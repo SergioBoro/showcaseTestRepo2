@@ -1,0 +1,59 @@
+package ru.curs.showcase.app.server;
+
+import java.io.IOException;
+
+import org.apache.commons.fileupload.FileUploadException;
+
+import ru.curs.showcase.app.api.services.GeneralServerException;
+
+import com.google.gwt.user.client.rpc.SerializationException;
+
+/**
+ * Класс-обработчик на получение файла из БД с помощью хранимой процедуры.
+ * Используется для скачивания файлов из XForms.
+ * 
+ * @author den
+ * 
+ */
+public final class DownloadHandler extends AbstractDownloadHandler {
+	/**
+	 * Ссылка на файл.
+	 */
+	private String linkId;
+
+	/**
+	 * Данные, введенные пользователем.
+	 */
+	private String data;
+
+	@Override
+	protected void processFiles() throws GeneralServerException {
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		setOutputFile(serviceLayer.getDownloadFile(getContext(), getElementInfo(), linkId, data));
+	}
+
+	@Override
+	protected void getParams() throws SerializationException, FileUploadException, IOException {
+		super.getParams();
+		linkId = getRequest().getParameter("linkId");
+		data = getRequest().getParameter("data");
+	}
+
+	public String getLinkId() {
+		return linkId;
+	}
+
+	/**
+	 * Возвращает новый экземпляр обработчика.
+	 * 
+	 * @return - новый экземпляр.
+	 */
+	public static AbstractFilesHandler newInstance() {
+		return new DownloadHandler();
+	}
+
+	public String getData() {
+		return data;
+	}
+
+}

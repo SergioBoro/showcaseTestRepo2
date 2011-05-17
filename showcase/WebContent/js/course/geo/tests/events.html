@@ -1,0 +1,138 @@
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<link rel="stylesheet" href="../../../dijit/themes/claro/claro.css"/>
+
+<script src="https://www.google.com/jsapi?key=ABQIAAAA-DMAtggvLwlIYlUJiASaAxRQnCpeV9jusWIeBw0POFqU6SItGxRWZhddpS8pIkVUd2fDQhzwPUWmMA"></script>
+
+<script>
+    djConfig = {
+        isDebug: true,
+		parseOnLoad: false,
+        modulePaths: {course: "../course", courseApp: "../course/geo/tests"},
+		gfxRenderer: "svg,silverlight",
+		mapEngine: "gfx"
+    };
+</script>
+<script src="utils.js"></script>
+
+<script src="../../../dojo/dojo.js"></script>
+<script src="../../../course/geo/Map.js"></script>
+<script src="../../../course/geo/Feature.js"></script>
+<script src="../../../course/geo/FeatureCollection.js"></script>
+<script src="../../../course/geo/Placemark.js"></script>
+<script src="../../../course/geo/Style.js"></script>
+
+<script>
+if (djConfig.mapEngine=="ge") dojo.require("course.geo.ge.Engine");
+
+dojo.require("dijit.form.Button");
+
+if (djConfig.mapEngine=="ge") dojo.require("courseApp.data.russia_geometriesEpsg4326");
+else dojo.require("courseApp.data.russia_geometries");
+
+dojo.require("courseApp.data.russia_features");
+
+
+var f1 = function(feature, evt, evtType){ console.debug("function:RU-KYA, feature.id:"+feature.id+", event:"+evtType); },
+	f2 = function(feature, evt, evtType){ console.debug("function:RU-SAK, feature.id:"+feature.id+", event:"+evtType); },
+	f3 = function(feature, evt, evtType){ console.debug("function:RU-MOW, feature.id:"+feature.id+", event:"+evtType); },
+	f4 = function(feature, evt, evtType){ console.debug("function:RU-MOS, feature.id:"+feature.id+", event:"+evtType); },
+	fMap =  function(feature, evt, evtType){ console.debug("function:Map, feature.id:"+feature.id+", event:"+evtType); };
+
+var map, handle1, handle2, handle3, handle4;
+var addOnLoad = function() {
+
+    new dijit.form.ToggleButton({
+		checked: true,
+		onChange: function(value){
+			if (value) handle1 = connectFeature("RU-KYA", f1);
+			else disconnectFeature("RU-KYA", handle1);
+		},
+		iconClass: "dijitRadioIcon"
+	}, "1");
+	
+    new dijit.form.ToggleButton({
+		checked: true,
+		onChange: function(value){
+			if (value) handle2 = connectFeature("RU-SAK", f2);
+			else disconnectFeature("RU-SAK", handle2);
+		},
+		iconClass: "dijitRadioIcon"
+	}, "2");
+	
+    new dijit.form.ToggleButton({
+		checked: true,
+		onChange: function(value){
+			if (value) handle3 = connectFeature("RU-MOW", f3);
+			else disconnectFeature("RU-MOW", handle3);
+		},
+		iconClass: "dijitRadioIcon"
+	}, "3");
+	
+    new dijit.form.ToggleButton({
+		checked: true,
+		onChange: function(value){
+			if (value) handle4 = connectFeature("RU-MOS", f4);
+			else disconnectFeature("RU-MOS", handle4);
+		},
+		iconClass: "dijitRadioIcon"
+	}, "4");
+	
+    new dijit.form.ToggleButton({
+		checked: true,
+		onChange: function(value){
+			if (value) handleMap = map.connect("onclick", fMap);
+			else map.disconnect(handleMap);
+		},
+		iconClass: "dijitRadioIcon"
+	}, "wholeMap");
+	
+	
+
+    map = new course.geo.Map("map", {
+		engine: {type: djConfig.mapEngine},
+		geometries: courseApp.russiaGeometries,
+		width: 800,
+		height: 400,
+		features: courseApp.russiaFeatures
+	})
+	map.ready(function(){
+		handle1 = connectFeature("RU-KYA", f1);
+		handle2 = connectFeature("RU-SAK", f2);
+		handle3 = connectFeature("RU-MOW", f3);
+		handle4 = connectFeature("RU-MOS", f4);
+		handleMap = map.connect("onclick", fMap);
+	});
+}
+
+var connectFeature = function(id, callback) {
+	return map.getFeatureById(id).connect(["onclick", "onmouseover"], callback);
+}
+
+var disconnectFeature = function(id, handle) {
+	map.getFeatureById(id).disconnect(handle);
+}
+
+
+dojo.addOnLoad(addOnLoad);
+
+</script>
+
+</head>
+
+<body class="claro">
+<div>
+Krasnoyarsk region is a huge area right in the middle. Sakhalin region is at the east.
+It is composed of Sakhalin Island and Kurilian Islands. Moscow is entirely surrounded by Moscow region.
+</div>
+<div id="1">Krasnoyarsk region</div>
+<div id="2">Sakhalin region</div>
+<div id="3">Moscow</div>
+<div id="4">Moscow region</div>
+<div id="wholeMap">The whole map</div>
+<div id="map" style="width:800px;height:400px;"></div>
+
+</body>
+</html>

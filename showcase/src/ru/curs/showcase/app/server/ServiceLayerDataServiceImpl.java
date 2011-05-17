@@ -1,0 +1,321 @@
+package ru.curs.showcase.app.server;
+
+import java.io.*;
+
+import org.slf4j.*;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+
+import ru.curs.gwt.datagrid.model.ColumnSet;
+import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.chart.Chart;
+import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.geomap.GeoMap;
+import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.html.*;
+import ru.curs.showcase.app.api.navigator.Navigator;
+import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.exception.*;
+import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.chart.*;
+import ru.curs.showcase.model.datapanel.*;
+import ru.curs.showcase.model.geomap.*;
+import ru.curs.showcase.model.grid.*;
+import ru.curs.showcase.model.navigator.*;
+import ru.curs.showcase.model.webtext.*;
+import ru.curs.showcase.model.xform.*;
+import ru.curs.showcase.util.XMLUtils;
+
+import com.google.gson.*;
+
+/**
+ * Реализация функций сервисного слоя приложения не зависимая от GWT Servlet.
+ * Позволяет вызывать функции сервисного слоя не из GWT кода.
+ * 
+ * @author den
+ * 
+ */
+public final class ServiceLayerDataServiceImpl implements DataService, DataServiceExt {
+
+	/**
+	 * LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ServiceLayerDataServiceImpl.class);
+
+	static final String JSON_MAP_DATA = "Сформирован JSON с данными карты: ";
+	static final String JSON_MAP_TEMPLATE = "Получен JSON с шаблоном карты: ";
+
+	/**
+	 * Идентификатор текущей HTTP сессии.
+	 */
+	private String sessionId = null;
+
+	public ServiceLayerDataServiceImpl(final String aSessionId) {
+		super();
+		sessionId = aSessionId;
+	}
+
+	public ServiceLayerDataServiceImpl() {
+		super();
+	}
+
+	@Override
+	public Navigator getNavigator() throws GeneralServerException {
+		InputStream xml;
+		getServerCurrentState();
+		Navigator nav = null;
+
+		try {
+			NavigatorGateway gw = new NavigatorDBGateway();
+			CompositeContext context = new CompositeContext();
+			prepareContext(context);
+			try {
+				xml = gw.getXMLByDefault(context);
+				NavigatorFactory factory = new NavigatorFactory();
+				nav = factory.fromStream(xml);
+			} finally {
+				gw.releaseResources();
+			}
+			return nav;
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	private SolutionMessage getSolutionMessage(final Throwable exc) {
+		if (exc.getClass() == SolutionDBException.class) {
+			return ((SolutionDBException) exc).getSolutionMessage();
+		}
+		return null;
+	}
+
+	@Override
+	public DataPanel getDataPanel(final Action action) throws GeneralServerException {
+		DataPanel panel = null;
+
+		try {
+			DataPanelGateway gateway = new DataPanelXMLGateway();
+			DataFile<InputStream> file =
+				gateway.getXML(action.getDataPanelLink().getDataPanelId());
+			DataPanelFactory factory = new DataPanelFactory();
+			panel = factory.fromStream(file);
+			return panel;
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	@Override
+	public WebText getWebText(final CompositeContext context, final DataPanelElementInfo element)
+			throws GeneralServerException {
+		try {
+			WebTextGateway wtgateway = new WebTextDBGateway();
+			prepareContext(context);
+			HTMLBasedElementRawData rawWT = wtgateway.getRawData(context, element);
+			WebTextDBFactory builder = new WebTextDBFactory(rawWT);
+			WebText webtext = builder.build();
+			LOGGER.debug(webtext.getData());
+			return webtext;
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	@Override
+	public Grid getGrid(final CompositeContext context, final DataPanelElementInfo element,
+			final GridRequestedSettings aSettings) throws GeneralServerException {
+		try {
+			GridGateway gateway = new GridDBGateway();
+			prepareContext(context);
+			ElementRawData raw = gateway.getFactorySource(context, element, aSettings);
+			GridDBFactory factory = new GridDBFactory(raw, aSettings);
+			Grid grid = factory.build();
+			if (LOGGER.isDebugEnabled()) {
+				Gson gson = new GsonBuilder().setPrettyPrinting().create();
+				LOGGER.debug(gson.toJson(grid));
+			}
+			return grid;
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	@Override
+	public Chart getChart(final CompositeContext context, final DataPanelElementInfo element)
+			throws GeneralServerException {
+		try {
+			ChartGateway gateway = new ChartDBGateway();
+			prepareContext(context);
+			ElementRawData raw = gateway.getFactorySource(context, element);
+			ChartDBFactory factory = new ChartDBFactory(raw);
+			Chart chart = factory.build();
+			AdapterForJS adapter = new AdapterForJS();
+			adapter.adapt(chart);
+			return chart;
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	private String getOriginalMessage(final Throwable original) {
+		if (original instanceof AbstractShowcaseThrowable) {
+			return ((AbstractShowcaseThrowable) original).getOriginalMessage();
+		}
+		return null;
+	}
+
+	@Override
+	public ExcelFile generateExcelFromGrid(final GridToExcelExportType exportType,
+			final CompositeContext context, final DataPanelElementInfo element,
+			final GridRequestedSettings settings, final ColumnSet cs)
+			throws GeneralServerException {
+		ByteArrayOutputStream result = null;
+		Grid grid = null;
+		try {
+			if (exportType == GridToExcelExportType.ALL) {
+				settings.resetForReturnAllRecords();
+			}
+			settings.setApplyLocalFormatting(false);
+			grid = getGrid(context, element, settings);
+			GridXMLBuilder builder = new GridXMLBuilder(grid);
+			Document xml = builder.build(cs);
+			result = XMLUtils.xsltTransformForGrid(xml);
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+		return new ExcelFile(result);
+	}
+
+	@Override
+	public void saveColumnSet(final ColumnSet aCs) throws GeneralServerException {
+	}
+
+	@Override
+	public GeoMap getGeoMap(final CompositeContext context, final DataPanelElementInfo element)
+			throws GeneralServerException {
+		try {
+			GeoMapGateway gateway = new GeoMapDBGateway();
+			prepareContext(context);
+			ElementRawData raw = gateway.getFactorySource(context, element);
+			GeoMapDBFactory factory = new GeoMapDBFactory(raw);
+			GeoMap map = factory.build();
+			AdapterForJS adapter = new AdapterForJS();
+			adapter.adapt(map);
+			LOGGER.debug(JSON_MAP_DATA + map.getJsDynamicData());
+			LOGGER.debug(JSON_MAP_TEMPLATE + map.getTemplate());
+			return map;
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	@Override
+	public XForms getXForms(final CompositeContext context, final DataPanelElementInfo element,
+			final String currentData) throws GeneralServerException {
+		try {
+			XFormsGateway gateway = new XFormsDBGateway();
+			prepareContext(context);
+			HTMLBasedElementRawData raw = gateway.getInitialData(context, element);
+			if (currentData != null) {
+				raw.setData(currentData);
+			}
+			XFormsDBFactory factory = new XFormsDBFactory(raw);
+			XForms xforms = factory.build();
+			LOGGER.debug(xforms.getXFormParts().toString());
+			return xforms;
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	@Override
+	public CommandResult saveXForms(final CompositeContext context,
+			final DataPanelElementInfo element, final String data) throws GeneralServerException {
+		try {
+			XFormsGateway gateway = new XFormsDBGateway();
+			prepareContext(context);
+			LOGGER.debug("Идет сохранение данных XForms: " + data);
+			CommandResult res = gateway.saveData(context, element, data);
+			return res;
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	private void prepareContext(final CompositeContext context) {
+		context.setSession(AppInfoSingleton.getSessionContext(sessionId));
+	}
+
+	@Override
+	public RequestResult handleSQLSubmission(final String procName, final String content)
+			throws GeneralServerException {
+		try {
+			XFormsGateway gateway = new XFormsDBGateway();
+			RequestResult res = gateway.handleSubmission(procName, content);
+			if (res.getSuccess()) {
+				LOGGER.debug("Submission успешно выполнен: " + res.getData());
+			} else {
+				LOGGER.debug("Submission вернул ошибку: " + res.generateStandartErrorMessage());
+			}
+			return res;
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	@Override
+	public String handleXSLTSubmission(final String xsltFile, final String content)
+			throws GeneralServerException {
+		try {
+			InputSource is = new InputSource();
+			is.setCharacterStream(new StringReader(content));
+			Document doc = XMLUtils.createBuilder().parse(is);
+			String res = XMLUtils.xsltTransform(doc, xsltFile);
+			LOGGER.debug("XFormsTransformationServlet успешно выполнен: " + res);
+			return res;
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	@Override
+	public ServerCurrentState getServerCurrentState() throws GeneralServerException {
+		try {
+			ServerCurrentState res = ServerCurrentStateBuilder.build(sessionId);
+			LOGGER.debug(res.toString());
+			return res;
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	@Override
+	public DataFile<ByteArrayOutputStream> getDownloadFile(final CompositeContext context,
+			final DataPanelElementInfo elementInfo, final String linkId, final String data)
+			throws GeneralServerException {
+		try {
+			XFormsGateway gateway = new XFormsDBGateway();
+			prepareContext(context);
+			DataFile<ByteArrayOutputStream> file =
+				gateway.downloadFile(context, elementInfo, linkId, data);
+			return file;
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	@Override
+	public void uploadFile(final CompositeContext context, final DataPanelElementInfo elementInfo,
+			final String linkId, final String data, final DataFile<ByteArrayOutputStream> file)
+			throws GeneralServerException {
+		try {
+			XFormsGateway gateway = new XFormsDBGateway();
+			prepareContext(context);
+			gateway.uploadFile(context, elementInfo, linkId, data, file);
+		} catch (Throwable e) {
+			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+}
