@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="extragwt"/>
 	<classpathentry kind="src" path="datagrid"/>
-	<classpathentry kind="src" path="datagridpublic"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER">

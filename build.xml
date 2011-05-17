@@ -52,6 +52,7 @@
 		<copy overwrite="no" verbose="true" file=".classpath.template" tofile=".classpath" />
 		<copy overwrite="no" verbose="true" file="${src.dir}/path.properties.template" tofile="${src.dir}/path.properties" />
 		<copy overwrite="no" verbose="true" file="${userdata.dir}/app.properties.template" tofile="${userdata.dir}/app.properties" />
+		<copy overwrite="no" verbose="true" file="${userdata.dir}/gridproperties/default.properties.template" tofile="${userdata.dir}/gridproperties/default.properties" />
 		<copy overwrite="no" verbose="true" file="${src.dir}/log4j.xml.template" tofile="${src.dir}/log4j.xml" />
 		<echo>Не забудьте указать правильные настройки в файлах local.properties, path.properties и app.properties, а также настроить classpath (Build path) с помощью Eclipse</echo>
 	</target>
@@ -66,7 +67,7 @@
 
 	<target name="compile" depends="init.dirs" description="Compiles .java files to WAR directory">
 		<javac srcdir="${src.dir}; datagrid; extragwt" destdir="${class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java" />
-		<exec executable="svnver\svnversion.exe" output="WebContent\WEB-INF\classes\build" dir="." description="Write build number to file" />
+		<exec resolveexecutable="true" executable="svnver\svnversion.exe" output="WebContent\WEB-INF\classes\build" dir="." description="Write build number to file" />
 	</target>
 
 	<target name="build" depends="compile">
