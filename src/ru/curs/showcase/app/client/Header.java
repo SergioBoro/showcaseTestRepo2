@@ -52,7 +52,6 @@ public class Header {
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
-
 		dataService.getServerCurrentState(new GWTServiceCallback<ServerCurrentState>(
 				Constants.ERROR_OF_SERVER_CURRENT_STATE_RETRIEVING_FROM_SERVER) {
 
@@ -68,42 +67,21 @@ public class Header {
 				}
 			}
 		});
-
 		final VerticalPanel headerVerticalPanel = new VerticalPanel();
 		headerVerticalPanel.setStyleName("showcaseHeaderContainerStyle");
-		// headerVerticalPanel.setSpacing(10);
 		headerVerticalPanel.setSize("100%", "100%");
-
 		HorizontalPanel headerHorizontalPanel1 = new HorizontalPanel();
-		// HorizontalPanel headerHorizontalPanel2 = new HorizontalPanel();
-		// headerVerticalPanel.add(headerHorizontalPanel2);
-
 		htmlForUserNameIndication.setHTML("<b>Текущий пользователь: </b>");
-		// html.setText("Ntreobq");
-
 		headerVerticalPanel.add(headerHorizontalPanel1);
 		headerHorizontalPanel1.setSize("100%", "100%");
-		// headerHorizontalPanel2.setSize("100%", "100%");
-		// headerVerticalPanel.setHorizontalAlignment(VerticalPanel.ALIGN_LEFT);
-		// HorizontalPanel headerHorizontalPanel = new HorizontalPanel();
-		// final int n = 10;
-		// headerHorizontalPanel.setSpacing(n);
-		// headerHorizontalPanel.setSize("100%", "100%");
-		// headerVerticalPanel.add(headerHorizontalPanel);
-
-		// headerHorizontalPanel.add(createHeaderImage());
-		// headerHorizontalPanel.setSize("100%", "100%");
 
 		Anchor onMainPageLink =
 			new Anchor("<b>На главную</b>", true, Window.Location.getQueryString());
-		// headerVerticalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-		// headerVerticalPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
-		headerHorizontalPanel1.add(onMainPageLink);
-		// headerVerticalPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
 
-		// java.lang.String text, boolean asHTML
+		headerHorizontalPanel1.add(onMainPageLink);
+
 		headerHorizontalPanel1.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
-		// headerHorizontalPanel2.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+
 		Anchor exitLink = new Anchor("<b>Выход</b>", true);
 		exitLink.addClickHandler(new ClickHandler() {
 
@@ -118,14 +96,7 @@ public class Header {
 					builder.sendRequest(null, new RequestCallback() {
 						@Override
 						public void onError(final Request request, final Throwable exception) {
-							// if (exception instanceof RequestTimeoutException)
-							// {
-							// TODO handle a request timeout
-							// } else {
-							// TODO handle other request errors
-							// }
-							// Window.Location.replace(Window.Location.getPath()
-							// + "logout");
+
 							Window.Location.assign(AccessToDomModel.getAppContextPath()
 									+ "/logout");
 						}
@@ -135,8 +106,6 @@ public class Header {
 								final Response response) {
 							Window.Location.assign(AccessToDomModel.getAppContextPath()
 									+ "/logout");
-							// Window.Location.replace(Window.Location.getPath()
-							// + "logout");
 						}
 					});
 
@@ -169,7 +138,8 @@ public class Header {
 
 							"Copyright ООО 'КУРС-ИТ', 1998-2011 <br />"
 							+ "Тел/факс: +7(495)640-2772<br />"
-							+ "E-mail: <a href='mailto://info@mail.ru'>info@curs.ru</a> <br/> <a href='http://www.curs.ru' target='_blank'>http://www.curs.ru</a><br />"
+							+ "E-mail: <a href='mailto://info@mail.ru'>info@curs.ru</a>"
+							+ " <br/> <a href='http://www.curs.ru' target='_blank'>http://www.curs.ru</a><br />"
 
 							+ "<br />Версия SQL сервера: "
 							+ AppCurrContext.getInstance().getServerCurrentState().getSqlVersion()
@@ -185,8 +155,9 @@ public class Header {
 							+ AppCurrContext.getInstance().getServerCurrentState().getUserName()
 							+ "'" + "	является " + fff;
 				about.setHTML(textHTML);
-
-				about.setPixelSize(500, 310);
+				final int n500 = 500;
+				final int n300 = 300;
+				about.setPixelSize(n500, n300);
 				db.add(about);
 				db.center();
 				db.show();
