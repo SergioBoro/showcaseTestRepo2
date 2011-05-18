@@ -28,6 +28,7 @@ public class DataPanelTab extends VisualElement {
 	/**
 	 * Родительская панель.
 	 */
+	@ExcludeFromSerialization
 	private DataPanel dataPanel;
 
 	public final List<DataPanelElementInfo> getElements() {

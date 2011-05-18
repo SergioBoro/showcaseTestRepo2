@@ -78,6 +78,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			} finally {
 				gw.releaseResources();
 			}
+			outputDebugInfo(nav);
 			return nav;
 		} catch (Throwable e) {
 			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
@@ -101,6 +102,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 				gateway.getXML(action.getDataPanelLink().getDataPanelId());
 			DataPanelFactory factory = new DataPanelFactory();
 			panel = factory.fromStream(file);
+			outputDebugInfo(panel);
 			return panel;
 		} catch (Throwable e) {
 			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
@@ -116,7 +118,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			HTMLBasedElementRawData rawWT = wtgateway.getRawData(context, element);
 			WebTextDBFactory builder = new WebTextDBFactory(rawWT);
 			WebText webtext = builder.build();
-			LOGGER.debug(webtext.getData());
+			outputDebugInfo(webtext);
 			return webtext;
 		} catch (Throwable e) {
 			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
@@ -132,13 +134,28 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			ElementRawData raw = gateway.getFactorySource(context, element, aSettings);
 			GridDBFactory factory = new GridDBFactory(raw, aSettings);
 			Grid grid = factory.build();
-			if (LOGGER.isDebugEnabled()) {
-				Gson gson = new GsonBuilder().setPrettyPrinting().create();
-				LOGGER.debug(gson.toJson(grid));
-			}
+			outputDebugInfo(grid);
 			return grid;
 		} catch (Throwable e) {
 			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+		}
+	}
+
+	private void outputDebugInfo(final Object obj) {
+		if (LOGGER.isDebugEnabled()) {
+			ExclusionStrategy es = new ExclusionStrategy() {
+				@Override
+				public boolean shouldSkipClass(final Class<?> aClass) {
+					return false;
+				}
+
+				@Override
+				public boolean shouldSkipField(final FieldAttributes fa) {
+					return (fa.getAnnotation(ExcludeFromSerialization.class) != null);
+				}
+			};
+			Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(es).create();
+			LOGGER.debug(gson.toJson(obj));
 		}
 	}
 
@@ -153,6 +170,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			Chart chart = factory.build();
 			AdapterForJS adapter = new AdapterForJS();
 			adapter.adapt(chart);
+			outputDebugInfo(chart);
 			return chart;
 		} catch (Throwable e) {
 			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
@@ -203,8 +221,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			GeoMap map = factory.build();
 			AdapterForJS adapter = new AdapterForJS();
 			adapter.adapt(map);
-			LOGGER.debug(JSON_MAP_DATA + map.getJsDynamicData());
-			LOGGER.debug(JSON_MAP_TEMPLATE + map.getTemplate());
+			outputDebugInfo(map);
 			return map;
 		} catch (Throwable e) {
 			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
@@ -223,7 +240,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			}
 			XFormsDBFactory factory = new XFormsDBFactory(raw);
 			XForms xforms = factory.build();
-			LOGGER.debug(xforms.getXFormParts().toString());
+			outputDebugInfo(xforms);
 			return xforms;
 		} catch (Throwable e) {
 			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
@@ -238,6 +255,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			prepareContext(context);
 			LOGGER.debug("Идет сохранение данных XForms: " + data);
 			CommandResult res = gateway.saveData(context, element, data);
+			outputDebugInfo(res);
 			return res;
 		} catch (Throwable e) {
 			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
