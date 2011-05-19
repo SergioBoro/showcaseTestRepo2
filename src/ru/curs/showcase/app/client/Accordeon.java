@@ -7,6 +7,7 @@ import java.util.*;
 
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.app.client.api.Constants;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;

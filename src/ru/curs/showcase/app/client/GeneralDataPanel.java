@@ -8,7 +8,7 @@ import java.util.*;
 import ru.beta2.extra.gwt.ui.panels.CursScrolledTabLayoutPanel;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.client.api.DataGridPanelCallbacksEvents;
+import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.shared.HandlerRegistration;

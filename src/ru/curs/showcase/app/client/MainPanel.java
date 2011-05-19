@@ -4,6 +4,7 @@
 package ru.curs.showcase.app.client;
 
 import ru.beta2.extra.gwt.ui.panels.*;
+import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.DownloadHelper;
 
 import com.google.gwt.event.logical.shared.*;

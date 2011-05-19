@@ -7,6 +7,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanel;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.navigator.NavigatorElement;
 import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.app.client.api.Constants;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.*;

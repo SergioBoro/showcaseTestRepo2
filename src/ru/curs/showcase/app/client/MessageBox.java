@@ -3,6 +3,8 @@
  */
 package ru.curs.showcase.app.client;
 
+import ru.curs.showcase.app.client.api.Constants;
+
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.user.client.ui.*;

@@ -8,6 +8,7 @@ import java.util.Date;
 import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
 import ru.curs.showcase.app.api.ServerCurrentState;
 import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.AccessToDomModel;
 
 import com.google.gwt.core.client.GWT;
