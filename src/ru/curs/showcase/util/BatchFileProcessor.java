@@ -3,11 +3,18 @@ package ru.curs.showcase.util;
 import java.io.*;
 
 /**
- * Класс для пакетных операций с файлами. Пример использования:
+ * Класс для пакетных операций с файлами. Используется совместно с классами,
+ * реализующими интерфейс {@link ru.curs.showcase.util.FileAction FileAction}:
+ * 
+ * {@link ru.curs.showcase.util.CopyFileAction CopyFileAction}. а также
+ * интерфейс {@link java.io.FilenameFilter FilenameFilter}:
+ * {@link ru.curs.showcase.util.RegexFilenameFilter RegexFilenameFilter}. Пример
+ * использования: <code>
  * BatchFileProcessor fprocessor = new BatchFileProcessor(sourceDir, new
  * RegexFilenameFilter( "^[.].*", false)); try { fprocessor.process(new
  * CopyFileAction(destDir, true)); } catch (IOException e) {
  * LOGGER.error("Ошибка копирования файла:" + e.getMessage()); }
+ * </code>
  * 
  * @author den
  * 

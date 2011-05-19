@@ -43,7 +43,7 @@ public class CopyFileAction implements FileAction {
 	 * Признак того, что если каталог для файла назначение не существует, то его
 	 * нужно создать.
 	 */
-	private boolean createDirInNotExists = true;
+	private boolean createDirIfNotExists = true;
 
 	public String getToDir() {
 		return toDir;
@@ -61,12 +61,12 @@ public class CopyFileAction implements FileAction {
 		overwrite = aOverwrite;
 	}
 
-	public boolean isCreateDirInNotExists() {
-		return createDirInNotExists;
+	public boolean isCreateDirIfNotExists() {
+		return createDirIfNotExists;
 	}
 
-	public void setCreateDirInNotExists(final boolean aCreateDirInNotExists) {
-		createDirInNotExists = aCreateDirInNotExists;
+	public void setCreateDirIfNotExists(final boolean aCreateDirInNotExists) {
+		createDirIfNotExists = aCreateDirInNotExists;
 	}
 
 	public CopyFileAction(final String aToDir) {
@@ -98,7 +98,7 @@ public class CopyFileAction implements FileAction {
 
 	private void checkForDestDir() {
 		File destDir = new File(toDir);
-		if ((!destDir.exists()) && createDirInNotExists) {
+		if ((!destDir.exists()) && createDirIfNotExists) {
 			if (!destDir.mkdirs()) {
 				LOGGER.error(String.format(CREATE_DIR_ERROR, destDir.getName()));
 				return;
@@ -123,7 +123,7 @@ public class CopyFileAction implements FileAction {
 	@Override
 	public FileAction cloneForHandleChildDir(final String aChildDir) {
 		CopyFileAction res = new CopyFileAction(toDir + File.separator + aChildDir);
-		res.createDirInNotExists = createDirInNotExists;
+		res.createDirIfNotExists = createDirIfNotExists;
 		res.overwrite = overwrite;
 		return res;
 	}

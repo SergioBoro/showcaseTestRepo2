@@ -1,6 +1,6 @@
 package ru.curs.showcase.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.*;
 import java.util.*;
@@ -15,7 +15,6 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.server.*;
-import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.XMLUtils;
 
 /**
@@ -27,7 +26,6 @@ import ru.curs.showcase.util.XMLUtils;
 public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	static final boolean AUTH_VIA_AUTH_SERVER = true;
 	static final String TEMP_PASS = "pass";
-	static final String TEST_CSS = "ru\\curs\\showcase\\test\\ShowcaseDataGrid_test.css";
 	static final String VALUE12 = "value1";
 	static final String KEY1 = "key1";
 	static final String FAKE_SESSION_ID = "fake-session-id";
@@ -80,18 +78,5 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 				.getAuthViaAuthServerForSession(FAKE_SESSION_ID));
 		assertEquals(TEMP_PASS, AppInfoSingleton.getAppInfo()
 				.getAuthServerCrossAppPasswordForSession(FAKE_SESSION_ID));
-	}
-
-	/**
-	 * Проверка считывания из CSS ".webmain-SmartGrid .headerGap".
-	 * 
-	 */
-	@Test
-	public void testGridColumnGapRead() {
-		CSSPropReader reader = new CSSPropReader();
-		String width =
-			reader.read(TEST_CSS, ProductionModeInitializer.HEADER_GAP_SELECTOR,
-					ProductionModeInitializer.WIDTH_PROP);
-		assertNotNull(width);
 	}
 }
