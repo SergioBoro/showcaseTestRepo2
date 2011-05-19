@@ -15,6 +15,8 @@ import ru.curs.showcase.util.*;
 
 /**
  * Шлюз для работы с файлами данных XForms. Используется в отладочных целях.
+ * TODO пока сделан просто вывод данных о полученном файле или submission в
+ * консоль и upload файла из classes по его имени.
  * 
  * @author den
  * 
@@ -61,7 +63,9 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 
 	@Override
 	public RequestResult handleSubmission(final String aProcName, final String aInputData) {
-		// TODO сделать пример для файлов
+		System.out.println(String.format(
+				"Заглушка: выполнение Submission процедуры '%s' c данными формы  %s", aProcName,
+				aInputData));
 		return null;
 	}
 
@@ -83,10 +87,9 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	public void uploadFile(final CompositeContext aContext,
 			final DataPanelElementInfo aElementInfo, final String aLinkId, final String aData,
 			final DataFile<ByteArrayOutputStream> aFile) {
-		// TODO в целях отладки - просто вывод данных о полученном файле
 		System.out
 				.println(String
-						.format("Сохранен файл %s с контекстом %s из элемента %s, идентификатор ссылки %s, данные формы %s",
+						.format("Заглушка: сохранение файла '%s' с контекстом %s из элемента %s, ссылка %s, данные формы %s",
 								aFile.getName(), aContext, aElementInfo, aLinkId, aData));
 
 	}
