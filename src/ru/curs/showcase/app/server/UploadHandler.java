@@ -15,7 +15,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.model.DataFile;
-import ru.curs.showcase.util.InputStreamDuplicator;
+import ru.curs.showcase.util.StreamConvertor;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
@@ -64,7 +64,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 			FileItemStream item = iterator.next();
 			String name = item.getFieldName();
 			InputStream input = item.openStream();
-			ByteArrayOutputStream out = InputStreamDuplicator.inputToOutputStream(input);
+			ByteArrayOutputStream out = StreamConvertor.inputToOutputStream(input);
 
 			if (item.isFormField()) {
 				String paramValue = URLDecoder.decode(out.toString(), "UTF-8");

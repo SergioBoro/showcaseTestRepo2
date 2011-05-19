@@ -3,15 +3,14 @@ package ru.curs.showcase.util;
 import java.io.*;
 
 /**
- * Дубликатор для InputStream. TODO: не всякий поток позволяет повторное
- * копирование!
+ * Преобразователь для потоков Java. Преобразовывает InputStream в OutputStream
+ * и обратно, может сделать копию InputStream. TODO: не всякий поток позволяет
+ * повторное копирование!
  * 
  * @author den
  * 
  */
-public class InputStreamDuplicator {
-
-	static final int BUF_LEN = 512;
+public class StreamConvertor {
 	/**
 	 * Внутреннее хранилище данных.
 	 */
@@ -21,14 +20,15 @@ public class InputStreamDuplicator {
 	 */
 	private final InputStream input;
 
-	public InputStreamDuplicator(final InputStream is) throws IOException {
+	public StreamConvertor(final InputStream is) throws IOException {
 		input = is;
 		copy();
 	}
 
 	private void copy() throws IOException {
 		int chunk = 0;
-		byte[] data = new byte[BUF_LEN];
+		final int bufLen = 512;
+		byte[] data = new byte[bufLen];
 
 		while (-1 != (chunk = input.read(data))) {
 			internal.write(data, 0, chunk);
@@ -53,7 +53,7 @@ public class InputStreamDuplicator {
 	 */
 	public static ByteArrayOutputStream inputToOutputStream(final InputStream stream)
 			throws IOException {
-		InputStreamDuplicator dup = new InputStreamDuplicator(stream);
+		StreamConvertor dup = new StreamConvertor(stream);
 		ByteArrayOutputStream out = dup.getOutputStream();
 		return out;
 	}

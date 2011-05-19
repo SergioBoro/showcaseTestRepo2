@@ -509,9 +509,9 @@ public final class XMLUtils {
 	 * @return - входной поток, из которого можно читать.
 	 */
 	public static InputStream validateXMLStream(final InputStream stream, final String schemaFile) {
-		InputStreamDuplicator duplicator;
+		StreamConvertor duplicator;
 		try {
-			duplicator = new InputStreamDuplicator(stream);
+			duplicator = new StreamConvertor(stream);
 		} catch (IOException e) {
 			throw new CreateObjectError(e);
 		}

@@ -55,7 +55,7 @@ public class BaseObjectsTest {
 			AppProps.loadUserDataToStream(String.format("%s//%s",
 					DataPanelXMLGateway.DP_STORAGE_PARAM_NAME, "a.xml"));
 
-		InputStreamDuplicator dup = new InputStreamDuplicator(is);
+		StreamConvertor dup = new StreamConvertor(is);
 		String data = XMLUtils.xsltTransform(dup.getCopy(), null);
 		checkForDP(data);
 
@@ -65,10 +65,10 @@ public class BaseObjectsTest {
 		ByteArrayOutputStream outStream = dup.getOutputStream();
 		checkForDPWithXMLHeader(outStream);
 
-		data = XMLUtils.xsltTransform(InputStreamDuplicator.outputToInputStream(outStream), null);
+		data = XMLUtils.xsltTransform(StreamConvertor.outputToInputStream(outStream), null);
 		checkForDP(data);
 
-		outStream = InputStreamDuplicator.inputToOutputStream(dup.getCopy());
+		outStream = StreamConvertor.inputToOutputStream(dup.getCopy());
 		checkForDPWithXMLHeader(outStream);
 	}
 

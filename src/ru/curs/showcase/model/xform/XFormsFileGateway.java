@@ -62,9 +62,9 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	@Override
 	public DataFile<ByteArrayOutputStream> downloadFile(final CompositeContext context,
 			final DataPanelElementInfo elementInfo, final String linkId, final String data) {
-		InputStreamDuplicator dup;
+		StreamConvertor dup;
 		try {
-			dup = new InputStreamDuplicator(AppProps.loadResToStream(linkId));
+			dup = new StreamConvertor(AppProps.loadResToStream(linkId));
 		} catch (IOException e) {
 			throw new TestFileExchangeException(linkId, e);
 		}

@@ -9,7 +9,7 @@ import javax.xml.parsers.DocumentBuilder;
 import org.junit.Test;
 import org.w3c.dom.*;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.CommandResult;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
@@ -203,7 +203,10 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "03";
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
-		serviceLayer.getDownloadFile(context, element, linkId, null);
+		DataFile<ByteArrayOutputStream> file =
+			serviceLayer.getDownloadFile(context, element, linkId, null);
+		final int navigatorXMLLen = 192904;
+		assertEquals(navigatorXMLLen, file.getData().size());
 	}
 
 	/**
@@ -237,7 +240,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 
 	private DataFile<ByteArrayOutputStream> getTestFile(final String linkId) throws IOException {
 		DataFile<ByteArrayOutputStream> file =
-			new DataFile<ByteArrayOutputStream>(InputStreamDuplicator.inputToOutputStream(AppProps
+			new DataFile<ByteArrayOutputStream>(StreamConvertor.inputToOutputStream(AppProps
 					.loadResToStream(linkId)), linkId);
 		return file;
 	}

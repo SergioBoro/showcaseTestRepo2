@@ -3,7 +3,7 @@ package ru.curs.showcase.model.xform;
 import java.io.*;
 import java.sql.*;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.CommandResult;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.exception.*;
@@ -128,11 +128,9 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 				int errorCode = cs.getInt(1);
 				if (errorCode == 0) {
 					result =
-						RequestResult.newSuccessResult(cs.getSQLXML(OUTPUTDATA_PARAM)
-								.getString());
+						RequestResult.newSuccessResult(cs.getSQLXML(OUTPUTDATA_PARAM).getString());
 				} else {
-					result =
-						RequestResult.newErrorResult(errorCode, cs.getString(ERROR_MES_COL));
+					result = RequestResult.newErrorResult(errorCode, cs.getString(ERROR_MES_COL));
 				}
 			} finally {
 				db.close();
@@ -179,15 +177,16 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 				getCs().setString(XFORMSDATA_PARAM, data);
 				getCs().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
 				getCs().registerOutParameter(FILENAME_TAG, java.sql.Types.VARCHAR);
-				getCs().registerOutParameter(FILE_TAG, java.sql.Types.VARBINARY);
+				getCs().registerOutParameter(FILE_TAG, java.sql.Types.BLOB);
 				getCs().execute();
 				int errorCode = getCs().getInt(1);
 				if (errorCode == 0) {
 					String fileName = getCs().getString(FILENAME_TAG);
 					Blob blob = getCs().getBlob(FILE_TAG);
 					InputStream blobIs = blob.getBinaryStream();
-					InputStreamDuplicator dup = new InputStreamDuplicator(blobIs);
-					result = new DataFile<ByteArrayOutputStream>(dup.getOutputStream(), fileName);
+					StreamConvertor dup = new StreamConvertor(blobIs);
+					ByteArrayOutputStream os = dup.getOutputStream();
+					result = new DataFile<ByteArrayOutputStream>(os, fileName);
 				} else {
 					throw new DBQueryException(elementInfo, String.format(DOWNLOAD_ERROR,
 							errorCode, getCs().getString(ERROR_MES_COL)));
@@ -225,7 +224,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 				getCs().setString(XFORMSDATA_PARAM, data);
 				getCs().setString(FILENAME_TAG, file.getName());
 				getCs().setBinaryStream(FILE_TAG,
-						InputStreamDuplicator.outputToInputStream(file.getData()));
+						StreamConvertor.outputToInputStream(file.getData()));
 				getCs().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
 				getCs().execute();
 				int errorCode = getCs().getInt(1);
