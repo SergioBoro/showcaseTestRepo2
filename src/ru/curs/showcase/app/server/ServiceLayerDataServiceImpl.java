@@ -318,6 +318,8 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			prepareContext(context);
 			DataFile<ByteArrayOutputStream> file =
 				gateway.downloadFile(context, elementInfo, linkId, data);
+			LOGGER.debug(String
+					.format("Размер скачиваемого файла: %d байт", file.getData().size()));
 			return file;
 		} catch (Throwable e) {
 			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
