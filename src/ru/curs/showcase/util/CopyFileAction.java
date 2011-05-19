@@ -99,8 +99,9 @@ public class CopyFileAction implements FileAction {
 	private void checkForDestDir() {
 		File destDir = new File(toDir);
 		if ((!destDir.exists()) && createDirInNotExists) {
-			if (!destDir.mkdir()) {
+			if (!destDir.mkdirs()) {
 				LOGGER.error(String.format(CREATE_DIR_ERROR, destDir.getName()));
+				return;
 			}
 			LOGGER.debug(String.format(DIR_CREATED_INFO, destDir.getName()));
 		}
