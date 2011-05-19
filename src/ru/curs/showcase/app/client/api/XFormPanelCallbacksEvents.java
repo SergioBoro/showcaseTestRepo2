@@ -346,7 +346,12 @@ public final class XFormPanelCallbacksEvents {
 			currentXFormPanel.getUw().runUpload(param.linkId(), new UploadEndHandler() {
 
 				@Override
-				public void onEnd(final boolean res, final String fileName) {
+				public void onEnd(final boolean res, final String filePath) {
+					int index = filePath.lastIndexOf('\\');
+					String fileName = filePath;
+					if (index > -1) {
+						fileName = fileName.substring(++index);
+					}
 					param.onSelectionComplete(res, fileName);
 				}
 
