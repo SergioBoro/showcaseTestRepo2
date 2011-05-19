@@ -180,22 +180,22 @@ public final class XMLUtils {
 	}
 
 	/**
-	 * Функция сохранения строки в XML файл.
+	 * Функция сохранения строки в XML файл. Функция сначала преобразует строку
+	 * в XML документ в целях проверки.
 	 * 
 	 * @param content
 	 *            - содержимое строки.
 	 * @param filename
 	 *            - имя файла для сохранения.
-	 * @throws TestFileExchangeException
+	 * @throws IOException
+	 * @throws SAXException
+	 * @throws TransformerException
 	 */
-	public static void stringToXMLFile(final String content, final String filename) {
-		try {
-			Document doc = stringToDocument(content);
-			Transformer tr = createTransformer(null);
-			tr.transform(new DOMSource(doc), new StreamResult(new File(filename)));
-		} catch (Exception e) {
-			throw new TestFileExchangeException(filename, e);
-		}
+	public static void stringToXMLFile(final String content, final String filename)
+			throws SAXException, IOException, TransformerException {
+		Document doc = stringToDocument(content);
+		Transformer tr = createTransformer(null);
+		tr.transform(new DOMSource(doc), new StreamResult(new File(filename)));
 	}
 
 	/**
