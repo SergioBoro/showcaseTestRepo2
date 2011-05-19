@@ -156,8 +156,8 @@ public class Header {
 							+ "'" + "	является " + fff;
 				about.setHTML(textHTML);
 				final int n500 = 500;
-				final int n300 = 300;
-				about.setPixelSize(n500, n300);
+				final int n310 = 310;
+				about.setPixelSize(n500, n310);
 				db.add(about);
 				db.center();
 				db.show();
