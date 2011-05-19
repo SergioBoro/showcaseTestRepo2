@@ -188,7 +188,7 @@ public final class XMLUtils {
 	 *            - имя файла для сохранения.
 	 * @throws TestFileExchangeException
 	 */
-	public static void saveStringToXML(final String content, final String filename) {
+	public static void stringToXMLFile(final String content, final String filename) {
 		try {
 			Document doc = stringToDocument(content);
 			Transformer tr = createTransformer(null);
