@@ -19,11 +19,17 @@ public final class AppProps {
 	 * использовать двойной обратный слэш в качестве разделителя.
 	 */
 	public static final String PATH_PROPERTIES = "path.properties";
+
+	/**
+	 * SHOWCASE_USER_DATA_DEFAULT.
+	 */
+	public static final String SHOWCASE_USER_DATA_DEFAULT = "default";
+
 	/**
 	 * Параметр в файле настроек путей приложения, содержащий путь к
 	 * пользовательским данным.
 	 */
-	private static final String USER_DATA = "user.data";
+	public static final String USER_DATA = "user.data";
 	/**
 	 * Имя файла с настройками приложения.
 	 */

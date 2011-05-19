@@ -5,6 +5,7 @@ import java.io.*;
 import javax.servlet.http.*;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 /**
  * Вспомогательные функции для работы с сервлетами.
@@ -29,6 +30,21 @@ public final class ServletUtils {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * Возвращает идентификатор текущей сессии приложения.
+	 * 
+	 * @return - идентификатор текущей сессии приложения.
+	 */
+	public static String getSessionId() {
+		String id = null;
+		if (SecurityContextHolder.getContext().getAuthentication() != null) {
+			id =
+				((WebAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication()
+						.getDetails()).getSessionId();
+		}
+		return id;
 	}
 
 	/**

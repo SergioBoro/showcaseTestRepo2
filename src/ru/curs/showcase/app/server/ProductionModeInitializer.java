@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.server;
 
 import java.io.*;
+import java.util.Enumeration;
 
 import javax.servlet.*;
 
@@ -19,6 +20,8 @@ import ru.curs.showcase.util.*;
  */
 public final class ProductionModeInitializer {
 	static final String SHOWCASE_USER_DATA_PARAM = "showcase.user.data";
+	static final String USER_DATA_INFO =
+		"Добавлен userdata из context.xml с идентификатором '%s' и путем '%s'";
 	static final String CONTEXT_XML_READ_INFO = "Считан параметр " + SHOWCASE_USER_DATA_PARAM
 			+ " из context.xml - %s";
 	static final String FILE_COPY_ERROR = "Ошибка копирования файла при старте Tomcat: %s";
@@ -55,7 +58,7 @@ public final class ProductionModeInitializer {
 	 *            - ServletContextEvent.
 	 */
 	public static void initialize(final ServletContextEvent arg0) {
-		readServletContext(arg0); // считываем путь к user.data вначале
+		readServletContext(arg0); // считываем пути к userdata'м вначале
 		if (checkForCopyUserData()) {
 			copyUserData(arg0);
 		}
@@ -64,12 +67,36 @@ public final class ProductionModeInitializer {
 
 	private static void readServletContext(final ServletContextEvent arg0) {
 		ServletContext sc = arg0.getServletContext();
+
 		final String userDataPath = sc.getInitParameter(SHOWCASE_USER_DATA_PARAM);
 		LOGGER.info(String.format(CONTEXT_XML_READ_INFO, userDataPath));
 		if (userDataPath != null) {
 			AppProps.setUserDataCatalog(userDataPath);
 		}
+
+		Enumeration<?> en = sc.getInitParameterNames();
+		while (en.hasMoreElements()) {
+			String name = en.nextElement().toString();
+			if (name.toLowerCase().contains(SHOWCASE_USER_DATA_PARAM.toLowerCase())) {
+				String id =
+					name.substring(0,
+							name.toLowerCase().indexOf(SHOWCASE_USER_DATA_PARAM.toLowerCase()))
+							.trim();
+
+				if ("".equals(id)) {
+					id = AppProps.SHOWCASE_USER_DATA_DEFAULT;
+				} else {
+					id = id.substring(0, id.length() - 1);
+				}
+
+				String value = sc.getInitParameter(name);
+				AppInfoSingleton.getAppInfo().addUserData(id, value);
+				LOGGER.info(String.format(USER_DATA_INFO, id, value));
+			}
+		}
+
 		AppInfoSingleton.getAppInfo().setServletContainerVersion(sc.getServerInfo());
+
 	}
 
 	private static void readCSS() {

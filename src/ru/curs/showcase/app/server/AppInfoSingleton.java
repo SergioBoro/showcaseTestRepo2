@@ -29,6 +29,9 @@ public final class AppInfoSingleton {
 	 */
 	private static final String URL_PARAM_USERDATA = "userdata";
 
+	/** Список userdata. */
+	private final HashMap<String, UserData> userdatas = new HashMap<String, UserData>();
+
 	private AppInfoSingleton() {
 		super();
 	}
@@ -84,7 +87,7 @@ public final class AppInfoSingleton {
 		try {
 			SessionInfo si = getOrInitSessionInfoObject(sessionId);
 			si.setContext(SessionInfoGenerator.generateSessionContext(sessionId, cur));
-			si.setUserdata(getSessionUserdata(cur));
+			si.setUserdata(getSessionUserdataId(cur));
 		} catch (XSLTTransformException e) {
 			LOGGER.error(USER_SESSION_INFO_GENERATE_ERROR);
 		}
@@ -92,14 +95,14 @@ public final class AppInfoSingleton {
 	}
 
 	/**
-	 * Получает значение Userdata из параметров URL.
+	 * Получает идентификатор Userdata из параметров URL.
 	 * 
-	 * @return - строку с Userdata.
+	 * @return - строку с идентификатором.
 	 * @param params
-	 *            - параметры.
+	 *            - параметры URL.
 	 */
-	private String getSessionUserdata(final Map<String, String[]> params) {
-		String userdata = null;
+	private String getSessionUserdataId(final Map<String, String[]> params) {
+		String userdataId = null;
 
 		if ((params != null) && (!params.isEmpty())) {
 			Iterator<String> iterator = params.keySet().iterator();
@@ -107,14 +110,31 @@ public final class AppInfoSingleton {
 				String key = iterator.next();
 				if (URL_PARAM_USERDATA.equals(key)) {
 					if (params.get(key) != null) {
-						userdata = Arrays.toString(params.get(key)).trim();
+						userdataId = Arrays.toString(params.get(key)).trim();
 						break;
 					}
 				}
 			}
 		}
 
-		return userdata;
+		return userdataId;
+	}
+
+	public HashMap<String, UserData> getUserdatas() {
+		return userdatas;
+	}
+
+	/**
+	 * Добавляет UserData в список.
+	 * 
+	 * @param id
+	 *            Идентификатор UserData
+	 * 
+	 * @param path
+	 *            Путь к UserData
+	 */
+	public void addUserData(final String id, final String path) {
+		userdatas.put(id, new UserData(path));
 	}
 
 	/**
@@ -228,4 +248,5 @@ public final class AppInfoSingleton {
 		LOGGER.debug("Session context: " + sessionContext);
 		return sessionContext;
 	}
+
 }

@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
-import ru.curs.showcase.app.server.AppInitializer;
+import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.navigator.NavigatorFactory;
@@ -36,6 +36,9 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	@BeforeClass
 	public static void beforeClass() {
 		AppInitializer.initialize();
+		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
+			AppInitializer.readPathProperties();
+		}
 	}
 
 	public AbstractTestBasedOnFiles() {
