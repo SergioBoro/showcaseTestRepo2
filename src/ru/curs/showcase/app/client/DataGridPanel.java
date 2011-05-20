@@ -194,6 +194,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		p.add(new HTML(Constants.PLEASE_WAIT_GRID_1));
 
 		setGrid(UpdateType.FULL);
+
 	}
 
 	@Override
@@ -298,7 +299,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 				bListenersExit = false;
 
-				// TODO Боре
+				// TODO Боре - перенес из ReDrawPanel
 				// if (getIsFirstLoading() && refreshContextOnly) {
 				// grid.updateAddContext(context);
 				// }
