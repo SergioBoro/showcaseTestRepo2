@@ -35,56 +35,61 @@ public final class XFormPanelCallbacksEvents {
 	public static void xFormPanelClickSave(final String xformId, final String linkId,
 			final String data) {
 
-		final XFormPanel currentXFormPanel = getCurrentPanel(xformId);
+		final XFormPanel curXFormPanel = getCurrentPanel(xformId);
 
-		if (currentXFormPanel != null) {
-
+		if (curXFormPanel != null) {
 			// MessageBox.showSimpleMessage("Save=" + xformId, data);
 
-			Action ac = null;
+			final Action ac = getActionByLinkId(linkId, curXFormPanel);
 
-			Event ev = currentXFormPanel.getXform().getEventManager().getEventForLink(linkId);
+			if (curXFormPanel.getElementInfo().enabledSimpleSave()) {
+				curXFormPanel.getDataService().saveXForms(curXFormPanel.getContext(),
+						curXFormPanel.getElementInfo(), data,
+						new GWTServiceCallback<CommandResult>(Constants.XFORM_SAVE_DATA_ERROR) {
 
-			if (ev != null) {
-				ac = ev.getAction();
+							@Override
+							public void onSuccess(final CommandResult result) {
+								if (result.getSuccess()) {
+									if (curXFormPanel.getUw() != null) {
+										submitUploadForm(data, curXFormPanel);
+									}
+									runAction(ac);
+								} else {
+									MessageBox.showSimpleMessage(
+											Constants.XFORM_CHECK_DURING_SAVE_ERROR,
+											result.generateStandartErrorMessage());
+								}
+
+							}
+
+						});
+			} else {
+				runAction(ac);
 			}
 
-			if (ac != null) {
-				AppCurrContext.getInstance().setCurrentAction(ac);
-
-				if (currentXFormPanel.getElementInfo().enabledSimpleSaveXForms()) {
-					currentXFormPanel.getDataService()
-							.saveXForms(
-									currentXFormPanel.getContext(),
-									currentXFormPanel.getElementInfo(),
-									data,
-									new GWTServiceCallback<CommandResult>(
-											Constants.XFORM_SAVE_DATA_ERROR) {
-
-										@Override
-										public void onSuccess(final CommandResult result) {
-											if (result.getSuccess()) {
-												if (currentXFormPanel.getUw() != null) {
-													submit(data, currentXFormPanel);
-												}
-												ActionExecuter.execAction();
-											} else {
-												MessageBox.showSimpleMessage(
-														Constants.XFORM_CHECK_DURING_SAVE_ERROR,
-														result.generateStandartErrorMessage());
-											}
-
-										}
-									});
-				} else {
-					ActionExecuter.execAction();
-				}
-
-			}
 		}
 	}
 
-	private static void submit(final String data, final XFormPanel currentXFormPanel) {
+	private static void runAction(final Action ac) {
+		if (ac != null) {
+			AppCurrContext.getInstance().setCurrentAction(ac);
+			ActionExecuter.execAction();
+		}
+	}
+
+	private static Action
+			getActionByLinkId(final String linkId, final XFormPanel currentXFormPanel) {
+		Action ac = null;
+
+		Event ev = currentXFormPanel.getXform().getEventManager().getEventForLink(linkId);
+
+		if (ev != null) {
+			ac = ev.getAction();
+		}
+		return ac;
+	}
+
+	private static void submitUploadForm(final String data, final XFormPanel currentXFormPanel) {
 		RunServletByFormHelper uh = currentXFormPanel.getUw().getUploadHelper();
 		try {
 
@@ -113,25 +118,16 @@ public final class XFormPanelCallbacksEvents {
 	 */
 	public static void xFormPanelClickFilter(final String xformId, final String linkId,
 			final String data) {
-
 		XFormPanel currentXFormPanel = getCurrentPanel(xformId);
 
 		if (currentXFormPanel != null) {
-
 			// MessageBox.showSimpleMessage("Filter=" + xformId, data);
 
-			Action ac = null;
-
-			Event ev = currentXFormPanel.getXform().getEventManager().getEventForLink(linkId);
-
-			if (ev != null) {
-				ac = ev.getAction();
-			}
+			Action ac = getActionByLinkId(linkId, currentXFormPanel);
 
 			if (ac != null) {
 				ac.filterBy(data);
 				AppCurrContext.getInstance().setCurrentAction(ac);
-
 				ActionExecuter.execAction();
 			}
 		}

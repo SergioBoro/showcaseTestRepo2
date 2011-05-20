@@ -38,7 +38,8 @@
 			#B3B3B3;
 			padding:
 			0.3em;
-			margin: 0px 1px
+			margin: 0px
+			1px
 			0px 0px;
 			font-size: 11px;
 			width: 96px;
@@ -122,7 +123,8 @@
 			}
 			.ExecutorInput
 			.xforms-value {
-			width: 806px;
+			width:
+			806px;
 			}
 			.ProjectInput
 			.xforms-value {
@@ -192,11 +194,13 @@
 			870px;
 
 			}
-			/* -----Первая вкладка----- */
+			/* -----Первая
+			вкладка----- */
 			.TaskInput1
 			.xforms-value {
 			width: 940px;
-			text-align: center;
+			text-align:
+			center;
 			}
 			.NumberInput1
 			.xforms-value {
@@ -256,7 +260,8 @@
 			width: 96.8%;
 			border: 0px;
 			}
-			th.SobNumberHeader1, th.SobNumberHeader,
+			th.SobNumberHeader1,
+			th.SobNumberHeader,
 			th.SobNameHeader,th.SobAntiKrHeader,th.SobResponsibleHeader,
 			th.SobPeriodHeader1, th.SobConsiderHeader {
 			vertical-align:
@@ -339,54 +344,7 @@
 		</xf:model>
 	</head>
 	<body>
-		<div> Загрузка файла с навигатором с сервера </div>
-		<xf:trigger>
-			<xf:label>Скачать</xf:label>
-			<xf:action ev:event="DOMActivate">
-				<xf:load
-					resource="javascript:gwtXFormDownload('xformId', '03',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
-			</xf:action>
-		</xf:trigger>
-		<a
-			onclick="gwtXFormDownload('xformId', '03',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))"> Скачать вариант 2</a>
 
-		<div>
-			Загрузка файла на сервер: <xf:output ref="/schema/info/comment" />					
-		</div>
-		
-		<xf:trigger>
-			<xf:label>Закачать</xf:label>
-			<xf:action ev:event="DOMActivate">
-				<xf:load
-					resource="javascript:gwtXFormUpload({
-				xformsId: 'xformId',
-                linkId: '04', 
-                onSelectionComplete : function(ok, fileName) {
-                if (ok) {
-					var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('comment')[0];
-					setValue(a, fileName);
-		 
-					xforms.ready = false;
-					xforms.refresh();
-					xforms.ready = true;                
-                }
-                }});" />
-			</xf:action>
-		</xf:trigger>
-
-		<div> Загрузка файла на сервер №2 </div>
-		<xf:trigger>
-			<xf:label>Закачать</xf:label>
-			<xf:action ev:event="DOMActivate">
-				<xf:load resource="javascript:gwtXFormUpload({
-				xformsId: 'xformId',
-                linkId: '05', 
-                onSelectionComplete : function(ok, fileName) {
-                if (ok) {              
-                }
-                }});" />
-			</xf:action>
-		</xf:trigger>
 
 		<div style="font-size: 15px;"> Имя: </div>
 		<div>

@@ -78,7 +78,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	public CommandResult saveData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo, final String data) {
 		check(elementInfo);
-		if (!elementInfo.enabledSimpleSaveXForms()) {
+		if (!elementInfo.enabledSimpleSave()) {
 			throw new IncorrectElementException(elementInfo.toString());
 		}
 		setElementInfo(elementInfo);

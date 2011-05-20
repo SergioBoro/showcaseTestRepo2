@@ -180,7 +180,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 * 
 	 * @return - результат проверки.
 	 */
-	public boolean enabledSimpleSaveXForms() {
+	public boolean enabledSimpleSave() {
 		return (getSaveProcName() != null);
 	}
 
