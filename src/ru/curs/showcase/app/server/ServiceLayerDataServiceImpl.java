@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.server;
 
 import java.io.*;
+import java.lang.reflect.Modifier;
 
 import org.slf4j.*;
 import org.w3c.dom.Document;
@@ -154,7 +155,9 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 					return (fa.getAnnotation(ExcludeFromSerialization.class) != null);
 				}
 			};
-			Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(es).create();
+			Gson gson =
+				new GsonBuilder().setPrettyPrinting().setExclusionStrategies(es).serializeNulls()
+						.excludeFieldsWithModifiers(Modifier.TRANSIENT + Modifier.STATIC).create();
 			LOGGER.debug(gson.toJson(obj));
 		}
 	}
@@ -219,9 +222,9 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			ElementRawData raw = gateway.getFactorySource(context, element);
 			GeoMapDBFactory factory = new GeoMapDBFactory(raw);
 			GeoMap map = factory.build();
+			outputDebugInfo(map);
 			AdapterForJS adapter = new AdapterForJS();
 			adapter.adapt(map);
-			outputDebugInfo(map);
 			return map;
 		} catch (Throwable e) {
 			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
