@@ -15,7 +15,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.model.DataFile;
-import ru.curs.showcase.util.StreamConvertor;
+import ru.curs.showcase.util.*;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
@@ -67,7 +67,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 			ByteArrayOutputStream out = StreamConvertor.inputToOutputStream(input);
 
 			if (item.isFormField()) {
-				String paramValue = URLDecoder.decode(out.toString(), "UTF-8");
+				String paramValue = URLDecoder.decode(out.toString(), TextUtils.DEF_ENCODING);
 				if (name.equals("data")) {
 					data = paramValue;
 					LOGGER.debug("Данные формы при загрузке файла:" + data);
