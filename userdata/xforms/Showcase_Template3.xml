@@ -256,6 +256,11 @@
 			    width: 96.8%;
 			    border: 0px;
 			}
+			.BaseInput
+			.xforms-value {
+			    width: 300px;			    
+			}
+			
 			th.SobNumberHeader1, th.SobNumberHeader,
 			th.SobNameHeader,th.SobAntiKrHeader,th.SobResponsibleHeader,
 			th.SobPeriodHeader1, th.SobConsiderHeader {
@@ -280,7 +285,9 @@
 			div.Show {
 			    display:
 			    inline;
-			}</style>
+			}
+
+			</style>
 	
 
 		
@@ -300,21 +307,17 @@
             <xf:bind> </xf:bind>
         </xf:model>
     </head>
+    
     <body>
         <div style="font-size: 15px;"> Имя: </div>
         <div>
-            <xf:input ref="/schema/info/name">
+            <xf:input class="BaseInput" ref="/schema/info/name">
                 <xf:hint>Название "Статьи баланса первого уровня"</xf:hint>
-            </xf:input>	
-			
+            </xf:input>				
         </div>
- 
+   
 
-        
-
-        <div>
-        
-        
+        <div>  
             <xf:trigger>
                 <xf:label>Сохранить и Закрыть</xf:label>
                 <xf:action ev:event="DOMActivate">
@@ -334,13 +337,10 @@
                 <xf:action ev:event="DOMActivate">
                 <xf:load resource="javascript:gwtXFormSave('xformId', '2',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))"/>
                 </xf:action>
-            </xf:trigger>            
-            
+            </xf:trigger>                        
         </div>
 
-                
-        
-        
+                   
     </body>
 </html>
 
