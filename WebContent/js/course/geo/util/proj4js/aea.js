@@ -1,5 +1,5 @@
-dojo.provide("course.geo.utils.proj4js.aea");
-dojo.require("course.geo.utils.proj4js");
+dojo.provide("course.geo.util.proj4js.aea");
+dojo.require("course.geo.util.proj4js");
 /*******************************************************************************
 NAME                     ALBERS CONICAL EQUAL AREA 
 
@@ -25,9 +25,9 @@ ALGORITHM REFERENCES
 
 (function(){
 	
-var Proj4js = course.geo.utils.proj4js._getProj4js();
+var Proj4js = course.geo.util.proj4js._getProj4js();
 
-course.geo.utils.proj4js.addProj("aea", {
+course.geo.util.proj4js.addProj("aea", {
 
   init : function() {
 

@@ -17,7 +17,7 @@
 		mapEngine: "gfx"
     };
 </script>
-<script src="utils.js"></script>
+<script src="util.js"></script>
 
 <script src="../../../dojo/dojo.js"></script>
 <script src="../../../course/geo/Map.js"></script>
@@ -30,7 +30,7 @@
 
 <script src="../../../course/geo/gfx/Engine.js"></script>
 
-<script src="../../../course/geo/utils/jenks.js"></script>
+<script src="../../../course/geo/util/jenks.js"></script>
 
 
 <script src="../../../course/geo/ge/Engine.js"></script>
@@ -54,7 +54,7 @@ else dojo.require("courseApp.data.russia_geometries");
 
 dojo.require("courseApp.data.russia_features");
 
-dojo.require("course.geo.utils.jenks");
+dojo.require("course.geo.util.jenks");
 
 var map;
 var style = {
@@ -62,7 +62,7 @@ var style = {
 	styleClass: "populationDensity",
 	stroke: "black",
 	strokeWidth: 1,
-	styleFunction: {func: "course.geo.utils.jenks.generateStyle", options: {numClasses: 7, colorSchemeName: "Reds", attr: "indicator1"}}
+	styleFunction: {func: "course.geo.util.jenks.generateStyle", options: {numClasses: 7, colorSchemeName: "Reds", attr: "indicator1"}}
 }
 
 var setColorScheme = function(colorSchemeName, numClasses) {
@@ -78,7 +78,7 @@ var setColorScheme = function(colorSchemeName, numClasses) {
 	
 	// show colors from the selected scheme
 	var html="";
-	var colors = course.geo.utils.colorbrewer.schemes["seq"][options.numClasses][options.colorSchemeName].colors;
+	var colors = course.geo.util.colorbrewer.schemes["seq"][options.numClasses][options.colorSchemeName].colors;
 	dojo.forEach(colors, function(color){
 		html += "<span style='background-color:"+ color +"'>&nbsp;&nbsp;&nbsp;&nbsp;</span>"+color+"<br>";
 	});
@@ -90,7 +90,7 @@ var setColorScheme = function(colorSchemeName, numClasses) {
 var firstRun = true;
 var createColorSchemeGui = function(numClasses) {
 	var rules = style.rules;
-	var schemes = course.geo.utils.colorbrewer.schemes["seq"][numClasses];
+	var schemes = course.geo.util.colorbrewer.schemes["seq"][numClasses];
 	var container = dojo.byId("colorSchemes");
 	for(var schemeName in schemes) {
 		if (firstRun) {

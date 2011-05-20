@@ -6,6 +6,7 @@ dojo.require("course.geo.styling");
 (function() {
 
 var g = course.geo,
+	u = g.util,
 	s = g.styling;
 	
 var geometryTypes = {Point: 1, LineString: 1, Polygon: 1, MultiLineString: 1, MultiPolygon: 1};
@@ -37,11 +38,11 @@ dojo.declare("course.geo.Placemark", course.geo.Feature, {
 		return geometry;
 	},
 	
-	render: function(stylingOnly) {
-		this.map.methods.Placemark.render.call(this, stylingOnly);
+	render: function(stylingOnly, mode) {
+		this.map.methods.Placemark.render.call(this, stylingOnly, mode);
 	},
 
-	_render: function(stylingOnly) {
+	_render: function(stylingOnly, mode) {
 		//TODO: disconnect connections and then reconnect them
 		var geometry = this.getGeometry();
 		if (!geometry || !geometry.coordinates || !(geometry.type in geometryTypes)) {
@@ -66,7 +67,7 @@ dojo.declare("course.geo.Placemark", course.geo.Feature, {
 			this.map.engine.destroy(this.extraShapes.pop(), this);
 		}
 		
-		var style = s.calculateStyle(this);
+		var style = s.calculateStyle(this, mode);
 		/*
 		var pointStyle = s.calculatePointStyle(this),
 			textStyle = s.calculateTextStyle(this),
@@ -89,49 +90,31 @@ dojo.declare("course.geo.Placemark", course.geo.Feature, {
 		if (geometry.type == "Polygon" || geometry.type == "MultiPolygon") styleType = "polygon";
 		else if (geometry.type == "LineString" || geometry.type == "MultiLineString") styleType = "line";
 		if (stylingOnly) {
-			if (style[styleType]) { // we have a specific style
-				dojo.forEach(style[styleType], function(_style, i) {
-					var shape = this.baseShapes[i];
-					s.applyStyle(styleType, shape, this, style, _style, factory);
-				}, this);
-			}
-			else { // no specific style
-				var shape = this.baseShapes[0];
-				s.applyStyle(styleType, shape, this, style, null, factory);
-			}
-			// TODO: always rerender for points
-			/*
-			dojo.forEach(style, function(_style, i) {
-				var shape, appendChild = false;
-				if (i<numBaseShapes) {
-					shape = this.baseShapes[i];
-					// TODO: consider z-index change
-				}
-				else {
-					appendChild = true;
-					shape = this._createShape(geometry, factory);
-					this.baseShapes.push(shape);
-				}
-				s.applyStyle(shape, this, _style, factory);
-				if (appendChild) this.map.engine.appendChild(shape, this, _style.zIndex);
-			}, this);
-			*/
+			applyStyle(styleType, this, geometry, style, factory);
 		}
 		else {
+			// create shape(s)
 			if (style[styleType]) { // we have a specific style
 				dojo.forEach(style[styleType], function(_style) {
-					var shape = this._createShape(geometry, factory);
-					s.applyStyle(styleType, shape, this, style, _style, factory);
-					this.map.engine.appendChild(shape, this, _style.zIndex || style.zIndex);
-					this.baseShapes.push(shape);
+					var shape = factory.createShape(this, geometry);
+					if (shape) this.baseShapes.push(shape);
 				}, this);
 			}
-			else { // no specific style
-				var shape = this._createShape(geometry, factory);
-				s.applyStyle(styleType, shape, this, style, null, factory);
-				this.map.engine.appendChild(shape, this, style.zIndex);
-				this.baseShapes.push(shape);
+			else {
+				var shape = factory.createShape(this, geometry);
+				if (shape) this.baseShapes.push(shape);
 			}
+			
+			// apply style to the shape(s)
+			applyStyle(styleType, this, geometry, style, factory);
+			
+			// add shape(s) to the map
+			if (style[styleType]) { // we have a specific style
+				dojo.forEach(this.baseShapes, function(shape) {
+					this.map.engine.appendChild(shape, this);
+				});
+			}
+			else this.map.engine.appendChild(this.baseShapes[0], this);
 		}
 		
 		// render extra geometry if it is defined in a style
@@ -168,65 +151,55 @@ dojo.declare("course.geo.Placemark", course.geo.Feature, {
 		}
 		*/
 	},
-	
-	_createShape: function(geometry, factory) {
-		var shape;
-		var coordinates = geometry.coordinates;
-		switch (geometry.type) {
-			case "Point":
-				shape = factory.makePoint(this, coordinates);
-				break;
-			case "LineString":
-				shape = factory.makeLineString(this, coordinates);
-				break;			
-			case "Polygon":
-				shape = factory.makePolygon(this, coordinates);
-				break;
-			case "MultiPolygon":
-				shape = factory.makeMultiPolygon(this, coordinates);
-				break;
-			case "MultiLineString":
-				shape = factory.makeMultiLineString(this, coordinates);
-				break;
-			case "MultiPoint":
-				shape = factory.makeMultiPoint(this, coordinates);
-				break;
-		}
-		return shape;
-	},
-	
+
 	getBbox: function() {
 		// summary:
 		//		Returns the feature boundings box in the current map projection
 		var geometry = this.getGeometry();
-		return (geometry && geometry.bbox) ? geometry.bbox : geometry.coordinates; // TODO: calculate bounding box if it's not provided
+		return geometry ? (geometry.bbox ? geometry.bbox : u.bbox.get(geometry)) : null; // TODO: calculate bounding box if it's not provided
 	},
-	
+
 	connectWithHandle: function(handle, /* String|Array? */events, /*Object|null*/ context, /*String|Function*/ method) {
 		if (this.invalid) return handle;
 		events = dojo.isString(events) ? [events] : events;
-		var handleObj = handle && this.handles[handle] ? this.handles[handle] : {},
-			numEvents = 0; // number of connected events
+		
+		// disconnect existing events for this handle
+		var handleObj = this.handles[handle];
+		if (handleObj) {
+			var eventConnections = handleObj[3];
+			dojo.forEach(eventConnections, function(eventConnection){
+				if (eventConnection) this.map.engine.disconnect(eventConnection);
+			}, this);
+		}
+		var eventConnections = [];
+		// the format of handleObj is [events,context,method,eventConnections]
+		var handleObj = [events, context, method, eventConnections];
+
+		var numEvents = 0; // number of connected events
+			method = dojo.hitch(context, method);
 		dojo.forEach(events, function(event) {
 			if (course.geo.events[event]) {
-				if (handleObj[event]) dojo.disconnect(handleObj[event]);
-				method = dojo.hitch(context, method);
-				handleObj[event] = this.map.engine.connect(this.baseShapes[0], event, this, function(evt) {
-					method(this, evt, event);
-				});
+				var feature = this;
+				eventConnections.push(
+					this.map.engine.connect(this, event, u.normalizeCallback(feature, event, method))
+				);
 				numEvents++;
 			}
+			else eventConnections.push(null);
 		}, this);
 		if (!numEvents) return handle;
-		handle = handle || course.geo.utils.getUniqueNumber();
+		handle = handle || u.getUniqueNumber();
 		if (!this.handles[handle]) this.handles[handle] = handleObj;
 		return handle;
 	},
-	
+
 	disconnect: function(handle) {
 		var handleObj = this.handles[handle];
 		if (handleObj) {
-			for (var event in handleObj) dojo.disconnect(handleObj[event]);
+			var eventConnections = handleObj[3];
+			dojo.forEach(eventConnections, function(eventConnection){
+				this.map.engine.disconnect(eventConnection);
+			}, this);
 			delete this.handles[handle];
 		}
 	}
@@ -238,6 +211,24 @@ var p = g.Placemark.prototype;
 g.methods.Placemark = {
 	render: p._render
 }
+
+
+var applyStyle = function(styleType, feature, geometry, style, factory) {
+	switch(styleType) {
+		case "point":
+			factory.applyPointStyle(feature, geometry, style);
+			break;
+		case "line":
+			factory.applyLineStyle(feature, geometry, style);
+			break;
+		case "polygon":
+			factory.applyPolygonStyle(feature, geometry, style);
+			break;
+		case "text":
+			factory.applyTextStyle(feature, geometry, style);
+			break;
+	}
+};
 
 }())
 

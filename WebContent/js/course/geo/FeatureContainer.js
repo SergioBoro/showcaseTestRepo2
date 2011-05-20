@@ -44,14 +44,14 @@ dojo.declare("course.geo.FeatureContainer", course.geo.Feature, {
 	getBbox: function() {
 		var bbox = [Infinity,Infinity,-Infinity,-Infinity];
 		dojo.forEach(this.features, function(feature){
-			course.geo.utils.extendBbox(bbox, feature.getBbox());
+			course.geo.util.bbox.extend(bbox, feature.getBbox());
 		}, this);
 		return bbox;
 	},
 	
-	_render: function(stylingOnly) {
+	_render: function(stylingOnly, mode) {
 		dojo.forEach(this.features, function(feature){
-			feature._render(stylingOnly);
+			feature._render(stylingOnly, mode);
 		}, this);
 	},
 	
@@ -65,7 +65,7 @@ dojo.declare("course.geo.FeatureContainer", course.geo.Feature, {
 	connectWithHandle: function(handle, /* String|Array? */events, /*Object|null*/ context, /*String|Function*/ method) {
 		if (!this.features.length) return handle;
 		events = dojo.isString(events) ? [events] : events;
-		handle = handle || course.geo.utils.getUniqueNumber();
+		handle = handle || course.geo.util.getUniqueNumber();
 		method = dojo.hitch(context, method);
 		dojo.forEach(this.features, function(feature) {
 			feature.connectWithHandle(handle, events, method);

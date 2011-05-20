@@ -13,11 +13,11 @@
         isDebug: true,
 		parseOnLoad: false,
         modulePaths: {course: "../course", courseApp: "../course/geo/tests"},
-		gfxRenderer: "svg,silverlight",
+		gfxRenderer: "svg,silverlight,vml",
 		mapEngine: "gfx"
     };
 </script>
-<script src="utils.js"></script>
+<script src="util.js"></script>
 
 <script src="../../../dojo/dojo.js"></script>
 
@@ -26,12 +26,11 @@
 <script>
 if (djConfig.mapEngine=="ge") dojo.require("course.geo.ge.Engine");
 
-
 dojo.require("dijit.form.Button");
 dojo.require("course.geo.Map");
-dojo.require("course.geo.control.Magnify");
 dojo.require("course.geo.control.Highlight");
 dojo.require("course.geo.control.Tooltip");
+dojo.require("course.geo.control.Navigation");
 
 
 if (djConfig.mapEngine=="ge") dojo.require("courseApp.data.russia_geometriesEpsg4326");
@@ -40,10 +39,10 @@ else dojo.require("courseApp.data.russia_geometries");
 dojo.require("courseApp.data.russia_features");
 dojo.require("courseApp.data.russia_railways");
 
-dojo.require("course.geo.utils.proj4js");
-dojo.require("course.geo.utils.proj4js.aea");
+dojo.require("course.geo.util.proj4js");
+dojo.require("course.geo.util.proj4js.aea");
 dojo.require("course.geo.projection");
-course.geo.utils.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=0 +lon_0=105 +x_0=18500000 +y_0=0 +ellps=krass +units=m +towgs84=28,-130,-95,0,0,0,0 +no_defs");
+course.geo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=0 +lon_0=105 +x_0=18500000 +y_0=0 +ellps=krass +units=m +towgs84=28,-130,-95,0,0,0,0 +no_defs");
 
 
 var style = [
@@ -87,30 +86,36 @@ var features = [
 	{
 		id: "areas",
 		projection: (djConfig.mapEngine=="ge") ? "EPSG:4326" : "RUSSIA-ALBERS",
-		features: courseApp.russiaFeatures
+		features: courseApp.russiaFeatures,
+		style: {
+			mode: "highlight",
+			reset: true,
+			stroke: "red",
+			strokeWidth: 4
+		}
 	},
 	{
+		id: "railways",
 		style: {
 			line: [
-				{stroke: "black", strokeWidth: 3},
-				{stroke: "lightgrey", strokeWidth: 2}
+				{stroke: "black", strokeWidth: 30},
+				{stroke: "lightgrey", strokeWidth: 20}
 			]
 		},
 		features: courseApp.russiaRailways
 	},
 	{
-		geometry: {type: "Point", coordinates:[14752931.343609, 7021254.363717], bbox:[14752931.343609, 7021254.363717]},
+		geometry: {type: "Point", coordinates:[14752931.343609, 7021254.363717]},
 		style: {
-			size: 15,
+			size: 30,
 			point: [
 				{
-					type: "shape",
-					shapeType: "circle",
+					shape: "circle",
 					fill: "blue"
 				},
 				{
 					type: "shape",
-					shapeType: "cross",
+					shape: "cross",
 					fill: "red"
 				}
 			]
@@ -133,7 +138,7 @@ var features = [
 			"properties": {},
 			tooltip: "Города - Славгород (1107) (52.99031 - 78.6486)",
 			style: {
-				point:{type:"shape", shapeType:"star", fill:"green", size:50, stroke: "red"}
+				point:{type:"shape", shape:"star", fill:"green", size:50, stroke: "red"}
 			},
 			id: "1107",
 			name: "Slavgorod"
@@ -149,7 +154,8 @@ var features = [
 			},
 			tooltip: "Нижний Новгород - город с показателями",
 			style: {
-				point:{type:"shape", shapeType:"cross", fill:"brown"}
+				shape:"cross",
+				fill:"brown"
 			},
 			id: "1849",
 			name: "Nizhny Novgorod"
@@ -162,7 +168,8 @@ var features = [
 			properties: {},
 			tooltip: "Города - Великий Новгород (2532) (58.54497 - 31.26912)",
 			style: {
-				point:{type:"shape", shapeType:"triangle", fill:"yellow"}
+				shape:"triangle",
+				fill:"yellow"
 			},
 			id: "2532",
 			name: "Veliki Novgorod"
@@ -175,7 +182,8 @@ var features = [
 			properties: {},
 			tooltip: "Города - Белгород (3674) (50.59661 - 36.60921)",
 			style: {
-				point:{type:"shape", shapeType:"x", fill:"black"}
+				shape:"x",
+				fill:"black"
 			},
 			id: "3674",
 			name: "Belgorod"
@@ -195,14 +203,12 @@ var features = [
 				type: "Point",
 				coordinates: [65.53, 57.15]
 			},
-			style:{
-				point: {
-					type: "image",
-					width: 28,
-					height: 22,
-					src: "icons/load.png",
-					scale: 2
-				}
+			style: {
+				type: "image",
+				width: 28,
+				height: 22,
+				src: "resources/icons/load.png",
+				scale: 2
 			},
 			name: "Tyumen"
 		}
@@ -243,16 +249,17 @@ var addOnLoad = function() {
 	*/
 
     map = new course.geo.Map("map", {
-		geometryProjection: "RUSSIA-ALBERS",
 		currentProjection: "RUSSIA-ALBERS",
 		engine: {type: djConfig.mapEngine},
 		geometries: courseApp.russiaGeometries,
 		style: style,
-		features: features
+		features: features,
+		attributesInFeature: false
 	});
 	map.ready(function(){
-		new course.geo.control.Highlight("areas", {map: map});
-		new course.geo.control.Magnify("areas", {map: map});
+		new course.geo.control.Navigation(map);
+		new course.geo.control.Highlight(map, {map: map});
+		new course.geo.control.Tooltip(map, {map: map});
 	});
 }
 

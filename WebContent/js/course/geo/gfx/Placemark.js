@@ -1,11 +1,24 @@
 dojo.provide("course.geo.gfx.Placemark");
 
+dojo.require("course.geo.common.Placemark");
+
 (function() {
 
-dojo.declare("course.geo.gfx.Placemark", null, {
+var g = course.geo,
+	cp = g.common.Placemark,
+	s = course.geo.styling;
+
+dojo.declare("course.geo.gfx.Placemark", course.geo.common.Placemark, {
 	
 	constructor: function(kwArgs) {
 		dojo.mixin(this, kwArgs);
+		this.polygons = this.group.createGroup();
+		this.lines = this.group.createGroup();
+		this.points = this.group.createGroup();
+	},
+	
+	prerender: function() {
+		this.lengthDenominator = (this.group._getRealMatrix()||{xx:1}).xx;
 	},
 	
 	moveTo: function(path, point) {
@@ -25,8 +38,9 @@ dojo.declare("course.geo.gfx.Placemark", null, {
 	},
 	
 	makePoint: function(feature, coordinates) {
-		// just return coordinates to reference them in this.applyPointStyle
-		return coordinates;
+		// do nothing
+		// point shape are created in this.applyPointStyle
+		return null;
 	},
 	
 	makeLineString: function(feature, coordinates, path) {
@@ -65,13 +79,54 @@ dojo.declare("course.geo.gfx.Placemark", null, {
 		return path;
 	},
 	
-	applyPointStyle: function(shape, feature, calculatedStyle, specificStyle, factory) {
-		var coordinates = shape,
-			type = specificStyle.type,
+	applyPointStyle: function(feature, geometry, calculatedStyle) {
+		var coordinates = geometry.coordinates,
+			specificStyles = calculatedStyle["point"];
+		
+		// disconnect connected events if any
+		// store their handles for reconnection
+		var handles = {};
+		for (var handle in feature.handles) {
+			handles[handle] = feature.handles[handle];
+			feature.disconnect(handle);
+		}
+		
+		// remove existing shapes
+		if (feature.baseShapes.length) {
+			for (var i=feature.baseShapes.length-1; i>=0; i--) {
+				// remove shape
+				feature.baseShapes.pop().removeShape();
+			}
+		}
+		
+		if (specificStyles) {
+			dojo.forEach(specificStyles, function(specificStyle){
+				var shape = this._createPointShape(coordinates, calculatedStyle, specificStyle);
+				if (shape) feature.baseShapes.push(shape);
+			}, this);
+		}
+		else {
+			var shape = this._createPointShape(coordinates, calculatedStyle, null);
+			if (shape) feature.baseShapes.push(shape);
+		}
+		
+		// reconnect events
+		for (var handle in handles) {
+			var handleObj = handles[handle],
+				events = handleObj[0],
+				context = handleObj[1],
+				method = handleObj[2];
+			feature.connectWithHandle(handle, events, context, method);
+		}
+	},
+	
+	_createPointShape: function(coordinates, calculatedStyle, specificStyle) {
+		var type,
+			shapeType = cp.get("shape", calculatedStyle, specificStyle),
+			src = cp.get("src", calculatedStyle, specificStyle),
 			width,
 			height,
-			lengthDenominator = getLengthDenominator(this.group),
-			scale = get("scale", calculatedStyle, specificStyle),
+			scale = cp.get("scale", calculatedStyle, specificStyle),
 			transform = [dojox.gfx.matrix.translate(this.getX(coordinates[0]), this.getY(coordinates[1]))];
 		shape = null;
 
@@ -79,123 +134,187 @@ dojo.declare("course.geo.gfx.Placemark", null, {
 		if (specificStyle) {
 			width = specificStyle.width ? specificStyle.width : specificStyle.size;
 			height = specificStyle.height ? specificStyle.height : specificStyle.size;
+			// specific style for the following code always overrides calculatedStyle
+			if (specificStyle.type) type = specificStyle.type;
+			else {
+				if (specificStyle.shape) type = "shape";
+				else if (specificStyle.src) type = "image";
+			}
+		}
+		else {
+			if (calculatedStyle.type) type = calculatedStyle.type;
+			else {
+				if (calculatedStyle.shape) type = "shape";
+				else if (calculatedStyle.src) type = "image";
+			}
 		}
 		if (!width) width = calculatedStyle.width ? calculatedStyle.width : calculatedStyle.size;
 		if (!height) height = calculatedStyle.height ? calculatedStyle.height : calculatedStyle.size;
 		
 		if (!scale) scale = 1;
 
-		if (type == "shape" && shapes[specificStyle.shapeType]) {
-			var shapeDef = shapes[specificStyle.shapeType],
-				size = specificStyle.shapeType=="circle" ? 1 : shapeDef.size,
-				_scale = scale/lengthDenominator/size;
+		if ( type == "shape" && shapes[shapeType]) {
+			var shapeDef = shapes[shapeType],
+				size = shapeType=="circle" ? 2 : shapeDef.size,
+				_scale = scale/this.lengthDenominator/size;
 
 			transform.push(dojox.gfx.matrix.scale(_scale*width, _scale*height));
 			
-			if (specificStyle.shapeType=="circle") {
-				shape = this.points.createCircle({cx:0, cy:0, r:0.5});
+			if (shapeType=="circle") {
+				shape = this.points.createCircle({cx:0, cy:0, r:1});
 			}
 			else {
 				shape = this.points.createPolyline(shapeDef.points);
-				transform.push( dojox.gfx.matrix.translate(-shapeDef.center[0], -shapeDef.center[1]) );
 			}
 			applyFill(shape, calculatedStyle, specificStyle);
 			applyStroke(shape, calculatedStyle, specificStyle, size/height/scale);
 		}
-		else if (type == "image") {
+		else if (type == "image" && src) {
 			var imageDef = {
 				type: "image",
-				src: specificStyle.src,
+				src: src,
 				width: width,
 				height: height,
-				x: (specificStyle.x === undefined) ? -width/2 : specificStyle.x,
-				y: (specificStyle.y === undefined) ? -height/2 : specificStyle.y
+				x: (specificStyle && specificStyle.x !== undefined) ? specificStyle.x : -width/2,
+				y: (specificStyle && specificStyle.y !== undefined) ? specificStyle.y : -height/2
 			}
 			shape = this.points.createImage(imageDef);
-			transform.push(dojox.gfx.matrix.scale(1/lengthDenominator*scale));
+			transform.push(dojox.gfx.matrix.scale(1/this.lengthDenominator*scale));
 		}
-		if (shape) {
-			shape.setTransform(transform);
-		}
+		
+		if (shape) shape.setTransform(transform);
+		
 		return shape;
 	},
 	
-	applyLineStyle: function(shape, feature, calculatedStyle, specificStyle, factory) {
-		applyStroke(shape, calculatedStyle, specificStyle, 1/getLengthDenominator(this.group));
-		return shape;
+	applyLineStyle: function(feature, geometry, calculatedStyle) {
+		var specificStyles = calculatedStyle["line"],
+			baseShapes = feature.baseShapes;
+			
+		this._updateShapes(feature, geometry, calculatedStyle, specificStyles);
+
+		if (specificStyles) {
+			dojo.forEach(specificStyles, function(specificStyle, i){
+				// index of specificStyles corresponds to the index of feature.baseShapes
+				this._applyLineStyle(baseShapes[i], calculatedStyle, specificStyle);
+			}, this);
+		}
+		else {
+			this._applyLineStyle(baseShapes[0], calculatedStyle, null);
+		}
 	},
 	
-	applyPolygonStyle: function(shape, feature, calculatedStyle, specificStyle, factory) {
+	_applyLineStyle: function(shape, calculatedStyle, specificStyle) {
+		applyStroke(shape, calculatedStyle, specificStyle, 1/this.lengthDenominator);
+	},
+	
+	applyPolygonStyle: function(feature, geometry, calculatedStyle) {
+		var specificStyles = calculatedStyle["polygon"],
+			baseShapes = feature.baseShapes;
+			
+		this._updateShapes(feature, geometry, calculatedStyle, specificStyles);
+
+		if (specificStyles) {
+			dojo.forEach(specificStyles, function(specificStyle, i){
+				// index of specificStyles corresponds to the index of feature.baseShapes
+				this._applyPolygonStyle(baseShapes[i], calculatedStyle, specificStyle);
+			}, this);
+		}
+		else {
+			this._applyPolygonStyle(baseShapes[0], calculatedStyle, null);
+		}
+	},
+	
+	_applyPolygonStyle: function(shape, calculatedStyle, specificStyle) {
 		applyFill(shape, calculatedStyle, specificStyle);
-		applyStroke(shape, calculatedStyle, specificStyle, 1/getLengthDenominator(this.group));
-		return shape;
+		applyStroke(shape, calculatedStyle, specificStyle, 1/this.lengthDenominator);
+	},
+	
+	_updateShapes: function(feature, geometry, calculatedStyle, specificStyles) {
+		var baseShapes = feature.baseShapes,
+			handles = feature.handles,
+			numSpecificStyles = specificStyles ? specificStyles.length : 1,
+			numBaseShapes = baseShapes.length;
+
+		if (numSpecificStyles > numBaseShapes) {
+			// add missing shapes
+			var coordinates = geometry.coordinates;
+			for (var i=numBaseShapes; i<numSpecificStyles; i++) {
+				var shape = this.createShape(feature, geometry);
+				// connect events to the shape
+				for (var handle in handles) {
+					var events = handles[handle][0],
+						context = handles[handle][1],
+						method = handles[handle][2],
+						eventConnections = handles[handle][3];
+					dojo.forEach(events, function(event, eventIndex){
+						eventConnections[eventIndex].push( shape.connect(event, g.util.normalizeCallback(feature, event, context, method)) );
+					});
+				}
+				baseShapes.push(shape);
+			}
+		}
+		else if (numSpecificStyles < numBaseShapes) {
+			// remove excessive shapes
+			for (var i=numBaseShapes-1; i>=numSpecificStyles; i--) {
+				var shape = baseShapes.pop();
+				shape.removeShape();
+				// disconnect events from the shape
+				for (var handle in handles) {
+					var events = handles[handle][0],
+						eventConnections = handles[handle][3];
+					dojo.forEach(events, function(event, eventIndex){
+						shape.disconnect( eventConnections[eventIndex].pop() );
+					});
+				}
+			}
+			
+		}
 	}
 });
 
-
-var patchStyle = function(styleDef, group) {
-	if (dojox.gfx.renderer == "vml") return;
-	var lengthDenominator = (group._getRealMatrix()||{xx:1}).xx;
-	
-	var fill = styleDef.fill;
-	if (dojo.isObject(fill) && fill.type == "pattern") { //pattern
-		if (fill.width) fill.width = fill.width/lengthDenominator;
-		if (fill.height) fill.height = fill.height/lengthDenominator;
-	}
-};
-
-var get = function(attr, calculatedStyle, specificStyle) {
-	return specificStyle&&specificStyle[attr] ? specificStyle[attr] : calculatedStyle[attr];
-};
-	
-var normalizeLength = function(group, width) {
-	var matrix = group._getRealMatrix();
-	return (dojox.gfx.renderer != "vml") ? width/(matrix||{xx:1}).xx : width;
-};
-
-var getLengthDenominator = function(shape) {
-	return (shape._getRealMatrix()||{xx:1}).xx;
-};
-
 var applyFill = function(shape, calculatedStyle, specificStyle) {
-	var fill = get("fill", calculatedStyle, specificStyle);
-	shape.setFill(fill);
+	var fill = cp.get("fill", calculatedStyle, specificStyle);
+	if (fill) shape.setFill(fill);
 };
 
 var applyStroke = function(shape, calculatedStyle, specificStyle, widthMultiplier) {
 	if (dojox.gfx.renderer == "vml") widthMultiplier=1;
-	var stroke = get("stroke", calculatedStyle, specificStyle);
-	var strokeWidth = get("strokeWidth", calculatedStyle, specificStyle);
-	shape.setStroke({color: stroke, width:strokeWidth*widthMultiplier});
-};
-
-var shapes = {
-	circle: 1, // a dummy value
-	star: {
-		center: [500, 500],
-		size: 1000,
-		points:[500,24, 618,388, 1000,388, 691,612, 809,976, 500,751, 191,976, 309,612, 0,388, 382,388, 500,24]
-	},
-	cross: {
-		center: [5,5],
-		size: 10,
-		points: [4,0, 6,0, 6,4, 10,4, 10,6, 6,6, 6,10, 4,10, 4,6, 0,6, 0,4, 4,4, 4,0]
-	},
-	x: {
-		center: [50,50],
-		size: 100,
-		points: [0,0, 25,0, 50,35, 75,0, 100,0, 65,50, 100,100, 75,100, 50,65, 25,100, 0,100, 35,50, 0,0]
-	},
-	square: {
-		center: [1,1],
-		size: 2,
-		points: [0,0, 0,2, 2,2, 2,0, 0,0]
-	},
-	triangle: {
-		center: [5,5],
-		size: 10,
-		points: [0,10, 10,10, 5,0, 0,10]
+	var stroke = cp.get("stroke", calculatedStyle, specificStyle);
+	var strokeWidth = cp.get("strokeWidth", calculatedStyle, specificStyle);
+	if (strokeWidth!==undefined || stroke) {
+		var strokeDef = strokeWidth===0 ? null : {};
+		if (strokeDef) {
+			if (strokeWidth) strokeDef.width = strokeWidth*widthMultiplier;
+			if (stroke) strokeDef.color = stroke;
+		}
+		shape.setStroke(strokeDef);
 	}
 };
 
-}())
+// center of each shape must be 0,0
+var shapes = {
+	circle: 1, // a dummy value
+	star: {
+		size: 1000,
+		points: [0,-476, 118,-112, 500,-112, 191,112, 309,476, 0,251, -309,476, -191,112, -500,-112, -118,-112, 0,-476]
+	},
+	cross: {
+		size: 10,
+		points: [-1,-5, 1,-5, 1,-1, 5,-1, 5,1, 1,1, 1,5, -1,5, -1,1, -5,1, -5,-1, -1,-1, -1,-5]
+	},
+	x: {
+		size: 100,
+		points: [-50,-50, -25,-50, 0,-15, 25,-50, 50,-50, 15,0, 50,50, 25,50, 0,15, -25,50, -50,50, -15,0, -50,-50]
+	},
+	square: {
+		size: 2,
+		points: [-1,-1, -1,1, 1,1, 1,-1, -1,-1]
+	},
+	triangle: {
+		size: 10,
+		points: [-5,5, 5,5, 0,-5, -5,5]
+	}
+};
+
+}());

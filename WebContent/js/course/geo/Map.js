@@ -41,6 +41,8 @@ dojo.declare("course.geo.Map", null, {
 	//		Top level course.geo.FeatureContainer
 	featureContainer: null,
 	
+	attributesInFeature: true,
+	
 	_featuresByClass: null,
 
 	constructor: function(/* DOMNode */container, /* Object? */kwArgs){
@@ -66,10 +68,10 @@ dojo.declare("course.geo.Map", null, {
 		});
 		// alias for this.featureContainer
 		this.document = this.featureContainer;
-		this.document.addStyle(course.geo.styling.styleMap.normal, "normal", true);
+		this.addStyle(course.geo.styling.style, true);
 		
 		this._featuresByClass = {};
-		if (kwArgs.style) this.addStyle(kwArgs.style, "normal", true);
+		if (kwArgs.style) this.addStyle(kwArgs.style, true);
 		
 		// set engine
 		this.setEngine(kwArgs.engine || (window.djConfig&&djConfig.mapEngine) || defaultEngine);
@@ -84,23 +86,23 @@ dojo.declare("course.geo.Map", null, {
 		}));
 	},
 	
-	render: function(stylingOnly, features) {
-		this.methods.Map.render.call(this, stylingOnly, features);
+	render: function(stylingOnly, mode, features) {
+		this.methods.Map.render.call(this, stylingOnly, mode, features);
 	},
 
-	_render: function(stylingOnly, features) {
+	_render: function(stylingOnly, mode, features) {
 		if (features) {
 			// render only the given features instead of the whole map tree
 			for(var fid in features) {
 				// TODO: avoid double rendering
-				features[fid]._render(stylingOnly);
+				features[fid]._render(stylingOnly, mode);
 			}
 		}
 		else {
 			if (!this.extent) this.extent = this.getBbox();
 			this._calculateViewport();
-			this.engine.prerender()
-			this.document._render(stylingOnly);
+			this.engine.prerender();
+			this.document._render(stylingOnly, mode);
 		}
 	},
 
@@ -149,13 +151,13 @@ dojo.declare("course.geo.Map", null, {
 		}
 	},
 	
-	addStyle: function(/* Array|Object */style, styleKey, preventRendering) {
-		this.document.addStyle(style, styleKey);
+	addStyle: function(/* Array|Object */style, preventRendering) {
+		this.document.addStyle(style);
 		if (!preventRendering) this.document._render(true);;
 	},
 	
-	setStyle: function(/* Array|Object */style, styleKey) {
-		this.document.setStyle(style, styleKey);
+	setStyle: function(/* Array|Object */style) {
+		this.document.setStyle(style);
 	},
 
 	getGeometryById: function(id) {
@@ -164,10 +166,6 @@ dojo.declare("course.geo.Map", null, {
 
 	getStyleById: function(id) {
 		return this.styles[id];
-	},
-
-	getCalculatedStyleDef: function() {
-		return course.geo.styleMap["normal"];
 	},
 
 	registerFeature: function(feature) {

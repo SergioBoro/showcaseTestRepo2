@@ -7,7 +7,7 @@ var g = course.geo,
 	s = g.styling;
 	
 var symbolizers = ["point", "polygon", "line", "text"],
-	noStyleMixin = {id:1, filter:1, styleClass:1, fid:1, styleFunction:1};
+	noStyleMixin = {id:1, filter:1, styleClass:1, fid:1, styleFunction:1, mode:1};
 	
 var styleById = {};
 
@@ -94,10 +94,11 @@ dojo.declare("course.geo.Style", null, {
 
 		this._setDef(def);
 		// apply the style to the the affected features
-		this.map.render(true, affectedFeatures);
+		this.map.render(true, "normal", affectedFeatures);
 	},
 	
 	_setDef: function(def) {
+		if (def.mode) this.mode = def.mode;
 		var filter = def.filter;
 		if (def.filter) {
 			this.filter = dojo.isString(filter) ? eval("_=function(){return "+filter+";}" ) : filter;
@@ -137,7 +138,9 @@ dojo.declare("course.geo.Style", null, {
 		if (styleFunction) {
 			this.styleFunction = {
 				func: dojo.isString(styleFunction.func) ? dojo.getObject(styleFunction.func) : styleFunction.func,
-				options: styleFunction.options
+				options: styleFunction.options,
+				// features may need this attribute to be aware that the style has changed
+				updated: (new Date()).getTime()
 			};
 		}
 		def = styleMixin({}, def);
@@ -166,7 +169,7 @@ s.getStyleById = function(id) {
 	return styleById[id];
 };
 
-s.calculateStyle = function(feature, styleKey) {
+s.calculateStyle = function(feature, mode) {
 	var styles = [];
 	// find all features participating in the style calculation
 	// features = feature itself + all its parents
@@ -179,7 +182,7 @@ s.calculateStyle = function(feature, styleKey) {
 	while (parent != feature.map)
 	
 	for (var i=features.length-1; i>=0; i--) {
-		appendFeatureStyle(features[i], styles, styleKey);
+		appendFeatureStyle(features[i], styles, mode);
 	}
 	
 	// now do actual style calculation
@@ -188,7 +191,7 @@ s.calculateStyle = function(feature, styleKey) {
 		var applyStyle = style.filter ? evaluateFilter(style.filter, feature) : true;
 		if (applyStyle) {
 			dojo.mixin(resultStyle, style.def);
-			if (style.styleFunction) style.styleFunction.func(feature, resultStyle, style.styleFunction.options);
+			if (style.styleFunction) style.styleFunction.func(feature, resultStyle, style.styleFunction);
 		}
 	});
 	
@@ -201,50 +204,36 @@ s.calculateStyle = function(feature, styleKey) {
 	return resultStyle;
 }
 
-
-s.applyStyle = function(styleType, shape, feature, calculatedStyle, specificStyle, factory) {
-	switch(styleType) {
-		case "point":
-			shape = factory.applyPointStyle(shape, feature, calculatedStyle, specificStyle, factory);
-			break;
-		case "line":
-			shape = factory.applyLineStyle(shape, feature, calculatedStyle, specificStyle, factory);
-			break;
-		case "polygon":
-			shape = factory.applyPolygonStyle(shape, feature, calculatedStyle, specificStyle, factory);
-			break;
-		case "text":
-			shape = factory.applyTextStyle(shape, feature, calculatedStyle, specificStyle, factory);
-			break;
-	}
-	return shape;
-}
-
 function evaluateFilter(filter, feature) {
-	return filter.call(feature.properties);
+	return filter.call(feature.map.attributesInFeature ? feature : feature.properties);
 }
 
-var appendFeatureStyle = function(feature, styles, styleKey) {
+var appendFeatureStyle = function(feature, styles, mode) {
 	// TODO: duplication of styleClass
 	var styleClass = feature.styleClass,
 		fid = feature.id;
 	if (styleClass) {
 		dojo.forEach(styleClass, function(_styleClass){
 			if (byClassAndFid[_styleClass] && byClassAndFid[_styleClass][fid]) {
-				append(byClassAndFid[_styleClass][fid], styles);
+				append(byClassAndFid[_styleClass][fid], styles, mode);
 			}
-			else if (byClass[_styleClass]) append(byClass[_styleClass], styles);
+			else if (byClass[_styleClass]) append(byClass[_styleClass], styles, mode);
 		});
 	}
-	else if (byFid[fid]) append(byFid[fid], styles);
-	
-	if (!styleKey) styleKey = "normal";
-	if (feature.styleMap[styleKey]) append(feature.styleMap[styleKey], styles);
+	else if (byFid[fid]) append(byFid[fid], styles, mode);
+
+	if (feature.style) append(feature.style, styles, mode);
 }
 
-var append = function(/*Array*/what, /*Array*/to) {
+var append = function(/*Array*/what, /*Array*/to, mode) {
 	dojo.forEach(what, function(element){
-		to.push(element);
+		if ( ( (!element.mode||element.mode=="normal") && (!mode||mode=="normal") ) || (element.mode==mode) ) {
+			if (element.def.reset) {
+				// clear all entries in the destination
+				for(var i=to.length-1; i>=0; i--) to.pop();
+			}
+			to.push(element);
+		}
 	});
 }
 
@@ -256,29 +245,41 @@ var styleMixin = function(styleDef, styleAttrs) {
 	return styleDef;
 }
 
-s.styleMap = {
-	"normal": {
+s.style = [
+	{
 		stroke: "black",
 		strokeWidth: 0.5,
 		strokeJoin: "round",
 		fill: "#B7B7B7",
+		shape: "square", // circle, square, triangle, star, cross, or x
+		/*
 		point: {
-			/*
 			type: "image",
 			width: 10,
 			height: 10,
 			x: 0,
 			y: 0,
 			src: "path.png"
-			*/
-			type: "shape",
-			shapeType: "square" // circle, square, triangle, star, cross, or x
-		},
+		},*/
 		size: 10
 	},
-	"highlight": {
-		fill: "#D5D5D5"
+	{
+		mode: "highlight",
+		fill: "blue",
+		stroke: "orange",
+		strokeWidth: 10,
+		point: {
+			type: "shape",
+			shape: "square",
+			fill: "yellow",
+			size: 40
+		},
+		line: [
+			{strokeWidth: 30, stroke: "red"},
+			{strokeWidth: 20, stroke: "green"},
+			{strokeWidth: 10, stroke: "white"}
+		]
 	}
-}
+]
 
 }())

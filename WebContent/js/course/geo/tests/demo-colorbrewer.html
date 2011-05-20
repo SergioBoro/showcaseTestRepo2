@@ -17,33 +17,19 @@
 		mapEngine: "gfx"
     };
 </script>
-<script src="utils.js"></script>
+<script src="util.js"></script>
 
 <script src="../../../dojo/dojo.js"></script>
-<script src="../../../course/geo/Map.js"></script>
-<script src="../../../course/geo/Feature.js"></script>
-<script src="../../../course/geo/FeatureContainer.js"></script>
-<script src="../../../course/geo/Placemark.js"></script>
-<script src="../../../course/geo/styling.js"></script>
-<script src="../../../course/geo/control/Magnify.js"></script>
-<script src="../../../course/geo/control/Highlight.js"></script>
-
-<script src="../../../course/geo/gfx/Engine.js"></script>
-
-<script src="../../../course/geo/utils/jenks.js"></script>
-
-
-<script src="../../../course/geo/ge/Engine.js"></script>
-<script src="../../../course/geo/ge/Placemark.js"></script>
-
-
 
 <script>
 
 if (djConfig.mapEngine=="ge") dojo.require("course.geo.ge.Engine");
 
+
 dojo.require("dijit.form.CheckBox");
 dojo.require("dijit.form.Select");
+
+dojo.require("course.geo.Map");
 
 dojo.require("course.geo.control.Magnify");
 dojo.require("course.geo.control.Highlight");
@@ -54,7 +40,7 @@ else dojo.require("courseApp.data.russia_geometries");
 
 dojo.require("courseApp.data.russia_features");
 
-dojo.require("course.geo.utils.jenks");
+dojo.require("course.geo.util.jenks");
 
 var map;
 var style = {
@@ -62,7 +48,7 @@ var style = {
 	styleClass: "populationDensity",
 	stroke: "black",
 	strokeWidth: 1,
-	styleFunction: {func: "course.geo.utils.jenks.generateStyle", options: {numClasses: 7, colorSchemeName: "Reds", attr: "indicator1"}}
+	styleFunction: {func: "course.geo.util.jenks.generateStyle", options: {numClasses: 7, colorSchemeName: "Reds", attr: "indicator1"}}
 }
 
 var setColorScheme = function(colorSchemeName, numClasses) {
@@ -73,12 +59,11 @@ var setColorScheme = function(colorSchemeName, numClasses) {
 	}
 	if (numClasses) {
 		options.numClasses = numClasses;
-		options.recalculateBreaks = true;
 	}
 	
 	// show colors from the selected scheme
 	var html="";
-	var colors = course.geo.utils.colorbrewer.schemes["seq"][options.numClasses][options.colorSchemeName].colors;
+	var colors = course.geo.util.colorbrewer.schemes["seq"][options.numClasses][options.colorSchemeName].colors;
 	dojo.forEach(colors, function(color){
 		html += "<span style='background-color:"+ color +"'>&nbsp;&nbsp;&nbsp;&nbsp;</span>"+color+"<br>";
 	});
@@ -90,7 +75,7 @@ var setColorScheme = function(colorSchemeName, numClasses) {
 var firstRun = true;
 var createColorSchemeGui = function(numClasses) {
 	var rules = style.rules;
-	var schemes = course.geo.utils.colorbrewer.schemes["seq"][numClasses];
+	var schemes = course.geo.util.colorbrewer.schemes["seq"][numClasses];
 	var container = dojo.byId("colorSchemes");
 	for(var schemeName in schemes) {
 		if (firstRun) {
@@ -128,7 +113,8 @@ var addOnLoad = function() {
     map = new course.geo.Map("map", {
 		geometries: courseApp.russiaGeometries,
 		features: features,
-		style: style
+		style: style,
+		attributesInFeature: false
 	});
 	map.ready(function(){
 		//new course.geo.control.Magnify(map);

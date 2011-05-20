@@ -17,36 +17,27 @@
 		mapEngine: "gfx"
     };
 </script>
-<script src="utils.js"></script>
-
+<script src="util.js"></script>
 <script src="../../../dojo/dojo.js"></script>
-<script src="../../../course/geo/Map.js"></script>
-<script src="../../../course/geo/Feature.js"></script>
-<script src="../../../course/geo/FeatureContainer.js"></script>
-<script src="../../../course/geo/Placemark.js"></script>
-<script src="../../../course/geo/styling.js"></script>
-<script src="../../../course/geo/gfx/Placemark.js"></script>
-<script src="../../../course/geo/utils.js"></script>
-<script src="../../../course/geo/control/Magnify.js"></script>
-<script src="../../../course/geo/control/Highlight.js"></script>
-<script src="../../../course/geo/control/Tooltip.js"></script>
-<script src="../../../course/geo/projection.js"></script>
-
 
 <script>
 if (djConfig.mapEngine=="ge") dojo.require("course.geo.ge.Engine");
+else dojo.require("course.geo.gfx.Engine");
 
 dojo.require("dijit.form.Button");
-dojo.require("course.geo.control.Magnify");
+DebugUtil.timer.start("loading");
+dojo.require("course.geo.Map");
+
 dojo.require("course.geo.control.Highlight");
 dojo.require("course.geo.control.Tooltip");
+dojo.require("course.geo.control.Navigation");
 
 dojo.require("courseApp.data.berlin_buildings");
 dojo.require("courseApp.data.berlin_lines");
 
 
-dojo.require("course.geo.utils.proj4js");
-dojo.require("course.geo.utils.proj4js.merc");
+dojo.require("course.geo.util.proj4js");
+dojo.require("course.geo.util.proj4js.merc");
 dojo.require("course.geo.projection");
 
 
@@ -91,7 +82,6 @@ var style = [
 
 var features = [
 	{
-		id: "buildings",
 		styleClass: "buildings",
 		features: courseApp.data.berlinBuildings
 	},
@@ -99,7 +89,9 @@ var features = [
 		styleClass: "lines",
 		features: courseApp.data.berlinLines
 	}
-]
+];
+
+DebugUtil.timer.end("loading");
 
 var highlight, magnify, tooltip;
 var addOnLoad = function() {
@@ -131,17 +123,22 @@ var addOnLoad = function() {
 		iconClass: "dijitRadioIcon"
 	}, "tooltip");
 
+	DebugUtil.timer.start("render");
     map = new course.geo.Map("map", {
 		geometryProjection: "EPSG:4326",
 		currentProjection: "EPSG:3785",
 		engine: {type: djConfig.mapEngine},
 		style: style,
-		features: features
+		features: features,
+		attributesInFeature: false
 	});
 	map.ready(function(){
-		highlight = new course.geo.control.Highlight("buildings", {map: map});
-		magnify = new course.geo.control.Magnify("buildings", {map: map, scale: 2});
-		tooltip = new course.geo.control.Tooltip("buildings", {map: map});
+		DebugUtil.timer.end("render");
+		DebugUtil.timer.start("events-init");
+		new course.geo.control.Navigation(map);
+		highlight = new course.geo.control.Highlight(map);
+		tooltip = new course.geo.control.Tooltip(map);
+		DebugUtil.timer.end("events-init");
 	});
 }
 

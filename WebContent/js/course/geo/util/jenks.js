@@ -1,10 +1,10 @@
-dojo.provide("course.geo.utils.jenks");
+dojo.provide("course.geo.util.jenks");
 
-dojo.require("course.geo.utils.colorbrewer");
+dojo.require("course.geo.util.colorbrewer");
 
 (function(){
 
-var j = course.geo.utils.jenks;
+var j = course.geo.util.jenks;
 
 var ascendingSort = function(a, b) {return (a - b);}
 
@@ -85,10 +85,11 @@ j.getBreaks = function(dataList, numClasses) {
 };
 
 
-j.generateStyle = function(feature, style, kwArgs) {
-	var featureContainer = feature.parent;
-	var breaks = featureContainer._breaks;
-	if (!breaks || kwArgs.recalculateBreaks) {
+j.generateStyle = function(feature, style, styleFunctionDef) {
+	var kwArgs = styleFunctionDef.options;
+		featureContainer = feature.parent,
+		breaks = featureContainer._breaks;
+	if (!breaks || styleFunctionDef.updated > featureContainer._breaksTimestamp) {
 		var values = [];
 		dojo.forEach(featureContainer.features, function(feature){
 			var value = feature.get(kwArgs.attr);
@@ -99,7 +100,7 @@ j.generateStyle = function(feature, style, kwArgs) {
 		if (!breaks.length) return;
 		// store calculated breaks for the use by other features that are children of the featureContainer
 		featureContainer._breaks = breaks;
-		kwArgs.recalculateBreaks = false;
+		featureContainer._breaksTimestamp = (new Date()).getTime();
 	}
 
 	var attrValue = feature.get(kwArgs.attr);
@@ -109,7 +110,7 @@ j.generateStyle = function(feature, style, kwArgs) {
 		}
 		else if (breaks[i]<attrValue && attrValue<=breaks[i+1]) break;
 	}
-	if (i<kwArgs.numClasses) style.fill = course.geo.utils.colorbrewer.schemes["seq"][kwArgs.numClasses][kwArgs.colorSchemeName].colors[i];
+	if (i<kwArgs.numClasses) style.fill = course.geo.util.colorbrewer.schemes["seq"][kwArgs.numClasses][kwArgs.colorSchemeName].colors[i];
 }
 
 }());

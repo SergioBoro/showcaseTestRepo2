@@ -1,4 +1,4 @@
-dojo.provide("course.geo.utils.proj4js");
+dojo.provide("course.geo.util.proj4js");
 /*
 Author:       Mike Adair madairATdmsolutions.ca
               Richard Greenwood rich@greenwoodmap.com
@@ -45,7 +45,7 @@ $Id: Proj.js 2956 2007-07-09 12:17:52Z steven $
 
 (function(){
 
-var proj4js = course.geo.utils.proj4js;
+var proj4js = course.geo.util.proj4js;
 
 proj4js.transform = function(source, dest, point) {
 	return Proj4js.transform(source, dest, point);
@@ -242,7 +242,7 @@ var Proj4js = {
  *
  * A projection object has properties for units and title strings.
  */
-dojo.declare("course.geo.utils.proj4js.Proj", null, {
+dojo.declare("course.geo.util.proj4js.Proj", null, {
 
 	/**
 	 * Property: readyToUse
@@ -452,7 +452,7 @@ dojo.declare("course.geo.utils.proj4js.Proj", null, {
 		this.ep2=(this.a2-this.b2)/this.b2; // used in geocentric
 		if (!this.k0) this.k0 = 1.0;    //default value
 
-		this.datum = course.geo.utils.proj4js.Datum(this);
+		this.datum = course.geo.util.proj4js.Datum(this);
 	}
 });
 
@@ -690,7 +690,7 @@ Proj4js.common = {
 
 /** datum object
 */
-dojo.declare("course.geo.utils.proj4js.Datum", null, {
+dojo.declare("course.geo.util.proj4js.Datum", null, {
 
 	constructor : function(proj) {
 		this.datum_type = Proj4js.common.PJD_WGS84;   //default setting

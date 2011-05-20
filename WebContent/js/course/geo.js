@@ -63,13 +63,14 @@ g.makeMap = function(mapOptions) {
     if (!mapNode) return null;
     
 	o.currentProjection = "RUSSIA-ALBERS";
+	o.attributesInFeature = false;
     g.destroyMap(o.id);
     var map = new g.Map(o.id, o);
     mapRegistry[o.id] = {map: map};
     geo.setMap(o.id);
 	
 	map.ready(function() {
-		//geo.makeControl(o.action);
+		geo.makeControl(o.action);
 		//geo.makeEvents(o.events);
 	});
     return map;

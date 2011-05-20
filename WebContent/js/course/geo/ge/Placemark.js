@@ -5,12 +5,15 @@ dojo.provide("course.geo.ge.Placemark");
 var shapeSize = 50.;
 
 course.geo.ge.methods.Placemark = {
-	render: function() {
+	render: function(stylingOnly, mode) {
 		google.earth.executeBatch(this.engine.ge, dojo.hitch(this, function(){
-			this._render();
+			this._render(stylingOnly, mode);
 		}));
 	}
 };
+
+var g = course.geo,
+	cp = g.common.Placemark;
 
 dojo.declare("course.geo.ge.Placemark", null, {
 	
@@ -92,7 +95,7 @@ dojo.declare("course.geo.ge.Placemark", null, {
 	
 	applyPointStyle: function(placemark, feature, calculatedStyle, specificStyle, factory) {
 		var type = specificStyle.type,
-			scale = get("scale", calculatedStyle, specificStyle),
+			scale = cp.get("scale", calculatedStyle, specificStyle),
 			normalStyle = getNormalStyle(placemark),
 			icon = this.ge.createIcon(''),
 			setIcon = true,
@@ -111,8 +114,8 @@ dojo.declare("course.geo.ge.Placemark", null, {
 		var iconActualSize = scale*Math.min(width,height);
 		var kmlIconScale = iconActualSize/shapeSize;
 
-		if (type == "shape" && shapes[specificStyle.shapeType]) {
-			href = shapeIconsUrl + shapes[specificStyle.shapeType];
+		if (type == "shape" && shapes[specificStyle.shape]) {
+			href = shapeIconsUrl + shapes[specificStyle.shape];
 		}
 		else if (type == "image") {
 			href = isRelativeUrl(specificStyle.src) ? baseUrl+specificStyle.src : specificStyle.src;
@@ -125,7 +128,7 @@ dojo.declare("course.geo.ge.Placemark", null, {
 			iconStyle.setIcon(icon);
 			iconStyle.setScale(kmlIconScale);
 			if (type == "shape") {
-				var fill = get("fill", calculatedStyle, specificStyle);
+				var fill = cp.get("fill", calculatedStyle, specificStyle);
 				iconStyle.getColor().set(convertColor(fill));
 			}
 		}
@@ -141,7 +144,7 @@ dojo.declare("course.geo.ge.Placemark", null, {
 	applyPolygonStyle: function(placemark, feature, calculatedStyle, specificStyle, factory) {
 		//var normalStyle = this.ge.createStyle('');
 		var normalStyle = getNormalStyle(placemark);
-		var fill = get("fill", calculatedStyle, specificStyle);
+		var fill = cp.get("fill", calculatedStyle, specificStyle);
 		normalStyle.getPolyStyle().getColor().set(convertColor(fill));
 		applyStroke(normalStyle, calculatedStyle, specificStyle);
 		return placemark;
@@ -171,10 +174,6 @@ function convertColor(c) {
 	return "ff"+c.charAt(5)+c.charAt(6)+c.charAt(3)+c.charAt(4)+c.charAt(1)+c.charAt(2);
 }
 
-var get = function(attr, calculatedStyle, specificStyle) {
-	return specificStyle&&specificStyle[attr] ? specificStyle[attr] : calculatedStyle[attr];
-};
-
 var getNormalStyle = function(placemark) {
 	return placemark.getStyleSelector();
 	var styleSelector = placemark.getStyleSelector();
@@ -184,8 +183,8 @@ var getNormalStyle = function(placemark) {
 
 var applyStroke = function(kmlStyle, calculatedStyle, specificStyle) {
 	var lineStyle = kmlStyle.getLineStyle();
-	var stroke = get("stroke", calculatedStyle, specificStyle);
-	var strokeWidth = get("strokeWidth", calculatedStyle, specificStyle);
+	var stroke = cp.get("stroke", calculatedStyle, specificStyle);
+	var strokeWidth = cp.get("strokeWidth", calculatedStyle, specificStyle);
 	lineStyle.getColor().set(convertColor(stroke));
 	lineStyle.setWidth(strokeWidth);
 }

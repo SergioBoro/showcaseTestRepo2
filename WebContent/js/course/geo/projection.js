@@ -6,6 +6,7 @@ dojo.require("course.geo.Map");
 	
 var g = course.geo,
 	gp = g.projection,
+	u = g.util,
 	transforms = {},
 	projInstances = {};
 	
@@ -13,8 +14,8 @@ var getProjInstance = function(proj) {
 	var instance;
 	// try different ways to perform the transformation
 	// dojo wrapper for Proj4js
-	if (dojo._loadedModules["course.geo.utils.proj4js"]) {
-		if (!projInstances[proj]) projInstances[proj] = new course.geo.utils.proj4js.Proj(proj);
+	if (dojo._loadedModules["course.geo.util.proj4js"]) {
+		if (!projInstances[proj]) projInstances[proj] = new u.proj4js.Proj(proj);
 		if (projInstances[proj] && projInstances[proj].readyToUse) instance = projInstances[proj];
 	}
 	// original Proj4js
@@ -34,9 +35,9 @@ var getTransformFunction = function() {
 	// try different ways to perform the transformation
 
 	// dojo wrapper for Proj4js
-	if (dojo._loadedModules["course.geo.utils.proj4js"]) {
+	if (dojo._loadedModules["course.geo.util.proj4js"]) {
 		transformFunction = function(fromProj, toProj, point) {
-			return course.geo.utils.proj4js.transform(fromProj, toProj, point);
+			return u.proj4js.transform(fromProj, toProj, point);
 		};
 	}
 	// original Proj4js
@@ -56,13 +57,13 @@ var getTransformFunction = function() {
 
 // transform a single point (depth == 1)
 // transform an array of points (depth == 2)
-// transform an array of arrays of point (depth == 3)
+// transform an array of arrays of points (depth == 3)
 // transfrom an array of arrays of arrays of points (depth == 4)
 var transform = function(depth, /* Array */entities, /* Array */_entities, kwArgs) {
 	if (depth == 1) {
 		var p = kwArgs.transformFunction(kwArgs.fromProj, kwArgs.toProj, {x: entities[0], y: entities[1]});
 		_entities.push(p.x, p.y);
-		course.geo.utils.extendBbox(kwArgs.bbox, [p.x, p.y]);
+		u.bbox.extend(kwArgs.bbox, [p.x, p.y]);
 	}
 	else {
 		dojo.forEach(entities, function(entity){

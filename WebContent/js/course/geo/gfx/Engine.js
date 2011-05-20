@@ -16,17 +16,10 @@ dojo.declare("course.geo.gfx.Engine", course.geo.Engine, {
 	initialize: function(/* Function */readyFunction) {
 		this.surface = dojox.gfx.createSurface(this.map.container, this.map.width, this.map.height);
 		this.group = this.surface.createGroup();
-		this.polygons = this.group.createGroup();
-		this.lines = this.group.createGroup();
-		this.points = this.group.createGroup();
-		new dojox.gfx.Moveable(this.group);
 		
 		// initialize some factories
 		this.factories["Placemark"] = new course.geo.gfx.Placemark({
 			group: this.group,
-			polygons:this.polygons,
-			lines: this.lines,
-			points: this.points,
 			map: this.map
 		});
 
@@ -49,14 +42,25 @@ dojo.declare("course.geo.gfx.Engine", course.geo.Engine, {
 		this.group.setTransform([
 			dojox.gfx.matrix.scale(scale)
 		]);
+		this.factories.Placemark.prerender();
 	},
 	
 	getTopContainer: function() {
 		return this.group;
 	},
 	
-	connect: function(group, event, context, method) {
-		return group.connect(event, context, method);
+	connect: function(feature, event, method) {
+		var connections = [];
+		dojo.forEach(feature.baseShapes, function(shape){
+			connections.push(shape.connect(event, method));
+		});
+		return connections;
+	},
+	
+	disconnect: function(connections) {
+		dojo.forEach(connections, function(connection, i){
+			dojo.disconnect(connection);
+		});
 	}
 });
 

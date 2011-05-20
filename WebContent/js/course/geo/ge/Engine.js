@@ -11,6 +11,9 @@ if (!course.geo.ge._googleLoaded) {
 	
 // default methods;
 var e = course.geo.ge;
+
+var engineEvents = {onmouseover: "mouseover", onmouseout: "mouseout", onclick: "click"}
+
 e.methods = {
 	Map: {
 		addStyle: function(styles) {
@@ -19,9 +22,9 @@ e.methods = {
 			}));
 		},
 		
-		render: function(stylingOnly, features) {
+		render: function(stylingOnly, mode, features) {
 			google.earth.executeBatch(this.engine.ge, dojo.hitch(this, function(){
-				this._render(stylingOnly, features);
+				this._render(stylingOnly, mode, features);
 			}));
 		}
 	}
@@ -73,12 +76,24 @@ dojo.declare("course.geo.ge.Engine", course.geo.Engine, {
 		return this.ge;
 	},
 	
-	connect: function(container, event, context, method) {
-		//return group.connect(event, context, method);
-	},
-	
 	patchMethods: function() {
 		dojo.mixin(this.map.methods, e.methods);
+	},
+	
+	connect: function(feature, event, method) {
+		var connections = [];
+		dojo.forEach(feature.baseShapes, function(placemark){
+			event = engineEvents[event];
+			google.earth.addEventListener(placemark, event, method);
+			connections.push([placemark, event, method]);
+		});
+		return connections;
+	},
+	
+	disconnect: function(connections) {
+		dojo.forEach(connections, function(connection){
+			google.earth.removeEventListener(/* placemark */connection[0], /* engineEvent */connection[1], /* method */connection[2]);
+		});
 	},
 	
 	_zoomTo: function(extent) {

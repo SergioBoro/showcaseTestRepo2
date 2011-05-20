@@ -1,5 +1,5 @@
-dojo.provide("course.geo.utils.colorbrewer");
-course.geo.utils.colorbrewer.schemes =
+dojo.provide("course.geo.util.colorbrewer");
+course.geo.util.colorbrewer.schemes =
 {
     "qual": {
         "3": {
