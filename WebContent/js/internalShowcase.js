@@ -1,11 +1,11 @@
 // Jenks breaks algorithm
-dojo.require("course.geo.utils.jenks");
+dojo.require("course.geo.util.jenks");
 
 // projection for the map of Russia
-dojo.require("course.geo.utils.proj4js");
-dojo.require("course.geo.utils.proj4js.aea");
+dojo.require("course.geo.util.proj4js");
+dojo.require("course.geo.util.proj4js.aea");
 dojo.require("course.geo.projection");
-course.geo.utils.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=0 +lon_0=105 +x_0=18500000 +y_0=0 +ellps=krass +units=m +towgs84=28,-130,-95,0,0,0,0 +no_defs");
+course.geo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=0 +lon_0=105 +x_0=18500000 +y_0=0 +ellps=krass +units=m +towgs84=28,-130,-95,0,0,0,0 +no_defs");
 
 var convertorFunc = function(chartId, chartLegendId, optionSet1, optionSet2) {
 
@@ -98,10 +98,8 @@ function mapConvertorFunc(mapId, optionSet1, optionSet2) {
 		delete o.layers;
 		dojo.forEach(o.features, function(featureCollection){
 			featureCollection.type = "FeatureCollection";
-			if (featureCollection.id) featureCollection.styleClass = featureCollection.id;
 			dojo.forEach(featureCollection.features, function(feature){
 				feature.type = "Feature";
-				if (feature.id) feature.styleClass = feature.id;
 				if (feature.geometry && feature.geometry.type=="Point") feature.geometry.projection = "EPSG:4326";
 			})
 		});

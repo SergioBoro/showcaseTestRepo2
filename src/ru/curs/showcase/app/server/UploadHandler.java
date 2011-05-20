@@ -69,7 +69,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 			if (item.isFormField()) {
 				String paramValue = URLDecoder.decode(out.toString(), "UTF-8");
 				if (name.equals("data")) {
-					data = item.toString();
+					data = out.toString();
 					LOGGER.debug("Данные формы при загрузке файла:" + data);
 				} else if (CompositeContext.class.getName().equals(name)) {
 					setContext(((CompositeContext) deserializeObject(paramValue)));
