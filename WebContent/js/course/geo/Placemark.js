@@ -112,7 +112,7 @@ dojo.declare("course.geo.Placemark", course.geo.Feature, {
 			if (style[styleType]) { // we have a specific style
 				dojo.forEach(this.baseShapes, function(shape) {
 					this.map.engine.appendChild(shape, this);
-				});
+				}, this);
 			}
 			else this.map.engine.appendChild(this.baseShapes[0], this);
 		}
