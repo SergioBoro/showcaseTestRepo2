@@ -71,7 +71,7 @@ g.makeMap = function(mapOptions) {
 	
 	map.ready(function() {
 		geo.makeControl(o.action);
-		//geo.makeEvents(o.events);
+		geo.makeEvents(o.events);
 	});
     return map;
 }

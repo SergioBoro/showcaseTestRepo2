@@ -13,7 +13,7 @@ var convertorFunc = function(chartId, chartLegendId, optionSet1, optionSet2) {
    if (dojo.isString(optionSet2)) optionSet2 = dojo.fromJson(optionSet2);
    var chartOptions = optionSet2;
 
-   // copy id, series
+   // copy id, seriesstrokeWidth: 2,
    chartOptions.id = chartId;
    chartOptions.series = optionSet1.series;
    
@@ -108,8 +108,8 @@ function mapConvertorFunc(mapId, optionSet1, optionSet2) {
 	return o;
 }
 
-var eventCallbackMapHandler = function(feature) {
-   gwtMapFunc(feature.map.container, feature.id);
+var eventCallbackMapHandler = function(event) {
+   gwtMapFunc(event.feature.map.container, event.feature.id);
 }
 
 
