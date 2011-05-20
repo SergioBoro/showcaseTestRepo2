@@ -102,11 +102,6 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	private Grid grid = null;
 
 	/**
-	 * Содержит результат выполнения ф-ции setGrid.
-	 */
-	private boolean successSetGrid = false;
-
-	/**
 	 * Для предотвращения повторного срабатывания обработчиков.
 	 */
 	private boolean bListenersExit = true;
@@ -199,10 +194,6 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		p.add(new HTML(Constants.PLEASE_WAIT_GRID_1));
 
 		setGrid(UpdateType.FULL);
-		if (successSetGrid) {
-			setIsFirstLoading(false);
-		}
-
 	}
 
 	@Override
@@ -231,14 +222,6 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 				setGrid(UpdateType.UPDATE_BY_REDRAWGRID);
 			}
-
-			if (successSetGrid) {
-				if (getIsFirstLoading() && refreshContextOnly) {
-					grid.updateAddContext(context);
-				}
-				setIsFirstLoading(false);
-			}
-
 		}
 
 	}
@@ -270,8 +253,6 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	}
 
 	private void setGrid(final UpdateType ut) {
-
-		successSetGrid = false;
 
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -317,7 +298,11 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 				bListenersExit = false;
 
-				successSetGrid = true;
+				// TODO Боре
+				// if (getIsFirstLoading() && refreshContextOnly) {
+				// grid.updateAddContext(context);
+				// }
+				setIsFirstLoading(false);
 
 			}
 		});
