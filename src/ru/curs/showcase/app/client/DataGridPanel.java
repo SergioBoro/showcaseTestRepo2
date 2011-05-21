@@ -193,7 +193,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 		p.add(new HTML(Constants.PLEASE_WAIT_GRID_1));
 
-		setGrid(UpdateType.FULL);
+		setGrid(UpdateType.FULL, false);
 
 	}
 
@@ -212,7 +212,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 				p.add(new HTML(Constants.PLEASE_WAIT_GRID_1));
 
-				setGrid(UpdateType.FULL);
+				setGrid(UpdateType.FULL, refreshContextOnly);
 			} else {
 				hpHeader.clear();
 				hpHeader.add(new HTML(Constants.PLEASE_WAIT_GRID_2));
@@ -221,7 +221,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 				dg.setVisible(false);
 				hpFooter.setVisible(false);
 
-				setGrid(UpdateType.UPDATE_BY_REDRAWGRID);
+				setGrid(UpdateType.UPDATE_BY_REDRAWGRID, refreshContextOnly);
 			}
 		}
 
@@ -253,7 +253,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	private void setGrid(final UpdateType ut) {
+	private void setGrid(final UpdateType ut, final Boolean refreshContextOnly) {
 
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -261,14 +261,6 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 		dataService.getGrid(getContext(), elementInfo, settings, new GWTServiceCallback<Grid>(
 				"Ошибка при получении данных таблицы с сервера") {
-
-			// @Override
-			// public void onFailure(final Throwable caught) {
-
-			// MessageBox.showMessageWithDetails("Ошибка при получении данных таблицы с сервера",
-			// caught.getMessage(), GeneralServerException
-			// .checkExeptionTypeAndCreateDetailedTextOfException(caught));
-			// }
 
 			@Override
 			public void onSuccess(final Grid grid1) {
@@ -297,13 +289,12 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 				afterUpdateGrid(ut);
 
-				bListenersExit = false;
-
-				// TODO Боре - перенес из ReDrawPanel
-				// if (getIsFirstLoading() && refreshContextOnly) {
-				// grid.updateAddContext(context);
-				// }
+				if (getIsFirstLoading() && refreshContextOnly) {
+					grid.updateAddContext(getContext());
+				}
 				setIsFirstLoading(false);
+
+				bListenersExit = false;
 
 			}
 		});
@@ -664,7 +655,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 			settings.setPageNumber(1);
 			settings.setSortedColumns(columns);
-			setGrid(UpdateType.RECORDSET_BY_UPDATERECORDSET);
+			setGrid(UpdateType.RECORDSET_BY_UPDATERECORDSET, false);
 			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 		}
 
@@ -680,7 +671,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			}
 
 			settings.setPageNumber(newPageNumber);
-			setGrid(UpdateType.RECORDSET_BY_UPDATERECORDSET);
+			setGrid(UpdateType.RECORDSET_BY_UPDATERECORDSET, false);
 			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 		}
 
@@ -697,7 +688,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 			settings.setPageNumber(1);
 			settings.setPageSize(newItemsPerPage);
-			setGrid(UpdateType.RECORDSET_BY_SHOWDATA);
+			setGrid(UpdateType.RECORDSET_BY_SHOWDATA, false);
 			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 		}
 

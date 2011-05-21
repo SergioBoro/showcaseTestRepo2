@@ -69,11 +69,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 	private XForms xform = null;
 
 	/**
-	 * Содержит результат выполнения ф-ции setXForm.
-	 */
-	private boolean successSetXForm = false;
-
-	/**
 	 * Ф-ция, возвращающая панель с XForm.
 	 * 
 	 * @return - Панель с XForm.
@@ -138,10 +133,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 		p.clear();
 		p.add(new HTML(Constants.PLEASE_WAIT_XFORM_1));
 
-		setXForm();
-		if (successSetXForm) {
-			setIsFirstLoading(false);
-		}
+		setXForm(false);
 
 	}
 
@@ -157,22 +149,13 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 			p.clear();
 			p.add(new HTML(Constants.PLEASE_WAIT_XFORM_2));
-			setXForm();
-
-			if (successSetXForm) {
-				if (getIsFirstLoading() && refreshContextOnly) {
-					xform.updateAddContext(context);
-				}
-				setIsFirstLoading(false);
-			}
+			setXForm(refreshContextOnly);
 
 		}
 
 	}
 
-	private void setXForm() {
-
-		successSetXForm = false;
+	private void setXForm(final Boolean refreshContextOnly) {
 
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -206,7 +189,10 @@ public class XFormPanel extends BasicElementPanelBasis {
 							ActionExecuter.execAction();
 						}
 
-						successSetXForm = true;
+						if (getIsFirstLoading() && refreshContextOnly) {
+							xform.updateAddContext(getContext());
+						}
+						setIsFirstLoading(false);
 					}
 				});
 
