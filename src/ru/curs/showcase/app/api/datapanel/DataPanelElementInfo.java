@@ -437,6 +437,12 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		return null;
 	}
 
+	/**
+	 * Возвращает полный уникальный идентификатор элемента, включающий в себя
+	 * идентификатор панели.
+	 * 
+	 * @return - идентификатор.
+	 */
 	public String getFullId() {
 		return "dpe_" + tab.getDataPanel().getId() + "_" + id;
 	}
