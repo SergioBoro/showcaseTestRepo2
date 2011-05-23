@@ -81,8 +81,7 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testContextToXML() {
 		CompositeContext context = CompositeContext.createCurrent();
-		CompositeContextJAXBAdapter xsrContext = new CompositeContextJAXBAdapter(context);
-		Document doc = XMLUtils.objectToXML(xsrContext);
+		Document doc = XMLUtils.objectToXML(context);
 		assertEquals("context", doc.getDocumentElement().getNodeName());
 		final int contextsCount = 2;
 		assertEquals(contextsCount, doc.getDocumentElement().getChildNodes().getLength());
@@ -90,7 +89,7 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals("main", doc.getDocumentElement().getChildNodes().item(1).getNodeName());
 		CompositeContext context2 =
 			(CompositeContext) XMLUtils.xmlToObject(doc.getDocumentElement(),
-					CompositeContextJAXBAdapter.class);
+					CompositeContext.class);
 		assertTrue(context.equals(context2));
 	}
 
@@ -101,12 +100,11 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testDPElementInfoToXML() {
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "08");
-		DataPanelElementInfoJAXBAdapter xsrElement = new DataPanelElementInfoJAXBAdapter(element);
-		Document doc = XMLUtils.objectToXML(xsrElement);
+		Document doc = XMLUtils.objectToXML(element);
 		assertEquals("element", doc.getDocumentElement().getNodeName());
 		DataPanelElementInfo el2 =
 			(DataPanelElementInfo) XMLUtils.xmlToObject(doc.getDocumentElement(),
-					DataPanelElementInfoJAXBAdapter.class);
+					DataPanelElementInfo.class);
 		assertTrue(element.equals(el2));
 	}
 

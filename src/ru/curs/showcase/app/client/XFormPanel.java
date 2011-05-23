@@ -332,8 +332,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 			for (int i = 0; i < uiDataPanel.size(); i++) {
 				List<UIDataPanelElement> uiElements = uiDataPanel.get(i).getUiElements();
 				for (int j = 0; j < uiElements.size(); j++) {
-					if ((uiElements.get(j).getElementPanel().getElementInfo().getTabPosition() == bep
-							.getElementInfo().getTabPosition())
+					if ((uiElements.get(j).getElementPanel().getElementInfo().getTab() == bep
+							.getElementInfo().getTab())
 							&& (uiElements.get(j).getElementPanel().getElementInfo().getType() == DataPanelElementType.XFORMS)
 							&& (uiElements.get(j).getElementPanel() != bep)) {
 						((XFormPanel) uiElements.get(j).getElementPanel())

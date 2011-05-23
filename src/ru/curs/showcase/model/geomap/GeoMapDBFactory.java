@@ -97,8 +97,9 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 			if (SQLUtils.existsColumn(areasSql.getMetaData(), TextUtils.capitalizeWord(COLOR_TAG))) {
 				area.setStyle(areasSql.getString(TextUtils.capitalizeWord(COLOR_TAG)));
 			}
-			if (SQLUtils.existsColumn(areasSql.getMetaData(), STYLE_CLASS_TAG)) {
-				area.setStyleClass(areasSql.getString(STYLE_CLASS_TAG));
+			if (SQLUtils.existsColumn(areasSql.getMetaData(),
+					TextUtils.capitalizeWord(STYLE_CLASS_TAG))) {
+				area.setStyleClass(areasSql.getString(TextUtils.capitalizeWord(STYLE_CLASS_TAG)));
 			}
 			if (SQLUtils.existsColumn(areasSql.getMetaData(), TOOLTIP_COL)) {
 				String value = areasSql.getString(TOOLTIP_COL);
@@ -134,8 +135,9 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 					point.setTooltip(value);
 				}
 			}
-			if (SQLUtils.existsColumn(pointsSql.getMetaData(), STYLE_CLASS_TAG)) {
-				point.setStyleClass(pointsSql.getString(STYLE_CLASS_TAG));
+			if (SQLUtils.existsColumn(pointsSql.getMetaData(),
+					TextUtils.capitalizeWord(STYLE_CLASS_TAG))) {
+				point.setStyleClass(pointsSql.getString(TextUtils.capitalizeWord(STYLE_CLASS_TAG)));
 			}
 			if (SQLUtils.existsColumn(pointsSql.getMetaData(), PROPERTIES_SQL_TAG)) {
 				readEvents(point.getId(), pointsSql.getString(PROPERTIES_SQL_TAG));

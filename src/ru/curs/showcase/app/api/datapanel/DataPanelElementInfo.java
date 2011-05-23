@@ -2,17 +2,21 @@ package ru.curs.showcase.app.api.datapanel;
 
 import java.util.*;
 
+import javax.xml.bind.annotation.*;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.*;
 
 /**
- * Класс с описанием элемента информационной панели. Примечание: свойство tab в
- * классе носит справочный характер и поэтому не учитывается при сравнении и не
- * сериализуется в XML!
+ * Класс с описанием элемента информационной панели. Примечание: свойство
+ * {@link #tabPosition} в классе носит справочный характер и поэтому не
+ * учитывается при сравнении и не сериализуется в XML!
  * 
  * @author den
  * 
  */
+@XmlRootElement(name = "element")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DataPanelElementInfo extends TransferableElement implements SerializableElement,
 		Assignable {
 	static final String UNKNOWN_ELEMENT_TYPE = "Неизвестный тип элемента информационной панели";
@@ -70,9 +74,10 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	private Boolean neverShowInPanel = false;
 
 	/**
-	 * Номер родительской вкладки.
+	 * Имя класс CSS для элемента. Т.об. можно задать класс для нескольких
+	 * элементов.
 	 */
-	private Integer tabPosition;
+	private String styleClass;
 
 	/**
 	 * Дополнительные процедуры для элемента панели управления. Используются для
@@ -80,10 +85,17 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 */
 	private Map<String, DataPanelElementProc> procs = new TreeMap<String, DataPanelElementProc>();
 
+	/**
+	 * Ссылка на вкладку панели, на которой расположен элемент.
+	 */
+	@XmlTransient
+	@ExcludeFromSerialization
+	private DataPanelTab tab;
+
 	public DataPanelElementInfo(final Integer aPosition, final DataPanelTab aTab) {
 		super();
 		position = aPosition;
-		tabPosition = aTab.getPosition();
+		tab = aTab;
 	}
 
 	public DataPanelElementInfo() {
@@ -157,23 +169,6 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		position = aPosition;
 	}
 
-	public Integer getTabPosition() {
-		return tabPosition;
-	}
-
-	public final void setTab(final Integer aTabPosition) {
-		tabPosition = aTabPosition;
-	}
-
-	/**
-	 * Определяет, нужна ли XSL трансформация для формирования элемента в UI.
-	 * 
-	 * @return - результат проверки.
-	 */
-	public boolean needTransform() {
-		return (type == DataPanelElementType.WEBTEXT);
-	}
-
 	/**
 	 * Проверка того, что используется простое сохранение данных с XForms через
 	 * GWT.
@@ -235,6 +230,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		result = prime * result + ((position == null) ? 0 : position.hashCode());
 		result = prime * result + ((procName == null) ? 0 : procName.hashCode());
 		result = prime * result + ((procs == null) ? 0 : procs.hashCode());
+		result = prime * result + ((styleClass == null) ? 0 : styleClass.hashCode());
 		result = prime * result + ((templateName == null) ? 0 : templateName.hashCode());
 		result = prime * result + ((transformName == null) ? 0 : transformName.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
@@ -295,6 +291,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		} else if (!procs.equals(other.procs)) {
 			return false;
 		}
+		if (styleClass == null) {
+			if (other.styleClass != null) {
+				return false;
+			}
+		} else if (!styleClass.equals(other.styleClass)) {
+			return false;
+		}
 		if (templateName == null) {
 			if (other.templateName != null) {
 				return false;
@@ -334,8 +337,8 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 			if (transformName == null) {
 				transformName = sourceInfo.transformName;
 			}
-			if (tabPosition == null) {
-				tabPosition = sourceInfo.tabPosition;
+			if (tab == null) {
+				tab = sourceInfo.tab;
 			}
 			if (hideOnLoad == null) {
 				hideOnLoad = sourceInfo.hideOnLoad;
@@ -346,10 +349,29 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 			if (type == null) {
 				type = sourceInfo.type;
 			}
+			if (styleClass == null) {
+				styleClass = sourceInfo.styleClass;
+			}
 			if (procs.size() == 0) {
 				procs.putAll(sourceInfo.procs);
 			}
 		}
+	}
+
+	public String getStyleClass() {
+		return styleClass;
+	}
+
+	public void setStyleClass(final String aStyleClass) {
+		styleClass = aStyleClass;
+	}
+
+	public DataPanelTab getTab() {
+		return tab;
+	}
+
+	public void setTab(final DataPanelTab aTab) {
+		tab = aTab;
 	}
 
 	public Boolean getNeverShowInPanel() {
@@ -365,7 +387,8 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		return "DataPanelElementInfo [id=" + id + ", position=" + position + ", type=" + type
 				+ ", procName=" + procName + ", transformName=" + transformName
 				+ ", templateName=" + templateName + ", hideOnLoad=" + hideOnLoad
-				+ ", neverShowInPanel=" + neverShowInPanel + ", procs=" + procs + "]";
+				+ ", neverShowInPanel=" + neverShowInPanel + ", styleClass=" + styleClass
+				+ ", procs=" + procs + "]";
 	}
 
 	/**
@@ -412,5 +435,9 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 			return dpLink.getContext();
 		}
 		return null;
+	}
+
+	public String getFullId() {
+		return "dpe_" + tab.getDataPanel().getId() + "_" + id;
 	}
 }

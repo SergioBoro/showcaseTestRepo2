@@ -67,7 +67,7 @@ public abstract class GeneralXMLHelper {
 
 	protected static final String REFRESH_TAG = "refresh";
 
-	protected static final String STYLE_CLASS_TAG = "StyleClass";
+	protected static final String STYLE_CLASS_TAG = "styleClass";
 
 	/**
 	 * Имя атрибута с идентификатором ссылки, уникальным в пределах элемента.

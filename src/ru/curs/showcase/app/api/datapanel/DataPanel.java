@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.datapanel;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.SerializableElement;
 import ru.curs.showcase.app.api.event.Action;
 
 /**
@@ -21,6 +21,12 @@ public class DataPanel implements SerializableElement {
 	private static final long serialVersionUID = 1182249077845843177L;
 
 	/**
+	 * Идентификатор панели. В случае хранения панели в файле - имя файла без
+	 * расширения.
+	 */
+	private String id;
+
+	/**
 	 * Набор вкладок панели.
 	 */
 	private List<DataPanelTab> tabs = new ArrayList<DataPanelTab>();
@@ -36,6 +42,15 @@ public class DataPanel implements SerializableElement {
 	 * DataPanelRefreshMode.BY_TIMER.
 	 */
 	private Integer refreshInterval = DEF_TIMER_INTERVAL;
+
+	public DataPanel(final String aId) {
+		super();
+		id = aId;
+	}
+
+	public DataPanel() {
+		super();
+	}
 
 	/**
 	 * Возвращает активную вкладку для переданного объекта действия. Если в
@@ -82,16 +97,16 @@ public class DataPanel implements SerializableElement {
 	/**
 	 * Добавляет и инициализирует вкладку к панели.
 	 * 
-	 * @param id
+	 * @param tabId
 	 *            - id вкладки.
-	 * @param name
+	 * @param tabNamr
 	 *            - наименование вкладки.
 	 * @return - вкладка.
 	 */
-	public DataPanelTab add(final String id, final String name) {
+	public DataPanelTab add(final String tabId, final String tabNamr) {
 		DataPanelTab res = new DataPanelTab();
-		res.setId(id);
-		res.setName(name);
+		res.setId(tabId);
+		res.setName(tabNamr);
 		res.setDataPanel(this);
 		res.setPosition(tabs.size());
 		tabs.add(res);
@@ -112,5 +127,13 @@ public class DataPanel implements SerializableElement {
 
 	public void setRefreshInterval(final Integer aRefreshInterval) {
 		refreshInterval = aRefreshInterval;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(final String aId) {
+		id = aId;
 	}
 }

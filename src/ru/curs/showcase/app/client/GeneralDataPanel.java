@@ -234,8 +234,7 @@ public class GeneralDataPanel {
 
 		}
 
-		AppCurrContext.getInstance().getUiDataPanel().get(dpe.getTabPosition()).getUiElements()
-				.add(new UIDataPanelElement(chp));
+		getUiElements(dpe).add(new UIDataPanelElement(chp));
 		return w;
 
 	}
@@ -267,8 +266,7 @@ public class GeneralDataPanel {
 			dgp.hidePanel();
 		}
 
-		AppCurrContext.getInstance().getUiDataPanel().get(dpe.getTabPosition()).getUiElements()
-				.add(new UIDataPanelElement(dgp));
+		getUiElements(dpe).add(new UIDataPanelElement(dgp));
 
 		return w;
 	}
@@ -297,8 +295,7 @@ public class GeneralDataPanel {
 			wtp.hidePanel();
 		}
 
-		AppCurrContext.getInstance().getUiDataPanel().get(dpe.getTabPosition()).getUiElements()
-				.add(new UIDataPanelElement(wtp));
+		getUiElements(dpe).add(new UIDataPanelElement(wtp));
 
 		return w;
 	}
@@ -327,8 +324,7 @@ public class GeneralDataPanel {
 			wtp.hidePanel();
 		}
 
-		AppCurrContext.getInstance().getUiDataPanel().get(dpe.getTabPosition()).getUiElements()
-				.add(new UIDataPanelElement(wtp));
+		getUiElements(dpe).add(new UIDataPanelElement(wtp));
 
 		return w;
 	}
@@ -359,10 +355,14 @@ public class GeneralDataPanel {
 
 		}
 
-		AppCurrContext.getInstance().getUiDataPanel().get(dpe.getTabPosition()).getUiElements()
-				.add(new UIDataPanelElement(mp));
+		getUiElements(dpe).add(new UIDataPanelElement(mp));
 		return w;
 
+	}
+
+	private static List<UIDataPanelElement> getUiElements(final DataPanelElementInfo dpe) {
+		return AppCurrContext.getInstance().getUiDataPanel().get(dpe.getTab().getPosition())
+				.getUiElements();
 	}
 
 	private static CompositeContext getElementContextForNavigatorAction(

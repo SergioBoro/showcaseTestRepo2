@@ -33,6 +33,11 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 	private final DefaultHandler myHandler;
 
 	/**
+	 * Файл с исходными данными.
+	 */
+	private DataFile<InputStream> file;
+
+	/**
 	 * Текущая вкладка.
 	 */
 	private DataPanelTab currentTab = null;
@@ -48,7 +53,7 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 					final String qname, final Attributes attrs) {
 				String value;
 				if (qname.equalsIgnoreCase(DP_TAG)) {
-					result = new DataPanel();
+					result = new DataPanel(file.getId());
 					if (attrs.getIndex(REFRESH_MODE_TAG) > -1) {
 						value = attrs.getValue(REFRESH_MODE_TAG);
 						result.setRefreshMode(DataPanelRefreshMode.valueOf(value));
@@ -68,10 +73,13 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 					el.setId(attrs.getValue(ID_TAG));
 					el.setType(DataPanelElementType
 							.valueOf(attrs.getValue(TYPE_TAG).toUpperCase()));
+					if (attrs.getIndex(STYLE_CLASS_TAG) > -1) {
+						el.setStyleClass(attrs.getValue(STYLE_CLASS_TAG));
+					}
 					if (attrs.getIndex(PROC_ATTR_NAME) > -1) {
 						el.setProcName(attrs.getValue(PROC_ATTR_NAME));
 					}
-					if (el.needTransform()) {
+					if (el.getType() == DataPanelElementType.WEBTEXT) {
 						el.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));
 					}
 					if (el.getType() == DataPanelElementType.XFORMS) {
@@ -104,11 +112,12 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 	/**
 	 * Функция построения панели из XML файла.
 	 * 
-	 * @param file
+	 * @param aFile
 	 *            - файл с панелью.
 	 * @return - информационная панель.
 	 */
-	public DataPanel fromStream(final DataFile<InputStream> file) {
+	public DataPanel fromStream(final DataFile<InputStream> aFile) {
+		file = aFile;
 		InputStream streamForParse = XMLUtils.validateXMLStream(file.getData(), "datapanel.xsd");
 
 		SAXParser parser = XMLUtils.createSAXParser();

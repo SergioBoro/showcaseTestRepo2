@@ -1,5 +1,7 @@
 package ru.curs.showcase.model;
 
+import ru.curs.showcase.util.TextUtils;
+
 /**
  * Базовый класс для обмена файлами между сервером и клиентами. Содержимое файла
  * может храниться как в виде OutputStream, так и InputStream - чтобы избежать
@@ -45,4 +47,7 @@ public class DataFile<T> {
 		name = aName;
 	}
 
+	public String getId() {
+		return TextUtils.extractFileName(name);
+	}
 }

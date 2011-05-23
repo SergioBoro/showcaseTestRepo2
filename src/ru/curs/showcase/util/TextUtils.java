@@ -148,4 +148,28 @@ public final class TextUtils {
 		DateFormat df = DateFormat.getDateTimeInstance();
 		return df.format(new Date());
 	}
+
+	/**
+	 * Возвращает имя файла без пути и расширения.
+	 * 
+	 * @param path
+	 *            - полный путь к файлу.
+	 * @return - имя файла.
+	 */
+	public static String extractFileName(final String path) {
+		if (path == null) {
+			return null;
+		}
+
+		int dotPos = path.lastIndexOf('.');
+		int slashPos = path.lastIndexOf('\\');
+		if (slashPos == -1) {
+			slashPos = path.lastIndexOf('/');
+		}
+
+		int beginIndex = slashPos > 0 ? slashPos + 1 : 0;
+		int endIndex = dotPos > slashPos ? dotPos : path.length() - 1;
+
+		return path.substring(beginIndex, endIndex);
+	}
 }

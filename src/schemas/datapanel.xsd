@@ -41,6 +41,7 @@
 									<xs:attribute name="proc" type="notNullType" />
 									<xs:attribute name="template" type="xmlType" />
 									<xs:attribute name="transform" type="xslType" />
+									<xs:attribute name="styleClass" type="xs:string" />
 									<xs:assert
 										test="(@type='webtext' and count(@proc)+count(@transform)>0) or (@type='xforms' and count(@template)=1) or (@type!='webtext' and @type!='xforms' and count(@proc)=1 and count(@transform)=0) " />
 								</xs:complexType>

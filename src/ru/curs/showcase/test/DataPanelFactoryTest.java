@@ -38,6 +38,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanelTab tab;
 		DataPanelElementInfo el;
 
+		assertEquals("test", panel.getId());
 		assertEquals(panelsCount, panel.getTabs().size());
 		assertEquals(DataPanelRefreshMode.BY_TIMER, panel.getRefreshMode());
 		final int refreshInterval = 120;
@@ -46,7 +47,9 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		el = panel.getTabById("1").getElementInfoById("1");
 		assertFalse(el.getHideOnLoad());
 		assertNotNull(el);
-		assertTrue(el.needTransform());
+		assertEquals(DataPanelElementType.WEBTEXT, el.getType());
+		assertEquals("testStyle", el.getStyleClass());
+		assertEquals("dpe_test_1", el.getFullId());
 		tab = panel.getTabById("2");
 		assertNotNull(tab);
 		assertEquals("2", tab.getId());
@@ -68,7 +71,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	 * @throws GeneralServerException
 	 */
 	@Test
-	public void testFull() throws GeneralServerException {
+	public void testBySL() throws GeneralServerException {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
 		DataPanelLink dpLink = new DataPanelLink();
 		dpLink.setDataPanelId("test2.xml");

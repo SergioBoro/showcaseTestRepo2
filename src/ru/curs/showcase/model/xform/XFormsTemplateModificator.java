@@ -43,11 +43,9 @@ public final class XFormsTemplateModificator extends GeneralXMLHelper {
 		el = doc.createElement(SCHEMA_TAG);
 		srv = srv.appendChild(el);
 
-		CompositeContextJAXBAdapter xsrContext = new CompositeContextJAXBAdapter(context);
-		addServerElement(doc, srv, xsrContext);
+		addServerElement(doc, srv, context);
 
-		DataPanelElementInfoJAXBAdapter xsrElement = new DataPanelElementInfoJAXBAdapter(element);
-		addServerElement(doc, srv, xsrElement);
+		addServerElement(doc, srv, element);
 
 		return doc;
 	}

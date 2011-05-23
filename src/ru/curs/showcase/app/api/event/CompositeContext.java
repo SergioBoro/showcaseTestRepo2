@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.event;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import ru.curs.showcase.app.api.*;
 
 /**
@@ -11,6 +13,7 @@ import ru.curs.showcase.app.api.*;
  * @author den
  * 
  */
+@XmlRootElement(name = "context")
 public class CompositeContext extends TransferableElement implements CanBeCurrent,
 		SerializableElement, Assignable, GWTClonable {
 	/**

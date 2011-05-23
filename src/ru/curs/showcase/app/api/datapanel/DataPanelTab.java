@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.datapanel;
 
 import java.util.*;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.*;
 
@@ -29,6 +31,7 @@ public class DataPanelTab extends VisualElement {
 	 * Родительская панель.
 	 */
 	@ExcludeFromSerialization
+	@XmlTransient
 	private DataPanel dataPanel;
 
 	public final List<DataPanelElementInfo> getElements() {
