@@ -80,7 +80,7 @@ dojo.require("dojox.gfx.matrix");
 			
 			this.feature = feature;
 
-			var factory =  feature.map.engine.getFactory(feature.type),
+			var factory = this.map.engine.getFactory(feature.type),
 				featureBbox = feature.getBbox(),
 				centerX = factory.getX( (featureBbox[0]+featureBbox[2])/2 ),
 				centerY = factory.getY( (featureBbox[1]+featureBbox[3])/2 );
@@ -91,9 +91,8 @@ dojo.require("dojox.gfx.matrix");
 			var aroundRect = {type: "rect", x: point.x, y:point.y, width:0, height:0};
 			
 			// adjust relative coordinates to absolute, and remove fractions
-			var lt = dojo.coords(feature.map.container, true);
-			aroundRect.x += lt.x;
-			aroundRect.y += lt.y;
+			aroundRect.x += this.map.x;
+			aroundRect.y += this.map.y;
 			aroundRect.x = Math.round(aroundRect.x);
 			aroundRect.y = Math.round(aroundRect.y);
 			aroundRect.width = Math.ceil(aroundRect.width);

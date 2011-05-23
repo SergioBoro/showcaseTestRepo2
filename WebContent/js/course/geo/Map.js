@@ -125,9 +125,13 @@ dojo.declare("course.geo.Map", null, {
 		this.surface.destroy();
 	},
 
-	_calculateViewport: function(){
-		this.width = this.width || dojo.coords(this.container).w || 100;
-		this.height = this.height || dojo.coords(this.container).h || 100;
+	_calculateViewport: function() {
+		var contentBox = dojo.contentBox(this.container);
+		var coords = dojo.coords(this.container);
+		this.width = this.width || contentBox.w || 100;
+		this.height = this.height || contentBox.h || 100;
+		this.x = coords.x;
+		this.y = coords.y;
 	},
 
 	loadGeometries: function(/* String|Array|Object */geometries) {
