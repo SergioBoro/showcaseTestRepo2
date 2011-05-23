@@ -12,6 +12,7 @@ import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -201,18 +202,18 @@ public class GeneralDataPanel {
 				break;
 			}
 			if (el != null) {
-
 				el.addStyleName("dataPanelElement-BorderCorners");
+
+				if (dpe.getStyleClass() != null) {
+					el.addStyleName(dpe.getStyleClass());
+				}
+
 				el.setWidth("100%");
+				DOM.setElementAttribute(el.getElement(), "id", dpe.getFullId());
 
 				if (!(dpe.getNeverShowInPanel())) {
 					vp1.add(el);
 				}
-				// itr.
-				// WindowWithDataPanelElement r = new
-				// WindowWithDataPanelElement();
-				// r.showModalWindow("Тест", el);
-
 			}
 		}
 	}
