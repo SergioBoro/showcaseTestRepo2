@@ -35,5 +35,5 @@
 <!-- Для того, чтобы компилировалось все - строчку set-property  -->
 
 <!-- Установка общих стилей приложения     -->
-<stylesheet src="internalShowcase.css"/>    
+<stylesheet src="../css/internalShowcase.css"/>    
 </module>
