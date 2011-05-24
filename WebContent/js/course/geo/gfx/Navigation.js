@@ -27,21 +27,15 @@ dojo.declare("course.geo.gfx.Navigation",null, {
 		var x = mouseEvent.pageX - this.map.x,
 			y = mouseEvent.pageY - this.map.y;
 
-		var matrix = this.map.engine.group._getRealMatrix() || {xx:1,xy:0,yx:0,yy:1,dx:0,dy:0},
-			currentMapScale = matrix ? matrix.xx: 1.,
-			invMatrix = dojox.gfx.matrix.invert(matrix);
-
-		// x,y in the map coordinates
-		var mapPoint = dojox.gfx.matrix.multiplyPoint(invMatrix, x, y);
+		var matrix = this.map.engine.group._getRealMatrix() || {xx:1,xy:0,yx:0,yy:1,dx:0,dy:0};
 		
 		// zoom increment power 
 		var power  = mouseEvent[ dojo.isMozilla ? "detail" : "wheelDelta" ] / (dojo.isMozilla ? -3 : 120) ;
 		var scaleFactor = Math.pow(1.2, power);
 		
 		this.map.engine.group.setTransform([
-			dojox.gfx.matrix.translate(x, y),
-			dojox.gfx.matrix.scale(currentMapScale*scaleFactor),
-			dojox.gfx.matrix.translate(-x, -y)
+			{xx:scaleFactor,yy:scaleFactor, dx: x*(1-scaleFactor), dy: y*(1-scaleFactor)},
+			matrix
 		]);
 	}
 });
