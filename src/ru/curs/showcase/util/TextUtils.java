@@ -172,4 +172,41 @@ public final class TextUtils {
 
 		return path.substring(beginIndex, endIndex);
 	}
+
+	/**
+	 * Возвращает имя файла с расширением из полного пути.
+	 * 
+	 * @param path
+	 *            - путь к файлу.
+	 * @return - имя с расширением.
+	 */
+	public static String extractFileNameWithExt(final String path) {
+		if (path == null) {
+			return null;
+		}
+
+		File file = new File(path);
+		return file.getName();
+	}
+
+	/**
+	 * Определяет - не произошла ли ошибка при установке кодировки строки -
+	 * вместо UTF8 установлена другая кодировка и возвращает правильную
+	 * кодировку.
+	 * 
+	 * @param str
+	 *            - строка для проверки.
+	 * @return - правильная кодировка.
+	 */
+	public static String getRealEncoding(final String str) {
+		char[] chars = { 'Р', 'С' }; // 0xD0 и 0xD1 в CP1251
+		if (UTF8Checker.check(str, chars)) {
+			return "CP1251";
+		}
+		chars = new char[] { 'Ð', 'Ñ' }; // 0xD0 и 0xD1 в ISO-8859-1
+		if (UTF8Checker.check(str, chars)) {
+			return "ISO-8859-1";
+		}
+		return "UTF8";
+	}
 }

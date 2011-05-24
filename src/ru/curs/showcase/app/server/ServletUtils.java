@@ -7,6 +7,8 @@ import javax.servlet.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
+import ru.curs.showcase.util.TextUtils;
+
 /**
  * Вспомогательные функции для работы с сервлетами.
  * 
@@ -145,4 +147,21 @@ public final class ServletUtils {
 		resp.setDateHeader("Expires", 0);
 	}
 
+	/**
+	 * Проверяет параметр на неверную кодировку ANSI\ISO вместо UTF8 и
+	 * исправляет ее при необходимости.
+	 * 
+	 * @param param
+	 *            - параметр.
+	 * @return - правильно кодированный параметр.
+	 * @throws UnsupportedEncodingException
+	 */
+	public static String checkAndRecodeURLParam(final String param)
+			throws UnsupportedEncodingException {
+		String enc = TextUtils.getRealEncoding(param);
+		if (enc != ServletUtils.getCharsetForURLParams(null)) {
+			return TextUtils.recode(param, enc, ServletUtils.getCharsetForURLParams(null));
+		}
+		return param;
+	}
 }

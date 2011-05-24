@@ -59,7 +59,6 @@ public final class UploadHelper extends RunServletByFormHelper {
 			getPanel().add(uploader);
 			uploaders.put(linkId, uploader);
 			uploader.addChangeHandler(new ChangeHandler() {
-
 				@Override
 				public void onChange(final ChangeEvent aEvent) {
 					closeHandler.onChange(aEvent);
@@ -81,7 +80,6 @@ public final class UploadHelper extends RunServletByFormHelper {
 		while (iterator.hasNext()) {
 			iterator.next().setVisible(false);
 		}
-
 	}
 
 	/**

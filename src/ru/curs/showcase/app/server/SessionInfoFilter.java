@@ -6,8 +6,6 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import ru.curs.showcase.util.TextUtils;
-
 /**
  * Фильтр для считывание из URL параметров сессии.
  * 
@@ -73,7 +71,7 @@ public class SessionInfoFilter implements Filter {
 	/**
 	 * Подготавливает карту с параметрами URL. При подготовке учитывается то,
 	 * что русские параметры URL считываются сервером в кодировке ISO-8859-1 при
-	 * том, что в реальности они приходят либо в UTF-8 либо в СЗ1251, а также
+	 * том, что в реальности они приходят либо в UTF-8 либо в СP1251, а также
 	 * тот факт, что установка req.setCharacterEncoding("ISO-8859-1"): 1) не
 	 * помогает и 2) приводит к сбоям GWT-RPC вызовов
 	 * 
@@ -89,14 +87,11 @@ public class SessionInfoFilter implements Filter {
 		Iterator<String> iterator = req.getParameterMap().keySet().iterator();
 		while (iterator.hasNext()) {
 			String oldKey = iterator.next();
-			String key =
-				TextUtils.recode(oldKey, "ISO-8859-1", ServletUtils.getCharsetForURLParams(req));
+			String key = ServletUtils.checkAndRecodeURLParam(oldKey);
 			String[] oldValues = (String[]) req.getParameterMap().get(oldKey);
 			String[] values = oldValues.clone();
 			for (int i = 0; i < oldValues.length; i++) {
-				values[i] =
-					TextUtils.recode(oldValues[i], "ISO-8859-1",
-							ServletUtils.getCharsetForURLParams(req));
+				values[i] = ServletUtils.checkAndRecodeURLParam(oldValues[i]);
 			}
 			cur.put(key, values);
 		}

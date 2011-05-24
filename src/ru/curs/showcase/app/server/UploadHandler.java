@@ -59,7 +59,6 @@ public final class UploadHandler extends AbstractFilesHandler {
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
 		ServletFileUpload upload = new ServletFileUpload();
 		FileItemIterator iterator = upload.getItemIterator(getRequest());
-
 		while (iterator.hasNext()) {
 			FileItemStream item = iterator.next();
 			String name = item.getFieldName();
@@ -78,12 +77,12 @@ public final class UploadHandler extends AbstractFilesHandler {
 				}
 			} else {
 				String fileName = item.getName();
-				if (fileName != null) {
-					File file = new File(fileName);
-					fileName = file.getName();
-				}
+				fileName = ServletUtils.checkAndRecodeURLParam(fileName);
+				fileName = TextUtils.extractFileNameWithExt(fileName);
+
 				String linkId = name.replace(ExchangeConstants.FILE_DATA_PARAM_PREFIX, "");
 				files.put(linkId, new DataFile<ByteArrayOutputStream>(out, fileName));
+
 				LOGGER.debug("Получен файл '" + fileName + "' размером " + out.size() + " байт");
 			}
 		}
