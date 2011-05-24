@@ -3,7 +3,7 @@
 	<appender name="NT" class="org.apache.log4j.nt.NTEventLogAppender">
 		<param name="source" value="timex" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%p %c: %m%n" />
+			<param name="ConversionPattern" value="%d{ABSOLUTE} %5p %t %c{1}.%M():line %L: %m%n" />
 		</layout>
 	</appender>
 	<appender name="Console" class="org.apache.log4j.ConsoleAppender">
@@ -18,7 +18,7 @@
 		<!-- число резервных копий лога -->
 		<param name="MaxBackupIndex" value="1" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%p %c: %m%n" />
+			<param name="ConversionPattern" value="%d{ABSOLUTE} %5p %t %c{1}.%M():line %L: %m%n" />
 		</layout>
   </appender>	
 	<root>
