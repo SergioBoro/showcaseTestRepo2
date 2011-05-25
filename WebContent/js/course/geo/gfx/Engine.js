@@ -52,14 +52,14 @@ dojo.declare("course.geo.gfx.Engine", course.geo.Engine, {
 	connect: function(feature, event, method) {
 		var connections = [];
 		dojo.forEach(feature.baseShapes, function(shape){
-			connections.push(shape.connect(event, method));
+			connections.push([shape, shape.connect(event, method)]);
 		});
 		return connections;
 	},
 	
 	disconnect: function(connections) {
-		dojo.forEach(connections, function(connection, i){
-			dojo.disconnect(connection);
+		dojo.forEach(connections, function(connection){
+			connection[0].disconnect(connection[1]);
 		});
 	}
 });

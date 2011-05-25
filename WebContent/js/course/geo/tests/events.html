@@ -174,7 +174,10 @@ var features = [
 ];
 
 
-var f1 = function(event){ console.debug("function:RU-KYA, feature.id:"+event.feature.id+", event:"+event.type); },
+var f1 = function(event){
+	var t=0;
+	console.debug("function:RU-KYA, feature.id:"+event.feature.id+", event:"+event.type);
+	},
 	f2 = function(event){ console.debug("function:RU-SAK, feature.id:"+event.feature.id+", event:"+event.type); },
 	f3 = function(event){ console.debug("function:RU-MOW, feature.id:"+event.feature.id+", event:"+event.type); },
 	f4 = function(event){ console.debug("function:RU-MOS, feature.id:"+event.feature.id+", event:"+event.type); },
@@ -244,7 +247,7 @@ var addOnLoad = function() {
 		handle2 = connectFeature("RU-SAK", f2);
 		handle3 = connectFeature("RU-MOW", f3);
 		handle4 = connectFeature("RU-MOS", f4);
-		//handleMap = map.connect("onclick", fMap);
+		handleMap = map.connect("onclick", fMap);
 		map.getFeatureById("hospital").connect(["onmouseover", "onmouseout"], function(event){
 			console.debug("function:hospital, feature.id:"+event.feature.id+", event:"+event.type);
 		});
