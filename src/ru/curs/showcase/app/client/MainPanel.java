@@ -4,8 +4,9 @@
 package ru.curs.showcase.app.client;
 
 import ru.beta2.extra.gwt.ui.panels.*;
+import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.client.api.Constants;
-import ru.curs.showcase.app.client.utils.DownloadHelper;
+import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.user.client.Window;
@@ -21,19 +22,41 @@ import com.google.gwt.user.client.ui.*;
 public class MainPanel {
 
 	/**
+	 * Базовая вертикальная панель, содержащая все виджеты MainPanel.
+	 */
+	private final VerticalPanel basicVerticalPanel = new VerticalPanel();
+
+	/**
+	 * CursSplitLayoutPanel.
+	 */
+	private final CursSplitLayoutPanel p = new CursSplitLayoutPanel();
+
+	/**
+	 * Виджет, который содержит GeneralDataPanel.
+	 */
+	private Widget gp;
+
+	/**
+	 * Виджет который содержит навигатор.
+	 */
+	private Widget accordeon;
+
+	/**
+	 * Переменная, которая определяет на какую ширину от ширины экрана(от ширины
+	 * рабочей части окна браузера) нужно уменьшить MainPanel.
+	 */
+	private final int n35 = 35;
+
+	/**
 	 * Процедура создания MainPanel, которая включает в себя Accordeon и
 	 * GeneralDataPanel.
 	 * 
 	 * @return возвращает заполненный виджет MainPanel типа VerticalPanel.
 	 */
-	public Widget generateMainPanel() {
+	public Widget startMainPanelCreation() {
 
-		final VerticalPanel basicVerticalPanel = new VerticalPanel();
 		basicVerticalPanel.add(new DownloadHelper());
 
-		final CursSplitLayoutPanel p = new CursSplitLayoutPanel();
-
-		final int n35 = 35;
 		final int n85 = 85;
 		p.setPixelSize(Window.getClientWidth() - n35, Window.getClientHeight() - n85);
 
@@ -54,12 +77,61 @@ public class MainPanel {
 		basicVerticalPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
 		basicVerticalPanel.setSpacing(Constants.SPACINGN);
 
-		Widget accordeon = (new Accordeon()).generateAccordeon();
-		p.addWest(accordeon, Constants.SPLITLAYOUTPANELSIZEN);
-		// accordeon.p.setWidgetMinSize(accordeon, splitMinWidgetSizeN);
-		Widget gp = (new GeneralDataPanel()).generateDataPanel();
-		p.add(gp);
-		p.setWidgetMinSize(gp, 1);
+		accordeon = (new Accordeon()).generateAccordeon();
+
+		return basicVerticalPanel;
+	}
+
+	/**
+	 * 
+	 * Процедура которая продолжает создание главной панели MainPanel (добавляет
+	 * на нее Accordeon и GeneralDataPanel) на основе настроек пришедших из
+	 * хранимой процедуры через асинхронный gwt-servlet запрос.
+	 * 
+	 * @param showNavigator
+	 *            - показывать ли навигатор в приложении или скрывать его.
+	 * @param navigatorWidth
+	 *            - переменная которая содержит значение шириныв навигатора в
+	 *            пикселях или процентах (напр. "500px" или "30%").
+	 */
+	public void generateMainPanel(final boolean showNavigator, final String navigatorWidth) {
+
+		if (showNavigator) {
+
+			int widthNumber = 0;
+			try {
+				widthNumber = NavigatorWidthParser.getWidth(navigatorWidth);
+			} catch (Exception e) {
+
+				MessageBox.showMessageWithDetails(Constants.TRANSFORMATION_NAVIGATOR_WIDTH_ERROR,
+						e.getClass().getName() + ": " + e.getMessage(),
+						GeneralServerException.getStackText(e));
+			}
+
+			switch (NavigatorWidthParser.getWidthType(navigatorWidth)) {
+
+			case PIXELS:
+
+				p.addWest(accordeon, widthNumber);
+				break;
+
+			case PERCENTS:
+				final int percentsTotal = 100;
+				final int absoluteWidth =
+					widthNumber * (Window.getClientWidth() - n35) / percentsTotal;
+				p.addWest(accordeon, absoluteWidth);
+				break;
+
+			default:
+
+				p.addWest(accordeon, Constants.SPLITLAYOUTPANELSIZEN);
+				break;
+
+			}
+
+		}
+
+		gp = (new GeneralDataPanel()).generateDataPanel();
 
 		p.setSplitterDragHandler(new SplitterDragHandler() {
 
@@ -72,6 +144,9 @@ public class MainPanel {
 
 		});
 
-		return basicVerticalPanel;
+		p.add(gp);
+
+		p.setWidgetMinSize(gp, 1);
+
 	}
 }

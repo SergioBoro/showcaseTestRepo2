@@ -31,7 +31,8 @@ public class App implements EntryPoint {
 
 		// генерация и размещение главной части (главной) приложения Showcase
 		MainPanel mainPanel = new MainPanel();
-		RootPanel.get("showcaseAppContainer").add(mainPanel.generateMainPanel());
+		AppCurrContext.getInstance().setMainPanel(mainPanel);
+		RootPanel.get("showcaseAppContainer").add(mainPanel.startMainPanelCreation());
 
 	}
 

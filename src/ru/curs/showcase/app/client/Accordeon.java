@@ -96,11 +96,30 @@ public class Accordeon {
 		accordeon.setSize("100%", "100%");
 		verpan.setSize("100%", "100%");
 
+		final DecoratedPopupPanel db = new DecoratedPopupPanel();
+		Image waiteImage = new Image();
+		waiteImage.setUrl("resources/internal/progress.gif");
+		db.add(waiteImage);
+		db.center();
+		db.show();
+
 		dataService.getNavigator(new GWTServiceCallback<Navigator>(
 				Constants.ERROR_OF_NAVIGATOR_DATA_RETRIEVING_FROM_SERVER) {
+			@Override
+			public void onFailure(final Throwable caught) {
+
+				db.hide();
+				super.onFailure(caught);
+
+			}
 
 			@Override
 			public void onSuccess(final Navigator navigator) {
+				db.hide();
+				AppCurrContext.getInstance().getMainPanel()
+						.generateMainPanel(!navigator.getHideOnLoad(), navigator.getWidth());
+
+				// navigator.getWidth()
 				fillAccordeon(navigator);
 				verpan.clear();
 				verpan.add(accordeon);
@@ -139,6 +158,7 @@ public class Accordeon {
 
 	private void fillAccordeon(final Navigator navigator) {
 		final int m = 4;
+
 		for (int i = 0; i < navigator.getGroups().size(); i++) {
 			accordeon.add(getGroupTreeWidget(navigator.getGroups().get(i)),
 					getGroupString(navigator.getGroups().get(i)), true, m);

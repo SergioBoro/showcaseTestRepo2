@@ -5,7 +5,7 @@ package ru.curs.showcase.app.client;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.ServerCurrentState;
 import ru.curs.showcase.app.api.datapanel.DataPanel;
 import ru.curs.showcase.app.api.event.ActionHolder;
 
@@ -30,6 +30,11 @@ public final class AppCurrContext extends ActionHolder {
 	 * Синглетон клиентской части приложения.
 	 */
 	private static AppCurrContext appCurrContext;
+
+	/**
+	 * MainPanel для текущей сессии.
+	 */
+	private static MainPanel mainPanel;
 
 	/**
 	 * Переменная которая хранит в себе ссылку на текущее открытое окно (скорее
@@ -146,6 +151,21 @@ public final class AppCurrContext extends ActionHolder {
 	 */
 	public ServerCurrentState getServerCurrentState() {
 		return serverCurrentState;
+	}
+
+	/**
+	 * @param amainPanel
+	 *            the mainPanel to set
+	 */
+	public void setMainPanel(final MainPanel amainPanel) {
+		AppCurrContext.mainPanel = amainPanel;
+	}
+
+	/**
+	 * @return the mainPanel
+	 */
+	public MainPanel getMainPanel() {
+		return mainPanel;
 	}
 
 }

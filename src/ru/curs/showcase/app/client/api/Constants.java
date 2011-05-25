@@ -88,6 +88,9 @@ public final class Constants {
 
 	public static final String XFORMS_UPLOAD_ERROR = "Ошибка при загрузке файла(ов) на сервер";
 
+	public static final String TRANSFORMATION_NAVIGATOR_WIDTH_ERROR =
+		"Ошибка преобразования значения ширины навигатора";
+
 	// private final int widthN = 1200;
 	// private final int heightN = 700;
 	// private final int splitMinWidgetSizeN = 30;

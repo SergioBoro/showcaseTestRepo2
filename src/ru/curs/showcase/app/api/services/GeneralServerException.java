@@ -88,7 +88,15 @@ public class GeneralServerException extends Exception {
 		}
 	}
 
-	private static String getStackText(final Throwable original) {
+	/**
+	 * 
+	 * Возвращает текст стэка исключения.
+	 * 
+	 * @param original
+	 *            - Throwable
+	 * @return String
+	 */
+	public static String getStackText(final Throwable original) {
 		StringBuilder result = new StringBuilder();
 		String ls = LINE_SEPARATOR; // System.getProperty("line.separator"); -
 									// не
