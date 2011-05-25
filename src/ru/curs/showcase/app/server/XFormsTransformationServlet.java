@@ -35,7 +35,8 @@ public class XFormsTransformationServlet extends HttpServlet {
 		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
 
 		try {
-			ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl();
+			ServiceLayerDataServiceImpl sl =
+				new ServiceLayerDataServiceImpl(request.getSession().getId());
 			String res = sl.handleXSLTSubmission(xsltFile, content);
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.getWriter().append(res);

@@ -210,7 +210,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 		String xsdFileName = "test_good.xsd";
 
-		XMLUtils.xsdValidate(doc, xsdFileName);
+		XMLUtils.xsdValidateUserData(doc, xsdFileName);
 
 	}
 
@@ -226,7 +226,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 		String xsdFileName = "test_bad.xsd";
 
-		XMLUtils.xsdValidate(doc, xsdFileName);
+		XMLUtils.xsdValidateUserData(doc, xsdFileName);
 
 	}
 
@@ -239,7 +239,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 		String xsdFileName = "test_good.xsd";
 
-		XMLUtils.xsdValidate(saxParser,
+		XMLUtils.xsdValidateUserData(saxParser,
 				XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"), xsdFileName);
 
 	}
@@ -253,7 +253,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 		String xsdFileName = "test_bad.xsd";
 
-		XMLUtils.xsdValidate(saxParser,
+		XMLUtils.xsdValidateUserData(saxParser,
 				XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"), xsdFileName);
 	}
 
@@ -265,7 +265,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 		String xsdFileName = "test_good.xsd";
 
-		XMLUtils.xsdValidate(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"),
+		XMLUtils.xsdValidateUserData(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"),
 				xsdFileName);
 
 	}
@@ -278,7 +278,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 		String xsdFileName = "test_bad.xsd";
 
-		XMLUtils.xsdValidate(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"),
+		XMLUtils.xsdValidateUserData(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"),
 				xsdFileName);
 
 	}

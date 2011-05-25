@@ -30,6 +30,7 @@ public class TextUtilsTest extends AbstractTestBasedOnFiles {
 				"CP1251",
 				TextUtils
 						.getRealEncoding("РђР±Р±СЂРµРІРёР°С‚СѓСЂС‹ Р РѕСЃС‚СЂР°РЅСЃРЅР°РґР·РѕСЂР°"));
+		assertEquals("CP1251", TextUtils.getRealEncoding("РђР±"));
 		assertEquals("UTF8", TextUtils.getRealEncoding("Аббревиатуры Ространснадзора"));
 		assertEquals("ISO-8859-1", TextUtils.getRealEncoding("ÐÐ±Ð±ÑÐµÐ²Ð¸Ð°ÑÑÑÑ"));
 	}

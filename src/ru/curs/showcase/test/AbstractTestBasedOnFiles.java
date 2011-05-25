@@ -24,6 +24,10 @@ import ru.curs.showcase.util.AppProps;
 public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 
 	/**
+	 * Идентификатор сессии для модульных тестов.
+	 */
+	protected static final String TEST_SESSION = "testSession";
+	/**
 	 * Название каталога, содержащего описания навигаторов в формате XML для
 	 * тестовых целей.
 	 */
@@ -39,6 +43,12 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
 			AppInitializer.readPathProperties();
 		}
+		initTestSession();
+	}
+
+	private static void initTestSession() {
+		AppInfoSingleton.getAppInfo().clearSessions();
+		AppInfoSingleton.getAppInfo().addSession(TEST_SESSION);
 	}
 
 	public AbstractTestBasedOnFiles() {

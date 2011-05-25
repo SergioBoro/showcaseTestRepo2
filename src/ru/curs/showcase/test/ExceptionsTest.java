@@ -69,7 +69,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		dpLink.setTabId("1");
 		action.setDataPanelLink(dpLink);
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
 			serviceLayer.getDataPanel(action);
 		} catch (Exception e) {
@@ -93,7 +93,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
 		DataPanelElementInfo element = getDPElement("test2.xml", "3", "31");
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
 			serviceLayer.getChart(context, element);
 		} catch (Exception e) {
@@ -116,7 +116,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
 		DataPanelElementInfo element = getDPElement("test2.xml", "3", "32");
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
 			serviceLayer.getChart(context, element);
 		} catch (Exception e) {
@@ -135,7 +135,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test
 	public final void testWrongChartSPForSubmission() {
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
 			serviceLayer.handleSQLSubmission("no_exist_proc", "fake_data");
 		} catch (Exception e) {
@@ -159,7 +159,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		element.setId("11");
 		element.setType(DataPanelElementType.WEBTEXT);
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
 			serviceLayer.getWebText(context, element);
 		} catch (Exception e) {

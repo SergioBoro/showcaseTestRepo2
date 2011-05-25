@@ -46,7 +46,8 @@ public class GridToExcelHandler extends AbstractDownloadHandler {
 
 	@Override
 	protected void processFiles() throws GeneralServerException {
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer =
+			new ServiceLayerDataServiceImpl(getRequest().getSession().getId());
 		setOutputFile(serviceLayer.generateExcelFromGrid(exportType, getContext(),
 				getElementInfo(), settings, columnSet));
 	}

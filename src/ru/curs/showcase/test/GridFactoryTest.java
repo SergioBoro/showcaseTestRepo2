@@ -39,9 +39,10 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		Grid grid = serviceLayer.getGrid(context, element, null);
 
+		assertNotNull(context.getSession());
 		assertNotNull(grid);
 		assertNotNull(grid.getDataSet());
 		assertTrue(!grid.getHeader().isEmpty());
@@ -118,9 +119,10 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		settings.setCurrentRecordId("1");
 		settings.getSelectedRecordIds().add("1");
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		Grid grid = serviceLayer.getGrid(context, element, settings);
 
+		assertNotNull(context.getSession());
 		assertEquals(pageNum, grid.getDataSet().getRecordSet().getPageNumber());
 		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
 		assertEquals(pageSize, grid.getDataSet().getRecordSet().getRecordsCount());

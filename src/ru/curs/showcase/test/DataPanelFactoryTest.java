@@ -78,7 +78,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		dpLink.setTabId("1");
 		action.setDataPanelLink(dpLink);
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		DataPanel panel = serviceLayer.getDataPanel(action);
 
 		assertEquals(DataPanelRefreshMode.EVERY_TIME, panel.getRefreshMode());
@@ -107,6 +107,40 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		assertFalse(el.getNeverShowInPanel());
 		el = panel.getTabById("2").getElementInfoById("09");
 		assertTrue(el.getNeverShowInPanel());
+	}
+
+	/**
+	 * Функция проверки считывания списка процедур элемента панели.
+	 */
+	@Test
+	public void testDPProcs() {
+		DataPanelGateway gateway = new DataPanelXMLGateway();
+		DataFile<InputStream> file = gateway.getXML("test1.1.xml");
+		DataPanelFactory factory = new DataPanelFactory();
+		DataPanel panel = factory.fromStream(file);
+		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("09");
+		assertNotNull(el);
+		final int numProc = 7;
+		assertEquals(numProc, el.getProcs().values().size());
+		DataPanelElementProc proc = el.getProcs().get("proc3");
+		assertNull(proc.getTransformName());
+		assertNull(proc.getSchemaName());
+		proc = el.getProcs().get("proc6");
+		assertEquals(DataPanelElementProcType.DOWNLOAD, proc.getType());
+		assertEquals("test_good.xsl", proc.getTransformName());
+		assertEquals("test_good.xsd", proc.getSchemaName());
+		proc = el.getProcs().get("proc7");
+		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
+		assertEquals("test_good.xsl", proc.getTransformName());
+		assertEquals("test_good.xsd", proc.getSchemaName());
+		proc = el.getProcs().get("proc8");
+		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
+		assertNull(proc.getTransformName());
+		assertEquals("test_bad.xsd", proc.getSchemaName());
+		proc = el.getProcs().get("proc9");
+		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
+		assertEquals("test_good.xsl", proc.getTransformName());
+		assertNull(proc.getSchemaName());
 	}
 
 	/**

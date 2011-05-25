@@ -28,11 +28,13 @@ public class RunServletByFormHelper extends FormPanel {
 	private String errorCaption = "";
 
 	public RunServletByFormHelper() {
-		setWidget(panel);
+		super();
+		// setWidget(panel);
 		init();
+		add(panel);
 	}
 
-	protected VerticalPanel getPanel() {
+	public VerticalPanel getPanel() {
 		return panel;
 	}
 

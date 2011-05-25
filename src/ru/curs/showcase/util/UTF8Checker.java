@@ -68,7 +68,7 @@ public class UTF8Checker {
 	 * @return - результат проверки.
 	 */
 	public boolean check(final String str) {
-		for (int i = startFrom; i < startFrom + sequenceLen * 2; i = i + 2) {
+		for (int i = startFrom; i < Math.min(startFrom + sequenceLen * 2, str.length()); i = i + 2) {
 			char testCh = str.charAt(i);
 			boolean foundUFT8Symbol = false;
 			for (char j : signs) {

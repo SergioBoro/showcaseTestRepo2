@@ -72,8 +72,9 @@ public class GeoMapFactoryTest extends AbstractTestBasedOnFiles {
 		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "05");
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		GeoMap map = serviceLayer.getGeoMap(context, element);
+		assertNotNull(context.getSession());
 		assertNotNull(map);
 
 		assertNotNull(map.getHeader());

@@ -158,9 +158,10 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 		context.setAdditional("Алтайский край");
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "3");
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		Chart chart = serviceLayer.getChart(context, element);
 
+		assertNotNull(context.getSession());
 		assertEquals(null, chart.getJavaDynamicData());
 		assertTrue(chart.getJsDynamicData() != null);
 		assertTrue(chart.getJsDynamicData().startsWith("{"));

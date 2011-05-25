@@ -27,6 +27,11 @@ public class UploadWindow extends DialogBoxWithCaptionButton {
 	private UploadEndHandler closeHandler = null;
 
 	/**
+	 * Основная панель окна.
+	 */
+	private final VerticalPanel holder = new VerticalPanel();
+
+	/**
 	 * Имя выбранного файла.
 	 */
 	private String fileName;
@@ -35,7 +40,6 @@ public class UploadWindow extends DialogBoxWithCaptionButton {
 		super(false, true, caption);
 		center();
 
-		VerticalPanel holder = new VerticalPanel();
 		holder.setStylePrimaryName(SC_UPLOADER_WINDOW_CSS);
 		add(holder);
 
@@ -75,6 +79,9 @@ public class UploadWindow extends DialogBoxWithCaptionButton {
 			}
 		});
 
+		if (uploadHelper.getParent() != holder) {
+			holder.add(uploadHelper);
+		}
 		show();
 	}
 

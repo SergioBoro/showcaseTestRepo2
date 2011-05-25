@@ -91,7 +91,18 @@ public final class AppInfoSingleton {
 		} catch (XSLTTransformException e) {
 			LOGGER.error(USER_SESSION_INFO_GENERATE_ERROR);
 		}
-		LOGGER.debug("Число записей с информацией о сессии: " + getAppInfo().sessionInfoMap.size());
+		LOGGER.info("Число пользовательских сессий: " + getAppInfo().sessionInfoMap.size());
+	}
+
+	/**
+	 * Добавляет сессию в список без параметров URL. Функция используется в
+	 * тестовых целях.
+	 * 
+	 * @param sessionId
+	 *            - идентификатор сессии.
+	 */
+	public void addSession(final String sessionId) {
+		setParams(sessionId, new TreeMap<String, String[]>());
 	}
 
 	/**
@@ -247,6 +258,13 @@ public final class AppInfoSingleton {
 
 		LOGGER.debug("Session context: " + sessionContext);
 		return sessionContext;
+	}
+
+	/**
+	 * Очищает карту сессий.
+	 */
+	public void clearSessions() {
+		sessionInfoMap.clear();
 	}
 
 }

@@ -54,9 +54,10 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "08");
 
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		XForms xforms = sl.getXForms(context, element, null);
 
+		assertNotNull(context.getSession());
 		Action action = xforms.getActionForDependentElements();
 		assertNotNull(action);
 		assertEquals(1, action.getDataPanelLink().getElementLinks().size());

@@ -33,7 +33,8 @@ public class XFormsSubmissionServlet extends HttpServlet {
 		response.setContentType("text/html");
 		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
 		try {
-			ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl();
+			ServiceLayerDataServiceImpl sl =
+				new ServiceLayerDataServiceImpl(req.getSession().getId());
 			RequestResult res = sl.handleSQLSubmission(procName, content);
 			if (res.getSuccess()) {
 				response.setStatus(HttpServletResponse.SC_OK);

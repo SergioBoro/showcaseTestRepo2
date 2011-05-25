@@ -29,6 +29,8 @@
 											<xs:complexType>
 												<xs:attributeGroup ref="identGroup" />
 												<xs:attribute name="type" use="required" type="typeProc" />
+												<xs:attribute name="transform" type="xslType" />
+												<xs:attribute name="schema" type="xsdType" />
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>

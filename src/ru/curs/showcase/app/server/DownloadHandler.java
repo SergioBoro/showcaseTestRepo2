@@ -28,7 +28,8 @@ public final class DownloadHandler extends AbstractDownloadHandler {
 
 	@Override
 	protected void processFiles() throws GeneralServerException {
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer =
+			new ServiceLayerDataServiceImpl(getRequest().getSession().getId());
 		setOutputFile(serviceLayer.getDownloadFile(getContext(), getElementInfo(), linkId, data));
 	}
 

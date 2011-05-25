@@ -39,6 +39,12 @@ import com.google.gson.*;
  */
 public final class ServiceLayerDataServiceImpl implements DataService, DataServiceExt {
 
+	@SuppressWarnings("unused")
+	private ServiceLayerDataServiceImpl() {
+		throw new UnsupportedOperationException(
+				"Запрещено создавать ServiceLayerDataServiceImpl не передавая ему SessionId");
+	}
+
 	/**
 	 * LOGGER.
 	 */
@@ -56,10 +62,6 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	public ServiceLayerDataServiceImpl(final String aSessionId) {
 		super();
 		sessionId = aSessionId;
-	}
-
-	public ServiceLayerDataServiceImpl() {
-		super();
 	}
 
 	@Override
@@ -199,6 +201,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 				settings.resetForReturnAllRecords();
 			}
 			settings.setApplyLocalFormatting(false);
+			prepareContext(context);
 			grid = getGrid(context, element, settings);
 			GridXMLBuilder builder = new GridXMLBuilder(grid);
 			Document xml = builder.build(cs);

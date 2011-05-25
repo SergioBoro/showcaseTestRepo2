@@ -51,9 +51,8 @@ public final class XFormPanelCallbacksEvents {
 							public void onSuccess(final CommandResult result) {
 								if (result.getSuccess()) {
 									if (curXFormPanel.getUw() != null) {
-										submitUploadForm(data, curXFormPanel);
+										submitUploadForm(data, curXFormPanel, ac);
 									}
-									runAction(ac);
 								} else {
 									MessageBox.showSimpleMessage(
 											Constants.XFORM_CHECK_DURING_SAVE_ERROR,
@@ -89,8 +88,9 @@ public final class XFormPanelCallbacksEvents {
 		return ac;
 	}
 
-	private static void submitUploadForm(final String data, final XFormPanel currentXFormPanel) {
-		RunServletByFormHelper uh = currentXFormPanel.getUw().getUploadHelper();
+	private static void submitUploadForm(final String data, final XFormPanel currentXFormPanel,
+			final Action ac) {
+		UploadHelper uh = currentXFormPanel.getUw().getUploadHelper();
 		try {
 
 			uh.addStdPostParamsToBody(currentXFormPanel.getContext(),
@@ -99,7 +99,14 @@ public final class XFormPanelCallbacksEvents {
 			MessageBox.showSimpleMessage(Constants.XFORMS_UPLOAD_ERROR, e.getMessage());
 		}
 		uh.addParam("data", URL.encode(data));
-		uh.submit();
+		currentXFormPanel.getPanel().add(uh);
+		uh.submit(new UploadSubmitEndHandler() {
+
+			@Override
+			public void onEnd(final boolean aRes) {
+				runAction(ac);
+			}
+		});
 		uh.clear();
 	}
 
@@ -328,7 +335,7 @@ public final class XFormPanelCallbacksEvents {
 		}
 		final UploadParam param = (UploadParam) o;
 
-		XFormPanel currentXFormPanel = getCurrentPanel(param.xformsId());
+		final XFormPanel currentXFormPanel = getCurrentPanel(param.xformsId());
 
 		if (currentXFormPanel != null) {
 

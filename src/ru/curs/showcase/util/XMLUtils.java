@@ -1,6 +1,7 @@
 package ru.curs.showcase.util;
 
 import java.io.*;
+import java.net.URL;
 import java.sql.*;
 
 import javax.xml.bind.*;
@@ -18,6 +19,7 @@ import org.w3c.dom.*;
 import org.xml.sax.*;
 
 import ru.curs.showcase.exception.*;
+import ru.curs.showcase.model.SettingsFileType;
 
 /**
  * Реализует обработку XML (в частности, выполнение XSLT-преобразования).
@@ -390,18 +392,42 @@ public final class XMLUtils {
 		return validator;
 	}
 
+	private static Validator createValidatorForUserData(final String xsdFileName)
+			throws SAXException {
+		SchemaFactory schemaFactory = createSchemaFactory();
+		File file = getFileForUserSchema(xsdFileName);
+		// передавать InputStream и URL нельзя, т.к. в этом случае парсер не
+		// находит вложенных схем!
+		Schema schemaXSD = schemaFactory.newSchema(file);
+		Validator validator = schemaXSD.newValidator();
+
+		return validator;
+	}
+
 	private static File getFileForSchema(final String aXsdFileName) {
 		String xsdFullFileName =
 			String.format("%s/%s", AppProps.getRequiredValueByName(AppProps.SCHEMASDIR),
 					aXsdFileName);
 
 		// самый простой способ получить classpath в виде строки
-		xsdFullFileName = AppProps.getResURL(xsdFullFileName).getFile();
+		URL xsdURL = AppProps.getResURL(xsdFullFileName);
+		if (xsdURL == null) {
+			throw new SettingsFileOpenException(xsdFullFileName, SettingsFileType.SCHEMA);
+		}
+		xsdFullFileName = xsdURL.getFile();
 		// AppProps.getResURL меняет пробелы на их код, что не нужно - это будет
 		// сделано при создании StreamSource
 		xsdFullFileName = xsdFullFileName.replace("%20", " ");
 		// создание объекта типа File позволяет работает с путями файловой
 		// системы, содержащими русские символы
+		File file = new File(xsdFullFileName);
+		return file;
+	}
+
+	private static File getFileForUserSchema(final String aXsdFileName) {
+		String xsdFullFileName =
+			String.format("%s/%s/%s", AppProps.getUserDataCatalog(),
+					AppProps.getRequiredValueByName(AppProps.SCHEMASDIR), aXsdFileName);
 		File file = new File(xsdFullFileName);
 		return file;
 	}
@@ -462,6 +488,30 @@ public final class XMLUtils {
 		try {
 			Validator validator = createValidator(xsdFileName);
 			validator.validate(new DOMSource(doc));
+		} catch (SettingsFileOpenException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new XSDValidateException(getValidateError(xsdFileName) + e.getMessage());
+		}
+	}
+
+	/**
+	 * Выполняет XSD-проверку пользовательского документа.
+	 * 
+	 * @param doc
+	 *            org.w3c.dom.Document для проверки
+	 * @param xsdFileName
+	 *            Имя файла XSD-схемы
+	 * 
+	 */
+	public static void
+			xsdValidateUserData(final org.w3c.dom.Document doc, final String xsdFileName) {
+
+		try {
+			Validator validator = createValidatorForUserData(xsdFileName);
+			validator.validate(new DOMSource(doc));
+		} catch (SettingsFileOpenException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new XSDValidateException(getValidateError(xsdFileName) + e.getMessage());
 		}
@@ -492,6 +542,32 @@ public final class XMLUtils {
 		try {
 			Validator validator = createValidator(xsdFileName);
 			validator.validate(new SAXSource(parser.getXMLReader(), new InputSource(is)));
+		} catch (SettingsFileOpenException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new XSDValidateException(getValidateError(xsdFileName) + e.getMessage());
+		}
+	}
+
+	/**
+	 * Выполняет XSD-проверку пользовательского документа.
+	 * 
+	 * @param parser
+	 *            SAXParser
+	 * @param is
+	 *            InputStream для проверки
+	 * @param xsdFileName
+	 *            Имя файла XSD-схемы
+	 * 
+	 */
+	public static void xsdValidateUserData(final SAXParser parser, final InputStream is,
+			final String xsdFileName) {
+
+		try {
+			Validator validator = createValidatorForUserData(xsdFileName);
+			validator.validate(new SAXSource(parser.getXMLReader(), new InputSource(is)));
+		} catch (SettingsFileOpenException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new XSDValidateException(getValidateError(xsdFileName) + e.getMessage());
 		}
@@ -536,6 +612,29 @@ public final class XMLUtils {
 		try {
 			Validator validator = createValidator(xsdFileName);
 			validator.validate(new StreamSource(is));
+		} catch (SettingsFileOpenException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new XSDValidateException(getValidateError(xsdFileName) + e.getMessage());
+		}
+	}
+
+	/**
+	 * Выполняет XSD-проверку пользовательского документа.
+	 * 
+	 * @param is
+	 *            InputStream для проверки
+	 * @param xsdFileName
+	 *            Имя файла XSD-схемы
+	 * 
+	 */
+	public static void xsdValidateUserData(final InputStream is, final String xsdFileName) {
+
+		try {
+			Validator validator = createValidatorForUserData(xsdFileName);
+			validator.validate(new StreamSource(is));
+		} catch (SettingsFileOpenException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new XSDValidateException(getValidateError(xsdFileName) + e.getMessage());
 		}

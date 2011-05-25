@@ -34,6 +34,12 @@
         </xs:restriction>
     </xs:simpleType>
     
+    <xs:simpleType name="xsdType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([A-Za-zА-Яа-я0-9_-]+\.xsd)"/>            
+        </xs:restriction>
+    </xs:simpleType>    
+    
     <xs:simpleType name="rowOrCell">
         <xs:restriction base="xs:string">
             <xs:enumeration value="row"/>

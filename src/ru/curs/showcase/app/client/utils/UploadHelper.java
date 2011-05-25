@@ -3,6 +3,7 @@ package ru.curs.showcase.app.client.utils;
 import java.util.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.client.api.UploadSubmitEndHandler;
 
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.ui.*;
@@ -17,6 +18,11 @@ import com.google.gwt.user.client.ui.*;
 public final class UploadHelper extends RunServletByFormHelper {
 
 	static final String SC_UPLOADER_CSS = "sc-uploader-comp";
+
+	/**
+	 * Обработчик окончания загрузки файлов.
+	 */
+	private UploadSubmitEndHandler submitHandler = null;
 
 	public UploadHelper() {
 		super();
@@ -98,10 +104,30 @@ public final class UploadHelper extends RunServletByFormHelper {
 		return false;
 	}
 
-	@Override
-	public void submit() {
+	/**
+	 * Функция submit, получающая обработчик на завершение процесса загрузки.
+	 * 
+	 * @param aSubmitHandler
+	 *            - обработчик.
+	 */
+	public void submit(final UploadSubmitEndHandler aSubmitHandler) {
 		if (isFilesSelected()) {
+			submitHandler = aSubmitHandler;
 			super.submit();
 		}
+	}
+
+	/**
+	 * Настройка обработчиков формы.
+	 */
+	@Override
+	protected void initFormHandlers() {
+		addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+			@Override
+			public void onSubmitComplete(final SubmitCompleteEvent event) {
+				submitHandler.onEnd(true);
+			}
+
+		});
 	}
 }

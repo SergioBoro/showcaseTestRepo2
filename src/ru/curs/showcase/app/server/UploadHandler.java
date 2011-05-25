@@ -46,7 +46,8 @@ public final class UploadHandler extends AbstractFilesHandler {
 
 	@Override
 	protected void processFiles() throws GeneralServerException {
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer =
+			new ServiceLayerDataServiceImpl(getRequest().getSession().getId());
 		Iterator<String> iterator = files.keySet().iterator();
 		while (iterator.hasNext()) {
 			String linkId = iterator.next();

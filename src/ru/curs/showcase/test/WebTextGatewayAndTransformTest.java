@@ -32,8 +32,10 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
 		DataPanelElementInfo element = getDPElement("test2.xml", "1", "1");
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		WebText wt = serviceLayer.getWebText(context, element);
+
+		assertNotNull(context.getSession());
 		assertEquals(0, wt.getEventManager().getEvents().size());
 		assertNull(wt.getDefaultAction());
 		assertNotNull(wt.getData());
@@ -47,9 +49,10 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 	public void testEventsAndDefAction() throws GeneralServerException, IOException {
 		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
 		DataPanelElementInfo element = getDPElement("test2.xml", "1", "3");
+		CompositeContext clonedContext = context.gwtClone();
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
-		WebText wt = serviceLayer.getWebText(context, element);
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		WebText wt = serviceLayer.getWebText(clonedContext, element);
 
 		assertEquals(1, wt.getEventManager().getEvents().size());
 		assertEquals("0", wt.getEventManager().getEvents().get(0).getId1());
@@ -84,7 +87,7 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo el = new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
 		CompositeContext context = new CompositeContext();
 		el.setTransformName("bal_test.xsl");
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl();
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		WebText wt = serviceLayer.getWebText(context, el);
 
 		assertTrue(wt.getData().startsWith("<h3>Здесь находится просто статический текст</h3>"));

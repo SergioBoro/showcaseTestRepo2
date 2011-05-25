@@ -102,6 +102,12 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 					proc.setId(attrs.getValue(ID_TAG));
 					proc.setName(attrs.getValue(NAME_TAG));
 					proc.setType(DataPanelElementProcType.valueOf(attrs.getValue(TYPE_TAG)));
+					if (attrs.getIndex(TRANSFORM_ATTR_NAME) > -1) {
+						proc.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));
+					}
+					if (attrs.getIndex(SCHEMA_TAG) > -1) {
+						proc.setSchemaName(attrs.getValue(SCHEMA_TAG));
+					}
 					currentTab.getElements().get(currentTab.getElements().size() - 1).getProcs()
 							.put(proc.getId(), proc);
 				}
