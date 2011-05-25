@@ -97,6 +97,8 @@ public class Accordeon {
 		verpan.setSize("100%", "100%");
 
 		final DecoratedPopupPanel db = new DecoratedPopupPanel();
+		db.setAnimationEnabled(true);
+		db.setGlassEnabled(true);
 		Image waiteImage = new Image();
 		waiteImage.setUrl("resources/internal/progress.gif");
 		db.add(waiteImage);
