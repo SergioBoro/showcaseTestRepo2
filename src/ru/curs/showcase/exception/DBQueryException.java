@@ -51,4 +51,8 @@ public class DBQueryException extends AbstractShowcaseException {
 				ERROR_MES_TEXT, aErrorText));
 	}
 
+	public DBQueryException(final String procName, final String aErrorText) {
+		super(String.format("%s %s. %s: %s.", ERROR_HEADER, procName, ERROR_MES_TEXT, aErrorText));
+	}
+
 }

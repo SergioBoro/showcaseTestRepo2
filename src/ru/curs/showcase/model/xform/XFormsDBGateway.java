@@ -188,7 +188,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 					ByteArrayOutputStream os = dup.getOutputStream();
 					result = new DataFile<ByteArrayOutputStream>(os, fileName);
 				} else {
-					throw new DBQueryException(elementInfo, String.format(DOWNLOAD_ERROR,
+					throw new DBQueryException(proc.getName(), String.format(DOWNLOAD_ERROR,
 							errorCode, getCs().getString(ERROR_MES_COL)));
 				}
 			} finally {
@@ -229,8 +229,8 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 				getCs().execute();
 				int errorCode = getCs().getInt(1);
 				if (errorCode != 0) {
-					throw new DBQueryException(elementInfo, String.format(UPLOAD_ERROR, errorCode,
-							getCs().getString(ERROR_MES_COL)));
+					throw new DBQueryException(proc.getName(), String.format(UPLOAD_ERROR,
+							errorCode, getCs().getString(ERROR_MES_COL)));
 				}
 			} finally {
 				releaseResources();
