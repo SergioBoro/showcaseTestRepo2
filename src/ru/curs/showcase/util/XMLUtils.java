@@ -1,7 +1,6 @@
 package ru.curs.showcase.util;
 
 import java.io.*;
-import java.net.URL;
 import java.sql.*;
 
 import javax.xml.bind.*;
@@ -10,8 +9,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.*;
-import javax.xml.validation.*;
-import javax.xml.validation.Validator;
+import javax.xml.validation.SchemaFactory;
 
 import net.sf.saxon.om.NamespaceConstant;
 
@@ -19,7 +17,6 @@ import org.w3c.dom.*;
 import org.xml.sax.*;
 
 import ru.curs.showcase.exception.*;
-import ru.curs.showcase.model.SettingsFileType;
 
 /**
  * Реализует обработку XML (в частности, выполнение XSLT-преобразования).
@@ -81,15 +78,6 @@ public final class XMLUtils {
 
 	public static final String JAXP_SCHEMA_SOURCE =
 		"http://java.sun.com/xml/jaxp/properties/schemaSource";
-
-	/**
-	 * Стандартное сообщение об ошибке проверки XML.
-	 */
-	private static final String WRONG_DOC = "Документ не соответствует схеме: ";
-	/**
-	 * Стандартное расширенное сообщение об ошибке проверки XML.
-	 */
-	private static final String WRONG_DOC_EXT = "Документ не соответствует схеме %s: ";
 
 	private XMLUtils() {
 		throw new UnsupportedOperationException();
@@ -381,61 +369,12 @@ public final class XMLUtils {
 	protected static final String GENERATE_SYNTHETIC_ANNOTATIONS_ID =
 		"http://apache.org/xml/features/generate-synthetic-annotations";
 
-	private static Validator createValidator(final String xsdFileName) throws SAXException {
-		SchemaFactory schemaFactory = createSchemaFactory();
-		File file = getFileForSchema(xsdFileName);
-		// передавать InputStream и URL нельзя, т.к. в этом случае парсер не
-		// находит вложенных схем!
-		Schema schemaXSD = schemaFactory.newSchema(file);
-		Validator validator = schemaXSD.newValidator();
-
-		return validator;
-	}
-
-	private static Validator createValidatorForUserData(final String xsdFileName)
-			throws SAXException {
-		SchemaFactory schemaFactory = createSchemaFactory();
-		File file = getFileForUserSchema(xsdFileName);
-		// передавать InputStream и URL нельзя, т.к. в этом случае парсер не
-		// находит вложенных схем!
-		Schema schemaXSD = schemaFactory.newSchema(file);
-		Validator validator = schemaXSD.newValidator();
-
-		return validator;
-	}
-
-	private static File getFileForSchema(final String aXsdFileName) {
-		String xsdFullFileName =
-			String.format("%s/%s", AppProps.getRequiredValueByName(AppProps.SCHEMASDIR),
-					aXsdFileName);
-
-		// самый простой способ получить classpath в виде строки
-		URL xsdURL = AppProps.getResURL(xsdFullFileName);
-		if (xsdURL == null) {
-			throw new SettingsFileOpenException(xsdFullFileName, SettingsFileType.SCHEMA);
-		}
-		xsdFullFileName = xsdURL.getFile();
-		// AppProps.getResURL меняет пробелы на их код, что не нужно - это будет
-		// сделано при создании StreamSource
-		xsdFullFileName = xsdFullFileName.replace("%20", " ");
-		// создание объекта типа File позволяет работает с путями файловой
-		// системы, содержащими русские символы
-		File file = new File(xsdFullFileName);
-		return file;
-	}
-
-	private static File getFileForUserSchema(final String aXsdFileName) {
-		String xsdFullFileName =
-			String.format("%s/%s/%s", AppProps.getUserDataCatalog(),
-					AppProps.getRequiredValueByName(AppProps.SCHEMASDIR), aXsdFileName);
-		File file = new File(xsdFullFileName);
-		if (!file.exists()) {
-			throw new SettingsFileOpenException(xsdFullFileName, SettingsFileType.SCHEMA);
-		}
-		return file;
-	}
-
-	private static SchemaFactory createSchemaFactory() {
+	/**
+	 * Создает стандартную SchemaFactory.
+	 * 
+	 * @return - SchemaFactory.
+	 */
+	static SchemaFactory createSchemaFactory() {
 		boolean schemaFullChecking = false;
 		boolean honourAllSchemaLocations = false;
 		boolean validateAnnotations = false;
@@ -487,15 +426,8 @@ public final class XMLUtils {
 	 * 
 	 */
 	public static void xsdValidate(final org.w3c.dom.Document doc, final String xsdFileName) {
-
-		try {
-			Validator validator = createValidator(xsdFileName);
-			validator.validate(new DOMSource(doc));
-		} catch (SettingsFileOpenException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new XSDValidateException(getValidateError(xsdFileName) + e.getMessage());
-		}
+		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
+		validator.validate(xsdFileName, new XMLSource(doc));
 	}
 
 	/**
@@ -509,23 +441,8 @@ public final class XMLUtils {
 	 */
 	public static void
 			xsdValidateUserData(final org.w3c.dom.Document doc, final String xsdFileName) {
-
-		try {
-			Validator validator = createValidatorForUserData(xsdFileName);
-			validator.validate(new DOMSource(doc));
-		} catch (SettingsFileOpenException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new XSDValidateException(getValidateError(xsdFileName) + e.getMessage());
-		}
-	}
-
-	private static String getValidateError(final String xsdFileName) {
-		if (xsdFileName != null) {
-			return String.format(WRONG_DOC_EXT, xsdFileName);
-		} else {
-			return WRONG_DOC;
-		}
+		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
+		validator.validate(xsdFileName, new XMLSource(doc));
 	}
 
 	/**
@@ -541,15 +458,8 @@ public final class XMLUtils {
 	 */
 	public static void xsdValidate(final SAXParser parser, final InputStream is,
 			final String xsdFileName) {
-
-		try {
-			Validator validator = createValidator(xsdFileName);
-			validator.validate(new SAXSource(parser.getXMLReader(), new InputSource(is)));
-		} catch (SettingsFileOpenException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new XSDValidateException(getValidateError(xsdFileName) + e.getMessage());
-		}
+		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
+		validator.validate(xsdFileName, new XMLSource(is, parser));
 	}
 
 	/**
@@ -565,15 +475,8 @@ public final class XMLUtils {
 	 */
 	public static void xsdValidateUserData(final SAXParser parser, final InputStream is,
 			final String xsdFileName) {
-
-		try {
-			Validator validator = createValidatorForUserData(xsdFileName);
-			validator.validate(new SAXSource(parser.getXMLReader(), new InputSource(is)));
-		} catch (SettingsFileOpenException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new XSDValidateException(getValidateError(xsdFileName) + e.getMessage());
-		}
+		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
+		validator.validate(xsdFileName, new XMLSource(is, parser));
 	}
 
 	/**
@@ -611,15 +514,8 @@ public final class XMLUtils {
 	 * 
 	 */
 	public static void xsdValidate(final InputStream is, final String xsdFileName) {
-
-		try {
-			Validator validator = createValidator(xsdFileName);
-			validator.validate(new StreamSource(is));
-		} catch (SettingsFileOpenException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new XSDValidateException(getValidateError(xsdFileName) + e.getMessage());
-		}
+		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
+		validator.validate(xsdFileName, new XMLSource(is));
 	}
 
 	/**
@@ -632,15 +528,8 @@ public final class XMLUtils {
 	 * 
 	 */
 	public static void xsdValidateUserData(final InputStream is, final String xsdFileName) {
-
-		try {
-			Validator validator = createValidatorForUserData(xsdFileName);
-			validator.validate(new StreamSource(is));
-		} catch (SettingsFileOpenException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new XSDValidateException(getValidateError(xsdFileName) + e.getMessage());
-		}
+		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
+		validator.validate(xsdFileName, new XMLSource(is));
 	}
 
 	/**
