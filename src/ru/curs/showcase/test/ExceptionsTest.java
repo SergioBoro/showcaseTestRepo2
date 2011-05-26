@@ -17,7 +17,7 @@ import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.model.webtext.*;
-import ru.curs.showcase.util.AppProps;
+import ru.curs.showcase.util.*;
 
 /**
  * Тесты для серверных исключений.
@@ -26,6 +26,11 @@ import ru.curs.showcase.util.AppProps;
  * 
  */
 public class ExceptionsTest extends AbstractTestBasedOnFiles {
+	/**
+	 * Имя несуществующей схемы.
+	 */
+	private static final String PHANTOM_XSD = "phantom26052011.xsd";
+
 	/**
 	 * Тест на считывание несуществующего параметра из файла настроек.
 	 * 
@@ -198,6 +203,22 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 
 		WebTextGateway gateway = new WebTextDBGateway();
 		gateway.getRawData(context, element);
+	}
+
+	/**
+	 * Пытается проверить XML несуществующей пользовательской схемой.
+	 */
+	@Test(expected = SettingsFileOpenException.class)
+	public void testUserXSDNotFoundException() {
+		XMLUtils.xsdValidateUserData(AppProps.loadResToStream("log4j.xml"), PHANTOM_XSD);
+	}
+
+	/**
+	 * Пытается проверить XML несуществующей системной схемой.
+	 */
+	@Test(expected = SettingsFileOpenException.class)
+	public void testXSDNotFoundException() {
+		XMLUtils.xsdValidate(AppProps.loadResToStream("log4j.xml"), PHANTOM_XSD);
 	}
 
 	/**

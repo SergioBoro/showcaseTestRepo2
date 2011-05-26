@@ -13,6 +13,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import ru.curs.showcase.exception.*;
+import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.util.*;
 
 /**
@@ -281,6 +282,28 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 		XMLUtils.xsdValidateUserData(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"),
 				xsdFileName);
 
+	}
+
+	/**
+	 * Тест15 ф-ции xsdValidate.
+	 */
+	@Test
+	public final void testDPGoodValidateXSD() {
+		String xsdFileName = DataPanelFactory.DATAPANEL_XSD;
+
+		DataPanelGateway gateway = new DataPanelXMLGateway();
+		XMLUtils.xsdValidate(gateway.getXML("test.xml").getData(), xsdFileName);
+	}
+
+	/**
+	 * Тест16 ф-ции xsdValidate.
+	 */
+	@Test(expected = XSDValidateException.class)
+	public final void testDPBadValidateXSD() {
+		String xsdFileName = DataPanelFactory.DATAPANEL_XSD;
+
+		DataPanelGateway gateway = new DataPanelXMLGateway();
+		XMLUtils.xsdValidate(gateway.getXML("test.bad1.xml").getData(), xsdFileName);
 	}
 
 }

@@ -18,6 +18,7 @@ import ru.curs.showcase.util.XMLUtils;
  * 
  */
 public final class DataPanelFactory extends GeneralXMLHelper {
+	public static final String DATAPANEL_XSD = "datapanel.xsd";
 	static final String NEVER_SHOW_IN_PANEL_TAG = "neverShowInPanel";
 	static final String PROC_TAG = "proc";
 	static final String SAVE_PROC_TAG = "saveProc";
@@ -124,7 +125,7 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 	 */
 	public DataPanel fromStream(final DataFile<InputStream> aFile) {
 		file = aFile;
-		InputStream streamForParse = XMLUtils.validateXMLStream(file.getData(), "datapanel.xsd");
+		InputStream streamForParse = XMLUtils.validateXMLStream(file.getData(), DATAPANEL_XSD);
 
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {

@@ -429,6 +429,9 @@ public final class XMLUtils {
 			String.format("%s/%s/%s", AppProps.getUserDataCatalog(),
 					AppProps.getRequiredValueByName(AppProps.SCHEMASDIR), aXsdFileName);
 		File file = new File(xsdFullFileName);
+		if (!file.exists()) {
+			throw new SettingsFileOpenException(xsdFullFileName, SettingsFileType.SCHEMA);
+		}
 		return file;
 	}
 
