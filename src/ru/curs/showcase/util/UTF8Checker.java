@@ -9,15 +9,16 @@ package ru.curs.showcase.util;
  */
 public class UTF8Checker {
 	/**
-	 * Длина исследуемой последовательности по умолчанию.
+	 * Значение по умолчанию для пороговое числа подозрительных символов в
+	 * исследуемой последовательности.
 	 */
-	private static final int DEF_SEQ_LEN = 5;
+	private static final int DEF_THR_LEN = 5;
 
 	/**
-	 * Длина проверяемой цепочки символов, после которой будет сделан вывод о
-	 * реальной кодировке строки.
+	 * Число подозрительных символов в исследуемой последовательности, при
+	 * достижении которого строка считается неправильно закодированной.
 	 */
-	private int sequenceLen = DEF_SEQ_LEN;
+	private long thresholdLen = DEF_THR_LEN;
 
 	/**
 	 * Номер символа, с которого нужно начинать проверку. Используется для того,
@@ -44,16 +45,16 @@ public class UTF8Checker {
 		signs = aSigns;
 	}
 
-	public int getSequenceLen() {
-		return sequenceLen;
+	public long getThresholdLen() {
+		return thresholdLen;
 	}
 
-	public int getStartFrom() {
-		return startFrom;
+	public void setThresholdLen(final long aThresholdLen) {
+		thresholdLen = aThresholdLen;
 	}
 
 	public void setSequenceLen(final int aSequenceLen) {
-		sequenceLen = aSequenceLen;
+		thresholdLen = aSequenceLen;
 	}
 
 	public void setStartFrom(final int aStartFrom) {
@@ -68,21 +69,28 @@ public class UTF8Checker {
 	 * @return - результат проверки.
 	 */
 	public boolean check(final String str) {
-		for (int i = startFrom; i < Math.min(startFrom + sequenceLen * 2, str.length()); i = i + 2) {
+		if (str.length() <= startFrom) {
+			return false;
+		}
+
+		long founded = 0;
+		long posibleStes = Math.round((str.length() - startFrom) / 2.0);
+		long curThreshold = Math.min(thresholdLen, posibleStes);
+		for (int i = startFrom; i < str.length(); i = i + 2) {
 			char testCh = str.charAt(i);
-			boolean foundUFT8Symbol = false;
+
 			for (char j : signs) {
 				if ((testCh == j)) {
-					foundUFT8Symbol = true;
+					founded++;
 					break;
 				}
 			}
-			if (!foundUFT8Symbol) {
-				return false;
+			if (founded >= curThreshold) {
+				return true;
 			}
 
 		}
-		return true;
+		return false;
 	}
 
 	/**
