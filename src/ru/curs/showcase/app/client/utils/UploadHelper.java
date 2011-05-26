@@ -6,6 +6,8 @@ import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.client.api.UploadSubmitEndHandler;
 
 import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.logical.shared.*;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -23,6 +25,11 @@ public final class UploadHelper extends RunServletByFormHelper {
 	 * Обработчик окончания загрузки файлов.
 	 */
 	private UploadSubmitEndHandler submitHandler = null;
+
+	/**
+	 * Информация о регистрации обработчика.
+	 */
+	private HandlerRegistration handlerRegistration = null;
 
 	public UploadHelper() {
 		super();
@@ -64,7 +71,10 @@ public final class UploadHelper extends RunServletByFormHelper {
 			uploader.setName(ExchangeConstants.FILE_DATA_PARAM_PREFIX + linkId);
 			getPanel().add(uploader);
 			uploaders.put(linkId, uploader);
-			uploader.addChangeHandler(new ChangeHandler() {
+			if (handlerRegistration != null) {
+				handlerRegistration.removeHandler();
+			}
+			handlerRegistration = uploader.addChangeHandler(new ChangeHandler() {
 				@Override
 				public void onChange(final ChangeEvent aEvent) {
 					closeHandler.onChange(aEvent);
