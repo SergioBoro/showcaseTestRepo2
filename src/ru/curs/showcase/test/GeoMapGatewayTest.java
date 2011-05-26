@@ -15,7 +15,7 @@ import ru.curs.showcase.model.geomap.*;
  * @author den
  * 
  */
-public class GeoMapGateWayTest extends AbstractTestBasedOnFiles {
+public class GeoMapGatewayTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Основная функция тестирования шлюза.
 	 * 
