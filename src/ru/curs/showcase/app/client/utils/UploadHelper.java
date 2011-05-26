@@ -6,7 +6,6 @@ import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.client.api.UploadSubmitEndHandler;
 
 import com.google.gwt.event.dom.client.*;
-import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.*;
 
