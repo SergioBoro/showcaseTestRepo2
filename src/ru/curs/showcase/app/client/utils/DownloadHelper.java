@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.client.utils;
 
+import ru.curs.showcase.app.client.MessageBox;
+
 import com.google.gwt.user.client.ui.FormPanel;
 
 /**
@@ -54,6 +56,17 @@ public final class DownloadHelper extends RunServletByFormHelper {
 	protected void initFormView() {
 		setPixelSize(1, 1);
 		setVisible(false);
+	}
+
+	@Override
+	protected void initFormHandlers() {
+		addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+			@Override
+			public void onSubmitComplete(final SubmitCompleteEvent event) {
+				MessageBox.showSimpleMessage(getErrorCaption(), event.getResults());
+			}
+
+		});
 	}
 
 }

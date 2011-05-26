@@ -2,7 +2,7 @@ package ru.curs.showcase.app.client.utils;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.client.*;
+import ru.curs.showcase.app.client.WebUtils;
 
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.*;
 /**
  * Класс для "запуска" сервлетов, методами GET и POST.
  */
-public class RunServletByFormHelper extends FormPanel {
+public abstract class RunServletByFormHelper extends FormPanel {
 
 	/**
 	 * VerticalPanel panel.
@@ -50,15 +50,7 @@ public class RunServletByFormHelper extends FormPanel {
 	/**
 	 * Настройка обработчиков формы.
 	 */
-	protected void initFormHandlers() {
-		addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
-			@Override
-			public void onSubmitComplete(final SubmitCompleteEvent event) {
-				MessageBox.showSimpleMessage(errorCaption, event.getResults());
-			}
-
-		});
-	}
+	protected abstract void initFormHandlers();
 
 	/**
 	 * Настройка внешнего вида формы.
@@ -101,7 +93,7 @@ public class RunServletByFormHelper extends FormPanel {
 
 		panel.clear();
 
-		errorCaption = "";
+		setErrorCaption("");
 	}
 
 	/**
@@ -144,6 +136,10 @@ public class RunServletByFormHelper extends FormPanel {
 		addParam(context.getClass().getName(), context.toParamForHttpPost(getObjectSerializer()));
 		addParam(elementInfo.getClass().getName(),
 				elementInfo.toParamForHttpPost(getObjectSerializer()));
+	}
+
+	public String getErrorCaption() {
+		return errorCaption;
 	}
 
 }
