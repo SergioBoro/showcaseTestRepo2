@@ -52,6 +52,8 @@ public final class XFormPanelCallbacksEvents {
 								if (result.getSuccess()) {
 									if (curXFormPanel.getUw() != null) {
 										submitUploadForm(data, curXFormPanel, ac);
+									} else {
+										runAction(ac);
 									}
 								} else {
 									MessageBox.showSimpleMessage(
