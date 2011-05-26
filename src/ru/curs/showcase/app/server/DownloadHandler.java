@@ -36,8 +36,8 @@ public final class DownloadHandler extends AbstractDownloadHandler {
 	@Override
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
 		super.getParams();
-		linkId = getRequest().getParameter("linkId");
-		data = getRequest().getParameter("data");
+		linkId = decodeParamValue(getRequest().getParameter("linkId"));
+		data = decodeParamValue(getRequest().getParameter("data"));
 	}
 
 	public String getLinkId() {

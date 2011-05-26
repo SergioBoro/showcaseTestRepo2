@@ -320,6 +320,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			final DataPanelElementInfo elementInfo, final String linkId, final String data)
 			throws GeneralServerException {
 		try {
+			LOGGER.debug("Данные формы при выгрузке файла:" + data);
 			XFormsGateway gateway = new XFormsDBGateway();
 			prepareContext(context);
 			DataFile<ByteArrayOutputStream> file =
@@ -337,6 +338,9 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			final String linkId, final String data, final DataFile<ByteArrayOutputStream> file)
 			throws GeneralServerException {
 		try {
+			LOGGER.debug("Данные формы при загрузке файла:" + data);
+			LOGGER.debug("Получен файл '" + file.getName() + "' размером " + file.getData().size()
+					+ " байт");
 			XFormsGateway gateway = new XFormsDBGateway();
 			prepareContext(context);
 			gateway.uploadFile(context, elementInfo, linkId, data, file);

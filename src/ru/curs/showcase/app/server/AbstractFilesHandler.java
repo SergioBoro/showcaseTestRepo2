@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.server;
 
 import java.io.*;
+import java.net.URLDecoder;
 
 import javax.servlet.http.*;
 
@@ -9,6 +10,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.util.TextUtils;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;
@@ -108,6 +110,18 @@ public abstract class AbstractFilesHandler {
 					null);
 		streamReader.prepareToRead(data);
 		return streamReader.readObject();
+	}
+
+	/**
+	 * Стандартная функция для раскодировки текстовых параметров запроса.
+	 * 
+	 * @param value
+	 *            - исходное значение параметра.
+	 * @return - раскодированное значение.
+	 * @throws UnsupportedEncodingException
+	 */
+	protected String decodeParamValue(final String value) throws UnsupportedEncodingException {
+		return URLDecoder.decode(value, TextUtils.DEF_ENCODING);
 	}
 
 	public CompositeContext getContext() {
