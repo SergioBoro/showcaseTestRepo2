@@ -38,10 +38,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест клонирования Action и составляющих его объектов.
 	 * 
-	 * @throws IOException
+	 * @
 	 */
 	@Test
-	public void testClone() throws IOException {
+	public void testClone() {
 		Action action = createComplexTestAction();
 		Action clone = action.gwtClone();
 
@@ -135,10 +135,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Проверка актуализации Action для Tab на основе Action при обновлении
 	 * данных на открытой вкладке.
 	 * 
-	 * @throws IOException
+	 * @
 	 */
 	@Test
-	public void testRefreshTab() throws IOException {
+	public void testRefreshTab() {
 		Action first = createSimpleTestAction();
 
 		DataPanelTab tab = createStdTab();
@@ -163,10 +163,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Проверка установки DataPanelActionType.RELOAD_TAB при открытии новой
 	 * вкладки на уже открытой панели.
 	 * 
-	 * @throws IOException
+	 * @
 	 */
 	@Test
-	public void testSwitchToNewTab() throws IOException {
+	public void testSwitchToNewTab() {
 		Action first = createSimpleTestAction();
 		DataPanelTab tab = createStdTab();
 		tab.setId(TAB_1);
@@ -182,10 +182,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка актуализации действия типа firstOrCurrent.
 	 * 
-	 * @throws IOException
+	 * @
 	 */
 	@Test
-	public void testFirstOrCurrentActualize() throws IOException {
+	public void testFirstOrCurrentActualize() {
 		Action first = createSimpleTestAction();
 		first.getDataPanelLink().setTabId(TAB_2);
 		first.getDataPanelLink().getContext().setAdditional(ADD_CONDITION);
@@ -215,10 +215,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест на обновление дополнительного контекста.
 	 * 
-	 * @throws IOException
+	 * @
 	 */
 	@Test
-	public void testUpdateAddContext() throws IOException {
+	public void testUpdateAddContext() {
 		Grid grid = new Grid();
 		GridEvent event = new GridEvent();
 		event.setRecordId("01");
@@ -240,6 +240,8 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Тест на действие обновления навигатора.
 	 * 
 	 * @throws IOException
+	 * 
+	 *             @
 	 */
 	@Test
 	public void testRefreshNavigatorAction() throws IOException {
@@ -260,6 +262,8 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * навигаторе, но это же просто тест, а не use case.
 	 * 
 	 * @throws IOException
+	 * 
+	 *             @
 	 */
 	@Test
 	public void testRefreshContextOnlyAction() throws IOException {
@@ -273,6 +277,8 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Проверка считывания информации о модальном окне для действия.
 	 * 
 	 * @throws IOException
+	 * 
+	 *             @
 	 */
 	@Test
 	public void testActionModalInfo() throws IOException {
@@ -299,10 +305,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Создаем тестовое действие с не дефолтными значениями всех возможных
 	 * атрибутов.
 	 * 
-	 * @return - действие.
-	 * @throws IOException
+	 * @return - действие. @
 	 */
-	private Action createComplexTestAction() throws IOException {
+	private Action createComplexTestAction() {
 		Action action = createSimpleTestAction();
 
 		action.setKeepUserSettings(false);
@@ -332,7 +337,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		return action;
 	}
 
-	private Action createSimpleTestAction() throws IOException {
+	private Action createSimpleTestAction() {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
 		CompositeContext context = getSimpleTestContext();
 
@@ -369,6 +374,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Проверка работы функции Action.filterBy.
 	 * 
 	 * @throws IOException
+	 * 
 	 */
 	@Test
 	public void testActionFilterBy() throws IOException {
@@ -396,10 +402,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка работы функции setCurrentAction у ActionHolder.
 	 * 
-	 * @throws IOException
+	 * @
 	 */
 	@Test
-	public void testActionHolderSetCurrentAction() throws IOException {
+	public void testActionHolderSetCurrentAction() {
 		Action first = createSimpleTestAction();
 		ActionHolder ah = new ActionHolder();
 		ah.setNavigatorAction(first);
@@ -427,6 +433,8 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Тест для настройки keepUserSettings.
 	 * 
 	 * @throws IOException
+	 * 
+	 *             @
 	 */
 	@Test
 	public void testActionKeepUserSettings() throws IOException {
