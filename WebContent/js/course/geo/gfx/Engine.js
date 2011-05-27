@@ -3,6 +3,7 @@ dojo.provide("course.geo.gfx.Engine");
 dojo.require("course.geo.Engine");
 
 dojo.require("dojox.gfx");
+dojo.require("dojox.gfx.move");
 
 dojo.require("course.geo.gfx.Placemark");
 

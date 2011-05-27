@@ -1,6 +1,6 @@
 dojo.provide("course.geo.gfx.Navigation");
 
-dojo.require("course.geo.gfx.Moveable");
+dojo.require("dojox.gfx.matrix");
 
 dojo.declare("course.geo.gfx.Navigation",null, {
 
@@ -8,8 +8,8 @@ dojo.declare("course.geo.gfx.Navigation",null, {
 	wheelConnection: null,
 
 	enable: function() {
-		this.moveable = new course.geo.gfx.Moveable(this.map.engine.surface);
-		if (dojox.gfx.renderer!="silverlight") this.enableZoom(true);
+		this.moveable = new dojox.gfx.Moveable(this.map.engine.group);
+		this.enableZoom(true);
 	},
 
 	enableZoom: function(enable) {
@@ -37,18 +37,5 @@ dojo.declare("course.geo.gfx.Navigation",null, {
 			{xx:scaleFactor,yy:scaleFactor, dx: x*(1-scaleFactor), dy: y*(1-scaleFactor)},
 			matrix
 		]);
-		
-		this._updateFeatures();
-	},
-	
-	_updateFeatures: function() {
-		var updatePlacemark = function(feature) {
-			
-		},
-		updateFeatureContainer = function(featureContainer) {
-			dojo.forEach(featureContainer.features, function(feature){
-				if (feature.type == "Placemark") updatePlacemark();
-			});
-		};
 	}
 });
