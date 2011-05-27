@@ -53,10 +53,12 @@ public class AppPropsTest extends AbstractTestBasedOnFiles {
 	public final void testDirExists() {
 		checkDir(AppProps.XSLTTRANSFORMSDIR);
 		checkDir(AppProps.XSLTTRANSFORMSFORGRIDDIR);
-		assertTrue((new File(AppProps.getResURL(
-				AppProps.getRequiredValueByName(AppProps.SCHEMASDIR)).getFile())).exists());
 		checkDir(DataPanelXMLGateway.DP_STORAGE_PARAM_NAME);
 		checkDir(NAVIGATORSTORAGE);
+		checkDir(AppProps.SCHEMASDIR);
+		checkDir(AppProps.XFORMS_DIR);
+
+		assertTrue((new File(AppProps.getResURL(AppProps.SCHEMASDIR).getFile())).exists());
 	}
 
 	private void checkDir(final String dirName) {

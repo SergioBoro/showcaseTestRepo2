@@ -3,6 +3,7 @@ package ru.curs.showcase.app.client.utils;
 import java.util.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.client.MessageBox;
 import ru.curs.showcase.app.client.api.UploadSubmitEndHandler;
 
 import com.google.gwt.event.dom.client.*;
@@ -134,7 +135,12 @@ public final class UploadHelper extends RunServletByFormHelper {
 		addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
 			@Override
 			public void onSubmitComplete(final SubmitCompleteEvent event) {
-				submitHandler.onEnd(true);
+				if ((event.getResults() == null) || (event.getResults().isEmpty())) {
+					submitHandler.onEnd(true);
+				} else {
+					MessageBox.showSimpleMessage("При загрузке файлов произошла ошибка",
+							event.getResults());
+				}
 			}
 
 		});

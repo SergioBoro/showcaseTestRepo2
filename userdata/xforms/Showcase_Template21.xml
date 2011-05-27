@@ -306,14 +306,25 @@
 	<body>
 		<div> Загрузка файла с навигатором с сервера </div>
 		<xf:trigger>
-			<xf:label>Скачать</xf:label>
+			<xf:label>Скачать v.1</xf:label>
 			<xf:action ev:event="DOMActivate">
 				<xf:load
 					resource="javascript:gwtXFormDownload('xformId', '03',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
 			</xf:action>
 		</xf:trigger>
 		<a
-			onclick="gwtXFormDownload('xformId', '03',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))"> Скачать вариант 2</a>
+			onclick="gwtXFormDownload('xformId', '03',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))"> Скачать v.2</a>
+
+		<div> Загрузка XML файла с проверкой схемы и трансформацией с сервера </div>
+		<xf:trigger>
+			<xf:label>Скачать</xf:label>
+			<xf:action ev:event="DOMActivate">
+				<xf:load
+					resource="javascript:gwtXFormDownload('xformId', '06',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
+			</xf:action>
+		</xf:trigger>
+
+		<hr/>
 
 		<div>
 			Загрузка файла на сервер: <xf:output ref="/schema/info/comment" />					
@@ -339,13 +350,13 @@
 			</xf:action>
 		</xf:trigger>
 
-		<div> Загрузка файла на сервер №2 </div>
+		<div> Загрузка XML файла на сервер c проверкой схемы и трансформацией </div>
 		<xf:trigger>
 			<xf:label>Закачать</xf:label>
 			<xf:action ev:event="DOMActivate">
 				<xf:load resource="javascript:gwtXFormUpload({
 				xformsId: 'xformId',
-                linkId: '05', 
+                linkId: '07', 
                 onSelectionComplete : function(ok, fileName) {
                 if (ok) {              
                 }
@@ -353,6 +364,7 @@
 			</xf:action>
 		</xf:trigger>
 
+<hr/>
 
 		<div>
 			<xf:trigger>

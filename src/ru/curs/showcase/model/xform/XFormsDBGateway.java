@@ -205,7 +205,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 
 	@Override
 	public void uploadFile(final CompositeContext context, final DataPanelElementInfo elementInfo,
-			final String linkId, final String data, final DataFile<ByteArrayOutputStream> file) {
+			final String linkId, final String data, final DataFile<InputStream> file) {
 		check(elementInfo);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
 		if (proc == null) {
@@ -223,8 +223,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 				setupGeneralParameters();
 				getCs().setString(XFORMSDATA_PARAM, data);
 				getCs().setString(FILENAME_TAG, file.getName());
-				getCs().setBinaryStream(FILE_TAG,
-						StreamConvertor.outputToInputStream(file.getData()));
+				getCs().setBinaryStream(FILE_TAG, file.getData());
 				getCs().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
 				getCs().execute();
 				int errorCode = getCs().getInt(1);

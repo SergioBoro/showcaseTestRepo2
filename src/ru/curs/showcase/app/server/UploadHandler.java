@@ -34,8 +34,8 @@ public final class UploadHandler extends AbstractFilesHandler {
 	/**
 	 * Файлы, закаченные пользователем. Ключом является ссылка на файл (linkId).
 	 */
-	private final Map<String, DataFile<ByteArrayOutputStream>> files =
-		new TreeMap<String, DataFile<ByteArrayOutputStream>>();
+	private final Map<String, DataFile<InputStream>> files =
+		new TreeMap<String, DataFile<InputStream>>();
 
 	@Override
 	protected void processFiles() throws GeneralServerException {
@@ -57,6 +57,9 @@ public final class UploadHandler extends AbstractFilesHandler {
 			FileItemStream item = iterator.next();
 			String name = item.getFieldName();
 			InputStream input = item.openStream();
+			// несмотря на то, что нам нужен InputStream - его приходится
+			// преобразовывать в OutputStream - т.к. чтение из InputStream
+			// возможно только в данном цикле
 			ByteArrayOutputStream out = StreamConvertor.inputToOutputStream(input);
 
 			if (item.isFormField()) {
@@ -74,12 +77,14 @@ public final class UploadHandler extends AbstractFilesHandler {
 				fileName = TextUtils.extractFileNameWithExt(fileName);
 
 				String linkId = name.replace(ExchangeConstants.FILE_DATA_PARAM_PREFIX, "");
-				files.put(linkId, new DataFile<ByteArrayOutputStream>(out, fileName));
+				files.put(linkId,
+						new DataFile<InputStream>(StreamConvertor.outputToInputStream(out),
+								fileName));
 			}
 		}
 	}
 
-	public Map<String, DataFile<ByteArrayOutputStream>> getFiles() {
+	public Map<String, DataFile<InputStream>> getFiles() {
 		return files;
 	}
 

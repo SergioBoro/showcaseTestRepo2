@@ -19,7 +19,7 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 	static final String DEF_USERNAME_PARAM = "main.def.username";
 
 	@Override
-	public InputStream getXMLForUser(final String user, final CompositeContext context) {
+	public InputStream getData(final CompositeContext context) {
 		setDb(ConnectionFactory.getConnection());
 		String procName = AppProps.getRequiredValueByName(NAVIGATOR_PROCNAME_PARAM);
 		try {
@@ -34,11 +34,6 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 			dbExceptionHandler(e);
 		}
 		return null;
-	}
-
-	@Override
-	public InputStream getXMLByDefault(final CompositeContext context) {
-		return getXMLForUser(AppProps.getRequiredValueByName(DEF_USERNAME_PARAM), context);
 	}
 
 	@Override

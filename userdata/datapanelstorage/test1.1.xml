@@ -20,10 +20,11 @@
 			<proc id="proc3" name="xforms_save_error_proc1" type="SAVE" />
 			<proc id="proc4" name="xforms_download1" type="DOWNLOAD"/>
 			<proc id="proc5" name="xforms_upload1" type="UPLOAD"/>
-			<proc id="proc6" name="xforms_download1" type="DOWNLOAD" schema="test_good.xsd" transform="test_good.xsl"/>
+			<proc id="proc6" name="xforms_download2" type="DOWNLOAD" schema="test_good_small.xsd" transform="test_good.xsl"/>
 			<proc id="proc7" name="xforms_upload1" type="UPLOAD" schema="test_good.xsd" transform="test_good.xsl"/>			
 			<proc id="proc8" name="xforms_upload1" type="UPLOAD" schema="test_bad.xsd"/>
 			<proc id="proc9" name="xforms_upload1" type="UPLOAD" transform="test_good.xsl"/>			
+			<proc id="proc10" name="xforms_download3_wrong" type="DOWNLOAD" schema="test_good_small.xsd"/>
 		</element>			
 	</tab>
 </datapanel>

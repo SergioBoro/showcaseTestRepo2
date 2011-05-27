@@ -14,7 +14,6 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
-import ru.curs.showcase.exception.XSDValidateException;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.util.*;
@@ -216,10 +215,10 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testXFormsFileGatewayUpload() throws IOException {
+	public void testXFormsFileGatewayUpload() {
 		XFormsGateway gateway = new XFormsFileGateway();
 		final String linkId = "log4j.xml";
-		DataFile<ByteArrayOutputStream> file = getTestFile(linkId);
+		DataFile<InputStream> file = getTestFile(linkId);
 		gateway.uploadFile(null, null, linkId, null, file);
 	}
 
@@ -235,16 +234,15 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc5";
 		final String fileName = "log4j.xml";
-		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
+		DataFile<InputStream> file = getTestFile(fileName);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		serviceLayer.uploadFile(context, element, linkId, null, file);
 		assertNotNull(context.getSession());
 	}
 
-	private DataFile<ByteArrayOutputStream> getTestFile(final String linkId) throws IOException {
-		DataFile<ByteArrayOutputStream> file =
-			new DataFile<ByteArrayOutputStream>(StreamConvertor.inputToOutputStream(AppProps
-					.loadResToStream(linkId)), linkId);
+	private DataFile<InputStream> getTestFile(final String linkId) {
+		DataFile<InputStream> file =
+			new DataFile<InputStream>(AppProps.loadResToStream(linkId), linkId);
 		return file;
 	}
 
@@ -260,7 +258,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc7";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
-		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
+		DataFile<InputStream> file = getTestFile(fileName);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		serviceLayer.uploadFile(context, element, linkId, null, file);
 		assertNotNull(context.getSession());
@@ -272,15 +270,45 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 * @throws IOException
 	 * @throws GeneralServerException
 	 */
-	@Test(expected = XSDValidateException.class)
+	@Test(expected = GeneralServerException.class)
 	public void testXFormsXMLUploadBad() throws IOException, GeneralServerException {
 		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc8";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
-		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
+		DataFile<InputStream> file = getTestFile(fileName);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		serviceLayer.uploadFile(context, element, linkId, null, file);
 		assertNotNull(context.getSession());
+	}
+
+	/**
+	 * Проверка скачивания XML файла для XForms через ServiceLayer.
+	 * 
+	 * @throws GeneralServerException
+	 * @throws IOException
+	 */
+	@Test
+	public void testXFormsXMLDownloadGood() throws GeneralServerException, IOException {
+		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
+		String linkId = "proc6";
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		serviceLayer.getDownloadFile(context, element, linkId, null);
+	}
+
+	/**
+	 * Проверка скачивания XML файла для XForms через ServiceLayer.
+	 * 
+	 * @throws GeneralServerException
+	 * @throws IOException
+	 */
+	@Test(expected = GeneralServerException.class)
+	public void testXFormsXMLDownloadBad() throws GeneralServerException, IOException {
+		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
+		String linkId = "proc10";
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		serviceLayer.getDownloadFile(context, element, linkId, null);
 	}
 }

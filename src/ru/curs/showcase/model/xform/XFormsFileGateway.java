@@ -86,7 +86,7 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	@Override
 	public void uploadFile(final CompositeContext aContext,
 			final DataPanelElementInfo aElementInfo, final String aLinkId, final String aData,
-			final DataFile<ByteArrayOutputStream> aFile) {
+			final DataFile<InputStream> aFile) {
 		System.out
 				.println(String
 						.format("Заглушка: сохранение файла '%s' с контекстом %s из элемента %s, ссылка %s, данные формы %s",

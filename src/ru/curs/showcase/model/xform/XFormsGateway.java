@@ -1,8 +1,8 @@
 package ru.curs.showcase.model.xform;
 
-import java.io.ByteArrayOutputStream;
+import java.io.*;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.CommandResult;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.*;
@@ -82,9 +82,9 @@ public interface XFormsGateway {
 	 *            - ссылка на файл.
 	 * @param data
 	 *            - данные, введенные пользователем.
-	 * @param file
+	 * @param aFile
 	 *            - файл.
 	 * **/
 	void uploadFile(CompositeContext context, DataPanelElementInfo elementInfo, String linkId,
-			String data, DataFile<ByteArrayOutputStream> file);
+			String data, DataFile<InputStream> aFile);
 }

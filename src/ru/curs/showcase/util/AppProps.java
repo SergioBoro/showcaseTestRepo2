@@ -43,10 +43,6 @@ public final class AppProps {
 	 */
 	public static final String XSLTTRANSFORMSFORGRIDDIR = "xslttransformsforgrid";
 	/**
-	 * SCHEMASDIR.
-	 */
-	public static final String SCHEMASDIR = "schemasdir";
-	/**
 	 * GRIDDATAXSL.
 	 */
 	public static final String GRIDDATAXSL = "GridData.xsl";
@@ -55,6 +51,11 @@ public final class AppProps {
 	 * Каталог для шаблонов XForms и тестовых данных XForms.
 	 */
 	public static final String XFORMS_DIR = "xforms";
+
+	/**
+	 * Каталог со схемами Showcase - внутренними и пользовательскими.
+	 */
+	public static final String SCHEMASDIR = "schemas";
 
 	/**
 	 * Properties с настройками приложения.

@@ -120,7 +120,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("09");
 		assertNotNull(el);
-		final int numProc = 7;
+		final int numProc = 8;
 		assertEquals(numProc, el.getProcs().values().size());
 		DataPanelElementProc proc = el.getProcs().get("proc3");
 		assertNull(proc.getTransformName());
@@ -128,7 +128,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		proc = el.getProcs().get("proc6");
 		assertEquals(DataPanelElementProcType.DOWNLOAD, proc.getType());
 		assertEquals("test_good.xsl", proc.getTransformName());
-		assertEquals("test_good.xsd", proc.getSchemaName());
+		assertEquals("test_good_small.xsd", proc.getSchemaName());
 		proc = el.getProcs().get("proc7");
 		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
 		assertEquals("test_good.xsl", proc.getTransformName());

@@ -16,8 +16,8 @@ public final class UserDataXSDSource implements XSDSource {
 	@Override
 	public File getSchema(final String aFileName) {
 		String xsdFullFileName =
-			String.format("%s/%s/%s", AppProps.getUserDataCatalog(),
-					AppProps.getRequiredValueByName(AppProps.SCHEMASDIR), aFileName);
+			String.format("%s/%s/%s", AppProps.getUserDataCatalog(), AppProps.SCHEMASDIR,
+					aFileName);
 		File file = new File(xsdFullFileName);
 		if (!file.exists()) {
 			throw new SettingsFileOpenException(xsdFullFileName, SettingsFileType.SCHEMA);

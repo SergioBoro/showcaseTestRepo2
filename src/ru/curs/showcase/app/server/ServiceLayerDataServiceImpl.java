@@ -26,7 +26,7 @@ import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.model.navigator.*;
 import ru.curs.showcase.model.webtext.*;
 import ru.curs.showcase.model.xform.*;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.*;
 
 import com.google.gson.*;
 
@@ -75,7 +75,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			CompositeContext context = new CompositeContext();
 			prepareContext(context);
 			try {
-				xml = gw.getXMLByDefault(context);
+				xml = gw.getData(context);
 				NavigatorFactory factory = new NavigatorFactory();
 				nav = factory.fromStream(xml);
 			} finally {
@@ -325,6 +325,9 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			prepareContext(context);
 			DataFile<ByteArrayOutputStream> file =
 				gateway.downloadFile(context, elementInfo, linkId, data);
+
+			checkAndTransformDownloadFile(elementInfo.getProcs().get(linkId), file);
+
 			LOGGER.debug(String
 					.format("Размер скачиваемого файла: %d байт", file.getData().size()));
 			return file;
@@ -335,17 +338,61 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public void uploadFile(final CompositeContext context, final DataPanelElementInfo elementInfo,
-			final String linkId, final String data, final DataFile<ByteArrayOutputStream> file)
+			final String linkId, final String data, final DataFile<InputStream> file)
 			throws GeneralServerException {
 		try {
 			LOGGER.debug("Данные формы при загрузке файла:" + data);
-			LOGGER.debug("Получен файл '" + file.getName() + "' размером " + file.getData().size()
-					+ " байт");
-			XFormsGateway gateway = new XFormsDBGateway();
+			if (LOGGER.isDebugEnabled()) {
+				StreamConvertor sc = new StreamConvertor(file.getData());
+				ByteArrayOutputStream out = sc.getOutputStream();
+				file.setData(sc.getCopy());
+				LOGGER.debug("Получен файл '" + file.getName() + "' размером " + out.size()
+						+ " байт");
+			}
+
 			prepareContext(context);
+
+			checkAndTransformUploadFile(elementInfo.getProcs().get(linkId), file);
+
+			XFormsGateway gateway = new XFormsDBGateway();
 			gateway.uploadFile(context, elementInfo, linkId, data, file);
 		} catch (Throwable e) {
 			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
 		}
+	}
+
+	private void checkAndTransformUploadFile(final DataPanelElementProc proc,
+			final DataFile<InputStream> file) throws IOException {
+		if (file.getData() == null) {
+			return;
+		}
+		if ((proc.getSchemaName() != null) || (proc.getTransformName() != null)) {
+			StreamConvertor sc = new StreamConvertor(file.getData());
+			InputStream is = checkAndTransformFile(proc, sc.getOutputStream());
+			file.setData(is);
+		}
+	}
+
+	private void checkAndTransformDownloadFile(final DataPanelElementProc proc,
+			final DataFile<ByteArrayOutputStream> file) throws IOException {
+		if ((proc.getSchemaName() != null) || (proc.getTransformName() != null)) {
+			InputStream is = checkAndTransformFile(proc, file.getData());
+			file.setData(StreamConvertor.inputToOutputStream(is));
+		}
+	}
+
+	private InputStream checkAndTransformFile(final DataPanelElementProc proc,
+			final ByteArrayOutputStream xml) throws IOException {
+		if (proc.getSchemaName() != null) {
+			XMLValidator validator = new XMLValidator(new UserDataXSDSource());
+			InputStream is = StreamConvertor.outputToInputStream(xml);
+			validator.validate(proc.getSchemaName(), new XMLSource(is));
+		}
+		if (proc.getTransformName() != null) {
+			InputStream is = StreamConvertor.outputToInputStream(xml);
+			String res = XMLUtils.xsltTransform(is, proc.getTransformName());
+			return TextUtils.convertStringToStream(res);
+		}
+		return StreamConvertor.outputToInputStream(xml);
 	}
 }

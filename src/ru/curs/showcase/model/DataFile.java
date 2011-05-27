@@ -4,8 +4,8 @@ import ru.curs.showcase.util.TextUtils;
 
 /**
  * Базовый класс для обмена файлами между сервером и клиентами. Содержимое файла
- * может храниться как в виде OutputStream, так и InputStream - чтобы избежать
- * цепочки преобразований.
+ * может храниться как в виде OutputStream, так и InputStream или даже строки -
+ * чтобы избежать цепочки преобразований.
  * 
  * @author den
  * 
@@ -14,7 +14,7 @@ import ru.curs.showcase.util.TextUtils;
  */
 public class DataFile<T> {
 	/**
-	 * Данные файла (в виде выходного потока).
+	 * Данные файла.
 	 */
 	private T data;
 
@@ -47,6 +47,12 @@ public class DataFile<T> {
 		name = aName;
 	}
 
+	/**
+	 * Возвращает id файла, в качестве которого выступает имя файла без пути и
+	 * расширения.
+	 * 
+	 * @return - id.
+	 */
 	public String getId() {
 		return TextUtils.extractFileName(name);
 	}

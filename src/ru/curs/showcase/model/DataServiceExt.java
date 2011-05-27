@@ -1,6 +1,6 @@
 package ru.curs.showcase.model;
 
-import java.io.ByteArrayOutputStream;
+import java.io.*;
 
 import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
@@ -97,5 +97,5 @@ public interface DataServiceExt {
 	 * @throws GeneralServerException
 	 */
 	void uploadFile(CompositeContext context, DataPanelElementInfo elementInfo, String linkId,
-			String data, DataFile<ByteArrayOutputStream> file) throws GeneralServerException;
+			String data, DataFile<InputStream> file) throws GeneralServerException;
 }

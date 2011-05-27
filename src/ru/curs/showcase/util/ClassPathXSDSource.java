@@ -16,8 +16,7 @@ public class ClassPathXSDSource implements XSDSource {
 
 	@Override
 	public File getSchema(final String aFileName) {
-		String xsdFullFileName =
-			String.format("%s/%s", AppProps.getRequiredValueByName(AppProps.SCHEMASDIR), aFileName);
+		String xsdFullFileName = String.format("%s/%s", AppProps.SCHEMASDIR, aFileName);
 
 		// самый простой способ получить путь к ресурсу в classpath в виде
 		// строки

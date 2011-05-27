@@ -33,7 +33,7 @@ public class NavDBGatewayTest extends AbstractTestBasedOnFiles {
 		Document doc = null;
 		NavigatorGateway gw = new NavigatorDBGateway();
 		try {
-			InputStream xml = gw.getXMLByDefault(new CompositeContext());
+			InputStream xml = gw.getData(new CompositeContext());
 			doc = builder.parse(xml);
 		} finally {
 			gw.releaseResources();
