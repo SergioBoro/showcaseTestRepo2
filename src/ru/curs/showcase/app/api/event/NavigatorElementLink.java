@@ -42,6 +42,7 @@ public class NavigatorElementLink implements SerializableElement, GWTClonable {
 	public NavigatorElementLink gwtClone() {
 		NavigatorElementLink res = new NavigatorElementLink();
 		res.id = id;
+		res.refresh = refresh;
 		return res;
 	}
 

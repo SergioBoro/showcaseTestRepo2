@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.CanBeCurrent;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
@@ -19,7 +19,12 @@ import ru.curs.showcase.app.api.grid.*;
  */
 public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 
-	static final String FILTER_CONTEXT = "filter";
+	static final String MAIN_FILTER = "Алтайский край";
+	static final String SESSION_CONDITION =
+		"<sessioncontext><username>master</username><urlparams></urlparams></sessioncontext>";
+	static final String FILTER_CONDITION = "filter";
+	static final int DEF_SIZE_VALUE = 100;
+	static final String FILTER_CONTEXT = FILTER_CONDITION;
 	static final String NEW_ADD_CONDITION = "New add condition";
 	static final String MASTER_USER = "master";
 	static final String MOSCOW_CONTEXT = "Москва";
@@ -37,24 +42,40 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testClone() throws IOException {
-		Action action = createTestAction();
+		Action action = createComplexTestAction();
 		Action clone = action.gwtClone();
 
 		assertEquals(DataPanelActionType.RELOAD_PANEL, clone.getDataPanelActionType());
-		assertEquals(NavigatorActionType.DO_NOTHING, clone.getNavigatorActionType());
-		assertNull(clone.getNavigatorElementLink());
+		assertEquals(NavigatorActionType.CHANGE_NODE, clone.getNavigatorActionType());
+		assertFalse(clone.getKeepUserSettings());
+		assertEquals(ShowInMode.MODAL_WINDOW, clone.getShowInMode());
+
+		ModalWindowInfo mwi = clone.getModalWindowInfo();
+		assertNotNull(mwi);
+		assertEquals("mwi", mwi.getCaption());
+		assertEquals(DEF_SIZE_VALUE, mwi.getHeight().intValue());
+		assertEquals(DEF_SIZE_VALUE, mwi.getWidth().intValue());
+		assertTrue(mwi.getShowCloseBottomButton());
+
 		DataPanelLink link = clone.getDataPanelLink();
 		assertNotNull(link);
 		assertNotNull(link.getContext());
-		CompositeContext context = getTestContext();
+		CompositeContext context = getComplexTestContext();
 		assertEquals(context, link.getContext());
+
 		assertFalse(link.getFirstOrCurrentTab());
 		assertEquals(TEST_XML, link.getDataPanelId());
 		assertEquals(TAB_2, link.getTabId());
 		assertEquals(1, link.getElementLinks().size());
 		assertEquals(EL_06, link.getElementLinks().get(0).getId());
 		assertEquals(ADD_CONDITION, link.getElementLinks().get(0).getContext().getAdditional());
-		assertFalse(link.getElementLinks().get(0).getSkipRefreshContextOnly());
+		assertTrue(link.getElementLinks().get(0).getSkipRefreshContextOnly());
+		assertTrue(link.getElementLinks().get(0).getRefreshContextOnly());
+		assertTrue(link.getElementLinks().get(0).getKeepUserSettings());
+
+		assertNotNull(clone.getNavigatorElementLink());
+		assertEquals("nLink", clone.getNavigatorElementLink().getId());
+		assertTrue(clone.getNavigatorElementLink().getRefresh());
 
 		assertTrue(action != clone);
 		assertTrue(action.getDataPanelLink() != clone.getDataPanelLink());
@@ -118,13 +139,14 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testRefreshTab() throws IOException {
-		Action first = createTestAction();
+		Action first = createSimpleTestAction();
+
 		DataPanelTab tab = createStdTab();
 		ActionHolder ah = new ActionHolder();
 		ah.setNavigatorAction(first.gwtClone());
 		ah.setNavigatorActionFromTab(tab.getAction());
 		Action actual = ah.getNavigatorAction();
-		assertEquals(NavigatorActionType.DO_NOTHING, actual.getNavigatorActionType());
+
 		assertEquals(DataPanelActionType.REFRESH_TAB, actual.getDataPanelActionType());
 		assertTrue(actual.getKeepUserSettings());
 		final DataPanelLink dataPanelLink = actual.getDataPanelLink();
@@ -132,7 +154,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertEquals(TEST_XML, dataPanelLink.getDataPanelId());
 		assertEquals(TAB_2, dataPanelLink.getTabId());
 		assertFalse(dataPanelLink.getFirstOrCurrentTab());
-		CompositeContext context = getTestContext();
+		CompositeContext context = getSimpleTestContext();
 		assertEquals(context, dataPanelLink.getContext());
 		assertEquals(1, dataPanelLink.getElementLinks().size());
 	}
@@ -145,7 +167,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testSwitchToNewTab() throws IOException {
-		Action first = createTestAction();
+		Action first = createSimpleTestAction();
 		DataPanelTab tab = createStdTab();
 		tab.setId(TAB_1);
 
@@ -164,7 +186,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testFirstOrCurrentActualize() throws IOException {
-		Action first = createTestAction();
+		Action first = createSimpleTestAction();
 		first.getDataPanelLink().setTabId(TAB_2);
 		first.getDataPanelLink().getContext().setAdditional(ADD_CONDITION);
 
@@ -200,7 +222,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		Grid grid = new Grid();
 		GridEvent event = new GridEvent();
 		event.setRecordId("01");
-		Action action = createTestAction();
+		Action action = createSimpleTestAction();
 		event.setAction(action);
 		grid.getEventManager().getEvents().add(event);
 		grid.setDefaultAction(action);
@@ -273,23 +295,73 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		return tab;
 	}
 
-	private Action createTestAction() throws IOException {
+	/**
+	 * Создаем тестовое действие с не дефолтными значениями всех возможных
+	 * атрибутов.
+	 * 
+	 * @return - действие.
+	 * @throws IOException
+	 */
+	private Action createComplexTestAction() throws IOException {
+		Action action = createSimpleTestAction();
+
+		action.setKeepUserSettings(false);
+		action.setShowInMode(ShowInMode.MODAL_WINDOW);
+
+		ModalWindowInfo mwi = new ModalWindowInfo();
+		mwi.setCaption("mwi");
+		mwi.setHeight(DEF_SIZE_VALUE);
+		mwi.setWidth(DEF_SIZE_VALUE);
+		mwi.setShowCloseBottomButton(true);
+		action.setModalWindowInfo(mwi);
+
+		NavigatorElementLink nLink = new NavigatorElementLink();
+		nLink.setId("nLink");
+		nLink.setRefresh(true);
+		action.setNavigatorElementLink(nLink);
+
+		DataPanelElementLink elLink = action.getDataPanelLink().getElementLinkById(EL_06);
+		elLink.setKeepUserSettings(true);
+		elLink.setRefreshContextOnly(true);
+		elLink.setSkipRefreshContextOnly(true);
+
+		action.getDataPanelLink().setContext(getComplexTestContext());
+
+		action.determineState();
+
+		return action;
+	}
+
+	private Action createSimpleTestAction() throws IOException {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
-		CompositeContext context = getTestContext();
+		CompositeContext context = getSimpleTestContext();
+
 		DataPanelLink link = action.getDataPanelLink();
 		link.setContext(context);
 		link.setDataPanelId(TEST_XML);
 		link.setTabId(TAB_2);
 		CompositeContext elContext = context.gwtClone();
 		elContext.setAdditional(ADD_CONDITION);
+
 		DataPanelElementLink elLink = new DataPanelElementLink(EL_06, elContext);
 		link.getElementLinks().add(elLink);
+
 		action.determineState();
 		return action;
 	}
 
-	private CompositeContext getTestContext() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
+	private CompositeContext getSimpleTestContext() {
+		CompositeContext context = new CompositeContext();
+		context.setMain(MAIN_FILTER);
+		return context;
+	}
+
+	private CompositeContext getComplexTestContext() {
+		CompositeContext context = getSimpleTestContext();
+		context.setFilter(FILTER_CONDITION);
+		context.setAdditional(ADD_CONDITION);
+		context.setSession(SESSION_CONDITION);
+
 		return context;
 	}
 
@@ -328,7 +400,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testActionHolderSetCurrentAction() throws IOException {
-		Action first = createTestAction();
+		Action first = createSimpleTestAction();
 		ActionHolder ah = new ActionHolder();
 		ah.setNavigatorAction(first);
 		first.filterBy(FILTER_CONTEXT);
