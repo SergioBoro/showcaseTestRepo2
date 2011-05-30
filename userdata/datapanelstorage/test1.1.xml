@@ -24,7 +24,15 @@
 			<proc id="proc7" name="xforms_upload1" type="UPLOAD" schema="test_good.xsd" transform="test_good.xsl"/>			
 			<proc id="proc8" name="xforms_upload1" type="UPLOAD" schema="test_bad.xsd"/>
 			<proc id="proc9" name="xforms_upload1" type="UPLOAD" transform="test_good.xsl"/>			
-			<proc id="proc10" name="xforms_download3_wrong" type="DOWNLOAD" schema="test_good_small.xsd"/>
+			<proc id="proc10" name="xforms_download3_wrong" type="DOWNLOAD" schema="test_good_small.xsd"/>			
 		</element>			
+		<element id="10" type="xforms" template="Showcase_Template.xml"
+			proc="xforms_proc1">
+			<proc id="proc11" name="xforms_saveproc1" type="SAVE" schema="xforms_test_good.xsd" transform="xformsxslttransformation_test.xsl"/>		
+		</element>	
+		<element id="11" type="xforms" template="Showcase_Template.xml"
+			proc="xforms_proc1">		
+			<proc id="proc12" name="xforms_saveproc1" type="SAVE" schema="xforms_test_good.xsd"/>
+		</element>					
 	</tab>
 </datapanel>

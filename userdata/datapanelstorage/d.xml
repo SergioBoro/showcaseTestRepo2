@@ -11,7 +11,7 @@
 			<proc id="04" name="xforms_upload1" type="UPLOAD" />
 			<proc id="05" name="xforms_upload1" type="UPLOAD" />
 			<proc id="06" name="xforms_download2" type="DOWNLOAD" schema="test_good_small.xsd" transform="test_good.xsl"/>
-			<proc id="07" name="xforms_upload1" type="UPLOAD" schema="test_good.xsd" transform="test_good.xsl"/>			
+			<proc id="07" name="xforms_upload1" type="UPLOAD" schema="test_good.xsd" transform="test_good.xsl"/>					
 		</element>
 		<element id="22" type="webtext" proc="webtext_filter_and_add"
 			hideOnLoad="true" />		
