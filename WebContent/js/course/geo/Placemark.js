@@ -8,7 +8,7 @@ dojo.require("course.geo.styling");
 var g = course.geo,
 	u = g.util,
 	s = g.styling;
-	
+
 var geometryTypes = {Point: 1, LineString: 1, Polygon: 1, MultiLineString: 1, MultiPolygon: 1};
 
 dojo.declare("course.geo.Placemark", course.geo.Feature, {

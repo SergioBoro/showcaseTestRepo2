@@ -18,7 +18,11 @@ dojo.declare("course.geo.gfx.Placemark", course.geo.common.Placemark, {
 	},
 	
 	prerender: function() {
-		this.lengthDenominator = (this.group._getRealMatrix()||{xx:1}).xx;
+		this.calculateLengthDenominator();
+	},
+	
+	calculateLengthDenominator: function() {
+		this.lengthDenominator = (this.group.getTransform()||{xx:1}).xx;
 	},
 	
 	moveTo: function(path, point) {

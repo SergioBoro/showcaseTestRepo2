@@ -3,6 +3,10 @@ dojo.provide("course.geo.gfx.Navigation");
 dojo.require("course.geo.gfx.Moveable");
 
 dojo.declare("course.geo.gfx.Navigation",null, {
+	
+	resizePoints: true,
+	resizeLines: true,
+	resizePolygons: true,
 
 	moveable: null,
 	wheelConnection: null,
@@ -26,29 +30,44 @@ dojo.declare("course.geo.gfx.Navigation",null, {
 		// position relative to map container
 		var x = mouseEvent.pageX - this.map.x,
 			y = mouseEvent.pageY - this.map.y;
-
-		var matrix = this.map.engine.group._getRealMatrix() || {xx:1,xy:0,yx:0,yy:1,dx:0,dy:0};
 		
 		// zoom increment power 
 		var power  = mouseEvent[ dojo.isMozilla ? "detail" : "wheelDelta" ] / (dojo.isMozilla ? -3 : 120) ;
 		var scaleFactor = Math.pow(1.2, power);
+
+		var engine = this.map.engine;
+		engine.group.applyLeftTransform({xx:scaleFactor,yy:scaleFactor, dx: x*(1-scaleFactor), dy: y*(1-scaleFactor)});
+		engine.factories.Placemark.calculateLengthDenominator();
 		
-		this.map.engine.group.setTransform([
-			{xx:scaleFactor,yy:scaleFactor, dx: x*(1-scaleFactor), dy: y*(1-scaleFactor)},
-			matrix
-		]);
-		
-		this._resizeFeatures(this.map.featureContainer);
+		this._resizeFeatures(this.map.featureContainer, 1/scaleFactor);
 	},
 	
-	_resizeFeatures: function(featureContainer) {
+	_resizeFeatures: function(featureContainer, scaleFactor) {
 		dojo.forEach(featureContainer.features, function(feature){
-			if (feature.type == "Placemark") this._resizePlacemark(feature);
-			else if (feature.type == "FeatureContainer") this._resizeFeatures(feature);
+			if (feature.type == "Placemark") this._resizePlacemark(feature, scaleFactor);
+			else if (feature.type == "FeatureContainer") this._resizeFeatures(feature, scaleFactor);
 		}, this);
 	},
 	
-	_resizePlacemark: function(feature) {
-		
+	_resizePlacemark: function(feature, scaleFactor) {
+		if (feature.invalid) return;
+		var geometry = feature.getGeometry();
+
+		if (this.resizePoints && geometry.type == "Point") {
+			dojo.forEach(feature.baseShapes, function(shape){
+				shape.applyRightTransform(dojox.gfx.matrix.scale(scaleFactor));
+			});
+		}
+		else if ( dojox.gfx.renderer!="vml" && (
+				(this.resizeLines && (geometry.type == "LineString" || geometry.type == "MultiLineString")) ||
+				(this.resizePolygons && (geometry.type == "Polygon" || geometry.type == "MultiPolygon")) )) {
+			dojo.forEach(feature.baseShapes, function(shape){
+				var stroke = shape.getStroke();
+				if (stroke) {
+					stroke.width *= scaleFactor;
+					shape.setStroke(stroke);
+				}
+			});
+		}
 	}
 });
