@@ -19,6 +19,8 @@
 <script src="../../../dojo/dojo.js"></script>
 
 <script>
+dojo.require("course.geo.control.Highlight");
+dojo.require("course.geo.control.Tooltip");
 if (djConfig.mapEngine=="ge") dojo.require("course.geo.ge.Engine");
 else dojo.require("course.geo.gfx.Engine");
 
@@ -241,6 +243,8 @@ var addOnLoad = function() {
 		currentProjection: "RUSSIA-ALBERS"
 	});
 	map.ready(function(){
+		new course.geo.control.Highlight(map, {targets: "l1"});
+		new course.geo.control.Tooltip(map, {targets: "l1"});
 		DebugUtil.timer.end("render");
 		connectFeature("1107", function(event) {console.debug(event.type);});
 		handle1 = connectFeature("RU-KYA", f1);
@@ -248,7 +252,7 @@ var addOnLoad = function() {
 		handle3 = connectFeature("RU-MOW", f3);
 		handle4 = connectFeature("RU-MOS", f4);
 		handleMap = map.connect("onclick", fMap);
-		map.getFeatureById("hospital").connect(["onmouseover", "onmouseout"], function(event){
+		map.getFeatureById("l1").connect(["onclick","onmouseover", "onmouseout"], function(event){
 			console.debug("function:hospital, feature.id:"+event.feature.id+", event:"+event.type);
 		});
 		map.getFeatureById("railways").connect(["onmouseover", "onmouseout"], function(event){

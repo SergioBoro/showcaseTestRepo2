@@ -26,7 +26,7 @@ dojo.declare("course.geo.Feature", null, {
 	setMap: function(map) {
 		this.map = map;
 		if (this.styleClass) dojo.forEach(this.styleClass, function(_class){
-			var featuresByClass = map._featuresByClass;
+			var featuresByClass = map.featuresByClass;
 			if (!featuresByClass[_class]) featuresByClass[_class] = [];
 			featuresByClass[_class].push(this);
 		}, this);

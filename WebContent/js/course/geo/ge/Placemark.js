@@ -1,5 +1,7 @@
 dojo.provide("course.geo.ge.Placemark");
 
+dojo.require("course.geo.common.Placemark");
+
 (function() {
 	
 var shapeSize = 50.;
@@ -15,7 +17,7 @@ course.geo.ge.methods.Placemark = {
 var g = course.geo,
 	cp = g.common.Placemark;
 
-dojo.declare("course.geo.ge.Placemark", null, {
+dojo.declare("course.geo.ge.Placemark", course.geo.common.Placemark, {
 	
 	constructor: function(kwArgs) {
 		dojo.mixin(this, kwArgs);

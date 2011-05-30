@@ -111,6 +111,22 @@ j.generateStyle = function(feature, style, styleFunctionDef) {
 		else if (breaks[i]<attrValue && attrValue<=breaks[i+1]) break;
 	}
 	if (i<kwArgs.numClasses) style.fill = course.geo.util.colorbrewer.schemes["seq"][kwArgs.numClasses][kwArgs.colorSchemeName].colors[i];
-}
+};
+
+j.generateLegend = function(domContainer, style, features, name) {
+	var html = "",
+		kwArgs = style.styleFunction.options;
+	dojo.forEach(features, function(feature){
+		var breaks = feature._breaks;
+		if (name) html += name+"<br>";
+		html += "<div style='padding-left:20px'>";
+		for (var i=0; i<kwArgs.numClasses; i++) {
+			var color = course.geo.util.colorbrewer.schemes["seq"][kwArgs.numClasses][kwArgs.colorSchemeName].colors[i];
+			html += "<span style='background-color:"+ color +"'>&nbsp;&nbsp;&nbsp;&nbsp;</span>"+breaks[i]+"..."+breaks[i+1]+"<br>";
+		}
+		html += "</div>";
+	});
+	domContainer.innerHTML = html;
+};
 
 }());

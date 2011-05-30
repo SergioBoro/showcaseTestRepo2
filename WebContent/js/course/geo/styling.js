@@ -1,6 +1,5 @@
 dojo.provide("course.geo.styling");
 
-
 (function() {
 	
 var g = course.geo,
@@ -8,12 +7,6 @@ var g = course.geo,
 	
 var symbolizers = ["point", "polygon", "line", "text"],
 	noStyleMixin = {id:1, filter:1, styleClass:1, fid:1, styleFunction:1, mode:1};
-	
-var styleById = {};
-
-var byFid = {},
-	byClass = {},
-	byClassAndFid = {};
 
 dojo.declare("course.geo.Style", null, {
 	
@@ -27,25 +20,26 @@ dojo.declare("course.geo.Style", null, {
 		this.map = map;
 		this._features = {};
 		this._setDef(def);
-		if (def.id) styleById[def.id] = this;
+		if (def.id) map.styleById[def.id] = this;
 	},
 	
 	set: function(def) {
+		var m = this.map;
 		var affectedFeatures = this.styleClass || this.fid ? {} : this._features;
-		// remove the style from byClassAndFid, byFid, byClass
+		// remove the style from styleByClassAndFid, styleByFid, styleByClass
 		if (this.styleClass) {
 			dojo.forEach(this.styleClass, function(_class){
-				// remove the style from byClassAndFid
+				// remove the style from styleByClassAndFid
 				if (this.fid) {
 					dojo.forEach(this.fid, function(_fid){
-						var entry = byClassAndFid[_class][_fid],
+						var entry = m.styleByClassAndFid[_class][_fid],
 							entryLength = entry.length;
 						for(var i=0; i<entryLength;i++) {
 							if (entry[i]==this) break;
 						}
 						if (i<entryLength) {
 							entry.splice(i,1);
-							var feature = this.map.getFeatureById(_fid);
+							var feature = m.getFeatureById(_fid);
 							if (feature && feature.styleClass) {
 								for (var i=0; i<feature.styleClass.length; i++) {
 									if (_class==feature.styleClass[i] && !affectedFeatures[feature.id]) {
@@ -58,15 +52,15 @@ dojo.declare("course.geo.Style", null, {
 					}, this);
 				}
 				else {
-					// remove the style from byClass
-					var entry = byClass[_class],
+					// remove the style from styleByClass
+					var entry = m.styleByClass[_class],
 						entryLength = entry.length;
 					for(var i=0; i<entryLength;i++) {
 						if (entry[i]==this) break;
 					}
 					if (i<entryLength) {
 						entry.splice(i,1);
-						var features = this.map._featuresByClass[_class];
+						var features = m.featuresByClass[_class];
 						if (features) dojo.forEach(features, function(f){
 							if (!affectedFeatures[f.id]) affectedFeatures[f.id] = f;
 						});
@@ -75,16 +69,16 @@ dojo.declare("course.geo.Style", null, {
 			}, this);
 		}
 		else if (this.fid) {
-			// remove the style from byFid
+			// remove the style from styleByFid
 			dojo.forEach(this.fid, function(_fid){
-				var entry = byFid[_fid],
+				var entry = m.styleByFid[_fid],
 					entryLength = entry.length;
 				for(var i=0; i<entryLength;i++) {
 					if (entry[i]==this) break;
 				}
 				if (i<entryLength) {
 					entry.splice(i,1);
-					var feature = this.map.getFeatureById(_fid);
+					var feature = m.getFeatureById(_fid);
 					if (feature && !affectedFeatures[feature.id]) affectedFeatures[feature.id] = feature;
 				}
 			}, this);
@@ -98,6 +92,7 @@ dojo.declare("course.geo.Style", null, {
 	},
 	
 	_setDef: function(def) {
+		var m = this.map;
 		if (def.mode) this.mode = def.mode;
 		var filter = def.filter;
 		if (def.filter) {
@@ -112,6 +107,7 @@ dojo.declare("course.geo.Style", null, {
 			dojo.forEach(styleClass, function(_class){
 				// styleClass and fid simultaneously
 				if (fid) {
+					var byClassAndFid = m.styleByClassAndFid;
 					dojo.forEach(fid, function(_fid){
 						if (!byClassAndFid[_class]) byClassAndFid[_class] = {};
 						if (!byClassAndFid[_class][_fid]) byClassAndFid[_class][_fid] = [];
@@ -120,16 +116,16 @@ dojo.declare("course.geo.Style", null, {
 				}
 				// styleClass only
 				else {
-					if (!byClass[_class]) byClass[_class] = [];
-					byClass[_class].push(this);
+					if (!m.styleByClass[_class]) m.styleByClass[_class] = [];
+					m.styleByClass[_class].push(this);
 				}
 			}, this);
 		}
 		else if (fid) {
 			// fid only
 			dojo.forEach(fid, function(_fid){
-				if (!byFid[_fid]) byFid[_fid] = [];
-				byFid[_fid].push(this);
+				if (!m.styleByFid[_fid]) m.styleByFid[_fid] = [];
+				m.styleByFid[_fid].push(this);
 			}, this);
 		}
 		if (styleClass) this.styleClass = styleClass;
@@ -137,11 +133,14 @@ dojo.declare("course.geo.Style", null, {
 		var styleFunction = def.styleFunction;
 		if (styleFunction) {
 			this.styleFunction = {
-				func: dojo.isString(styleFunction.func) ? dojo.getObject(styleFunction.func) : styleFunction.func,
-				options: styleFunction.options,
 				// features may need this attribute to be aware that the style has changed
 				updated: (new Date()).getTime()
 			};
+			var func = styleFunction.func;
+			func = dojo.isString(func) ? dojo.getObject(func) : func;
+			for(var attr in styleFunction) {
+				this.styleFunction[attr] = (attr == "func") ? func : styleFunction[attr];
+			}
 		}
 		def = styleMixin({}, def);
 		this.def = def;
@@ -152,22 +151,20 @@ dojo.declare("course.geo.Style", null, {
 	}
 });
 
+/*
 s.reset = function() {
-	dojo.forEach([byFid, byClass, byClassAndFid], function(obj){
+	dojo.forEach([styleByFid, styleByClass, styleByClassAndFid], function(obj){
 		for(var key in obj) {
 			dojo.forEach(obj[key], function(style){
 				style.destroy();
 			})
 		}
 	});
-	byFid = {};
-	byClass = {};
-	byClassAndFid = {};
+	styleByFid = {};
+	styleByClass = {};
+	styleByClassAndFid = {};
 }
-
-s.getStyleById = function(id) {
-	return styleById[id];
-};
+*/
 
 s.calculateStyle = function(feature, mode) {
 	var styles = [];
@@ -210,17 +207,19 @@ function evaluateFilter(filter, feature) {
 
 var appendFeatureStyle = function(feature, styles, mode) {
 	// TODO: duplication of styleClass
-	var styleClass = feature.styleClass,
+	var m = feature.map;
+		styleClass = feature.styleClass,
 		fid = feature.id;
 	if (styleClass) {
 		dojo.forEach(styleClass, function(_styleClass){
+			var byClassAndFid = m.styleByClassAndFid;
 			if (byClassAndFid[_styleClass] && byClassAndFid[_styleClass][fid]) {
 				append(byClassAndFid[_styleClass][fid], styles, mode);
 			}
-			else if (byClass[_styleClass]) append(byClass[_styleClass], styles, mode);
+			else if (m.styleByClass[_styleClass]) append(m.styleByClass[_styleClass], styles, mode);
 		});
 	}
-	else if (byFid[fid]) append(byFid[fid], styles, mode);
+	else if (m.styleByFid[fid]) append(m.styleByFid[fid], styles, mode);
 
 	if (feature.style) append(feature.style, styles, mode);
 }

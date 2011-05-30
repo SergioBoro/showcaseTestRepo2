@@ -31,7 +31,6 @@ dojo.require("dijit.form.Select");
 
 dojo.require("course.geo.Map");
 
-dojo.require("course.geo.control.Magnify");
 dojo.require("course.geo.control.Highlight");
 dojo.require("course.geo.control.Tooltip");
 
@@ -42,13 +41,18 @@ dojo.require("courseApp.data.russia_features");
 
 dojo.require("course.geo.util.jenks");
 
-var map;
+var map, legend;
 var style = {
 	id: "populationDensity",
 	styleClass: "populationDensity",
 	stroke: "black",
 	strokeWidth: 1,
-	styleFunction: {func: "course.geo.util.jenks.generateStyle", options: {numClasses: 7, colorSchemeName: "Reds", attr: "indicator1"}}
+	name: "Population density",
+	styleFunction: {
+		func: "course.geo.util.jenks.generateStyle",
+		options: {numClasses: 7, colorSchemeName: "Reds", attr: "indicator1"},
+		legendFunc: "course.geo.util.jenks.generateLegend"
+	}
 }
 
 var setColorScheme = function(colorSchemeName, numClasses) {
@@ -69,7 +73,7 @@ var setColorScheme = function(colorSchemeName, numClasses) {
 	});
 	dojo.attr("selectedSchemeColors", "innerHTML", html);
 	
-	course.geo.styling.getStyleById("populationDensity").set(style);
+	map.getStyleById("populationDensity").set(style);
 }
 
 var firstRun = true;
@@ -85,7 +89,10 @@ var createColorSchemeGui = function(numClasses) {
 				name: "colorbrewer",
 				value: schemeName,
 				onChange: function(value) {
-					if (value!==false) setColorScheme(this.id, null);
+					if (value!==false) {
+						setColorScheme(this.id, null);
+						legend.refresh();
+					}
 				}
 			}).domNode,container);
 			dojo.place("<span id='colors"+ schemeName +"'></span><br>", container);
@@ -117,7 +124,6 @@ var addOnLoad = function() {
 		attributesInFeature: false
 	});
 	map.ready(function(){
-		//new course.geo.control.Magnify(map);
 		//new course.geo.control.Highlight(map);
 		// create <number of classes> dijit.form.Select
 		var numClasses = new dijit.form.Select({options:[
@@ -126,9 +132,12 @@ var addOnLoad = function() {
 		numClasses.watch("value", function(attr, oldValue, newValue){
 			createColorSchemeGui(newValue);
 			setColorScheme(null, newValue);
+			legend.refresh();
 		})
 		createColorSchemeGui(7);
 		dijit.byId("Oranges").set("checked", true);
+		dojo.require("course.geo.widget.Legend");
+		legend = new course.geo.widget.Legend({map: map}, "mapLegend");
 	});
 }
 
@@ -160,6 +169,8 @@ dojo.addOnLoad(addOnLoad);
 		</td>
 	</tr>
 </table>
+
+<div id="mapLegend"></div>
 
 </body>
 </html>

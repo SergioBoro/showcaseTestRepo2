@@ -14,7 +14,7 @@ var restoreMethods = function(map) {
 	}
 	
 	dojo.mixin(map.methods, {
-		Map: {render: map._render, loadStyles: map._loadStyles}
+		Map: {render: map._render}
 	});
 };
 
@@ -34,18 +34,25 @@ dojo.declare("course.geo.Map", null, {
     //	geometries: Object
 	//		A registry of geometries that can be referenced by id.
 	geometries: null,
-    //	styles: Object
-	//		A registry of styles that can be referenced by id.
-	styles: null,
 	//	featureContainer: course.geo.FeatureContainer
 	//		Top level course.geo.FeatureContainer
 	featureContainer: null,
 	
 	attributesInFeature: true,
 	
-	_featuresByClass: null,
+	styleById: null,
+	styleByFid: null,
+	styleByClass: null,
+	styleByClassAndFid: null,
+	featuresByClass: null,
 
 	constructor: function(/* DOMNode */container, /* Object? */kwArgs){
+		// initialize styling registries
+		this.styleById = {};
+		this.styleByFid = {};
+		this.styleByClass = {};
+		this.styleByClassAndFid = {};
+		this.featuresByClass = {};
 
 		restoreMethods(this);
 		
@@ -69,8 +76,7 @@ dojo.declare("course.geo.Map", null, {
 		// alias for this.featureContainer
 		this.document = this.featureContainer;
 		this.addStyle(course.geo.styling.style, true);
-		
-		this._featuresByClass = {};
+
 		if (kwArgs.style) this.addStyle(kwArgs.style, true);
 		
 		// set engine
@@ -169,7 +175,7 @@ dojo.declare("course.geo.Map", null, {
 	},
 
 	getStyleById: function(id) {
-		return this.styles[id];
+		return this.styleById[id];
 	},
 
 	registerFeature: function(feature) {
