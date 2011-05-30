@@ -34,8 +34,8 @@ public final class UploadHandler extends AbstractFilesHandler {
 	/**
 	 * Файлы, закаченные пользователем. Ключом является ссылка на файл (linkId).
 	 */
-	private final Map<String, DataFile<InputStream>> files =
-		new TreeMap<String, DataFile<InputStream>>();
+	private final Map<String, DataFile<ByteArrayOutputStream>> files =
+		new TreeMap<String, DataFile<ByteArrayOutputStream>>();
 
 	@Override
 	protected void processFiles() throws GeneralServerException {
@@ -77,14 +77,12 @@ public final class UploadHandler extends AbstractFilesHandler {
 				fileName = TextUtils.extractFileNameWithExt(fileName);
 
 				String linkId = name.replace(ExchangeConstants.FILE_DATA_PARAM_PREFIX, "");
-				files.put(linkId,
-						new DataFile<InputStream>(StreamConvertor.outputToInputStream(out),
-								fileName));
+				files.put(linkId, new DataFile<ByteArrayOutputStream>(out, fileName));
 			}
 		}
 	}
 
-	public Map<String, DataFile<InputStream>> getFiles() {
+	public Map<String, DataFile<ByteArrayOutputStream>> getFiles() {
 		return files;
 	}
 

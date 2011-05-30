@@ -14,6 +14,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
+import ru.curs.showcase.exception.XSDValidateException;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.util.*;
@@ -218,7 +219,8 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	public void testXFormsFileGatewayUpload() {
 		XFormsGateway gateway = new XFormsFileGateway();
 		final String linkId = "log4j.xml";
-		DataFile<InputStream> file = getTestFile(linkId);
+		DataFile<InputStream> file =
+			new DataFile<InputStream>(AppProps.loadResToStream(linkId), linkId);
 		gateway.uploadFile(null, null, linkId, null, file);
 	}
 
@@ -234,15 +236,16 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc5";
 		final String fileName = "log4j.xml";
-		DataFile<InputStream> file = getTestFile(fileName);
+		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		serviceLayer.uploadFile(context, element, linkId, null, file);
 		assertNotNull(context.getSession());
 	}
 
-	private DataFile<InputStream> getTestFile(final String linkId) {
-		DataFile<InputStream> file =
-			new DataFile<InputStream>(AppProps.loadResToStream(linkId), linkId);
+	private DataFile<ByteArrayOutputStream> getTestFile(final String linkId) throws IOException {
+		DataFile<ByteArrayOutputStream> file =
+			new DataFile<ByteArrayOutputStream>(StreamConvertor.inputToOutputStream(AppProps
+					.loadResToStream(linkId)), linkId);
 		return file;
 	}
 
@@ -258,7 +261,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc7";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
-		DataFile<InputStream> file = getTestFile(fileName);
+		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		serviceLayer.uploadFile(context, element, linkId, null, file);
 		assertNotNull(context.getSession());
@@ -268,18 +271,21 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 * Проверка загрузки на сервер не соответствующего схеме XML.
 	 * 
 	 * @throws IOException
-	 * @throws GeneralServerException
 	 */
-	@Test(expected = GeneralServerException.class)
-	public void testXFormsXMLUploadBad() throws IOException, GeneralServerException {
+	@Test(expected = XSDValidateException.class)
+	public void testXFormsXMLUploadBad() throws IOException {
 		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
+		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc8";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
-		DataFile<InputStream> file = getTestFile(fileName);
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.uploadFile(context, element, linkId, null, file);
-		assertNotNull(context.getSession());
+		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
+
+		UserXMLTransformer transformer =
+			new UserXMLTransformer(file, elementInfo.getProcs().get(linkId));
+		transformer.checkAndTransform();
+
+		XFormsGateway gateway = new XFormsDBGateway();
+		gateway.uploadFile(context, elementInfo, linkId, null, transformer.getInputStreamResult());
 	}
 
 	/**
@@ -300,15 +306,57 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка скачивания XML файла для XForms через ServiceLayer.
 	 * 
-	 * @throws GeneralServerException
 	 * @throws IOException
 	 */
-	@Test(expected = GeneralServerException.class)
-	public void testXFormsXMLDownloadBad() throws GeneralServerException, IOException {
+	@Test(expected = XSDValidateException.class)
+	public void testXFormsXMLDownloadBad() throws IOException {
 		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
+		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc10";
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.getDownloadFile(context, element, linkId, null);
+
+		XFormsGateway gateway = new XFormsDBGateway();
+		DataFile<ByteArrayOutputStream> file =
+			gateway.downloadFile(context, elementInfo, linkId, null);
+
+		UserXMLTransformer transformer =
+			new UserXMLTransformer(file, elementInfo.getProcs().get(linkId));
+		transformer.checkAndTransform();
+	}
+
+	/**
+	 * Тест сохранения данных через XFormsDBGateway c проверкой схемы и
+	 * трансформацией.
+	 * 
+	 */
+	@Test
+	public void testDBGatewayUpdateWithTransform() throws IOException {
+		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "10");
+
+		XFormsGateway gateway = new XFormsDBGateway();
+		String content = getNewContentBasedOnExisting(context, elementInfo, gateway);
+
+		UserXMLTransformer transformer =
+			new UserXMLTransformer(content, elementInfo.getSaveProc());
+		transformer.checkAndTransform();
+		gateway = new XFormsDBGateway();
+		CommandResult res = gateway.saveData(context, elementInfo, transformer.getStringResult());
+
+		assertTrue(res.getSuccess());
+	}
+
+	/**
+	 * Тест сохранения данных через XFormsDBGateway, приводящий к ошибке
+	 * проверки XSD.
+	 * 
+	 */
+	@Test(expected = XSDValidateException.class)
+	public void testDBGatewayUpdateWithUnSuccessTransform() throws IOException {
+		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "11");
+
+		String content = "<test>";
+		UserXMLTransformer transformer =
+			new UserXMLTransformer(content, elementInfo.getSaveProc());
+		transformer.checkAndTransform();
 	}
 }

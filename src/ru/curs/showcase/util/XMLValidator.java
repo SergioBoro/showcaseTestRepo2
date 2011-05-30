@@ -18,15 +18,6 @@ import ru.curs.showcase.exception.*;
  */
 public class XMLValidator {
 	/**
-	 * Стандартное сообщение об ошибке проверки XML.
-	 */
-	private static final String WRONG_DOC = "Документ не соответствует схеме: ";
-	/**
-	 * Стандартное расширенное сообщение об ошибке проверки XML.
-	 */
-	private static final String WRONG_DOC_EXT = "Документ не соответствует схеме %s: ";
-
-	/**
 	 * Источник для схем.
 	 */
 	private XSDSource xsdSource;
@@ -34,19 +25,21 @@ public class XMLValidator {
 	/**
 	 * Функция проверки XML (Template Method).
 	 * 
-	 * @param schema
-	 *            - имя файла схемы.
 	 * @param source
 	 *            - источник XML данных.
 	 */
-	public void validate(final String schema, final XMLSource source) {
+	public void validate(final XMLSource source) {
 		try {
-			Validator validator = createValidator(schema);
+			Validator validator = createValidator(source);
 			validator.validate(createSource(source));
 		} catch (SettingsFileOpenException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new XSDValidateException(getValidateError(schema) + e.getMessage());
+			if (source.getSubjectName() != null) {
+				throw new XSDValidateException(e, source.getSubjectName(), source.getSchemaName());
+			} else {
+				throw new XSDValidateException(e, source.getSchemaName());
+			}
 		}
 	}
 
@@ -54,9 +47,9 @@ public class XMLValidator {
 		return aSource.getExtractor().extract(aSource); // TODO некрасиво
 	}
 
-	private Validator createValidator(final String schema) throws SAXException {
+	private Validator createValidator(final XMLSource aSource) throws SAXException {
 		SchemaFactory schemaFactory = XMLUtils.createSchemaFactory();
-		File file = getFileForSchema(schema);
+		File file = getFileForSchema(aSource.getSchemaName());
 		// передавать InputStream и URL нельзя, т.к. в этом случае парсер не
 		// находит вложенных схем!
 		Schema schemaXSD = schemaFactory.newSchema(file);
@@ -71,14 +64,6 @@ public class XMLValidator {
 	public XMLValidator(final XSDSource aXsdSource) {
 		super();
 		xsdSource = aXsdSource;
-	}
-
-	private String getValidateError(final String xsdFileName) {
-		if (xsdFileName != null) {
-			return String.format(WRONG_DOC_EXT, xsdFileName);
-		} else {
-			return WRONG_DOC;
-		}
 	}
 
 	public XSDSource getXsdSource() {

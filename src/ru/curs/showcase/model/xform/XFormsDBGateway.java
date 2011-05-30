@@ -88,7 +88,8 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 			setDb(ConnectionFactory.getConnection());
 			CommandResult result;
 			try {
-				String sql = String.format(getSaveSqlTemplate(), elementInfo.getSaveProcName());
+				String sql =
+					String.format(getSaveSqlTemplate(), elementInfo.getSaveProc().getName());
 				setCs(getDb().prepareCall(sql));
 				getCs().registerOutParameter(1, java.sql.Types.INTEGER);
 				setupGeneralParameters();

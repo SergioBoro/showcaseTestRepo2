@@ -218,7 +218,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test(expected = SettingsFileOpenException.class)
 	public void testXSDNotFoundException() {
-		XMLUtils.xsdValidate(AppProps.loadResToStream("log4j.xml"), PHANTOM_XSD);
+		XMLUtils.xsdValidateUserData(AppProps.loadResToStream("log4j.xml"), PHANTOM_XSD);
 	}
 
 	/**

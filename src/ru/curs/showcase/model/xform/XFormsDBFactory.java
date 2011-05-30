@@ -44,7 +44,8 @@ public final class XFormsDBFactory extends HTMLBasedElementFactory {
 			stream = AppProps.loadUserDataToStream(file);
 
 		} catch (IOException e) {
-			throw new XFormsTemplateNotFound(getSource().getElementInfo().getTemplateName());
+			throw new SettingsFileOpenException(getSource().getElementInfo().getTemplateName(),
+					SettingsFileType.XFORM);
 		}
 
 		try {

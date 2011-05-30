@@ -63,10 +63,7 @@ public class GridEventManager extends EventManager {
 						newLink.getContext().setFilter("");
 						result.getDataPanelLink().getElementLinks().add(newLink);
 					}
-					newLink.getContext().setFilter(
-							newLink.getContext().getFilter()
-									+ Action.generateFilterContextLine(curLink.getContext()
-											.getAdditional()));
+					newLink.getContext().addFilterLine(curLink.getContext());
 				}
 			}
 		}
@@ -75,8 +72,10 @@ public class GridEventManager extends EventManager {
 			result.getDataPanelLink().getElementLinks().iterator();
 		while (literator.hasNext()) {
 			DataPanelElementLink newLink = literator.next();
-			newLink.getContext().setFilter(
-					Action.generateFilterContextGeneralPart(newLink.getContext().getFilter()));
+			newLink.getContext().finishFilter();
+			if (result.getDataPanelLink().getContext().getFilter() == null) {
+				result.getDataPanelLink().getContext().setFilter(newLink.getContext().getFilter());
+			}
 		}
 		return result;
 	}

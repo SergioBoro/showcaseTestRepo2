@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.server.*;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.GeneralXMLHelper;
 import ru.curs.showcase.model.datapanel.DataPanelXMLGateway;
 import ru.curs.showcase.util.*;
 
@@ -163,17 +163,18 @@ public class BaseObjectsTest {
 	 */
 	@Test
 	public void testXMLSourceCreate() {
-		XMLSource source = new XMLSource(AppProps.loadResToStream("log4j.xml"));
+		XMLSource source = new XMLSource(AppProps.loadResToStream("log4j.xml"), "");
 		assertNotNull(source.getInputStream());
 		assertNull(source.getDocument());
 		assertNull(source.getSaxParser());
 
-		source = new XMLSource(AppProps.loadResToStream("log4j.xml"), XMLUtils.createSAXParser());
+		source =
+			new XMLSource(AppProps.loadResToStream("log4j.xml"), XMLUtils.createSAXParser(), "");
 		assertNotNull(source.getInputStream());
 		assertNull(source.getDocument());
 		assertNotNull(source.getSaxParser());
 
-		source = new XMLSource(XMLUtils.createEmptyDoc("test"));
+		source = new XMLSource(XMLUtils.createEmptyDoc("test"), "");
 		assertNull(source.getInputStream());
 		assertNotNull(source.getDocument());
 		assertNull(source.getSaxParser());

@@ -135,7 +135,6 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Проверка актуализации Action для Tab на основе Action при обновлении
 	 * данных на открытой вкладке.
 	 * 
-	 * @
 	 */
 	@Test
 	public void testRefreshTab() {
@@ -163,7 +162,6 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Проверка установки DataPanelActionType.RELOAD_TAB при открытии новой
 	 * вкладки на уже открытой панели.
 	 * 
-	 * @
 	 */
 	@Test
 	public void testSwitchToNewTab() {
@@ -182,7 +180,6 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка актуализации действия типа firstOrCurrent.
 	 * 
-	 * @
 	 */
 	@Test
 	public void testFirstOrCurrentActualize() {
@@ -215,7 +212,6 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест на обновление дополнительного контекста.
 	 * 
-	 * @
 	 */
 	@Test
 	public void testUpdateAddContext() {
@@ -241,7 +237,6 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * 
 	 * @throws IOException
 	 * 
-	 *             @
 	 */
 	@Test
 	public void testRefreshNavigatorAction() throws IOException {
@@ -263,7 +258,6 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * 
 	 * @throws IOException
 	 * 
-	 *             @
 	 */
 	@Test
 	public void testRefreshContextOnlyAction() throws IOException {
@@ -278,7 +272,6 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * 
 	 * @throws IOException
 	 * 
-	 *             @
 	 */
 	@Test
 	public void testActionModalInfo() throws IOException {
@@ -305,7 +298,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Создаем тестовое действие с не дефолтными значениями всех возможных
 	 * атрибутов.
 	 * 
-	 * @return - действие. @
+	 * @return - действие.
 	 */
 	private Action createComplexTestAction() {
 		Action action = createSimpleTestAction();
@@ -391,9 +384,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testActionGenerateFilterContextLine() {
-		String filter = Action.generateFilterContextLine("add_context1");
-		filter = filter + Action.generateFilterContextLine("add_context2");
-		filter = Action.generateFilterContextGeneralPart(filter);
+		String filter = CompositeContext.generateFilterContextLine("add_context1");
+		filter = filter + CompositeContext.generateFilterContextLine("add_context2");
+		filter = CompositeContext.generateFilterContextGeneralPart(filter);
 		assertEquals(
 				"<filter><context>add_context1</context><context>add_context2</context></filter>",
 				filter);
@@ -402,7 +395,6 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка работы функции setCurrentAction у ActionHolder.
 	 * 
-	 * @
 	 */
 	@Test
 	public void testActionHolderSetCurrentAction() {
@@ -434,7 +426,6 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * 
 	 * @throws IOException
 	 * 
-	 *             @
 	 */
 	@Test
 	public void testActionKeepUserSettings() throws IOException {

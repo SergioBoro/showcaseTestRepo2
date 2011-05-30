@@ -17,6 +17,7 @@ public final class TextUtils {
 	 * Внутренняя кодировка Java. Все Java String имеют данную кодировку по
 	 * умолчанию.
 	 */
+	@SuppressWarnings("unused")
 	private static final String JAVA_ENCODING = "UTF-16";
 	/**
 	 * Кодировка по умолчанию в приложении. Все выходные и входные документы по
@@ -38,13 +39,13 @@ public final class TextUtils {
 	 * @return - строка с содержимым InputStream.
 	 * @throws IOException
 	 */
-	public static String convertStreamToString(final InputStream is) throws IOException {
+	public static String streamToString(final InputStream is) throws IOException {
 		if (is != null) {
 			Writer writer = new StringWriter();
 			final int bufMaxLen = 4096;
 			char[] buffer = new char[bufMaxLen];
 			try {
-				Reader reader = new BufferedReader(new InputStreamReader(is, JAVA_ENCODING));
+				Reader reader = new BufferedReader(new InputStreamReader(is, DEF_ENCODING));
 				int n;
 				while ((n = reader.read(buffer)) != -1) {
 					writer.write(buffer, 0, n);
@@ -67,8 +68,7 @@ public final class TextUtils {
 	 * @return - InputStream.
 	 * @throws UnsupportedEncodingException
 	 */
-	public static InputStream convertStringToStream(final String str)
-			throws UnsupportedEncodingException {
+	public static InputStream stringToStream(final String str) throws UnsupportedEncodingException {
 		return new ByteArrayInputStream(str.getBytes(DEF_ENCODING));
 
 	}

@@ -176,7 +176,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 * @return - результат проверки.
 	 */
 	public boolean enabledSimpleSave() {
-		return (getSaveProcName() != null);
+		return (getSaveProc() != null);
 	}
 
 	public final Boolean getHideOnLoad() {
@@ -188,17 +188,17 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	}
 
 	/**
-	 * Возвращает имя процедуры для сохранения данных. Такая процедура может
-	 * быть только одна.
+	 * Возвращает процедуру для сохранения данных. Такая процедура может быть
+	 * только одна.
 	 * 
-	 * @return - имя процедуры.
+	 * @return - процедура.
 	 */
-	public String getSaveProcName() {
+	public DataPanelElementProc getSaveProc() {
 		Iterator<DataPanelElementProc> iterator = procs.values().iterator();
 		while (iterator.hasNext()) {
 			DataPanelElementProc cur = iterator.next();
 			if (cur.getType() == DataPanelElementProcType.SAVE) {
-				return cur.getName();
+				return cur;
 			}
 		}
 		return null;

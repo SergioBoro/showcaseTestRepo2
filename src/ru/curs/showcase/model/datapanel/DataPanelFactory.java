@@ -125,11 +125,11 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 	 */
 	public DataPanel fromStream(final DataFile<InputStream> aFile) {
 		file = aFile;
-		InputStream streamForParse = XMLUtils.validateXMLStream(file.getData(), DATAPANEL_XSD);
+		XMLUtils.validateXMLStream(file, DATAPANEL_XSD);
 
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {
-			parser.parse(streamForParse, myHandler);
+			parser.parse(file.getData(), myHandler);
 		} catch (Throwable e) {
 			XMLUtils.stdSAXErrorHandler(e, file.getName());
 		}

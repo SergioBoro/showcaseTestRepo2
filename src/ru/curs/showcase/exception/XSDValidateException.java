@@ -11,23 +11,20 @@ public class XSDValidateException extends AbstractShowcaseException {
 	private static final long serialVersionUID = -4848505926999363486L;
 
 	/**
-	 * Текст ошибки.
+	 * Расширенный текст ошибки.
 	 */
-	private static final String ERROR_MES = "Документ не соответствует схеме";
+	private static final String EXT_ERROR_MES = "Документ '%s' не соответствует схеме '%s'";
 
-	public XSDValidateException(final Throwable cause) {
-		super(ERROR_MES, cause);
+	/**
+	 * Обычный текст ошибки.
+	 */
+	private static final String ERROR_MES = "Документ не соответствует схеме '%s'";
+
+	public XSDValidateException(final Throwable cause, final String subject, final String schema) {
+		super(String.format(EXT_ERROR_MES, subject, schema), cause);
 	}
 
-	public XSDValidateException() {
-		super(ERROR_MES);
-	}
-
-	public XSDValidateException(final String message, final Throwable cause) {
-		super(ERROR_MES + ": " + message, cause);
-	}
-
-	public XSDValidateException(final String message) {
-		super(message);
+	public XSDValidateException(final Throwable cause, final String schema) {
+		super(String.format(ERROR_MES, schema), cause);
 	}
 }

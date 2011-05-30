@@ -17,6 +17,7 @@ import org.w3c.dom.*;
 import org.xml.sax.*;
 
 import ru.curs.showcase.exception.*;
+import ru.curs.showcase.model.DataFile;
 
 /**
  * Реализует обработку XML (в частности, выполнение XSLT-преобразования).
@@ -417,20 +418,6 @@ public final class XMLUtils {
 	}
 
 	/**
-	 * Выполняет XSD-проверку документа.
-	 * 
-	 * @param doc
-	 *            org.w3c.dom.Document для проверки
-	 * @param xsdFileName
-	 *            Имя файла XSD-схемы
-	 * 
-	 */
-	public static void xsdValidate(final org.w3c.dom.Document doc, final String xsdFileName) {
-		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
-		validator.validate(xsdFileName, new XMLSource(doc));
-	}
-
-	/**
 	 * Выполняет XSD-проверку пользовательского документа.
 	 * 
 	 * @param doc
@@ -442,24 +429,7 @@ public final class XMLUtils {
 	public static void
 			xsdValidateUserData(final org.w3c.dom.Document doc, final String xsdFileName) {
 		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
-		validator.validate(xsdFileName, new XMLSource(doc));
-	}
-
-	/**
-	 * Выполняет XSD-проверку документа.
-	 * 
-	 * @param parser
-	 *            SAXParser
-	 * @param is
-	 *            InputStream для проверки
-	 * @param xsdFileName
-	 *            Имя файла XSD-схемы
-	 * 
-	 */
-	public static void xsdValidate(final SAXParser parser, final InputStream is,
-			final String xsdFileName) {
-		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
-		validator.validate(xsdFileName, new XMLSource(is, parser));
+		validator.validate(new XMLSource(doc, xsdFileName));
 	}
 
 	/**
@@ -476,7 +446,7 @@ public final class XMLUtils {
 	public static void xsdValidateUserData(final SAXParser parser, final InputStream is,
 			final String xsdFileName) {
 		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
-		validator.validate(xsdFileName, new XMLSource(is, parser));
+		validator.validate(new XMLSource(is, parser, xsdFileName));
 	}
 
 	/**
@@ -500,22 +470,9 @@ public final class XMLUtils {
 		InputStream stream1 = duplicator.getCopy();
 		InputStream stream2 = duplicator.getCopy();
 
-		XMLUtils.xsdValidate(stream1, schemaFile);
-		return stream2;
-	}
-
-	/**
-	 * Выполняет XSD-проверку документа.
-	 * 
-	 * @param is
-	 *            InputStream для проверки
-	 * @param xsdFileName
-	 *            Имя файла XSD-схемы
-	 * 
-	 */
-	public static void xsdValidate(final InputStream is, final String xsdFileName) {
 		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
-		validator.validate(xsdFileName, new XMLSource(is));
+		validator.validate(new XMLSource(stream1, schemaFile));
+		return stream2;
 	}
 
 	/**
@@ -529,7 +486,7 @@ public final class XMLUtils {
 	 */
 	public static void xsdValidateUserData(final InputStream is, final String xsdFileName) {
 		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
-		validator.validate(xsdFileName, new XMLSource(is));
+		validator.validate(new XMLSource(is, xsdFileName));
 	}
 
 	/**
@@ -580,5 +537,29 @@ public final class XMLUtils {
 			attrsString = attrsString + String.format("%s=\"%s\" ", name, value);
 		}
 		return "<" + qname + attrsString + ">";
+	}
+
+	/**
+	 * Функция проверки XML документа, переданного посредством DataFile,
+	 * позволяющая повторное чтение из переданного InputStream. Повторное чтение
+	 * обеспечивается с помощью клонирования InputStream.
+	 * 
+	 * @param file
+	 *            - файл с XML документом.
+	 * @param schema
+	 *            - наименование файла схемы.
+	 */
+	public static void validateXMLStream(final DataFile<InputStream> file, final String schema) {
+		StreamConvertor duplicator;
+		try {
+			duplicator = new StreamConvertor(file.getData());
+		} catch (IOException e) {
+			throw new CreateObjectError(e);
+		}
+		InputStream stream1 = duplicator.getCopy();
+		file.setData(duplicator.getCopy());
+
+		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
+		validator.validate(new XMLSource(stream1, file.getName(), schema));
 	}
 }

@@ -255,12 +255,19 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public CommandResult saveXForms(final CompositeContext context,
-			final DataPanelElementInfo element, final String data) throws GeneralServerException {
+			final DataPanelElementInfo elementInfo, final String data)
+			throws GeneralServerException {
 		try {
-			XFormsGateway gateway = new XFormsDBGateway();
 			prepareContext(context);
 			LOGGER.debug("Идет сохранение данных XForms: " + data);
-			CommandResult res = gateway.saveData(context, element, data);
+
+			UserXMLTransformer transformer =
+				new UserXMLTransformer(data, elementInfo.getSaveProc());
+			transformer.checkAndTransform();
+			XFormsGateway gateway = new XFormsDBGateway();
+			CommandResult res =
+				gateway.saveData(context, elementInfo, transformer.getStringResult());
+
 			outputDebugInfo(res);
 			return res;
 		} catch (Throwable e) {
@@ -321,12 +328,16 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			throws GeneralServerException {
 		try {
 			LOGGER.debug("Данные формы при выгрузке файла:" + data);
-			XFormsGateway gateway = new XFormsDBGateway();
 			prepareContext(context);
+
+			XFormsGateway gateway = new XFormsDBGateway();
 			DataFile<ByteArrayOutputStream> file =
 				gateway.downloadFile(context, elementInfo, linkId, data);
 
-			checkAndTransformDownloadFile(elementInfo.getProcs().get(linkId), file);
+			UserXMLTransformer transformer =
+				new UserXMLTransformer(file, elementInfo.getProcs().get(linkId));
+			transformer.checkAndTransform();
+			file = transformer.getOutputStreamResult();
 
 			LOGGER.debug(String
 					.format("Размер скачиваемого файла: %d байт", file.getData().size()));
@@ -338,61 +349,24 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public void uploadFile(final CompositeContext context, final DataPanelElementInfo elementInfo,
-			final String linkId, final String data, final DataFile<InputStream> file)
+			final String linkId, final String data, final DataFile<ByteArrayOutputStream> file)
 			throws GeneralServerException {
 		try {
 			LOGGER.debug("Данные формы при загрузке файла:" + data);
 			if (LOGGER.isDebugEnabled()) {
-				StreamConvertor sc = new StreamConvertor(file.getData());
-				ByteArrayOutputStream out = sc.getOutputStream();
-				file.setData(sc.getCopy());
-				LOGGER.debug("Получен файл '" + file.getName() + "' размером " + out.size()
-						+ " байт");
+				LOGGER.debug("Получен файл '" + file.getName() + "' размером "
+						+ file.getData().size() + " байт");
 			}
-
 			prepareContext(context);
 
-			checkAndTransformUploadFile(elementInfo.getProcs().get(linkId), file);
-
+			UserXMLTransformer transformer =
+				new UserXMLTransformer(file, elementInfo.getProcs().get(linkId));
+			transformer.checkAndTransform();
 			XFormsGateway gateway = new XFormsDBGateway();
-			gateway.uploadFile(context, elementInfo, linkId, data, file);
+			gateway.uploadFile(context, elementInfo, linkId, data,
+					transformer.getInputStreamResult());
 		} catch (Throwable e) {
 			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
 		}
-	}
-
-	private void checkAndTransformUploadFile(final DataPanelElementProc proc,
-			final DataFile<InputStream> file) throws IOException {
-		if (file.getData() == null) {
-			return;
-		}
-		if ((proc.getSchemaName() != null) || (proc.getTransformName() != null)) {
-			StreamConvertor sc = new StreamConvertor(file.getData());
-			InputStream is = checkAndTransformFile(proc, sc.getOutputStream());
-			file.setData(is);
-		}
-	}
-
-	private void checkAndTransformDownloadFile(final DataPanelElementProc proc,
-			final DataFile<ByteArrayOutputStream> file) throws IOException {
-		if ((proc.getSchemaName() != null) || (proc.getTransformName() != null)) {
-			InputStream is = checkAndTransformFile(proc, file.getData());
-			file.setData(StreamConvertor.inputToOutputStream(is));
-		}
-	}
-
-	private InputStream checkAndTransformFile(final DataPanelElementProc proc,
-			final ByteArrayOutputStream xml) throws IOException {
-		if (proc.getSchemaName() != null) {
-			XMLValidator validator = new XMLValidator(new UserDataXSDSource());
-			InputStream is = StreamConvertor.outputToInputStream(xml);
-			validator.validate(proc.getSchemaName(), new XMLSource(is));
-		}
-		if (proc.getTransformName() != null) {
-			InputStream is = StreamConvertor.outputToInputStream(xml);
-			String res = XMLUtils.xsltTransform(is, proc.getTransformName());
-			return TextUtils.convertStringToStream(res);
-		}
-		return StreamConvertor.outputToInputStream(xml);
 	}
 }

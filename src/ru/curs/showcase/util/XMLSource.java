@@ -15,6 +15,15 @@ import org.w3c.dom.Document;
  */
 public class XMLSource {
 	/**
+	 * Имя проверяемого файла (если поток был получен из файловой системы).
+	 */
+	private String subjectName;
+
+	/**
+	 * Имя схемы для проверки.
+	 */
+	private String schemaName;
+	/**
 	 * Поток с XML данными.
 	 */
 	private InputStream inputStream;
@@ -43,20 +52,32 @@ public class XMLSource {
 		return null;
 	}
 
-	public XMLSource(final InputStream aInputStream, final SAXParser aSaxParser) {
+	public XMLSource(final InputStream aInputStream, final SAXParser aSaxParser,
+			final String aSchemaName) {
 		super();
 		inputStream = aInputStream;
 		saxParser = aSaxParser;
+		schemaName = aSchemaName;
 	}
 
-	public XMLSource(final Document aDocument) {
+	public XMLSource(final Document aDocument, final String aSchemaName) {
 		super();
 		document = aDocument;
+		schemaName = aSchemaName;
 	}
 
-	public XMLSource(final InputStream aInputStream) {
+	public XMLSource(final InputStream aInputStream, final String aSchemaName) {
 		super();
 		inputStream = aInputStream;
+		schemaName = aSchemaName;
+	}
+
+	public XMLSource(final InputStream aInputStream, final String aSubjectName,
+			final String aSchemaName) {
+		super();
+		inputStream = aInputStream;
+		subjectName = aSubjectName;
+		schemaName = aSchemaName;
 	}
 
 	public InputStream getInputStream() {
@@ -81,5 +102,21 @@ public class XMLSource {
 
 	public void setSaxParser(final SAXParser aSaxParser) {
 		saxParser = aSaxParser;
+	}
+
+	public String getSubjectName() {
+		return subjectName;
+	}
+
+	public void setSubjectName(final String aSubjectName) {
+		subjectName = aSubjectName;
+	}
+
+	public String getSchemaName() {
+		return schemaName;
+	}
+
+	public void setSchemaName(final String aSchemaName) {
+		schemaName = aSchemaName;
 	}
 }

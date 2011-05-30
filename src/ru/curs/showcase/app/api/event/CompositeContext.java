@@ -224,6 +224,31 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	}
 
 	/**
+	 * Возвращает строку фильтра на основе переданного дополнительного
+	 * контекста.
+	 * 
+	 * @param aAdditional
+	 *            - значение дополнительного контекста.
+	 * @return - строка фильтра.
+	 */
+	public static String generateFilterContextLine(final String aAdditional) {
+		return "<" + Action.CONTEXT_TAG + ">" + aAdditional + "</" + Action.CONTEXT_TAG + ">";
+	}
+
+	/**
+	 * Генерирует общую часть фильтра использую переменную часть, зависящую от
+	 * выделенных строк.
+	 * 
+	 * @param aMutableFilterPart
+	 *            - переменная часть фильтра.
+	 * @return - строка с фильтром, готовая к использованию в хранимой
+	 *         процедуре.
+	 */
+	public static String generateFilterContextGeneralPart(final String aMutableFilterPart) {
+		return "<" + Action.FILTER_TAG + ">" + aMutableFilterPart + "</" + Action.FILTER_TAG + ">";
+	}
+
+	/**
 	 * Функция, создающая "текущий" контекст.
 	 * 
 	 * @return - контекст.
@@ -233,5 +258,22 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		res.main = CURRENT_ID;
 		res.additional = CURRENT_ID;
 		return res;
+	}
+
+	/**
+	 * Функция добавления строки фильтра в контекст.
+	 * 
+	 * @param source
+	 *            - контекст источник для фильтра.
+	 */
+	public void addFilterLine(final CompositeContext source) {
+		filter = filter + generateFilterContextLine(source.additional);
+	}
+
+	/**
+	 * Заканчивает построение фильтра контекста добавляя общую часть.
+	 */
+	public void finishFilter() {
+		filter = generateFilterContextGeneralPart(filter);
 	}
 }

@@ -98,7 +98,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("08");
 		assertNotNull(el);
 		assertEquals(2, el.getProcs().values().size());
-		assertEquals("xforms_saveproc1", el.getSaveProcName());
+		assertEquals("xforms_saveproc1", el.getSaveProc().getName());
 		DataPanelElementProc proc = el.getProcs().get("proc2");
 		assertNotNull(proc);
 		assertEquals("proc2", proc.getId());

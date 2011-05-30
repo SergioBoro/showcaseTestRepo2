@@ -310,31 +310,6 @@ public class Action implements SerializableElement, GWTClonable {
 		}
 	}
 
-	/**
-	 * Возвращает строку фильтра на основе переданного дополнительного
-	 * контекста.
-	 * 
-	 * @param aAdditional
-	 *            - значение дополнительного контекста.
-	 * @return - строка фильтра.
-	 */
-	public static String generateFilterContextLine(final String aAdditional) {
-		return "<" + CONTEXT_TAG + ">" + aAdditional + "</" + CONTEXT_TAG + ">";
-	}
-
-	/**
-	 * Генерирует общую часть фильтра использую переменную часть, зависящую от
-	 * выделенных строк.
-	 * 
-	 * @param aMutableFilterPart
-	 *            - переменная часть фильтра.
-	 * @return - строка с фильтром, готовая к использованию в хранимой
-	 *         процедуре.
-	 */
-	public static String generateFilterContextGeneralPart(final String aMutableFilterPart) {
-		return "<" + FILTER_TAG + ">" + aMutableFilterPart + "</" + FILTER_TAG + ">";
-	}
-
 	public ShowInMode getShowInMode() {
 		return showInMode;
 	}
