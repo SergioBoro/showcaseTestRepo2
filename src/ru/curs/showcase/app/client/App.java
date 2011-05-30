@@ -1,12 +1,12 @@
 package ru.curs.showcase.app.client;
 
-import ru.curs.showcase.app.client.utils.AccessToDomModel;
+import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * Класс точки входа в ПЦЕ часть приложения. Используется функция
+ * Класс точки входа в GWT часть приложения. Используется функция
  * <code>onModuleLoad()</code>.
  */
 public class App implements EntryPoint {
@@ -37,8 +37,7 @@ public class App implements EntryPoint {
 	}
 
 	private void addUserDataCSS() {
-		AccessToDomModel.addCSSLink("css/solution.css");
-		AccessToDomModel.addCSSLink("css/solutionGrid.css");
+		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/solution.css"));
+		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/solutionGrid.css"));
 	}
-
 }

@@ -43,6 +43,18 @@ public class AppPropsTest extends AbstractTestBasedOnFiles {
 		AppProps.getRequiredValueByName(SecurityParamsFactory.AUTH_SERVER_URL_PARAM);
 		AppProps.getRequiredValueByName(ConnectionFactory.CONNECTION_URL_PARAM);
 		assertNotNull(AppProps.getOptionalValueByName(ConnectionFactory.CONNECTION_URL_PARAM));
+
+		assertEquals("group_icon_default1.png",
+				AppProps.getOptionalValueByName("navigator.def.icon.name", "test1"));
+	}
+
+	/**
+	 * Тест ф-ции getUserDataId.
+	 * 
+	 */
+	@Test
+	public final void testGetUserDataId() {
+		assertEquals(AppProps.SHOWCASE_USER_DATA_DEFAULT, AppProps.getUserDataId());
 	}
 
 	/**

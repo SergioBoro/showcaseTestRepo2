@@ -12,8 +12,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
 	<title>Showcase index page</title>
     <link rel="stylesheet" href="xsltforms/xsltforms.css" type="text/css" />	
-	<link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon" />
-	<link rel="icon" href="resources/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />
     <script type="text/javascript" language="javascript" src="secured/secured.nocache.js"></script>
     
     <link rel="stylesheet" href="js/dijit/themes/claro/claro.css"/>
@@ -26,7 +26,7 @@
     <script src="js/course/geo/Map.js"></script>
     <script src="js/course/geo/Style.js"></script>
     <script src="js/internalShowcase.js"></script>
-    <script src="js/solution.js"></script>
+    <script src="solutions/default/js/solution.js"></script>
     
     <script>
      var appContextPath="Showcase";

@@ -10,8 +10,8 @@ pageEncoding="UTF-8"%>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
 	<title>Авторизация в КУРС: Showcase</title>
-	<link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon" />
-	<link rel="icon" href="resources/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />
 	
 
 <script src="js/dojo/dojo.js" djConfig="isDebug: false, parseOnLoad: false"></script>

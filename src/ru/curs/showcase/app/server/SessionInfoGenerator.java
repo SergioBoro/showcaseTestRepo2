@@ -6,6 +6,7 @@ import org.slf4j.*;
 import org.w3c.dom.*;
 
 import ru.curs.showcase.model.GeneralXMLHelper;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.XMLUtils;
 
 /**
@@ -25,6 +26,7 @@ public final class SessionInfoGenerator extends GeneralXMLHelper {
 	public static final String USERNAME_TAG = "username";
 	public static final String URL_PARAMS_TAG = "urlparams";
 	public static final String URL_PARAM_TAG = "urlparam";
+	public static final String USERDATA_TAG = "userdata";
 
 	private SessionInfoGenerator() {
 		throw new UnsupportedOperationException();
@@ -67,14 +69,25 @@ public final class SessionInfoGenerator extends GeneralXMLHelper {
 			Iterator<String> iterator = params.keySet().iterator();
 			while (iterator.hasNext()) {
 				String key = iterator.next();
-				Element child = info.createElement(URL_PARAM_TAG);
-				node.appendChild(child);
-				child.setAttribute(NAME_TAG, key);
-				String value = "";
-				if (params.get(key) != null) {
-					value = Arrays.toString(params.get(key));
+				if (!(AppProps.URL_PARAM_USERDATA.equals(key))) {
+					Element child = info.createElement(URL_PARAM_TAG);
+					node.appendChild(child);
+					child.setAttribute(NAME_TAG, key);
+					String value = "";
+					if (params.get(key) != null) {
+						value = Arrays.toString(params.get(key));
+					}
+					child.setAttribute(VALUE_TAG, value);
 				}
-				child.setAttribute(VALUE_TAG, value);
+			}
+
+			if (params.get(AppProps.URL_PARAM_USERDATA) != null) {
+				node = info.createElement(USERDATA_TAG);
+				info.getDocumentElement().appendChild(node);
+				String value =
+					Arrays.toString(params.get(AppProps.URL_PARAM_USERDATA)).replace("[", "")
+							.replace("]", "");
+				node.setTextContent(value);
 			}
 		}
 	}

@@ -60,8 +60,8 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		col = grid.getDataSet().getColumnSet().getColumns().get(1);
 		assertEquals(HorizontalAlignment.CENTER, col.getHorizontalAlignment());
 		assertEquals(GridValueType.IMAGE, col.getValueType());
-		assertEquals("resources/imagesingrid/test.jpg", grid.getDataSet().getRecordSet()
-				.getRecords().get(0).getValue(col));
+		assertEquals("solutions/default/resources/imagesingrid/test.jpg", grid.getDataSet()
+				.getRecordSet().getRecords().get(0).getValue(col));
 		col = grid.getDataSet().getColumnSet().getColumns().get(2);
 		assertEquals(HorizontalAlignment.RIGHT, col.getHorizontalAlignment());
 		assertEquals(precision, col.getFormat());

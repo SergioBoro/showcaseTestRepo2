@@ -25,9 +25,6 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		LOGGER.debug(SHOWCASE_LOADING);
 		AppInitializer.initialize();
 		ProductionModeInitializer.initialize(arg0);
-		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
-			AppInitializer.readPathProperties();
-		}
 	}
 
 	@Override

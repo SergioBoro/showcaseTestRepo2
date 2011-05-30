@@ -2,8 +2,9 @@ package ru.curs.showcase.util;
 
 import java.io.*;
 import java.net.URL;
-import java.util.Properties;
+import java.util.*;
 
+import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.SettingsFileType;
 
@@ -21,15 +22,27 @@ public final class AppProps {
 	public static final String PATH_PROPERTIES = "path.properties";
 
 	/**
-	 * SHOWCASE_USER_DATA_DEFAULT.
+	 * Идентификатор userdata по-умолчанию.
 	 */
 	public static final String SHOWCASE_USER_DATA_DEFAULT = "default";
 
 	/**
-	 * Параметр в файле настроек путей приложения, содержащий путь к
-	 * пользовательским данным.
+	 * Название параметра userdata в URL.
 	 */
-	public static final String USER_DATA = "user.data";
+	public static final String URL_PARAM_USERDATA = "userdata";
+
+	/**
+	 * Каталог на сервере с решениями (сейчас туда копируются userdata при
+	 * старте сервера).
+	 */
+	public static final String SOLUTIONS_DIR = "solutions";
+
+	/**
+	 * Часть названия параметров в app.properties, относящихся к системе
+	 * аутентификации(authserver).
+	 */
+	public static final String AUTHSERVERURL_PART = "authserverurl";
+
 	/**
 	 * Имя файла с настройками приложения.
 	 */
@@ -43,6 +56,10 @@ public final class AppProps {
 	 */
 	public static final String XSLTTRANSFORMSFORGRIDDIR = "xslttransformsforgrid";
 	/**
+	 * SCHEMASDIR.
+	 */
+	public static final String SCHEMASDIR = "schemas";
+	/**
 	 * GRIDDATAXSL.
 	 */
 	public static final String GRIDDATAXSL = "GridData.xsl";
@@ -53,18 +70,21 @@ public final class AppProps {
 	public static final String XFORMS_DIR = "xforms";
 
 	/**
-	 * Каталог со схемами Showcase - внутренними и пользовательскими.
+	 * NAVIGATOR_ICONS_DIRNAME.
 	 */
-	public static final String SCHEMASDIR = "schemas";
+	private static final String NAVIGATOR_ICONS_DIR_NAME = "navigator.icons.dir.name";
+	/**
+	 * IMAGES_IN_GRID_DIR.
+	 */
+	private static final String IMAGES_IN_GRID_DIR = "images.in.grid.dir";
 
 	/**
-	 * Properties с настройками приложения.
+	 * DIR_IN_SOLUTIONS.
 	 */
-	private static Properties props = null;
-	/**
-	 * Путь к каталогу с пользовательскими данными.
-	 */
-	private static String userDataCatalog = null;
+	private static final String DIR_IN_SOLUTIONS = SOLUTIONS_DIR + "/%s/%s";
+
+	/** Список Properties с настройками приложения. */
+	private static HashMap<String, Properties> props = new HashMap<String, Properties>();
 
 	private AppProps() {
 		throw new UnsupportedOperationException();
@@ -72,7 +92,7 @@ public final class AppProps {
 
 	/**
 	 * Универсальная функция загрузки внутренних ресурсов Web-приложения по
-	 * относительному пути используя Java ClassLoader (например, файлов
+	 * относительному пути, используя Java ClassLoader (например, файлов
 	 * конфигурации). Загрузка идет из папки classes.
 	 * 
 	 * @param fileName
@@ -88,7 +108,7 @@ public final class AppProps {
 
 	/**
 	 * Универсальная функция получения URL внутренних ресурсов Web-приложения по
-	 * относительному пути используя Java ClassLoader (например, файлов
+	 * относительному пути, используя Java ClassLoader (например, файлов
 	 * конфигурации). Загрузка идет из папки classes.
 	 * 
 	 * @param fileName
@@ -103,31 +123,50 @@ public final class AppProps {
 	}
 
 	/**
-	 * Функция загрузки пользовательских ресурсов Web-приложения используя
-	 * стандартный java IO API. Загрузка идет из каталога пользовательских
-	 * ресурсов, определенном в файле path.properties.
+	 * Функция загрузки пользовательских ресурсов Web-приложения, используя
+	 * стандартный java IO API. Загрузка идет из каталога текущей userdata.
 	 * 
 	 * @param fileName
-	 *            - путь к загружаемому файлу в каталоге пользовательских
-	 *            данных.
+	 *            - путь к загружаемому файлу в каталоге userdata
 	 * @return поток с файлом.
 	 * @throws IOException
 	 */
 	public static InputStream loadUserDataToStream(final String fileName) throws IOException {
-		initPaths();
-		FileInputStream result = new FileInputStream(userDataCatalog + File.separator + fileName);
+		FileInputStream result =
+			new FileInputStream(getUserDataCatalog() + File.separator + fileName);
 		return result;
 	}
 
 	/**
-	 * Получает значение обязательного параметра по его имени.
+	 * Функция загрузки пользовательских ресурсов Web-приложения, используя
+	 * стандартный java IO API. Загрузка идет из каталога userdata с
+	 * идентификатором userdataId.
+	 * 
+	 * @param fileName
+	 *            путь к загружаемому файлу в каталоге userdata
+	 * @param userdataId
+	 *            идентификатор userdata
+	 * @return поток с файлом.
+	 * @throws IOException
+	 */
+	private static InputStream
+			loadUserDataToStream(final String fileName, final String userdataId)
+					throws IOException {
+		FileInputStream result =
+			new FileInputStream(getUserDataCatalog(userdataId) + File.separator + fileName);
+		return result;
+	}
+
+	/**
+	 * Получает значение обязательного параметра по его имени из текущей
+	 * userdata.
 	 * 
 	 * @param propName
 	 *            - имя параметра.
 	 * @return - значение параметра.
 	 */
 	public static String getRequiredValueByName(final String propName) {
-		String result = generalReadFunc(propName);
+		String result = generalReadFunc(propName, null);
 		if (result == null) {
 			throw new SettingsFileRequiredPropException(PROPFILENAME, propName,
 					SettingsFileType.APP_PROPERTIES);
@@ -136,22 +175,69 @@ public final class AppProps {
 	}
 
 	/**
-	 * Получает значение необязательного параметра по его имени.
+	 * Получает значение обязательного параметра по его имени из userdata с
+	 * идентификатором userdataId.
+	 * 
+	 * @param propName
+	 *            - имя параметра.
+	 * @param userdataId
+	 *            идентификатор userdata, из которого будет считан параметр
+	 * @return - значение параметра.
+	 */
+	public static String getRequiredValueByName(final String propName, final String userdataId) {
+		String result = generalReadFunc(propName, userdataId);
+		if (result == null) {
+			throw new SettingsFileRequiredPropException(PROPFILENAME, propName,
+					SettingsFileType.APP_PROPERTIES);
+		}
+		return result;
+	}
+
+	/**
+	 * Получает значение необязательного параметра по его имени из текущей
+	 * userdata.
 	 * 
 	 * @param propName
 	 *            - имя параметра.
 	 * @return - значение параметра.
 	 */
 	public static String getOptionalValueByName(final String propName) {
-		return generalReadFunc(propName);
+		return generalReadFunc(propName, null);
 	}
 
-	private static String generalReadFunc(final String propName) {
+	/**
+	 * Получает значение необязательного параметра по его имени из userdata с
+	 * идентификатором userdataId.
+	 * 
+	 * @param propName
+	 *            - имя параметра.
+	 * @param userdataId
+	 *            идентификатор userdata, из которого будет считан параметр
+	 * @return - значение параметра.
+	 */
+	public static String getOptionalValueByName(final String propName, final String userdataId) {
+		return generalReadFunc(propName, userdataId);
+	}
+
+	private static String generalReadFunc(final String propName, final String aUserdataId) {
 		try {
-			init();
-			String result = props.getProperty(propName);
+			String userdataId = aUserdataId;
+			if (propName.trim().contains(AUTHSERVERURL_PART)) {
+				userdataId = SHOWCASE_USER_DATA_DEFAULT;
+			}
+
+			String result = getProperties(userdataId).getProperty(propName);
 			if (result != null) {
 				result = result.trim();
+
+				if (NAVIGATOR_ICONS_DIR_NAME.equals(propName)
+						|| IMAGES_IN_GRID_DIR.equals(propName)) {
+					if (userdataId == null) {
+						userdataId = getUserDataId();
+					}
+					result = String.format(DIR_IN_SOLUTIONS, userdataId, result);
+				}
+
 			}
 			return result;
 		} catch (IOException e) {
@@ -159,43 +245,82 @@ public final class AppProps {
 		}
 	}
 
-	private static void init() throws IOException {
-		initPaths();
-
-		if (props == null) {
-			props = new Properties();
-			props.load(new InputStreamReader(loadUserDataToStream(PROPFILENAME), "UTF8"));
+	private static Properties getProperties(final String aUserdataId) throws IOException {
+		String userdataId;
+		if (aUserdataId == null) {
+			userdataId = getUserDataId();
+		} else {
+			userdataId = aUserdataId;
 		}
-	}
 
-	private static void initPaths() throws IOException {
-		if (userDataCatalog == null) {
-			Properties paths = new Properties();
-			paths.load(new InputStreamReader(loadResToStream(PATH_PROPERTIES), "UTF8"));
-			userDataCatalog = paths.getProperty(USER_DATA);
-			if (userDataCatalog == null) {
-				throw new SettingsFileRequiredPropException(PATH_PROPERTIES, USER_DATA,
-						SettingsFileType.PATH_PROPERTIES);
-			}
+		Properties prop = props.get(userdataId);
+		if (prop == null) {
+			prop = new Properties();
+			prop.load(new InputStreamReader(loadUserDataToStream(PROPFILENAME, userdataId), "UTF8"));
+			props.put(userdataId, prop);
 		}
+		return prop;
 	}
 
 	/**
-	 * Возвращает текущий каталог с данными пользователя.
+	 * Возвращает идентификатор текущей userdata.
+	 * 
+	 * @return - идентификатор текущей userdata.
+	 */
+	public static String getUserDataId() {
+		String userdataId = null;
+
+		String sessionId = ServletUtils.getSessionId();
+		if (sessionId != null) {
+			userdataId = AppInfoSingleton.getAppInfo().getUserDataIdForSession(sessionId);
+		}
+
+		if (userdataId == null) {
+			userdataId = SHOWCASE_USER_DATA_DEFAULT;
+		}
+
+		return userdataId;
+	}
+
+	/**
+	 * Возвращает каталог с данными пользователя из текущей userdata.
 	 * 
 	 * @return - каталог.
 	 */
 	public static String getUserDataCatalog() {
-		try {
-			initPaths();
-		} catch (IOException e) {
-			throw new SettingsFileOpenException(e, PATH_PROPERTIES,
-					SettingsFileType.PATH_PROPERTIES);
+		String userDataCatalog = null;
+
+		String userdataId = getUserDataId();
+		UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
+		if (us != null) {
+			userDataCatalog = us.getPath();
 		}
+
 		return userDataCatalog;
+
 	}
 
-	public static void setUserDataCatalog(final String aUserDataCatalog) {
-		userDataCatalog = aUserDataCatalog;
+	/**
+	 * Возвращает каталог с данными пользователя из userdata с идентификатором
+	 * userdataId.
+	 * 
+	 * @param userdataId
+	 *            идентификатор userdata
+	 * @return - каталог.
+	 */
+	private static String getUserDataCatalog(final String userdataId) {
+		String userDataCatalog = null;
+
+		if (userdataId == null) {
+			userDataCatalog = getUserDataCatalog();
+		} else {
+			UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
+			if (us != null) {
+				userDataCatalog = us.getPath();
+			}
+		}
+
+		return userDataCatalog;
+
 	}
 }

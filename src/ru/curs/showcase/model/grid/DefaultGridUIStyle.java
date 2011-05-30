@@ -21,6 +21,7 @@ public final class DefaultGridUIStyle implements GridUIStyle {
 	static final String DEF_VISIBLE_EXPORTTOEXCEL_CURRENTPAGE =
 		"def.visible.exporttoexcel.currentpage";
 	static final String DEF_VISIBLE_EXPORTTOEXCEL_ALL = "def.visible.exporttoexcel.all";
+	static final String DEF_VISIBLE_COPYTOCLIPBOARD = "def.visible.copytoclipboard";
 	static final String DEF_VISIBLE_RECORDS_SELECTOR = "def.visible.records.selector";
 	static final String DEF_VISIBLE_COLUMNS_HEADER = "def.visible.columns.header";
 	static final String SINGLE_CLICK_BEFORE_DOUBLE = "single.click.before.double";
@@ -94,6 +95,10 @@ public final class DefaultGridUIStyle implements GridUIStyle {
 		boolValue = gp.stdReadBoolGridValue(DEF_VISIBLE_EXPORTTOEXCEL_ALL);
 		if (boolValue != null) {
 			settings.setVisibleExportToExcelAll(boolValue);
+		}
+		boolValue = gp.stdReadBoolGridValue(DEF_VISIBLE_COPYTOCLIPBOARD);
+		if (boolValue != null) {
+			settings.setVisibleCopyToClipboard(boolValue);
 		}
 		boolValue = gp.stdReadBoolGridValue(DEF_VISIBLE_RECORDS_SELECTOR);
 		if (boolValue != null) {

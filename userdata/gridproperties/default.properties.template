@@ -28,5 +28,6 @@ def.visible.columngroups.customizer = false
 def.visible.pager = true
 def.visible.exporttoexcel.currentpage = true
 def.visible.exporttoexcel.all = true
+def.visible.copytoclipboard = true
 def.visible.records.selector = true
 def.visible.columns.header = true

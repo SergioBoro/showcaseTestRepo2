@@ -46,6 +46,11 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	 */
 	private final PushButton exportToExcelAll = new PushButton(new Image(
 			Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL));
+	/**
+	 * PushButton copyToClipboard.
+	 */
+	private final PushButton copyToClipboard = new PushButton(new Image(
+			Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
 
 	/**
 	 * HorizontalPanel hpFooter.
@@ -333,7 +338,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 		hpToolbar.setSpacing(1);
 		if (grid.getUISettings().isVisibleExportToExcelCurrentPage()) {
-			exportToExcelCurrentPage.setTitle("Экспорт в Excel текущей страницы");
+			exportToExcelCurrentPage.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE);
 			exportToExcelCurrentPage.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -343,7 +348,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			hpToolbar.add(exportToExcelCurrentPage);
 		}
 		if (grid.getUISettings().isVisibleExportToExcelAll()) {
-			exportToExcelAll.setTitle("Экспорт в Excel всей таблицы");
+			exportToExcelAll.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_ALL);
 			exportToExcelAll.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -351,6 +356,16 @@ public class DataGridPanel extends BasicElementPanelBasis {
 				}
 			});
 			hpToolbar.add(exportToExcelAll);
+		}
+		if (grid.getUISettings().isVisibleCopyToClipboard()) {
+			copyToClipboard.setTitle(Constants.GRID_CAPTION_COPY_TO_CLIPBOARD);
+			copyToClipboard.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(final ClickEvent event) {
+					copyToClipboard();
+				}
+			});
+			hpToolbar.add(copyToClipboard);
 		}
 
 		p.clear();
@@ -486,6 +501,20 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			MessageBox
 					.showSimpleMessage(Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL, e.getMessage());
 		}
+	}
+
+	private void copyToClipboard() {
+		StringBuilder b = new StringBuilder();
+		List<Column> columns = cs.getVisibleColumnsByIndex();
+		for (Record r : dg.getSelection().getSelectedRecords()) {
+			String d = "";
+			for (Column c : columns) {
+				b.append(d).append(r.getValues().get(c.getId()));
+				d = "\t";
+			}
+			b.append("\n");
+		}
+		new ClipboardDialog(b.toString()).center();
 	}
 
 	// -------------------------------------------------------

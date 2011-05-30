@@ -71,7 +71,7 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 				.getId());
 		assertEquals("1", firstGroup.getId());
 		assertEquals("Балансы зерна", firstGroup.getName());
-		assertEquals("resources/group_icon_default.png", firstGroup.getImageId());
+		assertEquals("solutions/default/resources/group_icon_default.png", firstGroup.getImageId());
 		assertEquals(FIRST_GRP_ELEMENTS_COUNT, firstGroup.getElements().size());
 		assertEquals(0, firstGroup.getElements().get(0).getElements().size());
 		assertEquals(1, firstGroup.getElements().get(1).getElements().size());

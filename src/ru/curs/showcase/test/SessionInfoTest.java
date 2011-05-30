@@ -15,6 +15,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.server.*;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.XMLUtils;
 
 /**
@@ -29,6 +30,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	static final String VALUE12 = "value1";
 	static final String KEY1 = "key1";
 	static final String FAKE_SESSION_ID = "fake-session-id";
+	static final String USERDATA_ID = "test1";
 
 	/**
 	 * Базовый тест на запись и чтение URLParams.
@@ -45,6 +47,8 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		params.put(KEY1, value1);
 		String[] value2 = { "value21", "value22" };
 		params.put("key2", value2);
+		String[] value3 = { USERDATA_ID };
+		params.put(AppProps.URL_PARAM_USERDATA, value3);
 		AppInfoSingleton.getAppInfo().setParams(FAKE_SESSION_ID, params);
 		AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(FAKE_SESSION_ID,
 				AUTH_VIA_AUTH_SERVER);
@@ -74,9 +78,15 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		assertEquals("[" + VALUE12 + "]", node.getChildNodes().item(1).getAttributes()
 				.getNamedItem(VALUE_TAG).getNodeValue());
 
+		final int indexUserdata = 5;
+		node = doc.getDocumentElement().getChildNodes().item(indexUserdata);
+		assertEquals(SessionInfoGenerator.USERDATA_TAG, node.getNodeName());
+		assertEquals(USERDATA_ID, node.getTextContent());
+
 		assertEquals(AUTH_VIA_AUTH_SERVER, AppInfoSingleton.getAppInfo()
 				.getAuthViaAuthServerForSession(FAKE_SESSION_ID));
 		assertEquals(TEMP_PASS, AppInfoSingleton.getAppInfo()
 				.getAuthServerCrossAppPasswordForSession(FAKE_SESSION_ID));
+
 	}
 }

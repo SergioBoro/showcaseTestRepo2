@@ -19,11 +19,10 @@ import ru.curs.showcase.util.*;
  * 
  */
 public final class ProductionModeInitializer {
+
 	static final String SHOWCASE_USER_DATA_PARAM = "showcase.user.data";
 	static final String USER_DATA_INFO =
 		"Добавлен userdata из context.xml с идентификатором '%s' и путем '%s'";
-	static final String CONTEXT_XML_READ_INFO = "Считан параметр " + SHOWCASE_USER_DATA_PARAM
-			+ " из context.xml - %s";
 	static final String FILE_COPY_ERROR = "Ошибка копирования файла при старте Tomcat: %s";
 	static final String COPY_USERDATA_DIRS_PARAM = "copy.userdata.dirs";
 	static final String USER_DATA_DIR_NOT_FOUND_ERROR =
@@ -36,7 +35,8 @@ public final class ProductionModeInitializer {
 	static final String COPY_USERDATA_ON_STARTUP_PARAM = "copy.userdata.on.startup";
 	static final String GET_USERDATA_PATH_ERROR =
 		"Невозможно получить путь к каталогу с пользовательскими данными";
-	public static final String SHOWCASE_DATA_GRID_CSS = "../../css/solutionGrid.css";
+	static final String SHOWCASE_DATA_GRID_CSS = "../../" + AppProps.SOLUTIONS_DIR
+			+ "/%s/css/solutionGrid.css";
 	public static final String WIDTH_PROP = "width";
 	public static final String HEADER_GAP_SELECTOR = ".webmain-SmartGrid .headerGap";
 	static final String CSS_READ = "Из CSS файла '" + SHOWCASE_DATA_GRID_CSS
@@ -59,20 +59,24 @@ public final class ProductionModeInitializer {
 	 */
 	public static void initialize(final ServletContextEvent arg0) {
 		readServletContext(arg0); // считываем пути к userdata'м вначале
-		if (checkForCopyUserData()) {
-			copyUserData(arg0);
+		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
+			AppInitializer.readPathProperties();
 		}
-		readCSS();
+
+		copyUserDatas(arg0);
+
+		readCSSs();
+
+		LOGGER.info("Сформирован массив UserData:");
+		for (String id : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+			LOGGER.info(id + " | "
+					+ AppInfoSingleton.getAppInfo().getUserdatas().get(id).getPath() + " | "
+					+ AppInfoSingleton.getAppInfo().getUserdatas().get(id).getGridColumnGapWidth());
+		}
 	}
 
 	private static void readServletContext(final ServletContextEvent arg0) {
 		ServletContext sc = arg0.getServletContext();
-
-		final String userDataPath = sc.getInitParameter(SHOWCASE_USER_DATA_PARAM);
-		LOGGER.info(String.format(CONTEXT_XML_READ_INFO, userDataPath));
-		if (userDataPath != null) {
-			AppProps.setUserDataCatalog(userDataPath);
-		}
 
 		Enumeration<?> en = sc.getInitParameterNames();
 		while (en.hasMoreElements()) {
@@ -99,36 +103,82 @@ public final class ProductionModeInitializer {
 
 	}
 
-	private static void readCSS() {
+	private static void readCSSs() {
+		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+			readCSS(userdataId);
+		}
+
+	}
+
+	private static void readCSS(final String userdataId) {
 		CSSPropReader reader = new CSSPropReader();
 		String width = null;
 		try {
-			width = reader.read(SHOWCASE_DATA_GRID_CSS, HEADER_GAP_SELECTOR, WIDTH_PROP);
+			width =
+				reader.read(String.format(SHOWCASE_DATA_GRID_CSS, userdataId),
+						HEADER_GAP_SELECTOR, WIDTH_PROP);
 		} catch (CSSReadException e) {
 			LOGGER.error(e.getLocalizedMessage());
 			return;
 		}
 		if (width != null) {
-			LOGGER.info(String.format(CSS_READ, width));
+			LOGGER.info(String.format(CSS_READ, userdataId, width));
 			int value = TextUtils.getIntSizeValue(width);
 			if (value > 0) {
 				value--;
 			}
-			AppInfoSingleton.getAppInfo().setGridColumnGapWidth(value);
+
+			UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
+			if (us != null) {
+				us.setGridColumnGapWidth(value);
+
+			}
 		}
 	}
 
-	private static void copyUserData(final ServletContextEvent arg0) {
-		String userDataCatalog = "";
+	private static void copyUserDatas(final ServletContextEvent arg0) {
+		if (checkForCopyUserData(AppProps.SHOWCASE_USER_DATA_DEFAULT)) {
+			copyUserData(arg0, AppProps.SHOWCASE_USER_DATA_DEFAULT);
+		}
+
+		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+			if (!(AppProps.SHOWCASE_USER_DATA_DEFAULT.equals(userdataId))) {
+				if (checkForCopyUserData(userdataId)) {
+					copyUserData(arg0, userdataId);
+				}
+
+			}
+		}
+
+	}
+
+	private static boolean checkForCopyUserData(final String userdataId) {
 		try {
-			userDataCatalog = AppProps.getUserDataCatalog();
-		} catch (SettingsFileOpenException e) {
+			String value =
+				AppProps.getOptionalValueByName(COPY_USERDATA_ON_STARTUP_PARAM, userdataId);
+			if (value != null) {
+				boolean copyUserdataOnStartup = Boolean.parseBoolean(value);
+				return copyUserdataOnStartup;
+			}
+		} catch (SettingsFileOpenException e1) {
+			LOGGER.error(APP_PROPS_READ_ERROR);
+			return false;
+		}
+		return false;
+	}
+
+	private static void copyUserData(final ServletContextEvent arg0, final String userdataId) {
+		String userDataCatalog = "";
+		UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
+		if (us == null) {
 			LOGGER.error(GET_USERDATA_PATH_ERROR);
 			return;
 		}
+		userDataCatalog = us.getPath();
+
 		String dirsForCopyStr;
 		try {
-			dirsForCopyStr = AppProps.getOptionalValueByName(COPY_USERDATA_DIRS_PARAM);
+			dirsForCopyStr = AppProps.getOptionalValueByName(COPY_USERDATA_DIRS_PARAM, userdataId);
 		} catch (SettingsFileOpenException e) {
 			LOGGER.error(GET_USERDATA_PATH_ERROR);
 			return;
@@ -145,7 +195,8 @@ public final class ProductionModeInitializer {
 				continue;
 			}
 			isAllFilesCopied =
-				isAllFilesCopied && copyUserDataDir(arg0, userDataCatalog, dirsForCopy[i]);
+				isAllFilesCopied
+						&& copyUserDataDir(arg0, userDataCatalog, dirsForCopy[i], userdataId);
 		}
 
 		if (!(isAllFilesCopied)) {
@@ -154,14 +205,14 @@ public final class ProductionModeInitializer {
 	}
 
 	private static Boolean copyUserDataDir(final ServletContextEvent arg0,
-			final String userDataCatalog, final String dirName) {
+			final String userDataCatalog, final String dirName, final String userdataId) {
 		Boolean isAllFilesCopied = true;
 		BatchFileProcessor fprocessor =
 			new BatchFileProcessor(userDataCatalog + "/" + dirName, new RegexFilenameFilter(
 					"^[.].*", false));
 		try {
 			fprocessor.process(new CopyFileAction(arg0.getServletContext().getRealPath(
-					"/" + dirName)));
+					"/" + AppProps.SOLUTIONS_DIR + "/" + userdataId + "/" + dirName)));
 		} catch (IOException e) {
 			isAllFilesCopied = false;
 			LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
@@ -169,17 +220,4 @@ public final class ProductionModeInitializer {
 		return isAllFilesCopied;
 	}
 
-	private static boolean checkForCopyUserData() {
-		try {
-			String value = AppProps.getOptionalValueByName(COPY_USERDATA_ON_STARTUP_PARAM);
-			if (value != null) {
-				boolean copyUserdataOnStartup = Boolean.parseBoolean(value);
-				return copyUserdataOnStartup;
-			}
-		} catch (SettingsFileOpenException e1) {
-			LOGGER.error(APP_PROPS_READ_ERROR);
-			return false;
-		}
-		return false;
-	}
 }

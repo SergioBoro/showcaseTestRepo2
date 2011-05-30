@@ -56,10 +56,18 @@ public final class Constants {
 
 	public static final String GRID_ERROR_CAPTION_EXPORT_EXCEL = "Ошибка при экспорте в Excel";
 
+	public static final String GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE =
+		"Экспорт в Excel текущей страницы";
+	public static final String GRID_CAPTION_EXPORT_TO_EXCEL_ALL = "Экспорт в Excel всей таблицы";
+	public static final String GRID_CAPTION_COPY_TO_CLIPBOARD = "Копировать в буфер обмена";
+
 	public static final String GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE =
 		"resources/internal/ExportToExcelCurrentPage.png";
 	public static final String GRID_IMAGE_EXPORT_TO_EXCEL_ALL =
 		"resources/internal/ExportToExcelAll.png";
+	public static final String GRID_IMAGE_COPY_TO_CLIPBOARD =
+		"resources/internal/CopyToClipboard.png";
+
 	public static final String ARROW_FOR_DISCLOSURE_PANEL_CLOSE_IMAGE =
 		"resources/internal/arrow_for_disclosure_panel_close.png";
 	public static final String ARROW_FOR_DISCLOSURE_PANEL_OPEN_IMAGE =

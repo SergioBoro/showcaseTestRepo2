@@ -5,6 +5,7 @@ import java.util.*;
 import org.slf4j.*;
 
 import ru.curs.showcase.exception.XSLTTransformException;
+import ru.curs.showcase.util.AppProps;
 
 /**
  * Синглетон для хранения информации о сессиях приложения и глобальной
@@ -24,11 +25,6 @@ public final class AppInfoSingleton {
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AppInfoSingleton.class);
 
-	/**
-	 * URL_PARAM_USERDATA.
-	 */
-	private static final String URL_PARAM_USERDATA = "userdata";
-
 	/** Список userdata. */
 	private final HashMap<String, UserData> userdatas = new HashMap<String, UserData>();
 
@@ -46,12 +42,6 @@ public final class AppInfoSingleton {
 	 */
 	private final Map<String, SessionInfo> sessionInfoMap = Collections
 			.synchronizedMap(new HashMap<String, SessionInfo>());
-
-	/**
-	 * Ширина для разделителя столбцов в гриде. Считывается при старте
-	 * приложения из CSS файла.
-	 */
-	private Integer gridColumnGapWidth = null;
 
 	/**
 	 * Версия контейнера сервлетов.
@@ -87,7 +77,7 @@ public final class AppInfoSingleton {
 		try {
 			SessionInfo si = getOrInitSessionInfoObject(sessionId);
 			si.setContext(SessionInfoGenerator.generateSessionContext(sessionId, cur));
-			si.setUserdata(getSessionUserdataId(cur));
+			si.setUserdataId(getSessionUserdataId(cur));
 		} catch (XSLTTransformException e) {
 			LOGGER.error(USER_SESSION_INFO_GENERATE_ERROR);
 		}
@@ -119,9 +109,10 @@ public final class AppInfoSingleton {
 			Iterator<String> iterator = params.keySet().iterator();
 			while (iterator.hasNext()) {
 				String key = iterator.next();
-				if (URL_PARAM_USERDATA.equals(key)) {
+				if (AppProps.URL_PARAM_USERDATA.equals(key)) {
 					if (params.get(key) != null) {
 						userdataId = Arrays.toString(params.get(key)).trim();
+						userdataId = userdataId.replace("[", "").replace("]", "");
 						break;
 					}
 				}
@@ -138,14 +129,42 @@ public final class AppInfoSingleton {
 	/**
 	 * Добавляет UserData в список.
 	 * 
-	 * @param id
+	 * @param userdataId
 	 *            Идентификатор UserData
 	 * 
 	 * @param path
-	 *            Путь к UserData
+	 *            Путь к userdata
 	 */
-	public void addUserData(final String id, final String path) {
-		userdatas.put(id, new UserData(path));
+	public void addUserData(final String userdataId, final String path) {
+		userdatas.put(userdataId, new UserData(path));
+	}
+
+	/**
+	 * Возвращает UserData по его идентификатору.
+	 * 
+	 * @param userdataId
+	 *            Идентификатор UserData
+	 * 
+	 * @return UserData
+	 */
+	public UserData getUserData(final String userdataId) {
+		UserData us = null;
+		if (userdataId != null) {
+			us = userdatas.get(userdataId);
+		}
+		return us;
+	}
+
+	/**
+	 * Получает идентификатор userdata для сессии.
+	 * 
+	 * @param sessionId
+	 *            - идентификатор сессии.
+	 * @return идентификатор userdata.
+	 */
+	public String getUserDataIdForSession(final String sessionId) {
+		SessionInfo si = getOrInitSessionInfoObject(sessionId);
+		return si.getUserdataId();
 	}
 
 	/**
@@ -202,11 +221,7 @@ public final class AppInfoSingleton {
 	}
 
 	public Integer getGridColumnGapWidth() {
-		return gridColumnGapWidth;
-	}
-
-	public void setGridColumnGapWidth(final Integer aGridColumnGapWidth) {
-		gridColumnGapWidth = aGridColumnGapWidth;
+		return getUserdatas().get(AppProps.getUserDataId()).getGridColumnGapWidth();
 	}
 
 	/**

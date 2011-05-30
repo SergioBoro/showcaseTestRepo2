@@ -24,9 +24,9 @@ public class SessionInfo {
 	private String authServerCrossAppPassword = null;
 
 	/**
-	 * Userdata из URL.
+	 * Идентификатор userdata из URL.
 	 */
-	private String userdata;
+	private String userdataId;
 
 	public SessionInfo() {
 		super();
@@ -61,11 +61,11 @@ public class SessionInfo {
 		authViaAuthServer = aAuthViaAuthServer;
 	}
 
-	public String getUserdata() {
-		return userdata;
+	public String getUserdataId() {
+		return userdataId;
 	}
 
-	public void setUserdata(final String aUserdata) {
-		userdata = aUserdata;
+	public void setUserdataId(final String aUserdataId) {
+		userdataId = aUserdataId;
 	}
 }
