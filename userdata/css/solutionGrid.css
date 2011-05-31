@@ -91,13 +91,13 @@
 .webmain-DataGrid .sortingAsc {
     background-repeat: no-repeat;
     background-position: right;
-    background-image: url("../resources/internal/tablesorter-asc.gif");
+    background-image: url("../../../resources/internal/tablesorter-asc.gif");
 
 }
 .webmain-DataGrid .sortingDesc {
     background-repeat: no-repeat;
     background-position: right;
-    background-image: url("../resources/internal/tablesorter-desc.gif");
+    background-image: url("../../../resources/internal/tablesorter-desc.gif");
 
 }
 
