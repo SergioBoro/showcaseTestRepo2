@@ -247,6 +247,7 @@ var addOnLoad = function() {
 	*/
 
     map = new course.geo.Map("map", {
+		geometryProjection: "RUSSIA-ALBERS",
 		currentProjection: "RUSSIA-ALBERS",
 		engine: {type: djConfig.mapEngine},
 		geometries: courseApp.russiaGeometries,

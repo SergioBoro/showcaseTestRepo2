@@ -10,6 +10,8 @@ var g = course.geo,
 
 dojo.declare("course.geo.gfx.Placemark", course.geo.common.Placemark, {
 	
+	multipleSymbolizers: true,
+	
 	constructor: function(kwArgs) {
 		dojo.mixin(this, kwArgs);
 		this.polygons = this.group.createGroup();
@@ -138,19 +140,11 @@ dojo.declare("course.geo.gfx.Placemark", course.geo.common.Placemark, {
 		if (specificStyle) {
 			width = specificStyle.width ? specificStyle.width : specificStyle.size;
 			height = specificStyle.height ? specificStyle.height : specificStyle.size;
-			// specific style for the following code always overrides calculatedStyle
-			if (specificStyle.type) type = specificStyle.type;
-			else {
-				if (specificStyle.shape) type = "shape";
-				else if (specificStyle.src) type = "image";
-			}
+			// specific style in the following code always overrides calculatedStyle
+			type = cp.getPointType(specificStyle);
 		}
 		else {
-			if (calculatedStyle.type) type = calculatedStyle.type;
-			else {
-				if (calculatedStyle.shape) type = "shape";
-				else if (calculatedStyle.src) type = "image";
-			}
+			type = cp.getPointType(calculatedStyle);
 		}
 		if (!width) width = calculatedStyle.width ? calculatedStyle.width : calculatedStyle.size;
 		if (!height) height = calculatedStyle.height ? calculatedStyle.height : calculatedStyle.size;

@@ -41,11 +41,15 @@ dojo.declare("course.geo.Engine", null, {
 			// type can have one of the following forms: 1)Placemark 2)control.Highlight
 			// in the case 1) we try the type as is, in the case of 2) we try Highlight
 			module = this.baseModule + "." + module;
-			if (dojo.require(module)) this.factories[type] = new (dojo.getObject(module))({engine: this});
+			dojo.require(module, true);
+			var cstr = dojo.getObject(module);
+			if (cstr) this.factories[type] = new (cstr)({engine: this});
 			else if (lastDot>0) {
 				// in the case 2) we try control.Highlight, i.e. type as is
 				module = this.baseModule + "." + type;
-				if (dojo.require(module)) this.factories[type] = new (dojo.getObject(module));
+				dojo.require(module, true);
+				var cstr = dojo.getObject(module);
+				if (cstr) this.factories[type] = new (cstr)({engine: this});
 			}
 		}
 		return this.factories[type];

@@ -94,7 +94,7 @@ dojo.declare("course.geo.Placemark", course.geo.Feature, {
 		}
 		else {
 			// create shape(s)
-			if (style[styleType]) { // we have a specific style
+			if (factory.multipleSymbolizers && style[styleType]) { // we have a specific style
 				dojo.forEach(style[styleType], function(_style) {
 					var shape = factory.createShape(this, geometry);
 					if (shape) this.baseShapes.push(shape);

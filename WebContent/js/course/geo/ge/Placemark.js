@@ -19,16 +19,18 @@ var g = course.geo,
 
 dojo.declare("course.geo.ge.Placemark", course.geo.common.Placemark, {
 	
+	specificStyleIndex: -1, // -1 means: use the last specific style in the array
+
 	constructor: function(kwArgs) {
 		dojo.mixin(this, kwArgs);
 	},
-	
+
 	createPlacemark: function() {
 		var placemark = this.ge.createPlacemark('');
 		placemark.setStyleSelector(this.ge.createStyle(''));
 		return placemark;
 	},
-	
+
 	makePoint: function(feature, coordinates) {
 		var placemark = this.createPlacemark();
 		var point = this.ge.createPoint('');
@@ -36,7 +38,7 @@ dojo.declare("course.geo.ge.Placemark", course.geo.common.Placemark, {
 		placemark.setGeometry(point);
 		return placemark;
 	},
-	
+
 	makeLineString: function(feature, coordinates) {
 		var placemark = this.createPlacemark();
 		var lineString = this.ge.createLineString('');
@@ -44,7 +46,7 @@ dojo.declare("course.geo.ge.Placemark", course.geo.common.Placemark, {
 		placemark.setGeometry(lineString);
 		return placemark;
 	},
-	
+
 	_makeLineString: function(lineString, coordinates) {
 		dojo.forEach(coordinates, function(point, i){
 			lineString.getCoordinates().pushLatLngAlt(point[1], point[0], 150/*TODO: 3D*/);
@@ -58,7 +60,7 @@ dojo.declare("course.geo.ge.Placemark", course.geo.common.Placemark, {
 		placemark.setGeometry(polygon);
 		return placemark;
 	},
-	
+
 	_makePolygon: function(polygon, coordinates) {
 		dojo.forEach(coordinates, function(lineStringCoords, i){
 			var linearRing = this.ge.createLinearRing('');
@@ -95,8 +97,14 @@ dojo.declare("course.geo.ge.Placemark", course.geo.common.Placemark, {
 		return placemark;
 	},
 	
-	applyPointStyle: function(placemark, feature, calculatedStyle, specificStyle, factory) {
-		var type = specificStyle.type,
+	applyPointStyle: function(feature, geometry, calculatedStyle) {
+		var specificStyle = getSpecificStyle(calculatedStyle["point"], this.specificStyleIndex),
+			placemark = feature.baseShapes[0],
+			type,
+			shapeType = cp.get("shape", calculatedStyle, specificStyle),
+			src = cp.get("src", calculatedStyle, specificStyle),
+			width,
+			height,
 			scale = cp.get("scale", calculatedStyle, specificStyle),
 			normalStyle = getNormalStyle(placemark),
 			icon = this.ge.createIcon(''),
@@ -107,6 +115,10 @@ dojo.declare("course.geo.ge.Placemark", course.geo.common.Placemark, {
 		if (specificStyle) {
 			width = specificStyle.width ? specificStyle.width : specificStyle.size;
 			height = specificStyle.height ? specificStyle.height : specificStyle.size;
+			type = cp.getPointType(specificStyle);
+		}
+		else {
+			type = cp.getPointType(calculatedStyle);
 		}
 		if (!width) width = calculatedStyle.width ? calculatedStyle.width : calculatedStyle.size;
 		if (!height) height = calculatedStyle.height ? calculatedStyle.height : calculatedStyle.size;
@@ -116,10 +128,10 @@ dojo.declare("course.geo.ge.Placemark", course.geo.common.Placemark, {
 		var iconActualSize = scale*Math.min(width,height);
 		var kmlIconScale = iconActualSize/shapeSize;
 
-		if (type == "shape" && shapes[specificStyle.shape]) {
-			href = shapeIconsUrl + shapes[specificStyle.shape];
+		if (type == "shape" && shapes[shapeType]) {
+			href = shapeIconsUrl + shapes[shapeType];
 		}
-		else if (type == "image") {
+		else if (type == "image" && src) {
 			href = isRelativeUrl(specificStyle.src) ? baseUrl+specificStyle.src : specificStyle.src;
 		}
 		else setIcon = false;
@@ -137,16 +149,20 @@ dojo.declare("course.geo.ge.Placemark", course.geo.common.Placemark, {
 		return placemark;
 	},
 	
-	applyLineStyle: function(placemark, feature, calculatedStyle, specificStyle, factory) {
-		var normalStyle = getNormalStyle(placemark);
+	applyLineStyle: function(feature, geometry, calculatedStyle) {
+		var specificStyle = getSpecificStyle(calculatedStyle["line"], this.specificStyleIndex),
+			placemark = feature.baseShapes[0],
+			normalStyle = getNormalStyle(placemark);
 		applyStroke(normalStyle, calculatedStyle, specificStyle);
 		return placemark;
 	},
-	
-	applyPolygonStyle: function(placemark, feature, calculatedStyle, specificStyle, factory) {
+
+	applyPolygonStyle: function(feature, geometry, calculatedStyle) {
+		var specificStyle = getSpecificStyle(calculatedStyle["polygon"], this.specificStyleIndex);
+			placemark = feature.baseShapes[0],
 		//var normalStyle = this.ge.createStyle('');
-		var normalStyle = getNormalStyle(placemark);
-		var fill = cp.get("fill", calculatedStyle, specificStyle);
+			normalStyle = getNormalStyle(placemark),
+			fill = cp.get("fill", calculatedStyle, specificStyle);
 		normalStyle.getPolyStyle().getColor().set(convertColor(fill));
 		applyStroke(normalStyle, calculatedStyle, specificStyle);
 		return placemark;
@@ -171,7 +187,20 @@ shapeIconsUrl = (function(relativePath) {
 	return baseUrl.substring(0,position) + "/" +relativePath.substring(3*_depth);
 })(shapeIconsUrl);
 
-function convertColor(c) {
+var getSpecificStyle = function(specificStyles, specificStyleIndex) {
+	if (!specificStyles) return null;
+	var specificStyle,
+		numStyles = specificStyles.length;
+	if (specificStyleIndex>=0) {
+		specificStyle = specificStyleIndex < numStyles ? specificStyles[specificStyleIndex] : specificStyles[numStyles-1];
+	}
+	else {
+		specificStyle = specificStyleIndex >= -numStyles ? specificStyles[numStyles+specificStyleIndex] : specificStyles[0];
+	}
+	return specificStyle;
+}
+
+var convertColor = function(c) {
 	c = new dojo.Color(c).toHex();
 	return "ff"+c.charAt(5)+c.charAt(6)+c.charAt(3)+c.charAt(4)+c.charAt(1)+c.charAt(2);
 }

@@ -38,8 +38,21 @@ dojo.declare("course.geo.common.Placemark", null, {
 	}
 });
 
-course.geo.common.Placemark.get = function(attr, calculatedStyle, specificStyle) {
+var pl = course.geo.common.Placemark;
+
+pl.get = function(attr, calculatedStyle, specificStyle) {
 	return specificStyle&&specificStyle[attr] ? specificStyle[attr] : calculatedStyle[attr];
 };
+
+pl.getPointType = function(style) {
+	var type;
+	if (style.type) type = style.type;
+	else {
+		if (style.shape) type = "shape";
+		else if (style.src) type = "image";
+	}
+	return type;
+}
+
 
 }());
