@@ -80,7 +80,7 @@ dojo.declare("course.geo.Map", null, {
 		if (kwArgs.style) this.addStyle(kwArgs.style, true);
 		
 		// set engine
-		this.setEngine(kwArgs.engine || (window.djConfig&&djConfig.mapEngine) || defaultEngine);
+		this.setEngine(kwArgs.engine || (dojo.config&&dojo.config.mapEngine) || defaultEngine);
 		
 		if (kwArgs.features) this.featureContainer.addFeatures(kwArgs.features);
 	},

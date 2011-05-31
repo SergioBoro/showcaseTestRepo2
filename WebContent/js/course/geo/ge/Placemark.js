@@ -132,7 +132,7 @@ dojo.declare("course.geo.ge.Placemark", course.geo.common.Placemark, {
 			href = shapeIconsUrl + shapes[shapeType];
 		}
 		else if (type == "image" && src) {
-			href = isRelativeUrl(specificStyle.src) ? baseUrl+specificStyle.src : specificStyle.src;
+			href = isRelativeUrl(src) ? baseUrl+src : src;
 		}
 		else setIcon = false;
 
