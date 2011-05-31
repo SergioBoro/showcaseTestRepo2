@@ -44,8 +44,8 @@ dojo.declare("course.geo.gfx.Navigation",null, {
 	
 	_resizeFeatures: function(featureContainer, scaleFactor) {
 		dojo.forEach(featureContainer.features, function(feature){
-			if (feature.type == "Placemark") this._resizePlacemark(feature, scaleFactor);
-			else if (feature.type == "FeatureContainer") this._resizeFeatures(feature, scaleFactor);
+			if (feature.type == "Placemark" || feature.type == "Feature") this._resizePlacemark(feature, scaleFactor);
+			else if (feature.type == "FeatureContainer" || feature.type == "FeatureCollection") this._resizeFeatures(feature, scaleFactor);
 		}, this);
 	},
 	
