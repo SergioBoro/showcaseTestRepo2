@@ -93,33 +93,6 @@ public final class ServletUtils {
 	}
 
 	/**
-	 * Определяет тип браузера по UserAgent.
-	 * 
-	 * @param req
-	 *            - HttpServletRequest.
-	 * @return - тип браузера.
-	 */
-	public static BrowserType getBrowser(final HttpServletRequest req) {
-		String userAgent = req.getHeader("User-Agent");
-		if (userAgent.contains("Gecko") && userAgent.contains("Firefox")) {
-			return BrowserType.FIREFOX;
-		}
-		if (userAgent.contains("AppleWebKit") && userAgent.contains("Chrome")) {
-			return BrowserType.CHROME;
-		}
-		if (userAgent.contains("AppleWebKit") && userAgent.contains("Safari")) {
-			return BrowserType.SAFARI;
-		}
-		if (userAgent.contains("Opera")) {
-			return BrowserType.OPERA;
-		}
-		if (userAgent.contains("MSIE")) {
-			return BrowserType.IE;
-		}
-		return null;
-	}
-
-	/**
 	 * Возвращает кодировку для текста в адресной строке браузера. Данный метод
 	 * корректно работает с кириллическими символами при переходах по ссылке в
 	 * любых браузерах, всегда - в Safari, Chrome и Opera, и при обновлении

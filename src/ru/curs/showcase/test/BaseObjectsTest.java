@@ -19,7 +19,7 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-public class BaseObjectsTest {
+public class BaseObjectsTest extends AbstractTestBasedOnFiles {
 	static final String TEST_CSS = "ru\\curs\\showcase\\test\\ShowcaseDataGrid_test.css";
 
 	/**
@@ -178,5 +178,35 @@ public class BaseObjectsTest {
 		assertNull(source.getInputStream());
 		assertNotNull(source.getDocument());
 		assertNull(source.getSaxParser());
+	}
+
+	/**
+	 * Проверка функции детектирования браузера.
+	 */
+	@Test
+	public void testBrowserTypeDetection() {
+		// CHECKSTYLE:OFF
+		final String safariUA =
+			"mozilla/5.0 (windows; u; windows nt 6.1; ru-ru) applewebkit/533.20.25 (khtml, like gecko) version/5.0.4 safari/533.20.27";
+		final String chromeUA =
+			"mozilla/5.0 (windows nt 6.1; wow64) applewebkit/534.24 (khtml, like gecko) chrome/11.0.696.71 safari/534.24";
+		final String operaUA = "opera/9.80 (windows nt 6.1; u; ru) presto/2.8.131 version/11.11";
+		final String firefoxUA =
+			"mozilla/5.0 (windows nt 6.1; wow64; rv:2.0.1) gecko/20100101 firefox/4.0.1";
+		final String IEUA =
+			"mozilla/5.0 (compatible; msie 9.0; windows nt 6.1; wow64; trident/5.0; slcc2; .net clr 2.0.50727; .net clr 3.5.30729; .net clr 3.0.30729; media center pc 6.0; .net4.0c)";
+		// CHECKSTYLE:ON
+
+		assertEquals(BrowserType.SAFARI, BrowserType.detect(safariUA));
+		assertEquals(BrowserType.CHROME, BrowserType.detect(chromeUA));
+		assertEquals(BrowserType.OPERA, BrowserType.detect(operaUA));
+		assertEquals(BrowserType.FIREFOX, BrowserType.detect(firefoxUA));
+		assertEquals(BrowserType.IE, BrowserType.detect(IEUA));
+
+		assertEquals("5.0.4", BrowserType.detectVersion(safariUA));
+		assertEquals("11.0.696.71", BrowserType.detectVersion(chromeUA));
+		assertEquals("11.11", BrowserType.detectVersion(operaUA));
+		assertEquals("4.0.1", BrowserType.detectVersion(firefoxUA));
+		assertEquals("9.0", BrowserType.detectVersion(IEUA));
 	}
 }
