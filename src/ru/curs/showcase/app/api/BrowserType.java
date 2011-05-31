@@ -30,6 +30,7 @@ public enum BrowserType implements SerializableElement {
 	 */
 	SAFARI("Apple Safari");
 
+	static final String VERSION_NOT_DEFINED = "не определена";
 	/**
 	 * Имя браузера.
 	 */
@@ -95,7 +96,7 @@ public enum BrowserType implements SerializableElement {
 		case SAFARI:
 			return findVersion(userAgent, "version\\/([0-9\\.]*)");
 		default:
-			return null;
+			return VERSION_NOT_DEFINED;
 		}
 
 	}
@@ -112,6 +113,6 @@ public enum BrowserType implements SerializableElement {
 			return res.getGroup(1);
 		}
 
-		return null;
+		return VERSION_NOT_DEFINED;
 	}
 }
