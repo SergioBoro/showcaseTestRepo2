@@ -3,7 +3,10 @@ package ru.curs.showcase.app.api;
 import com.google.gwt.regexp.shared.*;
 
 /**
- * Тип браузера.
+ * Тип браузера. Класс также содержит функции определения типа и версии браузера
+ * по UserAgent. UserAgent может быть получен либо в Java сервлете:
+ * req.getHeader("User-Agent"), либо через JSNI:
+ * navigator.userAgent.toLowerCase().
  * 
  * @author den
  * 
@@ -49,9 +52,7 @@ public enum BrowserType implements SerializableElement {
 	}
 
 	/**
-	 * Определяет тип браузера по UserAgent. UserAgent может быть получен либо в
-	 * Java сервлете: req.getHeader("User-Agent"), либо через JSNI:
-	 * navigator.userAgent.toLowerCase().
+	 * Определяет тип браузера по UserAgent.
 	 * 
 	 * @param userAgent
 	 *            - userAgent.
