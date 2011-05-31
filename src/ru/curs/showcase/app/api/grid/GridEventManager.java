@@ -8,7 +8,7 @@ import ru.curs.showcase.app.api.element.EventManager;
 import ru.curs.showcase.app.api.event.*;
 
 /**
- * Менеджер событий для грида.
+ * Менеджер событий для грида. test
  * 
  * @author den
  * 
