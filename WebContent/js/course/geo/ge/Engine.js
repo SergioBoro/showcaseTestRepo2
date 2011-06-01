@@ -100,7 +100,7 @@ dojo.declare("course.geo.ge.Engine", course.geo.Engine, {
 		// The following code is derived from earth-api-utility-library (http://code.google.com/p/earth-api-utility-library/)
 		// The earth-api-utility-library is licensed under the Apache License, Version 2.0
 
-		var lookAtRange = 1000, // the default lookat range to use when creating a view for a degenerate, single-point extent
+		var lookAtRange = 500, // the default lookat range to use when creating a view for a degenerate, single-point extent
 			scaleRange = 1.5,
 			aspectRatio = this.map.width/this.map.height;
 			centerX = (extent[0]+extent[2])/2,

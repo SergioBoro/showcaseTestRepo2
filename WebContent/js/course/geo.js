@@ -68,10 +68,26 @@ g.makeMap = function(mapOptions) {
     var map = new g.Map(o.id, o);
     mapRegistry[o.id] = {map: map};
     geo.setMap(o.id);
+    
+    // register dojo modules if available
+    if (o.registerModulePath) {
+    	dojo.registerModulePath(o.registerModulePath[0], o.registerModulePath[1]);
+    }
 	
 	map.ready(function() {
 		geo.makeControl(o.action);
 		geo.makeEvents(o.events);
+		if (o.requireModules) {
+			dojo.forEach(o.requireModules, function(module){
+				dojo.require(module);
+			});
+		}
+		if (o.executeFunctions) {
+			dojo.forEach(o.executeFunctions, function(func){
+				if (dojo.isString(func)) func = dojo.getObject(func);
+				func(map);
+			});
+		}
 	});
     return map;
 }
