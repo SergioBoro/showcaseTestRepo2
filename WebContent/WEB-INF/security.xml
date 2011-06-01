@@ -20,8 +20,8 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 	 <intercept-url pattern="/debug.jsp*" filters="none"/> 
 	 <intercept-url pattern="/js/dojo/dojo.js" filters="none"/>
 	 <intercept-url pattern="/js/course/geo/ge/resources/icons/*" filters="none"/>
-	 <intercept-url pattern="/js/pizhma/*" filters="none"/>
-	 <intercept-url pattern="/solutions/defaults/resources/favicon.ico*" filters="none"/>
+	 <intercept-url pattern="/solutions/default/js/pizhma/*" filters="none"/>
+	 <intercept-url pattern="/solutions/default/resources/favicon.ico*" filters="none"/>
 	 <intercept-url pattern="/auth/isAuthenticatedServlet*" filters="none"/>
 	 
 	 
