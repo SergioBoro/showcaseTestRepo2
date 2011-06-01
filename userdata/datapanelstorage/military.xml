@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>
+
+	<tab id="6_1" name="Карта 1">
+		<element id="62" type="geomap" proc="geomap_func2_military2"/>
+	</tab>	
+	<tab id="6" name="Карта 2">
+		<element id="61" type="geomap" proc="geomap_func2_military1"/>
+	</tab>				
+	<tab id="60" name="Карта 3">
+		<element id="610" type="geomap" proc="geomap_func2_military3"/>
+		<element id="50" type="webtext" proc="webtext_military"/>
+	</tab>				
+</datapanel>

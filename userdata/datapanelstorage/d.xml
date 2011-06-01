@@ -35,5 +35,9 @@
 			proc="xforms_proc3" neverShowInPanel="true">
 			<proc id="proc1" name="xforms_saveproc3" type="SAVE"/>
 		</element>
-	</tab>			
+	</tab>
+	<tab id="60" name="Обновление навигатора">
+		<element id="610" type="geomap" proc="geomap_func2_anlug"/>
+		<element id="060" type="webtext" proc="webtext_grid" hideOnLoad="true" />
+	</tab>				
 </datapanel>
