@@ -74,7 +74,7 @@ public final class Constants {
 		"resources/internal/arrow_for_disclosure_panel_close.png";
 	public static final String ARROW_FOR_DISCLOSURE_PANEL_OPEN_IMAGE =
 		"resources/internal/arrow_for_disclosure_panel_open.png";
-
+	public static final String IMAGE_FOR_WAITING_WINDOW = "resources/internal/progress.gif";
 	public static final int GRID_SELECTION_DELAY = 900;
 
 	/**
