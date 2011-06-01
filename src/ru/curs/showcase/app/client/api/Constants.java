@@ -25,6 +25,8 @@ public final class Constants {
 		"Пожалуйста подождите...Идет загрузка данных навигации";
 	public static final String PLEASE_WAIT_CHART_DATA_ARE_LOADING =
 		"Пожалуйста подождите...Идет загрузка данных графика";
+	public static final String PLEASE_WAIT_NAVIGATION_DATA_ARE_REFRESHING =
+		"Пожалуйста подождите...Идет обновление данных навигатора";
 	public static final String PLEASE_WAIT_MAP_DATA_ARE_LOADING =
 		"Пожалуйста подождите...Идет загрузка данных карты";
 	public static final String PLEASE_WAIT_WEBTEXT_DATA_ARE_LOADING =
