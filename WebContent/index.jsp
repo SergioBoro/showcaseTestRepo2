@@ -23,11 +23,11 @@
     
     <link rel="stylesheet" href="js/dijit/themes/claro/claro.css"/>
     
-<!--    <script src="https://www.google.com/jsapi?key=ABQIAAAA-DMAtggvLwlIYlUJiASaAxRQnCpeV9jusWIeBw0POFqU6SItGxRWZhddpS8pIkVUd2fDQhzwPUWmMA"></script>-->
+    <script src="https://www.google.com/jsapi?key=ABQIAAAA-DMAtggvLwlIYlUJiASaAxRQnCpeV9jusWIeBw0POFqU6SItGxRWZhddpS8pIkVUd2fDQhzwPUWmMA"></script>
     <script src="js/dojo/dojo.js" djConfig="isDebug: false, parseOnLoad: false, modulePaths: {course: '../course', courseApp: '../..'}, gfxRenderer: 'svg,silverlight,vml'"></script>
-<!--    <script>-->
-<!--     dojo.require("course.geo.ge.Engine");-->
-<!--    </script> -->
+    <script>
+      dojo.require("course.geo.ge.Engine");
+    </script> 
     <script src="js/internalShowcase.js"></script>
     <script src="solutions/<%=userdataId%>/js/solution.js"></script>
     
