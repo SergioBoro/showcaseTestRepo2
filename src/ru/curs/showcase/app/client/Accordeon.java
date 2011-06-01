@@ -23,6 +23,11 @@ import com.google.gwt.user.client.ui.*;
 public class Accordeon {
 
 	/**
+	 * Панель содержащая навигатор.
+	 */
+	private final SimplePanel verpan = new SimplePanel();
+
+	/**
 	 * Коллекция объектов аккордеона, которая связывает UI элементы (группы и
 	 * элементы дерева) c метаданными.
 	 */
@@ -89,35 +94,25 @@ public class Accordeon {
 	 */
 	public Widget generateAccordeon() {
 
-		final SimplePanel verpan = new SimplePanel();
-
-		verpan.add(new HTML(Constants.PLEASE_WAIT_NAVIGATION_DATA_ARE_LOADING));
+		// verpan.add(new
+		// HTML(Constants.PLEASE_WAIT_NAVIGATION_DATA_ARE_LOADING));
 
 		accordeon.setSize("100%", "100%");
 		verpan.setSize("100%", "100%");
-
-		final DecoratedPopupPanel db = new DecoratedPopupPanel();
-		db.setAnimationEnabled(true);
-		db.setGlassEnabled(true);
-		Image waiteImage = new Image();
-		waiteImage.setUrl("resources/internal/progress.gif");
-		db.add(waiteImage);
-		db.center();
-		db.show();
 
 		dataService.getNavigator(new GWTServiceCallback<Navigator>(
 				Constants.ERROR_OF_NAVIGATOR_DATA_RETRIEVING_FROM_SERVER) {
 			@Override
 			public void onFailure(final Throwable caught) {
 
-				db.hide();
+				ProgressWindow.closeProgressWindow();
 				super.onFailure(caught);
 
 			}
 
 			@Override
 			public void onSuccess(final Navigator navigator) {
-				db.hide();
+				ProgressWindow.closeProgressWindow();
 				AppCurrContext.getInstance().getMainPanel()
 						.generateMainPanel(!navigator.getHideOnLoad(), navigator.getWidth());
 
@@ -127,7 +122,7 @@ public class Accordeon {
 				verpan.add(accordeon);
 				NavigatorElement nav = navigator.getAutoSelectElement();
 				if (nav != null) {
-					selectNesessaryItemInAccardion(nav.getId());
+					selectNesessaryItemInAccardion(nav.getId(), true);
 				}
 
 			}
@@ -139,20 +134,28 @@ public class Accordeon {
 
 	/**
 	 * 
-	 * Выделяет элемент с соответствующим id в аккордеон.
+	 * Выделяет элемент с соответствующим id в аккордеонe.
 	 * 
 	 * @param id
 	 *            - id
+	 * @param fireEvent
+	 *            - boolean параметр который определяет будет ли обрабатываться
+	 *            событие клика на дереве в навигаторе при выделении.
+	 * 
 	 */
-	protected void selectNesessaryItemInAccardion(final String id) {
-
+	public void selectNesessaryItemInAccardion(final String id, final Boolean fireEvent) {
+		if ((id == "") || (id == null)) {
+			return;
+		}
 		int n = getGroupNamberInAccordeonById(id);
 		if (n > -1) {
+
 			accordeon.showWidget(n);
 
 			TreeItem ti = getTreeItemInAccordeonById(id);
 			if (ti != null) {
-				uiListOfAccordeonTrees.get(n).setSelectedItem(ti, true);
+				uiListOfAccordeonTrees.get(n).setSelectedItem(ti, fireEvent);
+				lastSelectedItem = ti;
 			}
 		}
 
@@ -385,4 +388,54 @@ public class Accordeon {
 
 	}
 
+	/**
+	 * Обновляет навигатор (аккардион).
+	 * 
+	 * @param selectionId
+	 *            - Id узла, для выделения в навигаторе после его обновления.
+	 * @param fireEventSelection
+	 *            - boolean параметр который определяет будет ли обрабатываться
+	 *            событие клика на дереве в навигаторе при выделении, либо узел
+	 *            будет выделен без какого-либо действия.
+	 */
+	public void refreshAccordeon(final String selectionId, final boolean fireEventSelection) {
+
+		final String idToSelect =
+			(accordeon.getVisibleIndex() > -1) ? ((NavigatorElement) uiListOfAccordeonTrees
+					.get(accordeon.getVisibleIndex()).getSelectedItem().getUserObject()).getId()
+					: "";
+
+		verpan.clear();
+		verpan.add(new HTML(Constants.PLEASE_WAIT_NAVIGATION_DATA_ARE_REFRESHING));
+		accordeon.clear();
+		dataService.getNavigator(new GWTServiceCallback<Navigator>(
+				Constants.ERROR_OF_NAVIGATOR_DATA_RETRIEVING_FROM_SERVER) {
+			@Override
+			public void onFailure(final Throwable caught) {
+
+				ProgressWindow.closeProgressWindow();
+				super.onFailure(caught);
+
+			}
+
+			@Override
+			public void onSuccess(final Navigator navigator) {
+
+				uiListOfAccordeonTrees.clear();
+				ProgressWindow.closeProgressWindow();
+
+				fillAccordeon(navigator);
+				verpan.clear();
+				verpan.add(accordeon);
+
+				if ((selectionId != "") && (selectionId != null)) {
+					selectNesessaryItemInAccardion(selectionId, fireEventSelection);
+				} else {
+					selectNesessaryItemInAccardion(idToSelect, fireEventSelection);
+				}
+
+			}
+
+		});
+	}
 }
