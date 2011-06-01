@@ -39,7 +39,27 @@ public class MainPanel {
 	/**
 	 * Виджет который содержит навигатор.
 	 */
-	private Widget accordeon;
+	private Widget accordeonWidget;
+
+	/**
+	 * Переменная которая содержит класс навигатора Accordeon.
+	 */
+	private Accordeon accordeon;
+
+	/**
+	 * @return the accordeon
+	 */
+	public Accordeon getAccordeon() {
+		return accordeon;
+	}
+
+	/**
+	 * @param aaccordeon
+	 *            the accordeon to set
+	 */
+	public void setAccordeon(final Accordeon aaccordeon) {
+		this.accordeon = aaccordeon;
+	}
 
 	/**
 	 * Переменная, которая определяет на какую ширину от ширины экрана(от ширины
@@ -54,7 +74,7 @@ public class MainPanel {
 	 * @return возвращает заполненный виджет MainPanel типа VerticalPanel.
 	 */
 	public Widget startMainPanelCreation() {
-
+		ProgressWindow.showProgressWindow();
 		basicVerticalPanel.add(new DownloadHelper());
 
 		final int n85 = 85;
@@ -77,7 +97,8 @@ public class MainPanel {
 		basicVerticalPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
 		basicVerticalPanel.setSpacing(Constants.SPACINGN);
 
-		accordeon = (new Accordeon()).generateAccordeon();
+		accordeon = new Accordeon();
+		accordeonWidget = accordeon.generateAccordeon();
 
 		return basicVerticalPanel;
 	}
@@ -112,19 +133,19 @@ public class MainPanel {
 
 			case PIXELS:
 
-				p.addWest(accordeon, widthNumber);
+				p.addWest(accordeonWidget, widthNumber);
 				break;
 
 			case PERCENTS:
 				final int percentsTotal = 100;
 				final int absoluteWidth =
 					widthNumber * (Window.getClientWidth() - n35) / percentsTotal;
-				p.addWest(accordeon, absoluteWidth);
+				p.addWest(accordeonWidget, absoluteWidth);
 				break;
 
 			default:
 
-				p.addWest(accordeon, Constants.SPLITLAYOUTPANELSIZEN);
+				p.addWest(accordeonWidget, Constants.SPLITLAYOUTPANELSIZEN);
 				break;
 
 			}
