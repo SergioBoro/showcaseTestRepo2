@@ -130,6 +130,10 @@ dojo.declare("course.geo.ge.Engine", course.geo.Engine, {
 
 		// update the view in Google Earth
 		this.ge.getView().setAbstractView(lookAt);
+	},
+	
+	destroy: function() {
+		
 	}
 });
 

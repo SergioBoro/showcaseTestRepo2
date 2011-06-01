@@ -127,10 +127,6 @@ dojo.declare("course.geo.Map", null, {
 		this.render();
 	},
 
-	destroy:function(){
-		this.surface.destroy();
-	},
-
 	_calculateViewport: function() {
 		var contentBox = dojo.contentBox(this.container);
 		var coords = dojo.coords(this.container);
@@ -214,7 +210,7 @@ dojo.declare("course.geo.Map", null, {
 	},
 	
 	destroy: function() {
-		this.engine.surface.destroy();
+		this.engine.destroy();
 	}
 });
 

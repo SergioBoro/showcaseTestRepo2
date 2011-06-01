@@ -61,6 +61,10 @@ dojo.declare("course.geo.gfx.Engine", course.geo.Engine, {
 		dojo.forEach(connections, function(connection){
 			connection[0].disconnect(connection[1]);
 		});
+	},
+	
+	destroy: function() {
+		this.surface.destroy();
 	}
 });
 

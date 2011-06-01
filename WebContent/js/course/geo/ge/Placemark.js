@@ -233,4 +233,4 @@ var shapes = {
 	triangle: "triangle.png"
 };
 
-}())
+}());
