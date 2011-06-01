@@ -3,6 +3,8 @@
  */
 package ru.curs.showcase.app.client;
 
+import ru.curs.showcase.app.client.api.Constants;
+
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -28,7 +30,7 @@ public class ProgressWindow extends DecoratedPopupPanel {
 		prWin.setGlassEnabled(true);
 		Image waiteImage = new Image();
 		waiteImage.setSize("48px", "48px");
-		waiteImage.setUrl("resources/internal/progress.gif");
+		waiteImage.setUrl(Constants.IMAGE_FOR_WAITING_WINDOW);
 		prWin.add(waiteImage);
 		prWin.setSize("58px", "58px");
 		prWin.center();
