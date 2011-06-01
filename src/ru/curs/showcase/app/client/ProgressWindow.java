@@ -21,6 +21,10 @@ public class ProgressWindow extends DecoratedPopupPanel {
 	 */
 	public static void showProgressWindow() {
 		final ProgressWindow prWin = new ProgressWindow();
+		AbsolutePanel ap = new AbsolutePanel();
+		ap.setSize("48px", "48px");
+
+		prWin.add(ap);
 
 		if (AppCurrContext.getInstance().getProgressWindow() != null) {
 			ProgressWindow.closeProgressWindow();
@@ -29,12 +33,9 @@ public class ProgressWindow extends DecoratedPopupPanel {
 		prWin.setAnimationEnabled(true);
 		prWin.setGlassEnabled(true);
 		Image waiteImage = new Image();
-		waiteImage.setSize("48px", "48px");
 		waiteImage.setUrl(Constants.IMAGE_FOR_WAITING_WINDOW);
-		prWin.add(waiteImage);
-		prWin.setSize("58px", "58px");
+		ap.add(waiteImage);
 		prWin.center();
-		prWin.show();
 	}
 
 	/**
