@@ -3,3 +3,4 @@ deploy.dir=${servlet.cont.dir}/webapps
 servlet.cont.lib.dir=${servlet.cont.dir}/lib
 gwt.dir=c:/Program Files/gwt
 junit.dir=c:/Program Files/junit
+gquery-dnd-bundle=gquery-dnd-bundle-1.0.4.jar
