@@ -32,6 +32,12 @@ public final class AppCurrContext extends ActionHolder {
 	private static AppCurrContext appCurrContext;
 
 	/**
+	 * Содержит текущий открытый ProgressWindow (окно прогресса). Если свойство
+	 * равно null, то нет открытого окна прогресса.
+	 */
+	private static ProgressWindow progressWindow;
+
+	/**
 	 * MainPanel для текущей сессии.
 	 */
 	private static MainPanel mainPanel;
@@ -166,6 +172,21 @@ public final class AppCurrContext extends ActionHolder {
 	 */
 	public MainPanel getMainPanel() {
 		return mainPanel;
+	}
+
+	/**
+	 * @param aprogressWindow
+	 *            the progressWindow to set
+	 */
+	public void setProgressWindow(final ProgressWindow aprogressWindow) {
+		AppCurrContext.progressWindow = aprogressWindow;
+	}
+
+	/**
+	 * @return the progressWindow
+	 */
+	public ProgressWindow getProgressWindow() {
+		return progressWindow;
 	}
 
 }
