@@ -174,7 +174,7 @@ public class BaseObjectsTest extends AbstractTestBasedOnFiles {
 		assertNull(source.getDocument());
 		assertNotNull(source.getSaxParser());
 
-		source = new XMLSource(XMLUtils.createEmptyDoc("test"), "");
+		source = new XMLSource(XMLUtils.createEmptyDoc("test"), "test", "");
 		assertNull(source.getInputStream());
 		assertNotNull(source.getDocument());
 		assertNull(source.getSaxParser());

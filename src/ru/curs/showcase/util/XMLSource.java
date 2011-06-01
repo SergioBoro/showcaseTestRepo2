@@ -60,6 +60,13 @@ public class XMLSource {
 		schemaName = aSchemaName;
 	}
 
+	public XMLSource(final Document aDocument, final String aSubjectName, final String aSchemaName) {
+		super();
+		document = aDocument;
+		subjectName = aSubjectName;
+		schemaName = aSchemaName;
+	}
+
 	public XMLSource(final Document aDocument, final String aSchemaName) {
 		super();
 		document = aDocument;

@@ -1,12 +1,14 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.services.ExceptionType;
+
 /**
  * Ошибка соединения с БД.
  * 
  * @author den
  * 
  */
-public class DBConnectException extends AbstractShowcaseException {
+public class DBConnectException extends BaseException {
 
 	/**
 	 * Текст ошибки.
@@ -17,12 +19,8 @@ public class DBConnectException extends AbstractShowcaseException {
 	 */
 	private static final long serialVersionUID = 7586686198028153113L;
 
-	public DBConnectException() {
-		super(ERROR_MES);
-	}
-
 	public DBConnectException(final Throwable cause) {
-		super(ERROR_MES, cause);
+		super(ExceptionType.SOLUTION, ERROR_MES, cause);
 	}
 
 }

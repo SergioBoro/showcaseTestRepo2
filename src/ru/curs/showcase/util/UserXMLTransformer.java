@@ -2,7 +2,13 @@ package ru.curs.showcase.util;
 
 import java.io.*;
 
+import javax.xml.parsers.DocumentBuilder;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
 import ru.curs.showcase.app.api.datapanel.DataPanelElementProc;
+import ru.curs.showcase.exception.NotXMLException;
 import ru.curs.showcase.model.DataFile;
 
 /**
@@ -37,23 +43,37 @@ public final class UserXMLTransformer {
 	 * Проверяет исходник и трансформирует его если в процедуре трансформации
 	 * описаны соответствующие схема и файл трансформации.
 	 * 
-	 * @throws UnsupportedEncodingException
+	 * @throws IOException
 	 */
-	public void checkAndTransform() throws UnsupportedEncodingException {
+	public void checkAndTransform() throws IOException {
 		if ((subject == null) || (proc == null)) {
 			return;
 		}
 
 		if (proc.getSchemaName() != null) {
+			Document doc = checkForXMLandCreateDoc();
 			XMLValidator validator = new XMLValidator(new UserDataXSDSource());
-			InputStream is = StreamConvertor.outputToInputStream(subject.getData());
-			validator.validate(new XMLSource(is, subject.getName(), proc.getSchemaName()));
+			validator.validate(new XMLSource(doc, subject.getName(), proc.getSchemaName()));
 		}
 		if (proc.getTransformName() != null) {
 			InputStream is = StreamConvertor.outputToInputStream(subject.getData());
 			String res = XMLUtils.xsltTransform(is, proc.getTransformName());
 			result = TextUtils.stringToStream(res);
 		}
+	}
+
+	private Document checkForXMLandCreateDoc() throws IOException {
+		DocumentBuilder db = XMLUtils.createBuilder();
+		Document doc = null;
+		InputStream is = StreamConvertor.outputToInputStream(subject.getData());
+		try {
+			doc = db.parse(is);
+		} catch (SAXException e) {
+			throw new NotXMLException(e, subject.getName());
+		} catch (IOException e) {
+			throw e;
+		}
+		return doc;
 	}
 
 	public DataFile<ByteArrayOutputStream> getSubject() {

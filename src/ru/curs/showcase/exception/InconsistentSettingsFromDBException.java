@@ -1,5 +1,6 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.services.ExceptionType;
 
 /**
  * Исключение, возникающее при несогласованных настройках элементов, переданных
@@ -8,7 +9,7 @@ package ru.curs.showcase.exception;
  * @author den
  * 
  */
-public final class InconsistentSettingsFromDBException extends AbstractShowcaseException {
+public final class InconsistentSettingsFromDBException extends BaseException {
 
 	/**
 	 * Сообщение об ошибке.
@@ -20,7 +21,7 @@ public final class InconsistentSettingsFromDBException extends AbstractShowcaseE
 	private static final long serialVersionUID = 5664191473699810949L;
 
 	public InconsistentSettingsFromDBException(final String aString) {
-		super(ERROR_MES + aString);
+		super(ExceptionType.SOLUTION, ERROR_MES + aString);
 	}
 
 }

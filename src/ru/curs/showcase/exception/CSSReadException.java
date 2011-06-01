@@ -1,12 +1,14 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.services.ExceptionType;
+
 /**
  * Ошибка при загрузке или разборе CSS.
  * 
  * @author den
  * 
  */
-public class CSSReadException extends AbstractShowcaseException {
+public class CSSReadException extends BaseException {
 
 	/**
 	 * Сообщение об ошибке.
@@ -18,7 +20,7 @@ public class CSSReadException extends AbstractShowcaseException {
 	private static final long serialVersionUID = -7795606248492441994L;
 
 	public CSSReadException(final Throwable aCause) {
-		super(ERROR_MES, aCause);
+		super(ExceptionType.SOLUTION, ERROR_MES, aCause);
 	}
 
 }

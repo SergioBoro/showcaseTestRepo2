@@ -191,8 +191,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 *            - исключение.
 	 */
 	protected void dbExceptionHandler(final SQLException e) {
-		if (SolutionDBException.isSolutionDBException(e)) {
-			throw new SolutionDBException(e);
+		if (ValidateInDBException.isSolutionDBException(e)) {
+			throw new ValidateInDBException(e);
 		} else {
 			throw new DBQueryException(e, getElementInfo(), getContext());
 		}

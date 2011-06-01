@@ -1,5 +1,6 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.services.ExceptionType;
 import ru.curs.showcase.model.SettingsFileType;
 
 /**
@@ -9,7 +10,7 @@ import ru.curs.showcase.model.SettingsFileType;
  * @author den
  * 
  */
-public class SettingsFileRequiredPropException extends AbstractShowcaseException {
+public class SettingsFileRequiredPropException extends BaseException {
 
 	/**
 	 * serialVersionUID.
@@ -34,7 +35,7 @@ public class SettingsFileRequiredPropException extends AbstractShowcaseException
 	/**
 	 * Тип файла настроек.
 	 */
-	private final SettingsFileType type;
+	private final SettingsFileType fileType;
 
 	public String getPropName() {
 		return propName;
@@ -46,13 +47,14 @@ public class SettingsFileRequiredPropException extends AbstractShowcaseException
 
 	public SettingsFileRequiredPropException(final String aFileName, final String aPropName,
 			final SettingsFileType aType) {
-		super(String.format(ERROR_MES, aType.getName(), aFileName, aPropName));
+		super(ExceptionType.SOLUTION, String.format(ERROR_MES, aType.getName(), aFileName,
+				aPropName));
 		fileName = aFileName;
 		propName = aPropName;
-		type = aType;
+		fileType = aType;
 	}
 
-	public SettingsFileType getType() {
-		return type;
+	public SettingsFileType getFileType() {
+		return fileType;
 	}
 }

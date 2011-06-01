@@ -1,5 +1,7 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.services.ExceptionType;
+
 /**
  * Специальный класс ошибки для передачи наверх ошибки в обработчике SAX
  * парсера.
@@ -7,10 +9,10 @@ package ru.curs.showcase.exception;
  * @author den
  * 
  */
-public final class SAXError extends AbstractShowcaseError {
+public final class SAXError extends BaseException {
 
 	public SAXError(final Throwable aCause) {
-		super(aCause);
+		super(ExceptionType.APP, aCause);
 	}
 
 	/**

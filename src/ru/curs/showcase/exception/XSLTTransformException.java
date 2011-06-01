@@ -1,10 +1,12 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.services.ExceptionType;
+
 /**
  * Класс исключений, генерируемых при выполнении XSLT-преобразования
  * XMLUtils.xsltTransform.
  */
-public class XSLTTransformException extends AbstractShowcaseException {
+public class XSLTTransformException extends BaseException {
 
 	/**
 	 * serialVersionUID.
@@ -16,18 +18,18 @@ public class XSLTTransformException extends AbstractShowcaseException {
 	private static final String ERROR_MES = "Ошибка при выполнении XSLT-преобразования";
 
 	public XSLTTransformException(final Throwable cause) {
-		super(ERROR_MES, cause);
+		super(ExceptionType.SOLUTION, ERROR_MES, cause);
 	}
 
 	public XSLTTransformException() {
-		super(ERROR_MES);
+		super(ExceptionType.SOLUTION, ERROR_MES);
 	}
 
 	public XSLTTransformException(final String message, final Throwable cause) {
-		super(ERROR_MES + ": " + message, cause);
+		super(ExceptionType.SOLUTION, ERROR_MES + ": " + message, cause);
 	}
 
 	public XSLTTransformException(final String message) {
-		super(message);
+		super(ExceptionType.SOLUTION, message);
 	}
 }

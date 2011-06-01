@@ -7,6 +7,7 @@ import javax.xml.validation.*;
 
 import org.xml.sax.SAXException;
 
+import ru.curs.showcase.app.api.services.ExceptionType;
 import ru.curs.showcase.exception.*;
 
 /**
@@ -31,19 +32,26 @@ public class XMLValidator {
 	public void validate(final XMLSource source) {
 		try {
 			Validator validator = createValidator(source);
-			validator.validate(createSource(source));
+			Source prepared = prepareSource(source);
+			validator.validate(prepared);
 		} catch (SettingsFileOpenException e) {
 			throw e;
 		} catch (Exception e) {
-			if (source.getSubjectName() != null) {
-				throw new XSDValidateException(e, source.getSubjectName(), source.getSchemaName());
-			} else {
-				throw new XSDValidateException(e, source.getSchemaName());
-			}
+			handleException(source, e);
 		}
 	}
 
-	private Source createSource(final XMLSource aSource) throws SAXException {
+	private void handleException(final XMLSource source, final Exception e) {
+		ExceptionType exType = xsdSource.getExceptionType();
+		if (source.getSubjectName() != null) {
+			throw new XSDValidateException(exType, e, source.getSubjectName(),
+					source.getSchemaName());
+		} else {
+			throw new XSDValidateException(exType, e, source.getSchemaName());
+		}
+	}
+
+	private Source prepareSource(final XMLSource aSource) throws SAXException {
 		return aSource.getExtractor().extract(aSource); // TODO некрасиво
 	}
 

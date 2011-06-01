@@ -1,5 +1,7 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.services.ExceptionType;
+
 /**
  * Ошибка при создании объекта. Используется для перехвата исключений,
  * возникающих при создании объектов - как из системных библиотек, так и своих,
@@ -8,7 +10,7 @@ package ru.curs.showcase.exception;
  * @author den
  * 
  */
-public class CreateObjectError extends AbstractShowcaseError {
+public class CreateObjectError extends BaseException {
 
 	/**
 	 * Сообщение об ошибке.
@@ -20,7 +22,7 @@ public class CreateObjectError extends AbstractShowcaseError {
 	private static final long serialVersionUID = -7749067251383439818L;
 
 	public CreateObjectError(final Throwable cause) {
-		super(ERROR_MES, cause);
+		super(ExceptionType.APP, ERROR_MES, cause);
 	}
 
 }

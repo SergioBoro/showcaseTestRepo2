@@ -3,7 +3,8 @@ package ru.curs.showcase.util;
 import java.io.File;
 import java.net.URL;
 
-import ru.curs.showcase.exception.SettingsFileOpenException;
+import ru.curs.showcase.app.api.services.ExceptionType;
+import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.SettingsFileType;
 
 /**
@@ -34,4 +35,8 @@ public class ClassPathXSDSource implements XSDSource {
 		return file;
 	}
 
+	@Override
+	public ExceptionType getExceptionType() {
+		return ExceptionType.SOLUTION;
+	}
 }

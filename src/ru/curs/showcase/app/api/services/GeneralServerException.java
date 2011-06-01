@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.services;
 
-import ru.curs.showcase.app.api.SolutionMessage;
+import ru.curs.showcase.app.api.UserMessage;
 
 /**
  * Класс общего серверного исключения. Данное исключение передается на GWT
@@ -34,16 +34,6 @@ public class GeneralServerException extends Exception {
 	private static final long serialVersionUID = -5928650256788448347L;
 
 	/**
-	 * Класс оригинального исключения.
-	 */
-	private String originalExceptionClass;
-
-	/**
-	 * Стек оригинального исключения.
-	 */
-	private String originalTrace;
-
-	/**
 	 * Оригинальное сообщение об ошибке. Задается в случае, если ошибка Showcase
 	 * базируется на другой ошибке.
 	 */
@@ -52,11 +42,12 @@ public class GeneralServerException extends Exception {
 	/**
 	 * Сообщение, выдаваемое пользователю.
 	 */
-	private SolutionMessage solutionMessage;
+	private UserMessage userMessage;
 
-	public boolean isSolutionMessage() {
-		return (solutionMessage != null);
-	}
+	/**
+	 * Тип исключения.
+	 */
+	private ExceptionType type;
 
 	public final String getOriginalMessage() {
 		return originalMessage;
@@ -70,22 +61,9 @@ public class GeneralServerException extends Exception {
 		super();
 	}
 
-	public GeneralServerException(final Throwable original, final String aOriginalMessage,
-			final SolutionMessage aSolutionMessage) {
-		super(getMessageText(original), original);
-
-		originalExceptionClass = original.getClass().getName();
-		originalTrace = getStackText(original);
-		originalMessage = aOriginalMessage;
-		solutionMessage = aSolutionMessage;
-	}
-
-	private static String getMessageText(final Throwable original) {
-		if (original.getLocalizedMessage() != null) {
-			return original.getLocalizedMessage();
-		} else {
-			return original.getClass().getName();
-		}
+	public GeneralServerException(final Throwable original, final UserMessage aUserMessage) {
+		super(aUserMessage.getText(), original);
+		userMessage = aUserMessage;
 	}
 
 	/**
@@ -98,8 +76,8 @@ public class GeneralServerException extends Exception {
 	 */
 	public static String getStackText(final Throwable original) {
 		StringBuilder result = new StringBuilder();
-		String ls = LINE_SEPARATOR; // System.getProperty("line.separator"); -
-									// не
+		String ls = LINE_SEPARATOR;
+		// System.getProperty("line.separator"); - не
 		// работает в gwt
 
 		for (StackTraceElement el : original.getStackTrace()) {
@@ -116,33 +94,21 @@ public class GeneralServerException extends Exception {
 	}
 
 	public final String getOriginalExceptionClass() {
-		return originalExceptionClass;
-	}
-
-	public final void setOriginalExceptionClass(final String aOriginalExceptionClass) {
-		originalExceptionClass = aOriginalExceptionClass;
+		return getCause().getClass().getName();
 	}
 
 	public final String getOriginalTrace() {
-		return originalTrace;
+		return getStackText(getCause());
 	}
 
-	public final void setOriginalTrace(final String aOriginalTrace) {
-		originalTrace = aOriginalTrace;
-	}
-
-	/**
-	 * Возвращает подробный текст сообщения об ошибке.
-	 * 
-	 * @return текст сообщения
-	 */
-	public final String getDetailedTextOfException() {
+	private static String getDetailedTextOfException(final String mes, final String className,
+			final String trace, final ExceptionType aType) {
 		String str = null;
-		str = ORIGINAL_MESSAGE + this.getOriginalMessage() + LINE_SEPARATOR + LINE_SEPARATOR;
-		str =
-			str + EXCEPTION_CLASS + this.getOriginalExceptionClass() + LINE_SEPARATOR
-					+ LINE_SEPARATOR;
-		str = str + EXCEPTION_TRACE + this.getOriginalTrace();
+		str = ORIGINAL_MESSAGE + mes + LINE_SEPARATOR + LINE_SEPARATOR;
+		if (aType != ExceptionType.USER) {
+			str = str + EXCEPTION_CLASS + className + LINE_SEPARATOR + LINE_SEPARATOR;
+			str = str + EXCEPTION_TRACE + trace;
+		}
 		return str;
 	}
 
@@ -155,24 +121,40 @@ public class GeneralServerException extends Exception {
 	 * @return текст сообщения
 	 */
 	public static String checkExeptionTypeAndCreateDetailedTextOfException(final Throwable caught) {
-		String str = null;
 		if (caught instanceof GeneralServerException) {
-			return ((GeneralServerException) caught).getDetailedTextOfException();
+			GeneralServerException gse = (GeneralServerException) caught;
+			return getDetailedTextOfException(gse.originalMessage,
+					gse.getOriginalExceptionClass(), gse.getOriginalTrace(), gse.type);
 		} else {
-			str = ORIGINAL_MESSAGE + caught.getMessage() + LINE_SEPARATOR + LINE_SEPARATOR;
-			str = str + EXCEPTION_CLASS + caught.getClass() + LINE_SEPARATOR + LINE_SEPARATOR;
-			str = str + EXCEPTION_TRACE + getStackText(caught);
-			return str;
+			return getDetailedTextOfException(caught.getMessage(), caught.getClass().getName(),
+					getStackText(caught), ExceptionType.JAVA);
 		}
 
 	}
 
-	public SolutionMessage getSolutionMessage() {
-		return solutionMessage;
+	/**
+	 * Функция говорит о том, нужно ли дать возможность просмотреть детальную
+	 * информацию об ошибке на клиентской части.
+	 * 
+	 * @return - результат проверки.
+	 */
+	public boolean needDetailedInfo() {
+		return (type != ExceptionType.USER) || (getOriginalMessage() != null);
 	}
 
-	public void setSolutionMessage(final SolutionMessage aSolutionMessage) {
-		solutionMessage = aSolutionMessage;
+	public UserMessage getUserMessage() {
+		return userMessage;
 	}
 
+	public void setUserMessage(final UserMessage aUserMessage) {
+		userMessage = aUserMessage;
+	}
+
+	public ExceptionType getType() {
+		return type;
+	}
+
+	public void setType(final ExceptionType aType) {
+		type = aType;
+	}
 }

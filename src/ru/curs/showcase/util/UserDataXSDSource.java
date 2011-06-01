@@ -2,7 +2,8 @@ package ru.curs.showcase.util;
 
 import java.io.File;
 
-import ru.curs.showcase.exception.SettingsFileOpenException;
+import ru.curs.showcase.app.api.services.ExceptionType;
+import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.SettingsFileType;
 
 /**
@@ -23,6 +24,11 @@ public final class UserDataXSDSource implements XSDSource {
 			throw new SettingsFileOpenException(xsdFullFileName, SettingsFileType.SCHEMA);
 		}
 		return file;
+	}
+
+	@Override
+	public ExceptionType getExceptionType() {
+		return ExceptionType.USER;
 	}
 
 }

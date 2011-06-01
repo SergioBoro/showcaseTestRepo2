@@ -138,8 +138,8 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 			}
 			return result;
 		} catch (SQLException e) {
-			if (SolutionDBException.isSolutionDBException(e)) {
-				throw new SolutionDBException(e);
+			if (ValidateInDBException.isSolutionDBException(e)) {
+				throw new ValidateInDBException(e);
 			} else {
 				throw new DBQueryException(e, aProcName);
 			}

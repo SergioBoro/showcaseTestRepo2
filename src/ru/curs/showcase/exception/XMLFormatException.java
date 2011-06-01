@@ -1,12 +1,14 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.services.ExceptionType;
+
 /**
  * Ошибка получения XML документа из XML поля.
  * 
  * @author den
  * 
  */
-public class XMLFormatException extends AbstractShowcaseException {
+public class XMLFormatException extends BaseException {
 
 	/**
 	 * Текст ошибки.
@@ -18,14 +20,14 @@ public class XMLFormatException extends AbstractShowcaseException {
 	private static final long serialVersionUID = 7758790066616498408L;
 
 	public XMLFormatException() {
-		super(ERROR_MES);
+		super(ExceptionType.SOLUTION, ERROR_MES);
 	}
 
 	public XMLFormatException(final String fileName, final Throwable cause) {
-		super(ERROR_MES + ": " + fileName, cause);
+		super(ExceptionType.SOLUTION, ERROR_MES + ": " + fileName, cause);
 	}
 
 	public XMLFormatException(final String fileName) {
-		super(ERROR_MES + ": " + fileName);
+		super(ExceptionType.SOLUTION, ERROR_MES + ": " + fileName);
 	}
 }

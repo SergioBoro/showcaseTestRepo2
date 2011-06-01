@@ -1,5 +1,7 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.services.ExceptionType;
+
 /**
  * Ошибка при работе с полученным из БД ResultSet. Может быть вызвана потерей
  * соединения с сервером.
@@ -7,7 +9,7 @@ package ru.curs.showcase.exception;
  * @author den
  * 
  */
-public class ResultSetHandleException extends AbstractShowcaseException {
+public class ResultSetHandleException extends BaseException {
 
 	/**
 	 * Сообщение об ошибке.
@@ -18,16 +20,12 @@ public class ResultSetHandleException extends AbstractShowcaseException {
 	 */
 	private static final long serialVersionUID = -4089202125257954531L;
 
-	public ResultSetHandleException() {
-		super(ERROR_MES);
-	}
-
 	public ResultSetHandleException(final Throwable aCause) {
-		super(ERROR_MES, aCause);
+		super(ExceptionType.SOLUTION, ERROR_MES, aCause);
 	}
 
 	public ResultSetHandleException(final String aString) {
-		super(aString);
+		super(ExceptionType.SOLUTION, aString);
 	}
 
 }

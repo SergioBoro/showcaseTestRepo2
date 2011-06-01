@@ -1,5 +1,6 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.services.ExceptionType;
 import ru.curs.showcase.model.SettingsFileType;
 
 /**
@@ -8,7 +9,7 @@ import ru.curs.showcase.model.SettingsFileType;
  * @author den
  * 
  */
-public class SettingsFileOpenException extends AbstractShowcaseException {
+public class SettingsFileOpenException extends BaseException {
 	/**
 	 * serialVersionUID.
 	 */
@@ -27,23 +28,22 @@ public class SettingsFileOpenException extends AbstractShowcaseException {
 	/**
 	 * Тип файла.
 	 */
-	private final SettingsFileType type;
+	private final SettingsFileType fileType;
 
 	public SettingsFileOpenException(final Throwable cause, final String aFileName,
-			final SettingsFileType aType) {
-		super(generateMessage(aFileName, aType), cause);
+			final SettingsFileType aFileType) {
+		super(ExceptionType.SOLUTION, generateMessage(aFileName, aFileType), cause);
 		fileName = aFileName;
-		type = aType;
+		fileType = aFileType;
 	}
 
-	public SettingsFileOpenException(final String aFileName, final SettingsFileType aType) {
-		super(generateMessage(aFileName, aType));
+	public SettingsFileOpenException(final String aFileName, final SettingsFileType aFileType) {
+		super(ExceptionType.SOLUTION, generateMessage(aFileName, aFileType));
 		fileName = aFileName;
-		type = aType;
+		fileType = aFileType;
 	}
 
-	private static String generateMessage(final String aFileName,
-			final SettingsFileType aType) {
+	private static String generateMessage(final String aFileName, final SettingsFileType aType) {
 		return String.format(ERROR_MES, aType.getName(), aFileName);
 	}
 
@@ -51,7 +51,7 @@ public class SettingsFileOpenException extends AbstractShowcaseException {
 		return fileName;
 	}
 
-	public SettingsFileType getType() {
-		return type;
+	public SettingsFileType getFileType() {
+		return fileType;
 	}
 }

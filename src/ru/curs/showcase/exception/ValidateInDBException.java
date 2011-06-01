@@ -9,20 +9,22 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.services.ExceptionType;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.util.*;
 
 /**
- * Исключение для решения. Исключение можно вызвать, если в тексте сообщения об
- * ошибке из БД будут определенные комбинации символов. Описание выдаваемых
- * пользователю сообщений при таких исключений хранятся в файле в папке
- * userdata. Формат этих файлов следующий: <messages> <messages id="id1"
- * type="ERROR"> Это текст сообщения об ошибке в хранимой процедуре.
+ * Исключение, возникающее при проверке введенных пользователем данных в БД.
+ * Исключение можно вызвать, если в тексте сообщения об ошибке из БД будут
+ * определенные комбинации символов. Описание выдаваемых пользователю сообщений
+ * при таких исключений хранятся в файле в папке userdata. Формат этих файлов
+ * следующий: <messages> <messages id="id1" type="ERROR"> Это текст сообщения об
+ * ошибке в хранимой процедуре.
  * 
  * @author den
  * 
  */
-public class SolutionDBException extends AbstractShowcaseException {
+public class ValidateInDBException extends BaseException {
 
 	/**
 	 * Префикс для исключения решения.
@@ -37,15 +39,25 @@ public class SolutionDBException extends AbstractShowcaseException {
 	 * Имя файла с описанием сообщений.
 	 */
 	public static final String SOL_MESSAGES_FILE = "solution.messages.xml";
-	/**
-	 * Сообщение, выдаваемое пользователю.
-	 */
-	private SolutionMessage solutionMessage;
 
 	/**
 	 * Временная переменная для хранения идентификатора сообщения.
 	 */
 	private String mesId;
+
+	/**
+	 * Сообщение, выдаваемое пользователю.
+	 */
+	private UserMessage userMessage;
+
+	public UserMessage getUserMessage() {
+		return userMessage;
+	}
+
+	public void setUserMessage(final UserMessage aMessage) {
+		userMessage = aMessage;
+	}
+
 	/**
 	 * serialVersionUID.
 	 */
@@ -57,8 +69,8 @@ public class SolutionDBException extends AbstractShowcaseException {
 	 */
 	private boolean mesFound = false;
 
-	public SolutionDBException(final Throwable cause) {
-		super(cause);
+	public ValidateInDBException(final Throwable cause) {
+		super(ExceptionType.USER);
 		parse(cause);
 		loadMessage();
 	}
@@ -80,12 +92,14 @@ public class SolutionDBException extends AbstractShowcaseException {
 				if (qname.equalsIgnoreCase(MESSAGE_TAG)) {
 					if (attrs.getValue(GeneralXMLHelper.ID_TAG).equals(mesId)) {
 						mesFound = true;
-						solutionMessage = new SolutionMessage();
-						solutionMessage.setId(mesId);
-						solutionMessage.setText("");
+						setUserMessage(new UserMessage());
+						getUserMessage().setId(mesId);
+						getUserMessage().setText("");
 						if (attrs.getIndex(GeneralXMLHelper.TYPE_TAG) > -1) {
-							solutionMessage.setType(MessageType.valueOf(attrs
-									.getValue(GeneralXMLHelper.TYPE_TAG)));
+							getUserMessage()
+									.setType(
+											MessageType.valueOf(attrs
+													.getValue(GeneralXMLHelper.TYPE_TAG)));
 						}
 					}
 				}
@@ -95,8 +109,8 @@ public class SolutionDBException extends AbstractShowcaseException {
 			public void characters(final char[] aCh, final int aStart, final int aLength)
 					throws SAXException {
 				if (mesFound) {
-					solutionMessage.setText(solutionMessage.getText()
-							+ String.copyValueOf(aCh, aStart, aLength));
+					getUserMessage().setText(
+							getUserMessage().getText() + String.copyValueOf(aCh, aStart, aLength));
 				}
 			}
 
@@ -106,7 +120,7 @@ public class SolutionDBException extends AbstractShowcaseException {
 				if (qname.equalsIgnoreCase(MESSAGE_TAG)) {
 					if (mesFound) {
 						mesFound = false;
-						solutionMessage.setText(solutionMessage.getText().trim());
+						getUserMessage().setText(getUserMessage().getText().trim());
 					}
 				}
 			}
@@ -119,7 +133,7 @@ public class SolutionDBException extends AbstractShowcaseException {
 			XMLUtils.stdSAXErrorHandler(e, SOL_MESSAGES_FILE);
 		}
 
-		if (solutionMessage == null) {
+		if (getUserMessage() == null) {
 			throw new SettingsFileRequiredPropException(SOL_MESSAGES_FILE, mesId,
 					SettingsFileType.SOLUTION_MESSAGES);
 		}
@@ -145,13 +159,4 @@ public class SolutionDBException extends AbstractShowcaseException {
 		return exc.getMessage().contains(SOL_MES_PREFIX)
 				&& exc.getMessage().contains(SOL_MES_SUFFIX);
 	}
-
-	public SolutionMessage getSolutionMessage() {
-		return solutionMessage;
-	}
-
-	public void setSolutionMessage(final SolutionMessage aSolutionMessage) {
-		solutionMessage = aSolutionMessage;
-	}
-
 }

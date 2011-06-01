@@ -1,5 +1,6 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.services.ExceptionType;
 import ru.curs.showcase.model.SettingsFileType;
 
 /**
@@ -9,7 +10,7 @@ import ru.curs.showcase.model.SettingsFileType;
  * @author den
  * 
  */
-public final class SettingsFilePropValueFormatException extends AbstractShowcaseException {
+public final class SettingsFilePropValueFormatException extends BaseException {
 
 	/**
 	 * Сообщение об ошибке.
@@ -34,22 +35,22 @@ public final class SettingsFilePropValueFormatException extends AbstractShowcase
 	/**
 	 * Тип файла.
 	 */
-	private final SettingsFileType type;
+	private final SettingsFileType fileType;
 
 	public SettingsFilePropValueFormatException(final Throwable aCause, final String aFileName,
 			final String aPropName, final SettingsFileType aType) {
-		super(generateMessage(aFileName, aPropName, aType), aCause);
+		super(ExceptionType.SOLUTION, generateMessage(aFileName, aPropName, aType), aCause);
 		fileName = aFileName;
 		propName = aPropName;
-		type = aType;
+		fileType = aType;
 	}
 
 	public SettingsFilePropValueFormatException(final String aFileName, final String aPropName,
 			final SettingsFileType aType) {
-		super(generateMessage(aFileName, aPropName, aType));
+		super(ExceptionType.SOLUTION, generateMessage(aFileName, aPropName, aType));
 		fileName = aFileName;
 		propName = aPropName;
-		type = aType;
+		fileType = aType;
 	}
 
 	private static String generateMessage(final String aFileName, final String aPropName,
@@ -65,7 +66,7 @@ public final class SettingsFilePropValueFormatException extends AbstractShowcase
 		return propName;
 	}
 
-	public SettingsFileType getType() {
-		return type;
+	public SettingsFileType getFileType() {
+		return fileType;
 	}
 }

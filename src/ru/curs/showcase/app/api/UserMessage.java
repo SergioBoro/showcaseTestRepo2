@@ -6,7 +6,17 @@ package ru.curs.showcase.app.api;
  * @author den
  * 
  */
-public class SolutionMessage implements SerializableElement {
+public class UserMessage implements SerializableElement {
+
+	public UserMessage() {
+		super();
+	}
+
+	public UserMessage(final String aText, final MessageType aType) {
+		super();
+		text = aText;
+		type = aType;
+	}
 
 	/**
 	 * serialVersionUID.

@@ -14,7 +14,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
-import ru.curs.showcase.exception.XSDValidateException;
+import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.util.*;
@@ -351,7 +351,22 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test(expected = XSDValidateException.class)
-	public void testDBGatewayUpdateWithUnSuccessTransform() throws IOException {
+	public void testDBUpdateWithInvalidXML() throws IOException {
+		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "11");
+
+		String content = "<test/>";
+		UserXMLTransformer transformer =
+			new UserXMLTransformer(content, elementInfo.getSaveProc());
+		transformer.checkAndTransform();
+	}
+
+	/**
+	 * Тест сохранения данных через XFormsDBGateway, приводящий к ошибке
+	 * проверки XSD.
+	 * 
+	 */
+	@Test(expected = NotXMLException.class)
+	public void testDBUpdateWithNotXML() throws IOException {
 		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "11");
 
 		String content = "<test>";

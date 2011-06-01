@@ -226,22 +226,22 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testSolutionException() {
-		SQLException exc = new SQLException(SolutionDBException.SOL_MES_PREFIX);
-		assertFalse(SolutionDBException.isSolutionDBException(exc));
+		SQLException exc = new SQLException(ValidateInDBException.SOL_MES_PREFIX);
+		assertFalse(ValidateInDBException.isSolutionDBException(exc));
 		exc =
-			new SQLException(String.format("%stest1%s", SolutionDBException.SOL_MES_PREFIX,
-					SolutionDBException.SOL_MES_SUFFIX));
-		assertTrue(SolutionDBException.isSolutionDBException(exc));
-		SolutionDBException solEx = new SolutionDBException(exc);
-		assertNotNull(solEx.getSolutionMessage());
-		assertEquals("test1", solEx.getSolutionMessage().getId());
-		assertEquals(MessageType.ERROR, solEx.getSolutionMessage().getType());
-		assertEquals("Ошибка", solEx.getSolutionMessage().getText());
+			new SQLException(String.format("%stest1%s", ValidateInDBException.SOL_MES_PREFIX,
+					ValidateInDBException.SOL_MES_SUFFIX));
+		assertTrue(ValidateInDBException.isSolutionDBException(exc));
+		ValidateInDBException solEx = new ValidateInDBException(exc);
+		assertNotNull(solEx.getUserMessage());
+		assertEquals("test1", solEx.getUserMessage().getId());
+		assertEquals(MessageType.ERROR, solEx.getUserMessage().getType());
+		assertEquals("Ошибка", solEx.getUserMessage().getText());
 		exc =
-			new SQLException(String.format("%stest2%s", SolutionDBException.SOL_MES_PREFIX,
-					SolutionDBException.SOL_MES_SUFFIX));
-		solEx = new SolutionDBException(exc);
-		assertEquals("Предупреждение", solEx.getSolutionMessage().getText());
+			new SQLException(String.format("%stest2%s", ValidateInDBException.SOL_MES_PREFIX,
+					ValidateInDBException.SOL_MES_SUFFIX));
+		solEx = new ValidateInDBException(exc);
+		assertEquals("Предупреждение", solEx.getUserMessage().getText());
 	}
 
 	/**
@@ -251,24 +251,23 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test(expected = SettingsFileRequiredPropException.class)
 	public void testSolutionExceptionMesNotFound() {
 		SQLException exc =
-			new SQLException(String.format("%stestN%s", SolutionDBException.SOL_MES_PREFIX,
-					SolutionDBException.SOL_MES_SUFFIX));
-		new SolutionDBException(exc);
+			new SQLException(String.format("%stestN%s", ValidateInDBException.SOL_MES_PREFIX,
+					ValidateInDBException.SOL_MES_SUFFIX));
+		new ValidateInDBException(exc);
 	}
 
 	/**
-	 * Проверка обработки SolutionDBException на сервисном уровне.
+	 * Проверка обработки пользовательского исключения в БД на сервисном уровне.
 	 */
 	@Test
 	public void testSolutionExceptionBySL() {
 		SQLException exc =
-			new SQLException(String.format("%stest1%s", SolutionDBException.SOL_MES_PREFIX,
-					SolutionDBException.SOL_MES_SUFFIX));
-		SolutionDBException solEx = new SolutionDBException(exc);
-		GeneralServerException gse =
-			new GeneralServerException(solEx, "", solEx.getSolutionMessage());
-		assertTrue(gse.isSolutionMessage());
-		assertEquals("Ошибка", solEx.getSolutionMessage().getText());
+			new SQLException(String.format("%stest1%s", ValidateInDBException.SOL_MES_PREFIX,
+					ValidateInDBException.SOL_MES_SUFFIX));
+		ValidateInDBException exc2 = new ValidateInDBException(exc);
+		GeneralServerException gse = GeneralServerExceptionFactory.build(exc2);
+		assertFalse(gse.needDetailedInfo());
+		assertEquals("Ошибка", exc2.getUserMessage().getText());
 	}
 
 }

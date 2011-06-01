@@ -17,7 +17,7 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.exception.*;
+import ru.curs.showcase.exception.GeneralServerExceptionFactory;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.chart.*;
 import ru.curs.showcase.model.datapanel.*;
@@ -84,15 +84,8 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			outputDebugInfo(nav);
 			return nav;
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
-	}
-
-	private SolutionMessage getSolutionMessage(final Throwable exc) {
-		if (exc.getClass() == SolutionDBException.class) {
-			return ((SolutionDBException) exc).getSolutionMessage();
-		}
-		return null;
 	}
 
 	@Override
@@ -108,7 +101,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			outputDebugInfo(panel);
 			return panel;
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
 
@@ -124,7 +117,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			outputDebugInfo(webtext);
 			return webtext;
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
 
@@ -140,7 +133,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			outputDebugInfo(grid);
 			return grid;
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
 
@@ -178,15 +171,8 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			outputDebugInfo(chart);
 			return chart;
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
-	}
-
-	private String getOriginalMessage(final Throwable original) {
-		if (original instanceof AbstractShowcaseThrowable) {
-			return ((AbstractShowcaseThrowable) original).getOriginalMessage();
-		}
-		return null;
 	}
 
 	@Override
@@ -207,7 +193,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			Document xml = builder.build(cs);
 			result = XMLUtils.xsltTransformForGrid(xml);
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
 		return new ExcelFile(result);
 	}
@@ -230,7 +216,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			adapter.adapt(map);
 			return map;
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
 
@@ -249,7 +235,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			outputDebugInfo(xforms);
 			return xforms;
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
 
@@ -271,7 +257,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			outputDebugInfo(res);
 			return res;
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
 
@@ -292,7 +278,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			}
 			return res;
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
 
@@ -307,7 +293,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			LOGGER.debug("XFormsTransformationServlet успешно выполнен: " + res);
 			return res;
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
 
@@ -318,7 +304,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			LOGGER.debug(res.toString());
 			return res;
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
 
@@ -343,7 +329,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 					.format("Размер скачиваемого файла: %d байт", file.getData().size()));
 			return file;
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
 
@@ -366,7 +352,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			gateway.uploadFile(context, elementInfo, linkId, data,
 					transformer.getInputStreamResult());
 		} catch (Throwable e) {
-			throw new GeneralServerException(e, getOriginalMessage(e), getSolutionMessage(e));
+			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
 }
