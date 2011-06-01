@@ -1,1 +1,7 @@
 @CHARSET "UTF-8";
+
+.pizhma {
+	font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 27px;
+    color: green;
+}
