@@ -30,21 +30,27 @@ public final class ActionExecuter {
 	 */
 	public static void execAction() {
 
-		// MessageBox.showSimpleMessage("1212", "1212121221");
 		Action ac = AppCurrContext.getInstance().getCurrentAction();
 
 		if (ac == null) {
 			return;
 		}
+
+		final DataPanelActionType dpat = ac.getDataPanelActionType();
+		// ac.getNavigatorActionType()
 		if (ac.getNavigatorElementLink() != null) {
-			MessageBox.showSimpleMessage("11112", ac.getNavigatorElementLink().getId());
+
+			boolean fireSelectionAction = (dpat == DataPanelActionType.DO_NOTHING) ? true : false;
+			Accordeon acrd = AppCurrContext.getInstance().getMainPanel().getAccordeon();
+			if (ac.getNavigatorElementLink().getRefresh()) {
+				acrd.refreshAccordeon(ac.getNavigatorElementLink().getId(), fireSelectionAction);
+			} else {
+				acrd.selectNesessaryItemInAccardion(ac.getNavigatorElementLink().getId(),
+						fireSelectionAction);
+			}
+
 		}
-		// for (int k = 0; k <
-		// ac.getNavigatorElementLink().getElementLinks().size(); k++) {
-
-		// }
-
-		switch (ac.getDataPanelActionType()) {
+		switch (dpat) {
 		case DO_NOTHING:
 			break;
 		case RELOAD_PANEL:
@@ -52,7 +58,6 @@ public final class ActionExecuter {
 		case REFRESH_TAB:
 			// Обновить вкладку целиком (активную), а перед этим закрыть
 			// модальное окно если оно открыто.
-
 			if ((ac.getShowInMode() == ShowInMode.PANEL)
 					&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() != null)) {
 				AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement()
@@ -88,10 +93,11 @@ public final class ActionExecuter {
 			break;
 		case RELOAD_ELEMENTS:
 			for (int k = 0; k < ac.getDataPanelLink().getElementLinks().size(); k++) {
+
 				String elementIdForDraw = ac.getDataPanelLink().getElementLinks().get(k).getId();
+
 				BasicElementPanel bep = getElementPanelById(elementIdForDraw);
 				if (bep != null) {
-
 					if ((ac.getShowInMode() == ShowInMode.PANEL)
 							&& (AppCurrContext.getInstance()
 									.getCurrentOpenWindowWithDataPanelElement() != null)) {
