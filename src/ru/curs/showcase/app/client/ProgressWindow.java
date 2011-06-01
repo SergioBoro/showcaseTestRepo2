@@ -14,6 +14,9 @@ public class ProgressWindow extends DecoratedPopupPanel {
 		super();
 	}
 
+	/**
+	 * Показать по центру окно ожидания.
+	 */
 	public static void showProgressWindow() {
 		final ProgressWindow prWin = new ProgressWindow();
 
@@ -32,6 +35,9 @@ public class ProgressWindow extends DecoratedPopupPanel {
 		prWin.show();
 	}
 
+	/**
+	 * Скрыть окно ожидания.
+	 */
 	public static void closeProgressWindow() {
 		if (AppCurrContext.getInstance().getProgressWindow() != null) {
 			AppCurrContext.getInstance().getProgressWindow().hide();
