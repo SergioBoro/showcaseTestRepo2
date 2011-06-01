@@ -88,7 +88,7 @@
 				<pathelement path="${src.dir}" />
 				<pathelement path="${datagrid.dir}" />
 				<pathelement path="${extragwt.dir}" />
-				<pathelement path="${lib.dir}/gquery-dnd-bundle-1.0.2.jar" />
+				<pathelement path="${lib.dir}/gquery-dnd-bundle.jar" />
 				<pathelement path="${gwt.dir}/gwt-dev.jar" />
 				<pathelement path="${gwt.dir}/gwt-user.jar" />
 			</classpath>
