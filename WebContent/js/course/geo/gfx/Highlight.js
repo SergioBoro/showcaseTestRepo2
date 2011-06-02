@@ -12,6 +12,10 @@ dojo.declare("course.geo.gfx.Highlight", course.geo.gfx.AnimatedControl, {
 	
 	onmouseoverTimeout: null,
 	
+	constructor: function(kwArgs) {
+		
+	},
+	
 	process: function(event){
 		var feature = event.feature,
 			fid = feature.id,
