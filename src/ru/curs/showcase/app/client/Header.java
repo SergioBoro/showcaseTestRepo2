@@ -6,7 +6,7 @@ package ru.curs.showcase.app.client;
 import java.util.Date;
 
 import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
-import ru.curs.showcase.app.api.ServerCurrentState;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.AccessToDomModel;
@@ -81,6 +81,12 @@ public class Header {
 
 		headerHorizontalPanel1.add(onMainPageLink);
 
+		Label l = new Label("П И Ж М А");
+		// l.setHTML("<p style='font-size: 27px; color: green;'>П И Ж М А</p>");
+		l.setStyleName("pizhma");
+		// l.setStyleName(style);
+		headerHorizontalPanel1.add(l);
+
 		headerHorizontalPanel1.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
 
 		Anchor exitLink = new Anchor("<b>Выход</b>", true);
@@ -130,6 +136,20 @@ public class Header {
 				String fff =
 					(AppCurrContext.getInstance().getServerCurrentState().getIsNativeUser()) ? "внутренним"
 							: "внешним";
+
+				String userAgent = getUserAgent();
+				BrowserType browserType = null;
+				String browserVersion = null;
+				String browserTypeString = null;
+
+				if (userAgent != null) {
+					browserVersion = ru.curs.showcase.app.api.BrowserType.detectVersion(userAgent);
+					browserType = ru.curs.showcase.app.api.BrowserType.detect(userAgent);
+
+					browserTypeString = (browserType != null) ? browserType.getName() : null;
+
+				}
+
 				String textHTML =
 					"<p><img src='resources/internal/logo.gif' alt='КУРС' /></p>"
 							+ "<img src='resources/internal/favicon32.png' alt='' />&nbsp;Showcase&nbsp;"
@@ -151,14 +171,29 @@ public class Header {
 							+ "<br />"
 							+ "Версия сервлет контейнера: "
 							+ AppCurrContext.getInstance().getServerCurrentState()
-									.getServletContainerVersion() + "<br />"
+									.getServletContainerVersion()
+							+ "<br />"
+
+							+ "Тип браузера: "
+							+ ((browserTypeString != null) ? browserTypeString
+									: "не удалось определить")
+							+ "<br />"
+
+							+ "Версия браузера: "
+							+ ((browserVersion != null) ? browserVersion : "не удалось определить")
+							+ "<br />"
+
 							+ "Текущий пользователь '"
 							+ AppCurrContext.getInstance().getServerCurrentState().getUserName()
 							+ "'" + "	является " + fff;
+
+				// navigator.userAgent.toLowerCase()
+				// ru.curs.showcase.app.api.BrowserType?.detect(String)
+
 				about.setHTML(textHTML);
 				final int n500 = 500;
-				final int n310 = 310;
-				about.setPixelSize(n500, n310);
+				final int n350 = 350;
+				about.setPixelSize(n500, n350);
 				db.add(about);
 				db.center();
 				db.show();
@@ -200,5 +235,12 @@ public class Header {
 		im.setUrl("resources/header.jpg");
 		return im;
 	}
+
+	/**
+	 * При.
+	 */
+	public native String getUserAgent() /*-{
+		return $wnd.navigator.userAgent.toLowerCase();
+	}-*/;
 
 }
