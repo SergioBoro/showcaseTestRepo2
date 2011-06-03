@@ -7,7 +7,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.exception.*;
+import ru.curs.showcase.exception.InconsistentSettingsFromDBException;
 import ru.curs.showcase.model.*;
 
 /**

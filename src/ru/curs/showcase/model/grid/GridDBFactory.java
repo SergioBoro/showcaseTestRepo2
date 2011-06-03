@@ -3,6 +3,7 @@ package ru.curs.showcase.model.grid;
 import java.sql.*;
 import java.text.*;
 import java.util.*;
+import java.util.regex.*;
 
 import javax.sql.RowSet;
 
@@ -86,9 +87,12 @@ public class GridDBFactory extends AbstractGridFactory {
 									sql.getString(col.getId()));
 					} else if (col.getValueType() == GridValueType.LINK) {
 						value = sql.getString(col.getId());
-						value =
-							value.replace("${" + IMAGES_IN_GRID_DIR + "}",
-									AppProps.getRequiredValueByName(IMAGES_IN_GRID_DIR));
+						if (value != null) {
+							value =
+								value.replace("${" + IMAGES_IN_GRID_DIR + "}",
+										AppProps.getRequiredValueByName(IMAGES_IN_GRID_DIR));
+							value = replaceXMLServiceSymbols(value);
+						}
 					} else if (sql.getObject(col.getId()) == null) {
 						value = "";
 					} else if (col.getValueType().isDate()) {
@@ -105,9 +109,42 @@ public class GridDBFactory extends AbstractGridFactory {
 			}
 
 			calcRecordsCount(rs);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			throw new ResultSetHandleException(e);
 		}
+	}
+
+	/**
+	 * Функция для замены служебных символов XML (только XML, не HTML!) в
+	 * описании ссылки в гриде.
+	 * 
+	 * @param value
+	 *            - текст ссылки.
+	 * @return - исправленный текст ссылки.
+	 */
+	public static String replaceXMLServiceSymbols(final String value) {
+		String res = value.trim();
+
+		Pattern pattern = Pattern.compile("(\\&(?!quot;)(?!lt;)(?!gt;)(?!amp;)(?!apos;))");
+		Matcher matcher = pattern.matcher(res);
+		res = matcher.replaceAll("&amp;");
+
+		pattern =
+			Pattern.compile("(?<!=)(\")(?!\\s*openInNewTab)(?!\\s*text)(?!\\s*href)(?!\\s*image)(?!\\s*/\\>)");
+		matcher = pattern.matcher(res);
+		res = matcher.replaceAll("&quot;");
+
+		pattern = Pattern.compile("(?<!^)(\\<)");
+		matcher = pattern.matcher(res);
+		res = matcher.replaceAll("&lt;");
+
+		pattern = Pattern.compile("(\\>)(?!$)");
+		matcher = pattern.matcher(res);
+		res = matcher.replaceAll("&gt;");
+
+		res = res.replace("'", "&apos;");
+
+		return res;
 	}
 
 	private void readEvents(final String curRecordId, final String data) {

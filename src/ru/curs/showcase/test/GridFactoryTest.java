@@ -168,4 +168,18 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		col.setIndex(index);
 		settings.getSortedColumns().add(col);
 	}
+
+	/**
+	 * Проверка работы функции
+	 * {@link ru.curs.showcase.model.grid.GridDBFactory#replaceXMLServiceSymbols}
+	 * .
+	 */
+	@Test
+	public void testGridLinkReplaceXMLServiceSymbols() {
+		assertEquals("<link href=\"ya.ru?search=aa&amp;bla&amp;ab\" "
+				+ "image=\"xxx.jpg\"  text=\"&lt;&quot; &lt;&gt; &gt; a&apos;&quot;\"  />",
+				GridDBFactory
+						.replaceXMLServiceSymbols("<link href=\"ya.ru?search=aa&amp;bla&ab\" "
+								+ "image=\"xxx.jpg\"  text=\"<&quot; &lt;&gt; > a'\"\"  />"));
+	}
 }
