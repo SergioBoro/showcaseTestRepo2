@@ -44,7 +44,7 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		Navigator nav = serviceLayer.getNavigator();
 		assertFalse(nav.getHideOnLoad());
-		assertEquals("300px", nav.getWidth());
+		assertEquals("180px", nav.getWidth());
 	}
 
 	/**

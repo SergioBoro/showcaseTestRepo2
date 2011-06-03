@@ -15,13 +15,6 @@
 		</element>
 		<element id="22" type="webtext" proc="webtext_filter_and_add"
 			hideOnLoad="true" />		
-	</tab>	
-	<tab id="6" name="Раскраска по значению">
-		<element id="61" type="geomap" proc="geomap_func2"/>
-		<element id="06" type="webtext" proc="webtext_grid" hideOnLoad="true" />
-	</tab>	
-	<tab id="6_1" name="Раскраска стилями">
-		<element id="62" type="geomap" proc="geomap_bal"/>
 	</tab>				
 	<tab id="7" name="SelfRefresh">		
 		<element id="77" type="webtext" proc="webtext_self_refresh" />
@@ -35,9 +28,5 @@
 			proc="xforms_proc3" neverShowInPanel="true">
 			<proc id="proc1" name="xforms_saveproc3" type="SAVE"/>
 		</element>
-	</tab>
-	<tab id="60" name="Обновление навигатора">
-		<element id="610" type="geomap" proc="geomap_func2_anlug"/>
-		<element id="060" type="webtext" proc="webtext_grid" hideOnLoad="true" />
 	</tab>				
 </datapanel>

@@ -38,7 +38,7 @@ public class ValidateInDBException extends BaseException {
 	/**
 	 * Имя файла с описанием сообщений.
 	 */
-	public static final String SOL_MESSAGES_FILE = "solution.messages.xml";
+	public static final String SOL_MESSAGES_FILE = "user.messages.xml";
 
 	/**
 	 * Временная переменная для хранения идентификатора сообщения.
