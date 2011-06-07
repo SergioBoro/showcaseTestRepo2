@@ -81,11 +81,9 @@ public class Header {
 
 		headerHorizontalPanel1.add(onMainPageLink);
 
-		Label l = new Label("П И Ж М А");
-		// l.setHTML("<p style='font-size: 27px; color: green;'>П И Ж М А</p>");
-		l.setStyleName("pizhma");
-		// l.setStyleName(style);
-		headerHorizontalPanel1.add(l);
+		// Label l = new Label("П И Ж М А");
+		// l.setStyleName("pizhma");
+		// headerHorizontalPanel1.add(l);
 
 		headerHorizontalPanel1.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
 
@@ -192,8 +190,8 @@ public class Header {
 
 				about.setHTML(textHTML);
 				final int n500 = 500;
-				final int n350 = 350;
-				about.setPixelSize(n500, n350);
+				final int n400 = 400;
+				about.setPixelSize(n500, n400);
 				db.add(about);
 				db.center();
 				db.show();
