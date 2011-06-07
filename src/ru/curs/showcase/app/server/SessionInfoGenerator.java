@@ -55,8 +55,25 @@ public final class SessionInfoGenerator extends GeneralXMLHelper {
 
 		fillURLParams(info, sessionId, params);
 
+		addUserData(info, params);
+
 		String result = XMLUtils.xsltTransform(info, null);
 		return result;
+	}
+
+	private static void addUserData(final Document info, final Map<String, String[]> params) {
+		Element node = info.createElement(USERDATA_TAG);
+		info.getDocumentElement().appendChild(node);
+		String value = null;
+		if (params.get(AppProps.URL_PARAM_USERDATA) != null) {
+			value =
+				Arrays.toString(params.get(AppProps.URL_PARAM_USERDATA)).replace("[", "")
+						.replace("]", "");
+		} else {
+			value = AppProps.SHOWCASE_USER_DATA_DEFAULT;
+		}
+		node.setTextContent(value);
+
 	}
 
 	private static void fillURLParams(final Document info, final String sessionId,
@@ -79,15 +96,6 @@ public final class SessionInfoGenerator extends GeneralXMLHelper {
 					}
 					child.setAttribute(VALUE_TAG, value);
 				}
-			}
-
-			if (params.get(AppProps.URL_PARAM_USERDATA) != null) {
-				node = info.createElement(USERDATA_TAG);
-				info.getDocumentElement().appendChild(node);
-				String value =
-					Arrays.toString(params.get(AppProps.URL_PARAM_USERDATA)).replace("[", "")
-							.replace("]", "");
-				node.setTextContent(value);
 			}
 		}
 	}

@@ -65,11 +65,17 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		String sessionContext = context.getSession();
 		DocumentBuilder db = XMLUtils.createBuilder();
 		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
-		assertEquals(SessionInfoGenerator.USERNAME_TAG, doc.getDocumentElement().getChildNodes()
-				.item(1).getNodeName());
-		final int index = 3;
-		Node node = doc.getDocumentElement().getChildNodes().item(index);
-		assertEquals(SessionInfoGenerator.URL_PARAMS_TAG, node.getNodeName());
+
+		assertEquals(1,
+				doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.USERNAME_TAG)
+						.getLength());
+
+		assertEquals(1,
+				doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.URL_PARAMS_TAG)
+						.getLength());
+		Node node =
+			doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.URL_PARAMS_TAG)
+					.item(0);
 		assertEquals(SessionInfoGenerator.URL_PARAM_TAG, node.getChildNodes().item(1)
 				.getNodeName());
 		assertEquals(2, node.getChildNodes().item(1).getAttributes().getLength());
@@ -78,15 +84,54 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		assertEquals("[" + VALUE12 + "]", node.getChildNodes().item(1).getAttributes()
 				.getNamedItem(VALUE_TAG).getNodeValue());
 
-		final int indexUserdata = 5;
-		node = doc.getDocumentElement().getChildNodes().item(indexUserdata);
-		assertEquals(SessionInfoGenerator.USERDATA_TAG, node.getNodeName());
+		assertEquals(1,
+				doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.USERDATA_TAG)
+						.getLength());
+		node =
+			doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.USERDATA_TAG)
+					.item(0);
 		assertEquals(USERDATA_ID, node.getTextContent());
 
 		assertEquals(AUTH_VIA_AUTH_SERVER, AppInfoSingleton.getAppInfo()
 				.getAuthViaAuthServerForSession(FAKE_SESSION_ID));
 		assertEquals(TEMP_PASS, AppInfoSingleton.getAppInfo()
 				.getAuthServerCrossAppPasswordForSession(FAKE_SESSION_ID));
+
+	}
+
+	/**
+	 * Проверка считывания информации о сессии, если userdata не задана.
+	 * 
+	 * @throws IOException
+	 * @throws GeneralServerException
+	 * @throws SAXException
+	 */
+	@Test
+	public void testWriteAndReadIfNoURLParams() throws IOException, GeneralServerException,
+			SAXException {
+
+		Map<String, String[]> params = new TreeMap<String, String[]>();
+		AppInfoSingleton.getAppInfo().setParams(FAKE_SESSION_ID, params);
+
+		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 1);
+		context.setAdditional("Алтайский край");
+		DataPanelElementInfo element = getDPElement("test.xml", "2", "3");
+		ServiceLayerDataServiceImpl serviceLayer =
+			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
+		serviceLayer.getChart(context, element);
+
+		String sessionContext = context.getSession();
+		DocumentBuilder db = XMLUtils.createBuilder();
+		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
+		assertEquals(1,
+				doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.USERDATA_TAG)
+						.getLength());
+		assertEquals(AppProps.SHOWCASE_USER_DATA_DEFAULT, doc.getDocumentElement()
+				.getElementsByTagName(SessionInfoGenerator.USERDATA_TAG).item(0).getTextContent());
+
+		assertEquals(0,
+				doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.URL_PARAMS_TAG)
+						.getLength());
 
 	}
 }
