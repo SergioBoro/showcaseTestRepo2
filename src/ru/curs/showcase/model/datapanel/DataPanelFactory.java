@@ -23,7 +23,8 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 	static final String PROC_TAG = "proc";
 	static final String SAVE_PROC_TAG = "saveProc";
 	static final String REFRESH_INTERVAL_TAG = "refreshInterval";
-	static final String REFRESH_MODE_TAG = "refreshMode";
+	static final String REFRESH_BY_TIMER_TAG = "refreshByTimer";
+	static final String UPDATE_MODE_TAG = "updateMode";
 	/**
 	 * Создаваемая панель.
 	 */
@@ -55,9 +56,13 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 				String value;
 				if (qname.equalsIgnoreCase(DP_TAG)) {
 					result = new DataPanel(file.getId());
-					if (attrs.getIndex(REFRESH_MODE_TAG) > -1) {
-						value = attrs.getValue(REFRESH_MODE_TAG);
-						result.setRefreshMode(DataPanelRefreshMode.valueOf(value));
+					if (attrs.getIndex(UPDATE_MODE_TAG) > -1) {
+						value = attrs.getValue(UPDATE_MODE_TAG);
+						result.setUpdateMode(DataPanelUpdateMode.valueOf(value));
+					}
+					if (attrs.getIndex(REFRESH_BY_TIMER_TAG) > -1) {
+						value = attrs.getValue(REFRESH_BY_TIMER_TAG);
+						result.setRefreshByTimer(Boolean.valueOf(value));
 					}
 					if (attrs.getIndex(REFRESH_INTERVAL_TAG) > -1) {
 						value = attrs.getValue(REFRESH_INTERVAL_TAG);

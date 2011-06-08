@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<datapanel refreshMode="BY_TIMER" refreshInterval="120">  
+<datapanel updateMode="AT_PANEL_LOAD" refreshByTimer="true" refreshInterval="120">  
    <tab id="1" name="Характеристика">
        <element id="1" type="webtext" transform="bal.xsl" styleClass="testStyle"/>
    </tab>

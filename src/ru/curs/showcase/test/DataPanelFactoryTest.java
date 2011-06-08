@@ -22,6 +22,17 @@ import ru.curs.showcase.model.datapanel.*;
 public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 
 	/**
+	 * Проверка значений атрибутов панели по умолчанию.
+	 */
+	@Test
+	public void testSimpleCreate() {
+		DataPanel panel = new DataPanel("dp.xml");
+		assertEquals(DataPanel.DEF_UPDATE_MODE, panel.getUpdateMode());
+		assertFalse(panel.getRefreshByTimer());
+		assertEquals(DataPanel.DEF_TIMER_INTERVAL, panel.getRefreshInterval().intValue());
+	}
+
+	/**
 	 * Основной тест.
 	 * 
 	 */
@@ -40,7 +51,8 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 
 		assertEquals("test", panel.getId());
 		assertEquals(panelsCount, panel.getTabs().size());
-		assertEquals(DataPanelRefreshMode.BY_TIMER, panel.getRefreshMode());
+		assertEquals(DataPanelUpdateMode.AT_PANEL_LOAD, panel.getUpdateMode());
+		assertTrue(panel.getRefreshByTimer());
 		final int refreshInterval = 120;
 		assertEquals(refreshInterval, panel.getRefreshInterval().intValue());
 		assertNotNull(panel.getTabById("1"));
@@ -81,7 +93,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		DataPanel panel = serviceLayer.getDataPanel(action);
 
-		assertEquals(DataPanelRefreshMode.EVERY_TIME, panel.getRefreshMode());
+		assertEquals(DataPanelUpdateMode.AT_TAB_SWITCH, panel.getUpdateMode());
 		assertEquals(DataPanel.DEF_TIMER_INTERVAL, panel.getRefreshInterval().intValue());
 	}
 

@@ -3,9 +3,9 @@
 	<xs:include schemaLocation="specialTypes.xsd" />
 	<xs:simpleType name="refreshModeType">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="EVERY_TIME" />
-			<xs:enumeration value="FIRST_LOAD_TIME" />
-			<xs:enumeration value="BY_TIMER" />
+			<xs:enumeration value="AT_TAB_SWITCH" />
+			<xs:enumeration value="AT_TAB_FIRST_OPEN" />
+			<xs:enumeration value="AT_PANEL_LOAD" />
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="typeProc">
@@ -53,7 +53,8 @@
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
-			<xs:attribute name="refreshMode" type="refreshModeType" />
+			<xs:attribute name="updateMode" type="refreshModeType" />
+			<xs:attribute name="refreshByTimer" type="xs:boolean" />
 			<xs:attribute name="refreshInterval" type="xs:integer" />
 		</xs:complexType>
 		<xs:unique name="elementId">
