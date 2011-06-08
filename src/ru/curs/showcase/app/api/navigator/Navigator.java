@@ -39,7 +39,8 @@ public class Navigator implements SerializableElement {
 	 * корректно работает - навигатор лежит на SplitPanel, которая сама создает
 	 * панели и устанавливает их ширины. Отказ от SplitPanel - тоже не хорошо.
 	 * Значение по умолчанию - DEF_NAV_WIDTH. Может задаваться как в процентах,
-	 * так и в пикселях.
+	 * так и в пикселях. В первом случае значение должно содержать префикс «px»,
+	 * во втором - префикс »%».
 	 */
 	private String width = DEF_NAV_WIDTH;
 
@@ -47,6 +48,17 @@ public class Navigator implements SerializableElement {
 	 * Автоматически выделяемый при загрузке в навигаторе элемент.
 	 */
 	private NavigatorElement autoSelectElement = null;
+
+	/**
+	 * Признак того, что нужно сохранять данные уже открытых панелей и не
+	 * обращаться к серверу повторно, если панель была загружена. На выполнение
+	 * действий, меняющих панель, данная опция также влияет, т.к. иначе
+	 * кэширование не будет иметь смысла - при переключении элементов навигатора
+	 * панель меняется "всегда". В режиме cacheData = true возможность
+	 * принудительного обновления не нужна - всегда можно принудительно обновить
+	 * нужные вкладки.
+	 */
+	private Boolean cacheData = false;
 
 	public final List<NavigatorGroup> getGroups() {
 		return groups;
@@ -99,5 +111,13 @@ public class Navigator implements SerializableElement {
 
 	public void setWidth(final String aWidth) {
 		width = aWidth;
+	}
+
+	public Boolean getCacheData() {
+		return cacheData;
+	}
+
+	public void setCacheData(final Boolean aCacheData) {
+		cacheData = aCacheData;
 	}
 }

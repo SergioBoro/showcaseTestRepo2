@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:include schemaLocation="specialTypes.xsd" />
-	<xs:simpleType name="refreshModeType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="AT_TAB_SWITCH" />
-			<xs:enumeration value="AT_TAB_FIRST_OPEN" />
-			<xs:enumeration value="AT_PANEL_LOAD" />
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:simpleType name="typeProc">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="SAVE" />
@@ -53,7 +46,7 @@
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
-			<xs:attribute name="updateMode" type="refreshModeType" />
+			<xs:attribute name="cacheData" type="xs:boolean" />
 			<xs:attribute name="refreshByTimer" type="xs:boolean" />
 			<xs:attribute name="refreshInterval" type="xs:integer" />
 		</xs:complexType>

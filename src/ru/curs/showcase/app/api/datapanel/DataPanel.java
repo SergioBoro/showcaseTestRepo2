@@ -13,7 +13,6 @@ import ru.curs.showcase.app.api.event.Action;
  * 
  */
 public class DataPanel implements SerializableElement {
-	public static final DataPanelUpdateMode DEF_UPDATE_MODE = DataPanelUpdateMode.AT_TAB_SWITCH;
 
 	public static final int DEF_TIMER_INTERVAL = 600;
 
@@ -34,20 +33,20 @@ public class DataPanel implements SerializableElement {
 	private List<DataPanelTab> tabs = new ArrayList<DataPanelTab>();
 
 	/**
-	 * Режим обновления данных на панели. По умолчанию - при каждом
-	 * переключении.
+	 * Признак того, что нужно сохранять данные уже открытых вкладок панели и не
+	 * обращаться к серверу повторно при смене вкладки. На выполнение действий
+	 * данная опция также влияет, т.к. по сути смена вкладки из UI при клике ее
+	 * заголовку - это тоже действие. В режиме cacheData = true должна быть
+	 * возможность принудительного обновления вкладки.
 	 */
-	private DataPanelUpdateMode updateMode = DEF_UPDATE_MODE;
+	private Boolean cacheData = false;
 
 	/**
-	 * Признак того, нужно ли обновлять элементы панели по таймеру. Действия при
-	 * обновлении зависят от значения updateMode. Если AT_TAB_SWITCH и
-	 * AT_TAB_FIRST_OPEN - то обновляется только содержимое текущий вкладки.
-	 * Если AT_PANEL_LOAD - обновляется содержимое всей панели. При этом время
-	 * отсчитывается от последнего из 3 событий: 1) последней загрузки данных
-	 * вкладки (или панели), инициированной из UI, 2) выполнения действия,
-	 * обновившего текущую вкладку (панель), 3) последнего обновления по
-	 * таймеру.
+	 * Признак того, нужно ли обновлять элементы панели по таймеру. При
+	 * обновлении по таймеру обновляется только содержимое текущий вкладки. При
+	 * этом время отсчитывается от последнего из 3 событий: 1) последней
+	 * загрузки данных вкладки, инициированной из UI, 2) выполнения действия,
+	 * обновившего текущую вкладку, 3) последнего обновления по таймеру.
 	 */
 	private Boolean refreshByTimer = false;
 	/**
@@ -126,14 +125,6 @@ public class DataPanel implements SerializableElement {
 		return res;
 	}
 
-	public DataPanelUpdateMode getUpdateMode() {
-		return updateMode;
-	}
-
-	public void setUpdateMode(final DataPanelUpdateMode aNewMode) {
-		updateMode = aNewMode;
-	}
-
 	public Integer getRefreshInterval() {
 		return refreshInterval;
 	}
@@ -156,6 +147,14 @@ public class DataPanel implements SerializableElement {
 
 	public void setRefreshByTimer(final Boolean aRefreshByTimer) {
 		refreshByTimer = aRefreshByTimer;
+	}
+
+	public Boolean getCacheData() {
+		return cacheData;
+	}
+
+	public void setCacheData(final Boolean aCacheData) {
+		cacheData = aCacheData;
 	}
 
 }

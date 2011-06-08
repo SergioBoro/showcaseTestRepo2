@@ -25,7 +25,8 @@
                 </xs:element>                
             </xs:sequence>	
             <xs:attribute name="hideOnLoad" type="xs:boolean"/>
-            <xs:attribute name="width" type="notNullType"/>		
+            <xs:attribute name="width" type="notNullType"/>	
+			<xs:attribute name="cacheData" type="xs:boolean" />            	
         </xs:complexType>
         <xs:unique name="level1Id">
             <xs:selector

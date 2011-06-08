@@ -27,7 +27,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testSimpleCreate() {
 		DataPanel panel = new DataPanel("dp.xml");
-		assertEquals(DataPanel.DEF_UPDATE_MODE, panel.getUpdateMode());
+		assertFalse(panel.getCacheData());
 		assertFalse(panel.getRefreshByTimer());
 		assertEquals(DataPanel.DEF_TIMER_INTERVAL, panel.getRefreshInterval().intValue());
 	}
@@ -51,7 +51,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 
 		assertEquals("test", panel.getId());
 		assertEquals(panelsCount, panel.getTabs().size());
-		assertEquals(DataPanelUpdateMode.AT_PANEL_LOAD, panel.getUpdateMode());
+		assertTrue(panel.getCacheData());
 		assertTrue(panel.getRefreshByTimer());
 		final int refreshInterval = 120;
 		assertEquals(refreshInterval, panel.getRefreshInterval().intValue());
@@ -93,7 +93,8 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		DataPanel panel = serviceLayer.getDataPanel(action);
 
-		assertEquals(DataPanelUpdateMode.AT_TAB_SWITCH, panel.getUpdateMode());
+		assertFalse(panel.getCacheData());
+		assertFalse(panel.getRefreshByTimer());
 		assertEquals(DataPanel.DEF_TIMER_INTERVAL, panel.getRefreshInterval().intValue());
 	}
 

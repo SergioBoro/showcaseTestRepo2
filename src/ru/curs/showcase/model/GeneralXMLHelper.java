@@ -84,6 +84,8 @@ public abstract class GeneralXMLHelper {
 
 	protected static final String FILE_TAG = "file";
 
+	protected static final String CACHE_DATA_TAG = "cacheData";
+
 	/**
 	 * Имя колонки или строки с XML документом, содержащим обработчики.
 	 */

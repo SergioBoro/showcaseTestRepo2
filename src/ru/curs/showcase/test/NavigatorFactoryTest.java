@@ -28,6 +28,7 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 	public void testContructor() {
 		Navigator nav = new Navigator();
 		assertFalse(nav.getHideOnLoad());
+		assertFalse(nav.getCacheData());
 		assertNotNull(nav.getGroups());
 		assertEquals(0, nav.getGroups().size());
 		assertNull(nav.getGroupById("fake"));
@@ -45,6 +46,7 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 		Navigator nav = serviceLayer.getNavigator();
 		assertFalse(nav.getHideOnLoad());
 		assertEquals("180px", nav.getWidth());
+		assertFalse(nav.getCacheData());
 	}
 
 	/**
@@ -65,6 +67,7 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 		Navigator nav = factory.fromStream(stream);
 		assertEquals("200px", nav.getWidth());
 		assertTrue(nav.getHideOnLoad());
+		assertTrue(nav.getCacheData());
 		assertEquals(nav.getGroups().get(0).getElements().get(1), nav.getAutoSelectElement());
 		final NavigatorGroup firstGroup = nav.getGroupById("1");
 		assertEquals("C6CC2BA4-A6ED-4630-8E58-CBBFA9C8C0A9", firstGroup.getElements().get(1)
