@@ -70,10 +70,6 @@ public final class NavigatorFactory extends GeneralXMLHelper {
 					if (attrs.getIndex(WIDTH_TAG) > -1) {
 						result.setWidth(attrs.getValue(WIDTH_TAG));
 					}
-					if (attrs.getIndex(CACHE_DATA_TAG) > -1) {
-						String value = attrs.getValue(CACHE_DATA_TAG);
-						result.setCacheData(Boolean.valueOf(value));
-					}
 					return;
 				}
 				if (qname.equalsIgnoreCase(GROUP_TAG)) {

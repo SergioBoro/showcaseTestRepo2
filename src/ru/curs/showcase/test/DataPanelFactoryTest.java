@@ -26,10 +26,10 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testSimpleCreate() {
-		DataPanel panel = new DataPanel("dp.xml");
-		assertFalse(panel.getCacheData());
-		assertFalse(panel.getRefreshByTimer());
-		assertEquals(DataPanel.DEF_TIMER_INTERVAL, panel.getRefreshInterval().intValue());
+		DataPanelElementInfo dpei = new DataPanelElementInfo("01", DataPanelElementType.GEOMAP);
+		assertFalse(dpei.getCacheData());
+		assertFalse(dpei.getRefreshByTimer());
+		assertEquals(DataPanelElementInfo.DEF_TIMER_INTERVAL, dpei.getRefreshInterval().intValue());
 	}
 
 	/**
@@ -51,10 +51,6 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 
 		assertEquals("test", panel.getId());
 		assertEquals(panelsCount, panel.getTabs().size());
-		assertTrue(panel.getCacheData());
-		assertTrue(panel.getRefreshByTimer());
-		final int refreshInterval = 120;
-		assertEquals(refreshInterval, panel.getRefreshInterval().intValue());
 		assertNotNull(panel.getTabById("1"));
 		el = panel.getTabById("1").getElementInfoById("1");
 		assertFalse(el.getHideOnLoad());
@@ -62,6 +58,8 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals(DataPanelElementType.WEBTEXT, el.getType());
 		assertEquals("testStyle", el.getStyleClass());
 		assertEquals("dpe_test_1", el.getFullId());
+		assertEquals("dpe_test_1_current", el.getKeyForCaching(CompositeContext.createCurrent()));
+
 		tab = panel.getTabById("2");
 		assertNotNull(tab);
 		assertEquals("2", tab.getId());
@@ -75,6 +73,14 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals(DataPanelElementType.CHART, el.getType());
 		assertEquals("chart_bal", el.getProcName());
 		assertTrue(el.getHideOnLoad());
+
+		el = tab.getElementInfoById("05");
+		assertNotNull(el);
+		assertEquals(DataPanelElementType.GEOMAP, el.getType());
+		assertTrue(el.getCacheData());
+		assertTrue(el.getRefreshByTimer());
+		final int refreshInterval = 120;
+		assertEquals(refreshInterval, el.getRefreshInterval().intValue());
 	}
 
 	/**
@@ -93,9 +99,11 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		DataPanel panel = serviceLayer.getDataPanel(action);
 
-		assertFalse(panel.getCacheData());
-		assertFalse(panel.getRefreshByTimer());
-		assertEquals(DataPanel.DEF_TIMER_INTERVAL, panel.getRefreshInterval().intValue());
+		DataPanelElementInfo elInfo = panel.getTabs().get(0).getElements().get(0);
+		assertFalse(elInfo.getCacheData());
+		assertFalse(elInfo.getRefreshByTimer());
+		assertEquals(DataPanelElementInfo.DEF_TIMER_INTERVAL, elInfo.getRefreshInterval()
+				.intValue());
 	}
 
 	/**

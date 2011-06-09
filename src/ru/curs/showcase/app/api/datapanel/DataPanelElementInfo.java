@@ -20,7 +20,7 @@ import ru.curs.showcase.app.api.event.*;
 public class DataPanelElementInfo extends TransferableElement implements SerializableElement,
 		Assignable {
 	static final String UNKNOWN_ELEMENT_TYPE = "Неизвестный тип элемента информационной панели";
-
+	public static final int DEF_TIMER_INTERVAL = 600;
 	/**
 	 * serialVersionUID.
 	 */
@@ -78,6 +78,30 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 * элементов.
 	 */
 	private String styleClass;
+
+	/**
+	 * Признак того, что нужно сохранять данные элемента и не обращаться к
+	 * серверу повторно при возврате на вкладку или панель элемента. На
+	 * выполнение действий с типом RELOAD_ELEMENTS данная опция не влияет. В
+	 * режиме cacheData = true должна быть возможность принудительного
+	 * обновления элемента. Элементы кэшируются по составному ключу, включающему
+	 * в себя FullId элемента и main context.
+	 */
+	private Boolean cacheData = false;
+
+	/**
+	 * Признак того, нужно ли обновлять содержимое элемента по таймеру. При этом
+	 * время отсчитывается от последнего из 3 событий: 1) последней загрузки
+	 * данных элемента, инициированной из UI, 2) выполнения действия,
+	 * обновившего данные текущего элемента, 3) последнего обновления по
+	 * таймеру.
+	 */
+	private Boolean refreshByTimer = false;
+	/**
+	 * Интервал обновления панели в секундах. Используется только если
+	 * refreshByTimer=true.
+	 */
+	private Integer refreshInterval = DEF_TIMER_INTERVAL;
 
 	/**
 	 * Дополнительные процедуры для элемента панели управления. Используются для
@@ -224,12 +248,15 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((cacheData == null) ? 0 : cacheData.hashCode());
 		result = prime * result + ((hideOnLoad == null) ? 0 : hideOnLoad.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((neverShowInPanel == null) ? 0 : neverShowInPanel.hashCode());
 		result = prime * result + ((position == null) ? 0 : position.hashCode());
 		result = prime * result + ((procName == null) ? 0 : procName.hashCode());
 		result = prime * result + ((procs == null) ? 0 : procs.hashCode());
+		result = prime * result + ((refreshByTimer == null) ? 0 : refreshByTimer.hashCode());
+		result = prime * result + ((refreshInterval == null) ? 0 : refreshInterval.hashCode());
 		result = prime * result + ((styleClass == null) ? 0 : styleClass.hashCode());
 		result = prime * result + ((templateName == null) ? 0 : templateName.hashCode());
 		result = prime * result + ((transformName == null) ? 0 : transformName.hashCode());
@@ -249,6 +276,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 			return false;
 		}
 		DataPanelElementInfo other = (DataPanelElementInfo) obj;
+		if (cacheData == null) {
+			if (other.cacheData != null) {
+				return false;
+			}
+		} else if (!cacheData.equals(other.cacheData)) {
+			return false;
+		}
 		if (hideOnLoad == null) {
 			if (other.hideOnLoad != null) {
 				return false;
@@ -289,6 +323,20 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 				return false;
 			}
 		} else if (!procs.equals(other.procs)) {
+			return false;
+		}
+		if (refreshByTimer == null) {
+			if (other.refreshByTimer != null) {
+				return false;
+			}
+		} else if (!refreshByTimer.equals(other.refreshByTimer)) {
+			return false;
+		}
+		if (refreshInterval == null) {
+			if (other.refreshInterval != null) {
+				return false;
+			}
+		} else if (!refreshInterval.equals(other.refreshInterval)) {
 			return false;
 		}
 		if (styleClass == null) {
@@ -352,6 +400,15 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 			if (styleClass == null) {
 				styleClass = sourceInfo.styleClass;
 			}
+			if (cacheData == null) {
+				cacheData = sourceInfo.cacheData;
+			}
+			if (refreshByTimer == null) {
+				refreshByTimer = sourceInfo.refreshByTimer;
+			}
+			if (refreshInterval == null) {
+				refreshInterval = sourceInfo.refreshInterval;
+			}
 			if (procs.size() == 0) {
 				procs.putAll(sourceInfo.procs);
 			}
@@ -388,7 +445,8 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 				+ ", procName=" + procName + ", transformName=" + transformName
 				+ ", templateName=" + templateName + ", hideOnLoad=" + hideOnLoad
 				+ ", neverShowInPanel=" + neverShowInPanel + ", styleClass=" + styleClass
-				+ ", procs=" + procs + "]";
+				+ ", cacheData=" + cacheData + ", refreshByTimer=" + refreshByTimer
+				+ ", refreshInterval=" + refreshInterval + ", procs=" + procs + "]";
 	}
 
 	/**
@@ -445,5 +503,41 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 */
 	public String getFullId() {
 		return "dpe_" + tab.getDataPanel().getId() + "_" + id;
+	}
+
+	/**
+	 * Возвращает ключ, который может быть использован для кэширования элементов
+	 * на клиентской стороне.
+	 * 
+	 * @param context
+	 *            - контектс для элемента.
+	 * @return - ключ.
+	 */
+	public String getKeyForCaching(final CompositeContext context) {
+		return getFullId() + "_" + context.getMain();
+	}
+
+	public Integer getRefreshInterval() {
+		return refreshInterval;
+	}
+
+	public void setRefreshInterval(final Integer aRefreshInterval) {
+		refreshInterval = aRefreshInterval;
+	}
+
+	public Boolean getRefreshByTimer() {
+		return refreshByTimer;
+	}
+
+	public void setRefreshByTimer(final Boolean aRefreshByTimer) {
+		refreshByTimer = aRefreshByTimer;
+	}
+
+	public Boolean getCacheData() {
+		return cacheData;
+	}
+
+	public void setCacheData(final Boolean aCacheData) {
+		cacheData = aCacheData;
 	}
 }

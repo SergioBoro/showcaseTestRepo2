@@ -8,7 +8,7 @@
 			<xs:enumeration value="DOWNLOAD" />
 			<xs:enumeration value="UPLOAD" />
 		</xs:restriction>
-	</xs:simpleType>	
+	</xs:simpleType>
 	<xs:element name="datapanel">
 		<xs:complexType>
 			<xs:sequence>
@@ -32,11 +32,14 @@
 									<xs:attribute name="hideOnLoad" type="xs:boolean"
 										default="false" />
 									<xs:attribute name="neverShowInPanel" type="xs:boolean"
-										default="false" />										
+										default="false" />
 									<xs:attribute name="proc" type="notNullType" />
 									<xs:attribute name="template" type="xmlType" />
 									<xs:attribute name="transform" type="xslType" />
 									<xs:attribute name="styleClass" type="xs:string" />
+									<xs:attribute name="cacheData" type="xs:boolean" />
+									<xs:attribute name="refreshByTimer" type="xs:boolean" />
+									<xs:attribute name="refreshInterval" type="xs:integer" />
 									<xs:assert
 										test="(@type='webtext' and count(@proc)+count(@transform)>0) or (@type='xforms' and count(@template)=1) or (@type!='webtext' and @type!='xforms' and count(@proc)=1 and count(@transform)=0) " />
 								</xs:complexType>
@@ -46,9 +49,6 @@
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
-			<xs:attribute name="cacheData" type="xs:boolean" />
-			<xs:attribute name="refreshByTimer" type="xs:boolean" />
-			<xs:attribute name="refreshInterval" type="xs:integer" />
 		</xs:complexType>
 		<xs:unique name="elementId">
 			<xs:selector xpath="tab/element" />

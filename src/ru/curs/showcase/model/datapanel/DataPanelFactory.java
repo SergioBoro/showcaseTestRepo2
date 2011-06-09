@@ -56,18 +56,6 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 				String value;
 				if (qname.equalsIgnoreCase(DP_TAG)) {
 					result = new DataPanel(file.getId());
-					if (attrs.getIndex(CACHE_DATA_TAG) > -1) {
-						value = attrs.getValue(CACHE_DATA_TAG);
-						result.setCacheData(Boolean.valueOf(value));
-					}
-					if (attrs.getIndex(REFRESH_BY_TIMER_TAG) > -1) {
-						value = attrs.getValue(REFRESH_BY_TIMER_TAG);
-						result.setRefreshByTimer(Boolean.valueOf(value));
-					}
-					if (attrs.getIndex(REFRESH_INTERVAL_TAG) > -1) {
-						value = attrs.getValue(REFRESH_INTERVAL_TAG);
-						result.setRefreshInterval(Integer.valueOf(value));
-					}
 					return;
 				}
 				if (qname.equalsIgnoreCase(TAB_TAG)) {
@@ -99,7 +87,18 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 						value = attrs.getValue(NEVER_SHOW_IN_PANEL_TAG);
 						el.setNeverShowInPanel(Boolean.valueOf(value));
 					}
-
+					if (attrs.getIndex(CACHE_DATA_TAG) > -1) {
+						value = attrs.getValue(CACHE_DATA_TAG);
+						el.setCacheData(Boolean.valueOf(value));
+					}
+					if (attrs.getIndex(REFRESH_BY_TIMER_TAG) > -1) {
+						value = attrs.getValue(REFRESH_BY_TIMER_TAG);
+						el.setRefreshByTimer(Boolean.valueOf(value));
+					}
+					if (attrs.getIndex(REFRESH_INTERVAL_TAG) > -1) {
+						value = attrs.getValue(REFRESH_INTERVAL_TAG);
+						el.setRefreshInterval(Integer.valueOf(value));
+					}
 					currentTab.getElements().add(el);
 					return;
 				}
