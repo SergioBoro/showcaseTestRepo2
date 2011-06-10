@@ -7,7 +7,7 @@ dojo.declare("course.geo.gfx.Moveable", dojox.gfx.Moveable, {
 		// summary: called during every move notification,
 		//	should actually move the node, can be overwritten.
 		this.onMoving(mover, shift);
-		var transformShape = (this.shape instanceof dojox.gfx.Surface) ? this.shape.children[0] : this.shape; 
+		var transformShape = (this.shape instanceof dojox.gfx.Surface) ? this.shape.children[0] : this.shape;
 		transformShape.applyLeftTransform(shift);
 		this.onMoved(mover, shift);
 	}

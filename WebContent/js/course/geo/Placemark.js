@@ -156,7 +156,7 @@ dojo.declare("course.geo.Placemark", course.geo.Feature, {
 		// summary:
 		//		Returns the feature boundings box in the current map projection
 		var geometry = this.getGeometry();
-		return geometry ? (geometry.bbox ? geometry.bbox : u.bbox.get(geometry)) : null; // TODO: calculate bounding box if it's not provided
+		return geometry ? (geometry.bbox ? geometry.bbox : u.bbox.get(geometry)) : null;
 	},
 
 	connectWithHandle: function(handle, /* String|Array? */events, /*Object|null*/ context, /*String|Function*/ method) {

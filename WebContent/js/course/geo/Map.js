@@ -99,9 +99,16 @@ dojo.declare("course.geo.Map", null, {
 	_render: function(stylingOnly, mode, features) {
 		if (features) {
 			// render only the given features instead of the whole map tree
-			for(var fid in features) {
-				// TODO: avoid double rendering
-				features[fid]._render(stylingOnly, mode);
+			if (dojo.isArray(features)) {
+				dojo.forEach(features, function(feature){
+					feature._render(stylingOnly, mode);
+				}, this);
+			}
+			else {
+				for(var fid in features) {
+					// TODO: avoid double rendering
+					features[fid]._render(stylingOnly, mode);
+				}
 			}
 		}
 		else {

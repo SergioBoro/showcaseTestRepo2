@@ -107,6 +107,10 @@ dojo.require("dojox.gfx.matrix");
 			this.feature = null;
             hideTooltip(this.aroundRect);
 			this.aroundRect = null;
+		},
+		
+		hideTooltip: function() {
+			hideTooltip(this.aroundRect);
 		}
 	});
 

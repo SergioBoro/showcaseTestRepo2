@@ -18,6 +18,8 @@ dojo.declare("course.geo.FeatureContainer", course.geo.Feature, {
 	},
 	
 	addFeatures: function(/* Array */features) {
+		if (!dojo.isArray(features)) features = [features];
+		var addedFeatures = [];
 		dojo.forEach(features, function(feature){
 			if (feature.declaredClass) { // derived from course.geo.Feature
 				feature.setMap(this.map);
@@ -37,8 +39,10 @@ dojo.declare("course.geo.FeatureContainer", course.geo.Feature, {
 				feature.setMap(this.map);
 				feature.setParent(this);
 				this.map.registerFeature(feature);
+				addedFeatures.push(feature);
 			}
 		}, this);
+		return addedFeatures;
 	},
 	
 	getBbox: function() {
