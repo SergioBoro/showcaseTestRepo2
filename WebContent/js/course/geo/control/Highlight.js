@@ -1,7 +1,6 @@
 dojo.provide("course.geo.control.Highlight");
 
 dojo.require("course.geo.control.Base");
-dojo.require("dojox.color");
 
 /*=====
 dojo.declare("dojox.charting.action2d.__HighlightCtorArgs", dojox.charting.action2d.__BaseCtorArgs, {

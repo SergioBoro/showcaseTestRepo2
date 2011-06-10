@@ -1,5 +1,7 @@
 dojo.provide("course.geo.styling");
 
+dojo.require("dojox.color");
+
 (function() {
 	
 var g = course.geo,
