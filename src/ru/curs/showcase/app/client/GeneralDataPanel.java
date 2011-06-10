@@ -93,12 +93,12 @@ public class GeneralDataPanel {
 
 		if (getTabPanel().getWidgetCount() > 0) {
 
-			Integer p1 = getTabPanel().getWidgetCount();
-			for (int i = p1 - 1; i < 0; i--) {
-				// getTabPanel().remove(i);
-				// getTabPanel().getTabWidget(i).removeFromParent();
-				// getTabPanel().getTabWidget(i).setVisible(false);
-			}
+			// Integer p1 = getTabPanel().getWidgetCount();
+			// for (int i = p1 - 1; i < 0; i--) {
+			// getTabPanel().remove(i);
+			// getTabPanel().getTabWidget(i).removeFromParent();
+			// getTabPanel().getTabWidget(i).setVisible(false);
+			// }
 			getTabPanel().clear();
 
 		}
@@ -195,8 +195,8 @@ public class GeneralDataPanel {
 			DataPanelElementInfo dpe = itr.next();
 			if (dpe.getCacheData()) {
 				el =
-					AppCurrContext.m.get(dpe
-							.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
+					AppCurrContext.getInstance().getMapOfDataPanelElements()
+							.get(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
 
 			}
 
@@ -236,7 +236,9 @@ public class GeneralDataPanel {
 					vp1.add(el);
 
 					if (dpe.getCacheData()) {
-						AppCurrContext.m
+						AppCurrContext
+								.getInstance()
+								.getMapOfDataPanelElements()
 								.put(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)),
 										el);
 					}
