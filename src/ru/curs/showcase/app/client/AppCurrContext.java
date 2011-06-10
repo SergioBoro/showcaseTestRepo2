@@ -10,6 +10,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanel;
 import ru.curs.showcase.app.api.event.ActionHolder;
 
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * 
@@ -19,6 +20,28 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * 
  */
 public final class AppCurrContext extends ActionHolder {
+
+	/**
+	 * Переменная хранящая в структуре Map закэшированные виджеты в элементами,
+	 * которые "закэшированы".
+	 */
+	private static HashMap<String, Widget> mapOfDataPanelElementsToBeCached =
+		new HashMap<String, Widget>();
+
+	/**
+	 * @return the mapOfDataPanelElements
+	 */
+	public HashMap<String, Widget> getMapOfDataPanelElements() {
+		return mapOfDataPanelElementsToBeCached;
+	}
+
+	/**
+	 * @param amapOfDataPanelElements
+	 *            the mapOfDataPanelElements to set
+	 */
+	public void setMapOfDataPanelElements(final HashMap<String, Widget> amapOfDataPanelElements) {
+		AppCurrContext.mapOfDataPanelElementsToBeCached = amapOfDataPanelElements;
+	}
 
 	/**
 	 * Переменная хранящая текущее состояние приложение (версия, текущее имя
