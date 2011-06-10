@@ -168,33 +168,6 @@ public class GeneralDataPanel {
 	 */
 	public static void fillTabContent(final int tabIndex) {
 
-		// if (tabIndex == 2) {
-		// if (ppp2 > 0) {
-		// return;
-		// } else {
-		// ppp2++;
-		// // ppp = ppp + 1;
-		// }
-		// }
-		//
-		// if (tabIndex == 1) {
-		// if (ppp1 > 0) {
-		// return;
-		// } else {
-		// ppp1++;
-		// // ppp = ppp + 1;
-		// }
-		// }
-		//
-		// if (tabIndex == 0) {
-		// if (ppp0 > 0) {
-		// return;
-		// } else {
-		// ppp0++;
-		// // ppp = ppp + 1;
-		// }
-		// }
-
 		XFormPanel.destroyXForms(); // Важно !!!!
 
 		// очистка текущей вкладки полностью
@@ -220,17 +193,14 @@ public class GeneralDataPanel {
 		while (itr.hasNext()) {
 			Widget el = null;
 			DataPanelElementInfo dpe = itr.next();
-			// MessageBox.showSimpleMessage("0", "0");
 			if (dpe.getCacheData()) {
 				el =
 					AppCurrContext.m.get(dpe
 							.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
 
-				// vp1.add(el);
 			}
 
 			if (el == null) {
-				// MessageBox.showSimpleMessage("2", "2");
 				switch (dpe.getType()) {
 				case WEBTEXT:
 					el = generateWebTextElement(dpe);
@@ -251,7 +221,6 @@ public class GeneralDataPanel {
 					break;
 				}
 			}
-			// MessageBox.showSimpleMessage("3", "3");
 			if (el != null) {
 				el.addStyleName("dataPanelElement-BorderCorners");
 
@@ -345,7 +314,6 @@ public class GeneralDataPanel {
 		WebTextPanel wtp = null;
 		Widget w = null;
 		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-			// dpe.get
 			wtp = new WebTextPanel(getElementContextForNavigatorAction(dpe), dpe);
 			w = wtp.getPanel();
 			w.setSize("100%", "100%");
