@@ -12,6 +12,7 @@
     <xs:element name="action">
         <xs:complexType>
             <xs:all>
+                <xs:element name="main_context" minOccurs="0"/>
                 <xs:element name="navigator" minOccurs="0">
                     <xs:complexType>
                         <xs:attribute name="element" type="notNullType"/>
@@ -24,17 +25,18 @@
                         <xs:sequence>
                             <xs:element name="element" maxOccurs="unbounded" minOccurs="0">
                                 <xs:complexType>
-                                    <xs:attribute name="id" type="notNullType" use="required"/>                          
-                                    <xs:attribute name="add_context" type="notNullType" use="required"/>
+                                    <xs:sequence>
+						                <xs:element name="add_context" minOccurs="0"/>
+                                    </xs:sequence>   
+                                    <xs:attribute name="id" type="notNullType" use="required"/>
                                     <xs:attribute name="refresh_context_only" type="xs:boolean"/>
                                     <xs:attribute name="skip_refresh_context_only" type="xs:boolean"/>
                                     <xs:attribute name="keep_user_settings" type="xs:boolean"/>
-                                </xs:complexType>                                
+                                </xs:complexType>
                             </xs:element>
                         </xs:sequence>
                         <xs:attribute name="type" type="xmlType" use="required"/>                          
                         <xs:attribute name="tab" type="notNullType"/>
-                        <xs:attribute name="main_context" type="xs:string" use="required"/>
                     </xs:complexType>
                     <xs:unique name="elementId">
                         <xs:selector xpath="element"/>

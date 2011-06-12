@@ -23,27 +23,41 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 	 */
 	private Action current;
 
-	private CompositeContext setupContext(final Attributes attrs) {
-		CompositeContext context = null;
-		if ((attrs.getIndex(MAIN_CONTEXT_ATTR_NAME) > -1)
-				|| (attrs.getIndex(ADD_CONTEXT_ATTR_NAME) > -1)) {
-			context = new CompositeContext();
-			if (attrs.getIndex(MAIN_CONTEXT_ATTR_NAME) > -1) {
-				context.setMain(attrs.getValue(MAIN_CONTEXT_ATTR_NAME));
-			}
-			if (attrs.getIndex(ADD_CONTEXT_ATTR_NAME) > -1) {
-				context.setAdditional(attrs.getValue(ADD_CONTEXT_ATTR_NAME));
-			}
-		}
-		return context;
+	/**
+	 * Текущий DataPanelLink.
+	 */
+	private DataPanelLink linkDataPanelLink = null;
+	/**
+	 * Текущий DataPanelElementLink.
+	 */
+	private DataPanelElementLink linkDataPanelElementLink = null;
+	/**
+	 * readingMainContext.
+	 */
+	private boolean readingMainContext = false;
+	/**
+	 * readingAddContext.
+	 */
+	private boolean readingAddContext = false;
+	/**
+	 * characters.
+	 */
+	private String characters = null;
+
+	@Override
+	public boolean canHandleStartTag(final String tagName, final SaxEventType saxEventType) {
+		return ACTION_TAG.equalsIgnoreCase(tagName) || DP_TAG.equalsIgnoreCase(tagName)
+				|| NAVIGATOR_TAG.equalsIgnoreCase(tagName)
+				|| ELEMENT_TAG.equalsIgnoreCase(tagName)
+				|| MODAL_WINDOW_TAG.equalsIgnoreCase(tagName)
+				|| MAIN_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName)
+				|| ADD_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName);
 	}
 
 	@Override
-	public boolean canHandle(final String aTagName, final SaxEventType aSaxEventType) {
-		return ACTION_TAG.equalsIgnoreCase(aTagName) || DP_TAG.equalsIgnoreCase(aTagName)
-				|| NAVIGATOR_TAG.equalsIgnoreCase(aTagName)
-				|| ELEMENT_TAG.equalsIgnoreCase(aTagName)
-				|| MODAL_WINDOW_TAG.equalsIgnoreCase(aTagName);
+	public boolean canHandleEndTag(final String tagName, final SaxEventType saxEventType) {
+		return MAIN_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName)
+				|| ADD_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName);
 	}
 
 	@Override
@@ -64,15 +78,11 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 			current = action;
 		}
 		if (qname.equalsIgnoreCase(DP_TAG)) {
-			DataPanelLink link = new DataPanelLink();
-			link.setDataPanelId(attrs.getValue(DP_ID_ATTR_NAME));
+			linkDataPanelLink.setDataPanelId(attrs.getValue(DP_ID_ATTR_NAME));
 
 			ActionTabFinder finder = AppRegistry.getActionTabFinder();
-			link.setTabId(finder.findTabForAction(link, attrs.getValue(TAB_TAG)));
-
-			CompositeContext context = setupContext(attrs);
-			link.setContext(context);
-			current.setDataPanelLink(link);
+			linkDataPanelLink.setTabId(finder.findTabForAction(linkDataPanelLink,
+					attrs.getValue(TAB_TAG)));
 		}
 		if (qname.equalsIgnoreCase(NAVIGATOR_TAG)) {
 			NavigatorElementLink link = new NavigatorElementLink();
@@ -105,34 +115,77 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 			current.setModalWindowInfo(mwi);
 		}
 		if (qname.equalsIgnoreCase(ELEMENT_TAG)) {
-			DataPanelElementLink link = new DataPanelElementLink();
-			link.setId(attrs.getValue(ID_TAG));
-			CompositeContext context = setupContext(attrs);
-			context.assignNullValues(current.getDataPanelLink().getContext());
-			link.setContext(context);
+			linkDataPanelElementLink = new DataPanelElementLink();
+
+			linkDataPanelElementLink.setId(attrs.getValue(ID_TAG));
+
 			if (attrs.getIndex(REFRESH_CONTEXT_ONLY_TAG) > -1) {
 				value = attrs.getValue(REFRESH_CONTEXT_ONLY_TAG);
-				link.setRefreshContextOnly(Boolean.parseBoolean(value));
+				linkDataPanelElementLink.setRefreshContextOnly(Boolean.parseBoolean(value));
 			}
 			if (attrs.getIndex(SKIP_REFRESH_CONTEXT_ONLY_TAG) > -1) {
 				value = attrs.getValue(SKIP_REFRESH_CONTEXT_ONLY_TAG);
-				link.setSkipRefreshContextOnly(Boolean.parseBoolean(value));
+				linkDataPanelElementLink.setSkipRefreshContextOnly(Boolean.parseBoolean(value));
 			}
 			if (attrs.getIndex(KEEP_USER_SETTINGS_TAG) > -1) {
 				value = attrs.getValue(KEEP_USER_SETTINGS_TAG);
-				link.setKeepUserSettings(Boolean.parseBoolean(value));
+				linkDataPanelElementLink.setKeepUserSettings(Boolean.parseBoolean(value));
 			}
-			current.getDataPanelLink().getElementLinks().add(link);
 		}
+
+		if (qname.equalsIgnoreCase(MAIN_CONTEXT_ATTR_NAME)) {
+			linkDataPanelLink = new DataPanelLink();
+
+			readingMainContext = true;
+		}
+		if (qname.equalsIgnoreCase(ADD_CONTEXT_ATTR_NAME)) {
+			readingAddContext = true;
+		}
+
 		return current;
 	}
 
 	@Override
-	public void handleEndTag(final String aNamespaceURI, final String aLname, final String aQname) {
+	public Action
+			handleEndTag(final String aNamespaceURI, final String aLname, final String aQname) {
+		if (aQname.equalsIgnoreCase(MAIN_CONTEXT_ATTR_NAME)) {
+			// System.out.println("handleCharacters, main_context = " +
+			// characters);
+			CompositeContext context = new CompositeContext();
+			context.setMain(characters);
+			linkDataPanelLink.setContext(context);
+			current.setDataPanelLink(linkDataPanelLink);
+
+			readingMainContext = false;
+		}
+
+		if (aQname.equalsIgnoreCase(ADD_CONTEXT_ATTR_NAME)) {
+			// System.out.println("handleCharacters, add_context = " +
+			// characters);
+			CompositeContext context = new CompositeContext();
+			context.assignNullValues(current.getDataPanelLink().getContext());
+			context.setAdditional(characters);
+			linkDataPanelElementLink.setContext(context);
+			current.getDataPanelLink().getElementLinks().add(linkDataPanelElementLink);
+
+			readingAddContext = false;
+		}
+
+		characters = null;
+
+		return current;
 	}
 
 	@Override
 	public void handleCharacters(final char[] aArg0, final int aArg1, final int aArg2) {
+		if (readingMainContext || readingAddContext) {
+			String s = new String(aArg0, aArg1, aArg2).trim();
+			if (characters == null) {
+				characters = s;
+			} else {
+				characters = characters + s;
+			}
+		}
 	}
 
 }

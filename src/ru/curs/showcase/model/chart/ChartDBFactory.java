@@ -214,18 +214,27 @@ public class ChartDBFactory extends AbstractChartFactory {
 			}
 
 			@Override
-			public void handleEndTag(final String aNamespaceURI, final String aLname,
+			public Object handleEndTag(final String aNamespaceURI, final String aLname,
 					final String aQname) {
+				return null;
 			}
 
 			@Override
 			public void handleCharacters(final char[] aArg0, final int aArg1, final int aArg2) {
+
 			}
 
 			@Override
-			public boolean canHandle(final String aTagName, final SaxEventType aSaxEventType) {
+			public boolean canHandleStartTag(final String aTagName,
+					final SaxEventType aSaxEventType) {
 				return (COLOR_TAG.equalsIgnoreCase(aTagName));
 			}
+
+			@Override
+			public boolean canHandleEndTag(final String tagName, final SaxEventType saxEventType) {
+				return false;
+			}
+
 		};
 		factory.addHandler(colorHandler);
 		getResult().getEventManager().getEvents()

@@ -100,7 +100,7 @@ public final class NavigatorFactory extends GeneralXMLHelper {
 					return;
 				}
 
-				if (actionFactory.canHandle(qname, SaxEventType.STARTELEMENT)) {
+				if (actionFactory.canHandleStartTag(qname, SaxEventType.STARTELEMENT)) {
 					Action action =
 						actionFactory.handleStartTag(namespaceURI, lname, qname, attrs);
 					NavigatorElement cur = currentElStack.getLast();
@@ -115,6 +115,20 @@ public final class NavigatorFactory extends GeneralXMLHelper {
 				if (qname.startsWith(EL_ON_LEVEL_NODE_NAME)) {
 					currentElStack.removeLast();
 				}
+
+				if (actionFactory.canHandleEndTag(qname, SaxEventType.ENDELEMENT)) {
+					Action action = actionFactory.handleEndTag(namespaceURI, lname, qname);
+					NavigatorElement cur = currentElStack.getLast();
+					cur.setAction(action);
+				}
+
+			}
+
+			@Override
+			public void characters(final char[] arg0, final int arg1, final int arg2) {
+
+				actionFactory.handleCharacters(arg0, arg1, arg2);
+
 			}
 
 			private void setupImageId(final String imageFile) {

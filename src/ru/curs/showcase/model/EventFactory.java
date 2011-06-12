@@ -163,7 +163,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 					return;
 				}
 
-				if (actionFactory.canHandle(qname, SaxEventType.STARTELEMENT)) {
+				if (actionFactory.canHandleStartTag(qname, SaxEventType.STARTELEMENT)) {
 					Action action =
 						actionFactory.handleStartTag(namespaceURI, lname, qname, attrs);
 					if (current != null) {
@@ -176,7 +176,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 				Iterator<SAXTagHandler> iterator = handlers.iterator();
 				while (iterator.hasNext()) {
 					SAXTagHandler handler = iterator.next();
-					if (handler.canHandle(qname, SaxEventType.STARTELEMENT)) {
+					if (handler.canHandleStartTag(qname, SaxEventType.STARTELEMENT)) {
 						handler.handleStartTag(namespaceURI, lname, qname, attrs);
 						return;
 					}
@@ -189,7 +189,25 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 				if (qname.equalsIgnoreCase(EVENT_TAG)) {
 					current = null;
 				}
+
+				if (actionFactory.canHandleEndTag(qname, SaxEventType.ENDELEMENT)) {
+					Action action = actionFactory.handleEndTag(namespaceURI, lname, qname);
+					if (current != null) {
+						current.setAction(action);
+					} else {
+						defaultAction = action;
+					}
+				}
+
 			}
+
+			@Override
+			public void characters(final char[] arg0, final int arg1, final int arg2) {
+
+				actionFactory.handleCharacters(arg0, arg1, arg2);
+
+			}
+
 		};
 	}
 

@@ -50,7 +50,7 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Число элементов в первой группе навигатора.
 	 */
-	private static final int FIRST_GRP_ELEMENTS_COUNT = 16;
+	private static final int FIRST_GRP_ELEMENTS_COUNT = 6;
 
 	/**
 	 * Тест навигатора, построенного на основе данных из файла XML.

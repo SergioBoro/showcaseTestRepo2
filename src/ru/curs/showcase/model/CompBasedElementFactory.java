@@ -63,7 +63,7 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 						throw new SAXError(e);
 					}
 				}
-				if (actionFactory.canHandle(qname, SaxEventType.STARTELEMENT)) {
+				if (actionFactory.canHandleStartTag(qname, SaxEventType.STARTELEMENT)) {
 					Action action =
 						actionFactory.handleStartTag(namespaceURI, lname, qname, attrs);
 					getResult().setDefaultAction(action);
@@ -103,6 +103,12 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 						throw new SAXError(e);
 					}
 				}
+
+				if (actionFactory.canHandleEndTag(qname, SaxEventType.ENDELEMENT)) {
+					Action action = actionFactory.handleEndTag(namespaceURI, lname, qname);
+					getResult().setDefaultAction(action);
+				}
+
 				if (readingHeader) {
 					getResult().setHeader(getResult().getHeader() + "</" + qname + ">");
 					return;
@@ -132,6 +138,9 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 						throw new SAXError(e);
 					}
 				}
+
+				actionFactory.handleCharacters(arg0, arg1, arg2);
+
 			}
 		};
 
