@@ -115,13 +115,31 @@ public final class ActionExecuter {
 									.getCurrentOpenWindowWithDataPanelElement() == null)) {
 
 						ModalWindowInfo mwi = ac.getModalWindowInfo();
-						WindowWithDataPanelElement modWind;
+						WindowWithDataPanelElement modWind = null;
 						if (mwi != null) {
-							modWind =
-								new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
-										mwi.getHeight(), mwi.getShowCloseBottomButton());
+
+							if ((mwi.getCaption() != null) && (mwi.getWidth() != null)
+									&& (mwi.getHeight() != null)) {
+								modWind =
+									new WindowWithDataPanelElement(mwi.getCaption(),
+											mwi.getWidth(), mwi.getHeight(),
+											mwi.getShowCloseBottomButton());
+							} else {
+
+								if (mwi.getCaption() != null) {
+									modWind =
+										new WindowWithDataPanelElement(mwi.getCaption(),
+												mwi.getShowCloseBottomButton());
+								} else {
+									modWind =
+										new WindowWithDataPanelElement(
+												mwi.getShowCloseBottomButton());
+								}
+
+							}
+
 						} else {
-							modWind = new WindowWithDataPanelElement();
+							modWind = new WindowWithDataPanelElement(false);
 						}
 
 						modWind.showModalWindow(bep);

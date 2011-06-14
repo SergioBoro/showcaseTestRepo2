@@ -49,9 +49,17 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 		return showCloseBottomButton;
 	}
 
-	public WindowWithDataPanelElement() {
+	public WindowWithDataPanelElement(final Boolean ashowCloseBottomButton) {
 		super();
-		setShowCloseBottomButton(false);
+		setShowCloseBottomButton(ashowCloseBottomButton);
+		final int n100 = 100;
+		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
+				String.valueOf(Window.getClientHeight() - n100) + "px");
+	}
+
+	public WindowWithDataPanelElement(final String caption, final Boolean ashowCloseBottomButton) {
+		super(caption);
+		setShowCloseBottomButton(ashowCloseBottomButton);
 		final int n100 = 100;
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
 				String.valueOf(Window.getClientHeight() - n100) + "px");
