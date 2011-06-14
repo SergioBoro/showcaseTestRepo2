@@ -43,6 +43,10 @@ public final class AppInfoSingleton {
 	private final Map<String, SessionInfo> sessionInfoMap = Collections
 			.synchronizedMap(new HashMap<String, SessionInfo>());
 
+	public Map<String, SessionInfo> getSessionInfoMap() {
+		return sessionInfoMap;
+	}
+
 	/**
 	 * Версия контейнера сервлетов.
 	 */
