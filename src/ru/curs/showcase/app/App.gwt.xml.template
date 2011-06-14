@@ -31,6 +31,5 @@
 <!--   where safari==chrome, gecko1_8==firefox 2+ -->
 <!-- Для того, чтобы компилировалось все - строчку set-property  -->
 
-<!-- Установка общих стилей приложения     -->
-<stylesheet src="internalShowcase.css"/>    
+<!-- Установка общих стилей приложения из app.gwt.xml не рекомендуется!    -->
 </module>
