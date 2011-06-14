@@ -4,7 +4,29 @@ function includeJS(jsFile)
 		+ jsFile + '"></script>'); 			
 }
 
-includeJS("js/internalGeo.js");
+function safeIncludeGeoJS(jsFile)
+{
+	dojo.xhrGet({
+		url: "secured/geoCheck",
+		load: function(responce, ioArgs) {
+			if (responce == "ok") {
+				var newscript = document.createElement('script');
+				newscript.src = jsFile;
+				newscript.type = "text/javascript";
+				var div = document.getElementById('target');
+				div.appendChild(newscript);
+			}
+		else {
+			console.log("geo module disabled!");	
+			}
+		}		
+	});
+
+}
+
+safeIncludeGeoJS('js/internalGeo.js');
+
+//includeJS("js/internalGeo.js");
 
 var convertorFunc = function(chartId, chartLegendId, optionSet1, optionSet2) {
 
