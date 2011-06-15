@@ -31,6 +31,16 @@ public class EventsTest extends AbstractTestBasedOnFiles {
 	static final String ROW1 = "row1";
 
 	/**
+	 * Проверка на мусор на входе.
+	 */
+	@Test
+	public void testGarbage() {
+		GridEventManager mgr = (GridEventManager) createStdMgr();
+		assertNull(mgr.getEventForCell(null, null, null));
+		assertNull(mgr.getEventForCell("null", "null", InteractionType.MIDDLE_CLICK));
+	}
+
+	/**
 	 * Тестирование функции очистки событий от мусорных.
 	 */
 	@Test

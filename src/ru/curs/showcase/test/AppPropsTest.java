@@ -44,7 +44,7 @@ public class AppPropsTest extends AbstractTestBasedOnFiles {
 		AppProps.getRequiredValueByName(ConnectionFactory.CONNECTION_URL_PARAM);
 		assertNotNull(AppProps.getOptionalValueByName(ConnectionFactory.CONNECTION_URL_PARAM));
 
-		assertEquals("group_icon_default.png",
+		assertEquals("group_icon_default1.png",
 				AppProps.getOptionalValueByName("navigator.def.icon.name", "test1"));
 	}
 

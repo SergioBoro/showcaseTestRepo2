@@ -1,9 +1,3 @@
-function includeJS(jsFile)
-{
-	document.write('<script type="text/javascript" src="'
-		+ jsFile + '"></script>'); 			
-}
-
 function safeIncludeGeoJS(jsFile)
 {
 	dojo.xhrGet({
@@ -25,8 +19,6 @@ function safeIncludeGeoJS(jsFile)
 }
 
 safeIncludeGeoJS('js/internalGeo.js');
-
-//includeJS("js/internalGeo.js");
 
 var convertorFunc = function(chartId, chartLegendId, optionSet1, optionSet2) {
 

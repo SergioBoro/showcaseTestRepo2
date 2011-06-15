@@ -206,7 +206,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		DataFile<ByteArrayOutputStream> file =
 			serviceLayer.getDownloadFile(context, element, linkId, null);
-		final int navigatorXMLLen = 231106;
+		final int navigatorXMLLen = 231478;
 		assertNotNull(context.getSession());
 		assertEquals(navigatorXMLLen, file.getData().size());
 	}
