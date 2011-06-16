@@ -10,7 +10,7 @@ import javax.management.*;
  * @author den
  * 
  */
-public final class JMXAgent {
+public final class JMXMBeanRegistrator {
 
 	/**
 	 * Сервер JMX Bean.
@@ -37,7 +37,7 @@ public final class JMXAgent {
 		}
 	}
 
-	private JMXAgent() {
+	private JMXMBeanRegistrator() {
 		throw new UnsupportedOperationException();
 	}
 }

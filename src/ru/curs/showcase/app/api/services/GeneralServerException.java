@@ -75,6 +75,9 @@ public class GeneralServerException extends Exception {
 	 * @return String
 	 */
 	public static String getStackText(final Throwable original) {
+		if (original == null) {
+			return null;
+		}
 		StringBuilder result = new StringBuilder();
 		String ls = LINE_SEPARATOR;
 		// System.getProperty("line.separator"); - не
@@ -93,8 +96,16 @@ public class GeneralServerException extends Exception {
 		return result.toString();
 	}
 
+	/**
+	 * Возвращает имя базового класса исключения.
+	 * 
+	 * @return - имя класса.
+	 */
 	public final String getOriginalExceptionClass() {
-		return getCause().getClass().getName();
+		if (getCause() != null) {
+			return getCause().getClass().getName();
+		}
+		return null;
 	}
 
 	public final String getOriginalTrace() {

@@ -50,7 +50,7 @@ public final class AppInitializer {
 	public static void initialize() {
 		XMLUtils.setupSchemaFactory();
 		XMLUtils.setupTransformer();
-		JMXAgent.register();
+		JMXMBeanRegistrator.register();
 	}
 
 	/**

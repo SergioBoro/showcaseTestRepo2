@@ -29,7 +29,7 @@ public class ValidateInDBException extends BaseException {
 	/**
 	 * Префикс для исключения решения.
 	 */
-	public static final String SOL_MES_PREFIX = "__sol_mes_";
+	public static final String SOL_MES_PREFIX = "__user_mes_";
 	/**
 	 * Суффикс для исключения решения.
 	 */
