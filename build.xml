@@ -67,8 +67,7 @@
 	</target>
 
 	<target name="compile" depends="init.dirs" description="Compiles .java files to WAR directory">
-		<javac srcdir="${src.dir}; datagrid; extragwt" destdir="${class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java" />
-		<exec resolveexecutable="true" executable="svnver\svnversion.exe" output="WebContent\WEB-INF\classes\build" dir="." description="Write build number to file" />
+		<javac encoding="UTF-8" srcdir="${src.dir}; datagrid; extragwt" destdir="${class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java" />
 	</target>
 
 	<target name="build" depends="compile">
@@ -126,6 +125,10 @@
 		<copy tofile="${tmp.dir}\App.gwt.xml.re" file="${gwt.src.root.dir}\App.gwt.xml" overwrite="true" />
 		<copy tofile="${gwt.src.root.dir}\App.gwt.xml" file="${gwt.src.root.dir}\App.gwt.xml.template" overwrite="true" />
 		<antcall target="build.with.gwt" />
+		
+		<echo>Update build number</echo>
+		<exec resolveexecutable="true" executable="svnver\svnversion.exe" output="WebContent\WEB-INF\classes\build" dir="." description="Write build number to file" />		
+		
 		<echo>Copy sources to war</echo>
 		<copy todir="${webinf.dir}/src/core">
 			<fileset dir="${src.dir}">
@@ -142,6 +145,7 @@
 				<include name="**/*.java" />
 			</fileset>
 		</copy>
+		
 		<echo>Making war not love</echo>
 		<war destfile="${war.file}">
 			<fileset dir="${war.dir}">
@@ -151,8 +155,10 @@
 				<exclude name="debug.jsp" />
 			</fileset>
 		</war>
+		
 		<echo>Clearing after make war</echo>
 		<delete dir="${webinf.dir}/${src.dir}" failonerror="false" />
+		<copy tofile="WebContent\WEB-INF\classes\build" file="src\build" failonerror="false" overwrite="true"/>
 		<copy tofile="${gwt.src.root.dir}\App.gwt.xml" file="${tmp.dir}\App.gwt.xml.re" overwrite="true" />
 	</target>
 
