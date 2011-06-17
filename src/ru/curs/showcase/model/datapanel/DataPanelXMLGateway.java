@@ -18,6 +18,8 @@ import ru.curs.showcase.util.*;
  * 
  */
 public class DataPanelXMLGateway extends GeneralXMLHelper implements DataPanelGateway {
+	static final String NO_TABS_ERROR = "Панель '%s' не содержит вкладок";
+
 	/**
 	 * Идентификатор первой вкладки.
 	 */
@@ -51,7 +53,8 @@ public class DataPanelXMLGateway extends GeneralXMLHelper implements DataPanelGa
 		}
 
 		if (firstTabId == null) {
-			throw new XMLFormatException(dataPanelId);
+			throw new XMLFormatException(String.format(NO_TABS_ERROR,
+					dataPanelId));
 		}
 		return firstTabId;
 	}

@@ -1,5 +1,7 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.ExceptionType;
 
 /**
@@ -24,8 +26,11 @@ public class ResultSetHandleException extends BaseException {
 		super(ExceptionType.SOLUTION, ERROR_MES, aCause);
 	}
 
-	public ResultSetHandleException(final String aString) {
+	public ResultSetHandleException(final String aString,
+			final CompositeContext aCompositeContext,
+			final DataPanelElementInfo aDataPanelElementInfo) {
 		super(ExceptionType.SOLUTION, aString);
+		setContext(new DataPanelElementContext(aCompositeContext, aDataPanelElementInfo));
 	}
 
 }

@@ -1,6 +1,7 @@
 package ru.curs.showcase.exception;
 
 import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.services.*;
 
 /**
@@ -28,7 +29,15 @@ public final class GeneralServerExceptionFactory {
 		res.setOriginalTrace(GeneralServerException.getStackText(original));
 		res.setOriginalMessage(getOriginalMessage(original));
 		res.setType(getType(original));
+		res.setContext(getContext(original));
 		return res;
+	}
+
+	private static DataPanelElementContext getContext(final Throwable e) {
+		if (e instanceof BaseException) {
+			return ((BaseException) e).getContext();
+		}
+		return null;
 	}
 
 	private static ExceptionType getType(final Throwable e) {

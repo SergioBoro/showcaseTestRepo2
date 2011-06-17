@@ -19,10 +19,6 @@ public class XMLFormatException extends BaseException {
 	 */
 	private static final long serialVersionUID = 7758790066616498408L;
 
-	public XMLFormatException() {
-		super(ExceptionType.SOLUTION, ERROR_MES);
-	}
-
 	public XMLFormatException(final String fileName, final Throwable cause) {
 		super(ExceptionType.SOLUTION, ERROR_MES + ": " + fileName, cause);
 	}

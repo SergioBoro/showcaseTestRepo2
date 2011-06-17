@@ -21,7 +21,7 @@ public abstract class CompBasedElementSPCallHelper extends SPCallHelper {
 	protected void stdGetResults() throws SQLException {
 		boolean hasResult = getCs().execute();
 		if (!hasResult) {
-			throw new DBQueryException(getElementInfo(), NO_RESULTSET_ERROR);
+			throw new DBQueryException(getElementInfo(), getContext(), NO_RESULTSET_ERROR);
 		}
 	}
 }

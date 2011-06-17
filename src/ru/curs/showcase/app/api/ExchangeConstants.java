@@ -13,6 +13,12 @@ public final class ExchangeConstants implements SerializableElement {
 	}
 
 	/**
+	 * Разделитель строк для сообщений, показываемых пользователю (используется
+	 * разделитель Windows).
+	 */
+	public static final String LINE_SEPARATOR = "\r\n";
+
+	/**
 	 * serialVersionUID.
 	 */
 	private static final long serialVersionUID = 6722656736605297948L;
@@ -23,4 +29,5 @@ public final class ExchangeConstants implements SerializableElement {
 	public static final String FILE_DATA_PARAM_PREFIX = "@@filedata@@";
 
 	public static final String SESSION_NOT_AUTH_SIGN = "SessionNotAuthenticated";
+
 }

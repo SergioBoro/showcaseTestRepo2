@@ -62,8 +62,9 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 
 	@Override
 	public String toString() {
-		return "CompositeContext [main=" + main + ", additional=" + additional + ", session="
-				+ session + ", filter=" + filter + "]";
+		return "mainContext=" + main + ExchangeConstants.LINE_SEPARATOR + "additionalContext="
+				+ additional + ExchangeConstants.LINE_SEPARATOR + "sessionContext=" + session
+				+ ExchangeConstants.LINE_SEPARATOR + "filterContext=" + filter;
 	}
 
 	public final String getMain() {

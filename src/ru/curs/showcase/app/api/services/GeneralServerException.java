@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.api.services;
 
-import ru.curs.showcase.app.api.UserMessage;
+import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 
 /**
  * Класс общего серверного исключения. Данное исключение передается на GWT
@@ -11,22 +12,15 @@ import ru.curs.showcase.app.api.UserMessage;
  * 
  */
 public class GeneralServerException extends Exception {
-	/**
-	 * Разделитель строк для сообщений, показываемых пользователю (используется
-	 * разделитель Windows).
-	 */
-	private static final String LINE_SEPARATOR = "\r\n";
-
-	static final String EXCEPTION_TRACE = "Стек ошибки:" + LINE_SEPARATOR;
+	static final String EXCEPTION_TRACE = "Стек ошибки:";
 
 	static final String EXCEPTION_CLASS = "Класс ошибки: ";
 
 	static final String ORIGINAL_MESSAGE = "Исходное сообщение: ";
 
-	/**
-	 * Заголовок в полном стеке исключения перед описанием исключения-источника.
-	 */
-	private static final String CAUSE_EXC_CAPTION = "Источник ошибки";
+	static final String CONTEXT_MES = "Контекст выполнения: ";
+
+	static final String CAUSE_EXC_CAPTION = "Источник ошибки";
 
 	/**
 	 * serialVersionUID.
@@ -61,6 +55,13 @@ public class GeneralServerException extends Exception {
 	 */
 	private String originalTrace;
 
+	/**
+	 * Информация о контексте и элементе в момент возникновения ошибки.
+	 * Сохраняется только в случае, когда данные могут помочь понять причину
+	 * ошибки.
+	 */
+	private DataPanelElementContext context;
+
 	public final String getOriginalMessage() {
 		return originalMessage;
 	}
@@ -88,7 +89,7 @@ public class GeneralServerException extends Exception {
 	 */
 	public static String getStackText(final Throwable original) {
 		StringBuilder result = new StringBuilder();
-		String ls = LINE_SEPARATOR;
+		String ls = ExchangeConstants.LINE_SEPARATOR;
 		// System.getProperty("line.separator"); - не
 		// работает в gwt
 
@@ -106,14 +107,17 @@ public class GeneralServerException extends Exception {
 	}
 
 	private static String getDetailedTextOfException(final String mes, final String className,
-			final String trace, final ExceptionType aType) {
+			final String trace, final ExceptionType aType, final DataPanelElementContext context) {
 		String str = null;
 		if (mes != null) {
-			str = ORIGINAL_MESSAGE + mes + LINE_SEPARATOR + LINE_SEPARATOR;
+			str = ORIGINAL_MESSAGE + mes + ExchangeConstants.LINE_SEPARATOR + ExchangeConstants.LINE_SEPARATOR;
+		}
+		if (context != null) {
+			str = CONTEXT_MES + ExchangeConstants.LINE_SEPARATOR + context.toString();
 		}
 		if (aType != ExceptionType.USER) {
-			str = str + EXCEPTION_CLASS + className + LINE_SEPARATOR + LINE_SEPARATOR;
-			str = str + EXCEPTION_TRACE + trace;
+			str = str + EXCEPTION_CLASS + className + ExchangeConstants.LINE_SEPARATOR + ExchangeConstants.LINE_SEPARATOR;
+			str = str + EXCEPTION_TRACE + ExchangeConstants.LINE_SEPARATOR + trace;
 		}
 		return str;
 	}
@@ -130,10 +134,10 @@ public class GeneralServerException extends Exception {
 		if (caught instanceof GeneralServerException) {
 			GeneralServerException gse = (GeneralServerException) caught;
 			return getDetailedTextOfException(gse.originalMessage, gse.originalExceptionClass,
-					gse.originalTrace, gse.type);
+					gse.originalTrace, gse.type, gse.context);
 		} else {
 			return getDetailedTextOfException(caught.getMessage(), caught.getClass().getName(),
-					getStackText(caught), ExceptionType.JAVA);
+					getStackText(caught), ExceptionType.JAVA, null);
 		}
 	}
 
@@ -177,5 +181,13 @@ public class GeneralServerException extends Exception {
 
 	public void setOriginalTrace(final String aOriginalTrace) {
 		originalTrace = aOriginalTrace;
+	}
+
+	public DataPanelElementContext getContext() {
+		return context;
+	}
+
+	public void setContext(final DataPanelElementContext aContext) {
+		context = aContext;
 	}
 }

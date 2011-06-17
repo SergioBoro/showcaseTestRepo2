@@ -22,14 +22,6 @@ public class XSDValidateException extends BaseException {
 	 */
 	private static final String ERROR_MES = "Документ не соответствует схеме '%s'";
 
-	public XSDValidateException(final Throwable cause, final String subject, final String schema) {
-		super(ExceptionType.SOLUTION, String.format(EXT_ERROR_MES, subject, schema), cause);
-	}
-
-	public XSDValidateException(final Throwable cause, final String schema) {
-		super(ExceptionType.SOLUTION, String.format(ERROR_MES, schema), cause);
-	}
-
 	public XSDValidateException(final ExceptionType exType, final Throwable cause,
 			final String subject, final String schema) {
 		super(exType, String.format(EXT_ERROR_MES, subject, schema), cause);
