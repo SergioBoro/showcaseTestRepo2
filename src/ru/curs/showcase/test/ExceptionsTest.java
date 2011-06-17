@@ -10,7 +10,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.MessageType;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.*;
@@ -264,7 +264,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 					ValidateInDBException.SOL_MES_SUFFIX));
 		ValidateInDBException exc2 = new ValidateInDBException(exc);
 		GeneralServerException gse = GeneralServerExceptionFactory.build(exc2);
-		assertFalse(gse.needDetailedInfo());
+		assertFalse(GeneralServerException.needDetailedInfo(gse));
 		assertEquals("Ошибка", exc2.getUserMessage().getText());
 		GeneralServerException.checkExeptionTypeAndCreateDetailedTextOfException(gse);
 	}
@@ -293,6 +293,21 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		assertNotNull(gse.getContext());
 		assertEquals("Ввоз, включая импорт - Всего", gse.getContext().getCompositeContext()
 				.getMain());
+		assertTrue(GeneralServerException.needDetailedInfo(gse));
 		GeneralServerException.checkExeptionTypeAndCreateDetailedTextOfException(gse);
+	}
+
+	/**
+	 * Тесты для статических функций GeneralServerException, работающих с любыми
+	 * исключениями.
+	 */
+	@Test
+	public void testGSEStaticFunctions() {
+		Exception exc = new Exception();
+		assertEquals(MessageType.ERROR, GeneralServerException.getMessageType(exc));
+		assertEquals(ExceptionType.JAVA, GeneralServerException.getType(exc));
+		assertTrue(GeneralServerException.needDetailedInfo(exc));
+		assertNotNull(GeneralServerException
+				.checkExeptionTypeAndCreateDetailedTextOfException(exc));
 	}
 }

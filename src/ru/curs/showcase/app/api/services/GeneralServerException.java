@@ -149,13 +149,35 @@ public class GeneralServerException extends Exception {
 	 * информацию об ошибке на клиентской части.
 	 * 
 	 * @return - результат проверки.
+	 * @param caught
+	 *            - исключение.
 	 */
-	public boolean needDetailedInfo() {
-		return (type != ExceptionType.USER) || (getOriginalMessage() != null);
+	public static boolean needDetailedInfo(final Throwable caught) {
+		if (caught instanceof GeneralServerException) {
+			GeneralServerException gse = (GeneralServerException) caught;
+			return (gse.type != ExceptionType.USER) || (gse.getOriginalMessage() != null);
+		} else {
+			return true;
+		}
 	}
 
 	public ExceptionType getType() {
 		return type;
+	}
+
+	/**
+	 * Функция получения типа исключения, работающая с любыми исключениями.
+	 * 
+	 * @param caught
+	 *            - проверяемое исключение.
+	 * @return = тип.
+	 */
+	public static ExceptionType getType(final Throwable caught) {
+		if (caught instanceof GeneralServerException) {
+			return ((GeneralServerException) caught).type;
+		} else {
+			return ExceptionType.JAVA;
+		}
 	}
 
 	public void setType(final ExceptionType aType) {
@@ -188,6 +210,21 @@ public class GeneralServerException extends Exception {
 
 	public MessageType getMessageType() {
 		return messageType;
+	}
+
+	/**
+	 * Функция определения типа исключения, работающая со всеми исключениями.
+	 * 
+	 * @param caught
+	 *            - проверяемое исключение.
+	 * @return - тип.
+	 */
+	public static MessageType getMessageType(final Throwable caught) {
+		if (caught instanceof GeneralServerException) {
+			return ((GeneralServerException) caught).messageType;
+		} else {
+			return MessageType.ERROR;
+		}
 	}
 
 	public void setMessageType(final MessageType aMessageType) {
