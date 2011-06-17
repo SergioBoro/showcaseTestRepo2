@@ -17,11 +17,11 @@ public class GeneralServerException extends Exception {
 	 */
 	private static final String LINE_SEPARATOR = "\r\n";
 
-	static final String EXCEPTION_TRACE = "Exception trace:\r\n";
+	static final String EXCEPTION_TRACE = "Стек ошибки:" + LINE_SEPARATOR;
 
-	static final String EXCEPTION_CLASS = "ExceptionClass: ";
+	static final String EXCEPTION_CLASS = "Класс ошибки: ";
 
-	static final String ORIGINAL_MESSAGE = "OriginalMessage: ";
+	static final String ORIGINAL_MESSAGE = "Исходное сообщение: ";
 
 	/**
 	 * Заголовок в полном стеке исключения перед описанием исключения-источника.
@@ -40,7 +40,7 @@ public class GeneralServerException extends Exception {
 	private String originalMessage;
 
 	/**
-	 * Сообщение, выдаваемое пользователю.
+	 * Информация для вывода пользователю (сообщение, его тип).
 	 */
 	private UserMessage userMessage;
 
@@ -48,6 +48,18 @@ public class GeneralServerException extends Exception {
 	 * Тип исключения.
 	 */
 	private ExceptionType type;
+
+	/**
+	 * Класс оригинального исключения. Необходимо хранить здесь, т.к. при
+	 * сериализации gwt cause не сохраняется (нет метода setCause()).
+	 */
+	private String originalExceptionClass;
+
+	/**
+	 * Стек оригинального исключения. Необходимо хранить здесь, т.к. при
+	 * сериализации gwt cause не сохраняется (нет метода setCause()).
+	 */
+	private String originalTrace;
 
 	public final String getOriginalMessage() {
 		return originalMessage;
@@ -75,9 +87,6 @@ public class GeneralServerException extends Exception {
 	 * @return String
 	 */
 	public static String getStackText(final Throwable original) {
-		if (original == null) {
-			return null;
-		}
 		StringBuilder result = new StringBuilder();
 		String ls = LINE_SEPARATOR;
 		// System.getProperty("line.separator"); - не
@@ -96,26 +105,12 @@ public class GeneralServerException extends Exception {
 		return result.toString();
 	}
 
-	/**
-	 * Возвращает имя базового класса исключения.
-	 * 
-	 * @return - имя класса.
-	 */
-	public final String getOriginalExceptionClass() {
-		if (getCause() != null) {
-			return getCause().getClass().getName();
-		}
-		return null;
-	}
-
-	public final String getOriginalTrace() {
-		return getStackText(getCause());
-	}
-
 	private static String getDetailedTextOfException(final String mes, final String className,
 			final String trace, final ExceptionType aType) {
 		String str = null;
-		str = ORIGINAL_MESSAGE + mes + LINE_SEPARATOR + LINE_SEPARATOR;
+		if (mes != null) {
+			str = ORIGINAL_MESSAGE + mes + LINE_SEPARATOR + LINE_SEPARATOR;
+		}
 		if (aType != ExceptionType.USER) {
 			str = str + EXCEPTION_CLASS + className + LINE_SEPARATOR + LINE_SEPARATOR;
 			str = str + EXCEPTION_TRACE + trace;
@@ -134,13 +129,12 @@ public class GeneralServerException extends Exception {
 	public static String checkExeptionTypeAndCreateDetailedTextOfException(final Throwable caught) {
 		if (caught instanceof GeneralServerException) {
 			GeneralServerException gse = (GeneralServerException) caught;
-			return getDetailedTextOfException(gse.originalMessage,
-					gse.getOriginalExceptionClass(), gse.getOriginalTrace(), gse.type);
+			return getDetailedTextOfException(gse.originalMessage, gse.originalExceptionClass,
+					gse.originalTrace, gse.type);
 		} else {
 			return getDetailedTextOfException(caught.getMessage(), caught.getClass().getName(),
 					getStackText(caught), ExceptionType.JAVA);
 		}
-
 	}
 
 	/**
@@ -167,5 +161,21 @@ public class GeneralServerException extends Exception {
 
 	public void setType(final ExceptionType aType) {
 		type = aType;
+	}
+
+	public String getOriginalExceptionClass() {
+		return originalExceptionClass;
+	}
+
+	public void setOriginalExceptionClass(final String aOriginalExceptionClass) {
+		originalExceptionClass = aOriginalExceptionClass;
+	}
+
+	public String getOriginalTrace() {
+		return originalTrace;
+	}
+
+	public void setOriginalTrace(final String aOriginalTrace) {
+		originalTrace = aOriginalTrace;
 	}
 }

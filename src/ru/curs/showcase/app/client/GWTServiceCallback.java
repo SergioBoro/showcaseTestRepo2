@@ -1,5 +1,6 @@
 package ru.curs.showcase.app.client;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.client.utils.AccessToDomModel;
 
@@ -28,7 +29,7 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 	@Override
 	public void onFailure(final Throwable caught) {
 
-		if ("SessionNotAuthenticated".equals(caught.getMessage())) {
+		if (ExchangeConstants.SESSION_NOT_AUTH_SIGN.equals(caught.getMessage())) {
 			Window.Location.assign(AccessToDomModel.getAppContextPath() + "/logout");
 			// Window.Location.replace(Window.Location.getPath() + "logout");
 

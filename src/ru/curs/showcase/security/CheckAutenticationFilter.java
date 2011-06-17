@@ -9,6 +9,7 @@ import org.slf4j.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.server.AppInfoSingleton;
 import ru.curs.showcase.exception.SettingsFileOpenException;
 import ru.curs.showcase.util.TextUtils;
@@ -37,7 +38,7 @@ public class CheckAutenticationFilter implements Filter {
 			response.reset();
 			response.setContentType("text/html");
 			response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-			response.getWriter().append("SessionNotAuthenticated");
+			response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
 			response.getWriter().close();
 
 		} else {
@@ -66,7 +67,7 @@ public class CheckAutenticationFilter implements Filter {
 					response.reset();
 					response.setContentType("text/html");
 					response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-					response.getWriter().append("SessionNotAuthenticated");
+					response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
 					response.getWriter().close();
 				} else {
 					filterChain.doFilter(request, response);

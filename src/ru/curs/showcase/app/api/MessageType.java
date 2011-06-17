@@ -10,13 +10,30 @@ public enum MessageType implements SerializableElement {
 	/**
 	 * Информационное сообщение.
 	 */
-	INFO,
+	INFO("Информация"),
 	/**
 	 * Предупреждение.
 	 */
-	WARNING,
+	WARNING("Предупреждение"),
 	/**
 	 * Ошибка.
 	 */
-	ERROR
+	ERROR("Ошибка");
+
+	/**
+	 * Наименование типа.
+	 */
+	private String name;
+
+	private MessageType(final String aName) {
+		name = aName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(final String aName) {
+		name = aName;
+	}
 }

@@ -21,4 +21,6 @@ public final class ExchangeConstants implements SerializableElement {
 	 * Префикс для параметров сервлета, содержащих данные файла.
 	 */
 	public static final String FILE_DATA_PARAM_PREFIX = "@@filedata@@";
+
+	public static final String SESSION_NOT_AUTH_SIGN = "SessionNotAuthenticated";
 }

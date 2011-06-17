@@ -24,6 +24,8 @@ public final class GeneralServerExceptionFactory {
 	public static GeneralServerException build(final Throwable original) {
 		GeneralServerException res =
 			new GeneralServerException(original, getUserMessage(original));
+		res.setOriginalExceptionClass(original.getClass().getName());
+		res.setOriginalTrace(GeneralServerException.getStackText(original));
 		res.setOriginalMessage(getOriginalMessage(original));
 		res.setType(getType(original));
 		return res;
