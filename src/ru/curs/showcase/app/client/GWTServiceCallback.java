@@ -30,7 +30,7 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 	public void onFailure(final Throwable caught) {
 
 		if (ExchangeConstants.SESSION_NOT_AUTH_SIGN.equals(caught.getMessage())) {
-			Window.Location.assign(AccessToDomModel.getAppContextPath() + "/logout");
+			Window.Location.assign(AccessToDomModel.getAppContextPath() + "/sestimeout.jsp");
 			// Window.Location.replace(Window.Location.getPath() + "logout");
 
 		} else {

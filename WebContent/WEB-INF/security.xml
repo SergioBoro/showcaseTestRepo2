@@ -18,6 +18,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 <!--	<intercept-url pattern="/login.jsp*" access="fullyAuthenticated" />-->
 	 <intercept-url pattern="/login.jsp*" filters="none"/>  
 	 <intercept-url pattern="/debug.jsp*" filters="none"/> 
+	 <intercept-url pattern="/sestimeout.jsp*" filters="none"/>  
 	 <intercept-url pattern="/js/dojo/dojo.js" filters="none"/>
 	 <intercept-url pattern="/js/course/geo/ge/resources/icons/*" filters="none"/>
 	 <intercept-url pattern="/solutions/default/js/pizhma/*" filters="none"/>
