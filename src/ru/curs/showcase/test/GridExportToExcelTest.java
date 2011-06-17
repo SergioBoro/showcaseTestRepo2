@@ -29,7 +29,7 @@ public class GridExportToExcelTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testExportCurrentPage() throws GeneralServerException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
+		DataPanelElementInfo element = getTestGridInfo();
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		Grid grid = serviceLayer.getGrid(context, element, null);
@@ -74,7 +74,7 @@ public class GridExportToExcelTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testServiceForExportAll() throws GeneralServerException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
+		DataPanelElementInfo element = getTestGridInfo();
 		GridRequestedSettings settings = new GridRequestedSettings();
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -94,7 +94,7 @@ public class GridExportToExcelTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testServiceForExportCurrent() throws GeneralServerException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
+		DataPanelElementInfo element = getTestGridInfo();
 		GridRequestedSettings settings = new GridRequestedSettings();
 		settings.setPageNumber(1);
 		settings.setPageSize(2);

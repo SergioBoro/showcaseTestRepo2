@@ -21,7 +21,7 @@ public class GridGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testGetData() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
+		DataPanelElementInfo element = getTestGridInfo();
 
 		GridGateway gateway = new GridDBGateway();
 		gateway.getFactorySource(context, element);

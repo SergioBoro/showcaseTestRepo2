@@ -20,7 +20,7 @@ public class ChartGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testGetData() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test.xml", "2", "3");
+		DataPanelElementInfo element = getTestChartInfo();
 
 		ChartGateway gateway = new ChartDBGateway();
 		gateway.getFactorySource(context, element);

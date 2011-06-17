@@ -2,8 +2,6 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.chart.*;
@@ -74,12 +72,9 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 		final String seriesName = "Алтайский край";
 		final String secondGridId = "4";
 
-		// получаем элемент с main context
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 1);
-		// добавляем add context
-		context.setAdditional(seriesName);
+		CompositeContext context = getTestContext3();
 		// график со второй вкладки в панели a.xml
-		DataPanelElementInfo element = getDPElement("test.xml", "2", "3");
+		DataPanelElementInfo element = getTestChartInfo();
 
 		ChartGateway gateway = new ChartDBGateway();
 		ElementRawData raw = gateway.getFactorySource(context, element);
@@ -127,12 +122,9 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testGetHints() throws Exception {
-		// получаем элемент с main context
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 1);
-		// добавляем add context
-		context.setAdditional("Алтайский край");
+		CompositeContext context = getTestContext3();
 		// график со второй вкладки в панели a.xml
-		DataPanelElementInfo element = getDPElement("test.xml", "2", "3");
+		DataPanelElementInfo element = getTestChartInfo();
 
 		ChartGateway gateway = new ChartDBGateway();
 		ElementRawData raw = gateway.getFactorySource(context, element);
@@ -149,14 +141,12 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка работы адаптера в JSON.
 	 * 
-	 * @throws IOException
 	 * @throws GeneralServerException
 	 */
 	@Test
-	public void testAdaptChartForJS() throws IOException, GeneralServerException {
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 1);
-		context.setAdditional("Алтайский край");
-		DataPanelElementInfo element = getDPElement("test.xml", "2", "3");
+	public void testAdaptChartForJS() throws GeneralServerException {
+		CompositeContext context = getTestContext3();
+		DataPanelElementInfo element = getTestChartInfo();
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		Chart chart = serviceLayer.getChart(context, element);

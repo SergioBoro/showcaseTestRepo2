@@ -35,7 +35,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		final String precision = "2";
 
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
+		DataPanelElementInfo element = getTestGridInfo();
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		Grid grid = serviceLayer.getGrid(context, element, null);
@@ -102,7 +102,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		final int pageNum = 10;
 		final String firstColName = "3кв. 2005г.";
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
+		DataPanelElementInfo element = getTestGridInfo();
 
 		GridRequestedSettings settings = new GridRequestedSettings();
 		settings.setPageNumber(pageNum);

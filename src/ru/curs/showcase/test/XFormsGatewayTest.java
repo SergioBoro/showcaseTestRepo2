@@ -86,7 +86,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testDBgateway() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "08");
+		DataPanelElementInfo element = getTestXForms1Info();
 
 		XFormsGateway gateway = new XFormsDBGateway();
 		gateway.getInitialData(context, element);
@@ -99,7 +99,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testDBGatewayUpdate() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "08");
+		DataPanelElementInfo element = getTestXForms1Info();
 
 		XFormsGateway gateway = new XFormsDBGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
@@ -115,7 +115,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testDBGatewayUpdateWithError() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
+		DataPanelElementInfo element = getTestXForms2Info();
 
 		XFormsGateway gateway = new XFormsDBGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
@@ -198,14 +198,14 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testXFormsFileDownloadBySL() throws GeneralServerException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
+		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc4";
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		DataFile<ByteArrayOutputStream> file =
 			serviceLayer.getDownloadFile(context, element, linkId, null);
 		final int navigatorXMLLen = 231478;
 		assertNotNull(context.getSession());
-		assertEquals(navigatorXMLLen, file.getData().size());
+		assertTrue(file.getData().size() > navigatorXMLLen);
 	}
 
 	/**
@@ -230,7 +230,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testXFormsFileUploadBySL() throws GeneralServerException, IOException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
+		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc5";
 		final String fileName = "log4j.xml";
 		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
@@ -255,7 +255,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testXFormsXMLUploadGood() throws IOException, GeneralServerException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
+		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc7";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
 		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
@@ -272,7 +272,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test(expected = XSDValidateException.class)
 	public void testXFormsXMLUploadBad() throws IOException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "09");
+		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc8";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
 		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
@@ -293,7 +293,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testXFormsXMLDownloadGood() throws GeneralServerException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
+		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc6";
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		serviceLayer.getDownloadFile(context, element, linkId, null);
@@ -307,7 +307,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test(expected = XSDValidateException.class)
 	public void testXFormsXMLDownloadBad() throws IOException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "09");
+		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc10";
 
 		XFormsGateway gateway = new XFormsDBGateway();

@@ -50,7 +50,7 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testServiceLayer() throws GeneralServerException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "08");
+		DataPanelElementInfo element = getTestXForms1Info();
 
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		XForms xforms = sl.getXForms(context, element, null);
@@ -98,7 +98,7 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testDPElementInfoToXML() {
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "08");
+		DataPanelElementInfo element = getTestXForms1Info();
 		Document doc = XMLUtils.objectToXML(element);
 		assertEquals("element", doc.getDocumentElement().getNodeName());
 		DataPanelElementInfo el2 =
@@ -109,7 +109,7 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 
 	private XFormsDBFactory createFactory() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "08");
+		DataPanelElementInfo element = getTestXForms1Info();
 
 		XFormsGateway gateway = new XFormsDBGateway();
 		HTMLBasedElementRawData raw = gateway.getInitialData(context, element);

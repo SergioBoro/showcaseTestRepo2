@@ -55,9 +55,8 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		AppInfoSingleton.getAppInfo().setAuthServerCrossAppPasswordForSession(FAKE_SESSION_ID,
 				TEMP_PASS);
 
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 1);
-		context.setAdditional("Алтайский край");
-		DataPanelElementInfo element = getDPElement("test.xml", "2", "3");
+		CompositeContext context = getTestContext3();
+		DataPanelElementInfo element = getTestChartInfo();
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
 		serviceLayer.getChart(context, element);
@@ -113,9 +112,8 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		Map<String, String[]> params = new TreeMap<String, String[]>();
 		AppInfoSingleton.getAppInfo().setParams(FAKE_SESSION_ID, params);
 
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 1);
-		context.setAdditional("Алтайский край");
-		DataPanelElementInfo element = getDPElement("test.xml", "2", "3");
+		CompositeContext context = getTestContext3();
+		DataPanelElementInfo element = getTestChartInfo();
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
 		serviceLayer.getChart(context, element);
