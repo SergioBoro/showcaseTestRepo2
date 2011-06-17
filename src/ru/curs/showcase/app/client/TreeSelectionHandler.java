@@ -32,6 +32,8 @@ public class TreeSelectionHandler implements SelectionHandler<TreeItem> {
 
 		if (!canBeSelectedAfterPreviousSelection) {
 			Accordeon.selectLastSelectedItem(arg0.getSelectedItem());
+			((ScrollPanel) arg0.getSelectedItem().getTree().getParent())
+					.setHorizontalScrollPosition(0);
 			return;
 		} else {
 			canBeSelectedAfterPreviousSelection = false;
