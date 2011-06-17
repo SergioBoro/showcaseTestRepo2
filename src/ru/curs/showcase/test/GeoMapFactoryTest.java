@@ -2,8 +2,6 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
@@ -63,13 +61,11 @@ public class GeoMapFactoryTest extends AbstractTestBasedOnFiles {
 	 * Тест на проверку статических свойств карты, созданной на основе данных из
 	 * БД.
 	 * 
-	 * @throws IOException
-	 * 
 	 * @throws GeneralServerException
 	 */
 	@Test
-	public void testFromDBStaticData() throws GeneralServerException, IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testFromDBStaticData() throws GeneralServerException {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "05");
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -106,7 +102,7 @@ public class GeoMapFactoryTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testFromDBDynamicData() throws Exception {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "05");
 
 		GeoMapGateway gateway = new GeoMapDBGateway();

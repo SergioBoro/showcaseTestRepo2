@@ -2,8 +2,6 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -29,7 +27,7 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testXFormsFactory() throws IOException {
+	public void testXFormsFactory() {
 		createFactory();
 	}
 
@@ -50,8 +48,8 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testServiceLayer() throws IOException, GeneralServerException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testServiceLayer() throws GeneralServerException {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "08");
 
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -109,8 +107,8 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 		assertTrue(element.equals(el2));
 	}
 
-	private XFormsDBFactory createFactory() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	private XFormsDBFactory createFactory() {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "08");
 
 		XFormsGateway gateway = new XFormsDBGateway();

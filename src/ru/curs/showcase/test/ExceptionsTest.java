@@ -2,7 +2,7 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 
 import org.junit.Test;
@@ -90,12 +90,10 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 
 	/**
 	 * Тест на ошибку из-за несуществующей хранимой процедуры.
-	 * 
-	 * @throws IOException
 	 */
 	@Test
-	public final void testWrongChartSP() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
+	public final void testWrongChartSP() {
+		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement("test2.xml", "3", "31");
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -117,8 +115,8 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public final void testWrongChartSPWithNoResult() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
+	public final void testWrongChartSPWithNoResult() {
+		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement("test2.xml", "3", "32");
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -158,8 +156,8 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public final void testWrongElement() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
+	public final void testWrongElement() {
+		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = new DataPanelElementInfo();
 		element.setId("11");
 		element.setType(DataPanelElementType.WEBTEXT);
@@ -183,7 +181,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test(expected = InconsistentSettingsFromDBException.class)
 	public void testInconsistentSettings() throws Exception {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "3", "5");
 
 		GridGateway gateway = new GridDBGateway();
@@ -197,8 +195,8 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test(expected = XSDValidateException.class)
-	public void testXSDValidateException() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testXSDValidateException() {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "3", "6");
 
 		WebTextGateway gateway = new WebTextDBGateway();
@@ -268,6 +266,33 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		GeneralServerException gse = GeneralServerExceptionFactory.build(exc2);
 		assertFalse(gse.needDetailedInfo());
 		assertEquals("Ошибка", exc2.getUserMessage().getText());
+		GeneralServerException.checkExeptionTypeAndCreateDetailedTextOfException(gse);
 	}
 
+	/**
+	 * Проверка создания DBQueryException через SL.
+	 */
+	@Test
+	public void testDBQueryExceptionBySL() {
+		CompositeContext context = getTestContext1();
+		DataPanelGateway gateway = new DataPanelXMLGateway();
+		DataFile<InputStream> file = gateway.getXML("test.xml");
+		DataPanelFactory factory = new DataPanelFactory();
+		DataPanel dp = factory.fromStream(file);
+		DBQueryException dbqe =
+			new DBQueryException(dp.getTabById("2").getElementInfoById("2"), context, "error");
+		GeneralServerException gse = GeneralServerExceptionFactory.build(dbqe);
+
+		final String errorMes =
+			"Произошла ошибка при выполнении хранимой процедуры grid_bal. Текст ошибки: : error.";
+		assertEquals(errorMes, gse.getMessage());
+		assertNull(gse.getOriginalMessage());
+		assertEquals(DBQueryException.class.getName(), gse.getOriginalExceptionClass());
+		assertNotNull(gse.getStackTrace());
+		assertEquals(MessageType.ERROR, gse.getMessageType());
+		assertNotNull(gse.getContext());
+		assertEquals("Ввоз, включая импорт - Всего", gse.getContext().getCompositeContext()
+				.getMain());
+		GeneralServerException.checkExeptionTypeAndCreateDetailedTextOfException(gse);
+	}
 }

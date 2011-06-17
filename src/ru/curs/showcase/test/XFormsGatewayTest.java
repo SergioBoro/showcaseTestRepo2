@@ -28,12 +28,10 @@ import ru.curs.showcase.util.*;
 public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест для чтения из файла.
-	 * 
-	 * @throws IOException
 	 */
 	@Test
-	public void testFileGateWay() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testFileGateWay() {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "07");
 
 		XFormsGateway gateway = new XFormsFileGateway();
@@ -45,8 +43,8 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testFileGatewayUpdate() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testFileGatewayUpdate() {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "07");
 
 		XFormsGateway gateway = new XFormsFileGateway();
@@ -67,7 +65,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testFileGateWayWithTransform() throws Exception {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "07");
 
 		XFormsGateway gateway = new XFormsFileGateway();
@@ -86,8 +84,8 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testDBgateway() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testDBgateway() {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "08");
 
 		XFormsGateway gateway = new XFormsDBGateway();
@@ -99,8 +97,8 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testDBGatewayUpdate() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testDBGatewayUpdate() {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "08");
 
 		XFormsGateway gateway = new XFormsDBGateway();
@@ -115,8 +113,8 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testDBGatewayUpdateWithError() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testDBGatewayUpdateWithError() {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
 
 		XFormsGateway gateway = new XFormsDBGateway();
@@ -196,11 +194,10 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 * Проверка скачивания файла для XForms через ServiceLayer.
 	 * 
 	 * @throws GeneralServerException
-	 * @throws IOException
 	 */
 	@Test
-	public void testXFormsFileDownloadBySL() throws GeneralServerException, IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testXFormsFileDownloadBySL() throws GeneralServerException {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc4";
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -232,7 +229,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testXFormsFileUploadBySL() throws GeneralServerException, IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc5";
 		final String fileName = "log4j.xml";
@@ -257,7 +254,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testXFormsXMLUploadGood() throws IOException, GeneralServerException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc7";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
@@ -274,7 +271,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test(expected = XSDValidateException.class)
 	public void testXFormsXMLUploadBad() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc8";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
@@ -292,11 +289,10 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 * Проверка скачивания XML файла для XForms через ServiceLayer.
 	 * 
 	 * @throws GeneralServerException
-	 * @throws IOException
 	 */
 	@Test
-	public void testXFormsXMLDownloadGood() throws GeneralServerException, IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testXFormsXMLDownloadGood() throws GeneralServerException {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc6";
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -310,7 +306,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test(expected = XSDValidateException.class)
 	public void testXFormsXMLDownloadBad() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "09");
 		String linkId = "proc10";
 
@@ -330,7 +326,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testDBGatewayUpdateWithTransform() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "10");
 
 		XFormsGateway gateway = new XFormsDBGateway();

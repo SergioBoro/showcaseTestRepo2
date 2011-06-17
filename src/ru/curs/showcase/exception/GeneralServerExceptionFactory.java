@@ -1,6 +1,6 @@
 package ru.curs.showcase.exception;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.MessageType;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.services.*;
 
@@ -30,7 +30,15 @@ public final class GeneralServerExceptionFactory {
 		res.setOriginalMessage(getOriginalMessage(original));
 		res.setType(getType(original));
 		res.setContext(getContext(original));
+		res.setMessageType(getMessageType(original));
 		return res;
+	}
+
+	private static MessageType getMessageType(final Throwable exc) {
+		if (exc instanceof ValidateInDBException) {
+			return ((ValidateInDBException) exc).getUserMessage().getType();
+		}
+		return MessageType.ERROR;
 	}
 
 	private static DataPanelElementContext getContext(final Throwable e) {
@@ -47,18 +55,14 @@ public final class GeneralServerExceptionFactory {
 		return ExceptionType.JAVA;
 	}
 
-	private static UserMessage getUserMessage(final Throwable exc) {
+	private static String getUserMessage(final Throwable exc) {
 		if (exc instanceof ValidateInDBException) {
-			return ((ValidateInDBException) exc).getUserMessage();
+			return ((ValidateInDBException) exc).getUserMessage().getText();
 		}
-		return new UserMessage(getMessageText(exc), MessageType.ERROR);
-	}
-
-	private static String getMessageText(final Throwable original) {
-		if (original.getLocalizedMessage() != null) {
-			return original.getLocalizedMessage();
+		if (exc.getLocalizedMessage() != null) {
+			return exc.getLocalizedMessage();
 		} else {
-			return original.getClass().getName();
+			return exc.getClass().getName();
 		}
 	}
 

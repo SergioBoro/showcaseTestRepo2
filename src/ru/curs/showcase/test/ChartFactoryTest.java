@@ -40,7 +40,7 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 		final int defaultHeight = 200;
 		final int labelyCount = 2;
 
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
+		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement("test2.xml", "2", "22");
 
 		ChartGateway gateway = new ChartDBGateway();
@@ -177,7 +177,7 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 	public void testFlipedData() throws Exception {
 		final int seriesCount = 24;
 		final int labelsXCount = 9;
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
+		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement("test2.xml", "2", "210");
 
 		ChartGateway gateway = new ChartDBGateway();

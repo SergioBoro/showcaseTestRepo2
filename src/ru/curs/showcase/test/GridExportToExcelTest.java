@@ -2,8 +2,6 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-
 import org.junit.Test;
 import org.w3c.dom.*;
 
@@ -26,12 +24,11 @@ public class GridExportToExcelTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест экспорта данных из текущей страницы.
 	 * 
-	 * @throws IOException
 	 * @throws GeneralServerException
 	 */
 	@Test
-	public void testExportCurrentPage() throws IOException, GeneralServerException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testExportCurrentPage() throws GeneralServerException {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -73,11 +70,10 @@ public class GridExportToExcelTest extends AbstractTestBasedOnFiles {
 	 * Тест экспорта всех страниц используя ServiceLayer.
 	 * 
 	 * @throws GeneralServerException
-	 * @throws IOException
 	 */
 	@Test
-	public void testServiceForExportAll() throws GeneralServerException, IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testServiceForExportAll() throws GeneralServerException {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
 		GridRequestedSettings settings = new GridRequestedSettings();
 
@@ -94,11 +90,10 @@ public class GridExportToExcelTest extends AbstractTestBasedOnFiles {
 	 * Тест экспорта текущей страницы используя ServiceLayer.
 	 * 
 	 * @throws GeneralServerException
-	 * @throws IOException
 	 */
 	@Test
-	public void testServiceForExportCurrent() throws GeneralServerException, IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testServiceForExportCurrent() throws GeneralServerException {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
 		GridRequestedSettings settings = new GridRequestedSettings();
 		settings.setPageNumber(1);

@@ -1,12 +1,10 @@
 package ru.curs.showcase.test;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.exception.*;
+import ru.curs.showcase.exception.IncorrectElementException;
 import ru.curs.showcase.model.grid.*;
 
 /**
@@ -21,8 +19,8 @@ public class GridGatewayTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testGetData() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testGetData() {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
 
 		GridGateway gateway = new GridDBGateway();

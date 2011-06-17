@@ -98,6 +98,28 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	}
 
 	/**
+	 * Возвращает контекст для тестов.
+	 * 
+	 * @return - контекст.
+	 */
+	protected CompositeContext getTestContext1() {
+		CompositeContext context = new CompositeContext();
+		context.setMain("Ввоз, включая импорт - Всего");
+		return context;
+	}
+
+	/**
+	 * Возвращает контекст для тестов.
+	 * 
+	 * @return - контекст.
+	 */
+	protected CompositeContext getTestContext2() {
+		CompositeContext context = new CompositeContext();
+		context.setMain("Алтайский край");
+		return context;
+	}
+
+	/**
 	 * Возвращает действие для тестов из файла навигатора.
 	 * 
 	 * @param groupID

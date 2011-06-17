@@ -2,8 +2,6 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.*;
@@ -29,14 +27,14 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	 * Основной тест для фабрики гридов.
 	 */
 	@Test
-	public void testGetData() throws GeneralServerException, IOException {
+	public void testGetData() throws GeneralServerException {
 		final int colCount = 26;
 		final int pagesCount = 6;
 		final int pageSize = 15;
 		final Integer autoSelectRecord = 15;
 		final String precision = "2";
 
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -98,12 +96,12 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	 * Тест на обновление грида с измененными параметрами постраничной выборки.
 	 */
 	@Test
-	public void testWithRequestedSettings() throws GeneralServerException, IOException {
+	public void testWithRequestedSettings() throws GeneralServerException {
 		final int maxColIndex = 5;
 		final int pageSize = maxColIndex;
 		final int pageNum = 10;
 		final String firstColName = "3кв. 2005г.";
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "2");
 
 		GridRequestedSettings settings = new GridRequestedSettings();
@@ -140,7 +138,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testProfileSelection() throws Exception {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "4");
 
 		GridGateway gateway = new GridDBGateway();

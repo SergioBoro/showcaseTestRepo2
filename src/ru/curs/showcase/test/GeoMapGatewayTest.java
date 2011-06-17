@@ -1,7 +1,5 @@
 package ru.curs.showcase.test;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
@@ -18,12 +16,10 @@ import ru.curs.showcase.model.geomap.*;
 public class GeoMapGatewayTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Основная функция тестирования шлюза.
-	 * 
-	 * @throws IOException
 	 */
 	@Test
-	public void testGetData() throws IOException {
-		CompositeContext context = getContext("tree_multilevel.xml", 0, 0);
+	public void testGetData() {
+		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "05");
 
 		GeoMapGateway gateway = new GeoMapDBGateway();

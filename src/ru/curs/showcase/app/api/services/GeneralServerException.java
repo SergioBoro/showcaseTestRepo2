@@ -34,9 +34,9 @@ public class GeneralServerException extends Exception {
 	private String originalMessage;
 
 	/**
-	 * Информация для вывода пользователю (сообщение, его тип).
+	 * Тип сообщения, выводимого пользователю.
 	 */
-	private UserMessage userMessage;
+	private MessageType messageType;
 
 	/**
 	 * Тип исключения.
@@ -74,9 +74,8 @@ public class GeneralServerException extends Exception {
 		super();
 	}
 
-	public GeneralServerException(final Throwable original, final UserMessage aUserMessage) {
-		super(aUserMessage.getText(), original);
-		userMessage = aUserMessage;
+	public GeneralServerException(final Throwable original, final String aUserMessage) {
+		super(aUserMessage, original);
 	}
 
 	/**
@@ -110,13 +109,17 @@ public class GeneralServerException extends Exception {
 			final String trace, final ExceptionType aType, final DataPanelElementContext context) {
 		String str = null;
 		if (mes != null) {
-			str = ORIGINAL_MESSAGE + mes + ExchangeConstants.LINE_SEPARATOR + ExchangeConstants.LINE_SEPARATOR;
+			str =
+				ORIGINAL_MESSAGE + mes + ExchangeConstants.LINE_SEPARATOR
+						+ ExchangeConstants.LINE_SEPARATOR;
 		}
 		if (context != null) {
 			str = CONTEXT_MES + ExchangeConstants.LINE_SEPARATOR + context.toString();
 		}
 		if (aType != ExceptionType.USER) {
-			str = str + EXCEPTION_CLASS + className + ExchangeConstants.LINE_SEPARATOR + ExchangeConstants.LINE_SEPARATOR;
+			str =
+				str + EXCEPTION_CLASS + className + ExchangeConstants.LINE_SEPARATOR
+						+ ExchangeConstants.LINE_SEPARATOR;
 			str = str + EXCEPTION_TRACE + ExchangeConstants.LINE_SEPARATOR + trace;
 		}
 		return str;
@@ -151,14 +154,6 @@ public class GeneralServerException extends Exception {
 		return (type != ExceptionType.USER) || (getOriginalMessage() != null);
 	}
 
-	public UserMessage getUserMessage() {
-		return userMessage;
-	}
-
-	public void setUserMessage(final UserMessage aUserMessage) {
-		userMessage = aUserMessage;
-	}
-
 	public ExceptionType getType() {
 		return type;
 	}
@@ -189,5 +184,13 @@ public class GeneralServerException extends Exception {
 
 	public void setContext(final DataPanelElementContext aContext) {
 		context = aContext;
+	}
+
+	public MessageType getMessageType() {
+		return messageType;
+	}
+
+	public void setMessageType(final MessageType aMessageType) {
+		messageType = aMessageType;
 	}
 }

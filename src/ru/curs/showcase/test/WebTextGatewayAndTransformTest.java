@@ -2,8 +2,6 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
@@ -28,8 +26,8 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testGetData() throws GeneralServerException, IOException {
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
+	public void testGetData() throws GeneralServerException {
+		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement("test2.xml", "1", "1");
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -46,8 +44,8 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testEventsAndDefAction() throws GeneralServerException, IOException {
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
+	public void testEventsAndDefAction() throws GeneralServerException {
+		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement("test2.xml", "1", "3");
 		CompositeContext clonedContext = context.gwtClone();
 
@@ -100,9 +98,9 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testGetStaticDataBySP() throws IOException {
+	public void testGetStaticDataBySP() {
 		String prefix = "<root>";
-		CompositeContext context = getContext("tree_multilevel.v2.xml", 1, 0);
+		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement("test2.xml", "1", "2");
 
 		WebTextGateway wtgateway = new WebTextDBGateway();
