@@ -11,6 +11,7 @@ import ru.curs.showcase.app.client.api.Constants;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.*;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -21,8 +22,31 @@ import com.google.gwt.user.client.ui.*;
  */
 public class TreeSelectionHandler implements SelectionHandler<TreeItem> {
 
+	/**
+	 * Переменная, защищающая от двойного клика на элементе дерева.
+	 */
+	private Boolean canBeSelectedAfterPreviousSelection = true;
+
 	@Override
 	public void onSelection(final SelectionEvent<TreeItem> arg0) {
+
+		if (!canBeSelectedAfterPreviousSelection) {
+			Accordeon.selectLastSelectedItem(arg0.getSelectedItem());
+			return;
+		} else {
+			canBeSelectedAfterPreviousSelection = false;
+		}
+
+		final Timer timer = new Timer() {
+
+			@Override
+			public void run() {
+				canBeSelectedAfterPreviousSelection = true;
+			}
+
+		};
+		final int n1000 = 1000;
+		timer.schedule(n1000);
 
 		if (((NavigatorElement) arg0.getSelectedItem().getUserObject()).getAction() != null) {
 
