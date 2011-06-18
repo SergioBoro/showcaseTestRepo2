@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.slf4j.*;
 
-import ru.curs.showcase.exception.XSLTTransformException;
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.util.AppProps;
 
 /**
@@ -43,6 +43,11 @@ public final class AppInfoSingleton {
 	private final Map<String, SessionInfo> sessionInfoMap = Collections
 			.synchronizedMap(new HashMap<String, SessionInfo>());
 
+	/**
+	 * Идентификатор userdata в текущем запросе.
+	 */
+	private final ThreadLocal<String> currentUserDataId = new ThreadLocal<String>();
+
 	public Map<String, SessionInfo> getSessionInfoMap() {
 		return sessionInfoMap;
 	}
@@ -65,30 +70,6 @@ public final class AppInfoSingleton {
 	}
 
 	/**
-	 * Устанавливает session context для сессии используя текущее имя
-	 * пользователя и параметры URL.
-	 * 
-	 * @param params
-	 *            - карта с параметрами, полученная из HTTPRequest.
-	 * @param sessionId
-	 *            - идентификатор сессии.
-	 * @throws XSLTTransformException
-	 */
-	public void setParams(final String sessionId, final Map<String, String[]> params) {
-		SortedMap<String, String[]> cur =
-			Collections.synchronizedSortedMap(new TreeMap<String, String[]>());
-		cur.putAll(params);
-		try {
-			SessionInfo si = getOrInitSessionInfoObject(sessionId);
-			si.setContext(SessionInfoGenerator.generateSessionContext(sessionId, cur));
-			si.setUserdataId(getSessionUserdataId(cur));
-		} catch (XSLTTransformException e) {
-			LOGGER.error(USER_SESSION_INFO_GENERATE_ERROR);
-		}
-		LOGGER.info("Число пользовательских сессий: " + getAppInfo().sessionInfoMap.size());
-	}
-
-	/**
 	 * Добавляет сессию в список без параметров URL. Функция используется в
 	 * тестовых целях.
 	 * 
@@ -96,26 +77,27 @@ public final class AppInfoSingleton {
 	 *            - идентификатор сессии.
 	 */
 	public void addSession(final String sessionId) {
-		setParams(sessionId, new TreeMap<String, String[]>());
+		getOrInitSessionInfoObject(sessionId);
+		LOGGER.info("Число пользовательских сессий: " + getAppInfo().sessionInfoMap.size());
 	}
 
 	/**
 	 * Получает идентификатор Userdata из параметров URL.
 	 * 
 	 * @return - строку с идентификатором.
-	 * @param params
+	 * @param aMap
 	 *            - параметры URL.
 	 */
-	private String getSessionUserdataId(final Map<String, String[]> params) {
+	private String getUserdataIdFromURLParams(final Map<String, ArrayList<String>> aMap) {
 		String userdataId = null;
 
-		if ((params != null) && (!params.isEmpty())) {
-			Iterator<String> iterator = params.keySet().iterator();
+		if ((aMap != null) && (!aMap.isEmpty())) {
+			Iterator<String> iterator = aMap.keySet().iterator();
 			while (iterator.hasNext()) {
 				String key = iterator.next();
 				if (AppProps.URL_PARAM_USERDATA.equals(key)) {
-					if (params.get(key) != null) {
-						userdataId = Arrays.toString(params.get(key)).trim();
+					if (aMap.get(key) != null) {
+						userdataId = Arrays.toString(aMap.get(key).toArray()).trim();
 						userdataId = userdataId.replace("[", "").replace("]", "");
 						break;
 					}
@@ -157,18 +139,6 @@ public final class AppInfoSingleton {
 			us = userdatas.get(userdataId);
 		}
 		return us;
-	}
-
-	/**
-	 * Получает идентификатор userdata для сессии.
-	 * 
-	 * @param sessionId
-	 *            - идентификатор сессии.
-	 * @return идентификатор userdata.
-	 */
-	public String getUserDataIdForSession(final String sessionId) {
-		SessionInfo si = getOrInitSessionInfoObject(sessionId);
-		return si.getUserdataId();
 	}
 
 	/**
@@ -255,35 +225,28 @@ public final class AppInfoSingleton {
 	}
 
 	/**
-	 * Возвращает текущий контекст сессии (для передачи в БД).
-	 * 
-	 * @param sessionId
-	 *            - идентификатор сессии.
-	 * @return - контекст.
-	 */
-	static String getSessionContext(final String sessionId) {
-		if (sessionId == null) {
-			return null;
-		}
-
-		String sessionContext =
-			AppInfoSingleton.getAppInfo().getOrInitSessionInfoObject(sessionId).getContext();
-
-		if (sessionContext == null) {
-			sessionContext = SessionInfoGenerator.generateSessionContext(sessionId, null);
-			AppInfoSingleton.getAppInfo().getOrInitSessionInfoObject(sessionId)
-					.setContext(sessionContext);
-		}
-
-		LOGGER.debug("Session context: " + sessionContext);
-		return sessionContext;
-	}
-
-	/**
 	 * Очищает карту сессий.
 	 */
 	public void clearSessions() {
 		sessionInfoMap.clear();
+	}
+
+	public String getCurrentUserDataId() {
+		return currentUserDataId.get();
+	}
+
+	/**
+	 * Устанавливает новое значение текущей userdata.
+	 * 
+	 * @param aMap
+	 *            - параметры URL.
+	 */
+	public void setCurrentUserDataId(final Map<String, ArrayList<String>> aMap) {
+		String userDataId = getUserdataIdFromURLParams(aMap);
+		if (userDataId == null) {
+			userDataId = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
+		}
+		currentUserDataId.set(userDataId);
 	}
 
 }

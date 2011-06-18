@@ -1,5 +1,8 @@
 package ru.curs.showcase.app.api.event;
 
+import java.util.*;
+
+import com.google.gwt.core.client.GWT;
 
 /**
  * Класс API, служащий для корректного сохранения текущего контекста на
@@ -41,7 +44,16 @@ public class ActionHolder {
 		Action clone = newAction.gwtClone();
 		clone.actualizeBy(navigatorAction);
 		leaveOldFilterForInsideTabAction(clone);
+		setupUserdata(clone);
 		currentAction = clone;
+	}
+
+	private void setupUserdata(final Action action) {
+		Map<String, List<String>> params = null;
+		if (GWT.isClient()) {
+			params = com.google.gwt.user.client.Window.Location.getParameterMap();
+		}
+		action.setSessionContext(params);
 	}
 
 	public Action getNavigatorAction() {
@@ -76,6 +88,7 @@ public class ActionHolder {
 		if (navigatorAction != null) {
 			clone.actualizeBy(navigatorAction);
 		}
+		setupUserdata(clone);
 		navigatorAction = clone;
 		currentAction = null;
 	}

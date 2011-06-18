@@ -10,7 +10,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <%
-	String userdataId = AppProps.getUserDataId();
+	String userdataId = request.getParameter("userdata");
+	if (userdataId == null) {
+		userdataId = "default";
+	}
 %>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />

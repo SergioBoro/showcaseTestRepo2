@@ -1,6 +1,6 @@
 package ru.curs.showcase.test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.*;
 import java.util.*;
@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
@@ -42,20 +43,25 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testWriteAndRead() throws IOException, GeneralServerException, SAXException {
 
-		Map<String, String[]> params = new TreeMap<String, String[]>();
-		String[] value1 = { VALUE12 };
+		Map<String, List<String>> params = new TreeMap<String, List<String>>();
+		ArrayList<String> value1 = new ArrayList<String>();
+		value1.add(VALUE12);
 		params.put(KEY1, value1);
-		String[] value2 = { "value21", "value22" };
+		ArrayList<String> value2 = new ArrayList<String>();
+		value2.add("value21");
+		value2.add("value22");
 		params.put("key2", value2);
-		String[] value3 = { USERDATA_ID };
+		ArrayList<String> value3 = new ArrayList<String>();
+		value3.add(USERDATA_ID);
 		params.put(AppProps.URL_PARAM_USERDATA, value3);
-		AppInfoSingleton.getAppInfo().setParams(FAKE_SESSION_ID, params);
+
 		AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(FAKE_SESSION_ID,
 				AUTH_VIA_AUTH_SERVER);
 		AppInfoSingleton.getAppInfo().setAuthServerCrossAppPasswordForSession(FAKE_SESSION_ID,
 				TEMP_PASS);
 
 		CompositeContext context = getTestContext3();
+		context.addSessionParams(params);
 		DataPanelElementInfo element = getTestChartInfo();
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
@@ -108,11 +114,10 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testWriteAndReadIfNoURLParams() throws IOException, GeneralServerException,
 			SAXException {
-
-		Map<String, String[]> params = new TreeMap<String, String[]>();
-		AppInfoSingleton.getAppInfo().setParams(FAKE_SESSION_ID, params);
+		Map<String, List<String>> params = new TreeMap<String, List<String>>();
 
 		CompositeContext context = getTestContext3();
+		context.addSessionParams(params);
 		DataPanelElementInfo element = getTestChartInfo();
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
@@ -124,12 +129,32 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		assertEquals(1,
 				doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.USERDATA_TAG)
 						.getLength());
-		assertEquals(AppProps.SHOWCASE_USER_DATA_DEFAULT, doc.getDocumentElement()
+		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, doc.getDocumentElement()
 				.getElementsByTagName(SessionInfoGenerator.USERDATA_TAG).item(0).getTextContent());
 
 		assertEquals(0,
 				doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.URL_PARAMS_TAG)
 						.getLength());
 
+	}
+
+	/**
+	 * Проверка установки и чтения текущей userdata.
+	 */
+	@Test
+	public void testCurrentUserdata() {
+		AppInfoSingleton.getAppInfo().setCurrentUserDataId(
+				new TreeMap<String, ArrayList<String>>());
+		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, AppInfoSingleton.getAppInfo()
+				.getCurrentUserDataId());
+		assertNotNull(AppProps.getUserDataCatalog());
+
+		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
+		ArrayList<String> value3 = new ArrayList<String>();
+		value3.add(USERDATA_ID);
+		params.put(AppProps.URL_PARAM_USERDATA, value3);
+		AppInfoSingleton.getAppInfo().setCurrentUserDataId(params);
+		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurrentUserDataId());
+		assertNotNull(AppProps.getUserDataCatalog());
 	}
 }

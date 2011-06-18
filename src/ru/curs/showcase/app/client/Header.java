@@ -81,12 +81,33 @@ public class Header {
 
 		headerHorizontalPanel1.add(onMainPageLink);
 
-		// Label l = new Label("П И Ж М А");
-		// l.setStyleName("pizhma");
-		// headerHorizontalPanel1.add(l);
-
 		headerHorizontalPanel1.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
 
+		Anchor exitLink = generateExitLink();
+
+		Anchor aboutLink = generateAboutLink();
+
+		HorizontalPanel hp = new HorizontalPanel();
+		hp.add(aboutLink);
+		aboutLink.setStyleName("aboutLink");
+		htmlForUserNameIndication.setStyleName("currentUserWidget");
+		hp.add(htmlForUserNameIndication);
+		hp.add(exitLink);
+		headerHorizontalPanel1.add(hp);
+		final int n = 27;
+		headerVerticalPanel.setWidth(Window.getClientWidth() - n + "px");
+		Window.addResizeHandler(new ResizeHandler() {
+			@Override
+			public void onResize(final ResizeEvent event) {
+				int width = event.getWidth() - n;
+				headerVerticalPanel.setWidth(width + "px");
+			}
+		});
+		return headerVerticalPanel;
+
+	}
+
+	private Anchor generateExitLink() {
 		Anchor exitLink = new Anchor("<b>Выход</b>", true);
 		exitLink.addClickHandler(new ClickHandler() {
 
@@ -120,7 +141,10 @@ public class Header {
 			}
 
 		});
+		return exitLink;
+	}
 
+	private Anchor generateAboutLink() {
 		Anchor aboutLink = new Anchor("О программе...", false);
 
 		aboutLink.addClickHandler(new ClickHandler() {
@@ -199,25 +223,7 @@ public class Header {
 			}
 
 		});
-
-		HorizontalPanel hp = new HorizontalPanel();
-		hp.add(aboutLink);
-		aboutLink.setStyleName("aboutLink");
-		htmlForUserNameIndication.setStyleName("currentUserWidget");
-		hp.add(htmlForUserNameIndication);
-		hp.add(exitLink);
-		headerHorizontalPanel1.add(hp);
-		final int n = 27;
-		headerVerticalPanel.setWidth(Window.getClientWidth() - n + "px");
-		Window.addResizeHandler(new ResizeHandler() {
-			@Override
-			public void onResize(final ResizeEvent event) {
-				int width = event.getWidth() - n;
-				headerVerticalPanel.setWidth(width + "px");
-			}
-		});
-		return headerVerticalPanel;
-
+		return aboutLink;
 	}
 
 	private void fillServerCurrentStateInfoToTheAppropriatePanels() {
@@ -227,7 +233,6 @@ public class Header {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private Widget createHeaderImage() {
 		Image im = new Image();
 		im.setUrl("resources/header.jpg");

@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.event;
 
+import java.util.*;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import ru.curs.showcase.app.api.*;
@@ -48,9 +50,24 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	private String session;
 
 	/**
+	 * Параметры URL, полученные из клиентской части. На основе их создается
+	 * session context для БД.
+	 */
+	private Map<String, ArrayList<String>> sessionParamsMap;
+
+	/**
 	 * Фильтрующий контекст. Задается с помощью компонента XForms.
 	 */
 	private String filter;
+
+	public CompositeContext(final Map<String, List<String>> aParams) {
+		super();
+		addSessionParams(aParams);
+	}
+
+	public CompositeContext() {
+		super();
+	}
 
 	public String getSession() {
 		return session;
@@ -276,5 +293,36 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	 */
 	public void finishFilter() {
 		filter = generateFilterContextGeneralPart(filter);
+	}
+
+	public Map<String, ArrayList<String>> getSessionParamsMap() {
+		return sessionParamsMap;
+	}
+
+	/**
+	 * Функция для установки параметров URL в формате Map<String, List<String>>.
+	 * 
+	 * @param aData
+	 *            - параметры.
+	 */
+	public void addSessionParams(final Map<String, List<String>> aData) {
+		if (sessionParamsMap == null) {
+			sessionParamsMap = new TreeMap<String, ArrayList<String>>();
+		}
+		sessionParamsMap.clear();
+		if (aData == null) {
+			return;
+		}
+		Iterator<String> iterator = aData.keySet().iterator();
+		while (iterator.hasNext()) {
+			String key = iterator.next();
+			ArrayList<String> values = new ArrayList<String>();
+			values.addAll(aData.get(key));
+			sessionParamsMap.put(key, values);
+		}
+	}
+
+	public void setSessionParamsMap(final Map<String, ArrayList<String>> aSessionParamsMap) {
+		sessionParamsMap = aSessionParamsMap;
 	}
 }

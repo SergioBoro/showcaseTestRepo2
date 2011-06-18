@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.event;
 
-import java.util.Iterator;
+import java.util.*;
 
 import ru.curs.showcase.app.api.*;
 
@@ -364,5 +364,24 @@ public class Action implements SerializableElement, GWTClonable {
 
 	public void setModalWindowInfo(final ModalWindowInfo aModalWindowInfo) {
 		modalWindowInfo = aModalWindowInfo;
+	}
+
+	/**
+	 * Устанавливает контекст сессии для всех составных контекстов действия.
+	 * 
+	 * @param data
+	 *            - новое значение контекста.
+	 */
+	public void setSessionContext(final Map<String, List<String>> data) {
+		if (getDataPanelActionType() == DataPanelActionType.DO_NOTHING) {
+			return;
+		}
+		dataPanelLink.getContext().addSessionParams(data);
+		Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
+		while (iterator.hasNext()) {
+			DataPanelElementLink link = iterator.next();
+			link.getContext().addSessionParams(data);
+		}
+
 	}
 }

@@ -5,6 +5,7 @@ package ru.curs.showcase.app.client;
 
 import java.util.*;
 
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.Constants;
@@ -100,14 +101,14 @@ public class Accordeon {
 		accordeon.setSize("100%", "100%");
 		verpan.setSize("100%", "100%");
 
-		dataService.getNavigator(new GWTServiceCallback<Navigator>(
+		CompositeContext context = getCurrentContext();
+
+		dataService.getNavigator(context, new GWTServiceCallback<Navigator>(
 				Constants.ERROR_OF_NAVIGATOR_DATA_RETRIEVING_FROM_SERVER) {
 			@Override
 			public void onFailure(final Throwable caught) {
-
 				ProgressWindow.closeProgressWindow();
 				super.onFailure(caught);
-
 			}
 
 			@Override
@@ -130,6 +131,14 @@ public class Accordeon {
 		});
 
 		return verpan;
+	}
+
+	private CompositeContext getCurrentContext() {
+		Map<String, List<String>> params =
+			com.google.gwt.user.client.Window.Location.getParameterMap();
+		CompositeContext context;
+		context = new CompositeContext(params);
+		return context;
 	}
 
 	/**
@@ -408,7 +417,9 @@ public class Accordeon {
 		verpan.clear();
 		verpan.add(new HTML(Constants.PLEASE_WAIT_NAVIGATION_DATA_ARE_REFRESHING));
 		accordeon.clear();
-		dataService.getNavigator(new GWTServiceCallback<Navigator>(
+
+		CompositeContext context = getCurrentContext();
+		dataService.getNavigator(context, new GWTServiceCallback<Navigator>(
 				Constants.ERROR_OF_NAVIGATOR_DATA_RETRIEVING_FROM_SERVER) {
 			@Override
 			public void onFailure(final Throwable caught) {

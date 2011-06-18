@@ -6,6 +6,7 @@ import java.io.*;
 
 import org.junit.Test;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.model.datapanel.DataPanelXMLGateway;
 import ru.curs.showcase.security.SecurityParamsFactory;
 import ru.curs.showcase.util.*;
@@ -54,7 +55,7 @@ public class AppPropsTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public final void testGetUserDataId() {
-		assertEquals(AppProps.SHOWCASE_USER_DATA_DEFAULT, AppProps.getUserDataId());
+		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, AppProps.getUserDataId());
 	}
 
 	/**

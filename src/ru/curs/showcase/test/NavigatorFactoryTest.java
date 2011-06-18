@@ -42,7 +42,7 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testNavigatorFromDBBySL() throws GeneralServerException {
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Navigator nav = serviceLayer.getNavigator();
+		Navigator nav = serviceLayer.getNavigator(new CompositeContext());
 		assertFalse(nav.getHideOnLoad());
 		assertEquals("180px", nav.getWidth());
 	}

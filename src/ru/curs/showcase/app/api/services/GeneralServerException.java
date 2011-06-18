@@ -20,7 +20,9 @@ public class GeneralServerException extends Exception {
 
 	static final String CONTEXT_MES = "Контекст выполнения: ";
 
-	static final String CAUSE_EXC_CAPTION = "Источник ошибки";
+	static final String CAUSE_EXC_CAPTION = "Источник ошибки: ";
+
+	static final String CAUSE_EXC_TRACE_CAPTION = "Стек источника ошибки:";
 
 	/**
 	 * serialVersionUID.
@@ -93,13 +95,23 @@ public class GeneralServerException extends Exception {
 		// работает в gwt
 
 		for (StackTraceElement el : original.getStackTrace()) {
-			result.append(el.toString() + ls);
+			result.append(el.toString());
+			result.append(ls);
 		}
+		result.append(ls);
+
 		if (original.getCause() != null) {
-			result.append(CAUSE_EXC_CAPTION + ls);
-			result.append(original.getCause().getStackTrace()[0].toString() + ls);
+			result.append(CAUSE_EXC_CAPTION + original.getCause().getLocalizedMessage());
+			result.append(ls);
+			result.append(ls);
+			result.append(CAUSE_EXC_TRACE_CAPTION);
+			result.append(ls);
+			result.append(ls);
+			result.append(original.getCause().getStackTrace()[0].toString());
+			result.append(ls);
 			if (original.getCause().getStackTrace().length > 1) {
-				result.append(original.getCause().getStackTrace()[1].toString() + ls);
+				result.append(original.getCause().getStackTrace()[1].toString());
+				result.append(ls);
 			}
 		}
 		return result.toString();
@@ -108,19 +120,18 @@ public class GeneralServerException extends Exception {
 	private static String getDetailedTextOfException(final String mes, final String className,
 			final String trace, final ExceptionType aType, final DataPanelElementContext context) {
 		String str = null;
+		String ls = ExchangeConstants.LINE_SEPARATOR;
 		if (mes != null) {
-			str =
-				ORIGINAL_MESSAGE + mes + ExchangeConstants.LINE_SEPARATOR
-						+ ExchangeConstants.LINE_SEPARATOR;
+			str = ORIGINAL_MESSAGE + mes + ls + ls;
 		}
+
 		if (context != null) {
-			str = CONTEXT_MES + ExchangeConstants.LINE_SEPARATOR + context.toString();
+			str = CONTEXT_MES + ls + context.toString();
 		}
+		str = str + ls;
 		if (aType != ExceptionType.USER) {
-			str =
-				str + EXCEPTION_CLASS + className + ExchangeConstants.LINE_SEPARATOR
-						+ ExchangeConstants.LINE_SEPARATOR;
-			str = str + EXCEPTION_TRACE + ExchangeConstants.LINE_SEPARATOR + trace;
+			str = str + EXCEPTION_CLASS + className + ls + ls;
+			str = str + EXCEPTION_TRACE + ls + trace;
 		}
 		return str;
 	}

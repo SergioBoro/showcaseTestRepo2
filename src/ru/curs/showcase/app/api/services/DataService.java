@@ -24,8 +24,10 @@ public interface DataService extends RemoteService {
 	 * 
 	 * @return - объект навигатора.
 	 * @throws GeneralServerException
+	 * @param context
+	 *            - контекст вызова. Содержит параметры URL.
 	 */
-	Navigator getNavigator() throws GeneralServerException;
+	Navigator getNavigator(CompositeContext context) throws GeneralServerException;
 
 	/**
 	 * Возвращает информационную панель по переданному действию. Информационная

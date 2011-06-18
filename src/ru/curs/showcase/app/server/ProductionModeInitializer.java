@@ -7,6 +7,7 @@ import javax.servlet.*;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.exception.*;
 import ru.curs.showcase.util.*;
 
@@ -88,7 +89,7 @@ public final class ProductionModeInitializer {
 							.trim();
 
 				if ("".equals(id)) {
-					id = AppProps.SHOWCASE_USER_DATA_DEFAULT;
+					id = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
 				} else {
 					id = id.substring(0, id.length() - 1);
 				}
@@ -137,12 +138,12 @@ public final class ProductionModeInitializer {
 	}
 
 	private static void copyUserDatas(final ServletContextEvent arg0) {
-		if (checkForCopyUserData(AppProps.SHOWCASE_USER_DATA_DEFAULT)) {
-			copyUserData(arg0, AppProps.SHOWCASE_USER_DATA_DEFAULT);
+		if (checkForCopyUserData(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT)) {
+			copyUserData(arg0, ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
 		}
 
 		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
-			if (!(AppProps.SHOWCASE_USER_DATA_DEFAULT.equals(userdataId))) {
+			if (!(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT.equals(userdataId))) {
 				if (checkForCopyUserData(userdataId)) {
 					copyUserData(arg0, userdataId);
 				}

@@ -20,10 +20,12 @@ public interface DataServiceAsync {
 	/**
 	 * Асинхронная версия.
 	 * 
+	 * @param context
+	 *            - текущий контекст.
 	 * @param callback
 	 *            - callback.
 	 */
-	void getNavigator(AsyncCallback<Navigator> callback);
+	void getNavigator(CompositeContext context, AsyncCallback<Navigator> callback);
 
 	/**
 	 * Асинхронная версия.

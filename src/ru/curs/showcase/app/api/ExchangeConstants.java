@@ -13,6 +13,11 @@ public final class ExchangeConstants implements SerializableElement {
 	}
 
 	/**
+	 * Идентификатор userdata по-умолчанию.
+	 */
+	public static final String SHOWCASE_USER_DATA_DEFAULT = "default";
+
+	/**
 	 * Разделитель строк для сообщений, показываемых пользователю (используется
 	 * разделитель Windows).
 	 */

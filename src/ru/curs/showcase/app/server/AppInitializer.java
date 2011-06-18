@@ -5,6 +5,7 @@ import java.util.*;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.XMLUtils;
 
@@ -76,7 +77,7 @@ public final class AppInitializer {
 								.trim();
 
 					if ("".equals(id)) {
-						id = AppProps.SHOWCASE_USER_DATA_DEFAULT;
+						id = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
 					} else {
 						id = id.substring(0, id.length() - 1);
 					}

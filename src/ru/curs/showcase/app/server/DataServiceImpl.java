@@ -25,8 +25,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public Navigator getNavigator() throws GeneralServerException {
-		return getServiceLayer().getNavigator();
+	public Navigator getNavigator(final CompositeContext context) throws GeneralServerException {
+		return getServiceLayer().getNavigator(context);
 	}
 
 	private String getSessionId() {

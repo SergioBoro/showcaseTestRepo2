@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.SettingsFileType;
@@ -20,11 +21,6 @@ public final class AppProps {
 	 * использовать двойной обратный слэш в качестве разделителя.
 	 */
 	public static final String PATH_PROPERTIES = "path.properties";
-
-	/**
-	 * Идентификатор userdata по-умолчанию.
-	 */
-	public static final String SHOWCASE_USER_DATA_DEFAULT = "default";
 
 	/**
 	 * Название параметра userdata в URL.
@@ -223,7 +219,7 @@ public final class AppProps {
 		try {
 			String userdataId = aUserdataId;
 			if (propName.trim().contains(AUTHSERVERURL_PART)) {
-				userdataId = SHOWCASE_USER_DATA_DEFAULT;
+				userdataId = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
 			}
 
 			String result = getProperties(userdataId).getProperty(propName);
@@ -272,11 +268,11 @@ public final class AppProps {
 
 		String sessionId = ServletUtils.getSessionId();
 		if (sessionId != null) {
-			userdataId = AppInfoSingleton.getAppInfo().getUserDataIdForSession(sessionId);
+			userdataId = AppInfoSingleton.getAppInfo().getCurrentUserDataId();
 		}
 
 		if (userdataId == null) {
-			userdataId = SHOWCASE_USER_DATA_DEFAULT;
+			userdataId = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
 		}
 
 		return userdataId;
