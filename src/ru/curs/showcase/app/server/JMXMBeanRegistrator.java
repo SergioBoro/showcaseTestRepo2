@@ -21,19 +21,19 @@ public final class JMXMBeanRegistrator {
 	 * Функция регистрации JMX bean.
 	 */
 	public static void register() {
-		// Получить экземпляр MBeanServer
 		mbs = ManagementFactory.getPlatformMBeanServer();
 
-		// Создаем наш MBean
 		JMXMonitorBean monBean = new JMXMonitorBeanImpl();
 		ObjectName beanName = null;
-
 		try {
-			// И регистрируем его на платформе MBeanServer
 			beanName = new ObjectName("Showcase:name=Showcase.Monitor");
+			if (mbs.isRegistered(beanName)) {
+				mbs.unregisterMBean(beanName);
+			}
 			mbs.registerMBean(monBean, beanName);
 		} catch (Exception e) {
 			e.printStackTrace();
+			// TODO заменить
 		}
 	}
 
