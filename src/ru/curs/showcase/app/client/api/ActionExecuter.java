@@ -147,7 +147,7 @@ public final class ActionExecuter {
 					}
 					if (ac.getDataPanelLink().getElementLinks().get(k).doHiding()) {
 						bep.hidePanel();
-						break;
+						continue;
 					}
 					bep.showPanel();
 
