@@ -45,6 +45,21 @@ dojo.declare("course.geo.FeatureContainer", course.geo.Feature, {
 		return addedFeatures;
 	},
 	
+	removeFeatures: function(features) {
+		if (!dojo.isArray(features)) features = [features];
+		var removedFeatures = [];
+		dojo.forEach(features, function(feature){
+			feature = feature.declaredClass ? feature : this.map.getFeatureById(feature);
+			var baseShapes = feature.baseShapes;
+			dojo.forEach(baseShapes, function(baseShape){
+				baseShape.removeShape();
+			});
+			// remove feature from the feature container
+			// disconnect all events
+		}, this);
+		return removedFeatures;
+	},
+	
 	getBbox: function() {
 		var bbox = [Infinity,Infinity,-Infinity,-Infinity];
 		dojo.forEach(this.features, function(feature){

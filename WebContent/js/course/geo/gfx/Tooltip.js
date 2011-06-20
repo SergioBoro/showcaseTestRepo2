@@ -1,117 +1,174 @@
 dojo.provide("course.geo.gfx.Tooltip");
 
 dojo.require("course.geo.gfx.AnimatedControl");
+dojo.require("course.geo.gfx.feature_interaction");
 
 dojo.require("dijit.Tooltip");
-dojo.require("dojox.gfx.matrix");
 
 (function(){
-
-	var position = ["above", "below"];
-
-	var m = dojox.gfx.matrix, pi4 = Math.PI / 4, pi2 = Math.PI / 2;
 	
-	// singletons!
-	var tooltip,
-		onmouseoutTimeout,
-		mouseOverTooltip = false;
+var gg = course.geo.gfx,
+	p = gg._pointed;
 
-	var showTooltip = function(/*String*/ innerHTML, /*DomNode*/ aroundNode, /*String[]?*/ position, /*Boolean*/ rtl){
-		if(!tooltip) tooltip = createTooltip();
-		dojo.style(tooltip.domNode, "padding", "0");
-		return tooltip.show(innerHTML, aroundNode, position, rtl);
+var offsetX = -1,// a bit to the left
+	offsetY = 2;// a bit downwards
+
+var position = ["above", "below"]
+	rtl = false;
+
+// singletons!
+var tooltip,
+	onpointermoveConn,
+	aroundRect = {type: "rect", x: 0, y:0, width:0, height:0},
+	onpointeroutTimeout = {feature: null, tooltip: null};
+
+var showTooltip = function(/*String*/ innerHTML, browserEvent, control, /*Boolean*/ rtl){
+	if(!tooltip) tooltip = createTooltip();
+	_setAroundRect(browserEvent, control);
+	onpointermoveConn = dojo.connect(tooltip.domNode, "onmousemove", function(event){
+		moveTooltip(event);
+	});
+	return tooltip.show(innerHTML, aroundRect, position, rtl);
+},
+moveTooltip = function(browserEvent) {
+	_setAroundRect(browserEvent);
+	dijit.placeOnScreenAroundElement(tooltip.domNode, aroundRect, dijit.getPopupAroundAlignment((position && position.length) ? position : dijit.Tooltip.defaultPosition, !rtl), dojo.hitch(tooltip, "orient"));
+	if (dojo.isIE) tooltip.connectorNode.style.bottom = "-5px";
+},
+_setAroundRect = function(browserEvent, control) {
+	if (control) aroundRect.control = control;
+	else control = aroundRect.control;
+	var p1 = dojo.position(control.map.container, true),
+		p2 = dojo.position(control.map.container, false);
+	aroundRect.x = Math.round(browserEvent.clientX+p1.x-p2.x)-offsetX;
+	aroundRect.y = Math.round(browserEvent.clientY+p1.y-p2.y)-offsetY;
+},
+hideTooltip = function(){
+	dojo.disconnect(onpointermoveConn);
+	if (onpointeroutTimeout.tooltip) clearOnpointeroutTimeout("tooltip");
+	if (p.control) p.control.onpointeroutHandler.call(p.control);
+	if(!tooltip) tooltip = createTooltip();
+	return tooltip.hide(aroundRect);
+},
+createTooltip = function() {
+	var tooltip = new dijit._MasterTooltip();
+	_patchTooltip(tooltip);
+	dojo.connect(tooltip.domNode, "onmouseover", function() {
+		p.cancelOnpointerout = true;
+		if (onpointeroutTimeout.feature) clearOnpointeroutTimeout("feature");
+		if (onpointeroutTimeout.tooltip) clearOnpointeroutTimeout("tooltip");
+		if (p.onpointeroutTimeout){
+			clearTimeout(p.onpointeroutTimeout.id);
+			p.onpointeroutTimeout = null;
+		}
+	});
+	tooltip.connect(tooltip.domNode, "onmouseout", function() {
+		p.cancelOnpointerout = false;
+		if (onpointeroutTimeout.feature) clearOnpointeroutTimeout("feature");
+		if (onpointeroutTimeout.tooltip) clearOnpointeroutTimeout("tooltip");
+		onpointeroutTimeout.tooltip = {
+			id: setTimeout(
+				function(){
+					onpointeroutTimeout.tooltip = null;
+					aroundRect.control.feature = null;
+					hideTooltip();
+				},
+				gg.onpointeroutDelay
+			)
+		};
+	});
+	return tooltip;
+},
+_patchTooltip = function(tooltip) {
+	tooltip.show = function(/*String*/ innerHTML, /*DomNode*/ aroundNode, /*String[]?*/ position, /*Boolean*/ rtl){
+		// summary:
+		//		Display tooltip w/specified contents to right of specified node
+		//		(To left if there's no space on the right, or if rtl == true)
+		/* patched
+		if(this.aroundNode && this.aroundNode === aroundNode){
+			return;
+		}
+		*/
+
+		// reset width; it may have been set by orient() on a previous tooltip show()
+		this.domNode.width = "auto";
+
+		if(this.fadeOut.status() == "playing"){
+			// previous tooltip is being hidden; wait until the hide completes then show new one
+			this._onDeck=arguments;
+			return;
+		}
+		this.containerNode.innerHTML=innerHTML;
+
+		var pos = dijit.placeOnScreenAroundElement(this.domNode, aroundNode, dijit.getPopupAroundAlignment((position && position.length) ? position : dijit.Tooltip.defaultPosition, !rtl), dojo.hitch(this, "orient"));
+		if (dojo.isIE) tooltip.connectorNode.style.bottom = "-5px";
+
+		// show it
+		dojo.style(this.domNode, "opacity", 0);
+		this.fadeIn.play();
+		this.isShowingNow = true;
+		this.aroundNode = aroundNode;
 	};
-	var hideTooltip = function(aroundNode){
-		if(!tooltip) tooltip = createTooltip();
-		return tooltip.hide(aroundNode);
-	};
-	var createTooltip = function() {
-		// create a tooltip without a dijitTooltipConnector
-		var tooltip = new dijit._MasterTooltip();
-		dojo.style(tooltip.connectorNode, "display", "none");
-		dojo.connect(tooltip.domNode, "onmouseover", function(){
-			mouseOverTooltip = true;
-			if (onmouseoutTimeout) {
-				clearOnmouseoutTimeout();
+}
+clearOnpointeroutTimeout = function(type, obj) {
+	clearTimeout(onpointeroutTimeout[type].id);
+	onpointeroutTimeout[type] = null;
+};
+
+dojo.declare("course.geo.gfx.Tooltip", course.geo.gfx.AnimatedControl, {
+
+	// current tooltip feature
+	feature: null,
+	
+	onmousemoveHandle: null,
+
+	onmouseoverTimeout: null,
+
+	constructor: function(kwArgs) {
+		this.onmousemoveHandle = course.geo.util.getUniqueNumber();
+	},
+
+	process: function(event) {
+		var feature = event.feature;
+		
+		if (onpointeroutTimeout.feature) clearOnpointeroutTimeout("feature");
+		if (onpointeroutTimeout.tooltip) clearOnpointeroutTimeout("tooltip");
+
+		if (event.type == "onmouseout") {
+			if (!p.cancelOnpointerout) {
+				onpointeroutTimeout.feature = {
+					feature: feature,
+					id: setTimeout(
+						dojo.hitch(this, this._onpointerout),
+						gg.onpointeroutDelay
+					)
+				};
 			}
-		});
-		tooltip.connect(tooltip.domNode, "onmouseout", function(){
-			mouseOverTooltip = false;
-		});
-		return tooltip;
-	};
-	var clearOnmouseoutTimeout = function() {
-		clearTimeout(onmouseoutTimeout.id);
-		onmouseoutTimeout = null;
-	}
-	
-	dojo.declare("course.geo.gfx.Tooltip", course.geo.gfx.AnimatedControl, {
-
-		// current tooltip feature
-		feature: null,
-		
-		onmouseoutDelay: 100, // milliseconds
-	
-		onmouseoverTimeout: null,
-		
-		init: function() {
-			
-		},
-		
-		process: function(event) {
-			var feature = event.feature;
-			
-			if (onmouseoutTimeout) clearOnmouseoutTimeout();
-
-			if(event.type == "onmouseout") {
-				if (!mouseOverTooltip) {
-					onmouseoutTimeout = {
-						feature: feature,
-						id: setTimeout(
-							dojo.hitch(this, this._onmouseout),
-							this.onmouseoutDelay
-						)
-					};
-				}
-				return;
-			}
-			
+		}
+		else if (event.type == "onmousemove") {
+			// adjust relative coordinates to absolute, and remove fractions
+			moveTooltip(event.event);
+		}
+		else if (event.type == "onmouseover") {
 			if (this.feature == feature) return;
 			
 			this.feature = feature;
 
-			var factory = this.map.engine.getFactory(feature.type),
-				featureBbox = feature.getBbox(),
-				centerX = factory.getX( (featureBbox[0]+featureBbox[2])/2 ),
-				centerY = factory.getY( (featureBbox[1]+featureBbox[3])/2 );
-			var realMatrix = factory.group._getRealMatrix() || {xx:1,xy:0,yx:0,yy:1,dx:0,dy:0};
-			var point = dojox.gfx.matrix.multiplyPoint(realMatrix, centerX, centerY);
-			
-			// calculate relative coordinates and the position
-			var aroundRect = {type: "rect", x: point.x, y:point.y, width:0, height:0};
-			
-			// adjust relative coordinates to absolute, and remove fractions
-			aroundRect.x += this.map.x;
-			aroundRect.y += this.map.y;
-			aroundRect.x = Math.round(aroundRect.x);
-			aroundRect.y = Math.round(aroundRect.y);
-			aroundRect.width = Math.ceil(aroundRect.width);
-			aroundRect.height = Math.ceil(aroundRect.height);
-			this.aroundRect = aroundRect;
-			
-            showTooltip(this.text(feature), this.aroundRect, position);
-		},
-		
-		_onmouseout: function() {
-			onmouseoutTimeout = null;
-			this.feature = null;
-            hideTooltip(this.aroundRect);
-			this.aroundRect = null;
-		},
-		
-		hideTooltip: function() {
-			hideTooltip(this.aroundRect);
+			feature.connectWithHandle(this.onmousemoveHandle, "onmousemove", this, "process");
+			showTooltip(this.text(feature), event.event, this);
 		}
-	});
+	},
+	
+	_onpointerout: function() {
+		this.feature.disconnect(this.onmousemoveHandle);
+		onpointeroutTimeout.feature = null;
+		this.feature = null;
+		hideTooltip();
+	},
+	
+	hideTooltip: function() {
+		hideTooltip();
+	}
+});
 
 })();

@@ -1,19 +1,21 @@
 dojo.provide("course.geo.gfx.Highlight");
 
 dojo.require("course.geo.gfx.AnimatedControl");
+dojo.require("course.geo.gfx.feature_interaction");
 
 dojo.require("dojox.gfx.fx");
+
+(function(){
+
+var gg = course.geo.gfx,
+	p = gg._pointed;
 
 dojo.declare("course.geo.gfx.Highlight", course.geo.gfx.AnimatedControl, {
 	
 	highlightedFeature: null,
 	
-	onmouseoutDelay: 100, // milliseconds
-	
-	onmouseoverTimeout: null,
-	
 	constructor: function(kwArgs) {
-		
+
 	},
 	
 	process: function(event){
@@ -26,41 +28,50 @@ dojo.declare("course.geo.gfx.Highlight", course.geo.gfx.AnimatedControl, {
 			step; // result of _getStep;
 
 		if (event.type == "onmouseover") {
-			if (this.onmouseoutTimeout) {
-				if (this.onmouseoutTimeout.feature==feature) {
-					clearTimeout(this.onmouseoutTimeout.id);
-					this.onmouseoutTimeout = null;
-				}
+			if (p.onpointeroutTimeout) {
+				var _feature = p.onpointeroutTimeout.feature;
+				clearTimeout(p.onpointeroutTimeout.id);
+				p.onpointeroutTimeout = null;
+				if (_feature==feature) return;
 				else {
-					var _feature = this.onmouseoutTimeout.feature;
-					clearTimeout(this.onmouseoutTimeout.id);
-					this.onmouseoutTimeout = null;
 					_feature.render(true);
 				}
 			}
+			
 			if (this.highlightedFeature) {
 				if (this.highlightedFeature == feature) return;
 				else this.highlightedFeature.render(true);
 			}
+
 			this.highlightedFeature = feature;
+			if (p.control != this) p.control = this;
 			feature.render(true, "highlight");
 		}
 		else { // onmouseout
-			this.onmouseoutTimeout = {
-				feature: feature,
-				id: setTimeout(
-					dojo.hitch(this, this._onmouseout),
-					this.onmouseoutDelay
-				)
-			};
+			if (!p.cancelOnpointerout) {
+				p.onpointeroutTimeout = {
+					feature: feature,
+					id: setTimeout(
+						dojo.hitch(this, this._onpointerout),
+						gg.onpointeroutDelay
+					)
+				};
+			}
 		}
 	},
-	
-	_onmouseout: function() {
-		var feature = this.onmouseoutTimeout.feature;
-		this.onmouseoutTimeout = null;
+
+	_onpointerout: function() {
+		var feature = p.onpointeroutTimeout.feature;
+		p.onpointeroutTimeout = null;
 		this.highlightedFeature = null;
 		feature.render(true);
+	},
+
+	onpointeroutHandler: function() {
+		if (this.highlightedFeature) {
+			this.highlightedFeature.render(true);
+			this.highlightedFeature = null;
+		}
 	},
 	
 /*
@@ -73,7 +84,6 @@ dojo.declare("course.geo.gfx.Highlight", course.geo.gfx.AnimatedControl, {
 			anims = [],
 			step; // result of _getStep;
 
-		console.debug(event.type+" "+fid);
 		// start apply highlight
 		if (event.type == "onmouseover"){
 			if (this.highlightedFeature) {
@@ -229,9 +239,8 @@ dojo.declare("course.geo.gfx.Highlight", course.geo.gfx.AnimatedControl, {
 			}
 			anims.push( dojox.gfx.fx.animateStroke(kwArgs) );
 		}, this);
-	},
-	
-	applyHiglightStyle: function(feature) {
 	}
 
 });
+
+})();

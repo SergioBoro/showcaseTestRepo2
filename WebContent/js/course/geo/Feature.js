@@ -2,7 +2,7 @@ dojo.provide("course.geo.Feature");
 
 dojo.require("course.geo.util");
 
-course.geo.events = {onmouseover: true, onmouseout: true, onclick: true};
+course.geo.events = {onmouseover: 1, onmouseout: 1, onclick: 1, onmousemove: 1};
 
 dojo.declare("course.geo.Feature", null, {
 	

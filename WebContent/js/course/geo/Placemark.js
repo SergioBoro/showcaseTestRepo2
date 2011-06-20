@@ -208,6 +208,7 @@ dojo.declare("course.geo.Placemark", course.geo.Feature, {
 
 // default methods;
 var p = g.Placemark.prototype;
+if (!g.methods) g.methods = {};
 g.methods.Placemark = {
 	render: p._render
 }

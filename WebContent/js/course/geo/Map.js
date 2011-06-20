@@ -57,7 +57,7 @@ dojo.declare("course.geo.Map", null, {
 		restoreMethods(this);
 		
 		// get map container coords
-		dojo.style(container, "display", "block");
+		//dojo.style(container, "display", "block");
 		this.container = container;
 
 		if(!kwArgs) kwArgs = {};
@@ -204,9 +204,11 @@ dojo.declare("course.geo.Map", null, {
 	setEngine: function(engine) {
 		if (dojo.isString(engine)) engine = {type: engine};
 		if (!engine.declaredClass) {
+			// cheating build util
+			var req = dojo.require;
 			var options = {map: this};
 			if (engine.options) dojo.mixin(options, engine.options);
-			dojo.require("course.geo."+engine.type+".Engine");
+			req("course.geo."+engine.type+".Engine");
 			engine = new course.geo[engine.type].Engine(options);
 		}
 		this.engine = engine;
@@ -223,8 +225,9 @@ dojo.declare("course.geo.Map", null, {
 
 // default methods;
 var p = g.Map.prototype;
-g.methods = {
-	Map: {render: p._render}
+if (!g.methods) g.methods = {};
+g.methods.Map = {
+	render: p._render
 }
 
 }());
