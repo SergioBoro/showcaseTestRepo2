@@ -92,6 +92,18 @@ public class XFormPanel extends BasicElementPanelBasis {
 		this.elementInfo = aelement;
 	}
 
+	public DataServiceAsync getDataService() {
+		return dataService;
+	}
+
+	public UploadWindow getUw() {
+		return uw;
+	}
+
+	public void setUw(final UploadWindow auw) {
+		this.uw = auw;
+	}
+
 	@Override
 	public void hidePanel() {
 		p.setVisible(false);
@@ -354,18 +366,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 		p.add(new HTML(Constants.PLEASE_WAIT_XFORM_3));
 
 		xf = null;
-	}
-
-	public DataServiceAsync getDataService() {
-		return dataService;
-	}
-
-	public UploadWindow getUw() {
-		return uw;
-	}
-
-	public void setUw(final UploadWindow auw) {
-		this.uw = auw;
 	}
 
 }
