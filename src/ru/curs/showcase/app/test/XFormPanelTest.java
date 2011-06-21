@@ -1,6 +1,8 @@
 package ru.curs.showcase.app.test;
 
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.client.XFormPanel;
+import ru.curs.showcase.app.client.utils.UploadWindow;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
@@ -15,34 +17,49 @@ public class XFormPanelTest extends GWTTestCase {
 	}
 
 	/**
-	 * testConstr1.
+	 * Тест без начального показа XForm.
 	 */
 	public void testConstr1() {
-		XFormPanel xfp = new XFormPanel(null);
+		DataPanelElementInfo dpei = new DataPanelElementInfo();
+		dpei.setId("1");
+		dpei.setPosition(1);
+		dpei.setType(DataPanelElementType.XFORMS);
+
+		XFormPanel xfp = new XFormPanel(dpei);
 		assertNotNull(xfp);
 
-		// xfp.setIsFirstLoading(true);
-		// assertTrue(xfp.getIsFirstLoading());
+		assertEquals("1", xfp.getElementInfo().getId());
+		assertNull(xfp.getContext());
+		assertTrue(xfp.getIsFirstLoading());
 
-		xfp.setIsFirstLoading(false);
-		assertFalse(xfp.getIsFirstLoading());
+		assertNotNull(xfp.getSelSrv());
+		assertNotNull(xfp.getPanel());
+		assertNull(xfp.getElement());
+		assertNull(xfp.getDataService());
 
-		// VerticalPanel mainPanel = new VerticalPanel();
-		// mainPanel.add(xfp.getPanel());
-		// Button addStockButton = new Button("Add");
-		// mainPanel.add(addStockButton);
-		//
-		// RootPanel.get("showcaseAppContainer").add(mainPanel);
+		UploadWindow uw = new UploadWindow("TestUploadWindow");
+		xfp.setUw(uw);
+		assertEquals("TestUploadWindow", xfp.getUw().getText());
+
+		xfp.showPanel();
+		assertTrue(xfp.getPanel().isVisible());
+		xfp.hidePanel();
+		assertFalse(xfp.getPanel().isVisible());
+
+		xfp.setElementInfo(null);
+		assertNull(xfp.getElementInfo());
 
 	}
 
 	/**
-	 * testConstr2.
+	 * Тест с начальным показом XForm.
 	 */
 	public void testConstr2() {
 		XFormPanel xfp = new XFormPanel(null, null);
 		// delayTestFinish(2000);
 		assertNotNull(xfp);
+
+		// assertNull(xfp.getMainInstance());
 
 	}
 
