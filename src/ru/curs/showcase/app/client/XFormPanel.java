@@ -290,7 +290,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 */
 	private static native void destroy() /*-{
 		//Деинициализируем механизм XSLTForms
-		$wnd.xforms.close();
+		if ($wnd.xforms != null)
+			$wnd.xforms.close();
 
 		//Подчищаем динамические стили
 		var hdr = $doc.getElementsByTagName('head')[0];
@@ -307,6 +308,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 		var div = $doc.getElementById('target');
 		while (div.childNodes.length > 0)
 			div.removeChild(div.firstChild);
+
 	}-*/;
 
 	/**
