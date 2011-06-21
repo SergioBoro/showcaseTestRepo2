@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.test;
 
+import java.util.ArrayList;
+
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XForms;
@@ -81,6 +83,8 @@ public class XFormPanelTest extends GWTTestCase {
 		dpei.setType(DataPanelElementType.XFORMS);
 
 		XForms xform = new XForms();
+		ArrayList<String> xFormParts = new ArrayList<String>();
+		xform.setXFormParts(xFormParts);
 
 		XFormPanel xfp = new XFormPanel(context, dpei, xform);
 		assertNotNull(xfp);
