@@ -6,6 +6,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.XForms;
 import ru.curs.showcase.app.client.*;
+import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.UploadWindow;
 
 import com.google.gwt.junit.client.GWTTestCase;
@@ -36,6 +37,21 @@ public class XFormPanelTest extends GWTTestCase {
 
 	@Override
 	public void gwtSetUp() {
+
+		com.google.gwt.user.client.Element elem = DOM.getElementById("dynastyle");
+		if (elem != null) {
+			elem.removeFromParent();
+		}
+
+		elem = DOM.getElementById("target");
+		if (elem != null) {
+			elem.removeFromParent();
+		}
+
+		elem = DOM.getElementById("showcaseAppContainer");
+		if (elem != null) {
+			elem.removeFromParent();
+		}
 
 	}
 
@@ -134,9 +150,9 @@ public class XFormPanelTest extends GWTTestCase {
 	}
 
 	/**
-	 * Тест ф-ции reDrawPanel.
+	 * Тест1 ф-ции reDrawPanel.
 	 */
-	public void testReDrawPanel() {
+	public void testReDrawPanel1() {
 
 		DataPanelElementInfo dpei = new DataPanelElementInfo();
 		dpei.setId("1");
@@ -146,11 +162,248 @@ public class XFormPanelTest extends GWTTestCase {
 		XFormPanel xfp = new XFormPanel(dpei);
 		assertNotNull(xfp);
 
-		// XFormPanel xfp = new XFormPanel(null, null, null);
-		// assertNotNull(xfp);
-		//
-		// xfp.reDrawPanel(null, true);
-		// xfp.reDrawPanel(null, false);
+		CompositeContext context = new CompositeContext();
+
+		xfp.reDrawPanel(context, true);
+		assertNotNull(xfp.getContext());
+
+		assertEquals(1, xfp.getPanel().getWidgetCount());
+		assertEquals(Constants.PLEASE_WAIT_XFORM_2, ((HTML) xfp.getPanel().getWidget(0)).getHTML());
+
+	}
+
+	/**
+	 * Тест2 ф-ции reDrawPanel.
+	 */
+	public void testReDrawPanel2() {
+
+		com.google.gwt.user.client.Element bodyElem = RootPanel.getBodyElement();
+		com.google.gwt.user.client.Element div = DOM.createDiv();
+		DOM.setElementAttribute(div, "id", "target");
+		DOM.insertChild(bodyElem, div, 0);
+
+		div = DOM.createDiv();
+		DOM.setElementAttribute(div, "id", "showcaseAppContainer");
+		DOM.insertChild(bodyElem, div, 1);
+
+		CompositeContext context = new CompositeContext();
+
+		DataPanelElementInfo dpei = new DataPanelElementInfo();
+		dpei.setId("1");
+		dpei.setPosition(1);
+		dpei.setType(DataPanelElementType.XFORMS);
+
+		XForms xform = new XForms();
+		final int numParts = 4;
+		ArrayList<String> xFormParts = new ArrayList<String>(numParts);
+		xFormParts.add(XFORM_BODY);
+		xFormParts.add(XFORM_CSS);
+		xFormParts.add(XFORM_SCRIPT1);
+		xFormParts.add(XFORM_SCRIPT2);
+		xform.setXFormParts(xFormParts);
+
+		Action ac = new Action();
+		ac.setDataPanelActionType(DataPanelActionType.DO_NOTHING);
+		xform.setDefaultAction(ac);
+
+		XFormPanel xfp = new XFormPanel(context, dpei, xform);
+		assertNotNull(xfp);
+
+		xfp.reDrawPanel(context, true);
+
+		assertEquals(1, xfp.getPanel().getWidgetCount());
+
+		com.google.gwt.user.client.Element dynastyle = DOM.getElementById("dynastyle");
+		assertEquals(1, dynastyle.getChildCount());
+
+		com.google.gwt.user.client.Element target = DOM.getElementById("target");
+		assertEquals(2, target.getChildCount());
+
+	}
+
+	/**
+	 * Тест ф-ции destroyXForms.
+	 */
+	public void testDestroyXForms() {
+
+		com.google.gwt.user.client.Element bodyElem = RootPanel.getBodyElement();
+		com.google.gwt.user.client.Element div = DOM.createDiv();
+		DOM.setElementAttribute(div, "id", "target");
+		DOM.insertChild(bodyElem, div, 0);
+
+		div = DOM.createDiv();
+		DOM.setElementAttribute(div, "id", "showcaseAppContainer");
+		DOM.insertChild(bodyElem, div, 1);
+
+		CompositeContext context = new CompositeContext();
+
+		DataPanelElementInfo dpei = new DataPanelElementInfo();
+		dpei.setId("1");
+		dpei.setPosition(1);
+		dpei.setType(DataPanelElementType.XFORMS);
+
+		XForms xform = new XForms();
+		final int numParts = 4;
+		ArrayList<String> xFormParts = new ArrayList<String>(numParts);
+		xFormParts.add(XFORM_BODY);
+		xFormParts.add(XFORM_CSS);
+		xFormParts.add(XFORM_SCRIPT1);
+		xFormParts.add(XFORM_SCRIPT2);
+		xform.setXFormParts(xFormParts);
+
+		Action ac = new Action();
+		ac.setDataPanelActionType(DataPanelActionType.DO_NOTHING);
+		xform.setDefaultAction(ac);
+
+		XFormPanel xfp = new XFormPanel(context, dpei, xform);
+		assertNotNull(xfp);
+
+		XFormPanel.destroyXForms();
+
+		com.google.gwt.user.client.Element dynastyle = DOM.getElementById("dynastyle");
+		assertNull(dynastyle);
+
+		com.google.gwt.user.client.Element target = DOM.getElementById("target");
+		assertEquals(0, target.getChildCount());
+
+	}
+
+	/**
+	 * Тест ф-ции saveSettings.
+	 */
+	public void testSaveSettings() {
+		com.google.gwt.user.client.Element bodyElem = RootPanel.getBodyElement();
+		com.google.gwt.user.client.Element div = DOM.createDiv();
+		DOM.setElementAttribute(div, "id", "target");
+		DOM.insertChild(bodyElem, div, 0);
+
+		div = DOM.createDiv();
+		DOM.setElementAttribute(div, "id", "showcaseAppContainer");
+		DOM.insertChild(bodyElem, div, 1);
+
+		CompositeContext context = new CompositeContext();
+
+		DataPanelElementInfo dpei = new DataPanelElementInfo();
+		dpei.setId("1");
+		dpei.setPosition(1);
+		dpei.setType(DataPanelElementType.XFORMS);
+
+		XForms xform = new XForms();
+		final int numParts = 4;
+		ArrayList<String> xFormParts = new ArrayList<String>(numParts);
+		xFormParts.add(XFORM_BODY);
+		xFormParts.add(XFORM_CSS);
+		xFormParts.add(XFORM_SCRIPT1);
+		xFormParts.add(XFORM_SCRIPT2);
+		xform.setXFormParts(xFormParts);
+
+		Action ac = new Action();
+		ac.setDataPanelActionType(DataPanelActionType.DO_NOTHING);
+		xform.setDefaultAction(ac);
+
+		XFormPanel xfp = new XFormPanel(context, dpei, xform);
+		assertNotNull(xfp);
+
+		xfp.saveSettings(false);
+		xfp.saveSettings(true);
+
+		com.google.gwt.user.client.Element dynastyle = DOM.getElementById("dynastyle");
+		assertEquals(1, dynastyle.getChildCount());
+
+		com.google.gwt.user.client.Element target = DOM.getElementById("target");
+		assertEquals(2, target.getChildCount());
+
+	}
+
+	/**
+	 * Тест ф-ции beforeModalWindow.
+	 */
+	public void testBeforeModalWindow() {
+
+		com.google.gwt.user.client.Element bodyElem = RootPanel.getBodyElement();
+		com.google.gwt.user.client.Element div = DOM.createDiv();
+		DOM.setElementAttribute(div, "id", "target");
+		DOM.insertChild(bodyElem, div, 0);
+
+		div = DOM.createDiv();
+		DOM.setElementAttribute(div, "id", "showcaseAppContainer");
+		DOM.insertChild(bodyElem, div, 1);
+
+		CompositeContext context = new CompositeContext();
+
+		DataPanelElementInfo dpei = new DataPanelElementInfo();
+		dpei.setId("1");
+		dpei.setPosition(1);
+		dpei.setType(DataPanelElementType.XFORMS);
+
+		XForms xform = new XForms();
+		final int numParts = 4;
+		ArrayList<String> xFormParts = new ArrayList<String>(numParts);
+		xFormParts.add(XFORM_BODY);
+		xFormParts.add(XFORM_CSS);
+		xFormParts.add(XFORM_SCRIPT1);
+		xFormParts.add(XFORM_SCRIPT2);
+		xform.setXFormParts(xFormParts);
+
+		Action ac = new Action();
+		ac.setDataPanelActionType(DataPanelActionType.DO_NOTHING);
+		xform.setDefaultAction(ac);
+
+		XFormPanel xfp = new XFormPanel(context, dpei, xform);
+		assertNotNull(xfp);
+
+		XFormPanel bep = new XFormPanel(null);
+		XFormPanel.beforeModalWindow(bep);
+
+		com.google.gwt.user.client.Element dynastyle = DOM.getElementById("dynastyle");
+		assertNull(dynastyle);
+
+		com.google.gwt.user.client.Element target = DOM.getElementById("target");
+		assertEquals(0, target.getChildCount());
+
+	}
+
+	/**
+	 * Тест ф-ции reDrawBeforeModalWindow.
+	 */
+	public void testReDrawBeforeModalWindow() {
+
+		com.google.gwt.user.client.Element bodyElem = RootPanel.getBodyElement();
+		com.google.gwt.user.client.Element div = DOM.createDiv();
+		DOM.setElementAttribute(div, "id", "target");
+		DOM.insertChild(bodyElem, div, 0);
+
+		div = DOM.createDiv();
+		DOM.setElementAttribute(div, "id", "showcaseAppContainer");
+		DOM.insertChild(bodyElem, div, 1);
+
+		CompositeContext context = new CompositeContext();
+
+		DataPanelElementInfo dpei = new DataPanelElementInfo();
+		dpei.setId("1");
+		dpei.setPosition(1);
+		dpei.setType(DataPanelElementType.XFORMS);
+
+		XForms xform = new XForms();
+		final int numParts = 4;
+		ArrayList<String> xFormParts = new ArrayList<String>(numParts);
+		xFormParts.add(XFORM_BODY);
+		xFormParts.add(XFORM_CSS);
+		xFormParts.add(XFORM_SCRIPT1);
+		xFormParts.add(XFORM_SCRIPT2);
+		xform.setXFormParts(xFormParts);
+
+		Action ac = new Action();
+		ac.setDataPanelActionType(DataPanelActionType.DO_NOTHING);
+		xform.setDefaultAction(ac);
+
+		XFormPanel xfp = new XFormPanel(context, dpei, xform);
+		assertNotNull(xfp);
+
+		xfp.reDrawBeforeModalWindow();
+
+		assertEquals(1, xfp.getPanel().getWidgetCount());
+		assertEquals(Constants.PLEASE_WAIT_XFORM_3, ((HTML) xfp.getPanel().getWidget(0)).getHTML());
 
 	}
 

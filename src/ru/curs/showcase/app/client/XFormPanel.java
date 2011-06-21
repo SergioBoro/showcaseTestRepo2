@@ -372,7 +372,10 @@ public class XFormPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	private void reDrawBeforeModalWindow() {
+	/**
+	 * Вызывается перед показом модального окна, содержащего XFormPanel.
+	 */
+	public void reDrawBeforeModalWindow() {
 		fillMainInstance();
 
 		p.clear();
