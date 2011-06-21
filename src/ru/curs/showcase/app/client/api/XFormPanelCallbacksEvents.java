@@ -3,6 +3,7 @@ package ru.curs.showcase.app.client.api;
 import ru.beta2.extra.gwt.ui.selector.SelectorComponent;
 import ru.curs.showcase.app.api.CommandResult;
 import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.html.XForms;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.utils.*;
 
@@ -82,7 +83,8 @@ public final class XFormPanelCallbacksEvents {
 			getActionByLinkId(final String linkId, final XFormPanel currentXFormPanel) {
 		Action ac = null;
 
-		Event ev = currentXFormPanel.getXform().getEventManager().getEventForLink(linkId);
+		Event ev =
+			((XForms) currentXFormPanel.getElement()).getEventManager().getEventForLink(linkId);
 
 		if (ev != null) {
 			ac = ev.getAction();

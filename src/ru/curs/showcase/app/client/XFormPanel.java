@@ -211,9 +211,9 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 	private native void fillMainInstance() /*-{
 		if ($wnd.xforms.defaultModel != null) {
-		this.@ru.curs.showcase.app.client.XFormPanel::mainInstance = $wnd.Writer
-		.toString($wnd.xforms.defaultModel
-		.getInstanceDocument('mainInstance'));
+			this.@ru.curs.showcase.app.client.XFormPanel::mainInstance = $wnd.Writer
+					.toString($wnd.xforms.defaultModel
+							.getInstanceDocument('mainInstance'));
 		}
 	}-*/;
 
@@ -276,17 +276,17 @@ public class XFormPanel extends BasicElementPanelBasis {
 		var hdr = $doc.getElementsByTagName('head')[0];
 		var ss1 = $doc.getElementById('dynastyle');
 		if (ss1 != null)
-		hdr.removeChild(ss1);
+			hdr.removeChild(ss1);
 
 		//Подчищаем
 		ss1 = $doc.getElementById('xf-model-config');
 		if (ss1 != null)
-		hdr.removeChild(ss1);
+			hdr.removeChild(ss1);
 
 		//Подчищаем динамические скрипты
 		var div = $doc.getElementById('target');
 		while (div.childNodes.length > 0)
-		div.removeChild(div.firstChild);
+			div.removeChild(div.firstChild);
 	}-*/;
 
 	/**
@@ -354,10 +354,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 		p.add(new HTML(Constants.PLEASE_WAIT_XFORM_3));
 
 		xf = null;
-	}
-
-	public XForms getXform() {
-		return xform;
 	}
 
 	public DataServiceAsync getDataService() {
