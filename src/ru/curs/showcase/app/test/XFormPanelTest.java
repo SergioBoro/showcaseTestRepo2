@@ -1,6 +1,8 @@
 package ru.curs.showcase.app.test;
 
 import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.html.XForms;
 import ru.curs.showcase.app.client.XFormPanel;
 import ru.curs.showcase.app.client.utils.UploadWindow;
 
@@ -55,11 +57,18 @@ public class XFormPanelTest extends GWTTestCase {
 	 * Тест с начальным показом XForm.
 	 */
 	public void testConstr2() {
-		XFormPanel xfp = new XFormPanel(null, null);
-		// delayTestFinish(2000);
-		assertNotNull(xfp);
+		CompositeContext context = new CompositeContext();
 
-		// assertNull(xfp.getMainInstance());
+		DataPanelElementInfo dpei = new DataPanelElementInfo();
+		dpei.setId("1");
+		dpei.setPosition(1);
+		dpei.setType(DataPanelElementType.XFORMS);
+
+		// XForms xform = new XForms();
+		XForms xform = null;
+
+		XFormPanel xfp = new XFormPanel(context, dpei, xform);
+		assertNotNull(xfp);
 
 	}
 
@@ -67,7 +76,7 @@ public class XFormPanelTest extends GWTTestCase {
 	 * testReDrawPanel.
 	 */
 	public void testReDrawPanel() {
-		XFormPanel xfp = new XFormPanel(null, null);
+		XFormPanel xfp = new XFormPanel(null, null, null);
 		assertNotNull(xfp);
 
 		xfp.reDrawPanel(null, true);

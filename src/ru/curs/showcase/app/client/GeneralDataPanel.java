@@ -345,7 +345,7 @@ public class GeneralDataPanel {
 		Widget w = null;
 		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
 
-			wtp = new XFormPanel(getElementContextForNavigatorAction(dpe), dpe);
+			wtp = new XFormPanel(getElementContextForNavigatorAction(dpe), dpe, null);
 			w = wtp.getPanel();
 			w.setSize("100%", "100%");
 		} else {

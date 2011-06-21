@@ -130,9 +130,10 @@ public class XFormPanel extends BasicElementPanelBasis {
 	}
 
 	/**
-	 * Конструктор класса XFormPanel.
+	 * Конструктор класса XFormPanel с начальным показом XForm.
 	 */
-	public XFormPanel(final CompositeContext context, final DataPanelElementInfo element) {
+	public XFormPanel(final CompositeContext context, final DataPanelElementInfo element,
+			final XForms xform1) {
 
 		setContext(context);
 		setElementInfo(element);
@@ -145,7 +146,11 @@ public class XFormPanel extends BasicElementPanelBasis {
 		p.clear();
 		p.add(new HTML(Constants.PLEASE_WAIT_XFORM_1));
 
-		setXForm(false);
+		if (xform1 == null) {
+			setXFormPanel(false);
+		} else {
+			setXFormPanelByXForms(xform1, false);
+		}
 
 	}
 
@@ -161,13 +166,13 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 			p.clear();
 			p.add(new HTML(Constants.PLEASE_WAIT_XFORM_2));
-			setXForm(refreshContextOnly);
+			setXFormPanel(refreshContextOnly);
 
 		}
 
 	}
 
-	private void setXForm(final Boolean refreshContextOnly) {
+	private void setXFormPanel(final Boolean refreshContextOnly) {
 
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -178,36 +183,39 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 					@Override
 					public void onSuccess(final XForms xform1) {
-
-						xform = xform1;
-
-						destroy();
-
-						p.setSize("100%", "100%");
-
-						xf = new HTML();
-
-						xf.setWidth("100%");
-
-						p.clear();
-						p.add(xf);
-
-						instrumentForm(xf, xform.getXFormParts());
-
-						Action ac = xform.getActionForDependentElements();
-						if (ac != null) {
-							AppCurrContext.getInstance().setCurrentAction(ac);
-
-							ActionExecuter.execAction();
-						}
-
-						if (getIsFirstLoading() && refreshContextOnly) {
-							xform.updateAddContext(getContext());
-						}
-						setIsFirstLoading(false);
+						setXFormPanelByXForms(xform1, refreshContextOnly);
 					}
 				});
 
+	}
+
+	private void setXFormPanelByXForms(final XForms xform1, final Boolean refreshContextOnly) {
+		xform = xform1;
+
+		destroy();
+
+		p.setSize("100%", "100%");
+
+		xf = new HTML();
+
+		xf.setWidth("100%");
+
+		p.clear();
+		p.add(xf);
+
+		instrumentForm(xf, xform.getXFormParts());
+
+		Action ac = xform.getActionForDependentElements();
+		if (ac != null) {
+			AppCurrContext.getInstance().setCurrentAction(ac);
+
+			ActionExecuter.execAction();
+		}
+
+		if (getIsFirstLoading() && refreshContextOnly) {
+			xform.updateAddContext(getContext());
+		}
+		setIsFirstLoading(false);
 	}
 
 	/**
