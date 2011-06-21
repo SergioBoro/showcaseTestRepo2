@@ -28,8 +28,12 @@
   <source path='api'/>
   
   <public path="test/public"/>
+  
+  <stylesheet src="xsltforms/xsltforms.css" />
+  
+  <script src="xsltforms/xsltforms.js"></script>  
        
-  <set-property name="user.agent" value="safari" />         
+  <set-property name="user.agent" value="safari" />    
        
 <!--   The supported user agents at the moment of writing were:-->
 <!--   ie6,ie8,gecko,gecko1_8,safari,opera	  -->

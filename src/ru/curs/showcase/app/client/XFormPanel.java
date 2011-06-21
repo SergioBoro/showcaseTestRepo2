@@ -149,6 +149,9 @@ public class XFormPanel extends BasicElementPanelBasis {
 		if (xform1 == null) {
 			setXFormPanel(false);
 		} else {
+
+			RootPanel.get("showcaseAppContainer").add(p);
+
 			setXFormPanelByXForms(xform1, false);
 		}
 
