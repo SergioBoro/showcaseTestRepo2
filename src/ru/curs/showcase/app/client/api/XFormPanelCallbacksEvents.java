@@ -17,6 +17,15 @@ import com.google.gwt.user.client.rpc.SerializationException;
  */
 public final class XFormPanelCallbacksEvents {
 
+	/**
+	 * Тестовая XFormPanel.
+	 */
+	private static XFormPanel testXFormPanel = null;
+
+	public static void setTestXFormPanel(final XFormPanel testXFormPanel1) {
+		testXFormPanel = testXFormPanel1;
+	}
+
 	private XFormPanelCallbacksEvents() {
 
 	}
@@ -39,7 +48,8 @@ public final class XFormPanelCallbacksEvents {
 		final XFormPanel curXFormPanel = getCurrentPanel(xformId);
 
 		if (curXFormPanel != null) {
-			// MessageBox.showSimpleMessage("Save=" + xformId, data);
+			// MessageBox.showSimpleMessage("Save. xformId=" + xformId +
+			// ", linkId=" + linkId, data);
 
 			final Action ac = getActionByLinkId(linkId, curXFormPanel);
 
@@ -132,7 +142,9 @@ public final class XFormPanelCallbacksEvents {
 		XFormPanel currentXFormPanel = getCurrentPanel(xformId);
 
 		if (currentXFormPanel != null) {
-			// MessageBox.showSimpleMessage("Filter=" + xformId, data);
+			// MessageBox
+			// .showSimpleMessage("Filter. xformId=" + xformId + ", linkId=" +
+			// linkId, data);
 
 			Action ac = getActionByLinkId(linkId, currentXFormPanel);
 
@@ -160,7 +172,9 @@ public final class XFormPanelCallbacksEvents {
 		XFormPanel currentXFormPanel = getCurrentPanel(xformId);
 
 		if (currentXFormPanel != null) {
-			// MessageBox.showSimpleMessage("Update=" + xformId, data);
+			// MessageBox
+			// .showSimpleMessage("Update. xformId=" + xformId + ", linkId=" +
+			// linkId, data);
 
 			Action ac = getActionByLinkId(linkId, currentXFormPanel);
 
@@ -297,6 +311,10 @@ public final class XFormPanelCallbacksEvents {
 		XFormPanel currentXFormPanel = getCurrentPanel(xformId);
 
 		if (currentXFormPanel != null) {
+
+			// MessageBox.showSimpleMessage(
+			// "downloadFile. xformId=" + xformId + ", linkId=" + linkId, data);
+
 			DownloadHelper dh = DownloadHelper.getInstance();
 			dh.clear();
 			dh.setErrorCaption(Constants.XFORMS_DOWNLOAD_ERROR);
@@ -392,7 +410,11 @@ public final class XFormPanelCallbacksEvents {
 	}
 
 	private static XFormPanel getCurrentPanel(final String xformId) {
-		return ((XFormPanel) ActionExecuter.getElementPanelById(xformId));
+		if (testXFormPanel == null) {
+			return ((XFormPanel) ActionExecuter.getElementPanelById(xformId));
+		} else {
+			return testXFormPanel;
+		}
 	}
 
 }
