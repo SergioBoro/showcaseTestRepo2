@@ -150,6 +150,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 			setXFormPanel(false);
 		} else {
 
+			RootPanel.get("showcaseAppContainer").clear();
 			RootPanel.get("showcaseAppContainer").add(p);
 
 			setXFormPanelByXForms(xform1, false);
@@ -160,6 +161,23 @@ public class XFormPanel extends BasicElementPanelBasis {
 	@Override
 	public void reDrawPanel(final CompositeContext context, final Boolean refreshContextOnly) {
 
+		reDrawPanelExt(context, refreshContextOnly, null);
+
+	}
+
+	/**
+	 * Расширенная ф-ция reDrawPanel. Используется в рабочем режиме и для тестов
+	 * 
+	 * @param context
+	 *            CompositeContext
+	 * @param refreshContextOnly
+	 *            Boolean
+	 * @param xform1
+	 *            XForms
+	 */
+	public void reDrawPanelExt(final CompositeContext context, final Boolean refreshContextOnly,
+			final XForms xform1) {
+
 		setContext(context);
 		// --------------
 
@@ -169,7 +187,15 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 			p.clear();
 			p.add(new HTML(Constants.PLEASE_WAIT_XFORM_2));
-			setXFormPanel(refreshContextOnly);
+
+			if (xform1 == null) {
+				setXFormPanel(refreshContextOnly);
+			} else {
+				RootPanel.get("showcaseAppContainer").clear();
+				RootPanel.get("showcaseAppContainer").add(p);
+
+				setXFormPanelByXForms(xform1, refreshContextOnly);
+			}
 
 		}
 
