@@ -138,8 +138,7 @@ public final class XFormPanelCallbacksEvents {
 
 			if (ac != null) {
 				ac.filterBy(data);
-				AppCurrContext.getInstance().setCurrentAction(ac);
-				ActionExecuter.execAction();
+				runAction(ac);
 			}
 		}
 	}
@@ -165,10 +164,8 @@ public final class XFormPanelCallbacksEvents {
 
 			Action ac = getActionByLinkId(linkId, currentXFormPanel);
 
-			if (ac != null) {
-				AppCurrContext.getInstance().setCurrentAction(ac);
-				ActionExecuter.execAction();
-			}
+			runAction(ac);
+
 		}
 	}
 
