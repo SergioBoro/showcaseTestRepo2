@@ -145,6 +145,34 @@ public final class XFormPanelCallbacksEvents {
 	}
 
 	/**
+	 * Функция, которая будет выполняться по клику на кнопку Обновить в XForm.
+	 * 
+	 * @param xformId
+	 *            Id элемента xForm.
+	 * 
+	 * @param linkId
+	 *            Идентификатор события
+	 * 
+	 * @param data
+	 *            Данные xForm'ы
+	 */
+	public static void xFormPanelClickUpdate(final String xformId, final String linkId,
+			final String data) {
+		XFormPanel currentXFormPanel = getCurrentPanel(xformId);
+
+		if (currentXFormPanel != null) {
+			// MessageBox.showSimpleMessage("Update=" + xformId, data);
+
+			Action ac = getActionByLinkId(linkId, currentXFormPanel);
+
+			if (ac != null) {
+				AppCurrContext.getInstance().setCurrentAction(ac);
+				ActionExecuter.execAction();
+			}
+		}
+	}
+
+	/**
 	 * Статический метод для открытия окна-селектора. Может быть использован
 	 * непосредственно в javscript-е на форме.
 	 * 

@@ -34,6 +34,13 @@ public class XFormPanelCallbacksEventsTest extends GWTTestCase {
 	}
 
 	/**
+	 * Тест ф-ции xFormPanelClickUpdate.
+	 */
+	public void testXFormPanelClickUpdate() {
+		assertTrue(true);
+	}
+
+	/**
 	 * Тест ф-ции showSelector.
 	 */
 	public void testShowSelector() {

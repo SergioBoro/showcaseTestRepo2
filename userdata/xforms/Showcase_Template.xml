@@ -506,6 +506,14 @@
 						resource="javascript:gwtXFormFilter('xformId', '2',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
 				</xf:action>
 			</xf:trigger>
+			
+			<xf:trigger>
+				<xf:label>Обновить</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:load
+						resource="javascript:gwtXFormUpdate('xformId', '3',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
+				</xf:action>
+			</xf:trigger>
 
 		</div>
 
