@@ -194,7 +194,16 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 		p.add(new HTML(Constants.PLEASE_WAIT_GRID_1));
 
-		setGrid(UpdateType.FULL, false);
+		if (grid1 == null) {
+			setDataGridPanel(UpdateType.FULL, false);
+		} else {
+
+			RootPanel.get("showcaseAppContainer").clear();
+			RootPanel.get("showcaseAppContainer").add(p);
+
+			setDataGridPanelByGrid(grid1, UpdateType.FULL, false);
+
+		}
 
 	}
 
@@ -213,7 +222,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 				p.add(new HTML(Constants.PLEASE_WAIT_GRID_1));
 
-				setGrid(UpdateType.FULL, refreshContextOnly);
+				setDataGridPanel(UpdateType.FULL, refreshContextOnly);
 			} else {
 				hpHeader.clear();
 				hpHeader.add(new HTML(Constants.PLEASE_WAIT_GRID_2));
@@ -222,7 +231,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 				dg.setVisible(false);
 				hpFooter.setVisible(false);
 
-				setGrid(UpdateType.UPDATE_BY_REDRAWGRID, refreshContextOnly);
+				setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID, refreshContextOnly);
 			}
 		}
 
@@ -254,7 +263,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	private void setGrid(final UpdateType ut, final Boolean refreshContextOnly) {
+	private void setDataGridPanel(final UpdateType ut, final Boolean refreshContextOnly) {
 
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -265,40 +274,46 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 			@Override
 			public void onSuccess(final Grid grid1) {
-				grid = grid1;
-
-				bListenersExit = true;
-
-				beforeUpdateGrid();
-
-				switch (ut) {
-				case FULL:
-					updateGridFull();
-					break;
-				case RECORDSET_BY_UPDATERECORDSET:
-					updateGridRecordsetByUpdateRecordset();
-					break;
-				case RECORDSET_BY_SHOWDATA:
-					updateGridRecordsetByShowData();
-					break;
-				case UPDATE_BY_REDRAWGRID:
-					updateGridRedrawGrid();
-					break;
-				default:
-					throw new Error("Неизвестный тип UpdateType");
-				}
-
-				afterUpdateGrid(ut);
-
-				if (getIsFirstLoading() && refreshContextOnly) {
-					grid.updateAddContext(getContext());
-				}
-				setIsFirstLoading(false);
-
-				bListenersExit = false;
-
+				setDataGridPanelByGrid(grid1, ut, refreshContextOnly);
 			}
 		});
+
+	}
+
+	private void setDataGridPanelByGrid(final Grid grid1, final UpdateType ut,
+			final Boolean refreshContextOnly) {
+
+		grid = grid1;
+
+		bListenersExit = true;
+
+		beforeUpdateGrid();
+
+		switch (ut) {
+		case FULL:
+			updateGridFull();
+			break;
+		case RECORDSET_BY_UPDATERECORDSET:
+			updateGridRecordsetByUpdateRecordset();
+			break;
+		case RECORDSET_BY_SHOWDATA:
+			updateGridRecordsetByShowData();
+			break;
+		case UPDATE_BY_REDRAWGRID:
+			updateGridRedrawGrid();
+			break;
+		default:
+			throw new Error("Неизвестный тип UpdateType");
+		}
+
+		afterUpdateGrid(ut);
+
+		if (getIsFirstLoading() && refreshContextOnly) {
+			grid.updateAddContext(getContext());
+		}
+		setIsFirstLoading(false);
+
+		bListenersExit = false;
 
 	}
 
@@ -670,7 +685,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 			settings.setPageNumber(1);
 			settings.setSortedColumns(columns);
-			setGrid(UpdateType.RECORDSET_BY_UPDATERECORDSET, false);
+			setDataGridPanel(UpdateType.RECORDSET_BY_UPDATERECORDSET, false);
 			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 		}
 
@@ -686,7 +701,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			}
 
 			settings.setPageNumber(newPageNumber);
-			setGrid(UpdateType.RECORDSET_BY_UPDATERECORDSET, false);
+			setDataGridPanel(UpdateType.RECORDSET_BY_UPDATERECORDSET, false);
 			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 		}
 
@@ -703,7 +718,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 			settings.setPageNumber(1);
 			settings.setPageSize(newItemsPerPage);
-			setGrid(UpdateType.RECORDSET_BY_SHOWDATA, false);
+			setDataGridPanel(UpdateType.RECORDSET_BY_SHOWDATA, false);
 			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 		}
 
