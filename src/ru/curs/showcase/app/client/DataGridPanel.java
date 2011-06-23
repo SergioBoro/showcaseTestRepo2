@@ -211,7 +211,6 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	public void reDrawPanel(final CompositeContext context, final Boolean refreshContextOnly) {
 
 		setContext(context);
-		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		// --------------
 
 		if ((!getIsFirstLoading()) && refreshContextOnly) {
@@ -225,6 +224,8 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 				setDataGridPanel(UpdateType.FULL, refreshContextOnly);
 			} else {
+				p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+
 				hpHeader.clear();
 				hpHeader.add(new HTML(Constants.PLEASE_WAIT_GRID_2));
 
@@ -315,7 +316,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		}
 		setIsFirstLoading(false);
 
-		getPanel().setHeight("100%");
+		p.setHeight("100%");
 
 		bListenersExit = false;
 

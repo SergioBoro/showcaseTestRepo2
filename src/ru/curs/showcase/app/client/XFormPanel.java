@@ -184,6 +184,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 		if ((!getIsFirstLoading()) && refreshContextOnly) {
 			xform.updateAddContext(context);
 		} else {
+			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
 			p.clear();
 			p.add(new HTML(Constants.PLEASE_WAIT_XFORM_2));
@@ -223,7 +224,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 		destroy();
 
-		p.setSize("100%", "100%");
+		// p.setSize("100%", "100%");
 
 		xf = new HTML();
 
@@ -237,7 +238,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 		Action ac = xform.getActionForDependentElements();
 		if (ac != null) {
 			AppCurrContext.getInstance().setCurrentAction(ac);
-
 			ActionExecuter.execAction();
 		}
 
@@ -245,6 +245,9 @@ public class XFormPanel extends BasicElementPanelBasis {
 			xform.updateAddContext(getContext());
 		}
 		setIsFirstLoading(false);
+
+		// p.setHeight("100%");
+		p.setSize("100%", "100%");
 	}
 
 	/**
