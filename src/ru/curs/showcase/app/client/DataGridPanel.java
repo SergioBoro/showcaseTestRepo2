@@ -211,6 +211,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	public void reDrawPanel(final CompositeContext context, final Boolean refreshContextOnly) {
 
 		setContext(context);
+		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		// --------------
 
 		if ((!getIsFirstLoading()) && refreshContextOnly) {
@@ -233,8 +234,9 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 				setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID, refreshContextOnly);
 			}
-		}
 
+		}
+		getPanel().setHeight("100%");
 	}
 
 	private void resetCurrentSelection() {
