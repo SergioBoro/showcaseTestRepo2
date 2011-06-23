@@ -8,7 +8,7 @@ import java.util.*;
 import ru.beta2.extra.gwt.ui.panels.CursScrolledTabLayoutPanel;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.MultiUserData;
 
 import com.google.gwt.dom.client.Style.Unit;
@@ -286,13 +286,11 @@ public class GeneralDataPanel {
 		Widget w = null;
 
 		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-			dgp =
-				new DataGridPanel(getElementContextForNavigatorAction(dpe), dpe,
-						new DataGridPanelCallbacksEvents());
+			dgp = new DataGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
 			w = dgp.getPanel();
 			w.setSize("100%", "100%");
 		} else {
-			dgp = new DataGridPanel(dpe, new DataGridPanelCallbacksEvents());
+			dgp = new DataGridPanel(dpe);
 			w = dgp.getPanel();
 			dgp.hidePanel();
 		}

@@ -91,10 +91,6 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	 * DataPanelElementInfo.
 	 */
 	private DataPanelElementInfo elementInfo;
-	/**
-	 * DataGridPanelCallbacks.
-	 */
-	private final DataGridPanelCallbacks dgpCallbacks;
 
 	/**
 	 * GridRequestedSettings.
@@ -158,6 +154,11 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	}
 
 	@Override
+	public DataPanelElement getElement() {
+		return grid;
+	}
+
+	@Override
 	public DataPanelElementInfo getElementInfo() {
 		return elementInfo;
 	}
@@ -169,14 +170,11 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	/**
 	 * Конструктор класса DataGridPanel без начального показа грида.
 	 */
-	public DataGridPanel(final DataPanelElementInfo element,
-			final DataGridPanelCallbacks dgpCallbacks1) {
+	public DataGridPanel(final DataPanelElementInfo element) {
 
 		setElementInfo(element);
 		setContext(null);
 		setIsFirstLoading(true);
-
-		this.dgpCallbacks = dgpCallbacks1;
 
 		// --------------
 
@@ -186,13 +184,11 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	 * Конструктор класса DataGridPanel.
 	 */
 	public DataGridPanel(final CompositeContext context, final DataPanelElementInfo element,
-			final DataGridPanelCallbacks dgpCallbacks1) {
+			final Grid grid1) {
 
 		this.setContext(context);
 		this.setElementInfo(element);
 		setIsFirstLoading(true);
-
-		this.dgpCallbacks = dgpCallbacks1;
 
 		// --------------
 
@@ -453,9 +449,9 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		}
 
 		if (ut == UpdateType.FULL) {
-			runActionForDepElements();
+			runAction(grid.getActionForDependentElements());
 		} else if ((ut == UpdateType.UPDATE_BY_REDRAWGRID) && (!selectionSaved)) {
-			runActionForDepElements();
+			runAction(grid.getActionForDependentElements());
 		} else {
 			processClick(recId, colId, InteractionType.SINGLE_CLICK);
 		}
@@ -465,12 +461,10 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	private void runActionForDepElements() {
-		Action ac = grid.getActionForDependentElements();
+	private void runAction(final Action ac) {
 		if (ac != null) {
 			AppCurrContext.getInstance().setCurrentAction(ac);
-
-			dgpCallbacks.dataGridPanelClick();
+			ActionExecuter.execAction();
 		}
 	}
 
@@ -582,11 +576,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			ac = ev.getAction();
 		}
 
-		if (ac != null) {
-			AppCurrContext.getInstance().setCurrentAction(ac);
-
-			dgpCallbacks.dataGridPanelClick();
-		}
+		runAction(ac);
 
 	}
 
@@ -637,11 +627,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		Action ac =
 			grid.getEventManager().getSelectionActionForDependentElements(dg.getSelection());
 
-		if (ac != null) {
-			AppCurrContext.getInstance().setCurrentAction(ac);
-
-			dgpCallbacks.dataGridPanelClick();
-		}
+		runAction(ac);
 
 	}
 
@@ -752,11 +738,6 @@ public class DataGridPanel extends BasicElementPanelBasis {
 				settings = null;
 			}
 		}
-	}
-
-	@Override
-	public DataPanelElement getElement() {
-		return grid;
 	}
 
 }
