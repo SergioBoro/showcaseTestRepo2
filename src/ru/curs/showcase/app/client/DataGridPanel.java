@@ -236,7 +236,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			}
 
 		}
-		getPanel().setHeight("100%");
+
 	}
 
 	private void resetCurrentSelection() {
@@ -314,6 +314,8 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			grid.updateAddContext(getContext());
 		}
 		setIsFirstLoading(false);
+
+		getPanel().setHeight("100%");
 
 		bListenersExit = false;
 
