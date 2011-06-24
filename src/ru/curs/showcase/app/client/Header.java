@@ -240,7 +240,9 @@ public class Header {
 	}
 
 	/**
-	 * При.
+	 * Возвращает UserAgent.
+	 * 
+	 * @return UserAgent
 	 */
 	public native String getUserAgent() /*-{
 		return $wnd.navigator.userAgent.toLowerCase();

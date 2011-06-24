@@ -80,6 +80,8 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	/**
 	 * Генерирует описание грида для тестов.
 	 * 
+	 * @return DataPanelElementInfo
+	 * 
 	 */
 	protected DataPanelElementInfo getTestGridInfo() {
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("2", DataPanelElementType.GRID);
@@ -92,6 +94,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	/**
 	 * Генерирует описание графика для тестов.
 	 * 
+	 * @return DataPanelElementInfo
 	 */
 	protected DataPanelElementInfo getTestChartInfo() {
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("3", DataPanelElementType.CHART);
@@ -106,6 +109,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	/**
 	 * Генерирует описание xforms для тестов.
 	 * 
+	 * @return DataPanelElementInfo
 	 */
 	protected DataPanelElementInfo getTestXForms1Info() {
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("08", DataPanelElementType.XFORMS);
@@ -132,6 +136,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	/**
 	 * Генерирует описание xforms для тестов.
 	 * 
+	 * @return DataPanelElementInfo
 	 */
 	protected DataPanelElementInfo getTestXForms2Info() {
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("09", DataPanelElementType.XFORMS);
