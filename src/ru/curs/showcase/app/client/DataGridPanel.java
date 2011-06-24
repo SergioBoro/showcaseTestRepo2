@@ -561,14 +561,23 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	public ClipboardDialog copyToClipboard() {
 		StringBuilder b = new StringBuilder();
 		List<Column> columns = cs.getVisibleColumnsByIndex();
+
+		String d = "";
+		for (Column c : columns) {
+			b.append(d).append(c.getCaption());
+			d = "\t";
+		}
+		b.append("\n");
+
 		for (Record r : dg.getSelection().getSelectedRecords()) {
-			String d = "";
+			d = "";
 			for (Column c : columns) {
 				b.append(d).append(r.getValues().get(c.getId()));
 				d = "\t";
 			}
 			b.append("\n");
 		}
+
 		ClipboardDialog cd = new ClipboardDialog(b.toString());
 		cd.center();
 		return cd;
