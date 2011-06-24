@@ -416,7 +416,12 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 	@Override
 	public void refreshPanel() {
-		// TODO Auto-generated method stub
+		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+
+		p.clear();
+		p.add(new HTML(Constants.PLEASE_WAIT_XFORM_2));
+
+		setXFormPanel(false);
 
 	}
 

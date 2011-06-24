@@ -825,7 +825,16 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 	@Override
 	public void refreshPanel() {
-		// TODO Auto-generated method stub
+		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+
+		hpHeader.clear();
+		hpHeader.add(new HTML(Constants.PLEASE_WAIT_GRID_2));
+
+		hpToolbar.setVisible(false);
+		dg.setVisible(false);
+		hpFooter.setVisible(false);
+
+		setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID, false);
 
 	}
 
