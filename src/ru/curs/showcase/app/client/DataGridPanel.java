@@ -254,7 +254,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		DataCell cell = dg.getSelection().getSelectedCell();
 		if (cell != null) {
 			settings.setCurrentRecordId(cell.getRecord().getId());
-			settings.setCurrentRecordId(cell.getColumn().getId());
+			settings.setCurrentColumnId(cell.getColumn().getId());
 		}
 
 		List<Record> records = dg.getSelection().getSelectedRecords();
