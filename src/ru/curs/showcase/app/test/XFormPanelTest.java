@@ -15,8 +15,6 @@ import com.google.gwt.user.client.ui.HTML;
  */
 public class XFormPanelTest extends GWTTestCase {
 
-	static final int LEN_MAININSTANCE = 539;
-
 	@Override
 	public String getModuleName() {
 		return "ru.curs.showcase.app.AppTest";
@@ -81,7 +79,7 @@ public class XFormPanelTest extends GWTTestCase {
 		com.google.gwt.user.client.Element target = DOM.getElementById("target");
 		assertEquals(2, target.getChildCount());
 
-		assertEquals(LEN_MAININSTANCE, xfp.getMainInstance().trim().length());
+		assertEquals(XFormTestsCommon.LEN_MAININSTANCE, xfp.getMainInstance().trim().length());
 
 		assertEquals(DataPanelActionType.DO_NOTHING, AppCurrContext.getInstance()
 				.getCurrentAction().getDataPanelActionType());
@@ -111,7 +109,7 @@ public class XFormPanelTest extends GWTTestCase {
 		com.google.gwt.user.client.Element target = DOM.getElementById("target");
 		assertEquals(2, target.getChildCount());
 
-		assertEquals(LEN_MAININSTANCE, xfp.getMainInstance().trim().length());
+		assertEquals(XFormTestsCommon.LEN_MAININSTANCE, xfp.getMainInstance().trim().length());
 
 		assertEquals(DataPanelActionType.DO_NOTHING, AppCurrContext.getInstance()
 				.getCurrentAction().getDataPanelActionType());

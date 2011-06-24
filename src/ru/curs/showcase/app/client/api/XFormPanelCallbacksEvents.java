@@ -409,7 +409,14 @@ public final class XFormPanelCallbacksEvents {
 		}
 	}
 
-	private static XFormPanel getCurrentPanel(final String xformId) {
+	/**
+	 * Возвращает текущую XFormPanel.
+	 * 
+	 * @param xformId
+	 *            - Id элемента xForm.
+	 * @return XFormPanel
+	 */
+	public static XFormPanel getCurrentPanel(final String xformId) {
 		if (testXFormPanel == null) {
 			return ((XFormPanel) ActionExecuter.getElementPanelById(xformId));
 		} else {

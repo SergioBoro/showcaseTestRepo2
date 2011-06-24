@@ -31,9 +31,10 @@ public class XFormPanelCallbacksEventsTest extends GWTTestCase {
 	public void testXFormPanelClickSave() {
 
 		XFormPanel xfp = XFormTestsCommon.createXFormPanelForTests2();
+		assertNull(AppCurrContext.getInstance().getCurrentAction().getKeepUserSettings());
 		XFormPanelCallbacksEvents.setTestXFormPanel(xfp);
 
-		final String xformId = "61";
+		final String xformId = "1";
 		final String linkId = "1";
 		final String data = XFormTestsCommon.XFORM_DATA;
 
@@ -41,6 +42,7 @@ public class XFormPanelCallbacksEventsTest extends GWTTestCase {
 
 		assertEquals(DataPanelActionType.DO_NOTHING, AppCurrContext.getInstance()
 				.getCurrentAction().getDataPanelActionType());
+		assertTrue(AppCurrContext.getInstance().getCurrentAction().getKeepUserSettings());
 
 	}
 
@@ -50,16 +52,18 @@ public class XFormPanelCallbacksEventsTest extends GWTTestCase {
 	public void testXFormPanelClickFilter() {
 
 		XFormPanel xfp = XFormTestsCommon.createXFormPanelForTests2();
+		assertNull(AppCurrContext.getInstance().getCurrentAction().getKeepUserSettings());
 		XFormPanelCallbacksEvents.setTestXFormPanel(xfp);
 
-		final String xformId = "61";
-		final String linkId = "2";
+		final String xformId = "1";
+		final String linkId = "1";
 		final String data = XFormTestsCommon.XFORM_DATA;
 
 		XFormPanelCallbacksEvents.xFormPanelClickFilter(xformId, linkId, data);
 
 		assertEquals(DataPanelActionType.DO_NOTHING, AppCurrContext.getInstance()
 				.getCurrentAction().getDataPanelActionType());
+		assertTrue(AppCurrContext.getInstance().getCurrentAction().getKeepUserSettings());
 
 	}
 
@@ -69,16 +73,18 @@ public class XFormPanelCallbacksEventsTest extends GWTTestCase {
 	public void testXFormPanelClickUpdate() {
 
 		XFormPanel xfp = XFormTestsCommon.createXFormPanelForTests2();
+		assertNull(AppCurrContext.getInstance().getCurrentAction().getKeepUserSettings());
 		XFormPanelCallbacksEvents.setTestXFormPanel(xfp);
 
-		final String xformId = "61";
-		final String linkId = "3";
+		final String xformId = "1";
+		final String linkId = "1";
 		final String data = XFormTestsCommon.XFORM_DATA;
 
 		XFormPanelCallbacksEvents.xFormPanelClickUpdate(xformId, linkId, data);
 
 		assertEquals(DataPanelActionType.DO_NOTHING, AppCurrContext.getInstance()
 				.getCurrentAction().getDataPanelActionType());
+		assertTrue(AppCurrContext.getInstance().getCurrentAction().getKeepUserSettings());
 
 	}
 
@@ -87,29 +93,25 @@ public class XFormPanelCallbacksEventsTest extends GWTTestCase {
 	 */
 	public void testShowSelector() {
 		assertTrue(true);
-
-		// XFormPanel xfp = XFormTestsCommon.createXFormPanelForTests2();
-		// XFormPanelCallbacksEvents.setTestXFormPanel(xfp);
-		// XFormPanelCallbacksEvents.showSelector(null);
 	}
 
 	/**
 	 * Тест ф-ции downloadFile.
 	 */
 	public void testDownloadFile() {
-		// assertTrue(true);
 
 		XFormPanel xfp = XFormTestsCommon.createXFormPanelForTests2();
 		XFormPanelCallbacksEvents.setTestXFormPanel(xfp);
 
-		final String xformId = "611";
-		final String linkId = "4";
+		final String xformId = "1";
+		final String linkId = "1";
 		final String data = XFormTestsCommon.XFORM_DATA;
 
 		XFormPanelCallbacksEvents.downloadFile(xformId, linkId, data);
 
 		assertEquals(DataPanelActionType.DO_NOTHING, AppCurrContext.getInstance()
 				.getCurrentAction().getDataPanelActionType());
+		assertNull(AppCurrContext.getInstance().getCurrentAction().getKeepUserSettings());
 
 	}
 
@@ -120,4 +122,16 @@ public class XFormPanelCallbacksEventsTest extends GWTTestCase {
 		assertTrue(true);
 	}
 
+	/**
+	 * Тест ф-ции getCurrentPanel.
+	 */
+	public void testGetCurrentPanel() {
+
+		XFormPanel xfp = XFormTestsCommon.createXFormPanelForTests2();
+		XFormPanelCallbacksEvents.setTestXFormPanel(xfp);
+
+		assertEquals(XFormTestsCommon.LEN_MAININSTANCE,
+				XFormPanelCallbacksEvents.getCurrentPanel("1").getMainInstance().trim().length());
+
+	}
 }
