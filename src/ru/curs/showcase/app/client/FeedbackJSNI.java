@@ -67,7 +67,7 @@ public final class FeedbackJSNI {
 	 *            - Id элемента
 	 * @return - String
 	 */
-	public static String refreshElementBromBase(final String elementId) {
+	public static String refreshElementFromBase(final String elementId) {
 		BasicElementPanel bep = ActionExecuter.getElementPanelById(elementId);
 		if (bep != null) {
 			bep.refreshPanel();
@@ -89,8 +89,8 @@ public final class FeedbackJSNI {
 		@ru.curs.showcase.app.client.FeedbackJSNI::getElementMainContext(Ljava/lang/String;);
 		$wnd.getAdditionalContextFeedbackJSNIFunction = 
 		@ru.curs.showcase.app.client.FeedbackJSNI::getElementAdditionContext(Ljava/lang/String;);
-		$wnd.refreshElementBromBaseFeedbackJSNIFunction = 
-		@ru.curs.showcase.app.client.FeedbackJSNI::refreshElementBromBase(Ljava/lang/String;);
+		$wnd.refreshElementFromBaseFeedbackJSNIFunction = 
+		@ru.curs.showcase.app.client.FeedbackJSNI::refreshElementFromBase(Ljava/lang/String;);
 		
 	}-*/;
 
