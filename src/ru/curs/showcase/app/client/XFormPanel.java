@@ -414,4 +414,10 @@ public class XFormPanel extends BasicElementPanelBasis {
 		xf = null;
 	}
 
+	@Override
+	public void refreshPanel() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

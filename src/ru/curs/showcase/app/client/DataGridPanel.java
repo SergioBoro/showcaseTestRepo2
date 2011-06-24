@@ -823,4 +823,10 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		}
 	}
 
+	@Override
+	public void refreshPanel() {
+		// TODO Auto-generated method stub
+
+	}
+
 }
