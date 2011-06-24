@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.*;
 /**
  * Класс диалога копирования в буфер обмена.
  */
-class ClipboardDialog extends DialogBoxWithCaptionButton {
+public class ClipboardDialog extends DialogBoxWithCaptionButton {
 
 	/**
 	 * TextArea ta.

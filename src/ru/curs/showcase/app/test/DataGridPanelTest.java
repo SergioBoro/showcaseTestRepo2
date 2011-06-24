@@ -5,7 +5,7 @@ import java.util.*;
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.grid.GridEvent;
+import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.client.*;
 
 import com.google.gwt.junit.client.GWTTestCase;
@@ -278,6 +278,65 @@ public class DataGridPanelTest extends GWTTestCase {
 
 		final int widgetCount1 = 4;
 		assertEquals(widgetCount1, dgp.getPanel().getWidgetCount());
+
+	}
+
+	/**
+	 * Тест3 ф-ции reDrawPanel.
+	 */
+	public void testReDrawPanel3() {
+
+		DataGridPanel dgp = createDataGridPanelForTests2();
+		assertNotNull(dgp);
+
+		CompositeContext context = new CompositeContext();
+
+		ru.curs.showcase.app.api.grid.Grid grid = createGrid();
+
+		dgp.reDrawPanelExt(context, false, grid);
+
+		final int widgetCount1 = 4;
+		assertEquals(widgetCount1, dgp.getPanel().getWidgetCount());
+
+	}
+
+	/**
+	 * Тест ф-ции exportToExcel.
+	 */
+	public void testExportToExcel() {
+
+		DataGridPanel dgp = createDataGridPanelForTests2();
+		assertNotNull(dgp);
+
+		dgp.exportToExcel(GridToExcelExportType.CURRENTPAGE);
+		dgp.exportToExcel(GridToExcelExportType.ALL);
+
+	}
+
+	/**
+	 * Тест ф-ции copyToClipboard.
+	 */
+	public void testCopyToClipboard() {
+
+		DataGridPanel dgp = createDataGridPanelForTests2();
+		assertNotNull(dgp);
+
+		ClipboardDialog cd = dgp.copyToClipboard();
+		assertTrue(cd.isVisible());
+		cd.hide();
+
+	}
+
+	/**
+	 * Тест ф-ции saveSettings.
+	 */
+	public void testSaveSettings() {
+
+		DataGridPanel dgp = createDataGridPanelForTests2();
+		assertNotNull(dgp);
+
+		dgp.saveSettings(true);
+		dgp.saveSettings(false);
 
 	}
 

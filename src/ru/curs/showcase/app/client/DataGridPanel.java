@@ -523,7 +523,13 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		settings.setPageSize(grid.getDataSet().getRecordSet().getPageSize());
 	}
 
-	private void exportToExcel(final GridToExcelExportType exportType) {
+	/**
+	 * Экспорт в Excel.
+	 * 
+	 * @param exportType
+	 *            GridToExcelExportType
+	 */
+	public void exportToExcel(final GridToExcelExportType exportType) {
 		DownloadHelper dh = DownloadHelper.getInstance();
 		dh.clear();
 
@@ -546,7 +552,13 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	private void copyToClipboard() {
+	/**
+	 * Передача в буфер обмена.
+	 * 
+	 * @return ClipboardDialog
+	 * 
+	 */
+	public ClipboardDialog copyToClipboard() {
 		StringBuilder b = new StringBuilder();
 		List<Column> columns = cs.getVisibleColumnsByIndex();
 		for (Record r : dg.getSelection().getSelectedRecords()) {
@@ -557,7 +569,9 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			}
 			b.append("\n");
 		}
-		new ClipboardDialog(b.toString()).center();
+		ClipboardDialog cd = new ClipboardDialog(b.toString());
+		cd.center();
+		return cd;
 	}
 
 	// -------------------------------------------------------
