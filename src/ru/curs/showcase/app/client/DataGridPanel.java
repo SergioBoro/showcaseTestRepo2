@@ -569,13 +569,24 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		}
 		b.append("\n");
 
-		for (Record r : dg.getSelection().getSelectedRecords()) {
-			d = "";
-			for (Column c : columns) {
-				b.append(d).append(r.getValues().get(c.getId()));
-				d = "\t";
+		if (dg.getSelection().hasSelectedRecords()) {
+			for (Record r : dg.getSelection().getSelectedRecords()) {
+				d = "";
+				for (Column c : columns) {
+					b.append(d).append(r.getValues().get(c.getId()));
+					d = "\t";
+				}
+				b.append("\n");
 			}
-			b.append("\n");
+		} else {
+			for (Record r : grid.getDataSet().getRecordSet().getRecords()) {
+				d = "";
+				for (Column c : columns) {
+					b.append(d).append(r.getValues().get(c.getId()));
+					d = "\t";
+				}
+				b.append("\n");
+			}
 		}
 
 		ClipboardDialog cd = new ClipboardDialog(b.toString());
