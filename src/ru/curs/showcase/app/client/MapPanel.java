@@ -8,6 +8,7 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -132,6 +133,24 @@ public class MapPanel extends BasicElementPanelBasis {
 
 		drawMap(divIdMap, paramMap1, paramMap2);
 		checkForDefaultAction();
+
+		if (getElementInfo().getRefreshByTimer()) {
+			Timer timer = getTimer();
+			if (timer != null) {
+				timer.cancel();
+			}
+			timer = new Timer() {
+
+				@Override
+				public void run() {
+					refreshPanel();
+				}
+
+			};
+			final int n1000 = 1000;
+			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
+		}
+
 	}
 
 	/**
@@ -232,7 +251,7 @@ public class MapPanel extends BasicElementPanelBasis {
 	public void reDrawPanel(final CompositeContext context1, final Boolean refreshContextOnly) {
 
 		this.setContext(context1);
-
+		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		if ((!getIsFirstLoading()) && refreshContextOnly) {
 			geoMap.updateAddContext(context1);
 		} else {
@@ -252,6 +271,7 @@ public class MapPanel extends BasicElementPanelBasis {
 					geoMap = aGeoMap;
 					if (geoMap != null) {
 						fillMapPanel(aGeoMap);
+						getPanel().setHeight("100%");
 						if (getIsFirstLoading() && refreshContextOnly) {
 							geoMap.updateAddContext(context1);
 						}
@@ -293,5 +313,32 @@ public class MapPanel extends BasicElementPanelBasis {
 	@Override
 	public DataPanelElement getElement() {
 		return geoMap;
+	}
+
+	@Override
+	public void refreshPanel() {
+
+		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+
+		generalMapPanel.clear();
+		generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_MAP_DATA_ARE_LOADING));
+		if (dataService == null) {
+			dataService = GWT.create(DataService.class);
+		}
+
+		dataService.getGeoMap(getContext(), elementInfo, new GWTServiceCallback<GeoMap>(
+				Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
+
+			@Override
+			public void onSuccess(final GeoMap aGeoMap) {
+
+				geoMap = aGeoMap;
+				if (geoMap != null) {
+					fillMapPanel(aGeoMap);
+					getPanel().setHeight("100%");
+				}
+			}
+		});
+
 	}
 }

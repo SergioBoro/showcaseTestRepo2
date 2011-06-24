@@ -12,14 +12,15 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /**
  * @author anlug
  * 
- *         Интерфейс панели,на которой может находится grid, web-text или chart.
+ *         Интерфейс панели,на которой может находится grid, web-text или chart,
+ *         geomap.
  * 
  */
 public interface BasicElementPanel {
 
 	/**
 	 * 
-	 * Функция перерисовки панели (графика, грида, вебтекста).
+	 * Функция перерисовки элемента панели (графика, грида, вебтекста).
 	 * 
 	 * @param context1
 	 *            контекст с которым надо перерисовать объект.
@@ -28,6 +29,13 @@ public interface BasicElementPanel {
 	 *            обновления контекста для всех его событий.
 	 */
 	void reDrawPanel(final CompositeContext context1, final Boolean refreshContextOnly);
+
+	/**
+	 * 
+	 * Функция обновления элемента панели (графика, грида, вебтекста).
+	 * 
+	 */
+	void refreshPanel();
 
 	/**
 	 * 

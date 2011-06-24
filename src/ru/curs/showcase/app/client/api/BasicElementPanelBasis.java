@@ -5,6 +5,8 @@ package ru.curs.showcase.app.client.api;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 
+import com.google.gwt.user.client.Timer;
+
 /**
  * @author anlug
  * 
@@ -12,7 +14,28 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 public abstract class BasicElementPanelBasis implements BasicElementPanel {
 
 	/**
-	 * CompositeContext элемента, с которым об был отрисован последний раз..
+	 * Таймер, для обновление данных панели элемента через заданные интервалы
+	 * времени.
+	 */
+	private Timer timer;
+
+	/**
+	 * @return the timer
+	 */
+	public Timer getTimer() {
+		return timer;
+	}
+
+	/**
+	 * @param atimer
+	 *            the timer to set
+	 */
+	public void setTimer(final Timer atimer) {
+		this.timer = atimer;
+	}
+
+	/**
+	 * CompositeContext элемента, с которым он был отрисован последний раз..
 	 */
 	private CompositeContext context;
 

@@ -60,6 +60,24 @@ public final class FeedbackJSNI {
 
 	/**
 	 * 
+	 * Функция возвращает последний addition-context с которым был отрисован
+	 * элемент.
+	 * 
+	 * @param elementId
+	 *            - Id элемента
+	 * @return - String
+	 */
+	public static String refreshElementBromBase(final String elementId) {
+		BasicElementPanel bep = ActionExecuter.getElementPanelById(elementId);
+		if (bep != null) {
+			bep.refreshPanel();
+		}
+		return null;
+
+	}
+
+	/**
+	 * 
 	 * Процедура инициализирующая Java функции gwt клиентского кода
 	 * (JSNI-технология), которые будут выполняться при их вызове в javaScript
 	 * из dom-модели Showcase. Данная функция должна вызываться при
@@ -69,8 +87,10 @@ public final class FeedbackJSNI {
 	public static native void initFeedbackJSNIFunctions() /*-{
 		$wnd.getMainContextFeedbackJSNIFunction = 
 		@ru.curs.showcase.app.client.FeedbackJSNI::getElementMainContext(Ljava/lang/String;);
-				$wnd.getAdditionalContextFeedbackJSNIFunction = 
+		$wnd.getAdditionalContextFeedbackJSNIFunction = 
 		@ru.curs.showcase.app.client.FeedbackJSNI::getElementAdditionContext(Ljava/lang/String;);
+		$wnd.refreshElementBromBaseFeedbackJSNIFunction = 
+		@ru.curs.showcase.app.client.FeedbackJSNI::refreshElementBromBase(Ljava/lang/String;);
 		
 	}-*/;
 

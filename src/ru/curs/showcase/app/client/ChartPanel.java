@@ -8,6 +8,7 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -134,6 +135,23 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 		drawChart(divIdGraph, divIdLegend, paramChart1, paramChart2);
 		checkForDefaultAction();
+
+		if (getElementInfo().getRefreshByTimer()) {
+			Timer timer = getTimer();
+			if (timer != null) {
+				timer.cancel();
+			}
+			timer = new Timer() {
+
+				@Override
+				public void run() {
+					refreshPanel();
+				}
+
+			};
+			final int n1000 = 1000;
+			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
+		}
 	}
 
 	/**
@@ -234,7 +252,7 @@ public class ChartPanel extends BasicElementPanelBasis {
 	public void reDrawPanel(final CompositeContext context1, final Boolean refreshContextOnly) {
 
 		this.setContext(context1);
-
+		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		if ((!getIsFirstLoading()) && refreshContextOnly) {
 			chart.updateAddContext(context1);
 		} else {
@@ -253,6 +271,7 @@ public class ChartPanel extends BasicElementPanelBasis {
 					chart = achart;
 					if (chart != null) {
 						fillChartPanel(achart);
+						getPanel().setHeight("100%");
 						if (getIsFirstLoading() && refreshContextOnly) {
 							chart.updateAddContext(context1);
 						}
@@ -294,5 +313,32 @@ public class ChartPanel extends BasicElementPanelBasis {
 	@Override
 	public DataPanelElement getElement() {
 		return chart;
+	}
+
+	@Override
+	public void refreshPanel() {
+
+		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+
+		generalChartPanel.clear();
+		generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_CHART_DATA_ARE_LOADING));
+		if (dataService == null) {
+			dataService = GWT.create(DataService.class);
+		}
+
+		dataService.getChart(getContext(), elementInfo, new GWTServiceCallback<Chart>(
+				Constants.ERROR_OF_CHART_DATA_RETRIEVING_FROM_SERVER) {
+
+			@Override
+			public void onSuccess(final Chart achart) {
+
+				chart = achart;
+				if (chart != null) {
+					fillChartPanel(achart);
+					getPanel().setHeight("100%");
+				}
+			}
+		});
+
 	}
 }
