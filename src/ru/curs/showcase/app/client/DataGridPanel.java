@@ -209,6 +209,21 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 	@Override
 	public void reDrawPanel(final CompositeContext context, final Boolean refreshContextOnly) {
+		reDrawPanelExt(context, refreshContextOnly, null);
+	}
+
+	/**
+	 * Расширенная ф-ция reDrawPanel. Используется в рабочем режиме и для тестов
+	 * 
+	 * @param context
+	 *            CompositeContext
+	 * @param refreshContextOnly
+	 *            Boolean
+	 * @param grid1
+	 *            Grid
+	 */
+	public void reDrawPanelExt(final CompositeContext context, final Boolean refreshContextOnly,
+			final Grid grid1) {
 
 		setContext(context);
 		// --------------
@@ -222,7 +237,14 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 				p.add(new HTML(Constants.PLEASE_WAIT_GRID_1));
 
-				setDataGridPanel(UpdateType.FULL, refreshContextOnly);
+				if (grid1 == null) {
+					setDataGridPanel(UpdateType.FULL, refreshContextOnly);
+				} else {
+					RootPanel.get("showcaseAppContainer").clear();
+					RootPanel.get("showcaseAppContainer").add(p);
+					setDataGridPanelByGrid(grid1, UpdateType.FULL, refreshContextOnly);
+				}
+
 			} else {
 				p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
@@ -233,7 +255,14 @@ public class DataGridPanel extends BasicElementPanelBasis {
 				dg.setVisible(false);
 				hpFooter.setVisible(false);
 
-				setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID, refreshContextOnly);
+				if (grid1 == null) {
+					setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID, refreshContextOnly);
+				} else {
+					RootPanel.get("showcaseAppContainer").clear();
+					RootPanel.get("showcaseAppContainer").add(p);
+					setDataGridPanelByGrid(grid1, UpdateType.UPDATE_BY_REDRAWGRID,
+							refreshContextOnly);
+				}
 			}
 
 		}

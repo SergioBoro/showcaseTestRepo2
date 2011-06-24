@@ -1,20 +1,24 @@
 package ru.curs.showcase.app.test;
 
+import java.util.*;
+
+import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.grid.Grid;
-import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.grid.GridEvent;
 import ru.curs.showcase.app.client.*;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.*;
 
 /**
  * Класс для тестирования DataGridPanel.
  */
 public class DataGridPanelTest extends GWTTestCase {
+
+	static final String HEADER = "Это хедер";
+	static final String FOOTER = "Это футер";
 
 	@Override
 	public String getModuleName() {
@@ -46,16 +50,137 @@ public class DataGridPanelTest extends GWTTestCase {
 		return new DataGridPanel(dpei);
 	}
 
+	private ru.curs.showcase.app.api.grid.Grid createGrid() {
+
+		ru.curs.showcase.app.api.grid.Grid grid = new ru.curs.showcase.app.api.grid.Grid();
+
+		DataSet ds = new DataSet();
+		ColumnSet cs = new ColumnSet();
+		RecordSet rs = new RecordSet();
+
+		grid.setDataSet(ds);
+
+		ds.setColumnSet(cs);
+		ds.setRecordSet(rs);
+
+		Column c1 = new Column();
+		c1.setId("Регион");
+		c1.setCaption("Регион");
+		c1.setIndex(0);
+		c1.setVisible(true);
+		c1.setWidth("100px");
+
+		Column c2 = new Column();
+		c2.setId("Картинка");
+		c2.setCaption("Картинка");
+		c2.setIndex(1);
+		c2.setVisible(true);
+		c2.setWidth("20px");
+		c2.setHorizontalAlignment(HorizontalAlignment.CENTER);
+		c2.setDisplayMode(ColumnValueDisplayMode.AUTOFIT);
+		c2.setValueType(GridValueType.IMAGE);
+
+		Column c3 = new Column();
+		c3.setId("3кв. 2005г.");
+		c3.setCaption("3кв. 2005г.");
+		c3.setIndex(2);
+		c3.setVisible(true);
+		c3.setWidth("60px");
+
+		Column c4 = new Column();
+		c4.setId("4кв. 2005г.");
+		c4.setCaption("4кв. 2005г.");
+		final int index = 3;
+		c4.setIndex(index);
+		c4.setVisible(true);
+		c4.setWidth("60px");
+
+		cs.setColumns(new ArrayList<Column>(Arrays.asList(c1, c2, c3, c4)));
+
+		final int pageNumber = 1;
+		final int pageSize = 3;
+		final int pagesTotal = 27;
+
+		rs.setPageNumber(pageNumber);
+		rs.setPageSize(pageSize);
+		rs.setPagesTotal(pagesTotal);
+
+		Record r1 = new Record();
+		r1.setId("0");
+		r1.setValue("Регион", "Итого по России");
+		r1.setValue("Картинка", "solutions/default/resources/imagesingrid/test.jpg");
+		r1.setValue("3кв. 2005г.", "377,63");
+		r1.setValue("4кв. 2005г.", "293,42");
+
+		Record r2 = new Record();
+		r2.setId("1");
+		r2.setValue("Регион", "Алтайский край");
+		r2.setValue("Картинка", "solutions/default/resources/imagesingrid/test.jpg");
+		r2.setValue("3кв. 2005г.", "17,40");
+		r2.setValue("4кв. 2005г.", "15,87");
+
+		Record r3 = new Record();
+		r3.setId("2");
+		r3.setValue("Регион", "Тестовый регион");
+		r3.setValue("Картинка", "solutions/default/resources/imagesingrid/test.jpg");
+		r3.setValue("3кв. 2005г.", "15,27");
+		r3.setValue("4кв. 2005г.", "0,30");
+
+		rs.setRecords(Arrays.asList(r1, r2, r3));
+
+		grid.setAutoSelectColumn(c3);
+		grid.setAutoSelectRecord(r2);
+
+		Action ac = new Action();
+		ac.setDataPanelActionType(DataPanelActionType.DO_NOTHING);
+		grid.setDefaultAction(ac);
+		Event ev = new GridEvent();
+		ev.setAction(ac);
+		((GridEvent) ev).setColId(grid.getAutoSelectColumn().getId());
+		((GridEvent) ev).setRecordId(grid.getAutoSelectRecord().getId());
+		((GridEvent) ev).setInteractionType(InteractionType.SINGLE_CLICK);
+		grid.getEventManager().setEvents(Arrays.asList(ev));
+
+		grid.setHeader(HEADER);
+		grid.setFooter(FOOTER);
+
+		DataGridSettings settings = new DataGridSettings();
+		final int pagerDuplicateRecords = 4;
+		settings.setPagerDuplicateRecords(pagerDuplicateRecords);
+		final int pagesButtonCount = 17;
+		settings.setPagesButtonCount(pagesButtonCount);
+		settings.setRightClickEnabled(false);
+		settings.setMiddleClickEnabled(false);
+		settings.setSingleClickBeforeDoubleClick(false);
+		settings.setDoubleClickEnabled(true);
+		final int doubleClickTime = 300;
+		settings.setDoubleClickTime(doubleClickTime);
+		settings.setSelectOnlyRecords(false);
+		settings.setSelectOnDoubleClick(true);
+		settings.setSelectRecordOnClick(true);
+		settings.setUnselectRecordOnClick(false);
+		settings.setUnselectCellOnClick(false);
+		settings.setHorizontalScrollable(true);
+		settings.setColumnGapHtml("");
+		settings.setColumnGapWidth(2);
+		grid.setUISettings(settings);
+
+		return grid;
+
+	}
+
 	private DataGridPanel createDataGridPanelForTests2() {
 
 		CompositeContext context = new CompositeContext();
+		context.setMain("Ввоз, включая импорт - Всего");
 
 		DataPanelElementInfo dpei = new DataPanelElementInfo();
 		dpei.setId("1");
 		dpei.setPosition(1);
 		dpei.setType(DataPanelElementType.GRID);
+		dpei.setProcName("grid_bal");
 
-		Grid grid = new Grid();
+		ru.curs.showcase.app.api.grid.Grid grid = createGrid();
 
 		return new DataGridPanel(context, dpei, grid);
 	}
@@ -90,51 +215,69 @@ public class DataGridPanelTest extends GWTTestCase {
 	 */
 	public void testConstr2() {
 
-		final CompositeContext context = new CompositeContext();
-		context.setMain("Ввоз, включая импорт - Всего");
+		DataGridPanel dgp = createDataGridPanelForTests2();
+		assertNotNull(dgp);
 
-		final DataPanelElementInfo elInfo =
-			new DataPanelElementInfo("2", DataPanelElementType.GRID);
-		elInfo.setPosition(1);
-		elInfo.setProcName("grid_bal");
+		assertNotNull(dgp.getContext());
+		assertEquals("1", dgp.getElementInfo().getId());
+		assertFalse(dgp.getIsFirstLoading());
 
-		DataServiceAsync dataService = GWT.create(DataService.class);
+		final int widgetCount1 = 4;
+		assertEquals(widgetCount1, dgp.getPanel().getWidgetCount());
+		assertEquals(HEADER,
+				((HTML) ((HorizontalPanel) dgp.getPanel().getWidget(0)).getWidget(0)).getHTML());
+		final int widgetCount2 = 3;
+		assertEquals(widgetCount2,
+				((HorizontalPanel) dgp.getPanel().getWidget(1)).getWidgetCount());
+		final int indWidget = 3;
+		assertEquals(FOOTER,
+				((HTML) ((HorizontalPanel) dgp.getPanel().getWidget(indWidget)).getWidget(0))
+						.getHTML());
 
-		dataService.getGrid(context, elInfo, null, new GWTServiceCallback<Grid>(
-				"Ошибка при получении данных таблицы с сервера") {
-
-			@Override
-			public void onSuccess(final Grid grid) {
-
-				// DataGridPanel dgp = createDataGridPanelForTests2();
-				DataGridPanel dgp = new DataGridPanel(context, elInfo, grid);
-				assertNotNull(dgp);
-
-				assertNotNull(dgp.getContext());
-				assertEquals("1", dgp.getElementInfo().getId());
-				// assertFalse(dgp.getIsFirstLoading());
-
-				// assertEquals(1, dgp.getPanel().getWidgetCount());
-
-				// assertEquals(DataPanelActionType.DO_NOTHING,
-				// AppCurrContext.getInstance()
-				// .getCurrentAction().getDataPanelActionType());
-
-				finishTest();
-
-			}
-		});
-
-		delayTestFinish(10000);
+		assertEquals(DataPanelActionType.DO_NOTHING, AppCurrContext.getInstance()
+				.getCurrentAction().getDataPanelActionType());
 
 	}
 
 	/**
-	 * Тест ф-ции reDrawPanel.
+	 * Тест1 ф-ции reDrawPanel.
 	 */
-	public void testReDrawPanel() {
+	public void testReDrawPanel1() {
 
-		assertTrue(true);
+		DataGridPanel dgp = createDataGridPanelForTests1();
+		assertNotNull(dgp);
+
+		CompositeContext context = new CompositeContext();
+
+		ru.curs.showcase.app.api.grid.Grid grid = createGrid();
+
+		dgp.reDrawPanelExt(context, true, grid);
+		assertNotNull(dgp.getContext());
+
+		final int widgetCount1 = 4;
+		assertEquals(widgetCount1, dgp.getPanel().getWidgetCount());
+
+		assertEquals(DataPanelActionType.DO_NOTHING, AppCurrContext.getInstance()
+				.getCurrentAction().getDataPanelActionType());
+
+	}
+
+	/**
+	 * Тест2 ф-ции reDrawPanel.
+	 */
+	public void testReDrawPanel2() {
+
+		DataGridPanel dgp = createDataGridPanelForTests2();
+		assertNotNull(dgp);
+
+		CompositeContext context = new CompositeContext();
+
+		ru.curs.showcase.app.api.grid.Grid grid = createGrid();
+
+		dgp.reDrawPanelExt(context, true, grid);
+
+		final int widgetCount1 = 4;
+		assertEquals(widgetCount1, dgp.getPanel().getWidgetCount());
 
 	}
 
