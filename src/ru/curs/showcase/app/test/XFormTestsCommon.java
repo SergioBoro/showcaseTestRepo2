@@ -112,6 +112,7 @@ public final class XFormTestsCommon {
 		dpei.setId("1");
 		dpei.setPosition(1);
 		dpei.setType(DataPanelElementType.XFORMS);
+		dpei.setRefreshByTimer(true);
 
 		return new XFormPanel(dpei);
 	}
@@ -129,6 +130,7 @@ public final class XFormTestsCommon {
 		dpei.setId("1");
 		dpei.setPosition(1);
 		dpei.setType(DataPanelElementType.XFORMS);
+		dpei.setRefreshByTimer(true);
 
 		XForms xform = createXForms2();
 

@@ -340,6 +340,23 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 		afterUpdateGrid(ut);
 
+		if (getElementInfo().getRefreshByTimer()) {
+			Timer timer = getTimer();
+			if (timer != null) {
+				timer.cancel();
+			}
+			timer = new Timer() {
+
+				@Override
+				public void run() {
+					refreshPanel();
+				}
+
+			};
+			final int n1000 = 1000;
+			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
+		}
+
 		if (getIsFirstLoading() && refreshContextOnly) {
 			grid.updateAddContext(getContext());
 		}

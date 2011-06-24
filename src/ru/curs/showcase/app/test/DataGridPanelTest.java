@@ -46,6 +46,7 @@ public class DataGridPanelTest extends GWTTestCase {
 		dpei.setId("1");
 		dpei.setPosition(1);
 		dpei.setType(DataPanelElementType.GRID);
+		dpei.setRefreshByTimer(true);
 
 		return new DataGridPanel(dpei);
 	}
@@ -179,6 +180,7 @@ public class DataGridPanelTest extends GWTTestCase {
 		dpei.setPosition(1);
 		dpei.setType(DataPanelElementType.GRID);
 		dpei.setProcName("grid_bal");
+		dpei.setRefreshByTimer(true);
 
 		ru.curs.showcase.app.api.grid.Grid grid = createGrid();
 
