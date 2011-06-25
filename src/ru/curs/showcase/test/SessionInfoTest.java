@@ -16,6 +16,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.server.*;
+import ru.curs.showcase.exception.NoSuchUserDataException;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.XMLUtils;
 
@@ -32,6 +33,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	static final String KEY1 = "key1";
 	static final String FAKE_SESSION_ID = "fake-session-id";
 	static final String USERDATA_ID = "test1";
+	static final String NOT_EXIST_USERDATA_ID = "test123";
 
 	/**
 	 * Базовый тест на запись и чтение URLParams.
@@ -157,4 +159,17 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurrentUserDataId());
 		assertNotNull(AppProps.getUserDataCatalog());
 	}
+
+	/**
+	 * Проверка установки несуществующей userdata.
+	 */
+	@Test(expected = NoSuchUserDataException.class)
+	public void testNotExistUserdata() {
+		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
+		ArrayList<String> value3 = new ArrayList<String>();
+		value3.add(NOT_EXIST_USERDATA_ID);
+		params.put(AppProps.URL_PARAM_USERDATA, value3);
+		AppInfoSingleton.getAppInfo().setCurrentUserDataId(params);
+	}
+
 }

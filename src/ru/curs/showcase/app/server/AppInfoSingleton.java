@@ -5,6 +5,7 @@ import java.util.*;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.exception.NoSuchUserDataException;
 import ru.curs.showcase.util.AppProps;
 
 /**
@@ -246,6 +247,11 @@ public final class AppInfoSingleton {
 		if (userDataId == null) {
 			userDataId = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
 		}
+
+		if (!userdatas.containsKey(userDataId)) {
+			throw new NoSuchUserDataException(userDataId);
+		}
+
 		currentUserDataId.set(userDataId);
 	}
 

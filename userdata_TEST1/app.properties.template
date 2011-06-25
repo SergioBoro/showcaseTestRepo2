@@ -7,7 +7,7 @@ rdbms.connection.username = sa
 rdbms.connection.password = F708420Dx
 navigator.proc.name = generationtree
 # general
-navigator.def.icon.name = group_icon_default.png
+navigator.def.icon.name = group_icon_default1.png
 copy.userdata.on.startup = false
 copy.userdata.dirs = js:css:html:resources:WEB-INF
 # dirs
