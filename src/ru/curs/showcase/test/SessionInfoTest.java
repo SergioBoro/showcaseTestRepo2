@@ -13,7 +13,7 @@ import org.xml.sax.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.exception.NoSuchUserDataException;
@@ -43,19 +43,9 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	 * @throws SAXException
 	 */
 	@Test
-	public void testWriteAndRead() throws IOException, GeneralServerException, SAXException {
-
-		Map<String, List<String>> params = new TreeMap<String, List<String>>();
-		ArrayList<String> value1 = new ArrayList<String>();
-		value1.add(VALUE12);
-		params.put(KEY1, value1);
-		ArrayList<String> value2 = new ArrayList<String>();
-		value2.add("value21");
-		value2.add("value22");
-		params.put("key2", value2);
-		ArrayList<String> value3 = new ArrayList<String>();
-		value3.add(USERDATA_ID);
-		params.put(AppProps.URL_PARAM_USERDATA, value3);
+	public void testSessionInfoForGetChart() throws IOException, GeneralServerException,
+			SAXException {
+		Map<String, List<String>> params = generateTestURLParams();
 
 		AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(FAKE_SESSION_ID,
 				AUTH_VIA_AUTH_SERVER);
@@ -69,6 +59,17 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
 		serviceLayer.getChart(context, element);
 
+		checkTestUrlParams(context);
+
+		assertEquals(AUTH_VIA_AUTH_SERVER, AppInfoSingleton.getAppInfo()
+				.getAuthViaAuthServerForSession(FAKE_SESSION_ID));
+		assertEquals(TEMP_PASS, AppInfoSingleton.getAppInfo()
+				.getAuthServerCrossAppPasswordForSession(FAKE_SESSION_ID));
+
+	}
+
+	private void checkTestUrlParams(final CompositeContext context) throws SAXException,
+			IOException {
 		String sessionContext = context.getSession();
 		DocumentBuilder db = XMLUtils.createBuilder();
 		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
@@ -98,12 +99,41 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 			doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.USERDATA_TAG)
 					.item(0);
 		assertEquals(USERDATA_ID, node.getTextContent());
+	}
 
-		assertEquals(AUTH_VIA_AUTH_SERVER, AppInfoSingleton.getAppInfo()
-				.getAuthViaAuthServerForSession(FAKE_SESSION_ID));
-		assertEquals(TEMP_PASS, AppInfoSingleton.getAppInfo()
-				.getAuthServerCrossAppPasswordForSession(FAKE_SESSION_ID));
+	/**
+	 * Проверка установки информации о сессии для функции получения инф. панели.
+	 * 
+	 * @throws IOException
+	 * @throws GeneralServerException
+	 * @throws SAXException
+	 */
+	@Test
+	public void testSessionInfoForGetDP() throws IOException, GeneralServerException, SAXException {
+		Map<String, List<String>> params = generateTestURLParams();
+		ServiceLayerDataServiceImpl serviceLayer =
+			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
+		final int elID = 5;
+		Action action = getAction("tree_multilevel.xml", 0, elID);
+		action.setSessionContext(params);
+		serviceLayer.getDataPanel(action);
+		checkTestUrlParams(action.getDataPanelLink().getContext());
+		checkTestUrlParams(action.getDataPanelLink().getElementLinks().get(0).getContext());
+	}
 
+	private Map<String, List<String>> generateTestURLParams() {
+		Map<String, List<String>> params = new TreeMap<String, List<String>>();
+		ArrayList<String> value1 = new ArrayList<String>();
+		value1.add(VALUE12);
+		params.put(KEY1, value1);
+		ArrayList<String> value2 = new ArrayList<String>();
+		value2.add("value21");
+		value2.add("value22");
+		params.put("key2", value2);
+		ArrayList<String> value3 = new ArrayList<String>();
+		value3.add(USERDATA_ID);
+		params.put(AppProps.URL_PARAM_USERDATA, value3);
+		return params;
 	}
 
 	/**

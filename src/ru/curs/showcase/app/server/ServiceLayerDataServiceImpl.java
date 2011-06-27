@@ -92,6 +92,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		DataPanel panel = null;
 
 		try {
+			prepareContext(action);
 			DataPanelGateway gateway = new DataPanelXMLGateway();
 			DataFile<InputStream> file =
 				gateway.getXML(action.getDataPanelLink().getDataPanelId());
@@ -267,6 +268,19 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 		LOGGER.debug("Session context: " + sessionContext);
 		context.setSession(sessionContext);
+		AppInfoSingleton.getAppInfo().setCurrentUserDataId(context.getSessionParamsMap());
+	}
+
+	private void prepareContext(final Action action) throws UnsupportedEncodingException {
+		if (action.getDataPanelActionType() == DataPanelActionType.DO_NOTHING) {
+			return;
+		}
+
+		CompositeContext context = action.getDataPanelLink().getContext();
+		String sessionContext =
+			SessionInfoGenerator.generateSessionContext(sessionId, context.getSessionParamsMap());
+		LOGGER.debug("Session context: " + sessionContext);
+		action.setSessionContext(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurrentUserDataId(context.getSessionParamsMap());
 	}
 

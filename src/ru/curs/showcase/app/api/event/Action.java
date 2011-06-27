@@ -367,7 +367,8 @@ public class Action implements SerializableElement, GWTClonable {
 	}
 
 	/**
-	 * Устанавливает контекст сессии для всех составных контекстов действия.
+	 * Устанавливает контекст сессии (в виде карты) для всех составных
+	 * контекстов действия.
 	 * 
 	 * @param data
 	 *            - новое значение контекста.
@@ -381,6 +382,26 @@ public class Action implements SerializableElement, GWTClonable {
 		while (iterator.hasNext()) {
 			DataPanelElementLink link = iterator.next();
 			link.getContext().addSessionParams(data);
+		}
+
+	}
+
+	/**
+	 * Устанавливает контекст сессии (в виде строки) для всех составных
+	 * контекстов действия.
+	 * 
+	 * @param data
+	 *            - новое значение контекста.
+	 */
+	public void setSessionContext(final String data) {
+		if (getDataPanelActionType() == DataPanelActionType.DO_NOTHING) {
+			return;
+		}
+		dataPanelLink.getContext().setSession(data);
+		Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
+		while (iterator.hasNext()) {
+			DataPanelElementLink elLink = iterator.next();
+			elLink.getContext().setSession(data);
 		}
 
 	}
