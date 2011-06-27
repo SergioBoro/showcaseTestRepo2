@@ -107,6 +107,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 			Timer timer = getTimer();
 			if (timer != null) {
 				timer.cancel();
+				// MessageBox.showSimpleMessage("fff", "timer cancel");
 			}
 			timer = new Timer() {
 
@@ -116,6 +117,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 				}
 
 			};
+			setTimer(timer);
 			final int n1000 = 1000;
 			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
 
