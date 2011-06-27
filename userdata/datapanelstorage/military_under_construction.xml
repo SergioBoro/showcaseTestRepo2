@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<datapanel>
-
-
-	<tab id="6111" name="В разработке">
-		<element id="50111" type="webtext" proc="webtext_military_under_construction"/>
-	</tab>				
-</datapanel>
