@@ -255,4 +255,14 @@ public final class AppInfoSingleton {
 		currentUserDataId.set(userDataId);
 	}
 
+	/**
+	 * Метод для прямой установки currentUserDataId.
+	 * 
+	 * @param aUserDataId
+	 *            - новое значение currentUserDataId.
+	 */
+	public void setCurrentUserDataId(final String aUserDataId) {
+		currentUserDataId.set(aUserDataId);
+	}
+
 }

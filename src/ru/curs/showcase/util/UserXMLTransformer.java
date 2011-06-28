@@ -93,9 +93,12 @@ public final class UserXMLTransformer {
 		strSubject = aSubject;
 		// некрасиво, зато меньше кода, по сравнению с вариантом преобразования
 		// в Document
-		ByteArrayOutputStream os =
-			StreamConvertor.inputToOutputStream(TextUtils.stringToStream(aSubject));
-		subject = new DataFile<ByteArrayOutputStream>(os, "данные формы");
+		if (aSubject != null) {
+			ByteArrayOutputStream os =
+				StreamConvertor.inputToOutputStream(TextUtils.stringToStream(aSubject));
+			subject = new DataFile<ByteArrayOutputStream>(os, "данные формы");
+		}
+
 		proc = aProc;
 	}
 

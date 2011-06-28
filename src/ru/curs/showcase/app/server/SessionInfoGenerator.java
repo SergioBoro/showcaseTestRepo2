@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
 
-import org.slf4j.*;
 import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
@@ -20,10 +19,6 @@ import ru.curs.showcase.util.XMLUtils;
  * 
  */
 public final class SessionInfoGenerator extends GeneralXMLHelper {
-	/**
-	 * LOGGER.
-	 */
-	static final Logger LOGGER = LoggerFactory.getLogger(SessionInfoGenerator.class);
 
 	static final String SESSION_CONTEXT_TAG = "sessioncontext";
 	public static final String USERNAME_TAG = "username";
@@ -48,7 +43,6 @@ public final class SessionInfoGenerator extends GeneralXMLHelper {
 	 */
 	static String generateSessionContext(final String sessionId,
 			final Map<String, ArrayList<String>> aMap) throws UnsupportedEncodingException {
-		LOGGER.debug("generateSessionContext sessionId = " + sessionId);
 		Document info =
 			XMLUtils.createBuilder().getDOMImplementation()
 					.createDocument("", SESSION_CONTEXT_TAG, null);

@@ -94,6 +94,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanelLink dpLink = new DataPanelLink();
 		dpLink.setDataPanelId("test2.xml");
 		dpLink.setTabId("1");
+		dpLink.setContext(CompositeContext.createCurrent());
 		action.setDataPanelLink(dpLink);
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);

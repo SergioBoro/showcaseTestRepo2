@@ -5,7 +5,6 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.model.RequestResult;
 import ru.curs.showcase.util.TextUtils;
 
@@ -43,12 +42,9 @@ public class XFormsSubmissionServlet extends HttpServlet {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				response.getWriter().append(res.generateStandartErrorMessage());
 			}
-		} catch (GeneralServerException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().append(e.getOriginalMessage());
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().append(e.getMessage());
+			response.getWriter().append(e.getLocalizedMessage());
 		}
 		response.getWriter().close();
 	}

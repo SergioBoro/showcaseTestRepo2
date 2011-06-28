@@ -60,7 +60,7 @@ public final class XFormsDBFactory extends HTMLBasedElementFactory {
 				XFormsTemplateModificator.addSrvInfo(template, getSource().getCallContext(),
 						getSource().getElementInfo());
 			html =
-				XFormProducer.getHTML(template, (getSource()).getData(), getSource()
+				XFormProducer.getHTML(template, getSource().getData(), getSource()
 						.getElementInfo().getId());
 			result.setXFormParts(XFormCutter.xFormParts(html));
 		} catch (Exception e) {

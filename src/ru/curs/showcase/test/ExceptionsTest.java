@@ -72,6 +72,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		DataPanelLink dpLink = new DataPanelLink();
 		dpLink.setDataPanelId("verysecretandhidden.xml");
 		dpLink.setTabId("1");
+		dpLink.setContext(CompositeContext.createCurrent());
 		action.setDataPanelLink(dpLink);
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -310,4 +311,20 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		assertNotNull(GeneralServerException
 				.checkExeptionTypeAndCreateDetailedTextOfException(exc));
 	}
+
+	/**
+	 * Проверяет на ошибку при передаче в БД "неверного" параметра userdata в
+	 * sessionContext.
+	 * 
+	 * @throws GeneralServerException
+	 */
+	@Test
+	public void testForUserDataToGridProcSuccessfull() throws GeneralServerException {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);
+		dpei.setProcName("grid_by_userdata");
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		serviceLayer.getGrid(context, dpei, null);
+	}
+
 }

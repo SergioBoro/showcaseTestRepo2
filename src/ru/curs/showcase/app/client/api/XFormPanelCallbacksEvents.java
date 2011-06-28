@@ -112,7 +112,11 @@ public final class XFormPanelCallbacksEvents {
 		} catch (SerializationException e) {
 			MessageBox.showSimpleMessage(Constants.XFORMS_UPLOAD_ERROR, e.getMessage());
 		}
-		uh.addParam("data", URL.encode(data));
+		String encodedData = null;
+		if (data != null) {
+			encodedData = URL.encode(data);
+		}
+		uh.addParam("data", encodedData);
 		currentXFormPanel.getPanel().add(uh);
 		uh.submit(new UploadSubmitEndHandler() {
 

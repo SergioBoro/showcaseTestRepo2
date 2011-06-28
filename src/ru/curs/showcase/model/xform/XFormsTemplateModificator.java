@@ -37,15 +37,16 @@ public final class XFormsTemplateModificator extends GeneralXMLHelper {
 		Node node = XFormProducer.getMainInstance(doc);
 		Node parent = node.getParentNode();
 
-		Element el = doc.createElement(XFormProducer.XF_INSTANCE);
+		Element el = doc.createElementNS("", XFormProducer.XF_INSTANCE);
 		el.setAttribute(ID_TAG, ROOT_SRV_DATA_TAG);
 		Node srv = parent.appendChild(el);
 		el = doc.createElement(SCHEMA_TAG);
 		srv = srv.appendChild(el);
 
 		addServerElement(doc, srv, context);
-
 		addServerElement(doc, srv, element);
+
+		doc.normalizeDocument();
 
 		return doc;
 	}

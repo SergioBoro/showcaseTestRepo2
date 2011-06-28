@@ -50,7 +50,7 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 			c.setDoInput(true);
 			c.connect();
 			if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				LOGGER.debug(String.format(LOGOUT_INFO, sesid));
+				LOGGER.info(String.format(LOGOUT_INFO, sesid));
 			}
 		}
 

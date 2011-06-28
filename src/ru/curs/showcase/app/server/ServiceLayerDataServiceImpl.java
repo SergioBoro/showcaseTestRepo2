@@ -2,6 +2,7 @@ package ru.curs.showcase.app.server;
 
 import java.io.*;
 import java.lang.reflect.Modifier;
+import java.util.*;
 
 import org.slf4j.*;
 import org.w3c.dom.Document;
@@ -27,6 +28,7 @@ import ru.curs.showcase.model.navigator.*;
 import ru.curs.showcase.model.webtext.*;
 import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.XMLUtils;
 
 import com.google.gson.*;
 
@@ -138,7 +140,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	private void outputDebugInfo(final Object obj) {
-		if (LOGGER.isDebugEnabled()) {
+		if (LOGGER.isInfoEnabled()) {
 			ExclusionStrategy es = new ExclusionStrategy() {
 				@Override
 				public boolean shouldSkipClass(final Class<?> aClass) {
@@ -153,7 +155,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			Gson gson =
 				new GsonBuilder().setPrettyPrinting().setExclusionStrategies(es).serializeNulls()
 						.excludeFieldsWithModifiers(Modifier.TRANSIENT + Modifier.STATIC).create();
-			LOGGER.debug(gson.toJson(obj));
+			LOGGER.info(gson.toJson(obj));
 		}
 	}
 
@@ -166,9 +168,9 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			ElementRawData raw = gateway.getFactorySource(context, element);
 			ChartDBFactory factory = new ChartDBFactory(raw);
 			Chart chart = factory.build();
+			outputDebugInfo(chart);
 			AdapterForJS adapter = new AdapterForJS();
 			adapter.adapt(chart);
-			outputDebugInfo(chart);
 			return chart;
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);
@@ -245,7 +247,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			throws GeneralServerException {
 		try {
 			prepareContext(context);
-			LOGGER.debug("Идет сохранение данных XForms: " + data);
+			LOGGER.info("Идет сохранение данных XForms: " + data);
 
 			UserXMLTransformer transformer =
 				new UserXMLTransformer(data, elementInfo.getSaveProc());
@@ -266,8 +268,9 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		String sessionContext =
 			SessionInfoGenerator.generateSessionContext(sessionId, context.getSessionParamsMap());
 
-		LOGGER.debug("Session context: " + sessionContext);
+		LOGGER.info("Session context: " + sessionContext);
 		context.setSession(sessionContext);
+		context.setSessionParamsMap(null);
 		AppInfoSingleton.getAppInfo().setCurrentUserDataId(context.getSessionParamsMap());
 	}
 
@@ -279,8 +282,9 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		CompositeContext context = action.getDataPanelLink().getContext();
 		String sessionContext =
 			SessionInfoGenerator.generateSessionContext(sessionId, context.getSessionParamsMap());
-		LOGGER.debug("Session context: " + sessionContext);
+		LOGGER.info("Session context: " + sessionContext);
 		action.setSessionContext(sessionContext);
+		action.setSessionContext((Map<String, List<String>>) null);
 		AppInfoSingleton.getAppInfo().setCurrentUserDataId(context.getSessionParamsMap());
 	}
 
@@ -289,11 +293,17 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			throws GeneralServerException {
 		try {
 			XFormsGateway gateway = new XFormsDBGateway();
-			RequestResult res = gateway.handleSubmission(procName, content);
+			String decodedContent = XMLUtils.xmlServiceSymbolsToNormal(content);
+
+			RequestResult res = gateway.handleSubmission(procName, decodedContent);
+
 			if (res.getSuccess()) {
-				LOGGER.debug("Submission успешно выполнен: " + res.getData());
+				LOGGER.info(String.format(
+						"Submission '%s' c данными %s успешно выполнен c результатом: %s",
+						procName, decodedContent, res.getData()));
 			} else {
-				LOGGER.debug("Submission вернул ошибку: " + res.generateStandartErrorMessage());
+				LOGGER.info(String.format("Submission '%s' c данными %s вернул ошибку: %s",
+						procName, decodedContent, res.generateStandartErrorMessage()));
 			}
 			return res;
 		} catch (Throwable e) {
@@ -309,7 +319,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			is.setCharacterStream(new StringReader(content));
 			Document doc = XMLUtils.createBuilder().parse(is);
 			String res = XMLUtils.xsltTransform(doc, xsltFile);
-			LOGGER.debug("XFormsTransformationServlet успешно выполнен: " + res);
+			LOGGER.info("XFormsTransformationServlet успешно выполнен: " + res);
 			return res;
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);
@@ -320,7 +330,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	public ServerCurrentState getServerCurrentState() throws GeneralServerException {
 		try {
 			ServerCurrentState res = ServerCurrentStateBuilder.build(sessionId);
-			LOGGER.debug(res.toString());
+			LOGGER.info(res.toString());
 			return res;
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);
@@ -332,7 +342,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			final DataPanelElementInfo elementInfo, final String linkId, final String data)
 			throws GeneralServerException {
 		try {
-			LOGGER.debug("Данные формы при выгрузке файла:" + data);
+			LOGGER.info("Данные формы при выгрузке файла:" + data);
 			prepareContext(context);
 
 			XFormsGateway gateway = new XFormsDBGateway();
@@ -344,8 +354,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			transformer.checkAndTransform();
 			file = transformer.getOutputStreamResult();
 
-			LOGGER.debug(String
-					.format("Размер скачиваемого файла: %d байт", file.getData().size()));
+			LOGGER.info(String.format("Размер скачиваемого файла: %d байт", file.getData().size()));
 			return file;
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);
@@ -357,13 +366,11 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			final String linkId, final String data, final DataFile<ByteArrayOutputStream> file)
 			throws GeneralServerException {
 		try {
-			LOGGER.debug("Данные формы при загрузке файла:" + data);
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Получен файл '" + file.getName() + "' размером "
-						+ file.getData().size() + " байт");
-			}
-			prepareContext(context);
+			LOGGER.info("Данные формы при загрузке файла:" + data);
+			LOGGER.info("Получен файл '" + file.getName() + "' размером " + file.getData().size()
+					+ " байт");
 
+			prepareContext(context);
 			UserXMLTransformer transformer =
 				new UserXMLTransformer(file, elementInfo.getProcs().get(linkId));
 			transformer.checkAndTransform();

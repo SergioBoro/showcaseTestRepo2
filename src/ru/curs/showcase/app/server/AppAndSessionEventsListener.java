@@ -22,7 +22,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 	@Override
 	public final void contextInitialized(final ServletContextEvent arg0) {
-		LOGGER.debug(SHOWCASE_LOADING);
+		LOGGER.info(SHOWCASE_LOADING);
 		AppInitializer.initialize();
 		ProductionModeInitializer.initialize(arg0);
 	}
@@ -34,16 +34,13 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 	@Override
 	public final void sessionCreated(final HttpSessionEvent arg0) {
-		LOGGER.debug("сессия Showcase создается... " + arg0.getSession().getId());
-
-		// arg0.getSession().setAttribute("pathOfUserData",
-		// "x:\\jprojects\\Showcase\\userdata");
+		LOGGER.info("сессия Showcase создается... " + arg0.getSession().getId());
 
 	}
 
 	@Override
 	public void sessionDestroyed(final HttpSessionEvent arg0) {
-		LOGGER.debug("сессия Showcase удаляется..." + arg0.getSession().getId());
+		LOGGER.info("сессия Showcase удаляется..." + arg0.getSession().getId());
 		AppInfoSingleton.getAppInfo().removeSessionInfo(arg0.getSession().getId());
 	}
 }

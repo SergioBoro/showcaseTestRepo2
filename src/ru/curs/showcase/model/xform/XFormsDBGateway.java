@@ -128,8 +128,13 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 				cs.execute();
 				int errorCode = cs.getInt(1);
 				if (errorCode == 0) {
-					result =
-						RequestResult.newSuccessResult(cs.getSQLXML(OUTPUTDATA_PARAM).getString());
+					SQLXML sqlxml = cs.getSQLXML(OUTPUTDATA_PARAM);
+					String out = null;
+					if (sqlxml != null) {
+						out = sqlxml.getString();
+
+					}
+					result = RequestResult.newSuccessResult(out);
 				} else {
 					result = RequestResult.newErrorResult(errorCode, cs.getString(ERROR_MES_COL));
 				}

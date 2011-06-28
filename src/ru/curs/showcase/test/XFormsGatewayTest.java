@@ -164,6 +164,21 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	}
 
 	/**
+	 * Функция тестирования работы SQL Submission через ServiceLayer c передачей
+	 * null в параметре content.
+	 * 
+	 * @throws GeneralServerException
+	 */
+	@Test
+	public void testSQLSubmissionBySLWithNullData() throws GeneralServerException {
+		String content = null;
+		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		RequestResult res = sl.handleSQLSubmission("xforms_submission1", content);
+		assertTrue(res.getSuccess());
+		assertEquals(content, res.getData());
+	}
+
+	/**
 	 * Функция тестирования работы XSLT Submission через ServiceLayer.
 	 * 
 	 * @throws GeneralServerException

@@ -81,15 +81,15 @@ public class CopyFileAction implements FileAction {
 		}
 		checkForDestDir();
 		copy(sourceFile, destFile);
-		LOGGER.debug(String.format(FILE_COPIED_INFO, sourceFile.getName(), toDir));
+		LOGGER.info(String.format(FILE_COPIED_INFO, sourceFile.getName(), toDir));
 	}
 
 	private boolean checkForDestFileExists(final File sourceFile, final File destFile) {
 		if (destFile.exists()) {
 			if (overwrite) {
-				LOGGER.debug(String.format(FILE_OVERWRITE_INFO, destFile.getName()));
+				LOGGER.info(String.format(FILE_OVERWRITE_INFO, destFile.getName()));
 			} else {
-				LOGGER.debug(String.format(FILE_SKIPED_INFO, sourceFile.getName(), toDir));
+				LOGGER.info(String.format(FILE_SKIPED_INFO, sourceFile.getName(), toDir));
 				return false;
 			}
 		}
@@ -103,7 +103,7 @@ public class CopyFileAction implements FileAction {
 				LOGGER.error(String.format(CREATE_DIR_ERROR, destDir.getName()));
 				return;
 			}
-			LOGGER.debug(String.format(DIR_CREATED_INFO, destDir.getName()));
+			LOGGER.info(String.format(DIR_CREATED_INFO, destDir.getName()));
 		}
 	}
 

@@ -177,7 +177,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals("<link href=\"ya.ru?search=aa&amp;bla&amp;ab\" "
 				+ "image=\"xxx.jpg\"  text=\"&lt;&quot; &lt;&gt; &gt; a&apos;&quot;\"  />",
 				GridDBFactory
-						.replaceXMLServiceSymbols("<link href=\"ya.ru?search=aa&amp;bla&ab\" "
+						.makeSafeXMLAttrValues("<link href=\"ya.ru?search=aa&amp;bla&ab\" "
 								+ "image=\"xxx.jpg\"  text=\"<&quot; &lt;&gt; > a'\"\"  />"));
 	}
 }

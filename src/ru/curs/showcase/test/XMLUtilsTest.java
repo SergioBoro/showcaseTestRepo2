@@ -70,7 +70,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 		Connection connection = ConnectionFactory.getConnection();
 
-		SQLXML sqlxmlIn = XMLUtils.getDOMToSQLXML(doc, connection);
+		SQLXML sqlxmlIn = XMLUtils.domToSQLXML(doc, connection);
 
 		SQLXML sqlxmlOut = getOutputByInputSQLXML(connection, sqlxmlIn);
 
@@ -100,7 +100,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 		Connection connection = ConnectionFactory.getConnection();
 
-		SQLXML sqlxmlIn = XMLUtils.getDOMToSQLXML(doc, connection);
+		SQLXML sqlxmlIn = XMLUtils.domToSQLXML(doc, connection);
 
 		SQLXML sqlxmlOut = getOutputByInputSQLXML(connection, sqlxmlIn);
 
@@ -310,4 +310,15 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 				"test.bad1.xml", xsdFileName));
 	}
 
+	/**
+	 * Проверка функции {@link ru.curs.showcase.util.TextUtils#getRealEncoding
+	 * XMLUtils.testXmlServiceSymbolsToNormal}.
+	 * 
+	 */
+	@Test
+	public void testXmlServiceSymbolsToNormal() {
+		String original = "&amp;&quot;&apos;&gt;&lt; какой-то текст";
+		String result = XMLUtils.xmlServiceSymbolsToNormal(original);
+		assertEquals("&\"'>< какой-то текст", result);
+	}
 }

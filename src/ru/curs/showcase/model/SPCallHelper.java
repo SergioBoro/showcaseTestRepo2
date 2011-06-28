@@ -79,8 +79,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 
 		cs.setString(ELEMENTID_COLUMNNAME, elementInfo.getId());
 
-		LOGGER.debug(context.toString());
-		LOGGER.debug(elementInfo.toString());
+		LOGGER.info("context=" + context.toString());
+		LOGGER.info("elementInfo=" + elementInfo.toString());
 	}
 
 	/**
@@ -164,7 +164,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		xml = getCs().getSQLXML(getOutSettingsParam());
 		if (xml != null) {
 			InputStream settings = xml.getBinaryStream();
-			validatedSettings = XMLUtils.validateXMLStream(settings, getSettingsSchema());
+			validatedSettings = XMLUtils.xsdValidateAppDataSafe(settings, getSettingsSchema());
 		}
 		return validatedSettings;
 	}

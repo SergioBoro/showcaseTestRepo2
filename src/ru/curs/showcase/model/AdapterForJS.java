@@ -2,8 +2,6 @@ package ru.curs.showcase.model;
 
 import java.lang.reflect.Modifier;
 
-import org.slf4j.*;
-
 import ru.curs.showcase.app.api.JSONObject;
 
 import com.google.gson.*;
@@ -15,11 +13,6 @@ import com.google.gson.*;
  * 
  */
 public class AdapterForJS {
-	/**
-	 * LOGGER.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(AdapterForJS.class);
-
 	/**
 	 * Результат.
 	 */
@@ -46,9 +39,6 @@ public class AdapterForJS {
 		GsonBuilder builder =
 			new GsonBuilder().serializeNulls().excludeFieldsWithModifiers(
 					Modifier.TRANSIENT + Modifier.STATIC);
-		if (LOGGER.isDebugEnabled()) {
-			builder = builder.setPrettyPrinting();
-		}
 		Gson gson = builder.create();
 		// вариант по умолчанию
 		// Gson gson = new Gson();

@@ -145,7 +145,7 @@ public final class NavigatorFactory extends GeneralXMLHelper {
 	 * @return - навигатор.
 	 */
 	public Navigator fromStream(final InputStream stream) {
-		InputStream streamForParse = XMLUtils.validateXMLStream(stream, "navigator.xsd");
+		InputStream streamForParse = XMLUtils.xsdValidateAppDataSafe(stream, "navigator.xsd");
 
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {

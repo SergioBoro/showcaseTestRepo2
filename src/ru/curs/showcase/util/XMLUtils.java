@@ -99,7 +99,7 @@ public final class XMLUtils {
 	 * @throws TransformerException
 	 *             В случае ошибки
 	 */
-	public static SQLXML getDOMToSQLXML(final org.w3c.dom.Document doc, final Connection con)
+	public static SQLXML domToSQLXML(final org.w3c.dom.Document doc, final Connection con)
 			throws SQLException, TransformerException {
 		Transformer tr = javax.xml.transform.TransformerFactory.newInstance().newTransformer();
 		SQLXML sqlxml = con.createSQLXML();
@@ -422,14 +422,14 @@ public final class XMLUtils {
 	 * 
 	 * @param doc
 	 *            org.w3c.dom.Document для проверки
-	 * @param xsdFileName
+	 * @param schemaFile
 	 *            Имя файла XSD-схемы
 	 * 
 	 */
 	public static void
-			xsdValidateUserData(final org.w3c.dom.Document doc, final String xsdFileName) {
+			xsdValidateUserData(final org.w3c.dom.Document doc, final String schemaFile) {
 		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
-		validator.validate(new XMLSource(doc, xsdFileName));
+		validator.validate(new XMLSource(doc, schemaFile));
 	}
 
 	/**
@@ -439,14 +439,14 @@ public final class XMLUtils {
 	 *            SAXParser
 	 * @param is
 	 *            InputStream для проверки
-	 * @param xsdFileName
+	 * @param schemaFile
 	 *            Имя файла XSD-схемы
 	 * 
 	 */
 	public static void xsdValidateUserData(final SAXParser parser, final InputStream is,
-			final String xsdFileName) {
+			final String schemaFile) {
 		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
-		validator.validate(new XMLSource(is, parser, xsdFileName));
+		validator.validate(new XMLSource(is, parser, schemaFile));
 	}
 
 	/**
@@ -460,7 +460,8 @@ public final class XMLUtils {
 	 *            - наименование файла схемы.
 	 * @return - входной поток, из которого можно читать.
 	 */
-	public static InputStream validateXMLStream(final InputStream stream, final String schemaFile) {
+	public static InputStream xsdValidateAppDataSafe(final InputStream stream,
+			final String schemaFile) {
 		StreamConvertor duplicator;
 		try {
 			duplicator = new StreamConvertor(stream);
@@ -480,13 +481,13 @@ public final class XMLUtils {
 	 * 
 	 * @param is
 	 *            InputStream для проверки
-	 * @param xsdFileName
+	 * @param schemaFile
 	 *            Имя файла XSD-схемы
 	 * 
 	 */
-	public static void xsdValidateUserData(final InputStream is, final String xsdFileName) {
+	public static void xsdValidateUserData(final InputStream is, final String schemaFile) {
 		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
-		validator.validate(new XMLSource(is, xsdFileName));
+		validator.validate(new XMLSource(is, schemaFile));
 	}
 
 	/**
@@ -521,7 +522,7 @@ public final class XMLUtils {
 	}
 
 	/**
-	 * Строит строку содержащую стартовый тэг с атрибутами для SAX парсера.
+	 * Строит строку содержащую тэг с атрибутами для SAX парсера.
 	 * 
 	 * @param qname
 	 *            - имя тэга.
@@ -546,10 +547,11 @@ public final class XMLUtils {
 	 * 
 	 * @param file
 	 *            - файл с XML документом.
-	 * @param schema
+	 * @param schemaName
 	 *            - наименование файла схемы.
 	 */
-	public static void validateXMLStream(final DataFile<InputStream> file, final String schema) {
+	public static void xsdValidateAppDataSafe(final DataFile<InputStream> file,
+			final String schemaName) {
 		StreamConvertor duplicator;
 		try {
 			duplicator = new StreamConvertor(file.getData());
@@ -560,6 +562,26 @@ public final class XMLUtils {
 		file.setData(duplicator.getCopy());
 
 		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
-		validator.validate(new XMLSource(stream1, file.getName(), schema));
+		validator.validate(new XMLSource(stream1, file.getName(), schemaName));
+	}
+
+	/**
+	 * Функция, частично заменяющая служебные XML символы на обычные. Важное
+	 * замечание: заменяются только XML, но не HTML символы!
+	 * 
+	 * @param original
+	 *            - исходная строка.
+	 */
+	public static String xmlServiceSymbolsToNormal(final String original) {
+		if (original == null) {
+			return null;
+		}
+		String result = original;
+		result = result.replace("&amp;", "&");
+		result = result.replace("&quot;", "\"");
+		result = result.replace("&apos;", "'");
+		result = result.replace("&lt;", "<");
+		result = result.replace("&gt;", ">");
+		return result;
 	}
 }

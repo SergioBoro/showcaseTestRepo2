@@ -230,7 +230,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 			throw new ResultSetHandleException(e);
 		}
 
-		xml = XMLUtils.validateXMLStream(xml, schemaName);
+		xml = XMLUtils.xsdValidateAppDataSafe(xml, schemaName);
 
 		stdParseProc(xml);
 		return result;
@@ -256,7 +256,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 	public Collection<E> getSimpleEvents(final InputStream stream) {
 		InputStream data = stream;
 		if (schemaName != null) {
-			data = XMLUtils.validateXMLStream(data, schemaName);
+			data = XMLUtils.xsdValidateAppDataSafe(data, schemaName);
 		}
 		stdParseProc(data);
 		return result;

@@ -91,7 +91,7 @@ public class GridDBFactory extends AbstractGridFactory {
 							value =
 								value.replace("${" + IMAGES_IN_GRID_DIR + "}",
 										AppProps.getRequiredValueByName(IMAGES_IN_GRID_DIR));
-							value = replaceXMLServiceSymbols(value);
+							value = makeSafeXMLAttrValues(value);
 						}
 					} else if (sql.getObject(col.getId()) == null) {
 						value = "";
@@ -122,7 +122,7 @@ public class GridDBFactory extends AbstractGridFactory {
 	 *            - текст ссылки.
 	 * @return - исправленный текст ссылки.
 	 */
-	public static String replaceXMLServiceSymbols(final String value) {
+	public static String makeSafeXMLAttrValues(final String value) {
 		String res = value.trim();
 
 		Pattern pattern = Pattern.compile("(\\&(?!quot;)(?!lt;)(?!gt;)(?!amp;)(?!apos;))");

@@ -129,7 +129,7 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 	 */
 	public DataPanel fromStream(final DataFile<InputStream> aFile) {
 		file = aFile;
-		XMLUtils.validateXMLStream(file, DATAPANEL_XSD);
+		XMLUtils.xsdValidateAppDataSafe(file, DATAPANEL_XSD);
 
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {

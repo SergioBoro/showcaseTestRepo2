@@ -57,4 +57,5 @@ public class TextUtilsTest extends AbstractTestBasedOnFiles {
 		assertEquals(RUS_NAME, TextUtils.extractFileName(RUS_PATH1));
 		assertEquals(RUS_NAME, TextUtils.extractFileName(RUS_PATH2));
 	}
+
 }
