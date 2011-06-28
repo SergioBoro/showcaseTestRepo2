@@ -22,7 +22,7 @@
 		</layout>
   </appender>	
 	<root>
-		<priority value="debug" />
+		<priority value="info" />
 		<appender-ref ref="Console" />
 <!--Для вывода в файл нужно добавить строку внутрь тэга <root>-->
 <!--<appender-ref ref="LogFile"/> и указать правильное имя файла в <appender name="LogFile">.-->
