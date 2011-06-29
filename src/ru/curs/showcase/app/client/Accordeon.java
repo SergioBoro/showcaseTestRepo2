@@ -123,7 +123,7 @@ public class Accordeon {
 				verpan.add(accordeon);
 				NavigatorElement nav = navigator.getAutoSelectElement();
 				if (nav != null) {
-					selectNesessaryItemInAccardion(nav.getId(), true);
+					selectNesessaryItemInAccordion(nav.getId(), true);
 				}
 
 			}
@@ -152,7 +152,7 @@ public class Accordeon {
 	 *            событие клика на дереве в навигаторе при выделении.
 	 * 
 	 */
-	public void selectNesessaryItemInAccardion(final String id, final Boolean fireEvent) {
+	public void selectNesessaryItemInAccordion(final String id, final Boolean fireEvent) {
 		if ((id == "") || (id == null)) {
 			return;
 		}
@@ -440,9 +440,9 @@ public class Accordeon {
 				verpan.add(accordeon);
 
 				if ((selectionId != "") && (selectionId != null)) {
-					selectNesessaryItemInAccardion(selectionId, fireEventSelection);
+					selectNesessaryItemInAccordion(selectionId, fireEventSelection);
 				} else {
-					selectNesessaryItemInAccardion(idToSelect, fireEventSelection);
+					selectNesessaryItemInAccordion(idToSelect, fireEventSelection);
 				}
 
 			}

@@ -37,15 +37,16 @@ public final class ActionExecuter {
 		}
 
 		final DataPanelActionType dpat = ac.getDataPanelActionType();
-		// ac.getNavigatorActionType()
-		if (ac.getNavigatorElementLink() != null) {
 
-			boolean fireSelectionAction = (dpat == DataPanelActionType.DO_NOTHING) ? true : false;
+		if (ac.getNavigatorActionType() != NavigatorActionType.DO_NOTHING) {
+
+			boolean fireSelectionAction =
+				ac.getNavigatorActionType() == NavigatorActionType.CHANGE_NODE_AND_DO_ACTION;
 			Accordeon acrd = AppCurrContext.getInstance().getMainPanel().getAccordeon();
 			if (ac.getNavigatorElementLink().getRefresh()) {
 				acrd.refreshAccordeon(ac.getNavigatorElementLink().getId(), fireSelectionAction);
 			} else {
-				acrd.selectNesessaryItemInAccardion(ac.getNavigatorElementLink().getId(),
+				acrd.selectNesessaryItemInAccordion(ac.getNavigatorElementLink().getId(),
 						fireSelectionAction);
 			}
 

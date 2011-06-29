@@ -67,7 +67,6 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 		if (qname.equalsIgnoreCase(ACTION_TAG)) {
 			Action action = new Action();
 			action.setDataPanelActionType(DataPanelActionType.RELOAD_PANEL);
-			action.setNavigatorActionType(NavigatorActionType.DO_NOTHING);
 			if (attrs.getIndex(SHOW_IN_MODE_TAG) > -1) {
 				action.setShowInMode(ShowInMode.valueOf(attrs.getValue(SHOW_IN_MODE_TAG)));
 			}

@@ -40,11 +40,6 @@ public class Action implements SerializableElement, GWTClonable {
 	private DataPanelLink dataPanelLink;
 
 	/**
-	 * Тип действия, которое нужно осуществить с навигатором.
-	 */
-	private NavigatorActionType navigatorActionType = NavigatorActionType.DO_NOTHING;
-
-	/**
 	 * Ссылка на элемент навигатора, которая должна быть открыта при выполнении
 	 * действия.
 	 */
@@ -93,12 +88,20 @@ public class Action implements SerializableElement, GWTClonable {
 		this.dataPanelActionType = aDataPanelActionType;
 	}
 
+	/**
+	 * Возвращает тип действия для навигатора в зависимости от состояния
+	 * действия.
+	 * 
+	 */
 	public final NavigatorActionType getNavigatorActionType() {
-		return navigatorActionType;
-	}
-
-	public final void setNavigatorActionType(final NavigatorActionType aNavigatorActionType) {
-		this.navigatorActionType = aNavigatorActionType;
+		if (navigatorElementLink == null) {
+			return NavigatorActionType.DO_NOTHING;
+		}
+		if (dataPanelLink == null) {
+			return NavigatorActionType.CHANGE_NODE_AND_DO_ACTION;
+		} else {
+			return NavigatorActionType.CHANGE_NODE;
+		}
 	}
 
 	/**
@@ -108,7 +111,6 @@ public class Action implements SerializableElement, GWTClonable {
 	 */
 	public void determineState() {
 		determineDPActionType();
-		determineNavActionType();
 		determineKeepUserSettingsState();
 	}
 
@@ -131,18 +133,6 @@ public class Action implements SerializableElement, GWTClonable {
 				}
 
 			}
-		}
-	}
-
-	private void determineNavActionType() {
-		if (navigatorElementLink == null) {
-			navigatorActionType = NavigatorActionType.DO_NOTHING;
-			return;
-		}
-		if (dataPanelLink == null) {
-			navigatorActionType = NavigatorActionType.CHANGE_NODE_AND_DO_ACTION;
-		} else {
-			navigatorActionType = NavigatorActionType.CHANGE_NODE;
 		}
 	}
 
@@ -245,7 +235,6 @@ public class Action implements SerializableElement, GWTClonable {
 		if (dataPanelLink != null) {
 			res.dataPanelLink = dataPanelLink.gwtClone();
 		}
-		res.navigatorActionType = navigatorActionType;
 		if (navigatorElementLink != null) {
 			res.navigatorElementLink = navigatorElementLink.gwtClone();
 		}

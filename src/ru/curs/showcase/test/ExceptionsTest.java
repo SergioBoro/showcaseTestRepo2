@@ -68,7 +68,6 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	public final void testWrongDPByServiceLayer() {
 		Action action = new Action();
 		action.setDataPanelActionType(DataPanelActionType.RELOAD_PANEL);
-		action.setNavigatorActionType(NavigatorActionType.DO_NOTHING);
 		DataPanelLink dpLink = new DataPanelLink();
 		dpLink.setDataPanelId("verysecretandhidden.xml");
 		dpLink.setTabId("1");
