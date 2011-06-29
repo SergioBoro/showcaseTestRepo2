@@ -4,22 +4,15 @@ dojo.require("course.geo.util.numeric");
 
 (function(){
 
-var j = course.geo.util.jenks,
-	n = course.geo.util.numeric;
+var u = course.geo.util,
+	j = u.jenks,
+	n = u.numeric;
 
-j.getBreaks = function(feature, styleFunctionDef) {
-	var kwArgs = styleFunctionDef.options,
-		featureContainer = feature.parent,
-		breaks = featureContainer._breaks;
-	if (!breaks || styleFunctionDef.updated > featureContainer._breaksTimestamp) {
-		var values = n.composeArray(featureContainer, kwArgs.attr, /*performSort*/true, /*ascendingSort*/true);
-		if (!values.length) return;
-		breaks = getBreaks(values, kwArgs.numClasses);
-		if (!breaks.length) return;
-		// store calculated breaks for the use by other features that are children of the featureContainer
-		featureContainer._breaks = breaks;
-		featureContainer._breaksTimestamp = (new Date()).getTime();
-	}
+j.getBreaks = function(featureContainer, kwArgs) {
+	var values = dojo.isArray(featureContainer) ? featureContainer : n.composeArray(featureContainer, kwArgs.attr, /*performSort*/true, /*ascendingSort*/true);
+	if (!values.length) return;
+	breaks = getBreaks(values, kwArgs.numClasses);
+	if (!breaks.length) return;
 
 	return breaks;
 };

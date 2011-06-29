@@ -12,12 +12,12 @@ dojo.declare("course.geo.FeatureContainer", course.geo.Feature, {
 		if (this.features) {
 			var features = this.features;
 			this.features = [];
-			this.addFeatures(features);
+			this.addFeatures(features, true);
 		}
 		else this.features = [];
 	},
 	
-	addFeatures: function(/* Array */features) {
+	addFeatures: function(/* Array */features, noRendering) {
 		if (!dojo.isArray(features)) features = [features];
 		var addedFeatures = [];
 		dojo.forEach(features, function(feature){
@@ -42,6 +42,7 @@ dojo.declare("course.geo.FeatureContainer", course.geo.Feature, {
 				addedFeatures.push(feature);
 			}
 		}, this);
+		if (!noRendering) this.map.renderFeatures(addedFeatures);
 		return addedFeatures;
 	},
 	
@@ -50,14 +51,13 @@ dojo.declare("course.geo.FeatureContainer", course.geo.Feature, {
 		var removedFeatures = [];
 		dojo.forEach(features, function(feature){
 			feature = feature.declaredClass ? feature : this.map.getFeatureById(feature);
-			var baseShapes = feature.baseShapes;
-			dojo.forEach(baseShapes, function(baseShape){
-				baseShape.removeShape();
-			});
-			// remove feature from the feature container
-			// disconnect all events
+			if (feature) feature.remove();
 		}, this);
 		return removedFeatures;
+	},
+	
+	remove: function() {
+		this.removeFeatures(this.features);
 	},
 	
 	getBbox: function() {

@@ -13,9 +13,14 @@ var restoreMethods = function(map) {
 		dojo.mixin(map.methods[type], g.methods[type]);
 	}
 	
+	/*
 	dojo.mixin(map.methods, {
-		Map: {render: map._render}
+		Map: {
+			render: map._render,
+			renderFeatures: map._renderFeatures
+		}
 	});
+	*/
 };
 
 
@@ -82,7 +87,7 @@ dojo.declare("course.geo.Map", null, {
 		// set engine
 		this.setEngine(kwArgs.engine || (dojo.config&&dojo.config.mapEngine) || defaultEngine);
 		
-		if (kwArgs.features) this.featureContainer.addFeatures(kwArgs.features);
+		if (kwArgs.features) this.addFeatures(kwArgs.features, true);
 	},
 	
 	ready: function(/* Function */readyFunction) {
@@ -92,30 +97,41 @@ dojo.declare("course.geo.Map", null, {
 		}));
 	},
 	
-	render: function(stylingOnly, mode, features) {
-		this.methods.Map.render.call(this, stylingOnly, mode, features);
+	addFeatures: function(features, noRendering) {
+		this.document.addFeatures(features, noRendering);
+	},
+	
+	removeFeatures: function(features) {
+		this.document.removeFeatures(features);
+	},
+	
+	render: function(stylingOnly, mode) {
+		this.methods.Map.render.call(this, stylingOnly, mode);
+	},
+	
+	_render: function(stylingOnly, mode) {
+		if (!this.extent) this.extent = this.getBbox();
+		this._calculateViewport();
+		this.engine.prepare();
+		this.document._render(stylingOnly, mode);
+	},
+	
+	renderFeatures: function(features, stylingOnly, mode) {
+		this.methods.Map.renderFeatures.call(this, features, stylingOnly, mode);
 	},
 
-	_render: function(stylingOnly, mode, features) {
-		if (features) {
-			// render only the given features instead of the whole map tree
-			if (dojo.isArray(features)) {
-				dojo.forEach(features, function(feature){
-					feature._render(stylingOnly, mode);
-				}, this);
-			}
-			else {
-				for(var fid in features) {
-					// TODO: avoid double rendering
-					features[fid]._render(stylingOnly, mode);
-				}
-			}
+	_renderFeatures: function(features, stylingOnly, mode) {
+		// render the given features only instead of the whole map tree
+		if (dojo.isArray(features)) {
+			dojo.forEach(features, function(feature){
+				feature._render(stylingOnly, mode);
+			}, this);
 		}
 		else {
-			if (!this.extent) this.extent = this.getBbox();
-			this._calculateViewport();
-			this.engine.prerender();
-			this.document._render(stylingOnly, mode);
+			for(var fid in features) {
+				// TODO: avoid double rendering
+				features[fid]._render(stylingOnly, mode);
+			}
 		}
 	},
 
@@ -202,14 +218,18 @@ dojo.declare("course.geo.Map", null, {
 	},
 	
 	setEngine: function(engine) {
+		// cheating build util
+		var req = dojo.require;
 		if (dojo.isString(engine)) engine = {type: engine};
 		if (!engine.declaredClass) {
-			// cheating build util
-			var req = dojo.require;
 			var options = {map: this};
 			if (engine.options) dojo.mixin(options, engine.options);
 			req("course.geo."+engine.type+".Engine");
 			engine = new course.geo[engine.type].Engine(options);
+		}
+		// check dependencies in the _dependencies local variable
+		for (dependency in _dependencies) {
+			req("course.geo."+engine.type+"."+dependency, true);
 		}
 		this.engine = engine;
 	},
@@ -220,14 +240,26 @@ dojo.declare("course.geo.Map", null, {
 	
 	destroy: function() {
 		this.engine.destroy();
+	},
+	
+	getMapGeometry: function(geometry) {
+		return geometry;
 	}
 });
+
+// An engine is supposed to implement each module listed in the _dependencies.
+// See dynamics.js for an example
+var _dependencies = {};
+g.setDependency = function(dependency) {
+	_dependencies[dependency] = 1;
+};
 
 // default methods;
 var p = g.Map.prototype;
 if (!g.methods) g.methods = {};
 g.methods.Map = {
-	render: p._render
+	render: p._render,
+	renderFeatures: p._renderFeatures
 }
 
 }());

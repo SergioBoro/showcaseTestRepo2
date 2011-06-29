@@ -166,6 +166,10 @@ dojo.declare("course.geo.ge.Placemark", course.geo.common.Placemark, {
 		normalStyle.getPolyStyle().getColor().set(convertColor(fill));
 		applyStroke(normalStyle, calculatedStyle, specificStyle);
 		return placemark;
+	},
+	
+	remove: function(placemark) {
+		placemark.getParentNode().getFeatures().removeChild(placemark);
 	}
 });
 
@@ -207,9 +211,9 @@ var convertColor = function(c) {
 
 var getNormalStyle = function(placemark) {
 	return placemark.getStyleSelector();
-	var styleSelector = placemark.getStyleSelector();
-	var normalStyle = styleSelector.getNormalStyle();
-	return normalStyle;
+	//var styleSelector = placemark.getStyleSelector();
+	//var normalStyle = styleSelector.getNormalStyle();
+	//return normalStyle;
 }
 
 var applyStroke = function(kmlStyle, calculatedStyle, specificStyle) {

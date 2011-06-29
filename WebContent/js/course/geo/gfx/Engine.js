@@ -33,7 +33,7 @@ dojo.declare("course.geo.gfx.Engine", course.geo.Engine, {
 		return parentContainer.createGroup();
 	},
 
-	prerender: function() {
+	prepare: function() {
 		var mapExtent = this.map.extent;
 		//transform map to fit container
 		var mapWidth = mapExtent[2] - mapExtent[0];
@@ -42,7 +42,7 @@ dojo.declare("course.geo.gfx.Engine", course.geo.Engine, {
 		this.group.setTransform([
 			dojox.gfx.matrix.scale(scale)
 		]);
-		this.factories.Placemark.prerender();
+		this.factories.Placemark.prepare();
 	},
 	
 	getTopContainer: function() {

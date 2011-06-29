@@ -90,7 +90,7 @@ dojo.declare("course.geo.Style", null, {
 
 		this._setDef(def);
 		// apply the style to the the affected features
-		this.map.render(true, "normal", affectedFeatures);
+		this.map.renderFeatures(affectedFeatures, true, "normal");
 	},
 	
 	_setDef: function(def) {

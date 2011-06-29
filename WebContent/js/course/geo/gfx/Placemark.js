@@ -19,7 +19,7 @@ dojo.declare("course.geo.gfx.Placemark", course.geo.common.Placemark, {
 		this.points = this.group.createGroup();
 	},
 	
-	prerender: function() {
+	prepare: function() {
 		this.calculateLengthDenominator();
 	},
 	
@@ -268,6 +268,10 @@ dojo.declare("course.geo.gfx.Placemark", course.geo.common.Placemark, {
 			}
 			
 		}
+	},
+	
+	remove: function(shape) {
+		shape.removeShape();
 	}
 });
 

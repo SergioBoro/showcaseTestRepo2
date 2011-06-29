@@ -32,7 +32,7 @@ dojo.require("course.geo.control.Navigation");
 
 
 dojo.require("course.geo.tests.data.usa_geometries");
-
+dojo.require("course.geo.tests.data.usa_features");
 dojo.require("course.geo.tests.data.usa_largest_airports");
 
 
@@ -50,20 +50,7 @@ var style = [
 var features = [
 	{
 		id: "areas",
-		features: [
-			{
-				id: "US-AK"
-			},
-			{
-				id: "US-HI"
-			},
-			{
-				id: "US-TX"
-			},
-			{
-				id: "US-ME"
-			}
-		],
+		features: course.geo.tests.data.usa_features,
 		style: {
 			mode: "highlight",
 			reset: true,

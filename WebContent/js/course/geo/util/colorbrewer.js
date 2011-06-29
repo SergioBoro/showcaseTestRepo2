@@ -1,26 +1,32 @@
 dojo.provide("course.geo.util.colorbrewer");
 
+dojo.require("course.geo.util.numeric");
 dojo.require("course.geo.util.colorbrewer_data");
 
 (function(){
 
 var u = course.geo.util,
+	n = u.numeric,
 	cb = u.colorbrewer,
 	cbd = u.colorbrewer_data;
 
 cb.getStyle = function(feature, style, styleFunctionDef) {
 	var kwArgs = styleFunctionDef.options,
 		getBreaks = dojo.isString(kwArgs.getBreaks) ? dojo.getObject(kwArgs.getBreaks) : kwArgs.getBreaks,
-		breaks = getBreaks(feature, styleFunctionDef),
-		attrValue = feature.get(kwArgs.attr);
-
-	for (var i=0; i<kwArgs.numClasses; i++) {
-		if (i==0) {
-			if (breaks[0]<=attrValue && attrValue<=breaks[1]) break;
-		}
-		else if (breaks[i]<attrValue && attrValue<=breaks[i+1]) break;
+		attrValue = feature.get(kwArgs.attr),
+		featureContainer = feature.parent,
+		breaks = featureContainer._breaks;
+	
+	if (!breaks || styleFunctionDef.updated > featureContainer._breaksTimestamp) {
+		breaks = getBreaks(featureContainer, styleFunctionDef.options);
+		
+		// store calculated breaks for the use by other features that are children of the featureContainer
+		featureContainer._breaks = breaks;
+		featureContainer._breaksTimestamp = (new Date()).getTime();
 	}
-	if (i<kwArgs.numClasses) style.fill = cbd["seq"][kwArgs.numClasses][kwArgs.colorSchemeName].colors[i];
+
+	var breakIndex = n.getBreakIndex(breaks, kwArgs.numClasses, attrValue);
+	if (breakIndex<kwArgs.numClasses) style.fill = cbd["seq"][kwArgs.numClasses][kwArgs.colorSchemeName].colors[breakIndex];
 };
 
 cb.getLegend = function(domContainer, style, features, name) {

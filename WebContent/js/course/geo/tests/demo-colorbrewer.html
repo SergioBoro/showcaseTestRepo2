@@ -39,6 +39,7 @@ else dojo.require("courseApp.data.russia_geometries");
 
 dojo.require("courseApp.data.russia_features");
 
+dojo.require("course.geo.util.colorbrewer");
 dojo.require("course.geo.util.jenks");
 
 var map, legend;
@@ -49,9 +50,9 @@ var style = {
 	strokeWidth: 1,
 	name: "Population density",
 	styleFunction: {
-		func: "course.geo.util.jenks.generateStyle",
-		options: {numClasses: 7, colorSchemeName: "Reds", attr: "indicator1"},
-		legendFunc: "course.geo.util.jenks.generateLegend"
+		getStyle: "course.geo.util.colorbrewer.getStyle",
+		options: {numClasses: 7, colorSchemeName: "Reds", attr: "indicator1", getBreaks: "course.geo.util.jenks.getBreaks"},
+		getLegend: "course.geo.util.colorbrewer.getLegend"
 	}
 }
 
@@ -67,7 +68,7 @@ var setColorScheme = function(colorSchemeName, numClasses) {
 	
 	// show colors from the selected scheme
 	var html="";
-	var colors = course.geo.util.colorbrewer.schemes["seq"][options.numClasses][options.colorSchemeName].colors;
+	var colors = course.geo.util.colorbrewer_data["seq"][options.numClasses][options.colorSchemeName].colors;
 	dojo.forEach(colors, function(color){
 		html += "<span style='background-color:"+ color +"'>&nbsp;&nbsp;&nbsp;&nbsp;</span>"+color+"<br>";
 	});
@@ -79,7 +80,7 @@ var setColorScheme = function(colorSchemeName, numClasses) {
 var firstRun = true;
 var createColorSchemeGui = function(numClasses) {
 	var rules = style.rules;
-	var schemes = course.geo.util.colorbrewer.schemes["seq"][numClasses];
+	var schemes = course.geo.util.colorbrewer_data["seq"][numClasses];
 	var container = dojo.byId("colorSchemes");
 	for(var schemeName in schemes) {
 		if (firstRun) {

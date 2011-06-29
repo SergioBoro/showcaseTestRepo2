@@ -174,6 +174,13 @@ dojo.extend(g.FeatureContainer, {
 dojo.extend(g.Map, {
 	getProjection: function() {
 		return this.geometryProjection || this.currentProjection;
+	},
+	getMapGeometry: function(geometry) {
+		var userProjection = this.userProjection || this.currentProjection;
+		if (userProjection != this.currentProjection) {
+			geometry = g.projection.transform(userProjection, this.currentProjection, geometry);
+		}
+		return geometry;
 	}
 });
 

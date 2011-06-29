@@ -30,7 +30,7 @@ dojo.declare("course.geo.Engine", null, {
 		
 	},
 
-	prerender: function() {
+	prepare: function() {
 
 	},
 	

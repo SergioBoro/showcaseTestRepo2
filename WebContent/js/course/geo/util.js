@@ -11,6 +11,14 @@ u.getUniqueNumber = function() {
 	return idCounter;
 }
 
+u.degToRad = function(degree){
+	return Math.PI * degree / 180;
+};
+
+u.radToDeg = function(radian){
+	return radian / Math.PI * 180;
+};
+
 u.normalizeCallback = function(feature, event, context, method) {
 	method = method ? dojo.hitch(context, method) : context;
 	return function(nativeEvent){
