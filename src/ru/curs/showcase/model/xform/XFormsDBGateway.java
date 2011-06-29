@@ -88,8 +88,8 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 			setDb(ConnectionFactory.getConnection());
 			CommandResult result;
 			try {
-				String sql =
-					String.format(getSaveSqlTemplate(), elementInfo.getSaveProc().getName());
+				setProcName(elementInfo.getSaveProc().getName());
+				String sql = String.format(getSaveSqlTemplate(), getProcName());
 				setCs(getDb().prepareCall(sql));
 				getCs().registerOutParameter(1, java.sql.Types.INTEGER);
 				setupGeneralParameters();
@@ -176,7 +176,8 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 			setDb(ConnectionFactory.getConnection());
 			DataFile<ByteArrayOutputStream> result;
 			try {
-				String sql = String.format(getFileSqlTemplate(), proc.getName());
+				setProcName(proc.getName());
+				String sql = String.format(getFileSqlTemplate(), getProcName());
 				setCs(getDb().prepareCall(sql));
 				getCs().registerOutParameter(1, java.sql.Types.INTEGER);
 				setupGeneralParameters();
@@ -223,7 +224,8 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 		try {
 			setDb(ConnectionFactory.getConnection());
 			try {
-				String sql = String.format(getFileSqlTemplate(), proc.getName());
+				setProcName(proc.getName());
+				String sql = String.format(getFileSqlTemplate(), getProcName());
 				setCs(getDb().prepareCall(sql));
 				getCs().registerOutParameter(1, java.sql.Types.INTEGER);
 				setupGeneralParameters();

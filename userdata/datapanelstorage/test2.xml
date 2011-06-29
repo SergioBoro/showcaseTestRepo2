@@ -18,7 +18,8 @@
         <element id="210" type="chart" proc="chart_pas_fliped"/>
     </tab>  
     <tab id="3" name="Плохие элементы">
-        <element id="31" type="chart" proc="chart_pas_phantom"/>
-        <element id="32" type="chart" proc="chart_pas_no_res"/>  
+        <element id="31" type="chart" proc="chart_pas_phantom"/>        
+        <element id="32" type="chart" proc="chart_pas_no_res"/>
+        <element id="33" type="chart" proc="chart_pas_wrong_param"/>  
     </tab>      
 </datapanel>

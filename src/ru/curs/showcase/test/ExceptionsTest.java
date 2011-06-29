@@ -93,7 +93,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	 * Тест на ошибку из-за несуществующей хранимой процедуры.
 	 */
 	@Test
-	public final void testWrongChartSP() {
+	public final void testPhantomChartSP() {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement("test2.xml", "3", "31");
 
@@ -102,10 +102,31 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 			serviceLayer.getChart(context, element);
 		} catch (Exception e) {
 			assertEquals(GeneralServerException.class, e.getClass());
+			assertEquals(SPNotExistsException.class.getName(),
+					((GeneralServerException) e).getOriginalExceptionClass());
+			return;
+		}
+		fail();
+	}
+
+	/**
+	 * Тест на ошибку из-за хранимой процедуры c неверными параметрами.
+	 */
+	@Test
+	public final void testWrongChartSP() {
+		CompositeContext context = getTestContext2();
+
+		DataPanelElementInfo element = getDPElement("test2.xml", "3", "33");
+		final String procName = "chart_pas_wrong_param";
+
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		try {
+			serviceLayer.getChart(context, element);
+		} catch (Exception e) {
+			assertEquals(GeneralServerException.class, e.getClass());
 			assertEquals(DBQueryException.class.getName(),
 					((GeneralServerException) e).getOriginalExceptionClass());
-			assertTrue(((GeneralServerException) e).getOriginalMessage().indexOf(
-					"chart_pas_phantom") > -1);
+			assertTrue(((GeneralServerException) e).getOriginalMessage().indexOf(procName) > -1);
 			return;
 		}
 		fail();

@@ -69,7 +69,6 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	@Override
 	public Navigator getNavigator(final CompositeContext context) throws GeneralServerException {
 		InputStream xml;
-		getServerCurrentState();
 		Navigator nav = null;
 
 		try {
@@ -270,8 +269,8 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 		LOGGER.info("Session context: " + sessionContext);
 		context.setSession(sessionContext);
-		context.setSessionParamsMap(null);
 		AppInfoSingleton.getAppInfo().setCurrentUserDataId(context.getSessionParamsMap());
+		context.setSessionParamsMap(null);
 	}
 
 	private void prepareContext(final Action action) throws UnsupportedEncodingException {
@@ -284,8 +283,8 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			SessionInfoGenerator.generateSessionContext(sessionId, context.getSessionParamsMap());
 		LOGGER.info("Session context: " + sessionContext);
 		action.setSessionContext(sessionContext);
-		action.setSessionContext((Map<String, List<String>>) null);
 		AppInfoSingleton.getAppInfo().setCurrentUserDataId(context.getSessionParamsMap());
+		action.setSessionContext((Map<String, List<String>>) null);
 	}
 
 	@Override

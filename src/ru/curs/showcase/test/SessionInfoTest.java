@@ -60,7 +60,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		serviceLayer.getChart(context, element);
 
 		checkTestUrlParams(context);
-
+		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurrentUserDataId());
 		assertEquals(AUTH_VIA_AUTH_SERVER, AppInfoSingleton.getAppInfo()
 				.getAuthViaAuthServerForSession(FAKE_SESSION_ID));
 		assertEquals(TEMP_PASS, AppInfoSingleton.getAppInfo()
@@ -117,6 +117,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		Action action = getAction("tree_multilevel.xml", 0, elID);
 		action.setSessionContext(params);
 		serviceLayer.getDataPanel(action);
+		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurrentUserDataId());
 		checkTestUrlParams(action.getDataPanelLink().getContext());
 		checkTestUrlParams(action.getDataPanelLink().getElementLinks().get(0).getContext());
 	}

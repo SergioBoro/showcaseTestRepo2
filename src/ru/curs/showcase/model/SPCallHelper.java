@@ -43,6 +43,19 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 */
 	private DataPanelElementInfo elementInfo = null;
 
+	/**
+	 * Имя хранимой процедуры, которую нужно вызвать.
+	 */
+	private String procName;
+
+	public String getProcName() {
+		return procName;
+	}
+
+	public void setProcName(final String aProcName) {
+		procName = aProcName;
+	}
+
 	public SPCallHelper() {
 		super();
 	}
@@ -92,7 +105,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 */
 	protected void prepareStdStatement() throws SQLException {
 		db = ConnectionFactory.getConnection();
-		String sql = String.format(getSqlTemplate(), elementInfo.getProcName());
+		procName = elementInfo.getProcName();
+		String sql = String.format(getSqlTemplate(), procName);
 		cs = db.prepareCall(sql);
 		setupGeneralParameters();
 		cs.registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
@@ -194,8 +208,29 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		if (ValidateInDBException.isSolutionDBException(e)) {
 			throw new ValidateInDBException(e);
 		} else {
+			if (!checkProcExists()) {
+				throw new SPNotExistsException(getProcName());
+			}
 			throw new DBQueryException(e, getElementInfo(), getContext());
 		}
 
+	}
+
+	private boolean checkProcExists() {
+		String sql =
+			String.format(
+					"IF (OBJECT_ID('[dbo].[%1$s]') IS NOT NULL AND (OBJECTPROPERTY(OBJECT_ID('[dbo].[%1$s]'),'IsProcedure')=1))",
+					procName)
+					+ " SELECT 'exists' AS [result] ELSE SELECT 'absent' AS [result]";
+		try {
+			cs = db.prepareCall(sql);
+			ResultSet rs = cs.executeQuery();
+			while (rs.next()) {
+				return "exists".equals(rs.getString("result"));
+			}
+		} catch (SQLException e) {
+			return true;
+		}
+		return true;
 	}
 }

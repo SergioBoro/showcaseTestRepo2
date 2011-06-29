@@ -21,9 +21,9 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 	@Override
 	public InputStream getData(final CompositeContext context) {
 		setDb(ConnectionFactory.getConnection());
-		String procName = AppProps.getRequiredValueByName(NAVIGATOR_PROCNAME_PARAM);
+		setProcName(AppProps.getRequiredValueByName(NAVIGATOR_PROCNAME_PARAM));
 		try {
-			String sql = String.format(getSqlTemplate(), procName);
+			String sql = String.format(getSqlTemplate(), getProcName());
 			CallableStatement cs = getDb().prepareCall(sql);
 			cs.setString(SESSION_CONTEXT_PARAM, context.getSession());
 			cs.registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
