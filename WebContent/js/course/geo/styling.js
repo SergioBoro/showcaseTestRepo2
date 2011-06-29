@@ -86,11 +86,11 @@ dojo.declare("course.geo.Style", null, {
 			}, this);
 		}
 		
-		delete this.styleClass, this.fid, this.filter;
+		delete this.styleClass, this.fid; this.filter;
 
 		this._setDef(def);
 		// apply the style to the the affected features
-		this.map.renderFeatures(affectedFeatures, true, "normal");
+		this.map.render(true, "normal", affectedFeatures);
 	},
 	
 	_setDef: function(def) {
@@ -138,10 +138,10 @@ dojo.declare("course.geo.Style", null, {
 				// features may need this attribute to be aware that the style has changed
 				updated: (new Date()).getTime()
 			};
-			var getStyle = styleFunction.getStyle;
-			getStyle = dojo.isString(getStyle) ? dojo.getObject(getStyle) : getStyle;
+			var func = styleFunction.func;
+			func = dojo.isString(func) ? dojo.getObject(func) : func;
 			for(var attr in styleFunction) {
-				this.styleFunction[attr] = (attr == "getStyle") ? getStyle : styleFunction[attr];
+				this.styleFunction[attr] = (attr == "func") ? func : styleFunction[attr];
 			}
 		}
 		def = styleMixin({}, def);
@@ -190,7 +190,7 @@ s.calculateStyle = function(feature, mode) {
 		var applyStyle = style.filter ? evaluateFilter(style.filter, feature) : true;
 		if (applyStyle) {
 			dojo.mixin(resultStyle, style.def);
-			if (style.styleFunction) style.styleFunction.getStyle(feature, resultStyle, style.styleFunction);
+			if (style.styleFunction) style.styleFunction.func(feature, resultStyle, style.styleFunction);
 		}
 	});
 	

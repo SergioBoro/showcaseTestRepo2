@@ -19,7 +19,7 @@ dojo.declare("course.geo.gfx.Placemark", course.geo.common.Placemark, {
 		this.points = this.group.createGroup();
 	},
 	
-	prepare: function() {
+	prerender: function() {
 		this.calculateLengthDenominator();
 	},
 	
@@ -246,7 +246,7 @@ dojo.declare("course.geo.gfx.Placemark", course.geo.common.Placemark, {
 						method = handles[handle][2],
 						eventConnections = handles[handle][3];
 					dojo.forEach(events, function(event, eventIndex){
-						eventConnections[eventIndex].push( [shape, shape.connect(event, g.util.normalizeCallback(feature, event, context, method))] );
+						eventConnections[eventIndex].push( shape.connect(event, g.util.normalizeCallback(feature, event, context, method)) );
 					});
 				}
 				baseShapes.push(shape);
@@ -262,16 +262,12 @@ dojo.declare("course.geo.gfx.Placemark", course.geo.common.Placemark, {
 					var events = handles[handle][0],
 						eventConnections = handles[handle][3];
 					dojo.forEach(events, function(event, eventIndex){
-						shape.disconnect( eventConnections[eventIndex].pop()[1] );
+						shape.disconnect( eventConnections[eventIndex].pop() );
 					});
 				}
 			}
 			
 		}
-	},
-	
-	remove: function(shape) {
-		shape.removeShape();
 	}
 });
 

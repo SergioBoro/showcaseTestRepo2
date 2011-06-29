@@ -50,10 +50,10 @@ dojo.declare("course.geo.widget.Legend", [dijit._Widget, dijit._Templated], {
 				td = dojo.create("td", null, tr),
 				name = (this.getName) ? this.getName(style) : style.def.name;
 			if (style.styleFunction) {
-				var getLegend = style.styleFunction.getLegend;
-				if (getLegend) {
-					getLegend = dojo.isString(getLegend) ? dojo.getObject(getLegend) : getLegend;
-					getLegend(td, style, affectedFeatures, name);
+				var legendFunc = style.styleFunction.legendFunc;
+				if (legendFunc) {
+					legendFunc = dojo.isString(legendFunc) ? dojo.getObject(legendFunc) : legendFunc;
+					legendFunc(td, style, affectedFeatures, name);
 				}
 			}
 		}, this);

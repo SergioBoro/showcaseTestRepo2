@@ -30,26 +30,24 @@ dojo.declare("course.geo.Engine", null, {
 		
 	},
 
-	prepare: function() {
+	prerender: function() {
 
 	},
 	
 	getFactory: function(type) {
 		if (!this.factories[type]) {
-			// cheating build util
-			var req = dojo.require;
-			var lastDot = type.lastIndexOf("."),
-				module = lastDot>=0 ? type.substring(lastDot+1) : type;
+			var lastDot = type.lastIndexOf(".");
+			var module = lastDot>=0 ? type.substring(lastDot+1) : type;
 			// type can have one of the following forms: 1)Placemark 2)control.Highlight
 			// in the case 1) we try the type as is, in the case of 2) we try Highlight
 			module = this.baseModule + "." + module;
-			req(module, true);
+			dojo.require(module, true);
 			var cstr = dojo.getObject(module);
 			if (cstr) this.factories[type] = new (cstr)({engine: this});
 			else if (lastDot>0) {
 				// in the case 2) we try control.Highlight, i.e. type as is
 				module = this.baseModule + "." + type;
-				req(module, true);
+				dojo.require(module, true);
 				var cstr = dojo.getObject(module);
 				if (cstr) this.factories[type] = new (cstr)({engine: this});
 			}

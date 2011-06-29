@@ -26,12 +26,6 @@ e.methods = {
 			google.earth.executeBatch(this.engine.ge, dojo.hitch(this, function(){
 				this._render(stylingOnly, mode, features);
 			}));
-		},
-		
-		renderFeatures: function(features, stylingOnly, mode) {
-			google.earth.executeBatch(this.engine.ge, dojo.hitch(this, function(){
-				this._renderFeatures(features, stylingOnly, mode);
-			}));
 		}
 	}
 }
@@ -55,10 +49,7 @@ dojo.declare("course.geo.ge.Engine", course.geo.Engine, {
 			this.patchMethods();
 			
 			// initialize some factories
-			this.factories["Placemark"] = new course.geo.ge.Placemark({
-				ge: this.ge,
-				map: this.map
-			});
+			this.factories["Placemark"] = new course.geo.ge.Placemark({ge:this.ge, engine:this});
 			
 			this.initialized = true;
 			readyFunction();
@@ -71,8 +62,8 @@ dojo.declare("course.geo.ge.Engine", course.geo.Engine, {
 		return container;
 	},
 	
-	prepare: function() {
-		this._zoomTo( this.map.extent );
+	prerender: function() {
+		this._zoomTo( this.map.getBbox() );
 	},
 	
 	appendChild: function(child, feature) {

@@ -12,7 +12,7 @@
     djConfig = {
         isDebug: true,
 		parseOnLoad: false,
-        modulePaths: {course: "../course"},
+        modulePaths: {course: "../course", courseApp: "../course/geo/tests"},
 		gfxRenderer: "svg,silverlight,vml",
 		mapEngine: "gfx"
     };
@@ -31,10 +31,16 @@ dojo.require("course.geo.control.Tooltip");
 dojo.require("course.geo.control.Navigation");
 
 
-dojo.require("course.geo.tests.data.usa_geometries");
-dojo.require("course.geo.tests.data.usa_features");
-dojo.require("course.geo.tests.data.usa_largest_airports");
+if (djConfig.mapEngine=="ge") dojo.require("courseApp.data.russia_geometriesEpsg4326");
+else dojo.require("courseApp.data.russia_geometries");
 
+dojo.require("courseApp.data.russia_features");
+dojo.require("courseApp.data.russia_railways");
+
+dojo.require("course.geo.util.proj4js");
+dojo.require("course.geo.util.proj4js.aea");
+dojo.require("course.geo.projection");
+course.geo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=0 +lon_0=105 +x_0=18500000 +y_0=0 +ellps=krass +units=m +towgs84=28,-130,-95,0,0,0,0 +no_defs");
 
 
 var style = [
@@ -44,13 +50,41 @@ var style = [
 		strokeWidth: .5,
 		fill: "blue",
 		size: 20
+	},
+	{
+		name: "Very low density",
+		filter: "0<=this.indicator1 && this.indicator1<2",
+		fill: "#FFFFB2",
+		stroke: "green",
+		strokeWidth: 2
+	},
+	{
+		name: "Low density",
+		filter: function() { return 2<=this.indicator1 && this.indicator1<10},
+		fill: "#FECC5C"
+	},
+	{
+		name: "Average density",
+		filter: "10<=this.indicator1 && this.indicator1<50",
+		fill: "#FD8D3C"
+	},
+	{
+		name: "High density",
+		filter: "50<=this.indicator1 && this.indicator1<150",
+		fill: "#F03B20"
+	},
+	{
+		name: "Very high density",
+		filter: "150<=this.indicator1",
+		fill: "#BD0026"
 	}
 ]
 
 var features = [
 	{
 		id: "areas",
-		features: course.geo.tests.data.usa_features,
+		projection: (djConfig.mapEngine=="ge") ? "EPSG:4326" : "RUSSIA-ALBERS",
+		features: courseApp.russiaFeatures,
 		style: {
 			mode: "highlight",
 			reset: true,
@@ -59,17 +93,128 @@ var features = [
 		}
 	},
 	{
-		id: "airports",
+		id: "railways",
 		style: {
-			stroke: "red",
-			shape: "triangle",
-			fill: "green"
+			line: [
+				{stroke: "black", strokeWidth: 30},
+				{stroke: "lightgrey", strokeWidth: 20}
+			]
 		},
-		features: course.geo.tests.data.usa_largest_airports
+		features: courseApp.russiaRailways
+	},
+	{
+		geometry: {type: "Point", coordinates:[14752931.343609, 7021254.363717]},
+		style: {
+			size: 30,
+			point: [
+				{
+					shape: "circle",
+					fill: "blue"
+				},
+				{
+					type: "shape",
+					shape: "cross",
+					fill: "red"
+				}
+			]
+		}
+	},
+	{
+		"id": "l1",
+		"name": "Города",
+		projection: "EPSG:4326",
+		style: {
+			stroke: "black",
+			strokeWidth: 1
+		},
+		features: [
+		{
+			geometry: {
+				type: "Point",
+				coordinates: [78.6486,52.99031]
+			},
+			"properties": {},
+			tooltip: "Города - Славгород (1107) (52.99031 - 78.6486)",
+			style: {
+				point:{type:"shape", shape:"star", fill:"green", size:50, stroke: "red"}
+			},
+			id: "1107",
+			name: "Slavgorod"
+		},
+		{
+			geometry: {
+				type: "Point",
+				coordinates: [44.009193,56.329918]
+			},
+			properties: {
+				ind3: 10.0,
+				ind4: 100.0
+			},
+			tooltip: "Нижний Новгород - город с показателями",
+			style: {
+				shape:"cross",
+				fill:"brown"
+			},
+			id: "1849",
+			name: "Nizhny Novgorod"
+		},
+		{
+			geometry: {
+				type: "Point",
+				coordinates: [31.26912,58.54497]
+			},
+			properties: {},
+			tooltip: "Города - Великий Новгород (2532) (58.54497 - 31.26912)",
+			style: {
+				shape:"triangle",
+				fill:"yellow"
+			},
+			id: "2532",
+			name: "Veliki Novgorod"
+		},
+		{
+			geometry: {
+				type: "Point",
+				coordinates: [36.60921,50.59661]
+			},
+			properties: {},
+			tooltip: "Города - Белгород (3674) (50.59661 - 36.60921)",
+			style: {
+				shape:"x",
+				fill:"black"
+			},
+			id: "3674",
+			name: "Belgorod"
+		},
+		{
+			geometry: {
+				type: "Point",
+				coordinates: [36.86614,55.73133]
+			},
+			properties: {},
+			tooltip: "Города - Звенигород (3742) (55.73133 - 36.86614)",
+			id: "3742",
+			name: "Zvenigorod"
+		},
+		{
+			geometry: {
+				type: "Point",
+				coordinates: [65.53, 57.15]
+			},
+			style: {
+				type: "image",
+				width: 28,
+				height: 22,
+				src: "resources/icons/load.png",
+				scale: 2
+			},
+			name: "Tyumen"
+		}
+		]
 	}
 ]
 
-var map, highlight, tooltip;
+var map, magnify, highlight, tooltip;
 
 var addOnLoad = function() {
 	/*
@@ -102,16 +247,18 @@ var addOnLoad = function() {
 	*/
 
     map = new course.geo.Map("map", {
+		geometryProjection: "RUSSIA-ALBERS",
+		currentProjection: "RUSSIA-ALBERS",
 		engine: {type: djConfig.mapEngine},
-		geometries: course.geo.tests.data.usa_geometries,
+		geometries: courseApp.russiaGeometries,
 		style: style,
-		features: features
-		//attributesInFeature: true
+		features: features,
+		attributesInFeature: false
 	});
 	map.ready(function(){
 		new course.geo.control.Navigation(map);
-		new course.geo.control.Highlight(map);
-		new course.geo.control.Tooltip(map);
+		new course.geo.control.Highlight(map, {map: map});
+		//new course.geo.control.Tooltip(map, {map: map});
 	});
 }
 
@@ -131,6 +278,6 @@ dojo.addOnLoad(addOnLoad);
 <div id="tooltip">Tooltip</div>
 -->
 <div id="map" style="width:800px;height:400px;"></div>
-Map data (c) <a id="test" href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.
+Map data (c) <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.
 </body>
 </html>

@@ -38,11 +38,6 @@ dojo.declare("course.geo.Placemark", course.geo.Feature, {
 		return geometry;
 	},
 	
-	setGeometry: function(geometry) {
-		delete this._geometry;
-		this.geometry = geometry;
-	},
-	
 	render: function(stylingOnly, mode) {
 		this.map.methods.Placemark.render.call(this, stylingOnly, mode);
 	},
@@ -55,8 +50,9 @@ dojo.declare("course.geo.Placemark", course.geo.Feature, {
 			return;
 		}
 		
-		// get factory for the Placemark
+		// check if have factory for the Placemark
 		var factory = this.map.engine.getFactory(this.type);
+		if (!factory) return;
 
 		// TODO: disconnect
 		if (!stylingOnly) {
@@ -155,16 +151,6 @@ dojo.declare("course.geo.Placemark", course.geo.Feature, {
 		}
 		*/
 	},
-	
-	remove: function() {
-		// get factory for the Placemark
-		var factory = this.map.engine.getFactory(this.type);
-		dojo.forEach(this.baseShapes, function(shape){
-			factory.remove(shape);
-		});
-		// remove feature from the feature container
-		// disconnect all events
-	},
 
 	getBbox: function() {
 		// summary:
@@ -222,7 +208,6 @@ dojo.declare("course.geo.Placemark", course.geo.Feature, {
 
 // default methods;
 var p = g.Placemark.prototype;
-if (!g.methods) g.methods = {};
 g.methods.Placemark = {
 	render: p._render
 }
