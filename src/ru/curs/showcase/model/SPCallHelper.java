@@ -70,17 +70,30 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 * 
 	 * @throws SQLException
 	 */
+	protected void setupGeneralElementParameters() throws SQLException {
+		setupGeneralParameters();
+		cs.setString(ADD_CONTEXT_ATTR_NAME, "");
+		if (context != null) {
+			if (context.getAdditional() != null) {
+				cs.setString(ADD_CONTEXT_ATTR_NAME, context.getAdditional());
+			}
+		}
+		cs.setString(ELEMENTID_COLUMNNAME, elementInfo.getId());
+		LOGGER.info("elementInfo=" + elementInfo.toString());
+	}
+
+	/**
+	 * Функция для настройки общих параметров запроса: контекста и фильтров.
+	 * 
+	 * @throws SQLException
+	 */
 	protected void setupGeneralParameters() throws SQLException {
 		cs.setString(MAIN_CONTEXT_ATTR_NAME, "");
-		cs.setString(ADD_CONTEXT_ATTR_NAME, "");
 		cs.setString(SESSION_CONTEXT_PARAM, "");
 		cs.setString(FILTER_COLUMNNAME, "");
 		if (context != null) {
 			if (context.getMain() != null) {
 				cs.setString(MAIN_CONTEXT_ATTR_NAME, context.getMain());
-			}
-			if (context.getAdditional() != null) {
-				cs.setString(ADD_CONTEXT_ATTR_NAME, context.getAdditional());
 			}
 			if (context.getSession() != null) {
 				cs.setString(SESSION_CONTEXT_PARAM, context.getSession());
@@ -89,11 +102,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 				cs.setString(FILTER_COLUMNNAME, context.getFilter());
 			}
 		}
-
-		cs.setString(ELEMENTID_COLUMNNAME, elementInfo.getId());
-
 		LOGGER.info("context=" + context.toString());
-		LOGGER.info("elementInfo=" + elementInfo.toString());
 	}
 
 	/**
@@ -108,7 +117,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		procName = elementInfo.getProcName();
 		String sql = String.format(getSqlTemplate(), procName);
 		cs = db.prepareCall(sql);
-		setupGeneralParameters();
+		setupGeneralElementParameters();
 		cs.registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
 	}
 
@@ -216,7 +225,10 @@ public abstract class SPCallHelper extends DataCheckGateway {
 
 	}
 
-	private boolean checkProcExists() {
+	/**
+	 * Проверяет наличие хранимой процедуры в БД.
+	 */
+	protected boolean checkProcExists() {
 		String sql =
 			String.format(
 					"IF (OBJECT_ID('[dbo].[%1$s]') IS NOT NULL AND (OBJECTPROPERTY(OBJECT_ID('[dbo].[%1$s]'),'IsProcedure')=1))",

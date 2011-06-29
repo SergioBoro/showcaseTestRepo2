@@ -59,6 +59,23 @@
 				</action>
 			</level2>
 		</level1>
+		<level1 id="C6CC2BA4-A6ED-4630-8E58-CBBFA9C8C0A5" name="Вывоз, включая экспорт - Всего">
+			<action>
+				<main_context>Вывоз, включая экспорт - Всего</main_context>
+				<datapanel type="a.xml" />
+				<server>
+				<activity type="SP" name="exec_test"/>
+				</server>
+			</action>
+		</level1>
+		<level1 id="C6CC2BA4-A6ED-4630-8E58-CBBFA9C8C0A4" name="Вывоз, включая экспорт - Всего">
+			<action>
+				<main_context>Вывоз, включая экспорт - Всего</main_context>
+				<server>
+				<activity type="SP" name="exec_by_userdata"/>
+				</server>
+			</action>
+		</level1>			
 	</group>
 	
 	<group id="2" name="Регионы">

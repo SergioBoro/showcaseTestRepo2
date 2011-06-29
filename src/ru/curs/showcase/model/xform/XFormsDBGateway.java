@@ -24,7 +24,6 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	static final String OUTPUTDATA_PARAM = "outputdata";
 	static final String INPUTDATA_PARAM = "inputdata";
 	static final String XFORMSDATA_PARAM = "xformsdata";
-	static final String ERROR_MES_COL = "error_mes";
 	static final String UPLOAD_ERROR =
 		"Запрос для загрузки файла на SQL сервер вернул ошибку с кодом %d - %s";
 
@@ -92,7 +91,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 				String sql = String.format(getSaveSqlTemplate(), getProcName());
 				setCs(getDb().prepareCall(sql));
 				getCs().registerOutParameter(1, java.sql.Types.INTEGER);
-				setupGeneralParameters();
+				setupGeneralElementParameters();
 				getCs().setString(XFORMSDATA_PARAM, data);
 				getCs().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
 				getCs().execute();
@@ -180,7 +179,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 				String sql = String.format(getFileSqlTemplate(), getProcName());
 				setCs(getDb().prepareCall(sql));
 				getCs().registerOutParameter(1, java.sql.Types.INTEGER);
-				setupGeneralParameters();
+				setupGeneralElementParameters();
 				getCs().setString(XFORMSDATA_PARAM, data);
 				getCs().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
 				getCs().registerOutParameter(FILENAME_TAG, java.sql.Types.VARCHAR);
@@ -228,7 +227,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 				String sql = String.format(getFileSqlTemplate(), getProcName());
 				setCs(getDb().prepareCall(sql));
 				getCs().registerOutParameter(1, java.sql.Types.INTEGER);
-				setupGeneralParameters();
+				setupGeneralElementParameters();
 				getCs().setString(XFORMSDATA_PARAM, data);
 				getCs().setString(FILENAME_TAG, file.getName());
 				getCs().setBinaryStream(FILE_TAG, file.getData());

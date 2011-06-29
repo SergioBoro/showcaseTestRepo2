@@ -82,4 +82,9 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	public ServerCurrentState getServerCurrentState() throws GeneralServerException {
 		return getServiceLayer().getServerCurrentState();
 	}
+
+	@Override
+	public void execServerAction(final Action action) throws GeneralServerException {
+		getServiceLayer().execServerAction(action);
+	}
 }

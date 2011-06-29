@@ -3,6 +3,7 @@ package ru.curs.showcase.test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.*;
 
 import org.junit.Test;
 
@@ -10,6 +11,8 @@ import ru.curs.showcase.app.api.CanBeCurrent;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.server.*;
 
 /**
  * Тесты для действий и контекста.
@@ -82,6 +85,12 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertTrue(action.getDataPanelLink().getContext() != clone.getDataPanelLink().getContext());
 		assertTrue(action.getDataPanelLink().getElementLinks().get(0) != clone.getDataPanelLink()
 				.getElementLinks().get(0));
+
+		assertTrue(action.containServerActivity());
+		ServerActivity sa = action.getServerActivities().get(0);
+		assertNotNull(sa);
+		assertEquals(ServerActivityType.SP, sa.getType());
+		assertEquals("test", sa.getName());
 	}
 
 	/**
@@ -325,6 +334,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 
 		action.getDataPanelLink().setContext(getComplexTestContext());
 
+		ServerActivity sa = new ServerActivity("test", ServerActivityType.SP);
+		action.getServerActivities().add(sa);
+
 		action.determineState();
 
 		return action;
@@ -448,5 +460,54 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		action.setKeepUserSettingsForAll(true);
 		assertTrue(action.getKeepUserSettings());
 		assertTrue(action.getDataPanelLink().getElementLinks().get(0).getKeepUserSettings());
+	}
+
+	/**
+	 * Проверка считывания блока действия, касающегося серверной активности.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testServerActivityRead() throws IOException {
+		final int actionNumber = 1;
+		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
+		assertTrue(action.containServerActivity());
+		assertTrue(action.getServerActivities().size() == 1);
+		assertEquals("exec_test", action.getServerActivities().get(0).getName());
+		assertEquals(ServerActivityType.SP, action.getServerActivities().get(0).getType());
+	}
+
+	/**
+	 * Проверка выполнения действия на сервере.
+	 * 
+	 * @throws IOException
+	 * @throws GeneralServerException
+	 */
+	@Test
+	public void testServerActivityExec() throws IOException, GeneralServerException {
+		final int actionNumber = 1;
+		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
+		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		sl.execServerAction(action);
+	}
+
+	/**
+	 * Проверка выполнения действия на сервере, приводящего к ошибке.
+	 * 
+	 * @throws IOException
+	 * @throws GeneralServerException
+	 */
+	@Test(expected = GeneralServerException.class)
+	public void testServerActivityExecFail() throws IOException, GeneralServerException {
+		final int actionNumber = 2;
+		AppInfoSingleton.getAppInfo().setCurrentUserDataId("test1");
+		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
+		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
+		ArrayList<String> val = new ArrayList<String>();
+		val.add("test1");
+		params.put("userdata", val);
+		action.getDataPanelLink().getContext().setSessionParamsMap(params);
+		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		sl.execServerAction(action);
 	}
 }

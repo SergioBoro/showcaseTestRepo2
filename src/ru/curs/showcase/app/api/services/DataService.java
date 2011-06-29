@@ -145,4 +145,14 @@ public interface DataService extends RemoteService {
 	 * @throws GeneralServerException
 	 */
 	ServerCurrentState getServerCurrentState() throws GeneralServerException;
+
+	/**
+	 * Выполняет действие на сервере.
+	 * 
+	 * @param action
+	 *            - действие.
+	 * 
+	 * @throws GeneralServerException
+	 */
+	void execServerAction(Action action) throws GeneralServerException;
 }

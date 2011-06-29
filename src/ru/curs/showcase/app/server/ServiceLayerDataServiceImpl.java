@@ -380,4 +380,27 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
+
+	@Override
+	public void execServerAction(final Action action) throws GeneralServerException {
+		try {
+			prepareContext(action);
+			ActivityGateway gateway = new SQLActivityGateway();
+			CompositeContext context;
+			if (action.getDataPanelLink() != null) {
+				context = action.getDataPanelLink().getContext();
+			} else {
+				context = new CompositeContext();
+			}
+
+			Iterator<ServerActivity> iterator = action.getServerActivities().iterator();
+			while (iterator.hasNext()) {
+				ServerActivity sa = iterator.next();
+				gateway.exec(context, sa);
+				LOGGER.info("Выполнено действие на сервере: " + sa.toString());
+			}
+		} catch (Throwable e) {
+			throw GeneralServerExceptionFactory.build(e);
+		}
+	}
 }

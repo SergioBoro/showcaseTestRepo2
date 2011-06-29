@@ -86,6 +86,12 @@ public abstract class GeneralXMLHelper {
 
 	protected static final String CACHE_DATA_TAG = "cacheData";
 
+	protected static final String SERVER_TAG = "server";
+
+	protected static final String ACTIVITY_TAG = "activity";
+
+	protected static final String ERROR_MES_COL = "error_mes";
+
 	/**
 	 * Имя колонки или строки с XML документом, содержащим обработчики.
 	 */

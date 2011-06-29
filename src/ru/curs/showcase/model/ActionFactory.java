@@ -51,7 +51,8 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 				|| ELEMENT_TAG.equalsIgnoreCase(tagName)
 				|| MODAL_WINDOW_TAG.equalsIgnoreCase(tagName)
 				|| MAIN_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName)
-				|| ADD_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName);
+				|| ADD_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName)
+				|| SERVER_TAG.equalsIgnoreCase(tagName) || ACTIVITY_TAG.equalsIgnoreCase(tagName);
 	}
 
 	@Override
@@ -131,7 +132,13 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 				linkDataPanelElementLink.setKeepUserSettings(Boolean.parseBoolean(value));
 			}
 		}
-
+		if (qname.equalsIgnoreCase(ACTIVITY_TAG)) {
+			ServerActivity sa = new ServerActivity();
+			sa.setName(attrs.getValue(NAME_TAG));
+			value = attrs.getValue(TYPE_TAG);
+			sa.setType(ServerActivityType.valueOf(value));
+			current.getServerActivities().add(sa);
+		}
 		if (qname.equalsIgnoreCase(MAIN_CONTEXT_ATTR_NAME)) {
 			linkDataPanelLink = new DataPanelLink();
 

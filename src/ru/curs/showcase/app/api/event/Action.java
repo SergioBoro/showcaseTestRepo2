@@ -63,6 +63,11 @@ public class Action implements SerializableElement, GWTClonable {
 	 */
 	private ModalWindowInfo modalWindowInfo;
 
+	/**
+	 * Список действий на сервере, содержащихся в данном действии.
+	 */
+	private List<ServerActivity> serverActivities = new ArrayList<ServerActivity>();
+
 	public final DataPanelLink getDataPanelLink() {
 		return dataPanelLink;
 	}
@@ -243,6 +248,8 @@ public class Action implements SerializableElement, GWTClonable {
 		if (modalWindowInfo != null) {
 			res.modalWindowInfo = modalWindowInfo.gwtClone();
 		}
+		res.serverActivities.clear();
+		res.serverActivities.addAll(serverActivities);
 		return res;
 	}
 
@@ -393,5 +400,22 @@ public class Action implements SerializableElement, GWTClonable {
 			elLink.getContext().setSession(data);
 		}
 
+	}
+
+	/**
+	 * Функция, определяющая требует ли действие выполнение каких-либо операций
+	 * на сервера (например, вызов процедуры в БД).
+	 * 
+	 */
+	public boolean containServerActivity() {
+		return serverActivities.size() > 0;
+	}
+
+	public List<ServerActivity> getServerActivities() {
+		return serverActivities;
+	}
+
+	public void setServerActivities(final List<ServerActivity> aServerActivities) {
+		serverActivities = aServerActivities;
 	}
 }

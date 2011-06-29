@@ -139,4 +139,15 @@ public interface DataServiceAsync {
 	 */
 	void getServerCurrentState(AsyncCallback<ServerCurrentState> callback);
 
+	/**
+	 * Асинхронная версия.
+	 * 
+	 * @param action
+	 *            - действие.
+	 * @param callback
+	 *            - callback.
+	 * @throws GeneralServerException
+	 */
+	void execServerAction(Action action, AsyncCallback<Void> callback)
+			throws GeneralServerException;
 }
