@@ -106,8 +106,7 @@ public final class Constants {
 	public static final String TRANSFORMATION_NAVIGATOR_WIDTH_ERROR =
 		"Ошибка преобразования значения ширины навигатора";
 
-	public static final String ERROR_IN_SERVER_ACTIVITY =
-		"Ошибка при выполнении действия на сервере";
+	public static final String ERROR_IN_SERVER_ACTIVITY = "при выполнении действия на сервере";
 
 	// private final int widthN = 1200;
 	// private final int heightN = 700;
