@@ -46,15 +46,15 @@ public final class Constants {
 	public static final String EMPTY = "Пусто";
 
 	public static final String ERROR_OF_CHART_DATA_RETRIEVING_FROM_SERVER =
-		"Ошибка при получении данных графика с сервера";
+		"при получении данных графика с сервера";
 	public static final String ERROR_OF_NAVIGATOR_DATA_RETRIEVING_FROM_SERVER =
-		"Ошибка при получении данных навигатора с сервера";
+		"при получении данных навигатора с сервера";
 	public static final String ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER =
-		"Ошибка при получении данных карты с сервера";
+		"при получении данных карты с сервера";
 	public static final String ERROR_OF_WEBTEXT_DATA_RETRIEVING_FROM_SERVER =
-		"Ошибка при получении текстовых данных с сервера";
+		"при получении текстовых данных с сервера";
 	public static final String ERROR_OF_SERVER_CURRENT_STATE_RETRIEVING_FROM_SERVER =
-		"Ошибка при получении данных о текущем состоянии приложения";
+		"при получении данных о текущем состоянии приложения";
 
 	public static final String GRID_ERROR_CAPTION_EXPORT_EXCEL = "Ошибка при экспорте в Excel";
 

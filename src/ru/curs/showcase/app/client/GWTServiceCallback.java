@@ -35,18 +35,22 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 
 		} else {
 			MessageType mesType;
+			String str;
 			switch (GeneralServerException.getMessageType(caught)) {
 			case INFO:
 				mesType = MessageType.INFO;
+				str = "Информация ";
 				break;
 			case WARNING:
 				mesType = MessageType.WARNING;
+				str = "Предупреждение ";
 				break;
 			default:
 				mesType = MessageType.ERROR;
+				str = "Ошибка ";
 				break;
 			}
-			MessageBox.showMessageWithDetails(msgErrorCaption, caught.getMessage(),
+			MessageBox.showMessageWithDetails(str + msgErrorCaption, caught.getMessage(),
 					GeneralServerException
 							.checkExeptionTypeAndCreateDetailedTextOfException(caught), mesType,
 					GeneralServerException.needDetailedInfo(caught));
