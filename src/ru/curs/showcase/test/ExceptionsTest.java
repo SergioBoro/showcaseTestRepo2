@@ -314,7 +314,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		assertNotNull(gse.getContext());
 		assertEquals("Ввоз, включая импорт - Всего", gse.getContext().getCompositeContext()
 				.getMain());
-		assertTrue(GeneralServerException.needDetailedInfo(gse));
+		assertFalse(GeneralServerException.needDetailedInfo(gse));
 		GeneralServerException.checkExeptionTypeAndCreateDetailedTextOfException(gse);
 	}
 

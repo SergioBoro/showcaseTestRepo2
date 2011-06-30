@@ -119,7 +119,7 @@ public class GeneralServerException extends Exception {
 
 	private static String getDetailedTextOfException(final String mes, final String className,
 			final String trace, final ExceptionType aType, final DataPanelElementContext context) {
-		String str = null;
+		String str = "";
 		String ls = ExchangeConstants.LINE_SEPARATOR;
 		if (mes != null) {
 			str = ORIGINAL_MESSAGE + mes + ls + ls;
@@ -166,7 +166,7 @@ public class GeneralServerException extends Exception {
 	public static boolean needDetailedInfo(final Throwable caught) {
 		if (caught instanceof GeneralServerException) {
 			GeneralServerException gse = (GeneralServerException) caught;
-			return (gse.type != ExceptionType.USER) || (gse.getOriginalMessage() != null);
+			return (gse.getOriginalMessage() != null);
 		} else {
 			return true;
 		}

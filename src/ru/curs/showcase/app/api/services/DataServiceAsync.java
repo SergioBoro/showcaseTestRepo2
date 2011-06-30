@@ -148,6 +148,5 @@ public interface DataServiceAsync {
 	 *            - callback.
 	 * @throws GeneralServerException
 	 */
-	void execServerAction(Action action, AsyncCallback<Void> callback)
-			throws GeneralServerException;
+	void execServerAction(Action action, AsyncCallback<Void> callback);
 }

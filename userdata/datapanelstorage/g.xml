@@ -18,16 +18,5 @@
 	<tab id="04" name="Графики">
 		<element id="0401" type="grid" proc="grid_bal_multiaction" />
 		<element id="d1" type="chart" proc="chart_ylabelsfunc" hideOnLoad="true"/>
-	</tab>	
-	<tab id="05" name="userdata">
-		<element id="0501" type="webtext" proc="webtext_context_info"/>
-		<element id="0502" type="xforms" template="Showcase_Template22.xml"
-			proc="xforms_proc21">
-			<proc id="proc1" name="xforms_saveproc_by_userdata" type="SAVE" />
-			<proc id="03" name="xforms_download_by_userdata" type="DOWNLOAD" />
-			<proc id="04" name="xforms_upload_by_userdata" type="UPLOAD" />
-			<proc id="proc2" name="xforms_submission_by_userdata" type="SUBMISSION" />					
-		</element>		
-		<element id="0503" type="grid" proc="grid_by_userdata"/>		
 	</tab>				
 </datapanel>

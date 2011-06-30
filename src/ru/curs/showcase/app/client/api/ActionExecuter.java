@@ -7,7 +7,10 @@ import java.util.*;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.*;
+
+import com.google.gwt.core.client.GWT;
 
 /**
  * 
@@ -18,6 +21,12 @@ import ru.curs.showcase.app.client.*;
  * 
  */
 public final class ActionExecuter {
+
+	/**
+	 * Создает удаленный proxy сервис для общения с серверной частью
+	 * DataService.
+	 */
+	private static DataServiceAsync dataService = null;
 
 	private ActionExecuter() {
 		super();
@@ -30,14 +39,31 @@ public final class ActionExecuter {
 	 */
 	public static void execAction() {
 
-		Action ac = AppCurrContext.getInstance().getCurrentAction();
+		final Action ac = AppCurrContext.getInstance().getCurrentAction();
 
 		if (ac == null) {
 			return;
 		}
 
-		final DataPanelActionType dpat = ac.getDataPanelActionType();
+		if (ac.containServerActivity()) {
+			if (dataService == null) {
+				dataService = GWT.create(DataService.class);
+			}
+			dataService.execServerAction(ac, new GWTServiceCallback<Void>(
+					Constants.ERROR_IN_SERVER_ACTIVITY) {
 
+				@Override
+				public void onSuccess(final Void fakeRes) {
+					execClientAction(ac);
+				}
+
+			});
+		} else {
+			execClientAction(ac);
+		}
+	}
+
+	private static void execClientAction(final Action ac) {
 		if (ac.getNavigatorActionType() != NavigatorActionType.DO_NOTHING) {
 
 			boolean fireSelectionAction =
@@ -51,6 +77,9 @@ public final class ActionExecuter {
 			}
 
 		}
+
+		final DataPanelActionType dpat = ac.getDataPanelActionType();
+
 		switch (dpat) {
 		case DO_NOTHING:
 			break;
@@ -166,7 +195,6 @@ public final class ActionExecuter {
 		default:
 			break;
 		}
-
 	}
 
 	/**
