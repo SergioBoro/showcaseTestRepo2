@@ -1,9 +1,9 @@
 package ru.curs.showcase.app.api.grid;
 
-import java.util.Iterator;
+import java.util.*;
 
 import ru.curs.gwt.datagrid.model.*;
-import ru.curs.showcase.app.api.element.*;
+import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.*;
 
 /**
@@ -99,34 +99,41 @@ public class Grid extends DataPanelCompBasedElement {
 	@Override
 	public Action getActionForDependentElements() {
 		if (autoSelectRecord != null) {
-			Column column = null;
+			String columnId = null;
 
-			if (autoSelectColumn == null) {
-				column = dataSet.getColumnSet().getColumns().get(0);
-			} else {
-				column = autoSelectColumn;
-			}
-			if (column == null) {
-				return null; // грид без столбцов - нет смысла
+			if (autoSelectColumn != null) {
+				columnId = autoSelectColumn.getId();
 			}
 
-			GridEvent event =
-				getEventManager().getEventForCell(autoSelectRecord.getId(), column.getId(),
+			List<GridEvent> events =
+				getEventManager().getEventForCell(autoSelectRecord.getId(), columnId,
 						InteractionType.SINGLE_CLICK);
-			if (event != null) {
-				return event.getAction();
+			GridEvent res = getConcreteEvent(events);
+			if (res != null) {
+				return res.getAction();
 			}
-			event =
-				getEventManager().getEventForCell(autoSelectRecord.getId(), column.getId(),
+
+			events =
+				getEventManager().getEventForCell(autoSelectRecord.getId(), columnId,
 						InteractionType.DOUBLE_CLICK);
-			if (event != null) {
-				return event.getAction();
+			res = getConcreteEvent(events);
+			if (res != null) {
+				return res.getAction();
 			}
 		} else {
 			return getDefaultAction();
 		}
 
 		return null;
+	}
+
+	private GridEvent getConcreteEvent(final List<GridEvent> events) {
+		Iterator<GridEvent> iterator = events.iterator();
+		GridEvent res = null;
+		while (iterator.hasNext()) {
+			res = iterator.next();
+		}
+		return res;
 	}
 
 	public final DataGridSettings getUISettings() {
@@ -138,7 +145,7 @@ public class Grid extends DataPanelCompBasedElement {
 	}
 
 	@Override
-	protected EventManager initEventManager() {
+	protected GridEventManager initEventManager() {
 		return new GridEventManager();
 	}
 }

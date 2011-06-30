@@ -1,7 +1,9 @@
 package ru.curs.showcase.app.api.geomap;
 
+import java.util.List;
+
 import ru.curs.showcase.app.api.element.EventManager;
-import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.event.InteractionType;
 
 /**
  * Менеджер события для карты.
@@ -9,7 +11,7 @@ import ru.curs.showcase.app.api.event.*;
  * @author den
  * 
  */
-public class GeoMapEventManager extends EventManager {
+public class GeoMapEventManager extends EventManager<GeoMapEvent> {
 
 	/**
 	 * serialVersionUID.
@@ -25,7 +27,7 @@ public class GeoMapEventManager extends EventManager {
 	 *            - идентификатор строки.
 	 * @return - событие или NULL в случае его отсутствия.
 	 */
-	public GeoMapEvent getEventForFeature(final String featureId) {
-		return (GeoMapEvent) getEventByIds(featureId, null, InteractionType.SINGLE_CLICK);
+	public List<GeoMapEvent> getEventForFeature(final String featureId) {
+		return getEventByIds(featureId, null, InteractionType.SINGLE_CLICK);
 	}
 }

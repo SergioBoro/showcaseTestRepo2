@@ -92,6 +92,9 @@ public abstract class GeneralXMLHelper {
 
 	protected static final String ERROR_MES_COL = "error_mes";
 
+	protected static final String FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG =
+		"fireGeneralAndConcreteEvents";
+
 	/**
 	 * Имя колонки или строки с XML документом, содержащим обработчики.
 	 */

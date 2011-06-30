@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.html;
 
 import java.util.List;
 
-import ru.curs.showcase.app.api.element.*;
+import ru.curs.showcase.app.api.element.DataPanelElement;
 
 /**
  * Класс, содержащий данные для отрисовки элемента WebText и необходимые
@@ -35,7 +35,7 @@ public class XForms extends DataPanelElement {
 	}
 
 	@Override
-	protected EventManager initEventManager() {
+	protected HTMLEventManager initEventManager() {
 		return new HTMLEventManager();
 	}
 

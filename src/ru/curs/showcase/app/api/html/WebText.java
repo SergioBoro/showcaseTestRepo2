@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.html;
 
-import ru.curs.showcase.app.api.element.*;
+import ru.curs.showcase.app.api.element.DataPanelElement;
 
 /**
  * Класс, содержащий данные для отрисовки элемента WebText и необходимые
@@ -38,7 +38,7 @@ public class WebText extends DataPanelElement {
 	}
 
 	@Override
-	protected EventManager initEventManager() {
+	protected HTMLEventManager initEventManager() {
 		return new HTMLEventManager();
 	}
 

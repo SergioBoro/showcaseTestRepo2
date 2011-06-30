@@ -1,7 +1,8 @@
 package ru.curs.showcase.app.client.api;
 
-import ru.curs.showcase.app.api.event.Event;
-import ru.curs.showcase.app.api.html.WebText;
+import java.util.*;
+
+import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.client.*;
 
 /**
@@ -32,11 +33,12 @@ public final class WebTextPanelCallbacksEvents {
 
 		WebText wt = ((WebTextPanel) ActionExecuter.getElementPanelById(webTextId)).getWebText();
 
-		Event chev = wt.getEventManager().getEventForLink(linkId);
-		if (chev != null) {
+		List<HTMLEvent> events = wt.getEventManager().getEventForLink(linkId);
+		Iterator<HTMLEvent> iterator = events.iterator();
+		while (iterator.hasNext()) {
+			HTMLEvent chev = iterator.next();
 			AppCurrContext.getInstance().setCurrentAction(chev.getAction());
 			ActionExecuter.execAction();
-
 		}
 
 	}

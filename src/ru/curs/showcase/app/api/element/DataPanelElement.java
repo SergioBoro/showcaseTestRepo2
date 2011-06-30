@@ -27,7 +27,7 @@ public abstract class DataPanelElement implements SerializableElement {
 	/**
 	 * Менеджер событий в гриде.
 	 */
-	private EventManager eventManager = initEventManager();
+	private EventManager<? extends Event> eventManager = initEventManager();
 
 	public final Action getDefaultAction() {
 		return defaultAction;
@@ -37,7 +37,7 @@ public abstract class DataPanelElement implements SerializableElement {
 		defaultAction = aAction;
 	}
 
-	protected final void setEventManager(final EventManager aEventManager) {
+	protected final void setEventManager(final EventManager<Event> aEventManager) {
 		eventManager = aEventManager;
 	}
 
@@ -46,9 +46,9 @@ public abstract class DataPanelElement implements SerializableElement {
 	 * 
 	 * @return - менеджер событий.
 	 */
-	protected abstract EventManager initEventManager();
+	protected abstract EventManager<? extends Event> initEventManager();
 
-	public EventManager getEventManager() {
+	public EventManager<? extends Event> getEventManager() {
 		return eventManager;
 	}
 
@@ -69,7 +69,7 @@ public abstract class DataPanelElement implements SerializableElement {
 	 *            - контекст.
 	 */
 	public void actualizeActions(final CompositeContext callContext) {
-		Iterator<Event> iterator = getEventManager().getEvents().iterator();
+		Iterator<? extends Event> iterator = getEventManager().getEvents().iterator();
 		while (iterator.hasNext()) {
 			Action action = iterator.next().getAction();
 			action.actualizeBy(callContext);
@@ -88,7 +88,7 @@ public abstract class DataPanelElement implements SerializableElement {
 	 *            - новый контекст.
 	 */
 	public void updateAddContext(final CompositeContext context) {
-		Iterator<Event> eviterator = eventManager.getEvents().iterator();
+		Iterator<? extends Event> eviterator = eventManager.getEvents().iterator();
 		while (eviterator.hasNext()) {
 			Action action = eviterator.next().getAction();
 			action.updateAddContext(context);

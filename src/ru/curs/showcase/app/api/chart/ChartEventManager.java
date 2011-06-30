@@ -1,7 +1,9 @@
 package ru.curs.showcase.app.api.chart;
 
+import java.util.List;
+
 import ru.curs.showcase.app.api.element.EventManager;
-import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.event.InteractionType;
 
 /**
  * Адаптер абстрактного менеджера событий для графика.
@@ -9,7 +11,7 @@ import ru.curs.showcase.app.api.event.*;
  * @author den
  * 
  */
-public final class ChartEventManager extends EventManager {
+public final class ChartEventManager extends EventManager<ChartEvent> {
 
 	/**
 	 * serialVersionUID.
@@ -26,7 +28,7 @@ public final class ChartEventManager extends EventManager {
 	 *            - идентификатор строки.
 	 * @return - событие или NULL.
 	 */
-	public ChartEvent getEventForValue(final String seriesName, final Integer x) {
-		return (ChartEvent) getEventByIds(seriesName, x.toString(), InteractionType.SINGLE_CLICK);
+	public List<ChartEvent> getEventForValue(final String seriesName, final Integer x) {
+		return getEventByIds(seriesName, x.toString(), InteractionType.SINGLE_CLICK);
 	}
 }

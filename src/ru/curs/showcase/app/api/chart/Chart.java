@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.chart;
 
-import ru.curs.showcase.app.api.element.*;
+import ru.curs.showcase.app.api.element.DataPanelElementWithLegend;
 
 /**
  * Данные для построения графика.
@@ -36,7 +36,7 @@ public class Chart extends DataPanelElementWithLegend {
 	}
 
 	@Override
-	protected EventManager initEventManager() {
+	protected ChartEventManager initEventManager() {
 		return new ChartEventManager();
 	}
 

@@ -2,6 +2,8 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.*;
@@ -76,7 +78,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 					.getEventForCell(
 							autoSelectRecord.toString(),
 							grid.getDataSet().getColumnSet().getColumnsByIndex().iterator().next()
-									.getId(), InteractionType.SINGLE_CLICK).getAction();
+									.getId(), InteractionType.SINGLE_CLICK).get(0).getAction();
 		assertEquals(firstCellAction, grid.getActionForDependentElements());
 		assertEquals(DataPanelActionType.RELOAD_ELEMENTS, grid.getDefaultAction()
 				.getDataPanelActionType());
@@ -158,6 +160,26 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals(fontWidth, grid.getDataSet().getRecordSet().getRecords().get(0).getFontSize());
 	}
 
+	/**
+	 * Проверка работы опции fireGeneralAndConcreteEvents у грида.
+	 * 
+	 * @throws GeneralServerException
+	 */
+	@Test
+	public void testFireGeneralAndConcreteEvents() throws GeneralServerException {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo element = getDPElement("test1.1.xml", "8", "83");
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		Grid grid = serviceLayer.getGrid(context, element, null);
+
+		assertTrue(grid.getEventManager().getFireGeneralAndConcreteEvents());
+		List<GridEvent> events =
+			grid.getEventManager().getEventForCell("1", "Название", InteractionType.DOUBLE_CLICK);
+		assertEquals(2, events.size());
+		assertNull(events.get(0).getId2());
+		assertNotNull(events.get(1).getId2());
+	}
+
 	private void addSortedColumn(final GridRequestedSettings settings, final String name,
 			final int index) {
 		Column col = new Column();
@@ -176,8 +198,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	public void testGridLinkReplaceXMLServiceSymbols() {
 		assertEquals("<link href=\"ya.ru?search=aa&amp;bla&amp;ab\" "
 				+ "image=\"xxx.jpg\"  text=\"&lt;&quot; &lt;&gt; &gt; a&apos;&quot;\"  />",
-				GridDBFactory
-						.makeSafeXMLAttrValues("<link href=\"ya.ru?search=aa&amp;bla&ab\" "
-								+ "image=\"xxx.jpg\"  text=\"<&quot; &lt;&gt; > a'\"\"  />"));
+				GridDBFactory.makeSafeXMLAttrValues("<link href=\"ya.ru?search=aa&amp;bla&ab\" "
+						+ "image=\"xxx.jpg\"  text=\"<&quot; &lt;&gt; > a'\"\"  />"));
 	}
 }

@@ -670,13 +670,15 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 		Action ac = null;
 
-		GridEvent ev = grid.getEventManager().getEventForCell(rowId, colId, interactionType);
+		List<GridEvent> events =
+			grid.getEventManager().getEventForCell(rowId, colId, interactionType);
 
-		if (ev != null) {
+		Iterator<GridEvent> iterator = events.iterator();
+		while (iterator.hasNext()) {
+			GridEvent ev = iterator.next();
 			ac = ev.getAction();
+			runAction(ac);
 		}
-
-		runAction(ac);
 
 	}
 

@@ -1,6 +1,8 @@
 package ru.curs.showcase.model;
 
-import ru.curs.showcase.app.api.html.HTMLEvent;
+import java.util.Collection;
+
+import ru.curs.showcase.app.api.html.*;
 
 /**
  * Базовый класс фабрики для элементов, основанных на HTML.
@@ -25,8 +27,8 @@ public abstract class HTMLBasedElementFactory extends TemplateMethodFactory {
 
 		EventFactory<HTMLEvent> factory = new EventFactory<HTMLEvent>(HTMLEvent.class);
 		factory.intiForGetSimpleEvents(LINK_ID_TAG, null);
-		getResult().getEventManager().getEvents()
-				.addAll(factory.getSimpleEvents(getSource().getProperties()));
+		Collection<HTMLEvent> events = factory.getSimpleEvents(getSource().getProperties());
+		((HTMLEventManager) getResult().getEventManager()).getEvents().addAll(events);
 
 		getResult().setDefaultAction(factory.getDefaultAction());
 	}

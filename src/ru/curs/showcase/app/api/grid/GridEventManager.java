@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.grid;
 
-import java.util.Iterator;
+import java.util.*;
 
 import ru.curs.gwt.datagrid.model.Record;
 import ru.curs.gwt.datagrid.selection.DataSelection;
@@ -13,7 +13,7 @@ import ru.curs.showcase.app.api.event.*;
  * @author den
  * 
  */
-public class GridEventManager extends EventManager {
+public class GridEventManager extends EventManager<GridEvent> {
 	/**
 	 * serialVersionUID.
 	 */
@@ -31,9 +31,9 @@ public class GridEventManager extends EventManager {
 	 *            - тип взаимодействия.
 	 * @return - событие или NULL.
 	 */
-	public GridEvent getEventForCell(final String rowId, final String colId,
+	public List<GridEvent> getEventForCell(final String rowId, final String colId,
 			final InteractionType interactionType) {
-		return (GridEvent) getEventByIds(rowId, colId, interactionType);
+		return getEventByIds(rowId, colId, interactionType);
 	}
 
 	/**
@@ -67,10 +67,11 @@ public class GridEventManager extends EventManager {
 		Iterator<Record> iterator = selection.getSelectedRecords().iterator();
 		while (iterator.hasNext()) {
 			Record record = iterator.next();
-			GridEvent event = getEventForCell(record.getId(), null, InteractionType.SELECTION);
-			if (event != null) {
+			List<GridEvent> events =
+				getEventForCell(record.getId(), null, InteractionType.SELECTION);
+			if (events.size() > 0) {
 				Iterator<DataPanelElementLink> literator =
-					event.getAction().getDataPanelLink().getElementLinks().iterator();
+					events.get(0).getAction().getDataPanelLink().getElementLinks().iterator();
 				while (literator.hasNext()) {
 					DataPanelElementLink curLink = literator.next();
 					DataPanelElementLink resLink =
@@ -83,7 +84,7 @@ public class GridEventManager extends EventManager {
 
 	private Action prepareFilterAction() {
 		Action result = new Action(DataPanelActionType.RELOAD_ELEMENTS);
-		Iterator<Event> iterator = getEvents().iterator();
+		Iterator<GridEvent> iterator = getEvents().iterator();
 		while (iterator.hasNext()) {
 			Event event = iterator.next();
 			if (event.getInteractionType() == InteractionType.SELECTION) {

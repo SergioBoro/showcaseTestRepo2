@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.element;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.SerializableElement;
 import ru.curs.showcase.app.api.event.*;
 
 /**
@@ -12,29 +12,39 @@ import ru.curs.showcase.app.api.event.*;
  * 
  * @author den
  * 
+ * @param <T>
+ *            - тип событий.
  */
-public abstract class EventManager implements SerializableElement {
+public abstract class EventManager<T extends Event> implements SerializableElement {
 	/**
 	 * serialVersionUID.
 	 */
 	private static final long serialVersionUID = -464983712459253702L;
 	/**
-	 * Набор обработчиков для отображаемых в данный момент записей грида.
+	 * Набор возможных событий для элемента инф. панели.
 	 */
-	private List<Event> events = new ArrayList<Event>();
+	private List<T> events = new ArrayList<T>();
 
-	public List<Event> getEvents() {
+	/**
+	 * Признак того, что даже при наличии конкретного события (c совпадающими
+	 * id1 и id2) до него должно срабатывать общее событие (c совпадающим id1).
+	 */
+	private Boolean fireGeneralAndConcreteEvents = false;
+
+	public List<T> getEvents() {
 		return events;
 	}
 
-	public void setEvents(final List<Event> aEvents) {
+	public void setEvents(final List<T> aEvents) {
 		events = aEvents;
 	}
 
 	/**
-	 * Функция возвращает нужный обработчик события по переданным ей
+	 * Функция возвращает нужные обработчики события по переданным ей
 	 * идентификаторам и типу события. При этом события, у которых заданы 2
-	 * идентификатора имеют приоритет перед событиями с одним идентификатором.
+	 * идентификатора имеют приоритет перед событиями с одним идентификатором. В
+	 * возвращаемом списке может быть более одного события, если включена опция
+	 * fireGeneralAndConcreteEvents.
 	 * 
 	 * @param id1
 	 *            - идентификатор 1 (обязательный).
@@ -44,29 +54,37 @@ public abstract class EventManager implements SerializableElement {
 	 *            - тип взаимодействия.
 	 * @return - событие или NULL.
 	 */
-	protected Event getEventByIds(final String id1, final String id2,
+	protected List<T> getEventByIds(final String id1, final String id2,
 			final InteractionType interactionType) {
+		List<T> res = new ArrayList<T>();
 		if (id1 == null) {
-			return null;
+			return res;
 		}
-		Iterator<Event> iterator = events.iterator();
-		Event forRow = null;
+
+		Iterator<T> iterator = events.iterator();
+		T general = null;
 		while (iterator.hasNext()) {
-			Event current = iterator.next();
+			T current = iterator.next();
 			if (interactionType == current.getInteractionType()) {
 				if (id1.equals(current.getId1())) {
 					if (current.getId2() == null) {
-						forRow = current;
+						general = current;
 					}
 					if ((id2 != null)) {
 						if (id2.equals(current.getId2())) {
-							return current;
+							res.add(current);
+							break;
 						}
 					}
 				}
 			}
 		}
-		return forRow;
+		if (fireGeneralAndConcreteEvents || (res.size() == 0)) {
+			if (general != null) {
+				res.add(0, general);
+			}
+		}
+		return res;
 	}
 
 	/**
@@ -81,7 +99,7 @@ public abstract class EventManager implements SerializableElement {
 	 */
 	public int clean(final Set<String> ids1, final Set<String> ids2) {
 		int initSize = events.size();
-		Iterator<Event> iterator = events.iterator();
+		Iterator<T> iterator = events.iterator();
 		while (iterator.hasNext()) {
 			Event cur = iterator.next();
 			if (!ids1.contains(cur.getId1())) {
@@ -94,5 +112,13 @@ public abstract class EventManager implements SerializableElement {
 			}
 		}
 		return initSize - events.size();
+	}
+
+	public Boolean getFireGeneralAndConcreteEvents() {
+		return fireGeneralAndConcreteEvents;
+	}
+
+	public void setFireGeneralAndConcreteEvents(final Boolean aFireGeneralAndConcreteEvents) {
+		fireGeneralAndConcreteEvents = aFireGeneralAndConcreteEvents;
 	}
 }

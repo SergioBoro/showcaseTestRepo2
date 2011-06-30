@@ -58,6 +58,7 @@
             <xs:attribute name="profile" type="notNullType"/>
             <xs:attribute name="selectMode" type="rowOrCell"/>
             <xs:attribute name="totalCount" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="fireGeneralAndConcreteEvents" type="xs:boolean"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>

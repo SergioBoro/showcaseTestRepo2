@@ -34,4 +34,14 @@
 		<element id="0501" type="webtext" proc="webtext_non_exists_proc"/>
 		<element id="0502" type="webtext" proc="webtext_wrong_userdata"/>
 	</tab>	
+	<tab id="8" name="Карточка">		
+		<element id="81" type="xforms" template="Showcase_Template2.xml"
+			proc="xforms_proc2"/>
+		<element id="82" type="webtext" proc="webtext_3buttons" hideOnLoad="true"/>
+		<element id="83" type="grid" proc="grid_bal_articles_dbl"/>	
+		<element id="84" type="xforms" template="Showcase_Template3.xml"
+			proc="xforms_proc3" neverShowInPanel="true">
+			<proc id="proc1" name="xforms_saveproc3" type="SAVE"/>
+		</element>
+	</tab>			
 </datapanel>

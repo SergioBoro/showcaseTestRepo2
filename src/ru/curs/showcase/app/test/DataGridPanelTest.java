@@ -135,11 +135,11 @@ public class DataGridPanelTest extends GWTTestCase {
 		Action ac = new Action();
 		ac.setDataPanelActionType(DataPanelActionType.DO_NOTHING);
 		grid.setDefaultAction(ac);
-		Event ev = new GridEvent();
+		GridEvent ev = new GridEvent();
 		ev.setAction(ac);
-		((GridEvent) ev).setColId(grid.getAutoSelectColumn().getId());
-		((GridEvent) ev).setRecordId(grid.getAutoSelectRecord().getId());
-		((GridEvent) ev).setInteractionType(InteractionType.SINGLE_CLICK);
+		(ev).setColId(grid.getAutoSelectColumn().getId());
+		(ev).setRecordId(grid.getAutoSelectRecord().getId());
+		(ev).setInteractionType(InteractionType.SINGLE_CLICK);
 		grid.getEventManager().setEvents(Arrays.asList(ev));
 
 		grid.setHeader(HEADER);

@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.Record;
 import ru.curs.gwt.datagrid.selection.*;
-import ru.curs.showcase.app.api.element.EventManager;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 
@@ -35,9 +34,9 @@ public class EventsTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testGarbage() {
-		GridEventManager mgr = (GridEventManager) createStdMgr();
-		assertNull(mgr.getEventForCell(null, null, null));
-		assertNull(mgr.getEventForCell("null", "null", InteractionType.MIDDLE_CLICK));
+		GridEventManager mgr = createStdMgr();
+		assertEquals(0, mgr.getEventForCell(null, null, null).size());
+		assertEquals(0, mgr.getEventForCell("null", "null", InteractionType.MIDDLE_CLICK).size());
 	}
 
 	/**
@@ -51,7 +50,7 @@ public class EventsTest extends AbstractTestBasedOnFiles {
 		String[] ids2Array = { COL1, COL2 };
 		ids1.addAll(Arrays.asList(ids1Array));
 		ids2.addAll(Arrays.asList(ids2Array));
-		EventManager mgr = createStdMgr();
+		GridEventManager mgr = createStdMgr();
 		final int initEventsCount = 4;
 		assertEquals(initEventsCount, mgr.getEvents().size());
 		assertEquals(2, mgr.clean(ids1, ids2));
@@ -63,21 +62,21 @@ public class EventsTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testGetEvents() {
-		GridEventManager mgr = (GridEventManager) createStdMgr();
-		Event event = mgr.getEventForCell(ROW1, null, InteractionType.SINGLE_CLICK);
-		assertNotNull(event);
-		assertEquals(ROW1, event.getId1());
-		assertNull(event.getId2());
-		event = mgr.getEventForCell(ROW1, COL1, InteractionType.SINGLE_CLICK);
-		assertNotNull(event);
-		assertEquals(ROW1, event.getId1());
-		assertEquals(COL1, event.getId2());
-		event = mgr.getEventForCell(ROW1, COL3, InteractionType.SINGLE_CLICK);
-		assertNotNull(event);
-		assertEquals(ROW1, event.getId1());
-		assertNull(event.getId2());
-		event = mgr.getEventForCell(ROW4, COL3, InteractionType.SINGLE_CLICK);
-		assertNull(event);
+		GridEventManager mgr = createStdMgr();
+		List<GridEvent> events = mgr.getEventForCell(ROW1, null, InteractionType.SINGLE_CLICK);
+		assertEquals(1, events.size());
+		assertEquals(ROW1, events.get(0).getId1());
+		assertNull(events.get(0).getId2());
+		events = mgr.getEventForCell(ROW1, COL1, InteractionType.SINGLE_CLICK);
+		assertEquals(1, events.size());
+		assertEquals(ROW1, events.get(0).getId1());
+		assertEquals(COL1, events.get(0).getId2());
+		events = mgr.getEventForCell(ROW1, COL3, InteractionType.SINGLE_CLICK);
+		assertEquals(1, events.size());
+		assertEquals(ROW1, events.get(0).getId1());
+		assertNull(events.get(0).getId2());
+		events = mgr.getEventForCell(ROW4, COL3, InteractionType.SINGLE_CLICK);
+		assertEquals(0, events.size());
 	}
 
 	/**
@@ -86,7 +85,7 @@ public class EventsTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testSelectionEvents() {
 		GridEventManager mgr = new GridEventManager();
-		Event event = new GridEvent();
+		GridEvent event = new GridEvent();
 		event.setInteractionType(InteractionType.SELECTION);
 		event.setId1(ROW1);
 		Action action = new Action(DataPanelActionType.RELOAD_ELEMENTS);
@@ -176,9 +175,9 @@ public class EventsTest extends AbstractTestBasedOnFiles {
 				.getDataPanelLink().getElementLinkById(ROW2).getContext().getFilter());
 	}
 
-	private EventManager createStdMgr() {
-		EventManager mgr = new GridEventManager();
-		Event event = new GridEvent();
+	private GridEventManager createStdMgr() {
+		GridEventManager mgr = new GridEventManager();
+		GridEvent event = new GridEvent();
 		event.setInteractionType(InteractionType.SINGLE_CLICK);
 		event.setId1(ROW1);
 		mgr.getEvents().add(event);

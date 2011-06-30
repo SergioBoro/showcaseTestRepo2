@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.geomap;
 
-import ru.curs.showcase.app.api.element.*;
+import ru.curs.showcase.app.api.element.DataPanelElementWithLegend;
 
 /**
  * Класс карты - элемента информационной панели. На карте отображаются
@@ -30,7 +30,7 @@ public final class GeoMap extends DataPanelElementWithLegend {
 	}
 
 	@Override
-	protected EventManager initEventManager() {
+	protected GeoMapEventManager initEventManager() {
 		return new GeoMapEventManager();
 	}
 

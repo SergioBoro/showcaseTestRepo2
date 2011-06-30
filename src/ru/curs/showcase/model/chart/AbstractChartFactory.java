@@ -149,7 +149,13 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 				selectorColumn = value;
 				value = attrs.getValue(FLIP_TAG);
 				flip = Boolean.valueOf(value);
-				hintFormat = attrs.getValue(HINT_FORMAT_TAG);
+				if (attrs.getIndex(HINT_FORMAT_TAG) > -1) {
+					hintFormat = attrs.getValue(HINT_FORMAT_TAG);
+				}
+				if (attrs.getIndex(FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG) > -1) {
+					getResult().getEventManager().setFireGeneralAndConcreteEvents(
+							Boolean.valueOf(attrs.getValue(FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG)));
+				}
 				return;
 			}
 			if (qname.equalsIgnoreCase(LABEL_Y_TAG)) {

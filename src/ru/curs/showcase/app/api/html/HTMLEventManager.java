@@ -1,7 +1,9 @@
 package ru.curs.showcase.app.api.html;
 
+import java.util.List;
+
 import ru.curs.showcase.app.api.element.EventManager;
-import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.event.InteractionType;
 
 /**
  * Адаптер менеджера событий для HTML based элементов.
@@ -9,7 +11,7 @@ import ru.curs.showcase.app.api.event.*;
  * @author den
  * 
  */
-public final class HTMLEventManager extends EventManager {
+public final class HTMLEventManager extends EventManager<HTMLEvent> {
 
 	/**
 	 * serialVersionUID.
@@ -24,7 +26,12 @@ public final class HTMLEventManager extends EventManager {
 	 *            - идентификатор строки.
 	 * @return - событие или NULL.
 	 */
-	public HTMLEvent getEventForLink(final String linkId) {
-		return (HTMLEvent) getEventByIds(linkId, null, InteractionType.SINGLE_CLICK);
+	public List<HTMLEvent> getEventForLink(final String linkId) {
+		return getEventByIds(linkId, null, InteractionType.SINGLE_CLICK);
+	}
+
+	@Override
+	public List<HTMLEvent> getEvents() {
+		return super.getEvents();
 	}
 }

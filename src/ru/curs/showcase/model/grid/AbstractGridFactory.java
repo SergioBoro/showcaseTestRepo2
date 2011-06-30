@@ -325,6 +325,10 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 				if (attrs.getIndex(PROFILE_TAG) > -1) {
 					profile = attrs.getValue(PROFILE_TAG);
 				}
+				if (attrs.getIndex(FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG) > -1) {
+					getResult().getEventManager().setFireGeneralAndConcreteEvents(
+							Boolean.valueOf(attrs.getValue(FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG)));
+				}
 				if ((!isRefresh()) && (attrs.getIndex(PAGESIZE_TAG) > -1)) {
 					value = attrs.getValue(PAGESIZE_TAG);
 					Integer intValue = Integer.valueOf(value);
