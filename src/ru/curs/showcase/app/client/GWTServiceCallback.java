@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.client;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.client.utils.AccessToDomModel;
 
@@ -34,10 +34,31 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 			// Window.Location.replace(Window.Location.getPath() + "logout");
 
 		} else {
-
+			MessageType mesType;
+			switch (GeneralServerException.getMessageType(caught)) {
+			case INFO:
+				mesType = MessageType.INFO;
+				break;
+			case WARNING:
+				mesType = MessageType.WARNING;
+				break;
+			default:
+				mesType = MessageType.ERROR;
+				break;
+			}
 			MessageBox.showMessageWithDetails(msgErrorCaption, caught.getMessage(),
 					GeneralServerException
-							.checkExeptionTypeAndCreateDetailedTextOfException(caught));
+							.checkExeptionTypeAndCreateDetailedTextOfException(caught), mesType,
+					GeneralServerException.needDetailedInfo(caught));
+
+			// MessageBox.showMessageWithDetails(msgErrorCaption,
+			// caught.getMessage(),
+			// GeneralServerException
+			// .checkExeptionTypeAndCreateDetailedTextOfException(caught));
+			//
+			// GeneralServerException.needDetailedInfo(caught);
+
+			// GeneralServerException.getMessageType(caught);
 
 		}
 
