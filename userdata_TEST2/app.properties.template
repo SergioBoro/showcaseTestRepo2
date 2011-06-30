@@ -9,7 +9,7 @@ navigator.proc.name = generationtree
 # general
 navigator.def.icon.name = group_icon_default.png
 copy.userdata.on.startup = false
-copy.userdata.dirs = js:css:html:resources:WEB-INF
+copy.userdata.dirs = js:css:html:resources
 # dirs
 navigator.icons.dir.name = resources
 images.in.grid.dir = resources
