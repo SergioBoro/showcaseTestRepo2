@@ -8,11 +8,13 @@ import javax.servlet.http.*;
 import ru.curs.showcase.util.TextUtils;
 
 /**
- * Front controller для работы с файлами.
+ * Front controller для получения "статических" фреймов, которые будут включены
+ * в главную страницу приложения.
  */
-public final class FilesFrontController extends HttpServlet {
+public final class MainPageFramesFrontController extends HttpServlet {
 
-	static final String UNKNOWN_COMMAND_ERROR = "Неизвестная команда для FilesFrontController";
+	static final String UNKNOWN_COMMAND_ERROR =
+		"Неизвестная команда для MainPageFramesFrontController";
 	/**
 	 * serialVersionUID.
 	 */
@@ -24,22 +26,22 @@ public final class FilesFrontController extends HttpServlet {
 		try {
 			String servlet = request.getServletPath();
 			servlet = servlet.replace("/secured/", "").toUpperCase();
-			FilesFrontControllerAction action = FilesFrontControllerAction.valueOf(servlet);
-			AbstractFilesHandler handler = null;
+			MainPageFramesType action = MainPageFramesType.valueOf(servlet);
+
 			switch (action) {
-			case DOWNLOAD:
-				handler = DownloadHandler.newInstance();
+			case WELCOME:
+
 				break;
-			case GRIDTOEXCEL:
-				handler = GridToExcelHandler.newInstance();
+			case HEADER:
+
 				break;
-			case UPLOAD:
-				handler = UploadHandler.newInstance();
+			case FOOTER:
+
 				break;
 			default:
 				fillErrorResponce(response, UNKNOWN_COMMAND_ERROR);
 			}
-			handler.handle(request, response);
+			// handler.handle(request, response);
 
 		} catch (Throwable e) {
 			fillErrorResponce(response, e.getMessage());

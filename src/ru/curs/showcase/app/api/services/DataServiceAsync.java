@@ -149,4 +149,14 @@ public interface DataServiceAsync {
 	 * @throws GeneralServerException
 	 */
 	void execServerAction(Action action, AsyncCallback<Void> callback);
+
+	/**
+	 * Асинхронная версия.
+	 * 
+	 * @param context
+	 *            - текущий контекст.
+	 * @param callback
+	 *            - callback.
+	 */
+	void getMainPage(CompositeContext context, AsyncCallback<MainPage> callback);
 }

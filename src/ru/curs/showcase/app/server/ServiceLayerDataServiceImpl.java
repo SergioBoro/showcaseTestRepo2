@@ -403,4 +403,18 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			throw GeneralServerExceptionFactory.build(e);
 		}
 	}
+
+	@Override
+	public MainPage getMainPage(final CompositeContext context) throws GeneralServerException {
+		try {
+			prepareContext(context);
+			MainPage mp = new MainPage();
+			mp.setHeaderHeight("10px");
+			mp.setFooterHeight("10px");
+			outputDebugInfo(mp);
+			return mp;
+		} catch (Throwable e) {
+			throw GeneralServerExceptionFactory.build(e);
+		}
+	}
 }

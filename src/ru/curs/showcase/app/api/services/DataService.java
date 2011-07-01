@@ -155,4 +155,14 @@ public interface DataService extends RemoteService {
 	 * @throws GeneralServerException
 	 */
 	void execServerAction(Action action) throws GeneralServerException;
+
+	/**
+	 * Возвращает данные для формирования главной страницы.
+	 * 
+	 * @param context
+	 *            - контекст, содержащий параметры URL.
+	 * 
+	 * @throws GeneralServerException
+	 */
+	MainPage getMainPage(CompositeContext context) throws GeneralServerException;
 }

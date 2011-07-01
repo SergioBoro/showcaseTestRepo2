@@ -34,7 +34,7 @@
 		<element id="0501" type="webtext" proc="webtext_non_exists_proc"/>
 		<element id="0502" type="webtext" proc="webtext_wrong_userdata"/>
 	</tab>	
-	<tab id="8" name="Карточка">		
+	<tab id="8" name="Выполнение 2 действий в гриде">		
 		<element id="81" type="xforms" template="Showcase_Template2.xml"
 			proc="xforms_proc2"/>
 		<element id="82" type="webtext" proc="webtext_3buttons" hideOnLoad="true"/>

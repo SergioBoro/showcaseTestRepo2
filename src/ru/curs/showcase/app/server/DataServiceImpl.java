@@ -87,4 +87,9 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	public void execServerAction(final Action action) throws GeneralServerException {
 		getServiceLayer().execServerAction(action);
 	}
+
+	@Override
+	public MainPage getMainPage(final CompositeContext context) throws GeneralServerException {
+		return getServiceLayer().getMainPage(context);
+	}
 }

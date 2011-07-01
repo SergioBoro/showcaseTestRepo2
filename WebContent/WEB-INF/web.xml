@@ -122,16 +122,40 @@
     <servlet-name>XFormsTransformationServlet</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.XFormsTransformationServlet</servlet-class>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>XFormsTransformationServlet</servlet-name>
+    <url-pattern>/secured/xslttransformer</url-pattern>
+  </servlet-mapping>  
   <servlet>
     <servlet-name>GeoCheckServlet</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.GeoCheckServlet</servlet-class>
   </servlet>  
   <servlet-mapping>
-    <servlet-name>XFormsTransformationServlet</servlet-name>
-    <url-pattern>/secured/xslttransformer</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
     <servlet-name>GeoCheckServlet</servlet-name>
     <url-pattern>/secured/geoCheck</url-pattern>
   </servlet-mapping>  
+  <servlet>
+    <servlet-name>Welcome frame</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.MainPageFramesFrontController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Welcome frame</servlet-name>
+    <url-pattern>/secured/welcome</url-pattern>
+  </servlet-mapping>   
+  <servlet>
+    <servlet-name>Header frame</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.MainPageFramesFrontController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Header frame</servlet-name>
+    <url-pattern>/secured/header</url-pattern>
+  </servlet-mapping>   
+  <servlet>
+    <servlet-name>Footer frame</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.MainPageFramesFrontController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Footer frame</servlet-name>
+    <url-pattern>/secured/footer</url-pattern>
+  </servlet-mapping>       
 </web-app>
