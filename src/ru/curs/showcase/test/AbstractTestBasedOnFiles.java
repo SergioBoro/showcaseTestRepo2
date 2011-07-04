@@ -3,8 +3,9 @@ package ru.curs.showcase.test;
 import static org.junit.Assert.assertTrue;
 
 import java.io.*;
+import java.util.*;
 
-import org.junit.BeforeClass;
+import org.junit.*;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
@@ -33,6 +34,9 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	 */
 	static final String NAVIGATORSTORAGE = "navigatorstorage";
 
+	static final String VALUE12 = "value1";
+	static final String KEY1 = "key1";
+
 	/**
 	 * Действия, которые должны выполняться перед запуском любых тестовых
 	 * классов.
@@ -44,6 +48,14 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 			AppInitializer.readPathProperties();
 		}
 		initTestSession();
+	}
+
+	/**
+	 * Очистка информации о текущей userdata после каждого теста.
+	 */
+	@After
+	public void afterTest() {
+		AppInfoSingleton.getAppInfo().setCurrentUserDataId((String) null);
 	}
 
 	private static void initTestSession() {
@@ -279,4 +291,45 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		return action;
 	}
 
+	/**
+	 * Генерирует набор параметров URL c заданной userdata.
+	 * 
+	 * @param userDataId
+	 *            - идентификатор userdata.
+	 */
+	protected Map<String, List<String>> generateTestURLParams(final String userDataId) {
+		Map<String, List<String>> params = new TreeMap<String, List<String>>();
+		ArrayList<String> value1 = new ArrayList<String>();
+		value1.add(VALUE12);
+		params.put(KEY1, value1);
+		ArrayList<String> value2 = new ArrayList<String>();
+		value2.add("value21");
+		value2.add("value22");
+		params.put("key2", value2);
+		ArrayList<String> value3 = new ArrayList<String>();
+		value3.add(userDataId);
+		params.put(AppProps.URL_PARAM_USERDATA, value3);
+		return params;
+	}
+
+	/**
+	 * Генерирует набор параметров URL c заданной userdata.
+	 * 
+	 * @param userDataId
+	 *            - идентификатор userdata.
+	 */
+	protected Map<String, ArrayList<String>> generateTestURLParamsForSL(final String userDataId) {
+		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
+		ArrayList<String> value1 = new ArrayList<String>();
+		value1.add(VALUE12);
+		params.put(KEY1, value1);
+		ArrayList<String> value2 = new ArrayList<String>();
+		value2.add("value21");
+		value2.add("value22");
+		params.put("key2", value2);
+		ArrayList<String> value3 = new ArrayList<String>();
+		value3.add(userDataId);
+		params.put(AppProps.URL_PARAM_USERDATA, value3);
+		return params;
+	}
 }

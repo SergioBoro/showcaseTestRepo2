@@ -6,7 +6,10 @@ import java.io.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.datapanel.DataPanelXMLGateway;
 import ru.curs.showcase.security.SecurityParamsFactory;
 import ru.curs.showcase.util.*;
@@ -14,13 +17,13 @@ import ru.curs.showcase.util.*;
 /**
  * Тесты класса AppProps.
  */
-public class AppPropsTest extends AbstractTestBasedOnFiles {
+public final class AppPropsTest extends AbstractTestBasedOnFiles {
 
 	/**
 	 * Тест ф-ции loadResToStream.
 	 */
 	@Test
-	public final void testLoadResToStream() {
+	public void testLoadResToStream() {
 		assertNotNull(AppProps.loadResToStream(AppProps.PATH_PROPERTIES));
 	}
 
@@ -31,7 +34,7 @@ public class AppPropsTest extends AbstractTestBasedOnFiles {
 	 * @throws IOException
 	 */
 	@Test
-	public final void testLoadUserDataToStream() throws IOException {
+	public void testLoadUserDataToStream() throws IOException {
 		assertNotNull(AppProps.loadUserDataToStream(AppProps.PROPFILENAME));
 	}
 
@@ -40,7 +43,7 @@ public class AppPropsTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public final void testGetValueByName() {
+	public void testGetValueByName() {
 		AppProps.getRequiredValueByName(SecurityParamsFactory.AUTH_SERVER_URL_PARAM);
 		AppProps.getRequiredValueByName(ConnectionFactory.CONNECTION_URL_PARAM);
 		assertNotNull(AppProps.getOptionalValueByName(ConnectionFactory.CONNECTION_URL_PARAM));
@@ -54,7 +57,7 @@ public class AppPropsTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public final void testGetUserDataId() {
+	public void testGetUserDataId() {
 		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, AppProps.getUserDataId());
 	}
 
@@ -63,7 +66,7 @@ public class AppPropsTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public final void testDirExists() {
+	public void testDirExists() {
 		checkDir(AppProps.XSLTTRANSFORMSDIR);
 		checkDir(AppProps.XSLTTRANSFORMSFORGRIDDIR);
 		checkDir(DataPanelXMLGateway.DP_STORAGE_PARAM_NAME);
@@ -77,5 +80,36 @@ public class AppPropsTest extends AbstractTestBasedOnFiles {
 	private void checkDir(final String dirName) {
 		File dir = new File(AppProps.getUserDataCatalog() + File.separator + dirName);
 		assertTrue(dir.exists());
+	}
+
+	/**
+	 * Проверка чтения информации о главном окне из app.properties.
+	 */
+	@Test
+	public void testReadMainPageInfo() {
+		assertEquals("100px",
+				AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP, "test1"));
+		assertEquals("50px", AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, "test1"));
+		assertNull(AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP, "test2"));
+		assertNull(AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, "test2"));
+	}
+
+	/**
+	 * Проверка чтения информации о главном окне из app.properties.
+	 * 
+	 * @throws GeneralServerException
+	 */
+	@Test
+	public void testReadMainPageInfoBySL() throws GeneralServerException {
+		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		CompositeContext context = new CompositeContext(generateTestURLParams("test1"));
+		MainPage mp = sl.getMainPage(context);
+		assertEquals("100px", mp.getHeaderHeight());
+		assertEquals("50px", mp.getFooterHeight());
+
+		context = new CompositeContext(generateTestURLParams("test2"));
+		mp = sl.getMainPage(context);
+		assertEquals(AppProps.DEF_HEADER_HEIGTH, mp.getHeaderHeight());
+		assertEquals(AppProps.DEF_FOOTER_HEIGTH, mp.getFooterHeight());
 	}
 }

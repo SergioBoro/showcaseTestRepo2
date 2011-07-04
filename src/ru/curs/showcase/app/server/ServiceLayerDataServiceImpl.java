@@ -41,14 +41,6 @@ import com.google.gson.*;
  */
 public final class ServiceLayerDataServiceImpl implements DataService, DataServiceExt {
 
-	public static final String FOOTER_HEIGHT_PROP = "footer.height";
-
-	public static final String HEADER_HEIGHT_PROP = "header.height";
-
-	public static final String DEF_HEADER_HEIGTH = "50px";
-
-	public static final String DEF_FOOTER_HEIGTH = "50px";
-
 	@SuppressWarnings("unused")
 	private ServiceLayerDataServiceImpl() {
 		throw new UnsupportedOperationException(
@@ -417,17 +409,17 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		try {
 			prepareContext(context);
 			MainPage mp = new MainPage();
-			String value = AppProps.getOptionalValueByName(HEADER_HEIGHT_PROP);
+			String value = AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP);
 			if (value != null) {
 				mp.setHeaderHeight(value);
 			} else {
-				mp.setHeaderHeight(DEF_HEADER_HEIGTH);
+				mp.setHeaderHeight(AppProps.DEF_HEADER_HEIGTH);
 			}
-			value = AppProps.getOptionalValueByName(FOOTER_HEIGHT_PROP);
+			value = AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP);
 			if (value != null) {
 				mp.setFooterHeight(value);
 			} else {
-				mp.setFooterHeight(DEF_FOOTER_HEIGTH);
+				mp.setFooterHeight(AppProps.DEF_FOOTER_HEIGTH);
 			}
 			outputDebugInfo(mp);
 			return mp;

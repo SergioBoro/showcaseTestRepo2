@@ -14,6 +14,14 @@ import ru.curs.showcase.model.SettingsFileType;
  * 
  */
 public final class AppProps {
+	public static final String DEF_FOOTER_HEIGTH = "50px";
+
+	public static final String DEF_HEADER_HEIGTH = "50px";
+
+	public static final String HEADER_HEIGHT_PROP = "header.height";
+
+	public static final String FOOTER_HEIGHT_PROP = "footer.height";
+
 	/**
 	 * Имя файла с настройками путей приложения. Пути рекомендуется задавать
 	 * абсолютно, т.к. относительный путь отсчитывается либо от папки с eclipse,
@@ -264,12 +272,7 @@ public final class AppProps {
 	 * @return - идентификатор текущей userdata.
 	 */
 	public static String getUserDataId() {
-		String userdataId = null;
-
-		String sessionId = ServletUtils.getSessionId();
-		if (sessionId != null) {
-			userdataId = AppInfoSingleton.getAppInfo().getCurrentUserDataId();
-		}
+		String userdataId = AppInfoSingleton.getAppInfo().getCurrentUserDataId();
 
 		if (userdataId == null) {
 			userdataId = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;

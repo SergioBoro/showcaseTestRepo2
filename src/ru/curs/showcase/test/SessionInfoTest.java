@@ -29,11 +29,27 @@ import ru.curs.showcase.util.XMLUtils;
 public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	static final boolean AUTH_VIA_AUTH_SERVER = true;
 	static final String TEMP_PASS = "pass";
-	static final String VALUE12 = "value1";
-	static final String KEY1 = "key1";
 	static final String FAKE_SESSION_ID = "fake-session-id";
 	static final String USERDATA_ID = "test1";
 	static final String NOT_EXIST_USERDATA_ID = "test123";
+
+	/**
+	 * Простой тест на установку текущего userdataId.
+	 */
+	@Test
+	public void testCurUserDataIdSet() {
+		AppInfoSingleton.getAppInfo().setCurrentUserDataId(generateTestURLParamsForSL("test1"));
+		assertEquals("test1", AppInfoSingleton.getAppInfo().getCurrentUserDataId());
+	}
+
+	/**
+	 * Проверка того, что значение getCurrentUserDataId сразу после запуска
+	 * равно null.
+	 */
+	@Test
+	public void testInitialCurUserDataIdValue() {
+		assertNull(AppInfoSingleton.getAppInfo().getCurrentUserDataId());
+	}
 
 	/**
 	 * Базовый тест на запись и чтение URLParams.
@@ -45,7 +61,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testSessionInfoForGetChart() throws IOException, GeneralServerException,
 			SAXException {
-		Map<String, List<String>> params = generateTestURLParams();
+		Map<String, List<String>> params = generateTestURLParams(USERDATA_ID);
 
 		AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(FAKE_SESSION_ID,
 				AUTH_VIA_AUTH_SERVER);
@@ -110,7 +126,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testSessionInfoForGetDP() throws IOException, GeneralServerException, SAXException {
-		Map<String, List<String>> params = generateTestURLParams();
+		Map<String, List<String>> params = generateTestURLParams(USERDATA_ID);
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
 		final int elID = 5;
@@ -120,21 +136,6 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurrentUserDataId());
 		checkTestUrlParams(action.getDataPanelLink().getContext());
 		checkTestUrlParams(action.getDataPanelLink().getElementLinks().get(0).getContext());
-	}
-
-	private Map<String, List<String>> generateTestURLParams() {
-		Map<String, List<String>> params = new TreeMap<String, List<String>>();
-		ArrayList<String> value1 = new ArrayList<String>();
-		value1.add(VALUE12);
-		params.put(KEY1, value1);
-		ArrayList<String> value2 = new ArrayList<String>();
-		value2.add("value21");
-		value2.add("value22");
-		params.put("key2", value2);
-		ArrayList<String> value3 = new ArrayList<String>();
-		value3.add(USERDATA_ID);
-		params.put(AppProps.URL_PARAM_USERDATA, value3);
-		return params;
 	}
 
 	/**
