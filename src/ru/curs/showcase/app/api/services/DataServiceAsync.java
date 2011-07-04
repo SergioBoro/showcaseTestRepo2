@@ -134,10 +134,14 @@ public interface DataServiceAsync {
 	/**
 	 * Асинхронная версия.
 	 * 
+	 * @param context
+	 *            - контекст, содержащий параметры URL..
 	 * @param callback
 	 *            - callback.
 	 */
-	void getServerCurrentState(AsyncCallback<ServerCurrentState> callback);
+	void
+			getServerCurrentState(CompositeContext context,
+					AsyncCallback<ServerCurrentState> callback);
 
 	/**
 	 * Асинхронная версия.
@@ -154,7 +158,7 @@ public interface DataServiceAsync {
 	 * Асинхронная версия.
 	 * 
 	 * @param context
-	 *            - текущий контекст.
+	 *            - контекст, содержащий параметры URL..
 	 * @param callback
 	 *            - callback.
 	 */

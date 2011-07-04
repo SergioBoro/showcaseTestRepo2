@@ -6,7 +6,7 @@ import java.io.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
@@ -50,15 +50,6 @@ public final class AppPropsTest extends AbstractTestBasedOnFiles {
 
 		assertEquals("group_icon_default1.png",
 				AppProps.getOptionalValueByName("navigator.def.icon.name", "test1"));
-	}
-
-	/**
-	 * Тест ф-ции getUserDataId.
-	 * 
-	 */
-	@Test
-	public void testGetUserDataId() {
-		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, AppProps.getUserDataId());
 	}
 
 	/**

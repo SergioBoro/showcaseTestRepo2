@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.util.TextUtils;
 
 /**
@@ -29,6 +29,7 @@ public class XFormsTransformationServlet extends HttpServlet {
 		if (xsltFile == null) {
 			throw new ServletException(XSLTFILE_PARAM_ERROR);
 		}
+		String userDataId = request.getParameter(ExchangeConstants.URL_PARAM_USERDATA);
 		String content = ServletUtils.getRequestAsString(request);
 
 		response.setContentType("text/html");
@@ -37,12 +38,9 @@ public class XFormsTransformationServlet extends HttpServlet {
 		try {
 			ServiceLayerDataServiceImpl sl =
 				new ServiceLayerDataServiceImpl(request.getSession().getId());
-			String res = sl.handleXSLTSubmission(xsltFile, content);
+			String res = sl.handleXSLTSubmission(xsltFile, content, userDataId);
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.getWriter().append(res);
-		} catch (GeneralServerException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().append(e.getOriginalMessage());
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().append(e.getMessage());

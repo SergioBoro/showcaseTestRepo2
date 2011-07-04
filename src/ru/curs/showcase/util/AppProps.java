@@ -31,11 +31,6 @@ public final class AppProps {
 	public static final String PATH_PROPERTIES = "path.properties";
 
 	/**
-	 * Название параметра userdata в URL.
-	 */
-	public static final String URL_PARAM_USERDATA = "userdata";
-
-	/**
 	 * Каталог на сервере с решениями (сейчас туда копируются userdata при
 	 * старте сервера).
 	 */
@@ -237,7 +232,7 @@ public final class AppProps {
 				if (NAVIGATOR_ICONS_DIR_NAME.equals(propName)
 						|| IMAGES_IN_GRID_DIR.equals(propName)) {
 					if (userdataId == null) {
-						userdataId = getUserDataId();
+						userdataId = AppInfoSingleton.getAppInfo().getCurrentUserDataId();
 					}
 					result = String.format(DIR_IN_SOLUTIONS, userdataId, result);
 				}
@@ -252,7 +247,7 @@ public final class AppProps {
 	private static Properties getProperties(final String aUserdataId) throws IOException {
 		String userdataId;
 		if (aUserdataId == null) {
-			userdataId = getUserDataId();
+			userdataId = AppInfoSingleton.getAppInfo().getCurrentUserDataId();
 		} else {
 			userdataId = aUserdataId;
 		}
@@ -289,7 +284,7 @@ public final class AppProps {
 	public static String getUserDataCatalog() {
 		String userDataCatalog = null;
 
-		String userdataId = getUserDataId();
+		String userdataId = AppInfoSingleton.getAppInfo().getCurrentUserDataId();
 		UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
 		if (us != null) {
 			userDataCatalog = us.getPath();

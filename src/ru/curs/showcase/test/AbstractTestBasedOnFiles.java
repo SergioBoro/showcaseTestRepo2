@@ -7,6 +7,7 @@ import java.util.*;
 
 import org.junit.*;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
@@ -48,6 +49,15 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 			AppInitializer.readPathProperties();
 		}
 		initTestSession();
+	}
+
+	/**
+	 * Установка userdata по умолчанию для тестов, не вызывающих функции SL.
+	 */
+	@Before
+	public void beforeTest() {
+		AppInfoSingleton.getAppInfo().setCurrentUserDataId(
+				ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
 	}
 
 	/**
@@ -308,7 +318,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		params.put("key2", value2);
 		ArrayList<String> value3 = new ArrayList<String>();
 		value3.add(userDataId);
-		params.put(AppProps.URL_PARAM_USERDATA, value3);
+		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
 		return params;
 	}
 
@@ -329,7 +339,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		params.put("key2", value2);
 		ArrayList<String> value3 = new ArrayList<String>();
 		value3.add(userDataId);
-		params.put(AppProps.URL_PARAM_USERDATA, value3);
+		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
 		return params;
 	}
 }

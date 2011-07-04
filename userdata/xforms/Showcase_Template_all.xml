@@ -35,6 +35,12 @@
 			<xf:submission id="xslttransformation" method="post"
 				instance="mainInstance" replace="instance" ref="instance('mainInstance')"
 				action="secured/xslttransformer?xsltfile=xformsxslttransformation_test.xsl">
+				<xf:action ev:event="xforms-submit-error">
+					<xf:message>
+						Ошибка при выполнении submission:
+						<xf:output value="event('response-body')" />
+					</xf:message>
+				</xf:action>				
 			</xf:submission>
 
 			<xf:bind>

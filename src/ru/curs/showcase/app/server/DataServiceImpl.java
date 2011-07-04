@@ -79,8 +79,9 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public ServerCurrentState getServerCurrentState() throws GeneralServerException {
-		return getServiceLayer().getServerCurrentState();
+	public ServerCurrentState getServerCurrentState(final CompositeContext context)
+			throws GeneralServerException {
+		return getServiceLayer().getServerCurrentState(context);
 	}
 
 	@Override

@@ -40,7 +40,6 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	public void testCurUserDataIdSet() {
 		AppInfoSingleton.getAppInfo().setCurrentUserDataId(generateTestURLParamsForSL("test1"));
 		assertEquals("test1", AppInfoSingleton.getAppInfo().getCurrentUserDataId());
-		assertEquals("test1", AppProps.getUserDataId());
 	}
 
 	/**
@@ -49,8 +48,8 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testInitialCurUserDataIdValue() {
-		assertNull(AppInfoSingleton.getAppInfo().getCurrentUserDataId());
-		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, AppProps.getUserDataId());
+		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, AppInfoSingleton.getAppInfo()
+				.getCurrentUserDataId());
 	}
 
 	/**
@@ -188,7 +187,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
 		ArrayList<String> value3 = new ArrayList<String>();
 		value3.add(USERDATA_ID);
-		params.put(AppProps.URL_PARAM_USERDATA, value3);
+		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
 		AppInfoSingleton.getAppInfo().setCurrentUserDataId(params);
 		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurrentUserDataId());
 		assertNotNull(AppProps.getUserDataCatalog());
@@ -202,7 +201,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
 		ArrayList<String> value3 = new ArrayList<String>();
 		value3.add(NOT_EXIST_USERDATA_ID);
-		params.put(AppProps.URL_PARAM_USERDATA, value3);
+		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
 		AppInfoSingleton.getAppInfo().setCurrentUserDataId(params);
 	}
 

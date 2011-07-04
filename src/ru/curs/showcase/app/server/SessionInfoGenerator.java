@@ -24,7 +24,7 @@ public final class SessionInfoGenerator extends GeneralXMLHelper {
 	public static final String USERNAME_TAG = "username";
 	public static final String URL_PARAMS_TAG = "urlparams";
 	public static final String URL_PARAM_TAG = "urlparam";
-	public static final String USERDATA_TAG = "userdata";
+	public static final String USERDATA_TAG = ExchangeConstants.URL_PARAM_USERDATA;
 
 	private SessionInfoGenerator() {
 		throw new UnsupportedOperationException();
@@ -64,10 +64,10 @@ public final class SessionInfoGenerator extends GeneralXMLHelper {
 		Element node = info.createElement(USERDATA_TAG);
 		info.getDocumentElement().appendChild(node);
 		String value = null;
-		if ((aMap != null) && (aMap.get(AppProps.URL_PARAM_USERDATA) != null)) {
+		if ((aMap != null) && (aMap.get(ExchangeConstants.URL_PARAM_USERDATA) != null)) {
 			value =
-				Arrays.toString(aMap.get(AppProps.URL_PARAM_USERDATA).toArray()).replace("[", "")
-						.replace("]", "");
+				Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_USERDATA).toArray())
+						.replace("[", "").replace("]", "");
 		} else {
 			value = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
 		}
@@ -85,7 +85,7 @@ public final class SessionInfoGenerator extends GeneralXMLHelper {
 			Iterator<String> iterator = aMap.keySet().iterator();
 			while (iterator.hasNext()) {
 				String key = iterator.next();
-				if (!(AppProps.URL_PARAM_USERDATA.equals(key))) {
+				if (!(ExchangeConstants.URL_PARAM_USERDATA.equals(key))) {
 					Element child = info.createElement(URL_PARAM_TAG);
 					node.appendChild(child);
 					child.setAttribute(NAME_TAG, URLDecoder.decode(key, TextUtils.DEF_ENCODING));

@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.model.GeneralXMLHelper;
 import ru.curs.showcase.model.datapanel.DataPanelXMLGateway;
@@ -208,5 +210,21 @@ public class BaseObjectsTest extends AbstractTestBasedOnFiles {
 		assertEquals("11.11", BrowserType.detectVersion(operaUA));
 		assertEquals("4.0.1", BrowserType.detectVersion(firefoxUA));
 		assertEquals("9.0", BrowserType.detectVersion(IEUA));
+	}
+
+	/**
+	 * Проверка вызова функции getServerCurrentState.
+	 * 
+	 * @throws GeneralServerException
+	 */
+	@Test
+	public void testGetServerCurrentState() throws GeneralServerException {
+		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		CompositeContext context = new CompositeContext();
+		ServerCurrentState scs = sl.getServerCurrentState(context);
+		assertNotNull(scs);
+		assertEquals(AppInfoSingleton.getAppInfo().getServletContainerVersion(),
+				scs.getServletContainerVersion());
+		assertEquals(System.getProperty("java.version"), scs.getJavaVersion());
 	}
 }

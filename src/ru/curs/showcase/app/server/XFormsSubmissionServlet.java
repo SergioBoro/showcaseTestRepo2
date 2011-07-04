@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.model.RequestResult;
 import ru.curs.showcase.util.TextUtils;
 
@@ -27,6 +28,7 @@ public class XFormsSubmissionServlet extends HttpServlet {
 		if (procName == null) {
 			throw new ServletException(PROC_PARAM_ERROR);
 		}
+		String userDataId = req.getParameter(ExchangeConstants.URL_PARAM_USERDATA);
 		String content = ServletUtils.getRequestAsString(req);
 
 		response.setContentType("text/html");
@@ -34,7 +36,7 @@ public class XFormsSubmissionServlet extends HttpServlet {
 		try {
 			ServiceLayerDataServiceImpl sl =
 				new ServiceLayerDataServiceImpl(req.getSession().getId());
-			RequestResult res = sl.handleSQLSubmission(procName, content);
+			RequestResult res = sl.handleSQLSubmission(procName, content, userDataId);
 			if (res.getSuccess()) {
 				response.setStatus(HttpServletResponse.SC_OK);
 				response.getWriter().append(res.getData());

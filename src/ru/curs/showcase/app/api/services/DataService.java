@@ -143,8 +143,11 @@ public interface DataService extends RemoteService {
 	 * 
 	 * @return - объект с информацией.
 	 * @throws GeneralServerException
+	 * @param context
+	 *            -контекст, содержащий параметры URL.
 	 */
-	ServerCurrentState getServerCurrentState() throws GeneralServerException;
+	ServerCurrentState getServerCurrentState(CompositeContext context)
+			throws GeneralServerException;
 
 	/**
 	 * Выполняет действие на сервере.

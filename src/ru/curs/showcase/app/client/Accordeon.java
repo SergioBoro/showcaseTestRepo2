@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.Constants;
+import ru.curs.showcase.app.client.utils.MultiUserData;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -101,7 +102,7 @@ public class Accordeon {
 		accordeon.setSize("100%", "100%");
 		verpan.setSize("100%", "100%");
 
-		CompositeContext context = getCurrentContext();
+		CompositeContext context = MultiUserData.getCurrentContextFromURL();
 
 		dataService.getNavigator(context, new GWTServiceCallback<Navigator>(
 				Constants.ERROR_OF_NAVIGATOR_DATA_RETRIEVING_FROM_SERVER) {
@@ -131,14 +132,6 @@ public class Accordeon {
 		});
 
 		return verpan;
-	}
-
-	private CompositeContext getCurrentContext() {
-		Map<String, List<String>> params =
-			com.google.gwt.user.client.Window.Location.getParameterMap();
-		CompositeContext context;
-		context = new CompositeContext(params);
-		return context;
 	}
 
 	/**
@@ -418,7 +411,7 @@ public class Accordeon {
 		verpan.add(new HTML(Constants.PLEASE_WAIT_NAVIGATION_DATA_ARE_REFRESHING));
 		accordeon.clear();
 
-		CompositeContext context = getCurrentContext();
+		CompositeContext context = MultiUserData.getCurrentContextFromURL();
 		dataService.getNavigator(context, new GWTServiceCallback<Navigator>(
 				Constants.ERROR_OF_NAVIGATOR_DATA_RETRIEVING_FROM_SERVER) {
 			@Override

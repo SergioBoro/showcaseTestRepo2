@@ -6,7 +6,6 @@ import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.exception.NoSuchUserDataException;
-import ru.curs.showcase.util.AppProps;
 
 /**
  * Синглетон для хранения информации о сессиях приложения и глобальной
@@ -96,7 +95,7 @@ public final class AppInfoSingleton {
 			Iterator<String> iterator = aMap.keySet().iterator();
 			while (iterator.hasNext()) {
 				String key = iterator.next();
-				if (AppProps.URL_PARAM_USERDATA.equals(key)) {
+				if (ExchangeConstants.URL_PARAM_USERDATA.equals(key)) {
 					if (aMap.get(key) != null) {
 						userdataId = Arrays.toString(aMap.get(key).toArray()).trim();
 						userdataId = userdataId.replace("[", "").replace("]", "");
@@ -196,7 +195,7 @@ public final class AppInfoSingleton {
 	}
 
 	public Integer getGridColumnGapWidth() {
-		return getUserdatas().get(AppProps.getUserDataId()).getGridColumnGapWidth();
+		return getUserdatas().get(getCurrentUserDataId()).getGridColumnGapWidth();
 	}
 
 	/**

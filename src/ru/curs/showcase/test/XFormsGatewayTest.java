@@ -158,7 +158,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	public void testSQLSubmissionBySL() throws GeneralServerException {
 		String data = "<data>test</data>";
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		RequestResult res = sl.handleSQLSubmission("xforms_submission1", data);
+		RequestResult res = sl.handleSQLSubmission("xforms_submission1", data, null);
 		assertTrue(res.getSuccess());
 		assertEquals(data, res.getData());
 	}
@@ -173,7 +173,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	public void testSQLSubmissionBySLWithNullData() throws GeneralServerException {
 		String content = null;
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		RequestResult res = sl.handleSQLSubmission("xforms_submission1", content);
+		RequestResult res = sl.handleSQLSubmission("xforms_submission1", content, null);
 		assertTrue(res.getSuccess());
 		assertEquals(content, res.getData());
 	}
@@ -187,7 +187,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	public void testXSLTSubmissionBySL() throws GeneralServerException {
 		String data = "<data>test</data>";
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		String res = sl.handleXSLTSubmission("xformsxslttransformation_test.xsl", data);
+		String res = sl.handleXSLTSubmission("xformsxslttransformation_test.xsl", data, null);
 		assertNotNull(res);
 	}
 

@@ -7,7 +7,7 @@ import java.util.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.CanBeCurrent;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
@@ -505,7 +505,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
 		ArrayList<String> val = new ArrayList<String>();
 		val.add("test1");
-		params.put("userdata", val);
+		params.put(ExchangeConstants.URL_PARAM_USERDATA, val);
 		action.getDataPanelLink().getContext().setSessionParamsMap(params);
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		sl.execServerAction(action);

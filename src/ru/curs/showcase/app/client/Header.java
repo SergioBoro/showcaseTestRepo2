@@ -7,9 +7,10 @@ import java.util.Date;
 
 import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
 import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.Constants;
-import ru.curs.showcase.app.client.utils.AccessToDomModel;
+import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
@@ -53,7 +54,8 @@ public class Header {
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
-		dataService.getServerCurrentState(new GWTServiceCallback<ServerCurrentState>(
+		CompositeContext context = MultiUserData.getCurrentContextFromURL();
+		dataService.getServerCurrentState(context, new GWTServiceCallback<ServerCurrentState>(
 				Constants.ERROR_OF_SERVER_CURRENT_STATE_RETRIEVING_FROM_SERVER) {
 
 			@Override

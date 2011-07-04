@@ -46,8 +46,11 @@ public interface DataServiceExt {
 	 *            - некие данные из формы.
 	 * @return - результат выполнения submission.
 	 * @throws GeneralServerException
+	 * 
+	 * @param userDataId
+	 *            - идентификатор userdata.
 	 */
-	RequestResult handleSQLSubmission(String procName, String content)
+	RequestResult handleSQLSubmission(String procName, String content, String userDataId)
 			throws GeneralServerException;
 
 	/**
@@ -59,9 +62,12 @@ public interface DataServiceExt {
 	 * @param content
 	 *            - некие данные из формы.
 	 * @return - результат выполнения submission.
+	 * @param userDataId
+	 *            - идентификатор userdata.
 	 * @throws GeneralServerException
 	 */
-	String handleXSLTSubmission(String xsltFile, String content) throws GeneralServerException;
+	String handleXSLTSubmission(String xsltFile, String content, String userDataId)
+			throws GeneralServerException;
 
 	/**
 	 * Возвращает файл для скачивания.

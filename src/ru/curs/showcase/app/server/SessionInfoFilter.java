@@ -43,6 +43,12 @@ public class SessionInfoFilter implements Filter {
 			}
 		}
 		chain.doFilter(req, resp);
+		resetThread();
+	}
+
+	private void resetThread() {
+		AppInfoSingleton.getAppInfo().setCurrentUserDataId((String) null);
+
 	}
 
 	private void skipServletCaching(final ServletResponse resp) {

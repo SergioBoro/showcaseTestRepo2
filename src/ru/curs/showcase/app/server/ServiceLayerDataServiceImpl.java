@@ -34,18 +34,13 @@ import com.google.gson.*;
 
 /**
  * Реализация функций сервисного слоя приложения не зависимая от GWT Servlet.
- * Позволяет вызывать функции сервисного слоя не из GWT кода.
+ * Позволяет вызывать функции сервисного слоя не из GWT кода. Нельзя создавать
+ * экземпляр данного класса, не указав при этом aSessionId.
  * 
  * @author den
  * 
  */
 public final class ServiceLayerDataServiceImpl implements DataService, DataServiceExt {
-
-	@SuppressWarnings("unused")
-	private ServiceLayerDataServiceImpl() {
-		throw new UnsupportedOperationException(
-				"Запрещено создавать ServiceLayerDataServiceImpl не передавая ему SessionId");
-	}
 
 	/**
 	 * LOGGER.
@@ -288,9 +283,10 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public RequestResult handleSQLSubmission(final String procName, final String content)
-			throws GeneralServerException {
+	public RequestResult handleSQLSubmission(final String procName, final String content,
+			final String userDataId) throws GeneralServerException {
 		try {
+			setUserData(userDataId);
 			XFormsGateway gateway = new XFormsDBGateway();
 			String decodedContent = XMLUtils.xmlServiceSymbolsToNormal(content);
 
@@ -310,10 +306,16 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		}
 	}
 
+	private void setUserData(final String userDataId) {
+		AppInfoSingleton.getAppInfo().setCurrentUserDataId(
+				(userDataId != null) ? userDataId : ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
+	}
+
 	@Override
-	public String handleXSLTSubmission(final String xsltFile, final String content)
-			throws GeneralServerException {
+	public String handleXSLTSubmission(final String xsltFile, final String content,
+			final String userDataId) throws GeneralServerException {
 		try {
+			setUserData(userDataId);
 			InputSource is = new InputSource();
 			is.setCharacterStream(new StringReader(content));
 			Document doc = XMLUtils.createBuilder().parse(is);
@@ -326,8 +328,10 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public ServerCurrentState getServerCurrentState() throws GeneralServerException {
+	public ServerCurrentState getServerCurrentState(final CompositeContext context)
+			throws GeneralServerException {
 		try {
+			prepareContext(context);
 			ServerCurrentState res = ServerCurrentStateBuilder.build(sessionId);
 			LOGGER.info(res.toString());
 			return res;

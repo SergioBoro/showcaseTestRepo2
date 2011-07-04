@@ -1,19 +1,15 @@
 package ru.curs.showcase.app.client.utils;
 
+import java.util.*;
+
+import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.event.CompositeContext;
+
 /**
  * Поддержка работы с несколькими userdata в клиентской части.
  * 
  */
 public final class MultiUserData {
-
-	/**
-	 * Идентификатор userdata по-умолчанию.
-	 */
-	private static final String SHOWCASE_USER_DATA_DEFAULT = "default";
-	/**
-	 * URL_PARAM_USERDATA.
-	 */
-	private static final String URL_PARAM_USERDATA = "userdata";
 	/**
 	 * SOLUTIONS.
 	 */
@@ -34,12 +30,25 @@ public final class MultiUserData {
 	 */
 	public static String getPathWithUserData(final String path) {
 		String userdataId =
-			com.google.gwt.user.client.Window.Location.getParameter(URL_PARAM_USERDATA);
+			com.google.gwt.user.client.Window.Location
+					.getParameter(ExchangeConstants.URL_PARAM_USERDATA);
 		if ((userdataId == null) || ("".equals(userdataId))) {
-			userdataId = SHOWCASE_USER_DATA_DEFAULT;
+			userdataId = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
 		}
 
 		return SOLUTIONS + "/" + userdataId + "/" + path;
+	}
+
+	/**
+	 * Формирует текущий контекст из URL. Необходима для вызова ряда функции
+	 * GWT-RPC: getNavigator, getServerCurrentState...
+	 */
+	public static CompositeContext getCurrentContextFromURL() {
+		Map<String, List<String>> params =
+			com.google.gwt.user.client.Window.Location.getParameterMap();
+		CompositeContext context;
+		context = new CompositeContext(params);
+		return context;
 	}
 
 }
