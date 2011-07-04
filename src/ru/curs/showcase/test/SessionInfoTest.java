@@ -40,6 +40,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	public void testCurUserDataIdSet() {
 		AppInfoSingleton.getAppInfo().setCurrentUserDataId(generateTestURLParamsForSL("test1"));
 		assertEquals("test1", AppInfoSingleton.getAppInfo().getCurrentUserDataId());
+		assertEquals("test1", AppProps.getUserDataId());
 	}
 
 	/**
@@ -49,6 +50,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testInitialCurUserDataIdValue() {
 		assertNull(AppInfoSingleton.getAppInfo().getCurrentUserDataId());
+		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, AppProps.getUserDataId());
 	}
 
 	/**
