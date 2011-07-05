@@ -6,8 +6,11 @@ import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.grid.Grid;
+import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.*;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.*;
@@ -339,6 +342,36 @@ public class DataGridPanelTest extends GWTTestCase {
 
 		dgp.saveSettings(true);
 		dgp.saveSettings(false);
+
+	}
+
+	/**
+	 * Тест RPC вызова.
+	 */
+	public void testRPC() {
+		DataServiceAsync dataService = GWT.create(DataService.class);
+
+		CompositeContext context = new CompositeContext();
+		context.setMain("Ввоз, включая импорт - Всего");
+
+		DataPanelElementInfo dpei = new DataPanelElementInfo();
+		dpei.setId("1");
+		dpei.setPosition(1);
+		dpei.setType(DataPanelElementType.GRID);
+		dpei.setProcName("grid_bal");
+		dpei.setRefreshByTimer(true);
+
+		dataService.getGrid(context, dpei, null, new GWTServiceCallback<Grid>(
+				"Ошибка при получении данных таблицы с сервера") {
+
+			@Override
+			public void onSuccess(final Grid grid1) {
+				finishTest();
+			}
+		});
+
+		final int delay = 15000;
+		delayTestFinish(delay);
 
 	}
 
