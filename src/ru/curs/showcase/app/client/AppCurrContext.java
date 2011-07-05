@@ -5,7 +5,7 @@ package ru.curs.showcase.app.client;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.ServerCurrentState;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanel;
 import ru.curs.showcase.app.api.event.ActionHolder;
 
@@ -42,6 +42,12 @@ public final class AppCurrContext extends ActionHolder {
 	public void setMapOfDataPanelElements(final HashMap<String, Widget> amapOfDataPanelElements) {
 		AppCurrContext.mapOfDataPanelElementsToBeCached = amapOfDataPanelElements;
 	}
+
+	/**
+	 * Переменная хранящая объект MainPage приложения (в нем находится
+	 * информация о главной странице, например высота заголовка и пр.).
+	 */
+	private static MainPage mainPage;
 
 	/**
 	 * Переменная хранящая текущее состояние приложение (версия, текущее имя
@@ -131,6 +137,7 @@ public final class AppCurrContext extends ActionHolder {
 			appCurrContext = new AppCurrContext();
 			AppCurrContext.currentOpenWindowWithDataPanelElement = null;
 			AppCurrContext.serverCurrentState = null;
+			AppCurrContext.mainPage = null;
 		}
 		return appCurrContext;
 	}
@@ -210,6 +217,21 @@ public final class AppCurrContext extends ActionHolder {
 	 */
 	public ProgressWindow getProgressWindow() {
 		return progressWindow;
+	}
+
+	/**
+	 * @param amainPage
+	 *            the mainPage to set
+	 */
+	public void setMainPage(final MainPage amainPage) {
+		AppCurrContext.mainPage = amainPage;
+	}
+
+	/**
+	 * @return the mainPage
+	 */
+	public MainPage getMainPage() {
+		return mainPage;
 	}
 
 }

@@ -5,29 +5,29 @@ package ru.curs.showcase.app.client.utils;
 
 /**
  * 
- * Набор функций для работы со сторкой в которой заданы ширина навигатора в
- * пикселях или процентах и ее анализом.
+ * Набор функций для работы со сторкой в которой заданы размер в пикселях или
+ * процентах и ее анализом.
  * 
  * @author anlug
  * 
  */
-public final class NavigatorWidthParser {
+public final class SizeParser {
 
-	private NavigatorWidthParser() {
+	private SizeParser() {
 
 	}
 
 	/**
-	 * Процедура, получающая абсолютную (число) ширину навигатора в процентах
-	 * или пикселях.
+	 * Процедура, возвращающая абсолютный (число) размер в процентах или
+	 * пикселях из строки.
 	 * 
 	 * @param s
 	 *            - строка.
-	 * @return - ширина навигатора в Integer.
+	 * @return - размер в Integer.
 	 */
-	public static Integer getWidth(final String s) {
+	public static Integer getSize(final String s) {
 		String temp;
-		switch (getWidthType(s)) {
+		switch (getSizeType(s)) {
 
 		case PIXELS:
 			int firstInsexOfPx = s.indexOf("px");
@@ -48,20 +48,20 @@ public final class NavigatorWidthParser {
 
 	/**
 	 * Процедура, получающая тип (проценты или пикселы) значения, обозначающего
-	 * ширину навигатора.
+	 * размер.
 	 * 
 	 * @param s
 	 *            - строка.
 	 * @return - WidthType
 	 */
-	public static WidthType getWidthType(final String s) {
+	public static SizeType getSizeType(final String s) {
 
 		if (s.endsWith("px")) {
-			return WidthType.PIXELS;
+			return SizeType.PIXELS;
 		} else if (s.endsWith("%")) {
-			return WidthType.PERCENTS;
+			return SizeType.PERCENTS;
 		} else {
-			return WidthType.ERROR_OF_TYPE_RETRIEVING;
+			return SizeType.ERROR_OF_TYPE_RETRIEVING;
 		}
 
 	}

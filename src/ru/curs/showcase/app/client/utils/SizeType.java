@@ -9,7 +9,7 @@ package ru.curs.showcase.app.client.utils;
  * @author anlug
  * 
  */
-public enum WidthType {
+public enum SizeType {
 
 	/**
 	 * Невозможно получить значение в чем указана ширина: в пикселях или

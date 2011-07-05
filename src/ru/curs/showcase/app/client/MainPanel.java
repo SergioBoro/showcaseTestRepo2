@@ -10,7 +10,7 @@ import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.event.logical.shared.*;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -79,12 +79,17 @@ public class MainPanel {
 		basicVerticalPanel.add(new DownloadHelper());
 
 		final int n85 = 85;
-		p.setPixelSize(Window.getClientWidth() - n35, Window.getClientHeight() - n85);
+		p.setPixelSize(Window.getClientWidth() - n35, Window.getClientHeight() - n85
+				- DOM.getElementById("showcaseHeaderContainer").getOffsetHeight()
+				- DOM.getElementById("showcaseBottomContainer").getOffsetHeight());
 
 		Window.addResizeHandler(new ResizeHandler() {
 			@Override
 			public void onResize(final ResizeEvent event) {
-				int height = event.getHeight() - n85;
+				int height =
+					event.getHeight() - n85
+							- DOM.getElementById("showcaseHeaderContainer").getOffsetHeight()
+							- DOM.getElementById("showcaseBottomContainer").getOffsetHeight();
 				int width = event.getWidth() - n35;
 				p.setHeight(height + "px");
 				p.setWidth(width + "px");
@@ -122,7 +127,7 @@ public class MainPanel {
 
 			int widthNumber = 0;
 			try {
-				widthNumber = NavigatorWidthParser.getWidth(navigatorWidth);
+				widthNumber = SizeParser.getSize(navigatorWidth);
 			} catch (Exception e) {
 
 				MessageBox.showMessageWithDetails(Constants.TRANSFORMATION_NAVIGATOR_WIDTH_ERROR,
@@ -130,7 +135,7 @@ public class MainPanel {
 						GeneralServerException.getStackText(e), MessageType.ERROR, true);
 			}
 
-			switch (NavigatorWidthParser.getWidthType(navigatorWidth)) {
+			switch (SizeParser.getSizeType(navigatorWidth)) {
 
 			case PIXELS:
 

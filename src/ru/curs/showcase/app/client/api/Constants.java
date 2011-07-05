@@ -92,6 +92,11 @@ public final class Constants {
 	 */
 	public static final int SPLITLAYOUTPANELSIZEN = 300;
 
+	/**
+	 * Высота хедера и футера по умолчанию в пикселях.
+	 */
+	public static final int HEIGHTOFFOOTERANDBOTTOM = 50;
+
 	public static final String XFORM_UPLOAD_CAPTION = "Загрузка файла";
 
 	public static final String XFORM_CHECK_DURING_SAVE_ERROR = "Ошибка при проверке данных";
@@ -105,6 +110,8 @@ public final class Constants {
 
 	public static final String TRANSFORMATION_NAVIGATOR_WIDTH_ERROR =
 		"Ошибка преобразования значения ширины навигатора";
+	public static final String TRANSFORMATION_HEADER_OR_FOOTER_WIDTH_ERROR =
+		"Ошибка преобразования значения высоты верхнего или нижнего колонтитула";
 
 	public static final String ERROR_IN_SERVER_ACTIVITY = "при выполнении действия на сервере";
 
