@@ -7,7 +7,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
-import ru.curs.showcase.model.frame.MainPageFramesType;
+import ru.curs.showcase.model.frame.MainPageFrameType;
 
 /**
  * Тесты для получения фреймов из файла и из БД.
@@ -27,7 +27,7 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 	public void testGetFileFrameWelcome() throws GeneralServerException {
 		CompositeContext context = new CompositeContext(generateTestURLParams(USERDATA_TEST1));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		String html = sl.getMainPageFrame(context, MainPageFramesType.WELCOME);
+		String html = sl.getMainPageFrame(context, MainPageFrameType.WELCOME);
 		assertTrue(html.endsWith("<h1 align=\"center\">Компания КУРС представляет</h1>"));
 	}
 
@@ -40,7 +40,7 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 	public void testGetDBFrameHeader() throws GeneralServerException {
 		CompositeContext context = new CompositeContext(generateTestURLParams(USERDATA_TEST1));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		String html = sl.getMainPageFrame(context, MainPageFramesType.HEADER);
+		String html = sl.getMainPageFrame(context, MainPageFrameType.HEADER);
 		assertEquals("<h1 align=\"center\">Заголовок из БД</h1>", html);
 	}
 
@@ -53,7 +53,7 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 	public void testGetDBFrameFooter() throws GeneralServerException {
 		CompositeContext context = new CompositeContext(generateTestURLParams(USERDATA_TEST1));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		String html = sl.getMainPageFrame(context, MainPageFramesType.FOOTER);
+		String html = sl.getMainPageFrame(context, MainPageFrameType.FOOTER);
 		assertEquals("<h1 align=\"center\">Подвал из БД для " + USERDATA_TEST1 + "</h1>", html);
 	}
 }

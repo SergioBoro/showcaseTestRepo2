@@ -7,7 +7,7 @@ package ru.curs.showcase.model.frame;
  * @author den
  * 
  */
-public enum MainPageFramesType {
+public enum MainPageFrameType {
 	/**
 	 * Заставка решения (splash), отображаемая в центре главной страницы сразу
 	 * после ее загрузки.

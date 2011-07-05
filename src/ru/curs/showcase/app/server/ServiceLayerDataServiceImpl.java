@@ -436,32 +436,17 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public String getMainPageFrame(final CompositeContext context, final MainPageFramesType type)
+	public String getMainPageFrame(final CompositeContext context, final MainPageFrameType type)
 			throws GeneralServerException {
 		try {
 			prepareContext(context);
-			String frameSource =
-				AppProps.getOptionalValueByName(String.format("%s.%s", type.toString()
-						.toLowerCase(), GeneralXMLHelper.SOURCE_TAG));
-			if (frameSource == null) {
-				frameSource = type.toString().toLowerCase() + "." + "html";
-			}
-			MainPageFrameGateway gateway;
-			if (isFile(frameSource)) {
-				gateway = new FileMainPageFrameGateway();
-			} else {
-				gateway = new DBMainPageFrameGateway();
-			}
-			String result = gateway.get(context, frameSource);
+			MainPageFrameSource source = new MainPageFrameSource(type);
+			String result = source.getGateway().get(context, source.getSourceName());
 			LOGGER.info(String.format("Возвращен фрейм типа %s c кодом: %s", type.toString(),
 					result));
 			return result;
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);
 		}
-	}
-
-	private boolean isFile(final String aFrameSource) {
-		return aFrameSource.endsWith("." + "html");
 	}
 }

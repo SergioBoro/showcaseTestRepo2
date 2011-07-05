@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.frame.MainPageFramesType;
+import ru.curs.showcase.model.frame.MainPageFrameType;
 import ru.curs.showcase.util.TextUtils;
 
 /**
@@ -29,7 +29,7 @@ public final class MainPageFramesFrontController extends HttpServlet {
 		try {
 			String servlet = request.getServletPath();
 			servlet = servlet.replace("/secured/", "").toUpperCase();
-			MainPageFramesType type = MainPageFramesType.valueOf(servlet);
+			MainPageFrameType type = MainPageFrameType.valueOf(servlet);
 			Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
 			CompositeContext context = new CompositeContext(params);
 			ServiceLayerDataServiceImpl sl =

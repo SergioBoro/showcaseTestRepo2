@@ -7,7 +7,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.GeneralServerException;
-import ru.curs.showcase.model.frame.MainPageFramesType;
+import ru.curs.showcase.model.frame.MainPageFrameType;
 
 /**
  * Расширенный интерфейс DataService, который содержит функции, не вошедшие в
@@ -115,6 +115,6 @@ public interface DataServiceExt {
 	 *            - тип фрейма.
 	 * @throws GeneralServerException
 	 */
-	String getMainPageFrame(final CompositeContext context, final MainPageFramesType type)
+	String getMainPageFrame(final CompositeContext context, final MainPageFrameType type)
 			throws GeneralServerException;
 }
