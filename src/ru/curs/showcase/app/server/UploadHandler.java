@@ -86,15 +86,6 @@ public final class UploadHandler extends AbstractFilesHandler {
 		return files;
 	}
 
-	/**
-	 * Возвращает новый экземпляр обработчика.
-	 * 
-	 * @return - новый экземпляр.
-	 */
-	public static AbstractFilesHandler newInstance() {
-		return new UploadHandler();
-	}
-
 	public String getData() {
 		return data;
 	}

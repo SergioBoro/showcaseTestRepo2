@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.server;
 
 import java.io.*;
+import java.util.*;
 
 import javax.servlet.http.*;
 
@@ -19,6 +20,54 @@ public final class ServletUtils {
 
 	private ServletUtils() {
 		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Подготавливает карту с параметрами URL. При подготовке учитывается то,
+	 * что русские параметры URL считываются сервером в кодировке ISO-8859-1 при
+	 * том, что в реальности они приходят либо в UTF-8 либо в СP1251, а также
+	 * тот факт, что установка req.setCharacterEncoding("ISO-8859-1"): 1) не
+	 * помогает и 2) приводит к сбоям GWT-RPC вызовов
+	 * 
+	 * @param req
+	 *            - http запрос.
+	 */
+	public static SortedMap<String, List<String>>
+			prepareURLParamsMap(final HttpServletRequest req) throws UnsupportedEncodingException {
+		SortedMap<String, List<String>> result = new TreeMap<String, List<String>>();
+		@SuppressWarnings("unchecked")
+		Iterator<String> iterator = req.getParameterMap().keySet().iterator();
+		while (iterator.hasNext()) {
+			String oldKey = iterator.next();
+			String key = checkAndRecodeURLParam(oldKey);
+			String[] oldValues = (String[]) req.getParameterMap().get(oldKey);
+			ArrayList<String> values = new ArrayList<String>();
+			for (int i = 0; i < oldValues.length; i++) {
+				values.add(checkAndRecodeURLParam(oldValues[i]));
+			}
+			result.put(key, values);
+		}
+		return result;
+	}
+
+	/**
+	 * Стандартный обработчик ошибки в сервлете.
+	 * 
+	 * @param response
+	 *            - ответ.
+	 * @param message
+	 *            - сообщение об ошибке.
+	 * @throws IOException
+	 */
+	public static void fillErrorResponce(final HttpServletResponse response, final String message)
+			throws IOException {
+		response.reset();
+		doNoCasheResponse(response);
+		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		response.setContentType("text/html");
+		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
+		response.getWriter().append(message);
+		response.getWriter().close();
 	}
 
 	/**
@@ -81,9 +130,6 @@ public final class ServletUtils {
 		StringBuffer stringBuffer = new StringBuffer();
 		String line;
 
-		// stringBuffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-
-		// Читаем все строчки
 		while ((line = requestData.readLine()) != null) {
 			stringBuffer.append(line);
 		}

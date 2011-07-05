@@ -35,15 +35,6 @@ public class GridToExcelHandler extends AbstractDownloadHandler {
 	public GridToExcelHandler() {
 	}
 
-	/**
-	 * Создает новый экземпляр обработчика.
-	 * 
-	 * @return - новый экземпляр.
-	 */
-	public static GridToExcelHandler newInstance() {
-		return new GridToExcelHandler();
-	}
-
 	@Override
 	protected void processFiles() throws GeneralServerException {
 		ServiceLayerDataServiceImpl serviceLayer =

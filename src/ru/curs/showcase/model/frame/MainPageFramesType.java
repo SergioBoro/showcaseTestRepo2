@@ -1,4 +1,4 @@
-package ru.curs.showcase.app.server;
+package ru.curs.showcase.model.frame;
 
 /**
  * Типы "статических" фреймов главной страницы. Статическими они являются по

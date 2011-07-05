@@ -21,7 +21,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	/**
 	 * LOGGER.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(SPCallHelper.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(SPCallHelper.class);
 
 	/**
 	 * Соединение с БД.
@@ -220,7 +220,11 @@ public abstract class SPCallHelper extends DataCheckGateway {
 			if (!checkProcExists()) {
 				throw new SPNotExistsException(getProcName());
 			}
-			throw new DBQueryException(e, getElementInfo(), getContext());
+			if (getElementInfo() != null) {
+				throw new DBQueryException(e, getElementInfo(), getContext());
+			} else {
+				throw new DBQueryException(e, getProcName());
+			}
 		}
 
 	}

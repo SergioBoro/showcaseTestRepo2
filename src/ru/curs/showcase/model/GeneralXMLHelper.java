@@ -37,8 +37,8 @@ public abstract class GeneralXMLHelper {
 	protected static final String TRANSFORM_ATTR_NAME = "transform";
 	protected static final String HIDE_ON_LOAD_TAG = "hideOnLoad";
 
-	protected static final String HEADER_TAG = "header";
-	protected static final String FOOTER_TAG = "footer";
+	public static final String HEADER_TAG = "header";
+	public static final String FOOTER_TAG = "footer";
 
 	/**
 	 * Тэг события.
@@ -94,6 +94,8 @@ public abstract class GeneralXMLHelper {
 
 	protected static final String FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG =
 		"fireGeneralAndConcreteEvents";
+
+	public static final String SOURCE_TAG = "source";
 
 	/**
 	 * Имя колонки или строки с XML документом, содержащим обработчики.

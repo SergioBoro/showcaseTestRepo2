@@ -15,6 +15,7 @@ import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.datapanel.*;
+import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.model.webtext.*;
 import ru.curs.showcase.util.*;
@@ -154,7 +155,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	}
 
 	/**
-	 * Тест на ошибку из-за хранимой процедуры, не вернувшей данные.
+	 * Тест на ошибку для несуществующей хранимой процедуру для Submission.
 	 */
 	@Test
 	public final void testWrongChartSPForSubmission() {
@@ -300,12 +301,13 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		DataFile<InputStream> file = gateway.getXML("test.xml");
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel dp = factory.fromStream(file);
+
 		DBQueryException dbqe =
 			new DBQueryException(dp.getTabById("2").getElementInfoById("2"), context, "error");
 		GeneralServerException gse = GeneralServerExceptionFactory.build(dbqe);
 
 		final String errorMes =
-			"Произошла ошибка при выполнении хранимой процедуры grid_bal. Текст ошибки: : error.";
+			"Произошла ошибка при выполнении хранимой процедуры grid_bal. Подробности: error.";
 		assertEquals(errorMes, gse.getMessage());
 		assertNull(gse.getOriginalMessage());
 		assertEquals(DBQueryException.class.getName(), gse.getOriginalExceptionClass());
@@ -333,8 +335,8 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	}
 
 	/**
-	 * Проверяет на ошибку при передаче в БД "неверного" параметра userdata в
-	 * sessionContext.
+	 * Проверяет на отсутствие ошибки при передаче в БД "правильного" параметра
+	 * userdata в sessionContext.
 	 * 
 	 * @throws GeneralServerException
 	 */
@@ -345,6 +347,43 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		dpei.setProcName("grid_by_userdata");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		serviceLayer.getGrid(context, dpei, null);
+	}
+
+	/**
+	 * Проверяет на ошибку при передаче в БД "неверного" параметра userdata в
+	 * sessionContext.
+	 * 
+	 * @throws GeneralServerException
+	 */
+	@Test(expected = GeneralServerException.class)
+	public void testForUserDataToGridProcFault() throws GeneralServerException {
+		CompositeContext context = getTestContext1();
+		context.setSessionParamsMap(generateTestURLParamsForSL("test1"));
+		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);
+		dpei.setProcName("grid_by_userdata");
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		serviceLayer.getGrid(context, dpei, null);
+	}
+
+	/**
+	 * Проверка возврата ошибки с кодом из БД.
+	 */
+	@Test
+	public void testReturnErrorFromDB() {
+		MainPageFrameGateway gateway = new DBMainPageFrameGateway();
+		CompositeContext context = getTestContext1();
+
+		try {
+			gateway.get(context, "header_proc_with_error");
+		} catch (Exception e) {
+			assertEquals(DBQueryException.class, e.getClass());
+			assertEquals(
+					"Произошла ошибка при выполнении хранимой процедуры header_proc_with_error. "
+							+ "Подробности: этап - получение кода фрейма, код - 1, текст - "
+							+ "Ошибка, переданная через @error_mes.", e.getLocalizedMessage());
+			return;
+		}
+		fail();
 	}
 
 }

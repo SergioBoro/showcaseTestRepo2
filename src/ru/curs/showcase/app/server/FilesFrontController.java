@@ -5,8 +5,6 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import ru.curs.showcase.util.TextUtils;
-
 /**
  * Front controller для работы с файлами.
  */
@@ -28,33 +26,21 @@ public final class FilesFrontController extends HttpServlet {
 			AbstractFilesHandler handler = null;
 			switch (action) {
 			case DOWNLOAD:
-				handler = DownloadHandler.newInstance();
+				handler = new DownloadHandler();
 				break;
 			case GRIDTOEXCEL:
-				handler = GridToExcelHandler.newInstance();
+				handler = new GridToExcelHandler();
 				break;
 			case UPLOAD:
-				handler = UploadHandler.newInstance();
+				handler = new UploadHandler();
 				break;
 			default:
-				fillErrorResponce(response, UNKNOWN_COMMAND_ERROR);
+				ServletUtils.fillErrorResponce(response, UNKNOWN_COMMAND_ERROR);
 			}
 			handler.handle(request, response);
-
 		} catch (Throwable e) {
-			fillErrorResponce(response, e.getMessage());
+			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
 		}
 
-	}
-
-	private void fillErrorResponce(final HttpServletResponse response, final String message)
-			throws IOException {
-		response.reset();
-		ServletUtils.doNoCasheResponse(response);
-		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		response.setContentType("text/html");
-		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-		response.getWriter().append(message);
-		response.getWriter().close();
 	}
 }

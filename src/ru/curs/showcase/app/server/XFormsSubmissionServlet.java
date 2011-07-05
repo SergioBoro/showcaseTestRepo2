@@ -44,10 +44,9 @@ public class XFormsSubmissionServlet extends HttpServlet {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				response.getWriter().append(res.generateStandartErrorMessage());
 			}
+			response.getWriter().close();
 		} catch (Exception e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().append(e.getLocalizedMessage());
+			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
 		}
-		response.getWriter().close();
 	}
 }

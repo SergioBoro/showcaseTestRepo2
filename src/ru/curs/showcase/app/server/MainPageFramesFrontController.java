@@ -1,10 +1,13 @@
 package ru.curs.showcase.app.server;
 
 import java.io.IOException;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.model.frame.MainPageFramesType;
 import ru.curs.showcase.util.TextUtils;
 
 /**
@@ -26,37 +29,20 @@ public final class MainPageFramesFrontController extends HttpServlet {
 		try {
 			String servlet = request.getServletPath();
 			servlet = servlet.replace("/secured/", "").toUpperCase();
-			MainPageFramesType action = MainPageFramesType.valueOf(servlet);
-
-			switch (action) {
-			case WELCOME:
-
-				break;
-			case HEADER:
-
-				break;
-			case FOOTER:
-
-				break;
-			default:
-				fillErrorResponce(response, UNKNOWN_COMMAND_ERROR);
-			}
-			// handler.handle(request, response);
-
+			MainPageFramesType type = MainPageFramesType.valueOf(servlet);
+			Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
+			CompositeContext context = new CompositeContext(params);
+			ServiceLayerDataServiceImpl sl =
+				new ServiceLayerDataServiceImpl(request.getSession().getId());
+			String html = sl.getMainPageFrame(context, type);
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.setContentType("text/html");
+			response.setCharacterEncoding(TextUtils.DEF_ENCODING);
+			response.getWriter().append(html);
+			response.getWriter().close();
 		} catch (Throwable e) {
-			fillErrorResponce(response, e.getMessage());
+			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
 		}
 
-	}
-
-	private void fillErrorResponce(final HttpServletResponse response, final String message)
-			throws IOException {
-		response.reset();
-		ServletUtils.doNoCasheResponse(response);
-		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		response.setContentType("text/html");
-		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-		response.getWriter().append(message);
-		response.getWriter().close();
 	}
 }

@@ -22,6 +22,7 @@ import ru.curs.showcase.exception.GeneralServerExceptionFactory;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.chart.*;
 import ru.curs.showcase.model.datapanel.*;
+import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.geomap.*;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.model.navigator.*;
@@ -50,6 +51,8 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	static final String JSON_MAP_DATA = "Сформирован JSON с данными карты: ";
 	static final String JSON_MAP_TEMPLATE = "Получен JSON с шаблоном карты: ";
+
+	public static final String HEADER_SOURCE = "header.source";
 
 	/**
 	 * Идентификатор текущей HTTP сессии.
@@ -430,5 +433,35 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);
 		}
+	}
+
+	@Override
+	public String getMainPageFrame(final CompositeContext context, final MainPageFramesType type)
+			throws GeneralServerException {
+		try {
+			prepareContext(context);
+			String frameSource =
+				AppProps.getOptionalValueByName(String.format("%s.%s", type.toString()
+						.toLowerCase(), GeneralXMLHelper.SOURCE_TAG));
+			if (frameSource == null) {
+				frameSource = type.toString().toLowerCase() + "." + "html";
+			}
+			MainPageFrameGateway gateway;
+			if (isFile(frameSource)) {
+				gateway = new FileMainPageFrameGateway();
+			} else {
+				gateway = new DBMainPageFrameGateway();
+			}
+			String result = gateway.get(context, frameSource);
+			LOGGER.info(String.format("Возвращен фрейм типа %s c кодом: %s", type.toString(),
+					result));
+			return result;
+		} catch (Throwable e) {
+			throw GeneralServerExceptionFactory.build(e);
+		}
+	}
+
+	private boolean isFile(final String aFrameSource) {
+		return aFrameSource.endsWith("." + "html");
 	}
 }

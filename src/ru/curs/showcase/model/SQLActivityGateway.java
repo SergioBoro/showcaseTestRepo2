@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.exception.*;
+import ru.curs.showcase.exception.DBQueryException;
 import ru.curs.showcase.util.ConnectionFactory;
 
 /**
@@ -15,15 +15,15 @@ import ru.curs.showcase.util.ConnectionFactory;
  */
 public class SQLActivityGateway extends SPCallHelper implements ActivityGateway {
 
-	static final String EXEC_ERROR = "При исполнении хранимой процедуры '%s' произошла ошибка: %s";
+	protected static final String EXEC_ERROR = "код ошибки %d, текст - %s";
 
 	@Override
 	public void exec(final CompositeContext context, final ServerActivity activity) {
 		setContext(context);
-
 		try {
-			setDb(ConnectionFactory.getConnection());
 			try {
+				setDb(ConnectionFactory.getConnection());
+
 				setProcName(activity.getName());
 				String sql = String.format(getSqlTemplate(), getProcName());
 				setCs(getDb().prepareCall(sql));
@@ -36,18 +36,11 @@ public class SQLActivityGateway extends SPCallHelper implements ActivityGateway 
 					throw new DBQueryException(activity.getName(), String.format(EXEC_ERROR,
 							errorCode, getCs().getString(ERROR_MES_COL)));
 				}
-			} finally {
-				releaseResources();
+			} catch (SQLException e) {
+				dbExceptionHandler(e);
 			}
-		} catch (SQLException e) {
-			if (ValidateInDBException.isSolutionDBException(e)) {
-				throw new ValidateInDBException(e);
-			} else {
-				if (!checkProcExists()) {
-					throw new SPNotExistsException(getProcName());
-				}
-				throw new DBQueryException(e, getProcName());
-			}
+		} finally {
+			releaseResources();
 		}
 	}
 
@@ -68,7 +61,7 @@ public class SQLActivityGateway extends SPCallHelper implements ActivityGateway 
 
 	@Override
 	protected DataPanelElementType getGatewayType() {
-		return null;
+		return DataPanelElementType.NON_DP_ELEMENT;
 	}
 
 }

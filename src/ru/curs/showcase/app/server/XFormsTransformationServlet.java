@@ -41,11 +41,11 @@ public class XFormsTransformationServlet extends HttpServlet {
 			String res = sl.handleXSLTSubmission(xsltFile, content, userDataId);
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.getWriter().append(res);
+			response.getWriter().close();
 		} catch (Exception e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().append(e.getMessage());
+			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
 		}
-		response.getWriter().close();
+
 	}
 
 }

@@ -44,15 +44,6 @@ public final class DownloadHandler extends AbstractDownloadHandler {
 		return linkId;
 	}
 
-	/**
-	 * Возвращает новый экземпляр обработчика.
-	 * 
-	 * @return - новый экземпляр.
-	 */
-	public static AbstractFilesHandler newInstance() {
-		return new DownloadHandler();
-	}
-
 	public String getData() {
 		return data;
 	}
