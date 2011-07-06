@@ -15,16 +15,13 @@ import ru.curs.showcase.util.TextUtils;
  * в главную страницу приложения.
  */
 public final class MainPageFramesFrontController extends HttpServlet {
-
-	static final String UNKNOWN_COMMAND_ERROR =
-		"Неизвестная команда для MainPageFramesFrontController";
 	/**
 	 * serialVersionUID.
 	 */
 	private static final long serialVersionUID = 7991801050316249555L;
 
 	@Override
-	protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
+	protected void service(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
 			String servlet = request.getServletPath();
@@ -43,6 +40,6 @@ public final class MainPageFramesFrontController extends HttpServlet {
 		} catch (Throwable e) {
 			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
 		}
-
 	}
+
 }
