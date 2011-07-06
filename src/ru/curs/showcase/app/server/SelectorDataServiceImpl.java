@@ -1,17 +1,19 @@
 package ru.curs.showcase.app.server;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.*;
 import java.util.*;
 
 import org.slf4j.*;
 
 import ru.beta2.extra.gwt.ui.selector.api.*;
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.util.ConnectionFactory;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
- * Реализация сервиса для селектора.
+ * Реализация сервиса для селектора. TODO: переделать на работу через SL.
  */
 public class SelectorDataServiceImpl extends RemoteServiceServlet implements SelectorDataService {
 
@@ -66,9 +68,11 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 	@Override
 	public DataSet getSelectorData(final DataRequest req) {
 		DataSet ds = new DataSet();
-		ds.setFirstRecord(req.getFirstRecord());
-		ds.setTotalCount(0);
 		try {
+			setupSession();
+
+			ds.setFirstRecord(req.getFirstRecord());
+			ds.setTotalCount(0);
 
 			String procCount =
 				req.getProcName().substring(0, req.getProcName().indexOf(PROCNAME_SEPARATOR));
@@ -154,5 +158,24 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		}
 
 		return ds;
+	}
+
+	private void setupSession() throws UnsupportedEncodingException {
+		Map<String, List<String>> params =
+			ServletUtils.prepareURLParamsMap(perThreadRequest.get());
+		CompositeContext context = new CompositeContext(params);
+		prepareContext(context);
+	}
+
+	private void prepareContext(final CompositeContext context)
+			throws UnsupportedEncodingException {
+		String sessionContext =
+			SessionInfoGenerator.generateSessionContext(perThreadRequest.get().getSession()
+					.getId(), context.getSessionParamsMap());
+
+		LOGGER.info("Session context: " + sessionContext);
+		context.setSession(sessionContext);
+		AppInfoSingleton.getAppInfo().setCurrentUserDataId(context.getSessionParamsMap());
+		context.setSessionParamsMap(null);
 	}
 }

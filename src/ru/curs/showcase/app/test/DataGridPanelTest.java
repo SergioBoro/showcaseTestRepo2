@@ -136,6 +136,7 @@ public class DataGridPanelTest extends GWTTestCase {
 		grid.setAutoSelectRecord(r2);
 
 		Action ac = new Action();
+		ac.setContext(new CompositeContext());
 		ac.setDataPanelActionType(DataPanelActionType.DO_NOTHING);
 		grid.setDefaultAction(ac);
 		GridEvent ev = new GridEvent();

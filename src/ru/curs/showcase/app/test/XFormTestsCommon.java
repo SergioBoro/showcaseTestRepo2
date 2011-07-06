@@ -85,11 +85,13 @@ public final class XFormTestsCommon {
 		xform.setXFormParts(xFormParts);
 
 		Action ac = new Action();
+		ac.setContext(new CompositeContext());
 		ac.setDataPanelActionType(DataPanelActionType.DO_NOTHING);
 		// ac.setKeepUserSettings(aKeepUserSettings)
 		xform.setDefaultAction(ac);
 
 		ac = new Action();
+		ac.setContext(new CompositeContext());
 		ac.setDataPanelActionType(DataPanelActionType.DO_NOTHING);
 		ac.setKeepUserSettings(true);
 		HTMLEvent ev = new HTMLEvent();

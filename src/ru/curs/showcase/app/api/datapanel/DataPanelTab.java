@@ -97,7 +97,7 @@ public class DataPanelTab extends VisualElement {
 		res.setDataPanelLink(new DataPanelLink());
 		res.getDataPanelLink().setDataPanelId(CanBeCurrent.CURRENT_ID);
 		res.getDataPanelLink().setTabId(getId());
-		res.getDataPanelLink().setContext(CompositeContext.createCurrent());
+		res.setContext(CompositeContext.createCurrent());
 		res.determineState();
 		return res;
 	}

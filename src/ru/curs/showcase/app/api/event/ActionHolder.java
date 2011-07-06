@@ -105,7 +105,7 @@ public class ActionHolder {
 				|| (clone.getDataPanelActionType() == DataPanelActionType.RELOAD_ELEMENTS)) {
 			if (!clone.isFiltered()) {
 				if (currentAction != null) {
-					clone.filterBy(currentAction.getDataPanelLink().getContext().getFilter());
+					clone.filterBy(currentAction.getContext().getFilter());
 				}
 			}
 		}

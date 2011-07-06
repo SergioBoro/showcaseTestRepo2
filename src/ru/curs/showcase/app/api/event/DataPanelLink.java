@@ -35,11 +35,6 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 	private Boolean firstOrCurrentTab = false;
 
 	/**
-	 * Контекст, связанный с данной ссылкой.
-	 */
-	private CompositeContext context;
-
-	/**
 	 * Коллекция элементов информационной панели, для которых нужно
 	 * переопределить контекст или которые нужно перерисовать.
 	 */
@@ -92,14 +87,6 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 		this.elementLinks = aElementLinks;
 	}
 
-	public final CompositeContext getContext() {
-		return context;
-	}
-
-	public final void setContext(final CompositeContext aContext) {
-		this.context = aContext;
-	}
-
 	public final String getDataPanelId() {
 		return dataPanelId;
 	}
@@ -136,9 +123,6 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 		res.dataPanelId = dataPanelId;
 		res.tabId = tabId;
 		res.firstOrCurrentTab = firstOrCurrentTab;
-		if (context != null) {
-			res.context = context.gwtClone();
-		}
 		Iterator<DataPanelElementLink> iterator = elementLinks.iterator();
 		while (iterator.hasNext()) {
 			res.getElementLinks().add(iterator.next().gwtClone());
@@ -155,7 +139,6 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 		DataPanelLink result = new DataPanelLink();
 		result.setDataPanelId(CURRENT_ID);
 		result.setTabId(CURRENT_ID);
-		result.setContext(CompositeContext.createCurrent());
 		return result;
 	}
 }

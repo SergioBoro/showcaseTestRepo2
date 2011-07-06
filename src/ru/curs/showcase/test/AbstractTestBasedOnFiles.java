@@ -241,8 +241,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	protected CompositeContext
 			getContext(final String fileName, final int groupID, final int elID)
 					throws IOException {
-		CompositeContext context =
-			getAction(fileName, groupID, elID).getDataPanelLink().getContext();
+		CompositeContext context = getAction(fileName, groupID, elID).getContext();
 		return context;
 	}
 

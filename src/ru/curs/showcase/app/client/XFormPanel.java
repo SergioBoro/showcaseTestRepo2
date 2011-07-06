@@ -12,7 +12,7 @@ import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.*;
 
@@ -52,7 +52,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	private final SelectorDataServiceAsync selSrv = GWT.create(SelectorDataService.class);
 	{
 		((ServiceDefTarget) selSrv).setServiceEntryPoint(GWT.getModuleBaseURL()
-				+ "SelectorDataService");
+				+ "SelectorDataService" + Window.Location.getQueryString());
 	}
 
 	public SelectorDataServiceAsync getSelSrv() {

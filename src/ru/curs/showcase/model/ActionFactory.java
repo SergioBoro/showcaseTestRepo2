@@ -78,11 +78,13 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 			current = action;
 		}
 		if (qname.equalsIgnoreCase(DP_TAG)) {
+			linkDataPanelLink = new DataPanelLink();
 			linkDataPanelLink.setDataPanelId(attrs.getValue(DP_ID_ATTR_NAME));
 
 			ActionTabFinder finder = AppRegistry.getActionTabFinder();
 			linkDataPanelLink.setTabId(finder.findTabForAction(linkDataPanelLink,
 					attrs.getValue(TAB_TAG)));
+			current.setDataPanelLink(linkDataPanelLink);
 		}
 		if (qname.equalsIgnoreCase(NAVIGATOR_TAG)) {
 			NavigatorElementLink link = new NavigatorElementLink();
@@ -140,8 +142,6 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 			current.getServerActivities().add(sa);
 		}
 		if (qname.equalsIgnoreCase(MAIN_CONTEXT_ATTR_NAME)) {
-			linkDataPanelLink = new DataPanelLink();
-
 			readingMainContext = true;
 		}
 		if (qname.equalsIgnoreCase(ADD_CONTEXT_ATTR_NAME)) {
@@ -155,21 +155,15 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 	public Action
 			handleEndTag(final String aNamespaceURI, final String aLname, final String aQname) {
 		if (aQname.equalsIgnoreCase(MAIN_CONTEXT_ATTR_NAME)) {
-			// System.out.println("handleCharacters, main_context = " +
-			// characters);
 			CompositeContext context = new CompositeContext();
 			context.setMain(characters);
-			linkDataPanelLink.setContext(context);
-			current.setDataPanelLink(linkDataPanelLink);
-
+			current.setContext(context);
 			readingMainContext = false;
 		}
 
 		if (aQname.equalsIgnoreCase(ADD_CONTEXT_ATTR_NAME)) {
-			// System.out.println("handleCharacters, add_context = " +
-			// characters);
 			CompositeContext context = new CompositeContext();
-			context.assignNullValues(current.getDataPanelLink().getContext());
+			context.assignNullValues(current.getContext());
 			context.setAdditional(characters);
 			linkDataPanelElementLink.setContext(context);
 			current.getDataPanelLink().getElementLinks().add(linkDataPanelElementLink);

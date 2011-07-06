@@ -276,7 +276,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			return;
 		}
 
-		CompositeContext context = action.getDataPanelLink().getContext();
+		CompositeContext context = action.getContext();
 		String sessionContext =
 			SessionInfoGenerator.generateSessionContext(sessionId, context.getSessionParamsMap());
 		LOGGER.info("Session context: " + sessionContext);
@@ -393,10 +393,8 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		try {
 			prepareContext(action);
 			ActivityGateway gateway = new SQLActivityGateway();
-			CompositeContext context;
-			if (action.getDataPanelLink() != null) {
-				context = action.getDataPanelLink().getContext();
-			} else {
+			CompositeContext context = action.getContext();
+			if (context == null) {
 				context = new CompositeContext();
 			}
 

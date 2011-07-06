@@ -60,12 +60,12 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertEquals(DEF_SIZE_VALUE, mwi.getWidth().intValue());
 		assertTrue(mwi.getShowCloseBottomButton());
 
+		CompositeContext context = getComplexTestContext();
+		assertNotNull(clone.getContext());
+		assertEquals(context, clone.getContext());
+
 		DataPanelLink link = clone.getDataPanelLink();
 		assertNotNull(link);
-		assertNotNull(link.getContext());
-		CompositeContext context = getComplexTestContext();
-		assertEquals(context, link.getContext());
-
 		assertFalse(link.getFirstOrCurrentTab());
 		assertEquals(TEST_XML, link.getDataPanelId());
 		assertEquals(TAB_2, link.getTabId());
@@ -81,12 +81,12 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertTrue(clone.getNavigatorElementLink().getRefresh());
 
 		assertTrue(action != clone);
-		assertTrue(action.getDataPanelLink() != clone.getDataPanelLink());
-		assertTrue(action.getDataPanelLink().getContext() != clone.getDataPanelLink().getContext());
-		assertTrue(action.getDataPanelLink().getElementLinks().get(0) != clone.getDataPanelLink()
+		assertNotSame(action.getDataPanelLink(), clone.getDataPanelLink());
+		assertNotSame(action.getContext(), clone.getContext());
+		assertNotSame(action.getDataPanelLink().getElementLinks().get(0), clone.getDataPanelLink()
 				.getElementLinks().get(0));
 
-		assertTrue(action.containServerActivity());
+		assertTrue(action.containsServerActivity());
 		ServerActivity sa = action.getServerActivities().get(0);
 		assertNotNull(sa);
 		assertEquals(ServerActivityType.SP, sa.getType());
@@ -114,8 +114,8 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		Action action = new Action(DataPanelActionType.RELOAD_ELEMENTS);
 		assertEquals(CanBeCurrent.CURRENT_ID, action.getDataPanelLink().getDataPanelId());
 		assertEquals(CanBeCurrent.CURRENT_ID, action.getDataPanelLink().getTabId());
-		assertTrue(action.getDataPanelLink().getContext().mainIsCurrent());
-		assertTrue(action.getDataPanelLink().getContext().addIsCurrent());
+		assertTrue(action.getContext().mainIsCurrent());
+		assertTrue(action.getContext().addIsCurrent());
 		assertEquals(ShowInMode.PANEL, action.getShowInMode());
 	}
 
@@ -129,14 +129,14 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertNull(action.getNavigatorElementLink());
 		assertEquals(NavigatorActionType.DO_NOTHING, action.getNavigatorActionType());
 		assertEquals(DataPanelActionType.REFRESH_TAB, action.getDataPanelActionType());
+		assertTrue(action.getContext().addIsCurrent());
+		assertTrue(action.getContext().mainIsCurrent());
 
 		final DataPanelLink dataPanelLink = action.getDataPanelLink();
 		assertNotNull(dataPanelLink);
 		assertEquals(CanBeCurrent.CURRENT_ID, dataPanelLink.getDataPanelId());
 		assertEquals(TAB_2, dataPanelLink.getTabId());
 		assertFalse(dataPanelLink.getFirstOrCurrentTab());
-		assertTrue(dataPanelLink.getContext().addIsCurrent());
-		assertTrue(dataPanelLink.getContext().mainIsCurrent());
 		assertEquals(0, dataPanelLink.getElementLinks().size());
 	}
 
@@ -162,9 +162,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertEquals(TEST_XML, dataPanelLink.getDataPanelId());
 		assertEquals(TAB_2, dataPanelLink.getTabId());
 		assertFalse(dataPanelLink.getFirstOrCurrentTab());
-		CompositeContext context = getSimpleTestContext();
-		assertEquals(context, dataPanelLink.getContext());
 		assertEquals(1, dataPanelLink.getElementLinks().size());
+
+		CompositeContext context = getSimpleTestContext();
+		assertEquals(context, actual.getContext());
 	}
 
 	/**
@@ -194,12 +195,12 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	public void testFirstOrCurrentActualize() {
 		Action first = createSimpleTestAction();
 		first.getDataPanelLink().setTabId(TAB_2);
-		first.getDataPanelLink().getContext().setAdditional(ADD_CONDITION);
+		first.getContext().setAdditional(ADD_CONDITION);
 
 		Action foc = new Action(DataPanelActionType.REFRESH_TAB);
 		DataPanelLink link = foc.getDataPanelLink();
 		CompositeContext cc = new CompositeContext();
-		link.setContext(cc);
+		foc.setContext(cc);
 		cc.setMain(MOSCOW_CONTEXT);
 		link.setDataPanelId(TEST_XML);
 		link.setTabId(TAB_1);
@@ -208,13 +209,14 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 
 		assertEquals(NavigatorActionType.DO_NOTHING, actual.getNavigatorActionType());
 		assertEquals(DataPanelActionType.REFRESH_TAB, actual.getDataPanelActionType());
+		assertEquals(MOSCOW_CONTEXT, actual.getContext().getMain());
+		assertNull(actual.getContext().getAdditional()); // !
+
 		final DataPanelLink dataPanelLink = actual.getDataPanelLink();
 		assertNotNull(dataPanelLink);
 		assertEquals(TEST_XML, dataPanelLink.getDataPanelId());
 		assertEquals(TAB_2, dataPanelLink.getTabId()); // !
 		assertTrue(dataPanelLink.getFirstOrCurrentTab()); // !
-		assertEquals(MOSCOW_CONTEXT, dataPanelLink.getContext().getMain());
-		assertEquals(null, dataPanelLink.getContext().getAdditional()); // !
 		assertEquals(0, dataPanelLink.getElementLinks().size()); // !
 	}
 
@@ -327,12 +329,12 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		nLink.setRefresh(true);
 		action.setNavigatorElementLink(nLink);
 
+		action.setContext(getComplexTestContext());
+
 		DataPanelElementLink elLink = action.getDataPanelLink().getElementLinkById(EL_06);
 		elLink.setKeepUserSettings(true);
 		elLink.setRefreshContextOnly(true);
 		elLink.setSkipRefreshContextOnly(true);
-
-		action.getDataPanelLink().setContext(getComplexTestContext());
 
 		ServerActivity sa = new ServerActivity("test", ServerActivityType.SP);
 		action.getServerActivities().add(sa);
@@ -345,9 +347,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	private Action createSimpleTestAction() {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
 		CompositeContext context = getSimpleTestContext();
+		action.setContext(context);
 
 		DataPanelLink link = action.getDataPanelLink();
-		link.setContext(context);
 		link.setDataPanelId(TEST_XML);
 		link.setTabId(TAB_2);
 		CompositeContext elContext = context.gwtClone();
@@ -388,7 +390,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		action.filterBy(FILTER_CONTEXT);
 		assertEquals(FILTER_CONTEXT, action.getDataPanelLink().getElementLinks().get(0)
 				.getContext().getFilter());
-		assertEquals(FILTER_CONTEXT, action.getDataPanelLink().getContext().getFilter());
+		assertEquals(FILTER_CONTEXT, action.getContext().getFilter());
 	}
 
 	/**
@@ -417,10 +419,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		ah.setCurrentAction(first);
 
 		Action insideAction = new Action(DataPanelActionType.REFRESH_TAB);
+		insideAction.setContext(CompositeContext.createCurrent());
 		DataPanelLink dpLink = new DataPanelLink();
 		dpLink.setDataPanelId(CanBeCurrent.CURRENT_ID);
 		dpLink.setTabId(TAB_2);
-		dpLink.setContext(CompositeContext.createCurrent());
 		insideAction.setDataPanelLink(dpLink);
 		insideAction.determineState();
 		ah.setCurrentAction(insideAction);
@@ -428,8 +430,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertNotNull(ah.getCurrentAction());
 		assertEquals(DataPanelActionType.REFRESH_TAB, ah.getCurrentAction()
 				.getDataPanelActionType());
-		assertEquals(FILTER_CONTEXT, ah.getCurrentAction().getDataPanelLink().getContext()
-				.getFilter());
+		assertEquals(FILTER_CONTEXT, ah.getCurrentAction().getContext().getFilter());
 		assertTrue(ah.getCurrentAction().getKeepUserSettings());
 	}
 
@@ -471,7 +472,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	public void testServerActivityRead() throws IOException {
 		final int actionNumber = 1;
 		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
-		assertTrue(action.containServerActivity());
+		assertTrue(action.containsServerActivity());
 		assertTrue(action.getServerActivities().size() == 1);
 		assertEquals("exec_test", action.getServerActivities().get(0).getName());
 		assertEquals(ServerActivityType.SP, action.getServerActivities().get(0).getType());
@@ -506,7 +507,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		ArrayList<String> val = new ArrayList<String>();
 		val.add("test1");
 		params.put(ExchangeConstants.URL_PARAM_USERDATA, val);
-		action.getDataPanelLink().getContext().setSessionParamsMap(params);
+		action.getContext().setSessionParamsMap(params);
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		sl.execServerAction(action);
 	}

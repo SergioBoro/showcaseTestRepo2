@@ -81,7 +81,7 @@ public class GeoMapFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals(DataPanelActionType.RELOAD_ELEMENTS, action.getDataPanelActionType());
 		assertNotNull(action.getDataPanelLink());
 		assertEquals(1, action.getDataPanelLink().getElementLinks().size());
-		assertEquals(context.getMain(), action.getDataPanelLink().getContext().getMain());
+		assertEquals(context.getMain(), action.getContext().getMain());
 		assertEquals(NavigatorActionType.CHANGE_NODE, action.getNavigatorActionType());
 		assertNotNull(action.getNavigatorElementLink());
 		assertEquals("9EF5F299-0AB3-486B-A810-5818D17047AC", action.getNavigatorElementLink()

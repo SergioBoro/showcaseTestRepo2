@@ -135,7 +135,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		action.setSessionContext(params);
 		serviceLayer.getDataPanel(action);
 		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurrentUserDataId());
-		checkTestUrlParams(action.getDataPanelLink().getContext());
+		checkTestUrlParams(action.getContext());
 		checkTestUrlParams(action.getDataPanelLink().getElementLinks().get(0).getContext());
 	}
 

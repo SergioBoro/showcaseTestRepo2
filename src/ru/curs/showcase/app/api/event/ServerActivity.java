@@ -14,7 +14,7 @@ public class ServerActivity implements SerializableElement {
 
 	@Override
 	public String toString() {
-		return "ServerActivity [name=" + name + ", type=" + type + "]";
+		return "ServerActivity [name=" + name + ", type=" + type + ", context=" + context + "]";
 	}
 
 	/**
@@ -32,6 +32,11 @@ public class ServerActivity implements SerializableElement {
 	 * Тип действия на сервере.
 	 */
 	private ServerActivityType type;
+
+	/**
+	 * Контекст, связанный с серверным действием.
+	 */
+	private CompositeContext context;
 
 	public ServerActivity(final String aName, final ServerActivityType aType) {
 		name = aName;
@@ -56,5 +61,13 @@ public class ServerActivity implements SerializableElement {
 
 	public void setType(final ServerActivityType aType) {
 		type = aType;
+	}
+
+	public CompositeContext getContext() {
+		return context;
+	}
+
+	public void setContext(final CompositeContext aContext) {
+		context = aContext;
 	}
 }

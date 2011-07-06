@@ -82,9 +82,8 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals(firstCellAction, grid.getActionForDependentElements());
 		assertEquals(DataPanelActionType.RELOAD_ELEMENTS, grid.getDefaultAction()
 				.getDataPanelActionType());
-		assertEquals(context.getMain(), grid.getDefaultAction().getDataPanelLink().getContext()
-				.getMain());
-		assertNull(grid.getDefaultAction().getDataPanelLink().getContext().getSession());
+		assertEquals(context.getMain(), grid.getDefaultAction().getContext().getMain());
+		assertNull(grid.getDefaultAction().getContext().getSession());
 		assertNotNull(grid.getAutoSelectRecord());
 		assertEquals(autoSelectRecord.toString(), grid.getAutoSelectRecord().getId());
 

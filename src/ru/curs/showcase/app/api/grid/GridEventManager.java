@@ -57,9 +57,7 @@ public class GridEventManager extends EventManager<GridEvent> {
 		while (literator.hasNext()) {
 			DataPanelElementLink newLink = literator.next();
 			newLink.getContext().finishFilter();
-			if (result.getDataPanelLink().getContext().getFilter() == null) {
-				result.getDataPanelLink().getContext().setFilter(newLink.getContext().getFilter());
-			}
+			result.markFiltered(newLink.getContext().getFilter());
 		}
 	}
 

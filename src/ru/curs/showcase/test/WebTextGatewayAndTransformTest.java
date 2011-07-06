@@ -69,10 +69,10 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 
 	private void stdCheckAction(final CompositeContext context, final Action action) {
 		assertEquals(NavigatorActionType.DO_NOTHING, action.getNavigatorActionType());
-		assertEquals(context, action.getDataPanelLink().getContext());
+		assertEquals(context, action.getContext());
 		assertEquals(1, action.getDataPanelLink().getElementLinks().size());
 		assertEquals(context, action.getDataPanelLink().getElementLinks().get(0).getContext());
-		assertNull(action.getDataPanelLink().getContext().getSession());
+		assertNull(action.getContext().getSession());
 	}
 
 	/**

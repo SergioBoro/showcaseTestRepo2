@@ -45,7 +45,7 @@ public final class ActionExecuter {
 			return;
 		}
 
-		if (ac.containServerActivity()) {
+		if (ac.containsServerActivity()) {
 			if (dataService == null) {
 				dataService = GWT.create(DataService.class);
 			}

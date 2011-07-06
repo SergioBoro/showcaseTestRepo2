@@ -490,7 +490,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 					return link.getContext();
 				}
 			}
-			return dpLink.getContext();
+			return ac.getContext();
 		}
 		return null;
 	}

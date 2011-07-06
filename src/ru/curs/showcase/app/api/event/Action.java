@@ -68,6 +68,12 @@ public class Action implements SerializableElement, GWTClonable {
 	 */
 	private List<ServerActivity> serverActivities = new ArrayList<ServerActivity>();
 
+	/**
+	 * Контекст, общий для всего действия. Играет роль контекста по умолчанию
+	 * для элементов, не имеющих переопределенного контекста.
+	 */
+	private CompositeContext context;
+
 	public final DataPanelLink getDataPanelLink() {
 		return dataPanelLink;
 	}
@@ -156,7 +162,7 @@ public class Action implements SerializableElement, GWTClonable {
 		}
 		if (dataPanelLink.isCurrentPanel()) {
 			if (dataPanelLink.isCurrentTab()) {
-				if (dataPanelLink.getContext().mainIsCurrent()) {
+				if (context.mainIsCurrent()) {
 					dataPanelActionType = DataPanelActionType.RELOAD_ELEMENTS;
 				} else {
 					dataPanelActionType = DataPanelActionType.REFRESH_TAB;
@@ -178,12 +184,11 @@ public class Action implements SerializableElement, GWTClonable {
 	 */
 	public Action actualizeBy(final CompositeContext callContext) {
 		determineState();
+		context.actualizeBy(callContext);
+
 		if (getDataPanelActionType() == DataPanelActionType.DO_NOTHING) {
 			return this;
 		}
-
-		CompositeContext context = getDataPanelLink().getContext();
-		context.actualizeBy(callContext);
 
 		Iterator<DataPanelElementLink> eterator = getDataPanelLink().getElementLinks().iterator();
 		while (eterator.hasNext()) {
@@ -203,7 +208,13 @@ public class Action implements SerializableElement, GWTClonable {
 	 * @return - себя.
 	 */
 	public Action actualizeBy(final Action prevAction) {
-		if (dataPanelLink != null) {
+		if (prevAction == null) {
+			return this;
+		}
+
+		context.actualizeBy(prevAction.context);
+
+		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
 			if (dataPanelLink.isCurrentPanel()) {
 				dataPanelLink.setDataPanelId(prevAction.dataPanelLink.getDataPanelId());
 			}
@@ -216,14 +227,19 @@ public class Action implements SerializableElement, GWTClonable {
 				dataPanelLink.setTabId(prevAction.dataPanelLink.getTabId());
 			}
 
-			dataPanelLink.getContext().actualizeBy(prevAction.dataPanelLink.getContext());
-
 			Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
 			while (iterator.hasNext()) {
 				DataPanelElementLink link = iterator.next();
-				link.getContext().actualizeBy(dataPanelLink.getContext());
+				link.getContext().actualizeBy(context);
 			}
 		}
+
+		// Iterator<ServerActivity> iterator = serverActivities.iterator();
+		// while (iterator.hasNext()) {
+		// ServerActivity sa = iterator.next();
+		// sa.getContext().actualizeBy(prevAction.context);
+		// }
+
 		return this;
 	}
 
@@ -248,6 +264,9 @@ public class Action implements SerializableElement, GWTClonable {
 		if (modalWindowInfo != null) {
 			res.modalWindowInfo = modalWindowInfo.gwtClone();
 		}
+		if (context != null) {
+			res.context = context.gwtClone();
+		}
 		res.serverActivities.clear();
 		res.serverActivities.addAll(serverActivities);
 		return res;
@@ -263,6 +282,7 @@ public class Action implements SerializableElement, GWTClonable {
 
 		if (dataPanelActionType == DataPanelActionType.RELOAD_ELEMENTS) {
 			dataPanelLink = DataPanelLink.createCurrent();
+			context = CompositeContext.createCurrent();
 		} else {
 			dataPanelLink = new DataPanelLink();
 		}
@@ -271,17 +291,17 @@ public class Action implements SerializableElement, GWTClonable {
 	/**
 	 * Обновляет дополнительный контекст у всех зависимых элементов.
 	 * 
-	 * @param context
+	 * @param addContext
 	 *            - правильный контекст.
 	 * @return - себя.
 	 */
-	public Action updateAddContext(final CompositeContext context) {
+	public Action updateAddContext(final CompositeContext addContext) {
 		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
 			Iterator<DataPanelElementLink> eliterator = dataPanelLink.getElementLinks().iterator();
 			while (eliterator.hasNext()) {
 				DataPanelElementLink link = eliterator.next();
 				if (!link.getSkipRefreshContextOnly()) {
-					link.getContext().setAdditional(context.getAdditional());
+					link.getContext().setAdditional(addContext.getAdditional());
 				}
 			}
 		}
@@ -295,10 +315,10 @@ public class Action implements SerializableElement, GWTClonable {
 	 *            - данные фильтра (как правило MainInstance XForms).
 	 */
 	public void filterBy(final String data) {
+		context.setFilter(data);
 		if (getDataPanelActionType() == DataPanelActionType.DO_NOTHING) {
 			return;
 		}
-		dataPanelLink.getContext().setFilter(data);
 		Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
 		while (iterator.hasNext()) {
 			DataPanelElementLink link = iterator.next();
@@ -322,10 +342,19 @@ public class Action implements SerializableElement, GWTClonable {
 	 * @return - результат проверки.
 	 */
 	public boolean isFiltered() {
-		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
-			return (dataPanelLink.getContext().getFilter() != null);
+		return (context.getFilter() != null);
+	}
+
+	/**
+	 * Устанавливает признак того, что действие содержит фильтр.
+	 * 
+	 * @param filter
+	 *            - строка фильтра.
+	 */
+	public void markFiltered(final String filter) {
+		if (!isFiltered()) {
+			context.setFilter(filter);
 		}
-		return false;
 	}
 
 	public Boolean getKeepUserSettings() {
@@ -370,10 +399,10 @@ public class Action implements SerializableElement, GWTClonable {
 	 *            - новое значение контекста.
 	 */
 	public void setSessionContext(final Map<String, List<String>> data) {
+		context.addSessionParams(data);
 		if (getDataPanelActionType() == DataPanelActionType.DO_NOTHING) {
 			return;
 		}
-		dataPanelLink.getContext().addSessionParams(data);
 		Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
 		while (iterator.hasNext()) {
 			DataPanelElementLink link = iterator.next();
@@ -390,10 +419,10 @@ public class Action implements SerializableElement, GWTClonable {
 	 *            - новое значение контекста.
 	 */
 	public void setSessionContext(final String data) {
+		context.setSession(data);
 		if (getDataPanelActionType() == DataPanelActionType.DO_NOTHING) {
 			return;
 		}
-		dataPanelLink.getContext().setSession(data);
 		Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
 		while (iterator.hasNext()) {
 			DataPanelElementLink elLink = iterator.next();
@@ -407,12 +436,20 @@ public class Action implements SerializableElement, GWTClonable {
 	 * на сервера (например, вызов процедуры в БД).
 	 * 
 	 */
-	public boolean containServerActivity() {
+	public boolean containsServerActivity() {
 		return serverActivities.size() > 0;
 	}
 
 	public List<ServerActivity> getServerActivities() {
 		return serverActivities;
+	}
+
+	public CompositeContext getContext() {
+		return context;
+	}
+
+	public void setContext(final CompositeContext aContext) {
+		context = aContext;
 	}
 
 	public void setServerActivities(final List<ServerActivity> aServerActivities) {
