@@ -25,8 +25,8 @@
     <xs:element name="properties">
         <xs:complexType>
             <xs:attribute name="legend" type="legendPlace" use="required"/>
-            <xs:attribute name="width" type="sizeType" use="required"/>
-            <xs:attribute name="height" type="sizeType" use="required"/>
+            <xs:attribute name="width" type="sizeType"/>
+            <xs:attribute name="height" type="sizeType"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>
