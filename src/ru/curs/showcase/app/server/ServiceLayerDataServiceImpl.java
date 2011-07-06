@@ -426,6 +426,12 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			} else {
 				mp.setFooterHeight(AppProps.DEF_FOOTER_HEIGTH);
 			}
+			String html = getMainPageFrame(context, MainPageFrameType.HEADER);
+			mp.setHeader(html);
+			html = getMainPageFrame(context, MainPageFrameType.FOOTER);
+			mp.setFooter(html);
+			html = getMainPageFrame(context, MainPageFrameType.WELCOME);
+			mp.setWelcome(html);
 			outputDebugInfo(mp);
 			return mp;
 		} catch (Throwable e) {

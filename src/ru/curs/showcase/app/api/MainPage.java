@@ -23,6 +23,21 @@ public class MainPage implements SerializableElement {
 	 */
 	private String footerHeight;
 
+	/**
+	 * Код заголовка главной страницы.
+	 */
+	private String header;
+
+	/**
+	 * Код нижнего колонтитула главной страницы.
+	 */
+	private String footer;
+
+	/**
+	 * Код экрана приветствия.
+	 */
+	private String welcome;
+
 	public String getHeaderHeight() {
 		return headerHeight;
 	}
@@ -37,5 +52,29 @@ public class MainPage implements SerializableElement {
 
 	public void setFooterHeight(final String aFooterHeight) {
 		footerHeight = aFooterHeight;
+	}
+
+	public String getHeader() {
+		return header;
+	}
+
+	public void setHeader(final String aHeader) {
+		header = aHeader;
+	}
+
+	public String getFooter() {
+		return footer;
+	}
+
+	public void setFooter(final String aFooter) {
+		footer = aFooter;
+	}
+
+	public String getWelcome() {
+		return welcome;
+	}
+
+	public void setWelcome(final String aWelcome) {
+		welcome = aWelcome;
 	}
 }
