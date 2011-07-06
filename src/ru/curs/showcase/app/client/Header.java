@@ -7,14 +7,11 @@ import java.util.Date;
 
 import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.*;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
-import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
@@ -51,62 +48,100 @@ public class Header {
 	 */
 	public Widget generateHeader() {
 
-		if (dataService == null) {
-			dataService = GWT.create(DataService.class);
+		final SimplePanel tabVerticalPanel = new SimplePanel();
+		// tabVerticalPanel.setSize("100%", "100%");
+		HTML ht = new HTML();
+		// ht = new HTML();
+		ht.setHTML("<iframe style='border:0px; width: 100%; height: 100%;' src='"
+				+ AccessToDomModel.getAppContextPath() + "/secured/header" + "'/>");
+
+		int sizeNumber = 0;
+		int absolutePixelSize = 0;
+		try {
+			sizeNumber =
+				SizeParser.getSize(AppCurrContext.getInstance().getMainPage().getHeaderHeight());
+		} catch (Exception e) {
+
+			MessageBox.showMessageWithDetails(
+					Constants.TRANSFORMATION_HEADER_OR_FOOTER_WIDTH_ERROR, e.getClass().getName()
+							+ ": " + e.getMessage(), GeneralServerException.getStackText(e),
+					MessageType.ERROR, true);
 		}
-		CompositeContext context = MultiUserData.getCurrentContextFromURL();
-		dataService.getServerCurrentState(context, new GWTServiceCallback<ServerCurrentState>(
-				Constants.ERROR_OF_SERVER_CURRENT_STATE_RETRIEVING_FROM_SERVER) {
 
-			@Override
-			public void onSuccess(final ServerCurrentState serverCurrentState) {
+		switch (SizeParser.getSizeType(AppCurrContext.getInstance().getMainPage()
+				.getHeaderHeight())) {
 
-				if (serverCurrentState != null) {
+		case PIXELS:
+			absolutePixelSize = sizeNumber;
+			break;
 
-					AppCurrContext.getInstance().setServerCurrentState(serverCurrentState);
+		case PERCENTS:
+			final int percentsTotal = 100;
+			absolutePixelSize = sizeNumber * Window.getClientWidth() / percentsTotal;
+			break;
 
-					fillServerCurrentStateInfoToTheAppropriatePanels();
+		default:
+			absolutePixelSize = Constants.HEIGHTOFFOOTERANDBOTTOM;
+			break;
 
-				}
-			}
-		});
-		final VerticalPanel headerVerticalPanel = new VerticalPanel();
-		headerVerticalPanel.setStyleName("showcaseHeaderContainerStyle");
-		headerVerticalPanel.setSize("100%", "100%");
-		HorizontalPanel headerHorizontalPanel1 = new HorizontalPanel();
-		htmlForUserNameIndication.setHTML("<b>Текущий пользователь: </b>");
-		headerVerticalPanel.add(headerHorizontalPanel1);
-		headerHorizontalPanel1.setSize("100%", "100%");
+		}
 
-		Anchor onMainPageLink =
-			new Anchor("<b>На главную</b>", true, Window.Location.getQueryString());
+		ht.setSize("100%", String.valueOf(absolutePixelSize) + "px");
+		tabVerticalPanel.add(ht);
 
-		headerHorizontalPanel1.add(onMainPageLink);
-
-		headerHorizontalPanel1.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
-
-		Anchor exitLink = generateExitLink();
-
-		Anchor aboutLink = generateAboutLink();
-
-		HorizontalPanel hp = new HorizontalPanel();
-		hp.add(aboutLink);
-		aboutLink.setStyleName("aboutLink");
-		htmlForUserNameIndication.setStyleName("currentUserWidget");
-		hp.add(htmlForUserNameIndication);
-		hp.add(exitLink);
-		headerHorizontalPanel1.add(hp);
-		final int n = 27;
-		headerVerticalPanel.setWidth(Window.getClientWidth() - n + "px");
-		Window.addResizeHandler(new ResizeHandler() {
-			@Override
-			public void onResize(final ResizeEvent event) {
-				int width = event.getWidth() - n;
-				headerVerticalPanel.setWidth(width + "px");
-			}
-		});
-		return headerVerticalPanel;
-
+		/*
+		 * if (dataService == null) { dataService =
+		 * GWT.create(DataService.class); } CompositeContext context =
+		 * MultiUserData.getCurrentContextFromURL();
+		 * dataService.getServerCurrentState(context, new
+		 * GWTServiceCallback<ServerCurrentState>(
+		 * Constants.ERROR_OF_SERVER_CURRENT_STATE_RETRIEVING_FROM_SERVER) {
+		 * 
+		 * @Override public void onSuccess(final ServerCurrentState
+		 * serverCurrentState) {
+		 * 
+		 * if (serverCurrentState != null) {
+		 * 
+		 * AppCurrContext.getInstance().setServerCurrentState(serverCurrentState)
+		 * ;
+		 * 
+		 * fillServerCurrentStateInfoToTheAppropriatePanels();
+		 * 
+		 * } } }); final VerticalPanel headerVerticalPanel = new
+		 * VerticalPanel();
+		 * headerVerticalPanel.setStyleName("showcaseHeaderContainerStyle");
+		 * headerVerticalPanel.setSize("100%", "100%"); HorizontalPanel
+		 * headerHorizontalPanel1 = new HorizontalPanel();
+		 * htmlForUserNameIndication.setHTML("<b>Текущий пользователь: </b>");
+		 * headerVerticalPanel.add(headerHorizontalPanel1);
+		 * headerHorizontalPanel1.setSize("100%", "100%");
+		 * 
+		 * Anchor onMainPageLink = new Anchor("<b>На главную</b>", true,
+		 * Window.Location.getQueryString());
+		 * 
+		 * headerHorizontalPanel1.add(onMainPageLink);
+		 * 
+		 * headerHorizontalPanel1.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT
+		 * );
+		 * 
+		 * Anchor exitLink = generateExitLink();
+		 * 
+		 * Anchor aboutLink = generateAboutLink();
+		 * 
+		 * HorizontalPanel hp = new HorizontalPanel(); hp.add(aboutLink);
+		 * aboutLink.setStyleName("aboutLink");
+		 * htmlForUserNameIndication.setStyleName("currentUserWidget");
+		 * hp.add(htmlForUserNameIndication); hp.add(exitLink);
+		 * headerHorizontalPanel1.add(hp); final int n = 27;
+		 * headerVerticalPanel.setWidth(Window.getClientWidth() - n + "px");
+		 * Window.addResizeHandler(new ResizeHandler() {
+		 * 
+		 * @Override public void onResize(final ResizeEvent event) { int width =
+		 * event.getWidth() - n; headerVerticalPanel.setWidth(width + "px"); }
+		 * });
+		 */
+		// return headerVerticalPanel;
+		return tabVerticalPanel;
 	}
 
 	private Anchor generateExitLink() {
