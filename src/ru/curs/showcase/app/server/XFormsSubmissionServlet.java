@@ -7,7 +7,6 @@ import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.model.RequestResult;
-import ru.curs.showcase.util.TextUtils;
 
 /**
  * Сервлет, обрабатывающий submission из XForms.
@@ -31,20 +30,17 @@ public class XFormsSubmissionServlet extends HttpServlet {
 		String userDataId = req.getParameter(ExchangeConstants.URL_PARAM_USERDATA);
 		String content = ServletUtils.getRequestAsString(req);
 
-		response.setContentType("text/html");
-		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
 		try {
 			ServiceLayerDataServiceImpl sl =
 				new ServiceLayerDataServiceImpl(req.getSession().getId());
 			RequestResult res = sl.handleSQLSubmission(procName, content, userDataId);
 			if (res.getSuccess()) {
 				response.setStatus(HttpServletResponse.SC_OK);
-				response.getWriter().append(res.getData());
+				ServletUtils.makeResponseFromString(response, res.getData());
 			} else {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.getWriter().append(res.generateStandartErrorMessage());
+				ServletUtils.makeResponseFromString(response, res.generateStandartErrorMessage());
 			}
-			response.getWriter().close();
 		} catch (Exception e) {
 			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
 		}

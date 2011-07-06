@@ -3,7 +3,7 @@ package ru.curs.showcase.app.client.api;
 import java.util.List;
 
 import ru.beta2.extra.gwt.ui.selector.SelectorComponent;
-import ru.curs.showcase.app.api.CommandResult;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.client.*;
@@ -325,7 +325,7 @@ public final class XFormPanelCallbacksEvents {
 			DownloadHelper dh = DownloadHelper.getInstance();
 			dh.clear();
 			dh.setErrorCaption(Constants.XFORMS_DOWNLOAD_ERROR);
-			dh.setAction("secured/download");
+			dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/download");
 
 			try {
 				dh.addParam("linkId", URL.encode(linkId));
@@ -398,7 +398,7 @@ public final class XFormPanelCallbacksEvents {
 				currentXFormPanel.getPanel().add(currentXFormPanel.getUw());
 				UploadHelper uh = currentXFormPanel.getUw().getUploadHelper();
 				uh.setErrorCaption(Constants.XFORMS_UPLOAD_ERROR);
-				uh.setAction("secured/upload");
+				uh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/upload");
 			}
 			currentXFormPanel.getUw().runUpload(param.linkId(), new UploadEndHandler() {
 

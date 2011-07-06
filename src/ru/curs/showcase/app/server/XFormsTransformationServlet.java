@@ -6,7 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.util.TextUtils;
 
 /**
  * Сервлет, обрабатывающий xslt-преобразование из XForms.
@@ -32,16 +31,12 @@ public class XFormsTransformationServlet extends HttpServlet {
 		String userDataId = request.getParameter(ExchangeConstants.URL_PARAM_USERDATA);
 		String content = ServletUtils.getRequestAsString(request);
 
-		response.setContentType("text/html");
-		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-
 		try {
 			ServiceLayerDataServiceImpl sl =
 				new ServiceLayerDataServiceImpl(request.getSession().getId());
 			String res = sl.handleXSLTSubmission(xsltFile, content, userDataId);
 			response.setStatus(HttpServletResponse.SC_OK);
-			response.getWriter().append(res);
-			response.getWriter().close();
+			ServletUtils.makeResponseFromString(response, res);
 		} catch (Exception e) {
 			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
 		}

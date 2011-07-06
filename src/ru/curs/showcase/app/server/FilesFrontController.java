@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
+
 /**
  * Front controller для работы с файлами.
  */
@@ -21,7 +23,9 @@ public final class FilesFrontController extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			String servlet = request.getServletPath();
-			servlet = servlet.replace("/secured/", "").toUpperCase();
+			servlet =
+				servlet.replace("/" + ExchangeConstants.SECURED_SERVLET_PREFIX + "/", "")
+						.toUpperCase();
 			FilesFrontControllerAction action = FilesFrontControllerAction.valueOf(servlet);
 			AbstractFilesHandler handler = null;
 			switch (action) {

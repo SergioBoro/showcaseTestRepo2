@@ -64,6 +64,22 @@ public final class ServletUtils {
 		response.reset();
 		doNoCasheResponse(response);
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		makeResponseFromString(response, message);
+	}
+
+	/**
+	 * Стандартная функция для записи ответа сервера из переданной строки. Код
+	 * статуса должен быть установлен до вызова этой функции, т.к. она закрывает
+	 * поток записи ответа.
+	 * 
+	 * @param response
+	 *            - объект ответа сервера.
+	 * @param message
+	 *            - текст для записи в тело ответа.
+	 * @throws IOException
+	 */
+	public static void makeResponseFromString(final HttpServletResponse response,
+			final String message) throws IOException {
 		response.setContentType("text/html");
 		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
 		response.getWriter().append(message);

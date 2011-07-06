@@ -6,9 +6,9 @@ import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.frame.MainPageFrameType;
-import ru.curs.showcase.util.TextUtils;
 
 /**
  * Front controller для получения "статических" фреймов, которые будут включены
@@ -25,7 +25,9 @@ public final class MainPageFramesFrontController extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			String servlet = request.getServletPath();
-			servlet = servlet.replace("/secured/", "").toUpperCase();
+			servlet =
+				servlet.replace("/" + ExchangeConstants.SECURED_SERVLET_PREFIX + "/", "")
+						.toUpperCase();
 			MainPageFrameType type = MainPageFrameType.valueOf(servlet);
 			Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
 			CompositeContext context = new CompositeContext(params);
@@ -33,10 +35,7 @@ public final class MainPageFramesFrontController extends HttpServlet {
 				new ServiceLayerDataServiceImpl(request.getSession().getId());
 			String html = sl.getMainPageFrame(context, type);
 			response.setStatus(HttpServletResponse.SC_OK);
-			response.setContentType("text/html");
-			response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-			response.getWriter().append(html);
-			response.getWriter().close();
+			ServletUtils.makeResponseFromString(response, html);
 		} catch (Throwable e) {
 			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
 		}

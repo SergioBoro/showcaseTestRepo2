@@ -13,6 +13,12 @@ public final class ExchangeConstants implements SerializableElement {
 	}
 
 	/**
+	 * Префикс сервлетов, используемых для передачи или получения
+	 * пользовательских данных.
+	 */
+	public static final String SECURED_SERVLET_PREFIX = "secured";
+
+	/**
 	 * Название параметра userdata в URL.
 	 */
 	public static final String URL_PARAM_USERDATA = "userdata";

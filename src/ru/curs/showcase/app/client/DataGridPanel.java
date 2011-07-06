@@ -6,6 +6,7 @@ import ru.curs.gwt.datagrid.*;
 import ru.curs.gwt.datagrid.event.*;
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.gwt.datagrid.selection.*;
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.*;
@@ -551,7 +552,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		dh.clear();
 
 		dh.setErrorCaption(Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL);
-		dh.setAction("secured/gridToExcel");
+		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridToExcel");
 
 		try {
 			dh.addParam(exportType.getClass().getName(), exportType.toString());
