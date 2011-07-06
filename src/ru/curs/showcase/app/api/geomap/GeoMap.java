@@ -21,6 +21,12 @@ public final class GeoMap extends DataPanelElementWithLegend {
 	 */
 	private GeoMapData javaDynamicData;
 
+	/**
+	 * Признак того, что размеры карты должны подстраиватся под размеры инф.
+	 * панели. Данный режим включается, если не заданы размеры карты.
+	 */
+	private Boolean autoSize = false;
+
 	public GeoMap(final GeoMapData aGeoMapData) {
 		javaDynamicData = aGeoMapData;
 	}
@@ -51,5 +57,21 @@ public final class GeoMap extends DataPanelElementWithLegend {
 
 	public void setJavaDynamicData(final GeoMapData aJavaDynamicData) {
 		javaDynamicData = aJavaDynamicData;
+	}
+
+	public Boolean getAutoSize() {
+		return autoSize;
+	}
+
+	public void setAutoSize(final Boolean aAutoSize) {
+		autoSize = aAutoSize;
+	}
+
+	/**
+	 * Функция для определения значения признака autoSize. Должна быть вызвана
+	 * до сериализации карты в JSON, например из фабрики.
+	 */
+	public void determineAutoSize() {
+		autoSize = ((javaDynamicData.getHeight() == null) && (javaDynamicData.getWidth() == null));
 	}
 }

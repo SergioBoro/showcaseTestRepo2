@@ -143,12 +143,16 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 				value = attrs.getValue(LEGEND_TAG);
 				value = value.toUpperCase().trim();
 				getResult().setLegendPosition(LegendPosition.valueOf(value));
-				value = attrs.getValue(WIDTH_TAG);
-				intValue = TextUtils.getIntSizeValue(value);
-				getResult().getJavaDynamicData().setWidth(intValue);
-				value = attrs.getValue(HEIGHT_TAG);
-				intValue = TextUtils.getIntSizeValue(value);
-				getResult().getJavaDynamicData().setHeight(intValue);
+				if (attrs.getIndex(WIDTH_TAG) > -1) {
+					value = attrs.getValue(WIDTH_TAG);
+					intValue = TextUtils.getIntSizeValue(value);
+					getResult().getJavaDynamicData().setWidth(intValue);
+				}
+				if (attrs.getIndex(HEIGHT_TAG) > -1) {
+					value = attrs.getValue(HEIGHT_TAG);
+					intValue = TextUtils.getIntSizeValue(value);
+					getResult().getJavaDynamicData().setHeight(intValue);
+				}
 				return;
 			}
 		}
@@ -199,6 +203,7 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 			}
 			layer.setHintFormat(null); // теперь шаблон не нужен
 		}
+		getResult().determineAutoSize();
 	}
 
 	private String generateTooltip(final GeoMapLayer layer, final GeoMapObject obj) {
