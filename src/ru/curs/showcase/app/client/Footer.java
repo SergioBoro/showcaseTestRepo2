@@ -33,7 +33,8 @@ public class Footer {
 		// ht = new HTML();
 
 		ht.setHTML("<iframe style='border:0px; width: 100%; height: 100%' src='"
-				+ AccessToDomModel.getAppContextPath() + "/secured/footer" + "'/>");
+				+ AccessToDomModel.getAppContextPath() + "/secured/footer"
+				+ Window.Location.getQueryString() + "'/>");
 
 		// MultiUserData.getPathWithUserData("html/footer.jsp")
 

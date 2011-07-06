@@ -53,8 +53,8 @@ public class Header {
 		HTML ht = new HTML();
 		// ht = new HTML();
 		ht.setHTML("<iframe style='border:0px; width: 100%; height: 100%;' src='"
-				+ AccessToDomModel.getAppContextPath() + "/secured/header" + "'/>");
-
+				+ AccessToDomModel.getAppContextPath() + "/secured/header"
+				+ Window.Location.getQueryString() + "'/>");
 		int sizeNumber = 0;
 		int absolutePixelSize = 0;
 		try {
