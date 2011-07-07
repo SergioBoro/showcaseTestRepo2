@@ -262,8 +262,11 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	private void prepareContext(final CompositeContext context)
 			throws UnsupportedEncodingException {
+		if (context.getSession() != null) {
+			return;
+		}
 		String sessionContext =
-			SessionInfoGenerator.generateSessionContext(sessionId, context.getSessionParamsMap());
+			SessionContextGenerator.generate(sessionId, context.getSessionParamsMap());
 
 		LOGGER.info("Session context: " + sessionContext);
 		context.setSession(sessionContext);
@@ -272,13 +275,16 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	private void prepareContext(final Action action) throws UnsupportedEncodingException {
-		if (action.getDataPanelActionType() == DataPanelActionType.DO_NOTHING) {
+		if (action.getContext() == null) {
+			return;
+		}
+		if (action.getContext().getSession() != null) {
 			return;
 		}
 
 		CompositeContext context = action.getContext();
 		String sessionContext =
-			SessionInfoGenerator.generateSessionContext(sessionId, context.getSessionParamsMap());
+			SessionContextGenerator.generate(sessionId, context.getSessionParamsMap());
 		LOGGER.info("Session context: " + sessionContext);
 		action.setSessionContext(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurrentUserDataId(context.getSessionParamsMap());
@@ -393,15 +399,11 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		try {
 			prepareContext(action);
 			ActivityGateway gateway = new SQLActivityGateway();
-			CompositeContext context = action.getContext();
-			if (context == null) {
-				context = new CompositeContext();
-			}
 
 			Iterator<ServerActivity> iterator = action.getServerActivities().iterator();
 			while (iterator.hasNext()) {
 				ServerActivity sa = iterator.next();
-				gateway.exec(context, sa);
+				gateway.exec(sa);
 				LOGGER.info("Выполнено действие на сервере: " + sa.toString());
 			}
 		} catch (Throwable e) {

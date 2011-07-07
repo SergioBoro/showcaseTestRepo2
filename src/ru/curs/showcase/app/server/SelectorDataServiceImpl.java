@@ -170,7 +170,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 	private void prepareContext(final CompositeContext context)
 			throws UnsupportedEncodingException {
 		String sessionContext =
-			SessionInfoGenerator.generateSessionContext(perThreadRequest.get().getSession()
+			SessionContextGenerator.generate(perThreadRequest.get().getSession()
 					.getId(), context.getSessionParamsMap());
 
 		LOGGER.info("Session context: " + sessionContext);

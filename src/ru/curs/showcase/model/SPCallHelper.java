@@ -72,12 +72,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 */
 	protected void setupGeneralElementParameters() throws SQLException {
 		setupGeneralParameters();
-		cs.setString(ADD_CONTEXT_ATTR_NAME, "");
-		if (context != null) {
-			if (context.getAdditional() != null) {
-				cs.setString(ADD_CONTEXT_ATTR_NAME, context.getAdditional());
-			}
-		}
+
 		cs.setString(ELEMENTID_COLUMNNAME, elementInfo.getId());
 		LOGGER.info("elementInfo=" + elementInfo.toString());
 	}
@@ -89,11 +84,15 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 */
 	protected void setupGeneralParameters() throws SQLException {
 		cs.setString(MAIN_CONTEXT_ATTR_NAME, "");
+		cs.setString(ADD_CONTEXT_ATTR_NAME, "");
 		cs.setString(SESSION_CONTEXT_PARAM, "");
 		cs.setString(FILTER_COLUMNNAME, "");
 		if (context != null) {
 			if (context.getMain() != null) {
 				cs.setString(MAIN_CONTEXT_ATTR_NAME, context.getMain());
+			}
+			if (context.getAdditional() != null) {
+				cs.setString(ADD_CONTEXT_ATTR_NAME, context.getAdditional());
 			}
 			if (context.getSession() != null) {
 				cs.setString(SESSION_CONTEXT_PARAM, context.getSession());

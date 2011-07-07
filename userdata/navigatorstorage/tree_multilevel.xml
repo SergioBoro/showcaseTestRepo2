@@ -53,6 +53,13 @@
 						<add_context>add_context</add_context>
 					</element>
 				</datapanel>
+				<server>
+				<activity name="test" type="SP">
+				<add_context>
+				test
+				</add_context>
+				</activity>
+				</server>
 			</action>
 		</level1>	
 	</group>

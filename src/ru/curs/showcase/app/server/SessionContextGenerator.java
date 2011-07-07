@@ -18,7 +18,7 @@ import ru.curs.showcase.util.XMLUtils;
  * @author den
  * 
  */
-public final class SessionInfoGenerator extends GeneralXMLHelper {
+public final class SessionContextGenerator extends GeneralXMLHelper {
 
 	static final String SESSION_CONTEXT_TAG = "sessioncontext";
 	public static final String USERNAME_TAG = "username";
@@ -26,7 +26,7 @@ public final class SessionInfoGenerator extends GeneralXMLHelper {
 	public static final String URL_PARAM_TAG = "urlparam";
 	public static final String USERDATA_TAG = ExchangeConstants.URL_PARAM_USERDATA;
 
-	private SessionInfoGenerator() {
+	private SessionContextGenerator() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -41,7 +41,7 @@ public final class SessionInfoGenerator extends GeneralXMLHelper {
 	 *            - параметры.
 	 * @throws UnsupportedEncodingException
 	 */
-	static String generateSessionContext(final String sessionId,
+	static String generate(final String sessionId,
 			final Map<String, ArrayList<String>> aMap) throws UnsupportedEncodingException {
 		Document info =
 			XMLUtils.createBuilder().getDOMImplementation()

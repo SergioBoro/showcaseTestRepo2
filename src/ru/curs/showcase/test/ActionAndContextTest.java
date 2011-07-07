@@ -91,6 +91,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertNotNull(sa);
 		assertEquals(ServerActivityType.SP, sa.getType());
 		assertEquals("test", sa.getName());
+		assertEquals(ADD_CONDITION, sa.getContext().getAdditional());
 	}
 
 	/**
@@ -226,13 +227,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testUpdateAddContext() {
-		Grid grid = new Grid();
-		GridEvent event = new GridEvent();
-		event.setRecordId("01");
-		Action action = createSimpleTestAction();
-		event.setAction(action);
-		grid.getEventManager().getEvents().add(event);
-		grid.setDefaultAction(action);
+		Grid grid = createTestGrid();
 		CompositeContext context = new CompositeContext();
 		context.setAdditional(NEW_ADD_CONDITION);
 		grid.updateAddContext(context);
@@ -241,6 +236,46 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 				.getDataPanelLink().getElementLinks().get(0).getContext().getAdditional());
 		assertEquals(NEW_ADD_CONDITION, grid.getDefaultAction().getDataPanelLink()
 				.getElementLinks().get(0).getContext().getAdditional());
+		assertEquals(NEW_ADD_CONDITION, grid.getDefaultAction().getServerActivities().get(0)
+				.getContext().getAdditional());
+	}
+
+	/**
+	 * Тест на обновление дополнительного контекста.
+	 * 
+	 */
+	@Test
+	public void testActualizeActions() {
+		Grid grid = createTestGrid();
+		CompositeContext context = new CompositeContext();
+		context.setMain(MAIN_FILTER);
+		context.setAdditional(NEW_ADD_CONDITION);
+		grid.actualizeActions(context);
+
+		assertEquals(MAIN_FILTER, grid.getEventManager().getEvents().get(0).getAction()
+				.getDataPanelLink().getElementLinks().get(0).getContext().getMain());
+		assertEquals(MAIN_FILTER, grid.getDefaultAction().getDataPanelLink().getElementLinks()
+				.get(0).getContext().getMain());
+		assertEquals(MAIN_FILTER, grid.getDefaultAction().getServerActivities().get(0)
+				.getContext().getMain());
+
+		assertEquals(NEW_ADD_CONDITION, grid.getEventManager().getEvents().get(0).getAction()
+				.getDataPanelLink().getElementLinks().get(0).getContext().getAdditional());
+		assertEquals(NEW_ADD_CONDITION, grid.getDefaultAction().getDataPanelLink()
+				.getElementLinks().get(0).getContext().getAdditional());
+		assertEquals(NEW_ADD_CONDITION, grid.getDefaultAction().getServerActivities().get(0)
+				.getContext().getAdditional());
+	}
+
+	private Grid createTestGrid() {
+		Grid grid = new Grid();
+		GridEvent event = new GridEvent();
+		event.setRecordId("01");
+		Action action = createCurrentTestAction();
+		event.setAction(action);
+		grid.getEventManager().getEvents().add(event);
+		grid.setDefaultAction(action);
+		return grid;
 	}
 
 	/**
@@ -337,6 +372,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		elLink.setSkipRefreshContextOnly(true);
 
 		ServerActivity sa = new ServerActivity("test", ServerActivityType.SP);
+		sa.setContext(getComplexTestContext());
 		action.getServerActivities().add(sa);
 
 		action.determineState();
@@ -357,6 +393,31 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 
 		DataPanelElementLink elLink = new DataPanelElementLink(EL_06, elContext);
 		link.getElementLinks().add(elLink);
+
+		ServerActivity sa = new ServerActivity("test", ServerActivityType.SP);
+		sa.setContext(getComplexTestContext());
+		action.getServerActivities().add(sa);
+
+		action.determineState();
+		return action;
+	}
+
+	private Action createCurrentTestAction() {
+		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
+		CompositeContext context = CompositeContext.createCurrent();
+		action.setContext(context);
+
+		DataPanelLink link = action.getDataPanelLink();
+		link.setDataPanelId(CanBeCurrent.CURRENT_ID);
+		link.setTabId(CanBeCurrent.CURRENT_ID);
+		CompositeContext elContext = context.gwtClone();
+
+		DataPanelElementLink elLink = new DataPanelElementLink(EL_06, elContext);
+		link.getElementLinks().add(elLink);
+
+		ServerActivity sa = new ServerActivity("test", ServerActivityType.SP);
+		sa.setContext(context);
+		action.getServerActivities().add(sa);
 
 		action.determineState();
 		return action;
@@ -391,6 +452,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertEquals(FILTER_CONTEXT, action.getDataPanelLink().getElementLinks().get(0)
 				.getContext().getFilter());
 		assertEquals(FILTER_CONTEXT, action.getContext().getFilter());
+		assertEquals(FILTER_CONTEXT, action.getServerActivities().get(0).getContext().getFilter());
 	}
 
 	/**
@@ -425,6 +487,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		dpLink.setTabId(TAB_2);
 		insideAction.setDataPanelLink(dpLink);
 		insideAction.determineState();
+		ServerActivity sa = new ServerActivity("test", ServerActivityType.SP);
+		sa.setContext(CompositeContext.createCurrent());
+		insideAction.getServerActivities().add(sa);
 		ah.setCurrentAction(insideAction);
 
 		assertNotNull(ah.getCurrentAction());
@@ -432,6 +497,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 				.getDataPanelActionType());
 		assertEquals(FILTER_CONTEXT, ah.getCurrentAction().getContext().getFilter());
 		assertTrue(ah.getCurrentAction().getKeepUserSettings());
+		assertEquals(MAIN_FILTER, ah.getCurrentAction().getContext().getMain());
+		assertEquals(MAIN_FILTER, ah.getCurrentAction().getServerActivities().get(0).getContext()
+				.getMain());
 	}
 
 	/**
@@ -474,8 +542,13 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
 		assertTrue(action.containsServerActivity());
 		assertTrue(action.getServerActivities().size() == 1);
-		assertEquals("exec_test", action.getServerActivities().get(0).getName());
-		assertEquals(ServerActivityType.SP, action.getServerActivities().get(0).getType());
+		ServerActivity sa = action.getServerActivities().get(0);
+		assertEquals("exec_test", sa.getName());
+		assertEquals(ServerActivityType.SP, sa.getType());
+		assertNotNull(sa.getContext());
+		assertEquals(action.getContext().getMain(), sa.getContext().getMain());
+		assertEquals("<context_somexml someattr=\"value\" >test</context_somexml>", sa
+				.getContext().getAdditional());
 	}
 
 	/**
@@ -490,6 +563,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		sl.execServerAction(action);
+		assertNotNull(action.getServerActivities().get(0).getContext().getSession());
 	}
 
 	/**

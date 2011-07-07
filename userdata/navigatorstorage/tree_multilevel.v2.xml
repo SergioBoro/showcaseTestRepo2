@@ -64,7 +64,13 @@
 				<main_context>Вывоз, включая экспорт - Всего</main_context>
 				<datapanel type="a.xml" />
 				<server>
-				<activity type="SP" name="exec_test"/>
+				<activity type="SP" name="exec_test">
+				<add_context>
+				<context_somexml someattr="value">
+				test
+				</context_somexml>
+				</add_context>
+				</activity>
 				</server>
 			</action>
 		</level1>

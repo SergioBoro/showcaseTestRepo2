@@ -92,16 +92,16 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
 
 		assertEquals(1,
-				doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.USERNAME_TAG)
+				doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.USERNAME_TAG)
 						.getLength());
 
 		assertEquals(1,
-				doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.URL_PARAMS_TAG)
+				doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.URL_PARAMS_TAG)
 						.getLength());
 		Node node =
-			doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.URL_PARAMS_TAG)
+			doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.URL_PARAMS_TAG)
 					.item(0);
-		assertEquals(SessionInfoGenerator.URL_PARAM_TAG, node.getChildNodes().item(1)
+		assertEquals(SessionContextGenerator.URL_PARAM_TAG, node.getChildNodes().item(1)
 				.getNodeName());
 		assertEquals(2, node.getChildNodes().item(1).getAttributes().getLength());
 		assertEquals(KEY1, node.getChildNodes().item(1).getAttributes().getNamedItem(NAME_TAG)
@@ -110,10 +110,10 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 				.getNamedItem(VALUE_TAG).getNodeValue());
 
 		assertEquals(1,
-				doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.USERDATA_TAG)
+				doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.USERDATA_TAG)
 						.getLength());
 		node =
-			doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.USERDATA_TAG)
+			doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.USERDATA_TAG)
 					.item(0);
 		assertEquals(USERDATA_ID, node.getTextContent());
 	}
@@ -162,13 +162,13 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		DocumentBuilder db = XMLUtils.createBuilder();
 		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
 		assertEquals(1,
-				doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.USERDATA_TAG)
+				doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.USERDATA_TAG)
 						.getLength());
 		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, doc.getDocumentElement()
-				.getElementsByTagName(SessionInfoGenerator.USERDATA_TAG).item(0).getTextContent());
+				.getElementsByTagName(SessionContextGenerator.USERDATA_TAG).item(0).getTextContent());
 
 		assertEquals(0,
-				doc.getDocumentElement().getElementsByTagName(SessionInfoGenerator.URL_PARAMS_TAG)
+				doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.URL_PARAMS_TAG)
 						.getLength());
 
 	}

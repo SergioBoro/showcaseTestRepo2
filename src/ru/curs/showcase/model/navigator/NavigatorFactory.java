@@ -121,14 +121,11 @@ public final class NavigatorFactory extends GeneralXMLHelper {
 					NavigatorElement cur = currentElStack.getLast();
 					cur.setAction(action);
 				}
-
 			}
 
 			@Override
 			public void characters(final char[] arg0, final int arg1, final int arg2) {
-
 				actionFactory.handleCharacters(arg0, arg1, arg2);
-
 			}
 
 			private void setupImageId(final String imageFile) {

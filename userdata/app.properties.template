@@ -12,7 +12,7 @@ footer.source = footer_proc
 # general
 navigator.def.icon.name = group_icon_default.png
 copy.userdata.on.startup = true
-copy.userdata.dirs = js:css:html:resources:WEB-INF
+copy.userdata.dirs = js:css:resources:WEB-INF
 # dirs
 navigator.icons.dir.name = resources
 images.in.grid.dir = resources

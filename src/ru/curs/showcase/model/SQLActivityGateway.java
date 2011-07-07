@@ -3,7 +3,7 @@ package ru.curs.showcase.model;
 import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
-import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.event.ServerActivity;
 import ru.curs.showcase.exception.DBQueryException;
 import ru.curs.showcase.util.ConnectionFactory;
 
@@ -18,8 +18,8 @@ public class SQLActivityGateway extends SPCallHelper implements ActivityGateway 
 	protected static final String EXEC_ERROR = "код ошибки %d, текст - %s";
 
 	@Override
-	public void exec(final CompositeContext context, final ServerActivity activity) {
-		setContext(context);
+	public void exec(final ServerActivity activity) {
+		setContext(activity.getContext());
 		try {
 			try {
 				setDb(ConnectionFactory.getConnection());
@@ -51,7 +51,7 @@ public class SQLActivityGateway extends SPCallHelper implements ActivityGateway 
 
 	@Override
 	protected String getSqlTemplate() {
-		return "{? = call [dbo].[%s](?, ?, ?, ?)}";
+		return "{? = call [dbo].[%s](?, ?, ?, ?, ?)}";
 	}
 
 	@Override
