@@ -1,15 +1,23 @@
-﻿<body>
+﻿
+<body onload="function(){document.getElementById('123_header').innerHTML=getCurrentUserNameFeedbackJSNIFunction()}" >
  <table style="margin-top: -20px;">
    <tr>
      <td>
       <a href="" class="linkStyle" >На главную</a>
      </td>
      <td>
-      <a onclick="showAboutFeedbackJSNIFunction()" class="linkStyle" >О программе...</a><br/> 
+      <a onclick="showAboutFeedbackJSNIFunction()" class="linkStyle" > О программе...</a><br/> 
      </td>
      <td>
-      <a href="logout" class="linkStyle" >Выход</a><br/> 
+      <p>Текущий пользователь: </p><br/> 
+     </td>     
+     <td>
+      <p id = "CURRENT_USER_CONTROL_HEADER"> </p><br/> 
      </td>
+     <td>
+      <a href="logout" class="linkStyle" > Выход</a><br/> 
+     </td>
+     
    </tr>
  </table>
 </body>
