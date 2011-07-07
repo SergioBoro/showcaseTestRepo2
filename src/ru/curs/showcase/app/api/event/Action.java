@@ -184,7 +184,10 @@ public class Action implements SerializableElement, GWTClonable {
 	 */
 	public Action actualizeBy(final CompositeContext callContext) {
 		determineState();
-		context.actualizeBy(callContext);
+
+		if (needGeneralContext()) {
+			context.actualizeBy(callContext);
+		}
 
 		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
 			Iterator<DataPanelElementLink> eterator =
@@ -217,7 +220,9 @@ public class Action implements SerializableElement, GWTClonable {
 			return this;
 		}
 
-		context.actualizeBy(prevAction.context);
+		if (needGeneralContext()) {
+			context.actualizeBy(prevAction.context);
+		}
 
 		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
 			if (dataPanelLink.isCurrentPanel()) {
@@ -325,7 +330,9 @@ public class Action implements SerializableElement, GWTClonable {
 	 *            - данные фильтра (как правило MainInstance XForms).
 	 */
 	public void filterBy(final String data) {
-		context.setFilter(data);
+		if (needGeneralContext()) {
+			context.setFilter(data);
+		}
 		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
 			Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
 			while (iterator.hasNext()) {
@@ -413,7 +420,9 @@ public class Action implements SerializableElement, GWTClonable {
 	 *            - новое значение контекста.
 	 */
 	public void setSessionContext(final Map<String, List<String>> data) {
-		context.addSessionParams(data);
+		if (needGeneralContext()) {
+			context.addSessionParams(data);
+		}
 		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
 			Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
 			while (iterator.hasNext()) {
@@ -436,7 +445,9 @@ public class Action implements SerializableElement, GWTClonable {
 	 *            - новое значение контекста.
 	 */
 	public void setSessionContext(final String data) {
-		context.setSession(data);
+		if (needGeneralContext()) {
+			context.setSession(data);
+		}
 		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
 			Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
 			while (iterator.hasNext()) {
@@ -474,5 +485,14 @@ public class Action implements SerializableElement, GWTClonable {
 
 	public void setServerActivities(final List<ServerActivity> aServerActivities) {
 		serverActivities = aServerActivities;
+	}
+
+	/**
+	 * Признак того, что действие должно содержать базовый контекст.
+	 * 
+	 */
+	public boolean needGeneralContext() {
+		return (dataPanelActionType != DataPanelActionType.DO_NOTHING)
+				|| (containsServerActivity());
 	}
 }

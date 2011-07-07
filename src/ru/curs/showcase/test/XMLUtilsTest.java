@@ -311,7 +311,8 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 	}
 
 	/**
-	 * Проверка функции {@link ru.curs.showcase.util.TextUtils#getRealEncoding
+	 * Проверка функции
+	 * {@link ru.curs.showcase.util.XMLUtils#testXmlServiceSymbolsToNormal
 	 * XMLUtils.testXmlServiceSymbolsToNormal}.
 	 * 
 	 */

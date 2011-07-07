@@ -40,8 +40,6 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 
 	/**
 	 * Тест клонирования Action и составляющих его объектов.
-	 * 
-	 * @
 	 */
 	@Test
 	public void testClone() {
@@ -584,5 +582,44 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		action.getContext().setSessionParamsMap(params);
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		sl.execServerAction(action);
+	}
+
+	/**
+	 * Проверка работы функции
+	 * {@link ru.curs.showcase.app.api.event.Action#needGeneralContext
+	 * Action.needGeneralContext}.
+	 */
+	@Test
+	public void testNeedGeneralContext() {
+		Action action = new Action();
+		DataPanelLink dpl = new DataPanelLink();
+		dpl.setDataPanelId("test1.xml");
+		dpl.setTabId("1");
+		action.setDataPanelLink(dpl);
+		action.setContext(CompositeContext.createCurrent());
+		action.determineState();
+		assertTrue(action.needGeneralContext());
+
+		action = new Action();
+		action.setContext(CompositeContext.createCurrent());
+		ServerActivity sa = new ServerActivity("test_proc", ServerActivityType.SP);
+		sa.setContext(CompositeContext.createCurrent());
+		action.getServerActivities().add(sa);
+		action.determineState();
+		assertTrue(action.needGeneralContext());
+
+		action = new Action();
+		NavigatorElementLink nel = new NavigatorElementLink();
+		nel.setId("01");
+		action.setNavigatorElementLink(nel);
+		action.determineState();
+		assertFalse(action.needGeneralContext());
+
+		action = new Action();
+		nel = new NavigatorElementLink();
+		nel.setRefresh(true);
+		action.setNavigatorElementLink(nel);
+		action.determineState();
+		assertFalse(action.needGeneralContext());
 	}
 }
