@@ -52,9 +52,10 @@ public class Header {
 		// tabVerticalPanel.setSize("100%", "100%");
 		HTML ht = new HTML();
 		// ht = new HTML();
-		ht.setHTML("<iframe style='border:0px; width: 100%; height: 100%;' src='"
-				+ AccessToDomModel.getAppContextPath() + "/secured/header"
-				+ Window.Location.getQueryString() + "'/>");
+
+		// ht.setHTML("<iframe style='border:0px; width: 100%; height: 100%;' src='"
+		// + AccessToDomModel.getAppContextPath() + "/secured/header"
+		// + Window.Location.getQueryString() + "'/>");
 		int sizeNumber = 0;
 		int absolutePixelSize = 0;
 		try {
@@ -87,6 +88,8 @@ public class Header {
 		}
 
 		ht.setSize("100%", String.valueOf(absolutePixelSize) + "px");
+		ht.setHTML(AppCurrContext.getInstance().getMainPage().getHeader());
+		// ht.set
 		tabVerticalPanel.add(ht);
 
 		/*

@@ -9,7 +9,6 @@ import ru.beta2.extra.gwt.ui.panels.CursScrolledTabLayoutPanel;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.client.api.Constants;
-import ru.curs.showcase.app.client.utils.MultiUserData;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -64,8 +63,9 @@ public class GeneralDataPanel {
 		tabVerticalPanel.setSize("100%", "100%");
 		HTML ht = new HTML();
 		// ht = new HTML();
-		ht.setHTML("<iframe width='100%' height='100%' style='border:0px;' src='"
-				+ MultiUserData.getPathWithUserData("html/welcome.jsp") + "'/>");
+		ht.setHTML(AppCurrContext.getInstance().getMainPage().getWelcome());
+		// ht.setHTML("<iframe width='100%' height='100%' style='border:0px;' src='"
+		// + MultiUserData.getPathWithUserData("html/welcome.jsp") + "'/>");
 		ht.setSize("100%", "100%");
 		tabVerticalPanel.add(ht);
 		getTabPanel().add(tabVerticalPanel, Constants.WELCOM_TAB_CAPTION);

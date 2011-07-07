@@ -6,7 +6,7 @@ package ru.curs.showcase.app.client;
 import ru.curs.showcase.app.api.MessageType;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.client.api.Constants;
-import ru.curs.showcase.app.client.utils.*;
+import ru.curs.showcase.app.client.utils.SizeParser;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
@@ -32,9 +32,10 @@ public class Footer {
 		HTML ht = new HTML();
 		// ht = new HTML();
 
-		ht.setHTML("<iframe style='border:0px; width: 100%; height: 100%' src='"
-				+ AccessToDomModel.getAppContextPath() + "/secured/footer"
-				+ Window.Location.getQueryString() + "'/>");
+		ht.setHTML(AppCurrContext.getInstance().getMainPage().getFooter());
+		// ht.setHTML("<iframe style='border:0px; width: 100%; height: 100%' src='"
+		// + AccessToDomModel.getAppContextPath() + "/secured/footer"
+		// + Window.Location.getQueryString() + "'/>");
 
 		// MultiUserData.getPathWithUserData("html/footer.jsp")
 

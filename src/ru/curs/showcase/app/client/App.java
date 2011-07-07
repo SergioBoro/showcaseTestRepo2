@@ -2,9 +2,10 @@ package ru.curs.showcase.app.client;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.MainPage;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.*;
@@ -31,12 +32,32 @@ public class App implements EntryPoint {
 		// AppCurrContext.appCurrContext = AppCurrContext.getInstance();
 		AppCurrContext.getInstance();
 
+		CompositeContext context = getCurrentContext();
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		CompositeContext context = getCurrentContext();
+		dataService.getServerCurrentState(context, new GWTServiceCallback<ServerCurrentState>(
+				Constants.ERROR_OF_SERVER_CURRENT_STATE_RETRIEVING_FROM_SERVER) {
 
+			@Override
+			public void onSuccess(final ServerCurrentState serverCurrentState) {
+
+				if (serverCurrentState != null) {
+
+					AppCurrContext.getInstance().setServerCurrentState(serverCurrentState);
+					getAndFillMainPage();
+				}
+			}
+		});
+
+	}
+
+	private void getAndFillMainPage() {
+		if (dataService == null) {
+			dataService = GWT.create(DataService.class);
+		}
+		CompositeContext context = getCurrentContext();
 		dataService.getMainPage(context, new GWTServiceCallback<MainPage>("dsds") {
 
 			@Override
@@ -46,8 +67,6 @@ public class App implements EntryPoint {
 			}
 
 		});
-		// getMainPage();
-
 	}
 
 	// генерация и размещение приложения в DOM модели Showcase.
