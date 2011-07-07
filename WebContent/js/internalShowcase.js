@@ -1,3 +1,12 @@
+function setCurrentUserNameForViewInHTMLControl(preffix)
+{
+	
+	if (document.getElementById('CURRENT_USER_CONTROL_' + preffix)) {
+	 document.getElementById('CURRENT_USER_CONTROL_' + preffix).innerHTML=getCurrentUserNameFeedbackJSNIFunction();
+	}
+
+}
+
 function safeIncludeGeoJS(jsFile)
 {
 	dojo.xhrGet({
