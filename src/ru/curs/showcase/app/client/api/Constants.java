@@ -41,7 +41,7 @@ public final class Constants {
 		"Пожалуйста, подождите... идет загрузка данных в соответствии с выбранным элементом";
 	public static final String PLEASE_WAIT_XFORM_3 = "Пожалуйста, подождите...";
 
-	public static final String WELCOM_TAB_CAPTION = "Добро пожаловать";
+	public static final String WELCOME_TAB_CAPTION = "Добро пожаловать";
 	public static final String ERROR = "Ошибка";
 	public static final String EMPTY = "Пусто";
 
@@ -55,6 +55,8 @@ public final class Constants {
 		"при получении текстовых данных с сервера";
 	public static final String ERROR_OF_SERVER_CURRENT_STATE_RETRIEVING_FROM_SERVER =
 		"при получении данных о текущем состоянии приложения";
+	public static final String ERROR_OF_MAIN_PAGE_RETRIEVING_FROM_SERVER =
+		"при получении данных о главной странице приложения";
 
 	public static final String GRID_ERROR_CAPTION_EXPORT_EXCEL = "Ошибка при экспорте в Excel";
 

@@ -58,7 +58,8 @@ public class App implements EntryPoint {
 			dataService = GWT.create(DataService.class);
 		}
 		CompositeContext context = getCurrentContext();
-		dataService.getMainPage(context, new GWTServiceCallback<MainPage>("dsds") {
+		dataService.getMainPage(context, new GWTServiceCallback<MainPage>(
+				Constants.ERROR_OF_MAIN_PAGE_RETRIEVING_FROM_SERVER) {
 
 			@Override
 			public void onSuccess(final MainPage mainPage) {
