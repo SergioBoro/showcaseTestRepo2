@@ -76,6 +76,12 @@ public final class FeedbackJSNI {
 
 	}
 
+	/**
+	 * 
+	 * Возвращает текущее имя пользователя.
+	 * 
+	 * @return - String
+	 */
 	public static String getCurrentUserName() {
 
 		return AppCurrContext.getInstance().getServerCurrentState().getUserName();
