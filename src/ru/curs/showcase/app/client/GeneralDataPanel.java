@@ -69,6 +69,7 @@ public class GeneralDataPanel {
 		ht.setSize("100%", "100%");
 		tabVerticalPanel.add(ht);
 		getTabPanel().add(tabVerticalPanel, Constants.WELCOM_TAB_CAPTION);
+		JavaScriptFromGWTFeedbackJSNI.setCurrentUserNameForViewInHTMLControl("WELCOM");
 
 	}
 

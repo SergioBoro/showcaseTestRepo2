@@ -92,6 +92,8 @@ public class Header {
 		// ht.set
 		tabVerticalPanel.add(ht);
 
+		// setCurrentUserName();
+
 		/*
 		 * if (dataService == null) { dataService =
 		 * GWT.create(DataService.class); } CompositeContext context =

@@ -16,7 +16,7 @@ import ru.curs.showcase.app.client.api.*;
 public final class FeedbackJSNI {
 
 	private FeedbackJSNI() {
-
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -76,6 +76,12 @@ public final class FeedbackJSNI {
 
 	}
 
+	public static String getCurrentUserName() {
+
+		return AppCurrContext.getInstance().getServerCurrentState().getUserName();
+
+	}
+
 	/**
 	 * 
 	 * Процедура инициализирующая Java функции gwt клиентского кода
@@ -93,6 +99,8 @@ public final class FeedbackJSNI {
 		@ru.curs.showcase.app.client.FeedbackJSNI::refreshElementFromBase(Ljava/lang/String;);
         $wnd.showAboutFeedbackJSNIFunction = 
 		@ru.curs.showcase.app.client.About::showAbout();		
+		$wnd.getCurrentUserNameFeedbackJSNIFunction = 
+		@ru.curs.showcase.app.client.FeedbackJSNI::getCurrentUserName();	
 	}-*/;
 
 }
