@@ -68,8 +68,8 @@ public class GeneralDataPanel {
 		// + MultiUserData.getPathWithUserData("html/welcome.jsp") + "'/>");
 		ht.setSize("100%", "100%");
 		tabVerticalPanel.add(ht);
-		getTabPanel().add(tabVerticalPanel, Constants.WELCOM_TAB_CAPTION);
-		JavaScriptFromGWTFeedbackJSNI.setCurrentUserNameForViewInHTMLControl("WELCOM");
+		getTabPanel().add(tabVerticalPanel, Constants.WELCOME_TAB_CAPTION);
+		JavaScriptFromGWTFeedbackJSNI.setCurrentUserNameForViewInHTMLControl("WELCOME");
 
 	}
 
