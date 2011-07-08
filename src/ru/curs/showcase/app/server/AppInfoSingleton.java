@@ -28,10 +28,6 @@ public final class AppInfoSingleton {
 	/** Список userdata. */
 	private final HashMap<String, UserData> userdatas = new HashMap<String, UserData>();
 
-	private AppInfoSingleton() {
-		super();
-	}
-
 	/**
 	 * Синглетон.
 	 */
@@ -46,16 +42,20 @@ public final class AppInfoSingleton {
 	/**
 	 * Идентификатор userdata в текущем запросе.
 	 */
-	private final ThreadLocal<String> currentUserDataId = new ThreadLocal<String>();
-
-	public Map<String, SessionInfo> getSessionInfoMap() {
-		return sessionInfoMap;
-	}
+	private final ThreadLocal<String> curUserDataId = new ThreadLocal<String>();
 
 	/**
 	 * Версия контейнера сервлетов.
 	 */
 	private String servletContainerVersion;
+
+	private AppInfoSingleton() {
+		super();
+	}
+
+	public Map<String, SessionInfo> getSessionInfoMap() {
+		return sessionInfoMap;
+	}
 
 	public String getServletContainerVersion() {
 		return servletContainerVersion;
@@ -195,7 +195,7 @@ public final class AppInfoSingleton {
 	}
 
 	public Integer getGridColumnGapWidth() {
-		return getUserdatas().get(getCurrentUserDataId()).getGridColumnGapWidth();
+		return getUserdatas().get(getCurUserDataId()).getGridColumnGapWidth();
 	}
 
 	/**
@@ -231,8 +231,8 @@ public final class AppInfoSingleton {
 		sessionInfoMap.clear();
 	}
 
-	public String getCurrentUserDataId() {
-		return currentUserDataId.get();
+	public String getCurUserDataId() {
+		return curUserDataId.get();
 	}
 
 	/**
@@ -241,7 +241,7 @@ public final class AppInfoSingleton {
 	 * @param aMap
 	 *            - параметры URL.
 	 */
-	public void setCurrentUserDataId(final Map<String, ArrayList<String>> aMap) {
+	public void setCurUserDataIdFromMap(final Map<String, ArrayList<String>> aMap) {
 		String userDataId = getUserdataIdFromURLParams(aMap);
 		if (userDataId == null) {
 			userDataId = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
@@ -251,7 +251,7 @@ public final class AppInfoSingleton {
 			throw new NoSuchUserDataException(userDataId);
 		}
 
-		currentUserDataId.set(userDataId);
+		curUserDataId.set(userDataId);
 	}
 
 	/**
@@ -260,8 +260,8 @@ public final class AppInfoSingleton {
 	 * @param aUserDataId
 	 *            - новое значение currentUserDataId.
 	 */
-	public void setCurrentUserDataId(final String aUserDataId) {
-		currentUserDataId.set(aUserDataId);
+	public void setCurUserDataId(final String aUserDataId) {
+		curUserDataId.set(aUserDataId);
 	}
 
 }

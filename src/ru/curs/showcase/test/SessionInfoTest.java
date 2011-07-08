@@ -38,8 +38,8 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testCurUserDataIdSet() {
-		AppInfoSingleton.getAppInfo().setCurrentUserDataId(generateTestURLParamsForSL("test1"));
-		assertEquals("test1", AppInfoSingleton.getAppInfo().getCurrentUserDataId());
+		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(generateTestURLParamsForSL("test1"));
+		assertEquals("test1", AppInfoSingleton.getAppInfo().getCurUserDataId());
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testInitialCurUserDataIdValue() {
 		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, AppInfoSingleton.getAppInfo()
-				.getCurrentUserDataId());
+				.getCurUserDataId());
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		serviceLayer.getChart(context, element);
 
 		checkTestUrlParams(context);
-		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurrentUserDataId());
+		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurUserDataId());
 		assertEquals(AUTH_VIA_AUTH_SERVER, AppInfoSingleton.getAppInfo()
 				.getAuthViaAuthServerForSession(FAKE_SESSION_ID));
 		assertEquals(TEMP_PASS, AppInfoSingleton.getAppInfo()
@@ -134,7 +134,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		Action action = getAction("tree_multilevel.xml", 0, elID);
 		action.setSessionContext(params);
 		serviceLayer.getDataPanel(action);
-		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurrentUserDataId());
+		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurUserDataId());
 		checkTestUrlParams(action.getContext());
 		checkTestUrlParams(action.getDataPanelLink().getElementLinks().get(0).getContext());
 	}
@@ -178,18 +178,18 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testCurrentUserdata() {
-		AppInfoSingleton.getAppInfo().setCurrentUserDataId(
+		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(
 				new TreeMap<String, ArrayList<String>>());
 		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, AppInfoSingleton.getAppInfo()
-				.getCurrentUserDataId());
+				.getCurUserDataId());
 		assertNotNull(AppProps.getUserDataCatalog());
 
 		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
 		ArrayList<String> value3 = new ArrayList<String>();
 		value3.add(USERDATA_ID);
 		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
-		AppInfoSingleton.getAppInfo().setCurrentUserDataId(params);
-		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurrentUserDataId());
+		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(params);
+		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurUserDataId());
 		assertNotNull(AppProps.getUserDataCatalog());
 	}
 
@@ -202,7 +202,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		ArrayList<String> value3 = new ArrayList<String>();
 		value3.add(NOT_EXIST_USERDATA_ID);
 		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
-		AppInfoSingleton.getAppInfo().setCurrentUserDataId(params);
+		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(params);
 	}
 
 }

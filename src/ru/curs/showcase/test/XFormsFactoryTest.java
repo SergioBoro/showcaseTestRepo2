@@ -33,13 +33,13 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 
 	/**
 	 * Test method for
-	 * {@link ru.curs.showcase.model.xform.XFormsDBFactory#build()}.
+	 * {@link ru.curs.showcase.model.xform.XFormsFactory#build()}.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	public void testBuild() throws Exception {
-		XFormsDBFactory factory = createFactory();
+		XFormsFactory factory = createFactory();
 		factory.build();
 	}
 
@@ -107,12 +107,12 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 		assertTrue(element.equals(el2));
 	}
 
-	private XFormsDBFactory createFactory() {
+	private XFormsFactory createFactory() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms1Info();
 
 		XFormsGateway gateway = new XFormsDBGateway();
 		HTMLBasedElementRawData raw = gateway.getInitialData(context, element);
-		return new XFormsDBFactory(raw);
+		return new XFormsFactory(raw);
 	}
 }

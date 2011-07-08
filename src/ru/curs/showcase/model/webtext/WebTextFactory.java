@@ -14,13 +14,13 @@ import ru.curs.showcase.util.XMLUtils;
  * @author den
  * 
  */
-public final class WebTextDBFactory extends HTMLBasedElementFactory {
+public final class WebTextFactory extends HTMLBasedElementFactory {
 	/**
 	 * Результат работы фабрики.
 	 */
 	private WebText result;
 
-	public WebTextDBFactory(final HTMLBasedElementRawData aSource) {
+	public WebTextFactory(final HTMLBasedElementRawData aSource) {
 		super(aSource);
 	}
 

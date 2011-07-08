@@ -232,7 +232,7 @@ public final class AppProps {
 				if (NAVIGATOR_ICONS_DIR_NAME.equals(propName)
 						|| IMAGES_IN_GRID_DIR.equals(propName)) {
 					if (userdataId == null) {
-						userdataId = AppInfoSingleton.getAppInfo().getCurrentUserDataId();
+						userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
 					}
 					result = String.format(DIR_IN_SOLUTIONS, userdataId, result);
 				}
@@ -247,7 +247,7 @@ public final class AppProps {
 	private static Properties getProperties(final String aUserdataId) throws IOException {
 		String userdataId;
 		if (aUserdataId == null) {
-			userdataId = AppInfoSingleton.getAppInfo().getCurrentUserDataId();
+			userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
 		} else {
 			userdataId = aUserdataId;
 		}
@@ -267,7 +267,7 @@ public final class AppProps {
 	 * @return - идентификатор текущей userdata.
 	 */
 	public static String getUserDataId() {
-		String userdataId = AppInfoSingleton.getAppInfo().getCurrentUserDataId();
+		String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
 
 		if (userdataId == null) {
 			userdataId = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
@@ -284,7 +284,7 @@ public final class AppProps {
 	public static String getUserDataCatalog() {
 		String userDataCatalog = null;
 
-		String userdataId = AppInfoSingleton.getAppInfo().getCurrentUserDataId();
+		String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
 		UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
 		if (us != null) {
 			userDataCatalog = us.getPath();

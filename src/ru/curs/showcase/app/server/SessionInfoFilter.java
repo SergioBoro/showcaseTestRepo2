@@ -44,7 +44,7 @@ public class SessionInfoFilter implements Filter {
 	}
 
 	private void resetThread() {
-		AppInfoSingleton.getAppInfo().setCurrentUserDataId((String) null);
+		AppInfoSingleton.getAppInfo().setCurUserDataId((String) null);
 
 	}
 

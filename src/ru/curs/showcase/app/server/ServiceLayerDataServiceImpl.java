@@ -111,7 +111,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			WebTextGateway wtgateway = new WebTextDBGateway();
 			prepareContext(context);
 			HTMLBasedElementRawData rawWT = wtgateway.getRawData(context, element);
-			WebTextDBFactory builder = new WebTextDBFactory(rawWT);
+			WebTextFactory builder = new WebTextFactory(rawWT);
 			WebText webtext = builder.build();
 			outputDebugInfo(webtext);
 			return webtext;
@@ -229,7 +229,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			if (currentData != null) {
 				raw.setData(currentData);
 			}
-			XFormsDBFactory factory = new XFormsDBFactory(raw);
+			XFormsFactory factory = new XFormsFactory(raw);
 			XForms xforms = factory.build();
 			outputDebugInfo(xforms);
 			return xforms;
@@ -270,7 +270,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 		LOGGER.info("Session context: " + sessionContext);
 		context.setSession(sessionContext);
-		AppInfoSingleton.getAppInfo().setCurrentUserDataId(context.getSessionParamsMap());
+		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
 		context.setSessionParamsMap(null);
 	}
 
@@ -287,7 +287,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			SessionContextGenerator.generate(sessionId, context.getSessionParamsMap());
 		LOGGER.info("Session context: " + sessionContext);
 		action.setSessionContext(sessionContext);
-		AppInfoSingleton.getAppInfo().setCurrentUserDataId(context.getSessionParamsMap());
+		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
 		action.setSessionContext((Map<String, List<String>>) null);
 	}
 
@@ -316,7 +316,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	private void setUserData(final String userDataId) {
-		AppInfoSingleton.getAppInfo().setCurrentUserDataId(
+		AppInfoSingleton.getAppInfo().setCurUserDataId(
 				(userDataId != null) ? userDataId : ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
 	}
 
@@ -428,12 +428,18 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			} else {
 				mp.setFooterHeight(AppProps.DEF_FOOTER_HEIGTH);
 			}
-			String html = getMainPageFrame(context, MainPageFrameType.HEADER);
+			MainPageFrameFactory factory = new MainPageFrameFactory(false);
+
+			String html = getRawMainPageFrame(context, MainPageFrameType.HEADER);
+			html = factory.build(html);
 			mp.setHeader(html);
-			html = getMainPageFrame(context, MainPageFrameType.FOOTER);
+			html = getRawMainPageFrame(context, MainPageFrameType.FOOTER);
+			html = factory.build(html);
 			mp.setFooter(html);
-			html = getMainPageFrame(context, MainPageFrameType.WELCOME);
+			html = getRawMainPageFrame(context, MainPageFrameType.WELCOME);
+			html = factory.build(html);
 			mp.setWelcome(html);
+
 			outputDebugInfo(mp);
 			return mp;
 		} catch (Throwable e) {
@@ -446,13 +452,21 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			throws GeneralServerException {
 		try {
 			prepareContext(context);
-			MainPageFrameSource source = new MainPageFrameSource(type);
-			String result = source.getGateway().get(context, source.getSourceName());
+			String result = getRawMainPageFrame(context, type);
+			MainPageFrameFactory factory = new MainPageFrameFactory(true);
+			result = factory.build(result);
 			LOGGER.info(String.format("Возвращен фрейм типа %s c кодом: %s", type.toString(),
 					result));
 			return result;
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);
 		}
+	}
+
+	private String
+			getRawMainPageFrame(final CompositeContext context, final MainPageFrameType type) {
+		MainPageFrameSelector selector = new MainPageFrameSelector(type);
+		String result = selector.getGateway().get(context, selector.getSourceName());
+		return result;
 	}
 }

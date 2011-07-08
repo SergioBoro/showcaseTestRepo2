@@ -17,13 +17,13 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-public final class XFormsDBFactory extends HTMLBasedElementFactory {
+public final class XFormsFactory extends HTMLBasedElementFactory {
 	/**
 	 * Результат работы фабрики.
 	 */
 	private XForms result;
 
-	public XFormsDBFactory(final HTMLBasedElementRawData aSource) {
+	public XFormsFactory(final HTMLBasedElementRawData aSource) {
 		super(aSource);
 	}
 

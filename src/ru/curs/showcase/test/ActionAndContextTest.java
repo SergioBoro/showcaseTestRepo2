@@ -573,7 +573,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	@Test(expected = GeneralServerException.class)
 	public void testServerActivityExecFail() throws IOException, GeneralServerException {
 		final int actionNumber = 2;
-		AppInfoSingleton.getAppInfo().setCurrentUserDataId("test1");
+		AppInfoSingleton.getAppInfo().setCurUserDataId("test1");
 		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
 		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
 		ArrayList<String> val = new ArrayList<String>();

@@ -56,7 +56,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	 */
 	@Before
 	public void beforeTest() {
-		AppInfoSingleton.getAppInfo().setCurrentUserDataId(
+		AppInfoSingleton.getAppInfo().setCurUserDataId(
 				ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
 	}
 
@@ -65,7 +65,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	 */
 	@After
 	public void afterTest() {
-		AppInfoSingleton.getAppInfo().setCurrentUserDataId((String) null);
+		AppInfoSingleton.getAppInfo().setCurUserDataId((String) null);
 	}
 
 	private static void initTestSession() {

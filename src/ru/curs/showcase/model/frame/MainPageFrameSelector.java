@@ -4,13 +4,13 @@ import ru.curs.showcase.model.GeneralXMLHelper;
 import ru.curs.showcase.util.AppProps;
 
 /**
- * Источник для фрейма главной страницы. Отвечает за считывание названия
+ * "Выбиральщик" для фрейма главной страницы. Отвечает за считывание названия
  * источника и создание требуемого шлюза.
  * 
  * @author den
  * 
  */
-public class MainPageFrameSource {
+public class MainPageFrameSelector {
 	/**
 	 * Зафиксированное расширение для файлов с фреймами.
 	 */
@@ -25,7 +25,7 @@ public class MainPageFrameSource {
 	 */
 	private String sourceName;
 
-	public MainPageFrameSource(final MainPageFrameType aType) {
+	public MainPageFrameSelector(final MainPageFrameType aType) {
 		super();
 		type = aType;
 		read();
