@@ -12,7 +12,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
  * 
  */
 public class GeneralServerException extends Exception {
-	static final String EXCEPTION_TRACE = "Стек ошибки:";
+	static final String EXCEPTION_TRACE = "Основной стек ошибки:";
 
 	static final String EXCEPTION_CLASS = "Класс ошибки: ";
 
@@ -64,6 +64,12 @@ public class GeneralServerException extends Exception {
 	 */
 	private DataPanelElementContext context;
 
+	/**
+	 * Признак того, что для данного исключения требуется показывать
+	 * пользователю дополнительную инфорацию.
+	 */
+	private Boolean needDatailedInfo;
+
 	public final String getOriginalMessage() {
 		return originalMessage;
 	}
@@ -91,17 +97,11 @@ public class GeneralServerException extends Exception {
 	public static String getStackText(final Throwable original) {
 		StringBuilder result = new StringBuilder();
 		String ls = ExchangeConstants.LINE_SEPARATOR;
-		// System.getProperty("line.separator"); - не
-		// работает в gwt
-
-		for (StackTraceElement el : original.getStackTrace()) {
-			result.append(el.toString());
-			result.append(ls);
-		}
-		result.append(ls);
 
 		if (original.getCause() != null) {
-			result.append(CAUSE_EXC_CAPTION + original.getCause().getLocalizedMessage());
+			result.append(CAUSE_EXC_CAPTION);
+			result.append(ls);
+			result.append(original.getCause().getLocalizedMessage());
 			result.append(ls);
 			result.append(ls);
 			result.append(CAUSE_EXC_TRACE_CAPTION);
@@ -114,6 +114,18 @@ public class GeneralServerException extends Exception {
 				result.append(ls);
 			}
 		}
+
+		result.append(ls);
+
+		result.append(EXCEPTION_TRACE);
+		result.append(ls);
+		result.append(ls);
+
+		for (StackTraceElement el : original.getStackTrace()) {
+			result.append(el.toString());
+			result.append(ls);
+		}
+
 		return result.toString();
 	}
 
@@ -122,16 +134,16 @@ public class GeneralServerException extends Exception {
 		String str = "";
 		String ls = ExchangeConstants.LINE_SEPARATOR;
 		if (mes != null) {
-			str = ORIGINAL_MESSAGE + mes + ls + ls;
+			str = ORIGINAL_MESSAGE + ls + mes + ls + ls;
 		}
 
 		if (context != null) {
-			str = CONTEXT_MES + ls + context.toString();
+			str = CONTEXT_MES + ls + ls + context.toString();
 		}
 		str = str + ls;
 		if (aType != ExceptionType.USER) {
-			str = str + EXCEPTION_CLASS + className + ls + ls;
-			str = str + EXCEPTION_TRACE + ls + trace;
+			str = str + EXCEPTION_CLASS + ls + className + ls + ls;
+			str = str + trace;
 		}
 		return str;
 	}
@@ -166,7 +178,7 @@ public class GeneralServerException extends Exception {
 	public static boolean needDetailedInfo(final Throwable caught) {
 		if (caught instanceof GeneralServerException) {
 			GeneralServerException gse = (GeneralServerException) caught;
-			return (gse.getOriginalMessage() != null);
+			return gse.needDatailedInfo;
 		} else {
 			return true;
 		}
@@ -240,5 +252,13 @@ public class GeneralServerException extends Exception {
 
 	public void setMessageType(final MessageType aMessageType) {
 		messageType = aMessageType;
+	}
+
+	public Boolean getNeedDatailedInfo() {
+		return needDatailedInfo;
+	}
+
+	public void setNeedDatailedInfo(final Boolean aNeedDatailedInfo) {
+		needDatailedInfo = aNeedDatailedInfo;
 	}
 }

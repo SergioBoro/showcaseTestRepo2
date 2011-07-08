@@ -31,7 +31,13 @@ public final class GeneralServerExceptionFactory {
 		res.setType(getType(original));
 		res.setContext(getContext(original));
 		res.setMessageType(getMessageType(original));
+		res.setNeedDatailedInfo(getNeedDatailedInfo(original));
 		return res;
+	}
+
+	private static Boolean getNeedDatailedInfo(final Throwable e) {
+		return ((e.getClass() != NoSuchUserDataException.class)
+				&& (e.getClass() != SPNotExistsException.class) && (e.getClass() != ValidateInDBException.class));
 	}
 
 	private static MessageType getMessageType(final Throwable exc) {

@@ -30,7 +30,8 @@ public final class ExchangeConstants implements SerializableElement {
 
 	/**
 	 * Разделитель строк для сообщений, показываемых пользователю (используется
-	 * разделитель Windows).
+	 * разделитель Windows). System.getProperty("line.separator"); - не работает
+	 * в gwt
 	 */
 	public static final String LINE_SEPARATOR = "\r\n";
 
