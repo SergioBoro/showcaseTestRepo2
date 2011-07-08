@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.model.frame.*;
+import ru.curs.showcase.util.AppProps;
 
 /**
  * Тесты для получения фреймов из файла и из БД.
@@ -41,9 +42,14 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 		MainPageFrameSelector selector = new MainPageFrameSelector(MainPageFrameType.WELCOME);
 		MainPageFrameGateway gateway = selector.getGateway();
 		String raw = gateway.get(context, selector.getSourceName());
-		assertTrue(raw.indexOf(MainPageFrameFactory.SHOWCASE_CURRENT_USERDATA) > -1);
-		assertTrue(page.getWelcome().indexOf(MainPageFrameFactory.SHOWCASE_CURRENT_USERDATA) == -1);
+		assertTrue(raw.indexOf(AppProps.CURRENT_USERDATA_TEMPLATE) > -1);
+		assertTrue(raw.indexOf(AppProps.IMAGES_IN_GRID_DIR) > -1);
+
+		assertTrue(page.getWelcome().indexOf(AppProps.CURRENT_USERDATA_TEMPLATE) == -1);
+		assertTrue(page.getWelcome().indexOf(AppProps.IMAGES_IN_GRID_DIR) == -1);
 		assertTrue(page.getWelcome().indexOf(AppInfoSingleton.getAppInfo().getCurUserDataId()) > -1);
+		assertTrue(page.getWelcome().indexOf(
+				AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR)) > -1);
 	}
 
 	/**

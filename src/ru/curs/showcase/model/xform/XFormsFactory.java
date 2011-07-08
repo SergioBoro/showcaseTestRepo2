@@ -23,6 +23,11 @@ public final class XFormsFactory extends HTMLBasedElementFactory {
 	 */
 	private XForms result;
 
+	/**
+	 * Промежуточный результат работы фабрики.
+	 */
+	private String html;
+
 	public XFormsFactory(final HTMLBasedElementRawData aSource) {
 		super(aSource);
 	}
@@ -38,13 +43,12 @@ public final class XFormsFactory extends HTMLBasedElementFactory {
 		Document template = null;
 		InputStream stream;
 		String file =
-			String.format("%s/%s", AppProps.XFORMS_DIR, getSource().getElementInfo()
-					.getTemplateName());
+			String.format("%s/%s", AppProps.XFORMS_DIR, getElementInfo().getTemplateName());
 		try {
 			stream = AppProps.loadUserDataToStream(file);
 
 		} catch (IOException e) {
-			throw new SettingsFileOpenException(getSource().getElementInfo().getTemplateName(),
+			throw new SettingsFileOpenException(getElementInfo().getTemplateName(),
 					SettingsFileType.XFORM);
 		}
 
@@ -54,18 +58,24 @@ public final class XFormsFactory extends HTMLBasedElementFactory {
 			throw new XMLFormatException(file, e1);
 		}
 
-		String html;
 		try {
 			template =
 				XFormsTemplateModificator.addSrvInfo(template, getSource().getCallContext(),
-						getSource().getElementInfo());
+						getElementInfo());
 			html =
-				XFormProducer.getHTML(template, getSource().getData(), getSource()
-						.getElementInfo().getId());
+				XFormProducer.getHTML(template, getSource().getData(), getElementInfo().getId());
+			replaceVariables(html);
 			result.setXFormParts(XFormCutter.xFormParts(html));
 		} catch (Exception e) {
 			throw new XSLTTransformException(e);
 		}
+	}
+
+	@Override
+	protected String replaceVariables(final String data) {
+		html = super.replaceVariables(html);
+		html = html.replace("xformId", getElementInfo().getId());
+		return html;
 	}
 
 	@Override

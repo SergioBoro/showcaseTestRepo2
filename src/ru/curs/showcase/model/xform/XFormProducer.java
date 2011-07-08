@@ -138,7 +138,6 @@ public final class XFormProducer extends GeneralXMLHelper {
 		tr.transform(new DOMSource(xml), new StreamResult(sw));
 
 		String ret = sw.toString();
-		ret = ret.replaceAll("xformId", xformId);
 
 		return ret;
 	}

@@ -32,8 +32,7 @@ public final class WebTextFactory extends HTMLBasedElementFactory {
 	@Override
 	protected void transformData() {
 		String out =
-			XMLUtils.xsltTransform(getSource().getData(), getSource().getElementInfo()
-					.getTransformName());
+			XMLUtils.xsltTransform(getSource().getData(), getElementInfo().getTransformName());
 		result.setData(out);
 	}
 
@@ -45,5 +44,13 @@ public final class WebTextFactory extends HTMLBasedElementFactory {
 	@Override
 	protected void initResult() {
 		result = new WebText();
+	}
+
+	@Override
+	protected void correctSettingsAndData() {
+		super.correctSettingsAndData();
+		String out = result.getData();
+		out = replaceVariables(out);
+		result.setData(out);
 	}
 }

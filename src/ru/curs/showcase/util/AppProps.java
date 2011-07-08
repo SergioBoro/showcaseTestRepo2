@@ -14,6 +14,14 @@ import ru.curs.showcase.model.SettingsFileType;
  * 
  */
 public final class AppProps {
+	/**
+	 * Шаблон для пути к текущей userdata в WebContent относительно корня
+	 * веб-приложения.
+	 */
+	public static final String IMAGES_IN_GRID_DIR = "images.in.grid.dir";
+
+	public static final String CURRENT_USERDATA_TEMPLATE = "${userdata.dir}";
+
 	public static final String DEF_FOOTER_HEIGTH = "50px";
 
 	public static final String DEF_HEADER_HEIGTH = "50px";
@@ -72,10 +80,6 @@ public final class AppProps {
 	 * NAVIGATOR_ICONS_DIRNAME.
 	 */
 	private static final String NAVIGATOR_ICONS_DIR_NAME = "navigator.icons.dir.name";
-	/**
-	 * IMAGES_IN_GRID_DIR.
-	 */
-	private static final String IMAGES_IN_GRID_DIR = "images.in.grid.dir";
 
 	/**
 	 * DIR_IN_SOLUTIONS.
@@ -228,20 +232,22 @@ public final class AppProps {
 			String result = getProperties(userdataId).getProperty(propName);
 			if (result != null) {
 				result = result.trim();
-
-				if (NAVIGATOR_ICONS_DIR_NAME.equals(propName)
-						|| IMAGES_IN_GRID_DIR.equals(propName)) {
-					if (userdataId == null) {
-						userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
-					}
-					result = String.format(DIR_IN_SOLUTIONS, userdataId, result);
-				}
-
+				result = correctPathToSolutionResources(propName, result);
 			}
 			return result;
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, PROPFILENAME, SettingsFileType.APP_PROPERTIES);
 		}
+	}
+
+	private static String
+			correctPathToSolutionResources(final String propName, final String source) {
+		String result = source;
+		if (NAVIGATOR_ICONS_DIR_NAME.equals(propName) || IMAGES_IN_GRID_DIR.equals(propName)) {
+			String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
+			result = String.format(DIR_IN_SOLUTIONS, userdataId, source);
+		}
+		return result;
 	}
 
 	private static Properties getProperties(final String aUserdataId) throws IOException {
@@ -315,6 +321,22 @@ public final class AppProps {
 		}
 
 		return userDataCatalog;
+	}
 
+	/**
+	 * Функция по подстановке стандартных параметров приложения вместо их
+	 * шаблонов.
+	 * 
+	 * @param source
+	 *            - исходный текст.
+	 */
+	public static String replaceVariables(final String source) {
+		String value =
+			source.replace("${" + IMAGES_IN_GRID_DIR + "}",
+					getRequiredValueByName(IMAGES_IN_GRID_DIR));
+		value =
+			value.replace(CURRENT_USERDATA_TEMPLATE, String.format("solutions/%s",
+					AppInfoSingleton.getAppInfo().getCurUserDataId()));
+		return value;
 	}
 }

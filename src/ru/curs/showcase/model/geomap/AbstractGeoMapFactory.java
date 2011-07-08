@@ -187,6 +187,8 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 
 	@Override
 	protected void correctSettingsAndData() {
+		super.correctSettingsAndData();
+
 		Iterator<GeoMapLayer> iterator = getResult().getJavaDynamicData().getLayers().iterator();
 		while (iterator.hasNext()) {
 			GeoMapLayer layer = iterator.next();

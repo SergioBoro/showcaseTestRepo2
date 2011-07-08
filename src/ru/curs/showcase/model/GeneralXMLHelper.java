@@ -97,6 +97,8 @@ public abstract class GeneralXMLHelper {
 
 	public static final String SOURCE_TAG = "source";
 
+	protected static final String ELEMENT_ID = "${elementId}";
+
 	/**
 	 * Имя колонки или строки с XML документом, содержащим обработчики.
 	 */

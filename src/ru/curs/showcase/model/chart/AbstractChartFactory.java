@@ -222,6 +222,7 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 
 	@Override
 	protected void correctSettingsAndData() {
+		super.correctSettingsAndData();
 		setupTooltips();
 		setupBarLabels();
 	}

@@ -18,8 +18,6 @@ import ru.curs.showcase.model.*;
  * 
  */
 public abstract class AbstractGridFactory extends CompBasedElementFactory {
-	public static final String IMAGES_IN_GRID_DIR = "images.in.grid.dir";
-
 	public static final String GRID_DEFAULT_PROFILE = "default.properties";
 
 	/**
@@ -115,6 +113,8 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 
 	@Override
 	protected void correctSettingsAndData() {
+		super.correctSettingsAndData();
+
 		setupAutoSelecting();
 		correctPageCount();
 	}

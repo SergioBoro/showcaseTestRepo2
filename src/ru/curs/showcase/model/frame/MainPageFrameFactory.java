@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.frame;
 
-import ru.curs.showcase.app.server.AppInfoSingleton;
+import ru.curs.showcase.util.AppProps;
 
 /**
  * Фабрика для создания фреймов главной формы. Отвечает за дополнительную
@@ -10,11 +10,6 @@ import ru.curs.showcase.app.server.AppInfoSingleton;
  * 
  */
 public final class MainPageFrameFactory {
-	/**
-	 * Шаблон для пути к текущей userdata в WebContent относительно корня
-	 * веб-приложения.
-	 */
-	public static final String SHOWCASE_CURRENT_USERDATA = "%SHOWCASE_CURRENT_USERDATA%";
 	/**
 	 * Исходный HTML текст.
 	 */
@@ -56,9 +51,7 @@ public final class MainPageFrameFactory {
 	}
 
 	private void replaceTemplates() {
-		result =
-			result.replace(SHOWCASE_CURRENT_USERDATA, String.format("solutions/%s",
-					AppInfoSingleton.getAppInfo().getCurUserDataId()));
+		result = AppProps.replaceVariables(result);
 	}
 
 	public String getSource() {

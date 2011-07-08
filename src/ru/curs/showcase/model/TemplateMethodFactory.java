@@ -7,6 +7,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.exception.*;
+import ru.curs.showcase.util.AppProps;
 
 /**
  * Абстрактная фабрика с шаблонным методом построения сложных объектов -
@@ -115,5 +116,18 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 
 	public DataPanelElementInfo getElementInfo() {
 		return source.getElementInfo();
+	}
+
+	/**
+	 * Стандартный метод для замены строк шаблонов в элементах инф. панели.
+	 * 
+	 * @param in
+	 *            - входная строка.
+	 */
+	protected String replaceVariables(final String in) {
+		String out = in;
+		out = out.replace(ELEMENT_ID, getElementInfo().getId());
+		out = AppProps.replaceVariables(out);
+		return out;
 	}
 }

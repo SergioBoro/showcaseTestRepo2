@@ -83,14 +83,12 @@ public class GridDBFactory extends AbstractGridFactory {
 					if (col.getValueType() == GridValueType.IMAGE) {
 						value =
 							String.format("%s/%s",
-									AppProps.getRequiredValueByName(IMAGES_IN_GRID_DIR),
+									AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR),
 									sql.getString(col.getId()));
 					} else if (col.getValueType() == GridValueType.LINK) {
 						value = sql.getString(col.getId());
 						if (value != null) {
-							value =
-								value.replace("${" + IMAGES_IN_GRID_DIR + "}",
-										AppProps.getRequiredValueByName(IMAGES_IN_GRID_DIR));
+							value = AppProps.replaceVariables(value);
 							value = makeSafeXMLAttrValues(value);
 						}
 					} else if (sql.getObject(col.getId()) == null) {

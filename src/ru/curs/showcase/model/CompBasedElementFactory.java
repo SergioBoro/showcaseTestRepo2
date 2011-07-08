@@ -160,4 +160,16 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 	 */
 	protected abstract String getSettingsErrorMes();
 
+	@Override
+	protected void correctSettingsAndData() {
+		super.correctSettingsAndData();
+
+		String html = getResult().getHeader();
+		html = replaceVariables(html);
+		getResult().setHeader(html);
+		html = getResult().getFooter();
+		html = replaceVariables(html);
+		getResult().setFooter(html);
+	}
+
 }
