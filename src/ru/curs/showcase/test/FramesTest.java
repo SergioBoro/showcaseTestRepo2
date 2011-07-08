@@ -38,6 +38,10 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 		assertEquals(FOOTER_CODE, page.getFooter());
 		assertTrue(page.getWelcome().endsWith(WELCOME_CODE));
 
+		MainPageFrameSelector selector = new MainPageFrameSelector(MainPageFrameType.WELCOME);
+		MainPageFrameGateway gateway = selector.getGateway();
+		String raw = gateway.get(context, selector.getSourceName());
+		assertTrue(raw.indexOf(MainPageFrameFactory.SHOWCASE_CURRENT_USERDATA) > -1);
 		assertTrue(page.getWelcome().indexOf(MainPageFrameFactory.SHOWCASE_CURRENT_USERDATA) == -1);
 		assertTrue(page.getWelcome().indexOf(AppInfoSingleton.getAppInfo().getCurUserDataId()) > -1);
 	}
