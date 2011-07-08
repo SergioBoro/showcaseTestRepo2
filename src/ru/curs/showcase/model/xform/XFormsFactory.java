@@ -6,7 +6,9 @@ import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.html.XForms;
+import ru.curs.showcase.app.server.AppInfoSingleton;
 import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.util.*;
@@ -64,18 +66,27 @@ public final class XFormsFactory extends HTMLBasedElementFactory {
 						getElementInfo());
 			html =
 				XFormProducer.getHTML(template, getSource().getData(), getElementInfo().getId());
-			replaceVariables(html);
+			replaceVariables();
 			result.setXFormParts(XFormCutter.xFormParts(html));
 		} catch (Exception e) {
 			throw new XSLTTransformException(e);
 		}
 	}
 
-	@Override
-	protected String replaceVariables(final String data) {
+	private String replaceVariables() {
 		html = super.replaceVariables(html);
 		html = html.replace("xformId", getElementInfo().getId());
+		addUserDataToSubmissions();
 		return html;
+	}
+
+	private void addUserDataToSubmissions() {
+		String servletQuery = ExchangeConstants.SECURED_SERVLET_PREFIX + "/submit?";
+		String userDataParam =
+			"?userdata=" + AppInfoSingleton.getAppInfo().getCurUserDataId() + "&amp;";
+		html = html.replace(servletQuery, servletQuery + userDataParam);
+		servletQuery = ExchangeConstants.SECURED_SERVLET_PREFIX + "/xslttransformer?";
+		html = html.replace(servletQuery, servletQuery + userDataParam);
 	}
 
 	@Override
