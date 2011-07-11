@@ -2,9 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  
-
 <%@page import="ru.curs.showcase.security.SecurityParamsFactory"%>    
-<%@page import="ru.curs.showcase.util.AppProps"%>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -27,7 +25,15 @@
     <link rel="stylesheet" href="js/dijit/themes/claro/claro.css"/>
     
     <script src="https://www.google.com/jsapi?key=ABQIAAAA-DMAtggvLwlIYlUJiASaAxRQnCpeV9jusWIeBw0POFqU6SItGxRWZhddpS8pIkVUd2fDQhzwPUWmMA"></script>
-    <script src="js/dojo/dojo.js" djConfig="isDebug: false, parseOnLoad: false, modulePaths: {course: '../course', courseApp: '../..'}, gfxRenderer: 'svg,silverlight,vml'"></script>
+    <script type="text/javascript">
+        var djConfig = {
+            parseOnLoad: false,
+            isDebug: false,
+            modulePaths: {'course': '../course', 'courseApp': '../..'},
+            gfxRenderer: 'svg,silverlight,vml'
+        };
+    </script>    
+    <script src="js/dojo/dojo.js"></script>
     <script>
       dojo.require("course.geo.ge.Engine");
     </script> 
@@ -36,16 +42,7 @@
     
     <script>
      var appContextPath="<%=request.getContextPath()%>";
-    </script>
-    
-
-    
-  
-    
-    
-    
-    
-    
+    </script>        
     	
 </head>
 <body class="claro">

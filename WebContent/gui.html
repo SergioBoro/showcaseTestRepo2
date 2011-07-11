@@ -6,7 +6,14 @@
 <link rel="stylesheet" href="js/dijit/themes/claro/claro.css"/>
 <link rel="stylesheet" href="js/course/chartinggui/resources/common.css"/>
 
-<script src="js/dojo/dojo.js" djConfig="isDebug: false, parseOnLoad: true, modulePaths: {course: '../course'}"></script>
+    <script type="text/javascript">
+        var djConfig = {
+            parseOnLoad: true,
+            isDebug: false,
+            modulePaths: {'course': '../course'}
+        };
+    </script>  
+<script src="js/dojo/dojo.js"></script>
 <script src="js/course/chartinggui/Wrapper.js"></script>
 <script src="js/course/chartinggui/Theme.js"></script>
 <script src="js/course/chartinggui/Option.js"></script>

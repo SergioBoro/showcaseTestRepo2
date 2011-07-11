@@ -13,8 +13,13 @@ pageEncoding="UTF-8"%>
 	<link rel="shortcut icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />
 	
-
-<script src="js/dojo/dojo.js" djConfig="isDebug: false, parseOnLoad: false"></script>
+    <script type="text/javascript">
+        var djConfig = {
+            parseOnLoad: false,
+            isDebug: true
+        };
+    </script>  
+	<script src="js/dojo/dojo.js"></script>
 	
 <script type="text/javascript">
 

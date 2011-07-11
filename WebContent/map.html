@@ -4,7 +4,15 @@
 
 <link rel="stylesheet" href="js/dijit/themes/claro/claro.css"/>
 
-<script src="js/dojo/dojo.js" djConfig="isDebug: false, parseOnLoad: false, modulePaths: {course: '../course', courseApp: '../..'}"></script>
+    <script type="text/javascript">
+        var djConfig = {
+            parseOnLoad: false,
+            isDebug: false,
+            modulePaths: {'course': '../course', 'courseApp': '../..'},
+            gfxRenderer: 'svg,silverlight,vml'
+        };
+    </script>  
+<script src="js/dojo/dojo.js"></script>
 <script src="js/course/geo.js"></script>
 <script src="js/course/geo/Map.js"></script>
 <script src="js/course/geo/Feature.js"></script>

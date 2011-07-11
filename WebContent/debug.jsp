@@ -17,7 +17,15 @@
     <script type="text/javascript" language="javascript" src="secured/secured.nocache.js"></script>
     
     <link rel="stylesheet" href="js/dijit/themes/claro/claro.css"/>
-    <script src="js/dojo/dojo.js" djConfig="isDebug: false, parseOnLoad: false, modulePaths: {course: '../course', courseApp: '../..'}, gfxRenderer: 'svg,silverlight,vml'"></script>
+    <script type="text/javascript">
+        var djConfig = {
+            parseOnLoad: false,
+            isDebug: true,
+            modulePaths: {'course': '../course', 'courseApp': '../..'},
+            gfxRenderer: 'svg,silverlight,vml'
+        };
+    </script>      
+    <script src="js/dojo/dojo.js"></script>
     <script src="js/course/charting.js"></script>
     <script src="js/course/geo.js"></script>
     <script src="js/course/geo/Feature.js"></script>
