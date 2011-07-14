@@ -77,7 +77,29 @@ public class MapPanel extends BasicElementPanelBasis {
 		final String divIdMap = elementInfo.getId() + Constants.MAP_DIV_ID_SUFFIX;
 		final String divIdLegend = elementInfo.getId() + Constants.MAP_LEGEND_DIV_ID_SUFFIX;
 
-		final String htmlForMap = "<div id='" + divIdMap + "'></div>";
+		final String htmlForMap;
+		final int n60 = 60;
+		final int n80 = 80;
+		if (aGeoMap.getAutoSize()) {
+			// MessageBox.showSimpleMessage("cap",
+			// //
+			// String.valueOf(GeneralDataPanel.getTabPanel().getOffsetWidth()));
+			// MessageBox.showSimpleMessage("cap",
+			// String.valueOf(GeneralDataPanel.getTabPanel().getOffsetWidth()));
+			htmlForMap =
+				"<div id='" + divIdMap + "' style = 'width: "
+						+ String.valueOf(GeneralDataPanel.getTabPanel().getOffsetWidth() - n60)
+						+ "px; height: "
+						+ String.valueOf(GeneralDataPanel.getTabPanel().getOffsetHeight() - n80)
+						+ "px'></div>";
+
+		} else {
+			htmlForMap = "<div id='" + divIdMap + "'></div>";
+		}
+
+		// final String htmlForMap =
+		// "<div id='" + divIdMap +
+		// "' style = 'width: 900px; height: 600px'></div>";
 
 		final String htmlForLegend = "<div id='" + divIdLegend + "'></div>";
 
