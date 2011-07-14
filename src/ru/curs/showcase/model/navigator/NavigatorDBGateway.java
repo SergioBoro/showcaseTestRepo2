@@ -20,25 +20,20 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 
 	@Override
 	public InputStream getData(final CompositeContext context) {
-		setDb(ConnectionFactory.getConnection());
+		setConn(ConnectionFactory.getConnection());
 		setProcName(AppProps.getRequiredValueByName(NAVIGATOR_PROCNAME_PARAM));
 		try {
 			String sql = String.format(getSqlTemplate(), getProcName());
-			CallableStatement cs = getDb().prepareCall(sql);
+			CallableStatement cs = getConn().prepareCall(sql);
 			cs.setString(SESSION_CONTEXT_PARAM, context.getSession());
-			cs.registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
+			cs.registerOutParameter(NAVIGATOR_TAG, java.sql.Types.SQLXML);
 			cs.execute();
-			InputStream stream = cs.getSQLXML(getOutSettingsParam()).getBinaryStream();
+			InputStream stream = cs.getSQLXML(NAVIGATOR_TAG).getBinaryStream();
 			return stream;
 		} catch (SQLException e) {
 			dbExceptionHandler(e);
 		}
 		return null;
-	}
-
-	@Override
-	public String getOutSettingsParam() {
-		return NAVIGATOR_TAG;
 	}
 
 	@Override
@@ -48,14 +43,6 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 
 	@Override
 	protected DataPanelElementType getGatewayType() {
-		return null;
-		// для навигатора не имеет смысл. В будущем неплохо бы ввести особый тип
-		// или изменить иерархию наследования.
-	}
-
-	@Override
-	protected String getSettingsSchema() {
-		// TODO перенести проверку схемы в шлюз
-		return null;
+		return DataPanelElementType.NON_DP_ELEMENT;
 	}
 }

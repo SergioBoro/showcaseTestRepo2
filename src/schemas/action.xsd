@@ -65,18 +65,33 @@
 									<xs:sequence>
 										<xs:element name="add_context" minOccurs="0"/>
 									</xs:sequence>
-									<xs:attribute name="type" type="serverActivityType" />
-									<xs:attribute name="name" type="xs:string" />
+									<xs:attribute name="type" type="serverActivityType" use="required"/>
+									<xs:attribute name="name" type="xs:string" use="required"/>
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
 					</xs:complexType>
+				</xs:element>					
+				<xs:element name="client" minOccurs="0">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="activity" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="add_context" minOccurs="0"/>
+									</xs:sequence>
+									<xs:attribute name="id" type="notNullType" use="required" />
+									<xs:attribute name="name" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>					
 				</xs:element>
 			</xs:all>
 			<xs:attribute name="show_in" type="showInMode" />
 			<xs:attribute name="keep_user_settings" type="xs:boolean" />
 			<xs:assert
-				test="(count(datapanel) + count(server) =0) or (count(*[position()=1 and name()='main_context']) = 1)" />
+				test="(count(datapanel) + count(server) + count(client) =0) or (count(*[position()=1 and name()='main_context']) = 1)" />
 		</xs:complexType>
 	</xs:element>
 </xs:schema>

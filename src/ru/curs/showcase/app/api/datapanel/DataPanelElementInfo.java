@@ -127,7 +127,9 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	}
 
 	/**
-	 * Проверка на то, что данные для элемента заданы корректно.
+	 * Проверка на то, что данные для элемента заданы корректно. Необходима в
+	 * дополнение к проверке XSD, т.к. не всегда панель приходит к нам в виде
+	 * XML.
 	 * 
 	 * @return результат проверки.
 	 */
@@ -194,13 +196,19 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	}
 
 	/**
-	 * Проверка того, что используется простое сохранение данных с XForms через
-	 * GWT.
-	 * 
-	 * @return - результат проверки.
+	 * Возвращает процедуру для сохранения данных.
 	 */
-	public boolean enabledSimpleSave() {
-		return (getSaveProc() != null);
+	public DataPanelElementProc getSaveProc() {
+		return getProcByType(DataPanelElementProcType.SAVE);
+	}
+
+	/**
+	 * Возвращает процедуру для получения метаданных. Если данная процедура
+	 * отсутствует - значит для загрузки данных и метаданных используется одна и
+	 * та же процедура - getProcName().
+	 */
+	public DataPanelElementProc getMetadataProc() {
+		return getProcByType(DataPanelElementProcType.METADATA);
 	}
 
 	public final Boolean getHideOnLoad() {
@@ -212,16 +220,18 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	}
 
 	/**
-	 * Возвращает процедуру для сохранения данных. Такая процедура может быть
-	 * только одна.
+	 * Возвращает процедуру определенного типа. Использовать данную процедуру
+	 * имеет смысл только с теми типами, который могут содержаться в одном
+	 * экземпляре.
 	 * 
-	 * @return - процедура.
+	 * @param procType
+	 *            - тип процедуры.
 	 */
-	public DataPanelElementProc getSaveProc() {
+	private DataPanelElementProc getProcByType(final DataPanelElementProcType procType) {
 		Iterator<DataPanelElementProc> iterator = procs.values().iterator();
 		while (iterator.hasNext()) {
 			DataPanelElementProc cur = iterator.next();
-			if (cur.getType() == DataPanelElementProcType.SAVE) {
+			if (cur.getType() == procType) {
 				return cur;
 			}
 		}
@@ -539,5 +549,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 
 	public void setCacheData(final Boolean aCacheData) {
 		cacheData = aCacheData;
+	}
+
+	/**
+	 * Признак того, что для загрузки элемента используется только одна
+	 * процедура.
+	 */
+	public boolean loadByOneProc() {
+		return getMetadataProc() == null;
 	}
 }

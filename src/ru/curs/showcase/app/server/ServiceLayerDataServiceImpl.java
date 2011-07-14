@@ -121,38 +121,41 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public Grid getGrid(final CompositeContext context, final DataPanelElementInfo element,
+	public Grid getGrid(final CompositeContext context, final DataPanelElementInfo elementInfo,
 			final GridRequestedSettings aSettings) throws GeneralServerException {
 		try {
-			GridGateway gateway = new GridDBGateway();
+			GridGateway gateway = null;
+			GridDBFactory factory = null;
+			ElementRawData raw = null;
+			Grid grid = null;
+			ElementSettingsDBGateway sgateway = null;
+			GridRequestedSettings settings = aSettings;
+			if (settings == null) {
+				settings = GridRequestedSettings.createDefault();
+			}
 			prepareContext(context);
-			ElementRawData raw = gateway.getFactorySource(context, element, aSettings);
-			GridDBFactory factory = new GridDBFactory(raw, aSettings);
-			Grid grid = factory.build();
+
+			if (elementInfo.loadByOneProc()) {
+				gateway = new GridDBGateway();
+				raw = gateway.getDataAndSettings(context, elementInfo, settings);
+				factory = new GridDBFactory(raw, settings);
+				grid = factory.build();
+			} else {
+				sgateway = new ElementSettingsDBGateway();
+				raw = sgateway.get(context, elementInfo);
+				factory = new GridDBFactory(raw, settings);
+				factory.buildStepOne();
+				settings = factory.getRequestSettings();
+				gateway = new GridDBGateway(sgateway.getConn());
+				raw = gateway.getData(context, elementInfo, settings);
+				factory.setSource(raw);
+				grid = factory.buildStepTwo();
+			}
+
 			outputDebugInfo(grid);
 			return grid;
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);
-		}
-	}
-
-	private void outputDebugInfo(final Object obj) {
-		if (LOGGER.isInfoEnabled()) {
-			ExclusionStrategy es = new ExclusionStrategy() {
-				@Override
-				public boolean shouldSkipClass(final Class<?> aClass) {
-					return false;
-				}
-
-				@Override
-				public boolean shouldSkipField(final FieldAttributes fa) {
-					return (fa.getAnnotation(ExcludeFromSerialization.class) != null);
-				}
-			};
-			Gson gson =
-				new GsonBuilder().setPrettyPrinting().setExclusionStrategies(es).serializeNulls()
-						.excludeFieldsWithModifiers(Modifier.TRANSIENT + Modifier.STATIC).create();
-			LOGGER.info(gson.toJson(obj));
 		}
 	}
 
@@ -398,11 +401,11 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	public void execServerAction(final Action action) throws GeneralServerException {
 		try {
 			prepareContext(action);
-			ActivityGateway gateway = new SQLActivityGateway();
+			ActivityGateway gateway = new ActivityDBGateway();
 
-			Iterator<ServerActivity> iterator = action.getServerActivities().iterator();
+			Iterator<Activity> iterator = action.getServerActivities().iterator();
 			while (iterator.hasNext()) {
-				ServerActivity sa = iterator.next();
+				Activity sa = iterator.next();
 				gateway.exec(sa);
 				LOGGER.info("Выполнено действие на сервере: " + sa.toString());
 			}
@@ -468,5 +471,25 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		MainPageFrameSelector selector = new MainPageFrameSelector(type);
 		String result = selector.getGateway().get(context, selector.getSourceName());
 		return result;
+	}
+
+	private void outputDebugInfo(final Object obj) {
+		if (LOGGER.isInfoEnabled()) {
+			ExclusionStrategy es = new ExclusionStrategy() {
+				@Override
+				public boolean shouldSkipClass(final Class<?> aClass) {
+					return false;
+				}
+
+				@Override
+				public boolean shouldSkipField(final FieldAttributes fa) {
+					return (fa.getAnnotation(ExcludeFromSerialization.class) != null);
+				}
+			};
+			Gson gson =
+				new GsonBuilder().setPrettyPrinting().setExclusionStrategies(es).serializeNulls()
+						.excludeFieldsWithModifiers(Modifier.TRANSIENT + Modifier.STATIC).create();
+			LOGGER.info(gson.toJson(obj));
+		}
 	}
 }

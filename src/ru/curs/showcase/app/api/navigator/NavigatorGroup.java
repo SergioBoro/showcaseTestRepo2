@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.navigator;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.VisualElement;
+import ru.curs.showcase.app.api.NamedElement;
 
 /**
  * Класс группы элементов навигатора.
@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.VisualElement;
  * @author den
  * 
  */
-public class NavigatorGroup extends VisualElement {
+public class NavigatorGroup extends NamedElement {
 	/**
 	 * serialVersionUID.
 	 */

@@ -36,9 +36,9 @@ public class ElementRawData {
 	/**
 	 * Вспомогательный модуль для получения необходимых данных из БД.
 	 */
-	private final SPCallHelper spCallHelper;
+	private final ElementSPCallHelper spCallHelper;
 
-	public SPCallHelper getSpCallHelper() {
+	public ElementSPCallHelper getSpCallHelper() {
 		return spCallHelper;
 	}
 
@@ -50,8 +50,8 @@ public class ElementRawData {
 		spCallHelper = null;
 	}
 
-	public ElementRawData(final SPCallHelper aSPCallHelper, final DataPanelElementInfo aElementInfo,
-			final CompositeContext aContext) {
+	public ElementRawData(final ElementSPCallHelper aSPCallHelper,
+			final DataPanelElementInfo aElementInfo, final CompositeContext aContext) {
 		elementInfo = aElementInfo;
 		callContext = aContext;
 		properties = null;
@@ -95,7 +95,7 @@ public class ElementRawData {
 	 */
 	public void prepareSettings() {
 		try {
-			properties = spCallHelper.getSettingsStream();
+			properties = spCallHelper.getValidatedSettings();
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
 		}

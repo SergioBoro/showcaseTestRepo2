@@ -54,16 +54,31 @@ public final class ActionExecuter {
 
 				@Override
 				public void onSuccess(final Void fakeRes) {
-					execClientAction(ac);
+					execOtherClientAction(ac);
 				}
 
 			});
-		} else {
-			execClientAction(ac);
 		}
+
+		Iterator<Activity> iterator = ac.getClientActivities().iterator();
+		while (iterator.hasNext()) {
+			Activity act = iterator.next();
+			runClientActivity(act.getName(), act.getContext().getMain(), act.getContext()
+					.getAdditional(), act.getContext().getFilter());
+		}
+
+		execOtherClientAction(ac);
+
 	}
 
-	private static void execClientAction(final Action ac) {
+	private static native void runClientActivity(final String procName, final String mainContext,
+			final String addContext, final String filterContext) /*-{
+		var exp = '$wnd.' + procName + "('" + mainContext + "', '" + addContext
+				+ "', '" + filterContext + "')";
+		eval(exp);
+	}-*/;
+
+	private static void execOtherClientAction(final Action ac) {
 		if (ac.getNavigatorActionType() != NavigatorActionType.DO_NOTHING) {
 
 			boolean fireSelectionAction =

@@ -13,15 +13,11 @@ import ru.curs.showcase.model.*;
 public class WebTextDBGateway extends HTMLBasedSPCallHelper implements WebTextGateway {
 	public static final String OUTPUT_COLUMNNAME = "webtextsettings";
 	static final String DATA_COLUMNNAME = "webtextdata";
-	protected static final String WEBTEXTSETTINGS_XSD = "webtextsettings.xsd";
 
 	@Override
 	public HTMLBasedElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
-		setElementInfo(elementInfo);
-		setContext(context);
-
-		return stdGetData();
+		return stdGetData(context, elementInfo);
 	}
 
 	@Override
@@ -42,10 +38,5 @@ public class WebTextDBGateway extends HTMLBasedSPCallHelper implements WebTextGa
 	@Override
 	public String getDataParam() {
 		return DATA_COLUMNNAME;
-	}
-
-	@Override
-	protected String getSettingsSchema() {
-		return WEBTEXTSETTINGS_XSD;
 	}
 }

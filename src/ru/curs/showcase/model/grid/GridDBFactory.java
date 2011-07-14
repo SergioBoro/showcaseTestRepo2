@@ -39,8 +39,12 @@ public class GridDBFactory extends AbstractGridFactory {
 	 */
 	private RowSet sql;
 
-	public GridDBFactory(final ElementRawData aSource, final GridRequestedSettings aSettings) {
-		super(aSource, aSettings);
+	public GridDBFactory(final ElementRawData aRaw, final GridRequestedSettings aSettings) {
+		super(aRaw, aSettings);
+	}
+
+	public GridDBFactory(final ElementRawData aRaw) {
+		super(aRaw, GridRequestedSettings.createDefault());
 	}
 
 	@Override
@@ -56,7 +60,7 @@ public class GridDBFactory extends AbstractGridFactory {
 	@Override
 	protected void prepareData() {
 		try {
-			ResultSet rs = getSource().getSpCallHelper().getCs().getResultSet();
+			ResultSet rs = getSource().getSpCallHelper().getStatement().getResultSet();
 			sql = SQLUtils.cacheResultSet(rs);
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
@@ -64,51 +68,65 @@ public class GridDBFactory extends AbstractGridFactory {
 	}
 
 	@Override
-	protected void fillRecordsAndEvents() {
-		ColumnSet cs = getResult().getDataSet().getColumnSet();
-		RecordSet rs = getResult().getDataSet().getRecordSet();
+	protected void checkForDBError() {
+		super.checkForDBError();
 
 		try {
-			int counter = scrollToRequiredPage(rs);
-			int lastNumber = counter + rs.getPageSize();
-			while (sql.next() && (counter < lastNumber)) {
-				Record curRecord = new Record();
-				curRecord.setId(String.valueOf(counter++));
-				setupStdRecordProps(curRecord);
+			getSource().getSpCallHelper().checkErrorCode();
+		} catch (SQLException e) {
+			throw new ResultSetHandleException(e);
+		}
+	}
 
-				Iterator<Column> iterator = cs.getColumns().iterator();
-				String value = null;
-				while (iterator.hasNext()) {
-					Column col = iterator.next();
-					if (col.getValueType() == GridValueType.IMAGE) {
-						value =
-							String.format("%s/%s",
-									AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR),
-									sql.getString(col.getId()));
-					} else if (col.getValueType() == GridValueType.LINK) {
-						value = sql.getString(col.getId());
-						if (value != null) {
-							value = AppProps.replaceVariables(value);
-							value = makeSafeXMLAttrValues(value);
-						}
-					} else if (sql.getObject(col.getId()) == null) {
-						value = "";
-					} else if (col.getValueType().isDate()) {
-						value = getStringValueOfDate(col);
-					} else if (col.getValueType().isNumber()) {
-						value = getStringValueOfNumber(col);
-					} else {
-						value = sql.getString(col.getId());
-					}
-					curRecord.setValue(col.getId(), value);
-				}
-				rs.getRecords().add(curRecord);
-				readEvents(curRecord.getId(), sql.getString(PROPERTIES_SQL_TAG));
-			}
-
-			calcRecordsCount(rs);
+	@Override
+	protected void fillRecordsAndEvents() {
+		try {
+			scrollToRequiredPage();
+			readRecordsLoop();
+			calcRecordsCount();
 		} catch (Exception e) {
 			throw new ResultSetHandleException(e);
+		}
+	}
+
+	private void readRecordsLoop() throws SQLException {
+		ColumnSet cs = getResult().getDataSet().getColumnSet();
+		RecordSet rs = getResult().getDataSet().getRecordSet();
+		int counter = getRequestSettings().getFirstRecord();
+		int lastNumber = counter + rs.getPageSize();
+		while (sql.next() && (counter < lastNumber)) {
+			Record curRecord = new Record();
+			curRecord.setId(String.valueOf(counter++));
+			setupStdRecordProps(curRecord);
+
+			Iterator<Column> iterator = cs.getColumns().iterator();
+			String value = null;
+			while (iterator.hasNext()) {
+				Column col = iterator.next();
+				if (col.getValueType() == GridValueType.IMAGE) {
+					value =
+						String.format("%s/%s",
+								AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR),
+								sql.getString(col.getId()));
+				} else if (col.getValueType() == GridValueType.LINK) {
+					value = sql.getString(col.getId());
+					if (value != null) {
+						value = AppProps.replaceVariables(value);
+						value = makeSafeXMLAttrValues(value);
+					}
+				} else if (sql.getObject(col.getId()) == null) {
+					value = "";
+				} else if (col.getValueType().isDate()) {
+					value = getStringValueOfDate(col);
+				} else if (col.getValueType().isNumber()) {
+					value = getStringValueOfNumber(col);
+				} else {
+					value = sql.getString(col.getId());
+				}
+				curRecord.setValue(col.getId(), value);
+			}
+			rs.getRecords().add(curRecord);
+			readEvents(curRecord.getId(), sql.getString(PROPERTIES_SQL_TAG));
 		}
 	}
 
@@ -147,7 +165,8 @@ public class GridDBFactory extends AbstractGridFactory {
 
 	private void readEvents(final String curRecordId, final String data) {
 		EventFactory<GridEvent> factory = new EventFactory<GridEvent>(GridEvent.class);
-		factory.initForGetSubSetOfEvents(EVENT_COLUMN_TAG, CELL_PREFIX, GRID_PROPERTIES_XSD);
+		factory.initForGetSubSetOfEvents(EVENT_COLUMN_TAG, CELL_PREFIX, getElementInfo().getType()
+				.getPropsSchemaName());
 		getResult().getEventManager().getEvents()
 				.addAll(factory.getSubSetOfEvents(curRecordId, data));
 	}
@@ -204,24 +223,32 @@ public class GridDBFactory extends AbstractGridFactory {
 	}
 
 	private boolean useLocalFormatting() {
-		return (getRequestSettings() == null) || getRequestSettings().getApplyLocalFormatting();
+		return getRequestSettings().getApplyLocalFormatting();
 	}
 
-	private void calcRecordsCount(final RecordSet rs) throws SQLException {
-		sql.last();
-		float recCount = sql.getRow();
-		rs.setPagesTotal((int) Math.ceil(recCount / rs.getPageSize()));
+	private void calcRecordsCount() throws SQLException {
+		if (getTotalCount() == null) {
+			sql.last();
+			setTotalCount(sql.getRow());
+		}
+
+		RecordSet rs = getResult().getDataSet().getRecordSet();
+		rs.setPagesTotal((int) Math.ceil((float) getTotalCount() / rs.getPageSize()));
 	}
 
-	private int scrollToRequiredPage(final RecordSet rs) throws SQLException {
+	private void scrollToRequiredPage() throws SQLException {
+		if (!getElementInfo().loadByOneProc()) {
+			return;
+		}
+
+		int recNum = 1;
+		RecordSet rs = getResult().getDataSet().getRecordSet();
 		sql.setFetchSize(rs.getPageSize());
-		int recNum = 0;
-		while (recNum++ < (rs.getPageNumber() - 1) * rs.getPageSize()) {
+		while (recNum++ < getRequestSettings().getFirstRecord()) {
 			if (!sql.next()) {
 				break;
 			}
 		}
-		return --recNum;
 	}
 
 	@Override
@@ -244,9 +271,7 @@ public class GridDBFactory extends AbstractGridFactory {
 				curColumn.setIndex(i - 1);
 				determineValueType(curColumn, md.getColumnType(i));
 				setupStdColumnProps(curColumn);
-				if (getRequestSettings() != null) {
-					curColumn.setSorting(getRequestSettings().getSortingForColumn(curColumn));
-				}
+				curColumn.setSorting(getRequestSettings().getSortingForColumn(curColumn));
 			}
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);

@@ -32,8 +32,6 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 	protected static final String LAT_TAG = "Lat";
 	protected static final String LON_TAG = "Lon";
 
-	protected static final String MAP_PROPERTIES_XSD = "mapProperties.xsd";
-
 	/**
 	 * Результат работы фабрики - карта.
 	 */

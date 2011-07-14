@@ -34,10 +34,14 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 	/**
 	 * Исходные сырые данные для построения элемента.
 	 */
-	private final ElementRawData source;
+	private ElementRawData source;
 
 	public ElementRawData getSource() {
 		return source;
+	}
+
+	public void setSource(final ElementRawData aSource) {
+		source = aSource;
 	}
 
 	/**
@@ -57,8 +61,45 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 		initResult();
 		prepareData();
 		prepareSettings();
+		checkForDBError();
 		releaseResources();
 		setupDynamicSettings();
+		fillResultByData();
+		getResult().actualizeActions(getCallContext());
+		correctSettingsAndData();
+		return getResult();
+	}
+
+	/**
+	 * Метод для проверки на возврат процедурой кода ошибки. В случае ошибки
+	 * процесс построения элемента прерывается.
+	 */
+	protected void checkForDBError() {
+
+	}
+
+	/**
+	 * Первый шаг в процессе построения элемента - загрузка настроек.
+	 * 
+	 * @return - грид.
+	 */
+	public DataPanelElement buildStepOne() {
+		initResult();
+		prepareSettings();
+		setupDynamicSettings();
+		return getResult();
+	}
+
+	/**
+	 * Второй шаг в процессе построения элемента - загрузка данных, их обработка
+	 * и постобработка настроек и данных.
+	 * 
+	 * @return - грид.
+	 */
+	public DataPanelElement buildStepTwo() throws Exception {
+		prepareData();
+		checkForDBError();
+		releaseResources();
 		fillResultByData();
 		getResult().actualizeActions(getCallContext());
 		correctSettingsAndData();
@@ -130,4 +171,5 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 		out = AppProps.replaceVariables(out);
 		return out;
 	}
+
 }

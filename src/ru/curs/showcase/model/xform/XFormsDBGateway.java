@@ -17,23 +17,15 @@ import ru.curs.showcase.util.*;
  * 
  */
 public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFormsGateway {
-	static final String DOWNLOAD_ERROR =
-		"SQL запрос на скачивание файла вернул ошибку с кодом %d - '%s'";
-	protected static final String SETTINGS_XSD = "xformssettings.xsd";
 	public static final String OUTPUT_COLUMNNAME = "xformssettings";
 	static final String OUTPUTDATA_PARAM = "outputdata";
 	static final String INPUTDATA_PARAM = "inputdata";
 	static final String XFORMSDATA_PARAM = "xformsdata";
-	static final String UPLOAD_ERROR =
-		"Запрос для загрузки файла на SQL сервер вернул ошибку с кодом %d - %s";
 
 	@Override
 	public HTMLBasedElementRawData getInitialData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
-		setElementInfo(elementInfo);
-		setContext(context);
-
-		return stdGetData();
+		return stdGetData(context, elementInfo);
 	}
 
 	@Override
@@ -76,31 +68,31 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	@Override
 	public CommandResult saveData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo, final String data) {
-		check(elementInfo);
-		if (!elementInfo.enabledSimpleSave()) {
+		init(context, elementInfo);
+		DataPanelElementProc proc = elementInfo.getSaveProc();
+		if (proc == null) {
 			throw new IncorrectElementException(elementInfo.toString());
 		}
-		setElementInfo(elementInfo);
-		setContext(context);
 
 		try {
-			setDb(ConnectionFactory.getConnection());
+			setConn(ConnectionFactory.getConnection());
 			CommandResult result;
 			try {
-				setProcName(elementInfo.getSaveProc().getName());
+				setProcName(proc.getName());
 				String sql = String.format(getSaveSqlTemplate(), getProcName());
-				setCs(getDb().prepareCall(sql));
-				getCs().registerOutParameter(1, java.sql.Types.INTEGER);
+				setStatement(getConn().prepareCall(sql));
+				getStatement().registerOutParameter(1, java.sql.Types.INTEGER);
 				setupGeneralElementParameters();
-				getCs().setString(XFORMSDATA_PARAM, data);
-				getCs().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
-				getCs().execute();
-				int errorCode = getCs().getInt(1);
+				getStatement().setString(XFORMSDATA_PARAM, data);
+				getStatement().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
+				getStatement().execute();
+				int errorCode = getStatement().getInt(1);
 				if (errorCode == 0) {
 					result = CommandResult.newSuccessResult();
 				} else {
 					result =
-						CommandResult.newErrorResult(errorCode, getCs().getString(ERROR_MES_COL));
+						CommandResult.newErrorResult(errorCode,
+								getStatement().getString(ERROR_MES_COL));
 				}
 			} finally {
 				releaseResources();
@@ -131,7 +123,6 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 					String out = null;
 					if (sqlxml != null) {
 						out = sqlxml.getString();
-
 					}
 					result = RequestResult.newSuccessResult(out);
 				} else {
@@ -142,7 +133,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 			}
 			return result;
 		} catch (SQLException e) {
-			if (ValidateInDBException.isSolutionDBException(e)) {
+			if (ValidateInDBException.isExplicitRaised(e)) {
 				throw new ValidateInDBException(e);
 			} else {
 				throw new DBQueryException(e, aProcName);
@@ -156,47 +147,37 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	}
 
 	@Override
-	protected String getSettingsSchema() {
-		return SETTINGS_XSD;
-	}
-
-	@Override
 	public DataFile<ByteArrayOutputStream> downloadFile(final CompositeContext context,
 			final DataPanelElementInfo elementInfo, final String linkId, final String data) {
-		check(elementInfo);
+		init(context, elementInfo);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
 		if (proc == null) {
 			throw new IncorrectElementException(elementInfo.toString());
 		}
-		setElementInfo(elementInfo);
-		setContext(context);
 
 		try {
-			setDb(ConnectionFactory.getConnection());
+			setConn(ConnectionFactory.getConnection());
 			DataFile<ByteArrayOutputStream> result;
 			try {
 				setProcName(proc.getName());
 				String sql = String.format(getFileSqlTemplate(), getProcName());
-				setCs(getDb().prepareCall(sql));
-				getCs().registerOutParameter(1, java.sql.Types.INTEGER);
+				setStatement(getConn().prepareCall(sql));
+				getStatement().registerOutParameter(1, java.sql.Types.INTEGER);
 				setupGeneralElementParameters();
-				getCs().setString(XFORMSDATA_PARAM, data);
-				getCs().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
-				getCs().registerOutParameter(FILENAME_TAG, java.sql.Types.VARCHAR);
-				getCs().registerOutParameter(FILE_TAG, java.sql.Types.BLOB);
-				getCs().execute();
-				int errorCode = getCs().getInt(1);
-				if (errorCode == 0) {
-					String fileName = getCs().getString(FILENAME_TAG);
-					Blob blob = getCs().getBlob(FILE_TAG);
-					InputStream blobIs = blob.getBinaryStream();
-					StreamConvertor dup = new StreamConvertor(blobIs);
-					ByteArrayOutputStream os = dup.getOutputStream();
-					result = new DataFile<ByteArrayOutputStream>(os, fileName);
-				} else {
-					throw new DBQueryException(proc.getName(), String.format(DOWNLOAD_ERROR,
-							errorCode, getCs().getString(ERROR_MES_COL)));
-				}
+				getStatement().setString(XFORMSDATA_PARAM, data);
+				getStatement().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
+				getStatement().registerOutParameter(FILENAME_TAG, java.sql.Types.VARCHAR);
+				getStatement().registerOutParameter(FILE_TAG, java.sql.Types.BLOB);
+				getStatement().execute();
+
+				checkErrorCode();
+				String fileName = getStatement().getString(FILENAME_TAG);
+				Blob blob = getStatement().getBlob(FILE_TAG);
+				InputStream blobIs = blob.getBinaryStream();
+				StreamConvertor dup = new StreamConvertor(blobIs);
+				ByteArrayOutputStream os = dup.getOutputStream();
+				result = new DataFile<ByteArrayOutputStream>(os, fileName);
+
 			} finally {
 				releaseResources();
 			}
@@ -212,32 +193,26 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	@Override
 	public void uploadFile(final CompositeContext context, final DataPanelElementInfo elementInfo,
 			final String linkId, final String data, final DataFile<InputStream> file) {
-		check(elementInfo);
+		init(context, elementInfo);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
 		if (proc == null) {
 			throw new IncorrectElementException(elementInfo.toString());
 		}
-		setElementInfo(elementInfo);
-		setContext(context);
 
 		try {
-			setDb(ConnectionFactory.getConnection());
+			setConn(ConnectionFactory.getConnection());
 			try {
 				setProcName(proc.getName());
 				String sql = String.format(getFileSqlTemplate(), getProcName());
-				setCs(getDb().prepareCall(sql));
-				getCs().registerOutParameter(1, java.sql.Types.INTEGER);
+				setStatement(getConn().prepareCall(sql));
+				getStatement().registerOutParameter(1, java.sql.Types.INTEGER);
 				setupGeneralElementParameters();
-				getCs().setString(XFORMSDATA_PARAM, data);
-				getCs().setString(FILENAME_TAG, file.getName());
-				getCs().setBinaryStream(FILE_TAG, file.getData());
-				getCs().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
-				getCs().execute();
-				int errorCode = getCs().getInt(1);
-				if (errorCode != 0) {
-					throw new DBQueryException(proc.getName(), String.format(UPLOAD_ERROR,
-							errorCode, getCs().getString(ERROR_MES_COL)));
-				}
+				getStatement().setString(XFORMSDATA_PARAM, data);
+				getStatement().setString(FILENAME_TAG, file.getName());
+				getStatement().setBinaryStream(FILE_TAG, file.getData());
+				getStatement().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
+				getStatement().execute();
+				checkErrorCode();
 			} finally {
 				releaseResources();
 			}

@@ -75,6 +75,12 @@ public class ValidateInDBException extends BaseException {
 		loadMessage();
 	}
 
+	public ValidateInDBException(final int errorCode, final String errorMes) {
+		super(ExceptionType.USER);
+		userMessage =
+			new UserMessage(String.format("%s (%d)", errorMes, errorCode), MessageType.ERROR);
+	}
+
 	private void loadMessage() {
 		InputStream stream;
 		try {
@@ -155,7 +161,7 @@ public class ValidateInDBException extends BaseException {
 	 *            - исключение.
 	 * @return - результат проверки.
 	 */
-	public static boolean isSolutionDBException(final SQLException exc) {
+	public static boolean isExplicitRaised(final SQLException exc) {
 		return exc.getMessage().contains(SOL_MES_PREFIX)
 				&& exc.getMessage().contains(SOL_MES_SUFFIX);
 	}

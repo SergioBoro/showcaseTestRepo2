@@ -17,6 +17,16 @@ import ru.curs.showcase.app.api.*;
  */
 public class GridRequestedSettings extends TransferableElement implements SerializableElement {
 
+	/**
+	 * Размер страницы с данными грида по умолчанию.
+	 */
+	public static final int DEF_PAGE_SIZE_VAL = 20;
+
+	/**
+	 * Номер страницы в гриде по умолчанию (нумерация с 1).
+	 */
+	private static final int DEF_PAGE_NUMBER = 1;
+
 	@Override
 	public String toString() {
 		return "GridRequestedSettings.sortedColumns=" + sortedColumns
@@ -38,13 +48,13 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 	/**
 	 * Номер текущей страницы с данными. По-умолчанию - первая страница.
 	 */
-	private Integer pageNumber = 0;
+	private Integer pageNumber = DEF_PAGE_NUMBER;
 
 	/**
 	 * Установленный размер страницы. Если null - размер считывается из файла
 	 * настроек.
 	 */
-	private Integer pageSize;
+	private Integer pageSize = DEF_PAGE_SIZE_VAL;
 
 	/**
 	 * Признак того, что нужно применять форматирование для дат и чисел при
@@ -70,12 +80,18 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 	private List<String> selectedRecordIds = new ArrayList<String>();
 
 	/**
+	 * Признак того, что грид обновляется после взаимодействия с ним
+	 * пользователя.
+	 */
+	private Boolean isFirstLoad = false;
+
+	/**
 	 * Сбрасывает настройки таким образом, чтобы сервер вернул все записи на
 	 * первой странице.
 	 */
 	public void resetForReturnAllRecords() {
-		setPageNumber(0);
-		setPageSize(Integer.MAX_VALUE);
+		setPageNumber(1);
+		setPageSize(Integer.MAX_VALUE - 1);
 	}
 
 	/**
@@ -167,5 +183,34 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 
 	public void setSelectedRecordIds(final List<String> aSelectedRecordIds) {
 		selectedRecordIds = aSelectedRecordIds;
+	}
+
+	public int getFirstRecord() {
+		return pageSize * (pageNumber - 1) + 1;
+	}
+
+	/**
+	 * Проверка на то, что сортировка присутствует при данных настройках.
+	 */
+	public boolean sortingEnabled() {
+		return (sortedColumns != null) && (sortedColumns.size() > 0);
+	}
+
+	/**
+	 * Создает дефолтные настройки для грида - нужны для первоначальной
+	 * отрисовки грида и для тестов.
+	 */
+	public static GridRequestedSettings createDefault() {
+		GridRequestedSettings result = new GridRequestedSettings();
+		result.isFirstLoad = true;
+		return result;
+	}
+
+	public Boolean isFirstLoad() {
+		return isFirstLoad;
+	}
+
+	public void setIsFirstLoad(final Boolean value) {
+		isFirstLoad = value;
 	}
 }

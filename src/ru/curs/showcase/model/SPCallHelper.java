@@ -1,14 +1,12 @@
 package ru.curs.showcase.model;
 
-import java.io.InputStream;
 import java.sql.*;
 
 import org.slf4j.*;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.exception.*;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.ConnectionFactory;
 
 /**
  * Абстрактный класс, содержащий базовые константы и функции для вызова хранимых
@@ -26,22 +24,17 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	/**
 	 * Соединение с БД.
 	 */
-	private Connection db = null;
+	private Connection conn = null;
 
 	/**
 	 * Интерфейс вызова хранимых процедур JDBC.
 	 */
-	private CallableStatement cs = null;
+	private CallableStatement statement = null;
 
 	/**
 	 * Контекст вызова хранимой процедуры.
 	 */
 	private CompositeContext context = null;
-
-	/**
-	 * Информация об элементе, данные которого загружает процедура.
-	 */
-	private DataPanelElementInfo elementInfo = null;
 
 	/**
 	 * Имя хранимой процедуры, которую нужно вызвать.
@@ -60,7 +53,6 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		super();
 	}
 
-	public static final String NO_RESULTSET_ERROR = "хранимая процедура не возвратила данные";
 	protected static final String FILTER_COLUMNNAME = "filterinfo";
 	protected static final String ELEMENTID_COLUMNNAME = "element_id";
 	protected static final String SESSION_CONTEXT_PARAM = "session_context";
@@ -70,70 +62,42 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 * 
 	 * @throws SQLException
 	 */
-	protected void setupGeneralElementParameters() throws SQLException {
-		setupGeneralParameters();
-
-		cs.setString(ELEMENTID_COLUMNNAME, elementInfo.getId());
-		LOGGER.info("elementInfo=" + elementInfo.toString());
-	}
-
-	/**
-	 * Функция для настройки общих параметров запроса: контекста и фильтров.
-	 * 
-	 * @throws SQLException
-	 */
 	protected void setupGeneralParameters() throws SQLException {
-		cs.setString(MAIN_CONTEXT_ATTR_NAME, "");
-		cs.setString(ADD_CONTEXT_ATTR_NAME, "");
-		cs.setString(SESSION_CONTEXT_PARAM, "");
-		cs.setString(FILTER_COLUMNNAME, "");
+		statement.setString(MAIN_CONTEXT_ATTR_NAME, "");
+		statement.setString(ADD_CONTEXT_ATTR_NAME, "");
+		statement.setString(SESSION_CONTEXT_PARAM, "");
+		statement.setString(FILTER_COLUMNNAME, "");
 		if (context != null) {
 			if (context.getMain() != null) {
-				cs.setString(MAIN_CONTEXT_ATTR_NAME, context.getMain());
+				statement.setString(MAIN_CONTEXT_ATTR_NAME, context.getMain());
 			}
 			if (context.getAdditional() != null) {
-				cs.setString(ADD_CONTEXT_ATTR_NAME, context.getAdditional());
+				statement.setString(ADD_CONTEXT_ATTR_NAME, context.getAdditional());
 			}
 			if (context.getSession() != null) {
-				cs.setString(SESSION_CONTEXT_PARAM, context.getSession());
+				statement.setString(SESSION_CONTEXT_PARAM, context.getSession());
 			}
 			if (context.getFilter() != null) {
-				cs.setString(FILTER_COLUMNNAME, context.getFilter());
+				statement.setString(FILTER_COLUMNNAME, context.getFilter());
 			}
 		}
 		LOGGER.info("context=" + context.toString());
 	}
 
-	/**
-	 * Стандартная функция подготовки CallableStatement для выборки данных для
-	 * элемента информационной панели.
-	 * 
-	 * @throws SQLException
-	 * 
-	 */
-	protected void prepareStdStatement() throws SQLException {
-		db = ConnectionFactory.getConnection();
-		procName = elementInfo.getProcName();
-		String sql = String.format(getSqlTemplate(), procName);
-		cs = db.prepareCall(sql);
-		setupGeneralElementParameters();
-		cs.registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
+	public Connection getConn() {
+		return conn;
 	}
 
-	public Connection getDb() {
-		return db;
+	public void setConn(final Connection aConn) {
+		conn = aConn;
 	}
 
-	public void setDb(final Connection aDb) {
-		db = aDb;
+	public CallableStatement getStatement() {
+		return statement;
 	}
 
-	public CallableStatement getCs() {
-		return cs;
-	}
-
-	public void setCs(final CallableStatement aCs) {
-		cs = aCs;
+	public void setStatement(final CallableStatement aCs) {
+		statement = aCs;
 	}
 
 	public CompositeContext getContext() {
@@ -144,21 +108,6 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		context = aContext;
 	}
 
-	public DataPanelElementInfo getElementInfo() {
-		return elementInfo;
-	}
-
-	public void setElementInfo(final DataPanelElementInfo aElementInfo) {
-		elementInfo = aElementInfo;
-	}
-
-	/**
-	 * Возвращает имя OUT параметра с настройками элемента.
-	 * 
-	 * @return - имя параметра.
-	 */
-	public abstract String getOutSettingsParam();
-
 	/**
 	 * Возвращает шаблон для запуска SQL процедуры.
 	 * 
@@ -167,38 +116,13 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	protected abstract String getSqlTemplate();
 
 	/**
-	 * Возвращает имя схемы для проверки свойств элемента.
-	 * 
-	 * @return - имя схемы.
-	 */
-	protected abstract String getSettingsSchema();
-
-	/**
-	 * Возвращает поток с настройками элемента, который можно использовать с SAX
-	 * парсере.
-	 * 
-	 * @return - поток.
-	 * @throws SQLException
-	 */
-	protected InputStream getSettingsStream() throws SQLException {
-		InputStream validatedSettings = null;
-		SQLXML xml;
-		xml = getCs().getSQLXML(getOutSettingsParam());
-		if (xml != null) {
-			InputStream settings = xml.getBinaryStream();
-			validatedSettings = XMLUtils.xsdValidateAppDataSafe(settings, getSettingsSchema());
-		}
-		return validatedSettings;
-	}
-
-	/**
 	 * Функция освобождения ресурсов, необходимых для создания объекта.
 	 * 
 	 */
 	public void releaseResources() {
-		if (getDb() != null) {
+		if (getConn() != null) {
 			try {
-				getDb().close();
+				getConn().close();
 			} catch (SQLException e) {
 				throw new DBConnectException(e);
 			}
@@ -213,19 +137,14 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 *            - исключение.
 	 */
 	protected void dbExceptionHandler(final SQLException e) {
-		if (ValidateInDBException.isSolutionDBException(e)) {
+		if (ValidateInDBException.isExplicitRaised(e)) {
 			throw new ValidateInDBException(e);
 		} else {
 			if (!checkProcExists()) {
 				throw new SPNotExistsException(getProcName());
 			}
-			if (getElementInfo() != null) {
-				throw new DBQueryException(e, getElementInfo(), getContext());
-			} else {
-				throw new DBQueryException(e, getProcName());
-			}
+			throw new DBQueryException(e, getProcName());
 		}
-
 	}
 
 	/**
@@ -238,8 +157,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 					procName)
 					+ " SELECT 'exists' AS [result] ELSE SELECT 'absent' AS [result]";
 		try {
-			cs = db.prepareCall(sql);
-			ResultSet rs = cs.executeQuery();
+			statement = conn.prepareCall(sql);
+			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
 				return "exists".equals(rs.getString("result"));
 			}
@@ -247,5 +166,35 @@ public abstract class SPCallHelper extends DataCheckGateway {
 			return true;
 		}
 		return true;
+	}
+
+	/**
+	 * Подготавливает SQL запрос.
+	 */
+	protected void prepareSQL() throws SQLException {
+		if (conn == null) {
+			conn = ConnectionFactory.getConnection();
+		}
+		String sql = String.format(getSqlTemplate(), getProcName());
+		statement = conn.prepareCall(sql);
+	}
+
+	/**
+	 * Новая функция подготовки CallableStatement - с возвратом кода ошибки.
+	 */
+	protected void prepareStdStatementWithErrorMes() throws SQLException {
+		prepareSQL();
+		statement.registerOutParameter(1, java.sql.Types.INTEGER);
+		statement.registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
+	}
+
+	/**
+	 * Функция проверки кода ошибки, который вернула процедура.
+	 */
+	public void checkErrorCode() throws SQLException {
+		int errorCode = getStatement().getInt(1);
+		if (errorCode != 0) {
+			throw new ValidateInDBException(errorCode, getStatement().getString(ERROR_MES_COL));
+		}
 	}
 }

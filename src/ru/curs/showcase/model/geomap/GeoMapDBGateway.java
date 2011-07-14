@@ -1,7 +1,5 @@
 package ru.curs.showcase.model.geomap;
 
-import java.sql.SQLException;
-
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.*;
@@ -13,23 +11,12 @@ import ru.curs.showcase.model.*;
  * 
  */
 public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements GeoMapGateway {
-	protected static final String MAPSETTINGS_XSD = "mapsettings.xsd";
 	public static final String OUTPUT_COLUMNNAME = "geomapsettings";
 
 	@Override
 	public ElementRawData getFactorySource(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
-		check(elementInfo);
-		setElementInfo(elementInfo);
-		setContext(context);
-		try {
-			prepareStdStatement();
-			stdGetResults();
-			return new ElementRawData(this, elementInfo, context);
-		} catch (SQLException e) {
-			dbExceptionHandler(e);
-		}
-		return null;
+		return stdGetData(context, elementInfo);
 	}
 
 	@Override
@@ -45,10 +32,5 @@ public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements Geo
 	@Override
 	protected DataPanelElementType getGatewayType() {
 		return DataPanelElementType.GEOMAP;
-	}
-
-	@Override
-	protected String getSettingsSchema() {
-		return MAPSETTINGS_XSD;
 	}
 }

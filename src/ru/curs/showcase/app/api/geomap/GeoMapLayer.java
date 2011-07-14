@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.*;
  * @author den
  * 
  */
-public class GeoMapLayer extends VisualElement implements SerializableElement {
+public class GeoMapLayer extends NamedElement implements SerializableElement {
 	/**
 	 * Имя, используемое для показателей по умолчанию.
 	 */

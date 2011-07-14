@@ -63,7 +63,7 @@ public class MainPageFrameSelector {
 		if (isFile(sourceName)) {
 			return new FileMainPageFrameGateway();
 		} else {
-			return new DBMainPageFrameGateway();
+			return new MainPageFrameDBGateway();
 		}
 	}
 }

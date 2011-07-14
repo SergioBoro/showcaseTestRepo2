@@ -20,18 +20,6 @@ import ru.curs.showcase.model.*;
 public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	public static final String GRID_DEFAULT_PROFILE = "default.properties";
 
-	/**
-	 * Размер страницы с данными грида по умолчанию.
-	 */
-	public static final int DEF_PAGE_SIZE_VAL = 20;
-
-	/**
-	 * Номер страницы в гриде по умолчанию (нумерация с 1).
-	 */
-	private static final int DEF_PAGE_NUMBER = 1;
-
-	protected static final String GRID_PROPERTIES_XSD = "gridProperties.xsd";
-
 	protected static final String DEF_COL_HOR_ALIGN = "def.column.hor.align";
 	protected static final String DEF_COL_VALUE_DISPLAY_MODE = "def.column.value.display.mode";
 	protected static final String DEF_COL_WIDTH = "def.column.width";
@@ -93,6 +81,12 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	 */
 	private String profile = GRID_DEFAULT_PROFILE;
 
+	/**
+	 * Число записей в таблице, удовлетворяющих условию выборки. Может быть
+	 * получено из БД или вычислено после продвижения курсора в конец датасета.
+	 */
+	private Integer totalCount;
+
 	@Override
 	public Grid getResult() {
 		return result;
@@ -107,7 +101,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		requestSettings = aRequestSettings;
 	}
 
-	protected final GridRequestedSettings getRequestSettings() {
+	public final GridRequestedSettings getRequestSettings() {
 		return requestSettings;
 	}
 
@@ -136,6 +130,16 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		return (Grid) super.build();
 	}
 
+	@Override
+	public Grid buildStepOne() {
+		return (Grid) super.buildStepOne();
+	}
+
+	@Override
+	public Grid buildStepTwo() throws Exception {
+		return (Grid) super.buildStepTwo();
+	}
+
 	public AbstractGridFactory(final ElementRawData aSource, final GridRequestedSettings aSettings) {
 		super(aSource);
 		requestSettings = aSettings;
@@ -153,22 +157,13 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	 */
 	protected abstract void fillRecordsAndEvents();
 
-	protected boolean isRefresh() {
-		return (requestSettings != null);
-	}
-
 	/**
 	 * Настройка страничного отображения в гриде.
 	 * 
 	 */
 	protected void initPages() {
-		if (isRefresh()) {
-			getResult().getDataSet().getRecordSet().setPageSize(requestSettings.getPageSize());
-			getResult().getDataSet().getRecordSet().setPageNumber(requestSettings.getPageNumber());
-		} else {
-			getResult().getDataSet().getRecordSet().setPageSize(DEF_PAGE_SIZE_VAL);
-			getResult().getDataSet().getRecordSet().setPageNumber(DEF_PAGE_NUMBER);
-		}
+		getResult().getDataSet().getRecordSet().setPageSize(requestSettings.getPageSize());
+		getResult().getDataSet().getRecordSet().setPageNumber(requestSettings.getPageNumber());
 	}
 
 	@Override
@@ -293,7 +288,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 					col = createColumn(colId);
 					getResult().getDataSet().getColumnSet().getColumns().add(col);
 				}
-				if (!isRefresh()) {
+				if (requestSettings.isFirstLoad()) {
 					if (attrs.getIndex(WIDTH_TAG) > -1) {
 						String width = attrs.getValue(WIDTH_TAG);
 						col.setWidth(width);
@@ -311,13 +306,14 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 			}
 			if (qname.equalsIgnoreCase(PROPS_TAG)) {
 				String value;
+				Integer intValue;
 				if (attrs.getIndex(AUTO_SELECT_RELATIVE) > -1) {
 					value = attrs.getValue(AUTO_SELECT_RELATIVE);
 					autoSelectRelativeRecord = Boolean.valueOf(value);
 				}
 				if (attrs.getIndex(AUTO_SELECT_REC_TAG) > -1) {
 					value = attrs.getValue(AUTO_SELECT_REC_TAG);
-					autoSelectRecordId = Integer.parseInt(value) - 1; // "естественная нумерация с 1"
+					autoSelectRecordId = Integer.parseInt(value);
 				}
 				if (attrs.getIndex(AUTO_SELECT_COL_TAG) > -1) {
 					autoSelectColumnId = attrs.getValue(AUTO_SELECT_COL_TAG);
@@ -329,10 +325,15 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 					getResult().getEventManager().setFireGeneralAndConcreteEvents(
 							Boolean.valueOf(attrs.getValue(FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG)));
 				}
-				if ((!isRefresh()) && (attrs.getIndex(PAGESIZE_TAG) > -1)) {
+				if ((requestSettings.isFirstLoad()) && (attrs.getIndex(PAGESIZE_TAG) > -1)) {
 					value = attrs.getValue(PAGESIZE_TAG);
-					Integer intValue = Integer.valueOf(value);
+					intValue = Integer.valueOf(value);
 					getResult().getDataSet().getRecordSet().setPageSize(intValue);
+				}
+				if (!getElementInfo().loadByOneProc()) {
+					value = attrs.getValue(TOTAL_COUNT_TAG);
+					intValue = Integer.valueOf(value);
+					totalCount = intValue;
 				}
 				return;
 			}
@@ -354,6 +355,12 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		gridProps = new GridProps(profile);
 		setupDefaultUISettings();
 		correctAutoSelectRecordId();
+		syncBackPageSettings();
+	}
+
+	private void syncBackPageSettings() {
+		requestSettings.setPageSize(getResult().getDataSet().getRecordSet().getPageSize());
+		requestSettings.setPageNumber(getResult().getDataSet().getRecordSet().getPageNumber());
 	}
 
 	private void correctAutoSelectRecordId() {
@@ -366,7 +373,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 			}
 			autoSelectRecordId = autoSelectRecordId + rs.getPageSize() * (rs.getPageNumber() - 1);
 		} else {
-			if (!isRefresh() && (autoSelectRecordId != null)) {
+			if (requestSettings.isFirstLoad() && (autoSelectRecordId != null)) {
 				float autoSelectRecordNumber = autoSelectRecordId;
 				if (autoSelectRecordNumber >= rs.getPageSize()) {
 					rs.setPageNumber((int) Math.ceil((autoSelectRecordNumber + 1)
@@ -441,6 +448,14 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 
 	public void setProfile(final String aProfile) {
 		profile = aProfile;
+	}
+
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(final Integer aTotalCount) {
+		totalCount = aTotalCount;
 	}
 
 }

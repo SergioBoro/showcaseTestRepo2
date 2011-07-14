@@ -33,7 +33,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		final int colCount = 26;
 		final int pagesCount = 6;
 		final int pageSize = 15;
-		final Integer autoSelectRecord = 15;
+		final Integer autoSelectRecord = 16;
 		final String precision = "2";
 
 		CompositeContext context = getTestContext1();
@@ -73,12 +73,13 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals(pagesCount, grid.getDataSet().getRecordSet().getPagesTotal());
 
 		assertNotNull(grid.getDefaultAction());
-		Action firstCellAction =
+		List<GridEvent> events =
 			grid.getEventManager()
 					.getEventForCell(
 							autoSelectRecord.toString(),
 							grid.getDataSet().getColumnSet().getColumnsByIndex().iterator().next()
-									.getId(), InteractionType.SINGLE_CLICK).get(0).getAction();
+									.getId(), InteractionType.SINGLE_CLICK);
+		Action firstCellAction = events.get(0).getAction();
 		assertEquals(firstCellAction, grid.getActionForDependentElements());
 		assertEquals(DataPanelActionType.RELOAD_ELEMENTS, grid.getDefaultAction()
 				.getDataPanelActionType());
@@ -144,7 +145,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 
 		GridGateway gateway = new GridDBGateway();
 		ElementRawData raw = gateway.getFactorySource(context, element);
-		GridDBFactory factory = new GridDBFactory(raw, null);
+		GridDBFactory factory = new GridDBFactory(raw);
 		Grid grid = factory.build();
 		assertEquals(GRIDBAL_TEST_PROPERTIES, factory.getProfile());
 

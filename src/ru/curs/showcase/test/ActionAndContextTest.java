@@ -85,7 +85,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 				.getElementLinks().get(0));
 
 		assertTrue(action.containsServerActivity());
-		ServerActivity sa = action.getServerActivities().get(0);
+		Activity sa = action.getServerActivities().get(0);
 		assertNotNull(sa);
 		assertEquals(ServerActivityType.SP, sa.getType());
 		assertEquals("test", sa.getName());
@@ -369,7 +369,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		elLink.setRefreshContextOnly(true);
 		elLink.setSkipRefreshContextOnly(true);
 
-		ServerActivity sa = new ServerActivity("test", ServerActivityType.SP);
+		Activity sa = new Activity("test", ServerActivityType.SP);
 		sa.setContext(getComplexTestContext());
 		action.getServerActivities().add(sa);
 
@@ -392,7 +392,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		DataPanelElementLink elLink = new DataPanelElementLink(EL_06, elContext);
 		link.getElementLinks().add(elLink);
 
-		ServerActivity sa = new ServerActivity("test", ServerActivityType.SP);
+		Activity sa = new Activity("test", ServerActivityType.SP);
 		sa.setContext(getComplexTestContext());
 		action.getServerActivities().add(sa);
 
@@ -413,7 +413,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		DataPanelElementLink elLink = new DataPanelElementLink(EL_06, elContext);
 		link.getElementLinks().add(elLink);
 
-		ServerActivity sa = new ServerActivity("test", ServerActivityType.SP);
+		Activity sa = new Activity("test", ServerActivityType.SP);
 		sa.setContext(context);
 		action.getServerActivities().add(sa);
 
@@ -485,7 +485,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		dpLink.setTabId(TAB_2);
 		insideAction.setDataPanelLink(dpLink);
 		insideAction.determineState();
-		ServerActivity sa = new ServerActivity("test", ServerActivityType.SP);
+		Activity sa = new Activity("test", ServerActivityType.SP);
 		sa.setContext(CompositeContext.createCurrent());
 		insideAction.getServerActivities().add(sa);
 		ah.setCurrentAction(insideAction);
@@ -540,7 +540,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
 		assertTrue(action.containsServerActivity());
 		assertTrue(action.getServerActivities().size() == 1);
-		ServerActivity sa = action.getServerActivities().get(0);
+		Activity sa = action.getServerActivities().get(0);
 		assertEquals("exec_test", sa.getName());
 		assertEquals(ServerActivityType.SP, sa.getType());
 		assertNotNull(sa.getContext());
@@ -602,7 +602,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 
 		action = new Action();
 		action.setContext(CompositeContext.createCurrent());
-		ServerActivity sa = new ServerActivity("test_proc", ServerActivityType.SP);
+		Activity sa = new Activity("test_proc", ServerActivityType.SP);
 		sa.setContext(CompositeContext.createCurrent());
 		action.getServerActivities().add(sa);
 		action.determineState();

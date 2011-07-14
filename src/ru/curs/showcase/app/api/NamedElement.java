@@ -8,7 +8,7 @@ package ru.curs.showcase.app.api;
  * @author den
  * 
  */
-public abstract class VisualElement implements SerializableElement {
+public abstract class NamedElement implements SerializableElement {
 
 	@Override
 	public int hashCode() {
@@ -27,10 +27,10 @@ public abstract class VisualElement implements SerializableElement {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof VisualElement)) {
+		if (!(obj instanceof NamedElement)) {
 			return false;
 		}
-		VisualElement other = (VisualElement) obj;
+		NamedElement other = (NamedElement) obj;
 		if (id == null) {
 			if (other.id != null) {
 				return false;
@@ -48,11 +48,11 @@ public abstract class VisualElement implements SerializableElement {
 		return true;
 	}
 
-	public VisualElement() {
+	public NamedElement() {
 		super();
 	}
 
-	public VisualElement(final String aId, final String aName) {
+	public NamedElement(final String aId, final String aName) {
 		super();
 		id = aId;
 		name = aName;

@@ -40,8 +40,6 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 
 	protected static final String LABEL_Y_TEXT = "text";
 
-	protected static final String CHART_PROPERTIES_XSD = "chartProperties.xsd";
-
 	protected static final String X_TAG = "x";
 	/**
 	 * Название столбца, в котором содержатся подписи по X или названия серий.

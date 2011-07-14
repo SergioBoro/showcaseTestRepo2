@@ -42,7 +42,7 @@ public class ChartDBFactory extends AbstractChartFactory {
 	@Override
 	protected void prepareData() {
 		try {
-			ResultSet rs = getSource().getSpCallHelper().getCs().getResultSet();
+			ResultSet rs = getSource().getSpCallHelper().getStatement().getResultSet();
 			sql = SQLUtils.cacheResultSet(rs);
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
@@ -204,7 +204,8 @@ public class ChartDBFactory extends AbstractChartFactory {
 
 	private void readEvents(final ChartSeries series, final String value) {
 		EventFactory<ChartEvent> factory = new EventFactory<ChartEvent>(ChartEvent.class);
-		factory.initForGetSubSetOfEvents(X_TAG, VALUE_TAG, CHART_PROPERTIES_XSD);
+		factory.initForGetSubSetOfEvents(X_TAG, VALUE_TAG, getElementInfo().getType()
+				.getPropsSchemaName());
 		SAXTagHandler colorHandler = new SAXTagHandler() {
 			@Override
 			public Object handleStartTag(final String aNamespaceURI, final String aLname,

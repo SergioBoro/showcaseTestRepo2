@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.*;
  * @author den
  * 
  */
-public abstract class GeoMapObject extends VisualElement implements SerializableElement {
+public abstract class GeoMapObject extends NamedElement implements SerializableElement {
 	/**
 	 * serialVersionUID.
 	 */

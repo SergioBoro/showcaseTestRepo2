@@ -19,24 +19,26 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	static final String FIRST_RECORD_TAG = "firstrecord";
 	protected static final String SORT_COLUMNNAME = "sortcols";
 	public static final String OUTPUT_COLUMNNAME = "gridsettings";
-	protected static final String GRIDSETTINGS_XSD = "gridsettings.xsd";
+
+	public GridDBGateway() {
+		super();
+	}
+
+	public GridDBGateway(final Connection aConn) {
+		setConn(aConn);
+	}
 
 	@Override
-	public ElementRawData getFactorySource(final CompositeContext context,
-			final DataPanelElementInfo elementInfo, final GridRequestedSettings aSettings) {
-		check(elementInfo);
-		setElementInfo(elementInfo);
-		setContext(context);
+	public ElementRawData getDataAndSettings(final CompositeContext context,
+			final DataPanelElementInfo elementInfo, final GridRequestedSettings settings) {
+		init(context, elementInfo);
 		try {
-			if (aSettings != null) {
-				aSettings.normalize();
-			}
+			settings.normalize();
 
-			prepareStdStatement();
-			setupSorting(getCs(), aSettings);
-			getCs().setInt(FIRST_RECORD_TAG, 1);
-			getCs().setInt(PAGESIZE_TAG, 0); // TODO перейти на 2 вызова
+			prepareStdStatementWithErrorMes();
+			setupSorting(getStatement(), settings);
 			stdGetResults();
+
 			return new ElementRawData(this, elementInfo, context);
 		} catch (SQLException e) {
 			dbExceptionHandler(e);
@@ -46,10 +48,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 
 	private void setupSorting(final CallableStatement cs, final GridRequestedSettings settings)
 			throws SQLException {
-		if ((settings == null) || (settings.getSortedColumns() == null)
-				|| (settings.getSortedColumns().size() == 0)) {
-			cs.setString(SORT_COLUMNNAME, "");
-		} else {
+		if (settings.sortingEnabled()) {
 			String sortStatement = "ORDER BY ";
 			Iterator<Column> iterator = settings.getSortedColumns().iterator();
 			while (iterator.hasNext()) {
@@ -59,13 +58,15 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 			}
 			sortStatement = sortStatement.substring(0, sortStatement.length() - 1);
 			cs.setString(SORT_COLUMNNAME, sortStatement);
+		} else {
+			cs.setString(SORT_COLUMNNAME, "");
 		}
 	}
 
 	@Override
 	public ElementRawData getFactorySource(final CompositeContext aContext,
 			final DataPanelElementInfo aElement) {
-		return getFactorySource(aContext, aElement, null);
+		return getDataAndSettings(aContext, aElement, GridRequestedSettings.createDefault());
 	}
 
 	@Override
@@ -75,7 +76,11 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 
 	@Override
 	protected String getSqlTemplate() {
-		return "exec [dbo].[%s] ?, ?, ?, ?, ?, ?, ?, ?, ?";
+		return "{? = call [dbo].[%s](?, ?, ?, ?, ?, ?, ?, ?)}";
+	}
+
+	protected String getSqlDataTemplate() {
+		return "{? = call [dbo].[%s](?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 	}
 
 	@Override
@@ -84,7 +89,26 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	}
 
 	@Override
-	protected String getSettingsSchema() {
-		return GRIDSETTINGS_XSD;
+	public ElementRawData getData(final CompositeContext context,
+			final DataPanelElementInfo elementInfo, final GridRequestedSettings settings) {
+		init(context, elementInfo);
+		try {
+			settings.normalize();
+
+			String sql = String.format(getSqlDataTemplate(), getProcName());
+			setStatement(getConn().prepareCall(sql));
+			getStatement().registerOutParameter(1, java.sql.Types.INTEGER);
+			getStatement().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
+			setupGeneralElementParameters();
+			getStatement().setInt("firstrecord", settings.getFirstRecord());
+			getStatement().setInt("pagesize", settings.getPageSize());
+			setupSorting(getStatement(), settings);
+			stdGetResults();
+
+			return new ElementRawData(this, elementInfo, context);
+		} catch (SQLException e) {
+			dbExceptionHandler(e);
+		}
+		return null;
 	}
 }

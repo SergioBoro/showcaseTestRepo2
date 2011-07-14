@@ -109,8 +109,15 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("2", DataPanelElementType.GRID);
 		elInfo.setPosition(1);
 		elInfo.setProcName("grid_bal");
+		createTestTab(elInfo);
 		assertTrue(elInfo.isCorrect());
 		return elInfo;
+	}
+
+	private void createTestTab(final DataPanelElementInfo elInfo) {
+		DataPanel dp = new DataPanel("xxx");
+		DataPanelTab tab = new DataPanelTab(0, dp);
+		tab.add(elInfo);
 	}
 
 	/**
@@ -123,6 +130,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		elInfo.setPosition(2);
 		elInfo.setProcName("chart_bal");
 		elInfo.setHideOnLoad(true);
+		createTestTab(elInfo);
 
 		assertTrue(elInfo.isCorrect());
 		return elInfo;
@@ -150,6 +158,8 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		proc.setName("xforms_submission1");
 		proc.setType(DataPanelElementProcType.SUBMISSION);
 		elInfo.getProcs().put(proc.getId(), proc);
+
+		createTestTab(elInfo);
 
 		assertTrue(elInfo.isCorrect());
 		return elInfo;
@@ -221,6 +231,8 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		proc.setType(DataPanelElementProcType.DOWNLOAD);
 		proc.setSchemaName("test_good_small.xsd");
 		elInfo.getProcs().put(proc.getId(), proc);
+
+		createTestTab(elInfo);
 
 		assertTrue(elInfo.isCorrect());
 		return elInfo;

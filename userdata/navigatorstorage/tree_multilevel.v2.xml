@@ -72,6 +72,13 @@
 				</add_context>
 				</activity>
 				</server>
+				<client>
+				<activity id="cl01" name="show_moscow">
+				<add_context>				
+				01				
+				</add_context>
+				</activity>
+				</client>				
 			</action>
 		</level1>
 		<level1 id="C6CC2BA4-A6ED-4630-8E58-CBBFA9C8C0A4" name="Вывоз, включая экспорт - Всего">

@@ -32,5 +32,20 @@ public enum DataPanelElementType implements SerializableElement {
 	/**
 	 * XForms - форма для редактирования или фильтрации.
 	 */
-	XFORMS
+	XFORMS;
+
+	/**
+	 * Возвращает имя схемы для проверки общих настроек элемента.
+	 */
+	public String getSettingsSchemaName() {
+		return name().toLowerCase() + "Settings.xsd";
+	}
+
+	/**
+	 * Возвращает имя схемы для проверки настроек отдельных групп значения
+	 * элемента (строк или столбцов таблицы).
+	 */
+	public String getPropsSchemaName() {
+		return name().toLowerCase() + "Properties.xsd";
+	}
 }

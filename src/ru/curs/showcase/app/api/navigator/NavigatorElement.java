@@ -13,7 +13,7 @@ import ru.curs.showcase.app.api.event.Action;
  * @author den
  * 
  */
-public class NavigatorElement extends VisualElement {
+public class NavigatorElement extends NamedElement {
 	/**
 	 * serialVersionUID.
 	 */

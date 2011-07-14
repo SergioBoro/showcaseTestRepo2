@@ -13,7 +13,7 @@ import ru.curs.showcase.app.api.event.*;
  * @author den
  * 
  */
-public class DataPanelTab extends VisualElement {
+public class DataPanelTab extends NamedElement {
 	/**
 	 * serialVersionUID.
 	 */
@@ -100,5 +100,16 @@ public class DataPanelTab extends VisualElement {
 		res.setContext(CompositeContext.createCurrent());
 		res.determineState();
 		return res;
+	}
+
+	/**
+	 * Корректно добавляет элемент на вкладку.
+	 * 
+	 * @param aElInfo
+	 *            - информация об элементе.
+	 */
+	public void add(final DataPanelElementInfo aElInfo) {
+		getElements().add(aElInfo);
+		aElInfo.setTab(this);
 	}
 }

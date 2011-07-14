@@ -148,7 +148,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 			assertEquals(GeneralServerException.class, e.getClass());
 			assertEquals(DBQueryException.class.getName(),
 					((GeneralServerException) e).getOriginalExceptionClass());
-			assertTrue(e.getMessage().indexOf(SPCallHelper.NO_RESULTSET_ERROR) > -1);
+			assertTrue(e.getMessage().indexOf(CompBasedElementSPCallHelper.NO_RESULTSET_ERROR) > -1);
 			return;
 		}
 		fail();
@@ -208,7 +208,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 
 		GridGateway gateway = new GridDBGateway();
 		ElementRawData raw = gateway.getFactorySource(context, element);
-		GridDBFactory factory = new GridDBFactory(raw, null);
+		GridDBFactory factory = new GridDBFactory(raw);
 		factory.build();
 	}
 
@@ -247,11 +247,11 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testSolutionException() {
 		SQLException exc = new SQLException(ValidateInDBException.SOL_MES_PREFIX);
-		assertFalse(ValidateInDBException.isSolutionDBException(exc));
+		assertFalse(ValidateInDBException.isExplicitRaised(exc));
 		exc =
 			new SQLException(String.format("%stest1%s", ValidateInDBException.SOL_MES_PREFIX,
 					ValidateInDBException.SOL_MES_SUFFIX));
-		assertTrue(ValidateInDBException.isSolutionDBException(exc));
+		assertTrue(ValidateInDBException.isExplicitRaised(exc));
 		ValidateInDBException solEx = new ValidateInDBException(exc);
 		assertNotNull(solEx.getUserMessage());
 		assertEquals("test1", solEx.getUserMessage().getId());
@@ -316,7 +316,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		assertNotNull(gse.getContext());
 		assertEquals("Ввоз, включая импорт - Всего", gse.getContext().getCompositeContext()
 				.getMain());
-		assertFalse(GeneralServerException.needDetailedInfo(gse));
+		assertTrue(GeneralServerException.needDetailedInfo(gse));
 		GeneralServerException.checkExeptionTypeAndCreateDetailedTextOfException(gse);
 	}
 
@@ -370,17 +370,15 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testReturnErrorFromDB() {
-		MainPageFrameGateway gateway = new DBMainPageFrameGateway();
+		MainPageFrameGateway gateway = new MainPageFrameDBGateway();
 		CompositeContext context = getTestContext1();
 
 		try {
 			gateway.get(context, "header_proc_with_error");
 		} catch (Exception e) {
-			assertEquals(DBQueryException.class, e.getClass());
-			assertEquals(
-					"Произошла ошибка при выполнении хранимой процедуры header_proc_with_error. "
-							+ "Подробности: этап - получение кода фрейма, код - 1, текст - "
-							+ "Ошибка, переданная через @error_mes.", e.getLocalizedMessage());
+			assertEquals(ValidateInDBException.class, e.getClass());
+			assertEquals("Ошибка, переданная через @error_mes (1)", ((ValidateInDBException) e)
+					.getUserMessage().getText());
 			return;
 		}
 		fail();

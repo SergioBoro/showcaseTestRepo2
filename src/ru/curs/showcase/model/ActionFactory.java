@@ -37,7 +37,7 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 	/**
 	 * Считываемое сейчас серверное действие.
 	 */
-	private ServerActivity curServerActivity = null;
+	private Activity curActivity = null;
 	/**
 	 * Признак того, что считывается элемент main_context.
 	 */
@@ -51,6 +51,10 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 	 * characters.
 	 */
 	private String characters = null;
+	/**
+	 * Признак чтения секции server.
+	 */
+	private boolean readingServerPart = false;
 
 	@Override
 	public boolean canHandleStartTag(final String tagName, final SaxEventType saxEventType) {
@@ -69,6 +73,7 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 		return MAIN_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName)
 				|| ADD_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName)
 				|| ELEMENT_TAG.equalsIgnoreCase(tagName) || ACTIVITY_TAG.equalsIgnoreCase(tagName)
+				|| SERVER_TAG.equalsIgnoreCase(tagName)
 				|| ((tagName != null) && (tagName.startsWith(SOL_TAG_PREFIX)));
 	}
 
@@ -153,14 +158,19 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 			curDataPanelElementLink.setContext(context);
 			return curAction;
 		}
+		if (qname.equalsIgnoreCase(SERVER_TAG)) {
+			readingServerPart = true;
+		}
 		if (qname.equalsIgnoreCase(ACTIVITY_TAG)) {
-			curServerActivity = new ServerActivity();
-			curServerActivity.setName(attrs.getValue(NAME_TAG));
-			value = attrs.getValue(TYPE_TAG);
-			curServerActivity.setType(ServerActivityType.valueOf(value));
+			curActivity = new Activity();
+			curActivity.setName(attrs.getValue(NAME_TAG));
+			if (readingServerPart) {
+				value = attrs.getValue(TYPE_TAG);
+				curActivity.setType(ServerActivityType.valueOf(value));
+			}
 
 			CompositeContext context = createContextFromGeneral();
-			curServerActivity.setContext(context);
+			curActivity.setContext(context);
 			return curAction;
 		}
 		if (qname.equalsIgnoreCase(MAIN_CONTEXT_ATTR_NAME)) {
@@ -193,8 +203,8 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 		}
 
 		if (qname.equalsIgnoreCase(ADD_CONTEXT_ATTR_NAME)) {
-			if (curServerActivity != null) {
-				curServerActivity.getContext().setAdditional(characters);
+			if (curActivity != null) {
+				curActivity.getContext().setAdditional(characters);
 			} else {
 				curDataPanelElementLink.getContext().setAdditional(characters);
 			}
@@ -210,9 +220,19 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 		}
 
 		if (qname.equalsIgnoreCase(ACTIVITY_TAG)) {
-			curAction.getServerActivities().add(curServerActivity);
-			curServerActivity = null;
+			if (readingServerPart) {
+				curAction.getServerActivities().add(curActivity);
+
+			} else {
+				curAction.getClientActivities().add(curActivity);
+			}
+			curActivity = null;
+
 			return curAction;
+		}
+
+		if (qname.equalsIgnoreCase(SERVER_TAG)) {
+			readingServerPart = false;
 		}
 
 		if (readingMainContext || readingAddContext) {

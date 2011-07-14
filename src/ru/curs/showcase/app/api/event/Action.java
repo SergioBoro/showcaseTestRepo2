@@ -66,7 +66,12 @@ public class Action implements SerializableElement, GWTClonable {
 	/**
 	 * Список действий на сервере, содержащихся в данном действии.
 	 */
-	private List<ServerActivity> serverActivities = new ArrayList<ServerActivity>();
+	private List<Activity> serverActivities = new ArrayList<Activity>();
+
+	/**
+	 * Список действий на сервере, содержащихся в данном действии.
+	 */
+	private List<Activity> clientActivities = new ArrayList<Activity>();
 
 	/**
 	 * Контекст, общий для всего действия. Играет роль контекста по умолчанию
@@ -198,13 +203,19 @@ public class Action implements SerializableElement, GWTClonable {
 			}
 		}
 
-		Iterator<ServerActivity> iterator = serverActivities.iterator();
-		while (iterator.hasNext()) {
-			ServerActivity sa = iterator.next();
-			sa.getContext().actualizeBy(callContext);
-		}
+		actualizeActivities(serverActivities, callContext);
+		actualizeActivities(clientActivities, callContext);
 
 		return this;
+	}
+
+	private void actualizeActivities(final List<Activity> aActivities,
+			final CompositeContext callContext) {
+		Iterator<Activity> iterator = aActivities.iterator();
+		while (iterator.hasNext()) {
+			Activity act = iterator.next();
+			act.getContext().actualizeBy(callContext);
+		}
 	}
 
 	/**
@@ -244,13 +255,18 @@ public class Action implements SerializableElement, GWTClonable {
 			}
 		}
 
-		Iterator<ServerActivity> iterator = serverActivities.iterator();
-		while (iterator.hasNext()) {
-			ServerActivity sa = iterator.next();
-			sa.getContext().actualizeBy(prevAction.context);
-		}
+		actualizeActivities(serverActivities, prevAction);
+		actualizeActivities(clientActivities, prevAction);
 
 		return this;
+	}
+
+	private void actualizeActivities(final List<Activity> aActivities, final Action prevAction) {
+		Iterator<Activity> iterator = aActivities.iterator();
+		while (iterator.hasNext()) {
+			Activity sa = iterator.next();
+			sa.getContext().actualizeBy(prevAction.context);
+		}
 	}
 
 	/**
@@ -279,6 +295,8 @@ public class Action implements SerializableElement, GWTClonable {
 		}
 		res.serverActivities.clear();
 		res.serverActivities.addAll(serverActivities);
+		res.clientActivities.clear();
+		res.clientActivities.addAll(clientActivities);
 		return res;
 	}
 
@@ -315,12 +333,18 @@ public class Action implements SerializableElement, GWTClonable {
 				}
 			}
 		}
-		Iterator<ServerActivity> iterator = serverActivities.iterator();
+		updateActivitiesAddContext(serverActivities, addContext);
+		updateActivitiesAddContext(clientActivities, addContext);
+		return this;
+	}
+
+	private void updateActivitiesAddContext(final List<Activity> aActivities,
+			final CompositeContext addContext) {
+		Iterator<Activity> iterator = aActivities.iterator();
 		while (iterator.hasNext()) {
-			ServerActivity sa = iterator.next();
+			Activity sa = iterator.next();
 			sa.getContext().setAdditional(addContext.getAdditional());
 		}
-		return this;
 	}
 
 	/**
@@ -340,9 +364,14 @@ public class Action implements SerializableElement, GWTClonable {
 				link.getContext().setFilter(data);
 			}
 		}
-		Iterator<ServerActivity> iterator = serverActivities.iterator();
+		filterActivitiesBy(serverActivities, data);
+		filterActivitiesBy(clientActivities, data);
+	}
+
+	private void filterActivitiesBy(final List<Activity> aActivities, final String data) {
+		Iterator<Activity> iterator = aActivities.iterator();
 		while (iterator.hasNext()) {
-			ServerActivity sa = iterator.next();
+			Activity sa = iterator.next();
 			sa.getContext().setFilter(data);
 		}
 	}
@@ -430,9 +459,15 @@ public class Action implements SerializableElement, GWTClonable {
 				link.getContext().addSessionParams(data);
 			}
 		}
-		Iterator<ServerActivity> iterator = serverActivities.iterator();
+		setActivitiesSessionContext(serverActivities, data);
+		setActivitiesSessionContext(clientActivities, data);
+	}
+
+	private void setActivitiesSessionContext(final List<Activity> aActivities,
+			final Map<String, List<String>> data) {
+		Iterator<Activity> iterator = aActivities.iterator();
 		while (iterator.hasNext()) {
-			ServerActivity sa = iterator.next();
+			Activity sa = iterator.next();
 			sa.getContext().addSessionParams(data);
 		}
 	}
@@ -455,9 +490,13 @@ public class Action implements SerializableElement, GWTClonable {
 				elLink.getContext().setSession(data);
 			}
 		}
-		Iterator<ServerActivity> iterator = serverActivities.iterator();
+		setActivitiesSessionContext(serverActivities, data);
+	}
+
+	private void setActivitiesSessionContext(final List<Activity> aActivities, final String data) {
+		Iterator<Activity> iterator = aActivities.iterator();
 		while (iterator.hasNext()) {
-			ServerActivity sa = iterator.next();
+			Activity sa = iterator.next();
 			sa.getContext().setSession(data);
 		}
 	}
@@ -471,7 +510,16 @@ public class Action implements SerializableElement, GWTClonable {
 		return serverActivities.size() > 0;
 	}
 
-	public List<ServerActivity> getServerActivities() {
+	/**
+	 * Функция, определяющая требует ли действие выполнение каких-либо операций
+	 * на клиенте (например, вызов процедуры JS).
+	 * 
+	 */
+	public boolean containsClientActivity() {
+		return clientActivities.size() > 0;
+	}
+
+	public List<Activity> getServerActivities() {
 		return serverActivities;
 	}
 
@@ -483,7 +531,7 @@ public class Action implements SerializableElement, GWTClonable {
 		context = aContext;
 	}
 
-	public void setServerActivities(final List<ServerActivity> aServerActivities) {
+	public void setServerActivities(final List<Activity> aServerActivities) {
 		serverActivities = aServerActivities;
 	}
 
@@ -492,7 +540,15 @@ public class Action implements SerializableElement, GWTClonable {
 	 * 
 	 */
 	public boolean needGeneralContext() {
-		return (dataPanelActionType != DataPanelActionType.DO_NOTHING)
-				|| (containsServerActivity());
+		return (dataPanelActionType != DataPanelActionType.DO_NOTHING) || containsServerActivity()
+				|| containsClientActivity();
+	}
+
+	public List<Activity> getClientActivities() {
+		return clientActivities;
+	}
+
+	public void setClientActivities(final List<Activity> aClientActivities) {
+		clientActivities = aClientActivities;
 	}
 }

@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.datapanel;
 
-import ru.curs.showcase.app.api.VisualElement;
+import ru.curs.showcase.app.api.NamedElement;
 
 /**
  * Хранимая SQL процедура элемента информационной панели.
@@ -8,7 +8,7 @@ import ru.curs.showcase.app.api.VisualElement;
  * @author den
  * 
  */
-public final class DataPanelElementProc extends VisualElement {
+public final class DataPanelElementProc extends NamedElement {
 
 	/**
 	 * serialVersionUID.

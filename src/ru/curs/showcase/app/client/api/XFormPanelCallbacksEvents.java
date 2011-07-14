@@ -55,7 +55,7 @@ public final class XFormPanelCallbacksEvents {
 
 			final Action ac = getActionByLinkId(linkId, curXFormPanel);
 
-			if (curXFormPanel.getElementInfo().enabledSimpleSave()) {
+			if (curXFormPanel.getElementInfo().getSaveProc() != null) {
 				curXFormPanel.getDataService().saveXForms(curXFormPanel.getContext(),
 						curXFormPanel.getElementInfo(), data,
 						new GWTServiceCallback<CommandResult>(Constants.XFORM_SAVE_DATA_ERROR) {

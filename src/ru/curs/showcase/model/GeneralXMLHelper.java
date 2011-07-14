@@ -2,7 +2,7 @@ package ru.curs.showcase.model;
 
 import org.xml.sax.Attributes;
 
-import ru.curs.showcase.app.api.VisualElement;
+import ru.curs.showcase.app.api.NamedElement;
 
 /**
  * Базовый класс парсера, содержащий константы для разбора поступающих в систему
@@ -97,6 +97,8 @@ public abstract class GeneralXMLHelper {
 
 	public static final String SOURCE_TAG = "source";
 
+	public static final String TOTAL_COUNT_TAG = "totalCount";
+
 	protected static final String ELEMENT_ID = "${elementId}";
 
 	/**
@@ -112,7 +114,7 @@ public abstract class GeneralXMLHelper {
 	 * @param attrs
 	 *            - XML Attributes.
 	 */
-	protected void setupBaseProps(final VisualElement el, final Attributes attrs) {
+	protected void setupBaseProps(final NamedElement el, final Attributes attrs) {
 		el.setId(attrs.getValue(ID_TAG));
 		el.setName(attrs.getValue(NAME_TAG));
 	}

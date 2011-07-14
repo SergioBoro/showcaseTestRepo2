@@ -1,6 +1,6 @@
 package ru.curs.showcase.model;
 
-import ru.curs.showcase.app.api.event.ServerActivity;
+import ru.curs.showcase.app.api.event.Activity;
 
 /**
  * Шлюз-исполнитель для серверных действий.
@@ -15,5 +15,5 @@ public interface ActivityGateway {
 	 * @param activity
 	 *            - действие.
 	 */
-	void exec(ServerActivity activity);
+	void exec(Activity activity);
 }

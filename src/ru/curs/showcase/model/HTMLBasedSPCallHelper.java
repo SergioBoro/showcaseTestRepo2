@@ -7,6 +7,9 @@ import javax.xml.transform.dom.DOMSource;
 
 import org.w3c.dom.Document;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.event.CompositeContext;
+
 /**
  * Вспомогательный класс для работы с хранимыми процедурами получения данных для
  * построения основанных на HTML элементах.
@@ -14,7 +17,7 @@ import org.w3c.dom.Document;
  * @author den
  * 
  */
-public abstract class HTMLBasedSPCallHelper extends SPCallHelper {
+public abstract class HTMLBasedSPCallHelper extends ElementSPCallHelper {
 	/**
 	 * Возвращает имя OUT параметра с данными элемента. Необходим только для
 	 * HTML-based элементов.
@@ -26,16 +29,20 @@ public abstract class HTMLBasedSPCallHelper extends SPCallHelper {
 	@Override
 	protected void prepareStdStatement() throws SQLException {
 		super.prepareStdStatement();
-		getCs().registerOutParameter(getDataParam(), java.sql.Types.SQLXML);
+		getStatement().registerOutParameter(getDataParam(), java.sql.Types.SQLXML);
 	}
 
 	/**
-	 * Возвращает данные для элемента, основанного на HTML.
+	 * Стандартный метод возврата данных.
 	 * 
-	 * @return - сырые данные
+	 * @param context
+	 *            - контекст.
+	 * @param elementInfo
+	 *            - инф. об элементе.
 	 */
-	protected HTMLBasedElementRawData stdGetData() {
-		check(getElementInfo());
+	protected HTMLBasedElementRawData stdGetData(final CompositeContext context,
+			final DataPanelElementInfo elementInfo) {
+		init(context, elementInfo);
 		if (getElementInfo().getProcName() == null) {
 			return new HTMLBasedElementRawData(getElementInfo());
 		}
@@ -44,13 +51,13 @@ public abstract class HTMLBasedSPCallHelper extends SPCallHelper {
 			try {
 				prepareStdStatement();
 				Document data = null;
-				getCs().execute();
-				SQLXML xml = getCs().getSQLXML(getDataParam());
+				getStatement().execute();
+				SQLXML xml = getStatement().getSQLXML(getDataParam());
 				if (xml != null) {
 					DOMSource domSource = xml.getSource(DOMSource.class);
 					data = (Document) domSource.getNode();
 				}
-				InputStream validatedSettings = getSettingsStream();
+				InputStream validatedSettings = getValidatedSettings();
 				return new HTMLBasedElementRawData(data, validatedSettings, getElementInfo(),
 						getContext());
 			} catch (SQLException e) {

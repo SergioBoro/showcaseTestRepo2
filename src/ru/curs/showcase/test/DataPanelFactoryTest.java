@@ -198,4 +198,19 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		assertFalse(panel.getTabById(tabId).getElementInfoById(secElId)
 				.getKeepUserSettings(action));
 	}
+
+	/**
+	 * Проверка получения метаданных и данных для загрузки элемента раздельно.
+	 */
+	@Test
+	public void testMetadataProc() {
+		DataPanelGateway gateway = new DataPanelXMLGateway();
+		DataFile<InputStream> file = gateway.getXML("test1.1.xml");
+		DataPanelFactory factory = new DataPanelFactory();
+		DataPanel panel = factory.fromStream(file);
+		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("2");
+		DataPanelElementProc proc = el.getMetadataProc();
+		assertNotNull(el);
+		assertEquals(DataPanelElementProcType.METADATA, proc.getType());
+	}
 }

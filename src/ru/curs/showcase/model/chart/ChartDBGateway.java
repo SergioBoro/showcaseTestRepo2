@@ -1,7 +1,5 @@
 package ru.curs.showcase.model.chart;
 
-import java.sql.SQLException;
-
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.*;
@@ -14,22 +12,11 @@ import ru.curs.showcase.model.*;
  */
 public class ChartDBGateway extends CompBasedElementSPCallHelper implements ChartGateway {
 	public static final String OUTPUT_COLUMNNAME = "chartsettings";
-	protected static final String CHARTSETTINGS_XSD = "chartsettings.xsd";
 
 	@Override
 	public ElementRawData getFactorySource(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
-		check(elementInfo);
-		setElementInfo(elementInfo);
-		setContext(context);
-		try {
-			prepareStdStatement();
-			stdGetResults();
-			return new ElementRawData(this, elementInfo, context);
-		} catch (SQLException e) {
-			dbExceptionHandler(e);
-		}
-		return null;
+		return stdGetData(context, elementInfo);
 	}
 
 	@Override
@@ -45,10 +32,5 @@ public class ChartDBGateway extends CompBasedElementSPCallHelper implements Char
 	@Override
 	protected DataPanelElementType getGatewayType() {
 		return DataPanelElementType.CHART;
-	}
-
-	@Override
-	protected String getSettingsSchema() {
-		return CHARTSETTINGS_XSD;
 	}
 }
