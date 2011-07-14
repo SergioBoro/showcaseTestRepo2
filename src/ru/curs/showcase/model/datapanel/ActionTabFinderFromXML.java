@@ -18,4 +18,10 @@ public class ActionTabFinderFromXML extends ActionTabFinder {
 		return dpGateway.getFirstTabId(link.getDataPanelId());
 	}
 
+	@Override
+	public boolean existsInStorage(final DataPanelLink link, final String tabValue) {
+		DataPanelGateway dpGateway = new DataPanelXMLGateway();
+		return dpGateway.tabExists(link.getDataPanelId(), tabValue);
+	}
+
 }

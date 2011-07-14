@@ -88,7 +88,7 @@
 				<activity type="SP" name="exec_by_userdata"/>
 				</server>
 			</action>
-		</level1>			
+		</level1>				
 	</group>
 	
 	<group id="2" name="Регионы">

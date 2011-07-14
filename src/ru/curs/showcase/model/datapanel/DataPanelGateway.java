@@ -30,4 +30,14 @@ public interface DataPanelGateway {
 	 * @return - файл.
 	 */
 	DataFile<InputStream> getXML(String dataPanelId);
+
+	/**
+	 * Проверка на существование вкладки в файле.
+	 * 
+	 * @param aDataPanelId
+	 *            - идентификатор панели.
+	 * @param aTabValue
+	 *            - значение идентификатора вкладки.
+	 */
+	boolean tabExists(String aDataPanelId, String aTabValue);
 }

@@ -53,8 +53,7 @@ public class DataPanelXMLGateway extends GeneralXMLHelper implements DataPanelGa
 		}
 
 		if (firstTabId == null) {
-			throw new XMLFormatException(String.format(NO_TABS_ERROR,
-					dataPanelId));
+			throw new XMLFormatException(String.format(NO_TABS_ERROR, dataPanelId));
 		}
 		return firstTabId;
 	}
@@ -73,5 +72,31 @@ public class DataPanelXMLGateway extends GeneralXMLHelper implements DataPanelGa
 			throw new SettingsFileOpenException(dataPanelId, SettingsFileType.DATAPANEL);
 		}
 		return new DataFile<InputStream>(result, dataPanelId);
+	}
+
+	@Override
+	public boolean tabExists(final String dataPanelId, final String tabValue) {
+		DefaultHandler myHandler = new DefaultHandler() {
+			@Override
+			public void startElement(final String namespaceURI, final String lname,
+					final String qname, final Attributes attrs) {
+				if (TAB_TAG.equalsIgnoreCase(qname)) {
+					if (attrs.getValue(ID_TAG).equals(tabValue)) {
+						throw new BreakSAXLoopException();
+					}
+				}
+			}
+		};
+		DataFile<InputStream> file = getXML(dataPanelId);
+
+		SAXParser parser = XMLUtils.createSAXParser();
+		try {
+			parser.parse(file.getData(), myHandler);
+		} catch (Throwable e) {
+			XMLUtils.stdSAXErrorHandler(e, dataPanelId);
+			return true;
+		}
+
+		return false;
 	}
 }

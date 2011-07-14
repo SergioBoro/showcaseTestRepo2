@@ -2,7 +2,7 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.InputStream;
+import java.io.*;
 import java.sql.SQLException;
 
 import org.junit.Test;
@@ -382,6 +382,16 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 			return;
 		}
 		fail();
+	}
+
+	/**
+	 * Проверка на исключение при неверном номере вкладки инф. панели в
+	 * действии.
+	 */
+	@Test(expected = IncorrectElementException.class)
+	public void testWrongTab() throws IOException {
+		final int elID = 3;
+		getAction("tree_multilevel.wrong.xml", 0, elID);
 	}
 
 }

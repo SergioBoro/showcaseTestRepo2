@@ -492,7 +492,9 @@ public final class XMLUtils {
 
 	/**
 	 * Стандартный обработчик ошибки в SAX парсере, корректно обрабатывающий
-	 * специальный тип SAXError.
+	 * специальный тип SAXError. Если в функцию передано специально прерывающее
+	 * SAX парсер исключение - функция позволяет продолжить выполнение
+	 * программы.
 	 * 
 	 * @param e
 	 *            - исключение.
@@ -502,6 +504,12 @@ public final class XMLUtils {
 	 */
 	public static void stdSAXErrorHandler(final Throwable e, final String errorMes) {
 		Throwable realExc = e;
+		if (realExc instanceof BreakSAXLoopException) {
+			return;
+		}
+		if (BaseException.class.isAssignableFrom(realExc.getClass())) {
+			throw (BaseException) realExc;
+		}
 		if (e.getCause() != null) {
 			if (e.getCause().getClass() == SAXError.class) {
 				realExc = e.getCause().getCause();
