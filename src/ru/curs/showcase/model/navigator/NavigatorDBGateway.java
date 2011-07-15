@@ -19,7 +19,7 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 	static final String DEF_USERNAME_PARAM = "main.def.username";
 
 	@Override
-	public InputStream getData(final CompositeContext context) {
+	public InputStream getRawData(final CompositeContext context) {
 		setProcName(AppProps.getRequiredValueByName(NAVIGATOR_PROCNAME_PARAM));
 		try {
 			prepareSQL();

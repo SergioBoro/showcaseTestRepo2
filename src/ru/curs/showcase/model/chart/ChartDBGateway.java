@@ -14,7 +14,7 @@ public class ChartDBGateway extends CompBasedElementSPCallHelper implements Char
 	public static final String OUTPUT_COLUMNNAME = "chartsettings";
 
 	@Override
-	public ElementRawData getFactorySource(final CompositeContext context,
+	public ElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
 		return stdGetData(context, elementInfo);
 	}

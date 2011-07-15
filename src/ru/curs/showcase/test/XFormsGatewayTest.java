@@ -34,7 +34,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "07");
 
 		XFormsGateway gateway = new XFormsFileGateway();
-		gateway.getInitialData(context, element);
+		gateway.getRawData(context, element);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "07");
 
 		XFormsGateway gateway = new XFormsFileGateway();
-		HTMLBasedElementRawData raw = gateway.getInitialData(context, element);
+		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 
 		DocumentBuilder db = XMLUtils.createBuilder();
 		InputStream stream =
@@ -85,7 +85,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getTestXForms1Info();
 
 		XFormsGateway gateway = new XFormsDBGateway();
-		gateway.getInitialData(context, element);
+		gateway.getRawData(context, element);
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 
 	private String getNewContentBasedOnExisting(final CompositeContext context,
 			final DataPanelElementInfo element, final XFormsGateway gateway) {
-		HTMLBasedElementRawData raw = gateway.getInitialData(context, element);
+		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 		Element newChild = raw.getData().createElement("new");
 		raw.getData().getDocumentElement().appendChild(newChild);
 		String content = XMLUtils.documentToString(raw.getData());

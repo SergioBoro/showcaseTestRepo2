@@ -91,7 +91,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	protected DataPanelElementInfo getDPElement(final String fileName, final String tabID,
 			final String elID) {
 		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getXML(fileName);
+		DataFile<InputStream> file = gateway.getRawData(fileName);
 		DataPanelFactory dpFactory = new DataPanelFactory();
 		DataPanel panel = dpFactory.fromStream(file);
 		DataPanelElementInfo element = panel.getTabById(tabID).getElementInfoById(elID);

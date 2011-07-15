@@ -43,7 +43,7 @@ public class DataPanelXMLGateway extends GeneralXMLHelper implements DataPanelGa
 				}
 			}
 		};
-		DataFile<InputStream> file = getXML(dataPanelId);
+		DataFile<InputStream> file = getRawData(dataPanelId);
 
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {
@@ -59,7 +59,7 @@ public class DataPanelXMLGateway extends GeneralXMLHelper implements DataPanelGa
 	}
 
 	@Override
-	public DataFile<InputStream> getXML(final String dataPanelId) {
+	public DataFile<InputStream> getRawData(final String dataPanelId) {
 		InputStream result;
 		try {
 			result =
@@ -87,7 +87,7 @@ public class DataPanelXMLGateway extends GeneralXMLHelper implements DataPanelGa
 				}
 			}
 		};
-		DataFile<InputStream> file = getXML(dataPanelId);
+		DataFile<InputStream> file = getRawData(dataPanelId);
 
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {

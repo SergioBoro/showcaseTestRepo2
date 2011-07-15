@@ -25,7 +25,7 @@ public interface XFormsGateway {
 	 *            - элемент.
 	 * @return - xml данные.
 	 */
-	HTMLBasedElementRawData getInitialData(CompositeContext context, DataPanelElementInfo element);
+	HTMLBasedElementRawData getRawData(CompositeContext context, DataPanelElementInfo element);
 
 	/**
 	 * Сохраняет данные, введенные в карточке на основе XForms.

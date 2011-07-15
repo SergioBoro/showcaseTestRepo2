@@ -23,7 +23,7 @@ public class GeoMapGatewayTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "05");
 
 		GeoMapGateway gateway = new GeoMapDBGateway();
-		gateway.getFactorySource(context, element);
+		gateway.getRawData(context, element);
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class GeoMapGatewayTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = new DataPanelElementInfo("id", DataPanelElementType.GEOMAP);
 
 		GeoMapGateway gateway = new GeoMapDBGateway();
-		gateway.getFactorySource(null, element);
+		gateway.getRawData(null, element);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class GeoMapGatewayTest extends AbstractTestBasedOnFiles {
 		element.setProcName("proc");
 
 		GeoMapGateway gateway = new GeoMapDBGateway();
-		gateway.getFactorySource(null, element);
+		gateway.getRawData(null, element);
 	}
 
 	/**
@@ -58,6 +58,6 @@ public class GeoMapGatewayTest extends AbstractTestBasedOnFiles {
 	@Test(expected = IncorrectElementException.class)
 	public void testWrongElement3() {
 		GeoMapGateway gateway = new GeoMapDBGateway();
-		gateway.getFactorySource(null, null);
+		gateway.getRawData(null, null);
 	}
 }

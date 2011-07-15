@@ -41,7 +41,7 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 
 		MainPageFrameSelector selector = new MainPageFrameSelector(MainPageFrameType.WELCOME);
 		MainPageFrameGateway gateway = selector.getGateway();
-		String raw = gateway.get(context, selector.getSourceName());
+		String raw = gateway.getRawData(context, selector.getSourceName());
 		assertTrue(raw.indexOf(AppProps.CURRENT_USERDATA_TEMPLATE) > -1);
 		assertTrue(raw.indexOf(AppProps.IMAGES_IN_GRID_DIR) > -1);
 

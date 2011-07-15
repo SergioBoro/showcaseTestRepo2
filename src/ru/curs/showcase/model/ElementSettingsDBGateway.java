@@ -17,8 +17,8 @@ public class ElementSettingsDBGateway extends ElementSPCallHelper implements
 	protected static final String SETTINGS_COL_NAME = "settings";
 
 	@Override
-	public ElementRawData get(final CompositeContext context,
-			final DataPanelElementInfo elementInfo) throws SQLException {
+	public ElementRawData getRawData(final CompositeContext context,
+			final DataPanelElementInfo elementInfo) {
 		init(context, elementInfo);
 		setProcName(elementInfo.getMetadataProc().getName());
 

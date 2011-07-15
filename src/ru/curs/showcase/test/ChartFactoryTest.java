@@ -42,7 +42,7 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test2.xml", "2", "22");
 
 		ChartGateway gateway = new ChartDBGateway();
-		ElementRawData raw = gateway.getFactorySource(context, element);
+		ElementRawData raw = gateway.getRawData(context, element);
 		ChartDBFactory factory = new ChartDBFactory(raw);
 		Chart chart = factory.build();
 
@@ -77,7 +77,7 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getTestChartInfo();
 
 		ChartGateway gateway = new ChartDBGateway();
-		ElementRawData raw = gateway.getFactorySource(context, element);
+		ElementRawData raw = gateway.getRawData(context, element);
 		ChartDBFactory factory = new ChartDBFactory(raw);
 		Chart chart = factory.build();
 
@@ -127,7 +127,7 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getTestChartInfo();
 
 		ChartGateway gateway = new ChartDBGateway();
-		ElementRawData raw = gateway.getFactorySource(context, element);
+		ElementRawData raw = gateway.getRawData(context, element);
 		ChartDBFactory factory = new ChartDBFactory(raw);
 		Chart chart = factory.build();
 		ChartData data = chart.getJavaDynamicData();
@@ -171,7 +171,7 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test2.xml", "2", "210");
 
 		ChartGateway gateway = new ChartDBGateway();
-		ElementRawData raw = gateway.getFactorySource(context, element);
+		ElementRawData raw = gateway.getRawData(context, element);
 		ChartDBFactory factory = new ChartDBFactory(raw);
 		Chart chart = factory.build();
 

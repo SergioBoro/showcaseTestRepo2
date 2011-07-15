@@ -21,5 +21,5 @@ public interface ChartGateway {
 	 *            - элемент.
 	 * @return - фабрика.
 	 */
-	ElementRawData getFactorySource(CompositeContext context, DataPanelElementInfo element);
+	ElementRawData getRawData(CompositeContext context, DataPanelElementInfo element);
 }

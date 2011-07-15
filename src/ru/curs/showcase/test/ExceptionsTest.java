@@ -4,12 +4,15 @@ import static org.junit.Assert.*;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.*;
 
 import org.junit.Test;
 
+import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.MessageType;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.grid.GridRequestedSettings;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.exception.*;
@@ -19,6 +22,7 @@ import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.model.webtext.*;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.XMLUtils;
 
 /**
  * Тесты для серверных исключений.
@@ -58,7 +62,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test(expected = SettingsFileOpenException.class)
 	public final void testWrongDP() {
 		DataPanelGateway gateway = new DataPanelXMLGateway();
-		gateway.getXML("verysecretandhidden.xml");
+		gateway.getRawData("verysecretandhidden.xml");
 	}
 
 	/**
@@ -207,7 +211,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test.xml", "3", "5");
 
 		GridGateway gateway = new GridDBGateway();
-		ElementRawData raw = gateway.getFactorySource(context, element);
+		ElementRawData raw = gateway.getRawDataAndSettings(context, element);
 		GridDBFactory factory = new GridDBFactory(raw);
 		factory.build();
 	}
@@ -298,7 +302,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	public void testDBQueryExceptionBySL() {
 		CompositeContext context = getTestContext1();
 		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getXML("test.xml");
+		DataFile<InputStream> file = gateway.getRawData("test.xml");
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel dp = factory.fromStream(file);
 
@@ -374,7 +378,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		CompositeContext context = getTestContext1();
 
 		try {
-			gateway.get(context, "header_proc_with_error");
+			gateway.getRawData(context, "header_proc_with_error");
 		} catch (Exception e) {
 			assertEquals(ValidateInDBException.class, e.getClass());
 			assertEquals("Ошибка, переданная через @error_mes (1)", ((ValidateInDBException) e)
@@ -392,6 +396,39 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	public void testWrongTab() throws IOException {
 		final int elID = 3;
 		getAction("tree_multilevel.wrong.xml", 0, elID);
+	}
+
+	/**
+	 * Проверка на исключение при неверном столбце сортировки в гриде.
+	 */
+	@Test(expected = DBQueryException.class)
+	public void testDBQueryExceptionWithWrongGridSorting() {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo elInfo = getDPElement("test1.1.xml", "2", "2");
+		GridRequestedSettings settings = new GridRequestedSettings();
+		Collection<Column> aSortedColumns = new ArrayList<Column>();
+		Column col = new Column();
+		col.setId("Name111");
+		col.setSorting(Sorting.ASC);
+		aSortedColumns.add(col);
+		settings.setSortedColumns(aSortedColumns);
+
+		GridGateway gateway = new GridDBGateway();
+		gateway.getRawData(context, elInfo, settings);
+	}
+
+	/**
+	 * Проверка на исключение при попытке получить настройки элемента при
+	 * загрузке только данных.
+	 */
+	@Test(expected = ResultSetHandleException.class)
+	public void testErrorWhenGetSettingsForDataOnlyProc() {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo elInfo = getDPElement("test1.1.xml", "2", "2");
+		GridGateway gateway = new GridDBGateway();
+		GridRequestedSettings settings = new GridRequestedSettings();
+		ElementRawData res = gateway.getRawData(context, elInfo, settings);
+		res.prepareSettings();
 	}
 
 }

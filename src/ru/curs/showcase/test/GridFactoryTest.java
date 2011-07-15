@@ -2,7 +2,7 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
+import java.util.*;
 
 import org.junit.Test;
 
@@ -144,7 +144,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "4");
 
 		GridGateway gateway = new GridDBGateway();
-		ElementRawData raw = gateway.getFactorySource(context, element);
+		ElementRawData raw = gateway.getRawDataAndSettings(context, element);
 		GridDBFactory factory = new GridDBFactory(raw);
 		Grid grid = factory.build();
 		assertEquals(GRIDBAL_TEST_PROPERTIES, factory.getProfile());
@@ -178,6 +178,47 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals(2, events.size());
 		assertNull(events.get(0).getId2());
 		assertNotNull(events.get(1).getId2());
+	}
+
+	/**
+	 * Проверка получения грида через SL с помощью 2-х процедур.
+	 */
+	@Test
+	public void test2StepGridLoadBySL() throws GeneralServerException {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo elInfo = getDPElement("test1.1.xml", "2", "2");
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		Grid grid = serviceLayer.getGrid(context, elInfo, null);
+		assertNotNull(grid);
+		final int pageSize = 15;
+		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
+		final int pageNum = 3;
+		assertEquals(pageNum, grid.getDataSet().getRecordSet().getPageNumber());
+	}
+
+	/**
+	 * Проверка получения грида через SL с помощью 2-х процедур.
+	 */
+	@Test
+	public void test2StepGridLoadBySLWhenUpdate() throws GeneralServerException {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo elInfo = getDPElement("test1.1.xml", "2", "2");
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		GridRequestedSettings settings = new GridRequestedSettings();
+		Collection<Column> aSortedColumns = new ArrayList<Column>();
+		Column col = new Column();
+		col.setId("Name");
+		col.setSorting(Sorting.ASC);
+		col.setWidth("200px");
+		aSortedColumns.add(col);
+		settings.setSortedColumns(aSortedColumns);
+		Grid grid = serviceLayer.getGrid(context, elInfo, settings);
+
+		assertNotNull(grid);
+		final int pageSize = GridRequestedSettings.DEF_PAGE_SIZE_VAL;
+		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
+		final int pageNum = 1;
+		assertEquals(pageNum, grid.getDataSet().getRecordSet().getPageNumber());
 	}
 
 	private void addSortedColumn(final GridRequestedSettings settings, final String name,

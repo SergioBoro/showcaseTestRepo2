@@ -14,7 +14,7 @@ public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements Geo
 	public static final String OUTPUT_COLUMNNAME = "geomapsettings";
 
 	@Override
-	public ElementRawData getFactorySource(final CompositeContext context,
+	public ElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
 		return stdGetData(context, elementInfo);
 	}

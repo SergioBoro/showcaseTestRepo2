@@ -42,7 +42,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		final int firstPanelSecondTabElCount = 5;
 
 		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getXML("test.xml");
+		DataFile<InputStream> file = gateway.getRawData("test.xml");
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 
@@ -114,7 +114,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testXFormsProcLoad() {
 		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getXML("test1.1.xml");
+		DataFile<InputStream> file = gateway.getRawData("test1.1.xml");
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("08");
@@ -137,7 +137,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testDPProcs() {
 		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getXML("test1.1.xml");
+		DataFile<InputStream> file = gateway.getRawData("test1.1.xml");
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("09");
@@ -189,7 +189,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		dpLink.getElementLinks().add(elLink);
 
 		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getXML(dataPanelId);
+		DataFile<InputStream> file = gateway.getRawData(dataPanelId);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 
@@ -205,7 +205,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testMetadataProc() {
 		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getXML("test1.1.xml");
+		DataFile<InputStream> file = gateway.getRawData("test1.1.xml");
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("2");

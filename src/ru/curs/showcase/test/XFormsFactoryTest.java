@@ -112,7 +112,7 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getTestXForms1Info();
 
 		XFormsGateway gateway = new XFormsDBGateway();
-		HTMLBasedElementRawData raw = gateway.getInitialData(context, element);
+		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 		return new XFormsFactory(raw);
 	}
 }

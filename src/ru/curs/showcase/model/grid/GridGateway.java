@@ -26,7 +26,7 @@ public interface GridGateway {
 	 * @return - данные.
 	 * 
 	 */
-	ElementRawData getDataAndSettings(CompositeContext context, DataPanelElementInfo element,
+	ElementRawData getRawDataAndSettings(CompositeContext context, DataPanelElementInfo element,
 			GridRequestedSettings settings);
 
 	/**
@@ -42,7 +42,7 @@ public interface GridGateway {
 	 * @return - данные.
 	 * 
 	 */
-	ElementRawData getData(CompositeContext context, DataPanelElementInfo element,
+	ElementRawData getRawData(CompositeContext context, DataPanelElementInfo element,
 			GridRequestedSettings settings);
 
 	/**
@@ -55,5 +55,5 @@ public interface GridGateway {
 	 *            - элемент.
 	 * @return - данные.
 	 */
-	ElementRawData getFactorySource(CompositeContext context, DataPanelElementInfo element);
+	ElementRawData getRawDataAndSettings(CompositeContext context, DataPanelElementInfo element);
 }

@@ -37,7 +37,7 @@ public class HTMLVariablesTest extends AbstractTestBasedOnFiles {
 
 		MainPageFrameSelector selector = new MainPageFrameSelector(MainPageFrameType.WELCOME);
 		MainPageFrameGateway gateway = selector.getGateway();
-		String raw = gateway.get(context, selector.getSourceName());
+		String raw = gateway.getRawData(context, selector.getSourceName());
 		assertTrue(raw.indexOf(AppProps.CURRENT_USERDATA_TEMPLATE) > -1);
 		assertTrue(raw.indexOf(AppProps.IMAGES_IN_GRID_DIR) > -1);
 
@@ -60,7 +60,7 @@ public class HTMLVariablesTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "07");
 
 		XFormsGateway gateway = new XFormsFileGateway();
-		HTMLBasedElementRawData raw = gateway.getInitialData(context, element);
+		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 		XFormsFactory factory = new XFormsFactory(raw);
 		XForms xforms = factory.build();
 		assertTrue(xforms.getXFormParts().get(2).indexOf("?userdata=default") > -1);

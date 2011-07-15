@@ -73,7 +73,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			NavigatorGateway gw = new NavigatorDBGateway();
 			prepareContext(context);
 			try {
-				xml = gw.getData(context);
+				xml = gw.getRawData(context);
 				NavigatorFactory factory = new NavigatorFactory();
 				nav = factory.fromStream(xml);
 			} finally {
@@ -94,7 +94,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			prepareContext(action);
 			DataPanelGateway gateway = new DataPanelXMLGateway();
 			DataFile<InputStream> file =
-				gateway.getXML(action.getDataPanelLink().getDataPanelId());
+				gateway.getRawData(action.getDataPanelLink().getDataPanelId());
 			DataPanelFactory factory = new DataPanelFactory();
 			panel = factory.fromStream(file);
 			outputDebugInfo(panel);
@@ -137,17 +137,17 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 			if (elementInfo.loadByOneProc()) {
 				gateway = new GridDBGateway();
-				raw = gateway.getDataAndSettings(context, elementInfo, settings);
+				raw = gateway.getRawDataAndSettings(context, elementInfo, settings);
 				factory = new GridDBFactory(raw, settings);
 				grid = factory.build();
 			} else {
 				sgateway = new ElementSettingsDBGateway();
-				raw = sgateway.get(context, elementInfo);
+				raw = sgateway.getRawData(context, elementInfo);
 				factory = new GridDBFactory(raw, settings);
 				factory.buildStepOne();
 				settings = factory.getRequestSettings();
 				gateway = new GridDBGateway(sgateway.getConn());
-				raw = gateway.getData(context, elementInfo, settings);
+				raw = gateway.getRawData(context, elementInfo, settings);
 				factory.setSource(raw);
 				grid = factory.buildStepTwo();
 			}
@@ -165,7 +165,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		try {
 			ChartGateway gateway = new ChartDBGateway();
 			prepareContext(context);
-			ElementRawData raw = gateway.getFactorySource(context, element);
+			ElementRawData raw = gateway.getRawData(context, element);
 			ChartDBFactory factory = new ChartDBFactory(raw);
 			Chart chart = factory.build();
 			outputDebugInfo(chart);
@@ -210,7 +210,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		try {
 			GeoMapGateway gateway = new GeoMapDBGateway();
 			prepareContext(context);
-			ElementRawData raw = gateway.getFactorySource(context, element);
+			ElementRawData raw = gateway.getRawData(context, element);
 			GeoMapDBFactory factory = new GeoMapDBFactory(raw);
 			GeoMap map = factory.build();
 			outputDebugInfo(map);
@@ -228,7 +228,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		try {
 			XFormsGateway gateway = new XFormsDBGateway();
 			prepareContext(context);
-			HTMLBasedElementRawData raw = gateway.getInitialData(context, element);
+			HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 			if (currentData != null) {
 				raw.setData(currentData);
 			}
@@ -459,7 +459,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	private String
 			getRawMainPageFrame(final CompositeContext context, final MainPageFrameType type) {
 		MainPageFrameSelector selector = new MainPageFrameSelector(type);
-		String result = selector.getGateway().get(context, selector.getSourceName());
+		String result = selector.getGateway().getRawData(context, selector.getSourceName());
 		return result;
 	}
 

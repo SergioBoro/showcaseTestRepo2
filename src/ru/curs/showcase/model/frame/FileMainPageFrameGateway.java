@@ -16,7 +16,7 @@ import ru.curs.showcase.util.*;
 public class FileMainPageFrameGateway implements MainPageFrameGateway {
 
 	@Override
-	public String get(final CompositeContext context, final String frameSource) {
+	public String getRawData(final CompositeContext context, final String frameSource) {
 		String filepath = String.format("%s/%s", "html", frameSource);
 		try {
 			InputStream is = AppProps.loadUserDataToStream(filepath);

@@ -25,7 +25,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	static final int FILE_TEMPLATE_IND = 3;
 
 	@Override
-	public HTMLBasedElementRawData getInitialData(final CompositeContext context,
+	public HTMLBasedElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
 		return stdGetData(context, elementInfo);
 	}

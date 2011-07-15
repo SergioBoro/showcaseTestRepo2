@@ -17,7 +17,7 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 	protected static final String FRAME_DATA_TAG = "framedata";
 
 	@Override
-	public String get(final CompositeContext context, final String frameSource) {
+	public String getRawData(final CompositeContext context, final String frameSource) {
 		try {
 			try {
 				setProcName(frameSource);

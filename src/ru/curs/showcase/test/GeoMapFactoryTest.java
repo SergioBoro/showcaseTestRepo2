@@ -106,7 +106,7 @@ public class GeoMapFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "05");
 
 		GeoMapGateway gateway = new GeoMapDBGateway();
-		ElementRawData raw = gateway.getFactorySource(context, element);
+		ElementRawData raw = gateway.getRawData(context, element);
 		GeoMapDBFactory factory = new GeoMapDBFactory(raw);
 		GeoMap map = factory.build();
 

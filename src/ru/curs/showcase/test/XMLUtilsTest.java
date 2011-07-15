@@ -293,7 +293,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 		DataPanelGateway gateway = new DataPanelXMLGateway();
 		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
-		validator.validate(new XMLSource(gateway.getXML("test.xml").getData(), "test.xml",
+		validator.validate(new XMLSource(gateway.getRawData("test.xml").getData(), "test.xml",
 				xsdFileName));
 	}
 
@@ -306,7 +306,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 		DataPanelGateway gateway = new DataPanelXMLGateway();
 		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
-		validator.validate(new XMLSource(gateway.getXML("test.bad1.xml").getData(),
+		validator.validate(new XMLSource(gateway.getRawData("test.bad1.xml").getData(),
 				"test.bad1.xml", xsdFileName));
 	}
 

@@ -29,7 +29,7 @@ public interface DataPanelGateway {
 	 *            - идентификатор панели.
 	 * @return - файл.
 	 */
-	DataFile<InputStream> getXML(String dataPanelId);
+	DataFile<InputStream> getRawData(String dataPanelId);
 
 	/**
 	 * Проверка на существование вкладки в файле.

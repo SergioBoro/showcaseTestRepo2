@@ -20,7 +20,7 @@ public interface NavigatorGateway {
 	 * @param aContext
 	 *            - контекст.
 	 */
-	InputStream getData(CompositeContext aContext);
+	InputStream getRawData(CompositeContext aContext);
 
 	/**
 	 * Функция принудительно освобождает ресурсы, используемые шлюзом для

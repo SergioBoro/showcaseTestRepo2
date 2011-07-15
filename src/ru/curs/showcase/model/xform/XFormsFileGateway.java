@@ -23,7 +23,7 @@ import ru.curs.showcase.util.*;
 public final class XFormsFileGateway extends DataCheckGateway implements XFormsGateway {
 
 	@Override
-	public HTMLBasedElementRawData getInitialData(final CompositeContext context,
+	public HTMLBasedElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo element) {
 		check(element);
 		DocumentBuilder db = XMLUtils.createBuilder();

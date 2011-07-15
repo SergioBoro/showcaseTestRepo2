@@ -1,7 +1,5 @@
 package ru.curs.showcase.model;
 
-import java.sql.SQLException;
-
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 
@@ -19,8 +17,6 @@ public interface ElementSettingsGateway {
 	 *            - контекст.
 	 * @param elementInfo
 	 *            - описание элемента.
-	 * @throws SQLException
 	 */
-	ElementRawData get(CompositeContext context, DataPanelElementInfo elementInfo)
-			throws SQLException;
+	ElementRawData getRawData(CompositeContext context, DataPanelElementInfo elementInfo);
 }

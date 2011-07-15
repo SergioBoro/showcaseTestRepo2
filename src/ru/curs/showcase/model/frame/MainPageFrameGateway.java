@@ -18,6 +18,6 @@ public interface MainPageFrameGateway {
 	 * @param frameSource
 	 *            - источник данных.
 	 */
-	String get(CompositeContext context, String frameSource);
+	String getRawData(CompositeContext context, String frameSource);
 
 }

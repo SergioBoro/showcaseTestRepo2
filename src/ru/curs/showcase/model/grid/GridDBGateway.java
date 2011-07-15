@@ -30,7 +30,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	}
 
 	@Override
-	public ElementRawData getDataAndSettings(final CompositeContext context,
+	public ElementRawData getRawDataAndSettings(final CompositeContext context,
 			final DataPanelElementInfo elementInfo, final GridRequestedSettings settings) {
 		init(context, elementInfo);
 		try {
@@ -66,9 +66,9 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	}
 
 	@Override
-	public ElementRawData getFactorySource(final CompositeContext aContext,
+	public ElementRawData getRawDataAndSettings(final CompositeContext aContext,
 			final DataPanelElementInfo aElement) {
-		return getDataAndSettings(aContext, aElement, GridRequestedSettings.createDefault());
+		return getRawDataAndSettings(aContext, aElement, GridRequestedSettings.createDefault());
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	}
 
 	@Override
-	public ElementRawData getData(final CompositeContext context,
+	public ElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo, final GridRequestedSettings settings) {
 		init(context, elementInfo);
 		setTemplateIndex(DATA_ONLY_IND);

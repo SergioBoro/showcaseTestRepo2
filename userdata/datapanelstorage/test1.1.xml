@@ -4,8 +4,8 @@
 		<element id="1" type="webtext" transform="bal.xsl" />
 	</tab>
 	<tab id="2" name="Балансы">
-		<element id="2" type="grid" proc="grid_bal" >
-			<proc id="2md" name="grid_bal_metadata" type="METADATA"/>
+		<element id="2" type="grid" proc="grid_cities_data" >
+			<proc id="2md" name="grid_cities_metadata" type="METADATA"/>
 		</element>
 		<element id="3" type="chart" proc="chart_bal" hideOnLoad="true" />
 		<element id="4" type="chart" proc="chart_bal" hideOnLoad="true" />

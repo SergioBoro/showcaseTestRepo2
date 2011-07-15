@@ -23,7 +23,7 @@ public class ChartGatewayTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = getTestChartInfo();
 
 		ChartGateway gateway = new ChartDBGateway();
-		gateway.getFactorySource(context, element);
+		gateway.getRawData(context, element);
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class ChartGatewayTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo element = new DataPanelElementInfo("id", DataPanelElementType.CHART);
 
 		ChartGateway gateway = new ChartDBGateway();
-		gateway.getFactorySource(null, element);
+		gateway.getRawData(null, element);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class ChartGatewayTest extends AbstractTestBasedOnFiles {
 		element.setProcName("proc");
 
 		ChartGateway gateway = new ChartDBGateway();
-		gateway.getFactorySource(null, element);
+		gateway.getRawData(null, element);
 	}
 
 	/**
@@ -58,6 +58,6 @@ public class ChartGatewayTest extends AbstractTestBasedOnFiles {
 	@Test(expected = IncorrectElementException.class)
 	public void testWrongElement3() {
 		ChartGateway gateway = new ChartDBGateway();
-		gateway.getFactorySource(null, null);
+		gateway.getRawData(null, null);
 	}
 }

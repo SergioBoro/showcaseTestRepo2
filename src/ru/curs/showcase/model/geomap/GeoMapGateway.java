@@ -2,7 +2,7 @@ package ru.curs.showcase.model.geomap;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.ElementRawData;
+import ru.curs.showcase.model.*;
 
 /**
  * Шлюз для получения "сырых" данных для построения карты.
@@ -21,5 +21,5 @@ public interface GeoMapGateway {
 	 *            - элемент.
 	 * @return - фабрика.
 	 */
-	ElementRawData getFactorySource(CompositeContext context, DataPanelElementInfo element);
+	ElementRawData getRawData(CompositeContext context, DataPanelElementInfo element);
 }
