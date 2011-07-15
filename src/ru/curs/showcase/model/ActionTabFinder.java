@@ -36,19 +36,24 @@ public abstract class ActionTabFinder {
 		if (tabValue != null) {
 			if (!tabValue.equalsIgnoreCase(FIRST_OR_CURRENT_VALUE)) {
 				if (!tabValue.equalsIgnoreCase(CanBeCurrent.CURRENT_ID)) {
-					if (!existsInStorage(link, tabValue)) {
-						throw new IncorrectElementException(String.format(ERROR_MES, tabValue,
-								link.getDataPanelId()));
+					if (!link.getDataPanelId().equalsIgnoreCase(CanBeCurrent.CURRENT_ID)) {
+						checkForExists(link, tabValue);
 					}
 				}
 				return tabValue;
-
 			} else {
 				link.setFirstOrCurrentTab(true);
 				return getFirstFromStorage(link);
 			}
 		} else {
 			return getFirstFromStorage(link);
+		}
+	}
+
+	private void checkForExists(final DataPanelLink link, final String tabValue) {
+		if (!existsInStorage(link, tabValue)) {
+			throw new IncorrectElementException(String.format(ERROR_MES, tabValue,
+					link.getDataPanelId()));
 		}
 	}
 
