@@ -132,10 +132,9 @@ public interface DataService extends RemoteService {
 	 *            - описание элемента.
 	 * @param data
 	 *            - данные.
-	 * @return - результат сохранения.
 	 * @throws GeneralServerException
 	 */
-	CommandResult saveXForms(CompositeContext context, DataPanelElementInfo element, String data)
+	void saveXForms(CompositeContext context, DataPanelElementInfo element, String data)
 			throws GeneralServerException;
 
 	/**

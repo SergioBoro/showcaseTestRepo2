@@ -129,7 +129,7 @@ public interface DataServiceAsync {
 	 *            - данные.
 	 */
 	void saveXForms(CompositeContext context, DataPanelElementInfo element, String data,
-			AsyncCallback<CommandResult> callback);
+			AsyncCallback<Void> callback);
 
 	/**
 	 * Асинхронная версия.
@@ -163,4 +163,5 @@ public interface DataServiceAsync {
 	 *            - callback.
 	 */
 	void getMainPage(CompositeContext context, AsyncCallback<MainPage> callback);
+
 }

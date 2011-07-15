@@ -51,7 +51,7 @@ public interface DataServiceExt {
 	 * @param userDataId
 	 *            - идентификатор userdata.
 	 */
-	RequestResult handleSQLSubmission(String procName, String content, String userDataId)
+	String handleSQLSubmission(String procName, String content, String userDataId)
 			throws GeneralServerException;
 
 	/**

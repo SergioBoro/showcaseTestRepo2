@@ -3,7 +3,7 @@ package ru.curs.showcase.app.client.api;
 import java.util.List;
 
 import ru.beta2.extra.gwt.ui.selector.SelectorComponent;
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.client.*;
@@ -58,22 +58,15 @@ public final class XFormPanelCallbacksEvents {
 			if (curXFormPanel.getElementInfo().getSaveProc() != null) {
 				curXFormPanel.getDataService().saveXForms(curXFormPanel.getContext(),
 						curXFormPanel.getElementInfo(), data,
-						new GWTServiceCallback<CommandResult>(Constants.XFORM_SAVE_DATA_ERROR) {
+						new GWTServiceCallback<Void>(Constants.XFORM_SAVE_DATA_ERROR) {
 
 							@Override
-							public void onSuccess(final CommandResult result) {
-								if (result.getSuccess()) {
-									if (curXFormPanel.getUw() != null) {
-										submitUploadForm(data, curXFormPanel, ac);
-									} else {
-										runAction(ac);
-									}
+							public void onSuccess(final Void result) {
+								if (curXFormPanel.getUw() != null) {
+									submitUploadForm(data, curXFormPanel, ac);
 								} else {
-									MessageBox.showSimpleMessage(
-											Constants.XFORM_CHECK_DURING_SAVE_ERROR,
-											result.generateStandartErrorMessage());
+									runAction(ac);
 								}
-
 							}
 
 						});

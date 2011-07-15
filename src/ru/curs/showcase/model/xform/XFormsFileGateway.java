@@ -6,7 +6,6 @@ import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;
 
-import ru.curs.showcase.app.api.CommandResult;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.exception.TestFileExchangeException;
@@ -47,8 +46,8 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	}
 
 	@Override
-	public CommandResult saveData(final CompositeContext context,
-			final DataPanelElementInfo element, final String data) {
+	public void saveData(final CompositeContext context, final DataPanelElementInfo element,
+			final String data) {
 		check(element);
 		String fileName =
 			String.format("%s/%s/%s_updated.xml", AppProps.getUserDataCatalog(),
@@ -58,11 +57,10 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 		} catch (Exception e) {
 			throw new TestFileExchangeException(fileName, e);
 		}
-		return CommandResult.newSuccessResult();
 	}
 
 	@Override
-	public RequestResult handleSubmission(final String aProcName, final String aInputData) {
+	public String handleSubmission(final String aProcName, final String aInputData) {
 		System.out.println(String.format(
 				"Заглушка: выполнение Submission процедуры '%s' c данными формы  %s", aProcName,
 				aInputData));

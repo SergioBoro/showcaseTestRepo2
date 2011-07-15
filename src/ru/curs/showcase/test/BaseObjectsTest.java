@@ -25,36 +25,6 @@ public class BaseObjectsTest extends AbstractTestBasedOnFiles {
 	static final String TEST_CSS = "ru\\curs\\showcase\\test\\ShowcaseDataGrid_test.css";
 
 	/**
-	 * Проверяет работу функции CommandResult.newSuccessResult().
-	 * 
-	 * @see ru.curs.showcase.app.api.CommandResult#newSuccessResult()
-	 *      CommandResult.newSuccessResult
-	 */
-	@Test
-	public void testCommandResultNewSuccess() {
-		CommandResult res = CommandResult.newSuccessResult();
-		assertTrue(res.getSuccess());
-		assertNull(res.getErrorCode());
-		assertNull(res.getErrorMessage());
-	}
-
-	/**
-	 * Проверяет работу функции CommandResult.newErrorResult().
-	 * 
-	 * @see ru.curs.showcase.app.api.CommandResult#newErrorResult(int, String)
-	 *      CommandResult.newErrorResult
-	 */
-	@Test
-	public void testCommandResultErrorSuccess() {
-		final int errorCode = 1;
-		final String errorMes = "ErrorMes";
-		CommandResult res = CommandResult.newErrorResult(errorCode, errorMes);
-		assertFalse(res.getSuccess());
-		assertEquals(errorCode, res.getErrorCode().intValue());
-		assertEquals(errorMes, res.getErrorMessage());
-	}
-
-	/**
 	 * Проверка работы StreamConvertor.
 	 * 
 	 * @throws IOException

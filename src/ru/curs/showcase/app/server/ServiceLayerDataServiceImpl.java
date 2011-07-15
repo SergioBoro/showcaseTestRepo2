@@ -242,9 +242,8 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public CommandResult saveXForms(final CompositeContext context,
-			final DataPanelElementInfo elementInfo, final String data)
-			throws GeneralServerException {
+	public void saveXForms(final CompositeContext context, final DataPanelElementInfo elementInfo,
+			final String data) throws GeneralServerException {
 		try {
 			prepareContext(context);
 			LOGGER.info("Идет сохранение данных XForms: " + data);
@@ -253,11 +252,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 				new UserXMLTransformer(data, elementInfo.getSaveProc());
 			transformer.checkAndTransform();
 			XFormsGateway gateway = new XFormsDBGateway();
-			CommandResult res =
-				gateway.saveData(context, elementInfo, transformer.getStringResult());
-
-			outputDebugInfo(res);
-			return res;
+			gateway.saveData(context, elementInfo, transformer.getStringResult());
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);
 		}
@@ -295,23 +290,18 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public RequestResult handleSQLSubmission(final String procName, final String content,
+	public String handleSQLSubmission(final String procName, final String content,
 			final String userDataId) throws GeneralServerException {
 		try {
 			setUserData(userDataId);
 			XFormsGateway gateway = new XFormsDBGateway();
 			String decodedContent = XMLUtils.xmlServiceSymbolsToNormal(content);
 
-			RequestResult res = gateway.handleSubmission(procName, decodedContent);
+			String res = gateway.handleSubmission(procName, decodedContent);
 
-			if (res.getSuccess()) {
-				LOGGER.info(String.format(
-						"Submission '%s' c данными %s успешно выполнен c результатом: %s",
-						procName, decodedContent, res.getData()));
-			} else {
-				LOGGER.info(String.format("Submission '%s' c данными %s вернул ошибку: %s",
-						procName, decodedContent, res.generateStandartErrorMessage()));
-			}
+			LOGGER.info(String.format(
+					"Submission '%s' c данными %s успешно выполнен c результатом: %s", procName,
+					decodedContent, res));
 			return res;
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);

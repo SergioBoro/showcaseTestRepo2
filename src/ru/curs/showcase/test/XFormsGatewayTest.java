@@ -9,7 +9,6 @@ import javax.xml.parsers.DocumentBuilder;
 import org.junit.Test;
 import org.w3c.dom.*;
 
-import ru.curs.showcase.app.api.CommandResult;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralServerException;
@@ -50,8 +49,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		XFormsGateway gateway = new XFormsFileGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
 		gateway = new XFormsFileGateway();
-		CommandResult res = gateway.saveData(context, element, content);
-		assertTrue(res.getSuccess());
+		gateway.saveData(context, element, content);
 		File file =
 			new File(String.format("%s/%s/%s_updated.xml", AppProps.getUserDataCatalog(),
 					AppProps.XFORMS_DIR, element.getProcName()));
@@ -104,8 +102,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		XFormsGateway gateway = new XFormsDBGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
 		gateway = new XFormsDBGateway();
-		CommandResult res = gateway.saveData(context, element, content);
-		assertTrue(res.getSuccess());
+		gateway.saveData(context, element, content);
 	}
 
 	/**
@@ -120,11 +117,15 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		XFormsGateway gateway = new XFormsDBGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
 		gateway = new XFormsDBGateway();
-		CommandResult res = gateway.saveData(context, element, content);
-		assertFalse(res.getSuccess());
-		assertEquals(1, res.getErrorCode().intValue());
-		assertEquals("Неуловимая ошибка из БД, связанная с триггерами и блокировками",
-				res.getErrorMessage());
+		try {
+			gateway.saveData(context, element, content);
+		} catch (ValidateInDBException e) {
+			assertEquals("1", e.getUserMessage().getId());
+			assertEquals("Неуловимая ошибка из БД, связанная с триггерами и блокировками (1)", e
+					.getUserMessage().getText());
+			return;
+		}
+		fail();
 	}
 
 	private String getNewContentBasedOnExisting(final CompositeContext context,
@@ -144,9 +145,8 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	public void testSQLSubmission() {
 		String data = "<data>test</data>";
 		XFormsGateway gateway = new XFormsDBGateway();
-		RequestResult res = gateway.handleSubmission("xforms_submission1", data);
-		assertTrue(res.getSuccess());
-		assertEquals(data, res.getData());
+		String res = gateway.handleSubmission("xforms_submission1", data);
+		assertEquals(data, res);
 	}
 
 	/**
@@ -158,9 +158,8 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	public void testSQLSubmissionBySL() throws GeneralServerException {
 		String data = "<data>test</data>";
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		RequestResult res = sl.handleSQLSubmission("xforms_submission1", data, null);
-		assertTrue(res.getSuccess());
-		assertEquals(data, res.getData());
+		String res = sl.handleSQLSubmission("xforms_submission1", data, null);
+		assertEquals(data, res);
 	}
 
 	/**
@@ -173,9 +172,8 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	public void testSQLSubmissionBySLWithNullData() throws GeneralServerException {
 		String content = null;
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		RequestResult res = sl.handleSQLSubmission("xforms_submission1", content, null);
-		assertTrue(res.getSuccess());
-		assertEquals(content, res.getData());
+		String res = sl.handleSQLSubmission("xforms_submission1", content, null);
+		assertEquals(content, res);
 	}
 
 	/**
@@ -351,9 +349,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 			new UserXMLTransformer(content, elementInfo.getSaveProc());
 		transformer.checkAndTransform();
 		gateway = new XFormsDBGateway();
-		CommandResult res = gateway.saveData(context, elementInfo, transformer.getStringResult());
-
-		assertTrue(res.getSuccess());
+		gateway.saveData(context, elementInfo, transformer.getStringResult());
 	}
 
 	/**

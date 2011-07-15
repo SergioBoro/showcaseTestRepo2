@@ -75,10 +75,11 @@ public class ValidateInDBException extends BaseException {
 		loadMessage();
 	}
 
-	public ValidateInDBException(final int errorCode, final String errorMes) {
+	public ValidateInDBException(final Integer errorCode, final String errorMes) {
 		super(ExceptionType.USER);
 		userMessage =
 			new UserMessage(String.format("%s (%d)", errorMes, errorCode), MessageType.ERROR);
+		userMessage.setId(errorCode.toString());
 	}
 
 	private void loadMessage() {

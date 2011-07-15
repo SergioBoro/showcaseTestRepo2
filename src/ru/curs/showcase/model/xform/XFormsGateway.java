@@ -2,7 +2,6 @@ package ru.curs.showcase.model.xform;
 
 import java.io.*;
 
-import ru.curs.showcase.app.api.CommandResult;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.*;
@@ -37,10 +36,9 @@ public interface XFormsGateway {
 	 *            - элемент.
 	 * @param data
 	 *            - данные для сохранения.
-	 * @return - результат процедуры сохранения.
 	 * 
 	 */
-	CommandResult saveData(CompositeContext context, DataPanelElementInfo element, String data);
+	void saveData(CompositeContext context, DataPanelElementInfo element, String data);
 
 	/**
 	 * Возвращает файл для XForms.
@@ -69,7 +67,7 @@ public interface XFormsGateway {
 	 * @return - требуемые данные (как правило в формате XML).
 	 * 
 	 */
-	RequestResult handleSubmission(String procName, String inputData);
+	String handleSubmission(String procName, String inputData);
 
 	/**
 	 * Загружает файл в хранилище.

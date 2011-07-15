@@ -73,9 +73,9 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public CommandResult saveXForms(final CompositeContext context,
-			final DataPanelElementInfo element, final String data) throws GeneralServerException {
-		return getServiceLayer().saveXForms(context, element, data);
+	public void saveXForms(final CompositeContext context, final DataPanelElementInfo element,
+			final String data) throws GeneralServerException {
+		getServiceLayer().saveXForms(context, element, data);
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package ru.curs.showcase.model.xform;
 import java.io.*;
 import java.sql.*;
 
-import ru.curs.showcase.app.api.CommandResult;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.exception.*;
@@ -66,8 +65,8 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	}
 
 	@Override
-	public CommandResult saveData(final CompositeContext context,
-			final DataPanelElementInfo elementInfo, final String data) {
+	public void saveData(final CompositeContext context, final DataPanelElementInfo elementInfo,
+			final String data) {
 		init(context, elementInfo);
 		DataPanelElementProc proc = elementInfo.getSaveProc();
 		if (proc == null) {
@@ -76,7 +75,6 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 
 		try {
 			setConn(ConnectionFactory.getConnection());
-			CommandResult result;
 			try {
 				setProcName(proc.getName());
 				String sql = String.format(getSaveSqlTemplate(), getProcName());
@@ -86,52 +84,38 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 				getStatement().setString(XFORMSDATA_PARAM, data);
 				getStatement().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
 				getStatement().execute();
-				int errorCode = getStatement().getInt(1);
-				if (errorCode == 0) {
-					result = CommandResult.newSuccessResult();
-				} else {
-					result =
-						CommandResult.newErrorResult(errorCode,
-								getStatement().getString(ERROR_MES_COL));
-				}
+				checkErrorCode();
 			} finally {
 				releaseResources();
 			}
-			return result;
 		} catch (SQLException e) {
 			dbExceptionHandler(e);
 		}
-		return null;
 	}
 
 	@Override
-	public RequestResult handleSubmission(final String aProcName, final String aInputData) {
+	public String handleSubmission(final String aProcName, final String aInputData) {
 		try {
 			Connection db = ConnectionFactory.getConnection();
-			RequestResult result;
+			String out = null;
 			try {
 				String sql = String.format(getSubmissionSqlTemplate(), aProcName);
-				CallableStatement cs = db.prepareCall(sql);
-				cs.setString(INPUTDATA_PARAM, aInputData);
-				cs.registerOutParameter(1, java.sql.Types.INTEGER);
-				cs.registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
-				cs.registerOutParameter(OUTPUTDATA_PARAM, java.sql.Types.SQLXML);
-				cs.execute();
-				int errorCode = cs.getInt(1);
-				if (errorCode == 0) {
-					SQLXML sqlxml = cs.getSQLXML(OUTPUTDATA_PARAM);
-					String out = null;
-					if (sqlxml != null) {
-						out = sqlxml.getString();
-					}
-					result = RequestResult.newSuccessResult(out);
-				} else {
-					result = RequestResult.newErrorResult(errorCode, cs.getString(ERROR_MES_COL));
+				setStatement(db.prepareCall(sql));
+				getStatement().setString(INPUTDATA_PARAM, aInputData);
+				getStatement().registerOutParameter(1, java.sql.Types.INTEGER);
+				getStatement().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
+				getStatement().registerOutParameter(OUTPUTDATA_PARAM, java.sql.Types.SQLXML);
+				getStatement().execute();
+				checkErrorCode();
+
+				SQLXML sqlxml = getStatement().getSQLXML(OUTPUTDATA_PARAM);
+				if (sqlxml != null) {
+					out = sqlxml.getString();
 				}
 			} finally {
 				db.close();
 			}
-			return result;
+			return out;
 		} catch (SQLException e) {
 			if (ValidateInDBException.isExplicitRaised(e)) {
 				throw new ValidateInDBException(e);

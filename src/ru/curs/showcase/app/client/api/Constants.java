@@ -101,8 +101,6 @@ public final class Constants {
 
 	public static final String XFORM_UPLOAD_CAPTION = "Загрузка файла";
 
-	public static final String XFORM_CHECK_DURING_SAVE_ERROR = "Ошибка при проверке данных";
-
 	public static final String XFORM_SAVE_DATA_ERROR =
 		"Ошибка при сохранении данных XForms на сервере";
 
