@@ -26,15 +26,10 @@ public class DBQueryException extends BaseException {
 	 */
 	private static final long serialVersionUID = 4849562484767586377L;
 
-	public DBQueryException(final SQLException cause, final DataPanelElementInfo aElementInfo,
-			final CompositeContext aContext) {
-		super(ExceptionType.SOLUTION, String.format("%s %s.", ERROR_HEADER,
-				aElementInfo.getProcName()), cause);
-		setContext(new DataPanelElementContext(aContext, aElementInfo));
-	}
-
-	public DBQueryException(final SQLException cause, final String aProcName) {
+	public DBQueryException(final SQLException cause, final String aProcName,
+			final DataPanelElementContext aContext) {
 		super(ExceptionType.SOLUTION, String.format("%s %s.", ERROR_HEADER, aProcName), cause);
+		setContext(aContext);
 	}
 
 	public DBQueryException(final DataPanelElementInfo aElementInfo,
@@ -42,11 +37,6 @@ public class DBQueryException extends BaseException {
 		super(ExceptionType.SOLUTION, String.format("%s %s. %s: %s.", ERROR_HEADER,
 				aElementInfo.getProcName(), ERROR_MES_TEXT, aErrorText));
 		setContext(new DataPanelElementContext(aContext, aElementInfo));
-	}
-
-	public DBQueryException(final String procName, final String aErrorText) {
-		super(ExceptionType.SOLUTION, String.format("%s %s. %s: %s.", ERROR_HEADER, procName,
-				ERROR_MES_TEXT, aErrorText));
 	}
 
 }

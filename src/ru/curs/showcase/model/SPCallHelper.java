@@ -4,6 +4,7 @@ import java.sql.*;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.exception.*;
 import ru.curs.showcase.util.ConnectionFactory;
@@ -40,6 +41,11 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 * Имя хранимой процедуры, которую нужно вызвать.
 	 */
 	private String procName;
+
+	/**
+	 * Номер используемого шаблоны запроса. По умолчанию используется первый.
+	 */
+	private int templateIndex = 0;
 
 	public String getProcName() {
 		return procName;
@@ -111,9 +117,10 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	/**
 	 * Возвращает шаблон для запуска SQL процедуры.
 	 * 
-	 * @return - шаблон.
+	 * @param index
+	 *            - номер шаблона.
 	 */
-	protected abstract String getSqlTemplate();
+	protected abstract String getSqlTemplate(final int index);
 
 	/**
 	 * Функция освобождения ресурсов, необходимых для создания объекта.
@@ -134,23 +141,34 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 * SolutionDBException.
 	 * 
 	 * @param e
-	 *            - исключение.
+	 *            - исходное исключение.
 	 */
-	protected void dbExceptionHandler(final SQLException e) {
+	protected final void dbExceptionHandler(final SQLException e) {
 		if (ValidateInDBException.isExplicitRaised(e)) {
 			throw new ValidateInDBException(e);
 		} else {
 			if (!checkProcExists()) {
 				throw new SPNotExistsException(getProcName());
 			}
-			throw new DBQueryException(e, getProcName());
+			handleDBQueryException(e);
 		}
+	}
+
+	/**
+	 * Часть стандартного обработчика исключений, отвечающая за работу с
+	 * DBQueryException.
+	 * 
+	 * @param e
+	 *            - исходное исключение.
+	 */
+	protected void handleDBQueryException(final SQLException e) {
+		throw new DBQueryException(e, getProcName(), new DataPanelElementContext(getContext()));
 	}
 
 	/**
 	 * Проверяет наличие хранимой процедуры в БД.
 	 */
-	protected boolean checkProcExists() {
+	private boolean checkProcExists() {
 		String sql =
 			String.format(
 					"IF (OBJECT_ID('[dbo].[%1$s]') IS NOT NULL AND (OBJECTPROPERTY(OBJECT_ID('[dbo].[%1$s]'),'IsProcedure')=1))",
@@ -175,14 +193,14 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		if (conn == null) {
 			conn = ConnectionFactory.getConnection();
 		}
-		String sql = String.format(getSqlTemplate(), getProcName());
+		String sql = String.format(getSqlTemplate(templateIndex), getProcName());
 		statement = conn.prepareCall(sql);
 	}
 
 	/**
 	 * Новая функция подготовки CallableStatement - с возвратом кода ошибки.
 	 */
-	protected void prepareStdStatementWithErrorMes() throws SQLException {
+	protected void prepareStatementWithErrorMes() throws SQLException {
 		prepareSQL();
 		statement.registerOutParameter(1, java.sql.Types.INTEGER);
 		statement.registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
@@ -196,5 +214,13 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		if (errorCode != 0) {
 			throw new ValidateInDBException(errorCode, getStatement().getString(ERROR_MES_COL));
 		}
+	}
+
+	public int getTemplateIndex() {
+		return templateIndex;
+	}
+
+	public void setTemplateIndex(final int aTemplateIndex) {
+		templateIndex = aTemplateIndex;
 	}
 }

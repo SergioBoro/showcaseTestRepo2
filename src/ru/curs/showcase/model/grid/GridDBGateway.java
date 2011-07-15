@@ -19,6 +19,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	static final String FIRST_RECORD_TAG = "firstrecord";
 	protected static final String SORT_COLUMNNAME = "sortcols";
 	public static final String OUTPUT_COLUMNNAME = "gridsettings";
+	static final int DATA_ONLY_IND = 1;
 
 	public GridDBGateway() {
 		super();
@@ -35,7 +36,8 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 		try {
 			settings.normalize();
 
-			prepareStdStatementWithErrorMes();
+			prepareElementStatementWithErrorMes();
+			getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
 			setupSorting(getStatement(), settings);
 			stdGetResults();
 
@@ -75,12 +77,15 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	}
 
 	@Override
-	protected String getSqlTemplate() {
-		return "{? = call [dbo].[%s](?, ?, ?, ?, ?, ?, ?, ?)}";
-	}
-
-	protected String getSqlDataTemplate() {
-		return "{? = call [dbo].[%s](?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+	protected String getSqlTemplate(final int index) {
+		switch (index) {
+		case 0:
+			return "{? = call [dbo].[%s](?, ?, ?, ?, ?, ?, ?, ?)}";
+		case DATA_ONLY_IND:
+			return "{? = call [dbo].[%s](?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+		default:
+			return null;
+		}
 	}
 
 	@Override
@@ -92,14 +97,11 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	public ElementRawData getData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo, final GridRequestedSettings settings) {
 		init(context, elementInfo);
+		setTemplateIndex(DATA_ONLY_IND);
 		try {
 			settings.normalize();
 
-			String sql = String.format(getSqlDataTemplate(), getProcName());
-			setStatement(getConn().prepareCall(sql));
-			getStatement().registerOutParameter(1, java.sql.Types.INTEGER);
-			getStatement().registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
-			setupGeneralElementParameters();
+			prepareElementStatementWithErrorMes();
 			getStatement().setInt("firstrecord", settings.getFirstRecord());
 			getStatement().setInt("pagesize", settings.getPageSize());
 			setupSorting(getStatement(), settings);

@@ -21,7 +21,7 @@ public class WebTextDBGateway extends HTMLBasedSPCallHelper implements WebTextGa
 	}
 
 	@Override
-	protected String getSqlTemplate() {
+	protected String getSqlTemplate(final int index) {
 		return "{call [dbo].[%s](?, ?, ?, ?, ?, ?, ?)}";
 	}
 

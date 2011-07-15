@@ -5,9 +5,9 @@ import java.sql.*;
 
 import org.slf4j.*;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.exception.*;
+import ru.curs.showcase.exception.DBQueryException;
 import ru.curs.showcase.util.XMLUtils;
 
 /**
@@ -36,7 +36,7 @@ public abstract class ElementSPCallHelper extends SPCallHelper {
 	 * 
 	 * @throws SQLException
 	 */
-	protected void setupGeneralElementParameters() throws SQLException {
+	private void setupGeneralElementParameters() throws SQLException {
 		setupGeneralParameters();
 
 		getStatement().setString(ELEMENTID_COLUMNNAME, elementInfo.getId());
@@ -66,11 +66,9 @@ public abstract class ElementSPCallHelper extends SPCallHelper {
 	/**
 	 * Новая функция подготовки CallableStatement - с возвратом кода ошибки.
 	 */
-	@Override
-	protected void prepareStdStatementWithErrorMes() throws SQLException {
-		super.prepareStdStatementWithErrorMes();
+	protected void prepareElementStatementWithErrorMes() throws SQLException {
+		super.prepareStatementWithErrorMes();
 		setupGeneralElementParameters();
-		getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
 	}
 
 	public DataPanelElementInfo getElementInfo() {
@@ -124,19 +122,9 @@ public abstract class ElementSPCallHelper extends SPCallHelper {
 	}
 
 	@Override
-	protected void dbExceptionHandler(final SQLException e) {
-		if (ValidateInDBException.isExplicitRaised(e)) {
-			throw new ValidateInDBException(e);
-		} else {
-			if (!checkProcExists()) {
-				throw new SPNotExistsException(getProcName());
-			}
-			if (getElementInfo() != null) {
-				throw new DBQueryException(e, getElementInfo(), getContext());
-			} else {
-				throw new DBQueryException(e, getProcName());
-			}
-		}
+	protected void handleDBQueryException(final SQLException e) {
+		throw new DBQueryException(e, getProcName(), new DataPanelElementContext(getContext(),
+				getElementInfo()));
 	}
 
 	/**

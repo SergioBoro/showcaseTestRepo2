@@ -25,7 +25,7 @@ public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements Geo
 	}
 
 	@Override
-	protected String getSqlTemplate() {
+	protected String getSqlTemplate(final int index) {
 		return "exec [dbo].[%s] ?, ?, ?, ?, ?, ?";
 	}
 

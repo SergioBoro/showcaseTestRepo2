@@ -20,7 +20,7 @@ public class ActivityDBGateway extends SPCallHelper implements ActivityGateway {
 				setContext(activity.getContext());
 				setProcName(activity.getName());
 
-				prepareStdStatementWithErrorMes();
+				prepareStatementWithErrorMes();
 				setupGeneralParameters();
 				getStatement().execute();
 				checkErrorCode();
@@ -33,7 +33,7 @@ public class ActivityDBGateway extends SPCallHelper implements ActivityGateway {
 	}
 
 	@Override
-	protected String getSqlTemplate() {
+	protected String getSqlTemplate(final int index) {
 		return "{? = call [dbo].[%s](?, ?, ?, ?, ?)}";
 	}
 

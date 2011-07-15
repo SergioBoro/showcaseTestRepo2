@@ -50,9 +50,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		String content = getNewContentBasedOnExisting(context, element, gateway);
 		gateway = new XFormsFileGateway();
 		gateway.saveData(context, element, content);
-		File file =
-			new File(String.format("%s/%s/%s_updated.xml", AppProps.getUserDataCatalog(),
-					AppProps.XFORMS_DIR, element.getProcName()));
+		File file = new File(String.format("tmp/%s_updated.xml", element.getProcName()));
 		assertTrue(file.exists());
 	}
 

@@ -1,12 +1,12 @@
 package ru.curs.showcase.model.navigator;
 
 import java.io.InputStream;
-import java.sql.*;
+import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.SPCallHelper;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.AppProps;
 
 /**
  * Шлюз к хранимой процедуре в БД, возвращающей данные для навигатора.
@@ -20,15 +20,13 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 
 	@Override
 	public InputStream getData(final CompositeContext context) {
-		setConn(ConnectionFactory.getConnection());
 		setProcName(AppProps.getRequiredValueByName(NAVIGATOR_PROCNAME_PARAM));
 		try {
-			String sql = String.format(getSqlTemplate(), getProcName());
-			CallableStatement cs = getConn().prepareCall(sql);
-			cs.setString(SESSION_CONTEXT_PARAM, context.getSession());
-			cs.registerOutParameter(NAVIGATOR_TAG, java.sql.Types.SQLXML);
-			cs.execute();
-			InputStream stream = cs.getSQLXML(NAVIGATOR_TAG).getBinaryStream();
+			prepareSQL();
+			getStatement().setString(SESSION_CONTEXT_PARAM, context.getSession());
+			getStatement().registerOutParameter(NAVIGATOR_TAG, java.sql.Types.SQLXML);
+			getStatement().execute();
+			InputStream stream = getStatement().getSQLXML(NAVIGATOR_TAG).getBinaryStream();
 			return stream;
 		} catch (SQLException e) {
 			dbExceptionHandler(e);
@@ -37,7 +35,7 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 	}
 
 	@Override
-	protected String getSqlTemplate() {
+	protected String getSqlTemplate(final int index) {
 		return "exec [dbo].[%s] ?, ?";
 	}
 

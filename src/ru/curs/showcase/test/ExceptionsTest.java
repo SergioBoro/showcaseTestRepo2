@@ -165,9 +165,9 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 			serviceLayer.handleSQLSubmission("no_exist_proc", "fake_data", null);
 		} catch (Exception e) {
 			assertEquals(GeneralServerException.class, e.getClass());
-			assertEquals(DBQueryException.class.getName(),
+			assertEquals(SPNotExistsException.class.getName(),
 					((GeneralServerException) e).getOriginalExceptionClass());
-			assertTrue(((GeneralServerException) e).getOriginalMessage().indexOf("no_exist_proc") > -1);
+			assertTrue(((GeneralServerException) e).getMessage().indexOf("no_exist_proc") > -1);
 			return;
 		}
 		fail();

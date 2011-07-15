@@ -49,9 +49,7 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	public void saveData(final CompositeContext context, final DataPanelElementInfo element,
 			final String data) {
 		check(element);
-		String fileName =
-			String.format("%s/%s/%s_updated.xml", AppProps.getUserDataCatalog(),
-					AppProps.XFORMS_DIR, element.getProcName());
+		String fileName = String.format("tmp/%s_updated.xml", element.getProcName());
 		try {
 			XMLUtils.stringToXMLFile(data, fileName);
 		} catch (Exception e) {

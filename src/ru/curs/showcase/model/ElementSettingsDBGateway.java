@@ -23,7 +23,8 @@ public class ElementSettingsDBGateway extends ElementSPCallHelper implements
 		setProcName(elementInfo.getMetadataProc().getName());
 
 		try {
-			prepareStdStatementWithErrorMes();
+			prepareElementStatementWithErrorMes();
+			getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
 			getStatement().execute();
 			checkErrorCode();
 			return new ElementRawData(this, elementInfo, context);
@@ -39,7 +40,7 @@ public class ElementSettingsDBGateway extends ElementSPCallHelper implements
 	}
 
 	@Override
-	protected String getSqlTemplate() {
+	protected String getSqlTemplate(final int index) {
 		return "{? = call [dbo].[%s](?, ?, ?, ?, ?, ?, ?)}";
 	}
 

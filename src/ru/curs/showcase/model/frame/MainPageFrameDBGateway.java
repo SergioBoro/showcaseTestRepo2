@@ -22,13 +22,8 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 			try {
 				setProcName(frameSource);
 
-				prepareStdStatementWithErrorMes();
-				getStatement().setString(SESSION_CONTEXT_PARAM, "");
-				if (context != null) {
-					if (context.getSession() != null) {
-						getStatement().setString(SESSION_CONTEXT_PARAM, context.getSession());
-					}
-				}
+				prepareStatementWithErrorMes();
+				getStatement().setString(SESSION_CONTEXT_PARAM, context.getSession());
 				LOGGER.info("context=" + context.toString());
 				getStatement().registerOutParameter(FRAME_DATA_TAG, java.sql.Types.VARCHAR);
 
@@ -46,7 +41,7 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 	}
 
 	@Override
-	protected String getSqlTemplate() {
+	protected String getSqlTemplate(final int index) {
 		return "{? = call [dbo].[%s](?, ?, ?)}";
 	}
 
