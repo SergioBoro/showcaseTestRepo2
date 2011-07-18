@@ -54,12 +54,19 @@
 					</element>
 				</datapanel>
 				<server>
-				<activity name="test" type="SP">
+				<activity id="srv01" name="test" type="SP">
 				<add_context>
 				test
 				</add_context>
 				</activity>
 				</server>
+				<client>
+				<activity id="id01" name="testJS">
+				<add_context>				
+				01				
+				</add_context>
+				</activity>			
+				</client>					
 			</action>
 		</level1>	
 	</group>

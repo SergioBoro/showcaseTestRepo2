@@ -67,5 +67,8 @@
             <xs:pattern value="#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|()"></xs:pattern>
         </xs:restriction>
     </xs:simpleType>
-    
+	<xs:attributeGroup name="identGroup">
+		<xs:attribute name="id" use="required" type="notNullType" />
+		<xs:attribute name="name" use="required" type="notNullType" />
+	</xs:attributeGroup>    
 </xs:schema>

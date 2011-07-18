@@ -8,7 +8,7 @@
 			<xs:enumeration value="BROWSER_TAB" />
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="serverActivityType">
+	<xs:simpleType name="activityType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="SP" />
 		</xs:restriction>
@@ -63,29 +63,37 @@
 							<xs:element name="activity" minOccurs="0" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="add_context" minOccurs="0"/>
+										<xs:element name="add_context" minOccurs="0" />
 									</xs:sequence>
-									<xs:attribute name="type" type="serverActivityType" use="required"/>
-									<xs:attribute name="name" type="xs:string" use="required"/>
+									<xs:attributeGroup ref="identGroup" />
+									<xs:attribute name="type" type="activityType"
+										use="required" />									
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
 					</xs:complexType>
-				</xs:element>					
+					<xs:unique name="sActivityId">
+						<xs:selector xpath="activity" />
+						<xs:field xpath="@id" />
+					</xs:unique>					
+				</xs:element>
 				<xs:element name="client" minOccurs="0">
 					<xs:complexType>
 						<xs:all>
 							<xs:element name="activity" minOccurs="0" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="add_context" minOccurs="0"/>
+										<xs:element name="add_context" minOccurs="0" />
 									</xs:sequence>
-									<xs:attribute name="id" type="notNullType" use="required" />
-									<xs:attribute name="name" type="xs:string" use="required"/>
+									<xs:attributeGroup ref="identGroup" />
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
-					</xs:complexType>					
+					</xs:complexType>
+					<xs:unique name="cActivityId">
+						<xs:selector xpath="activity" />
+						<xs:field xpath="@id" />
+					</xs:unique>
 				</xs:element>
 			</xs:all>
 			<xs:attribute name="show_in" type="showInMode" />

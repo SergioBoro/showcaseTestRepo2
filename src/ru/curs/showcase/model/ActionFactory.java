@@ -163,10 +163,13 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 		}
 		if (qname.equalsIgnoreCase(ACTIVITY_TAG)) {
 			curActivity = new Activity();
+			curActivity.setId(attrs.getValue(ID_TAG));
 			curActivity.setName(attrs.getValue(NAME_TAG));
 			if (readingServerPart) {
 				value = attrs.getValue(TYPE_TAG);
-				curActivity.setType(ServerActivityType.valueOf(value));
+				curActivity.setType(ActivityType.valueOf(value));
+			} else {
+				curActivity.setType(ActivityType.BrowserJS);
 			}
 
 			CompositeContext context = createContextFromGeneral();

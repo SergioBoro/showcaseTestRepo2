@@ -85,11 +85,20 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 				.getElementLinks().get(0));
 
 		assertTrue(action.containsServerActivity());
-		Activity sa = action.getServerActivities().get(0);
-		assertNotNull(sa);
-		assertEquals(ServerActivityType.SP, sa.getType());
-		assertEquals("test", sa.getName());
-		assertEquals(ADD_CONDITION, sa.getContext().getAdditional());
+		Activity act = action.getServerActivities().get(0);
+		assertNotNull(act);
+		assertEquals(ActivityType.SP, act.getType());
+		assertEquals("01", act.getId());
+		assertEquals("test", act.getName());
+		assertEquals(ADD_CONDITION, act.getContext().getAdditional());
+
+		assertTrue(action.containsClientActivity());
+		act = action.getClientActivities().get(0);
+		assertNotNull(act);
+		assertEquals(ActivityType.BrowserJS, act.getType());
+		assertEquals("01", act.getId());
+		assertEquals("testJS", act.getName());
+		assertEquals(ADD_CONDITION, act.getContext().getAdditional());
 	}
 
 	/**
@@ -236,6 +245,8 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 				.getElementLinks().get(0).getContext().getAdditional());
 		assertEquals(NEW_ADD_CONDITION, grid.getDefaultAction().getServerActivities().get(0)
 				.getContext().getAdditional());
+		assertEquals(NEW_ADD_CONDITION, grid.getDefaultAction().getClientActivities().get(0)
+				.getContext().getAdditional());
 	}
 
 	/**
@@ -262,6 +273,8 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertEquals(NEW_ADD_CONDITION, grid.getDefaultAction().getDataPanelLink()
 				.getElementLinks().get(0).getContext().getAdditional());
 		assertEquals(NEW_ADD_CONDITION, grid.getDefaultAction().getServerActivities().get(0)
+				.getContext().getAdditional());
+		assertEquals(NEW_ADD_CONDITION, grid.getDefaultAction().getClientActivities().get(0)
 				.getContext().getAdditional());
 	}
 
@@ -369,9 +382,13 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		elLink.setRefreshContextOnly(true);
 		elLink.setSkipRefreshContextOnly(true);
 
-		Activity sa = new Activity("test", ServerActivityType.SP);
-		sa.setContext(getComplexTestContext());
-		action.getServerActivities().add(sa);
+		Activity act = new Activity("01", "test", ActivityType.SP);
+		act.setContext(getComplexTestContext());
+		action.getServerActivities().add(act);
+
+		act = new Activity("01", "testJS", ActivityType.BrowserJS);
+		act.setContext(getComplexTestContext());
+		action.getClientActivities().add(act);
 
 		action.determineState();
 
@@ -392,10 +409,6 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		DataPanelElementLink elLink = new DataPanelElementLink(EL_06, elContext);
 		link.getElementLinks().add(elLink);
 
-		Activity sa = new Activity("test", ServerActivityType.SP);
-		sa.setContext(getComplexTestContext());
-		action.getServerActivities().add(sa);
-
 		action.determineState();
 		return action;
 	}
@@ -413,9 +426,13 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		DataPanelElementLink elLink = new DataPanelElementLink(EL_06, elContext);
 		link.getElementLinks().add(elLink);
 
-		Activity sa = new Activity("test", ServerActivityType.SP);
-		sa.setContext(context);
-		action.getServerActivities().add(sa);
+		Activity act = new Activity("01", "test", ActivityType.SP);
+		act.setContext(context);
+		action.getServerActivities().add(act);
+
+		act = new Activity("01", "test", ActivityType.BrowserJS);
+		act.setContext(context);
+		action.getClientActivities().add(act);
 
 		action.determineState();
 		return action;
@@ -451,6 +468,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 				.getContext().getFilter());
 		assertEquals(FILTER_CONTEXT, action.getContext().getFilter());
 		assertEquals(FILTER_CONTEXT, action.getServerActivities().get(0).getContext().getFilter());
+		assertEquals(FILTER_CONTEXT, action.getClientActivities().get(0).getContext().getFilter());
 	}
 
 	/**
@@ -485,9 +503,12 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		dpLink.setTabId(TAB_2);
 		insideAction.setDataPanelLink(dpLink);
 		insideAction.determineState();
-		Activity sa = new Activity("test", ServerActivityType.SP);
-		sa.setContext(CompositeContext.createCurrent());
-		insideAction.getServerActivities().add(sa);
+		Activity act = new Activity("01", "test", ActivityType.SP);
+		act.setContext(CompositeContext.createCurrent());
+		insideAction.getServerActivities().add(act);
+		act = new Activity("01", "test", ActivityType.BrowserJS);
+		act.setContext(CompositeContext.createCurrent());
+		insideAction.getClientActivities().add(act);
 		ah.setCurrentAction(insideAction);
 
 		assertNotNull(ah.getCurrentAction());
@@ -497,6 +518,8 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertTrue(ah.getCurrentAction().getKeepUserSettings());
 		assertEquals(MAIN_FILTER, ah.getCurrentAction().getContext().getMain());
 		assertEquals(MAIN_FILTER, ah.getCurrentAction().getServerActivities().get(0).getContext()
+				.getMain());
+		assertEquals(MAIN_FILTER, ah.getCurrentAction().getClientActivities().get(0).getContext()
 				.getMain());
 	}
 
@@ -541,8 +564,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertTrue(action.containsServerActivity());
 		assertTrue(action.getServerActivities().size() == 1);
 		Activity sa = action.getServerActivities().get(0);
+		assertEquals("srv01", sa.getId());
 		assertEquals("exec_test", sa.getName());
-		assertEquals(ServerActivityType.SP, sa.getType());
+		assertEquals(ActivityType.SP, sa.getType());
 		assertNotNull(sa.getContext());
 		assertEquals(action.getContext().getMain(), sa.getContext().getMain());
 		assertEquals("<context_somexml someattr=\"value\" >test</context_somexml>", sa
@@ -602,9 +626,17 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 
 		action = new Action();
 		action.setContext(CompositeContext.createCurrent());
-		Activity sa = new Activity("test_proc", ServerActivityType.SP);
-		sa.setContext(CompositeContext.createCurrent());
-		action.getServerActivities().add(sa);
+		Activity act = new Activity("01", "test_proc", ActivityType.SP);
+		act.setContext(CompositeContext.createCurrent());
+		action.getServerActivities().add(act);
+		action.determineState();
+		assertTrue(action.needGeneralContext());
+
+		action = new Action();
+		action.setContext(CompositeContext.createCurrent());
+		act = new Activity("01", "test_proc", ActivityType.BrowserJS);
+		act.setContext(CompositeContext.createCurrent());
+		action.getClientActivities().add(act);
 		action.determineState();
 		assertTrue(action.needGeneralContext());
 
@@ -621,5 +653,23 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		action.setNavigatorElementLink(nel);
 		action.determineState();
 		assertFalse(action.needGeneralContext());
+	}
+
+	/**
+	 * Проверка считывания действия, содержащего вызовы действия на клиенте, не
+	 * связанные с навигатором и инф. панелью.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testReadClientActivity() throws IOException {
+		final int actionNumber = 1;
+		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
+		assertTrue(action.containsClientActivity());
+		assertTrue(action.getClientActivities().size() == 1);
+		Activity ac = action.getClientActivities().get(0);
+		assertEquals("show_moscow", ac.getName());
+		assertEquals("cl01", ac.getId());
+		assertEquals(ActivityType.BrowserJS, ac.getType());
 	}
 }

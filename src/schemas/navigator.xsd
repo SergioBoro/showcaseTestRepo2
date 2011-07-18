@@ -44,7 +44,7 @@
                 <xs:element ref="action" minOccurs="0"/>
                 <xs:element ref="level2" maxOccurs="unbounded" minOccurs="0"/>
             </xs:sequence>
-            <xs:attributeGroup ref="identGroup"/>
+            <xs:attributeGroup ref="identNavigatorGroup"/>
         </xs:complexType>
     </xs:element>
 
@@ -54,7 +54,7 @@
                 <xs:element ref="action" minOccurs="0"/>
                 <xs:element ref="level3" maxOccurs="unbounded" minOccurs="0"/>
             </xs:sequence>
-            <xs:attributeGroup ref="identGroup"/>
+            <xs:attributeGroup ref="identNavigatorGroup"/>
         </xs:complexType>
     </xs:element>
 
@@ -64,7 +64,7 @@
                 <xs:element ref="action" minOccurs="0"/>
                 <xs:element ref="level4" maxOccurs="unbounded" minOccurs="0"/>
             </xs:sequence>
-            <xs:attributeGroup ref="identGroup"/>
+            <xs:attributeGroup ref="identNavigatorGroup"/>
         </xs:complexType>
     </xs:element>
 
@@ -74,7 +74,7 @@
                 <xs:element ref="action" minOccurs="0"/>
                 <xs:element ref="level5" maxOccurs="unbounded" minOccurs="0"/>
             </xs:sequence>
-            <xs:attributeGroup ref="identGroup"/>
+            <xs:attributeGroup ref="identNavigatorGroup"/>
         </xs:complexType>
     </xs:element>
 
@@ -83,12 +83,12 @@
             <xs:sequence>
                 <xs:element ref="action" minOccurs="0"/>
             </xs:sequence>
-            <xs:attributeGroup ref="identGroup"/>
+            <xs:attributeGroup ref="identNavigatorGroup"/>
         </xs:complexType>
     </xs:element>
 
 
-    <xs:attributeGroup name="identGroup">
+    <xs:attributeGroup name="identNavigatorGroup">
         <xs:attribute name="id" use="required" type="notNullType"/>
         <xs:attribute name="name" use="required" type="notNullType"/>
         <xs:attribute name="selectOnLoad" type="xs:boolean"/>

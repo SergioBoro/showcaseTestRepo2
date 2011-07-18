@@ -27,15 +27,15 @@ public class Activity extends NamedElement implements SerializableElement {
 	/**
 	 * Тип действия на сервере.
 	 */
-	private ServerActivityType type;
+	private ActivityType type;
 
 	/**
 	 * Контекст, связанный с серверным действием.
 	 */
 	private CompositeContext context;
 
-	public Activity(final String aName, final ServerActivityType aType) {
-		setName(aName);
+	public Activity(final String aId, final String aName, final ActivityType aType) {
+		super(aId, aName);
 		type = aType;
 	}
 
@@ -43,11 +43,11 @@ public class Activity extends NamedElement implements SerializableElement {
 		super();
 	}
 
-	public ServerActivityType getType() {
+	public ActivityType getType() {
 		return type;
 	}
 
-	public void setType(final ServerActivityType aType) {
+	public void setType(final ActivityType aType) {
 		type = aType;
 	}
 
