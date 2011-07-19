@@ -8,7 +8,6 @@
     
     <xs:simpleType name="xslType">
         <xs:restriction base="xs:string">
-            <xs:pattern value="[A-Za-zА-Яа-я0-9_-]+\.xsl"/>
         </xs:restriction>
     </xs:simpleType>
     
@@ -29,14 +28,12 @@
     </xs:simpleType>
     
     <xs:simpleType name="xmlType">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="([A-Za-zА-Яа-я0-9_-]+\.xml)|current"/>            
+        <xs:restriction base="xs:string">          
         </xs:restriction>
     </xs:simpleType>
     
     <xs:simpleType name="xsdType">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="([A-Za-zА-Яа-я0-9_-]+\.xsd)"/>            
+        <xs:restriction base="xs:string">       
         </xs:restriction>
     </xs:simpleType>    
     
@@ -67,6 +64,7 @@
             <xs:pattern value="#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|()"></xs:pattern>
         </xs:restriction>
     </xs:simpleType>
+    
 	<xs:attributeGroup name="identGroup">
 		<xs:attribute name="id" use="required" type="notNullType" />
 		<xs:attribute name="name" use="required" type="notNullType" />
