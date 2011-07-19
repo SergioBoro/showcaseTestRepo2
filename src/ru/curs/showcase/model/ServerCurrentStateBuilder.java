@@ -1,9 +1,10 @@
-package ru.curs.showcase.app.server;
+package ru.curs.showcase.model;
 
 import java.io.*;
 import java.sql.*;
 
 import ru.curs.showcase.app.api.ServerCurrentState;
+import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.util.*;
 
 /**
@@ -69,9 +70,9 @@ public final class ServerCurrentStateBuilder {
 
 	private static String getSQLVersion() throws SQLException {
 		Connection conn = ConnectionFactory.getConnection();
-		String sql = "select @@VERSION AS [Version]";
-		PreparedStatement stat = conn.prepareStatement(sql);
 		try {
+			String sql = "select @@VERSION AS [Version]";
+			PreparedStatement stat = conn.prepareStatement(sql);
 			boolean hasResult = stat.execute();
 			if (hasResult) {
 				ResultSet rs = stat.getResultSet();
@@ -83,7 +84,6 @@ public final class ServerCurrentStateBuilder {
 				}
 			}
 		} finally {
-			stat.close();
 			conn.close();
 		}
 		return null;

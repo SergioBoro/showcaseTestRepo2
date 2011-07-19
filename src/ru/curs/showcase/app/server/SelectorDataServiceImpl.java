@@ -84,31 +84,30 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 
 			Connection conn = ConnectionFactory.getConnection();
 
-			// ЭТАП 1. Подсчёт общего количества записей
-			int c;
-			String stmt = String.format("{call %s(?,?,?,?)}", procCount);
-			CallableStatement cs = conn.prepareCall(stmt);
 			try {
+				// ЭТАП 1. Подсчёт общего количества записей
+				int c;
+				String stmt = String.format("{call %s(?,?,?,?)}", procCount);
+				CallableStatement cs = conn.prepareCall(stmt);
+
 				cs.setString(NUM1, req.getParams());
 				cs.setString(NUM2, req.getCurValue());
 				cs.setBoolean(NUM3, req.isStartsWith());
 				cs.registerOutParameter(NUM4, Types.INTEGER);
 				cs.execute();
 				c = cs.getInt(NUM4);
-			} finally {
+
+				ds.setTotalCount(c);
 				cs.close();
-			}
-			ds.setTotalCount(c);
 
-			// ЭТАП 2. Возврат записей.
-			stmt = String.format("{call %s(?,?,?,?,?)}", procList);
-			cs = conn.prepareCall(stmt);
+				// ЭТАП 2. Возврат записей.
+				stmt = String.format("{call %s(?,?,?,?,?)}", procList);
+				cs = conn.prepareCall(stmt);
 
-			// Мы заранее примерно знаем размер, так что используем
-			// ArrayList.
-			List<DataRecord> l;
+				// Мы заранее примерно знаем размер, так что используем
+				// ArrayList.
+				List<DataRecord> l;
 
-			try {
 				cs.setString(NUM1, req.getParams());
 				cs.setString(NUM2, req.getCurValue());
 				cs.setBoolean(NUM3, req.isStartsWith());
@@ -150,12 +149,11 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 						l.add(r);
 					}
 				}
+				ds.setRecords(l);
 			} finally {
-				cs.close();
 				conn.close();
 			}
 
-			ds.setRecords(l);
 		} catch (Throwable e) {
 			ds.setTotalCount(0);
 			// вернётся пустой датасет.

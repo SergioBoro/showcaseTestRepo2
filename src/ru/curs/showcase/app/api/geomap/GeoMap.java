@@ -19,7 +19,7 @@ public final class GeoMap extends DataPanelElementWithLegend {
 	/**
 	 * Динамические данные Java.
 	 */
-	private GeoMapData javaDynamicData;
+	private transient GeoMapData javaDynamicData;
 
 	/**
 	 * Признак того, что размеры карты должны подстраиватся под размеры инф.
@@ -49,11 +49,6 @@ public final class GeoMap extends DataPanelElementWithLegend {
 	@Override
 	public GeoMapData getJavaDynamicData() {
 		return javaDynamicData;
-	}
-
-	@Override
-	public void resetJavaDynamicData() {
-		javaDynamicData = null;
 	}
 
 	public void setJavaDynamicData(final GeoMapData aJavaDynamicData) {

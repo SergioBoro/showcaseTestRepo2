@@ -16,11 +16,6 @@ public interface JSONObject {
 	Object getJavaDynamicData();
 
 	/**
-	 * Очищает Java объект с динамическими данными.
-	 */
-	void resetJavaDynamicData();
-
-	/**
 	 * Устанавливает JSON данные, соответствующие getJavaDynamicData().
 	 * 
 	 * @param data
