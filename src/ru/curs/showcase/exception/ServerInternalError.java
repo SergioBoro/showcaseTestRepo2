@@ -9,18 +9,18 @@ import ru.curs.showcase.app.api.services.ExceptionType;
  * @author den
  * 
  */
-public class AppInternalError extends BaseException {
+public class ServerInternalError extends BaseException {
 
 	/**
 	 * serialVersionUID.
 	 */
 	private static final long serialVersionUID = 4193893671079202405L;
 
-	public AppInternalError(final String aMessage) {
+	public ServerInternalError(final String aMessage) {
 		super(ExceptionType.APP, aMessage);
 	}
 
-	public AppInternalError(final Exception ex) {
+	public ServerInternalError(final Exception ex) {
 		super(ExceptionType.APP, ex);
 	}
 

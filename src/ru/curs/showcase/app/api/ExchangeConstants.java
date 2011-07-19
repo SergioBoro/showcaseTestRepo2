@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api;
 
+import ru.beta2.extra.gwt.ui.SerializableElement;
+
 /**
  * Константы, используемые при обмене информацией между клиентом и сервером.
  * 

@@ -46,11 +46,24 @@ public final class ServerCurrentStateBuilder {
 	}
 
 	private static String getAppVersion() throws IOException {
-		BufferedReader buf =
-			new BufferedReader(new InputStreamReader(AppProps.loadResToStream(VERSION_FILE)));
-		String major = buf.readLine();
-		buf = new BufferedReader(new InputStreamReader(AppProps.loadResToStream(BUILD_FILE)));
-		String build = buf.readLine();
+		InputStream is = AppProps.loadResToStream(VERSION_FILE);
+		BufferedReader buf = new BufferedReader(new InputStreamReader(is));
+		String major;
+		try {
+			major = buf.readLine();
+		} finally {
+			buf.close();
+		}
+
+		is = AppProps.loadResToStream(BUILD_FILE);
+		buf = new BufferedReader(new InputStreamReader(is));
+		String build;
+		try {
+
+			build = buf.readLine();
+		} finally {
+			buf.close();
+		}
 		return String.format("%s.%s", major, build);
 	}
 
@@ -58,15 +71,20 @@ public final class ServerCurrentStateBuilder {
 		Connection conn = ConnectionFactory.getConnection();
 		String sql = "select @@VERSION AS [Version]";
 		PreparedStatement stat = conn.prepareStatement(sql);
-		boolean hasResult = stat.execute();
-		if (hasResult) {
-			ResultSet rs = stat.getResultSet();
-			if (rs.next()) {
-				String fullVersion = rs.getString("Version");
-				if (fullVersion != null) {
-					return fullVersion.split("\t")[0];
+		try {
+			boolean hasResult = stat.execute();
+			if (hasResult) {
+				ResultSet rs = stat.getResultSet();
+				if (rs.next()) {
+					String fullVersion = rs.getString("Version");
+					if (fullVersion != null) {
+						return fullVersion.split("\t")[0];
+					}
 				}
 			}
+		} finally {
+			stat.close();
+			conn.close();
 		}
 		return null;
 	}

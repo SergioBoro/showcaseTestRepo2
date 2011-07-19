@@ -18,10 +18,6 @@ public class SessionInfo {
 	 */
 	private String authServerCrossAppPassword = null;
 
-	public SessionInfo() {
-		super();
-	}
-
 	public String getAuthServerCrossAppPassword() {
 		return authServerCrossAppPassword;
 	}
@@ -30,7 +26,7 @@ public class SessionInfo {
 		authServerCrossAppPassword = aAuthServerCrossAppPassword;
 	}
 
-	public boolean getAuthViaAuthServer() {
+	public boolean isAuthViaAuthServer() {
 		return authViaAuthServer;
 	}
 

@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.chart;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.SerializableElement;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
  * Класс серии графика.
@@ -33,10 +33,6 @@ public class ChartSeries implements SerializableElement {
 	 * должно иметь "." несмотря на региональные настройки.
 	 */
 	private List<ChartSeriesValue> data = new ArrayList<ChartSeriesValue>();
-
-	public ChartSeries() {
-		super();
-	}
 
 	public final List<ChartSeriesValue> getData() {
 		return data;

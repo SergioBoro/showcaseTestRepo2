@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.chart;
 
-import ru.curs.showcase.app.api.SerializableElement;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
  * Значение серии в графике. Кроме собственно значения содержит также подпись и

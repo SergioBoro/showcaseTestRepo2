@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.datapanel;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.SerializableElement;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.event.Action;
 
 /**
@@ -63,9 +63,7 @@ public class DataPanel implements SerializableElement {
 	 * @return вкладку.
 	 */
 	public DataPanelTab getTabById(final String aTabId) {
-		Iterator<DataPanelTab> iterator = tabs.iterator();
-		while (iterator.hasNext()) {
-			DataPanelTab current = iterator.next();
+		for (DataPanelTab current : tabs) {
 			if (current.getId().equals(aTabId)) {
 				return current;
 			}

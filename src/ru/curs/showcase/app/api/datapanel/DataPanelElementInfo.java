@@ -4,8 +4,10 @@ import java.util.*;
 
 import javax.xml.bind.annotation.*;
 
+import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.services.AppLogicError;
 
 /**
  * Класс с описанием элемента информационной панели. Примечание: свойство
@@ -19,6 +21,8 @@ import ru.curs.showcase.app.api.event.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DataPanelElementInfo extends TransferableElement implements SerializableElement,
 		Assignable {
+	static final String KEEP_USER_SETTINGS_ERROR =
+		"Невозможно получить значение keepUserSettings для действия, не содержащего блока для работы с инф. панелью";
 	static final String UNKNOWN_ELEMENT_TYPE = "Неизвестный тип элемента информационной панели";
 	public static final int DEF_TIMER_INTERVAL = 600;
 	/**
@@ -228,9 +232,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 *            - тип процедуры.
 	 */
 	private DataPanelElementProc getProcByType(final DataPanelElementProcType procType) {
-		Iterator<DataPanelElementProc> iterator = procs.values().iterator();
-		while (iterator.hasNext()) {
-			DataPanelElementProc cur = iterator.next();
+		for (DataPanelElementProc cur : procs.values()) {
 			if (cur.getType() == procType) {
 				return cur;
 			}
@@ -419,7 +421,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 			if (refreshInterval == null) {
 				refreshInterval = sourceInfo.refreshInterval;
 			}
-			if (procs.size() == 0) {
+			if (procs.isEmpty()) {
 				procs.putAll(sourceInfo.procs);
 			}
 		}
@@ -469,10 +471,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 */
 	public Boolean getKeepUserSettings(final Action ac) {
 		if (ac.getDataPanelLink() != null) {
-			Iterator<DataPanelElementLink> iterator =
-				ac.getDataPanelLink().getElementLinks().iterator();
-			while (iterator.hasNext()) {
-				DataPanelElementLink link = iterator.next();
+			for (DataPanelElementLink link : ac.getDataPanelLink().getElementLinks()) {
 				if (link.getId().equals(id)) {
 					return link.getKeepUserSettings();
 				}
@@ -480,7 +479,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 
 			return ac.getKeepUserSettings();
 		}
-		return null;
+		throw new AppLogicError(KEEP_USER_SETTINGS_ERROR);
 	}
 
 	/**
@@ -493,9 +492,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	public CompositeContext getContext(final Action ac) {
 		DataPanelLink dpLink = ac.getDataPanelLink();
 		if (dpLink != null) {
-			Iterator<DataPanelElementLink> iterator = dpLink.getElementLinks().iterator();
-			while (iterator.hasNext()) {
-				DataPanelElementLink link = iterator.next();
+			for (DataPanelElementLink link : dpLink.getElementLinks()) {
 				if (link.getId().equals(id)) {
 					return link.getContext();
 				}

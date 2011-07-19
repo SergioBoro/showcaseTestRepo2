@@ -46,7 +46,7 @@ public final class FileUtils {
 			fprocessor.process(new CopyFileAction(destination));
 			return true;
 		} catch (FileNotFoundException ex) {
-			LOGGER.error(ex.getMessage() + " in the specified directory.");
+			LOGGER.error(ex.getMessage());
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -59,19 +59,10 @@ public final class FileUtils {
 	 * 
 	 * @param dir
 	 *            - удаляемый каталог.
-	 * @return - результат удаления.
+	 * @throws IOException
 	 */
-	public static boolean deleteDir(final File dir) {
-		if (dir.exists()) {
-			File[] files = dir.listFiles();
-			for (int i = 0; i < files.length; i++) {
-				if (files[i].isDirectory()) {
-					deleteDir(files[i]);
-				} else {
-					files[i].delete();
-				}
-			}
-		}
-		return (dir.delete());
+	public static void deleteDir(final String dir) throws IOException {
+		BatchFileProcessor fprocessor = new BatchFileProcessor(dir, true);
+		fprocessor.process(new DeleteFileAction());
 	}
 }

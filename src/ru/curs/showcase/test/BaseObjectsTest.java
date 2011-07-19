@@ -112,7 +112,7 @@ public class BaseObjectsTest extends AbstractTestBasedOnFiles {
 		String destDir = "tmp\\css";
 
 		File dir = new File(destDir);
-		FileUtils.deleteDir(dir);
+		FileUtils.deleteDir(destDir);
 		assertFalse(dir.exists());
 
 		BatchFileProcessor fprocessor =
@@ -127,7 +127,7 @@ public class BaseObjectsTest extends AbstractTestBasedOnFiles {
 		assertTrue(file.exists());
 		assertTrue(file.isFile());
 
-		FileUtils.deleteDir(new File(destDir));
+		FileUtils.deleteDir(destDir);
 	}
 
 	/**

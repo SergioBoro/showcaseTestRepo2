@@ -24,17 +24,17 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 	/**
 	 * Параметр HttpServletRequest с именем пользователя.
 	 */
-	private final String usernameHeader = "j_username";
+	private static final String USERNAME_HEADER = "j_username";
 	/**
 	 * Параметр HttpServletRequest с паролем пользователя.
 	 */
-	private final String passwordHeader = "j_password";
+	private static final String PASS_HEADER = "j_password";
 
 	@Override
 	public Authentication attemptAuthentication(final HttpServletRequest request,
 			final HttpServletResponse response) throws IOException, ServletException {
-		String username = request.getParameter(usernameHeader);
-		String password = request.getParameter(passwordHeader);
+		String username = request.getParameter(USERNAME_HEADER);
+		String password = request.getParameter(PASS_HEADER);
 		SignedUsernamePasswordAuthenticationToken authRequest =
 			new SignedUsernamePasswordAuthenticationToken(username, password);
 		authRequest.setDetails(new WebAuthenticationDetails(request));

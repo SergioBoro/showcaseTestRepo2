@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.element;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.SerializableElement;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.event.*;
 
 /**
@@ -61,10 +61,8 @@ public abstract class EventManager<T extends Event> implements SerializableEleme
 			return res;
 		}
 
-		Iterator<T> iterator = events.iterator();
 		T general = null;
-		while (iterator.hasNext()) {
-			T current = iterator.next();
+		for (T current : events) {
 			if (interactionType == current.getInteractionType()) {
 				if (id1.equals(current.getId1())) {
 					if (current.getId2() == null) {

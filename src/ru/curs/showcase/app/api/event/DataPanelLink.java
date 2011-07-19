@@ -2,6 +2,7 @@ package ru.curs.showcase.app.api.event;
 
 import java.util.*;
 
+import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 
 /**
@@ -46,7 +47,7 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 	 * @return результат проверки.
 	 */
 	public Boolean isCurrentPanel() {
-		return (CURRENT_ID.equals(dataPanelId));
+		return CURRENT_ID.equals(dataPanelId);
 	}
 
 	/**
@@ -55,7 +56,7 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 	 * @return результат проверки.
 	 */
 	public Boolean isCurrentTab() {
-		return (CURRENT_ID.equals(tabId));
+		return CURRENT_ID.equals(tabId);
 	}
 
 	/**

@@ -31,7 +31,13 @@ public class GridProps {
 	public GridProps(final String aProfile) {
 		profileName = GRIDPROPERTIES + "/" + aProfile;
 		try {
-			props.load(new InputStreamReader(AppProps.loadUserDataToStream(profileName)));
+			InputStreamReader reader =
+				new InputStreamReader(AppProps.loadUserDataToStream(profileName));
+			try {
+				props.load(reader);
+			} finally {
+				reader.close();
+			}
 		} catch (Exception e) {
 			throw new SettingsFileOpenException(e, profileName, SettingsFileType.GRID_PROPERTIES);
 		}

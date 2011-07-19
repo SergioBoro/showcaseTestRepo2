@@ -173,29 +173,23 @@ public final class XFormCutter {
 		@Override
 		public void processingInstruction(final String target, final String data)
 				throws SAXException {
-			switch (state) {
-			case BODY:
+			if (state == State.BODY) {
 				try {
 					xmlWriter.writeProcessingInstruction(target, data);
 				} catch (XMLStreamException e) {
 					throw new SAXException(e);
 				}
-			default:
-				break;
 			}
 		}
 
 		@Override
 		public void skippedEntity(final String name) throws SAXException {
-			switch (state) {
-			case BODY:
+			if (state == State.BODY) {
 				try {
 					xmlWriter.writeEntityRef(name);
 				} catch (XMLStreamException e) {
 					throw new SAXException(e);
 				}
-			default:
-				break;
 			}
 		}
 

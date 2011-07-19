@@ -64,7 +64,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 
 			if (item.isFormField()) {
 				String paramValue = decodeParamValue(out.toString());
-				if (name.equals("data")) {
+				if ("data".equals(name)) {
 					data = paramValue;
 				} else if (CompositeContext.class.getName().equals(name)) {
 					setContext(((CompositeContext) deserializeObject(paramValue)));

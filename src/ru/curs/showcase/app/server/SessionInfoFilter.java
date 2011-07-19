@@ -24,10 +24,6 @@ public class SessionInfoFilter implements Filter {
 	private static final String INDEX_FILE = "index.jsp";
 
 	@Override
-	public void destroy() {
-	}
-
-	@Override
 	public void doFilter(final ServletRequest req, final ServletResponse resp,
 			final FilterChain chain) throws IOException, ServletException {
 		if (req instanceof HttpServletRequest) {
@@ -70,6 +66,10 @@ public class SessionInfoFilter implements Filter {
 
 	@Override
 	public void init(final FilterConfig config) throws ServletException {
+	}
+
+	@Override
+	public void destroy() {
 	}
 
 }

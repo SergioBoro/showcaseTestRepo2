@@ -12,13 +12,8 @@ import javax.management.*;
  */
 public class JMXMonitorBeanImpl implements JMXMonitorBean, DynamicMBean {
 
-	public JMXMonitorBeanImpl() {
-		super();
-	}
-
 	@Override
 	public void setDebugLevel(final String aLevel) {
-		System.out.println("Заглушка для JMXMonitorBeanImpl.setDebugLevel");
 
 	}
 
@@ -35,7 +30,7 @@ public class JMXMonitorBeanImpl implements JMXMonitorBean, DynamicMBean {
 	@Override
 	public Object getAttribute(final String aArg0) throws AttributeNotFoundException,
 			MBeanException, ReflectionException {
-		if (aArg0.equals("SessionCount")) {
+		if ("SessionCount".equals(aArg0)) {
 			return getSessionCount();
 		}
 		return null;
@@ -72,7 +67,7 @@ public class JMXMonitorBeanImpl implements JMXMonitorBean, DynamicMBean {
 	@Override
 	public Object invoke(final String name, final Object[] args, final String[] sig)
 			throws MBeanException, ReflectionException {
-		if (name.equals("clearSessions") && (args == null || args.length == 0)
+		if ("clearSessions".equals(name) && (args == null || args.length == 0)
 				&& (sig == null || sig.length == 0)) {
 			clearSessions();
 			return null;

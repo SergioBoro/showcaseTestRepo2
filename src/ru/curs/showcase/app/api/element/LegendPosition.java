@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.element;
 
-import ru.curs.showcase.app.api.SerializableElement;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
  * Позиция легенды графика относительно объекта информационной панели. Может

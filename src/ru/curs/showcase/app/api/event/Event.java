@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.event;
 
-import ru.curs.showcase.app.api.*;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
  * Обобщенный класс события в UI, от которого наследуются события грида,

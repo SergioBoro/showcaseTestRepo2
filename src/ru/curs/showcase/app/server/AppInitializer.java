@@ -64,8 +64,13 @@ public final class AppInitializer {
 	public static void readPathProperties() {
 		Properties paths = new Properties();
 		try {
-			paths.load(new InputStreamReader(AppProps.loadResToStream(AppProps.PATH_PROPERTIES),
-					"UTF8"));
+			InputStreamReader reader =
+				new InputStreamReader(AppProps.loadResToStream(AppProps.PATH_PROPERTIES), "UTF8");
+			try {
+				paths.load(reader);
+			} finally {
+				reader.close();
+			}
 
 			Enumeration<?> en = paths.keys();
 			while (en.hasMoreElements()) {

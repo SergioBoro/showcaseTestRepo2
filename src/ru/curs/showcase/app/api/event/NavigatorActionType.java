@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.event;
 
-import ru.curs.showcase.app.api.SerializableElement;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
  * Тип действия, которое необходимо произвести с навигатором.

@@ -23,20 +23,26 @@ public class BatchFileProcessor {
 	/**
 	 * Исходный каталог с файлами.
 	 */
-	private final String sourceDir;
+	private final File sourceDir;
 	/**
 	 * Фильтр для выборки файлов из каталога.
 	 */
 	private final FilenameFilter filter;
 
+	/**
+	 * Признак того, что нужно обработать также и исходный каталог.
+	 */
+	private boolean includeSourceDir = false;
+
 	public BatchFileProcessor(final String aSourceDir, final FilenameFilter aFilter) {
-		this.sourceDir = aSourceDir;
-		this.filter = aFilter;
+		sourceDir = new File(aSourceDir);
+		filter = aFilter;
 	}
 
-	public BatchFileProcessor(final String aSourceDir) {
-		this.sourceDir = aSourceDir;
-		this.filter = null;
+	public BatchFileProcessor(final String aSourceDir, final boolean aIncludeSourceDir) {
+		sourceDir = new File(aSourceDir);
+		filter = null;
+		includeSourceDir = aIncludeSourceDir;
 	}
 
 	/**
@@ -47,15 +53,38 @@ public class BatchFileProcessor {
 	 * @throws IOException
 	 */
 	public void process(final FileAction action) throws IOException {
-		File fdir = new File(sourceDir);
-		File[] flist = fdir.listFiles(filter);
+		File[] flist = getFilesList();
+		if (flist == null) {
+			return;
+		}
 		for (File f : flist) {
 			if (f.isFile()) {
 				action.perform(f);
 			} else if (f.isDirectory()) {
 				BatchFileProcessor bfp =
-					new BatchFileProcessor(sourceDir + File.separator + f.getName(), filter);
+					new BatchFileProcessor(getParentDir() + File.separator + f.getName(), filter);
 				bfp.process(action.cloneForHandleChildDir(f.getName()));
+				action.perform(f);
+			}
+		}
+	}
+
+	private String getParentDir() {
+		if (includeSourceDir) {
+			return sourceDir.getParent();
+		}
+		return sourceDir.getPath();
+	}
+
+	private File[] getFilesList() {
+		if (includeSourceDir) {
+			File[] flist = { sourceDir };
+			return flist;
+		} else {
+			if (filter != null) {
+				return sourceDir.listFiles(filter);
+			} else {
+				return sourceDir.listFiles();
 			}
 		}
 	}

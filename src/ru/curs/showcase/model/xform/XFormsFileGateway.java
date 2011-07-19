@@ -4,6 +4,7 @@ import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
 
+import org.slf4j.*;
 import org.w3c.dom.Document;
 
 import ru.curs.showcase.app.api.datapanel.*;
@@ -22,15 +23,19 @@ import ru.curs.showcase.util.*;
  */
 public final class XFormsFileGateway extends DataCheckGateway implements XFormsGateway {
 
+	/**
+	 * LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(XFormsFileGateway.class);
+
 	@Override
 	public HTMLBasedElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo element) {
 		check(element);
 		DocumentBuilder db = XMLUtils.createBuilder();
-		InputStream stream = null;
-		Document doc = null;
+		Document doc;
 		try {
-			stream =
+			InputStream stream =
 				AppProps.loadUserDataToStream(String.format("%s/%s.xml", AppProps.XFORMS_DIR,
 						element.getProcName()));
 			doc = db.parse(stream);
@@ -59,7 +64,7 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 
 	@Override
 	public String handleSubmission(final String aProcName, final String aInputData) {
-		System.out.println(String.format(
+		LOGGER.info(String.format(
 				"Заглушка: выполнение Submission процедуры '%s' c данными формы  %s", aProcName,
 				aInputData));
 		return null;
@@ -83,10 +88,9 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	public void uploadFile(final CompositeContext aContext,
 			final DataPanelElementInfo aElementInfo, final String aLinkId, final String aData,
 			final DataFile<InputStream> aFile) {
-		System.out
-				.println(String
-						.format("Заглушка: сохранение файла '%s' с контекстом %s из элемента %s, ссылка %s, данные формы %s",
-								aFile.getName(), aContext, aElementInfo, aLinkId, aData));
+		LOGGER.info(String
+				.format("Заглушка: сохранение файла '%s' с контекстом %s из элемента %s, ссылка %s, данные формы %s",
+						aFile.getName(), aContext, aElementInfo, aLinkId, aData));
 
 	}
 }

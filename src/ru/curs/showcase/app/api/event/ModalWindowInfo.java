@@ -1,5 +1,6 @@
 package ru.curs.showcase.app.api.event;
 
+import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 
 /**
@@ -9,7 +10,7 @@ import ru.curs.showcase.app.api.*;
  * @author den
  * 
  */
-public final class ModalWindowInfo implements Cloneable, SerializableElement, GWTClonable {
+public final class ModalWindowInfo implements SerializableElement, GWTClonable {
 
 	/**
 	 * serialVersionUID.

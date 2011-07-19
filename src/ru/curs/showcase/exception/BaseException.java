@@ -74,7 +74,7 @@ public abstract class BaseException extends RuntimeException {
 	 * @param e
 	 *            - исключение.
 	 */
-	public void logAll(final Throwable e) {
+	public final void logAll(final Throwable e) {
 		String formatedMes = ERROR_CAPTION;
 		LOGGER.error(formatedMes, e);
 	}

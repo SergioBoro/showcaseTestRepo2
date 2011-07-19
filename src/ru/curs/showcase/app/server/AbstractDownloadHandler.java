@@ -33,10 +33,10 @@ public abstract class AbstractDownloadHandler extends AbstractFilesHandler {
 		// имени файла.
 		// Работает в IE, Chrome и Opera, не работает в Firefox и Safari.
 		// На английские символы перекодировка не влияет.
-		if (!ServletUtils.isOldIE(getRequest())) {
-			getResponse().setContentType("application/octet-stream");
-		} else {
+		if (ServletUtils.isOldIE(getRequest())) {
 			getResponse().setContentType("application/force-download");
+		} else {
+			getResponse().setContentType("application/octet-stream");
 		}
 		// По агентурным данным для старых версий IE "application/octet-stream"
 		// обрабатывается некорректно.

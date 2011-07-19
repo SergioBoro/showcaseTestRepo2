@@ -56,13 +56,16 @@ public abstract class HTMLBasedElementFactory extends TemplateMethodFactory {
 
 	@Override
 	protected void prepareData() {
+		// не используется для HTML элементов
 	}
 
 	@Override
 	protected void prepareSettings() {
+		// не используется для HTML элементов
 	}
 
 	@Override
 	protected void releaseResources() {
+		// не используется для HTML элементов
 	}
 }

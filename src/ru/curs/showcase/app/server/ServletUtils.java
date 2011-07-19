@@ -140,17 +140,20 @@ public final class ServletUtils {
 	 */
 	public static String getRequestAsString(final HttpServletRequest request)
 			throws java.io.IOException {
-		BufferedReader requestData =
-			new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
-
-		StringBuffer stringBuffer = new StringBuffer();
+		InputStream is = request.getInputStream();
+		BufferedReader requestData = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 		String line;
 
-		while ((line = requestData.readLine()) != null) {
-			stringBuffer.append(line);
-		}
-		line = stringBuffer.toString();
+		try {
+			StringBuffer stringBuffer = new StringBuffer();
+			while ((line = requestData.readLine()) != null) {
+				stringBuffer.append(line);
+			}
+			line = stringBuffer.toString();
 
+		} finally {
+			requestData.close();
+		}
 		return line;
 	}
 
@@ -194,7 +197,7 @@ public final class ServletUtils {
 	public static String checkAndRecodeURLParam(final String param)
 			throws UnsupportedEncodingException {
 		String enc = TextUtils.getRealEncoding(param);
-		if (enc != ServletUtils.getCharsetForURLParams(null)) {
+		if (enc.equals(ServletUtils.getCharsetForURLParams(null))) {
 			return TextUtils.recode(param, enc, ServletUtils.getCharsetForURLParams(null));
 		}
 		return param;

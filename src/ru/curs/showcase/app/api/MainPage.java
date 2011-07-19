@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api;
 
+import ru.beta2.extra.gwt.ui.SerializableElement;
+
 /**
  * Информация о главной странице.
  * 

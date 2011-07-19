@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.navigator;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.SerializableElement;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
  * Класс навигатора. Навигатор служит для перехода между различными вкладками и

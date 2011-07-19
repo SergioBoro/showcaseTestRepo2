@@ -32,9 +32,6 @@ public class GridToExcelHandler extends AbstractDownloadHandler {
 	 */
 	private ColumnSet columnSet;
 
-	public GridToExcelHandler() {
-	}
-
 	@Override
 	protected void processFiles() throws GeneralServerException {
 		ServiceLayerDataServiceImpl serviceLayer =

@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.chart;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.SerializableElement;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
  * Динамические данные для графика, передаваемые непосредственно в функцию
@@ -93,9 +93,7 @@ public class ChartData implements SerializableElement {
 	 * @return - подпись.
 	 */
 	public ChartLabel getLabelsYByValue(final double aY) {
-		Iterator<ChartLabel> iterator = labelsY.iterator();
-		while (iterator.hasNext()) {
-			ChartLabel cur = iterator.next();
+		for (ChartLabel cur : labelsY) {
 			if (aY == cur.getValue().doubleValue()) {
 				return cur;
 			}
@@ -114,9 +112,7 @@ public class ChartData implements SerializableElement {
 		if (seriesName == null) {
 			return null;
 		}
-		Iterator<ChartSeries> iterator = series.iterator();
-		while (iterator.hasNext()) {
-			ChartSeries current = iterator.next();
+		for (ChartSeries current : series) {
 			if (seriesName.equals(current.getName())) {
 				return current;
 			}

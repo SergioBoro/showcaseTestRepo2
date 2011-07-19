@@ -2,7 +2,8 @@ package ru.curs.showcase.app.api.event;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.*;
+import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.GWTClonable;
 
 /**
  * Класс действия, выполняемого при активации визуального элемента UI (например,
@@ -137,9 +138,7 @@ public class Action implements SerializableElement, GWTClonable {
 			actionParamDefined = false;
 		}
 		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
-			Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
-			while (iterator.hasNext()) {
-				DataPanelElementLink elink = iterator.next();
+			for (DataPanelElementLink elink : dataPanelLink.getElementLinks()) {
 				if (elink.getKeepUserSettings() == null) {
 					if (actionParamDefined) {
 						elink.setKeepUserSettings(getKeepUserSettings());
@@ -325,9 +324,8 @@ public class Action implements SerializableElement, GWTClonable {
 	 */
 	public Action updateAddContext(final CompositeContext addContext) {
 		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
-			Iterator<DataPanelElementLink> eliterator = dataPanelLink.getElementLinks().iterator();
-			while (eliterator.hasNext()) {
-				DataPanelElementLink link = eliterator.next();
+
+			for (DataPanelElementLink link : dataPanelLink.getElementLinks()) {
 				if (!link.getSkipRefreshContextOnly()) {
 					link.getContext().setAdditional(addContext.getAdditional());
 				}
@@ -425,9 +423,7 @@ public class Action implements SerializableElement, GWTClonable {
 	public void setKeepUserSettingsForAll(final boolean aKeepUserSettings) {
 		keepUserSettings = aKeepUserSettings;
 		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
-			Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
-			while (iterator.hasNext()) {
-				DataPanelElementLink elink = iterator.next();
+			for (DataPanelElementLink elink : dataPanelLink.getElementLinks()) {
 				elink.setKeepUserSettings(aKeepUserSettings);
 			}
 		}
@@ -507,7 +503,7 @@ public class Action implements SerializableElement, GWTClonable {
 	 * 
 	 */
 	public boolean containsServerActivity() {
-		return serverActivities.size() > 0;
+		return !serverActivities.isEmpty();
 	}
 
 	/**
@@ -516,7 +512,7 @@ public class Action implements SerializableElement, GWTClonable {
 	 * 
 	 */
 	public boolean containsClientActivity() {
-		return clientActivities.size() > 0;
+		return !clientActivities.isEmpty();
 	}
 
 	public List<Activity> getServerActivities() {

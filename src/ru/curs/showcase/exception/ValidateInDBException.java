@@ -24,7 +24,7 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-public class ValidateInDBException extends BaseException {
+public final class ValidateInDBException extends BaseException {
 
 	/**
 	 * Префикс для исключения решения.

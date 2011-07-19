@@ -261,7 +261,13 @@ public final class AppProps {
 		Properties prop = props.get(userdataId);
 		if (prop == null) {
 			prop = new Properties();
-			prop.load(new InputStreamReader(loadUserDataToStream(PROPFILENAME, userdataId), "UTF8"));
+			InputStreamReader reader =
+				new InputStreamReader(loadUserDataToStream(PROPFILENAME, userdataId), "UTF8");
+			try {
+				prop.load(reader);
+			} finally {
+				reader.close();
+			}
 			props.put(userdataId, prop);
 		}
 		return prop;

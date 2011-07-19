@@ -29,9 +29,4 @@ public final class HTMLEventManager extends EventManager<HTMLEvent> {
 	public List<HTMLEvent> getEventForLink(final String linkId) {
 		return getEventByIds(linkId, null, InteractionType.SINGLE_CLICK);
 	}
-
-	@Override
-	public List<HTMLEvent> getEvents() {
-		return super.getEvents();
-	}
 }

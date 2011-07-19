@@ -41,8 +41,8 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 	 *            - параметры.
 	 * @throws UnsupportedEncodingException
 	 */
-	static String generate(final String sessionId,
-			final Map<String, ArrayList<String>> aMap) throws UnsupportedEncodingException {
+	static String generate(final String sessionId, final Map<String, ArrayList<String>> aMap)
+			throws UnsupportedEncodingException {
 		Document info =
 			XMLUtils.createBuilder().getDOMImplementation()
 					.createDocument("", SESSION_CONTEXT_TAG, null);
@@ -82,16 +82,16 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 		if ((aMap != null) && (!aMap.isEmpty())) {
 			node = info.createElement(URL_PARAMS_TAG);
 			info.getDocumentElement().appendChild(node);
-			Iterator<String> iterator = aMap.keySet().iterator();
-			while (iterator.hasNext()) {
-				String key = iterator.next();
-				if (!(ExchangeConstants.URL_PARAM_USERDATA.equals(key))) {
+
+			for (Map.Entry<String, ArrayList<String>> entry : aMap.entrySet()) {
+				if (!(ExchangeConstants.URL_PARAM_USERDATA.equals(entry.getKey()))) {
 					Element child = info.createElement(URL_PARAM_TAG);
 					node.appendChild(child);
-					child.setAttribute(NAME_TAG, URLDecoder.decode(key, TextUtils.DEF_ENCODING));
+					child.setAttribute(NAME_TAG,
+							URLDecoder.decode(entry.getKey(), TextUtils.DEF_ENCODING));
 					String value = "";
-					if (aMap.get(key) != null) {
-						value = Arrays.toString(aMap.get(key).toArray());
+					if (entry.getValue() != null) {
+						value = Arrays.toString(entry.getValue().toArray());
 					}
 					child.setAttribute(VALUE_TAG, value);
 				}

@@ -24,17 +24,13 @@ public class RegexFilenameFilter implements java.io.FilenameFilter {
 		include = aInclude;
 	}
 
-	public void setPattern(final String aPattern) {
+	public final void setPattern(final String aPattern) {
 		pattern = java.util.regex.Pattern.compile(aPattern);
-	}
-
-	public String getPattern() {
-		return pattern.pattern();
 	}
 
 	@Override
 	public boolean accept(final File dir, final String fileName) {
-		boolean res = pattern.matcher(fileName).matches();
+		final boolean res = pattern.matcher(fileName).matches();
 		if (include) {
 			return res;
 		} else {

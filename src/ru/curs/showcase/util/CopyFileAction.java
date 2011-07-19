@@ -75,6 +75,9 @@ public class CopyFileAction implements FileAction {
 
 	@Override
 	public void perform(final File sourceFile) throws IOException {
+		if (sourceFile.isDirectory()) {
+			return;
+		}
 		File destFile = new File(toDir, sourceFile.getName());
 		if (!checkForDestFileExists(sourceFile, destFile)) {
 			return;

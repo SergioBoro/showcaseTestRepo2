@@ -2,6 +2,7 @@ package ru.curs.showcase.app.api.grid;
 
 import java.util.*;
 
+import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.*;
 

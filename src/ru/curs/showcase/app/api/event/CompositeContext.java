@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 
 /**
@@ -114,7 +115,7 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	 * @return результат проверки.
 	 */
 	public boolean mainIsCurrent() {
-		return (CURRENT_ID.equals(main));
+		return CURRENT_ID.equals(main);
 	}
 
 	/**
@@ -123,7 +124,7 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	 * @return результат проверки.
 	 */
 	public boolean addIsCurrent() {
-		return (CURRENT_ID.equals(additional));
+		return CURRENT_ID.equals(additional);
 	}
 
 	@Override
@@ -305,7 +306,7 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	 * @param aData
 	 *            - параметры.
 	 */
-	public void addSessionParams(final Map<String, List<String>> aData) {
+	public final void addSessionParams(final Map<String, List<String>> aData) {
 		if (sessionParamsMap == null) {
 			sessionParamsMap = new TreeMap<String, ArrayList<String>>();
 		}
@@ -313,12 +314,10 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		if (aData == null) {
 			return;
 		}
-		Iterator<String> iterator = aData.keySet().iterator();
-		while (iterator.hasNext()) {
-			String key = iterator.next();
+		for (Map.Entry<String, List<String>> entry : aData.entrySet()) {
 			ArrayList<String> values = new ArrayList<String>();
-			values.addAll(aData.get(key));
-			sessionParamsMap.put(key, values);
+			values.addAll(entry.getValue());
+			sessionParamsMap.put(entry.getKey(), values);
 		}
 	}
 

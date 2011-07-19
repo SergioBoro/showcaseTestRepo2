@@ -14,10 +14,6 @@ import com.google.gwt.core.client.GWT;
  */
 public class ActionHolder {
 
-	public ActionHolder() {
-		super();
-	}
-
 	/**
 	 * Текущий Action. По нему отрабатываются клики внутри вкладок.
 	 */

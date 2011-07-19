@@ -74,10 +74,6 @@ public abstract class AbstractFilesHandler {
 	 */
 	protected abstract void fillResponse() throws IOException;
 
-	public AbstractFilesHandler() {
-		super();
-	}
-
 	/**
 	 * Функция считывания параметров запроса на скачивание.
 	 * 

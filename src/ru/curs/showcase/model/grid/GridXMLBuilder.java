@@ -50,6 +50,7 @@ public class GridXMLBuilder extends GeneralXMLHelper {
 	private ColumnSet cs;
 
 	public GridXMLBuilder(final Grid aGrid) {
+		super();
 		grid = aGrid;
 	}
 
@@ -132,10 +133,10 @@ public class GridXMLBuilder extends GeneralXMLHelper {
 
 	private Iterator<Column> getColumnsIterator() {
 		ColumnSet current;
-		if (cs != null) {
-			current = cs;
-		} else {
+		if (cs == null) {
 			current = grid.getDataSet().getColumnSet();
+		} else {
+			current = cs;
 		}
 		return current.getVisibleColumnsByIndex().iterator();
 	}

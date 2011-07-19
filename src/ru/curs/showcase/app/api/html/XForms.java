@@ -17,10 +17,6 @@ public class XForms extends DataPanelElement {
 	 */
 	private static final long serialVersionUID = 2992185048516571628L;
 
-	public XForms() {
-		super();
-	}
-
 	/**
 	 * List<String> xFormParts.
 	 */

@@ -28,6 +28,7 @@ public final class GeoMap extends DataPanelElementWithLegend {
 	private Boolean autoSize = false;
 
 	public GeoMap(final GeoMapData aGeoMapData) {
+		super();
 		javaDynamicData = aGeoMapData;
 	}
 

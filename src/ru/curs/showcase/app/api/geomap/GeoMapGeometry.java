@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.geomap;
 
-import ru.curs.showcase.app.api.SerializableElement;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
  * Класс, содержащий описание геометрических данных для ГИС объекта (feature)
@@ -45,10 +45,6 @@ public class GeoMapGeometry implements SerializableElement {
 
 	public void setPolygonCoordinates(final Double[][][] aPolygonCoordinates) {
 		polygonCoordinates = aPolygonCoordinates;
-	}
-
-	public GeoMapGeometry() {
-		super();
 	}
 
 	/**

@@ -26,7 +26,7 @@ public final class AppInfoSingleton {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AppInfoSingleton.class);
 
 	/** Список userdata. */
-	private final HashMap<String, UserData> userdatas = new HashMap<String, UserData>();
+	private final Map<String, UserData> userdatas = new HashMap<String, UserData>();
 
 	/**
 	 * Синглетон.
@@ -91,16 +91,16 @@ public final class AppInfoSingleton {
 	private String getUserdataIdFromURLParams(final Map<String, ArrayList<String>> aMap) {
 		String userdataId = null;
 
-		if ((aMap != null) && (!aMap.isEmpty())) {
-			Iterator<String> iterator = aMap.keySet().iterator();
-			while (iterator.hasNext()) {
-				String key = iterator.next();
-				if (ExchangeConstants.URL_PARAM_USERDATA.equals(key)) {
-					if (aMap.get(key) != null) {
-						userdataId = Arrays.toString(aMap.get(key).toArray()).trim();
-						userdataId = userdataId.replace("[", "").replace("]", "");
-						break;
-					}
+		if ((aMap == null) || (aMap.isEmpty())) {
+			return null;
+		}
+
+		for (Map.Entry<String, ArrayList<String>> entry : aMap.entrySet()) {
+			if (ExchangeConstants.URL_PARAM_USERDATA.equals(entry.getKey())) {
+				if (aMap.get(entry.getKey()) != null) {
+					userdataId = Arrays.toString(entry.getValue().toArray()).trim();
+					userdataId = userdataId.replace("[", "").replace("]", "");
+					break;
 				}
 			}
 		}
@@ -108,7 +108,7 @@ public final class AppInfoSingleton {
 		return userdataId;
 	}
 
-	public HashMap<String, UserData> getUserdatas() {
+	public Map<String, UserData> getUserdatas() {
 		return userdatas;
 	}
 
@@ -164,7 +164,7 @@ public final class AppInfoSingleton {
 	 */
 	public boolean getAuthViaAuthServerForSession(final String sessionId) {
 		SessionInfo si = getOrInitSessionInfoObject(sessionId);
-		return si.getAuthViaAuthServer();
+		return si.isAuthViaAuthServer();
 	}
 
 	/**

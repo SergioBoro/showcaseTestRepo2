@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.grid;
 
-import ru.curs.showcase.app.api.SerializableElement;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
  * Типы экспорта в Excel.

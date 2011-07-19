@@ -1,8 +1,6 @@
 package ru.curs.showcase.app.api.element;
 
-import java.util.Iterator;
-
-import ru.curs.showcase.app.api.SerializableElement;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.event.*;
 
 /**
@@ -69,9 +67,8 @@ public abstract class DataPanelElement implements SerializableElement {
 	 *            - контекст.
 	 */
 	public void actualizeActions(final CompositeContext callContext) {
-		Iterator<? extends Event> iterator = getEventManager().getEvents().iterator();
-		while (iterator.hasNext()) {
-			Action action = iterator.next().getAction();
+		for (Event event : eventManager.getEvents()) {
+			Action action = event.getAction();
 			action.actualizeBy(callContext);
 		}
 
@@ -88,9 +85,8 @@ public abstract class DataPanelElement implements SerializableElement {
 	 *            - новый контекст.
 	 */
 	public void updateAddContext(final CompositeContext context) {
-		Iterator<? extends Event> eviterator = eventManager.getEvents().iterator();
-		while (eviterator.hasNext()) {
-			Action action = eviterator.next().getAction();
+		for (Event event : eventManager.getEvents()) {
+			Action action = event.getAction();
 			action.updateAddContext(context);
 		}
 

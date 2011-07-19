@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api;
 
+import ru.beta2.extra.gwt.ui.SerializableElement;
+
 /**
  * 
  * Базовый класс визуального элемента. От него наследуются все визуальные

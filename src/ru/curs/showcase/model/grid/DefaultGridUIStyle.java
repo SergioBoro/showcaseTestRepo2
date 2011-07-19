@@ -34,11 +34,11 @@ public final class DefaultGridUIStyle implements GridUIStyle {
 	@Override
 	public void apply(final GridProps gp, final DataGridSettings aSettings) {
 		settings = aSettings;
-		applyByDefault(gp);
+		applyByDefault();
 		applyFromPropertiesFile(gp);
 	}
 
-	private void applyByDefault(final GridProps gp) {
+	private void applyByDefault() {
 		settings.setHorizontalScrollable(true);
 
 		settings.setRightClickEnabled(false);

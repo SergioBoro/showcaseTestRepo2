@@ -146,7 +146,7 @@ public class Accordeon {
 	 * 
 	 */
 	public void selectNesessaryItemInAccordion(final String id, final Boolean fireEvent) {
-		if ((id == "") || (id == null)) {
+		if ((id == null) || id.isEmpty()) {
 			return;
 		}
 		int n = getGroupNamberInAccordeonById(id);

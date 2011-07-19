@@ -66,7 +66,7 @@ public class MainPanel {
 	 * Переменная, которая определяет на какую ширину от ширины экрана(от ширины
 	 * рабочей части окна браузера) нужно уменьшить MainPanel.
 	 */
-	private final int n35 = 35;
+	private static final int N35 = 35;
 
 	/**
 	 * Процедура создания MainPanel, которая включает в себя Accordeon и
@@ -79,7 +79,7 @@ public class MainPanel {
 		basicVerticalPanel.add(new DownloadHelper());
 
 		final int n85 = 85;
-		p.setPixelSize(Window.getClientWidth() - n35, Window.getClientHeight() - n85
+		p.setPixelSize(Window.getClientWidth() - N35, Window.getClientHeight() - n85
 				- DOM.getElementById("showcaseHeaderContainer").getOffsetHeight()
 				- DOM.getElementById("showcaseBottomContainer").getOffsetHeight());
 
@@ -90,7 +90,7 @@ public class MainPanel {
 					event.getHeight() - n85
 							- DOM.getElementById("showcaseHeaderContainer").getOffsetHeight()
 							- DOM.getElementById("showcaseBottomContainer").getOffsetHeight();
-				int width = event.getWidth() - n35;
+				int width = event.getWidth() - N35;
 				p.setHeight(height + "px");
 				p.setWidth(width + "px");
 			}
@@ -145,7 +145,7 @@ public class MainPanel {
 			case PERCENTS:
 				final int percentsTotal = 100;
 				final int absoluteWidth =
-					widthNumber * (Window.getClientWidth() - n35) / percentsTotal;
+					widthNumber * (Window.getClientWidth() - N35) / percentsTotal;
 				p.addWest(accordeonWidget, absoluteWidth);
 				break;
 

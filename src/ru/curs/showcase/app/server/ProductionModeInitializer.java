@@ -158,8 +158,7 @@ public final class ProductionModeInitializer {
 			String value =
 				AppProps.getOptionalValueByName(COPY_USERDATA_ON_STARTUP_PARAM, userdataId);
 			if (value != null) {
-				boolean copyUserdataOnStartup = Boolean.parseBoolean(value);
-				return copyUserdataOnStartup;
+				return Boolean.parseBoolean(value);
 			}
 		} catch (SettingsFileOpenException e1) {
 			LOGGER.error(APP_PROPS_READ_ERROR);

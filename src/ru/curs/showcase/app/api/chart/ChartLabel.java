@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.chart;
 
-import ru.curs.showcase.app.api.SerializableElement;
+import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
  * Класс подписи для оси графика.

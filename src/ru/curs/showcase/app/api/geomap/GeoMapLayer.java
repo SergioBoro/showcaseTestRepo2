@@ -2,7 +2,8 @@ package ru.curs.showcase.app.api.geomap;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.*;
+import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.NamedElement;
 
 /**
  * Класс слоя на карте. Слой может содержать объекты только одного типа. Кроме
@@ -266,11 +267,11 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 		int index = 0;
 		while (iiterator.hasNext()) {
 			GeoMapIndicator ind = iiterator.next();
-			if (!ind.getIsMain()) {
+			if (ind.getIsMain()) {
+				ind.setId(MAIN_IND_NAME);
+			} else {
 				String newId = "ind" + index;
 				ind.setId(newId);
-			} else {
-				ind.setId(MAIN_IND_NAME);
 			}
 			index++;
 

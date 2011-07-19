@@ -58,6 +58,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 
 	@Override
 	public void saveColumnSet(final ColumnSet aCs) throws GeneralServerException {
+		// fake метод для корректной сериализации
 	}
 
 	@Override

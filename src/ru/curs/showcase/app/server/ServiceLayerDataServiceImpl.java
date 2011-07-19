@@ -202,6 +202,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public void saveColumnSet(final ColumnSet aCs) throws GeneralServerException {
+		// fake метод для корректной сериализации
 	}
 
 	@Override
@@ -310,7 +311,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	private void setUserData(final String userDataId) {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(
-				(userDataId != null) ? userDataId : ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
+				(userDataId == null) ? ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT : userDataId);
 	}
 
 	@Override

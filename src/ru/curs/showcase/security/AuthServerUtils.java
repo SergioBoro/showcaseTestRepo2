@@ -1,6 +1,6 @@
 package ru.curs.showcase.security;
 
-import java.io.InputStream;
+import java.io.*;
 import java.net.*;
 import java.util.*;
 
@@ -77,7 +77,7 @@ public final class AuthServerUtils {
 			c.setRequestMethod("GET");
 			c.connect();
 			return c.getResponseCode() == HttpURLConnection.HTTP_OK;
-		} catch (Exception e) {
+		} catch (IOException e) {
 			return false;
 		}
 	}
@@ -96,7 +96,7 @@ public final class AuthServerUtils {
 				c.setRequestMethod("GET");
 				c.connect();
 				c.getResponseCode();
-			} catch (Exception e) {
+			} catch (IOException e) {
 				// Do nothing, not our problems.
 				LOGGER.warn(LOGOUT_WARN);
 			}
@@ -119,7 +119,7 @@ public final class AuthServerUtils {
 			c.connect();
 			return c.getResponseCode() == HttpURLConnection.HTTP_OK
 					&& c.getContentType().startsWith("image/gif");
-		} catch (Exception e) {
+		} catch (IOException e) {
 			return false;
 		}
 	}
@@ -159,8 +159,7 @@ public final class AuthServerUtils {
 		}
 		try {
 			URL server =
-				new URL(authServerURL
-						+ String.format("/checkname?sesid=%s&name=%s", sesid, login, login));
+				new URL(authServerURL + String.format("/checkname?sesid=%s&name=%s", sesid, login));
 			HttpURLConnection c = (HttpURLConnection) server.openConnection();
 			c.setRequestMethod("GET");
 			c.setDoInput(true);

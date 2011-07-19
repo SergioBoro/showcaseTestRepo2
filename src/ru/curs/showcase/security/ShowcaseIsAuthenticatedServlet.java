@@ -60,9 +60,8 @@ public class ShowcaseIsAuthenticatedServlet extends HttpServlet {
 					throw new ServletException(AuthServerUtils.AUTH_SERVER_DATA_ERROR
 							+ e.getMessage());
 				}
-				if (!(ud == null)) {
+				if ((ud != null)) {
 					String lgn = ud.getCaption();
-					System.out.print(lgn);
 					response.reset();
 					response.setStatus(c.getResponseCode());
 					response.setContentType("text/html");

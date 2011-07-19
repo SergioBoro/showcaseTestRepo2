@@ -277,7 +277,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		SQLException exc =
 			new SQLException(String.format("%stestN%s", ValidateInDBException.SOL_MES_PREFIX,
 					ValidateInDBException.SOL_MES_SUFFIX));
-		new ValidateInDBException(exc);
+		throw new ValidateInDBException(exc);
 	}
 
 	/**

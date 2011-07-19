@@ -26,6 +26,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	}
 
 	public GridDBGateway(final Connection aConn) {
+		super();
 		setConn(aConn);
 	}
 
@@ -51,14 +52,13 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	private void setupSorting(final CallableStatement cs, final GridRequestedSettings settings)
 			throws SQLException {
 		if (settings.sortingEnabled()) {
-			String sortStatement = "ORDER BY ";
+			StringBuilder builder = new StringBuilder("ORDER BY ");
 			Iterator<Column> iterator = settings.getSortedColumns().iterator();
 			while (iterator.hasNext()) {
 				Column col = iterator.next();
-				sortStatement =
-					sortStatement + String.format("[%s] %s,", col.getId(), col.getSorting());
+				builder.append(String.format("[%s] %s,", col.getId(), col.getSorting()));
 			}
-			sortStatement = sortStatement.substring(0, sortStatement.length() - 1);
+			String sortStatement = builder.substring(0, builder.length() - 1);
 			cs.setString(SORT_COLUMNNAME, sortStatement);
 		} else {
 			cs.setString(SORT_COLUMNNAME, "");

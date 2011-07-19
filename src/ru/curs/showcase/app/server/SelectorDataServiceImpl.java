@@ -88,69 +88,74 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			int c;
 			String stmt = String.format("{call %s(?,?,?,?)}", procCount);
 			CallableStatement cs = conn.prepareCall(stmt);
-			cs.setString(NUM1, req.getParams());
-			cs.setString(NUM2, req.getCurValue());
-			cs.setBoolean(NUM3, req.isStartsWith());
-			cs.registerOutParameter(NUM4, Types.INTEGER);
-			cs.execute();
-			c = cs.getInt(NUM4);
+			try {
+				cs.setString(NUM1, req.getParams());
+				cs.setString(NUM2, req.getCurValue());
+				cs.setBoolean(NUM3, req.isStartsWith());
+				cs.registerOutParameter(NUM4, Types.INTEGER);
+				cs.execute();
+				c = cs.getInt(NUM4);
+			} finally {
+				cs.close();
+			}
 			ds.setTotalCount(c);
 
 			// ЭТАП 2. Возврат записей.
 			stmt = String.format("{call %s(?,?,?,?,?)}", procList);
 			cs = conn.prepareCall(stmt);
-			cs.setString(NUM1, req.getParams());
-			cs.setString(NUM2, req.getCurValue());
-			cs.setBoolean(NUM3, req.isStartsWith());
-			cs.setInt(NUM4, req.getFirstRecord());
-			cs.setInt(NUM5, req.getRecordCount());
-			ResultSet rs = cs.executeQuery();
-			ResultSetMetaData m = rs.getMetaData();
+
 			// Мы заранее примерно знаем размер, так что используем
 			// ArrayList.
-			List<DataRecord> l = new ArrayList<DataRecord>(req.getRecordCount());
+			List<DataRecord> l;
 
-			// -----------------------------
-
-			int aliasId = -1;
-			int aliasName = -1;
-			for (int i = NUM1; i <= m.getColumnCount(); i++) {
-				if (COLUMN_ID.equalsIgnoreCase(m.getColumnName(i))) {
-					aliasId = i;
-				}
-				if (COLUMN_NAME.equalsIgnoreCase(m.getColumnName(i))) {
-					aliasName = i;
-				}
-			}
-
-			if ((aliasId == -1) || (aliasName == -1)) {
-				while (rs.next()) {
-					DataRecord r = new DataRecord();
-					r.setId(rs.getString(1));
-					r.setName(rs.getString(2));
-					for (int i = NUM3; i <= m.getColumnCount(); i++) {
-						r.addParameter(m.getColumnName(i), rs.getString(i));
+			try {
+				cs.setString(NUM1, req.getParams());
+				cs.setString(NUM2, req.getCurValue());
+				cs.setBoolean(NUM3, req.isStartsWith());
+				cs.setInt(NUM4, req.getFirstRecord());
+				cs.setInt(NUM5, req.getRecordCount());
+				ResultSet rs = cs.executeQuery();
+				ResultSetMetaData m = rs.getMetaData();
+				l = new ArrayList<DataRecord>(req.getRecordCount());
+				int aliasId = -1;
+				int aliasName = -1;
+				for (int i = NUM1; i <= m.getColumnCount(); i++) {
+					if (COLUMN_ID.equalsIgnoreCase(m.getColumnName(i))) {
+						aliasId = i;
 					}
-					l.add(r);
+					if (COLUMN_NAME.equalsIgnoreCase(m.getColumnName(i))) {
+						aliasName = i;
+					}
 				}
-			} else {
-				while (rs.next()) {
-					DataRecord r = new DataRecord();
-					r.setId(rs.getString(aliasId));
-					r.setName(rs.getString(aliasName));
-					for (int i = NUM1; i <= m.getColumnCount(); i++) {
-						if ((i != aliasId) && (i != aliasName)) {
+				if ((aliasId == -1) || (aliasName == -1)) {
+					while (rs.next()) {
+						DataRecord r = new DataRecord();
+						r.setId(rs.getString(1));
+						r.setName(rs.getString(2));
+						for (int i = NUM3; i <= m.getColumnCount(); i++) {
 							r.addParameter(m.getColumnName(i), rs.getString(i));
 						}
+						l.add(r);
 					}
-					l.add(r);
+				} else {
+					while (rs.next()) {
+						DataRecord r = new DataRecord();
+						r.setId(rs.getString(aliasId));
+						r.setName(rs.getString(aliasName));
+						for (int i = NUM1; i <= m.getColumnCount(); i++) {
+							if ((i != aliasId) && (i != aliasName)) {
+								r.addParameter(m.getColumnName(i), rs.getString(i));
+							}
+						}
+						l.add(r);
+					}
 				}
+			} finally {
+				cs.close();
+				conn.close();
 			}
 
-			// -----------------------------
-
 			ds.setRecords(l);
-
 		} catch (Throwable e) {
 			ds.setTotalCount(0);
 			// вернётся пустой датасет.
@@ -170,8 +175,8 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 	private void prepareContext(final CompositeContext context)
 			throws UnsupportedEncodingException {
 		String sessionContext =
-			SessionContextGenerator.generate(perThreadRequest.get().getSession()
-					.getId(), context.getSessionParamsMap());
+			SessionContextGenerator.generate(perThreadRequest.get().getSession().getId(),
+					context.getSessionParamsMap());
 
 		LOGGER.info("Session context: " + sessionContext);
 		context.setSession(sessionContext);

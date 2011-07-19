@@ -55,10 +55,6 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		procName = aProcName;
 	}
 
-	public SPCallHelper() {
-		super();
-	}
-
 	protected static final String FILTER_COLUMNNAME = "filterinfo";
 	protected static final String ELEMENTID_COLUMNNAME = "element_id";
 	protected static final String SESSION_CONTEXT_PARAM = "session_context";
@@ -86,8 +82,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 			if (context.getFilter() != null) {
 				statement.setString(FILTER_COLUMNNAME, context.getFilter());
 			}
+			LOGGER.info("context=" + context.toString());
 		}
-		LOGGER.info("context=" + context.toString());
 	}
 
 	public Connection getConn() {

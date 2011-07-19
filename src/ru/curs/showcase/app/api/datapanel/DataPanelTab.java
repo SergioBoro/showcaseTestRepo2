@@ -76,9 +76,7 @@ public class DataPanelTab extends NamedElement {
 	 * @return - элемент.
 	 */
 	public DataPanelElementInfo getElementInfoById(final String id) {
-		Iterator<DataPanelElementInfo> iterator = elements.iterator();
-		while (iterator.hasNext()) {
-			DataPanelElementInfo current = iterator.next();
+		for (DataPanelElementInfo current : elements) {
 			if (current.getId().equals(id)) {
 				return current;
 			}

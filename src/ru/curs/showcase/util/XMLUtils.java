@@ -42,7 +42,7 @@ public final class XMLUtils {
 			m.marshal(object, doc);
 			return doc;
 		} catch (JAXBException e) {
-			throw new AppInternalError(e);
+			throw new ServerInternalError(e);
 		}
 	}
 
@@ -63,7 +63,7 @@ public final class XMLUtils {
 			Object res = um.unmarshal(node);
 			return res;
 		} catch (JAXBException e) {
-			throw new AppInternalError(e);
+			throw new ServerInternalError(e);
 		}
 	}
 
@@ -507,7 +507,7 @@ public final class XMLUtils {
 		if (realExc instanceof BreakSAXLoopException) {
 			return;
 		}
-		if (BaseException.class.isAssignableFrom(realExc.getClass())) {
+		if (realExc instanceof BaseException) {
 			throw (BaseException) realExc;
 		}
 		if (e.getCause() != null) {
@@ -539,13 +539,13 @@ public final class XMLUtils {
 	 * @return - строка.
 	 */
 	public static String saxTagWithAttrsToString(final String qname, final Attributes attrs) {
-		String attrsString = " ";
+		StringBuilder builder = new StringBuilder(" ");
 		for (int i = 0; i < attrs.getLength(); i++) {
 			String name = attrs.getQName(i);
 			String value = attrs.getValue(i);
-			attrsString = attrsString + String.format("%s=\"%s\" ", name, value);
+			builder.append(String.format("%s=\"%s\" ", name, value));
 		}
-		return "<" + qname + attrsString + ">";
+		return "<" + qname + builder.toString() + ">";
 	}
 
 	/**
