@@ -210,7 +210,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 		}
 
 		dataService.getXForms(getContext(), elementInfo, mainInstance,
-				new GWTServiceCallback<XForms>("Ошибка при получении данных XForm с сервера") {
+				new GWTServiceCallback<XForms>("при получении данных XForm с сервера") {
 
 					@Override
 					public void onSuccess(final XForms xform1) {

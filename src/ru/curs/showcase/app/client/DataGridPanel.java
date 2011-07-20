@@ -303,7 +303,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		}
 
 		dataService.getGrid(getContext(), elementInfo, settings, new GWTServiceCallback<Grid>(
-				"Ошибка при получении данных таблицы с сервера") {
+				"при получении данных таблицы с сервера") {
 
 			@Override
 			public void onSuccess(final Grid grid1) {
