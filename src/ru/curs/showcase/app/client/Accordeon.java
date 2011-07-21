@@ -155,9 +155,20 @@ public class Accordeon {
 			accordeon.showWidget(n);
 
 			TreeItem ti = getTreeItemInAccordeonById(id);
+
+			// ti.getParentItem().setState(true);
+
 			if (ti != null) {
 				uiListOfAccordeonTrees.get(n).setSelectedItem(ti, fireEvent);
 				lastSelectedItem = ti;
+
+				// раскрыть все текущие верхние элементы дерева до выделенного
+				// элемента
+				while (ti != null) {
+					ti.setState(true);
+					ti = ti.getParentItem();
+				}
+
 			}
 		}
 
