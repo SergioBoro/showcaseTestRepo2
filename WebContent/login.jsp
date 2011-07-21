@@ -16,7 +16,7 @@ pageEncoding="UTF-8"%>
     <script type="text/javascript">
         var djConfig = {
             parseOnLoad: false,
-            isDebug: true
+            isDebug: false
         };
     </script>  
 	<script src="js/dojo/dojo.js"></script>
