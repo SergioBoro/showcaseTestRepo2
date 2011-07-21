@@ -20,7 +20,7 @@
     <script type="text/javascript">
         var djConfig = {
             parseOnLoad: false,
-            isDebug: true,
+            isDebug: false,
             modulePaths: {'course': '../course', 'courseApp': '../..'},
             gfxRenderer: 'svg,silverlight,vml'
         };

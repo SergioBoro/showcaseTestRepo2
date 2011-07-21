@@ -30,6 +30,10 @@ public class SessionInfoFilter implements Filter {
 			HttpServletRequest httpreq = ((HttpServletRequest) req);
 			if (isMainPage(httpreq)) {
 				initSession(httpreq); // TODO нужно ли
+				// if (needRedirect(httpreq)) {
+				// doRedirect(resp);
+				// return;
+				// }
 			}
 			if (isDynamicDataServlet(httpreq)) {
 				skipServletCaching(resp);
@@ -38,6 +42,17 @@ public class SessionInfoFilter implements Filter {
 		chain.doFilter(req, resp);
 		resetThread();
 	}
+
+	// private void doRedirect(final ServletResponse resp) throws IOException {
+	// HttpServletResponse httpresp = ((HttpServletResponse) resp);
+	// httpresp.sendRedirect(httpresp.encodeRedirectURL(INDEX_FILE + "?nocashe="
+	// + UUID.randomUUID().toString()));
+	//
+	// }
+	//
+	// private boolean needRedirect(final HttpServletRequest httpreq) {
+	// return (httpreq.getParameter("nocashe") == null);
+	// }
 
 	private void resetThread() {
 		AppInfoSingleton.getAppInfo().setCurUserDataId((String) null);
