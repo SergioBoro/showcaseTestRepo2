@@ -11,7 +11,6 @@ import ru.curs.showcase.model.*;
  * 
  */
 public class ChartDBGateway extends CompBasedElementSPCallHelper implements ChartGateway {
-	public static final String OUTPUT_COLUMNNAME = "chartsettings";
 
 	@Override
 	public ElementRawData getRawData(final CompositeContext context,
@@ -21,7 +20,7 @@ public class ChartDBGateway extends CompBasedElementSPCallHelper implements Char
 
 	@Override
 	public String getOutSettingsParam() {
-		return OUTPUT_COLUMNNAME;
+		return "chartsettings";
 	}
 
 	@Override

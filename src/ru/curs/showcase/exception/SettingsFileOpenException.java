@@ -32,13 +32,23 @@ public class SettingsFileOpenException extends BaseException {
 
 	public SettingsFileOpenException(final Throwable cause, final String aFileName,
 			final SettingsFileType aFileType) {
-		super(ExceptionType.SOLUTION, generateMessage(aFileName, aFileType), cause);
+		this(generateMessage(aFileName, aFileType), cause, aFileName, aFileType);
+	}
+
+	public SettingsFileOpenException(final String aFileName, final SettingsFileType aFileType) {
+		this(generateMessage(aFileName, aFileType), aFileName, aFileType);
+	}
+
+	protected SettingsFileOpenException(final String error, final String aFileName,
+			final SettingsFileType aFileType) {
+		super(ExceptionType.SOLUTION, error);
 		fileName = aFileName;
 		fileType = aFileType;
 	}
 
-	public SettingsFileOpenException(final String aFileName, final SettingsFileType aFileType) {
-		super(ExceptionType.SOLUTION, generateMessage(aFileName, aFileType));
+	protected SettingsFileOpenException(final String error, final Throwable cause,
+			final String aFileName, final SettingsFileType aFileType) {
+		super(ExceptionType.SOLUTION, error, cause);
 		fileName = aFileName;
 		fileType = aFileType;
 	}

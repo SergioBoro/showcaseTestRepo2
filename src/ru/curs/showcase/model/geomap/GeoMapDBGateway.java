@@ -11,7 +11,6 @@ import ru.curs.showcase.model.*;
  * 
  */
 public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements GeoMapGateway {
-	public static final String OUTPUT_COLUMNNAME = "geomapsettings";
 
 	@Override
 	public ElementRawData getRawData(final CompositeContext context,
@@ -21,7 +20,7 @@ public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements Geo
 
 	@Override
 	public String getOutSettingsParam() {
-		return OUTPUT_COLUMNNAME;
+		return "geomapsettings";
 	}
 
 	@Override

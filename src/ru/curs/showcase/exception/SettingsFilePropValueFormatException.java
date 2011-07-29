@@ -1,6 +1,5 @@
 package ru.curs.showcase.exception;
 
-import ru.curs.showcase.app.api.services.ExceptionType;
 import ru.curs.showcase.model.SettingsFileType;
 
 /**
@@ -10,7 +9,7 @@ import ru.curs.showcase.model.SettingsFileType;
  * @author den
  * 
  */
-public final class SettingsFilePropValueFormatException extends BaseException {
+public class SettingsFilePropValueFormatException extends SettingsFileOpenException {
 
 	/**
 	 * Сообщение об ошибке.
@@ -23,50 +22,34 @@ public final class SettingsFilePropValueFormatException extends BaseException {
 	private static final long serialVersionUID = -8355753684819986193L;
 
 	/**
-	 * Имя файла настроек.
-	 */
-	private final String fileName;
-
-	/**
-	 * Имя отсутствующего свойства.
+	 * Имя свойства.
 	 */
 	private final String propName;
 
-	/**
-	 * Тип файла.
-	 */
-	private final SettingsFileType fileType;
-
 	public SettingsFilePropValueFormatException(final Throwable aCause, final String aFileName,
 			final String aPropName, final SettingsFileType aType) {
-		super(ExceptionType.SOLUTION, generateMessage(aFileName, aPropName, aType), aCause);
-		fileName = aFileName;
+		super(generateMessage(ERROR_MES, aFileName, aPropName, aType), aCause, aFileName, aType);
 		propName = aPropName;
-		fileType = aType;
 	}
 
 	public SettingsFilePropValueFormatException(final String aFileName, final String aPropName,
 			final SettingsFileType aType) {
-		super(ExceptionType.SOLUTION, generateMessage(aFileName, aPropName, aType));
-		fileName = aFileName;
+		this(aFileName, aPropName, aType, ERROR_MES);
+	}
+
+	protected SettingsFilePropValueFormatException(final String aFileName, final String aPropName,
+			final SettingsFileType aType, final String aTemplate) {
+		super(generateMessage(ERROR_MES, aFileName, aPropName, aType), aFileName, aType);
 		propName = aPropName;
-		fileType = aType;
 	}
 
-	private static String generateMessage(final String aFileName, final String aPropName,
-			final SettingsFileType aType) {
-		return String.format(ERROR_MES, aType.getName(), aFileName, aPropName);
-	}
-
-	public String getFileName() {
-		return fileName;
+	private static String generateMessage(final String template, final String aFileName,
+			final String aPropName, final SettingsFileType aType) {
+		return String.format(template, aType.getName(), aFileName, aPropName);
 	}
 
 	public String getPropName() {
 		return propName;
 	}
 
-	public SettingsFileType getFileType() {
-		return fileType;
-	}
 }
