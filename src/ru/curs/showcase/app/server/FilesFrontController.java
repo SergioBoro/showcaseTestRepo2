@@ -42,7 +42,7 @@ public final class FilesFrontController extends HttpServlet {
 				ServletUtils.fillErrorResponce(response, UNKNOWN_COMMAND_ERROR);
 			}
 			handler.handle(request, response);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
 		}
 

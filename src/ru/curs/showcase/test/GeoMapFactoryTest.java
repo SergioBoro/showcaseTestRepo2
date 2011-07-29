@@ -8,7 +8,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.LegendPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.*;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.geomap.*;
@@ -61,10 +61,10 @@ public class GeoMapFactoryTest extends AbstractTestBasedOnFiles {
 	 * Тест на проверку статических свойств карты, созданной на основе данных из
 	 * БД.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testFromDBStaticData() throws GeneralServerException {
+	public void testFromDBStaticData() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "05");
 
@@ -89,7 +89,7 @@ public class GeoMapFactoryTest extends AbstractTestBasedOnFiles {
 
 		assertEquals(LegendPosition.BOTTOM, map.getLegendPosition());
 		assertNotNull(map.getJsDynamicData());
-		assertNull(map.getJavaDynamicData());
+		assertNotNull(map.getJavaDynamicData());
 
 		assertEquals(map.getActionForDependentElements(), map.getDefaultAction());
 	}

@@ -5,7 +5,7 @@ package ru.curs.showcase.app.client;
 
 import ru.beta2.extra.gwt.ui.panels.*;
 import ru.curs.showcase.app.api.MessageType;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.*;
 
@@ -131,8 +131,9 @@ public class MainPanel {
 			} catch (Exception e) {
 
 				MessageBox.showMessageWithDetails(Constants.TRANSFORMATION_NAVIGATOR_WIDTH_ERROR,
-						e.getClass().getName() + ": " + e.getMessage(),
-						GeneralServerException.getStackText(e), MessageType.ERROR, true);
+						e.getClass().getName() + ": " + e.getMessage(), GeneralException
+								.generateDetailedInfo(e),
+						MessageType.ERROR, GeneralException.needDetailedInfo(e));
 			}
 
 			switch (SizeParser.getSizeType(navigatorWidth)) {

@@ -106,6 +106,7 @@ public final class XFormCutter {
 		private final LinkedList<StringBuilder> scriptBuilders = new LinkedList<StringBuilder>();
 
 		public BodyFilter() throws XMLStreamException {
+			super();
 			xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(bodyWriter);
 		}
 

@@ -38,7 +38,6 @@ public final class ActionExecuter {
 	 * 
 	 */
 	public static void execAction() {
-
 		final Action ac = AppCurrContext.getInstance().getCurrentAction();
 
 		if (ac == null) {
@@ -54,12 +53,16 @@ public final class ActionExecuter {
 
 				@Override
 				public void onSuccess(final Void fakeRes) {
-					execOtherClientAction(ac);
+					handleClientBlocks(ac);
 				}
 
 			});
 		}
 
+		handleClientBlocks(ac);
+	}
+
+	private static void handleClientBlocks(final Action ac) {
 		Iterator<Activity> iterator = ac.getClientActivities().iterator();
 		while (iterator.hasNext()) {
 			Activity act = iterator.next();
@@ -67,8 +70,8 @@ public final class ActionExecuter {
 					.getAdditional(), act.getContext().getFilter());
 		}
 
-		execOtherClientAction(ac);
-
+		handleNavigatorBlock(ac);
+		handleDataPanelBlock(ac);
 	}
 
 	private static native void runClientActivity(final String procName, final String mainContext,
@@ -78,7 +81,128 @@ public final class ActionExecuter {
 		eval(exp);
 	}-*/;
 
-	private static void execOtherClientAction(final Action ac) {
+	private static void handleDataPanelBlock(final Action ac) {
+		final DataPanelActionType dpat = ac.getDataPanelActionType();
+
+		switch (dpat) {
+		case DO_NOTHING:
+			break;
+		case RELOAD_PANEL:
+			break;
+		case REFRESH_TAB:
+			handleRefreshTab(ac);
+			break;
+		case RELOAD_ELEMENTS:
+			handleReloadElements(ac);
+			break;
+		default:
+			break;
+		}
+	}
+
+	private static void handleReloadElements(final Action ac) {
+		for (int k = 0; k < ac.getDataPanelLink().getElementLinks().size(); k++) {
+
+			String elementIdForDraw = ac.getDataPanelLink().getElementLinks().get(k).getId();
+
+			BasicElementPanel bep = getElementPanelById(elementIdForDraw);
+			if (bep != null) {
+				if ((ac.getShowInMode() == ShowInMode.PANEL)
+						&& (AppCurrContext.getInstance()
+								.getCurrentOpenWindowWithDataPanelElement() != null)) {
+					AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement()
+							.closeWindow();
+
+					// если на вкладке есть xForm то прорисовываем ее
+					drawXFormPanelsAfterModalWindowShown(ac);
+				}
+				if ((ac.getShowInMode() == ShowInMode.MODAL_WINDOW)
+						&& (AppCurrContext.getInstance()
+								.getCurrentOpenWindowWithDataPanelElement() == null)) {
+
+					ModalWindowInfo mwi = ac.getModalWindowInfo();
+					WindowWithDataPanelElement modWind = null;
+					if (mwi != null) {
+
+						if ((mwi.getCaption() != null) && (mwi.getWidth() != null)
+								&& (mwi.getHeight() != null)) {
+							modWind =
+								new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
+										mwi.getHeight(), mwi.getShowCloseBottomButton());
+						} else {
+
+							if (mwi.getCaption() != null) {
+								modWind =
+									new WindowWithDataPanelElement(mwi.getCaption(),
+											mwi.getShowCloseBottomButton());
+							} else {
+								modWind =
+									new WindowWithDataPanelElement(mwi.getShowCloseBottomButton());
+							}
+
+						}
+
+					} else {
+						modWind = new WindowWithDataPanelElement(false);
+					}
+
+					modWind.showModalWindow(bep);
+
+				}
+				if (ac.getDataPanelLink().getElementLinks().get(k).doHiding()) {
+					bep.hidePanel();
+					continue;
+				}
+				bep.showPanel();
+
+				boolean keepElementSettings =
+					ac.getDataPanelLink().getElementLinks().get(k).getKeepUserSettings();
+
+				bep.saveSettings(keepElementSettings);
+
+				bep.reDrawPanel(bep.getElementInfo().getContext(ac), ac.getDataPanelLink()
+						.getElementLinks().get(k).getRefreshContextOnly());
+
+			}
+		}
+	}
+
+	private static void handleRefreshTab(final Action ac) {
+		// Обновить вкладку целиком (активную), а перед этим закрыть
+		// модальное окно если оно открыто.
+		if ((ac.getShowInMode() == ShowInMode.PANEL)
+				&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() != null)) {
+			AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement().closeWindow();
+		}
+
+		DataPanelTab dpt =
+			AppCurrContext.getInstance().getDataPanelMetaData().getActiveTabForAction(ac);
+
+		Collection<DataPanelElementInfo> tabscoll = dpt.getElements();
+		Iterator<DataPanelElementInfo> itr = tabscoll.iterator();
+		while (itr.hasNext()) {
+			DataPanelElementInfo dpe = itr.next();
+
+			if (dpe.getHideOnLoad()) {
+				BasicElementPanel bep = getElementPanelById(dpe.getId());
+				bep.hidePanel();
+
+			}
+
+			if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+				BasicElementPanel bep = getElementPanelById(dpe.getId());
+
+				bep.showPanel();
+
+				boolean keepElementSettings = bep.getElementInfo().getKeepUserSettings(ac);
+
+				bep.saveSettings(keepElementSettings);
+				bep.reDrawPanel(bep.getElementInfo().getContext(ac), false);
+			}
+		}
+	}
+
+	private static void handleNavigatorBlock(final Action ac) {
 		if (ac.getNavigatorActionType() != NavigatorActionType.DO_NOTHING) {
 
 			boolean fireSelectionAction =
@@ -91,124 +215,6 @@ public final class ActionExecuter {
 						fireSelectionAction);
 			}
 
-		}
-
-		final DataPanelActionType dpat = ac.getDataPanelActionType();
-
-		switch (dpat) {
-		case DO_NOTHING:
-			break;
-		case RELOAD_PANEL:
-			break;
-		case REFRESH_TAB:
-			// Обновить вкладку целиком (активную), а перед этим закрыть
-			// модальное окно если оно открыто.
-			if ((ac.getShowInMode() == ShowInMode.PANEL)
-					&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() != null)) {
-				AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement()
-						.closeWindow();
-			}
-
-			DataPanelTab dpt =
-				AppCurrContext.getInstance().getDataPanelMetaData().getActiveTabForAction(ac);
-
-			Collection<DataPanelElementInfo> tabscoll = dpt.getElements();
-			Iterator<DataPanelElementInfo> itr = tabscoll.iterator();
-			while (itr.hasNext()) {
-				DataPanelElementInfo dpe = itr.next();
-
-				if (dpe.getHideOnLoad()) {
-					BasicElementPanel bep = getElementPanelById(dpe.getId());
-					bep.hidePanel();
-
-				}
-
-				if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-					BasicElementPanel bep = getElementPanelById(dpe.getId());
-
-					bep.showPanel();
-
-					boolean keepElementSettings = bep.getElementInfo().getKeepUserSettings(ac);
-
-					bep.saveSettings(keepElementSettings);
-					bep.reDrawPanel(bep.getElementInfo().getContext(ac), false);
-				}
-			}
-
-			break;
-		case RELOAD_ELEMENTS:
-			for (int k = 0; k < ac.getDataPanelLink().getElementLinks().size(); k++) {
-
-				String elementIdForDraw = ac.getDataPanelLink().getElementLinks().get(k).getId();
-
-				BasicElementPanel bep = getElementPanelById(elementIdForDraw);
-				if (bep != null) {
-					if ((ac.getShowInMode() == ShowInMode.PANEL)
-							&& (AppCurrContext.getInstance()
-									.getCurrentOpenWindowWithDataPanelElement() != null)) {
-						AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement()
-								.closeWindow();
-
-						// ------------------ если на вкладке есть xForm то
-						// прорисовываем ее
-						drawXFormPanelsAfterModalWindowShown(ac);
-						// ------------
-
-					}
-					if ((ac.getShowInMode() == ShowInMode.MODAL_WINDOW)
-							&& (AppCurrContext.getInstance()
-									.getCurrentOpenWindowWithDataPanelElement() == null)) {
-
-						ModalWindowInfo mwi = ac.getModalWindowInfo();
-						WindowWithDataPanelElement modWind = null;
-						if (mwi != null) {
-
-							if ((mwi.getCaption() != null) && (mwi.getWidth() != null)
-									&& (mwi.getHeight() != null)) {
-								modWind =
-									new WindowWithDataPanelElement(mwi.getCaption(),
-											mwi.getWidth(), mwi.getHeight(),
-											mwi.getShowCloseBottomButton());
-							} else {
-
-								if (mwi.getCaption() != null) {
-									modWind =
-										new WindowWithDataPanelElement(mwi.getCaption(),
-												mwi.getShowCloseBottomButton());
-								} else {
-									modWind =
-										new WindowWithDataPanelElement(
-												mwi.getShowCloseBottomButton());
-								}
-
-							}
-
-						} else {
-							modWind = new WindowWithDataPanelElement(false);
-						}
-
-						modWind.showModalWindow(bep);
-
-					}
-					if (ac.getDataPanelLink().getElementLinks().get(k).doHiding()) {
-						bep.hidePanel();
-						continue;
-					}
-					bep.showPanel();
-
-					boolean keepElementSettings =
-						ac.getDataPanelLink().getElementLinks().get(k).getKeepUserSettings();
-
-					bep.saveSettings(keepElementSettings);
-
-					bep.reDrawPanel(bep.getElementInfo().getContext(ac), ac.getDataPanelLink()
-							.getElementLinks().get(k).getRefreshContextOnly());
-
-				}
-			}
-			break;
-		default:
-			break;
 		}
 	}
 

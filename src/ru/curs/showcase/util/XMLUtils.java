@@ -138,7 +138,7 @@ public final class XMLUtils {
 		try {
 			factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
 			parser = factory.newSAXParser();
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			throw new CreateObjectError(e);
 		}
 		return parser;
@@ -223,7 +223,7 @@ public final class XMLUtils {
 			tr.transform(sqlxml.getSource(DOMSource.class), new StreamResult(baos));
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (Exception e) {
-			throw new XSLTTransformException(XSLT_ERROR + e.getMessage());
+			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
 		}
 	}
 
@@ -245,7 +245,7 @@ public final class XMLUtils {
 			tr.transform(new DOMSource(doc), new StreamResult(baos));
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (Exception e) {
-			throw new XSLTTransformException(XSLT_ERROR + e.getMessage());
+			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
 		}
 	}
 
@@ -285,7 +285,7 @@ public final class XMLUtils {
 					new StreamResult(baos));
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (Exception e) {
-			throw new XSLTTransformException(XSLT_ERROR + e.getMessage());
+			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
 		}
 	}
 
@@ -308,7 +308,7 @@ public final class XMLUtils {
 			tr.transform(new StreamSource(is), new StreamResult(baos));
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (Exception e) {
-			throw new XSLTTransformException(XSLT_ERROR + e.getMessage());
+			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
 		}
 	}
 
@@ -338,7 +338,7 @@ public final class XMLUtils {
 			return baos;
 		} catch (Exception e) {
 			throw new XSLTTransformException(
-					"Ошибка при выполнении XSLT-преобразования для таблицы: " + e.getMessage());
+					"Ошибка при выполнении XSLT-преобразования для таблицы: " + e.getMessage(), e);
 		}
 	}
 
@@ -346,28 +346,28 @@ public final class XMLUtils {
 	 * Schema full checking feature id
 	 * (http://apache.org/xml/features/validation/schema-full-checking).
 	 */
-	protected static final String SCHEMA_FULL_CHECKING_FEATURE_ID =
+	private static final String SCHEMA_FULL_CHECKING_FEATURE_ID =
 		"http://apache.org/xml/features/validation/schema-full-checking";
 
 	/**
 	 * Honour all schema locations feature id
 	 * (http://apache.org/xml/features/honour-all-schemaLocations).
 	 */
-	protected static final String HONOUR_ALL_SCHEMA_LOCATIONS_ID =
+	private static final String HONOUR_ALL_SCHEMA_LOCATIONS_ID =
 		"http://apache.org/xml/features/honour-all-schemaLocations";
 
 	/**
 	 * Validate schema annotations feature id
 	 * (http://apache.org/xml/features/validate-annotations).
 	 */
-	protected static final String VALIDATE_ANNOTATIONS_ID =
+	private static final String VALIDATE_ANNOTATIONS_ID =
 		"http://apache.org/xml/features/validate-annotations";
 
 	/**
 	 * Generate synthetic schema annotations feature id
 	 * (http://apache.org/xml/features/generate-synthetic-annotations).
 	 */
-	protected static final String GENERATE_SYNTHETIC_ANNOTATIONS_ID =
+	private static final String GENERATE_SYNTHETIC_ANNOTATIONS_ID =
 		"http://apache.org/xml/features/generate-synthetic-annotations";
 
 	/**
@@ -507,13 +507,11 @@ public final class XMLUtils {
 		if (realExc instanceof BreakSAXLoopException) {
 			return;
 		}
+		if (e.getClass() == SAXError.class) {
+			realExc = e.getCause();
+		}
 		if (realExc instanceof BaseException) {
 			throw (BaseException) realExc;
-		}
-		if (e.getCause() != null) {
-			if (e.getCause().getClass() == SAXError.class) {
-				realExc = e.getCause().getCause();
-			}
 		}
 		throw new XMLFormatException(errorMes, realExc);
 	}

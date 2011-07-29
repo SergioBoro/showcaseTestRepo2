@@ -6,7 +6,7 @@ import org.apache.commons.fileupload.FileUploadException;
 
 import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
@@ -33,7 +33,7 @@ public class GridToExcelHandler extends AbstractDownloadHandler {
 	private ColumnSet columnSet;
 
 	@Override
-	protected void processFiles() throws GeneralServerException {
+	protected void processFiles() throws GeneralException {
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(getRequest().getSession().getId());
 		setOutputFile(serviceLayer.generateExcelFromGrid(exportType, getContext(),

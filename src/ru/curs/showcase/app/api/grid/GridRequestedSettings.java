@@ -194,7 +194,7 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 	 * Проверка на то, что сортировка присутствует при данных настройках.
 	 */
 	public boolean sortingEnabled() {
-		return (sortedColumns != null) && (sortedColumns.size() > 0);
+		return (sortedColumns != null) && (!sortedColumns.isEmpty());
 	}
 
 	/**

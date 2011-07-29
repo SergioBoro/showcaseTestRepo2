@@ -69,11 +69,11 @@ public class ChartDBFactory extends AbstractChartFactory {
 
 	@Override
 	protected void fillLabelsX() {
-		if (!isFlip()) {
-			fillLabelsXIfNotFlip();
-		} else {
+		if (isFlip()) {
 			fillLabelsXIfFlip();
 			resetRowPosition();
+		} else {
+			fillLabelsXIfNotFlip();
 		}
 	}
 
@@ -136,10 +136,10 @@ public class ChartDBFactory extends AbstractChartFactory {
 
 	@Override
 	protected void fillSeries() {
-		if (!isFlip()) {
-			fillSeriesIfNotFlip();
-		} else {
+		if (isFlip()) {
 			fillSeriesIfFlip();
+		} else {
+			fillSeriesIfNotFlip();
 		}
 	}
 
@@ -156,10 +156,10 @@ public class ChartDBFactory extends AbstractChartFactory {
 				series.setName(md.getColumnLabel(i));
 				while (sql.next()) {
 					String value = sql.getString(md.getColumnLabel(i));
-					if (sql.getRow() != eventRowNumber) {
-						addValueToSeries(series, value);
-					} else {
+					if (sql.getRow() == eventRowNumber) {
 						readEvents(series, value);
+					} else {
+						addValueToSeries(series, value);
 					}
 				}
 				getResult().getJavaDynamicData().getSeries().add(series);
@@ -206,7 +206,7 @@ public class ChartDBFactory extends AbstractChartFactory {
 		EventFactory<ChartEvent> factory = new EventFactory<ChartEvent>(ChartEvent.class);
 		factory.initForGetSubSetOfEvents(X_TAG, VALUE_TAG, getElementInfo().getType()
 				.getPropsSchemaName());
-		SAXTagHandler colorHandler = new SAXTagHandler() {
+		SAXTagHandler colorHandler = new StartTagSAXHandler() {
 			@Override
 			public Object handleStartTag(final String aNamespaceURI, final String aLname,
 					final String aQname, final Attributes attrs) {
@@ -215,25 +215,9 @@ public class ChartDBFactory extends AbstractChartFactory {
 			}
 
 			@Override
-			public Object handleEndTag(final String aNamespaceURI, final String aLname,
-					final String aQname) {
-				return null;
-			}
-
-			@Override
-			public void handleCharacters(final char[] aArg0, final int aArg1, final int aArg2) {
-
-			}
-
-			@Override
-			public boolean canHandleStartTag(final String aTagName,
-					final SaxEventType aSaxEventType) {
-				return (COLOR_TAG.equalsIgnoreCase(aTagName));
-			}
-
-			@Override
-			public boolean canHandleEndTag(final String tagName, final SaxEventType saxEventType) {
-				return false;
+			protected String[] getStartTags() {
+				String[] tags = { COLOR_TAG };
+				return tags;
 			}
 
 		};

@@ -22,11 +22,11 @@ public final class GeneralServerExceptionFactory {
 	 * @param original
 	 *            - оригинальное исключение.
 	 */
-	public static GeneralServerException build(final Throwable original) {
-		GeneralServerException res =
-			new GeneralServerException(original, getUserMessage(original));
+	public static GeneralException build(final Throwable original) {
+		GeneralException res =
+			new GeneralException(original, getUserMessage(original));
 		res.setOriginalExceptionClass(original.getClass().getName());
-		res.setOriginalTrace(GeneralServerException.getStackText(original));
+		res.setOriginalTrace(GeneralException.getStackText(original));
 		res.setOriginalMessage(getOriginalMessage(original));
 		res.setType(getType(original));
 		res.setContext(getContext(original));

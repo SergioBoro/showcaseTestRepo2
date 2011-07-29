@@ -49,7 +49,7 @@ public class CheckAutenticationFilter implements Filter {
 			try {
 				url = SecurityParamsFactory.getLocalAuthServerUrl();
 			} catch (SettingsFileOpenException e) {
-				throw new ServletException(AuthServerUtils.APP_PROP_READ_ERROR);
+				throw new ServletException(AuthServerUtils.APP_PROP_READ_ERROR, e);
 			}
 			AuthServerUtils.init(url);
 

@@ -108,4 +108,15 @@ public class GridProps {
 		return result;
 	}
 
+	/**
+	 * Признак того, что в значении параметра грида содержится true.
+	 * 
+	 * @param paramName
+	 *            - имя параметра.
+	 */
+	public boolean isTrueGridValue(final String paramName) {
+		Boolean value = stdReadBoolGridValue(paramName);
+		return (value != null) && value;
+	}
+
 }

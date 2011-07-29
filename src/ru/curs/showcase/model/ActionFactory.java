@@ -12,7 +12,7 @@ import ru.curs.showcase.util.XMLUtils;
  * @author den
  * 
  */
-public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
+public class ActionFactory extends SAXTagHandler {
 	/**
 	 * Префикс, который обязательно должен быть у всех внутренних тэгов
 	 * main_context и add_context.
@@ -56,141 +56,202 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 	 */
 	private boolean readingServerPart = false;
 
+	/**
+	 * Стартовые тэги, которые будут обработаны данным обработчиком.
+	 */
+	private static final String[] START_TAGS = {
+			ACTION_TAG, DP_TAG, NAVIGATOR_TAG, ELEMENT_TAG, MODAL_WINDOW_TAG,
+			MAIN_CONTEXT_ATTR_NAME, ADD_CONTEXT_ATTR_NAME, SERVER_TAG, ACTIVITY_TAG };
+
+	/**
+	 * Конечные тэги, которые будут обработаны.
+	 */
+	private static final String[] END_TAGS =
+		{ MAIN_CONTEXT_ATTR_NAME, ADD_CONTEXT_ATTR_NAME, ELEMENT_TAG, ACTIVITY_TAG, SERVER_TAG, };
+
 	@Override
-	public boolean canHandleStartTag(final String tagName, final SaxEventType saxEventType) {
-		return ACTION_TAG.equalsIgnoreCase(tagName) || DP_TAG.equalsIgnoreCase(tagName)
-				|| NAVIGATOR_TAG.equalsIgnoreCase(tagName)
-				|| ELEMENT_TAG.equalsIgnoreCase(tagName)
-				|| MODAL_WINDOW_TAG.equalsIgnoreCase(tagName)
-				|| MAIN_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName)
-				|| ADD_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName)
-				|| SERVER_TAG.equalsIgnoreCase(tagName) || ACTIVITY_TAG.equalsIgnoreCase(tagName)
-				|| ((tagName != null) && (tagName.startsWith(SOL_TAG_PREFIX)));
+	public boolean canHandleStartTag(final String tagName) {
+		boolean res = super.canHandleStartTag(tagName);
+		return res ? res : ((tagName != null) && (tagName.startsWith(SOL_TAG_PREFIX)));
 	}
 
 	@Override
-	public boolean canHandleEndTag(final String tagName, final SaxEventType saxEventType) {
-		return MAIN_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName)
-				|| ADD_CONTEXT_ATTR_NAME.equalsIgnoreCase(tagName)
-				|| ELEMENT_TAG.equalsIgnoreCase(tagName) || ACTIVITY_TAG.equalsIgnoreCase(tagName)
-				|| SERVER_TAG.equalsIgnoreCase(tagName)
-				|| ((tagName != null) && (tagName.startsWith(SOL_TAG_PREFIX)));
+	public boolean canHandleEndTag(final String tagName) {
+		boolean res = super.canHandleEndTag(tagName);
+		return res ? res : ((tagName != null) && (tagName.startsWith(SOL_TAG_PREFIX)));
 	}
 
 	@Override
 	public Action handleStartTag(final String namespaceURI, final String lname,
 			final String qname, final Attributes attrs) {
-		String value;
-		if (qname.equalsIgnoreCase(ACTION_TAG)) {
-			Action action = new Action();
-			action.setDataPanelActionType(DataPanelActionType.RELOAD_PANEL);
-			if (attrs.getIndex(SHOW_IN_MODE_TAG) > -1) {
-				action.setShowInMode(ShowInMode.valueOf(attrs.getValue(SHOW_IN_MODE_TAG)));
-			}
-			if (attrs.getIndex(KEEP_USER_SETTINGS_TAG) > -1) {
-				value = attrs.getValue(KEEP_USER_SETTINGS_TAG);
-				action.setKeepUserSettings(Boolean.parseBoolean(value));
-			}
-			curAction = action;
-			return curAction;
-		}
-		if (qname.equalsIgnoreCase(DP_TAG)) {
-			DataPanelLink curDataPanelLink = new DataPanelLink();
-			curDataPanelLink.setDataPanelId(attrs.getValue(DP_ID_ATTR_NAME));
-
-			ActionTabFinder finder = AppRegistry.getActionTabFinder();
-			curDataPanelLink.setTabId(finder.findTabForAction(curDataPanelLink,
-					attrs.getValue(TAB_TAG)));
-			curAction.setDataPanelLink(curDataPanelLink);
-			return curAction;
-		}
-		if (qname.equalsIgnoreCase(NAVIGATOR_TAG)) {
-			NavigatorElementLink link = new NavigatorElementLink();
-			if (attrs.getIndex(ELEMENT_TAG) > -1) {
-				link.setId(attrs.getValue(ELEMENT_TAG));
-			}
-			if (attrs.getIndex(REFRESH_TAG) > -1) {
-				value = attrs.getValue(REFRESH_TAG);
-				link.setRefresh(Boolean.parseBoolean(value));
-			}
-			curAction.setNavigatorElementLink(link);
-			return curAction;
-		}
-		if (qname.equalsIgnoreCase(MODAL_WINDOW_TAG)) {
-			ModalWindowInfo mwi = new ModalWindowInfo();
-			if (attrs.getIndex(CAPTION_TAG) > -1) {
-				mwi.setCaption(attrs.getValue(CAPTION_TAG));
-			}
-			if (attrs.getIndex(WIDTH_TAG) > -1) {
-				value = attrs.getValue(WIDTH_TAG);
-				mwi.setWidth(Integer.valueOf(value));
-			}
-			if (attrs.getIndex(HEIGHT_TAG) > -1) {
-				value = attrs.getValue(HEIGHT_TAG);
-				mwi.setHeight(Integer.valueOf(value));
-			}
-			if (attrs.getIndex(SHOW_CLOSE_BOTTOM_BUTTON_TAG) > -1) {
-				value = attrs.getValue(SHOW_CLOSE_BOTTOM_BUTTON_TAG);
-				mwi.setShowCloseBottomButton(Boolean.parseBoolean(value));
-			}
-			curAction.setModalWindowInfo(mwi);
-			return curAction;
-		}
-		if (qname.equalsIgnoreCase(ELEMENT_TAG)) {
-			curDataPanelElementLink = new DataPanelElementLink();
-
-			curDataPanelElementLink.setId(attrs.getValue(ID_TAG));
-
-			if (attrs.getIndex(REFRESH_CONTEXT_ONLY_TAG) > -1) {
-				value = attrs.getValue(REFRESH_CONTEXT_ONLY_TAG);
-				curDataPanelElementLink.setRefreshContextOnly(Boolean.parseBoolean(value));
-			}
-			if (attrs.getIndex(SKIP_REFRESH_CONTEXT_ONLY_TAG) > -1) {
-				value = attrs.getValue(SKIP_REFRESH_CONTEXT_ONLY_TAG);
-				curDataPanelElementLink.setSkipRefreshContextOnly(Boolean.parseBoolean(value));
-			}
-			if (attrs.getIndex(KEEP_USER_SETTINGS_TAG) > -1) {
-				value = attrs.getValue(KEEP_USER_SETTINGS_TAG);
-				curDataPanelElementLink.setKeepUserSettings(Boolean.parseBoolean(value));
-			}
-
-			CompositeContext context = createContextFromGeneral();
-			curDataPanelElementLink.setContext(context);
-			return curAction;
-		}
-		if (qname.equalsIgnoreCase(SERVER_TAG)) {
-			readingServerPart = true;
-		}
-		if (qname.equalsIgnoreCase(ACTIVITY_TAG)) {
-			curActivity = new Activity();
-			curActivity.setId(attrs.getValue(ID_TAG));
-			curActivity.setName(attrs.getValue(NAME_TAG));
-			if (readingServerPart) {
-				value = attrs.getValue(TYPE_TAG);
-				curActivity.setType(ActivityType.valueOf(value));
-			} else {
-				curActivity.setType(ActivityType.BrowserJS);
-			}
-
-			CompositeContext context = createContextFromGeneral();
-			curActivity.setContext(context);
-			return curAction;
-		}
-		if (qname.equalsIgnoreCase(MAIN_CONTEXT_ATTR_NAME)) {
-			readingMainContext = true;
-			characters = "";
-			return curAction;
-		}
-		if (qname.equalsIgnoreCase(ADD_CONTEXT_ATTR_NAME)) {
-			readingAddContext = true;
-			characters = "";
-			return curAction;
-		}
 		if (readingMainContext || readingAddContext) {
 			characters = characters + XMLUtils.saxTagWithAttrsToString(qname, attrs);
 			return curAction;
 		}
+
+		standartHandler(qname, attrs, SaxEventType.STARTTAG);
 		return curAction;
+	}
+
+	/**
+	 * Обработчик тэга server.
+	 * 
+	 * @param attrs
+	 *            - атрибуты тэга.
+	 */
+	public void serverSTARTTAGHandler(final Attributes attrs) {
+		readingServerPart = true;
+	}
+
+	/**
+	 * Обработчик тэга add_context.
+	 * 
+	 * @param attrs
+	 *            - атрибуты тэга.
+	 */
+	public void addcontextSTARTTAGHandler(final Attributes attrs) {
+		readingAddContext = true;
+		characters = "";
+	}
+
+	/**
+	 * Обработчик тэга main_context.
+	 * 
+	 * @param attrs
+	 *            - атрибуты тэга.
+	 */
+	public void maincontextSTARTTAGHandler(final Attributes attrs) {
+		readingMainContext = true;
+		characters = "";
+	}
+
+	/**
+	 * Обработчик тэга activity.
+	 * 
+	 * @param attrs
+	 *            - атрибуты тэга.
+	 */
+	public void activitySTARTTAGHandler(final Attributes attrs) {
+		curActivity = new Activity();
+		setupBaseProps(curActivity, attrs);
+		if (readingServerPart) {
+			String value = attrs.getValue(TYPE_TAG);
+			curActivity.setType(ActivityType.valueOf(value));
+		} else {
+			curActivity.setType(ActivityType.BrowserJS);
+		}
+
+		CompositeContext context = createContextFromGeneral();
+		curActivity.setContext(context);
+	}
+
+	/**
+	 * Обработчик тэга element.
+	 * 
+	 * @param attrs
+	 *            - атрибуты тэга.
+	 */
+	public void elementSTARTTAGHandler(final Attributes attrs) {
+		String value;
+		curDataPanelElementLink = new DataPanelElementLink();
+
+		curDataPanelElementLink.setId(attrs.getValue(ID_TAG));
+
+		if (attrs.getIndex(REFRESH_CONTEXT_ONLY_TAG) > -1) {
+			value = attrs.getValue(REFRESH_CONTEXT_ONLY_TAG);
+			curDataPanelElementLink.setRefreshContextOnly(Boolean.parseBoolean(value));
+		}
+		if (attrs.getIndex(SKIP_REFRESH_CONTEXT_ONLY_TAG) > -1) {
+			value = attrs.getValue(SKIP_REFRESH_CONTEXT_ONLY_TAG);
+			curDataPanelElementLink.setSkipRefreshContextOnly(Boolean.parseBoolean(value));
+		}
+		if (attrs.getIndex(KEEP_USER_SETTINGS_TAG) > -1) {
+			value = attrs.getValue(KEEP_USER_SETTINGS_TAG);
+			curDataPanelElementLink.setKeepUserSettings(Boolean.parseBoolean(value));
+		}
+
+		CompositeContext context = createContextFromGeneral();
+		curDataPanelElementLink.setContext(context);
+	}
+
+	/**
+	 * Обработчик тэга modalwindow.
+	 * 
+	 * @param attrs
+	 *            - атрибуты тэга.
+	 */
+	public void modalwindowSTARTTAGHandler(final Attributes attrs) {
+		String value;
+		ModalWindowInfo mwi = new ModalWindowInfo();
+		if (attrs.getIndex(CAPTION_TAG) > -1) {
+			mwi.setCaption(attrs.getValue(CAPTION_TAG));
+		}
+		if (attrs.getIndex(WIDTH_TAG) > -1) {
+			value = attrs.getValue(WIDTH_TAG);
+			mwi.setWidth(Integer.valueOf(value));
+		}
+		if (attrs.getIndex(HEIGHT_TAG) > -1) {
+			value = attrs.getValue(HEIGHT_TAG);
+			mwi.setHeight(Integer.valueOf(value));
+		}
+		if (attrs.getIndex(SHOW_CLOSE_BOTTOM_BUTTON_TAG) > -1) {
+			value = attrs.getValue(SHOW_CLOSE_BOTTOM_BUTTON_TAG);
+			mwi.setShowCloseBottomButton(Boolean.parseBoolean(value));
+		}
+		curAction.setModalWindowInfo(mwi);
+	}
+
+	/**
+	 * Обработчик тэга navigator.
+	 * 
+	 * @param attrs
+	 *            - атрибуты тэга.
+	 */
+	public void navigatorSTARTTAGHandler(final Attributes attrs) {
+		NavigatorElementLink link = new NavigatorElementLink();
+		if (attrs.getIndex(ELEMENT_TAG) > -1) {
+			link.setId(attrs.getValue(ELEMENT_TAG));
+		}
+		if (attrs.getIndex(REFRESH_TAG) > -1) {
+			String value = attrs.getValue(REFRESH_TAG);
+			link.setRefresh(Boolean.parseBoolean(value));
+		}
+		curAction.setNavigatorElementLink(link);
+	}
+
+	/**
+	 * Обработчик тэга datapanel.
+	 * 
+	 * @param attrs
+	 *            - атрибуты тэга.
+	 */
+	public void datapanelSTARTTAGHandler(final Attributes attrs) {
+		DataPanelLink curDataPanelLink = new DataPanelLink();
+		curDataPanelLink.setDataPanelId(attrs.getValue(DP_ID_ATTR_NAME));
+
+		ActionTabFinder finder = AppRegistry.getActionTabFinder();
+		curDataPanelLink.setTabId(finder.findTabForAction(curDataPanelLink,
+				attrs.getValue(TAB_TAG)));
+		curAction.setDataPanelLink(curDataPanelLink);
+	}
+
+	/**
+	 * Обработчик тэга action.
+	 * 
+	 * @param attrs
+	 *            - атрибуты тэга.
+	 */
+	public void actionSTARTTAGHandler(final Attributes attrs) {
+		Action action = new Action();
+		action.setDataPanelActionType(DataPanelActionType.RELOAD_PANEL);
+		if (attrs.getIndex(SHOW_IN_MODE_TAG) > -1) {
+			action.setShowInMode(ShowInMode.valueOf(attrs.getValue(SHOW_IN_MODE_TAG)));
+		}
+		if (attrs.getIndex(KEEP_USER_SETTINGS_TAG) > -1) {
+			String value = attrs.getValue(KEEP_USER_SETTINGS_TAG);
+			action.setKeepUserSettings(Boolean.parseBoolean(value));
+		}
+		curAction = action;
 	}
 
 	@Override
@@ -257,6 +318,16 @@ public class ActionFactory extends GeneralXMLHelper implements SAXTagHandler {
 			String s = new String(aArg0, aArg1, aArg2).trim();
 			characters = characters + s;
 		}
+	}
+
+	@Override
+	protected String[] getStartTags() {
+		return START_TAGS;
+	}
+
+	@Override
+	protected String[] getEndTrags() {
+		return END_TAGS;
 	}
 
 }

@@ -4,6 +4,8 @@ import java.lang.management.ManagementFactory;
 
 import javax.management.*;
 
+import org.slf4j.*;
+
 /**
  * Регистрация локальных JMX bean.
  * 
@@ -11,6 +13,10 @@ import javax.management.*;
  * 
  */
 public final class JMXMBeanRegistrator {
+	/**
+	 * LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(JMXMBeanRegistrator.class);
 
 	/**
 	 * Сервер JMX Bean.
@@ -32,8 +38,7 @@ public final class JMXMBeanRegistrator {
 			}
 			mbs.registerMBean(monBean, beanName);
 		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO заменить
+			LOGGER.error("Ошибка при регистрации MBean " + e.getLocalizedMessage());
 		}
 	}
 

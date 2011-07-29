@@ -73,8 +73,6 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 	private void determineLayerObjectProjection() {
 		if (type == GeoMapFeatureType.POINT) {
 			projection = DEF_POINT_PROJECTION;
-		} else {
-			projection = null;
 		}
 	}
 

@@ -1,6 +1,6 @@
 package ru.curs.showcase.util;
 
-import java.io.File;
+import java.io.*;
 
 import javax.xml.transform.Source;
 import javax.xml.validation.*;
@@ -8,7 +8,7 @@ import javax.xml.validation.*;
 import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.services.ExceptionType;
-import ru.curs.showcase.exception.*;
+import ru.curs.showcase.exception.XSDValidateException;
 
 /**
  * Валидатор схем, позволяющий настроить месторасположение схем и тип исходных
@@ -34,9 +34,10 @@ public class XMLValidator {
 			Validator validator = createValidator(source);
 			Source prepared = prepareSource(source);
 			validator.validate(prepared);
-		} catch (SettingsFileOpenException e) {
-			throw e;
-		} catch (Exception e) {
+			// нельзя ловить SettingsFileOpenException
+		} catch (SAXException e) {
+			handleException(source, e);
+		} catch (IOException e) {
 			handleException(source, e);
 		}
 	}

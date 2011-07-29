@@ -25,7 +25,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public Navigator getNavigator(final CompositeContext context) throws GeneralServerException {
+	public Navigator getNavigator(final CompositeContext context) throws GeneralException {
 		return getServiceLayer().getNavigator(context);
 	}
 
@@ -34,64 +34,64 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public DataPanel getDataPanel(final Action action) throws GeneralServerException {
+	public DataPanel getDataPanel(final Action action) throws GeneralException {
 		return getServiceLayer().getDataPanel(action);
 	}
 
 	@Override
 	public WebText getWebText(final CompositeContext context, final DataPanelElementInfo element)
-			throws GeneralServerException {
+			throws GeneralException {
 		return getServiceLayer().getWebText(context, element);
 	}
 
 	@Override
 	public Grid getGrid(final CompositeContext context, final DataPanelElementInfo element,
-			final GridRequestedSettings aSettings) throws GeneralServerException {
+			final GridRequestedSettings aSettings) throws GeneralException {
 		return getServiceLayer().getGrid(context, element, aSettings);
 	}
 
 	@Override
 	public Chart getChart(final CompositeContext context, final DataPanelElementInfo element)
-			throws GeneralServerException {
+			throws GeneralException {
 		return getServiceLayer().getChart(context, element);
 	}
 
 	@Override
-	public void saveColumnSet(final ColumnSet aCs) throws GeneralServerException {
+	public void saveColumnSet(final ColumnSet aCs) throws GeneralException {
 		// fake метод для корректной сериализации
 	}
 
 	@Override
 	public GeoMap getGeoMap(final CompositeContext context, final DataPanelElementInfo element)
-			throws GeneralServerException {
+			throws GeneralException {
 		return getServiceLayer().getGeoMap(context, element);
 	}
 
 	@Override
 	public XForms getXForms(final CompositeContext context, final DataPanelElementInfo element,
-			final String currentData) throws GeneralServerException {
+			final String currentData) throws GeneralException {
 		return getServiceLayer().getXForms(context, element, currentData);
 	}
 
 	@Override
 	public void saveXForms(final CompositeContext context, final DataPanelElementInfo element,
-			final String data) throws GeneralServerException {
+			final String data) throws GeneralException {
 		getServiceLayer().saveXForms(context, element, data);
 	}
 
 	@Override
 	public ServerCurrentState getServerCurrentState(final CompositeContext context)
-			throws GeneralServerException {
+			throws GeneralException {
 		return getServiceLayer().getServerCurrentState(context);
 	}
 
 	@Override
-	public void execServerAction(final Action action) throws GeneralServerException {
+	public void execServerAction(final Action action) throws GeneralException {
 		getServiceLayer().execServerAction(action);
 	}
 
 	@Override
-	public MainPage getMainPage(final CompositeContext context) throws GeneralServerException {
+	public MainPage getMainPage(final CompositeContext context) throws GeneralException {
 		return getServiceLayer().getMainPage(context);
 	}
 }

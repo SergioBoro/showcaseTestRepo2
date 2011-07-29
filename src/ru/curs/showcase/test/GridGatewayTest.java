@@ -71,17 +71,23 @@ public class GridGatewayTest extends AbstractTestBasedOnFiles {
 
 	/**
 	 * Проверка получения только данных для грида.
+	 * 
+	 * @throws SQLException
 	 */
 	@Test
-	public void testGetDataOnly() {
+	public void testGetDataOnly() throws SQLException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "2");
 		Connection conn = ConnectionFactory.getConnection();
-		GridGateway gateway = new GridDBGateway(conn);
-		GridRequestedSettings settings = new GridRequestedSettings();
-		settings.setPageNumber(2);
-		settings.setPageSize(2);
-		gateway.getRawData(context, element, settings);
+		try {
+			GridGateway gateway = new GridDBGateway(conn);
+			GridRequestedSettings settings = new GridRequestedSettings();
+			settings.setPageNumber(2);
+			settings.setPageSize(2);
+			gateway.getRawData(context, element, settings);
+		} finally {
+			conn.close();
+		}
 	}
 
 	/**

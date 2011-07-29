@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.util.AppProps;
@@ -27,10 +27,10 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест получения файла фрейма.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testGetFramesInMainPage() throws GeneralServerException {
+	public void testGetFramesInMainPage() throws GeneralException {
 		CompositeContext context = new CompositeContext(generateTestURLParams(USERDATA_TEST1));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		MainPage page = sl.getMainPage(context);
@@ -45,8 +45,8 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 		assertTrue(raw.indexOf(AppProps.CURRENT_USERDATA_TEMPLATE) > -1);
 		assertTrue(raw.indexOf(AppProps.IMAGES_IN_GRID_DIR) > -1);
 
-		assertTrue(page.getWelcome().indexOf(AppProps.CURRENT_USERDATA_TEMPLATE) == -1);
-		assertTrue(page.getWelcome().indexOf(AppProps.IMAGES_IN_GRID_DIR) == -1);
+		assertEquals(-1, page.getWelcome().indexOf(AppProps.CURRENT_USERDATA_TEMPLATE));
+		assertEquals(-1, page.getWelcome().indexOf(AppProps.IMAGES_IN_GRID_DIR));
 		assertTrue(page.getWelcome().indexOf(AppInfoSingleton.getAppInfo().getCurUserDataId()) > -1);
 		assertTrue(page.getWelcome().indexOf(
 				AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR)) > -1);
@@ -55,10 +55,10 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест получения файла фрейма.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testGetFileFrameWelcomeAsFrame() throws GeneralServerException {
+	public void testGetFileFrameWelcomeAsFrame() throws GeneralException {
 		CompositeContext context = new CompositeContext(generateTestURLParams(USERDATA_TEST1));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		String html = sl.getMainPageFrame(context, MainPageFrameType.WELCOME);
@@ -68,10 +68,10 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест получения кода фрейма из БД.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testGetDBFrameHeaderAsFrame() throws GeneralServerException {
+	public void testGetDBFrameHeaderAsFrame() throws GeneralException {
 		CompositeContext context = new CompositeContext(generateTestURLParams(USERDATA_TEST1));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		String html = sl.getMainPageFrame(context, MainPageFrameType.HEADER);
@@ -81,10 +81,10 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест получения кода фрейма из БД.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testGetDBFrameFooterAsFrame() throws GeneralServerException {
+	public void testGetDBFrameFooterAsFrame() throws GeneralException {
 		CompositeContext context = new CompositeContext(generateTestURLParams(USERDATA_TEST1));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		String html = sl.getMainPageFrame(context, MainPageFrameType.FOOTER);

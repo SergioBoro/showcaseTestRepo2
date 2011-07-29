@@ -10,11 +10,11 @@ public enum SaxEventType {
 	/**
 	 * Начало тэга.
 	 */
-	STARTELEMENT,
+	STARTTAG,
 	/**
 	 * Конец тэга.
 	 */
-	ENDELEMENT,
+	ENDTAG,
 	/**
 	 * Содержимое тэга.
 	 */

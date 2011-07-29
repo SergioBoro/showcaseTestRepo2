@@ -70,8 +70,6 @@ public final class UserXMLTransformer {
 			doc = db.parse(is);
 		} catch (SAXException e) {
 			throw new NotXMLException(e, subject.getName());
-		} catch (IOException e) {
-			throw e;
 		}
 		return doc;
 	}

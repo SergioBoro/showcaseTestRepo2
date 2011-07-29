@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
  * @author den
  * 
  */
-public class GeneralServerException extends Exception {
+public class GeneralException extends Exception {
 	static final String EXCEPTION_TRACE = "Основной стек ошибки:";
 
 	static final String EXCEPTION_CLASS = "Класс ошибки: ";
@@ -78,11 +78,11 @@ public class GeneralServerException extends Exception {
 		originalMessage = aOriginalMessage;
 	}
 
-	public GeneralServerException() {
+	public GeneralException() {
 		super();
 	}
 
-	public GeneralServerException(final Throwable original, final String aUserMessage) {
+	public GeneralException(final Throwable original, final String aUserMessage) {
 		super(aUserMessage, original);
 	}
 
@@ -156,9 +156,9 @@ public class GeneralServerException extends Exception {
 	 *            - исключение.
 	 * @return текст сообщения
 	 */
-	public static String checkExeptionTypeAndCreateDetailedTextOfException(final Throwable caught) {
-		if (caught instanceof GeneralServerException) {
-			GeneralServerException gse = (GeneralServerException) caught;
+	public static String generateDetailedInfo(final Throwable caught) {
+		if (caught instanceof GeneralException) {
+			GeneralException gse = (GeneralException) caught;
 			return getDetailedTextOfException(gse.originalMessage, gse.originalExceptionClass,
 					gse.originalTrace, gse.type, gse.context);
 		} else {
@@ -176,8 +176,8 @@ public class GeneralServerException extends Exception {
 	 *            - исключение.
 	 */
 	public static boolean needDetailedInfo(final Throwable caught) {
-		if (caught instanceof GeneralServerException) {
-			GeneralServerException gse = (GeneralServerException) caught;
+		if (caught instanceof GeneralException) {
+			GeneralException gse = (GeneralException) caught;
 			return gse.needDatailedInfo;
 		} else {
 			return true;
@@ -196,8 +196,8 @@ public class GeneralServerException extends Exception {
 	 * @return = тип.
 	 */
 	public static ExceptionType getType(final Throwable caught) {
-		if (caught instanceof GeneralServerException) {
-			return ((GeneralServerException) caught).type;
+		if (caught instanceof GeneralException) {
+			return ((GeneralException) caught).type;
 		} else {
 			return ExceptionType.JAVA;
 		}
@@ -243,8 +243,8 @@ public class GeneralServerException extends Exception {
 	 * @return - тип.
 	 */
 	public static MessageType getMessageType(final Throwable caught) {
-		if (caught instanceof GeneralServerException) {
-			return ((GeneralServerException) caught).messageType;
+		if (caught instanceof GeneralException) {
+			return ((GeneralException) caught).messageType;
 		} else {
 			return MessageType.ERROR;
 		}

@@ -1,6 +1,6 @@
 package ru.curs.showcase.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -8,7 +8,7 @@ import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XForms;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.frame.*;
@@ -27,10 +27,10 @@ public class HTMLVariablesTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка переменных в коде фреймов главной страницы.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testFramesVariables() throws GeneralServerException {
+	public void testFramesVariables() throws GeneralException {
 		CompositeContext context = new CompositeContext(generateTestURLParams("test1"));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		MainPage page = sl.getMainPage(context);
@@ -41,8 +41,8 @@ public class HTMLVariablesTest extends AbstractTestBasedOnFiles {
 		assertTrue(raw.indexOf(AppProps.CURRENT_USERDATA_TEMPLATE) > -1);
 		assertTrue(raw.indexOf(AppProps.IMAGES_IN_GRID_DIR) > -1);
 
-		assertTrue(page.getWelcome().indexOf(AppProps.CURRENT_USERDATA_TEMPLATE) == -1);
-		assertTrue(page.getWelcome().indexOf(AppProps.IMAGES_IN_GRID_DIR) == -1);
+		assertEquals(-1, page.getWelcome().indexOf(AppProps.CURRENT_USERDATA_TEMPLATE));
+		assertEquals(-1, page.getWelcome().indexOf(AppProps.IMAGES_IN_GRID_DIR));
 		assertTrue(page.getWelcome().indexOf(AppInfoSingleton.getAppInfo().getCurUserDataId()) > -1);
 		assertTrue(page.getWelcome().indexOf(
 				AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR)) > -1);

@@ -14,7 +14,7 @@ import org.xml.sax.*;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.exception.NoSuchUserDataException;
 import ru.curs.showcase.util.*;
@@ -56,11 +56,11 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	 * Базовый тест на запись и чтение URLParams.
 	 * 
 	 * @throws IOException
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 * @throws SAXException
 	 */
 	@Test
-	public void testSessionInfoForGetChart() throws IOException, GeneralServerException,
+	public void testSessionInfoForGetChart() throws IOException, GeneralException,
 			SAXException {
 		Map<String, List<String>> params = generateTestURLParams(USERDATA_ID);
 
@@ -122,11 +122,11 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	 * Проверка установки информации о сессии для функции получения инф. панели.
 	 * 
 	 * @throws IOException
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 * @throws SAXException
 	 */
 	@Test
-	public void testSessionInfoForGetDP() throws IOException, GeneralServerException, SAXException {
+	public void testSessionInfoForGetDP() throws IOException, GeneralException, SAXException {
 		Map<String, List<String>> params = generateTestURLParams(USERDATA_ID);
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
@@ -143,11 +143,11 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	 * Проверка считывания информации о сессии, если userdata не задана.
 	 * 
 	 * @throws IOException
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 * @throws SAXException
 	 */
 	@Test
-	public void testWriteAndReadIfNoURLParams() throws IOException, GeneralServerException,
+	public void testWriteAndReadIfNoURLParams() throws IOException, GeneralException,
 			SAXException {
 		Map<String, List<String>> params = new TreeMap<String, List<String>>();
 

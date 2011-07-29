@@ -62,22 +62,21 @@ public abstract class EventManager<T extends Event> implements SerializableEleme
 		}
 
 		T general = null;
+		Event testEvent = new Event(id1, id2, interactionType);
 		for (T current : events) {
-			if (interactionType == current.getInteractionType()) {
-				if (id1.equals(current.getId1())) {
-					if (current.getId2() == null) {
-						general = current;
+			if (current.isCompatible(testEvent)) {
+				if (current.isGeneral()) {
+					general = current;
+					if (id2 == null) {
+						break;
 					}
-					if ((id2 != null)) {
-						if (id2.equals(current.getId2())) {
-							res.add(current);
-							break;
-						}
-					}
+				} else {
+					res.add(current);
+					break;
 				}
 			}
 		}
-		if (fireGeneralAndConcreteEvents || (res.size() == 0)) {
+		if (fireGeneralAndConcreteEvents || res.isEmpty()) {
 			if (general != null) {
 				res.add(0, general);
 			}

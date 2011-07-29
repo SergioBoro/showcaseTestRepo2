@@ -65,8 +65,9 @@ public class Header {
 
 			MessageBox.showMessageWithDetails(
 					Constants.TRANSFORMATION_HEADER_OR_FOOTER_WIDTH_ERROR, e.getClass().getName()
-							+ ": " + e.getMessage(), GeneralServerException.getStackText(e),
-					MessageType.ERROR, true);
+							+ ": " + e.getMessage(),
+					GeneralException.generateDetailedInfo(e),
+					MessageType.ERROR, GeneralException.needDetailedInfo(e));
 		}
 
 		switch (SizeParser.getSizeType(AppCurrContext.getInstance().getMainPage()

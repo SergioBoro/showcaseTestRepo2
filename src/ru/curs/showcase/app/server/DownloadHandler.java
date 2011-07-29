@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.apache.commons.fileupload.FileUploadException;
 
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
@@ -27,7 +27,7 @@ public final class DownloadHandler extends AbstractDownloadHandler {
 	private String data;
 
 	@Override
-	protected void processFiles() throws GeneralServerException {
+	protected void processFiles() throws GeneralException {
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(getRequest().getSession().getId());
 		setOutputFile(serviceLayer.getDownloadFile(getContext(), getElementInfo(), linkId, data));

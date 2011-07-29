@@ -2,12 +2,11 @@ package ru.curs.showcase.model;
 
 import javax.xml.parsers.SAXParser;
 
-import org.xml.sax.*;
+import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.Action;
-import ru.curs.showcase.exception.SAXError;
 import ru.curs.showcase.util.XMLUtils;
 
 /**
@@ -32,11 +31,11 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 	 * 
 	 * @return - обработчик.
 	 */
-	protected abstract DefaultHandler getConcreteHandler();
+	protected abstract SAXTagHandler getConcreteHandler();
 
 	@Override
 	protected void setupDynamicSettings() {
-		final DefaultHandler addHandler = getConcreteHandler();
+		final SAXTagHandler addHandler = getConcreteHandler();
 		DefaultHandler myHandler = new DefaultHandler() {
 
 			private boolean readingHeader = false;
@@ -57,13 +56,12 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 					return;
 				}
 				if (addHandler != null) {
-					try {
-						addHandler.startElement(namespaceURI, lname, qname, attrs);
-					} catch (SAXException e) {
-						throw new SAXError(e);
+					if (addHandler.canHandleStartTag(qname)) {
+						addHandler.handleStartTag(namespaceURI, lname, qname, attrs);
+						return;
 					}
 				}
-				if (actionFactory.canHandleStartTag(qname, SaxEventType.STARTELEMENT)) {
+				if (actionFactory.canHandleStartTag(qname)) {
 					Action action =
 						actionFactory.handleStartTag(namespaceURI, lname, qname, attrs);
 					getResult().setDefaultAction(action);
@@ -97,16 +95,16 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 					return;
 				}
 				if (addHandler != null) {
-					try {
-						addHandler.endElement(namespaceURI, lname, qname);
-					} catch (SAXException e) {
-						throw new SAXError(e);
+					if (addHandler.canHandleEndTag(qname)) {
+						addHandler.handleEndTag(namespaceURI, lname, qname);
+						return;
 					}
 				}
 
-				if (actionFactory.canHandleEndTag(qname, SaxEventType.ENDELEMENT)) {
+				if (actionFactory.canHandleEndTag(qname)) {
 					Action action = actionFactory.handleEndTag(namespaceURI, lname, qname);
 					getResult().setDefaultAction(action);
+					return;
 				}
 
 				if (readingHeader) {
@@ -132,22 +130,16 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 					return;
 				}
 				if (addHandler != null) {
-					try {
-						addHandler.characters(arg0, arg1, arg2);
-					} catch (SAXException e) {
-						throw new SAXError(e);
-					}
+					addHandler.handleCharacters(arg0, arg1, arg2);
 				}
-
 				actionFactory.handleCharacters(arg0, arg1, arg2);
-
 			}
 		};
 
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {
 			parser.parse(getSettings(), myHandler);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			XMLUtils.stdSAXErrorHandler(e, getSettingsErrorMes());
 		}
 	}

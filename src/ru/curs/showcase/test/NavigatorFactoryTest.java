@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.*;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.navigator.NavigatorFactory;
 import ru.curs.showcase.util.AppProps;
@@ -40,7 +40,7 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testNavigatorFromDBBySL() throws GeneralServerException {
+	public void testNavigatorFromDBBySL() throws GeneralException {
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		Navigator nav = serviceLayer.getNavigator(new CompositeContext());
 		assertFalse(nav.getHideOnLoad());

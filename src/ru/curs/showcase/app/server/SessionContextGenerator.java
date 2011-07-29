@@ -51,7 +51,7 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 		info.getDocumentElement().appendChild(node);
 		node.appendChild(info.createTextNode(ServletUtils.getUserNameFromSession()));
 
-		fillURLParams(info, sessionId, aMap);
+		fillURLParams(info, aMap);
 
 		addUserData(info, aMap);
 
@@ -75,7 +75,7 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 
 	}
 
-	private static void fillURLParams(final Document info, final String sessionId,
+	private static void fillURLParams(final Document info,
 			final Map<String, ArrayList<String>> aMap) throws UnsupportedEncodingException {
 		Element node;
 

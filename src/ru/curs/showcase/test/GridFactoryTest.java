@@ -10,7 +10,7 @@ import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.grid.*;
@@ -29,7 +29,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	 * Основной тест для фабрики гридов.
 	 */
 	@Test
-	public void testGetData() throws GeneralServerException {
+	public void testGetData() throws GeneralException {
 		final int colCount = 26;
 		final int pagesCount = 6;
 		final int pageSize = 15;
@@ -45,7 +45,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		assertNotNull(context.getSession());
 		assertNotNull(grid);
 		assertNotNull(grid.getDataSet());
-		assertTrue(!grid.getHeader().isEmpty());
+		assertFalse(grid.getHeader().isEmpty());
 		assertTrue(grid.getHeader().contains("class=\"testStyle\""));
 		assertTrue(grid.getFooter().isEmpty());
 		assertNotNull(grid.getEventManager().getEvents());
@@ -98,7 +98,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	 * Тест на обновление грида с измененными параметрами постраничной выборки.
 	 */
 	@Test
-	public void testWithRequestedSettings() throws GeneralServerException {
+	public void testWithRequestedSettings() throws GeneralException {
 		final int maxColIndex = 5;
 		final int pageSize = maxColIndex;
 		final int pageNum = 10;
@@ -163,10 +163,10 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка работы опции fireGeneralAndConcreteEvents у грида.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testFireGeneralAndConcreteEvents() throws GeneralServerException {
+	public void testFireGeneralAndConcreteEvents() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test1.1.xml", "8", "83");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -184,7 +184,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	 * Проверка получения грида через SL с помощью 2-х процедур.
 	 */
 	@Test
-	public void test2StepGridLoadBySL() throws GeneralServerException {
+	public void test2StepGridLoadBySL() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getDPElement("test1.1.xml", "2", "2");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -200,7 +200,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	 * Проверка получения грида через SL с помощью 2-х процедур.
 	 */
 	@Test
-	public void test2StepGridLoadBySLWhenUpdate() throws GeneralServerException {
+	public void test2StepGridLoadBySLWhenUpdate() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getDPElement("test1.1.xml", "2", "2");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);

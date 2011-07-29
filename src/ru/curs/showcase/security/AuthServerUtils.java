@@ -1,22 +1,17 @@
 package ru.curs.showcase.security;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.*;
-import java.util.*;
-
-import javax.xml.transform.*;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.stream.StreamSource;
+import java.util.List;
 
 import org.slf4j.*;
-import org.xml.sax.*;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Набор утилит (функций) для работы с сервлетами сервера аутентификации.
  */
 public final class AuthServerUtils {
+	static final String REQUEST_METHOD = "GET";
+
 	public static final String APP_PROP_READ_ERROR =
 		"Не удалось считать security.authserverurl из app.properties";
 
@@ -74,7 +69,7 @@ public final class AuthServerUtils {
 				new URL(authServerURL
 						+ String.format("/login?sesid=%s&login=%s&pwd=%s", sesid, login, pwd));
 			HttpURLConnection c = (HttpURLConnection) server.openConnection();
-			c.setRequestMethod("GET");
+			c.setRequestMethod(REQUEST_METHOD);
 			c.connect();
 			return c.getResponseCode() == HttpURLConnection.HTTP_OK;
 		} catch (IOException e) {
@@ -93,7 +88,7 @@ public final class AuthServerUtils {
 			try {
 				URL server = new URL(authServerURL + String.format("/logout?sesid=%s", sesid));
 				HttpURLConnection c = (HttpURLConnection) server.openConnection();
-				c.setRequestMethod("GET");
+				c.setRequestMethod(REQUEST_METHOD);
 				c.connect();
 				c.getResponseCode();
 			} catch (IOException e) {
@@ -138,7 +133,7 @@ public final class AuthServerUtils {
 			try {
 				new URL(url);
 			} catch (MalformedURLException e) {
-				e.printStackTrace();
+				LOGGER.error("Проверка URL", e);
 			}
 		}
 		theAuthServerAlias = new AuthServerUtils(url);
@@ -161,21 +156,21 @@ public final class AuthServerUtils {
 			URL server =
 				new URL(authServerURL + String.format("/checkname?sesid=%s&name=%s", sesid, login));
 			HttpURLConnection c = (HttpURLConnection) server.openConnection();
-			c.setRequestMethod("GET");
+			c.setRequestMethod(REQUEST_METHOD);
 			c.setDoInput(true);
 			c.connect();
 			if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				List<UserData> l = UserInfo.parseStream(c.getInputStream());
-				if (l.size() > 0) {
-					return l.get(0);
-				} else {
+				if (l.isEmpty()) {
 					return null;
+				} else {
+					return l.get(0);
 				}
 			} else {
 				return null;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Проверка пользователя", e);
 			return null;
 		}
 	}
@@ -196,21 +191,21 @@ public final class AuthServerUtils {
 			URL server =
 				new URL(authServerURL + String.format("/isauthenticated?sesid=%s", sesid));
 			HttpURLConnection c = (HttpURLConnection) server.openConnection();
-			c.setRequestMethod("GET");
+			c.setRequestMethod(REQUEST_METHOD);
 			c.setDoInput(true);
 			c.connect();
 			if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				List<UserData> l = UserInfo.parseStream(c.getInputStream());
-				if (l.size() > 0) {
-					return l.get(0);
-				} else {
+				if (l.isEmpty()) {
 					return null;
+				} else {
+					return l.get(0);
 				}
 			} else {
 				return null;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Проверка входа в систему", e);
 			return null;
 		}
 	}
@@ -222,97 +217,6 @@ public final class AuthServerUtils {
 	 */
 	public String getUrl() {
 		return authServerURL;
-	}
-
-	/**
-	 * Информация о пользователе, получаемая из сервера аутентификации.
-	 */
-	private static final class UserInfo implements UserData {
-
-		/**
-		 * Login пользователя.
-		 */
-		private final String login;
-
-		/**
-		 * Идентификатор пользователя sid.
-		 */
-		private final String sid;
-
-		/**
-		 * Имя пользователя.
-		 */
-		private final String name;
-
-		/**
-		 * Электронный адрес пользователя.
-		 */
-		private final String email;
-
-		/**
-		 * Телефон пользователя.
-		 */
-		private final String phone;
-
-		UserInfo(final String alogin, final String asid, final String aname, final String aemail,
-				final String aphone) {
-			this.login = alogin;
-			this.sid = asid;
-			this.name = aname;
-			this.email = aemail;
-			this.phone = aphone;
-		}
-
-		static List<UserData> parseStream(final InputStream is) throws TransformerException {
-			final List<UserData> result = new LinkedList<UserData>();
-			final ContentHandler ch = new DefaultHandler() {
-				@Override
-				public void startElement(final String uri, final String localName,
-						final String prefixedName, final Attributes atts) throws SAXException {
-					if ("user".equals(localName)) {
-						UserInfo ui =
-							new UserInfo(atts.getValue("login"), atts.getValue("SID"),
-									atts.getValue("name"), atts.getValue("email"),
-									atts.getValue("phone"));
-						result.add(ui);
-					}
-				}
-			};
-			TransformerFactory.newInstance().newTransformer()
-					.transform(new StreamSource(is), new SAXResult(ch));
-			return result;
-		}
-
-		/**
-		 * SID пользователя.
-		 */
-		@Override
-		public String getSid() {
-			return sid;
-		}
-
-		/**
-		 * Email пользователя.
-		 */
-		@Override
-		public String getEmail() {
-			return email;
-		}
-
-		@Override
-		public String getCaption() {
-			return login;
-		}
-
-		@Override
-		public String getFullName() {
-			return name;
-		}
-
-		@Override
-		public String getPhone() {
-			return phone;
-		}
 	}
 
 }

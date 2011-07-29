@@ -9,7 +9,7 @@ import ru.curs.gwt.datagrid.model.GridValueType;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.grid.GridXMLBuilder;
@@ -24,10 +24,10 @@ public class GridExportToExcelTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест экспорта данных из текущей страницы.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testExportCurrentPage() throws GeneralServerException {
+	public void testExportCurrentPage() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 
@@ -69,10 +69,10 @@ public class GridExportToExcelTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест экспорта всех страниц используя ServiceLayer.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testServiceForExportAll() throws GeneralServerException {
+	public void testServiceForExportAll() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 		GridRequestedSettings settings = new GridRequestedSettings();
@@ -89,10 +89,10 @@ public class GridExportToExcelTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест экспорта текущей страницы используя ServiceLayer.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testServiceForExportCurrent() throws GeneralServerException {
+	public void testServiceForExportCurrent() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 		GridRequestedSettings settings = new GridRequestedSettings();

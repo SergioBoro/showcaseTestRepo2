@@ -20,6 +20,8 @@ import ru.curs.showcase.util.*;
  * 
  */
 public final class XFormsFactory extends HTMLBasedElementFactory {
+	static final String XFORMS_CREATE_ERROR = "Ошибка при формировании XForms для элемента '%s'";
+
 	/**
 	 * Результат работы фабрики.
 	 */
@@ -50,7 +52,7 @@ public final class XFormsFactory extends HTMLBasedElementFactory {
 			stream = AppProps.loadUserDataToStream(file);
 
 		} catch (IOException e) {
-			throw new SettingsFileOpenException(getElementInfo().getTemplateName(),
+			throw new SettingsFileOpenException(e, getElementInfo().getTemplateName(),
 					SettingsFileType.XFORM);
 		}
 
@@ -69,7 +71,8 @@ public final class XFormsFactory extends HTMLBasedElementFactory {
 			replaceVariables();
 			result.setXFormParts(XFormCutter.xFormParts(html));
 		} catch (Exception e) {
-			throw new XSLTTransformException(e);
+			throw new XSLTTransformException(String.format(XFORMS_CREATE_ERROR, getElementInfo()
+					.getFullId()), e);
 		}
 	}
 

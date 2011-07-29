@@ -34,16 +34,16 @@ public abstract class ActionTabFinder {
 	 */
 	public String findTabForAction(final DataPanelLink link, final String tabValue) {
 		if (tabValue != null) {
-			if (!tabValue.equalsIgnoreCase(FIRST_OR_CURRENT_VALUE)) {
+			if (tabValue.equalsIgnoreCase(FIRST_OR_CURRENT_VALUE)) {
+				link.setFirstOrCurrentTab(true);
+				return getFirstFromStorage(link);
+			} else {
 				if (!tabValue.equalsIgnoreCase(CanBeCurrent.CURRENT_ID)) {
 					if (!link.getDataPanelId().equalsIgnoreCase(CanBeCurrent.CURRENT_ID)) {
 						checkForExists(link, tabValue);
 					}
 				}
 				return tabValue;
-			} else {
-				link.setFirstOrCurrentTab(true);
-				return getFirstFromStorage(link);
 			}
 		} else {
 			return getFirstFromStorage(link);

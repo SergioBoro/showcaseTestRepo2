@@ -23,11 +23,11 @@ public interface DataService extends RemoteService {
 	 * пользователя, совершившего вход в систему.
 	 * 
 	 * @return - объект навигатора.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 * @param context
 	 *            - контекст вызова. Содержит параметры URL.
 	 */
-	Navigator getNavigator(CompositeContext context) throws GeneralServerException;
+	Navigator getNavigator(CompositeContext context) throws GeneralException;
 
 	/**
 	 * Возвращает информационную панель по переданному действию. Информационная
@@ -36,9 +36,9 @@ public interface DataService extends RemoteService {
 	 * @param action
 	 *            - действие.
 	 * @return - панель.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
-	DataPanel getDataPanel(Action action) throws GeneralServerException;
+	DataPanel getDataPanel(Action action) throws GeneralException;
 
 	/**
 	 * Возвращает данные для отрисовки элемента типа WebText по переданному
@@ -49,10 +49,10 @@ public interface DataService extends RemoteService {
 	 * @param element
 	 *            - элемент.
 	 * @return - WebText.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	WebText getWebText(CompositeContext context, DataPanelElementInfo element)
-			throws GeneralServerException;
+			throws GeneralException;
 
 	/**
 	 * Возвращает данные для отрисовки элемента типа Grid по переданным
@@ -65,10 +65,10 @@ public interface DataService extends RemoteService {
 	 * @param settings
 	 *            - настройки.
 	 * @return - грид.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	Grid getGrid(CompositeContext context, DataPanelElementInfo element,
-			GridRequestedSettings settings) throws GeneralServerException;
+			GridRequestedSettings settings) throws GeneralException;
 
 	/**
 	 * Возвращает данные для отрисовки графика по переданным контексту и
@@ -79,10 +79,10 @@ public interface DataService extends RemoteService {
 	 * @param element
 	 *            - элемент.
 	 * @return - chart.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	Chart getChart(CompositeContext context, DataPanelElementInfo element)
-			throws GeneralServerException;
+			throws GeneralException;
 
 	/**
 	 * Fake функция для того, чтобы заработала сериализация GWT для класса
@@ -90,9 +90,9 @@ public interface DataService extends RemoteService {
 	 * 
 	 * @param cs
 	 *            - набор столбцов.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
-	void saveColumnSet(ColumnSet cs) throws GeneralServerException;
+	void saveColumnSet(ColumnSet cs) throws GeneralException;
 
 	/**
 	 * Возвращает данные для отрисовки карты.
@@ -102,10 +102,10 @@ public interface DataService extends RemoteService {
 	 * @param element
 	 *            - описание элемента.
 	 * @return - невизуальный объект карты.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	GeoMap getGeoMap(CompositeContext context, DataPanelElementInfo element)
-			throws GeneralServerException;
+			throws GeneralException;
 
 	/**
 	 * Возвращает данные для отрисовки формы.
@@ -115,13 +115,13 @@ public interface DataService extends RemoteService {
 	 * @param element
 	 *            - описание элемента.
 	 * @return - логическая форма без данных.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 * @param currentData
 	 *            - текущие данные XForms. Они должны заменить собой данные,
 	 *            возвращенные хранимой процедурой.
 	 */
 	XForms getXForms(CompositeContext context, DataPanelElementInfo element, String currentData)
-			throws GeneralServerException;
+			throws GeneralException;
 
 	/**
 	 * Сохраняет данные карточки на основе XForms.
@@ -132,21 +132,21 @@ public interface DataService extends RemoteService {
 	 *            - описание элемента.
 	 * @param data
 	 *            - данные.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	void saveXForms(CompositeContext context, DataPanelElementInfo element, String data)
-			throws GeneralServerException;
+			throws GeneralException;
 
 	/**
 	 * Возвращает информацию о текущем состоянии сервера и о текущем сеансе.
 	 * 
 	 * @return - объект с информацией.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 * @param context
 	 *            -контекст, содержащий параметры URL.
 	 */
 	ServerCurrentState getServerCurrentState(CompositeContext context)
-			throws GeneralServerException;
+			throws GeneralException;
 
 	/**
 	 * Выполняет действие на сервере.
@@ -154,9 +154,9 @@ public interface DataService extends RemoteService {
 	 * @param action
 	 *            - действие.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
-	void execServerAction(Action action) throws GeneralServerException;
+	void execServerAction(Action action) throws GeneralException;
 
 	/**
 	 * Возвращает данные для формирования главной страницы.
@@ -164,7 +164,7 @@ public interface DataService extends RemoteService {
 	 * @param context
 	 *            - контекст, содержащий параметры URL.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
-	MainPage getMainPage(CompositeContext context) throws GeneralServerException;
+	MainPage getMainPage(CompositeContext context) throws GeneralException;
 }

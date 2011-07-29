@@ -6,7 +6,7 @@ import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.frame.MainPageFrameType;
 
 /**
@@ -31,11 +31,11 @@ public interface DataServiceExt {
 	 * @param cs
 	 *            - набор столбцов.
 	 * @return - файл.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	ExcelFile generateExcelFromGrid(GridToExcelExportType exportType, CompositeContext context,
 			DataPanelElementInfo element, GridRequestedSettings settings, ColumnSet cs)
-			throws GeneralServerException;
+			throws GeneralException;
 
 	/**
 	 * Выполняет xforms SQL submission - т.е. вызывает хранимую процедуру
@@ -46,13 +46,13 @@ public interface DataServiceExt {
 	 * @param content
 	 *            - некие данные из формы.
 	 * @return - результат выполнения submission.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 * 
 	 * @param userDataId
 	 *            - идентификатор userdata.
 	 */
 	String handleSQLSubmission(String procName, String content, String userDataId)
-			throws GeneralServerException;
+			throws GeneralException;
 
 	/**
 	 * Выполняет xforms XSLT submission - т.е. вызывает XSL преобразование
@@ -65,10 +65,10 @@ public interface DataServiceExt {
 	 * @return - результат выполнения submission.
 	 * @param userDataId
 	 *            - идентификатор userdata.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	String handleXSLTSubmission(String xsltFile, String content, String userDataId)
-			throws GeneralServerException;
+			throws GeneralException;
 
 	/**
 	 * Возвращает файл для скачивания.
@@ -82,11 +82,11 @@ public interface DataServiceExt {
 	 * @param data
 	 *            - данные, введенные пользователем.
 	 * @return - файл.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	DataFile<ByteArrayOutputStream> getDownloadFile(CompositeContext context,
 			DataPanelElementInfo elementInfo, String linkId, String data)
-			throws GeneralServerException;
+			throws GeneralException;
 
 	/**
 	 * Загружает файл в хранилище.
@@ -101,10 +101,10 @@ public interface DataServiceExt {
 	 *            - данные, введенные пользователем.
 	 * @param file
 	 *            - файл.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	void uploadFile(CompositeContext context, DataPanelElementInfo elementInfo, String linkId,
-			String data, DataFile<ByteArrayOutputStream> file) throws GeneralServerException;
+			String data, DataFile<ByteArrayOutputStream> file) throws GeneralException;
 
 	/**
 	 * Получает код фрейма главной страницы.
@@ -113,8 +113,8 @@ public interface DataServiceExt {
 	 *            - контекст.
 	 * @param type
 	 *            - тип фрейма.
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	String getMainPageFrame(final CompositeContext context, final MainPageFrameType type)
-			throws GeneralServerException;
+			throws GeneralException;
 }

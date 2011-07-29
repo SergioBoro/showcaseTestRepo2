@@ -1,6 +1,10 @@
 package ru.curs.showcase.model;
 
+import java.lang.reflect.*;
+
 import org.xml.sax.Attributes;
+
+import ru.curs.showcase.exception.*;
 
 /**
  * Интерфейс обработчика дополнительных тэгов для SAX парсера.
@@ -8,7 +12,7 @@ import org.xml.sax.Attributes;
  * @author den
  * 
  */
-public interface SAXTagHandler {
+public abstract class SAXTagHandler extends GeneralXMLHelper {
 	/**
 	 * Определяет, может ли обработать тэг обработчик handleStartTag. Функция
 	 * может использоваться как клиентом, так и внутри handleXXX функций
@@ -16,11 +20,21 @@ public interface SAXTagHandler {
 	 * 
 	 * @param tagName
 	 *            - имя тэга.
-	 * @param saxEventType
-	 *            - тип события.
 	 * @return - результат проверки.
 	 */
-	boolean canHandleStartTag(String tagName, SaxEventType saxEventType);
+	public boolean canHandleStartTag(final String tagName) {
+		for (String tag : getStartTags()) {
+			if (tag.equalsIgnoreCase(tagName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Возвращает список обрабатываемых стартовых тэгов.
+	 */
+	protected abstract String[] getStartTags();
 
 	/**
 	 * Определяет, может ли обработать тэг обработчик handleEndTag. Функция
@@ -29,11 +43,21 @@ public interface SAXTagHandler {
 	 * 
 	 * @param tagName
 	 *            - имя тэга.
-	 * @param saxEventType
-	 *            - тип события.
 	 * @return - результат проверки.
 	 */
-	boolean canHandleEndTag(String tagName, SaxEventType saxEventType);
+	public boolean canHandleEndTag(final String tagName) {
+		for (String tag : getEndTrags()) {
+			if (tag.equalsIgnoreCase(tagName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Возвращает список обрабатываемых конечных тэгов.
+	 */
+	protected abstract String[] getEndTrags();
 
 	/**
 	 * Обработчик начала тэга.
@@ -48,7 +72,10 @@ public interface SAXTagHandler {
 	 *            - атрибуты тэга.
 	 * @return - null или объект, созданный при обработке тэга.
 	 */
-	Object handleStartTag(String namespaceURI, String lname, String qname, Attributes attrs);
+	public Object handleStartTag(final String namespaceURI, final String lname,
+			final String qname, final Attributes attrs) {
+		return standartHandler(qname, attrs, SaxEventType.STARTTAG);
+	}
 
 	/**
 	 * Обработчик начала тэга.
@@ -61,7 +88,7 @@ public interface SAXTagHandler {
 	 *            - полное имя (с префиксом) - рекомендуется для использования.
 	 * @return - null или объект, созданный при обработке тэга.
 	 */
-	Object handleEndTag(String namespaceURI, String lname, String qname);
+	public abstract Object handleEndTag(String namespaceURI, String lname, String qname);
 
 	/**
 	 * Обработчик содержимого тэга.
@@ -74,5 +101,36 @@ public interface SAXTagHandler {
 	 *            - длина текста.
 	 * @return
 	 */
-	void handleCharacters(final char[] arg0, final int arg1, final int arg2);
+	public abstract void handleCharacters(final char[] arg0, final int arg1, final int arg2);
+
+	/**
+	 * Стандартный обработчик тэгов. Для каждого передаваемого в функцию тэга
+	 * должен быть определен обработчик.
+	 * 
+	 * @param qname
+	 *            - имя тэга.
+	 * @param attrs
+	 *            - атрибуты тэга.
+	 * @param type
+	 *            - тип события SAX.
+	 */
+	protected Object standartHandler(final String qname, final Attributes attrs,
+			final SaxEventType type) {
+		String tag = qname.replace("_", "");
+		String methodName = String.format("%s%sHandler", tag, type.toString());
+		try {
+			Method method = this.getClass().getMethod(methodName, Attributes.class);
+			return method.invoke(this, attrs);
+		} catch (SecurityException e) {
+			throw new ServerInternalError(e);
+		} catch (NoSuchMethodException e) {
+			throw new ServerInternalError(e);
+		} catch (IllegalArgumentException e) {
+			throw new ServerInternalError(e);
+		} catch (IllegalAccessException e) {
+			throw new ServerInternalError(e);
+		} catch (InvocationTargetException e) {
+			throw new SAXError(e.getTargetException());
+		}
+	}
 }

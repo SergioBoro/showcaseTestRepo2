@@ -21,6 +21,11 @@ import ru.curs.showcase.util.*;
  */
 public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
+	static final String TEST_TEXT_SAMPLE_XML = "TestTextSample.xml";
+	static final String TEST_GOOD_XSL = "test_good.xsl";
+	static final String TEST_STR2 = "учреждениях";
+	static final String TEST_STR1 = ">II. Индикаторы задач проекта</td>";
+
 	/**
 	 * Получает выходной SQLXML по входному.
 	 * 
@@ -66,21 +71,22 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 		DocumentBuilder db = XMLUtils.createBuilder();
 
 		org.w3c.dom.Document doc =
-			db.parse(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"));
+			db.parse(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML));
 
 		Connection connection = ConnectionFactory.getConnection();
+		try {
+			SQLXML sqlxmlIn = XMLUtils.domToSQLXML(doc, connection);
+			SQLXML sqlxmlOut = getOutputByInputSQLXML(connection, sqlxmlIn);
+			String xsltFileName = TEST_GOOD_XSL;
 
-		SQLXML sqlxmlIn = XMLUtils.domToSQLXML(doc, connection);
+			String out = XMLUtils.xsltTransform(sqlxmlOut, xsltFileName);
 
-		SQLXML sqlxmlOut = getOutputByInputSQLXML(connection, sqlxmlIn);
+			assertTrue(out.indexOf(TEST_STR1) > -1);
 
-		String xsltFileName = "test_good.xsl";
-
-		String out = XMLUtils.xsltTransform(sqlxmlOut, xsltFileName);
-
-		assertTrue(out.indexOf(">II. Индикаторы задач проекта</td>") > -1);
-
-		assertTrue(out.indexOf("учреждениях") > -1);
+			assertTrue(out.indexOf(TEST_STR2) > -1);
+		} finally {
+			connection.close();
+		}
 
 	}
 
@@ -96,21 +102,20 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 		DocumentBuilder db = XMLUtils.createBuilder();
 
 		org.w3c.dom.Document doc =
-			db.parse(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"));
+			db.parse(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML));
 
 		Connection connection = ConnectionFactory.getConnection();
 
-		SQLXML sqlxmlIn = XMLUtils.domToSQLXML(doc, connection);
-
-		SQLXML sqlxmlOut = getOutputByInputSQLXML(connection, sqlxmlIn);
-
-		String xsltFileName = "test_bad.xsl";
-
-		String out = XMLUtils.xsltTransform(sqlxmlOut, xsltFileName);
-
-		assertTrue(out.indexOf(">II. Индикаторы задач проекта</td>") > -1);
-
-		assertTrue(out.indexOf("учреждениях") > -1);
+		try {
+			SQLXML sqlxmlIn = XMLUtils.domToSQLXML(doc, connection);
+			SQLXML sqlxmlOut = getOutputByInputSQLXML(connection, sqlxmlIn);
+			String xsltFileName = "test_bad.xsl";
+			String out = XMLUtils.xsltTransform(sqlxmlOut, xsltFileName);
+			assertTrue(out.indexOf(TEST_STR1) > -1);
+			assertTrue(out.indexOf(TEST_STR2) > -1);
+		} finally {
+			connection.close();
+		}
 
 	}
 
@@ -122,15 +127,15 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 		DocumentBuilder db = XMLUtils.createBuilder();
 
 		org.w3c.dom.Document doc =
-			db.parse(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"));
+			db.parse(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML));
 
-		String xsltFileName = "test_good.xsl";
+		String xsltFileName = TEST_GOOD_XSL;
 
 		String out = XMLUtils.xsltTransform(doc, xsltFileName);
 
-		assertTrue(out.indexOf(">II. Индикаторы задач проекта</td>") > -1);
+		assertTrue(out.indexOf(TEST_STR1) > -1);
 
-		assertTrue(out.indexOf("учреждениях") > -1);
+		assertTrue(out.indexOf(TEST_STR2) > -1);
 
 	}
 
@@ -141,15 +146,15 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 	public final void test4XsltTransform() {
 		SAXParser saxParser = XMLUtils.createSAXParser();
 
-		String xsltFileName = "test_good.xsl";
+		String xsltFileName = TEST_GOOD_XSL;
 
 		String out =
 			XMLUtils.xsltTransform(saxParser,
-					XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"), xsltFileName);
+					XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML), xsltFileName);
 
-		assertTrue(out.indexOf(">II. Индикаторы задач проекта</td>") > -1);
+		assertTrue(out.indexOf(TEST_STR1) > -1);
 
-		assertTrue(out.indexOf("учреждениях") > -1);
+		assertTrue(out.indexOf(TEST_STR2) > -1);
 
 	}
 
@@ -159,17 +164,17 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 	@Test
 	public final void test5XsltTransform() {
 
-		String xsltFileName = "test_good.xsl";
+		String xsltFileName = TEST_GOOD_XSL;
 
 		String out =
-			XMLUtils.xsltTransform(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"),
+			XMLUtils.xsltTransform(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML),
 					xsltFileName);
 
 		// System.out.println(out);
 
-		assertTrue(out.indexOf(">II. Индикаторы задач проекта</td>") > -1);
+		assertTrue(out.indexOf(TEST_STR1) > -1);
 
-		assertTrue(out.indexOf("учреждениях") > -1);
+		assertTrue(out.indexOf(TEST_STR2) > -1);
 
 	}
 
@@ -207,7 +212,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 		DocumentBuilder db = XMLUtils.createBuilder();
 
 		org.w3c.dom.Document doc =
-			db.parse(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"));
+			db.parse(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML));
 
 		String xsdFileName = "test_good.xsd";
 
@@ -223,7 +228,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 		DocumentBuilder db = XMLUtils.createBuilder();
 
 		org.w3c.dom.Document doc =
-			db.parse(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"));
+			db.parse(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML));
 
 		String xsdFileName = "test_bad.xsd";
 
@@ -241,7 +246,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 		String xsdFileName = "test_good.xsd";
 
 		XMLUtils.xsdValidateUserData(saxParser,
-				XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"), xsdFileName);
+				XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML), xsdFileName);
 
 	}
 
@@ -255,7 +260,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 		String xsdFileName = "test_bad.xsd";
 
 		XMLUtils.xsdValidateUserData(saxParser,
-				XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"), xsdFileName);
+				XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML), xsdFileName);
 	}
 
 	/**
@@ -266,7 +271,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 		String xsdFileName = "test_good.xsd";
 
-		XMLUtils.xsdValidateUserData(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"),
+		XMLUtils.xsdValidateUserData(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML),
 				xsdFileName);
 
 	}
@@ -279,7 +284,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 		String xsdFileName = "test_bad.xsd";
 
-		XMLUtils.xsdValidateUserData(XMLUtilsTest.class.getResourceAsStream("TestTextSample.xml"),
+		XMLUtils.xsdValidateUserData(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML),
 				xsdFileName);
 
 	}

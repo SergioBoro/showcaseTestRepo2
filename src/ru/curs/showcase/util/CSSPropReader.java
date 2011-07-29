@@ -1,5 +1,6 @@
 package ru.curs.showcase.util;
 
+import java.io.IOException;
 import java.net.URL;
 
 import org.w3c.css.sac.*;
@@ -119,9 +120,11 @@ public final class CSSPropReader {
 
 		URL style;
 		try {
-			style = getClass().getClassLoader().getResource(cssPath);
+			style = Thread.currentThread().getContextClassLoader().getResource(cssPath);
 			p.parseStyleSheet(style.toString());
-		} catch (Throwable e) {
+		} catch (CSSException e) {
+			throw new CSSReadException(e);
+		} catch (IOException e) {
 			throw new CSSReadException(e);
 		}
 		return result;
@@ -165,42 +168,49 @@ public final class CSSPropReader {
 
 	private static String valueOf(final Condition condition) {
 		if (condition instanceof AttributeCondition) {
-			AttributeCondition c = (AttributeCondition) condition;
-			switch (c.getConditionType()) {
-			case Condition.SAC_ATTRIBUTE_CONDITION:
-				return "[" + c.getLocalName()
-						+ (c.getValue() != null ? "=\"" + c.getValue() + '"' : "") + "]";
-			case Condition.SAC_ONE_OF_ATTRIBUTE_CONDITION:
-				return "[" + c.getLocalName() + "~=\"" + c.getValue() + "\"]";
-			case Condition.SAC_BEGIN_HYPHEN_ATTRIBUTE_CONDITION:
-				return "[" + c.getLocalName() + "|=\"" + c.getValue() + "\"]";
-			case Condition.SAC_ID_CONDITION:
-				return "#" + c.getValue();
-			case Condition.SAC_CLASS_CONDITION:
-				return "." + c.getValue();
-			case Condition.SAC_PSEUDO_CLASS_CONDITION:
-				return ":" + c.getValue();
-			default:
-				break;
-			}
-
+			return valueOfAttributeCondition(condition);
 		} else if (condition instanceof CombinatorCondition) {
-			CombinatorCondition c = (CombinatorCondition) condition;
-			switch (condition.getConditionType()) {
-			case Condition.SAC_AND_CONDITION:
-				return valueOf(c.getFirstCondition()) + valueOf(c.getSecondCondition());
-			case Condition.SAC_OR_CONDITION:
-				// Unimplemented in CSS2?
-			default:
-				break;
-			}
-
+			return valueOfCombinatorCondition(condition);
 		} else if (condition instanceof LangCondition) {
 			LangCondition c = (LangCondition) condition;
 			return ":lang(" + c.getLang() + ")";
 		}
 		return null;
 
+	}
+
+	private static String valueOfCombinatorCondition(final Condition condition) {
+		CombinatorCondition c = (CombinatorCondition) condition;
+		switch (condition.getConditionType()) {
+		case Condition.SAC_AND_CONDITION:
+			return valueOf(c.getFirstCondition()) + valueOf(c.getSecondCondition());
+		case Condition.SAC_OR_CONDITION:
+			// Unimplemented in CSS2?
+			return null;
+		default:
+			return null;
+		}
+	}
+
+	private static String valueOfAttributeCondition(final Condition condition) {
+		AttributeCondition c = (AttributeCondition) condition;
+		switch (c.getConditionType()) {
+		case Condition.SAC_ATTRIBUTE_CONDITION:
+			return "[" + c.getLocalName()
+					+ (c.getValue() != null ? "=\"" + c.getValue() + '"' : "") + "]";
+		case Condition.SAC_ONE_OF_ATTRIBUTE_CONDITION:
+			return "[" + c.getLocalName() + "~=\"" + c.getValue() + "\"]";
+		case Condition.SAC_BEGIN_HYPHEN_ATTRIBUTE_CONDITION:
+			return "[" + c.getLocalName() + "|=\"" + c.getValue() + "\"]";
+		case Condition.SAC_ID_CONDITION:
+			return "#" + c.getValue();
+		case Condition.SAC_CLASS_CONDITION:
+			return "." + c.getValue();
+		case Condition.SAC_PSEUDO_CLASS_CONDITION:
+			return ":" + c.getValue();
+		default:
+			return null;
+		}
 	}
 
 	private static String valueOf(final Selector selector) {

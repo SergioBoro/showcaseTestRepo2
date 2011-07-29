@@ -41,14 +41,16 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		try {
 			url = SecurityParamsFactory.getLocalAuthServerUrl();
 		} catch (SettingsFileOpenException e1) {
-			throw new AuthenticationServiceException(AuthServerUtils.APP_PROP_READ_ERROR);
+			throw new AuthenticationServiceException(AuthServerUtils.APP_PROP_READ_ERROR, e1);
 		}
 
 		// AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(sesid,
 		// false);
 		// AppCurrContext.getInstance().setAuthViaAuthServ(false);
-		if (!(pwd.equals("9152046062107176349L_default_value"))) {
-
+		if ("9152046062107176349L_default_value".equals(pwd)) {
+			// AppCurrContext.getInstance().setAuthViaAuthServ(true);
+			AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(sesid, true);
+		} else {
 			AuthServerUtils.init(url);
 
 			// UserData ud =
@@ -65,26 +67,23 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 				c.setRequestMethod("GET");
 				c.connect();
 				// Thread.sleep(1000);
-				if (!(c.getResponseCode() == HttpURLConnection.HTTP_OK)) {
-					throw new BadCredentialsException("Bad credentials");
-				} else {
+				if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					// AppCurrContext.getInstance();
 					AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(sesid, true);
 					// AppCurrContext.getInstance().setAuthViaAuthServ(true);
+				} else {
+					throw new BadCredentialsException("Bad credentials");
 				}
 
 			} catch (Exception e) {
 				if ("Bad credentials".equals(e.getMessage())) {
-					throw new BadCredentialsException(e.getMessage());
+					throw new BadCredentialsException(e.getMessage(), e);
 				} else {
 					throw new BadCredentialsException("Authentication server is not available: "
-							+ e.getMessage());
+							+ e.getMessage(), e);
 				}
 			}
 			// }
-		} else {
-			// AppCurrContext.getInstance().setAuthViaAuthServ(true);
-			AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(sesid, true);
 		}
 
 		// Authentication g = new Authentication.;
@@ -100,7 +99,7 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 
 	@Override
 	public boolean supports(final Class<? extends Object> arg0) {
-		return (SignedUsernamePasswordAuthenticationToken.class.isAssignableFrom(arg0));
+		return SignedUsernamePasswordAuthenticationToken.class.isAssignableFrom(arg0);
 	}
 
 }

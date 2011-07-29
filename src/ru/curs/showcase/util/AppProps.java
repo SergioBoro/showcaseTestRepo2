@@ -87,7 +87,7 @@ public final class AppProps {
 	private static final String DIR_IN_SOLUTIONS = SOLUTIONS_DIR + "/%s/%s";
 
 	/** Список Properties с настройками приложения. */
-	private static HashMap<String, Properties> props = new HashMap<String, Properties>();
+	private static Map<String, Properties> props = new HashMap<String, Properties>();
 
 	private AppProps() {
 		throw new UnsupportedOperationException();

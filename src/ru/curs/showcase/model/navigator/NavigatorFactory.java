@@ -19,11 +19,21 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-public final class NavigatorFactory extends GeneralXMLHelper {
+public final class NavigatorFactory extends SAXTagHandler {
 	static final String SELECT_ON_LOAD_TAG = "selectOnLoad";
-	protected static final String XML_ERROR_MES = "описание навигатора";
-	protected static final String GRP_ICONS_DIR_PARAM_NAME = "navigator.icons.dir.name";
-	protected static final String GRP_DEF_ICON_PARAM_NAME = "navigator.def.icon.name";
+	static final String XML_ERROR_MES = "описание навигатора";
+	static final String GRP_ICONS_DIR_PARAM_NAME = "navigator.icons.dir.name";
+	static final String GRP_DEF_ICON_PARAM_NAME = "navigator.def.icon.name";
+
+	/**
+	 * Стартовые тэги, которые будут обработаны.
+	 */
+	private static final String[] START_TAGS = { NAVIGATOR_TAG, GROUP_TAG };
+
+	/**
+	 * Конечные тэги, которые будут обработаны.
+	 */
+	private static final String[] END_TAGS = { EL_ON_LEVEL_NODE_NAME };
 	/**
 	 * Путь к каталогу для иконок.
 	 */
@@ -32,10 +42,6 @@ public final class NavigatorFactory extends GeneralXMLHelper {
 	 * Имя иконки по умолчанию.
 	 */
 	private final String groupDefIcon;
-	/**
-	 * SAX обработчик.
-	 */
-	private final DefaultHandler myHandler;
 
 	/**
 	 * Конструируемый навигатор.
@@ -55,83 +61,72 @@ public final class NavigatorFactory extends GeneralXMLHelper {
 	private final LinkedList<NavigatorElement> currentElStack = new LinkedList<NavigatorElement>();
 
 	public NavigatorFactory() {
+		super();
 		groupIconsDir = AppProps.getRequiredValueByName(GRP_ICONS_DIR_PARAM_NAME);
 		groupDefIcon = AppProps.getRequiredValueByName(GRP_DEF_ICON_PARAM_NAME);
+	}
 
-		myHandler = new DefaultHandler() {
-			@Override
-			public void startElement(final String namespaceURI, final String lname,
-					final String qname, final Attributes attrs) {
-				if (qname.equalsIgnoreCase(NAVIGATOR_TAG) && (result == null)) {
-					result = new Navigator();
-					if (attrs.getIndex(HIDE_ON_LOAD_TAG) > -1) {
-						result.setHideOnLoad(Boolean.parseBoolean(attrs.getValue(HIDE_ON_LOAD_TAG)));
-					}
-					if (attrs.getIndex(WIDTH_TAG) > -1) {
-						result.setWidth(attrs.getValue(WIDTH_TAG));
-					}
-					return;
-				}
-				if (qname.equalsIgnoreCase(GROUP_TAG)) {
-					currentGroup = new NavigatorGroup();
-					setupBaseProps(currentGroup, attrs);
-					if (attrs.getIndex(IMAGE_ATTR_NAME) > -1) {
-						setupImageId(attrs.getValue(IMAGE_ATTR_NAME));
-					} else {
-						setupImageId(groupDefIcon);
-					}
-					result.getGroups().add(currentGroup);
-					return;
-				}
-				if (qname.startsWith(EL_ON_LEVEL_NODE_NAME)) {
-					NavigatorElement el = new NavigatorElement();
-					setupBaseProps(el, attrs);
-					if (attrs.getIndex(SELECT_ON_LOAD_TAG) > -1) {
-						if (attrs.getValue(SELECT_ON_LOAD_TAG).equalsIgnoreCase("true")) {
-							result.setAutoSelectElement(el);
-						}
-					}
-					if (currentElStack.size() == 0) {
-						currentGroup.getElements().add(el);
-					} else {
-						currentElStack.getLast().getElements().add(el);
-					}
-					currentElStack.add(el);
-					return;
-				}
-
-				if (actionFactory.canHandleStartTag(qname, SaxEventType.STARTELEMENT)) {
-					Action action =
-						actionFactory.handleStartTag(namespaceURI, lname, qname, attrs);
-					NavigatorElement cur = currentElStack.getLast();
-					cur.setAction(action);
-					return;
-				}
+	/**
+	 * Обработчик тэга level.
+	 * 
+	 * @param attrs
+	 *            - атрибуты.
+	 */
+	public void levelSTARTTAGHandler(final Attributes attrs) {
+		NavigatorElement el = new NavigatorElement();
+		setupBaseProps(el, attrs);
+		if (attrs.getIndex(SELECT_ON_LOAD_TAG) > -1) {
+			if (attrs.getValue(SELECT_ON_LOAD_TAG).equalsIgnoreCase("true")) {
+				result.setAutoSelectElement(el);
 			}
+		}
+		if (currentElStack.isEmpty()) {
+			currentGroup.getElements().add(el);
+		} else {
+			currentElStack.getLast().getElements().add(el);
+		}
+		currentElStack.add(el);
+	}
 
-			@Override
-			public void endElement(final String namespaceURI, final String lname,
-					final String qname) {
-				if (qname.startsWith(EL_ON_LEVEL_NODE_NAME)) {
-					currentElStack.removeLast();
-				}
+	/**
+	 * Обработчик тэга group.
+	 * 
+	 * @param attrs
+	 *            - атрибуты.
+	 */
+	public void groupSTARTTAGHandler(final Attributes attrs) {
+		currentGroup = new NavigatorGroup();
+		setupBaseProps(currentGroup, attrs);
+		if (attrs.getIndex(IMAGE_ATTR_NAME) > -1) {
+			setupImageId(attrs.getValue(IMAGE_ATTR_NAME));
+		} else {
+			setupImageId(groupDefIcon);
+		}
+		result.getGroups().add(currentGroup);
+	}
 
-				if (actionFactory.canHandleEndTag(qname, SaxEventType.ENDELEMENT)) {
-					Action action = actionFactory.handleEndTag(namespaceURI, lname, qname);
-					NavigatorElement cur = currentElStack.getLast();
-					cur.setAction(action);
-				}
+	private void setupImageId(final String imageFile) {
+		currentGroup.setImageId(String.format("%s/%s", groupIconsDir, imageFile));
+	}
+
+	/**
+	 * Обработчик тэга navigator.
+	 * 
+	 * @param attrs
+	 *            - атрибуты.
+	 */
+	public Object navigatorSTARTTAGHandler(final Attributes attrs) {
+		if (result == null) {
+			result = new Navigator();
+			if (attrs.getIndex(HIDE_ON_LOAD_TAG) > -1) {
+				result.setHideOnLoad(Boolean.parseBoolean(attrs.getValue(HIDE_ON_LOAD_TAG)));
 			}
-
-			@Override
-			public void characters(final char[] arg0, final int arg1, final int arg2) {
-				actionFactory.handleCharacters(arg0, arg1, arg2);
+			if (attrs.getIndex(WIDTH_TAG) > -1) {
+				result.setWidth(attrs.getValue(WIDTH_TAG));
 			}
-
-			private void setupImageId(final String imageFile) {
-				currentGroup.setImageId(String.format("%s/%s", groupIconsDir, imageFile));
-			}
-		};
+			return result;
+		}
+		return null;
 	}
 
 	/**
@@ -145,11 +140,82 @@ public final class NavigatorFactory extends GeneralXMLHelper {
 		InputStream streamForParse = XMLUtils.xsdValidateAppDataSafe(stream, "navigator.xsd");
 
 		SAXParser parser = XMLUtils.createSAXParser();
+
+		DefaultHandler myHandler = new DefaultHandler() {
+			@Override
+			public void startElement(final String namespaceURI, final String lname,
+					final String qname, final Attributes attrs) {
+				handleStartTag(namespaceURI, lname, qname, attrs);
+			}
+
+			@Override
+			public void endElement(final String namespaceURI, final String lname,
+					final String qname) {
+				handleEndTag(namespaceURI, lname, qname);
+			}
+
+			@Override
+			public void characters(final char[] arg0, final int arg1, final int arg2) {
+				handleCharacters(arg0, arg1, arg2);
+			}
+		};
+
 		try {
 			parser.parse(streamForParse, myHandler);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			XMLUtils.stdSAXErrorHandler(e, XML_ERROR_MES);
 		}
 		return result;
+	}
+
+	@Override
+	protected String[] getStartTags() {
+		return START_TAGS;
+	}
+
+	@Override
+	protected String[] getEndTrags() {
+		return END_TAGS;
+	}
+
+	@Override
+	public Object handleStartTag(final String namespaceURI, final String lname,
+			final String qname, final Attributes attrs) {
+		if (canHandleStartTag(qname)) {
+			if (super.handleStartTag(namespaceURI, lname, qname, attrs) != null) {
+				return null;
+			}
+		}
+		if (qname.startsWith(EL_ON_LEVEL_NODE_NAME)) {
+			levelSTARTTAGHandler(attrs);
+			return null;
+		}
+		if (actionFactory.canHandleStartTag(qname)) {
+			Action action = actionFactory.handleStartTag(namespaceURI, lname, qname, attrs);
+			NavigatorElement cur = currentElStack.getLast();
+			cur.setAction(action);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Object handleEndTag(final String namespaceURI, final String lname, final String qname) {
+		if (qname.startsWith(EL_ON_LEVEL_NODE_NAME)) {
+			currentElStack.removeLast();
+		}
+
+		if (actionFactory.canHandleEndTag(qname)) {
+			Action action = actionFactory.handleEndTag(namespaceURI, lname, qname);
+			NavigatorElement cur = currentElStack.getLast();
+			cur.setAction(action);
+		}
+
+		return null;
+	}
+
+	@Override
+	public void handleCharacters(final char[] arg0, final int arg1, final int arg2) {
+		actionFactory.handleCharacters(arg0, arg1, arg2);
 	}
 }

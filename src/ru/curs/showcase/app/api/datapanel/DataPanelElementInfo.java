@@ -19,8 +19,7 @@ import ru.curs.showcase.app.api.services.AppLogicError;
  */
 @XmlRootElement(name = "element")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DataPanelElementInfo extends TransferableElement implements SerializableElement,
-		Assignable {
+public class DataPanelElementInfo extends TransferableElement implements SerializableElement {
 	static final String KEEP_USER_SETTINGS_ERROR =
 		"Невозможно получить значение keepUserSettings для действия, не содержащего блока для работы с инф. панелью";
 	static final String UNKNOWN_ELEMENT_TYPE = "Неизвестный тип элемента информационной панели";
@@ -256,6 +255,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		procs = aProcs;
 	}
 
+	// CHECKSTYLE:OFF
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -276,6 +276,9 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		return result;
 	}
 
+	// CHECKSTYLE:ON
+
+	// CHECKSTYLE:OFF
 	@Override
 	public boolean equals(final Object obj) {
 		if (this == obj) {
@@ -378,54 +381,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		return true;
 	}
 
-	@Override
-	public void assignNullValues(final Object source) {
-		if (source instanceof DataPanelElementInfo) {
-			DataPanelElementInfo sourceInfo = (DataPanelElementInfo) source;
-			if (id == null) {
-				id = sourceInfo.id;
-			}
-			if (position == null) {
-				position = sourceInfo.position;
-			}
-			if (procName == null) {
-				procName = sourceInfo.procName;
-			}
-			if (templateName == null) {
-				templateName = sourceInfo.templateName;
-			}
-			if (transformName == null) {
-				transformName = sourceInfo.transformName;
-			}
-			if (tab == null) {
-				tab = sourceInfo.tab;
-			}
-			if (hideOnLoad == null) {
-				hideOnLoad = sourceInfo.hideOnLoad;
-			}
-			if (neverShowInPanel == null) {
-				neverShowInPanel = sourceInfo.neverShowInPanel;
-			}
-			if (type == null) {
-				type = sourceInfo.type;
-			}
-			if (styleClass == null) {
-				styleClass = sourceInfo.styleClass;
-			}
-			if (cacheData == null) {
-				cacheData = sourceInfo.cacheData;
-			}
-			if (refreshByTimer == null) {
-				refreshByTimer = sourceInfo.refreshByTimer;
-			}
-			if (refreshInterval == null) {
-				refreshInterval = sourceInfo.refreshInterval;
-			}
-			if (procs.isEmpty()) {
-				procs.putAll(sourceInfo.procs);
-			}
-		}
-	}
+	// CHECKSTYLE:ON
 
 	public String getStyleClass() {
 		return styleClass;

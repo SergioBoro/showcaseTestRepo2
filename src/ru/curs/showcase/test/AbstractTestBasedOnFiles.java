@@ -25,6 +25,7 @@ import ru.curs.showcase.util.AppProps;
  */
 public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 
+	static final String XFORMS_UPLOAD1 = "xforms_upload1";
 	/**
 	 * Идентификатор сессии для модульных тестов.
 	 */
@@ -71,10 +72,6 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	private static void initTestSession() {
 		AppInfoSingleton.getAppInfo().clearSessions();
 		AppInfoSingleton.getAppInfo().addSession(TEST_SESSION);
-	}
-
-	public AbstractTestBasedOnFiles() {
-		super();
 	}
 
 	/**
@@ -191,7 +188,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 
 		proc = new DataPanelElementProc();
 		proc.setId("proc5");
-		proc.setName("xforms_upload1");
+		proc.setName(XFORMS_UPLOAD1);
 		proc.setType(DataPanelElementProcType.UPLOAD);
 		elInfo.getProcs().put(proc.getId(), proc);
 
@@ -205,7 +202,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 
 		proc = new DataPanelElementProc();
 		proc.setId("proc7");
-		proc.setName("xforms_upload1");
+		proc.setName(XFORMS_UPLOAD1);
 		proc.setType(DataPanelElementProcType.UPLOAD);
 		proc.setSchemaName("test_good.xsd");
 		proc.setTransformName("test_good.xsl");
@@ -213,14 +210,14 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 
 		proc = new DataPanelElementProc();
 		proc.setId("proc8");
-		proc.setName("xforms_upload1");
+		proc.setName(XFORMS_UPLOAD1);
 		proc.setType(DataPanelElementProcType.UPLOAD);
 		proc.setSchemaName("test_bad.xsd");
 		elInfo.getProcs().put(proc.getId(), proc);
 
 		proc = new DataPanelElementProc();
 		proc.setId("proc9");
-		proc.setName("xforms_upload1");
+		proc.setName(XFORMS_UPLOAD1);
 		proc.setType(DataPanelElementProcType.UPLOAD);
 		proc.setTransformName("test_good.xsl");
 		elInfo.getProcs().put(proc.getId(), proc);

@@ -83,11 +83,11 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		try {
 			serviceLayer.getDataPanel(action);
 		} catch (Exception e) {
-			assertEquals(GeneralServerException.class, e.getClass());
+			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(SettingsFileOpenException.class.getName(),
-					((GeneralServerException) e).getOriginalExceptionClass());
-			assertNotNull(((GeneralServerException) e).getOriginalTrace());
-			assertNotNull(((GeneralServerException) e).getOriginalMessage());
+					((GeneralException) e).getOriginalExceptionClass());
+			assertNotNull(((GeneralException) e).getOriginalTrace());
+			assertNotNull(((GeneralException) e).getOriginalMessage());
 			return;
 		}
 		fail();
@@ -105,9 +105,9 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		try {
 			serviceLayer.getChart(context, element);
 		} catch (Exception e) {
-			assertEquals(GeneralServerException.class, e.getClass());
+			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(SPNotExistsException.class.getName(),
-					((GeneralServerException) e).getOriginalExceptionClass());
+					((GeneralException) e).getOriginalExceptionClass());
 			return;
 		}
 		fail();
@@ -127,10 +127,10 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		try {
 			serviceLayer.getChart(context, element);
 		} catch (Exception e) {
-			assertEquals(GeneralServerException.class, e.getClass());
+			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(DBQueryException.class.getName(),
-					((GeneralServerException) e).getOriginalExceptionClass());
-			assertTrue(((GeneralServerException) e).getOriginalMessage().indexOf(procName) > -1);
+					((GeneralException) e).getOriginalExceptionClass());
+			assertTrue(((GeneralException) e).getOriginalMessage().indexOf(procName) > -1);
 			return;
 		}
 		fail();
@@ -149,9 +149,9 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		try {
 			serviceLayer.getChart(context, element);
 		} catch (Exception e) {
-			assertEquals(GeneralServerException.class, e.getClass());
+			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(DBQueryException.class.getName(),
-					((GeneralServerException) e).getOriginalExceptionClass());
+					((GeneralException) e).getOriginalExceptionClass());
 			assertTrue(e.getMessage().indexOf(CompBasedElementSPCallHelper.NO_RESULTSET_ERROR) > -1);
 			return;
 		}
@@ -168,10 +168,10 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		try {
 			serviceLayer.handleSQLSubmission("no_exist_proc", "fake_data", null);
 		} catch (Exception e) {
-			assertEquals(GeneralServerException.class, e.getClass());
+			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(SPNotExistsException.class.getName(),
-					((GeneralServerException) e).getOriginalExceptionClass());
-			assertTrue(((GeneralServerException) e).getMessage().indexOf("no_exist_proc") > -1);
+					((GeneralException) e).getOriginalExceptionClass());
+			assertTrue(((GeneralException) e).getMessage().indexOf("no_exist_proc") > -1);
 			return;
 		}
 		fail();
@@ -192,9 +192,9 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		try {
 			serviceLayer.getWebText(context, element);
 		} catch (Exception e) {
-			assertEquals(GeneralServerException.class, e.getClass());
+			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(IncorrectElementException.class.getName(),
-					((GeneralServerException) e).getOriginalExceptionClass());
+					((GeneralException) e).getOriginalExceptionClass());
 			return;
 		}
 		fail();
@@ -289,10 +289,10 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 			new SQLException(String.format("%stest1%s", ValidateInDBException.SOL_MES_PREFIX,
 					ValidateInDBException.SOL_MES_SUFFIX));
 		ValidateInDBException exc2 = new ValidateInDBException(exc);
-		GeneralServerException gse = GeneralServerExceptionFactory.build(exc2);
-		assertFalse(GeneralServerException.needDetailedInfo(gse));
+		GeneralException gse = GeneralServerExceptionFactory.build(exc2);
+		assertFalse(GeneralException.needDetailedInfo(gse));
 		assertEquals("Ошибка", exc2.getUserMessage().getText());
-		GeneralServerException.checkExeptionTypeAndCreateDetailedTextOfException(gse);
+		GeneralException.generateDetailedInfo(gse);
 	}
 
 	/**
@@ -308,7 +308,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 
 		DBQueryException dbqe =
 			new DBQueryException(dp.getTabById("2").getElementInfoById("2"), context, "error");
-		GeneralServerException gse = GeneralServerExceptionFactory.build(dbqe);
+		GeneralException gse = GeneralServerExceptionFactory.build(dbqe);
 
 		final String errorMes =
 			"Произошла ошибка при выполнении хранимой процедуры grid_bal. Подробности: error.";
@@ -320,8 +320,8 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		assertNotNull(gse.getContext());
 		assertEquals("Ввоз, включая импорт - Всего", gse.getContext().getCompositeContext()
 				.getMain());
-		assertTrue(GeneralServerException.needDetailedInfo(gse));
-		GeneralServerException.checkExeptionTypeAndCreateDetailedTextOfException(gse);
+		assertTrue(GeneralException.needDetailedInfo(gse));
+		GeneralException.generateDetailedInfo(gse);
 	}
 
 	/**
@@ -331,21 +331,21 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testGSEStaticFunctions() {
 		Exception exc = new Exception();
-		assertEquals(MessageType.ERROR, GeneralServerException.getMessageType(exc));
-		assertEquals(ExceptionType.JAVA, GeneralServerException.getType(exc));
-		assertTrue(GeneralServerException.needDetailedInfo(exc));
-		assertNotNull(GeneralServerException
-				.checkExeptionTypeAndCreateDetailedTextOfException(exc));
+		assertEquals(MessageType.ERROR, GeneralException.getMessageType(exc));
+		assertEquals(ExceptionType.JAVA, GeneralException.getType(exc));
+		assertTrue(GeneralException.needDetailedInfo(exc));
+		assertNotNull(GeneralException
+				.generateDetailedInfo(exc));
 	}
 
 	/**
 	 * Проверяет на отсутствие ошибки при передаче в БД "правильного" параметра
 	 * userdata в sessionContext.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testForUserDataToGridProcSuccessfull() throws GeneralServerException {
+	public void testForUserDataToGridProcSuccessfull() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);
 		dpei.setProcName("grid_by_userdata");
@@ -357,10 +357,10 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	 * Проверяет на ошибку при передаче в БД "неверного" параметра userdata в
 	 * sessionContext.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
-	@Test(expected = GeneralServerException.class)
-	public void testForUserDataToGridProcFault() throws GeneralServerException {
+	@Test(expected = GeneralException.class)
+	public void testForUserDataToGridProcFault() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		context.setSessionParamsMap(generateTestURLParamsForSL("test1"));
 		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);

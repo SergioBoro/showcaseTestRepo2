@@ -38,12 +38,11 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 		String sesid;
 		try {
 			sesid = request.getSession().getId();
-			// request.getParameter("sesid");
 		} catch (Exception e) {
 			sesid = null;
 		}
 
-		if (!(url == null)) {
+		if (url != null) {
 			URL server = new URL(url + String.format("/logout?sesid=%s", sesid));
 			HttpURLConnection c = (HttpURLConnection) server.openConnection();
 			c.setRequestMethod("GET");
@@ -59,6 +58,6 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 	@Override
 	protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
-		LOGGER.debug("post anlug");
+		LOGGER.debug("logout post");
 	}
 }

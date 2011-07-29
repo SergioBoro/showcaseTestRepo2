@@ -6,7 +6,7 @@ import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.frame.MainPageFrameType;
 
@@ -36,7 +36,7 @@ public final class MainPageFramesFrontController extends HttpServlet {
 			String html = sl.getMainPageFrame(context, type);
 			response.setStatus(HttpServletResponse.SC_OK);
 			ServletUtils.makeResponseFromString(response, html);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
 		}
 	}

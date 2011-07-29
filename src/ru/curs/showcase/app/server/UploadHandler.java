@@ -11,7 +11,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.DataFile;
 import ru.curs.showcase.util.*;
 
@@ -38,7 +38,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 		new TreeMap<String, DataFile<ByteArrayOutputStream>>();
 
 	@Override
-	protected void processFiles() throws GeneralServerException {
+	protected void processFiles() throws GeneralException {
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(getRequest().getSession().getId());
 		Iterator<String> iterator = files.keySet().iterator();

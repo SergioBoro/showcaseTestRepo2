@@ -17,7 +17,7 @@ import ru.curs.showcase.util.*;
  */
 public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 	static final String CODE_TAG = "Code";
-	protected static final String IS_MAIN_TAG = "IsMain";
+	static final String IS_MAIN_TAG = "IsMain";
 	static final String TOOLTIP_COL = "Tooltip";
 	static final String WRONG_LAYER_ERROR =
 		"В переданных данных найден объект, ссылающийся на несуществующий слой";
@@ -103,7 +103,7 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 			}
 			if (SQLUtils.existsColumn(areasSql.getMetaData(), TOOLTIP_COL)) {
 				String value = areasSql.getString(TOOLTIP_COL);
-				if (value != "") {
+				if (value != null) {
 					area.setTooltip(value);
 				}
 			}
@@ -131,7 +131,7 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 			}
 			if (SQLUtils.existsColumn(pointsSql.getMetaData(), TOOLTIP_COL)) {
 				String value = pointsSql.getString(TOOLTIP_COL);
-				if (value != "") {
+				if (value != null) {
 					point.setTooltip(value);
 				}
 			}

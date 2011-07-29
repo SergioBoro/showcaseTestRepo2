@@ -48,7 +48,7 @@ public class DataPanelXMLGateway extends GeneralXMLHelper implements DataPanelGa
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {
 			parser.parse(file.getData(), myHandler);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			XMLUtils.stdSAXErrorHandler(e, dataPanelId);
 		}
 
@@ -92,7 +92,7 @@ public class DataPanelXMLGateway extends GeneralXMLHelper implements DataPanelGa
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {
 			parser.parse(file.getData(), myHandler);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			XMLUtils.stdSAXErrorHandler(e, dataPanelId);
 			return true;
 		}

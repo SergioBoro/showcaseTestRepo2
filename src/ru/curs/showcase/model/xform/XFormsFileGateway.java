@@ -39,7 +39,7 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 				AppProps.loadUserDataToStream(String.format("%s/%s.xml", AppProps.XFORMS_DIR,
 						element.getProcName()));
 			doc = db.parse(stream);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			throw new TestFileExchangeException(element.getProcName(), e);
 		}
 		return new HTMLBasedElementRawData(doc, null, element, context);

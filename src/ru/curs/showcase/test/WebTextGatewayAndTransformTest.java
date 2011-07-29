@@ -7,7 +7,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.WebText;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.exception.IncorrectElementException;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
@@ -26,7 +26,7 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testGetData() throws GeneralServerException {
+	public void testGetData() throws GeneralException {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement("test2.xml", "1", "1");
 
@@ -44,7 +44,7 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testEventsAndDefAction() throws GeneralServerException {
+	public void testEventsAndDefAction() throws GeneralException {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement("test2.xml", "1", "3");
 		CompositeContext clonedContext = context.gwtClone();
@@ -78,10 +78,10 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест для случая, когда не задана хранимая процедура, возвращающая данные.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testGetStaticDataByXSLT() throws GeneralServerException {
+	public void testGetStaticDataByXSLT() throws GeneralException {
 		DataPanelElementInfo el = new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
 		CompositeContext context = new CompositeContext();
 		el.setTransformName("bal_test.xsl");

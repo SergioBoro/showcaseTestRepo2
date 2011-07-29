@@ -67,7 +67,7 @@ public class GridEventManager extends EventManager<GridEvent> {
 			Record record = iterator.next();
 			List<GridEvent> events =
 				getEventForCell(record.getId(), null, InteractionType.SELECTION);
-			if (events.size() > 0) {
+			if (!events.isEmpty()) {
 				Iterator<DataPanelElementLink> literator =
 					events.get(0).getAction().getDataPanelLink().getElementLinks().iterator();
 				while (literator.hasNext()) {

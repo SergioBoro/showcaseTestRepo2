@@ -3,8 +3,8 @@ package ru.curs.showcase.exception;
 import ru.curs.showcase.app.api.services.ExceptionType;
 
 /**
- * Специальный класс ошибки для передачи наверх ошибки в обработчике SAX
- * парсера.
+ * Специальный класс ошибки для передачи наверх контролируемого исключения в
+ * обработчике SAX парсера.
  * 
  * @author den
  * 

@@ -8,7 +8,7 @@ import org.w3c.dom.Document;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.XForms;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.xform.*;
@@ -48,7 +48,7 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testServiceLayer() throws GeneralServerException {
+	public void testServiceLayer() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms1Info();
 
@@ -89,7 +89,7 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 		CompositeContext context2 =
 			(CompositeContext) XMLUtils.xmlToObject(doc.getDocumentElement(),
 					CompositeContext.class);
-		assertTrue(context.equals(context2));
+		assertEquals(context, context2);
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo el2 =
 			(DataPanelElementInfo) XMLUtils.xmlToObject(doc.getDocumentElement(),
 					DataPanelElementInfo.class);
-		assertTrue(element.equals(el2));
+		assertEquals(element, el2);
 	}
 
 	private XFormsFactory createFactory() {

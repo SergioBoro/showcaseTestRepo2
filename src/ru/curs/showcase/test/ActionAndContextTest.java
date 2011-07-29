@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.*;
 
 /**
@@ -78,7 +78,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertEquals("nLink", clone.getNavigatorElementLink().getId());
 		assertTrue(clone.getNavigatorElementLink().getRefresh());
 
-		assertTrue(action != clone);
+		assertNotSame(action, clone);
 		assertNotSame(action.getDataPanelLink(), clone.getDataPanelLink());
 		assertNotSame(action.getContext(), clone.getContext());
 		assertNotSame(action.getDataPanelLink().getElementLinks().get(0), clone.getDataPanelLink()
@@ -562,7 +562,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		final int actionNumber = 1;
 		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
 		assertTrue(action.containsServerActivity());
-		assertTrue(action.getServerActivities().size() == 1);
+		assertEquals(1, action.getServerActivities().size());
 		Activity sa = action.getServerActivities().get(0);
 		assertEquals("srv01", sa.getId());
 		assertEquals("exec_test", sa.getName());
@@ -577,10 +577,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Проверка выполнения действия на сервере.
 	 * 
 	 * @throws IOException
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testServerActivityExec() throws IOException, GeneralServerException {
+	public void testServerActivityExec() throws IOException, GeneralException {
 		final int actionNumber = 1;
 		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -592,10 +592,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Проверка выполнения действия на сервере, приводящего к ошибке.
 	 * 
 	 * @throws IOException
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
-	@Test(expected = GeneralServerException.class)
-	public void testServerActivityExecFail() throws IOException, GeneralServerException {
+	@Test(expected = GeneralException.class)
+	public void testServerActivityExecFail() throws IOException, GeneralException {
 		final int actionNumber = 2;
 		AppInfoSingleton.getAppInfo().setCurUserDataId("test1");
 		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
@@ -666,7 +666,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		final int actionNumber = 1;
 		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
 		assertTrue(action.containsClientActivity());
-		assertTrue(action.getClientActivities().size() == 1);
+		assertEquals(1, action.getClientActivities().size());
 		Activity ac = action.getClientActivities().get(0);
 		assertEquals("show_moscow", ac.getName());
 		assertEquals("cl01", ac.getId());

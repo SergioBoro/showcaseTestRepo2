@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import javax.xml.parsers.SAXParser;
 
-import org.xml.sax.Attributes;
+import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.datapanel.*;
@@ -17,7 +17,7 @@ import ru.curs.showcase.util.XMLUtils;
  * @author den
  * 
  */
-public final class DataPanelFactory extends GeneralXMLHelper {
+public final class DataPanelFactory extends StartTagSAXHandler {
 	public static final String DATAPANEL_XSD = "datapanel.xsd";
 	static final String NEVER_SHOW_IN_PANEL_TAG = "neverShowInPanel";
 	static final String PROC_TAG = "proc";
@@ -29,10 +29,6 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 	 * Создаваемая панель.
 	 */
 	private DataPanel result;
-	/**
-	 * Обработчик для SAX парсера.
-	 */
-	private final DefaultHandler myHandler;
 
 	/**
 	 * Файл с исходными данными.
@@ -44,80 +40,106 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 	 */
 	private DataPanelTab currentTab = null;
 
-	public DataPanelFactory() {
-		super();
+	/**
+	 * Число элементов.
+	 */
+	private int elCounter = 0;
 
-		myHandler = new DefaultHandler() {
-			private int elCounter = 0;
+	/**
+	 * Стартовые тэги, которые будут обработаны данным обработчиком.
+	 */
+	private final String[] startTags = { DP_TAG, TAB_TAG, ELEMENT_TAG, PROC_TAG };
 
-			@Override
-			public void startElement(final String namespaceURI, final String lname,
-					final String qname, final Attributes attrs) {
-				String value;
-				if (qname.equalsIgnoreCase(DP_TAG)) {
-					result = new DataPanel(file.getId());
-					return;
-				}
-				if (qname.equalsIgnoreCase(TAB_TAG)) {
-					currentTab = result.add(attrs.getValue(ID_TAG), attrs.getValue(NAME_TAG));
-					return;
-				}
-				if (qname.equalsIgnoreCase(ELEMENT_TAG)) {
-					DataPanelElementInfo el = new DataPanelElementInfo(elCounter++, currentTab);
-					el.setId(attrs.getValue(ID_TAG));
-					el.setType(DataPanelElementType
-							.valueOf(attrs.getValue(TYPE_TAG).toUpperCase()));
-					if (attrs.getIndex(STYLE_CLASS_TAG) > -1) {
-						el.setStyleClass(attrs.getValue(STYLE_CLASS_TAG));
-					}
-					if (attrs.getIndex(PROC_ATTR_NAME) > -1) {
-						el.setProcName(attrs.getValue(PROC_ATTR_NAME));
-					}
-					if (el.getType() == DataPanelElementType.WEBTEXT) {
-						el.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));
-					}
-					if (el.getType() == DataPanelElementType.XFORMS) {
-						el.setTemplateName(attrs.getValue(TEMPLATE_TAG));
-					}
-					if (attrs.getIndex(HIDE_ON_LOAD_TAG) > -1) {
-						value = attrs.getValue(HIDE_ON_LOAD_TAG);
-						el.setHideOnLoad(Boolean.valueOf(value));
-					}
-					if (attrs.getIndex(NEVER_SHOW_IN_PANEL_TAG) > -1) {
-						value = attrs.getValue(NEVER_SHOW_IN_PANEL_TAG);
-						el.setNeverShowInPanel(Boolean.valueOf(value));
-					}
-					if (attrs.getIndex(CACHE_DATA_TAG) > -1) {
-						value = attrs.getValue(CACHE_DATA_TAG);
-						el.setCacheData(Boolean.valueOf(value));
-					}
-					if (attrs.getIndex(REFRESH_BY_TIMER_TAG) > -1) {
-						value = attrs.getValue(REFRESH_BY_TIMER_TAG);
-						el.setRefreshByTimer(Boolean.valueOf(value));
-					}
-					if (attrs.getIndex(REFRESH_INTERVAL_TAG) > -1) {
-						value = attrs.getValue(REFRESH_INTERVAL_TAG);
-						el.setRefreshInterval(Integer.valueOf(value));
-					}
-					currentTab.getElements().add(el);
-					return;
-				}
-				if (qname.equalsIgnoreCase(PROC_TAG)) {
-					DataPanelElementProc proc = new DataPanelElementProc();
-					proc.setId(attrs.getValue(ID_TAG));
-					proc.setName(attrs.getValue(NAME_TAG));
-					proc.setType(DataPanelElementProcType.valueOf(attrs.getValue(TYPE_TAG)));
-					if (attrs.getIndex(TRANSFORM_ATTR_NAME) > -1) {
-						proc.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));
-					}
-					if (attrs.getIndex(SCHEMA_TAG) > -1) {
-						proc.setSchemaName(attrs.getValue(SCHEMA_TAG));
-					}
-					currentTab.getElements().get(currentTab.getElements().size() - 1).getProcs()
-							.put(proc.getId(), proc);
-				}
-			}
-		};
+	@Override
+	protected String[] getStartTags() {
+		return startTags;
+	}
+
+	/**
+	 * Обработчик тэга tab.
+	 * 
+	 * @param attrs
+	 *            - атрибуты.
+	 */
+	public void tabSTARTTAGHandler(final Attributes attrs) {
+		currentTab = result.add(attrs.getValue(ID_TAG), attrs.getValue(NAME_TAG));
+	}
+
+	/**
+	 * Обработчик тэга datapanel.
+	 * 
+	 * @param attrs
+	 *            - атрибуты.
+	 */
+	public void datapanelSTARTTAGHandler(final Attributes attrs) {
+		result = new DataPanel(file.getId());
+	}
+
+	/**
+	 * Обработчик тэга element.
+	 * 
+	 * @param attrs
+	 *            - атрибуты.
+	 */
+	public void elementSTARTTAGHandler(final Attributes attrs) {
+		String value;
+		DataPanelElementInfo el = new DataPanelElementInfo(elCounter++, currentTab);
+		el.setId(attrs.getValue(ID_TAG));
+		el.setType(DataPanelElementType.valueOf(attrs.getValue(TYPE_TAG).toUpperCase()));
+		if (attrs.getIndex(STYLE_CLASS_TAG) > -1) {
+			el.setStyleClass(attrs.getValue(STYLE_CLASS_TAG));
+		}
+		if (attrs.getIndex(PROC_ATTR_NAME) > -1) {
+			el.setProcName(attrs.getValue(PROC_ATTR_NAME));
+		}
+		if (el.getType() == DataPanelElementType.WEBTEXT) {
+			el.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));
+		}
+		if (el.getType() == DataPanelElementType.XFORMS) {
+			el.setTemplateName(attrs.getValue(TEMPLATE_TAG));
+		}
+		if (attrs.getIndex(HIDE_ON_LOAD_TAG) > -1) {
+			value = attrs.getValue(HIDE_ON_LOAD_TAG);
+			el.setHideOnLoad(Boolean.valueOf(value));
+		}
+		if (attrs.getIndex(NEVER_SHOW_IN_PANEL_TAG) > -1) {
+			value = attrs.getValue(NEVER_SHOW_IN_PANEL_TAG);
+			el.setNeverShowInPanel(Boolean.valueOf(value));
+		}
+		if (attrs.getIndex(CACHE_DATA_TAG) > -1) {
+			value = attrs.getValue(CACHE_DATA_TAG);
+			el.setCacheData(Boolean.valueOf(value));
+		}
+		if (attrs.getIndex(REFRESH_BY_TIMER_TAG) > -1) {
+			value = attrs.getValue(REFRESH_BY_TIMER_TAG);
+			el.setRefreshByTimer(Boolean.valueOf(value));
+		}
+		if (attrs.getIndex(REFRESH_INTERVAL_TAG) > -1) {
+			value = attrs.getValue(REFRESH_INTERVAL_TAG);
+			el.setRefreshInterval(Integer.valueOf(value));
+		}
+		currentTab.getElements().add(el);
+	}
+
+	/**
+	 * Обработчик тэга proc.
+	 * 
+	 * @param attrs
+	 *            - атрибуты.
+	 */
+	public void procSTARTTAGHandler(final Attributes attrs) {
+		DataPanelElementProc proc = new DataPanelElementProc();
+		proc.setId(attrs.getValue(ID_TAG));
+		proc.setName(attrs.getValue(NAME_TAG));
+		proc.setType(DataPanelElementProcType.valueOf(attrs.getValue(TYPE_TAG)));
+		if (attrs.getIndex(TRANSFORM_ATTR_NAME) > -1) {
+			proc.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));
+		}
+		if (attrs.getIndex(SCHEMA_TAG) > -1) {
+			proc.setSchemaName(attrs.getValue(SCHEMA_TAG));
+		}
+		currentTab.getElements().get(currentTab.getElements().size() - 1).getProcs()
+				.put(proc.getId(), proc);
 	}
 
 	/**
@@ -130,11 +152,21 @@ public final class DataPanelFactory extends GeneralXMLHelper {
 	public DataPanel fromStream(final DataFile<InputStream> aFile) {
 		file = aFile;
 		XMLUtils.xsdValidateAppDataSafe(file, DATAPANEL_XSD);
+		DefaultHandler myHandler = new DefaultHandler() {
+			@Override
+			public void startElement(final String namespaceURI, final String lname,
+					final String qname, final Attributes attrs) throws SAXException {
+				if (canHandleStartTag(qname)) {
+					handleStartTag(namespaceURI, lname, qname, attrs);
+				}
+			}
+
+		};
 
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {
 			parser.parse(file.getData(), myHandler);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			XMLUtils.stdSAXErrorHandler(e, file.getName());
 		}
 		return result;

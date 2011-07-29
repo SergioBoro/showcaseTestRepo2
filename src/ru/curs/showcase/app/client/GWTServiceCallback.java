@@ -1,7 +1,7 @@
 package ru.curs.showcase.app.client;
 
-import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.utils.AccessToDomModel;
 
 import com.google.gwt.user.client.Window;
@@ -34,26 +34,12 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 			// Window.Location.replace(Window.Location.getPath() + "logout");
 
 		} else {
-			MessageType mesType;
-			String str;
-			switch (GeneralServerException.getMessageType(caught)) {
-			case INFO:
-				mesType = MessageType.INFO;
-				str = "Информация ";
-				break;
-			case WARNING:
-				mesType = MessageType.WARNING;
-				str = "Предупреждение ";
-				break;
-			default:
-				mesType = MessageType.ERROR;
-				str = "Ошибка ";
-				break;
-			}
+
+			String str = GeneralException.getMessageType(caught).getName() + " ";
 			MessageBox.showMessageWithDetails(str + msgErrorCaption, caught.getMessage(),
-					GeneralServerException
-							.checkExeptionTypeAndCreateDetailedTextOfException(caught), mesType,
-					GeneralServerException.needDetailedInfo(caught));
+					GeneralException.generateDetailedInfo(caught),
+					GeneralException.getMessageType(caught),
+					GeneralException.needDetailedInfo(caught));
 
 			// MessageBox.showMessageWithDetails(msgErrorCaption,
 			// caught.getMessage(),

@@ -41,4 +41,19 @@ public interface UserData {
 	 */
 	String getSid();
 
+	/**
+	 * Возвращает код, полученный от AuthServer при запросе информации о
+	 * пользователе.
+	 */
+	int getResponseCode();
+
+	/**
+	 * Устанавливает код, полученный от AuthServer при запросе информации о
+	 * пользователе.
+	 * 
+	 * @param aResponseCode
+	 *            - код.
+	 */
+	void setResponseCode(int aResponseCode);
+
 }

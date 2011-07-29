@@ -3,7 +3,6 @@ package ru.curs.showcase.model.grid;
 import java.util.*;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.*;
@@ -203,7 +202,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	 */
 	protected void setupStdRecordProps(final Record curRecord) {
 		String value;
-		Boolean boolValue;
+		boolean boolValue;
 		value = gridProps.getValueByNameForGrid(DEF_VAL_FONT_COLOR);
 		if (value != null) {
 			curRecord.setTextColor(value);
@@ -216,20 +215,20 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		if (intValue != null) {
 			curRecord.setFontSize(intValue.byteValue());
 		}
-		boolValue = gridProps.stdReadBoolGridValue(DEF_VAL_FONT_BOLD);
-		if ((boolValue != null) && (boolValue)) {
+		boolValue = gridProps.isTrueGridValue(DEF_VAL_FONT_BOLD);
+		if (boolValue) {
 			curRecord.addFontModifier(FontModifier.BOLD);
 		}
-		boolValue = gridProps.stdReadBoolGridValue(DEF_VAL_FONT_IT);
-		if ((boolValue != null) && (boolValue)) {
+		boolValue = gridProps.isTrueGridValue(DEF_VAL_FONT_IT);
+		if (boolValue) {
 			curRecord.addFontModifier(FontModifier.ITALIC);
 		}
-		boolValue = gridProps.stdReadBoolGridValue(DEF_VAL_FONT_UL);
-		if ((boolValue != null) && (boolValue)) {
+		boolValue = gridProps.isTrueGridValue(DEF_VAL_FONT_UL);
+		if (boolValue) {
 			curRecord.addFontModifier(FontModifier.UNDERLINE);
 		}
-		boolValue = gridProps.stdReadBoolGridValue(DEF_VAL_FONT_ST);
-		if ((boolValue != null) && (boolValue)) {
+		boolValue = gridProps.isTrueGridValue(DEF_VAL_FONT_ST);
+		if (boolValue) {
 			curRecord.addFontModifier(FontModifier.STRIKETHROUGH);
 		}
 	}
@@ -276,75 +275,85 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	 * @author den
 	 * 
 	 */
-	private class GridDynamicSettingsReader extends DefaultHandler {
+	private class GridDynamicSettingsReader extends StartTagSAXHandler {
+		/**
+		 * Стартовые тэги, которые будут обработаны данным обработчиком.
+		 */
+		private final String[] startTags = { COL_SETTINGS_TAG, PROPS_TAG };
 
 		@Override
-		public void startElement(final String namespaceURI, final String lname,
+		public Object handleStartTag(final String namespaceURI, final String lname,
 				final String qname, final Attributes attrs) {
 			if (qname.equalsIgnoreCase(COL_SETTINGS_TAG)) {
-				String colId = attrs.getValue(ID_TAG);
-				Column col = getResult().getColumnById(colId);
-				if (col == null) {
-					col = createColumn(colId);
-					getResult().getDataSet().getColumnSet().getColumns().add(col);
-				}
-				if (requestSettings.isFirstLoad()) {
-					if (attrs.getIndex(WIDTH_TAG) > -1) {
-						String width = attrs.getValue(WIDTH_TAG);
-						col.setWidth(width);
-					}
-				}
-				if (attrs.getIndex(PRECISION_TAG) > -1) {
-					String value = attrs.getValue(PRECISION_TAG);
-					col.setFormat(value);
-				}
-				if (attrs.getIndex(TYPE_TAG) > -1) {
-					String value = attrs.getValue(TYPE_TAG);
-					col.setValueType(GridValueType.valueOf(value));
-				}
-				return;
+				return colSTARTTAGHandler(attrs);
 			}
 			if (qname.equalsIgnoreCase(PROPS_TAG)) {
-				String value;
-				Integer intValue;
-				if (attrs.getIndex(AUTO_SELECT_RELATIVE) > -1) {
-					value = attrs.getValue(AUTO_SELECT_RELATIVE);
-					autoSelectRelativeRecord = Boolean.valueOf(value);
-				}
-				if (attrs.getIndex(AUTO_SELECT_REC_TAG) > -1) {
-					value = attrs.getValue(AUTO_SELECT_REC_TAG);
-					autoSelectRecordId = Integer.parseInt(value);
-				}
-				if (attrs.getIndex(AUTO_SELECT_COL_TAG) > -1) {
-					autoSelectColumnId = attrs.getValue(AUTO_SELECT_COL_TAG);
-				}
-				if (attrs.getIndex(PROFILE_TAG) > -1) {
-					profile = attrs.getValue(PROFILE_TAG);
-				}
-				if (attrs.getIndex(FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG) > -1) {
-					getResult().getEventManager().setFireGeneralAndConcreteEvents(
-							Boolean.valueOf(attrs.getValue(FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG)));
-				}
-				if ((requestSettings.isFirstLoad()) && (attrs.getIndex(PAGESIZE_TAG) > -1)) {
-					value = attrs.getValue(PAGESIZE_TAG);
-					intValue = Integer.valueOf(value);
-					getResult().getDataSet().getRecordSet().setPageSize(intValue);
-				}
-				if (!getElementInfo().loadByOneProc()) {
-					value = attrs.getValue(TOTAL_COUNT_TAG);
-					intValue = Integer.valueOf(value);
-					totalCount = intValue;
-				}
-				return;
+				return propertiesSTARTTAGHandler(attrs);
 			}
+			return null;
+		}
+
+		private Object propertiesSTARTTAGHandler(final Attributes attrs) {
+			String value;
+			Integer intValue;
+			if (attrs.getIndex(AUTO_SELECT_RELATIVE) > -1) {
+				value = attrs.getValue(AUTO_SELECT_RELATIVE);
+				autoSelectRelativeRecord = Boolean.valueOf(value);
+			}
+			if (attrs.getIndex(AUTO_SELECT_REC_TAG) > -1) {
+				value = attrs.getValue(AUTO_SELECT_REC_TAG);
+				autoSelectRecordId = Integer.parseInt(value);
+			}
+			if (attrs.getIndex(AUTO_SELECT_COL_TAG) > -1) {
+				autoSelectColumnId = attrs.getValue(AUTO_SELECT_COL_TAG);
+			}
+			if (attrs.getIndex(PROFILE_TAG) > -1) {
+				profile = attrs.getValue(PROFILE_TAG);
+			}
+			if (attrs.getIndex(FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG) > -1) {
+				getResult().getEventManager().setFireGeneralAndConcreteEvents(
+						Boolean.valueOf(attrs.getValue(FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG)));
+			}
+			if ((requestSettings.isFirstLoad()) && (attrs.getIndex(PAGESIZE_TAG) > -1)) {
+				value = attrs.getValue(PAGESIZE_TAG);
+				intValue = Integer.valueOf(value);
+				getResult().getDataSet().getRecordSet().setPageSize(intValue);
+			}
+			if (!getElementInfo().loadByOneProc()) {
+				value = attrs.getValue(TOTAL_COUNT_TAG);
+				intValue = Integer.valueOf(value);
+				totalCount = intValue;
+			}
+			return null;
+		}
+
+		private Object colSTARTTAGHandler(final Attributes attrs) {
+			String colId = attrs.getValue(ID_TAG);
+			Column col = getResult().getColumnById(colId);
+			if (col == null) {
+				col = createColumn(colId);
+				getResult().getDataSet().getColumnSet().getColumns().add(col);
+			}
+			if (requestSettings.isFirstLoad()) {
+				if (attrs.getIndex(WIDTH_TAG) > -1) {
+					String width = attrs.getValue(WIDTH_TAG);
+					col.setWidth(width);
+				}
+			}
+			if (attrs.getIndex(PRECISION_TAG) > -1) {
+				String value = attrs.getValue(PRECISION_TAG);
+				col.setFormat(value);
+			}
+			if (attrs.getIndex(TYPE_TAG) > -1) {
+				String value = attrs.getValue(TYPE_TAG);
+				col.setValueType(GridValueType.valueOf(value));
+			}
+			return null;
 		}
 
 		@Override
-		public void endElement(final String namespaceURI, final String lname, final String qname) {
-		}
-
-		@Override
-		public void characters(final char[] arg0, final int arg1, final int arg2) {
+		protected String[] getStartTags() {
+			return startTags;
 		}
 
 	}
@@ -414,7 +423,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	}
 
 	@Override
-	protected DefaultHandler getConcreteHandler() {
+	protected SAXTagHandler getConcreteHandler() {
 		return new GridDynamicSettingsReader();
 	}
 

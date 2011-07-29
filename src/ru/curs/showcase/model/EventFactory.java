@@ -85,6 +85,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 	private final List<SAXTagHandler> handlers = new ArrayList<SAXTagHandler>();
 
 	public EventFactory(final Class<? extends Event> aEventClass) {
+		super();
 		init(aEventClass);
 	}
 
@@ -125,45 +126,15 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 		eventClass = aEventClass;
 		saxHandler = new DefaultHandler() {
 
-			@SuppressWarnings("unchecked")
 			@Override
 			public void startElement(final String namespaceURI, final String lname,
 					final String qname, final Attributes attrs) {
 				if (qname.equalsIgnoreCase(EVENT_TAG)) {
-					Event event;
-					String value;
-					try {
-						event = eventClass.newInstance();
-					} catch (Exception e) {
-						throw new CreateObjectError(e);
-					}
-					if (id1Tag == null) {
-						event.setId1(generalId);
-					} else {
-						value = attrs.getValue(id1Tag);
-						event.setId1(value);
-					}
-					value = attrs.getValue(NAME_TAG);
-
-					Iterator<InteractionType> iterator =
-						Arrays.asList(InteractionType.values()).iterator();
-					while (iterator.hasNext()) {
-						InteractionType type = iterator.next();
-						if (value.endsWith(type.toString().toLowerCase())) {
-							event.setInteractionType(type);
-							break;
-						}
-					}
-					if (value.startsWith(id2Prefix)) {
-						String id2 = attrs.getValue(id2Tag);
-						event.setId2(id2);
-					}
-					current = event;
-					result.add((E) event);
+					eventSTARTTAGHandler(attrs);
 					return;
 				}
 
-				if (actionFactory.canHandleStartTag(qname, SaxEventType.STARTELEMENT)) {
+				if (actionFactory.canHandleStartTag(qname)) {
 					Action action =
 						actionFactory.handleStartTag(namespaceURI, lname, qname, attrs);
 					if (current != null) {
@@ -176,11 +147,45 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 				Iterator<SAXTagHandler> iterator = handlers.iterator();
 				while (iterator.hasNext()) {
 					SAXTagHandler handler = iterator.next();
-					if (handler.canHandleStartTag(qname, SaxEventType.STARTELEMENT)) {
+					if (handler.canHandleStartTag(qname)) {
 						handler.handleStartTag(namespaceURI, lname, qname, attrs);
 						return;
 					}
 				}
+			}
+
+			@SuppressWarnings("unchecked")
+			private void eventSTARTTAGHandler(final Attributes attrs) {
+				Event event;
+				String value;
+				try {
+					event = eventClass.newInstance();
+				} catch (Exception e) {
+					throw new CreateObjectError(e);
+				}
+				if (id1Tag == null) {
+					event.setId1(generalId);
+				} else {
+					value = attrs.getValue(id1Tag);
+					event.setId1(value);
+				}
+				value = attrs.getValue(NAME_TAG);
+
+				Iterator<InteractionType> iterator =
+					Arrays.asList(InteractionType.values()).iterator();
+				while (iterator.hasNext()) {
+					InteractionType type = iterator.next();
+					if (value.endsWith(type.toString().toLowerCase())) {
+						event.setInteractionType(type);
+						break;
+					}
+				}
+				if (value.startsWith(id2Prefix)) {
+					String id2 = attrs.getValue(id2Tag);
+					event.setId2(id2);
+				}
+				current = event;
+				result.add((E) event);
 			}
 
 			@Override
@@ -190,7 +195,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 					current = null;
 				}
 
-				if (actionFactory.canHandleEndTag(qname, SaxEventType.ENDELEMENT)) {
+				if (actionFactory.canHandleEndTag(qname)) {
 					Action action = actionFactory.handleEndTag(namespaceURI, lname, qname);
 					if (current != null) {
 						current.setAction(action);
@@ -203,9 +208,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 
 			@Override
 			public void characters(final char[] arg0, final int arg1, final int arg2) {
-
 				actionFactory.handleCharacters(arg0, arg1, arg2);
-
 			}
 
 		};
@@ -240,7 +243,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {
 			parser.parse(stream, saxHandler);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			XMLUtils.stdSAXErrorHandler(e, PROP_COL_ERROR_MES);
 		}
 	}

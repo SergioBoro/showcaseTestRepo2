@@ -20,6 +20,7 @@ import ru.curs.showcase.util.AppProps;
 public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 
 	public TemplateMethodFactory(final ElementRawData aSource) {
+		super();
 		source = aSource;
 	}
 
@@ -75,7 +76,7 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 	 * процесс построения элемента прерывается.
 	 */
 	protected void checkForDBError() {
-
+		// По умолчанию ничего не делает - данный функционал не всегда нужен
 	}
 
 	/**
@@ -121,11 +122,10 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 
 	/**
 	 * Выполняет настройку свойств результата работы фабрики на основании
-	 * динамических данных, загруженных в методе fillResultByData. По умолчанию
-	 * ничего не делает - т.к. данный функционал не всегда нужен.
+	 * динамических данных, загруженных в методе fillResultByData.
 	 */
 	protected void correctSettingsAndData() {
-
+		// По умолчанию ничего не делает - данный функционал не всегда нужен
 	}
 
 	/**

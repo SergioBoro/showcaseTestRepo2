@@ -8,7 +8,7 @@ import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.LegendPosition;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.chart.*;
@@ -46,12 +46,12 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 		ChartDBFactory factory = new ChartDBFactory(raw);
 		Chart chart = factory.build();
 
-		assertTrue(!chart.getHeader().isEmpty());
+		assertFalse(chart.getHeader().isEmpty());
 		assertTrue(chart.getFooter().isEmpty());
 		assertEquals(seriesCount, chart.getJavaDynamicData().getSeries().size());
 		assertTrue(chart.getTemplate().length() > 0);
-		assertTrue(chart.getJavaDynamicData().getWidth() == defaultWidth);
-		assertTrue(chart.getJavaDynamicData().getHeight() == defaultHeight);
+		assertEquals(defaultWidth, chart.getJavaDynamicData().getWidth().intValue());
+		assertEquals(defaultHeight, chart.getJavaDynamicData().getHeight().intValue());
 		assertTrue(chart.getJavaDynamicData().getLabelsX().size() > 0);
 		assertEquals(labelyCount, chart.getJavaDynamicData().getLabelsY().size());
 		assertEquals("", chart.getJavaDynamicData().getLabelsX().get(0).getText());
@@ -141,10 +141,10 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка работы адаптера в JSON.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testAdaptChartForJS() throws GeneralServerException {
+	public void testAdaptChartForJS() throws GeneralException {
 		CompositeContext context = getTestContext3();
 		DataPanelElementInfo element = getTestChartInfo();
 
@@ -152,8 +152,8 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 		Chart chart = serviceLayer.getChart(context, element);
 
 		assertNotNull(context.getSession());
-		assertEquals(null, chart.getJavaDynamicData());
-		assertTrue(chart.getJsDynamicData() != null);
+		assertNotNull(chart.getJavaDynamicData());
+		assertNotNull(chart.getJsDynamicData());
 		assertTrue(chart.getJsDynamicData().startsWith("{"));
 		assertTrue(chart.getJsDynamicData().endsWith("}"));
 	}

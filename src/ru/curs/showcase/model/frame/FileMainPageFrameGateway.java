@@ -22,7 +22,7 @@ public class FileMainPageFrameGateway implements MainPageFrameGateway {
 			InputStream is = AppProps.loadUserDataToStream(filepath);
 			return TextUtils.streamToString(is);
 		} catch (IOException e) {
-			throw new SettingsFileOpenException(filepath, SettingsFileType.FRAME);
+			throw new SettingsFileOpenException(e, filepath, SettingsFileType.FRAME);
 		}
 	}
 

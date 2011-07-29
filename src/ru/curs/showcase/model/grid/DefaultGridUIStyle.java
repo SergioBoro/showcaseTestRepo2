@@ -69,7 +69,7 @@ public final class DefaultGridUIStyle implements GridUIStyle {
 			settings.setSelectOnlyRecords(boolValue);
 		}
 		boolValue = gp.stdReadBoolGridValue(SINGLE_CLICK_BEFORE_DOUBLE);
-		if ((boolValue != null) && (boolValue)) {
+		if (boolValue != null) {
 			settings.setSingleClickBeforeDoubleClick(boolValue);
 		}
 		applyVisibilitySettings(gp);

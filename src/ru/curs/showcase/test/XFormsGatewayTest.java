@@ -11,7 +11,7 @@ import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.*;
@@ -150,10 +150,10 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Функция тестирования работы SQL Submission через ServiceLayer.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testSQLSubmissionBySL() throws GeneralServerException {
+	public void testSQLSubmissionBySL() throws GeneralException {
 		String data = "<data>test</data>";
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		String res = sl.handleSQLSubmission("xforms_submission1", data, null);
@@ -164,10 +164,10 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 * Функция тестирования работы SQL Submission через ServiceLayer c передачей
 	 * null в параметре content.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testSQLSubmissionBySLWithNullData() throws GeneralServerException {
+	public void testSQLSubmissionBySLWithNullData() throws GeneralException {
 		String content = null;
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		String res = sl.handleSQLSubmission("xforms_submission1", content, null);
@@ -177,10 +177,10 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Функция тестирования работы XSLT Submission через ServiceLayer.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testXSLTSubmissionBySL() throws GeneralServerException {
+	public void testXSLTSubmissionBySL() throws GeneralException {
 		String data = "<data>test</data>";
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		String res = sl.handleXSLTSubmission("xformsxslttransformation_test.xsl", data, null);
@@ -204,10 +204,10 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка скачивания файла для XForms через ServiceLayer.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testXFormsFileDownloadBySL() throws GeneralServerException {
+	public void testXFormsFileDownloadBySL() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc4";
@@ -235,11 +235,11 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка закачивания файла из XForms через ServiceLayer.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 * @throws IOException
 	 */
 	@Test
-	public void testXFormsFileUploadBySL() throws GeneralServerException, IOException {
+	public void testXFormsFileUploadBySL() throws GeneralException, IOException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc5";
@@ -261,10 +261,10 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 * Проверка загрузки на сервер правильного XML.
 	 * 
 	 * @throws IOException
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testXFormsXMLUploadGood() throws IOException, GeneralServerException {
+	public void testXFormsXMLUploadGood() throws IOException, GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc7";
@@ -299,10 +299,10 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка скачивания XML файла для XForms через ServiceLayer.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testXFormsXMLDownloadGood() throws GeneralServerException {
+	public void testXFormsXMLDownloadGood() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc6";

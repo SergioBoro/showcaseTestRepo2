@@ -174,6 +174,7 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		return result;
 	}
 
+	// CHECKSTYLE:OFF
 	@Override
 	public boolean equals(final Object obj) {
 		if (this == obj) {
@@ -216,6 +217,8 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		}
 		return true;
 	}
+
+	// CHECKSTYLE:ON
 
 	/**
 	 * Определяет, являются ли контекст скрывающим (элемент).

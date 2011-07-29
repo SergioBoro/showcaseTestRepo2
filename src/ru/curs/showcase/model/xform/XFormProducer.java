@@ -46,12 +46,11 @@ public final class XFormProducer extends GeneralXMLHelper {
 	 *            Шаблон
 	 * 
 	 * @return org.w3c.dom.Document
+	 * @throws ParserConfigurationException
 	 * 
-	 * @throws Exception
-	 *             в случае ошибок.
 	 */
 	public static org.w3c.dom.Document getEmptyData(final org.w3c.dom.Document template)
-			throws Exception {
+			throws ParserConfigurationException {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		org.w3c.dom.Document doc = db.newDocument();
@@ -106,13 +105,11 @@ public final class XFormProducer extends GeneralXMLHelper {
 	 *            Id элемента информационной панели
 	 * 
 	 * @return HTML-фрагмент, пригодный для отображения в браузере
+	 * @throws TransformerException
 	 * 
-	 * @throws Exception
-	 *             в случае ошибки ввода-вывода, ошибки XSLT-преобразования и
-	 *             проч.
 	 */
 	public static String getHTML(final org.w3c.dom.Document xml,
-			final org.w3c.dom.Document tempData, final String xformId) throws Exception {
+			final org.w3c.dom.Document tempData, final String xformId) throws TransformerException {
 		/* В случае, когда нам подложили временные данные, мы их подменяем */
 		if (tempData != null) {
 			NodeList nl = xml.getElementsByTagNameNS(XFORMS_URI, INSTANCE);

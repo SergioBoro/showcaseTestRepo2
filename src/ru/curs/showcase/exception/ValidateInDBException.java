@@ -136,7 +136,7 @@ public final class ValidateInDBException extends BaseException {
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {
 			parser.parse(stream, saxHandler);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			XMLUtils.stdSAXErrorHandler(e, SOL_MESSAGES_FILE);
 		}
 

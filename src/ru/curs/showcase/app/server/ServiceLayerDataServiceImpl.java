@@ -57,7 +57,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	/**
 	 * Идентификатор текущей HTTP сессии.
 	 */
-	private String sessionId = null;
+	private final String sessionId;
 
 	public ServiceLayerDataServiceImpl(final String aSessionId) {
 		super();
@@ -65,7 +65,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public Navigator getNavigator(final CompositeContext context) throws GeneralServerException {
+	public Navigator getNavigator(final CompositeContext context) throws GeneralException {
 		InputStream xml;
 		Navigator nav = null;
 
@@ -87,7 +87,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public DataPanel getDataPanel(final Action action) throws GeneralServerException {
+	public DataPanel getDataPanel(final Action action) throws GeneralException {
 		DataPanel panel = null;
 
 		try {
@@ -106,7 +106,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public WebText getWebText(final CompositeContext context, final DataPanelElementInfo element)
-			throws GeneralServerException {
+			throws GeneralException {
 		try {
 			WebTextGateway wtgateway = new WebTextDBGateway();
 			prepareContext(context);
@@ -122,7 +122,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public Grid getGrid(final CompositeContext context, final DataPanelElementInfo elementInfo,
-			final GridRequestedSettings aSettings) throws GeneralServerException {
+			final GridRequestedSettings aSettings) throws GeneralException {
 		try {
 			GridGateway gateway = null;
 			GridDBFactory factory = null;
@@ -161,7 +161,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public Chart getChart(final CompositeContext context, final DataPanelElementInfo element)
-			throws GeneralServerException {
+			throws GeneralException {
 		try {
 			ChartGateway gateway = new ChartDBGateway();
 			prepareContext(context);
@@ -180,8 +180,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	@Override
 	public ExcelFile generateExcelFromGrid(final GridToExcelExportType exportType,
 			final CompositeContext context, final DataPanelElementInfo element,
-			final GridRequestedSettings settings, final ColumnSet cs)
-			throws GeneralServerException {
+			final GridRequestedSettings settings, final ColumnSet cs) throws GeneralException {
 		ByteArrayOutputStream result = null;
 		Grid grid = null;
 		try {
@@ -201,13 +200,13 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public void saveColumnSet(final ColumnSet aCs) throws GeneralServerException {
+	public void saveColumnSet(final ColumnSet aCs) throws GeneralException {
 		// fake метод для корректной сериализации
 	}
 
 	@Override
 	public GeoMap getGeoMap(final CompositeContext context, final DataPanelElementInfo element)
-			throws GeneralServerException {
+			throws GeneralException {
 		try {
 			GeoMapGateway gateway = new GeoMapDBGateway();
 			prepareContext(context);
@@ -225,7 +224,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public XForms getXForms(final CompositeContext context, final DataPanelElementInfo element,
-			final String currentData) throws GeneralServerException {
+			final String currentData) throws GeneralException {
 		try {
 			XFormsGateway gateway = new XFormsDBGateway();
 			prepareContext(context);
@@ -244,7 +243,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public void saveXForms(final CompositeContext context, final DataPanelElementInfo elementInfo,
-			final String data) throws GeneralServerException {
+			final String data) throws GeneralException {
 		try {
 			prepareContext(context);
 			LOGGER.info("Идет сохранение данных XForms: " + data);
@@ -292,7 +291,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public String handleSQLSubmission(final String procName, final String content,
-			final String userDataId) throws GeneralServerException {
+			final String userDataId) throws GeneralException {
 		try {
 			setUserData(userDataId);
 			XFormsGateway gateway = new XFormsDBGateway();
@@ -316,7 +315,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public String handleXSLTSubmission(final String xsltFile, final String content,
-			final String userDataId) throws GeneralServerException {
+			final String userDataId) throws GeneralException {
 		try {
 			setUserData(userDataId);
 			InputSource is = new InputSource();
@@ -332,7 +331,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public ServerCurrentState getServerCurrentState(final CompositeContext context)
-			throws GeneralServerException {
+			throws GeneralException {
 		try {
 			prepareContext(context);
 			ServerCurrentState res = ServerCurrentStateBuilder.build(sessionId);
@@ -346,7 +345,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	@Override
 	public DataFile<ByteArrayOutputStream> getDownloadFile(final CompositeContext context,
 			final DataPanelElementInfo elementInfo, final String linkId, final String data)
-			throws GeneralServerException {
+			throws GeneralException {
 		try {
 			LOGGER.info("Данные формы при выгрузке файла:" + data);
 			prepareContext(context);
@@ -370,7 +369,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	@Override
 	public void uploadFile(final CompositeContext context, final DataPanelElementInfo elementInfo,
 			final String linkId, final String data, final DataFile<ByteArrayOutputStream> file)
-			throws GeneralServerException {
+			throws GeneralException {
 		try {
 			LOGGER.info("Данные формы при загрузке файла:" + data);
 			LOGGER.info("Получен файл '" + file.getName() + "' размером " + file.getData().size()
@@ -389,7 +388,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public void execServerAction(final Action action) throws GeneralServerException {
+	public void execServerAction(final Action action) throws GeneralException {
 		try {
 			prepareContext(action);
 			ActivityGateway gateway = new ActivityDBGateway();
@@ -406,7 +405,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public MainPage getMainPage(final CompositeContext context) throws GeneralServerException {
+	public MainPage getMainPage(final CompositeContext context) throws GeneralException {
 		try {
 			prepareContext(context);
 			MainPage mp = new MainPage();
@@ -443,7 +442,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public String getMainPageFrame(final CompositeContext context, final MainPageFrameType type)
-			throws GeneralServerException {
+			throws GeneralException {
 		try {
 			prepareContext(context);
 			String result = getRawMainPageFrame(context, type);

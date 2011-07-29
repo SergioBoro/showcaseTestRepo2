@@ -28,9 +28,6 @@ public class DataFile<T> {
 		data = aData;
 	}
 
-	public DataFile() {
-	}
-
 	public final T getData() {
 		return data;
 	}

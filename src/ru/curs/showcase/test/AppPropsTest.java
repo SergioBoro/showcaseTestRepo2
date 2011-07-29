@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.datapanel.DataPanelXMLGateway;
 import ru.curs.showcase.security.SecurityParamsFactory;
@@ -18,6 +18,8 @@ import ru.curs.showcase.util.*;
  * Тесты класса AppProps.
  */
 public final class AppPropsTest extends AbstractTestBasedOnFiles {
+
+	static final String TEST1_USERDATA = "test1";
 
 	/**
 	 * Тест ф-ции loadResToStream.
@@ -49,7 +51,7 @@ public final class AppPropsTest extends AbstractTestBasedOnFiles {
 		assertNotNull(AppProps.getOptionalValueByName(ConnectionFactory.CONNECTION_URL_PARAM));
 
 		assertEquals("group_icon_default1.png",
-				AppProps.getOptionalValueByName("navigator.def.icon.name", "test1"));
+				AppProps.getOptionalValueByName("navigator.def.icon.name", TEST1_USERDATA));
 	}
 
 	/**
@@ -79,8 +81,8 @@ public final class AppPropsTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testReadMainPageInfo() {
 		assertEquals("100px",
-				AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP, "test1"));
-		assertEquals("50px", AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, "test1"));
+				AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP, TEST1_USERDATA));
+		assertEquals("50px", AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, TEST1_USERDATA));
 		assertNull(AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP, "test2"));
 		assertNull(AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, "test2"));
 	}
@@ -88,12 +90,12 @@ public final class AppPropsTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка чтения информации о главном окне из app.properties.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testReadMainPageInfoBySL() throws GeneralServerException {
+	public void testReadMainPageInfoBySL() throws GeneralException {
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		CompositeContext context = new CompositeContext(generateTestURLParams("test1"));
+		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		MainPage mp = sl.getMainPage(context);
 		assertEquals("100px", mp.getHeaderHeight());
 		assertEquals("50px", mp.getFooterHeight());

@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.Iterator;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.element.LegendPosition;
 import ru.curs.showcase.app.api.geomap.*;
@@ -121,21 +120,31 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 	 * @author den
 	 * 
 	 */
-	private class MapDynamicSettingsReader extends DefaultHandler {
+	private class MapDynamicSettingsReader extends SAXTagHandler {
+		/**
+		 * Стартовые тэги, которые будут обработаны.
+		 */
+		private final String[] startTags = { TEMPLATE_TAG, PROPS_TAG };
+
+		/**
+		 * Закрывающие тэги, которые будут обрабатываться.
+		 */
+		private final String[] endTags = { TEMPLATE_TAG };
+
 		/**
 		 * Признак чтения шаблона.
 		 */
 		private boolean readingTemplate = false;
 
 		@Override
-		public void startElement(final String namespaceURI, final String lname,
+		public Object handleStartTag(final String namespaceURI, final String lname,
 				final String qname, final Attributes attrs) {
 			String value;
 			Integer intValue = null;
 			if (qname.equalsIgnoreCase(TEMPLATE_TAG)) {
 				readingTemplate = true;
 				getResult().setTemplate("");
-				return;
+				return null;
 			}
 			if (qname.equalsIgnoreCase(PROPS_TAG)) {
 				value = attrs.getValue(LEGEND_TAG);
@@ -151,30 +160,43 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 					intValue = TextUtils.getIntSizeValue(value);
 					getResult().getJavaDynamicData().setHeight(intValue);
 				}
-				return;
+				return null;
 			}
+			return null;
 		}
 
 		@Override
-		public void endElement(final String namespaceURI, final String lname, final String qname) {
+		public Object handleEndTag(final String namespaceURI, final String lname,
+				final String qname) {
 			if (qname.equalsIgnoreCase(TEMPLATE_TAG)) {
 				readingTemplate = false;
-				return;
+				return null;
 			}
+			return null;
 		}
 
 		@Override
-		public void characters(final char[] arg0, final int arg1, final int arg2) {
+		public void handleCharacters(final char[] arg0, final int arg1, final int arg2) {
 			if (readingTemplate) {
 				getResult().setTemplate(
 						getResult().getTemplate() + String.copyValueOf(arg0, arg1, arg2));
 				return;
 			}
 		}
+
+		@Override
+		protected String[] getStartTags() {
+			return startTags;
+		}
+
+		@Override
+		protected String[] getEndTrags() {
+			return endTags;
+		}
 	}
 
 	@Override
-	protected DefaultHandler getConcreteHandler() {
+	protected SAXTagHandler getConcreteHandler() {
 		return new MapDynamicSettingsReader();
 	}
 

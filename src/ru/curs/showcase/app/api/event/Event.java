@@ -12,7 +12,14 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  * @author den
  * 
  */
-public abstract class Event implements SerializableElement {
+public class Event implements SerializableElement {
+	public Event(final String aId1, final String aId2, final InteractionType aInteractionType) {
+		super();
+		interactionType = aInteractionType;
+		id1 = aId1;
+		id2 = aId2;
+	}
+
 	/**
 	 * serialVersionUID.
 	 */
@@ -71,5 +78,34 @@ public abstract class Event implements SerializableElement {
 
 	public final void setId2(final String aId2) {
 		id2 = aId2;
+	}
+
+	/**
+	 * Проверка на совместимость - т.е. на то, что данное событие подходит на
+	 * роль переданного функции тестового события.
+	 * 
+	 * @param testEvent
+	 *            - тестовое событие.
+	 */
+	public boolean isCompatible(final Event testEvent) {
+		if (interactionType == testEvent.interactionType) {
+			if (id1.equals(testEvent.id1)) {
+				return isGeneral() || (id2.equals(testEvent.id2));
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Проверка на то, что события является общим - т.е. заданным для некоторого
+	 * диапазона элементов, на которых это событие может произойти (пример:
+	 * строка в гриде).
+	 */
+	public boolean isGeneral() {
+		return (id2 == null);
+	}
+
+	public Event() {
+		super();
 	}
 }

@@ -4,7 +4,7 @@
 package ru.curs.showcase.app.client;
 
 import ru.curs.showcase.app.api.MessageType;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.SizeParser;
 
@@ -49,8 +49,9 @@ public class Footer {
 
 			MessageBox.showMessageWithDetails(
 					Constants.TRANSFORMATION_HEADER_OR_FOOTER_WIDTH_ERROR, e.getClass().getName()
-							+ ": " + e.getMessage(), GeneralServerException.getStackText(e),
-					MessageType.ERROR, true);
+							+ ": " + e.getMessage(),
+					GeneralException.generateDetailedInfo(e),
+					MessageType.ERROR, GeneralException.needDetailedInfo(e));
 		}
 
 		switch (SizeParser.getSizeType(AppCurrContext.getInstance().getMainPage()

@@ -83,12 +83,11 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 								+ PROCNAME_SEPARATOR.length());
 
 			Connection conn = ConnectionFactory.getConnection();
-
+			// ЭТАП 1. Подсчёт общего количества записей
+			String stmt = String.format("{call %s(?,?,?,?)}", procCount);
+			CallableStatement cs = conn.prepareCall(stmt);
 			try {
-				// ЭТАП 1. Подсчёт общего количества записей
 				int c;
-				String stmt = String.format("{call %s(?,?,?,?)}", procCount);
-				CallableStatement cs = conn.prepareCall(stmt);
 
 				cs.setString(NUM1, req.getParams());
 				cs.setString(NUM2, req.getCurValue());
@@ -151,10 +150,11 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 				}
 				ds.setRecords(l);
 			} finally {
+				cs.close();
 				conn.close();
 			}
 
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			ds.setTotalCount(0);
 			// вернётся пустой датасет.
 			LOGGER.error(SELECTOR_ERROR + e.getMessage());

@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.services.GeneralServerException;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.DataFile;
 import ru.curs.showcase.model.datapanel.*;
@@ -86,10 +86,10 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Метод, эмулирующий вызов GWT на уровне сервера.
 	 * 
-	 * @throws GeneralServerException
+	 * @throws GeneralException
 	 */
 	@Test
-	public void testBySL() throws GeneralServerException {
+	public void testBySL() throws GeneralException {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
 		action.setContext(CompositeContext.createCurrent());
 		DataPanelLink dpLink = new DataPanelLink();

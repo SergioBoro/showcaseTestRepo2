@@ -1,5 +1,7 @@
 package ru.curs.showcase.exception;
 
+import org.xml.sax.SAXException;
+
 import ru.curs.showcase.app.api.services.ExceptionType;
 
 /**
@@ -27,8 +29,8 @@ public class NotXMLException extends BaseException {
 		return fileName;
 	}
 
-	public NotXMLException(final Throwable throwable, final String aFileName) {
-		super(ExceptionType.USER, String.format(ERROR_MES, aFileName));
+	public NotXMLException(final SAXException e, final String aFileName) {
+		super(ExceptionType.USER, String.format(ERROR_MES, aFileName), e);
 		fileName = aFileName;
 	}
 }
