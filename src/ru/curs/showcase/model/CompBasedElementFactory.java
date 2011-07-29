@@ -164,4 +164,14 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 		getResult().setFooter(html);
 	}
 
+	@Override
+	protected void prepareSettings() {
+		getSource().prepareSettings();
+	}
+
+	@Override
+	protected void releaseResources() {
+		getSource().releaseResources();
+	}
+
 }

@@ -3,6 +3,7 @@ package ru.curs.showcase.app.api.geomap;
 import java.util.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.element.Size;
 
 /**
  * Динамические данные для карты.
@@ -10,7 +11,7 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  * @author den
  * 
  */
-public class GeoMapData implements SerializableElement {
+public class GeoMapData extends Size implements SerializableElement {
 
 	/**
 	 * serialVersionUID.
@@ -18,35 +19,9 @@ public class GeoMapData implements SerializableElement {
 	private static final long serialVersionUID = -3552200592580335858L;
 
 	/**
-	 * Ширина графика.
-	 */
-	private Integer width;
-
-	/**
-	 * Высота графика.
-	 */
-	private Integer height;
-
-	/**
 	 * Коллекция слоев на карте.
 	 */
 	private List<GeoMapLayer> layers = new ArrayList<GeoMapLayer>();
-
-	public final Integer getWidth() {
-		return width;
-	}
-
-	public final void setWidth(final Integer aWidth) {
-		width = aWidth;
-	}
-
-	public final Integer getHeight() {
-		return height;
-	}
-
-	public final void setHeight(final Integer aHeight) {
-		height = aHeight;
-	}
 
 	public final List<GeoMapLayer> getLayers() {
 		return layers;

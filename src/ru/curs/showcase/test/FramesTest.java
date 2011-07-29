@@ -7,9 +7,8 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.*;
-import ru.curs.showcase.model.frame.*;
-import ru.curs.showcase.util.AppProps;
+import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
+import ru.curs.showcase.model.frame.MainPageFrameType;
 
 /**
  * Тесты для получения фреймов из файла и из БД.
@@ -38,18 +37,6 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 		assertEquals(HEADER_CODE, page.getHeader());
 		assertEquals(FOOTER_CODE, page.getFooter());
 		assertTrue(page.getWelcome().endsWith(WELCOME_CODE));
-
-		MainPageFrameSelector selector = new MainPageFrameSelector(MainPageFrameType.WELCOME);
-		MainPageFrameGateway gateway = selector.getGateway();
-		String raw = gateway.getRawData(context, selector.getSourceName());
-		assertTrue(raw.indexOf(AppProps.CURRENT_USERDATA_TEMPLATE) > -1);
-		assertTrue(raw.indexOf(AppProps.IMAGES_IN_GRID_DIR) > -1);
-
-		assertEquals(-1, page.getWelcome().indexOf(AppProps.CURRENT_USERDATA_TEMPLATE));
-		assertEquals(-1, page.getWelcome().indexOf(AppProps.IMAGES_IN_GRID_DIR));
-		assertTrue(page.getWelcome().indexOf(AppInfoSingleton.getAppInfo().getCurUserDataId()) > -1);
-		assertTrue(page.getWelcome().indexOf(
-				AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR)) > -1);
 	}
 
 	/**

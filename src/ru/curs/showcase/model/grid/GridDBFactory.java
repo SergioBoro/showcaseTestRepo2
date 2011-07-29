@@ -48,16 +48,6 @@ public class GridDBFactory extends AbstractGridFactory {
 	}
 
 	@Override
-	protected void releaseResources() {
-		getSource().releaseResources();
-	}
-
-	@Override
-	protected void prepareSettings() {
-		getSource().prepareSettings();
-	}
-
-	@Override
 	protected void prepareData() {
 		try {
 			ResultSet rs = getSource().getSpCallHelper().getStatement().getResultSet();

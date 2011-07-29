@@ -3,6 +3,7 @@ package ru.curs.showcase.app.api.chart;
 import java.util.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.element.Size;
 
 /**
  * Динамические данные для графика, передаваемые непосредственно в функцию
@@ -12,22 +13,12 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  * @author den
  * 
  */
-public class ChartData implements SerializableElement {
+public class ChartData extends Size implements SerializableElement {
 
 	/**
 	 * serialVersionUID.
 	 */
 	private static final long serialVersionUID = -2570277058263361565L;
-
-	/**
-	 * Ширина графика.
-	 */
-	private Integer width;
-
-	/**
-	 * Высота графика.
-	 */
-	private Integer height;
 
 	/**
 	 * Набор серий с данными, подписями и некоторыми дополнительными
@@ -47,22 +38,6 @@ public class ChartData implements SerializableElement {
 
 	public final void setLabelsY(final List<ChartLabel> aLabelsY) {
 		labelsY = aLabelsY;
-	}
-
-	public final Integer getWidth() {
-		return width;
-	}
-
-	public final void setWidth(final Integer aWidth) {
-		width = aWidth;
-	}
-
-	public final Integer getHeight() {
-		return height;
-	}
-
-	public final void setHeight(final Integer aHeight) {
-		height = aHeight;
 	}
 
 	public final List<ChartSeries> getSeries() {

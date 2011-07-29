@@ -49,16 +49,6 @@ public class ChartDBFactory extends AbstractChartFactory {
 		}
 	}
 
-	@Override
-	protected void prepareSettings() {
-		getSource().prepareSettings();
-	}
-
-	@Override
-	protected void releaseResources() {
-		getSource().releaseResources();
-	}
-
 	private void resetRowPosition() {
 		try {
 			sql.beforeFirst();

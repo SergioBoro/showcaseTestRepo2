@@ -13,25 +13,10 @@ import ru.curs.showcase.model.ElementRawData;
  * 
  */
 public interface GridGateway {
-	/**
-	 * Основная функция, возвращающая данные о гриде вызовом одной хранимой
-	 * процедуры.
-	 * 
-	 * @param context
-	 *            - контекст.
-	 * @param element
-	 *            - элемент грида.
-	 * @param settings
-	 *            - настройки грида.
-	 * @return - данные.
-	 * 
-	 */
-	ElementRawData getRawDataAndSettings(CompositeContext context, DataPanelElementInfo element,
-			GridRequestedSettings settings);
 
 	/**
 	 * Основная функция, возвращающая данные о гриде вызовом одной хранимой
-	 * процедуры.
+	 * процедуры для данных и настроек.
 	 * 
 	 * @param context
 	 *            - контекст.
@@ -39,10 +24,9 @@ public interface GridGateway {
 	 *            - элемент грида.
 	 * @param settings
 	 *            - настройки грида.
-	 * @return - данные.
 	 * 
 	 */
-	ElementRawData getRawData(CompositeContext context, DataPanelElementInfo element,
+	ElementRawData getRawDataAndSettings(CompositeContext context, DataPanelElementInfo element,
 			GridRequestedSettings settings);
 
 	/**
@@ -53,7 +37,21 @@ public interface GridGateway {
 	 *            - контекст.
 	 * @param element
 	 *            - элемент.
-	 * @return - данные.
 	 */
 	ElementRawData getRawDataAndSettings(CompositeContext context, DataPanelElementInfo element);
+
+	/**
+	 * Основная функция, возвращающая данные о гриде вызовом хранимой процедуры
+	 * для данных.
+	 * 
+	 * @param context
+	 *            - контекст.
+	 * @param element
+	 *            - элемент грида.
+	 * @param settings
+	 *            - настройки грида.
+	 * 
+	 */
+	ElementRawData getRawData(CompositeContext context, DataPanelElementInfo element,
+			GridRequestedSettings settings);
 }

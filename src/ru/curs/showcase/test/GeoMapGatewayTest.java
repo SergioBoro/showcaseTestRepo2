@@ -43,12 +43,9 @@ public class GeoMapGatewayTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement2() {
-		DataPanelElementInfo element = new DataPanelElementInfo("id", null);
-		element.setProcName("proc");
-
+	public void testWrongElement3() {
 		GeoMapGateway gateway = new GeoMapDBGateway();
-		gateway.getRawData(null, element);
+		gateway.getRawData(null, null);
 	}
 
 	/**
@@ -56,8 +53,11 @@ public class GeoMapGatewayTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement3() {
+	public void testWrongElement2() {
+		DataPanelElementInfo element = new DataPanelElementInfo("id", null);
+		element.setProcName("proc");
+
 		GeoMapGateway gateway = new GeoMapDBGateway();
-		gateway.getRawData(null, null);
+		gateway.getRawData(null, element);
 	}
 }

@@ -63,11 +63,21 @@ public class ActionFactory extends SAXTagHandler {
 			ACTION_TAG, DP_TAG, NAVIGATOR_TAG, ELEMENT_TAG, MODAL_WINDOW_TAG,
 			MAIN_CONTEXT_ATTR_NAME, ADD_CONTEXT_ATTR_NAME, SERVER_TAG, ACTIVITY_TAG };
 
+	@Override
+	protected String[] getStartTags() {
+		return START_TAGS;
+	}
+
 	/**
 	 * Конечные тэги, которые будут обработаны.
 	 */
 	private static final String[] END_TAGS =
 		{ MAIN_CONTEXT_ATTR_NAME, ADD_CONTEXT_ATTR_NAME, ELEMENT_TAG, ACTIVITY_TAG, SERVER_TAG, };
+
+	@Override
+	protected String[] getEndTrags() {
+		return END_TAGS;
+	}
 
 	@Override
 	public boolean canHandleStartTag(final String tagName) {
@@ -318,16 +328,6 @@ public class ActionFactory extends SAXTagHandler {
 			String s = new String(aArg0, aArg1, aArg2).trim();
 			characters = characters + s;
 		}
-	}
-
-	@Override
-	protected String[] getStartTags() {
-		return START_TAGS;
-	}
-
-	@Override
-	protected String[] getEndTrags() {
-		return END_TAGS;
 	}
 
 }

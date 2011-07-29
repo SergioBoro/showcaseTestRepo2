@@ -230,20 +230,6 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 	}
 
 	@Override
-	protected void prepareSettings() {
-		getSource().prepareSettings();
-	}
-
-	@Override
-	protected void releaseResources() {
-		getSource().releaseResources();
-	}
-
-	private CallableStatement getStatement() {
-		return getSource().getSpCallHelper().getStatement();
-	}
-
-	@Override
 	protected void fillResultByData() {
 		try {
 			super.fillResultByData();
@@ -252,4 +238,7 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 		}
 	}
 
+	private CallableStatement getStatement() {
+		return getSource().getSpCallHelper().getStatement();
+	}
 }

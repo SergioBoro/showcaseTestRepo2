@@ -34,14 +34,6 @@ public class ChartSeries implements SerializableElement {
 	 */
 	private List<ChartSeriesValue> data = new ArrayList<ChartSeriesValue>();
 
-	public final List<ChartSeriesValue> getData() {
-		return data;
-	}
-
-	public final void setData(final List<ChartSeriesValue> aData) {
-		data = aData;
-	}
-
 	public final String getName() {
 		return name;
 	}
@@ -92,5 +84,13 @@ public class ChartSeries implements SerializableElement {
 			return options.getFill();
 		}
 		return null;
+	}
+
+	public final List<ChartSeriesValue> getData() {
+		return data;
+	}
+
+	public final void setData(final List<ChartSeriesValue> aData) {
+		data = aData;
 	}
 }

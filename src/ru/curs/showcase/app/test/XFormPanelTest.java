@@ -71,6 +71,11 @@ public class XFormPanelTest extends GWTTestCase {
 		assertEquals("1", xfp.getElementInfo().getId());
 		assertFalse(xfp.getIsFirstLoading());
 
+		generalPartTest(xfp);
+
+	}
+
+	private void generalPartTest(final XFormPanel xfp) {
 		assertEquals(1, xfp.getPanel().getWidgetCount());
 
 		com.google.gwt.user.client.Element dynastyle = DOM.getElementById("dynastyle");
@@ -83,7 +88,6 @@ public class XFormPanelTest extends GWTTestCase {
 
 		assertEquals(DataPanelActionType.DO_NOTHING, AppCurrContext.getInstance()
 				.getCurrentAction().getDataPanelActionType());
-
 	}
 
 	/**
@@ -101,18 +105,7 @@ public class XFormPanelTest extends GWTTestCase {
 		xfp.reDrawPanelExt(context, true, xform);
 		assertNotNull(xfp.getContext());
 
-		assertEquals(1, xfp.getPanel().getWidgetCount());
-
-		com.google.gwt.user.client.Element dynastyle = DOM.getElementById("dynastyle");
-		assertEquals(1, dynastyle.getChildCount());
-
-		com.google.gwt.user.client.Element target = DOM.getElementById("target");
-		assertEquals(2, target.getChildCount());
-
-		assertEquals(XFormTestsCommon.LEN_MAININSTANCE, xfp.getMainInstance().trim().length());
-
-		assertEquals(DataPanelActionType.DO_NOTHING, AppCurrContext.getInstance()
-				.getCurrentAction().getDataPanelActionType());
+		generalPartTest(xfp);
 
 	}
 
