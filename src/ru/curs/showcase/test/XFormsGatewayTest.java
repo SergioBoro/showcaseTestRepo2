@@ -131,7 +131,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	private String getNewContentBasedOnExisting(final CompositeContext context,
 			final DataPanelElementInfo element, final XFormsGateway gateway) {
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
-		Element newChild = raw.getData().createElement("new");
+		Element newChild = raw.getData().createElementNS("", "new");
 		raw.getData().getDocumentElement().appendChild(newChild);
 		String content = XMLUtils.documentToString(raw.getData());
 		return content;
