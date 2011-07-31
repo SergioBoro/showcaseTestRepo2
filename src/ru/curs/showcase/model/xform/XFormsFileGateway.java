@@ -27,6 +27,10 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	 * LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(XFormsFileGateway.class);
+	/**
+	 * Тестовый каталог для данных, сохраняемых через шлюз.
+	 */
+	public static final String TMP_TEST_DATA_DIR = "tmp/tmp.test.data";
 
 	@Override
 	public HTMLBasedElementRawData getRawData(final CompositeContext context,
@@ -54,7 +58,8 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	public void saveData(final CompositeContext context, final DataPanelElementInfo element,
 			final String data) {
 		check(element);
-		String fileName = String.format("tmp/%s_updated.xml", element.getProcName());
+		String fileName =
+			String.format(TMP_TEST_DATA_DIR + "/%s_updated.xml", element.getProcName());
 		try {
 			XMLUtils.stringToXMLFile(data, fileName);
 		} catch (Exception e) {

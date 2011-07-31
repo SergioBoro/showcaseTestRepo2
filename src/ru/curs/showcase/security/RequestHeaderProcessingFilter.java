@@ -8,6 +8,8 @@ import javax.servlet.http.*;
 import org.springframework.security.core.*;
 import org.springframework.security.web.authentication.*;
 
+import ru.curs.showcase.app.server.SessionInfoFilter;
+
 //imports omitted
 /**
  * Тестовый фильтр аутентификации Spring Security.
@@ -48,7 +50,7 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 			public void onAuthenticationFailure(final HttpServletRequest request,
 					final HttpServletResponse response, final AuthenticationException exception)
 					throws IOException, ServletException {
-				super.setDefaultFailureUrl("/login.jsp?error=true");
+				super.setDefaultFailureUrl("/" + SessionInfoFilter.LOGIN_PAGE + "?error=true");
 				super.onAuthenticationFailure(request, response, exception);
 
 			}

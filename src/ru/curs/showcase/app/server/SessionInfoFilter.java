@@ -21,7 +21,12 @@ public class SessionInfoFilter implements Filter {
 	/**
 	 * Имя основной страницы приложения.
 	 */
-	private static final String INDEX_FILE = "index.jsp";
+	public static final String INDEX_PAGE = "index.jsp";
+
+	/**
+	 * Имя страницы логина приложения.
+	 */
+	public static final String LOGIN_PAGE = "login.jsp";
 
 	@Override
 	public void doFilter(final ServletRequest req, final ServletResponse resp,
@@ -70,13 +75,15 @@ public class SessionInfoFilter implements Filter {
 	}
 
 	private boolean isMainPage(final HttpServletRequest httpreq) {
-		return httpreq.getServletPath().contains("/" + INDEX_FILE);
+		return httpreq.getServletPath().contains("/" + INDEX_PAGE);
 	}
 
 	private boolean isDynamicDataServlet(final HttpServletRequest httpreq) {
 		String servletPath = httpreq.getServletPath();
 		return servletPath.startsWith("/" + ExchangeConstants.SECURED_SERVLET_PREFIX)
-				|| servletPath.startsWith("/" + AUTH_DATA_SERVLET_PREFIX);
+				|| servletPath.startsWith("/" + AUTH_DATA_SERVLET_PREFIX)
+				|| servletPath.startsWith("/" + INDEX_PAGE)
+				|| servletPath.startsWith("/" + LOGIN_PAGE);
 	}
 
 	@Override
