@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.client.api;
 
-import java.util.*;
+import java.util.List;
 
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.client.*;
@@ -38,9 +38,7 @@ public final class MapPanelCallbacksEvents {
 					- Constants.MAP_DIV_ID_SUFFIX.length()))).getMap();
 
 		List<GeoMapEvent> events = gm.getEventManager().getEventForFeature(featureId);
-		Iterator<GeoMapEvent> iterator = events.iterator();
-		while (iterator.hasNext()) {
-			GeoMapEvent gmev = iterator.next();
+		for (GeoMapEvent gmev : events) {
 			AppCurrContext.getInstance().setCurrentAction(gmev.getAction());
 			ActionExecuter.execAction();
 		}

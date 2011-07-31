@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.client;
 
-import java.util.*;
+import java.util.List;
 
 import ru.curs.gwt.datagrid.*;
 import ru.curs.gwt.datagrid.event.*;
@@ -289,9 +289,8 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 		List<Record> records = dg.getSelection().getSelectedRecords();
 		if (records != null) {
-			Iterator<Record> iterator = records.iterator();
-			while (iterator.hasNext()) {
-				settings.getSelectedRecordIds().add(iterator.next().getId());
+			for (Record rec : records) {
+				settings.getSelectedRecordIds().add(rec.getId());
 			}
 		}
 	}
@@ -674,9 +673,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		List<GridEvent> events =
 			grid.getEventManager().getEventForCell(rowId, colId, interactionType);
 
-		Iterator<GridEvent> iterator = events.iterator();
-		while (iterator.hasNext()) {
-			GridEvent ev = iterator.next();
+		for (GridEvent ev : events) {
 			ac = ev.getAction();
 			runAction(ac);
 		}

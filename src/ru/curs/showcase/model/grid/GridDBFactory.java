@@ -2,7 +2,7 @@ package ru.curs.showcase.model.grid;
 
 import java.sql.*;
 import java.text.*;
-import java.util.*;
+import java.util.Locale;
 import java.util.regex.*;
 
 import javax.sql.RowSet;
@@ -90,10 +90,8 @@ public class GridDBFactory extends AbstractGridFactory {
 			curRecord.setId(String.valueOf(counter++));
 			setupStdRecordProps(curRecord);
 
-			Iterator<Column> iterator = cs.getColumns().iterator();
 			String value = null;
-			while (iterator.hasNext()) {
-				Column col = iterator.next();
+			for (Column col : cs.getColumns()) {
 				if (col.getValueType() == GridValueType.IMAGE) {
 					value =
 						String.format("%s/%s",

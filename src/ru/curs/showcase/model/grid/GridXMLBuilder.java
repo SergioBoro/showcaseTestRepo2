@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.grid;
 
-import java.util.Iterator;
+import java.util.List;
 
 import org.w3c.dom.*;
 
@@ -81,14 +81,9 @@ public class GridXMLBuilder extends GeneralXMLHelper {
 	}
 
 	private void addRows() {
-		Iterator<Record> iterator = getRecordsIterator();
-		while (iterator.hasNext()) {
-			addRow(false, iterator.next());
+		for (Record cur : grid.getDataSet().getRecordSet().getRecords()) {
+			addRow(false, cur);
 		}
-	}
-
-	private Iterator<Record> getRecordsIterator() {
-		return grid.getDataSet().getRecordSet().getRecords().iterator();
 	}
 
 	private Document createDoc() {
@@ -101,9 +96,7 @@ public class GridXMLBuilder extends GeneralXMLHelper {
 
 	private void addRow(final boolean isHeader, final Record record) {
 		Element rowNode = result.createElement(ROW_TAG);
-		Iterator<Column> iterator = getColumnsIterator();
-		while (iterator.hasNext()) {
-			Column current = iterator.next();
+		for (Column current : getColumns()) {
 			Element node = result.createElement(CELL_TAG);
 			if (isHeader) {
 				node.setAttribute(TYPE_TAG, GridValueType.STRING.toStringForExcel());
@@ -119,9 +112,7 @@ public class GridXMLBuilder extends GeneralXMLHelper {
 
 	private void addColumnsData() {
 		Element node;
-		Iterator<Column> iterator = getColumnsIterator();
-		while (iterator.hasNext()) {
-			Column current = iterator.next();
+		for (Column current : getColumns()) {
 			if (current.getWidth() != null) {
 				node = result.createElement(COLUMN_TAG);
 				node.setAttribute(WIDTH_TAG, TextUtils.getIntSizeValue(current.getWidth())
@@ -131,14 +122,14 @@ public class GridXMLBuilder extends GeneralXMLHelper {
 		}
 	}
 
-	private Iterator<Column> getColumnsIterator() {
+	private List<Column> getColumns() {
 		ColumnSet current;
 		if (cs == null) {
 			current = grid.getDataSet().getColumnSet();
 		} else {
 			current = cs;
 		}
-		return current.getVisibleColumnsByIndex().iterator();
+		return current.getVisibleColumnsByIndex();
 	}
 
 	private Element getRoot() {

@@ -1,7 +1,5 @@
 package ru.curs.showcase.model.chart;
 
-import java.util.Iterator;
-
 import org.xml.sax.Attributes;
 
 import ru.curs.showcase.app.api.chart.*;
@@ -252,13 +250,9 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 		if (hintFormat == null) {
 			return;
 		}
-		Iterator<ChartSeries> siterator = result.getJavaDynamicData().getSeries().iterator();
-		while (siterator.hasNext()) {
-			ChartSeries series = siterator.next();
-			Iterator<ChartSeriesValue> viterator = series.getData().iterator();
+		for (ChartSeries series : result.getJavaDynamicData().getSeries()) {
 			int x = 1;
-			while (viterator.hasNext()) {
-				ChartSeriesValue value = viterator.next();
+			for (ChartSeriesValue value : series.getData()) {
 				String toolTip = hintFormat;
 				ChartLabel label = result.getJavaDynamicData().getLabelsX().get(x);
 				if (label != null) {
@@ -284,12 +278,9 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 	}
 
 	private void setupBarLabels() {
-		Iterator<ChartSeries> siterator = result.getJavaDynamicData().getSeries().iterator();
-		while (siterator.hasNext()) {
-			Iterator<ChartSeriesValue> viterator = siterator.next().getData().iterator();
+		for (ChartSeries series : result.getJavaDynamicData().getSeries()) {
 			int x = 1;
-			while (viterator.hasNext()) {
-				ChartSeriesValue value = viterator.next();
+			for (ChartSeriesValue value : series.getData()) {
 				ChartLabel label = result.getJavaDynamicData().getLabelsX().get(x);
 				if (label != null) {
 					value.setLegend(label.getText());

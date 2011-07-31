@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.grid;
 
-import java.util.*;
+import java.util.List;
 
 import ru.curs.gwt.datagrid.model.Record;
 import ru.curs.gwt.datagrid.selection.DataSelection;
@@ -52,26 +52,19 @@ public class GridEventManager extends EventManager<GridEvent> {
 	}
 
 	private void finishFilterAction(final Action result) {
-		Iterator<DataPanelElementLink> literator =
-			result.getDataPanelLink().getElementLinks().iterator();
-		while (literator.hasNext()) {
-			DataPanelElementLink newLink = literator.next();
+		for (DataPanelElementLink newLink : result.getDataPanelLink().getElementLinks()) {
 			newLink.getContext().finishFilter();
 			result.markFiltered(newLink.getContext().getFilter());
 		}
 	}
 
 	private void fillFilterActionBySelection(final DataSelection selection, final Action result) {
-		Iterator<Record> iterator = selection.getSelectedRecords().iterator();
-		while (iterator.hasNext()) {
-			Record record = iterator.next();
+		for (Record record : selection.getSelectedRecords()) {
 			List<GridEvent> events =
 				getEventForCell(record.getId(), null, InteractionType.SELECTION);
 			if (!events.isEmpty()) {
-				Iterator<DataPanelElementLink> literator =
-					events.get(0).getAction().getDataPanelLink().getElementLinks().iterator();
-				while (literator.hasNext()) {
-					DataPanelElementLink curLink = literator.next();
+				for (DataPanelElementLink curLink : events.get(0).getAction().getDataPanelLink()
+						.getElementLinks()) {
 					DataPanelElementLink resLink =
 						result.getDataPanelLink().getElementLinkById(curLink.getId());
 					resLink.getContext().addFilterLine(curLink.getContext());
@@ -82,14 +75,10 @@ public class GridEventManager extends EventManager<GridEvent> {
 
 	private Action prepareFilterAction() {
 		Action result = new Action(DataPanelActionType.RELOAD_ELEMENTS);
-		Iterator<GridEvent> iterator = getEvents().iterator();
-		while (iterator.hasNext()) {
-			Event event = iterator.next();
+		for (Event event : getEvents()) {
 			if (event.getInteractionType() == InteractionType.SELECTION) {
-				Iterator<DataPanelElementLink> literator =
-					event.getAction().getDataPanelLink().getElementLinks().iterator();
-				while (literator.hasNext()) {
-					DataPanelElementLink curLink = literator.next();
+				for (DataPanelElementLink curLink : event.getAction().getDataPanelLink()
+						.getElementLinks()) {
 					DataPanelElementLink newLink = curLink.gwtClone();
 					newLink.getContext().setAdditional(null);
 					newLink.getContext().setFilter("");

@@ -55,9 +55,7 @@ public class GeoMapData extends Size implements SerializableElement {
 		if (aLayerId == null) {
 			return null;
 		}
-		Iterator<GeoMapLayer> iterator = layers.iterator();
-		while (iterator.hasNext()) {
-			GeoMapLayer cur = iterator.next();
+		for (GeoMapLayer cur : layers) {
 			if (aLayerId.equals(cur.getId())) {
 				return cur;
 			}
@@ -76,12 +74,8 @@ public class GeoMapData extends Size implements SerializableElement {
 		if (aObjectId == null) {
 			return null;
 		}
-		Iterator<GeoMapLayer> iterator = layers.iterator();
-		while (iterator.hasNext()) {
-			GeoMapLayer curLayer = iterator.next();
-			Iterator<GeoMapFeature> oiterator = curLayer.getFeatures().iterator();
-			while (oiterator.hasNext()) {
-				GeoMapFeature curObj = oiterator.next();
+		for (GeoMapLayer curLayer : layers) {
+			for (GeoMapFeature curObj : curLayer.getFeatures()) {
 				if (aObjectId.equals(curObj.getId())) {
 					return curLayer;
 				}

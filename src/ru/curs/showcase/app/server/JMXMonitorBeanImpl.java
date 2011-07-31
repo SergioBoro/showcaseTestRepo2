@@ -50,12 +50,12 @@ public class JMXMonitorBeanImpl implements JMXMonitorBean, DynamicMBean {
 		SortedSet<String> names = new TreeSet<String>();
 		names.add(SESSION_COUNT_ATTR);
 		MBeanAttributeInfo[] attrs = new MBeanAttributeInfo[names.size()];
-		Iterator<String> it = names.iterator();
-		for (int i = 0; i < attrs.length; i++) {
-			String name = it.next();
-			attrs[i] = new MBeanAttributeInfo(name, "java.lang.String", "Property " + name, true, // isReadable
-					false, // isWritable
-					false); // isIs
+		int i = 0;
+		for (String name : names) {
+			attrs[i++] =
+				new MBeanAttributeInfo(name, "java.lang.String", "Property " + name, true, // isReadable
+						false, // isWritable
+						false); // isIs
 		}
 		MBeanOperationInfo[] opers =
 			{ new MBeanOperationInfo("clearSessions", "Очистка списка пользовательских сессий",

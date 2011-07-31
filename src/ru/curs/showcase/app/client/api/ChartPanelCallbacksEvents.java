@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.client.api;
 
-import java.util.*;
+import java.util.List;
 
 import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.client.*;
@@ -37,9 +37,7 @@ public final class ChartPanelCallbacksEvents {
 					chartDivId.length() - Constants.CHART_DIV_ID_SUFFIX.length()))).getChart();
 
 		List<ChartEvent> events = ch.getEventManager().getEventForValue(seriesName, index);
-		Iterator<ChartEvent> iterator = events.iterator();
-		while (iterator.hasNext()) {
-			ChartEvent chev = iterator.next();
+		for (ChartEvent chev : events) {
 			AppCurrContext.getInstance().setCurrentAction(chev.getAction());
 			ActionExecuter.execAction();
 		}

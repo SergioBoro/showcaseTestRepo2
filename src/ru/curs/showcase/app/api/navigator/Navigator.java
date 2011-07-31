@@ -76,9 +76,7 @@ public class Navigator implements SerializableElement {
 		if (id == null) {
 			return null;
 		}
-		Iterator<NavigatorGroup> iterator = groups.iterator();
-		while (iterator.hasNext()) {
-			NavigatorGroup current = iterator.next();
+		for (NavigatorGroup current : groups) {
 			if (id.equals(current.getId())) {
 				return current;
 			}

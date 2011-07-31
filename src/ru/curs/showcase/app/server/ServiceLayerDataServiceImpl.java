@@ -390,11 +390,9 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			prepareContext(action);
 			ActivityGateway gateway = new ActivityDBGateway();
 
-			Iterator<Activity> iterator = action.getServerActivities().iterator();
-			while (iterator.hasNext()) {
-				Activity sa = iterator.next();
-				gateway.exec(sa);
-				LOGGER.info("Выполнено действие на сервере: " + sa.toString());
+			for (Activity act : action.getServerActivities()) {
+				gateway.exec(act);
+				LOGGER.info("Выполнено действие на сервере: " + act.toString());
 			}
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);

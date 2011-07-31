@@ -194,10 +194,8 @@ public class Action implements SerializableElement, GWTClonable {
 		}
 
 		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
-			Iterator<DataPanelElementLink> eterator =
-				getDataPanelLink().getElementLinks().iterator();
-			while (eterator.hasNext()) {
-				CompositeContext elContext = eterator.next().getContext();
+			for (DataPanelElementLink el : getDataPanelLink().getElementLinks()) {
+				CompositeContext elContext = el.getContext();
 				elContext.actualizeBy(callContext);
 			}
 		}
@@ -210,9 +208,7 @@ public class Action implements SerializableElement, GWTClonable {
 
 	private void actualizeActivities(final List<Activity> aActivities,
 			final CompositeContext callContext) {
-		Iterator<Activity> iterator = aActivities.iterator();
-		while (iterator.hasNext()) {
-			Activity act = iterator.next();
+		for (Activity act : aActivities) {
 			act.getContext().actualizeBy(callContext);
 		}
 	}
@@ -247,9 +243,7 @@ public class Action implements SerializableElement, GWTClonable {
 				dataPanelLink.setTabId(prevAction.dataPanelLink.getTabId());
 			}
 
-			Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
-			while (iterator.hasNext()) {
-				DataPanelElementLink link = iterator.next();
+			for (DataPanelElementLink link : dataPanelLink.getElementLinks()) {
 				link.getContext().actualizeBy(context);
 			}
 		}
@@ -261,10 +255,8 @@ public class Action implements SerializableElement, GWTClonable {
 	}
 
 	private void actualizeActivities(final List<Activity> aActivities, final Action prevAction) {
-		Iterator<Activity> iterator = aActivities.iterator();
-		while (iterator.hasNext()) {
-			Activity sa = iterator.next();
-			sa.getContext().actualizeBy(prevAction.context);
+		for (Activity act : aActivities) {
+			act.getContext().actualizeBy(prevAction.context);
 		}
 	}
 
@@ -338,10 +330,8 @@ public class Action implements SerializableElement, GWTClonable {
 
 	private void updateActivitiesAddContext(final List<Activity> aActivities,
 			final CompositeContext addContext) {
-		Iterator<Activity> iterator = aActivities.iterator();
-		while (iterator.hasNext()) {
-			Activity sa = iterator.next();
-			sa.getContext().setAdditional(addContext.getAdditional());
+		for (Activity act : aActivities) {
+			act.getContext().setAdditional(addContext.getAdditional());
 		}
 	}
 
@@ -356,9 +346,7 @@ public class Action implements SerializableElement, GWTClonable {
 			context.setFilter(data);
 		}
 		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
-			Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
-			while (iterator.hasNext()) {
-				DataPanelElementLink link = iterator.next();
+			for (DataPanelElementLink link : dataPanelLink.getElementLinks()) {
 				link.getContext().setFilter(data);
 			}
 		}
@@ -367,10 +355,8 @@ public class Action implements SerializableElement, GWTClonable {
 	}
 
 	private void filterActivitiesBy(final List<Activity> aActivities, final String data) {
-		Iterator<Activity> iterator = aActivities.iterator();
-		while (iterator.hasNext()) {
-			Activity sa = iterator.next();
-			sa.getContext().setFilter(data);
+		for (Activity act : aActivities) {
+			act.getContext().setFilter(data);
 		}
 	}
 
@@ -449,10 +435,8 @@ public class Action implements SerializableElement, GWTClonable {
 			context.addSessionParams(data);
 		}
 		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
-			Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
-			while (iterator.hasNext()) {
-				DataPanelElementLink link = iterator.next();
-				link.getContext().addSessionParams(data);
+			for (DataPanelElementLink elink : dataPanelLink.getElementLinks()) {
+				elink.getContext().addSessionParams(data);
 			}
 		}
 		setActivitiesSessionContext(serverActivities, data);
@@ -461,10 +445,8 @@ public class Action implements SerializableElement, GWTClonable {
 
 	private void setActivitiesSessionContext(final List<Activity> aActivities,
 			final Map<String, List<String>> data) {
-		Iterator<Activity> iterator = aActivities.iterator();
-		while (iterator.hasNext()) {
-			Activity sa = iterator.next();
-			sa.getContext().addSessionParams(data);
+		for (Activity act : aActivities) {
+			act.getContext().addSessionParams(data);
 		}
 	}
 
@@ -480,20 +462,16 @@ public class Action implements SerializableElement, GWTClonable {
 			context.setSession(data);
 		}
 		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
-			Iterator<DataPanelElementLink> iterator = dataPanelLink.getElementLinks().iterator();
-			while (iterator.hasNext()) {
-				DataPanelElementLink elLink = iterator.next();
-				elLink.getContext().setSession(data);
+			for (DataPanelElementLink elink : dataPanelLink.getElementLinks()) {
+				elink.getContext().setSession(data);
 			}
 		}
 		setActivitiesSessionContext(serverActivities, data);
 	}
 
 	private void setActivitiesSessionContext(final List<Activity> aActivities, final String data) {
-		Iterator<Activity> iterator = aActivities.iterator();
-		while (iterator.hasNext()) {
-			Activity sa = iterator.next();
-			sa.getContext().setSession(data);
+		for (Activity act : aActivities) {
+			act.getContext().setSession(data);
 		}
 	}
 

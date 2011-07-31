@@ -41,11 +41,9 @@ public final class UploadHandler extends AbstractFilesHandler {
 	protected void processFiles() throws GeneralException {
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(getRequest().getSession().getId());
-		Iterator<String> iterator = files.keySet().iterator();
-		while (iterator.hasNext()) {
-			String linkId = iterator.next();
-			serviceLayer.uploadFile(getContext(), getElementInfo(), linkId, data,
-					files.get(linkId));
+		for (Map.Entry<String, DataFile<ByteArrayOutputStream>> entry : files.entrySet()) {
+			serviceLayer.uploadFile(getContext(), getElementInfo(), entry.getKey(), data,
+					entry.getValue());
 		}
 	}
 

@@ -63,9 +63,7 @@ public final class ActionExecuter {
 	}
 
 	private static void handleClientBlocks(final Action ac) {
-		Iterator<Activity> iterator = ac.getClientActivities().iterator();
-		while (iterator.hasNext()) {
-			Activity act = iterator.next();
+		for (Activity act : ac.getClientActivities()) {
 			runClientActivity(act.getName(), act.getContext().getMain(), act.getContext()
 					.getAdditional(), act.getContext().getFilter());
 		}
@@ -179,9 +177,7 @@ public final class ActionExecuter {
 			AppCurrContext.getInstance().getDataPanelMetaData().getActiveTabForAction(ac);
 
 		Collection<DataPanelElementInfo> tabscoll = dpt.getElements();
-		Iterator<DataPanelElementInfo> itr = tabscoll.iterator();
-		while (itr.hasNext()) {
-			DataPanelElementInfo dpe = itr.next();
+		for (DataPanelElementInfo dpe : tabscoll) {
 
 			if (dpe.getHideOnLoad()) {
 				BasicElementPanel bep = getElementPanelById(dpe.getId());
@@ -246,20 +242,17 @@ public final class ActionExecuter {
 	 *            Action
 	 */
 	public static void drawXFormPanelsAfterModalWindowShown(final Action ac) {
-
 		if (ac == null) {
 			return;
 		}
-		DataPanelTab dpt1 =
+		DataPanelTab dpt =
 			AppCurrContext.getInstance().getDataPanelMetaData().getActiveTabForAction(ac);
 
-		Collection<DataPanelElementInfo> tabscoll1 = dpt1.getElements();
-		Iterator<DataPanelElementInfo> itr1 = tabscoll1.iterator();
-		while (itr1.hasNext()) {
-			DataPanelElementInfo dpe1 = itr1.next();
+		Collection<DataPanelElementInfo> tabscoll = dpt.getElements();
+		for (DataPanelElementInfo dpe : tabscoll) {
 
-			if (!(dpe1.getNeverShowInPanel())) {
-				BasicElementPanel bep1 = getElementPanelById(dpe1.getId());
+			if (!dpe.getNeverShowInPanel()) {
+				BasicElementPanel bep1 = getElementPanelById(dpe.getId());
 				if (bep1 instanceof XFormPanel) {
 					bep1.saveSettings(true);
 					bep1.showPanel();

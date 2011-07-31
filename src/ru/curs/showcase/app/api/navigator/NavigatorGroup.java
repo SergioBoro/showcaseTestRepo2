@@ -54,9 +54,7 @@ public class NavigatorGroup extends NamedElement {
 		if (id == null) {
 			return null;
 		}
-		Iterator<NavigatorElement> iterator = elements.iterator();
-		while (iterator.hasNext()) {
-			NavigatorElement current = iterator.next();
+		for (NavigatorElement current : elements) {
 			if (id.equals(current.getId())) {
 				return current;
 			}

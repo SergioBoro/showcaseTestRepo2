@@ -1,7 +1,6 @@
 package ru.curs.showcase.model.chart;
 
 import java.sql.*;
-import java.util.Iterator;
 
 import javax.sql.RowSet;
 
@@ -174,11 +173,12 @@ public class ChartDBFactory extends AbstractChartFactory {
 				ChartSeries series = new ChartSeries();
 				series.setName(sql.getString(getSelectorColumn()));
 
-				Iterator<ChartLabel> iterator =
-					getResult().getJavaDynamicData().getLabelsX().iterator();
-				skipZeroLabelForX(iterator);
-				while (iterator.hasNext()) {
-					ChartLabel label = iterator.next();
+				boolean skipZeroLabelForX = true;
+				for (ChartLabel label : getResult().getJavaDynamicData().getLabelsX()) {
+					if (skipZeroLabelForX) {
+						skipZeroLabelForX = false;
+						continue;
+					}
 					String value = sql.getString(label.getText());
 					addValueToSeries(series, value);
 				}
@@ -214,11 +214,5 @@ public class ChartDBFactory extends AbstractChartFactory {
 		factory.addHandler(colorHandler);
 		getResult().getEventManager().getEvents()
 				.addAll(factory.getSubSetOfEvents(series.getName(), value));
-	}
-
-	private void skipZeroLabelForX(final Iterator<ChartLabel> iterator) {
-		if (iterator.hasNext()) {
-			iterator.next();
-		}
 	}
 }

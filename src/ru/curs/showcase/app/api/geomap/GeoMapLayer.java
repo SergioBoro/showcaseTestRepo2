@@ -175,9 +175,7 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 		if (aId == null) {
 			return null;
 		}
-		Iterator<GeoMapIndicator> iterator = indicators.iterator();
-		while (iterator.hasNext()) {
-			GeoMapIndicator cur = iterator.next();
+		for (GeoMapIndicator cur : indicators) {
 			if (aId.equals(cur.getId())) {
 				return cur;
 			}
@@ -204,9 +202,7 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 		if (aId == null) {
 			return null;
 		}
-		Iterator<GeoMapFeature> iterator = features.iterator();
-		while (iterator.hasNext()) {
-			GeoMapFeature cur = iterator.next();
+		for (GeoMapFeature cur : features) {
 			if (aId.equals(cur.getId())) {
 				return cur;
 			}
@@ -228,9 +224,7 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 	 * @return - показатель для раскраски слоя или null при его отсутствии.
 	 */
 	public GeoMapIndicator getMainIndicator() {
-		Iterator<GeoMapIndicator> iterator = indicators.iterator();
-		while (iterator.hasNext()) {
-			GeoMapIndicator ind = iterator.next();
+		for (GeoMapIndicator ind : indicators) {
 			if (ind.getIsMain()) {
 				return ind;
 			}
@@ -246,9 +240,7 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 	 * @return - основной идентификатор.
 	 */
 	public String getAttrIdByDBId(final String aDbId) {
-		Iterator<GeoMapIndicator> iiterator = indicators.iterator();
-		while (iiterator.hasNext()) {
-			GeoMapIndicator ind = iiterator.next();
+		for (GeoMapIndicator ind : indicators) {
 			if (ind.getDbId().equals(aDbId)) {
 				return ind.getId();
 			}
@@ -261,10 +253,8 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 	 * компоненте карты.
 	 */
 	public void generateIndicatorsIds() {
-		Iterator<GeoMapIndicator> iiterator = indicators.iterator();
 		int index = 0;
-		while (iiterator.hasNext()) {
-			GeoMapIndicator ind = iiterator.next();
+		for (GeoMapIndicator ind : indicators) {
 			if (ind.getIsMain()) {
 				ind.setId(MAIN_IND_NAME);
 			} else {
@@ -272,7 +262,6 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 				ind.setId(newId);
 			}
 			index++;
-
 		}
 	}
 

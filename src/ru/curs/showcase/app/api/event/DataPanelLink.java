@@ -70,9 +70,7 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 		if (id == null) {
 			return null;
 		}
-		Iterator<DataPanelElementLink> iterator = elementLinks.iterator();
-		while (iterator.hasNext()) {
-			DataPanelElementLink link = iterator.next();
+		for (DataPanelElementLink link : elementLinks) {
 			if (id.equals(link.getId())) {
 				return link;
 			}
@@ -124,9 +122,8 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 		res.dataPanelId = dataPanelId;
 		res.tabId = tabId;
 		res.firstOrCurrentTab = firstOrCurrentTab;
-		Iterator<DataPanelElementLink> iterator = elementLinks.iterator();
-		while (iterator.hasNext()) {
-			res.getElementLinks().add(iterator.next().gwtClone());
+		for (DataPanelElementLink link : elementLinks) {
+			res.getElementLinks().add(link.gwtClone());
 		}
 		return res;
 	}

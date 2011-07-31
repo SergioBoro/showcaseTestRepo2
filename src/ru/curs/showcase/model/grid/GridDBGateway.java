@@ -1,7 +1,6 @@
 package ru.curs.showcase.model.grid;
 
 import java.sql.*;
-import java.util.Iterator;
 
 import ru.curs.gwt.datagrid.model.Column;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -52,9 +51,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 			throws SQLException {
 		if (settings.sortingEnabled()) {
 			StringBuilder builder = new StringBuilder("ORDER BY ");
-			Iterator<Column> iterator = settings.getSortedColumns().iterator();
-			while (iterator.hasNext()) {
-				Column col = iterator.next();
+			for (Column col : settings.getSortedColumns()) {
 				builder.append(String.format("[%s] %s,", col.getId(), col.getSorting()));
 			}
 			String sortStatement = builder.substring(0, builder.length() - 1);

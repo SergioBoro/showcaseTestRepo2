@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.grid;
 
-import java.util.*;
+import java.util.List;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
@@ -57,9 +57,7 @@ public class Grid extends DataPanelCompBasedElement {
 	 * @return - столбец.
 	 */
 	public Column getColumnById(final String id) {
-		Iterator<Column> iterator = getDataSet().getColumnSet().getColumns().iterator();
-		while (iterator.hasNext()) {
-			Column current = iterator.next();
+		for (Column current : getDataSet().getColumnSet().getColumns()) {
 			if (current.getId().equals(id)) {
 				return current;
 			}
@@ -128,12 +126,7 @@ public class Grid extends DataPanelCompBasedElement {
 	}
 
 	private GridEvent getConcreteEvent(final List<GridEvent> events) {
-		Iterator<GridEvent> iterator = events.iterator();
-		GridEvent res = null;
-		while (iterator.hasNext()) {
-			res = iterator.next();
-		}
-		return res;
+		return (GridEvent) events.toArray()[events.size() - 1];
 	}
 
 	public final DataGridSettings getUISettings() {

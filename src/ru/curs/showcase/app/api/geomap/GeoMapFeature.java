@@ -87,9 +87,7 @@ public class GeoMapFeature extends GeoMapObject {
 		if (ind == null) {
 			return null;
 		}
-		Iterator<String> iterator = properties.keySet().iterator();
-		while (iterator.hasNext()) {
-			String key = iterator.next();
+		for (String key : properties.keySet()) {
 			if (ind.getId().equals(key)) {
 				return properties.get(key);
 			}

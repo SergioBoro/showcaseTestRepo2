@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.grid;
 
-import java.util.*;
+import java.util.ArrayList;
 
 import org.xml.sax.Attributes;
 
@@ -399,10 +399,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		if (autoSelectRecordId == null) {
 			return;
 		}
-		Iterator<Record> riterator =
-			getResult().getDataSet().getRecordSet().getRecords().iterator();
-		while (riterator.hasNext()) {
-			Record current = riterator.next();
+		for (Record current : getResult().getDataSet().getRecordSet().getRecords()) {
 			if (current.getId().equals(autoSelectRecordId.toString())) {
 				getResult().setAutoSelectRecord(current);
 			}
@@ -411,10 +408,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		if (autoSelectColumnId == null) {
 			return;
 		}
-		Iterator<Column> citerator =
-			getResult().getDataSet().getColumnSet().getColumns().iterator();
-		while (citerator.hasNext()) {
-			Column current = citerator.next();
+		for (Column current : getResult().getDataSet().getColumnSet().getColumns()) {
 			if (current.getId().equals(autoSelectColumnId)) {
 				getResult().setAutoSelectColumn(current);
 			}

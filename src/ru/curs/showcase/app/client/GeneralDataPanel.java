@@ -107,11 +107,9 @@ public class GeneralDataPanel {
 		AppCurrContext.getInstance().setDataPanelMetaData(dp);
 
 		Collection<DataPanelTab> dptCollection = dp.getTabs();
-		Iterator<DataPanelTab> itr = dptCollection.iterator();
 
 		AppCurrContext.getInstance().getUiDataPanel().clear();
-		while (itr.hasNext()) {
-			DataPanelTab dpt = itr.next();
+		for (DataPanelTab dpt : dptCollection) {
 			Widget w = generateTab(dpt);
 			AppCurrContext.getInstance().getUiDataPanel().add(new UIDataPanelTab(dpt, w));
 
@@ -190,10 +188,8 @@ public class GeneralDataPanel {
 		DataPanelTab dpt =
 			AppCurrContext.getInstance().getUiDataPanel().get(tabIndex).getDataPanelTabMetaData();
 		Collection<DataPanelElementInfo> tabscoll = dpt.getElements();
-		Iterator<DataPanelElementInfo> itr = tabscoll.iterator();
-		while (itr.hasNext()) {
+		for (DataPanelElementInfo dpe : tabscoll) {
 			Widget el = null;
-			DataPanelElementInfo dpe = itr.next();
 			if (dpe.getCacheData()) {
 				el =
 					AppCurrContext.getInstance().getMapOfDataPanelElements()

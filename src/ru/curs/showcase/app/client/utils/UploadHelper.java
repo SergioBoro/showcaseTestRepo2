@@ -92,9 +92,8 @@ public final class UploadHelper extends RunServletByFormHelper {
 	 * Скрывает все компоненты FileUpload.
 	 */
 	public void hide() {
-		Iterator<FileUpload> iterator = uploaders.values().iterator();
-		while (iterator.hasNext()) {
-			iterator.next().setVisible(false);
+		for (FileUpload cur : uploaders.values()) {
+			cur.setVisible(false);
 		}
 	}
 
@@ -104,9 +103,7 @@ public final class UploadHelper extends RunServletByFormHelper {
 	 * @return - результат проверки.
 	 */
 	public boolean isFilesSelected() {
-		Iterator<FileUpload> iterator = uploaders.values().iterator();
-		while (iterator.hasNext()) {
-			FileUpload current = iterator.next();
+		for (FileUpload current : uploaders.values()) {
 			if ((current.getFilename() != null) && (!current.getFilename().isEmpty())) {
 				return true;
 			}

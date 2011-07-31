@@ -4,7 +4,7 @@ import java.util.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.gwt.datagrid.model.*;
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.TransferableElement;
 
 /**
  * Класс, содержащий настройки грида, которые интерактивно могут изменять
@@ -104,9 +104,7 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 	 */
 	public Sorting getSortingForColumn(final Column aCurColumn) {
 		if (sortedColumns != null) {
-			Iterator<Column> iterator = sortedColumns.iterator();
-			while (iterator.hasNext()) {
-				Column col = iterator.next();
+			for (Column col : sortedColumns) {
 				if (col.getId().equals(aCurColumn.getId())) {
 					return col.getSorting();
 				}
@@ -146,9 +144,7 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 	public void normalize() {
 		Collection<Column> source = getSortedColumns();
 		SortedMap<Integer, Column> orderedByIndex = new TreeMap<Integer, Column>();
-		Iterator<Column> iterator = source.iterator();
-		while (iterator.hasNext()) {
-			Column col = iterator.next();
+		for (Column col : source) {
 			orderedByIndex.put(col.getIndex(), col);
 		}
 		setSortedColumns(orderedByIndex.values());

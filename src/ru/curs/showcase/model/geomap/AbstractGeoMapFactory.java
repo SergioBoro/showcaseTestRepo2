@@ -1,7 +1,6 @@
 package ru.curs.showcase.model.geomap;
 
 import java.sql.SQLException;
-import java.util.Iterator;
 
 import org.xml.sax.Attributes;
 
@@ -68,9 +67,7 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 	 * нужно единое название показателя.
 	 */
 	private void correctIndicators() {
-		Iterator<GeoMapLayer> literator = result.getJavaDynamicData().getLayers().iterator();
-		while (literator.hasNext()) {
-			GeoMapLayer layer = literator.next();
+		for (GeoMapLayer layer : result.getJavaDynamicData().getLayers()) {
 			layer.generateIndicatorsIds();
 		}
 	}
@@ -209,15 +206,11 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 	protected void correctSettingsAndData() {
 		super.correctSettingsAndData();
 
-		Iterator<GeoMapLayer> iterator = getResult().getJavaDynamicData().getLayers().iterator();
-		while (iterator.hasNext()) {
-			GeoMapLayer layer = iterator.next();
+		for (GeoMapLayer layer : result.getJavaDynamicData().getLayers()) {
 			if (layer.getHintFormat() == null) {
 				continue;
 			}
-			Iterator<GeoMapFeature> oiterator = layer.getFeatures().iterator();
-			while (oiterator.hasNext()) {
-				GeoMapFeature obj = oiterator.next();
+			for (GeoMapFeature obj : layer.getFeatures()) {
 				if (obj.getTooltip() == null) { // явная подсказка приоритетна
 					String toolTip = generateTooltip(layer, obj);
 					obj.setTooltip(toolTip);

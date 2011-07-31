@@ -144,9 +144,8 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 					}
 					return;
 				}
-				Iterator<SAXTagHandler> iterator = handlers.iterator();
-				while (iterator.hasNext()) {
-					SAXTagHandler handler = iterator.next();
+
+				for (SAXTagHandler handler : handlers) {
 					if (handler.canHandleStartTag(qname)) {
 						handler.handleStartTag(namespaceURI, lname, qname, attrs);
 						return;
@@ -171,10 +170,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 				}
 				value = attrs.getValue(NAME_TAG);
 
-				Iterator<InteractionType> iterator =
-					Arrays.asList(InteractionType.values()).iterator();
-				while (iterator.hasNext()) {
-					InteractionType type = iterator.next();
+				for (InteractionType type : Arrays.asList(InteractionType.values())) {
 					if (value.endsWith(type.toString().toLowerCase())) {
 						event.setInteractionType(type);
 						break;
@@ -209,7 +205,6 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 			public void characters(final char[] arg0, final int arg1, final int arg2) {
 				actionFactory.handleCharacters(arg0, arg1, arg2);
 			}
-
 		};
 	}
 
