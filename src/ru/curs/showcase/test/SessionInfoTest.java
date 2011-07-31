@@ -27,19 +27,19 @@ import ru.curs.showcase.util.XMLUtils;
  * 
  */
 public class SessionInfoTest extends AbstractTestBasedOnFiles {
-	static final boolean AUTH_VIA_AUTH_SERVER = true;
-	static final String TEMP_PASS = "pass";
-	static final String FAKE_SESSION_ID = "fake-session-id";
-	static final String USERDATA_ID = "test1";
-	static final String NOT_EXIST_USERDATA_ID = "test123";
+	private static final boolean AUTH_VIA_AUTH_SERVER = true;
+	private static final String TEMP_PASS = "pass";
+	private static final String FAKE_SESSION_ID = "fake-session-id";
+	private static final String NOT_EXIST_USERDATA_ID = "test123";
 
 	/**
 	 * Простой тест на установку текущего userdataId.
 	 */
 	@Test
 	public void testCurUserDataIdSet() {
-		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(generateTestURLParamsForSL("test1"));
-		assertEquals("test1", AppInfoSingleton.getAppInfo().getCurUserDataId());
+		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(
+				generateTestURLParamsForSL(TEST1_USERDATA));
+		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());
 	}
 
 	/**
@@ -60,9 +60,8 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	 * @throws SAXException
 	 */
 	@Test
-	public void testSessionInfoForGetChart() throws IOException, GeneralException,
-			SAXException {
-		Map<String, List<String>> params = generateTestURLParams(USERDATA_ID);
+	public void testSessionInfoForGetChart() throws IOException, GeneralException, SAXException {
+		Map<String, List<String>> params = generateTestURLParams(TEST1_USERDATA);
 
 		AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(FAKE_SESSION_ID,
 				AUTH_VIA_AUTH_SERVER);
@@ -77,7 +76,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		serviceLayer.getChart(context, element);
 
 		checkTestUrlParams(context);
-		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurUserDataId());
+		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());
 		assertEquals(AUTH_VIA_AUTH_SERVER, AppInfoSingleton.getAppInfo()
 				.getAuthViaAuthServerForSession(FAKE_SESSION_ID));
 		assertEquals(TEMP_PASS, AppInfoSingleton.getAppInfo()
@@ -92,12 +91,13 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
 
 		assertEquals(1,
-				doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.USERNAME_TAG)
-						.getLength());
+				doc.getDocumentElement()
+						.getElementsByTagName(SessionContextGenerator.USERNAME_TAG).getLength());
 
-		assertEquals(1,
-				doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.URL_PARAMS_TAG)
-						.getLength());
+		assertEquals(
+				1,
+				doc.getDocumentElement()
+						.getElementsByTagName(SessionContextGenerator.URL_PARAMS_TAG).getLength());
 		Node node =
 			doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.URL_PARAMS_TAG)
 					.item(0);
@@ -110,12 +110,12 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 				.getNamedItem(VALUE_TAG).getNodeValue());
 
 		assertEquals(1,
-				doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.USERDATA_TAG)
-						.getLength());
+				doc.getDocumentElement()
+						.getElementsByTagName(SessionContextGenerator.USERDATA_TAG).getLength());
 		node =
 			doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.USERDATA_TAG)
 					.item(0);
-		assertEquals(USERDATA_ID, node.getTextContent());
+		assertEquals(TEST1_USERDATA, node.getTextContent());
 	}
 
 	/**
@@ -127,14 +127,14 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testSessionInfoForGetDP() throws IOException, GeneralException, SAXException {
-		Map<String, List<String>> params = generateTestURLParams(USERDATA_ID);
+		Map<String, List<String>> params = generateTestURLParams(TEST1_USERDATA);
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
 		final int elID = 5;
 		Action action = getAction("tree_multilevel.xml", 0, elID);
 		action.setSessionContext(params);
 		serviceLayer.getDataPanel(action);
-		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurUserDataId());
+		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());
 		checkTestUrlParams(action.getContext());
 		checkTestUrlParams(action.getDataPanelLink().getElementLinks().get(0).getContext());
 	}
@@ -147,8 +147,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	 * @throws SAXException
 	 */
 	@Test
-	public void testWriteAndReadIfNoURLParams() throws IOException, GeneralException,
-			SAXException {
+	public void testWriteAndReadIfNoURLParams() throws IOException, GeneralException, SAXException {
 		Map<String, List<String>> params = new TreeMap<String, List<String>>();
 
 		CompositeContext context = getTestContext3();
@@ -162,14 +161,16 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		DocumentBuilder db = XMLUtils.createBuilder();
 		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
 		assertEquals(1,
-				doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.USERDATA_TAG)
-						.getLength());
+				doc.getDocumentElement()
+						.getElementsByTagName(SessionContextGenerator.USERDATA_TAG).getLength());
 		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, doc.getDocumentElement()
-				.getElementsByTagName(SessionContextGenerator.USERDATA_TAG).item(0).getTextContent());
+				.getElementsByTagName(SessionContextGenerator.USERDATA_TAG).item(0)
+				.getTextContent());
 
-		assertEquals(0,
-				doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.URL_PARAMS_TAG)
-						.getLength());
+		assertEquals(
+				0,
+				doc.getDocumentElement()
+						.getElementsByTagName(SessionContextGenerator.URL_PARAMS_TAG).getLength());
 
 	}
 
@@ -186,10 +187,10 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 
 		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
 		ArrayList<String> value3 = new ArrayList<String>();
-		value3.add(USERDATA_ID);
+		value3.add(TEST1_USERDATA);
 		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(params);
-		assertEquals(USERDATA_ID, AppInfoSingleton.getAppInfo().getCurUserDataId());
+		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());
 		assertNotNull(AppProps.getUserDataCatalog());
 	}
 

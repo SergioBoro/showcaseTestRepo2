@@ -17,10 +17,11 @@ import ru.curs.showcase.util.XMLUtils;
  * 
  */
 public abstract class ElementSPCallHelper extends SPCallHelper {
+	private static final String ELEMENTID_COLUMNNAME = "element_id";
 	/**
 	 * LOGGER.
 	 */
-	protected static final Logger LOGGER = LoggerFactory.getLogger(ElementSPCallHelper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ElementSPCallHelper.class);
 	/**
 	 * Информация об элементе, данные которого загружает процедура.
 	 */

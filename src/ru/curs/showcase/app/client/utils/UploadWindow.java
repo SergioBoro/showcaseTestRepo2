@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.*;
  */
 public class UploadWindow extends DialogBoxWithCaptionButton {
 
-	static final String SC_UPLOADER_WINDOW_CSS = "sc-uploader-holder";
+	private static final String SC_UPLOADER_WINDOW_CSS = "sc-uploader-holder";
 
 	/**
 	 * Форма для загрузки файлов на сервер.

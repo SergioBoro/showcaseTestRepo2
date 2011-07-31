@@ -203,7 +203,6 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 						defaultAction = action;
 					}
 				}
-
 			}
 
 			@Override

@@ -55,8 +55,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		procName = aProcName;
 	}
 
-	protected static final String FILTER_COLUMNNAME = "filterinfo";
-	protected static final String ELEMENTID_COLUMNNAME = "element_id";
+	private static final String FILTER_COLUMNNAME = "filterinfo";
 	protected static final String SESSION_CONTEXT_PARAM = "session_context";
 
 	/**

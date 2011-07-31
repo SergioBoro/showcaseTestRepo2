@@ -12,7 +12,8 @@ import ru.curs.showcase.app.api.ExchangeConstants;
  */
 public final class FilesFrontController extends HttpServlet {
 
-	static final String UNKNOWN_COMMAND_ERROR = "Неизвестная команда для FilesFrontController";
+	private static final String UNKNOWN_COMMAND_ERROR =
+		"Неизвестная команда для FilesFrontController";
 	/**
 	 * serialVersionUID.
 	 */

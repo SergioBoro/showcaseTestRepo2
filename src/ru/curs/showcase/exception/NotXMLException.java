@@ -13,7 +13,7 @@ import ru.curs.showcase.app.api.services.ExceptionType;
  */
 public class NotXMLException extends BaseException {
 
-	static final String ERROR_MES = "Файл '%s' не является файлом в формате XML";
+	private static final String ERROR_MES = "Файл '%s' не является файлом в формате XML";
 
 	/**
 	 * serialVersionUID.

@@ -25,7 +25,11 @@ import ru.curs.showcase.util.AppProps;
  */
 public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 
-	static final String XFORMS_UPLOAD1 = "xforms_upload1";
+	protected static final String TEST_GOOD_XSL = "test_good.xsl";
+	protected static final String XFORMS_UPLOAD1 = "xforms_upload1";
+	protected static final String TEST1_1_XML = "test1.1.xml";
+	protected static final String TEST2_XML = "test2.xml";
+	protected static final String TEST1_USERDATA = "test1";
 	/**
 	 * Идентификатор сессии для модульных тестов.
 	 */
@@ -34,10 +38,10 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	 * Название каталога, содержащего описания навигаторов в формате XML для
 	 * тестовых целей.
 	 */
-	static final String NAVIGATORSTORAGE = "navigatorstorage";
+	protected static final String NAVIGATORSTORAGE = "navigatorstorage";
 
-	static final String VALUE12 = "value1";
-	static final String KEY1 = "key1";
+	protected static final String VALUE12 = "value1";
+	protected static final String KEY1 = "key1";
 
 	/**
 	 * Действия, которые должны выполняться перед запуском любых тестовых
@@ -197,7 +201,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		proc.setName("xforms_download2");
 		proc.setType(DataPanelElementProcType.DOWNLOAD);
 		proc.setSchemaName("test_good_small.xsd");
-		proc.setTransformName("test_good.xsl");
+		proc.setTransformName(TEST_GOOD_XSL);
 		elInfo.getProcs().put(proc.getId(), proc);
 
 		proc = new DataPanelElementProc();
@@ -205,7 +209,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		proc.setName(XFORMS_UPLOAD1);
 		proc.setType(DataPanelElementProcType.UPLOAD);
 		proc.setSchemaName("test_good.xsd");
-		proc.setTransformName("test_good.xsl");
+		proc.setTransformName(TEST_GOOD_XSL);
 		elInfo.getProcs().put(proc.getId(), proc);
 
 		proc = new DataPanelElementProc();
@@ -219,7 +223,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		proc.setId("proc9");
 		proc.setName(XFORMS_UPLOAD1);
 		proc.setType(DataPanelElementProcType.UPLOAD);
-		proc.setTransformName("test_good.xsl");
+		proc.setTransformName(TEST_GOOD_XSL);
 		elInfo.getProcs().put(proc.getId(), proc);
 
 		proc = new DataPanelElementProc();

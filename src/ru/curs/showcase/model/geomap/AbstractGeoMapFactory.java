@@ -19,8 +19,8 @@ import ru.curs.showcase.util.TextUtils;
  */
 public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 
-	protected static final String OBJECT_NAME_TAG = "ObjectName";
-	protected static final String LAYER_NAME_TAG = "LayerName";
+	private static final String OBJECT_NAME_TAG = "ObjectName";
+	private static final String LAYER_NAME_TAG = "LayerName";
 	/**
 	 * Заголовок ошибки при считывании настроек карты.
 	 */

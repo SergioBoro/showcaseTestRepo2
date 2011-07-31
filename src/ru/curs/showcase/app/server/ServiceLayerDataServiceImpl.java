@@ -49,9 +49,6 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ServiceLayerDataServiceImpl.class);
 
-	static final String JSON_MAP_DATA = "Сформирован JSON с данными карты: ";
-	static final String JSON_MAP_TEMPLATE = "Получен JSON с шаблоном карты: ";
-
 	public static final String HEADER_SOURCE = "header.source";
 
 	/**

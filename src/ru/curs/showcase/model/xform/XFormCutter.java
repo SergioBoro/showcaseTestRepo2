@@ -126,6 +126,7 @@ public final class XFormCutter {
 				break;
 			case STYLE:
 				styleBuilder.append(ch, start, length);
+				break;
 			default:
 				break;
 			}
@@ -215,6 +216,7 @@ public final class XFormCutter {
 					} else if (STYLE.equalsIgnoreCase(localName)) {
 						state = State.STYLE;
 					}
+					break;
 				default:
 					break;
 				}

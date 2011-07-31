@@ -23,7 +23,7 @@ import ru.curs.showcase.model.grid.*;
  */
 public class GridFactoryTest extends AbstractTestBasedOnFiles {
 
-	static final String GRIDBAL_TEST_PROPERTIES = "gridbal.test.properties";
+	private static final String GRIDBAL_TEST_PROPERTIES = "gridbal.test.properties";
 
 	/**
 	 * Основной тест для фабрики гридов.
@@ -168,7 +168,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testFireGeneralAndConcreteEvents() throws GeneralException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "8", "83");
+		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "8", "83");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		Grid grid = serviceLayer.getGrid(context, element, null);
 
@@ -186,7 +186,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void test2StepGridLoadBySL() throws GeneralException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elInfo = getDPElement("test1.1.xml", "2", "2");
+		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "2", "2");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		Grid grid = serviceLayer.getGrid(context, elInfo, null);
 		assertNotNull(grid);
@@ -202,7 +202,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void test2StepGridLoadBySLWhenUpdate() throws GeneralException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elInfo = getDPElement("test1.1.xml", "2", "2");
+		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "2", "2");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		GridRequestedSettings settings = new GridRequestedSettings();
 		Collection<Column> aSortedColumns = new ArrayList<Column>();

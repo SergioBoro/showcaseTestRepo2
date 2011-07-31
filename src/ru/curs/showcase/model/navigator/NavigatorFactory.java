@@ -20,10 +20,10 @@ import ru.curs.showcase.util.*;
  * 
  */
 public final class NavigatorFactory extends SAXTagHandler {
-	static final String SELECT_ON_LOAD_TAG = "selectOnLoad";
-	static final String XML_ERROR_MES = "описание навигатора";
-	static final String GRP_ICONS_DIR_PARAM_NAME = "navigator.icons.dir.name";
-	static final String GRP_DEF_ICON_PARAM_NAME = "navigator.def.icon.name";
+	private static final String SELECT_ON_LOAD_TAG = "selectOnLoad";
+	private static final String XML_ERROR_MES = "описание навигатора";
+	private static final String GRP_ICONS_DIR_PARAM_NAME = "navigator.icons.dir.name";
+	private static final String GRP_DEF_ICON_PARAM_NAME = "navigator.def.icon.name";
 
 	/**
 	 * Стартовые тэги, которые будут обработаны.

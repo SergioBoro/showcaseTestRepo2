@@ -17,7 +17,7 @@ public class SessionInfoFilter implements Filter {
 	/**
 	 * Префикс сервлетов, используемых в механизме аутентификации.
 	 */
-	static final String AUTH_DATA_SERVLET_PREFIX = "auth";
+	private static final String AUTH_DATA_SERVLET_PREFIX = "auth";
 	/**
 	 * Имя основной страницы приложения.
 	 */

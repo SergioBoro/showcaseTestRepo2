@@ -10,7 +10,7 @@ import java.io.*;
  */
 public class DeleteFileAction implements FileAction {
 
-	static final String DELETE_ERROR = "Ошибка при удалении файла '%s'";
+	private static final String DELETE_ERROR = "Ошибка при удалении файла '%s'";
 
 	@Override
 	public void perform(final File aFile) throws IOException {

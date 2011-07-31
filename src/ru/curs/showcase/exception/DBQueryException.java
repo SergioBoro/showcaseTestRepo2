@@ -14,7 +14,7 @@ import ru.curs.showcase.app.api.services.ExceptionType;
  */
 public class DBQueryException extends BaseException {
 
-	static final String ERROR_MES_TEXT = "Подробности";
+	private static final String ERROR_MES_TEXT = "Подробности";
 	/**
 	 * Текст ошибки.
 	 */

@@ -35,7 +35,7 @@ public enum BrowserType implements SerializableElement {
 	 */
 	SAFARI("Apple Safari");
 
-	static final String VERSION_NOT_DEFINED = "не определена";
+	private static final String VERSION_NOT_DEFINED = "не определена";
 	/**
 	 * Имя браузера.
 	 */

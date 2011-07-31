@@ -19,11 +19,10 @@ import ru.curs.showcase.util.XMLUtils;
  */
 public final class DataPanelFactory extends StartTagSAXHandler {
 	public static final String DATAPANEL_XSD = "datapanel.xsd";
-	static final String NEVER_SHOW_IN_PANEL_TAG = "neverShowInPanel";
-	static final String PROC_TAG = "proc";
-	static final String SAVE_PROC_TAG = "saveProc";
-	static final String REFRESH_INTERVAL_TAG = "refreshInterval";
-	static final String REFRESH_BY_TIMER_TAG = "refreshByTimer";
+	private static final String NEVER_SHOW_IN_PANEL_TAG = "neverShowInPanel";
+	private static final String PROC_TAG = "proc";
+	private static final String REFRESH_INTERVAL_TAG = "refreshInterval";
+	private static final String REFRESH_BY_TIMER_TAG = "refreshByTimer";
 
 	/**
 	 * Создаваемая панель.

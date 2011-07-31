@@ -20,8 +20,8 @@ import com.google.gwt.user.client.ui.*;
  */
 public class DataGridPanelTest extends GWTTestCase {
 
-	static final String HEADER = "Это хедер";
-	static final String FOOTER = "Это футер";
+	private static final String HEADER = "Это хедер";
+	private static final String FOOTER = "Это футер";
 
 	@Override
 	public String getModuleName() {

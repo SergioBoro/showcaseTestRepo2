@@ -17,7 +17,7 @@ public class XFormsTransformationServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 382470453045525219L;
 
-	static final String XSLTFILE_PARAM_ERROR =
+	private static final String XSLTFILE_PARAM_ERROR =
 		"В XFormsTransformationServlet не передан обязательный параметр xsltfile";
 
 	@Override

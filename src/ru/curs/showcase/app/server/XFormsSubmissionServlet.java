@@ -12,7 +12,7 @@ import ru.curs.showcase.app.api.ExchangeConstants;
  */
 public class XFormsSubmissionServlet extends HttpServlet {
 
-	static final String PROC_PARAM_ERROR =
+	private static final String PROC_PARAM_ERROR =
 		"В XFormsSubmissionServlet не передан обязательный параметр proc";
 	/**
 	 * serialVersionUID.

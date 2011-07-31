@@ -20,9 +20,10 @@ import ru.curs.showcase.app.api.services.AppLogicError;
 @XmlRootElement(name = "element")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DataPanelElementInfo extends TransferableElement implements SerializableElement {
-	static final String KEEP_USER_SETTINGS_ERROR =
+	private static final String KEEP_USER_SETTINGS_ERROR =
 		"Невозможно получить значение keepUserSettings для действия, не содержащего блока для работы с инф. панелью";
-	static final String UNKNOWN_ELEMENT_TYPE = "Неизвестный тип элемента информационной панели";
+	private static final String UNKNOWN_ELEMENT_TYPE =
+		"Неизвестный тип элемента информационной панели";
 	public static final int DEF_TIMER_INTERVAL = 600;
 	/**
 	 * serialVersionUID.

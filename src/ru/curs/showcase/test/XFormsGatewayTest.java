@@ -25,13 +25,17 @@ import ru.curs.showcase.util.*;
  * 
  */
 public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
+	private static final String XFORMS_SUBMISSION1 = "xforms_submission1";
+	private static final String TEST_XML_FILE = "log4j.xml";
+	private static final String TEST_DATA_TAG = "<data>test</data>";
+
 	/**
 	 * Тест для чтения из файла.
 	 */
 	@Test
 	public void testFileGateWay() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "07");
+		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", "07");
 
 		XFormsGateway gateway = new XFormsFileGateway();
 		gateway.getRawData(context, element);
@@ -44,7 +48,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testFileGatewayUpdate() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "07");
+		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", "07");
 
 		XFormsGateway gateway = new XFormsFileGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
@@ -64,7 +68,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testFileGateWayWithTransform() throws Exception {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "07");
+		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", "07");
 
 		XFormsGateway gateway = new XFormsFileGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
@@ -143,9 +147,9 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testSQLSubmission() {
-		String data = "<data>test</data>";
+		String data = TEST_DATA_TAG;
 		XFormsGateway gateway = new XFormsDBGateway();
-		String res = gateway.handleSubmission("xforms_submission1", data);
+		String res = gateway.handleSubmission(XFORMS_SUBMISSION1, data);
 		assertEquals(data, res);
 	}
 
@@ -156,9 +160,9 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testSQLSubmissionBySL() throws GeneralException {
-		String data = "<data>test</data>";
+		String data = TEST_DATA_TAG;
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		String res = sl.handleSQLSubmission("xforms_submission1", data, null);
+		String res = sl.handleSQLSubmission(XFORMS_SUBMISSION1, data, null);
 		assertEquals(data, res);
 	}
 
@@ -172,7 +176,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	public void testSQLSubmissionBySLWithNullData() throws GeneralException {
 		String content = null;
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		String res = sl.handleSQLSubmission("xforms_submission1", content, null);
+		String res = sl.handleSQLSubmission(XFORMS_SUBMISSION1, content, null);
 		assertEquals(content, res);
 	}
 
@@ -183,7 +187,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testXSLTSubmissionBySL() throws GeneralException {
-		String data = "<data>test</data>";
+		String data = TEST_DATA_TAG;
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		String res = sl.handleXSLTSubmission("xformsxslttransformation_test.xsl", data, null);
 		assertNotNull(res);
@@ -196,7 +200,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testXFormsFileGatewayDownload() {
 		XFormsGateway gateway = new XFormsFileGateway();
-		final String linkId = "log4j.xml";
+		final String linkId = TEST_XML_FILE;
 		DataFile<ByteArrayOutputStream> file = gateway.downloadFile(null, null, linkId, null);
 		assertNotNull(file);
 		assertNotNull(file.getData());
@@ -228,7 +232,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testXFormsFileGatewayUpload() {
 		XFormsGateway gateway = new XFormsFileGateway();
-		final String linkId = "log4j.xml";
+		final String linkId = TEST_XML_FILE;
 		DataFile<InputStream> file =
 			new DataFile<InputStream>(AppProps.loadResToStream(linkId), linkId);
 		gateway.uploadFile(null, null, linkId, null, file);
@@ -245,7 +249,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc5";
-		final String fileName = "log4j.xml";
+		final String fileName = TEST_XML_FILE;
 		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		serviceLayer.uploadFile(context, element, linkId, null, file);
@@ -340,7 +344,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testDBGatewayUpdateWithTransform() throws IOException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "10");
+		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "10");
 
 		XFormsGateway gateway = new XFormsDBGateway();
 		String content = getNewContentBasedOnExisting(context, elementInfo, gateway);
@@ -359,7 +363,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test(expected = XSDValidateException.class)
 	public void testDBUpdateWithInvalidXML() throws IOException {
-		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "11");
+		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "11");
 
 		String content = "<test/>";
 		UserXMLTransformer transformer =
@@ -374,7 +378,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test(expected = NotXMLException.class)
 	public void testDBUpdateWithNotXML() throws IOException {
-		DataPanelElementInfo elementInfo = getDPElement("test1.1.xml", "2", "11");
+		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "11");
 
 		String content = "<test>";
 		UserXMLTransformer transformer =

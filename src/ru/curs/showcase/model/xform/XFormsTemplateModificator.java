@@ -15,7 +15,7 @@ import ru.curs.showcase.util.XMLUtils;
  * 
  */
 public final class XFormsTemplateModificator extends GeneralXMLHelper {
-	static final String ROOT_SRV_DATA_TAG = "srvdata";
+	private static final String ROOT_SRV_DATA_TAG = "srvdata";
 
 	private XFormsTemplateModificator() {
 		throw new UnsupportedOperationException();

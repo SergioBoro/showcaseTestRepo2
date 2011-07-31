@@ -21,26 +21,26 @@ import ru.curs.showcase.util.*;
  */
 public final class ProductionModeInitializer {
 
-	static final String SHOWCASE_USER_DATA_PARAM = "showcase.user.data";
-	static final String USER_DATA_INFO =
+	private static final String SHOWCASE_USER_DATA_PARAM = "showcase.user.data";
+	private static final String USER_DATA_INFO =
 		"Добавлен userdata из context.xml с идентификатором '%s' и путем '%s'";
-	static final String FILE_COPY_ERROR = "Ошибка копирования файла при старте Tomcat: %s";
-	static final String COPY_USERDATA_DIRS_PARAM = "copy.userdata.dirs";
-	static final String USER_DATA_DIR_NOT_FOUND_ERROR =
+	private static final String FILE_COPY_ERROR = "Ошибка копирования файла при старте Tomcat: %s";
+	private static final String COPY_USERDATA_DIRS_PARAM = "copy.userdata.dirs";
+	private static final String USER_DATA_DIR_NOT_FOUND_ERROR =
 		"Каталог с пользовательскими данными с именем '%s' не найден. " + "Исправьте параметр "
 				+ COPY_USERDATA_DIRS_PARAM + " в файле настроек приложения app.properties.";
-	static final String NOT_ALL_FILES_COPIED_ERROR =
+	private static final String NOT_ALL_FILES_COPIED_ERROR =
 		"В процессе запуска сервера не все файлы были корректно скопированы. "
 				+ "Showcase может работать неверно.";
-	static final String APP_PROPS_READ_ERROR = "Ошибка чтения файла настроек приложения";
-	static final String COPY_USERDATA_ON_STARTUP_PARAM = "copy.userdata.on.startup";
-	static final String GET_USERDATA_PATH_ERROR =
+	private static final String APP_PROPS_READ_ERROR = "Ошибка чтения файла настроек приложения";
+	private static final String COPY_USERDATA_ON_STARTUP_PARAM = "copy.userdata.on.startup";
+	private static final String GET_USERDATA_PATH_ERROR =
 		"Невозможно получить путь к каталогу с пользовательскими данными";
-	static final String SHOWCASE_DATA_GRID_CSS = "../../" + AppProps.SOLUTIONS_DIR
+	private static final String SHOWCASE_DATA_GRID_CSS = "../../" + AppProps.SOLUTIONS_DIR
 			+ "/%s/css/solutionGrid.css";
 	public static final String WIDTH_PROP = "width";
 	public static final String HEADER_GAP_SELECTOR = ".webmain-SmartGrid .headerGap";
-	static final String CSS_READ = "Из CSS файла '" + SHOWCASE_DATA_GRID_CSS
+	private static final String CSS_READ = "Из CSS файла '" + SHOWCASE_DATA_GRID_CSS
 			+ "' cчитано значение " + HEADER_GAP_SELECTOR + " ." + WIDTH_PROP + " - %s";
 
 	/**

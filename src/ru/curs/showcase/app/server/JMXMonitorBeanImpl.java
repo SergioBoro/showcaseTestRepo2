@@ -12,6 +12,8 @@ import javax.management.*;
  */
 public class JMXMonitorBeanImpl implements JMXMonitorBean, DynamicMBean {
 
+	private static final String SESSION_COUNT_ATTR = "SessionCount";
+
 	@Override
 	public void setDebugLevel(final String aLevel) {
 		// TODO
@@ -30,7 +32,7 @@ public class JMXMonitorBeanImpl implements JMXMonitorBean, DynamicMBean {
 	@Override
 	public Object getAttribute(final String aArg0) throws AttributeNotFoundException,
 			MBeanException, ReflectionException {
-		if ("SessionCount".equals(aArg0)) {
+		if (SESSION_COUNT_ATTR.equals(aArg0)) {
 			return getSessionCount();
 		}
 		return null;
@@ -39,14 +41,14 @@ public class JMXMonitorBeanImpl implements JMXMonitorBean, DynamicMBean {
 	@Override
 	public AttributeList getAttributes(final String[] aArg0) {
 		AttributeList list = new AttributeList();
-		list.add(new Attribute("SessionCount", getSessionCount()));
+		list.add(new Attribute(SESSION_COUNT_ATTR, getSessionCount()));
 		return list;
 	}
 
 	@Override
 	public MBeanInfo getMBeanInfo() {
 		SortedSet<String> names = new TreeSet<String>();
-		names.add("SessionCount");
+		names.add(SESSION_COUNT_ATTR);
 		MBeanAttributeInfo[] attrs = new MBeanAttributeInfo[names.size()];
 		Iterator<String> it = names.iterator();
 		for (int i = 0; i < attrs.length; i++) {

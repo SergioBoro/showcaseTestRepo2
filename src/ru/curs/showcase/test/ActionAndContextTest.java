@@ -22,21 +22,23 @@ import ru.curs.showcase.app.server.*;
  */
 public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 
-	static final String MAIN_FILTER = "Алтайский край";
-	static final String SESSION_CONDITION =
+	private static final String TREE_MULTILEVEL_XML = "tree_multilevel.xml";
+	private static final String TREE_MULTILEVEL_V2_XML = "tree_multilevel.v2.xml";
+	private static final String TEST_ACTIVITY_NAME = "test";
+	private static final String MAIN_FILTER = "Алтайский край";
+	private static final String SESSION_CONDITION =
 		"<sessioncontext><username>master</username><urlparams></urlparams></sessioncontext>";
-	static final String FILTER_CONDITION = "filter";
-	static final int DEF_SIZE_VALUE = 100;
-	static final String FILTER_CONTEXT = FILTER_CONDITION;
-	static final String NEW_ADD_CONDITION = "New add condition";
-	static final String MASTER_USER = "master";
-	static final String MOSCOW_CONTEXT = "Москва";
-	static final String TAB_1 = "1";
-	static final String TAB_2_NAME = "Вкладка 2";
-	static final String EL_06 = "06";
-	static final String ADD_CONDITION = "add_condition";
-	static final String TAB_2 = "2";
-	static final String TEST_XML = "test.xml";
+	private static final String FILTER_CONDITION = "filter";
+	private static final int DEF_SIZE_VALUE = 100;
+	private static final String FILTER_CONTEXT = FILTER_CONDITION;
+	private static final String NEW_ADD_CONDITION = "New add condition";
+	private static final String MOSCOW_CONTEXT = "Москва";
+	private static final String TAB_1 = "1";
+	private static final String TAB_2_NAME = "Вкладка 2";
+	private static final String EL_06 = "06";
+	private static final String ADD_CONDITION = "add_condition";
+	private static final String TAB_2 = "2";
+	private static final String TEST_XML = "test.xml";
 
 	/**
 	 * Тест клонирования Action и составляющих его объектов.
@@ -89,7 +91,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertNotNull(act);
 		assertEquals(ActivityType.SP, act.getType());
 		assertEquals("01", act.getId());
-		assertEquals("test", act.getName());
+		assertEquals(TEST_ACTIVITY_NAME, act.getName());
 		assertEquals(ADD_CONDITION, act.getContext().getAdditional());
 
 		assertTrue(action.containsClientActivity());
@@ -298,14 +300,14 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testRefreshNavigatorAction() throws IOException {
 		final int el2 = 2;
-		Action action = getAction("tree_multilevel.xml", 0, el2);
+		Action action = getAction(TREE_MULTILEVEL_XML, 0, el2);
 		assertTrue(action.getNavigatorElementLink().getRefresh());
 		final int el3 = 3;
-		action = getAction("tree_multilevel.xml", 0, el3);
+		action = getAction(TREE_MULTILEVEL_XML, 0, el3);
 		assertTrue(action.getNavigatorElementLink().getRefresh());
 		assertNotNull(action.getNavigatorElementLink().getId());
 		final int el4 = 4;
-		action = getAction("tree_multilevel.xml", 0, el4);
+		action = getAction(TREE_MULTILEVEL_XML, 0, el4);
 		assertNotNull(action.getNavigatorElementLink().getId());
 	}
 
@@ -319,7 +321,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testRefreshContextOnlyAction() throws IOException {
 		final int elNum = 5;
-		Action action = getAction("tree_multilevel.xml", 0, elNum);
+		Action action = getAction(TREE_MULTILEVEL_XML, 0, elNum);
 		assertTrue(action.getDataPanelLink().getElementLinks().get(0).getRefreshContextOnly());
 		assertTrue(action.getDataPanelLink().getElementLinks().get(1).getSkipRefreshContextOnly());
 	}
@@ -336,7 +338,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertNull(action.getModalWindowInfo());
 
 		final int elNum = 5;
-		action = getAction("tree_multilevel.xml", 0, elNum);
+		action = getAction(TREE_MULTILEVEL_XML, 0, elNum);
 		assertEquals("test_action_name", action.getModalWindowInfo().getCaption());
 		final int mwWidth = 99;
 		assertEquals(mwWidth, action.getModalWindowInfo().getWidth().intValue());
@@ -382,7 +384,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		elLink.setRefreshContextOnly(true);
 		elLink.setSkipRefreshContextOnly(true);
 
-		Activity act = new Activity("01", "test", ActivityType.SP);
+		Activity act = new Activity("01", TEST_ACTIVITY_NAME, ActivityType.SP);
 		act.setContext(getComplexTestContext());
 		action.getServerActivities().add(act);
 
@@ -426,11 +428,11 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		DataPanelElementLink elLink = new DataPanelElementLink(EL_06, elContext);
 		link.getElementLinks().add(elLink);
 
-		Activity act = new Activity("01", "test", ActivityType.SP);
+		Activity act = new Activity("01", TEST_ACTIVITY_NAME, ActivityType.SP);
 		act.setContext(context);
 		action.getServerActivities().add(act);
 
-		act = new Activity("01", "test", ActivityType.BrowserJS);
+		act = new Activity("01", TEST_ACTIVITY_NAME, ActivityType.BrowserJS);
 		act.setContext(context);
 		action.getClientActivities().add(act);
 
@@ -462,7 +464,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testActionFilterBy() throws IOException {
 		final int actionWithChildNumber = 5;
-		Action action = getAction("tree_multilevel.xml", 0, actionWithChildNumber);
+		Action action = getAction(TREE_MULTILEVEL_XML, 0, actionWithChildNumber);
 		action.filterBy(FILTER_CONTEXT);
 		assertEquals(FILTER_CONTEXT, action.getDataPanelLink().getElementLinks().get(0)
 				.getContext().getFilter());
@@ -503,10 +505,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		dpLink.setTabId(TAB_2);
 		insideAction.setDataPanelLink(dpLink);
 		insideAction.determineState();
-		Activity act = new Activity("01", "test", ActivityType.SP);
+		Activity act = new Activity("01", TEST_ACTIVITY_NAME, ActivityType.SP);
 		act.setContext(CompositeContext.createCurrent());
 		insideAction.getServerActivities().add(act);
-		act = new Activity("01", "test", ActivityType.BrowserJS);
+		act = new Activity("01", TEST_ACTIVITY_NAME, ActivityType.BrowserJS);
 		act.setContext(CompositeContext.createCurrent());
 		insideAction.getClientActivities().add(act);
 		ah.setCurrentAction(insideAction);
@@ -538,7 +540,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertFalse(action.getDataPanelLink().getElementLinks().get(0).getKeepUserSettings());
 
 		final int actionWithChildNumber = 5;
-		action = getAction("tree_multilevel.xml", 0, actionWithChildNumber);
+		action = getAction(TREE_MULTILEVEL_XML, 0, actionWithChildNumber);
 		action.determineState();
 		assertFalse(action.getKeepUserSettings());
 		assertFalse(action.getDataPanelLink().getElementLinks().get(0).getKeepUserSettings());
@@ -560,7 +562,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testServerActivityRead() throws IOException {
 		final int actionNumber = 1;
-		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
+		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		assertTrue(action.containsServerActivity());
 		assertEquals(1, action.getServerActivities().size());
 		Activity sa = action.getServerActivities().get(0);
@@ -582,7 +584,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testServerActivityExec() throws IOException, GeneralException {
 		final int actionNumber = 1;
-		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
+		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		sl.execServerAction(action);
 		assertNotNull(action.getServerActivities().get(0).getContext().getSession());
@@ -598,7 +600,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	public void testServerActivityExecFail() throws IOException, GeneralException {
 		final int actionNumber = 2;
 		AppInfoSingleton.getAppInfo().setCurUserDataId("test1");
-		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
+		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
 		ArrayList<String> val = new ArrayList<String>();
 		val.add("test1");
@@ -664,7 +666,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testReadClientActivity() throws IOException {
 		final int actionNumber = 1;
-		Action action = getAction("tree_multilevel.v2.xml", 0, actionNumber);
+		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		assertTrue(action.containsClientActivity());
 		assertEquals(1, action.getClientActivities().size());
 		Activity ac = action.getClientActivities().get(0);

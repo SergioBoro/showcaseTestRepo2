@@ -67,7 +67,7 @@ public final class XMLUtils {
 		}
 	}
 
-	static final String XSLT_ERROR = "Ошибка при выполнении XSLT-преобразования: ";
+	private static final String XSLT_ERROR = "Ошибка при выполнении XSLT-преобразования: ";
 
 	/**
 	 * Идентификатор схемы версии 1.1.

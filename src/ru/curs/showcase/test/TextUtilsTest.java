@@ -14,10 +14,10 @@ import ru.curs.showcase.util.TextUtils;
  */
 public class TextUtilsTest extends AbstractTestBasedOnFiles {
 
-	static final String RUS_PATH2 = "C:/Виндоус 7/System32/русское имя.ext";
-	static final String RUS_PATH1 = "C:\\Виндоус 7\\System32\\русское имя.ext";
-	static final String RUS_NAME = "русское имя";
-	static final String RUS_NAME_WITH_EXT = "русское имя.ext";
+	private static final String RUS_PATH2 = "C:/Виндоус 7/System32/русское имя.ext";
+	private static final String RUS_PATH1 = "C:\\Виндоус 7\\System32\\русское имя.ext";
+	private static final String RUS_NAME = "русское имя";
+	private static final String RUS_NAME_WITH_EXT = "русское имя.ext";
 
 	/**
 	 * Проверка функции {@link ru.curs.showcase.util.TextUtils#getRealEncoding

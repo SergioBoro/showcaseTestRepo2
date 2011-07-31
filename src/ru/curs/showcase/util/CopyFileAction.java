@@ -11,13 +11,13 @@ import org.slf4j.*;
  * 
  */
 public class CopyFileAction implements FileAction {
-	static final String FILE_SKIPED_INFO = "Файл '%s' пропущен при копировании в '%s'";
-	static final String FILE_OVERWRITE_INFO = "Файл '%s' будет перезаписан";
-	static final String FILE_COPIED_INFO = "Файл '%s' скопирован в '%s'";
+	private static final String FILE_SKIPED_INFO = "Файл '%s' пропущен при копировании в '%s'";
+	private static final String FILE_OVERWRITE_INFO = "Файл '%s' будет перезаписан";
+	private static final String FILE_COPIED_INFO = "Файл '%s' скопирован в '%s'";
 
-	static final String DIR_CREATED_INFO = "Каталог '%s' не существовал и был создан";
+	private static final String DIR_CREATED_INFO = "Каталог '%s' не существовал и был создан";
 
-	static final String CREATE_DIR_ERROR = "Не удалось создать каталог '%s'";
+	private static final String CREATE_DIR_ERROR = "Не удалось создать каталог '%s'";
 
 	/**
 	 * LOGGER.

@@ -20,7 +20,7 @@ import ru.curs.showcase.util.XMLUtils;
  */
 public final class SessionContextGenerator extends GeneralXMLHelper {
 
-	static final String SESSION_CONTEXT_TAG = "sessioncontext";
+	private static final String SESSION_CONTEXT_TAG = "sessioncontext";
 	public static final String USERNAME_TAG = "username";
 	public static final String URL_PARAMS_TAG = "urlparams";
 	public static final String URL_PARAM_TAG = "urlparam";

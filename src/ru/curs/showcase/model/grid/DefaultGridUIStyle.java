@@ -10,21 +10,22 @@ import ru.curs.showcase.app.server.AppInfoSingleton;
  * 
  */
 public final class DefaultGridUIStyle implements GridUIStyle {
-	public static final String DEF_VISIBLE_PAGES_COUNT = "def.visible.pages.count";
-	static final String DEF_PAGES_BLOCK_DUPLICATE_LIMIT = "def.pages.block.duplicate.limit";
+	private static final String DEF_VISIBLE_PAGES_COUNT = "def.visible.pages.count";
 	public static final String DEF_SELECT_WHOLE_RECORD = "def.select.whole.record";
 
-	static final String DEF_VISIBLE_COLUMNS_CUSTOMIZER = "def.visible.columns.customizer";
-	static final String DEF_VISIBLE_COLUMNGROUPS_CUSTOMIZER =
+	private static final String DEF_PAGES_BLOCK_DUPLICATE_LIMIT =
+		"def.pages.block.duplicate.limit";
+	private static final String DEF_VISIBLE_COLUMNS_CUSTOMIZER = "def.visible.columns.customizer";
+	private static final String DEF_VISIBLE_COLUMNGROUPS_CUSTOMIZER =
 		"def.visible.columngroups.customizer";
-	static final String DEF_VISIBLE_PAGER = "def.visible.pager";
-	static final String DEF_VISIBLE_EXPORTTOEXCEL_CURRENTPAGE =
+	private static final String DEF_VISIBLE_PAGER = "def.visible.pager";
+	private static final String DEF_VISIBLE_EXPORTTOEXCEL_CURRENTPAGE =
 		"def.visible.exporttoexcel.currentpage";
-	static final String DEF_VISIBLE_EXPORTTOEXCEL_ALL = "def.visible.exporttoexcel.all";
-	static final String DEF_VISIBLE_COPYTOCLIPBOARD = "def.visible.copytoclipboard";
-	static final String DEF_VISIBLE_RECORDS_SELECTOR = "def.visible.records.selector";
-	static final String DEF_VISIBLE_COLUMNS_HEADER = "def.visible.columns.header";
-	static final String SINGLE_CLICK_BEFORE_DOUBLE = "single.click.before.double";
+	private static final String DEF_VISIBLE_EXPORTTOEXCEL_ALL = "def.visible.exporttoexcel.all";
+	private static final String DEF_VISIBLE_COPYTOCLIPBOARD = "def.visible.copytoclipboard";
+	private static final String DEF_VISIBLE_RECORDS_SELECTOR = "def.visible.records.selector";
+	private static final String DEF_VISIBLE_COLUMNS_HEADER = "def.visible.columns.header";
+	private static final String SINGLE_CLICK_BEFORE_DOUBLE = "single.click.before.double";
 
 	/**
 	 * Настройки грида.

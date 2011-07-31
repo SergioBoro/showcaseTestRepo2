@@ -11,8 +11,8 @@ import ru.curs.showcase.model.*;
  * 
  */
 public class WebTextDBGateway extends HTMLBasedSPCallHelper implements WebTextGateway {
-	public static final String OUTPUT_COLUMNNAME = "webtextsettings";
-	static final String DATA_COLUMNNAME = "webtextdata";
+	private static final String OUTPUT_COLUMNNAME = "webtextsettings";
+	private static final String DATA_COLUMNNAME = "webtextdata";
 
 	@Override
 	public HTMLBasedElementRawData getRawData(final CompositeContext context,

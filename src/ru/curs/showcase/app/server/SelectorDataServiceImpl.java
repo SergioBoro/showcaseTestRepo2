@@ -17,7 +17,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  */
 public class SelectorDataServiceImpl extends RemoteServiceServlet implements SelectorDataService {
 
-	static final String SELECTOR_ERROR = "При получении данных для селектора возникла ошибка: ";
+	private static final String SELECTOR_ERROR =
+		"При получении данных для селектора возникла ошибка: ";
 
 	/**
 	 * serialVersionUID.

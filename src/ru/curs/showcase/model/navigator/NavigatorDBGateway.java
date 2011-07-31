@@ -15,8 +15,7 @@ import ru.curs.showcase.util.AppProps;
  * 
  */
 public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway {
-	static final String NAVIGATOR_PROCNAME_PARAM = "navigator.proc.name";
-	static final String DEF_USERNAME_PARAM = "main.def.username";
+	private static final String NAVIGATOR_PROCNAME_PARAM = "navigator.proc.name";
 
 	@Override
 	public InputStream getRawData(final CompositeContext context) {

@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.*;
  */
 public final class UploadHelper extends RunServletByFormHelper {
 
-	static final String SC_UPLOADER_CSS = "sc-uploader-comp";
+	private static final String SC_UPLOADER_CSS = "sc-uploader-comp";
 
 	/**
 	 * Обработчик окончания загрузки файлов.
@@ -107,7 +107,7 @@ public final class UploadHelper extends RunServletByFormHelper {
 		Iterator<FileUpload> iterator = uploaders.values().iterator();
 		while (iterator.hasNext()) {
 			FileUpload current = iterator.next();
-			if ((current.getFilename() != null) && (current.getFilename() != "")) {
+			if ((current.getFilename() != null) && (!current.getFilename().isEmpty())) {
 				return true;
 			}
 		}

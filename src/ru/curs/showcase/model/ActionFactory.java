@@ -18,11 +18,11 @@ public class ActionFactory extends SAXTagHandler {
 	 * main_context и add_context.
 	 */
 	private static final String SOL_TAG_PREFIX = "context";
-	static final String SHOW_CLOSE_BOTTOM_BUTTON_TAG = "show_close_bottom_button";
-	static final String KEEP_USER_SETTINGS_TAG = "keep_user_settings";
-	static final String SKIP_REFRESH_CONTEXT_ONLY_TAG = "skip_refresh_context_only";
-	static final String SHOW_IN_MODE_TAG = "show_in";
-	static final String REFRESH_CONTEXT_ONLY_TAG = "refresh_context_only";
+	private static final String SHOW_CLOSE_BOTTOM_BUTTON_TAG = "show_close_bottom_button";
+	private static final String KEEP_USER_SETTINGS_TAG = "keep_user_settings";
+	private static final String SKIP_REFRESH_CONTEXT_ONLY_TAG = "skip_refresh_context_only";
+	private static final String SHOW_IN_MODE_TAG = "show_in";
+	private static final String REFRESH_CONTEXT_ONLY_TAG = "refresh_context_only";
 
 	/**
 	 * Текущее действие.

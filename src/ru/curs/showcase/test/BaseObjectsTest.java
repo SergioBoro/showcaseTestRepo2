@@ -22,7 +22,7 @@ import ru.curs.showcase.util.*;
  * 
  */
 public class BaseObjectsTest extends AbstractTestBasedOnFiles {
-	static final String TEST_CSS = "ru\\curs\\showcase\\test\\ShowcaseDataGrid_test.css";
+	private static final String TEST_CSS = "ru\\curs\\showcase\\test\\ShowcaseDataGrid_test.css";
 
 	/**
 	 * Проверка работы StreamConvertor.

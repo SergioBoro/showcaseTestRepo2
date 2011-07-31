@@ -20,7 +20,7 @@ import ru.curs.showcase.model.geomap.*;
  * 
  */
 public class GeoMapFactoryTest extends AbstractTestBasedOnFiles {
-	static final String RU_AL_ID = "2";
+	private static final String RU_AL_ID = "2";
 
 	/**
 	 * Простой тест на создание объекта карты.

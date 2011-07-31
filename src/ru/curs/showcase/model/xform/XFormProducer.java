@@ -16,7 +16,7 @@ import ru.curs.showcase.model.GeneralXMLHelper;
  */
 public final class XFormProducer extends GeneralXMLHelper {
 	static final String XF_INSTANCE = "xf:instance";
-	static final String XSLTFORMS_XSL = "xsltforms.xsl";
+	private static final String XSLTFORMS_XSL = "xsltforms.xsl";
 	/**
 	 * String XFORMS_URI.
 	 */

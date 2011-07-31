@@ -20,8 +20,8 @@ import ru.curs.showcase.model.chart.*;
  * 
  */
 public class ChartFactoryTest extends AbstractTestBasedOnFiles {
-	protected static final String FIRST_COL_CAPTION = "3кв. 2005г.";
-	protected static final String SELECTOR_COL_FIRST_VALUE =
+	private static final String FIRST_COL_CAPTION = "3кв. 2005г.";
+	private static final String SELECTOR_COL_FIRST_VALUE =
 		"Запасы на конец отчетного периода - Всего";
 
 	/**

@@ -62,7 +62,7 @@ public final class ValidateInDBException extends BaseException {
 	 * serialVersionUID.
 	 */
 	private static final long serialVersionUID = 870894006633410366L;
-	static final String MESSAGE_TAG = "message";
+	private static final String MESSAGE_TAG = "message";
 
 	/**
 	 * Признак того, что нужное сообщение найдено в файле.

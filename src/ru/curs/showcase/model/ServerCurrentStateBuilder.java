@@ -15,8 +15,8 @@ import ru.curs.showcase.util.*;
  */
 public final class ServerCurrentStateBuilder {
 
-	static final String BUILD_FILE = "build";
-	static final String VERSION_FILE = "version";
+	private static final String BUILD_FILE = "build";
+	private static final String VERSION_FILE = "version";
 
 	private ServerCurrentStateBuilder() {
 		throw new UnsupportedOperationException();

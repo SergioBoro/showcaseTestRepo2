@@ -10,12 +10,12 @@ import org.slf4j.*;
  * Набор утилит (функций) для работы с сервлетами сервера аутентификации.
  */
 public final class AuthServerUtils {
-	static final String REQUEST_METHOD = "GET";
+	private static final String REQUEST_METHOD = "GET";
 
 	public static final String APP_PROP_READ_ERROR =
 		"Не удалось считать security.authserverurl из app.properties";
 
-	static final String LOGOUT_WARN = "Не удалось разлогиниться с AuthServer";
+	private static final String LOGOUT_WARN = "Не удалось разлогиниться с AuthServer";
 	/**
 	 * LOGGER.
 	 */

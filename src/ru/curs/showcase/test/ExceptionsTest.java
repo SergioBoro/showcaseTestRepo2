@@ -31,6 +31,7 @@ import ru.curs.showcase.util.XMLUtils;
  * 
  */
 public class ExceptionsTest extends AbstractTestBasedOnFiles {
+	private static final String TEST_XML = "test.xml";
 	/**
 	 * Имя несуществующей схемы.
 	 */
@@ -99,7 +100,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test
 	public final void testPhantomChartSP() {
 		CompositeContext context = getTestContext2();
-		DataPanelElementInfo element = getDPElement("test2.xml", "3", "31");
+		DataPanelElementInfo element = getDPElement(TEST2_XML, "3", "31");
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
@@ -120,7 +121,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	public final void testWrongChartSP() {
 		CompositeContext context = getTestContext2();
 
-		DataPanelElementInfo element = getDPElement("test2.xml", "3", "33");
+		DataPanelElementInfo element = getDPElement(TEST2_XML, "3", "33");
 		final String procName = "chart_pas_wrong_param";
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -143,7 +144,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test
 	public final void testWrongChartSPWithNoResult() {
 		CompositeContext context = getTestContext2();
-		DataPanelElementInfo element = getDPElement("test2.xml", "3", "32");
+		DataPanelElementInfo element = getDPElement(TEST2_XML, "3", "32");
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
@@ -208,7 +209,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test(expected = InconsistentSettingsFromDBException.class)
 	public void testInconsistentSettings() throws Exception {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test.xml", "3", "5");
+		DataPanelElementInfo element = getDPElement(TEST_XML, "3", "5");
 
 		GridGateway gateway = new GridDBGateway();
 		ElementRawData raw = gateway.getRawDataAndSettings(context, element);
@@ -223,7 +224,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test(expected = XSDValidateException.class)
 	public void testXSDValidateException() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test.xml", "3", "6");
+		DataPanelElementInfo element = getDPElement(TEST_XML, "3", "6");
 
 		WebTextGateway gateway = new WebTextDBGateway();
 		gateway.getRawData(context, element);
@@ -302,7 +303,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	public void testDBQueryExceptionBySL() {
 		CompositeContext context = getTestContext1();
 		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData("test.xml");
+		DataFile<InputStream> file = gateway.getRawData(TEST_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel dp = factory.fromStream(file);
 
@@ -334,8 +335,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		assertEquals(MessageType.ERROR, GeneralException.getMessageType(exc));
 		assertEquals(ExceptionType.JAVA, GeneralException.getType(exc));
 		assertTrue(GeneralException.needDetailedInfo(exc));
-		assertNotNull(GeneralException
-				.generateDetailedInfo(exc));
+		assertNotNull(GeneralException.generateDetailedInfo(exc));
 	}
 
 	/**
@@ -404,7 +404,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test(expected = DBQueryException.class)
 	public void testDBQueryExceptionWithWrongGridSorting() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elInfo = getDPElement("test1.1.xml", "2", "2");
+		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "2", "2");
 		GridRequestedSettings settings = new GridRequestedSettings();
 		Collection<Column> aSortedColumns = new ArrayList<Column>();
 		Column col = new Column();
@@ -424,7 +424,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test(expected = ResultSetHandleException.class)
 	public void testErrorWhenGetSettingsForDataOnlyProc() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elInfo = getDPElement("test1.1.xml", "2", "2");
+		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "2", "2");
 		GridGateway gateway = new GridDBGateway();
 		GridRequestedSettings settings = new GridRequestedSettings();
 		ElementRawData res = gateway.getRawData(context, elInfo, settings);

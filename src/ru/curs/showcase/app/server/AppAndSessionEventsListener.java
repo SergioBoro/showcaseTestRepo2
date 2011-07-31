@@ -12,7 +12,7 @@ import org.slf4j.*;
  * 
  */
 public class AppAndSessionEventsListener implements ServletContextListener, HttpSessionListener {
-	static final String SHOWCASE_LOADING = "Showcase загружается...";
+	private static final String SHOWCASE_LOADING = "Showcase загружается...";
 
 	/**
 	 * LOGGER.

@@ -21,13 +21,13 @@ import com.google.gwt.event.shared.HandlerRegistration;
  */
 public class EventsTest extends AbstractTestBasedOnFiles {
 
-	static final String ROW4 = "row4";
-	static final String COL2 = "col2";
-	static final String ROW2 = "row2";
-	static final String ROW3 = "row3";
-	static final String COL3 = "col3";
-	static final String COL1 = "col1";
-	static final String ROW1 = "row1";
+	private static final String ROW4 = "row4";
+	private static final String COL2 = "col2";
+	private static final String ROW2 = "row2";
+	private static final String ROW3 = "row3";
+	private static final String COL3 = "col3";
+	private static final String COL1 = "col1";
+	private static final String ROW1 = "row1";
 
 	/**
 	 * Проверка на мусор на входе.

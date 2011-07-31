@@ -25,19 +25,19 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 	 */
 	private static final String PIE_CHART = "Pie";
 
-	static final String MAX_X_TAG = "maxX";
+	private static final String MAX_X_TAG = "maxX";
 
-	static final String SERIES_NAME_TAG = "seriesName";
+	private static final String SERIES_NAME_TAG = "seriesName";
 
-	static final String LABEL_X_TAG = "labelx";
+	private static final String LABEL_X_TAG = "labelx";
 
-	protected static final String CHART_SETTINGS_ERROR_MES = "настройки графика";
+	private static final String CHART_SETTINGS_ERROR_MES = "настройки графика";
 
-	protected static final String SELECTOR_TAG = "selectorColumn";
+	private static final String SELECTOR_TAG = "selectorColumn";
 
-	protected static final String LABEL_Y_TAG = "labely";
+	private static final String LABEL_Y_TAG = "labely";
 
-	protected static final String LABEL_Y_TEXT = "text";
+	private static final String LABEL_Y_TEXT = "text";
 
 	protected static final String X_TAG = "x";
 	/**

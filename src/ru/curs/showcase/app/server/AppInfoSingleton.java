@@ -17,8 +17,6 @@ import ru.curs.showcase.exception.NoSuchUserDataException;
  * 
  */
 public final class AppInfoSingleton {
-	static final String USER_SESSION_INFO_GENERATE_ERROR =
-		"Ошибка при сохранении информации о пользовательской сессии";
 
 	/**
 	 * LOGGER.

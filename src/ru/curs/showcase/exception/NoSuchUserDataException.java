@@ -13,7 +13,7 @@ public class NoSuchUserDataException extends BaseException {
 	 */
 	private static final long serialVersionUID = -6928633456458398538L;
 
-	static final String ERROR_MES =
+	private static final String ERROR_MES =
 		"Каталог пользовательских данных(userdata) с идентификатором '%s' не задан в context.xml или path.properties";
 
 	/**

@@ -19,7 +19,7 @@ import ru.curs.showcase.util.*;
  */
 public final class AppPropsTest extends AbstractTestBasedOnFiles {
 
-	static final String TEST1_USERDATA = "test1";
+	private static final String TEST2_USERDATA = "test2";
 
 	/**
 	 * Тест ф-ции loadResToStream.
@@ -82,9 +82,10 @@ public final class AppPropsTest extends AbstractTestBasedOnFiles {
 	public void testReadMainPageInfo() {
 		assertEquals("100px",
 				AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP, TEST1_USERDATA));
-		assertEquals("50px", AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, TEST1_USERDATA));
-		assertNull(AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP, "test2"));
-		assertNull(AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, "test2"));
+		assertEquals("50px",
+				AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, TEST1_USERDATA));
+		assertNull(AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP, TEST2_USERDATA));
+		assertNull(AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, TEST2_USERDATA));
 	}
 
 	/**
@@ -100,7 +101,7 @@ public final class AppPropsTest extends AbstractTestBasedOnFiles {
 		assertEquals("100px", mp.getHeaderHeight());
 		assertEquals("50px", mp.getFooterHeight());
 
-		context = new CompositeContext(generateTestURLParams("test2"));
+		context = new CompositeContext(generateTestURLParams(TEST2_USERDATA));
 		mp = sl.getMainPage(context);
 		assertEquals(AppProps.DEF_HEADER_HEIGTH, mp.getHeaderHeight());
 		assertEquals(AppProps.DEF_FOOTER_HEIGTH, mp.getFooterHeight());

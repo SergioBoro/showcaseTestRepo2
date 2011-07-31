@@ -21,6 +21,8 @@ import ru.curs.showcase.util.AppProps;
  */
 public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 
+	private static final String TEST_ELEMEMNT_NAME = "Вывоз, включая экспорт - Ноябрь";
+
 	/**
 	 * Проверка навигатора, созданного обычным конструктором.
 	 */
@@ -81,7 +83,7 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals(DataPanelActionType.RELOAD_PANEL, testEl.getAction().getDataPanelActionType());
 		assertEquals(NavigatorActionType.DO_NOTHING, testEl.getAction().getNavigatorActionType());
 		assertEquals("C6CC2BA4-A6ED-4630-8E58-CBBFA9C8C0A8", testEl.getElements().get(0).getId());
-		assertEquals("Вывоз, включая экспорт - Ноябрь", testEl.getElements().get(0).getName());
+		assertEquals(TEST_ELEMEMNT_NAME, testEl.getElements().get(0).getName());
 		Action action = testEl.getElements().get(0).getAction();
 		assertNotNull(action);
 		DataPanelLink link = action.getDataPanelLink();
@@ -89,12 +91,12 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals("test.xml", link.getDataPanelId());
 		assertEquals("1", link.getTabId());
 		assertNotNull(action.getContext());
-		assertEquals("Вывоз, включая экспорт - Ноябрь", action.getContext().getMain());
+		assertEquals(TEST_ELEMEMNT_NAME, action.getContext().getMain());
 		assertNull(action.getContext().getAdditional());
 		assertEquals(1, link.getElementLinks().size());
 		assertEquals("1", link.getElementLinks().get(0).getId());
 		assertNotNull(link.getElementLinks().get(0).getContext());
-		assertEquals("Вывоз, включая экспорт - Ноябрь", link.getElementLinks().get(0).getContext()
+		assertEquals(TEST_ELEMEMNT_NAME, link.getElementLinks().get(0).getContext()
 				.getMain());
 		assertNull(link.getElementLinks().get(0).getContext().getSession());
 		assertEquals("(1=1)", link.getElementLinks().get(0).getContext().getAdditional());

@@ -31,7 +31,7 @@ public abstract class BaseException extends RuntimeException {
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(BaseException.class);
 
-	static final String ERROR_CAPTION = "Сообщение об ошибке";
+	private static final String ERROR_CAPTION = "Сообщение об ошибке";
 
 	/**
 	 * Тип исключения.

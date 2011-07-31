@@ -68,15 +68,11 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 					return;
 				}
 				if (readingHeader) {
-					getResult().setHeader(
-							getResult().getHeader()
-									+ XMLUtils.saxTagWithAttrsToString(qname, attrs));
+					addToHeader(XMLUtils.saxTagWithAttrsToString(qname, attrs));
 					return;
 				}
 				if (readingFooter) {
-					getResult().setFooter(
-							getResult().getFooter()
-									+ XMLUtils.saxTagWithAttrsToString(qname, attrs));
+					addToFooter(XMLUtils.saxTagWithAttrsToString(qname, attrs));
 					return;
 				}
 			}
@@ -108,11 +104,11 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 				}
 
 				if (readingHeader) {
-					getResult().setHeader(getResult().getHeader() + "</" + qname + ">");
+					addToHeader("</" + qname + ">");
 					return;
 				}
 				if (readingFooter) {
-					getResult().setFooter(getResult().getFooter() + "</" + qname + ">");
+					addToFooter("</" + qname + ">");
 					return;
 				}
 			}
@@ -120,13 +116,11 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 			@Override
 			public void characters(final char[] arg0, final int arg1, final int arg2) {
 				if (readingHeader) {
-					getResult().setHeader(
-							getResult().getHeader() + String.copyValueOf(arg0, arg1, arg2));
+					addToHeader(String.copyValueOf(arg0, arg1, arg2));
 					return;
 				}
 				if (readingFooter) {
-					getResult().setFooter(
-							getResult().getFooter() + String.copyValueOf(arg0, arg1, arg2));
+					addToFooter(String.copyValueOf(arg0, arg1, arg2));
 					return;
 				}
 				if (addHandler != null) {
@@ -174,4 +168,11 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 		getSource().releaseResources();
 	}
 
+	private void addToHeader(final String data) {
+		getResult().setHeader(getResult().getHeader() + data);
+	}
+
+	private void addToFooter(final String data) {
+		getResult().setFooter(getResult().getFooter() + data);
+	}
 }

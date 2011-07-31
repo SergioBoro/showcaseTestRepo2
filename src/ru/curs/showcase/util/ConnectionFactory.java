@@ -16,8 +16,8 @@ public final class ConnectionFactory {
 	 * сервером через JDBC.
 	 */
 	public static final String CONNECTION_URL_PARAM = "rdbms.connection.url";
-	static final String CONNECTION_USERNAME_PARAM = "rdbms.connection.username";
-	static final String CONNECTION_PASSWORD_PARAM = "rdbms.connection.password";
+	private static final String CONNECTION_USERNAME_PARAM = "rdbms.connection.username";
+	private static final String CONNECTION_PASSWORD_PARAM = "rdbms.connection.password";
 
 	private ConnectionFactory() {
 		throw new UnsupportedOperationException();

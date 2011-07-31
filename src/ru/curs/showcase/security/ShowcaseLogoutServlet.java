@@ -18,7 +18,7 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 	 * LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShowcaseLogoutServlet.class);
-	static final String LOGOUT_INFO = "Сессия %s закрыта";
+	private static final String LOGOUT_INFO = "Сессия %s закрыта";
 	/**
 	 * serialVersionUID.
 	 */

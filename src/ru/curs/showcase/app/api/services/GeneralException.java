@@ -12,17 +12,17 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
  * 
  */
 public class GeneralException extends Exception {
-	static final String EXCEPTION_TRACE = "Основной стек ошибки:";
+	private static final String EXCEPTION_TRACE = "Основной стек ошибки:";
 
-	static final String EXCEPTION_CLASS = "Класс ошибки: ";
+	private static final String EXCEPTION_CLASS = "Класс ошибки: ";
 
-	static final String ORIGINAL_MESSAGE = "Исходное сообщение: ";
+	private static final String ORIGINAL_MESSAGE = "Исходное сообщение: ";
 
-	static final String CONTEXT_MES = "Контекст выполнения: ";
+	private static final String CONTEXT_MES = "Контекст выполнения: ";
 
-	static final String CAUSE_EXC_CAPTION = "Источник ошибки: ";
+	private static final String CAUSE_EXC_CAPTION = "Источник ошибки: ";
 
-	static final String CAUSE_EXC_TRACE_CAPTION = "Стек источника ошибки:";
+	private static final String CAUSE_EXC_TRACE_CAPTION = "Стек источника ошибки:";
 
 	/**
 	 * serialVersionUID.

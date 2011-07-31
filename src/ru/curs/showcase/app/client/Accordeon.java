@@ -443,7 +443,7 @@ public class Accordeon {
 				verpan.clear();
 				verpan.add(accordeon);
 
-				if ((selectionId != "") && (selectionId != null)) {
+				if ((selectionId != null) && (!selectionId.isEmpty())) {
 					selectNesessaryItemInAccordion(selectionId, fireEventSelection);
 				} else {
 					selectNesessaryItemInAccordion(idToSelect, fireEventSelection);

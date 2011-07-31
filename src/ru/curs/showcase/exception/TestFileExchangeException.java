@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.services.ExceptionType;
  */
 public final class TestFileExchangeException extends BaseException {
 
-	static final String ERROR_MES = "Ошибка при чтении тестового файла: ";
+	private static final String ERROR_MES = "Ошибка при чтении тестового файла: ";
 	/**
 	 * serialVersionUID.
 	 */

@@ -114,7 +114,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testXFormsProcLoad() {
 		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData("test1.1.xml");
+		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("08");
@@ -137,7 +137,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testDPProcs() {
 		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData("test1.1.xml");
+		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("09");
@@ -149,11 +149,11 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		assertNull(proc.getSchemaName());
 		proc = el.getProcs().get("proc6");
 		assertEquals(DataPanelElementProcType.DOWNLOAD, proc.getType());
-		assertEquals("test_good.xsl", proc.getTransformName());
+		assertEquals(TEST_GOOD_XSL, proc.getTransformName());
 		assertEquals("test_good_small.xsd", proc.getSchemaName());
 		proc = el.getProcs().get("proc7");
 		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
-		assertEquals("test_good.xsl", proc.getTransformName());
+		assertEquals(TEST_GOOD_XSL, proc.getTransformName());
 		assertEquals("test_good.xsd", proc.getSchemaName());
 		proc = el.getProcs().get("proc8");
 		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
@@ -161,7 +161,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals("test_bad.xsd", proc.getSchemaName());
 		proc = el.getProcs().get("proc9");
 		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
-		assertEquals("test_good.xsl", proc.getTransformName());
+		assertEquals(TEST_GOOD_XSL, proc.getTransformName());
 		assertNull(proc.getSchemaName());
 	}
 
@@ -205,7 +205,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testMetadataProc() {
 		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData("test1.1.xml");
+		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("2");

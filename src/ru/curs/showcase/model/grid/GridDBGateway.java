@@ -16,10 +16,9 @@ import ru.curs.showcase.model.*;
  * 
  */
 public class GridDBGateway extends CompBasedElementSPCallHelper implements GridGateway {
-	static final String FIRST_RECORD_TAG = "firstrecord";
-	protected static final String SORT_COLUMNNAME = "sortcols";
-	public static final String OUTPUT_COLUMNNAME = "gridsettings";
-	static final int DATA_ONLY_IND = 1;
+	private static final String SORT_COLUMNNAME = "sortcols";
+	private static final String OUTPUT_COLUMNNAME = "gridsettings";
+	private static final int DATA_ONLY_IND = 1;
 
 	public GridDBGateway() {
 		super();

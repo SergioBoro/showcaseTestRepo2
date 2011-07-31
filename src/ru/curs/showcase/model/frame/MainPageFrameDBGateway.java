@@ -14,7 +14,7 @@ import ru.curs.showcase.model.SPCallHelper;
  */
 public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFrameGateway {
 
-	protected static final String FRAME_DATA_TAG = "framedata";
+	private static final String FRAME_DATA_TAG = "framedata";
 
 	@Override
 	public String getRawData(final CompositeContext context, final String frameSource) {

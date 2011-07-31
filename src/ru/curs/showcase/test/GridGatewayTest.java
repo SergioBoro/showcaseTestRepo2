@@ -77,7 +77,7 @@ public class GridGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testGetDataOnly() throws SQLException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "2");
+		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", "2");
 		Connection conn = ConnectionFactory.getConnection();
 		try {
 			GridGateway gateway = new GridDBGateway(conn);
@@ -98,7 +98,7 @@ public class GridGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testGetDataOnlyV2() throws SQLException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elInfo = getDPElement("test1.1.xml", "2", "2");
+		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "2", "2");
 		GridGateway gateway = new GridDBGateway();
 		GridRequestedSettings settings = new GridRequestedSettings();
 		ElementRawData res = gateway.getRawData(context, elInfo, settings);
@@ -122,7 +122,7 @@ public class GridGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testGetSettingsOnly() throws SQLException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elInfo = getDPElement("test1.1.xml", "2", "2");
+		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "2", "2");
 		ElementSettingsGateway gateway = new ElementSettingsDBGateway();
 		ElementRawData res = gateway.getRawData(context, elInfo);
 

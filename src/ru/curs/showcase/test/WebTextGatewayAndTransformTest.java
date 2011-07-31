@@ -28,7 +28,7 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testGetData() throws GeneralException {
 		CompositeContext context = getTestContext2();
-		DataPanelElementInfo element = getDPElement("test2.xml", "1", "1");
+		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "1");
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		WebText wt = serviceLayer.getWebText(context, element);
@@ -46,7 +46,7 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testEventsAndDefAction() throws GeneralException {
 		CompositeContext context = getTestContext2();
-		DataPanelElementInfo element = getDPElement("test2.xml", "1", "3");
+		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "3");
 		CompositeContext clonedContext = context.gwtClone();
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -101,7 +101,7 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 	public void testGetStaticDataBySP() {
 		String prefix = "<root>";
 		CompositeContext context = getTestContext2();
-		DataPanelElementInfo element = getDPElement("test2.xml", "1", "2");
+		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "2");
 
 		WebTextGateway wtgateway = new WebTextDBGateway();
 		HTMLBasedElementRawData rawWT = wtgateway.getRawData(context, element);

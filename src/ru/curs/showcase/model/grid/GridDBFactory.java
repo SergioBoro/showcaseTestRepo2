@@ -20,6 +20,7 @@ import ru.curs.showcase.util.*;
  * 
  */
 public class GridDBFactory extends AbstractGridFactory {
+	private static final String DEF_DATE_VALUES_FORMAT = "def.date.values.format";
 	/**
 	 * Не локальная Locale по умолчанию :) Используется для передачи данных в
 	 * приложение, которые плохо обрабатывают текущую Locale.

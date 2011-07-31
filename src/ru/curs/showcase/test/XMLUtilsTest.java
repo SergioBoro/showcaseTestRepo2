@@ -21,10 +21,12 @@ import ru.curs.showcase.util.*;
  */
 public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
-	static final String TEST_TEXT_SAMPLE_XML = "TestTextSample.xml";
-	static final String TEST_GOOD_XSL = "test_good.xsl";
-	static final String TEST_STR2 = "учреждениях";
-	static final String TEST_STR1 = ">II. Индикаторы задач проекта</td>";
+	private static final String TEST_GOOD_XSD = "test_good.xsd";
+	private static final String TEST_BAD_XSD = "test_bad.xsd";
+	private static final String TEST_TEXT_SAMPLE_XML = "TestTextSample.xml";
+	private static final String TEST_GOOD_XSL = "test_good.xsl";
+	private static final String TEST_STR2 = "учреждениях";
+	private static final String TEST_STR1 = ">II. Индикаторы задач проекта</td>";
 
 	/**
 	 * Получает выходной SQLXML по входному.
@@ -170,12 +172,9 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 			XMLUtils.xsltTransform(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML),
 					xsltFileName);
 
-		// System.out.println(out);
-
 		assertTrue(out.indexOf(TEST_STR1) > -1);
 
 		assertTrue(out.indexOf(TEST_STR2) > -1);
-
 	}
 
 	/**
@@ -214,7 +213,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 		org.w3c.dom.Document doc =
 			db.parse(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML));
 
-		String xsdFileName = "test_good.xsd";
+		String xsdFileName = TEST_GOOD_XSD;
 
 		XMLUtils.xsdValidateUserData(doc, xsdFileName);
 
@@ -230,7 +229,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 		org.w3c.dom.Document doc =
 			db.parse(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML));
 
-		String xsdFileName = "test_bad.xsd";
+		String xsdFileName = TEST_BAD_XSD;
 
 		XMLUtils.xsdValidateUserData(doc, xsdFileName);
 
@@ -243,7 +242,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 	public final void test13ValidateXSD() {
 		SAXParser saxParser = XMLUtils.createSAXParser();
 
-		String xsdFileName = "test_good.xsd";
+		String xsdFileName = TEST_GOOD_XSD;
 
 		XMLUtils.xsdValidateUserData(saxParser,
 				XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML), xsdFileName);
@@ -257,7 +256,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 	public final void test14ValidateXSD() {
 		SAXParser saxParser = XMLUtils.createSAXParser();
 
-		String xsdFileName = "test_bad.xsd";
+		String xsdFileName = TEST_BAD_XSD;
 
 		XMLUtils.xsdValidateUserData(saxParser,
 				XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML), xsdFileName);
@@ -269,7 +268,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 	@Test
 	public final void test15ValidateXSD() {
 
-		String xsdFileName = "test_good.xsd";
+		String xsdFileName = TEST_GOOD_XSD;
 
 		XMLUtils.xsdValidateUserData(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML),
 				xsdFileName);
@@ -282,7 +281,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 	@Test(expected = XSDValidateException.class)
 	public final void test16ValidateXSD() {
 
-		String xsdFileName = "test_bad.xsd";
+		String xsdFileName = TEST_BAD_XSD;
 
 		XMLUtils.xsdValidateUserData(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML),
 				xsdFileName);

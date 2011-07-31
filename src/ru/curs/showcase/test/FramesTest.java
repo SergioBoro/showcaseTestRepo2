@@ -17,11 +17,13 @@ import ru.curs.showcase.model.frame.MainPageFrameType;
  * 
  */
 public final class FramesTest extends AbstractTestBasedOnFiles {
-	static final String HEADER_CODE = "<h1 align=\"center\">Заголовок из БД</h1>";
-	static final String WELCOME_CODE = "<h1 align=\"center\">Компания КУРС представляет</h1>";
-	static final String USERDATA_TEST1 = "test1";
-	static final String FOOTER_CODE = "<h1 align=\"center\">Подвал из БД для " + USERDATA_TEST1
-			+ "</h1>";
+	private static final String HTML_HEAD_BODY_BEGIN = "<html><head/><body>";
+	private static final String BODY_HTML_ENDS = "</body></html>";
+	private static final String HEADER_CODE = "<h1 align=\"center\">Заголовок из БД</h1>";
+	private static final String WELCOME_CODE =
+		"<h1 align=\"center\">Компания КУРС представляет</h1>";
+	private static final String FOOTER_CODE = "<h1 align=\"center\">Подвал из БД для "
+			+ TEST1_USERDATA + "</h1>";
 
 	/**
 	 * Тест получения файла фрейма.
@@ -30,7 +32,7 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testGetFramesInMainPage() throws GeneralException {
-		CompositeContext context = new CompositeContext(generateTestURLParams(USERDATA_TEST1));
+		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		MainPage page = sl.getMainPage(context);
 
@@ -46,10 +48,10 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testGetFileFrameWelcomeAsFrame() throws GeneralException {
-		CompositeContext context = new CompositeContext(generateTestURLParams(USERDATA_TEST1));
+		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		String html = sl.getMainPageFrame(context, MainPageFrameType.WELCOME);
-		assertTrue(html.endsWith(WELCOME_CODE + "</body></html>"));
+		assertTrue(html.endsWith(WELCOME_CODE + BODY_HTML_ENDS));
 	}
 
 	/**
@@ -59,10 +61,10 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testGetDBFrameHeaderAsFrame() throws GeneralException {
-		CompositeContext context = new CompositeContext(generateTestURLParams(USERDATA_TEST1));
+		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		String html = sl.getMainPageFrame(context, MainPageFrameType.HEADER);
-		assertEquals("<html><head/><body>" + HEADER_CODE + "</body></html>", html);
+		assertEquals(HTML_HEAD_BODY_BEGIN + HEADER_CODE + BODY_HTML_ENDS, html);
 	}
 
 	/**
@@ -72,9 +74,9 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testGetDBFrameFooterAsFrame() throws GeneralException {
-		CompositeContext context = new CompositeContext(generateTestURLParams(USERDATA_TEST1));
+		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		String html = sl.getMainPageFrame(context, MainPageFrameType.FOOTER);
-		assertEquals("<html><head/><body>" + FOOTER_CODE + "</body></html>", html);
+		assertEquals(HTML_HEAD_BODY_BEGIN + FOOTER_CODE + BODY_HTML_ENDS, html);
 	}
 }

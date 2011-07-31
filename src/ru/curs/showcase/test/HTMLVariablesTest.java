@@ -31,7 +31,7 @@ public class HTMLVariablesTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testFramesVariables() throws GeneralException {
-		CompositeContext context = new CompositeContext(generateTestURLParams("test1"));
+		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		MainPage page = sl.getMainPage(context);
 
@@ -57,7 +57,7 @@ public class HTMLVariablesTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testXFormsVariables() throws Exception {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement("test1.1.xml", "2", "07");
+		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", "07");
 
 		XFormsGateway gateway = new XFormsFileGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);

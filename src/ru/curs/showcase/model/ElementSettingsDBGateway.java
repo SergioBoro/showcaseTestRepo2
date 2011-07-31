@@ -14,7 +14,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 public class ElementSettingsDBGateway extends ElementSPCallHelper implements
 		ElementSettingsGateway {
 
-	protected static final String SETTINGS_COL_NAME = "settings";
+	private static final String SETTINGS_COL_NAME = "settings";
 
 	@Override
 	public ElementRawData getRawData(final CompositeContext context,

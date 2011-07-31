@@ -17,12 +17,12 @@ import ru.curs.showcase.util.StreamConvertor;
  */
 public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFormsGateway {
 	public static final String OUTPUT_COLUMNNAME = "xformssettings";
-	static final String OUTPUTDATA_PARAM = "outputdata";
-	static final String INPUTDATA_PARAM = "inputdata";
-	static final String XFORMSDATA_PARAM = "xformsdata";
-	static final int SAVE_TEMPLATE_IND = 1;
-	static final int SUBMISSION_TEMPLATE_IND = 2;
-	static final int FILE_TEMPLATE_IND = 3;
+	private static final String OUTPUTDATA_PARAM = "outputdata";
+	private static final String INPUTDATA_PARAM = "inputdata";
+	private static final String XFORMSDATA_PARAM = "xformsdata";
+	private static final int SAVE_TEMPLATE_IND = 1;
+	private static final int SUBMISSION_TEMPLATE_IND = 2;
+	private static final int FILE_TEMPLATE_IND = 3;
 
 	@Override
 	public HTMLBasedElementRawData getRawData(final CompositeContext context,

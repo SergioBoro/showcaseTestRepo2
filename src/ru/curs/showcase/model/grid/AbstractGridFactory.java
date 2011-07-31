@@ -19,33 +19,32 @@ import ru.curs.showcase.model.*;
 public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	public static final String GRID_DEFAULT_PROFILE = "default.properties";
 
-	protected static final String DEF_COL_HOR_ALIGN = "def.column.hor.align";
-	protected static final String DEF_COL_VALUE_DISPLAY_MODE = "def.column.value.display.mode";
-	protected static final String DEF_COL_WIDTH = "def.column.width";
-	protected static final String DEF_VAL_FONT_COLOR = "def.value.font.color";
-	protected static final String DEF_VAL_BG_COLOR = "def.value.bg.color";
-	protected static final String DEF_VAL_FONT_SIZE = "def.value.font.size";
-	protected static final String DEF_VAL_FONT_BOLD = "def.value.font.bold";
-	protected static final String DEF_VAL_FONT_IT = "def.value.font.italic";
-	protected static final String DEF_VAL_FONT_UL = "def.value.font.underline";
-	protected static final String DEF_VAL_FONT_ST = "def.value.font.strikethrough";
-	protected static final String DEF_STR_COL_HOR_ALIGN = "def.str.column.hor.align";
-	protected static final String DEF_NUM_COL_HOR_ALIGN = "def.num.column.hor.align";
-	protected static final String DEF_DATE_COL_HOR_ALIGN = "def.date.column.hor.align";
-	protected static final String DEF_IMAGE_COL_HOR_ALIGN = "def.image.column.hor.align";
-	protected static final String DEF_LINK_COL_HOR_ALIGN = "def.link.column.hor.align";
-	protected static final String DEF_DATE_VALUES_FORMAT = "def.date.values.format";
+	private static final String DEF_COL_HOR_ALIGN = "def.column.hor.align";
+	private static final String DEF_COL_VALUE_DISPLAY_MODE = "def.column.value.display.mode";
+	private static final String DEF_COL_WIDTH = "def.column.width";
+	private static final String DEF_VAL_FONT_COLOR = "def.value.font.color";
+	private static final String DEF_VAL_BG_COLOR = "def.value.bg.color";
+	private static final String DEF_VAL_FONT_SIZE = "def.value.font.size";
+	private static final String DEF_VAL_FONT_BOLD = "def.value.font.bold";
+	private static final String DEF_VAL_FONT_IT = "def.value.font.italic";
+	private static final String DEF_VAL_FONT_UL = "def.value.font.underline";
+	private static final String DEF_VAL_FONT_ST = "def.value.font.strikethrough";
+	private static final String DEF_STR_COL_HOR_ALIGN = "def.str.column.hor.align";
+	private static final String DEF_NUM_COL_HOR_ALIGN = "def.num.column.hor.align";
+	private static final String DEF_DATE_COL_HOR_ALIGN = "def.date.column.hor.align";
+	private static final String DEF_IMAGE_COL_HOR_ALIGN = "def.image.column.hor.align";
+	private static final String DEF_LINK_COL_HOR_ALIGN = "def.link.column.hor.align";
 
-	protected static final String RELATIVE_NUMBER_TOO_BIG_ERROR =
+	private static final String RELATIVE_NUMBER_TOO_BIG_ERROR =
 		"относительный autoSelectRecordId = %d выходит за пределы страницы (%d записей)";
-	protected static final String XML_ERROR_MES = "настройки грида";
-	protected static final String COL_SETTINGS_TAG = "col";
+	private static final String XML_ERROR_MES = "настройки грида";
+	private static final String COL_SETTINGS_TAG = "col";
 
-	protected static final String AUTO_SELECT_REC_TAG = "autoSelectRecordId";
-	protected static final String AUTO_SELECT_COL_TAG = "autoSelectColumnId";
-	protected static final String AUTO_SELECT_RELATIVE = "autoSelectRelativeRecord";
-	protected static final String PRECISION_TAG = "precision";
-	protected static final String PROFILE_TAG = "profile";
+	private static final String AUTO_SELECT_REC_TAG = "autoSelectRecordId";
+	private static final String AUTO_SELECT_COL_TAG = "autoSelectColumnId";
+	private static final String AUTO_SELECT_RELATIVE = "autoSelectRelativeRecord";
+	private static final String PRECISION_TAG = "precision";
+	private static final String PROFILE_TAG = "profile";
 
 	/**
 	 * Профайл грида.

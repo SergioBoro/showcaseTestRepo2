@@ -16,21 +16,21 @@ import ru.curs.showcase.util.*;
  * 
  */
 public final class GeoMapDBFactory extends AbstractGeoMapFactory {
-	static final String CODE_TAG = "Code";
-	static final String IS_MAIN_TAG = "IsMain";
-	static final String TOOLTIP_COL = "Tooltip";
-	static final String WRONG_LAYER_ERROR =
+	private static final String CODE_TAG = "Code";
+	private static final String IS_MAIN_TAG = "IsMain";
+	private static final String TOOLTIP_COL = "Tooltip";
+	private static final String WRONG_LAYER_ERROR =
 		"В переданных данных найден объект, ссылающийся на несуществующий слой";
-	static final String NO_IND_VALUES_TABLE_ERROR =
+	private static final String NO_IND_VALUES_TABLE_ERROR =
 		"Не передана таблица со значениями показателей для объектов на карте";
-	static final String NO_POINTS_TABLE_ERROR = "Не передана таблица с точками для карты";
-	static final String WRONG_OBJ_ERROR =
+	private static final String NO_POINTS_TABLE_ERROR = "Не передана таблица с точками для карты";
+	private static final String WRONG_OBJ_ERROR =
 		"В переданных данных найдено значение показателя, ссылающееся на несуществующий объект";
-	static final String INDICATOR_ID = "IndicatorID";
-	static final String POLYGON_TO_POINT_LAYER_ERROR =
+	private static final String INDICATOR_ID = "IndicatorID";
+	private static final String POLYGON_TO_POINT_LAYER_ERROR =
 		"В слой типа 'точки' нельзя добавлять области";
 
-	static final String POINT_TO_POLYGON_LAYER_ERROR =
+	private static final String POINT_TO_POLYGON_LAYER_ERROR =
 		"В слой типа 'области' нельзя добавлять точки";
 
 	/**

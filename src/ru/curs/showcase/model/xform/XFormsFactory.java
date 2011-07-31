@@ -20,7 +20,8 @@ import ru.curs.showcase.util.*;
  * 
  */
 public final class XFormsFactory extends HTMLBasedElementFactory {
-	static final String XFORMS_CREATE_ERROR = "Ошибка при формировании XForms для элемента '%s'";
+	private static final String XFORMS_CREATE_ERROR =
+		"Ошибка при формировании XForms для элемента '%s'";
 
 	/**
 	 * Результат работы фабрики.

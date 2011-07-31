@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.services.ExceptionType;
  */
 public class SPNotExistsException extends BaseException {
 
-	static final String ERROR_MES = "Процедура '%s' отсутствует в БД";
+	private static final String ERROR_MES = "Процедура '%s' отсутствует в БД";
 	/**
 	 * serialVersionUID.
 	 */
