@@ -217,7 +217,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 	}
 
 	private void checkForDefaultAction() {
-		if ((webText.getActionForDependentElements() != null)) {
+		if (webText.getActionForDependentElements() != null) {
 			AppCurrContext.getInstance().setCurrentAction(webText.getActionForDependentElements());
 			ActionExecuter.execAction();
 		}

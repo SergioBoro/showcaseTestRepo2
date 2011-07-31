@@ -23,8 +23,7 @@ public final class GeneralServerExceptionFactory {
 	 *            - оригинальное исключение.
 	 */
 	public static GeneralException build(final Throwable original) {
-		GeneralException res =
-			new GeneralException(original, getUserMessage(original));
+		GeneralException res = new GeneralException(original, getUserMessage(original));
 		res.setOriginalExceptionClass(original.getClass().getName());
 		res.setOriginalTrace(GeneralException.getStackText(original));
 		res.setOriginalMessage(getOriginalMessage(original));
@@ -36,8 +35,9 @@ public final class GeneralServerExceptionFactory {
 	}
 
 	private static Boolean getNeedDatailedInfo(final Throwable e) {
-		return ((e.getClass() != NoSuchUserDataException.class)
-				&& (e.getClass() != SPNotExistsException.class) && (e.getClass() != ValidateInDBException.class));
+		return (e.getClass() != NoSuchUserDataException.class)
+				&& (e.getClass() != SPNotExistsException.class)
+				&& (e.getClass() != ValidateInDBException.class);
 	}
 
 	private static MessageType getMessageType(final Throwable exc) {

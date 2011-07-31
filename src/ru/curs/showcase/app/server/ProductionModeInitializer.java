@@ -199,7 +199,7 @@ public final class ProductionModeInitializer {
 						&& copyUserDataDir(arg0, userDataCatalog, dirsForCopy[i], userdataId);
 		}
 
-		if (!(isAllFilesCopied)) {
+		if (!isAllFilesCopied) {
 			LOGGER.error(NOT_ALL_FILES_COPIED_ERROR);
 		}
 	}

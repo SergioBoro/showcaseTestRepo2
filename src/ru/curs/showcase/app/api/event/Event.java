@@ -102,7 +102,7 @@ public class Event implements SerializableElement {
 	 * строка в гриде).
 	 */
 	public boolean isGeneral() {
-		return (id2 == null);
+		return id2 == null;
 	}
 
 	public Event() {

@@ -273,8 +273,7 @@ public final class XFormPanelCallbacksEvents {
 
 		final SelectorParam param = (SelectorParam) o;
 
-		XFormPanel currentXFormPanel =
-			((XFormPanel) ActionExecuter.getElementPanelById(param.id()));
+		XFormPanel currentXFormPanel = (XFormPanel) ActionExecuter.getElementPanelById(param.id());
 
 		if (currentXFormPanel != null) {
 
@@ -418,7 +417,7 @@ public final class XFormPanelCallbacksEvents {
 	 */
 	public static XFormPanel getCurrentPanel(final String xformId) {
 		if (testXFormPanel == null) {
-			return ((XFormPanel) ActionExecuter.getElementPanelById(xformId));
+			return (XFormPanel) ActionExecuter.getElementPanelById(xformId);
 		} else {
 			return testXFormPanel;
 		}

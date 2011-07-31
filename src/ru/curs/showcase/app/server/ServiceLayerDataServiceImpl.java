@@ -473,7 +473,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 				@Override
 				public boolean shouldSkipField(final FieldAttributes fa) {
-					return (fa.getAnnotation(ExcludeFromSerialization.class) != null);
+					return fa.getAnnotation(ExcludeFromSerialization.class) != null;
 				}
 			};
 			Gson gson =

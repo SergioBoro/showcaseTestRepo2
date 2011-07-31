@@ -32,7 +32,7 @@ public class SessionInfoFilter implements Filter {
 	public void doFilter(final ServletRequest req, final ServletResponse resp,
 			final FilterChain chain) throws IOException, ServletException {
 		if (req instanceof HttpServletRequest) {
-			HttpServletRequest httpreq = ((HttpServletRequest) req);
+			HttpServletRequest httpreq = (HttpServletRequest) req;
 			if (isMainPage(httpreq)) {
 				initSession(httpreq); // TODO нужно ли
 				// if (needRedirect(httpreq)) {
@@ -65,7 +65,7 @@ public class SessionInfoFilter implements Filter {
 	}
 
 	private void skipServletCaching(final ServletResponse resp) {
-		HttpServletResponse httpresp = ((HttpServletResponse) resp);
+		HttpServletResponse httpresp = (HttpServletResponse) resp;
 		ServletUtils.doNoCasheResponse(httpresp);
 	}
 

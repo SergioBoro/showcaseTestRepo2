@@ -137,8 +137,8 @@ public class GeneralDataPanel {
 	public static void selectTab(final DataPanelTab actDpt) {
 		for (int i = 0; i < getTabPanel().getWidgetCount(); i++) {
 			if (actDpt.getId().equals(
-					(AppCurrContext.getInstance().getUiDataPanel().get(i)
-							.getDataPanelTabMetaData().getId()))) {
+					AppCurrContext.getInstance().getUiDataPanel().get(i).getDataPanelTabMetaData()
+							.getId())) {
 				getTabPanel().selectTab(i, true);
 				break;
 			}
@@ -172,7 +172,7 @@ public class GeneralDataPanel {
 		XFormPanel.destroyXForms(); // Важно !!!!
 
 		// очистка текущей вкладки полностью
-		SimplePanel vp = ((SimplePanel) getTabPanel().getWidget(tabIndex));
+		SimplePanel vp = (SimplePanel) getTabPanel().getWidget(tabIndex);
 		vp.clear();
 
 		ScrollPanel sp = new ScrollPanel();

@@ -96,8 +96,8 @@ public final class XFormTestsCommon {
 		ac.setKeepUserSettings(true);
 		HTMLEvent ev = new HTMLEvent();
 		ev.setAction(ac);
-		(ev).setLinkId("1");
-		(ev).setInteractionType(InteractionType.SINGLE_CLICK);
+		ev.setLinkId("1");
+		ev.setInteractionType(InteractionType.SINGLE_CLICK);
 		xform.getEventManager().setEvents(Arrays.asList(ev));
 
 		return xform;

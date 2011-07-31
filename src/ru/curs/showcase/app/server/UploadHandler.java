@@ -67,9 +67,9 @@ public final class UploadHandler extends AbstractFilesHandler {
 				if ("data".equals(name)) {
 					data = paramValue;
 				} else if (CompositeContext.class.getName().equals(name)) {
-					setContext(((CompositeContext) deserializeObject(paramValue)));
+					setContext((CompositeContext) deserializeObject(paramValue));
 				} else if (DataPanelElementInfo.class.getName().equals(name)) {
-					setElementInfo(((DataPanelElementInfo) deserializeObject(paramValue)));
+					setElementInfo((DataPanelElementInfo) deserializeObject(paramValue));
 				}
 			} else {
 				String fileName = item.getName();

@@ -137,7 +137,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 * @return результат проверки.
 	 */
 	public Boolean isCorrect() {
-		Boolean baseCheckRes = (id != null);
+		Boolean baseCheckRes = id != null;
 		switch (type) {
 		case WEBTEXT:
 			return baseCheckRes && ((procName != null) || (transformName != null));

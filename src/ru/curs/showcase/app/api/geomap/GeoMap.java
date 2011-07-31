@@ -68,6 +68,6 @@ public final class GeoMap extends DataPanelElementWithLegend {
 	 * до сериализации карты в JSON, например из фабрики.
 	 */
 	public void determineAutoSize() {
-		autoSize = ((javaDynamicData.getHeight() == null) && (javaDynamicData.getWidth() == null));
+		autoSize = (javaDynamicData.getHeight() == null) && (javaDynamicData.getWidth() == null);
 	}
 }

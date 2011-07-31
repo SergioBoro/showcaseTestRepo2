@@ -80,7 +80,7 @@ public class UTF8Checker {
 			char testCh = str.charAt(i);
 
 			for (char j : signs) {
-				if ((testCh == j)) {
+				if (testCh == j) {
 					founded++;
 					break;
 				}

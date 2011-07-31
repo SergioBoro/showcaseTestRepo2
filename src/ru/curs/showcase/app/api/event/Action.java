@@ -390,7 +390,7 @@ public class Action implements SerializableElement, GWTClonable {
 	 * @return - результат проверки.
 	 */
 	public boolean isFiltered() {
-		return (context.getFilter() != null);
+		return context.getFilter() != null;
 	}
 
 	/**

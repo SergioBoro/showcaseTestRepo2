@@ -66,7 +66,7 @@ public final class SQLUtils {
 	 * @return - результат проверки.
 	 */
 	public static boolean isDateType(final int aSqlType) {
-		return (aSqlType == Types.DATE);
+		return aSqlType == Types.DATE;
 	}
 
 	/**
@@ -77,7 +77,7 @@ public final class SQLUtils {
 	 * @return - результат проверки.
 	 */
 	public static boolean isTimeType(final int aSqlType) {
-		return (aSqlType == Types.TIME);
+		return aSqlType == Types.TIME;
 	}
 
 	/**
@@ -88,7 +88,7 @@ public final class SQLUtils {
 	 * @return - результат проверки.
 	 */
 	public static boolean isDateTimeType(final int aSqlType) {
-		return (aSqlType == Types.TIMESTAMP);
+		return aSqlType == Types.TIMESTAMP;
 	}
 
 	/**
