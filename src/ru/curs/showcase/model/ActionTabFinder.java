@@ -1,4 +1,4 @@
-package ru.curs.showcase.model.event;
+package ru.curs.showcase.model;
 
 import ru.curs.showcase.app.api.CanBeCurrent;
 import ru.curs.showcase.app.api.event.DataPanelLink;

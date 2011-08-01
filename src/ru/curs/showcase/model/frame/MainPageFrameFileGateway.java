@@ -13,7 +13,7 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-public class FileMainPageFrameGateway implements MainPageFrameGateway {
+public class MainPageFrameFileGateway implements MainPageFrameGateway {
 
 	@Override
 	public String getRawData(final CompositeContext context, final String frameSource) {

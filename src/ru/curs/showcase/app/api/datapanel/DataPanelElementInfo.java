@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.*;
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.services.AppLogicError;
 
 /**
  * Класс с описанием элемента информационной панели. Примечание: свойство

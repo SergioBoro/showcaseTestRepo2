@@ -1,4 +1,4 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.event;
 
 import javax.xml.parsers.SAXParser;
 
@@ -7,7 +7,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.Action;
-import ru.curs.showcase.model.event.ActionFactory;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.util.XMLUtils;
 
 /**

@@ -8,6 +8,7 @@ import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.exception.InconsistentSettingsFromDBException;
 import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.event.CompBasedElementFactory;
 
 /**
  * Базовый класс построителя грида. Содержит функции считывания динамических и

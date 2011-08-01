@@ -1,4 +1,4 @@
-package ru.curs.showcase.app.api.services;
+package ru.curs.showcase.app.api;
 
 /**
  * Ошибка в логике приложения. Суть ошибки должна быть передана в виде сообщения
