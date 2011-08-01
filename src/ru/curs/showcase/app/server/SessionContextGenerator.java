@@ -7,7 +7,6 @@ import java.util.*;
 import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.model.GeneralXMLHelper;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.XMLUtils;
 
@@ -41,8 +40,9 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 	 *            - параметры.
 	 * @throws UnsupportedEncodingException
 	 */
-	static String generate(final String sessionId, final Map<String, ArrayList<String>> aMap)
-			throws UnsupportedEncodingException {
+	public static String
+			generate(final String sessionId, final Map<String, ArrayList<String>> aMap)
+					throws UnsupportedEncodingException {
 		Document info =
 			XMLUtils.createBuilder().getDOMImplementation()
 					.createDocument("", SESSION_CONTEXT_TAG, null);

@@ -9,7 +9,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.model.*;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.*;
 
 /**
  * Фабрика для создания информационных панелей.
@@ -128,8 +128,7 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 	 */
 	public void procSTARTTAGHandler(final Attributes attrs) {
 		DataPanelElementProc proc = new DataPanelElementProc();
-		proc.setId(attrs.getValue(ID_TAG));
-		proc.setName(attrs.getValue(NAME_TAG));
+		setupBaseProps(proc, attrs);
 		proc.setType(DataPanelElementProcType.valueOf(attrs.getValue(TYPE_TAG)));
 		if (attrs.getIndex(TRANSFORM_ATTR_NAME) > -1) {
 			proc.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));

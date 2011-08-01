@@ -1,7 +1,7 @@
 package ru.curs.showcase.model.grid;
 
 import ru.curs.gwt.datagrid.model.DataGridSettings;
-import ru.curs.showcase.app.server.AppInfoSingleton;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
  * Стиль по умолчанию.

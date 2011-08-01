@@ -11,6 +11,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.exception.TestFileExchangeException;
 import ru.curs.showcase.model.*;
+import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
 
 /**

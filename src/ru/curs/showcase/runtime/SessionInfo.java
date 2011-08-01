@@ -1,4 +1,4 @@
-package ru.curs.showcase.app.server;
+package ru.curs.showcase.runtime;
 
 /**
  * Информация о сессии пользователя.

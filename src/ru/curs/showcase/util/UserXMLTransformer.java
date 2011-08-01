@@ -9,7 +9,6 @@ import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementProc;
 import ru.curs.showcase.exception.NotXMLException;
-import ru.curs.showcase.model.DataFile;
 
 /**
  * Класс для трансформации пользовательских XML c проверкой схемы.

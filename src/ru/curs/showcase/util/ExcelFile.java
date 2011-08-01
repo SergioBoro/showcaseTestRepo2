@@ -1,6 +1,8 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.util;
 
 import java.io.ByteArrayOutputStream;
+
+
 
 /**
  * Класс файла Excel. Включает содержимое файла и его имя.

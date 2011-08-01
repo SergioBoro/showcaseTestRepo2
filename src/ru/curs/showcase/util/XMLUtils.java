@@ -17,7 +17,7 @@ import org.w3c.dom.*;
 import org.xml.sax.*;
 
 import ru.curs.showcase.exception.*;
-import ru.curs.showcase.model.DataFile;
+import ru.curs.showcase.runtime.AppProps;
 
 /**
  * Реализует обработку XML (в частности, выполнение XSLT-преобразования).

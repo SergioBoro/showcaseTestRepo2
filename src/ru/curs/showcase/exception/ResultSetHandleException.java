@@ -1,8 +1,8 @@
 package ru.curs.showcase.exception;
 
+import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.ExceptionType;
 
 /**
  * Ошибка при работе с полученным из БД ResultSet. Может быть вызвана потерей

@@ -4,8 +4,7 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 
 import ru.curs.showcase.exception.*;
-import ru.curs.showcase.model.SettingsFileType;
-import ru.curs.showcase.util.AppProps;
+import ru.curs.showcase.runtime.AppProps;
 
 /**
  * Получает настройки грида из профайла.

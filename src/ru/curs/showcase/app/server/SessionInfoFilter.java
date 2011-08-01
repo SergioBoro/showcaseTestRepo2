@@ -6,6 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
  * Фильтр для считывание из URL параметров сессии.

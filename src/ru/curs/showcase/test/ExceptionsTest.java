@@ -9,7 +9,7 @@ import java.util.*;
 import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.*;
-import ru.curs.showcase.app.api.MessageType;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.GridRequestedSettings;
@@ -21,6 +21,7 @@ import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.model.webtext.*;
+import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.XMLUtils;
 

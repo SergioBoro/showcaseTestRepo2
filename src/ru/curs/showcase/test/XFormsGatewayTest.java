@@ -16,6 +16,7 @@ import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.xform.*;
+import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
 
 /**

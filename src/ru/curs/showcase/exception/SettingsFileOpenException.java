@@ -1,7 +1,6 @@
 package ru.curs.showcase.exception;
 
-import ru.curs.showcase.app.api.services.ExceptionType;
-import ru.curs.showcase.model.SettingsFileType;
+import ru.curs.showcase.app.api.ExceptionType;
 
 /**
  * Исключение при чтении файла с настройками приложения.

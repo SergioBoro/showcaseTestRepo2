@@ -9,8 +9,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.api.services.ExceptionType;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
 
 /**
@@ -155,8 +154,8 @@ public final class ValidateInDBException extends BaseException {
 	}
 
 	/**
-	 * Функция проверки на то, что полученное из БД исключение является
-	 * "предопределенным" создателями решения.
+	 * Функция проверки на то, что полученное из БД исключение предусмотрено
+	 * создателями решения.
 	 * 
 	 * @param exc
 	 *            - исключение.

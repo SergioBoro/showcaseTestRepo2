@@ -2,8 +2,8 @@ package ru.curs.showcase.exception;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
-import ru.curs.showcase.app.api.services.ExceptionType;
 
 /**
  * Базовый класс серверных исключений Showcase. Наследуется от RuntimeException,

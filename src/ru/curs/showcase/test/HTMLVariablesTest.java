@@ -13,7 +13,7 @@ import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.xform.*;
-import ru.curs.showcase.util.AppProps;
+import ru.curs.showcase.runtime.*;
 
 /**
  * Специальный тестовый класс для проверки замены переменных в HTML блоках в

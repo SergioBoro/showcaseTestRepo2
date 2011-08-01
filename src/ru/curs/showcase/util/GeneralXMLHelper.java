@@ -1,4 +1,4 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.util;
 
 import org.xml.sax.Attributes;
 

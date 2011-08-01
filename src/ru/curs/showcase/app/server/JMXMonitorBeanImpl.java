@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.management.*;
 
+import ru.curs.showcase.runtime.AppInfoSingleton;
+
 /**
  * Реализация интерфейса для мониторинга состояния Showcase.
  * 

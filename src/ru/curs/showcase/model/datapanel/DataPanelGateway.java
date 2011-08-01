@@ -2,7 +2,7 @@ package ru.curs.showcase.model.datapanel;
 
 import java.io.InputStream;
 
-import ru.curs.showcase.model.DataFile;
+import ru.curs.showcase.util.DataFile;
 
 /**
  * Интерфейс шлюза для загрузки информации об информационных панелях.

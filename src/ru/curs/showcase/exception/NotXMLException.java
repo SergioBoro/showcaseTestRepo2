@@ -2,7 +2,7 @@ package ru.curs.showcase.exception;
 
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.app.api.services.ExceptionType;
+import ru.curs.showcase.app.api.ExceptionType;
 
 /**
  * Исключение, генерируемое в случае, когда вместо XML файла на сервер приходят

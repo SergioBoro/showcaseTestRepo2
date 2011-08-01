@@ -11,9 +11,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.GeneralXMLHelper;
 import ru.curs.showcase.model.navigator.*;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.*;
 
 /**
  * Класс тестов для шлюза навигатора.

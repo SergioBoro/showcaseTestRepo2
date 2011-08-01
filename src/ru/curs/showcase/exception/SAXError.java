@@ -1,6 +1,6 @@
 package ru.curs.showcase.exception;
 
-import ru.curs.showcase.app.api.services.ExceptionType;
+import ru.curs.showcase.app.api.ExceptionType;
 
 /**
  * Специальный класс ошибки для передачи наверх любого исключения в обработчике

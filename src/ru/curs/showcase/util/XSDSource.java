@@ -2,7 +2,7 @@ package ru.curs.showcase.util;
 
 import java.io.File;
 
-import ru.curs.showcase.app.api.services.ExceptionType;
+import ru.curs.showcase.app.api.ExceptionType;
 
 /**
  * Источник XSD схем.

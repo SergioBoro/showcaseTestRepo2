@@ -2,9 +2,9 @@ package ru.curs.showcase.util;
 
 import java.io.File;
 
-import ru.curs.showcase.app.api.services.ExceptionType;
+import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.exception.*;
-import ru.curs.showcase.model.SettingsFileType;
+import ru.curs.showcase.runtime.AppProps;
 
 /**
  * Источник схем из userdata.

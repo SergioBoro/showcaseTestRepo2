@@ -5,6 +5,8 @@ import javax.servlet.http.*;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.runtime.AppInfoSingleton;
+
 /**
  * Перехватчик старта приложения и сессии. Служит для инициализации приложения.
  * 

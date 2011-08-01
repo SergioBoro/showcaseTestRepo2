@@ -1,13 +1,11 @@
-package ru.curs.showcase.util;
+package ru.curs.showcase.runtime;
 
 import java.io.*;
 import java.net.URL;
 import java.util.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.exception.*;
-import ru.curs.showcase.model.SettingsFileType;
 
 /**
  * Получает проперти приложения из файла properties.

@@ -1,6 +1,6 @@
 package ru.curs.showcase.exception;
 
-import ru.curs.showcase.app.api.services.ExceptionType;
+import ru.curs.showcase.app.api.ExceptionType;
 
 /**
  * Исключение, генерируемое в случае обращения к несуществующей userdata.

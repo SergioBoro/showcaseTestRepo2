@@ -5,6 +5,7 @@ import java.lang.reflect.*;
 import org.xml.sax.Attributes;
 
 import ru.curs.showcase.exception.*;
+import ru.curs.showcase.util.GeneralXMLHelper;
 
 /**
  * Интерфейс обработчика дополнительных тэгов для SAX парсера.

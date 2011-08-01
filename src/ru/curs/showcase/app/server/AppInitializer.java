@@ -6,7 +6,7 @@ import java.util.*;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.XMLUtils;
 
 /**

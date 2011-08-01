@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.frame;
 
-import ru.curs.showcase.util.AppProps;
+import ru.curs.showcase.runtime.AppProps;
 
 /**
  * Фабрика для создания фреймов главной формы. Отвечает за дополнительную

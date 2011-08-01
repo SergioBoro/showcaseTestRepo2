@@ -8,10 +8,10 @@ import org.w3c.dom.Document;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.html.XForms;
-import ru.curs.showcase.app.server.AppInfoSingleton;
 import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.HTMLBasedElementFactory;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 
 /**

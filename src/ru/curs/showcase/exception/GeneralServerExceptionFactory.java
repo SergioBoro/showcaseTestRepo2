@@ -1,6 +1,6 @@
 package ru.curs.showcase.exception;
 
-import ru.curs.showcase.app.api.MessageType;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.services.*;
 

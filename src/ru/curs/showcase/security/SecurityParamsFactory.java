@@ -1,6 +1,6 @@
 package ru.curs.showcase.security;
 
-import ru.curs.showcase.util.AppProps;
+import ru.curs.showcase.runtime.AppProps;
 
 /**
  * @author anlug

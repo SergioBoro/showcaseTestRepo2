@@ -1,6 +1,5 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.util;
 
-import ru.curs.showcase.util.TextUtils;
 
 /**
  * Базовый класс для обмена файлами между сервером и клиентами. Содержимое файла

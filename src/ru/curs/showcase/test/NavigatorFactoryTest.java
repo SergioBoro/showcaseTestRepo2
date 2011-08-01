@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.navigator.NavigatorFactory;
-import ru.curs.showcase.util.AppProps;
+import ru.curs.showcase.runtime.AppProps;
 
 /**
  * Класс для тестирования фабрики навигаторов.

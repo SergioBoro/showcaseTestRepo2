@@ -12,7 +12,6 @@ import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.DataFile;
 import ru.curs.showcase.util.*;
 
 import com.google.gwt.user.client.rpc.SerializationException;

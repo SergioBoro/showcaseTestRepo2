@@ -13,6 +13,7 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
  * Тесты для действий и контекста.

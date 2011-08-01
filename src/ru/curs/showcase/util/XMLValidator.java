@@ -7,7 +7,7 @@ import javax.xml.validation.*;
 
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.app.api.services.ExceptionType;
+import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.exception.XSDValidateException;
 
 /**

@@ -1,4 +1,4 @@
-package ru.curs.showcase.app.api.services;
+package ru.curs.showcase.app.api;
 
 /**
  * Тип исключения серверной части GWT.

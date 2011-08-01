@@ -6,7 +6,6 @@ import org.w3c.dom.*;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.Grid;
-import ru.curs.showcase.model.GeneralXMLHelper;
 import ru.curs.showcase.util.*;
 
 /**

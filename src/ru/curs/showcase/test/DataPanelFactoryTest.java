@@ -10,8 +10,8 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
-import ru.curs.showcase.model.DataFile;
 import ru.curs.showcase.model.datapanel.*;
+import ru.curs.showcase.util.DataFile;
 
 /**
  * Тесты для фабрики информационных панелей.

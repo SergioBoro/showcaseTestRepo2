@@ -3,6 +3,7 @@ package ru.curs.showcase.util;
 import java.sql.*;
 
 import ru.curs.showcase.exception.DBConnectException;
+import ru.curs.showcase.runtime.AppProps;
 
 /**
  * Фабрика для создания соединений с БД.

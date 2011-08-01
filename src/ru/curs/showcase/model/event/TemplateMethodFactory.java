@@ -8,7 +8,8 @@ import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.*;
-import ru.curs.showcase.util.AppProps;
+import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.util.*;
 
 /**
  * Абстрактная фабрика с шаблонным методом построения сложных объектов -

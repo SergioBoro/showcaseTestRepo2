@@ -11,8 +11,8 @@ import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.*;
-import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.datapanel.DataPanelXMLGateway;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 
 /**
@@ -72,7 +72,7 @@ public class BaseObjectsTest extends AbstractTestBasedOnFiles {
 	 * @throws IOException
 	 * @throws SQLException
 	 * @see ru.curs.showcase.util.ServerCurrentState ServerCurrentState
-	 * @see ru.curs.showcase.model.ServerCurrentStateBuilder
+	 * @see ru.curs.showcase.app.server.ServerCurrentStateBuilder
 	 *      ServerCurrentStateBuilder
 	 */
 	@Test

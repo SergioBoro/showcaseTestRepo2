@@ -1,10 +1,10 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.app.server;
 
 import java.io.*;
 import java.sql.*;
 
 import ru.curs.showcase.app.api.ServerCurrentState;
-import ru.curs.showcase.app.server.*;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 
 /**

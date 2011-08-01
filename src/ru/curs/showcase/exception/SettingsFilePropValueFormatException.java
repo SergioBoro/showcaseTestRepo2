@@ -1,6 +1,5 @@
 package ru.curs.showcase.exception;
 
-import ru.curs.showcase.model.SettingsFileType;
 
 /**
  * Исключение, возникающее в случае неверного формата значений параметров в

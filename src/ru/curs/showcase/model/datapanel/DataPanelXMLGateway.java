@@ -8,7 +8,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.exception.*;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
 
 /**
