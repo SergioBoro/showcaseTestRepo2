@@ -404,7 +404,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test(expected = DBQueryException.class)
 	public void testDBQueryExceptionWithWrongGridSorting() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "2", "2");
+		DataPanelElementInfo elInfo = getTestGridInfo2();
 		GridRequestedSettings settings = new GridRequestedSettings();
 		Collection<Column> aSortedColumns = new ArrayList<Column>();
 		Column col = new Column();
@@ -424,7 +424,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test(expected = ResultSetHandleException.class)
 	public void testErrorWhenGetSettingsForDataOnlyProc() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "2", "2");
+		DataPanelElementInfo elInfo = getTestGridInfo2();
 		GridGateway gateway = new GridDBGateway();
 		GridRequestedSettings settings = new GridRequestedSettings();
 		ElementRawData res = gateway.getRawData(context, elInfo, settings);

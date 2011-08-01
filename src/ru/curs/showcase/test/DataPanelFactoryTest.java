@@ -117,7 +117,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
-		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("08");
+		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("0206");
 		assertNotNull(el);
 		assertEquals(2, el.getProcs().values().size());
 		assertEquals("xforms_saveproc1", el.getSaveProc().getName());
@@ -127,7 +127,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals("xforms_submission1", proc.getName());
 		assertEquals(DataPanelElementProcType.SUBMISSION, proc.getType());
 		assertFalse(el.getNeverShowInPanel());
-		el = panel.getTabById("2").getElementInfoById("09");
+		el = panel.getTabById("2").getElementInfoById("0207");
 		assertTrue(el.getNeverShowInPanel());
 	}
 
@@ -140,7 +140,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
-		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("09");
+		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("0207");
 		assertNotNull(el);
 		final int numProc = 8;
 		assertEquals(numProc, el.getProcs().values().size());
@@ -208,7 +208,7 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
-		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("2");
+		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("0201");
 		DataPanelElementProc proc = el.getMetadataProc();
 		assertNotNull(el);
 		assertEquals(DataPanelElementProcType.METADATA, proc.getType());

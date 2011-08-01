@@ -57,7 +57,7 @@ public class HTMLVariablesTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testXFormsVariables() throws Exception {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", "07");
+		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", "0205");
 
 		XFormsGateway gateway = new XFormsFileGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);

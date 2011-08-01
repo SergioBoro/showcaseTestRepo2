@@ -115,6 +115,26 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		return elInfo;
 	}
 
+	/**
+	 * Генерирует описание грида для тестов.
+	 * 
+	 * @return DataPanelElementInfo
+	 * 
+	 */
+	protected DataPanelElementInfo getTestGridInfo2() {
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("2", DataPanelElementType.GRID);
+		elInfo.setPosition(1);
+		elInfo.setProcName("grid_cities_data");
+		createTestTab(elInfo);
+		DataPanelElementProc proc = new DataPanelElementProc();
+		proc.setId("2md");
+		proc.setName("grid_cities_metadata");
+		proc.setType(DataPanelElementProcType.METADATA);
+		elInfo.getProcs().put(proc.getId(), proc);
+		assertTrue(elInfo.isCorrect());
+		return elInfo;
+	}
+
 	private void createTestTab(final DataPanelElementInfo elInfo) {
 		DataPanel dp = new DataPanel("xxx");
 		DataPanelTab tab = new DataPanelTab(0, dp);

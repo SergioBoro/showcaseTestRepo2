@@ -25,6 +25,7 @@ import ru.curs.showcase.util.*;
  * 
  */
 public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
+	private static final String ELEMENT_0205 = "0205";
 	private static final String XFORMS_SUBMISSION1 = "xforms_submission1";
 	private static final String TEST_XML_FILE = "log4j.xml";
 	private static final String TEST_DATA_TAG = "<data>test</data>";
@@ -35,7 +36,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testFileGateWay() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", "07");
+		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", ELEMENT_0205);
 
 		XFormsGateway gateway = new XFormsFileGateway();
 		gateway.getRawData(context, element);
@@ -48,7 +49,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testFileGatewayUpdate() {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", "07");
+		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", ELEMENT_0205);
 
 		XFormsGateway gateway = new XFormsFileGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
@@ -68,7 +69,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testFileGateWayWithTransform() throws Exception {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", "07");
+		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", ELEMENT_0205);
 
 		XFormsGateway gateway = new XFormsFileGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
@@ -344,7 +345,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testDBGatewayUpdateWithTransform() throws IOException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "10");
+		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "0208");
 
 		XFormsGateway gateway = new XFormsDBGateway();
 		String content = getNewContentBasedOnExisting(context, elementInfo, gateway);
@@ -363,7 +364,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test(expected = XSDValidateException.class)
 	public void testDBUpdateWithInvalidXML() throws IOException {
-		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "11");
+		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "0209");
 
 		String content = "<test/>";
 		UserXMLTransformer transformer =
@@ -378,7 +379,7 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test(expected = NotXMLException.class)
 	public void testDBUpdateWithNotXML() throws IOException {
-		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "11");
+		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "0209");
 
 		String content = "<test>";
 		UserXMLTransformer transformer =

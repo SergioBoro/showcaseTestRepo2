@@ -12,6 +12,7 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
+import ru.curs.showcase.exception.ValidateInDBException;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.grid.*;
 
@@ -186,7 +187,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void test2StepGridLoadBySL() throws GeneralException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "2", "2");
+		DataPanelElementInfo elInfo = getTestGridInfo2();
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		Grid grid = serviceLayer.getGrid(context, elInfo, null);
 		assertNotNull(grid);
@@ -202,7 +203,7 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void test2StepGridLoadBySLWhenUpdate() throws GeneralException {
 		CompositeContext context = getTestContext1();
-		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "2", "2");
+		DataPanelElementInfo elInfo = getTestGridInfo2();
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		GridRequestedSettings settings = new GridRequestedSettings();
 		Collection<Column> aSortedColumns = new ArrayList<Column>();
@@ -219,6 +220,58 @@ public class GridFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
 		final int pageNum = 1;
 		assertEquals(pageNum, grid.getDataSet().getRecordSet().getPageNumber());
+	}
+
+	@Test
+	public void testErrorByReturnCode1() {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "09", "0901");
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		GridRequestedSettings settings = new GridRequestedSettings();
+		try {
+			serviceLayer.getGrid(context, elInfo, settings);
+		} catch (GeneralException e) {
+			assertEquals(ValidateInDBException.class, e.getCause().getClass());
+			ValidateInDBException vid = (ValidateInDBException) e.getCause();
+			assertEquals(
+					"Ошибка построения XML c метаданными в процедуре \"grid_cities_metadata_ec\" (1)",
+					vid.getUserMessage().getText());
+			assertEquals("1", vid.getUserMessage().getId());
+		}
+	}
+
+	@Test
+	public void testErrorByReturnCode2() {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "09", "0902");
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		GridRequestedSettings settings = new GridRequestedSettings();
+		try {
+			serviceLayer.getGrid(context, elInfo, settings);
+		} catch (GeneralException e) {
+			assertEquals(ValidateInDBException.class, e.getCause().getClass());
+			ValidateInDBException vid = (ValidateInDBException) e.getCause();
+			assertEquals("Нет данных в процедуре \"grid_cities_data_ec\" (1)", vid
+					.getUserMessage().getText());
+			assertEquals("1", vid.getUserMessage().getId());
+		}
+	}
+
+	@Test
+	public void testErrorByReturnCode3() {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "09", "0903");
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		GridRequestedSettings settings = new GridRequestedSettings();
+		try {
+			serviceLayer.getGrid(context, elInfo, settings);
+		} catch (GeneralException e) {
+			assertEquals(ValidateInDBException.class, e.getCause().getClass());
+			ValidateInDBException vid = (ValidateInDBException) e.getCause();
+			assertEquals("Нет ничего в процедуре \"grid_cities_one_ec\" (1)", vid.getUserMessage()
+					.getText());
+			assertEquals("1", vid.getUserMessage().getId());
+		}
 	}
 
 	private void addSortedColumn(final GridRequestedSettings settings, final String name,
