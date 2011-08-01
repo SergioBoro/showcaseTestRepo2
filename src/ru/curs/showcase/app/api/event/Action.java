@@ -12,7 +12,7 @@ import ru.curs.showcase.app.api.GWTClonable;
  * @author den
  * 
  */
-public class Action implements SerializableElement, GWTClonable {
+public class Action implements SerializableElement, GWTClonable, ContainingContext {
 	/**
 	 * serialVersionUID.
 	 */
@@ -179,6 +179,52 @@ public class Action implements SerializableElement, GWTClonable {
 		}
 	}
 
+	private Iterable<ContainingContext> getContainingContextChilds() {
+		final Iterator<? extends ContainingContext> caIterator = getClientActivities().iterator();
+		final Iterator<? extends ContainingContext> saIterator = getServerActivities().iterator();
+		final Iterator<? extends ContainingContext> dpeIterator =
+			dataPanelActionType != DataPanelActionType.DO_NOTHING ? dataPanelLink
+					.getElementLinks().iterator() : null;
+
+		return new Iterable<ContainingContext>() {
+
+			@Override
+			public Iterator<ContainingContext> iterator() {
+				return new Iterator<ContainingContext>() {
+
+					@Override
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+
+					@Override
+					public ContainingContext next() {
+						if ((dpeIterator != null) && (dpeIterator.hasNext())) {
+							return dpeIterator.next();
+						}
+						if (saIterator.hasNext()) {
+							return saIterator.next();
+						}
+						if (caIterator.hasNext()) {
+							return caIterator.next();
+						}
+						return null;
+					}
+
+					@Override
+					public boolean hasNext() {
+						if (dpeIterator != null) {
+							return dpeIterator.hasNext() || saIterator.hasNext()
+									|| caIterator.hasNext();
+						} else {
+							return saIterator.hasNext() || caIterator.hasNext();
+						}
+					}
+				};
+			}
+		};
+	}
+
 	/**
 	 * Актуализирует состояние действия по переданному контексту.
 	 * 
@@ -193,24 +239,11 @@ public class Action implements SerializableElement, GWTClonable {
 			context.actualizeBy(callContext);
 		}
 
-		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
-			for (DataPanelElementLink el : getDataPanelLink().getElementLinks()) {
-				CompositeContext elContext = el.getContext();
-				elContext.actualizeBy(callContext);
-			}
+		for (ContainingContext el : getContainingContextChilds()) {
+			el.getContext().actualizeBy(callContext);
 		}
-
-		actualizeActivities(serverActivities, callContext);
-		actualizeActivities(clientActivities, callContext);
 
 		return this;
-	}
-
-	private void actualizeActivities(final List<Activity> aActivities,
-			final CompositeContext callContext) {
-		for (Activity act : aActivities) {
-			act.getContext().actualizeBy(callContext);
-		}
 	}
 
 	/**
@@ -242,22 +275,13 @@ public class Action implements SerializableElement, GWTClonable {
 							prevAction.dataPanelLink.getDataPanelId())) {
 				dataPanelLink.setTabId(prevAction.dataPanelLink.getTabId());
 			}
-
-			for (DataPanelElementLink link : dataPanelLink.getElementLinks()) {
-				link.getContext().actualizeBy(context);
-			}
 		}
 
-		actualizeActivities(serverActivities, prevAction);
-		actualizeActivities(clientActivities, prevAction);
+		for (ContainingContext el : getContainingContextChilds()) {
+			el.getContext().actualizeBy(context);
+		}
 
 		return this;
-	}
-
-	private void actualizeActivities(final List<Activity> aActivities, final Action prevAction) {
-		for (Activity act : aActivities) {
-			act.getContext().actualizeBy(prevAction.context);
-		}
 	}
 
 	/**
@@ -316,13 +340,13 @@ public class Action implements SerializableElement, GWTClonable {
 	 */
 	public Action updateAddContext(final CompositeContext addContext) {
 		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
-
 			for (DataPanelElementLink link : dataPanelLink.getElementLinks()) {
 				if (!link.getSkipRefreshContextOnly()) {
 					link.getContext().setAdditional(addContext.getAdditional());
 				}
 			}
 		}
+
 		updateActivitiesAddContext(serverActivities, addContext);
 		updateActivitiesAddContext(clientActivities, addContext);
 		return this;
@@ -345,18 +369,9 @@ public class Action implements SerializableElement, GWTClonable {
 		if (needGeneralContext()) {
 			context.setFilter(data);
 		}
-		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
-			for (DataPanelElementLink link : dataPanelLink.getElementLinks()) {
-				link.getContext().setFilter(data);
-			}
-		}
-		filterActivitiesBy(serverActivities, data);
-		filterActivitiesBy(clientActivities, data);
-	}
 
-	private void filterActivitiesBy(final List<Activity> aActivities, final String data) {
-		for (Activity act : aActivities) {
-			act.getContext().setFilter(data);
+		for (ContainingContext el : getContainingContextChilds()) {
+			el.getContext().setFilter(data);
 		}
 	}
 
@@ -434,19 +449,9 @@ public class Action implements SerializableElement, GWTClonable {
 		if (needGeneralContext()) {
 			context.addSessionParams(data);
 		}
-		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
-			for (DataPanelElementLink elink : dataPanelLink.getElementLinks()) {
-				elink.getContext().addSessionParams(data);
-			}
-		}
-		setActivitiesSessionContext(serverActivities, data);
-		setActivitiesSessionContext(clientActivities, data);
-	}
 
-	private void setActivitiesSessionContext(final List<Activity> aActivities,
-			final Map<String, List<String>> data) {
-		for (Activity act : aActivities) {
-			act.getContext().addSessionParams(data);
+		for (ContainingContext el : getContainingContextChilds()) {
+			el.getContext().addSessionParams(data);
 		}
 	}
 
@@ -461,17 +466,9 @@ public class Action implements SerializableElement, GWTClonable {
 		if (needGeneralContext()) {
 			context.setSession(data);
 		}
-		if (getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
-			for (DataPanelElementLink elink : dataPanelLink.getElementLinks()) {
-				elink.getContext().setSession(data);
-			}
-		}
-		setActivitiesSessionContext(serverActivities, data);
-	}
 
-	private void setActivitiesSessionContext(final List<Activity> aActivities, final String data) {
-		for (Activity act : aActivities) {
-			act.getContext().setSession(data);
+		for (ContainingContext el : getContainingContextChilds()) {
+			el.getContext().setSession(data);
 		}
 	}
 
@@ -497,6 +494,7 @@ public class Action implements SerializableElement, GWTClonable {
 		return serverActivities;
 	}
 
+	@Override
 	public CompositeContext getContext() {
 		return context;
 	}

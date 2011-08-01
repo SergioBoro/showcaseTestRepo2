@@ -1,7 +1,7 @@
 package ru.curs.showcase.app.api.event;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.NamedElement;
 
 /**
  * Описание действия на сервере или клиенте, не связанного напрямую с элементами
@@ -12,7 +12,7 @@ import ru.curs.showcase.app.api.*;
  * @author den
  * 
  */
-public class Activity extends NamedElement implements SerializableElement {
+public class Activity extends NamedElement implements SerializableElement, ContainingContext {
 
 	@Override
 	public String toString() {
@@ -52,6 +52,7 @@ public class Activity extends NamedElement implements SerializableElement {
 		type = aType;
 	}
 
+	@Override
 	public CompositeContext getContext() {
 		return context;
 	}

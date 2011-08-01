@@ -1,7 +1,7 @@
 package ru.curs.showcase.app.api.event;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.GWTClonable;
 
 /**
  * Ссылка на элемент информационной панели.
@@ -9,7 +9,7 @@ import ru.curs.showcase.app.api.*;
  * @author den
  * 
  */
-public class DataPanelElementLink implements SerializableElement, GWTClonable {
+public class DataPanelElementLink implements SerializableElement, GWTClonable, ContainingContext {
 	/**
 	 * serialVersionUID.
 	 */
@@ -62,6 +62,7 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable {
 		id = aId;
 	}
 
+	@Override
 	public final CompositeContext getContext() {
 		return context;
 	}
