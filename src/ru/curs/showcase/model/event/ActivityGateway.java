@@ -1,4 +1,4 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.event;
 
 import ru.curs.showcase.app.api.event.Activity;
 

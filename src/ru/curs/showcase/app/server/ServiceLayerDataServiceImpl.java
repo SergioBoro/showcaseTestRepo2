@@ -22,6 +22,7 @@ import ru.curs.showcase.exception.GeneralServerExceptionFactory;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.chart.*;
 import ru.curs.showcase.model.datapanel.*;
+import ru.curs.showcase.model.event.*;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.geomap.*;
 import ru.curs.showcase.model.grid.*;

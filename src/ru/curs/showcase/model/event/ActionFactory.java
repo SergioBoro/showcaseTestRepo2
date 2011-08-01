@@ -1,8 +1,9 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.event;
 
 import org.xml.sax.Attributes;
 
 import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.util.XMLUtils;
 
 /**

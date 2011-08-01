@@ -1,4 +1,4 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.event;
 
 import java.io.*;
 import java.util.*;
@@ -10,6 +10,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.exception.*;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.XMLUtils;
 

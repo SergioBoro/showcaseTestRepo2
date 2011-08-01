@@ -1,9 +1,10 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.event;
 
 import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.Activity;
+import ru.curs.showcase.model.*;
 
 /**
  * Класс шлюза-исполнителя вызовов SQL хранимых процедур.

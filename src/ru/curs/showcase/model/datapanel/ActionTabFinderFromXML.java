@@ -1,7 +1,7 @@
 package ru.curs.showcase.model.datapanel;
 
 import ru.curs.showcase.app.api.event.DataPanelLink;
-import ru.curs.showcase.model.ActionTabFinder;
+import ru.curs.showcase.model.event.ActionTabFinder;
 
 /**
  * Реализация интерфейса поиска вкладки для действия в инф. панели, хранимой в
