@@ -8,7 +8,8 @@ import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Класс, содержащий функции для получения информации о текущей сессией

@@ -4,7 +4,7 @@ import org.xml.sax.Attributes;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.*;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Фабрика для создания действий (Action) из XML. Не вызывается самостоятельно,

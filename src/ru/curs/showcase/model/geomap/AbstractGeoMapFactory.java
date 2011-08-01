@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
 import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.util.xml.SAXTagHandler;
 
 /**
  * Класс абстрактной фабрики карт - не содержащий кода для считывания данных из

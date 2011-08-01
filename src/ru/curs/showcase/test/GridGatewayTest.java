@@ -9,10 +9,9 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.GridRequestedSettings;
-import ru.curs.showcase.exception.IncorrectElementException;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.grid.*;
-import ru.curs.showcase.util.ConnectionFactory;
+import ru.curs.showcase.runtime.ConnectionFactory;
 
 /**
  * Тесты для шлюза грида.

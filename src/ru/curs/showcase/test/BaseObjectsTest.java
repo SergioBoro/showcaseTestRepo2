@@ -14,6 +14,7 @@ import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.model.datapanel.DataPanelXMLGateway;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Общий тестовый класс для мелких базовых объектов.

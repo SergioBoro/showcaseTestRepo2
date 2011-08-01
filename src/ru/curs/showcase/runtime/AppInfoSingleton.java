@@ -5,7 +5,6 @@ import java.util.*;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.exception.NoSuchUserDataException;
 
 /**
  * Синглетон для хранения информации о сессиях приложения и глобальной

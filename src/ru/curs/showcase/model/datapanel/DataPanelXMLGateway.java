@@ -7,9 +7,9 @@ import javax.xml.parsers.SAXParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ru.curs.showcase.exception.*;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Шлюз для получения данных об информационных панелях из файловой системы.

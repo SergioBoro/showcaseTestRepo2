@@ -4,7 +4,6 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.exception.DBQueryException;
 
 /**
  * Вспомогательный класс для получения данных элементов инф. панели, основанных

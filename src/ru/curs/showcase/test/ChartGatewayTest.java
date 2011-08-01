@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.exception.IncorrectElementException;
+import ru.curs.showcase.model.IncorrectElementException;
 import ru.curs.showcase.model.chart.*;
 
 /**

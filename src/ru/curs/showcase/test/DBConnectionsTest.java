@@ -6,7 +6,7 @@ import java.sql.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.util.ConnectionFactory;
+import ru.curs.showcase.runtime.ConnectionFactory;
 
 /**
  * Тесты соединения с БД.

@@ -7,6 +7,7 @@ import ru.curs.showcase.app.api.element.LegendPosition;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
 import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.util.xml.SAXTagHandler;
 
 import com.google.gson.Gson;
 

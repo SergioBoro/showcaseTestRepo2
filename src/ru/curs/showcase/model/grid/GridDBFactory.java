@@ -9,7 +9,6 @@ import javax.sql.RowSet;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.exception.ResultSetHandleException;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.EventFactory;
 import ru.curs.showcase.runtime.AppProps;

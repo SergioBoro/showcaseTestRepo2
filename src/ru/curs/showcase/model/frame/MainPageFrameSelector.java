@@ -1,7 +1,7 @@
 package ru.curs.showcase.model.frame;
 
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
  * "Выбиральщик" для фрейма главной страницы. Отвечает за считывание названия

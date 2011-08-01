@@ -16,6 +16,7 @@ import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.navigator.NavigatorFactory;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
  * Класс абстрактного теста, использующего тестовые файлы с данными.

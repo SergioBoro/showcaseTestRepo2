@@ -7,8 +7,7 @@ import org.slf4j.*;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.exception.DBQueryException;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Помощник для загрузки информации об элементе инф. панели.

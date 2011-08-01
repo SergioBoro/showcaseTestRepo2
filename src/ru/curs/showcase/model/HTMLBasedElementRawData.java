@@ -7,7 +7,7 @@ import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Класс, содержащий необработанные XML данные и метаданные HTML-подобного

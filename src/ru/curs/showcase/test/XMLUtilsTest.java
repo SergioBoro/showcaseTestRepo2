@@ -12,9 +12,9 @@ import org.junit.Test;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.exception.*;
 import ru.curs.showcase.model.datapanel.*;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.runtime.ConnectionFactory;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Тесты класса XMLProcessor.
@@ -316,7 +316,7 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 
 	/**
 	 * Проверка функции
-	 * {@link ru.curs.showcase.util.XMLUtils#testXmlServiceSymbolsToNormal
+	 * {@link ru.curs.showcase.util.xml.XMLUtils#testXmlServiceSymbolsToNormal
 	 * XMLUtils.testXmlServiceSymbolsToNormal}.
 	 * 
 	 */

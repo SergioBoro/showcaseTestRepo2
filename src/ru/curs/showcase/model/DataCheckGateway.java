@@ -1,8 +1,7 @@
 package ru.curs.showcase.model;
 
 import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.exception.IncorrectElementException;
-import ru.curs.showcase.util.GeneralXMLHelper;
+import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
  * Абстрактный класс шлюза с проверкой данных для элементов панели управления.

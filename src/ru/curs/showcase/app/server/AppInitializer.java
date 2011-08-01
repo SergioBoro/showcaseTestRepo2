@@ -7,7 +7,7 @@ import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Инициализатор приложения. Содержит главную функцию initialize, которая должна

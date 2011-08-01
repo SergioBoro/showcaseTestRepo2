@@ -7,7 +7,7 @@ import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.event.HTMLBasedElementFactory;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Фабрика для создания объектов WebText.

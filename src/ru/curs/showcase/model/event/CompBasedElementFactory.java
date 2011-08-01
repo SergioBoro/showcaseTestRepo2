@@ -8,7 +8,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.model.*;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Абстрактная фабрика для элементов инф. панели, основанных на компонентах -

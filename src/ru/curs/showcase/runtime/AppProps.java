@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.exception.*;
+import ru.curs.showcase.util.*;
 
 /**
  * Получает проперти приложения из файла properties.

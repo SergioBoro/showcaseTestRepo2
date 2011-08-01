@@ -4,7 +4,7 @@ import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Класс, модифицирующий шаблон XForms, добавляя в него служебную информацию,

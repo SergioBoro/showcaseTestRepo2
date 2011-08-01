@@ -7,6 +7,7 @@ import org.w3c.dom.*;
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.Grid;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Построитель XML документов на основе объекта грида.

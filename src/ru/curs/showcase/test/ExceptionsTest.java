@@ -13,9 +13,8 @@ import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.GridRequestedSettings;
-import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
-import ru.curs.showcase.exception.*;
+import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.frame.*;
@@ -23,7 +22,8 @@ import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.model.webtext.*;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Тесты для серверных исключений.

@@ -5,8 +5,6 @@ import java.sql.*;
 import javax.sql.RowSet;
 import javax.sql.rowset.CachedRowSet;
 
-import ru.curs.showcase.exception.ResultSetHandleException;
-
 import com.sun.rowset.CachedRowSetImpl;
 
 /**
@@ -44,16 +42,14 @@ public final class SQLUtils {
 	 * @param caption
 	 *            - заголовок столбца.
 	 * @return - результат проверки.
+	 * @throws SQLException
 	 */
-	public static boolean existsColumn(final ResultSetMetaData md, final String caption) {
-		try {
-			for (int i = 1; i <= md.getColumnCount(); i++) {
-				if (caption.equals(md.getColumnLabel(i))) {
-					return true;
-				}
+	public static boolean existsColumn(final ResultSetMetaData md, final String caption)
+			throws SQLException {
+		for (int i = 1; i <= md.getColumnCount(); i++) {
+			if (caption.equals(md.getColumnLabel(i))) {
+				return true;
 			}
-		} catch (SQLException e) {
-			throw new ResultSetHandleException(e);
 		}
 		return false;
 	}

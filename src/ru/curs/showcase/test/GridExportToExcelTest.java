@@ -13,6 +13,7 @@ import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.grid.GridXMLBuilder;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
  * Тесты для функции экспорта в Excel из грида.

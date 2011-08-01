@@ -7,10 +7,10 @@ import javax.sql.RowSet;
 import org.xml.sax.Attributes;
 
 import ru.curs.showcase.app.api.chart.*;
-import ru.curs.showcase.exception.ResultSetHandleException;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.EventFactory;
 import ru.curs.showcase.util.SQLUtils;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Фабрика для создания графика на основе данных из БД.

@@ -2,7 +2,6 @@ package ru.curs.showcase.model;
 
 import ru.curs.showcase.app.api.CanBeCurrent;
 import ru.curs.showcase.app.api.event.DataPanelLink;
-import ru.curs.showcase.exception.IncorrectElementException;
 
 /**
  * Интерфейс для поиска и установки вкладки инф. панели у действия при неполных

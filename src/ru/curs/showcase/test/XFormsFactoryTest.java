@@ -12,7 +12,7 @@ import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.xform.*;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Тесты для фабрики XForms.

@@ -10,10 +10,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.navigator.*;
-import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.ActionFactory;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Фабрика для создания навигатора.

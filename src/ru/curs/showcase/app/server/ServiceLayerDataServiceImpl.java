@@ -18,7 +18,6 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.exception.GeneralServerExceptionFactory;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.chart.*;
 import ru.curs.showcase.model.datapanel.*;
@@ -31,7 +30,8 @@ import ru.curs.showcase.model.webtext.*;
 import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 import com.google.gson.*;
 

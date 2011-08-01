@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.exception.ResultSetHandleException;
 
 /**
  * Базовый класс, содержащий необработанные XML данные и метаданные элемента

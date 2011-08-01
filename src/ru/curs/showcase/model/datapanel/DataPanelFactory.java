@@ -8,8 +8,8 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.model.*;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Фабрика для создания информационных панелей.

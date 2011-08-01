@@ -8,11 +8,11 @@ import org.w3c.dom.Document;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.html.XForms;
-import ru.curs.showcase.exception.*;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.event.HTMLBasedElementFactory;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Фабрика по созданию объектов XForms.

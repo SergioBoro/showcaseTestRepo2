@@ -3,8 +3,8 @@ package ru.curs.showcase.model.grid;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-import ru.curs.showcase.exception.*;
 import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.util.*;
 
 /**
  * Получает настройки грида из профайла.

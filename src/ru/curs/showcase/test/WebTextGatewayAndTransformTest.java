@@ -9,10 +9,9 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
-import ru.curs.showcase.exception.IncorrectElementException;
-import ru.curs.showcase.model.HTMLBasedElementRawData;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.webtext.*;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Тест для WebTextDBGateway.

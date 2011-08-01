@@ -9,7 +9,7 @@ import javax.xml.transform.stream.*;
 
 import org.w3c.dom.*;
 
-import ru.curs.showcase.util.GeneralXMLHelper;
+import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
  * Класс, преобразующий документ в HTML-код XForm.

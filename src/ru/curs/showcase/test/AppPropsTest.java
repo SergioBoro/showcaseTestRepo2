@@ -11,9 +11,8 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.datapanel.DataPanelXMLGateway;
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.SecurityParamsFactory;
-import ru.curs.showcase.util.*;
 
 /**
  * Тесты класса AppProps.

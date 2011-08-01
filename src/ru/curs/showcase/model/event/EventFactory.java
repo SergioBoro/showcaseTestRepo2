@@ -9,10 +9,10 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.exception.*;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.ResultSetHandleException;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.XMLUtils;
+import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Внутренняя фабрика для создания событий из XML документа. При описании

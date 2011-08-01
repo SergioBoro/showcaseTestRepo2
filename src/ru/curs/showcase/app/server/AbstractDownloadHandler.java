@@ -7,7 +7,6 @@ import org.apache.commons.fileupload.FileUploadException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.exception.HTTPRequestRequiredParamAbsentException;
 import ru.curs.showcase.util.*;
 
 import com.google.gwt.user.client.rpc.SerializationException;
