@@ -14,11 +14,6 @@ import ru.curs.showcase.util.xml.*;
  * 
  */
 public class ActionFactory extends SAXTagHandler {
-	/**
-	 * Префикс, который обязательно должен быть у всех внутренних тэгов
-	 * main_context и add_context.
-	 */
-	private static final String SOL_TAG_PREFIX = "context";
 	private static final String SHOW_CLOSE_BOTTOM_BUTTON_TAG = "show_close_bottom_button";
 	private static final String KEEP_USER_SETTINGS_TAG = "keep_user_settings";
 	private static final String SKIP_REFRESH_CONTEXT_ONLY_TAG = "skip_refresh_context_only";
@@ -83,13 +78,13 @@ public class ActionFactory extends SAXTagHandler {
 	@Override
 	public boolean canHandleStartTag(final String tagName) {
 		boolean res = super.canHandleStartTag(tagName);
-		return res ? res : ((tagName != null) && (tagName.startsWith(SOL_TAG_PREFIX)));
+		return res ? res : (readingMainContext || readingAddContext);
 	}
 
 	@Override
 	public boolean canHandleEndTag(final String tagName) {
 		boolean res = super.canHandleEndTag(tagName);
-		return res ? res : ((tagName != null) && (tagName.startsWith(SOL_TAG_PREFIX)));
+		return res ? res : (readingMainContext || readingAddContext);
 	}
 
 	@Override

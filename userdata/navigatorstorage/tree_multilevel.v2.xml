@@ -1,4 +1,4 @@
-﻿<navigator>
+﻿<navigator xmlns:context="http://www.kurs-it.ru/Context">
 	<group id="1" name="Балансы продовольственных ресурсов">
 		<level1 id="3" name="Балансы зерна">
 			<level2 id="C6B886DB-A835-464B-BCF8-522419CD8770" name="Ввоз, включая импорт - Всего">
@@ -66,9 +66,10 @@
 				<server>
 				<activity id="srv01" type="SP" name="exec_test">
 				<add_context>
-				<context_somexml someattr="value">
+				<context:somexml someattr="value">
+				<other/>
 				test
-				</context_somexml>
+				</context:somexml>
 				</add_context>
 				</activity>
 				</server>

@@ -572,8 +572,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertEquals(ActivityType.SP, sa.getType());
 		assertNotNull(sa.getContext());
 		assertEquals(action.getContext().getMain(), sa.getContext().getMain());
-		assertEquals("<context_somexml someattr=\"value\" >test</context_somexml>", sa
-				.getContext().getAdditional());
+		assertEquals(
+				"<context:somexml someattr=\"value\" ><other ></other>test</context:somexml>", sa
+						.getContext().getAdditional());
 	}
 
 	/**
