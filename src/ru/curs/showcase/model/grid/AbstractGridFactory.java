@@ -18,8 +18,6 @@ import ru.curs.showcase.util.xml.*;
  * 
  */
 public abstract class AbstractGridFactory extends CompBasedElementFactory {
-	public static final String GRID_DEFAULT_PROFILE = "default.properties";
-
 	private static final String DEF_COL_HOR_ALIGN = "def.column.hor.align";
 	private static final String DEF_COL_VALUE_DISPLAY_MODE = "def.column.value.display.mode";
 	private static final String DEF_COL_WIDTH = "def.column.width";
@@ -53,38 +51,13 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	private GridProps gridProps = null;
 
 	/**
-	 * Идентификатор записи, которая должна быть выбрана автоматически после
-	 * загрузки данных. По идентификатору можно определить autoSelectRecord.
-	 */
-	private Integer autoSelectRecordId = null;
-
-	/**
-	 * Идентификатор столбца, который должен быть выбран автоматически после
-	 * загрузки данных. По идентификатору можно определить autoSelectColumn.
-	 */
-	private String autoSelectColumnId = null;
-
-	/**
-	 * Указание на то, как именно учитывать autoSelectRecordId - как
-	 * относительный или абсолютный номер записи.
-	 */
-	private Boolean autoSelectRelativeRecord = true;
-
-	/**
 	 * Результат работы фабрики.
 	 */
 	private Grid result;
 
-	/**
-	 * Имя используемого профайла настроек грида.
-	 */
-	private String profile = GRID_DEFAULT_PROFILE;
+	private final GridServerState serverState;
 
-	/**
-	 * Число записей в таблице, удовлетворяющих условию выборки. Может быть
-	 * получено из БД или вычислено после продвижения курсора в конец датасета.
-	 */
-	private Integer totalCount;
+	private Integer autoSelectRecordId = null;
 
 	@Override
 	public Grid getResult() {
@@ -109,10 +82,17 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		super.correctSettingsAndData();
 
 		setupAutoSelecting();
-		correctPageCount();
+		calcPageCount();
+
+		updateServerState();
 	}
 
-	private void correctPageCount() {
+	private void updateServerState() {
+		serverState().setDefaultAction(getResult().getDefaultAction());
+		serverState().setColumnSet(getResult().getDataSet().getColumnSet());
+	}
+
+	private void calcPageCount() {
 		result.getUISettings().setPagesButtonCount(
 				Math.min(result.getUISettings().getPagesButtonCount(), result.getDataSet()
 						.getRecordSet().getPagesTotal()));
@@ -139,9 +119,11 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		return (Grid) super.buildStepTwo();
 	}
 
-	public AbstractGridFactory(final ElementRawData aSource, final GridRequestedSettings aSettings) {
+	public AbstractGridFactory(final ElementRawData aSource,
+			final GridRequestedSettings aSettings, final GridServerState aState) {
 		super(aSource);
 		requestSettings = aSettings;
+		serverState = aState;
 	}
 
 	/**
@@ -160,9 +142,8 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	 * Настройка страничного отображения в гриде.
 	 * 
 	 */
-	protected void initPages() {
-		getResult().getDataSet().getRecordSet().setPageSize(requestSettings.getPageSize());
-		getResult().getDataSet().getRecordSet().setPageNumber(requestSettings.getPageNumber());
+	private void initPages() {
+		getRecordSet().setPageInfo(requestSettings.getPageInfo());
 	}
 
 	@Override
@@ -269,6 +250,10 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		}
 	}
 
+	public GridServerState serverState() {
+		return serverState;
+	}
+
 	/**
 	 * Класс считывателя настроек грида.
 	 * 
@@ -298,23 +283,23 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 			Integer intValue;
 			if (attrs.getIndex(AUTO_SELECT_RELATIVE) > -1) {
 				value = attrs.getValue(AUTO_SELECT_RELATIVE);
-				autoSelectRelativeRecord = Boolean.valueOf(value);
+				serverState().setAutoSelectRelativeRecord(Boolean.valueOf(value));
 			}
 			if (attrs.getIndex(AUTO_SELECT_REC_TAG) > -1) {
 				value = attrs.getValue(AUTO_SELECT_REC_TAG);
-				autoSelectRecordId = Integer.parseInt(value);
+				serverState().setAutoSelectRecordId(Integer.parseInt(value));
 			}
 			if (attrs.getIndex(AUTO_SELECT_COL_TAG) > -1) {
-				autoSelectColumnId = attrs.getValue(AUTO_SELECT_COL_TAG);
+				serverState().setAutoSelectColumnId(attrs.getValue(AUTO_SELECT_COL_TAG));
 			}
 			if (attrs.getIndex(PROFILE_TAG) > -1) {
-				profile = attrs.getValue(PROFILE_TAG);
+				serverState().setProfile(attrs.getValue(PROFILE_TAG));
 			}
 			if (attrs.getIndex(FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG) > -1) {
 				getResult().getEventManager().setFireGeneralAndConcreteEvents(
 						Boolean.valueOf(attrs.getValue(FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG)));
 			}
-			if ((requestSettings.isFirstLoad()) && (attrs.getIndex(PAGESIZE_TAG) > -1)) {
+			if (attrs.getIndex(PAGESIZE_TAG) > -1) {
 				value = attrs.getValue(PAGESIZE_TAG);
 				intValue = Integer.valueOf(value);
 				getResult().getDataSet().getRecordSet().setPageSize(intValue);
@@ -322,7 +307,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 			if (!getElementInfo().loadByOneProc()) {
 				value = attrs.getValue(TOTAL_COUNT_TAG);
 				intValue = Integer.valueOf(value);
-				totalCount = intValue;
+				serverState().setTotalCount(intValue);
 			}
 			return null;
 		}
@@ -334,11 +319,9 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 				col = createColumn(colId);
 				getResult().getDataSet().getColumnSet().getColumns().add(col);
 			}
-			if (requestSettings.isFirstLoad()) {
-				if (attrs.getIndex(WIDTH_TAG) > -1) {
-					String width = attrs.getValue(WIDTH_TAG);
-					col.setWidth(width);
-				}
+			if (attrs.getIndex(WIDTH_TAG) > -1) {
+				String width = attrs.getValue(WIDTH_TAG);
+				col.setWidth(width);
 			}
 			if (attrs.getIndex(PRECISION_TAG) > -1) {
 				String value = attrs.getValue(PRECISION_TAG);
@@ -360,35 +343,57 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 
 	@Override
 	protected void setupDynamicSettings() {
-		super.setupDynamicSettings();
-		gridProps = new GridProps(profile);
-		setupDefaultUISettings();
-		correctAutoSelectRecordId();
-		syncBackPageSettings();
-	}
-
-	private void syncBackPageSettings() {
-		requestSettings.setPageSize(getResult().getDataSet().getRecordSet().getPageSize());
-		requestSettings.setPageNumber(getResult().getDataSet().getRecordSet().getPageNumber());
-	}
-
-	private void correctAutoSelectRecordId() {
-		RecordSet rs = getResult().getDataSet().getRecordSet();
-
-		if ((autoSelectRecordId != null) && autoSelectRelativeRecord) {
-			if (autoSelectRecordId >= rs.getPageSize()) {
-				throw new InconsistentSettingsFromDBException(String.format(
-						RELATIVE_NUMBER_TOO_BIG_ERROR, autoSelectRecordId, rs.getPageSize()));
-			}
-			autoSelectRecordId = autoSelectRecordId + rs.getPageSize() * (rs.getPageNumber() - 1);
+		if (requestSettings.isFirstLoad()) {
+			super.setupDynamicSettings();
+			loadStaticSettings();
+			calcPageNumber();
 		} else {
-			if (requestSettings.isFirstLoad() && (autoSelectRecordId != null)) {
-				float autoSelectRecordNumber = autoSelectRecordId;
-				if (autoSelectRecordNumber >= rs.getPageSize()) {
-					rs.setPageNumber((int) Math.ceil((autoSelectRecordNumber + 1)
-							/ rs.getPageSize()));
-				}
-			}
+			loadStaticSettings();
+			loadStoredState();
+		}
+	}
+
+	private void loadStoredState() {
+		if (serverState.getColumnSet() != null) {
+			getResult().getDataSet().setColumnSet(serverState.getColumnSet());
+		}
+		getResult().setDefaultAction(serverState.getDefaultAction());
+	}
+
+	private void loadStaticSettings() {
+		gridProps = new GridProps(serverState().getProfile());
+		setupDefaultUISettings();
+	}
+
+	protected void calcAutoSelectRecordId() {
+		Integer recId = serverState().getAutoSelectRecordId();
+
+		autoSelectRecordId = recId;
+		if ((recId != null) && serverState().getAutoSelectRelativeRecord()) {
+			checkAutoSelectRecordRangeOfBounds(recId);
+			autoSelectRecordId =
+				recId + getRecordSet().getPageSize() * (getRecordSet().getPageNumber() - 1);
+		}
+	}
+
+	private void checkAutoSelectRecordRangeOfBounds(final Integer recId) {
+		if (recId >= getRecordSet().getPageSize()) {
+			throw new InconsistentSettingsFromDBException(String.format(
+					RELATIVE_NUMBER_TOO_BIG_ERROR, recId, getRecordSet().getPageSize()));
+		}
+	}
+
+	protected RecordSet getRecordSet() {
+		return getResult().getDataSet().getRecordSet();
+	}
+
+	private void calcPageNumber() {
+		Integer recId = serverState().getAutoSelectRecordId();
+
+		if ((recId != null) && (recId >= getRecordSet().getPageSize())
+				&& !serverState().getAutoSelectRelativeRecord()) {
+			getRecordSet().setPageNumber(
+					(int) Math.ceil(((float) recId + 1) / getRecordSet().getPageSize()));
 		}
 	}
 
@@ -397,20 +402,22 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	 * данных.
 	 */
 	protected void setupAutoSelecting() {
+		calcAutoSelectRecordId();
+
 		if (autoSelectRecordId == null) {
 			return;
 		}
-		for (Record current : getResult().getDataSet().getRecordSet().getRecords()) {
+		for (Record current : getRecordSet().getRecords()) {
 			if (current.getId().equals(autoSelectRecordId.toString())) {
 				getResult().setAutoSelectRecord(current);
 			}
 		}
 
-		if (autoSelectColumnId == null) {
+		if (serverState().getAutoSelectColumnId() == null) {
 			return;
 		}
 		for (Column current : getResult().getDataSet().getColumnSet().getColumns()) {
-			if (current.getId().equals(autoSelectColumnId)) {
+			if (current.getId().equals(serverState().getAutoSelectColumnId())) {
 				getResult().setAutoSelectColumn(current);
 			}
 		}
@@ -443,22 +450,6 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 
 	protected GridProps getGridProps() {
 		return gridProps;
-	}
-
-	public String getProfile() {
-		return profile;
-	}
-
-	public void setProfile(final String aProfile) {
-		profile = aProfile;
-	}
-
-	public Integer getTotalCount() {
-		return totalCount;
-	}
-
-	public void setTotalCount(final Integer aTotalCount) {
-		totalCount = aTotalCount;
 	}
 
 }

@@ -49,7 +49,6 @@ public final class WebTextFactory extends HTMLBasedElementFactory {
 
 	@Override
 	protected void correctSettingsAndData() {
-		super.correctSettingsAndData();
 		String out = result.getData();
 		out = replaceVariables(out);
 		result.setData(out);

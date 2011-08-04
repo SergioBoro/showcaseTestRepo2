@@ -15,7 +15,7 @@ import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.navigator.NavigatorFactory;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
@@ -136,7 +136,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		return elInfo;
 	}
 
-	private void createTestTab(final DataPanelElementInfo elInfo) {
+	protected void createTestTab(final DataPanelElementInfo elInfo) {
 		DataPanel dp = new DataPanel("xxx");
 		DataPanelTab tab = new DataPanelTab(0, dp);
 		tab.add(elInfo);

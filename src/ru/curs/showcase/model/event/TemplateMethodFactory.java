@@ -63,7 +63,7 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 		initResult();
 		prepareData();
 		prepareSettings();
-		checkForDBError();
+		checkSourceError();
 		releaseResources();
 		setupDynamicSettings();
 		fillResultByData();
@@ -73,10 +73,10 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 	}
 
 	/**
-	 * Метод для проверки на возврат процедурой кода ошибки. В случае ошибки
+	 * Метод для проверки на возврат источником кода ошибки. В случае ошибки
 	 * процесс построения элемента прерывается.
 	 */
-	protected void checkForDBError() {
+	protected void checkSourceError() {
 		// По умолчанию ничего не делает - данный функционал не всегда нужен
 	}
 
@@ -93,6 +93,18 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 	}
 
 	/**
+	 * Первый шаг в процессе построения элемент - инициализация на основе
+	 * сохраненных настроек.
+	 * 
+	 * @return - грид.
+	 */
+	public DataPanelElement buildStepOneFast() {
+		initResult();
+		setupDynamicSettings();
+		return getResult();
+	}
+
+	/**
 	 * Второй шаг в процессе построения элемента - загрузка данных, их обработка
 	 * и постобработка настроек и данных.
 	 * 
@@ -100,7 +112,7 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 	 */
 	public DataPanelElement buildStepTwo() throws Exception {
 		prepareData();
-		checkForDBError();
+		checkSourceError();
 		releaseResources();
 		fillResultByData();
 		getResult().actualizeActions(getCallContext());
@@ -125,9 +137,7 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 	 * Выполняет настройку свойств результата работы фабрики на основании
 	 * динамических данных, загруженных в методе fillResultByData.
 	 */
-	protected void correctSettingsAndData() {
-		// По умолчанию ничего не делает - данный функционал не всегда нужен
-	}
+	protected abstract void correctSettingsAndData();
 
 	/**
 	 * Функция для инициализации результата работы фабрики. В данной функции

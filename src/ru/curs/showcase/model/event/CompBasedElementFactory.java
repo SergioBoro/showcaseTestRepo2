@@ -7,7 +7,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.Action;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -149,8 +149,6 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 
 	@Override
 	protected void correctSettingsAndData() {
-		super.correctSettingsAndData();
-
 		String html = getResult().getHeader();
 		html = replaceVariables(html);
 		getResult().setHeader(html);

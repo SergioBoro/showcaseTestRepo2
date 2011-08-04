@@ -64,7 +64,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	@Override
 	public ElementRawData getRawDataAndSettings(final CompositeContext aContext,
 			final DataPanelElementInfo aElement) {
-		return getRawDataAndSettings(aContext, aElement, GridRequestedSettings.createDefault());
+		return getRawDataAndSettings(aContext, aElement, GridRequestedSettings.createFirstLoadDefault());
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 			settings.normalize();
 
 			prepareElementStatementWithErrorMes();
-			getStatement().setInt("firstrecord", settings.getFirstRecord());
+			getStatement().setInt("firstrecord", settings.getPageInfo().getFirstRecord());
 			getStatement().setInt("pagesize", settings.getPageSize());
 			setupSorting(getStatement(), settings);
 			stdGetResults();

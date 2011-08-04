@@ -5,6 +5,8 @@ import java.util.*;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.event.CompositeContext;
 
 /**
  * Синглетон для хранения информации о сессиях приложения и глобальной
@@ -259,6 +261,16 @@ public final class AppInfoSingleton {
 	 */
 	public void setCurUserDataId(final String aUserDataId) {
 		curUserDataId.set(aUserDataId);
+	}
+
+	public Object getElementState(final String sessionId, final DataPanelElementInfo dpei,
+			final CompositeContext context) {
+		return getOrInitSessionInfoObject(sessionId).getElementState(sessionId, dpei, context);
+	}
+
+	public void storeElementState(final String sessionId, final DataPanelElementInfo dpei,
+			final CompositeContext context, final Object state) {
+		getOrInitSessionInfoObject(sessionId).storeElementState(sessionId, dpei, context, state);
 	}
 
 }

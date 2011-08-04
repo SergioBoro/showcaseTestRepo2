@@ -53,7 +53,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test(expected = SettingsFilePropValueFormatException.class)
 	public final void testReadWrongValue() {
-		GridProps gp = new GridProps(AbstractGridFactory.GRID_DEFAULT_PROFILE);
+		GridProps gp = new GridProps(GridServerState.GRID_DEFAULT_PROFILE);
 		gp.stdReadIntGridValue("def.column.hor.align");
 	}
 
@@ -350,6 +350,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);
 		dpei.setProcName("grid_by_userdata");
+		createTestTab(dpei);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		serviceLayer.getGrid(context, dpei, null);
 	}

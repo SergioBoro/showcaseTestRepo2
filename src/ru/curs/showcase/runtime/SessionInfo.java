@@ -1,5 +1,10 @@
 package ru.curs.showcase.runtime;
 
+import java.util.*;
+
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.event.CompositeContext;
+
 /**
  * Информация о сессии пользователя.
  * 
@@ -17,6 +22,27 @@ public class SessionInfo {
 	 * аутентификации через AuthServer.
 	 */
 	private String authServerCrossAppPassword = null;
+
+	private final Map<String, Object> elementStates = Collections
+			.synchronizedMap(new HashMap<String, Object>());
+
+	public Object getElementState(final String sessionId, final DataPanelElementInfo dpei,
+			final CompositeContext context) {
+		String key = generateStateKey(sessionId, dpei, context);
+		return elementStates.get(key);
+	}
+
+	private String generateStateKey(final String sessionId, final DataPanelElementInfo dpei,
+			final CompositeContext context) {
+		return sessionId + AppInfoSingleton.getAppInfo().getCurUserDataId() + dpei.getFullId()
+				+ context.getMain();
+	}
+
+	public void storeElementState(final String sessionId, final DataPanelElementInfo dpei,
+			final CompositeContext context, final Object state) {
+		String key = generateStateKey(sessionId, dpei, context);
+		elementStates.put(key, state);
+	}
 
 	public String getAuthServerCrossAppPassword() {
 		return authServerCrossAppPassword;

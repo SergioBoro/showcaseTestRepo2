@@ -12,10 +12,10 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.EventFactory;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.SQLUtils;
 
 /**
- * Фабрика для создания гридов инициализированная исходными данными для работы.
+ * Фабрика для создания гридов получающая на вход сырые исходные данные из БД.
  * 
  * @author den
  * 
@@ -36,32 +36,34 @@ public class GridDBFactory extends AbstractGridFactory {
 	 */
 	private static final String CELL_PREFIX = "cell";
 
-	/**
-	 * SQL ResultSet с данными грида.
-	 */
-	private RowSet sql;
+	private RowSet rowset;
 
-	public GridDBFactory(final ElementRawData aRaw, final GridRequestedSettings aSettings) {
-		super(aRaw, aSettings);
+	public GridDBFactory(final ElementRawData aRaw, final GridRequestedSettings aSettings,
+			final GridServerState aState) {
+		super(aRaw, aSettings, aState);
 	}
 
 	public GridDBFactory(final ElementRawData aRaw) {
-		super(aRaw, GridRequestedSettings.createDefault());
+		super(aRaw, GridRequestedSettings.createFirstLoadDefault(), new GridServerState());
+	}
+
+	public GridDBFactory(final GridRequestedSettings aSettings, final GridServerState aState) {
+		super(null, aSettings, aState);
 	}
 
 	@Override
 	protected void prepareData() {
 		try {
 			ResultSet rs = getSource().getSpCallHelper().getStatement().getResultSet();
-			sql = SQLUtils.cacheResultSet(rs);
+			rowset = SQLUtils.cacheResultSet(rs);
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
 		}
 	}
 
 	@Override
-	protected void checkForDBError() {
-		super.checkForDBError();
+	protected void checkSourceError() {
+		super.checkSourceError();
 
 		try {
 			getSource().getSpCallHelper().checkErrorCode();
@@ -83,10 +85,9 @@ public class GridDBFactory extends AbstractGridFactory {
 
 	private void readRecordsLoop() throws SQLException {
 		ColumnSet cs = getResult().getDataSet().getColumnSet();
-		RecordSet rs = getResult().getDataSet().getRecordSet();
-		int counter = getRequestSettings().getFirstRecord();
-		int lastNumber = counter + rs.getPageSize();
-		while (sql.next() && (counter < lastNumber)) {
+		int counter = getRecordSet().getPageInfo().getFirstRecord();
+		int lastNumber = counter + getRecordSet().getPageSize();
+		while (rowset.next() && (counter < lastNumber)) {
 			Record curRecord = new Record();
 			curRecord.setId(String.valueOf(counter++));
 			setupStdRecordProps(curRecord);
@@ -97,26 +98,26 @@ public class GridDBFactory extends AbstractGridFactory {
 					value =
 						String.format("%s/%s",
 								AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR),
-								sql.getString(col.getId()));
+								rowset.getString(col.getId()));
 				} else if (col.getValueType() == GridValueType.LINK) {
-					value = sql.getString(col.getId());
+					value = rowset.getString(col.getId());
 					if (value != null) {
 						value = AppProps.replaceVariables(value);
 						value = makeSafeXMLAttrValues(value);
 					}
-				} else if (sql.getObject(col.getId()) == null) {
+				} else if (rowset.getObject(col.getId()) == null) {
 					value = "";
 				} else if (col.getValueType().isDate()) {
 					value = getStringValueOfDate(col);
 				} else if (col.getValueType().isNumber()) {
 					value = getStringValueOfNumber(col);
 				} else {
-					value = sql.getString(col.getId());
+					value = rowset.getString(col.getId());
 				}
 				curRecord.setValue(col.getId(), value);
 			}
-			rs.getRecords().add(curRecord);
-			readEvents(curRecord.getId(), sql.getString(PROPERTIES_SQL_TAG));
+			getRecordSet().getRecords().add(curRecord);
+			readEvents(curRecord.getId(), rowset.getString(PROPERTIES_SQL_TAG));
 		}
 	}
 
@@ -162,9 +163,9 @@ public class GridDBFactory extends AbstractGridFactory {
 	}
 
 	private String getStringValueOfNumber(final Column col) throws SQLException {
-		Double value = sql.getDouble(col.getId());
+		Double value = rowset.getDouble(col.getId());
 		NumberFormat nf;
-		if (useLocalFormatting()) {
+		if (applyLocalFormatting()) {
 			nf = NumberFormat.getNumberInstance();
 		} else {
 			nf = NumberFormat.getNumberInstance(DEF_NON_LOCAL_LOCALE);
@@ -185,22 +186,22 @@ public class GridDBFactory extends AbstractGridFactory {
 			style = DateTimeFormat.valueOf(value).ordinal();
 		}
 		if (col.getValueType() == GridValueType.DATE) {
-			date = sql.getDate(col.getId());
-			if (useLocalFormatting()) {
+			date = rowset.getDate(col.getId());
+			if (applyLocalFormatting()) {
 				df = DateFormat.getDateInstance(style);
 			} else {
 				df = DateFormat.getDateInstance(style, DEF_NON_LOCAL_LOCALE);
 			}
 		} else if (col.getValueType() == GridValueType.TIME) {
-			date = sql.getTime(col.getId());
-			if (useLocalFormatting()) {
+			date = rowset.getTime(col.getId());
+			if (applyLocalFormatting()) {
 				df = DateFormat.getTimeInstance(style);
 			} else {
 				df = DateFormat.getTimeInstance(style, DEF_NON_LOCAL_LOCALE);
 			}
 		} else if (col.getValueType() == GridValueType.DATETIME) {
-			date = sql.getTimestamp(col.getId());
-			if (useLocalFormatting()) {
+			date = rowset.getTimestamp(col.getId());
+			if (applyLocalFormatting()) {
 				df = DateFormat.getDateTimeInstance(style, style);
 			} else {
 				df = DateFormat.getDateTimeInstance(style, style, DEF_NON_LOCAL_LOCALE);
@@ -212,18 +213,19 @@ public class GridDBFactory extends AbstractGridFactory {
 		return df.format(date);
 	}
 
-	private boolean useLocalFormatting() {
+	private boolean applyLocalFormatting() {
 		return getRequestSettings().getApplyLocalFormatting();
 	}
 
 	private void calcRecordsCount() throws SQLException {
-		if (getTotalCount() == null) {
-			sql.last();
-			setTotalCount(sql.getRow());
+		if (getElementInfo().loadByOneProc()) {
+			rowset.last();
+			serverState().setTotalCount(rowset.getRow());
 		}
 
-		RecordSet rs = getResult().getDataSet().getRecordSet();
-		rs.setPagesTotal((int) Math.ceil((float) getTotalCount() / rs.getPageSize()));
+		getRecordSet().setPagesTotal(
+				(int) Math.ceil((float) serverState().getTotalCount()
+						/ getRecordSet().getPageSize()));
 	}
 
 	private void scrollToRequiredPage() throws SQLException {
@@ -232,10 +234,11 @@ public class GridDBFactory extends AbstractGridFactory {
 		}
 
 		int recNum = 1;
-		RecordSet rs = getResult().getDataSet().getRecordSet();
-		sql.setFetchSize(rs.getPageSize());
-		while (recNum++ < getRequestSettings().getFirstRecord()) {
-			if (!sql.next()) {
+		rowset.setFetchSize(getRecordSet().getPageSize());
+		while (recNum++ < getRecordSet().getPageInfo().getFirstRecord()) {
+			if (!rowset.next()) {
+				// возвращаем 0 записей, если переданная страница не существует
+				rowset.previous();
 				break;
 			}
 		}
@@ -247,7 +250,7 @@ public class GridDBFactory extends AbstractGridFactory {
 		Column curColumn = null;
 		ResultSetMetaData md;
 		try {
-			md = sql.getMetaData();
+			md = rowset.getMetaData();
 			for (int i = 1; i <= md.getColumnCount(); i++) {
 				if (md.getColumnLabel(i).equals(PROPERTIES_SQL_TAG)) {
 					continue;

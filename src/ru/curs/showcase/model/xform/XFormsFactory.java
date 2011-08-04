@@ -103,4 +103,10 @@ public final class XFormsFactory extends HTMLBasedElementFactory {
 	protected void initResult() {
 		result = new XForms();
 	}
+
+	@Override
+	protected void correctSettingsAndData() {
+		// ничего не нужно
+
+	}
 }

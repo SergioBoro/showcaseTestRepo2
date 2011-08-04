@@ -30,9 +30,10 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 
 	@Override
 	public String toString() {
-		return "GridRequestedSettings.sortedColumns=" + sortedColumns
-				+ "&GridRequestedSettings.pageNumber=" + pageNumber
-				+ "&GridRequestedSettings.pageSize=" + pageSize;
+		return "GridRequestedSettings [sortedColumns=" + sortedColumns + ", pageInfo=" + pageInfo
+				+ ", currentRecordId=" + currentRecordId + ", currentColumnId=" + currentColumnId
+				+ ", selectedRecordIds=" + selectedRecordIds + ", isFirstLoad=" + isFirstLoad
+				+ ", applyLocalFormatting=" + applyLocalFormatting + "]";
 	}
 
 	/**
@@ -46,24 +47,7 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 	 */
 	private Collection<Column> sortedColumns = new ArrayList<Column>();
 
-	/**
-	 * Номер текущей страницы с данными. По-умолчанию - первая страница.
-	 */
-	private Integer pageNumber = DEF_PAGE_NUMBER;
-
-	/**
-	 * Установленный размер страницы. Если null - размер считывается из файла
-	 * настроек.
-	 */
-	private Integer pageSize = DEF_PAGE_SIZE_VAL;
-
-	/**
-	 * Признак того, что нужно применять форматирование для дат и чисел при
-	 * формировании грида. По умолчанию - нужно. Отключать эту опцию необходимо
-	 * при экспорте в Excel.
-	 */
-	private Boolean applyLocalFormatting = true;
-
+	private PageInfo pageInfo = new PageInfo(DEF_PAGE_NUMBER, DEF_PAGE_SIZE_VAL);
 	/**
 	 * Идентификатор выделенной по клику в гриде записи.
 	 */
@@ -85,6 +69,21 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 	 * пользователя.
 	 */
 	private Boolean isFirstLoad = false;
+
+	/**
+	 * Признак того, что нужно применять форматирование для дат и чисел при
+	 * формировании грида. По умолчанию - нужно. Отключать эту опцию необходимо
+	 * при экспорте в Excel.
+	 */
+	private Boolean applyLocalFormatting = true;
+
+	public Boolean getApplyLocalFormatting() {
+		return applyLocalFormatting;
+	}
+
+	public void setApplyLocalFormatting(final Boolean aApplyLocalFormatting) {
+		applyLocalFormatting = aApplyLocalFormatting;
+	}
 
 	/**
 	 * Сбрасывает настройки таким образом, чтобы сервер вернул все записи на
@@ -113,28 +112,28 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 		return null;
 	}
 
-	public final Integer getPageSize() {
-		return pageSize;
+	public void setPageNumber(final int pageNumber) {
+		pageInfo.setPageNumber(pageNumber);
 	}
 
-	public final void setPageSize(final Integer aPageSize) {
-		this.pageSize = aPageSize;
+	public int getPageNumber() {
+		return pageInfo.getPageNumber();
+	}
+
+	public void setPageSize(final int pageSize) {
+		pageInfo.setPageSize(pageSize);
+	}
+
+	public int getPageSize() {
+		return pageInfo.getPageSize();
 	}
 
 	public final Collection<Column> getSortedColumns() {
 		return sortedColumns;
 	}
 
-	public final Integer getPageNumber() {
-		return pageNumber;
-	}
-
 	public final void setSortedColumns(final Collection<Column> aSortedColumns) {
 		this.sortedColumns = aSortedColumns;
-	}
-
-	public final void setPageNumber(final Integer aPageNumber) {
-		this.pageNumber = aPageNumber;
 	}
 
 	/**
@@ -148,14 +147,6 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 			orderedByIndex.put(col.getIndex(), col);
 		}
 		setSortedColumns(orderedByIndex.values());
-	}
-
-	public final Boolean getApplyLocalFormatting() {
-		return applyLocalFormatting;
-	}
-
-	public final void setApplyLocalFormatting(final Boolean aApplyFormatting) {
-		applyLocalFormatting = aApplyFormatting;
 	}
 
 	public String getCurrentRecordId() {
@@ -182,10 +173,6 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 		selectedRecordIds = aSelectedRecordIds;
 	}
 
-	public int getFirstRecord() {
-		return pageSize * (pageNumber - 1) + 1;
-	}
-
 	/**
 	 * Проверка на то, что сортировка присутствует при данных настройках.
 	 */
@@ -197,7 +184,7 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 	 * Создает дефолтные настройки для грида - нужны для первоначальной
 	 * отрисовки грида и для тестов.
 	 */
-	public static GridRequestedSettings createDefault() {
+	public static GridRequestedSettings createFirstLoadDefault() {
 		GridRequestedSettings result = new GridRequestedSettings();
 		result.isFirstLoad = true;
 		return result;
@@ -209,5 +196,13 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 
 	public void setIsFirstLoad(final Boolean value) {
 		isFirstLoad = value;
+	}
+
+	public PageInfo getPageInfo() {
+		return pageInfo;
+	}
+
+	public void setPageInfo(final PageInfo aPageInfo) {
+		pageInfo = aPageInfo;
 	}
 }

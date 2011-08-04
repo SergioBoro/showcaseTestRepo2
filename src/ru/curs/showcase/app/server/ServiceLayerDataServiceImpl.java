@@ -123,29 +123,45 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	public Grid getGrid(final CompositeContext context, final DataPanelElementInfo elementInfo,
 			final GridRequestedSettings aSettings) throws GeneralException {
 		try {
-			GridGateway gateway = null;
+			GridDBGateway gateway = new GridDBGateway();
 			GridDBFactory factory = null;
 			ElementRawData raw = null;
 			Grid grid = null;
 			ElementSettingsDBGateway sgateway = null;
 			GridRequestedSettings settings = aSettings;
+			GridServerState state = null;
+
 			if (settings == null) {
-				settings = GridRequestedSettings.createDefault();
+				settings = GridRequestedSettings.createFirstLoadDefault();
 			}
 			prepareContext(context);
 
+			if (settings.isFirstLoad()) {
+				state = new GridServerState();
+				AppInfoSingleton.getAppInfo().storeElementState(sessionId, elementInfo, context,
+						state);
+			} else {
+				state =
+					(GridServerState) AppInfoSingleton.getAppInfo().getElementState(sessionId,
+							elementInfo, context);
+			}
+
 			if (elementInfo.loadByOneProc()) {
-				gateway = new GridDBGateway();
 				raw = gateway.getRawDataAndSettings(context, elementInfo, settings);
-				factory = new GridDBFactory(raw, settings);
+				factory = new GridDBFactory(raw, settings, state);
 				grid = factory.build();
 			} else {
-				sgateway = new ElementSettingsDBGateway();
-				raw = sgateway.getRawData(context, elementInfo);
-				factory = new GridDBFactory(raw, settings);
-				factory.buildStepOne();
-				settings = factory.getRequestSettings();
-				gateway = new GridDBGateway(sgateway.getConn());
+				if (settings.isFirstLoad()) {
+					sgateway = new ElementSettingsDBGateway();
+					raw = sgateway.getRawData(context, elementInfo);
+					factory = new GridDBFactory(raw, settings, state);
+					factory.buildStepOne();
+					settings = factory.getRequestSettings();
+					gateway.setConn(sgateway.getConn());
+				} else {
+					factory = new GridDBFactory(settings, state);
+					factory.buildStepOneFast();
+				}
 				raw = gateway.getRawData(context, elementInfo, settings);
 				factory.setSource(raw);
 				grid = factory.buildStepTwo();

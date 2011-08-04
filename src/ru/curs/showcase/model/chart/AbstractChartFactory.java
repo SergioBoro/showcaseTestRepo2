@@ -4,7 +4,7 @@ import org.xml.sax.Attributes;
 
 import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.api.element.LegendPosition;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.xml.SAXTagHandler;
@@ -299,4 +299,5 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 			}
 		}
 	}
+
 }
