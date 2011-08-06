@@ -46,9 +46,6 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 
 	@Override
 	public CompositeContext getContext() {
-		if (elementInfo == null) {
-			return context;
-		}
 		for (String id : elementInfo.getRelated()) {
 			// панель может быть еще не отрисована
 			final BasicElementPanel elementPanel = ActionExecuter.getElementPanelById(id);
