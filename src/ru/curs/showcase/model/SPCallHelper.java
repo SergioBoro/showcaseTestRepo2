@@ -7,7 +7,7 @@ import org.slf4j.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.ConnectionFactory;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.DBConnectException;
 
 /**
  * Абстрактный класс, содержащий базовые константы и функции для вызова хранимых
@@ -55,7 +55,6 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		procName = aProcName;
 	}
 
-	private static final String FILTER_COLUMNNAME = "filterinfo";
 	protected static final String SESSION_CONTEXT_PARAM = "session_context";
 
 	/**
@@ -67,7 +66,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		statement.setString(MAIN_CONTEXT_TAG, "");
 		statement.setString(ADD_CONTEXT_TAG, "");
 		statement.setString(SESSION_CONTEXT_PARAM, "");
-		statement.setString(FILTER_COLUMNNAME, "");
+		statement.setString(FILTER_TAG, "");
 		if (context != null) {
 			if (context.getMain() != null) {
 				statement.setString(MAIN_CONTEXT_TAG, context.getMain());
@@ -79,7 +78,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 				statement.setString(SESSION_CONTEXT_PARAM, context.getSession());
 			}
 			if (context.getFilter() != null) {
-				statement.setString(FILTER_COLUMNNAME, context.getFilter());
+				statement.setString(FILTER_TAG, context.getFilter());
 			}
 			LOGGER.info("context=" + context.toString());
 		}

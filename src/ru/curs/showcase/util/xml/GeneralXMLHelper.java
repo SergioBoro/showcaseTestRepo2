@@ -14,7 +14,6 @@ import ru.curs.showcase.app.api.NamedElement;
 public abstract class GeneralXMLHelper {
 	protected static final String MAIN_CONTEXT_TAG = "main_context";
 	protected static final String ADD_CONTEXT_TAG = "add_context";
-	protected static final String FILTER_CONTEXT_TAG = "filter_context";
 
 	protected static final String NAME_TAG = "name";
 	public static final String ID_TAG = "id";
@@ -103,6 +102,8 @@ public abstract class GeneralXMLHelper {
 	protected static final String RELATED_TAG = "related";
 
 	protected static final String ELEMENT_ID = "${elementId}";
+
+	protected static final String FILTER_TAG = "filterinfo";
 
 	/**
 	 * Имя колонки или строки с XML документом, содержащим обработчики.

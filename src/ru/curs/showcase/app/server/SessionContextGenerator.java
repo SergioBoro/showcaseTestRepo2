@@ -56,14 +56,16 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 
 	private static void addRelatedContext(final Document info,
 			final Map<String, CompositeContext> aRelated) {
+		Element root = info.createElement(RELATED_TAG);
+		info.getDocumentElement().appendChild(root);
 		for (Entry<String, CompositeContext> rc : aRelated.entrySet()) {
-			Element node = info.createElement(RELATED_TAG);
+			Element node = info.createElement(ELEMENT_TAG);
 			node.setAttribute(ID_TAG, rc.getKey());
-			info.getDocumentElement().appendChild(node);
+			root.appendChild(node);
 			Element subNode = info.createElement(ADD_CONTEXT_TAG);
 			node.appendChild(subNode);
 			subNode.appendChild(info.createTextNode(rc.getValue().getAdditional()));
-			subNode = info.createElement(FILTER_CONTEXT_TAG);
+			subNode = info.createElement(FILTER_TAG);
 			node.appendChild(subNode);
 			subNode.appendChild(info.createTextNode(rc.getValue().getFilter()));
 		}
