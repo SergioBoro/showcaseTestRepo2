@@ -3,6 +3,7 @@
  */
 package ru.curs.showcase.model.webtext;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
@@ -33,7 +34,8 @@ public final class WebTextFactory extends HTMLBasedElementFactory {
 	@Override
 	protected void transformData() {
 		String out =
-			XMLUtils.xsltTransform(getSource().getData(), getElementInfo().getTransformName());
+			XMLUtils.xsltTransform(getSource().getData(), new DataPanelElementContext(
+					getCallContext(), getElementInfo()));
 		result.setData(out);
 	}
 

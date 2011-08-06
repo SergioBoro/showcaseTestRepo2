@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.html.XForms;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.event.HTMLBasedElementFactory;
@@ -74,7 +75,8 @@ public final class XFormsFactory extends HTMLBasedElementFactory {
 			result.setXFormParts(XFormCutter.xFormParts(html));
 		} catch (Exception e) {
 			throw new XSLTTransformException(String.format(XFORMS_CREATE_ERROR, getElementInfo()
-					.getFullId()), e);
+					.getFullId()), e, new DataPanelElementContext(getCallContext(),
+					getElementInfo()));
 		}
 	}
 

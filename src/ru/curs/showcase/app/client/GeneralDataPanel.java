@@ -8,7 +8,7 @@ import java.util.*;
 import ru.beta2.extra.gwt.ui.panels.CursScrolledTabLayoutPanel;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.client.api.Constants;
+import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -365,7 +365,7 @@ public class GeneralDataPanel {
 	 */
 	public static Widget generateMapElement(final DataPanelElementInfo dpe) {
 
-		MapPanel mp = null;
+		BasicElementPanelBasis mp = null;
 		Widget w = null;
 		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
 

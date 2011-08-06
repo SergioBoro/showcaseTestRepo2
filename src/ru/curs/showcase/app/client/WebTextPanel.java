@@ -17,10 +17,6 @@ import com.google.gwt.user.client.ui.*;
 public class WebTextPanel extends BasicElementPanelBasis {
 
 	/**
-	 * DataPanelElementInfo.
-	 */
-	private DataPanelElementInfo elementInfo;
-	/**
 	 * DataServiceAsync.
 	 */
 	private DataServiceAsync dataService;
@@ -57,7 +53,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 	public WebTextPanel(final DataPanelElementInfo element1) {
 
-		this.elementInfo = element1;
+		this.setElementInfo(element1);
 
 		setContext(null);
 		setIsFirstLoading(true);
@@ -75,7 +71,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getWebText(getContext(), elementInfo, new GWTServiceCallback<WebText>(
+		dataService.getWebText(getContext(), getElementInfo(), new GWTServiceCallback<WebText>(
 				Constants.ERROR_OF_WEBTEXT_DATA_RETRIEVING_FROM_SERVER) {
 
 			@Override
@@ -148,15 +144,6 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		return generalWebTextPanel;
 	}
 
-	public void setElementInfo(final DataPanelElementInfo aelement) {
-		this.elementInfo = aelement;
-	}
-
-	@Override
-	public DataPanelElementInfo getElementInfo() {
-		return elementInfo;
-	}
-
 	public void setDataService(final DataServiceAsync adataService) {
 		this.dataService = adataService;
 	}
@@ -184,7 +171,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 				dataService = GWT.create(DataService.class);
 			}
 
-			dataService.getWebText(getContext(), elementInfo, new GWTServiceCallback<WebText>(
+			dataService.getWebText(getContext(), getElementInfo(), new GWTServiceCallback<WebText>(
 					Constants.ERROR_OF_WEBTEXT_DATA_RETRIEVING_FROM_SERVER) {
 
 				@Override
@@ -237,7 +224,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getWebText(getContext(), elementInfo, new GWTServiceCallback<WebText>(
+		dataService.getWebText(getContext(), getElementInfo(), new GWTServiceCallback<WebText>(
 				Constants.ERROR_OF_WEBTEXT_DATA_RETRIEVING_FROM_SERVER) {
 
 			@Override

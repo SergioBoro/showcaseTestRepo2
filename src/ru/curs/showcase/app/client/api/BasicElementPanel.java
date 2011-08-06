@@ -85,4 +85,6 @@ public interface BasicElementPanel {
 	 */
 	DataPanelElement getElement();
 
+	CompositeContext getContext();
+
 }

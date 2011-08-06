@@ -64,16 +64,16 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 * @throws SQLException
 	 */
 	protected void setupGeneralParameters() throws SQLException {
-		statement.setString(MAIN_CONTEXT_ATTR_NAME, "");
-		statement.setString(ADD_CONTEXT_ATTR_NAME, "");
+		statement.setString(MAIN_CONTEXT_TAG, "");
+		statement.setString(ADD_CONTEXT_TAG, "");
 		statement.setString(SESSION_CONTEXT_PARAM, "");
 		statement.setString(FILTER_COLUMNNAME, "");
 		if (context != null) {
 			if (context.getMain() != null) {
-				statement.setString(MAIN_CONTEXT_ATTR_NAME, context.getMain());
+				statement.setString(MAIN_CONTEXT_TAG, context.getMain());
 			}
 			if (context.getAdditional() != null) {
-				statement.setString(ADD_CONTEXT_ATTR_NAME, context.getAdditional());
+				statement.setString(ADD_CONTEXT_TAG, context.getAdditional());
 			}
 			if (context.getSession() != null) {
 				statement.setString(SESSION_CONTEXT_PARAM, context.getSession());

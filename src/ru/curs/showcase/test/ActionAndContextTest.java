@@ -12,7 +12,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.*;
+import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
@@ -675,5 +675,27 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertEquals("show_moscow", ac.getName());
 		assertEquals("cl01", ac.getId());
 		assertEquals(ActivityType.BrowserJS, ac.getType());
+	}
+
+	@Test
+	public void testAddRelatedToContext() {
+		CompositeContext parent = CompositeContext.createCurrent();
+		CompositeContext related = new CompositeContext();
+		related.setMain(MAIN_FILTER);
+		related.setAdditional(ADD_CONDITION);
+		related.setFilter(FILTER_CONDITION);
+		related.setSession(SESSION_CONDITION);
+		related.setSessionParamsMap(new TreeMap<String, ArrayList<String>>());
+		related.getRelated().put("rrid", new CompositeContext());
+		parent.addRelated("rid", related);
+
+		assertEquals(1, parent.getRelated().size());
+		CompositeContext test = parent.getRelated().values().iterator().next();
+		assertEquals(MAIN_FILTER, test.getMain());
+		assertEquals(ADD_CONDITION, test.getAdditional());
+		assertEquals(FILTER_CONDITION, test.getFilter());
+		assertNull(test.getSession());
+		assertNull(test.getSessionParamsMap());
+		assertTrue(test.getRelated().isEmpty());
 	}
 }

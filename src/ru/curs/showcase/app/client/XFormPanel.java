@@ -60,11 +60,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 	}
 
 	/**
-	 * DataPanelElementInfo.
-	 */
-	private DataPanelElementInfo elementInfo;
-
-	/**
 	 * XForms xform.
 	 */
 	private XForms xform = null;
@@ -82,15 +77,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 	@Override
 	public DataPanelElement getElement() {
 		return xform;
-	}
-
-	@Override
-	public DataPanelElementInfo getElementInfo() {
-		return elementInfo;
-	}
-
-	public void setElementInfo(final DataPanelElementInfo aelement) {
-		this.elementInfo = aelement;
 	}
 
 	public DataServiceAsync getDataService() {
@@ -209,7 +195,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getXForms(getContext(), elementInfo, mainInstance,
+		dataService.getXForms(getContext(), getElementInfo(), mainInstance,
 				new GWTServiceCallback<XForms>("при получении данных XForm с сервера") {
 
 					@Override

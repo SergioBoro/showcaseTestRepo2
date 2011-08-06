@@ -11,7 +11,8 @@ import ru.curs.showcase.app.api.*;
  * Класс составного контекста. Контекст определяет условия фильтрации данных,
  * которые будут получены из БД для отображения элементов информационной панели.
  * Контекст может быть задан как для панели в целом, так и для отдельных ее
- * элементов.
+ * элементов. Массивы related и sessionParamsMap не участвуют в проверке на
+ * идентичность и в клонировании.
  * 
  * @author den
  * 
@@ -60,6 +61,12 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	 * Фильтрующий контекст. Задается с помощью компонента XForms.
 	 */
 	private String filter;
+
+	/**
+	 * Контексты связанных элементов. Перед передачей в БД их содержимое
+	 * включается в session.
+	 */
+	private Map<String, CompositeContext> related = new TreeMap<String, CompositeContext>();
 
 	public CompositeContext(final Map<String, List<String>> aParams) {
 		super();
@@ -326,5 +333,20 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 
 	public void setSessionParamsMap(final Map<String, ArrayList<String>> aSessionParamsMap) {
 		sessionParamsMap = aSessionParamsMap;
+	}
+
+	public void addRelated(final String aId, final CompositeContext aContext) {
+		aContext.setSession(null);
+		aContext.setSessionParamsMap(null);
+		aContext.getRelated().clear();
+		related.put(aId, aContext);
+	}
+
+	public Map<String, CompositeContext> getRelated() {
+		return related;
+	}
+
+	public void setRelated(final Map<String, CompositeContext> aRelated) {
+		related = aRelated;
 	}
 }

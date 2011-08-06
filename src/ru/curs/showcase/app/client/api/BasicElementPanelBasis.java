@@ -3,6 +3,7 @@
  */
 package ru.curs.showcase.app.client.api;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 
 import com.google.gwt.user.client.Timer;
@@ -43,7 +44,20 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 		this.context = acontext;
 	}
 
+	@Override
 	public CompositeContext getContext() {
+		if (elementInfo == null) {
+			return context;
+		}
+		for (String id : elementInfo.getRelated()) {
+			// панель может быть еще не отрисована
+			final BasicElementPanel elementPanel = ActionExecuter.getElementPanelById(id);
+			if ((elementPanel != null) && (elementPanel.getContext() != null)) {
+				context.addRelated(id, elementPanel.getContext());
+			} else {
+				context.addRelated(id, new CompositeContext());
+			}
+		}
 		return context;
 	}
 
@@ -52,6 +66,10 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 	 * прорисовкой) элемент.
 	 */
 	private Boolean isFirstLoading = true;
+	/**
+	 * DataPanelElementInfo.
+	 */
+	private DataPanelElementInfo elementInfo;
 
 	/**
 	 * @param aisFirstLoading
@@ -72,6 +90,15 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 	public void saveSettings(final Boolean reDrawWithSettingsSave) {
 		// если появятся пользовательские настройки - в этой функции,
 		// переопределенной в панели элемента их нужно сохранять
+	}
+
+	@Override
+	public DataPanelElementInfo getElementInfo() {
+		return elementInfo;
+	}
+
+	public void setElementInfo(final DataPanelElementInfo aelement) {
+		this.elementInfo = aelement;
 	}
 
 }

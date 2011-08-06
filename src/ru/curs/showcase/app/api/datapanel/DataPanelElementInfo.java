@@ -10,8 +10,8 @@ import ru.curs.showcase.app.api.event.*;
 
 /**
  * Класс с описанием элемента информационной панели. Примечание: свойство
- * {@link #tabPosition} в классе носит справочный характер и поэтому не
- * учитывается при сравнении и не сериализуется в XML!
+ * {@link #tab} в классе носит справочный характер и поэтому не учитывается при
+ * сравнении и не сериализуется в XML!
  * 
  * @author den
  * 
@@ -113,6 +113,12 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	private Map<String, DataPanelElementProc> procs = new TreeMap<String, DataPanelElementProc>();
 
 	/**
+	 * Идентификаторы связанных с данным элементов. Контексты связанных
+	 * элементов передаются в БД.
+	 */
+	private List<String> related = new ArrayList<String>();
+
+	/**
 	 * Ссылка на вкладку панели, на которой расположен элемент.
 	 */
 	@XmlTransient
@@ -132,24 +138,36 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	/**
 	 * Проверка на то, что данные для элемента заданы корректно. Необходима в
 	 * дополнение к проверке XSD, т.к. не всегда панель приходит к нам в виде
-	 * XML.
+	 * XML. Возвращаем результат, т.к. это GWT API и нельзя вернуть серверное
+	 * исключение.
+	 * 
+	 * @return
 	 * 
 	 * @return результат проверки.
 	 */
-	public Boolean isCorrect() {
-		Boolean baseCheckRes = id != null;
+	public boolean isCorrect() {
+		Boolean checkRes = (id != null) && checkRelatedExists();
 		switch (type) {
 		case WEBTEXT:
-			return baseCheckRes && ((procName != null) || (transformName != null));
+			return checkRes && ((procName != null) || (transformName != null));
 		case GRID:
 		case CHART:
 		case GEOMAP:
-			return baseCheckRes && (procName != null);
+			return checkRes && (procName != null);
 		case XFORMS:
-			return baseCheckRes && (templateName != null);
+			return checkRes && (templateName != null);
 		default:
 			throw new Error(UNKNOWN_ELEMENT_TYPE);
 		}
+	}
+
+	private boolean checkRelatedExists() {
+		for (String key : related) {
+			if (tab.getElementInfoById(key) == null) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public DataPanelElementInfo(final String aId, final DataPanelElementType aType) {
@@ -269,6 +287,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		result = prime * result + ((procs == null) ? 0 : procs.hashCode());
 		result = prime * result + ((refreshByTimer == null) ? 0 : refreshByTimer.hashCode());
 		result = prime * result + ((refreshInterval == null) ? 0 : refreshInterval.hashCode());
+		result = prime * result + ((related == null) ? 0 : related.hashCode());
 		result = prime * result + ((styleClass == null) ? 0 : styleClass.hashCode());
 		result = prime * result + ((templateName == null) ? 0 : templateName.hashCode());
 		result = prime * result + ((transformName == null) ? 0 : transformName.hashCode());
@@ -276,9 +295,6 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		return result;
 	}
 
-	// CHECKSTYLE:ON
-
-	// CHECKSTYLE:OFF
 	@Override
 	public boolean equals(final Object obj) {
 		if (this == obj) {
@@ -354,6 +370,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		} else if (!refreshInterval.equals(other.refreshInterval)) {
 			return false;
 		}
+		if (related == null) {
+			if (other.related != null) {
+				return false;
+			}
+		} else if (!related.equals(other.related)) {
+			return false;
+		}
 		if (styleClass == null) {
 			if (other.styleClass != null) {
 				return false;
@@ -414,7 +437,8 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 				+ ", templateName=" + templateName + ", hideOnLoad=" + hideOnLoad
 				+ ", neverShowInPanel=" + neverShowInPanel + ", styleClass=" + styleClass
 				+ ", cacheData=" + cacheData + ", refreshByTimer=" + refreshByTimer
-				+ ", refreshInterval=" + refreshInterval + ", procs=" + procs + "]";
+				+ ", refreshInterval=" + refreshInterval + ", procs=" + procs + ", related="
+				+ related + "]";
 	}
 
 	/**
@@ -510,5 +534,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 */
 	public boolean loadByOneProc() {
 		return getMetadataProc() == null;
+	}
+
+	public List<String> getRelated() {
+		return related;
+	}
+
+	public void setRelated(final List<String> aRelated) {
+		related = aRelated;
 	}
 }

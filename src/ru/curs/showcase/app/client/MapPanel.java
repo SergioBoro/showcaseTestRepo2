@@ -18,7 +18,7 @@ public class MapPanel extends BasicElementPanelBasis {
 
 	public MapPanel(final CompositeContext context1, final DataPanelElementInfo element1) {
 		this.setContext(context1);
-		this.elementInfo = element1;
+		this.setElementInfo(element1);
 		setIsFirstLoading(true);
 
 		generalMapPanel = new VerticalPanel();
@@ -34,7 +34,7 @@ public class MapPanel extends BasicElementPanelBasis {
 	public MapPanel(final DataPanelElementInfo element1) {
 
 		// я бы убрал этот код-начало
-		this.elementInfo = element1;
+		this.setElementInfo(element1);
 		generalHp = new HorizontalPanel();
 		this.setContext(null);
 		setIsFirstLoading(true);
@@ -50,7 +50,7 @@ public class MapPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getGeoMap(getContext(), elementInfo, new GWTServiceCallback<GeoMap>(
+		dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
 				Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
 
 			@Override
@@ -74,8 +74,8 @@ public class MapPanel extends BasicElementPanelBasis {
 	 */
 	protected void fillMapPanel(final GeoMap aGeoMap) {
 
-		final String divIdMap = elementInfo.getId() + Constants.MAP_DIV_ID_SUFFIX;
-		final String divIdLegend = elementInfo.getId() + Constants.MAP_LEGEND_DIV_ID_SUFFIX;
+		final String divIdMap = getElementInfo().getId() + Constants.MAP_DIV_ID_SUFFIX;
+		final String divIdLegend = getElementInfo().getId() + Constants.MAP_LEGEND_DIV_ID_SUFFIX;
 
 		final String htmlForMap;
 		final int n60 = 60;
@@ -233,11 +233,6 @@ public class MapPanel extends BasicElementPanelBasis {
 	private HTML legendHTML = null;
 
 	/**
-	 * DataPanelElementInfo.
-	 */
-	private DataPanelElementInfo elementInfo;
-
-	/**
 	 * Ф-ция, возвращающая панель с картой и легендой, если она необходима.
 	 * 
 	 * @return - Панель с картой и легендой.
@@ -284,7 +279,7 @@ public class MapPanel extends BasicElementPanelBasis {
 				dataService = GWT.create(DataService.class);
 			}
 
-			dataService.getGeoMap(getContext(), elementInfo, new GWTServiceCallback<GeoMap>(
+			dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
 					Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
 
 				@Override
@@ -316,15 +311,6 @@ public class MapPanel extends BasicElementPanelBasis {
 
 	}
 
-	@Override
-	public DataPanelElementInfo getElementInfo() {
-		return elementInfo;
-	}
-
-	public void setElementInfo(final DataPanelElementInfo aelement) {
-		this.elementInfo = aelement;
-	}
-
 	private void checkForDefaultAction() {
 		if (geoMap.getActionForDependentElements() != null) {
 			AppCurrContext.getInstance().setCurrentAction(geoMap.getActionForDependentElements());
@@ -348,7 +334,7 @@ public class MapPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getGeoMap(getContext(), elementInfo, new GWTServiceCallback<GeoMap>(
+		dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
 				Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
 
 			@Override

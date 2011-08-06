@@ -67,12 +67,6 @@ public final class NavigatorFactory extends SAXTagHandler {
 		groupDefIcon = AppProps.getRequiredValueByName(GRP_DEF_ICON_PARAM_NAME);
 	}
 
-	/**
-	 * Обработчик тэга level.
-	 * 
-	 * @param attrs
-	 *            - атрибуты.
-	 */
 	public void levelSTARTTAGHandler(final Attributes attrs) {
 		NavigatorElement el = new NavigatorElement();
 		setupBaseProps(el, attrs);
@@ -89,12 +83,6 @@ public final class NavigatorFactory extends SAXTagHandler {
 		currentElStack.add(el);
 	}
 
-	/**
-	 * Обработчик тэга group.
-	 * 
-	 * @param attrs
-	 *            - атрибуты.
-	 */
 	public void groupSTARTTAGHandler(final Attributes attrs) {
 		currentGroup = new NavigatorGroup();
 		setupBaseProps(currentGroup, attrs);
@@ -110,12 +98,6 @@ public final class NavigatorFactory extends SAXTagHandler {
 		currentGroup.setImageId(String.format("%s/%s", groupIconsDir, imageFile));
 	}
 
-	/**
-	 * Обработчик тэга navigator.
-	 * 
-	 * @param attrs
-	 *            - атрибуты.
-	 */
 	public Object navigatorSTARTTAGHandler(final Attributes attrs) {
 		if (result == null) {
 			result = new Navigator();

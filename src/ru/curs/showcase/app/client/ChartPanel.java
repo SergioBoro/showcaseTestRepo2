@@ -19,7 +19,7 @@ public class ChartPanel extends BasicElementPanelBasis {
 	public ChartPanel(final CompositeContext context1, final DataPanelElementInfo element1) {
 
 		this.setContext(context1);
-		this.elementInfo = element1;
+		setElementInfo(element1);
 		setIsFirstLoading(true);
 
 		generalChartPanel = new VerticalPanel();
@@ -35,7 +35,7 @@ public class ChartPanel extends BasicElementPanelBasis {
 	public ChartPanel(final DataPanelElementInfo element1) {
 
 		// я бы убрал этот код-начало
-		this.elementInfo = element1;
+		setElementInfo(element1);
 		generalHp = new HorizontalPanel();
 		this.setContext(null);
 		setIsFirstLoading(true);
@@ -51,7 +51,7 @@ public class ChartPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getChart(getContext(), elementInfo, new GWTServiceCallback<Chart>(
+		dataService.getChart(getContext(), getElementInfo(), new GWTServiceCallback<Chart>(
 				Constants.ERROR_OF_CHART_DATA_RETRIEVING_FROM_SERVER) {
 
 			@Override
@@ -75,8 +75,8 @@ public class ChartPanel extends BasicElementPanelBasis {
 	 */
 	protected void fillChartPanel(final Chart achart) {
 
-		final String divIdGraph = elementInfo.getId() + Constants.CHART_DIV_ID_SUFFIX;
-		final String divIdLegend = elementInfo.getId() + Constants.CHART_LEGEND_DIV_ID_SUFFIX;
+		final String divIdGraph = getElementInfo().getId() + Constants.CHART_DIV_ID_SUFFIX;
+		final String divIdLegend = getElementInfo().getId() + Constants.CHART_LEGEND_DIV_ID_SUFFIX;
 
 		final String htmlForChart = "<div id='" + divIdGraph + "' class='cursChart'></div>";
 
@@ -212,11 +212,6 @@ public class ChartPanel extends BasicElementPanelBasis {
 	private HTML legendHTML = null;
 
 	/**
-	 * DataPanelElementInfo.
-	 */
-	private DataPanelElementInfo elementInfo;
-
-	/**
 	 * Ф-ция, возвращающая панель с графиком и легендой, если она необходима.
 	 * 
 	 * @return - Панель с графиком и легендой.
@@ -262,7 +257,7 @@ public class ChartPanel extends BasicElementPanelBasis {
 				dataService = GWT.create(DataService.class);
 			}
 
-			dataService.getChart(getContext(), elementInfo, new GWTServiceCallback<Chart>(
+			dataService.getChart(getContext(), getElementInfo(), new GWTServiceCallback<Chart>(
 					Constants.ERROR_OF_CHART_DATA_RETRIEVING_FROM_SERVER) {
 
 				@Override
@@ -294,15 +289,6 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 	}
 
-	@Override
-	public DataPanelElementInfo getElementInfo() {
-		return elementInfo;
-	}
-
-	public void setElement(final DataPanelElementInfo aelement) {
-		this.elementInfo = aelement;
-	}
-
 	private void checkForDefaultAction() {
 		if (chart.getActionForDependentElements() != null) {
 			AppCurrContext.getInstance().setCurrentAction(chart.getActionForDependentElements());
@@ -326,7 +312,7 @@ public class ChartPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getChart(getContext(), elementInfo, new GWTServiceCallback<Chart>(
+		dataService.getChart(getContext(), getElementInfo(), new GWTServiceCallback<Chart>(
 				Constants.ERROR_OF_CHART_DATA_RETRIEVING_FROM_SERVER) {
 
 			@Override

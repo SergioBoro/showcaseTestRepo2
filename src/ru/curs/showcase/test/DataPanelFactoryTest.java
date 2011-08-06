@@ -210,7 +210,31 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("0201");
 		DataPanelElementProc proc = el.getMetadataProc();
+
 		assertNotNull(el);
 		assertEquals(DataPanelElementProcType.METADATA, proc.getType());
+	}
+
+	@Test
+	public void testReadElementWithRelated() {
+		DataPanelGateway gateway = new DataPanelXMLGateway();
+		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
+		DataPanelFactory factory = new DataPanelFactory();
+		DataPanel panel = factory.fromStream(file);
+		DataPanelElementInfo el = panel.getTabById("10").getElementInfoById("1001");
+		el.isCorrect();
+		assertEquals(2, el.getRelated().size());
+		assertEquals("1002", el.getRelated().get(0));
+		assertEquals("1003", el.getRelated().get(1));
+	}
+
+	@Test
+	public void testWrongReadElementWithRelated() {
+		DataPanelGateway gateway = new DataPanelXMLGateway();
+		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
+		DataPanelFactory factory = new DataPanelFactory();
+		DataPanel panel = factory.fromStream(file);
+		DataPanelElementInfo el = panel.getTabById("11").getElementInfoById("1101");
+		assertFalse(el.isCorrect());
 	}
 }

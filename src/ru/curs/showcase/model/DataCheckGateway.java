@@ -21,7 +21,7 @@ public abstract class DataCheckGateway extends GeneralXMLHelper {
 		if (element == null) {
 			throw new IncorrectElementException();
 		}
-		if ((element.getType() != getGatewayType()) || (!element.isCorrect())) {
+		if ((element.getType() != getGatewayType()) || !element.isCorrect()) {
 			throw new IncorrectElementException(element.toString());
 		}
 	}

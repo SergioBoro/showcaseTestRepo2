@@ -278,8 +278,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		if (context.getSession() != null) {
 			return;
 		}
-		String sessionContext =
-			SessionContextGenerator.generate(sessionId, context.getSessionParamsMap());
+		String sessionContext = SessionContextGenerator.generate(sessionId, context);
 
 		LOGGER.info("Session context: " + sessionContext);
 		context.setSession(sessionContext);
@@ -296,8 +295,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		}
 
 		CompositeContext context = action.getContext();
-		String sessionContext =
-			SessionContextGenerator.generate(sessionId, context.getSessionParamsMap());
+		String sessionContext = SessionContextGenerator.generate(sessionId, context);
 		LOGGER.info("Session context: " + sessionContext);
 		action.setSessionContext(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());

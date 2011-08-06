@@ -47,39 +47,21 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 	/**
 	 * Стартовые тэги, которые будут обработаны данным обработчиком.
 	 */
-	private final String[] startTags = { DP_TAG, TAB_TAG, ELEMENT_TAG, PROC_TAG };
+	private final String[] startTags = { DP_TAG, TAB_TAG, ELEMENT_TAG, PROC_TAG, RELATED_TAG };
 
 	@Override
 	protected String[] getStartTags() {
 		return startTags;
 	}
 
-	/**
-	 * Обработчик тэга tab.
-	 * 
-	 * @param attrs
-	 *            - атрибуты.
-	 */
 	public void tabSTARTTAGHandler(final Attributes attrs) {
 		currentTab = result.add(attrs.getValue(ID_TAG), attrs.getValue(NAME_TAG));
 	}
 
-	/**
-	 * Обработчик тэга datapanel.
-	 * 
-	 * @param attrs
-	 *            - атрибуты.
-	 */
 	public void datapanelSTARTTAGHandler(final Attributes attrs) {
 		result = new DataPanel(file.getId());
 	}
 
-	/**
-	 * Обработчик тэга element.
-	 * 
-	 * @param attrs
-	 *            - атрибуты.
-	 */
 	public void elementSTARTTAGHandler(final Attributes attrs) {
 		String value;
 		DataPanelElementInfo el = new DataPanelElementInfo(elCounter++, currentTab);
@@ -120,12 +102,6 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		currentTab.getElements().add(el);
 	}
 
-	/**
-	 * Обработчик тэга proc.
-	 * 
-	 * @param attrs
-	 *            - атрибуты.
-	 */
 	public void procSTARTTAGHandler(final Attributes attrs) {
 		DataPanelElementProc proc = new DataPanelElementProc();
 		setupBaseProps(proc, attrs);
@@ -136,8 +112,15 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		if (attrs.getIndex(SCHEMA_TAG) > -1) {
 			proc.setSchemaName(attrs.getValue(SCHEMA_TAG));
 		}
-		currentTab.getElements().get(currentTab.getElements().size() - 1).getProcs()
-				.put(proc.getId(), proc);
+		getLastElement().getProcs().put(proc.getId(), proc);
+	}
+
+	private DataPanelElementInfo getLastElement() {
+		return currentTab.getElements().get(currentTab.getElements().size() - 1);
+	}
+
+	public void relatedSTARTTAGHandler(final Attributes attrs) {
+		getLastElement().getRelated().add(attrs.getValue(ID_TAG));
 	}
 
 	/**

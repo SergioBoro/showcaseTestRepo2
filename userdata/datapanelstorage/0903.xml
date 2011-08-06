@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>	
+	<tab id="04" name="2 процедуры для грида c ускорением">
+		<element id ="0401" type="grid" proc="grid_cities_data">
+			<proc id="040101" name="grid_cities_metadata" type="METADATA"/>
+		</element>
+		<element id="0402" type="grid" proc="grid_cities_one"/>
+	</tab>
+	<tab id="10" name="Получение состояния выбранных элементов">
+		<element id="61" type="xforms" template="Showcase_Template.xml"
+			proc="xforms_proc1">
+			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
+			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
+		</element>
+		<element id="62" type="webtext" proc="webtext_filter_and_add"
+			hideOnLoad="true" />
+		<element id="63" type="webtext" proc="webtext_dep62" >
+			<related id="62"/>
+		</element>
+	</tab>	
+	<tab id="02" name="Вызов SP c add_context">
+		<element id="0200" type="webtext" proc="webtext_buttons_uco"/>
+		<element id="0201" type="webtext" proc="webtext_call_sp"/>
+		<element id="0202" type="webtext" proc="webtext_show_debug_console" transform="xml_in_html.xsl" hideOnLoad="true"/>	
+	</tab>					
+</datapanel>

@@ -3,11 +3,13 @@ package ru.curs.showcase.app.server;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.Map.Entry;
 
 import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -37,27 +39,47 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 	 * @return - строку с XML.
 	 * @param sessionId
 	 *            - идентификатор сессии.
-	 * @param aMap
+	 * @param aContext
 	 *            - параметры.
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String
-			generate(final String sessionId, final Map<String, ArrayList<String>> aMap)
-					throws UnsupportedEncodingException {
+	public static String generate(final String sessionId, final CompositeContext aContext)
+			throws UnsupportedEncodingException {
+		Document info = createXML();
+		addUserNode(info);
+		fillURLParams(info, aContext.getSessionParamsMap());
+		addUserData(info, aContext.getSessionParamsMap());
+		addRelatedContext(info, aContext.getRelated());
+		String result = XMLUtils.documentToString(info);
+		return result;
+	}
+
+	private static void addRelatedContext(final Document info,
+			final Map<String, CompositeContext> aRelated) {
+		for (Entry<String, CompositeContext> rc : aRelated.entrySet()) {
+			Element node = info.createElement(RELATED_TAG);
+			node.setAttribute(ID_TAG, rc.getKey());
+			info.getDocumentElement().appendChild(node);
+			Element subNode = info.createElement(ADD_CONTEXT_TAG);
+			node.appendChild(subNode);
+			subNode.appendChild(info.createTextNode(rc.getValue().getAdditional()));
+			subNode = info.createElement(FILTER_CONTEXT_TAG);
+			node.appendChild(subNode);
+			subNode.appendChild(info.createTextNode(rc.getValue().getFilter()));
+		}
+	}
+
+	private static Document createXML() {
 		Document info =
 			XMLUtils.createBuilder().getDOMImplementation()
 					.createDocument("", SESSION_CONTEXT_TAG, null);
+		return info;
+	}
 
+	private static void addUserNode(final Document info) {
 		Element node = info.createElement(USERNAME_TAG);
 		info.getDocumentElement().appendChild(node);
 		node.appendChild(info.createTextNode(ServletUtils.getUserNameFromSession()));
-
-		fillURLParams(info, aMap);
-
-		addUserData(info, aMap);
-
-		String result = XMLUtils.xsltTransform(info, null);
-		return result;
 	}
 
 	private static void

@@ -104,7 +104,7 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 
 		WebTextGateway wtgateway = new WebTextDBGateway();
 		HTMLBasedElementRawData rawWT = wtgateway.getRawData(context, element);
-		String out = XMLUtils.xsltTransform(rawWT.getData(), null);
+		String out = XMLUtils.documentToString(rawWT.getData());
 		new WebText(out);
 		assertTrue(out.startsWith(prefix));
 	}

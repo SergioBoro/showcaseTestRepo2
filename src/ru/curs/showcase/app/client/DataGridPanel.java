@@ -89,11 +89,6 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	private DataServiceAsync dataService = null;
 
 	/**
-	 * DataPanelElementInfo.
-	 */
-	private DataPanelElementInfo elementInfo;
-
-	/**
 	 * GridRequestedSettings.
 	 */
 	private GridRequestedSettings settings = null;
@@ -157,15 +152,6 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	@Override
 	public DataPanelElement getElement() {
 		return grid;
-	}
-
-	@Override
-	public DataPanelElementInfo getElementInfo() {
-		return elementInfo;
-	}
-
-	public void setElementInfo(final DataPanelElementInfo aelement) {
-		this.elementInfo = aelement;
 	}
 
 	/**
@@ -301,7 +287,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getGrid(getContext(), elementInfo, settings, new GWTServiceCallback<Grid>(
+		dataService.getGrid(getContext(), getElementInfo(), settings, new GWTServiceCallback<Grid>(
 				"при получении данных таблицы с сервера") {
 
 			@Override
@@ -557,7 +543,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			dh.addParam(exportType.getClass().getName(), exportType.toString());
 
 			SerializationStreamFactory ssf = dh.getObjectSerializer();
-			dh.addStdPostParamsToBody(getContext(), elementInfo);
+			dh.addStdPostParamsToBody(getContext(), getElementInfo());
 			dh.addParam(settings.getClass().getName(), settings.toParamForHttpPost(ssf));
 			dh.addParam(cs.getClass().getName(), cs.toParamForHttpPost(ssf));
 

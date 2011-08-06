@@ -11,11 +11,12 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.*;
 import javax.xml.validation.SchemaFactory;
 
-import net.sf.saxon.om.NamespaceConstant;
+import net.sf.saxon.lib.NamespaceConstant;
 
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
 
@@ -189,15 +190,6 @@ public final class XMLUtils {
 		tr.transform(new DOMSource(doc), new StreamResult(new File(filename)));
 	}
 
-	/**
-	 * Функция создает XML документ по строке.
-	 * 
-	 * @param content
-	 *            - строка.
-	 * @return - XML документ.
-	 * @throws SAXException
-	 * @throws IOException
-	 */
 	public static Document stringToDocument(final String content) throws SAXException, IOException {
 		InputSource is = new InputSource(new StringReader(content));
 		DocumentBuilder db = createBuilder();
@@ -205,17 +197,6 @@ public final class XMLUtils {
 		return doc;
 	}
 
-	/**
-	 * Выполняет XSLT-преобразование.
-	 * 
-	 * @param sqlxml
-	 *            SQLXML для преобразования
-	 * @param xsltFileName
-	 *            Имя файла XSLT-преобразования
-	 * 
-	 * @return Преобразованный XML
-	 * 
-	 */
 	public static String xsltTransform(final SQLXML sqlxml, final String xsltFileName) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -227,17 +208,6 @@ public final class XMLUtils {
 		}
 	}
 
-	/**
-	 * Выполняет XSLT-преобразование.
-	 * 
-	 * @param doc
-	 *            org.w3c.dom.Document для преобразования
-	 * @param xsltFileName
-	 *            Имя файла XSLT-преобразования
-	 * 
-	 * @return Преобразованный XML
-	 * 
-	 */
 	public static String xsltTransform(final org.w3c.dom.Document doc, final String xsltFileName) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -249,33 +219,22 @@ public final class XMLUtils {
 		}
 	}
 
-	/**
-	 * Преобразует документ XML в строку.
-	 * 
-	 * @param doc
-	 *            - исходный документ.
-	 * @return - строка.
-	 * @throws XSLTTransformException
-	 */
-	public static String documentToString(final Document doc) {
-		return xsltTransform(doc, null);
+	public static String xsltTransform(final org.w3c.dom.Document doc,
+			final DataPanelElementContext context) {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			Transformer tr = createTransformer(context.getElementInfo().getTransformName());
+			tr.transform(new DOMSource(doc), new StreamResult(baos));
+			return baos.toString(TextUtils.DEF_ENCODING);
+		} catch (Exception e) {
+			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e, context);
+		}
 	}
 
-	/**
-	 * Выполняет XSLT-преобразование.
-	 * 
-	 * @param parser
-	 *            SAXParser
-	 * 
-	 * @param is
-	 *            InputStream для преобразования
-	 * 
-	 * @param xsltFileName
-	 *            Имя файла XSLT-преобразования
-	 * 
-	 * @return Преобразованный XML
-	 * 
-	 */
+	public static String documentToString(final Document doc) {
+		return xsltTransform(doc, (String) null);
+	}
+
 	public static String xsltTransform(final SAXParser parser, final InputStream is,
 			final String xsltFileName) {
 		try {
@@ -289,18 +248,6 @@ public final class XMLUtils {
 		}
 	}
 
-	/**
-	 * Выполняет XSLT-преобразование.
-	 * 
-	 * @param is
-	 *            InputStream для преобразования
-	 * 
-	 * @param xsltFileName
-	 *            Имя файла XSLT-преобразования
-	 * 
-	 * @return Преобразованный XML
-	 * 
-	 */
 	public static String xsltTransform(final InputStream is, final String xsltFileName) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();

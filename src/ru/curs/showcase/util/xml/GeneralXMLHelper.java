@@ -12,8 +12,9 @@ import ru.curs.showcase.app.api.NamedElement;
  * 
  */
 public abstract class GeneralXMLHelper {
-	protected static final String MAIN_CONTEXT_ATTR_NAME = "main_context";
-	protected static final String ADD_CONTEXT_ATTR_NAME = "add_context";
+	protected static final String MAIN_CONTEXT_TAG = "main_context";
+	protected static final String ADD_CONTEXT_TAG = "add_context";
+	protected static final String FILTER_CONTEXT_TAG = "filter_context";
 
 	protected static final String NAME_TAG = "name";
 	public static final String ID_TAG = "id";
@@ -98,6 +99,8 @@ public abstract class GeneralXMLHelper {
 	public static final String SOURCE_TAG = "source";
 
 	public static final String TOTAL_COUNT_TAG = "totalCount";
+
+	protected static final String RELATED_TAG = "related";
 
 	protected static final String ELEMENT_ID = "${elementId}";
 

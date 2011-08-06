@@ -1,6 +1,7 @@
 package ru.curs.showcase.util.xml;
 
 import ru.curs.showcase.app.api.ExceptionType;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.util.BaseException;
 
 /**
@@ -16,5 +17,11 @@ public class XSLTTransformException extends BaseException {
 
 	public XSLTTransformException(final String message, final Throwable cause) {
 		super(ExceptionType.SOLUTION, message, cause);
+	}
+
+	public XSLTTransformException(final String message, final Exception cause,
+			final DataPanelElementContext aContext) {
+		super(ExceptionType.SOLUTION, message, cause);
+		setContext(aContext);
 	}
 }

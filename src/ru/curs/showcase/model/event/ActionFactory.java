@@ -57,7 +57,7 @@ public class ActionFactory extends SAXTagHandler {
 	 */
 	private static final String[] START_TAGS = {
 			ACTION_TAG, DP_TAG, NAVIGATOR_TAG, ELEMENT_TAG, MODAL_WINDOW_TAG,
-			MAIN_CONTEXT_ATTR_NAME, ADD_CONTEXT_ATTR_NAME, SERVER_TAG, ACTIVITY_TAG };
+			MAIN_CONTEXT_TAG, ADD_CONTEXT_TAG, SERVER_TAG, ACTIVITY_TAG };
 
 	@Override
 	protected String[] getStartTags() {
@@ -68,7 +68,7 @@ public class ActionFactory extends SAXTagHandler {
 	 * Конечные тэги, которые будут обработаны.
 	 */
 	private static final String[] END_TAGS =
-		{ MAIN_CONTEXT_ATTR_NAME, ADD_CONTEXT_ATTR_NAME, ELEMENT_TAG, ACTIVITY_TAG, SERVER_TAG, };
+		{ MAIN_CONTEXT_TAG, ADD_CONTEXT_TAG, ELEMENT_TAG, ACTIVITY_TAG, SERVER_TAG, };
 
 	@Override
 	protected String[] getEndTrags() {
@@ -99,44 +99,20 @@ public class ActionFactory extends SAXTagHandler {
 		return curAction;
 	}
 
-	/**
-	 * Обработчик тэга server.
-	 * 
-	 * @param attrs
-	 *            - атрибуты тэга.
-	 */
 	public void serverSTARTTAGHandler(final Attributes attrs) {
 		readingServerPart = true;
 	}
 
-	/**
-	 * Обработчик тэга add_context.
-	 * 
-	 * @param attrs
-	 *            - атрибуты тэга.
-	 */
 	public void addcontextSTARTTAGHandler(final Attributes attrs) {
 		readingAddContext = true;
 		characters = "";
 	}
 
-	/**
-	 * Обработчик тэга main_context.
-	 * 
-	 * @param attrs
-	 *            - атрибуты тэга.
-	 */
 	public void maincontextSTARTTAGHandler(final Attributes attrs) {
 		readingMainContext = true;
 		characters = "";
 	}
 
-	/**
-	 * Обработчик тэга activity.
-	 * 
-	 * @param attrs
-	 *            - атрибуты тэга.
-	 */
 	public void activitySTARTTAGHandler(final Attributes attrs) {
 		curActivity = new Activity();
 		setupBaseProps(curActivity, attrs);
@@ -151,12 +127,6 @@ public class ActionFactory extends SAXTagHandler {
 		curActivity.setContext(context);
 	}
 
-	/**
-	 * Обработчик тэга element.
-	 * 
-	 * @param attrs
-	 *            - атрибуты тэга.
-	 */
 	public void elementSTARTTAGHandler(final Attributes attrs) {
 		String value;
 		curDataPanelElementLink = new DataPanelElementLink();
@@ -180,12 +150,6 @@ public class ActionFactory extends SAXTagHandler {
 		curDataPanelElementLink.setContext(context);
 	}
 
-	/**
-	 * Обработчик тэга modalwindow.
-	 * 
-	 * @param attrs
-	 *            - атрибуты тэга.
-	 */
 	public void modalwindowSTARTTAGHandler(final Attributes attrs) {
 		String value;
 		ModalWindowInfo mwi = new ModalWindowInfo();
@@ -207,12 +171,6 @@ public class ActionFactory extends SAXTagHandler {
 		curAction.setModalWindowInfo(mwi);
 	}
 
-	/**
-	 * Обработчик тэга navigator.
-	 * 
-	 * @param attrs
-	 *            - атрибуты тэга.
-	 */
 	public void navigatorSTARTTAGHandler(final Attributes attrs) {
 		NavigatorElementLink link = new NavigatorElementLink();
 		if (attrs.getIndex(ELEMENT_TAG) > -1) {
@@ -225,12 +183,6 @@ public class ActionFactory extends SAXTagHandler {
 		curAction.setNavigatorElementLink(link);
 	}
 
-	/**
-	 * Обработчик тэга datapanel.
-	 * 
-	 * @param attrs
-	 *            - атрибуты тэга.
-	 */
 	public void datapanelSTARTTAGHandler(final Attributes attrs) {
 		DataPanelLink curDataPanelLink = new DataPanelLink();
 		curDataPanelLink.setDataPanelId(attrs.getValue(DP_ID_ATTR_NAME));
@@ -241,12 +193,6 @@ public class ActionFactory extends SAXTagHandler {
 		curAction.setDataPanelLink(curDataPanelLink);
 	}
 
-	/**
-	 * Обработчик тэга action.
-	 * 
-	 * @param attrs
-	 *            - атрибуты тэга.
-	 */
 	public void actionSTARTTAGHandler(final Attributes attrs) {
 		Action action = new Action();
 		action.setDataPanelActionType(DataPanelActionType.RELOAD_PANEL);
@@ -263,7 +209,7 @@ public class ActionFactory extends SAXTagHandler {
 	@Override
 	public Action
 			handleEndTag(final String aNamespaceURI, final String aLname, final String qname) {
-		if (qname.equalsIgnoreCase(MAIN_CONTEXT_ATTR_NAME)) {
+		if (qname.equalsIgnoreCase(MAIN_CONTEXT_TAG)) {
 			CompositeContext context = new CompositeContext();
 			context.setMain(characters);
 			curAction.setContext(context);
@@ -272,7 +218,7 @@ public class ActionFactory extends SAXTagHandler {
 			return curAction;
 		}
 
-		if (qname.equalsIgnoreCase(ADD_CONTEXT_ATTR_NAME)) {
+		if (qname.equalsIgnoreCase(ADD_CONTEXT_TAG)) {
 			if (curActivity != null) {
 				curActivity.getContext().setAdditional(characters);
 			} else {
