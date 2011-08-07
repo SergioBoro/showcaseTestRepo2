@@ -81,11 +81,12 @@ public class XFormsFactoryTest extends AbstractTestBasedOnFiles {
 	public void testContextToXML() {
 		CompositeContext context = CompositeContext.createCurrent();
 		Document doc = XMLUtils.objectToXML(context);
-		assertEquals("context", doc.getDocumentElement().getNodeName());
-		final int contextsCount = 2;
-		assertEquals(contextsCount, doc.getDocumentElement().getChildNodes().getLength());
-		assertEquals("additional", doc.getDocumentElement().getChildNodes().item(0).getNodeName());
-		assertEquals("main", doc.getDocumentElement().getChildNodes().item(1).getNodeName());
+		assertEquals(Action.CONTEXT_TAG, doc.getDocumentElement().getNodeName());
+		assertEquals(1, doc.getDocumentElement().getElementsByTagName("additional").getLength());
+		assertEquals(1, doc.getDocumentElement().getElementsByTagName("main").getLength());
+		assertEquals(0, doc.getDocumentElement().getElementsByTagName(Action.FILTER_TAG)
+				.getLength());
+		assertEquals(0, doc.getDocumentElement().getElementsByTagName("session").getLength());
 		CompositeContext context2 =
 			(CompositeContext) XMLUtils.xmlToObject(doc.getDocumentElement(),
 					CompositeContext.class);

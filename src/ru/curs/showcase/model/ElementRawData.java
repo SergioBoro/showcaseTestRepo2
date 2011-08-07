@@ -57,9 +57,9 @@ public class ElementRawData {
 		spCallHelper = aSPCallHelper;
 	}
 
-	public ElementRawData(final DataPanelElementInfo aElementInfo) {
+	public ElementRawData(final DataPanelElementInfo aElementInfo, final CompositeContext aContext) {
 		elementInfo = aElementInfo;
-		callContext = null;
+		callContext = aContext;
 		properties = null;
 		spCallHelper = null;
 	}

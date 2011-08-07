@@ -26,12 +26,11 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	private static final String TREE_MULTILEVEL_XML = "tree_multilevel.xml";
 	private static final String TREE_MULTILEVEL_V2_XML = "tree_multilevel.v2.xml";
 	private static final String TEST_ACTIVITY_NAME = "test";
-	private static final String MAIN_FILTER = "Алтайский край";
+	private static final String MAIN_CONDITION = "Алтайский край";
 	private static final String SESSION_CONDITION =
 		"<sessioncontext><username>master</username><urlparams></urlparams></sessioncontext>";
 	private static final String FILTER_CONDITION = "filter";
 	private static final int DEF_SIZE_VALUE = 100;
-	private static final String FILTER_CONTEXT = FILTER_CONDITION;
 	private static final String NEW_ADD_CONDITION = "New add condition";
 	private static final String MOSCOW_CONTEXT = "Москва";
 	private static final String TAB_1 = "1";
@@ -87,21 +86,23 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertNotSame(action.getDataPanelLink().getElementLinks().get(0), clone.getDataPanelLink()
 				.getElementLinks().get(0));
 
-		assertTrue(action.containsServerActivity());
-		Activity act = action.getServerActivities().get(0);
+		assertTrue(clone.containsServerActivity());
+		Activity act = clone.getServerActivities().get(0);
 		assertNotNull(act);
 		assertEquals(ActivityType.SP, act.getType());
 		assertEquals("01", act.getId());
 		assertEquals(TEST_ACTIVITY_NAME, act.getName());
 		assertEquals(ADD_CONDITION, act.getContext().getAdditional());
+		assertNotSame(action.getServerActivities().get(0), act);
 
-		assertTrue(action.containsClientActivity());
-		act = action.getClientActivities().get(0);
+		assertTrue(clone.containsClientActivity());
+		act = clone.getClientActivities().get(0);
 		assertNotNull(act);
 		assertEquals(ActivityType.BrowserJS, act.getType());
 		assertEquals("01", act.getId());
 		assertEquals("testJS", act.getName());
 		assertEquals(ADD_CONDITION, act.getContext().getAdditional());
+		assertNotSame(action.getClientActivities().get(0), act);
 	}
 
 	/**
@@ -260,15 +261,15 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	public void testActualizeActions() {
 		Grid grid = createTestGrid();
 		CompositeContext context = new CompositeContext();
-		context.setMain(MAIN_FILTER);
+		context.setMain(MAIN_CONDITION);
 		context.setAdditional(NEW_ADD_CONDITION);
 		grid.actualizeActions(context);
 
-		assertEquals(MAIN_FILTER, grid.getEventManager().getEvents().get(0).getAction()
+		assertEquals(MAIN_CONDITION, grid.getEventManager().getEvents().get(0).getAction()
 				.getDataPanelLink().getElementLinks().get(0).getContext().getMain());
-		assertEquals(MAIN_FILTER, grid.getDefaultAction().getDataPanelLink().getElementLinks()
+		assertEquals(MAIN_CONDITION, grid.getDefaultAction().getDataPanelLink().getElementLinks()
 				.get(0).getContext().getMain());
-		assertEquals(MAIN_FILTER, grid.getDefaultAction().getServerActivities().get(0)
+		assertEquals(MAIN_CONDITION, grid.getDefaultAction().getServerActivities().get(0)
 				.getContext().getMain());
 
 		assertEquals(NEW_ADD_CONDITION, grid.getEventManager().getEvents().get(0).getAction()
@@ -443,7 +444,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 
 	private CompositeContext getSimpleTestContext() {
 		CompositeContext context = new CompositeContext();
-		context.setMain(MAIN_FILTER);
+		context.setMain(MAIN_CONDITION);
 		return context;
 	}
 
@@ -466,12 +467,14 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	public void testActionFilterBy() throws IOException {
 		final int actionWithChildNumber = 5;
 		Action action = getAction(TREE_MULTILEVEL_XML, 0, actionWithChildNumber);
-		action.filterBy(FILTER_CONTEXT);
-		assertEquals(FILTER_CONTEXT, action.getDataPanelLink().getElementLinks().get(0)
+		action.filterBy(FILTER_CONDITION);
+		assertEquals(FILTER_CONDITION, action.getDataPanelLink().getElementLinks().get(0)
 				.getContext().getFilter());
-		assertEquals(FILTER_CONTEXT, action.getContext().getFilter());
-		assertEquals(FILTER_CONTEXT, action.getServerActivities().get(0).getContext().getFilter());
-		assertEquals(FILTER_CONTEXT, action.getClientActivities().get(0).getContext().getFilter());
+		assertEquals(FILTER_CONDITION, action.getContext().getFilter());
+		assertEquals(FILTER_CONDITION, action.getServerActivities().get(0).getContext()
+				.getFilter());
+		assertEquals(FILTER_CONDITION, action.getClientActivities().get(0).getContext()
+				.getFilter());
 	}
 
 	/**
@@ -496,7 +499,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		Action first = createSimpleTestAction();
 		ActionHolder ah = new ActionHolder();
 		ah.setNavigatorAction(first);
-		first.filterBy(FILTER_CONTEXT);
+		first.filterBy(FILTER_CONDITION);
 		ah.setCurrentAction(first);
 
 		Action insideAction = new Action(DataPanelActionType.REFRESH_TAB);
@@ -517,13 +520,13 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 		assertNotNull(ah.getCurrentAction());
 		assertEquals(DataPanelActionType.REFRESH_TAB, ah.getCurrentAction()
 				.getDataPanelActionType());
-		assertEquals(FILTER_CONTEXT, ah.getCurrentAction().getContext().getFilter());
+		assertEquals(FILTER_CONDITION, ah.getCurrentAction().getContext().getFilter());
 		assertTrue(ah.getCurrentAction().getKeepUserSettings());
-		assertEquals(MAIN_FILTER, ah.getCurrentAction().getContext().getMain());
-		assertEquals(MAIN_FILTER, ah.getCurrentAction().getServerActivities().get(0).getContext()
-				.getMain());
-		assertEquals(MAIN_FILTER, ah.getCurrentAction().getClientActivities().get(0).getContext()
-				.getMain());
+		assertEquals(MAIN_CONDITION, ah.getCurrentAction().getContext().getMain());
+		assertEquals(MAIN_CONDITION, ah.getCurrentAction().getServerActivities().get(0)
+				.getContext().getMain());
+		assertEquals(MAIN_CONDITION, ah.getCurrentAction().getClientActivities().get(0)
+				.getContext().getMain());
 	}
 
 	/**
@@ -681,7 +684,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	public void testAddRelatedToContext() {
 		CompositeContext parent = CompositeContext.createCurrent();
 		CompositeContext related = new CompositeContext();
-		related.setMain(MAIN_FILTER);
+		related.setMain(MAIN_CONDITION);
 		related.setAdditional(ADD_CONDITION);
 		related.setFilter(FILTER_CONDITION);
 		related.setSession(SESSION_CONDITION);
@@ -691,11 +694,24 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 
 		assertEquals(1, parent.getRelated().size());
 		CompositeContext test = parent.getRelated().values().iterator().next();
-		assertEquals(MAIN_FILTER, test.getMain());
+		assertEquals(MAIN_CONDITION, test.getMain());
 		assertEquals(ADD_CONDITION, test.getAdditional());
 		assertEquals(FILTER_CONDITION, test.getFilter());
 		assertNull(test.getSession());
 		assertNull(test.getSessionParamsMap());
 		assertTrue(test.getRelated().isEmpty());
+	}
+
+	@Test
+	public void testActionSetAdditionalContext() throws IOException {
+		final int actionWithChildNumber = 5;
+		Action action = getAction(TREE_MULTILEVEL_XML, 0, actionWithChildNumber);
+		action.setAdditionalContext(ADD_CONDITION);
+		assertEquals(ADD_CONDITION, action.getDataPanelLink().getElementLinks().get(0)
+				.getContext().getAdditional());
+		assertEquals(ADD_CONDITION, action.getServerActivities().get(0).getContext()
+				.getAdditional());
+		assertEquals(ADD_CONDITION, action.getClientActivities().get(0).getContext()
+				.getAdditional());
 	}
 }

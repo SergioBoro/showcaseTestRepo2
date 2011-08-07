@@ -84,6 +84,7 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 		DataPanelElementInfo el = new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
 		CompositeContext context = new CompositeContext();
 		el.setTransformName("bal_test.xsl");
+		generateTestTabWithElement(el);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		WebText wt = serviceLayer.getWebText(context, el);
 

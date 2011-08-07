@@ -35,9 +35,11 @@ public final class HTMLBasedElementRawData extends ElementRawData {
 	 * 
 	 * @param aElementInfo
 	 *            - описание элемента.
+	 * @param aCompositeContext
 	 */
-	public HTMLBasedElementRawData(final DataPanelElementInfo aElementInfo) {
-		super(aElementInfo);
+	public HTMLBasedElementRawData(final DataPanelElementInfo aElementInfo,
+			final CompositeContext aContext) {
+		super(aElementInfo, aContext);
 		data = XMLUtils.createEmptyDoc("root");
 	}
 

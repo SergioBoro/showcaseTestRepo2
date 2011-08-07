@@ -57,9 +57,9 @@ public final class ActionExecuter {
 				}
 
 			});
+		} else {
+			handleClientBlocks(ac);
 		}
-
-		handleClientBlocks(ac);
 	}
 
 	private static void handleClientBlocks(final Action ac) {

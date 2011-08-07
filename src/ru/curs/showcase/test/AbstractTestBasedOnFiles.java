@@ -111,7 +111,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("2", DataPanelElementType.GRID);
 		elInfo.setPosition(1);
 		elInfo.setProcName("grid_bal");
-		createTestTab(elInfo);
+		generateTestTabWithElement(elInfo);
 		assertTrue(elInfo.isCorrect());
 		return elInfo;
 	}
@@ -126,7 +126,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("2", DataPanelElementType.GRID);
 		elInfo.setPosition(1);
 		elInfo.setProcName("grid_cities_data");
-		createTestTab(elInfo);
+		generateTestTabWithElement(elInfo);
 		DataPanelElementProc proc = new DataPanelElementProc();
 		proc.setId("2md");
 		proc.setName("grid_cities_metadata");
@@ -136,7 +136,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		return elInfo;
 	}
 
-	protected void createTestTab(final DataPanelElementInfo elInfo) {
+	protected void generateTestTabWithElement(final DataPanelElementInfo elInfo) {
 		DataPanel dp = new DataPanel("xxx");
 		DataPanelTab tab = new DataPanelTab(0, dp);
 		tab.add(elInfo);
@@ -152,7 +152,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		elInfo.setPosition(2);
 		elInfo.setProcName("chart_bal");
 		elInfo.setHideOnLoad(true);
-		createTestTab(elInfo);
+		generateTestTabWithElement(elInfo);
 
 		assertTrue(elInfo.isCorrect());
 		return elInfo;
@@ -181,7 +181,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		proc.setType(DataPanelElementProcType.SUBMISSION);
 		elInfo.getProcs().put(proc.getId(), proc);
 
-		createTestTab(elInfo);
+		generateTestTabWithElement(elInfo);
 
 		assertTrue(elInfo.isCorrect());
 		return elInfo;
@@ -254,7 +254,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 		proc.setSchemaName("test_good_small.xsd");
 		elInfo.getProcs().put(proc.getId(), proc);
 
-		createTestTab(elInfo);
+		generateTestTabWithElement(elInfo);
 
 		assertTrue(elInfo.isCorrect());
 		return elInfo;

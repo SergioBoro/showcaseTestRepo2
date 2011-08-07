@@ -87,11 +87,11 @@ public abstract class DataPanelElement implements SerializableElement {
 	public void updateAddContext(final CompositeContext context) {
 		for (Event event : eventManager.getEvents()) {
 			Action action = event.getAction();
-			action.updateAddContext(context);
+			action.refreshContextOnly(context);
 		}
 
 		if (defaultAction != null) {
-			defaultAction.updateAddContext(context);
+			defaultAction.refreshContextOnly(context);
 		}
 	}
 

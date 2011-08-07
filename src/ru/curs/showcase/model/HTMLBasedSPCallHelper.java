@@ -44,7 +44,7 @@ public abstract class HTMLBasedSPCallHelper extends ElementSPCallHelper {
 			final DataPanelElementInfo elementInfo) {
 		init(context, elementInfo);
 		if (getElementInfo().getProcName() == null) {
-			return new HTMLBasedElementRawData(getElementInfo());
+			return new HTMLBasedElementRawData(getElementInfo(), getContext());
 		}
 
 		try {

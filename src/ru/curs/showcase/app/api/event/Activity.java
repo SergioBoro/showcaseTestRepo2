@@ -60,4 +60,10 @@ public class Activity extends NamedElement implements SerializableElement, Conta
 	public void setContext(final CompositeContext aContext) {
 		context = aContext;
 	}
+
+	public Activity gwtClone() {
+		Activity res = new Activity(getId(), getName(), type);
+		res.setContext(context.gwtClone());
+		return res;
+	}
 }

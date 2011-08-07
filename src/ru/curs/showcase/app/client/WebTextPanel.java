@@ -128,6 +128,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		return webText;
 	}
 
+	// CHECKSTYLE:OFF
 	/**
 	 * 
 	 * Процедура определяющая функцию, которая будет выполняться по клику на
@@ -136,8 +137,10 @@ public class WebTextPanel extends BasicElementPanelBasis {
 	 */
 	public native void setCollbackJSNIFunction() /*-{
 		$wnd.gwtWebTextFunc = 
-		@ru.curs.showcase.app.client.api.WebTextPanelCallbacksEvents::webTextPanelClick(Ljava/lang/String;Ljava/lang/String;);
+		@ru.curs.showcase.app.client.api.WebTextPanelCallbacksEvents::webTextPanelClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 	}-*/;
+
+	// CHECKSTYLE:ON
 
 	@Override
 	public VerticalPanel getPanel() {
@@ -171,23 +174,24 @@ public class WebTextPanel extends BasicElementPanelBasis {
 				dataService = GWT.create(DataService.class);
 			}
 
-			dataService.getWebText(getContext(), getElementInfo(), new GWTServiceCallback<WebText>(
-					Constants.ERROR_OF_WEBTEXT_DATA_RETRIEVING_FROM_SERVER) {
+			dataService.getWebText(getContext(), getElementInfo(),
+					new GWTServiceCallback<WebText>(
+							Constants.ERROR_OF_WEBTEXT_DATA_RETRIEVING_FROM_SERVER) {
 
-				@Override
-				public void onSuccess(final WebText awt) {
+						@Override
+						public void onSuccess(final WebText awt) {
 
-					webText = awt;
-					if (webText != null) {
-						fillWebTextPanel(awt);
-						getPanel().setHeight("100%");
-						if (getIsFirstLoading() && refreshContextOnly) {
-							webText.updateAddContext(context1);
+							webText = awt;
+							if (webText != null) {
+								fillWebTextPanel(awt);
+								getPanel().setHeight("100%");
+								if (getIsFirstLoading() && refreshContextOnly) {
+									webText.updateAddContext(context1);
+								}
+								setIsFirstLoading(false);
+							}
 						}
-						setIsFirstLoading(false);
-					}
-				}
-			});
+					});
 		}
 
 	}

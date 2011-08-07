@@ -17,7 +17,7 @@ import ru.curs.showcase.app.api.*;
  * @author den
  * 
  */
-@XmlRootElement(name = "context")
+@XmlRootElement(name = Action.CONTEXT_TAG)
 public class CompositeContext extends TransferableElement implements CanBeCurrent,
 		SerializableElement, Assignable, GWTClonable {
 	/**

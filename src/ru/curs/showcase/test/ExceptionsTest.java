@@ -350,7 +350,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);
 		dpei.setProcName("grid_by_userdata");
-		createTestTab(dpei);
+		generateTestTabWithElement(dpei);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		serviceLayer.getGrid(context, dpei, null);
 	}

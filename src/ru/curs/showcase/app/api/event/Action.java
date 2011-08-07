@@ -309,9 +309,13 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 			res.context = context.gwtClone();
 		}
 		res.serverActivities.clear();
-		res.serverActivities.addAll(serverActivities);
+		for (Activity act : serverActivities) {
+			res.serverActivities.add(act.gwtClone());
+		}
 		res.clientActivities.clear();
-		res.clientActivities.addAll(clientActivities);
+		for (Activity act : clientActivities) {
+			res.clientActivities.add(act.gwtClone());
+		}
 		return res;
 	}
 
@@ -338,7 +342,7 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	 *            - правильный контекст.
 	 * @return - себя.
 	 */
-	public Action updateAddContext(final CompositeContext addContext) {
+	public Action refreshContextOnly(final CompositeContext addContext) {
 		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
 			for (DataPanelElementLink link : dataPanelLink.getElementLinks()) {
 				if (!link.getSkipRefreshContextOnly()) {
@@ -347,15 +351,27 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 			}
 		}
 
-		updateActivitiesAddContext(serverActivities, addContext);
-		updateActivitiesAddContext(clientActivities, addContext);
+		refreshContextOnlyForActivities(serverActivities, addContext);
+		refreshContextOnlyForActivities(clientActivities, addContext);
 		return this;
 	}
 
-	private void updateActivitiesAddContext(final List<Activity> aActivities,
+	private void refreshContextOnlyForActivities(final List<Activity> aActivities,
 			final CompositeContext addContext) {
 		for (Activity act : aActivities) {
 			act.getContext().setAdditional(addContext.getAdditional());
+		}
+	}
+
+	/**
+	 * Функция обновления add_context у всех дочерних контекстов в действии.
+	 * 
+	 * @param data
+	 *            - данные фильтра (как правило MainInstance XForms).
+	 */
+	public void setAdditionalContext(final String data) {
+		for (ContainingContext el : getContainingContextChilds()) {
+			el.getContext().setAdditional(data);
 		}
 	}
 

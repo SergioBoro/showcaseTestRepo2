@@ -168,18 +168,18 @@ public final class XFormPanelCallbacksEvents {
 	 *            Данные xForm'ы
 	 */
 	public static void xFormPanelClickUpdate(final String xformId, final String linkId,
-			final String data) {
+			final String overridenAddContext) {
 		XFormPanel currentXFormPanel = getCurrentPanel(xformId);
 
 		if (currentXFormPanel != null) {
-			// MessageBox
-			// .showSimpleMessage("Update. xformId=" + xformId + ", linkId=" +
-			// linkId, data);
-
 			Action ac = getActionByLinkId(linkId, currentXFormPanel);
-
-			runAction(ac);
-
+			if (ac != null) {
+				ac = ac.gwtClone();
+				if (overridenAddContext != null) {
+					ac.setAdditionalContext(overridenAddContext);
+				}
+				runAction(ac);
+			}
 		}
 	}
 
