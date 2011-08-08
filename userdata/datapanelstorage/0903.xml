@@ -31,4 +31,7 @@
 			hideOnLoad="true" />	
 		<element id="d2" type="webtext" proc="webtext_show_debug_console" transform="xml_in_html.xsl" hideOnLoad="true"/>			
 	</tab>
+	<tab id="01" name="userdata">
+		<element id="0101" type="webtext" proc="webtext_context_info"/>
+	</tab>	
 </datapanel>

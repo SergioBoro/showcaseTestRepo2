@@ -55,7 +55,8 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	 * Параметры URL, полученные из клиентской части. На основе их создается
 	 * session context для БД.
 	 */
-	private Map<String, ArrayList<String>> sessionParamsMap;
+	private Map<String, ArrayList<String>> sessionParamsMap =
+		new TreeMap<String, ArrayList<String>>();
 
 	/**
 	 * Фильтрующий контекст. Задается с помощью компонента XForms.
@@ -317,9 +318,6 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	 *            - параметры.
 	 */
 	public final void addSessionParams(final Map<String, List<String>> aData) {
-		if (sessionParamsMap == null) {
-			sessionParamsMap = new TreeMap<String, ArrayList<String>>();
-		}
 		sessionParamsMap.clear();
 		if (aData == null) {
 			return;

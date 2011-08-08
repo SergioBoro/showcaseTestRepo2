@@ -30,9 +30,10 @@ public class NavDBGatewayTest extends AbstractTestBasedOnFiles {
 	public void testGetData() throws SAXException, IOException {
 		DocumentBuilder builder = XMLUtils.createBuilder();
 		Document doc = null;
-		NavigatorGateway gw = new NavigatorDBGateway();
+		NavigatorSelector selector = new NavigatorSelector();
+		NavigatorGateway gw = selector.getGateway();
 		try {
-			InputStream xml = gw.getRawData(new CompositeContext());
+			InputStream xml = gw.getRawData(new CompositeContext(), selector.getSourceName());
 			doc = builder.parse(xml);
 		} finally {
 			gw.releaseResources();

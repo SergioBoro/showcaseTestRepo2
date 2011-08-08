@@ -1,5 +1,6 @@
 package ru.curs.showcase.model.frame;
 
+import ru.curs.showcase.model.SourceSelector;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
@@ -10,20 +11,11 @@ import ru.curs.showcase.util.xml.GeneralXMLHelper;
  * @author den
  * 
  */
-public class MainPageFrameSelector {
-	/**
-	 * Зафиксированное расширение для файлов с фреймами.
-	 */
-	private static final String FILE_EXT = "html";
+public class MainPageFrameSelector extends SourceSelector<MainPageFrameGateway> {
 	/**
 	 * Тип фрейма.
 	 */
 	private final MainPageFrameType type;
-
-	/**
-	 * Имя источника.
-	 */
-	private String sourceName;
 
 	public MainPageFrameSelector(final MainPageFrameType aType) {
 		super();
@@ -34,36 +26,34 @@ public class MainPageFrameSelector {
 	private void read() {
 		String frameParam =
 			String.format("%s.%s", type.toString().toLowerCase(), GeneralXMLHelper.SOURCE_TAG);
-		sourceName = AppProps.getOptionalValueByName(frameParam);
-		if (sourceName == null) {
-			sourceName = getDefaultValue();
+		setSourceName(AppProps.getOptionalValueByName(frameParam));
+		if (getSourceName() == null) {
+			setSourceName(getDefaultValue());
 		}
 	}
 
 	private String getDefaultValue() {
-		return type.toString().toLowerCase() + "." + FILE_EXT;
-	}
-
-	private boolean isFile(final String aFrameSource) {
-		return aFrameSource.endsWith("." + FILE_EXT);
+		return type.toString().toLowerCase() + "." + getFileExt();
 	}
 
 	public MainPageFrameType getType() {
 		return type;
 	}
 
-	public String getSourceName() {
-		return sourceName;
-	}
-
 	/**
 	 * Создает и возвращает шлюз для текущего источника.
 	 */
+	@Override
 	public MainPageFrameGateway getGateway() {
-		if (isFile(sourceName)) {
+		if (isFile()) {
 			return new MainPageFrameFileGateway();
 		} else {
 			return new MainPageFrameDBGateway();
 		}
+	}
+
+	@Override
+	protected String getFileExt() {
+		return "html";
 	}
 }

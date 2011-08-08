@@ -11,6 +11,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.datapanel.DataPanelXMLGateway;
+import ru.curs.showcase.model.navigator.NavigatorFileGateway;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.SecurityParamsFactory;
 
@@ -63,7 +64,7 @@ public final class AppPropsTest extends AbstractTestBasedOnFiles {
 		checkDir(AppProps.XSLTTRANSFORMSDIR);
 		checkDir(AppProps.XSLTTRANSFORMSFORGRIDDIR);
 		checkDir(DataPanelXMLGateway.DP_STORAGE_PARAM_NAME);
-		checkDir(NAVIGATORSTORAGE);
+		checkDir(NavigatorFileGateway.NAVIGATORSTORAGE);
 		checkDir(AppProps.SCHEMASDIR);
 		checkDir(AppProps.XFORMS_DIR);
 

@@ -2,7 +2,7 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.*;
+import java.io.InputStream;
 import java.util.*;
 
 import org.junit.*;
@@ -13,8 +13,8 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.model.datapanel.*;
-import ru.curs.showcase.model.navigator.NavigatorFactory;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.model.navigator.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
@@ -35,14 +35,11 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	 * Идентификатор сессии для модульных тестов.
 	 */
 	protected static final String TEST_SESSION = "testSession";
-	/**
-	 * Название каталога, содержащего описания навигаторов в формате XML для
-	 * тестовых целей.
-	 */
-	protected static final String NAVIGATORSTORAGE = "navigatorstorage";
 
 	protected static final String VALUE12 = "value1";
 	protected static final String KEY1 = "key1";
+
+	protected static final String TREE_MULTILEVEL_XML = "tree_multilevel.xml";
 
 	/**
 	 * Действия, которые должны выполняться перед запуском любых тестовых
@@ -270,11 +267,9 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	 * @param fileName
 	 *            - имя файла с навигатором.
 	 * @return - контекст.
-	 * @throws IOException
 	 */
 	protected CompositeContext
-			getContext(final String fileName, final int groupID, final int elID)
-					throws IOException {
+			getContext(final String fileName, final int groupID, final int elID) {
 		CompositeContext context = getAction(fileName, groupID, elID).getContext();
 		return context;
 	}
@@ -323,11 +318,10 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	 * @param fileName
 	 *            - имя файла с навигатором.
 	 * @return - контекст.
-	 * @throws IOException
 	 */
-	protected Action getAction(final String fileName, final int groupID, final int elID)
-			throws IOException {
-		InputStream stream1 = AppProps.loadUserDataToStream(NAVIGATORSTORAGE + "\\" + fileName);
+	protected Action getAction(final String fileName, final int groupID, final int elID) {
+		NavigatorGateway gateway = new NavigatorFileGateway();
+		InputStream stream1 = gateway.getRawData(new CompositeContext(), fileName);
 		NavigatorFactory navFactory = new NavigatorFactory();
 		Navigator nav = navFactory.fromStream(stream1);
 		Action action = nav.getGroups().get(groupID).getElements().get(elID).getAction();

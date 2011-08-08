@@ -89,7 +89,7 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 		Element node = info.createElement(USERDATA_TAG);
 		info.getDocumentElement().appendChild(node);
 		String value = null;
-		if ((aMap != null) && (aMap.get(ExchangeConstants.URL_PARAM_USERDATA) != null)) {
+		if (aMap.get(ExchangeConstants.URL_PARAM_USERDATA) != null) {
 			value =
 				Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_USERDATA).toArray())
 						.replace("[", "").replace("]", "");
@@ -104,7 +104,7 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 			final Map<String, ArrayList<String>> aMap) throws UnsupportedEncodingException {
 		Element node;
 
-		if ((aMap != null) && (!aMap.isEmpty())) {
+		if (!aMap.isEmpty()) {
 			node = info.createElement(URL_PARAMS_TAG);
 			info.getDocumentElement().appendChild(node);
 

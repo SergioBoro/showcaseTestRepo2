@@ -2,7 +2,7 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.*;
+import java.io.InputStream;
 
 import org.junit.Test;
 
@@ -10,8 +10,8 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
-import ru.curs.showcase.model.navigator.NavigatorFactory;
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.model.navigator.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
  * Класс для тестирования фабрики навигаторов.
@@ -43,10 +43,31 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testNavigatorFromDBBySL() throws GeneralException {
+		AppInfoSingleton.getAppInfo().setCurUserDataId((String) null);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		Navigator nav = serviceLayer.getNavigator(new CompositeContext());
 		assertFalse(nav.getHideOnLoad());
 		assertEquals("180px", nav.getWidth());
+	}
+
+	/**
+	 * Тест навигатора, построенного на основе данных из файла.
+	 */
+	@Test
+	public void testNavigatorFromFileBySL() throws GeneralException {
+		AppInfoSingleton.getAppInfo().setCurUserDataId((String) null);
+		CompositeContext context = new CompositeContext();
+		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
+		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		Navigator nav = serviceLayer.getNavigator(context);
+		assertTrue(nav.getHideOnLoad());
+		assertEquals(1, nav.getGroups().size());
+		final int l1ElementsCount = 1;
+		assertEquals(l1ElementsCount, nav.getGroups().get(0).getElements().size());
+		assertEquals("04", nav.getAutoSelectElement().getId());
+		final int l2ElementsCount = 0;
+		assertEquals(l2ElementsCount, nav.getGroups().get(0).getElements().get(0).getElements()
+				.size());
 	}
 
 	/**
@@ -59,10 +80,10 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 	 * 
 	 */
 	@Test
-	public void testNavigatorFromFile() throws IOException {
+	public void testNavigatorFromFile() {
 		NavigatorFactory factory = new NavigatorFactory();
-		InputStream stream =
-			AppProps.loadUserDataToStream(NAVIGATORSTORAGE + "/tree_multilevel.xml");
+		NavigatorGateway gateway = new NavigatorFileGateway();
+		InputStream stream = gateway.getRawData(new CompositeContext(), TREE_MULTILEVEL_XML);
 
 		Navigator nav = factory.fromStream(stream);
 		assertEquals("200px", nav.getWidth());
@@ -96,8 +117,7 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 		assertEquals(1, link.getElementLinks().size());
 		assertEquals("1", link.getElementLinks().get(0).getId());
 		assertNotNull(link.getElementLinks().get(0).getContext());
-		assertEquals(TEST_ELEMEMNT_NAME, link.getElementLinks().get(0).getContext()
-				.getMain());
+		assertEquals(TEST_ELEMEMNT_NAME, link.getElementLinks().get(0).getContext().getMain());
 		assertNull(link.getElementLinks().get(0).getContext().getSession());
 		assertEquals("(1=1)", link.getElementLinks().get(0).getContext().getAdditional());
 	}

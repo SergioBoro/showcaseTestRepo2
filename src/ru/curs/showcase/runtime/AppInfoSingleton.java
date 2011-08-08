@@ -90,10 +90,6 @@ public final class AppInfoSingleton {
 	private String getUserdataIdFromURLParams(final Map<String, ArrayList<String>> aMap) {
 		String userdataId = null;
 
-		if ((aMap == null) || (aMap.isEmpty())) {
-			return null;
-		}
-
 		for (Map.Entry<String, ArrayList<String>> entry : aMap.entrySet()) {
 			if (ExchangeConstants.URL_PARAM_USERDATA.equals(entry.getKey())) {
 				if (aMap.get(entry.getKey()) != null) {

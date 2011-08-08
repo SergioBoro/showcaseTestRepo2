@@ -2,7 +2,6 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
 import java.util.*;
 
 import org.junit.Test;
@@ -22,8 +21,6 @@ import ru.curs.showcase.runtime.AppInfoSingleton;
  * 
  */
 public class ActionAndContextTest extends AbstractTestBasedOnFiles {
-
-	private static final String TREE_MULTILEVEL_XML = "tree_multilevel.xml";
 	private static final String TREE_MULTILEVEL_V2_XML = "tree_multilevel.v2.xml";
 	private static final String TEST_ACTIVITY_NAME = "test";
 	private static final String MAIN_CONDITION = "Алтайский край";
@@ -296,11 +293,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест на действие обновления навигатора.
 	 * 
-	 * @throws IOException
-	 * 
 	 */
 	@Test
-	public void testRefreshNavigatorAction() throws IOException {
+	public void testRefreshNavigatorAction() {
 		final int el2 = 2;
 		Action action = getAction(TREE_MULTILEVEL_XML, 0, el2);
 		assertTrue(action.getNavigatorElementLink().getRefresh());
@@ -317,11 +312,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	 * Проверка считывания опции refresh_context_only. Она не имеет смысла в
 	 * навигаторе, но это же просто тест, а не use case.
 	 * 
-	 * @throws IOException
-	 * 
 	 */
 	@Test
-	public void testRefreshContextOnlyAction() throws IOException {
+	public void testRefreshContextOnlyAction() {
 		final int elNum = 5;
 		Action action = getAction(TREE_MULTILEVEL_XML, 0, elNum);
 		assertTrue(action.getDataPanelLink().getElementLinks().get(0).getRefreshContextOnly());
@@ -331,11 +324,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка считывания информации о модальном окне для действия.
 	 * 
-	 * @throws IOException
-	 * 
 	 */
 	@Test
-	public void testActionModalInfo() throws IOException {
+	public void testActionModalInfo() {
 		Action action = new Action();
 		assertNull(action.getModalWindowInfo());
 
@@ -460,11 +451,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка работы функции Action.filterBy.
 	 * 
-	 * @throws IOException
-	 * 
 	 */
 	@Test
-	public void testActionFilterBy() throws IOException {
+	public void testActionFilterBy() {
 		final int actionWithChildNumber = 5;
 		Action action = getAction(TREE_MULTILEVEL_XML, 0, actionWithChildNumber);
 		action.filterBy(FILTER_CONDITION);
@@ -532,11 +521,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Тест для настройки keepUserSettings.
 	 * 
-	 * @throws IOException
-	 * 
 	 */
 	@Test
-	public void testActionKeepUserSettings() throws IOException {
+	public void testActionKeepUserSettings() {
 		Action action = new Action(DataPanelActionType.RELOAD_ELEMENTS);
 		action.getDataPanelLink().getElementLinks().add(new DataPanelElementLink());
 		action.determineState();
@@ -560,11 +547,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 
 	/**
 	 * Проверка считывания блока действия, касающегося серверной активности.
-	 * 
-	 * @throws IOException
 	 */
 	@Test
-	public void testServerActivityRead() throws IOException {
+	public void testServerActivityRead() {
 		final int actionNumber = 1;
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		assertTrue(action.containsServerActivity());
@@ -583,11 +568,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка выполнения действия на сервере.
 	 * 
-	 * @throws IOException
 	 * @throws GeneralException
 	 */
 	@Test
-	public void testServerActivityExec() throws IOException, GeneralException {
+	public void testServerActivityExec() throws GeneralException {
 		final int actionNumber = 1;
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
@@ -598,11 +582,10 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка выполнения действия на сервере, приводящего к ошибке.
 	 * 
-	 * @throws IOException
 	 * @throws GeneralException
 	 */
 	@Test(expected = GeneralException.class)
-	public void testServerActivityExecFail() throws IOException, GeneralException {
+	public void testServerActivityExecFail() throws GeneralException {
 		final int actionNumber = 2;
 		AppInfoSingleton.getAppInfo().setCurUserDataId("test1");
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
@@ -665,11 +648,9 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	/**
 	 * Проверка считывания действия, содержащего вызовы действия на клиенте, не
 	 * связанные с навигатором и инф. панелью.
-	 * 
-	 * @throws IOException
 	 */
 	@Test
-	public void testReadClientActivity() throws IOException {
+	public void testReadClientActivity() {
 		final int actionNumber = 1;
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		assertTrue(action.containsClientActivity());
@@ -703,7 +684,7 @@ public class ActionAndContextTest extends AbstractTestBasedOnFiles {
 	}
 
 	@Test
-	public void testActionSetAdditionalContext() throws IOException {
+	public void testActionSetAdditionalContext() {
 		final int actionWithChildNumber = 5;
 		Action action = getAction(TREE_MULTILEVEL_XML, 0, actionWithChildNumber);
 		action.setAdditionalContext(ADD_CONDITION);

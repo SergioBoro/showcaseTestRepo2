@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.SPCallHelper;
-import ru.curs.showcase.runtime.AppProps;
 
 /**
  * Шлюз к хранимой процедуре в БД, возвращающей данные для навигатора.
@@ -15,11 +14,10 @@ import ru.curs.showcase.runtime.AppProps;
  * 
  */
 public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway {
-	private static final String NAVIGATOR_PROCNAME_PARAM = "navigator.proc.name";
 
 	@Override
-	public InputStream getRawData(final CompositeContext context) {
-		setProcName(AppProps.getRequiredValueByName(NAVIGATOR_PROCNAME_PARAM));
+	public InputStream getRawData(final CompositeContext context, final String sourceName) {
+		setProcName(sourceName);
 		try {
 			prepareSQL();
 			getStatement().setString(SESSION_CONTEXT_PARAM, context.getSession());

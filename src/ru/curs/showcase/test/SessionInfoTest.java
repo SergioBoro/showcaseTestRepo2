@@ -130,7 +130,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
 		final int elID = 5;
-		Action action = getAction("tree_multilevel.xml", 0, elID);
+		Action action = getAction(TREE_MULTILEVEL_XML, 0, elID);
 		action.setSessionContext(params);
 		serviceLayer.getDataPanel(action);
 		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());

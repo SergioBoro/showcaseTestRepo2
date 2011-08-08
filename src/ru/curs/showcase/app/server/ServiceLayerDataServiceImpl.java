@@ -69,10 +69,11 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		Navigator nav = null;
 
 		try {
-			NavigatorGateway gw = new NavigatorDBGateway();
 			prepareContext(context);
+			NavigatorSelector selector = new NavigatorSelector();
+			NavigatorGateway gw = selector.getGateway();
 			try {
-				xml = gw.getRawData(context);
+				xml = gw.getRawData(context, selector.getSourceName());
 				NavigatorFactory factory = new NavigatorFactory();
 				nav = factory.fromStream(xml);
 			} finally {

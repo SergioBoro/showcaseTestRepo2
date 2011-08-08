@@ -19,8 +19,10 @@ public interface NavigatorGateway {
 	 * @return - данные в формате xml.
 	 * @param aContext
 	 *            - контекст.
+	 * @param sourceName
+	 *            - имя источника - файла или процедуры.
 	 */
-	InputStream getRawData(CompositeContext aContext);
+	InputStream getRawData(CompositeContext aContext, String sourceName);
 
 	/**
 	 * Функция принудительно освобождает ресурсы, используемые шлюзом для

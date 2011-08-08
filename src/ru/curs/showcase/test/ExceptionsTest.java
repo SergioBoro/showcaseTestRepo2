@@ -2,7 +2,7 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.*;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -395,7 +395,7 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	 * действии.
 	 */
 	@Test(expected = IncorrectElementException.class)
-	public void testWrongTab() throws IOException {
+	public void testWrongTab() {
 		final int elID = 3;
 		getAction("tree_multilevel.wrong.xml", 0, elID);
 	}
