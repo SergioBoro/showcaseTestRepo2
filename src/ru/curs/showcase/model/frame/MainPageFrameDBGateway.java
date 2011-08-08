@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.SPCallHelper;
+import ru.curs.showcase.runtime.*;
 
 /**
  * Шлюз к БД для получения фреймов главной страницы.
@@ -14,7 +15,10 @@ import ru.curs.showcase.model.SPCallHelper;
  */
 public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFrameGateway {
 
+	private static final int SESSION_CONTEXT_PARAM_INDEX = 2;
+
 	private static final String FRAME_DATA_TAG = "framedata";
+	private static final int FRAME_DATA_TAG_INDEX = 3;
 
 	@Override
 	public String getRawData(final CompositeContext context, final String frameSource) {
@@ -23,13 +27,27 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 				setProcName(frameSource);
 
 				prepareStatementWithErrorMes();
-				getStatement().setString(SESSION_CONTEXT_PARAM, context.getSession());
+				if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+					getStatement().setString(SESSION_CONTEXT_PARAM, context.getSession());
+				} else {
+					getStatement().setString(SESSION_CONTEXT_PARAM_INDEX, context.getSession());
+				}
 				LOGGER.info("context=" + context.toString());
-				getStatement().registerOutParameter(FRAME_DATA_TAG, java.sql.Types.VARCHAR);
+				if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+					getStatement().registerOutParameter(FRAME_DATA_TAG, java.sql.Types.VARCHAR);
+				} else {
+					getStatement().registerOutParameter(FRAME_DATA_TAG_INDEX,
+							java.sql.Types.VARCHAR);
+				}
 
 				getStatement().execute();
 				checkErrorCode();
-				String result = getStatement().getString(FRAME_DATA_TAG);
+				String result;
+				if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+					result = getStatement().getString(FRAME_DATA_TAG);
+				} else {
+					result = getStatement().getString(FRAME_DATA_TAG_INDEX);
+				}
 				return result;
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
@@ -42,7 +60,11 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "{? = call [dbo].[%s](?, ?, ?)}";
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return "{? = call [dbo].[%s](?, ?, ?)}";
+		} else {
+			return "{? = call %s(?, ?, ?)}";
+		}
 	}
 
 	@Override

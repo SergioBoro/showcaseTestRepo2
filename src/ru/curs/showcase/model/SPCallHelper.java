@@ -6,7 +6,7 @@ import org.slf4j.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.runtime.ConnectionFactory;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.DBConnectException;
 
 /**
@@ -21,6 +21,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 * LOGGER.
 	 */
 	protected static final Logger LOGGER = LoggerFactory.getLogger(SPCallHelper.class);
+
+	private static final int ERROR_MES_COL_INDEX = 4;
 
 	/**
 	 * Соединение с БД.
@@ -197,7 +199,11 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	protected void prepareStatementWithErrorMes() throws SQLException {
 		prepareSQL();
 		statement.registerOutParameter(1, java.sql.Types.INTEGER);
-		statement.registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			statement.registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
+		} else {
+			statement.registerOutParameter(ERROR_MES_COL_INDEX, java.sql.Types.VARCHAR);
+		}
 	}
 
 	/**
