@@ -12,6 +12,7 @@ import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.xml.XSDValidateException;
 
 /**
  * Тесты для фабрики информационных панелей.
@@ -236,5 +237,13 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("11").getElementInfoById("1101");
 		assertFalse(el.isCorrect());
+	}
+
+	@Test(expected = XSDValidateException.class)
+	public void testWrongReadElementWithRelated2() {
+		DataPanelGateway gateway = new DataPanelXMLGateway();
+		DataFile<InputStream> file = gateway.getRawData("test.bad2.xml");
+		DataPanelFactory factory = new DataPanelFactory();
+		factory.fromStream(file);
 	}
 }
