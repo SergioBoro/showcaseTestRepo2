@@ -5,7 +5,7 @@ import java.sql.*;
 
 import ru.curs.showcase.app.api.ServerCurrentState;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.TextUtils;
 
 /**
  * Построитель ServerCurrentState.
@@ -70,7 +70,23 @@ public final class ServerCurrentStateBuilder {
 
 	private static String getSQLVersion() throws SQLException {
 		Connection conn = ConnectionFactory.getConnection();
-		String sql = "select @@VERSION AS [Version]";
+
+		String sql = null;
+		switch (ConnectionFactory.getSQLServerType()) {
+		case MSSQL:
+			sql = "select @@VERSION AS [Version]";
+			break;
+		case POSTGRESQL:
+			sql = "select version() AS Version";
+			break;
+		case ORACLE:
+			sql = "select @@VERSION AS [Version]"; // Здесь уточнить!
+			break;
+		default:
+			sql = null;
+			break;
+		}
+
 		PreparedStatement stat = conn.prepareStatement(sql);
 		try {
 			boolean hasResult = stat.execute();

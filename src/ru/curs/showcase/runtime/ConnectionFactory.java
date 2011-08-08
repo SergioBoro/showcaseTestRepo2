@@ -38,4 +38,30 @@ public final class ConnectionFactory {
 			throw new DBConnectException(e);
 		}
 	}
+
+	/**
+	 * Возвращает тип SQL сервера.
+	 */
+	public static SQLServerType getSQLServerType() {
+		String url = AppProps.getRequiredValueByName(CONNECTION_URL_PARAM).toLowerCase();
+
+		final String mssql = "jdbc:sqlserver";
+		final String postgresql = "jdbc:postgresql";
+		final String oracle = "jdbc:oracle"; // Здесь уточнить!
+
+		SQLServerType st = null;
+		if (url.indexOf(mssql) > -1) {
+			st = SQLServerType.MSSQL;
+		} else {
+			if (url.indexOf(postgresql) > -1) {
+				st = SQLServerType.POSTGRESQL;
+			} else {
+				if (url.indexOf(oracle) > -1) {
+					st = SQLServerType.ORACLE;
+				}
+			}
+		}
+
+		return st;
+	}
 }
