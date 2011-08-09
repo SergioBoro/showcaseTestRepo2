@@ -212,7 +212,13 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	public void checkErrorCode() throws SQLException {
 		int errorCode = getStatement().getInt(1);
 		if (errorCode != 0) {
-			throw new ValidateInDBException(errorCode, getStatement().getString(ERROR_MES_COL));
+			String errMess;
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+				errMess = getStatement().getString(ERROR_MES_COL);
+			} else {
+				errMess = getStatement().getString(ERROR_MES_COL_INDEX);
+			}
+			throw new ValidateInDBException(errorCode, errMess);
 		}
 	}
 

@@ -63,7 +63,9 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
 			return "{? = call [dbo].[%s](?, ?, ?)}";
 		} else {
-			return "{? = call %s(?, ?, ?)}";
+			// return "{? = call %s(?, ?, ?)}";
+			// Это эквивалентно
+			return "{call %s(?, ?, ?, ?)}";
 		}
 	}
 
