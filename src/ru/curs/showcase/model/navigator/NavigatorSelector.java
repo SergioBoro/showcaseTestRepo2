@@ -23,11 +23,14 @@ public class NavigatorSelector extends SourceSelector<NavigatorGateway> {
 
 	@Override
 	public NavigatorGateway getGateway() {
+		NavigatorGateway res;
 		if (isFile()) {
-			return new NavigatorFileGateway();
+			res = new NavigatorFileGateway();
 		} else {
-			return new NavigatorDBGateway();
+			res = new NavigatorDBGateway();
 		}
+		res.setSourceName(getSourceName());
+		return res;
 	}
 
 	@Override

@@ -9,9 +9,6 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
-import ru.curs.showcase.model.*;
-import ru.curs.showcase.model.webtext.*;
-import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Тест для WebTextDBGateway.
@@ -19,7 +16,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
-public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
+public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 	/**
 	 * Основной тест для проверки работы WebTextDBGateway.
 	 * 
@@ -91,58 +88,5 @@ public class WebTextGatewayAndTransformTest extends AbstractTestBasedOnFiles {
 		assertTrue(wt.getData().startsWith("<h3>Здесь находится просто статический текст</h3>"));
 		assertTrue(wt.getData().endsWith(
 				"<p>Коля у Светы спёр кассеты, а Света у Коли уперла костет</p>"));
-	}
-
-	/**
-	 * Тест на случай, когда не задано преобразование.
-	 * 
-	 */
-	@Test
-	public void testGetStaticDataBySP() {
-		String prefix = "<root>";
-		CompositeContext context = getTestContext2();
-		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "2");
-
-		WebTextGateway wtgateway = new WebTextDBGateway();
-		HTMLBasedElementRawData rawWT = wtgateway.getRawData(context, element);
-		String out = XMLUtils.documentToString(rawWT.getData());
-		new WebText(out);
-		assertTrue(out.startsWith(prefix));
-	}
-
-	/**
-	 * Проверка на то, что описание элемента не полностью заполнено.
-	 * 
-	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement1() {
-		DataPanelElementInfo element =
-			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
-
-		WebTextGateway wtgateway = new WebTextDBGateway();
-		wtgateway.getRawData(null, element);
-	}
-
-	/**
-	 * Проверка на то, что описание элемента не полностью заполнено.
-	 * 
-	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement2() {
-		DataPanelElementInfo element = new DataPanelElementInfo("id", null);
-		element.setProcName("proc");
-
-		WebTextGateway wtgateway = new WebTextDBGateway();
-		wtgateway.getRawData(null, element);
-	}
-
-	/**
-	 * Проверка на то, что описание элемента не полностью заполнено.
-	 * 
-	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement3() {
-		WebTextGateway wtgateway = new WebTextDBGateway();
-		wtgateway.getRawData(null, null);
 	}
 }

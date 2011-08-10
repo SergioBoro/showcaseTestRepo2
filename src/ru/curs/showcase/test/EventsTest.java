@@ -19,7 +19,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author den
  * 
  */
-public class EventsTest extends AbstractTestBasedOnFiles {
+public class EventsTest extends AbstractTestWithDefaultUserData {
 
 	private static final String ROW4 = "row4";
 	private static final String COL2 = "col2";

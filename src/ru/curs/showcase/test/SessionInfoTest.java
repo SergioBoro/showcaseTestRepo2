@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.GeneralException;
@@ -25,7 +25,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
-public class SessionInfoTest extends AbstractTestBasedOnFiles {
+public class SessionInfoTest extends AbstractTest {
 	private static final boolean AUTH_VIA_AUTH_SERVER = true;
 	private static final String TEMP_PASS = "pass";
 	private static final String FAKE_SESSION_ID = "fake-session-id";
@@ -47,6 +47,7 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testInitialCurUserDataIdValue() {
+		setDefaultUserData();
 		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, AppInfoSingleton.getAppInfo()
 				.getCurUserDataId());
 	}
@@ -205,4 +206,19 @@ public class SessionInfoTest extends AbstractTestBasedOnFiles {
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(params);
 	}
 
+	/**
+	 * Проверка вызова функции getServerCurrentState.
+	 * 
+	 * @throws GeneralException
+	 */
+	@Test
+	public void testGetServerCurrentState() throws GeneralException {
+		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		CompositeContext context = new CompositeContext();
+		ServerCurrentState scs = sl.getServerCurrentState(context);
+		assertNotNull(scs);
+		assertEquals(AppInfoSingleton.getAppInfo().getServletContainerVersion(),
+				scs.getServletContainerVersion());
+		assertEquals(System.getProperty("java.version"), scs.getJavaVersion());
+	}
 }

@@ -6,11 +6,7 @@ import java.io.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.MainPage;
-import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
-import ru.curs.showcase.model.datapanel.DataPanelXMLGateway;
+import ru.curs.showcase.model.datapanel.DataPanelFileGateway;
 import ru.curs.showcase.model.navigator.NavigatorFileGateway;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.SecurityParamsFactory;
@@ -18,9 +14,7 @@ import ru.curs.showcase.security.SecurityParamsFactory;
 /**
  * Тесты класса AppProps.
  */
-public final class AppPropsTest extends AbstractTestBasedOnFiles {
-
-	private static final String TEST2_USERDATA = "test2";
+public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Тест ф-ции loadResToStream.
@@ -63,7 +57,7 @@ public final class AppPropsTest extends AbstractTestBasedOnFiles {
 	public void testDirExists() {
 		checkDir(AppProps.XSLTTRANSFORMSDIR);
 		checkDir(AppProps.XSLTTRANSFORMSFORGRIDDIR);
-		checkDir(DataPanelXMLGateway.DP_STORAGE_PARAM_NAME);
+		checkDir(DataPanelFileGateway.DP_STORAGE_PARAM_NAME);
 		checkDir(NavigatorFileGateway.NAVIGATORSTORAGE);
 		checkDir(AppProps.SCHEMASDIR);
 		checkDir(AppProps.XFORMS_DIR);
@@ -89,22 +83,4 @@ public final class AppPropsTest extends AbstractTestBasedOnFiles {
 		assertNull(AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, TEST2_USERDATA));
 	}
 
-	/**
-	 * Проверка чтения информации о главном окне из app.properties.
-	 * 
-	 * @throws GeneralException
-	 */
-	@Test
-	public void testReadMainPageInfoBySL() throws GeneralException {
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
-		MainPage mp = sl.getMainPage(context);
-		assertEquals("100px", mp.getHeaderHeight());
-		assertEquals("50px", mp.getFooterHeight());
-
-		context = new CompositeContext(generateTestURLParams(TEST2_USERDATA));
-		mp = sl.getMainPage(context);
-		assertEquals(AppProps.DEF_HEADER_HEIGTH, mp.getHeaderHeight());
-		assertEquals(AppProps.DEF_FOOTER_HEIGTH, mp.getFooterHeight());
-	}
 }

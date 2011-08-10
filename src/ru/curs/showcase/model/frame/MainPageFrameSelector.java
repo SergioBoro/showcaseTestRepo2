@@ -45,11 +45,14 @@ public class MainPageFrameSelector extends SourceSelector<MainPageFrameGateway> 
 	 */
 	@Override
 	public MainPageFrameGateway getGateway() {
+		MainPageFrameGateway gateway;
 		if (isFile()) {
-			return new MainPageFrameFileGateway();
+			gateway = new MainPageFrameFileGateway();
 		} else {
-			return new MainPageFrameDBGateway();
+			gateway = new MainPageFrameDBGateway();
 		}
+		gateway.setSourceName(getSourceName());
+		return gateway;
 	}
 
 	@Override

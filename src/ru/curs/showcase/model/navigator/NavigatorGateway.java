@@ -22,7 +22,9 @@ public interface NavigatorGateway {
 	 * @param sourceName
 	 *            - имя источника - файла или процедуры.
 	 */
-	InputStream getRawData(CompositeContext aContext, String sourceName);
+	InputStream getRawData(CompositeContext aContext);
+
+	InputStream getRawData(CompositeContext aCompositeContext, String aSourceName);
 
 	/**
 	 * Функция принудительно освобождает ресурсы, используемые шлюзом для
@@ -31,4 +33,6 @@ public interface NavigatorGateway {
 	 * 
 	 */
 	void releaseResources();
+
+	void setSourceName(String aSourceName);
 }

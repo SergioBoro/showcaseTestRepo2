@@ -31,8 +31,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
-public class ExceptionsTest extends AbstractTestBasedOnFiles {
-	private static final String TEST_XML = "test.xml";
+public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	/**
 	 * Имя несуществующей схемы.
 	 */
@@ -63,8 +62,8 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test(expected = SettingsFileOpenException.class)
 	public final void testWrongDP() {
-		DataPanelGateway gateway = new DataPanelXMLGateway();
-		gateway.getRawData("verysecretandhidden.xml");
+		DataPanelGateway gateway = new DataPanelFileGateway();
+		gateway.getRawData(new CompositeContext(), "verysecretandhidden.xml");
 	}
 
 	/**
@@ -303,8 +302,8 @@ public class ExceptionsTest extends AbstractTestBasedOnFiles {
 	@Test
 	public void testDBQueryExceptionBySL() {
 		CompositeContext context = getTestContext1();
-		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData(TEST_XML);
+		DataPanelGateway gateway = new DataPanelFileGateway();
+		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel dp = factory.fromStream(file);
 

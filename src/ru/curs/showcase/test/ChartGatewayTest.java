@@ -13,7 +13,7 @@ import ru.curs.showcase.model.chart.*;
  * @author den
  * 
  */
-public class ChartGatewayTest extends AbstractTestBasedOnFiles {
+public class ChartGatewayTest extends AbstractTestWithDefaultUserData {
 	/**
 	 * Основная функция тестирования шлюза.
 	 */

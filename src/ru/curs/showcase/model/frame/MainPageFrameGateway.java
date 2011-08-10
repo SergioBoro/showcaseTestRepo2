@@ -20,4 +20,8 @@ public interface MainPageFrameGateway {
 	 */
 	String getRawData(CompositeContext context, String frameSource);
 
+	String getRawData(CompositeContext context);
+
+	void setSourceName(String name);
+
 }

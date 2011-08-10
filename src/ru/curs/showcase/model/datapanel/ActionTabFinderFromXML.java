@@ -1,7 +1,16 @@
 package ru.curs.showcase.model.datapanel;
 
-import ru.curs.showcase.app.api.event.DataPanelLink;
+import java.io.InputStream;
+
+import javax.xml.parsers.SAXParser;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.helpers.DefaultHandler;
+
+import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.ActionTabFinder;
+import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Реализация интерфейса поиска вкладки для действия в инф. панели, хранимой в
@@ -12,16 +21,70 @@ import ru.curs.showcase.model.ActionTabFinder;
  */
 public class ActionTabFinderFromXML extends ActionTabFinder {
 
+	private static final String NO_TABS_ERROR = "Панель '%s' не содержит вкладок";
+
+	private String firstTabId = null;
+
 	@Override
-	public String getFirstFromStorage(final DataPanelLink link) {
-		DataPanelGateway dpGateway = new DataPanelXMLGateway();
-		return dpGateway.getFirstTabId(link.getDataPanelId());
+	public String getFirstTabId(final CompositeContext context, final DataPanelLink link) {
+		DefaultHandler myHandler = new DefaultHandler() {
+			@Override
+			public void startElement(final String namespaceURI, final String lname,
+					final String qname, final Attributes attrs) {
+				if (firstTabId == null) {
+					firstTabId = attrs.getValue(ID_TAG);
+				}
+			}
+		};
+		firstTabId = null; // нужно, думаю из-за Spring IoC
+		DataFile<InputStream> file = getFile(context, link);
+
+		SAXParser parser = XMLUtils.createSAXParser();
+		try {
+			parser.parse(file.getData(), myHandler);
+		} catch (Exception e) {
+			XMLUtils.stdSAXErrorHandler(e, link.getDataPanelId());
+		}
+
+		if (firstTabId == null) {
+			throw new XMLFormatException(String.format(NO_TABS_ERROR, link.getDataPanelId()));
+		}
+		return firstTabId;
 	}
 
 	@Override
-	public boolean existsInStorage(final DataPanelLink link, final String tabValue) {
-		DataPanelGateway dpGateway = new DataPanelXMLGateway();
-		return dpGateway.tabExists(link.getDataPanelId(), tabValue);
+	public boolean tabExists(final CompositeContext context, final DataPanelLink link,
+			final String tabValue) {
+		DefaultHandler myHandler = new DefaultHandler() {
+			@Override
+			public void startElement(final String namespaceURI, final String lname,
+					final String qname, final Attributes attrs) {
+				if (TAB_TAG.equalsIgnoreCase(qname)) {
+					if (attrs.getValue(ID_TAG).equals(tabValue)) {
+						throw new BreakSAXLoopException();
+					}
+				}
+			}
+		};
+		DataFile<InputStream> file = getFile(context, link);
+
+		SAXParser parser = XMLUtils.createSAXParser();
+		try {
+			parser.parse(file.getData(), myHandler);
+		} catch (Exception e) {
+			XMLUtils.stdSAXErrorHandler(e, link.getDataPanelId());
+			return true;
+		}
+
+		return false;
+	}
+
+	private DataFile<InputStream>
+			getFile(final CompositeContext context, final DataPanelLink link) {
+		DataPanelSelector selector = new DataPanelSelector(link);
+		DataPanelGateway gateway = selector.getGateway();
+		DataFile<InputStream> file = gateway.getRawData(context, link.getDataPanelId());
+		return file;
 	}
 
 }

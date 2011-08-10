@@ -19,7 +19,7 @@ import ru.curs.showcase.runtime.ConnectionFactory;
  * @author den
  * 
  */
-public class GridGatewayTest extends AbstractTestBasedOnFiles {
+public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 	/**
 	 * Основной тест на получение данных из БД.
 	 * 

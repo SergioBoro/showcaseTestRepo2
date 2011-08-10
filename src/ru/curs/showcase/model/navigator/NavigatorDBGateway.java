@@ -18,8 +18,14 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 	private static final int SESSION_CONTEXT_PARAM_INDEX = 1;
 	private static final int NAVIGATOR_TAG_INDEX = 2;
 
+	private String sourceName;
+
+	public String getSourceName() {
+		return sourceName;
+	}
+
 	@Override
-	public InputStream getRawData(final CompositeContext context, final String sourceName) {
+	public InputStream getRawData(final CompositeContext context) {
 		setProcName(sourceName);
 		try {
 			prepareSQL();
@@ -57,5 +63,17 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 	@Override
 	protected DataPanelElementType getGatewayType() {
 		return DataPanelElementType.NON_DP_ELEMENT;
+	}
+
+	@Override
+	public void setSourceName(final String aSourceName) {
+		sourceName = aSourceName;
+
+	}
+
+	@Override
+	public InputStream getRawData(final CompositeContext aContext, final String aSourceName) {
+		sourceName = aSourceName;
+		return getRawData(aContext);
 	}
 }

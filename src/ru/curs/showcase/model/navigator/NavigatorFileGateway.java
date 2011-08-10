@@ -23,8 +23,7 @@ public class NavigatorFileGateway implements NavigatorGateway {
 	private String fileName;
 
 	@Override
-	public InputStream getRawData(final CompositeContext aContext, final String aFileName) {
-		fileName = aFileName;
+	public InputStream getRawData(final CompositeContext aContext) {
 		try {
 			stream = AppProps.loadUserDataToStream(NAVIGATORSTORAGE + "\\" + fileName);
 			return stream;
@@ -36,10 +35,27 @@ public class NavigatorFileGateway implements NavigatorGateway {
 	@Override
 	public void releaseResources() {
 		try {
-			stream.close();
+			if (stream != null) {
+				stream.close();
+			}
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(fileName, SettingsFileType.NAVIGATOR);
 		}
+	}
+
+	@Override
+	public void setSourceName(final String aSourceName) {
+		fileName = aSourceName;
+	}
+
+	public String getSourceName() {
+		return fileName;
+	}
+
+	@Override
+	public InputStream getRawData(final CompositeContext aContext, final String aSourceName) {
+		fileName = aSourceName;
+		return getRawData(aContext);
 	}
 
 }

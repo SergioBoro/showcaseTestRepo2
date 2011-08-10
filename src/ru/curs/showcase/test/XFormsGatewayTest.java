@@ -11,8 +11,6 @@ import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.runtime.AppProps;
@@ -25,7 +23,7 @@ import ru.curs.showcase.util.xml.*;
  * @author den
  * 
  */
-public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
+public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 	private static final String ELEMENT_0205 = "0205";
 	private static final String XFORMS_SUBMISSION1 = "xforms_submission1";
 	private static final String TEST_XML_FILE = "log4j.xml";
@@ -156,46 +154,6 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 	}
 
 	/**
-	 * Функция тестирования работы SQL Submission через ServiceLayer.
-	 * 
-	 * @throws GeneralException
-	 */
-	@Test
-	public void testSQLSubmissionBySL() throws GeneralException {
-		String data = TEST_DATA_TAG;
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		String res = sl.handleSQLSubmission(XFORMS_SUBMISSION1, data, null);
-		assertEquals(data, res);
-	}
-
-	/**
-	 * Функция тестирования работы SQL Submission через ServiceLayer c передачей
-	 * null в параметре content.
-	 * 
-	 * @throws GeneralException
-	 */
-	@Test
-	public void testSQLSubmissionBySLWithNullData() throws GeneralException {
-		String content = null;
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		String res = sl.handleSQLSubmission(XFORMS_SUBMISSION1, content, null);
-		assertEquals(content, res);
-	}
-
-	/**
-	 * Функция тестирования работы XSLT Submission через ServiceLayer.
-	 * 
-	 * @throws GeneralException
-	 */
-	@Test
-	public void testXSLTSubmissionBySL() throws GeneralException {
-		String data = TEST_DATA_TAG;
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		String res = sl.handleXSLTSubmission("xformsxslttransformation_test.xsl", data, null);
-		assertNotNull(res);
-	}
-
-	/**
 	 * Проверка файлового шлюза для скачивания данных.
 	 * 
 	 */
@@ -207,24 +165,6 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		assertNotNull(file);
 		assertNotNull(file.getData());
 		assertEquals(linkId, file.getName());
-	}
-
-	/**
-	 * Проверка скачивания файла для XForms через ServiceLayer.
-	 * 
-	 * @throws GeneralException
-	 */
-	@Test
-	public void testXFormsFileDownloadBySL() throws GeneralException {
-		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getTestXForms2Info();
-		String linkId = "proc4";
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		DataFile<ByteArrayOutputStream> file =
-			serviceLayer.getDownloadFile(context, element, linkId, null);
-		final int navigatorXMLLen = 231478;
-		assertNotNull(context.getSession());
-		assertTrue(file.getData().size() > navigatorXMLLen);
 	}
 
 	/**
@@ -240,47 +180,11 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		gateway.uploadFile(null, null, linkId, null, file);
 	}
 
-	/**
-	 * Проверка закачивания файла из XForms через ServiceLayer.
-	 * 
-	 * @throws GeneralException
-	 * @throws IOException
-	 */
-	@Test
-	public void testXFormsFileUploadBySL() throws GeneralException, IOException {
-		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getTestXForms2Info();
-		String linkId = "proc5";
-		final String fileName = TEST_XML_FILE;
-		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.uploadFile(context, element, linkId, null, file);
-		assertNotNull(context.getSession());
-	}
-
 	private DataFile<ByteArrayOutputStream> getTestFile(final String linkId) throws IOException {
 		DataFile<ByteArrayOutputStream> file =
 			new DataFile<ByteArrayOutputStream>(StreamConvertor.inputToOutputStream(AppProps
 					.loadResToStream(linkId)), linkId);
 		return file;
-	}
-
-	/**
-	 * Проверка загрузки на сервер правильного XML.
-	 * 
-	 * @throws IOException
-	 * @throws GeneralException
-	 */
-	@Test
-	public void testXFormsXMLUploadGood() throws IOException, GeneralException {
-		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getTestXForms2Info();
-		String linkId = "proc7";
-		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
-		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.uploadFile(context, element, linkId, null, file);
-		assertNotNull(context.getSession());
 	}
 
 	/**
@@ -302,20 +206,6 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 
 		XFormsGateway gateway = new XFormsDBGateway();
 		gateway.uploadFile(context, elementInfo, linkId, null, transformer.getInputStreamResult());
-	}
-
-	/**
-	 * Проверка скачивания XML файла для XForms через ServiceLayer.
-	 * 
-	 * @throws GeneralException
-	 */
-	@Test
-	public void testXFormsXMLDownloadGood() throws GeneralException {
-		CompositeContext context = getTestContext1();
-		DataPanelElementInfo element = getTestXForms2Info();
-		String linkId = "proc6";
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.getDownloadFile(context, element, linkId, null);
 	}
 
 	/**
@@ -358,11 +248,6 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		gateway.saveData(context, elementInfo, transformer.getStringResult());
 	}
 
-	/**
-	 * Тест сохранения данных через XFormsDBGateway, приводящий к ошибке
-	 * проверки XSD.
-	 * 
-	 */
 	@Test(expected = XSDValidateException.class)
 	public void testDBUpdateWithInvalidXML() throws IOException {
 		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "0209");
@@ -373,11 +258,6 @@ public class XFormsGatewayTest extends AbstractTestBasedOnFiles {
 		transformer.checkAndTransform();
 	}
 
-	/**
-	 * Тест сохранения данных через XFormsDBGateway, приводящий к ошибке
-	 * проверки XSD.
-	 * 
-	 */
 	@Test(expected = NotXMLException.class)
 	public void testDBUpdateWithNotXML() throws IOException {
 		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "0209");

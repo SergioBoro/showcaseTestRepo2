@@ -73,8 +73,8 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			NavigatorSelector selector = new NavigatorSelector();
 			NavigatorGateway gw = selector.getGateway();
 			try {
-				xml = gw.getRawData(context, selector.getSourceName());
-				NavigatorFactory factory = new NavigatorFactory();
+				xml = gw.getRawData(context);
+				NavigatorFactory factory = new NavigatorFactory(context);
 				nav = factory.fromStream(xml);
 			} finally {
 				gw.releaseResources();
@@ -92,11 +92,16 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 		try {
 			prepareContext(action);
-			DataPanelGateway gateway = new DataPanelXMLGateway();
-			DataFile<InputStream> file =
-				gateway.getRawData(action.getDataPanelLink().getDataPanelId());
-			DataPanelFactory factory = new DataPanelFactory();
-			panel = factory.fromStream(file);
+
+			DataPanelSelector selector = new DataPanelSelector(action.getDataPanelLink());
+			DataPanelGateway gateway = selector.getGateway();
+			try {
+				DataFile<InputStream> file = gateway.getRawData(action.getContext());
+				DataPanelFactory factory = new DataPanelFactory();
+				panel = factory.fromStream(file);
+			} finally {
+				gateway.releaseResources();
+			}
 			outputDebugInfo(panel);
 			return panel;
 		} catch (Throwable e) {
@@ -137,15 +142,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 			}
 			prepareContext(context);
 
-			if (settings.isFirstLoad()) {
-				state = new GridServerState();
-				AppInfoSingleton.getAppInfo().storeElementState(sessionId, elementInfo, context,
-						state);
-			} else {
-				state =
-					(GridServerState) AppInfoSingleton.getAppInfo().getElementState(sessionId,
-							elementInfo, context);
-			}
+			state = getGridState(context, elementInfo, settings);
 
 			if (elementInfo.loadByOneProc()) {
 				raw = gateway.getRawDataAndSettings(context, elementInfo, settings);
@@ -173,6 +170,21 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);
 		}
+	}
+
+	private GridServerState getGridState(final CompositeContext context,
+			final DataPanelElementInfo elementInfo, final GridRequestedSettings settings) {
+		GridServerState state;
+		if (settings.isFirstLoad()) {
+			state = new GridServerState();
+			AppInfoSingleton.getAppInfo()
+					.storeElementState(sessionId, elementInfo, context, state);
+		} else {
+			state =
+				(GridServerState) AppInfoSingleton.getAppInfo().getElementState(sessionId,
+						elementInfo, context);
+		}
+		return state;
 	}
 
 	@Override
@@ -471,7 +483,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	private String
 			getRawMainPageFrame(final CompositeContext context, final MainPageFrameType type) {
 		MainPageFrameSelector selector = new MainPageFrameSelector(type);
-		String result = selector.getGateway().getRawData(context, selector.getSourceName());
+		String result = selector.getGateway().getRawData(context);
 		return result;
 	}
 

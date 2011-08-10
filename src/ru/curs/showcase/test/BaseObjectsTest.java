@@ -8,11 +8,9 @@ import java.sql.SQLException;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.*;
-import ru.curs.showcase.model.datapanel.DataPanelXMLGateway;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.model.datapanel.DataPanelFileGateway;
+import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
 
@@ -22,7 +20,7 @@ import ru.curs.showcase.util.xml.*;
  * @author den
  * 
  */
-public class BaseObjectsTest extends AbstractTestBasedOnFiles {
+public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	private static final String TEST_CSS = "ru\\curs\\showcase\\test\\ShowcaseDataGrid_test.css";
 
 	/**
@@ -35,7 +33,7 @@ public class BaseObjectsTest extends AbstractTestBasedOnFiles {
 	public void testStreamConvertor() throws IOException {
 		InputStream is =
 			AppProps.loadUserDataToStream(String.format("%s//%s",
-					DataPanelXMLGateway.DP_STORAGE_PARAM_NAME, "a.xml"));
+					DataPanelFileGateway.DP_STORAGE_PARAM_NAME, "a.xml"));
 
 		StreamConvertor dup = new StreamConvertor(is);
 		String data = XMLUtils.xsltTransform(dup.getCopy(), null);
@@ -181,21 +179,5 @@ public class BaseObjectsTest extends AbstractTestBasedOnFiles {
 		assertEquals("11.11", BrowserType.detectVersion(operaUA));
 		assertEquals("4.0.1", BrowserType.detectVersion(firefoxUA));
 		assertEquals("9.0", BrowserType.detectVersion(IEUA));
-	}
-
-	/**
-	 * Проверка вызова функции getServerCurrentState.
-	 * 
-	 * @throws GeneralException
-	 */
-	@Test
-	public void testGetServerCurrentState() throws GeneralException {
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		CompositeContext context = new CompositeContext();
-		ServerCurrentState scs = sl.getServerCurrentState(context);
-		assertNotNull(scs);
-		assertEquals(AppInfoSingleton.getAppInfo().getServletContainerVersion(),
-				scs.getServletContainerVersion());
-		assertEquals(System.getProperty("java.version"), scs.getJavaVersion());
 	}
 }

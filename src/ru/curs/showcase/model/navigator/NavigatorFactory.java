@@ -8,7 +8,7 @@ import javax.xml.parsers.SAXParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ru.curs.showcase.app.api.event.Action;
+import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.model.event.ActionFactory;
 import ru.curs.showcase.runtime.AppProps;
@@ -56,15 +56,18 @@ public final class NavigatorFactory extends SAXTagHandler {
 	 * Фабрика событий.
 	 */
 	private final ActionFactory actionFactory = new ActionFactory();
+
+	private final CompositeContext callContext;
 	/**
 	 * Стек текущих элементов навигатора.
 	 */
 	private final LinkedList<NavigatorElement> currentElStack = new LinkedList<NavigatorElement>();
 
-	public NavigatorFactory() {
+	public NavigatorFactory(final CompositeContext aCallContext) {
 		super();
 		groupIconsDir = AppProps.getRequiredValueByName(GRP_ICONS_DIR_PARAM_NAME);
 		groupDefIcon = AppProps.getRequiredValueByName(GRP_DEF_ICON_PARAM_NAME);
+		callContext = aCallContext;
 	}
 
 	public void levelSTARTTAGHandler(final Attributes attrs) {

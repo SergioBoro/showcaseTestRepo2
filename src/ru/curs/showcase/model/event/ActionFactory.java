@@ -52,12 +52,23 @@ public class ActionFactory extends SAXTagHandler {
 	 */
 	private boolean readingServerPart = false;
 
+	private CompositeContext callContext = null;
+
 	/**
 	 * Стартовые тэги, которые будут обработаны данным обработчиком.
 	 */
 	private static final String[] START_TAGS = {
-			ACTION_TAG, DP_TAG, NAVIGATOR_TAG, ELEMENT_TAG, MODAL_WINDOW_TAG,
-			MAIN_CONTEXT_TAG, ADD_CONTEXT_TAG, SERVER_TAG, ACTIVITY_TAG };
+			ACTION_TAG, DP_TAG, NAVIGATOR_TAG, ELEMENT_TAG, MODAL_WINDOW_TAG, MAIN_CONTEXT_TAG,
+			ADD_CONTEXT_TAG, SERVER_TAG, ACTIVITY_TAG };
+
+	public ActionFactory(final CompositeContext aCallContext) {
+		super();
+		callContext = aCallContext;
+	}
+
+	public ActionFactory() {
+		super();
+	}
 
 	@Override
 	protected String[] getStartTags() {
@@ -67,8 +78,8 @@ public class ActionFactory extends SAXTagHandler {
 	/**
 	 * Конечные тэги, которые будут обработаны.
 	 */
-	private static final String[] END_TAGS =
-		{ MAIN_CONTEXT_TAG, ADD_CONTEXT_TAG, ELEMENT_TAG, ACTIVITY_TAG, SERVER_TAG, };
+	private static final String[] END_TAGS = {
+			MAIN_CONTEXT_TAG, ADD_CONTEXT_TAG, ELEMENT_TAG, ACTIVITY_TAG, SERVER_TAG, };
 
 	@Override
 	protected String[] getEndTrags() {
@@ -188,7 +199,7 @@ public class ActionFactory extends SAXTagHandler {
 		curDataPanelLink.setDataPanelId(attrs.getValue(DP_ID_ATTR_NAME));
 
 		ActionTabFinder finder = AppRegistry.getActionTabFinder();
-		curDataPanelLink.setTabId(finder.findTabForAction(curDataPanelLink,
+		curDataPanelLink.setTabId(finder.findTabForAction(getCallContext(), curDataPanelLink,
 				attrs.getValue(TAB_TAG)));
 		curAction.setDataPanelLink(curDataPanelLink);
 	}
@@ -270,6 +281,14 @@ public class ActionFactory extends SAXTagHandler {
 			String s = new String(aArg0, aArg1, aArg2).trim();
 			characters = characters + s;
 		}
+	}
+
+	public CompositeContext getCallContext() {
+		return callContext;
+	}
+
+	public void setCallContext(final CompositeContext aCallContext) {
+		callContext = aCallContext;
 	}
 
 }

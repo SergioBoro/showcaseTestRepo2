@@ -14,7 +14,7 @@ import ru.curs.showcase.runtime.ConnectionFactory;
  * @author den
  * 
  */
-public class DBConnectionsTest extends AbstractTestBasedOnFiles {
+public class DBConnectionsTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Простой тест работы фабрики соединений.

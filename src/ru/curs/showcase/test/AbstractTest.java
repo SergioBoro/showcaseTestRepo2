@@ -24,13 +24,15 @@ import ru.curs.showcase.util.xml.GeneralXMLHelper;
  * @author den
  * 
  */
-public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
+public class AbstractTest extends GeneralXMLHelper {
 
 	protected static final String TEST_GOOD_XSL = "test_good.xsl";
 	protected static final String XFORMS_UPLOAD1 = "xforms_upload1";
+	protected static final String TEST_XML = "test.xml";
 	protected static final String TEST1_1_XML = "test1.1.xml";
 	protected static final String TEST2_XML = "test2.xml";
 	protected static final String TEST1_USERDATA = "test1";
+	protected static final String TEST2_USERDATA = "test2";
 	/**
 	 * Идентификатор сессии для модульных тестов.
 	 */
@@ -40,6 +42,7 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	protected static final String KEY1 = "key1";
 
 	protected static final String TREE_MULTILEVEL_XML = "tree_multilevel.xml";
+	protected static final String TREE_MULTILEVEL_V2_XML = "tree_multilevel.v2.xml";
 
 	/**
 	 * Действия, которые должны выполняться перед запуском любых тестовых
@@ -55,19 +58,14 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	}
 
 	/**
-	 * Установка userdata по умолчанию для тестов, не вызывающих функции SL.
-	 */
-	@Before
-	public void beforeTest() {
-		AppInfoSingleton.getAppInfo().setCurUserDataId(
-				ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
-	}
-
-	/**
 	 * Очистка информации о текущей userdata после каждого теста.
 	 */
 	@After
 	public void afterTest() {
+		resetUserData();
+	}
+
+	protected void resetUserData() {
 		AppInfoSingleton.getAppInfo().setCurUserDataId((String) null);
 	}
 
@@ -89,13 +87,29 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	 */
 	protected DataPanelElementInfo getDPElement(final String fileName, final String tabID,
 			final String elID) {
-		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData(fileName);
-		DataPanelFactory dpFactory = new DataPanelFactory();
-		DataPanel panel = dpFactory.fromStream(file);
-		DataPanelElementInfo element = panel.getTabById(tabID).getElementInfoById(elID);
-		assertTrue(element.isCorrect());
-		return element;
+		boolean needReset = false;
+		if (AppInfoSingleton.getAppInfo().getCurUserDataId() == null) {
+			setDefaultUserData();
+			needReset = true;
+		}
+		try {
+			DataPanelGateway gateway = new DataPanelFileGateway();
+			DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), fileName);
+			DataPanelFactory dpFactory = new DataPanelFactory();
+			DataPanel panel = dpFactory.fromStream(file);
+			DataPanelElementInfo element = panel.getTabById(tabID).getElementInfoById(elID);
+			assertTrue(element.isCorrect());
+			return element;
+		} finally {
+			if (needReset) {
+				resetUserData();
+			}
+		}
+	}
+
+	protected void setDefaultUserData() {
+		AppInfoSingleton.getAppInfo().setCurUserDataId(
+				ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
 	}
 
 	/**
@@ -320,12 +334,26 @@ public class AbstractTestBasedOnFiles extends GeneralXMLHelper {
 	 * @return - контекст.
 	 */
 	protected Action getAction(final String fileName, final int groupID, final int elID) {
-		NavigatorGateway gateway = new NavigatorFileGateway();
-		InputStream stream1 = gateway.getRawData(new CompositeContext(), fileName);
-		NavigatorFactory navFactory = new NavigatorFactory();
-		Navigator nav = navFactory.fromStream(stream1);
-		Action action = nav.getGroups().get(groupID).getElements().get(elID).getAction();
-		return action;
+		boolean needReset = false;
+		if (AppInfoSingleton.getAppInfo().getCurUserDataId() == null) {
+			setDefaultUserData();
+			needReset = true;
+		}
+		try {
+			NavigatorGateway gateway = new NavigatorFileGateway();
+			InputStream stream1 = gateway.getRawData(new CompositeContext(), fileName);
+			CompositeContext context =
+				new CompositeContext(
+						generateTestURLParams(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT));
+			NavigatorFactory navFactory = new NavigatorFactory(context);
+			Navigator nav = navFactory.fromStream(stream1);
+			Action action = nav.getGroups().get(groupID).getElements().get(elID).getAction();
+			return action;
+		} finally {
+			if (needReset) {
+				resetUserData();
+			}
+		}
 	}
 
 	/**

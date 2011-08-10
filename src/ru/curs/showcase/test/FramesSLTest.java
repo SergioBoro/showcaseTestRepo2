@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.frame.MainPageFrameType;
+import ru.curs.showcase.runtime.AppProps;
 
 /**
  * Тесты для получения фреймов из файла и из БД.
@@ -16,7 +17,7 @@ import ru.curs.showcase.model.frame.MainPageFrameType;
  * @author den
  * 
  */
-public final class FramesTest extends AbstractTestBasedOnFiles {
+public final class FramesSLTest extends AbstractTest {
 	private static final String HTML_HEAD_BODY_BEGIN = "<html><head/><body>";
 	private static final String BODY_HTML_ENDS = "</body></html>";
 	private static final String HEADER_CODE = "<h1 align=\"center\">Заголовок из БД</h1>";
@@ -78,5 +79,24 @@ public final class FramesTest extends AbstractTestBasedOnFiles {
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		String html = sl.getMainPageFrame(context, MainPageFrameType.FOOTER);
 		assertEquals(HTML_HEAD_BODY_BEGIN + FOOTER_CODE + BODY_HTML_ENDS, html);
+	}
+
+	/**
+	 * Проверка чтения информации о главном окне из app.properties.
+	 * 
+	 * @throws GeneralException
+	 */
+	@Test
+	public void testReadMainPageInfoBySL() throws GeneralException {
+		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
+		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
+		MainPage mp = sl.getMainPage(context);
+		assertEquals("100px", mp.getHeaderHeight());
+		assertEquals("50px", mp.getFooterHeight());
+
+		context = new CompositeContext(generateTestURLParams(TEST2_USERDATA));
+		mp = sl.getMainPage(context);
+		assertEquals(AppProps.DEF_HEADER_HEIGTH, mp.getHeaderHeight());
+		assertEquals(AppProps.DEF_FOOTER_HEIGTH, mp.getFooterHeight());
 	}
 }

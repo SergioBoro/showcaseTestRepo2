@@ -2,6 +2,7 @@ package ru.curs.showcase.model.datapanel;
 
 import java.io.InputStream;
 
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.util.DataFile;
 
 /**
@@ -12,16 +13,6 @@ import ru.curs.showcase.util.DataFile;
  */
 public interface DataPanelGateway {
 	/**
-	 * Функция получения идентификатора первой вкладки панели по идентификатору
-	 * панели.
-	 * 
-	 * @param dataPanelId
-	 *            - идентификатор панели.
-	 * @return - идентификатор вкладки.
-	 */
-	String getFirstTabId(String dataPanelId);
-
-	/**
 	 * Функция, возвращающая поток с XML документом, описывающим панель, по его
 	 * идентификатору.
 	 * 
@@ -29,15 +20,11 @@ public interface DataPanelGateway {
 	 *            - идентификатор панели.
 	 * @return - файл.
 	 */
-	DataFile<InputStream> getRawData(String dataPanelId);
+	DataFile<InputStream> getRawData(final CompositeContext context, String dataPanelId);
 
-	/**
-	 * Проверка на существование вкладки в файле.
-	 * 
-	 * @param aDataPanelId
-	 *            - идентификатор панели.
-	 * @param aTabValue
-	 *            - значение идентификатора вкладки.
-	 */
-	boolean tabExists(String aDataPanelId, String aTabValue);
+	DataFile<InputStream> getRawData(CompositeContext aContext);
+
+	void releaseResources();
+
+	void setSourceName(String name);
 }

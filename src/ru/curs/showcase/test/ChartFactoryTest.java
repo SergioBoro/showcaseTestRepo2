@@ -8,8 +8,6 @@ import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.LegendPosition;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.chart.*;
 
@@ -19,7 +17,7 @@ import ru.curs.showcase.model.chart.*;
  * @author den
  * 
  */
-public class ChartFactoryTest extends AbstractTestBasedOnFiles {
+public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 	private static final String FIRST_COL_CAPTION = "3кв. 2005г.";
 	private static final String SELECTOR_COL_FIRST_VALUE =
 		"Запасы на конец отчетного периода - Всего";
@@ -136,26 +134,6 @@ public class ChartFactoryTest extends AbstractTestBasedOnFiles {
 				String.format("%d (%s): %s", 1, data.getLabelsX().get(1).getText(), value.getY()),
 				value.getTooltip());
 		assertEquals(data.getLabelsX().get(1).getText(), value.getLegend());
-	}
-
-	/**
-	 * Проверка работы адаптера в JSON.
-	 * 
-	 * @throws GeneralException
-	 */
-	@Test
-	public void testAdaptChartForJS() throws GeneralException {
-		CompositeContext context = getTestContext3();
-		DataPanelElementInfo element = getTestChartInfo();
-
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Chart chart = serviceLayer.getChart(context, element);
-
-		assertNotNull(context.getSession());
-		assertNotNull(chart.getJavaDynamicData());
-		assertNotNull(chart.getJsDynamicData());
-		assertTrue(chart.getJsDynamicData().startsWith("{"));
-		assertTrue(chart.getJsDynamicData().endsWith("}"));
 	}
 
 	/**

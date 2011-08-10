@@ -21,7 +21,7 @@ import ru.curs.showcase.util.xml.GeneralXMLHelper;
  * @author den
  * 
  */
-public class GridExportToExcelTest extends AbstractTestBasedOnFiles {
+public class GridExportToExcelSLTest extends AbstractTest {
 	/**
 	 * Тест экспорта данных из текущей страницы.
 	 * 

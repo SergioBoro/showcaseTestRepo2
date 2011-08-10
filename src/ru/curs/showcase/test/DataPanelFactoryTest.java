@@ -8,8 +8,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
+import ru.curs.showcase.model.SPNotExistsException;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.XSDValidateException;
@@ -20,7 +19,7 @@ import ru.curs.showcase.util.xml.XSDValidateException;
  * @author den
  * 
  */
-public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
+public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Проверка значений атрибутов панели по умолчанию.
@@ -42,8 +41,8 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		final int panelsCount = 3;
 		final int firstPanelSecondTabElCount = 5;
 
-		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData("test.xml");
+		DataPanelGateway gateway = new DataPanelFileGateway();
+		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 
@@ -85,37 +84,13 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	}
 
 	/**
-	 * Метод, эмулирующий вызов GWT на уровне сервера.
-	 * 
-	 * @throws GeneralException
-	 */
-	@Test
-	public void testBySL() throws GeneralException {
-		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
-		action.setContext(CompositeContext.createCurrent());
-		DataPanelLink dpLink = new DataPanelLink();
-		dpLink.setDataPanelId("test2.xml");
-		dpLink.setTabId("1");
-		action.setDataPanelLink(dpLink);
-
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		DataPanel panel = serviceLayer.getDataPanel(action);
-
-		DataPanelElementInfo elInfo = panel.getTabs().get(0).getElements().get(0);
-		assertFalse(elInfo.getCacheData());
-		assertFalse(elInfo.getRefreshByTimer());
-		assertEquals(DataPanelElementInfo.DEF_TIMER_INTERVAL, elInfo.getRefreshInterval()
-				.intValue());
-	}
-
-	/**
 	 * Проверка загрузки процедур XForms.
 	 * 
 	 */
 	@Test
 	public void testXFormsProcLoad() {
-		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
+		DataPanelGateway gateway = new DataPanelFileGateway();
+		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("0206");
@@ -137,8 +112,8 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testDPProcs() {
-		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
+		DataPanelGateway gateway = new DataPanelFileGateway();
+		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("0207");
@@ -189,8 +164,8 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 		elLink.setKeepUserSettings(false);
 		dpLink.getElementLinks().add(elLink);
 
-		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData(dataPanelId);
+		DataPanelGateway gateway = new DataPanelFileGateway();
+		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), dataPanelId);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 
@@ -205,8 +180,8 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testMetadataProc() {
-		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
+		DataPanelGateway gateway = new DataPanelFileGateway();
+		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("2").getElementInfoById("0201");
@@ -218,8 +193,8 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 
 	@Test
 	public void testReadElementWithRelated() {
-		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
+		DataPanelGateway gateway = new DataPanelFileGateway();
+		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("10").getElementInfoById("1001");
@@ -231,8 +206,8 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 
 	@Test
 	public void testWrongReadElementWithRelated() {
-		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData(TEST1_1_XML);
+		DataPanelGateway gateway = new DataPanelFileGateway();
+		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
 		DataPanelElementInfo el = panel.getTabById("11").getElementInfoById("1101");
@@ -241,9 +216,26 @@ public class DataPanelFactoryTest extends AbstractTestBasedOnFiles {
 
 	@Test(expected = XSDValidateException.class)
 	public void testWrongReadElementWithRelated2() {
-		DataPanelGateway gateway = new DataPanelXMLGateway();
-		DataFile<InputStream> file = gateway.getRawData("test.bad2.xml");
+		DataPanelGateway gateway = new DataPanelFileGateway();
+		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), "test.bad2.xml");
 		DataPanelFactory factory = new DataPanelFactory();
 		factory.fromStream(file);
+	}
+
+	@Test(expected = SPNotExistsException.class)
+	public void testBySLFromDBSPNotExists() {
+		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
+		action.setContext(CompositeContext.createCurrent());
+		DataPanelLink dpLink = new DataPanelLink();
+		dpLink.setDataPanelId("dp09031");
+		action.setDataPanelLink(dpLink);
+
+		DataPanelSelector selector = new DataPanelSelector(action.getDataPanelLink());
+		DataPanelGateway gateway = selector.getGateway();
+		try {
+			gateway.getRawData(action.getContext());
+		} finally {
+			gateway.releaseResources();
+		}
 	}
 }

@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.util.xml.*;
@@ -19,7 +20,7 @@ import ru.curs.showcase.util.xml.*;
 /**
  * Тесты класса XMLProcessor.
  */
-public class XMLUtilsTest extends AbstractTestBasedOnFiles {
+public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 
 	private static final String TEST_GOOD_XSD = "test_good.xsd";
 	private static final String TEST_BAD_XSD = "test_bad.xsd";
@@ -295,10 +296,10 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 	public final void testDPGoodValidateXSD() {
 		String xsdFileName = DataPanelFactory.DATAPANEL_XSD;
 
-		DataPanelGateway gateway = new DataPanelXMLGateway();
+		DataPanelGateway gateway = new DataPanelFileGateway();
 		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
-		validator.validate(new XMLSource(gateway.getRawData("test.xml").getData(), "test.xml",
-				xsdFileName));
+		validator.validate(new XMLSource(gateway.getRawData(new CompositeContext(), TEST_XML)
+				.getData(), "test.xml", xsdFileName));
 	}
 
 	/**
@@ -308,10 +309,10 @@ public class XMLUtilsTest extends AbstractTestBasedOnFiles {
 	public final void testDPBadValidateXSD() {
 		String xsdFileName = DataPanelFactory.DATAPANEL_XSD;
 
-		DataPanelGateway gateway = new DataPanelXMLGateway();
+		DataPanelGateway gateway = new DataPanelFileGateway();
 		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
-		validator.validate(new XMLSource(gateway.getRawData("test.bad1.xml").getData(),
-				"test.bad1.xml", xsdFileName));
+		validator.validate(new XMLSource(gateway.getRawData(new CompositeContext(),
+				"test.bad1.xml").getData(), "test.bad1.xml", xsdFileName));
 	}
 
 	/**

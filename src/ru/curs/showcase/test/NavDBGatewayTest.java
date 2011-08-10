@@ -20,7 +20,7 @@ import ru.curs.showcase.util.xml.*;
  * @author den
  * 
  */
-public class NavDBGatewayTest extends AbstractTestBasedOnFiles {
+public class NavDBGatewayTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Тест функции получения данных для навигатора.

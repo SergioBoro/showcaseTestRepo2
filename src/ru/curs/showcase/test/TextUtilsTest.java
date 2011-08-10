@@ -12,7 +12,7 @@ import ru.curs.showcase.util.TextUtils;
  * @author den
  * 
  */
-public class TextUtilsTest extends AbstractTestBasedOnFiles {
+public class TextUtilsTest extends AbstractTestWithDefaultUserData {
 
 	private static final String RUS_PATH2 = "C:/Виндоус 7/System32/русское имя.ext";
 	private static final String RUS_PATH1 = "C:\\Виндоус 7\\System32\\русское имя.ext";
@@ -56,6 +56,10 @@ public class TextUtilsTest extends AbstractTestBasedOnFiles {
 	public void testExtractFileName() {
 		assertEquals(RUS_NAME, TextUtils.extractFileName(RUS_PATH1));
 		assertEquals(RUS_NAME, TextUtils.extractFileName(RUS_PATH2));
+		final String procName = "dp0903";
+		assertEquals(procName, TextUtils.extractFileName(procName));
+		assertEquals("calc", TextUtils.extractFileName("calc.exe"));
+		assertEquals("calc", TextUtils.extractFileName("C:\\windows\\calc"));
 	}
 
 }

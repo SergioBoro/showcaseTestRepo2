@@ -66,7 +66,7 @@ public class GeneralException extends Exception {
 
 	/**
 	 * Признак того, что для данного исключения требуется показывать
-	 * пользователю дополнительную инфорацию.
+	 * пользователю дополнительную информацию.
 	 */
 	private Boolean needDatailedInfo;
 

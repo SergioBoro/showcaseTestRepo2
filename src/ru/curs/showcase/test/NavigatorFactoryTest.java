@@ -6,12 +6,10 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.*;
-import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.navigator.*;
-import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
  * Класс для тестирования фабрики навигаторов.
@@ -19,7 +17,7 @@ import ru.curs.showcase.runtime.AppInfoSingleton;
  * @author den
  * 
  */
-public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
+public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 
 	private static final String TEST_ELEMEMNT_NAME = "Вывоз, включая экспорт - Ноябрь";
 
@@ -38,39 +36,6 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 	}
 
 	/**
-	 * Тест навигатора, построенного на основе данных из БД.
-	 * 
-	 */
-	@Test
-	public void testNavigatorFromDBBySL() throws GeneralException {
-		AppInfoSingleton.getAppInfo().setCurUserDataId((String) null);
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Navigator nav = serviceLayer.getNavigator(new CompositeContext());
-		assertFalse(nav.getHideOnLoad());
-		assertEquals("180px", nav.getWidth());
-	}
-
-	/**
-	 * Тест навигатора, построенного на основе данных из файла.
-	 */
-	@Test
-	public void testNavigatorFromFileBySL() throws GeneralException {
-		AppInfoSingleton.getAppInfo().setCurUserDataId((String) null);
-		CompositeContext context = new CompositeContext();
-		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Navigator nav = serviceLayer.getNavigator(context);
-		assertTrue(nav.getHideOnLoad());
-		assertEquals(1, nav.getGroups().size());
-		final int l1ElementsCount = 1;
-		assertEquals(l1ElementsCount, nav.getGroups().get(0).getElements().size());
-		assertEquals("04", nav.getAutoSelectElement().getId());
-		final int l2ElementsCount = 0;
-		assertEquals(l2ElementsCount, nav.getGroups().get(0).getElements().get(0).getElements()
-				.size());
-	}
-
-	/**
 	 * Число элементов в первой группе навигатора.
 	 */
 	private static final int FIRST_GRP_ELEMENTS_COUNT = 6;
@@ -81,7 +46,10 @@ public class NavigatorFactoryTest extends AbstractTestBasedOnFiles {
 	 */
 	@Test
 	public void testNavigatorFromFile() {
-		NavigatorFactory factory = new NavigatorFactory();
+		CompositeContext context =
+			new CompositeContext(
+					generateTestURLParams(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT));
+		NavigatorFactory factory = new NavigatorFactory(context);
 		NavigatorGateway gateway = new NavigatorFileGateway();
 		InputStream stream = gateway.getRawData(new CompositeContext(), TREE_MULTILEVEL_XML);
 

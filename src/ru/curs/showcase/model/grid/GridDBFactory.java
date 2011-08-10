@@ -117,7 +117,9 @@ public class GridDBFactory extends AbstractGridFactory {
 				curRecord.setValue(col.getId(), value);
 			}
 			getRecordSet().getRecords().add(curRecord);
-			readEvents(curRecord.getId(), rowset.getString(PROPERTIES_SQL_TAG));
+			if (SQLUtils.existsColumn(rowset.getMetaData(), PROPERTIES_SQL_TAG)) {
+				readEvents(curRecord.getId(), rowset.getString(PROPERTIES_SQL_TAG));
+			}
 		}
 	}
 

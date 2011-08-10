@@ -23,16 +23,6 @@ public class DataPanelElementContext implements SerializableElement {
 	private CompositeContext compositeContext;
 
 	/**
-	 * Название панели.
-	 */
-	private String panel;
-
-	/**
-	 * Идентификатор элемента.
-	 */
-	private String elementId;
-
-	/**
 	 * Сохраняем ссылку на случай запроса доп. информации в процедуре обработки
 	 * исключений.
 	 */
@@ -53,10 +43,10 @@ public class DataPanelElementContext implements SerializableElement {
 	@Override
 	public String toString() {
 		String res = compositeContext.toString();
-		if (elementId != null) {
+		if (elementInfo != null) {
 			res =
-				res + ExchangeConstants.LINE_SEPARATOR + "panel=" + panel
-						+ ExchangeConstants.LINE_SEPARATOR + "elementId=" + elementId
+				res + ExchangeConstants.LINE_SEPARATOR + "panel=" + getPanel()
+						+ ExchangeConstants.LINE_SEPARATOR + "elementId=" + getElementId()
 						+ ExchangeConstants.LINE_SEPARATOR;
 		}
 		return res;
@@ -65,8 +55,6 @@ public class DataPanelElementContext implements SerializableElement {
 	public DataPanelElementContext(final CompositeContext aContext, final DataPanelElementInfo dpei) {
 		super();
 		compositeContext = aContext;
-		panel = dpei.getTab().getDataPanel().getId();
-		elementId = dpei.getId();
 		elementInfo = dpei;
 	}
 
@@ -76,19 +64,17 @@ public class DataPanelElementContext implements SerializableElement {
 	}
 
 	public String getPanel() {
-		return panel;
-	}
-
-	public void setPanel(final String aPanel) {
-		panel = aPanel;
+		if (elementInfo != null) {
+			return elementInfo.getTab().getDataPanel().getId();
+		}
+		return null;
 	}
 
 	public String getElementId() {
-		return elementId;
-	}
-
-	public void setElementId(final String aElementId) {
-		elementId = aElementId;
+		if (elementInfo != null) {
+			return elementInfo.getId();
+		}
+		return null;
 	}
 
 	public DataPanelElementInfo getElementInfo() {

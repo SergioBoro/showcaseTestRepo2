@@ -41,7 +41,7 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 
 			private boolean readingHeader = false;
 			private boolean readingFooter = false;
-			private final ActionFactory actionFactory = new ActionFactory();
+			private final ActionFactory actionFactory = new ActionFactory(getCallContext());
 
 			@Override
 			public void startElement(final String namespaceURI, final String lname,

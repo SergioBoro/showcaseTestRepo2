@@ -167,7 +167,7 @@ public final class TextUtils {
 		}
 
 		int beginIndex = slashPos > 0 ? slashPos + 1 : 0;
-		int endIndex = dotPos > slashPos ? dotPos : path.length() - 1;
+		int endIndex = dotPos > slashPos ? dotPos : path.length();
 
 		return path.substring(beginIndex, endIndex);
 	}

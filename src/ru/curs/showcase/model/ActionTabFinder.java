@@ -1,7 +1,8 @@
 package ru.curs.showcase.model;
 
 import ru.curs.showcase.app.api.CanBeCurrent;
-import ru.curs.showcase.app.api.event.DataPanelLink;
+import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
  * Интерфейс для поиска и установки вкладки инф. панели у действия при неполных
@@ -10,7 +11,7 @@ import ru.curs.showcase.app.api.event.DataPanelLink;
  * @author den
  * 
  */
-public abstract class ActionTabFinder {
+public abstract class ActionTabFinder extends GeneralXMLHelper {
 	/**
 	 * Часть сообщения об ошибке, передаваемая в случае неверного номера
 	 * вкладки.
@@ -31,47 +32,35 @@ public abstract class ActionTabFinder {
 	 * @param link
 	 *            - ссылка на панель.
 	 */
-	public String findTabForAction(final DataPanelLink link, final String tabValue) {
+	public String findTabForAction(final CompositeContext context, final DataPanelLink link,
+			final String tabValue) {
 		if (tabValue != null) {
 			if (tabValue.equalsIgnoreCase(FIRST_OR_CURRENT_VALUE)) {
 				link.setFirstOrCurrentTab(true);
-				return getFirstFromStorage(link);
+				return getFirstTabId(context, link);
 			} else {
 				if (!tabValue.equalsIgnoreCase(CanBeCurrent.CURRENT_ID)) {
 					if (!link.getDataPanelId().equalsIgnoreCase(CanBeCurrent.CURRENT_ID)) {
-						checkForExists(link, tabValue);
+						checkForExists(context, link, tabValue);
 					}
 				}
 				return tabValue;
 			}
 		} else {
-			return getFirstFromStorage(link);
+			return getFirstTabId(context, link);
 		}
 	}
 
-	private void checkForExists(final DataPanelLink link, final String tabValue) {
-		if (!existsInStorage(link, tabValue)) {
+	private void checkForExists(final CompositeContext context, final DataPanelLink link,
+			final String tabValue) {
+		if (!tabExists(context, link, tabValue)) {
 			throw new IncorrectElementException(String.format(ERROR_MES, tabValue,
 					link.getDataPanelId()));
 		}
 	}
 
-	/**
-	 * Получает первую вкладку панели.
-	 * 
-	 * @param link
-	 *            - идентификатор панели.
-	 * @return - идентификатор первой вкладки.
-	 */
-	public abstract String getFirstFromStorage(final DataPanelLink link);
+	public abstract String getFirstTabId(final CompositeContext context, final DataPanelLink link);
 
-	/**
-	 * Проверяет - существует ли вкладка в панели.
-	 * 
-	 * @param link
-	 *            - идентификатор панели.
-	 * @param tabValue
-	 *            - значение идентификатора вкладки.
-	 */
-	public abstract boolean existsInStorage(final DataPanelLink link, final String tabValue);
+	public abstract boolean tabExists(final CompositeContext context, final DataPanelLink link,
+			final String tabValue);
 }
