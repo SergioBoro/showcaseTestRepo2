@@ -22,10 +22,30 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 
 	@Override
 	public String getRawData(final CompositeContext context, final String frameSource) {
+		setProcName(frameSource);
+		return getRawData(context);
+	}
+
+	@Override
+	protected String getSqlTemplate(final int index) {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return "{? = call [dbo].[%s](?, ?, ?)}";
+		} else {
+			// return "{? = call %s(?, ?, ?)}";
+			// Это эквивалентно
+			return "{call %s(?, ?, ?, ?)}";
+		}
+	}
+
+	@Override
+	protected DataPanelElementType getGatewayType() {
+		return DataPanelElementType.NON_DP_ELEMENT;
+	}
+
+	@Override
+	public String getRawData(final CompositeContext context) {
 		try {
 			try {
-				setProcName(frameSource);
-
 				prepareStatementWithErrorMes();
 				if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
 					getStatement().setString(SESSION_CONTEXT_PARAM, context.getSession());
@@ -59,19 +79,8 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 	}
 
 	@Override
-	protected String getSqlTemplate(final int index) {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return "{? = call [dbo].[%s](?, ?, ?)}";
-		} else {
-			// return "{? = call %s(?, ?, ?)}";
-			// Это эквивалентно
-			return "{call %s(?, ?, ?, ?)}";
-		}
-	}
-
-	@Override
-	protected DataPanelElementType getGatewayType() {
-		return DataPanelElementType.NON_DP_ELEMENT;
+	public void setSourceName(final String aName) {
+		setProcName(aName);
 	}
 
 }
