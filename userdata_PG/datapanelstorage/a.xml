@@ -39,4 +39,7 @@
 		<element id="62" type="webtext" proc="webtext_filter_and_add"
 			hideOnLoad="true" />		
 	</tab>
+	<tab id="7" name="Карта. Раскраска стилями">
+		<element id="72" type="geomap" proc="geomap_bal"/>
+	</tab>			
 </datapanel>
