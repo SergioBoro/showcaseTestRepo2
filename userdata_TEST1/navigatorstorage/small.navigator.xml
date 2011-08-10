@@ -6,7 +6,7 @@
 				<main_context>
 					Запасы на конец отчетного периода - Всего
 				</main_context>
-				<datapanel type="d.xml" tab="firstOrCurrent"/>				
+				<datapanel type="dp0903dynSession" tab="firstOrCurrent"/>				
 			</action>
 		</level1>
 	</group>

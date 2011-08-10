@@ -36,7 +36,7 @@ public class ActionTabFinderFromXML extends ActionTabFinder {
 				}
 			}
 		};
-		firstTabId = null; // нужно, думаю из-за Spring IoC
+		reset();
 		DataFile<InputStream> file = getFile(context, link);
 
 		SAXParser parser = XMLUtils.createSAXParser();
@@ -50,6 +50,13 @@ public class ActionTabFinderFromXML extends ActionTabFinder {
 			throw new XMLFormatException(String.format(NO_TABS_ERROR, link.getDataPanelId()));
 		}
 		return firstTabId;
+	}
+
+	/**
+	 * Spring IoC засоряет мусором firstTabId.
+	 */
+	private void reset() {
+		firstTabId = null;
 	}
 
 	@Override

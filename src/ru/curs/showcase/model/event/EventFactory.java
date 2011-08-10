@@ -41,7 +41,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 	/**
 	 * Фабрика событий.
 	 */
-	private final ActionFactory actionFactory = new ActionFactory();
+	private final ActionFactory actionFactory;
 
 	/**
 	 * Требуемый класс событий.
@@ -85,9 +85,10 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 	 */
 	private final List<SAXTagHandler> handlers = new ArrayList<SAXTagHandler>();
 
-	public EventFactory(final Class<? extends Event> aEventClass) {
+	public EventFactory(final Class<? extends Event> aEventClass, final CompositeContext context) {
 		super();
 		init(aEventClass);
+		actionFactory = new ActionFactory(context);
 	}
 
 	/**

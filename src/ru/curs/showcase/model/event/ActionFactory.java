@@ -61,13 +61,15 @@ public class ActionFactory extends SAXTagHandler {
 			ACTION_TAG, DP_TAG, NAVIGATOR_TAG, ELEMENT_TAG, MODAL_WINDOW_TAG, MAIN_CONTEXT_TAG,
 			ADD_CONTEXT_TAG, SERVER_TAG, ACTIVITY_TAG };
 
+	/**
+	 * Передавать контекст нужно для ActionTabFinder.
+	 * 
+	 * @param aCallContext
+	 *            - контекст с session.
+	 */
 	public ActionFactory(final CompositeContext aCallContext) {
 		super();
 		callContext = aCallContext;
-	}
-
-	public ActionFactory() {
-		super();
 	}
 
 	@Override
@@ -199,7 +201,9 @@ public class ActionFactory extends SAXTagHandler {
 		curDataPanelLink.setDataPanelId(attrs.getValue(DP_ID_ATTR_NAME));
 
 		ActionTabFinder finder = AppRegistry.getActionTabFinder();
-		curDataPanelLink.setTabId(finder.findTabForAction(getCallContext(), curDataPanelLink,
+		CompositeContext context = curAction.getContext().gwtClone();
+		context.setSession(callContext.getSession());
+		curDataPanelLink.setTabId(finder.findTabForAction(context, curDataPanelLink,
 				attrs.getValue(TAB_TAG)));
 		curAction.setDataPanelLink(curDataPanelLink);
 	}

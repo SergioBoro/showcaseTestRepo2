@@ -157,7 +157,8 @@ public class GridDBFactory extends AbstractGridFactory {
 	}
 
 	private void readEvents(final String curRecordId, final String data) {
-		EventFactory<GridEvent> factory = new EventFactory<GridEvent>(GridEvent.class);
+		EventFactory<GridEvent> factory =
+			new EventFactory<GridEvent>(GridEvent.class, getCallContext());
 		factory.initForGetSubSetOfEvents(EVENT_COLUMN_TAG, CELL_PREFIX, getElementInfo().getType()
 				.getPropsSchemaName());
 		getResult().getEventManager().getEvents()

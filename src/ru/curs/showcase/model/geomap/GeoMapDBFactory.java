@@ -190,7 +190,8 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 	}
 
 	private void readEvents(final String objectId, final String value) {
-		EventFactory<GeoMapEvent> factory = new EventFactory<GeoMapEvent>(GeoMapEvent.class);
+		EventFactory<GeoMapEvent> factory =
+			new EventFactory<GeoMapEvent>(GeoMapEvent.class, getCallContext());
 		factory.initForGetSimpleSubSetOfEvents(getElementInfo().getType().getPropsSchemaName());
 		getResult().getEventManager().getEvents()
 				.addAll(factory.getSubSetOfEvents(objectId, value));

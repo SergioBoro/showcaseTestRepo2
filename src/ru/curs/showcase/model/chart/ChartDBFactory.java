@@ -194,7 +194,8 @@ public class ChartDBFactory extends AbstractChartFactory {
 	}
 
 	private void readEvents(final ChartSeries series, final String value) {
-		EventFactory<ChartEvent> factory = new EventFactory<ChartEvent>(ChartEvent.class);
+		EventFactory<ChartEvent> factory =
+			new EventFactory<ChartEvent>(ChartEvent.class, getCallContext());
 		factory.initForGetSubSetOfEvents(X_TAG, VALUE_TAG, getElementInfo().getType()
 				.getPropsSchemaName());
 		SAXTagHandler colorHandler = new StartTagSAXHandler() {

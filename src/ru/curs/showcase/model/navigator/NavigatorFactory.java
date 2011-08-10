@@ -55,9 +55,8 @@ public final class NavigatorFactory extends SAXTagHandler {
 	/**
 	 * Фабрика событий.
 	 */
-	private final ActionFactory actionFactory = new ActionFactory();
+	private final ActionFactory actionFactory;
 
-	private final CompositeContext callContext;
 	/**
 	 * Стек текущих элементов навигатора.
 	 */
@@ -67,7 +66,7 @@ public final class NavigatorFactory extends SAXTagHandler {
 		super();
 		groupIconsDir = AppProps.getRequiredValueByName(GRP_ICONS_DIR_PARAM_NAME);
 		groupDefIcon = AppProps.getRequiredValueByName(GRP_DEF_ICON_PARAM_NAME);
-		callContext = aCallContext;
+		actionFactory = new ActionFactory(aCallContext);
 	}
 
 	public void levelSTARTTAGHandler(final Attributes attrs) {

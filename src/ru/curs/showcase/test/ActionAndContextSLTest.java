@@ -2,11 +2,8 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.util.*;
-
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
@@ -44,13 +41,8 @@ public class ActionAndContextSLTest extends AbstractTest {
 		final int actionNumber = 2;
 		AppInfoSingleton.getAppInfo().setCurUserDataId("test1");
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
-		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
-		ArrayList<String> val = new ArrayList<String>();
-		val.add("test1");
-		params.put(ExchangeConstants.URL_PARAM_USERDATA, val);
-		action.getContext().setSessionParamsMap(params);
+		action.getContext().setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		sl.execServerAction(action);
 	}
-
 }

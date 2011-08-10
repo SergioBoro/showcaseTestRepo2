@@ -89,7 +89,19 @@
 				<activity id="srv01" name="exec_by_userdata" type="SP" />
 				</server>					
 			</action>
-		</level1>				
+		</level1>	
+		<level1 id="C6CC2BA4-A6ED-4630-8E58-CBBFA9C8C0A3" name="SQL DP test">
+			<action>
+				<main_context>Вывоз, включая экспорт - Всего</main_context>
+				<datapanel type="dp0903" />				
+			</action>
+		</level1>	
+		<level1 id="C6CC2BA4-A6ED-4630-8E58-CBBFA9C8C0A2" name="SQL DP test dynamic">
+			<action>
+				<main_context>Правильный контекст</main_context>
+				<datapanel type="dp0903dynMain" />				
+			</action>
+		</level1>								
 	</group>
 	
 	<group id="2" name="Регионы">
