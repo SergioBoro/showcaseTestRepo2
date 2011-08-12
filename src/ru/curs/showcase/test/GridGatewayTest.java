@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.grid.GridRequestedSettings;
+import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.runtime.ConnectionFactory;
@@ -26,7 +26,7 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testGetData() {
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 
 		GridGateway gateway = new GridDBGateway();
@@ -80,10 +80,11 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 		Connection conn = ConnectionFactory.getConnection();
 		try {
 			GridGateway gateway = new GridDBGateway(conn);
-			GridRequestedSettings settings = new GridRequestedSettings();
-			settings.setPageNumber(2);
-			settings.setPageSize(2);
-			gateway.getRawData(context, element, settings);
+			GridContext gc = new GridContext();
+			gc.setPageNumber(2);
+			gc.setPageSize(2);
+			gc.apply(context);
+			gateway.getRawData(gc, element);
 		} finally {
 			conn.close();
 		}
@@ -99,11 +100,11 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 		GridGateway gateway = new GridDBGateway();
-		GridRequestedSettings settings = new GridRequestedSettings();
-		ElementRawData res = gateway.getRawData(context, elInfo, settings);
+		GridContext gc = new GridContext(context);
+		ElementRawData res = gateway.getRawData(gc, elInfo);
 
 		assertNotNull(res);
-		assertEquals(context, res.getCallContext());
+		assertEquals(gc, res.getCallContext());
 		assertEquals(elInfo, res.getElementInfo());
 		assertNull(res.getProperties());
 		assertNotNull(res.getSpCallHelper());

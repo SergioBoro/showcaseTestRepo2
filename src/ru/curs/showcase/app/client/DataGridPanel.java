@@ -91,7 +91,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	/**
 	 * GridRequestedSettings.
 	 */
-	private GridRequestedSettings settings = null;
+	private GridContext localContext = null;
 
 	/**
 	 * Grid.
@@ -220,7 +220,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		} else {
 
 			if (getIsFirstLoading()) {
-				settings = null;
+				localContext = null;
 
 				p.add(new HTML(Constants.PLEASE_WAIT_GRID_1));
 
@@ -256,28 +256,30 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 	}
 
-	private void resetCurrentSelection() {
-		settings.setCurrentColumnId(null);
-		settings.setCurrentRecordId(null);
-		settings.getSelectedRecordIds().clear();
+	private void resetSelection() {
+		localContext.getSelectedRecordIds().clear();
+		localContext.setCurrentColumnId(null);
+		localContext.setCurrentRecordId(null);
 	}
 
-	private void saveCurrentSelection() {
-		if (dg.getClickSelection().getClickedRecord() != null) {
-			settings.setCurrentRecordId(dg.getClickSelection().getClickedRecord().getId());
-		}
-
-		DataCell cell = dg.getSelection().getSelectedCell();
-		if (cell != null) {
-			settings.setCurrentRecordId(cell.getRecord().getId());
-			settings.setCurrentColumnId(cell.getColumn().getId());
-		}
+	private void saveCurrentCheckBoxSelection() {
+		localContext.getSelectedRecordIds().clear();
 
 		List<Record> records = dg.getSelection().getSelectedRecords();
 		if (records != null) {
 			for (Record rec : records) {
-				settings.getSelectedRecordIds().add(rec.getId());
+				localContext.getSelectedRecordIds().add(rec.getId());
 			}
+		}
+	}
+
+	private void saveCurrentClickSelection(final DataCell cell) {
+		localContext.setCurrentColumnId(null);
+		localContext.setCurrentRecordId(null);
+
+		if (cell != null) {
+			localContext.setCurrentRecordId(cell.getRecord().getId());
+			localContext.setCurrentColumnId(cell.getColumn().getId());
 		}
 	}
 
@@ -287,7 +289,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getGrid(getContext(), getElementInfo(), settings, new GWTServiceCallback<Grid>(
+		dataService.getGrid(getDetailedContext(), getElementInfo(), new GWTServiceCallback<Grid>(
 				"при получении данных таблицы с сервера") {
 
 			@Override
@@ -422,8 +424,6 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		p.add(dg);
 		p.add(hpFooter);
 
-		resetGridSettingsToCurrent();
-
 		cs = grid.getDataSet().getColumnSet();
 
 		dg.addDataGridListener(new GridListener());
@@ -485,17 +485,17 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			}
 
 			// user settings имеет приоритет
-			if (settings != null) {
-				recId = settings.getCurrentRecordId();
-				colId = settings.getCurrentColumnId();
+			if (localContext != null) {
+				recId = localContext.getCurrentRecordId();
+				colId = localContext.getCurrentColumnId();
 				if (recId != null) {
 					selectionSaved = true;
-					if (colId != null) {
+					if ((colId != null) && (!settingsDataGrid.isSelectOnlyRecords())) {
 						dg.getSelection().setSelectedCellById(recId, colId);
 					}
 					dg.getClickSelection().setClickedRecordById(recId);
 				}
-				dg.getSelection().setSelectedRecordsById(settings.getSelectedRecordIds());
+				dg.getSelection().setSelectedRecordsById(localContext.getSelectedRecordIds());
 			}
 
 		}
@@ -508,8 +508,13 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			processClick(recId, colId, InteractionType.SINGLE_CLICK);
 		}
 
-		if (ut == UpdateType.UPDATE_BY_REDRAWGRID) {
+		switch (ut) {
+		case FULL:
+		case UPDATE_BY_REDRAWGRID:
 			resetGridSettingsToCurrent();
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -521,9 +526,19 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	}
 
 	private void resetGridSettingsToCurrent() {
-		settings = new GridRequestedSettings();
-		settings.setPageNumber(grid.getDataSet().getRecordSet().getPageNumber());
-		settings.setPageSize(grid.getDataSet().getRecordSet().getPageSize());
+		localContext = new GridContext();
+		localContext.setPageNumber(grid.getDataSet().getRecordSet().getPageNumber());
+		localContext.setPageSize(grid.getDataSet().getRecordSet().getPageSize());
+		saveCurrentCheckBoxSelection();
+		DataCell cell = dg.getSelection().getSelectedCell();
+		if (cell != null) {
+			saveCurrentClickSelection(cell);
+		} else {
+			// если выделена не ячейка, а запись целиком
+			if (dg.getClickSelection().getClickedRecord() != null) {
+				localContext.setCurrentRecordId(dg.getClickSelection().getClickedRecord().getId());
+			}
+		}
 	}
 
 	/**
@@ -543,8 +558,9 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			dh.addParam(exportType.getClass().getName(), exportType.toString());
 
 			SerializationStreamFactory ssf = dh.getObjectSerializer();
-			dh.addStdPostParamsToBody(getContext(), getElementInfo());
-			dh.addParam(settings.getClass().getName(), settings.toParamForHttpPost(ssf));
+			dh.addStdPostParamsToBody(getDetailedContext(), getElementInfo());
+			dh.addParam(getDetailedContext().getClass().getName(), getDetailedContext()
+					.toParamForHttpPost(ssf));
 			dh.addParam(cs.getClass().getName(), cs.toParamForHttpPost(ssf));
 
 			dh.submit();
@@ -627,6 +643,8 @@ public class DataGridPanel extends BasicElementPanelBasis {
 				return;
 			}
 
+			saveCurrentClickSelection(event.getTarget());
+
 			InteractionType interactionType;
 			switch (event.getClickType()) {
 			case SINGLE:
@@ -693,6 +711,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			};
 			selectionTimer.schedule(Constants.GRID_SELECTION_DELAY);
 
+			saveCurrentCheckBoxSelection();
 		}
 
 		@Override
@@ -754,8 +773,9 @@ public class DataGridPanel extends BasicElementPanelBasis {
 				return;
 			}
 
-			settings.setPageNumber(1);
-			settings.setSortedColumns(columns);
+			localContext.setPageNumber(1);
+			localContext.setSortedColumns(columns);
+			resetSelection();
 			setDataGridPanel(UpdateType.RECORDSET_BY_UPDATERECORDSET, false);
 			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 		}
@@ -771,7 +791,8 @@ public class DataGridPanel extends BasicElementPanelBasis {
 				return;
 			}
 
-			settings.setPageNumber(newPageNumber);
+			localContext.setPageNumber(newPageNumber);
+			resetSelection();
 			setDataGridPanel(UpdateType.RECORDSET_BY_UPDATERECORDSET, false);
 			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 		}
@@ -787,8 +808,9 @@ public class DataGridPanel extends BasicElementPanelBasis {
 				return;
 			}
 
-			settings.setPageNumber(1);
-			settings.setPageSize(newItemsPerPage);
+			localContext.setPageNumber(1);
+			localContext.setPageSize(newItemsPerPage);
+			resetSelection();
 			setDataGridPanel(UpdateType.RECORDSET_BY_SHOWDATA, false);
 			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 		}
@@ -815,14 +837,9 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	}
 
 	@Override
-	public void saveSettings(final Boolean reDrawWithSettingsSave) {
-		if (!getIsFirstLoading()) {
-			if (reDrawWithSettingsSave) {
-				resetCurrentSelection();
-				saveCurrentSelection();
-			} else {
-				settings = null;
-			}
+	public void prepareSettings(final boolean keepElementSettings) {
+		if (!keepElementSettings) {
+			localContext = null;
 		}
 	}
 
@@ -839,6 +856,16 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 		setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID, false);
 
+	}
+
+	@Override
+	public GridContext getDetailedContext() {
+		GridContext result = localContext;
+		if (result == null) {
+			result = GridContext.createFirstLoadDefault();
+		}
+		result.apply(getContext());
+		return result;
 	}
 
 }

@@ -64,19 +64,6 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		return result;
 	}
 
-	/**
-	 * Запрашиваемые настройки грида.
-	 */
-	private GridRequestedSettings requestSettings;
-
-	protected final void setRequestSettings(final GridRequestedSettings aRequestSettings) {
-		requestSettings = aRequestSettings;
-	}
-
-	public final GridRequestedSettings getRequestSettings() {
-		return requestSettings;
-	}
-
 	@Override
 	protected void correctSettingsAndData() {
 		super.correctSettingsAndData();
@@ -119,10 +106,13 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		return (Grid) super.buildStepTwo();
 	}
 
-	public AbstractGridFactory(final ElementRawData aSource,
-			final GridRequestedSettings aSettings, final GridServerState aState) {
+	@Override
+	public GridContext getCallContext() {
+		return (GridContext) super.getCallContext();
+	}
+
+	public AbstractGridFactory(final ElementRawData aSource, final GridServerState aState) {
 		super(aSource);
-		requestSettings = aSettings;
 		serverState = aState;
 	}
 
@@ -143,7 +133,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	 * 
 	 */
 	private void initPages() {
-		getRecordSet().setPageInfo(requestSettings.getPageInfo());
+		getRecordSet().setPageInfo(getCallContext().getPageInfo());
 	}
 
 	@Override
@@ -343,7 +333,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 
 	@Override
 	protected void setupDynamicSettings() {
-		if (requestSettings.isFirstLoad()) {
+		if (getCallContext().isFirstLoad()) {
 			super.setupDynamicSettings();
 			loadStaticSettings();
 			calcPageNumber();

@@ -62,13 +62,10 @@ public interface DataService extends RemoteService {
 	 *            - контекст.
 	 * @param element
 	 *            - элемент.
-	 * @param settings
-	 *            - настройки.
 	 * @return - грид.
 	 * @throws GeneralException
 	 */
-	Grid getGrid(CompositeContext context, DataPanelElementInfo element,
-			GridRequestedSettings settings) throws GeneralException;
+	Grid getGrid(GridContext context, DataPanelElementInfo element) throws GeneralException;
 
 	/**
 	 * Возвращает данные для отрисовки графика по переданным контексту и
@@ -81,8 +78,7 @@ public interface DataService extends RemoteService {
 	 * @return - chart.
 	 * @throws GeneralException
 	 */
-	Chart getChart(CompositeContext context, DataPanelElementInfo element)
-			throws GeneralException;
+	Chart getChart(CompositeContext context, DataPanelElementInfo element) throws GeneralException;
 
 	/**
 	 * Fake функция для того, чтобы заработала сериализация GWT для класса
@@ -145,8 +141,7 @@ public interface DataService extends RemoteService {
 	 * @param context
 	 *            -контекст, содержащий параметры URL.
 	 */
-	ServerCurrentState getServerCurrentState(CompositeContext context)
-			throws GeneralException;
+	ServerCurrentState getServerCurrentState(CompositeContext context) throws GeneralException;
 
 	/**
 	 * Выполняет действие на сервере.

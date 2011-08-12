@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.grid.Grid;
+import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.GeneralException;
@@ -57,25 +57,26 @@ public class ActionTabFinderSLTest extends AbstractTest {
 
 	@Test
 	public void testReadFirstTabFromDBFromSettingsDynMain() throws GeneralException {
-		CompositeContext context = getTestContext1();
+		GridContext context = GridContext.createFirstLoadDefault();
+		context.apply(getTestContext1());
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);
 		elInfo.setProcName("grid_dyn_dp_main");
 		generateTestTabWithElement(elInfo);
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = sl.getGrid(context, elInfo, null);
+		Grid grid = sl.getGrid(context, elInfo);
 
 		assertEquals("01", grid.getDefaultAction().getDataPanelLink().getTabId());
 	}
 
 	@Test
 	public void testReadFirstTabFromDBFromSettingsDynSession() throws GeneralException {
-		CompositeContext context = new CompositeContext();
+		GridContext context = GridContext.createFirstLoadDefault();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);
 		elInfo.setProcName("grid_dyn_dp_session");
 		generateTestTabWithElement(elInfo);
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = sl.getGrid(context, elInfo, null);
+		Grid grid = sl.getGrid(context, elInfo);
 
 		assertEquals("1", grid.getDefaultAction().getDataPanelLink().getTabId());
 	}

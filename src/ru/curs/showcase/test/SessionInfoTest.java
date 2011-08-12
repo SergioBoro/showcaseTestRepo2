@@ -221,4 +221,15 @@ public class SessionInfoTest extends AbstractTest {
 				scs.getServletContainerVersion());
 		assertEquals(System.getProperty("java.version"), scs.getJavaVersion());
 	}
+
+	@Test
+	public void testRelatedData() throws UnsupportedEncodingException {
+		CompositeContext context = CompositeContext.createCurrent();
+		getExtGridContext(context);
+		String res = SessionContextGenerator.generate(TEST_SESSION, context);
+		assertTrue(res.contains("<selectedRecordId>r2</selectedRecordId>"));
+		assertTrue(res.contains("<currentColumnId>curColumnId</currentColumnId>"));
+		assertTrue(res.contains("size=\"2\""));
+		assertTrue(res.contains("<add>value</add>"));
+	}
 }

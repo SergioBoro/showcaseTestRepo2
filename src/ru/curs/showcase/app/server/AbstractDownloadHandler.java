@@ -47,8 +47,12 @@ public abstract class AbstractDownloadHandler extends AbstractFilesHandler {
 
 	@Override
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
-		setContext((CompositeContext) deserializeObject(getParam(CompositeContext.class)));
+		setContext((CompositeContext) deserializeObject(getParam(getContextClass())));
 		setElementInfo((DataPanelElementInfo) deserializeObject(getParam(DataPanelElementInfo.class)));
+	}
+
+	protected Class<? extends CompositeContext> getContextClass() {
+		return CompositeContext.class;
 	}
 
 	/**

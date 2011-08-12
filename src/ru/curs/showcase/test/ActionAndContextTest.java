@@ -638,11 +638,11 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 
 		assertEquals(1, parent.getRelated().size());
 		CompositeContext test = parent.getRelated().values().iterator().next();
-		assertEquals(MAIN_CONDITION, test.getMain());
+		assertNull(test.getMain());
 		assertEquals(ADD_CONDITION, test.getAdditional());
 		assertEquals(FILTER_CONDITION, test.getFilter());
 		assertNull(test.getSession());
-		assertNull(test.getSessionParamsMap());
+		assertTrue(test.getSessionParamsMap().isEmpty());
 		assertTrue(test.getRelated().isEmpty());
 	}
 
@@ -657,5 +657,16 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 				.getAdditional());
 		assertEquals(ADD_CONDITION, action.getClientActivities().get(0).getContext()
 				.getAdditional());
+	}
+
+	@Test
+	public void testGridContext() {
+		CompositeContext context = getComplexTestContext();
+		GridContext ces = new GridContext(context);
+
+		assertEquals(MAIN_CONDITION, ces.getMain());
+		assertEquals(ADD_CONDITION, ces.getAdditional());
+		assertEquals(FILTER_CONDITION, ces.getFilter());
+		assertEquals(SESSION_CONDITION, ces.getSession());
 	}
 }

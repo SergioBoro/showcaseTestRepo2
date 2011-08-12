@@ -179,6 +179,6 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		LOGGER.info("Session context: " + sessionContext);
 		context.setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
-		context.setSessionParamsMap(null);
+		context.getSessionParamsMap().clear();
 	}
 }

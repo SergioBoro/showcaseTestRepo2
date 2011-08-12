@@ -7,9 +7,11 @@ import java.util.*;
 
 import org.junit.*;
 
+import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.model.datapanel.*;
@@ -297,6 +299,33 @@ public class AbstractTest extends GeneralXMLHelper {
 		CompositeContext context = new CompositeContext();
 		context.setMain("Ввоз, включая импорт - Всего");
 		return context;
+	}
+
+	protected GridContext getTestGridContext1() {
+		CompositeContext context = getTestContext1();
+		GridContext gc = GridContext.createFirstLoadDefault();
+		gc.apply(context);
+		return gc;
+	}
+
+	protected GridContext getExtGridContext(final CompositeContext context) {
+		GridContext gc = new GridContext();
+		gc.setAdditional("<add>value</add>");
+		gc.setFilter("<filter>filter_value</filter>");
+		gc.setPageSize(2);
+		Column col = new Column();
+		col.setId("colId");
+		col.setSorting(Sorting.ASC);
+		col.setWidth("10px");
+		gc.getSortedColumns().add(col);
+		gc.getSelectedRecordIds().add("r1");
+		gc.getSelectedRecordIds().add("r2");
+		gc.setCurrentColumnId("curColumnId");
+		gc.setCurrentRecordId("curRecordId");
+
+		context.addRelated("01", gc);
+
+		return gc;
 	}
 
 	/**

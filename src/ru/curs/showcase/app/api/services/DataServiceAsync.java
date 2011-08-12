@@ -57,13 +57,10 @@ public interface DataServiceAsync {
 	 *            - текущий контекст.
 	 * @param element
 	 *            - описание элемента.
-	 * @param settings
-	 *            - настройки.
 	 * @param callback
 	 *            - callback.
 	 */
-	void getGrid(CompositeContext context, DataPanelElementInfo element,
-			GridRequestedSettings settings, AsyncCallback<Grid> callback);
+	void getGrid(GridContext context, DataPanelElementInfo element, AsyncCallback<Grid> callback);
 
 	/**
 	 * Асинхронная версия.

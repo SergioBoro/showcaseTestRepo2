@@ -34,9 +34,8 @@ public interface DataServiceExt {
 	 * @return - файл.
 	 * @throws GeneralException
 	 */
-	ExcelFile generateExcelFromGrid(GridToExcelExportType exportType, CompositeContext context,
-			DataPanelElementInfo element, GridRequestedSettings settings, ColumnSet cs)
-			throws GeneralException;
+	ExcelFile generateExcelFromGrid(GridToExcelExportType exportType, GridContext context,
+			DataPanelElementInfo element, ColumnSet cs) throws GeneralException;
 
 	/**
 	 * Выполняет xforms SQL submission - т.е. вызывает хранимую процедуру

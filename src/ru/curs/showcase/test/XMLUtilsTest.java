@@ -9,10 +9,12 @@ import javax.xml.parsers.*;
 import javax.xml.transform.TransformerException;
 
 import org.junit.Test;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.util.xml.*;
@@ -326,5 +328,52 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		String original = "&amp;&quot;&apos;&gt;&lt; какой-то текст";
 		String result = XMLUtils.xmlServiceSymbolsToNormal(original);
 		assertEquals("&\"'>< какой-то текст", result);
+	}
+
+	/**
+	 * Проверяет сериализацию текущего контекста в XML.
+	 */
+	@Test
+	public void testContextToXML() {
+		CompositeContext context = CompositeContext.createCurrent();
+		Document doc = XMLUtils.objectToXML(context);
+		assertEquals(Action.CONTEXT_TAG, doc.getDocumentElement().getNodeName());
+		assertEquals(1, doc.getDocumentElement().getElementsByTagName("additional").getLength());
+		assertEquals(1, doc.getDocumentElement().getElementsByTagName("main").getLength());
+		assertEquals(0, doc.getDocumentElement().getElementsByTagName(Action.FILTER_TAG)
+				.getLength());
+		assertEquals(0, doc.getDocumentElement().getElementsByTagName("session").getLength());
+		CompositeContext context2 =
+			(CompositeContext) XMLUtils.xmlToObject(doc.getDocumentElement(),
+					CompositeContext.class);
+		assertEquals(context, context2);
+	}
+
+	@Test
+	public void testContextualElementStateToXML() {
+		CompositeContext context = new CompositeContext();
+		context.setMain(null);
+		context.setSession(null);
+		GridContext gc = getExtGridContext(context);
+		Document doc = XMLUtils.objectToXML(context.getRelated().get("01"));
+		GridContext gc2 =
+			(GridContext) XMLUtils.xmlToObject(doc.getDocumentElement(), GridContext.class);
+
+		assertEquals(gc, gc2);
+	}
+
+	/**
+	 * Тестирования сериализации информации об элементе панели в XML.
+	 * 
+	 */
+	@Test
+	public void testDPElementInfoToXML() {
+		DataPanelElementInfo element = getTestXForms1Info();
+		Document doc = XMLUtils.objectToXML(element);
+		assertEquals("element", doc.getDocumentElement().getNodeName());
+		DataPanelElementInfo el2 =
+			(DataPanelElementInfo) XMLUtils.xmlToObject(doc.getDocumentElement(),
+					DataPanelElementInfo.class);
+		assertEquals(element, el2);
 	}
 }

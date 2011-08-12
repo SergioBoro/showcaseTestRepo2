@@ -29,7 +29,7 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 		return source.getProperties();
 	}
 
-	public final CompositeContext getCallContext() {
+	public CompositeContext getCallContext() {
 		return source.getCallContext();
 	}
 
@@ -67,7 +67,7 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 		releaseResources();
 		setupDynamicSettings();
 		fillResultByData();
-		getResult().actualizeActions(getCallContext());
+		getResult().actualizeActions(source.getCallContext());
 		correctSettingsAndData();
 		return getResult();
 	}

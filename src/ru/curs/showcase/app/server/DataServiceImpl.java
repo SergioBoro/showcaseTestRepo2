@@ -45,9 +45,9 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public Grid getGrid(final CompositeContext context, final DataPanelElementInfo element,
-			final GridRequestedSettings aSettings) throws GeneralException {
-		return getServiceLayer().getGrid(context, element, aSettings);
+	public Grid getGrid(final GridContext context, final DataPanelElementInfo element)
+			throws GeneralException {
+		return getServiceLayer().getGrid(context, element);
 	}
 
 	@Override

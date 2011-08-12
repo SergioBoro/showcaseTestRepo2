@@ -39,11 +39,11 @@ public class GridSLTest extends AbstractTest {
 		final Integer autoSelectRecord = 16;
 		final String precision = "2";
 
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = serviceLayer.getGrid(context, element, null);
+		Grid grid = serviceLayer.getGrid(context, element);
 
 		assertNotNull(context.getSession());
 		assertNotNull(grid);
@@ -109,31 +109,32 @@ public class GridSLTest extends AbstractTest {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 
-		GridRequestedSettings settings = new GridRequestedSettings();
-		settings.setPageNumber(pageNum);
-		settings.setPageSize(pageSize);
-		addSortedColumn(settings, "3кв. 2007г.", maxColIndex);
-		addSortedColumn(settings, "3кв. 2006г.", 1);
-		addSortedColumn(settings, firstColName, 0);
-		assertNull(settings.getCurrentColumnId());
-		assertNull(settings.getCurrentRecordId());
-		assertEquals(0, settings.getSelectedRecordIds().size());
-		settings.setCurrentColumnId(firstColName);
-		settings.setCurrentRecordId("1");
-		settings.getSelectedRecordIds().add("1");
+		GridContext gc = new GridContext();
+		gc.setPageNumber(pageNum);
+		gc.setPageSize(pageSize);
+		addSortedColumn(gc, "3кв. 2007г.", maxColIndex);
+		addSortedColumn(gc, "3кв. 2006г.", 1);
+		addSortedColumn(gc, firstColName, 0);
+		assertNull(gc.getCurrentColumnId());
+		assertNull(gc.getCurrentRecordId());
+		assertEquals(0, gc.getSelectedRecordIds().size());
+		gc.setCurrentColumnId(firstColName);
+		gc.setCurrentRecordId("1");
+		gc.getSelectedRecordIds().add("1");
+		gc.apply(context);
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = serviceLayer.getGrid(context, element, settings);
+		Grid grid = serviceLayer.getGrid(gc, element);
 
-		assertNotNull(context.getSession());
+		assertNotNull(gc.getSession());
 		assertEquals(pageNum, grid.getDataSet().getRecordSet().getPageNumber());
 		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
 		assertEquals(pageSize, grid.getDataSet().getRecordSet().getRecordsCount());
-		assertEquals(firstColName, settings.getSortedColumns().iterator().next().getId());
-		assertEquals(firstColName, settings.getCurrentColumnId());
-		assertEquals("1", settings.getCurrentRecordId());
-		assertEquals(1, settings.getSelectedRecordIds().size());
-		assertEquals("1", settings.getSelectedRecordIds().get(0));
+		assertEquals(firstColName, gc.getSortedColumns().iterator().next().getId());
+		assertEquals(firstColName, gc.getCurrentColumnId());
+		assertEquals("1", gc.getCurrentRecordId());
+		assertEquals(1, gc.getSelectedRecordIds().size());
+		assertEquals("1", gc.getSelectedRecordIds().get(0));
 	}
 
 	/**
@@ -143,10 +144,10 @@ public class GridSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testFireGeneralAndConcreteEvents() throws GeneralException {
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "8", "83");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = serviceLayer.getGrid(context, element, null);
+		Grid grid = serviceLayer.getGrid(context, element);
 
 		assertTrue(grid.getEventManager().getFireGeneralAndConcreteEvents());
 		List<GridEvent> events =
@@ -161,10 +162,10 @@ public class GridSLTest extends AbstractTest {
 	 */
 	@Test
 	public void test2StepGridLoadBySL() throws GeneralException {
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = serviceLayer.getGrid(context, elInfo, null);
+		Grid grid = serviceLayer.getGrid(context, elInfo);
 		assertNotNull(grid);
 		final int pageSize = 15;
 		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
@@ -180,14 +181,15 @@ public class GridSLTest extends AbstractTest {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 
-		GridRequestedSettings settings = new GridRequestedSettings();
+		GridContext gc = new GridContext();
 		Collection<Column> aSortedColumns = new ArrayList<Column>();
 		Column col = new Column();
 		col.setId("Name");
 		col.setSorting(Sorting.ASC);
 		col.setWidth("200px");
 		aSortedColumns.add(col);
-		settings.setSortedColumns(aSortedColumns);
+		gc.setSortedColumns(aSortedColumns);
+		gc.apply(context);
 
 		setDefaultUserData();
 		GridServerState state = new GridServerState();
@@ -197,14 +199,14 @@ public class GridSLTest extends AbstractTest {
 		state.setAutoSelectRelativeRecord(true);
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = serviceLayer.getGrid(context, elInfo, settings);
+		Grid grid = serviceLayer.getGrid(gc, elInfo);
 
 		assertNotNull(grid);
-		final int pageSize = GridRequestedSettings.DEF_PAGE_SIZE_VAL;
+		final int pageSize = GridContext.DEF_PAGE_SIZE_VAL;
 		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
 		final int pageNum = 1;
 		assertEquals(pageNum, grid.getDataSet().getRecordSet().getPageNumber());
-		final int pagesCount = CITIES_COUNT / GridRequestedSettings.DEF_PAGE_SIZE_VAL + 1;
+		final int pagesCount = CITIES_COUNT / GridContext.DEF_PAGE_SIZE_VAL + 1;
 		assertEquals(pagesCount, grid.getDataSet().getRecordSet().getPagesTotal());
 		assertEquals("2", grid.getAutoSelectRecord().getId());
 	}
@@ -217,11 +219,12 @@ public class GridSLTest extends AbstractTest {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 
-		GridRequestedSettings settings = new GridRequestedSettings();
+		GridContext gc = new GridContext();
 		final int pageNumber = 2;
-		settings.setPageNumber(pageNumber);
+		gc.setPageNumber(pageNumber);
 		final int pageSize = 10;
-		settings.setPageSize(pageSize);
+		gc.setPageSize(pageSize);
+		gc.apply(context);
 
 		setDefaultUserData();
 		GridServerState state = new GridServerState();
@@ -232,7 +235,7 @@ public class GridSLTest extends AbstractTest {
 		state.setAutoSelectRelativeRecord(false);
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = serviceLayer.getGrid(context, elInfo, settings);
+		Grid grid = serviceLayer.getGrid(gc, elInfo);
 
 		assertNotNull(grid);
 		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
@@ -248,14 +251,15 @@ public class GridSLTest extends AbstractTest {
 	 */
 	@Test
 	public void test2StepGridLoadBySLWhenUpdateOutOfBounds() throws GeneralException {
-		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 
-		GridRequestedSettings settings = new GridRequestedSettings();
-		final int pageNumber = 200;
-		settings.setPageNumber(pageNumber);
 		final int pageSize = 100;
-		settings.setPageSize(pageSize);
+		final int pageNumber = 200;
+		CompositeContext context = getTestContext1();
+		GridContext gc = new GridContext();
+		gc.setPageNumber(pageNumber);
+		gc.setPageSize(pageSize);
+		gc.apply(context);
 
 		setDefaultUserData();
 		GridServerState state = new GridServerState();
@@ -263,7 +267,7 @@ public class GridSLTest extends AbstractTest {
 		state.setTotalCount(CITIES_COUNT);
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = serviceLayer.getGrid(context, elInfo, settings);
+		Grid grid = serviceLayer.getGrid(gc, elInfo);
 
 		assertNotNull(grid);
 		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
@@ -280,17 +284,18 @@ public class GridSLTest extends AbstractTest {
 	 */
 	@Test
 	public void test1StepGridLoadBySLWhenUpdateOutOfBounds() throws GeneralException {
-		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo();
 
-		GridRequestedSettings settings = new GridRequestedSettings();
-		final int pageNumber = 200;
-		settings.setPageNumber(pageNumber);
 		final int pageSize = 100;
-		settings.setPageSize(pageSize);
+		final int pageNumber = 200;
+		CompositeContext context = getTestContext1();
+		GridContext gc = new GridContext();
+		gc.setPageNumber(pageNumber);
+		gc.setPageSize(pageSize);
+		gc.apply(context);
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = serviceLayer.getGrid(context, elInfo, settings);
+		Grid grid = serviceLayer.getGrid(gc, elInfo);
 
 		assertNotNull(grid);
 		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
@@ -304,21 +309,22 @@ public class GridSLTest extends AbstractTest {
 	 */
 	@Test
 	public void test1StepGridLoadAndUpdate() throws GeneralException {
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo();
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = serviceLayer.getGrid(context, elInfo, null);
+		Grid grid = serviceLayer.getGrid(context, elInfo);
 		final String colId = "Картинка";
 		Column col = grid.getColumnById(colId);
 		Action defAction = grid.getDefaultAction();
 
-		GridRequestedSettings settings = new GridRequestedSettings();
-		final int pageNumber = 200;
-		settings.setPageNumber(pageNumber);
 		final int pageSize = 100;
-		settings.setPageSize(pageSize);
-		grid = serviceLayer.getGrid(context, elInfo, settings);
+		final int pageNumber = 200;
+		GridContext gc = new GridContext();
+		gc.setPageNumber(pageNumber);
+		gc.setPageSize(pageSize);
+		gc.apply(context);
+		grid = serviceLayer.getGrid(gc, elInfo);
 
 		assertNotNull(grid.getColumnById(colId));
 		assertEquals(col.getValueType(), grid.getColumnById(colId).getValueType());
@@ -330,11 +336,11 @@ public class GridSLTest extends AbstractTest {
 
 	@Test
 	public void testErrorByReturnCode1() {
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "09", "0901");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
-			serviceLayer.getGrid(context, elInfo, null);
+			serviceLayer.getGrid(context, elInfo);
 		} catch (GeneralException e) {
 			assertEquals(ValidateInDBException.class, e.getCause().getClass());
 			ValidateInDBException vid = (ValidateInDBException) e.getCause();
@@ -347,11 +353,11 @@ public class GridSLTest extends AbstractTest {
 
 	@Test
 	public void testErrorByReturnCode1ForUpdateCase() {
-		CompositeContext context = getTestContext1();
+		GridContext gc = new GridContext(getTestContext1());
 		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "09", "0901");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
-			serviceLayer.getGrid(context, elInfo, new GridRequestedSettings());
+			serviceLayer.getGrid(gc, elInfo);
 		} catch (GeneralException e) {
 			assertEquals(ValidateInDBException.class, e.getCause().getClass());
 			assertEquals(NO_DATA_ERROR, ((ValidateInDBException) e.getCause()).getUserMessage()
@@ -361,11 +367,11 @@ public class GridSLTest extends AbstractTest {
 
 	@Test
 	public void testErrorByReturnCode2() {
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "09", "0902");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
-			serviceLayer.getGrid(context, elInfo, null);
+			serviceLayer.getGrid(context, elInfo);
 		} catch (GeneralException e) {
 			assertEquals(ValidateInDBException.class, e.getCause().getClass());
 			ValidateInDBException vid = (ValidateInDBException) e.getCause();
@@ -376,11 +382,11 @@ public class GridSLTest extends AbstractTest {
 
 	@Test
 	public void testErrorByReturnCode3() {
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "09", "0903");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
-			serviceLayer.getGrid(context, elInfo, null);
+			serviceLayer.getGrid(context, elInfo);
 		} catch (GeneralException e) {
 			assertEquals(ValidateInDBException.class, e.getCause().getClass());
 			ValidateInDBException vid = (ValidateInDBException) e.getCause();
@@ -390,8 +396,7 @@ public class GridSLTest extends AbstractTest {
 		}
 	}
 
-	private void addSortedColumn(final GridRequestedSettings settings, final String name,
-			final int index) {
+	private void addSortedColumn(final GridContext settings, final String name, final int index) {
 		Column col = new Column();
 		col.setId(name);
 		col.setSorting(Sorting.ASC);
@@ -401,11 +406,11 @@ public class GridSLTest extends AbstractTest {
 
 	@Test
 	public void testGridNoEventsAndDefAction() throws GeneralException {
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo();
 		elInfo.setProcName("grid_bal_noevents");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = serviceLayer.getGrid(context, elInfo, null);
+		Grid grid = serviceLayer.getGrid(context, elInfo);
 
 		assertTrue(grid.getEventManager().getEvents().isEmpty());
 		assertNull(grid.getDefaultAction());

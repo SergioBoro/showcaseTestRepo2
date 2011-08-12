@@ -189,9 +189,8 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 	 */
 	@Override
 	public void closeWindow() {
-
+		super.closeWindow();
 		AppCurrContext.getInstance().setCurrentOpenWindowWithDataPanelElement(null);
-		hide();
 		if (bep != null) {
 			if (bep instanceof XFormPanel) {
 				XFormPanel.destroyXForms();
@@ -199,13 +198,9 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 		}
 		bep = null;
 
-		// ------------------ если на вкладке есть xForm то
-		// прорисовываем ее
-
+		// если на вкладке есть XForms - прорисовываем ее
 		ActionExecuter.drawXFormPanelsAfterModalWindowShown(AppCurrContext.getInstance()
 				.getCurrentAction());
-
-		// ------------
 	}
 
 }

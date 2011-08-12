@@ -5,8 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.grid.Grid;
+import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.grid.*;
 
@@ -26,7 +25,7 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testProfileSelection() throws Exception {
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "4");
 
 		GridGateway gateway = new GridDBGateway();

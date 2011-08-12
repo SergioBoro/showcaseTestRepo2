@@ -260,7 +260,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 * @return содержимое mainInstance
 	 * 
 	 */
-	public String getMainInstance() {
+	public String fillAndGetMainInstance() {
 		fillMainInstance();
 		return mainInstance;
 	}
@@ -368,13 +368,13 @@ public class XFormPanel extends BasicElementPanelBasis {
 	}
 
 	@Override
-	public void saveSettings(final Boolean reDrawWithSettingsSave) {
-		if (!reDrawWithSettingsSave) {
-			mainInstance = null;
-		} else {
+	public void prepareSettings(final boolean keepElementSettings) {
+		if (keepElementSettings) {
 			if (xf != null) {
 				fillMainInstance();
 			}
+		} else {
+			mainInstance = null;
 		}
 	}
 

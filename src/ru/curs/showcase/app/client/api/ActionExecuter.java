@@ -110,9 +110,6 @@ public final class ActionExecuter {
 								.getCurrentOpenWindowWithDataPanelElement() != null)) {
 					AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement()
 							.closeWindow();
-
-					// если на вкладке есть xForm то прорисовываем ее
-					drawXFormPanelsAfterModalWindowShown(ac);
 				}
 				if ((ac.getShowInMode() == ShowInMode.MODAL_WINDOW)
 						&& (AppCurrContext.getInstance()
@@ -156,7 +153,7 @@ public final class ActionExecuter {
 				boolean keepElementSettings =
 					ac.getDataPanelLink().getElementLinks().get(k).getKeepUserSettings();
 
-				bep.saveSettings(keepElementSettings);
+				bep.prepareSettings(keepElementSettings);
 
 				bep.reDrawPanel(bep.getElementInfo().getContext(ac), ac.getDataPanelLink()
 						.getElementLinks().get(k).getRefreshContextOnly());
@@ -192,7 +189,7 @@ public final class ActionExecuter {
 
 				boolean keepElementSettings = bep.getElementInfo().getKeepUserSettings(ac);
 
-				bep.saveSettings(keepElementSettings);
+				bep.prepareSettings(keepElementSettings);
 				bep.reDrawPanel(bep.getElementInfo().getContext(ac), false);
 			}
 		}
@@ -248,15 +245,13 @@ public final class ActionExecuter {
 		DataPanelTab dpt =
 			AppCurrContext.getInstance().getDataPanelMetaData().getActiveTabForAction(ac);
 
-		Collection<DataPanelElementInfo> tabscoll = dpt.getElements();
-		for (DataPanelElementInfo dpe : tabscoll) {
-
+		for (DataPanelElementInfo dpe : dpt.getElements()) {
 			if (!dpe.getNeverShowInPanel()) {
-				BasicElementPanel bep1 = getElementPanelById(dpe.getId());
-				if (bep1 instanceof XFormPanel) {
-					bep1.saveSettings(true);
-					bep1.showPanel();
-					bep1.reDrawPanel(bep1.getElementInfo().getContext(ac), false);
+				BasicElementPanel bep = getElementPanelById(dpe.getId());
+				if (bep instanceof XFormPanel) {
+					bep.prepareSettings(true);
+					bep.showPanel();
+					bep.reDrawPanel(bep.getElementInfo().getContext(ac), false);
 
 				}
 			}

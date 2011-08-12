@@ -341,8 +341,8 @@ public class DataGridPanelTest extends GWTTestCase {
 		DataGridPanel dgp = createDataGridPanelForTests2();
 		assertNotNull(dgp);
 
-		dgp.saveSettings(true);
-		dgp.saveSettings(false);
+		dgp.prepareSettings(true);
+		dgp.prepareSettings(false);
 
 	}
 
@@ -352,7 +352,7 @@ public class DataGridPanelTest extends GWTTestCase {
 	public void testRPC() {
 		DataServiceAsync dataService = GWT.create(DataService.class);
 
-		CompositeContext context = new CompositeContext();
+		GridContext context = new GridContext();
 		context.setMain("Ввоз, включая импорт - Всего");
 
 		DataPanelElementInfo dpei = new DataPanelElementInfo();
@@ -362,7 +362,7 @@ public class DataGridPanelTest extends GWTTestCase {
 		dpei.setProcName("grid_bal");
 		dpei.setRefreshByTimer(true);
 
-		dataService.getGrid(context, dpei, null, new GWTServiceCallback<Grid>(
+		dataService.getGrid(context, dpei, new GWTServiceCallback<Grid>(
 				"Ошибка при получении данных таблицы с сервера") {
 
 			@Override

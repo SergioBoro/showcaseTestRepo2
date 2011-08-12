@@ -51,6 +51,7 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 		addUserData(info, aContext.getSessionParamsMap());
 		addRelatedContext(info, aContext.getRelated());
 		String result = XMLUtils.documentToString(info);
+		result = XMLUtils.xmlServiceSymbolsToNormal(result);
 		return result;
 	}
 
@@ -59,15 +60,11 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 		Element root = info.createElement(RELATED_TAG);
 		info.getDocumentElement().appendChild(root);
 		for (Entry<String, CompositeContext> rc : aRelated.entrySet()) {
-			Element node = info.createElement(ELEMENT_TAG);
-			node.setAttribute(ID_TAG, rc.getKey());
-			root.appendChild(node);
-			Element subNode = info.createElement(ADD_CONTEXT_TAG);
-			node.appendChild(subNode);
-			subNode.appendChild(info.createTextNode(rc.getValue().getAdditional()));
-			subNode = info.createElement(FILTER_TAG);
-			node.appendChild(subNode);
-			subNode.appendChild(info.createTextNode(rc.getValue().getFilter()));
+			Document doc = XMLUtils.objectToXML(rc.getValue());
+			Element inserted = doc.getDocumentElement();
+			Element child = (Element) info.importNode(inserted, true);
+			child.setAttribute(ID_TAG, rc.getKey());
+			root.appendChild(child);
 		}
 	}
 

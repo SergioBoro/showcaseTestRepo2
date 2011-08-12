@@ -1,8 +1,9 @@
 package ru.curs.showcase.app.api.event;
 
 import java.util.*;
+import java.util.Map.Entry;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
@@ -11,15 +12,16 @@ import ru.curs.showcase.app.api.*;
  * Класс составного контекста. Контекст определяет условия фильтрации данных,
  * которые будут получены из БД для отображения элементов информационной панели.
  * Контекст может быть задан как для панели в целом, так и для отдельных ее
- * элементов. Массивы related и sessionParamsMap не участвуют в проверке на
- * идентичность и в клонировании.
+ * элементов. Массивы related и sessionParamsMap являются временными и не
+ * участвуют в проверке на идентичность.
  * 
  * @author den
  * 
  */
 @XmlRootElement(name = Action.CONTEXT_TAG)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CompositeContext extends TransferableElement implements CanBeCurrent,
-		SerializableElement, Assignable, GWTClonable {
+		SerializableElement, Assignable<CompositeContext>, GWTClonable {
 	/**
 	 * serialVersionUID.
 	 */
@@ -55,6 +57,7 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	 * Параметры URL, полученные из клиентской части. На основе их создается
 	 * session context для БД.
 	 */
+	@XmlTransient
 	private Map<String, ArrayList<String>> sessionParamsMap =
 		new TreeMap<String, ArrayList<String>>();
 
@@ -67,7 +70,8 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	 * Контексты связанных элементов. Перед передачей в БД их содержимое
 	 * включается в session.
 	 */
-	private Map<String, CompositeContext> related = new TreeMap<String, CompositeContext>();
+	@XmlTransient
+	private Map<String, CompositeContext> related = new HashMap<String, CompositeContext>();
 
 	public CompositeContext(final Map<String, List<String>> aParams) {
 		super();
@@ -136,21 +140,27 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	}
 
 	@Override
-	public void assignNullValues(final Object source) {
-		if (source instanceof CompositeContext) {
-			CompositeContext sourceContext = (CompositeContext) source;
-			if (main == null) {
-				main = sourceContext.main;
-			}
-			if (additional == null) {
-				additional = sourceContext.additional;
-			}
-			if (filter == null) {
-				filter = sourceContext.filter;
-			}
-			if (session == null) {
-				session = sourceContext.session;
-			}
+	public void assignNullValues(final CompositeContext sourceContext) {
+		if (sourceContext == null) {
+			return;
+		}
+		if (main == null) {
+			main = sourceContext.main;
+		}
+		if (additional == null) {
+			additional = sourceContext.additional;
+		}
+		if (filter == null) {
+			filter = sourceContext.filter;
+		}
+		if (session == null) {
+			session = sourceContext.session;
+		}
+		if (sessionParamsMap.isEmpty()) {
+			sessionParamsMap.putAll(sourceContext.sessionParamsMap);
+		}
+		if (related.isEmpty()) {
+			related.putAll(sourceContext.related);
 		}
 	}
 
@@ -182,52 +192,6 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		return result;
 	}
 
-	// CHECKSTYLE:OFF
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof CompositeContext)) {
-			return false;
-		}
-		CompositeContext other = (CompositeContext) obj;
-		if (additional == null) {
-			if (other.additional != null) {
-				return false;
-			}
-		} else if (!additional.equals(other.additional)) {
-			return false;
-		}
-		if (filter == null) {
-			if (other.filter != null) {
-				return false;
-			}
-		} else if (!filter.equals(other.filter)) {
-			return false;
-		}
-		if (main == null) {
-			if (other.main != null) {
-				return false;
-			}
-		} else if (!main.equals(other.main)) {
-			return false;
-		}
-		if (session == null) {
-			if (other.session != null) {
-				return false;
-			}
-		} else if (!session.equals(other.session)) {
-			return false;
-		}
-		return true;
-	}
-
-	// CHECKSTYLE:ON
-
 	/**
 	 * Определяет, являются ли контекст скрывающим (элемент).
 	 * 
@@ -240,17 +204,29 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	/**
 	 * "Тупое" клонирование объекта, работающее в gwt. Заглушка до тех пор, пока
 	 * в GWT не будет официальной реализации clone.
-	 * 
-	 * @return - копию объекта.
 	 */
 	@Override
 	public CompositeContext gwtClone() {
-		CompositeContext res = new CompositeContext();
+		CompositeContext res = newInstance();
 		res.setMain(getMain());
 		res.setAdditional(getAdditional());
 		res.setSession(getSession());
 		res.setFilter(getFilter());
+		for (Entry<String, ArrayList<String>> entry : sessionParamsMap.entrySet()) {
+			ArrayList<String> values = new ArrayList<String>();
+			for (String value : entry.getValue()) {
+				values.add(value);
+			}
+			res.sessionParamsMap.put(entry.getKey(), values);
+		}
+		for (Entry<String, CompositeContext> entry : related.entrySet()) {
+			res.related.put(entry.getKey(), entry.getValue().gwtClone());
+		}
 		return res;
+	}
+
+	protected CompositeContext newInstance() {
+		return new CompositeContext();
 	}
 
 	/**
@@ -334,10 +310,13 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	}
 
 	public void addRelated(final String aId, final CompositeContext aContext) {
-		aContext.setSession(null);
-		aContext.setSessionParamsMap(null);
-		aContext.getRelated().clear();
-		related.put(aId, aContext);
+		CompositeContext context = aContext.gwtClone();
+		// в БД не должно идти ничего лишнего
+		context.setMain(null);
+		context.setSession(null);
+		context.getRelated().clear();
+		context.getSessionParamsMap().clear();
+		related.put(aId, context);
 	}
 
 	public Map<String, CompositeContext> getRelated() {
@@ -346,5 +325,26 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 
 	public void setRelated(final Map<String, CompositeContext> aRelated) {
 		related = aRelated;
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null) {
+			return false;
+		}
+		if (o.getClass() != getClass()) {
+			return false;
+		}
+		CompositeContext castedObj = (CompositeContext) o;
+		return (this.main == null ? castedObj.main == null : this.main.equals(castedObj.main))
+				&& (this.additional == null ? castedObj.additional == null : this.additional
+						.equals(castedObj.additional))
+				&& (this.session == null ? castedObj.session == null : this.session
+						.equals(castedObj.session))
+				&& (this.filter == null ? castedObj.filter == null : this.filter
+						.equals(castedObj.filter));
 	}
 }

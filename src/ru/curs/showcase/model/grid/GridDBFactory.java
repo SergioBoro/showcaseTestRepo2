@@ -38,17 +38,23 @@ public class GridDBFactory extends AbstractGridFactory {
 
 	private RowSet rowset;
 
-	public GridDBFactory(final ElementRawData aRaw, final GridRequestedSettings aSettings,
-			final GridServerState aState) {
-		super(aRaw, aSettings, aState);
+	/**
+	 * Признак того, что нужно применять форматирование для дат и чисел при
+	 * формировании грида. По умолчанию - нужно. Отключать эту опцию необходимо
+	 * при экспорте в Excel.
+	 */
+	private Boolean applyLocalFormatting = true;
+
+	public GridDBFactory(final ElementRawData aRaw, final GridServerState aState) {
+		super(aRaw, aState);
+	}
+
+	public GridDBFactory(final GridContext context, final GridServerState aState) {
+		super(new ElementRawData(null, context), aState);
 	}
 
 	public GridDBFactory(final ElementRawData aRaw) {
-		super(aRaw, GridRequestedSettings.createFirstLoadDefault(), new GridServerState());
-	}
-
-	public GridDBFactory(final GridRequestedSettings aSettings, final GridServerState aState) {
-		super(null, aSettings, aState);
+		super(aRaw, new GridServerState());
 	}
 
 	@Override
@@ -168,7 +174,7 @@ public class GridDBFactory extends AbstractGridFactory {
 	private String getStringValueOfNumber(final Column col) throws SQLException {
 		Double value = rowset.getDouble(col.getId());
 		NumberFormat nf;
-		if (applyLocalFormatting()) {
+		if (applyLocalFormatting) {
 			nf = NumberFormat.getNumberInstance();
 		} else {
 			nf = NumberFormat.getNumberInstance(DEF_NON_LOCAL_LOCALE);
@@ -190,21 +196,21 @@ public class GridDBFactory extends AbstractGridFactory {
 		}
 		if (col.getValueType() == GridValueType.DATE) {
 			date = rowset.getDate(col.getId());
-			if (applyLocalFormatting()) {
+			if (applyLocalFormatting) {
 				df = DateFormat.getDateInstance(style);
 			} else {
 				df = DateFormat.getDateInstance(style, DEF_NON_LOCAL_LOCALE);
 			}
 		} else if (col.getValueType() == GridValueType.TIME) {
 			date = rowset.getTime(col.getId());
-			if (applyLocalFormatting()) {
+			if (applyLocalFormatting) {
 				df = DateFormat.getTimeInstance(style);
 			} else {
 				df = DateFormat.getTimeInstance(style, DEF_NON_LOCAL_LOCALE);
 			}
 		} else if (col.getValueType() == GridValueType.DATETIME) {
 			date = rowset.getTimestamp(col.getId());
-			if (applyLocalFormatting()) {
+			if (applyLocalFormatting) {
 				df = DateFormat.getDateTimeInstance(style, style);
 			} else {
 				df = DateFormat.getDateTimeInstance(style, style, DEF_NON_LOCAL_LOCALE);
@@ -214,10 +220,6 @@ public class GridDBFactory extends AbstractGridFactory {
 			return "";
 		}
 		return df.format(date);
-	}
-
-	private boolean applyLocalFormatting() {
-		return getRequestSettings().getApplyLocalFormatting();
 	}
 
 	private void calcRecordsCount() throws SQLException {
@@ -267,7 +269,7 @@ public class GridDBFactory extends AbstractGridFactory {
 				curColumn.setIndex(i - 1);
 				determineValueType(curColumn, md.getColumnType(i));
 				setupStdColumnProps(curColumn);
-				curColumn.setSorting(getRequestSettings().getSortingForColumn(curColumn));
+				curColumn.setSorting(getCallContext().getSortingForColumn(curColumn));
 			}
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
@@ -293,5 +295,13 @@ public class GridDBFactory extends AbstractGridFactory {
 		} else {
 			column.setValueType(GridValueType.STRING);
 		}
+	}
+
+	public Boolean getApplyLocalFormatting() {
+		return applyLocalFormatting;
+	}
+
+	public void setApplyLocalFormatting(final Boolean aApplyLocalFormatting) {
+		applyLocalFormatting = aApplyLocalFormatting;
 	}
 }

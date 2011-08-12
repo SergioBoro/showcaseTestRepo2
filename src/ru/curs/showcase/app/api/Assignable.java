@@ -2,12 +2,14 @@ package ru.curs.showcase.app.api;
 
 /**
  * Интерфейс, определяющий операцию копирования содержимого одного элемента в
- * другой. Копирование не должно затрагивать идентификатор(ы) элемента.
+ * другой. Объекты по ссылкам при этом не клонируются - не "глубокая" копия.
  * 
  * @author den
  * 
+ * @param <T>
+ *            - класс, реализующий данный интерфейс.
  */
-public interface Assignable {
+public interface Assignable<T> {
 	/**
 	 * Операция копирования содержимого. При копировании заменяют только null
 	 * значения получателя.
@@ -15,5 +17,5 @@ public interface Assignable {
 	 * @param source
 	 *            - исходный элемент.
 	 */
-	void assignNullValues(Object source);
+	void assignNullValues(T source);
 }

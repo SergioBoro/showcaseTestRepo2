@@ -12,7 +12,7 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.grid.GridXMLBuilder;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.ExcelFile;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
@@ -29,11 +29,11 @@ public class GridExportToExcelSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testExportCurrentPage() throws GeneralException {
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = serviceLayer.getGrid(context, element, null);
+		Grid grid = serviceLayer.getGrid(context, element);
 
 		GridXMLBuilder builder = new GridXMLBuilder(grid);
 		Document xml = builder.build();
@@ -76,13 +76,12 @@ public class GridExportToExcelSLTest extends AbstractTest {
 	public void testServiceForExportAll() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestGridInfo();
-		GridRequestedSettings settings = new GridRequestedSettings();
+		GridContext gc = new GridContext(context);
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		ExcelFile file =
-			serviceLayer.generateExcelFromGrid(GridToExcelExportType.ALL, context, element,
-					settings, null);
-		assertNotNull(context.getSession()); // побочный эффект - нет clone
+			serviceLayer.generateExcelFromGrid(GridToExcelExportType.ALL, gc, element, null);
+		assertNotNull(gc.getSession()); // побочный эффект - нет clone
 		assertNotNull(file.getData());
 		assertEquals("table.xls", file.getName());
 	}
@@ -96,13 +95,12 @@ public class GridExportToExcelSLTest extends AbstractTest {
 	public void testServiceForExportCurrent() throws GeneralException {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestGridInfo();
-		GridRequestedSettings settings = new GridRequestedSettings();
-		settings.setPageNumber(1);
-		settings.setPageSize(2);
+		GridContext gc = new GridContext(context);
+		gc.setPageNumber(1);
+		gc.setPageSize(2);
 
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.generateExcelFromGrid(GridToExcelExportType.CURRENTPAGE, context, element,
-				settings, null);
-		assertNotNull(context.getSession());
+		serviceLayer.generateExcelFromGrid(GridToExcelExportType.CURRENTPAGE, gc, element, null);
+		assertNotNull(gc.getSession());
 	}
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.commons.fileupload.FileUploadException;
 
 import ru.curs.gwt.datagrid.model.ColumnSet;
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 
@@ -24,28 +25,32 @@ public class GridToExcelHandler extends AbstractDownloadHandler {
 	 */
 	private GridToExcelExportType exportType;
 	/**
-	 * Требуемые настройки грида.
-	 */
-	private GridRequestedSettings settings;
-	/**
 	 * Описание настроенного пользователем набора столбцов.
 	 */
 	private ColumnSet columnSet;
+
+	@Override
+	public GridContext getContext() {
+		return (GridContext) super.getContext();
+	}
+
+	@Override
+	protected Class<? extends CompositeContext> getContextClass() {
+		return GridContext.class;
+	}
 
 	@Override
 	protected void processFiles() throws GeneralException {
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(getRequest().getSession().getId());
 		setOutputFile(serviceLayer.generateExcelFromGrid(exportType, getContext(),
-				getElementInfo(), settings, columnSet));
+				getElementInfo(), columnSet));
 	}
 
 	@Override
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
 		super.getParams();
 		exportType = GridToExcelExportType.valueOf(getParam(GridToExcelExportType.class));
-		settings =
-			(GridRequestedSettings) deserializeObject(getParam(GridRequestedSettings.class));
 		columnSet = (ColumnSet) deserializeObject(getParam(ColumnSet.class));
 	}
 }

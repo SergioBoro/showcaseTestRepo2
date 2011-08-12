@@ -126,42 +126,44 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public Grid getGrid(final CompositeContext context, final DataPanelElementInfo elementInfo,
-			final GridRequestedSettings aSettings) throws GeneralException {
+	public Grid getGrid(final GridContext context, final DataPanelElementInfo elementInfo)
+			throws GeneralException {
+		return getGridExt(context, elementInfo, true);
+	}
+
+	private Grid getGridExt(final GridContext context, final DataPanelElementInfo elementInfo,
+			final Boolean applyLocalFormatting) throws GeneralException {
 		try {
 			GridDBGateway gateway = new GridDBGateway();
 			GridDBFactory factory = null;
 			ElementRawData raw = null;
 			Grid grid = null;
 			ElementSettingsDBGateway sgateway = null;
-			GridRequestedSettings settings = aSettings;
 			GridServerState state = null;
 
-			if (settings == null) {
-				settings = GridRequestedSettings.createFirstLoadDefault();
-			}
 			prepareContext(context);
 
-			state = getGridState(context, elementInfo, settings);
+			state = getGridState(context, elementInfo);
 
 			if (elementInfo.loadByOneProc()) {
-				raw = gateway.getRawDataAndSettings(context, elementInfo, settings);
-				factory = new GridDBFactory(raw, settings, state);
+				raw = gateway.getRawDataAndSettings(context, elementInfo);
+				factory = new GridDBFactory(raw, state);
+				factory.setApplyLocalFormatting(applyLocalFormatting);
 				grid = factory.build();
 			} else {
-				if (settings.isFirstLoad()) {
+				if (context.isFirstLoad()) {
 					sgateway = new ElementSettingsDBGateway();
 					raw = sgateway.getRawData(context, elementInfo);
-					factory = new GridDBFactory(raw, settings, state);
+					factory = new GridDBFactory(raw, state);
 					factory.buildStepOne();
-					settings = factory.getRequestSettings();
 					gateway.setConn(sgateway.getConn());
 				} else {
-					factory = new GridDBFactory(settings, state);
+					factory = new GridDBFactory(context, state);
 					factory.buildStepOneFast();
 				}
-				raw = gateway.getRawData(context, elementInfo, settings);
+				raw = gateway.getRawData(context, elementInfo);
 				factory.setSource(raw);
+				factory.setApplyLocalFormatting(applyLocalFormatting);
 				grid = factory.buildStepTwo();
 			}
 
@@ -172,18 +174,28 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		}
 	}
 
-	private GridServerState getGridState(final CompositeContext context,
-			final DataPanelElementInfo elementInfo, final GridRequestedSettings settings) {
+	private GridServerState getGridState(final GridContext context,
+			final DataPanelElementInfo elementInfo) {
 		GridServerState state;
-		if (settings.isFirstLoad()) {
-			state = new GridServerState();
-			AppInfoSingleton.getAppInfo()
-					.storeElementState(sessionId, elementInfo, context, state);
+		if (context.isFirstLoad()) {
+			state = saveGridServerState(context, elementInfo);
 		} else {
 			state =
 				(GridServerState) AppInfoSingleton.getAppInfo().getElementState(sessionId,
 						elementInfo, context);
+			if (state == null) {
+				// состояние по каким-либо причинам не сохранено
+				context.setIsFirstLoad(false);
+				state = saveGridServerState(context, elementInfo);
+			}
 		}
+		return state;
+	}
+
+	protected GridServerState saveGridServerState(final GridContext context,
+			final DataPanelElementInfo elementInfo) {
+		GridServerState state = new GridServerState();
+		AppInfoSingleton.getAppInfo().storeElementState(sessionId, elementInfo, context, state);
 		return state;
 	}
 
@@ -207,17 +219,17 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 	@Override
 	public ExcelFile generateExcelFromGrid(final GridToExcelExportType exportType,
-			final CompositeContext context, final DataPanelElementInfo element,
-			final GridRequestedSettings settings, final ColumnSet cs) throws GeneralException {
+			final GridContext context, final DataPanelElementInfo element, final ColumnSet cs)
+			throws GeneralException {
 		ByteArrayOutputStream result = null;
 		Grid grid = null;
 		try {
 			if (exportType == GridToExcelExportType.ALL) {
-				settings.resetForReturnAllRecords();
+				context.resetForReturnAllRecords();
 			}
-			settings.setApplyLocalFormatting(false);
+
 			prepareContext(context);
-			grid = getGrid(context, element, settings);
+			grid = getGridExt(context, element, false);
 			GridXMLBuilder builder = new GridXMLBuilder(grid);
 			Document xml = builder.build(cs);
 			result = XMLUtils.xsltTransformForGrid(xml);
@@ -296,7 +308,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		LOGGER.info("Session context: " + sessionContext);
 		context.setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
-		context.setSessionParamsMap(null);
+		context.getSessionParamsMap().clear();
 	}
 
 	private void prepareContext(final Action action) throws UnsupportedEncodingException {

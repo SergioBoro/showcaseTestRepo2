@@ -50,7 +50,7 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 			// панель может быть еще не отрисована
 			final BasicElementPanel elementPanel = ActionExecuter.getElementPanelById(id);
 			if ((elementPanel != null) && (elementPanel.getContext() != null)) {
-				context.addRelated(id, elementPanel.getContext());
+				context.addRelated(id, elementPanel.getDetailedContext());
 			} else {
 				context.addRelated(id, new CompositeContext());
 			}
@@ -84,18 +84,22 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 	}
 
 	@Override
-	public void saveSettings(final Boolean reDrawWithSettingsSave) {
-		// если появятся пользовательские настройки - в этой функции,
-		// переопределенной в панели элемента их нужно сохранять
-	}
-
-	@Override
 	public DataPanelElementInfo getElementInfo() {
 		return elementInfo;
 	}
 
 	public void setElementInfo(final DataPanelElementInfo aelement) {
 		this.elementInfo = aelement;
+	}
+
+	@Override
+	public CompositeContext getDetailedContext() {
+		return getContext();
+	}
+
+	@Override
+	public void prepareSettings(final boolean aKeepElementSettings) {
+		// ничего не делаем для элементов, не имеющих настроек
 	}
 
 }

@@ -131,7 +131,7 @@ public class XFormPanelCallbacksEventsTest extends GWTTestCase {
 		XFormPanelCallbacksEvents.setTestXFormPanel(xfp);
 
 		assertEquals(XFormTestsCommon.LEN_MAININSTANCE,
-				XFormPanelCallbacksEvents.getCurrentPanel("1").getMainInstance().trim().length());
+				XFormPanelCallbacksEvents.getCurrentPanel("1").fillAndGetMainInstance().trim().length());
 
 	}
 }

@@ -12,7 +12,7 @@ import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.grid.GridRequestedSettings;
+import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.model.*;
@@ -208,11 +208,11 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = InconsistentSettingsFromDBException.class)
 	public void testInconsistentSettings() throws Exception {
-		CompositeContext context = getTestContext1();
+		GridContext gc = getTestGridContext1();
 		DataPanelElementInfo element = getDPElement(TEST_XML, "3", "5");
 
 		GridGateway gateway = new GridDBGateway();
-		ElementRawData raw = gateway.getRawDataAndSettings(context, element);
+		ElementRawData raw = gateway.getRawDataAndSettings(gc, element);
 		GridDBFactory factory = new GridDBFactory(raw);
 		factory.build();
 	}
@@ -346,12 +346,12 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testForUserDataToGridProcSuccessfull() throws GeneralException {
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);
 		dpei.setProcName("grid_by_userdata");
 		generateTestTabWithElement(dpei);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.getGrid(context, dpei, null);
+		serviceLayer.getGrid(context, dpei);
 	}
 
 	/**
@@ -362,12 +362,12 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = GeneralException.class)
 	public void testForUserDataToGridProcFault() throws GeneralException {
-		CompositeContext context = getTestContext1();
+		GridContext context = getTestGridContext1();
 		context.setSessionParamsMap(generateTestURLParamsForSL("test1"));
 		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);
 		dpei.setProcName("grid_by_userdata");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.getGrid(context, dpei, null);
+		serviceLayer.getGrid(context, dpei);
 	}
 
 	/**
@@ -406,16 +406,17 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	public void testDBQueryExceptionWithWrongGridSorting() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
-		GridRequestedSettings settings = new GridRequestedSettings();
+		GridContext gc = new GridContext();
 		Collection<Column> aSortedColumns = new ArrayList<Column>();
 		Column col = new Column();
 		col.setId("Name111");
 		col.setSorting(Sorting.ASC);
 		aSortedColumns.add(col);
-		settings.setSortedColumns(aSortedColumns);
+		gc.setSortedColumns(aSortedColumns);
+		gc.apply(context);
 
 		GridGateway gateway = new GridDBGateway();
-		gateway.getRawData(context, elInfo, settings);
+		gateway.getRawData(gc, elInfo);
 	}
 
 	/**
@@ -427,9 +428,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 		GridGateway gateway = new GridDBGateway();
-		GridRequestedSettings settings = new GridRequestedSettings();
-		ElementRawData res = gateway.getRawData(context, elInfo, settings);
+		GridContext gc = new GridContext();
+		gc.apply(context);
+		ElementRawData res = gateway.getRawData(gc, elInfo);
 		res.prepareSettings();
 	}
-
 }

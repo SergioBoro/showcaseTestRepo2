@@ -67,16 +67,6 @@ public interface BasicElementPanel {
 	VerticalPanel getPanel();
 
 	/**
-	 * Временно сохранить настройки элемента, для последущего использования их в
-	 * данном сеансе (например для обновления панели).
-	 * 
-	 * @param reDrawWithSettingsSave
-	 *            - свойство, определяющее перерисовывать ли панель с
-	 *            сохранением настроек предыдущей.
-	 */
-	void saveSettings(final Boolean reDrawWithSettingsSave);
-
-	/**
 	 * 
 	 * Функция возвращает текущий связанный с данной панелью элемент
 	 * DataPanelElement.
@@ -87,4 +77,11 @@ public interface BasicElementPanel {
 
 	CompositeContext getContext();
 
+	/**
+	 * Возвращает детализированный контекст элемента, включающий в себя
+	 * настройки элемента, сделанные пользователем.
+	 */
+	CompositeContext getDetailedContext();
+
+	void prepareSettings(boolean keepElementSettings);
 }

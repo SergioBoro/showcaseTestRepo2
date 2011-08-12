@@ -4,8 +4,7 @@ import java.sql.*;
 
 import ru.curs.gwt.datagrid.model.Column;
 import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.grid.GridRequestedSettings;
+import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.model.*;
 
 /**
@@ -28,26 +27,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 		setConn(aConn);
 	}
 
-	@Override
-	public ElementRawData getRawDataAndSettings(final CompositeContext context,
-			final DataPanelElementInfo elementInfo, final GridRequestedSettings settings) {
-		init(context, elementInfo);
-		try {
-			settings.normalize();
-
-			prepareElementStatementWithErrorMes();
-			getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
-			setupSorting(getStatement(), settings);
-			stdGetResults();
-
-			return new ElementRawData(this, elementInfo, context);
-		} catch (SQLException e) {
-			dbExceptionHandler(e);
-		}
-		return null;
-	}
-
-	private void setupSorting(final CallableStatement cs, final GridRequestedSettings settings)
+	private void setupSorting(final CallableStatement cs, final GridContext settings)
 			throws SQLException {
 		if (settings.sortingEnabled()) {
 			StringBuilder builder = new StringBuilder("ORDER BY ");
@@ -62,9 +42,22 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	}
 
 	@Override
-	public ElementRawData getRawDataAndSettings(final CompositeContext aContext,
-			final DataPanelElementInfo aElement) {
-		return getRawDataAndSettings(aContext, aElement, GridRequestedSettings.createFirstLoadDefault());
+	public ElementRawData getRawDataAndSettings(final GridContext context,
+			final DataPanelElementInfo elementInfo) {
+		init(context, elementInfo);
+		try {
+			context.normalize();
+
+			prepareElementStatementWithErrorMes();
+			getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
+			setupSorting(getStatement(), context);
+			stdGetResults();
+
+			return new ElementRawData(this, elementInfo, context);
+		} catch (SQLException e) {
+			dbExceptionHandler(e);
+		}
+		return null;
 	}
 
 	@Override
@@ -90,17 +83,17 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	}
 
 	@Override
-	public ElementRawData getRawData(final CompositeContext context,
-			final DataPanelElementInfo elementInfo, final GridRequestedSettings settings) {
+	public ElementRawData getRawData(final GridContext context,
+			final DataPanelElementInfo elementInfo) {
 		init(context, elementInfo);
 		setTemplateIndex(DATA_ONLY_IND);
 		try {
-			settings.normalize();
+			context.normalize();
 
 			prepareElementStatementWithErrorMes();
-			getStatement().setInt("firstrecord", settings.getPageInfo().getFirstRecord());
-			getStatement().setInt("pagesize", settings.getPageSize());
-			setupSorting(getStatement(), settings);
+			getStatement().setInt("firstrecord", context.getPageInfo().getFirstRecord());
+			getStatement().setInt("pagesize", context.getPageSize());
+			setupSorting(getStatement(), context);
 			stdGetResults();
 
 			return new ElementRawData(this, elementInfo, context);

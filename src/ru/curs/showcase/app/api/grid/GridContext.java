@@ -2,21 +2,24 @@ package ru.curs.showcase.app.api.grid;
 
 import java.util.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import javax.xml.bind.annotation.*;
+
 import ru.curs.gwt.datagrid.model.*;
-import ru.curs.showcase.app.api.TransferableElement;
+import ru.curs.showcase.app.api.event.CompositeContext;
 
 /**
- * Класс, содержащий настройки грида, которые интерактивно могут изменять
- * пользователи в процессе работы с гридом. В частности, содержит информацию о
- * выделении в гриде. Информация о выделении может быть использована при печати,
- * а также выделение должно восстанавливаться в некоторых случаях - в частности,
- * при возврате из карточки.
+ * Класс, содержащий детальный контекст грида. Включает в себя основной контекст
+ * плюс настройки, которые интерактивно могут изменять пользователи в процессе
+ * работы с гридом. Пользовательские настройки должны восстанавливаться после
+ * обновления элемента. Замечание: @XmlRootElement не может указывать на то же
+ * имя context, что и CompositeContext!
  * 
  * @author den
  * 
  */
-public class GridRequestedSettings extends TransferableElement implements SerializableElement {
+@XmlRootElement(name = "gridContext")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class GridContext extends CompositeContext {
 
 	/**
 	 * Размер страницы с данными грида по умолчанию.
@@ -28,23 +31,26 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 	 */
 	private static final int DEF_PAGE_NUMBER = 1;
 
-	@Override
-	public String toString() {
-		return "GridRequestedSettings [sortedColumns=" + sortedColumns + ", pageInfo=" + pageInfo
-				+ ", currentRecordId=" + currentRecordId + ", currentColumnId=" + currentColumnId
-				+ ", selectedRecordIds=" + selectedRecordIds + ", isFirstLoad=" + isFirstLoad
-				+ ", applyLocalFormatting=" + applyLocalFormatting + "]";
+	public GridContext(final CompositeContext aContext) {
+		super();
+		apply(aContext);
 	}
 
-	/**
-	 * serialVersionUID.
-	 */
+	@Override
+	public String toString() {
+		return "GridContext [sortedColumns=" + sortedColumns + ", pageInfo=" + pageInfo
+				+ ", currentRecordId=" + currentRecordId + ", currentColumnId=" + currentColumnId
+				+ ", selectedRecordIds=" + selectedRecordIds + ", isFirstLoad=" + isFirstLoad
+				+ ", toString()=" + super.toString() + "]";
+	}
+
 	private static final long serialVersionUID = 2005065362465664382L;
 
 	/**
 	 * Набор столбцов, на которых установлена сортировка. Если null - сортировка
 	 * не задана.
 	 */
+	@XmlElement(name = "sortedColumn")
 	private Collection<Column> sortedColumns = new ArrayList<Column>();
 
 	private PageInfo pageInfo = new PageInfo(DEF_PAGE_NUMBER, DEF_PAGE_SIZE_VAL);
@@ -62,28 +68,15 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 	/**
 	 * Массив идентификаторов выделенных с помощью селектора записей в гриде.
 	 */
+	@XmlElement(name = "selectedRecordId")
 	private List<String> selectedRecordIds = new ArrayList<String>();
 
 	/**
 	 * Признак того, что грид обновляется после взаимодействия с ним
 	 * пользователя.
 	 */
+	@XmlTransient
 	private Boolean isFirstLoad = false;
-
-	/**
-	 * Признак того, что нужно применять форматирование для дат и чисел при
-	 * формировании грида. По умолчанию - нужно. Отключать эту опцию необходимо
-	 * при экспорте в Excel.
-	 */
-	private Boolean applyLocalFormatting = true;
-
-	public Boolean getApplyLocalFormatting() {
-		return applyLocalFormatting;
-	}
-
-	public void setApplyLocalFormatting(final Boolean aApplyLocalFormatting) {
-		applyLocalFormatting = aApplyLocalFormatting;
-	}
 
 	/**
 	 * Сбрасывает настройки таким образом, чтобы сервер вернул все записи на
@@ -113,19 +106,19 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 	}
 
 	public void setPageNumber(final int pageNumber) {
-		pageInfo.setPageNumber(pageNumber);
+		pageInfo.setNumber(pageNumber);
 	}
 
 	public int getPageNumber() {
-		return pageInfo.getPageNumber();
+		return pageInfo.getNumber();
 	}
 
 	public void setPageSize(final int pageSize) {
-		pageInfo.setPageSize(pageSize);
+		pageInfo.setSize(pageSize);
 	}
 
 	public int getPageSize() {
-		return pageInfo.getPageSize();
+		return pageInfo.getSize();
 	}
 
 	public final Collection<Column> getSortedColumns() {
@@ -184,10 +177,14 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 	 * Создает дефолтные настройки для грида - нужны для первоначальной
 	 * отрисовки грида и для тестов.
 	 */
-	public static GridRequestedSettings createFirstLoadDefault() {
-		GridRequestedSettings result = new GridRequestedSettings();
+	public static GridContext createFirstLoadDefault() {
+		GridContext result = new GridContext();
 		result.isFirstLoad = true;
 		return result;
+	}
+
+	public GridContext() {
+		super();
 	}
 
 	public Boolean isFirstLoad() {
@@ -204,5 +201,110 @@ public class GridRequestedSettings extends TransferableElement implements Serial
 
 	public void setPageInfo(final PageInfo aPageInfo) {
 		pageInfo = aPageInfo;
+	}
+
+	public void apply(final CompositeContext aContext) {
+		assignNullValues(aContext);
+	}
+
+	// CHECKSTYLE:OFF
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof GridContext)) {
+			return false;
+		}
+		GridContext other = (GridContext) obj;
+		if (currentColumnId == null) {
+			if (other.currentColumnId != null) {
+				return false;
+			}
+		} else if (!currentColumnId.equals(other.currentColumnId)) {
+			return false;
+		}
+		if (currentRecordId == null) {
+			if (other.currentRecordId != null) {
+				return false;
+			}
+		} else if (!currentRecordId.equals(other.currentRecordId)) {
+			return false;
+		}
+		if (isFirstLoad == null) {
+			if (other.isFirstLoad != null) {
+				return false;
+			}
+		} else if (!isFirstLoad.equals(other.isFirstLoad)) {
+			return false;
+		}
+		if (pageInfo == null) {
+			if (other.pageInfo != null) {
+				return false;
+			}
+		} else if (!pageInfo.equals(other.pageInfo)) {
+			return false;
+		}
+		if (selectedRecordIds == null) {
+			if (other.selectedRecordIds != null) {
+				return false;
+			}
+		} else if (!selectedRecordIds.equals(other.selectedRecordIds)) {
+			return false;
+		}
+		if (sortedColumns == null) {
+			if (other.sortedColumns != null) {
+				return false;
+			}
+		} else if (!sortedColumns.equals(other.sortedColumns)) {
+			return false;
+		}
+		return true;
+	}
+
+	// CHECKSTYLE:ON
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((currentColumnId == null) ? 0 : currentColumnId.hashCode());
+		result = prime * result + ((currentRecordId == null) ? 0 : currentRecordId.hashCode());
+		result = prime * result + ((isFirstLoad == null) ? 0 : isFirstLoad.hashCode());
+		result = prime * result + ((pageInfo == null) ? 0 : pageInfo.hashCode());
+		result = prime * result + ((selectedRecordIds == null) ? 0 : selectedRecordIds.hashCode());
+		result = prime * result + ((sortedColumns == null) ? 0 : sortedColumns.hashCode());
+		return result;
+	}
+
+	/**
+	 * "Тупое" клонирование объекта, работающее в gwt. Заглушка до тех пор, пока
+	 * в GWT не будет официальной реализации clone.
+	 * 
+	 * @return - копию объекта.
+	 */
+	@Override
+	public GridContext gwtClone() {
+		GridContext res = (GridContext) super.gwtClone();
+		res.currentColumnId = currentColumnId;
+		res.currentRecordId = currentRecordId;
+		res.isFirstLoad = isFirstLoad.booleanValue();
+		res.pageInfo.setNumber(pageInfo.getNumber());
+		res.pageInfo.setSize(pageInfo.getSize());
+		for (Column col : sortedColumns) {
+			res.sortedColumns.add(col); // TODO глубокое клонирование
+		}
+		for (String id : selectedRecordIds) {
+			res.selectedRecordIds.add(id);
+		}
+		return res;
+	}
+
+	@Override
+	protected GridContext newInstance() {
+		return new GridContext();
 	}
 }
