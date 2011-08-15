@@ -349,7 +349,7 @@ public class DataGridPanelTest extends GWTTestCase {
 	/**
 	 * Тест RPC вызова.
 	 */
-	public void testRPC() {
+	public void disabledtestRPC() {
 		DataServiceAsync dataService = GWT.create(DataService.class);
 
 		GridContext context = new GridContext();
