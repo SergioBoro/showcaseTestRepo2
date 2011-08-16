@@ -50,14 +50,14 @@
        
     <xs:element name="properties">
         <xs:complexType>
-            <xs:attribute name="flip" type="xs:boolean" use="required"/>
+            <xs:attribute name="flip" type="xs:boolean"/>
             <xs:attribute name="pagesize" type="xs:unsignedShort"/>
             <xs:attribute name="autoSelectColumnId" type="notNullType"/>
             <xs:attribute name="autoSelectRecordId" type="xs:unsignedInt"/>
             <xs:attribute name="autoSelectRelativeRecord" type="xs:boolean" default="true"/>
             <xs:attribute name="profile" type="notNullType"/>
             <xs:attribute name="selectMode" type="rowOrCell"/>
-            <xs:attribute name="totalCount" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="totalCount" type="xs:unsignedInt"/>
             <xs:attribute name="fireGeneralAndConcreteEvents" type="xs:boolean"/>
         </xs:complexType>
     </xs:element>
