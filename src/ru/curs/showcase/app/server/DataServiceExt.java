@@ -6,6 +6,7 @@ import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.html.XFormsContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.frame.MainPageFrameType;
 import ru.curs.showcase.util.*;
@@ -79,13 +80,11 @@ public interface DataServiceExt {
 	 *            - описание элемента.
 	 * @param linkId
 	 *            - ссылка на файл.
-	 * @param data
-	 *            - данные, введенные пользователем.
 	 * @return - файл.
 	 * @throws GeneralException
 	 */
-	DataFile<ByteArrayOutputStream> getDownloadFile(CompositeContext context,
-			DataPanelElementInfo elementInfo, String linkId, String data) throws GeneralException;
+	DataFile<ByteArrayOutputStream> getDownloadFile(XFormsContext context,
+			DataPanelElementInfo elementInfo, String linkId) throws GeneralException;
 
 	/**
 	 * Загружает файл в хранилище.
@@ -96,14 +95,12 @@ public interface DataServiceExt {
 	 *            - описание элемента.
 	 * @param linkId
 	 *            - ссылка на файл.
-	 * @param data
-	 *            - данные, введенные пользователем.
 	 * @param file
 	 *            - файл.
 	 * @throws GeneralException
 	 */
-	void uploadFile(CompositeContext context, DataPanelElementInfo elementInfo, String linkId,
-			String data, DataFile<ByteArrayOutputStream> file) throws GeneralException;
+	void uploadFile(XFormsContext context, DataPanelElementInfo elementInfo, String linkId,
+			DataFile<ByteArrayOutputStream> file) throws GeneralException;
 
 	/**
 	 * Получает код фрейма главной страницы.

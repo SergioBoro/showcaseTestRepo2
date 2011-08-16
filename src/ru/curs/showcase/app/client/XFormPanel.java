@@ -6,7 +6,7 @@ import ru.beta2.extra.gwt.ui.selector.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.html.XForms;
+import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.*;
@@ -195,7 +195,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getXForms(getContext(), getElementInfo(), mainInstance,
+		dataService.getXForms(new XFormsContext(getContext(), mainInstance), getElementInfo(),
 				new GWTServiceCallback<XForms>("при получении данных XForm с сервера") {
 
 					@Override
@@ -429,4 +429,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 	}
 
+	@Override
+	public CompositeContext getDetailedContext() {
+		return new XFormsContext(getContext(), fillAndGetMainInstance());
+	}
 }

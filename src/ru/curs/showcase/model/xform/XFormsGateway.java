@@ -4,7 +4,8 @@ import java.io.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.app.api.html.XFormsContext;
+import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.util.DataFile;
 
 /**
@@ -50,12 +51,10 @@ public interface XFormsGateway {
 	 *            - описание элемента.
 	 * @param linkId
 	 *            - идентификатор ссылки на файл
-	 * @param data
-	 *            - данные, введенные пользователем.
 	 * @return - файл.
 	 */
-	DataFile<ByteArrayOutputStream> downloadFile(CompositeContext context,
-			DataPanelElementInfo elementInfo, String linkId, String data);
+	DataFile<ByteArrayOutputStream> downloadFile(XFormsContext context,
+			DataPanelElementInfo elementInfo, String linkId);
 
 	/**
 	 * Загружает (или модифицирует) дополнительные данные через Submission.
@@ -79,11 +78,9 @@ public interface XFormsGateway {
 	 *            - описание элемента.
 	 * @param linkId
 	 *            - ссылка на файл.
-	 * @param data
-	 *            - данные, введенные пользователем.
 	 * @param aFile
 	 *            - файл.
 	 * **/
-	void uploadFile(CompositeContext context, DataPanelElementInfo elementInfo, String linkId,
-			String data, DataFile<InputStream> aFile);
+	void uploadFile(XFormsContext context, DataPanelElementInfo elementInfo, String linkId,
+			DataFile<InputStream> aFile);
 }

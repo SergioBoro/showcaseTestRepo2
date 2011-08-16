@@ -56,8 +56,9 @@ public final class XFormPanelCallbacksEvents {
 			final Action ac = getActionByLinkId(linkId, curXFormPanel);
 
 			if (curXFormPanel.getElementInfo().getSaveProc() != null) {
-				curXFormPanel.getDataService().saveXForms(curXFormPanel.getContext(),
-						curXFormPanel.getElementInfo(), data,
+				curXFormPanel.getDataService().saveXForms(
+						new XFormsContext(curXFormPanel.getContext(), data),
+						curXFormPanel.getElementInfo(),
 						new GWTServiceCallback<Void>(Constants.XFORM_SAVE_DATA_ERROR) {
 
 							@Override
@@ -102,17 +103,17 @@ public final class XFormPanelCallbacksEvents {
 			final Action ac) {
 		UploadHelper uh = currentXFormPanel.getUw().getUploadHelper();
 		try {
-
-			uh.addStdPostParamsToBody(currentXFormPanel.getContext(),
-					currentXFormPanel.getElementInfo());
+			String encodedData = null;
+			if (data != null) {
+				encodedData = URL.encode(data);
+			}
+			XFormsContext xcontext =
+				new XFormsContext(currentXFormPanel.getContext(), encodedData);
+			uh.addStdPostParamsToBody(xcontext, currentXFormPanel.getElementInfo());
 		} catch (SerializationException e) {
 			MessageBox.showSimpleMessage(Constants.XFORMS_UPLOAD_ERROR, e.getMessage());
 		}
-		String encodedData = null;
-		if (data != null) {
-			encodedData = URL.encode(data);
-		}
-		uh.addParam("data", encodedData);
+
 		currentXFormPanel.getPanel().add(uh);
 		uh.submit(new UploadSubmitEndHandler() {
 
@@ -321,8 +322,8 @@ public final class XFormPanelCallbacksEvents {
 
 			try {
 				dh.addParam("linkId", URL.encode(linkId));
-				dh.addParam("data", URL.encode(data));
-				dh.addStdPostParamsToBody(currentXFormPanel.getContext(),
+				dh.addStdPostParamsToBody(
+						new XFormsContext(currentXFormPanel.getContext(), URL.encode(data)),
 						currentXFormPanel.getElementInfo());
 				dh.submit();
 			} catch (Exception e) {

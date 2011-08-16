@@ -11,6 +11,7 @@ import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.html.XFormsContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.runtime.AppProps;
@@ -161,7 +162,8 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 	public void testXFormsFileGatewayDownload() {
 		XFormsGateway gateway = new XFormsFileGateway();
 		final String linkId = TEST_XML_FILE;
-		DataFile<ByteArrayOutputStream> file = gateway.downloadFile(null, null, linkId, null);
+		XFormsContext context = new XFormsContext(getTestContext1());
+		DataFile<ByteArrayOutputStream> file = gateway.downloadFile(context, null, linkId);
 		assertNotNull(file);
 		assertNotNull(file.getData());
 		assertEquals(linkId, file.getName());
@@ -177,7 +179,7 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 		final String linkId = TEST_XML_FILE;
 		DataFile<InputStream> file =
 			new DataFile<InputStream>(AppProps.loadResToStream(linkId), linkId);
-		gateway.uploadFile(null, null, linkId, null, file);
+		gateway.uploadFile(new XFormsContext(), null, linkId, file);
 	}
 
 	private DataFile<ByteArrayOutputStream> getTestFile(final String linkId) throws IOException {
@@ -194,7 +196,7 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = XSDValidateException.class)
 	public void testXFormsXMLUploadBad() throws IOException {
-		CompositeContext context = getTestContext1();
+		XFormsContext context = new XFormsContext(getTestContext1());
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc8";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
@@ -205,7 +207,7 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 		transformer.checkAndTransform();
 
 		XFormsGateway gateway = new XFormsDBGateway();
-		gateway.uploadFile(context, elementInfo, linkId, null, transformer.getInputStreamResult());
+		gateway.uploadFile(context, elementInfo, linkId, transformer.getInputStreamResult());
 	}
 
 	/**
@@ -215,13 +217,12 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = XSDValidateException.class)
 	public void testXFormsXMLDownloadBad() throws IOException {
-		CompositeContext context = getTestContext1();
+		XFormsContext context = new XFormsContext(getTestContext1());
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc10";
 
 		XFormsGateway gateway = new XFormsDBGateway();
-		DataFile<ByteArrayOutputStream> file =
-			gateway.downloadFile(context, elementInfo, linkId, null);
+		DataFile<ByteArrayOutputStream> file = gateway.downloadFile(context, elementInfo, linkId);
 
 		UserXMLTransformer transformer =
 			new UserXMLTransformer(file, elementInfo.getProcs().get(linkId));

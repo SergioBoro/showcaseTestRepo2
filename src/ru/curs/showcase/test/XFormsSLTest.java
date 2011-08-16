@@ -7,8 +7,8 @@ import java.io.*;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.html.XForms;
+import ru.curs.showcase.app.api.event.Action;
+import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.runtime.AppProps;
@@ -31,13 +31,13 @@ public class XFormsSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testServiceLayer() throws GeneralException {
-		CompositeContext context = getTestContext1();
+		XFormsContext xcontext = new XFormsContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms1Info();
 
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		XForms xforms = sl.getXForms(context, element, null);
+		XForms xforms = sl.getXForms(xcontext, element);
 
-		assertNotNull(context.getSession());
+		assertNotNull(xcontext.getSession());
 		Action action = xforms.getActionForDependentElements();
 		assertNotNull(action);
 		assertEquals(1, action.getDataPanelLink().getElementLinks().size());
@@ -103,12 +103,12 @@ public class XFormsSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testXFormsFileDownloadBySL() throws GeneralException {
-		CompositeContext context = getTestContext1();
+		XFormsContext context = new XFormsContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc4";
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		DataFile<ByteArrayOutputStream> file =
-			serviceLayer.getDownloadFile(context, element, linkId, null);
+			serviceLayer.getDownloadFile(context, element, linkId);
 		final int navigatorXMLLen = 231478;
 		assertNotNull(context.getSession());
 		assertTrue(file.getData().size() > navigatorXMLLen);
@@ -122,13 +122,13 @@ public class XFormsSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testXFormsFileUploadBySL() throws GeneralException, IOException {
-		CompositeContext context = getTestContext1();
+		XFormsContext context = new XFormsContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc5";
 		final String fileName = TEST_XML_FILE;
 		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.uploadFile(context, element, linkId, null, file);
+		serviceLayer.uploadFile(context, element, linkId, file);
 		assertNotNull(context.getSession());
 	}
 
@@ -147,13 +147,13 @@ public class XFormsSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testXFormsXMLUploadGood() throws IOException, GeneralException {
-		CompositeContext context = getTestContext1();
+		XFormsContext context = new XFormsContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc7";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
 		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.uploadFile(context, element, linkId, null, file);
+		serviceLayer.uploadFile(context, element, linkId, file);
 		assertNotNull(context.getSession());
 	}
 
@@ -164,10 +164,10 @@ public class XFormsSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testXFormsXMLDownloadGood() throws GeneralException {
-		CompositeContext context = getTestContext1();
+		XFormsContext context = new XFormsContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc6";
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.getDownloadFile(context, element, linkId, null);
+		serviceLayer.getDownloadFile(context, element, linkId);
 	}
 }

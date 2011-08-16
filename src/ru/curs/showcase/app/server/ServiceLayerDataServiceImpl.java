@@ -263,14 +263,14 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public XForms getXForms(final CompositeContext context, final DataPanelElementInfo element,
-			final String currentData) throws GeneralException {
+	public XForms getXForms(final XFormsContext context, final DataPanelElementInfo element)
+			throws GeneralException {
 		try {
 			XFormsGateway gateway = new XFormsDBGateway();
 			prepareContext(context);
 			HTMLBasedElementRawData raw = gateway.getRawData(context, element);
-			if (currentData != null) {
-				raw.setData(currentData);
+			if (context.getFormData() != null) {
+				raw.setData(context.getFormData());
 			}
 			XFormsFactory factory = new XFormsFactory(raw);
 			XForms xforms = factory.build();
@@ -282,14 +282,14 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public void saveXForms(final CompositeContext context, final DataPanelElementInfo elementInfo,
-			final String data) throws GeneralException {
+	public void saveXForms(final XFormsContext context, final DataPanelElementInfo elementInfo)
+			throws GeneralException {
 		try {
 			prepareContext(context);
-			LOGGER.info("Идет сохранение данных XForms: " + data);
+			LOGGER.info("Идет сохранение данных XForms: " + context.getFormData());
 
 			UserXMLTransformer transformer =
-				new UserXMLTransformer(data, elementInfo.getSaveProc());
+				new UserXMLTransformer(context.getFormData(), elementInfo.getSaveProc());
 			transformer.checkAndTransform();
 			XFormsGateway gateway = new XFormsDBGateway();
 			gateway.saveData(context, elementInfo, transformer.getStringResult());
@@ -381,16 +381,15 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public DataFile<ByteArrayOutputStream> getDownloadFile(final CompositeContext context,
-			final DataPanelElementInfo elementInfo, final String linkId, final String data)
-			throws GeneralException {
+	public DataFile<ByteArrayOutputStream> getDownloadFile(final XFormsContext context,
+			final DataPanelElementInfo elementInfo, final String linkId) throws GeneralException {
 		try {
-			LOGGER.info("Данные формы при выгрузке файла:" + data);
+			LOGGER.info("Данные формы при выгрузке файла:" + context.getFormData());
 			prepareContext(context);
 
 			XFormsGateway gateway = new XFormsDBGateway();
 			DataFile<ByteArrayOutputStream> file =
-				gateway.downloadFile(context, elementInfo, linkId, data);
+				gateway.downloadFile(context, elementInfo, linkId);
 
 			UserXMLTransformer transformer =
 				new UserXMLTransformer(file, elementInfo.getProcs().get(linkId));
@@ -405,11 +404,11 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	}
 
 	@Override
-	public void uploadFile(final CompositeContext context, final DataPanelElementInfo elementInfo,
-			final String linkId, final String data, final DataFile<ByteArrayOutputStream> file)
+	public void uploadFile(final XFormsContext context, final DataPanelElementInfo elementInfo,
+			final String linkId, final DataFile<ByteArrayOutputStream> file)
 			throws GeneralException {
 		try {
-			LOGGER.info("Данные формы при загрузке файла:" + data);
+			LOGGER.info("Данные формы при загрузке файла:" + context.getFormData());
 			LOGGER.info("Получен файл '" + file.getName() + "' размером " + file.getData().size()
 					+ " байт");
 
@@ -418,8 +417,7 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 				new UserXMLTransformer(file, elementInfo.getProcs().get(linkId));
 			transformer.checkAndTransform();
 			XFormsGateway gateway = new XFormsDBGateway();
-			gateway.uploadFile(context, elementInfo, linkId, data,
-					transformer.getInputStreamResult());
+			gateway.uploadFile(context, elementInfo, linkId, transformer.getInputStreamResult());
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);
 		}

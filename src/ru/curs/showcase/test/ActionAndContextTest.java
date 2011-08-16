@@ -29,9 +29,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 	private static final String TAB_1 = "1";
 	private static final String TAB_2_NAME = "Вкладка 2";
 	private static final String EL_06 = "06";
-	private static final String ADD_CONDITION = "add_condition";
 	private static final String TAB_2 = "2";
-	private static final String TEST_XML = "test.xml";
 
 	/**
 	 * Тест клонирования Action и составляющих его объектов.

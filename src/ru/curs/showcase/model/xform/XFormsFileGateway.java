@@ -9,6 +9,7 @@ import org.w3c.dom.Document;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.html.XFormsContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
@@ -77,8 +78,8 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	}
 
 	@Override
-	public DataFile<ByteArrayOutputStream> downloadFile(final CompositeContext context,
-			final DataPanelElementInfo elementInfo, final String linkId, final String data) {
+	public DataFile<ByteArrayOutputStream> downloadFile(final XFormsContext context,
+			final DataPanelElementInfo elementInfo, final String linkId) {
 		StreamConvertor dup;
 		try {
 			dup = new StreamConvertor(AppProps.loadResToStream(linkId));
@@ -91,12 +92,11 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	}
 
 	@Override
-	public void uploadFile(final CompositeContext aContext,
-			final DataPanelElementInfo aElementInfo, final String aLinkId, final String aData,
-			final DataFile<InputStream> aFile) {
+	public void uploadFile(final XFormsContext aContext, final DataPanelElementInfo aElementInfo,
+			final String aLinkId, final DataFile<InputStream> aFile) {
 		LOGGER.info(String
 				.format("Заглушка: сохранение файла '%s' с контекстом %s из элемента %s, ссылка %s, данные формы %s",
-						aFile.getName(), aContext, aElementInfo, aLinkId, aData));
+						aFile.getName(), aContext, aElementInfo, aLinkId, aContext.getFormData()));
 
 	}
 }

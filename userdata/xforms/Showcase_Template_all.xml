@@ -190,7 +190,7 @@
 				<xf:label>Запустить закачку на сервер (через gwtXFormSave)</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
-						resource="javascript:gwtXFormSave('xformId', null,  null)" />
+						resource="javascript:gwtXFormSave('xformId', null, Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
 				</xf:action>
 			</xf:trigger>
 		</div>

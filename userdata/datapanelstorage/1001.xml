@@ -10,7 +10,8 @@
 			hideOnLoad="true" />
 		<element id="d03" type="webtext" proc="webtext_dep62" >	
 			<related id="d01"/>
-			<related id="d02"/>							
+			<related id="d02"/>
+			<related id="0101"/>								
 		</element>
 		<element id ="d02" type="grid" proc="grid_cities_data" hideOnLoad="true">
 			<proc id="d201" name="grid_cities_metadata" type="METADATA"/>

@@ -5,6 +5,7 @@ import java.sql.*;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.html.XFormsContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.util.*;
 
@@ -140,8 +141,8 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	}
 
 	@Override
-	public DataFile<ByteArrayOutputStream> downloadFile(final CompositeContext context,
-			final DataPanelElementInfo elementInfo, final String linkId, final String data) {
+	public DataFile<ByteArrayOutputStream> downloadFile(final XFormsContext context,
+			final DataPanelElementInfo elementInfo, final String linkId) {
 		init(context, elementInfo);
 		setTemplateIndex(FILE_TEMPLATE_IND);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
@@ -154,7 +155,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 		try {
 			try {
 				prepareElementStatementWithErrorMes();
-				setSQLXMLParamByString(getDataParam(FILE_TEMPLATE_IND), data);
+				setSQLXMLParamByString(getDataParam(FILE_TEMPLATE_IND), context.getFormData());
 				getStatement().registerOutParameter(FILENAME_INDEX, java.sql.Types.VARCHAR);
 				getStatement().registerOutParameter(FILE_INDEX, java.sql.Types.BLOB);
 				getStatement().execute();
@@ -178,8 +179,8 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	}
 
 	@Override
-	public void uploadFile(final CompositeContext context, final DataPanelElementInfo elementInfo,
-			final String linkId, final String data, final DataFile<InputStream> file) {
+	public void uploadFile(final XFormsContext context, final DataPanelElementInfo elementInfo,
+			final String linkId, final DataFile<InputStream> file) {
 		init(context, elementInfo);
 		setTemplateIndex(FILE_TEMPLATE_IND);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
@@ -191,7 +192,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 		try {
 			try {
 				prepareElementStatementWithErrorMes();
-				setSQLXMLParamByString(getDataParam(FILE_TEMPLATE_IND), data);
+				setSQLXMLParamByString(getDataParam(FILE_TEMPLATE_IND), context.getFormData());
 				getStatement().setString(FILENAME_INDEX, file.getName());
 				getStatement().setBinaryStream(FILE_INDEX, file.getData());
 				getStatement().execute();

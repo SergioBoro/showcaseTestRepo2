@@ -104,7 +104,8 @@ public interface DataService extends RemoteService {
 			throws GeneralException;
 
 	/**
-	 * Возвращает данные для отрисовки формы.
+	 * Возвращает данные для отрисовки формы. Передаваемые в контексте данные
+	 * должны заменить данные из БД, реализуя т.об. обновление формы.
 	 * 
 	 * @param context
 	 *            - контекст.
@@ -112,12 +113,8 @@ public interface DataService extends RemoteService {
 	 *            - описание элемента.
 	 * @return - логическая форма без данных.
 	 * @throws GeneralException
-	 * @param currentData
-	 *            - текущие данные XForms. Они должны заменить собой данные,
-	 *            возвращенные хранимой процедурой.
 	 */
-	XForms getXForms(CompositeContext context, DataPanelElementInfo element, String currentData)
-			throws GeneralException;
+	XForms getXForms(XFormsContext context, DataPanelElementInfo element) throws GeneralException;
 
 	/**
 	 * Сохраняет данные карточки на основе XForms.
@@ -126,12 +123,9 @@ public interface DataService extends RemoteService {
 	 *            - контекст.
 	 * @param element
 	 *            - описание элемента.
-	 * @param data
-	 *            - данные.
 	 * @throws GeneralException
 	 */
-	void saveXForms(CompositeContext context, DataPanelElementInfo element, String data)
-			throws GeneralException;
+	void saveXForms(XFormsContext context, DataPanelElementInfo element) throws GeneralException;
 
 	/**
 	 * Возвращает информацию о текущем состоянии сервера и о текущем сеансе.

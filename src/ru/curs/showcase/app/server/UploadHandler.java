@@ -10,7 +10,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.html.XFormsContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.util.*;
 
@@ -26,11 +26,6 @@ import com.google.gwt.user.client.rpc.SerializationException;
 public final class UploadHandler extends AbstractFilesHandler {
 
 	/**
-	 * Данные, введенные пользователем.
-	 */
-	private String data;
-
-	/**
 	 * Файлы, закаченные пользователем. Ключом является ссылка на файл (linkId).
 	 */
 	private final Map<String, DataFile<ByteArrayOutputStream>> files =
@@ -41,7 +36,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 		ServiceLayerDataServiceImpl serviceLayer =
 			new ServiceLayerDataServiceImpl(getRequest().getSession().getId());
 		for (Map.Entry<String, DataFile<ByteArrayOutputStream>> entry : files.entrySet()) {
-			serviceLayer.uploadFile(getContext(), getElementInfo(), entry.getKey(), data,
+			serviceLayer.uploadFile(getContext(), getElementInfo(), entry.getKey(),
 					entry.getValue());
 		}
 	}
@@ -61,10 +56,9 @@ public final class UploadHandler extends AbstractFilesHandler {
 
 			if (item.isFormField()) {
 				String paramValue = decodeParamValue(out.toString());
-				if ("data".equals(name)) {
-					data = paramValue;
-				} else if (CompositeContext.class.getName().equals(name)) {
-					setContext((CompositeContext) deserializeObject(paramValue));
+				if (XFormsContext.class.getName().equals(name)) {
+					setContext((XFormsContext) deserializeObject(paramValue));
+					getContext().setFormData(decodeParamValue(getContext().getFormData()));
 				} else if (DataPanelElementInfo.class.getName().equals(name)) {
 					setElementInfo((DataPanelElementInfo) deserializeObject(paramValue));
 				}
@@ -79,12 +73,13 @@ public final class UploadHandler extends AbstractFilesHandler {
 		}
 	}
 
-	public Map<String, DataFile<ByteArrayOutputStream>> getFiles() {
-		return files;
+	@Override
+	public XFormsContext getContext() {
+		return (XFormsContext) super.getContext();
 	}
 
-	public String getData() {
-		return data;
+	public Map<String, DataFile<ByteArrayOutputStream>> getFiles() {
+		return files;
 	}
 
 	@Override

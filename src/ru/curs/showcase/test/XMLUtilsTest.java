@@ -15,6 +15,7 @@ import org.xml.sax.SAXException;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.GridContext;
+import ru.curs.showcase.app.api.html.XFormsContext;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.util.xml.*;
@@ -350,7 +351,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testContextualElementStateToXML() {
+	public void testGridContextToXML() {
 		CompositeContext context = new CompositeContext();
 		context.setMain(null);
 		context.setSession(null);
@@ -360,6 +361,20 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 			(GridContext) XMLUtils.xmlToObject(doc.getDocumentElement(), GridContext.class);
 
 		assertEquals(gc, gc2);
+	}
+
+	@Test
+	public void testXFormsContextToXML() {
+		CompositeContext context = new CompositeContext();
+		XFormsContext xc = new XFormsContext();
+		xc.setFormData("<schema/>");
+		xc.setAdditional(ADD_CONDITION);
+		context.addRelated("01", xc);
+		Document doc = XMLUtils.objectToXML(context.getRelated().get("01"));
+		XFormsContext xc2 =
+			(XFormsContext) XMLUtils.xmlToObject(doc.getDocumentElement(), XFormsContext.class);
+
+		assertEquals(xc, xc2);
 	}
 
 	/**

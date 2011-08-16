@@ -105,12 +105,10 @@ public interface DataServiceAsync {
 	 *            - текущий контекст.
 	 * @param element
 	 *            - описание элемента.
-	 * @param currentData
-	 *            - данные.
 	 * @param callback
 	 *            - callback.
 	 */
-	void getXForms(CompositeContext context, DataPanelElementInfo element, String currentData,
+	void getXForms(XFormsContext context, DataPanelElementInfo element,
 			AsyncCallback<XForms> callback);
 
 	/**
@@ -122,10 +120,8 @@ public interface DataServiceAsync {
 	 *            - описание элемента.
 	 * @param callback
 	 *            - callback.
-	 * @param data
-	 *            - данные.
 	 */
-	void saveXForms(CompositeContext context, DataPanelElementInfo element, String data,
+	void saveXForms(XFormsContext context, DataPanelElementInfo element,
 			AsyncCallback<Void> callback);
 
 	/**
