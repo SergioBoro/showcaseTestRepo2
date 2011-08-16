@@ -16,7 +16,8 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 public abstract class ElementSPCallHelper extends SPCallHelper {
-	private static final String ELEMENTID_COLUMNNAME = "element_id";
+
+	private static final int ELEMENTID_INDEX = 5;
 	/**
 	 * LOGGER.
 	 */
@@ -39,16 +40,16 @@ public abstract class ElementSPCallHelper extends SPCallHelper {
 	private void setupGeneralElementParameters() throws SQLException {
 		setupGeneralParameters();
 
-		getStatement().setString(ELEMENTID_COLUMNNAME, elementInfo.getId());
+		getStatement().setString(getElementIdIndex(getTemplateIndex()), elementInfo.getId());
 		LOGGER.info("elementInfo=" + elementInfo.toString());
 	}
 
 	/**
-	 * Возвращает имя OUT параметра с настройками элемента.
+	 * Возвращает индекс OUT параметра с настройками элемента.
 	 * 
-	 * @return - имя параметра.
+	 * @return - индекс параметра.
 	 */
-	protected abstract String getOutSettingsParam();
+	protected abstract int getOutSettingsParam();
 
 	/**
 	 * Стандартная функция подготовки CallableStatement для выборки данных для
@@ -133,4 +134,9 @@ public abstract class ElementSPCallHelper extends SPCallHelper {
 	private String getSettingsSchema() {
 		return getGatewayType().getSettingsSchemaName();
 	}
+
+	protected int getElementIdIndex(final int index) {
+		return ELEMENTID_INDEX;
+	}
+
 }

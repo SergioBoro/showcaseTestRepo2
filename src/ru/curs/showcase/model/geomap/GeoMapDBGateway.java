@@ -12,6 +12,8 @@ import ru.curs.showcase.model.*;
  */
 public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements GeoMapGateway {
 
+	private static final int OUT_SETTINGS_PARAM = 6;
+
 	@Override
 	public ElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
@@ -19,13 +21,13 @@ public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements Geo
 	}
 
 	@Override
-	public String getOutSettingsParam() {
-		return "geomapsettings";
+	public int getOutSettingsParam() {
+		return OUT_SETTINGS_PARAM;
 	}
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "exec [dbo].[%s] ?, ?, ?, ?, ?, ?";
+		return "{call %s(?, ?, ?, ?, ?, ?)}";
 	}
 
 	@Override

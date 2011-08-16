@@ -19,17 +19,21 @@ import ru.curs.showcase.app.api.event.CompositeContext;
  */
 public abstract class HTMLBasedSPCallHelper extends ElementSPCallHelper {
 	/**
-	 * Возвращает имя OUT параметра с данными элемента. Необходим только для
+	 * Возвращает индекс OUT параметра с данными элемента. Необходим только для
 	 * HTML-based элементов.
 	 * 
-	 * @return - имя параметра.
+	 * @param index
+	 *            TODO
+	 * 
+	 * @return - индекс параметра.
 	 */
-	public abstract String getDataParam();
+	public abstract int getDataParam(int index);
 
 	@Override
 	protected void prepareStdStatement() throws SQLException {
 		super.prepareStdStatement();
-		getStatement().registerOutParameter(getDataParam(), java.sql.Types.SQLXML);
+		getStatement().registerOutParameter(getDataParam(getTemplateIndex()),
+				java.sql.Types.SQLXML);
 	}
 
 	/**
@@ -52,7 +56,7 @@ public abstract class HTMLBasedSPCallHelper extends ElementSPCallHelper {
 				prepareStdStatement();
 				Document data = null;
 				getStatement().execute();
-				SQLXML xml = getStatement().getSQLXML(getDataParam());
+				SQLXML xml = getStatement().getSQLXML(getDataParam(getTemplateIndex()));
 				if (xml != null) {
 					DOMSource domSource = xml.getSource(DOMSource.class);
 					data = (Document) domSource.getNode();

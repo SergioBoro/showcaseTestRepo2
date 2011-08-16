@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.Activity;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.SPCallHelper;
 
 /**
  * Класс шлюза-исполнителя вызовов SQL хранимых процедур.
@@ -13,6 +13,12 @@ import ru.curs.showcase.model.*;
  * 
  */
 public class ActivityDBGateway extends SPCallHelper implements ActivityGateway {
+
+	private static final int MAIN_CONTEXT_INDEX = 2;
+	private static final int ADD_CONTEXT_INDEX = 3;
+	private static final int FILTER_INDEX = 4;
+	private static final int SESSION_CONTEXT_INDEX = 5;
+	private static final int ERROR_MES_INDEX = 6;
 
 	@Override
 	public void exec(final Activity activity) {
@@ -35,12 +41,37 @@ public class ActivityDBGateway extends SPCallHelper implements ActivityGateway {
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "{? = call [dbo].[%s](?, ?, ?, ?, ?)}";
+		return "{? = call %s(?, ?, ?, ?, ?)}";
 	}
 
 	@Override
 	protected DataPanelElementType getGatewayType() {
 		return DataPanelElementType.NON_DP_ELEMENT;
+	}
+
+	@Override
+	protected int getMainContextIndex(final int index) {
+		return MAIN_CONTEXT_INDEX;
+	}
+
+	@Override
+	protected int getAddContextIndex(final int index) {
+		return ADD_CONTEXT_INDEX;
+	}
+
+	@Override
+	protected int getFilterIndex(final int index) {
+		return FILTER_INDEX;
+	}
+
+	@Override
+	protected int getSessionContextIndex(final int index) {
+		return SESSION_CONTEXT_INDEX;
+	}
+
+	@Override
+	protected int getErrorMesIndex(final int index) {
+		return ERROR_MES_INDEX;
 	}
 
 }

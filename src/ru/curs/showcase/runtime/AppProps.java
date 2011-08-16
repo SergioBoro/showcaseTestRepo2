@@ -65,6 +65,11 @@ public final class AppProps {
 	 */
 	public static final String SCHEMASDIR = "schemas";
 	/**
+	 * SCRIPTSDIR.
+	 */
+	public static final String SCRIPTSDIR = "scripts";
+
+	/**
 	 * GRIDDATAXSL.
 	 */
 	public static final String GRIDDATAXSL = "GridData.xsl";

@@ -16,6 +16,11 @@ import ru.curs.showcase.util.DataFile;
  */
 public class DataPanelDBGateway extends SPCallHelper implements DataPanelGateway {
 
+	private static final int MAIN_CONTEXT_INDEX = 2;
+	private static final int SESSION_CONTEXT_INDEX = 3;
+	private static final int DP_INDEX = 4;
+	private static final int ERROR_MES_INDEX = 5;
+
 	@Override
 	public DataFile<InputStream> getRawData(final CompositeContext context,
 			final String dataPanelId) {
@@ -25,7 +30,7 @@ public class DataPanelDBGateway extends SPCallHelper implements DataPanelGateway
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "{? = call [dbo].[%s](?, ?, ?, ?)}";
+		return "{? = call %s(?, ?, ?, ?)}";
 	}
 
 	@Override
@@ -37,12 +42,13 @@ public class DataPanelDBGateway extends SPCallHelper implements DataPanelGateway
 	public DataFile<InputStream> getRawData(final CompositeContext context) {
 		try {
 			prepareStatementWithErrorMes();
-			getStatement().setString(SESSION_CONTEXT_PARAM, context.getSession());
-			getStatement().setString(MAIN_CONTEXT_TAG, context.getMain());
-			getStatement().registerOutParameter(DP_TAG, java.sql.Types.SQLXML);
+			setSQLXMLParamByString(getSessionContextIndex(getTemplateIndex()),
+					context.getSession());
+			getStatement().setString(getMainContextIndex(getTemplateIndex()), context.getMain());
+			getStatement().registerOutParameter(DP_INDEX, java.sql.Types.SQLXML);
 			getStatement().execute();
 			checkErrorCode();
-			InputStream stream = getStatement().getSQLXML(DP_TAG).getBinaryStream();
+			InputStream stream = getStatement().getSQLXML(DP_INDEX).getBinaryStream();
 			return new DataFile<InputStream>(stream, getProcName());
 		} catch (SQLException e) {
 			dbExceptionHandler(e);
@@ -54,4 +60,20 @@ public class DataPanelDBGateway extends SPCallHelper implements DataPanelGateway
 	public void setSourceName(final String aName) {
 		setProcName(aName);
 	}
+
+	@Override
+	protected int getMainContextIndex(final int index) {
+		return MAIN_CONTEXT_INDEX;
+	}
+
+	@Override
+	protected int getSessionContextIndex(final int index) {
+		return SESSION_CONTEXT_INDEX;
+	}
+
+	@Override
+	protected int getErrorMesIndex(final int index) {
+		return ERROR_MES_INDEX;
+	}
+
 }

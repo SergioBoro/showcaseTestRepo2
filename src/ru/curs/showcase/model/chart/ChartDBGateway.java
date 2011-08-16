@@ -12,6 +12,8 @@ import ru.curs.showcase.model.*;
  */
 public class ChartDBGateway extends CompBasedElementSPCallHelper implements ChartGateway {
 
+	private static final int OUT_SETTINGS_PARAM = 6;
+
 	@Override
 	public ElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
@@ -19,13 +21,13 @@ public class ChartDBGateway extends CompBasedElementSPCallHelper implements Char
 	}
 
 	@Override
-	public String getOutSettingsParam() {
-		return "chartsettings";
+	public int getOutSettingsParam() {
+		return OUT_SETTINGS_PARAM;
 	}
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "exec [dbo].[%s] ?, ?, ?, ?, ?, ?";
+		return "{call %s(?, ?, ?, ?, ?, ?)}";
 	}
 
 	@Override

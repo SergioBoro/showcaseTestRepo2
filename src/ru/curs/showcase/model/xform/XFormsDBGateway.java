@@ -15,10 +15,33 @@ import ru.curs.showcase.util.*;
  * 
  */
 public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFormsGateway {
-	public static final String OUTPUT_COLUMNNAME = "xformssettings";
-	private static final String OUTPUTDATA_PARAM = "outputdata";
-	private static final String INPUTDATA_PARAM = "inputdata";
-	private static final String XFORMSDATA_PARAM = "xformsdata";
+
+	private static final int MAIN_CONTEXT_INDEX_0 = 1;
+	private static final int ADD_CONTEXT_INDEX_0 = 2;
+	private static final int FILTER_INDEX_0 = 3;
+	private static final int SESSION_CONTEXT_INDEX_0 = 4;
+	private static final int ELEMENTID_INDEX_0 = 5;
+	private static final int XFORMSDATA_INDEX_0 = 6;
+
+	private static final int MAIN_CONTEXT_INDEX_NOT0 = 2;
+	private static final int ADD_CONTEXT_INDEX_NOT0 = 3;
+	private static final int FILTER_INDEX_NOT0 = 4;
+	private static final int SESSION_CONTEXT_INDEX_NOT0 = 5;
+	private static final int ELEMENTID_INDEX_NOT0 = 6;
+	private static final int XFORMSDATA_INDEX_NOT0 = 7;
+
+	private static final int OUTPUT_INDEX = 7;
+
+	private static final int ERROR_MES_INDEX_SAVE = 8;
+	private static final int ERROR_MES_INDEX_SUBMISSION = 4;
+	private static final int ERROR_MES_INDEX_FILE = 10;
+
+	private static final int FILENAME_INDEX = 8;
+	private static final int FILE_INDEX = 9;
+
+	private static final int INPUTDATA_INDEX = 2;
+	private static final int OUTPUTDATA_INDEX = 3;
+
 	private static final int SAVE_TEMPLATE_IND = 1;
 	private static final int SUBMISSION_TEMPLATE_IND = 2;
 	private static final int FILE_TEMPLATE_IND = 3;
@@ -30,21 +53,21 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	}
 
 	@Override
-	public String getOutSettingsParam() {
-		return OUTPUT_COLUMNNAME;
+	public int getOutSettingsParam() {
+		return OUTPUT_INDEX;
 	}
 
 	@Override
 	protected String getSqlTemplate(final int index) {
 		switch (index) {
 		case 0:
-			return "{call [dbo].[%s](?, ?, ?, ?, ?, ?, ?)}";
+			return "{call %s(?, ?, ?, ?, ?, ?, ?)}";
 		case SAVE_TEMPLATE_IND:
-			return "{? = call [dbo].[%s](?, ?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s(?, ?, ?, ?, ?, ?, ?)}";
 		case SUBMISSION_TEMPLATE_IND:
-			return "{? = call [dbo].[%s](?, ?, ?)}";
+			return "{? = call %s(?, ?, ?)}";
 		case FILE_TEMPLATE_IND:
-			return "{? = call [dbo].[%s](?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 		default:
 			return null;
 		}
@@ -69,7 +92,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 		try {
 			try {
 				prepareElementStatementWithErrorMes();
-				getStatement().setString(XFORMSDATA_PARAM, data);
+				setSQLXMLParamByString(getDataParam(SAVE_TEMPLATE_IND), data);
 				getStatement().execute();
 				checkErrorCode();
 			} catch (SQLException e) {
@@ -89,12 +112,12 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 		try {
 			try {
 				prepareStatementWithErrorMes();
-				getStatement().setString(INPUTDATA_PARAM, aInputData);
-				getStatement().registerOutParameter(OUTPUTDATA_PARAM, java.sql.Types.SQLXML);
+				setSQLXMLParamByString(INPUTDATA_INDEX, aInputData);
+				getStatement().registerOutParameter(OUTPUTDATA_INDEX, java.sql.Types.SQLXML);
 				getStatement().execute();
 				checkErrorCode();
 
-				SQLXML sqlxml = getStatement().getSQLXML(OUTPUTDATA_PARAM);
+				SQLXML sqlxml = getStatement().getSQLXML(OUTPUTDATA_INDEX);
 				if (sqlxml != null) {
 					out = sqlxml.getString();
 				}
@@ -108,8 +131,12 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	}
 
 	@Override
-	public String getDataParam() {
-		return XFORMSDATA_PARAM;
+	public int getDataParam(final int index) {
+		if (index == 0) {
+			return XFORMSDATA_INDEX_0;
+		} else {
+			return XFORMSDATA_INDEX_NOT0;
+		}
 	}
 
 	@Override
@@ -127,14 +154,14 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 		try {
 			try {
 				prepareElementStatementWithErrorMes();
-				getStatement().setString(XFORMSDATA_PARAM, data);
-				getStatement().registerOutParameter(FILENAME_TAG, java.sql.Types.VARCHAR);
-				getStatement().registerOutParameter(FILE_TAG, java.sql.Types.BLOB);
+				setSQLXMLParamByString(getDataParam(FILE_TEMPLATE_IND), data);
+				getStatement().registerOutParameter(FILENAME_INDEX, java.sql.Types.VARCHAR);
+				getStatement().registerOutParameter(FILE_INDEX, java.sql.Types.BLOB);
 				getStatement().execute();
 				checkErrorCode();
 
-				String fileName = getStatement().getString(FILENAME_TAG);
-				Blob blob = getStatement().getBlob(FILE_TAG);
+				String fileName = getStatement().getString(FILENAME_INDEX);
+				Blob blob = getStatement().getBlob(FILE_INDEX);
 				InputStream blobIs = blob.getBinaryStream();
 				StreamConvertor dup = new StreamConvertor(blobIs);
 				ByteArrayOutputStream os = dup.getOutputStream();
@@ -164,9 +191,9 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 		try {
 			try {
 				prepareElementStatementWithErrorMes();
-				getStatement().setString(XFORMSDATA_PARAM, data);
-				getStatement().setString(FILENAME_TAG, file.getName());
-				getStatement().setBinaryStream(FILE_TAG, file.getData());
+				setSQLXMLParamByString(getDataParam(FILE_TEMPLATE_IND), data);
+				getStatement().setString(FILENAME_INDEX, file.getName());
+				getStatement().setBinaryStream(FILE_INDEX, file.getData());
 				getStatement().execute();
 				checkErrorCode();
 			} catch (SQLException e) {
@@ -174,6 +201,68 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 			}
 		} finally {
 			releaseResources();
+		}
+	}
+
+	@Override
+	protected int getMainContextIndex(final int index) {
+		if (index == 0) {
+			return MAIN_CONTEXT_INDEX_0;
+		} else {
+			return MAIN_CONTEXT_INDEX_NOT0;
+		}
+	}
+
+	@Override
+	protected int getAddContextIndex(final int index) {
+		if (index == 0) {
+			return ADD_CONTEXT_INDEX_0;
+		} else {
+			return ADD_CONTEXT_INDEX_NOT0;
+		}
+
+	}
+
+	@Override
+	protected int getFilterIndex(final int index) {
+		if (index == 0) {
+			return FILTER_INDEX_0;
+		} else {
+			return FILTER_INDEX_NOT0;
+		}
+
+	}
+
+	@Override
+	protected int getSessionContextIndex(final int index) {
+		if (index == 0) {
+			return SESSION_CONTEXT_INDEX_0;
+		} else {
+			return SESSION_CONTEXT_INDEX_NOT0;
+		}
+
+	}
+
+	@Override
+	protected int getElementIdIndex(final int index) {
+		if (index == 0) {
+			return ELEMENTID_INDEX_0;
+		} else {
+			return ELEMENTID_INDEX_NOT0;
+		}
+	}
+
+	@Override
+	protected int getErrorMesIndex(final int index) {
+		switch (index) {
+		case SAVE_TEMPLATE_IND:
+			return ERROR_MES_INDEX_SAVE;
+		case SUBMISSION_TEMPLATE_IND:
+			return ERROR_MES_INDEX_SUBMISSION;
+		case FILE_TEMPLATE_IND:
+			return ERROR_MES_INDEX_FILE;
+		default:
+			return -1;
 		}
 	}
 

@@ -1,5 +1,6 @@
 package ru.curs.showcase.model;
 
+import java.io.IOException;
 import java.sql.*;
 
 import org.slf4j.*;
@@ -7,7 +8,7 @@ import org.slf4j.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.DBConnectException;
+import ru.curs.showcase.util.*;
 
 /**
  * Абстрактный класс, содержащий базовые константы и функции для вызова хранимых
@@ -17,12 +18,18 @@ import ru.curs.showcase.util.DBConnectException;
  * 
  */
 public abstract class SPCallHelper extends DataCheckGateway {
+
+	private static final int MAIN_CONTEXT_INDEX = 1;
+	private static final int ADD_CONTEXT_INDEX = 2;
+	private static final int FILTER_INDEX = 3;
+	private static final int SESSION_CONTEXT_INDEX = 4;
+
+	private static final int ERROR_MES_INDEX = -1;
+
 	/**
 	 * LOGGER.
 	 */
 	protected static final Logger LOGGER = LoggerFactory.getLogger(SPCallHelper.class);
-
-	private static final int ERROR_MES_COL_INDEX = 4;
 
 	/**
 	 * Соединение с БД.
@@ -65,22 +72,22 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 * @throws SQLException
 	 */
 	protected void setupGeneralParameters() throws SQLException {
-		statement.setString(MAIN_CONTEXT_TAG, "");
-		statement.setString(ADD_CONTEXT_TAG, "");
-		statement.setString(SESSION_CONTEXT_PARAM, "");
-		statement.setString(FILTER_TAG, "");
+		statement.setString(getMainContextIndex(templateIndex), "");
+		statement.setString(getAddContextIndex(templateIndex), "");
+		setSQLXMLParamByString(getFilterIndex(templateIndex), "");
+		setSQLXMLParamByString(getSessionContextIndex(templateIndex), "");
 		if (context != null) {
 			if (context.getMain() != null) {
-				statement.setString(MAIN_CONTEXT_TAG, context.getMain());
+				statement.setString(getMainContextIndex(templateIndex), context.getMain());
 			}
 			if (context.getAdditional() != null) {
-				statement.setString(ADD_CONTEXT_TAG, context.getAdditional());
-			}
-			if (context.getSession() != null) {
-				statement.setString(SESSION_CONTEXT_PARAM, context.getSession());
+				statement.setString(getAddContextIndex(templateIndex), context.getAdditional());
 			}
 			if (context.getFilter() != null) {
-				statement.setString(FILTER_TAG, context.getFilter());
+				setSQLXMLParamByString(getFilterIndex(templateIndex), context.getFilter());
+			}
+			if (context.getSession() != null) {
+				setSQLXMLParamByString(getSessionContextIndex(templateIndex), context.getSession());
 			}
 			LOGGER.info("context=" + context.toString());
 		}
@@ -165,21 +172,32 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 * Проверяет наличие хранимой процедуры в БД.
 	 */
 	private boolean checkProcExists() {
-		String sql =
-			String.format(
-					"IF (OBJECT_ID('[dbo].[%1$s]') IS NOT NULL AND (OBJECTPROPERTY(OBJECT_ID('[dbo].[%1$s]'),'IsProcedure')=1))",
-					procName)
-					+ " SELECT 'exists' AS [result] ELSE SELECT 'absent' AS [result]";
+		String fileName =
+			String.format("%s/checkProcExists_%s.sql", AppProps.SCRIPTSDIR, ConnectionFactory
+					.getSQLServerType().toString().toLowerCase());
+
+		String sql = "";
+		try {
+			sql = TextUtils.streamToString(AppProps.loadResToStream(fileName));
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(e, fileName, SettingsFileType.SCRIPT);
+		}
+		if (sql.trim().isEmpty()) {
+			throw new SettingsFileOpenException(fileName, SettingsFileType.SCRIPT);
+		}
+		sql = String.format(sql, procName);
+
 		try {
 			statement = conn.prepareCall(sql);
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
-				return "exists".equals(rs.getString("result"));
+				return rs.getInt("num") > 0;
 			}
 		} catch (SQLException e) {
 			return true;
 		}
 		return true;
+
 	}
 
 	/**
@@ -199,11 +217,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	protected void prepareStatementWithErrorMes() throws SQLException {
 		prepareSQL();
 		statement.registerOutParameter(1, java.sql.Types.INTEGER);
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			statement.registerOutParameter(ERROR_MES_COL, java.sql.Types.VARCHAR);
-		} else {
-			statement.registerOutParameter(ERROR_MES_COL_INDEX, java.sql.Types.VARCHAR);
-		}
+		statement.registerOutParameter(getErrorMesIndex(templateIndex), java.sql.Types.VARCHAR);
 	}
 
 	/**
@@ -212,12 +226,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	public void checkErrorCode() throws SQLException {
 		int errorCode = getStatement().getInt(1);
 		if (errorCode != 0) {
-			String errMess;
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-				errMess = getStatement().getString(ERROR_MES_COL);
-			} else {
-				errMess = getStatement().getString(ERROR_MES_COL_INDEX);
-			}
+			String errMess = getStatement().getString(getErrorMesIndex(templateIndex));
 			throw new ValidateInDBException(errorCode, errMess);
 		}
 	}
@@ -228,5 +237,42 @@ public abstract class SPCallHelper extends DataCheckGateway {
 
 	public void setTemplateIndex(final int aTemplateIndex) {
 		templateIndex = aTemplateIndex;
+	}
+
+	protected void setSQLXMLParamByString(final int index, final String value) throws SQLException {
+		String value2 = value;
+		if (value2 == null) {
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+				value2 = "";
+			}
+		} else {
+			if (value2.isEmpty()
+					&& ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+				value2 = null;
+			}
+		}
+		SQLXML sqlxml = getConn().createSQLXML();
+		sqlxml.setString(value2);
+		getStatement().setSQLXML(index, sqlxml);
+	}
+
+	protected int getMainContextIndex(final int index) {
+		return MAIN_CONTEXT_INDEX;
+	}
+
+	protected int getAddContextIndex(final int index) {
+		return ADD_CONTEXT_INDEX;
+	}
+
+	protected int getFilterIndex(final int index) {
+		return FILTER_INDEX;
+	}
+
+	protected int getSessionContextIndex(final int index) {
+		return SESSION_CONTEXT_INDEX;
+	}
+
+	protected int getErrorMesIndex(final int index) {
+		return ERROR_MES_INDEX;
 	}
 }

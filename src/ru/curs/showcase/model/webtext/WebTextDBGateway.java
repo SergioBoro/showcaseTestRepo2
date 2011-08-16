@@ -11,8 +11,9 @@ import ru.curs.showcase.model.*;
  * 
  */
 public class WebTextDBGateway extends HTMLBasedSPCallHelper implements WebTextGateway {
-	private static final String OUTPUT_COLUMNNAME = "webtextsettings";
-	private static final String DATA_COLUMNNAME = "webtextdata";
+
+	private static final int DATA_INDEX = 6;
+	private static final int OUTPUT_INDEX = 7;
 
 	@Override
 	public HTMLBasedElementRawData getRawData(final CompositeContext context,
@@ -22,12 +23,12 @@ public class WebTextDBGateway extends HTMLBasedSPCallHelper implements WebTextGa
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "{call [dbo].[%s](?, ?, ?, ?, ?, ?, ?)}";
+		return "{call %s(?, ?, ?, ?, ?, ?, ?)}";
 	}
 
 	@Override
-	public String getOutSettingsParam() {
-		return OUTPUT_COLUMNNAME;
+	public int getOutSettingsParam() {
+		return OUTPUT_INDEX;
 	}
 
 	@Override
@@ -36,7 +37,7 @@ public class WebTextDBGateway extends HTMLBasedSPCallHelper implements WebTextGa
 	}
 
 	@Override
-	public String getDataParam() {
-		return DATA_COLUMNNAME;
+	public int getDataParam(final int index) {
+		return DATA_INDEX;
 	}
 }
