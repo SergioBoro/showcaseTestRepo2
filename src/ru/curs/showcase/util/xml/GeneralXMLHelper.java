@@ -67,8 +67,6 @@ public abstract class GeneralXMLHelper {
 
 	protected static final String REFRESH_TAG = "refresh";
 
-	protected static final String STYLE_CLASS_TAG = "styleClass";
-
 	/**
 	 * Имя атрибута с идентификатором ссылки, уникальным в пределах элемента.
 	 */
@@ -109,6 +107,7 @@ public abstract class GeneralXMLHelper {
 	 * Имя колонки или строки с XML документом, содержащим обработчики.
 	 */
 	protected static final String PROPERTIES_SQL_TAG = "~~" + PROPS_TAG;
+	protected static final String ID_SQL_TAG = "~~" + ID_TAG;
 
 	/**
 	 * Установка базовых свойств - id и name - у элемента.

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>
+	<tab id="01" name="get tab elements state">
+		<element id="0101" type="xforms" template="Showcase_Template.xml"
+			proc="xforms_proc_dep">
+			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
+			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
+		</element>
+		<element id="d01" type="webtext" proc="webtext_filter_and_add"
+			hideOnLoad="true" />
+		<element id="d03" type="webtext" proc="webtext_dep62" >	
+			<related id="d01"/>
+			<related id="d02"/>							
+		</element>
+		<element id ="d02" type="grid" proc="grid_cities_data" hideOnLoad="true">
+			<proc id="d201" name="grid_cities_metadata" type="METADATA"/>
+		</element>	
+	</tab>		
+	<tab id="02" name="задание css и id для строки грида">
+		<element id="0201" type="grid" proc="grid_portals_id_and_css"/>
+		<element id="0203" type="webtext" proc="webtext_dep62" >	
+			<related id="0201"/>					
+		</element>		
+	</tab>			
+</datapanel>

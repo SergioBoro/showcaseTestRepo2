@@ -89,4 +89,18 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		assertNull(link.getElementLinks().get(0).getContext().getSession());
 		assertEquals("(1=1)", link.getElementLinks().get(0).getContext().getAdditional());
 	}
+
+	@Test
+	public void testFromDB() {
+		NavigatorSelector selector = new NavigatorSelector();
+		NavigatorGateway gw = selector.getGateway();
+		CompositeContext context = new CompositeContext();
+		try {
+			InputStream xml = gw.getRawData(context, selector.getSourceName());
+			NavigatorFactory factory = new NavigatorFactory(context);
+			factory.fromStream(xml);
+		} finally {
+			gw.releaseResources();
+		}
+	}
 }

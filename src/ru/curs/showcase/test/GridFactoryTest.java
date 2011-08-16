@@ -1,13 +1,18 @@
 package ru.curs.showcase.test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.beta2.extra.gwt.ui.GeneralConstants;
+import ru.curs.gwt.datagrid.model.Record;
+import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.event.InteractionType;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.grid.*;
+
+import com.google.gwt.dom.client.Style.Unit;
 
 /**
  * Тестовый класс для фабрики гридов.
@@ -41,7 +46,7 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 		Boolean defSelectRecord =
 			gp.stdReadBoolGridValue(DefaultGridUIStyle.DEF_SELECT_WHOLE_RECORD);
 		assertEquals(defSelectRecord, grid.getUISettings().isSelectOnlyRecords());
-		final int fontWidth = 27;
+		final String fontWidth = "27";
 		assertEquals(fontWidth, grid.getDataSet().getRecordSet().getRecords().get(0).getFontSize());
 	}
 
@@ -56,5 +61,61 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 				+ "image=\"xxx.jpg\"  text=\"&lt;&quot; &lt;&gt; &gt; a&apos;&quot;\"  />",
 				GridDBFactory.makeSafeXMLAttrValues("<link href=\"ya.ru?search=aa&amp;bla&ab\" "
 						+ "image=\"xxx.jpg\"  text=\"<&quot; &lt;&gt; > a'\"\"  />"));
+	}
+
+	@Test
+	public void testLoadIDAndCSS() throws Exception {
+		GridContext context = new GridContext(getTestContext1());
+		context.setIsFirstLoad(true);
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);
+		elInfo.setProcName("grid_portals_id_and_css");
+		generateTestTabWithElement(elInfo);
+
+		GridGateway gateway = new GridDBGateway();
+		ElementRawData raw = gateway.getRawDataAndSettings(context, elInfo);
+		GridDBFactory factory = new GridDBFactory(raw);
+		Grid grid = factory.build();
+
+		assertNotNull(grid.getAutoSelectRecord());
+		final String recId = "77F60A7C-42EB-4E32-B23D-F179E58FB138";
+		assertEquals(recId, grid.getAutoSelectRecord().getId());
+		assertNotNull(grid.getEventManager().getEventForCell(recId, "URL",
+				InteractionType.SINGLE_CLICK));
+		assertEquals("grid-record-bold grid-record-italic", grid.getDataSet().getRecordSet()
+				.getRecords().get(0).getAttributes().getValue(GeneralConstants.STYLE_CLASS_TAG));
+	}
+
+	@Test(expected = StringIndexOutOfBoundsException.class)
+	public void testFontSizeDetermine() {
+		Record rec = new Record();
+
+		final String fontSize = "1.1";
+		rec.setFontSize(fontSize);
+		final double accuracy = 0.01;
+		assertEquals(Double.parseDouble(fontSize), rec.getFontSizeValue(), accuracy);
+		assertEquals(Unit.EM, rec.getFontSizeUnit());
+
+		rec.setFontSize("1.1em");
+		assertEquals(Double.parseDouble(fontSize), rec.getFontSizeValue(), accuracy);
+		assertEquals(Unit.EM, rec.getFontSizeUnit());
+
+		rec.setFontSize("12px");
+		final int fonSize2 = 12;
+		assertEquals(fonSize2, rec.getFontSizeValue(), accuracy);
+		assertEquals(Unit.PX, rec.getFontSizeUnit());
+
+		rec.setFontSize("120%");
+		final int fonSize3 = 120;
+		assertEquals(fonSize3, rec.getFontSizeValue(), accuracy);
+		assertEquals(Unit.PCT, rec.getFontSizeUnit());
+
+		try {
+			rec.setFontSize("%");
+			rec.getFontSizeValue();
+		} catch (Exception e) {
+			rec.setFontSize("");
+			rec.getFontSizeValue();
+		}
+		fail();
 	}
 }

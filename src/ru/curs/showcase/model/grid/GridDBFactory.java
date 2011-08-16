@@ -2,17 +2,21 @@ package ru.curs.showcase.model.grid;
 
 import java.sql.*;
 import java.text.*;
-import java.util.Locale;
+import java.util.*;
 import java.util.regex.*;
 
 import javax.sql.RowSet;
 
+import org.xml.sax.Attributes;
+
+import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.EventFactory;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.SQLUtils;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Фабрика для создания гридов получающая на вход сырые исходные данные из БД.
@@ -21,6 +25,8 @@ import ru.curs.showcase.util.SQLUtils;
  * 
  */
 public class GridDBFactory extends AbstractGridFactory {
+	private static final String UNIQUE_CHECK_ERROR =
+		"В отображаемом наборе присутствуют записи с неуникальным id";
 	private static final String DEF_DATE_VALUES_FORMAT = "def.date.values.format";
 	/**
 	 * Не локальная Locale по умолчанию :) Используется для передачи данных в
@@ -82,37 +88,52 @@ public class GridDBFactory extends AbstractGridFactory {
 	protected void fillRecordsAndEvents() {
 		try {
 			scrollToRequiredPage();
-			readRecordsLoop();
+			readRecords();
+			checkRecordIdUniqueness();
 			calcRecordsCount();
 		} catch (Exception e) {
 			throw new ResultSetHandleException(e);
 		}
 	}
 
-	private void readRecordsLoop() throws SQLException {
+	private void checkRecordIdUniqueness() {
+		List<String> ids = new ArrayList<String>();
+		for (Record rec : getRecordSet().getRecords()) {
+			if (ids.indexOf(rec.getId()) > -1) {
+				throw new ResultSetHandleException(UNIQUE_CHECK_ERROR, getCallContext(),
+						getElementInfo());
+			}
+		}
+
+	}
+
+	private void readRecords() throws SQLException {
 		ColumnSet cs = getResult().getDataSet().getColumnSet();
 		int counter = getRecordSet().getPageInfo().getFirstRecord();
 		int lastNumber = counter + getRecordSet().getPageSize();
-		while (rowset.next() && (counter < lastNumber)) {
+		for (; rowset.next() && (counter < lastNumber); counter++) {
 			Record curRecord = new Record();
-			curRecord.setId(String.valueOf(counter++));
+			if (SQLUtils.existsColumn(rowset.getMetaData(), ID_SQL_TAG)) {
+				curRecord.setId(rowset.getString(ID_SQL_TAG));
+			} else {
+				curRecord.setId(String.valueOf(counter));
+			}
+			curRecord.setIndex(counter);
 			setupStdRecordProps(curRecord);
 
 			String value = null;
 			for (Column col : cs.getColumns()) {
-				if (col.getValueType() == GridValueType.IMAGE) {
+				if (rowset.getObject(col.getId()) == null) {
+					value = "";
+				} else if (col.getValueType() == GridValueType.IMAGE) {
 					value =
 						String.format("%s/%s",
 								AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR),
 								rowset.getString(col.getId()));
 				} else if (col.getValueType() == GridValueType.LINK) {
 					value = rowset.getString(col.getId());
-					if (value != null) {
-						value = AppProps.replaceVariables(value);
-						value = makeSafeXMLAttrValues(value);
-					}
-				} else if (rowset.getObject(col.getId()) == null) {
-					value = "";
+					value = AppProps.replaceVariables(value);
+					value = makeSafeXMLAttrValues(value);
 				} else if (col.getValueType().isDate()) {
 					value = getStringValueOfDate(col);
 				} else if (col.getValueType().isNumber()) {
@@ -120,11 +141,12 @@ public class GridDBFactory extends AbstractGridFactory {
 				} else {
 					value = rowset.getString(col.getId());
 				}
+
 				curRecord.setValue(col.getId(), value);
 			}
 			getRecordSet().getRecords().add(curRecord);
 			if (SQLUtils.existsColumn(rowset.getMetaData(), PROPERTIES_SQL_TAG)) {
-				readEvents(curRecord.getId(), rowset.getString(PROPERTIES_SQL_TAG));
+				readEvents(curRecord, rowset.getString(PROPERTIES_SQL_TAG));
 			}
 		}
 	}
@@ -162,13 +184,44 @@ public class GridDBFactory extends AbstractGridFactory {
 		return res;
 	}
 
-	private void readEvents(final String curRecordId, final String data) {
+	/**
+	 * Считывает события для записи и ее ячеек, а также доп. параметры записи.
+	 * Один из таких параметров - стиль CSS. Есть возможность задать несколько
+	 * стилей для каждой записи.
+	 */
+	private void readEvents(final Record record, final String data) {
 		EventFactory<GridEvent> factory =
 			new EventFactory<GridEvent>(GridEvent.class, getCallContext());
 		factory.initForGetSubSetOfEvents(EVENT_COLUMN_TAG, CELL_PREFIX, getElementInfo().getType()
 				.getPropsSchemaName());
+		SAXTagHandler recPropHandler = new StartTagSAXHandler() {
+			@Override
+			public Object handleStartTag(final String aNamespaceURI, final String aLname,
+					final String aQname, final Attributes attrs) {
+				String value;
+				if (record.getAttributes().getValue(GeneralConstants.STYLE_CLASS_TAG) == null) {
+					initRecAttrs(record);
+					value = attrs.getValue(NAME_TAG);
+				} else {
+					value =
+						record.getAttributes().getValue(GeneralConstants.STYLE_CLASS_TAG) + " "
+								+ attrs.getValue(NAME_TAG);
+				}
+
+				record.getAttributes().setValue(GeneralConstants.STYLE_CLASS_TAG, value);
+				return null;
+			}
+
+			@Override
+			protected String[] getStartTags() {
+				String[] tags = { GeneralConstants.STYLE_CLASS_TAG };
+				return tags;
+			}
+
+		};
+		factory.addHandler(recPropHandler);
 		getResult().getEventManager().getEvents()
-				.addAll(factory.getSubSetOfEvents(curRecordId, data));
+				.addAll(factory.getSubSetOfEvents(record.getId(), data));
 	}
 
 	private String getStringValueOfNumber(final Column col) throws SQLException {
@@ -257,7 +310,7 @@ public class GridDBFactory extends AbstractGridFactory {
 		try {
 			md = rowset.getMetaData();
 			for (int i = 1; i <= md.getColumnCount(); i++) {
-				if (md.getColumnLabel(i).equals(PROPERTIES_SQL_TAG)) {
+				if (isServiceColumn(md.getColumnLabel(i))) {
 					continue;
 				}
 				String colId = md.getColumnLabel(i);
@@ -274,6 +327,11 @@ public class GridDBFactory extends AbstractGridFactory {
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
 		}
+	}
+
+	private boolean isServiceColumn(final String aColumnLabel) {
+		return PROPERTIES_SQL_TAG.equalsIgnoreCase(aColumnLabel)
+				|| ID_SQL_TAG.equalsIgnoreCase(aColumnLabel);
 	}
 
 	private void determineValueType(final Column column, final int sqlType) {

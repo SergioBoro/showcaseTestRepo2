@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.grid;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import org.xml.sax.Attributes;
 
@@ -182,9 +182,9 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		if (value != null) {
 			curRecord.setBackgroundColor(value);
 		}
-		Integer intValue = gridProps.stdReadIntGridValue(DEF_VAL_FONT_SIZE);
-		if (intValue != null) {
-			curRecord.setFontSize(intValue.byteValue());
+		value = gridProps.getValueByNameForGrid(DEF_VAL_FONT_SIZE);
+		if (value != null) {
+			curRecord.setFontSize(value);
 		}
 		boolValue = gridProps.isTrueGridValue(DEF_VAL_FONT_BOLD);
 		if (boolValue) {
@@ -356,13 +356,12 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	}
 
 	protected void calcAutoSelectRecordId() {
-		Integer recId = serverState().getAutoSelectRecordId();
-
-		autoSelectRecordId = recId;
-		if ((recId != null) && serverState().getAutoSelectRelativeRecord()) {
-			checkAutoSelectRecordRangeOfBounds(recId);
+		autoSelectRecordId = serverState().getAutoSelectRecordId();
+		if ((autoSelectRecordId != null) && serverState().getAutoSelectRelativeRecord()) {
+			checkAutoSelectRecordRangeOfBounds(autoSelectRecordId);
 			autoSelectRecordId =
-				recId + getRecordSet().getPageSize() * (getRecordSet().getPageNumber() - 1);
+				autoSelectRecordId + getRecordSet().getPageSize()
+						* (getRecordSet().getPageNumber() - 1);
 		}
 	}
 
@@ -398,7 +397,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 			return;
 		}
 		for (Record current : getRecordSet().getRecords()) {
-			if (current.getId().equals(autoSelectRecordId.toString())) {
+			if (current.getIndex().equals(autoSelectRecordId)) {
 				getResult().setAutoSelectRecord(current);
 			}
 		}
@@ -440,6 +439,13 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 
 	protected GridProps getGridProps() {
 		return gridProps;
+	}
+
+	protected void initRecAttrs(final Record record) {
+		ru.curs.gwt.datagrid.model.Attributes recAttrs =
+			new ru.curs.gwt.datagrid.model.Attributes();
+		recAttrs.setValues(new HashMap<String, String>());
+		record.setAttributes(recAttrs);
 	}
 
 }

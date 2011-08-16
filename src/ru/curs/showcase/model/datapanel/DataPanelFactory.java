@@ -7,6 +7,7 @@ import javax.xml.parsers.SAXParser;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
+import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
@@ -67,8 +68,8 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		DataPanelElementInfo el = new DataPanelElementInfo(elCounter++, currentTab);
 		el.setId(attrs.getValue(ID_TAG));
 		el.setType(DataPanelElementType.valueOf(attrs.getValue(TYPE_TAG).toUpperCase()));
-		if (attrs.getIndex(STYLE_CLASS_TAG) > -1) {
-			el.setStyleClass(attrs.getValue(STYLE_CLASS_TAG));
+		if (attrs.getIndex(GeneralConstants.STYLE_CLASS_TAG) > -1) {
+			el.setStyleClass(attrs.getValue(GeneralConstants.STYLE_CLASS_TAG));
 		}
 		if (attrs.getIndex(PROC_ATTR_NAME) > -1) {
 			el.setProcName(attrs.getValue(PROC_ATTR_NAME));

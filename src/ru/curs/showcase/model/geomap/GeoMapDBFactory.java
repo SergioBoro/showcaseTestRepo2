@@ -4,6 +4,7 @@ import java.sql.*;
 
 import javax.sql.RowSet;
 
+import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.EventFactory;
@@ -98,8 +99,9 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 				area.setStyle(areasSql.getString(TextUtils.capitalizeWord(COLOR_TAG)));
 			}
 			if (SQLUtils.existsColumn(areasSql.getMetaData(),
-					TextUtils.capitalizeWord(STYLE_CLASS_TAG))) {
-				area.setStyleClass(areasSql.getString(TextUtils.capitalizeWord(STYLE_CLASS_TAG)));
+					TextUtils.capitalizeWord(GeneralConstants.STYLE_CLASS_TAG))) {
+				area.setStyleClass(areasSql.getString(TextUtils
+						.capitalizeWord(GeneralConstants.STYLE_CLASS_TAG)));
 			}
 			if (SQLUtils.existsColumn(areasSql.getMetaData(), TOOLTIP_COL)) {
 				String value = areasSql.getString(TOOLTIP_COL);
@@ -136,8 +138,9 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 				}
 			}
 			if (SQLUtils.existsColumn(pointsSql.getMetaData(),
-					TextUtils.capitalizeWord(STYLE_CLASS_TAG))) {
-				point.setStyleClass(pointsSql.getString(TextUtils.capitalizeWord(STYLE_CLASS_TAG)));
+					TextUtils.capitalizeWord(GeneralConstants.STYLE_CLASS_TAG))) {
+				point.setStyleClass(pointsSql.getString(TextUtils
+						.capitalizeWord(GeneralConstants.STYLE_CLASS_TAG)));
 			}
 			if (SQLUtils.existsColumn(pointsSql.getMetaData(), PROPERTIES_SQL_TAG)) {
 				readEvents(point.getId(), pointsSql.getString(PROPERTIES_SQL_TAG));

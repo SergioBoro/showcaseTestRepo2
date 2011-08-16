@@ -252,8 +252,14 @@
     empty-cells: show;
 }
 
+.grid-record-bold {
+	font-weight: bold ;
+}
+.grid-record-italic {
+	font-style: italic;
 
 /*.webmain-DataGrid .columnGap {*/
     /*width: 5px !important;*/
 /*}*/
+
 
