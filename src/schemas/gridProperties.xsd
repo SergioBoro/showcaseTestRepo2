@@ -5,14 +5,15 @@
     <xs:element name="properties">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="event" maxOccurs="unbounded" minOccurs="0"/>
+				<xs:element ref="styleClass" minOccurs="0" maxOccurs="unbounded"/>            
+                <xs:element ref="event" minOccurs="0" maxOccurs="unbounded"/>                
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="color">
+    <xs:element name="styleClass">
         <xs:complexType>
-            <xs:attribute name="value" type="colorType" use="required"/>
+            <xs:attribute name="name" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
 
