@@ -44,7 +44,6 @@ public final class DownloadHandler extends AbstractDownloadHandler {
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
 		super.getParams();
 		linkId = decodeParamValue(getRequest().getParameter("linkId"));
-		getContext().setFormData(decodeParamValue(getContext().getFormData()));
 	}
 
 	public String getLinkId() {

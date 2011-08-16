@@ -103,12 +103,7 @@ public final class XFormPanelCallbacksEvents {
 			final Action ac) {
 		UploadHelper uh = currentXFormPanel.getUw().getUploadHelper();
 		try {
-			String encodedData = null;
-			if (data != null) {
-				encodedData = URL.encode(data);
-			}
-			XFormsContext xcontext =
-				new XFormsContext(currentXFormPanel.getContext(), encodedData);
+			XFormsContext xcontext = new XFormsContext(currentXFormPanel.getContext(), data);
 			uh.addStdPostParamsToBody(xcontext, currentXFormPanel.getElementInfo());
 		} catch (SerializationException e) {
 			MessageBox.showSimpleMessage(Constants.XFORMS_UPLOAD_ERROR, e.getMessage());
@@ -322,8 +317,7 @@ public final class XFormPanelCallbacksEvents {
 
 			try {
 				dh.addParam("linkId", URL.encode(linkId));
-				dh.addStdPostParamsToBody(
-						new XFormsContext(currentXFormPanel.getContext(), URL.encode(data)),
+				dh.addStdPostParamsToBody(new XFormsContext(currentXFormPanel.getContext(), data),
 						currentXFormPanel.getElementInfo());
 				dh.submit();
 			} catch (Exception e) {

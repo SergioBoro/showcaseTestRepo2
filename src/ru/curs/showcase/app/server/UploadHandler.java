@@ -58,7 +58,6 @@ public final class UploadHandler extends AbstractFilesHandler {
 				String paramValue = decodeParamValue(out.toString());
 				if (XFormsContext.class.getName().equals(name)) {
 					setContext((XFormsContext) deserializeObject(paramValue));
-					getContext().setFormData(decodeParamValue(getContext().getFormData()));
 				} else if (DataPanelElementInfo.class.getName().equals(name)) {
 					setElementInfo((DataPanelElementInfo) deserializeObject(paramValue));
 				}
