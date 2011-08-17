@@ -1,6 +1,7 @@
-package ru.curs.showcase.util;
+package ru.curs.showcase.runtime;
 
 import ru.curs.showcase.app.api.ExceptionType;
+import ru.curs.showcase.util.BaseException;
 
 /**
  * Ошибка соединения с БД.

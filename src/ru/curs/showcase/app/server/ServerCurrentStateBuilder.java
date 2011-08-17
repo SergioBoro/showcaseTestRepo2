@@ -2,6 +2,7 @@ package ru.curs.showcase.app.server;
 
 import java.io.*;
 import java.sql.*;
+import java.util.regex.*;
 
 import ru.curs.showcase.app.api.ServerCurrentState;
 import ru.curs.showcase.runtime.*;
@@ -47,7 +48,11 @@ public final class ServerCurrentStateBuilder {
 	}
 
 	private static String getAppVersion() throws IOException {
-		InputStream is = AppProps.loadResToStream(VERSION_FILE);
+		return getAppVersion("");
+	}
+
+	public static String getAppVersion(final String baseDir) throws IOException {
+		InputStream is = AppProps.loadResToStream(baseDir + VERSION_FILE);
 		BufferedReader buf = new BufferedReader(new InputStreamReader(is));
 		String major;
 		try {
@@ -56,12 +61,15 @@ public final class ServerCurrentStateBuilder {
 			buf.close();
 		}
 
-		is = AppProps.loadResToStream(BUILD_FILE);
+		is = AppProps.loadResToStream(baseDir + BUILD_FILE);
 		buf = new BufferedReader(new InputStreamReader(is));
 		String build;
 		try {
-
 			build = buf.readLine();
+			Pattern pattern = Pattern.compile("(\\d+|development)");
+			Matcher matcher = pattern.matcher(build);
+			matcher.find();
+			build = matcher.group();
 		} finally {
 			buf.close();
 		}
@@ -79,10 +87,10 @@ public final class ServerCurrentStateBuilder {
 		try {
 			sql = TextUtils.streamToString(AppProps.loadResToStream(fileName));
 		} catch (IOException e) {
-			throw new SettingsFileOpenException(e, fileName, SettingsFileType.SCRIPT);
+			throw new SettingsFileOpenException(e, fileName, SettingsFileType.SQLSCRIPT);
 		}
 		if (sql.trim().isEmpty()) {
-			throw new SettingsFileOpenException(fileName, SettingsFileType.SCRIPT);
+			throw new SettingsFileOpenException(fileName, SettingsFileType.SQLSCRIPT);
 		}
 
 		PreparedStatement stat = conn.prepareStatement(sql);

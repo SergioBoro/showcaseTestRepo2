@@ -79,9 +79,13 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 		ServerCurrentState state = ServerCurrentStateBuilder.build("fake");
 		assertNotNull(state);
 		assertNotNull(state.getAppVersion());
+		assertTrue(state.getAppVersion().endsWith("development"));
 		assertNotNull(state.getJavaVersion());
 		assertNotNull(state.getServerTime());
 		assertNotNull(state.getSqlVersion());
+
+		assertEquals("10.0.0.9999",
+				ServerCurrentStateBuilder.getAppVersion("ru/curs/showcase/test/"));
 	}
 
 	/**
