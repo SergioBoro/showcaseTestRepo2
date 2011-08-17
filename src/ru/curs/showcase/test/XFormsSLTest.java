@@ -80,7 +80,8 @@ public class XFormsSLTest extends AbstractTest {
 		String content = null;
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		String res = sl.handleSQLSubmission(XFORMS_SUBMISSION1, content, null);
-		assertEquals(content, res);
+		// assertEquals(content, res);
+		assertEquals("", res);
 	}
 
 	/**
