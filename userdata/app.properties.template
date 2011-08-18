@@ -5,7 +5,7 @@ local.security.authserverurl = http://localhost:8180/AuthServer
 rdbms.connection.url = jdbc:sqlserver://CASTLE\\R2;databasename=CARTRADE
 rdbms.connection.username = sa
 rdbms.connection.password = F708420Dx
-navigator.proc.name = generationtree
+navigator.proc.name = generationtree.xml
 welcome.source = welcome.jsp
 header.source = header_proc
 footer.source = footer_proc
