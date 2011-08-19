@@ -352,36 +352,7 @@ public class GridSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testErrorByReturnCode1ForUpdateCase() {
-		GridContext gc = new GridContext(getTestContext1());
-		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "09", "0901");
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		try {
-			serviceLayer.getGrid(gc, elInfo);
-		} catch (GeneralException e) {
-			assertEquals(ValidateInDBException.class, e.getCause().getClass());
-			assertEquals(NO_DATA_ERROR, ((ValidateInDBException) e.getCause()).getUserMessage()
-					.getText());
-		}
-	}
-
-	@Test
 	public void testErrorByReturnCode2() {
-		GridContext context = getTestGridContext1();
-		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "09", "0902");
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		try {
-			serviceLayer.getGrid(context, elInfo);
-		} catch (GeneralException e) {
-			assertEquals(ValidateInDBException.class, e.getCause().getClass());
-			ValidateInDBException vid = (ValidateInDBException) e.getCause();
-			assertEquals(NO_DATA_ERROR, vid.getUserMessage().getText());
-			assertEquals("1", vid.getUserMessage().getId());
-		}
-	}
-
-	@Test
-	public void testErrorByReturnCode3() {
 		GridContext context = getTestGridContext1();
 		DataPanelElementInfo elInfo = getDPElement(TEST1_1_XML, "09", "0903");
 		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);

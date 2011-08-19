@@ -7,11 +7,8 @@
 		<element id="0402" type="grid" proc="grid_cities_one"/>
 	</tab>
 	<tab id="05" name="2 процедуры - код возврата">
-		<element id ="0501" type="grid" proc="grid_cities_data_ec">
+		<element id ="0501" type="grid" proc="grid_cities_data">
 			<proc id="050101" name="grid_cities_metadata_ec" type="METADATA"/>
-		</element>
-		<element id ="0502" type="grid" proc="grid_cities_data_ec">
-			<proc id="050301" name="grid_cities_metadata" type="METADATA"/>
 		</element>		
 		<element id="0503" type="grid" proc="grid_cities_one_ec"/>
 	</tab>	

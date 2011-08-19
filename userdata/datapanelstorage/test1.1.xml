@@ -54,11 +54,8 @@
 		</element>
 	</tab>
 	<tab id="09" name="Ошибки return code">
-		<element id="0901" type="grid" proc="grid_cities_data_ec">
+		<element id="0901" type="grid" proc="grid_cities_data">
 			<proc id="090101" name="grid_cities_metadata_ec" type="METADATA" />
-		</element>
-		<element id="0902" type="grid" proc="grid_cities_data_ec">
-			<proc id="090201" name="grid_cities_metadata" type="METADATA" />
 		</element>
 		<element id="0903" type="grid" proc="grid_cities_one_ec" />
 	</tab>

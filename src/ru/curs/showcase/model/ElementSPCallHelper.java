@@ -37,7 +37,7 @@ public abstract class ElementSPCallHelper extends SPCallHelper {
 	 * 
 	 * @throws SQLException
 	 */
-	private void setupGeneralElementParameters() throws SQLException {
+	protected void setupGeneralElementParameters() throws SQLException {
 		setupGeneralParameters();
 
 		getStatement().setString(getElementIdIndex(getTemplateIndex()), elementInfo.getId());

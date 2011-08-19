@@ -221,10 +221,18 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	}
 
 	/**
-	 * Функция проверки кода ошибки, который вернула процедура.
+	 * Функция проверки кода ошибки, который вернула процедура. Проверка
+	 * происходит только в том случае, если первым параметром функции является
+	 * код возврата.
 	 */
 	public void checkErrorCode() throws SQLException {
-		int errorCode = getStatement().getInt(1);
+		int errorCode;
+		try {
+			errorCode = getStatement().getInt(1);
+		} catch (Exception e) {
+			// проверка через metadata почему-то глючит с MSSQL JDBC драйвером
+			return;
+		}
 		if (errorCode != 0) {
 			String errMess = getStatement().getString(getErrorMesIndex(templateIndex));
 			throw new ValidateInDBException(errorCode, errMess);
