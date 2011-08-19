@@ -7,6 +7,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormsContext;
 import ru.curs.showcase.model.*;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 
 /**
@@ -157,13 +158,12 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 				prepareElementStatementWithErrorMes();
 				setSQLXMLParamByString(getDataParam(FILE_TEMPLATE_IND), context.getFormData());
 				getStatement().registerOutParameter(FILENAME_INDEX, java.sql.Types.VARCHAR);
-				getStatement().registerOutParameter(FILE_INDEX, java.sql.Types.BLOB);
+				getStatement().registerOutParameter(FILE_INDEX, getBinarySQLType());
 				getStatement().execute();
 				checkErrorCode();
 
 				String fileName = getStatement().getString(FILENAME_INDEX);
-				Blob blob = getStatement().getBlob(FILE_INDEX);
-				InputStream blobIs = blob.getBinaryStream();
+				InputStream blobIs = getBinaryStream(FILE_INDEX);
 				StreamConvertor dup = new StreamConvertor(blobIs);
 				ByteArrayOutputStream os = dup.getOutputStream();
 				result = new DataFile<ByteArrayOutputStream>(os, fileName);
@@ -194,11 +194,13 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 				prepareElementStatementWithErrorMes();
 				setSQLXMLParamByString(getDataParam(FILE_TEMPLATE_IND), context.getFormData());
 				getStatement().setString(FILENAME_INDEX, file.getName());
-				getStatement().setBinaryStream(FILE_INDEX, file.getData());
+				setBinaryStream(FILE_INDEX, file.getData());
 				getStatement().execute();
 				checkErrorCode();
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
+			} catch (IOException e2) {
+				throw new CreateObjectError(e2);
 			}
 		} finally {
 			releaseResources();
@@ -264,6 +266,35 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 			return ERROR_MES_INDEX_FILE;
 		default:
 			return -1;
+		}
+	}
+
+	private int getBinarySQLType() {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return java.sql.Types.BLOB;
+		} else {
+			return java.sql.Types.BINARY;
+		}
+	}
+
+	private InputStream getBinaryStream(final int parameterIndex) throws SQLException {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			Blob blob = getStatement().getBlob(parameterIndex);
+			return blob.getBinaryStream();
+		} else {
+			byte[] bt = getStatement().getBytes(parameterIndex);
+			return new ByteArrayInputStream(bt);
+		}
+	}
+
+	private void setBinaryStream(final int parameterIndex, final InputStream is)
+			throws SQLException, IOException {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			getStatement().setBinaryStream(parameterIndex, is);
+		} else {
+			StreamConvertor dup = new StreamConvertor(is);
+			ByteArrayOutputStream os = dup.getOutputStream();
+			getStatement().setBytes(parameterIndex, os.toByteArray());
 		}
 	}
 
