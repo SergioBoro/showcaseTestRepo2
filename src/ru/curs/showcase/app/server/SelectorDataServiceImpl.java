@@ -101,54 +101,27 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 				cs.close();
 
 				// ЭТАП 2. Возврат записей.
-				stmt = String.format("{call %s(?,?,?,?,?)}", procList);
+				if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+					conn.setAutoCommit(false);
+				}
+				stmt = String.format(getSqlTemplate(), procList);
 				cs = conn.prepareCall(stmt);
+
+				if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+					cs.registerOutParameter(NUM1, Types.OTHER);
+				}
+				cs.setString(getParamsIndex(), req.getParams());
+				cs.setString(getCurValueIndex(), req.getCurValue());
+				cs.setBoolean(getIsStartsWithIndex(), req.isStartsWith());
+				cs.setInt(getFirstRecordIndex(), req.getFirstRecord());
+				cs.setInt(getRecordCountIndex(), req.getRecordCount());
+
+				ResultSet rs = getResultSet(cs);
 
 				// Мы заранее примерно знаем размер, так что используем
 				// ArrayList.
-				List<DataRecord> l;
-
-				cs.setString(NUM1, req.getParams());
-				cs.setString(NUM2, req.getCurValue());
-				cs.setBoolean(NUM3, req.isStartsWith());
-				cs.setInt(NUM4, req.getFirstRecord());
-				cs.setInt(NUM5, req.getRecordCount());
-				ResultSet rs = cs.executeQuery();
-				ResultSetMetaData m = rs.getMetaData();
-				l = new ArrayList<DataRecord>(req.getRecordCount());
-				int aliasId = -1;
-				int aliasName = -1;
-				for (int i = NUM1; i <= m.getColumnCount(); i++) {
-					if (COLUMN_ID.equalsIgnoreCase(m.getColumnName(i))) {
-						aliasId = i;
-					}
-					if (COLUMN_NAME.equalsIgnoreCase(m.getColumnName(i))) {
-						aliasName = i;
-					}
-				}
-				if ((aliasId == -1) || (aliasName == -1)) {
-					while (rs.next()) {
-						DataRecord r = new DataRecord();
-						r.setId(rs.getString(1));
-						r.setName(rs.getString(2));
-						for (int i = NUM3; i <= m.getColumnCount(); i++) {
-							r.addParameter(m.getColumnName(i), rs.getString(i));
-						}
-						l.add(r);
-					}
-				} else {
-					while (rs.next()) {
-						DataRecord r = new DataRecord();
-						r.setId(rs.getString(aliasId));
-						r.setName(rs.getString(aliasName));
-						for (int i = NUM1; i <= m.getColumnCount(); i++) {
-							if ((i != aliasId) && (i != aliasName)) {
-								r.addParameter(m.getColumnName(i), rs.getString(i));
-							}
-						}
-						l.add(r);
-					}
-				}
+				ArrayList<DataRecord> l = new ArrayList<DataRecord>(req.getRecordCount());
+				fillArrayListOfDataRecord(rs, l);
 				ds.setRecords(l);
 			} finally {
 				cs.close();
@@ -181,4 +154,92 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
 		context.getSessionParamsMap().clear();
 	}
+
+	private String getSqlTemplate() {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return "{call %s(?,?,?,?,?)}";
+		} else {
+			return "{? = call %s(?,?,?,?,?)}";
+		}
+	}
+
+	private ResultSet getResultSet(final CallableStatement cs) throws SQLException {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return cs.executeQuery();
+		} else {
+			cs.execute();
+			return (ResultSet) cs.getObject(NUM1);
+		}
+	}
+
+	private void fillArrayListOfDataRecord(final ResultSet rs, final ArrayList<DataRecord> l)
+			throws SQLException {
+		ResultSetMetaData m = rs.getMetaData();
+		int aliasId = -1;
+		int aliasName = -1;
+		for (int i = NUM1; i <= m.getColumnCount(); i++) {
+			if (COLUMN_ID.equalsIgnoreCase(m.getColumnName(i))) {
+				aliasId = i;
+			}
+			if (COLUMN_NAME.equalsIgnoreCase(m.getColumnName(i))) {
+				aliasName = i;
+			}
+		}
+		if ((aliasId == -1) || (aliasName == -1)) {
+			aliasId = 1;
+			aliasName = 2;
+		}
+		while (rs.next()) {
+			DataRecord r = new DataRecord();
+			r.setId(rs.getString(aliasId));
+			r.setName(rs.getString(aliasName));
+			for (int i = NUM1; i <= m.getColumnCount(); i++) {
+				if ((i != aliasId) && (i != aliasName)) {
+					r.addParameter(m.getColumnName(i), rs.getString(i));
+				}
+			}
+			l.add(r);
+		}
+	}
+
+	private int getParamsIndex() {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return NUM1;
+		} else {
+			return NUM1 + 1;
+		}
+	}
+
+	private int getCurValueIndex() {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return NUM2;
+		} else {
+			return NUM2 + 1;
+		}
+	}
+
+	private int getIsStartsWithIndex() {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return NUM3;
+		} else {
+			return NUM3 + 1;
+		}
+	}
+
+	private int getFirstRecordIndex() {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return NUM4;
+		} else {
+			return NUM4 + 1;
+		}
+	}
+
+	private int getRecordCountIndex() {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return NUM5;
+		} else {
+			return NUM5 + 1;
+		}
+	}
+
 }
