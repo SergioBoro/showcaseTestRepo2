@@ -6,6 +6,7 @@ import ru.curs.gwt.datagrid.model.Column;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.model.*;
+import ru.curs.showcase.runtime.*;
 
 /**
  * Шлюз к БД для грида.
@@ -55,14 +56,6 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 		}
 	}
 
-	private int getSortColumnsIndex(final int queryType) {
-		if (queryType == DATA_ONLY_QUERY) {
-			return SORTCOLS_INDEX - 1;
-		} else {
-			return SORTCOLS_INDEX;
-		}
-	}
-
 	@Override
 	public ElementRawData getRawDataAndSettings(final GridContext context,
 			final DataPanelElementInfo elementInfo) {
@@ -93,7 +86,11 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 		case DATA_AND_SETTINS_QUERY:
 			return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?)}";
 		case DATA_ONLY_QUERY:
-			return "{call %s(?, ?, ?, ?, ?, ?, ?, ?)}";
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+				return "{call %s(?, ?, ?, ?, ?, ?, ?, ?)}";
+			} else {
+				return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?)}";
+			}
 		default:
 			return null;
 		}
@@ -114,9 +111,14 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 
 			prepareSQL();
 			setupGeneralElementParameters();
-			getStatement().setInt(FIRST_RECORD_INDEX, context.getPageInfo().getFirstRecord());
-			getStatement().setInt(PAGE_SIZE_INDEX, context.getPageSize());
+			getStatement().setInt(getAdjustParamIndexAccordingToSQLServerType(FIRST_RECORD_INDEX),
+					context.getPageInfo().getFirstRecord());
+			getStatement().setInt(getAdjustParamIndexAccordingToSQLServerType(PAGE_SIZE_INDEX),
+					context.getPageSize());
 			setupSorting(getStatement(), context, DATA_ONLY_QUERY);
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+				getStatement().registerOutParameter(1, Types.OTHER);
+			}
 			stdGetResults();
 
 			return new ElementRawData(this, elementInfo, context);
@@ -129,7 +131,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	@Override
 	protected int getMainContextIndex(final int index) {
 		if (index == DATA_ONLY_QUERY) {
-			return MAIN_CONTEXT_INDEX - 1;
+			return getAdjustParamIndexAccordingToSQLServerType(MAIN_CONTEXT_INDEX - 1);
 		} else {
 			return MAIN_CONTEXT_INDEX;
 		}
@@ -138,7 +140,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	@Override
 	protected int getAddContextIndex(final int index) {
 		if (index == DATA_ONLY_QUERY) {
-			return ADD_CONTEXT_INDEX - 1;
+			return getAdjustParamIndexAccordingToSQLServerType(ADD_CONTEXT_INDEX - 1);
 		} else {
 			return ADD_CONTEXT_INDEX;
 		}
@@ -147,7 +149,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	@Override
 	protected int getFilterIndex(final int index) {
 		if (index == DATA_ONLY_QUERY) {
-			return FILTER_INDEX - 1;
+			return getAdjustParamIndexAccordingToSQLServerType(FILTER_INDEX - 1);
 		} else {
 			return FILTER_INDEX;
 		}
@@ -156,7 +158,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	@Override
 	protected int getSessionContextIndex(final int index) {
 		if (index == DATA_ONLY_QUERY) {
-			return SESSION_CONTEXT_INDEX - 1;
+			return getAdjustParamIndexAccordingToSQLServerType(SESSION_CONTEXT_INDEX - 1);
 		} else {
 			return SESSION_CONTEXT_INDEX;
 		}
@@ -165,9 +167,17 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	@Override
 	protected int getElementIdIndex(final int index) {
 		if (index == DATA_ONLY_QUERY) {
-			return ELEMENTID_INDEX - 1;
+			return getAdjustParamIndexAccordingToSQLServerType(ELEMENTID_INDEX - 1);
 		} else {
 			return ELEMENTID_INDEX;
+		}
+	}
+
+	private int getSortColumnsIndex(final int queryType) {
+		if (queryType == DATA_ONLY_QUERY) {
+			return getAdjustParamIndexAccordingToSQLServerType(SORTCOLS_INDEX - 1);
+		} else {
+			return SORTCOLS_INDEX;
 		}
 	}
 

@@ -30,10 +30,9 @@
 			hideOnLoad="true" />		
 	</tab>
 	<tab id="4" name="Грид">
-		<element id="14" type="grid" proc="grid_grid" />
-		<element id="11" type="grid" proc="grid_grid1" />
-		<element id="10" type="webtext" proc="webtext_grid"
-			hideOnLoad="true" />
+		<element id ="0401" type="grid" proc="grid_cities_data">
+			<proc id="040101" name="grid_cities_metadata" type="METADATA"/>
+		</element>
 	</tab>
 	<tab id="5" name="График">
 		<element id="13" type="grid" proc="grid_grid" />

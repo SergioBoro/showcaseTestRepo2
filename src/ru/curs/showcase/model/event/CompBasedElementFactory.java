@@ -1,5 +1,7 @@
 package ru.curs.showcase.model.event;
 
+import java.sql.*;
+
 import javax.xml.parsers.SAXParser;
 
 import org.xml.sax.Attributes;
@@ -8,6 +10,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.model.ElementRawData;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -174,4 +177,14 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 	private void addToFooter(final String data) {
 		getResult().setFooter(getResult().getFooter() + data);
 	}
+
+	protected ResultSet getResultSetAccordingToSQLServerType(final CallableStatement cs)
+			throws SQLException {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return cs.getResultSet();
+		} else {
+			return (ResultSet) cs.getObject(1);
+		}
+	}
+
 }
