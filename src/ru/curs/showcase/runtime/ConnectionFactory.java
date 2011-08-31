@@ -2,7 +2,6 @@ package ru.curs.showcase.runtime;
 
 import java.sql.*;
 
-
 /**
  * Фабрика для создания соединений с БД.
  * 
@@ -46,7 +45,7 @@ public final class ConnectionFactory {
 
 		final String mssql = "jdbc:sqlserver";
 		final String postgresql = "jdbc:postgresql";
-		final String oracle = "jdbc:oracle"; // Здесь уточнить!
+		final String oracle = "jdbc:oracle";
 
 		SQLServerType st = null;
 		if (url.indexOf(mssql) > -1) {
