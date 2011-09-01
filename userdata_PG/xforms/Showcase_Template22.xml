@@ -21,7 +21,7 @@
 		
 
 			<xf:submission id="good_save" method="post" instance="srvdata"
-				replace="instance" ref="instance('srvdata')" action="secured/submit?proc=xforms_submission_by_userdata&amp;userdata=test1">
+				replace="instance" ref="instance('srvdata')" action="secured/submit?proc=xforms_submission_by_userdata&amp;userdata=pg">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>

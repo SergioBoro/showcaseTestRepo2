@@ -307,7 +307,7 @@
 
 
 			<xf:submission id="wrong_save" method="post" instance="mainInstance"
-				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission11&amp;userdata=pg">
+				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission11&amp;userdata=ora">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -320,7 +320,7 @@
 			</xf:submission>
 
 			<xf:submission id="good_save" method="post" instance="mainInstance"
-				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission1&amp;userdata=pg">
+				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission1&amp;userdata=ora">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -335,7 +335,7 @@
 
 			<xf:submission id="xslttransformation" method="post"
 				instance="mainInstance" replace="instance" ref="instance('mainInstance')"
-				action="secured/xslttransformer?xsltfile=xformsxslttransformation_test.xsl&amp;userdata=pg">
+				action="secured/xslttransformer?xsltfile=xformsxslttransformation_test.xsl&amp;userdata=ora">
 			</xf:submission>
 
 

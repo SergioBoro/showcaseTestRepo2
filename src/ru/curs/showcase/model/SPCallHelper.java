@@ -250,7 +250,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	protected void setSQLXMLParamByString(final int index, final String value) throws SQLException {
 		String value2 = value;
 		if (value2 == null) {
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			if (ConnectionFactory.getSQLServerType() != SQLServerType.POSTGRESQL) {
 				value2 = "";
 			}
 		} else {
