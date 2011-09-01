@@ -24,8 +24,6 @@ import ru.curs.showcase.runtime.AppInfoSingleton;
  */
 public class GridSLTest extends AbstractTest {
 
-	private static final String NO_DATA_ERROR =
-		"Нет данных в процедуре \"grid_cities_data_ec\" (1)";
 	private static final Integer CITIES_COUNT = 11111;
 
 	/**

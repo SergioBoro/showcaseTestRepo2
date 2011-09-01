@@ -83,4 +83,13 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 		assertNull(AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, TEST2_USERDATA));
 	}
 
+	@Test
+	public void testLogSettings() {
+		final int logSize =
+			Integer.parseInt(AppProps.getRequiredValueByName(LastLogEvents.INTERNAL_LOG_SIZE));
+		assertEquals(logSize, LastLogEvents.getMaxRecords());
+		AppInfoSingleton.getAppInfo().setCurUserDataId(TEST1_USERDATA);
+		assertEquals(LastLogEvents.DEF_MAX_RECORDS, LastLogEvents.getMaxRecords());
+
+	}
 }

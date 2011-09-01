@@ -3,13 +3,14 @@
 	<appender name="NT" class="org.apache.log4j.nt.NTEventLogAppender">
 		<param name="source" value="timex" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{ABSOLUTE} %5p %t %c{1}.%M():line %L: %m%n" />
+			<param name="ConversionPattern" value="%p %c: %m%n" />
 		</layout>
 	</appender>
 	<appender name="Console" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{ABSOLUTE} %5p %t %c{1}.%M():line %L: %m%n" />
+			<param name="ConversionPattern"
+				value="sc.log %d{ABSOLUTE} %5p %t %c{1}.%M() line:%L %m%n" />
 		</layout>
 	</appender>
 	<appender name="LogFile" class="org.apache.log4j.RollingFileAppender">
@@ -18,15 +19,21 @@
 		<!-- число резервных копий лога -->
 		<param name="MaxBackupIndex" value="1" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{ABSOLUTE} %5p %t %c{1}.%M():line %L: %m%n" />
+			<param name="ConversionPattern"
+				value="sc.log %d{ABSOLUTE} %5p %t %c{1}.%M() line:%L %m%n" />
 		</layout>
-  </appender>	
+	</appender>
+	<appender name="Log4jShowcaseAppender" class="ru.curs.showcase.runtime.Log4jShowcaseAppender">
+		
+	</appender>
 	<root>
-		<priority value="info" />
+		<priority value="INFO" />
 		<appender-ref ref="Console" />
-<!--Для вывода в файл нужно добавить строку внутрь тэга <root>-->
-<!--<appender-ref ref="LogFile"/> и указать правильное имя файла в <appender name="LogFile">.-->
-<!--Также можно включить вывод ошибок в системный лог Windows-->
-<!--(<appender name="NT">).-->		
+		<appender-ref ref="Log4jShowcaseAppender"/>
+		<!--Для вывода в файл нужно добавить строку внутрь тэга <root> -->
+		<!--<appender-ref ref="LogFile"/> и указать правильное имя файла в <appender 
+			name="LogFile">. -->
+		<!--Также можно включить вывод ошибок в системный лог Windows -->
+		<!--(<appender name="NT">). -->
 	</root>
 </log4j:configuration>

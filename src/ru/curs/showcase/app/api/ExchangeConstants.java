@@ -14,6 +14,8 @@ public final class ExchangeConstants implements SerializableElement {
 		throw new UnsupportedOperationException();
 	}
 
+	public static final String SUBMIT_SERVLET = "submit";
+
 	/**
 	 * Префикс сервлетов, используемых для передачи или получения
 	 * пользовательских данных.

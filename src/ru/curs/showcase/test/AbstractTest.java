@@ -1,10 +1,12 @@
 package ru.curs.showcase.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.InputStream;
 import java.util.*;
 
+import org.apache.log4j.*;
+import org.apache.log4j.spi.LoggingEvent;
 import org.junit.*;
 
 import ru.curs.gwt.datagrid.model.*;
@@ -16,7 +18,7 @@ import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.navigator.*;
-import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
@@ -427,5 +429,21 @@ public class AbstractTest extends GeneralXMLHelper {
 		value3.add(userDataId);
 		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
 		return params;
+	}
+
+	@SuppressWarnings("deprecation")
+	protected void testBaseLastLogEventQueue(final Collection<LoggingEventDecorator> lleq) {
+		AppInfoSingleton.getAppInfo().setCurUserDataId(
+				ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
+		final int eventCount = 105;
+		Random random = new Random();
+		for (int i = 0; i < eventCount; i++) {
+			LoggingEvent original =
+				new LoggingEvent("testClass", Category.getInstance("testCategory"),
+						random.nextLong(), Priority.ERROR, "message", null);
+			lleq.add(new LoggingEventDecorator(original));
+		}
+
+		assertEquals(LastLogEvents.getMaxRecords(), lleq.size());
 	}
 }

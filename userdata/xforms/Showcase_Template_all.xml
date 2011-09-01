@@ -30,7 +30,45 @@
 					</xf:message>
 				</xf:action>
 			</xf:submission>
+			
+			<xf:submission id="submit_ec" method="post" instance="mainInstance"
+				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission_ec">
+				<xf:action ev:event="xforms-submit-done">
+					<xf:message>Submission успешно выполнен</xf:message>
+				</xf:action>
+				<xf:action ev:event="xforms-submit-error">
+					<xf:message>
+						Ошибка при выполнении submission:
+						<xf:output value="event('response-body')" />
+					</xf:message>
+				</xf:action>
+			</xf:submission>	
+			
+			<xf:submission id="submit_um" method="post" instance="mainInstance"
+				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission_um">
+				<xf:action ev:event="xforms-submit-done">
+					<xf:message>Submission успешно выполнен</xf:message>
+				</xf:action>
+				<xf:action ev:event="xforms-submit-error">
+					<xf:message>
+						Ошибка при выполнении submission:
+						<xf:output value="event('response-body')" />
+					</xf:message>
+				</xf:action>
+			</xf:submission>						
 
+			<xf:submission id="submit_re" method="post" instance="mainInstance"
+				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission_re">
+				<xf:action ev:event="xforms-submit-done">
+					<xf:message>Submission успешно выполнен</xf:message>
+				</xf:action>
+				<xf:action ev:event="xforms-submit-error">
+					<xf:message>
+						Ошибка при выполнении submission:
+						<xf:output value="event('response-body')" />
+					</xf:message>
+				</xf:action>
+			</xf:submission>
 
 			<xf:submission id="xslttransformation" method="post"
 				instance="mainInstance" replace="instance" ref="instance('mainInstance')"
@@ -94,7 +132,34 @@
 				</xf:action>
 			</xf:trigger>
 		</div>
-
+		<hr/>
+		<div>
+			<xf:trigger>
+				<xf:label>Вызов XFormsSubmissionServlet с ошибкой через EC</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:send submission="submit_ec" />
+				</xf:action>
+			</xf:trigger>
+		</div>		
+		<hr/>
+		<div>
+			<xf:trigger>
+				<xf:label>Вызов XFormsSubmissionServlet с ошибкой через UM</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:send submission="submit_um" />
+				</xf:action>
+			</xf:trigger>
+		</div>
+		<hr/>
+		<div>
+			<xf:trigger>
+				<xf:label>Вызов XFormsSubmissionServlet с ошибкой через RE</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:send submission="submit_re" />
+				</xf:action>
+			</xf:trigger>
+		</div>
+				
 		<hr/>
 		<div>
 			<xf:trigger>

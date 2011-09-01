@@ -10,7 +10,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.model.datapanel.DataPanelFileGateway;
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
 
@@ -149,7 +149,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 		assertNull(source.getDocument());
 		assertNotNull(source.getSaxParser());
 
-		source = new XMLSource(XMLUtils.createEmptyDoc("test"), "test", "");
+		source = new XMLSource(XMLUtils.createEmptyDoc("testTag"), "testFile", "");
 		assertNull(source.getInputStream());
 		assertNotNull(source.getDocument());
 		assertNull(source.getSaxParser());
@@ -183,5 +183,10 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 		assertEquals("11.11", BrowserType.detectVersion(operaUA));
 		assertEquals("4.0.1", BrowserType.detectVersion(firefoxUA));
 		assertEquals("9.0", BrowserType.detectVersion(IEUA));
+	}
+
+	@Test
+	public void testLastLogEventQueue() {
+		testBaseLastLogEventQueue(new LastLogEvents());
 	}
 }

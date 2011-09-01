@@ -88,9 +88,11 @@ public final class XFormsFactory extends HTMLBasedElementFactory {
 	}
 
 	private void addUserDataToSubmissions() {
-		String servletQuery = ExchangeConstants.SECURED_SERVLET_PREFIX + "/submit?";
+		String servletQuery =
+			ExchangeConstants.SECURED_SERVLET_PREFIX + "/" + ExchangeConstants.SUBMIT_SERVLET
+					+ "?";
 		String userDataParam =
-			"?userdata=" + AppInfoSingleton.getAppInfo().getCurUserDataId() + "&amp;";
+			"userdata=" + AppInfoSingleton.getAppInfo().getCurUserDataId() + "&amp;";
 		html = html.replace(servletQuery, servletQuery + userDataParam);
 		servletQuery = ExchangeConstants.SECURED_SERVLET_PREFIX + "/xslttransformer?";
 		html = html.replace(servletQuery, servletQuery + userDataParam);

@@ -48,6 +48,17 @@ public final class AppInfoSingleton {
 	 */
 	private String servletContainerVersion;
 
+	private final Collection<LoggingEventDecorator> lastLogEvents = Collections
+			.synchronizedCollection(new LastLogEvents());
+
+	public Collection<LoggingEventDecorator> getLastLogEvents() {
+		return lastLogEvents;
+	}
+
+	public void addLogEvent(final LoggingEventDecorator event) {
+		lastLogEvents.add(event);
+	}
+
 	private AppInfoSingleton() {
 		super();
 	}
@@ -267,6 +278,10 @@ public final class AppInfoSingleton {
 	public void storeElementState(final String sessionId, final DataPanelElementInfo dpei,
 			final CompositeContext context, final Object state) {
 		getOrInitSessionInfoObject(sessionId).storeElementState(sessionId, dpei, context, state);
+	}
+
+	public boolean initializedUserdata() {
+		return getCurUserDataId() != null;
 	}
 
 }

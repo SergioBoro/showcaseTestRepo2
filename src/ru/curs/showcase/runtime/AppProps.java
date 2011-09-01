@@ -2,7 +2,7 @@ package ru.curs.showcase.runtime;
 
 import java.io.*;
 import java.net.URL;
-import java.util.*;
+import java.util.Properties;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.util.*;
@@ -88,9 +88,6 @@ public final class AppProps {
 	 * DIR_IN_SOLUTIONS.
 	 */
 	private static final String DIR_IN_SOLUTIONS = SOLUTIONS_DIR + "/%s/%s";
-
-	/** Список Properties с настройками приложения. */
-	private static Map<String, Properties> props = new HashMap<String, Properties>();
 
 	private AppProps() {
 		throw new UnsupportedOperationException();
@@ -261,18 +258,15 @@ public final class AppProps {
 			userdataId = aUserdataId;
 		}
 
-		Properties prop = props.get(userdataId);
-		if (prop == null) {
-			prop = new Properties();
-			InputStreamReader reader =
-				new InputStreamReader(loadUserDataToStream(PROPFILENAME, userdataId), "UTF8");
-			try {
-				prop.load(reader);
-			} finally {
-				reader.close();
-			}
-			props.put(userdataId, prop);
+		Properties prop = new Properties();
+		InputStreamReader reader =
+			new InputStreamReader(loadUserDataToStream(PROPFILENAME, userdataId), "UTF8");
+		try {
+			prop.load(reader);
+		} finally {
+			reader.close();
 		}
+
 		return prop;
 	}
 

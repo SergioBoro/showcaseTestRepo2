@@ -17,5 +17,4 @@ public class AbstractTestWithDefaultUserData extends AbstractTest {
 	public void beforeTest() {
 		setDefaultUserData();
 	}
-
 }

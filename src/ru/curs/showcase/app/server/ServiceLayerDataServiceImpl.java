@@ -58,6 +58,8 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 	 */
 	private final String sessionId;
 
+	private final UUID requestId = UUID.randomUUID();
+
 	public ServiceLayerDataServiceImpl(final String aSessionId) {
 		super();
 		sessionId = aSessionId;
@@ -305,7 +307,6 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 		}
 		String sessionContext = SessionContextGenerator.generate(sessionId, context);
 
-		LOGGER.info("Session context: " + sessionContext);
 		context.setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
 		context.getSessionParamsMap().clear();
@@ -321,7 +322,6 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 
 		CompositeContext context = action.getContext();
 		String sessionContext = SessionContextGenerator.generate(sessionId, context);
-		LOGGER.info("Session context: " + sessionContext);
 		action.setSessionContext(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
 		action.setSessionContext((Map<String, List<String>>) null);
@@ -511,9 +511,11 @@ public final class ServiceLayerDataServiceImpl implements DataService, DataServi
 				}
 			};
 			Gson gson =
-				new GsonBuilder().setPrettyPrinting().setExclusionStrategies(es).serializeNulls()
+				new GsonBuilder().disableHtmlEscaping().setExclusionStrategies(es)
+						.serializeNulls()
 						.excludeFieldsWithModifiers(Modifier.TRANSIENT + Modifier.STATIC).create();
-			LOGGER.info(gson.toJson(obj));
+
+			LOGGER.info(String.format("SL output <br> %s <br> %s", requestId, gson.toJson(obj)));
 		}
 	}
 }

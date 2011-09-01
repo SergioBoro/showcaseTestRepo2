@@ -232,4 +232,10 @@ public class SessionInfoTest extends AbstractTest {
 		assertTrue(res.contains("size=\"2\""));
 		assertTrue(res.contains("<add>value</add>"));
 	}
+
+	@Test
+	public void testLastLogEventQueue() {
+		testBaseLastLogEventQueue(AppInfoSingleton.getAppInfo().getLastLogEvents());
+
+	}
 }
