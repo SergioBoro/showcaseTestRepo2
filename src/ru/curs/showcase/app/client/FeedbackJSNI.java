@@ -107,6 +107,8 @@ public final class FeedbackJSNI {
 		@ru.curs.showcase.app.client.About::showAbout();		
 		$wnd.getCurrentUserNameFeedbackJSNIFunction = 
 		@ru.curs.showcase.app.client.FeedbackJSNI::getCurrentUserName();	
+		$wnd.showcaseLogout = 
+		@ru.curs.showcase.app.client.ShowcaseLogout::showcaseLogout();	
 	}-*/;
 
 }
