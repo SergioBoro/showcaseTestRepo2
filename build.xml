@@ -175,7 +175,7 @@
 	</target>
 
 
-	<target name="deploy.with.userdata" depends="dist.with.userdata" description="Deploys WAR file with test data to ${deploy.dir}">
+	<target name="deploy" depends="dist" description="Deploys WAR file with test data to ${deploy.dir}">
 		<delete failonerror="true" dir="${deploy.dir}/${appname}" />
 		<copy file="${war.file}" todir="${deploy.dir}" />
 	</target>
