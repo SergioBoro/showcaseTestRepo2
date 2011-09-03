@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.sql.*;
 import java.util.*;
 
+import oracle.jdbc.OracleTypes;
+
 import org.slf4j.*;
 
 import ru.beta2.extra.gwt.ui.selector.api.*;
@@ -109,6 +111,9 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 
 				if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
 					cs.registerOutParameter(NUM1, Types.OTHER);
+				}
+				if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
+					cs.registerOutParameter(NUM1, OracleTypes.CURSOR);
 				}
 				cs.setString(getParamsIndex(), req.getParams());
 				cs.setString(getCurValueIndex(), req.getCurValue());
