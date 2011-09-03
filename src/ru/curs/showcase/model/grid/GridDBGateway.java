@@ -2,6 +2,7 @@ package ru.curs.showcase.model.grid;
 
 import java.sql.*;
 
+import oracle.jdbc.OracleTypes;
 import ru.curs.gwt.datagrid.model.Column;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.GridContext;
@@ -118,6 +119,9 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 			setupSorting(getStatement(), context, DATA_ONLY_QUERY);
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
 				getStatement().registerOutParameter(1, Types.OTHER);
+			}
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
+				getStatement().registerOutParameter(1, OracleTypes.CURSOR);
 			}
 			stdGetResults();
 

@@ -25,7 +25,9 @@ public abstract class CompBasedElementSPCallHelper extends ElementSPCallHelper {
 						CompBasedElementSPCallHelper.NO_RESULTSET_ERROR);
 			}
 		} else {
-			getConn().setAutoCommit(false);
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+				getConn().setAutoCommit(false);
+			}
 			getStatement().execute();
 		}
 	}
