@@ -34,6 +34,8 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	private static final int DATA_ONLY_QUERY = 1;
 	private static final int DATA_AND_SETTINS_QUERY = 0;
 
+	private static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS = 10;
+
 	public GridDBGateway() {
 		super();
 	}
@@ -67,6 +69,10 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 			prepareElementStatementWithErrorMes();
 			getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
 			setupSorting(getStatement(), context, DATA_AND_SETTINS_QUERY);
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
+				getStatement().registerOutParameter(ORA_CURSOR_INDEX_DATA_AND_SETTINS,
+						OracleTypes.CURSOR);
+			}
 			stdGetResults();
 
 			return new ElementRawData(this, elementInfo, context);
@@ -85,7 +91,11 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	protected String getSqlTemplate(final int index) {
 		switch (index) {
 		case DATA_AND_SETTINS_QUERY:
-			return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?)}";
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+				return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?)}";
+			} else {
+				return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+			}
 		case DATA_ONLY_QUERY:
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
 				return "{call %s(?, ?, ?, ?, ?, ?, ?, ?)}";

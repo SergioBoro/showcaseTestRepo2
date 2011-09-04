@@ -33,6 +33,7 @@
 		<element id ="0401" type="grid" proc="grid_cities_data">
 			<proc id="040101" name="grid_cities_metadata" type="METADATA"/>
 		</element>
+  	    <element id="0402" type="grid" proc="grid_cities_one"/>
 	</tab>
 	<tab id="5" name="График">
 		<element id="13" type="grid" proc="grid_grid" />

@@ -183,8 +183,11 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
 			return cs.getResultSet();
 		} else {
-			return (ResultSet) cs.getObject(1);
+			try {
+				return (ResultSet) cs.getObject(1);
+			} catch (Exception e) {
+				return (ResultSet) cs.getObject(cs.getParameterMetaData().getParameterCount());
+			}
 		}
 	}
-
 }
