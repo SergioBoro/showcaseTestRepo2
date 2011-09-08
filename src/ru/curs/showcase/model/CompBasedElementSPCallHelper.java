@@ -55,6 +55,15 @@ public abstract class CompBasedElementSPCallHelper extends ElementSPCallHelper {
 		return null;
 	}
 
+	@Override
+	protected void prepareStdStatement() throws SQLException {
+		super.prepareStdStatement();
+
+		registerOutParameterCursor();
+	}
+
+	protected abstract void registerOutParameterCursor() throws SQLException;
+
 	protected int getAdjustParamIndexAccordingToSQLServerType(final int index) {
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
 			return index;

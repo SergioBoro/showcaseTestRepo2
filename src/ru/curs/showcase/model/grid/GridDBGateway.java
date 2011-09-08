@@ -204,4 +204,8 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 		}
 	}
 
+	@Override
+	protected void registerOutParameterCursor() throws SQLException {
+	}
+
 }

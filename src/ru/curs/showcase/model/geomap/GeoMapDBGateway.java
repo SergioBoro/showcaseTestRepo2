@@ -1,5 +1,7 @@
 package ru.curs.showcase.model.geomap;
 
+import java.sql.SQLException;
+
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.*;
@@ -33,5 +35,11 @@ public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements Geo
 	@Override
 	protected DataPanelElementType getGatewayType() {
 		return DataPanelElementType.GEOMAP;
+	}
+
+	@Override
+	protected void registerOutParameterCursor() throws SQLException {
+		// TODO Auto-generated method stub
+
 	}
 }
