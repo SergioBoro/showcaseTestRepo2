@@ -21,5 +21,4 @@ public class AppLogicError extends RuntimeException {
 	public AppLogicError(final String aMessage) {
 		super(aMessage);
 	}
-
 }

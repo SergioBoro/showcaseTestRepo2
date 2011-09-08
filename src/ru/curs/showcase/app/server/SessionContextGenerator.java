@@ -35,15 +35,14 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 	/**
 	 * Формирует контекст сессии в виде XML объекта.
 	 * 
-	 * 
-	 * @return - строку с XML.
-	 * @param sessionId
-	 *            - идентификатор сессии.
 	 * @param aContext
 	 *            - параметры.
+	 * 
+	 * 
+	 * @return - строку с XML.
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String generate(final String sessionId, final CompositeContext aContext)
+	public static String generate(final CompositeContext aContext)
 			throws UnsupportedEncodingException {
 		Document info = createXML();
 		addUserNode(info);
@@ -78,7 +77,7 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 	private static void addUserNode(final Document info) {
 		Element node = info.createElement(USERNAME_TAG);
 		info.getDocumentElement().appendChild(node);
-		node.appendChild(info.createTextNode(ServletUtils.getUserNameFromSession()));
+		node.appendChild(info.createTextNode(ServletUtils.getCurrentSessionUserName()));
 	}
 
 	private static void

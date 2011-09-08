@@ -30,7 +30,7 @@ public enum DataPanelElementType implements SerializableElement {
 	 */
 	GEOMAP,
 	/**
-	 * XForms - форма для редактирования или фильтрации.
+	 * XForm - форма для редактирования или фильтрации.
 	 */
 	XFORMS;
 

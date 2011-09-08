@@ -53,7 +53,7 @@ public final class AppCurrContext extends ActionHolder {
 	 * Переменная хранящая текущее состояние приложение (версия, текущее имя
 	 * пользователя и т.п.).
 	 */
-	private static ServerCurrentState serverCurrentState;
+	private static ServerState serverCurrentState;
 
 	/**
 	 * Синглетон клиентской части приложения.
@@ -178,14 +178,14 @@ public final class AppCurrContext extends ActionHolder {
 	 * @param aserverCurrentState
 	 *            the serverCurrentState to set
 	 */
-	public void setServerCurrentState(final ServerCurrentState aserverCurrentState) {
+	public void setServerCurrentState(final ServerState aserverCurrentState) {
 		serverCurrentState = aserverCurrentState;
 	}
 
 	/**
 	 * @return the serverCurrentState
 	 */
-	public ServerCurrentState getServerCurrentState() {
+	public ServerState getServerCurrentState() {
 		return serverCurrentState;
 	}
 

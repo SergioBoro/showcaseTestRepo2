@@ -9,7 +9,7 @@ import org.w3c.dom.Document;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.html.XFormsContext;
+import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
@@ -23,12 +23,12 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
-public final class XFormsFileGateway extends DataCheckGateway implements XFormsGateway {
+public final class XFormFileGateway extends DataCheckGateway implements XFormGateway {
 
 	/**
 	 * LOGGER.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(XFormsFileGateway.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(XFormFileGateway.class);
 	/**
 	 * Тестовый каталог для данных, сохраняемых через шлюз.
 	 */
@@ -70,7 +70,7 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	}
 
 	@Override
-	public String handleSubmission(final String aProcName, final String aInputData) {
+	public String sqlTransform(final String aProcName, final String aInputData) {
 		LOGGER.info(String.format(
 				"Заглушка: выполнение Submission процедуры '%s' c данными формы  %s", aProcName,
 				aInputData));
@@ -78,7 +78,7 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	}
 
 	@Override
-	public DataFile<ByteArrayOutputStream> downloadFile(final XFormsContext context,
+	public DataFile<ByteArrayOutputStream> downloadFile(final XFormContext context,
 			final DataPanelElementInfo elementInfo, final String linkId) {
 		StreamConvertor dup;
 		try {
@@ -92,7 +92,7 @@ public final class XFormsFileGateway extends DataCheckGateway implements XFormsG
 	}
 
 	@Override
-	public void uploadFile(final XFormsContext aContext, final DataPanelElementInfo aElementInfo,
+	public void uploadFile(final XFormContext aContext, final DataPanelElementInfo aElementInfo,
 			final String aLinkId, final DataFile<InputStream> aFile) {
 		LOGGER.info(String
 				.format("Заглушка: сохранение файла '%s' с контекстом %s из элемента %s, ссылка %s, данные формы %s",

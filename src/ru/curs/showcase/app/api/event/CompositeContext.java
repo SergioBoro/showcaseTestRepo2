@@ -54,23 +54,25 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	private String session;
 
 	/**
+	 * Фильтрующий контекст. Задается с помощью компонента XForms.
+	 */
+	private String filter;
+
+	/**
 	 * Параметры URL, полученные из клиентской части. На основе их создается
 	 * session context для БД.
 	 */
 	@XmlTransient
+	@ExcludeFromSerialization
 	private Map<String, ArrayList<String>> sessionParamsMap =
 		new TreeMap<String, ArrayList<String>>();
-
-	/**
-	 * Фильтрующий контекст. Задается с помощью компонента XForms.
-	 */
-	private String filter;
 
 	/**
 	 * Контексты связанных элементов. Перед передачей в БД их содержимое
 	 * включается в session.
 	 */
 	@XmlTransient
+	@ExcludeFromSerialization
 	private Map<String, CompositeContext> related = new HashMap<String, CompositeContext>();
 
 	public CompositeContext(final Map<String, List<String>> aParams) {

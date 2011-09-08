@@ -8,7 +8,7 @@ import org.w3c.dom.Document;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
-import ru.curs.showcase.app.api.html.XForms;
+import ru.curs.showcase.app.api.html.XForm;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.event.HTMLBasedElementFactory;
 import ru.curs.showcase.runtime.*;
@@ -21,27 +21,27 @@ import ru.curs.showcase.util.xml.*;
  * @author den
  * 
  */
-public final class XFormsFactory extends HTMLBasedElementFactory {
+public final class XFormFactory extends HTMLBasedElementFactory {
 	private static final String XFORMS_CREATE_ERROR =
 		"Ошибка при формировании XForms для элемента '%s'";
 
 	/**
 	 * Результат работы фабрики.
 	 */
-	private XForms result;
+	private XForm result;
 
 	/**
 	 * Промежуточный результат работы фабрики.
 	 */
 	private String html;
 
-	public XFormsFactory(final HTMLBasedElementRawData aSource) {
+	public XFormFactory(final HTMLBasedElementRawData aSource) {
 		super(aSource);
 	}
 
 	@Override
-	public XForms build() throws Exception {
-		return (XForms) super.build();
+	public XForm build() throws Exception {
+		return (XForm) super.build();
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public final class XFormsFactory extends HTMLBasedElementFactory {
 
 		try {
 			template =
-				XFormsTemplateModificator.addSrvInfo(template, getSource().getCallContext(),
+				XFormTemplateModificator.addSrvInfo(template, getSource().getCallContext(),
 						getElementInfo());
 			html =
 				XFormProducer.getHTML(template, getSource().getData(), getElementInfo().getId());
@@ -99,13 +99,13 @@ public final class XFormsFactory extends HTMLBasedElementFactory {
 	}
 
 	@Override
-	public XForms getResult() {
+	public XForm getResult() {
 		return result;
 	}
 
 	@Override
 	protected void initResult() {
-		result = new XForms();
+		result = new XForm();
 	}
 
 	@Override

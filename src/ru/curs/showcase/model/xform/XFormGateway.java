@@ -4,7 +4,7 @@ import java.io.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.html.XFormsContext;
+import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.util.DataFile;
 
@@ -15,7 +15,7 @@ import ru.curs.showcase.util.DataFile;
  * @author den
  * 
  */
-public interface XFormsGateway {
+public interface XFormGateway {
 
 	/**
 	 * Основная функция получения данных. Возвращает начальные данные для XForms
@@ -53,7 +53,7 @@ public interface XFormsGateway {
 	 *            - идентификатор ссылки на файл
 	 * @return - файл.
 	 */
-	DataFile<ByteArrayOutputStream> downloadFile(XFormsContext context,
+	DataFile<ByteArrayOutputStream> downloadFile(XFormContext context,
 			DataPanelElementInfo elementInfo, String linkId);
 
 	/**
@@ -67,7 +67,7 @@ public interface XFormsGateway {
 	 * @return - требуемые данные (как правило в формате XML).
 	 * 
 	 */
-	String handleSubmission(String procName, String inputData);
+	String sqlTransform(String procName, String inputData);
 
 	/**
 	 * Загружает файл в хранилище.
@@ -81,6 +81,6 @@ public interface XFormsGateway {
 	 * @param aFile
 	 *            - файл.
 	 * **/
-	void uploadFile(XFormsContext context, DataPanelElementInfo elementInfo, String linkId,
+	void uploadFile(XFormContext context, DataPanelElementInfo elementInfo, String linkId,
 			DataFile<InputStream> aFile);
 }

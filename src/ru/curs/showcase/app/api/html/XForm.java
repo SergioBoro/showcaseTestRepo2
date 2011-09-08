@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.element.DataPanelElement;
  * @author den
  * 
  */
-public class XForms extends DataPanelElement {
+public class XForm extends DataPanelElement {
 	/**
 	 * serialVersionUID.
 	 */

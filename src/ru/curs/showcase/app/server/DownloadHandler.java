@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.commons.fileupload.FileUploadException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.html.XFormsContext;
+import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -31,13 +31,13 @@ public final class DownloadHandler extends AbstractDownloadHandler {
 	}
 
 	@Override
-	public XFormsContext getContext() {
-		return (XFormsContext) super.getContext();
+	public XFormContext getContext() {
+		return (XFormContext) super.getContext();
 	}
 
 	@Override
 	protected Class<? extends CompositeContext> getContextClass() {
-		return XFormsContext.class;
+		return XFormContext.class;
 	}
 
 	@Override

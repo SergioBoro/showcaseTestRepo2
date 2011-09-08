@@ -146,7 +146,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 * @return результат проверки.
 	 */
 	public boolean isCorrect() {
-		Boolean checkRes = (id != null) && checkRelatedExists();
+		Boolean checkRes = (id != null) && checkRelatedExistances();
 		switch (type) {
 		case WEBTEXT:
 			return checkRes && ((procName != null) || (transformName != null));
@@ -161,7 +161,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		}
 	}
 
-	private boolean checkRelatedExists() {
+	private boolean checkRelatedExistances() {
 		for (String key : related) {
 			if (tab.getElementInfoById(key) == null) {
 				return false;

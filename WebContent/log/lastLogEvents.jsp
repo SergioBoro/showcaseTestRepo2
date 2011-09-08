@@ -10,17 +10,32 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Последние записи лога Showcase</title>
+<link rel="shortcut icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />
+<link rel="icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />
+<style>
+<!--
+th, td
+ {
+ 	border: 1px solid black;
+ 	white-space: pre-wrap;
+ }
+ table
+ {
+	table-layout:fixed; 
+ }
+-->
+</style>
 </head>
 <body>
 <%
 	Collection<LoggingEventDecorator> lastLogEvents = AppInfoSingleton.getAppInfo().getLastLogEvents();
 %>
-<table>
+<table width="90%">
 <c:forEach items="<%=lastLogEvents%>" var="event">
 <tr>
-<td width="100px">${event.getLevel()} </td>
-<td width="100px">${event.getTime()} </td>
-<td>${event.getMessage()} </td>
+<td width="10%">${event.getLevel()} </td>
+<td width="10%">${event.getTime()} </td>
+<td width="80%">${event.getMessage()} </td>
 </tr>
 </c:forEach>
 </table>

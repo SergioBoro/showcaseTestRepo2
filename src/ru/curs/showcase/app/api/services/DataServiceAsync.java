@@ -108,8 +108,8 @@ public interface DataServiceAsync {
 	 * @param callback
 	 *            - callback.
 	 */
-	void getXForms(XFormsContext context, DataPanelElementInfo element,
-			AsyncCallback<XForms> callback);
+	void getXForms(XFormContext context, DataPanelElementInfo element,
+			AsyncCallback<XForm> callback);
 
 	/**
 	 * Асинхронная версия.
@@ -121,7 +121,7 @@ public interface DataServiceAsync {
 	 * @param callback
 	 *            - callback.
 	 */
-	void saveXForms(XFormsContext context, DataPanelElementInfo element,
+	void saveXForms(XFormContext context, DataPanelElementInfo element,
 			AsyncCallback<Void> callback);
 
 	/**
@@ -134,7 +134,7 @@ public interface DataServiceAsync {
 	 */
 	void
 			getServerCurrentState(CompositeContext context,
-					AsyncCallback<ServerCurrentState> callback);
+					AsyncCallback<ServerState> callback);
 
 	/**
 	 * Асинхронная версия.

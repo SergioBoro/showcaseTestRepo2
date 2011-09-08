@@ -17,7 +17,7 @@ import ru.curs.showcase.model.xform.*;
  * @author den
  * 
  */
-public class XFormsFactoryTest extends AbstractTestWithDefaultUserData {
+public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Тест на создание фабрики.
@@ -30,23 +30,23 @@ public class XFormsFactoryTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Test method for
-	 * {@link ru.curs.showcase.model.xform.XFormsFactory#build()}.
+	 * {@link ru.curs.showcase.model.xform.XFormFactory#build()}.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	public void testBuild() throws Exception {
-		XFormsFactory factory = createFactory();
+		XFormFactory factory = createFactory();
 		factory.build();
 	}
 
-	private XFormsFactory createFactory() {
+	private XFormFactory createFactory() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms1Info();
 
-		XFormsGateway gateway = new XFormsDBGateway();
+		XFormGateway gateway = new XFormDBGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
-		return new XFormsFactory(raw);
+		return new XFormFactory(raw);
 	}
 
 	@Test
@@ -54,12 +54,12 @@ public class XFormsFactoryTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
 		elInfo.setProcName("xforms_proc_all");
 		elInfo.setTemplateName("Showcase_Template_all.xml");
-		XFormsContext context = new XFormsContext(getTestContext1());
+		XFormContext context = new XFormContext(getTestContext1());
 		generateTestTabWithElement(elInfo);
-		XFormsGateway gateway = new XFormsDBGateway();
+		XFormGateway gateway = new XFormDBGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, elInfo);
-		XFormsFactory factory = new XFormsFactory(raw);
-		XForms result = factory.build();
+		XFormFactory factory = new XFormFactory(raw);
+		XForm result = factory.build();
 
 		assertTrue(result
 				.getXFormParts()

@@ -1,25 +1,25 @@
-package ru.curs.showcase.app.server;
+package ru.curs.showcase.runtime;
 
 import java.io.*;
 import java.sql.*;
 import java.util.regex.*;
 
-import ru.curs.showcase.app.api.ServerCurrentState;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.app.api.ServerState;
+import ru.curs.showcase.app.server.ServletUtils;
 import ru.curs.showcase.util.*;
 
 /**
- * Построитель ServerCurrentState.
+ * Построитель объекта с текущим состоянием серверной части.
  * 
  * @author den
  * 
  */
-public final class ServerCurrentStateBuilder {
+public final class ServerStateFactory {
 
 	private static final String BUILD_FILE = "build";
 	private static final String VERSION_FILE = "version";
 
-	private ServerCurrentStateBuilder() {
+	private ServerStateFactory() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -32,9 +32,9 @@ public final class ServerCurrentStateBuilder {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	public static ServerCurrentState build(final String sessionId) throws SQLException,
+	public static ServerState build(final String sessionId) throws SQLException,
 			IOException {
-		ServerCurrentState state = new ServerCurrentState();
+		ServerState state = new ServerState();
 		state.setServerTime(TextUtils.getCurrentLocalDate());
 		state.setAppVersion(getAppVersion());
 		state.setServletContainerVersion(AppInfoSingleton.getAppInfo()
@@ -42,7 +42,7 @@ public final class ServerCurrentStateBuilder {
 		state.setIsNativeUser(!AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(
 				sessionId));
 		state.setJavaVersion(System.getProperty("java.version"));
-		state.setUserName(ServletUtils.getUserNameFromSession());
+		state.setUserName(ServletUtils.getCurrentSessionUserName());
 		state.setSqlVersion(getSQLVersion());
 		return state;
 	}

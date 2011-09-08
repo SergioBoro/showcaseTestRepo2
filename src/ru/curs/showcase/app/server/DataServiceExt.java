@@ -6,7 +6,7 @@ import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.app.api.html.XFormsContext;
+import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.frame.MainPageFrameType;
 import ru.curs.showcase.util.*;
@@ -42,33 +42,28 @@ public interface DataServiceExt {
 	 * Выполняет xforms SQL submission - т.е. вызывает хранимую процедуру
 	 * передавая ей данные из xforms и возвращает результат.
 	 * 
-	 * @param procName
-	 *            - имя процедуры.
-	 * @param content
-	 *            - некие данные из формы.
+	 * @param context
+	 *            - контекст.
+	 * @param elInfo
+	 *            - описание элемента.
 	 * @return - результат выполнения submission.
 	 * @throws GeneralException
 	 * 
-	 * @param userDataId
-	 *            - идентификатор userdata.
 	 */
-	String handleSQLSubmission(String procName, String content, String userDataId)
+	String handleSQLSubmission(XFormContext context, DataPanelElementInfo elInfo)
 			throws GeneralException;
 
 	/**
 	 * Выполняет xforms XSLT submission - т.е. вызывает XSL преобразование
 	 * передавая ему данные из xforms и возвращает результат.
 	 * 
-	 * @param xsltFile
-	 *            - имя файла с XSL преобразованием.
-	 * @param content
-	 *            - некие данные из формы.
-	 * @return - результат выполнения submission.
-	 * @param userDataId
-	 *            - идентификатор userdata.
+	 * @param context
+	 *            - контекст.
+	 * @param elInfo
+	 *            - описание элемента.
 	 * @throws GeneralException
 	 */
-	String handleXSLTSubmission(String xsltFile, String content, String userDataId)
+	String handleXSLTSubmission(XFormContext context, DataPanelElementInfo elInfo)
 			throws GeneralException;
 
 	/**
@@ -83,7 +78,7 @@ public interface DataServiceExt {
 	 * @return - файл.
 	 * @throws GeneralException
 	 */
-	DataFile<ByteArrayOutputStream> getDownloadFile(XFormsContext context,
+	DataFile<ByteArrayOutputStream> getDownloadFile(XFormContext context,
 			DataPanelElementInfo elementInfo, String linkId) throws GeneralException;
 
 	/**
@@ -99,7 +94,7 @@ public interface DataServiceExt {
 	 *            - файл.
 	 * @throws GeneralException
 	 */
-	void uploadFile(XFormsContext context, DataPanelElementInfo elementInfo, String linkId,
+	void uploadFile(XFormContext context, DataPanelElementInfo elementInfo, String linkId,
 			DataFile<ByteArrayOutputStream> file) throws GeneralException;
 
 	/**

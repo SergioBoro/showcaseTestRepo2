@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.html;
 
+import java.util.*;
+
 import javax.xml.bind.annotation.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -12,24 +14,29 @@ import ru.curs.showcase.app.api.event.CompositeContext;
  */
 @XmlRootElement(name = "xformsContext")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class XFormsContext extends CompositeContext {
+public class XFormContext extends CompositeContext {
 	private static final long serialVersionUID = -6836184134400790951L;
 
 	private String formData;
 
-	public XFormsContext(final CompositeContext baseContext) {
+	public XFormContext(final CompositeContext baseContext) {
 		super();
 		assignNullValues(baseContext);
 	}
 
-	public XFormsContext(final CompositeContext baseContext, final String aFormData) {
+	public XFormContext(final CompositeContext baseContext, final String aFormData) {
 		super();
 		assignNullValues(baseContext);
 		formData = aFormData;
 	}
 
-	public XFormsContext() {
+	public XFormContext() {
 		super();
+	}
+
+	public XFormContext(final Map<String, List<String>> aParams, final String aFormData) {
+		super(aParams);
+		formData = aFormData;
 	}
 
 	public String getFormData() {
@@ -41,15 +48,15 @@ public class XFormsContext extends CompositeContext {
 	}
 
 	@Override
-	public XFormsContext gwtClone() {
-		XFormsContext result = (XFormsContext) super.gwtClone();
+	public XFormContext gwtClone() {
+		XFormContext result = (XFormContext) super.gwtClone();
 		result.formData = formData;
 		return result;
 	}
 
 	@Override
-	protected XFormsContext newInstance() {
-		return new XFormsContext();
+	protected XFormContext newInstance() {
+		return new XFormContext();
 	}
 
 	@Override
@@ -68,10 +75,10 @@ public class XFormsContext extends CompositeContext {
 		if (!super.equals(obj)) {
 			return false;
 		}
-		if (!(obj instanceof XFormsContext)) {
+		if (!(obj instanceof XFormContext)) {
 			return false;
 		}
-		XFormsContext other = (XFormsContext) obj;
+		XFormContext other = (XFormContext) obj;
 		if (formData == null) {
 			if (other.formData != null) {
 				return false;

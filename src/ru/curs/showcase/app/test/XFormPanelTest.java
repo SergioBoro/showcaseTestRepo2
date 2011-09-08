@@ -1,7 +1,7 @@
 package ru.curs.showcase.app.test;
 
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.html.XForms;
+import ru.curs.showcase.app.api.html.XForm;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.UploadWindow;
@@ -100,7 +100,7 @@ public class XFormPanelTest extends GWTTestCase {
 
 		CompositeContext context = new CompositeContext();
 
-		XForms xform = XFormTestsCommon.createXForms2();
+		XForm xform = XFormTestsCommon.createXForms2();
 
 		xfp.reDrawPanelExt(context, true, xform);
 		assertNotNull(xfp.getContext());
@@ -119,7 +119,7 @@ public class XFormPanelTest extends GWTTestCase {
 
 		CompositeContext context = new CompositeContext();
 
-		XForms xform = XFormTestsCommon.createXForms2();
+		XForm xform = XFormTestsCommon.createXForms2();
 
 		xfp.reDrawPanelExt(context, true, xform);
 

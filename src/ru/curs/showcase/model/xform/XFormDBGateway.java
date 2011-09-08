@@ -5,7 +5,7 @@ import java.sql.*;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.html.XFormsContext;
+import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
@@ -16,7 +16,7 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFormsGateway {
+public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XFormGateway {
 
 	private static final int MAIN_CONTEXT_INDEX_0 = 1;
 	private static final int ADD_CONTEXT_INDEX_0 = 2;
@@ -106,7 +106,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	}
 
 	@Override
-	public String handleSubmission(final String aProcName, final String aInputData) {
+	public String sqlTransform(final String aProcName, final String aInputData) {
 		String out = null;
 		setProcName(aProcName);
 		setTemplateIndex(SUBMISSION_TEMPLATE_IND);
@@ -142,7 +142,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	}
 
 	@Override
-	public DataFile<ByteArrayOutputStream> downloadFile(final XFormsContext context,
+	public DataFile<ByteArrayOutputStream> downloadFile(final XFormContext context,
 			final DataPanelElementInfo elementInfo, final String linkId) {
 		init(context, elementInfo);
 		setTemplateIndex(FILE_TEMPLATE_IND);
@@ -179,7 +179,7 @@ public final class XFormsDBGateway extends HTMLBasedSPCallHelper implements XFor
 	}
 
 	@Override
-	public void uploadFile(final XFormsContext context, final DataPanelElementInfo elementInfo,
+	public void uploadFile(final XFormContext context, final DataPanelElementInfo elementInfo,
 			final String linkId, final DataFile<InputStream> file) {
 		init(context, elementInfo);
 		setTemplateIndex(FILE_TEMPLATE_IND);

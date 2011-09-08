@@ -62,7 +62,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	/**
 	 * XForms xform.
 	 */
-	private XForms xform = null;
+	private XForm xform = null;
 
 	/**
 	 * Ф-ция, возвращающая панель с XForm.
@@ -120,7 +120,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 * Конструктор класса XFormPanel с начальным показом XForm.
 	 */
 	public XFormPanel(final CompositeContext context, final DataPanelElementInfo element,
-			final XForms xform1) {
+			final XForm xform1) {
 
 		setContext(context);
 		setElementInfo(element);
@@ -163,7 +163,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 *            XForms
 	 */
 	public void reDrawPanelExt(final CompositeContext context, final Boolean refreshContextOnly,
-			final XForms xform1) {
+			final XForm xform1) {
 
 		setContext(context);
 		// --------------
@@ -195,18 +195,18 @@ public class XFormPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getXForms(new XFormsContext(getContext(), mainInstance), getElementInfo(),
-				new GWTServiceCallback<XForms>("при получении данных XForm с сервера") {
+		dataService.getXForms(new XFormContext(getContext(), mainInstance), getElementInfo(),
+				new GWTServiceCallback<XForm>("при получении данных XForm с сервера") {
 
 					@Override
-					public void onSuccess(final XForms xform1) {
+					public void onSuccess(final XForm xform1) {
 						setXFormPanelByXForms(xform1, refreshContextOnly);
 					}
 				});
 
 	}
 
-	private void setXFormPanelByXForms(final XForms xform1, final Boolean refreshContextOnly) {
+	private void setXFormPanelByXForms(final XForm xform1, final Boolean refreshContextOnly) {
 		xform = xform1;
 
 		destroy();
@@ -431,6 +431,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 	@Override
 	public CompositeContext getDetailedContext() {
-		return new XFormsContext(getContext(), fillAndGetMainInstance());
+		return new XFormContext(getContext(), fillAndGetMainInstance());
 	}
 }

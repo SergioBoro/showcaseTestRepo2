@@ -91,7 +91,7 @@ public final class ServletUtils {
 	 * 
 	 * @return - имя пользователя.
 	 */
-	public static String getUserNameFromSession() {
+	public static String getCurrentSessionUserName() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			return SecurityContextHolder.getContext().getAuthentication().getName();
 		} else {

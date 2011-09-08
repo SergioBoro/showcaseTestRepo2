@@ -37,11 +37,11 @@ public class App implements EntryPoint {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getServerCurrentState(context, new GWTServiceCallback<ServerCurrentState>(
+		dataService.getServerCurrentState(context, new GWTServiceCallback<ServerState>(
 				Constants.ERROR_OF_SERVER_CURRENT_STATE_RETRIEVING_FROM_SERVER) {
 
 			@Override
-			public void onSuccess(final ServerCurrentState serverCurrentState) {
+			public void onSuccess(final ServerState serverCurrentState) {
 
 				if (serverCurrentState != null) {
 

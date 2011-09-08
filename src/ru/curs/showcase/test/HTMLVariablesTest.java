@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.html.XForms;
+import ru.curs.showcase.app.api.html.XForm;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.xform.*;
 
@@ -30,10 +30,10 @@ public class HTMLVariablesTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", "0205");
 
-		XFormsGateway gateway = new XFormsFileGateway();
+		XFormGateway gateway = new XFormFileGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
-		XFormsFactory factory = new XFormsFactory(raw);
-		XForms xforms = factory.build();
+		XFormFactory factory = new XFormFactory(raw);
+		XForm xforms = factory.build();
 		assertTrue(xforms.getXFormParts().get(2).indexOf("?userdata=default") > -1);
 	}
 }

@@ -136,7 +136,6 @@ public class SessionInfoTest extends AbstractTest {
 		serviceLayer.getDataPanel(action);
 		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());
 		checkTestUrlParams(action.getContext());
-		checkTestUrlParams(action.getDataPanelLink().getElementLinks().get(0).getContext());
 	}
 
 	/**
@@ -215,7 +214,7 @@ public class SessionInfoTest extends AbstractTest {
 	public void testGetServerCurrentState() throws GeneralException {
 		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		CompositeContext context = new CompositeContext();
-		ServerCurrentState scs = sl.getServerCurrentState(context);
+		ServerState scs = sl.getServerCurrentState(context);
 		assertNotNull(scs);
 		assertEquals(AppInfoSingleton.getAppInfo().getServletContainerVersion(),
 				scs.getServletContainerVersion());
@@ -226,7 +225,7 @@ public class SessionInfoTest extends AbstractTest {
 	public void testRelatedData() throws UnsupportedEncodingException {
 		CompositeContext context = CompositeContext.createCurrent();
 		getExtGridContext(context);
-		String res = SessionContextGenerator.generate(TEST_SESSION, context);
+		String res = SessionContextGenerator.generate(context);
 		assertTrue(res.contains("<selectedRecordId>r2</selectedRecordId>"));
 		assertTrue(res.contains("<currentColumnId>curColumnId</currentColumnId>"));
 		assertTrue(res.contains("size=\"2\""));

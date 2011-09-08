@@ -1,16 +1,21 @@
 package ru.curs.showcase.app.server;
 
 import java.io.IOException;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.html.XFormContext;
+import ru.curs.showcase.model.xform.XFormInfoFactory;
 
 /**
  * Сервлет, обрабатывающий xslt-преобразование из XForms.
  */
-public class XFormsTransformationServlet extends HttpServlet {
+public class XFormXSLTransformServlet extends HttpServlet {
+
+	private static final String XSLTFILE_PARAM = "xsltfile";
 
 	/**
 	 * serialVersionUID.
@@ -18,23 +23,28 @@ public class XFormsTransformationServlet extends HttpServlet {
 	private static final long serialVersionUID = 382470453045525219L;
 
 	private static final String XSLTFILE_PARAM_ERROR =
-		"В XFormsTransformationServlet не передан обязательный параметр xsltfile";
+		"В XFormsXSLTransformServlet не передан обязательный параметр xsltfile";
 
 	@Override
 	protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String xsltFile = request.getParameter("xsltfile");
+		String xsltFile = request.getParameter(XSLTFILE_PARAM);
 		if (xsltFile == null) {
 			throw new ServletException(XSLTFILE_PARAM_ERROR);
 		}
-		String userDataId = request.getParameter(ExchangeConstants.URL_PARAM_USERDATA);
+
+		Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
+		params.remove(XSLTFILE_PARAM);
 		String content = ServletUtils.getRequestAsString(request);
+		XFormContext context = new XFormContext(params, content);
+		DataPanelElementInfo elInfo =
+			XFormInfoFactory.generateXFormsTransformationInfo(xsltFile);
 
 		try {
 			ServiceLayerDataServiceImpl sl =
 				new ServiceLayerDataServiceImpl(request.getSession().getId());
-			String res = sl.handleXSLTSubmission(xsltFile, content, userDataId);
+			String res = sl.handleXSLTSubmission(context, elInfo);
 			response.setStatus(HttpServletResponse.SC_OK);
 			ServletUtils.makeResponseFromString(response, res);
 		} catch (Exception e) {

@@ -57,7 +57,7 @@ public final class XFormPanelCallbacksEvents {
 
 			if (curXFormPanel.getElementInfo().getSaveProc() != null) {
 				curXFormPanel.getDataService().saveXForms(
-						new XFormsContext(curXFormPanel.getContext(), data),
+						new XFormContext(curXFormPanel.getContext(), data),
 						curXFormPanel.getElementInfo(),
 						new GWTServiceCallback<Void>(Constants.XFORM_SAVE_DATA_ERROR) {
 
@@ -90,7 +90,7 @@ public final class XFormPanelCallbacksEvents {
 		Action ac = null;
 
 		List<HTMLEvent> events =
-			((XForms) currentXFormPanel.getElement()).getEventManager().getEventForLink(linkId);
+			((XForm) currentXFormPanel.getElement()).getEventManager().getEventForLink(linkId);
 		// TODO сделал для простоты т.к. сейчас для xforms не может вернутся
 		// более 1 события
 		if (events.size() > 0) {
@@ -103,7 +103,7 @@ public final class XFormPanelCallbacksEvents {
 			final Action ac) {
 		UploadHelper uh = currentXFormPanel.getUw().getUploadHelper();
 		try {
-			XFormsContext xcontext = new XFormsContext(currentXFormPanel.getContext(), data);
+			XFormContext xcontext = new XFormContext(currentXFormPanel.getContext(), data);
 			uh.addStdPostParamsToBody(xcontext, currentXFormPanel.getElementInfo());
 		} catch (SerializationException e) {
 			MessageBox.showSimpleMessage(Constants.XFORMS_UPLOAD_ERROR, e.getMessage());
@@ -317,7 +317,7 @@ public final class XFormPanelCallbacksEvents {
 
 			try {
 				dh.addParam("linkId", URL.encode(linkId));
-				dh.addStdPostParamsToBody(new XFormsContext(currentXFormPanel.getContext(), data),
+				dh.addStdPostParamsToBody(new XFormContext(currentXFormPanel.getContext(), data),
 						currentXFormPanel.getElementInfo());
 				dh.submit();
 			} catch (Exception e) {

@@ -8,7 +8,7 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  * @author den
  * 
  */
-public final class ServerCurrentState implements SerializableElement {
+public final class ServerState implements SerializableElement {
 
 	/**
 	 * serialVersionUID.

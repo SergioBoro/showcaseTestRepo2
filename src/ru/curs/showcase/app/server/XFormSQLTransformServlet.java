@@ -1,19 +1,23 @@
 package ru.curs.showcase.app.server;
 
 import java.io.IOException;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.html.XFormContext;
+import ru.curs.showcase.model.xform.XFormInfoFactory;
 
 /**
  * Сервлет, обрабатывающий submission из XForms.
  */
-public class XFormsSubmissionServlet extends HttpServlet {
+public class XFormSQLTransformServlet extends HttpServlet {
 
+	private static final String PROC_PARAM = "proc";
 	private static final String PROC_PARAM_ERROR =
-		"В XFormsSubmissionServlet не передан обязательный параметр proc";
+		"В XFormsSQLTransformServlet не передан обязательный параметр proc";
 	/**
 	 * serialVersionUID.
 	 */
@@ -22,17 +26,21 @@ public class XFormsSubmissionServlet extends HttpServlet {
 	@Override
 	protected void doPost(final HttpServletRequest req, final HttpServletResponse response)
 			throws ServletException, IOException {
-		String procName = req.getParameter("proc");
+		String procName = req.getParameter(PROC_PARAM);
 		if (procName == null) {
 			throw new ServletException(PROC_PARAM_ERROR);
 		}
-		String userDataId = req.getParameter(ExchangeConstants.URL_PARAM_USERDATA);
-		String content = ServletUtils.getRequestAsString(req);
 
+		Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(req);
+		params.remove(PROC_PARAM);
+		String content = ServletUtils.getRequestAsString(req);
+		XFormContext context = new XFormContext(params, content);
+		DataPanelElementInfo elInfo =
+			XFormInfoFactory.generateXFormsSQLSubmissionInfo(procName);
 		try {
 			ServiceLayerDataServiceImpl sl =
 				new ServiceLayerDataServiceImpl(req.getSession().getId());
-			String res = sl.handleSQLSubmission(procName, content, userDataId);
+			String res = sl.handleSQLSubmission(context, elInfo);
 
 			response.setStatus(HttpServletResponse.SC_OK);
 			ServletUtils.makeResponseFromString(response, res);

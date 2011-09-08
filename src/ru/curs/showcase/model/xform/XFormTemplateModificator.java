@@ -13,10 +13,10 @@ import ru.curs.showcase.util.xml.*;
  * @author den
  * 
  */
-public final class XFormsTemplateModificator extends GeneralXMLHelper {
+public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String ROOT_SRV_DATA_TAG = "srvdata";
 
-	private XFormsTemplateModificator() {
+	private XFormTemplateModificator() {
 		throw new UnsupportedOperationException();
 	}
 

@@ -11,7 +11,7 @@ import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.html.XFormsContext;
+import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.runtime.AppProps;
@@ -24,7 +24,7 @@ import ru.curs.showcase.util.xml.*;
  * @author den
  * 
  */
-public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
+public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	private static final String ELEMENT_0205 = "0205";
 	private static final String XFORMS_SUBMISSION1 = "xforms_submission1";
 	private static final String TEST_XML_FILE = "log4j.xml";
@@ -38,7 +38,7 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", ELEMENT_0205);
 
-		XFormsGateway gateway = new XFormsFileGateway();
+		XFormGateway gateway = new XFormFileGateway();
 		gateway.getRawData(context, element);
 	}
 
@@ -51,12 +51,12 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", ELEMENT_0205);
 
-		XFormsGateway gateway = new XFormsFileGateway();
+		XFormGateway gateway = new XFormFileGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
-		gateway = new XFormsFileGateway();
+		gateway = new XFormFileGateway();
 		gateway.saveData(context, element, content);
 		File file =
-			new File(String.format(XFormsFileGateway.TMP_TEST_DATA_DIR + "/%s_updated.xml",
+			new File(String.format(XFormFileGateway.TMP_TEST_DATA_DIR + "/%s_updated.xml",
 					element.getProcName()));
 		assertTrue(file.exists());
 	}
@@ -71,7 +71,7 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", ELEMENT_0205);
 
-		XFormsGateway gateway = new XFormsFileGateway();
+		XFormGateway gateway = new XFormFileGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 
 		DocumentBuilder db = XMLUtils.createBuilder();
@@ -91,7 +91,7 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms1Info();
 
-		XFormsGateway gateway = new XFormsDBGateway();
+		XFormGateway gateway = new XFormDBGateway();
 		gateway.getRawData(context, element);
 	}
 
@@ -104,9 +104,9 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms1Info();
 
-		XFormsGateway gateway = new XFormsDBGateway();
+		XFormGateway gateway = new XFormDBGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
-		gateway = new XFormsDBGateway();
+		gateway = new XFormDBGateway();
 		gateway.saveData(context, element, content);
 	}
 
@@ -119,9 +119,9 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms2Info();
 
-		XFormsGateway gateway = new XFormsDBGateway();
+		XFormGateway gateway = new XFormDBGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
-		gateway = new XFormsDBGateway();
+		gateway = new XFormDBGateway();
 		try {
 			gateway.saveData(context, element, content);
 		} catch (ValidateInDBException e) {
@@ -134,7 +134,7 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 	}
 
 	private String getNewContentBasedOnExisting(final CompositeContext context,
-			final DataPanelElementInfo element, final XFormsGateway gateway) {
+			final DataPanelElementInfo element, final XFormGateway gateway) {
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 		Element newChild = raw.getData().createElementNS("", "new");
 		raw.getData().getDocumentElement().appendChild(newChild);
@@ -149,8 +149,8 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testSQLSubmission() {
 		String data = TEST_DATA_TAG;
-		XFormsGateway gateway = new XFormsDBGateway();
-		String res = gateway.handleSubmission(XFORMS_SUBMISSION1, data);
+		XFormGateway gateway = new XFormDBGateway();
+		String res = gateway.sqlTransform(XFORMS_SUBMISSION1, data);
 		assertEquals(data, res);
 	}
 
@@ -160,9 +160,9 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testXFormsFileGatewayDownload() {
-		XFormsGateway gateway = new XFormsFileGateway();
+		XFormGateway gateway = new XFormFileGateway();
 		final String linkId = TEST_XML_FILE;
-		XFormsContext context = new XFormsContext(getTestContext1());
+		XFormContext context = new XFormContext(getTestContext1());
 		DataFile<ByteArrayOutputStream> file = gateway.downloadFile(context, null, linkId);
 		assertNotNull(file);
 		assertNotNull(file.getData());
@@ -175,11 +175,11 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testXFormsFileGatewayUpload() {
-		XFormsGateway gateway = new XFormsFileGateway();
+		XFormGateway gateway = new XFormFileGateway();
 		final String linkId = TEST_XML_FILE;
 		DataFile<InputStream> file =
 			new DataFile<InputStream>(AppProps.loadResToStream(linkId), linkId);
-		gateway.uploadFile(new XFormsContext(), null, linkId, file);
+		gateway.uploadFile(new XFormContext(), null, linkId, file);
 	}
 
 	private DataFile<ByteArrayOutputStream> getTestFile(final String linkId) throws IOException {
@@ -196,7 +196,7 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = XSDValidateException.class)
 	public void testXFormsXMLUploadBad() throws IOException {
-		XFormsContext context = new XFormsContext(getTestContext1());
+		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc8";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
@@ -206,7 +206,7 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 			new UserXMLTransformer(file, elementInfo.getProcs().get(linkId));
 		transformer.checkAndTransform();
 
-		XFormsGateway gateway = new XFormsDBGateway();
+		XFormGateway gateway = new XFormDBGateway();
 		gateway.uploadFile(context, elementInfo, linkId, transformer.getInputStreamResult());
 	}
 
@@ -217,11 +217,11 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = XSDValidateException.class)
 	public void testXFormsXMLDownloadBad() throws IOException {
-		XFormsContext context = new XFormsContext(getTestContext1());
+		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc10";
 
-		XFormsGateway gateway = new XFormsDBGateway();
+		XFormGateway gateway = new XFormDBGateway();
 		DataFile<ByteArrayOutputStream> file = gateway.downloadFile(context, elementInfo, linkId);
 
 		UserXMLTransformer transformer =
@@ -239,13 +239,13 @@ public class XFormsGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "0208");
 
-		XFormsGateway gateway = new XFormsDBGateway();
+		XFormGateway gateway = new XFormDBGateway();
 		String content = getNewContentBasedOnExisting(context, elementInfo, gateway);
 
 		UserXMLTransformer transformer =
 			new UserXMLTransformer(content, elementInfo.getSaveProc());
 		transformer.checkAndTransform();
-		gateway = new XFormsDBGateway();
+		gateway = new XFormDBGateway();
 		gateway.saveData(context, elementInfo, transformer.getStringResult());
 	}
 

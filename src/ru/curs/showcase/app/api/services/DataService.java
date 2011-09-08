@@ -114,7 +114,7 @@ public interface DataService extends RemoteService {
 	 * @return - логическая форма без данных.
 	 * @throws GeneralException
 	 */
-	XForms getXForms(XFormsContext context, DataPanelElementInfo element) throws GeneralException;
+	XForm getXForms(XFormContext context, DataPanelElementInfo element) throws GeneralException;
 
 	/**
 	 * Сохраняет данные карточки на основе XForms.
@@ -125,7 +125,7 @@ public interface DataService extends RemoteService {
 	 *            - описание элемента.
 	 * @throws GeneralException
 	 */
-	void saveXForms(XFormsContext context, DataPanelElementInfo element) throws GeneralException;
+	void saveXForms(XFormContext context, DataPanelElementInfo element) throws GeneralException;
 
 	/**
 	 * Возвращает информацию о текущем состоянии сервера и о текущем сеансе.
@@ -135,7 +135,7 @@ public interface DataService extends RemoteService {
 	 * @param context
 	 *            -контекст, содержащий параметры URL.
 	 */
-	ServerCurrentState getServerCurrentState(CompositeContext context) throws GeneralException;
+	ServerState getServerCurrentState(CompositeContext context) throws GeneralException;
 
 	/**
 	 * Выполняет действие на сервере.

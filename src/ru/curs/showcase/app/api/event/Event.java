@@ -26,16 +26,6 @@ public class Event implements SerializableElement {
 	private static final long serialVersionUID = 3610656112304171914L;
 
 	/**
-	 * Тип взаимодействия пользователя с элементом UI.
-	 */
-	private InteractionType interactionType;
-
-	/**
-	 * Действие, вызываемое по наступлению события.
-	 */
-	private Action action;
-
-	/**
 	 * Первый идентификатор для события. Является обязательным!
 	 */
 	private String id1;
@@ -47,6 +37,16 @@ public class Event implements SerializableElement {
 	 * являются, к примеру, строка и столбец в гриде.
 	 */
 	private String id2;
+
+	/**
+	 * Тип взаимодействия пользователя с элементом UI.
+	 */
+	private InteractionType interactionType;
+
+	/**
+	 * Действие, вызываемое по наступлению события.
+	 */
+	private Action action;
 
 	public final InteractionType getInteractionType() {
 		return interactionType;

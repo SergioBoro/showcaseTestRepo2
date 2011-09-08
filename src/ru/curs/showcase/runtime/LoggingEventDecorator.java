@@ -25,7 +25,12 @@ public class LoggingEventDecorator {
 	}
 
 	public String getMessage() {
-		return (String) original.getMessage();
+		String src = (String) original.getMessage();
+		src = src.replace("<", "&lt;");
+		src = src.replace(">", "&gt;");
+		src = src.replace("\\r\\n", "&lt;br/&gt;");
+		src = src.replace("\\n", "&lt;br/&gt;");
+		return src;
 	}
 
 	public Level getLevel() {

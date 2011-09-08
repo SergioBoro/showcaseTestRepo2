@@ -70,13 +70,13 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	 * 
 	 * @throws IOException
 	 * @throws SQLException
-	 * @see ru.curs.showcase.util.ServerCurrentState ServerCurrentState
-	 * @see ru.curs.showcase.app.server.ServerCurrentStateBuilder
+	 * @see ru.curs.showcase.util.ServerState ServerCurrentState
+	 * @see ru.curs.showcase.runtime.ServerStateFactory
 	 *      ServerCurrentStateBuilder
 	 */
 	@Test
 	public void testServerCurrentStateBuilder() throws IOException, SQLException {
-		ServerCurrentState state = ServerCurrentStateBuilder.build("fake");
+		ServerState state = ServerStateFactory.build("fake");
 		assertNotNull(state);
 		assertNotNull(state.getAppVersion());
 		assertTrue(state.getAppVersion().endsWith("development"));
@@ -85,7 +85,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(state.getSqlVersion());
 
 		assertEquals("10.0.0.9999",
-				ServerCurrentStateBuilder.getAppVersion("ru/curs/showcase/test/"));
+				ServerStateFactory.getAppVersion("ru/curs/showcase/test/"));
 	}
 
 	/**

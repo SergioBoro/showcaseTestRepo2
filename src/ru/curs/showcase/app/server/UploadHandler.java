@@ -10,7 +10,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.app.api.html.XFormsContext;
+import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.util.*;
 
@@ -56,8 +56,8 @@ public final class UploadHandler extends AbstractFilesHandler {
 
 			if (item.isFormField()) {
 				String paramValue = decodeParamValue(out.toString());
-				if (XFormsContext.class.getName().equals(name)) {
-					setContext((XFormsContext) deserializeObject(paramValue));
+				if (XFormContext.class.getName().equals(name)) {
+					setContext((XFormContext) deserializeObject(paramValue));
 				} else if (DataPanelElementInfo.class.getName().equals(name)) {
 					setElementInfo((DataPanelElementInfo) deserializeObject(paramValue));
 				}
@@ -73,8 +73,8 @@ public final class UploadHandler extends AbstractFilesHandler {
 	}
 
 	@Override
-	public XFormsContext getContext() {
-		return (XFormsContext) super.getContext();
+	public XFormContext getContext() {
+		return (XFormContext) super.getContext();
 	}
 
 	public Map<String, DataFile<ByteArrayOutputStream>> getFiles() {

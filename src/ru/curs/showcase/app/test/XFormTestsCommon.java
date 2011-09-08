@@ -73,9 +73,9 @@ public final class XFormTestsCommon {
 	 * 
 	 * @return XForms
 	 */
-	public static XForms createXForms2() {
+	public static XForm createXForms2() {
 
-		XForms xform = new XForms();
+		XForm xform = new XForm();
 		final int numParts = 4;
 		ArrayList<String> xFormParts = new ArrayList<String>(numParts);
 		xFormParts.add(XFORM_2_BODY);
@@ -134,7 +134,7 @@ public final class XFormTestsCommon {
 		dpei.setType(DataPanelElementType.XFORMS);
 		dpei.setRefreshByTimer(true);
 
-		XForms xform = createXForms2();
+		XForm xform = createXForms2();
 
 		return new XFormPanel(context, dpei, xform);
 	}

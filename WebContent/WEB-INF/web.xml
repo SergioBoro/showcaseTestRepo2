@@ -85,12 +85,13 @@
     <url-pattern>/secured/upload</url-pattern>
   </servlet-mapping>    
   <servlet>
-    <servlet-name>XFormsSubmissionServlet</servlet-name>
-    <servlet-class>ru.curs.showcase.app.server.XFormsSubmissionServlet</servlet-class>
+    <servlet-name>XFormSQLTransformServlet</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.XFormSQLTransformServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>XFormsSubmissionServlet</servlet-name>
+    <servlet-name>XFormSQLTransformServlet</servlet-name>
     <url-pattern>/secured/submit</url-pattern>
+    <url-pattern>/secured/sqlTransform</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>SelectorDataService</servlet-name>
@@ -118,13 +119,13 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>XFormsTransformationServlet</display-name>
-    <servlet-name>XFormsTransformationServlet</servlet-name>
-    <servlet-class>ru.curs.showcase.app.server.XFormsTransformationServlet</servlet-class>
+    <servlet-name>XFormXSLTransformServlet</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.XFormXSLTransformServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>XFormsTransformationServlet</servlet-name>
+    <servlet-name>XFormXSLTransformServlet</servlet-name>
     <url-pattern>/secured/xslttransformer</url-pattern>
+    <url-pattern>/secured/xslTransform</url-pattern>    
   </servlet-mapping>  
   <servlet>
     <servlet-name>GeoCheckServlet</servlet-name>

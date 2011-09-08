@@ -35,6 +35,11 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	private DataPanelActionType dataPanelActionType = DataPanelActionType.DO_NOTHING;
 
 	/**
+	 * Режим отображения элементов панели.
+	 */
+	private ShowInMode showInMode = ShowInMode.PANEL;
+
+	/**
 	 * Ссылка на информационную панель, которая должна быть открыта при
 	 * выполнении действия.
 	 */
@@ -45,11 +50,6 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	 * действия.
 	 */
 	private NavigatorElementLink navigatorElementLink;
-
-	/**
-	 * Режим отображения элементов панели.
-	 */
-	private ShowInMode showInMode = ShowInMode.PANEL;
 
 	/**
 	 * Признак того, что нужно сохранять пользовательские настройки всех
@@ -65,6 +65,12 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	private ModalWindowInfo modalWindowInfo;
 
 	/**
+	 * Контекст, общий для всего действия. Играет роль контекста по умолчанию
+	 * для элементов, не имеющих переопределенного контекста.
+	 */
+	private CompositeContext context;
+
+	/**
 	 * Список действий на сервере, содержащихся в данном действии.
 	 */
 	private List<Activity> serverActivities = new ArrayList<Activity>();
@@ -73,12 +79,6 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	 * Список действий на сервере, содержащихся в данном действии.
 	 */
 	private List<Activity> clientActivities = new ArrayList<Activity>();
-
-	/**
-	 * Контекст, общий для всего действия. Играет роль контекста по умолчанию
-	 * для элементов, не имеющих переопределенного контекста.
-	 */
-	private CompositeContext context;
 
 	public final DataPanelLink getDataPanelLink() {
 		return dataPanelLink;
