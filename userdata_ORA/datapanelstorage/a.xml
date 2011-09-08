@@ -36,9 +36,10 @@
   	    <element id="0402" type="grid" proc="grid_cities_one"/>
 	</tab>
 	<tab id="5" name="График">
-        <element id="2" type="chart" proc="chart_pas"/>
+        <element id="501" type="webtext" proc="webtext_pas" transform="pas.xsl"/>	
+        <element id="502" type="chart" proc="chart_pas"/>
 	</tab>	
-	<tab id="7" name="Карта. Раскраска стилями">
-		<element id="72" type="geomap" proc="geomap_bal"/>
+	<tab id="7" name="Карта">
+		<element id="72" type="geomap" proc="geomap_func2"/>
 	</tab>			
 </datapanel>
