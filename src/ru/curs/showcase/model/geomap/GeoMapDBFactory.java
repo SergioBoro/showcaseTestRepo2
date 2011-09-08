@@ -8,6 +8,7 @@ import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.EventFactory;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 
 /**
@@ -203,33 +204,87 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 	@Override
 	protected void prepareData() {
 		try {
-			ResultSet rs = getStatement().getResultSet();
-			layersSql = SQLUtils.cacheResultSet(rs);
-			if (!getStatement().getMoreResults()) {
-				throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR, getCallContext(),
-						getElementInfo());
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+				ResultSet rs = getStatement().getResultSet();
+				layersSql = SQLUtils.cacheResultSet(rs);
+				if (!getStatement().getMoreResults()) {
+					throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR, getCallContext(),
+							getElementInfo());
+				}
+				rs = getStatement().getResultSet();
+				pointsSql = SQLUtils.cacheResultSet(rs);
+				if (!getStatement().getMoreResults()) {
+					return; // разрешаем создавать карту, содержащую только
+							// точки -
+							// например карту региона.
+				}
+				rs = getStatement().getResultSet();
+				areasSql = SQLUtils.cacheResultSet(rs);
+				if (!getStatement().getMoreResults()) {
+					return; // разрешаем создавать карту без показателей
+				}
+				rs = getStatement().getResultSet();
+				indicatorsSql = SQLUtils.cacheResultSet(rs);
+				if (!getStatement().getMoreResults()) {
+					throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR,
+							getCallContext(), getElementInfo());
+				}
+				rs = getStatement().getResultSet();
+				indicatorValuesSql = SQLUtils.cacheResultSet(rs);
+			} else {
+				ResultSet rs =
+					(ResultSet) getStatement().getObject(
+							GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_1);
+				layersSql = SQLUtils.cacheResultSet(rs);
+
+				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_2)) {
+					throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR, getCallContext(),
+							getElementInfo());
+				}
+				rs =
+					(ResultSet) getStatement().getObject(
+							GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_2);
+				pointsSql = SQLUtils.cacheResultSet(rs);
+
+				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_3)) {
+					return; // разрешаем создавать карту, содержащую только
+							// точки -
+							// например карту региона.
+				}
+				rs =
+					(ResultSet) getStatement().getObject(
+							GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_3);
+				areasSql = SQLUtils.cacheResultSet(rs);
+
+				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_4)) {
+					return; // разрешаем создавать карту без показателей
+				}
+				rs =
+					(ResultSet) getStatement().getObject(
+							GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_4);
+				indicatorsSql = SQLUtils.cacheResultSet(rs);
+
+				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_5)) {
+					throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR,
+							getCallContext(), getElementInfo());
+				}
+				rs =
+					(ResultSet) getStatement().getObject(
+							GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_5);
+				indicatorValuesSql = SQLUtils.cacheResultSet(rs);
+
 			}
-			rs = getStatement().getResultSet();
-			pointsSql = SQLUtils.cacheResultSet(rs);
-			if (!getStatement().getMoreResults()) {
-				return; // разрешаем создавать карту, содержащую только точки -
-						// например карту региона.
-			}
-			rs = getStatement().getResultSet();
-			areasSql = SQLUtils.cacheResultSet(rs);
-			if (!getStatement().getMoreResults()) {
-				return; // разрешаем создавать карту без показателей
-			}
-			rs = getStatement().getResultSet();
-			indicatorsSql = SQLUtils.cacheResultSet(rs);
-			if (!getStatement().getMoreResults()) {
-				throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR, getCallContext(),
-						getElementInfo());
-			}
-			rs = getStatement().getResultSet();
-			indicatorValuesSql = SQLUtils.cacheResultSet(rs);
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
+		}
+	}
+
+	private boolean isCursorOpen(final int index) {
+		try {
+			getStatement().getObject(index);
+			return true;
+		} catch (SQLException e) {
+			return false;
 		}
 	}
 
