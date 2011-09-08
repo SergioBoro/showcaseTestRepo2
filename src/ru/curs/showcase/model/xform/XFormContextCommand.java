@@ -2,7 +2,7 @@ package ru.curs.showcase.model.xform;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.model.DataPanelElementCommand;
+import ru.curs.showcase.model.command.DataPanelElementCommand;
 
 /**
  * Базовый класс для всех команд XForms.

@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import ru.curs.showcase.app.api.datapanel.DataPanel;
 import ru.curs.showcase.app.api.event.Action;
-import ru.curs.showcase.model.ServiceLayerCommand;
+import ru.curs.showcase.model.command.ServiceLayerCommand;
 import ru.curs.showcase.util.DataFile;
 
 /**

@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.Navigator;
-import ru.curs.showcase.model.ServiceLayerCommand;
+import ru.curs.showcase.model.command.ServiceLayerCommand;
 
 /**
  * Команда получения навигатора.

@@ -17,6 +17,7 @@ import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.command.GeneralServerExceptionFactory;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.grid.*;

@@ -1,4 +1,4 @@
-package ru.curs.showcase.app.server;
+package ru.curs.showcase.util;
 
 import java.io.*;
 import java.util.*;
@@ -8,7 +8,6 @@ import javax.servlet.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
-import ru.curs.showcase.util.TextUtils;
 
 /**
  * Вспомогательные функции для работы с сервлетами.

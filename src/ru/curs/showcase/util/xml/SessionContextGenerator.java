@@ -1,4 +1,4 @@
-package ru.curs.showcase.app.server;
+package ru.curs.showcase.util.xml;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -9,9 +9,7 @@ import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.util.TextUtils;
-import ru.curs.showcase.util.xml.*;
-import ru.curs.showcase.util.xml.XMLUtils;
+import ru.curs.showcase.util.*;
 
 /**
  * Класс, содержащий функции для получения информации о текущей сессией

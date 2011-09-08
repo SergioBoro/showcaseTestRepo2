@@ -1,7 +1,7 @@
 package ru.curs.showcase.model.frame;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.ServiceLayerCommand;
+import ru.curs.showcase.model.command.ServiceLayerCommand;
 
 /**
  * Базовый класс для команд, возвращающих фрейм(ы) главной страницы.

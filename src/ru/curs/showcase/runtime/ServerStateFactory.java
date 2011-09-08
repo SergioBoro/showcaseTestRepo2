@@ -5,7 +5,6 @@ import java.sql.*;
 import java.util.regex.*;
 
 import ru.curs.showcase.app.api.ServerState;
-import ru.curs.showcase.app.server.ServletUtils;
 import ru.curs.showcase.util.*;
 
 /**

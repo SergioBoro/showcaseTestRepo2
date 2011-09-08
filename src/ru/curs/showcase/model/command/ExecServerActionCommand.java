@@ -1,12 +1,12 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.command;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.server.SessionContextGenerator;
 import ru.curs.showcase.model.event.*;
-import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.xml.SessionContextGenerator;
 
 /**
  * Команда, выполняющая серверные действия.

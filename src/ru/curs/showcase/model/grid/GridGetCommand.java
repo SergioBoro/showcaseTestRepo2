@@ -4,6 +4,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.command.DataPanelElementCommand;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**

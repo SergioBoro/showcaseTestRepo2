@@ -9,7 +9,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.DataPanelElementCommand;
+import ru.curs.showcase.model.command.DataPanelElementCommand;
 import ru.curs.showcase.util.ExcelFile;
 import ru.curs.showcase.util.xml.XMLUtils;
 

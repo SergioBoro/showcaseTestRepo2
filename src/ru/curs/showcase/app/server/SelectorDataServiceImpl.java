@@ -11,6 +11,8 @@ import org.slf4j.*;
 import ru.beta2.extra.gwt.ui.selector.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.ServletUtils;
+import ru.curs.showcase.util.xml.SessionContextGenerator;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 

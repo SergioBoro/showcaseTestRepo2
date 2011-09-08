@@ -1,4 +1,4 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.command;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Modifier;
@@ -9,8 +9,8 @@ import org.slf4j.*;
 import ru.curs.showcase.app.api.ExcludeFromSerialization;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.util.xml.SessionContextGenerator;
 
 import com.google.gson.*;
 

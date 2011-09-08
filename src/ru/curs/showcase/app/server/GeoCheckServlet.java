@@ -5,7 +5,7 @@ import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.util.*;
 
 /**
  * Сервлет для проверки того, доступен ли гео-модуль. Гео-модуль отключен в open

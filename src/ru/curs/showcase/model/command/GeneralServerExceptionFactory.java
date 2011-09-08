@@ -1,4 +1,4 @@
-package ru.curs.showcase.app.server;
+package ru.curs.showcase.model.command;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
