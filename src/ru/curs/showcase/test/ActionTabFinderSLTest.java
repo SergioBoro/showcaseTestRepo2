@@ -10,7 +10,9 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
+import ru.curs.showcase.model.grid.GridGetCommand;
+import ru.curs.showcase.model.navigator.NavigatorGetCommand;
+import ru.curs.showcase.model.webtext.WebTextGetCommand;
 
 /**
  * Проверка ActionTabFinder через SL.
@@ -21,10 +23,10 @@ import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 public class ActionTabFinderSLTest extends AbstractTest {
 	@Test
 	public void testReadFirstTabForDBDPFromNavigatorDynSessionContext() throws GeneralException {
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
-		Navigator navigator = sl.getNavigator(context);
+		NavigatorGetCommand command = new NavigatorGetCommand(context);
+		Navigator navigator = command.execute();
 
 		assertEquals("1", navigator.getGroupById("00").getElementById("04").getAction()
 				.getDataPanelLink().getTabId());
@@ -35,8 +37,9 @@ public class ActionTabFinderSLTest extends AbstractTest {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.WEBTEXT);
 		elInfo.setProcName("webtext_dyn_dp_main");
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		WebText webtext = sl.getWebText(context, elInfo);
+
+		WebTextGetCommand command = new WebTextGetCommand(context, elInfo);
+		WebText webtext = command.execute();
 
 		assertEquals("01", webtext.getEventManager().getEvents().get(0).getAction()
 				.getDataPanelLink().getTabId());
@@ -48,8 +51,9 @@ public class ActionTabFinderSLTest extends AbstractTest {
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.WEBTEXT);
 		elInfo.setProcName("webtext_dyn_dp_session");
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		WebText webtext = sl.getWebText(context, elInfo);
+
+		WebTextGetCommand command = new WebTextGetCommand(context, elInfo);
+		WebText webtext = command.execute();
 
 		assertEquals("1", webtext.getEventManager().getEvents().get(0).getAction()
 				.getDataPanelLink().getTabId());
@@ -62,8 +66,9 @@ public class ActionTabFinderSLTest extends AbstractTest {
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);
 		elInfo.setProcName("grid_dyn_dp_main");
 		generateTestTabWithElement(elInfo);
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = sl.getGrid(context, elInfo);
+
+		GridGetCommand command = new GridGetCommand(context, elInfo, true);
+		Grid grid = command.execute();
 
 		assertEquals("01", grid.getDefaultAction().getDataPanelLink().getTabId());
 	}
@@ -75,8 +80,9 @@ public class ActionTabFinderSLTest extends AbstractTest {
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);
 		elInfo.setProcName("grid_dyn_dp_session");
 		generateTestTabWithElement(elInfo);
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = sl.getGrid(context, elInfo);
+
+		GridGetCommand command = new GridGetCommand(context, elInfo, true);
+		Grid grid = command.execute();
 
 		assertEquals("1", grid.getDefaultAction().getDataPanelLink().getTabId());
 	}

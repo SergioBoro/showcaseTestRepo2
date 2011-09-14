@@ -3,6 +3,8 @@ package ru.curs.showcase.model;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import ru.curs.showcase.util.ObjectToLogSerializer;
+
 /**
  * Реестр, хранящий различные глобальные объекты, настраиваемые с помощью Spring
  * IoC.
@@ -28,5 +30,9 @@ public final class AppRegistry {
 	 */
 	public static ActionTabFinder getActionTabFinder() {
 		return (ActionTabFinder) context.getBean("actionTabFinder");
+	}
+
+	public static ObjectToLogSerializer getObjectSerializer() {
+		return (ObjectToLogSerializer) context.getBean("objectSerializer");
 	}
 }

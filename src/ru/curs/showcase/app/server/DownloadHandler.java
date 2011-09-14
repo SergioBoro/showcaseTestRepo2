@@ -7,6 +7,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.model.xform.XFormDownloadCommand;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
@@ -25,9 +26,10 @@ public final class DownloadHandler extends AbstractDownloadHandler {
 
 	@Override
 	protected void processFiles() throws GeneralException {
-		ServiceLayerDataServiceImpl serviceLayer =
-			new ServiceLayerDataServiceImpl(getRequest().getSession().getId());
-		setOutputFile(serviceLayer.getDownloadFile(getContext(), getElementInfo(), linkId));
+		XFormDownloadCommand command =
+			new XFormDownloadCommand(getContext(), getElementInfo(),
+					linkId);
+		setOutputFile(command.execute());
 	}
 
 	@Override

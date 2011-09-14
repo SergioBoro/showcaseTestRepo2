@@ -8,7 +8,7 @@ import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.model.xform.XFormInfoFactory;
+import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.util.ServletUtils;
 
 /**
@@ -36,12 +36,10 @@ public class XFormSQLTransformServlet extends HttpServlet {
 		params.remove(PROC_PARAM);
 		String content = ServletUtils.getRequestAsString(req);
 		XFormContext context = new XFormContext(params, content);
-		DataPanelElementInfo elInfo =
-			XFormInfoFactory.generateXFormsSQLSubmissionInfo(procName);
+		DataPanelElementInfo elInfo = XFormInfoFactory.generateXFormsSQLSubmissionInfo(procName);
 		try {
-			ServiceLayerDataServiceImpl sl =
-				new ServiceLayerDataServiceImpl(req.getSession().getId());
-			String res = sl.handleSQLSubmission(context, elInfo);
+			XFormSQLTransformCommand command = new XFormSQLTransformCommand(context, elInfo);
+			String res = command.execute();
 
 			response.setStatus(HttpServletResponse.SC_OK);
 			ServletUtils.makeResponseFromString(response, res);

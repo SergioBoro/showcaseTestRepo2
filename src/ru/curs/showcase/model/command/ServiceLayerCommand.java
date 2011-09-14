@@ -1,18 +1,16 @@
 package ru.curs.showcase.model.command;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Modifier;
-import java.util.UUID;
+import java.lang.reflect.Method;
 
 import org.slf4j.*;
 
-import ru.curs.showcase.app.api.ExcludeFromSerialization;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.model.AppRegistry;
 import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.SessionContextGenerator;
-
-import com.google.gson.*;
 
 /**
  * Абстрактный класс команды сервисного уровня приложения. Весь функционал
@@ -25,24 +23,32 @@ import com.google.gson.*;
  */
 public abstract class ServiceLayerCommand<T> {
 
+	private static final String LOG_TEMPLATE =
+		"Command %s \r\n userName=%s \r\n requestId=%s \r\n commandName=%s \r\n objectClass=%s \r\n "
+				+ "getObjectMethodName=%s \r\n %s";
+
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ServiceLayerCommand.class);
 
-	/**
-	 * Идентификатор текущего запроса к сервисному слою.
-	 */
-	private final UUID requestId = UUID.randomUUID();
+	private final CommandContext commandContext = new CommandContext(this);
 
 	/**
 	 * Идентификатор текущей HTTP сессии.
 	 */
-	private final String sessionId;
+	private final String sessionId = ServletUtils.getCurrentSessionId();
 
 	private T result;
+
+	private final ObjectToLogSerializer serializer = AppRegistry.getObjectSerializer();
 
 	/**
 	 * Контекст вызова команды. Должен быть у любой команды!
 	 */
 	private final CompositeContext context;
+
+	@InputParam
+	public CompositeContext getContext() {
+		return context;
+	}
 
 	public T getResult() {
 		return result;
@@ -52,9 +58,8 @@ public abstract class ServiceLayerCommand<T> {
 		result = aResult;
 	}
 
-	public ServiceLayerCommand(final String aSessionId, final CompositeContext aContext) {
+	public ServiceLayerCommand(final CompositeContext aContext) {
 		super();
-		sessionId = aSessionId;
 		context = aContext;
 	}
 
@@ -73,7 +78,27 @@ public abstract class ServiceLayerCommand<T> {
 	}
 
 	protected void logInputParams() {
-		// TODO Auto-generated method stub
+		if (!LOGGER.isInfoEnabled()) {
+			return;
+		}
+
+		for (Method method : getClass().getMethods()) {
+			if (method.getAnnotation(InputParam.class) != null) {
+				try {
+					Object methodResult = method.invoke(this);
+					if (methodResult == null) {
+						continue;
+					}
+					LOGGER.info(String.format(LOG_TEMPLATE, "input", ServletUtils
+							.getCurrentSessionUserName(), commandContext.getRequestId(),
+							commandContext.getCommandName(), method.getReturnType()
+									.getSimpleName(), method.getName(), serializer
+									.serialize(methodResult)));
+				} catch (Exception e) {
+					throw new ServerInternalError(e);
+				}
+			}
+		}
 	}
 
 	@SuppressWarnings("unused")
@@ -86,25 +111,17 @@ public abstract class ServiceLayerCommand<T> {
 	}
 
 	protected void logOutput() {
-		if (LOGGER.isInfoEnabled()) {
-			ExclusionStrategy es = new ExclusionStrategy() {
-				@Override
-				public boolean shouldSkipClass(final Class<?> aClass) {
-					return false;
-				}
-
-				@Override
-				public boolean shouldSkipField(final FieldAttributes fa) {
-					return fa.getAnnotation(ExcludeFromSerialization.class) != null;
-				}
-			};
-			Gson gson =
-				new GsonBuilder().disableHtmlEscaping().setPrettyPrinting()
-						.setExclusionStrategies(es).serializeNulls()
-						.excludeFieldsWithModifiers(Modifier.TRANSIENT + Modifier.STATIC).create();
-
-			LOGGER.info(String.format("SL output \r\n %s \r\n %s", requestId, gson.toJson(result)));
+		if (!LOGGER.isInfoEnabled()) {
+			return;
 		}
+		if (result == null) {
+			return;
+		}
+
+		LOGGER.info(String.format(LOG_TEMPLATE, "output",
+				ServletUtils.getCurrentSessionUserName(), commandContext.getRequestId(),
+				commandContext.getCommandName(), result.getClass().getSimpleName(), "",
+				serializer.serialize(result)));
 	}
 
 	protected abstract void mainProc() throws Exception;
@@ -118,10 +135,6 @@ public abstract class ServiceLayerCommand<T> {
 		getContext().setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(getContext().getSessionParamsMap());
 		getContext().getSessionParamsMap().clear();
-	}
-
-	public CompositeContext getContext() {
-		return context;
 	}
 
 	public String getSessionId() {

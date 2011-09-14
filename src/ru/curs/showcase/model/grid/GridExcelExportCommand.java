@@ -6,10 +6,9 @@ import org.w3c.dom.Document;
 
 import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.command.DataPanelElementCommand;
+import ru.curs.showcase.model.command.*;
 import ru.curs.showcase.util.ExcelFile;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -21,16 +20,34 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelFile> {
 
-	private final GridToExcelExportType exportType;
 	private Grid grid;
+
+	private final GridToExcelExportType exportType;
+
+	@InputParam
+	public GridToExcelExportType getExportType() {
+		return exportType;
+	}
+
 	private final ColumnSet columnSet;
 
-	public GridExcelExportCommand(final String aSessionId, final CompositeContext aContext,
-			final DataPanelElementInfo aElInfo, final GridToExcelExportType aExportType,
-			final ColumnSet cs) {
-		super(aSessionId, aContext, aElInfo);
+	@InputParam
+	public ColumnSet getColumnSet() {
+		return columnSet;
+	}
+
+	public GridExcelExportCommand(final GridContext aContext, final DataPanelElementInfo aElInfo,
+			final GridToExcelExportType aExportType, final ColumnSet cs) {
+		super(aContext, aElInfo);
 		exportType = aExportType;
 		columnSet = cs;
+	}
+
+	public GridExcelExportCommand(final GridContext aContext, final DataPanelElementInfo aElInfo,
+			final GridToExcelExportType aExportType) {
+		super(aContext, aElInfo);
+		exportType = aExportType;
+		columnSet = null;
 	}
 
 	@Override
@@ -46,14 +63,13 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 			getContext().resetForReturnAllRecords();
 		}
 
-		GridGetCommand command =
-			new GridGetCommand(getSessionId(), getContext(), getElementInfo(), false);
+		GridGetCommand command = new GridGetCommand(getContext(), getElementInfo(), false);
 		grid = command.execute();
 	}
 
 	@Override
 	protected void mainProc() throws Exception {
-		GridXMLBuilder builder = new GridXMLBuilder(grid);
+		GridToExcelXMLFactory builder = new GridToExcelXMLFactory(grid);
 		Document xml = builder.build(columnSet);
 		ByteArrayOutputStream stream = XMLUtils.xsltTransformForGrid(xml);
 		setResult(new ExcelFile(stream));

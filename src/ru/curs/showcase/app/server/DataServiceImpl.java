@@ -10,6 +10,15 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.model.chart.ChartGetCommand;
+import ru.curs.showcase.model.command.*;
+import ru.curs.showcase.model.datapanel.DataPanelGetCommand;
+import ru.curs.showcase.model.frame.MainPageGetCommand;
+import ru.curs.showcase.model.geomap.GeoMapGetCommand;
+import ru.curs.showcase.model.grid.GridGetCommand;
+import ru.curs.showcase.model.navigator.NavigatorGetCommand;
+import ru.curs.showcase.model.webtext.WebTextGetCommand;
+import ru.curs.showcase.model.xform.*;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -20,40 +29,37 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 @SuppressWarnings("serial")
 public class DataServiceImpl extends RemoteServiceServlet implements DataService {
 
-	private ServiceLayerDataServiceImpl getServiceLayer() {
-		return new ServiceLayerDataServiceImpl(getSessionId());
-	}
-
 	@Override
 	public Navigator getNavigator(final CompositeContext context) throws GeneralException {
-		return getServiceLayer().getNavigator(context);
-	}
-
-	private String getSessionId() {
-		return perThreadRequest.get().getSession().getId();
+		NavigatorGetCommand command = new NavigatorGetCommand(context);
+		return command.execute();
 	}
 
 	@Override
 	public DataPanel getDataPanel(final Action action) throws GeneralException {
-		return getServiceLayer().getDataPanel(action);
+		DataPanelGetCommand command = new DataPanelGetCommand(action);
+		return command.execute();
 	}
 
 	@Override
 	public WebText getWebText(final CompositeContext context, final DataPanelElementInfo element)
 			throws GeneralException {
-		return getServiceLayer().getWebText(context, element);
+		WebTextGetCommand command = new WebTextGetCommand(context, element);
+		return command.execute();
 	}
 
 	@Override
 	public Grid getGrid(final GridContext context, final DataPanelElementInfo element)
 			throws GeneralException {
-		return getServiceLayer().getGrid(context, element);
+		GridGetCommand command = new GridGetCommand(context, element, true);
+		return command.execute();
 	}
 
 	@Override
 	public Chart getChart(final CompositeContext context, final DataPanelElementInfo element)
 			throws GeneralException {
-		return getServiceLayer().getChart(context, element);
+		ChartGetCommand command = new ChartGetCommand(context, element);
+		return command.execute();
 	}
 
 	@Override
@@ -64,34 +70,40 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	@Override
 	public GeoMap getGeoMap(final CompositeContext context, final DataPanelElementInfo element)
 			throws GeneralException {
-		return getServiceLayer().getGeoMap(context, element);
+		GeoMapGetCommand command = new GeoMapGetCommand(context, element);
+		return command.execute();
 	}
 
 	@Override
 	public XForm getXForms(final XFormContext context, final DataPanelElementInfo element)
 			throws GeneralException {
-		return getServiceLayer().getXForms(context, element);
+		XFormGetCommand command = new XFormGetCommand(context, element);
+		return command.execute();
 	}
 
 	@Override
 	public void saveXForms(final XFormContext context, final DataPanelElementInfo element)
 			throws GeneralException {
-		getServiceLayer().saveXForms(context, element);
+		XFormSaveCommand command = new XFormSaveCommand(context, element);
+		command.execute();
 	}
 
 	@Override
 	public ServerState getServerCurrentState(final CompositeContext context)
 			throws GeneralException {
-		return getServiceLayer().getServerCurrentState(context);
+		ServerStateGetCommand command = new ServerStateGetCommand(context);
+		return command.execute();
 	}
 
 	@Override
 	public void execServerAction(final Action action) throws GeneralException {
-		getServiceLayer().execServerAction(action);
+		ExecServerActionCommand command = new ExecServerActionCommand(action);
+		command.execute();
 	}
 
 	@Override
 	public MainPage getMainPage(final CompositeContext context) throws GeneralException {
-		return getServiceLayer().getMainPage(context);
+		MainPageGetCommand command = new MainPageGetCommand(context);
+		return command.execute();
 	}
 }

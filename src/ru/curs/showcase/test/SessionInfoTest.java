@@ -15,7 +15,9 @@ import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.*;
+import ru.curs.showcase.model.chart.ChartGetCommand;
+import ru.curs.showcase.model.command.ServerStateGetCommand;
+import ru.curs.showcase.model.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -72,9 +74,9 @@ public class SessionInfoTest extends AbstractTest {
 		CompositeContext context = getTestContext3();
 		context.addSessionParams(params);
 		DataPanelElementInfo element = getTestChartInfo();
-		ServiceLayerDataServiceImpl serviceLayer =
-			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
-		serviceLayer.getChart(context, element);
+
+		ChartGetCommand command = new ChartGetCommand(context, element);
+		command.execute();
 
 		checkTestUrlParams(context);
 		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());
@@ -129,12 +131,13 @@ public class SessionInfoTest extends AbstractTest {
 	@Test
 	public void testSessionInfoForGetDP() throws IOException, GeneralException, SAXException {
 		Map<String, List<String>> params = generateTestURLParams(TEST1_USERDATA);
-		ServiceLayerDataServiceImpl serviceLayer =
-			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
 		final int elID = 5;
 		Action action = getAction(TREE_MULTILEVEL_XML, 0, elID);
 		action.setSessionContext(params);
-		serviceLayer.getDataPanel(action);
+
+		DataPanelGetCommand command = new DataPanelGetCommand(action);
+		command.execute();
+
 		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());
 		checkTestUrlParams(action.getContext());
 	}
@@ -149,13 +152,12 @@ public class SessionInfoTest extends AbstractTest {
 	@Test
 	public void testWriteAndReadIfNoURLParams() throws IOException, GeneralException, SAXException {
 		Map<String, List<String>> params = new TreeMap<String, List<String>>();
-
 		CompositeContext context = getTestContext3();
 		context.addSessionParams(params);
 		DataPanelElementInfo element = getTestChartInfo();
-		ServiceLayerDataServiceImpl serviceLayer =
-			new ServiceLayerDataServiceImpl(FAKE_SESSION_ID);
-		serviceLayer.getChart(context, element);
+
+		ChartGetCommand command = new ChartGetCommand(context, element);
+		command.execute();
 
 		String sessionContext = context.getSession();
 		DocumentBuilder db = XMLUtils.createBuilder();
@@ -213,9 +215,9 @@ public class SessionInfoTest extends AbstractTest {
 	 */
 	@Test
 	public void testGetServerCurrentState() throws GeneralException {
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		CompositeContext context = new CompositeContext();
-		ServerState scs = sl.getServerCurrentState(context);
+		ServerStateGetCommand command = new ServerStateGetCommand(context);
+		ServerState scs = command.execute();
 		assertNotNull(scs);
 		assertEquals(AppInfoSingleton.getAppInfo().getServletContainerVersion(),
 				scs.getServletContainerVersion());

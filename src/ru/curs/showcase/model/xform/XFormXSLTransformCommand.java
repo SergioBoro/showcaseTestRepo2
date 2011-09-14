@@ -17,9 +17,8 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public final class XFormXSLTransformCommand extends XFormContextCommand<String> {
 
-	public XFormXSLTransformCommand(final String aSessionId, final XFormContext aContext,
-			final DataPanelElementInfo aElInfo) {
-		super(aSessionId, aContext, aElInfo);
+	public XFormXSLTransformCommand(final XFormContext aContext, final DataPanelElementInfo aElInfo) {
+		super(aContext, aElInfo);
 	}
 
 	@Override

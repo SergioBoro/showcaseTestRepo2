@@ -8,7 +8,7 @@ import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.frame.MainPageFrameType;
+import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.util.ServletUtils;
 
 /**
@@ -32,9 +32,9 @@ public final class MainPageFramesFrontController extends HttpServlet {
 			MainPageFrameType type = MainPageFrameType.valueOf(servlet);
 			Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
 			CompositeContext context = new CompositeContext(params);
-			ServiceLayerDataServiceImpl sl =
-				new ServiceLayerDataServiceImpl(request.getSession().getId());
-			String html = sl.getMainPageFrame(context, type);
+			MainPageFrameGetCommand command =
+				new MainPageFrameGetCommand(context, type);
+			String html = command.execute();
 			response.setStatus(HttpServletResponse.SC_OK);
 			ServletUtils.makeResponseFromString(response, html);
 		} catch (Exception e) {

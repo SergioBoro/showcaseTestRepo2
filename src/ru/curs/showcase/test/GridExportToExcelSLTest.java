@@ -10,8 +10,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
-import ru.curs.showcase.model.grid.GridXMLBuilder;
+import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.util.ExcelFile;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
@@ -32,28 +31,28 @@ public class GridExportToExcelSLTest extends AbstractTest {
 		GridContext context = getTestGridContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Grid grid = serviceLayer.getGrid(context, element);
+		GridGetCommand command = new GridGetCommand(context, element, true);
+		Grid grid = command.execute();
 
-		GridXMLBuilder builder = new GridXMLBuilder(grid);
+		GridToExcelXMLFactory builder = new GridToExcelXMLFactory(grid);
 		Document xml = builder.build();
 
-		assertEquals(GridXMLBuilder.TABLE_TAG, xml.getDocumentElement().getNodeName());
+		assertEquals(GridToExcelXMLFactory.TABLE_TAG, xml.getDocumentElement().getNodeName());
 
-		assertEquals(GridXMLBuilder.COLUMN_TAG, xml.getDocumentElement().getFirstChild()
+		assertEquals(GridToExcelXMLFactory.COLUMN_TAG, xml.getDocumentElement().getFirstChild()
 				.getNodeName());
 		assertNull(xml.getDocumentElement().getFirstChild().getFirstChild());
 		assertNotNull(xml.getDocumentElement().getFirstChild().getAttributes()
 				.getNamedItem(GeneralXMLHelper.WIDTH_TAG));
 
 		// header row test above
-		NodeList list = xml.getDocumentElement().getElementsByTagName(GridXMLBuilder.ROW_TAG);
+		NodeList list = xml.getDocumentElement().getElementsByTagName(GridToExcelXMLFactory.ROW_TAG);
 		assertTrue(list.getLength() > 0);
 		assertEquals(GridValueType.STRING.toStringForExcel(), list.item(0).getFirstChild()
 				.getAttributes().getNamedItem(GeneralXMLHelper.TYPE_TAG).getNodeValue());
 
-		assertEquals(GridXMLBuilder.ROW_TAG, xml.getDocumentElement().getLastChild().getNodeName());
-		assertEquals(GridXMLBuilder.CELL_TAG, xml.getDocumentElement().getLastChild()
+		assertEquals(GridToExcelXMLFactory.ROW_TAG, xml.getDocumentElement().getLastChild().getNodeName());
+		assertEquals(GridToExcelXMLFactory.CELL_TAG, xml.getDocumentElement().getLastChild()
 				.getFirstChild().getNodeName());
 		assertNotNull(xml.getDocumentElement().getLastChild().getFirstChild().getFirstChild()
 				.getNodeValue());
@@ -78,9 +77,10 @@ public class GridExportToExcelSLTest extends AbstractTest {
 		DataPanelElementInfo element = getTestGridInfo();
 		GridContext gc = new GridContext(context);
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		ExcelFile file =
-			serviceLayer.generateExcelFromGrid(GridToExcelExportType.ALL, gc, element, null);
+		GridExcelExportCommand command =
+			new GridExcelExportCommand(gc, element, GridToExcelExportType.ALL);
+		ExcelFile file = command.execute();
+
 		assertNotNull(gc.getSession()); // побочный эффект - нет clone
 		assertNotNull(file.getData());
 		assertEquals("table.xls", file.getName());
@@ -99,8 +99,10 @@ public class GridExportToExcelSLTest extends AbstractTest {
 		gc.setPageNumber(1);
 		gc.setPageSize(2);
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.generateExcelFromGrid(GridToExcelExportType.CURRENTPAGE, gc, element, null);
+		GridExcelExportCommand command =
+			new GridExcelExportCommand(gc, element, GridToExcelExportType.CURRENTPAGE);
+		command.execute();
+
 		assertNotNull(gc.getSession());
 	}
 }

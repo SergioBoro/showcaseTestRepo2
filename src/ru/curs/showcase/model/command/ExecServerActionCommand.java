@@ -5,7 +5,7 @@ import java.util.*;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.event.*;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.xml.SessionContextGenerator;
 
 /**
@@ -18,10 +18,15 @@ public final class ExecServerActionCommand extends ServiceLayerCommand<Void> {
 
 	private static final String SERVER_ACTION_EXECUTED = "Выполнено действие на сервере: ";
 
+	@InputParam
+	public Action getAction() {
+		return action;
+	}
+
 	private final Action action;
 
-	public ExecServerActionCommand(final String aSessionId, final Action aAction) {
-		super(aSessionId, aAction.getContext());
+	public ExecServerActionCommand(final Action aAction) {
+		super(aAction.getContext());
 		action = aAction;
 	}
 

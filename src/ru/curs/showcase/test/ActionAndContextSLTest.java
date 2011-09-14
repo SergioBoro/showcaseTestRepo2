@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
+import ru.curs.showcase.model.command.ExecServerActionCommand;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
@@ -26,8 +26,8 @@ public class ActionAndContextSLTest extends AbstractTest {
 	public void testServerActivityExec() throws GeneralException {
 		final int actionNumber = 1;
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		sl.execServerAction(action);
+		ExecServerActionCommand command = new ExecServerActionCommand(action);
+		command.execute();
 		assertNotNull(action.getServerActivities().get(0).getContext().getSession());
 	}
 
@@ -42,7 +42,7 @@ public class ActionAndContextSLTest extends AbstractTest {
 		AppInfoSingleton.getAppInfo().setCurUserDataId("test1");
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		action.getContext().setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		sl.execServerAction(action);
+		ExecServerActionCommand command = new ExecServerActionCommand(action);
+		command.execute();
 	}
 }

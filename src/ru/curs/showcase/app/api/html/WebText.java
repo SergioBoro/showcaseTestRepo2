@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.html;
 
+import javax.xml.bind.annotation.*;
+
 import ru.curs.showcase.app.api.element.DataPanelElement;
 
 /**
@@ -9,6 +11,8 @@ import ru.curs.showcase.app.api.element.DataPanelElement;
  * @author den
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class WebText extends DataPanelElement {
 	/**
 	 * serialVersionUID.

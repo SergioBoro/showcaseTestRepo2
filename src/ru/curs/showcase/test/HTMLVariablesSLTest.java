@@ -7,7 +7,6 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.runtime.*;
 
@@ -28,8 +27,8 @@ public class HTMLVariablesSLTest extends AbstractTest {
 	@Test
 	public void testFramesVariables() throws GeneralException {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		MainPage page = sl.getMainPage(context);
+		MainPageGetCommand command = new MainPageGetCommand(context);
+		MainPage page = command.execute();
 
 		MainPageFrameSelector selector = new MainPageFrameSelector(MainPageFrameType.WELCOME);
 		MainPageFrameGateway gateway = selector.getGateway();

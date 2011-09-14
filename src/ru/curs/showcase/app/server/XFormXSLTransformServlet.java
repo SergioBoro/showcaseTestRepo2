@@ -8,7 +8,7 @@ import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.model.xform.XFormInfoFactory;
+import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.util.ServletUtils;
 
 /**
@@ -39,13 +39,12 @@ public class XFormXSLTransformServlet extends HttpServlet {
 		params.remove(XSLTFILE_PARAM);
 		String content = ServletUtils.getRequestAsString(request);
 		XFormContext context = new XFormContext(params, content);
-		DataPanelElementInfo elInfo =
-			XFormInfoFactory.generateXFormsTransformationInfo(xsltFile);
+		DataPanelElementInfo elInfo = XFormInfoFactory.generateXFormsTransformationInfo(xsltFile);
 
 		try {
-			ServiceLayerDataServiceImpl sl =
-				new ServiceLayerDataServiceImpl(request.getSession().getId());
-			String res = sl.handleXSLTSubmission(context, elInfo);
+			XFormXSLTransformCommand command =
+				new XFormXSLTransformCommand(context, elInfo);
+			String res = command.execute();
 			response.setStatus(HttpServletResponse.SC_OK);
 			ServletUtils.makeResponseFromString(response, res);
 		} catch (Exception e) {

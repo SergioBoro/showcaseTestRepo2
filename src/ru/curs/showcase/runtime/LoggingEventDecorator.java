@@ -6,6 +6,9 @@ import java.util.Date;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.util.TextUtils;
+
 /**
  * Оболочка для класса LoggingEvent.
  * 
@@ -26,10 +29,23 @@ public class LoggingEventDecorator {
 
 	public String getMessage() {
 		String src = (String) original.getMessage();
+		if (original.getThrowableInformation() != null) {
+			src =
+				src
+						+ ExchangeConstants.LINE_SEPARATOR
+						+ TextUtils.arrayToString(original.getThrowableInformation()
+								.getThrowableStrRep(), ExchangeConstants.LINE_SEPARATOR);
+		}
 		src = src.replace("<", "&lt;");
 		src = src.replace(">", "&gt;");
-		src = src.replace("\\r\\n", "&lt;br/&gt;");
-		src = src.replace("\\n", "&lt;br/&gt;");
+
+		src = src.replace("\\r\\n", ExchangeConstants.LINE_SEPARATOR);
+		src = src.replace("\\n", "\n");
+		src = src.replace("\\\"", "&quot;");
+		src = src.replace("\\t", "\t");
+		src = src.replace("&amp;", "&");
+		src = src.replace("&quot;", "\"");
+		src = src.replace("&apos;", "'");
 		return src;
 	}
 

@@ -14,8 +14,8 @@ import ru.curs.showcase.model.command.ServiceLayerCommand;
  */
 public final class NavigatorGetCommand extends ServiceLayerCommand<Navigator> {
 
-	public NavigatorGetCommand(final String aSessionId, final CompositeContext aContext) {
-		super(aSessionId, aContext);
+	public NavigatorGetCommand(final CompositeContext aContext) {
+		super(aContext);
 	}
 
 	@Override

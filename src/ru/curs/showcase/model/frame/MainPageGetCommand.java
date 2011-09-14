@@ -12,8 +12,8 @@ import ru.curs.showcase.runtime.AppProps;
  */
 public final class MainPageGetCommand extends AbstractMainPageFrameCommand<MainPage> {
 
-	public MainPageGetCommand(final String aSessionId, final CompositeContext aContext) {
-		super(aSessionId, aContext);
+	public MainPageGetCommand(final CompositeContext aContext) {
+		super(aContext);
 	}
 
 	@Override

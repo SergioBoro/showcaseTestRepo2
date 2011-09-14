@@ -1,5 +1,6 @@
 package ru.curs.showcase.model.frame;
 
+import javax.xml.bind.annotation.*;
 
 /**
  * Типы "статических" фреймов главной страницы. Статическими они являются по
@@ -8,6 +9,8 @@ package ru.curs.showcase.model.frame;
  * @author den
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public enum MainPageFrameType {
 	/**
 	 * Заставка решения (splash), отображаемая в центре главной страницы сразу

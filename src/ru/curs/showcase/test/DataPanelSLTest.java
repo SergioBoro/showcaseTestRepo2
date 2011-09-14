@@ -7,7 +7,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
+import ru.curs.showcase.model.datapanel.DataPanelGetCommand;
 
 /**
  * Тесты для фабрики информационных панелей.
@@ -26,8 +26,8 @@ public class DataPanelSLTest extends AbstractTest {
 		dpLink.setTabId("1");
 		action.setDataPanelLink(dpLink);
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		DataPanel panel = serviceLayer.getDataPanel(action);
+		DataPanelGetCommand command = new DataPanelGetCommand(action);
+		DataPanel panel = command.execute();
 
 		DataPanelElementInfo elInfo = panel.getTabs().get(0).getElements().get(0);
 		assertFalse(elInfo.getCacheData());
@@ -44,8 +44,9 @@ public class DataPanelSLTest extends AbstractTest {
 		dpLink.setDataPanelId("dp0903");
 		action.setDataPanelLink(dpLink);
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		DataPanel panel = serviceLayer.getDataPanel(action);
+		DataPanelGetCommand command = new DataPanelGetCommand(action);
+		DataPanel panel = command.execute();
+
 		assertEquals("dp0903", panel.getId());
 		final int tabsCount = 5;
 		assertEquals(tabsCount, panel.getTabs().size());

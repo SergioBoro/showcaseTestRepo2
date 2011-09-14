@@ -8,7 +8,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
+import ru.curs.showcase.model.webtext.WebTextGetCommand;
 
 /**
  * Тест для WebTextDBGateway.
@@ -26,8 +26,8 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "1");
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		WebText wt = serviceLayer.getWebText(context, element);
+		WebTextGetCommand command = new WebTextGetCommand(context, element);
+		WebText wt = command.execute();
 
 		assertNotNull(context.getSession());
 		assertEquals(0, wt.getEventManager().getEvents().size());
@@ -45,8 +45,8 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "3");
 		CompositeContext clonedContext = context.gwtClone();
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		WebText wt = serviceLayer.getWebText(clonedContext, element);
+		WebTextGetCommand command = new WebTextGetCommand(clonedContext, element);
+		WebText wt = command.execute();
 
 		assertEquals(1, wt.getEventManager().getEvents().size());
 		assertEquals("0", wt.getEventManager().getEvents().get(0).getId1());
@@ -82,8 +82,9 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = new CompositeContext();
 		el.setTransformName("bal_test.xsl");
 		generateTestTabWithElement(el);
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		WebText wt = serviceLayer.getWebText(context, el);
+
+		WebTextGetCommand command = new WebTextGetCommand(context, el);
+		WebText wt = command.execute();
 
 		assertTrue(wt.getData().startsWith("<h3>Здесь находится просто статический текст</h3>"));
 		assertTrue(wt.getData().endsWith(

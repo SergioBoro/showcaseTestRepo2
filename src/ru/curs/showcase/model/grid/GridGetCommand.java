@@ -1,7 +1,6 @@
 package ru.curs.showcase.model.grid;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.command.DataPanelElementCommand;
@@ -17,9 +16,9 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 
 	private final Boolean applyLocalFormatting;
 
-	public GridGetCommand(final String aSessionId, final CompositeContext aContext,
-			final DataPanelElementInfo aElInfo, final Boolean aApplyLocalFormatting) {
-		super(aSessionId, aContext, aElInfo);
+	public GridGetCommand(final GridContext aContext, final DataPanelElementInfo aElInfo,
+			final Boolean aApplyLocalFormatting) {
+		super(aContext, aElInfo);
 		applyLocalFormatting = aApplyLocalFormatting;
 	}
 

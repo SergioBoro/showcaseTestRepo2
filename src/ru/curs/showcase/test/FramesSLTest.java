@@ -7,8 +7,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
-import ru.curs.showcase.model.frame.MainPageFrameType;
+import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.runtime.AppProps;
 
 /**
@@ -34,8 +33,8 @@ public final class FramesSLTest extends AbstractTest {
 	@Test
 	public void testGetFramesInMainPage() throws GeneralException {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		MainPage page = sl.getMainPage(context);
+		MainPageGetCommand command = new MainPageGetCommand(context);
+		MainPage page = command.execute();
 
 		assertEquals(HEADER_CODE, page.getHeader());
 		assertEquals(FOOTER_CODE, page.getFooter());
@@ -50,8 +49,9 @@ public final class FramesSLTest extends AbstractTest {
 	@Test
 	public void testGetFileFrameWelcomeAsFrame() throws GeneralException {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		String html = sl.getMainPageFrame(context, MainPageFrameType.WELCOME);
+		MainPageFrameGetCommand command =
+			new MainPageFrameGetCommand(context, MainPageFrameType.WELCOME);
+		String html = command.execute();
 		assertTrue(html.endsWith(WELCOME_CODE + BODY_HTML_ENDS));
 	}
 
@@ -63,8 +63,9 @@ public final class FramesSLTest extends AbstractTest {
 	@Test
 	public void testGetDBFrameHeaderAsFrame() throws GeneralException {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		String html = sl.getMainPageFrame(context, MainPageFrameType.HEADER);
+		MainPageFrameGetCommand command =
+			new MainPageFrameGetCommand(context, MainPageFrameType.HEADER);
+		String html = command.execute();
 		assertEquals(HTML_HEAD_BODY_BEGIN + HEADER_CODE + BODY_HTML_ENDS, html);
 	}
 
@@ -76,8 +77,9 @@ public final class FramesSLTest extends AbstractTest {
 	@Test
 	public void testGetDBFrameFooterAsFrame() throws GeneralException {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		String html = sl.getMainPageFrame(context, MainPageFrameType.FOOTER);
+		MainPageFrameGetCommand command =
+			new MainPageFrameGetCommand(context, MainPageFrameType.FOOTER);
+		String html = command.execute();
 		assertEquals(HTML_HEAD_BODY_BEGIN + FOOTER_CODE + BODY_HTML_ENDS, html);
 	}
 
@@ -88,14 +90,15 @@ public final class FramesSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testReadMainPageInfoBySL() throws GeneralException {
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
-		MainPage mp = sl.getMainPage(context);
+		MainPageGetCommand command = new MainPageGetCommand(context);
+		MainPage mp = command.execute();
 		assertEquals("100px", mp.getHeaderHeight());
 		assertEquals("50px", mp.getFooterHeight());
 
 		context = new CompositeContext(generateTestURLParams(TEST2_USERDATA));
-		mp = sl.getMainPage(context);
+		command = new MainPageGetCommand(context);
+		mp = command.execute();
 		assertEquals(AppProps.DEF_HEADER_HEIGTH, mp.getHeaderHeight());
 		assertEquals(AppProps.DEF_FOOTER_HEIGTH, mp.getFooterHeight());
 	}

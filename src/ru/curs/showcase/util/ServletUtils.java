@@ -8,7 +8,6 @@ import javax.servlet.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
-
 /**
  * Вспомогательные функции для работы с сервлетами.
  * 
@@ -16,6 +15,11 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
  * 
  */
 public final class ServletUtils {
+
+	/**
+	 * Идентификатор сессии для модульных тестов.
+	 */
+	public static final String TEST_SESSION = "testSession";
 
 	private ServletUtils() {
 		throw new UnsupportedOperationException();
@@ -95,6 +99,15 @@ public final class ServletUtils {
 			return SecurityContextHolder.getContext().getAuthentication().getName();
 		} else {
 			return null;
+		}
+	}
+
+	public static String getCurrentSessionId() {
+		if (SecurityContextHolder.getContext().getAuthentication() != null) {
+			return ((WebAuthenticationDetails) SecurityContextHolder.getContext()
+					.getAuthentication().getDetails()).getSessionId();
+		} else {
+			return TEST_SESSION;
 		}
 	}
 

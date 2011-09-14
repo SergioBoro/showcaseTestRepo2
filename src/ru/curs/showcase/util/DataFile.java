@@ -1,5 +1,6 @@
 package ru.curs.showcase.util;
 
+import javax.xml.bind.annotation.*;
 
 /**
  * Базовый класс для обмена файлами между сервером и клиентами. Содержимое файла
@@ -11,7 +12,11 @@ package ru.curs.showcase.util;
  * @param <T>
  *            - тип для хранения содержимого - OutputStream или InputStream.
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso(java.io.ByteArrayOutputStream.class)
 public class DataFile<T> {
+
 	/**
 	 * Данные файла.
 	 */
@@ -21,6 +26,10 @@ public class DataFile<T> {
 	 * Имя файла. При использовании русского имени возможны проблемы!!!
 	 */
 	private String name;
+
+	public DataFile() {
+		super();
+	}
 
 	public DataFile(final T aData, final String fileName) {
 		name = fileName;

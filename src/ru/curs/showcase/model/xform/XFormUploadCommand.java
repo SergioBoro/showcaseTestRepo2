@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
+import ru.curs.showcase.model.command.InputParam;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.UserXMLTransformer;
 
@@ -18,10 +19,19 @@ public final class XFormUploadCommand extends XFormContextCommand<Void> {
 	private final String linkId;
 	private final DataFile<ByteArrayOutputStream> file;
 
-	public XFormUploadCommand(final String aSessionId, final XFormContext aContext,
-			final DataPanelElementInfo aElInfo, final String aLinkId,
-			final DataFile<ByteArrayOutputStream> aFile) {
-		super(aSessionId, aContext, aElInfo);
+	@InputParam
+	public String getLinkId() {
+		return linkId;
+	}
+
+	@InputParam
+	public DataFile<ByteArrayOutputStream> getFile() {
+		return file;
+	}
+
+	public XFormUploadCommand(final XFormContext aContext, final DataPanelElementInfo aElInfo,
+			final String aLinkId, final DataFile<ByteArrayOutputStream> aFile) {
+		super(aContext, aElInfo);
 		linkId = aLinkId;
 		file = aFile;
 	}
@@ -39,7 +49,8 @@ public final class XFormUploadCommand extends XFormContextCommand<Void> {
 			new UserXMLTransformer(file, getElementInfo().getProcs().get(linkId));
 		transformer.checkAndTransform();
 		XFormGateway gateway = new XFormDBGateway();
-		gateway.uploadFile(getContext(), getElementInfo(), linkId, transformer.getInputStreamResult());
+		gateway.uploadFile(getContext(), getElementInfo(), linkId,
+				transformer.getInputStreamResult());
 	}
 
 }

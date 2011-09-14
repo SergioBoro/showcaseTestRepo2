@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
+import ru.curs.showcase.model.command.InputParam;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.UserXMLTransformer;
 
@@ -18,9 +19,14 @@ public final class XFormDownloadCommand extends
 
 	private final String linkId;
 
-	public XFormDownloadCommand(final String aSessionId, final XFormContext aContext,
-			final DataPanelElementInfo aElInfo, final String aLinkId) {
-		super(aSessionId, aContext, aElInfo);
+	@InputParam
+	public String getLinkId() {
+		return linkId;
+	}
+
+	public XFormDownloadCommand(final XFormContext aContext, final DataPanelElementInfo aElInfo,
+			final String aLinkId) {
+		super(aContext, aElInfo);
 		linkId = aLinkId;
 	}
 

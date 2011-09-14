@@ -16,12 +16,13 @@ public abstract class DataPanelElementCommand<T> extends ServiceLayerCommand<T> 
 
 	private final DataPanelElementInfo elementInfo;
 
-	public DataPanelElementCommand(final String aSessionId, final CompositeContext aContext,
+	public DataPanelElementCommand(final CompositeContext aContext,
 			final DataPanelElementInfo aElementInfo) {
-		super(aSessionId, aContext);
+		super(aContext);
 		elementInfo = aElementInfo;
 	}
 
+	@InputParam
 	public DataPanelElementInfo getElementInfo() {
 		return elementInfo;
 	}

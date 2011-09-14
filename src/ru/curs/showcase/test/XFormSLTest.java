@@ -10,8 +10,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
-import ru.curs.showcase.model.xform.XFormInfoFactory;
+import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
 
@@ -35,8 +34,8 @@ public class XFormSLTest extends AbstractTest {
 		XFormContext xcontext = new XFormContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms1Info();
 
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		XForm xforms = sl.getXForms(xcontext, element);
+		XFormGetCommand command = new XFormGetCommand(xcontext, element);
+		XForm xforms = command.execute();
 
 		assertNotNull(xcontext.getSession());
 		Action action = xforms.getActionForDependentElements();
@@ -64,9 +63,8 @@ public class XFormSLTest extends AbstractTest {
 		XFormContext xcontext = new XFormContext(getTestContext1());
 		xcontext.setFormData(data);
 		DataPanelElementInfo element = getTestXForms1Info();
-
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		sl.saveXForms(xcontext, element);
+		XFormSaveCommand command = new XFormSaveCommand(xcontext, element);
+		command.execute();
 	}
 
 	/**
@@ -77,12 +75,12 @@ public class XFormSLTest extends AbstractTest {
 	@Test
 	public void testSQLSubmissionBySL() throws GeneralException {
 		String data = TEST_DATA_TAG;
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		XFormContext context = new XFormContext();
 		context.setFormData(data);
 		DataPanelElementInfo elInfo =
 			XFormInfoFactory.generateXFormsSQLSubmissionInfo(XFORMS_SUBMISSION1);
-		String res = sl.handleSQLSubmission(context, elInfo);
+		XFormSQLTransformCommand command = new XFormSQLTransformCommand(context, elInfo);
+		String res = command.execute();
 		assertEquals(data, res);
 	}
 
@@ -95,12 +93,12 @@ public class XFormSLTest extends AbstractTest {
 	@Test
 	public void testSQLSubmissionBySLWithNullData() throws GeneralException {
 		String content = null;
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		XFormContext context = new XFormContext();
 		context.setFormData(content);
 		DataPanelElementInfo elInfo =
 			XFormInfoFactory.generateXFormsSQLSubmissionInfo(XFORMS_SUBMISSION1);
-		String res = sl.handleSQLSubmission(context, elInfo);
+		XFormSQLTransformCommand command = new XFormSQLTransformCommand(context, elInfo);
+		String res = command.execute();
 		assertEquals("handleSQLSubmission должен вернуть пустую строку в ответ на null", "", res);
 	}
 
@@ -112,13 +110,12 @@ public class XFormSLTest extends AbstractTest {
 	@Test
 	public void testXSLTSubmissionBySL() throws GeneralException {
 		String data = TEST_DATA_TAG;
-		ServiceLayerDataServiceImpl sl = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		XFormContext context = new XFormContext();
 		context.setFormData(data);
 		DataPanelElementInfo elInfo =
-			XFormInfoFactory
-					.generateXFormsTransformationInfo("xformsxslttransformation_test.xsl");
-		String res = sl.handleXSLTSubmission(context, elInfo);
+			XFormInfoFactory.generateXFormsTransformationInfo("xformsxslttransformation_test.xsl");
+		XFormXSLTransformCommand command = new XFormXSLTransformCommand(context, elInfo);
+		String res = command.execute();
 		assertNotNull(res);
 	}
 
@@ -130,11 +127,10 @@ public class XFormSLTest extends AbstractTest {
 	@Test
 	public void testXFormsFileDownloadBySL() throws GeneralException {
 		XFormContext context = new XFormContext(getTestContext1());
-		DataPanelElementInfo element = getTestXForms2Info();
+		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc4";
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		DataFile<ByteArrayOutputStream> file =
-			serviceLayer.getDownloadFile(context, element, linkId);
+		XFormDownloadCommand command = new XFormDownloadCommand(context, elementInfo, linkId);
+		DataFile<ByteArrayOutputStream> file = command.execute();
 		final int navigatorXMLLen = 231478;
 		assertNotNull(context.getSession());
 		assertTrue(file.getData().size() > navigatorXMLLen);
@@ -153,8 +149,8 @@ public class XFormSLTest extends AbstractTest {
 		String linkId = "proc5";
 		final String fileName = TEST_XML_FILE;
 		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.uploadFile(context, element, linkId, file);
+		XFormUploadCommand command = new XFormUploadCommand(context, element, linkId, file);
+		command.execute();
 		assertNotNull(context.getSession());
 	}
 
@@ -178,8 +174,8 @@ public class XFormSLTest extends AbstractTest {
 		String linkId = "proc7";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
 		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.uploadFile(context, element, linkId, file);
+		XFormUploadCommand command = new XFormUploadCommand(context, element, linkId, file);
+		command.execute();
 		assertNotNull(context.getSession());
 	}
 
@@ -191,9 +187,9 @@ public class XFormSLTest extends AbstractTest {
 	@Test
 	public void testXFormsXMLDownloadGood() throws GeneralException {
 		XFormContext context = new XFormContext(getTestContext1());
-		DataPanelElementInfo element = getTestXForms2Info();
+		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc6";
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.getDownloadFile(context, element, linkId);
+		XFormDownloadCommand command = new XFormDownloadCommand(context, elementInfo, linkId);
+		command.execute();
 	}
 }

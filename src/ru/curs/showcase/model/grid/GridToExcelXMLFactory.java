@@ -15,7 +15,7 @@ import ru.curs.showcase.util.xml.*;
  * @author den
  * 
  */
-public class GridXMLBuilder extends GeneralXMLHelper {
+public class GridToExcelXMLFactory extends GeneralXMLHelper {
 	/**
 	 * Тэг для описания свойств столбца.
 	 */
@@ -49,7 +49,7 @@ public class GridXMLBuilder extends GeneralXMLHelper {
 	 */
 	private ColumnSet cs;
 
-	public GridXMLBuilder(final Grid aGrid) {
+	public GridToExcelXMLFactory(final Grid aGrid) {
 		super();
 		grid = aGrid;
 	}

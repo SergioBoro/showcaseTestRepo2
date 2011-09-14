@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
@@ -8,6 +10,8 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  * @author den
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class ServerState implements SerializableElement {
 
 	/**

@@ -72,16 +72,16 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 * @throws SQLException
 	 */
 	protected void setupGeneralParameters() throws SQLException {
-		statement.setString(getMainContextIndex(templateIndex), "");
-		statement.setString(getAddContextIndex(templateIndex), "");
+		getStatement().setString(getMainContextIndex(templateIndex), "");
+		getStatement().setString(getAddContextIndex(templateIndex), "");
 		setSQLXMLParamByString(getFilterIndex(templateIndex), "");
 		setSQLXMLParamByString(getSessionContextIndex(templateIndex), "");
 		if (context != null) {
 			if (context.getMain() != null) {
-				statement.setString(getMainContextIndex(templateIndex), context.getMain());
+				getStatement().setString(getMainContextIndex(templateIndex), context.getMain());
 			}
 			if (context.getAdditional() != null) {
-				statement.setString(getAddContextIndex(templateIndex), context.getAdditional());
+				getStatement().setString(getAddContextIndex(templateIndex), context.getAdditional());
 			}
 			if (context.getFilter() != null) {
 				setSQLXMLParamByString(getFilterIndex(templateIndex), context.getFilter());
@@ -188,8 +188,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		sql = String.format(sql, procName);
 
 		try {
-			statement = conn.prepareCall(sql);
-			ResultSet rs = statement.executeQuery();
+			setStatement(conn.prepareCall(sql));
+			ResultSet rs = getStatement().executeQuery();
 			while (rs.next()) {
 				return rs.getInt("num") > 0;
 			}
@@ -208,7 +208,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 			conn = ConnectionFactory.getConnection();
 		}
 		String sql = String.format(getSqlTemplate(templateIndex), getProcName());
-		statement = conn.prepareCall(sql);
+		setStatement(conn.prepareCall(sql));
 	}
 
 	/**
@@ -216,8 +216,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 */
 	protected void prepareStatementWithErrorMes() throws SQLException {
 		prepareSQL();
-		statement.registerOutParameter(1, java.sql.Types.INTEGER);
-		statement.registerOutParameter(getErrorMesIndex(templateIndex), java.sql.Types.VARCHAR);
+		getStatement().registerOutParameter(1, java.sql.Types.INTEGER);
+		getStatement().registerOutParameter(getErrorMesIndex(templateIndex), java.sql.Types.VARCHAR);
 	}
 
 	/**

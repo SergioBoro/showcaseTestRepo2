@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.datapanel;
 
 import java.util.*;
 
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.*;
@@ -13,6 +13,7 @@ import ru.curs.showcase.app.api.event.*;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DataPanelTab extends NamedElement {
 	/**
 	 * serialVersionUID.

@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.navigator;
 
 import java.util.*;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
@@ -12,6 +14,8 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  * @author den
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Navigator implements SerializableElement {
 	/**
 	 * Ширина навигатора по умолчанию.

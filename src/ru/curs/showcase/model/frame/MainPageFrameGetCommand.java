@@ -1,6 +1,7 @@
 package ru.curs.showcase.model.frame;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.model.command.InputParam;
 
 /**
  * Команда получения одного "специального" фрейма главной формы.
@@ -12,9 +13,13 @@ public final class MainPageFrameGetCommand extends AbstractMainPageFrameCommand<
 
 	private final MainPageFrameType type;
 
-	public MainPageFrameGetCommand(final String aSessionId, final CompositeContext aContext,
-			final MainPageFrameType aType) {
-		super(aSessionId, aContext);
+	@InputParam
+	public MainPageFrameType getType() {
+		return type;
+	}
+
+	public MainPageFrameGetCommand(final CompositeContext aContext, final MainPageFrameType aType) {
+		super(aContext);
 		type = aType;
 	}
 

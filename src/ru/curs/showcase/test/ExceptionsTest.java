@@ -15,14 +15,14 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.chart.ChartGetCommand;
 import ru.curs.showcase.model.command.GeneralServerExceptionFactory;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.model.webtext.*;
-import ru.curs.showcase.model.xform.XFormInfoFactory;
+import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
@@ -83,9 +83,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		dpLink.setTabId("1");
 		action.setDataPanelLink(dpLink);
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
-			serviceLayer.getDataPanel(action);
+			DataPanelGetCommand command = new DataPanelGetCommand(action);
+			command.execute();
 		} catch (Exception e) {
 			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(SettingsFileOpenException.class.getName(),
@@ -105,9 +105,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "3", "31");
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
-			serviceLayer.getChart(context, element);
+			ChartGetCommand command = new ChartGetCommand(context, element);
+			command.execute();
 		} catch (Exception e) {
 			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(SPNotExistsException.class.getName(),
@@ -127,9 +127,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "3", "33");
 		final String procName = "chart_pas_wrong_param";
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
-			serviceLayer.getChart(context, element);
+			ChartGetCommand command = new ChartGetCommand(context, element);
+			command.execute();
 		} catch (Exception e) {
 			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(DBQueryException.class.getName(),
@@ -149,9 +149,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "3", "32");
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
-			serviceLayer.getChart(context, element);
+			ChartGetCommand command = new ChartGetCommand(context, element);
+			command.execute();
 		} catch (Exception e) {
 			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(DBQueryException.class.getName(),
@@ -168,11 +168,12 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public final void testWrongChartSPForSubmission() {
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
 			XFormContext context = new XFormContext();
-			DataPanelElementInfo elInfo = XFormInfoFactory.generateXFormsSQLSubmissionInfo("no_exist_proc");
-			serviceLayer.handleSQLSubmission(context, elInfo);
+			DataPanelElementInfo elInfo =
+				XFormInfoFactory.generateXFormsSQLSubmissionInfo("no_exist_proc");
+			XFormSQLTransformCommand command = new XFormSQLTransformCommand(context, elInfo);
+			command.execute();
 		} catch (Exception e) {
 			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(SPNotExistsException.class.getName(),
@@ -194,9 +195,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		element.setId("11");
 		element.setType(DataPanelElementType.WEBTEXT);
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
 		try {
-			serviceLayer.getWebText(context, element);
+			WebTextGetCommand command = new WebTextGetCommand(context, element);
+			command.execute();
 		} catch (Exception e) {
 			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(IncorrectElementException.class.getName(),
@@ -355,8 +356,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);
 		dpei.setProcName("grid_by_userdata");
 		generateTestTabWithElement(dpei);
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.getGrid(context, dpei);
+
+		GridGetCommand command = new GridGetCommand(context, dpei, true);
+		command.execute();
 	}
 
 	/**
@@ -371,8 +373,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		context.setSessionParamsMap(generateTestURLParamsForSL("test1"));
 		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);
 		dpei.setProcName("grid_by_userdata");
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		serviceLayer.getGrid(context, dpei);
+
+		GridGetCommand command = new GridGetCommand(context, dpei, true);
+		command.execute();
 	}
 
 	/**

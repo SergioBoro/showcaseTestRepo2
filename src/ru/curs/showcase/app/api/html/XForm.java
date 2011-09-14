@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.html;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
+
 import ru.curs.showcase.app.api.element.DataPanelElement;
 
 /**
@@ -11,6 +13,8 @@ import ru.curs.showcase.app.api.element.DataPanelElement;
  * @author den
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class XForm extends DataPanelElement {
 	/**
 	 * serialVersionUID.

@@ -12,9 +12,8 @@ import ru.curs.showcase.util.xml.UserXMLTransformer;
  */
 public final class XFormSaveCommand extends XFormContextCommand<Void> {
 
-	public XFormSaveCommand(final String aSessionId, final XFormContext aContext,
-			final DataPanelElementInfo aElInfo) {
-		super(aSessionId, aContext, aElInfo);
+	public XFormSaveCommand(final XFormContext aContext, final DataPanelElementInfo aElInfo) {
+		super(aContext, aElInfo);
 	}
 
 	@Override

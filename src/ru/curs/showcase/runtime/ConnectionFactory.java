@@ -28,10 +28,11 @@ public final class ConnectionFactory {
 	 */
 	public static Connection getConnection() {
 		try {
-			return DriverManager.getConnection(
-					AppProps.getRequiredValueByName(CONNECTION_URL_PARAM),
-					AppProps.getRequiredValueByName(CONNECTION_USERNAME_PARAM),
-					AppProps.getRequiredValueByName(CONNECTION_PASSWORD_PARAM));
+			Connection result =
+				DriverManager.getConnection(AppProps.getRequiredValueByName(CONNECTION_URL_PARAM),
+						AppProps.getRequiredValueByName(CONNECTION_USERNAME_PARAM),
+						AppProps.getRequiredValueByName(CONNECTION_PASSWORD_PARAM));
+			return result;
 		} catch (SQLException e) {
 			throw new DBConnectException(e);
 		}
@@ -43,9 +44,10 @@ public final class ConnectionFactory {
 	public static SQLServerType getSQLServerType() {
 		String url = AppProps.getRequiredValueByName(CONNECTION_URL_PARAM).toLowerCase();
 
-		final String mssql = "jdbc:sqlserver";
-		final String postgresql = "jdbc:postgresql";
-		final String oracle = "jdbc:oracle";
+		// TODO regexp
+		final String mssql = "sqlserver";
+		final String postgresql = "postgresql";
+		final String oracle = "oracle";
 
 		SQLServerType st = null;
 		if (url.indexOf(mssql) > -1) {

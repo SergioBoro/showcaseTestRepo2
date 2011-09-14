@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.datapanel;
 
 import java.util.*;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.event.Action;
 
@@ -12,6 +14,8 @@ import ru.curs.showcase.app.api.event.Action;
  * @author den
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DataPanel implements SerializableElement {
 
 	/**

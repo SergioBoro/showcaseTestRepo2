@@ -13,8 +13,8 @@ import ru.curs.showcase.model.command.ServiceLayerCommand;
  */
 public abstract class AbstractMainPageFrameCommand<T> extends ServiceLayerCommand<T> {
 
-	public AbstractMainPageFrameCommand(final String aSessionId, final CompositeContext aContext) {
-		super(aSessionId, aContext);
+	public AbstractMainPageFrameCommand(final CompositeContext aContext) {
+		super(aContext);
 	}
 
 	protected String getRawMainPageFrame(final CompositeContext context,

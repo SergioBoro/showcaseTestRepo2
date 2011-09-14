@@ -9,7 +9,7 @@ import ru.curs.showcase.app.api.element.LegendPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.GeoMap;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
+import ru.curs.showcase.model.geomap.GeoMapGetCommand;
 
 /**
  * Тесты для фабрики карт.
@@ -30,8 +30,8 @@ public class GeoMapSLTest extends AbstractTest {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "05");
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		GeoMap map = serviceLayer.getGeoMap(context, element);
+		GeoMapGetCommand command = new GeoMapGetCommand(context, element);
+		GeoMap map = command.execute();
 		assertNotNull(context.getSession());
 		assertNotNull(map);
 

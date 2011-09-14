@@ -2,7 +2,7 @@ package ru.curs.showcase.util;
 
 import java.io.ByteArrayOutputStream;
 
-
+import javax.xml.bind.annotation.*;
 
 /**
  * Класс файла Excel. Включает содержимое файла и его имя.
@@ -10,6 +10,8 @@ import java.io.ByteArrayOutputStream;
  * @author den
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ExcelFile extends DataFile<ByteArrayOutputStream> {
 	/**
 	 * Имя результирующего файла по умолчанию.
@@ -25,6 +27,10 @@ public class ExcelFile extends DataFile<ByteArrayOutputStream> {
 
 	public ExcelFile(final ByteArrayOutputStream aData) {
 		super(aData, String.format("%s.%s", DEF_FILENAME, FILEEXT));
+	}
+
+	public ExcelFile() {
+		super();
 	}
 
 }

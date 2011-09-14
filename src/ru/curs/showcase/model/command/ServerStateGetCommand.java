@@ -12,8 +12,8 @@ import ru.curs.showcase.runtime.ServerStateFactory;
  */
 public final class ServerStateGetCommand extends ServiceLayerCommand<ServerState> {
 
-	public ServerStateGetCommand(final String aSessionId, final CompositeContext aContext) {
-		super(aSessionId, aContext);
+	public ServerStateGetCommand(final CompositeContext aContext) {
+		super(aContext);
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.model.xform.XFormUploadCommand;
 import ru.curs.showcase.util.*;
 
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -33,11 +34,11 @@ public final class UploadHandler extends AbstractFilesHandler {
 
 	@Override
 	protected void processFiles() throws GeneralException {
-		ServiceLayerDataServiceImpl serviceLayer =
-			new ServiceLayerDataServiceImpl(getRequest().getSession().getId());
 		for (Map.Entry<String, DataFile<ByteArrayOutputStream>> entry : files.entrySet()) {
-			serviceLayer.uploadFile(getContext(), getElementInfo(), entry.getKey(),
-					entry.getValue());
+			XFormUploadCommand command =
+				new XFormUploadCommand(getContext(), getElementInfo(),
+						entry.getKey(), entry.getValue());
+			command.execute();
 		}
 	}
 

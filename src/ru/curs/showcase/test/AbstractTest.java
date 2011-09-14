@@ -19,7 +19,7 @@ import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.navigator.*;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
@@ -37,11 +37,6 @@ public class AbstractTest extends GeneralXMLHelper {
 	protected static final String TEST2_XML = "test2.xml";
 	protected static final String TEST1_USERDATA = "test1";
 	protected static final String TEST2_USERDATA = "test2";
-	/**
-	 * Идентификатор сессии для модульных тестов.
-	 */
-	protected static final String TEST_SESSION = "testSession";
-
 	protected static final String VALUE12 = "value1";
 	protected static final String KEY1 = "key1";
 
@@ -77,7 +72,7 @@ public class AbstractTest extends GeneralXMLHelper {
 
 	private static void initTestSession() {
 		AppInfoSingleton.getAppInfo().clearSessions();
-		AppInfoSingleton.getAppInfo().addSession(TEST_SESSION);
+		AppInfoSingleton.getAppInfo().addSession(ServletUtils.TEST_SESSION);
 	}
 
 	/**

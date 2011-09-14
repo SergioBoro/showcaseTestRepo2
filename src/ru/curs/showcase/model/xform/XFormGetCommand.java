@@ -12,9 +12,8 @@ import ru.curs.showcase.model.HTMLBasedElementRawData;
  */
 public final class XFormGetCommand extends XFormContextCommand<XForm> {
 
-	public XFormGetCommand(final String aSessionId, final XFormContext aContext,
-			final DataPanelElementInfo aElInfo) {
-		super(aSessionId, aContext, aElInfo);
+	public XFormGetCommand(final XFormContext aContext, final DataPanelElementInfo aElInfo) {
+		super(aContext, aElInfo);
 	}
 
 	@Override

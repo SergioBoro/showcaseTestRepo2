@@ -8,7 +8,7 @@ import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
+import ru.curs.showcase.model.chart.ChartGetCommand;
 
 /**
  * Тесты фабрики графиков.
@@ -28,8 +28,8 @@ public class ChartSLTest extends AbstractTest {
 		CompositeContext context = getTestContext3();
 		DataPanelElementInfo element = getTestChartInfo();
 
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Chart chart = serviceLayer.getChart(context, element);
+		ChartGetCommand command = new ChartGetCommand(context, element);
+		Chart chart = command.execute();
 
 		assertNotNull(context.getSession());
 		assertNotNull(chart.getJavaDynamicData());

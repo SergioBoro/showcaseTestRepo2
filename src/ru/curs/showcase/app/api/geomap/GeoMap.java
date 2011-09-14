@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.geomap;
 
+import javax.xml.bind.annotation.*;
+
 import ru.curs.showcase.app.api.element.DataPanelElementWithLegend;
 
 /**
@@ -9,6 +11,8 @@ import ru.curs.showcase.app.api.element.DataPanelElementWithLegend;
  * @author den
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class GeoMap extends DataPanelElementWithLegend {
 
 	/**

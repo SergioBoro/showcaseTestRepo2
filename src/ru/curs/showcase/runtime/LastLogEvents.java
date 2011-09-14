@@ -3,8 +3,8 @@ package ru.curs.showcase.runtime;
 import java.util.*;
 
 /**
- * Очередь для последних событий, записанных в лог. Длина очереди фиксируется в
- * файле настроек.
+ * Очередь для последних событий, записанных в лог. Длина очереди
+ * устанавливается в файле общих настроек приложения.
  * 
  * @author den
  * 
@@ -29,26 +29,23 @@ public class LastLogEvents extends TreeSet<LoggingEventDecorator> {
 			@Override
 			public int compare(final LoggingEventDecorator event1,
 					final LoggingEventDecorator event2) {
-				return (int) (event1.getOriginal().timeStamp - event2.getOriginal().timeStamp);
+				return (int) (event2.getOriginal().timeStamp - event1.getOriginal().timeStamp);
 			}
 		});
-
 	}
 
 	private LastLogEvents(final int aInitialCapacity,
 			final Comparator<? super LoggingEventDecorator> aComparator) {
 		super(aComparator);
-
 	}
 
 	@Override
 	public boolean add(final LoggingEventDecorator event) {
 		boolean res = super.add(event);
 		if (size() > getMaxRecords()) {
-			pollFirst();
+			pollLast();
 		}
 		return res;
-
 	}
 
 }

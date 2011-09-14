@@ -4,7 +4,7 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 
 /**
- * Наш обработчик события для Log4j.
+ * Наш обработчик событий для Log4J.
  * 
  * @author den
  * 
@@ -13,7 +13,8 @@ public class Log4jShowcaseAppender extends AppenderSkeleton {
 
 	@Override
 	protected void append(final LoggingEvent event) {
-		if (event.getLoggerName().startsWith("ru.curs")) {
+		if (event.getLoggerName().startsWith("ru.curs")
+				|| event.getLoggerName().startsWith("jdbc.sqlonly")) {
 			AppInfoSingleton.getAppInfo().addLogEvent(new LoggingEventDecorator(event));
 		}
 	}

@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.grid;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
+
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.*;
@@ -13,6 +15,8 @@ import ru.curs.showcase.app.api.event.*;
  * @author den
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Grid extends DataPanelCompBasedElement {
 
 	/**

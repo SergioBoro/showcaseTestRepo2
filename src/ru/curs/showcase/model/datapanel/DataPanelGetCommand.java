@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import ru.curs.showcase.app.api.datapanel.DataPanel;
 import ru.curs.showcase.app.api.event.Action;
-import ru.curs.showcase.model.command.ServiceLayerCommand;
+import ru.curs.showcase.model.command.*;
 import ru.curs.showcase.util.DataFile;
 
 /**
@@ -17,8 +17,13 @@ public final class DataPanelGetCommand extends ServiceLayerCommand<DataPanel> {
 
 	private final Action action;
 
-	public DataPanelGetCommand(final String aSessionId, final Action aAction) {
-		super(aSessionId, aAction.getContext());
+	@InputParam
+	public Action getAction() {
+		return action;
+	}
+
+	public DataPanelGetCommand(final Action aAction) {
+		super(aAction.getContext());
 		action = aAction;
 	}
 

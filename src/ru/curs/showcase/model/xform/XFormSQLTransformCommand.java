@@ -2,7 +2,6 @@ package ru.curs.showcase.model.xform;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -13,22 +12,13 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public final class XFormSQLTransformCommand extends XFormContextCommand<String> {
 
-	private String decodedContent;
-
-	public XFormSQLTransformCommand(final String aSessionId, final XFormContext aContext,
-			final DataPanelElementInfo aElInfo) {
-		super(aSessionId, aContext, aElInfo);
-	}
-
-	@Override
-	protected void preProcess() throws GeneralException {
-		super.preProcess();
-
-		decodedContent = XMLUtils.xmlServiceSymbolsToNormal(getContext().getFormData());
+	public XFormSQLTransformCommand(final XFormContext aContext, final DataPanelElementInfo aElInfo) {
+		super(aContext, aElInfo);
 	}
 
 	@Override
 	protected void mainProc() throws Exception {
+		String decodedContent = XMLUtils.xmlServiceSymbolsToNormal(getContext().getFormData());
 		XFormGateway gateway = new XFormDBGateway();
 		setResult(gateway.sqlTransform(getElementInfo().getProcName(), decodedContent));
 	}

@@ -7,7 +7,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.server.ServiceLayerDataServiceImpl;
+import ru.curs.showcase.model.navigator.NavigatorGetCommand;
 
 /**
  * Класс для тестирования фабрики навигаторов.
@@ -22,8 +22,9 @@ public class NavigatorSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testNavigatorFromDBBySL() throws GeneralException {
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Navigator nav = serviceLayer.getNavigator(new CompositeContext());
+		NavigatorGetCommand command =
+			new NavigatorGetCommand(new CompositeContext());
+		Navigator nav = command.execute();
 		assertFalse(nav.getHideOnLoad());
 		assertEquals("180px", nav.getWidth());
 	}
@@ -35,8 +36,8 @@ public class NavigatorSLTest extends AbstractTest {
 	public void testNavigatorFromFileBySL() throws GeneralException {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
-		ServiceLayerDataServiceImpl serviceLayer = new ServiceLayerDataServiceImpl(TEST_SESSION);
-		Navigator nav = serviceLayer.getNavigator(context);
+		NavigatorGetCommand command = new NavigatorGetCommand(context);
+		Navigator nav = command.execute();
 		assertTrue(nav.getHideOnLoad());
 		assertEquals(1, nav.getGroups().size());
 		final int l1ElementsCount = 1;

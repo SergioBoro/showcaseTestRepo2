@@ -208,4 +208,23 @@ public final class TextUtils {
 		}
 		return "UTF8";
 	}
+
+	/**
+	 * Правильное преобразование массива в строку. Arrays.toString не выставляет
+	 * переводы строк.
+	 */
+	public static String arrayToString(final String[] array, final String separator) {
+		if (array == null || separator == null) {
+			return null;
+		}
+		StringBuilder result = new StringBuilder();
+		if (array.length > 0) {
+			result.append(array[0]);
+			for (int i = 1; i < array.length; i++) {
+				result.append(separator);
+				result.append(array[i]);
+			}
+		}
+		return result.toString();
+	}
 }

@@ -2,7 +2,7 @@ package ru.curs.showcase.model.xform;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.model.command.DataPanelElementCommand;
+import ru.curs.showcase.model.command.*;
 
 /**
  * Базовый класс для всех команд XForms.
@@ -14,12 +14,12 @@ import ru.curs.showcase.model.command.DataPanelElementCommand;
  */
 public abstract class XFormContextCommand<T> extends DataPanelElementCommand<T> {
 	@Override
+	@InputParam
 	public XFormContext getContext() {
 		return (XFormContext) super.getContext();
 	}
 
-	public XFormContextCommand(final String aSessionId, final XFormContext aContext,
-			final DataPanelElementInfo aElInfo) {
-		super(aSessionId, aContext, aElInfo);
+	public XFormContextCommand(final XFormContext aContext, final DataPanelElementInfo aElInfo) {
+		super(aContext, aElInfo);
 	}
 }

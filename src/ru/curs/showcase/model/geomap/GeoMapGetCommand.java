@@ -14,9 +14,8 @@ import ru.curs.showcase.model.command.DataPanelElementCommand;
  */
 public final class GeoMapGetCommand extends DataPanelElementCommand<GeoMap> {
 
-	public GeoMapGetCommand(final String aSessionId, final CompositeContext aContext,
-			final DataPanelElementInfo aElInfo) {
-		super(aSessionId, aContext, aElInfo);
+	public GeoMapGetCommand(final CompositeContext aContext, final DataPanelElementInfo aElInfo) {
+		super(aContext, aElInfo);
 	}
 
 	@Override

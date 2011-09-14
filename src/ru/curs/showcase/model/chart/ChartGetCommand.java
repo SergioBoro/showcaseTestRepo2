@@ -14,9 +14,8 @@ import ru.curs.showcase.model.command.DataPanelElementCommand;
  */
 public final class ChartGetCommand extends DataPanelElementCommand<Chart> {
 
-	public ChartGetCommand(final String aSessionId, final CompositeContext aContext,
-			final DataPanelElementInfo aElInfo) {
-		super(aSessionId, aContext, aElInfo);
+	public ChartGetCommand(final CompositeContext aContext, final DataPanelElementInfo aElInfo) {
+		super(aContext, aElInfo);
 	}
 
 	@Override
