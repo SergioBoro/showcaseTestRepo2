@@ -273,7 +273,6 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		procs = aProcs;
 	}
 
-	// CHECKSTYLE:OFF
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -404,8 +403,6 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		return true;
 	}
 
-	// CHECKSTYLE:ON
-
 	public String getStyleClass() {
 		return styleClass;
 	}
@@ -497,7 +494,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 * на клиентской стороне.
 	 * 
 	 * @param context
-	 *            - контектс для элемента.
+	 *            - контекст для элемента.
 	 * @return - ключ.
 	 */
 	public String getKeyForCaching(final CompositeContext context) {

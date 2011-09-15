@@ -1,4 +1,4 @@
-package ru.curs.showcase.app.client;
+package ru.curs.showcase.app.client.utils;
 
 import ru.curs.showcase.app.api.services.DataService;
 

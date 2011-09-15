@@ -11,6 +11,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.ResultSetHandleException;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.CreateObjectError;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 

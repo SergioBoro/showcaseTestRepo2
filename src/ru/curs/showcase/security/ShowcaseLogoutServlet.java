@@ -8,7 +8,7 @@ import javax.servlet.http.*;
 
 import org.slf4j.*;
 
-import ru.curs.showcase.util.SettingsFileOpenException;
+import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
  * Servlet implementation class ShowcaseIsAuthenticatedServlet.

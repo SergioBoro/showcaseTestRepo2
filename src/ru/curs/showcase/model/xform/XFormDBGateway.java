@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.CreateObjectError;
 
 /**
  * Шлюз к БД для получения XForms.
@@ -95,7 +96,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 			try {
 				prepareElementStatementWithErrorMes();
 				setSQLXMLParamByString(getDataParam(SAVE_TEMPLATE_IND), data);
-				getStatement().execute();
+				execute();
 				checkErrorCode();
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
@@ -116,7 +117,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 				prepareStatementWithErrorMes();
 				setSQLXMLParamByString(INPUTDATA_INDEX, aInputData);
 				getStatement().registerOutParameter(OUTPUTDATA_INDEX, java.sql.Types.SQLXML);
-				getStatement().execute();
+				execute();
 				checkErrorCode();
 
 				SQLXML sqlxml = getStatement().getSQLXML(OUTPUTDATA_INDEX);
@@ -159,7 +160,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 				setSQLXMLParamByString(getDataParam(FILE_TEMPLATE_IND), context.getFormData());
 				getStatement().registerOutParameter(FILENAME_INDEX, java.sql.Types.VARCHAR);
 				getStatement().registerOutParameter(FILE_INDEX, getBinarySQLType());
-				getStatement().execute();
+				execute();
 				checkErrorCode();
 
 				String fileName = getStatement().getString(FILENAME_INDEX);
@@ -195,7 +196,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 				setSQLXMLParamByString(getDataParam(FILE_TEMPLATE_IND), context.getFormData());
 				getStatement().setString(FILENAME_INDEX, file.getName());
 				setBinaryStream(FILE_INDEX, file.getData());
-				getStatement().execute();
+				execute();
 				checkErrorCode();
 			} catch (SQLException e) {
 				dbExceptionHandler(e);

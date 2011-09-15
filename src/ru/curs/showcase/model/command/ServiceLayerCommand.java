@@ -10,6 +10,7 @@ import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.AppRegistry;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.ServerLogicError;
 import ru.curs.showcase.util.xml.SessionContextGenerator;
 
 /**
@@ -95,7 +96,7 @@ public abstract class ServiceLayerCommand<T> {
 									.getSimpleName(), method.getName(), serializer
 									.serialize(methodResult)));
 				} catch (Exception e) {
-					throw new ServerInternalError(e);
+					throw new ServerLogicError(e);
 				}
 			}
 		}

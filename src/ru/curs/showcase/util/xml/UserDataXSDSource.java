@@ -5,6 +5,7 @@ import java.io.File;
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
  * Источник схем из userdata.

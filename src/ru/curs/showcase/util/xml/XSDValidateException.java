@@ -1,7 +1,7 @@
 package ru.curs.showcase.util.xml;
 
 import ru.curs.showcase.app.api.ExceptionType;
-import ru.curs.showcase.util.BaseException;
+import ru.curs.showcase.util.exception.BaseException;
 
 /**
  * Класс исключений, генерируемых при выполнении XSD-проверки

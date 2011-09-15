@@ -4,7 +4,7 @@ import java.lang.reflect.*;
 
 import org.xml.sax.Attributes;
 
-import ru.curs.showcase.util.ServerInternalError;
+import ru.curs.showcase.util.exception.ServerLogicError;
 
 /**
  * Интерфейс обработчика дополнительных тэгов для SAX парсера.
@@ -122,13 +122,13 @@ public abstract class SAXTagHandler extends GeneralXMLHelper {
 			Method method = this.getClass().getMethod(methodName, Attributes.class);
 			return method.invoke(this, attrs);
 		} catch (SecurityException e) {
-			throw new ServerInternalError(e);
+			throw new ServerLogicError(e);
 		} catch (NoSuchMethodException e) {
-			throw new ServerInternalError(e);
+			throw new ServerLogicError(e);
 		} catch (IllegalArgumentException e) {
-			throw new ServerInternalError(e);
+			throw new ServerLogicError(e);
 		} catch (IllegalAccessException e) {
-			throw new ServerInternalError(e);
+			throw new ServerLogicError(e);
 		} catch (InvocationTargetException e) {
 			throw new SAXError(e.getTargetException());
 		}

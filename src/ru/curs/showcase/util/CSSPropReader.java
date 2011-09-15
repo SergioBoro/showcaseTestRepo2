@@ -6,6 +6,8 @@ import java.net.URL;
 import org.w3c.css.sac.*;
 import org.w3c.flute.parser.Parser;
 
+import ru.curs.showcase.util.exception.CSSReadException;
+
 
 /**
  * Класс для считывания свойств из CSS. Код в основном заимствован из GWT.

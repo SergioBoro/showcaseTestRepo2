@@ -46,7 +46,7 @@ public class DataPanelDBGateway extends SPCallHelper implements DataPanelGateway
 					context.getSession());
 			getStatement().setString(getMainContextIndex(getTemplateIndex()), context.getMain());
 			getStatement().registerOutParameter(DP_INDEX, java.sql.Types.SQLXML);
-			getStatement().execute();
+			execute();
 			checkErrorCode();
 			InputStream stream = getStatement().getSQLXML(DP_INDEX).getBinaryStream();
 			return new DataFile<InputStream>(stream, getProcName());

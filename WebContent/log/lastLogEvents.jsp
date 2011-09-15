@@ -33,9 +33,9 @@ th, td
 <table width="90%">
 <c:forEach items="<%=lastLogEvents%>" var="event">
 <tr>
-<td width="5%">${event.getLevel()} </td>
-<td width="8%">${event.getTime()} </td>
-<td width="87%">${event.getMessage()} </td>
+<td width="7%">${event.getLevel()} </td>
+<td width="18%">${event.getTime()} </td>
+<td width="77%">${event.getMessage()} </td>
 </tr>
 </c:forEach>
 </table>

@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import ru.curs.showcase.runtime.AppInfoSingleton;
-import ru.curs.showcase.util.SettingsFileOpenException;
+import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
  * @author anlug

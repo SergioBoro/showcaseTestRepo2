@@ -6,6 +6,7 @@ import java.util.regex.*;
 
 import ru.curs.showcase.app.api.ServerState;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
  * Построитель объекта с текущим состоянием серверной части.

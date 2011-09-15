@@ -19,7 +19,7 @@ public abstract class CompBasedElementSPCallHelper extends ElementSPCallHelper {
 	 */
 	protected void stdGetResults() throws SQLException {
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			boolean hasResult = getStatement().execute();
+			boolean hasResult = execute();
 			if (!hasResult) {
 				throw new DBQueryException(getElementInfo(), getContext(),
 						CompBasedElementSPCallHelper.NO_RESULTSET_ERROR);
@@ -27,8 +27,10 @@ public abstract class CompBasedElementSPCallHelper extends ElementSPCallHelper {
 		} else {
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
 				getConn().setAutoCommit(false);
+				// TODO проверить как поведет себя вышележащий код при
+				// отсутствии датасета
 			}
-			getStatement().execute();
+			execute();
 		}
 	}
 

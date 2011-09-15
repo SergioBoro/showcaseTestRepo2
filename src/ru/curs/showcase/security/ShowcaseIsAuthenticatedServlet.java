@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 import javax.xml.transform.TransformerException;
 
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
  * Servlet implementation class ShowcaseIsAuthenticatedServlet.

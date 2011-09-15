@@ -1,4 +1,4 @@
-package ru.curs.showcase.util;
+package ru.curs.showcase.util.exception;
 
 import ru.curs.showcase.app.api.ExceptionType;
 

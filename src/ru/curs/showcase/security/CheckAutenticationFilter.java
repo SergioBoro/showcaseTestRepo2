@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
  * Фильтр, контролирующий доступ к данным системы.

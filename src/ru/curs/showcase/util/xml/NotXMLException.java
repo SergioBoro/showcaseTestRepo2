@@ -3,7 +3,7 @@ package ru.curs.showcase.util.xml;
 import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.ExceptionType;
-import ru.curs.showcase.util.BaseException;
+import ru.curs.showcase.util.exception.BaseException;
 
 /**
  * Исключение, генерируемое в случае, когда вместо XML файла на сервер приходят

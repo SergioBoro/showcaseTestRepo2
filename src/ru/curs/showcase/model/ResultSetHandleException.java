@@ -3,7 +3,7 @@ package ru.curs.showcase.model;
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.util.BaseException;
+import ru.curs.showcase.util.exception.BaseException;
 
 /**
  * Ошибка при работе с полученным из БД ResultSet. Может быть вызвана потерей

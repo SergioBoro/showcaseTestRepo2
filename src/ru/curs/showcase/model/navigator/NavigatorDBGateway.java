@@ -32,7 +32,7 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 			setSQLXMLParamByString(getSessionContextIndex(getTemplateIndex()),
 					context.getSession());
 			getStatement().registerOutParameter(NAVIGATOR_INDEX, java.sql.Types.SQLXML);
-			getStatement().execute();
+			execute();
 
 			InputStream stream = getStatement().getSQLXML(NAVIGATOR_INDEX).getBinaryStream();
 			return stream;

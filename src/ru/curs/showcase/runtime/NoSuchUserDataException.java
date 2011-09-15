@@ -1,7 +1,7 @@
 package ru.curs.showcase.runtime;
 
 import ru.curs.showcase.app.api.ExceptionType;
-import ru.curs.showcase.util.BaseException;
+import ru.curs.showcase.util.exception.BaseException;
 
 /**
  * Исключение, генерируемое в случае обращения к несуществующей userdata.

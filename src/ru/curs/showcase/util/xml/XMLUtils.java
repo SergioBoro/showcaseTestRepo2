@@ -19,6 +19,7 @@ import org.xml.sax.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.*;
 
 /**
  * Реализует обработку XML (в частности, выполнение XSLT-преобразования).
@@ -43,7 +44,7 @@ public final class XMLUtils {
 			m.marshal(object, doc);
 			return doc;
 		} catch (JAXBException e) {
-			throw new ServerInternalError(e);
+			throw new ServerLogicError(e);
 		}
 	}
 
@@ -64,7 +65,7 @@ public final class XMLUtils {
 			Object res = um.unmarshal(node);
 			return res;
 		} catch (JAXBException e) {
-			throw new ServerInternalError(e);
+			throw new ServerLogicError(e);
 		}
 	}
 

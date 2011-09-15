@@ -44,7 +44,7 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 				LOGGER.info("context=" + context.toString());
 				getStatement().registerOutParameter(FRAME_DATA_INDEX, java.sql.Types.VARCHAR);
 
-				getStatement().execute();
+				execute();
 				checkErrorCode();
 
 				String result = getStatement().getString(FRAME_DATA_INDEX);

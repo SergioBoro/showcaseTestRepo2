@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.util.BaseException;
+import ru.curs.showcase.util.exception.BaseException;
 
 /**
  * Исключение, возникающее при запросе к БД.

@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
  * Абстрактный класс, содержащий базовые константы и функции для вызова хранимых
@@ -18,7 +19,6 @@ import ru.curs.showcase.util.*;
  * 
  */
 public abstract class SPCallHelper extends DataCheckGateway {
-
 	private static final int MAIN_CONTEXT_INDEX = 1;
 	private static final int ADD_CONTEXT_INDEX = 2;
 	private static final int FILTER_INDEX = 3;
@@ -65,6 +65,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	}
 
 	protected static final String SESSION_CONTEXT_PARAM = "session_context";
+	private String sqlTemplate;
 
 	/**
 	 * Функция для настройки общих параметров запроса: контекста и фильтров.
@@ -81,7 +82,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 				getStatement().setString(getMainContextIndex(templateIndex), context.getMain());
 			}
 			if (context.getAdditional() != null) {
-				getStatement().setString(getAddContextIndex(templateIndex), context.getAdditional());
+				getStatement().setString(getAddContextIndex(templateIndex),
+						context.getAdditional());
 			}
 			if (context.getFilter() != null) {
 				setSQLXMLParamByString(getFilterIndex(templateIndex), context.getFilter());
@@ -207,8 +209,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		if (conn == null) {
 			conn = ConnectionFactory.getConnection();
 		}
-		String sql = String.format(getSqlTemplate(templateIndex), getProcName());
-		setStatement(conn.prepareCall(sql));
+		sqlTemplate = String.format(getSqlTemplate(templateIndex), getProcName());
+		setStatement(conn.prepareCall(sqlTemplate));
 	}
 
 	/**
@@ -217,7 +219,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	protected void prepareStatementWithErrorMes() throws SQLException {
 		prepareSQL();
 		getStatement().registerOutParameter(1, java.sql.Types.INTEGER);
-		getStatement().registerOutParameter(getErrorMesIndex(templateIndex), java.sql.Types.VARCHAR);
+		getStatement().registerOutParameter(getErrorMesIndex(templateIndex),
+				java.sql.Types.VARCHAR);
 	}
 
 	/**
@@ -248,19 +251,19 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	}
 
 	protected void setSQLXMLParamByString(final int index, final String value) throws SQLException {
-		String value2 = value;
-		if (value2 == null) {
+		String realValue = value;
+		if (realValue == null) {
 			if (ConnectionFactory.getSQLServerType() != SQLServerType.POSTGRESQL) {
-				value2 = "";
+				realValue = "";
 			}
 		} else {
-			if (value2.isEmpty()
+			if (realValue.isEmpty()
 					&& ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
-				value2 = null;
+				realValue = null;
 			}
 		}
 		SQLXML sqlxml = getConn().createSQLXML();
-		sqlxml.setString(value2);
+		sqlxml.setString(realValue);
 		getStatement().setSQLXML(index, sqlxml);
 	}
 
@@ -282,5 +285,10 @@ public abstract class SPCallHelper extends DataCheckGateway {
 
 	protected int getErrorMesIndex(final int index) {
 		return ERROR_MES_INDEX;
+	}
+
+	protected boolean execute() throws SQLException {
+		LOGGER.info(String.format("SQL input \r\n %s", sqlTemplate));
+		return getStatement().execute();
 	}
 }

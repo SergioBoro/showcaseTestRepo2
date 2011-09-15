@@ -31,7 +31,7 @@ public class ElementSettingsDBGateway extends ElementSPCallHelper implements
 		try {
 			prepareElementStatementWithErrorMes();
 			getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
-			getStatement().execute();
+			execute();
 			checkErrorCode();
 			return new ElementRawData(this, elementInfo, context);
 		} catch (SQLException e) {

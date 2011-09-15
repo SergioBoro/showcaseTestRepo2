@@ -29,7 +29,7 @@ public class ActivityDBGateway extends SPCallHelper implements ActivityGateway {
 
 				prepareStatementWithErrorMes();
 				setupGeneralParameters();
-				getStatement().execute();
+				execute();
 				checkErrorCode();
 			} catch (SQLException e) {
 				dbExceptionHandler(e);

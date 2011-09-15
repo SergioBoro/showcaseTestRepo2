@@ -2,6 +2,8 @@ package ru.curs.showcase.util;
 
 import java.lang.reflect.*;
 
+import ru.curs.showcase.util.exception.ServerLogicError;
+
 /**
  * Статический класс, содержащий общие функции для работы с Java Reflection.
  * 
@@ -20,7 +22,7 @@ public final class ReflectionUtils {
 			Method met = obj.getClass().getMethod(metName);
 			return met.invoke(obj);
 		} catch (Exception e) {
-			throw new ServerInternalError(e);
+			throw new ServerLogicError(e);
 		}
 
 	}

@@ -5,7 +5,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.NoSuchUserDataException;
-import ru.curs.showcase.util.BaseException;
+import ru.curs.showcase.util.exception.BaseException;
 
 /**
  * Фабрика по созданию GeneralServerException на основе серверного Exception.

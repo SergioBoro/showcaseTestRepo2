@@ -17,9 +17,7 @@ import ru.curs.showcase.app.api.GWTClonable;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Action implements SerializableElement, GWTClonable, ContainingContext {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = -5014034913652092038L;
 
 	/**

@@ -55,7 +55,7 @@ public abstract class HTMLBasedSPCallHelper extends ElementSPCallHelper {
 			try {
 				prepareStdStatement();
 				Document data = null;
-				getStatement().execute();
+				execute();
 				SQLXML xml = getStatement().getSQLXML(getDataParam(getTemplateIndex()));
 				if (xml != null) {
 					DOMSource domSource = xml.getSource(DOMSource.class);

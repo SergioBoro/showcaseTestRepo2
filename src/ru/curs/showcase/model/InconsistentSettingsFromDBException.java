@@ -1,7 +1,7 @@
 package ru.curs.showcase.model;
 
 import ru.curs.showcase.app.api.ExceptionType;
-import ru.curs.showcase.util.BaseException;
+import ru.curs.showcase.util.exception.BaseException;
 
 /**
  * Исключение, возникающее при несогласованных настройках элементов, переданных

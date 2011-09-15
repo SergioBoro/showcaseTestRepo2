@@ -2,7 +2,6 @@ package ru.curs.showcase.app.client.utils;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.client.WebUtils;
 
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
