@@ -12,8 +12,7 @@ import ru.curs.showcase.app.api.html.XForm;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.event.HTMLBasedElementFactory;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.exception.SettingsFileOpenException;
+import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;
 
 /**

@@ -1,9 +1,7 @@
 package ru.curs.showcase.model;
 
 import java.io.InputStream;
-import java.sql.*;
-
-import javax.xml.transform.dom.DOMSource;
+import java.sql.SQLException;
 
 import org.w3c.dom.Document;
 
@@ -54,13 +52,8 @@ public abstract class HTMLBasedSPCallHelper extends ElementSPCallHelper {
 		try {
 			try {
 				prepareStdStatement();
-				Document data = null;
 				execute();
-				SQLXML xml = getStatement().getSQLXML(getDataParam(getTemplateIndex()));
-				if (xml != null) {
-					DOMSource domSource = xml.getSource(DOMSource.class);
-					data = (Document) domSource.getNode();
-				}
+				Document data = getDocumentForXMLParam(getDataParam(getTemplateIndex()));
 				InputStream validatedSettings = getValidatedSettings();
 				return new HTMLBasedElementRawData(data, validatedSettings, getElementInfo(),
 						getContext());

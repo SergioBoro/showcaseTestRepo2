@@ -39,11 +39,9 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 		try {
 			try {
 				prepareStatementWithErrorMes();
-				setSQLXMLParamByString(getSessionContextIndex(getTemplateIndex()),
-						context.getSession());
-				LOGGER.info("context=" + context.toString());
+				setSQLXMLParam(getSessionContextIndex(getTemplateIndex()), context.getSession());
 				getStatement().registerOutParameter(FRAME_DATA_INDEX, java.sql.Types.VARCHAR);
-
+				setContext(context);
 				execute();
 				checkErrorCode();
 

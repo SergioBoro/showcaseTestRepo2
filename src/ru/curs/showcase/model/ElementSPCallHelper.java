@@ -1,9 +1,7 @@
 package ru.curs.showcase.model;
 
 import java.io.InputStream;
-import java.sql.*;
-
-import org.slf4j.*;
+import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -18,10 +16,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
 public abstract class ElementSPCallHelper extends SPCallHelper {
 
 	private static final int ELEMENTID_INDEX = 5;
-	/**
-	 * LOGGER.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(ElementSPCallHelper.class);
+
 	/**
 	 * Информация об элементе, данные которого загружает процедура.
 	 */
@@ -40,8 +35,7 @@ public abstract class ElementSPCallHelper extends SPCallHelper {
 	protected void setupGeneralElementParameters() throws SQLException {
 		setupGeneralParameters();
 
-		getStatement().setString(getElementIdIndex(getTemplateIndex()), elementInfo.getId());
-		LOGGER.info("elementInfo=" + elementInfo.toString());
+		setStringParam(getElementIdIndex(getTemplateIndex()), elementInfo.getId());
 	}
 
 	/**
@@ -108,10 +102,8 @@ public abstract class ElementSPCallHelper extends SPCallHelper {
 	 */
 	protected InputStream getValidatedSettings() throws SQLException {
 		if (validatedSettings == null) {
-			SQLXML xml;
-			xml = getStatement().getSQLXML(getOutSettingsParam());
-			if (xml != null) {
-				InputStream settings = xml.getBinaryStream();
+			InputStream settings = getInputStreamForXMLParam(getOutSettingsParam());
+			if (settings != null) {
 				validatedSettings = XMLUtils.xsdValidateAppDataSafe(settings, getSettingsSchema());
 			}
 		}

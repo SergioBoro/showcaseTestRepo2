@@ -5,8 +5,7 @@ import java.net.URL;
 
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.exception.SettingsFileOpenException;
+import ru.curs.showcase.util.exception.*;
 
 /**
  * Источник схем в classpath.

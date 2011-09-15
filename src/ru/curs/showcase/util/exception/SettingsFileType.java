@@ -1,4 +1,4 @@
-package ru.curs.showcase.util;
+package ru.curs.showcase.util.exception;
 
 /**
  * Тип Файла настроек приложения.

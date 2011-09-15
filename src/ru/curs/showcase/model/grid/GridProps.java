@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 
 /**

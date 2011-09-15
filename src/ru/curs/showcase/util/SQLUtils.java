@@ -1,6 +1,8 @@
 package ru.curs.showcase.util;
 
 import java.sql.*;
+import java.util.Map;
+import java.util.regex.*;
 
 import javax.sql.RowSet;
 import javax.sql.rowset.CachedRowSet;
@@ -123,6 +125,24 @@ public final class SQLUtils {
 		return (aSqlType == Types.CHAR) || (aSqlType == Types.NCHAR)
 				|| (aSqlType == Types.NVARCHAR) || (aSqlType == Types.VARCHAR)
 				|| (aSqlType == Types.LONGNVARCHAR) || (aSqlType == Types.LONGVARCHAR);
+	}
+
+	public static String addParamsToSQLTemplate(final String template,
+			final Map<Integer, Object> params) {
+		String value = template;
+		Pattern pattern = Pattern.compile("(\\?)");
+		Matcher matcher = pattern.matcher(value);
+		int i = 1;
+		while (matcher.find()) {
+			Object paramValue = params.get(i++);
+			if (paramValue instanceof Integer) {
+				value = matcher.replaceFirst(((Integer) paramValue).toString());
+			} else {
+				value = matcher.replaceFirst(String.format("\"%s\"", paramValue));
+			}
+			matcher = pattern.matcher(value);
+		}
+		return value;
 	}
 
 }

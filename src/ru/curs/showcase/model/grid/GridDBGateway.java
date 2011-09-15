@@ -45,17 +45,16 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 		setConn(aConn);
 	}
 
-	private void setupSorting(final CallableStatement cs, final GridContext settings,
-			final int queryType) throws SQLException {
+	private void setupSorting(final GridContext settings, final int queryType) throws SQLException {
 		if (settings.sortingEnabled()) {
 			StringBuilder builder = new StringBuilder("ORDER BY ");
 			for (Column col : settings.getSortedColumns()) {
 				builder.append(String.format("\"%s\" %s,", col.getId(), col.getSorting()));
 			}
 			String sortStatement = builder.substring(0, builder.length() - 1);
-			cs.setString(getSortColumnsIndex(queryType), sortStatement);
+			setStringParam(getSortColumnsIndex(queryType), sortStatement);
 		} else {
-			cs.setString(getSortColumnsIndex(queryType), "");
+			setStringParam(getSortColumnsIndex(queryType), "");
 		}
 	}
 
@@ -68,7 +67,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 
 			prepareElementStatementWithErrorMes();
 			getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
-			setupSorting(getStatement(), context, DATA_AND_SETTINS_QUERY);
+			setupSorting(context, DATA_AND_SETTINS_QUERY);
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
 				getStatement().registerOutParameter(ORA_CURSOR_INDEX_DATA_AND_SETTINS,
 						OracleTypes.CURSOR);
@@ -122,11 +121,11 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 
 			prepareSQL();
 			setupGeneralElementParameters();
-			getStatement().setInt(getAdjustParamIndexAccordingToSQLServerType(FIRST_RECORD_INDEX),
-					context.getPageInfo().getFirstRecord());
-			getStatement().setInt(getAdjustParamIndexAccordingToSQLServerType(PAGE_SIZE_INDEX),
+			setIntParam(getAdjustParamIndexAccordingToSQLServerType(FIRST_RECORD_INDEX), context
+					.getPageInfo().getFirstRecord());
+			setIntParam(getAdjustParamIndexAccordingToSQLServerType(PAGE_SIZE_INDEX),
 					context.getPageSize());
-			setupSorting(getStatement(), context, DATA_ONLY_QUERY);
+			setupSorting(context, DATA_ONLY_QUERY);
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
 				getStatement().registerOutParameter(1, Types.OTHER);
 			}

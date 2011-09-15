@@ -5,7 +5,7 @@ import java.io.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.exception.SettingsFileOpenException;
+import ru.curs.showcase.util.exception.*;
 
 /**
  * Файловый шлюз для получения фреймов главной страницы.

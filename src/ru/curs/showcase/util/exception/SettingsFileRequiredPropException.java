@@ -1,6 +1,5 @@
 package ru.curs.showcase.util.exception;
 
-import ru.curs.showcase.util.SettingsFileType;
 
 /**
  * Исключение, генерируемое при отсутствии в файле настроек приложения

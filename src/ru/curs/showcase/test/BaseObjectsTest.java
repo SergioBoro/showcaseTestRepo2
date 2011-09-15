@@ -4,15 +4,17 @@ import static org.junit.Assert.*;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.*;
 
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.server.*;
+import ru.curs.showcase.app.server.ProductionModeInitializer;
 import ru.curs.showcase.model.datapanel.DataPanelFileGateway;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Общий тестовый класс для мелких базовых объектов.
@@ -84,8 +86,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(state.getServerTime());
 		assertNotNull(state.getSqlVersion());
 
-		assertEquals("10.0.0.9999",
-				ServerStateFactory.getAppVersion("ru/curs/showcase/test/"));
+		assertEquals("10.0.0.9999", ServerStateFactory.getAppVersion("ru/curs/showcase/test/"));
 	}
 
 	/**
@@ -189,4 +190,25 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	public void testLastLogEventQueue() {
 		testBaseLastLogEventQueue(new LastLogEvents());
 	}
+
+	@Test
+	public void testTextDataFile() {
+		DataFile<InputStream> file = new DataFile<InputStream>(null, "test.txt");
+		assertTrue(file.isTextFile());
+		file = new DataFile<InputStream>(null, "test.exe");
+		assertFalse(file.isTextFile());
+	}
+
+	@Test
+	public void testAddParamsToSQLTemplate() {
+		Map<Integer, Object> params = new TreeMap<Integer, Object>();
+		params.put(1, "first");
+		params.put(2, 2);
+		String value = "call {?,?,?}";
+
+		value = SQLUtils.addParamsToSQLTemplate(value, params);
+
+		assertEquals("call {\"first\",2,\"null\"}", value);
+	}
+
 }

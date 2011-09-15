@@ -1,15 +1,20 @@
 package ru.curs.showcase.model;
 
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
+import java.util.*;
+
+import javax.xml.transform.dom.DOMSource;
 
 import org.slf4j.*;
+import org.w3c.dom.Document;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.exception.SettingsFileOpenException;
+import ru.curs.showcase.util.exception.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Абстрактный класс, содержащий базовые константы и функции для вызова хранимых
@@ -26,11 +31,15 @@ public abstract class SPCallHelper extends DataCheckGateway {
 
 	private static final int ERROR_MES_INDEX = -1;
 
+	private static final String LOG_TEMPLATE =
+		"SQL %s \r\n userName=%s \r\n requestId=%s \r\n commandName=%s \r\n %s";
+
 	/**
 	 * LOGGER.
 	 */
 	protected static final Logger LOGGER = LoggerFactory.getLogger(SPCallHelper.class);
 
+	private final Map<Integer, Object> params = new TreeMap<Integer, Object>();
 	/**
 	 * Соединение с БД.
 	 */
@@ -73,26 +82,29 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 * @throws SQLException
 	 */
 	protected void setupGeneralParameters() throws SQLException {
-		getStatement().setString(getMainContextIndex(templateIndex), "");
-		getStatement().setString(getAddContextIndex(templateIndex), "");
-		setSQLXMLParamByString(getFilterIndex(templateIndex), "");
-		setSQLXMLParamByString(getSessionContextIndex(templateIndex), "");
+		setStringParam(getMainContextIndex(templateIndex), "");
+		setStringParam(getAddContextIndex(templateIndex), "");
+		setSQLXMLParam(getFilterIndex(templateIndex), "");
+		setSQLXMLParam(getSessionContextIndex(templateIndex), "");
 		if (context != null) {
 			if (context.getMain() != null) {
-				getStatement().setString(getMainContextIndex(templateIndex), context.getMain());
+				setStringParam(getMainContextIndex(templateIndex), context.getMain());
 			}
 			if (context.getAdditional() != null) {
-				getStatement().setString(getAddContextIndex(templateIndex),
-						context.getAdditional());
+				setStringParam(getAddContextIndex(templateIndex), context.getAdditional());
 			}
 			if (context.getFilter() != null) {
-				setSQLXMLParamByString(getFilterIndex(templateIndex), context.getFilter());
+				setSQLXMLParam(getFilterIndex(templateIndex), context.getFilter());
 			}
 			if (context.getSession() != null) {
-				setSQLXMLParamByString(getSessionContextIndex(templateIndex), context.getSession());
+				setSQLXMLParam(getSessionContextIndex(templateIndex), context.getSession());
 			}
-			LOGGER.info("context=" + context.toString());
 		}
+	}
+
+	protected void setStringParam(final int index, final String value) throws SQLException {
+		getStatement().setString(index, value);
+		storeParamValue(index, value);
 	}
 
 	public Connection getConn() {
@@ -250,7 +262,33 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		templateIndex = aTemplateIndex;
 	}
 
-	protected void setSQLXMLParamByString(final int index, final String value) throws SQLException {
+	protected void setSQLXMLParam(final int index, final String value) throws SQLException {
+		String realValue = correctValueForXML(value);
+
+		SQLXML sqlxml = getConn().createSQLXML();
+		sqlxml.setString(realValue);
+		getStatement().setSQLXML(index, sqlxml);
+
+		storeParamValue(index, realValue);
+	}
+
+	private void storeParamValue(final int index, final Object value) {
+		if (LOGGER.isInfoEnabled()) {
+			if (value instanceof String) {
+				params.put(index, value);
+			} else if (value instanceof InputStream) {
+				try {
+					params.put(index, TextUtils.streamToString((InputStream) value));
+				} catch (IOException e) {
+					throw new ServerLogicError(e);
+				}
+			} else if (value instanceof Integer) {
+				params.put(index, value);
+			}
+		}
+	}
+
+	private String correctValueForXML(final String value) {
 		String realValue = value;
 		if (realValue == null) {
 			if (ConnectionFactory.getSQLServerType() != SQLServerType.POSTGRESQL) {
@@ -262,9 +300,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 				realValue = null;
 			}
 		}
-		SQLXML sqlxml = getConn().createSQLXML();
-		sqlxml.setString(realValue);
-		getStatement().setSQLXML(index, sqlxml);
+		return realValue;
 	}
 
 	protected int getMainContextIndex(final int index) {
@@ -288,7 +324,132 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	}
 
 	protected boolean execute() throws SQLException {
-		LOGGER.info(String.format("SQL input \r\n %s", sqlTemplate));
+		String value = SQLUtils.addParamsToSQLTemplate(sqlTemplate, params);
+		LOGGER.info(String.format(LOG_TEMPLATE, "input", ServletUtils.getCurrentSessionUserName(),
+				getRequestId(), getCommandName(), value));
 		return getStatement().execute();
+	}
+
+	private String getCommandName() {
+		if ((getContext() != null) && (getContext().getCommandContext() != null)) {
+			return getContext().getCommandContext().getCommandName();
+		} else {
+			return null;
+		}
+	}
+
+	private String getRequestId() {
+		if ((getContext() != null) && (getContext().getCommandContext() != null)) {
+			return getContext().getCommandContext().getRequestId();
+		} else {
+			return null;
+		}
+	}
+
+	protected void setBinaryStream(final int parameterIndex, final DataFile<InputStream> file)
+			throws SQLException, IOException {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			getStatement().setBinaryStream(parameterIndex, file.getData());
+		} else {
+			StreamConvertor dup = new StreamConvertor(file.getData());
+			ByteArrayOutputStream os = dup.getOutputStream();
+			getStatement().setBytes(parameterIndex, os.toByteArray());
+		}
+		if (file.isTextFile()) {
+			storeParamValue(parameterIndex, file.getData());
+		}
+	}
+
+	protected void setIntParam(final int index, final int value) throws SQLException {
+		getStatement().setInt(index, value);
+		storeParamValue(index, value);
+	}
+
+	protected InputStream getInputStreamForXMLParam(final int index) throws SQLException {
+		SQLXML sqlXml = getStatement().getSQLXML(index);
+		if (sqlXml != null) {
+			InputStream is = sqlXml.getBinaryStream();
+			is = logOutputXMLStream(is);
+			return is;
+		}
+		return null;
+	}
+
+	protected Document getDocumentForXMLParam(final int index) throws SQLException {
+		SQLXML sqlXml = getStatement().getSQLXML(index);
+		if (sqlXml != null) {
+			DOMSource domSource = sqlXml.getSource(DOMSource.class);
+			Document doc = (Document) domSource.getNode();
+			logOutputXMLDocument(doc);
+			return doc;
+		}
+		return null;
+	}
+
+	protected String getStringForXMLParam(final int index) throws SQLException {
+		SQLXML sqlXml = getStatement().getSQLXML(index);
+		if (sqlXml != null) {
+			String result = sqlXml.getString();
+			logOutputXMLString(result);
+			return result;
+		}
+		return null;
+	}
+
+	private InputStream logOutputXMLStream(final InputStream is) {
+		if (LOGGER.isInfoEnabled()) {
+			try {
+				StreamConvertor convertor = new StreamConvertor(is);
+				String value = XMLUtils.xsltTransform(convertor.getCopy(), null);
+				logOutputXMLString(value);
+				return convertor.getCopy();
+			} catch (IOException e) {
+				throw new CreateObjectError(e);
+			}
+		}
+		return is;
+	}
+
+	private void logOutputXMLDocument(final Document doc) {
+		if (LOGGER.isInfoEnabled()) {
+			String value = XMLUtils.documentToString(doc);
+			logOutputXMLString(value);
+		}
+	}
+
+	private void logOutputXMLString(final String value) {
+		LOGGER.info(String.format(LOG_TEMPLATE, "output",
+				ServletUtils.getCurrentSessionUserName(), getRequestId(), getCommandName(), value));
+	}
+
+	protected DataFile<ByteArrayOutputStream> getFileForBinaryStream(final int dataIndex,
+			final int nameIndex) throws SQLException {
+		InputStream is = getBinaryStream(dataIndex);
+		String fileName = getStatement().getString(nameIndex);
+		StreamConvertor dup;
+		try {
+			dup = new StreamConvertor(is);
+		} catch (IOException e) {
+			throw new CreateObjectError(e);
+		}
+		ByteArrayOutputStream os = dup.getOutputStream();
+		DataFile<ByteArrayOutputStream> result = new DataFile<ByteArrayOutputStream>(os, fileName);
+
+		if (result.isTextFile()) {
+			logOutputXMLStream(dup.getCopy());
+		}
+		return result;
+	}
+
+	private InputStream getBinaryStream(final int dataIndex) throws SQLException {
+		InputStream is = null;
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			Blob blob = getStatement().getBlob(dataIndex);
+			is = blob.getBinaryStream();
+		} else {
+			byte[] bt = getStatement().getBytes(dataIndex);
+			is = new ByteArrayInputStream(bt);
+		}
+		return is;
 	}
 }

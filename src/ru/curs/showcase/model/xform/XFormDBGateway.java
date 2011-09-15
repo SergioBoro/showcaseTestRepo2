@@ -1,14 +1,14 @@
 package ru.curs.showcase.model.xform;
 
 import java.io.*;
-import java.sql.*;
+import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.exception.CreateObjectError;
 
 /**
@@ -95,7 +95,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 		try {
 			try {
 				prepareElementStatementWithErrorMes();
-				setSQLXMLParamByString(getDataParam(SAVE_TEMPLATE_IND), data);
+				setSQLXMLParam(getDataParam(SAVE_TEMPLATE_IND), data);
 				execute();
 				checkErrorCode();
 			} catch (SQLException e) {
@@ -115,15 +115,11 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 		try {
 			try {
 				prepareStatementWithErrorMes();
-				setSQLXMLParamByString(INPUTDATA_INDEX, aInputData);
+				setSQLXMLParam(INPUTDATA_INDEX, aInputData);
 				getStatement().registerOutParameter(OUTPUTDATA_INDEX, java.sql.Types.SQLXML);
 				execute();
 				checkErrorCode();
-
-				SQLXML sqlxml = getStatement().getSQLXML(OUTPUTDATA_INDEX);
-				if (sqlxml != null) {
-					out = sqlxml.getString();
-				}
+				out = getStringForXMLParam(OUTPUTDATA_INDEX);
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
 			}
@@ -157,21 +153,14 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 		try {
 			try {
 				prepareElementStatementWithErrorMes();
-				setSQLXMLParamByString(getDataParam(FILE_TEMPLATE_IND), context.getFormData());
+				setSQLXMLParam(getDataParam(FILE_TEMPLATE_IND), context.getFormData());
 				getStatement().registerOutParameter(FILENAME_INDEX, java.sql.Types.VARCHAR);
 				getStatement().registerOutParameter(FILE_INDEX, getBinarySQLType());
 				execute();
 				checkErrorCode();
-
-				String fileName = getStatement().getString(FILENAME_INDEX);
-				InputStream blobIs = getBinaryStream(FILE_INDEX);
-				StreamConvertor dup = new StreamConvertor(blobIs);
-				ByteArrayOutputStream os = dup.getOutputStream();
-				result = new DataFile<ByteArrayOutputStream>(os, fileName);
+				result = getFileForBinaryStream(FILE_INDEX, FILENAME_INDEX);
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
-			} catch (IOException e2) {
-				throw new CreateObjectError(e2);
 			}
 		} finally {
 			releaseResources();
@@ -193,9 +182,9 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 		try {
 			try {
 				prepareElementStatementWithErrorMes();
-				setSQLXMLParamByString(getDataParam(FILE_TEMPLATE_IND), context.getFormData());
-				getStatement().setString(FILENAME_INDEX, file.getName());
-				setBinaryStream(FILE_INDEX, file.getData());
+				setSQLXMLParam(getDataParam(FILE_TEMPLATE_IND), context.getFormData());
+				setStringParam(FILENAME_INDEX, file.getName());
+				setBinaryStream(FILE_INDEX, file);
 				execute();
 				checkErrorCode();
 			} catch (SQLException e) {
@@ -275,27 +264,6 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 			return java.sql.Types.BLOB;
 		} else {
 			return java.sql.Types.BINARY;
-		}
-	}
-
-	private InputStream getBinaryStream(final int parameterIndex) throws SQLException {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			Blob blob = getStatement().getBlob(parameterIndex);
-			return blob.getBinaryStream();
-		} else {
-			byte[] bt = getStatement().getBytes(parameterIndex);
-			return new ByteArrayInputStream(bt);
-		}
-	}
-
-	private void setBinaryStream(final int parameterIndex, final InputStream is)
-			throws SQLException, IOException {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			getStatement().setBinaryStream(parameterIndex, is);
-		} else {
-			StreamConvertor dup = new StreamConvertor(is);
-			ByteArrayOutputStream os = dup.getOutputStream();
-			getStatement().setBytes(parameterIndex, os.toByteArray());
 		}
 	}
 

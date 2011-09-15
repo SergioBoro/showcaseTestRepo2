@@ -2,10 +2,11 @@ package ru.curs.showcase.model.command;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 import org.slf4j.*;
 
-import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.AppRegistry;
 import ru.curs.showcase.runtime.AppInfoSingleton;
@@ -30,7 +31,8 @@ public abstract class ServiceLayerCommand<T> {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ServiceLayerCommand.class);
 
-	private final CommandContext commandContext = new CommandContext(this);
+	private final CommandContext commandContext = new CommandContext(this.getClass()
+			.getSimpleName(), UUID.randomUUID().toString());
 
 	/**
 	 * Идентификатор текущей HTTP сессии.
@@ -136,6 +138,8 @@ public abstract class ServiceLayerCommand<T> {
 		getContext().setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(getContext().getSessionParamsMap());
 		getContext().getSessionParamsMap().clear();
+
+		getContext().setCommandContext(commandContext);
 	}
 
 	public String getSessionId() {

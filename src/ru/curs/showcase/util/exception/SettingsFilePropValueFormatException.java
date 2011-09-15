@@ -1,9 +1,5 @@
 package ru.curs.showcase.util.exception;
 
-import ru.curs.showcase.util.*;
-
-
-
 /**
  * Исключение, возникающее в случае неверного формата значений параметров в
  * файлах настроек приложения.

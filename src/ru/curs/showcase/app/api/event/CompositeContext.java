@@ -75,6 +75,8 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	@ExcludeFromSerialization
 	private Map<String, CompositeContext> related = new HashMap<String, CompositeContext>();
 
+	private CommandContext commandContext;
+
 	public CompositeContext(final Map<String, List<String>> aParams) {
 		super();
 		addSessionParams(aParams);
@@ -90,13 +92,6 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 
 	public void setSession(final String aSession) {
 		session = aSession;
-	}
-
-	@Override
-	public String toString() {
-		return "mainContext=" + main + ExchangeConstants.LINE_SEPARATOR + "additionalContext="
-				+ additional + ExchangeConstants.LINE_SEPARATOR + "sessionContext=" + session
-				+ ExchangeConstants.LINE_SEPARATOR + "filterContext=" + filter;
 	}
 
 	public final String getMain() {
@@ -164,6 +159,9 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		if (related.isEmpty()) {
 			related.putAll(sourceContext.related);
 		}
+		if (commandContext != null) {
+			commandContext.assignNullValues(sourceContext.getCommandContext());
+		}
 	}
 
 	/**
@@ -188,6 +186,7 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((additional == null) ? 0 : additional.hashCode());
+		result = prime * result + ((commandContext == null) ? 0 : commandContext.hashCode());
 		result = prime * result + ((filter == null) ? 0 : filter.hashCode());
 		result = prime * result + ((main == null) ? 0 : main.hashCode());
 		result = prime * result + ((session == null) ? 0 : session.hashCode());
@@ -223,6 +222,9 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		}
 		for (Entry<String, CompositeContext> entry : related.entrySet()) {
 			res.related.put(entry.getKey(), entry.getValue().gwtClone());
+		}
+		if (getCommandContext() != null) {
+			res.setCommandContext(getCommandContext().gwtClone());
 		}
 		return res;
 	}
@@ -330,23 +332,60 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		if (this == o) {
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
 		}
-		if (o == null) {
+		if (obj == null) {
 			return false;
 		}
-		if (o.getClass() != getClass()) {
+		if (!(obj instanceof CompositeContext)) {
 			return false;
 		}
-		CompositeContext castedObj = (CompositeContext) o;
-		return (this.main == null ? castedObj.main == null : this.main.equals(castedObj.main))
-				&& (this.additional == null ? castedObj.additional == null : this.additional
-						.equals(castedObj.additional))
-				&& (this.session == null ? castedObj.session == null : this.session
-						.equals(castedObj.session))
-				&& (this.filter == null ? castedObj.filter == null : this.filter
-						.equals(castedObj.filter));
+		CompositeContext other = (CompositeContext) obj;
+		if (additional == null) {
+			if (other.additional != null) {
+				return false;
+			}
+		} else if (!additional.equals(other.additional)) {
+			return false;
+		}
+		if (commandContext == null) {
+			if (other.commandContext != null) {
+				return false;
+			}
+		} else if (!commandContext.equals(other.commandContext)) {
+			return false;
+		}
+		if (filter == null) {
+			if (other.filter != null) {
+				return false;
+			}
+		} else if (!filter.equals(other.filter)) {
+			return false;
+		}
+		if (main == null) {
+			if (other.main != null) {
+				return false;
+			}
+		} else if (!main.equals(other.main)) {
+			return false;
+		}
+		if (session == null) {
+			if (other.session != null) {
+				return false;
+			}
+		} else if (!session.equals(other.session)) {
+			return false;
+		}
+		return true;
+	}
+
+	public CommandContext getCommandContext() {
+		return commandContext;
+	}
+
+	public void setCommandContext(final CommandContext aCommandContext) {
+		commandContext = aCommandContext;
 	}
 }

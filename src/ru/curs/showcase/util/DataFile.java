@@ -61,4 +61,17 @@ public class DataFile<T> {
 	public String getId() {
 		return TextUtils.extractFileName(name);
 	}
+
+	public boolean isTextFile() {
+		String[] textExtensions =
+			{
+					"txt", "xml", "xsd", "xsl", "sql", "ini", "properties", "htm", "html", "java",
+					"cmd", "vbs", "py" };
+		for (String ext : textExtensions) {
+			if (name.endsWith(ext)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

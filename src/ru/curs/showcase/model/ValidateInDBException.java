@@ -10,7 +10,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;
 

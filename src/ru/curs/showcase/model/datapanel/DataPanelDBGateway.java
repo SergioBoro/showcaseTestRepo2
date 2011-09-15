@@ -41,14 +41,14 @@ public class DataPanelDBGateway extends SPCallHelper implements DataPanelGateway
 	@Override
 	public DataFile<InputStream> getRawData(final CompositeContext context) {
 		try {
+			setContext(context);
 			prepareStatementWithErrorMes();
-			setSQLXMLParamByString(getSessionContextIndex(getTemplateIndex()),
-					context.getSession());
-			getStatement().setString(getMainContextIndex(getTemplateIndex()), context.getMain());
+			setSQLXMLParam(getSessionContextIndex(getTemplateIndex()), context.getSession());
+			setStringParam(getMainContextIndex(getTemplateIndex()), context.getMain());
 			getStatement().registerOutParameter(DP_INDEX, java.sql.Types.SQLXML);
 			execute();
 			checkErrorCode();
-			InputStream stream = getStatement().getSQLXML(DP_INDEX).getBinaryStream();
+			InputStream stream = getInputStreamForXMLParam(DP_INDEX);
 			return new DataFile<InputStream>(stream, getProcName());
 		} catch (SQLException e) {
 			dbExceptionHandler(e);
