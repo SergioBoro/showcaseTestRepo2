@@ -226,6 +226,16 @@ public final class XFormPanelCallbacksEvents {
 	}-*/;
 
 			/**
+			 * Название процедуры получения и общего числа записей, и записей
+			 * как таковых
+			 * 
+			 * @return String
+			 */
+			native String procListAndCount()/*-{
+		return this.procListAndCount;
+	}-*/;
+
+			/**
 			 * общие фильтры. Этот параметр передаётся хранимой процедуре БД
 			 * (см. ниже) без изменений
 			 * 
@@ -283,8 +293,15 @@ public final class XFormPanelCallbacksEvents {
 			});
 			c.center();
 
-			c.initData(param.generalFilters(), param.procCount()
-					+ "FDCF8ABB9B6540A89E350010424C2B80" + param.procList(), param.currentValue());
+			String procName;
+			if (param.procListAndCount() == null) {
+				procName =
+					param.procCount() + "FDCF8ABB9B6540A89E350010424C2B80" + param.procList();
+			} else {
+				procName = param.procListAndCount();
+			}
+
+			c.initData(param.generalFilters(), procName, param.currentValue());
 
 		}
 

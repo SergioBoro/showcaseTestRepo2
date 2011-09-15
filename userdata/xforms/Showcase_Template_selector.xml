@@ -355,13 +355,13 @@
 
 
 			<xf:trigger>
-				<xf:label>Selector</xf:label>
+				<xf:label>Selector. 2 процедуры</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
 						resource="javascript:showSelector({
 			           id : 'xformId',
-                       procCount : 'companycount',
-                       procList  : 'companylist',                       
+                       procCount : '[dbo].[companycount]',
+                       procList  : '[dbo].[companylist]',                       
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
@@ -377,6 +377,30 @@
 								   }});;" />
 				</xf:action>
 			</xf:trigger>
+			
+			<xf:trigger>
+				<xf:label>Selector. 1 процедура</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:load
+						resource="javascript:showSelector({
+			           id : 'xformId',
+                       procListAndCount  : '[dbo].[companylist_and_count]',
+                       generalFilters      : '',
+                       currentValue        : '',
+                       windowCaption       : 'Выберите название',
+                       onSelectionComplete : function(ok, selected){
+					if (ok) {
+					var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('name')[0];
+					setValue(a, selected.name);
+		 
+					xforms.ready = false;
+					xforms.refresh();
+					xforms.ready = true;
+							}
+								   }});;" />
+				</xf:action>
+			</xf:trigger>
+			
 
 		</div>
 		<div style="font-size: 15px;"> Цвет глаз (1): </div>

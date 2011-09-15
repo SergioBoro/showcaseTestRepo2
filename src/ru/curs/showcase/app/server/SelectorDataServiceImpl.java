@@ -24,46 +24,23 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 	private static final String SELECTOR_ERROR =
 		"При получении данных для селектора возникла ошибка: ";
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 8719830458845626545L;
 
-	/**
-	 * LOGGER.
-	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(SelectorDataServiceImpl.class);
 
-	/**
-	 * COLUMN_ID.
-	 */
 	private static final String COLUMN_ID = "ID";
 
-	/**
-	 * COLUMN_NAME.
-	 */
 	private static final String COLUMN_NAME = "NAME";
 
-	/**
-	 * NUM.
-	 */
 	private static final int NUM1 = 1;
-	/**
-	 * NUM.
-	 */
 	private static final int NUM2 = 2;
-	/**
-	 * NUM.
-	 */
 	private static final int NUM3 = 3;
-	/**
-	 * NUM.
-	 */
 	private static final int NUM4 = 4;
-	/**
-	 * NUM.
-	 */
 	private static final int NUM5 = 5;
+	private static final int NUM6 = 6;
+
+	private static final int BY_ONE_PROC = 1;
+	private static final int BY_TWO_PROC = 2;
 
 	/**
 	 * PROCNAME_SEPARATOR.
@@ -79,60 +56,18 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			ds.setFirstRecord(req.getFirstRecord());
 			ds.setTotalCount(0);
 
-			String procCount =
-				req.getProcName().substring(0, req.getProcName().indexOf(PROCNAME_SEPARATOR));
+			if (req.getProcName().indexOf(PROCNAME_SEPARATOR) > -1) {
+				String procCount =
+					req.getProcName().substring(0, req.getProcName().indexOf(PROCNAME_SEPARATOR));
 
-			String procList =
-				req.getProcName().substring(
-						req.getProcName().indexOf(PROCNAME_SEPARATOR)
-								+ PROCNAME_SEPARATOR.length());
+				String procList =
+					req.getProcName().substring(
+							req.getProcName().indexOf(PROCNAME_SEPARATOR)
+									+ PROCNAME_SEPARATOR.length());
 
-			Connection conn = ConnectionFactory.getConnection();
-			// ЭТАП 1. Подсчёт общего количества записей
-			String stmt = String.format("{call %s(?,?,?,?)}", procCount);
-			CallableStatement cs = conn.prepareCall(stmt);
-			try {
-				int c;
-
-				cs.setString(NUM1, req.getParams());
-				cs.setString(NUM2, req.getCurValue());
-				cs.setBoolean(NUM3, req.isStartsWith());
-				cs.registerOutParameter(NUM4, Types.INTEGER);
-				cs.execute();
-				c = cs.getInt(NUM4);
-
-				ds.setTotalCount(c);
-				cs.close();
-
-				// ЭТАП 2. Возврат записей.
-				if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
-					conn.setAutoCommit(false);
-				}
-				stmt = String.format(getSqlTemplate(), procList);
-				cs = conn.prepareCall(stmt);
-
-				if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
-					cs.registerOutParameter(NUM1, Types.OTHER);
-				}
-				if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
-					cs.registerOutParameter(NUM1, OracleTypes.CURSOR);
-				}
-				cs.setString(getParamsIndex(), req.getParams());
-				cs.setString(getCurValueIndex(), req.getCurValue());
-				cs.setBoolean(getIsStartsWithIndex(), req.isStartsWith());
-				cs.setInt(getFirstRecordIndex(), req.getFirstRecord());
-				cs.setInt(getRecordCountIndex(), req.getRecordCount());
-
-				ResultSet rs = getResultSet(cs);
-
-				// Мы заранее примерно знаем размер, так что используем
-				// ArrayList.
-				ArrayList<DataRecord> l = new ArrayList<DataRecord>(req.getRecordCount());
-				fillArrayListOfDataRecord(rs, l);
-				ds.setRecords(l);
-			} finally {
-				cs.close();
-				conn.close();
+				getDataByTwoProc(req, procCount, procList, ds);
+			} else {
+				getDataByOneProc(req, req.getProcName(), ds);
 			}
 
 		} catch (Exception e) {
@@ -144,6 +79,91 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		return ds;
 	}
 
+	private void getDataByTwoProc(final DataRequest req, final String procCount,
+			final String procList, final DataSet ds) throws SQLException {
+		Connection conn = ConnectionFactory.getConnection();
+		// ЭТАП 1. Подсчёт общего количества записей
+		String stmt = String.format("{call %s(?,?,?,?)}", procCount);
+		CallableStatement cs = conn.prepareCall(stmt);
+		try {
+			int c;
+
+			cs.setString(NUM1, req.getParams());
+			cs.setString(NUM2, req.getCurValue());
+			cs.setBoolean(NUM3, req.isStartsWith());
+			cs.registerOutParameter(NUM4, Types.INTEGER);
+			cs.execute();
+			c = cs.getInt(NUM4);
+
+			ds.setTotalCount(c);
+			cs.close();
+
+			// ЭТАП 2. Возврат записей.
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+				conn.setAutoCommit(false);
+			}
+			stmt = String.format(getSqlTemplate(BY_TWO_PROC), procList);
+			cs = conn.prepareCall(stmt);
+
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+				cs.registerOutParameter(NUM1, Types.OTHER);
+			}
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
+				cs.registerOutParameter(NUM1, OracleTypes.CURSOR);
+			}
+			cs.setString(getParamsIndex(), req.getParams());
+			cs.setString(getCurValueIndex(), req.getCurValue());
+			cs.setBoolean(getIsStartsWithIndex(), req.isStartsWith());
+			cs.setInt(getFirstRecordIndex(), req.getFirstRecord());
+			cs.setInt(getRecordCountIndex(), req.getRecordCount());
+
+			ResultSet rs = getResultSet(cs);
+
+			// Мы заранее примерно знаем размер, так что используем
+			// ArrayList.
+			ArrayList<DataRecord> l = new ArrayList<DataRecord>(req.getRecordCount());
+			fillArrayListOfDataRecord(rs, l);
+			ds.setRecords(l);
+		} finally {
+			cs.close();
+			conn.close();
+		}
+	}
+
+	private void getDataByOneProc(final DataRequest req, final String procListAndCount,
+			final DataSet ds) throws SQLException {
+		Connection conn = ConnectionFactory.getConnection();
+		String stmt = String.format(getSqlTemplate(BY_ONE_PROC), procListAndCount);
+		CallableStatement cs = conn.prepareCall(stmt);
+		try {
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
+				cs.registerOutParameter(NUM1, OracleTypes.CURSOR);
+			}
+			cs.setString(getParamsIndex(), req.getParams());
+			cs.setString(getCurValueIndex(), req.getCurValue());
+			cs.setBoolean(getIsStartsWithIndex(), req.isStartsWith());
+			cs.setInt(getFirstRecordIndex(), req.getFirstRecord());
+			cs.setInt(getRecordCountIndex(), req.getRecordCount());
+			cs.registerOutParameter(getCountAllRecordsIndex(), Types.INTEGER);
+
+			ResultSet rs = getResultSet(cs);
+
+			// Мы заранее примерно знаем размер, так что используем
+			// ArrayList.
+			ArrayList<DataRecord> l = new ArrayList<DataRecord>(req.getRecordCount());
+			fillArrayListOfDataRecord(rs, l);
+
+			int c = cs.getInt(getCountAllRecordsIndex());
+
+			ds.setTotalCount(c);
+
+			ds.setRecords(l);
+		} finally {
+			cs.close();
+			conn.close();
+		}
+	}
+
 	private void setupSession() throws UnsupportedEncodingException {
 		Map<String, List<String>> params =
 			ServletUtils.prepareURLParamsMap(perThreadRequest.get());
@@ -153,27 +173,34 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 
 	private void prepareContext(final CompositeContext context)
 			throws UnsupportedEncodingException {
-		String sessionContext =
-			SessionContextGenerator.generate(context);
+		String sessionContext = SessionContextGenerator.generate(context);
 
 		context.setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
 		context.getSessionParamsMap().clear();
 	}
 
-	private String getSqlTemplate() {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return "{call %s(?,?,?,?,?)}";
+	private String getSqlTemplate(final int index) {
+		if (index == BY_TWO_PROC) {
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+				return "{call %s(?,?,?,?,?)}";
+			} else {
+				return "{? = call %s(?,?,?,?,?)}";
+			}
 		} else {
-			return "{? = call %s(?,?,?,?,?)}";
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+				return "{call %s(?,?,?,?,?,?)}";
+			} else {
+				return "{? = call %s(?,?,?,?,?,?)}";
+			}
 		}
 	}
 
 	private ResultSet getResultSet(final CallableStatement cs) throws SQLException {
+		cs.execute();
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return cs.executeQuery();
+			return cs.getResultSet();
 		} else {
-			cs.execute();
 			return (ResultSet) cs.getObject(NUM1);
 		}
 	}
@@ -245,6 +272,14 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			return NUM5;
 		} else {
 			return NUM5 + 1;
+		}
+	}
+
+	private int getCountAllRecordsIndex() {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return NUM6;
+		} else {
+			return NUM6 + 1;
 		}
 	}
 

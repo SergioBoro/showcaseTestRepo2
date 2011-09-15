@@ -36,4 +36,13 @@
 			<proc id="proc5" name="xforms_submission_re" type="SUBMISSION" />
 		</element>
 	</tab>
+	<tab id="05" name="XFrorms. Селектор - доработки">
+		<element id="0501" type="xforms" template="Showcase_Template_selector.xml"
+			proc="xforms_proc1">
+			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
+			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
+		</element>
+		<element id="0502" type="webtext" proc="webtext_filter_and_add"
+			hideOnLoad="true" />		
+	</tab>
 </datapanel>

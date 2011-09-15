@@ -307,7 +307,7 @@
 
 
 			<xf:submission id="wrong_save" method="post" instance="mainInstance"
-				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission11&amp;userdata=ora">
+				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission11">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -320,7 +320,7 @@
 			</xf:submission>
 
 			<xf:submission id="good_save" method="post" instance="mainInstance"
-				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission1&amp;userdata=ora">
+				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission1">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -335,7 +335,7 @@
 
 			<xf:submission id="xslttransformation" method="post"
 				instance="mainInstance" replace="instance" ref="instance('mainInstance')"
-				action="secured/xslttransformer?xsltfile=xformsxslttransformation_test.xsl&amp;userdata=ora">
+				action="secured/xslttransformer?xsltfile=xformsxslttransformation_test.xsl">
 			</xf:submission>
 
 
@@ -355,13 +355,36 @@
 
 
 			<xf:trigger>
-				<xf:label>Selector</xf:label>
+				<xf:label>Selector. 2 процедуры</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
 						resource="javascript:showSelector({
 			           id : 'xformId',
                        procCount : 'companycount',
                        procList  : 'companylist',                       
+                       generalFilters      : '',
+                       currentValue        : '',
+                       windowCaption       : 'Выберите название',
+                       onSelectionComplete : function(ok, selected){
+					if (ok) {
+					var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('name')[0];
+					setValue(a, selected.name);
+		 
+					xforms.ready = false;
+					xforms.refresh();
+					xforms.ready = true;
+							}
+								   }});;" />
+				</xf:action>
+			</xf:trigger>
+			
+			<xf:trigger>
+				<xf:label>Selector. 1 процедура</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:load
+						resource="javascript:showSelector({
+			           id : 'xformId',
+                       procListAndCount  : 'companylist_and_count',
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
