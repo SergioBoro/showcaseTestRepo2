@@ -388,4 +388,20 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	public void setCommandContext(final CommandContext aCommandContext) {
 		commandContext = aCommandContext;
 	}
+
+	public String getCommandName() {
+		if (getCommandContext() != null) {
+			return getCommandContext().getCommandName();
+		} else {
+			return null;
+		}
+	}
+
+	public String getRequestId() {
+		if (getCommandContext() != null) {
+			return getCommandContext().getRequestId();
+		} else {
+			return null;
+		}
+	}
 }

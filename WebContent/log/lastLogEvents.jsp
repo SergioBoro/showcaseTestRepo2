@@ -29,13 +29,24 @@ th, td
 <body>
 <%
 	Collection<LoggingEventDecorator> lastLogEvents = AppInfoSingleton.getAppInfo().getLastLogEvents();
+	int number = 0;	
 %>
 <table width="90%">
 <c:forEach items="<%=lastLogEvents%>" var="event">
+<% 	number++;
+%>
 <tr>
-<td width="7%">${event.getLevel()} </td>
-<td width="18%">${event.getTime()} </td>
-<td width="77%">${event.getMessage()} </td>
+<td width="7%" onclick="document.getElementById('row<%=number+1%>').scrollIntoView()">
+ ${event.getLevel()} 
+</td>
+<td width="18%" onclick="document.getElementById('row<%=number-1%>').scrollIntoView()">
+${event.getTime()} 
+</td>
+<td width="77%">
+<div id="row<%=number%>">
+${event.getMessage()} 
+</div>
+</td>
 </tr>
 </c:forEach>
 </table>

@@ -32,7 +32,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	private static final int ERROR_MES_INDEX = -1;
 
 	private static final String LOG_TEMPLATE =
-		"SQL %s \r\n userName=%s \r\n requestId=%s \r\n commandName=%s \r\n %s";
+		"SQL %s \r\n userName=%s \r\n userData=%s \r\n requestId=%s \r\n commandName=%s \r\n %s";
 
 	/**
 	 * LOGGER.
@@ -325,25 +325,10 @@ public abstract class SPCallHelper extends DataCheckGateway {
 
 	protected boolean execute() throws SQLException {
 		String value = SQLUtils.addParamsToSQLTemplate(sqlTemplate, params);
-		LOGGER.info(String.format(LOG_TEMPLATE, "input", ServletUtils.getCurrentSessionUserName(),
-				getRequestId(), getCommandName(), value));
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, ServletUtils
+				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
+				context.getRequestId(), context.getCommandName(), value));
 		return getStatement().execute();
-	}
-
-	private String getCommandName() {
-		if ((getContext() != null) && (getContext().getCommandContext() != null)) {
-			return getContext().getCommandContext().getCommandName();
-		} else {
-			return null;
-		}
-	}
-
-	private String getRequestId() {
-		if ((getContext() != null) && (getContext().getCommandContext() != null)) {
-			return getContext().getCommandContext().getRequestId();
-		} else {
-			return null;
-		}
 	}
 
 	protected void setBinaryStream(final int parameterIndex, final DataFile<InputStream> file)
@@ -400,7 +385,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		if (LOGGER.isInfoEnabled()) {
 			try {
 				StreamConvertor convertor = new StreamConvertor(is);
-				String value = XMLUtils.xsltTransform(convertor.getCopy(), null);
+				String value = XMLUtils.streamToString(convertor.getCopy());
 				logOutputXMLString(value);
 				return convertor.getCopy();
 			} catch (IOException e) {
@@ -418,8 +403,9 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	}
 
 	private void logOutputXMLString(final String value) {
-		LOGGER.info(String.format(LOG_TEMPLATE, "output",
-				ServletUtils.getCurrentSessionUserName(), getRequestId(), getCommandName(), value));
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, ServletUtils
+				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
+				context.getRequestId(), context.getCommandName(), value));
 	}
 
 	protected DataFile<ByteArrayOutputStream> getFileForBinaryStream(final int dataIndex,

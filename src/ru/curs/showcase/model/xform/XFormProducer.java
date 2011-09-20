@@ -16,7 +16,7 @@ import ru.curs.showcase.util.xml.GeneralXMLHelper;
  */
 public final class XFormProducer extends GeneralXMLHelper {
 	static final String XF_INSTANCE = "xf:instance";
-	private static final String XSLTFORMS_XSL = "xsltforms.xsl";
+	public static final String XSLTFORMS_XSL = "xsltforms.xsl";
 	/**
 	 * String XFORMS_URI.
 	 */
@@ -95,22 +95,37 @@ public final class XFormProducer extends GeneralXMLHelper {
 	 * 
 	 * @param xml
 	 *            документ
-	 * 
 	 * @param tempData
 	 *            временные данные документа (если эта переменная не равна null,
 	 *            эти данные подставляются в MainInstance). Необходимо для
 	 *            просмотра проимпортированного содержимого формы.
-	 * 
-	 * @param xformId
-	 *            Id элемента информационной панели
 	 * 
 	 * @return HTML-фрагмент, пригодный для отображения в браузере
 	 * @throws TransformerException
 	 * 
 	 */
 	public static String getHTML(final org.w3c.dom.Document xml,
-			final org.w3c.dom.Document tempData, final String xformId) throws TransformerException {
-		/* В случае, когда нам подложили временные данные, мы их подменяем */
+			final org.w3c.dom.Document tempData) throws TransformerException {
+		insertActualData(xml, tempData);
+		return transform(xml);
+	}
+
+	private static String transform(final org.w3c.dom.Document xml) throws TransformerException {
+		TransformerFactory tf = TransformerFactory.newInstance();
+		Transformer tr =
+			tf.newTransformer(new StreamSource(XFormProducer.class
+					.getResourceAsStream(XSLTFORMS_XSL)));
+		tr.setParameter("baseuri", "xsltforms/");
+		StringWriter sw = new StringWriter(DEFAULT_BUFFER_SIZE);
+		tr.transform(new DOMSource(xml), new StreamResult(sw));
+
+		String ret = sw.toString();
+
+		return ret;
+	}
+
+	private static void insertActualData(final org.w3c.dom.Document xml,
+			final org.w3c.dom.Document tempData) {
 		if (tempData != null) {
 			NodeList nl = xml.getElementsByTagNameNS(XFORMS_URI, INSTANCE);
 			for (int i = 0; i < nl.getLength(); i++) {
@@ -123,19 +138,5 @@ public final class XFormProducer extends GeneralXMLHelper {
 				}
 			}
 		}
-
-		// Выполняем трансформацию xsltforms
-		TransformerFactory tf = TransformerFactory.newInstance();
-		Transformer tr =
-			tf.newTransformer(new StreamSource(XFormProducer.class
-					.getResourceAsStream(XSLTFORMS_XSL)));
-		tr.setParameter("baseuri", "xsltforms/");
-		StringWriter sw = new StringWriter(DEFAULT_BUFFER_SIZE);
-
-		tr.transform(new DOMSource(xml), new StreamResult(sw));
-
-		String ret = sw.toString();
-
-		return ret;
 	}
 }

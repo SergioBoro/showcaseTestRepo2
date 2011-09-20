@@ -9,7 +9,7 @@ import javax.xml.parsers.DocumentBuilder;
 import org.junit.Test;
 import org.w3c.dom.*;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.*;
@@ -79,7 +79,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 			AppProps.loadUserDataToStream(String.format("%s/%s", AppProps.XFORMS_DIR,
 					element.getTemplateName()));
 		Document doc = db.parse(stream);
-		XFormProducer.getHTML(doc, raw.getData(), element.getId());
+		XFormProducer.getHTML(doc, raw.getData());
 	}
 
 	/**
@@ -147,11 +147,12 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	 * 
 	 */
 	@Test
-	public void testSQLSubmission() {
-		String data = TEST_DATA_TAG;
+	public void testSQLTransform() {
+		XFormContext context = new XFormContext();
+		context.setFormData(TEST_DATA_TAG);
 		XFormGateway gateway = new XFormDBGateway();
-		String res = gateway.sqlTransform(XFORMS_SUBMISSION1, data);
-		assertEquals(data, res);
+		String res = gateway.sqlTransform(XFORMS_SUBMISSION1, context);
+		assertEquals(TEST_DATA_TAG, res);
 	}
 
 	/**
@@ -203,7 +204,8 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
 
 		UserXMLTransformer transformer =
-			new UserXMLTransformer(file, elementInfo.getProcs().get(linkId));
+			new UserXMLTransformer(file, elementInfo.getProcs().get(linkId),
+					new DataPanelElementContext(context, elementInfo));
 		transformer.checkAndTransform();
 
 		XFormGateway gateway = new XFormDBGateway();
@@ -225,7 +227,8 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		DataFile<ByteArrayOutputStream> file = gateway.downloadFile(context, elementInfo, linkId);
 
 		UserXMLTransformer transformer =
-			new UserXMLTransformer(file, elementInfo.getProcs().get(linkId));
+			new UserXMLTransformer(file, elementInfo.getProcs().get(linkId),
+					new DataPanelElementContext(context, elementInfo));
 		transformer.checkAndTransform();
 	}
 
@@ -243,7 +246,8 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		String content = getNewContentBasedOnExisting(context, elementInfo, gateway);
 
 		UserXMLTransformer transformer =
-			new UserXMLTransformer(content, elementInfo.getSaveProc());
+			new UserXMLTransformer(content, elementInfo.getSaveProc(),
+					new DataPanelElementContext(context, elementInfo));
 		transformer.checkAndTransform();
 		gateway = new XFormDBGateway();
 		gateway.saveData(context, elementInfo, transformer.getStringResult());
@@ -255,7 +259,8 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 
 		String content = "<test/>";
 		UserXMLTransformer transformer =
-			new UserXMLTransformer(content, elementInfo.getSaveProc());
+			new UserXMLTransformer(content, elementInfo.getSaveProc(),
+					new DataPanelElementContext(new CompositeContext(), elementInfo));
 		transformer.checkAndTransform();
 	}
 
@@ -265,7 +270,8 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 
 		String content = "<test>";
 		UserXMLTransformer transformer =
-			new UserXMLTransformer(content, elementInfo.getSaveProc());
+			new UserXMLTransformer(content, elementInfo.getSaveProc(),
+					new DataPanelElementContext(new CompositeContext(), elementInfo));
 		transformer.checkAndTransform();
 	}
 }

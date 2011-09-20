@@ -7,7 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementProc;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.util.*;
 
 /**
@@ -39,6 +39,11 @@ public final class UserXMLTransformer {
 	private InputStream result = null;
 
 	/**
+	 * Контекст вызова для преобразования.
+	 */
+	private final DataPanelElementContext context;
+
+	/**
 	 * Проверяет исходник и трансформирует его если в процедуре трансформации
 	 * описаны соответствующие схема и файл трансформации.
 	 * 
@@ -56,7 +61,7 @@ public final class UserXMLTransformer {
 		}
 		if (proc.getTransformName() != null) {
 			InputStream is = StreamConvertor.outputToInputStream(subject.getData());
-			String res = XMLUtils.xsltTransform(is, proc.getTransformName());
+			String res = XMLUtils.xsltTransform(is, context, proc.getTransformName());
 			result = TextUtils.stringToStream(res);
 		}
 	}
@@ -78,14 +83,15 @@ public final class UserXMLTransformer {
 	}
 
 	public UserXMLTransformer(final DataFile<ByteArrayOutputStream> aSubject,
-			final DataPanelElementProc aProc) {
+			final DataPanelElementProc aProc, final DataPanelElementContext aContext) {
 		super();
 		subject = aSubject;
 		proc = aProc;
+		context = aContext;
 	}
 
-	public UserXMLTransformer(final String aSubject, final DataPanelElementProc aProc)
-			throws IOException {
+	public UserXMLTransformer(final String aSubject, final DataPanelElementProc aProc,
+			final DataPanelElementContext aContext) throws IOException {
 		super();
 		strSubject = aSubject;
 		// некрасиво, зато меньше кода, по сравнению с вариантом преобразования
@@ -97,6 +103,7 @@ public final class UserXMLTransformer {
 		}
 
 		proc = aProc;
+		context = aContext;
 	}
 
 	public void setSubject(final DataFile<ByteArrayOutputStream> aSubject) {

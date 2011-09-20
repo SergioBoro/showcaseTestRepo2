@@ -33,8 +33,8 @@ public class LoggingEventDecorator {
 			src =
 				src
 						+ ExchangeConstants.LINE_SEPARATOR
-						+ TextUtils.arrayToString(original.getThrowableInformation()
-								.getThrowableStrRep(), ExchangeConstants.LINE_SEPARATOR);
+						+ TextUtils.arrayToString(original.getThrowableStrRep(),
+								ExchangeConstants.LINE_SEPARATOR);
 		}
 		src = src.replace("<", "&lt;");
 		src = src.replace(">", "&gt;");
@@ -58,4 +58,5 @@ public class LoggingEventDecorator {
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS");
 		return sdf.format(time);
 	}
+
 }

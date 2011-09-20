@@ -9,7 +9,7 @@ import org.slf4j.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.AppRegistry;
-import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.ServerLogicError;
 import ru.curs.showcase.util.xml.SessionContextGenerator;
@@ -26,7 +26,7 @@ import ru.curs.showcase.util.xml.SessionContextGenerator;
 public abstract class ServiceLayerCommand<T> {
 
 	private static final String LOG_TEMPLATE =
-		"Command %s \r\n userName=%s \r\n requestId=%s \r\n commandName=%s \r\n objectClass=%s \r\n "
+		"Command %s \r\n userName=%s \r\n userData=%s \r\n requestId=%s \r\n commandName=%s \r\n objectClass=%s \r\n "
 				+ "getObjectMethodName=%s \r\n %s";
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ServiceLayerCommand.class);
@@ -92,11 +92,11 @@ public abstract class ServiceLayerCommand<T> {
 					if (methodResult == null) {
 						continue;
 					}
-					LOGGER.info(String.format(LOG_TEMPLATE, "input", ServletUtils
-							.getCurrentSessionUserName(), commandContext.getRequestId(),
-							commandContext.getCommandName(), method.getReturnType()
-									.getSimpleName(), method.getName(), serializer
-									.serialize(methodResult)));
+					LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, ServletUtils
+							.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo()
+							.getCurUserDataId(), commandContext.getRequestId(), commandContext
+							.getCommandName(), method.getReturnType().getSimpleName(), method
+							.getName(), serializer.serialize(methodResult)));
 				} catch (Exception e) {
 					throw new ServerLogicError(e);
 				}
@@ -121,10 +121,10 @@ public abstract class ServiceLayerCommand<T> {
 			return;
 		}
 
-		LOGGER.info(String.format(LOG_TEMPLATE, "output",
-				ServletUtils.getCurrentSessionUserName(), commandContext.getRequestId(),
-				commandContext.getCommandName(), result.getClass().getSimpleName(), "",
-				serializer.serialize(result)));
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, ServletUtils
+				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
+				commandContext.getRequestId(), commandContext.getCommandName(), result.getClass()
+						.getSimpleName(), "", serializer.serialize(result)));
 	}
 
 	protected abstract void mainProc() throws Exception;

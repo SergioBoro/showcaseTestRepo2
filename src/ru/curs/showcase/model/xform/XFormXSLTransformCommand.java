@@ -1,11 +1,8 @@
 package ru.curs.showcase.model.xform;
 
-import java.io.StringReader;
-
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -23,9 +20,8 @@ public final class XFormXSLTransformCommand extends XFormContextCommand<String> 
 
 	@Override
 	protected void mainProc() throws Exception {
-		InputSource is = new InputSource();
-		is.setCharacterStream(new StringReader(getContext().getFormData()));
-		Document doc = XMLUtils.createBuilder().parse(is);
-		setResult(XMLUtils.xsltTransform(doc, getElementInfo().getTransformName()));
+		Document doc = XMLUtils.stringToDocument(getContext().getFormData());
+		setResult(XMLUtils.xsltTransform(doc, new DataPanelElementContext(getContext(),
+				getElementInfo())));
 	}
 }

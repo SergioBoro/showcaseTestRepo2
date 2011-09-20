@@ -4,6 +4,7 @@ import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
 
+import org.slf4j.*;
 import org.w3c.dom.Document;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
@@ -12,6 +13,7 @@ import ru.curs.showcase.app.api.html.XForm;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.event.HTMLBasedElementFactory;
 import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.ServletUtils;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;
 
@@ -22,6 +24,11 @@ import ru.curs.showcase.util.xml.*;
  * 
  */
 public final class XFormFactory extends HTMLBasedElementFactory {
+	protected static final Logger LOGGER = LoggerFactory.getLogger(XFormFactory.class);
+
+	private static final String LOG_TEMPLATE =
+		"XSL %s \r\n userName=%s \r\n userData=%s \r\n requestId=%s \r\n commandName=%s \r\n xslTransform=%s \r\n %s";
+
 	private static final String XFORMS_CREATE_ERROR =
 		"Ошибка при формировании XForms для элемента '%s'";
 
@@ -69,8 +76,9 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 			template =
 				XFormTemplateModificator.addSrvInfo(template, getSource().getCallContext(),
 						getElementInfo());
-			html =
-				XFormProducer.getHTML(template, getSource().getData(), getElementInfo().getId());
+			logInput(template);
+			html = XFormProducer.getHTML(template, getSource().getData());
+			logOutput();
 			replaceVariables();
 			result.setXFormParts(XFormCutter.xFormParts(html));
 		} catch (Exception e) {
@@ -78,6 +86,23 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 					.getFullId()), e, new DataPanelElementContext(getCallContext(),
 					getElementInfo()));
 		}
+	}
+
+	private void logOutput() {
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, ServletUtils
+				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
+				getCallContext().getRequestId(), getCallContext().getCommandName(),
+				XFormProducer.XSLTFORMS_XSL, html));
+	}
+
+	private void logInput(final Document template) {
+		if (!LOGGER.isInfoEnabled()) {
+			return;
+		}
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, ServletUtils
+				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
+				getCallContext().getRequestId(), getCallContext().getCommandName(),
+				XFormProducer.XSLTFORMS_XSL, XMLUtils.documentToString(template)));
 	}
 
 	private String replaceVariables() {

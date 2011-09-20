@@ -70,7 +70,7 @@ public final class XFormFileGateway extends DataCheckGateway implements XFormGat
 	}
 
 	@Override
-	public String sqlTransform(final String aProcName, final String aInputData) {
+	public String sqlTransform(final String aProcName, final XFormContext aInputData) {
 		LOGGER.info(String.format(
 				"Заглушка: выполнение Submission процедуры '%s' c данными формы  %s", aProcName,
 				aInputData));

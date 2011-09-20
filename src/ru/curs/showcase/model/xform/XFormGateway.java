@@ -61,13 +61,13 @@ public interface XFormGateway {
 	 * 
 	 * @param procName
 	 *            - идентификатор процедуры.
-	 * @param inputData
+	 * @param context
 	 *            - дополнительные данные, требуемые для загрузки (как правило в
 	 *            формате XML).
 	 * @return - требуемые данные (как правило в формате XML).
 	 * 
 	 */
-	String sqlTransform(String procName, String inputData);
+	String sqlTransform(String procName, XFormContext context);
 
 	/**
 	 * Загружает файл в хранилище.

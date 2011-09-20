@@ -107,15 +107,16 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 	}
 
 	@Override
-	public String sqlTransform(final String aProcName, final String aInputData) {
+	public String sqlTransform(final String aProcName, final XFormContext context) {
 		String out = null;
 		setProcName(aProcName);
+		setContext(context);
 		setTemplateIndex(SUBMISSION_TEMPLATE_IND);
 
 		try {
 			try {
 				prepareStatementWithErrorMes();
-				setSQLXMLParam(INPUTDATA_INDEX, aInputData);
+				setSQLXMLParam(INPUTDATA_INDEX, context.getFormData());
 				getStatement().registerOutParameter(OUTPUTDATA_INDEX, java.sql.Types.SQLXML);
 				execute();
 				checkErrorCode();

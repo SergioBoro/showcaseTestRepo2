@@ -14,12 +14,6 @@ import java.util.regex.*;
 public final class TextUtils {
 
 	/**
-	 * Внутренняя кодировка Java. Все Java String имеют данную кодировку по
-	 * умолчанию.
-	 */
-	@SuppressWarnings("unused")
-	private static final String JAVA_ENCODING = "UTF-16";
-	/**
 	 * Кодировка по умолчанию в приложении. Все выходные и входные документы по
 	 * умолчанию должны имеют данную кодировку (если явно не указано другое).
 	 */

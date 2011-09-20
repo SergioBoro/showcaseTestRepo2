@@ -2,7 +2,7 @@ package ru.curs.showcase.model.xform;
 
 import java.io.ByteArrayOutputStream;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.command.InputParam;
 import ru.curs.showcase.util.DataFile;
@@ -36,7 +36,8 @@ public final class XFormDownloadCommand extends
 		DataFile<ByteArrayOutputStream> file =
 			gateway.downloadFile(getContext(), getElementInfo(), linkId);
 		UserXMLTransformer transformer =
-			new UserXMLTransformer(file, getElementInfo().getProcs().get(linkId));
+			new UserXMLTransformer(file, getElementInfo().getProcs().get(linkId),
+					new DataPanelElementContext(getContext(), getElementInfo()));
 		transformer.checkAndTransform();
 		setResult(transformer.getOutputStreamResult());
 	}

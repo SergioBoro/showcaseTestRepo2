@@ -2,7 +2,7 @@ package ru.curs.showcase.model.xform;
 
 import java.io.ByteArrayOutputStream;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.command.InputParam;
 import ru.curs.showcase.util.DataFile;
@@ -46,7 +46,8 @@ public final class XFormUploadCommand extends XFormContextCommand<Void> {
 	@Override
 	protected void mainProc() throws Exception {
 		UserXMLTransformer transformer =
-			new UserXMLTransformer(file, getElementInfo().getProcs().get(linkId));
+			new UserXMLTransformer(file, getElementInfo().getProcs().get(linkId),
+					new DataPanelElementContext(getContext(), getElementInfo()));
 		transformer.checkAndTransform();
 		XFormGateway gateway = new XFormDBGateway();
 		gateway.uploadFile(getContext(), getElementInfo(), linkId,

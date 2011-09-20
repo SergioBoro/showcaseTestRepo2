@@ -19,7 +19,8 @@ public final class XFormSQLTransformCommand extends XFormContextCommand<String> 
 	@Override
 	protected void mainProc() throws Exception {
 		String decodedContent = XMLUtils.xmlServiceSymbolsToNormal(getContext().getFormData());
+		getContext().setFormData(decodedContent);
 		XFormGateway gateway = new XFormDBGateway();
-		setResult(gateway.sqlTransform(getElementInfo().getProcName(), decodedContent));
+		setResult(gateway.sqlTransform(getElementInfo().getProcName(), getContext()));
 	}
 }

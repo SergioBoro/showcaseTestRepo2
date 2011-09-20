@@ -13,11 +13,12 @@ import javax.xml.validation.SchemaFactory;
 
 import net.sf.saxon.lib.NamespaceConstant;
 
+import org.slf4j.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 
@@ -26,6 +27,11 @@ import ru.curs.showcase.util.exception.*;
  * 
  */
 public final class XMLUtils {
+
+	protected static final Logger LOGGER = LoggerFactory.getLogger(XMLUtils.class);
+
+	private static final String LOG_TEMPLATE =
+		"XSL %s \r\n userName=%s \r\n userData=%s \r\n requestId=%s \r\n commandName=%s \r\n xslTransform=%s \r\n %s";
 
 	/**
 	 * Преобразует объект в XML документ.
@@ -224,9 +230,12 @@ public final class XMLUtils {
 			final DataPanelElementContext context) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			logXSLInput(doc, context, context.getElementInfo().getTransformName());
 			Transformer tr = createTransformer(context.getElementInfo().getTransformName());
 			tr.transform(new DOMSource(doc), new StreamResult(baos));
-			return baos.toString(TextUtils.DEF_ENCODING);
+			final String result = baos.toString(TextUtils.DEF_ENCODING);
+			logXSLOutput(context, context.getElementInfo().getTransformName(), result);
+			return result;
 		} catch (Exception e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e, context);
 		}
@@ -253,6 +262,71 @@ public final class XMLUtils {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			Transformer tr = createTransformer(xsltFileName);
+			tr.transform(new StreamSource(is), new StreamResult(baos));
+			return baos.toString(TextUtils.DEF_ENCODING);
+		} catch (Exception e) {
+			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
+		}
+	}
+
+	public static String xsltTransform(final InputStream is,
+			final DataPanelElementContext context, final String xsltFileName) {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			InputStream source = is;
+			source = (InputStream) logXSLInput(source, context, xsltFileName);
+			Transformer tr = createTransformer(xsltFileName);
+			tr.transform(new StreamSource(source), new StreamResult(baos));
+			String result = baos.toString(TextUtils.DEF_ENCODING);
+			logXSLOutput(context, xsltFileName, result);
+			return result;
+		} catch (Exception e) {
+			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e, context);
+		}
+	}
+
+	private static Object logXSLInput(final Object source, final DataPanelElementContext context,
+			final String xsltFileName) {
+		String value = null;
+		Object sourceCopy = source;
+		if ((!LOGGER.isInfoEnabled()) || (xsltFileName == null)) {
+			return sourceCopy;
+		}
+		if (source instanceof InputStream) {
+			StreamConvertor convertor;
+			try {
+				convertor = new StreamConvertor((InputStream) source);
+			} catch (IOException e) {
+				throw new CreateObjectError(e);
+			}
+			value = streamToString(convertor.getCopy());
+			sourceCopy = convertor.getCopy();
+		} else if (source instanceof Document) {
+			value = documentToString((Document) source);
+		}
+
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, ServletUtils
+				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
+				context.getCompositeContext().getRequestId(), context.getCompositeContext()
+						.getCommandName(), xsltFileName, value));
+		return sourceCopy;
+	}
+
+	private static void logXSLOutput(final DataPanelElementContext context,
+			final String xsltFileName, final String result) {
+		if (xsltFileName == null) {
+			return;
+		}
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, ServletUtils
+				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
+				context.getCompositeContext().getRequestId(), context.getCompositeContext()
+						.getCommandName(), xsltFileName, result));
+	}
+
+	public static String streamToString(final InputStream is) {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			Transformer tr = createTransformer(null);
 			tr.transform(new StreamSource(is), new StreamResult(baos));
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (Exception e) {

@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.xform;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.util.xml.UserXMLTransformer;
 
@@ -19,7 +19,8 @@ public final class XFormSaveCommand extends XFormContextCommand<Void> {
 	@Override
 	protected void mainProc() throws Exception {
 		UserXMLTransformer transformer =
-			new UserXMLTransformer(getContext().getFormData(), getElementInfo().getSaveProc());
+			new UserXMLTransformer(getContext().getFormData(), getElementInfo().getSaveProc(),
+					new DataPanelElementContext(getContext(), getElementInfo()));
 		transformer.checkAndTransform();
 		XFormGateway gateway = new XFormDBGateway();
 		gateway.saveData(getContext(), getElementInfo(), transformer.getStringResult());

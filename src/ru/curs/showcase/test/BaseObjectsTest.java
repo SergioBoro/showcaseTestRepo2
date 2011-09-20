@@ -38,16 +38,16 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 					DataPanelFileGateway.DP_STORAGE_PARAM_NAME, "a.xml"));
 
 		StreamConvertor dup = new StreamConvertor(is);
-		String data = XMLUtils.xsltTransform(dup.getCopy(), null);
+		String data = XMLUtils.streamToString(dup.getCopy());
 		checkForDP(data);
 
-		data = XMLUtils.xsltTransform(dup.getCopy(), null);
+		data = XMLUtils.streamToString(dup.getCopy());
 		checkForDP(data);
 
 		ByteArrayOutputStream outStream = dup.getOutputStream();
 		checkForDPWithXMLHeader(outStream);
 
-		data = XMLUtils.xsltTransform(StreamConvertor.outputToInputStream(outStream), null);
+		data = XMLUtils.streamToString(StreamConvertor.outputToInputStream(outStream));
 		checkForDP(data);
 
 		outStream = StreamConvertor.inputToOutputStream(dup.getCopy());
