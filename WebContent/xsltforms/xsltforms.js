@@ -9926,7 +9926,12 @@ function setXFormByXPath(ok, selected, xpathMapping)
 {
 	if (ok) {
 		for (var xpath in xpathMapping) {
-		  (new XFSetvalue(new Binding(false, xpath),null,selected[xpathMapping[xpath]],null,null)).run();
+			var value = xpathMapping[xpath];
+            if ((value == null) || (value.indexOf('/') == -1)) {
+           	    (new XFSetvalue(new Binding(false, xpath),null,selected[value],null,null)).run();            	
+            }else {
+           	    (new XFSetvalue(new Binding(false, xpath),value,null,null,null)).run();
+            }
 		}		
 	}
 }

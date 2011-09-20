@@ -433,7 +433,7 @@
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
-                       xpathMapping        : {'/schema/info/name': 'name', '/schema/info/comment': null}
+                       xpathMapping        : {'/schema/info/name': 'name', '/schema/info/comment': '/schema/info/eyescolour'}
 					   });;" />
 				</xf:action>
 			</xf:trigger>
