@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.client.api;
 
-import java.util.List;
+import java.util.*;
 
 import ru.beta2.extra.gwt.ui.selector.SelectorComponent;
 import ru.curs.showcase.app.api.ExchangeConstants;
@@ -275,6 +275,16 @@ public final class XFormPanelCallbacksEvents {
 			native void onSelectionComplete(final boolean ok, final JavaScriptObject selected)/*-{
 		this.onSelectionComplete(ok, selected);
 	}-*/;
+
+			/**
+			 * mapping между полями XForm'ы и полями выбранной записи
+			 * 
+			 * @return Map<String, String>
+			 */
+			native Map<String, String> xpathMapping()/*-{
+		return this.xpathMapping;
+	}-*/;
+
 		}
 
 		final SelectorParam param = (SelectorParam) o;
@@ -288,7 +298,13 @@ public final class XFormPanelCallbacksEvents {
 			c.setSelectorListener(new SelectorComponent.SelectorListener() {
 				@Override
 				public void onSelectionComplete(final SelectorComponent selector) {
-					param.onSelectionComplete(selector.isOK(), selector.getSelectedAsJsObject());
+					if (param.xpathMapping() == null) {
+						param.onSelectionComplete(selector.isOK(),
+								selector.getSelectedAsJsObject());
+					} else {
+						setXFormByXPath(selector.isOK(), selector.getSelectedAsJsObject(),
+								param.xpathMapping());
+					}
 				}
 			});
 			c.center();
@@ -306,6 +322,11 @@ public final class XFormPanelCallbacksEvents {
 		}
 
 	}
+
+	private static native void setXFormByXPath(final boolean ok, final JavaScriptObject selected,
+			final Map<String, String> xpathMapping) /*-{
+		$wnd.setXFormByXPath(ok, selected, xpathMapping);
+	}-*/;
 
 	/**
 	 * Загружает файл с сервера.

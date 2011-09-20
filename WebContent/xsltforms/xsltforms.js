@@ -9921,6 +9921,16 @@ function GetElem(id)
 {
 	return document.getElementById(id).innerHTML;
 }
+
+function setXFormByXPath(ok, selected, xpathMapping)
+{
+	if (ok) {
+		for (var xpath in xpathMapping) {
+		  (new XFSetvalue(new Binding(false, xpath),null,selected[xpathMapping[xpath]],null,null)).run();
+		}		
+	}
+}
+
 	
 	
 	

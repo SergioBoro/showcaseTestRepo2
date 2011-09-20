@@ -353,9 +353,34 @@
 				<xf:hint>Дополнительная информация</xf:hint>
 			</xf:input>
 
+			<xf:trigger>
+				<xf:label>onSelectionComplete, 1 процедура</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:load
+						resource="javascript:showSelector({
+			           id : 'xformId',
+                       procListAndCount  : '[dbo].[companylist_and_count]',
+                       generalFilters      : '',
+                       currentValue        : '',
+                       windowCaption       : 'Выберите название',
+                       onSelectionComplete : function(ok, selected){
+					if (ok) {
+					var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('name')[0];
+					setValue(a, selected.name);
+
+					a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('comment')[0];
+					setValue(a, selected.CreateRowUser);
+		 
+					xforms.ready = false;
+					xforms.refresh();
+					xforms.ready = true;
+							}
+								   }});;" />
+				</xf:action>
+			</xf:trigger>
 
 			<xf:trigger>
-				<xf:label>Selector. 2 процедуры</xf:label>
+				<xf:label>onSelectionComplete, 2 процедуры</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
 						resource="javascript:showSelector({
@@ -369,6 +394,9 @@
 					if (ok) {
 					var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('name')[0];
 					setValue(a, selected.name);
+					
+					a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('comment')[0];
+					setValue(a, null);
 		 
 					xforms.ready = false;
 					xforms.refresh();
@@ -378,8 +406,9 @@
 				</xf:action>
 			</xf:trigger>
 			
+
 			<xf:trigger>
-				<xf:label>Selector. 1 процедура</xf:label>
+				<xf:label>XPath, 1 процедура</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
 						resource="javascript:showSelector({
@@ -388,16 +417,24 @@
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
-                       onSelectionComplete : function(ok, selected){
-					if (ok) {
-					var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('name')[0];
-					setValue(a, selected.name);
-		 
-					xforms.ready = false;
-					xforms.refresh();
-					xforms.ready = true;
-							}
-								   }});;" />
+                       xpathMapping        : {'/schema/info/name': 'name', '/schema/info/comment': 'CreateRowUser'}
+                       });;" />
+				</xf:action>
+			</xf:trigger>
+
+			<xf:trigger>
+				<xf:label>XPath, 2 процедуры</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:load
+						resource="javascript:showSelector({
+			           id : 'xformId',
+                       procCount : '[dbo].[companycount]',
+                       procList  : '[dbo].[companylist]',                       
+                       generalFilters      : '',
+                       currentValue        : '',
+                       windowCaption       : 'Выберите название',
+                       xpathMapping        : {'/schema/info/name': 'name', '/schema/info/comment': null}
+					   });;" />
 				</xf:action>
 			</xf:trigger>
 			
