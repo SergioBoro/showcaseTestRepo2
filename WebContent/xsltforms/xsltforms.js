@@ -9927,7 +9927,7 @@ function setXFormByXPath(ok, selected, xpathMapping)
 	if (ok) {
 		for (var xpath in xpathMapping) {
 			var value = xpathMapping[xpath];
-            if ((value == null) || (value.indexOf('/') == -1)) {
+            if ((value == null) || (value[0] != '/')) {
            	    (new XFSetvalue(new Binding(false, xpath),null,selected[value],null,null)).run();            	
             }else {
            	    (new XFSetvalue(new Binding(false, xpath),value,null,null,null)).run();
@@ -9935,6 +9935,13 @@ function setXFormByXPath(ok, selected, xpathMapping)
 		}		
 	}
 }
+
+function getValueByXPath(xpath)
+{
+	return (new Binding(true, xpath)).evaluate();
+}
+
+
 
 	
 	

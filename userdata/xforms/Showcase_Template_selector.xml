@@ -415,7 +415,7 @@
 			           id : 'xformId',
                        procListAndCount  : '[dbo].[companylist_and_count]',
                        generalFilters      : '',
-                       currentValue        : '',
+                       currentValue        : '/schema/info/name',
                        windowCaption       : 'Выберите название',
                        xpathMapping        : {'/schema/info/name': 'name', '/schema/info/comment': 'CreateRowUser'}
                        });;" />

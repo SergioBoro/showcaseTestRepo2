@@ -317,7 +317,12 @@ public final class XFormPanelCallbacksEvents {
 				procName = param.procListAndCount();
 			}
 
-			c.initData(param.generalFilters(), procName, param.currentValue());
+			String currentValue = param.currentValue();
+			if (currentValue.startsWith("/")) {
+				currentValue = getValueByXPath(currentValue);
+			}
+
+			c.initData(param.generalFilters(), procName, currentValue);
 
 		}
 
@@ -326,6 +331,10 @@ public final class XFormPanelCallbacksEvents {
 	private static native void setXFormByXPath(final boolean ok, final JavaScriptObject selected,
 			final Map<String, String> xpathMapping) /*-{
 		$wnd.setXFormByXPath(ok, selected, xpathMapping);
+	}-*/;
+
+	private static native String getValueByXPath(final String xpath) /*-{
+		return $wnd.getValueByXPath(xpath);
 	}-*/;
 
 	/**
