@@ -103,6 +103,9 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	 */
 	private boolean bListenersExit = true;
 
+	private String strHeader = "";
+	private String strFooter = "";
+
 	/**
 	 * Тип обновления грида.
 	 */
@@ -357,14 +360,22 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	}
 
 	private void beforeUpdateGrid() {
+		// Header и Footer - считаем статическими элементами, не меняющимися при
+		// изменении контекста грида
 		hpHeader.clear();
 		HTML header = new HTML();
-		header.setHTML(grid.getHeader());
+		if (!grid.getHeader().isEmpty()) {
+			strHeader = grid.getHeader();
+		}
+		header.setHTML(strHeader);
 		hpHeader.add(header);
 
 		hpFooter.clear();
 		HTML footer = new HTML();
-		footer.setHTML(grid.getFooter());
+		if (!grid.getFooter().isEmpty()) {
+			strFooter = grid.getFooter();
+		}
+		footer.setHTML(strFooter);
 		hpFooter.add(footer);
 
 		settingsDataGrid.assign(grid.getUISettings());
