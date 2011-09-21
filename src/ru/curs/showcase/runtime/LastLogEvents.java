@@ -27,18 +27,18 @@ public class LastLogEvents extends TreeSet<LoggingEventDecorator> {
 	}
 
 	public LastLogEvents() {
-		this(DEF_MAX_RECORDS, new Comparator<LoggingEventDecorator>() {
+		this(new Comparator<LoggingEventDecorator>() {
 
 			@Override
 			public int compare(final LoggingEventDecorator event1,
 					final LoggingEventDecorator event2) {
-				return (int) (event2.getOriginal().timeStamp - event1.getOriginal().timeStamp);
+				return (int) (event2.getOriginal().getTimeStamp() - event1.getOriginal()
+						.getTimeStamp());
 			}
 		});
 	}
 
-	private LastLogEvents(final int aInitialCapacity,
-			final Comparator<? super LoggingEventDecorator> aComparator) {
+	private LastLogEvents(final Comparator<? super LoggingEventDecorator> aComparator) {
 		super(aComparator);
 	}
 

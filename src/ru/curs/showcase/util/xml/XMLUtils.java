@@ -30,8 +30,7 @@ public final class XMLUtils {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(XMLUtils.class);
 
-	private static final String LOG_TEMPLATE =
-		"XSL %s \r\n userName=%s \r\n userData=%s \r\n requestId=%s \r\n commandName=%s \r\n xslTransform=%s \r\n %s";
+	private static final String LOG_TEMPLATE = "XSL %s \r\n xslTransform=%s \r\n %s";
 
 	/**
 	 * Преобразует объект в XML документ.
@@ -305,10 +304,7 @@ public final class XMLUtils {
 			value = documentToString((Document) source);
 		}
 
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, ServletUtils
-				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
-				context.getCompositeContext().getRequestId(), context.getCompositeContext()
-						.getCommandName(), xsltFileName, value));
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, xsltFileName, value));
 		return sourceCopy;
 	}
 
@@ -317,10 +313,7 @@ public final class XMLUtils {
 		if (xsltFileName == null) {
 			return;
 		}
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, ServletUtils
-				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
-				context.getCompositeContext().getRequestId(), context.getCompositeContext()
-						.getCommandName(), xsltFileName, result));
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, xsltFileName, result));
 	}
 
 	public static String streamToString(final InputStream is) {

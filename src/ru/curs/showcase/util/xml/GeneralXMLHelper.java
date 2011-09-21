@@ -103,6 +103,12 @@ public abstract class GeneralXMLHelper {
 
 	protected static final String FILTER_TAG = "filterinfo";
 
+	public static final String USERNAME_TAG = "username";
+
+	public static final String REQUEST_ID_TAG = "requestId";
+
+	public static final String COMMAND_NAME_TAG = "commandName";
+
 	/**
 	 * Имя колонки или строки с XML документом, содержащим обработчики.
 	 */

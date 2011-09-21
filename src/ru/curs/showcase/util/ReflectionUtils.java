@@ -24,7 +24,19 @@ public final class ReflectionUtils {
 		} catch (Exception e) {
 			throw new ServerLogicError(e);
 		}
+	}
 
+	/**
+	 * Метод не должен вызывать исключения, наследованные от BaseException по
+	 * причине того, что используется в механизме вывода "веб-консоли". А запись
+	 * нового события в лог во время процесса вывода, происходящая в том же
+	 * потоке, приводит к ConcurrentModificationException.
+	 */
+	public static Object getPropValueForFieldName(final Object obj, final String fieldName)
+			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		String metName = getAccessMethodNameForField(fieldName);
+		Method met = obj.getClass().getMethod(metName);
+		return met.invoke(obj);
 	}
 
 	/**
@@ -34,6 +46,10 @@ public final class ReflectionUtils {
 	 */
 	private static String getAccessMethodNameForField(final Field field) {
 		String fldName = field.getName();
+		return getAccessMethodNameForField(fldName);
+	}
+
+	private static String getAccessMethodNameForField(final String fldName) {
 		if (fldName.startsWith("is")) {
 			return fldName;
 		} else {

@@ -238,6 +238,68 @@ public class SessionInfoTest extends AbstractTest {
 	@Test
 	public void testLastLogEventQueue() {
 		testBaseLastLogEventQueue(AppInfoSingleton.getAppInfo().getLastLogEvents());
+	}
 
+	@Test
+	public void testLoggingEventDecorator() {
+		LoggingEventDecorator decorator =
+			new LoggingEventDecorator(generateTestLoggingEvent(new Random()));
+
+		decorator.setUserdata("test1");
+		assertTrue(decorator.isSatisfied(ExchangeConstants.URL_PARAM_USERDATA, "test1"));
+		assertFalse(decorator.isSatisfied(ExchangeConstants.URL_PARAM_USERDATA, "default"));
+
+		decorator.setUserName("master");
+		assertTrue(decorator.isSatisfied("userName", "master"));
+		assertFalse(decorator.isSatisfied("userName", "master1"));
+
+		decorator.getCommandContext().setCommandName("XFormDownloadCommand");
+		assertTrue(decorator.isSatisfied("commandName", "XFormDownloadCommand"));
+		assertFalse(decorator.isSatisfied("commandName", "XFormUploadCommand"));
+
+		decorator.getCommandContext().setRequestId("1");
+		assertTrue(decorator.isSatisfied("requestId", "1"));
+		assertFalse(decorator.isSatisfied("requestId", "2"));
+
+		assertTrue(decorator.isSatisfied("requestid", "1111"));
+	}
+
+	@Test
+	public void testGetLastLogEventsWithFilter() {
+		Random random = new Random();
+		AppInfoSingleton.getAppInfo().getLastLogEvents().clear();
+		LoggingEventDecorator decorator =
+			new LoggingEventDecorator(generateTestLoggingEvent(random));
+		decorator.setUserdata(TEST1_USERDATA);
+		AppInfoSingleton.getAppInfo().addLogEvent(decorator);
+
+		decorator = new LoggingEventDecorator(generateTestLoggingEvent(random));
+		decorator.setUserdata("default");
+		AppInfoSingleton.getAppInfo().addLogEvent(decorator);
+
+		Map<String, List<String>> params = new TreeMap<String, List<String>>();
+		params.put(ExchangeConstants.URL_PARAM_USERDATA, Arrays.asList(TEST1_USERDATA));
+		Collection<LoggingEventDecorator> selected =
+			AppInfoSingleton.getAppInfo().getLastLogEvents(params);
+
+		assertEquals(1, selected.size());
+		assertEquals(TEST1_USERDATA, selected.iterator().next().getUserdata());
+	}
+
+	@Test
+	public void testGetLastLogEventsWithNullFilter() {
+		Random random = new Random();
+		AppInfoSingleton.getAppInfo().getLastLogEvents().clear();
+		LoggingEventDecorator decorator =
+			new LoggingEventDecorator(generateTestLoggingEvent(random));
+		decorator.setUserdata(TEST1_USERDATA);
+		AppInfoSingleton.getAppInfo().addLogEvent(decorator);
+
+		Map<String, List<String>> params = null;
+		Collection<LoggingEventDecorator> selected =
+			AppInfoSingleton.getAppInfo().getLastLogEvents(params);
+
+		assertEquals(1, selected.size());
+		assertEquals(TEST1_USERDATA, selected.iterator().next().getUserdata());
 	}
 }

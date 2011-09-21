@@ -1,12 +1,18 @@
 package ru.curs.showcase.runtime;
 
+import java.io.UnsupportedEncodingException;
 import java.util.*;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.util.ServletUtils;
+import ru.curs.showcase.util.exception.ServerLogicError;
 
 /**
  * Синглетон для хранения информации о сессиях приложения и глобальной
@@ -48,14 +54,42 @@ public final class AppInfoSingleton {
 	 */
 	private String servletContainerVersion;
 
-	private final Collection<LoggingEventDecorator> lastLogEvents = Collections
-			.synchronizedCollection(new LastLogEvents());
+	private final SortedSet<LoggingEventDecorator> lastLogEvents = new LastLogEvents();
 
-	public Collection<LoggingEventDecorator> getLastLogEvents() {
+	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
 		return lastLogEvents;
 	}
 
-	public void addLogEvent(final LoggingEventDecorator event) {
+	public synchronized Collection<LoggingEventDecorator> getLastLogEvents(
+			final ServletRequest request) {
+		SortedMap<String, List<String>> params;
+		try {
+			params = ServletUtils.prepareURLParamsMap((HttpServletRequest) request);
+		} catch (UnsupportedEncodingException e) {
+			throw new ServerLogicError(e);
+		}
+
+		return getLastLogEvents(params);
+	}
+
+	public Collection<LoggingEventDecorator> getLastLogEvents(
+			final Map<String, List<String>> params) {
+		Collection<LoggingEventDecorator> result = new ArrayList<LoggingEventDecorator>();
+
+		skip: for (LoggingEventDecorator event : lastLogEvents) {
+			if (params != null) {
+				for (Map.Entry<String, List<String>> entry : params.entrySet()) {
+					if (!event.isSatisfied(entry.getKey(), entry.getValue().get(0))) {
+						continue skip;
+					}
+				}
+			}
+			result.add(event);
+		}
+		return result;
+	}
+
+	public synchronized void addLogEvent(final LoggingEventDecorator event) {
 		lastLogEvents.add(event);
 	}
 
@@ -238,7 +272,13 @@ public final class AppInfoSingleton {
 	}
 
 	public String getCurUserDataId() {
-		return curUserDataId.get();
+		String res = curUserDataId.get();
+		return res;
+	}
+
+	public String getCurUserDataIdSafe() {
+		String res = curUserDataId.get();
+		return res != null ? res : "";
 	}
 
 	/**

@@ -28,7 +28,8 @@ th, td
 </head>
 <body>
 <%
-	Collection<LoggingEventDecorator> lastLogEvents = AppInfoSingleton.getAppInfo().getLastLogEvents();
+
+	Collection<LoggingEventDecorator> lastLogEvents = AppInfoSingleton.getAppInfo().getLastLogEvents(request);
 	int number = 0;	
 %>
 <table width="90%">
@@ -36,16 +37,42 @@ th, td
 <% 	number++;
 %>
 <tr>
-<td width="7%" onclick="document.getElementById('row<%=number+1%>').scrollIntoView()">
+<td width="18%">
  ${event.getLevel()} 
 </td>
-<td width="18%" onclick="document.getElementById('row<%=number-1%>').scrollIntoView()">
-${event.getTime()} 
-</td>
-<td width="77%">
+<td width="82%" rowspan="7" onclick="document.getElementById('row<%=number+1%>').scrollIntoView()">
 <div id="row<%=number%>">
 ${event.getMessage()} 
 </div>
+</td>
+</tr>
+<tr>
+<td  width="18%">
+${event.getTime()} 
+</td>
+</tr>
+<tr>
+<td  width="18%" >
+${event.getUserName()} 
+</td>
+</tr>
+<tr>
+<td  width="18%" >
+${event.getUserdata()} 
+</td>
+</tr>
+<tr>
+<td  width="18%" >
+${event.getCommandContext().getRequestId()} 
+</td>
+</tr>
+<tr>
+<td  width="18%" >
+${event.getCommandContext().getCommandName()} 
+</td>
+</tr>
+<tr>
+<td  width="18%" onclick="document.getElementById('row<%=number-1%>').scrollIntoView()">
 </td>
 </tr>
 </c:forEach>

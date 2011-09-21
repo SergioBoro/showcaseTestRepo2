@@ -98,7 +98,7 @@ public final class ServletUtils {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			return SecurityContextHolder.getContext().getAuthentication().getName();
 		} else {
-			return null;
+			return "";
 		}
 	}
 

@@ -75,8 +75,6 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	@ExcludeFromSerialization
 	private Map<String, CompositeContext> related = new HashMap<String, CompositeContext>();
 
-	private CommandContext commandContext;
-
 	public CompositeContext(final Map<String, List<String>> aParams) {
 		super();
 		addSessionParams(aParams);
@@ -159,9 +157,6 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		if (related.isEmpty()) {
 			related.putAll(sourceContext.related);
 		}
-		if (commandContext != null) {
-			commandContext.assignNullValues(sourceContext.getCommandContext());
-		}
 	}
 
 	/**
@@ -186,7 +181,6 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((additional == null) ? 0 : additional.hashCode());
-		result = prime * result + ((commandContext == null) ? 0 : commandContext.hashCode());
 		result = prime * result + ((filter == null) ? 0 : filter.hashCode());
 		result = prime * result + ((main == null) ? 0 : main.hashCode());
 		result = prime * result + ((session == null) ? 0 : session.hashCode());
@@ -222,9 +216,6 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		}
 		for (Entry<String, CompositeContext> entry : related.entrySet()) {
 			res.related.put(entry.getKey(), entry.getValue().gwtClone());
-		}
-		if (getCommandContext() != null) {
-			res.setCommandContext(getCommandContext().gwtClone());
 		}
 		return res;
 	}
@@ -350,13 +341,6 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		} else if (!additional.equals(other.additional)) {
 			return false;
 		}
-		if (commandContext == null) {
-			if (other.commandContext != null) {
-				return false;
-			}
-		} else if (!commandContext.equals(other.commandContext)) {
-			return false;
-		}
 		if (filter == null) {
 			if (other.filter != null) {
 				return false;
@@ -379,29 +363,5 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 			return false;
 		}
 		return true;
-	}
-
-	public CommandContext getCommandContext() {
-		return commandContext;
-	}
-
-	public void setCommandContext(final CommandContext aCommandContext) {
-		commandContext = aCommandContext;
-	}
-
-	public String getCommandName() {
-		if (getCommandContext() != null) {
-			return getCommandContext().getCommandName();
-		} else {
-			return null;
-		}
-	}
-
-	public String getRequestId() {
-		if (getCommandContext() != null) {
-			return getCommandContext().getRequestId();
-		} else {
-			return null;
-		}
 	}
 }

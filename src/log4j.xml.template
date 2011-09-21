@@ -23,13 +23,13 @@
 				value="sc.log %d{ABSOLUTE} %5p %t %c{1}.%M() line:%L %m%n" />
 		</layout>
 	</appender>
-	<appender name="Log4jShowcaseAppender" class="ru.curs.showcase.runtime.Log4jShowcaseAppender">
-		
+	<appender name="ShowcaseWebConsoleAppender" class="ru.curs.showcase.runtime.ShowcaseWebConsoleAppender">
 	</appender>
+	
 	<root>
 		<priority value="INFO" />
 		<appender-ref ref="Console" />
-		<appender-ref ref="Log4jShowcaseAppender"/>
+		<appender-ref ref="ShowcaseWebConsoleAppender"/>
 		<!--Для вывода в файл нужно добавить строку внутрь тэга <root> -->
 		<!--<appender-ref ref="LogFile"/> и указать правильное имя файла в <appender 
 			name="LogFile">. -->

@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.event;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.NamedElement;
 
@@ -12,13 +14,9 @@ import ru.curs.showcase.app.api.NamedElement;
  * @author den
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Activity extends NamedElement implements SerializableElement, ContainingContext {
-
-	@Override
-	public String toString() {
-		return "Activity [type=" + type + ", context=" + context + ", getId()=" + getId()
-				+ ", getName()=" + getName() + "]";
-	}
 
 	/**
 	 * serialVersionUID.

@@ -52,7 +52,7 @@ public final class ExecServerActionCommand extends ServiceLayerCommand<Void> {
 		ActivityGateway gateway = new ActivityDBGateway();
 		for (Activity act : action.getServerActivities()) {
 			gateway.exec(act);
-			LOGGER.info(SERVER_ACTION_EXECUTED + act.toString());
+			LOGGER.info(SERVER_ACTION_EXECUTED + getSerializer().serialize(act));
 		}
 	}
 

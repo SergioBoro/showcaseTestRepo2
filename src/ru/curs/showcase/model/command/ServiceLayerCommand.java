@@ -6,13 +6,14 @@ import java.util.UUID;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.AppRegistry;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.ServerLogicError;
-import ru.curs.showcase.util.xml.SessionContextGenerator;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Абстрактный класс команды сервисного уровня приложения. Весь функционал
@@ -25,9 +26,8 @@ import ru.curs.showcase.util.xml.SessionContextGenerator;
  */
 public abstract class ServiceLayerCommand<T> {
 
-	private static final String LOG_TEMPLATE =
-		"Command %s \r\n userName=%s \r\n userData=%s \r\n requestId=%s \r\n commandName=%s \r\n objectClass=%s \r\n "
-				+ "getObjectMethodName=%s \r\n %s";
+	private static final String LOG_TEMPLATE = "Command %s \r\n objectClass=%s \r\n "
+			+ "getObjectMethodName=%s \r\n %s";
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ServiceLayerCommand.class);
 
@@ -42,6 +42,10 @@ public abstract class ServiceLayerCommand<T> {
 	private T result;
 
 	private final ObjectToLogSerializer serializer = AppRegistry.getObjectSerializer();
+
+	protected ObjectToLogSerializer getSerializer() {
+		return serializer;
+	}
 
 	/**
 	 * Контекст вызова команды. Должен быть у любой команды!
@@ -66,9 +70,18 @@ public abstract class ServiceLayerCommand<T> {
 		context = aContext;
 	}
 
+	private void setupMDC() {
+		MDC.put(GeneralXMLHelper.USERNAME_TAG, ServletUtils.getCurrentSessionUserName());
+		MDC.put(ExchangeConstants.URL_PARAM_USERDATA, AppInfoSingleton.getAppInfo()
+				.getCurUserDataIdSafe());
+		MDC.put(GeneralXMLHelper.REQUEST_ID_TAG, commandContext.getRequestId());
+		MDC.put(GeneralXMLHelper.COMMAND_NAME_TAG, commandContext.getCommandName());
+	}
+
 	public T execute() throws GeneralException {
 		try {
 			initContext();
+			setupMDC();
 			preProcess();
 			logInputParams();
 			mainProc();
@@ -92,11 +105,9 @@ public abstract class ServiceLayerCommand<T> {
 					if (methodResult == null) {
 						continue;
 					}
-					LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, ServletUtils
-							.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo()
-							.getCurUserDataId(), commandContext.getRequestId(), commandContext
-							.getCommandName(), method.getReturnType().getSimpleName(), method
-							.getName(), serializer.serialize(methodResult)));
+					LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, method
+							.getReturnType().getSimpleName(), method.getName(), serializer
+							.serialize(methodResult)));
 				} catch (Exception e) {
 					throw new ServerLogicError(e);
 				}
@@ -121,10 +132,8 @@ public abstract class ServiceLayerCommand<T> {
 			return;
 		}
 
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, ServletUtils
-				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
-				commandContext.getRequestId(), commandContext.getCommandName(), result.getClass()
-						.getSimpleName(), "", serializer.serialize(result)));
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, result.getClass()
+				.getSimpleName(), "", serializer.serialize(result)));
 	}
 
 	protected abstract void mainProc() throws Exception;
@@ -138,8 +147,6 @@ public abstract class ServiceLayerCommand<T> {
 		getContext().setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(getContext().getSessionParamsMap());
 		getContext().getSessionParamsMap().clear();
-
-		getContext().setCommandContext(commandContext);
 	}
 
 	public String getSessionId() {

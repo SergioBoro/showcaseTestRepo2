@@ -13,7 +13,6 @@ import ru.curs.showcase.app.api.html.XForm;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.event.HTMLBasedElementFactory;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.ServletUtils;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;
 
@@ -26,8 +25,7 @@ import ru.curs.showcase.util.xml.*;
 public final class XFormFactory extends HTMLBasedElementFactory {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(XFormFactory.class);
 
-	private static final String LOG_TEMPLATE =
-		"XSL %s \r\n userName=%s \r\n userData=%s \r\n requestId=%s \r\n commandName=%s \r\n xslTransform=%s \r\n %s";
+	private static final String LOG_TEMPLATE = "XSL %s \r\n xslTransform=%s \r\n %s";
 
 	private static final String XFORMS_CREATE_ERROR =
 		"Ошибка при формировании XForms для элемента '%s'";
@@ -89,20 +87,16 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 	}
 
 	private void logOutput() {
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, ServletUtils
-				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
-				getCallContext().getRequestId(), getCallContext().getCommandName(),
-				XFormProducer.XSLTFORMS_XSL, html));
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, XFormProducer.XSLTFORMS_XSL,
+				html));
 	}
 
 	private void logInput(final Document template) {
 		if (!LOGGER.isInfoEnabled()) {
 			return;
 		}
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, ServletUtils
-				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
-				getCallContext().getRequestId(), getCallContext().getCommandName(),
-				XFormProducer.XSLTFORMS_XSL, XMLUtils.documentToString(template)));
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, XFormProducer.XSLTFORMS_XSL,
+				XMLUtils.documentToString(template)));
 	}
 
 	private String replaceVariables() {

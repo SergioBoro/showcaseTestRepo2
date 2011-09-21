@@ -31,8 +31,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 
 	private static final int ERROR_MES_INDEX = -1;
 
-	private static final String LOG_TEMPLATE =
-		"SQL %s \r\n userName=%s \r\n userData=%s \r\n requestId=%s \r\n commandName=%s \r\n %s";
+	private static final String LOG_TEMPLATE = "SQL %s \r\n %s";
 
 	/**
 	 * LOGGER.
@@ -325,9 +324,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 
 	protected boolean execute() throws SQLException {
 		String value = SQLUtils.addParamsToSQLTemplate(sqlTemplate, params);
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, ServletUtils
-				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
-				context.getRequestId(), context.getCommandName(), value));
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, value));
 		return getStatement().execute();
 	}
 
@@ -403,9 +400,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	}
 
 	private void logOutputXMLString(final String value) {
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, ServletUtils
-				.getCurrentSessionUserName(), AppInfoSingleton.getAppInfo().getCurUserDataId(),
-				context.getRequestId(), context.getCommandName(), value));
+		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, value));
 	}
 
 	protected DataFile<ByteArrayOutputStream> getFileForBinaryStream(final int dataIndex,

@@ -426,19 +426,22 @@ public class AbstractTest extends GeneralXMLHelper {
 		return params;
 	}
 
-	@SuppressWarnings("deprecation")
 	protected void testBaseLastLogEventQueue(final Collection<LoggingEventDecorator> lleq) {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(
 				ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
 		final int eventCount = 105;
 		Random random = new Random();
 		for (int i = 0; i < eventCount; i++) {
-			LoggingEvent original =
-				new LoggingEvent("testClass", Category.getInstance("testCategory"),
-						random.nextLong(), Priority.ERROR, "message", null);
+			LoggingEvent original = generateTestLoggingEvent(random);
 			lleq.add(new LoggingEventDecorator(original));
 		}
 
 		assertEquals(LastLogEvents.getMaxRecords(), lleq.size());
+	}
+
+	@SuppressWarnings("deprecation")
+	protected LoggingEvent generateTestLoggingEvent(final Random random) {
+		return new LoggingEvent("testClass", Category.getInstance("testCategory"),
+				random.nextLong(), Priority.ERROR, "message", null);
 	}
 }
