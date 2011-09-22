@@ -15,34 +15,30 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-public class LoggingEventDecorator {
+public class LoggingEventDecorator implements AbstractCommandContext {
+
+	private final LoggingEvent original;
+
+	private CommandContext commandContext = new CommandContext();
+
 	public LoggingEvent getOriginal() {
 		return original;
 	}
 
-	private final LoggingEvent original;
-
-	private String userName;
-
-	private String userdata;
-
-	private final CommandContext commandContext = new CommandContext();
-
+	@Override
 	public String getUserdata() {
-		return userdata;
-	}
-
-	public void setUserdata(final String aUserData) {
-		userdata = aUserData;
-	}
-
-	public void setUserName(final String aUserName) {
-		userName = aUserName;
+		return commandContext.getUserdata();
 	}
 
 	public LoggingEventDecorator(final LoggingEvent event) {
 		super();
 		original = event;
+	}
+
+	public LoggingEventDecorator(final LoggingEvent aEvent, final CommandContext aCommandContext) {
+		super();
+		original = aEvent;
+		commandContext = aCommandContext;
 	}
 
 	public String getMessage() {
@@ -77,29 +73,33 @@ public class LoggingEventDecorator {
 		return sdf.format(time);
 	}
 
+	@Override
 	public String getUserName() {
-		return userName;
+		return commandContext.getUserName();
 	}
 
-	public CommandContext getCommandContext() {
+	public AbstractCommandContext getCommandContext() {
 		return commandContext;
 	}
 
+	@Override
 	public String getRequestId() {
 		return commandContext.getRequestId();
 	}
 
+	@Override
 	public String getCommandName() {
 		return commandContext.getCommandName();
 	}
 
 	public boolean isSatisfied(final String fieldName, final String fieldValue) {
-		String realValue = null;
+		Object tempValue = null;
 		try {
-			realValue = (String) ReflectionUtils.getPropValueForFieldName(this, fieldName);
+			tempValue = ReflectionUtils.getPropValueByFieldName(this, fieldName);
 		} catch (Exception e) {
 			return true;
 		}
+		String realValue = tempValue != null ? tempValue.toString() : null;
 		if ((realValue == null) && (fieldValue == null)) {
 			return true;
 		}
@@ -107,4 +107,20 @@ public class LoggingEventDecorator {
 				.equalsIgnoreCase(fieldValue) : false;
 	}
 
+	public void setUserdata(final String aUserdata) {
+		commandContext.setUserdata(aUserdata);
+
+	}
+
+	public void setUserName(final String aUserName) {
+		commandContext.setUserName(aUserName);
+	}
+
+	public void setRequestId(final String aRequestId) {
+		commandContext.setRequestId(aRequestId);
+	}
+
+	public void setCommandName(final String aCommandName) {
+		commandContext.setCommandName(aCommandName);
+	}
 }

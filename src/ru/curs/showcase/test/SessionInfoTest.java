@@ -18,6 +18,7 @@ import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.chart.ChartGetCommand;
 import ru.curs.showcase.model.command.ServerStateGetCommand;
 import ru.curs.showcase.model.datapanel.DataPanelGetCommand;
+import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -29,6 +30,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 public class SessionInfoTest extends AbstractTest {
+	private static final String LEVEL_LOG_EVENT_PROP = "level";
 	private static final boolean AUTH_VIA_AUTH_SERVER = true;
 	private static final String TEMP_PASS = "pass";
 	private static final String FAKE_SESSION_ID = "fake-session-id";
@@ -245,7 +247,7 @@ public class SessionInfoTest extends AbstractTest {
 		LoggingEventDecorator decorator =
 			new LoggingEventDecorator(generateTestLoggingEvent(new Random()));
 
-		decorator.setUserdata("test1");
+		decorator.setUserdata(TEST1_USERDATA);
 		assertTrue(decorator.isSatisfied(ExchangeConstants.URL_PARAM_USERDATA, "test1"));
 		assertFalse(decorator.isSatisfied(ExchangeConstants.URL_PARAM_USERDATA, "default"));
 
@@ -253,13 +255,18 @@ public class SessionInfoTest extends AbstractTest {
 		assertTrue(decorator.isSatisfied("userName", "master"));
 		assertFalse(decorator.isSatisfied("userName", "master1"));
 
-		decorator.getCommandContext().setCommandName("XFormDownloadCommand");
-		assertTrue(decorator.isSatisfied("commandName", "XFormDownloadCommand"));
-		assertFalse(decorator.isSatisfied("commandName", "XFormUploadCommand"));
+		decorator.setCommandName(XFormDownloadCommand.class.getSimpleName());
+		assertTrue(decorator
+				.isSatisfied("commandName", XFormDownloadCommand.class.getSimpleName()));
+		assertFalse(decorator.isSatisfied("commandName", XFormUploadCommand.class.getSimpleName()));
 
-		decorator.getCommandContext().setRequestId("1");
+		decorator.setRequestId("1");
 		assertTrue(decorator.isSatisfied("requestId", "1"));
 		assertFalse(decorator.isSatisfied("requestId", "2"));
+
+		assertTrue(decorator.isSatisfied(LEVEL_LOG_EVENT_PROP, "error"));
+		assertTrue(decorator.isSatisfied(LEVEL_LOG_EVENT_PROP, "ERROR"));
+		assertFalse(decorator.isSatisfied(LEVEL_LOG_EVENT_PROP, "warn"));
 
 		assertTrue(decorator.isSatisfied("requestid", "1111"));
 	}
@@ -301,5 +308,26 @@ public class SessionInfoTest extends AbstractTest {
 
 		assertEquals(1, selected.size());
 		assertEquals(TEST1_USERDATA, selected.iterator().next().getUserdata());
+	}
+
+	@Test
+	public void testCommandContext() {
+		CommandContext cc = new CommandContext();
+		cc.setUserdata(TEST1_USERDATA);
+		cc.setUserName(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
+		cc.setCommandName(XFormDownloadCommand.class.getSimpleName());
+		cc.setRequestId("1");
+
+		AbstractCommandContext clone = cc.gwtClone();
+		assertEquals(cc, clone);
+		assertNotSame(cc, clone);
+		cc.setRequestId("2");
+		assertFalse(cc.equals(clone));
+		assertEquals(cc.getUserName(), clone.getUserName());
+
+		CommandContext clone2 = new CommandContext();
+		clone2.assignNullValues(cc);
+		assertEquals(cc, clone2);
+		assertNotSame(cc, clone2);
 	}
 }

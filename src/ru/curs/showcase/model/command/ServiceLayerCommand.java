@@ -6,14 +6,13 @@ import java.util.UUID;
 
 import org.slf4j.*;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.AppRegistry;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.ServerLogicError;
-import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.SessionContextGenerator;
 
 /**
  * Абстрактный класс команды сервисного уровня приложения. Весь функционал
@@ -31,8 +30,7 @@ public abstract class ServiceLayerCommand<T> {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ServiceLayerCommand.class);
 
-	private final CommandContext commandContext = new CommandContext(this.getClass()
-			.getSimpleName(), UUID.randomUUID().toString());
+	private CommandContext commandContext;
 
 	/**
 	 * Идентификатор текущей HTTP сессии.
@@ -70,18 +68,10 @@ public abstract class ServiceLayerCommand<T> {
 		context = aContext;
 	}
 
-	private void setupMDC() {
-		MDC.put(GeneralXMLHelper.USERNAME_TAG, ServletUtils.getCurrentSessionUserName());
-		MDC.put(ExchangeConstants.URL_PARAM_USERDATA, AppInfoSingleton.getAppInfo()
-				.getCurUserDataIdSafe());
-		MDC.put(GeneralXMLHelper.REQUEST_ID_TAG, commandContext.getRequestId());
-		MDC.put(GeneralXMLHelper.COMMAND_NAME_TAG, commandContext.getCommandName());
-	}
-
 	public T execute() throws GeneralException {
 		try {
 			initContext();
-			setupMDC();
+			commandContext.toMDC();
 			preProcess();
 			logInputParams();
 			mainProc();
@@ -147,6 +137,9 @@ public abstract class ServiceLayerCommand<T> {
 		getContext().setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(getContext().getSessionParamsMap());
 		getContext().getSessionParamsMap().clear();
+
+		commandContext =
+			new CommandContext(this.getClass().getSimpleName(), UUID.randomUUID().toString());
 	}
 
 	public String getSessionId() {
