@@ -28,11 +28,10 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 	 <intercept-url pattern="/solutions/default/resources/favicon.ico*" filters="none"/>
 	 <intercept-url pattern="/auth/isAuthenticatedServlet*" filters="none"/>
 	 <intercept-url pattern="/resources/login_content/*" filters="none"/> 
-	 
-	 
-<!--	 <intercept-url pattern="/**" access="fullyAuthenticated" />  -->
-<!--	<intercept-url pattern="/index.jsp*" access="fullyAuthenticated" />-->
+	
 	<intercept-url pattern="/**" access="fullyAuthenticated" />
+	
+	
 	<!--<http-basic />-->
 <!--    <form-login login-page="/login.jsp" default-target-url="/index.jsp"-->
 <!--                authentication-failure-url="/login.jsp?error=true" /> -->
@@ -52,7 +51,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
     <!--Провайдер, реализующий аутентификацию через файл, в котором хранятся пользователи и пароли-->
 	<authentication-provider>
        <password-encoder hash="md5" />	  	
-       <user-service properties="/WEB-INF/user.properties" />	
+       <user-service properties="/WEB-INF/user.properties" />	       
 	</authentication-provider>
 
     <!--Провайдер, реализующий аутентификацию через AuthServer-->    

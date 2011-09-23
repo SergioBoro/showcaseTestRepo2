@@ -138,9 +138,15 @@ public final class SQLUtils {
 			if (paramValue instanceof Integer) {
 				value = matcher.replaceFirst(((Integer) paramValue).toString());
 			} else {
-				value = matcher.replaceFirst(String.format("\"%s\"", paramValue));
+				value = matcher.replaceFirst(String.format("'%s'", paramValue));
 			}
 			matcher = pattern.matcher(value);
+		}
+
+		pattern = Pattern.compile("call (.+)\\(([\\s\\S]+)\\)");
+		matcher = pattern.matcher(value);
+		if (matcher.find()) {
+			value = matcher.group(1) + " " + matcher.group(2);
 		}
 		return value;
 	}

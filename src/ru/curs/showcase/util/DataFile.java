@@ -2,6 +2,8 @@ package ru.curs.showcase.util;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import ru.curs.showcase.runtime.AppProps;
+
 /**
  * Базовый класс для обмена файлами между сервером и клиентами. Содержимое файла
  * может храниться как в виде OutputStream, так и InputStream или даже строки -
@@ -13,6 +15,8 @@ import javax.xml.bind.annotation.XmlTransient;
  *            - тип для хранения содержимого - OutputStream или InputStream.
  */
 public class DataFile<T> {
+
+	private static final String WEB_CONSOLE_ADD_TEXT_FILES_PARAM = "web.console.add.text.files";
 
 	/**
 	 * Данные файла.
@@ -66,11 +70,18 @@ public class DataFile<T> {
 	}
 
 	public boolean isTextFile() {
-		String[] textExtensions =
+		String[] stdTextExtensions =
 			{
 					"txt", "xml", "xsd", "xsl", "sql", "ini", "properties", "htm", "html", "java",
-					"cmd", "vbs", "py" };
-		for (String ext : textExtensions) {
+					"cmd", "py" };
+		String fromAppProps = AppProps.getOptionalValueByName(WEB_CONSOLE_ADD_TEXT_FILES_PARAM);
+		String[] userTextExtensions = fromAppProps.split(":");
+
+		return checkExtensionsArray(stdTextExtensions) || checkExtensionsArray(userTextExtensions);
+	}
+
+	private boolean checkExtensionsArray(final String[] aExtensions) {
+		for (String ext : aExtensions) {
 			if (name.endsWith(ext)) {
 				return true;
 			}
@@ -85,4 +96,5 @@ public class DataFile<T> {
 	public void setEncoding(final String aEncoding) {
 		encoding = aEncoding;
 	}
+
 }

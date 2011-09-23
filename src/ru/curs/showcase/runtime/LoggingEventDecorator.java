@@ -44,6 +44,12 @@ public class LoggingEventDecorator implements AbstractCommandContext {
 
 	public String getMessage() {
 		String src = original.getMessage();
+		if (original.getThrowableProxy() != null) {
+			src =
+				src + ExchangeConstants.LINE_SEPARATOR + original.getThrowableProxy().getMessage()
+						+ ExchangeConstants.LINE_SEPARATOR
+						+ logExceptionStack(original.getThrowableProxy());
+		}
 
 		src = src.replace("<", "&lt;");
 		src = src.replace(">", "&gt;");
@@ -56,6 +62,21 @@ public class LoggingEventDecorator implements AbstractCommandContext {
 		src = src.replace("&quot;", "\"");
 		src = src.replace("&apos;", "'");
 		return src;
+	}
+
+	private String logExceptionStack(final IThrowableProxy throwableProxy) {
+		String result = "";
+		StackTraceElementProxy[] stackElements = throwableProxy.getStackTraceElementProxyArray();
+		for (StackTraceElementProxy element : stackElements) {
+			result = result + ExchangeConstants.LINE_SEPARATOR + element.getSTEAsString();
+		}
+		if (throwableProxy.getCause() != null) {
+			result =
+				result + ExchangeConstants.LINE_SEPARATOR + ExchangeConstants.LINE_SEPARATOR
+						+ "Источник ошибки:" + ExchangeConstants.LINE_SEPARATOR
+						+ logExceptionStack(throwableProxy.getCause());
+		}
+		return result;
 	}
 
 	public Level getLevel() {

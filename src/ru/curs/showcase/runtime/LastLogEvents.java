@@ -14,8 +14,9 @@ public class LastLogEvents extends TreeSet<LoggingEventDecorator> {
 	public static final String INPUT = "input";
 	public static final String OUTPUT = "output";
 
-	public static final String INTERNAL_LOG_SIZE = "internal.log.size";
+	public static final String INTERNAL_LOG_SIZE = "web.console.size";
 	public static final int DEF_MAX_RECORDS = 50;
+
 	private static final long serialVersionUID = 9039619678848110139L;
 
 	public static int getMaxRecords() {

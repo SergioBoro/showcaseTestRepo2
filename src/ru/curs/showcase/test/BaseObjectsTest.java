@@ -202,13 +202,13 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testAddParamsToSQLTemplate() {
 		Map<Integer, Object> params = new TreeMap<Integer, Object>();
-		params.put(1, "first");
+		params.put(1, "first\n");
 		params.put(2, 2);
-		String value = "call {?,?,?}";
+		String value = "{call test_proc(?,?,?)}";
 
 		value = SQLUtils.addParamsToSQLTemplate(value, params);
 
-		assertEquals("call {\"first\",2,\"null\"}", value);
+		assertEquals("test_proc 'first\n',2,'null'", value);
 	}
 
 }

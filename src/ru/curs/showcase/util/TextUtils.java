@@ -13,6 +13,8 @@ import java.util.regex.*;
  */
 public final class TextUtils {
 
+	public static final String CP1251 = "CP1251";
+
 	/**
 	 * Кодировка по умолчанию в приложении. Все выходные и входные документы по
 	 * умолчанию должны имеют данную кодировку (если явно не указано другое).

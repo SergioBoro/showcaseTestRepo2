@@ -37,10 +37,10 @@ th, td
 <% 	number++;
 %>
 <tr>
-<td width="18%">
+<td width="18%" onclick="document.getElementById('row<%=number+1%>').scrollIntoView()">
  ${event.getLevel()} 
 </td>
-<td width="82%" rowspan="9" onclick="document.getElementById('row<%=number+1%>').scrollIntoView()">
+<td width="82%" rowspan="9">
 <div id="row<%=number%>">
 ${event.getMessage()} 
 </div>

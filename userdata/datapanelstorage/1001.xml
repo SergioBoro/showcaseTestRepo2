@@ -24,7 +24,7 @@
 			<related id="0201" />
 		</element>
 	</tab>
-	<tab id="04" name="XFrorms - возможности">
+	<tab id="04" name="XForms - возможности">
 		<element id="0401" type="xforms" template="Showcase_Template_all.xml"
 			proc="xforms_proc_all">
 			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
@@ -35,15 +35,5 @@
 			<proc id="proc4" name="xforms_submission_um" type="SUBMISSION" />
 			<proc id="proc5" name="xforms_submission_re" type="SUBMISSION" />
 		</element>
-	</tab>
-	<tab id="06" name="XFrorms. Селектор - доработки">
-		<element id="61" type="xforms" template="Showcase_Template_selector.xml"
-			proc="xforms_proc1">
-			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
-			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
-		</element>
-		<element id="62" type="webtext" proc="webtext_filter_and_add"
-			hideOnLoad="true" />		
-	</tab>	
-	
+	</tab>		
 </datapanel>
