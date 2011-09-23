@@ -27,7 +27,6 @@ import ru.curs.showcase.util.xml.*;
 public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	private static final String ELEMENT_0205 = "0205";
 	private static final String XFORMS_SUBMISSION1 = "xforms_submission1";
-	private static final String TEST_XML_FILE = "log4j.xml";
 	private static final String TEST_DATA_TAG = "<data>test</data>";
 
 	/**

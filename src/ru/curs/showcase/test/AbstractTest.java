@@ -44,6 +44,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	protected static final String TREE_MULTILEVEL_V2_XML = "tree_multilevel.v2.xml";
 
 	protected static final String ADD_CONDITION = "add_condition";
+	protected static final String TEST_XML_FILE = "logic.xml";
 
 	/**
 	 * Действия, которые должны выполняться перед запуском любых тестовых

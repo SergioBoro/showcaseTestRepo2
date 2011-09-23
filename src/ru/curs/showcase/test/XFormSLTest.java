@@ -21,7 +21,6 @@ import ru.curs.showcase.util.*;
  */
 public class XFormSLTest extends AbstractTest {
 	private static final String XFORMS_SUBMISSION1 = "xforms_submission1";
-	private static final String TEST_XML_FILE = "log4j.xml";
 	private static final String TEST_DATA_TAG = "<data>test</data>";
 
 	/**
