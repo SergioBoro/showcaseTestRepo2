@@ -2,7 +2,7 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.*;
+import java.io.IOException;
 
 import org.junit.Test;
 
@@ -11,7 +11,6 @@ import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.xform.*;
-import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
 
 /**
@@ -130,10 +129,11 @@ public class XFormSLTest extends AbstractTest {
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc4";
 		XFormDownloadCommand command = new XFormDownloadCommand(context, elementInfo, linkId);
-		DataFile<ByteArrayOutputStream> file = command.execute();
+		OutputStreamDataFile file = command.execute();
 		final int navigatorXMLLen = 231478;
 		assertNotNull(context.getSession());
 		assertTrue(file.getData().size() > navigatorXMLLen);
+		assertEquals(TextUtils.JDBC_ENCODING, file.getEncoding());
 	}
 
 	/**
@@ -148,17 +148,10 @@ public class XFormSLTest extends AbstractTest {
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc5";
 		final String fileName = TEST_XML_FILE;
-		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
+		OutputStreamDataFile file = getTestFile(fileName);
 		XFormUploadCommand command = new XFormUploadCommand(context, element, linkId, file);
 		command.execute();
 		assertNotNull(context.getSession());
-	}
-
-	private DataFile<ByteArrayOutputStream> getTestFile(final String linkId) throws IOException {
-		DataFile<ByteArrayOutputStream> file =
-			new DataFile<ByteArrayOutputStream>(StreamConvertor.inputToOutputStream(AppProps
-					.loadResToStream(linkId)), linkId);
-		return file;
 	}
 
 	/**
@@ -173,7 +166,7 @@ public class XFormSLTest extends AbstractTest {
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc7";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
-		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
+		OutputStreamDataFile file = getTestFile(fileName);
 		XFormUploadCommand command = new XFormUploadCommand(context, element, linkId, file);
 		command.execute();
 		assertNotNull(context.getSession());

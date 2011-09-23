@@ -24,14 +24,13 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 public abstract class SPCallHelper extends DataCheckGateway {
+	public static final String SQL_MARKER = "SQL";
 	private static final int MAIN_CONTEXT_INDEX = 1;
 	private static final int ADD_CONTEXT_INDEX = 2;
 	private static final int FILTER_INDEX = 3;
 	private static final int SESSION_CONTEXT_INDEX = 4;
 
 	private static final int ERROR_MES_INDEX = -1;
-
-	private static final String LOG_TEMPLATE = "SQL %s \r\n %s";
 
 	/**
 	 * LOGGER.
@@ -324,7 +323,9 @@ public abstract class SPCallHelper extends DataCheckGateway {
 
 	protected boolean execute() throws SQLException {
 		String value = SQLUtils.addParamsToSQLTemplate(sqlTemplate, params);
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, value));
+		Marker marker = MarkerFactory.getDetachedMarker(SQL_MARKER);
+		marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
+		LOGGER.info(marker, value);
 		return getStatement().execute();
 	}
 
@@ -400,11 +401,13 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	}
 
 	private void logOutputXMLString(final String value) {
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, value));
+		Marker marker = MarkerFactory.getDetachedMarker(SQL_MARKER);
+		marker.add(MarkerFactory.getMarker(LastLogEvents.OUTPUT));
+		LOGGER.info(marker, value);
 	}
 
-	protected DataFile<ByteArrayOutputStream> getFileForBinaryStream(final int dataIndex,
-			final int nameIndex) throws SQLException {
+	protected OutputStreamDataFile
+			getFileForBinaryStream(final int dataIndex, final int nameIndex) throws SQLException {
 		InputStream is = getBinaryStream(dataIndex);
 		String fileName = getStatement().getString(nameIndex);
 		StreamConvertor dup;
@@ -414,8 +417,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 			throw new CreateObjectError(e);
 		}
 		ByteArrayOutputStream os = dup.getOutputStream();
-		DataFile<ByteArrayOutputStream> result = new DataFile<ByteArrayOutputStream>(os, fileName);
-
+		OutputStreamDataFile result = new OutputStreamDataFile(os, fileName);
+		result.setEncoding(TextUtils.JDBC_ENCODING);
 		if (result.isTextFile()) {
 			logOutputXMLStream(dup.getCopy());
 		}

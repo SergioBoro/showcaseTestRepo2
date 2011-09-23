@@ -1,11 +1,9 @@
 package ru.curs.showcase.model.xform;
 
-import java.io.ByteArrayOutputStream;
-
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.command.InputParam;
-import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.OutputStreamDataFile;
 import ru.curs.showcase.util.xml.UserXMLTransformer;
 
 /**
@@ -17,7 +15,7 @@ import ru.curs.showcase.util.xml.UserXMLTransformer;
 public final class XFormUploadCommand extends XFormContextCommand<Void> {
 
 	private final String linkId;
-	private final DataFile<ByteArrayOutputStream> file;
+	private final OutputStreamDataFile file;
 
 	@InputParam
 	public String getLinkId() {
@@ -25,12 +23,12 @@ public final class XFormUploadCommand extends XFormContextCommand<Void> {
 	}
 
 	@InputParam
-	public DataFile<ByteArrayOutputStream> getFile() {
+	public OutputStreamDataFile getFile() {
 		return file;
 	}
 
 	public XFormUploadCommand(final XFormContext aContext, final DataPanelElementInfo aElInfo,
-			final String aLinkId, final DataFile<ByteArrayOutputStream> aFile) {
+			final String aLinkId, final OutputStreamDataFile aFile) {
 		super(aContext, aElInfo);
 		linkId = aLinkId;
 		file = aFile;

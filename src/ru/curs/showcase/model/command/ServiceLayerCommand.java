@@ -25,8 +25,7 @@ import ru.curs.showcase.util.xml.SessionContextGenerator;
  */
 public abstract class ServiceLayerCommand<T> {
 
-	private static final String LOG_TEMPLATE = "Command %s \r\n objectClass=%s \r\n "
-			+ "getObjectMethodName=%s \r\n %s";
+	public static final String SERVLET_MARKER = "Servlet";
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ServiceLayerCommand.class);
 
@@ -70,8 +69,8 @@ public abstract class ServiceLayerCommand<T> {
 
 	public T execute() throws GeneralException {
 		try {
-			initContext();
-			commandContext.toMDC();
+			initSessionContext();
+			initCommandContext();
 			preProcess();
 			logInputParams();
 			mainProc();
@@ -81,6 +80,12 @@ public abstract class ServiceLayerCommand<T> {
 		} catch (Throwable e) {
 			throw GeneralServerExceptionFactory.build(e);
 		}
+	}
+
+	private void initCommandContext() {
+		commandContext =
+			new CommandContext(this.getClass().getSimpleName(), UUID.randomUUID().toString());
+		commandContext.toMDC();
 	}
 
 	protected void logInputParams() {
@@ -95,9 +100,11 @@ public abstract class ServiceLayerCommand<T> {
 					if (methodResult == null) {
 						continue;
 					}
-					LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, method
-							.getReturnType().getSimpleName(), method.getName(), serializer
-							.serialize(methodResult)));
+					Marker marker = MarkerFactory.getDetachedMarker(SERVLET_MARKER);
+					marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
+					marker.add(MarkerFactory.getMarker(String.format("class=%s \r\nmethod=%s",
+							method.getReturnType().getSimpleName(), method.getName())));
+					LOGGER.info(marker, serializer.serialize(methodResult));
 				} catch (Exception e) {
 					throw new ServerLogicError(e);
 				}
@@ -122,13 +129,16 @@ public abstract class ServiceLayerCommand<T> {
 			return;
 		}
 
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, result.getClass()
-				.getSimpleName(), "", serializer.serialize(result)));
+		Marker marker = MarkerFactory.getDetachedMarker(SERVLET_MARKER);
+		marker.add(MarkerFactory.getMarker(LastLogEvents.OUTPUT));
+		marker.add(MarkerFactory.getMarker(String.format("class=%s", result.getClass()
+				.getSimpleName())));
+		LOGGER.info(marker, serializer.serialize(result));
 	}
 
 	protected abstract void mainProc() throws Exception;
 
-	protected void initContext() throws UnsupportedEncodingException {
+	protected void initSessionContext() throws UnsupportedEncodingException {
 		if (getContext().getSession() != null) {
 			return;
 		}
@@ -137,9 +147,6 @@ public abstract class ServiceLayerCommand<T> {
 		getContext().setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(getContext().getSessionParamsMap());
 		getContext().getSessionParamsMap().clear();
-
-		commandContext =
-			new CommandContext(this.getClass().getSimpleName(), UUID.randomUUID().toString());
 	}
 
 	public String getSessionId() {

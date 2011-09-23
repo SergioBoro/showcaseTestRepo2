@@ -187,7 +187,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testLastLogEventQueue() {
+	public void testLastLogEventQueue() throws InterruptedException {
 		testBaseLastLogEventQueue(new LastLogEvents());
 	}
 

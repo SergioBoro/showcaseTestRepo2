@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ExcelFile extends DataFile<ByteArrayOutputStream> {
+public class ExcelFile extends OutputStreamDataFile {
 	/**
 	 * Имя результирующего файла по умолчанию.
 	 */
@@ -33,4 +33,8 @@ public class ExcelFile extends DataFile<ByteArrayOutputStream> {
 		super();
 	}
 
+	@Override
+	public boolean isTextFile() {
+		return true;
+	}
 }

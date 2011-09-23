@@ -8,7 +8,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.CreateObjectError;
 
 /**
@@ -140,7 +140,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 	}
 
 	@Override
-	public DataFile<ByteArrayOutputStream> downloadFile(final XFormContext context,
+	public OutputStreamDataFile downloadFile(final XFormContext context,
 			final DataPanelElementInfo elementInfo, final String linkId) {
 		init(context, elementInfo);
 		setTemplateIndex(FILE_TEMPLATE_IND);
@@ -149,7 +149,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 			throw new IncorrectElementException(elementInfo.toString());
 		}
 		setProcName(proc.getName());
-		DataFile<ByteArrayOutputStream> result = null;
+		OutputStreamDataFile result = null;
 
 		try {
 			try {

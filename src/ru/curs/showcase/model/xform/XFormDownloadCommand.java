@@ -1,11 +1,9 @@
 package ru.curs.showcase.model.xform;
 
-import java.io.ByteArrayOutputStream;
-
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.command.InputParam;
-import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.OutputStreamDataFile;
 import ru.curs.showcase.util.xml.UserXMLTransformer;
 
 /**
@@ -14,8 +12,7 @@ import ru.curs.showcase.util.xml.UserXMLTransformer;
  * @author den
  * 
  */
-public final class XFormDownloadCommand extends
-		XFormContextCommand<DataFile<ByteArrayOutputStream>> {
+public final class XFormDownloadCommand extends XFormContextCommand<OutputStreamDataFile> {
 
 	private final String linkId;
 
@@ -33,8 +30,7 @@ public final class XFormDownloadCommand extends
 	@Override
 	protected void mainProc() throws Exception {
 		XFormGateway gateway = new XFormDBGateway();
-		DataFile<ByteArrayOutputStream> file =
-			gateway.downloadFile(getContext(), getElementInfo(), linkId);
+		OutputStreamDataFile file = gateway.downloadFile(getContext(), getElementInfo(), linkId);
 		UserXMLTransformer transformer =
 			new UserXMLTransformer(file, getElementInfo().getProcs().get(linkId),
 					new DataPanelElementContext(getContext(), getElementInfo()));

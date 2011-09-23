@@ -19,6 +19,11 @@ public final class TextUtils {
 	 */
 	public static final String DEF_ENCODING = "UTF-8";
 
+	/**
+	 * Кодировка, используемая в JDBC.
+	 */
+	public static final String JDBC_ENCODING = "UTF-16";
+
 	private TextUtils() {
 		throw new UnsupportedOperationException();
 	}

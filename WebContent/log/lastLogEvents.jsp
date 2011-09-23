@@ -40,7 +40,7 @@ th, td
 <td width="18%">
  ${event.getLevel()} 
 </td>
-<td width="82%" rowspan="7" onclick="document.getElementById('row<%=number+1%>').scrollIntoView()">
+<td width="82%" rowspan="9" onclick="document.getElementById('row<%=number+1%>').scrollIntoView()">
 <div id="row<%=number%>">
 ${event.getMessage()} 
 </div>
@@ -63,16 +63,27 @@ ${event.getUserdata()}
 </tr>
 <tr>
 <td  width="18%" >
-${event.getCommandContext().getRequestId()} 
+${event.getRequestId()} 
 </td>
 </tr>
 <tr>
 <td  width="18%" >
-${event.getCommandContext().getCommandName()} 
+${event.getCommandName()} 
 </td>
 </tr>
 <tr>
-<td  width="18%" onclick="document.getElementById('row<%=number-1%>').scrollIntoView()">
+<td valign="top" width="18%">
+${event.getProcess()} 
+</td>
+</tr>
+<tr>
+<td valign="top" width="18%">
+${event.getDirection()} 
+</td>
+</tr>
+<tr>
+<td valign="top" width="18%" onclick="document.getElementById('row<%=number-1%>').scrollIntoView()">
+${event.getParams()} 
 </td>
 </tr>
 </c:forEach>

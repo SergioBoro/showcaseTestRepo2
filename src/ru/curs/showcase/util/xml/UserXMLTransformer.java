@@ -21,7 +21,7 @@ public final class UserXMLTransformer {
 	/**
 	 * Исходный поток.
 	 */
-	private DataFile<ByteArrayOutputStream> subject;
+	private OutputStreamDataFile subject;
 
 	/**
 	 * Исходный файл в виде строки.
@@ -78,11 +78,11 @@ public final class UserXMLTransformer {
 		return doc;
 	}
 
-	public DataFile<ByteArrayOutputStream> getSubject() {
+	public OutputStreamDataFile getSubject() {
 		return subject;
 	}
 
-	public UserXMLTransformer(final DataFile<ByteArrayOutputStream> aSubject,
+	public UserXMLTransformer(final OutputStreamDataFile aSubject,
 			final DataPanelElementProc aProc, final DataPanelElementContext aContext) {
 		super();
 		subject = aSubject;
@@ -99,14 +99,14 @@ public final class UserXMLTransformer {
 		if (aSubject != null) {
 			ByteArrayOutputStream os =
 				StreamConvertor.inputToOutputStream(TextUtils.stringToStream(aSubject));
-			subject = new DataFile<ByteArrayOutputStream>(os, "данные формы");
+			subject = new OutputStreamDataFile(os, "данные формы");
 		}
 
 		proc = aProc;
 		context = aContext;
 	}
 
-	public void setSubject(final DataFile<ByteArrayOutputStream> aSubject) {
+	public void setSubject(final OutputStreamDataFile aSubject) {
 		subject = aSubject;
 	}
 
@@ -139,10 +139,10 @@ public final class UserXMLTransformer {
 	 * 
 	 * @return - выходной файл.
 	 */
-	public DataFile<ByteArrayOutputStream> getOutputStreamResult() throws IOException {
+	public OutputStreamDataFile getOutputStreamResult() throws IOException {
 		if (result != null) {
-			return new DataFile<ByteArrayOutputStream>(
-					StreamConvertor.inputToOutputStream(result), subject.getName());
+			return new OutputStreamDataFile(StreamConvertor.inputToOutputStream(result),
+					subject.getName());
 		} else {
 			return subject;
 		}

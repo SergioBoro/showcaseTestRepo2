@@ -1,13 +1,14 @@
 package ru.curs.showcase.runtime;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.spi.LoggingEvent;
+import org.slf4j.Marker;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.ReflectionUtils;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.spi.*;
 
 /**
  * Оболочка для класса LoggingEvent.
@@ -17,11 +18,11 @@ import ru.curs.showcase.util.*;
  */
 public class LoggingEventDecorator implements AbstractCommandContext {
 
-	private final LoggingEvent original;
+	private final ILoggingEvent original;
 
 	private CommandContext commandContext = new CommandContext();
 
-	public LoggingEvent getOriginal() {
+	public ILoggingEvent getOriginal() {
 		return original;
 	}
 
@@ -35,21 +36,15 @@ public class LoggingEventDecorator implements AbstractCommandContext {
 		original = event;
 	}
 
-	public LoggingEventDecorator(final LoggingEvent aEvent, final CommandContext aCommandContext) {
+	public LoggingEventDecorator(final ILoggingEvent aEvent, final CommandContext aCommandContext) {
 		super();
 		original = aEvent;
 		commandContext = aCommandContext;
 	}
 
 	public String getMessage() {
-		String src = (String) original.getMessage();
-		if (original.getThrowableInformation() != null) {
-			src =
-				src
-						+ ExchangeConstants.LINE_SEPARATOR
-						+ TextUtils.arrayToString(original.getThrowableStrRep(),
-								ExchangeConstants.LINE_SEPARATOR);
-		}
+		String src = original.getMessage();
+
 		src = src.replace("<", "&lt;");
 		src = src.replace(">", "&gt;");
 
@@ -90,6 +85,37 @@ public class LoggingEventDecorator implements AbstractCommandContext {
 	@Override
 	public String getCommandName() {
 		return commandContext.getCommandName();
+	}
+
+	public String getDirection() {
+		Marker marker = original.getMarker();
+		if ((marker != null) && marker.hasReferences()) {
+			return ((Marker) marker.iterator().next()).getName();
+		}
+		return "";
+	}
+
+	public String getProcess() {
+		Marker marker = original.getMarker();
+		if (marker != null) {
+			return marker.getName();
+		}
+		return "";
+	}
+
+	public String getParams() {
+		Marker marker = original.getMarker();
+		if ((marker != null) && marker.hasReferences()) {
+			@SuppressWarnings("unchecked")
+			Iterator<Marker> iterator = marker.iterator();
+			iterator.next();
+			if (iterator.hasNext()) {
+				return iterator.next().getName();
+			} else {
+				return "";
+			}
+		}
+		return "";
 	}
 
 	public boolean isSatisfied(final String fieldName, final String fieldValue) {

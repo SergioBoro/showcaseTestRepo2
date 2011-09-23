@@ -29,15 +29,15 @@ public final class UploadHandler extends AbstractFilesHandler {
 	/**
 	 * Файлы, закаченные пользователем. Ключом является ссылка на файл (linkId).
 	 */
-	private final Map<String, DataFile<ByteArrayOutputStream>> files =
-		new TreeMap<String, DataFile<ByteArrayOutputStream>>();
+	private final Map<String, OutputStreamDataFile> files =
+		new TreeMap<String, OutputStreamDataFile>();
 
 	@Override
 	protected void processFiles() throws GeneralException {
-		for (Map.Entry<String, DataFile<ByteArrayOutputStream>> entry : files.entrySet()) {
+		for (Map.Entry<String, OutputStreamDataFile> entry : files.entrySet()) {
 			XFormUploadCommand command =
-				new XFormUploadCommand(getContext(), getElementInfo(),
-						entry.getKey(), entry.getValue());
+				new XFormUploadCommand(getContext(), getElementInfo(), entry.getKey(),
+						entry.getValue());
 			command.execute();
 		}
 	}
@@ -68,7 +68,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 				fileName = TextUtils.extractFileNameWithExt(fileName);
 
 				String linkId = name.replace(ExchangeConstants.FILE_DATA_PARAM_PREFIX, "");
-				files.put(linkId, new DataFile<ByteArrayOutputStream>(out, fileName));
+				files.put(linkId, new OutputStreamDataFile(out, fileName));
 			}
 		}
 	}
@@ -78,7 +78,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 		return (XFormContext) super.getContext();
 	}
 
-	public Map<String, DataFile<ByteArrayOutputStream>> getFiles() {
+	public Map<String, OutputStreamDataFile> getFiles() {
 		return files;
 	}
 

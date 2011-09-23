@@ -31,7 +31,7 @@ public final class ExecServerActionCommand extends ServiceLayerCommand<Void> {
 	}
 
 	@Override
-	protected void initContext() throws UnsupportedEncodingException {
+	protected void initSessionContext() throws UnsupportedEncodingException {
 		if (action.getContext() == null) {
 			return;
 		}

@@ -25,8 +25,6 @@ import ru.curs.showcase.util.xml.*;
 public final class XFormFactory extends HTMLBasedElementFactory {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(XFormFactory.class);
 
-	private static final String LOG_TEMPLATE = "XSL %s \r\n xslTransform=%s \r\n %s";
-
 	private static final String XFORMS_CREATE_ERROR =
 		"Ошибка при формировании XForms для элемента '%s'";
 
@@ -87,16 +85,22 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 	}
 
 	private void logOutput() {
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, XFormProducer.XSLTFORMS_XSL,
-				html));
+		Marker marker = MarkerFactory.getDetachedMarker(XMLUtils.XSL_MARKER);
+		marker.add(MarkerFactory.getMarker(LastLogEvents.OUTPUT));
+		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s",
+				XFormProducer.XSLTFORMS_XSL)));
+		LOGGER.info(marker, html);
 	}
 
 	private void logInput(final Document template) {
 		if (!LOGGER.isInfoEnabled()) {
 			return;
 		}
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, XFormProducer.XSLTFORMS_XSL,
-				XMLUtils.documentToString(template)));
+		Marker marker = MarkerFactory.getDetachedMarker(XMLUtils.XSL_MARKER);
+		marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
+		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s",
+				XFormProducer.XSLTFORMS_XSL)));
+		LOGGER.info(marker, XMLUtils.documentToString(template));
 	}
 
 	private String replaceVariables() {

@@ -1,12 +1,12 @@
 package ru.curs.showcase.model.xform;
 
-import java.io.*;
+import java.io.InputStream;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
-import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.*;
 
 /**
  * Шлюз для получения данных, необходимых для построения элемента панели типа
@@ -53,8 +53,8 @@ public interface XFormGateway {
 	 *            - идентификатор ссылки на файл
 	 * @return - файл.
 	 */
-	DataFile<ByteArrayOutputStream> downloadFile(XFormContext context,
-			DataPanelElementInfo elementInfo, String linkId);
+	OutputStreamDataFile downloadFile(XFormContext context, DataPanelElementInfo elementInfo,
+			String linkId);
 
 	/**
 	 * Загружает (или модифицирует) дополнительные данные через Submission.

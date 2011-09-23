@@ -78,7 +78,7 @@ public final class XFormFileGateway extends DataCheckGateway implements XFormGat
 	}
 
 	@Override
-	public DataFile<ByteArrayOutputStream> downloadFile(final XFormContext context,
+	public OutputStreamDataFile downloadFile(final XFormContext context,
 			final DataPanelElementInfo elementInfo, final String linkId) {
 		StreamConvertor dup;
 		try {
@@ -86,8 +86,8 @@ public final class XFormFileGateway extends DataCheckGateway implements XFormGat
 		} catch (IOException e) {
 			throw new TestFileExchangeException(linkId, e);
 		}
-		DataFile<ByteArrayOutputStream> file =
-			new DataFile<ByteArrayOutputStream>(dup.getOutputStream(), linkId);
+		OutputStreamDataFile file = new OutputStreamDataFile(dup.getOutputStream(), linkId);
+		file.setEncoding(TextUtils.JDBC_ENCODING);
 		return file;
 	}
 

@@ -28,9 +28,9 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class XMLUtils {
 
-	protected static final Logger LOGGER = LoggerFactory.getLogger(XMLUtils.class);
+	public static final String XSL_MARKER = "XSL";
 
-	private static final String LOG_TEMPLATE = "XSL %s \r\n xslTransform=%s \r\n %s";
+	protected static final Logger LOGGER = LoggerFactory.getLogger(XMLUtils.class);
 
 	/**
 	 * Преобразует объект в XML документ.
@@ -304,7 +304,10 @@ public final class XMLUtils {
 			value = documentToString((Document) source);
 		}
 
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.INPUT, xsltFileName, value));
+		Marker marker = MarkerFactory.getDetachedMarker(XSL_MARKER);
+		marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
+		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s", xsltFileName)));
+		LOGGER.info(marker, value);
 		return sourceCopy;
 	}
 
@@ -313,7 +316,10 @@ public final class XMLUtils {
 		if (xsltFileName == null) {
 			return;
 		}
-		LOGGER.info(String.format(LOG_TEMPLATE, LastLogEvents.OUTPUT, xsltFileName, result));
+		Marker marker = MarkerFactory.getDetachedMarker(XSL_MARKER);
+		marker.add(MarkerFactory.getMarker(LastLogEvents.OUTPUT));
+		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s", xsltFileName)));
+		LOGGER.info(marker, result);
 	}
 
 	public static String streamToString(final InputStream is) {

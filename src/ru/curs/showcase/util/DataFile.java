@@ -1,6 +1,6 @@
 package ru.curs.showcase.util;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Базовый класс для обмена файлами между сервером и клиентами. Содержимое файла
@@ -12,9 +12,6 @@ import javax.xml.bind.annotation.*;
  * @param <T>
  *            - тип для хранения содержимого - OutputStream или InputStream.
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso(java.io.ByteArrayOutputStream.class)
 public class DataFile<T> {
 
 	/**
@@ -27,6 +24,11 @@ public class DataFile<T> {
 	 */
 	private String name;
 
+	/**
+	 * Кодировка, используемая для данных.
+	 */
+	private String encoding = TextUtils.DEF_ENCODING;
+
 	public DataFile() {
 		super();
 	}
@@ -36,6 +38,7 @@ public class DataFile<T> {
 		data = aData;
 	}
 
+	@XmlTransient
 	public final T getData() {
 		return data;
 	}
@@ -73,5 +76,13 @@ public class DataFile<T> {
 			}
 		}
 		return false;
+	}
+
+	public String getEncoding() {
+		return encoding;
+	}
+
+	public void setEncoding(final String aEncoding) {
+		encoding = aEncoding;
 	}
 }

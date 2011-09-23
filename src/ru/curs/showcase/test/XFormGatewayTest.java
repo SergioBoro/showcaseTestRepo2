@@ -164,10 +164,11 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		XFormGateway gateway = new XFormFileGateway();
 		final String linkId = TEST_XML_FILE;
 		XFormContext context = new XFormContext(getTestContext1());
-		DataFile<ByteArrayOutputStream> file = gateway.downloadFile(context, null, linkId);
+		OutputStreamDataFile file = gateway.downloadFile(context, null, linkId);
 		assertNotNull(file);
 		assertNotNull(file.getData());
 		assertEquals(linkId, file.getName());
+		assertEquals(TextUtils.JDBC_ENCODING, file.getEncoding());
 	}
 
 	/**
@@ -180,20 +181,14 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		final String linkId = TEST_XML_FILE;
 		DataFile<InputStream> file =
 			new DataFile<InputStream>(AppProps.loadResToStream(linkId), linkId);
-		gateway.uploadFile(new XFormContext(), null, linkId, file);
-	}
 
-	private DataFile<ByteArrayOutputStream> getTestFile(final String linkId) throws IOException {
-		DataFile<ByteArrayOutputStream> file =
-			new DataFile<ByteArrayOutputStream>(StreamConvertor.inputToOutputStream(AppProps
-					.loadResToStream(linkId)), linkId);
-		return file;
+		assertEquals(TextUtils.DEF_ENCODING, file.getEncoding());
+		gateway.uploadFile(new XFormContext(), null, linkId, file);
 	}
 
 	/**
 	 * Проверка загрузки на сервер не соответствующего схеме XML.
 	 * 
-	 * @throws IOException
 	 */
 	@Test(expected = XSDValidateException.class)
 	public void testXFormsXMLUploadBad() throws IOException {
@@ -201,7 +196,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc8";
 		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
-		DataFile<ByteArrayOutputStream> file = getTestFile(fileName);
+		OutputStreamDataFile file = getTestFile(fileName);
 
 		UserXMLTransformer transformer =
 			new UserXMLTransformer(file, elementInfo.getProcs().get(linkId),
@@ -224,7 +219,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		String linkId = "proc10";
 
 		XFormGateway gateway = new XFormDBGateway();
-		DataFile<ByteArrayOutputStream> file = gateway.downloadFile(context, elementInfo, linkId);
+		OutputStreamDataFile file = gateway.downloadFile(context, elementInfo, linkId);
 
 		UserXMLTransformer transformer =
 			new UserXMLTransformer(file, elementInfo.getProcs().get(linkId),

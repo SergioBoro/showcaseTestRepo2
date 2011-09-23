@@ -22,7 +22,7 @@ public abstract class AbstractDownloadHandler extends AbstractFilesHandler {
 	/**
 	 * Создаваемый файл.
 	 */
-	private DataFile<ByteArrayOutputStream> outputFile;
+	private OutputStreamDataFile outputFile;
 
 	@Override
 	protected void fillResponse() throws IOException {
@@ -74,11 +74,11 @@ public abstract class AbstractDownloadHandler extends AbstractFilesHandler {
 		return URLDecoder.decode(result, TextUtils.DEF_ENCODING);
 	}
 
-	public DataFile<ByteArrayOutputStream> getOutputFile() {
+	public OutputStreamDataFile getOutputFile() {
 		return outputFile;
 	}
 
-	public void setOutputFile(final DataFile<ByteArrayOutputStream> aOutputFile) {
+	public void setOutputFile(final OutputStreamDataFile aOutputFile) {
 		outputFile = aOutputFile;
 	}
 }

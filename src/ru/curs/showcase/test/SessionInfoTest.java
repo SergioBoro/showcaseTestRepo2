@@ -238,14 +238,13 @@ public class SessionInfoTest extends AbstractTest {
 	}
 
 	@Test
-	public void testLastLogEventQueue() {
+	public void testLastLogEventQueue() throws InterruptedException {
 		testBaseLastLogEventQueue(AppInfoSingleton.getAppInfo().getLastLogEvents());
 	}
 
 	@Test
 	public void testLoggingEventDecorator() {
-		LoggingEventDecorator decorator =
-			new LoggingEventDecorator(generateTestLoggingEvent(new Random()));
+		LoggingEventDecorator decorator = new LoggingEventDecorator(generateTestLoggingEvent());
 
 		decorator.setUserdata(TEST1_USERDATA);
 		assertTrue(decorator.isSatisfied(ExchangeConstants.URL_PARAM_USERDATA, "test1"));
@@ -273,14 +272,12 @@ public class SessionInfoTest extends AbstractTest {
 
 	@Test
 	public void testGetLastLogEventsWithFilter() {
-		Random random = new Random();
 		AppInfoSingleton.getAppInfo().getLastLogEvents().clear();
-		LoggingEventDecorator decorator =
-			new LoggingEventDecorator(generateTestLoggingEvent(random));
+		LoggingEventDecorator decorator = new LoggingEventDecorator(generateTestLoggingEvent());
 		decorator.setUserdata(TEST1_USERDATA);
 		AppInfoSingleton.getAppInfo().addLogEvent(decorator);
 
-		decorator = new LoggingEventDecorator(generateTestLoggingEvent(random));
+		decorator = new LoggingEventDecorator(generateTestLoggingEvent());
 		decorator.setUserdata("default");
 		AppInfoSingleton.getAppInfo().addLogEvent(decorator);
 
@@ -295,10 +292,8 @@ public class SessionInfoTest extends AbstractTest {
 
 	@Test
 	public void testGetLastLogEventsWithNullFilter() {
-		Random random = new Random();
 		AppInfoSingleton.getAppInfo().getLastLogEvents().clear();
-		LoggingEventDecorator decorator =
-			new LoggingEventDecorator(generateTestLoggingEvent(random));
+		LoggingEventDecorator decorator = new LoggingEventDecorator(generateTestLoggingEvent());
 		decorator.setUserdata(TEST1_USERDATA);
 		AppInfoSingleton.getAppInfo().addLogEvent(decorator);
 

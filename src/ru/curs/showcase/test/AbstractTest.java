@@ -2,11 +2,9 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
-import org.apache.log4j.*;
-import org.apache.log4j.spi.LoggingEvent;
 import org.junit.*;
 
 import ru.curs.gwt.datagrid.model.*;
@@ -21,6 +19,8 @@ import ru.curs.showcase.model.navigator.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.spi.LoggingEvent;
 
 /**
  * Класс абстрактного теста, использующего тестовые файлы с данными.
@@ -426,22 +426,33 @@ public class AbstractTest extends GeneralXMLHelper {
 		return params;
 	}
 
-	protected void testBaseLastLogEventQueue(final Collection<LoggingEventDecorator> lleq) {
+	protected void testBaseLastLogEventQueue(final Collection<LoggingEventDecorator> lleq)
+			throws InterruptedException {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(
 				ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
 		final int eventCount = 105;
-		Random random = new Random();
 		for (int i = 0; i < eventCount; i++) {
-			LoggingEvent original = generateTestLoggingEvent(random);
+			Thread.sleep(1);
+			LoggingEvent original = generateTestLoggingEvent();
 			lleq.add(new LoggingEventDecorator(original));
 		}
 
 		assertEquals(LastLogEvents.getMaxRecords(), lleq.size());
 	}
 
-	@SuppressWarnings("deprecation")
-	protected LoggingEvent generateTestLoggingEvent(final Random random) {
-		return new LoggingEvent("testClass", Category.getInstance("testCategory"),
-				random.nextLong(), Priority.ERROR, "message", null);
+	protected LoggingEvent generateTestLoggingEvent() {
+		LoggingEvent event = new LoggingEvent();
+		event.setMessage("message");
+		event.setLevel(Level.ERROR);
+		Date date = new Date();
+		event.setTimeStamp(date.getTime());
+		return event;
+	}
+
+	protected OutputStreamDataFile getTestFile(final String linkId) throws IOException {
+		OutputStreamDataFile file =
+			new OutputStreamDataFile(StreamConvertor.inputToOutputStream(AppProps
+					.loadResToStream(linkId)), linkId);
+		return file;
 	}
 }
