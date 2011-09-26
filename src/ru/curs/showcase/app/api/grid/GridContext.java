@@ -51,7 +51,7 @@ public class GridContext extends CompositeContext {
 	 * не задана.
 	 */
 	@XmlElement(name = "sortedColumn")
-	private Collection<Column> sortedColumns = new ArrayList<Column>();
+	private List<Column> sortedColumns = new ArrayList<Column>();
 
 	private PageInfo pageInfo = new PageInfo(DEF_PAGE_NUMBER, DEF_PAGE_SIZE_VAL);
 	/**
@@ -121,11 +121,11 @@ public class GridContext extends CompositeContext {
 		return pageInfo.getSize();
 	}
 
-	public final Collection<Column> getSortedColumns() {
+	public final List<Column> getSortedColumns() {
 		return sortedColumns;
 	}
 
-	public final void setSortedColumns(final Collection<Column> aSortedColumns) {
+	public final void setSortedColumns(final List<Column> aSortedColumns) {
 		this.sortedColumns = aSortedColumns;
 	}
 
@@ -134,12 +134,12 @@ public class GridContext extends CompositeContext {
 	 * правильной работы шлюза и фабрики.
 	 */
 	public void normalize() {
-		Collection<Column> source = getSortedColumns();
-		SortedMap<Integer, Column> orderedByIndex = new TreeMap<Integer, Column>();
+		List<Column> source = getSortedColumns();
+		Map<Integer, Column> orderedByIndex = new TreeMap<Integer, Column>();
 		for (Column col : source) {
 			orderedByIndex.put(col.getIndex(), col);
 		}
-		setSortedColumns(orderedByIndex.values());
+		setSortedColumns(new ArrayList<Column>(orderedByIndex.values()));
 	}
 
 	public String getCurrentRecordId() {

@@ -1,12 +1,14 @@
 package ru.curs.showcase.app.api;
 
+import ru.beta2.extra.gwt.ui.SerializableElement;
+
 /**
  * Тип исключения серверной части GWT.
  * 
  * @author den
  * 
  */
-public enum ExceptionType {
+public enum ExceptionType implements SerializableElement {
 	/**
 	 * Ошибка в приложении - это ситуация, которой не должно быть, если бы
 	 * программа работала как запланировано. Может быть связана с ошибками Java,

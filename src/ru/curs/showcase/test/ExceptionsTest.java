@@ -416,7 +416,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 		GridContext gc = new GridContext();
-		Collection<Column> aSortedColumns = new ArrayList<Column>();
+		List<Column> aSortedColumns = new ArrayList<Column>();
 		Column col = new Column();
 		col.setId("Name111");
 		col.setSorting(Sorting.ASC);
