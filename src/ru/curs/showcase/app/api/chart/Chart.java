@@ -14,9 +14,6 @@ import ru.curs.showcase.app.api.element.DataPanelElementWithLegend;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Chart extends DataPanelElementWithLegend {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 8945028162073890091L;
 
 	/**
