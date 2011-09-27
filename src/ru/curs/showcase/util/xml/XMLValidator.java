@@ -8,6 +8,7 @@ import javax.xml.validation.*;
 import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.ExceptionType;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
  * Валидатор схем, позволяющий настроить месторасположение схем и тип исходных
@@ -32,7 +33,9 @@ public class XMLValidator {
 		try {
 			Validator validator = createValidator(source);
 			Source prepared = prepareSource(source);
-			validator.validate(prepared);
+			synchronized (AppInfoSingleton.getAppInfo()) {
+				validator.validate(prepared);
+			}
 			// нельзя ловить SettingsFileOpenException
 		} catch (SAXException e) {
 			handleException(source, e);
