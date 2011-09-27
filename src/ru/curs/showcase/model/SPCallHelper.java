@@ -190,7 +190,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 
 		String sql = "";
 		try {
-			sql = TextUtils.streamToString(AppProps.loadResToStream(fileName));
+			sql = TextUtils.streamToString(FileUtils.loadResToStream(fileName));
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, fileName, SettingsFileType.SQLSCRIPT);
 		}

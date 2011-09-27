@@ -13,8 +13,6 @@ import java.util.regex.*;
  */
 public final class TextUtils {
 
-	public static final String CP1251 = "CP1251";
-
 	/**
 	 * Кодировка по умолчанию в приложении. Все выходные и входные документы по
 	 * умолчанию должны имеют данную кодировку (если явно не указано другое).
@@ -187,27 +185,6 @@ public final class TextUtils {
 
 		File file = new File(path);
 		return file.getName();
-	}
-
-	/**
-	 * Определяет - не произошла ли ошибка при установке кодировки строки -
-	 * вместо UTF8 установлена другая кодировка и возвращает правильную
-	 * кодировку.
-	 * 
-	 * @param str
-	 *            - строка для проверки.
-	 * @return - правильная кодировка.
-	 */
-	public static String getRealEncoding(final String str) {
-		char[] chars = { 'Р', 'С' }; // 0xD0 и 0xD1 в CP1251
-		if (UTF8Checker.check(str, chars)) {
-			return "CP1251";
-		}
-		chars = new char[] { 'Ð', 'Ñ' }; // 0xD0 и 0xD1 в ISO-8859-1
-		if (UTF8Checker.check(str, chars)) {
-			return "ISO-8859-1";
-		}
-		return "UTF8";
 	}
 
 	/**

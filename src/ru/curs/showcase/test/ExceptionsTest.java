@@ -24,7 +24,7 @@ import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.model.webtext.*;
 import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -242,7 +242,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = SettingsFileOpenException.class)
 	public void testUserXSDNotFoundException() {
-		XMLUtils.xsdValidateUserData(AppProps.loadResToStream(TEST_XML_FILE), PHANTOM_XSD);
+		XMLUtils.xsdValidateUserData(FileUtils.loadResToStream(TEST_XML_FILE), PHANTOM_XSD);
 	}
 
 	/**
@@ -250,7 +250,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = SettingsFileOpenException.class)
 	public void testXSDNotFoundException() {
-		XMLUtils.xsdValidateAppDataSafe(AppProps.loadResToStream(TEST_XML_FILE), PHANTOM_XSD);
+		XMLUtils.xsdValidateAppDataSafe(FileUtils.loadResToStream(TEST_XML_FILE), PHANTOM_XSD);
 	}
 
 	/**

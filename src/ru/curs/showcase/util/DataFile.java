@@ -2,8 +2,6 @@ package ru.curs.showcase.util;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import ru.curs.showcase.runtime.AppProps;
-
 /**
  * Базовый класс для обмена файлами между сервером и клиентами. Содержимое файла
  * может храниться как в виде OutputStream, так и InputStream или даже строки -
@@ -74,10 +72,16 @@ public class DataFile<T> {
 			{
 					"txt", "xml", "xsd", "xsl", "sql", "ini", "properties", "htm", "html", "java",
 					"cmd", "py" };
-		String fromAppProps = AppProps.getOptionalValueByName(WEB_CONSOLE_ADD_TEXT_FILES_PARAM);
-		String[] userTextExtensions = fromAppProps.split(":");
+		if (checkExtensionsArray(stdTextExtensions)) {
+			return true;
+		}
 
-		return checkExtensionsArray(stdTextExtensions) || checkExtensionsArray(userTextExtensions);
+		String fromAppProps = FileUtils.getGeneralOptionalParam(WEB_CONSOLE_ADD_TEXT_FILES_PARAM);
+		if (fromAppProps != null) {
+			String[] userTextExtensions = fromAppProps.split(":");
+			return checkExtensionsArray(userTextExtensions);
+		}
+		return false;
 	}
 
 	private boolean checkExtensionsArray(final String[] aExtensions) {

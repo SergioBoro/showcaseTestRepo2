@@ -5,6 +5,7 @@ import java.net.URL;
 
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.util.FileUtils;
 import ru.curs.showcase.util.exception.*;
 
 /**
@@ -21,7 +22,7 @@ public class ClassPathXSDSource implements XSDSource {
 
 		// самый простой способ получить путь к ресурсу в classpath в виде
 		// строки
-		URL xsdURL = AppProps.getResURL(xsdFullFileName);
+		URL xsdURL = FileUtils.getResURL(xsdFullFileName);
 		if (xsdURL == null) {
 			throw new SettingsFileOpenException(xsdFullFileName, SettingsFileType.SCHEMA);
 		}

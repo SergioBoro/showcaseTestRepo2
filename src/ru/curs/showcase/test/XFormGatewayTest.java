@@ -179,7 +179,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		XFormGateway gateway = new XFormFileGateway();
 		final String linkId = TEST_XML_FILE;
 		DataFile<InputStream> file =
-			new DataFile<InputStream>(AppProps.loadResToStream(linkId), linkId);
+			new DataFile<InputStream>(FileUtils.loadResToStream(linkId), linkId);
 
 		assertEquals(TextUtils.DEF_ENCODING, file.getEncoding());
 		gateway.uploadFile(new XFormContext(), null, linkId, file);

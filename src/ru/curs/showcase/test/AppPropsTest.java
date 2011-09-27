@@ -10,6 +10,7 @@ import ru.curs.showcase.model.datapanel.DataPanelFileGateway;
 import ru.curs.showcase.model.navigator.NavigatorFileGateway;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.SecurityParamsFactory;
+import ru.curs.showcase.util.FileUtils;
 
 /**
  * Тесты класса AppProps.
@@ -21,7 +22,7 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testLoadResToStream() {
-		assertNotNull(AppProps.loadResToStream(AppProps.PATH_PROPERTIES));
+		assertNotNull(FileUtils.loadResToStream(FileUtils.PATH_PROPERTIES));
 	}
 
 	/**
@@ -62,7 +63,7 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 		checkDir(AppProps.SCHEMASDIR);
 		checkDir(AppProps.XFORMS_DIR);
 
-		assertTrue((new File(AppProps.getResURL(AppProps.SCHEMASDIR).getFile())).exists());
+		assertTrue((new File(FileUtils.getResURL(AppProps.SCHEMASDIR).getFile())).exists());
 	}
 
 	private void checkDir(final String dirName) {
@@ -86,10 +87,7 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testLogSettings() {
 		final int logSize =
-			Integer.parseInt(AppProps.getRequiredValueByName(LastLogEvents.INTERNAL_LOG_SIZE));
+			Integer.parseInt(FileUtils.getGeneralOptionalParam(LastLogEvents.INTERNAL_LOG_SIZE));
 		assertEquals(logSize, LastLogEvents.getMaxRecords());
-		AppInfoSingleton.getAppInfo().setCurUserDataId(TEST1_USERDATA);
-		assertEquals(LastLogEvents.DEF_MAX_RECORDS, LastLogEvents.getMaxRecords());
-
 	}
 }

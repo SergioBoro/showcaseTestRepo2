@@ -6,7 +6,8 @@ import java.util.*;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -27,7 +28,7 @@ public final class AppInitializer {
 	 * PATH_PROPERTIES_ERROR.
 	 */
 	private static final String PATH_PROPERTIES_ERROR = "Ошибка чтения файла "
-			+ AppProps.PATH_PROPERTIES;
+			+ FileUtils.PATH_PROPERTIES;
 
 	/**
 	 * USER_DATA_INFO.
@@ -65,7 +66,8 @@ public final class AppInitializer {
 		Properties paths = new Properties();
 		try {
 			InputStreamReader reader =
-				new InputStreamReader(AppProps.loadResToStream(AppProps.PATH_PROPERTIES), "UTF8");
+				new InputStreamReader(FileUtils.loadResToStream(FileUtils.PATH_PROPERTIES),
+						TextUtils.DEF_ENCODING);
 			try {
 				paths.load(reader);
 			} finally {

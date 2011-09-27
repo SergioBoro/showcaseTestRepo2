@@ -1,7 +1,6 @@
 package ru.curs.showcase.runtime;
 
 import java.io.*;
-import java.net.URL;
 import java.util.Properties;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
@@ -27,14 +26,6 @@ public final class AppProps {
 	public static final String HEADER_HEIGHT_PROP = "header.height";
 
 	public static final String FOOTER_HEIGHT_PROP = "footer.height";
-
-	/**
-	 * Имя файла с настройками путей приложения. Пути рекомендуется задавать
-	 * абсолютно, т.к. относительный путь отсчитывается либо от папки с eclipse,
-	 * либо от папки с Tomcat и не является постоянным. При задании пути нужно
-	 * использовать двойной обратный слэш в качестве разделителя.
-	 */
-	public static final String PATH_PROPERTIES = "path.properties";
 
 	/**
 	 * Каталог на сервере с решениями (сейчас туда копируются userdata при
@@ -91,38 +82,6 @@ public final class AppProps {
 
 	private AppProps() {
 		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Универсальная функция загрузки внутренних ресурсов Web-приложения по
-	 * относительному пути, используя Java ClassLoader (например, файлов
-	 * конфигурации). Загрузка идет из папки classes.
-	 * 
-	 * @param fileName
-	 *            - путь к загружаемому файлу
-	 * @return поток с файлом.
-	 */
-	public static InputStream loadResToStream(final String fileName) {
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-		InputStream result = classLoader.getResourceAsStream(fileName);
-		return result;
-	}
-
-	/**
-	 * Универсальная функция получения URL внутренних ресурсов Web-приложения по
-	 * относительному пути, используя Java ClassLoader (например, файлов
-	 * конфигурации). Загрузка идет из папки classes.
-	 * 
-	 * @param fileName
-	 *            - путь к загружаемому ресурсу
-	 * @return URL ресурса
-	 */
-	public static URL getResURL(final String fileName) {
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-		URL result = classLoader.getResource(fileName);
-		return result;
 	}
 
 	/**

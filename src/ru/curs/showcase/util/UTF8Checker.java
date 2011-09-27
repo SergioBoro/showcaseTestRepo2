@@ -94,6 +94,27 @@ public class UTF8Checker {
 	}
 
 	/**
+	 * Определяет - не произошла ли ошибка при установке кодировки строки -
+	 * вместо UTF8 установлена другая кодировка и возвращает правильную
+	 * кодировку.
+	 * 
+	 * @param str
+	 *            - строка для проверки.
+	 * @return - правильная кодировка.
+	 */
+	public static String getRealEncoding(final String str) {
+		char[] chars = { 'Р', 'С' }; // 0xD0 и 0xD1 в CP1251
+		if (check(str, chars)) {
+			return "CP1251";
+		}
+		chars = new char[] { 'Ð', 'Ñ' }; // 0xD0 и 0xD1 в ISO-8859-1
+		if (check(str, chars)) {
+			return "ISO-8859-1";
+		}
+		return "UTF8";
+	}
+
+	/**
 	 * Функция проверки для случая, когда набор символов для первого байта
 	 * динамический.
 	 * 

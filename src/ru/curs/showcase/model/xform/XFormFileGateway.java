@@ -82,7 +82,7 @@ public final class XFormFileGateway extends DataCheckGateway implements XFormGat
 			final DataPanelElementInfo elementInfo, final String linkId) {
 		StreamConvertor dup;
 		try {
-			dup = new StreamConvertor(AppProps.loadResToStream(linkId));
+			dup = new StreamConvertor(FileUtils.loadResToStream(linkId));
 		} catch (IOException e) {
 			throw new TestFileExchangeException(linkId, e);
 		}

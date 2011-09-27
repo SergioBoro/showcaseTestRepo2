@@ -4,8 +4,12 @@
 package ru.curs.showcase.util;
 
 import java.io.*;
+import java.net.URL;
+import java.util.Properties;
 
 import org.slf4j.*;
+
+import ru.curs.showcase.util.exception.*;
 
 /**
  * Класс, содержащий общие функции для работы с файлами.
@@ -14,6 +18,46 @@ import org.slf4j.*;
  * 
  */
 public final class FileUtils {
+
+	/**
+	 * Универсальная функция получения URL внутренних ресурсов Web-приложения по
+	 * относительному пути, используя Java ClassLoader (например, файлов
+	 * конфигурации). Загрузка идет из папки classes.
+	 * 
+	 * @param fileName
+	 *            - путь к загружаемому ресурсу
+	 * @return URL ресурса
+	 */
+	public static URL getResURL(final String fileName) {
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
+		URL result = classLoader.getResource(fileName);
+		return result;
+	}
+
+	/**
+	 * Универсальная функция загрузки внутренних ресурсов Web-приложения по
+	 * относительному пути, используя Java ClassLoader (например, файлов
+	 * конфигурации). Загрузка идет из папки classes.
+	 * 
+	 * @param fileName
+	 *            - путь к загружаемому файлу
+	 * @return поток с файлом.
+	 */
+	public static InputStream loadResToStream(final String fileName) {
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
+		InputStream result = classLoader.getResourceAsStream(fileName);
+		return result;
+	}
+
+	/**
+	 * Имя файла с настройками путей приложения. Пути рекомендуется задавать
+	 * абсолютно, т.к. относительный путь отсчитывается либо от папки с eclipse,
+	 * либо от папки с Tomcat и не является постоянным. При задании пути нужно
+	 * использовать двойной обратный слэш в качестве разделителя.
+	 */
+	public static final String PATH_PROPERTIES = "path.properties";
 
 	/**
 	 * LOGGER.
@@ -64,5 +108,20 @@ public final class FileUtils {
 	public static void deleteDir(final String dir) throws IOException {
 		BatchFileProcessor fprocessor = new BatchFileProcessor(dir, true);
 		fprocessor.process(new DeleteFileAction());
+	}
+
+	public static String getGeneralOptionalParam(final String paramName) {
+		Properties prop = new Properties();
+		InputStreamReader reader = new InputStreamReader(loadResToStream(PATH_PROPERTIES));
+		try {
+			try {
+				prop.load(reader);
+			} finally {
+				reader.close();
+			}
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(PATH_PROPERTIES, SettingsFileType.PATH_PROPERTIES);
+		}
+		return prop.getProperty(paramName);
 	}
 }

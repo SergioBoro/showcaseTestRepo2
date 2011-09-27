@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.util.*;
 
 /**
  * Тесты для функций по работе с текстом из TextUtils.
@@ -20,7 +20,7 @@ public class TextUtilsTest extends AbstractTestWithDefaultUserData {
 	private static final String RUS_NAME_WITH_EXT = "русское имя.ext";
 
 	/**
-	 * Проверка функции {@link ru.curs.showcase.util.TextUtils#getRealEncoding
+	 * Проверка функции {@link ru.curs.showcase.util.UTF8Checker#getRealEncoding
 	 * TextUtils.getRealEncoding}.
 	 * 
 	 */
@@ -28,11 +28,11 @@ public class TextUtilsTest extends AbstractTestWithDefaultUserData {
 	public void testGetRealEncoding() {
 		assertEquals(
 				"CP1251",
-				TextUtils
+				UTF8Checker
 						.getRealEncoding("РђР±Р±СЂРµРІРёР°С‚СѓСЂС‹ Р РѕСЃС‚СЂР°РЅСЃРЅР°РґР·РѕСЂР°"));
-		assertEquals("CP1251", TextUtils.getRealEncoding("РђР±"));
-		assertEquals("UTF8", TextUtils.getRealEncoding("Аббревиатуры Ространснадзора"));
-		assertEquals("ISO-8859-1", TextUtils.getRealEncoding("ÐÐ±Ð±ÑÐµÐ²Ð¸Ð°ÑÑÑÑ"));
+		assertEquals("CP1251", UTF8Checker.getRealEncoding("РђР±"));
+		assertEquals("UTF8", UTF8Checker.getRealEncoding("Аббревиатуры Ространснадзора"));
+		assertEquals("ISO-8859-1", UTF8Checker.getRealEncoding("ÐÐ±Ð±ÑÐµÐ²Ð¸Ð°ÑÑÑÑ"));
 	}
 
 	/**

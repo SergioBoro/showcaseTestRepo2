@@ -208,7 +208,7 @@ public final class ServletUtils {
 	 */
 	public static String checkAndRecodeURLParam(final String param)
 			throws UnsupportedEncodingException {
-		String enc = TextUtils.getRealEncoding(param);
+		String enc = UTF8Checker.getRealEncoding(param);
 		if (enc.equals(ServletUtils.getCharsetForURLParams(null))) {
 			return TextUtils.recode(param, enc, ServletUtils.getCharsetForURLParams(null));
 		}

@@ -52,7 +52,7 @@ public final class ServerStateFactory {
 	}
 
 	public static String getAppVersion(final String baseDir) throws IOException {
-		InputStream is = AppProps.loadResToStream(baseDir + VERSION_FILE);
+		InputStream is = FileUtils.loadResToStream(baseDir + VERSION_FILE);
 		BufferedReader buf = new BufferedReader(new InputStreamReader(is));
 		String major;
 		try {
@@ -61,7 +61,7 @@ public final class ServerStateFactory {
 			buf.close();
 		}
 
-		is = AppProps.loadResToStream(baseDir + BUILD_FILE);
+		is = FileUtils.loadResToStream(baseDir + BUILD_FILE);
 		buf = new BufferedReader(new InputStreamReader(is));
 		String build;
 		try {
@@ -85,7 +85,7 @@ public final class ServerStateFactory {
 
 		String sql = "";
 		try {
-			sql = TextUtils.streamToString(AppProps.loadResToStream(fileName));
+			sql = TextUtils.streamToString(FileUtils.loadResToStream(fileName));
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, fileName, SettingsFileType.SQLSCRIPT);
 		}

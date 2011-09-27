@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.model.SPNotExistsException;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.XSDValidateException;

@@ -8,7 +8,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.model.ActionTabFinder;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
 
