@@ -2,6 +2,7 @@ package ru.curs.showcase.model.grid;
 
 import java.util.*;
 
+import org.slf4j.*;
 import org.xml.sax.Attributes;
 
 import ru.curs.gwt.datagrid.model.*;
@@ -18,6 +19,11 @@ import ru.curs.showcase.util.xml.*;
  * 
  */
 public abstract class AbstractGridFactory extends CompBasedElementFactory {
+	private static final String AUTO_SELECT_RELATIVE_RECORD_DISABLED =
+		"Опция AutoSelectRelativeRecord отключена из-за недостаточного размера страницы грида";
+
+	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractGridFactory.class);
+
 	private static final String DEF_COL_HOR_ALIGN = "def.column.hor.align";
 	private static final String DEF_COL_VALUE_DISPLAY_MODE = "def.column.value.display.mode";
 	private static final String DEF_COL_WIDTH = "def.column.width";
@@ -358,17 +364,30 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	protected void calcAutoSelectRecordId() {
 		autoSelectRecordId = serverState().getAutoSelectRecordId();
 		if ((autoSelectRecordId != null) && serverState().getAutoSelectRelativeRecord()) {
-			checkAutoSelectRecordRangeOfBounds(autoSelectRecordId);
-			autoSelectRecordId =
-				autoSelectRecordId + getRecordSet().getPageSize()
-						* (getRecordSet().getPageNumber() - 1);
+			checkAutoSelectRecordRangeOfBounds();
+			checkApplyAutoSelect();
 		}
 	}
 
-	private void checkAutoSelectRecordRangeOfBounds(final Integer recId) {
-		if (recId >= getRecordSet().getPageSize()) {
-			throw new InconsistentSettingsFromDBException(String.format(
-					RELATIVE_NUMBER_TOO_BIG_ERROR, recId, getRecordSet().getPageSize()));
+	private void checkApplyAutoSelect() {
+		if (autoSelectRecordId >= getRecordSet().getPageSize()) {
+			if (!getCallContext().isFirstLoad()) {
+				LOGGER.info(AUTO_SELECT_RELATIVE_RECORD_DISABLED);
+				return;
+			}
+		}
+		autoSelectRecordId =
+			autoSelectRecordId + getRecordSet().getPageSize()
+					* (getRecordSet().getPageNumber() - 1);
+	}
+
+	private void checkAutoSelectRecordRangeOfBounds() {
+		if (autoSelectRecordId >= getRecordSet().getPageSize()) {
+			if (getCallContext().isFirstLoad()) {
+				throw new InconsistentSettingsFromDBException(String.format(
+						RELATIVE_NUMBER_TOO_BIG_ERROR, autoSelectRecordId, getRecordSet()
+								.getPageSize()));
+			}
 		}
 	}
 

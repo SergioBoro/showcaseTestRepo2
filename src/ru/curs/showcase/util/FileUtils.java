@@ -57,7 +57,7 @@ public final class FileUtils {
 	 * либо от папки с Tomcat и не является постоянным. При задании пути нужно
 	 * использовать двойной обратный слэш в качестве разделителя.
 	 */
-	public static final String PATH_PROPERTIES = "path.properties";
+	public static final String PATH_PROPERTIES = "general.properties";
 
 	/**
 	 * LOGGER.
