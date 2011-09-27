@@ -34,7 +34,7 @@
 			<evaluator> <!-- defaults to type ch.qos.logback.classic.boolex.JaninoEventEvaluator -->
 				<matcher>
 					<Name>ru_curs</Name>
-					<regex>^ru.curs.+</regex>
+					<regex>^ru[.]curs.+</regex>
 				</matcher>
 				<expression>ru_curs.matches(logger)</expression>
 			</evaluator>
