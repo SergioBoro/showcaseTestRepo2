@@ -1,9 +1,8 @@
-#Tue Sep 27 22:14:06 MSD 2011
+#Tue Sep 27 22:23:47 MSD 2011
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/user.properties=UTF-8
 encoding//WebContent/log/lastLogEvents.jsp=UTF-8
 encoding//WebContent/login.jsp=UTF-8
-encoding//src/general.properties=UTF-8
 encoding//userdata/app.properties=UTF-8
 encoding//userdata/gridproperties/default.properties=UTF-8
 encoding//userdata/gridproperties/gridbal.test.properties=UTF-8
