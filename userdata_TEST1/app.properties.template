@@ -9,7 +9,12 @@ navigator.proc.name = small.navigator.xml
 # general
 navigator.def.icon.name = group_icon_default1.png
 copy.userdata.on.startup = true
-copy.userdata.dirs = js:css:html:resources
+copy.userdata.dirs = js:css:html:resource
+welcome.source = welcome.html
+header.source = header_proc
+footer.source = footer_procs
+header.height = 100px
+footer.height = 50px
 # dirs
 navigator.icons.dir.name = resources
 images.in.grid.dir = resources
