@@ -7,8 +7,8 @@ package ru.curs.showcase.util.exception;
  * 
  */
 public enum SettingsFileType {
-	PATH_PROPERTIES("Файл с путями к другим ресурсам"),
-	APP_PROPERTIES("Файл с общими настройками решения"),
+	PATH_PROPERTIES("Файл с общими настройками приложения"),
+	APP_PROPERTIES("Файл с настройками userdata"),
 	GRID_PROPERTIES("Профайл настроек грида"),
 	VERSION("Файл версии приложения"),
 	DATAPANEL("Файл инф. панели"),

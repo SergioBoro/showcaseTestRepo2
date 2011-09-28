@@ -67,8 +67,14 @@ public class ActionHolder {
 	public void setNavigatorActionFromTab(final Action newAction) {
 		navigatorAction.setDataPanelActionType(DataPanelActionType.REFRESH_TAB);
 		determineNavigatorKeepUserSettingsWhenTabSwitching(newAction);
-		navigatorAction.getDataPanelLink().setTabId(newAction.getDataPanelLink().getTabId());
-		navigatorAction.getDataPanelLink().setFirstOrCurrentTab(false);
+		if (!newAction.getDataPanelLink().getTabId()
+				.equals(navigatorAction.getDataPanelLink().getTabId())) {
+			navigatorAction.getDataPanelLink().setTabId(newAction.getDataPanelLink().getTabId());
+			navigatorAction.getDataPanelLink().setFirstOrCurrentTab(false);
+			if (currentAction != null) {
+				currentAction.filterBy(null);
+			}
+		}
 	}
 
 	/**

@@ -11,6 +11,7 @@ import ru.curs.showcase.model.navigator.NavigatorFileGateway;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.SecurityParamsFactory;
 import ru.curs.showcase.util.FileUtils;
+import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
  * Тесты класса AppProps.
@@ -89,5 +90,16 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 		final int logSize =
 			Integer.parseInt(FileUtils.getGeneralOptionalParam(LastLogEvents.INTERNAL_LOG_SIZE));
 		assertEquals(logSize, LastLogEvents.getMaxRecords());
+	}
+
+	@Test(expected = NoSuchUserDataException.class)
+	public void testAppPropsExists() {
+		AppProps.checkAppPropsExists("test33");
+	}
+
+	@Test(expected = SettingsFileOpenException.class)
+	public void testCheckUserdatas() {
+		AppInfoSingleton.getAppInfo().getUserdatas().put("test34", new UserData("c:\\"));
+		AppProps.checkUserdatas();
 	}
 }

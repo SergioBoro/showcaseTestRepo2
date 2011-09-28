@@ -65,8 +65,8 @@ public final class ProductionModeInitializer {
 			AppInitializer.readPathProperties();
 		}
 
+		AppProps.checkUserdatas();
 		copyUserDatas(arg0);
-
 		readCSSs();
 
 		LOGGER.info("Сформирован массив UserData:");
@@ -148,7 +148,6 @@ public final class ProductionModeInitializer {
 				if (checkForCopyUserData(userdataId)) {
 					copyUserData(arg0, userdataId);
 				}
-
 			}
 		}
 

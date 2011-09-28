@@ -14,9 +14,7 @@ import ru.curs.showcase.app.api.element.DataPanelElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WebText extends DataPanelElement {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = 2992185048516571628L;
 
 	public WebText() {

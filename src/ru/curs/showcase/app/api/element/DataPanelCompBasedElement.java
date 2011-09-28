@@ -1,5 +1,6 @@
 package ru.curs.showcase.app.api.element;
 
+import javax.xml.bind.annotation.*;
 
 /**
  * Абстрактный класс элемента информационной панели, в основе которого лежит
@@ -9,11 +10,9 @@ package ru.curs.showcase.app.api.element;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class DataPanelCompBasedElement extends DataPanelElement {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 8093132785939139397L;
 
 	/**

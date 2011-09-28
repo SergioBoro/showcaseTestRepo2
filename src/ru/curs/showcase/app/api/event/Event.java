@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.event;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
@@ -12,17 +14,9 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Event implements SerializableElement {
-	public Event(final String aId1, final String aId2, final InteractionType aInteractionType) {
-		super();
-		interactionType = aInteractionType;
-		id1 = aId1;
-		id2 = aId2;
-	}
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 3610656112304171914L;
 
 	/**
@@ -47,6 +41,13 @@ public class Event implements SerializableElement {
 	 * Действие, вызываемое по наступлению события.
 	 */
 	private Action action;
+
+	public Event(final String aId1, final String aId2, final InteractionType aInteractionType) {
+		super();
+		interactionType = aInteractionType;
+		id1 = aId1;
+		id2 = aId2;
+	}
 
 	public final InteractionType getInteractionType() {
 		return interactionType;

@@ -11,6 +11,12 @@ import ru.curs.showcase.util.exception.*;
  * 
  */
 public final class AppProps {
+	public static void checkUserdatas() {
+		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+			checkAppPropsExists(userdataId);
+		}
+	}
+
 	/**
 	 * Шаблон для пути к текущей userdata в WebContent относительно корня
 	 * веб-приложения.
@@ -229,6 +235,14 @@ public final class AppProps {
 		return prop;
 	}
 
+	public static void checkAppPropsExists(final String aUserdataId) {
+		String fileName = getUserDataCatalog(aUserdataId) + File.separator + PROPFILENAME;
+		File propsFile = new File(fileName);
+		if (!propsFile.exists()) {
+			throw new SettingsFileOpenException(fileName, SettingsFileType.APP_PROPERTIES);
+		}
+	}
+
 	/**
 	 * Возвращает идентификатор текущей userdata.
 	 * 
@@ -250,16 +264,7 @@ public final class AppProps {
 	 * @return - каталог.
 	 */
 	public static String getUserDataCatalog() {
-		String userDataCatalog = null;
-
-		String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
-		UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
-		if (us != null) {
-			userDataCatalog = us.getPath();
-		}
-
-		return userDataCatalog;
-
+		return getUserDataCatalog(null);
 	}
 
 	/**
@@ -270,16 +275,17 @@ public final class AppProps {
 	 *            идентификатор userdata
 	 * @return - каталог.
 	 */
-	private static String getUserDataCatalog(final String userdataId) {
+	private static String getUserDataCatalog(final String aUserdataId) {
 		String userDataCatalog = null;
-
+		String userdataId = aUserdataId;
 		if (userdataId == null) {
-			userDataCatalog = getUserDataCatalog();
+			userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
+		}
+		UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
+		if (us != null) {
+			userDataCatalog = us.getPath();
 		} else {
-			UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
-			if (us != null) {
-				userDataCatalog = us.getPath();
-			}
+			throw new NoSuchUserDataException(userdataId);
 		}
 
 		return userDataCatalog;

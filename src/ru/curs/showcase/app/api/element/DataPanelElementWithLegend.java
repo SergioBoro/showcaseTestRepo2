@@ -1,6 +1,8 @@
 package ru.curs.showcase.app.api.element;
 
-import ru.curs.showcase.app.api.*;
+import javax.xml.bind.annotation.*;
+
+import ru.curs.showcase.app.api.JSONObject;
 
 /**
  * Класс элемента панели управления с легендой. Легенда содержит информацию об
@@ -10,6 +12,7 @@ import ru.curs.showcase.app.api.*;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class DataPanelElementWithLegend extends DataPanelCompBasedElement implements
 		JSONObject {
 

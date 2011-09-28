@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.element;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.event.*;
 
@@ -9,16 +11,15 @@ import ru.curs.showcase.app.api.event.*;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class DataPanelElement implements SerializableElement {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 8787932721898449225L;
 
 	/**
-	 * Действие по умолчанию - для сокрытия зависимых элементов при условии, что
-	 * в элементе не выделено ни одной записи.
+	 * Действие по умолчанию. Возможное применение сокрытие зависимых элементов
+	 * при перерисовке главного элемента при условии, что в нем не выделен
+	 * активный элемент.
 	 */
 	private Action defaultAction;
 

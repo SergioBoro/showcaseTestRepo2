@@ -38,7 +38,7 @@ th, td
 %>
 <tr>
 <td width="18%" onclick="document.getElementById('row<%=number+1%>').scrollIntoView()">
- ${event.getLevel()} 
+level=${event.getLevel()} 
 </td>
 <td width="82%" rowspan="9">
 <div id="row<%=number%>">
@@ -48,42 +48,42 @@ ${event.getMessage()}
 </tr>
 <tr>
 <td  width="18%">
-${event.getTime()} 
+time=${event.getTime()} 
 </td>
 </tr>
 <tr>
 <td  width="18%" >
-${event.getUserName()} 
+userName=${event.getUserName()} 
 </td>
 </tr>
 <tr>
 <td  width="18%" >
-${event.getUserdata()} 
+userdata=${event.getUserdata()} 
 </td>
 </tr>
 <tr>
 <td  width="18%" >
-${event.getRequestId()} 
+requestId=${event.getRequestId()} 
 </td>
 </tr>
 <tr>
 <td  width="18%" >
-${event.getCommandName()} 
+commandName=<br/>${event.getCommandName()} 
 </td>
 </tr>
 <tr>
 <td valign="top" width="18%">
-${event.getProcess()} 
+process=${event.getProcess()} 
 </td>
 </tr>
 <tr>
 <td valign="top" width="18%">
-${event.getDirection()} 
+direction=${event.getDirection()} 
 </td>
 </tr>
 <tr>
 <td valign="top" width="18%" onclick="document.getElementById('row<%=number-1%>').scrollIntoView()">
-${event.getParams()} 
+params:<br/>${event.getParams()} 
 </td>
 </tr>
 </c:forEach>
