@@ -3,14 +3,14 @@
       xmlns:xsd="http://www.w3.org/2001/XMLschema"
       xmlns:fs="http://www.curs.ru/ns/FormServer"
       xmlns:xf="http://www.w3.org/2002/xforms">
-    <head>
+    <head>	
         <!-- Простейшие контролы ввода и вывода -->
         <xf:model id="mainModel">
             <xf:instance id="mainInstance">
                 <schema xmlns="">
                     <info>
                         <name/>
-                        <old_name/>
+                        <table/>
                     </info>
                 </schema>
             </xf:instance>  
@@ -20,35 +20,25 @@
     </head>
     
     <body>
-        <div style="font-size: 15px;"> Имя: </div>
         <div>
-            <xf:input class="BaseInput" ref="/schema/info/name">
-                <xf:hint>Название "Статьи баланса первого уровня"</xf:hint>
-            </xf:input>				
-        </div>
-   
+            <xf:output ref="'Удалить запись ' + /schema/info/name 
+                            + ' из журнала ' + /schema/info/table"/>        			 
+        </div>   
 
         <div>  
             <xf:trigger>
-                <xf:label>Сохранить и Закрыть</xf:label>
+                <xf:label>Удалить</xf:label>
                 <xf:action ev:event="DOMActivate">
                 <xf:load resource="javascript:gwtXFormSave('xformId', '1',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))"/>
                 </xf:action>
             </xf:trigger>
             
             <xf:trigger>
-                <xf:label>Закрыть</xf:label>
+                <xf:label>Отмена</xf:label>
                 <xf:action ev:event="DOMActivate">
-                <xf:load resource="javascript:gwtXFormFilter('xformId', '1.1',  null)"/>
+                <xf:load resource="javascript:gwtXFormFilter('xformId', '2',  null)"/>
                 </xf:action>
-            </xf:trigger>
-            
-            <xf:trigger>
-                <xf:label>Сохранить и создать новый</xf:label>
-                <xf:action ev:event="DOMActivate">
-                <xf:load resource="javascript:gwtXFormSave('xformId', '2',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))"/>
-                </xf:action>
-            </xf:trigger>                        
+            </xf:trigger>                      
         </div>
 
                    

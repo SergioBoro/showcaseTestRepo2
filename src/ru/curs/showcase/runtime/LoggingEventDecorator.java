@@ -74,6 +74,8 @@ public class LoggingEventDecorator implements AbstractCommandContext {
 			result =
 				result + ExchangeConstants.LINE_SEPARATOR + ExchangeConstants.LINE_SEPARATOR
 						+ "Источник ошибки:" + ExchangeConstants.LINE_SEPARATOR
+						+ throwableProxy.getCause().getMessage()
+						+ ExchangeConstants.LINE_SEPARATOR
 						+ logExceptionStack(throwableProxy.getCause());
 		}
 		return result;
