@@ -20,7 +20,7 @@ public class Chart extends DataPanelElementWithLegend {
 	 * Динамические данные для графика, на основе которых строится JSON объект
 	 * для передачи в JS функцию построения графика.
 	 */
-	private transient ChartData javaDynamicData;
+	private ChartData javaDynamicData;
 
 	@Override
 	public final ChartData getJavaDynamicData() {

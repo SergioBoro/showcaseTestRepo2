@@ -15,15 +15,12 @@ import ru.curs.showcase.app.api.element.DataPanelElementWithLegend;
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class GeoMap extends DataPanelElementWithLegend {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 3147374218653835207L;
 
 	/**
 	 * Динамические данные Java.
 	 */
-	private transient GeoMapData javaDynamicData;
+	private GeoMapData javaDynamicData;
 
 	/**
 	 * Признак того, что размеры карты должны подстраиватся под размеры инф.

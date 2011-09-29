@@ -51,7 +51,7 @@ public class GeoMapSLTest extends AbstractTest {
 
 		assertEquals(LegendPosition.BOTTOM, map.getLegendPosition());
 		assertNotNull(map.getJsDynamicData());
-		assertNotNull(map.getJavaDynamicData());
+		assertNull(map.getJavaDynamicData());
 
 		assertEquals(map.getActionForDependentElements(), map.getDefaultAction());
 	}

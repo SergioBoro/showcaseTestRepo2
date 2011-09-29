@@ -32,7 +32,7 @@ public class ChartSLTest extends AbstractTest {
 		Chart chart = command.execute();
 
 		assertNotNull(context.getSession());
-		assertNotNull(chart.getJavaDynamicData());
+		assertNull(chart.getJavaDynamicData());
 		assertNotNull(chart.getJsDynamicData());
 		assertTrue(chart.getJsDynamicData().startsWith("{"));
 		assertTrue(chart.getJsDynamicData().endsWith("}"));

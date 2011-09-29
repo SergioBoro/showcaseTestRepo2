@@ -32,5 +32,6 @@ public final class GeoMapGetCommand extends DataPanelElementCommand<GeoMap> {
 
 		AdapterForJS adapter = new AdapterForJS();
 		adapter.adapt(getResult());
+		getResult().setJavaDynamicData(null);
 	}
 }

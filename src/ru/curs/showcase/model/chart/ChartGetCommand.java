@@ -22,6 +22,7 @@ public final class ChartGetCommand extends DataPanelElementCommand<Chart> {
 	protected void postProcess() {
 		AdapterForJS adapter = new AdapterForJS();
 		adapter.adapt(getResult());
+		getResult().setJavaDynamicData(null);
 	}
 
 	@Override

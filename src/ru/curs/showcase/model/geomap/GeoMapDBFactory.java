@@ -129,7 +129,7 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 			if (SQLUtils.existsColumn(pointsSql.getMetaData(), LAT_TAG)
 					&& SQLUtils.existsColumn(pointsSql.getMetaData(), LON_TAG)) {
 				Double[] coords = { pointsSql.getDouble(LON_TAG), pointsSql.getDouble(LAT_TAG) };
-				point.setPointCoordinates(coords);
+				point.setPointCoords(coords);
 
 			}
 			if (SQLUtils.existsColumn(pointsSql.getMetaData(), TOOLTIP_COL)) {

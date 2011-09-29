@@ -16,9 +16,6 @@ import ru.curs.showcase.app.api.JSONObject;
 public abstract class DataPanelElementWithLegend extends DataPanelCompBasedElement implements
 		JSONObject {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 652329350772736896L;
 
 	/**

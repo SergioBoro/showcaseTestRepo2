@@ -26,27 +26,27 @@ public class GeoMapFeature extends GeoMapObject {
 	/**
 	 * Координаты точки для карты.
 	 */
-	private Double[] pointCoordinates;
+	private Double[] pointCoords;
 
 	/**
 	 * Координаты полигона на карте. Для будущего использования.
 	 */
-	private Double[][][] polygonCoordinates;
+	private Double[][][] polygonCoords;
 
 	/**
 	 * Координаты сложного полигона (MULTIPOLYGON) на карте.
 	 */
-	private Double[][][][] multiPolygonCoordinates;
+	private Double[][][][] multiPolygonCoords;
 
 	/**
 	 * Координаты линии.
 	 */
-	private Double[][] lineStringCoordinates;
+	private Double[][] lineStringCoords;
 
 	/**
 	 * Координаты сложной линии.
 	 */
-	private Double[][][] multiLineStringCoordinates;
+	private Double[][][] multiLineStringCoords;
 
 	/**
 	 * Клас CSS стиля, который будет использован для отображения данного
@@ -61,28 +61,28 @@ public class GeoMapFeature extends GeoMapObject {
 	 */
 	private Map<String, Double> attrs = new TreeMap<String, Double>();
 
-	public Double[][][] getPolygonCoordinates() {
-		return polygonCoordinates;
+	public Double[][][] getPolygonCoords() {
+		return polygonCoords;
 	}
 
-	public void setPolygonCoordinates(final Double[][][] aPolygonCoordinates) {
-		polygonCoordinates = aPolygonCoordinates;
+	public void setPolygonCoords(final Double[][][] aPolygonCoordinates) {
+		polygonCoords = aPolygonCoordinates;
 	}
 
-	public Double[][][][] getMultiPolygonCoordinates() {
-		return multiPolygonCoordinates;
+	public Double[][][][] getMultiPolygonCoords() {
+		return multiPolygonCoords;
 	}
 
-	public void setMultiPolygonCoordinates(final Double[][][][] aMultiPolygonCoordinates) {
-		multiPolygonCoordinates = aMultiPolygonCoordinates;
+	public void setMultiPolygonCoords(final Double[][][][] aMultiPolygonCoordinates) {
+		multiPolygonCoords = aMultiPolygonCoordinates;
 	}
 
-	public Double[] getPointCoordinates() {
-		return pointCoordinates;
+	public Double[] getPointCoords() {
+		return pointCoords;
 	}
 
-	public void setPointCoordinates(final Double[] aPointCoordinates) {
-		pointCoordinates = aPointCoordinates;
+	public void setPointCoords(final Double[] aPointCoordinates) {
+		pointCoords = aPointCoordinates;
 	}
 
 	public GeoMapFeature() {
@@ -154,7 +154,7 @@ public class GeoMapFeature extends GeoMapObject {
 	 * @return - Latitude.
 	 */
 	public Double getLat() {
-		return pointCoordinates[1];
+		return pointCoords[1];
 	}
 
 	/**
@@ -163,22 +163,22 @@ public class GeoMapFeature extends GeoMapObject {
 	 * @return - longitude.
 	 */
 	public Double getLon() {
-		return pointCoordinates[0];
+		return pointCoords[0];
 	}
 
-	public Double[][] getLineStringCoordinates() {
-		return lineStringCoordinates;
+	public Double[][] getLineStringCoords() {
+		return lineStringCoords;
 	}
 
-	public void setLineStringCoordinates(final Double[][] aLineStringCoordinates) {
-		lineStringCoordinates = aLineStringCoordinates;
+	public void setLineStringCoords(final Double[][] aLineStringCoordinates) {
+		lineStringCoords = aLineStringCoordinates;
 	}
 
-	public Double[][][] getMultiLineStringCoordinates() {
-		return multiLineStringCoordinates;
+	public Double[][][] getMultiLineStringCoords() {
+		return multiLineStringCoords;
 	}
 
-	public void setMultiLineStringCoordinates(final Double[][][] aMultiLineStringCoordinates) {
-		multiLineStringCoordinates = aMultiLineStringCoordinates;
+	public void setMultiLineStringCoords(final Double[][][] aMultiLineStringCoordinates) {
+		multiLineStringCoords = aMultiLineStringCoordinates;
 	}
 }
