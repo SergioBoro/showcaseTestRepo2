@@ -232,11 +232,11 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 		toolTip = TextUtils.replaceCI(toolTip, "%" + OBJECT_NAME_TAG, obj.getName());
 		if (layer.getType() == GeoMapFeatureType.POINT) {
 			toolTip =
-				TextUtils.replaceCI(toolTip, "%" + LAT_TAG, ((GeoMapFeature) obj).getGeometry()
-						.getLat().toString());
+				TextUtils.replaceCI(toolTip, "%" + LAT_TAG, ((GeoMapFeature) obj).getLat()
+						.toString());
 			toolTip =
-				TextUtils.replaceCI(toolTip, "%" + LON_TAG, ((GeoMapFeature) obj).getGeometry()
-						.getLon().toString());
+				TextUtils.replaceCI(toolTip, "%" + LON_TAG, ((GeoMapFeature) obj).getLon()
+						.toString());
 		}
 		return toolTip;
 	}

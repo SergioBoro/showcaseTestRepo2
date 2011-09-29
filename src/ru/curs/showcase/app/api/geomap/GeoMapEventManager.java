@@ -13,9 +13,6 @@ import ru.curs.showcase.app.api.event.InteractionType;
  */
 public class GeoMapEventManager extends EventManager<GeoMapEvent> {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 3329856250556569988L;
 
 	/**

@@ -10,9 +10,6 @@ import ru.curs.showcase.app.api.event.Event;
  */
 public final class ChartEvent extends Event {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 6740690372017535475L;
 
 	public String getSeriesId() {

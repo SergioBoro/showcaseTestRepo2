@@ -130,8 +130,17 @@ public final class MessageBox {
 
 		Label l = new Label(message);
 		horPan.setCellHorizontalAlignment(l, HasHorizontalAlignment.ALIGN_LEFT);
-
 		horPan.add(l);
+
+		if (messageType == MessageType.ERROR) {
+			HorizontalPanel consoleLinkPanel = new HorizontalPanel();
+			dialogContents.add(consoleLinkPanel);
+			consoleLinkPanel.setWidth("100%");
+			consoleLinkPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+			Anchor anchor = new Anchor("Веб-консоль", "log/lastLogEvents.jsp", "_blank");
+			consoleLinkPanel.add(anchor);
+		}
+
 		if (showDetailedMessage) {
 			final DisclosurePanel dp = new DisclosurePanel();
 

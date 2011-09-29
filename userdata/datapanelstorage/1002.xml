@@ -23,5 +23,11 @@
 			proc="xforms_delConfirm1" neverShowInPanel="true">
 			<proc id="proc1" name="xforms_saveproc_delConfirm1" type="SAVE"/>
 		</element>		
+	</tab>	
+	<tab id="9" name="Грид - самообновление">	
+		<element id="91" type="grid" proc="grid_cities_data_sr"
+			>
+			<proc id="d201" name="grid_cities_metadata" type="METADATA" />
+		</element>	
 	</tab>			
 </datapanel>

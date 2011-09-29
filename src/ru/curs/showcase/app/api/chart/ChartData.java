@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.chart;
 
 import java.util.*;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.element.Size;
 
@@ -13,11 +15,9 @@ import ru.curs.showcase.app.api.element.Size;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ChartData extends Size implements SerializableElement {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -2570277058263361565L;
 
 	/**

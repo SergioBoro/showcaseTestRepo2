@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
@@ -10,7 +12,39 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class NamedElement implements SerializableElement {
+
+	private static final long serialVersionUID = 7814677563299260714L;
+
+	/**
+	 * Идентификатор визуального элемента. Не отображается в UI, служит для
+	 * быстрой идентификации элемента в коде программы. Содержимое строки
+	 * идентификатора не определено - это может быть и число, и GUID.
+	 */
+	private String id;
+
+	/**
+	 * Имя (заголовок) визуального элемента. Отображается в UI, служит для
+	 * идентификации элемента пользователем программы.
+	 */
+	private String name;
+
+	public final String getId() {
+		return id;
+	}
+
+	public final void setId(final String aId) {
+		this.id = aId;
+	}
+
+	public final String getName() {
+		return name;
+	}
+
+	public final void setName(final String aName) {
+		this.name = aName;
+	}
 
 	@Override
 	public int hashCode() {
@@ -58,39 +92,5 @@ public abstract class NamedElement implements SerializableElement {
 		super();
 		id = aId;
 		name = aName;
-	}
-
-	/**
-	 * serialVersionUID.
-	 */
-	private static final long serialVersionUID = 7814677563299260714L;
-
-	/**
-	 * Идентификатор визуального элемента. Не отображается в UI, служит для
-	 * быстрой идентификации элемента в коде программы. Содержимое строки
-	 * идентификатора не определено - это может быть и число, и GUID.
-	 */
-	private String id;
-
-	/**
-	 * Имя (заголовок) визуального элемента. Отображается в UI, служит для
-	 * идентификации элемента пользователем программы.
-	 */
-	private String name;
-
-	public final String getId() {
-		return id;
-	}
-
-	public final void setId(final String aId) {
-		this.id = aId;
-	}
-
-	public final String getName() {
-		return name;
-	}
-
-	public final void setName(final String aName) {
-		this.name = aName;
 	}
 }

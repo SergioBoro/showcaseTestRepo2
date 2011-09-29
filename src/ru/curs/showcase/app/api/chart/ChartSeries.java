@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.chart;
 
 import java.util.*;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
@@ -10,11 +12,9 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ChartSeries implements SerializableElement {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -3989798207026304906L;
 
 	/**

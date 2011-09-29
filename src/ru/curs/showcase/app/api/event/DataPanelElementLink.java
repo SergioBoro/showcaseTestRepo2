@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.event;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.GWTClonable;
 
@@ -9,10 +11,9 @@ import ru.curs.showcase.app.api.GWTClonable;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DataPanelElementLink implements SerializableElement, GWTClonable, ContainingContext {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = 8381576475440574251L;
 
 	/**

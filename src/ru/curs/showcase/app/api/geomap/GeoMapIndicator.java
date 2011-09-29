@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.geomap;
 
+import javax.xml.bind.annotation.*;
+
 /**
  * Показатель для карты. Показатель должен относится к какому-то объекту карты.
  * Он отображается рядом с соответствующим объектом.
@@ -7,19 +9,12 @@ package ru.curs.showcase.app.api.geomap;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class GeoMapIndicator extends GeoMapObject {
 	/**
 	 * serialVersionUID.
 	 */
 	private static final long serialVersionUID = 1236534208108835700L;
-
-	/**
-	 * Признак того, что на основе этого показателя определяется цвет области на
-	 * слое. Имеет смысл только для показателей, относящихся к слою типа
-	 * POLYGON. Установка данного признака в true имеет приоритет перед явно
-	 * заданным цветом области.
-	 */
-	private Boolean isMain = false;
 
 	/**
 	 * Идентификатор показателя в БД. Не используется в клиентском коде, т.к. в
@@ -28,6 +23,14 @@ public class GeoMapIndicator extends GeoMapObject {
 	 * клиентский код не передается.
 	 */
 	private transient String dbId;
+
+	/**
+	 * Признак того, что на основе этого показателя определяется цвет области на
+	 * слое. Имеет смысл только для показателей, относящихся к слою типа
+	 * POLYGON. Установка данного признака в true имеет приоритет перед явно
+	 * заданным цветом области.
+	 */
+	private Boolean isMain = false;
 
 	public String getDbId() {
 		return dbId;

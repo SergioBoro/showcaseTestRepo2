@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.geomap;
 
 import java.util.*;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.element.Size;
 
@@ -11,11 +13,9 @@ import ru.curs.showcase.app.api.element.Size;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class GeoMapData extends Size implements SerializableElement {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -3552200592580335858L;
 
 	/**

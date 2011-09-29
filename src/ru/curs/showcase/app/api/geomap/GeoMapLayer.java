@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.geomap;
 
 import java.util.*;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.NamedElement;
 
@@ -12,6 +14,7 @@ import ru.curs.showcase.app.api.NamedElement;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class GeoMapLayer extends NamedElement implements SerializableElement {
 	/**
 	 * Имя, используемое для показателей по умолчанию.
@@ -123,7 +126,6 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 			return null;
 		}
 		GeoMapFeature res = new GeoMapFeature(id, name);
-		res.setGeometry(new GeoMapGeometry());
 		features.add(res);
 		return res;
 	}

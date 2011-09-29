@@ -108,10 +108,8 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 				.doubleValue(), 0);
 		layer = data.getLayerById("l1");
 		GeoMapFeature novgorod = layer.getObjectById("2532");
-		assertEquals(
-				String.format("%s - %s (%s) (%s - %s)", layer.getName(), novgorod.getName(),
-						novgorod.getId(), novgorod.getGeometry().getLat(), novgorod.getGeometry()
-								.getLon()), novgorod.getTooltip());
+		assertEquals(String.format("%s - %s (%s) (%s - %s)", layer.getName(), novgorod.getName(),
+				novgorod.getId(), novgorod.getLat(), novgorod.getLon()), novgorod.getTooltip());
 		assertEquals("TestStyleClass", novgorod.getStyleClass());
 	}
 

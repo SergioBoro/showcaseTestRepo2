@@ -10,9 +10,6 @@ import ru.curs.showcase.app.api.event.Event;
  */
 public final class GeoMapEvent extends Event {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 2590511685180732104L;
 
 	public String getObjectId() {

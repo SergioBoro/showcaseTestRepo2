@@ -21,5 +21,15 @@ public enum GeoMapFeatureType implements SerializableElement {
 	/**
 	 * Сложный полигон, состоящий из нескольких простых полигонов.
 	 */
-	MULTIPOLYGON
+	MULTIPOLYGON,
+
+	/**
+	 * Ломаная линия.
+	 */
+	LINESTRING,
+
+	/**
+	 * Сложная ломаная из нескольких простых ломаных.
+	 */
+	MULTILINESTRING
 }

@@ -1,7 +1,9 @@
 package ru.curs.showcase.app.api.geomap;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.NamedElement;
 
 /**
  * 
@@ -11,6 +13,7 @@ import ru.curs.showcase.app.api.*;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class GeoMapObject extends NamedElement implements SerializableElement {
 	/**
 	 * serialVersionUID.
@@ -18,16 +21,16 @@ public abstract class GeoMapObject extends NamedElement implements SerializableE
 	private static final long serialVersionUID = -7054114684387944282L;
 
 	/**
-	 * Текстовая подпись для объекта.
-	 */
-	private String tooltip;
-
-	/**
 	 * Стиль объекта на карте. Для полигона и показателя - цвет (задается в
 	 * формате #FFFFFF). Для точки - вид ее значка (список возможных стилей
 	 * определяется шаблоном карты). В будущем возможно введение объекта Style.
 	 */
 	private String style;
+
+	/**
+	 * Текстовая подпись для объекта.
+	 */
+	private String tooltip;
 
 	public final String getStyle() {
 		return style;

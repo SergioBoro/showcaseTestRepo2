@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.geomap;
 
 import java.util.*;
 
+import javax.xml.bind.annotation.*;
+
 /**
  * Класс ГИС объекта (feature) на карте. Применяется для описания точки и
  * полигона, а также любых других типов объектов, которые появятся в будущем.
@@ -11,21 +13,40 @@ import java.util.*;
  * @author den
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class GeoMapFeature extends GeoMapObject {
-	/**
-	 * serialVersionUID.
-	 */
-	private static final long serialVersionUID = -3726515877064440608L;
 
-	/**
-	 * Описание геометрии объекта.
-	 */
-	private GeoMapGeometry geometry = null;
+	private static final long serialVersionUID = -3726515877064440608L;
 
 	/**
 	 * Идентификатор геометрии объекта.
 	 */
 	private String geometryId = null;
+
+	/**
+	 * Координаты точки для карты.
+	 */
+	private Double[] pointCoordinates;
+
+	/**
+	 * Координаты полигона на карте. Для будущего использования.
+	 */
+	private Double[][][] polygonCoordinates;
+
+	/**
+	 * Координаты сложного полигона (MULTIPOLYGON) на карте.
+	 */
+	private Double[][][][] multiPolygonCoordinates;
+
+	/**
+	 * Координаты линии.
+	 */
+	private Double[][] lineStringCoordinates;
+
+	/**
+	 * Координаты сложной линии.
+	 */
+	private Double[][][] multiLineStringCoordinates;
 
 	/**
 	 * Клас CSS стиля, который будет использован для отображения данного
@@ -35,17 +56,33 @@ public class GeoMapFeature extends GeoMapObject {
 	private String styleClass = null;
 
 	/**
-	 * Набор свойств ГИС объекта. Как минимум, содержит набор пар <ID
+	 * Набор атрибутов ГИС объекта. Как минимум, содержит набор пар <ID
 	 * показателя>:<Значение показателя для объекта>.
 	 */
-	private Map<String, Double> properties = new TreeMap<String, Double>();
+	private Map<String, Double> attrs = new TreeMap<String, Double>();
 
-	public GeoMapGeometry getGeometry() {
-		return geometry;
+	public Double[][][] getPolygonCoordinates() {
+		return polygonCoordinates;
 	}
 
-	public void setGeometry(final GeoMapGeometry aGeometry) {
-		geometry = aGeometry;
+	public void setPolygonCoordinates(final Double[][][] aPolygonCoordinates) {
+		polygonCoordinates = aPolygonCoordinates;
+	}
+
+	public Double[][][][] getMultiPolygonCoordinates() {
+		return multiPolygonCoordinates;
+	}
+
+	public void setMultiPolygonCoordinates(final Double[][][][] aMultiPolygonCoordinates) {
+		multiPolygonCoordinates = aMultiPolygonCoordinates;
+	}
+
+	public Double[] getPointCoordinates() {
+		return pointCoordinates;
+	}
+
+	public void setPointCoordinates(final Double[] aPointCoordinates) {
+		pointCoordinates = aPointCoordinates;
 	}
 
 	public GeoMapFeature() {
@@ -56,12 +93,12 @@ public class GeoMapFeature extends GeoMapObject {
 		super(aId, aName);
 	}
 
-	public Map<String, Double> getProperties() {
-		return properties;
+	public Map<String, Double> getAttrs() {
+		return attrs;
 	}
 
-	public void setProperties(final Map<String, Double> aProperties) {
-		properties = aProperties;
+	public void setAttrs(final Map<String, Double> aAttrs) {
+		attrs = aAttrs;
 	}
 
 	/**
@@ -73,7 +110,7 @@ public class GeoMapFeature extends GeoMapObject {
 	 *            - значение показателя.
 	 */
 	public void setValue(final String indId, final Double value) {
-		properties.put(indId, value);
+		attrs.put(indId, value);
 	}
 
 	/**
@@ -87,9 +124,9 @@ public class GeoMapFeature extends GeoMapObject {
 		if (ind == null) {
 			return null;
 		}
-		for (String key : properties.keySet()) {
+		for (String key : attrs.keySet()) {
 			if (ind.getId().equals(key)) {
-				return properties.get(key);
+				return attrs.get(key);
 			}
 		}
 		return null;
@@ -109,5 +146,39 @@ public class GeoMapFeature extends GeoMapObject {
 
 	public void setStyleClass(final String aStyleClass) {
 		styleClass = aStyleClass;
+	}
+
+	/**
+	 * Возвращает Latitude для точки на карте.
+	 * 
+	 * @return - Latitude.
+	 */
+	public Double getLat() {
+		return pointCoordinates[1];
+	}
+
+	/**
+	 * Возвращает longitude для точки на карте.
+	 * 
+	 * @return - longitude.
+	 */
+	public Double getLon() {
+		return pointCoordinates[0];
+	}
+
+	public Double[][] getLineStringCoordinates() {
+		return lineStringCoordinates;
+	}
+
+	public void setLineStringCoordinates(final Double[][] aLineStringCoordinates) {
+		lineStringCoordinates = aLineStringCoordinates;
+	}
+
+	public Double[][][] getMultiLineStringCoordinates() {
+		return multiLineStringCoordinates;
+	}
+
+	public void setMultiLineStringCoordinates(final Double[][][] aMultiLineStringCoordinates) {
+		multiLineStringCoordinates = aMultiLineStringCoordinates;
 	}
 }

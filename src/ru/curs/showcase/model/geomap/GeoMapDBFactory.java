@@ -129,7 +129,7 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 			if (SQLUtils.existsColumn(pointsSql.getMetaData(), LAT_TAG)
 					&& SQLUtils.existsColumn(pointsSql.getMetaData(), LON_TAG)) {
 				Double[] coords = { pointsSql.getDouble(LON_TAG), pointsSql.getDouble(LAT_TAG) };
-				point.getGeometry().setPointCoordinates(coords);
+				point.setPointCoordinates(coords);
 
 			}
 			if (SQLUtils.existsColumn(pointsSql.getMetaData(), TOOLTIP_COL)) {
@@ -221,7 +221,7 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 				rs = getStatement().getResultSet();
 				areasSql = SQLUtils.cacheResultSet(rs);
 				if (!getStatement().getMoreResults()) {
-					return; // разрешаем создавать карту без показателей
+					return; // разрешаем создавать карту без показателей.
 				}
 				rs = getStatement().getResultSet();
 				indicatorsSql = SQLUtils.cacheResultSet(rs);

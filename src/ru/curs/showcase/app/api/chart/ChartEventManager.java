@@ -13,9 +13,6 @@ import ru.curs.showcase.app.api.event.InteractionType;
  */
 public final class ChartEventManager extends EventManager<ChartEvent> {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 3574166433929505612L;
 
 	/**
