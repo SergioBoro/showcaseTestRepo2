@@ -19,27 +19,23 @@
   </listener>
   <listener>
     <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
-  </listener>  
-
-   <filter>
+  </listener>
+  <filter>
     <filter-name>CheckAutenticationFilter</filter-name>
     <filter-class>ru.curs.showcase.security.CheckAutenticationFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>CheckAutenticationFilter</filter-name>
     <url-pattern>/secured/*</url-pattern>
-  </filter-mapping>  
-
-   <filter>
+  </filter-mapping>
+  <filter>
     <filter-name>springSecurityFilterChain</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
     <url-pattern>/*</url-pattern>
-  </filter-mapping>   
- 
-
+  </filter-mapping>
   <filter>
     <filter-name>SessionInfoFilter</filter-name>
     <filter-class>ru.curs.showcase.app.server.SessionInfoFilter</filter-class>
@@ -48,7 +44,6 @@
     <filter-name>SessionInfoFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
@@ -75,7 +70,7 @@
   <servlet-mapping>
     <servlet-name>Download</servlet-name>
     <url-pattern>/secured/download</url-pattern>
-  </servlet-mapping>  
+  </servlet-mapping>
   <servlet>
     <servlet-name>Upload</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.FilesFrontController</servlet-class>
@@ -83,7 +78,7 @@
   <servlet-mapping>
     <servlet-name>Upload</servlet-name>
     <url-pattern>/secured/upload</url-pattern>
-  </servlet-mapping>    
+  </servlet-mapping>
   <servlet>
     <servlet-name>XFormSQLTransformServlet</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.XFormSQLTransformServlet</servlet-class>
@@ -125,16 +120,16 @@
   <servlet-mapping>
     <servlet-name>XFormXSLTransformServlet</servlet-name>
     <url-pattern>/secured/xslttransformer</url-pattern>
-    <url-pattern>/secured/xslTransform</url-pattern>    
-  </servlet-mapping>  
+    <url-pattern>/secured/xslTransform</url-pattern>
+  </servlet-mapping>
   <servlet>
     <servlet-name>GeoCheckServlet</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.GeoCheckServlet</servlet-class>
-  </servlet>  
+  </servlet>
   <servlet-mapping>
     <servlet-name>GeoCheckServlet</servlet-name>
     <url-pattern>/secured/geoCheck</url-pattern>
-  </servlet-mapping>  
+  </servlet-mapping>
   <servlet>
     <servlet-name>Welcome frame</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.MainPageFramesFrontController</servlet-class>
@@ -142,7 +137,7 @@
   <servlet-mapping>
     <servlet-name>Welcome frame</servlet-name>
     <url-pattern>/secured/welcome</url-pattern>
-  </servlet-mapping>   
+  </servlet-mapping>
   <servlet>
     <servlet-name>Header frame</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.MainPageFramesFrontController</servlet-class>
@@ -150,7 +145,7 @@
   <servlet-mapping>
     <servlet-name>Header frame</servlet-name>
     <url-pattern>/secured/header</url-pattern>
-  </servlet-mapping>   
+  </servlet-mapping>
   <servlet>
     <servlet-name>Footer frame</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.MainPageFramesFrontController</servlet-class>
@@ -158,5 +153,13 @@
   <servlet-mapping>
     <servlet-name>Footer frame</servlet-name>
     <url-pattern>/secured/footer</url-pattern>
-  </servlet-mapping>       
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ServerStateServlet</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.ServerStateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServerStateServlet</servlet-name>
+    <url-pattern>/ServerStateServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
