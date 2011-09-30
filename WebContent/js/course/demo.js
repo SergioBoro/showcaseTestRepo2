@@ -9,7 +9,7 @@ dojo.require("djeo.control.Highlight");
 dojo.require("djeo.control.Tooltip");
 dojo.require("djeo.widget.Legend");
 
-dojo.require("kurs.data.russia_geometriesEpsg4326");
+//dojo.require("kurs.data.russia_geometriesEpsg4326");
 dojo.require("kurs.data.russia_geometries");
 
 dojo.require("djeo.util.numeric");
@@ -41,7 +41,7 @@ course.geo.demo.make = function(mapNode, legendNode, data) {
 		legend: "djeo._getBreaksAreaLegend"
 	};
 
-	map = new djeo.Map("map", {
+	map = new djeo.Map(mapNode, {
 		geometries: kurs.data.russiaGeometries,
 		features: data.features,
 		style: mapStyle,
