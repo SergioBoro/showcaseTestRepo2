@@ -1,8 +1,10 @@
 dojo.provide("course.geo");
+
 dojo.require("djeo.Map");
+dojo.require("djeo.ge.Engine");
 
 (function(){
-var defaultManagerModule = "course.geo.basic",
+var defaultManagerModule = "course.geo.demo",
 	defaultManagerFunction = "make";
 
 var g = course.geo;
@@ -59,13 +61,13 @@ g.makeMap = function(mapDivId, mapLegendId, data, options) {
     if (!mapNode) return;
 
     g.destroyMap(mapDivId);
-	
+
+	if (!options) options = {};
 	var managerModule = options.managerModule ? options.managerModule : defaultManagerModule;
 	dojo.require(managerModule);
 	var managerFunction = options.managerFunction ? options.managerFunction : defaultManagerFunction;
 	if (managerFunction) {
-		var map = managerFunction(mapNode, dojo.byId(mapLegendId), data)
-		mapRegistry[mapDivId] = {map: map};
+		mapRegistry[mapDivId] = managerFunction(mapNode, dojo.byId(mapLegendId), data);
 	}
 }
 

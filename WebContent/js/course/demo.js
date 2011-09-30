@@ -1,12 +1,8 @@
-dojo.provide("course.geo.basic");
+dojo.provide("course.geo.demo");
 
 dojo.require("djeo.Map");
 
 //dojo.registerModulePath("", "");
-
-dojo.require("djeo.ge.Engine");
-
-dojo.require("djeo.Map");
 
 dojo.require("djeo.control.Navigation");
 dojo.require("djeo.control.Highlight");
@@ -24,7 +20,7 @@ dojo.require("djeo.util.jenks");
 	
 var mapEngine = "gfx";
 
-course.geo.basic.make = function(mapNode, legendNode, data) {
+course.geo.demo.make = function(mapNode, legendNode, data) {
 	var map, legend;
 	var mapStyle = {
 		id: "populationDensity",
@@ -49,14 +45,15 @@ course.geo.basic.make = function(mapNode, legendNode, data) {
 		geometries: kurs.data.russiaGeometries,
 		features: data.features,
 		style: mapStyle,
-		useAttrs: true
+		useAttrs: true,
+		mapEngine: mapEngine
 	});
 	
 	map.ready(function(){
-		if (legendNode) new djeo.widget.Legend({map: map}, legendNode);
+		if (legendNode) legend = new djeo.widget.Legend({map: map}, legendNode);
 	});
 	
-	return map;
+	return {map: map, legend: legend};
 }
 
 }());
