@@ -2,6 +2,7 @@ package ru.curs.showcase.util;
 
 import java.lang.reflect.*;
 
+import ru.curs.showcase.model.Description;
 import ru.curs.showcase.util.exception.ServerLogicError;
 
 /**
@@ -62,4 +63,12 @@ public final class ReflectionUtils {
 		throw new UnsupportedOperationException();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static String getProcessDescForClass(final Class classLink) {
+		if (classLink.getAnnotation(Description.class) != null) {
+			return ((Description) classLink.getAnnotation(Description.class)).process();
+		}
+		return "не задан";
+
+	}
 }

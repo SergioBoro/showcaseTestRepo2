@@ -22,9 +22,13 @@ import ru.curs.showcase.app.api.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CompositeContext extends TransferableElement implements CanBeCurrent,
 		SerializableElement, Assignable<CompositeContext>, GWTClonable {
-	/**
-	 * serialVersionUID.
-	 */
+
+	@Override
+	public String toString() {
+		return "CompositeContext [main=" + main + ", additional=" + additional + ", session="
+				+ session + ", filter=" + filter + "]";
+	}
+
 	private static final long serialVersionUID = 6956997088646193138L;
 
 	/**

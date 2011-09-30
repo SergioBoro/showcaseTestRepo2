@@ -40,7 +40,6 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 					GeneralException.generateDetailedInfo(caught),
 					GeneralException.getMessageType(caught),
 					GeneralException.needDetailedInfo(caught));
-
 			// MessageBox.showMessageWithDetails(msgErrorCaption,
 			// caught.getMessage(),
 			// GeneralServerException

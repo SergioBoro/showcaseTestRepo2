@@ -5,10 +5,10 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelElement;
-import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.xml.GeneralXMLHelper;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Абстрактная фабрика с шаблонным методом построения сложных объектов -
@@ -19,6 +19,9 @@ import ru.curs.showcase.util.xml.GeneralXMLHelper;
  * 
  */
 public abstract class TemplateMethodFactory extends GeneralXMLHelper {
+
+	private static final String CHECK_ACTION_ERROR =
+		"Некорректное описание действия в элементе инф. панели: ";
 
 	public TemplateMethodFactory(final ElementRawData aSource) {
 		super();
@@ -67,8 +70,7 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 		releaseResources();
 		setupDynamicSettings();
 		fillResultByData();
-		getResult().actualizeActions(source.getCallContext());
-		correctSettingsAndData();
+		postProcess();
 		return getResult();
 	}
 
@@ -115,9 +117,18 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 		checkSourceError();
 		releaseResources();
 		fillResultByData();
-		getResult().actualizeActions(getCallContext());
-		correctSettingsAndData();
+		postProcess();
 		return getResult();
+	}
+
+	private void postProcess() {
+		getResult().actualizeActions(getCallContext());
+		Action wrong = getResult().checkActions();
+		if (wrong != null) {
+			throw new IncorrectElementException(CHECK_ACTION_ERROR
+					+ XMLUtils.documentToString(XMLUtils.objectToXML(wrong)));
+		}
+		correctSettingsAndData();
 	}
 
 	/**

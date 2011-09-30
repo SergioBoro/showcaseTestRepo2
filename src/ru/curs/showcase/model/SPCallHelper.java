@@ -163,7 +163,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 			throw new ValidateInDBException(e);
 		} else {
 			if (!checkProcExists()) {
-				throw new SPNotExistsException(getProcName());
+				throw new SPNotExistsException(getProcName(), getClass());
 			}
 			handleDBQueryException(e);
 		}
@@ -177,7 +177,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 *            - исходное исключение.
 	 */
 	protected void handleDBQueryException(final SQLException e) {
-		throw new DBQueryException(e, getProcName(), new DataPanelElementContext(getContext()));
+		throw new DBQueryException(e, getProcName(), new DataPanelElementContext(getContext()),
+				getClass());
 	}
 
 	/**

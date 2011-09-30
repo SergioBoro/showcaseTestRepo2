@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.GWTClonable;
+import ru.curs.showcase.app.api.datapanel.SelfCheckObject;
 
 /**
  * Класс действия, выполняемого при активации визуального элемента UI (например,
@@ -16,7 +17,8 @@ import ru.curs.showcase.app.api.GWTClonable;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Action implements SerializableElement, GWTClonable, ContainingContext {
+public class Action implements SerializableElement, GWTClonable, ContainingContext,
+		SelfCheckObject {
 
 	private static final long serialVersionUID = -5014034913652092038L;
 
@@ -540,5 +542,23 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 
 	public void setClientActivities(final List<Activity> aClientActivities) {
 		clientActivities = aClientActivities;
+	}
+
+	@Override
+	public boolean isCorrect() {
+		return (!needGeneralContext() || (context != null))
+				&& ((showInMode != ShowInMode.MODAL_WINDOW) || (!haveRefreshContextOnlyElements()));
+	}
+
+	private boolean haveRefreshContextOnlyElements() {
+		if (dataPanelLink == null) {
+			return false;
+		}
+		for (DataPanelElementLink elLink : dataPanelLink.getElementLinks()) {
+			if (elLink.getRefreshContextOnly()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

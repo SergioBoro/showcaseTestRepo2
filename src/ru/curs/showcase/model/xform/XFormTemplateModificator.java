@@ -2,7 +2,7 @@ package ru.curs.showcase.model.xform;
 
 import org.w3c.dom.*;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.SelfCheckObject;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.util.xml.*;
 
@@ -32,7 +32,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	 *            - описание элемента инф. панели.
 	 */
 	public static org.w3c.dom.Document addSrvInfo(final org.w3c.dom.Document doc,
-			final CompositeContext context, final DataPanelElementInfo element) {
+			final CompositeContext context, final SelfCheckObject element) {
 		Node node = XFormProducer.getMainInstance(doc);
 		Node parent = node.getParentNode();
 

@@ -3,7 +3,7 @@ package ru.curs.showcase.model;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import ru.curs.showcase.util.ObjectToLogSerializer;
+import ru.curs.showcase.util.ObjectSerializer;
 
 /**
  * Реестр, хранящий различные глобальные объекты, настраиваемые с помощью Spring
@@ -32,7 +32,7 @@ public final class AppRegistry {
 		return (ActionTabFinder) context.getBean("actionTabFinder");
 	}
 
-	public static ObjectToLogSerializer getObjectSerializer() {
-		return (ObjectToLogSerializer) context.getBean("objectSerializer");
+	public static ObjectSerializer getObjectSerializer() {
+		return (ObjectSerializer) context.getBean("objectSerializer");
 	}
 }

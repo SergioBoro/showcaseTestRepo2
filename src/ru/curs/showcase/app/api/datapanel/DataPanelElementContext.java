@@ -12,9 +12,6 @@ import ru.curs.showcase.app.api.event.CompositeContext;
  */
 public class DataPanelElementContext implements SerializableElement {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -2803616788574282075L;
 
 	/**

@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.SPCallHelper;
+import ru.curs.showcase.model.*;
 
 /**
  * Шлюз к БД для получения фреймов главной страницы.
@@ -12,6 +12,7 @@ import ru.curs.showcase.model.SPCallHelper;
  * @author den
  * 
  */
+@Description(process = "Загрузка данных для фрейма на главной странице из БД")
 public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFrameGateway {
 
 	private static final int SESSION_CONTEXT_INDEX = 2;
@@ -30,7 +31,7 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 	}
 
 	@Override
-	protected DataPanelElementType getGatewayType() {
+	protected DataPanelElementType getElementType() {
 		return DataPanelElementType.NON_DP_ELEMENT;
 	}
 

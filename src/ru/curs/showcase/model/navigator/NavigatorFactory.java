@@ -1,7 +1,7 @@
 package ru.curs.showcase.model.navigator;
 
 import java.io.InputStream;
-import java.util.LinkedList;
+import java.util.*;
 
 import javax.xml.parsers.SAXParser;
 
@@ -10,9 +10,12 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.*;
+import ru.curs.showcase.model.IncorrectElementException;
 import ru.curs.showcase.model.event.ActionFactory;
 import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.util.ObjectSerializer;
 import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Фабрика для создания навигатора.
@@ -21,6 +24,8 @@ import ru.curs.showcase.util.xml.*;
  * 
  */
 public final class NavigatorFactory extends SAXTagHandler {
+	private static final String WRONG_ACTION_IN_NAVIGATOR_ERROR =
+		"Некорректное описание действия в навигаторе: ";
 	private static final String SELECT_ON_LOAD_TAG = "selectOnLoad";
 	private static final String XML_ERROR_MES = "описание навигатора";
 	private static final String GRP_ICONS_DIR_PARAM_NAME = "navigator.icons.dir.name";
@@ -147,10 +152,35 @@ public final class NavigatorFactory extends SAXTagHandler {
 
 		try {
 			parser.parse(streamForParse, myHandler);
+			postProcess();
 		} catch (Exception e) {
 			XMLUtils.stdSAXErrorHandler(e, XML_ERROR_MES);
 		}
 		return result;
+	}
+
+	private void postProcess() {
+		for (NavigatorGroup group : result.getGroups()) {
+			checkNavigatorElements(group.getElements());
+		}
+	}
+
+	private void checkNavigatorElements(final List<NavigatorElement> elements) {
+		for (NavigatorElement element : elements) {
+			determineAndCheckAction(element.getAction());
+			checkNavigatorElements(element.getElements());
+		}
+	}
+
+	private void determineAndCheckAction(final Action action) {
+		if (action != null) {
+			action.determineState();
+			if (!action.isCorrect()) {
+				ObjectSerializer serializer = new XMLObjectSerializer();
+				throw new IncorrectElementException(WRONG_ACTION_IN_NAVIGATOR_ERROR
+						+ serializer.serialize(action));
+			}
+		}
 	}
 
 	@Override

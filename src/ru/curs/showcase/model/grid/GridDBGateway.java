@@ -15,6 +15,7 @@ import ru.curs.showcase.runtime.*;
  * @author den
  * 
  */
+@Description(process = "Загрузка данных для грида из БД")
 public class GridDBGateway extends CompBasedElementSPCallHelper implements GridGateway {
 
 	private static final int MAIN_CONTEXT_INDEX = 2;
@@ -107,7 +108,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	}
 
 	@Override
-	protected DataPanelElementType getGatewayType() {
+	protected DataPanelElementType getElementType() {
 		return DataPanelElementType.GRID;
 	}
 

@@ -14,6 +14,7 @@ import ru.curs.showcase.util.DataFile;
  * @author den
  * 
  */
+@Description(process = "Загрузка данных для информационной панели из БД")
 public class DataPanelDBGateway extends SPCallHelper implements DataPanelGateway {
 
 	private static final int MAIN_CONTEXT_INDEX = 2;
@@ -34,7 +35,7 @@ public class DataPanelDBGateway extends SPCallHelper implements DataPanelGateway
 	}
 
 	@Override
-	protected DataPanelElementType getGatewayType() {
+	protected DataPanelElementType getElementType() {
 		return DataPanelElementType.NON_DP_ELEMENT;
 	}
 

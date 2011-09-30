@@ -12,22 +12,10 @@ import ru.curs.showcase.util.exception.BaseException;
  */
 public class IncorrectElementException extends BaseException {
 
-	/**
-	 * Сообщение об ошибке.
-	 */
-	private static final String ERROR_MES =
-		"Получено описание элемента с некорректным состоянием или неподходящий по типу элемент";
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 2762191427245015158L;
 
 	public IncorrectElementException(final String message) {
-		super(ExceptionType.SOLUTION, ERROR_MES + ": " + message);
-	}
-
-	public IncorrectElementException() {
-		super(ExceptionType.SOLUTION, ERROR_MES);
+		super(ExceptionType.SOLUTION, message);
 	}
 
 }

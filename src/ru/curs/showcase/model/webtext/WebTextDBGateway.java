@@ -10,6 +10,7 @@ import ru.curs.showcase.model.*;
  * @author den
  * 
  */
+@Description(process = "Загрузка данных для вебтекста из БД")
 public class WebTextDBGateway extends HTMLBasedSPCallHelper implements WebTextGateway {
 
 	private static final int DATA_INDEX = 6;
@@ -32,7 +33,7 @@ public class WebTextDBGateway extends HTMLBasedSPCallHelper implements WebTextGa
 	}
 
 	@Override
-	protected DataPanelElementType getGatewayType() {
+	protected DataPanelElementType getElementType() {
 		return DataPanelElementType.WEBTEXT;
 	}
 

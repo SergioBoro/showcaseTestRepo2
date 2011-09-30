@@ -3,6 +3,7 @@ package ru.curs.showcase.model.navigator;
 import java.io.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.model.Description;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.exception.*;
 
@@ -12,6 +13,7 @@ import ru.curs.showcase.util.exception.*;
  * @author den
  * 
  */
+@Description(process = "Загрузка данных для навигатора из файла")
 public class NavigatorFileGateway implements NavigatorGateway {
 	/**
 	 * Каталог внутри userdata, в котором содержатся описания навигатора.

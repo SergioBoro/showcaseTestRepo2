@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.SPCallHelper;
+import ru.curs.showcase.model.*;
 
 /**
  * Шлюз к хранимой процедуре в БД, возвращающей данные для навигатора.
@@ -13,6 +13,7 @@ import ru.curs.showcase.model.SPCallHelper;
  * @author den
  * 
  */
+@Description(process = "Загрузка данных для навигатора из БД")
 public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway {
 
 	private static final int SESSION_CONTEXT_INDEX = 1;
@@ -29,8 +30,7 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 		setProcName(sourceName);
 		try {
 			prepareSQL();
-			setSQLXMLParam(getSessionContextIndex(getTemplateIndex()),
-					context.getSession());
+			setSQLXMLParam(getSessionContextIndex(getTemplateIndex()), context.getSession());
 			getStatement().registerOutParameter(NAVIGATOR_INDEX, java.sql.Types.SQLXML);
 			execute();
 
@@ -48,7 +48,7 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 	}
 
 	@Override
-	protected DataPanelElementType getGatewayType() {
+	protected DataPanelElementType getElementType() {
 		return DataPanelElementType.NON_DP_ELEMENT;
 	}
 

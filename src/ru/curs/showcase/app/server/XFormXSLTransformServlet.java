@@ -42,8 +42,7 @@ public class XFormXSLTransformServlet extends HttpServlet {
 		DataPanelElementInfo elInfo = XFormInfoFactory.generateXFormsTransformationInfo(xsltFile);
 
 		try {
-			XFormXSLTransformCommand command =
-				new XFormXSLTransformCommand(context, elInfo);
+			XFormXSLTransformCommand command = new XFormXSLTransformCommand(context, elInfo);
 			String res = command.execute();
 			response.setStatus(HttpServletResponse.SC_OK);
 			ServletUtils.makeResponseFromString(response, res);

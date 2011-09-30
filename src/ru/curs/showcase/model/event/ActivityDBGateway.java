@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.Activity;
-import ru.curs.showcase.model.SPCallHelper;
+import ru.curs.showcase.model.*;
 
 /**
  * Класс шлюза-исполнителя вызовов SQL хранимых процедур.
@@ -12,6 +12,7 @@ import ru.curs.showcase.model.SPCallHelper;
  * @author den
  * 
  */
+@Description(process = "Вызов хранимых процедур на сервере SQL")
 public class ActivityDBGateway extends SPCallHelper implements ActivityGateway {
 
 	private static final int MAIN_CONTEXT_INDEX = 2;
@@ -45,7 +46,7 @@ public class ActivityDBGateway extends SPCallHelper implements ActivityGateway {
 	}
 
 	@Override
-	protected DataPanelElementType getGatewayType() {
+	protected DataPanelElementType getElementType() {
 		return DataPanelElementType.NON_DP_ELEMENT;
 	}
 

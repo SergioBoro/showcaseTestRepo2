@@ -23,6 +23,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
+@Description(process = "Загрузка данных для XForm из файлов")
 public final class XFormFileGateway extends DataCheckGateway implements XFormGateway {
 
 	/**
@@ -52,7 +53,7 @@ public final class XFormFileGateway extends DataCheckGateway implements XFormGat
 	}
 
 	@Override
-	protected DataPanelElementType getGatewayType() {
+	protected DataPanelElementType getElementType() {
 		return DataPanelElementType.XFORMS;
 	}
 

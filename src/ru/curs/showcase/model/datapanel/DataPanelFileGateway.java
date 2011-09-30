@@ -3,8 +3,9 @@ package ru.curs.showcase.model.datapanel;
 import java.io.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.model.Description;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.exception.*;
 
 /**
@@ -13,6 +14,7 @@ import ru.curs.showcase.util.exception.*;
  * @author den
  * 
  */
+@Description(process = "Загрузка данных для информационной панели из файла")
 public class DataPanelFileGateway implements DataPanelGateway {
 	/**
 	 * Название параметра в файле настроек приложение, содержащего путь к

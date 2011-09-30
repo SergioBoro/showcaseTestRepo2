@@ -17,8 +17,14 @@ import ru.curs.showcase.util.exception.CreateObjectError;
  * @author den
  * 
  */
+@Description(process = "Загрузка данных для XForm из БД")
 public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XFormGateway {
 
+	private static final String NO_UPLOAD_PROC_ERROR =
+		"Не задана процедура для загрузки файлов на сервер для linkId=";
+	private static final String NO_SAVE_PROC_ERROR = "Не задана процедура для сохранения XForms";
+	private static final String NO_DOWNLOAD_PROC_ERROR =
+		"Не задана процедура для скачивания файлов из сервера для linkId=";
 	private static final int MAIN_CONTEXT_INDEX_0 = 1;
 	private static final int ADD_CONTEXT_INDEX_0 = 2;
 	private static final int FILTER_INDEX_0 = 3;
@@ -77,7 +83,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 	}
 
 	@Override
-	protected DataPanelElementType getGatewayType() {
+	protected DataPanelElementType getElementType() {
 		return DataPanelElementType.XFORMS;
 	}
 
@@ -88,7 +94,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 		setTemplateIndex(SAVE_TEMPLATE_IND);
 		DataPanelElementProc proc = elementInfo.getSaveProc();
 		if (proc == null) {
-			throw new IncorrectElementException(elementInfo.toString());
+			throw new IncorrectElementException(NO_SAVE_PROC_ERROR);
 		}
 		setProcName(proc.getName());
 
@@ -146,7 +152,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 		setTemplateIndex(FILE_TEMPLATE_IND);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
 		if (proc == null) {
-			throw new IncorrectElementException(elementInfo.toString());
+			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR + linkId);
 		}
 		setProcName(proc.getName());
 		OutputStreamDataFile result = null;
@@ -176,7 +182,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 		setTemplateIndex(FILE_TEMPLATE_IND);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
 		if (proc == null) {
-			throw new IncorrectElementException(elementInfo.toString());
+			throw new IncorrectElementException(NO_UPLOAD_PROC_ERROR + linkId);
 		}
 		setProcName(proc.getName());
 

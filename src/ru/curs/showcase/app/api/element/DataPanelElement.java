@@ -78,6 +78,22 @@ public abstract class DataPanelElement implements SerializableElement {
 		}
 	}
 
+	public Action checkActions() {
+		for (Event event : eventManager.getEvents()) {
+			Action action = event.getAction();
+			if (!action.isCorrect()) {
+				return action;
+			}
+		}
+
+		if (defaultAction != null) {
+			if (!defaultAction.isCorrect()) {
+				return defaultAction;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Обновляет дополнительный контекст у всех событий элемента и у действия по
 	 * умолчанию.

@@ -14,6 +14,7 @@ import ru.curs.showcase.runtime.*;
  * @author den
  * 
  */
+@Description(process = "Загрузка данных для графика из БД")
 public class ChartDBGateway extends CompBasedElementSPCallHelper implements ChartGateway {
 
 	private static final int OUT_SETTINGS_PARAM = 6;
@@ -41,7 +42,7 @@ public class ChartDBGateway extends CompBasedElementSPCallHelper implements Char
 	}
 
 	@Override
-	protected DataPanelElementType getGatewayType() {
+	protected DataPanelElementType getElementType() {
 		return DataPanelElementType.CHART;
 	}
 

@@ -210,7 +210,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
-		DataPanelElementInfo el = panel.getTabById("11").getElementInfoById("1101");
+		SelfCheckObject el = panel.getTabById("11").getElementInfoById("1101");
 		assertFalse(el.isCorrect());
 	}
 

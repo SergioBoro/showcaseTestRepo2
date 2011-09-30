@@ -16,9 +16,5 @@ public enum ShowInMode implements SerializableElement {
 	/**
 	 * В модальном окне.
 	 */
-	MODAL_WINDOW,
-	/**
-	 * На отдельной вкладке браузера.
-	 */
-	BROWSER_TAB
+	MODAL_WINDOW
 }

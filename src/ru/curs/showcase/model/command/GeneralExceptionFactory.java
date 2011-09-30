@@ -8,13 +8,13 @@ import ru.curs.showcase.runtime.NoSuchUserDataException;
 import ru.curs.showcase.util.exception.BaseException;
 
 /**
- * Фабрика по созданию GeneralServerException на основе серверного Exception.
+ * Фабрика по созданию GeneralException на основе серверного Exception.
  * 
  * @author den
  * 
  */
-public final class GeneralServerExceptionFactory {
-	private GeneralServerExceptionFactory() {
+public final class GeneralExceptionFactory {
+	private GeneralExceptionFactory() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -28,7 +28,6 @@ public final class GeneralServerExceptionFactory {
 	public static GeneralException build(final Throwable original) {
 		GeneralException res = new GeneralException(original, getUserMessage(original));
 		res.setOriginalExceptionClass(original.getClass().getName());
-		res.setOriginalTrace(GeneralException.getStackText(original));
 		res.setOriginalMessage(getOriginalMessage(original));
 		res.setType(getType(original));
 		res.setContext(getContext(original));

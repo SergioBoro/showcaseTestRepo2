@@ -309,7 +309,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testRefreshContextOnlyAction() {
-		final int elNum = 5;
+		final int elNum = 6;
 		Action action = getAction(TREE_MULTILEVEL_XML, 0, elNum);
 		assertTrue(action.getDataPanelLink().getElementLinks().get(0).getRefreshContextOnly());
 		assertTrue(action.getDataPanelLink().getElementLinks().get(1).getSkipRefreshContextOnly());

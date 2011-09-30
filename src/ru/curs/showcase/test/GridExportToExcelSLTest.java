@@ -46,12 +46,14 @@ public class GridExportToExcelSLTest extends AbstractTest {
 				.getNamedItem(GeneralXMLHelper.WIDTH_TAG));
 
 		// header row test above
-		NodeList list = xml.getDocumentElement().getElementsByTagName(GridToExcelXMLFactory.ROW_TAG);
+		NodeList list =
+			xml.getDocumentElement().getElementsByTagName(GridToExcelXMLFactory.ROW_TAG);
 		assertTrue(list.getLength() > 0);
 		assertEquals(GridValueType.STRING.toStringForExcel(), list.item(0).getFirstChild()
 				.getAttributes().getNamedItem(GeneralXMLHelper.TYPE_TAG).getNodeValue());
 
-		assertEquals(GridToExcelXMLFactory.ROW_TAG, xml.getDocumentElement().getLastChild().getNodeName());
+		assertEquals(GridToExcelXMLFactory.ROW_TAG, xml.getDocumentElement().getLastChild()
+				.getNodeName());
 		assertEquals(GridToExcelXMLFactory.CELL_TAG, xml.getDocumentElement().getLastChild()
 				.getFirstChild().getNodeName());
 		assertNotNull(xml.getDocumentElement().getLastChild().getFirstChild().getFirstChild()

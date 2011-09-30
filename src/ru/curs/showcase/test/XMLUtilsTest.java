@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.app.api.html.XFormContext;
@@ -383,11 +383,11 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testDPElementInfoToXML() {
-		DataPanelElementInfo element = getTestXForms1Info();
+		SelfCheckObject element = getTestXForms1Info();
 		Document doc = XMLUtils.objectToXML(element);
 		assertEquals("element", doc.getDocumentElement().getNodeName());
-		DataPanelElementInfo el2 =
-			(DataPanelElementInfo) XMLUtils.xmlToObject(doc.getDocumentElement(),
+		SelfCheckObject el2 =
+			(SelfCheckObject) XMLUtils.xmlToObject(doc.getDocumentElement(),
 					DataPanelElementInfo.class);
 		assertEquals(element, el2);
 	}

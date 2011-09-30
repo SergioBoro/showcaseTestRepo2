@@ -3,8 +3,9 @@ package ru.curs.showcase.model.frame;
 import java.io.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.model.Description;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.*;
 
 /**
@@ -13,6 +14,7 @@ import ru.curs.showcase.util.exception.*;
  * @author den
  * 
  */
+@Description(process = "Загрузка данных для фрейма на главной странице из файла")
 public class MainPageFrameFileGateway implements MainPageFrameGateway {
 
 	private String fileName;

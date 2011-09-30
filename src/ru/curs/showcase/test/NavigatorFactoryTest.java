@@ -9,6 +9,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.*;
+import ru.curs.showcase.model.IncorrectElementException;
 import ru.curs.showcase.model.navigator.*;
 
 /**
@@ -38,7 +39,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	/**
 	 * Число элементов в первой группе навигатора.
 	 */
-	private static final int FIRST_GRP_ELEMENTS_COUNT = 6;
+	private static final int FIRST_GRP_ELEMENTS_COUNT = 7;
 
 	/**
 	 * Тест навигатора, построенного на основе данных из файла XML.
@@ -51,9 +52,14 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 					generateTestURLParams(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT));
 		NavigatorFactory factory = new NavigatorFactory(context);
 		NavigatorGateway gateway = new NavigatorFileGateway();
-		InputStream stream = gateway.getRawData(new CompositeContext(), TREE_MULTILEVEL_XML);
+		Navigator nav;
+		try {
+			InputStream stream = gateway.getRawData(new CompositeContext(), TREE_MULTILEVEL_XML);
 
-		Navigator nav = factory.fromStream(stream);
+			nav = factory.fromStream(stream);
+		} finally {
+			gateway.releaseResources();
+		}
 		assertEquals("200px", nav.getWidth());
 		assertTrue(nav.getHideOnLoad());
 		assertEquals(nav.getGroups().get(0).getElements().get(1), nav.getAutoSelectElement());
@@ -101,6 +107,22 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			factory.fromStream(xml);
 		} finally {
 			gw.releaseResources();
+		}
+	}
+
+	@Test(expected = IncorrectElementException.class)
+	public void testWrongActionInNavigator() {
+		CompositeContext context =
+			new CompositeContext(
+					generateTestURLParams(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT));
+		NavigatorFactory factory = new NavigatorFactory(context);
+		NavigatorGateway gateway = new NavigatorFileGateway();
+		try {
+			InputStream stream =
+				gateway.getRawData(new CompositeContext(), "tree_multilevel.wrong.2.xml");
+			factory.fromStream(stream);
+		} finally {
+			gateway.releaseResources();
 		}
 	}
 }

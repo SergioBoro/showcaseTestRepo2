@@ -44,7 +44,7 @@
 				<modalwindow caption="test_action_name" width="99"
 					height="98" show_close_bottom_button="true" />
 				<datapanel type="a.xml">
-					<element id="elid" refresh_context_only="true">
+					<element id="elid" refresh_context_only="false">
 						<add_context>add_context</add_context>
 					</element>
 					<element id="elid2" skip_refresh_context_only="true"
@@ -68,5 +68,20 @@
 				</client>					
 			</action>
 		</level1>	
+		<level1 id="9CBCF924-B7EC-413F-BF49-F35F1E6A92DC" name="Запасы на конец отчетного периода - Всего">
+			<action keep_user_settings="false">
+				<main_context>Запасы на конец отчетного периода - Всего
+				</main_context>
+				<datapanel type="a.xml">
+					<element id="elid" refresh_context_only="true">
+						<add_context>add_context</add_context>
+					</element>
+					<element id="elid2" skip_refresh_context_only="true"
+						keep_user_settings="true">
+						<add_context>add_context</add_context>
+					</element>
+				</datapanel>					
+			</action>
+		</level1>		
 	</group>
 </navigator>

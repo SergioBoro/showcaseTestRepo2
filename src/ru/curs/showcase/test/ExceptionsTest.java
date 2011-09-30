@@ -17,7 +17,7 @@ import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.chart.ChartGetCommand;
-import ru.curs.showcase.model.command.GeneralServerExceptionFactory;
+import ru.curs.showcase.model.command.GeneralExceptionFactory;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.grid.*;
@@ -91,7 +91,6 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 			assertEquals(GeneralException.class, e.getClass());
 			assertEquals(SettingsFileOpenException.class.getName(),
 					((GeneralException) e).getOriginalExceptionClass());
-			assertNotNull(((GeneralException) e).getOriginalTrace());
 			assertNotNull(((GeneralException) e).getOriginalMessage());
 			return;
 		}
@@ -297,7 +296,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 			new SQLException(String.format("%stest1%s", ValidateInDBException.SOL_MES_PREFIX,
 					ValidateInDBException.SOL_MES_SUFFIX));
 		ValidateInDBException exc2 = new ValidateInDBException(exc);
-		GeneralException gse = GeneralServerExceptionFactory.build(exc2);
+		GeneralException gse = GeneralExceptionFactory.build(exc2);
 		assertFalse(GeneralException.needDetailedInfo(gse));
 		assertEquals("Ошибка", exc2.getUserMessage().getText());
 		GeneralException.generateDetailedInfo(gse);
@@ -316,7 +315,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 
 		DBQueryException dbqe =
 			new DBQueryException(dp.getTabById("2").getElementInfoById("2"), context, "error");
-		GeneralException gse = GeneralServerExceptionFactory.build(dbqe);
+		GeneralException gse = GeneralExceptionFactory.build(dbqe);
 
 		final String errorMes =
 			"Произошла ошибка при выполнении хранимой процедуры grid_bal. Подробности: error.";
@@ -441,5 +440,17 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		gc.apply(context);
 		ElementRawData res = gateway.getRawData(gc, elInfo);
 		res.prepareSettings();
+	}
+
+	@Test(expected = IncorrectElementException.class)
+	public void testElementActionWrong() throws Exception {
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
+		elInfo.setProcName("xforms_proc_wrong_1");
+		generateTestTabWithElement(elInfo);
+		XFormContext xContext = new XFormContext(getTestContext1());
+		XFormGateway gateway = new XFormDBGateway();
+		HTMLBasedElementRawData raw = gateway.getRawData(xContext, elInfo);
+		XFormFactory factory = new XFormFactory(raw);
+		factory.build();
 	}
 }

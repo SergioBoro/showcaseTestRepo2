@@ -132,9 +132,7 @@ public interface DataServiceAsync {
 	 * @param callback
 	 *            - callback.
 	 */
-	void
-			getServerCurrentState(CompositeContext context,
-					AsyncCallback<ServerState> callback);
+	void getServerCurrentState(CompositeContext context, AsyncCallback<ServerState> callback);
 
 	/**
 	 * Асинхронная версия.

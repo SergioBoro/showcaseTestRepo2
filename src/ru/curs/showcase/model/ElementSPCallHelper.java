@@ -117,14 +117,14 @@ public abstract class ElementSPCallHelper extends SPCallHelper {
 	@Override
 	protected void handleDBQueryException(final SQLException e) {
 		throw new DBQueryException(e, getProcName(), new DataPanelElementContext(getContext(),
-				getElementInfo()));
+				getElementInfo()), getClass());
 	}
 
 	/**
 	 * Возвращает имя схемы для проверки свойств элемента.
 	 */
 	private String getSettingsSchema() {
-		return getGatewayType().getSettingsSchemaName();
+		return getElementType().getSettingsSchemaName();
 	}
 
 	protected int getElementIdIndex(final int index) {

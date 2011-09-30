@@ -38,9 +38,9 @@ public abstract class ServiceLayerCommand<T> {
 
 	private T result;
 
-	private final ObjectToLogSerializer serializer = AppRegistry.getObjectSerializer();
+	private final ObjectSerializer serializer = AppRegistry.getObjectSerializer();
 
-	protected ObjectToLogSerializer getSerializer() {
+	protected ObjectSerializer getSerializer() {
 		return serializer;
 	}
 
@@ -78,7 +78,7 @@ public abstract class ServiceLayerCommand<T> {
 			postProcess();
 			return result;
 		} catch (Throwable e) {
-			throw GeneralServerExceptionFactory.build(e);
+			throw GeneralExceptionFactory.build(e);
 		}
 	}
 

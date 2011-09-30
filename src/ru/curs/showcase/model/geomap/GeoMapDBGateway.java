@@ -14,6 +14,7 @@ import ru.curs.showcase.runtime.*;
  * @author den
  * 
  */
+@Description(process = "Загрузка данных для карты из БД")
 public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements GeoMapGateway {
 
 	private static final int OUT_SETTINGS_PARAM = 6;
@@ -45,7 +46,7 @@ public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements Geo
 	}
 
 	@Override
-	protected DataPanelElementType getGatewayType() {
+	protected DataPanelElementType getElementType() {
 		return DataPanelElementType.GEOMAP;
 	}
 

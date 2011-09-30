@@ -11,6 +11,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
  * @author den
  * 
  */
+@Description(process = "Загрузка метаданных для элемента инф. панели из БД")
 public class ElementSettingsDBGateway extends ElementSPCallHelper implements
 		ElementSettingsGateway {
 
@@ -51,7 +52,7 @@ public class ElementSettingsDBGateway extends ElementSPCallHelper implements
 	}
 
 	@Override
-	protected DataPanelElementType getGatewayType() {
+	protected DataPanelElementType getElementType() {
 		return getElementInfo().getType();
 	}
 

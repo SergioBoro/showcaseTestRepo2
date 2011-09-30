@@ -6,6 +6,6 @@ package ru.curs.showcase.util;
  * @author den
  * 
  */
-public interface ObjectToLogSerializer {
+public interface ObjectSerializer {
 	String serialize(Object obj);
 }

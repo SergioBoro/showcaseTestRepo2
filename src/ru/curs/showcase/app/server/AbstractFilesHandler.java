@@ -10,7 +10,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.command.GeneralServerExceptionFactory;
+import ru.curs.showcase.model.command.GeneralExceptionFactory;
 import ru.curs.showcase.util.TextUtils;
 
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -58,11 +58,11 @@ public abstract class AbstractFilesHandler {
 		try {
 			handleTemplateMethod();
 		} catch (SerializationException e) {
-			GeneralServerExceptionFactory.build(e);
+			GeneralExceptionFactory.build(e);
 		} catch (IOException e) {
-			GeneralServerExceptionFactory.build(e);
+			GeneralExceptionFactory.build(e);
 		} catch (FileUploadException e) {
-			GeneralServerExceptionFactory.build(e);
+			GeneralExceptionFactory.build(e);
 		}
 	}
 

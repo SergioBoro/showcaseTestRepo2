@@ -1,6 +1,6 @@
 package ru.curs.showcase.util.xml;
 
-import ru.curs.showcase.util.ObjectToLogSerializer;
+import ru.curs.showcase.util.ObjectSerializer;
 
 /**
  * Сериализатор объекта в XML для передачи в вебконсоль.
@@ -8,7 +8,7 @@ import ru.curs.showcase.util.ObjectToLogSerializer;
  * @author den
  * 
  */
-public class XMLObjectToLogSerializer implements ObjectToLogSerializer {
+public class XMLObjectSerializer implements ObjectSerializer {
 
 	@Override
 	public String serialize(final Object aObj) {

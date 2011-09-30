@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.util.ReflectionUtils;
 import ru.curs.showcase.util.exception.BaseException;
 
 /**
@@ -16,20 +17,18 @@ import ru.curs.showcase.util.exception.BaseException;
 public class DBQueryException extends BaseException {
 
 	private static final String ERROR_MES_TEXT = "Подробности";
-	/**
-	 * Текст ошибки.
-	 */
+
 	private static final String ERROR_HEADER =
 		"Произошла ошибка при выполнении хранимой процедуры";
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 4849562484767586377L;
 
 	public DBQueryException(final SQLException cause, final String aProcName,
-			final DataPanelElementContext aContext) {
-		super(ExceptionType.SOLUTION, String.format("%s %s.", ERROR_HEADER, aProcName), cause);
+			final DataPanelElementContext aContext,
+			final Class<? extends SPCallHelper> gatewayClass) {
+		super(ExceptionType.SOLUTION, String.format("Процесс: %s. %s %s.",
+				ReflectionUtils.getProcessDescForClass(gatewayClass), ERROR_HEADER, aProcName),
+				cause);
 		setContext(aContext);
 	}
 

@@ -18,15 +18,14 @@ import ru.curs.showcase.app.api.event.*;
  */
 @XmlRootElement(name = "element")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DataPanelElementInfo extends TransferableElement implements SerializableElement {
+public class DataPanelElementInfo extends TransferableElement implements SerializableElement,
+		SelfCheckObject {
 	private static final String KEEP_USER_SETTINGS_ERROR =
 		"Невозможно получить значение keepUserSettings для действия, не содержащего блока для работы с инф. панелью";
 	private static final String UNKNOWN_ELEMENT_TYPE =
 		"Неизвестный тип элемента информационной панели";
 	public static final int DEF_TIMER_INTERVAL = 600;
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = -6461216659708261808L;
 
 	/**
@@ -135,16 +134,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		super();
 	}
 
-	/**
-	 * Проверка на то, что данные для элемента заданы корректно. Необходима в
-	 * дополнение к проверке XSD, т.к. не всегда панель приходит к нам в виде
-	 * XML. Возвращаем результат, т.к. это GWT API и нельзя вернуть серверное
-	 * исключение.
-	 * 
-	 * @return
-	 * 
-	 * @return результат проверки.
-	 */
+	@Override
 	public boolean isCorrect() {
 		Boolean checkRes = (id != null) && checkRelatedExistances();
 		switch (type) {

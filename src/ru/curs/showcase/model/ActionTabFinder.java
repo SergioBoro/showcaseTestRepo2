@@ -16,7 +16,7 @@ public abstract class ActionTabFinder extends GeneralXMLHelper {
 	 * Часть сообщения об ошибке, передаваемая в случае неверного номера
 	 * вкладки.
 	 */
-	private static final String ERROR_MES = "вкладка %s в панели %s не существует";
+	private static final String ERROR_MES = "Вкладка %s в инф. панели %s не существует";
 	/**
 	 * Признак того, что нужно искать первую вкладку при первом открытии панели
 	 * и оставаться на текущей при последующих.
