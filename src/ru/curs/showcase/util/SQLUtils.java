@@ -49,7 +49,7 @@ public final class SQLUtils {
 	public static boolean existsColumn(final ResultSetMetaData md, final String caption)
 			throws SQLException {
 		for (int i = 1; i <= md.getColumnCount(); i++) {
-			if (caption.equals(md.getColumnLabel(i))) {
+			if (caption.equalsIgnoreCase(md.getColumnLabel(i))) {
 				return true;
 			}
 		}

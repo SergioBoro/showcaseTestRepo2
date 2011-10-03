@@ -160,6 +160,6 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ServerStateServlet</servlet-name>
-    <url-pattern>/ServerStateServlet</url-pattern>
+    <url-pattern>/forall/serverstate</url-pattern>
   </servlet-mapping>
 </web-app>

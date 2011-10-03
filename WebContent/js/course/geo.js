@@ -61,19 +61,21 @@ g.makeMap = function(mapDivId, mapLegendId, data, options) {
     if (!mapNode) return;
 
     g.destroyMap(mapDivId);
+    
+    if (!options) options = {};
+    
+	// register dojo modules
+	if (options.registerModules) {
+		dojo.forEach(options.registerModules, function(module){
+			dojo.registerModulePath(module[0], module[1]);
+		});
+	}
 
-	if (!options) options = {};
 	var managerModule = options.managerModule ? options.managerModule : defaultManagerModule;
 	dojo.require(managerModule);
 	managerModule = dojo.getObject(managerModule);
 	var managerFunction = options.managerFunction ? options.managerFunction : defaultManagerFunction;
 	if (managerFunction) {
-		// register dojo modules
-		if (options.registerModules) {
-			dojo.forEach(options.registerModules, function(module){
-				dojo.registerModulePath(module[0], module[1]);
-			});
-		}
 		// clean up options
 		delete options.managerModule, options.managerFunction, options.registerModules;
 		dojo.mixin(data, options);

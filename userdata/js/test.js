@@ -1,4 +1,4 @@
-dojo.provide("course.demo");
+dojo.provide("solution.test");
 
 dojo.require("djeo.Map");
 
@@ -23,9 +23,10 @@ djeo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=
 
 (function() {
 
-course.demo.make = function(mapNode, legendNode, data) {
+	solution.test.make = function(mapNode, legendNode, data) {
 	var map, legend;
 	var mapStyle = {
+		id: "populationDensity",
 		//styleClass: "populationDensity",
 		fid: "l2",
 		stroke: "black",
@@ -43,7 +44,6 @@ course.demo.make = function(mapNode, legendNode, data) {
 		legend: "djeo._getBreaksAreaLegend"
 	};
 
-	//if (!data.geometries) data.geometries = courseApp.data.geo.russiaGeometries;
 	dojo.mixin(data, {
 		projection: "RUSSIA-ALBERS"
 	});

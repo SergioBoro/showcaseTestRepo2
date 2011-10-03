@@ -55,6 +55,10 @@ public final class ServerState implements SerializableElement {
 	 */
 	private String sqlVersion;
 
+	private String gwtVersion;
+
+	private String dojoVersion;
+
 	public String getAppVersion() {
 		return appVersion;
 	}
@@ -103,14 +107,6 @@ public final class ServerState implements SerializableElement {
 		serverTime = aServerTime;
 	}
 
-	@Override
-	public String toString() {
-		return "ServerCurrentState [appVersion=" + appVersion + ", userName=" + userName
-				+ ", isNativeUser=" + isNativeUser + ", servletContainerVersion="
-				+ servletContainerVersion + ", javaVersion=" + javaVersion + ", serverTime="
-				+ serverTime + ", sqlVersion=" + sqlVersion + "]";
-	}
-
 	public String getSqlVersion() {
 		return sqlVersion;
 	}
@@ -118,4 +114,21 @@ public final class ServerState implements SerializableElement {
 	public void setSqlVersion(final String aSqlVersion) {
 		sqlVersion = aSqlVersion;
 	}
+
+	public String getGwtVersion() {
+		return gwtVersion;
+	}
+
+	public void setGwtVersion(final String aGwtVersion) {
+		gwtVersion = aGwtVersion;
+	}
+
+	public String getDojoVersion() {
+		return dojoVersion;
+	}
+
+	public void setDojoVersion(final String aDojoVersion) {
+		dojoVersion = aDojoVersion;
+	}
+
 }

@@ -32,8 +32,7 @@ public final class ServerStateFactory {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	public static ServerState build(final String sessionId) throws SQLException,
-			IOException {
+	public static ServerState build(final String sessionId) throws SQLException, IOException {
 		ServerState state = new ServerState();
 		state.setServerTime(TextUtils.getCurrentLocalDate());
 		state.setAppVersion(getAppVersion());
@@ -44,6 +43,7 @@ public final class ServerStateFactory {
 		state.setJavaVersion(System.getProperty("java.version"));
 		state.setUserName(ServletUtils.getCurrentSessionUserName());
 		state.setSqlVersion(getSQLVersion());
+
 		return state;
 	}
 
