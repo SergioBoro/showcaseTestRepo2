@@ -346,6 +346,8 @@
 	<body>
 
 
+<xf:repeat id="securityRealEstateRow" nodeset="/schema/info">
+
 		<div style="font-size: 15px;"> Имя: </div>
 		<div>
 			<xf:input ref="/schema/info/name">
@@ -415,9 +417,15 @@
 			           id : 'xformId',
                        procListAndCount  : '[dbo].[companylist_and_count]',
                        generalFilters      : '',
-                       currentValue        : '/schema/info/name',
+                       currentValue        : 'XPath(/schema/info[index(quot(securityRealEstateRow))]/name)',
                        windowCaption       : 'Выберите название',
-                       xpathMapping        : {'/schema/info/name': 'name', '/schema/info/comment': 'CreateRowUser'}
+                       xpathMapping        : {
+                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/name)': 
+                                              'name', 
+                                              
+                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/comment)': 
+                                              'CreateRowUser'
+                                             }
                        });;" />
 				</xf:action>
 			</xf:trigger>
@@ -433,13 +441,21 @@
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
-                       xpathMapping        : {'/schema/info/name': 'name', '/schema/info/comment': '/schema/info/eyescolour'}
+                       xpathMapping        : {
+                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/name)': 
+                                              'name', 
+                                              
+                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/comment)': 
+                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/eyescolour)'
+                                             }
 					   });;" />
 				</xf:action>
 			</xf:trigger>
-			
-
 		</div>
+		
+		
+</xf:repeat>		
+		
 		<div style="font-size: 15px;"> Цвет глаз (1): </div>
 		<div>
 			<xf:select1 appearance="full" ref="/schema/info/eyescolour">

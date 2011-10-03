@@ -9922,15 +9922,26 @@ function GetElem(id)
 	return document.getElementById(id).innerHTML;
 }
 
+//
+function isXPath(value)
+{
+	return /^XPath\(\S*\)/i.test(value);
+}
+
+function getXPath(value)
+{
+	return value.replace(/^XPath\((\S*)\)/i,"$1").replace(/quot\((\w*)\)/g,"'$1'");
+}
+
 function setXFormByXPath(ok, selected, xpathMapping)
 {
 	if (ok) {
 		for (var xpath in xpathMapping) {
 			var value = xpathMapping[xpath];
-            if ((value == null) || (value[0] != '/')) {
-           	    (new XFSetvalue(new Binding(false, xpath),null,selected[value],null,null)).run();            	
+            if (isXPath(value)) {
+           	    (new XFSetvalue(new Binding(false, getXPath(xpath)),getXPath(value),null,null,null)).run();            	
             }else {
-           	    (new XFSetvalue(new Binding(false, xpath),value,null,null,null)).run();
+            	(new XFSetvalue(new Binding(false, getXPath(xpath)),null,selected[value],null,null)).run();
             }
 		}		
 	}
@@ -9938,7 +9949,11 @@ function setXFormByXPath(ok, selected, xpathMapping)
 
 function getValueByXPath(xpath)
 {
-	return (new Binding(true, xpath)).evaluate();
+    if (isXPath(xpath)) {
+    	return (new Binding(true, getXPath(xpath))).evaluate();            	
+    }else {
+    	return xpath;
+    }
 }
 
 

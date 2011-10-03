@@ -317,12 +317,7 @@ public final class XFormPanelCallbacksEvents {
 				procName = param.procListAndCount();
 			}
 
-			String currentValue = param.currentValue();
-			if (currentValue.startsWith("/")) {
-				currentValue = getValueByXPath(currentValue);
-			}
-
-			c.initData(param.generalFilters(), procName, currentValue);
+			c.initData(param.generalFilters(), procName, getValueByXPath(param.currentValue()));
 
 		}
 
