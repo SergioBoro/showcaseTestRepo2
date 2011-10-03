@@ -167,7 +167,7 @@ dojo.declare("djeo.ymaps.Placemark", djeo.common.Placemark, {
 
 	},
 
-	rotate: function(heading, feature) {
+	rotate: function(orientation, feature) {
 
 	}
 });

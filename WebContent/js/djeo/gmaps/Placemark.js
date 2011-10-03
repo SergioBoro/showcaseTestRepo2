@@ -174,7 +174,7 @@ dojo.declare("djeo.gmaps.Placemark", djeo.common.Placemark, {
 		feature.baseShapes[0].setPosition(new GM.LatLng(position[1], position[0]));
 	},
 
-	rotate: function(heading, feature) {
+	rotate: function(orientation, feature) {
 
 	}
 });

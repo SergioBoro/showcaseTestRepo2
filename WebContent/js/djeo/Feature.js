@@ -51,7 +51,7 @@ dojo.declare("djeo.Feature", null, {
 	},
 	
 	get: function(attr) {
-		return this.map.useAttrs ? (this.attrs && this.attrs[attr] ? this.attrs[attr] : this[attr]) : this[attr];
+		return this.map.useAttrs ? (this.attrs && this.attrs[attr]!==undefined ? this.attrs[attr] : this[attr]) : this[attr];
 	},
 	
 	addStyle: function(/* Array|Object */style) {
