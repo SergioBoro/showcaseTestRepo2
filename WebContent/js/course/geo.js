@@ -26,19 +26,18 @@ function convertData(data) {
 				var coords, type;
 				if (feature.pointCoords) {
 					coords = feature.pointCoords;
-					delete feature.pointCoords;
 					type = "Point";
 				}
 				else if (feature.polygonCoords) {
 					coords = feature.polygonCoords;
-					delete feature.polygonCoords;
 					type = "Polygon";
 				}
 				else if (feature.multiPolygonCoordinates) {
 					coords = feature.multiPolygonCoords;
-					delete feature.multiPolygonCoords;
 					type = "MultiPolygon";
 				}
+				// clean feature object
+				delete feature.pointCoords, feature.polygonCoords, feature.multiPolygonCoords;
 				if (coords) {
 					feature.coords = coords;
 					feature.type = type;
@@ -67,6 +66,18 @@ g.makeMap = function(mapDivId, mapLegendId, data, options) {
 	dojo.require(managerModule);
 	var managerFunction = options.managerFunction ? options.managerFunction : defaultManagerFunction;
 	if (managerFunction) {
+		// register dojo modules
+		if (options.registerModules) {
+			dojo.forEach(options.registerModules, function(module){
+				dojo.registerModulePath(module[0], module[1]);
+			});
+		}
+		// clean up options
+		delete options.managerModule, options.managerFunction, options.registerModules;
+		dojo.mixin(data, options);
+		// patch data
+		if (!data.mapEngine) data.mapEngine = defaultMapEngine;
+		data.useAttrs = true;
 		mapRegistry[mapDivId] = managerFunction(mapNode, dojo.byId(mapLegendId), data);
 	}
 }

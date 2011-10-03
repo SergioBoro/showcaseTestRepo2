@@ -17,8 +17,8 @@ dojo.require("djeo.util.colorbrewer");
 dojo.require("djeo.util.jenks");
 
 (function() {
-	
-var mapEngine = "gfx";
+
+var defaultMapEngine = "gfx";
 
 course.geo.demo.make = function(mapNode, legendNode, data) {
 	var map, legend;
@@ -41,14 +41,11 @@ course.geo.demo.make = function(mapNode, legendNode, data) {
 		legend: "djeo._getBreaksAreaLegend"
 	};
 
-	map = new djeo.Map(mapNode, {
-		geometries: kurs.data.russiaGeometries,
-		features: data.features,
-		style: mapStyle,
-		useAttrs: true,
-		mapEngine: mapEngine
-	});
-	
+	if (!data.geometries) data.geometries = kurs.data.russiaGeometries;
+	data.style = mapStyle;
+
+	map = new djeo.Map(mapNode, data);
+
 	map.ready(function(){
 		if (legendNode) legend = new djeo.widget.Legend({map: map}, legendNode);
 	});
