@@ -1,4 +1,4 @@
-dojo.provide("course.geo.demo");
+dojo.provide("course.demo");
 
 dojo.require("djeo.Map");
 
@@ -10,30 +10,33 @@ dojo.require("djeo.control.Tooltip");
 dojo.require("djeo.widget.Legend");
 
 //dojo.require("kurs.data.russia_geometriesEpsg4326");
-dojo.require("kurs.data.russia_geometries");
+dojo.require("courseApp.data.geo.russia_geometries");
 
 dojo.require("djeo.util.numeric");
 dojo.require("djeo.util.colorbrewer");
 dojo.require("djeo.util.jenks");
 
+dojo.require("djeo.util.proj4js");
+dojo.require("djeo.util.proj4js.aea");
+dojo.require("djeo.projection");
+djeo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=0 +lon_0=105 +x_0=18500000 +y_0=0 +ellps=krass +units=m +towgs84=28,-130,-95,0,0,0,0 +no_defs");
+
 (function() {
 
-var defaultMapEngine = "gfx";
-
-course.geo.demo.make = function(mapNode, legendNode, data) {
+course.demo.make = function(mapNode, legendNode, data) {
 	var map, legend;
 	var mapStyle = {
 		id: "populationDensity",
-		styleClass: "populationDensity",
+		//styleClass: "populationDensity",
+		fid: "l2",
 		stroke: "black",
 		strokeWidth: 1,
-		name: "Style name",
 		styleFunction: {
 			getStyle: "djeo.util.numeric.getStyle",
 			options: {
 				numClasses: 7,
 				colorSchemeName: "Reds",
-				attr: "indicator1",
+				attr: "mainInd",
 				breaks: "djeo.util.jenks.getBreaks",
 				calculateStyle: djeo.util.colorbrewer.calculateStyle
 			}
@@ -41,12 +44,19 @@ course.geo.demo.make = function(mapNode, legendNode, data) {
 		legend: "djeo._getBreaksAreaLegend"
 	};
 
-	if (!data.geometries) data.geometries = kurs.data.russiaGeometries;
-	data.style = mapStyle;
+	//if (!data.geometries) data.geometries = courseApp.data.geo.russiaGeometries;
+	dojo.mixin(data, {
+		geometries: courseApp.data.geo.russiaGeometries,
+		style: mapStyle,
+		projection: "RUSSIA-ALBERS"
+	});
 
 	map = new djeo.Map(mapNode, data);
 
 	map.ready(function(){
+		new djeo.control.Navigation(map);
+		new djeo.control.Highlight(map);
+		new djeo.control.Tooltip(map);
 		if (legendNode) legend = new djeo.widget.Legend({map: map}, legendNode);
 	});
 	
