@@ -99,7 +99,7 @@
 			<xs:attribute name="show_in" type="showInMode" />
 			<xs:attribute name="keep_user_settings" type="xs:boolean" />
 			<xs:assert
-				test="(count(datapanel) + count(server) + count(client) =0) or (count(*[position()=1 and name()='main_context']) = 1)" />
+				test="if (datapanel or server) then main_context[not(preceding-sibling::*)] else true()" />
 		</xs:complexType>
 	</xs:element>
 </xs:schema>
