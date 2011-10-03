@@ -153,7 +153,7 @@ public class MapPanel extends BasicElementPanelBasis {
 
 		final String paramMap2 = aGeoMap.getTemplate();
 
-		drawMap(divIdMap, paramMap1, paramMap2);
+		drawMap(divIdMap, divIdLegend, paramMap1, paramMap2);
 		checkForDefaultAction();
 
 		if (getElementInfo().getRefreshByTimer()) {
@@ -248,20 +248,23 @@ public class MapPanel extends BasicElementPanelBasis {
 	 * 
 	 * @param divIdMap
 	 *            - ID для div карты
+	 * @param divIdMap
+	 *            - ID для div легенды карты
+	 * 
 	 * 
 	 * @param jsonStr1
 	 *            - JSON строка с данными карты
 	 * @param jsonStr2
 	 *            - JSON строка с настройками карты
 	 */
-	public native void
-			drawMap(final String divIdMap, final String jsonStr1, final String jsonStr2) /*-{
+	public native void drawMap(final String divIdMap, final String divIdLegend,
+			final String jsonStr1, final String jsonStr2) /*-{
 		$wnd.gwtMapFunc =                   
 		@ru.curs.showcase.app.client.api.MapPanelCallbacksEvents::mapPanelClick(Ljava/lang/String;Ljava/lang/String;);
 
 		$wnd.dojo.require("course.geo");
 		// course.geo.makeMap("map", optionSet1, optionSet2, mapConvertorFunc);
-		$wnd.course.geo.makeMap(divIdMap, jsonStr1, jsonStr2, $wnd.mapConvertorFunc);
+		$wnd.course.geo.makeMap(divIdMap, divIdLegend, jsonStr1, jsonStr2);
 	}-*/;
 
 	@Override
