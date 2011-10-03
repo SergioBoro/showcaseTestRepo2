@@ -24,19 +24,21 @@
     
     <link rel="stylesheet" href="js/dijit/themes/claro/claro.css"/>
     
-    <script src="https://www.google.com/jsapi?key=ABQIAAAA-DMAtggvLwlIYlUJiASaAxRQnCpeV9jusWIeBw0POFqU6SItGxRWZhddpS8pIkVUd2fDQhzwPUWmMA"></script>
+<!--    <script src="https://www.google.com/jsapi?key=ABQIAAAA-DMAtggvLwlIYlUJiASaAxRQnCpeV9jusWIeBw0POFqU6SItGxRWZhddpS8pIkVUd2fDQhzwPUWmMA"></script>-->
     <script type="text/javascript">
-        var djConfig = {
+        var dojoConfig = {
             parseOnLoad: false,
             isDebug: false,
-            modulePaths: {'course': '../course', 'courseApp': '../..'},
+            paths: {'course': '../course', 'djeo': '../djeo', 'courseApp': '../..'},
             gfxRenderer: 'svg,silverlight,vml'
         };
     </script>    
     <script src="js/dojo/dojo.js"></script>
-    <script>
-      dojo.require("course.geo.ge.Engine");
-    </script> 
+    
+<!--    <script>-->
+<!--      dojo.require("course.geo.ge.Engine");-->
+<!--    </script> -->
+    
     <script src="js/internalShowcase.js"></script>
     <script src="solutions/<%=userdataId%>/js/solution.js"></script>
     
