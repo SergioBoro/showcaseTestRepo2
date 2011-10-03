@@ -123,9 +123,9 @@ g._getBreaksIconLegend = function(domContainer, style, features, name) {
 				if (isVectorShape) {
 					var surface = dojox.gfx.createSurface(td1, width+2, height+2),
 					shapeDef = g.shapes[shapeType],
-					shapeSize = shapeType=="circle" ? 2 : Math.max(shapeDef.size[0], shapeDef.size[1]),
+					shapeSize = shapeType=="circle" ? Math.max(width, height) : Math.max(shapeDef.size[0], shapeDef.size[1]),
 					shape = shapeType=="circle" ?
-						surface.createCircle({cx:size/2+1, cy:size/2+1, r:Math.min(width, height)/2}) :
+						surface.createCircle({cx:width/2+1, cy:height/2+1, r:Math.min(width, height)/2}) :
 						surface.createPolyline(shapeDef.points).setTransform([
 							dojox.gfx.matrix.translate(width/2+1, height/2+1),
 							dojox.gfx.matrix.scale(maxWH/shapeSize)
