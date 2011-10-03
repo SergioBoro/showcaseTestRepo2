@@ -78,35 +78,23 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 	},
 	
 	applyPointStyle: function(feature, coords, calculatedStyle) {
-		var specificStyles = calculatedStyle["point"],
+		var specificStyle = calculatedStyle.point,
+			specificShapeStyles = calculatedStyle.points,
 			baseShapes = feature.baseShapes,
 			numBaseShapes = baseShapes.length;
 
-		// check we have a specific case of when relative only relative scaling only is applied
-		if (numBaseShapes && calculatedStyle.rScale !== undefined && !specificStyles) {
-			var shapeType = cp.get("shape", calculatedStyle),
-				src = cp.getImgSrc(calculatedStyle);
-			if (!shapeType && !src) {
-				dojo.forEach(baseShapes, function(shape){
-					shape.applyRightTransform(dojox.gfx.matrix.scale(calculatedStyle.rScale));
-				});
-				return;
-			}
-		}
-		
-		this._updateShapes(feature, coords, calculatedStyle, specificStyles, true);
-
-		if (specificStyles) {
+		if (specificShapeStyles) {
+			this._updateShapes(feature, coords, calculatedStyle, specificShapeStyles, true);
 			var recreateShapes = false;
-			dojo.forEach(specificStyles, function(specificStyle, i){
+			dojo.forEach(specificShapeStyles, function(specificShapeStyle, i){
 				var currentShape = baseShapes[i];
 				if (currentShape && recreateShapes) {
 					// disconnect events and remove the shape
 					this._removeShape(currentShape, feature);
 					currentShape = null;
 				}
-				// index of specificStyles corresponds to the index of feature.baseShapes
-				var shape = this._applyPointStyle(coords, calculatedStyle, specificStyle, feature, currentShape);
+				// index of specificShapeStyles corresponds to the index of feature.baseShapes
+				var shape = this._applyPointStyle(coords, calculatedStyle, specificStyle, specificShapeStyle, feature, currentShape);
 				if (currentShape && currentShape != shape) {
 					// shape has been replaced!
 					// we need to recreate all subsequent shapes
@@ -119,27 +107,46 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 			}, this);
 		}
 		else {
-			var currentShape = baseShapes[0],
-				shape = this._applyPointStyle(coords, calculatedStyle, null, feature, currentShape);
-			if (shape && (numBaseShapes == 0 || /* shape has been replaced*/currentShape != shape) ) feature.baseShapes[0] = shape;
+			if (numBaseShapes > 1) {
+				// apply the same style to all shapes
+				dojo.forEach(baseShapes, function(shape, i){
+					var resultShape = this._applyPointStyle(coords, calculatedStyle, specificStyle, null, feature, shape);
+					if (numBaseShapes == 0 || /* shape has been replaced*/resultShape != shape) {
+						feature.baseShapes[i] = resultShape;
+					}
+				}, this);
+			}
+			else {
+				var currentShape = baseShapes[0],
+					shape = this._applyPointStyle(coords, calculatedStyle, specificStyle, null, feature, currentShape);
+				if (numBaseShapes == 0 || /* shape has been replaced*/currentShape != shape) {
+					feature.baseShapes[0] = shape;
+				}
+			}
 		}
 	},
 	
-	_applyPointStyle: function(coords, calculatedStyle, specificStyle, feature, shape) {
-		var shapeType = cp.get("shape", calculatedStyle, specificStyle),
-			src = cp.getImgSrc(calculatedStyle, specificStyle),
-			isVectorShape = true,
-			scale = cp.getScale(calculatedStyle, specificStyle),
+	_applyPointStyle: function(coords, calculatedStyle, specificStyle, specificShapeStyle, feature, shape) {
+		var shapeType = cp.get("shape", calculatedStyle, specificStyle, specificShapeStyle),
+			src = cp.getImgSrc(calculatedStyle, specificStyle, specificShapeStyle),
+			isVectorShape,
+			size,
+			rScale,
+			scale = cp.getScale(calculatedStyle, specificStyle, specificShapeStyle),
 			transform = [dojox.gfx.matrix.translate(this.getX(coords[0]), this.getY(coords[1]))],
+			applyTransform = true,
 			// if we alreade have a shape, we don't need to connect events: the events are already connected to the shape
 			connectEvents = !shape ? true : false;
 
-		if (!shapeType && src) isVectorShape = false;
-		else if (!g.shapes[shapeType] && !shape)
-			// set default value for the shapeType only if we haven't already styled the feature (!shape)
-			shapeType = cp.defaultShapeType;
+		if (shapeType) {
+			if (!g.shapes[shapeType]) shapeType = cp.defaultShapeType;
+			isVectorShape = true;
+		}
+		else if (src) isVectorShape = false;
 
-		var size = isVectorShape ? cp.getSize(calculatedStyle, specificStyle) : cp.getImgSize(calculatedStyle, specificStyle);
+		if (isVectorShape !== undefined) {
+			size = isVectorShape ? cp.getSize(calculatedStyle, specificStyle, specificShapeStyle) : cp.getImgSize(calculatedStyle, specificStyle, specificShapeStyle);
+		}
 		if (size) {
 			// store the size and the scale for possible future reference
 			feature.state.size = [size[0], size[1]];
@@ -147,8 +154,8 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 		}
 		else if (shape) {
 			// check if we can apply relative scale (rScale)
-			var rScale = cp.get("rScale", calculatedStyle, specificStyle);
-			if (rScale !== undefined) {
+			rScale = cp.get("rScale", calculatedStyle, specificStyle, specificShapeStyle);
+			if (isVectorShape !== undefined && rScale !== undefined) {
 				size = feature.state.size;
 				scale = rScale * feature.state.scale;
 			}
@@ -186,10 +193,10 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 				if (shape) shape.setShape({points: shapeDef.points});
 				else shape = this.points.createPolyline(shapeDef.points);
 			}
-			dx.applyFill(shape, calculatedStyle, specificStyle);
-			dx.applyStroke(shape, calculatedStyle, specificStyle, shapeSize/Math.max(size[0], size[1])/scale);
+			dx.applyFill(shape, calculatedStyle, specificStyle, specificShapeStyle);
+			dx.applyStroke(shape, calculatedStyle, specificStyle, specificShapeStyle, shapeSize/Math.max(size[0], size[1])/scale);
 		}
-		else {
+		else if (isVectorShape === false) {
 			if (shape && shape.shape.type != "image") {
 				// can't use existing shape
 				// disconnect events and remove the shape
@@ -198,7 +205,7 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 				connectEvents = true;
 				shape = null;
 			}
-			var anchor = cp.getAnchor(calculatedStyle, specificStyle, size),
+			var anchor = cp.getAnchor(calculatedStyle, specificStyle, specificShapeStyle, size),
 				imageDef = {
 					type: "image",
 					src: this._getImageUrl(src),
@@ -211,56 +218,61 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 			else shape = this.points.createImage(imageDef);
 			transform.push(dojox.gfx.matrix.scale(1/this.lengthDenominator*scale));
 		}
-		
-		if (shape) {
-			shape.setTransform(transform);
-			if (connectEvents) this._connectEvents(shape, feature);
+		else if (shape) {
+			if (shape.shape.type != "image") {
+				// apply stroke and fill to the existing vector shape
+				dx.applyFill(shape, calculatedStyle, specificStyle, specificShapeStyle);
+				//dx.applyStroke(shape, calculatedStyle, specificStyle, specificShapeStyle, shapeSize/Math.max(size[0], size[1])/scale);
+			}
+			if (rScale !== undefined) {
+				shape.applyRightTransform(dojox.gfx.matrix.scale(calculatedStyle.rScale));
+				applyTransform = false;
+			}
 		}
-		
+
+		if (shape) {
+			if (applyTransform) {
+				shape.setTransform(transform);
+			}
+			if (connectEvents) {
+				this._connectEvents(shape, feature);
+			}
+		}
+
 		return shape;
 	},
 	
 	applyLineStyle: function(feature, coords, calculatedStyle) {
-		var specificStyles = calculatedStyle["line"],
+		var specificStyle = calculatedStyle.line,
+			specificShapeStyles = calculatedStyle.lines,
 			baseShapes = feature.baseShapes;
 
-		this._updateShapes(feature, coords, calculatedStyle, specificStyles);
+		this._updateShapes(feature, coords, calculatedStyle, specificShapeStyles);
 
-		if (specificStyles) {
-			dojo.forEach(specificStyles, function(specificStyle, i){
-				// index of specificStyles corresponds to the index of feature.baseShapes
-				this._applyLineStyle(baseShapes[i], calculatedStyle, specificStyle);
+		if (specificShapeStyles) {
+			dojo.forEach(specificShapeStyles, function(specificShapeStyle, i){
+				// index of specificShapeStyles corresponds to the index of feature.baseShapes
+				this._applyLineStyle(baseShapes[i], calculatedStyle, specificStyle, specificShapeStyle);
 			}, this);
 		}
 		else {
-			this._applyLineStyle(baseShapes[0], calculatedStyle, null);
+			this._applyLineStyle(baseShapes[0], calculatedStyle, specificStyle);
 		}
 	},
 	
-	_applyLineStyle: function(shape, calculatedStyle, specificStyle) {
-		dx.applyStroke(shape, calculatedStyle, specificStyle, 1/this.lengthDenominator);
+	_applyLineStyle: function(shape, calculatedStyle, specificStyle, specificShapeStyle) {
+		dx.applyStroke(shape, calculatedStyle, specificStyle, specificShapeStyle, 1/this.lengthDenominator);
 	},
 	
 	applyPolygonStyle: function(feature, coords, calculatedStyle) {
-		var specificStyles = calculatedStyle["polygon"],
-			baseShapes = feature.baseShapes;
-			
-		this._updateShapes(feature, coords, calculatedStyle, specificStyles);
-
-		if (specificStyles) {
-			dojo.forEach(specificStyles, function(specificStyle, i){
-				// index of specificStyles corresponds to the index of feature.baseShapes
-				this._applyPolygonStyle(baseShapes[i], calculatedStyle, specificStyle);
-			}, this);
-		}
-		else {
-			this._applyPolygonStyle(baseShapes[0], calculatedStyle, null);
-		}
+		// no specific shape styles for a polygon!
+		this._updateShapes(feature, coords, calculatedStyle);
+		this._applyPolygonStyle(feature.baseShapes[0], calculatedStyle, calculatedStyle.polygon);
 	},
 	
 	_applyPolygonStyle: function(shape, calculatedStyle, specificStyle) {
 		dx.applyFill(shape, calculatedStyle, specificStyle);
-		dx.applyStroke(shape, calculatedStyle, specificStyle, 1/this.lengthDenominator);
+		dx.applyStroke(shape, calculatedStyle, specificStyle, null, 1/this.lengthDenominator);
 	},
 	
 	_updateShapes: function(feature, coords, calculatedStyle, specificStyles, preventAddingShapes) {

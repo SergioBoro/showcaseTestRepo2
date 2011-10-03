@@ -7,7 +7,7 @@ dojo.require("dojo.colors");
 var g = djeo,
 	s = g.styling;
 	
-var symbolizers = ["point", "polygon", "line"],
+var symbolizers = ["points", "lines"],
 	styleAttributes = {theme:1, name: 1, legend: 1},
 	noStyleMixin = {id:1, filter:1, styleClass:1, fid:1,  styleFunction:1};
 
@@ -263,8 +263,6 @@ s.style = [
 		theme: "highlight",
 		stroke: "orange",
 		strokeWidth: 3,
-		strokeOpacity: 1,
-		fillOpacity: 0.8,
 		rScale: 1.5
 		/*
 		point: {

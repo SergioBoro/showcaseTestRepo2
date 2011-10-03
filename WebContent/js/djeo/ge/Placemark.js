@@ -113,12 +113,13 @@ dojo.declare("djeo.ge.Placemark", djeo.common.Placemark, {
 	},
 	
 	applyPointStyle: function(feature, coords, calculatedStyle) {
-		var specificStyle = cp.getSpecificStyle(calculatedStyle["point"], this.specificStyleIndex),
+		var specificStyle = calculatedStyle.point,
+			specificShapeStyle = cp.getSpecificShapeStyle(calculatedStyle.points, this.specificStyleIndex),
 			placemark = feature.baseShapes[0],
-			shapeType = cp.get("shape", calculatedStyle, specificStyle),
-			src = cp.getImgSrc(calculatedStyle, specificStyle),
+			shapeType = cp.get("shape", calculatedStyle, specificStyle, specificShapeStyle),
+			src = cp.getImgSrc(calculatedStyle, specificStyle, specificShapeStyle),
 			isVectorShape = true,
-			scale = cp.getScale(calculatedStyle, specificStyle),
+			scale = cp.getScale(calculatedStyle, specificStyle, specificShapeStyle),
 			normalStyle = getNormalStyle(placemark),
 			// style has been already applied to the feature during a previous function call
 			styleApplied = feature.state.kmlIconScale !== undefined ? true : false;
@@ -137,7 +138,7 @@ dojo.declare("djeo.ge.Placemark", djeo.common.Placemark, {
 			iconStyle.setIcon(icon);
 		}
 
-		var size = isVectorShape ? cp.getSize(calculatedStyle, specificStyle) : cp.getImgSize(calculatedStyle, specificStyle),
+		var size = isVectorShape ? cp.getSize(calculatedStyle, specificStyle, specificShapeStyle) : cp.getImgSize(calculatedStyle, specificStyle, specificShapeStyle),
 			kmlIconScale;
 		if (size) {
 			var kmlIconScale = isVectorShape ? scale*Math.max(size[0],size[1])/shapeSize : scale;
@@ -145,27 +146,29 @@ dojo.declare("djeo.ge.Placemark", djeo.common.Placemark, {
 		}
 		else if (styleApplied) {
 			// check if we can apply relative scale (rScale)
-			var rScale = cp.get("rScale", calculatedStyle, specificStyle);
+			var rScale = cp.get("rScale", calculatedStyle, specificStyle, specificShapeStyle);
 			if (rScale !== undefined) kmlIconScale = rScale * feature.state.kmlIconScale;
 		}
 		iconStyle.setScale(kmlIconScale);
 
-		if (isVectorShape) applyFill(iconStyle, calculatedStyle, specificStyle, true);
+		if (isVectorShape) applyFill(iconStyle, calculatedStyle, specificStyle, specificShapeStyle, true);
 	},
 	
 	applyLineStyle: function(feature, coords, calculatedStyle) {
-		var specificStyle = cp.getSpecificStyle(calculatedStyle["line"], this.specificStyleIndex),
+		var specificStyle = calculatedStyle.line,
+			specificShapeStyle = cp.getSpecificShapeStyle(calculatedStyle.lines, this.specificStyleIndex),
 			placemark = feature.baseShapes[0],
 			normalStyle = getNormalStyle(placemark);
-		applyStroke(normalStyle, calculatedStyle, specificStyle);
+		applyStroke(normalStyle, calculatedStyle, specificStyle, specificShapeStyle);
 		if (feature.extrude) {
 			// set fill color for the extrusion
-			applyFill(normalStyle, calculatedStyle, specificStyle);
+			applyFill(normalStyle, calculatedStyle, specificStyle, specificShapeStyle);
 		}
 	},
 
 	applyPolygonStyle: function(feature, coords, calculatedStyle) {
-		var specificStyle = cp.getSpecificStyle(calculatedStyle["polygon"], this.specificStyleIndex);
+		// no specific shape styles for a polygon!
+		var specificStyle = calculatedStyle.polygon,
 			placemark = feature.baseShapes[0],
 			normalStyle = getNormalStyle(placemark);
 		applyFill(normalStyle, calculatedStyle, specificStyle);
@@ -252,9 +255,9 @@ var getNormalStyle = function(placemark) {
 	return placemark.getStyleSelector();
 };
 
-var applyFill = function(kmlStyle, calculatedStyle, specificStyle, isIconStyle) {
-	var fill = cp.get("fill", calculatedStyle, specificStyle),
-		fillOpacity = cp.get("fillOpacity", calculatedStyle, specificStyle);
+var applyFill = function(kmlStyle, calculatedStyle, specificStyle, specificShapeStyle, isIconStyle) {
+	var fill = cp.get("fill", calculatedStyle, specificStyle, specificShapeStyle),
+		fillOpacity = cp.get("fillOpacity", calculatedStyle, specificStyle, specificShapeStyle);
 
 	if (fill || fillOpacity!==undefined) {
 		kmlStyle = isIconStyle ? kmlStyle : kmlStyle.getPolyStyle();
@@ -265,10 +268,10 @@ var applyFill = function(kmlStyle, calculatedStyle, specificStyle, isIconStyle) 
 	}
 };
 
-var applyStroke = function(kmlStyle, calculatedStyle, specificStyle) {
-	var stroke = cp.get("stroke", calculatedStyle, specificStyle),
-		strokeWidth = cp.get("strokeWidth", calculatedStyle, specificStyle),
-		strokeOpacity = cp.get("strokeOpacity", calculatedStyle, specificStyle);
+var applyStroke = function(kmlStyle, calculatedStyle, specificStyle, specificShapeStyle) {
+	var stroke = cp.get("stroke", calculatedStyle, specificStyle, specificShapeStyle),
+		strokeWidth = cp.get("strokeWidth", calculatedStyle, specificStyle, specificShapeStyle),
+		strokeOpacity = cp.get("strokeOpacity", calculatedStyle, specificStyle, specificShapeStyle);
 
 	if (stroke || strokeWidth!==undefined || strokeOpacity!==undefined) {
 		var lineStyle = kmlStyle.getLineStyle(),

@@ -102,7 +102,7 @@ dojo.declare("djeo.Map", null, {
 	// styleByFid: Object
 	//		A registry of instances of djeo.Style with fid attribute (feature id)
 	//		Fid (feature id) is used as a key
-	styleByClass: null,
+	styleByFid: null,
 	// styleByFid: Object
 	//		A registry of instances of djeo.Style with styleClass attribute
 	//		styleClass is used as a key

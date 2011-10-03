@@ -64,11 +64,15 @@ cp.shapes = {
 	triangle: "triangle.png"
 };
 
-cp.get = function(attr, calculatedStyle, specificStyle) {
-	return specificStyle&&specificStyle[attr] ? specificStyle[attr] : calculatedStyle[attr];
+cp.get = function(attr, calculatedStyle, specificStyle, specificShapeStyle) {
+	var result;
+	if (specificShapeStyle && specificShapeStyle[attr] !== undefined) result = specificShapeStyle[attr];
+	else if (specificStyle && specificStyle[attr] !== undefined) result = specificStyle[attr];
+	else result = calculatedStyle[attr];
+	return result;
 };
 
-cp.getSpecificStyle = function(specificStyles, specificStyleIndex) {
+cp.getSpecificShapeStyle = function(specificStyles, specificStyleIndex) {
 	if (!specificStyles) return null;
 	var specificStyle,
 		numStyles = specificStyles.length;
@@ -81,31 +85,31 @@ cp.getSpecificStyle = function(specificStyles, specificStyleIndex) {
 	return specificStyle;
 };
 
-cp.getSize = function(calculatedStyle, specificStyle) {
-	var size = (specificStyle && specificStyle.size !== undefined) ? specificStyle.size : calculatedStyle.size;
+cp.getSize = function(calculatedStyle, specificStyle, specificShapeStyle) {
+	var size = cp.get("size", calculatedStyle, specificStyle, specificShapeStyle);
 	if (size !==undefined && !dojo.isArray(size)) size = [size, size];
 	return size;
 };
 
-cp.getScale = function(calculatedStyle, specificStyle) {
-	var scale = cp.get("scale", calculatedStyle, specificStyle);
+cp.getScale = function(calculatedStyle, specificStyle, specificShapeStyle) {
+	var scale = cp.get("scale", calculatedStyle, specificStyle, specificShapeStyle);
 	if (!scale) scale = 1;
 	return scale;
 };
 
-cp.getAnchor = function(calculatedStyle, specificStyle, size) {
-	var anchor = cp.get("anchor", calculatedStyle, specificStyle);
+cp.getAnchor = function(calculatedStyle, specificStyle, specificShapeStyle, size) {
+	var anchor = cp.get("anchor", calculatedStyle, specificStyle, specificShapeStyle);
 	return anchor ? anchor : [-size[0]/2, -size[1]/2];
 };
 
-cp.getImgSrc = function(calculatedStyle, specificStyle) {
-	var img = cp.get("img", calculatedStyle, specificStyle);
+cp.getImgSrc = function(calculatedStyle, specificStyle, specificShapeStyle) {
+	var img = cp.get("img", calculatedStyle, specificStyle, specificShapeStyle);
 	return dojo.isObject(img) ? img.src : img;
 };
 
-cp.getImgSize = function(calculatedStyle, specificStyle) {
-	var img = cp.get("img", calculatedStyle, specificStyle);
-	return (dojo.isObject(img) && img.size) ? img.size : cp.getSize(calculatedStyle, specificStyle);
+cp.getImgSize = function(calculatedStyle, specificStyle, specificShapeStyle) {
+	var img = cp.get("img", calculatedStyle, specificStyle, specificShapeStyle);
+	return (dojo.isObject(img) && img.size) ? img.size : cp.getSize(calculatedStyle, specificStyle, specificShapeStyle);
 };
 
 }());

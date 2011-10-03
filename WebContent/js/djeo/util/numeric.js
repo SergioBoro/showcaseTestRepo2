@@ -32,8 +32,11 @@ n.getBreakIndex = function(breaks, numClasses, value) {
 
 n.getStyle = function(feature, style, styleFunctionDef) {
 	var kwArgs = styleFunctionDef.options,
-		attrValue = feature.get(kwArgs.attr),
-		calculateStyle = dojo.isString(kwArgs.calculateStyle) ? dojo.getObject(kwArgs.calculateStyle) : kwArgs.calculateStyle,
+		attrValue = feature.get(kwArgs.attr);
+	
+	if (attrValue === undefined) return;
+	
+	var calculateStyle = dojo.isString(kwArgs.calculateStyle) ? dojo.getObject(kwArgs.calculateStyle) : kwArgs.calculateStyle,
 		breaks, numClasses;
 
 	if (dojo.isArray(kwArgs.breaks)) {

@@ -34,25 +34,27 @@ g.shapes = {
 	}
 };
 
-dx.applyFill = function(shape, calculatedStyle, specificStyle) {
-	var fill = cp.get("fill", calculatedStyle, specificStyle),
-		fillOpacity = cp.get("fillOpacity", calculatedStyle, specificStyle);
+dx.applyFill = function(shape, calculatedStyle, specificStyle, specificShapeStyle) {
+	var fill = cp.get("fill", calculatedStyle, specificStyle, specificShapeStyle),
+		fillOpacity = cp.get("fillOpacity", calculatedStyle, specificStyle, specificShapeStyle);
 
 	if (fill || fillOpacity !== undefined) {
-		var gfxFill = shape.getFill();
+		var gfxFill = shape.getFill(),
+			gfxFillOpacity = gfxFill && gfxFill.a;
 		if (fill) gfxFill = new dojo.Color(fill);
 		if (gfxFill) {
 			if (fillOpacity !== undefined) gfxFill.a = fillOpacity;
+			else if (gfxFillOpacity !== undefined) gfxFill.a = gfxFillOpacity;
 			shape.setFill(gfxFill);
 		}
 	}
 };
 
-dx.applyStroke = function(shape, calculatedStyle, specificStyle, widthMultiplier) {
+dx.applyStroke = function(shape, calculatedStyle, specificStyle, specificShapeStyle, widthMultiplier) {
 	if (dojox.gfx.renderer == "vml") widthMultiplier=1;
-	var stroke = cp.get("stroke", calculatedStyle, specificStyle),
-		strokeWidth = cp.get("strokeWidth", calculatedStyle, specificStyle),
-		strokeOpacity = cp.get("strokeOpacity", calculatedStyle, specificStyle);
+	var stroke = cp.get("stroke", calculatedStyle, specificStyle, specificShapeStyle),
+		strokeWidth = cp.get("strokeWidth", calculatedStyle, specificStyle, specificShapeStyle),
+		strokeOpacity = cp.get("strokeOpacity", calculatedStyle, specificStyle, specificShapeStyle);
 
 	if (stroke || strokeWidth!==undefined || strokeOpacity!==undefined) {
 		if (strokeWidth === 0) shape.setStroke(null);

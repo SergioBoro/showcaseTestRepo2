@@ -117,19 +117,33 @@ var features = [
 			{
 				type: "Point",
 				coords:[-74, 40.71],
-				style: {
-					size: 30,
-					point: [
-						{
-							shape: "circle",
-							fill: "blue"
-						},
-						{
-							shape: "cross",
-							fill: "red"
-						}
-					]
-				},
+				style: [
+					{
+						size: 30,
+						points: [
+							{
+								shape: "circle",
+								fill: "blue"
+							},
+							{
+								shape: "cross",
+								strokeWidth: 0,
+								fill: "red"
+							}
+						]
+					},
+					{
+						theme: "highlight",
+						points: [
+							{
+								fill: "red"
+							},
+							{
+								fill: "blue"
+							}
+						]
+					}
+				],
 				name: "New York City"
 			},
 			{

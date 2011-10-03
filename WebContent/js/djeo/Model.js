@@ -59,4 +59,4 @@ g.methods.Model = {
 // register the constructor
 g.featureTypes.Model = g.Model;
 
-}())
+}());

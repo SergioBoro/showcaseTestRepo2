@@ -73,12 +73,13 @@ dojo.declare("djeo.gmaps.Placemark", djeo.common.Placemark, {
 	},
 	
 	applyPointStyle: function(feature, coords, calculatedStyle) {
-		var specificStyle = cp.getSpecificStyle(calculatedStyle["point"], this.specificStyleIndex),
+		var specificStyle = calculatedStyle.point,
+			specificShapeStyle = cp.getSpecificShapeStyle(calculatedStyle.points, this.specificStyleIndex),
 			marker = feature.baseShapes[0],
-			shapeType = cp.get("shape", calculatedStyle, specificStyle),
-			src = cp.getImgSrc(calculatedStyle, specificStyle),
+			shapeType = cp.get("shape", calculatedStyle, specificStyle, specificShapeStyle),
+			src = cp.getImgSrc(calculatedStyle, specificStyle, specificShapeStyle),
 			isVectorShape = true,
-			scale = cp.getScale(calculatedStyle, specificStyle),
+			scale = cp.getScale(calculatedStyle, specificStyle, specificShapeStyle),
 			mi = marker.getIcon(), // mi stands for markerImage
 			miExists = mi ? true : false;
 
@@ -92,16 +93,16 @@ dojo.declare("djeo.gmaps.Placemark", djeo.common.Placemark, {
 		var url = this._getIconUrl(isVectorShape, shapeType, src);
 		if (url) mi.url = url;
 
-		var size = isVectorShape ? cp.getSize(calculatedStyle, specificStyle) : cp.getImgSize(calculatedStyle, specificStyle);
+		var size = isVectorShape ? cp.getSize(calculatedStyle, specificStyle, specificShapeStyle) : cp.getImgSize(calculatedStyle, specificStyle, specificShapeStyle);
 		if (size) {
-			var anchor = isVectorShape ? [-size[0]/2, -size[1]/2] : cp.getAnchor(calculatedStyle, specificStyle, size);
+			var anchor = isVectorShape ? [-size[0]/2, -size[1]/2] : cp.getAnchor(calculatedStyle, specificStyle, specificShapeStyle, size);
 			mi.size = new GM.Size(scale*size[0], scale*size[1]);
 			mi.anchor = new GM.Point(-scale*anchor[0], -scale*anchor[1]);
 			mi.scaledSize = new GM.Size(scale*size[0], scale*size[1])
 		}
 		else if (miExists) {
 			// check if we can apply relative scale (rScale)
-			var rScale = cp.get("rScale", calculatedStyle, specificStyle);
+			var rScale = cp.get("rScale", calculatedStyle, specificStyle, specificShapeStyle);
 			if (rScale !== undefined) {
 				mi.size.width *= rScale;
 				mi.size.height *= rScale;
@@ -116,11 +117,12 @@ dojo.declare("djeo.gmaps.Placemark", djeo.common.Placemark, {
 	},
 	
 	applyLineStyle: function(feature, coords, calculatedStyle) {
-		var specificStyle = cp.getSpecificStyle(calculatedStyle["line"], this.specificStyleIndex),
+		var specificStyle = calculatedStyle.line,
+			specificShapeStyle = cp.getSpecificShapeStyle(calculatedStyle.lines, this.specificStyleIndex),
 			polylines = feature.baseShapes,
-			stroke = cp.get("stroke", calculatedStyle, specificStyle),
-			strokeOpacity = cp.get("strokeOpacity", calculatedStyle, specificStyle),
-			strokeWidth = cp.get("strokeWidth", calculatedStyle, specificStyle);
+			stroke = cp.get("stroke", calculatedStyle, specificStyle, specificShapeStyle),
+			strokeOpacity = cp.get("strokeOpacity", calculatedStyle, specificStyle, specificShapeStyle),
+			strokeWidth = cp.get("strokeWidth", calculatedStyle, specificStyle, specificShapeStyle);
 
 		// if polylines.length>1 we have a MultiLineString 
 		dojo.forEach(polylines, function(polyline){
@@ -133,7 +135,8 @@ dojo.declare("djeo.gmaps.Placemark", djeo.common.Placemark, {
 	},
 
 	applyPolygonStyle: function(feature, coords, calculatedStyle) {
-		var specificStyle = cp.getSpecificStyle(calculatedStyle["polygon"], this.specificStyleIndex);
+		// no specific shape styles for a polygon!
+		var specificStyle = calculatedStyle.polygon,
 			polygon = feature.baseShapes[0],
 			fill = cp.get("fill", calculatedStyle, specificStyle),
 			fillOpacity = cp.get("fillOpacity", calculatedStyle, specificStyle),

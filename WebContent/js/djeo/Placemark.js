@@ -139,46 +139,14 @@ dojo.declare("djeo.Placemark", g.Feature, {
 				this.map.engine.appendChild(shape, this);
 			}, this);
 		}
-		
-		// render extra geometry if it is defined in a style
-		// point geometry can only have base geometry
-		/*
-		if (!isPoint) {
-			if (lineStyle) {
-				dojo.forEach(lineStyle, function(_style) {
-					var extraGeometry = s.getStyleGeometry(_style, geometry);
-					if (extraGeometry) {
-						var shape = this._createShape(extraGeometry, factory);
-						s.applyLineStyle(shape, this, _style, factory);
-						this.map.engine.appendChild(shape, this, _style.zIndex);
-						this.extraShapes.push(shape);
-					}
-				}, this);
-			}
-			if (polygonStyle) {
-				dojo.forEach(polygonStyle, function(_style) {
-					var extraGeometry = s.getStyleGeometry(_style, geometry);
-					if (extraGeometry) {
-						var shape = this._createShape(extraGeometry, factory);
-						s.applyPolygonStyle(shape, this, _style, factory);
-						this.map.engine.appendChild(shape, this, _style.zIndex);
-						this.extraShapes.push(shape);
-					}
-				}, this);
-			}
-		}
-		
-		// apply text styles
-		if (textStyle) {
-			// take into account all geometries produced above
-		}
-		*/
 	},
 	
 	remove: function() {
 		this.factory.remove(this);
 		dojo.publish("djeo.placemark.remove", [this]);
 		// remove feature from the feature container
+		// remove from the registry of features
+		// remove from style dependence
 		// disconnect all events
 	},
 	
@@ -288,9 +256,6 @@ var applyStyle = function(styleType, feature, coords, style, factory) {
 			break;
 		case "polygon":
 			factory.applyPolygonStyle(feature, coords, style);
-			break;
-		case "text":
-			factory.applyTextStyle(feature, coords, style);
 			break;
 	}
 };

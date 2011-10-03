@@ -79,12 +79,13 @@ dojo.declare("djeo.ymaps.Placemark", djeo.common.Placemark, {
 	},
 	
 	applyPointStyle: function(feature, coords, calculatedStyle) {
-		var specificStyle = cp.getSpecificStyle(calculatedStyle["point"], this.specificStyleIndex),
+		var specificStyle = calculatedStyle.point,
+			specificShapeStyle = cp.getSpecificShapeStyle(calculatedStyle.points, this.specificStyleIndex),
 			placemark = feature.baseShapes[0],
-			shapeType = cp.get("shape", calculatedStyle, specificStyle),
-			src = cp.getImgSrc(calculatedStyle, specificStyle),
+			shapeType = cp.get("shape", calculatedStyle, specificStyle, specificShapeStyle),
+			src = cp.getImgSrc(calculatedStyle, specificStyle, specificShapeStyle),
 			isVectorShape = true,
-			scale = cp.getScale(calculatedStyle, specificStyle),
+			scale = cp.getScale(calculatedStyle, specificStyle, specificShapeStyle),
 			yStyle = placemark.getStyle() || new Y.Style(),
 			iconStyle = yStyle.iconStyle || new Y.IconStyle();
 
@@ -94,15 +95,15 @@ dojo.declare("djeo.ymaps.Placemark", djeo.common.Placemark, {
 			shapeType = cp.defaultShapeType;
 
 		// set size and offset
-		var size = isVectorShape ? cp.getSize(calculatedStyle, specificStyle) : cp.getImgSize(calculatedStyle, specificStyle);
+		var size = isVectorShape ? cp.getSize(calculatedStyle, specificStyle, specificShapeStyle) : cp.getImgSize(calculatedStyle, specificStyle, specificShapeStyle);
 		if (size) {
-			var anchor = isVectorShape ? [-size[0]/2, -size[1]/2] : cp.getAnchor(calculatedStyle, specificStyle, size);
+			var anchor = isVectorShape ? [-size[0]/2, -size[1]/2] : cp.getAnchor(calculatedStyle, specificStyle, specificShapeStyle, size);
 			iconStyle.size = new YMaps.Point(scale*size[0], scale*size[1]);
 			iconStyle.offset = new YMaps.Point(scale*anchor[0], scale*anchor[1]);
 		}
 		else if (iconStyle.href) {
 			// check if we can apply relative scale (rScale)
-			var rScale = cp.get("rScale", calculatedStyle, specificStyle);
+			var rScale = cp.get("rScale", calculatedStyle, specificStyle, specificShapeStyle);
 			if (rScale !== undefined) {
 				iconStyle.size.x *= rScale;
 				iconStyle.size.y *= rScale;
@@ -119,19 +120,21 @@ dojo.declare("djeo.ymaps.Placemark", djeo.common.Placemark, {
 	},
 	
 	applyLineStyle: function(feature, coords, calculatedStyle) {
-		var specificStyle = cp.getSpecificStyle(calculatedStyle["line"], this.specificStyleIndex),
+		var specificStyle = calculatedStyle.line,
+			specificShapeStyle = cp.getSpecificShapeStyle(calculatedStyle.lines, this.specificStyleIndex),
 			polyline = feature.baseShapes[0],
 			style = polyline.getStyle() || new Y.Style(),
 			lineStyle = style.lineStyle || new Y.LineStyle();
-		
-		applyStroke(lineStyle, calculatedStyle, specificStyle);
-		
+
+		applyStroke(lineStyle, calculatedStyle, specificStyle, specificShapeStyle);
+
 		style.lineStyle = lineStyle;
 		polyline.setStyle(style);
 	},
 
 	applyPolygonStyle: function(feature, coords, calculatedStyle) {
-		var specificStyle = cp.getSpecificStyle(calculatedStyle["polygon"], this.specificStyleIndex);
+		// no specific shape styles for a polygon!
+		var specificStyle = calculatedStyle.polygon,
 			polygon = feature.baseShapes[0],
 			fill = cp.get("fill", calculatedStyle, specificStyle),
 			fillOpacity = cp.get("fillOpacity", calculatedStyle, specificStyle),
@@ -189,10 +192,10 @@ var getOpacity = function(ymapsColor) {
 	return parseInt(ymapsColor.substring(6), 16) / 255;
 };
 
-var applyStroke = function(ymapsStyle, calculatedStyle, specificStyle) {
-	var stroke = cp.get("stroke", calculatedStyle, specificStyle),
-		strokeWidth = cp.get("strokeWidth", calculatedStyle, specificStyle),
-		strokeOpacity = cp.get("strokeOpacity", calculatedStyle, specificStyle);
+var applyStroke = function(ymapsStyle, calculatedStyle, specificStyle, specificShapeStyle) {
+	var stroke = cp.get("stroke", calculatedStyle, specificStyle, specificShapeStyle),
+		strokeWidth = cp.get("strokeWidth", calculatedStyle, specificStyle, specificShapeStyle),
+		strokeOpacity = cp.get("strokeOpacity", calculatedStyle, specificStyle, specificShapeStyle);
 
 	if (stroke || strokeWidth!==undefined || strokeOpacity!==undefined) {
 		stroke = stroke ? stroke : getColor(ymapsStyle.strokeColor);
