@@ -151,6 +151,9 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 
 	@Override
 	protected void fillIndicators() throws SQLException {
+		if (indicatorsSql == null) {
+			return;
+		}
 		while (indicatorsSql.next()) {
 			GeoMapLayer layer = getLayerForObject(indicatorsSql);
 			GeoMapIndicator indicator =
@@ -168,6 +171,9 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 
 	@Override
 	protected void fillIndicatorValues() throws SQLException {
+		if (indicatorValuesSql == null) {
+			return;
+		}
 		while (indicatorValuesSql.next()) {
 			String objectId = indicatorValuesSql.getString(OBJECT_ID_TAG);
 			GeoMapLayer layer = getData().getLayerByObjectId(objectId);

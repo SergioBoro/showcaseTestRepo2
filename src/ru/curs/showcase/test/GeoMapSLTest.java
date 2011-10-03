@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.LegendPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.GeoMap;
@@ -54,6 +54,17 @@ public class GeoMapSLTest extends AbstractTest {
 		assertNull(map.getJavaDynamicData());
 
 		assertEquals(map.getActionForDependentElements(), map.getDefaultAction());
+	}
+
+	@Test
+	public void testMapWithOutIndicators() throws GeneralException {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.GEOMAP);
+		generateTestTabWithElement(elInfo);
+		elInfo.setProcName("geomap_bal_lite");
+
+		GeoMapGetCommand command = new GeoMapGetCommand(context, elInfo);
+		command.execute();
 	}
 
 }

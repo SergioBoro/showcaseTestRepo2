@@ -1,4 +1,4 @@
-<project name="Showcase" basedir="." default="build"> 
+<project name="Showcase" basedir="." default="build">
 	<property name="appname" value="${ant.project.name}" />
 	<property name="env" value="local" />
 
@@ -25,8 +25,12 @@
 	<!--  нужно чтобы работали основные функции (!) при отсутствии local.properties -->
 	<property name="servlet.cont.lib.dir" value="" />
 	<property name="deploy.dir" value="" />
-	<property name="servlet.cont.lib.dir" value=""/>
-
+	<property name="servlet.cont.lib.dir" value="" />
+	
+	<tstamp> 
+	    <format property="cur_date" pattern="dd.MM" locale="ru,RU"/> 
+	</tstamp>
+	<property name="db.backup.name" value="showcase-test-${cur_date}" />
 
 	<path id="master-classpath" description="Master CLASSPATH for this script">
 		<fileset dir="${lib.dir}">
@@ -45,7 +49,7 @@
 	</path>
 
 	<target name="info" description="Show wise configuration info">
-		<echo>Соединение с SQL Server "${rdbms.connection.url}" и развертывание на контейнере сервлетов "${servlet.cont.dir}"</echo>
+		<echo>Соединение с SQL Server "${rdbms.name}" и развертывание на контейнере сервлетов "${servlet.cont.dir}"</echo>
 	</target>
 
 	<target name="init.local.files" description="Create local files">
@@ -125,10 +129,10 @@
 		<copy tofile="${tmp.dir}\App.gwt.xml.re" file="${gwt.src.root.dir}\App.gwt.xml" overwrite="true" />
 		<copy tofile="${gwt.src.root.dir}\App.gwt.xml" file="${gwt.src.root.dir}\App.gwt.xml.template" overwrite="true" />
 		<antcall target="build.with.gwt" />
-		
+
 		<echo>Update build number</echo>
-		<exec resolveexecutable="true" executable="svnver\svnversion.exe" output="WebContent\WEB-INF\classes\build" dir="." description="Write build number to file" />		
-		
+		<exec resolveexecutable="true" executable="svnver\svnversion.exe" output="WebContent\WEB-INF\classes\build" dir="." description="Write build number to file" />
+
 		<echo>Copy sources to war</echo>
 		<copy todir="${webinf.dir}/src/core">
 			<fileset dir="${src.dir}">
@@ -145,7 +149,7 @@
 				<include name="**/*.java" />
 			</fileset>
 		</copy>
-		
+
 		<echo>Making war not love</echo>
 		<war destfile="${war.file}">
 			<fileset dir="${war.dir}">
@@ -155,10 +159,10 @@
 				<exclude name="debug.jsp" />
 			</fileset>
 		</war>
-		
+
 		<echo>Clearing after make war</echo>
 		<delete dir="${webinf.dir}/${src.dir}" failonerror="false" />
-		<copy tofile="WebContent\WEB-INF\classes\build" file="src\build" failonerror="false" overwrite="true"/>
+		<copy tofile="WebContent\WEB-INF\classes\build" file="src\build" failonerror="false" overwrite="true" />
 		<copy tofile="${gwt.src.root.dir}\App.gwt.xml" file="${tmp.dir}\App.gwt.xml.re" overwrite="true" />
 	</target>
 
@@ -205,6 +209,27 @@
 		</unzip>
 		<unzip src="${dist.dir}/js/dojox.zip" dest="${js.dir}">
 		</unzip>
+	</target>
+
+	<target name="deploy trunk" depends="dist">		
+		<echo>Deploying trunk distr to server</echo>
+		<zip destfile="${dist.dir}/userdata.zip">
+			<zipfileset dir="." includes="userdata*/**" />
+		</zip>
+		<move todir="${trunk.deploy.path}" file="${dist.dir}/userdata.zip" overwrite="true" />
+		<move todir="${trunk.deploy.path}" file="${dist.dir}/Showcase.war" overwrite="true" />
+		<exec executable="${sqlutil.path}\\SQLUtil_n_nokey.exe">
+			<arg value="-server_name=${rdbms.name}" />
+			<arg value="-user_name=sa" />
+			<arg value="-user_pass=F708420Dx" />
+			<arg value="-backup" />
+			<arg value="-free_file=${db.backup.path}\${db.backup.name}.mbk" />
+		</exec>
+		<zip destfile="${db.backup.path}\${db.backup.name}.zip">
+			<zipfileset file="${db.backup.path}\${db.backup.name}.mbk" />
+		</zip>
+		<delete file="${db.backup.path}\${db.backup.name}.mbk"/>
+		<copy todir="${trunk.deploy.path}" file="${db.backup.path}\${db.backup.name}.zip" overwrite="true" />
 	</target>
 
 </project>

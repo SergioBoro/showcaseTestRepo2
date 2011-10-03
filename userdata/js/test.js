@@ -38,7 +38,7 @@ djeo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=
 				colorSchemeName: "Reds",
 				attr: "mainInd",
 				breaks: "djeo.util.jenks.getBreaks",
-				calculateStyle: djeo.util.colorbrewer.calculateStyle
+				calculateStyle: "djeo.util.colorbrewer.calculateStyle"
 			}
 		},
 		legend: "djeo._getBreaksAreaLegend"

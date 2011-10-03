@@ -431,7 +431,7 @@ public class AbstractTest extends GeneralXMLHelper {
 			throws InterruptedException {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(
 				ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
-		final int eventCount = 105;
+		final int eventCount = 405;
 		for (int i = 0; i < eventCount; i++) {
 			Thread.sleep(1);
 			LoggingEvent original = generateTestLoggingEvent();

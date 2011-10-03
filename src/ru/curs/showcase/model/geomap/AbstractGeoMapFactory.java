@@ -208,6 +208,16 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 	protected void correctSettingsAndData() {
 		super.correctSettingsAndData();
 
+		setupHints();
+		getResult().determineAutoSize();
+		replaceVariablesInTemplate();
+	}
+
+	private void replaceVariablesInTemplate() {
+		getResult().setTemplate(replaceVariables(getResult().getTemplate()));
+	}
+
+	private void setupHints() {
 		for (GeoMapLayer layer : result.getJavaDynamicData().getLayers()) {
 			if (layer.getHintFormat() == null) {
 				continue;
@@ -220,7 +230,6 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 			}
 			layer.setHintFormat(null); // теперь шаблон не нужен
 		}
-		getResult().determineAutoSize();
 	}
 
 	private String generateTooltip(final GeoMapLayer layer, final GeoMapObject obj) {
