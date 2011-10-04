@@ -15,6 +15,7 @@ import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
+import ch.qos.logback.classic.spi.LoggingEvent;
 
 /**
  * Общий тестовый класс для мелких базовых объектов.
@@ -190,6 +191,23 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testLastLogEventQueue() throws InterruptedException {
 		testBaseLastLogEventQueue(new LastLogEvents());
+	}
+
+	@Test
+	public void testLastLogEventQueueDuplicates() {
+		LastLogEvents lle = new LastLogEvents();
+		LoggingEvent original = generateTestLoggingEvent();
+		long timestamp = original.getTimeStamp();
+		lle.add(new LoggingEventDecorator(original));
+		original = generateTestLoggingEvent();
+		original.setTimeStamp(timestamp);
+		lle.add(new LoggingEventDecorator(original));
+		original = generateTestLoggingEvent();
+		original.setTimeStamp(timestamp);
+		lle.add(new LoggingEventDecorator(original));
+
+		final int itemsCount = 3;
+		assertEquals(itemsCount, lle.size());
 	}
 
 	@Test

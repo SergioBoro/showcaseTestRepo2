@@ -46,13 +46,9 @@ public final class XFormPanelCallbacksEvents {
 	 */
 	public static void xFormPanelClickSave(final String xformId, final String linkId,
 			final String data) {
-
 		final XFormPanel curXFormPanel = getCurrentPanel(xformId);
 
 		if (curXFormPanel != null) {
-			// MessageBox.showSimpleMessage("Save. xformId=" + xformId +
-			// ", linkId=" + linkId, data);
-
 			final Action ac = getActionByLinkId(linkId, curXFormPanel);
 
 			if (curXFormPanel.getElementInfo().getSaveProc() != null) {
@@ -74,7 +70,34 @@ public final class XFormPanelCallbacksEvents {
 			} else {
 				runAction(ac);
 			}
+		}
+	}
 
+	/**
+	 * Функция, которая будет выполняться по клику на кнопку Обновить в XForm.
+	 * 
+	 * @param xformId
+	 *            Id элемента xForm.
+	 * 
+	 * @param linkId
+	 *            Идентификатор события
+	 * 
+	 * @param data
+	 *            Данные xForm'ы
+	 */
+	public static void xFormPanelClickUpdate(final String xformId, final String linkId,
+			final String overridenAddContext) {
+		XFormPanel currentXFormPanel = getCurrentPanel(xformId);
+
+		if (currentXFormPanel != null) {
+			Action ac = getActionByLinkId(linkId, currentXFormPanel);
+			if (ac != null) {
+				ac = ac.gwtClone();
+				if (overridenAddContext != null) {
+					ac.setAdditionalContext(overridenAddContext);
+				}
+				runAction(ac);
+			}
 		}
 	}
 
@@ -146,34 +169,6 @@ public final class XFormPanelCallbacksEvents {
 
 			if (ac != null) {
 				ac.filterBy(data);
-				runAction(ac);
-			}
-		}
-	}
-
-	/**
-	 * Функция, которая будет выполняться по клику на кнопку Обновить в XForm.
-	 * 
-	 * @param xformId
-	 *            Id элемента xForm.
-	 * 
-	 * @param linkId
-	 *            Идентификатор события
-	 * 
-	 * @param data
-	 *            Данные xForm'ы
-	 */
-	public static void xFormPanelClickUpdate(final String xformId, final String linkId,
-			final String overridenAddContext) {
-		XFormPanel currentXFormPanel = getCurrentPanel(xformId);
-
-		if (currentXFormPanel != null) {
-			Action ac = getActionByLinkId(linkId, currentXFormPanel);
-			if (ac != null) {
-				ac = ac.gwtClone();
-				if (overridenAddContext != null) {
-					ac.setAdditionalContext(overridenAddContext);
-				}
 				runAction(ac);
 			}
 		}

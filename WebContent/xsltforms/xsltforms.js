@@ -1133,12 +1133,15 @@ var xforms = {
 			xforms.changes = [];
 			xforms.models = [];
 			xforms.body = null;
-			xforms.cont = 0;
+			xforms.cont = 0; 
+			
 			xforms.dispose(document.documentElement);
 			//[KURS
 			Calendar.INSTANCE = null;
 			dropHasXFElement(document.documentElement);
+
 			//KURS]
+			
 			//Event.flush_();
 	    if (Event.cache) 
 
@@ -1169,8 +1172,11 @@ var xforms = {
 		if (this.cont == 1) {
 			this.closeChanges();
 		}
-		
-		this.cont--;
+		// KURS BEGIN
+		if (this.cont > 0) {
+			this.cont--;
+		}
+		// KURS END
 	},
 
 		

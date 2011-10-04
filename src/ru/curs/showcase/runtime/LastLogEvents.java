@@ -32,8 +32,14 @@ public class LastLogEvents extends TreeSet<LoggingEventDecorator> {
 			@Override
 			public int compare(final LoggingEventDecorator event1,
 					final LoggingEventDecorator event2) {
-				return (int) (event2.getOriginal().getTimeStamp() - event1.getOriginal()
-						.getTimeStamp());
+				int res =
+					(int) (event2.getOriginal().getTimeStamp() - event1.getOriginal()
+							.getTimeStamp());
+				if (res == 0) {
+					res = 1;
+					// нельзя, чтобы события перезаписывали друг друга
+				}
+				return res;
 			}
 		});
 	}

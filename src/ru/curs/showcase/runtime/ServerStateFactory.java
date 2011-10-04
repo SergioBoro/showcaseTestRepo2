@@ -17,6 +17,7 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class ServerStateFactory {
 
+	private static final String DOJO_VERSION_FILE = "../../js/dojo/package.json";
 	private static final String GWTVERSION_FILE = "gwtversion";
 	private static final String BUILD_FILE = "build";
 	private static final String VERSION_FILE = "version";
@@ -65,15 +66,14 @@ public final class ServerStateFactory {
 		}
 		Pattern pattern = Pattern.compile("Google Web Toolkit ([0-9.]+)");
 		Matcher matcher = pattern.matcher(data);
-		matcher.find();
-		if (matcher.groupCount() > 0) {
+		if (matcher.find()) {
 			return matcher.group(1);
 		}
 		return null;
 	}
 
 	private static String getDojoVersion() {
-		URL url = FileUtils.getResURL("../../js/dojo/package.json");
+		URL url = FileUtils.getResURL(DOJO_VERSION_FILE);
 		if (url == null) {
 			return null;
 		}
