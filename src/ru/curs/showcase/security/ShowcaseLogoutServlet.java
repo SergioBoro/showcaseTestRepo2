@@ -63,7 +63,6 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				// e.printStackTrace();
 				LOGGER.info(String.format(ERROR_LOGOUT_INFO, sesid));
 			}
 
