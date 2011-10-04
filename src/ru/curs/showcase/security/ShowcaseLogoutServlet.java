@@ -8,6 +8,7 @@ import javax.servlet.http.*;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
@@ -19,6 +20,8 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShowcaseLogoutServlet.class);
 	private static final String LOGOUT_INFO = "Сессия %s закрыта";
+	private static final String ERROR_LOGOUT_INFO =
+		"Сессия %s не была закрыта на сервере аутентификафии. AuthServer недоступен.";
 	/**
 	 * serialVersionUID.
 	 */
@@ -28,13 +31,6 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String url = null;
-		try {
-			url = SecurityParamsFactory.getLocalAuthServerUrl();
-		} catch (SettingsFileOpenException e) {
-			throw new ServletException(AuthServerUtils.APP_PROP_READ_ERROR);
-		}
-
 		String sesid;
 		try {
 			sesid = request.getSession().getId();
@@ -42,15 +38,35 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 			sesid = null;
 		}
 
+		if (!(AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(sesid))) {
+			return;
+		}
+
+		String url = null;
+		try {
+			url = SecurityParamsFactory.getLocalAuthServerUrl();
+		} catch (SettingsFileOpenException e) {
+			throw new ServletException(AuthServerUtils.APP_PROP_READ_ERROR);
+		}
+
 		if (url != null) {
 			URL server = new URL(url + String.format("/logout?sesid=%s", sesid));
 			HttpURLConnection c = (HttpURLConnection) server.openConnection();
 			c.setRequestMethod("GET");
 			c.setDoInput(true);
-			c.connect();
-			if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				LOGGER.info(String.format(LOGOUT_INFO, sesid));
+			try {
+				c.connect();
+
+				if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
+					LOGGER.info(String.format(LOGOUT_INFO, sesid));
+				}
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+				LOGGER.info(String.format(ERROR_LOGOUT_INFO, sesid));
 			}
+
 		}
 
 	}
