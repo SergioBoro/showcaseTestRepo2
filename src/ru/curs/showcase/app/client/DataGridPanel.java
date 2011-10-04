@@ -27,75 +27,27 @@ import com.google.gwt.user.client.ui.*;
  */
 public class DataGridPanel extends BasicElementPanelBasis {
 
-	/**
-	 * HorizontalPanel hpHeader.
-	 */
+	private static final String PROC100 = "100%";
+	private static final String SHOWCASE_APP_CONTAINER = "showcaseAppContainer";
+
+	private final VerticalPanel p = new VerticalPanel();
 	private final HorizontalPanel hpHeader = new HorizontalPanel();
-
-	/**
-	 * HorizontalPanel hpButtons.
-	 */
 	private final HorizontalPanel hpToolbar = new HorizontalPanel();
+	private final HorizontalPanel hpFooter = new HorizontalPanel();
 
-	/**
-	 * PushButton exportToExcelCurrentPage.
-	 */
 	private final PushButton exportToExcelCurrentPage = new PushButton(new Image(
 			Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE));
-	/**
-	 * PushButton exportToExcelAll.
-	 */
 	private final PushButton exportToExcelAll = new PushButton(new Image(
 			Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL));
-	/**
-	 * PushButton copyToClipboard.
-	 */
 	private final PushButton copyToClipboard = new PushButton(new Image(
 			Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
 
-	/**
-	 * HorizontalPanel hpFooter.
-	 */
-	private final HorizontalPanel hpFooter = new HorizontalPanel();
-
-	/**
-	 * DataGridSettings settingsDataGrid.
-	 */
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
-
-	/**
-	 * DataGrid dg.
-	 */
 	private DataGrid dg = null;
-
-	/**
-	 * ColumnSet cs.
-	 */
 	private ColumnSet cs = null;
-
-	/**
-	 * Timer selectionTimer.
-	 */
 	private Timer selectionTimer = null;
-
-	/**
-	 * VerticalPanel.
-	 */
-	private final VerticalPanel p = new VerticalPanel();
-
-	/**
-	 * DataServiceAsync.
-	 */
 	private DataServiceAsync dataService = null;
-
-	/**
-	 * GridRequestedSettings.
-	 */
 	private GridContext localContext = null;
-
-	/**
-	 * Grid.
-	 */
 	private Grid grid = null;
 
 	/**
@@ -188,8 +140,8 @@ public class DataGridPanel extends BasicElementPanelBasis {
 			setDataGridPanel(UpdateType.FULL, false);
 		} else {
 
-			RootPanel.get("showcaseAppContainer").clear();
-			RootPanel.get("showcaseAppContainer").add(p);
+			RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
+			RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
 
 			setDataGridPanelByGrid(grid1, UpdateType.FULL, false);
 
@@ -230,8 +182,8 @@ public class DataGridPanel extends BasicElementPanelBasis {
 				if (grid1 == null) {
 					setDataGridPanel(UpdateType.FULL, refreshContextOnly);
 				} else {
-					RootPanel.get("showcaseAppContainer").clear();
-					RootPanel.get("showcaseAppContainer").add(p);
+					RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
+					RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
 					setDataGridPanelByGrid(grid1, UpdateType.FULL, refreshContextOnly);
 				}
 
@@ -248,8 +200,8 @@ public class DataGridPanel extends BasicElementPanelBasis {
 				if (grid1 == null) {
 					setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID, refreshContextOnly);
 				} else {
-					RootPanel.get("showcaseAppContainer").clear();
-					RootPanel.get("showcaseAppContainer").add(p);
+					RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
+					RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
 					setDataGridPanelByGrid(grid1, UpdateType.UPDATE_BY_REDRAWGRID,
 							refreshContextOnly);
 				}
@@ -353,7 +305,7 @@ public class DataGridPanel extends BasicElementPanelBasis {
 		}
 		setIsFirstLoading(false);
 
-		p.setHeight("100%");
+		p.setHeight(PROC100);
 
 		bListenersExit = false;
 
@@ -389,12 +341,12 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 		// -------------------------
 
-		p.setSize("100%", "100%");
+		p.setSize(PROC100, PROC100);
 
-		hpHeader.setSize("100%", "100%");
-		hpFooter.setSize("100%", "100%");
-		// dg.setSize("100%", "100%");
-		hpToolbar.setHeight("100%");
+		hpHeader.setSize(PROC100, PROC100);
+		hpFooter.setSize(PROC100, PROC100);
+		// dg.setSize(PROC100, PROC100);
+		hpToolbar.setHeight(PROC100);
 		dg.setWidth("95%");
 
 		hpToolbar.setSpacing(1);

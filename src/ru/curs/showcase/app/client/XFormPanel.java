@@ -21,34 +21,22 @@ import com.google.gwt.user.client.ui.*;
  */
 public class XFormPanel extends BasicElementPanelBasis {
 
-	/**
-	 * String mainInstance.
-	 */
-	private String mainInstance;
+	private static final String PROC100 = "100%";
+	private static final String SHOWCASE_APP_CONTAINER = "showcaseAppContainer";
 
-	/**
-	 * HTML xf.
-	 */
+	private final VerticalPanel p = new VerticalPanel();
 	private HTML xf = null;
 
-	/**
-	 * VerticalPanel.
-	 */
-	private final VerticalPanel p = new VerticalPanel();
+	private XForm xform = null;
+	private String mainInstance;
 
 	/**
 	 * Окно для загрузки файлов на сервер.
 	 */
 	private UploadWindow uw = null;
 
-	/**
-	 * DataServiceAsync.
-	 */
 	private DataServiceAsync dataService = null;
 
-	/**
-	 * SelectorDataServiceAsync.
-	 */
 	private final SelectorDataServiceAsync selSrv = GWT.create(SelectorDataService.class);
 	{
 		((ServiceDefTarget) selSrv).setServiceEntryPoint(GWT.getModuleBaseURL()
@@ -58,11 +46,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 	public SelectorDataServiceAsync getSelSrv() {
 		return selSrv;
 	}
-
-	/**
-	 * XForms xform.
-	 */
-	private XForm xform = null;
 
 	/**
 	 * Ф-ция, возвращающая панель с XForm.
@@ -137,8 +120,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 			setXFormPanel(false);
 		} else {
 
-			RootPanel.get("showcaseAppContainer").clear();
-			RootPanel.get("showcaseAppContainer").add(p);
+			RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
+			RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
 
 			setXFormPanelByXForms(xform1, false);
 		}
@@ -179,8 +162,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 			if (xform1 == null) {
 				setXFormPanel(refreshContextOnly);
 			} else {
-				RootPanel.get("showcaseAppContainer").clear();
-				RootPanel.get("showcaseAppContainer").add(p);
+				RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
+				RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
 
 				setXFormPanelByXForms(xform1, refreshContextOnly);
 			}
@@ -211,11 +194,11 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 		destroy();
 
-		// p.setSize("100%", "100%");
+		// p.setSize(PROC100, PROC100);
 
 		xf = new HTML();
 
-		xf.setWidth("100%");
+		xf.setWidth(PROC100);
 
 		p.clear();
 		p.add(xf);
@@ -250,8 +233,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 		}
 		setIsFirstLoading(false);
 
-		// p.setHeight("100%");
-		p.setSize("100%", "100%");
+		// p.setHeight(PROC100);
+		p.setSize(PROC100, PROC100);
 	}
 
 	/**
