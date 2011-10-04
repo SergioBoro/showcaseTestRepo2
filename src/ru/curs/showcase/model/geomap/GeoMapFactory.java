@@ -17,7 +17,7 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-public final class GeoMapDBFactory extends AbstractGeoMapFactory {
+public final class GeoMapFactory extends AbstractGeoMapFactory {
 	private static final String CODE_TAG = "Code";
 	private static final String IS_MAIN_TAG = "IsMain";
 	private static final String TOOLTIP_COL = "Tooltip";
@@ -60,7 +60,7 @@ public final class GeoMapDBFactory extends AbstractGeoMapFactory {
 	 */
 	private RowSet indicatorValuesSql;
 
-	public GeoMapDBFactory(final ElementRawData aSource) {
+	public GeoMapFactory(final ElementRawData aSource) {
 		super(aSource);
 	}
 

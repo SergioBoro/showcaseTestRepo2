@@ -22,7 +22,7 @@ public final class GeoMapGetCommand extends DataPanelElementCommand<GeoMap> {
 	protected void mainProc() throws Exception {
 		GeoMapGateway gateway = new GeoMapDBGateway();
 		ElementRawData raw = gateway.getRawData(getContext(), getElementInfo());
-		GeoMapDBFactory factory = new GeoMapDBFactory(raw);
+		GeoMapFactory factory = new GeoMapFactory(raw);
 		setResult(factory.build());
 	}
 

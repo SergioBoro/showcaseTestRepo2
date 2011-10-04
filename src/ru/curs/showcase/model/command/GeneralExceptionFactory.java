@@ -1,5 +1,7 @@
 package ru.curs.showcase.model.command;
 
+import org.slf4j.*;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.services.GeneralException;
@@ -14,8 +16,24 @@ import ru.curs.showcase.util.exception.BaseException;
  * 
  */
 public final class GeneralExceptionFactory {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(BaseException.class);
+
+	private static final String ERROR_CAPTION = "Сообщение об ошибке";
+
 	private GeneralExceptionFactory() {
 		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Выводит в лог полную информацию об исключении.
+	 * 
+	 * @param e
+	 *            - исключение.
+	 */
+	private static void logAll(final Throwable e) {
+		String formatedMes = ERROR_CAPTION;
+		LOGGER.error(formatedMes, e);
 	}
 
 	/**
@@ -26,6 +44,7 @@ public final class GeneralExceptionFactory {
 	 *            - оригинальное исключение.
 	 */
 	public static GeneralException build(final Throwable original) {
+		logAll(original);
 		GeneralException res = new GeneralException(original, getUserMessage(original));
 		res.setOriginalExceptionClass(original.getClass().getName());
 		res.setOriginalMessage(getOriginalMessage(original));

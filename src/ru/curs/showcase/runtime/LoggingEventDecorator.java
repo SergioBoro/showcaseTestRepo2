@@ -46,11 +46,15 @@ public class LoggingEventDecorator implements AbstractCommandContext {
 		String src = original.getMessage();
 		if (original.getThrowableProxy() != null) {
 			src =
-				src + ExchangeConstants.LINE_SEPARATOR + original.getThrowableProxy().getMessage()
-						+ ExchangeConstants.LINE_SEPARATOR
+				src + ExchangeConstants.LINE_SEPARATOR
 						+ logExceptionStack(original.getThrowableProxy());
 		}
+		src = prepareTextForWeb(src);
+		return src;
+	}
 
+	private String prepareTextForWeb(final String aSrc) {
+		String src = aSrc;
 		src = src.replace("<", "&lt;");
 		src = src.replace(">", "&gt;");
 
@@ -65,20 +69,27 @@ public class LoggingEventDecorator implements AbstractCommandContext {
 	}
 
 	private String logExceptionStack(final IThrowableProxy throwableProxy) {
-		String result = "";
+		StringBuilder sb = new StringBuilder("");
+
+		sb.append(throwableProxy.getMessage());
+		sb.append(ExchangeConstants.LINE_SEPARATOR);
+		sb.append(throwableProxy.getClassName());
+		sb.append(ExchangeConstants.LINE_SEPARATOR);
+
 		StackTraceElementProxy[] stackElements = throwableProxy.getStackTraceElementProxyArray();
 		for (StackTraceElementProxy element : stackElements) {
-			result = result + ExchangeConstants.LINE_SEPARATOR + element.getSTEAsString();
+			sb.append(ExchangeConstants.LINE_SEPARATOR);
+			sb.append(element.getSTEAsString());
 		}
+
 		if (throwableProxy.getCause() != null) {
-			result =
-				result + ExchangeConstants.LINE_SEPARATOR + ExchangeConstants.LINE_SEPARATOR
-						+ "Источник ошибки:" + ExchangeConstants.LINE_SEPARATOR
-						+ throwableProxy.getCause().getMessage()
-						+ ExchangeConstants.LINE_SEPARATOR
-						+ logExceptionStack(throwableProxy.getCause());
+			sb.append(ExchangeConstants.LINE_SEPARATOR);
+			sb.append(ExchangeConstants.LINE_SEPARATOR);
+			sb.append("Источник ошибки:");
+			sb.append(ExchangeConstants.LINE_SEPARATOR);
+			sb.append(logExceptionStack(throwableProxy.getCause()));
 		}
-		return result;
+		return sb.toString();
 	}
 
 	public Level getLevel() {

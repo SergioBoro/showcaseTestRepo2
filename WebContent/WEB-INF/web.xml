@@ -155,11 +155,11 @@
     <url-pattern>/secured/footer</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>ServerStateServlet</servlet-name>
-    <servlet-class>ru.curs.showcase.app.server.ServerStateServlet</servlet-class>
+    <servlet-name>StateServlet</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.StateServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ServerStateServlet</servlet-name>
-    <url-pattern>/forall/serverstate</url-pattern>
+    <servlet-name>StateServlet</servlet-name>
+    <url-pattern>/forall/state</url-pattern>
   </servlet-mapping>
 </web-app>

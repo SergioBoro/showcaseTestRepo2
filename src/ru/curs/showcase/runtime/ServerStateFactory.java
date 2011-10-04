@@ -1,6 +1,7 @@
 package ru.curs.showcase.runtime;
 
 import java.io.*;
+import java.net.URL;
 import java.sql.*;
 import java.util.regex.*;
 
@@ -16,6 +17,7 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class ServerStateFactory {
 
+	private static final String GWTVERSION_FILE = "gwtversion";
 	private static final String BUILD_FILE = "build";
 	private static final String VERSION_FILE = "version";
 
@@ -43,8 +45,53 @@ public final class ServerStateFactory {
 		state.setJavaVersion(System.getProperty("java.version"));
 		state.setUserName(ServletUtils.getCurrentSessionUserName());
 		state.setSqlVersion(getSQLVersion());
-
+		state.setDojoVersion(getDojoVersion());
+		state.setGwtVersion(getGwtVersion());
 		return state;
+	}
+
+	private static String getGwtVersion() {
+		URL url = FileUtils.getResURL(GWTVERSION_FILE);
+		if (url == null) {
+			return null;
+		}
+
+		String data;
+		try {
+			InputStream is = url.openStream();
+			data = TextUtils.streamToString(is);
+		} catch (IOException e) {
+			return null;
+		}
+		Pattern pattern = Pattern.compile("Google Web Toolkit ([0-9.]+)");
+		Matcher matcher = pattern.matcher(data);
+		matcher.find();
+		if (matcher.groupCount() > 0) {
+			return matcher.group(1);
+		}
+		return null;
+	}
+
+	private static String getDojoVersion() {
+		URL url = FileUtils.getResURL("../../js/dojo/package.json");
+		if (url == null) {
+			return null;
+		}
+
+		String data;
+		try {
+			InputStream is = url.openStream();
+			data = TextUtils.streamToString(is);
+		} catch (IOException e) {
+			return null;
+		}
+		Pattern pattern = Pattern.compile("\"version\":\"([a-z0-9.]+)\"");
+		Matcher matcher = pattern.matcher(data);
+		matcher.find();
+		if (matcher.groupCount() > 0) {
+			return matcher.group(1);
+		}
+		return null;
 	}
 
 	private static String getAppVersion() throws IOException {

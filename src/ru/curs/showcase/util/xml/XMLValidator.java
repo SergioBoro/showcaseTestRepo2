@@ -58,18 +58,14 @@ public class XMLValidator {
 		return aSource.getExtractor().extract(aSource); // TODO некрасиво
 	}
 
-	private Validator createValidator(final XMLSource aSource) throws SAXException {
+	private Validator createValidator(final XMLSource aXMLSource) throws SAXException {
 		SchemaFactory schemaFactory = XMLUtils.createSchemaFactory();
-		File file = getFileForSchema(aSource.getSchemaName());
+		File file = xsdSource.getSchema(aXMLSource.getSchemaName());
 		// передавать InputStream и URL нельзя, т.к. в этом случае парсер не
 		// находит вложенных схем!
 		Schema schemaXSD = schemaFactory.newSchema(file);
 		Validator validator = schemaXSD.newValidator();
 		return validator;
-	}
-
-	private File getFileForSchema(final String aSchema) {
-		return xsdSource.getSchema(aSchema);
 	}
 
 	public XMLValidator(final XSDSource aXsdSource) {

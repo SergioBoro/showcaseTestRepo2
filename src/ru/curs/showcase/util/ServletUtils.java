@@ -135,11 +135,15 @@ public final class ServletUtils {
 	 * @return - результат проверки.
 	 */
 	public static boolean isOldIE(final HttpServletRequest request) {
-		String userAgent = request.getHeader("User-Agent").toLowerCase();
+		String userAgent = getUserAgent(request);
 		boolean isOldIE =
 			((userAgent.indexOf("msie 6.0") != -1) || (userAgent.indexOf("msie 7.0") != -1)) ? true
 					: false;
 		return isOldIE;
+	}
+
+	public static String getUserAgent(final HttpServletRequest request) {
+		return request.getHeader("User-Agent").toLowerCase();
 	}
 
 	/**

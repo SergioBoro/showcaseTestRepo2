@@ -257,21 +257,23 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testSolutionException() {
-		SQLException exc = new SQLException(ValidateInDBException.SOL_MES_PREFIX);
-		assertFalse(ValidateInDBException.isExplicitRaised(exc));
+		SQLException exc = new SQLException(UserMessageFactory.SOL_MES_PREFIX);
+		assertFalse(UserMessageFactory.isExplicitRaised(exc));
 		exc =
-			new SQLException(String.format("%stest1%s", ValidateInDBException.SOL_MES_PREFIX,
-					ValidateInDBException.SOL_MES_SUFFIX));
-		assertTrue(ValidateInDBException.isExplicitRaised(exc));
-		ValidateInDBException solEx = new ValidateInDBException(exc);
+			new SQLException(String.format("%stest1%s", UserMessageFactory.SOL_MES_PREFIX,
+					UserMessageFactory.SOL_MES_SUFFIX));
+		assertTrue(UserMessageFactory.isExplicitRaised(exc));
+		UserMessageFactory factory = new UserMessageFactory();
+		ValidateInDBException solEx = new ValidateInDBException(factory.build(exc));
 		assertNotNull(solEx.getUserMessage());
 		assertEquals("test1", solEx.getUserMessage().getId());
 		assertEquals(MessageType.ERROR, solEx.getUserMessage().getType());
 		assertEquals("Ошибка", solEx.getUserMessage().getText());
 		exc =
-			new SQLException(String.format("%stest2%s", ValidateInDBException.SOL_MES_PREFIX,
-					ValidateInDBException.SOL_MES_SUFFIX));
-		solEx = new ValidateInDBException(exc);
+			new SQLException(String.format("%stest2%s", UserMessageFactory.SOL_MES_PREFIX,
+					UserMessageFactory.SOL_MES_SUFFIX));
+		factory = new UserMessageFactory();
+		solEx = new ValidateInDBException(factory.build(exc));
 		assertEquals("Предупреждение", solEx.getUserMessage().getText());
 	}
 
@@ -282,9 +284,10 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test(expected = SettingsFileRequiredPropException.class)
 	public void testSolutionExceptionMesNotFound() {
 		SQLException exc =
-			new SQLException(String.format("%stestN%s", ValidateInDBException.SOL_MES_PREFIX,
-					ValidateInDBException.SOL_MES_SUFFIX));
-		throw new ValidateInDBException(exc);
+			new SQLException(String.format("%stestN%s", UserMessageFactory.SOL_MES_PREFIX,
+					UserMessageFactory.SOL_MES_SUFFIX));
+		UserMessageFactory factory = new UserMessageFactory();
+		throw new ValidateInDBException(factory.build(exc));
 	}
 
 	/**
@@ -293,9 +296,10 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testSolutionExceptionBySL() {
 		SQLException exc =
-			new SQLException(String.format("%stest1%s", ValidateInDBException.SOL_MES_PREFIX,
-					ValidateInDBException.SOL_MES_SUFFIX));
-		ValidateInDBException exc2 = new ValidateInDBException(exc);
+			new SQLException(String.format("%stest1%s", UserMessageFactory.SOL_MES_PREFIX,
+					UserMessageFactory.SOL_MES_SUFFIX));
+		UserMessageFactory factory = new UserMessageFactory();
+		ValidateInDBException exc2 = new ValidateInDBException(factory.build(exc));
 		GeneralException gse = GeneralExceptionFactory.build(exc2);
 		assertFalse(GeneralException.needDetailedInfo(gse));
 		assertEquals("Ошибка", exc2.getUserMessage().getText());

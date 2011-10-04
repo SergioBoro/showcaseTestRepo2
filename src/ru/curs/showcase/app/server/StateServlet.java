@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 import ru.curs.showcase.app.api.ServerState;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.command.ServerStateGetCommand;
+import ru.curs.showcase.runtime.ClientState;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.XMLObjectSerializer;
 
@@ -18,11 +19,11 @@ import ru.curs.showcase.util.xml.XMLObjectSerializer;
  * @author den
  * 
  */
-public final class ServerStateServlet extends HttpServlet {
+public final class StateServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -3101461389195836031L;
 
-	public ServerStateServlet() {
+	public StateServlet() {
 		super();
 	}
 
@@ -32,16 +33,18 @@ public final class ServerStateServlet extends HttpServlet {
 		Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
 		CompositeContext context = new CompositeContext(params);
 		try {
+			String userAgent = ServletUtils.getUserAgent(request);
 			ServerStateGetCommand command = new ServerStateGetCommand(context);
-			ServerState state = command.execute();
+			ServerState serverState = command.execute();
+			ClientState sessionState = new ClientState(serverState, userAgent);
 
 			response.setStatus(HttpServletResponse.SC_OK);
-			response.setContentType("text/html");
+			response.setContentType("text/xml");
 			response.setCharacterEncoding(TextUtils.DEF_ENCODING);
+
 			ObjectSerializer serializer = new XMLObjectSerializer();
-			String message = serializer.serialize(state);
-			message = message.replace("<", "&lt;");
-			message = message.replace(">", "&gt;");
+			String message = serializer.serialize(sessionState);
+
 			response.getWriter().append(message);
 			response.getWriter().close();
 		} catch (Exception e) {

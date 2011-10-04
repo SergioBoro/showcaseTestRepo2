@@ -67,7 +67,7 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 
 		GeoMapGateway gateway = new GeoMapDBGateway();
 		ElementRawData raw = gateway.getRawData(context, element);
-		GeoMapDBFactory factory = new GeoMapDBFactory(raw);
+		GeoMapFactory factory = new GeoMapFactory(raw);
 		GeoMap map = factory.build();
 
 		final int size = 500;

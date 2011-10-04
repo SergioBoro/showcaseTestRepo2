@@ -1,7 +1,5 @@
 package ru.curs.showcase.util.exception;
 
-import org.slf4j.*;
-
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 
@@ -21,17 +19,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
  */
 public abstract class BaseException extends RuntimeException {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 6824298988092385401L;
-
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(BaseException.class);
-
-	private static final String ERROR_CAPTION = "Сообщение об ошибке";
 
 	/**
 	 * Тип исключения.
@@ -47,36 +35,21 @@ public abstract class BaseException extends RuntimeException {
 	public BaseException(final ExceptionType aType, final Throwable aCause) {
 		super(aCause);
 		type = aType;
-		logAll(this);
 	}
 
 	public BaseException(final ExceptionType aType) {
 		super();
 		type = aType;
-		logAll(this);
 	}
 
 	public BaseException(final ExceptionType aType, final String aMessage) {
 		super(aMessage);
 		type = aType;
-		logAll(this);
 	}
 
 	public BaseException(final ExceptionType aType, final String aMessage, final Throwable aCause) {
 		super(aMessage, aCause);
 		type = aType;
-		logAll(this);
-	}
-
-	/**
-	 * Выводит в лог полную информацию об исключении.
-	 * 
-	 * @param e
-	 *            - исключение.
-	 */
-	public final void logAll(final Throwable e) {
-		String formatedMes = ERROR_CAPTION;
-		LOGGER.error(formatedMes, e);
 	}
 
 	public ExceptionType getType() {

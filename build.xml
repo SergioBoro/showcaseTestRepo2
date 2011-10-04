@@ -26,9 +26,9 @@
 	<property name="servlet.cont.lib.dir" value="" />
 	<property name="deploy.dir" value="" />
 	<property name="servlet.cont.lib.dir" value="" />
-	
-	<tstamp> 
-	    <format property="cur_date" pattern="dd.MM" locale="ru,RU"/> 
+
+	<tstamp>
+		<format property="cur_date" pattern="dd.MM" locale="ru,RU" />
 	</tstamp>
 	<property name="db.backup.name" value="showcase-test-${cur_date}" />
 
@@ -130,8 +130,8 @@
 		<copy tofile="${gwt.src.root.dir}\App.gwt.xml" file="${gwt.src.root.dir}\App.gwt.xml.template" overwrite="true" />
 		<antcall target="build.with.gwt" />
 
-		<echo>Update build number</echo>
-		<exec resolveexecutable="true" executable="svnver\svnversion.exe" output="WebContent\WEB-INF\classes\build" dir="." description="Write build number to file" />
+		<antcall target="get.app.version" />
+		<antcall target="get.gwt.version" />
 
 		<echo>Copy sources to war</echo>
 		<copy todir="${webinf.dir}/src/core">
@@ -179,7 +179,7 @@
 	</target>
 
 
-	<target name="deploy" depends="dist" description="Deploys WAR file with test data to ${deploy.dir}">
+	<target name="deploy.tomcat" depends="dist" description="Deploys WAR file with test data to ${deploy.dir}">
 		<delete failonerror="true" dir="${deploy.dir}/${appname}" />
 		<copy file="${war.file}" todir="${deploy.dir}" />
 	</target>
@@ -211,7 +211,7 @@
 		</unzip>
 	</target>
 
-	<target name="deploy trunk" depends="dist">		
+	<target name="deploy.trunk" depends="dist">
 		<echo>Deploying trunk distr to server</echo>
 		<zip destfile="${dist.dir}/userdata.zip">
 			<zipfileset dir="." includes="userdata*/**" />
@@ -228,8 +228,22 @@
 		<zip destfile="${db.backup.path}\${db.backup.name}.zip">
 			<zipfileset file="${db.backup.path}\${db.backup.name}.mbk" />
 		</zip>
-		<delete file="${db.backup.path}\${db.backup.name}.mbk"/>
+		<delete file="${db.backup.path}\${db.backup.name}.mbk" />
 		<copy todir="${trunk.deploy.path}" file="${db.backup.path}\${db.backup.name}.zip" overwrite="true" />
+	</target>
+	
+	<target name="get.gwt.version" depends="info">
+		<echo>Update gwt version</echo>
+		<exec resolveexecutable="true" executable="java" output="WebContent\WEB-INF\classes\gwtversion" dir="${gwt.dir}"  description="Write gwt version number to file" >
+			<arg value="-jar" />
+			<arg value="gwt-dev.jar" />			
+		</exec>		
+	</target>	
+	
+	<target name="get.app.version" depends="info">
+		<echo>Update build number</echo>
+		<exec resolveexecutable="true" executable="svnver\svnversion.exe" output="WebContent\WEB-INF\classes\build" dir="." description="Write build number to file" />
+		
 	</target>
 
 </project>
