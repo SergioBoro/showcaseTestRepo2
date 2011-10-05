@@ -9,7 +9,7 @@ var defaultManagerModule = "course.demo",
 
 var g = course.geo;
 
-var mapRegistry = {maps:{}, data:{}};
+g.mapRegistry = {};
 
 function convertData(data) {
 
@@ -82,16 +82,35 @@ g.makeMap = function(mapDivId, mapLegendId, data, options) {
 		// patch data
 		if (!data.mapEngine) data.mapEngine = defaultMapEngine;
 		data.useAttrs = true;
-		mapRegistry[mapDivId] = managerModule[managerFunction](mapNode, dojo.byId(mapLegendId), data);
+		g.mapRegistry[mapDivId] = managerModule[managerFunction](mapNode, dojo.byId(mapLegendId), data);
 	}
-}
+};
 
 g.destroyMap = function(id) {
-    if (mapRegistry[id]) {
-		mapRegistry[id].map.destroy();
-		if (mapRegistry[id].legend) mapRegistry[id].legend.destroy(true);
-		delete mapRegistry[id];
+    if (g.mapRegistry[id]) {
+		g.mapRegistry[id].map.destroy();
+		if (g.mapRegistry[id].legend) g.mapRegistry[id].legend.destroy(true);
+		delete g.mapRegistry[id];
     }
+};
+
+g.toSvg = function(map, successCallback, failureCallback) {
+	if (dojo.isString(map)) map = g.mapRegistry[map].map;
+	if (!map) return;
+
+	dojo.require("dojox.gfx.utils");
+	
+	if (!successCallback) successCallback = function(svg) {
+		var svgWindow = window.open("", "svg");
+		svgWindow.document.write(svg);
+	}
+	if (!failureCallback) failureCallback = function(error) {
+		console.log(error);
+	}
+	
+	var svgDeferred = dojox.gfx.utils.toSvg(map.engine.surface);
+	svgDeferred.addCallback(successCallback);
+	svgDeferred.addErrback(failureCallback);
 }
 
 })();
