@@ -7,7 +7,7 @@ import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
 import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.event.dom.client.*;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -101,6 +101,7 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 		}
 
 		VerticalPanel dialogContents = new VerticalPanel();
+		DOM.setElementAttribute(dialogContents.getElement(), "id", "showcaseModalWindow");
 
 		sp.add(dialogContents);
 		final int n = 10;

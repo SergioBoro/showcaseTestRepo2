@@ -143,8 +143,8 @@ var Core = {
 					properties.setDoc(req.responseText);
 					properties.srcXML = Writer.toString(properties.doc.getElementsByTagName("properties")[0]);
 					properties.setDoc(properties.srcXML);
-					//XMLEvents.dispatch(properties.model, "xforms-rebuild");
-					//xforms.refresh();
+					// XMLEvents.dispatch(properties.model, "xforms-rebuild");
+					// xforms.refresh();
 				}
     },
 
@@ -182,19 +182,27 @@ var Core = {
     getWindowSize : function() {
 				var myWidth = 0, myHeight = 0, myOffsetX = 0, myOffsetY = 0, myScrollX = 0, myScrollY = 0;
 				if( typeof( window.innerWidth ) == 'number' ) {
-					//Non-IE
+					// Non-IE
 					myWidth = document.documentElement.clientWidth;
 					myHeight = document.documentElement.clientHeight;
-					myOffsetX = document.body ? Math.max(document.documentElement.clientWidth, document.body.clientWidth) : document.documentElement.clientWidth; // body margins ?
-					myOffsetY = document.body ? Math.max(document.documentElement.clientHeight, document.body.clientHeight) : document.documentElement.clientHeight; // body margins ?
+					myOffsetX = document.body ? Math.max(document.documentElement.clientWidth, document.body.clientWidth) : document.documentElement.clientWidth; // body
+																																									// margins
+																																									// ?
+					myOffsetY = document.body ? Math.max(document.documentElement.clientHeight, document.body.clientHeight) : document.documentElement.clientHeight; // body
+																																										// margins
+																																										// ?
 					myScrollX = window.scrollX;
 					myScrollY = window.scrollY;
 				} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
-					//IE 6+ in 'standards compliant mode'
+					// IE 6+ in 'standards compliant mode'
 					myWidth = document.documentElement.clientWidth;
 					myHeight = document.documentElement.clientHeight;
-					myOffsetX = Math.max(document.documentElement.clientWidth, document.body.clientWidth); // body margins ?
-					myOffsetY = Math.max(document.documentElement.clientHeight, document.body.clientHeight); // body margins ?
+					myOffsetX = Math.max(document.documentElement.clientWidth, document.body.clientWidth); // body
+																											// margins
+																											// ?
+					myOffsetY = Math.max(document.documentElement.clientHeight, document.body.clientHeight); // body
+																												// margins
+																												// ?
 					myScrollX = document.body.parentNode.scrollLeft;
 					myScrollY = document.body.parentNode.scrollTop;
 				}
@@ -647,9 +655,8 @@ var I8N = {
 			}
 			return "";
 			/*
-			}
-			return key == "status" ? LoadingMsg : "";
-			*/
+			 * } return key == "status" ? LoadingMsg : "";
+			 */
     },
 
 		
@@ -1076,9 +1083,9 @@ var xforms = {
 			var target = Event.getTarget(evt);
 			var parent = target;
 			
-			while (//[KURS
+			while (// [KURS
 					parent != null &&
-					//KURS]
+					// KURS]
 					parent.nodeType == NodeType.ELEMENT) {
 				if (Core.hasClass(parent, "xforms-repeat-item")) {
 					XFRepeat.selectItem(parent);
@@ -1087,9 +1094,9 @@ var xforms = {
 			}
 			
 			parent = target;
-			while (//[KURS
+			while (// [KURS
 					parent != null &&
-					//KURS]
+					// KURS]
 					parent.nodeType == NodeType.ELEMENT) {
 				var xf = parent.xfElement;
 
@@ -1136,13 +1143,13 @@ var xforms = {
 			xforms.cont = 0; 
 			
 			xforms.dispose(document.documentElement);
-			//[KURS
+			// [KURS
 			Calendar.INSTANCE = null;
 			dropHasXFElement(document.documentElement);
 
-			//KURS]
+			// KURS]
 			
-			//Event.flush_();
+			// Event.flush_();
 	    if (Event.cache) 
 
 	        for (var i = Event.cache.length - 1; i >= 0; i--) {
@@ -1187,7 +1194,7 @@ var xforms = {
 		for (var i = 0, len = changes.length; i < len; i++) {
 			var change = changes[i];
 
-			if (change.instances) {//Model
+			if (change.instances) {// Model
 				if (change.rebuilded) {
 					XMLEvents.dispatch(change, "xforms-rebuild");
 				} else {
@@ -1271,7 +1278,7 @@ var xforms = {
 		var xf = element.xfElement;
 		var hasXFElement = !!xf;
 
-		//if (!ctx) { alert("xforms.build " + element.id + " no ctx"); }
+		// if (!ctx) { alert("xforms.build " + element.id + " no ctx"); }
 		
 		if (xf) {
 			xf.build(ctx);
@@ -1357,7 +1364,7 @@ var xforms = {
 	}
 };
     
-//[KURS	
+// [KURS
 function dropHasXFElement(element){
 	element.hasXFElement = null;
 	var subelement = element.firstChild;
@@ -1367,7 +1374,7 @@ function dropHasXFElement(element){
 		subelement = subelement.nextSibling;
 	}
 }			
-//KURS]		
+// KURS]
 		
 function Binding(isvalue, xpath, model, bind) {
 	this.isvalue = isvalue;
@@ -1446,9 +1453,9 @@ var IdManager = {
 				}
 			}
 			var res = document.getElementById(id);
-			//if (!res) {
-				//alert("element " + id + " not found");
-			//}
+			// if (!res) {
+				// alert("element " + id + " not found");
+			// }
 			return res;
     },
     clear : function() {
@@ -2189,11 +2196,11 @@ XFSubmission.prototype.submit = function() {
 									document.write(resp);
 									document.close();
 								} else {
-									//document.documentElement.parentNode.replaceChild(req.responseXML.documentElement,document.documentElement);
+									// document.documentElement.parentNode.replaceChild(req.responseXML.documentElement,document.documentElement);
 									if (resp.indexOf("<?", 0) === 0) {
 										resp = resp.substr(resp.indexOf("?>")+2);
 									}                       
-									//alert(resp);
+									// alert(resp);
 									document.documentElement.innerHTML = resp;
 								}
 							}
@@ -2326,7 +2333,8 @@ XFSubmission.prototype.issueSubmitException_ = function(evcontext, req, ex) {
 			// TODO: Parse headers into nodes.
 			evcontext["response-headers"] = rheads;
 		}
-		// TODO: Should it use the 'req.responseXML' function if parsing succeeded?
+		// TODO: Should it use the 'req.responseXML' function if parsing
+		// succeeded?
 		evcontext["response-body"] = req.responseText;
 	}
 	XMLEvents.dispatch(this, "xforms-submit-error", null, null, null, null, evcontext);
@@ -2561,7 +2569,7 @@ XFAction.prototype.run = function(element, ctx, evt) {
 		
 function XFDelete(nodeset, model, bind, at, context, ifexpr, whileexpr) {
 	this.binding = new Binding(false, nodeset, model, bind);
-	//this.at = at?XPath.get(at):null;
+	// this.at = at?XPath.get(at):null;
 	this.at = XPath.get(at);
 	this.context = XPath.get(context);
 	this.init(ifexpr, whileexpr);
@@ -3199,7 +3207,7 @@ XFElement.prototype.build = function(ctx) {
 
 			for (var j = 0, len1 = changes.length; !build && j < len1; j++) {
 				if (el == changes[j]) {
-					if (el.instances) { //model
+					if (el.instances) { // model
 						if (el.rebuilded || el.newRebuilded) {
 							build = true;
 						} else {
@@ -3445,8 +3453,8 @@ XFControl.prototype.valueChanged = function(value) {
 		xforms.openAction();
 		setValue(node, value);
 		model.addChange(node);
-		//XMLEvents.dispatch(model, "xforms-recalculate");
-		//xforms.refresh();
+		// XMLEvents.dispatch(model, "xforms-recalculate");
+		// xforms.refresh();
 		xforms.closeAction();
 	}
 };
@@ -3944,14 +3952,10 @@ XFItem.prototype.click = function (target) {
 		var xf = XFControl.getXFElement(this.element);
 		
 		if (!xf.element.node.readonly && target == input) {
-/*		
-			if (target != input) {
-				if (input.type != "radio" || !input.checked) {
-					input.checked = !input.checked;
-					input.focus();
-				}
-			}
-*/
+/*
+ * if (target != input) { if (input.type != "radio" || !input.checked) {
+ * input.checked = !input.checked; input.focus(); } }
+ */
 
 			xf.itemClick(input.value);
 		}
@@ -4182,7 +4186,10 @@ XFOutput.prototype.setValue = function(value) {
 					xamlObject.setAttribute("height", element.currentStyle.height+"px");
 					xamlObject.setAttribute("type", "application/x-silverlight");
 					xamlObject.setAttribute("style", "min-width: " + element.currentStyle.width+"px");
-					//xamlObject.setAttribute("style", "min-width: " + xamlScript.text.substring(xamlScript.text.indexOf('<Canvas Width="')+15,xamlScript.text.indexOf('" Height="')) + "px");
+					// xamlObject.setAttribute("style", "min-width: " +
+					// xamlScript.text.substring(xamlScript.text.indexOf('<Canvas
+					// Width="')+15,xamlScript.text.indexOf('" Height="')) +
+					// "px");
 					var xamlParamSource = Core.isXhtml ? document.createElementNS("http://www.w3.org/1999/xhtml", "param") : document.createElement("param");
 					xamlParamSource.setAttribute("name", "source");
 					xamlParamSource.setAttribute("value", "#"+this.element.id+"-xaml");
@@ -4764,11 +4771,13 @@ XFTrigger.prototype.blur = function () { };
 function Calendar() {
     var calendar = this;
     var body = Core.isXhtml ? document.getElementsByTagNameNS("http://www.w3.org/1999/xhtml", "body")[0] : document.getElementsByTagName("body")[0];
-    //[KURS
-    // it is necessary due to the calendar work properly in modal window of Showcase
-    if (body.children[body.children.length-1].className == "gwt-DialogBox")
-    	body = body.children[body.children.length-1];
-    //KURS]
+    // [KURS
+    // it is necessary due to the calendar work properly in modal window of
+	// Showcase
+    if (document.getElementById("showcaseModalWindow") != null)
+    	body = document.getElementById("showcaseModalWindow");      
+    // KURS]
+
     this.element = Core.createElement("table", body, null, "calendar");
 
     var tHead = Core.createElement("thead", this.element);
@@ -4886,8 +4895,6 @@ function Calendar() {
 Calendar.prototype.today = function() {
 	this.refreshControls(new Date());
 };
-
-
 		
 
 Calendar.prototype.refreshControls = function(date) {
@@ -4989,18 +4996,19 @@ Calendar.SECONDS = 3;
 		
 
 Calendar.show = function(input, type) {
-    var cal = Calendar.INSTANCE;
-
-    if (!cal) {
-        cal = new Calendar();
-        Calendar.INSTANCE = cal;
-    }
+	var cal = Calendar.INSTANCE;
+	
+	if (!cal) {
+		cal = new Calendar();
+		Calendar.INSTANCE = cal;
+	}
 
 	if (!type) {
 		type = Calendar.ONLY_DATE;
 	}
 
     cal.input = input;
+
     cal.type = type;
     cal.isTimestamp = type != Calendar.ONLY_DATE;
     Core.setClass(cal.element, "date", !cal.isTimestamp);
@@ -5243,7 +5251,7 @@ AtomicType.prototype.put = function(name, value) {
 
 		
 
-/** If valid return canonicalValue else null*/
+/** If valid return canonicalValue else null */
 AtomicType.prototype.validate = function (value) {
 	value = this.canonicalValue(value);
 
@@ -5373,7 +5381,8 @@ ListType.prototype.validate = function (value) {
 		value += value.length === 0? item : " " + item;
 	}
 
-	if ( (this.length != null > 0 && this.length != 1) // !!! was l (lowercase L)
+	if ( (this.length != null > 0 && this.length != 1) // !!! was l (lowercase
+														// L)
 		|| (this.minLength != null && 1 < this.minLength)
 		|| (this.maxLength != null && 1 > this.maxLength)) {
 		return null;
@@ -5841,10 +5850,10 @@ TypeDefs.XForms = {
 			return I8N.formatDate(I8N.parse(value, "yyyy-MM-dd"));
 		},
 		"parse" : function(value) {
-			//[KURS
-			//return I8N.format(I8N.parseDate(value), "yyyy-MM-dd"); 
+			// [KURS
+			// return I8N.format(I8N.parseDate(value), "yyyy-MM-dd");
 			return I8N.format(I8N.parseDate(value), "yyyy-MM-dd", true);
-			//KURS]
+			// KURS]
 		}
 	},
 
@@ -7072,13 +7081,13 @@ XDocument.prototype.transformToText = function(xslt) {
 		return resultNode;
 	} else {
 		var parser = new DOMParser();
-		//var serializer = new XMLSerializer();
+		// var serializer = new XMLSerializer();
 		var xmlDoc = parser.parseFromString(Writer.toString(this), "text/xml");
 		var xsltDoc = parser.parseFromString(Writer.toString(xslt), "text/xml");
 	  var xsltProcessor = new XSLTProcessor();
 	  xsltProcessor.importStylesheet(xsltDoc);
 	  var resultDocument = xsltProcessor.transformToDocument(xmlDoc);
-		//alert(serializer.serializeToString(resultDocument));
+		// alert(serializer.serializeToString(resultDocument));
 		if (resultDocument.documentElement.nodeName == "html") {
 			return resultDocument.documentElement.firstChild.nextSibling.nextSibling.nextSibling.firstChild.nextSibling.textContent;
 		}
@@ -7105,10 +7114,9 @@ XDocument.unescape = function(xml) {
 
 XDocument.parse = function(xml, root) {
 /*
-var start1 = new Date().getTime();
-var end1 = new Date().getTime();
-var time1 = end1 - start1;
-var start = new Date().getTime();*/
+ * var start1 = new Date().getTime(); var end1 = new Date().getTime(); var time1 =
+ * end1 - start1; var start = new Date().getTime();
+ */
 		xml = XDocument.unescape(xml);
     var regex_empty = /\/$/;
     var regex_tagname = /^([\w:\-\.]*)/;
@@ -7146,7 +7154,8 @@ var start = new Date().getTime();*/
             
             parent = stack[stack.length - 1];
         } else if (tag.charAt(0) == "?" || tag.charAt(0) == "!") {
-            // Ignore XML declaration and processing instructions, notation and comments
+            // Ignore XML declaration and processing instructions, notation and
+			// comments
         } else {
             var empty = tag.match(regex_empty);
             var tagname = regex_tagname.exec(tag)[1];
@@ -7202,10 +7211,9 @@ var start = new Date().getTime();*/
         }
     }
 /*
-var end = new Date().getTime();
-var time = end - start;
-alert('Execution time1: ' + time1 + '\nExecution time: ' + time);
-*/
+ * var end = new Date().getTime(); var time = end - start; alert('Execution
+ * time1: ' + time1 + '\nExecution time: ' + time);
+ */
     return root;
 };
 
@@ -8069,11 +8077,11 @@ UnionExpr.prototype.evaluate = function(ctx) {
 		
 		
 function stringValue(value) {
-   //[ru.curs
+   // [ru.curs
 	if (value == null)
 		  return "null";
 		else
-    //ru.curs]
+    // ru.curs]
 	return typeof value != "object"? "" + value
         : (value.length === 0? "" : xmlValue(value[0]));
 }
@@ -9422,7 +9430,7 @@ XPathCoreFunctions = {
 			}
 			return strings.join(joinString);
 		} ),
-		//����
+		// ����
 		"http://www.w3.org/2005/xpath-functions GenerateGUID" : new XPathFunction(false, XPathFunction.DEFAULT_NONE, false,
 			function() {
 				return GenerateGUID()
@@ -9825,7 +9833,7 @@ function var_dump(data,addwhitespace,safety,level) {
 	if(!level) {level = 1;}
 	for(var i=0; i<level; i++) {
 		 spaces += '   ';
-	}//end for i<level
+	}// end for i<level
 	if(typeof(data) != 'object') {
 		 dt = data;
 		 if(typeof(data) == 'string') {
@@ -9833,29 +9841,29 @@ function var_dump(data,addwhitespace,safety,level) {
 					 dt = dt.replace(/&/g,'&amp;');
 					 dt = dt.replace(/>/g,'&gt;');
 					 dt = dt.replace(/</g,'&lt;');
-				}//end if addwhitespace == html
+				}// end if addwhitespace == html
 				dt = dt.replace(/\"/g,'\"');
 				dt = '"' + dt + '"';
-		 }//end if typeof == string
+		 }// end if typeof == string
 		 if(typeof(data) == 'function' && addwhitespace) {
 				dt = new String(dt).replace(/\n/g,"\n"+spaces);
 				if(addwhitespace == 'html') {
 					 dt = dt.replace(/&/g,'&amp;');
 					 dt = dt.replace(/>/g,'&gt;');
 					 dt = dt.replace(/</g,'&lt;');
-				}//end if addwhitespace == html
-		 }//end if typeof == function
+				}// end if addwhitespace == html
+		 }// end if typeof == function
 		 if(typeof(data) == 'undefined') {
 				dt = 'undefined';
-		 }//end if typeof == undefined
+		 }// end if typeof == undefined
 		 if(addwhitespace == 'html') {
 				if(typeof(dt) != 'string') {
 					 dt = new String(dt);
-				}//end typeof != string
+				}// end typeof != string
 				dt = dt.replace(/ /g,"&nbsp;").replace(/\n/g,"<br>");
-		 }//end if addwhitespace == html
+		 }// end if addwhitespace == html
 		 return dt;
-	}//end if typeof != object && != array
+	}// end if typeof != object && != array
 	for (var x in data) {
 		 if(safety && (level > safety)) {
 				dt = '*RECURSION*';
@@ -9863,25 +9871,25 @@ function var_dump(data,addwhitespace,safety,level) {
 				try {
 					 dt = var_dump(data[x],addwhitespace,safety,level+1);
 				} catch (e) {continue;}
-		 }//end if-else level > safety
+		 }// end if-else level > safety
 		 it = var_dump(x,addwhitespace,safety,level+1);
 		 rtrn += it + ':' + dt + ',';
 		 if(addwhitespace) {
 				rtrn += '\n'+spaces;
-		 }//end if addwhitespace
-	}//end for...in
+		 }// end if addwhitespace
+	}// end for...in
 	if(addwhitespace) {
 		 rtrn = '{\n' + spaces + rtrn.substr(0,rtrn.length-(2+(level*3))) + '\n' + spaces.substr(0,spaces.length-3) + '}';
 	} else {
 		 rtrn = '{' + rtrn.substr(0,rtrn.length-1) + '}';
-	}//end if-else addwhitespace
+	}// end if-else addwhitespace
 	if(addwhitespace == 'html') {
 		 rtrn = rtrn.replace(/ /g,"&nbsp;").replace(/\n/g,"<br>");
-	}//end if addwhitespace == html
+	}// end if addwhitespace == html
 	return rtrn;
 }
     
-//����
+// ����
 function S4()
 {
 	return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
