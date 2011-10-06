@@ -50,7 +50,7 @@ u.bbox = {
 		var coords = feature.getCoords();
 		var bbox,
 			depth = 0;
-		switch (feature.getType()) {
+		switch (feature.getCoordsType()) {
 			case "Point":
 				depth = 1;
 				break;
@@ -73,9 +73,17 @@ u.bbox = {
 			feature._bbox = bbox;
 		}
 		return bbox;
+	}	
+};
+
+u.center = function(feature) {
+	var bbox = u.bbox.get(feature),
+		center;
+	if (bbox) {
+		center = [ (bbox[0]+bbox[2])/2, (bbox[1]+bbox[3])/2 ];
 	}
-	
-}
+	return center;
+};
 	
 // calculate bbox for:
 // a single point (depth == 1)

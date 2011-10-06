@@ -363,8 +363,9 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 			textShape;
 
 		if (label) {
-			var coords = feature.getCoords();
-			if (feature.getType() == "Point") {
+			var coords = feature.getCoords(),
+				type = feature.getCoordsType();
+			if (type == "Point") {
 				var x = this.getX(coords[0]),
 					y = this.getY(coords[1]);
 				textShape = this.text.createText({
@@ -374,9 +375,24 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 					}).
 					setTransform(dojox.gfx.matrix.scaleAt(1/this.lengthDenominator, x, y ));
 			}
+			else if (type == "Polygon" || type == "MultiPolygon") {
+				var center = djeo.util.center(feature),
+					x = this.getX(center[0]),
+					y = this.getY(center[1]);
+				textShape = this.text.createText({
+						x: x,
+						y: y,
+						text: label,
+						align: "middle"
+					}).
+					setTransform(dojox.gfx.matrix.scaleAt(1/this.lengthDenominator, x, y ));
+			}
 			if (textShape) {
 				if (textStyle.fill) {
 					textShape.setFill(textStyle.fill);
+				}
+				if (textStyle.font) {
+					textShape.setFont(textStyle.font);
 				}
 				
 			}
