@@ -72,7 +72,7 @@ dojo.declare("djeo.gmaps.Placemark", djeo.common.Placemark, {
 		});
 	},
 	
-	applyPointStyle: function(feature, coords, calculatedStyle) {
+	applyPointStyle: function(feature, calculatedStyle, coords) {
 		var specificStyle = calculatedStyle.point,
 			specificShapeStyle = cp.getSpecificShapeStyle(calculatedStyle.points, this.specificStyleIndex),
 			marker = feature.baseShapes[0],
@@ -116,7 +116,7 @@ dojo.declare("djeo.gmaps.Placemark", djeo.common.Placemark, {
 		marker.setIcon(mi);
 	},
 	
-	applyLineStyle: function(feature, coords, calculatedStyle) {
+	applyLineStyle: function(feature, calculatedStyle, coords) {
 		var specificStyle = calculatedStyle.line,
 			specificShapeStyle = cp.getSpecificShapeStyle(calculatedStyle.lines, this.specificStyleIndex),
 			polylines = feature.baseShapes,
@@ -134,7 +134,7 @@ dojo.declare("djeo.gmaps.Placemark", djeo.common.Placemark, {
 		});
 	},
 
-	applyPolygonStyle: function(feature, coords, calculatedStyle) {
+	applyPolygonStyle: function(feature, calculatedStyle, coords) {
 		// no specific shape styles for a polygon!
 		var specificStyle = calculatedStyle.polygon,
 			polygon = feature.baseShapes[0],

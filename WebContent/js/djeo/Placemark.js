@@ -249,13 +249,13 @@ g.methods.Placemark = {
 var applyStyle = function(styleType, feature, coords, style, factory) {
 	switch(styleType) {
 		case "point":
-			factory.applyPointStyle(feature, coords, style);
+			factory.applyPointStyle(feature, style, coords);
 			break;
 		case "line":
-			factory.applyLineStyle(feature, coords, style);
+			factory.applyLineStyle(feature, style, coords);
 			break;
 		case "polygon":
-			factory.applyPolygonStyle(feature, coords, style);
+			factory.applyPolygonStyle(feature, style, coords);
 			break;
 	}
 };

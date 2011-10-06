@@ -20,6 +20,7 @@ dojo.declare("djeo.widget.Legend", [dijit._Widget, dijit._TemplatedMixin], {
 		
 		this.refresh();
 	},
+
 	refresh: function(){
 		// summary: regenerates the legend to reflect changes to the map
 

@@ -146,8 +146,7 @@ dojo.declare("djeo.gfx.Engine", djeo.Engine, {
 	
 	_resizePlacemark: function(feature, scaleFactor) {
 		if (feature.invalid) return;
-		var type = feature.getCoordsType(),
-			coords = feature.getCoords();
+		var type = feature.getCoordsType();
 
 		if (this.resizePoints && type == "Point") {
 			dojo.forEach(feature.baseShapes, function(shape){
@@ -155,6 +154,7 @@ dojo.declare("djeo.gfx.Engine", djeo.Engine, {
 			});
 			if (feature.textShapes) {
 				var factory = this.map.engine.factories.Placemark,
+					coords = feature.getCoords(),
 					x = factory.getX(coords[0]),
 					y = factory.getY(coords[1]);
 				feature.textShapes.applyRightTransform(dojox.gfx.matrix.scaleAt(scaleFactor, x, y));

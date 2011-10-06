@@ -112,7 +112,7 @@ dojo.declare("djeo.ge.Placemark", djeo.common.Placemark, {
 		if (feature.tessellate != undefined) geometry.setTessellate(feature.tessellate);
 	},
 	
-	applyPointStyle: function(feature, coords, calculatedStyle) {
+	applyPointStyle: function(feature, calculatedStyle, coords) {
 		var specificStyle = calculatedStyle.point,
 			specificShapeStyle = cp.getSpecificShapeStyle(calculatedStyle.points, this.specificStyleIndex),
 			placemark = feature.baseShapes[0],
@@ -154,7 +154,7 @@ dojo.declare("djeo.ge.Placemark", djeo.common.Placemark, {
 		if (isVectorShape) applyFill(iconStyle, calculatedStyle, specificStyle, specificShapeStyle, true);
 	},
 	
-	applyLineStyle: function(feature, coords, calculatedStyle) {
+	applyLineStyle: function(feature, calculatedStyle, coords) {
 		var specificStyle = calculatedStyle.line,
 			specificShapeStyle = cp.getSpecificShapeStyle(calculatedStyle.lines, this.specificStyleIndex),
 			placemark = feature.baseShapes[0],
@@ -166,7 +166,7 @@ dojo.declare("djeo.ge.Placemark", djeo.common.Placemark, {
 		}
 	},
 
-	applyPolygonStyle: function(feature, coords, calculatedStyle) {
+	applyPolygonStyle: function(feature, calculatedStyle, coords) {
 		// no specific shape styles for a polygon!
 		var specificStyle = calculatedStyle.polygon,
 			placemark = feature.baseShapes[0],

@@ -10,8 +10,9 @@ var u = djeo.util,
 
 j.getBreaks = function(featureContainer, kwArgs) {
 	var values = dojo.isArray(featureContainer) ? featureContainer : n.composeArray(featureContainer, kwArgs.attr, /*performSort*/true, /*ascendingSort*/true);
-	if (!values.length) return;
-	breaks = getBreaks(values, kwArgs.numClasses);
+	var numValues = values.length;
+	if (numValues == 0) return;
+	breaks = getBreaks(values, (numValues < kwArgs.numClasses) ? numValues : kwArgs.numClasses);
 	if (!breaks.length) return;
 
 	return breaks;

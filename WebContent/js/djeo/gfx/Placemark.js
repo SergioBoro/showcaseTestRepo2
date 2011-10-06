@@ -77,7 +77,7 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 		return this.polygons.createPath({path: this.makePathString(coords, 3)});
 	},
 	
-	applyPointStyle: function(feature, coords, calculatedStyle) {
+	applyPointStyle: function(feature, calculatedStyle, coords) {
 		var specificStyle = calculatedStyle.point,
 			specificShapeStyles = calculatedStyle.points,
 			baseShapes = feature.baseShapes,
@@ -242,7 +242,7 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 		return shape;
 	},
 	
-	applyLineStyle: function(feature, coords, calculatedStyle) {
+	applyLineStyle: function(feature, calculatedStyle, coords) {
 		var specificStyle = calculatedStyle.line,
 			specificShapeStyles = calculatedStyle.lines,
 			baseShapes = feature.baseShapes;
@@ -264,7 +264,7 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 		dx.applyStroke(shape, calculatedStyle, specificStyle, specificShapeStyle, 1/this.lengthDenominator);
 	},
 	
-	applyPolygonStyle: function(feature, coords, calculatedStyle) {
+	applyPolygonStyle: function(feature, calculatedStyle, coords) {
 		// no specific shape styles for a polygon!
 		this._updateShapes(feature, coords, calculatedStyle);
 		this._applyPolygonStyle(feature.baseShapes[0], calculatedStyle, calculatedStyle.polygon);
