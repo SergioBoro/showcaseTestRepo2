@@ -106,6 +106,8 @@ public final class Constants {
 
 	public static final String XFORMS_DOWNLOAD_ERROR = "Ошибка при скачивании файла";
 
+	public static final String EXPORT_TO_PNG_ERROR = "Ошибка при PNG скачивании файла";
+
 	public static final String XFORMS_UPLOAD_ERROR = "Ошибка при загрузке файла(ов) на сервер";
 
 	public static final String TRANSFORMATION_NAVIGATOR_WIDTH_ERROR =

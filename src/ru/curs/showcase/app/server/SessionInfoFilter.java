@@ -5,7 +5,6 @@ import java.io.IOException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.ServletUtils;
 
@@ -19,7 +18,7 @@ public class SessionInfoFilter implements Filter {
 	/**
 	 * Префикс сервлетов, используемых в механизме аутентификации.
 	 */
-	private static final String AUTH_DATA_SERVLET_PREFIX = "auth";
+	// private static final String AUTH_DATA_SERVLET_PREFIX = "auth";
 	/**
 	 * Имя основной страницы приложения.
 	 */
@@ -66,11 +65,13 @@ public class SessionInfoFilter implements Filter {
 	}
 
 	private boolean isDynamicDataServlet(final HttpServletRequest httpreq) {
-		String servletPath = httpreq.getServletPath();
-		return servletPath.startsWith("/" + ExchangeConstants.SECURED_SERVLET_PREFIX)
-				|| servletPath.startsWith("/" + AUTH_DATA_SERVLET_PREFIX)
-				|| servletPath.startsWith("/" + INDEX_PAGE)
-				|| servletPath.startsWith("/" + LOGIN_PAGE);
+		// String servletPath = httpreq.getServletPath();
+		// return servletPath.startsWith("/" +
+		// ExchangeConstants.SECURED_SERVLET_PREFIX)
+		// || servletPath.startsWith("/" + AUTH_DATA_SERVLET_PREFIX)
+		// || servletPath.startsWith("/" + INDEX_PAGE)
+		// || servletPath.startsWith("/" + LOGIN_PAGE);
+		return true;
 	}
 
 	@Override

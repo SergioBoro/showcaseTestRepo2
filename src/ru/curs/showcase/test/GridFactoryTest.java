@@ -9,8 +9,9 @@ import ru.curs.gwt.datagrid.model.Record;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.InteractionType;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.model.ElementRawData;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.grid.*;
+import ru.curs.showcase.runtime.ProfileReader;
 
 import com.google.gwt.dom.client.Style.Unit;
 
@@ -41,10 +42,11 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 
 		assertEquals(1, grid.getDataSet().getRecordSet().getPageNumber());
 
-		GridProps gp = new GridProps(GRIDBAL_TEST_PROPERTIES);
+		ProfileReader gp = new GridPropsReader(GRIDBAL_TEST_PROPERTIES);
+		gp.init();
 
 		Boolean defSelectRecord =
-			gp.stdReadBoolGridValue(DefaultGridUIStyle.DEF_SELECT_WHOLE_RECORD);
+			gp.getBoolValue(DefaultGridSettingsApplyStrategy.DEF_SELECT_WHOLE_RECORD);
 		assertEquals(defSelectRecord, grid.getUISettings().isSelectOnlyRecords());
 		final String fontWidth = "27";
 		assertEquals(fontWidth, grid.getDataSet().getRecordSet().getRecords().get(0).getFontSize());

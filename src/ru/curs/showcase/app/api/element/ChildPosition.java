@@ -3,13 +3,12 @@ package ru.curs.showcase.app.api.element;
 import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
- * Позиция легенды графика относительно объекта информационной панели. Может
- * задаваться для графика и карты.
+ * Позиция вспомогательной панели относительно элемента информационной панели.
  * 
  * @author den
  * 
  */
-public enum LegendPosition implements SerializableElement {
+public enum ChildPosition implements SerializableElement {
 	/**
 	 * Слева.
 	 */

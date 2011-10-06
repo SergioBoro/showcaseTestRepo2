@@ -522,8 +522,6 @@ public class DataGridPanel extends BasicElementPanelBasis {
 
 			SerializationStreamFactory ssf = dh.getObjectSerializer();
 			dh.addStdPostParamsToBody(getDetailedContext(), getElementInfo());
-			dh.addParam(getDetailedContext().getClass().getName(), getDetailedContext()
-					.toParamForHttpPost(ssf));
 			dh.addParam(cs.getClass().getName(), cs.toParamForHttpPost(ssf));
 
 			dh.submit();

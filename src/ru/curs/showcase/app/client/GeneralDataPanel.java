@@ -369,12 +369,12 @@ public class GeneralDataPanel {
 		Widget w = null;
 		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
 
-			mp = new MapPanel(getElementContextForNavigatorAction(dpe), dpe);
+			mp = new GeoMapPanel(getElementContextForNavigatorAction(dpe), dpe);
 
 			w = mp.getPanel();
 		} else {
 			// в случае когда у данного элемента есть главный элемент
-			mp = new MapPanel(dpe);
+			mp = new GeoMapPanel(dpe);
 			w = mp.getPanel();
 			mp.hidePanel();
 

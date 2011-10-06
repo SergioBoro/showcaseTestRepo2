@@ -21,7 +21,7 @@ public abstract class DataPanelElementWithLegend extends DataPanelCompBasedEleme
 	/**
 	 * Позиция легенды относительно графика.
 	 */
-	private LegendPosition legendPosition;
+	private ChildPosition legendPosition;
 
 	/**
 	 * Шаблон для графика. В текущей реализации представляет собой строку с JSON
@@ -43,11 +43,11 @@ public abstract class DataPanelElementWithLegend extends DataPanelCompBasedEleme
 		jsDynamicData = aJsDynamicData;
 	}
 
-	public final LegendPosition getLegendPosition() {
+	public final ChildPosition getLegendPosition() {
 		return legendPosition;
 	}
 
-	public final void setLegendPosition(final LegendPosition aLegendPosition) {
+	public final void setLegendPosition(final ChildPosition aLegendPosition) {
 		legendPosition = aLegendPosition;
 	}
 

@@ -100,6 +100,11 @@ pageEncoding="UTF-8"%>
       <input type="reset" value="Сбросить" />
     </td>
   </tr>
+  <tr>
+  <td>
+  <a href="forall/state" target="_black">О программе</a>
+  </td>
+  </tr>
 </table>
 </form>
 

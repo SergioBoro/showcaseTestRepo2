@@ -8,26 +8,5 @@
 		</element>
 		<element id="62" type="webtext" proc="webtext_filter_and_add"
 			hideOnLoad="true" />		
-	</tab>	
-	<tab id="8" name="Карточка + грид с 2-мя процедурами">		
-		<element id="d1" type="webtext" proc="webtext_3buttons_enh"/>
-		<element id="table1" type="grid" proc="grid_cities_data_rco"
-			>
-			<proc id="d201" name="grid_cities_metadata" type="METADATA" />
-		</element>
-		<element id="card1" type="xforms" template="Showcase_Template3.xml"
-			proc="xforms_proc3_enh" neverShowInPanel="true">
-			<proc id="proc1" name="xforms_saveproc_enh" type="SAVE"/>
-		</element>
-		<element id="delConfirm1" type="xforms" template="Showcase_Template_Del_Confirm1.xml"
-			proc="xforms_delConfirm1" neverShowInPanel="true">
-			<proc id="proc1" name="xforms_saveproc_delConfirm1" type="SAVE"/>
-		</element>		
-	</tab>	
-	<tab id="9" name="Грид - самообновление">	
-		<element id="91" type="grid" proc="grid_cities_data_sr"
-			>
-			<proc id="d201" name="grid_cities_metadata" type="METADATA" />
-		</element>	
 	</tab>			
 </datapanel>

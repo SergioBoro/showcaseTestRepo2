@@ -243,7 +243,7 @@ public class GridDBFactory extends AbstractGridFactory {
 	private String getStringValueOfDate(final Column col) throws SQLException {
 		java.util.Date date = null;
 		DateFormat df = null;
-		String value = getGridProps().getValueByNameForGrid(DEF_DATE_VALUES_FORMAT);
+		String value = getGridProps().getStringValue(DEF_DATE_VALUES_FORMAT);
 		Integer style = DateFormat.DEFAULT;
 		if (value != null) {
 			style = DateTimeFormat.valueOf(value).ordinal();

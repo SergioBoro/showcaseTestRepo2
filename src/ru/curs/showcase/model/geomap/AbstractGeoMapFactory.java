@@ -4,9 +4,9 @@ import java.sql.SQLException;
 
 import org.xml.sax.Attributes;
 
-import ru.curs.showcase.app.api.element.LegendPosition;
+import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.geomap.*;
-import ru.curs.showcase.model.ElementRawData;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.xml.SAXTagHandler;
@@ -111,6 +111,9 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 	@Override
 	protected void initResult() {
 		result = new GeoMap(new GeoMapData());
+		ProfileBasedSettingsApplyStrategy strategy =
+			new DefaultGeoMapSettingsApplyStrategy(result.getUiSettings());
+		strategy.apply();
 	}
 
 	/**
@@ -148,7 +151,7 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 			if (qname.equalsIgnoreCase(PROPS_TAG)) {
 				value = attrs.getValue(LEGEND_TAG);
 				value = value.toUpperCase().trim();
-				getResult().setLegendPosition(LegendPosition.valueOf(value));
+				getResult().setLegendPosition(ChildPosition.valueOf(value));
 				if (attrs.getIndex(WIDTH_TAG) > -1) {
 					value = attrs.getValue(WIDTH_TAG);
 					intValue = TextUtils.getIntSizeValue(value);

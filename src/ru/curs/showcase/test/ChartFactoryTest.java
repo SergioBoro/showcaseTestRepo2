@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.app.api.element.LegendPosition;
+import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.chart.*;
@@ -31,7 +31,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testGetData() throws Exception {
 		final int seriesCount = 9;
-		final LegendPosition defaultPos = LegendPosition.BOTTOM;
+		final ChildPosition defaultPos = ChildPosition.BOTTOM;
 		final int defaultWidth = 500;
 		final int defaultHeight = 200;
 		final int labelyCount = 2;

@@ -18,7 +18,8 @@ public enum SettingsFileType {
 	SOLUTION_MESSAGES("Файл с сообщениями решения для пользователя"),
 	SCHEMA("Файл XSD схемы"),
 	FRAME("Фрейм главной страницы"),
-	SQLSCRIPT("Файл SQL скрипта");
+	SQLSCRIPT("Файл SQL скрипта"),
+	GEOMAP_PROPERTIES("Профайл настроек карты");
 
 	/**
 	 * Название файла.

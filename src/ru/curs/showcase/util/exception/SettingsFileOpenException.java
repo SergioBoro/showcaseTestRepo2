@@ -9,9 +9,7 @@ import ru.curs.showcase.app.api.ExceptionType;
  * 
  */
 public class SettingsFileOpenException extends BaseException {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = 519101136526014887L;
 
 	/**

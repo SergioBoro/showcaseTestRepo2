@@ -28,6 +28,8 @@ public final class GeoMap extends DataPanelElementWithLegend {
 	 */
 	private Boolean autoSize = false;
 
+	private GeoMapUISettings uiSettings = new GeoMapUISettings();
+
 	public GeoMap(final GeoMapData aGeoMapData) {
 		super();
 		javaDynamicData = aGeoMapData;
@@ -71,4 +73,13 @@ public final class GeoMap extends DataPanelElementWithLegend {
 	public void determineAutoSize() {
 		autoSize = (javaDynamicData.getHeight() == null) && (javaDynamicData.getWidth() == null);
 	}
+
+	public GeoMapUISettings getUiSettings() {
+		return uiSettings;
+	}
+
+	public void setUiSettings(final GeoMapUISettings aUiSettings) {
+		uiSettings = aUiSettings;
+	}
+
 }

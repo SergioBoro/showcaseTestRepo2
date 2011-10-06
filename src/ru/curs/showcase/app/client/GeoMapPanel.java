@@ -8,15 +8,16 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Timer;
+import com.google.gwt.event.dom.client.*;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.*;
 
 /**
  * Класс панели с картой и легендой.
  */
-public class MapPanel extends BasicElementPanelBasis {
+public class GeoMapPanel extends BasicElementPanelBasis {
 
-	public MapPanel(final CompositeContext context1, final DataPanelElementInfo element1) {
+	public GeoMapPanel(final CompositeContext context1, final DataPanelElementInfo element1) {
 		this.setContext(context1);
 		this.setElementInfo(element1);
 		setIsFirstLoading(true);
@@ -24,14 +25,35 @@ public class MapPanel extends BasicElementPanelBasis {
 		generalMapPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
 		generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_MAP_DATA_ARE_LOADING));
+		divIdMap = getElementInfo().getId() + Constants.MAP_DIV_ID_SUFFIX;
 
+		createChildPanels();
 		dataService = GWT.create(DataService.class);
 
 		setMapPanel();
 
 	}
 
-	public MapPanel(final DataPanelElementInfo element1) {
+	private HorizontalPanel childLeftPanel;
+
+	private HorizontalPanel childRightPanel;
+
+	private VerticalPanel childTopPanel;
+
+	private VerticalPanel childBottomPanel;
+
+	private void createChildPanels() {
+		childLeftPanel = new HorizontalPanel();
+		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "left" + divIdMap);
+		childRightPanel = new HorizontalPanel();
+		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "right" + divIdMap);
+		childTopPanel = new VerticalPanel();
+		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "top" + divIdMap);
+		childBottomPanel = new VerticalPanel();
+		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "bottom" + divIdMap);
+	}
+
+	public GeoMapPanel(final DataPanelElementInfo element1) {
 
 		// я бы убрал этот код-начало
 		this.setElementInfo(element1);
@@ -39,6 +61,8 @@ public class MapPanel extends BasicElementPanelBasis {
 		this.setContext(null);
 		setIsFirstLoading(true);
 		// я бы убрал этот код-конец
+		divIdMap = getElementInfo().getId() + Constants.MAP_DIV_ID_SUFFIX;
+		createChildPanels();
 
 		generalMapPanel = new VerticalPanel();
 		generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_MAP_DATA_ARE_LOADING));
@@ -73,8 +97,6 @@ public class MapPanel extends BasicElementPanelBasis {
 	 *            GeoMap
 	 */
 	protected void fillMapPanel(final GeoMap aGeoMap) {
-
-		final String divIdMap = getElementInfo().getId() + Constants.MAP_DIV_ID_SUFFIX;
 		final String divIdLegend = getElementInfo().getId() + Constants.MAP_LEGEND_DIV_ID_SUFFIX;
 
 		final String htmlForMap;
@@ -114,21 +136,20 @@ public class MapPanel extends BasicElementPanelBasis {
 		generalHp.clear();
 		generalMapPanel.add(headerHTML);
 
+		generalMapPanel.add(childTopPanel);
+		generalHp.add(childLeftPanel);
 		switch (aGeoMap.getLegendPosition()) {
 		case LEFT:
-
 			generalMapPanel.add(generalHp);
 			generalHp.add(legendHTML);
 			generalHp.add(mapHTML);
 			break;
 
 		case RIGHT:
-
 			generalMapPanel.add(generalHp);
 			generalHp.add(mapHTML);
 			generalHp.add(legendHTML);
 			break;
-
 		case TOP:
 
 			generalMapPanel.add(legendHTML);
@@ -147,7 +168,11 @@ public class MapPanel extends BasicElementPanelBasis {
 			break;
 
 		}
+		generalMapPanel.add(childBottomPanel);
+		generalHp.add(childRightPanel);
 		generalMapPanel.add(footerHTML);
+
+		generateButtonsPanel();
 
 		final String paramMap1 = aGeoMap.getJsDynamicData();
 
@@ -174,6 +199,56 @@ public class MapPanel extends BasicElementPanelBasis {
 		}
 
 	}
+
+	private void generateButtonsPanel() {
+		if (!geoMap.getUiSettings().getButtonsPanelVisible()) {
+			return;
+		}
+		CellPanel buttonsPanel = null;
+		switch (geoMap.getUiSettings().getButtonsPanelPosition()) {
+		case TOP:
+			buttonsPanel = new HorizontalPanel();
+			childTopPanel.add(buttonsPanel);
+			break;
+		case BOTTOM:
+			buttonsPanel = new HorizontalPanel();
+			childBottomPanel.add(buttonsPanel);
+			break;
+		case LEFT:
+			buttonsPanel = new VerticalPanel();
+			childLeftPanel.add(buttonsPanel);
+			break;
+		case RIGHT:
+			buttonsPanel = new VerticalPanel();
+			childRightPanel.add(buttonsPanel);
+			break;
+		default:
+			break;
+		}
+		DOM.setElementAttribute(buttonsPanel.getElement(), "id", "buttons" + divIdMap);
+		if (geoMap.getUiSettings().getExportToSVGButtonVisible()) {
+			Button button =
+				new Button("<nobr><img src=\"resources/internal/ExportToSVG.png\"/>",
+						new ClickHandler() {
+							@Override
+							public void onClick(final ClickEvent aEvent) {
+								exportToSVG(divIdMap);
+							}
+
+						});
+			buttonsPanel.add(button);
+		}
+	}
+
+	private native void exportToSVG(final String mapId) /*-{
+		$wnd.gwtGeoMapExportToPNGSuccess =                   
+		@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::exportToPNGSuccess(Ljava/lang/String;Ljava/lang/String;);
+		$wnd.gwtGeoMapExportToPNGError =                   
+		@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::exportToPNGError(Ljava/lang/String;Ljava/lang/String;);
+
+		$wnd.dojo.require("course.geo");		
+		$wnd.course.geo.toSvg(mapId, $wnd.gwtGeoMapExportToPNGSuccess, $wnd.gwtGeoMapExportToPNGError);
+	}-*/;
 
 	/**
 	 * VerticalPanel на которой отображена карта и легенда.
@@ -232,6 +307,8 @@ public class MapPanel extends BasicElementPanelBasis {
 	 */
 	private HTML legendHTML = null;
 
+	private final String divIdMap;
+
 	/**
 	 * Ф-ция, возвращающая панель с картой и легендой, если она необходима.
 	 * 
@@ -257,14 +334,14 @@ public class MapPanel extends BasicElementPanelBasis {
 	 * @param jsonStr2
 	 *            - JSON строка с настройками карты
 	 */
-	public native void drawMap(final String divIdMap, final String divIdLegend,
+	public native void drawMap(final String mapId, final String divIdLegend,
 			final String jsonStr1, final String jsonStr2) /*-{
 		$wnd.gwtMapFunc =                   
-		@ru.curs.showcase.app.client.api.MapPanelCallbacksEvents::mapPanelClick(Ljava/lang/String;Ljava/lang/String;);
+		@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::mapPanelClick(Ljava/lang/String;Ljava/lang/String;);
 
 		$wnd.dojo.require("course.geo");
 		// course.geo.makeMap("map", optionSet1, optionSet2, mapConvertorFunc);
-		$wnd.course.geo.makeMap(divIdMap, divIdLegend, jsonStr1, jsonStr2);
+		$wnd.course.geo.makeMap(mapId, divIdLegend, jsonStr1, jsonStr2);
 	}-*/;
 
 	@Override

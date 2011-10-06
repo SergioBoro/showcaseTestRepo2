@@ -162,4 +162,12 @@
     <servlet-name>StateServlet</servlet-name>
     <url-pattern>/forall/state</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>GeoMapToPNGHandler</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.GeoMapToPNGHandler</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GeoMapToPNGHandler</servlet-name>
+    <url-pattern>/secured/geoMapToPNG</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -1,15 +1,16 @@
 package ru.curs.showcase.model.grid;
 
 import ru.curs.gwt.datagrid.model.DataGridSettings;
-import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.model.ProfileBasedSettingsApplyStrategy;
+import ru.curs.showcase.runtime.*;
 
 /**
- * Стиль по умолчанию.
+ * Стратегия применения настроек по умолчанию.
  * 
  * @author den
  * 
  */
-public final class DefaultGridUIStyle implements GridUIStyle {
+public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettingsApplyStrategy {
 	private static final String DEF_VISIBLE_PAGES_COUNT = "def.visible.pages.count";
 	public static final String DEF_SELECT_WHOLE_RECORD = "def.select.whole.record";
 
@@ -30,16 +31,16 @@ public final class DefaultGridUIStyle implements GridUIStyle {
 	/**
 	 * Настройки грида.
 	 */
-	private DataGridSettings settings;
+	private final DataGridSettings settings;
 
-	@Override
-	public void apply(final GridProps gp, final DataGridSettings aSettings) {
-		settings = aSettings;
-		applyByDefault();
-		applyFromPropertiesFile(gp);
+	public DefaultGridSettingsApplyStrategy(final ProfileReader aGridPropsReader,
+			final DataGridSettings aUiSettings) {
+		super(aGridPropsReader);
+		settings = aUiSettings;
 	}
 
-	private void applyByDefault() {
+	@Override
+	protected void applyByDefault() {
 		settings.setHorizontalScrollable(true);
 
 		settings.setRightClickEnabled(false);
@@ -55,57 +56,58 @@ public final class DefaultGridUIStyle implements GridUIStyle {
 		settings.setUnselectCellOnClick(false);
 	}
 
-	private void applyFromPropertiesFile(final GridProps gp) {
+	@Override
+	protected void applyFromProfile() {
 		Integer intValue;
-		intValue = gp.stdReadIntGridValue(DEF_PAGES_BLOCK_DUPLICATE_LIMIT);
+		intValue = reader().getIntValue(DEF_PAGES_BLOCK_DUPLICATE_LIMIT);
 		if (intValue != null) {
 			settings.setPagerDuplicateRecords(intValue);
 		}
-		intValue = gp.stdReadIntGridValue(DEF_VISIBLE_PAGES_COUNT);
+		intValue = reader().getIntValue(DEF_VISIBLE_PAGES_COUNT);
 		if (intValue != null) {
 			settings.setPagesButtonCount(intValue);
 		}
-		Boolean boolValue = gp.stdReadBoolGridValue(DEF_SELECT_WHOLE_RECORD);
+		Boolean boolValue = reader().getBoolValue(DEF_SELECT_WHOLE_RECORD);
 		if (boolValue != null) {
 			settings.setSelectOnlyRecords(boolValue);
 		}
-		boolValue = gp.stdReadBoolGridValue(SINGLE_CLICK_BEFORE_DOUBLE);
+		boolValue = reader().getBoolValue(SINGLE_CLICK_BEFORE_DOUBLE);
 		if (boolValue != null) {
 			settings.setSingleClickBeforeDoubleClick(boolValue);
 		}
-		applyVisibilitySettings(gp);
+		applyVisibilitySettings();
 	}
 
-	private void applyVisibilitySettings(final GridProps gp) {
-		Boolean boolValue = gp.stdReadBoolGridValue(DEF_VISIBLE_COLUMNS_CUSTOMIZER);
+	private void applyVisibilitySettings() {
+		Boolean boolValue = reader().getBoolValue(DEF_VISIBLE_COLUMNS_CUSTOMIZER);
 		if (boolValue != null) {
 			settings.setVisibleColumnsCustomizer(boolValue);
 		}
-		boolValue = gp.stdReadBoolGridValue(DEF_VISIBLE_COLUMNGROUPS_CUSTOMIZER);
+		boolValue = reader().getBoolValue(DEF_VISIBLE_COLUMNGROUPS_CUSTOMIZER);
 		if (boolValue != null) {
 			settings.setVisibleColumnGroupsCustomizer(boolValue);
 		}
-		boolValue = gp.stdReadBoolGridValue(DEF_VISIBLE_PAGER);
+		boolValue = reader().getBoolValue(DEF_VISIBLE_PAGER);
 		if (boolValue != null) {
 			settings.setVisiblePager(boolValue);
 		}
-		boolValue = gp.stdReadBoolGridValue(DEF_VISIBLE_EXPORTTOEXCEL_CURRENTPAGE);
+		boolValue = reader().getBoolValue(DEF_VISIBLE_EXPORTTOEXCEL_CURRENTPAGE);
 		if (boolValue != null) {
 			settings.setVisibleExportToExcelCurrentPage(boolValue);
 		}
-		boolValue = gp.stdReadBoolGridValue(DEF_VISIBLE_EXPORTTOEXCEL_ALL);
+		boolValue = reader().getBoolValue(DEF_VISIBLE_EXPORTTOEXCEL_ALL);
 		if (boolValue != null) {
 			settings.setVisibleExportToExcelAll(boolValue);
 		}
-		boolValue = gp.stdReadBoolGridValue(DEF_VISIBLE_COPYTOCLIPBOARD);
+		boolValue = reader().getBoolValue(DEF_VISIBLE_COPYTOCLIPBOARD);
 		if (boolValue != null) {
 			settings.setVisibleCopyToClipboard(boolValue);
 		}
-		boolValue = gp.stdReadBoolGridValue(DEF_VISIBLE_RECORDS_SELECTOR);
+		boolValue = reader().getBoolValue(DEF_VISIBLE_RECORDS_SELECTOR);
 		if (boolValue != null) {
 			settings.setVisibleRecordsSelector(boolValue);
 		}
-		boolValue = gp.stdReadBoolGridValue(DEF_VISIBLE_COLUMNS_HEADER);
+		boolValue = reader().getBoolValue(DEF_VISIBLE_COLUMNS_HEADER);
 		if (boolValue != null) {
 			settings.setVisibleColumnsHeader(boolValue);
 		}

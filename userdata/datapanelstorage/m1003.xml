@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>
+	<tab id="01" name="Карта - экспорт в SVG" layout="table" style="yyy" class="">
+		<tr height="500px" style="xxx" class="">
+			<td width="200px" style="xxx" class="" rowSpan="2" colSpan="3">
+				<element id="0101" type="geomap" proc="geomap_bal"
+					cacheData="false" />
+			</td>
+		</tr>
+	</tab>
+	<tab id="06" name="XForms. Селектор - доработки №2" layout="vertical">
+		<element id="61" type="xforms" template="Showcase_Template_selector.xml"
+			proc="xforms_proc1">
+			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
+			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
+		</element>
+		<element id="62" type="webtext" proc="webtext_filter_and_add"
+			hideOnLoad="true" />
+	</tab>
+</datapanel>

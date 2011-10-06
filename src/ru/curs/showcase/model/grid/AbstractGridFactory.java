@@ -9,6 +9,7 @@ import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
+import ru.curs.showcase.runtime.ProfileReader;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -51,10 +52,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	private static final String PRECISION_TAG = "precision";
 	private static final String PROFILE_TAG = "profile";
 
-	/**
-	 * Профайл грида.
-	 */
-	private GridProps gridProps = null;
+	private ProfileReader gridProps = null;
 
 	/**
 	 * Результат работы фабрики.
@@ -90,11 +88,6 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 				Math.min(result.getUISettings().getPagesButtonCount(), result.getDataSet()
 						.getRecordSet().getPagesTotal()));
 
-	}
-
-	private void setupDefaultUISettings() {
-		GridUIStyle style = new DefaultGridUIStyle();
-		style.apply(gridProps, getResult().getUISettings());
 	}
 
 	@Override
@@ -180,31 +173,31 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	protected void setupStdRecordProps(final Record curRecord) {
 		String value;
 		boolean boolValue;
-		value = gridProps.getValueByNameForGrid(DEF_VAL_FONT_COLOR);
+		value = gridProps.getStringValue(DEF_VAL_FONT_COLOR);
 		if (value != null) {
 			curRecord.setTextColor(value);
 		}
-		value = gridProps.getValueByNameForGrid(DEF_VAL_BG_COLOR);
+		value = gridProps.getStringValue(DEF_VAL_BG_COLOR);
 		if (value != null) {
 			curRecord.setBackgroundColor(value);
 		}
-		value = gridProps.getValueByNameForGrid(DEF_VAL_FONT_SIZE);
+		value = gridProps.getStringValue(DEF_VAL_FONT_SIZE);
 		if (value != null) {
 			curRecord.setFontSize(value);
 		}
-		boolValue = gridProps.isTrueGridValue(DEF_VAL_FONT_BOLD);
+		boolValue = gridProps.isTrueValue(DEF_VAL_FONT_BOLD);
 		if (boolValue) {
 			curRecord.addFontModifier(FontModifier.BOLD);
 		}
-		boolValue = gridProps.isTrueGridValue(DEF_VAL_FONT_IT);
+		boolValue = gridProps.isTrueValue(DEF_VAL_FONT_IT);
 		if (boolValue) {
 			curRecord.addFontModifier(FontModifier.ITALIC);
 		}
-		boolValue = gridProps.isTrueGridValue(DEF_VAL_FONT_UL);
+		boolValue = gridProps.isTrueValue(DEF_VAL_FONT_UL);
 		if (boolValue) {
 			curRecord.addFontModifier(FontModifier.UNDERLINE);
 		}
-		boolValue = gridProps.isTrueGridValue(DEF_VAL_FONT_ST);
+		boolValue = gridProps.isTrueValue(DEF_VAL_FONT_ST);
 		if (boolValue) {
 			curRecord.addFontModifier(FontModifier.STRIKETHROUGH);
 		}
@@ -219,28 +212,28 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	protected void setupStdColumnProps(final Column column) {
 		String val;
 		column.setVisible(true);
-		val = gridProps.getValueByNameForGrid(DEF_COL_VALUE_DISPLAY_MODE);
+		val = gridProps.getStringValue(DEF_COL_VALUE_DISPLAY_MODE);
 		if (val != null) {
 			column.setDisplayMode(ColumnValueDisplayMode.valueOf(val));
 		}
 
 		if (column.getValueType().isString()) {
-			val = gridProps.getValueByNameForGrid(DEF_STR_COL_HOR_ALIGN);
+			val = gridProps.getStringValue(DEF_STR_COL_HOR_ALIGN);
 		} else if (column.getValueType().isNumber()) {
-			val = gridProps.getValueByNameForGrid(DEF_NUM_COL_HOR_ALIGN);
+			val = gridProps.getStringValue(DEF_NUM_COL_HOR_ALIGN);
 		} else if (column.getValueType().isDate()) {
-			val = gridProps.getValueByNameForGrid(DEF_DATE_COL_HOR_ALIGN);
+			val = gridProps.getStringValue(DEF_DATE_COL_HOR_ALIGN);
 		} else if (column.getValueType() == GridValueType.IMAGE) {
-			val = gridProps.getValueByNameForGrid(DEF_IMAGE_COL_HOR_ALIGN);
+			val = gridProps.getStringValue(DEF_IMAGE_COL_HOR_ALIGN);
 		} else if (column.getValueType() == GridValueType.LINK) {
-			val = gridProps.getValueByNameForGrid(DEF_LINK_COL_HOR_ALIGN);
+			val = gridProps.getStringValue(DEF_LINK_COL_HOR_ALIGN);
 		} else {
-			val = gridProps.getValueByNameForGrid(DEF_COL_HOR_ALIGN);
+			val = gridProps.getStringValue(DEF_COL_HOR_ALIGN);
 		}
 		if (val != null) {
 			column.setHorizontalAlignment(HorizontalAlignment.valueOf(val));
 		}
-		val = gridProps.getValueByNameForGrid(DEF_COL_WIDTH);
+		val = gridProps.getStringValue(DEF_COL_WIDTH);
 		if ((val != null) && (column.getWidth() == null)) {
 			column.setWidth(val);
 		}
@@ -357,8 +350,11 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	}
 
 	private void loadStaticSettings() {
-		gridProps = new GridProps(serverState().getProfile());
-		setupDefaultUISettings();
+		gridProps = new GridPropsReader(serverState().getProfile());
+		gridProps.init();
+		ProfileBasedSettingsApplyStrategy strategy =
+			new DefaultGridSettingsApplyStrategy(gridProps, getResult().getUISettings());
+		strategy.apply();
 	}
 
 	protected void calcAutoSelectRecordId() {
@@ -456,7 +452,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		return XML_ERROR_MES;
 	}
 
-	protected GridProps getGridProps() {
+	protected ProfileReader getGridProps() {
 		return gridProps;
 	}
 

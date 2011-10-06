@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.app.api.element.LegendPosition;
+import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.GeoMap;
 import ru.curs.showcase.app.api.services.GeneralException;
@@ -49,11 +49,16 @@ public class GeoMapSLTest extends AbstractTest {
 		assertEquals("9EF5F299-0AB3-486B-A810-5818D17047AC", action.getNavigatorElementLink()
 				.getId());
 
-		assertEquals(LegendPosition.BOTTOM, map.getLegendPosition());
+		assertEquals(ChildPosition.BOTTOM, map.getLegendPosition());
 		assertNotNull(map.getJsDynamicData());
 		assertNull(map.getJavaDynamicData());
 
 		assertEquals(map.getActionForDependentElements(), map.getDefaultAction());
+
+		assertNotNull(map.getUiSettings());
+		assertNotNull(map.getUiSettings().getButtonsPanelPosition());
+		assertNotNull(map.getUiSettings().getButtonsPanelVisible());
+		assertNotNull(map.getUiSettings().getExportToSVGButtonVisible());
 	}
 
 	@Test

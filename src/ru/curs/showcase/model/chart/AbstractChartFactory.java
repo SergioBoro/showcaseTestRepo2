@@ -3,7 +3,7 @@ package ru.curs.showcase.model.chart;
 import org.xml.sax.Attributes;
 
 import ru.curs.showcase.app.api.chart.*;
-import ru.curs.showcase.app.api.element.LegendPosition;
+import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
 import ru.curs.showcase.util.TextUtils;
@@ -145,7 +145,7 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 			if (qname.equalsIgnoreCase(PROPS_TAG)) {
 				value = attrs.getValue(LEGEND_TAG);
 				value = value.toUpperCase().trim();
-				getResult().setLegendPosition(LegendPosition.valueOf(value));
+				getResult().setLegendPosition(ChildPosition.valueOf(value));
 				value = attrs.getValue(WIDTH_TAG);
 				intValue = TextUtils.getIntSizeValue(value);
 				getResult().getJavaDynamicData().setWidth(intValue);

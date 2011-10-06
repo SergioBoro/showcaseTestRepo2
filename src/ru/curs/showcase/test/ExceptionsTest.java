@@ -23,7 +23,7 @@ import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.model.webtext.*;
 import ru.curs.showcase.model.xform.*;
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;
@@ -56,8 +56,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = SettingsFilePropValueFormatException.class)
 	public final void testReadWrongValue() {
-		GridProps gp = new GridProps(GridServerState.GRID_DEFAULT_PROFILE);
-		gp.stdReadIntGridValue("def.column.hor.align");
+		ProfileReader gp = new GridPropsReader(GridServerState.GRID_DEFAULT_PROFILE);
+		gp.init();
+		gp.getIntValue("def.column.hor.align");
 	}
 
 	/**
