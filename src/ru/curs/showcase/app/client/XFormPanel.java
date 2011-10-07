@@ -265,6 +265,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 		$wnd.gwtXFormFilter = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickFilter(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 		$wnd.gwtXFormUpdate = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickUpdate(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 		$wnd.showSelector =	@ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
+		$wnd.showMultiSelector = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showMultiSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
 		$wnd.gwtXFormDownload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::downloadFile(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 		$wnd.gwtXFormUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::uploadFile(Lcom/google/gwt/core/client/JavaScriptObject;);
 	}-*/;

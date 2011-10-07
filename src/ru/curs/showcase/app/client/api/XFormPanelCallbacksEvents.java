@@ -2,7 +2,7 @@ package ru.curs.showcase.app.client.api;
 
 import java.util.*;
 
-import ru.beta2.extra.gwt.ui.selector.SelectorComponent;
+import ru.beta2.extra.gwt.ui.selector.*;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
@@ -175,14 +175,31 @@ public final class XFormPanelCallbacksEvents {
 	}
 
 	/**
-	 * Статический метод для открытия окна-селектора. Может быть использован
-	 * непосредственно в javscript-е на форме.
+	 * Статический метод для открытия окна селектора с единственным выбором.
+	 * Может быть использован непосредственно в javscript-е на форме.
 	 * 
 	 * @param o
 	 *            Объект-хендлер окна-селектора
 	 * 
 	 */
 	public static void showSelector(final JavaScriptObject o) {
+		showSingleAndMultiSelector(o, false);
+	}
+
+	/**
+	 * Статический метод для открытия окна селектора со множественным выбором.
+	 * Может быть использован непосредственно в javscript-е на форме.
+	 * 
+	 * @param o
+	 *            Объект-хендлер окна-селектора
+	 * 
+	 */
+	public static void showMultiSelector(final JavaScriptObject o) {
+		showSingleAndMultiSelector(o, true);
+	}
+
+	private static void showSingleAndMultiSelector(final JavaScriptObject o,
+			final boolean isMultiSelector) {
 
 		/**
 		 * SelectorParam
@@ -287,9 +304,14 @@ public final class XFormPanelCallbacksEvents {
 		XFormPanel currentXFormPanel = (XFormPanel) ActionExecuter.getElementPanelById(param.id());
 
 		if (currentXFormPanel != null) {
-
-			SelectorComponent c =
-				new SelectorComponent(currentXFormPanel.getSelSrv(), param.windowCaption());
+			SelectorComponent c;
+			if (isMultiSelector) {
+				c =
+					new MultiSelectorComponent(currentXFormPanel.getSelSrv(),
+							param.windowCaption());
+			} else {
+				c = new SelectorComponent(currentXFormPanel.getSelSrv(), param.windowCaption());
+			}
 			c.setSelectorListener(new SelectorComponent.SelectorListener() {
 				@Override
 				public void onSelectionComplete(final SelectorComponent selector) {
@@ -313,9 +335,7 @@ public final class XFormPanelCallbacksEvents {
 			}
 
 			c.initData(param.generalFilters(), procName, getValueByXPath(param.currentValue()));
-
 		}
-
 	}
 
 	private static native void setXFormByXPath(final boolean ok, final JavaScriptObject selected,
