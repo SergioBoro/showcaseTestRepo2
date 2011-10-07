@@ -416,7 +416,7 @@
 						resource="javascript:showSelector({
 			           id : 'xformId',
                        procListAndCount  : '[dbo].[companylist_and_count]',
-                       generalFilters      : '',
+                       generalFilters      : 'фильтры',
                        currentValue        : 'XPath(/schema/info[index(quot(securityRealEstateRow))]/name)',
                        windowCaption       : 'Выберите название',
                        xpathMapping        : {
@@ -437,8 +437,14 @@
 						resource="javascript:showSelector({
 			           id : 'xformId',
                        procCount : '[dbo].[companycount]',
-                       procList  : '[dbo].[companylist]',                       
-                       generalFilters      : '',
+                       procList  : '[dbo].[companylist]',
+                                              
+                       generalFilters      : [
+                                              'фильтры',                       
+                                              'XPath(/schema/info/name)', 
+                                              'XPath(/schema/info/eyescolour)'
+                                             ],
+                       
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
                        xpathMapping        : {
@@ -567,7 +573,6 @@
 
 
 		<div>
-
 			<xf:trigger>
 				<xf:label>Сохранить</xf:label>
 				<xf:action ev:event="DOMActivate">
@@ -591,7 +596,6 @@
 						resource="javascript:gwtXFormUpdate('xformId', '3',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
 				</xf:action>
 			</xf:trigger>
-
 		</div>
 
 

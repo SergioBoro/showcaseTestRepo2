@@ -253,7 +253,7 @@ public final class XFormPanelCallbacksEvents {
 			 * 
 			 * @return String
 			 */
-			native String generalFilters()/*-{
+			native Object generalFilters()/*-{
 		return this.generalFilters;
 	}-*/;
 
@@ -334,7 +334,11 @@ public final class XFormPanelCallbacksEvents {
 				procName = param.procListAndCount();
 			}
 
-			c.initData(param.generalFilters(), procName, getValueByXPath(param.currentValue()));
+			// MessageBox.showSimpleMessage("",
+			// getXMLByXPathArray(param.generalFilters()));
+
+			c.initData(getXMLByXPathArray(param.generalFilters()), procName,
+					getValueByXPath(param.currentValue()));
 		}
 	}
 
@@ -345,6 +349,10 @@ public final class XFormPanelCallbacksEvents {
 
 	private static native String getValueByXPath(final String xpath) /*-{
 		return $wnd.getValueByXPath(xpath);
+	}-*/;
+
+	private static native String getXMLByXPathArray(final Object xpathArray) /*-{
+		return $wnd.getXMLByXPathArray(xpathArray);
 	}-*/;
 
 	/**

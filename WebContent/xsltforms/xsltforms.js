@@ -9970,7 +9970,29 @@ function getValueByXPath(xpath)
     }
 }
 
+function getXMLByXPathArray(xpathArray)
+{
+	if( typeof xpathArray == "string" ) {
+		return xpathArray.toString();
+	}
 
+	var xml = '<schema xmlns="">';
+	for (var i in xpathArray) {
+	    if (isXPath(xpathArray[i])) {
+            var nodes = (new Binding(false, getXPath(xpathArray[i]))).evaluate();
+   		    xml = xml+'<filter xmlns="">';          
+      	    for (var j in nodes) {
+      		   xml = xml+Writer.toString(nodes[j]);
+      	    }
+   		    xml = xml+'</filter>';
+	    }else {
+			xml = xml+'<filter xmlns="">'+xpathArray[i]+'</filter>';
+	    }
+	}	
+	xml = xml+"</schema>";
+	
+	return xml;
+}
 
 	
 	
