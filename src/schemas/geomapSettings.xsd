@@ -6,6 +6,7 @@
             <xs:all>                        
                 <xs:element ref="labels" minOccurs="0" maxOccurs="1"/>
                 <xs:element ref="action" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="exportSettings" minOccurs="0"/>  
                 <xs:element ref="properties"/>                                   
                 <xs:element name="template" type="notNullType"/>            
             </xs:all>                       
@@ -21,6 +22,15 @@
         </xs:complexType>
     </xs:element> 
     
+    <xs:element name="exportSettings">
+        <xs:complexType>
+            <xs:attribute name="width" type="xs:integer"/>
+            <xs:attribute name="height" type="xs:integer"/>
+            <xs:attribute name="backgroundColor" type="colorType"/>
+            <xs:attribute name="jpegQuality" type="xs:integer"/>
+            <xs:attribute name="filename" type="xs:string"/>
+        </xs:complexType>
+    </xs:element> 
     
     <xs:element name="properties">
         <xs:complexType>

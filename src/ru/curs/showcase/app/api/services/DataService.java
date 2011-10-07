@@ -5,7 +5,7 @@ import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.geomap.GeoMap;
+import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
@@ -88,7 +88,7 @@ public interface DataService extends RemoteService {
 	 *            - набор столбцов.
 	 * @throws GeneralException
 	 */
-	void saveColumnSet(ColumnSet cs) throws GeneralException;
+	void saveColumnSet(ColumnSet cs, GeoMapExportSettings settings) throws GeneralException;
 
 	/**
 	 * Возвращает данные для отрисовки карты.

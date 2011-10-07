@@ -106,9 +106,9 @@ dojo.require("djeo.Map");
 		}
 	};
 
-	g.toSvg = function(map, gwtSuccessCallback, gwtFailureCallback) {
-		if (dojo.isString(map))
-			map = g.mapRegistry[map].map;
+	g.toSvg = function(mapId, exportType, gwtSuccessCallback, gwtFailureCallback) {
+		if (dojo.isString(mapId))
+			map = g.mapRegistry[mapId].map;
 		if (!map)
 			return;
 
@@ -121,7 +121,7 @@ dojo.require("djeo.Map");
 			};
 		} else {
 			successCallback = function(svg) {
-				gwtSuccessCallback(map, svg);
+				gwtSuccessCallback(mapId, exportType, svg);
 			};
 		}
 		if (!gwtFailureCallback)
@@ -130,7 +130,7 @@ dojo.require("djeo.Map");
 			};
 		else {
 			failureCallback = function(error) {
-				gwtFailureCallback(map, error);
+				gwtFailureCallback(mapId, error);
 			};
 		}
 

@@ -123,10 +123,16 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 	 * 
 	 */
 	private class MapDynamicSettingsReader extends SAXTagHandler {
+		private static final String JPEG_QUALITY_TAG = "jpegQuality";
+
+		private static final String BACKGROUND_COLOR_TAG = "backgroundColor";
+
+		private static final String EXPORT_SETTINGS_TAG = "exportSettings";
+
 		/**
 		 * Стартовые тэги, которые будут обработаны.
 		 */
-		private final String[] startTags = { TEMPLATE_TAG, PROPS_TAG };
+		private final String[] startTags = { TEMPLATE_TAG, PROPS_TAG, EXPORT_SETTINGS_TAG };
 
 		/**
 		 * Закрывающие тэги, которые будут обрабатываться.
@@ -161,6 +167,28 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 					value = attrs.getValue(HEIGHT_TAG);
 					intValue = TextUtils.getIntSizeValue(value);
 					getResult().getJavaDynamicData().setHeight(intValue);
+				}
+				return null;
+			}
+			if (qname.equalsIgnoreCase(EXPORT_SETTINGS_TAG)) {
+				if (attrs.getIndex(WIDTH_TAG) > -1) {
+					getResult().getExportSettings().setWidth(
+							Integer.valueOf(attrs.getValue(WIDTH_TAG)));
+				}
+				if (attrs.getIndex(HEIGHT_TAG) > -1) {
+					getResult().getExportSettings().setHeight(
+							Integer.valueOf(attrs.getValue(HEIGHT_TAG)));
+				}
+				if (attrs.getIndex(FILENAME_TAG) > -1) {
+					getResult().getExportSettings().setFileName(attrs.getValue(FILENAME_TAG));
+				}
+				if (attrs.getIndex(BACKGROUND_COLOR_TAG) > -1) {
+					getResult().getExportSettings().setBackgroundColor(
+							attrs.getValue(BACKGROUND_COLOR_TAG));
+				}
+				if (attrs.getIndex(JPEG_QUALITY_TAG) > -1) {
+					getResult().getExportSettings().setJpegQuality(
+							Integer.valueOf(attrs.getValue(JPEG_QUALITY_TAG)));
 				}
 				return null;
 			}

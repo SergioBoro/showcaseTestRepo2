@@ -16,6 +16,8 @@ public class DefaultGeoMapSettingsApplyStrategy extends ProfileBasedSettingsAppl
 
 	private static final String BUTTONS_PANEL_POSITION_PROP = "buttons.panel.position";
 	private static final String VISIBLE_EXPORTTOPNG_BUTTON_PROP = "exporttopng.button.visible";
+	private static final String VISIBLE_EXPORTTOSVG_BUTTON_PROP = "exporttosvg.button.visible";
+	private static final String VISIBLE_EXPORTTOJPG_BUTTON_PROP = "exporttojpg.button.visible";
 	private static final String VISIBLE_BUTTONS_PANEL_PROP = "buttons.panel.visible";
 
 	private final GeoMapUISettings uiSettings;
@@ -36,6 +38,8 @@ public class DefaultGeoMapSettingsApplyStrategy extends ProfileBasedSettingsAppl
 		uiSettings.setButtonsPanelVisible(false);
 		uiSettings.setExportToSVGButtonVisible(true);
 		uiSettings.setButtonsPanelPosition(ChildPosition.TOP);
+		uiSettings.setExportToJPGButtonVisible(true);
+		uiSettings.setExportToPNGButtonVisible(true);
 	}
 
 	@Override
@@ -47,9 +51,17 @@ public class DefaultGeoMapSettingsApplyStrategy extends ProfileBasedSettingsAppl
 		if (boolValue != null) {
 			uiSettings.setButtonsPanelVisible(boolValue);
 		}
-		boolValue = reader().getBoolValue(VISIBLE_EXPORTTOPNG_BUTTON_PROP);
+		boolValue = reader().getBoolValue(VISIBLE_EXPORTTOSVG_BUTTON_PROP);
 		if (boolValue != null) {
 			uiSettings.setExportToSVGButtonVisible(boolValue);
+		}
+		boolValue = reader().getBoolValue(VISIBLE_EXPORTTOPNG_BUTTON_PROP);
+		if (boolValue != null) {
+			uiSettings.setExportToPNGButtonVisible(boolValue);
+		}
+		boolValue = reader().getBoolValue(VISIBLE_EXPORTTOJPG_BUTTON_PROP);
+		if (boolValue != null) {
+			uiSettings.setExportToJPGButtonVisible(boolValue);
 		}
 		String value = reader().getStringValue(BUTTONS_PANEL_POSITION_PROP);
 		if (value != null) {

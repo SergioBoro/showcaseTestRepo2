@@ -7,6 +7,8 @@ import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.utils.DownloadHelper;
 
+import com.google.gwt.user.client.rpc.SerializationStreamFactory;
+
 /**
  * @author anlug
  * 
@@ -35,7 +37,7 @@ public final class GeoMapPanelCallbacksEvents {
 		// "Сообщение вызвано при нажатии на карте "
 		// + mapDivId + " из gwt кода на объекте " + featureId);
 
-		GeoMap gm = (getPanel(mapDivId)).getMap();
+		GeoMap gm = getPanel(mapDivId).getMap();
 
 		List<GeoMapEvent> events = gm.getEventManager().getEventForFeature(featureId);
 		for (GeoMapEvent gmev : events) {
@@ -49,18 +51,21 @@ public final class GeoMapPanelCallbacksEvents {
 				mapDivId.length() - Constants.MAP_DIV_ID_SUFFIX.length()));
 	}
 
-	public static void exportToPNGSuccess(final String mapDivId, final String svg) {
+	public static void exportToPNGSuccess(final String mapDivId, final String imageFormat,
+			final String svg) {
 		DownloadHelper dh = DownloadHelper.getInstance();
 		dh.clear();
 
 		dh.setErrorCaption(Constants.EXPORT_TO_PNG_ERROR);
-		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/geoMapToPNG");
+		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/geoMapExport");
 
 		try {
-			// SerializationStreamFactory ssf = dh.getObjectSerializer();
-			// dh.addStdPostParamsToBody(getDetailedContext(),
-			// getElementInfo());
+			GeoMap map = getPanel(mapDivId).getMap();
+			SerializationStreamFactory ssf = dh.getObjectSerializer();
+			dh.addParam(ImageFormat.class.getName(), imageFormat);
 			dh.addParam("svg", svg);
+			dh.addParam(map.getExportSettings().getClass().getName(), map.getExportSettings()
+					.toParamForHttpPost(ssf));
 			dh.submit();
 		} catch (Exception e) {
 			MessageBox.showSimpleMessage(Constants.EXPORT_TO_PNG_ERROR, e.getMessage());

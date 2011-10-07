@@ -3,7 +3,7 @@ package ru.curs.showcase.app.client;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.geomap.GeoMap;
+import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 
@@ -226,29 +226,44 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			break;
 		}
 		DOM.setElementAttribute(buttonsPanel.getElement(), "id", "buttons" + divIdMap);
-		if (geoMap.getUiSettings().getExportToSVGButtonVisible()) {
-			Button button =
-				new Button("<nobr><img src=\"resources/internal/ExportToSVG.png\"/>",
-						new ClickHandler() {
-							@Override
-							public void onClick(final ClickEvent aEvent) {
-								exportToSVG(divIdMap);
-							}
 
-						});
-			buttonsPanel.add(button);
+		if (geoMap.getUiSettings().getExportToPNGButtonVisible()) {
+			createButton(buttonsPanel, ImageFormat.PNG);
+		}
+		if (geoMap.getUiSettings().getExportToJPGButtonVisible()) {
+			createButton(buttonsPanel, ImageFormat.JPG);
+		}
+		if (geoMap.getUiSettings().getExportToSVGButtonVisible()) {
+			createButton(buttonsPanel, ImageFormat.SVG);
 		}
 	}
 
-	private native void exportToSVG(final String mapId) /*-{
-		$wnd.gwtGeoMapExportToPNGSuccess =                   
-		@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::exportToPNGSuccess(Ljava/lang/String;Ljava/lang/String;);
-		$wnd.gwtGeoMapExportToPNGError =                   
+	private void createButton(final CellPanel buttonsPanel, final ImageFormat imageFormat) {
+		final String fileName = "ExportTo" + imageFormat.toString() + ".png";
+		Button button =
+			new Button("<nobr><img height=\"16\" width=\"16\" src=\"resources/internal/"
+					+ fileName + "\"/>", new ClickHandler() {
+				@Override
+				public void onClick(final ClickEvent aEvent) {
+					export(divIdMap, imageFormat.toString());
+				}
+
+			});
+		buttonsPanel.add(button);
+	}
+
+	// CHECKSTYLE:OFF
+	private native void export(final String mapId, final String exportType) /*-{
+		$wnd.gwtGeoMapExportSuccess =                   
+		@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::exportToPNGSuccess(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+		$wnd.gwtGeoMapExportError =                   
 		@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::exportToPNGError(Ljava/lang/String;Ljava/lang/String;);
 
 		$wnd.dojo.require("course.geo");		
-		$wnd.course.geo.toSvg(mapId, $wnd.gwtGeoMapExportToPNGSuccess, $wnd.gwtGeoMapExportToPNGError);
+		$wnd.course.geo.toSvg(mapId, exportType, $wnd.gwtGeoMapExportSuccess, $wnd.gwtGeoMapExportError);
 	}-*/;
+
+	// CHECKSTYLE:ON
 
 	/**
 	 * VerticalPanel на которой отображена карта и легенда.

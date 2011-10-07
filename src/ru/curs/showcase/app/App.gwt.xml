@@ -17,6 +17,7 @@
   <inherits name='ru.beta2.extra.gwt.ExtraUI'/>
   <inherits name="com.google.gwt.http.HTTP"/>  
   
+  <super-source path="jre"></super-source>
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='ru.curs.showcase.app.client.App'/>
@@ -24,16 +25,12 @@
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
   <source path='api'/>
-  
-  <super-source path="jre"></super-source>
        
-  <set-property name="user.agent" value="safari" />
-  
 <!--   The supported user agents at the moment of writing were:-->
 <!--   ie6,ie8,gecko,gecko1_8,safari,opera	  -->
 <!--   where safari==chrome, gecko1_8==firefox 2+ -->
 <!-- Для того, чтобы компилировалось все - строчку set-property  -->
 
 <!-- Установка общих стилей приложения. Рекомендуется устанавливать здесь, чтобы не забыть установить в каждом jsp файле. -->
-<stylesheet src="../css/internalShowcase.css"/>    
+<stylesheet src="../css/internalShowcase.css"/>      
 </module>

@@ -59,9 +59,6 @@ public final class FileUtils {
 	 */
 	public static final String PATH_PROPERTIES = "general.properties";
 
-	/**
-	 * LOGGER.
-	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
 	private FileUtils() {

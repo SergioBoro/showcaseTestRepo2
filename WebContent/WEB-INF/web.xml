@@ -163,11 +163,11 @@
     <url-pattern>/forall/state</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>GeoMapToPNGHandler</servlet-name>
-    <servlet-class>ru.curs.showcase.app.server.GeoMapToPNGHandler</servlet-class>
+    <servlet-name>GeoMapExportServlet</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.GeoMapExportServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>GeoMapToPNGHandler</servlet-name>
-    <url-pattern>/secured/geoMapToPNG</url-pattern>
+    <servlet-name>GeoMapExportServlet</servlet-name>
+    <url-pattern>/secured/geoMapExport</url-pattern>
   </servlet-mapping>
 </web-app>

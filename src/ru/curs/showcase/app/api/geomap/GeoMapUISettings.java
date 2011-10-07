@@ -21,6 +21,10 @@ public final class GeoMapUISettings implements SerializableElement {
 
 	private Boolean exportToSVGButtonVisible;
 
+	private Boolean exportToJPGButtonVisible;
+
+	private Boolean exportToPNGButtonVisible;
+
 	private ChildPosition buttonsPanelPosition;
 
 	public Boolean getButtonsPanelVisible() {
@@ -45,6 +49,22 @@ public final class GeoMapUISettings implements SerializableElement {
 
 	public void setButtonsPanelPosition(final ChildPosition aButtonsPanelPosition) {
 		buttonsPanelPosition = aButtonsPanelPosition;
+	}
+
+	public Boolean getExportToJPGButtonVisible() {
+		return exportToJPGButtonVisible;
+	}
+
+	public void setExportToJPGButtonVisible(final Boolean aExportToJPGButtonVisible) {
+		exportToJPGButtonVisible = aExportToJPGButtonVisible;
+	}
+
+	public Boolean getExportToPNGButtonVisible() {
+		return exportToPNGButtonVisible;
+	}
+
+	public void setExportToPNGButtonVisible(final Boolean aExportToPNGButtonVisible) {
+		exportToPNGButtonVisible = aExportToPNGButtonVisible;
 	}
 
 }

@@ -5,7 +5,7 @@ import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.geomap.GeoMap;
+import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
@@ -63,7 +63,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public void saveColumnSet(final ColumnSet aCs) throws GeneralException {
+	public void saveColumnSet(final ColumnSet aCs, final GeoMapExportSettings settings)
+			throws GeneralException {
 		// fake метод для корректной сериализации
 	}
 

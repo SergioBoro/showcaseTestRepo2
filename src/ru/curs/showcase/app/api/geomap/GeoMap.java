@@ -23,12 +23,14 @@ public final class GeoMap extends DataPanelElementWithLegend {
 	private GeoMapData javaDynamicData;
 
 	/**
-	 * Признак того, что размеры карты должны подстраиватся под размеры инф.
+	 * Признак того, что размеры карты должны подстраиваться под размеры инф.
 	 * панели. Данный режим включается, если не заданы размеры карты.
 	 */
 	private Boolean autoSize = false;
 
 	private GeoMapUISettings uiSettings = new GeoMapUISettings();
+
+	private GeoMapExportSettings exportSettings = new GeoMapExportSettings();
 
 	public GeoMap(final GeoMapData aGeoMapData) {
 		super();
@@ -80,6 +82,14 @@ public final class GeoMap extends DataPanelElementWithLegend {
 
 	public void setUiSettings(final GeoMapUISettings aUiSettings) {
 		uiSettings = aUiSettings;
+	}
+
+	public GeoMapExportSettings getExportSettings() {
+		return exportSettings;
+	}
+
+	public void setExportSettings(final GeoMapExportSettings aExportSettings) {
+		exportSettings = aExportSettings;
 	}
 
 }
