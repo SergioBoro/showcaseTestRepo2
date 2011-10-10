@@ -35,14 +35,6 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 		this.lengthDenominator = (this.group.getTransform()||{xx:1}).xx;
 	},
 	
-	moveTo: function(path, point) {
-		path.moveTo(this.getX(point[0]), this.getY(point[1]));
-	},
-	
-	lineTo: function(path, point) {
-		path.lineTo(this.getX(point[0]), this.getY(point[1]));
-	},
-	
 	getX: function(x) {
 		var result = x-this.map.extent[0];
 		if (this.engine.correctScale) result *= this.engine.correctionScale;
@@ -109,7 +101,7 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 		else {
 			if (numBaseShapes > 1) {
 				// apply the same style to all shapes
-				dojo.forEach(baseShapes, function(shape, i){
+				dojo.forEach(baseShapes, function(shape, i) {
 					var resultShape = this._applyPointStyle(coords, calculatedStyle, specificStyle, null, feature, shape);
 					if (numBaseShapes == 0 || /* shape has been replaced*/resultShape != shape) {
 						feature.baseShapes[i] = resultShape;
@@ -247,16 +239,18 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 			specificShapeStyles = calculatedStyle.lines,
 			baseShapes = feature.baseShapes;
 
-		this._updateShapes(feature, coords, calculatedStyle, specificShapeStyles);
-
 		if (specificShapeStyles) {
+			this._updateShapes(feature, coords, calculatedStyle, specificShapeStyles);
 			dojo.forEach(specificShapeStyles, function(specificShapeStyle, i){
 				// index of specificShapeStyles corresponds to the index of feature.baseShapes
 				this._applyLineStyle(baseShapes[i], calculatedStyle, specificStyle, specificShapeStyle);
 			}, this);
 		}
 		else {
-			this._applyLineStyle(baseShapes[0], calculatedStyle, specificStyle);
+			// apply the same style to all shapes
+			dojo.forEach(baseShapes, function(shape) {
+				this._applyLineStyle(shape, calculatedStyle, specificStyle)
+			}, this);
 		}
 	},
 	
@@ -394,7 +388,9 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 				if (textStyle.font) {
 					textShape.setFont(textStyle.font);
 				}
-				
+				if (textStyle.stroke) {
+					textShape.setStroke(textStyle.stroke);
+				}
 			}
 		}
 		return textShape;
