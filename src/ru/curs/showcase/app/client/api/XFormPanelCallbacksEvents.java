@@ -304,7 +304,7 @@ public final class XFormPanelCallbacksEvents {
 		XFormPanel currentXFormPanel = (XFormPanel) ActionExecuter.getElementPanelById(param.id());
 
 		if (currentXFormPanel != null) {
-			SelectorComponent c;
+			BaseSelectorComponent c;
 			if (isMultiSelector) {
 				c =
 					new MultiSelectorComponent(currentXFormPanel.getSelSrv(),
@@ -312,9 +312,9 @@ public final class XFormPanelCallbacksEvents {
 			} else {
 				c = new SelectorComponent(currentXFormPanel.getSelSrv(), param.windowCaption());
 			}
-			c.setSelectorListener(new SelectorComponent.SelectorListener() {
+			c.setSelectorListener(new BaseSelectorComponent.SelectorListener() {
 				@Override
-				public void onSelectionComplete(final SelectorComponent selector) {
+				public void onSelectionComplete(final BaseSelectorComponent selector) {
 					if (param.xpathMapping() == null) {
 						param.onSelectionComplete(selector.isOK(),
 								selector.getSelectedAsJsObject());

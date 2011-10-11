@@ -457,6 +457,28 @@
 					   });;" />
 				</xf:action>
 			</xf:trigger>
+			
+			<xf:trigger>
+				<xf:label>MultiSelector</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:load
+						resource="javascript:showMultiSelector({
+			           id : 'xformId',
+                       procListAndCount  : '[dbo].[companylist_and_count]',
+                       generalFilters      : '',
+                       currentValue        : 'XPath(/schema/info[index(quot(securityRealEstateRow))]/name)',
+                       windowCaption       : 'Выберите значения',
+                       xpathMapping        : {
+                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/name)': 
+                                              'name', 
+                                              
+                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/comment)': 
+                                              'CreateRowUser'
+                                             }
+                       });;" />
+				</xf:action>
+			</xf:trigger>
+			
 		</div>
 		
 		
