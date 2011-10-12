@@ -319,8 +319,13 @@ public final class XFormPanelCallbacksEvents {
 						param.onSelectionComplete(selector.isOK(),
 								selector.getSelectedAsJsObject());
 					} else {
-						setXFormByXPath(selector.isOK(), selector.getSelectedAsJsObject(),
-								param.xpathMapping());
+						if (isMultiSelector) {
+							insertXFormByXPath(selector.isOK(), selector.getSelectedAsJsObject(),
+									param.xpathMapping());
+						} else {
+							setXFormByXPath(selector.isOK(), selector.getSelectedAsJsObject(),
+									param.xpathMapping());
+						}
 					}
 				}
 			});
@@ -334,9 +339,6 @@ public final class XFormPanelCallbacksEvents {
 				procName = param.procListAndCount();
 			}
 
-			// MessageBox.showSimpleMessage("",
-			// getXMLByXPathArray(param.generalFilters()));
-
 			c.initData(getXMLByXPathArray(param.generalFilters()), procName,
 					getValueByXPath(param.currentValue()));
 		}
@@ -345,6 +347,11 @@ public final class XFormPanelCallbacksEvents {
 	private static native void setXFormByXPath(final boolean ok, final JavaScriptObject selected,
 			final Map<String, String> xpathMapping) /*-{
 		$wnd.setXFormByXPath(ok, selected, xpathMapping);
+	}-*/;
+
+	private static native void insertXFormByXPath(final boolean ok,
+			final JavaScriptObject selected, final Map<String, String> xpathMapping) /*-{
+		$wnd.insertXFormByXPath(ok, selected, xpathMapping);
 	}-*/;
 
 	private static native String getValueByXPath(final String xpath) /*-{

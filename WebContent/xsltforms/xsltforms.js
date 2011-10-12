@@ -9961,6 +9961,20 @@ function setXFormByXPath(ok, selected, xpathMapping)
 	}
 }
 
+function insertXFormByXPath(ok, selected, xpathMapping)
+{
+	if (ok) {
+	
+		var mess = "--------------------\n";		
+		for (var i in selected) {
+			mess = mess+selected[i].name+"\n";
+		}
+		mess = mess+"--------------------";		
+		
+		alert(mess);
+	}
+}
+
 function getValueByXPath(xpath)
 {
     if (isXPath(xpath)) {
