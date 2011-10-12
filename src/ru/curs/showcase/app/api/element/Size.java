@@ -22,7 +22,7 @@ public abstract class Size {
 		return width;
 	}
 
-	public final void setWidth(final Integer aWidth) {
+	public void setWidth(final Integer aWidth) {
 		width = aWidth;
 	}
 
@@ -30,7 +30,7 @@ public abstract class Size {
 		return height;
 	}
 
-	public final void setHeight(final Integer aHeight) {
+	public void setHeight(final Integer aHeight) {
 		height = aHeight;
 	}
 

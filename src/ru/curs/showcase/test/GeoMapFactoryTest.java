@@ -7,7 +7,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.*;
-import ru.curs.showcase.model.ElementRawData;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.geomap.*;
 
 /**
@@ -17,6 +17,7 @@ import ru.curs.showcase.model.geomap.*;
  * 
  */
 public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
+
 	private static final String RU_AL_ID = "2";
 
 	/**
@@ -24,7 +25,7 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testSimpleCreateObj() {
-		GeoMap map = new GeoMap(new GeoMapData());
+		GeoMap map = new GeoMap();
 		assertNotNull(map.getJavaDynamicData());
 		assertNull(map.getJsDynamicData());
 		map.getJavaDynamicData().addLayer(GeoMapFeatureType.POLYGON);
@@ -52,6 +53,10 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 		feature.setValue(indId, value);
 		assertEquals(value, feature.getValueForIndicator(ind).doubleValue(), 0);
 		assertEquals(false, ind.getIsMain());
+
+		assertTrue(map.getAutoSize());
+		assertEquals(GeoMapData.AUTOSIZE_CONSTANT, map.getJavaDynamicData().getHeight());
+		assertEquals(GeoMapData.AUTOSIZE_CONSTANT, map.getJavaDynamicData().getWidth());
 	}
 
 	/**
@@ -111,6 +116,21 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 		assertEquals(String.format("%s - %s (%s) (%s - %s)", layer.getName(), novgorod.getName(),
 				novgorod.getId(), novgorod.getLat(), novgorod.getLon()), novgorod.getTooltip());
 		assertEquals("TestStyleClass", novgorod.getStyleClass());
+	}
+
+	@Test
+	public void testApplyAutoSizeValuesOnClient() {
+		final int height = 200;
+		final int width = 100;
+		GeoMap map = new GeoMap();
+		AdapterForJS adapter = new AdapterForJS();
+		adapter.adapt(map);
+
+		assertTrue(map.getJsDynamicData().indexOf("\"width\":" + GeoMapData.AUTOSIZE_CONSTANT) > -1);
+		assertTrue(map.getJsDynamicData().indexOf("\"height\":" + GeoMapData.AUTOSIZE_CONSTANT) > -1);
+		map.applyAutoSizeValuesOnClient(width, height);
+		assertTrue(map.getJsDynamicData().indexOf("\"width\":" + width) > -1);
+		assertTrue(map.getJsDynamicData().indexOf("\"height\":" + height) > -1);
 	}
 
 	/**

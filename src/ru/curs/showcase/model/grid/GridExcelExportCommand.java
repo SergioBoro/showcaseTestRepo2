@@ -50,6 +50,7 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 		columnSet = null;
 	}
 
+	@InputParam
 	@Override
 	public GridContext getContext() {
 		return (GridContext) super.getContext();

@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.*;
 /**
  * Класс панели с гридом.
  */
-public class DataGridPanel extends BasicElementPanelBasis {
+public class GridPanel extends BasicElementPanelBasis {
 
 	private static final String PROC100 = "100%";
 	private static final String SHOWCASE_APP_CONTAINER = "showcaseAppContainer";
@@ -110,9 +110,9 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	}
 
 	/**
-	 * Конструктор класса DataGridPanel без начального показа грида.
+	 * Конструктор класса GridPanel без начального показа грида.
 	 */
-	public DataGridPanel(final DataPanelElementInfo element) {
+	public GridPanel(final DataPanelElementInfo element) {
 
 		setElementInfo(element);
 		setContext(null);
@@ -123,9 +123,9 @@ public class DataGridPanel extends BasicElementPanelBasis {
 	}
 
 	/**
-	 * Конструктор класса DataGridPanel.
+	 * Конструктор класса GridPanel.
 	 */
-	public DataGridPanel(final CompositeContext context, final DataPanelElementInfo element,
+	public GridPanel(final CompositeContext context, final DataPanelElementInfo element,
 			final Grid grid1) {
 
 		this.setContext(context);

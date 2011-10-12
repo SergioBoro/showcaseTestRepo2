@@ -13,7 +13,9 @@
 			hideOnLoad="true" />		
 	</tab>	
 	<tab id="8" name="Карточка + грид с 2-мя процедурами">		
-		<element id="d1" type="webtext" proc="webtext_3buttons_enh"/>
+		<element id="d1" type="webtext" proc="webtext_3buttons_enh">
+			<related id="table1"/>
+		</element>	
 		<element id="table1" type="grid" proc="grid_cities_data_rco"
 			>
 			<proc id="d201" name="grid_cities_metadata" type="METADATA" />

@@ -23,6 +23,41 @@ public class GeoMapData extends Size implements SerializableElement {
 	 */
 	private List<GeoMapLayer> layers = new ArrayList<GeoMapLayer>();
 
+	public static final Integer AUTOSIZE_CONSTANT = -999;
+
+	public GeoMapData(final GeoMap aParent) {
+		super();
+		parent = aParent;
+	}
+
+	void initAutoSize() {
+		setHeight(AUTOSIZE_CONSTANT);
+		setWidth(AUTOSIZE_CONSTANT);
+	}
+
+	public GeoMapData() {
+		super();
+		parent = null;
+	}
+
+	private final transient GeoMap parent;
+
+	@Override
+	public final void setWidth(final Integer aWidth) {
+		super.setWidth(aWidth);
+		if (parent != null) {
+			parent.determineAutoSize();
+		}
+	}
+
+	@Override
+	public final void setHeight(final Integer aHeight) {
+		super.setHeight(aHeight);
+		if (parent != null) {
+			parent.determineAutoSize();
+		}
+	}
+
 	public final List<GeoMapLayer> getLayers() {
 		return layers;
 	}

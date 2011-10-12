@@ -7,6 +7,8 @@ import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.utils.DownloadHelper;
 
+import com.google.gwt.http.client.URL;
+import com.google.gwt.regexp.shared.*;
 import com.google.gwt.user.client.rpc.SerializationStreamFactory;
 
 /**
@@ -47,8 +49,18 @@ public final class GeoMapPanelCallbacksEvents {
 	}
 
 	public static GeoMapPanel getPanel(final String mapDivId) {
-		return (GeoMapPanel) ActionExecuter.getElementPanelById(mapDivId.substring(0,
-				mapDivId.length() - Constants.MAP_DIV_ID_SUFFIX.length()));
+		String elementId = getElementIdByGeomapDivId(mapDivId);
+		return (GeoMapPanel) ActionExecuter.getElementPanelById(elementId);
+	}
+
+	public static String getElementIdByGeomapDivId(final String mapDivId) {
+		String elementId = null;
+		RegExp pattern = RegExp.compile("dpe_.*__(.*)" + Constants.MAP_DIV_ID_SUFFIX, "i");
+		MatchResult res = pattern.exec(mapDivId);
+		if (res.getGroupCount() == 2) {
+			elementId = res.getGroup(1);
+		}
+		return elementId;
 	}
 
 	public static void exportToPNGSuccess(final String mapDivId, final String imageFormat,
@@ -63,7 +75,7 @@ public final class GeoMapPanelCallbacksEvents {
 			GeoMap map = getPanel(mapDivId).getMap();
 			SerializationStreamFactory ssf = dh.getObjectSerializer();
 			dh.addParam(ImageFormat.class.getName(), imageFormat);
-			dh.addParam("svg", svg);
+			dh.addParam("svg", URL.encode(svg));
 			dh.addParam(map.getExportSettings().getClass().getName(), map.getExportSettings()
 					.toParamForHttpPost(ssf));
 			dh.submit();
@@ -73,6 +85,6 @@ public final class GeoMapPanelCallbacksEvents {
 	}
 
 	public static void exportToPNGError(final String mapDivId, final String error) {
-		MessageBox.showSimpleMessage(Constants.EXPORT_TO_PNG_ERROR, error);
+		MessageBox.showSimpleMessage(Constants.EXPORT_TO_PNG_ERROR + "(djeo)", error);
 	}
 }

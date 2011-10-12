@@ -9,7 +9,7 @@
     <bean id="actionTabFinder" class="ru.curs.showcase.model.datapanel.ActionTabFinderFromXML">
     </bean>    
     
-    <bean id="objectSerializer" class="ru.curs.showcase.util.JSONObjectToLogSerializer">
+    <bean id="objectSerializer" class="ru.curs.showcase.util.xml.XMLObjectSerializer">
     </bean>   
     
 </beans>

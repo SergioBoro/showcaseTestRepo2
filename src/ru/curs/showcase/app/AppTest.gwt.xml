@@ -37,7 +37,7 @@
        
 <!--  <set-property name="user.agent" value="safari" /> -->
 <!-- Должны быть включены ВСЕ агенты, иначе не запускаются GWT-тесты   -->    
-<!-- для DataGridPanel в development mode во встроенном броузере       -->
+<!-- для GridPanel в development mode во встроенном броузере       -->
        
 <!--   The supported user agents at the moment of writing were:-->
 <!--   ie6,ie8,gecko,gecko1_8,safari,opera	  -->

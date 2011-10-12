@@ -16,9 +16,9 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.*;
 
 /**
- * Класс для тестирования DataGridPanel.
+ * Класс для тестирования GridPanel.
  */
-public class DataGridPanelTest extends GWTTestCase {
+public class GridPanelTest extends GWTTestCase {
 
 	private static final String HEADER = "Это хедер";
 	private static final String FOOTER = "Это футер";
@@ -43,7 +43,7 @@ public class DataGridPanelTest extends GWTTestCase {
 
 	}
 
-	private DataGridPanel createDataGridPanelForTests1() {
+	private GridPanel createGridPanelForTests1() {
 
 		DataPanelElementInfo dpei = new DataPanelElementInfo();
 		dpei.setId("1");
@@ -51,7 +51,7 @@ public class DataGridPanelTest extends GWTTestCase {
 		dpei.setType(DataPanelElementType.GRID);
 		dpei.setRefreshByTimer(true);
 
-		return new DataGridPanel(dpei);
+		return new GridPanel(dpei);
 	}
 
 	private ru.curs.showcase.app.api.grid.Grid createGrid() {
@@ -174,7 +174,7 @@ public class DataGridPanelTest extends GWTTestCase {
 
 	}
 
-	private DataGridPanel createDataGridPanelForTests2() {
+	private GridPanel createGridPanelForTests2() {
 
 		CompositeContext context = new CompositeContext();
 		context.setMain("Ввоз, включая импорт - Всего");
@@ -188,15 +188,15 @@ public class DataGridPanelTest extends GWTTestCase {
 
 		ru.curs.showcase.app.api.grid.Grid grid = createGrid();
 
-		return new DataGridPanel(context, dpei, grid);
+		return new GridPanel(context, dpei, grid);
 	}
 
 	/**
-	 * Тест без начального показа DataGridPanel.
+	 * Тест без начального показа GridPanel.
 	 */
 	public void testConstr1() {
 
-		DataGridPanel dgp = createDataGridPanelForTests1();
+		GridPanel dgp = createGridPanelForTests1();
 		assertNotNull(dgp);
 
 		assertEquals("1", dgp.getElementInfo().getId());
@@ -217,11 +217,11 @@ public class DataGridPanelTest extends GWTTestCase {
 	}
 
 	/**
-	 * Тест с начальным показом DataGridPanel.
+	 * Тест с начальным показом GridPanel.
 	 */
 	public void testConstr2() {
 
-		DataGridPanel dgp = createDataGridPanelForTests2();
+		GridPanel dgp = createGridPanelForTests2();
 		assertNotNull(dgp);
 
 		assertNotNull(dgp.getContext());
@@ -250,7 +250,7 @@ public class DataGridPanelTest extends GWTTestCase {
 	 */
 	public void testReDrawPanel1() {
 
-		DataGridPanel dgp = createDataGridPanelForTests1();
+		GridPanel dgp = createGridPanelForTests1();
 		assertNotNull(dgp);
 
 		CompositeContext context = new CompositeContext();
@@ -273,7 +273,7 @@ public class DataGridPanelTest extends GWTTestCase {
 	 */
 	public void testReDrawPanel2() {
 
-		DataGridPanel dgp = createDataGridPanelForTests2();
+		GridPanel dgp = createGridPanelForTests2();
 		assertNotNull(dgp);
 
 		CompositeContext context = new CompositeContext();
@@ -292,7 +292,7 @@ public class DataGridPanelTest extends GWTTestCase {
 	 */
 	public void testReDrawPanel3() {
 
-		DataGridPanel dgp = createDataGridPanelForTests2();
+		GridPanel dgp = createGridPanelForTests2();
 		assertNotNull(dgp);
 
 		CompositeContext context = new CompositeContext();
@@ -311,7 +311,7 @@ public class DataGridPanelTest extends GWTTestCase {
 	 */
 	public void testExportToExcel() {
 
-		DataGridPanel dgp = createDataGridPanelForTests2();
+		GridPanel dgp = createGridPanelForTests2();
 		assertNotNull(dgp);
 
 		dgp.exportToExcel(GridToExcelExportType.CURRENTPAGE);
@@ -324,7 +324,7 @@ public class DataGridPanelTest extends GWTTestCase {
 	 */
 	public void testCopyToClipboard() {
 
-		DataGridPanel dgp = createDataGridPanelForTests2();
+		GridPanel dgp = createGridPanelForTests2();
 		assertNotNull(dgp);
 
 		ClipboardDialog cd = dgp.copyToClipboard();
@@ -338,7 +338,7 @@ public class DataGridPanelTest extends GWTTestCase {
 	 */
 	public void testSaveSettings() {
 
-		DataGridPanel dgp = createDataGridPanelForTests2();
+		GridPanel dgp = createGridPanelForTests2();
 		assertNotNull(dgp);
 
 		dgp.prepareSettings(true);

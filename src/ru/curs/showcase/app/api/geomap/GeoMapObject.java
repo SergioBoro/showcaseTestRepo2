@@ -15,9 +15,7 @@ import ru.curs.showcase.app.api.NamedElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class GeoMapObject extends NamedElement implements SerializableElement {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = -7054114684387944282L;
 
 	/**

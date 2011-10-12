@@ -32,13 +32,10 @@ public final class GeoMap extends DataPanelElementWithLegend {
 
 	private GeoMapExportSettings exportSettings = new GeoMapExportSettings();
 
-	public GeoMap(final GeoMapData aGeoMapData) {
-		super();
-		javaDynamicData = aGeoMapData;
-	}
-
 	public GeoMap() {
 		super();
+		javaDynamicData = new GeoMapData(this);
+		javaDynamicData.initAutoSize();
 	}
 
 	@Override
@@ -72,8 +69,12 @@ public final class GeoMap extends DataPanelElementWithLegend {
 	 * Функция для определения значения признака autoSize. Должна быть вызвана
 	 * до сериализации карты в JSON, например из фабрики.
 	 */
-	public void determineAutoSize() {
-		autoSize = (javaDynamicData.getHeight() == null) && (javaDynamicData.getWidth() == null);
+	void determineAutoSize() {
+		if (javaDynamicData != null) {
+			autoSize =
+				(GeoMapData.AUTOSIZE_CONSTANT.equals(javaDynamicData.getHeight()))
+						&& (GeoMapData.AUTOSIZE_CONSTANT.equals(javaDynamicData.getWidth()));
+		}
 	}
 
 	public GeoMapUISettings getUiSettings() {
@@ -92,4 +93,10 @@ public final class GeoMap extends DataPanelElementWithLegend {
 		exportSettings = aExportSettings;
 	}
 
+	public void applyAutoSizeValuesOnClient(final int width, final int height) {
+		setJsDynamicData(getJsDynamicData().replace("\"width\":" + GeoMapData.AUTOSIZE_CONSTANT,
+				"\"width\":" + width));
+		setJsDynamicData(getJsDynamicData().replace("\"height\":" + GeoMapData.AUTOSIZE_CONSTANT,
+				"\"height\":" + height));
+	}
 }

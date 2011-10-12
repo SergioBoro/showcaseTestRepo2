@@ -335,11 +335,11 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		if (getCallContext().isFirstLoad()) {
 			super.setupDynamicSettings();
 			loadStaticSettings();
-			calcPageNumber();
 		} else {
 			loadStaticSettings();
 			loadStoredState();
 		}
+		calcAutoSelectRecordId();
 	}
 
 	private void loadStoredState() {
@@ -359,15 +359,25 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 
 	protected void calcAutoSelectRecordId() {
 		autoSelectRecordId = serverState().getAutoSelectRecordId();
-		if ((autoSelectRecordId != null) && serverState().getAutoSelectRelativeRecord()) {
-			checkAutoSelectRecordRangeOfBounds();
-			checkApplyAutoSelect();
+		if (autoSelectRecordId == null) {
+			return;
 		}
+
+		if (serverState().getAutoSelectRelativeRecord()) {
+			recalcAutoSelectRecordId();
+		} else {
+			recalcPageNumber();
+		}
+
 	}
 
-	private void checkApplyAutoSelect() {
+	private void recalcAutoSelectRecordId() {
 		if (autoSelectRecordId >= getRecordSet().getPageSize()) {
-			if (!getCallContext().isFirstLoad()) {
+			if (getCallContext().isFirstLoad()) {
+				throw new InconsistentSettingsFromDBException(String.format(
+						RELATIVE_NUMBER_TOO_BIG_ERROR, autoSelectRecordId, getRecordSet()
+								.getPageSize()));
+			} else {
 				LOGGER.info(AUTO_SELECT_RELATIVE_RECORD_DISABLED);
 				return;
 			}
@@ -377,12 +387,12 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 					* (getRecordSet().getPageNumber() - 1);
 	}
 
-	private void checkAutoSelectRecordRangeOfBounds() {
-		if (autoSelectRecordId >= getRecordSet().getPageSize()) {
-			if (getCallContext().isFirstLoad()) {
-				throw new InconsistentSettingsFromDBException(String.format(
-						RELATIVE_NUMBER_TOO_BIG_ERROR, autoSelectRecordId, getRecordSet()
-								.getPageSize()));
+	private void recalcPageNumber() {
+		if (getCallContext().isFirstLoad()) {
+			if (autoSelectRecordId >= getRecordSet().getPageSize()) {
+				getRecordSet().setPageNumber(
+						(int) Math.ceil(((float) autoSelectRecordId + 1)
+								/ getRecordSet().getPageSize()));
 			}
 		}
 	}
@@ -391,26 +401,15 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		return getResult().getDataSet().getRecordSet();
 	}
 
-	private void calcPageNumber() {
-		Integer recId = serverState().getAutoSelectRecordId();
-
-		if ((recId != null) && (recId >= getRecordSet().getPageSize())
-				&& !serverState().getAutoSelectRelativeRecord()) {
-			getRecordSet().setPageNumber(
-					(int) Math.ceil(((float) recId + 1) / getRecordSet().getPageSize()));
-		}
-	}
-
 	/**
 	 * Настройка автоматического выделения у грида на основе считанных из БД
 	 * данных.
 	 */
 	protected void setupAutoSelecting() {
-		calcAutoSelectRecordId();
-
 		if (autoSelectRecordId == null) {
 			return;
 		}
+
 		for (Record current : getRecordSet().getRecords()) {
 			if (current.getIndex().equals(autoSelectRecordId)) {
 				getResult().setAutoSelectRecord(current);

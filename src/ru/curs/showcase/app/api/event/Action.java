@@ -157,7 +157,7 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 
 	/**
 	 * TODO: Алгоритм хотя и довольно простой, но не отражен в модели. Подумать
-	 * о доработке модели.
+	 * о доработке модели. Повторное определение типа заблокировано!
 	 * 
 	 * @param aCurrentElementInfo
 	 *            - информация о текущем элементе на панели. Используется в
@@ -166,6 +166,9 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	private void determineDPActionType() {
 		if (dataPanelLink == null) {
 			dataPanelActionType = DataPanelActionType.DO_NOTHING;
+			return;
+		}
+		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
 			return;
 		}
 		if (dataPanelLink.isCurrentPanel()) {

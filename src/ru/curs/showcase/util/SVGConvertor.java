@@ -30,35 +30,36 @@ public final class SVGConvertor {
 		exportSettings = aExportSettings;
 	}
 
-	public OutputStream svgStringToJPEG(final String svg) {
+	public ByteArrayOutputStream svgStringToJPEG(final String svg) {
 		InputStream is;
 		try {
 			is = TextUtils.stringToStream(svg);
 		} catch (UnsupportedEncodingException e) {
 			throw new SVGConvertException(e);
 		}
-		OutputStream output = new ByteArrayOutputStream();
-		output = svgToJPEGBaseMethod(is, output);
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		output = (ByteArrayOutputStream) svgToJPEGBaseMethod(is, output);
 		return output;
 	}
 
-	public OutputStream svgStringToPNG(final String svg) {
+	public ByteArrayOutputStream svgStringToPNG(final String svg) {
 		InputStream is;
 		try {
 			is = TextUtils.stringToStream(svg);
 		} catch (UnsupportedEncodingException e) {
 			throw new SVGConvertException(e);
 		}
-		OutputStream output = new ByteArrayOutputStream();
-		output = svgToPNGBaseMethod(is, output);
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		output = (ByteArrayOutputStream) svgToPNGBaseMethod(is, output);
 		return output;
 	}
 
 	private OutputStream svgToJPEGBaseMethod(final InputStream is, final OutputStream os) {
 		try {
 			ImageTranscoder t = new JPEGTranscoder();
+			final double percentDivider = 100.0;
 			t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY,
-					new Float(exportSettings.getJpegQuality() / 100.0));
+					new Float(exportSettings.getJpegQuality() / percentDivider));
 			if (exportSettings.getBackgroundColor() != null) {
 				t.addTranscodingHint(ImageTranscoder.KEY_BACKGROUND_COLOR,
 						Color.decode(exportSettings.getBackgroundColor()));

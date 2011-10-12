@@ -210,7 +210,6 @@ public class ActionFactory extends SAXTagHandler {
 
 	public void actionSTARTTAGHandler(final Attributes attrs) {
 		Action action = new Action();
-		action.setDataPanelActionType(DataPanelActionType.DO_NOTHING);
 		if (attrs.getIndex(SHOW_IN_MODE_TAG) > -1) {
 			action.setShowInMode(ShowInMode.valueOf(attrs.getValue(SHOW_IN_MODE_TAG)));
 		}

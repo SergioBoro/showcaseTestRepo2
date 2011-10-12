@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.SPNotExistsException;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.XSDValidateException;
@@ -57,8 +57,8 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(el);
 		assertEquals(DataPanelElementType.WEBTEXT, el.getType());
 		assertEquals("testStyle", el.getStyleClass());
-		assertEquals("dpe_test_1", el.getFullId());
-		assertEquals("dpe_test_1_current", el.getKeyForCaching(CompositeContext.createCurrent()));
+		assertEquals("dpe_test__1", el.getFullId());
+		assertEquals("dpe_test__1_current", el.getKeyForCaching(CompositeContext.createCurrent()));
 
 		tab = panel.getTabById("2");
 		assertNotNull(tab);

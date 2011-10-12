@@ -279,15 +279,15 @@ public class GeneralDataPanel {
 	 */
 	public static Widget generateGridElement(final DataPanelElementInfo dpe) {
 
-		DataGridPanel dgp = null;
+		GridPanel dgp = null;
 		Widget w = null;
 
 		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-			dgp = new DataGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
+			dgp = new GridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
 			w = dgp.getPanel();
 			w.setSize("100%", "100%");
 		} else {
-			dgp = new DataGridPanel(dpe);
+			dgp = new GridPanel(dpe);
 			w = dgp.getPanel();
 			dgp.hidePanel();
 		}

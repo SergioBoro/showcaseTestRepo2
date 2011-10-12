@@ -8,6 +8,7 @@ import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;
@@ -59,23 +60,25 @@ public class GeoMapExportServlet extends HttpServlet {
 			// обрабатывается некорректно.
 			response.setHeader("Content-Disposition",
 					String.format("attachment; filename=\"%s\"", fileName));
-			String svg = request.getParameter("svg");
+			String svg = decodeParamValue(request.getParameter("svg"));
+			svg = checkSVGEncoding(svg);
 			switch (imageFormat) {
 			case PNG:
 				SVGConvertor convertor = new SVGConvertor(settings);
-				ByteArrayOutputStream os = (ByteArrayOutputStream) convertor.svgStringToPNG(svg);
+				ByteArrayOutputStream os = convertor.svgStringToPNG(svg);
 				OutputStream out = response.getOutputStream();
 				out.write(os.toByteArray());
 				out.close();
 				break;
 			case JPG:
 				convertor = new SVGConvertor(settings);
-				os = (ByteArrayOutputStream) convertor.svgStringToJPEG(svg);
+				os = convertor.svgStringToJPEG(svg);
 				out = response.getOutputStream();
 				out.write(os.toByteArray());
 				out.close();
 				break;
 			case SVG:
+				response.setCharacterEncoding(TextUtils.DEF_ENCODING);
 				response.getWriter().append(svg);
 				break;
 			default:
@@ -83,6 +86,14 @@ public class GeoMapExportServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			throw new ServletException(e);
+		}
+	}
+
+	private String checkSVGEncoding(final String aSvg) {
+		if (aSvg.startsWith(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8)) {
+			return aSvg;
+		} else {
+			return XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8 + "\n" + aSvg;
 		}
 	}
 }

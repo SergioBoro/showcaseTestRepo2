@@ -25,7 +25,6 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		generalMapPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
 		generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_MAP_DATA_ARE_LOADING));
-		divIdMap = getElementInfo().getFullId() + Constants.MAP_DIV_ID_SUFFIX;
 		// getElementInfo().getFullId();
 		createChildPanels();
 		dataService = GWT.create(DataService.class);
@@ -44,13 +43,13 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 	private void createChildPanels() {
 		childLeftPanel = new HorizontalPanel();
-		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "left" + divIdMap);
+		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "left" + getDivIdMap());
 		childRightPanel = new HorizontalPanel();
-		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "right" + divIdMap);
+		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "right" + getDivIdMap());
 		childTopPanel = new VerticalPanel();
-		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "top" + divIdMap);
+		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "top" + getDivIdMap());
 		childBottomPanel = new VerticalPanel();
-		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "bottom" + divIdMap);
+		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "bottom" + getDivIdMap());
 	}
 
 	public GeoMapPanel(final DataPanelElementInfo element1) {
@@ -61,7 +60,6 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		this.setContext(null);
 		setIsFirstLoading(true);
 		// я бы убрал этот код-конец
-		divIdMap = getElementInfo().getId() + Constants.MAP_DIV_ID_SUFFIX;
 		createChildPanels();
 
 		generalMapPanel = new VerticalPanel();
@@ -108,15 +106,15 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			// String.valueOf(GeneralDataPanel.getTabPanel().getOffsetWidth()));
 			// MessageBox.showSimpleMessage("cap",
 			// String.valueOf(GeneralDataPanel.getTabPanel().getOffsetWidth()));
+			final int width = GeneralDataPanel.getTabPanel().getOffsetWidth() - n60;
+			final int height = GeneralDataPanel.getTabPanel().getOffsetHeight() - n80;
 			htmlForMap =
-				"<div id='" + divIdMap + "' style = 'width: "
-						+ String.valueOf(GeneralDataPanel.getTabPanel().getOffsetWidth() - n60)
-						+ "px; height: "
-						+ String.valueOf(GeneralDataPanel.getTabPanel().getOffsetHeight() - n80)
-						+ "px'></div>";
+				"<div id='" + getDivIdMap() + "' style = 'width: " + String.valueOf(width)
+						+ "px; height: " + String.valueOf(height) + "px'></div>";
+			aGeoMap.applyAutoSizeValuesOnClient(width, height);
 
 		} else {
-			htmlForMap = "<div id='" + divIdMap + "'></div>";
+			htmlForMap = "<div id='" + getDivIdMap() + "'></div>";
 		}
 
 		// final String htmlForMap =
@@ -178,7 +176,7 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 		final String paramMap2 = aGeoMap.getTemplate();
 
-		drawMap(divIdMap, divIdLegend, paramMap1, paramMap2);
+		drawMap(getDivIdMap(), divIdLegend, paramMap1, paramMap2);
 		checkForDefaultAction();
 
 		if (getElementInfo().getRefreshByTimer()) {
@@ -225,7 +223,7 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		default:
 			break;
 		}
-		DOM.setElementAttribute(buttonsPanel.getElement(), "id", "buttons" + divIdMap);
+		DOM.setElementAttribute(buttonsPanel.getElement(), "id", "buttons" + getDivIdMap());
 
 		if (geoMap.getUiSettings().getExportToPNGButtonVisible()) {
 			createButton(buttonsPanel, ImageFormat.PNG);
@@ -245,7 +243,7 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 					+ fileName + "\"/>", new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent aEvent) {
-					export(divIdMap, imageFormat.toString());
+					export(getDivIdMap(), imageFormat.toString());
 				}
 
 			});
@@ -321,8 +319,6 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	 * HTML виждет для легенды карты.
 	 */
 	private HTML legendHTML = null;
-
-	private final String divIdMap;
 
 	/**
 	 * Ф-ция, возвращающая панель с картой и легендой, если она необходима.
@@ -443,5 +439,9 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			}
 		});
 
+	}
+
+	private String getDivIdMap() {
+		return getElementInfo().getFullId() + Constants.MAP_DIV_ID_SUFFIX;
 	}
 }

@@ -19,9 +19,6 @@ import ru.curs.showcase.app.api.event.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Grid extends DataPanelCompBasedElement {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -8875148764868361032L;
 
 	/**

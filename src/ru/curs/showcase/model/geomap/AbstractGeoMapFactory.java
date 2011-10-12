@@ -110,7 +110,7 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 
 	@Override
 	protected void initResult() {
-		result = new GeoMap(new GeoMapData());
+		result = new GeoMap();
 		ProfileBasedSettingsApplyStrategy strategy =
 			new DefaultGeoMapSettingsApplyStrategy(result.getUiSettings());
 		strategy.apply();
@@ -240,7 +240,6 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 		super.correctSettingsAndData();
 
 		setupHints();
-		getResult().determineAutoSize();
 		replaceVariablesInTemplate();
 	}
 

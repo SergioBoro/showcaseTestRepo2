@@ -3,7 +3,7 @@ package ru.curs.showcase.model.grid;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.*;
-import ru.curs.showcase.model.command.DataPanelElementCommand;
+import ru.curs.showcase.model.command.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
@@ -22,6 +22,7 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 		applyLocalFormatting = aApplyLocalFormatting;
 	}
 
+	@InputParam
 	@Override
 	public GridContext getContext() {
 		return (GridContext) super.getContext();

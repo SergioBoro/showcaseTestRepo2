@@ -12,7 +12,7 @@ import com.google.gson.*;
  * @author den
  * 
  */
-public class JSONObjectToLogSerializer implements ObjectSerializer {
+public class JSONObjectSerializer implements ObjectSerializer {
 
 	private final ExclusionStrategy logExclusionStrategy = new ExclusionStrategy() {
 		@Override

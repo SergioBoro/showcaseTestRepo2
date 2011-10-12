@@ -14,9 +14,6 @@ import ru.curs.showcase.app.api.event.Action;
 public class GridServerState implements SerializableElement {
 	public static final String GRID_DEFAULT_PROFILE = "default.properties";
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -1419798447839020679L;
 
 	/**

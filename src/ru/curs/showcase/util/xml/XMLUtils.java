@@ -28,6 +28,9 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class XMLUtils {
 
+	public static final String XML_VERSION_1_0_ENCODING_UTF_8 =
+		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
 	public static final String XSL_MARKER = "XSL";
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(XMLUtils.class);
