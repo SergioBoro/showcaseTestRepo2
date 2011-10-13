@@ -8,16 +8,15 @@ import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.*;
 
 /**
- * Класс вкладки информационной панели.
+ * Класс вкладки информационной панели. В случае табличной раскладки панели
+ * фактически включает в себя блок &lt;table&gt;.
  * 
  * @author den
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DataPanelTab extends NamedElement {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = -560927756003899524L;
 	/**
 	 * Позиция вкладки на панели. Нумерация начинается с 0.
@@ -34,6 +33,12 @@ public class DataPanelTab extends NamedElement {
 	@ExcludeFromSerialization
 	@XmlTransient
 	private DataPanel dataPanel;
+
+	private DataPanelTabLayout layout = DataPanelTabLayout.VERTICAL;
+
+	private HTMLAttrs htmlAttrs = new HTMLAttrs();
+
+	private List<DataPanelTR> trs = new ArrayList<DataPanelTR>();
 
 	public final List<DataPanelElementInfo> getElements() {
 		return elements;
@@ -110,5 +115,41 @@ public class DataPanelTab extends NamedElement {
 	public void add(final DataPanelElementInfo aElInfo) {
 		getElements().add(aElInfo);
 		aElInfo.setTab(this);
+	}
+
+	public DataPanelElementInfo addElement(final String aId, final DataPanelElementType aType) {
+		DataPanelElementInfo aElInfo = new DataPanelElementInfo(aId, aType);
+		add(aElInfo);
+		return aElInfo;
+	}
+
+	public HTMLAttrs getHtmlAttrs() {
+		return htmlAttrs;
+	}
+
+	public void setHtmlAttrs(final HTMLAttrs aHtmlAttrs) {
+		htmlAttrs = aHtmlAttrs;
+	}
+
+	public DataPanelTabLayout getLayout() {
+		return layout;
+	}
+
+	public void setLayout(final DataPanelTabLayout aLayout) {
+		layout = aLayout;
+	}
+
+	public DataPanelTR addTR() {
+		DataPanelTR tr = new DataPanelTR(this);
+		trs.add(tr);
+		return tr;
+	}
+
+	public List<DataPanelTR> getTrs() {
+		return trs;
+	}
+
+	public void setTrs(final List<DataPanelTR> aTrs) {
+		trs = aTrs;
 	}
 }

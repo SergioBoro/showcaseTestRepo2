@@ -11,6 +11,7 @@ import javax.xml.transform.stream.*;
 
 import org.w3c.dom.*;
 
+import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
@@ -229,7 +230,7 @@ public final class XFormProducer extends GeneralXMLHelper {
 		Element div = xml.createElement("div");
 		div.setAttribute("id", TEMP_TAG_FOR_SELECTOR_ID);
 		// div.setAttribute("style", "clear: both;");
-		div.setAttribute("style", "display: none;");
+		div.setAttribute(GeneralConstants.STYLE_TAG, "display: none;");
 		body.item(0).insertBefore(div, body.item(0).getFirstChild());
 
 		for (String xpath : xpaths) {

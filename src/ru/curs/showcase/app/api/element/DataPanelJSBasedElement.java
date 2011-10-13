@@ -13,7 +13,7 @@ import ru.curs.showcase.app.api.JSONObject;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class DataPanelElementWithLegend extends DataPanelCompBasedElement implements
+public abstract class DataPanelJSBasedElement extends DataPanelCompBasedElement implements
 		JSONObject {
 
 	private static final long serialVersionUID = 652329350772736896L;
@@ -24,8 +24,8 @@ public abstract class DataPanelElementWithLegend extends DataPanelCompBasedEleme
 	private ChildPosition legendPosition;
 
 	/**
-	 * Шаблон для графика. В текущей реализации представляет собой строку с JSON
-	 * объектом. Параметр 2 в функции Володи.
+	 * Шаблон элемента. В текущей реализации представляет собой строку с JSON
+	 * объектом. Передается в JS компоненту, отрисовывающую элемент.
 	 */
 	private String template;
 
@@ -58,4 +58,5 @@ public abstract class DataPanelElementWithLegend extends DataPanelCompBasedEleme
 	public final void setTemplate(final String aTemplate) {
 		template = aTemplate;
 	}
+
 }

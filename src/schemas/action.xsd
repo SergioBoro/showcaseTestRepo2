@@ -52,8 +52,8 @@
 				<xs:element name="modalwindow" minOccurs="0">
 					<xs:complexType>
 						<xs:attribute name="caption" type="xs:string" />
-						<xs:attribute name="width" type="xs:integer" />
-						<xs:attribute name="height" type="xs:integer" />
+						<xs:attribute name="width" type="xs:positiveInteger" />
+						<xs:attribute name="height" type="xs:positiveInteger" />
 						<xs:attribute name="show_close_bottom_button" type="xs:boolean" />
 					</xs:complexType>
 				</xs:element>

@@ -24,10 +24,10 @@
     
     <xs:element name="exportSettings">
         <xs:complexType>
-            <xs:attribute name="width" type="xs:integer"/>
-            <xs:attribute name="height" type="xs:integer"/>
+            <xs:attribute name="width" type="xs:unsignedShort"/>
+            <xs:attribute name="height" type="xs:unsignedShort"/>
             <xs:attribute name="backgroundColor" type="colorType"/>
-            <xs:attribute name="jpegQuality" type="xs:integer"/>
+            <xs:attribute name="jpegQuality" type="PercentRange"/>
             <xs:attribute name="filename" type="xs:string"/>
         </xs:complexType>
     </xs:element> 
@@ -35,8 +35,8 @@
     <xs:element name="properties">
         <xs:complexType>
             <xs:attribute name="legend" type="legendPlace" use="required"/>
-            <xs:attribute name="width" type="sizeType"/>
-            <xs:attribute name="height" type="sizeType"/>
+            <xs:attribute name="width" type="HtmlSizeType"/>
+            <xs:attribute name="height" type="HtmlSizeType"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>

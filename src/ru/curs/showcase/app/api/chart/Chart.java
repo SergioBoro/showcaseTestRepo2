@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.chart;
 
 import javax.xml.bind.annotation.*;
 
-import ru.curs.showcase.app.api.element.DataPanelElementWithLegend;
+import ru.curs.showcase.app.api.element.DataPanelJSBasedElement;
 
 /**
  * Данные для построения графика.
@@ -12,7 +12,7 @@ import ru.curs.showcase.app.api.element.DataPanelElementWithLegend;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Chart extends DataPanelElementWithLegend {
+public class Chart extends DataPanelJSBasedElement {
 
 	private static final long serialVersionUID = 8945028162073890091L;
 

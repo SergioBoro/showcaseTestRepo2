@@ -76,10 +76,10 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	private Boolean neverShowInPanel = false;
 
 	/**
-	 * Имя класс CSS для элемента. Т.об. можно задать класс для нескольких
-	 * элементов.
+	 * Стандартные атрибуты для HTML элемента, созданного на основе данное
+	 * элемента панели. Включают в себя описания стилей.
 	 */
-	private String styleClass;
+	private HTMLAttrs htmlAttrs = new HTMLAttrs();
 
 	/**
 	 * Признак того, что нужно сохранять данные элемента и не обращаться к
@@ -269,6 +269,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		int result = 1;
 		result = prime * result + ((cacheData == null) ? 0 : cacheData.hashCode());
 		result = prime * result + ((hideOnLoad == null) ? 0 : hideOnLoad.hashCode());
+		result = prime * result + ((htmlAttrs == null) ? 0 : htmlAttrs.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((neverShowInPanel == null) ? 0 : neverShowInPanel.hashCode());
 		result = prime * result + ((position == null) ? 0 : position.hashCode());
@@ -277,7 +278,6 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		result = prime * result + ((refreshByTimer == null) ? 0 : refreshByTimer.hashCode());
 		result = prime * result + ((refreshInterval == null) ? 0 : refreshInterval.hashCode());
 		result = prime * result + ((related == null) ? 0 : related.hashCode());
-		result = prime * result + ((styleClass == null) ? 0 : styleClass.hashCode());
 		result = prime * result + ((templateName == null) ? 0 : templateName.hashCode());
 		result = prime * result + ((transformName == null) ? 0 : transformName.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
@@ -308,6 +308,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 				return false;
 			}
 		} else if (!hideOnLoad.equals(other.hideOnLoad)) {
+			return false;
+		}
+		if (htmlAttrs == null) {
+			if (other.htmlAttrs != null) {
+				return false;
+			}
+		} else if (!htmlAttrs.equals(other.htmlAttrs)) {
 			return false;
 		}
 		if (id == null) {
@@ -366,13 +373,6 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		} else if (!related.equals(other.related)) {
 			return false;
 		}
-		if (styleClass == null) {
-			if (other.styleClass != null) {
-				return false;
-			}
-		} else if (!styleClass.equals(other.styleClass)) {
-			return false;
-		}
 		if (templateName == null) {
 			if (other.templateName != null) {
 				return false;
@@ -393,14 +393,6 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		return true;
 	}
 
-	public String getStyleClass() {
-		return styleClass;
-	}
-
-	public void setStyleClass(final String aStyleClass) {
-		styleClass = aStyleClass;
-	}
-
 	public DataPanelTab getTab() {
 		return tab;
 	}
@@ -415,17 +407,6 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 
 	public void setNeverShowInPanel(final Boolean aNeverShowInPanel) {
 		neverShowInPanel = aNeverShowInPanel;
-	}
-
-	@Override
-	public String toString() {
-		return "DataPanelElementInfo [id=" + id + ", position=" + position + ", type=" + type
-				+ ", procName=" + procName + ", transformName=" + transformName
-				+ ", templateName=" + templateName + ", hideOnLoad=" + hideOnLoad
-				+ ", neverShowInPanel=" + neverShowInPanel + ", styleClass=" + styleClass
-				+ ", cacheData=" + cacheData + ", refreshByTimer=" + refreshByTimer
-				+ ", refreshInterval=" + refreshInterval + ", procs=" + procs + ", related="
-				+ related + "]";
 	}
 
 	/**
@@ -529,5 +510,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 
 	public void setRelated(final List<String> aRelated) {
 		related = aRelated;
+	}
+
+	public HTMLAttrs getHtmlAttrs() {
+		return htmlAttrs;
+	}
+
+	public void setHtmlAttrs(final HTMLAttrs aHtmlAttrs) {
+		htmlAttrs = aHtmlAttrs;
 	}
 }

@@ -221,8 +221,8 @@ public class GeneralDataPanel {
 			if (el != null) {
 				el.addStyleName("dataPanelElement-BorderCorners");
 
-				if (dpe.getStyleClass() != null) {
-					el.addStyleName(dpe.getStyleClass());
+				if (dpe.getHtmlAttrs().getStyleClass() != null) {
+					el.addStyleName(dpe.getHtmlAttrs().getStyleClass());
 				}
 
 				el.setWidth("100%");

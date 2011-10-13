@@ -8,6 +8,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
+import ru.curs.showcase.app.api.HTMLAttrs;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
@@ -19,11 +20,14 @@ import ru.curs.showcase.util.xml.*;
  * 
  */
 public final class DataPanelFactory extends StartTagSAXHandler {
+	private static final String LAYOUT_TAG = "layout";
+	private static final String ROWSPAN_TAG = "rowspan";
 	public static final String DATAPANEL_XSD = "datapanel.xsd";
 	private static final String NEVER_SHOW_IN_PANEL_TAG = "neverShowInPanel";
 	private static final String PROC_TAG = "proc";
 	private static final String REFRESH_INTERVAL_TAG = "refreshInterval";
 	private static final String REFRESH_BY_TIMER_TAG = "refreshByTimer";
+	private static final String COLSPAN_TAG = "colspan";
 
 	/**
 	 * Создаваемая панель.
@@ -35,10 +39,11 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 	 */
 	private DataFile<InputStream> file;
 
-	/**
-	 * Текущая вкладка.
-	 */
 	private DataPanelTab currentTab = null;
+
+	private DataPanelTR currentTR = null;
+
+	private DataPanelTD currentTD = null;
 
 	/**
 	 * Число элементов.
@@ -48,7 +53,9 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 	/**
 	 * Стартовые тэги, которые будут обработаны данным обработчиком.
 	 */
-	private final String[] startTags = { DP_TAG, TAB_TAG, ELEMENT_TAG, PROC_TAG, RELATED_TAG };
+	private final String[] startTags = {
+			DP_TAG, TAB_TAG, ELEMENT_TAG, PROC_TAG, RELATED_TAG, GeneralConstants.TR_TAG,
+			GeneralConstants.TD_TAG };
 
 	@Override
 	protected String[] getStartTags() {
@@ -57,10 +64,42 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 
 	public void tabSTARTTAGHandler(final Attributes attrs) {
 		currentTab = result.add(attrs.getValue(ID_TAG), attrs.getValue(NAME_TAG));
+		handleHTMLAttrs(attrs, currentTab.getHtmlAttrs());
+		if (attrs.getIndex(LAYOUT_TAG) > -1) {
+			currentTab.setLayout(DataPanelTabLayout.valueOf(attrs.getValue(LAYOUT_TAG)));
+		}
 	}
 
 	public void datapanelSTARTTAGHandler(final Attributes attrs) {
 		result = new DataPanel(file.getId());
+	}
+
+	public void trSTARTTAGHandler(final Attributes attrs) {
+		currentTR = currentTab.addTR();
+		if (attrs.getIndex(ID_TAG) > -1) {
+			currentTR.setId(attrs.getValue(ID_TAG));
+		}
+		if (attrs.getIndex(HEIGHT_TAG) > -1) {
+			currentTR.setHeight(attrs.getValue(HEIGHT_TAG));
+		}
+		handleHTMLAttrs(attrs, currentTR.getHtmlAttrs());
+	}
+
+	public void tdSTARTTAGHandler(final Attributes attrs) {
+		currentTD = currentTR.add();
+		if (attrs.getIndex(ID_TAG) > -1) {
+			currentTD.setId(attrs.getValue(ID_TAG));
+		}
+		if (attrs.getIndex(WIDTH_TAG) > -1) {
+			currentTD.setWidth(attrs.getValue(WIDTH_TAG));
+		}
+		handleHTMLAttrs(attrs, currentTD.getHtmlAttrs());
+		if (attrs.getIndex(ROWSPAN_TAG) > -1) {
+			currentTD.setRowspan(Integer.valueOf(attrs.getValue(ROWSPAN_TAG)));
+		}
+		if (attrs.getIndex(COLSPAN_TAG) > -1) {
+			currentTD.setColspan(Integer.valueOf(attrs.getValue(COLSPAN_TAG)));
+		}
 	}
 
 	public void elementSTARTTAGHandler(final Attributes attrs) {
@@ -68,9 +107,7 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		DataPanelElementInfo el = new DataPanelElementInfo(elCounter++, currentTab);
 		el.setId(attrs.getValue(ID_TAG));
 		el.setType(DataPanelElementType.valueOf(attrs.getValue(TYPE_TAG).toUpperCase()));
-		if (attrs.getIndex(GeneralConstants.STYLE_CLASS_TAG) > -1) {
-			el.setStyleClass(attrs.getValue(GeneralConstants.STYLE_CLASS_TAG));
-		}
+		handleHTMLAttrs(attrs, el.getHtmlAttrs());
 		if (attrs.getIndex(PROC_ATTR_NAME) > -1) {
 			el.setProcName(attrs.getValue(PROC_ATTR_NAME));
 		}
@@ -100,7 +137,20 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 			value = attrs.getValue(REFRESH_INTERVAL_TAG);
 			el.setRefreshInterval(Integer.valueOf(value));
 		}
-		currentTab.getElements().add(el);
+		if (currentTab.getLayout() == DataPanelTabLayout.VERTICAL) {
+			currentTab.getElements().add(el);
+		} else {
+			currentTD.setElement(el);
+		}
+	}
+
+	public void handleHTMLAttrs(final Attributes attrs, final HTMLAttrs aHtmlAttrs) {
+		if (attrs.getIndex(GeneralConstants.STYLE_CLASS_TAG) > -1) {
+			aHtmlAttrs.setStyleClass(attrs.getValue(GeneralConstants.STYLE_CLASS_TAG));
+		}
+		if (attrs.getIndex(GeneralConstants.STYLE_TAG) > -1) {
+			aHtmlAttrs.setStyle(attrs.getValue(GeneralConstants.STYLE_TAG));
+		}
 	}
 
 	public void procSTARTTAGHandler(final Attributes attrs) {

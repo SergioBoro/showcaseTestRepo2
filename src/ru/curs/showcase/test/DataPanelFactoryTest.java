@@ -25,16 +25,74 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 	 * Проверка значений атрибутов панели по умолчанию.
 	 */
 	@Test
-	public void testSimpleCreate() {
+	public void testCreateDPEI() {
 		DataPanelElementInfo dpei = new DataPanelElementInfo("01", DataPanelElementType.GEOMAP);
 		assertFalse(dpei.getCacheData());
 		assertFalse(dpei.getRefreshByTimer());
 		assertEquals(DataPanelElementInfo.DEF_TIMER_INTERVAL, dpei.getRefreshInterval().intValue());
 	}
 
+	@Test
+	public void testCreateDPWithTable() {
+		DataPanel dp = new DataPanel("zzz");
+		DataPanelTab tab = dp.add("t01", "Табличная вкладка");
+		tab.setLayout(DataPanelTabLayout.TABLE);
+		DataPanelTR tr = tab.addTR();
+		DataPanelTD td = tr.add();
+		DataPanelElementInfo dpei = td.add("elId", DataPanelElementType.CHART);
+
+		DataPanelTab tab2 = dp.add("t02", "Вертикальная вкладка");
+		DataPanelElementInfo dpei2 = tab2.addElement("elId2", DataPanelElementType.GEOMAP);
+
+		assertEquals(tab, dpei.getTab());
+		assertEquals(tab, tr.getTab());
+		assertEquals(tr, td.getTR());
+		assertTrue(tab.getTrs().contains(tr));
+		assertTrue(tr.getTds().contains(td));
+		assertEquals(dpei, td.getElement());
+		assertTrue(tab.getElements().isEmpty());
+
+		assertEquals(tab2, dpei2.getTab());
+		assertTrue(tab2.getElements().contains(dpei2));
+		assertTrue(tab2.getTrs().isEmpty());
+	}
+
+	@Test
+	public void testRichDP() {
+		DataPanelGateway gateway = new DataPanelFileGateway();
+		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), RICH_DP);
+		DataPanelFactory factory = new DataPanelFactory();
+		DataPanel panel = factory.fromStream(file);
+
+		assertNotNull(panel);
+		DataPanelTab tab = panel.getTabById("01");
+		assertEquals(DataPanelTabLayout.TABLE, tab.getLayout());
+		assertEquals(2, tab.getTrs().size());
+		assertEquals(0, tab.getElements().size());
+		DataPanelTR tr = tab.getTrs().get(0);
+		assertEquals("500px", tr.getHeight());
+		assertEquals("r01", tr.getId());
+		assertEquals("border-width: medium", tr.getHtmlAttrs().getStyle());
+		assertEquals("css-class", tr.getHtmlAttrs().getStyleClass());
+		assertEquals(2, tr.getTds().size());
+		DataPanelTD td = tr.getTds().get(1);
+		assertEquals("d0102", td.getId());
+		assertEquals("300px", td.getWidth());
+		assertEquals("500px", td.getHeight());
+		assertEquals("border-width: medium", td.getHtmlAttrs().getStyle());
+		assertEquals("css-class", td.getHtmlAttrs().getStyleClass());
+		assertEquals(2, td.getRowspan().intValue());
+		assertNull(td.getColspan());
+		DataPanelElementInfo dpei = td.getElement();
+		assertNotNull(dpei);
+
+		td = tab.getTrs().get(1).getTds().get(0);
+		assertEquals(2, td.getColspan().intValue());
+		assertNull(td.getRowspan());
+	}
+
 	/**
 	 * Основной тест.
-	 * 
 	 */
 	@Test
 	public void testGetData() {
@@ -56,7 +114,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		assertFalse(el.getHideOnLoad());
 		assertNotNull(el);
 		assertEquals(DataPanelElementType.WEBTEXT, el.getType());
-		assertEquals("testStyle", el.getStyleClass());
+		assertEquals("testStyle", el.getHtmlAttrs().getStyleClass());
 		assertEquals("dpe_test__1", el.getFullId());
 		assertEquals("dpe_test__1_current", el.getKeyForCaching(CompositeContext.createCurrent()));
 

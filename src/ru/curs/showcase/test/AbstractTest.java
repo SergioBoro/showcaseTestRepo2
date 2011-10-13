@@ -46,6 +46,8 @@ public class AbstractTest extends GeneralXMLHelper {
 	protected static final String ADD_CONDITION = "add_condition";
 	protected static final String TEST_XML_FILE = "logic.xml";
 
+	protected static final String RICH_DP = "m1003.xml";
+
 	/**
 	 * Действия, которые должны выполняться перед запуском любых тестовых
 	 * классов.

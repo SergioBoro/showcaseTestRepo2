@@ -302,7 +302,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		DataPanelGateway gateway = new DataPanelFileGateway();
 		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
 		validator.validate(new XMLSource(gateway.getRawData(new CompositeContext(), TEST_XML)
-				.getData(), "test.xml", xsdFileName));
+				.getData(), TEST_XML, xsdFileName));
 	}
 
 	/**
@@ -390,5 +390,15 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 			(SelfCheckObject) XMLUtils.xmlToObject(doc.getDocumentElement(),
 					DataPanelElementInfo.class);
 		assertEquals(element, el2);
+	}
+
+	@Test
+	public final void testDPTableLayoutXSD() {
+		String xsdFileName = DataPanelFactory.DATAPANEL_XSD;
+
+		DataPanelGateway gateway = new DataPanelFileGateway();
+		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
+		validator.validate(new XMLSource(gateway.getRawData(new CompositeContext(), RICH_DP)
+				.getData(), RICH_DP, xsdFileName));
 	}
 }

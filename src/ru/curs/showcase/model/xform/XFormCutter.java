@@ -11,6 +11,8 @@ import javax.xml.transform.stream.StreamSource;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
+import ru.beta2.extra.gwt.ui.GeneralConstants;
+
 /**
  * Класс, разрезающий XForm на содержимое тэгов script и body.
  * 
@@ -61,10 +63,6 @@ public final class XFormCutter {
 	 * HTML-кода.
 	 */
 	private static class BodyFilter extends DefaultHandler {
-		/**
-		 * String STYLE.
-		 */
-		private static final String STYLE = "style";
 		/**
 		 * String SCRIPT.
 		 */
@@ -163,7 +161,7 @@ public final class XFormCutter {
 				}
 				break;
 			case STYLE:
-				if (STYLE.equalsIgnoreCase(localName)) {
+				if (GeneralConstants.STYLE_TAG.equalsIgnoreCase(localName)) {
 					state = State.SKIP;
 				}
 				break;
@@ -213,7 +211,7 @@ public final class XFormCutter {
 					} else if (SCRIPT.equalsIgnoreCase(localName)) {
 						state = State.SCRIPT;
 						scriptBuilders.add(new StringBuilder());
-					} else if (STYLE.equalsIgnoreCase(localName)) {
+					} else if (GeneralConstants.STYLE_TAG.equalsIgnoreCase(localName)) {
 						state = State.STYLE;
 					}
 					break;

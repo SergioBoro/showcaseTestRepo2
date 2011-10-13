@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.geomap;
 
 import javax.xml.bind.annotation.*;
 
-import ru.curs.showcase.app.api.element.DataPanelElementWithLegend;
+import ru.curs.showcase.app.api.element.DataPanelJSBasedElement;
 
 /**
  * Класс карты - элемента информационной панели. На карте отображаются
@@ -13,7 +13,7 @@ import ru.curs.showcase.app.api.element.DataPanelElementWithLegend;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class GeoMap extends DataPanelElementWithLegend {
+public final class GeoMap extends DataPanelJSBasedElement {
 
 	private static final long serialVersionUID = 3147374218653835207L;
 
