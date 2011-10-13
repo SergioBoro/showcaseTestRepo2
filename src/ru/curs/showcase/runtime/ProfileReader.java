@@ -11,10 +11,21 @@ import ru.curs.showcase.util.exception.*;
  * @author den
  * 
  */
-public abstract class ProfileReader {
+public class ProfileReader {
+	/**
+	 * Properties-файл с настройками.
+	 */
+	private final Properties props = new Properties();
+	/**
+	 * Путь к профайлу с настройками.
+	 */
+	private final String profileName;
 
-	public ProfileReader(final String aProfile) {
+	private final SettingsFileType settingsFileType;
+
+	public ProfileReader(final String aProfile, final SettingsFileType aSettingsFileType) {
 		super();
+		settingsFileType = aSettingsFileType;
 		profileName = generateProfileName(aProfile);
 	}
 
@@ -32,7 +43,13 @@ public abstract class ProfileReader {
 		}
 	}
 
-	protected abstract SettingsFileType getSettingsType();
+	protected String getProfileCatalog() {
+		return getSettingsType().getFileDir();
+	}
+
+	protected SettingsFileType getSettingsType() {
+		return settingsFileType;
+	}
 
 	private String generateProfileName(final String aProfile) {
 		if (!getProfileCatalog().isEmpty()) {
@@ -41,19 +58,6 @@ public abstract class ProfileReader {
 			return aProfile;
 		}
 	}
-
-	protected String getProfileCatalog() {
-		return "";
-	}
-
-	/**
-	 * Properties-файл с настройками.
-	 */
-	private final Properties props = new Properties();
-	/**
-	 * Путь к профайлу с настройками.
-	 */
-	private final String profileName;
 
 	protected Properties getProps() {
 		return props;

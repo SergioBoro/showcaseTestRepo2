@@ -9,9 +9,10 @@ import ru.curs.gwt.datagrid.model.Record;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.InteractionType;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.runtime.ProfileReader;
+import ru.curs.showcase.util.exception.SettingsFileType;
 
 import com.google.gwt.dom.client.Style.Unit;
 
@@ -42,7 +43,8 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 
 		assertEquals(1, grid.getDataSet().getRecordSet().getPageNumber());
 
-		ProfileReader gp = new GridPropsReader(GRIDBAL_TEST_PROPERTIES);
+		ProfileReader gp =
+			new ProfileReader(GRIDBAL_TEST_PROPERTIES, SettingsFileType.GRID_PROPERTIES);
 		gp.init();
 
 		Boolean defSelectRecord =

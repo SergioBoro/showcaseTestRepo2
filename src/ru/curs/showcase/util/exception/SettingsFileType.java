@@ -37,4 +37,8 @@ public enum SettingsFileType {
 	public void setName(final String aName) {
 		name = aName;
 	}
+
+	public String getFileDir() {
+		return this.name().toLowerCase().replace("_", "");
+	}
 }

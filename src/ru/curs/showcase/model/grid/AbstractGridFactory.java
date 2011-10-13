@@ -10,6 +10,7 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
 import ru.curs.showcase.runtime.ProfileReader;
+import ru.curs.showcase.util.exception.SettingsFileType;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -350,7 +351,8 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	}
 
 	private void loadStaticSettings() {
-		gridProps = new GridPropsReader(serverState().getProfile());
+		gridProps =
+			new ProfileReader(serverState().getProfile(), SettingsFileType.GRID_PROPERTIES);
 		gridProps.init();
 		ProfileBasedSettingsApplyStrategy strategy =
 			new DefaultGridSettingsApplyStrategy(gridProps, getResult().getUISettings());

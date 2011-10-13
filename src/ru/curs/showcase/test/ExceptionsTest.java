@@ -56,7 +56,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = SettingsFilePropValueFormatException.class)
 	public final void testReadWrongValue() {
-		ProfileReader gp = new GridPropsReader(GridServerState.GRID_DEFAULT_PROFILE);
+		ProfileReader gp =
+			new ProfileReader(GridServerState.GRID_DEFAULT_PROFILE,
+					SettingsFileType.GRID_PROPERTIES);
 		gp.init();
 		gp.getIntValue("def.column.hor.align");
 	}

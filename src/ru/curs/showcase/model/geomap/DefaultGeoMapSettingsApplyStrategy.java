@@ -3,7 +3,8 @@ package ru.curs.showcase.model.geomap;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.geomap.GeoMapUISettings;
 import ru.curs.showcase.model.ProfileBasedSettingsApplyStrategy;
-import ru.curs.showcase.util.exception.SettingsFileOpenException;
+import ru.curs.showcase.runtime.ProfileReader;
+import ru.curs.showcase.util.exception.*;
 
 /**
  * Стратегия применения настроек карты по умолчанию, основанная на считывании из
@@ -24,7 +25,7 @@ public class DefaultGeoMapSettingsApplyStrategy extends ProfileBasedSettingsAppl
 	private boolean profileExists = true;
 
 	public DefaultGeoMapSettingsApplyStrategy(final GeoMapUISettings aUISettings) {
-		super(new GeoMapPropsReader("default.properties"));
+		super(new ProfileReader("default.properties", SettingsFileType.GEOMAP_PROPERTIES));
 		try {
 			reader().init();
 		} catch (SettingsFileOpenException e) {
