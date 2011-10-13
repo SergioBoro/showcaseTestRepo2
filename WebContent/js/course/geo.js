@@ -92,8 +92,7 @@ dojo.require("djeo.Map");
 			if (!data.mapEngine)
 				data.mapEngine = defaultMapEngine;
 			data.useAttrs = true;
-			g.mapRegistry[mapDivId] = managerModule[managerFunction](mapNode,
-					dojo.byId(mapLegendId), data);
+			g.mapRegistry[mapDivId] = managerModule[managerFunction](mapDivId, mapLegendId, data);
 		}
 	};
 
