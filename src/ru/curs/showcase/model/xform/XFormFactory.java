@@ -70,7 +70,7 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 
 		try {
 			template =
-				XFormTemplateModificator.addSrvInfo(template, getSource().getCallContext(),
+				XFormTemplateModificator.modify(template, getSource().getCallContext(),
 						getElementInfo());
 			logInput(template);
 			html = XFormProducer.getHTML(template, getSource().getData());

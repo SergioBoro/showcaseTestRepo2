@@ -18,7 +18,6 @@ import com.google.gwt.user.client.rpc.SerializationException;
  * 
  */
 public final class XFormPanelCallbacksEvents {
-
 	/**
 	 * Тестовая XFormPanel.
 	 */
@@ -59,6 +58,10 @@ public final class XFormPanelCallbacksEvents {
 
 							@Override
 							public void onSuccess(final Void result) {
+								InlineUploader uploader =
+									new InlineUploader(data, curXFormPanel, ac);
+								uploader.checkForUpload();
+
 								if (curXFormPanel.getUw() != null) {
 									submitUploadForm(data, curXFormPanel, ac);
 								} else {

@@ -225,11 +225,28 @@
 			</xf:action>
 		</xf:trigger>
 		<hr/>
-
 		<div>
-			Загрузка файла на сервер: <xf:output ref="/schema/info/comment" />					
+			Загрузка файла по новому - 1-й					
+		</div>		
+			<xf:upload id="04" />
+		<div>
+			Загрузка файла по новому - 2-й			
 		</div>
+			<xf:upload id="041"/>
 		
+		<div>
+			<xf:trigger>
+				<xf:label>Запустить закачку на сервер (через gwtXFormSave)</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:load
+						resource="javascript:gwtXFormSave('xformId', '1', Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
+				</xf:action>
+			</xf:trigger>
+		</div>
+		<hr/>
+		<div>
+			Загрузка файла по старому: <xf:output ref="/schema/info/comment" />					
+		</div>						
 		<xf:trigger>
 			<xf:label>Выбрать файл</xf:label>
 			<xf:action ev:event="DOMActivate">

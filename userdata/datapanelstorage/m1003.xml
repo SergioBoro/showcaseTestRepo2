@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datapanel>
+	<tab id="00" name="Новый загрузчик файлов">
+		<element id="0001" type="xforms" template="Showcase_Template_all.xml"
+			proc="xforms_proc_all">
+			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
+			<proc id="03" name="xforms_download_by_userdata" type="DOWNLOAD" />
+			<proc id="04" name="xforms_upload_by_userdata" type="UPLOAD" />
+			<proc id="041" name="xforms_upload_by_userdata" type="UPLOAD" />			
+			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
+			<proc id="proc3" name="xforms_submission_ec" type="SUBMISSION" />
+			<proc id="proc4" name="xforms_submission_um" type="SUBMISSION" />
+			<proc id="proc5" name="xforms_submission_re" type="SUBMISSION" />
+		</element>	
+		<element id="62" type="webtext" proc="webtext_filter_and_add"
+			hideOnLoad="true" />		
+	</tab>
 	<tab id="01" name="Табличная раскладка" layout="TABLE" style="yyy" styleClass="css-class">
 		<tr id="r01" height="500px" style="border-width: medium" styleClass="css-class">
 			<td id="d0101" width="10%" style="border-width: medium" styleClass="css-class" >
@@ -23,7 +38,7 @@
 			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
 			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
 		</element>
-		<element id="62" type="webtext" proc="webtext_filter_and_add"
+		<element id="622" type="webtext" proc="webtext_filter_and_add"
 			hideOnLoad="true" />					
 	</tab>
 </datapanel>

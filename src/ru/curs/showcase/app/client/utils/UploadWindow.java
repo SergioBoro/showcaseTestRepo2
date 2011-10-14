@@ -72,8 +72,12 @@ public class UploadWindow extends DialogBoxWithCaptionButton {
 
 			@Override
 			public void onChange(final ChangeEvent aEvent) {
-				fileName = ((FileUpload) aEvent.getSource()).getFilename();
-				if ((fileName != null) && (!fileName.isEmpty())) {
+				try {
+					fileName = ((FileUpload) aEvent.getSource()).getFilename();
+					if ((fileName != null) && (!fileName.isEmpty())) {
+						closeWindow();
+					}
+				} catch (Exception e) {
 					closeWindow();
 				}
 			}

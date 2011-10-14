@@ -519,4 +519,8 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	public void setHtmlAttrs(final HTMLAttrs aHtmlAttrs) {
 		htmlAttrs = aHtmlAttrs;
 	}
+
+	public String getUploaderId(final String procId) {
+		return getFullId() + "__proc_" + procId + "__uploader";
+	}
 }

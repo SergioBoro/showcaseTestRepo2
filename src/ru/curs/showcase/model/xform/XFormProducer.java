@@ -21,7 +21,7 @@ public final class XFormProducer extends GeneralXMLHelper {
 	public static final String XF_INSTANCE = "xf:instance";
 	public static final String XSLTFORMS_XSL = "xsltforms.xsl";
 
-	private static final String XFORMS_URI = "http://www.w3.org/2002/xforms";
+	public static final String XFORMS_URI = "http://www.w3.org/2002/xforms";
 
 	private static final int DEFAULT_BUFFER_SIZE = 1024;
 
@@ -33,9 +33,6 @@ public final class XFormProducer extends GeneralXMLHelper {
 	private static final String VALUE = "value";
 	private static final String SHOW_SELECTOR = "showSelector";
 	private static final String TEMP_TAG_FOR_SELECTOR_ID = "tempTagForSelector";
-
-	// private static final Logger LOGGER =
-	// LoggerFactory.getLogger(XFormProducer.class);
 
 	private XFormProducer() {
 		throw new UnsupportedOperationException();

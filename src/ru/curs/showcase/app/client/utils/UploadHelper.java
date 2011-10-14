@@ -19,6 +19,8 @@ import com.google.gwt.user.client.ui.*;
  */
 public final class UploadHelper extends RunServletByFormHelper {
 
+	private static final String UPLOAD_ERROR = "При загрузке файлов произошла ошибка";
+
 	private static final String SC_UPLOADER_CSS = "sc-uploader-comp";
 
 	/**
@@ -135,8 +137,7 @@ public final class UploadHelper extends RunServletByFormHelper {
 				if ((event.getResults() == null) || (event.getResults().isEmpty())) {
 					submitHandler.onEnd(true);
 				} else {
-					MessageBox.showSimpleMessage("При загрузке файлов произошла ошибка",
-							event.getResults());
+					MessageBox.showSimpleMessage(UPLOAD_ERROR, event.getResults());
 				}
 			}
 

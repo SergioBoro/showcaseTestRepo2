@@ -27,17 +27,32 @@ import com.google.gwt.user.client.rpc.SerializationException;
 public final class UploadHandler extends AbstractFilesHandler {
 
 	/**
-	 * Файлы, закаченные пользователем. Ключом является ссылка на файл (linkId).
+	 * Описание отдельного файла при закачке - linkId + содержимое и имя файла.
+	 * 
+	 * @author den
+	 * 
 	 */
-	private final Map<String, OutputStreamDataFile> files =
-		new TreeMap<String, OutputStreamDataFile>();
+	private class UploadingFile {
+		private final String linkId;
+		private final OutputStreamDataFile file;
+
+		public UploadingFile(final String aLinkId, final OutputStreamDataFile aFile) {
+			super();
+			linkId = aLinkId;
+			file = aFile;
+		}
+	}
+
+	/**
+	 * Файлы, закаченные пользователем.
+	 */
+	private final List<UploadingFile> files = new ArrayList<UploadingFile>();
 
 	@Override
 	protected void processFiles() throws GeneralException {
-		for (Map.Entry<String, OutputStreamDataFile> entry : files.entrySet()) {
+		for (UploadingFile item : files) {
 			XFormUploadCommand command =
-				new XFormUploadCommand(getContext(), getElementInfo(), entry.getKey(),
-						entry.getValue());
+				new XFormUploadCommand(getContext(), getElementInfo(), item.linkId, item.file);
 			command.execute();
 		}
 	}
@@ -68,7 +83,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 				fileName = TextUtils.extractFileNameWithExt(fileName);
 
 				String linkId = name.replace(ExchangeConstants.FILE_DATA_PARAM_PREFIX, "");
-				files.put(linkId, new OutputStreamDataFile(out, fileName));
+				files.add(new UploadingFile(linkId, new OutputStreamDataFile(out, fileName)));
 			}
 		}
 	}
@@ -76,10 +91,6 @@ public final class UploadHandler extends AbstractFilesHandler {
 	@Override
 	public XFormContext getContext() {
 		return (XFormContext) super.getContext();
-	}
-
-	public Map<String, OutputStreamDataFile> getFiles() {
-		return files;
 	}
 
 	@Override

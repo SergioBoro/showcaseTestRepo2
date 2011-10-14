@@ -2,7 +2,13 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
+import javax.xml.parsers.DocumentBuilder;
+
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -10,6 +16,8 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.model.HTMLBasedElementRawData;
 import ru.curs.showcase.model.xform.*;
+import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Тесты для фабрики XForms.
@@ -29,8 +37,8 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	/**
-	 * Test method for
-	 * {@link ru.curs.showcase.model.xform.XFormFactory#build()}.
+	 * Test method for {@link ru.curs.showcase.model.xform.XFormFactory#build()}
+	 * .
 	 * 
 	 * @throws Exception
 	 */
@@ -69,5 +77,21 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 								ExchangeConstants.SUBMIT_SERVLET,
 								ExchangeConstants.URL_PARAM_USERDATA,
 								ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT)) > 0);
+	}
+
+	@Test
+	public void testGenerateUploaders() throws SAXException, IOException {
+		DocumentBuilder builder = XMLUtils.createBuilder();
+		Document doc =
+			builder.parse(AppProps.loadUserDataToStream(AppProps.XFORMS_DIR
+					+ "/Showcase_Template_all.xml"));
+		DataPanelElementInfo dpei = new DataPanelElementInfo("01", DataPanelElementType.XFORMS);
+		generateTestTabWithElement(dpei);
+		DataPanelElementProc proc = new DataPanelElementProc();
+		proc.setId("upload1");
+		proc.setType(DataPanelElementProcType.UPLOAD);
+		proc.setName("upload1_proc");
+		dpei.getProcs().put(proc.getId(), proc);
+		XFormTemplateModificator.generateUploaders(doc, dpei);
 	}
 }
