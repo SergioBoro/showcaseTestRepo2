@@ -69,7 +69,6 @@ public class InlineUploader {
 			}
 			if (isFilesSelected) {
 				form.submit();
-				MessageBox.showSimpleMessage("debug", form.getId());
 				clearForm(form);
 				runAction();
 			}
