@@ -64,11 +64,9 @@ public final class XFormPanelCallbacksEvents {
 
 								if (curXFormPanel.getUw() != null) {
 									submitUploadForm(data, curXFormPanel, ac);
-								} else {
-									runAction(ac);
 								}
+								runAction(ac);
 							}
-
 						});
 			} else {
 				runAction(ac);
@@ -140,7 +138,7 @@ public final class XFormPanelCallbacksEvents {
 
 			@Override
 			public void onEnd(final boolean aRes) {
-				runAction(ac);
+
 			}
 		});
 		uh.clear();

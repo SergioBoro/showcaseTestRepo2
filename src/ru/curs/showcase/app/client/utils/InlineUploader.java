@@ -6,7 +6,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.client.*;
-import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.api.Constants;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.*;
@@ -70,19 +70,11 @@ public class InlineUploader {
 			if (isFilesSelected) {
 				form.submit();
 				clearForm(form);
-				runAction();
 			}
 		} catch (Exception e) {
 			MessageBox.showSimpleMessage(Constants.XFORMS_UPLOAD_ERROR, e.getMessage());
 		}
 
-	}
-
-	private void runAction() {
-		if (ac != null) {
-			AppCurrContext.getInstance().setCurrentAction(ac);
-			ActionExecuter.execAction();
-		}
 	}
 
 	private void clearForm(final FormElement form) {
