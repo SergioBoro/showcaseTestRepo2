@@ -27,8 +27,7 @@ public final class DownloadHandler extends AbstractDownloadHandler {
 	@Override
 	protected void processFiles() throws GeneralException {
 		XFormDownloadCommand command =
-			new XFormDownloadCommand(getContext(), getElementInfo(),
-					linkId);
+			new XFormDownloadCommand(getContext(), getElementInfo(), linkId);
 		setOutputFile(command.execute());
 	}
 
@@ -45,7 +44,7 @@ public final class DownloadHandler extends AbstractDownloadHandler {
 	@Override
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
 		super.getParams();
-		linkId = decodeParamValue(getRequest().getParameter("linkId"));
+		linkId = getRequest().getParameter("linkId");
 	}
 
 	public String getLinkId() {

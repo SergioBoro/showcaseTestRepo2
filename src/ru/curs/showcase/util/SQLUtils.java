@@ -133,18 +133,25 @@ public final class SQLUtils {
 		Pattern pattern = Pattern.compile("(\\?)");
 		Matcher matcher = pattern.matcher(value);
 		int i = 1;
+		StringBuffer result = new StringBuffer("");
+
 		while (matcher.find()) {
 			Object paramValue = params.get(i++);
 			if (paramValue instanceof Integer) {
-				value = matcher.replaceFirst(((Integer) paramValue).toString());
+				matcher.appendReplacement(result, ((Integer) paramValue).toString());
 			} else {
-				value = matcher.replaceFirst(String.format("'%s'", paramValue));
+				String tmpValue = (String) paramValue;
+				if (tmpValue != null) {
+					tmpValue = tmpValue.replace("\\", "\\\\");
+					tmpValue = tmpValue.replace("$", "\\$");
+				}
+				matcher.appendReplacement(result, String.format("'%s'", tmpValue));
 			}
-			matcher = pattern.matcher(value);
 		}
+		matcher.appendTail(result);
 
 		pattern = Pattern.compile("call (.+)\\(([\\s\\S]+)\\)");
-		matcher = pattern.matcher(value);
+		matcher = pattern.matcher(result.toString());
 		if (matcher.find()) {
 			value = matcher.group(1) + " " + matcher.group(2);
 		}

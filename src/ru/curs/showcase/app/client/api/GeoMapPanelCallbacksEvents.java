@@ -7,7 +7,6 @@ import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.utils.DownloadHelper;
 
-import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.*;
 import com.google.gwt.user.client.rpc.SerializationStreamFactory;
 
@@ -69,13 +68,14 @@ public final class GeoMapPanelCallbacksEvents {
 		dh.clear();
 
 		dh.setErrorCaption(Constants.EXPORT_TO_PNG_ERROR);
-		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/geoMapExport");
+		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/geoMapExport"
+				+ com.google.gwt.user.client.Window.Location.getQueryString());
 
 		try {
 			GeoMap map = getPanel(mapDivId).getMap();
 			SerializationStreamFactory ssf = dh.getObjectSerializer();
 			dh.addParam(ImageFormat.class.getName(), imageFormat);
-			dh.addParam("svg", URL.encode(svg));
+			dh.addParam("svg", svg);
 			dh.addParam(map.getExportSettings().getClass().getName(), map.getExportSettings()
 					.toParamForHttpPost(ssf));
 			dh.submit();

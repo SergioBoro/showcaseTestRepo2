@@ -58,7 +58,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	private void checkForDPWithXMLHeader(final ByteArrayOutputStream outStream)
 			throws UnsupportedEncodingException {
 		String data;
-		data = outStream.toString("UTF-8");
+		data = outStream.toString(TextUtils.DEF_ENCODING);
 		assertTrue(data.startsWith(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8));
 		assertTrue(data.endsWith("</" + GeneralXMLHelper.DP_TAG + ">"));
 	}

@@ -9,12 +9,13 @@ import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.ServletUtils;
 
 /**
- * Фильтр для считывание из URL параметров сессии.
+ * Фильтр для настройки базовых параметров запросов к серверу и ответов сервера.
+ * Должен обрабатывать все запросы к серверу.
  * 
  * @author den
  * 
  */
-public class SessionInfoFilter implements Filter {
+public class PreProcessFilter implements Filter {
 	/**
 	 * Префикс сервлетов, используемых в механизме аутентификации.
 	 */
@@ -29,6 +30,13 @@ public class SessionInfoFilter implements Filter {
 	 */
 	public static final String LOGIN_PAGE = "login.jsp";
 
+	/**
+	 * Выставляем кодировку UTF-8 у всех вызовов. Раньше на этом сыпался GWT,
+	 * сейчас все ок. (non-Javadoc)
+	 * 
+	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
+	 *      javax.servlet.ServletResponse, javax.servlet.FilterChain)
+	 */
 	@Override
 	public void doFilter(final ServletRequest req, final ServletResponse resp,
 			final FilterChain chain) throws IOException, ServletException {
@@ -40,6 +48,8 @@ public class SessionInfoFilter implements Filter {
 			if (isDynamicDataServlet(httpreq)) {
 				skipServletCaching(resp);
 			}
+
+			httpreq.setCharacterEncoding("UTF-8");
 		}
 		chain.doFilter(req, resp);
 		resetThread();

@@ -6,7 +6,7 @@ import java.util.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.event.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
-import ru.curs.showcase.util.xml.SessionContextGenerator;
+import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**
  * Команда, выполняющая серверные действия.
@@ -40,7 +40,7 @@ public final class ExecServerActionCommand extends ServiceLayerCommand<Void> {
 		if (context.getSession() != null) {
 			return;
 		}
-		String sessionContext = SessionContextGenerator.generate(context);
+		String sessionContext = XMLSessionContextGenerator.generate(context);
 
 		action.setSessionContext(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());

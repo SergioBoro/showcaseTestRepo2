@@ -12,7 +12,7 @@ import ru.curs.showcase.model.AppRegistry;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.ServerLogicError;
-import ru.curs.showcase.util.xml.SessionContextGenerator;
+import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**
  * Абстрактный класс команды сервисного уровня приложения. Весь функционал
@@ -142,7 +142,7 @@ public abstract class ServiceLayerCommand<T> {
 		if (getContext().getSession() != null) {
 			return;
 		}
-		String sessionContext = SessionContextGenerator.generate(getContext());
+		String sessionContext = XMLSessionContextGenerator.generate(getContext());
 
 		getContext().setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(getContext().getSessionParamsMap());

@@ -8,7 +8,7 @@ import javax.servlet.http.*;
 import org.springframework.security.core.*;
 import org.springframework.security.web.authentication.*;
 
-import ru.curs.showcase.app.server.SessionInfoFilter;
+import ru.curs.showcase.app.server.PreProcessFilter;
 
 //imports omitted
 /**
@@ -50,7 +50,7 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 			public void onAuthenticationFailure(final HttpServletRequest request,
 					final HttpServletResponse response, final AuthenticationException exception)
 					throws IOException, ServletException {
-				super.setDefaultFailureUrl("/" + SessionInfoFilter.LOGIN_PAGE + "?error=true");
+				super.setDefaultFailureUrl("/" + PreProcessFilter.LOGIN_PAGE + "?error=true");
 				super.onAuthenticationFailure(request, response, exception);
 
 			}

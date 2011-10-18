@@ -48,7 +48,7 @@ public final class XMLUtils {
 		try {
 			JAXBContext jc = JAXBContext.newInstance(object.getClass());
 			Marshaller m = jc.createMarshaller();
-			m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			m.setProperty(Marshaller.JAXB_ENCODING, TextUtils.DEF_ENCODING);
 			m.marshal(object, doc);
 			return doc;
 		} catch (JAXBException e) {

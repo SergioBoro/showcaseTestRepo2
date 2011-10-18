@@ -97,16 +97,16 @@ public class SessionInfoTest extends AbstractTest {
 
 		assertEquals(1,
 				doc.getDocumentElement()
-						.getElementsByTagName(SessionContextGenerator.USERNAME_TAG).getLength());
+						.getElementsByTagName(XMLSessionContextGenerator.USERNAME_TAG).getLength());
 
 		assertEquals(
 				1,
 				doc.getDocumentElement()
-						.getElementsByTagName(SessionContextGenerator.URL_PARAMS_TAG).getLength());
+						.getElementsByTagName(XMLSessionContextGenerator.URL_PARAMS_TAG).getLength());
 		Node node =
-			doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.URL_PARAMS_TAG)
+			doc.getDocumentElement().getElementsByTagName(XMLSessionContextGenerator.URL_PARAMS_TAG)
 					.item(0);
-		assertEquals(SessionContextGenerator.URL_PARAM_TAG, node.getChildNodes().item(1)
+		assertEquals(XMLSessionContextGenerator.URL_PARAM_TAG, node.getChildNodes().item(1)
 				.getNodeName());
 		assertEquals(2, node.getChildNodes().item(1).getAttributes().getLength());
 		assertEquals(KEY1, node.getChildNodes().item(1).getAttributes().getNamedItem(NAME_TAG)
@@ -116,9 +116,9 @@ public class SessionInfoTest extends AbstractTest {
 
 		assertEquals(1,
 				doc.getDocumentElement()
-						.getElementsByTagName(SessionContextGenerator.USERDATA_TAG).getLength());
+						.getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG).getLength());
 		node =
-			doc.getDocumentElement().getElementsByTagName(SessionContextGenerator.USERDATA_TAG)
+			doc.getDocumentElement().getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG)
 					.item(0);
 		assertEquals(TEST1_USERDATA, node.getTextContent());
 	}
@@ -166,15 +166,15 @@ public class SessionInfoTest extends AbstractTest {
 		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
 		assertEquals(1,
 				doc.getDocumentElement()
-						.getElementsByTagName(SessionContextGenerator.USERDATA_TAG).getLength());
+						.getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG).getLength());
 		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, doc.getDocumentElement()
-				.getElementsByTagName(SessionContextGenerator.USERDATA_TAG).item(0)
+				.getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG).item(0)
 				.getTextContent());
 
 		assertEquals(
 				0,
 				doc.getDocumentElement()
-						.getElementsByTagName(SessionContextGenerator.URL_PARAMS_TAG).getLength());
+						.getElementsByTagName(XMLSessionContextGenerator.URL_PARAMS_TAG).getLength());
 
 	}
 
@@ -230,7 +230,7 @@ public class SessionInfoTest extends AbstractTest {
 	public void testRelatedData() throws UnsupportedEncodingException {
 		CompositeContext context = CompositeContext.createCurrent();
 		getExtGridContext(context);
-		String res = SessionContextGenerator.generate(context);
+		String res = XMLSessionContextGenerator.generate(context);
 		assertTrue(res.contains("<selectedRecordId>r2</selectedRecordId>"));
 		assertTrue(res.contains("<currentColumnId>curColumnId</currentColumnId>"));
 		assertTrue(res.contains("size=\"2\""));

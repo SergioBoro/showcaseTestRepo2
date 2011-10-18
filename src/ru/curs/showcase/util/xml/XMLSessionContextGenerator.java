@@ -18,14 +18,14 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-public final class SessionContextGenerator extends GeneralXMLHelper {
+public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 
 	private static final String SESSION_CONTEXT_TAG = "sessioncontext";
 	public static final String URL_PARAMS_TAG = "urlparams";
 	public static final String URL_PARAM_TAG = "urlparam";
 	public static final String USERDATA_TAG = ExchangeConstants.URL_PARAM_USERDATA;
 
-	private SessionContextGenerator() {
+	private XMLSessionContextGenerator() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -34,7 +34,6 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 	 * 
 	 * @param aContext
 	 *            - параметры.
-	 * 
 	 * 
 	 * @return - строку с XML.
 	 * @throws UnsupportedEncodingException
@@ -93,6 +92,12 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 
 	}
 
+	/**
+	 * Создает фрагмент XML документа с параметрами URL. Перекодировка ключа URL
+	 * функцией URLDecoder.decode параметра необходима, т.к. в случае русских
+	 * символов ключ содержит URL коды.
+	 * 
+	 */
 	private static void fillURLParams(final Document info,
 			final Map<String, ArrayList<String>> aMap) throws UnsupportedEncodingException {
 		Element node;
@@ -105,6 +110,7 @@ public final class SessionContextGenerator extends GeneralXMLHelper {
 				if (!(ExchangeConstants.URL_PARAM_USERDATA.equals(entry.getKey()))) {
 					Element child = info.createElement(URL_PARAM_TAG);
 					node.appendChild(child);
+
 					child.setAttribute(NAME_TAG,
 							URLDecoder.decode(entry.getKey(), TextUtils.DEF_ENCODING));
 					String value = "";

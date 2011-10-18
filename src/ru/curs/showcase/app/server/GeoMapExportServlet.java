@@ -1,14 +1,15 @@
 package ru.curs.showcase.app.server;
 
 import java.io.*;
-import java.net.URLDecoder;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.*;
+import ru.curs.showcase.model.svg.SVGGetCommand;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.xml.XMLUtils;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;
@@ -21,6 +22,7 @@ import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;
  */
 public class GeoMapExportServlet extends HttpServlet {
 
+	private static final String SVG_DATA_PARAM = "svg";
 	private static final long serialVersionUID = -4464217023791442531L;
 
 	public GeoMapExportServlet() {
@@ -35,19 +37,17 @@ public class GeoMapExportServlet extends HttpServlet {
 		return streamReader.readObject();
 	}
 
-	protected String decodeParamValue(final String value) throws UnsupportedEncodingException {
-		return URLDecoder.decode(value, TextUtils.DEF_ENCODING);
-	}
-
 	@Override
 	protected void service(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
 			GeoMapExportSettings settings =
-				(GeoMapExportSettings) deserializeObject(decodeParamValue(request
-						.getParameter(GeoMapExportSettings.class.getName())));
+				(GeoMapExportSettings) deserializeObject(request
+						.getParameter(GeoMapExportSettings.class.getName()));
 			ImageFormat imageFormat =
 				ImageFormat.valueOf(request.getParameter(ImageFormat.class.getName()));
+			String svg = request.getParameter(SVG_DATA_PARAM);
+
 			String fileName = settings.getFileName() + "." + imageFormat.toString().toLowerCase();
 
 			if (ServletUtils.isOldIE(request)) {
@@ -60,8 +60,13 @@ public class GeoMapExportServlet extends HttpServlet {
 			// обрабатывается некорректно.
 			response.setHeader("Content-Disposition",
 					String.format("attachment; filename=\"%s\"", fileName));
-			String svg = decodeParamValue(request.getParameter("svg"));
-			svg = checkSVGEncoding(svg);
+
+			Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
+			params.remove(GeoMapExportSettings.class.getName());
+			params.remove(SVG_DATA_PARAM);
+			params.remove(ImageFormat.class.getName());
+			CompositeContext context = new CompositeContext(params);
+
 			switch (imageFormat) {
 			case PNG:
 				SVGConvertor convertor = new SVGConvertor(settings);
@@ -78,22 +83,15 @@ public class GeoMapExportServlet extends HttpServlet {
 				out.close();
 				break;
 			case SVG:
+				SVGGetCommand command = new SVGGetCommand(context, settings, imageFormat, svg);
 				response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-				response.getWriter().append(svg);
+				response.getWriter().append(command.execute());
 				break;
 			default:
 				break;
 			}
 		} catch (Exception e) {
 			throw new ServletException(e);
-		}
-	}
-
-	private String checkSVGEncoding(final String aSvg) {
-		if (aSvg.startsWith(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8)) {
-			return aSvg;
-		} else {
-			return XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8 + "\n" + aSvg;
 		}
 	}
 }

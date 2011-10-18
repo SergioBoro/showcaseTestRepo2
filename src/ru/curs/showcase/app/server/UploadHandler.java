@@ -71,7 +71,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 			ByteArrayOutputStream out = StreamConvertor.inputToOutputStream(input);
 
 			if (item.isFormField()) {
-				String paramValue = decodeParamValue(out.toString());
+				String paramValue = out.toString();
 				if (XFormContext.class.getName().equals(name)) {
 					setContext((XFormContext) deserializeObject(paramValue));
 				} else if (DataPanelElementInfo.class.getName().equals(name)) {
@@ -79,7 +79,6 @@ public final class UploadHandler extends AbstractFilesHandler {
 				}
 			} else {
 				String fileName = item.getName();
-				fileName = ServletUtils.checkAndRecodeURLParam(fileName);
 				fileName = TextUtils.extractFileNameWithExt(fileName);
 
 				String linkId = name.replace(ExchangeConstants.FILE_DATA_PARAM_PREFIX, "");

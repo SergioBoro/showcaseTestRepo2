@@ -1,6 +1,5 @@
 package ru.curs.showcase.app.api;
 
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.rpc.*;
 
 /**
@@ -26,6 +25,6 @@ public abstract class TransferableElement {
 			((SerializationStreamFactory) factory).createStreamWriter();
 		writer.writeObject(this);
 		String content = writer.toString();
-		return URL.encode(content);
+		return content;
 	}
 }

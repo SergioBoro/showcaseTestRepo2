@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.geomap;
 
+import javax.xml.bind.annotation.*;
+
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.TransferableElement;
 
@@ -9,6 +11,8 @@ import ru.curs.showcase.app.api.TransferableElement;
  * @author den
  * 
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class GeoMapExportSettings extends TransferableElement implements SerializableElement {
 
 	private static final int DEF_JPEG_QUALITY = 90;

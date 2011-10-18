@@ -80,6 +80,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			form.setAttribute("class", "sc-uploader-form");
 			form.setAttribute("target", getUploaderTargetName(element, procId));
 			form.setAttribute("method", "post");
+			form.setAttribute("accept-charset", "utf-8");
 			form.setAttribute("enctype", "multipart/form-data");
 			form.setAttribute("style", "width: 100%; height: 100%;");
 			form.setAttribute("action", ExchangeConstants.SECURED_SERVLET_PREFIX + "/upload");

@@ -1,7 +1,7 @@
 package ru.curs.showcase.app.server;
 
 import java.io.*;
-import java.net.*;
+import java.net.URLEncoder;
 
 import org.apache.commons.fileupload.FileUploadException;
 
@@ -62,16 +62,15 @@ public abstract class AbstractDownloadHandler extends AbstractFilesHandler {
 	 * @param paramClass
 	 *            - класс.
 	 * @return - значение параметра.
-	 * @throws UnsupportedEncodingException
 	 */
 	@SuppressWarnings("rawtypes")
-	protected String getParam(final Class paramClass) throws UnsupportedEncodingException {
+	protected String getParam(final Class paramClass) {
 		String paramName = paramClass.getName();
 		String result = getRequest().getParameter(paramName);
 		if (result == null) {
 			throw new HTTPRequestRequiredParamAbsentException(paramName);
 		}
-		return URLDecoder.decode(result, TextUtils.DEF_ENCODING);
+		return result;
 	}
 
 	public OutputStreamDataFile getOutputFile() {

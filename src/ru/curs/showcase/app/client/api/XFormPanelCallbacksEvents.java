@@ -10,7 +10,6 @@ import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.rpc.SerializationException;
 
 /**
@@ -389,7 +388,7 @@ public final class XFormPanelCallbacksEvents {
 			dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/download");
 
 			try {
-				dh.addParam("linkId", URL.encode(linkId));
+				dh.addParam("linkId", linkId);
 				dh.addStdPostParamsToBody(new XFormContext(currentXFormPanel.getContext(), data),
 						currentXFormPanel.getElementInfo());
 				dh.submit();

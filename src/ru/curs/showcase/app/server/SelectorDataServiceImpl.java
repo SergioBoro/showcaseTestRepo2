@@ -12,7 +12,7 @@ import ru.beta2.extra.gwt.ui.selector.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.ServletUtils;
-import ru.curs.showcase.util.xml.SessionContextGenerator;
+import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -173,7 +173,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 
 	private void prepareContext(final CompositeContext context)
 			throws UnsupportedEncodingException {
-		String sessionContext = SessionContextGenerator.generate(context);
+		String sessionContext = XMLSessionContextGenerator.generate(context);
 
 		context.setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());

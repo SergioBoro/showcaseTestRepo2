@@ -29,8 +29,8 @@ public final class ServletUtils {
 	 * Подготавливает карту с параметрами URL. При подготовке учитывается то,
 	 * что русские параметры URL считываются сервером в кодировке ISO-8859-1 при
 	 * том, что в реальности они приходят либо в UTF-8 либо в СP1251, а также
-	 * тот факт, что установка req.setCharacterEncoding("ISO-8859-1"): 1) не
-	 * помогает и 2) приводит к сбоям GWT-RPC вызовов
+	 * тот факт, что установка req.setCharacterEncoding("ISO-8859-1") не
+	 * помогает для параметров из URL (хотя помогает для параметров HTML формы).
 	 * 
 	 * @param req
 	 *            - http запрос.
@@ -157,7 +157,8 @@ public final class ServletUtils {
 	public static String getRequestAsString(final HttpServletRequest request)
 			throws java.io.IOException {
 		InputStream is = request.getInputStream();
-		BufferedReader requestData = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+		BufferedReader requestData =
+			new BufferedReader(new InputStreamReader(is, TextUtils.DEF_ENCODING));
 		String line;
 
 		try {
@@ -171,21 +172,6 @@ public final class ServletUtils {
 			requestData.close();
 		}
 		return line;
-	}
-
-	/**
-	 * Возвращает кодировку для текста в адресной строке браузера. Данный метод
-	 * корректно работает с кириллическими символами при переходах по ссылке в
-	 * любых браузерах, всегда - в Safari, Chrome и Opera, и при обновлении
-	 * страницы кнопкой "Обновить" - также в IE и Firefox (при нажатии Enter в
-	 * адресной строке в данных браузерах - не работает).
-	 * 
-	 * @param req
-	 *            - HttpServletRequest.
-	 * @return - строка с кодировкой.
-	 */
-	public static String getCharsetForURLParams(final HttpServletRequest req) {
-		return "UTF-8";
 	}
 
 	/**
@@ -213,8 +199,8 @@ public final class ServletUtils {
 	public static String checkAndRecodeURLParam(final String param)
 			throws UnsupportedEncodingException {
 		String enc = UTF8Checker.getRealEncoding(param);
-		if (enc.equals(ServletUtils.getCharsetForURLParams(null))) {
-			return TextUtils.recode(param, enc, ServletUtils.getCharsetForURLParams(null));
+		if (!TextUtils.DEF_ENCODING.equals(enc)) {
+			return TextUtils.recode(param, enc, TextUtils.DEF_ENCODING);
 		}
 		return param;
 	}
