@@ -304,6 +304,20 @@
 					</info>
 				</schema>
 			</xf:instance>
+			
+			
+            <xf:instance id="myInstance">
+                <schema xmlns="">
+					<info>                
+                      <name>Василий1</name>
+                      <name>Николай2</name>
+					</info>
+					<info>                
+                      <recordid>Василий3</recordid>
+                      <recordid>Николай4</recordid>
+					</info>
+                </schema>
+           </xf:instance>
 
 
 			<xf:submission id="wrong_save" method="post" instance="mainInstance"
@@ -458,6 +472,41 @@
 				</xf:action>
 			</xf:trigger>
 			
+			
+		</div>
+		
+		
+</xf:repeat>
+
+
+		<div style="font-size: 15px;"> Комментарии: </div>
+		<div>
+			<xf:input ref="/schema/info/comment" />
+			
+			
+        <xf:select1 ref="/schema/info/comment">
+            <xf:item>
+                <xf:label>-</xf:label>
+                <xf:value>-</xf:value>
+            </xf:item>
+            <xf:itemset nodeset="instance('myInstance')/info[1]/name">
+                <xf:label ref="."/>
+                <xf:value ref="."/>
+            </xf:itemset>
+        </xf:select1>
+        
+        <xf:select1 ref="/schema/info/comment">
+            <xf:item>
+                <xf:label>-</xf:label>
+                <xf:value>-</xf:value>
+            </xf:item>
+            <xf:itemset nodeset="instance('myInstance')/info[2]/recordid">
+                <xf:label ref="."/>
+                <xf:value ref="."/>
+            </xf:itemset>
+        </xf:select1>
+        
+			
 			<xf:trigger>
 				<xf:label>MultiSelector</xf:label>
 				<xf:action ev:event="DOMActivate">
@@ -466,23 +515,23 @@
 			           id : 'xformId',
                        procListAndCount  : '[dbo].[companylist_and_count]',
                        generalFilters      : '',
-                       currentValue        : 'XPath(/schema/info[index(quot(securityRealEstateRow))]/name)',
+                       currentValue        : '',
                        windowCaption       : 'Выберите значения',
                        xpathMapping        : {
-                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/name)': 
+                                              'XPath(instance(quot(myInstance))/info[1])': 
                                               'name', 
                                               
-                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/comment)': 
-                                              'CreateRowUser'
+                                              'XPath(instance(quot(myInstance))/info[2])': 
+                                              ['id', 'recordid']
                                              }
-                       });;" />
+                       });" />
 				</xf:action>
 			</xf:trigger>
 			
+			
 		</div>
-		
-		
-</xf:repeat>		
+
+
 		
 		<div style="font-size: 15px;"> Цвет глаз (1): </div>
 		<div>
@@ -559,10 +608,6 @@
 					<xf:value>Эстрадная</xf:value>
 				</xf:item>
 			</xf:select>
-		</div>
-		<div style="font-size: 15px;"> Комментарии: </div>
-		<div>
-			<xf:textarea ref="/schema/info/comment" />
 		</div>
 		<div style="clear: both;">
 			<xf:output

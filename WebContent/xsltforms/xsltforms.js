@@ -9964,14 +9964,34 @@ function setXFormByXPath(ok, selected, xpathMapping)
 function insertXFormByXPath(ok, selected, xpathMapping)
 {
 	if (ok) {
-	
-		var mess = "--------------------\n";		
-		for (var i in selected) {
-			mess = mess+selected[i].name+"\n";
+		for (var xpath in xpathMapping) {
+			var value = xpathMapping[xpath];
+            if ((typeof value == "string") && isXPath(value)) {
+           	    (new XFSetvalue(new Binding(false, getXPath(xpath)),getXPath(value),null,null,null)).run();            	
+            }else {
+            	var context = getXPath(xpath);
+            	
+            	var column      = "";
+            	var elementName = "";
+                if (typeof value == "string") {
+                	column      = value;
+                	elementName = value;
+                }else if (value.length == 1) { 
+                	column      = value[0];
+                	elementName = value[0];
+                }else {
+            	    column      = value[0];
+            	    elementName = value[1];
+                }
+                
+            	var origin = "instance('srvdata')/selectordata/"+elementName;
+            	
+        		for (var i in selected) {
+               	    (new XFSetvalue(new Binding(false, origin),null,selected[i][column],null,null)).run();
+              		(new XFInsert(null, null, null, "last", "after", origin, context, null, null)).run(null, context);
+        		}
+            }
 		}
-		mess = mess+"--------------------";		
-		
-		alert(mess);
 	}
 }
 

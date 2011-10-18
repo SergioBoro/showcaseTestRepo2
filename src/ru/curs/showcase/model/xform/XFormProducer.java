@@ -1,8 +1,6 @@
 package ru.curs.showcase.model.xform;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.regex.*;
 
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
@@ -11,7 +9,6 @@ import javax.xml.transform.stream.*;
 
 import org.w3c.dom.*;
 
-import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
@@ -27,12 +24,6 @@ public final class XFormProducer extends GeneralXMLHelper {
 
 	private static final String MAIN_INSTANCE = "mainInstance";
 	private static final String INSTANCE = "instance";
-
-	private static final String LOAD = "load";
-	private static final String RESOURCE = "resource";
-	private static final String VALUE = "value";
-	private static final String SHOW_SELECTOR = "showSelector";
-	private static final String TEMP_TAG_FOR_SELECTOR_ID = "tempTagForSelector";
 
 	private XFormProducer() {
 		throw new UnsupportedOperationException();
@@ -106,7 +97,6 @@ public final class XFormProducer extends GeneralXMLHelper {
 	 */
 	public static String getHTML(final org.w3c.dom.Document xml,
 			final org.w3c.dom.Document tempData) throws TransformerException {
-		insertHiddenTagForSelector(xml);
 		insertActualData(xml, tempData);
 		return transform(xml);
 	}
@@ -138,102 +128,6 @@ public final class XFormProducer extends GeneralXMLHelper {
 					break;
 				}
 			}
-		}
-	}
-
-	private static void insertHiddenTagForSelector(final org.w3c.dom.Document xml) {
-
-		ArrayList<String> selectors = getArraySelectors(xml);
-
-		ArrayList<String> xpaths = getArrayXPaths(selectors);
-
-		setHiddenTag(xml, xpaths);
-
-		// LOGGER.info(XMLUtils.documentToString(xml));
-
-	}
-
-	private static ArrayList<String> getArraySelectors(final org.w3c.dom.Document xml) {
-		ArrayList<String> selectors = new ArrayList<String>();
-
-		NodeList nl;
-		Node n;
-
-		nl = xml.getElementsByTagNameNS(XFORMS_URI, LOAD);
-		for (int i = 0; i < nl.getLength(); i++) {
-			n = nl.item(i);
-			if ((n.getAttributes() != null) && (n.getAttributes().getNamedItem(RESOURCE) != null)) {
-				selectors.add(n.getAttributes().getNamedItem(RESOURCE).getTextContent());
-			}
-		}
-
-		nl = xml.getElementsByTagNameNS(XFORMS_URI, RESOURCE);
-		for (int i = 0; i < nl.getLength(); i++) {
-			n = nl.item(i);
-			if ((n.getAttributes() != null) && (n.getAttributes().getNamedItem(VALUE) != null)) {
-				selectors.add(n.getAttributes().getNamedItem(VALUE).getTextContent());
-			}
-		}
-
-		return selectors;
-	}
-
-	private static ArrayList<String> getArrayXPaths(final ArrayList<String> selectors) {
-		ArrayList<String> xpaths = new ArrayList<String>();
-
-		Pattern pXPath =
-			Pattern.compile("XPath\\((\\S*)\\)", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
-
-		Pattern pQuot =
-			Pattern.compile("quot\\((\\w*)\\)", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
-
-		Matcher mXPath;
-		Matcher mQuot;
-		String s;
-
-		for (String selector : selectors) {
-			if (selector.toLowerCase().indexOf(SHOW_SELECTOR.toLowerCase()) > -1) {
-				mXPath = pXPath.matcher(selector);
-				while (mXPath.find()) {
-					s = mXPath.group(1);
-
-					mQuot = pQuot.matcher(s);
-					StringBuffer sb = new StringBuffer();
-					while (mQuot.find()) {
-						mQuot.appendReplacement(sb, "'" + mQuot.group(1) + "'");
-					}
-					mQuot.appendTail(sb);
-
-					s = sb.toString();
-
-					if (!xpaths.contains(s)) {
-						xpaths.add(s);
-					}
-				}
-			}
-		}
-
-		return xpaths;
-	}
-
-	private static void
-			setHiddenTag(final org.w3c.dom.Document xml, final ArrayList<String> xpaths) {
-		if (xpaths.isEmpty()) {
-			return;
-		}
-
-		NodeList body = xml.getElementsByTagName("body");
-
-		Element div = xml.createElement("div");
-		div.setAttribute("id", TEMP_TAG_FOR_SELECTOR_ID);
-		// div.setAttribute("style", "clear: both;");
-		div.setAttribute(GeneralConstants.STYLE_TAG, "display: none;");
-		body.item(0).insertBefore(div, body.item(0).getFirstChild());
-
-		for (String xpath : xpaths) {
-			Element xfoutput = xml.createElementNS(XFORMS_URI, "output");
-			xfoutput.setAttribute("ref", xpath);
-			div.appendChild(xfoutput);
 		}
 	}
 
