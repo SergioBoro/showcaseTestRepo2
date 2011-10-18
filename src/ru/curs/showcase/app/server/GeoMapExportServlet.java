@@ -50,14 +50,6 @@ public class GeoMapExportServlet extends HttpServlet {
 
 			String fileName = settings.getFileName() + "." + imageFormat.toString().toLowerCase();
 
-			if (ServletUtils.isOldIE(request)) {
-				response.setContentType("application/force-download");
-			} else {
-				response.setContentType("application/octet-stream");
-			}
-			// По агентурным данным для старых версий IE
-			// "application/octet-stream"
-			// обрабатывается некорректно.
 			response.setHeader("Content-Disposition",
 					String.format("attachment; filename=\"%s\"", fileName));
 
@@ -71,20 +63,21 @@ public class GeoMapExportServlet extends HttpServlet {
 			case PNG:
 				SVGConvertor convertor = new SVGConvertor(settings);
 				ByteArrayOutputStream os = convertor.svgStringToPNG(svg);
-				OutputStream out = response.getOutputStream();
-				out.write(os.toByteArray());
-				out.close();
+
+				response.setContentType("image/png");
+				writeStreamToResponse(response, os);
 				break;
 			case JPG:
 				convertor = new SVGConvertor(settings);
 				os = convertor.svgStringToJPEG(svg);
-				out = response.getOutputStream();
-				out.write(os.toByteArray());
-				out.close();
+
+				response.setContentType("image/jpg");
+				writeStreamToResponse(response, os);
 				break;
 			case SVG:
 				SVGGetCommand command = new SVGGetCommand(context, settings, imageFormat, svg);
 				response.setCharacterEncoding(TextUtils.DEF_ENCODING);
+				response.setContentType("application/svg+xml");
 				response.getWriter().append(command.execute());
 				break;
 			default:
@@ -93,5 +86,12 @@ public class GeoMapExportServlet extends HttpServlet {
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
+	}
+
+	public void writeStreamToResponse(final HttpServletResponse response,
+			final ByteArrayOutputStream os) throws IOException {
+		OutputStream out = response.getOutputStream();
+		out.write(os.toByteArray());
+		out.close();
 	}
 }

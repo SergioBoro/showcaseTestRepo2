@@ -123,9 +123,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 	public static Document modify(final Document aTemplate, final CompositeContext aCallContext,
 			final DataPanelElementInfo aElementInfo) {
-		Document result =
-			XFormTemplateModificator.addSrvInfo(aTemplate, aCallContext, aElementInfo);
-		result = XFormTemplateModificator.generateUploaders(result, aElementInfo);
+		Document result = addSrvInfo(aTemplate, aCallContext, aElementInfo);
+		result = generateUploaders(result, aElementInfo);
 		result = insertDataForSelectors(result);
 		return result;
 	}
