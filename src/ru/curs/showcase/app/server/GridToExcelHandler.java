@@ -53,4 +53,9 @@ public class GridToExcelHandler extends AbstractDownloadHandler {
 		exportType = GridToExcelExportType.valueOf(getParam(GridToExcelExportType.class));
 		columnSet = (ColumnSet) deserializeObject(getParam(ColumnSet.class));
 	}
+
+	@Override
+	protected void setContentType() {
+		getResponse().setContentType("application/vnd.ms-excel");
+	}
 }
