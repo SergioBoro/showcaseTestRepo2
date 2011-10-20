@@ -19,6 +19,7 @@
 		<element id="table1" type="grid" proc="grid_cities_data_rco"
 			>
 			<proc id="d201" name="grid_cities_metadata" type="METADATA" />
+			<proc id="d202" name="grid_cities_download" type="DOWNLOAD" />
 		</element>
 		<element id="card1" type="xforms" template="Showcase_Template3.xml"
 			proc="xforms_proc3_enh" neverShowInPanel="true">

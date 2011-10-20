@@ -6,6 +6,9 @@ import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import org.apache.commons.fileupload.*;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.model.svg.SVGGetCommand;
@@ -41,12 +44,28 @@ public class GeoMapExportServlet extends HttpServlet {
 	protected void service(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			GeoMapExportSettings settings =
-				(GeoMapExportSettings) deserializeObject(request
-						.getParameter(GeoMapExportSettings.class.getName()));
-			ImageFormat imageFormat =
-				ImageFormat.valueOf(request.getParameter(ImageFormat.class.getName()));
-			String svg = request.getParameter(SVG_DATA_PARAM);
+			ServletFileUpload upload = new ServletFileUpload();
+			FileItemIterator iterator = upload.getItemIterator(request);
+			GeoMapExportSettings settings = null;
+			ImageFormat imageFormat = null;
+			String svg = null;
+			while (iterator.hasNext()) {
+				FileItemStream item = iterator.next();
+				String name = item.getFieldName();
+				InputStream input = item.openStream();
+				// несмотря на то, что нам нужен InputStream - его приходится
+				// преобразовывать в OutputStream - т.к. чтение из InputStream
+				// возможно только в данном цикле
+				ByteArrayOutputStream out = StreamConvertor.inputToOutputStream(input);
+				String paramValue = out.toString();
+				if (GeoMapExportSettings.class.getName().equals(name)) {
+					settings = (GeoMapExportSettings) deserializeObject(paramValue);
+				} else if (ImageFormat.class.getName().equals(name)) {
+					imageFormat = ImageFormat.valueOf(paramValue);
+				} else if (SVG_DATA_PARAM.equals(name)) {
+					svg = paramValue;
+				}
+			}
 
 			String fileName = settings.getFileName() + "." + imageFormat.toString().toLowerCase();
 

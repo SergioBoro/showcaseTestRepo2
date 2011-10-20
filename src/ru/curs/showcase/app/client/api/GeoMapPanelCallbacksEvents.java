@@ -9,6 +9,7 @@ import ru.curs.showcase.app.client.utils.DownloadHelper;
 
 import com.google.gwt.regexp.shared.*;
 import com.google.gwt.user.client.rpc.SerializationStreamFactory;
+import com.google.gwt.user.client.ui.FormPanel;
 
 /**
  * @author anlug
@@ -70,14 +71,14 @@ public final class GeoMapPanelCallbacksEvents {
 		dh.setErrorCaption(Constants.EXPORT_TO_PNG_ERROR);
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/geoMapExport"
 				+ com.google.gwt.user.client.Window.Location.getQueryString());
-
+		dh.setEncoding(FormPanel.ENCODING_MULTIPART);
 		try {
 			GeoMap map = getPanel(mapDivId).getMap();
 			SerializationStreamFactory ssf = dh.getObjectSerializer();
-			dh.addParam(ImageFormat.class.getName(), imageFormat);
-			dh.addParam("svg", svg);
 			dh.addParam(map.getExportSettings().getClass().getName(), map.getExportSettings()
 					.toParamForHttpPost(ssf));
+			dh.addParam(ImageFormat.class.getName(), imageFormat);
+			dh.addParam("svg", svg);
 			dh.submit();
 		} catch (Exception e) {
 			MessageBox.showSimpleMessage(Constants.EXPORT_TO_PNG_ERROR, e.getMessage());

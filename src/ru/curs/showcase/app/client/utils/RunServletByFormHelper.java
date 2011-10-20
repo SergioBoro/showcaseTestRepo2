@@ -85,11 +85,6 @@ public abstract class RunServletByFormHelper extends FormPanel {
 	@Override
 	public void clear() {
 		reset();
-
-		// form.setMethod(FormPanel.METHOD_POST);
-		// form.setEncoding(FormPanel.ENCODING_URLENCODED);
-		// form.setAction("");
-
 		panel.clear();
 
 		setErrorCaption("");

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datapanel>
 	<tab id="-01" name="Экспорт в JPG и PNG">
-		<element id="-0101" type="geomap" proc="geomap_bal" cacheData="false"/>	
+		<element id="-0101" type="geomap" proc="geomap_world" cacheData="false"/>	
 	</tab>
 	<tab id="00" name="Новый загрузчик файлов">
 		<element id="0001" type="xforms" template="Showcase_Template_uploaders.xml"
