@@ -187,61 +187,179 @@ public class GeneralDataPanel {
 
 		DataPanelTab dpt =
 			AppCurrContext.getInstance().getUiDataPanel().get(tabIndex).getDataPanelTabMetaData();
-		Collection<DataPanelElementInfo> tabscoll = dpt.getElements();
-		for (DataPanelElementInfo dpe : tabscoll) {
-			Widget el = null;
-			if (dpe.getCacheData()) {
-				el =
-					AppCurrContext.getInstance().getMapOfDataPanelElements()
-							.get(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
 
-			}
-
-			if (el == null) {
-				switch (dpe.getType()) {
-				case WEBTEXT:
-					el = generateWebTextElement(dpe);
-					break;
-				case XFORMS:
-					el = generateXFormsElement(dpe);
-					break;
-				case GRID:
-					el = generateGridElement(dpe);
-					break;
-				case CHART:
-					el = generateChartElement(dpe);
-					break;
-				case GEOMAP:
-					el = generateMapElement(dpe);
-					break;
-				default:
-					break;
-				}
-			}
-			if (el != null) {
-				el.addStyleName("dataPanelElement-BorderCorners");
-
-				if (dpe.getHtmlAttrs().getStyleClass() != null) {
-					el.addStyleName(dpe.getHtmlAttrs().getStyleClass());
-				}
-
-				el.setWidth("100%");
-				DOM.setElementAttribute(el.getElement(), "id", dpe.getFullId());
-
-				if (!(dpe.getNeverShowInPanel())) {
-
-					vp1.add(el);
-
-					if (dpe.getCacheData()) {
+		if (dpt.getLayout().equals(DataPanelTabLayout.VERTICAL)) {
+			// Вертикальное размещение элементов
+			Collection<DataPanelElementInfo> tabscoll = dpt.getElements();
+			for (DataPanelElementInfo dpe : tabscoll) {
+				Widget el = null;
+				if (dpe.getCacheData()) {
+					el =
 						AppCurrContext
 								.getInstance()
 								.getMapOfDataPanelElements()
-								.put(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)),
-										el);
-					}
+								.get(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
 
 				}
+
+				if (el == null) {
+					switch (dpe.getType()) {
+					case WEBTEXT:
+						el = generateWebTextElement(dpe);
+						break;
+					case XFORMS:
+						el = generateXFormsElement(dpe);
+						break;
+					case GRID:
+						el = generateGridElement(dpe);
+						break;
+					case CHART:
+						el = generateChartElement(dpe);
+						break;
+					case GEOMAP:
+						el = generateMapElement(dpe);
+						break;
+					default:
+						break;
+					}
+				}
+				if (el != null) {
+					el.addStyleName("dataPanelElement-BorderCorners");
+
+					if (dpe.getHtmlAttrs().getStyleClass() != null) {
+						el.addStyleName(dpe.getHtmlAttrs().getStyleClass());
+					}
+
+					el.setWidth("100%");
+					DOM.setElementAttribute(el.getElement(), "id", dpe.getFullId());
+
+					if (!(dpe.getNeverShowInPanel())) {
+
+						vp1.add(el);
+
+						if (dpe.getCacheData()) {
+							AppCurrContext
+									.getInstance()
+									.getMapOfDataPanelElements()
+									.put(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)),
+											el);
+						}
+
+					}
+				}
 			}
+		} else { // Табличное размещение элементов
+
+			FlexTable ft = new FlexTable();
+			vp1.add(ft);
+
+			ft.getElement().setAttribute("style", dpt.getHtmlAttrs().getStyle());
+			ft.setStylePrimaryName(dpt.getHtmlAttrs().getStyleClass());
+			// ft.setSize("100%", "100%");
+
+			Collection<DataPanelTR> trColl = dpt.getTrs();
+			Integer layoutRowCount = trColl.size();
+
+			Integer currentRowCount = -1;
+			for (DataPanelTR tr : trColl) {
+				currentRowCount++;
+
+				Integer currentColoumnCount = -1;
+				Collection<DataPanelTD> tdColl = tr.getTds();
+
+				for (DataPanelTD td : tdColl) {
+
+					currentColoumnCount++;
+
+					DataPanelElementInfo dpe = td.getElement();
+
+					Widget el = null;
+					// if (dpe.getCacheData()) {
+					// el =
+					// AppCurrContext
+					// .getInstance()
+					// .getMapOfDataPanelElements()
+					// .get(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
+
+					// }
+
+					// if (el == null) {
+					switch (dpe.getType()) {
+					case WEBTEXT:
+						el = generateWebTextElement(dpe);
+						break;
+					case XFORMS:
+						el = generateXFormsElement(dpe);
+						break;
+					case GRID:
+						el = generateGridElement(dpe);
+						break;
+					case CHART:
+						el = generateChartElement(dpe);
+						break;
+					case GEOMAP:
+						el = generateMapElement(dpe);
+						break;
+					default:
+						break;
+					}
+
+					if (el != null) {
+
+						ft.setWidget(currentRowCount, currentColoumnCount, el);
+						el.addStyleName("dataPanelElement-BorderCorners");
+
+						if (dpe.getHtmlAttrs().getStyleClass() != null) {
+							el.addStyleName(dpe.getHtmlAttrs().getStyleClass());
+						}
+
+						el.setWidth("100%");
+						DOM.setElementAttribute(el.getElement(), "id", dpe.getFullId());
+
+					}
+
+					if (td.getColspan() != null) {
+						ft.getFlexCellFormatter().setColSpan(currentRowCount, currentColoumnCount,
+								td.getColspan());
+					}
+
+					if (td.getRowspan() != null) {
+						ft.getFlexCellFormatter().setRowSpan(currentRowCount, currentColoumnCount,
+								td.getRowspan());
+					}
+
+					ft.getFlexCellFormatter().getElement(currentRowCount, currentColoumnCount)
+							.setAttribute("style", td.getHtmlAttrs().getStyle());
+					ft.getFlexCellFormatter().getElement(currentRowCount, currentColoumnCount)
+							.setAttribute("width", td.getWidth());
+					ft.getFlexCellFormatter().setStylePrimaryName(currentRowCount,
+							currentColoumnCount, td.getHtmlAttrs().getStyleClass());
+
+					// if (!(dpe.getNeverShowInPanel())) {
+
+					// vp1.add(el);
+
+					// if (dpe.getCacheData()) {
+					// AppCurrContext
+					// .getInstance()
+					// .getMapOfDataPanelElements()
+					// .put(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)),
+					// el);
+					// }
+
+					// }
+
+				}
+
+				ft.getRowFormatter().getElement(currentRowCount)
+						.setAttribute("style", tr.getHtmlAttrs().getStyle());
+				ft.getRowFormatter().getElement(currentRowCount)
+						.setAttribute("height", tr.getHeight());
+				ft.getRowFormatter().setStylePrimaryName(currentRowCount,
+						tr.getHtmlAttrs().getStyleClass());
+
+			}
+
 		}
 	}
 
