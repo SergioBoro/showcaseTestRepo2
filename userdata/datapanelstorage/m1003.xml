@@ -15,23 +15,42 @@
 		<element id="62" type="webtext" proc="webtext_filter_and_add"
 			hideOnLoad="true" />		
 	</tab>
-	<tab id="01" name="Табличная раскладка" layout="TABLE" style="yyy" styleClass="css-class">
+	
+	
+		<tab id="01" name="Табличная раскладка" layout="TABLE" style="background: yellow;" styleClass="css-class">
 		<tr id="r01" height="500px" style="border-width: medium" styleClass="css-class">
-			<td id="d0101" width="10%" style="border-width: medium" styleClass="css-class" >
-				<element id="0101" type="geomap" proc="geomap_bal"
-					cacheData="true" style="border-width: medium" styleClass="css-class" />					
-			</td>	
-			<td id="d0102" width="300px" style="border-width: medium" styleClass="css-class" rowspan="2" > 
-				<element id="0102" type="geomap" proc="geomap_bal"
-					cacheData="false" />					
-			</td>							
+			<td id="d0101" width="600px" style="border-width: medium; background: green;" styleClass="css-class" colspan="2" >
+				<element id="0101" type="webtext" proc="webtext_3buttons"
+					style="border-width: medium" styleClass="css-class" />					
+			</td>						
 		</tr>	
 		<tr id="r02" height="200px" style="border-width: medium" styleClass="css-class">	
-			<td id="d0201" width="100px" style="border-width: medium" styleClass="css-class" colspan="2">
-				<element id="0103" type="grid" proc="grid_portals" />
+			<td id="d0201" width="100px" style="border-width: medium" styleClass="css-class">
+				<element id="0103" type="webtext" proc="webtext_3buttons" />
+			</td>
+			<td id="d0102" width="300px" style="border-width: medium; background: blue;" styleClass="css-class" > 
+				<element id="0102" type="webtext" proc="webtext_3buttons"/>					
 			</td>
 		</tr>			
 	</tab>
+	
+<!--	<tab id="01" name="Табличная раскладка" layout="TABLE" style="yyy" styleClass="css-class">-->
+<!--		<tr id="r01" height="500px" style="border-width: medium" styleClass="css-class">-->
+<!--			<td id="d0101" width="10%" style="border-width: medium" styleClass="css-class" >-->
+<!--				<element id="0101" type="geomap" proc="geomap_bal"-->
+<!--					cacheData="true" style="border-width: medium" styleClass="css-class" />					-->
+<!--			</td>	-->
+<!--			<td id="d0102" width="300px" style="border-width: medium" styleClass="css-class" rowspan="2" > -->
+<!--				<element id="0102" type="geomap" proc="geomap_bal"-->
+<!--					cacheData="false" />					-->
+<!--			</td>							-->
+<!--		</tr>	-->
+<!--		<tr id="r02" height="200px" style="border-width: medium" styleClass="css-class">	-->
+<!--			<td id="d0201" width="100px" style="border-width: medium" styleClass="css-class" colspan="2">-->
+<!--				<element id="0103" type="grid" proc="grid_portals" />-->
+<!--			</td>-->
+<!--		</tr>			-->
+<!--	</tab>-->
 	<tab id="06" name="XForms. Селектор" layout="VERTICAL">
 		<element id="61" type="xforms" template="Showcase_Template_selector.xml"
 			proc="xforms_proc1">
