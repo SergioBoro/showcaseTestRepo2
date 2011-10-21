@@ -25,6 +25,10 @@
 					<info>                
                       <recordid>Шамбала</recordid>
 					</info>
+					<info>                
+                      <name4 id="Атлантида4"></name4>
+                      <name4 id="Китеж-град4"></name4>
+					</info>
                 </schema>
            </xf:instance>
 
@@ -199,7 +203,10 @@
 						resource="javascript:showMultiSelector({
 			           id : 'xformId',
                        procListAndCount  : '[dbo].[companylist_and_count]',
-                       generalFilters      : '',
+                       generalFilters      : [ 
+                                              'XPath(instance(quot(myInstance))/info[3]/name4)',  
+                                              'XPath(instance(quot(myInstance))/info[3]/name4/@id)'
+                                             ],
                        currentValue        : '',
                        windowCaption       : 'Выберите значения',
                        needClear           : true,

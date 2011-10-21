@@ -10018,11 +10018,22 @@ function getXMLByXPathArray(xpathArray)
 	for (var i in xpathArray) {
 	    if (isXPath(xpathArray[i])) {
             var nodes = (new Binding(false, getXPath(xpathArray[i]))).evaluate();
-   		    xml = xml+'<filter xmlns="">';          
-      	    for (var j in nodes) {
-      		   xml = xml+Writer.toString(nodes[j]);
-      	    }
-   		    xml = xml+'</filter>';
+            
+            if(nodes.length > 0){
+       		    xml = xml+'<filter xmlns="">';
+       		    if (nodes[0].nodeType == NodeType.ATTRIBUTE) {
+       	      	    for (var j in nodes) {
+       	      		   xml = xml+'<'+nodes[j].nodeName+' xmlns="">';
+     	      		   xml = xml+Writer.encoding(nodes[j].nodeValue);
+    	     		   xml = xml+'</'+nodes[j].nodeName+'>';
+       	      	    }
+       		    }else {
+       	      	    for (var j in nodes) {
+       	      		   xml = xml+Writer.toString(nodes[j]);
+       	      	    }
+       		    }
+       		    xml = xml+'</filter>';
+            }   		    
 	    }else {
 			xml = xml+'<filter xmlns="">'+xpathArray[i]+'</filter>';
 	    }
