@@ -20,7 +20,10 @@ public abstract class AbstractMainPageFrameCommand<T> extends ServiceLayerComman
 	protected String getRawMainPageFrame(final CompositeContext context,
 			final MainPageFrameType type) {
 		MainPageFrameSelector selector = new MainPageFrameSelector(type);
-		String result = selector.getGateway().getRawData(context);
+		String result = null;
+		if (selector.isEnabled()) {
+			result = selector.getGateway().getRawData(context);
+		}
 		return result;
 	}
 }

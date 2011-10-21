@@ -37,6 +37,10 @@ public final class MainPageFrameFactory {
 	 *            - исходный код.
 	 */
 	public String build(final String aSource) {
+		if (aSource == null) {
+			return null;
+		}
+
 		source = aSource;
 		result = source;
 		replaceTemplates();

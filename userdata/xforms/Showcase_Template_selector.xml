@@ -375,7 +375,7 @@
 					<xf:load
 						resource="javascript:showSelector({
 			           id : 'xformId',
-                       procListAndCount  : '[dbo].[companylist_and_count]',
+                       procListAndCount  : '[dbo].[regions_list_and_count]',
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
@@ -401,8 +401,8 @@
 					<xf:load
 						resource="javascript:showSelector({
 			           id : 'xformId',
-                       procCount : '[dbo].[companycount]',
-                       procList  : '[dbo].[companylist]',                       
+                       procCount : '[dbo].[regionscount]',
+                       procList  : '[dbo].[regionslist]',                       
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
@@ -429,7 +429,7 @@
 					<xf:load
 						resource="javascript:showSelector({
 			           id : 'xformId',
-                       procListAndCount  : '[dbo].[companylist_and_count]',
+                       procListAndCount  : '[dbo].[regions_list_and_count]',
                        generalFilters      : 'фильтры',
                        currentValue        : 'XPath(/schema/info[index(quot(securityRealEstateRow))]/name)',
                        windowCaption       : 'Выберите название',
@@ -450,8 +450,8 @@
 					<xf:load
 						resource="javascript:showSelector({
 			           id : 'xformId',
-                       procCount : '[dbo].[companycount]',
-                       procList  : '[dbo].[companylist]',
+                       procCount : '[dbo].[regionscount]',
+                       procList  : '[dbo].[regionslist]',
                                               
                        generalFilters      : [
                                               'фильтры',                       
@@ -513,7 +513,7 @@
 					<xf:load
 						resource="javascript:showMultiSelector({
 			           id : 'xformId',
-                       procListAndCount  : '[dbo].[companylist_and_count]',
+                       procListAndCount  : '[dbo].[regions_list_and_count]',
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите значения',

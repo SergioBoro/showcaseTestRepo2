@@ -12,10 +12,14 @@ import ru.curs.showcase.util.xml.GeneralXMLHelper;
  * 
  */
 public class MainPageFrameSelector extends SourceSelector<MainPageFrameGateway> {
+	private static final String PROC_DISABLED = "none";
+
 	/**
 	 * Тип фрейма.
 	 */
 	private final MainPageFrameType type;
+
+	private boolean enabled = true;
 
 	public MainPageFrameSelector(final MainPageFrameType aType) {
 		super();
@@ -29,6 +33,8 @@ public class MainPageFrameSelector extends SourceSelector<MainPageFrameGateway> 
 		setSourceName(AppProps.getOptionalValueByName(frameParam));
 		if (getSourceName() == null) {
 			setSourceName(getDefaultValue());
+		} else if (PROC_DISABLED.equalsIgnoreCase(getSourceName().trim())) {
+			enabled = false;
 		}
 	}
 
@@ -58,5 +64,13 @@ public class MainPageFrameSelector extends SourceSelector<MainPageFrameGateway> 
 	@Override
 	protected String getFileExt() {
 		return "html";
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(final boolean aEnabled) {
+		enabled = aEnabled;
 	}
 }
