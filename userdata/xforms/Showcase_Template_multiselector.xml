@@ -202,6 +202,7 @@
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите значения',
+                       needClear           : true,
                        xpathMapping        : {
                                               'XPath(instance(quot(myInstance))/info[1])': 
                                               'name', 
@@ -223,6 +224,7 @@
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите значения',
+                       needClear           : false,                       
                        xpathMapping        : {
                                               'XPath(instance(quot(myInstance))/info[1])': 
                                               'name', 

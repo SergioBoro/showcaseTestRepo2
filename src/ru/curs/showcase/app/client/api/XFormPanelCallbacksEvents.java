@@ -198,106 +198,115 @@ public final class XFormPanelCallbacksEvents {
 		showSingleAndMultiSelector(o, true);
 	}
 
-	private static void showSingleAndMultiSelector(final JavaScriptObject o,
-			final boolean isMultiSelector) {
+	/**
+	 * SelectorParam.
+	 */
+	private static final class SelectorParam extends JavaScriptObject {
+
+		protected SelectorParam() {
+
+		};
 
 		/**
-		 * SelectorParam
+		 * Id элемента xForm.
+		 * 
+		 * @return String
 		 */
-		final class SelectorParam extends JavaScriptObject {
+		native String id()/*-{
+			return this.id;
+		}-*/;
 
-			protected SelectorParam() {
+		/**
+		 * Название процедуры получения общего числа записей.
+		 * 
+		 * @return String
+		 */
+		native String procCount()/*-{
+			return this.procCount;
+		}-*/;
 
-			};
+		/**
+		 * Название процедуры получения записей как таковых.
+		 * 
+		 * @return String
+		 */
+		native String procList()/*-{
+			return this.procList;
+		}-*/;
 
-			/**
-			 * Id элемента xForm
-			 * 
-			 * @return String
-			 */
-			native String id()/*-{
-		return this.id;
-	}-*/;
+		/**
+		 * Название процедуры получения и общего числа записей, и записей как
+		 * таковых.
+		 * 
+		 * @return String
+		 */
+		native String procListAndCount()/*-{
+			return this.procListAndCount;
+		}-*/;
 
-			/**
-			 * Название процедуры получения общего числа записей
-			 * 
-			 * @return String
-			 */
-			native String procCount()/*-{
-		return this.procCount;
-	}-*/;
+		/**
+		 * общие фильтры. Этот параметр передаётся хранимой процедуре БД (см.
+		 * ниже) без изменений
+		 * 
+		 * @return String
+		 */
+		native Object generalFilters()/*-{
+			return this.generalFilters;
+		}-*/;
 
-			/**
-			 * Название процедуры получения записей как таковых
-			 * 
-			 * @return String
-			 */
-			native String procList()/*-{
-		return this.procList;
-	}-*/;
+		/**
+		 * начальное значение поискового поля.
+		 * 
+		 * @return String
+		 */
+		native String currentValue()/*-{
+			return this.currentValue;
+		}-*/;
 
-			/**
-			 * Название процедуры получения и общего числа записей, и записей
-			 * как таковых
-			 * 
-			 * @return String
-			 */
-			native String procListAndCount()/*-{
-		return this.procListAndCount;
-	}-*/;
+		/**
+		 * заголовок окна для выбора из больших списков.
+		 * 
+		 * @return String
+		 */
+		native String windowCaption()/*-{
+			return this.windowCaption;
+		}-*/;
 
-			/**
-			 * общие фильтры. Этот параметр передаётся хранимой процедуре БД
-			 * (см. ниже) без изменений
-			 * 
-			 * @return String
-			 */
-			native Object generalFilters()/*-{
-		return this.generalFilters;
-	}-*/;
+		/**
+		 * нужно ли очищать ноду перед вставкой выбранных значений.
+		 * 
+		 * @return boolean
+		 */
+		native boolean needClear()/*-{
+			return this.needClear;
+		}-*/;
 
-			/**
-			 * начальное значение поискового поля
-			 * 
-			 * @return String
-			 */
-			native String currentValue()/*-{
-		return this.currentValue;
-	}-*/;
+		/**
+		 * onSelectionComplete.
+		 * 
+		 * @param ok
+		 *            boolean
+		 * 
+		 * @param selected
+		 *            JavaScriptObject
+		 */
+		native void onSelectionComplete(final boolean ok, final JavaScriptObject selected)/*-{
+			this.onSelectionComplete(ok, selected);
+		}-*/;
 
-			/**
-			 * заголовок окна для выбора из больших списков.
-			 * 
-			 * @return String
-			 */
-			native String windowCaption()/*-{
-		return this.windowCaption;
-	}-*/;
+		/**
+		 * mapping между полями XForm'ы и полями выбранной записи.
+		 * 
+		 * @return Map<String, String>
+		 */
+		native Map<String, String> xpathMapping()/*-{
+			return this.xpathMapping;
+		}-*/;
 
-			/**
-			 * onSelectionComplete
-			 * 
-			 * @param ok
-			 *            boolean
-			 * 
-			 * @param selected
-			 *            JavaScriptObject
-			 */
-			native void onSelectionComplete(final boolean ok, final JavaScriptObject selected)/*-{
-		this.onSelectionComplete(ok, selected);
-	}-*/;
+	}
 
-			/**
-			 * mapping между полями XForm'ы и полями выбранной записи
-			 * 
-			 * @return Map<String, String>
-			 */
-			native Map<String, String> xpathMapping()/*-{
-		return this.xpathMapping;
-	}-*/;
-
-		}
+	private static void showSingleAndMultiSelector(final JavaScriptObject o,
+			final boolean isMultiSelector) {
 
 		final SelectorParam param = (SelectorParam) o;
 
@@ -321,7 +330,7 @@ public final class XFormPanelCallbacksEvents {
 					} else {
 						if (isMultiSelector) {
 							insertXFormByXPath(selector.isOK(), selector.getSelectedAsJsObject(),
-									param.xpathMapping());
+									param.xpathMapping(), param.needClear());
 						} else {
 							setXFormByXPath(selector.isOK(), selector.getSelectedAsJsObject(),
 									param.xpathMapping());
@@ -350,8 +359,9 @@ public final class XFormPanelCallbacksEvents {
 	}-*/;
 
 	private static native void insertXFormByXPath(final boolean ok,
-			final JavaScriptObject selected, final Map<String, String> xpathMapping) /*-{
-		$wnd.insertXFormByXPath(ok, selected, xpathMapping);
+			final JavaScriptObject selected, final Map<String, String> xpathMapping,
+			final boolean needClear) /*-{
+		$wnd.insertXFormByXPath(ok, selected, xpathMapping, needClear);
 	}-*/;
 
 	private static native String getValueByXPath(final String xpath) /*-{

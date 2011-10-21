@@ -9961,7 +9961,7 @@ function setXFormByXPath(ok, selected, xpathMapping)
 	}
 }
 
-function insertXFormByXPath(ok, selected, xpathMapping)
+function insertXFormByXPath(ok, selected, xpathMapping, needClear)
 {
 	if (ok) {
 		for (var xpath in xpathMapping) {
@@ -9985,6 +9985,10 @@ function insertXFormByXPath(ok, selected, xpathMapping)
                 }
                 
             	var origin = "instance('srvdata')/selectordata/"+elementName;
+            	
+            	if(needClear){
+                    (new XFDelete(elementName, null, null, null, context, null, null)).run(null, context);
+            	}
             	
         		for (var i in selected) {
                	    (new XFSetvalue(new Binding(false, origin),null,selected[i][column],null,null)).run();

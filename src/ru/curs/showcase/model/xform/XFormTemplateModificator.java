@@ -264,6 +264,12 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			final ArrayList<String> xpaths, final ArrayList<String> origins) {
 		String s;
 		for (String origin : origins) {
+			s = origin;
+			if (!xpaths.contains(s)) {
+				xpaths.add(s);
+			}
+		}
+		for (String origin : origins) {
 			s = String.format(ORIGIN, origin);
 			if (!xpaths.contains(s)) {
 				xpaths.add(s);
