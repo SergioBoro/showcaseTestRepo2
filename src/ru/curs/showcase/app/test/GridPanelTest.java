@@ -23,6 +23,12 @@ public class GridPanelTest extends GWTTestCase {
 	private static final String HEADER = "Это хедер";
 	private static final String FOOTER = "Это футер";
 
+	private static final String REGION = "Регион";
+	private static final String PICTURE = "Картинка";
+	private static final String Q3_2005 = "3кв. 2005г.";
+	private static final String Q4_2005 = "4кв. 2005г.";
+	private static final String TEST_IMAGE = "solutions/default/resources/imagesingrid/test.jpg";
+
 	@Override
 	public String getModuleName() {
 		return "ru.curs.showcase.app.AppTest";
@@ -68,15 +74,15 @@ public class GridPanelTest extends GWTTestCase {
 		ds.setRecordSet(rs);
 
 		Column c1 = new Column();
-		c1.setId("Регион");
-		c1.setCaption("Регион");
+		c1.setId(REGION);
+		c1.setCaption(REGION);
 		c1.setIndex(0);
 		c1.setVisible(true);
 		c1.setWidth("100px");
 
 		Column c2 = new Column();
-		c2.setId("Картинка");
-		c2.setCaption("Картинка");
+		c2.setId(PICTURE);
+		c2.setCaption(PICTURE);
 		c2.setIndex(1);
 		c2.setVisible(true);
 		c2.setWidth("20px");
@@ -85,15 +91,15 @@ public class GridPanelTest extends GWTTestCase {
 		c2.setValueType(GridValueType.IMAGE);
 
 		Column c3 = new Column();
-		c3.setId("3кв. 2005г.");
-		c3.setCaption("3кв. 2005г.");
+		c3.setId(Q3_2005);
+		c3.setCaption(Q3_2005);
 		c3.setIndex(2);
 		c3.setVisible(true);
 		c3.setWidth("60px");
 
 		Column c4 = new Column();
-		c4.setId("4кв. 2005г.");
-		c4.setCaption("4кв. 2005г.");
+		c4.setId(Q4_2005);
+		c4.setCaption(Q4_2005);
 		final int index = 3;
 		c4.setIndex(index);
 		c4.setVisible(true);
@@ -111,24 +117,24 @@ public class GridPanelTest extends GWTTestCase {
 
 		Record r1 = new Record();
 		r1.setId("0");
-		r1.setValue("Регион", "Итого по России");
-		r1.setValue("Картинка", "solutions/default/resources/imagesingrid/test.jpg");
-		r1.setValue("3кв. 2005г.", "377,63");
-		r1.setValue("4кв. 2005г.", "293,42");
+		r1.setValue(REGION, "Итого по России");
+		r1.setValue(PICTURE, TEST_IMAGE);
+		r1.setValue(Q3_2005, "377,63");
+		r1.setValue(Q4_2005, "293,42");
 
 		Record r2 = new Record();
 		r2.setId("1");
-		r2.setValue("Регион", "Алтайский край");
-		r2.setValue("Картинка", "solutions/default/resources/imagesingrid/test.jpg");
-		r2.setValue("3кв. 2005г.", "17,40");
-		r2.setValue("4кв. 2005г.", "15,87");
+		r2.setValue(REGION, "Алтайский край");
+		r2.setValue(PICTURE, TEST_IMAGE);
+		r2.setValue(Q3_2005, "17,40");
+		r2.setValue(Q4_2005, "15,87");
 
 		Record r3 = new Record();
 		r3.setId("2");
-		r3.setValue("Регион", "Тестовый регион");
-		r3.setValue("Картинка", "solutions/default/resources/imagesingrid/test.jpg");
-		r3.setValue("3кв. 2005г.", "15,27");
-		r3.setValue("4кв. 2005г.", "0,30");
+		r3.setValue(REGION, "Тестовый регион");
+		r3.setValue(PICTURE, TEST_IMAGE);
+		r3.setValue(Q3_2005, "15,27");
+		r3.setValue(Q4_2005, "0,30");
 
 		rs.setRecords(Arrays.asList(r1, r2, r3));
 

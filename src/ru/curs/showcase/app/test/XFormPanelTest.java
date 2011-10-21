@@ -15,6 +15,9 @@ import com.google.gwt.user.client.ui.HTML;
  */
 public class XFormPanelTest extends GWTTestCase {
 
+	private static final String DYNASTYLE = "dynastyle";
+	private static final String TARGET = "target";
+
 	@Override
 	public String getModuleName() {
 		return "ru.curs.showcase.app.AppTest";
@@ -78,13 +81,14 @@ public class XFormPanelTest extends GWTTestCase {
 	private void generalPartTest(final XFormPanel xfp) {
 		assertEquals(1, xfp.getPanel().getWidgetCount());
 
-		com.google.gwt.user.client.Element dynastyle = DOM.getElementById("dynastyle");
+		com.google.gwt.user.client.Element dynastyle = DOM.getElementById(DYNASTYLE);
 		assertEquals(1, dynastyle.getChildCount());
 
-		com.google.gwt.user.client.Element target = DOM.getElementById("target");
+		com.google.gwt.user.client.Element target = DOM.getElementById(TARGET);
 		assertEquals(2, target.getChildCount());
 
-		assertEquals(XFormTestsCommon.LEN_MAININSTANCE, xfp.fillAndGetMainInstance().trim().length());
+		assertEquals(XFormTestsCommon.LEN_MAININSTANCE, xfp.fillAndGetMainInstance().trim()
+				.length());
 
 		assertEquals(DataPanelActionType.DO_NOTHING, AppCurrContext.getInstance()
 				.getCurrentAction().getDataPanelActionType());
@@ -125,10 +129,10 @@ public class XFormPanelTest extends GWTTestCase {
 
 		assertEquals(1, xfp.getPanel().getWidgetCount());
 
-		com.google.gwt.user.client.Element dynastyle = DOM.getElementById("dynastyle");
+		com.google.gwt.user.client.Element dynastyle = DOM.getElementById(DYNASTYLE);
 		assertEquals(1, dynastyle.getChildCount());
 
-		com.google.gwt.user.client.Element target = DOM.getElementById("target");
+		com.google.gwt.user.client.Element target = DOM.getElementById(TARGET);
 		assertEquals(2, target.getChildCount());
 
 	}
@@ -143,10 +147,10 @@ public class XFormPanelTest extends GWTTestCase {
 
 		XFormPanel.destroyXForms();
 
-		com.google.gwt.user.client.Element dynastyle = DOM.getElementById("dynastyle");
+		com.google.gwt.user.client.Element dynastyle = DOM.getElementById(DYNASTYLE);
 		assertNull(dynastyle);
 
-		com.google.gwt.user.client.Element target = DOM.getElementById("target");
+		com.google.gwt.user.client.Element target = DOM.getElementById(TARGET);
 		assertEquals(0, target.getChildCount());
 
 	}
@@ -162,10 +166,10 @@ public class XFormPanelTest extends GWTTestCase {
 		xfp.prepareSettings(false);
 		xfp.prepareSettings(true);
 
-		com.google.gwt.user.client.Element dynastyle = DOM.getElementById("dynastyle");
+		com.google.gwt.user.client.Element dynastyle = DOM.getElementById(DYNASTYLE);
 		assertEquals(1, dynastyle.getChildCount());
 
-		com.google.gwt.user.client.Element target = DOM.getElementById("target");
+		com.google.gwt.user.client.Element target = DOM.getElementById(TARGET);
 		assertEquals(2, target.getChildCount());
 
 	}
@@ -181,10 +185,10 @@ public class XFormPanelTest extends GWTTestCase {
 		XFormPanel bep = new XFormPanel(null);
 		XFormPanel.beforeModalWindow(bep);
 
-		com.google.gwt.user.client.Element dynastyle = DOM.getElementById("dynastyle");
+		com.google.gwt.user.client.Element dynastyle = DOM.getElementById(DYNASTYLE);
 		assertNull(dynastyle);
 
-		com.google.gwt.user.client.Element target = DOM.getElementById("target");
+		com.google.gwt.user.client.Element target = DOM.getElementById(TARGET);
 		assertEquals(0, target.getChildCount());
 
 	}
