@@ -522,7 +522,7 @@
                                               'name', 
                                               
                                               'XPath(instance(quot(myInstance))/info[2])': 
-                                              ['id', 'recordid']
+                                              {'id': 'recordid'}
                                              }
                        });" />
 				</xf:action>

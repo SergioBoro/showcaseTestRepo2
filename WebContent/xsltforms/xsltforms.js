@@ -9976,12 +9976,12 @@ function insertXFormByXPath(ok, selected, xpathMapping)
                 if (typeof value == "string") {
                 	column      = value;
                 	elementName = value;
-                }else if (value.length == 1) { 
-                	column      = value[0];
-                	elementName = value[0];
                 }else {
-            	    column      = value[0];
-            	    elementName = value[1];
+            		for (var col in value) {
+                	    column      = col;
+                	    elementName = value[col];
+                	    break;
+            		}
                 }
                 
             	var origin = "instance('srvdata')/selectordata/"+elementName;
