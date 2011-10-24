@@ -112,21 +112,6 @@ public final class ServletUtils {
 	}
 
 	/**
-	 * Возвращает идентификатор текущей сессии приложения.
-	 * 
-	 * @return - идентификатор текущей сессии приложения.
-	 */
-	public static String getSessionId() {
-		String id = null;
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			id =
-				((WebAuthenticationDetails) SecurityContextHolder.getContext().getAuthentication()
-						.getDetails()).getSessionId();
-		}
-		return id;
-	}
-
-	/**
 	 * Определяет, является ли браузер пользователя "старой версией IE".
 	 * "Старыми" считаются 6 и 7 IE.
 	 * 
