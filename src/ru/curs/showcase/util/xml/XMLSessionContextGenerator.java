@@ -73,7 +73,7 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	private static void addUserNode(final Document info) {
 		Element node = info.createElement(USERNAME_TAG);
 		info.getDocumentElement().appendChild(node);
-		node.appendChild(info.createTextNode(ServletUtils.getCurrentSessionUserName()));
+		node.appendChild(info.createTextNode(SessionUtils.getCurrentSessionUserName()));
 	}
 
 	private static void
