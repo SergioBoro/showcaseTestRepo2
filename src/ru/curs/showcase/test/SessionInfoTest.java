@@ -20,6 +20,7 @@ import ru.curs.showcase.model.command.ServerStateGetCommand;
 import ru.curs.showcase.model.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.SessionUtils;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -35,6 +36,7 @@ public class SessionInfoTest extends AbstractTest {
 	private static final String TEMP_PASS = "pass";
 	private static final String FAKE_SESSION_ID = "fake-session-id";
 	private static final String NOT_EXIST_USERDATA_ID = "test123";
+	private static final String TEST_SESSION = "testSession";
 
 	/**
 	 * Простой тест на установку текущего userdataId.
@@ -44,6 +46,16 @@ public class SessionInfoTest extends AbstractTest {
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(
 				generateTestURLParamsForSL(TEST1_USERDATA));
 		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());
+	}
+
+	/**
+	 * Простой тест на запуск функций из SessionUtils.
+	 */
+	@Test
+	public void testSessionUtilsFunctions() {
+		assertEquals("", SessionUtils.getCurrentSessionUserName());
+		assertEquals(TEST_SESSION, SessionUtils.getCurrentSessionId());
+		assertNull(SessionUtils.getCurrentUserSID());
 	}
 
 	/**
@@ -95,17 +107,19 @@ public class SessionInfoTest extends AbstractTest {
 		DocumentBuilder db = XMLUtils.createBuilder();
 		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
 
-		assertEquals(1,
+		assertEquals(
+				1,
 				doc.getDocumentElement()
 						.getElementsByTagName(XMLSessionContextGenerator.USERNAME_TAG).getLength());
 
 		assertEquals(
 				1,
 				doc.getDocumentElement()
-						.getElementsByTagName(XMLSessionContextGenerator.URL_PARAMS_TAG).getLength());
+						.getElementsByTagName(XMLSessionContextGenerator.URL_PARAMS_TAG)
+						.getLength());
 		Node node =
-			doc.getDocumentElement().getElementsByTagName(XMLSessionContextGenerator.URL_PARAMS_TAG)
-					.item(0);
+			doc.getDocumentElement()
+					.getElementsByTagName(XMLSessionContextGenerator.URL_PARAMS_TAG).item(0);
 		assertEquals(XMLSessionContextGenerator.URL_PARAM_TAG, node.getChildNodes().item(1)
 				.getNodeName());
 		assertEquals(2, node.getChildNodes().item(1).getAttributes().getLength());
@@ -114,7 +128,8 @@ public class SessionInfoTest extends AbstractTest {
 		assertEquals("[" + VALUE12 + "]", node.getChildNodes().item(1).getAttributes()
 				.getNamedItem(VALUE_TAG).getNodeValue());
 
-		assertEquals(1,
+		assertEquals(
+				1,
 				doc.getDocumentElement()
 						.getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG).getLength());
 		node =
@@ -164,7 +179,8 @@ public class SessionInfoTest extends AbstractTest {
 		String sessionContext = context.getSession();
 		DocumentBuilder db = XMLUtils.createBuilder();
 		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
-		assertEquals(1,
+		assertEquals(
+				1,
 				doc.getDocumentElement()
 						.getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG).getLength());
 		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, doc.getDocumentElement()
@@ -174,7 +190,8 @@ public class SessionInfoTest extends AbstractTest {
 		assertEquals(
 				0,
 				doc.getDocumentElement()
-						.getElementsByTagName(XMLSessionContextGenerator.URL_PARAMS_TAG).getLength());
+						.getElementsByTagName(XMLSessionContextGenerator.URL_PARAMS_TAG)
+						.getLength());
 
 	}
 
