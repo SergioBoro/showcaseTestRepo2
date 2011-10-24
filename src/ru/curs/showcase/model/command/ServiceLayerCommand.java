@@ -34,7 +34,7 @@ public abstract class ServiceLayerCommand<T> {
 	/**
 	 * Идентификатор текущей HTTP сессии.
 	 */
-	private final String sessionId = ServletUtils.getCurrentSessionId();
+	private final String sessionId = SessionUtils.getCurrentSessionId();
 
 	private T result;
 
