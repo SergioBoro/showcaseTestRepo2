@@ -29,8 +29,8 @@ public final class AppInitializer {
 	/**
 	 * USER_DATA_INFO.
 	 */
-	private static final String USER_DATA_INFO =
-		"Добавлен userdata на основе rootpath из path.properties с идентификатором '%s' и путем '%s'";
+	private static final String USER_DATA_INFO = "Добавлен userdata на основе rootpath из "
+			+ FileUtils.PATH_PROPERTIES + " с идентификатором '%s' и путем '%s'";
 
 	/**
 	 * LOGGER.
@@ -52,8 +52,9 @@ public final class AppInitializer {
 	}
 
 	/**
-	 * Считывает userdata's из path.properties. Вызывается 1.В ProductionMode,
-	 * если в context.xml нет userdata 2.В режиме модульных тестов
+	 * Считывает userdata's из FileUtils.PATH_PROPERTIES. Вызывается 1.В
+	 * ProductionMode, если в context.xml нет userdata 2.В режиме модульных
+	 * тестов
 	 * 
 	 * @throws IOException
 	 * @throws UnsupportedEncodingException
