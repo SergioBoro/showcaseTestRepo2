@@ -11,7 +11,7 @@ import org.slf4j.*;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.util.ServletUtils;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.ServerLogicError;
 
 /**
@@ -252,6 +252,18 @@ public final class AppInfoSingleton {
 			sessionInfoMap.put(sessionId, res);
 		}
 		return res;
+	}
+
+	public static String getCurrentUserSID() {
+		SessionInfo si =
+			AppInfoSingleton.getAppInfo().getOrInitSessionInfoObject(
+					SessionUtils.getCurrentSessionId());
+		String sid = si.getSid();
+		if (sid == null) {
+			sid = SessionUtils.getCurrentUserSID();
+			si.setSid(sid);
+		}
+		return sid;
 	}
 
 	/**

@@ -111,7 +111,12 @@ public class SessionInfoTest extends AbstractTest {
 				1,
 				doc.getDocumentElement()
 						.getElementsByTagName(XMLSessionContextGenerator.USERNAME_TAG).getLength());
-
+		assertEquals(1,
+				doc.getDocumentElement().getElementsByTagName(XMLSessionContextGenerator.SID_TAG)
+						.getLength());
+		assertEquals(SessionUtils.TEST_SID,
+				doc.getDocumentElement().getElementsByTagName(XMLSessionContextGenerator.SID_TAG)
+						.item(0).getChildNodes().item(0).getNodeValue());
 		assertEquals(
 				1,
 				doc.getDocumentElement()

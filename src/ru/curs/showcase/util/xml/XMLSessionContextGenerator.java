@@ -5,10 +5,12 @@ import java.net.URLDecoder;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.slf4j.*;
 import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.*;
 
 /**
@@ -20,10 +22,13 @@ import ru.curs.showcase.util.*;
  */
 public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(XMLSessionContextGenerator.class);
+
 	private static final String SESSION_CONTEXT_TAG = "sessioncontext";
 	public static final String URL_PARAMS_TAG = "urlparams";
 	public static final String URL_PARAM_TAG = "urlparam";
 	public static final String USERDATA_TAG = ExchangeConstants.URL_PARAM_USERDATA;
+	public static final String SID_TAG = "sid";
 
 	private XMLSessionContextGenerator() {
 		throw new UnsupportedOperationException();
@@ -47,6 +52,8 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		addRelatedContext(info, aContext.getRelated());
 		String result = XMLUtils.documentToString(info);
 		result = XMLUtils.xmlServiceSymbolsToNormal(result);
+		LOGGER.debug("XMLSessionContextGenerator.generate()"
+				+ System.getProperty("line.separator") + result);
 		return result;
 	}
 
@@ -74,6 +81,10 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		Element node = info.createElement(USERNAME_TAG);
 		info.getDocumentElement().appendChild(node);
 		node.appendChild(info.createTextNode(SessionUtils.getCurrentSessionUserName()));
+
+		node = info.createElement(SID_TAG);
+		info.getDocumentElement().appendChild(node);
+		node.appendChild(info.createTextNode(AppInfoSingleton.getCurrentUserSID()));
 	}
 
 	private static void

@@ -26,6 +26,7 @@ public final class SessionUtils {
 	 * Идентификатор сессии для модульных тестов.
 	 */
 	public static final String TEST_SESSION = "testSession";
+	public static final String TEST_SID = "testSID";
 
 	private SessionUtils() {
 		throw new UnsupportedOperationException();
@@ -64,7 +65,6 @@ public final class SessionUtils {
 	 * @return - SID пользователя.
 	 */
 	public static String getCurrentUserSID() {
-
 		String url = null;
 		try {
 			url = SecurityParamsFactory.getLocalAuthServerUrl();
@@ -72,13 +72,16 @@ public final class SessionUtils {
 			LOGGER.error(APP_PROP_READ_ERROR);
 		}
 		AuthServerUtils.init(url);
-		if (AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(getCurrentSessionId())) {
-			UserData ud =
-				AuthServerUtils.getTheAuthServerAlias().isAuthenticated(getCurrentSessionId());
+		String sessionId = getCurrentSessionId();
+		if (AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(sessionId)) {
+			UserData ud = AuthServerUtils.getTheAuthServerAlias().isAuthenticated(sessionId);
 			if (ud != null) {
 				return ud.getSid();
 			}
+		} else if (TEST_SESSION.equals(sessionId)) {
+			return TEST_SID;
 		}
+
 		return null;
 	}
 }

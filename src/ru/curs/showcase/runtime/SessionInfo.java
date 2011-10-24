@@ -23,6 +23,8 @@ public class SessionInfo {
 	 */
 	private String authServerCrossAppPassword = null;
 
+	private String sid;
+
 	private final Map<String, Object> elementStates = Collections
 			.synchronizedMap(new HashMap<String, Object>());
 
@@ -58,5 +60,13 @@ public class SessionInfo {
 
 	public void setAuthViaAuthServer(final boolean aAuthViaAuthServer) {
 		authViaAuthServer = aAuthViaAuthServer;
+	}
+
+	public String getSid() {
+		return sid;
+	}
+
+	public void setSid(final String aSid) {
+		sid = aSid;
 	}
 }
