@@ -20,7 +20,8 @@ public final class SessionUtils {
 	 * LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(SessionUtils.class);
-
+	public static final String APP_PROP_READ_ERROR =
+		"Не удалось считать security.authserverurl из app.properties";
 	/**
 	 * Идентификатор сессии для модульных тестов.
 	 */
@@ -68,14 +69,9 @@ public final class SessionUtils {
 		try {
 			url = SecurityParamsFactory.getLocalAuthServerUrl();
 		} catch (SettingsFileOpenException e) {
-			// throw new ServletException(AuthServerUtils.APP_PROP_READ_ERROR,
-			// e);
-
-			LOGGER.error(AuthServerUtils.APP_PROP_READ_ERROR);
-
+			LOGGER.error(APP_PROP_READ_ERROR);
 		}
 		AuthServerUtils.init(url);
-
 		if (AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(getCurrentSessionId())) {
 			UserData ud =
 				AuthServerUtils.getTheAuthServerAlias().isAuthenticated(getCurrentSessionId());
@@ -83,8 +79,6 @@ public final class SessionUtils {
 				return ud.getSid();
 			}
 		}
-
 		return null;
-
 	}
 }
