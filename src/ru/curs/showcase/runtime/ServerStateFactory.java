@@ -44,7 +44,7 @@ public final class ServerStateFactory {
 		state.setIsNativeUser(!AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(
 				sessionId));
 		state.setJavaVersion(System.getProperty("java.version"));
-		state.setUserName(ServletUtils.getCurrentSessionUserName());
+		state.setUserName(SessionUtils.getCurrentSessionUserName());
 		state.setSqlVersion(getSQLVersion());
 		state.setDojoVersion(getDojoVersion());
 		state.setGwtVersion(getGwtVersion());
