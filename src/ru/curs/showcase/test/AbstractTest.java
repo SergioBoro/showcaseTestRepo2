@@ -58,6 +58,9 @@ public class AbstractTest extends GeneralXMLHelper {
 		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
 			AppInitializer.readPathProperties();
 		}
+		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
+			throw new NoRootPathUserDataException();
+		}
 		initTestSession();
 	}
 

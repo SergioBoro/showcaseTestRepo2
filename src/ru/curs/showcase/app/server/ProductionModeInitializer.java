@@ -22,9 +22,10 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class ProductionModeInitializer {
 
-	private static final String SHOWCASE_USER_DATA_PARAM = "showcase.user.data";
+	private static final String SHOWCASE_ROOTPATH_USERDATA_PARAM = "showcase.rootpath.userdata";
+	public static final String DIR_SVN = ".svn";
 	private static final String USER_DATA_INFO =
-		"Добавлен userdata из context.xml с идентификатором '%s' и путем '%s'";
+		"Добавлен userdata на основе rootpath из context.xml с идентификатором '%s' и путем '%s'";
 	private static final String FILE_COPY_ERROR = "Ошибка копирования файла при старте Tomcat: %s";
 	private static final String COPY_USERDATA_DIRS_PARAM = "copy.userdata.dirs";
 	private static final String USER_DATA_DIR_NOT_FOUND_ERROR =
@@ -64,6 +65,9 @@ public final class ProductionModeInitializer {
 		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
 			AppInitializer.readPathProperties();
 		}
+		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
+			throw new NoRootPathUserDataException();
+		}
 
 		AppProps.checkUserdatas();
 		copyUserDatas(arg0);
@@ -83,21 +87,17 @@ public final class ProductionModeInitializer {
 		Enumeration<?> en = sc.getInitParameterNames();
 		while (en.hasMoreElements()) {
 			String name = en.nextElement().toString();
-			if (name.toLowerCase().contains(SHOWCASE_USER_DATA_PARAM.toLowerCase())) {
-				String id =
-					name.substring(0,
-							name.toLowerCase().indexOf(SHOWCASE_USER_DATA_PARAM.toLowerCase()))
-							.trim();
-
-				if ("".equals(id)) {
-					id = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
-				} else {
-					id = id.substring(0, id.length() - 1);
+			if (SHOWCASE_ROOTPATH_USERDATA_PARAM.equalsIgnoreCase(name)) {
+				String rootpath = sc.getInitParameter(name);
+				File dir = new File(rootpath);
+				String value;
+				for (String id : dir.list()) {
+					if (!DIR_SVN.equalsIgnoreCase(id)) {
+						value = rootpath + "\\\\" + id;
+						AppInfoSingleton.getAppInfo().addUserData(id, value);
+						LOGGER.info(String.format(USER_DATA_INFO, id, value));
+					}
 				}
-
-				String value = sc.getInitParameter(name);
-				AppInfoSingleton.getAppInfo().addUserData(id, value);
-				LOGGER.info(String.format(USER_DATA_INFO, id, value));
 			}
 		}
 

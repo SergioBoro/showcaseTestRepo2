@@ -8,14 +8,10 @@ import ru.curs.showcase.util.exception.BaseException;
  * 
  */
 public class NoSuchUserDataException extends BaseException {
-
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -6928633456458398538L;
 
 	private static final String ERROR_MES =
-		"Каталог пользовательских данных(userdata) с идентификатором '%s' не задан в context.xml или path.properties";
+		"Каталог пользовательских данных(userdata) '%s' не существует в корневом каталоге пользовательских данных";
 
 	/**
 	 * Идентификатор userdata.

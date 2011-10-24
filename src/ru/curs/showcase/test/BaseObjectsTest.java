@@ -114,7 +114,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testBatchFileProcessorAndDeleteDir() throws IOException {
-		String sourceDir = "userdata\\css";
+		String sourceDir = "userdatas\\default\\css";
 		String destDir = "tmp\\css";
 
 		File dir = new File(destDir);

@@ -1,14 +1,14 @@
-#Thu Oct 06 14:19:12 MSD 2011
+#Mon Oct 24 10:22:00 MSD 2011
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/user.properties=UTF-8
 encoding//WebContent/log/lastLogEvents.jsp=UTF-8
 encoding//WebContent/login.jsp=UTF-8
-encoding//userdata/app.properties=UTF-8
-encoding//userdata/geomapproperties/default.properties=UTF-8
-encoding//userdata/gridproperties/default.properties=UTF-8
-encoding//userdata/gridproperties/gridbal.test.properties=UTF-8
-encoding//userdata/gridproperties/sngl_before_dbl.properties=UTF-8
-encoding//userdata_PG/gridproperties/default.properties=UTF-8
-encoding//userdata_TEST1/gridproperties/default.properties=UTF-8
-encoding//userdata_TEST2/gridproperties/default.properties=UTF-8
+encoding//userdatas/default/app.properties=UTF-8
+encoding//userdatas/default/geomapproperties/default.properties=UTF-8
+encoding//userdatas/default/gridproperties/default.properties=UTF-8
+encoding//userdatas/default/gridproperties/gridbal.test.properties=UTF-8
+encoding//userdatas/default/gridproperties/sngl_before_dbl.properties=UTF-8
+encoding//userdatas/pg/gridproperties/default.properties=UTF-8
+encoding//userdatas/test1/gridproperties/default.properties=UTF-8
+encoding//userdatas/test2/gridproperties/default.properties=UTF-8
 encoding/<project>=UTF-8

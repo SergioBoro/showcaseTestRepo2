@@ -5,7 +5,6 @@ import java.util.*;
 
 import org.slf4j.*;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -19,10 +18,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public final class AppInitializer {
 
-	/**
-	 * SHOWCASE_USER_DATA_PARAM.
-	 */
-	private static final String SHOWCASE_USER_DATA_PARAM = "user.data";
+	private static final String SHOWCASE_ROOTPATH_USERDATA_PARAM = "rootpath.userdata";
 
 	/**
 	 * PATH_PROPERTIES_ERROR.
@@ -34,7 +30,7 @@ public final class AppInitializer {
 	 * USER_DATA_INFO.
 	 */
 	private static final String USER_DATA_INFO =
-		"Добавлен userdata из path.properties с идентификатором '%s' и путем '%s'";
+		"Добавлен userdata на основе rootpath из path.properties с идентификатором '%s' и путем '%s'";
 
 	/**
 	 * LOGGER.
@@ -77,21 +73,17 @@ public final class AppInitializer {
 			Enumeration<?> en = paths.keys();
 			while (en.hasMoreElements()) {
 				String name = en.nextElement().toString();
-				if (name.toLowerCase().contains(SHOWCASE_USER_DATA_PARAM.toLowerCase())) {
-					String id =
-						name.substring(0,
-								name.toLowerCase().indexOf(SHOWCASE_USER_DATA_PARAM.toLowerCase()))
-								.trim();
-
-					if ("".equals(id)) {
-						id = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
-					} else {
-						id = id.substring(0, id.length() - 1);
+				if (SHOWCASE_ROOTPATH_USERDATA_PARAM.equalsIgnoreCase(name)) {
+					String rootpath = paths.getProperty(name);
+					File dir = new File(rootpath);
+					String value;
+					for (String id : dir.list()) {
+						if (!ProductionModeInitializer.DIR_SVN.equalsIgnoreCase(id)) {
+							value = rootpath + "\\" + id;
+							AppInfoSingleton.getAppInfo().addUserData(id, value);
+							LOGGER.info(String.format(USER_DATA_INFO, id, value));
+						}
 					}
-
-					String value = paths.getProperty(name);
-					AppInfoSingleton.getAppInfo().addUserData(id, value);
-					LOGGER.info(String.format(USER_DATA_INFO, id, value));
 				}
 			}
 		} catch (IOException e) {
