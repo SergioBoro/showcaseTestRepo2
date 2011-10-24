@@ -102,6 +102,11 @@ public final class ServletUtils {
 		}
 	}
 
+	/**
+	 * Возвращает id текущей сессии приложения.
+	 * 
+	 * @return - id текущей сессии приложения.
+	 */
 	public static String getCurrentSessionId() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			return ((WebAuthenticationDetails) SecurityContextHolder.getContext()
