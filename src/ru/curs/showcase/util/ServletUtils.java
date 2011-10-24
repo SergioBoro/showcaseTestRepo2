@@ -5,9 +5,6 @@ import java.util.*;
 
 import javax.servlet.http.*;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
-
 /**
  * Вспомогательные функции для работы с сервлетами.
  * 
@@ -87,33 +84,6 @@ public final class ServletUtils {
 		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
 		response.getWriter().append(message);
 		response.getWriter().close();
-	}
-
-	/**
-	 * Возвращает имя пользователя из текущей сессии приложения.
-	 * 
-	 * @return - имя пользователя.
-	 */
-	public static String getCurrentSessionUserName() {
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			return SecurityContextHolder.getContext().getAuthentication().getName();
-		} else {
-			return "";
-		}
-	}
-
-	/**
-	 * Возвращает id текущей сессии приложения.
-	 * 
-	 * @return - id текущей сессии приложения.
-	 */
-	public static String getCurrentSessionId() {
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			return ((WebAuthenticationDetails) SecurityContextHolder.getContext()
-					.getAuthentication().getDetails()).getSessionId();
-		} else {
-			return TEST_SESSION;
-		}
 	}
 
 	/**
