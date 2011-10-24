@@ -14,9 +14,7 @@ import ru.curs.showcase.app.api.*;
  * 
  */
 public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClonable {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = 5921173204380210732L;
 
 	/**

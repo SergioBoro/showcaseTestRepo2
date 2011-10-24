@@ -1,7 +1,7 @@
 package ru.curs.showcase.app.api.event;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.GWTClonable;
 
 /**
  * Информация о модальном окне, которое должно быть отображено при выполнении
@@ -12,9 +12,6 @@ import ru.curs.showcase.app.api.*;
  */
 public final class ModalWindowInfo implements SerializableElement, GWTClonable {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 9177503564264889964L;
 
 	/**
