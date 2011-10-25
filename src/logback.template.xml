@@ -14,19 +14,17 @@
 		</encoder>
 	</appender>
 
-	<appender name="FILE"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>x:\\app.log</file>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<!-- daily rollover -->
-			<FileNamePattern>x:\\app.%d{yyyy.MM.dd}.log</FileNamePattern>
-			<!-- keep 30 days' worth of history -->
-			<maxHistory>30</maxHistory>
-		</rollingPolicy>
-		<encoder>
-			<Pattern>${mainPattern}</Pattern>
-		</encoder>
-	</appender>
+<!-- 	<appender name="FILE" -->
+<!-- 		class="ch.qos.logback.core.rolling.RollingFileAppender"> -->
+<!-- 		<file>c:\\app.log</file> -->
+<!-- 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> -->
+<!-- 			<FileNamePattern>c:\\app.%d{yyyy.MM.dd}.log</FileNamePattern> -->
+<!-- 			<maxHistory>30</maxHistory> -->
+<!-- 		</rollingPolicy> -->
+<!-- 		<encoder> -->
+<!-- 			<Pattern>${mainPattern}</Pattern> -->
+<!-- 		</encoder> -->
+<!-- 	</appender> -->
 
 	<appender name="ShowcaseWebConsoleAppender"
 		class="ru.curs.showcase.runtime.ShowcaseWebConsoleAppender">
@@ -46,5 +44,7 @@
 	<root level="info">
 		<appender-ref ref="ShowcaseWebConsoleAppender" />
 <!-- 		<appender-ref ref="STDOUT" /> -->
+<!-- 		<appender-ref ref="FILE" /> -->
+<!-- 		<appender-ref ref="ShowcaseWebConsoleAppender" /> -->
 	</root>
 </configuration>
