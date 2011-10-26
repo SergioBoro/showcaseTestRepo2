@@ -5,7 +5,7 @@ import java.util.*;
 
 import org.slf4j.*;
 
-import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -77,6 +77,9 @@ public final class AppInitializer {
 				if (SHOWCASE_ROOTPATH_USERDATA_PARAM.equalsIgnoreCase(name)) {
 					String rootpath = paths.getProperty(name);
 					File dir = new File(rootpath);
+					if (!dir.exists()) {
+						throw new NoSuchRootPathUserDataException(rootpath);
+					}
 					String value;
 					for (String id : dir.list()) {
 						if (!ProductionModeInitializer.DIR_SVN.equalsIgnoreCase(id)) {

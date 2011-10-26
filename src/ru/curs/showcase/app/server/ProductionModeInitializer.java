@@ -90,6 +90,9 @@ public final class ProductionModeInitializer {
 			if (SHOWCASE_ROOTPATH_USERDATA_PARAM.equalsIgnoreCase(name)) {
 				String rootpath = sc.getInitParameter(name);
 				File dir = new File(rootpath);
+				if (!dir.exists()) {
+					throw new NoSuchRootPathUserDataException(rootpath);
+				}
 				String value;
 				for (String id : dir.list()) {
 					if (!DIR_SVN.equalsIgnoreCase(id)) {
