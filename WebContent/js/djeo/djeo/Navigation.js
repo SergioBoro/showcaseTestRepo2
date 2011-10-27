@@ -1,8 +1,8 @@
-dojo.provide("djeo.gfx.Navigation");
+dojo.provide("djeo.djeo.Navigation");
 
-dojo.require("djeo.gfx.Moveable");
+dojo.require("djeo.djeo.Moveable");
 
-dojo.declare("djeo.gfx.Navigation",null, {
+dojo.declare("djeo.djeo.Navigation",null, {
 
 	moveable: null,
 	wheelConnection: null,
@@ -10,7 +10,7 @@ dojo.declare("djeo.gfx.Navigation",null, {
 	enable: function(enable) {
 		if (enable === undefined) enable = true;
 		if (enable) {
-			this.moveable = new djeo.gfx.Moveable(this.map.engine.surface);
+			this.moveable = new djeo.djeo.Moveable(this.map.engine.surface);
 			if (dojox.gfx.renderer!="silverlight") this.enableZoom(true);
 		}
 		else {

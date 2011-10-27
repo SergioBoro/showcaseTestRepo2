@@ -1,16 +1,16 @@
-dojo.provide("djeo.gfx.Highlight");
+dojo.provide("djeo.djeo.Highlight");
 
-dojo.require("djeo.gfx.AnimatedControl");
-dojo.require("djeo.gfx.feature_interaction");
+dojo.require("djeo.djeo.AnimatedControl");
+dojo.require("djeo.djeo.feature_interaction");
 
 dojo.require("dojox.gfx.fx");
 
 (function(){
 
-var gg = djeo.gfx,
-	p = gg._pointed;
+var dd = djeo.djeo,
+	p = dd._pointed;
 
-dojo.declare("djeo.gfx.Highlight", djeo.gfx.AnimatedControl, {
+dojo.declare("djeo.djeo.Highlight", djeo.djeo.AnimatedControl, {
 	
 	highlightedFeature: null,
 	
@@ -50,7 +50,7 @@ dojo.declare("djeo.gfx.Highlight", djeo.gfx.AnimatedControl, {
 					feature: feature,
 					id: setTimeout(
 						dojo.hitch(this, this._onpointerout),
-						gg.onpointeroutDelay
+						dd.onpointeroutDelay
 					)
 				};
 			}

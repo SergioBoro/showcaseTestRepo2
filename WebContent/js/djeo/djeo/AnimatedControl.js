@@ -1,4 +1,4 @@
-dojo.provide("djeo.gfx.AnimatedControl");
+dojo.provide("djeo.djeo.AnimatedControl");
 
 dojo.require("dojo.fx.easing");
 
@@ -7,7 +7,7 @@ dojo.require("dojo.fx.easing");
 var DEFAULT_DURATION = 400,	// ms
 	DEFAULT_EASING   = dojo.fx.easing.backOut;
 
-dojo.declare("djeo.gfx.AnimatedControl", null, {
+dojo.declare("djeo.djeo.AnimatedControl", null, {
 	
 	constructor: function(kwArgs) {
 		dojo.mixin(this, kwArgs);

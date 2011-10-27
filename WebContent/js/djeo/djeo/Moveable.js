@@ -1,8 +1,8 @@
-dojo.provide("djeo.gfx.Moveable");
+dojo.provide("djeo.djeo.Moveable");
 
 dojo.require("dojox.gfx.Moveable");
 
-dojo.declare("djeo.gfx.Moveable", dojox.gfx.Moveable, {
+dojo.declare("djeo.djeo.Moveable", dojox.gfx.Moveable, {
 	onMove: function(/* dojox.gfx.Mover */ mover, /* Object */ shift){
 		// summary: called during every move notification,
 		//	should actually move the node, can be overwritten.

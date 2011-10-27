@@ -1,16 +1,17 @@
-dojo.provide("djeo.gfx.Placemark");
+dojo.provide("djeo.djeo.Placemark");
 
 dojo.require("djeo.common.Placemark");
 dojo.require("djeo.gfx");
 
 (function() {
 
-var g = djeo,
-	dx = g.gfx,
-	cp = g.common.Placemark,
-	s = g.styling;
+var d = djeo,
+	dx = d.gfx,
+	cp = d.common.Placemark,
+	s = d.styling,
+	matrix = dojox.gfx.matrix;
 
-dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
+dojo.declare("djeo.djeo.Placemark", cp, {
 	
 	multipleSymbolizers: true,
 	
@@ -125,13 +126,13 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 			size,
 			rScale,
 			scale = cp.getScale(calculatedStyle, specificStyle, specificShapeStyle),
-			transform = [dojox.gfx.matrix.translate(this.getX(coords[0]), this.getY(coords[1]))],
+			transform = [matrix.translate(this.getX(coords[0]), this.getY(coords[1]))],
 			applyTransform = true,
 			// if we alreade have a shape, we don't need to connect events: the events are already connected to the shape
 			connectEvents = !shape ? true : false;
 
 		if (shapeType) {
-			if (!g.shapes[shapeType]) shapeType = cp.defaultShapeType;
+			if (!d.shapes[shapeType]) shapeType = cp.defaultShapeType;
 			isVectorShape = true;
 		}
 		else if (src) isVectorShape = false;
@@ -154,11 +155,11 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 		}
 
 		if (isVectorShape) {
-			var shapeDef = g.shapes[shapeType],
+			var shapeDef = d.shapes[shapeType],
 				shapeSize = shapeType=="circle" ? 2 : Math.max(shapeDef.size[0], shapeDef.size[1]),
 				_scale = scale/this.lengthDenominator/shapeSize;
 
-			transform.push(dojox.gfx.matrix.scale(_scale*size[0], _scale*size[1]));
+			transform.push(matrix.scale(_scale*size[0], _scale*size[1]));
 
 			if (shapeType=="circle") {
 				if (shape && (shape.shape.type != "circle")) {
@@ -208,7 +209,7 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 				};
 			if (shape) shape.setShape(imageDef);
 			else shape = this.points.createImage(imageDef);
-			transform.push(dojox.gfx.matrix.scale(1/this.lengthDenominator*scale));
+			transform.push(matrix.scale(1/this.lengthDenominator*scale));
 		}
 		else if (shape) {
 			if (shape.shape.type != "image") {
@@ -217,7 +218,7 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 				//dx.applyStroke(shape, calculatedStyle, specificStyle, specificShapeStyle, shapeSize/Math.max(size[0], size[1])/scale);
 			}
 			if (rScale !== undefined) {
-				shape.applyRightTransform(dojox.gfx.matrix.scale(calculatedStyle.rScale));
+				shape.applyRightTransform(matrix.scale(calculatedStyle.rScale));
 				applyTransform = false;
 			}
 		}
@@ -228,7 +229,7 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 				var state = feature.state,
 					heading = state.orientation ? state.orientation.heading : state.heading;
 				if (heading !== undefined) {
-					transform.push(dojox.gfx.matrix.rotate(heading));
+					transform.push(matrix.rotate(heading));
 				}
 				shape.setTransform(transform);
 			}
@@ -390,7 +391,7 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 						y: y,
 						text: label
 					}).
-					setTransform(dojox.gfx.matrix.scaleAt(1/this.lengthDenominator, x, y ));
+					setTransform(matrix.scaleAt(1/this.lengthDenominator, x, y ));
 			}
 			else if (type == "Polygon" || type == "MultiPolygon") {
 				var center = djeo.util.center(feature),
@@ -402,7 +403,7 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 						text: label,
 						align: "middle"
 					}).
-					setTransform(dojox.gfx.matrix.scaleAt(1/this.lengthDenominator, x, y ));
+					setTransform(matrix.scaleAt(1/this.lengthDenominator, x, y ));
 			}
 			if (textShape) {
 				if (textStyle.fill) {
@@ -442,7 +443,7 @@ dojo.declare("djeo.gfx.Placemark", djeo.common.Placemark, {
 			deltaHeading = -oldHeading + heading;
 
 		dojo.forEach(baseShapes, function(shape){
-			shape.applyRightTransform(dojox.gfx.matrix.rotate(deltaHeading));
+			shape.applyRightTransform(matrix.rotate(deltaHeading));
 		}, this);
 	},
 	

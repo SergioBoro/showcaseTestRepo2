@@ -1,8 +1,8 @@
-dojo.provide("djeo.gfx.CoordArray");
+dojo.provide("djeo.djeo.CoordArray");
 
 (function() {
 
-dojo.declare("djeo.gfx.CoordArray", null, {
+dojo.declare("djeo.djeo.CoordArray", null, {
 	
 	constructor: function(kwArgs) {
 		dojo.mixin(this, kwArgs);

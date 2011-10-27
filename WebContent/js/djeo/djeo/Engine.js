@@ -1,14 +1,17 @@
-dojo.provide("djeo.gfx.Engine");
+dojo.provide("djeo.djeo.Engine");
 
 dojo.require("djeo.Engine");
 dojo.require("dojox.gfx");
-dojo.require("djeo.gfx.Placemark");
+dojo.require("djeo.djeo.Placemark");
 
 (function(){
 
-dojo.declare("djeo.gfx.Engine", djeo.Engine, {
+var gfx = dojox.gfx,
+	matrix = gfx.matrix;
+
+dojo.declare("djeo.djeo.Engine", djeo.Engine, {
 	
-	type: "gfx",
+	type: "djeo",
 	
 	correctionScale: 1000,
 	
@@ -22,7 +25,7 @@ dojo.declare("djeo.gfx.Engine", djeo.Engine, {
 	
 	constructor: function(kwArgs) {
 		// initialize basic factories
-		this._initBasicFactories(new djeo.gfx.Placemark({
+		this._initBasicFactories(new djeo.djeo.Placemark({
 			map: this.map,
 			engine: this
 		}));
@@ -30,7 +33,7 @@ dojo.declare("djeo.gfx.Engine", djeo.Engine, {
 	
 	initialize: function(/* Function */readyFunction) {
 		var map = this.map;
-		this.surface = dojox.gfx.createSurface(map.container, map.width, map.height);
+		this.surface = gfx.createSurface(map.container, map.width, map.height);
 		this.group = this.surface.createGroup();
 		
 		if (map.resizePoints !== undefined) this.resizePoints = map.resizePoints;
@@ -127,8 +130,8 @@ dojo.declare("djeo.gfx.Engine", djeo.Engine, {
 		if (this.correctScale) scale /= this.correctionScale;
 
 		this.group.setTransform([
-			dojox.gfx.matrix.scale(scale),
-			dojox.gfx.matrix.translate(-x1, -y2)
+			matrix.scale(scale),
+			matrix.translate(-x1, -y2)
 		]);
 		
 		if (oldScale != scale) {
@@ -150,10 +153,10 @@ dojo.declare("djeo.gfx.Engine", djeo.Engine, {
 
 		if (this.resizePoints && type == "Point") {
 			dojo.forEach(feature.baseShapes, function(shape){
-				shape.applyRightTransform(dojox.gfx.matrix.scale(scaleFactor));
+				shape.applyRightTransform(matrix.scale(scaleFactor));
 			});
 		}
-		else if ( dojox.gfx.renderer!="vml" && (
+		else if ( gfx.renderer!="vml" && (
 				(this.resizeLines && (type == "LineString" || type == "MultiLineString")) ||
 				(this.resizePolygons && (type == "Polygon" || type == "MultiPolygon")) )) {
 			dojo.forEach(feature.baseShapes, function(shape){
@@ -170,7 +173,7 @@ dojo.declare("djeo.gfx.Engine", djeo.Engine, {
 				center = djeo.util.center(feature),
 				x = factory.getX(center[0]),
 				y = factory.getY(center[1]);
-			feature.textShapes.applyRightTransform(dojox.gfx.matrix.scaleAt(scaleFactor, x, y));
+			feature.textShapes.applyRightTransform(matrix.scaleAt(scaleFactor, x, y));
 		}
 	}
 });
