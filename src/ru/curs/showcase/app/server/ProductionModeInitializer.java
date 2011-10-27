@@ -45,9 +45,6 @@ public final class ProductionModeInitializer {
 	private static final String CSS_READ = "Из CSS файла '" + SHOWCASE_DATA_GRID_CSS
 			+ "' cчитано значение " + HEADER_GAP_SELECTOR + " ." + WIDTH_PROP + " - %s";
 
-	/**
-	 * LOGGER.
-	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductionModeInitializer.class);
 
 	private ProductionModeInitializer() {

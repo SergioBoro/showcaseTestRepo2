@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
  * @author den
  * 
  */
-public class GeneralException extends Exception {
+public class GeneralException extends RuntimeException {
 
 	private static final String EXCEPTION_CLASS = "Класс ошибки: ";
 

@@ -28,28 +28,24 @@ public final class StateServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void service(final HttpServletRequest request, final HttpServletResponse response)
+	protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 		Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
 		CompositeContext context = new CompositeContext(params);
-		try {
-			String userAgent = ServletUtils.getUserAgent(request);
-			ServerStateGetCommand command = new ServerStateGetCommand(context);
-			ServerState serverState = command.execute();
-			ClientState sessionState = new ClientState(serverState, userAgent);
+		String userAgent = ServletUtils.getUserAgent(request);
+		ServerStateGetCommand command = new ServerStateGetCommand(context);
+		ServerState serverState = command.execute();
+		ClientState sessionState = new ClientState(serverState, userAgent);
 
-			response.setStatus(HttpServletResponse.SC_OK);
-			response.setContentType("text/xml");
-			response.setCharacterEncoding(TextUtils.DEF_ENCODING);
+		response.setStatus(HttpServletResponse.SC_OK);
+		response.setContentType("text/xml");
+		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
 
-			ObjectSerializer serializer = new XMLObjectSerializer();
-			String message = serializer.serialize(sessionState);
+		ObjectSerializer serializer = new XMLObjectSerializer();
+		String message = serializer.serialize(sessionState);
 
-			response.getWriter().append(message);
-			response.getWriter().close();
-		} catch (Exception e) {
-			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
-		}
+		response.getWriter().append(message);
+		response.getWriter().close();
 	}
 
 }

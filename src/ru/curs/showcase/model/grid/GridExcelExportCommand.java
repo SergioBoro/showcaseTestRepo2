@@ -7,7 +7,6 @@ import org.w3c.dom.Document;
 import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.command.*;
 import ru.curs.showcase.util.ExcelFile;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -57,7 +56,7 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 	}
 
 	@Override
-	protected void preProcess() throws GeneralException {
+	protected void preProcess() {
 		super.preProcess();
 
 		if (exportType == GridToExcelExportType.ALL) {

@@ -24,8 +24,7 @@
     
     <link rel="stylesheet" href="js/dijit/themes/claro/claro.css"/>
     
-<!--    <script src="https://www.google.com/jsapi?key=ABQIAAAA-DMAtggvLwlIYlUJiASaAxRQnCpeV9jusWIeBw0POFqU6SItGxRWZhddpS8pIkVUd2fDQhzwPUWmMA"></script>-->
-    <script type="text/javascript">
+   <script type="text/javascript">
         var dojoConfig = {
             parseOnLoad: false,
             isDebug: false,
@@ -34,18 +33,25 @@
         };
     </script>    
     <script src="js/dojo/dojo.js"></script>
-    
-<!--    <script>-->
-<!--      dojo.require("course.geo.ge.Engine");-->
-<!--    </script> -->
-    
     <script src="js/internalShowcase.js"></script>
     <script src="solutions/<%=userdataId%>/js/solution.js"></script>
     
     <script>
      var appContextPath="<%=request.getContextPath()%>";
-    </script>        
-    	
+    </script>
+            
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>    	
+<!--     <script src="http://api-maps.yandex.ru/1.1/index.xml?key=AJaOqU4BAAAA8T_COwQAykhZZqSHIqAuO0vpxvdbjcnz16UAAAAAAAAAAAAP611ZGZKbOp9grAH7YLJUZ8ORVg=="></script> -->
+    
+<!-- uncomment it if you plan to use Google Maps
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+-->
+<!-- uncomment it if you plan to use Google Earth browser plugin and copy your own key; apply for a key at http://code.google.com/apis/maps/signup.html
+<script src="https://www.google.com/jsapi?key=ABQIAAAA-DMAtggvLwlIYlUJiASaAxRQnCpeV9jusWIeBw0POFqU6SItGxRWZhddpS8pIkVUd2fDQhzwPUWmMA"></script>
+-->
+<!-- uncomment it if you plan to use Yandex Maps and copy your own key; apply for a key at http://api.yandex.ru/maps/form.xml
+<script src="http://api-maps.yandex.ru/1.1/index.xml?key=AMOPgE4BAAAA9Y-BUwMAonjZ5NBRJDj54c-cDVPzQcYlLNAAAAAAAAAAAACPSuKS9WyCiMuXm9An1ZKCx5Pk-A=="></script>
+-->    
 </head>
 <body class="claro">
 
@@ -64,6 +70,7 @@
 <script type="text/javascript" src="xsltforms/xsltforms.js">
 	/* */
 </script>
+
 <div id="target"></div>
 
 	<div id=showcaseHeaderContainer></div>

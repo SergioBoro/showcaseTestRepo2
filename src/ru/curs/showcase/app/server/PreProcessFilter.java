@@ -32,26 +32,24 @@ public class PreProcessFilter implements Filter {
 
 	/**
 	 * Выставляем кодировку UTF-8 у всех вызовов. Раньше на этом сыпался GWT,
-	 * сейчас все ок. (non-Javadoc)
-	 * 
-	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
-	 *      javax.servlet.ServletResponse, javax.servlet.FilterChain)
+	 * сейчас все ок. Обязательно перехватываем Throwable, чтобы на клиента не
+	 * шел HTML.
 	 */
 	@Override
-	public void doFilter(final ServletRequest req, final ServletResponse resp,
+	public void doFilter(final ServletRequest request, final ServletResponse response,
 			final FilterChain chain) throws IOException, ServletException {
-		if (req instanceof HttpServletRequest) {
-			HttpServletRequest httpreq = (HttpServletRequest) req;
-			if (isMainPage(httpreq)) {
-				initSession(httpreq); // TODO нужно ли
-			}
-			if (isDynamicDataServlet(httpreq)) {
-				skipServletCaching(resp);
-			}
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-			httpreq.setCharacterEncoding("UTF-8");
+		if (request instanceof HttpServletRequest) {
+			if (isMainPage(httpRequest)) {
+				initSession(httpRequest); // TODO нужно ли
+			}
+			if (isDynamicDataServlet(httpRequest)) {
+				skipServletCaching(response);
+			}
+			httpRequest.setCharacterEncoding("UTF-8");
 		}
-		chain.doFilter(req, resp);
+		chain.doFilter(request, response);
 		resetThread();
 	}
 

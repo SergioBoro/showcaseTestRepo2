@@ -7,7 +7,6 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.WebText;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.webtext.WebTextGetCommand;
 
 /**
@@ -19,10 +18,9 @@ import ru.curs.showcase.model.webtext.WebTextGetCommand;
 public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 	/**
 	 * Основной тест для проверки работы WebTextDBGateway.
-	 * 
 	 */
 	@Test
-	public void testGetData() throws GeneralException {
+	public void testGetData() {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "1");
 
@@ -37,10 +35,9 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Тест на выборку событий и действия по умолчанию из БД.
-	 * 
 	 */
 	@Test
-	public void testEventsAndDefAction() throws GeneralException {
+	public void testEventsAndDefAction() {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "3");
 		CompositeContext clonedContext = context.gwtClone();
@@ -73,11 +70,9 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Тест для случая, когда не задана хранимая процедура, возвращающая данные.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testGetStaticDataByXSLT() throws GeneralException {
+	public void testGetStaticDataByXSLT() {
 		DataPanelElementInfo el = new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
 		CompositeContext context = new CompositeContext();
 		el.setTransformName("bal_test.xsl");

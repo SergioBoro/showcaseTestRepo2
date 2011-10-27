@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.runtime.AppProps;
 
@@ -28,10 +27,9 @@ public final class FramesSLTest extends AbstractTest {
 	/**
 	 * Тест получения файла фрейма.
 	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testGetFramesInMainPage() throws GeneralException {
+	public void testGetFramesInMainPage() {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		MainPageGetCommand command = new MainPageGetCommand(context);
 		MainPage page = command.execute();
@@ -43,11 +41,9 @@ public final class FramesSLTest extends AbstractTest {
 
 	/**
 	 * Тест получения файла фрейма.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testGetFileFrameWelcomeAsFrame() throws GeneralException {
+	public void testGetFileFrameWelcomeAsFrame() {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		MainPageFrameGetCommand command =
 			new MainPageFrameGetCommand(context, MainPageFrameType.WELCOME);
@@ -57,11 +53,9 @@ public final class FramesSLTest extends AbstractTest {
 
 	/**
 	 * Тест получения кода фрейма из БД.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testGetDBFrameHeaderAsFrame() throws GeneralException {
+	public void testGetDBFrameHeaderAsFrame() {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		MainPageFrameGetCommand command =
 			new MainPageFrameGetCommand(context, MainPageFrameType.HEADER);
@@ -71,11 +65,9 @@ public final class FramesSLTest extends AbstractTest {
 
 	/**
 	 * Тест получения кода фрейма из БД.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testGetDBFrameFooterAsFrame() throws GeneralException {
+	public void testGetDBFrameFooterAsFrame() {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		MainPageFrameGetCommand command =
 			new MainPageFrameGetCommand(context, MainPageFrameType.FOOTER);
@@ -85,11 +77,9 @@ public final class FramesSLTest extends AbstractTest {
 
 	/**
 	 * Проверка чтения информации о главном окне из app.properties.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testReadMainPageInfoBySL() throws GeneralException {
+	public void testReadMainPageInfoBySL() {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		MainPageGetCommand command = new MainPageGetCommand(context);
 		MainPage mp = command.execute();

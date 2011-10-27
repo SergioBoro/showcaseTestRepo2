@@ -7,7 +7,6 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.chart.ChartGetCommand;
 
 /**
@@ -20,11 +19,9 @@ public class ChartSLTest extends AbstractTest {
 
 	/**
 	 * Проверка работы адаптера в JSON.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testAdaptChartForJS() throws GeneralException {
+	public void testAdaptChartForJS() {
 		CompositeContext context = getTestContext3();
 		DataPanelElementInfo element = getTestChartInfo();
 

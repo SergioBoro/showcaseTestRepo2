@@ -9,7 +9,6 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.navigator.Navigator;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.grid.GridGetCommand;
 import ru.curs.showcase.model.navigator.NavigatorGetCommand;
 import ru.curs.showcase.model.webtext.WebTextGetCommand;
@@ -22,7 +21,7 @@ import ru.curs.showcase.model.webtext.WebTextGetCommand;
  */
 public class ActionTabFinderSLTest extends AbstractTest {
 	@Test
-	public void testReadFirstTabForDBDPFromNavigatorDynSessionContext() throws GeneralException {
+	public void testReadFirstTabForDBDPFromNavigatorDynSessionContext() {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
 		NavigatorGetCommand command = new NavigatorGetCommand(context);
@@ -33,7 +32,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testReadFirstTabFromDBFromEventDynMain() throws GeneralException {
+	public void testReadFirstTabFromDBFromEventDynMain() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.WEBTEXT);
 		elInfo.setProcName("webtext_dyn_dp_main");
@@ -46,7 +45,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testReadFirstTabFromDBFromEventDynSession() throws GeneralException {
+	public void testReadFirstTabFromDBFromEventDynSession() {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.WEBTEXT);
@@ -60,7 +59,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testReadFirstTabFromDBFromSettingsDynMain() throws GeneralException {
+	public void testReadFirstTabFromDBFromSettingsDynMain() {
 		GridContext context = GridContext.createFirstLoadDefault();
 		context.apply(getTestContext1());
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);
@@ -74,7 +73,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testReadFirstTabFromDBFromSettingsDynSession() throws GeneralException {
+	public void testReadFirstTabFromDBFromSettingsDynSession() {
 		GridContext context = GridContext.createFirstLoadDefault();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);

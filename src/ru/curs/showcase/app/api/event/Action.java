@@ -564,4 +564,10 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 		}
 		return false;
 	}
+
+	public void setMainContext(final String data) {
+		for (ContainingContext el : getContainingContextChilds()) {
+			el.getContext().setMain(data);
+		}
+	}
 }

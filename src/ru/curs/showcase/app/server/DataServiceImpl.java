@@ -27,6 +27,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * сервисного слоя приложения.
  */
 @SuppressWarnings("serial")
+// CHECKSTYLE:OFF
 public class DataServiceImpl extends RemoteServiceServlet implements DataService {
 
 	@Override

@@ -20,10 +20,9 @@ public class ActionAndContextSLTest extends AbstractTest {
 	/**
 	 * Проверка выполнения действия на сервере.
 	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testServerActivityExec() throws GeneralException {
+	public void testServerActivityExec() {
 		final int actionNumber = 1;
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		ExecServerActionCommand command = new ExecServerActionCommand(action);
@@ -34,10 +33,9 @@ public class ActionAndContextSLTest extends AbstractTest {
 	/**
 	 * Проверка выполнения действия на сервере, приводящего к ошибке.
 	 * 
-	 * @throws GeneralException
 	 */
 	@Test(expected = GeneralException.class)
-	public void testServerActivityExecFail() throws GeneralException {
+	public void testServerActivityExecFail() {
 		final int actionNumber = 2;
 		AppInfoSingleton.getAppInfo().setCurUserDataId("test1");
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);

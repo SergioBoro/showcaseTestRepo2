@@ -30,7 +30,7 @@ public class GridSLTest extends AbstractTest {
 	 * Основной тест для фабрики гридов.
 	 */
 	@Test
-	public void testGetData() throws GeneralException {
+	public void testGetData() {
 		final int colCount = 26;
 		final int pagesCount = 6;
 		final int pageSize = 15;
@@ -99,7 +99,7 @@ public class GridSLTest extends AbstractTest {
 	 * Тест на обновление грида с измененными параметрами постраничной выборки.
 	 */
 	@Test
-	public void testWithRequestedSettings() throws GeneralException {
+	public void testWithRequestedSettings() {
 		final int maxColIndex = 5;
 		final int pageSize = 5;
 		final int pageNum = 10;
@@ -137,11 +137,9 @@ public class GridSLTest extends AbstractTest {
 
 	/**
 	 * Проверка работы опции fireGeneralAndConcreteEvents у грида.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testFireGeneralAndConcreteEvents() throws GeneralException {
+	public void testFireGeneralAndConcreteEvents() {
 		GridContext context = getTestGridContext1();
 		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "8", "83");
 
@@ -160,7 +158,7 @@ public class GridSLTest extends AbstractTest {
 	 * Проверка получения грида через SL с помощью 2-х процедур.
 	 */
 	@Test
-	public void test2StepGridLoadBySL() throws GeneralException {
+	public void test2StepGridLoadBySL() {
 		GridContext context = getTestGridContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 
@@ -177,7 +175,7 @@ public class GridSLTest extends AbstractTest {
 	 * Проверка получения грида через SL с помощью 2-х процедур.
 	 */
 	@Test
-	public void test2StepGridLoadBySLWhenUpdate() throws GeneralException {
+	public void test2StepGridLoadBySLWhenUpdate() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 
@@ -216,7 +214,7 @@ public class GridSLTest extends AbstractTest {
 	 * Проверка получения грида через SL с помощью 2-х процедур.
 	 */
 	@Test
-	public void test2StepGridLoadBySLWhenUpdateVar2() throws GeneralException {
+	public void test2StepGridLoadBySLWhenUpdateVar2() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 
@@ -252,7 +250,7 @@ public class GridSLTest extends AbstractTest {
 	 * несуществующих данных.
 	 */
 	@Test
-	public void test2StepGridLoadBySLWhenUpdateOutOfBounds() throws GeneralException {
+	public void test2StepGridLoadBySLWhenUpdateOutOfBounds() {
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 
 		final int pageSize = 100;
@@ -286,7 +284,7 @@ public class GridSLTest extends AbstractTest {
 	 * несуществующих данных.
 	 */
 	@Test
-	public void test1StepGridLoadBySLWhenUpdateOutOfBounds() throws GeneralException {
+	public void test1StepGridLoadBySLWhenUpdateOutOfBounds() {
 		DataPanelElementInfo elInfo = getTestGridInfo();
 		final int pageSize = 100;
 		final int pageNumber = 200;
@@ -310,7 +308,7 @@ public class GridSLTest extends AbstractTest {
 	 * обновлением.
 	 */
 	@Test
-	public void test1StepGridLoadAndUpdate() throws GeneralException {
+	public void test1StepGridLoadAndUpdate() {
 		GridContext context = getTestGridContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo();
 
@@ -381,7 +379,7 @@ public class GridSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testGridNoEventsAndDefAction() throws GeneralException {
+	public void testGridNoEventsAndDefAction() {
 		GridContext context = getTestGridContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo();
 		elInfo.setProcName("grid_bal_noevents");

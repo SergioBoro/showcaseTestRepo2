@@ -11,7 +11,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.xform.XFormUploadCommand;
 import ru.curs.showcase.util.*;
 
@@ -49,7 +48,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 	private final List<UploadingFile> files = new ArrayList<UploadingFile>();
 
 	@Override
-	protected void processFiles() throws GeneralException {
+	protected void processFiles() {
 		for (UploadingFile item : files) {
 			XFormUploadCommand command =
 				new XFormUploadCommand(getContext(), getElementInfo(), item.linkId, item.file);

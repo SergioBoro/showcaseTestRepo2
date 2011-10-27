@@ -22,24 +22,19 @@ public final class MainPageFramesFrontController extends HttpServlet {
 	private static final long serialVersionUID = 7991801050316249555L;
 
 	@Override
-	protected void service(final HttpServletRequest request, final HttpServletResponse response)
+	protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
-			String servlet = request.getServletPath();
-			servlet =
-				servlet.replace("/" + ExchangeConstants.SECURED_SERVLET_PREFIX + "/", "")
-						.toUpperCase();
-			MainPageFrameType type = MainPageFrameType.valueOf(servlet);
-			Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
-			CompositeContext context = new CompositeContext(params);
-			MainPageFrameGetCommand command =
-				new MainPageFrameGetCommand(context, type);
-			String html = command.execute();
-			response.setStatus(HttpServletResponse.SC_OK);
-			ServletUtils.makeResponseFromString(response, html);
-		} catch (Exception e) {
-			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
-		}
+		String servlet = request.getServletPath();
+		servlet =
+			servlet.replace("/" + ExchangeConstants.SECURED_SERVLET_PREFIX + "/", "")
+					.toUpperCase();
+		MainPageFrameType type = MainPageFrameType.valueOf(servlet);
+		Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
+		CompositeContext context = new CompositeContext(params);
+		MainPageFrameGetCommand command = new MainPageFrameGetCommand(context, type);
+		String html = command.execute();
+		response.setStatus(HttpServletResponse.SC_OK);
+		ServletUtils.makeResponseFromString(response, html);
 	}
 
 }

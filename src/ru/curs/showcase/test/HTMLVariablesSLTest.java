@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.runtime.*;
 
@@ -21,11 +20,9 @@ public class HTMLVariablesSLTest extends AbstractTest {
 
 	/**
 	 * Проверка переменных в коде фреймов главной страницы.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testFramesVariables() throws GeneralException {
+	public void testFramesVariables() {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		MainPageGetCommand command = new MainPageGetCommand(context);
 		MainPage page = command.execute();

@@ -78,12 +78,18 @@
           <datapanel type="1003.xml" tab="firstOrCurrent" />
         </action>
       </level2>   
-      <level2 id="1101" name="11-й этап, 1 неделя" selectOnLoad="true">
+      <level2 id="1101" name="11-й этап, 1 неделя" selectOnLoad="false">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
           <datapanel type="1101.xml" tab="firstOrCurrent" />
         </action>
-      </level2>                   
+      </level2>   
+      <level2 id="1102" name="11-й этап, 2 неделя" selectOnLoad="true">
+        <action>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
+          <datapanel type="1102.xml" tab="firstOrCurrent" />
+        </action>
+      </level2>                         
     </level1>    
   </group>
   <group id="1" name="Балансы продовольственных ресурсов">

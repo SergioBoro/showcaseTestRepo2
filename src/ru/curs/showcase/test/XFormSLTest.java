@@ -9,7 +9,6 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.util.*;
 
@@ -25,10 +24,9 @@ public class XFormSLTest extends AbstractTest {
 
 	/**
 	 * Тест функции получения XForms из сервисного уровня.
-	 * 
 	 */
 	@Test
-	public void testServiceLayer() throws GeneralException {
+	public void testServiceLayer() {
 		XFormContext xcontext = new XFormContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms1Info();
 
@@ -55,7 +53,7 @@ public class XFormSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testSaveXForms() throws GeneralException {
+	public void testSaveXForms() {
 		String data =
 			"<schema xmlns=\"\"><info><name/><growth/><eyescolour/><music/><comment/></info></schema>";
 		XFormContext xcontext = new XFormContext(getTestContext1());
@@ -67,11 +65,9 @@ public class XFormSLTest extends AbstractTest {
 
 	/**
 	 * Функция тестирования работы SQL Submission через ServiceLayer.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testSQLSubmissionBySL() throws GeneralException {
+	public void testSQLSubmissionBySL() {
 		String data = TEST_DATA_TAG;
 		XFormContext context = new XFormContext();
 		context.setFormData(data);
@@ -85,11 +81,9 @@ public class XFormSLTest extends AbstractTest {
 	/**
 	 * Функция тестирования работы SQL Submission через ServiceLayer c передачей
 	 * null в параметре content.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testSQLSubmissionBySLWithNullData() throws GeneralException {
+	public void testSQLSubmissionBySLWithNullData() {
 		String content = null;
 		XFormContext context = new XFormContext();
 		context.setFormData(content);
@@ -102,11 +96,9 @@ public class XFormSLTest extends AbstractTest {
 
 	/**
 	 * Функция тестирования работы XSLT Submission через ServiceLayer.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testXSLTSubmissionBySL() throws GeneralException {
+	public void testXSLTSubmissionBySL() {
 		String data = TEST_DATA_TAG;
 		XFormContext context = new XFormContext();
 		context.setFormData(data);
@@ -119,11 +111,9 @@ public class XFormSLTest extends AbstractTest {
 
 	/**
 	 * Проверка скачивания файла для XForms через ServiceLayer.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testXFormsFileDownloadBySL() throws GeneralException {
+	public void testXFormsFileDownloadBySL() {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc4";
@@ -138,11 +128,10 @@ public class XFormSLTest extends AbstractTest {
 	/**
 	 * Проверка закачивания файла из XForms через ServiceLayer.
 	 * 
-	 * @throws GeneralException
 	 * @throws IOException
 	 */
 	@Test
-	public void testXFormsFileUploadBySL() throws GeneralException, IOException {
+	public void testXFormsFileUploadBySL() throws IOException {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc5";
@@ -157,10 +146,9 @@ public class XFormSLTest extends AbstractTest {
 	 * Проверка загрузки на сервер правильного XML.
 	 * 
 	 * @throws IOException
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testXFormsXMLUploadGood() throws IOException, GeneralException {
+	public void testXFormsXMLUploadGood() throws IOException {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc7";
@@ -173,11 +161,9 @@ public class XFormSLTest extends AbstractTest {
 
 	/**
 	 * Проверка скачивания XML файла для XForms через ServiceLayer.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testXFormsXMLDownloadGood() throws GeneralException {
+	public void testXFormsXMLDownloadGood() {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc6";

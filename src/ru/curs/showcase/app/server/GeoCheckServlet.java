@@ -17,9 +17,6 @@ import ru.curs.showcase.util.*;
  */
 public class GeoCheckServlet extends HttpServlet {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 2507880112801078333L;
 
 	@Override

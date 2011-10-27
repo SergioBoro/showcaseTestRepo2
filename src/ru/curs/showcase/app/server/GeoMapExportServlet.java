@@ -41,14 +41,15 @@ public class GeoMapExportServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void service(final HttpServletRequest request, final HttpServletResponse response)
+	protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
+		GeoMapExportSettings settings = null;
+		ImageFormat imageFormat = null;
+		String svg = null;
+
 		try {
 			ServletFileUpload upload = new ServletFileUpload();
 			FileItemIterator iterator = upload.getItemIterator(request);
-			GeoMapExportSettings settings = null;
-			ImageFormat imageFormat = null;
-			String svg = null;
 			while (iterator.hasNext()) {
 				FileItemStream item = iterator.next();
 				String name = item.getFieldName();
@@ -66,44 +67,43 @@ public class GeoMapExportServlet extends HttpServlet {
 					svg = paramValue;
 				}
 			}
-
-			String fileName = settings.getFileName() + "." + imageFormat.toString().toLowerCase();
-
-			response.setHeader("Content-Disposition",
-					String.format("attachment; filename=\"%s\"", fileName));
-
-			Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
-			params.remove(GeoMapExportSettings.class.getName());
-			params.remove(SVG_DATA_PARAM);
-			params.remove(ImageFormat.class.getName());
-			CompositeContext context = new CompositeContext(params);
-
-			switch (imageFormat) {
-			case PNG:
-				SVGConvertor convertor = new SVGConvertor(settings);
-				ByteArrayOutputStream os = convertor.svgStringToPNG(svg);
-
-				response.setContentType("image/png");
-				writeStreamToResponse(response, os);
-				break;
-			case JPG:
-				convertor = new SVGConvertor(settings);
-				os = convertor.svgStringToJPEG(svg);
-
-				response.setContentType("image/jpg");
-				writeStreamToResponse(response, os);
-				break;
-			case SVG:
-				SVGGetCommand command = new SVGGetCommand(context, settings, imageFormat, svg);
-				response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-				response.setContentType("application/svg+xml");
-				response.getWriter().append(command.execute());
-				break;
-			default:
-				break;
-			}
 		} catch (Exception e) {
 			throw new ServletException(e);
+		}
+		String fileName = settings.getFileName() + "." + imageFormat.toString().toLowerCase();
+
+		response.setHeader("Content-Disposition",
+				String.format("attachment; filename=\"%s\"", fileName));
+
+		Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
+		params.remove(GeoMapExportSettings.class.getName());
+		params.remove(SVG_DATA_PARAM);
+		params.remove(ImageFormat.class.getName());
+		CompositeContext context = new CompositeContext(params);
+
+		switch (imageFormat) {
+		case PNG:
+			SVGConvertor convertor = new SVGConvertor(settings);
+			ByteArrayOutputStream os = convertor.svgStringToPNG(svg);
+
+			response.setContentType("image/png");
+			writeStreamToResponse(response, os);
+			break;
+		case JPG:
+			convertor = new SVGConvertor(settings);
+			os = convertor.svgStringToJPEG(svg);
+
+			response.setContentType("image/jpg");
+			writeStreamToResponse(response, os);
+			break;
+		case SVG:
+			SVGGetCommand command = new SVGGetCommand(context, settings, imageFormat, svg);
+			response.setCharacterEncoding(TextUtils.DEF_ENCODING);
+			response.setContentType("application/svg+xml");
+			response.getWriter().append(command.execute());
+			break;
+		default:
+			break;
 		}
 	}
 

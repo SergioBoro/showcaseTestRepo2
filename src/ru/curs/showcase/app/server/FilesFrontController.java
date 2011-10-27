@@ -23,30 +23,25 @@ public final class FilesFrontController extends HttpServlet {
 	@Override
 	protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
-			String servlet = request.getServletPath();
-			servlet =
-				servlet.replace("/" + ExchangeConstants.SECURED_SERVLET_PREFIX + "/", "")
-						.toUpperCase();
-			FilesFrontControllerAction action = FilesFrontControllerAction.valueOf(servlet);
-			AbstractFilesHandler handler = null;
-			switch (action) {
-			case DOWNLOAD:
-				handler = new DownloadHandler();
-				break;
-			case GRIDTOEXCEL:
-				handler = new GridToExcelHandler();
-				break;
-			case UPLOAD:
-				handler = new UploadHandler();
-				break;
-			default:
-				ServletUtils.fillErrorResponce(response, UNKNOWN_COMMAND_ERROR);
-			}
-			handler.handle(request, response);
-		} catch (Exception e) {
-			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
+		String servlet = request.getServletPath();
+		servlet =
+			servlet.replace("/" + ExchangeConstants.SECURED_SERVLET_PREFIX + "/", "")
+					.toUpperCase();
+		FilesFrontControllerAction action = FilesFrontControllerAction.valueOf(servlet);
+		AbstractFilesHandler handler = null;
+		switch (action) {
+		case DOWNLOAD:
+			handler = new DownloadHandler();
+			break;
+		case GRIDTOEXCEL:
+			handler = new GridToExcelHandler();
+			break;
+		case UPLOAD:
+			handler = new UploadHandler();
+			break;
+		default:
+			ServletUtils.fillErrorResponce(response, UNKNOWN_COMMAND_ERROR);
 		}
-
+		handler.handle(request, response);
 	}
 }

@@ -1,4 +1,4 @@
-dojo.provide("solution.test");
+dojo.provide("solution.russia_gm");
 
 dojo.require("djeo.Map");
 
@@ -9,8 +9,8 @@ dojo.require("djeo.control.Highlight");
 dojo.require("djeo.control.Tooltip");
 dojo.require("djeo.widget.Legend");
 
-//dojo.require("kurs.data.russia_geometriesEpsg4326");
-dojo.require("courseApp.data.geo.russia_geometries");
+dojo.require("courseApp.data.geo.russia_geometriesEpsg4326");
+//dojo.require("courseApp.data.geo.russia_geometries");
 
 dojo.require("djeo.util.numeric");
 dojo.require("djeo.util.colorbrewer");
@@ -21,9 +21,10 @@ dojo.require("djeo.util.proj4js.aea");
 dojo.require("djeo.projection");
 djeo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=0 +lon_0=105 +x_0=18500000 +y_0=0 +ellps=krass +units=m +towgs84=28,-130,-95,0,0,0,0 +no_defs");
 
+
 (function() {
 
-	solution.test.make = function(mapNode, legendNode, data) {
+	solution.russia_gm.make = function(mapNode, legendNode, data) {
 	var map, legend;
 	var mapStyle = {
 		id: "populationDensity",
@@ -50,14 +51,14 @@ djeo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=
 	
 	if (!data.geometries) data.geometries = courseApp.data.geo.russiaGeometries;
 	if (!data.style) data.style = mapStyle;
-	
+
 //	Supported mapping engines (replace the value for djeoEngine parameter)
 //	djeo native mapping engine - djeoEngine:'djeo'
 //	Google Maps API - djeoEngine:'gmaps'
 //	Google Earth API - djeoEngine:'ge'
-//	Yandex Maps API - djeoEngine:'ymaps'	
-	data.engine = "djeo";
+//	Yandex Maps API - djeoEngine:'ymaps'
 	
+	data.engine = "gmaps";
 	map = new djeo.Map(mapNode, data);
 
 	map.ready(function(){
@@ -71,3 +72,6 @@ djeo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=
 }
 
 }());
+
+
+//o.projection = "RUSSIA-ALBERS";

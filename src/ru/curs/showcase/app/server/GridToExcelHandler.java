@@ -7,7 +7,6 @@ import org.apache.commons.fileupload.FileUploadException;
 import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.grid.GridExcelExportCommand;
 
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -41,7 +40,7 @@ public class GridToExcelHandler extends AbstractDownloadHandler {
 	}
 
 	@Override
-	protected void processFiles() throws GeneralException {
+	protected void processFiles() {
 		GridExcelExportCommand command =
 			new GridExcelExportCommand(getContext(), getElementInfo(), exportType, columnSet);
 		setOutputFile(command.execute());

@@ -137,7 +137,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 	 */
 	public native void setCollbackJSNIFunction() /*-{
 		$wnd.gwtWebTextFunc = 
-		@ru.curs.showcase.app.client.api.WebTextPanelCallbacksEvents::webTextPanelClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+		@ru.curs.showcase.app.client.api.WebTextPanelCallbacksEvents::webTextPanelClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 	}-*/;
 
 	// CHECKSTYLE:ON

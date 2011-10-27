@@ -1,0 +1,48 @@
+package ru.curs.showcase.app.server;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+
+import org.aspectj.lang.annotation.*;
+import org.slf4j.*;
+
+import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.util.ServletUtils;
+import ru.curs.showcase.util.exception.BaseException;
+
+/**
+ * Перехватчик для исключений при вызове сервлетов.
+ * 
+ * @author den
+ * 
+ */
+@Aspect
+public final class ServletExceptionInterceptor {
+
+	private static final String ERROR_MES = "Сообщение об ошибке";
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ServletExceptionInterceptor.class);
+
+	@Before("args(req, resp) && execution(protected void javax.servlet.http.HttpServlet.do*(..))")
+	public void logInput(final HttpServletRequest req, final HttpServletResponse resp) {
+		// TODO
+	}
+
+	@AfterThrowing(
+			pointcut = "args(request, response) && execution(protected void javax.servlet.http.HttpServlet.do*(..))",
+			throwing = "e")
+	public
+			void logException(final HttpServletRequest request,
+					final HttpServletResponse response, final Throwable e) throws IOException {
+		Throwable exc = e;
+		if ((exc instanceof ServletException) && (exc.getCause() != null)) {
+			exc = exc.getCause();
+		}
+		if (!(exc instanceof GeneralException) && !(exc instanceof BaseException)) {
+			LOGGER.error(ERROR_MES, exc);
+		}
+		ServletUtils.fillErrorResponce(response, exc.getLocalizedMessage());
+	}
+}

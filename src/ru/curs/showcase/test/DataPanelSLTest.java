@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.datapanel.DataPanelGetCommand;
 
 /**
@@ -18,7 +17,7 @@ import ru.curs.showcase.model.datapanel.DataPanelGetCommand;
 public class DataPanelSLTest extends AbstractTest {
 
 	@Test
-	public void testBySLFromFile() throws GeneralException {
+	public void testBySLFromFile() {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
 		action.setContext(CompositeContext.createCurrent());
 		DataPanelLink dpLink = new DataPanelLink();
@@ -37,7 +36,7 @@ public class DataPanelSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testBySLFromDB() throws GeneralException {
+	public void testBySLFromDB() {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
 		action.setContext(CompositeContext.createCurrent());
 		DataPanelLink dpLink = new DataPanelLink();

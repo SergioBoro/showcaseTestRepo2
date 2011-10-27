@@ -8,6 +8,7 @@ import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.xform.*;
 import ru.curs.showcase.util.ServletUtils;
 
@@ -29,7 +30,6 @@ public class XFormXSLTransformServlet extends HttpServlet {
 	@Override
 	protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
-
 		String xsltFile = request.getParameter(XSLTFILE_PARAM);
 		if (xsltFile == null) {
 			throw new ServletException(XSLTFILE_PARAM_ERROR);
@@ -41,15 +41,12 @@ public class XFormXSLTransformServlet extends HttpServlet {
 		XFormContext context = new XFormContext(params, content);
 		DataPanelElementInfo elInfo = XFormInfoFactory.generateXFormsTransformationInfo(xsltFile);
 
-		try {
-			XFormXSLTransformCommand command = new XFormXSLTransformCommand(context, elInfo);
-			String res = command.execute();
-			response.setStatus(HttpServletResponse.SC_OK);
-			ServletUtils.makeResponseFromString(response, res);
-		} catch (Exception e) {
-			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
-		}
+		XFormXSLTransformCommand command = new XFormXSLTransformCommand(context, elInfo);
+		String res = command.execute();
 
+		response.setStatus(HttpServletResponse.SC_OK);
+		ServletUtils.makeResponseFromString(response, res);
+		throw new GeneralException(new Exception("error"), "error");
 	}
 
 }

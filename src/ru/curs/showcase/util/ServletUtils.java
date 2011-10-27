@@ -5,6 +5,8 @@ import java.util.*;
 
 import javax.servlet.http.*;
 
+import org.slf4j.*;
+
 /**
  * Вспомогательные функции для работы с сервлетами.
  * 
@@ -13,10 +15,14 @@ import javax.servlet.http.*;
  */
 public final class ServletUtils {
 
+	private static final String CANT_WRITE_RESPONSE_ERROR = "Невозможно вернуть ошибку в HTTP response";
+
 	/**
 	 * Идентификатор сессии для модульных тестов.
 	 */
 	public static final String TEST_SESSION = "testSession";
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServletUtils.class);
 
 	private ServletUtils() {
 		throw new UnsupportedOperationException();
@@ -61,10 +67,14 @@ public final class ServletUtils {
 	 */
 	public static void fillErrorResponce(final HttpServletResponse response, final String message)
 			throws IOException {
-		response.reset();
-		doNoCasheResponse(response);
-		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		makeResponseFromString(response, message);
+		if (!response.isCommitted()) {
+			response.reset();
+			doNoCasheResponse(response);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			makeResponseFromString(response, message);
+		} else {
+			LOGGER.warn(CANT_WRITE_RESPONSE_ERROR);
+		}
 	}
 
 	/**

@@ -354,11 +354,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	/**
 	 * Проверяет на отсутствие ошибки при передаче в БД "правильного" параметра
 	 * userdata в sessionContext.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testForUserDataToGridProcSuccessfull() throws GeneralException {
+	public void testForUserDataToGridProcSuccessfull() {
 		GridContext context = getTestGridContext1();
 		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);
 		dpei.setProcName("grid_by_userdata");
@@ -375,7 +373,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 * @throws GeneralException
 	 */
 	@Test(expected = GeneralException.class)
-	public void testForUserDataToGridProcFault() throws GeneralException {
+	public void testForUserDataToGridProcFault() {
 		GridContext context = getTestGridContext1();
 		context.setSessionParamsMap(generateTestURLParamsForSL("test1"));
 		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);

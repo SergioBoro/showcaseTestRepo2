@@ -16,6 +16,7 @@ import com.google.gwt.user.client.rpc.*;
  * Основной GWT-RPC интерфейс для приложения. Основное назначение - передача
  * данных для отображения в UI.
  */
+// CHECKSTYLE:OFF
 @RemoteServiceRelativePath("data")
 public interface DataService extends RemoteService {
 	/**

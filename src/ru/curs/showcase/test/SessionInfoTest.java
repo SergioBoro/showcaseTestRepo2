@@ -14,7 +14,6 @@ import org.xml.sax.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.chart.ChartGetCommand;
 import ru.curs.showcase.model.command.ServerStateGetCommand;
 import ru.curs.showcase.model.datapanel.DataPanelGetCommand;
@@ -36,7 +35,6 @@ public class SessionInfoTest extends AbstractTest {
 	private static final String TEMP_PASS = "pass";
 	private static final String FAKE_SESSION_ID = "fake-session-id";
 	private static final String NOT_EXIST_USERDATA_ID = "test123";
-	private static final String TEST_SESSION = "testSession";
 
 	/**
 	 * Простой тест на установку текущего userdataId.
@@ -54,8 +52,8 @@ public class SessionInfoTest extends AbstractTest {
 	@Test
 	public void testSessionUtilsFunctions() {
 		assertEquals("", SessionUtils.getCurrentSessionUserName());
-		assertEquals(TEST_SESSION, SessionUtils.getCurrentSessionId());
-		assertNull(SessionUtils.getCurrentUserSID());
+		assertEquals(SessionUtils.TEST_SESSION, SessionUtils.getCurrentSessionId());
+		assertEquals(SessionUtils.TEST_SID, SessionUtils.getCurrentUserSID());
 	}
 
 	/**
@@ -73,11 +71,10 @@ public class SessionInfoTest extends AbstractTest {
 	 * Базовый тест на запись и чтение URLParams.
 	 * 
 	 * @throws IOException
-	 * @throws GeneralException
 	 * @throws SAXException
 	 */
 	@Test
-	public void testSessionInfoForGetChart() throws IOException, GeneralException, SAXException {
+	public void testSessionInfoForGetChart() throws IOException, SAXException {
 		Map<String, List<String>> params = generateTestURLParams(TEST1_USERDATA);
 
 		AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(FAKE_SESSION_ID,
@@ -147,11 +144,10 @@ public class SessionInfoTest extends AbstractTest {
 	 * Проверка установки информации о сессии для функции получения инф. панели.
 	 * 
 	 * @throws IOException
-	 * @throws GeneralException
 	 * @throws SAXException
 	 */
 	@Test
-	public void testSessionInfoForGetDP() throws IOException, GeneralException, SAXException {
+	public void testSessionInfoForGetDP() throws IOException, SAXException {
 		Map<String, List<String>> params = generateTestURLParams(TEST1_USERDATA);
 		final int elID = 5;
 		Action action = getAction(TREE_MULTILEVEL_XML, 0, elID);
@@ -168,11 +164,10 @@ public class SessionInfoTest extends AbstractTest {
 	 * Проверка считывания информации о сессии, если userdata не задана.
 	 * 
 	 * @throws IOException
-	 * @throws GeneralException
 	 * @throws SAXException
 	 */
 	@Test
-	public void testWriteAndReadIfNoURLParams() throws IOException, GeneralException, SAXException {
+	public void testWriteAndReadIfNoURLParams() throws IOException, SAXException {
 		Map<String, List<String>> params = new TreeMap<String, List<String>>();
 		CompositeContext context = getTestContext3();
 		context.addSessionParams(params);
@@ -234,11 +229,9 @@ public class SessionInfoTest extends AbstractTest {
 
 	/**
 	 * Проверка вызова функции getServerCurrentState.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testGetServerCurrentState() throws GeneralException {
+	public void testGetServerCurrentState() {
 		CompositeContext context = new CompositeContext();
 		ServerStateGetCommand command = new ServerStateGetCommand(context);
 		ServerState scs = command.execute();

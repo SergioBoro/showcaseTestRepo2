@@ -9,7 +9,6 @@ import ru.curs.gwt.datagrid.model.GridValueType;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.util.ExcelFile;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
@@ -23,11 +22,9 @@ import ru.curs.showcase.util.xml.GeneralXMLHelper;
 public class GridExportToExcelSLTest extends AbstractTest {
 	/**
 	 * Тест экспорта данных из текущей страницы.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testExportCurrentPage() throws GeneralException {
+	public void testExportCurrentPage() {
 		GridContext context = getTestGridContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 
@@ -70,11 +67,9 @@ public class GridExportToExcelSLTest extends AbstractTest {
 
 	/**
 	 * Тест экспорта всех страниц используя ServiceLayer.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testServiceForExportAll() throws GeneralException {
+	public void testServiceForExportAll() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 		GridContext gc = new GridContext(context);
@@ -90,11 +85,9 @@ public class GridExportToExcelSLTest extends AbstractTest {
 
 	/**
 	 * Тест экспорта текущей страницы используя ServiceLayer.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testServiceForExportCurrent() throws GeneralException {
+	public void testServiceForExportCurrent() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 		GridContext gc = new GridContext(context);

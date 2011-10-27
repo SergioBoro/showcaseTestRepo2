@@ -8,7 +8,6 @@ import org.apache.commons.fileupload.FileUploadException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.command.GeneralExceptionFactory;
 
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -46,10 +45,8 @@ public abstract class AbstractFilesHandler {
 	 *            - запрос.
 	 * @param aResponse
 	 *            - ответ.
-	 * @throws GeneralException
 	 */
-	public void handle(final HttpServletRequest aRequest, final HttpServletResponse aResponse)
-			throws GeneralException {
+	public void handle(final HttpServletRequest aRequest, final HttpServletResponse aResponse) {
 		request = aRequest;
 		response = aResponse;
 
@@ -65,7 +62,7 @@ public abstract class AbstractFilesHandler {
 	}
 
 	private void handleTemplateMethod() throws SerializationException, IOException,
-			GeneralException, FileUploadException {
+			FileUploadException {
 		getParams();
 		processFiles();
 		fillResponse();
@@ -92,9 +89,8 @@ public abstract class AbstractFilesHandler {
 	/**
 	 * Функция получения файла.
 	 * 
-	 * @throws GeneralException
 	 */
-	protected abstract void processFiles() throws GeneralException;
+	protected abstract void processFiles();
 
 	/**
 	 * Функция десериализации объекта, переданного в теле запроса.

@@ -8,7 +8,6 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.GeoMap;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.geomap.GeoMapGetCommand;
 
 /**
@@ -22,11 +21,9 @@ public class GeoMapSLTest extends AbstractTest {
 	/**
 	 * Тест на проверку статических свойств карты, созданной на основе данных из
 	 * БД.
-	 * 
-	 * @throws GeneralException
 	 */
 	@Test
-	public void testFromDBStaticData() throws GeneralException {
+	public void testFromDBStaticData() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "05");
 
@@ -62,7 +59,7 @@ public class GeoMapSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testMapWithOutIndicators() throws GeneralException {
+	public void testMapWithOutIndicators() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.GEOMAP);
 		generateTestTabWithElement(elInfo);

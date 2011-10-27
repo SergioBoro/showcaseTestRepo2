@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.AppRegistry;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
@@ -67,7 +66,7 @@ public abstract class ServiceLayerCommand<T> {
 		context = aContext;
 	}
 
-	public T execute() throws GeneralException {
+	public T execute() {
 		try {
 			initSessionContext();
 			initCommandContext();
@@ -112,8 +111,7 @@ public abstract class ServiceLayerCommand<T> {
 		}
 	}
 
-	@SuppressWarnings("unused")
-	protected void preProcess() throws GeneralException {
+	protected void preProcess() {
 		// по умолчанию ничего не делаем
 	}
 

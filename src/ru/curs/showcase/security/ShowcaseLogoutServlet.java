@@ -69,10 +69,4 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 		}
 
 	}
-
-	@Override
-	protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
-			throws ServletException, IOException {
-		LOGGER.debug("logout post");
-	}
 }

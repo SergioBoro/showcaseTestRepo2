@@ -37,14 +37,11 @@ public class XFormSQLTransformServlet extends HttpServlet {
 		String content = ServletUtils.getRequestAsString(req);
 		XFormContext context = new XFormContext(params, content);
 		DataPanelElementInfo elInfo = XFormInfoFactory.generateXFormsSQLSubmissionInfo(procName);
-		try {
-			XFormSQLTransformCommand command = new XFormSQLTransformCommand(context, elInfo);
-			String res = command.execute();
 
-			response.setStatus(HttpServletResponse.SC_OK);
-			ServletUtils.makeResponseFromString(response, res);
-		} catch (Exception e) {
-			ServletUtils.fillErrorResponce(response, e.getLocalizedMessage());
-		}
+		XFormSQLTransformCommand command = new XFormSQLTransformCommand(context, elInfo);
+		String res = command.execute();
+
+		response.setStatus(HttpServletResponse.SC_OK);
+		ServletUtils.makeResponseFromString(response, res);
 	}
 }

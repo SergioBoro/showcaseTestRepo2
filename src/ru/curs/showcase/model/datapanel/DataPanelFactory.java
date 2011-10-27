@@ -1,6 +1,7 @@
 package ru.curs.showcase.model.datapanel;
 
 import java.io.InputStream;
+import java.util.regex.*;
 
 import javax.xml.parsers.SAXParser;
 
@@ -68,6 +69,8 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		if (attrs.getIndex(LAYOUT_TAG) > -1) {
 			currentTab.setLayout(DataPanelTabLayout.valueOf(attrs.getValue(LAYOUT_TAG)));
 		}
+		currentTD = null;
+		currentTR = null;
 	}
 
 	public void datapanelSTARTTAGHandler(final Attributes attrs) {
@@ -167,7 +170,13 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 	}
 
 	private DataPanelElementInfo getLastElement() {
-		return currentTab.getElements().get(currentTab.getElements().size() - 1);
+		DataPanelElementInfo dpei = null;
+		if (currentTD == null) {
+			dpei = currentTab.getElements().get(currentTab.getElements().size() - 1);
+		} else {
+			dpei = currentTD.getElement();
+		}
+		return dpei;
 	}
 
 	public void relatedSTARTTAGHandler(final Attributes attrs) {
@@ -198,9 +207,32 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {
 			parser.parse(file.getData(), myHandler);
+			adjustTableTabWidth();
 		} catch (Exception e) {
 			XMLUtils.stdSAXErrorHandler(e, file.getName());
 		}
 		return result;
+	}
+
+	private void adjustTableTabWidth() {
+		final String stdWidth = "width: 100%";
+		for (DataPanelTab tab : result.getTabs()) {
+			if (tab.getLayout() == DataPanelTabLayout.TABLE) {
+				if ((tab.getHtmlAttrs().getStyle() == null)
+						|| (tab.getHtmlAttrs().getStyle().isEmpty())) {
+					tab.getHtmlAttrs().setStyle(stdWidth);
+				} else if (!consistsWidth(tab.getHtmlAttrs().getStyle())) {
+					tab.getHtmlAttrs().setStyle(tab.getHtmlAttrs().getStyle() + "; " + stdWidth);
+				}
+
+			}
+		}
+
+	}
+
+	private boolean consistsWidth(final String aStyle) {
+		Pattern widthPattern = Pattern.compile("\\bwidth:");
+		Matcher matcher = widthPattern.matcher(aStyle);
+		return matcher.find();
 	}
 }

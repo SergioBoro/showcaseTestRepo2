@@ -32,8 +32,7 @@ public final class GeneralExceptionFactory {
 	 *            - исключение.
 	 */
 	private static void logAll(final Throwable e) {
-		String formatedMes = ERROR_CAPTION;
-		LOGGER.error(formatedMes, e);
+		LOGGER.error(ERROR_CAPTION, e);
 	}
 
 	/**
@@ -44,7 +43,7 @@ public final class GeneralExceptionFactory {
 	 *            - оригинальное исключение.
 	 */
 	public static GeneralException build(final Throwable original) {
-		logAll(original);
+		log(original);
 		GeneralException res = new GeneralException(original, getUserMessage(original));
 		res.setOriginalExceptionClass(original.getClass().getName());
 		res.setOriginalMessage(getOriginalMessage(original));
@@ -53,6 +52,12 @@ public final class GeneralExceptionFactory {
 		res.setMessageType(getMessageType(original));
 		res.setNeedDatailedInfo(getNeedDatailedInfo(original));
 		return res;
+	}
+
+	private static void log(final Throwable original) {
+		if (!(original instanceof BaseException)) {
+			logAll(original);
+		}
 	}
 
 	private static Boolean getNeedDatailedInfo(final Throwable e) {
