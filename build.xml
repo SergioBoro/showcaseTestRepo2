@@ -1,6 +1,6 @@
 <project name="Showcase" basedir="." default="build">
 	<property name="appname" value="${ant.project.name}" />
-	<property name="env" value="local" />
+	<property name="env" value="local" />   
 
 	<property name="dist.dir" value="dist" />
 	<property name="extragwt.dir" value="extragwt" />
@@ -18,7 +18,6 @@
 	<property name="userdata.dir" value="userdata" />
 	<property name="env.props" value="${env}.properties" />
 	<property name="gwt.src.root.dir" value="${src.dir}\ru\curs\showcase\app" />
-
 
 	<property file="${env.props}" />
 	<property file="${userdata.dir}/app.properties" />
@@ -69,9 +68,18 @@
 		<mkdir dir="${tmp.dir}" />
 		<mkdir dir="${js.dir}" />
 	</target>
-
+	
 	<target name="compile" depends="init.dirs" description="Compiles .java files to WAR directory">
-		<javac encoding="UTF-8" srcdir="${src.dir}; datagrid; extragwt" destdir="${class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java" />
+		<!--Вариант с org.aspectj.tools.ant.taskdefs.Ajc11Compiler не работает при запуске из Eclipse-->
+		<!--<javac source="1.6" target="1.6" includeantruntime="false" encoding="UTF-8" srcdir="${src.dir}; datagrid; extragwt" destdir="${class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java" >
+		</javac>-->		
+	    <iajc source="1.6" target="1.6" encoding="UTF-8" destdir="${class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java">
+	        <sourceroots>
+	          <pathelement location="${src.dir}"/>
+	        	<pathelement location="datagrid"/>
+	          	<pathelement location="extragwt"/>
+	        </sourceroots>	    	
+		</iajc>
 	</target>
 
 	<target name="build" depends="compile">
@@ -125,6 +133,7 @@
 	<target name="rebuild" depends="clean, build" />
 
 	<target name="dist" description="Assembles WAR file">
+		<antcall target="clear" />
 		<echo>Prepare for GWT build for all browsers</echo>
 		<copy tofile="${tmp.dir}\App.gwt.xml.re" file="${gwt.src.root.dir}\App.gwt.xml" overwrite="true" />
 		<copy tofile="${gwt.src.root.dir}\App.gwt.xml" file="${gwt.src.root.dir}\App.gwt.xml.template" overwrite="true" />

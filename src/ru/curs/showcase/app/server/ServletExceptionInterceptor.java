@@ -25,17 +25,21 @@ public final class ServletExceptionInterceptor {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ServletExceptionInterceptor.class);
 
-	@Before("args(req, resp) && execution(protected void javax.servlet.http.HttpServlet.do*(..))")
-	public void logInput(final HttpServletRequest req, final HttpServletResponse resp) {
-		// TODO
+	@SuppressWarnings("unused")
+	@Pointcut("args(request, response) && execution(protected void javax.servlet.http.HttpServlet.do*(..))")
+	private
+			void servletExecutionPointcut(final HttpServletRequest request,
+					final HttpServletResponse response) {
+	};
+
+	@Before("servletExecutionPointcut(request, response)")
+	public void logInput(final HttpServletRequest request, final HttpServletResponse response) {
+		LOGGER.info("@Before");
 	}
 
-	@AfterThrowing(
-			pointcut = "args(request, response) && execution(protected void javax.servlet.http.HttpServlet.do*(..))",
-			throwing = "e")
-	public
-			void logException(final HttpServletRequest request,
-					final HttpServletResponse response, final Throwable e) throws IOException {
+	@AfterThrowing(pointcut = "servletExecutionPointcut(request, response)", throwing = "e")
+	public void logException(final HttpServletRequest request, final HttpServletResponse response,
+			final Throwable e) throws IOException {
 		Throwable exc = e;
 		if ((exc instanceof ServletException) && (exc.getCause() != null)) {
 			exc = exc.getCause();

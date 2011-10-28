@@ -69,7 +69,8 @@ public final class WebTextPanelCallbacksEvents {
 							link.setId(overridenValue);
 						} else {
 							MessageBox.showSimpleMessage("Ошибка",
-									"Элемент действия для замены ID неверно определен");
+									"Элемент действия для замены ID неверно определен (ID = "
+											+ elID + ")");
 						}
 					}
 					break;

@@ -658,6 +658,17 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
+	public void testActionSetMainContext() {
+		final int actionWithChildNumber = 5;
+		Action action = getAction(TREE_MULTILEVEL_XML, 0, actionWithChildNumber);
+		action.setMainContext(MAIN_CONDITION);
+		assertEquals(MAIN_CONDITION, action.getDataPanelLink().getElementLinks().get(0)
+				.getContext().getMain());
+		assertEquals(MAIN_CONDITION, action.getServerActivities().get(0).getContext().getMain());
+		assertEquals(MAIN_CONDITION, action.getClientActivities().get(0).getContext().getMain());
+	}
+
+	@Test
 	public void testGridContext() {
 		CompositeContext context = getComplexTestContext();
 		GridContext ces = new GridContext(context);
