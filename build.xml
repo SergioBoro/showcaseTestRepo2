@@ -1,6 +1,6 @@
 <project name="Showcase" basedir="." default="build">
 	<property name="appname" value="${ant.project.name}" />
-	<property name="env" value="local" />   
+	<property name="env" value="local" />
 
 	<property name="dist.dir" value="dist" />
 	<property name="extragwt.dir" value="extragwt" />
@@ -68,17 +68,24 @@
 		<mkdir dir="${tmp.dir}" />
 		<mkdir dir="${js.dir}" />
 	</target>
-	
+
+	<!--Для компиляции не из Eclipse. В Eclipse снова не работает-->
+	<!--<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+		<classpath>
+			<pathelement location="${ANT.HOME}/aspectjtools.jar" />
+		</classpath>
+	</taskdef>-->
+
 	<target name="compile" depends="init.dirs" description="Compiles .java files to WAR directory">
 		<!--Вариант с org.aspectj.tools.ant.taskdefs.Ajc11Compiler не работает при запуске из Eclipse-->
 		<!--<javac source="1.6" target="1.6" includeantruntime="false" encoding="UTF-8" srcdir="${src.dir}; datagrid; extragwt" destdir="${class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java" >
-		</javac>-->		
-	    <iajc source="1.6" target="1.6" encoding="UTF-8" destdir="${class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java">
-	        <sourceroots>
-	          <pathelement location="${src.dir}"/>
-	        	<pathelement location="datagrid"/>
-	          	<pathelement location="extragwt"/>
-	        </sourceroots>	    	
+		</javac>-->
+		<iajc source="1.6" target="1.6" encoding="UTF-8" destdir="${class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java">
+			<sourceroots>
+				<pathelement location="${src.dir}" />
+				<pathelement location="datagrid" />
+				<pathelement location="extragwt" />
+			</sourceroots>
 		</iajc>
 	</target>
 
@@ -133,7 +140,7 @@
 	<target name="rebuild" depends="clean, build" />
 
 	<target name="dist" description="Assembles WAR file">
-		<antcall target="clear" />
+		<antcall target="clean" />
 		<echo>Prepare for GWT build for all browsers</echo>
 		<copy tofile="${tmp.dir}\App.gwt.xml.re" file="${gwt.src.root.dir}\App.gwt.xml" overwrite="true" />
 		<copy tofile="${gwt.src.root.dir}\App.gwt.xml" file="${gwt.src.root.dir}\App.gwt.xml.template" overwrite="true" />
@@ -240,19 +247,19 @@
 		<delete file="${db.backup.path}\${db.backup.name}.mbk" />
 		<copy todir="${trunk.deploy.path}" file="${db.backup.path}\${db.backup.name}.zip" overwrite="true" />
 	</target>
-	
+
 	<target name="get.gwt.version" depends="info">
 		<echo>Update gwt version</echo>
-		<exec resolveexecutable="true" executable="java" output="WebContent\WEB-INF\classes\gwtversion" dir="${gwt.dir}"  description="Write gwt version number to file" >
+		<exec resolveexecutable="true" executable="java" output="WebContent\WEB-INF\classes\gwtversion" dir="${gwt.dir}" description="Write gwt version number to file">
 			<arg value="-jar" />
-			<arg value="gwt-dev.jar" />			
-		</exec>		
-	</target>	
-	
+			<arg value="gwt-dev.jar" />
+		</exec>
+	</target>
+
 	<target name="get.app.version" depends="info">
 		<echo>Update build number</echo>
 		<exec resolveexecutable="true" executable="svnver\svnversion.exe" output="WebContent\WEB-INF\classes\build" dir="." description="Write build number to file" />
-		
+
 	</target>
 
 </project>
