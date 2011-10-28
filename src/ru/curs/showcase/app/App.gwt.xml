@@ -26,8 +26,6 @@
   <source path='client'/>
   <source path='api'/>
        
-  <set-property name="user.agent" value="safari" />       
-  
 <!--   The supported user agents at the moment of writing were:-->
 <!--   ie6,ie8,gecko,gecko1_8,safari,opera	  -->
 <!--   where safari==chrome, gecko1_8==firefox 2+ -->

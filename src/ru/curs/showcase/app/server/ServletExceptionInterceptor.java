@@ -34,7 +34,6 @@ public final class ServletExceptionInterceptor {
 
 	@Before("servletExecutionPointcut(request, response)")
 	public void logInput(final HttpServletRequest request, final HttpServletResponse response) {
-		LOGGER.info("@Before");
 	}
 
 	@AfterThrowing(pointcut = "servletExecutionPointcut(request, response)", throwing = "e")

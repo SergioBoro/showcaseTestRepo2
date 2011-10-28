@@ -41,6 +41,7 @@
     </script>
             
 <!--     <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>    	 -->
+<!-- for 127.0.0.1 -->
 <!--     <script src="http://api-maps.yandex.ru/1.1/index.xml?key=AJaOqU4BAAAA8T_COwQAykhZZqSHIqAuO0vpxvdbjcnz16UAAAAAAAAAAAAP611ZGZKbOp9grAH7YLJUZ8ORVg=="></script> -->
     
 <!-- uncomment it if you plan to use Google Maps
