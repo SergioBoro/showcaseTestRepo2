@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
 import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.util.exception.ServerLogicError;
 import ru.curs.showcase.util.xml.SAXTagHandler;
 
 /**
@@ -244,6 +245,16 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 	}
 
 	private void replaceVariablesInTemplate() {
+		String replaceTemplate =
+			"registerModules: [[\"solution\", \"../../\\${userdata.dir}/js\"]], managerModule: \"solution.$1\",";
+		try {
+			getResult().setTemplate(
+					getResult().getTemplate().replaceAll("registerSolutionMap: (\\w+),",
+							replaceTemplate));
+		} catch (Exception ex) {
+			throw new ServerLogicError(ex);
+		}
+
 		getResult().setTemplate(replaceVariables(getResult().getTemplate()));
 	}
 

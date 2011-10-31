@@ -69,4 +69,19 @@ public class GeoMapSLTest extends AbstractTest {
 		command.execute();
 	}
 
+	@Test
+	public void testReplaceVariables() {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.GEOMAP);
+		generateTestTabWithElement(elInfo);
+		elInfo.setProcName("geomap_func2_ym");
+
+		GeoMapGetCommand command = new GeoMapGetCommand(context, elInfo);
+		GeoMap map = command.execute();
+
+		assertTrue(map.getTemplate().indexOf("registerSolutionMap:") == -1);
+		assertTrue(map.getTemplate().indexOf("registerModules:") > -1);
+		assertTrue(map.getTemplate().indexOf("managerModule:") > -1);
+	}
+
 }
