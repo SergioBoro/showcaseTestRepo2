@@ -5,9 +5,11 @@ import java.sql.*;
 import oracle.jdbc.OracleTypes;
 import ru.curs.gwt.datagrid.model.Column;
 import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.OutputStreamDataFile;
 
 /**
  * Шлюз к БД для грида.
@@ -206,6 +208,15 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 
 	@Override
 	protected void registerOutParameterCursor() throws SQLException {
+	}
+
+	@Override
+	public OutputStreamDataFile downloadFile(final CompositeContext context,
+			final DataPanelElementInfo elementInfo, final String linkId, final String recordId) {
+
+		// TODO Auto-generated method stub
+
+		return null;
 	}
 
 }

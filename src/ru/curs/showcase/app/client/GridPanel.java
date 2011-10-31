@@ -629,7 +629,7 @@ public class GridPanel extends BasicElementPanelBasis {
 			if ((event.getTarget().getColumn().getValueType() == GridValueType.DOWNLOAD)
 					&& (interactionType == InteractionType.SINGLE_CLICK)) {
 				event.preventDefault();
-				processFileDownload(event.getTarget().getColumn());
+				processFileDownload(event.getTarget().getRecord(), event.getTarget().getColumn());
 			} else {
 				processClick(event.getTarget().getRecord().getId(), event.getTarget().getColumn()
 						.getId(), interactionType);
@@ -650,16 +650,18 @@ public class GridPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	private void processFileDownload(final Column col) {
+	private void processFileDownload(final Record rec, final Column col) {
 		DownloadHelper dh = DownloadHelper.getInstance();
+		dh.setEncoding(FormPanel.ENCODING_URLENCODED);		
 		dh.clear();
 
 		dh.setErrorCaption(Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD);
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
 
 		try {
-			dh.addStdPostParamsToBody(getDetailedContext(), getElementInfo());
 			dh.addParam("linkId", col.getLinkId());
+			dh.addStdPostParamsToBody(getContext(), getElementInfo());
+			dh.addParam("recordId", rec.getId());
 
 			dh.submit();
 		} catch (Exception e) {

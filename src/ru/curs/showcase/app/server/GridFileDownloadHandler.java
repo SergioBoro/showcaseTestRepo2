@@ -4,8 +4,7 @@ import java.io.IOException;
 
 import org.apache.commons.fileupload.FileUploadException;
 
-import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.grid.GridContext;
+import ru.curs.showcase.model.command.GridFileDownloadCommand;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
@@ -17,34 +16,35 @@ import com.google.gwt.user.client.rpc.SerializationException;
 public class GridFileDownloadHandler extends AbstractDownloadHandler {
 
 	/**
-	 * Ссылка на файл.
+	 * Ссылка на хранимую процедуру получения файла.
 	 */
 	private String linkId;
 
+	/**
+	 * Идентификатор записи грида для скачивания файла.
+	 */
+	private String recordId;
+
 	@Override
 	protected void processFiles() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public GridContext getContext() {
-		return (GridContext) super.getContext();
-	}
-
-	@Override
-	protected Class<? extends CompositeContext> getContextClass() {
-		return GridContext.class;
+		GridFileDownloadCommand command =
+			new GridFileDownloadCommand(getContext(), getElementInfo(), linkId, recordId);
+		setOutputFile(command.execute());
 	}
 
 	@Override
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
 		super.getParams();
 		linkId = getRequest().getParameter("linkId");
+		recordId = getRequest().getParameter("recordId");
 	}
 
 	public String getLinkId() {
 		return linkId;
+	}
+
+	public String getRecordId() {
+		return recordId;
 	}
 
 }
