@@ -20,6 +20,9 @@ import ru.curs.showcase.util.OutputStreamDataFile;
 @Description(process = "Загрузка данных для грида из БД")
 public class GridDBGateway extends CompBasedElementSPCallHelper implements GridGateway {
 
+	private static final String NO_DOWNLOAD_PROC_ERROR =
+		"Не задана процедура для скачивания файлов из сервера для linkId=";
+
 	private static final int MAIN_CONTEXT_INDEX = 2;
 	private static final int ADD_CONTEXT_INDEX = 3;
 	private static final int FILTER_INDEX = 4;
@@ -34,10 +37,16 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	private static final int FIRST_RECORD_INDEX = 7;
 	private static final int PAGE_SIZE_INDEX = 8;
 
-	private static final int DATA_ONLY_QUERY = 1;
 	private static final int DATA_AND_SETTINS_QUERY = 0;
+	private static final int DATA_ONLY_QUERY = 1;
+	private static final int FILE_DOWNLOAD = 2;
 
 	private static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS = 10;
+
+	private static final int RECORD_ID_INDEX = 7;
+	private static final int FILENAME_INDEX = 8;
+	private static final int FILE_INDEX = 9;
+	private static final int ERROR_MES_INDEX_FILE_DOWNLOAD = 10;
 
 	public GridDBGateway() {
 		super();
@@ -104,6 +113,8 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 			} else {
 				return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?)}";
 			}
+		case FILE_DOWNLOAD:
+			return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 		default:
 			return null;
 		}
@@ -199,9 +210,12 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 
 	@Override
 	protected int getErrorMesIndex(final int index) {
-		if (index == DATA_AND_SETTINS_QUERY) {
+		switch (index) {
+		case DATA_AND_SETTINS_QUERY:
 			return ERROR_MES_INDEX_DATA_AND_SETTINGS;
-		} else {
+		case FILE_DOWNLOAD:
+			return ERROR_MES_INDEX_FILE_DOWNLOAD;
+		default:
 			return -1;
 		}
 	}
@@ -213,10 +227,31 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 	@Override
 	public OutputStreamDataFile downloadFile(final CompositeContext context,
 			final DataPanelElementInfo elementInfo, final String linkId, final String recordId) {
+		init(context, elementInfo);
+		setTemplateIndex(FILE_DOWNLOAD);
+		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
+		if (proc == null) {
+			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR + linkId);
+		}
+		setProcName(proc.getName());
+		OutputStreamDataFile result = null;
 
-		// TODO Auto-generated method stub
-
-		return null;
+		try {
+			try {
+				prepareElementStatementWithErrorMes();
+				setStringParam(RECORD_ID_INDEX, recordId);
+				getStatement().registerOutParameter(FILENAME_INDEX, java.sql.Types.VARCHAR);
+				getStatement().registerOutParameter(FILE_INDEX, getBinarySQLType());
+				execute();
+				checkErrorCode();
+				result = getFileForBinaryStream(FILE_INDEX, FILENAME_INDEX);
+			} catch (SQLException e) {
+				dbExceptionHandler(e);
+			}
+		} finally {
+			releaseResources();
+		}
+		return result;
 	}
 
 }

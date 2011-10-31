@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -129,6 +130,14 @@ public abstract class ElementSPCallHelper extends SPCallHelper {
 
 	protected int getElementIdIndex(final int index) {
 		return ELEMENTID_INDEX;
+	}
+
+	protected int getBinarySQLType() {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return java.sql.Types.BLOB;
+		} else {
+			return java.sql.Types.BINARY;
+		}
 	}
 
 }

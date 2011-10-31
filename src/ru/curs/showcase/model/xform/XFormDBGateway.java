@@ -7,7 +7,6 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.*;
-import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.CreateObjectError;
 
@@ -263,14 +262,6 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 			return ERROR_MES_INDEX_FILE;
 		default:
 			return -1;
-		}
-	}
-
-	private int getBinarySQLType() {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return java.sql.Types.BLOB;
-		} else {
-			return java.sql.Types.BINARY;
 		}
 	}
 
