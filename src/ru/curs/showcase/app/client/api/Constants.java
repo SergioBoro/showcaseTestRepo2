@@ -59,6 +59,7 @@ public final class Constants {
 		"при получении данных о главной странице приложения";
 
 	public static final String GRID_ERROR_CAPTION_EXPORT_EXCEL = "Ошибка при экспорте в Excel";
+	public static final String GRID_ERROR_CAPTION_FILE_DOWNLOAD = "Ошибка при скачивании файла";
 
 	public static final String GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE =
 		"Экспорт в Excel текущей страницы";

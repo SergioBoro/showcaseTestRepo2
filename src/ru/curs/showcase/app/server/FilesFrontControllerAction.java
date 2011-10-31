@@ -12,6 +12,10 @@ public enum FilesFrontControllerAction {
 	 */
 	GRIDTOEXCEL,
 	/**
+	 * Скачивание файла из грида.
+	 */
+	GRIDFILEDOWNLOAD,
+	/**
 	 * Скачивание файла с сервера.
 	 */
 	DOWNLOAD,

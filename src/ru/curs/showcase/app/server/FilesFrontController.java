@@ -36,6 +36,9 @@ public final class FilesFrontController extends HttpServlet {
 		case GRIDTOEXCEL:
 			handler = new GridToExcelHandler();
 			break;
+		case GRIDFILEDOWNLOAD:
+			handler = new GridFileDownloadHandler();
+			break;
 		case UPLOAD:
 			handler = new UploadHandler();
 			break;

@@ -321,6 +321,10 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 				String value = attrs.getValue(TYPE_TAG);
 				col.setValueType(GridValueType.valueOf(value));
 			}
+			if (attrs.getIndex(LINK_ID_TAG) > -1) {
+				String value = attrs.getValue(LINK_ID_TAG);
+				col.setLinkId(value);
+			}
 			return null;
 		}
 

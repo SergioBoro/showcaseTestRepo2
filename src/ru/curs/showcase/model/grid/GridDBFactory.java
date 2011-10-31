@@ -135,6 +135,10 @@ public class GridDBFactory extends AbstractGridFactory {
 					value = rowset.getString(col.getId());
 					value = AppProps.replaceVariables(value);
 					value = makeSafeXMLAttrValues(value);
+				} else if (col.getValueType() == GridValueType.DOWNLOAD) {
+					value = rowset.getString(col.getId());
+					value = AppProps.replaceVariables(value);
+					//value = makeSafeXMLAttrValues(value);
 				} else if (col.getValueType().isDate()) {
 					value = getStringValueOfDate(col);
 				} else if (col.getValueType().isNumber()) {
