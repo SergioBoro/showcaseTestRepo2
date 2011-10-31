@@ -512,6 +512,7 @@ public class GridPanel extends BasicElementPanelBasis {
 	 */
 	public void exportToExcel(final GridToExcelExportType exportType) {
 		DownloadHelper dh = DownloadHelper.getInstance();
+		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
 
 		dh.setErrorCaption(Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL);
