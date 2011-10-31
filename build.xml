@@ -113,7 +113,8 @@
 			</classpath>
 			<classpath refid="master-classpath" />
 			<arg line="-war ${war.dir}" />
-			<arg line="ru.curs.showcase.app.App" />
+			<arg line="ru.curs.showcase.app.App" />			
+			<jvmarg line="-Dgwt.persistentunitcachedir=tmp"/>
 		</java>
 	</target>
 
