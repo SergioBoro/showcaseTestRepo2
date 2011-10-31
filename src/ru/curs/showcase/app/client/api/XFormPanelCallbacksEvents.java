@@ -11,6 +11,7 @@ import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.client.ui.FormPanel;
 
 /**
  * Класс, реализующий функции обратного вызова из XFormPanel.
@@ -393,6 +394,7 @@ public final class XFormPanelCallbacksEvents {
 			// "downloadFile. xformId=" + xformId + ", linkId=" + linkId, data);
 
 			DownloadHelper dh = DownloadHelper.getInstance();
+			dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 			dh.clear();
 			dh.setErrorCaption(Constants.XFORMS_DOWNLOAD_ERROR);
 			dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/download");
