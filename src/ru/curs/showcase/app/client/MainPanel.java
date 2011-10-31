@@ -66,7 +66,7 @@ public class MainPanel {
 	 * Переменная, которая определяет на какую ширину от ширины экрана(от ширины
 	 * рабочей части окна браузера) нужно уменьшить MainPanel.
 	 */
-	private static final int N35 = 35;
+	private static final int N16 = 16;
 
 	/**
 	 * Процедура создания MainPanel, которая включает в себя Accordeon и
@@ -78,8 +78,10 @@ public class MainPanel {
 		ProgressWindow.showProgressWindow();
 		basicVerticalPanel.add(new DownloadHelper());
 
-		final int n85 = 85;
-		p.setPixelSize(Window.getClientWidth() - N35, Window.getClientHeight() - n85
+		final int n10 = 10;
+
+		basicVerticalPanel.setStyleName("basicVerticalPanel-CellspacingForMainPanel");
+		p.setPixelSize(Window.getClientWidth() - N16, Window.getClientHeight() - n10
 				- DOM.getElementById("showcaseHeaderContainer").getOffsetHeight()
 				- DOM.getElementById("showcaseBottomContainer").getOffsetHeight());
 
@@ -87,16 +89,17 @@ public class MainPanel {
 			@Override
 			public void onResize(final ResizeEvent event) {
 				int height =
-					event.getHeight() - n85
+					event.getHeight() - n10
 							- DOM.getElementById("showcaseHeaderContainer").getOffsetHeight()
 							- DOM.getElementById("showcaseBottomContainer").getOffsetHeight();
-				int width = event.getWidth() - N35;
+				int width = event.getWidth() - N16;
 				p.setHeight(height + "px");
 				p.setWidth(width + "px");
 			}
 		});
 
 		DecoratorPanel decoratorPanel = new DecoratorPanel();
+		decoratorPanel.addStyleName("DockLayoutPanel-MainPanel");
 		decoratorPanel.setWidget(p);
 		basicVerticalPanel.add(decoratorPanel);
 
@@ -131,9 +134,9 @@ public class MainPanel {
 			} catch (Exception e) {
 
 				MessageBox.showMessageWithDetails(Constants.TRANSFORMATION_NAVIGATOR_WIDTH_ERROR,
-						e.getClass().getName() + ": " + e.getMessage(), GeneralException
-								.generateDetailedInfo(e),
-						MessageType.ERROR, GeneralException.needDetailedInfo(e));
+						e.getClass().getName() + ": " + e.getMessage(),
+						GeneralException.generateDetailedInfo(e), MessageType.ERROR,
+						GeneralException.needDetailedInfo(e));
 			}
 
 			switch (SizeParser.getSizeType(navigatorWidth)) {
@@ -146,7 +149,7 @@ public class MainPanel {
 			case PERCENTS:
 				final int percentsTotal = 100;
 				final int absoluteWidth =
-					widthNumber * (Window.getClientWidth() - N35) / percentsTotal;
+					widthNumber * (Window.getClientWidth() - N16) / percentsTotal;
 				p.addWest(accordeonWidget, absoluteWidth);
 				break;
 

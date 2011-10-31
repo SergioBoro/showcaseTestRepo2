@@ -60,14 +60,19 @@ public class GeneralDataPanel {
 
 	private void showWelcomPage() {
 		final SimplePanel tabVerticalPanel = new SimplePanel();
+
+		ScrollPanel sp = new ScrollPanel();
+		sp.setSize("100%", "100%");
+
 		tabVerticalPanel.setSize("100%", "100%");
 		HTML ht = new HTML();
-		// ht = new HTML();
 		ht.setHTML(AppCurrContext.getInstance().getMainPage().getWelcome());
 		// ht.setHTML("<iframe width='100%' height='100%' style='border:0px;' src='"
 		// + MultiUserData.getPathWithUserData("html/welcome.jsp") + "'/>");
 		ht.setSize("100%", "100%");
-		tabVerticalPanel.add(ht);
+
+		sp.add(ht);
+		tabVerticalPanel.add(sp);
 		getTabPanel().add(tabVerticalPanel, Constants.WELCOME_TAB_CAPTION);
 		JavaScriptFromGWTFeedbackJSNI.setCurrentUserNameForViewInHTMLControl("WELCOME");
 

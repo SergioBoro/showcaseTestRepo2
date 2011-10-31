@@ -65,8 +65,7 @@ public class Header {
 
 			MessageBox.showMessageWithDetails(
 					Constants.TRANSFORMATION_HEADER_OR_FOOTER_WIDTH_ERROR, e.getClass().getName()
-							+ ": " + e.getMessage(),
-					GeneralException.generateDetailedInfo(e),
+							+ ": " + e.getMessage(), GeneralException.generateDetailedInfo(e),
 					MessageType.ERROR, GeneralException.needDetailedInfo(e));
 		}
 
@@ -90,6 +89,10 @@ public class Header {
 
 		ht.setSize("100%", String.valueOf(absolutePixelSize) + "px");
 		ht.setHTML(AppCurrContext.getInstance().getMainPage().getHeader());
+		if (AppCurrContext.getInstance().getMainPage().getHeader() == null) {
+			ht.setSize("100%", "0px");
+		}
+
 		// ht.set
 		tabVerticalPanel.add(ht);
 
