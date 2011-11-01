@@ -10,9 +10,12 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.client.api.*;
 
+import com.google.gwt.dom.client.*;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -42,6 +45,28 @@ public class GeneralDataPanel {
 	 * @return возвращает виджет GeneralDataPanel типа SimplePanel.
 	 */
 	public Widget generateDataPanel() {
+
+		final int n69 = 69;
+		Event.addNativePreviewHandler(new NativePreviewHandler() {
+			@Override
+			public void onPreviewNativeEvent(final NativePreviewEvent event) {
+				NativeEvent nativeEvent = event.getNativeEvent();
+
+				if ((event.getTypeInt() == Event.ONKEYUP) && (nativeEvent.getCtrlKey())
+						&& (nativeEvent.getShiftKey()) && (nativeEvent.getAltKey())
+						&& (nativeEvent.getKeyCode() == n69)) {
+
+					String url =
+						"http://" + Window.Location.getHost() + Window.Location.getPath()
+								+ "log/lastLogEvents.jsp";
+
+					Window.open(url, "_blank", "");
+
+				}
+
+			}
+
+		});
 
 		final SimplePanel basicDataVerticalPanel = new SimplePanel();
 
