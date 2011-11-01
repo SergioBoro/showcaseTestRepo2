@@ -9,7 +9,7 @@ import org.slf4j.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.AppRegistry;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.ObjectSerializer;
 import ru.curs.showcase.util.exception.ServerLogicError;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 

@@ -22,5 +22,9 @@ public enum FilesFrontControllerAction {
 	/**
 	 * Закачивание файла на сервер.
 	 */
-	UPLOAD
+	UPLOAD,
+	/**
+	 * Экспорт карты.
+	 */
+	GEOMAPEXPORT
 }

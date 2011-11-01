@@ -71,7 +71,7 @@ public class DataFile<T> {
 		String[] stdTextExtensions =
 			{
 					"txt", "xml", "xsd", "xsl", "sql", "ini", "properties", "htm", "html", "java",
-					"cmd", "py" };
+					"cmd", "py", "svg" };
 		if (checkExtensionsArray(stdTextExtensions)) {
 			return true;
 		}

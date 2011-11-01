@@ -3,6 +3,7 @@ package ru.curs.showcase.model.webtext;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.*;
+import ru.curs.showcase.util.Description;
 
 /**
  * Реализация шлюза к БД для получения данных типа WebText.

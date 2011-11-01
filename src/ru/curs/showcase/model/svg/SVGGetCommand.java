@@ -1,7 +1,10 @@
 package ru.curs.showcase.model.svg;
 
+import java.io.ByteArrayOutputStream;
+
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.*;
+import ru.curs.showcase.util.TextUtils;
 
 /**
  * Команда, возвращающая исходный SVG после предварительной обработки.
@@ -9,17 +12,20 @@ import ru.curs.showcase.app.api.geomap.*;
  * @author den
  * 
  */
-public class SVGGetCommand extends AbstractSVGCommand<String> {
+public class SVGGetCommand extends AbstractSVGCommand {
 
 	public SVGGetCommand(final CompositeContext aContext, final GeoMapExportSettings aSettings,
-			final ImageFormat aImageFormat, final String aInput) {
-		super(aContext, aSettings, aImageFormat, aInput);
+			final String aInput) {
+		super(aContext, aSettings, ImageFormat.SVG, aInput);
 	}
 
 	@Override
 	protected void mainProc() throws Exception {
 		super.mainProc();
-		setResult(getInput());
+		byte[] bytes = getInput().getBytes(TextUtils.DEF_ENCODING);
+		ByteArrayOutputStream os = new ByteArrayOutputStream(bytes.length);
+		os.write(bytes, 0, bytes.length);
+		getResult().setData(os);
 	}
 
 }

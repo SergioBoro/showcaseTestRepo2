@@ -3,6 +3,7 @@ package ru.curs.showcase.model.svg;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.model.command.*;
+import ru.curs.showcase.util.OutputStreamDataFile;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -10,9 +11,8 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  * @author den
  * 
- * @param <T>
  */
-public abstract class AbstractSVGCommand<T> extends ServiceLayerCommand<T> {
+public abstract class AbstractSVGCommand extends ServiceLayerCommand<OutputStreamDataFile> {
 
 	private String input;
 
@@ -27,6 +27,10 @@ public abstract class AbstractSVGCommand<T> extends ServiceLayerCommand<T> {
 		input = aInput;
 		settings = aSettings;
 		imageFormat = aImageFormat;
+
+		setResult(new OutputStreamDataFile());
+		getResult().setName(
+				getSettings().getFileName() + "." + getImageFormat().toString().toLowerCase());
 	}
 
 	@InputParam
@@ -55,5 +59,12 @@ public abstract class AbstractSVGCommand<T> extends ServiceLayerCommand<T> {
 	@Override
 	protected void mainProc() throws Exception {
 		input = checkSVGEncoding(input);
+	}
+
+	@Override
+	protected void logOutput() {
+		super.logOutput();
+		LOGGER.info(String.format("Размер скачиваемого файла: %d байт", getResult().getData()
+				.size()));
 	}
 }

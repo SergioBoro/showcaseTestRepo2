@@ -11,7 +11,7 @@ import org.w3c.dom.*;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.AppInfoSingleton;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.TextUtils;
 
 /**
  * Класс, содержащий функции для получения информации о текущей сессией
@@ -80,7 +80,8 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	private static void addUserNode(final Document info) {
 		Element node = info.createElement(USERNAME_TAG);
 		info.getDocumentElement().appendChild(node);
-		node.appendChild(info.createTextNode(SessionUtils.getCurrentSessionUserName()));
+		node.appendChild(info.createTextNode(ru.curs.showcase.runtime.SessionUtils
+				.getCurrentSessionUserName()));
 
 		node = info.createElement(SID_TAG);
 		info.getDocumentElement().appendChild(node);

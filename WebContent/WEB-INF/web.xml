@@ -171,11 +171,11 @@
     <url-pattern>/forall/state</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>GeoMapExportServlet</servlet-name>
-    <servlet-class>ru.curs.showcase.app.server.GeoMapExportServlet</servlet-class>
+    <servlet-name>GeoMapExport</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.FilesFrontController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>GeoMapExportServlet</servlet-name>
+    <servlet-name>GeoMapExport</servlet-name>
     <url-pattern>/secured/geoMapExport</url-pattern>
   </servlet-mapping>
 </web-app>

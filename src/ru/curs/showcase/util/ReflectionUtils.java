@@ -2,7 +2,6 @@ package ru.curs.showcase.util;
 
 import java.lang.reflect.*;
 
-import ru.curs.showcase.model.Description;
 import ru.curs.showcase.util.exception.ServerLogicError;
 
 /**

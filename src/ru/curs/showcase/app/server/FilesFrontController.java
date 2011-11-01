@@ -42,6 +42,9 @@ public final class FilesFrontController extends HttpServlet {
 		case UPLOAD:
 			handler = new UploadHandler();
 			break;
+		case GEOMAPEXPORT:
+			handler = new GeoMapExportHandler();
+			break;
 		default:
 			ServletUtils.fillErrorResponce(response, UNKNOWN_COMMAND_ERROR);
 		}

@@ -1,7 +1,6 @@
 package ru.curs.showcase.app.server;
 
 import java.io.IOException;
-import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -30,8 +29,7 @@ public final class StateServlet extends HttpServlet {
 	@Override
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
-		Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
-		CompositeContext context = new CompositeContext(params);
+		CompositeContext context = ServletUtils.prepareURLParamsContext(request);
 		String userAgent = ServletUtils.getUserAgent(request);
 		ServerStateGetCommand command = new ServerStateGetCommand(context);
 		ServerState serverState = command.execute();

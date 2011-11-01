@@ -24,6 +24,7 @@ import ch.qos.logback.classic.spi.LoggingEvent;
  * 
  */
 public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
+
 	private static final String TEST_CSS = "ru\\curs\\showcase\\test\\ShowcaseDataGrid_test.css";
 
 	/**

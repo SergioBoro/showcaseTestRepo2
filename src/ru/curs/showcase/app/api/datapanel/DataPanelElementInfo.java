@@ -19,7 +19,7 @@ import ru.curs.showcase.app.api.event.*;
 @XmlRootElement(name = "element")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DataPanelElementInfo extends TransferableElement implements SerializableElement,
-		SelfCheckObject {
+		ru.curs.showcase.app.api.SelfCheckObject {
 	private static final String KEEP_USER_SETTINGS_ERROR =
 		"Невозможно получить значение keepUserSettings для действия, не содержащего блока для работы с инф. панелью";
 	private static final String UNKNOWN_ELEMENT_TYPE =

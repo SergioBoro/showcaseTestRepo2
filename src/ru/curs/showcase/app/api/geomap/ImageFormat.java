@@ -11,5 +11,15 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public enum ImageFormat {
-	SVG, PNG, JPG
+	SVG("application/svg+xml"), PNG("image/png"), JPG("image/jpg");
+
+	private String contentType;
+
+	ImageFormat(final String aName) {
+		contentType = aName;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
 }

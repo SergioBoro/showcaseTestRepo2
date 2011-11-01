@@ -3,9 +3,8 @@ package ru.curs.showcase.model.frame;
 import java.io.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.Description;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 
 /**

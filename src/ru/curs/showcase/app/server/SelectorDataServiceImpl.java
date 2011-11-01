@@ -2,7 +2,7 @@ package ru.curs.showcase.app.server;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
 
 import oracle.jdbc.OracleTypes;
 
@@ -165,9 +165,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 	}
 
 	private void setupSession() throws UnsupportedEncodingException {
-		Map<String, List<String>> params =
-			ServletUtils.prepareURLParamsMap(perThreadRequest.get());
-		CompositeContext context = new CompositeContext(params);
+		CompositeContext context = ServletUtils.prepareURLParamsContext(perThreadRequest.get());
 		prepareContext(context);
 	}
 

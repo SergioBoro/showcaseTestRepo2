@@ -2,13 +2,18 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
+import java.io.*;
+
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.geomap.GeoMap;
+import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.model.geomap.GeoMapGetCommand;
+import ru.curs.showcase.model.svg.*;
+import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Тесты для фабрики карт.
@@ -82,6 +87,49 @@ public class GeoMapSLTest extends AbstractTest {
 		assertTrue(map.getTemplate().indexOf("registerSolutionMap:") == -1);
 		assertTrue(map.getTemplate().indexOf("registerModules:") > -1);
 		assertTrue(map.getTemplate().indexOf("managerModule:") > -1);
+	}
+
+	@Test
+	public void testSVGGet() throws IOException {
+		String inputFile = RU_CURS_SHOWCASE_TEST + GEOMAP_WOHEADER_SVG;
+		InputStream is = FileUtils.loadResToStream(inputFile);
+		String svg = TextUtils.streamToString(is);
+		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
+		SVGGetCommand scommand = new SVGGetCommand(context, new GeoMapExportSettings(), svg);
+
+		OutputStreamDataFile result = scommand.execute();
+
+		assertTrue(result.getTextData().startsWith(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8));
+		assertEquals(svg.length() + 1 + XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.length(), result
+				.getTextData().length());
+	}
+
+	@Test
+	public void testPNGGet() throws IOException {
+		String inputFile = RU_CURS_SHOWCASE_TEST + GEOMAP_WOHEADER_SVG;
+		InputStream is = FileUtils.loadResToStream(inputFile);
+		String svg = TextUtils.streamToString(is);
+		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
+		PNGGetCommand command = new PNGGetCommand(context, new GeoMapExportSettings(), svg);
+		OutputStreamDataFile result = command.execute();
+
+		assertTrue(result.getData().size() > 0);
+		assertNull(result.getTextData());
+		assertTrue(result.getName().endsWith("png"));
+	}
+
+	@Test
+	public void testJPGGet() throws IOException {
+		String inputFile = RU_CURS_SHOWCASE_TEST + GEOMAP_WOHEADER_SVG;
+		InputStream is = FileUtils.loadResToStream(inputFile);
+		String svg = TextUtils.streamToString(is);
+		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
+		JPGGetCommand command = new JPGGetCommand(context, new GeoMapExportSettings(), svg);
+		OutputStreamDataFile result = command.execute();
+
+		assertTrue(result.getData().size() > 0);
+		assertNull(result.getTextData());
+		assertTrue(result.getName().endsWith("jpg"));
 	}
 
 }

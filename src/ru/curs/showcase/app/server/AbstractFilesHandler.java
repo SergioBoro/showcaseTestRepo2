@@ -89,8 +89,10 @@ public abstract class AbstractFilesHandler {
 	/**
 	 * Функция получения файла.
 	 * 
+	 * @throws UnsupportedEncodingException
+	 * 
 	 */
-	protected abstract void processFiles();
+	protected abstract void processFiles() throws UnsupportedEncodingException;
 
 	/**
 	 * Функция десериализации объекта, переданного в теле запроса.

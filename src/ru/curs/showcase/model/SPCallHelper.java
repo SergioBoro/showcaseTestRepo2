@@ -428,15 +428,16 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		return result;
 	}
 
+	/**
+	 * Функция getBytes подходит и для BINARY, и для BLOB.
+	 * 
+	 * @param dataIndex
+	 * @return
+	 * @throws SQLException
+	 */
 	private InputStream getBinaryStream(final int dataIndex) throws SQLException {
-		InputStream is = null;
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			Blob blob = getStatement().getBlob(dataIndex);
-			is = blob.getBinaryStream();
-		} else {
-			byte[] bt = getStatement().getBytes(dataIndex);
-			is = new ByteArrayInputStream(bt);
-		}
+		byte[] bt = getStatement().getBytes(dataIndex);
+		InputStream is = new ByteArrayInputStream(bt);
 		return is;
 	}
 }

@@ -1,0 +1,84 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events"
+    xmlns:xsd="http://www.w3.org/2001/XMLschema" xmlns:fs="http://www.curs.ru/ns/FormServer"
+    xmlns:xf="http://www.w3.org/2002/xforms">
+    <head>
+        <style  type="text/css" >
+            .dateInput
+            .xforms-value {
+            width: 120px !important;
+            border: 0px;
+            padding: 2px 0px 2px 0px; 
+            background-color: #E5F2FF;
+            margin: 2px 0px 0px 0px;
+            min-height: 13px;
+            }
+            .aid-button,
+            .aid-button
+            button {
+            width: 30px !important;
+            }
+            .xforms-invalid .xforms-alert
+            {
+            display:none !important;
+            }
+            .xforms-invalid
+            .xforms-value {
+            background-color: red !important;
+            border: 0 !important;
+            }
+        </style>
+        <xf:model id="mainModel">
+            <xf:instance id="mainInstance">
+                <schema xmlns="">
+                    <date/>
+                </schema>
+            </xf:instance>
+           
+                <xf:bind nodeset="/schema/date" type="date"/>
+        </xf:model>        
+    </head>
+    <body>
+        
+        <div class="control" style="width: 150px; padding: 2px; float: left;">
+            <xf:input class="dateInput" ref="/schema/date">
+                <xf:label>Выберите дату: </xf:label>
+            </xf:input>
+        </div>    
+        
+        <div class="control" style="width: 10px; padding: 2px; float: left;  clear: both;"/>
+        
+        
+        <div style="float: left;">
+            <table cellpadding="0px" cellspacing="1px" width="250px">
+                <tr height="20px;"/>
+                <tr>
+                    <td class="Tab" id="Tab4" style="width: 150px; text-align: center">
+                        <SPAN id="Tab4Button">
+                            <BUTTON class="TabButton" hasXFElement="false" type="submit">Сохранить и
+                                Закрыть</BUTTON>
+                        </SPAN>
+                        <xf:trigger class="HideButton" id="Tab4Button">
+                            <xf:action ev:event="DOMActivate">
+                    <xf:load
+                        resource="javascript:gwtXFormSave('${elementId}','1',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))"
+                    />
+                            </xf:action>
+                        </xf:trigger>
+                    </td>
+                    <td class="Tab" id="Tab5" style="width: 100px; text-align: center">
+                        <SPAN id="Tab5Button">
+                            <BUTTON class="TabButton" hasXFElement="false" type="submit"
+                                >Закрыть</BUTTON>
+                        </SPAN>
+                        <xf:trigger class="HideButton" id="Tab5Button">
+                            <xf:action ev:event="DOMActivate">
+                                <xf:load resource="javascript:gwtXFormFilter('${elementId}', '1', null)"/>
+                            </xf:action>
+                        </xf:trigger>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+    </body>
+</html>

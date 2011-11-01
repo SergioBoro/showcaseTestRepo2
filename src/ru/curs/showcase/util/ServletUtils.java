@@ -7,6 +7,8 @@ import javax.servlet.http.*;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.app.api.event.CompositeContext;
+
 /**
  * Вспомогательные функции для работы с сервлетами.
  * 
@@ -15,7 +17,8 @@ import org.slf4j.*;
  */
 public final class ServletUtils {
 
-	private static final String CANT_WRITE_RESPONSE_ERROR = "Невозможно вернуть ошибку в HTTP response";
+	private static final String CANT_WRITE_RESPONSE_ERROR =
+		"Невозможно вернуть ошибку в HTTP response";
 
 	/**
 	 * Идентификатор сессии для модульных тестов.
@@ -54,6 +57,12 @@ public final class ServletUtils {
 			result.put(key, values);
 		}
 		return result;
+	}
+
+	public static CompositeContext prepareURLParamsContext(final HttpServletRequest request)
+			throws UnsupportedEncodingException {
+		Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
+		return new CompositeContext(params);
 	}
 
 	/**

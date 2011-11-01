@@ -48,6 +48,9 @@ public class AbstractTest extends GeneralXMLHelper {
 
 	protected static final String RICH_DP = "m1003.xml";
 
+	protected static final String GEOMAP_WOHEADER_SVG = "geomap_woheader.svg";
+	protected static final String RU_CURS_SHOWCASE_TEST = "ru\\curs\\showcase\\test\\";
+
 	/**
 	 * Действия, которые должны выполняться перед запуском любых тестовых
 	 * классов.

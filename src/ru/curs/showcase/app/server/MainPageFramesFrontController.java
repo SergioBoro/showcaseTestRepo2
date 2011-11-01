@@ -1,7 +1,6 @@
 package ru.curs.showcase.app.server;
 
 import java.io.IOException;
-import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -29,8 +28,7 @@ public final class MainPageFramesFrontController extends HttpServlet {
 			servlet.replace("/" + ExchangeConstants.SECURED_SERVLET_PREFIX + "/", "")
 					.toUpperCase();
 		MainPageFrameType type = MainPageFrameType.valueOf(servlet);
-		Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
-		CompositeContext context = new CompositeContext(params);
+		CompositeContext context = ServletUtils.prepareURLParamsContext(request);
 		MainPageFrameGetCommand command = new MainPageFrameGetCommand(context, type);
 		String html = command.execute();
 		response.setStatus(HttpServletResponse.SC_OK);
