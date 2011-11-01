@@ -46,7 +46,8 @@ public class GeneralDataPanel {
 	 */
 	public Widget generateDataPanel() {
 
-		final int n69 = 69;
+		final int n87 = 87;
+		final int n73 = 73;
 		Event.addNativePreviewHandler(new NativePreviewHandler() {
 			@Override
 			public void onPreviewNativeEvent(final NativePreviewEvent event) {
@@ -54,7 +55,7 @@ public class GeneralDataPanel {
 
 				if ((event.getTypeInt() == Event.ONKEYUP) && (nativeEvent.getCtrlKey())
 						&& (nativeEvent.getShiftKey()) && (nativeEvent.getAltKey())
-						&& (nativeEvent.getKeyCode() == n69)) {
+						&& ((nativeEvent.getKeyCode() == n87) | (nativeEvent.getKeyCode() == n73))) {
 
 					String url =
 						"http://" + Window.Location.getHost() + Window.Location.getPath()
