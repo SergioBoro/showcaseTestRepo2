@@ -626,10 +626,12 @@ public class GridPanel extends BasicElementPanelBasis {
 				break;
 			}
 
-			if ((event.getTarget().getColumn().getValueType() == GridValueType.DOWNLOAD)
-					&& (interactionType == InteractionType.SINGLE_CLICK)) {
+			if (event.isClickFromAdditionalButton()) {
 				event.preventDefault();
-				processFileDownload(event.getTarget().getRecord(), event.getTarget().getColumn());
+				if (event.getTarget().getColumn().getValueType() == GridValueType.DOWNLOAD) {
+					processFileDownload(event.getTarget().getRecord(), event.getTarget()
+							.getColumn());
+				}
 			} else {
 				processClick(event.getTarget().getRecord().getId(), event.getTarget().getColumn()
 						.getId(), interactionType);
@@ -652,7 +654,7 @@ public class GridPanel extends BasicElementPanelBasis {
 
 	private void processFileDownload(final Record rec, final Column col) {
 		DownloadHelper dh = DownloadHelper.getInstance();
-		dh.setEncoding(FormPanel.ENCODING_URLENCODED);		
+		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
 
 		dh.setErrorCaption(Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD);
