@@ -32,10 +32,4 @@
 			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
 		</element>					
 	</tab>
-	<tab id="07" name="Скачивание файлов из грида">
-		<element id="0701" type="grid" proc="grid_download_load">
-			<proc id="11" name="grid_download1" type="DOWNLOAD" />
-			<proc id="12" name="grid_download2" type="DOWNLOAD" />
-		</element>		
-	</tab>
 </datapanel>

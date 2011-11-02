@@ -58,7 +58,7 @@
           <datapanel type="dp0903" tab="firstOrCurrent" />
         </action>
       </level2>
-    </level1>
+    </level1>    
     <level1 id="10" name="10-й этап">    
       <level2 id="1001" name="10-й этап, 1 неделя">
         <action>
@@ -77,7 +77,9 @@
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
           <datapanel type="1003.xml" tab="firstOrCurrent" />
         </action>
-      </level2>   
+      </level2>  
+    </level1>       
+    <level1 id="11" name="11-й этап">         
       <level2 id="1101" name="11-й этап, 1 неделя" selectOnLoad="false">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
