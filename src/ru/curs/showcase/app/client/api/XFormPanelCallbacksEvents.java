@@ -47,6 +47,8 @@ public final class XFormPanelCallbacksEvents {
 			final String data) {
 		final XFormPanel curXFormPanel = getCurrentPanel(xformId);
 
+		MessageBox.showSimpleMessage("message", xformId + "///" + linkId + "///" + data);
+
 		if (curXFormPanel != null) {
 			final Action ac = getActionByLinkId(linkId, curXFormPanel);
 
@@ -60,12 +62,22 @@ public final class XFormPanelCallbacksEvents {
 							public void onSuccess(final Void result) {
 								InlineUploader uploader =
 									new InlineUploader(data, curXFormPanel, ac);
-								uploader.checkForUpload();
+								uploader.checkForUpload(new CompleteHandler() {
 
+									@Override
+									public void onComplete(boolean aRes) {
+										// TODO Auto-generated method stub
+										runAction(ac);
+									}
+
+								});
+								// MessageBox.showSimpleMessage("message1",
+								// xformId + "///" + linkId
+								// + "///" + data);
 								if (curXFormPanel.getUw() != null) {
 									submitUploadForm(data, curXFormPanel, ac);
 								}
-								runAction(ac);
+								// runAction(ac);
 							}
 						});
 			} else {
@@ -134,10 +146,10 @@ public final class XFormPanelCallbacksEvents {
 		}
 
 		currentXFormPanel.getPanel().add(uh);
-		uh.submit(new UploadSubmitEndHandler() {
+		uh.submit(new CompleteHandler() {
 
 			@Override
-			public void onEnd(final boolean aRes) {
+			public void onComplete(final boolean aRes) {
 
 			}
 		});

@@ -6,12 +6,12 @@ package ru.curs.showcase.app.client.api;
  * @author den
  * 
  */
-public interface UploadSubmitEndHandler {
+public interface CompleteHandler {
 	/**
 	 * Обработчик окончания загрузки файлов на сервер.
 	 * 
 	 * @param aRes
 	 *            - был ли выбран файл.
 	 */
-	void onEnd(boolean aRes);
+	void onComplete(boolean aRes);
 }

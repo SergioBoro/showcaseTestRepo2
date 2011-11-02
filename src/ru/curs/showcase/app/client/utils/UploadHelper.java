@@ -4,7 +4,7 @@ import java.util.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.client.MessageBox;
-import ru.curs.showcase.app.client.api.UploadSubmitEndHandler;
+import ru.curs.showcase.app.client.api.CompleteHandler;
 
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -26,7 +26,7 @@ public final class UploadHelper extends RunServletByFormHelper {
 	/**
 	 * Обработчик окончания загрузки файлов.
 	 */
-	private UploadSubmitEndHandler submitHandler = null;
+	private CompleteHandler submitHandler = null;
 
 	/**
 	 * Информация о регистрации обработчика.
@@ -119,7 +119,7 @@ public final class UploadHelper extends RunServletByFormHelper {
 	 * @param aSubmitHandler
 	 *            - обработчик.
 	 */
-	public void submit(final UploadSubmitEndHandler aSubmitHandler) {
+	public void submit(final CompleteHandler aSubmitHandler) {
 		if (isFilesSelected()) {
 			submitHandler = aSubmitHandler;
 			super.submit();
@@ -135,7 +135,7 @@ public final class UploadHelper extends RunServletByFormHelper {
 			@Override
 			public void onSubmitComplete(final SubmitCompleteEvent event) {
 				if ((event.getResults() == null) || (event.getResults().isEmpty())) {
-					submitHandler.onEnd(true);
+					submitHandler.onComplete(true);
 				} else {
 					MessageBox.showSimpleMessage(UPLOAD_ERROR, event.getResults());
 				}
