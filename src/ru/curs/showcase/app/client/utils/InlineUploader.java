@@ -125,7 +125,7 @@ public class InlineUploader {
 		}
 	}-*/;
 
-	public static void onSubmitComplete() {
+	public static synchronized void onSubmitComplete() {
 		counter--;
 		if (counter == 0) {
 			if (submitHandler != null) {
