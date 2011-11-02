@@ -47,8 +47,6 @@ public final class XFormPanelCallbacksEvents {
 			final String data) {
 		final XFormPanel curXFormPanel = getCurrentPanel(xformId);
 
-		MessageBox.showSimpleMessage("message", xformId + "///" + linkId + "///" + data);
-
 		if (curXFormPanel != null) {
 			final Action ac = getActionByLinkId(linkId, curXFormPanel);
 
@@ -71,9 +69,7 @@ public final class XFormPanelCallbacksEvents {
 									}
 
 								});
-								// MessageBox.showSimpleMessage("message1",
-								// xformId + "///" + linkId
-								// + "///" + data);
+
 								if (curXFormPanel.getUw() != null) {
 									submitUploadForm(data, curXFormPanel, ac);
 								}
