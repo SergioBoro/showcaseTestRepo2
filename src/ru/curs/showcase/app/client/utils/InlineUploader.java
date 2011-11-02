@@ -6,7 +6,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.client.*;
-import ru.curs.showcase.app.client.api.Constants;
+import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.*;
@@ -26,14 +26,21 @@ public class InlineUploader {
 	private final XFormPanel currentXFormPanel;
 	private final Action ac;
 
+	/**
+	 * Обработчик окончания загрузки файлов.
+	 */
+	private CompleteHandler submitHandler = null;
+
 	public InlineUploader(final String aData, final XFormPanel aCurrentXFormPanel, final Action aAc) {
 		super();
+
 		data = aData;
 		currentXFormPanel = aCurrentXFormPanel;
 		ac = aAc;
 	}
 
-	public void checkForUpload() {
+	public void checkForUpload(final CompleteHandler uplSubmitEndHandler) {
+		submitHandler = uplSubmitEndHandler;
 		DataPanelElementInfo dpei = currentXFormPanel.getElementInfo();
 
 		for (Entry<String, DataPanelElementProc> entry : dpei.getProcs().entrySet()) {
