@@ -73,7 +73,6 @@ public final class XFormPanelCallbacksEvents {
 								if (curXFormPanel.getUw() != null) {
 									submitUploadForm(data, curXFormPanel, ac);
 								}
-								// runAction(ac);
 							}
 						});
 			} else {
