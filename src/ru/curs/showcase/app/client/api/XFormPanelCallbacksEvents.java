@@ -63,7 +63,7 @@ public final class XFormPanelCallbacksEvents {
 								uploader.checkForUpload(new CompleteHandler() {
 
 									@Override
-									public void onComplete(boolean aRes) {
+									public void onComplete(final boolean aRes) {
 										// TODO Auto-generated method stub
 										runAction(ac);
 									}
