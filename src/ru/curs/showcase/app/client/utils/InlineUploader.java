@@ -24,12 +24,15 @@ public class InlineUploader {
 
 	private final String data;
 	private final XFormPanel currentXFormPanel;
+	@SuppressWarnings("unused")
 	private final Action ac;
+
+	private static int counter = 0;
 
 	/**
 	 * Обработчик окончания загрузки файлов.
 	 */
-	private CompleteHandler submitHandler = null;
+	private static CompleteHandler submitHandler = null;
 
 	public InlineUploader(final String aData, final XFormPanel aCurrentXFormPanel, final Action aAc) {
 		super();
@@ -42,6 +45,8 @@ public class InlineUploader {
 	public void checkForUpload(final CompleteHandler uplSubmitEndHandler) {
 		submitHandler = uplSubmitEndHandler;
 		DataPanelElementInfo dpei = currentXFormPanel.getElementInfo();
+
+		counter = 0;
 
 		for (Entry<String, DataPanelElementProc> entry : dpei.getProcs().entrySet()) {
 			if (entry.getValue().getType() == DataPanelElementProcType.UPLOAD) {
@@ -74,7 +79,11 @@ public class InlineUploader {
 					isFilesSelected = isFilesSelected || isFilesSelected(el);
 				}
 			}
+
+			setOnSubmitComplete(form.getAttribute("target"));
+
 			if (isFilesSelected) {
+				counter++;
 				form.submit();
 				clearForm(form);
 			}
@@ -95,4 +104,36 @@ public class InlineUploader {
 	private static native JavaScriptObject getElementById(final String id) /*-{
 		return $wnd.document.getElementById(id);
 	}-*/;
+
+	private static native void setOnSubmitComplete(final String name) /*-{
+		var iframe = $wnd.document.getElementsByName(name)[0];
+
+		if (iframe.attachEvent) {
+			if (iframe.getAttribute("isSetOnSubmitComplete") == "") {
+				iframe
+						.attachEvent(
+								"onload",
+								function() {
+									@ru.curs.showcase.app.client.utils.InlineUploader::onSubmitComplete()();
+								});
+				iframe.setAttribute("isSetOnSubmitComplete", "true")
+			}
+		} else {
+			iframe.onload = function() {
+				@ru.curs.showcase.app.client.utils.InlineUploader::onSubmitComplete()();
+			};
+		}
+	}-*/;
+
+	public static void onSubmitComplete() {
+		counter--;
+		if (counter == 0) {
+			if (submitHandler != null) {
+				submitHandler.onComplete(true);
+				submitHandler = null;
+			}
+			// MessageBox.showSimpleMessage("", "Complete");
+		}
+	}
+
 }
