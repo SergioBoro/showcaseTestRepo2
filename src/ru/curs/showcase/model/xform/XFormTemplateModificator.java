@@ -78,7 +78,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			parent.replaceChild(form, old);
 			form.setAttribute(ID_TAG, element.getUploaderId(procId));
 			form.setAttribute("class", "sc-uploader-form");
-			form.setAttribute("target", getUploaderTargetName(element, procId));
+			form.setAttribute("target", getUploaderTargetName(element, procId, i));
 			form.setAttribute("method", "post");
 			form.setAttribute("accept-charset", "utf-8");
 			form.setAttribute("enctype", "multipart/form-data");
@@ -100,7 +100,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			form.appendChild(input);
 
 			Element iframe = doc.createElement("iframe");
-			iframe.setAttribute(NAME_TAG, getUploaderTargetName(element, procId));
+			iframe.setAttribute(NAME_TAG, getUploaderTargetName(element, procId, i));
 			iframe.setAttribute("src", "javascript:''");
 			iframe.setAttribute("style", "position:absolute;width:0;height:0;border:0");
 			iframe.setAttribute("isSetOnSubmitComplete", "");
@@ -111,8 +111,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	}
 
 	private static String getUploaderTargetName(final DataPanelElementInfo element,
-			final String procId) {
-		return String.format("%s__%s", element.getUploaderId(procId), "hidden_target");
+			final String procId, final int index) {
+		return String.format("%s_%s__%s", element.getUploaderId(procId), index, "hidden_target");
 	}
 
 	private static void addServerElement(final org.w3c.dom.Document doc, final Node srv,

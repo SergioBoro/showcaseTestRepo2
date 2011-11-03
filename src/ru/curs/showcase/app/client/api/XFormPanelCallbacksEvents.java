@@ -65,6 +65,10 @@ public final class XFormPanelCallbacksEvents {
 									@Override
 									public void onComplete(final boolean aRes) {
 										// TODO Auto-generated method stub
+
+										// MessageBox.showSimpleMessage("InlineUploaderComplete",
+										// "aRes=" + String.valueOf(aRes));
+
 										runAction(ac);
 									}
 
@@ -430,6 +434,7 @@ public final class XFormPanelCallbacksEvents {
 		 */
 		final class UploadParam extends JavaScriptObject {
 
+			@SuppressWarnings("unused")
 			protected UploadParam() {
 
 			};

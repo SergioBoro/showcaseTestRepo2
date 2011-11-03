@@ -29,6 +29,8 @@ public class InlineUploader {
 
 	private static int counter = 0;
 
+	private boolean isAtLeastOneFileSelected = false;
+
 	/**
 	 * Обработчик окончания загрузки файлов.
 	 */
@@ -47,6 +49,7 @@ public class InlineUploader {
 		DataPanelElementInfo dpei = currentXFormPanel.getElementInfo();
 
 		counter = 0;
+		isAtLeastOneFileSelected = false;
 
 		for (Entry<String, DataPanelElementProc> entry : dpei.getProcs().entrySet()) {
 			if (entry.getValue().getType() == DataPanelElementProcType.UPLOAD) {
@@ -54,6 +57,13 @@ public class InlineUploader {
 				if (form != null) {
 					submitInlineForm(dpei, form);
 				}
+			}
+		}
+
+		if (!isAtLeastOneFileSelected) {
+			if (submitHandler != null) {
+				submitHandler.onComplete(false);
+				submitHandler = null;
 			}
 		}
 
@@ -84,6 +94,7 @@ public class InlineUploader {
 
 			if (isFilesSelected) {
 				counter++;
+				isAtLeastOneFileSelected = true;
 				form.submit();
 				clearForm(form);
 			}
