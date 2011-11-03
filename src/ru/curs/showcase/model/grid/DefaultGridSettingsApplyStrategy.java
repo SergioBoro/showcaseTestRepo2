@@ -28,6 +28,8 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 	private static final String DEF_VISIBLE_COLUMNS_HEADER = "def.visible.columns.header";
 	private static final String SINGLE_CLICK_BEFORE_DOUBLE = "single.click.before.double";
 
+	private static final String URL_IMAGE_FILE_DOWNLOAD = "resources/internal/fileDownload.PNG";
+
 	/**
 	 * Настройки грида.
 	 */
@@ -54,6 +56,8 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 		settings.setSelectRecordOnClick(true);
 		settings.setUnselectRecordOnClick(false);
 		settings.setUnselectCellOnClick(false);
+
+		settings.setUrlImageFileDownload(URL_IMAGE_FILE_DOWNLOAD);
 	}
 
 	@Override
