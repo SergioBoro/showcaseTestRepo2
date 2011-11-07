@@ -17,4 +17,7 @@
 			<proc id="12" name="grid_download2" type="DOWNLOAD" />
 		</element>		
 	</tab>	
+	<tab id="08" name="Jython">
+		<element id="0801" type="webtext" proc="webtext_sa"/>
+	</tab>
 </datapanel>

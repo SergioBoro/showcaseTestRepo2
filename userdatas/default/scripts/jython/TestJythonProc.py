@@ -15,11 +15,12 @@ class TestJythonProc(JythonProc):
     def execute(self, obj):
         self.obj = obj;   
         if (not obj.getMain()):       
-            raise Exception("не нравится мне этот контекст!")        
-        print "main context is %s" % (obj.getMain());
-        print "add context is %s" % (obj.getAdditional());
-        print "filter context is %s" % (obj.getFilter());
-        print "session context is %s" % (obj.getSession());
+            raise Exception("не нравится мне этот контекст!")      
+        print "main context is " + obj.getMain().encode("utf-8") ;
+        print "add context is %s" % (obj.getAdditional().encode("utf-8"));
+        if (obj.getFilter()):
+            print "filter context is %s" % (obj.getFilter().encode("utf-8"));
+        print "session context is %s" % (obj.getSession().encode("utf-8"));
         # пример работы с функциями Showcase
         session = XMLUtils.stringToDocument(obj.getSession());
         print "userdata is %s" % (session.getDocumentElement().getElementsByTagName("userdata").item(0).getChildNodes().item(0).getNodeValue());

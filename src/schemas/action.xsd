@@ -8,11 +8,6 @@
 			<xs:enumeration value="BROWSER_TAB" />
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="activityType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="SP" />
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:element name="action">
 		<xs:complexType>
 			<xs:all>
@@ -65,9 +60,7 @@
 									<xs:sequence>
 										<xs:element name="add_context" minOccurs="0" />
 									</xs:sequence>
-									<xs:attributeGroup ref="identGroup" />
-									<xs:attribute name="type" type="activityType"
-										use="required" />									
+									<xs:attributeGroup ref="identGroup" />								
 								</xs:complexType>
 							</xs:element>
 						</xs:all>

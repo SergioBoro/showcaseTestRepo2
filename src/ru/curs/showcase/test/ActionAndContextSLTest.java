@@ -52,7 +52,7 @@ public class ActionAndContextSLTest extends AbstractTest {
 		CompositeContext context =
 			new CompositeContext(
 					generateTestURLParams(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT));
-		context.setMain(MAIN_CONTEXT_TAG);
+		context.setMain("Мейн контекст");
 		context.setAdditional(ADD_CONTEXT_TAG);
 		context.setFilter(FILTER_TAG);
 		activity.setContext(context);

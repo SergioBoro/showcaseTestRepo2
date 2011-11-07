@@ -35,8 +35,13 @@ public final class FileUtils {
 		return result;
 	}
 
+	/**
+	 * Возвращает путь к classes. getResURL(".") использовать нельзя, т.к. он
+	 * некорректно работает на Tomcat, возвращая путь к ${Tomcat}\lib.
+	 */
 	public static String getClassPath() {
-		return getResURL(".").getPath();
+		File tmp = new File(getResURL("ru").getPath());
+		return tmp.getParent();
 	}
 
 	/**

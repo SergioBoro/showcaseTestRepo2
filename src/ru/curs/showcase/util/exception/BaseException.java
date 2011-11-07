@@ -1,5 +1,6 @@
 package ru.curs.showcase.util.exception;
 
+import org.python.core.PyException;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExceptionType;
@@ -89,7 +90,11 @@ public abstract class BaseException extends RuntimeException {
 	 */
 	public String getOriginalMessage() {
 		if (getCause() != null) {
-			return getCause().getLocalizedMessage();
+			if (getCause().getClass() != PyException.class) {
+				return getCause().getLocalizedMessage();
+			} else {
+				return getCause().toString();
+			}
 		}
 		return null;
 	}

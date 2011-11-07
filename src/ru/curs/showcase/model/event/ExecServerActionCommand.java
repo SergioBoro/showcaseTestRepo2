@@ -17,6 +17,7 @@ import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
  */
 public final class ExecServerActionCommand extends ServiceLayerCommand<Void> {
 
+	private static final String NO_SERVER_ACTIVIVTY_IMPL_ERROR = "%s серверное действие еще не реализовано";
 	private static final String SERVER_ACTION_EXECUTED = "Выполнено действие на сервере: ";
 
 	@InputParam
@@ -61,7 +62,7 @@ public final class ExecServerActionCommand extends ServiceLayerCommand<Void> {
 				break;
 			default:
 				throw new ServerLogicError(String.format(
-						"%s серверное действие еще не реализовано", act.getType().toString()));
+						NO_SERVER_ACTIVIVTY_IMPL_ERROR, act.getType().toString()));
 			}
 			gateway.exec(act);
 			LOGGER.info(SERVER_ACTION_EXECUTED + getSerializer().serialize(act));

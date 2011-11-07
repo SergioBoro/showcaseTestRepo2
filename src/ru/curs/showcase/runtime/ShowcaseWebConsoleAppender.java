@@ -19,11 +19,4 @@ public class ShowcaseWebConsoleAppender extends AppenderBase<ILoggingEvent> {
 		AppInfoSingleton.getAppInfo().addLogEvent(eventDecorator);
 	}
 
-	/**
-	 * Layout не используется.
-	 */
-	@Override
-	public void start() {
-		super.start();
-	}
 }
