@@ -16,9 +16,6 @@ import ru.curs.showcase.runtime.AppInfoSingleton;
 public class AppAndSessionEventsListener implements ServletContextListener, HttpSessionListener {
 	private static final String SHOWCASE_LOADING = "Showcase загружается...";
 
-	/**
-	 * LOGGER.
-	 */
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AppAndSessionEventsListener.class);
 

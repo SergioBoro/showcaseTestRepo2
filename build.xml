@@ -227,6 +227,13 @@
 		<unzip src="${dist.dir}/js/dojox.zip" dest="${js.dir}">
 		</unzip>
 	</target>
+	
+	<target name="init.jython" depends="info">
+		<echo>Deleting old jython files</echo>
+		<delete failonerror="false" dir="${webinf.dir}/libJython" />
+		<echo>Unpack new jython files</echo>
+		<unzip src="${dist.dir}/jython/libJython.zip" dest="${webinf.dir}"/>
+	</target>	
 
 	<target name="deploy.trunk" depends="dist">
 		<echo>Deploying trunk distr to server</echo>

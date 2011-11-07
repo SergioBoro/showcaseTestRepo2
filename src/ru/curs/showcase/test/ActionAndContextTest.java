@@ -6,10 +6,12 @@ import java.util.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.CanBeCurrent;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.model.JythonException;
+import ru.curs.showcase.model.event.*;
 
 /**
  * Тесты для действий и контекста.
@@ -81,6 +83,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		Activity act = clone.getServerActivities().get(0);
 		assertNotNull(act);
 		assertEquals(ActivityType.SP, act.getType());
+		assertTrue(act.getOnServerSide());
 		assertEquals("01", act.getId());
 		assertEquals(TEST_ACTIVITY_NAME, act.getName());
 		assertEquals(ADD_CONDITION, act.getContext().getAdditional());
@@ -89,7 +92,8 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		assertTrue(clone.containsClientActivity());
 		act = clone.getClientActivities().get(0);
 		assertNotNull(act);
-		assertEquals(ActivityType.BrowserJS, act.getType());
+		assertEquals(ActivityType.JS, act.getType());
+		assertFalse(act.getOnServerSide());
 		assertEquals("01", act.getId());
 		assertEquals("testJS", act.getName());
 		assertEquals(ADD_CONDITION, act.getContext().getAdditional());
@@ -371,11 +375,11 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		elLink.setRefreshContextOnly(true);
 		elLink.setSkipRefreshContextOnly(true);
 
-		Activity act = new Activity("01", TEST_ACTIVITY_NAME, ActivityType.SP);
+		Activity act = Activity.newServerActivity("01", TEST_ACTIVITY_NAME);
 		act.setContext(getComplexTestContext());
 		action.getServerActivities().add(act);
 
-		act = new Activity("01", "testJS", ActivityType.BrowserJS);
+		act = Activity.newClientActivity("01", "testJS");
 		act.setContext(getComplexTestContext());
 		action.getClientActivities().add(act);
 
@@ -415,11 +419,11 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementLink elLink = new DataPanelElementLink(EL_06, elContext);
 		link.getElementLinks().add(elLink);
 
-		Activity act = new Activity("01", TEST_ACTIVITY_NAME, ActivityType.SP);
+		Activity act = Activity.newServerActivity("01", TEST_ACTIVITY_NAME);
 		act.setContext(context);
 		action.getServerActivities().add(act);
 
-		act = new Activity("01", TEST_ACTIVITY_NAME, ActivityType.BrowserJS);
+		act = Activity.newClientActivity("01", TEST_ACTIVITY_NAME);
 		act.setContext(context);
 		action.getClientActivities().add(act);
 
@@ -492,10 +496,10 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		dpLink.setTabId(TAB_2);
 		insideAction.setDataPanelLink(dpLink);
 		insideAction.determineState();
-		Activity act = new Activity("01", TEST_ACTIVITY_NAME, ActivityType.SP);
+		Activity act = Activity.newServerActivity("01", TEST_ACTIVITY_NAME);
 		act.setContext(CompositeContext.createCurrent());
 		insideAction.getServerActivities().add(act);
-		act = new Activity("01", TEST_ACTIVITY_NAME, ActivityType.BrowserJS);
+		act = Activity.newClientActivity("01", TEST_ACTIVITY_NAME);
 		act.setContext(CompositeContext.createCurrent());
 		insideAction.getClientActivities().add(act);
 		ah.setCurrentAction(insideAction);
@@ -552,6 +556,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		assertEquals("srv01", sa.getId());
 		assertEquals("exec_test", sa.getName());
 		assertEquals(ActivityType.SP, sa.getType());
+		assertTrue(sa.getOnServerSide());
 		assertNotNull(sa.getContext());
 		assertEquals(action.getContext().getMain(), sa.getContext().getMain());
 		assertEquals(
@@ -577,7 +582,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 
 		action = new Action();
 		action.setContext(CompositeContext.createCurrent());
-		Activity act = new Activity("01", "test_proc", ActivityType.SP);
+		Activity act = Activity.newServerActivity("01", "test_proc");
 		act.setContext(CompositeContext.createCurrent());
 		action.getServerActivities().add(act);
 		action.determineState();
@@ -585,7 +590,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 
 		action = new Action();
 		action.setContext(CompositeContext.createCurrent());
-		act = new Activity("01", "test_proc", ActivityType.BrowserJS);
+		act = Activity.newClientActivity("01", "test_proc");
 		act.setContext(CompositeContext.createCurrent());
 		action.getClientActivities().add(act);
 		action.determineState();
@@ -619,7 +624,8 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		Activity ac = action.getClientActivities().get(0);
 		assertEquals("show_moscow", ac.getName());
 		assertEquals("cl01", ac.getId());
-		assertEquals(ActivityType.BrowserJS, ac.getType());
+		assertEquals(ActivityType.JS, ac.getType());
+		assertFalse(ac.getOnServerSide());
 	}
 
 	@Test
@@ -678,4 +684,16 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		assertEquals(FILTER_CONDITION, ces.getFilter());
 		assertEquals(SESSION_CONDITION, ces.getSession());
 	}
+
+	@Test(expected = JythonException.class)
+	public void testJythonActivityException() {
+		Activity activity = Activity.newServerActivity("id", "TestJythonProc.py");
+		CompositeContext context =
+			new CompositeContext(
+					generateTestURLParams(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT));
+		activity.setContext(context);
+		ActivityGateway gateway = new ActivityJythonGateway();
+		gateway.exec(activity);
+	}
+
 }

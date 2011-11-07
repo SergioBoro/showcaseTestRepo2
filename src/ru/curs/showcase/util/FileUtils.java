@@ -35,6 +35,10 @@ public final class FileUtils {
 		return result;
 	}
 
+	public static String getClassPath() {
+		return getResURL(".").getPath();
+	}
+
 	/**
 	 * Универсальная функция загрузки внутренних ресурсов Web-приложения по
 	 * относительному пути, используя Java ClassLoader (например, файлов

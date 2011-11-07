@@ -11,7 +11,7 @@ import org.slf4j.*;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.ServletUtils;
 import ru.curs.showcase.util.exception.ServerLogicError;
 
 /**
@@ -334,6 +334,10 @@ public final class AppInfoSingleton {
 
 	public boolean initializedUserdata() {
 		return getCurUserDataId() != null;
+	}
+
+	public UserData getCurUserData() {
+		return userdatas.get(getCurUserDataId());
 	}
 
 }

@@ -21,7 +21,7 @@ import ru.curs.showcase.app.api.*;
 @XmlRootElement(name = Action.CONTEXT_TAG)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CompositeContext extends TransferableElement implements CanBeCurrent,
-		SerializableElement, Assignable<CompositeContext>, GWTClonable {
+		SerializableElement, Assignable<CompositeContext>, GWTClonable, AbstractCompositeContext {
 
 	@Override
 	public String toString() {
@@ -88,34 +88,42 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		super();
 	}
 
+	@Override
 	public String getSession() {
 		return session;
 	}
 
+	@Override
 	public void setSession(final String aSession) {
 		session = aSession;
 	}
 
+	@Override
 	public final String getMain() {
 		return main;
 	}
 
+	@Override
 	public final void setMain(final String aMain) {
 		this.main = aMain;
 	}
 
+	@Override
 	public final String getAdditional() {
 		return additional;
 	}
 
+	@Override
 	public final void setAdditional(final String aAdditional) {
 		this.additional = aAdditional;
 	}
 
+	@Override
 	public String getFilter() {
 		return filter;
 	}
 
+	@Override
 	public void setFilter(final String aFilter) {
 		filter = aFilter;
 	}

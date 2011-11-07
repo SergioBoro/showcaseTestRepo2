@@ -4,9 +4,10 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.event.Action;
+import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.command.ExecServerActionCommand;
+import ru.curs.showcase.model.event.ExecServerActionCommand;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
@@ -40,6 +41,23 @@ public class ActionAndContextSLTest extends AbstractTest {
 		AppInfoSingleton.getAppInfo().setCurUserDataId("test1");
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		action.getContext().setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
+		ExecServerActionCommand command = new ExecServerActionCommand(action);
+		command.execute();
+	}
+
+	@Test
+	public void testJythonActivity() {
+		Action action = new Action();
+		Activity activity = Activity.newServerActivity("id", "TestJythonProc.py");
+		CompositeContext context =
+			new CompositeContext(
+					generateTestURLParams(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT));
+		context.setMain(MAIN_CONTEXT_TAG);
+		context.setAdditional(ADD_CONTEXT_TAG);
+		context.setFilter(FILTER_TAG);
+		activity.setContext(context);
+		action.setContext(context);
+		action.getServerActivities().add(activity);
 		ExecServerActionCommand command = new ExecServerActionCommand(action);
 		command.execute();
 	}

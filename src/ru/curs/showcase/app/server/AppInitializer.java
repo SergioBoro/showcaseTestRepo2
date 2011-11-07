@@ -3,6 +3,7 @@ package ru.curs.showcase.app.server;
 import java.io.*;
 import java.util.*;
 
+import org.python.util.PythonInterpreter;
 import org.slf4j.*;
 
 import ru.curs.showcase.runtime.*;
@@ -49,6 +50,18 @@ public final class AppInitializer {
 		XMLUtils.setupSchemaFactory();
 		XMLUtils.setupTransformer();
 		JMXMBeanRegistrator.register();
+		jythonInit();
+	}
+
+	/**
+	 * Инициализация Jython. Нельзя инициализировать Py.getSystemState() здесь,
+	 * т.к. для конкретного интерпретатора все равно будет использоваться свой
+	 * SystemState
+	 */
+	private static void jythonInit() {
+		Properties newProps = new Properties();
+		newProps.put("python.cachedir", "..\\tmp");
+		PythonInterpreter.initialize(System.getProperties(), newProps, new String[0]);
 	}
 
 	/**

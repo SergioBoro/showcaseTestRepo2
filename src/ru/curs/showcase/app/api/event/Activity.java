@@ -18,24 +18,25 @@ import ru.curs.showcase.app.api.NamedElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Activity extends NamedElement implements SerializableElement, ContainingContext {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -3677230519093999292L;
 
-	/**
-	 * Тип действия на сервере.
-	 */
-	private ActivityType type;
-
-	/**
-	 * Контекст, связанный с серверным действием.
-	 */
 	private CompositeContext context;
 
-	public Activity(final String aId, final String aName, final ActivityType aType) {
+	private Boolean onServerSide;
+
+	public static Activity newServerActivity(final String aId, final String aName) {
+		Activity res = new Activity(aId, aName, true);
+		return res;
+	}
+
+	public static Activity newClientActivity(final String aId, final String aName) {
+		Activity res = new Activity(aId, aName, false);
+		return res;
+	}
+
+	protected Activity(final String aId, final String aName, final Boolean aOnServerSide) {
 		super(aId, aName);
-		type = aType;
+		onServerSide = aOnServerSide;
 	}
 
 	public Activity() {
@@ -43,11 +44,18 @@ public class Activity extends NamedElement implements SerializableElement, Conta
 	}
 
 	public ActivityType getType() {
-		return type;
-	}
-
-	public void setType(final ActivityType aType) {
-		type = aType;
+		ActivityType res;
+		if (getOnServerSide()) {
+			res = ActivityType.SP;
+			if (getName().endsWith(".py")) {
+				return ActivityType.JYTHON;
+			} else if (getName().endsWith(".js")) {
+				return ActivityType.JS;
+			}
+		} else {
+			res = ActivityType.JS;
+		}
+		return res;
 	}
 
 	@Override
@@ -60,8 +68,16 @@ public class Activity extends NamedElement implements SerializableElement, Conta
 	}
 
 	public Activity gwtClone() {
-		Activity res = new Activity(getId(), getName(), type);
+		Activity res = new Activity(getId(), getName(), onServerSide);
 		res.setContext(context.gwtClone());
 		return res;
+	}
+
+	public Boolean getOnServerSide() {
+		return onServerSide;
+	}
+
+	public void setOnServerSide(final Boolean aOnServerSide) {
+		onServerSide = aOnServerSide;
 	}
 }

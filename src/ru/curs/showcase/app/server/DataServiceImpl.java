@@ -13,6 +13,7 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.model.chart.ChartGetCommand;
 import ru.curs.showcase.model.command.*;
 import ru.curs.showcase.model.datapanel.DataPanelGetCommand;
+import ru.curs.showcase.model.event.ExecServerActionCommand;
 import ru.curs.showcase.model.frame.MainPageGetCommand;
 import ru.curs.showcase.model.geomap.GeoMapGetCommand;
 import ru.curs.showcase.model.grid.GridGetCommand;

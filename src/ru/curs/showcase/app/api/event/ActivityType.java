@@ -14,5 +14,9 @@ public enum ActivityType {
 	/**
 	 * Вызов процедуры JS в браузере.
 	 */
-	BrowserJS
+	JS,
+	/**
+	 * Вызов Jython скрипта.
+	 */
+	JYTHON
 }

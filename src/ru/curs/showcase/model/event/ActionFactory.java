@@ -129,12 +129,7 @@ public class ActionFactory extends SAXTagHandler {
 	public void activitySTARTTAGHandler(final Attributes attrs) {
 		curActivity = new Activity();
 		setupBaseProps(curActivity, attrs);
-		if (readingServerPart) {
-			String value = attrs.getValue(TYPE_TAG);
-			curActivity.setType(ActivityType.valueOf(value));
-		} else {
-			curActivity.setType(ActivityType.BrowserJS);
-		}
+		curActivity.setOnServerSide(readingServerPart);
 
 		CompositeContext context = createContextFromGeneral();
 		curActivity.setContext(context);
