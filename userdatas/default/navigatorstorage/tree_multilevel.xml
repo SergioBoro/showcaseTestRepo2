@@ -53,7 +53,7 @@
 					</element>
 				</datapanel>
 				<server>
-				<activity id="srv01" name="test" type="SP">
+				<activity id="srv01" name="test">
 				<add_context>
 				test
 				</add_context>

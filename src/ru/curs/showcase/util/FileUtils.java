@@ -40,8 +40,10 @@ public final class FileUtils {
 	 * некорректно работает на Tomcat, возвращая путь к ${Tomcat}\lib.
 	 */
 	public static String getClassPath() {
-		File tmp = new File(getResURL("ru").getPath());
-		return tmp.getParent();
+		URL url = getResURL("ru/curs/showcase/util/FileUtils.class");
+		File tmp = new File(url.getPath());
+		return tmp.getParent().substring(0,
+				tmp.getParent().length() - "\\ru\\curs\\showcase\\util".length());
 	}
 
 	/**

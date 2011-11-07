@@ -64,7 +64,7 @@
 				<main_context>Вывоз, включая экспорт - Всего</main_context>
 				<datapanel type="a.xml" />
 				<server>
-				<activity id="srv01" type="SP" name="exec_test"/>
+				<activity id="srv01" name="exec_test"/>
 				</server>
 			</action>
 		</level1>
@@ -72,7 +72,7 @@
 			<action>
 				<main_context>Вывоз, включая экспорт - Всего</main_context>
 				<server>
-				<activity id="srv01" type="SP" name="exec_by_userdata"/>
+				<activity id="srv01" name="exec_by_userdata"/>
 				</server>
 			</action>
 		</level1>						
