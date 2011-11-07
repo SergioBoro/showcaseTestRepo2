@@ -12,21 +12,21 @@ from datetime import date;
 class TestJythonProc(JythonProc):
     def __init__(self):
         print "init func!";        
-    def execute(self, obj):
-        self.obj = obj;   
-        if (not obj.getMain()):       
-            raise Exception("не нравится мне этот контекст!")      
-        print "main context is " + obj.getMain().encode("utf-8") ;
-        print "add context is %s" % (obj.getAdditional().encode("utf-8"));
-        if (obj.getFilter()):
-            print "filter context is %s" % (obj.getFilter().encode("utf-8"));
-        print "session context is %s" % (obj.getSession().encode("utf-8"));
+    def execute(self, context):
+        self.context = context;   
+        if (not context.getMain()):       
+            raise Exception("не нравится мне этот контекст!");      
+        print "main context is " + context.getMain().encode("utf-8");
+        print "add context is %s" % (context.getAdditional().encode("utf-8"));
+        if (context.getFilter()):
+            print "filter context is %s" % (context.getFilter().encode("utf-8"));
+        print "session context is %s" % (context.getSession().encode("utf-8"));
         # пример работы с функциями Showcase
-        session = XMLUtils.stringToDocument(obj.getSession());
+        session = XMLUtils.stringToDocument(context.getSession());
         print "userdata is %s" % (session.getDocumentElement().getElementsByTagName("userdata").item(0).getChildNodes().item(0).getNodeValue());
         doc = XMLUtils.createEmptyDoc("activity");
         el = doc.createElement("context");
         doc.getDocumentElement().appendChild(el);
-        el.setAttribute("main", obj.getMain());
+        el.setAttribute("main", context.getMain());
         # пример работы с модулями Jython
         print "Дата: %s" % date.today();

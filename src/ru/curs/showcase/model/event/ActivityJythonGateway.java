@@ -19,6 +19,8 @@ import ru.curs.showcase.util.exception.ServerLogicError;
  */
 public class ActivityJythonGateway implements ActivityGateway {
 
+	private static final String PYTHON_SCRIPTS_DIR_NOT_FOUND =
+		"Каталог с python скриптами не найден";
 	public static final String LIB_JYTHON_PATH = "\\..\\libJython";
 	private static final String JYTHON_ERROR =
 		"При вызове Jython Server Activity '%s' произошла ошибка";
@@ -31,10 +33,13 @@ public class ActivityJythonGateway implements ActivityGateway {
 		state.path.append(new PyString(AppInfoSingleton.getAppInfo().getCurUserData().getPath()
 				+ "\\\\" + SCRIPTS_JYTHON_PATH));
 		File jythonLibPath = new File(FileUtils.getClassPath() + LIB_JYTHON_PATH);
+		if (!jythonLibPath.exists()) {
+			throw new ServerLogicError(PYTHON_SCRIPTS_DIR_NOT_FOUND);
+		}
 		try {
 			state.path.append(new PyString(jythonLibPath.getCanonicalPath()));
 		} catch (IOException e) {
-			throw new ServerLogicError("Каталог с python скриптами не найден");
+			throw new ServerLogicError(e);
 		}
 
 		String className = TextUtils.extractFileName(act.getName());
