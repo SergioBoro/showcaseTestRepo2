@@ -9,6 +9,9 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 <http auto-config="true" use-expressions="true">
 <custom-filter ref="requestHeaderFilter" before="FORM_LOGIN_FILTER"/>
 <!--	<intercept-url pattern="/messageList*" access="ROLE_USER,ROLE_ANONYMOUS" />-->
+
+    <intercept-url pattern="/log/*" access="hasRole('ROLE_ADMIN')" />
+
 	<session-management session-authentication-strategy-ref="sas"/>
 	<session-management session-fixation-protection="none"/>
 	
