@@ -69,6 +69,15 @@ public class InlineUploader {
 
 	}
 
+	public void singleFormUpload(final String linkId) {
+		DataPanelElementInfo dpei = currentXFormPanel.getElementInfo();
+
+		JavaScriptObject form = getElementById(dpei.getUploaderId(linkId));
+		if (form != null) {
+			submitInlineForm(dpei, form);
+		}
+	}
+
 	private void submitInlineForm(final DataPanelElementInfo dpei, final JavaScriptObject element) {
 		boolean isFilesSelected = false;
 		try {
@@ -137,13 +146,15 @@ public class InlineUploader {
 	}-*/;
 
 	public static synchronized void onSubmitComplete() {
+
+		// MessageBox.showSimpleMessage("", "Complete");
+
 		counter--;
 		if (counter == 0) {
 			if (submitHandler != null) {
 				submitHandler.onComplete(true);
 				submitHandler = null;
 			}
-			// MessageBox.showSimpleMessage("", "Complete");
 		}
 	}
 

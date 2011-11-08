@@ -268,6 +268,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 		$wnd.showMultiSelector = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showMultiSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
 		$wnd.gwtXFormDownload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::downloadFile(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 		$wnd.gwtXFormUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::uploadFile(Lcom/google/gwt/core/client/JavaScriptObject;);
+		$wnd.gwtXFormSimpleUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::simpleUpload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);		
+		
 	}-*/;
 
 	// CHECKSTYLE:ON

@@ -64,8 +64,6 @@ public final class XFormPanelCallbacksEvents {
 
 									@Override
 									public void onComplete(final boolean aRes) {
-										// TODO Auto-generated method stub
-
 										// MessageBox.showSimpleMessage("InlineUploaderComplete",
 										// "aRes=" + String.valueOf(aRes));
 
@@ -83,6 +81,25 @@ public final class XFormPanelCallbacksEvents {
 				runAction(ac);
 			}
 		}
+	}
+
+	/**
+	 * Функция, которая будет выполняться по клику на кнопку Загрузить в XForm.
+	 * 
+	 * @param xformId
+	 *            - Id элемента xForm.
+	 * 
+	 * @param linkId
+	 *            Идентификатор события
+	 * 
+	 * @param data
+	 *            - Данные xForm'ы
+	 */
+	public static void simpleUpload(final String xformId, final String linkId, final String data) {
+		final XFormPanel curXFormPanel = getCurrentPanel(xformId);
+
+		InlineUploader uploader = new InlineUploader(data, curXFormPanel, null);
+		uploader.singleFormUpload(linkId);
 	}
 
 	/**
