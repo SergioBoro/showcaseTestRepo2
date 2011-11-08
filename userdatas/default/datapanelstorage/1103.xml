@@ -18,7 +18,9 @@
 		</element>		
 	</tab>	
 	<tab id="08" name="Jython">
-		<element id="0801" type="webtext" proc="webtext_sa"/>
+		<element id="0801" type="webtext" proc="webtext_sa"/>		
+		<element id="d1" type="webtext" transform="active_bal.xsl" hideOnLoad="true"/>
+		<element id="d2" type="webtext" proc="webtext_show_debug_console" hideOnLoad="true"/>				
 	</tab>
 	<tab id="09" name="Упрощенная загрузка файлов">
 		<element id="0001" type="xforms" template="Showcase_Template_uploaders_simple.xml"
