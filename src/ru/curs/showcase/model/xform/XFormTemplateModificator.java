@@ -21,6 +21,8 @@ import ru.curs.showcase.util.xml.*;
  */
 public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String INPUT_TAG = "input";
+	private static final String SUBMIT_TAG = "submit";
+	private static final String SUBMIT_LABEL_TAG = "submitLabel";
 	private static final String ROOT_SRV_DATA_TAG = "srvdata";
 
 	private static final String LOAD = "load";
@@ -32,6 +34,12 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String SELECTOR_DATA_TAG = "selectordata";
 	private static final String ORIGIN = "instance('" + ROOT_SRV_DATA_TAG + "')/"
 			+ SELECTOR_DATA_TAG + "/%s";
+
+	// CHECKSTYLE:OFF
+	private static final String JS_SIMPLE_UPLOAD =
+		"javascript:gwtXFormSimpleUpload('xformId', '%s', Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))";
+
+	// CHECKSTYLE:ON
 
 	private XFormTemplateModificator() {
 		throw new UnsupportedOperationException();
@@ -98,6 +106,34 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			input.setAttribute(TYPE_TAG, "file");
 			form.setAttribute("class", "sc-uploader-comp");
 			form.appendChild(input);
+
+			Node node = old.getAttributes().getNamedItem(SUBMIT_TAG);
+			if (node != null) {
+				boolean submit = Boolean.parseBoolean(node.getTextContent());
+				if (submit) {
+					String submitLabel = "";
+					node = old.getAttributes().getNamedItem(SUBMIT_LABEL_TAG);
+					if (node != null) {
+						submitLabel = node.getTextContent();
+					}
+
+					Element trigger = doc.createElementNS(XFormProducer.XFORMS_URI, "trigger");
+					// form.appendChild(trigger);
+					parent.insertBefore(trigger, form.getNextSibling());
+
+					Element label = doc.createElementNS(XFormProducer.XFORMS_URI, "label");
+					label.setTextContent(submitLabel);
+					trigger.appendChild(label);
+
+					Element action = doc.createElementNS(XFormProducer.XFORMS_URI, "action");
+					action.setAttributeNS(XFormProducer.EVENTS_URI, "ev:event", "DOMActivate");
+					trigger.appendChild(action);
+
+					Element load = doc.createElementNS(XFormProducer.XFORMS_URI, "load");
+					load.setAttribute("resource", String.format(JS_SIMPLE_UPLOAD, procId));
+					action.appendChild(load);
+				}
+			}
 
 			Element iframe = doc.createElement("iframe");
 			iframe.setAttribute(NAME_TAG, getUploaderTargetName(element, procId, i));

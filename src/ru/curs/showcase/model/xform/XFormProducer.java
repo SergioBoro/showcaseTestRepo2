@@ -19,6 +19,7 @@ public final class XFormProducer extends GeneralXMLHelper {
 	public static final String XSLTFORMS_XSL = "xsltforms.xsl";
 
 	public static final String XFORMS_URI = "http://www.w3.org/2002/xforms";
+	public static final String EVENTS_URI = "http://www.w3.org/2001/xml-events";
 
 	private static final int DEFAULT_BUFFER_SIZE = 1024;
 

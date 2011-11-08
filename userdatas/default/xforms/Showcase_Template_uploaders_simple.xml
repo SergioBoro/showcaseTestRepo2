@@ -23,6 +23,20 @@
 	</head>
 	
 	<body>
+	
+		<div>
+			Упрощенная загрузка файла - 1-й					
+		</div>
+		<xf:upload id="05"  submit="true" submitLabel="Загрузить1"  />
+
+			
+		<div>
+			Упрощенная загрузка файла - 2-й			
+		</div>
+		<xf:upload id="051"  submit="true" submitLabel="Загрузить2"  />
+	
+		<hr />
+	
 		<div>
 			Обычная загрузка файла - 1-й					
 		</div>
@@ -31,6 +45,8 @@
 			Обычная загрузка файла - 2-й			
 		</div>
 		<xf:upload id="041" />
+		
+		<hr />		
 		
 		<div>
 			<xf:trigger>
@@ -42,35 +58,7 @@
 				</xf:action>
 			</xf:trigger>
 		</div>
-
-		<hr />
 		
-		<div>
-			Упрощенная загрузка файла - 1-й					
-		</div>
-		
-
-
-		
-		<xf:upload id="05" />
-		
-			<xf:trigger>
-				<xf:label>Загрузить
-				</xf:label>
-				<xf:action ev:event="DOMActivate">
-					<xf:load
-						resource="javascript:gwtXFormSimpleUpload('xformId', '05', Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
-				</xf:action>
-			</xf:trigger>
-			
-			
- 
-
-			
-		<div>
-			Упрощенная загрузка файла - 2-й			
-		</div>
-		<xf:upload id="051" />
 
 	</body>
 </html>

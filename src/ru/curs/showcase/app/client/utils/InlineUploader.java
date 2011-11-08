@@ -70,6 +70,7 @@ public class InlineUploader {
 	}
 
 	public void singleFormUpload(final String linkId) {
+		submitHandler = null;
 		DataPanelElementInfo dpei = currentXFormPanel.getElementInfo();
 
 		JavaScriptObject form = getElementById(dpei.getUploaderId(linkId));
@@ -118,7 +119,7 @@ public class InlineUploader {
 	}
 
 	private static native boolean isFilesSelected(final Element el)/*-{
-		return el.value;
+		return el.value != "";
 	}-*/;
 
 	private static native JavaScriptObject getElementById(final String id) /*-{
@@ -149,9 +150,9 @@ public class InlineUploader {
 
 		// MessageBox.showSimpleMessage("", "Complete");
 
-		counter--;
-		if (counter == 0) {
-			if (submitHandler != null) {
+		if (submitHandler != null) {
+			counter--;
+			if (counter == 0) {
 				submitHandler.onComplete(true);
 				submitHandler = null;
 			}
