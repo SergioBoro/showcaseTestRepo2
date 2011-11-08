@@ -27,13 +27,13 @@
 		<div>
 			Упрощенная загрузка файла - 1-й					
 		</div>
-		<xf:upload id="05"  submit="true" submitLabel="Загрузить1"  />
+		<xf:upload id="05"  submit="true" submitLabel="Загрузить файлы"  />
 
 			
 		<div>
 			Упрощенная загрузка файла - 2-й			
 		</div>
-		<xf:upload id="051"  submit="true" submitLabel="Загрузить2"  />
+		<xf:upload id="051"  submit="true"  />
 	
 		<hr />
 	

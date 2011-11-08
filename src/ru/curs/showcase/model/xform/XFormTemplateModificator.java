@@ -41,6 +41,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 	// CHECKSTYLE:ON
 
+	private static final String DEFAULT_SUBMIT_LABEL = "Загрузить";
+
 	private XFormTemplateModificator() {
 		throw new UnsupportedOperationException();
 	}
@@ -111,14 +113,15 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			if (node != null) {
 				boolean submit = Boolean.parseBoolean(node.getTextContent());
 				if (submit) {
-					String submitLabel = "";
+					String submitLabel;
 					node = old.getAttributes().getNamedItem(SUBMIT_LABEL_TAG);
 					if (node != null) {
 						submitLabel = node.getTextContent();
+					} else {
+						submitLabel = DEFAULT_SUBMIT_LABEL;
 					}
 
 					Element trigger = doc.createElementNS(XFormProducer.XFORMS_URI, "trigger");
-					// form.appendChild(trigger);
 					parent.insertBefore(trigger, form.getNextSibling());
 
 					Element label = doc.createElementNS(XFormProducer.XFORMS_URI, "label");
