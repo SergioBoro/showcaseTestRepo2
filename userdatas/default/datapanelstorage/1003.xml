@@ -29,6 +29,8 @@
 			proc="xforms_delConfirm1" neverShowInPanel="true">
 			<proc id="proc1" name="xforms_saveproc_delConfirm1" type="SAVE"/>
 		</element>		
+		<element id="card1_d1" type="webtext" proc="webtext_filter_and_add"
+			neverShowInPanel="true" />			
 	</tab>	
 	<tab id="9" name="Грид - самообновление">	
 		<element id="91" type="grid" proc="grid_cities_data_sr"

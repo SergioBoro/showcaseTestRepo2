@@ -2,6 +2,7 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import org.junit.Test;
@@ -12,6 +13,7 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.JythonException;
 import ru.curs.showcase.model.event.*;
+import ru.curs.showcase.util.ReflectionUtils;
 
 /**
  * Тесты для действий и контекста.
@@ -35,9 +37,12 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Тест клонирования Action и составляющих его объектов.
+	 * 
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
 	 */
 	@Test
-	public void testClone() {
+	public void testClone() throws IllegalAccessException, InvocationTargetException {
 		Action action = createComplexTestAction();
 		Action clone = action.gwtClone();
 
@@ -55,7 +60,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 
 		CompositeContext context = getComplexTestContext();
 		assertNotNull(clone.getContext());
-		assertEquals(context, clone.getContext());
+		assertTrue(ReflectionUtils.equals(context, clone.getContext()));
 
 		DataPanelLink link = clone.getDataPanelLink();
 		assertNotNull(link);
@@ -151,9 +156,12 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 	 * Проверка актуализации Action для Tab на основе Action при обновлении
 	 * данных на открытой вкладке.
 	 * 
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * 
 	 */
 	@Test
-	public void testRefreshTab() {
+	public void testRefreshTab() throws IllegalAccessException, InvocationTargetException {
 		Action first = createSimpleTestAction();
 
 		DataPanelTab tab = createStdTab();
@@ -172,7 +180,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		assertEquals(1, dataPanelLink.getElementLinks().size());
 
 		CompositeContext context = getSimpleTestContext();
-		assertEquals(context, actual.getContext());
+		assertTrue(ReflectionUtils.equals(context, actual.getContext()));
 	}
 
 	/**
@@ -689,8 +697,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 	public void testJythonActivityException() {
 		Activity activity = Activity.newServerActivity("id", "TestJythonProc.py");
 		CompositeContext context =
-			new CompositeContext(
-					generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		activity.setContext(context);
 		ActivityGateway gateway = new ActivityJythonGateway();
 		gateway.exec(activity);

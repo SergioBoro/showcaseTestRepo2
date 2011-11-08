@@ -10,6 +10,7 @@ import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.chart.*;
+import ru.curs.showcase.util.ReflectionUtils;
 
 /**
  * Тесты фабрики графиков.
@@ -108,7 +109,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo secondGrid = getDPElement("test.xml", "2", secondGridId);
 		calcContext = secondGrid.getContext(event.getAction());
 		assertNotNull(calcContext);
-		assertEquals(context, calcContext);
+		assertTrue(ReflectionUtils.equals(context, calcContext));
 
 		// проверяем цвета
 		assertEquals("#00FFFF", chart.getJavaDynamicData().getSeries().get(0).getColor());

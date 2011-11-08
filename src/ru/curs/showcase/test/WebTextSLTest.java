@@ -2,12 +2,15 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.model.webtext.WebTextGetCommand;
+import ru.curs.showcase.util.ReflectionUtils;
 
 /**
  * Тест для WebTextDBGateway.
@@ -35,9 +38,12 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Тест на выборку событий и действия по умолчанию из БД.
+	 * 
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
 	 */
 	@Test
-	public void testEventsAndDefAction() {
+	public void testEventsAndDefAction() throws IllegalAccessException, InvocationTargetException {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "3");
 		CompositeContext clonedContext = context.gwtClone();
@@ -60,11 +66,13 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(wt.getData());
 	}
 
-	private void stdCheckAction(final CompositeContext context, final Action action) {
+	private void stdCheckAction(final CompositeContext context, final Action action)
+			throws IllegalAccessException, InvocationTargetException {
 		assertEquals(NavigatorActionType.DO_NOTHING, action.getNavigatorActionType());
-		assertEquals(context, action.getContext());
+		assertTrue(ReflectionUtils.equals(context, action.getContext()));
 		assertEquals(1, action.getDataPanelLink().getElementLinks().size());
-		assertEquals(context, action.getDataPanelLink().getElementLinks().get(0).getContext());
+		assertTrue(ReflectionUtils.equals(context, action.getDataPanelLink().getElementLinks()
+				.get(0).getContext()));
 		assertNull(action.getContext().getSession());
 	}
 

@@ -3,6 +3,7 @@ package ru.curs.showcase.test;
 import static org.junit.Assert.*;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 
 import javax.xml.parsers.*;
@@ -12,13 +13,13 @@ import org.junit.Test;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.app.api.SelfCheckObject;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.runtime.ConnectionFactory;
+import ru.curs.showcase.util.ReflectionUtils;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -334,9 +335,12 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Проверяет сериализацию текущего контекста в XML.
+	 * 
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
 	 */
 	@Test
-	public void testContextToXML() {
+	public void testContextToXML() throws IllegalAccessException, InvocationTargetException {
 		CompositeContext context = CompositeContext.createCurrent();
 		Document doc = XMLUtils.objectToXML(context);
 		assertEquals(Action.CONTEXT_TAG, doc.getDocumentElement().getNodeName());
@@ -348,11 +352,11 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context2 =
 			(CompositeContext) XMLUtils.xmlToObject(doc.getDocumentElement(),
 					CompositeContext.class);
-		assertEquals(context, context2);
+		assertTrue(ReflectionUtils.equals(context, context2));
 	}
 
 	@Test
-	public void testGridContextToXML() {
+	public void testGridContextToXML() throws IllegalAccessException, InvocationTargetException {
 		CompositeContext context = new CompositeContext();
 		context.setMain(null);
 		context.setSession(null);
@@ -361,11 +365,11 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		GridContext gc2 =
 			(GridContext) XMLUtils.xmlToObject(doc.getDocumentElement(), GridContext.class);
 
-		assertEquals(gc, gc2);
+		assertTrue(ReflectionUtils.equals(gc, gc2));
 	}
 
 	@Test
-	public void testXFormsContextToXML() {
+	public void testXFormsContextToXML() throws IllegalAccessException, InvocationTargetException {
 		CompositeContext context = new CompositeContext();
 		XFormContext xc = new XFormContext();
 		xc.setFormData("<schema/>");
@@ -375,22 +379,30 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		XFormContext xc2 =
 			(XFormContext) XMLUtils.xmlToObject(doc.getDocumentElement(), XFormContext.class);
 
-		assertEquals(xc, xc2);
+		assertTrue(ReflectionUtils.equals(xc, xc2));
 	}
 
 	/**
 	 * Тестирования сериализации информации об элементе панели в XML.
 	 * 
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * 
 	 */
 	@Test
-	public void testDPElementInfoToXML() {
+	public void testDPElementInfoToXML() throws IllegalAccessException, InvocationTargetException {
 		DataPanelElementInfo element = getTestXForms1Info();
 		Document doc = XMLUtils.objectToXML(element);
 		assertEquals("element", doc.getDocumentElement().getNodeName());
-		SelfCheckObject el2 =
-			(SelfCheckObject) XMLUtils.xmlToObject(doc.getDocumentElement(),
+		DataPanelElementInfo el2 =
+			(DataPanelElementInfo) XMLUtils.xmlToObject(doc.getDocumentElement(),
 					DataPanelElementInfo.class);
-		assertEquals(element, el2);
+		assertTrue(ReflectionUtils.equals(element, el2));
+		el2.setCacheData(!el2.getCacheData());
+		assertFalse(ReflectionUtils.equals(element, el2));
+		el2.setCacheData(!el2.getCacheData());
+		el2.getHtmlAttrs().setStyle("6461216659708261808L");
+		assertFalse(ReflectionUtils.equals(element, el2));
 	}
 
 	@Test

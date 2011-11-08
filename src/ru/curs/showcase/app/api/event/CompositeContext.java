@@ -188,17 +188,6 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		return this;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((additional == null) ? 0 : additional.hashCode());
-		result = prime * result + ((filter == null) ? 0 : filter.hashCode());
-		result = prime * result + ((main == null) ? 0 : main.hashCode());
-		result = prime * result + ((session == null) ? 0 : session.hashCode());
-		return result;
-	}
-
 	/**
 	 * Определяет, являются ли контекст скрывающим (элемент).
 	 * 
@@ -332,48 +321,5 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 
 	public void setRelated(final Map<String, CompositeContext> aRelated) {
 		related = aRelated;
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof CompositeContext)) {
-			return false;
-		}
-		CompositeContext other = (CompositeContext) obj;
-		if (additional == null) {
-			if (other.additional != null) {
-				return false;
-			}
-		} else if (!additional.equals(other.additional)) {
-			return false;
-		}
-		if (filter == null) {
-			if (other.filter != null) {
-				return false;
-			}
-		} else if (!filter.equals(other.filter)) {
-			return false;
-		}
-		if (main == null) {
-			if (other.main != null) {
-				return false;
-			}
-		} else if (!main.equals(other.main)) {
-			return false;
-		}
-		if (session == null) {
-			if (other.session != null) {
-				return false;
-			}
-		} else if (!session.equals(other.session)) {
-			return false;
-		}
-		return true;
 	}
 }

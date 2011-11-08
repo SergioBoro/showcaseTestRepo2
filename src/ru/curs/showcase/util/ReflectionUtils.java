@@ -2,6 +2,7 @@ package ru.curs.showcase.util;
 
 import java.lang.reflect.*;
 
+import ru.curs.showcase.app.api.ExcludeFromSerialization;
 import ru.curs.showcase.util.exception.ServerLogicError;
 
 /**
@@ -68,6 +69,49 @@ public final class ReflectionUtils {
 			return ((Description) classLink.getAnnotation(Description.class)).process();
 		}
 		return "не задан";
+	}
 
+	public static boolean equals(final Object first, final Object second)
+			throws IllegalAccessException, InvocationTargetException {
+		if (first == second) {
+			return true;
+		}
+		if ((first == null) || (second == null)) {
+			return false;
+		}
+		if (first.getClass() != second.getClass()) {
+			return false;
+		}
+		boolean hasProps = false;
+		for (Field field : first.getClass().getDeclaredFields()) {
+			if (field.getAnnotation(ExcludeFromSerialization.class) != null) {
+				continue;
+			}
+			if (!isProperty(field.getModifiers())) {
+				continue;
+			}
+			Object value1;
+			Object value2;
+			try {
+				value1 = getPropValueByFieldName(first, field.getName());
+				value2 = getPropValueByFieldName(second, field.getName());
+			} catch (NoSuchMethodException e) {
+				continue;
+			}
+			hasProps = true;
+			if (!equals(value1, value2)) {
+				return false;
+			}
+
+		}
+		if (!hasProps) {
+			return first.equals(second);
+		}
+		return true;
+	}
+
+	private static boolean isProperty(final int modifier) {
+		return Modifier.isPrivate(modifier) && !Modifier.isStatic(modifier)
+				&& !Modifier.isTransient(modifier) && !Modifier.isFinal(modifier);
 	}
 }

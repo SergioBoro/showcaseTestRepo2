@@ -30,19 +30,19 @@ public class SessionInfo {
 
 	public Object getElementState(final String sessionId, final DataPanelElementInfo dpei,
 			final CompositeContext context) {
-		String key = generateStateKey(sessionId, dpei, context);
+		String key = getSessionKeyForCaching(sessionId, dpei, context);
 		return elementStates.get(key);
 	}
 
-	private String generateStateKey(final String sessionId, final DataPanelElementInfo dpei,
+	private String getSessionKeyForCaching(final String sessionId, final DataPanelElementInfo dpei,
 			final CompositeContext context) {
-		return sessionId + AppInfoSingleton.getAppInfo().getCurUserDataId() + dpei.getFullId()
-				+ context.getMain();
+		return sessionId + AppInfoSingleton.getAppInfo().getCurUserDataId()
+				+ dpei.getKeyForCaching(context);
 	}
 
 	public void storeElementState(final String sessionId, final DataPanelElementInfo dpei,
 			final CompositeContext context, final Object state) {
-		String key = generateStateKey(sessionId, dpei, context);
+		String key = getSessionKeyForCaching(sessionId, dpei, context);
 		elementStates.put(key, state);
 	}
 

@@ -18,8 +18,8 @@
 		</element>		
 	</tab>	
 	<tab id="08" name="Jython">
-		<element id="0801" type="webtext" proc="webtext_sa"/>		
-		<element id="d1" type="webtext" transform="active_bal.xsl" hideOnLoad="true"/>
+		<element id="0801" type="webtext" proc="webtext_sa" showLoadingMessage="true"/>		
+		<element id="d1" type="webtext" transform="active_bal.xsl" showLoadingMessage="false" hideOnLoad="true"/>
 		<element id="d2" type="webtext" proc="webtext_show_debug_console" hideOnLoad="true"/>				
 	</tab>
 	<tab id="09" name="Упрощенная загрузка файлов">

@@ -124,6 +124,14 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	@ExcludeFromSerialization
 	private DataPanelTab tab;
 
+	/**
+	 * Определяет, показывать ли сообщение о загрузке элемента. Запрет на показ
+	 * сообщения приводит к том, что элемент будет обновлен только после
+	 * получения данных от сервера. Это нужно, если вы хотите избежать мигания
+	 * панели. Но это плохо, если загрузка элемента происходит достаточно долго.
+	 */
+	private Boolean showLoadingMessage = false;
+
 	public DataPanelElementInfo(final Integer aPosition, final DataPanelTab aTab) {
 		super();
 		position = aPosition;
@@ -263,136 +271,6 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		procs = aProcs;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cacheData == null) ? 0 : cacheData.hashCode());
-		result = prime * result + ((hideOnLoad == null) ? 0 : hideOnLoad.hashCode());
-		result = prime * result + ((htmlAttrs == null) ? 0 : htmlAttrs.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((neverShowInPanel == null) ? 0 : neverShowInPanel.hashCode());
-		result = prime * result + ((position == null) ? 0 : position.hashCode());
-		result = prime * result + ((procName == null) ? 0 : procName.hashCode());
-		result = prime * result + ((procs == null) ? 0 : procs.hashCode());
-		result = prime * result + ((refreshByTimer == null) ? 0 : refreshByTimer.hashCode());
-		result = prime * result + ((refreshInterval == null) ? 0 : refreshInterval.hashCode());
-		result = prime * result + ((related == null) ? 0 : related.hashCode());
-		result = prime * result + ((templateName == null) ? 0 : templateName.hashCode());
-		result = prime * result + ((transformName == null) ? 0 : transformName.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof DataPanelElementInfo)) {
-			return false;
-		}
-		DataPanelElementInfo other = (DataPanelElementInfo) obj;
-		if (cacheData == null) {
-			if (other.cacheData != null) {
-				return false;
-			}
-		} else if (!cacheData.equals(other.cacheData)) {
-			return false;
-		}
-		if (hideOnLoad == null) {
-			if (other.hideOnLoad != null) {
-				return false;
-			}
-		} else if (!hideOnLoad.equals(other.hideOnLoad)) {
-			return false;
-		}
-		if (htmlAttrs == null) {
-			if (other.htmlAttrs != null) {
-				return false;
-			}
-		} else if (!htmlAttrs.equals(other.htmlAttrs)) {
-			return false;
-		}
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		if (neverShowInPanel == null) {
-			if (other.neverShowInPanel != null) {
-				return false;
-			}
-		} else if (!neverShowInPanel.equals(other.neverShowInPanel)) {
-			return false;
-		}
-		if (position == null) {
-			if (other.position != null) {
-				return false;
-			}
-		} else if (!position.equals(other.position)) {
-			return false;
-		}
-		if (procName == null) {
-			if (other.procName != null) {
-				return false;
-			}
-		} else if (!procName.equals(other.procName)) {
-			return false;
-		}
-		if (procs == null) {
-			if (other.procs != null) {
-				return false;
-			}
-		} else if (!procs.equals(other.procs)) {
-			return false;
-		}
-		if (refreshByTimer == null) {
-			if (other.refreshByTimer != null) {
-				return false;
-			}
-		} else if (!refreshByTimer.equals(other.refreshByTimer)) {
-			return false;
-		}
-		if (refreshInterval == null) {
-			if (other.refreshInterval != null) {
-				return false;
-			}
-		} else if (!refreshInterval.equals(other.refreshInterval)) {
-			return false;
-		}
-		if (related == null) {
-			if (other.related != null) {
-				return false;
-			}
-		} else if (!related.equals(other.related)) {
-			return false;
-		}
-		if (templateName == null) {
-			if (other.templateName != null) {
-				return false;
-			}
-		} else if (!templateName.equals(other.templateName)) {
-			return false;
-		}
-		if (transformName == null) {
-			if (other.transformName != null) {
-				return false;
-			}
-		} else if (!transformName.equals(other.transformName)) {
-			return false;
-		}
-		if (type != other.type) {
-			return false;
-		}
-		return true;
-	}
-
 	public DataPanelTab getTab() {
 		return tab;
 	}
@@ -522,5 +400,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 
 	public String getUploaderId(final String procId) {
 		return getFullId() + "__proc_" + procId + "__uploader";
+	}
+
+	public Boolean getShowLoadingMessage() {
+		return showLoadingMessage;
+	}
+
+	public void setShowLoadingMessage(final Boolean aShowLoadingMessage) {
+		showLoadingMessage = aShowLoadingMessage;
 	}
 }

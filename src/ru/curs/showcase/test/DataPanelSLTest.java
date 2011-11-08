@@ -54,4 +54,21 @@ public class DataPanelSLTest extends AbstractTest {
 		assertNotNull(panel.getTabById("02").getElementInfoById("0202"));
 	}
 
+	@Test
+	public void testShowLoadingMessage() {
+		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
+		action.setContext(CompositeContext.createCurrent());
+		DataPanelLink dpLink = new DataPanelLink();
+		dpLink.setDataPanelId("1103.xml");
+		action.setDataPanelLink(dpLink);
+
+		DataPanelGetCommand command = new DataPanelGetCommand(action);
+		DataPanel panel = command.execute();
+
+		assertTrue(panel.getTabById("08").getElementInfoById("0801").getShowLoadingMessage());
+		assertFalse(panel.getTabById("08").getElementInfoById("d1").getShowLoadingMessage());
+		assertFalse(panel.getTabById("08").getElementInfoById("d2").getShowLoadingMessage());
+		assertFalse(new DataPanelElementInfo().getShowLoadingMessage());
+	}
+
 }

@@ -82,9 +82,19 @@ public class DataPanelTab extends NamedElement {
 	 * @return - элемент.
 	 */
 	public DataPanelElementInfo getElementInfoById(final String id) {
+		if (id == null) {
+			return null;
+		}
 		for (DataPanelElementInfo current : elements) {
-			if (current.getId().equals(id)) {
+			if (id.equals(current.getId())) {
 				return current;
+			}
+		}
+		for (DataPanelTR tr : trs) {
+			for (DataPanelTD td : tr.getTds()) {
+				if (id.equals(td.getElement().getId())) {
+					return td.getElement();
+				}
 			}
 		}
 		return null;
