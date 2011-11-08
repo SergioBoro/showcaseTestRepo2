@@ -76,7 +76,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 						String.format("%s/%s?%s=%s&", ExchangeConstants.SECURED_SERVLET_PREFIX,
 								ExchangeConstants.SUBMIT_SERVLET,
 								ExchangeConstants.URL_PARAM_USERDATA,
-								ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT)) > 0);
+								ExchangeConstants.DEFAULT_USERDATA)) > 0);
 	}
 
 	@Test

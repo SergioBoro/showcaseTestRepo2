@@ -56,6 +56,8 @@ public final class AppInfoSingleton {
 
 	private final SortedSet<LoggingEventDecorator> lastLogEvents = new LastLogEvents();
 
+	private String webInfPath;
+
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
 		return lastLogEvents;
 	}
@@ -302,7 +304,7 @@ public final class AppInfoSingleton {
 	public void setCurUserDataIdFromMap(final Map<String, ArrayList<String>> aMap) {
 		String userDataId = getUserdataIdFromURLParams(aMap);
 		if (userDataId == null) {
-			userDataId = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
+			userDataId = ExchangeConstants.DEFAULT_USERDATA;
 		}
 
 		if (!userdatas.containsKey(userDataId)) {
@@ -340,4 +342,11 @@ public final class AppInfoSingleton {
 		return userdatas.get(getCurUserDataId());
 	}
 
+	public String getWebInfPath() {
+		return webInfPath;
+	}
+
+	public void setWebInfPath(final String aWebInfPath) {
+		webInfPath = aWebInfPath;
+	}
 }

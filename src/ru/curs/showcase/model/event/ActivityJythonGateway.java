@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.event;
 
-import java.io.*;
+import java.io.File;
 
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
@@ -8,7 +8,7 @@ import org.python.util.PythonInterpreter;
 import ru.curs.showcase.app.api.event.Activity;
 import ru.curs.showcase.model.JythonException;
 import ru.curs.showcase.runtime.AppInfoSingleton;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.ServerLogicError;
 
 /**
@@ -21,7 +21,7 @@ public class ActivityJythonGateway implements ActivityGateway {
 
 	private static final String PYTHON_SCRIPTS_DIR_NOT_FOUND =
 		"Каталог с python скриптами не найден";
-	public static final String LIB_JYTHON_PATH = "\\..\\libJython";
+	public static final String LIB_JYTHON_PATH = "\\libJython";
 	private static final String JYTHON_ERROR =
 		"При вызове Jython Server Activity '%s' произошла ошибка";
 	public static final String SCRIPTS_JYTHON_PATH = "scripts\\\\jython";
@@ -32,15 +32,12 @@ public class ActivityJythonGateway implements ActivityGateway {
 		PySystemState state = new PySystemState();
 		state.path.append(new PyString(AppInfoSingleton.getAppInfo().getCurUserData().getPath()
 				+ "\\\\" + SCRIPTS_JYTHON_PATH));
-		File jythonLibPath = new File(FileUtils.getClassPath() + LIB_JYTHON_PATH);
+		File jythonLibPath =
+			new File(AppInfoSingleton.getAppInfo().getWebInfPath() + LIB_JYTHON_PATH);
 		if (!jythonLibPath.exists()) {
 			throw new ServerLogicError(PYTHON_SCRIPTS_DIR_NOT_FOUND);
 		}
-		try {
-			state.path.append(new PyString(jythonLibPath.getCanonicalPath()));
-		} catch (IOException e) {
-			throw new ServerLogicError(e);
-		}
+		state.path.append(new PyString(jythonLibPath.getAbsolutePath()));
 
 		String className = TextUtils.extractFileName(act.getName());
 		PythonInterpreter interpreter = new PythonInterpreter(dict, state);

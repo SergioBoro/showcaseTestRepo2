@@ -39,7 +39,10 @@ public class DataPanelElementContext implements SerializableElement {
 
 	@Override
 	public String toString() {
-		String res = compositeContext.toString();
+		String res = "";
+		if (compositeContext != null) {
+			res = compositeContext.toString();
+		}
 		if (elementInfo != null) {
 			res =
 				res + ExchangeConstants.LINE_SEPARATOR + "panel=" + getPanel()

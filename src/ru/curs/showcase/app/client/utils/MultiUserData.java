@@ -33,7 +33,7 @@ public final class MultiUserData {
 			com.google.gwt.user.client.Window.Location
 					.getParameter(ExchangeConstants.URL_PARAM_USERDATA);
 		if ((userdataId == null) || ("".equals(userdataId))) {
-			userdataId = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
+			userdataId = ExchangeConstants.DEFAULT_USERDATA;
 		}
 
 		return SOLUTIONS + "/" + userdataId + "/" + path;

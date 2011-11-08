@@ -51,7 +51,7 @@ public class ActionAndContextSLTest extends AbstractTest {
 		Activity activity = Activity.newServerActivity("id", "TestJythonProc.py");
 		CompositeContext context =
 			new CompositeContext(
-					generateTestURLParams(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT));
+					generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		context.setMain("Мейн контекст");
 		context.setAdditional(ADD_CONTEXT_TAG);
 		context.setFilter(FILTER_TAG);

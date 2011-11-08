@@ -47,10 +47,18 @@ public final class AppInitializer {
 	 * Основной метод инициализатора.
 	 */
 	public static void initialize() {
+		initClassPath();
 		XMLUtils.setupSchemaFactory();
 		XMLUtils.setupTransformer();
 		JMXMBeanRegistrator.register();
 		jythonInit();
+	}
+
+	private static void initClassPath() {
+		File file = new File(".");
+		AppInfoSingleton.getAppInfo().setWebInfPath(
+				file.getAbsolutePath() + "\\WebContent\\WEB-INF");
+
 	}
 
 	/**

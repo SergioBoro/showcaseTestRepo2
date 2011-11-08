@@ -62,7 +62,7 @@ public class SessionInfoTest extends AbstractTest {
 	@Test
 	public void testInitialCurUserDataIdValue() {
 		setDefaultUserData();
-		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, AppInfoSingleton.getAppInfo()
+		assertEquals(ExchangeConstants.DEFAULT_USERDATA, AppInfoSingleton.getAppInfo()
 				.getCurUserDataId());
 	}
 
@@ -182,7 +182,7 @@ public class SessionInfoTest extends AbstractTest {
 				1,
 				doc.getDocumentElement()
 						.getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG).getLength());
-		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, doc.getDocumentElement()
+		assertEquals(ExchangeConstants.DEFAULT_USERDATA, doc.getDocumentElement()
 				.getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG).item(0)
 				.getTextContent());
 
@@ -201,7 +201,7 @@ public class SessionInfoTest extends AbstractTest {
 	public void testCurrentUserdata() {
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(
 				new TreeMap<String, ArrayList<String>>());
-		assertEquals(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT, AppInfoSingleton.getAppInfo()
+		assertEquals(ExchangeConstants.DEFAULT_USERDATA, AppInfoSingleton.getAppInfo()
 				.getCurUserDataId());
 		assertNotNull(AppProps.getUserDataCatalog());
 
@@ -323,7 +323,7 @@ public class SessionInfoTest extends AbstractTest {
 	public void testCommandContext() {
 		CommandContext cc = new CommandContext();
 		cc.setUserdata(TEST1_USERDATA);
-		cc.setUserName(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
+		cc.setUserName(ExchangeConstants.DEFAULT_USERDATA);
 		cc.setCommandName(XFormDownloadCommand.class.getSimpleName());
 		cc.setRequestId("1");
 

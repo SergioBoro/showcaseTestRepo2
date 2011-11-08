@@ -690,7 +690,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		Activity activity = Activity.newServerActivity("id", "TestJythonProc.py");
 		CompositeContext context =
 			new CompositeContext(
-					generateTestURLParams(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT));
+					generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		activity.setContext(context);
 		ActivityGateway gateway = new ActivityJythonGateway();
 		gateway.exec(activity);

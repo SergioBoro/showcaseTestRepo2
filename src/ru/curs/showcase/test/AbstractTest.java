@@ -119,7 +119,7 @@ public class AbstractTest extends GeneralXMLHelper {
 
 	protected void setDefaultUserData() {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(
-				ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
+				ExchangeConstants.DEFAULT_USERDATA);
 	}
 
 	/**
@@ -381,7 +381,7 @@ public class AbstractTest extends GeneralXMLHelper {
 			InputStream stream1 = gateway.getRawData(new CompositeContext(), fileName);
 			CompositeContext context =
 				new CompositeContext(
-						generateTestURLParams(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT));
+						generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 			NavigatorFactory navFactory = new NavigatorFactory(context);
 			Navigator nav = navFactory.fromStream(stream1);
 			Action action = nav.getGroups().get(groupID).getElements().get(elID).getAction();
@@ -438,7 +438,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	protected void testBaseLastLogEventQueue(final Collection<LoggingEventDecorator> lleq)
 			throws InterruptedException {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(
-				ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
+				ExchangeConstants.DEFAULT_USERDATA);
 		final int eventCount = 405;
 		for (int i = 0; i < eventCount; i++) {
 			Thread.sleep(1);

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.SPCallHelper;
 import ru.curs.showcase.util.Description;
 
 /**
@@ -28,7 +28,7 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 
 	@Override
 	public InputStream getRawData(final CompositeContext context) {
-		setProcName(sourceName);
+		init(context);
 		try {
 			prepareSQL();
 			setSQLXMLParam(getSessionContextIndex(getTemplateIndex()), context.getSession());
@@ -41,6 +41,11 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 			dbExceptionHandler(e);
 		}
 		return null;
+	}
+
+	private void init(final CompositeContext context) {
+		setProcName(sourceName);
+		setContext(context);
 	}
 
 	@Override

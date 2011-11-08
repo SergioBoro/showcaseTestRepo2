@@ -58,6 +58,7 @@ public final class ProductionModeInitializer {
 	 *            - ServletContextEvent.
 	 */
 	public static void initialize(final ServletContextEvent arg0) {
+		initClassPath(arg0);
 		readServletContext(arg0); // считываем пути к userdata'м вначале
 		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
 			AppInitializer.readPathProperties();
@@ -69,7 +70,17 @@ public final class ProductionModeInitializer {
 		AppProps.checkUserdatas();
 		copyUserDatas(arg0);
 		readCSSs();
+		logUserDatas();
+	}
 
+	private static void initClassPath(final ServletContextEvent arg0) {
+		String path = arg0.getServletContext().getRealPath("index.jsp");
+		path = path.substring(0, path.lastIndexOf("\\"));
+		AppInfoSingleton.getAppInfo().setWebInfPath(path + "\\WEB-INF");
+
+	}
+
+	private static void logUserDatas() {
 		LOGGER.info("Сформирован массив UserData:");
 		for (String id : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
 			LOGGER.info(id + " | "
@@ -139,12 +150,12 @@ public final class ProductionModeInitializer {
 	}
 
 	private static void copyUserDatas(final ServletContextEvent arg0) {
-		if (checkForCopyUserData(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT)) {
-			copyUserData(arg0, ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT);
+		if (checkForCopyUserData(ExchangeConstants.DEFAULT_USERDATA)) {
+			copyUserData(arg0, ExchangeConstants.DEFAULT_USERDATA);
 		}
 
 		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
-			if (!(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT.equals(userdataId))) {
+			if (!(ExchangeConstants.DEFAULT_USERDATA.equals(userdataId))) {
 				if (checkForCopyUserData(userdataId)) {
 					copyUserData(arg0, userdataId);
 				}

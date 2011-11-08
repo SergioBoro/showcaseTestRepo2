@@ -32,9 +32,6 @@ public abstract class SPCallHelper extends DataCheckGateway {
 
 	private static final int ERROR_MES_INDEX = -1;
 
-	/**
-	 * LOGGER.
-	 */
 	protected static final Logger LOGGER = LoggerFactory.getLogger(SPCallHelper.class);
 
 	private final Map<Integer, Object> params = new TreeMap<Integer, Object>();

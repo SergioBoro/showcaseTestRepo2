@@ -98,7 +98,7 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 				Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_USERDATA).toArray())
 						.replace("[", "").replace("]", "");
 		} else {
-			value = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
+			value = ExchangeConstants.DEFAULT_USERDATA;
 		}
 		node.setTextContent(value);
 

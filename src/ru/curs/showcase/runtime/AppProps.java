@@ -191,7 +191,7 @@ public final class AppProps {
 		try {
 			String userdataId = aUserdataId;
 			if (propName.trim().contains(AUTHSERVERURL_PART)) {
-				userdataId = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
+				userdataId = ExchangeConstants.DEFAULT_USERDATA;
 			}
 
 			String result = getProperties(userdataId).getProperty(propName);
@@ -252,7 +252,7 @@ public final class AppProps {
 		String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
 
 		if (userdataId == null) {
-			userdataId = ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT;
+			userdataId = ExchangeConstants.DEFAULT_USERDATA;
 		}
 
 		return userdataId;

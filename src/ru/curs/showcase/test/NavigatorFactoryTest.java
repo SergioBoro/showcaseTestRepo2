@@ -9,7 +9,9 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.*;
-import ru.curs.showcase.model.IncorrectElementException;
+import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.command.GeneralExceptionFactory;
 import ru.curs.showcase.model.navigator.*;
 
 /**
@@ -48,8 +50,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testNavigatorFromFile() {
 		CompositeContext context =
-			new CompositeContext(
-					generateTestURLParams(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT));
+			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
 		NavigatorGateway gateway = new NavigatorFileGateway();
 		Navigator nav;
@@ -97,7 +98,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testFromDB() {
+	public void testWithSelectro() {
 		NavigatorSelector selector = new NavigatorSelector();
 		NavigatorGateway gw = selector.getGateway();
 		CompositeContext context = new CompositeContext();
@@ -113,16 +114,47 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	@Test(expected = IncorrectElementException.class)
 	public void testWrongActionInNavigator() {
 		CompositeContext context =
-			new CompositeContext(
-					generateTestURLParams(ExchangeConstants.SHOWCASE_USER_DATA_DEFAULT));
+			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
 		NavigatorGateway gateway = new NavigatorFileGateway();
 		try {
-			InputStream stream =
-				gateway.getRawData(new CompositeContext(), "tree_multilevel.wrong.2.xml");
+			InputStream stream = gateway.getRawData(context, "tree_multilevel.wrong.2.xml");
 			factory.fromStream(stream);
 		} finally {
 			gateway.releaseResources();
 		}
+	}
+
+	@Test
+	public void testFromDB() {
+		CompositeContext context =
+			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+		NavigatorFactory factory = new NavigatorFactory(context);
+		NavigatorGateway gateway = new NavigatorDBGateway();
+		try {
+			InputStream stream = gateway.getRawData(context, "generationtree");
+			factory.fromStream(stream);
+		} finally {
+			gateway.releaseResources();
+		}
+	}
+
+	@Test
+	public void testFromDBWithException() {
+		CompositeContext context =
+			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+		NavigatorGateway gateway = new NavigatorDBGateway();
+		try {
+			gateway.getRawData(context, "generationtree_re");
+		} catch (DBQueryException e) {
+			GeneralException ge = GeneralExceptionFactory.build(e);
+			String mes = GeneralException.generateDetailedInfo(ge);
+			assertTrue(mes.contains("просто raiserror"));
+			assertTrue(mes.contains("Контекст выполнения:"));
+			return;
+		} finally {
+			gateway.releaseResources();
+		}
+		fail();
 	}
 }
