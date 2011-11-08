@@ -148,6 +148,9 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			gateway.getRawData(context, "generationtree_re");
 		} catch (DBQueryException e) {
 			GeneralException ge = GeneralExceptionFactory.build(e);
+			assertNotNull(ge.getContext().getCompositeContext());
+			assertNull(ge.getContext().getElementInfo());
+
 			String mes = GeneralException.generateDetailedInfo(ge);
 			assertTrue(mes.contains("просто raiserror"));
 			assertTrue(mes.contains("Контекст выполнения:"));
