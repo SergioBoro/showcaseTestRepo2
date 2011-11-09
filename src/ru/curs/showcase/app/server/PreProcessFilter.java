@@ -1,12 +1,12 @@
 package ru.curs.showcase.app.server;
 
-import java.io.IOException;
+import java.io.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 
 import ru.curs.showcase.runtime.AppInfoSingleton;
-import ru.curs.showcase.util.ServletUtils;
+import ru.curs.showcase.util.*;
 
 /**
  * Фильтр для настройки базовых параметров запросов к серверу и ответов сервера.
@@ -39,6 +39,7 @@ public class PreProcessFilter implements Filter {
 	public void doFilter(final ServletRequest request, final ServletResponse response,
 			final FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		HttpServletResponse httpResponse = (HttpServletResponse) response;
 
 		if (request instanceof HttpServletRequest) {
 			if (isMainPage(httpRequest)) {
@@ -49,8 +50,30 @@ public class PreProcessFilter implements Filter {
 			}
 			httpRequest.setCharacterEncoding("UTF-8");
 		}
+		if (handleGeoModule(httpRequest, httpResponse)) {
+			return;
+		}
 		chain.doFilter(request, response);
 		resetThread();
+	}
+
+	private boolean handleGeoModule(final HttpServletRequest httpRequest,
+			final HttpServletResponse httpResponse) throws IOException {
+		if ((httpRequest.getRequestURI().endsWith("geo.js")) && (!checkGeoModule(httpRequest))) {
+			httpResponse.setContentType("text/javascript");
+			httpResponse.setStatus(HttpServletResponse.SC_OK);
+			httpResponse.setCharacterEncoding(TextUtils.DEF_ENCODING);
+			httpResponse.getWriter().append("console.log('geo module disabled!')");
+			httpResponse.getWriter().close();
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean checkGeoModule(final HttpServletRequest request) {
+		File file =
+			new File(request.getSession().getServletContext().getRealPath("js/course/geo.js"));
+		return file.exists();
 	}
 
 	private void resetThread() {

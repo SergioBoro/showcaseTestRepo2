@@ -131,14 +131,6 @@
     <url-pattern>/secured/xslTransform</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>GeoCheckServlet</servlet-name>
-    <servlet-class>ru.curs.showcase.app.server.GeoCheckServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>GeoCheckServlet</servlet-name>
-    <url-pattern>/secured/geoCheck</url-pattern>
-  </servlet-mapping>
-  <servlet>
     <servlet-name>Welcome frame</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.MainPageFramesFrontController</servlet-class>
   </servlet>
