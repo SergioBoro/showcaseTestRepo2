@@ -25,13 +25,13 @@
 	<body>
 	
 		<div>
-			Упрощенная загрузка файла - 1-й					
+			Упрощенная загрузка файла - 1-й (задан submitLabel, запрет мультивыбора)					
 		</div>
-		<xf:upload id="05"  submit="true" submitLabel="Загрузить файлы"  />
+		<xf:upload id="05"  submit="true" submitLabel="Загрузить файлы" singleFile="true"  />
 
 			
 		<div>
-			Упрощенная загрузка файла - 2-й			
+			Упрощенная загрузка файла - 2-й (submitLabel по умолчанию)			
 		</div>
 		<xf:upload id="051"  submit="true"  />
 	

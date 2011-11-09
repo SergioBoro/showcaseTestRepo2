@@ -23,6 +23,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String INPUT_TAG = "input";
 	private static final String SUBMIT_TAG = "submit";
 	private static final String SUBMIT_LABEL_TAG = "submitLabel";
+	private static final String SINGLE_FILE_TAG = "singleFile";
 	private static final String ROOT_SRV_DATA_TAG = "srvdata";
 
 	private static final String LOAD = "load";
@@ -117,12 +118,19 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			form.appendChild(input);
 			input = doc.createElement(INPUT_TAG);
 			input.setAttribute(NAME_TAG, "@@filedata@@" + procId);
-			input.setAttribute("multiple", "multiple");
+			boolean singleFile = false;
+			Node node = old.getAttributes().getNamedItem(SINGLE_FILE_TAG);
+			if (node != null) {
+				singleFile = Boolean.parseBoolean(node.getTextContent());
+			}
+			if (!singleFile) {
+				input.setAttribute("multiple", "multiple");
+			}
 			input.setAttribute(TYPE_TAG, "file");
 			form.setAttribute("class", "sc-uploader-comp");
 			form.appendChild(input);
 
-			Node node = old.getAttributes().getNamedItem(SUBMIT_TAG);
+			node = old.getAttributes().getNamedItem(SUBMIT_TAG);
 			if (node != null) {
 				boolean submit = Boolean.parseBoolean(node.getTextContent());
 				if (submit) {
