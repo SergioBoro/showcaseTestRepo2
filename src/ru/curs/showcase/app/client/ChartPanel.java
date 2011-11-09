@@ -320,9 +320,8 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
-		// generalChartPanel.clear();
-		// generalChartPanel.add(new
-		// HTML(Constants.PLEASE_WAIT_CHART_DATA_ARE_LOADING));
+		generalChartPanel.clear();
+		generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_CHART_DATA_ARE_LOADING));
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
