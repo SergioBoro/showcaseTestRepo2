@@ -83,9 +83,22 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		for (int i = nl.getLength() - 1; i >= 0; i--) {
 			Node old = nl.item(i);
 			String procId = old.getAttributes().getNamedItem(ID_TAG).getTextContent();
-			Element form = doc.createElement("form");
 			Node parent = old.getParentNode();
-			parent.replaceChild(form, old);
+			Element table = doc.createElement("table");
+			table.setAttribute("border", "0");
+			table.setAttribute("cellpadding", "0");
+			table.setAttribute("cellspacing", "0");
+			table.setAttribute("frame", "void");
+			table.setAttribute("rules", "none");
+			table.setAttribute("cols", "1");
+			parent.replaceChild(table, old);
+			Element tr = doc.createElement("tr");
+			tr.setAttribute("valign", "baseline");
+			table.appendChild(tr);
+			Element td = doc.createElement("td");
+			tr.appendChild(td);
+			Element form = doc.createElement("form");
+			td.appendChild(form);
 			form.setAttribute(ID_TAG, element.getUploaderId(procId));
 			form.setAttribute("class", "sc-uploader-form");
 			form.setAttribute("target", getUploaderTargetName(element, procId, i));
@@ -121,8 +134,13 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 						submitLabel = DEFAULT_SUBMIT_LABEL;
 					}
 
+					table.setAttribute("cols", "2");
+
+					td = doc.createElement("td");
+					tr.appendChild(td);
+
 					Element trigger = doc.createElementNS(XFormProducer.XFORMS_URI, "trigger");
-					parent.insertBefore(trigger, form.getNextSibling());
+					td.appendChild(trigger);
 
 					Element label = doc.createElementNS(XFormProducer.XFORMS_URI, "label");
 					label.setTextContent(submitLabel);
@@ -145,6 +163,9 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			iframe.setAttribute("isSetOnSubmitComplete", "");
 			parent.appendChild(iframe);
 		}
+
+		// LoggerFactory.getLogger(XFormTemplateModificator.class).info(
+		// XMLUtils.documentToString(doc));
 
 		return doc;
 	}
