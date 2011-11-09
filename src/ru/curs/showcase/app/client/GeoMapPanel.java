@@ -176,7 +176,19 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 		final String paramMap2 = aGeoMap.getTemplate();
 
-		drawMap(getDivIdMap(), divIdLegend, paramMap1, paramMap2);
+		try {
+			drawMap(getDivIdMap(), divIdLegend, paramMap1, paramMap2);
+		} catch (Exception e) {
+			if (e.getCause() != null) {
+				MessageBox.showMessageWithDetails(Constants.ERROR_OF_MAP_PAINTING, e.getMessage(),
+						GeneralException.generateDetailedInfo(e.getCause()),
+						GeneralException.getMessageType(e.getCause()),
+						GeneralException.needDetailedInfo(e.getCause()));
+			} else {
+				MessageBox.showSimpleMessage(Constants.ERROR_OF_MAP_PAINTING, e.getMessage());
+			}
+		}
+
 		checkForDefaultAction();
 
 		if (getElementInfo().getRefreshByTimer()) {

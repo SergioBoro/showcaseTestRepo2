@@ -60,7 +60,8 @@ public final class Constants {
 
 	public static final String GRID_ERROR_CAPTION_EXPORT_EXCEL = "Ошибка при экспорте в Excel";
 	public static final String GRID_ERROR_CAPTION_FILE_DOWNLOAD = "Ошибка при скачивании файла";
-
+	public static final String ERROR_OF_MAP_PAINTING = "Ошибка при построении карты";
+	public static final String ERROR_OF_CHART_PAINTING = "Ошибка при построении графика";
 	public static final String GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE =
 		"Экспорт в Excel текущей страницы";
 	public static final String GRID_CAPTION_EXPORT_TO_EXCEL_ALL = "Экспорт в Excel всей таблицы";

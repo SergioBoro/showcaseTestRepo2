@@ -133,7 +133,21 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 		final String paramChart2 = achart.getTemplate();
 
-		drawChart(divIdGraph, divIdLegend, paramChart1, paramChart2);
+		try {
+
+			drawChart(divIdGraph, divIdLegend, paramChart1, paramChart2);
+
+		} catch (Exception e) {
+			if (e.getCause() != null) {
+				MessageBox.showMessageWithDetails(Constants.ERROR_OF_CHART_PAINTING,
+						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
+						GeneralException.getMessageType(e.getCause()),
+						GeneralException.needDetailedInfo(e.getCause()));
+			} else {
+				MessageBox.showSimpleMessage(Constants.ERROR_OF_CHART_PAINTING, e.getMessage());
+			}
+		}
+
 		checkForDefaultAction();
 
 		if (getElementInfo().getRefreshByTimer()) {
@@ -306,8 +320,9 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
-		generalChartPanel.clear();
-		generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_CHART_DATA_ARE_LOADING));
+		// generalChartPanel.clear();
+		// generalChartPanel.add(new
+		// HTML(Constants.PLEASE_WAIT_CHART_DATA_ARE_LOADING));
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
