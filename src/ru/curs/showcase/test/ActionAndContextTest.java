@@ -40,9 +40,11 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 	 * 
 	 * @throws InvocationTargetException
 	 * @throws IllegalAccessException
+	 * @throws NoSuchMethodException
 	 */
 	@Test
-	public void testClone() throws IllegalAccessException, InvocationTargetException {
+	public void testClone() throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
 		Action action = createComplexTestAction();
 		Action clone = action.gwtClone();
 
@@ -158,10 +160,12 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 	 * 
 	 * @throws InvocationTargetException
 	 * @throws IllegalAccessException
+	 * @throws NoSuchMethodException
 	 * 
 	 */
 	@Test
-	public void testRefreshTab() throws IllegalAccessException, InvocationTargetException {
+	public void testRefreshTab() throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
 		Action first = createSimpleTestAction();
 
 		DataPanelTab tab = createStdTab();

@@ -1,7 +1,9 @@
 package ru.curs.showcase.util;
 
 import java.lang.reflect.*;
+import java.util.Map;
 
+import net.sf.saxon.functions.Collection;
 import ru.curs.showcase.app.api.ExcludeFromSerialization;
 import ru.curs.showcase.util.exception.ServerLogicError;
 
@@ -71,19 +73,13 @@ public final class ReflectionUtils {
 		return "не задан";
 	}
 
-	public static boolean equals(final Object first, final Object second)
-			throws IllegalAccessException, InvocationTargetException {
-		if (first == second) {
-			return true;
+	private static boolean equals(final Object first, final Object second,
+			final Class<?> comparedClass) throws IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException {
+		if (hasClassRightEqualsMethod(comparedClass)) {
+			return first.equals(second);
 		}
-		if ((first == null) || (second == null)) {
-			return false;
-		}
-		if (first.getClass() != second.getClass()) {
-			return false;
-		}
-		boolean hasProps = false;
-		for (Field field : first.getClass().getDeclaredFields()) {
+		for (Field field : comparedClass.getDeclaredFields()) {
 			if (field.getAnnotation(ExcludeFromSerialization.class) != null) {
 				continue;
 			}
@@ -98,16 +94,47 @@ public final class ReflectionUtils {
 			} catch (NoSuchMethodException e) {
 				continue;
 			}
-			hasProps = true;
 			if (!equals(value1, value2)) {
 				return false;
 			}
+		}
 
+		if (comparedClass.getSuperclass() != Object.class) {
+			return equals(first, second, comparedClass.getSuperclass());
+		} else {
+			return true;
 		}
-		if (!hasProps) {
-			return first.equals(second);
+	}
+
+	private static boolean hasClassRightEqualsMethod(final Class<?> comparedClass) {
+		final Class<?> superclass = comparedClass.getSuperclass();
+		boolean res =
+			(superclass == null) || (superclass == Number.class) || comparedClass.isArray()
+					|| Collection.class.isAssignableFrom(comparedClass)
+					|| Map.class.isAssignableFrom(comparedClass);
+		if (!res) {
+			try {
+				comparedClass.getDeclaredMethod("equals", Object.class);
+				return true;
+			} catch (NoSuchMethodException e) {
+				return false;
+			}
 		}
-		return true;
+		return res;
+	}
+
+	public static boolean equals(final Object first, final Object second)
+			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		if (first == second) {
+			return true;
+		}
+		if ((first == null) || (second == null)) {
+			return false;
+		}
+		if (first.getClass() != second.getClass()) {
+			return false;
+		}
+		return equals(first, second, first.getClass());
 	}
 
 	private static boolean isProperty(final int modifier) {

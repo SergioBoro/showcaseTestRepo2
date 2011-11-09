@@ -338,9 +338,11 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	 * 
 	 * @throws InvocationTargetException
 	 * @throws IllegalAccessException
+	 * @throws NoSuchMethodException
 	 */
 	@Test
-	public void testContextToXML() throws IllegalAccessException, InvocationTargetException {
+	public void testContextToXML() throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
 		CompositeContext context = CompositeContext.createCurrent();
 		Document doc = XMLUtils.objectToXML(context);
 		assertEquals(Action.CONTEXT_TAG, doc.getDocumentElement().getNodeName());
@@ -356,7 +358,8 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testGridContextToXML() throws IllegalAccessException, InvocationTargetException {
+	public void testGridContextToXML() throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
 		CompositeContext context = new CompositeContext();
 		context.setMain(null);
 		context.setSession(null);
@@ -369,7 +372,8 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testXFormsContextToXML() throws IllegalAccessException, InvocationTargetException {
+	public void testXFormsContextToXML() throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
 		CompositeContext context = new CompositeContext();
 		XFormContext xc = new XFormContext();
 		xc.setFormData("<schema/>");
@@ -380,6 +384,8 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 			(XFormContext) XMLUtils.xmlToObject(doc.getDocumentElement(), XFormContext.class);
 
 		assertTrue(ReflectionUtils.equals(xc, xc2));
+		xc2.setAdditional("F1281D4A-5D6E-4DAB-8A5A-2D87B59B6ED2");
+		assertFalse(ReflectionUtils.equals(xc, xc2));
 	}
 
 	/**
@@ -387,10 +393,12 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	 * 
 	 * @throws InvocationTargetException
 	 * @throws IllegalAccessException
+	 * @throws NoSuchMethodException
 	 * 
 	 */
 	@Test
-	public void testDPElementInfoToXML() throws IllegalAccessException, InvocationTargetException {
+	public void testDPElementInfoToXML() throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
 		DataPanelElementInfo element = getTestXForms1Info();
 		Document doc = XMLUtils.objectToXML(element);
 		assertEquals("element", doc.getDocumentElement().getNodeName());

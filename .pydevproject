@@ -80,24 +80,5 @@
 <path>/Showcase/WebContent/WEB-INF/lib/xml-apis.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/xmlparserv2.jar</path>
 </pydev_pathproperty>
-<pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\annotations-api.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\catalina.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\catalina-ant.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\catalina-ha.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\catalina-tribes.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\ecj-3.6.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\el-api.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\jasper.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\jasper-el.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\jsp-api.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\servlet-api.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\tomcat-api.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\tomcat-coyote.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\tomcat-dbcp.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\tomcat-i18n-es.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\tomcat-i18n-fr.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\tomcat-i18n-ja.jar</path>
-<path>D:\PR.dev\java\Tomcat-7.0.8\lib\tomcat-util.jar</path>
-</pydev_pathproperty>
+
 </pydev_project>

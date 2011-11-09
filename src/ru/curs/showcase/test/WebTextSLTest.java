@@ -41,9 +41,11 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 	 * 
 	 * @throws InvocationTargetException
 	 * @throws IllegalAccessException
+	 * @throws NoSuchMethodException
 	 */
 	@Test
-	public void testEventsAndDefAction() throws IllegalAccessException, InvocationTargetException {
+	public void testEventsAndDefAction() throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "3");
 		CompositeContext clonedContext = context.gwtClone();
@@ -67,7 +69,7 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 	}
 
 	private void stdCheckAction(final CompositeContext context, final Action action)
-			throws IllegalAccessException, InvocationTargetException {
+			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		assertEquals(NavigatorActionType.DO_NOTHING, action.getNavigatorActionType());
 		assertTrue(ReflectionUtils.equals(context, action.getContext()));
 		assertEquals(1, action.getDataPanelLink().getElementLinks().size());
