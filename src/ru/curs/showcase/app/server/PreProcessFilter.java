@@ -59,21 +59,22 @@ public class PreProcessFilter implements Filter {
 
 	private boolean handleGeoModule(final HttpServletRequest httpRequest,
 			final HttpServletResponse httpResponse) throws IOException {
-		if ((httpRequest.getRequestURI().endsWith("geo.js")) && (!checkGeoModule(httpRequest))) {
-			httpResponse.setContentType("text/javascript");
-			httpResponse.setStatus(HttpServletResponse.SC_OK);
-			httpResponse.setCharacterEncoding(TextUtils.DEF_ENCODING);
-			httpResponse.getWriter().append("console.log('geo module disabled!')");
-			httpResponse.getWriter().close();
-			return true;
+		if (httpRequest.getRequestURI().endsWith("geo.js")) {
+			File file =
+				new File(httpRequest.getSession().getServletContext()
+						.getRealPath("js/course/geo.js"));
+			if (!file.exists()) {
+				httpResponse.setContentType("text/javascript");
+				httpResponse.setStatus(HttpServletResponse.SC_OK);
+				InputStream is =
+					httpRequest.getSession().getServletContext()
+							.getResourceAsStream("js/course/geo_fake.js");
+				httpResponse.getWriter().append(TextUtils.streamToString(is));
+				httpResponse.getWriter().close();
+				return true;
+			}
 		}
 		return false;
-	}
-
-	private static boolean checkGeoModule(final HttpServletRequest request) {
-		File file =
-			new File(request.getSession().getServletContext().getRealPath("js/course/geo.js"));
-		return file.exists();
 	}
 
 	private void resetThread() {

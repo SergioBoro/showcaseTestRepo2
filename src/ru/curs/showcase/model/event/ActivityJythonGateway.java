@@ -26,9 +26,13 @@ public class ActivityJythonGateway implements ActivityGateway {
 		"При вызове Jython Server Activity '%s' произошла ошибка";
 	public static final String SCRIPTS_JYTHON_PATH = "scripts\\\\jython";
 
+	/**
+	 * Функция вначале инициализирует пути к пользовательским скриптам и
+	 * скриптам библиотеки Python. После чего импортирует нужный класс, получает
+	 * его экземпляр, конвертирует его в класс Java и вызывает метод execute.
+	 */
 	@Override
 	public void exec(final Activity act) {
-		PyDictionary dict = new PyDictionary();
 		PySystemState state = new PySystemState();
 		state.path.append(new PyString(AppInfoSingleton.getAppInfo().getCurUserData().getPath()
 				+ "\\\\" + SCRIPTS_JYTHON_PATH));
@@ -40,7 +44,7 @@ public class ActivityJythonGateway implements ActivityGateway {
 		state.path.append(new PyString(jythonLibPath.getAbsolutePath()));
 
 		String className = TextUtils.extractFileName(act.getName());
-		PythonInterpreter interpreter = new PythonInterpreter(dict, state);
+		PythonInterpreter interpreter = new PythonInterpreter(null, state);
 
 		String cmd = String.format("from %1$s import %1$s\n", className);
 
