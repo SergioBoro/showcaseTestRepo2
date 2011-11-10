@@ -139,9 +139,10 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 * 
 	 */
 	public void releaseResources() {
-		if (getConn() != null) {
+		if (conn != null) {
 			try {
-				getConn().close();
+				conn.close();
+				conn = null;
 			} catch (SQLException e) {
 				throw new DBConnectException(e);
 			}

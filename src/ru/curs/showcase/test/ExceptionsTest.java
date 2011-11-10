@@ -458,4 +458,34 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		XFormFactory factory = new XFormFactory(raw);
 		factory.build();
 	}
+
+	@Test
+	public void testErrorCodeReturn() {
+		XFormContext context = new XFormContext();
+		context.setMain(MAIN_CONTEXT_TAG);
+		context.setAdditional(ADD_CONDITION);
+		XFormDBGateway gateway = new XFormDBGateway();
+		final String procName = "xforms_submission_ec";
+
+		try {
+			gateway.sqlTransform(procName, context);
+		} catch (ValidateInDBException e) {
+			assertEquals("Ошибка в SP (-1)", e.getMessage());
+		}
+
+		try {
+			context.setFormData("<mesid>555</mesid>");
+			gateway.sqlTransform(procName, context);
+		} catch (ValidateInDBException e) {
+			assertEquals("Отформатированное сообщение: Ошибка в SP - из БД", e.getMessage());
+		}
+
+		try {
+			context.setFormData("<mesid>556</mesid>");
+			gateway.sqlTransform(procName, context);
+		} catch (ValidateInDBException e) {
+			assertEquals("Составное сообщение из БД. Ошибка в SP", e.getMessage());
+		}
+	}
+
 }

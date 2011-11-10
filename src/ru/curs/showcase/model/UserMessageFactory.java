@@ -50,13 +50,26 @@ public final class UserMessageFactory {
 	public UserMessage build(final Throwable cause) {
 		String mesId = parse(cause);
 		loadMessage(mesId);
+		if (userMessage == null) {
+			throw new SettingsFileRequiredPropException(SOL_MESSAGES_FILE, mesId,
+					SettingsFileType.SOLUTION_MESSAGES);
+		}
 		return userMessage;
 	}
 
 	public UserMessage build(final Integer errorCode, final String errorMes) {
-		userMessage =
-			new UserMessage(String.format("%s (%d)", errorMes, errorCode), MessageType.ERROR);
-		userMessage.setId(errorCode.toString());
+		loadMessage(errorCode.toString());
+		if (userMessage != null) {
+			if (userMessage.getText().indexOf("%s") > -1) {
+				userMessage.setText(String.format(userMessage.getText(), errorMes));
+			} else {
+				userMessage.setText(userMessage.getText() + " " + errorMes);
+			}
+		} else {
+			userMessage =
+				new UserMessage(String.format("%s (%d)", errorMes, errorCode), MessageType.ERROR);
+			userMessage.setId(errorCode.toString());
+		}
 		return userMessage;
 	}
 
@@ -115,12 +128,6 @@ public final class UserMessageFactory {
 		} catch (Exception e) {
 			XMLUtils.stdSAXErrorHandler(e, SOL_MESSAGES_FILE);
 		}
-
-		if (userMessage == null) {
-			throw new SettingsFileRequiredPropException(SOL_MESSAGES_FILE, mesId,
-					SettingsFileType.SOLUTION_MESSAGES);
-		}
-
 	}
 
 	private static String parse(final Throwable cause) {

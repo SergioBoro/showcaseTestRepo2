@@ -9,4 +9,10 @@
 <message id="test3" type="INFO">
 Информация
 </message>
+<message id="555" type="INFO">
+Отформатированное сообщение: %s - из БД
+</message>
+<message id="556" type="INFO">
+Составное сообщение из БД. 
+</message>
 </messages>
