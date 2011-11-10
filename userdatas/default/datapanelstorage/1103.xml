@@ -45,5 +45,11 @@
 	<tab id="-01" name="Карты Гугль и Яндекса">
 		<element id="-0101" type="geomap" proc="geomap_world_gm" cacheData="false"/>
 		<element id="-0102" type="geomap" proc="geomap_func2_ym" cacheData="false"/>	
-	</tab>		
+	</tab>	
+	<tab id="21" name="XForms. Доработки мультиселектора" layout="VERTICAL">
+		<element id="211" type="xforms" template="Showcase_Template_multiselector.xml"
+			proc="xforms_proc_no_data">
+			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
+		</element>					
+	</tab>
 </datapanel>

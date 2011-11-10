@@ -9947,6 +9947,19 @@ function getXPath(value)
 	return value.replace(/^XPath\((\S*)\)/i,"$1").replace(/quot\((\w*)\)/g,"'$1'");
 }
 
+function getLastPartXPath(value)
+{
+	var result = ""; 
+	
+	var arr = /\/([^\/]*)$/.exec(value);	
+	
+	if((arr != null) && (typeof arr[1] != "undefined")){
+		result = arr[1];
+	}
+	
+	return result;
+}
+
 function setXFormByXPath(ok, selected, xpathMapping)
 {
 	if (ok) {
@@ -9961,40 +9974,38 @@ function setXFormByXPath(ok, selected, xpathMapping)
 	}
 }
 
-function insertXFormByXPath(ok, selected, xpathMapping, needClear)
+function insertXFormByXPath(ok, selected, xpathRoot, xpathMapping, needClear)
 {
 	if (ok) {
 		for (var xpath in xpathMapping) {
 			var value = xpathMapping[xpath];
-            if ((typeof value == "string") && isXPath(value)) {
-           	    (new XFSetvalue(new Binding(false, getXPath(xpath)),getXPath(value),null,null,null)).run();            	
-            }else {
-            	var context = getXPath(xpath);
-            	
-            	var column      = "";
-            	var elementName = "";
-                if (typeof value == "string") {
-                	column      = value;
-                	elementName = value;
-                }else {
-            		for (var col in value) {
-                	    column      = col;
-                	    elementName = value[col];
-                	    break;
-            		}
-                }
-                
-            	var origin = "instance('srvdata')/selectordata/"+elementName;
-            	
-            	if(needClear){
-                    (new XFDelete(elementName, null, null, null, context, null, null)).run(null, context);
-            	}
-            	
-        		for (var i in selected) {
-               	    (new XFSetvalue(new Binding(false, origin),null,selected[i][column],null,null)).run();
-              		(new XFInsert(null, null, null, "last", "after", origin, context, null, null)).run(null, context);
-        		}
-            }
+        	var xpathFull = "";
+        	
+        	if(needClear){
+                (new XFDelete(getLastPartXPath(getXPath(xpath)), null, null, null, getXPath(xpathRoot), null, null)).run(null, getXPath(xpathRoot));
+        	}
+        	
+        	var map = {};  
+   		    for (var col in value) {
+    			    xpathFull = getXPath(xpath)+"/"+value[col];
+    		    	map[col] = (new Binding(true, xpathFull)).evaluate();
+    		}
+			
+    		for (var i in selected) {
+    		    for (var col in value) {
+    			    xpathFull = getXPath(xpath)+"/"+value[col];
+               	    (new XFSetvalue(new Binding(false, xpathFull),null,selected[i][col],null,null)).run();
+    		    }
+    		    
+          		(new XFInsert(null, null, null, "last", "after", getXPath(xpath), getXPath(xpathRoot), null, null)).run(null, getXPath(xpathRoot));
+    		}
+    		
+   		    for (var col in value) {
+			    xpathFull = getXPath(xpath)+"/"+value[col];
+           	    (new XFSetvalue(new Binding(false, xpathFull),null,map[col],null,null)).run();		    	
+  		    }
+    		
+			break;
 		}
 	}
 }

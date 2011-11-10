@@ -302,7 +302,8 @@ public final class XFormPanelCallbacksEvents {
 		}-*/;
 
 		/**
-		 * нужно ли очищать ноду перед вставкой выбранных значений.
+		 * Мультиселектор. Нужно ли очищать ноду перед вставкой выбранных
+		 * значений.
 		 * 
 		 * @return boolean
 		 */
@@ -321,6 +322,15 @@ public final class XFormPanelCallbacksEvents {
 		 */
 		native void onSelectionComplete(final boolean ok, final JavaScriptObject selected)/*-{
 			this.onSelectionComplete(ok, selected);
+		}-*/;
+
+		/**
+		 * Мультиселектор. Определяет тег, куда должны попадать записи.
+		 * 
+		 * @return String
+		 */
+		native String xpathRoot()/*-{
+			return this.xpathRoot;
 		}-*/;
 
 		/**
@@ -359,7 +369,7 @@ public final class XFormPanelCallbacksEvents {
 					} else {
 						if (isMultiSelector) {
 							insertXFormByXPath(selector.isOK(), selector.getSelectedAsJsObject(),
-									param.xpathMapping(), param.needClear());
+									param.xpathRoot(), param.xpathMapping(), param.needClear());
 						} else {
 							setXFormByXPath(selector.isOK(), selector.getSelectedAsJsObject(),
 									param.xpathMapping());
@@ -388,9 +398,10 @@ public final class XFormPanelCallbacksEvents {
 	}-*/;
 
 	private static native void insertXFormByXPath(final boolean ok,
-			final JavaScriptObject selected, final Map<String, String> xpathMapping,
-			final boolean needClear) /*-{
-		$wnd.insertXFormByXPath(ok, selected, xpathMapping, needClear);
+			final JavaScriptObject selected, final String xpathRoot,
+			final Map<String, String> xpathMapping, final boolean needClear) /*-{
+		$wnd.insertXFormByXPath(ok, selected, xpathRoot, xpathMapping,
+				needClear);
 	}-*/;
 
 	private static native String getValueByXPath(final String xpath) /*-{

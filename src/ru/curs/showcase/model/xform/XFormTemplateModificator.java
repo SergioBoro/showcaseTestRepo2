@@ -32,9 +32,6 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String SHOW_SELECTOR = "showSelector";
 	private static final String SHOW_MULTISELECTOR = "showMultiSelector";
 	private static final String TEMP_TAG_FOR_SELECTOR_ID = "tempTagForSelector";
-	private static final String SELECTOR_DATA_TAG = "selectordata";
-	private static final String ORIGIN = "instance('" + ROOT_SRV_DATA_TAG + "')/"
-			+ SELECTOR_DATA_TAG + "/%s";
 
 	// CHECKSTYLE:OFF
 	private static final String JS_SIMPLE_UPLOAD =
@@ -76,6 +73,24 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		doc.normalizeDocument();
 
 		return doc;
+	}
+
+	/**
+	 * Возвращает ноду xf:instance c id=ROOT_SRV_DATA_TAG.
+	 * 
+	 * @param doc
+	 *            - документ шаблона.
+	 * @return - элемент c id=ROOT_SRV_DATA_TAG.
+	 */
+	public static Node getSrvDataInstance(final org.w3c.dom.Document doc) {
+		NodeList l = doc.getElementsByTagName(XFormProducer.XF_INSTANCE);
+		for (int i = 0; i < l.getLength(); i++) {
+			Node n = l.item(i).getAttributes().getNamedItem(ID_TAG);
+			if ((n != null) && (ROOT_SRV_DATA_TAG.equals(n.getTextContent()))) {
+				return l.item(i);
+			}
+		}
+		return null;
 	}
 
 	public static org.w3c.dom.Document generateUploaders(final org.w3c.dom.Document doc,
@@ -204,9 +219,9 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 		ArrayList<String> xpaths = getArrayXPaths(selectors);
 
-		ArrayList<String> origins = getArrayOrigins(selectors);
+		adjustArrayXPathsForMultiSelectors(selectors, xpaths);
 
-		Document result = setDataForSelectors(xml, xpaths, origins);
+		Document result = setDataForSelectors(xml, xpaths);
 
 		// LoggerFactory.getLogger(XFormTemplateModificator.class).info(
 		// XMLUtils.documentToString(result));
@@ -241,7 +256,17 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 	private static ArrayList<String> getArrayXPaths(final ArrayList<String> selectors) {
 		ArrayList<String> xpaths = new ArrayList<String>();
+		for (String selector : selectors) {
+			if ((selector.toLowerCase().indexOf(SHOW_SELECTOR.toLowerCase()) > -1)
+					|| (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) > -1)) {
+				addXPathsFromStringToArrayXPaths(selector, xpaths);
+			}
+		}
+		return xpaths;
+	}
 
+	private static void addXPathsFromStringToArrayXPaths(final String selector,
+			final ArrayList<String> xpaths) {
 		Pattern pXPath =
 			Pattern.compile("XPath\\((\\S*)\\)", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
 
@@ -252,99 +277,86 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		Matcher mQuot;
 		String s;
 
-		for (String selector : selectors) {
-			if ((selector.toLowerCase().indexOf(SHOW_SELECTOR.toLowerCase()) > -1)
-					|| (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) > -1)) {
-				mXPath = pXPath.matcher(selector);
-				while (mXPath.find()) {
-					s = mXPath.group(1);
+		mXPath = pXPath.matcher(selector);
+		while (mXPath.find()) {
+			s = mXPath.group(1);
 
-					mQuot = pQuot.matcher(s);
-					StringBuffer sb = new StringBuffer();
-					while (mQuot.find()) {
-						mQuot.appendReplacement(sb, "'" + mQuot.group(1) + "'");
-					}
-					mQuot.appendTail(sb);
+			mQuot = pQuot.matcher(s);
+			StringBuffer sb = new StringBuffer();
+			while (mQuot.find()) {
+				mQuot.appendReplacement(sb, "'" + mQuot.group(1) + "'");
+			}
+			mQuot.appendTail(sb);
 
-					s = sb.toString();
+			s = sb.toString();
 
-					if (!xpaths.contains(s)) {
-						xpaths.add(s);
-					}
-				}
+			if (!xpaths.contains(s)) {
+				xpaths.add(s);
 			}
 		}
-
-		return xpaths;
 	}
 
-	private static ArrayList<String> getArrayOrigins(final ArrayList<String> selectors) {
-		ArrayList<String> origins = new ArrayList<String>();
-
+	private static void adjustArrayXPathsForMultiSelectors(final ArrayList<String> selectors,
+			final ArrayList<String> xpaths) {
 		Pattern pXPathMapping =
 			Pattern.compile("xpathMapping\\s*\\:\\s*\\{([\\s\\S]*)\\}", Pattern.CASE_INSENSITIVE
 					+ Pattern.UNICODE_CASE);
 
 		Pattern pQuot =
-			Pattern.compile("'(\\w*)'", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
+			Pattern.compile("'([^']*)'", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
+
+		Pattern pLastPartXPath =
+			Pattern.compile("\\/([^\\/]*)$", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
 
 		Matcher mXPathMapping;
 		Matcher mQuot;
+		Matcher mLastPartXPath;
 		String s;
 
 		for (String selector : selectors) {
 			if (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) > -1) {
+				ArrayList<String> localXPaths = new ArrayList<String>();
+				ArrayList<String> xp = new ArrayList<String>();
+
 				mXPathMapping = pXPathMapping.matcher(selector);
 				if (mXPathMapping.find()) {
 					s = mXPathMapping.group(1);
 
+					addXPathsFromStringToArrayXPaths(s, xp);
+
 					mQuot = pQuot.matcher(s);
 					while (mQuot.find()) {
-						if (!origins.contains(mQuot.group(1))) {
-							origins.add(mQuot.group(1));
+						if (!localXPaths.contains(mQuot.group(1))) {
+							localXPaths.add(mQuot.group(1));
 						}
 					}
 				}
+
+				if (!xp.isEmpty()) {
+					mLastPartXPath = pLastPartXPath.matcher(xp.get(0));
+					if (mLastPartXPath.find()) {
+						s = mLastPartXPath.group(1);
+						if (!xpaths.contains(s)) {
+							xpaths.add(s);
+						}
+					}
+
+					for (String localXPath : localXPaths) {
+						if (!localXPath.toLowerCase().contains("XPath".toLowerCase())) {
+							s = xp.get(0) + "/" + localXPath;
+							if (!xpaths.contains(s)) {
+								xpaths.add(s);
+							}
+						}
+					}
+				}
+
 			}
 		}
-
-		return origins;
-	}
-
-	/**
-	 * Возвращает ноду xf:instance c id=ROOT_SRV_DATA_TAG.
-	 * 
-	 * @param doc
-	 *            - документ шаблона.
-	 * @return - элемент c id=ROOT_SRV_DATA_TAG.
-	 */
-	private static Node getSrvDataInstance(final org.w3c.dom.Document doc) {
-		NodeList l = doc.getElementsByTagName(XFormProducer.XF_INSTANCE);
-		for (int i = 0; i < l.getLength(); i++) {
-			Node n = l.item(i).getAttributes().getNamedItem(ID_TAG);
-			if ((n != null) && (ROOT_SRV_DATA_TAG.equals(n.getTextContent()))) {
-				return l.item(i);
-			}
-		}
-		return null;
 	}
 
 	private static Document setDataForSelectors(final org.w3c.dom.Document xml,
-			final ArrayList<String> xpaths, final ArrayList<String> origins) {
-		String s;
-		for (String origin : origins) {
-			s = origin;
-			if (!xpaths.contains(s)) {
-				xpaths.add(s);
-			}
-		}
-		for (String origin : origins) {
-			s = String.format(ORIGIN, origin);
-			if (!xpaths.contains(s)) {
-				xpaths.add(s);
-			}
-		}
-
+			final ArrayList<String> xpaths) {
 		if (!xpaths.isEmpty()) {
 			NodeList body = xml.getElementsByTagName("body");
 
@@ -358,18 +370,6 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 				Element xfoutput = xml.createElementNS(XFormProducer.XFORMS_URI, "output");
 				xfoutput.setAttribute("ref", xpath);
 				div.appendChild(xfoutput);
-			}
-		}
-
-		if (!origins.isEmpty()) {
-			Node srv = getSrvDataInstance(xml);
-
-			Element data = xml.createElement(SELECTOR_DATA_TAG);
-			srv.getFirstChild().appendChild(data);
-
-			for (String origin : origins) {
-				Element el = xml.createElement(origin);
-				data.appendChild(el);
 			}
 		}
 

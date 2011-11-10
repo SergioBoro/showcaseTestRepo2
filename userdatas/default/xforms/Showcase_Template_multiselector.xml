@@ -18,20 +18,36 @@
 			
             <xf:instance id="myInstance">
                 <schema xmlns="">
-					<info>                
-                      <name>Атлантида</name>
-                      <name>Китеж-град</name>
+				  <infos>                
+					<info id = "1">                
+                      <name>Атлантида1</name>
+                      <recordid>Шамбала1</recordid>
 					</info>
-					<info>                
-                      <recordid>Шамбала</recordid>
+					<info id = "2">
+                      <name>Атлантида2</name>
+                      <recordid>Шамбала2</recordid>
 					</info>
-					<info>                
+					<info id = "3">
+                      <name>Атлантида3</name>
+                      <recordid>Шамбала3</recordid>
+					
                       <name4 id="Атлантида4"></name4>
                       <name4 id="Китеж-град4"></name4>
 					</info>
+				  </infos>					
                 </schema>
            </xf:instance>
-
+           
+            <xf:instance id="myInstance1">
+                <schema xmlns="">
+					<info id = "101">                
+                      <name>Атлантида101</name>
+                      <recordid>Шамбала101</recordid>
+					</info>
+                </schema>
+           </xf:instance>
+           
+           
 			<xf:submission id="good_save" method="post" instance="myInstance"
 				replace="instance" ref="instance('myInstance')" action="secured/sqlTransform?proc=xforms_submission1">
 				<xf:action ev:event="xforms-submit-done">
@@ -169,32 +185,35 @@
 <hr/>
 		<div style="font-size: 15px;"> Город из мультиселектора: </div>
 		<div>
-			<xf:input ref="/schema/info/city2" >
+			<xf:input ref="instance('myInstance1')/info/@id" >
+				<xf:hint>Содержит город, выбранный в мультиселекторе</xf:hint>
+			</xf:input>
+			<xf:input ref="instance('myInstance1')/info/name" >
 				<xf:hint>Содержит город, выбранный в мультиселекторе</xf:hint>
 			</xf:input>			
+
+        <xf:select1 ref="/schema/info/city2">
+            <xf:item>
+                <xf:label>-</xf:label>
+                <xf:value>-</xf:value>
+            </xf:item>
+            <xf:itemset nodeset="instance('myInstance')/infos/info/@id">
+                <xf:label ref="."/>
+                <xf:value ref="."/>
+            </xf:itemset>
+        </xf:select1>
 			
         <xf:select1 ref="/schema/info/city2">
             <xf:item>
                 <xf:label>-</xf:label>
                 <xf:value>-</xf:value>
             </xf:item>
-            <xf:itemset nodeset="instance('myInstance')/info[1]/name">
+            <xf:itemset nodeset="instance('myInstance')/infos/info/name">
                 <xf:label ref="."/>
                 <xf:value ref="."/>
             </xf:itemset>
         </xf:select1>
-        
-        <xf:select1 ref="/schema/info/city2">
-            <xf:item>
-                <xf:label>-</xf:label>
-                <xf:value>-</xf:value>
-            </xf:item>
-            <xf:itemset nodeset="instance('myInstance')/info[2]/recordid">
-                <xf:label ref="."/>
-                <xf:value ref="."/>
-            </xf:itemset>
-        </xf:select1>
-        
+         
 			
 			<xf:trigger>
 				<xf:label>XPath MultiSelector</xf:label>
@@ -202,24 +221,23 @@
 					<xf:load
 						resource="javascript:showMultiSelector({
 			           id : 'xformId',
-                       procListAndCount  : '[dbo].[regions_list_and_count]',
+                       procListAndCount    : '[dbo].[regions_list_and_count]',
                        generalFilters      : [ 
-                                              'XPath(instance(quot(myInstance))/info[3]/name4)',  
-                                              'XPath(instance(quot(myInstance))/info[3]/name4/@id)'
+                                              'XPath(instance(quot(myInstance))/infos/info[3]/name4)',  
+                                              'XPath(instance(quot(myInstance))/infos/info[3]/name4/@id)'
                                              ],
                        currentValue        : '',
                        windowCaption       : 'Выберите значения',
                        needClear           : true,
+                       xpathRoot		   : 'XPath(instance(quot(myInstance))/infos)',
                        xpathMapping        : {
-                                              'XPath(instance(quot(myInstance))/info[1])': 
-                                              'name', 
-                                              
-                                              'XPath(instance(quot(myInstance))/info[2])': 
-                                              {'id': 'recordid'}
+                                              'XPath(instance(quot(myInstance1))/info)': 
+                                              {'id': '@id','name':'name'}
                                              }
                        });" />
 				</xf:action>
 			</xf:trigger>
+			
 			<xf:trigger>
 				<xf:label>XPath MultiSelector 2 proc</xf:label>
 				<xf:action ev:event="DOMActivate">
@@ -232,12 +250,10 @@
                        currentValue        : '',
                        windowCaption       : 'Выберите значения',
                        needClear           : false,                       
+                       xpathRoot		   : 'XPath(instance(quot(myInstance))/infos)',
                        xpathMapping        : {
-                                              'XPath(instance(quot(myInstance))/info[1])': 
-                                              'name', 
-                                              
-                                              'XPath(instance(quot(myInstance))/info[2])': 
-                                              {'id': 'recordid'}
+                                              'XPath(instance(quot(myInstance1))/info)': 
+                                              {'id': '@id','name':'name'}
                                              }
                        });" />
 				</xf:action>
@@ -261,6 +277,9 @@
 			</xf:trigger>
 
 		</div>
+		
+		
+		
 
 	</body>
 </html>
