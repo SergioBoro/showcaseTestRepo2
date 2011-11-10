@@ -75,17 +75,6 @@ public class GridDBFactory extends AbstractGridFactory {
 	}
 
 	@Override
-	protected void checkSourceError() {
-		super.checkSourceError();
-
-		try {
-			getSource().getSpCallHelper().checkErrorCode();
-		} catch (SQLException e) {
-			throw new ResultSetHandleException(e);
-		}
-	}
-
-	@Override
 	protected void fillRecordsAndEvents() {
 		try {
 			scrollToRequiredPage();
@@ -138,7 +127,7 @@ public class GridDBFactory extends AbstractGridFactory {
 				} else if (col.getValueType() == GridValueType.DOWNLOAD) {
 					value = rowset.getString(col.getId());
 					value = AppProps.replaceVariables(value);
-					//value = makeSafeXMLAttrValues(value);
+					// value = makeSafeXMLAttrValues(value);
 				} else if (col.getValueType().isDate()) {
 					value = getStringValueOfDate(col);
 				} else if (col.getValueType().isNumber()) {

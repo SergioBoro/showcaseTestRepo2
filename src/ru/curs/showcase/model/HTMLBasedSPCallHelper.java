@@ -20,17 +20,14 @@ public abstract class HTMLBasedSPCallHelper extends ElementSPCallHelper {
 	 * Возвращает индекс OUT параметра с данными элемента. Необходим только для
 	 * HTML-based элементов.
 	 * 
-	 * @param index
-	 *            TODO
-	 * 
 	 * @return - индекс параметра.
 	 */
-	public abstract int getDataParam(int index);
+	public abstract int getDataParam();
 
 	@Override
 	protected void prepareStdStatement() throws SQLException {
 		super.prepareStdStatement();
-		getStatement().registerOutParameter(getDataParam(getTemplateIndex()),
+		getStatement().registerOutParameter(getDataParam(),
 				java.sql.Types.SQLXML);
 	}
 
@@ -53,7 +50,7 @@ public abstract class HTMLBasedSPCallHelper extends ElementSPCallHelper {
 			try {
 				prepareStdStatement();
 				execute();
-				Document data = getDocumentForXMLParam(getDataParam(getTemplateIndex()));
+				Document data = getDocumentForXMLParam(getDataParam());
 				InputStream validatedSettings = getValidatedSettings();
 				return new HTMLBasedElementRawData(data, validatedSettings, getElementInfo(),
 						getContext());

@@ -190,4 +190,11 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 			}
 		}
 	}
+
+	@Override
+	protected void checkSourceError() {
+		super.checkSourceError();
+	
+		getSource().getSpCallHelper().checkErrorCode();
+	}
 }

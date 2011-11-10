@@ -24,21 +24,10 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 	private static final String NO_SAVE_PROC_ERROR = "Не задана процедура для сохранения XForms";
 	private static final String NO_DOWNLOAD_PROC_ERROR =
 		"Не задана процедура для скачивания файлов из сервера для linkId=";
-	private static final int MAIN_CONTEXT_INDEX_0 = 1;
-	private static final int ADD_CONTEXT_INDEX_0 = 2;
-	private static final int FILTER_INDEX_0 = 3;
-	private static final int SESSION_CONTEXT_INDEX_0 = 4;
-	private static final int ELEMENTID_INDEX_0 = 5;
-	private static final int XFORMSDATA_INDEX_0 = 6;
 
-	private static final int MAIN_CONTEXT_INDEX_NOT0 = 2;
-	private static final int ADD_CONTEXT_INDEX_NOT0 = 3;
-	private static final int FILTER_INDEX_NOT0 = 4;
-	private static final int SESSION_CONTEXT_INDEX_NOT0 = 5;
-	private static final int ELEMENTID_INDEX_NOT0 = 6;
-	private static final int XFORMSDATA_INDEX_NOT0 = 7;
+	private static final int XFORMSDATA_INDEX = 7;
 
-	private static final int OUTPUT_INDEX = 7;
+	private static final int OUTPUT_INDEX = 8;
 
 	private static final int ERROR_MES_INDEX_SAVE = 8;
 	private static final int ERROR_MES_INDEX_SUBMISSION = 4;
@@ -69,7 +58,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 	protected String getSqlTemplate(final int index) {
 		switch (index) {
 		case 0:
-			return "{call %s(?, ?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s(?, ?, ?, ?, ?, ?, ?)}";
 		case SAVE_TEMPLATE_IND:
 			return "{? = call %s(?, ?, ?, ?, ?, ?, ?)}";
 		case SUBMISSION_TEMPLATE_IND:
@@ -100,9 +89,8 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 		try {
 			try {
 				prepareElementStatementWithErrorMes();
-				setSQLXMLParam(getDataParam(SAVE_TEMPLATE_IND), data);
+				setSQLXMLParam(getDataParam(), data);
 				execute();
-				checkErrorCode();
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
 			}
@@ -124,7 +112,6 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 				setSQLXMLParam(INPUTDATA_INDEX, context.getFormData());
 				getStatement().registerOutParameter(OUTPUTDATA_INDEX, java.sql.Types.SQLXML);
 				execute();
-				checkErrorCode();
 				out = getStringForXMLParam(OUTPUTDATA_INDEX);
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
@@ -136,12 +123,8 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 	}
 
 	@Override
-	public int getDataParam(final int index) {
-		if (index == 0) {
-			return XFORMSDATA_INDEX_0;
-		} else {
-			return XFORMSDATA_INDEX_NOT0;
-		}
+	public int getDataParam() {
+		return XFORMSDATA_INDEX;
 	}
 
 	@Override
@@ -159,11 +142,10 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 		try {
 			try {
 				prepareElementStatementWithErrorMes();
-				setSQLXMLParam(getDataParam(FILE_TEMPLATE_IND), context.getFormData());
+				setSQLXMLParam(getDataParam(), context.getFormData());
 				getStatement().registerOutParameter(FILENAME_INDEX, java.sql.Types.VARCHAR);
 				getStatement().registerOutParameter(FILE_INDEX, getBinarySQLType());
 				execute();
-				checkErrorCode();
 				result = getFileForBinaryStream(FILE_INDEX, FILENAME_INDEX);
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
@@ -188,11 +170,10 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 		try {
 			try {
 				prepareElementStatementWithErrorMes();
-				setSQLXMLParam(getDataParam(FILE_TEMPLATE_IND), context.getFormData());
+				setSQLXMLParam(getDataParam(), context.getFormData());
 				setStringParam(FILENAME_INDEX, file.getName());
 				setBinaryStream(FILE_INDEX, file);
 				execute();
-				checkErrorCode();
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
 			} catch (IOException e2) {
@@ -200,54 +181,6 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 			}
 		} finally {
 			releaseResources();
-		}
-	}
-
-	@Override
-	protected int getMainContextIndex(final int index) {
-		if (index == 0) {
-			return MAIN_CONTEXT_INDEX_0;
-		} else {
-			return MAIN_CONTEXT_INDEX_NOT0;
-		}
-	}
-
-	@Override
-	protected int getAddContextIndex(final int index) {
-		if (index == 0) {
-			return ADD_CONTEXT_INDEX_0;
-		} else {
-			return ADD_CONTEXT_INDEX_NOT0;
-		}
-
-	}
-
-	@Override
-	protected int getFilterIndex(final int index) {
-		if (index == 0) {
-			return FILTER_INDEX_0;
-		} else {
-			return FILTER_INDEX_NOT0;
-		}
-
-	}
-
-	@Override
-	protected int getSessionContextIndex(final int index) {
-		if (index == 0) {
-			return SESSION_CONTEXT_INDEX_0;
-		} else {
-			return SESSION_CONTEXT_INDEX_NOT0;
-		}
-
-	}
-
-	@Override
-	protected int getElementIdIndex(final int index) {
-		if (index == 0) {
-			return ELEMENTID_INDEX_0;
-		} else {
-			return ELEMENTID_INDEX_NOT0;
 		}
 	}
 

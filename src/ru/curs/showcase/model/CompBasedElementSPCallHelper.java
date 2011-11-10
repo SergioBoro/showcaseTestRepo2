@@ -21,6 +21,7 @@ public abstract class CompBasedElementSPCallHelper extends ElementSPCallHelper {
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
 			boolean hasResult = execute();
 			if (!hasResult) {
+				checkErrorCode();
 				throw new DBQueryException(getElementInfo(), getContext(),
 						CompBasedElementSPCallHelper.NO_RESULTSET_ERROR);
 			}

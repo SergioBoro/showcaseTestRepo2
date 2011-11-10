@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.SPCallHelper;
 import ru.curs.showcase.util.Description;
 
 /**
@@ -41,11 +41,10 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 		try {
 			try {
 				prepareStatementWithErrorMes();
-				setSQLXMLParam(getSessionContextIndex(getTemplateIndex()), context.getSession());
+				setSQLXMLParam(getSessionContextIndex(), context.getSession());
 				getStatement().registerOutParameter(FRAME_DATA_INDEX, java.sql.Types.VARCHAR);
 				setContext(context);
 				execute();
-				checkErrorCode();
 
 				String result = getStatement().getString(FRAME_DATA_INDEX);
 				return result;
@@ -64,7 +63,7 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 	}
 
 	@Override
-	protected int getSessionContextIndex(final int index) {
+	protected int getSessionContextIndex() {
 		return SESSION_CONTEXT_INDEX;
 	}
 

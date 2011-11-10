@@ -14,8 +14,8 @@ import ru.curs.showcase.util.Description;
 @Description(process = "Загрузка данных для вебтекста из БД")
 public class WebTextDBGateway extends HTMLBasedSPCallHelper implements WebTextGateway {
 
-	private static final int DATA_INDEX = 6;
-	private static final int OUTPUT_INDEX = 7;
+	private static final int DATA_INDEX = 7;
+	private static final int OUTPUT_INDEX = 8;
 
 	@Override
 	public HTMLBasedElementRawData getRawData(final CompositeContext context,
@@ -25,7 +25,7 @@ public class WebTextDBGateway extends HTMLBasedSPCallHelper implements WebTextGa
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "{call %s(?, ?, ?, ?, ?, ?, ?)}";
+		return "{? = call %s(?, ?, ?, ?, ?, ?, ?)}";
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class WebTextDBGateway extends HTMLBasedSPCallHelper implements WebTextGa
 	}
 
 	@Override
-	public int getDataParam(final int index) {
+	public int getDataParam() {
 		return DATA_INDEX;
 	}
 }

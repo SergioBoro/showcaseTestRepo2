@@ -18,13 +18,14 @@ import ru.curs.showcase.util.Description;
 @Description(process = "Загрузка данных для графика из БД")
 public class ChartDBGateway extends CompBasedElementSPCallHelper implements ChartGateway {
 
-	private static final int OUT_SETTINGS_PARAM = 6;
+	private static final int OUT_SETTINGS_PARAM = 7;
 
-	private static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS = 7;
+	private static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS = 8;
 
 	@Override
 	public ElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
+		setRetriveResultSets(true);
 		return stdGetData(context, elementInfo);
 	}
 
@@ -36,9 +37,9 @@ public class ChartDBGateway extends CompBasedElementSPCallHelper implements Char
 	@Override
 	protected String getSqlTemplate(final int index) {
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return "{call %s(?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s(?, ?, ?, ?, ?, ?)}";
 		} else {
-			return "{call %s(?, ?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s(?, ?, ?, ?, ?, ?, ?)}";
 		}
 	}
 

@@ -18,6 +18,11 @@
 			<xs:enumeration value="webtext" />
 			<xs:enumeration value="geomap" />
 			<xs:enumeration value="xforms" />
+			<xs:enumeration value="CHART" />
+			<xs:enumeration value="GRID" />
+			<xs:enumeration value="WEBTEXT" />
+			<xs:enumeration value="GEOMAP" />
+			<xs:enumeration value="XFORMS" />			
 		</xs:restriction>
 	</xs:simpleType>
 

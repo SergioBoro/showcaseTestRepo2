@@ -32,4 +32,18 @@
 			<proc id="051" name="xforms_upload_by_userdata" type="UPLOAD" />			
 		</element>	
 	</tab>
+	<tab id="10" name="Доработанный возврат ошибок">
+		<element id="1000" type="webtext" proc="webtext_mesid"/>
+		<element id="d3" proc="geomap_ec" type="GEOMAP" hideOnLoad="true"/>
+		<element id="1002" type="xforms" template="Showcase_Template_submission_ec.xml"
+			proc="xforms_proc_all">
+			<proc id="proc3" name="xforms_submission_ec" type="SUBMISSION" />
+			<proc id="proc4" name="xforms_submission_um" type="SUBMISSION" />
+			<proc id="proc5" name="xforms_submission_re" type="SUBMISSION" />
+		</element>
+	</tab>
+	<tab id="-01" name="Карты Гугль и Яндекса">
+		<element id="-0101" type="geomap" proc="geomap_world_gm" cacheData="false"/>
+		<element id="-0102" type="geomap" proc="geomap_func2_ym" cacheData="false"/>	
+	</tab>		
 </datapanel>

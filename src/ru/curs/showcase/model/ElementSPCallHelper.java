@@ -16,7 +16,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public abstract class ElementSPCallHelper extends SPCallHelper {
 
-	private static final int ELEMENTID_INDEX = 5;
+	private static final int ELEMENTID_INDEX = 6;
 
 	/**
 	 * Информация об элементе, данные которого загружает процедура.

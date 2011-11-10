@@ -18,17 +18,18 @@ import ru.curs.showcase.util.Description;
 @Description(process = "Загрузка данных для карты из БД")
 public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements GeoMapGateway {
 
-	private static final int OUT_SETTINGS_PARAM = 6;
+	private static final int OUT_SETTINGS_PARAM = 7;
 
-	public static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS_1 = 7;
-	public static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS_2 = 8;
-	public static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS_3 = 9;
-	public static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS_4 = 10;
-	public static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS_5 = 11;
+	public static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS_1 = 8;
+	public static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS_2 = 9;
+	public static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS_3 = 10;
+	public static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS_4 = 11;
+	public static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS_5 = 12;
 
 	@Override
 	public ElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
+		setRetriveResultSets(true);
 		return stdGetData(context, elementInfo);
 	}
 
@@ -40,9 +41,9 @@ public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements Geo
 	@Override
 	protected String getSqlTemplate(final int index) {
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return "{call %s(?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s(?, ?, ?, ?, ?, ?)}";
 		} else {
-			return "{call %s(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 		}
 	}
 

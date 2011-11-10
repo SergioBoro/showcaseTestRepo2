@@ -25,10 +25,10 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public abstract class SPCallHelper extends DataCheckGateway {
 	public static final String SQL_MARKER = "SQL";
-	private static final int MAIN_CONTEXT_INDEX = 1;
-	private static final int ADD_CONTEXT_INDEX = 2;
-	private static final int FILTER_INDEX = 3;
-	private static final int SESSION_CONTEXT_INDEX = 4;
+	private static final int MAIN_CONTEXT_INDEX = 2;
+	private static final int ADD_CONTEXT_INDEX = 3;
+	private static final int FILTER_INDEX = 4;
+	private static final int SESSION_CONTEXT_INDEX = 5;
 
 	private static final int ERROR_MES_INDEX = -1;
 
@@ -60,6 +60,16 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 */
 	private int templateIndex = 0;
 
+	private boolean retriveResultSets = false;
+
+	public boolean isRetriveResultSets() {
+		return retriveResultSets;
+	}
+
+	public void setRetriveResultSets(final boolean aRetriveResultSets) {
+		retriveResultSets = aRetriveResultSets;
+	}
+
 	public String getProcName() {
 		return procName;
 	}
@@ -77,22 +87,22 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 * @throws SQLException
 	 */
 	protected void setupGeneralParameters() throws SQLException {
-		setStringParam(getMainContextIndex(templateIndex), "");
-		setStringParam(getAddContextIndex(templateIndex), "");
-		setSQLXMLParam(getFilterIndex(templateIndex), "");
-		setSQLXMLParam(getSessionContextIndex(templateIndex), "");
+		setStringParam(getMainContextIndex(), "");
+		setStringParam(ADD_CONTEXT_INDEX, "");
+		setSQLXMLParam(FILTER_INDEX, "");
+		setSQLXMLParam(getSessionContextIndex(), "");
 		if (context != null) {
 			if (context.getMain() != null) {
-				setStringParam(getMainContextIndex(templateIndex), context.getMain());
+				setStringParam(getMainContextIndex(), context.getMain());
 			}
 			if (context.getAdditional() != null) {
-				setStringParam(getAddContextIndex(templateIndex), context.getAdditional());
+				setStringParam(ADD_CONTEXT_INDEX, context.getAdditional());
 			}
 			if (context.getFilter() != null) {
-				setSQLXMLParam(getFilterIndex(templateIndex), context.getFilter());
+				setSQLXMLParam(FILTER_INDEX, context.getFilter());
 			}
 			if (context.getSession() != null) {
-				setSQLXMLParam(getSessionContextIndex(templateIndex), context.getSession());
+				setSQLXMLParam(getSessionContextIndex(), context.getSession());
 			}
 		}
 	}
@@ -221,14 +231,14 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		}
 		sqlTemplate = String.format(getSqlTemplate(templateIndex), getProcName());
 		setStatement(conn.prepareCall(sqlTemplate));
+		getStatement().registerOutParameter(1, java.sql.Types.INTEGER);
 	}
 
 	/**
-	 * Новая функция подготовки CallableStatement - с возвратом кода ошибки.
+	 * Новая функция подготовки CallableStatement - с возвратом сообщения из БД.
 	 */
 	protected void prepareStatementWithErrorMes() throws SQLException {
 		prepareSQL();
-		getStatement().registerOutParameter(1, java.sql.Types.INTEGER);
 		getStatement().registerOutParameter(getErrorMesIndex(templateIndex),
 				java.sql.Types.VARCHAR);
 	}
@@ -236,9 +246,9 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	/**
 	 * Функция проверки кода ошибки, который вернула процедура. Проверка
 	 * происходит только в том случае, если первым параметром функции является
-	 * код возврата.
+	 * код возврата. В MSSQL это происходит автоматически.
 	 */
-	public void checkErrorCode() throws SQLException {
+	public void checkErrorCode() {
 		int errorCode;
 		try {
 			errorCode = getStatement().getInt(1);
@@ -247,7 +257,12 @@ public abstract class SPCallHelper extends DataCheckGateway {
 			return;
 		}
 		if (errorCode != 0) {
-			String errMess = getStatement().getString(getErrorMesIndex(templateIndex));
+			String errMess;
+			try {
+				errMess = getStatement().getString(getErrorMesIndex(templateIndex));
+			} catch (Exception e) {
+				errMess = "";
+			}
 			UserMessageFactory factory = new UserMessageFactory();
 			throw new ValidateInDBException(factory.build(errorCode, errMess));
 		}
@@ -302,19 +317,11 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		return realValue;
 	}
 
-	protected int getMainContextIndex(final int index) {
+	protected int getMainContextIndex() {
 		return MAIN_CONTEXT_INDEX;
 	}
 
-	protected int getAddContextIndex(final int index) {
-		return ADD_CONTEXT_INDEX;
-	}
-
-	protected int getFilterIndex(final int index) {
-		return FILTER_INDEX;
-	}
-
-	protected int getSessionContextIndex(final int index) {
+	protected int getSessionContextIndex() {
 		return SESSION_CONTEXT_INDEX;
 	}
 
@@ -327,7 +334,11 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		Marker marker = MarkerFactory.getDetachedMarker(SQL_MARKER);
 		marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
 		LOGGER.info(marker, value);
-		return getStatement().execute();
+		boolean res = getStatement().execute();
+		if (!retriveResultSets) {
+			checkErrorCode();
+		}
+		return res;
 	}
 
 	protected void setBinaryStream(final int parameterIndex, final DataFile<InputStream> file)

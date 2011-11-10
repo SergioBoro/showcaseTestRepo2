@@ -17,8 +17,8 @@ import ru.curs.showcase.util.Description;
 @Description(process = "Загрузка данных для навигатора из БД")
 public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway {
 
-	private static final int SESSION_CONTEXT_INDEX = 1;
-	private static final int NAVIGATOR_INDEX = 2;
+	private static final int SESSION_CONTEXT_INDEX = 2;
+	private static final int NAVIGATOR_INDEX = 3;
 
 	private String sourceName;
 
@@ -31,7 +31,7 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 		init(context);
 		try {
 			prepareSQL();
-			setSQLXMLParam(getSessionContextIndex(getTemplateIndex()), context.getSession());
+			setSQLXMLParam(getSessionContextIndex(), context.getSession());
 			getStatement().registerOutParameter(NAVIGATOR_INDEX, java.sql.Types.SQLXML);
 			execute();
 
@@ -50,7 +50,7 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "{call %s(?, ?)}";
+		return "{? = call %s(?, ?)}";
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway
 	}
 
 	@Override
-	protected int getSessionContextIndex(final int index) {
+	protected int getSessionContextIndex() {
 		return SESSION_CONTEXT_INDEX;
 	}
 

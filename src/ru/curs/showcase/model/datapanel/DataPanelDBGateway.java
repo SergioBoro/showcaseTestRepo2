@@ -17,7 +17,6 @@ import ru.curs.showcase.util.*;
 @Description(process = "Загрузка данных для информационной панели из БД")
 public class DataPanelDBGateway extends SPCallHelper implements DataPanelGateway {
 
-	private static final int MAIN_CONTEXT_INDEX = 2;
 	private static final int SESSION_CONTEXT_INDEX = 3;
 	private static final int DP_INDEX = 4;
 	private static final int ERROR_MES_INDEX = 5;
@@ -44,11 +43,10 @@ public class DataPanelDBGateway extends SPCallHelper implements DataPanelGateway
 		try {
 			setContext(context);
 			prepareStatementWithErrorMes();
-			setSQLXMLParam(getSessionContextIndex(getTemplateIndex()), context.getSession());
-			setStringParam(getMainContextIndex(getTemplateIndex()), context.getMain());
+			setSQLXMLParam(getSessionContextIndex(), context.getSession());
+			setStringParam(getMainContextIndex(), context.getMain());
 			getStatement().registerOutParameter(DP_INDEX, java.sql.Types.SQLXML);
 			execute();
-			checkErrorCode();
 			InputStream stream = getInputStreamForXMLParam(DP_INDEX);
 			return new DataFile<InputStream>(stream, getProcName());
 		} catch (SQLException e) {
@@ -63,12 +61,7 @@ public class DataPanelDBGateway extends SPCallHelper implements DataPanelGateway
 	}
 
 	@Override
-	protected int getMainContextIndex(final int index) {
-		return MAIN_CONTEXT_INDEX;
-	}
-
-	@Override
-	protected int getSessionContextIndex(final int index) {
+	protected int getSessionContextIndex() {
 		return SESSION_CONTEXT_INDEX;
 	}
 

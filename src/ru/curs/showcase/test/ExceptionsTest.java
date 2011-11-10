@@ -16,7 +16,7 @@ import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.*;
-import ru.curs.showcase.model.chart.ChartGetCommand;
+import ru.curs.showcase.model.chart.*;
 import ru.curs.showcase.model.command.GeneralExceptionFactory;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.frame.*;
@@ -464,7 +464,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		XFormContext context = new XFormContext();
 		context.setMain(MAIN_CONTEXT_TAG);
 		context.setAdditional(ADD_CONDITION);
-		XFormDBGateway gateway = new XFormDBGateway();
+		XFormGateway gateway = new XFormDBGateway();
 		final String procName = "xforms_submission_ec";
 
 		try {
@@ -477,14 +477,29 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 			context.setFormData("<mesid>555</mesid>");
 			gateway.sqlTransform(procName, context);
 		} catch (ValidateInDBException e) {
-			assertEquals("Отформатированное сообщение: Ошибка в SP - из БД", e.getMessage());
+			assertEquals("Отформатированное сообщение: Ошибка в SP. Спасибо!", e.getMessage());
 		}
 
 		try {
 			context.setFormData("<mesid>556</mesid>");
 			gateway.sqlTransform(procName, context);
 		} catch (ValidateInDBException e) {
-			assertEquals("Составное сообщение из БД. Ошибка в SP", e.getMessage());
+			assertEquals("Составное сообщение + Ошибка в SP", e.getMessage());
+		}
+	}
+
+	@Test
+	public void testGeoMapErrorCodeReturn() {
+		CompositeContext context = new CompositeContext();
+		context.setMain(MAIN_CONTEXT_TAG);
+		context.setAdditional("<mesid>556</mesid>");
+		ChartGateway gateway = new ChartDBGateway();
+		DataPanelElementInfo dpei = new DataPanelElementInfo("id", DataPanelElementType.CHART);
+		dpei.setProcName("geomap_ec");
+		try {
+			gateway.getRawData(context, dpei);
+		} catch (ValidateInDBException e) {
+			assertEquals("Составное сообщение + ", e.getMessage());
 		}
 	}
 
