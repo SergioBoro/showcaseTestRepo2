@@ -229,6 +229,7 @@
                        currentValue        : '',
                        windowCaption       : 'Выберите значения',
                        needClear           : true,
+                       needInitSelection   : true,
                        xpathRoot		   : 'XPath(instance(quot(myInstance))/infos)',
                        xpathMapping        : {
                                               'XPath(instance(quot(myInstance1))/info)': 

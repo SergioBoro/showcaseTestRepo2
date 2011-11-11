@@ -312,6 +312,15 @@ public final class XFormPanelCallbacksEvents {
 		}-*/;
 
 		/**
+		 * Мультиселектор. Нужно ли загружать начальные выбранные значения.
+		 * 
+		 * @return boolean
+		 */
+		native boolean needInitSelection()/*-{
+			return this.needInitSelection;
+		}-*/;
+
+		/**
 		 * onSelectionComplete.
 		 * 
 		 * @param ok
@@ -354,9 +363,16 @@ public final class XFormPanelCallbacksEvents {
 		if (currentXFormPanel != null) {
 			BaseSelectorComponent c;
 			if (isMultiSelector) {
+				JavaScriptObject initSelection;
+				if (param.needInitSelection()) {
+					initSelection = getInitSelection(param.xpathRoot(), param.xpathMapping());
+				} else {
+					initSelection = null;
+				}
+
 				c =
 					new MultiSelectorComponent(currentXFormPanel.getSelSrv(),
-							param.windowCaption());
+							param.windowCaption(), initSelection);
 			} else {
 				c = new SelectorComponent(currentXFormPanel.getSelSrv(), param.windowCaption());
 			}
@@ -410,6 +426,11 @@ public final class XFormPanelCallbacksEvents {
 
 	private static native String getXMLByXPathArray(final Object xpathArray) /*-{
 		return $wnd.getXMLByXPathArray(xpathArray);
+	}-*/;
+
+	private static native JavaScriptObject getInitSelection(final String xpathRoot,
+			final Map<String, String> xpathMapping) /*-{
+		return $wnd.getInitSelection(xpathRoot, xpathMapping);
 	}-*/;
 
 	/**

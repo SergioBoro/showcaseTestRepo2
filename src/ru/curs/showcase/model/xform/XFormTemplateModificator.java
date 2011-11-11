@@ -265,6 +265,12 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		return xpaths;
 	}
 
+	private static void addIfNotContains(final ArrayList<String> arrList, final String s) {
+		if (!arrList.contains(s)) {
+			arrList.add(s);
+		}
+	}
+
 	private static void addXPathsFromStringToArrayXPaths(final String selector,
 			final ArrayList<String> xpaths) {
 		Pattern pXPath =
@@ -289,10 +295,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			mQuot.appendTail(sb);
 
 			s = sb.toString();
+			addIfNotContains(xpaths, s);
 
-			if (!xpaths.contains(s)) {
-				xpaths.add(s);
-			}
 		}
 	}
 
@@ -302,6 +306,10 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			Pattern.compile("xpathMapping\\s*\\:\\s*\\{([\\s\\S]*)\\}", Pattern.CASE_INSENSITIVE
 					+ Pattern.UNICODE_CASE);
 
+		Pattern pXPathRoot =
+			Pattern.compile("xpathRoot\\s*\\:\\s*\\'(XPath\\(\\S*\\))\\'",
+					Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
+
 		Pattern pQuot =
 			Pattern.compile("'([^']*)'", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
 
@@ -309,6 +317,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			Pattern.compile("\\/([^\\/]*)$", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
 
 		Matcher mXPathMapping;
+		Matcher mXPathRoot;
 		Matcher mQuot;
 		Matcher mLastPartXPath;
 		String s;
@@ -316,36 +325,42 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		for (String selector : selectors) {
 			if (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) > -1) {
 				ArrayList<String> localXPaths = new ArrayList<String>();
-				ArrayList<String> xp = new ArrayList<String>();
+				ArrayList<String> xpathMapping = new ArrayList<String>();
+				ArrayList<String> xpathRoot = new ArrayList<String>();
 
 				mXPathMapping = pXPathMapping.matcher(selector);
 				if (mXPathMapping.find()) {
 					s = mXPathMapping.group(1);
-
-					addXPathsFromStringToArrayXPaths(s, xp);
+					addXPathsFromStringToArrayXPaths(s, xpathMapping);
 
 					mQuot = pQuot.matcher(s);
 					while (mQuot.find()) {
-						if (!localXPaths.contains(mQuot.group(1))) {
-							localXPaths.add(mQuot.group(1));
-						}
+						addIfNotContains(localXPaths, mQuot.group(1));
 					}
 				}
 
-				if (!xp.isEmpty()) {
-					mLastPartXPath = pLastPartXPath.matcher(xp.get(0));
+				mXPathRoot = pXPathRoot.matcher(selector);
+				if (mXPathRoot.find()) {
+					s = mXPathRoot.group(1);
+					addXPathsFromStringToArrayXPaths(s, xpathRoot);
+				}
+
+				if (!xpathMapping.isEmpty()) {
+					String sLastPartXPath = null;
+					mLastPartXPath = pLastPartXPath.matcher(xpathMapping.get(0));
 					if (mLastPartXPath.find()) {
-						s = mLastPartXPath.group(1);
-						if (!xpaths.contains(s)) {
-							xpaths.add(s);
-						}
+						sLastPartXPath = mLastPartXPath.group(1);
+						addIfNotContains(xpaths, sLastPartXPath);
 					}
 
 					for (String localXPath : localXPaths) {
 						if (!localXPath.toLowerCase().contains("XPath".toLowerCase())) {
-							s = xp.get(0) + "/" + localXPath;
-							if (!xpaths.contains(s)) {
-								xpaths.add(s);
+							s = xpathMapping.get(0) + "/" + localXPath;
+							addIfNotContains(xpaths, s);
+
+							if (sLastPartXPath != null) {
+								s = xpathRoot.get(0) + "/" + sLastPartXPath + "/" + localXPath;
+								addIfNotContains(xpaths, s);
 							}
 						}
 					}

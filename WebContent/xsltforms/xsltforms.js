@@ -10009,6 +10009,26 @@ function insertXFormByXPath(ok, selected, xpathRoot, xpathMapping, needClear)
 		}
 	}
 }
+/*
+function SelectionObject(id, name) {
+    this.id   = id;	
+    this.name = name;
+}
+*/
+function getInitSelection(xpathRoot, xpathMapping)
+{
+/*	
+	var selected = [];
+	
+	selected[0] = new SelectionObject("'200'", "'Атлантида200'");
+	selected[1] = new SelectionObject("'201'", "'Атлантида201'");	
+	
+	alert(selected);
+	
+	return selected;
+*/	
+	return null;	
+}
 
 function getValueByXPath(xpath)
 {
