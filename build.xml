@@ -125,7 +125,8 @@
 		</delete>
 		<delete includeemptydirs="true" failonerror="false">
 			<fileset dir="${dist.dir}">
-				<exclude name="js/*.*" />
+				<exclude name="js/**" />
+				<exclude name="jython/**" />
 			</fileset>
 		</delete>
 		<delete includeemptydirs="true" failonerror="false">
