@@ -56,7 +56,7 @@ public final class AppInfoSingleton {
 
 	private final SortedSet<LoggingEventDecorator> lastLogEvents = new LastLogEvents();
 
-	private String webInfPath;
+	private String webAppPath;
 
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
 		return lastLogEvents;
@@ -342,11 +342,12 @@ public final class AppInfoSingleton {
 		return userdatas.get(getCurUserDataId());
 	}
 
-	public String getWebInfPath() {
-		return webInfPath;
+	public String getWebAppPath() {
+		return webAppPath;
 	}
 
-	public void setWebInfPath(final String aWebInfPath) {
-		webInfPath = aWebInfPath;
+	public void setWebAppPath(final String aPath) {
+		webAppPath = aPath;
 	}
+
 }

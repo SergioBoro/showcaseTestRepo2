@@ -56,9 +56,7 @@ public final class AppInitializer {
 
 	private static void initClassPath() {
 		File file = new File(".");
-		AppInfoSingleton.getAppInfo().setWebInfPath(
-				file.getAbsolutePath() + "\\WebContent\\WEB-INF");
-
+		AppInfoSingleton.getAppInfo().setWebAppPath(file.getAbsolutePath() + "\\WebContent");
 	}
 
 	/**

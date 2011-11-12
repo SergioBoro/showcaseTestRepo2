@@ -9,6 +9,7 @@ import javax.xml.transform.stream.*;
 
 import org.w3c.dom.*;
 
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
@@ -108,6 +109,8 @@ public final class XFormProducer extends GeneralXMLHelper {
 			tf.newTransformer(new StreamSource(XFormProducer.class
 					.getResourceAsStream(XSLTFORMS_XSL)));
 		tr.setParameter("baseuri", "xsltforms/");
+		tr.setParameter("xsltforms_home", AppInfoSingleton.getAppInfo().getWebAppPath()
+				+ "/xsltforms/");
 		StringWriter sw = new StringWriter(DEFAULT_BUFFER_SIZE);
 		tr.transform(new DOMSource(xml), new StreamResult(sw));
 
