@@ -78,7 +78,7 @@ public class MainPanel {
 		ProgressWindow.showProgressWindow();
 		basicVerticalPanel.add(new DownloadHelper());
 
-		final int n10 = 10;
+		final int n10 = 20;
 
 		basicVerticalPanel.setStyleName("basicVerticalPanel-CellspacingForMainPanel");
 		p.setPixelSize(Window.getClientWidth() - N16, Window.getClientHeight() - n10
