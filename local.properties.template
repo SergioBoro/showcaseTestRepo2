@@ -1,10 +1,10 @@
-servlet.cont.dir=c:/Program Files/Tomcat
+servlet.cont.dir=d\:PR.dev\\java\\Tomcat-7.0.8\\
 deploy.dir=${servlet.cont.dir}/webapps
 servlet.cont.lib.dir=${servlet.cont.dir}/lib
-gwt.dir=c:/Program Files/gwt
-junit.dir=c:/Program Files/junit
+gwt.dir=d\:\\PR.dev\\java\\gwt-2.4.0\\
+junit.dir=d\:\\PR.dev\\java\\junit\\
 gquery-dnd-bundle=gquery-dnd-bundle-1.0.4.jar
-trunk.deploy.path=\\server\share\ftp\development\Showcase\trunk
-db.backup.path=x:\showcase.data
+trunk.deploy.path=\\\\server\\share\\ftp\\development\\Showcase\\trunk
+db.backup.path=x\:showcase.data
 rdbms.name=CASTLE\R2
-sqlutil.path=X:\\dprojects\\C-COM\\sqlutil\\bin
+sqlutil.path=X\:\\dprojects\\C-COM\\sqlutil\\bin

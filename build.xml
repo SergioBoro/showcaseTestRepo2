@@ -69,12 +69,11 @@
 		<mkdir dir="${js.dir}" />
 	</target>
 
-	<!--Для компиляции не из Eclipse. В Eclipse снова не работает-->
-	<!--<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
 		<classpath>
 			<pathelement location="${ANT.HOME}/aspectjtools.jar" />
 		</classpath>
-	</taskdef>-->
+	</taskdef>
 
 	<target name="compile" depends="init.dirs" description="Compiles .java files to WAR directory">
 		<!--Вариант с org.aspectj.tools.ant.taskdefs.Ajc11Compiler не работает при запуске из Eclipse-->
@@ -241,8 +240,6 @@
 		<zip destfile="${dist.dir}/userdata.zip">
 			<zipfileset dir="." includes="userdata*/**" />
 		</zip>
-		<move todir="${trunk.deploy.path}" file="${dist.dir}/userdata.zip" overwrite="true" />
-		<move todir="${trunk.deploy.path}" file="${dist.dir}/Showcase.war" overwrite="true" />
 		<exec executable="${sqlutil.path}\\SQLUtil_n_nokey.exe">
 			<arg value="-server_name=${rdbms.name}" />
 			<arg value="-user_name=sa" />
@@ -254,6 +251,8 @@
 			<zipfileset file="${db.backup.path}\${db.backup.name}.mbk" />
 		</zip>
 		<delete file="${db.backup.path}\${db.backup.name}.mbk" />
+		<move todir="${trunk.deploy.path}" file="${dist.dir}/userdata.zip" overwrite="true" />
+		<move todir="${trunk.deploy.path}" file="${dist.dir}/Showcase.war" overwrite="true" />		
 		<copy todir="${trunk.deploy.path}" file="${db.backup.path}\${db.backup.name}.zip" overwrite="true" />
 	</target>
 
