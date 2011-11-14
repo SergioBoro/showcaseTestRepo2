@@ -27,6 +27,10 @@ import com.google.gwt.user.client.ui.*;
  */
 
 public class GeneralDataPanel {
+
+	public static final String SIZE_ONE_HUNDRED_PERCENTS = "100%";
+	public static final String STYLE = "style";
+
 	/**
 	 * HandlerRegistration.
 	 */
@@ -71,8 +75,8 @@ public class GeneralDataPanel {
 
 		final SimplePanel basicDataVerticalPanel = new SimplePanel();
 
-		basicDataVerticalPanel.setSize("100%", "100%");
-		getTabPanel().setSize("100%", "100%");
+		basicDataVerticalPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+		getTabPanel().setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		basicDataVerticalPanel.add(getTabPanel());
 
 		// tabPanel.setSize("400px", "400px");
@@ -88,14 +92,14 @@ public class GeneralDataPanel {
 		final SimplePanel tabVerticalPanel = new SimplePanel();
 
 		ScrollPanel sp = new ScrollPanel();
-		sp.setSize("100%", "100%");
+		sp.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
-		tabVerticalPanel.setSize("100%", "100%");
+		tabVerticalPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		HTML ht = new HTML();
 		ht.setHTML(AppCurrContext.getInstance().getMainPage().getWelcome());
 		// ht.setHTML("<iframe width='100%' height='100%' style='border:0px;' src='"
 		// + MultiUserData.getPathWithUserData("html/welcome.jsp") + "'/>");
-		ht.setSize("100%", "100%");
+		ht.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
 		sp.add(ht);
 		tabVerticalPanel.add(sp);
@@ -190,6 +194,169 @@ public class GeneralDataPanel {
 		return vp;
 	}
 
+	public static Widget generateElement(final DataPanelElementInfo dpe) {
+		switch (dpe.getType()) {
+		case WEBTEXT:
+			return generateWebTextElement(dpe);
+
+		case XFORMS:
+			return generateXFormsElement(dpe);
+
+		case GRID:
+			return generateGridElement(dpe);
+
+		case CHART:
+			return generateChartElement(dpe);
+
+		case GEOMAP:
+			return generateMapElement(dpe);
+
+		default:
+			return null;
+
+		}
+	}
+
+	public static void fillTabWithVerticalLayout(final DataPanelTab dpt, final VerticalPanel vp1) {
+
+		// Вертикальное размещение элементов
+		Collection<DataPanelElementInfo> tabscoll = dpt.getElements();
+		for (DataPanelElementInfo dpe : tabscoll) {
+			Widget el = null;
+			if (dpe.getCacheData()) {
+				el =
+					AppCurrContext.getInstance().getMapOfDataPanelElements()
+							.get(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
+
+			}
+
+			if (el == null) {
+				el = generateElement(dpe);
+			}
+			if (el != null) {
+				el.addStyleName("dataPanelElement-BorderCorners");
+
+				if (dpe.getHtmlAttrs().getStyleClass() != null) {
+					el.addStyleName(dpe.getHtmlAttrs().getStyleClass());
+				}
+
+				el.setWidth(SIZE_ONE_HUNDRED_PERCENTS);
+				DOM.setElementAttribute(el.getElement(), "id", dpe.getFullId());
+
+				if (!(dpe.getNeverShowInPanel())) {
+
+					vp1.add(el);
+
+					if (dpe.getCacheData()) {
+						AppCurrContext
+								.getInstance()
+								.getMapOfDataPanelElements()
+								.put(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)),
+										el);
+					}
+
+				}
+			}
+		}
+
+	}
+
+	public static void fillTabWithTableLayout(final DataPanelTab dpt, final VerticalPanel vp1) {
+		// Табличное размещение элементов
+
+		FlexTable ft = new FlexTable();
+		vp1.add(ft);
+
+		ft.getElement().setAttribute(STYLE, dpt.getHtmlAttrs().getStyle());
+		ft.setStylePrimaryName(dpt.getHtmlAttrs().getStyleClass());
+		// ft.setSize("100%", "100%");
+
+		Collection<DataPanelTR> trColl = dpt.getTrs();
+		// Integer layoutRowCount = trColl.size();
+
+		Integer currentRowCount = -1;
+		for (DataPanelTR tr : trColl) {
+			currentRowCount++;
+
+			Integer currentColoumnCount = -1;
+			Collection<DataPanelTD> tdColl = tr.getTds();
+
+			for (DataPanelTD td : tdColl) {
+
+				currentColoumnCount++;
+
+				DataPanelElementInfo dpe = td.getElement();
+
+				Widget el = null;
+				// if (dpe.getCacheData()) {
+				// el =
+				// AppCurrContext
+				// .getInstance()
+				// .getMapOfDataPanelElements()
+				// .get(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
+
+				// }
+
+				// if (el == null) {
+				el = generateElement(dpe);
+
+				if (el != null) {
+
+					ft.setWidget(currentRowCount, currentColoumnCount, el);
+					el.addStyleName("dataPanelElement-BorderCorners");
+
+					if (dpe.getHtmlAttrs().getStyleClass() != null) {
+						el.addStyleName(dpe.getHtmlAttrs().getStyleClass());
+					}
+
+					el.setWidth(SIZE_ONE_HUNDRED_PERCENTS);
+					DOM.setElementAttribute(el.getElement(), "id", dpe.getFullId());
+
+				}
+
+				if (td.getColspan() != null) {
+					ft.getFlexCellFormatter().setColSpan(currentRowCount, currentColoumnCount,
+							td.getColspan());
+				}
+
+				if (td.getRowspan() != null) {
+					ft.getFlexCellFormatter().setRowSpan(currentRowCount, currentColoumnCount,
+							td.getRowspan());
+				}
+
+				ft.getFlexCellFormatter().getElement(currentRowCount, currentColoumnCount)
+						.setAttribute(STYLE, td.getHtmlAttrs().getStyle());
+				ft.getFlexCellFormatter().getElement(currentRowCount, currentColoumnCount)
+						.setAttribute("width", td.getWidth());
+				ft.getFlexCellFormatter().setStylePrimaryName(currentRowCount,
+						currentColoumnCount, td.getHtmlAttrs().getStyleClass());
+
+				// if (!(dpe.getNeverShowInPanel())) {
+
+				// vp1.add(el);
+
+				// if (dpe.getCacheData()) {
+				// AppCurrContext
+				// .getInstance()
+				// .getMapOfDataPanelElements()
+				// .put(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)),
+				// el);
+				// }
+
+				// }
+
+			}
+
+			ft.getRowFormatter().getElement(currentRowCount)
+					.setAttribute(STYLE, tr.getHtmlAttrs().getStyle());
+			ft.getRowFormatter().getElement(currentRowCount)
+					.setAttribute("height", tr.getHeight());
+			ft.getRowFormatter().setStylePrimaryName(currentRowCount,
+					tr.getHtmlAttrs().getStyleClass());
+
+		}
+	}
+
 	/**
 	 * Заполняет вкладку соответствующим контентом из виджетов.
 	 * 
@@ -199,7 +366,6 @@ public class GeneralDataPanel {
 	public static void fillTabContent(final int tabIndex) {
 
 		XFormPanel.destroyXForms(); // Важно !!!!
-
 		// очистка текущей вкладки полностью
 		SimplePanel vp = (SimplePanel) getTabPanel().getWidget(tabIndex);
 		vp.clear();
@@ -207,11 +373,11 @@ public class GeneralDataPanel {
 		ScrollPanel sp = new ScrollPanel();
 
 		vp.add(sp);
-		sp.setSize("100%", "100%");
+		sp.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
 		VerticalPanel vp1 = new VerticalPanel();
 		vp1.setSpacing(2);
-		vp1.setSize("100%", "100%");
+		vp1.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		sp.add(vp1);
 
 		AppCurrContext.getInstance().getUiDataPanel().get(tabIndex).getUiElements().clear();
@@ -220,176 +386,9 @@ public class GeneralDataPanel {
 			AppCurrContext.getInstance().getUiDataPanel().get(tabIndex).getDataPanelTabMetaData();
 
 		if (dpt.getLayout().equals(DataPanelTabLayout.VERTICAL)) {
-			// Вертикальное размещение элементов
-			Collection<DataPanelElementInfo> tabscoll = dpt.getElements();
-			for (DataPanelElementInfo dpe : tabscoll) {
-				Widget el = null;
-				if (dpe.getCacheData()) {
-					el =
-						AppCurrContext
-								.getInstance()
-								.getMapOfDataPanelElements()
-								.get(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
-
-				}
-
-				if (el == null) {
-					switch (dpe.getType()) {
-					case WEBTEXT:
-						el = generateWebTextElement(dpe);
-						break;
-					case XFORMS:
-						el = generateXFormsElement(dpe);
-						break;
-					case GRID:
-						el = generateGridElement(dpe);
-						break;
-					case CHART:
-						el = generateChartElement(dpe);
-						break;
-					case GEOMAP:
-						el = generateMapElement(dpe);
-						break;
-					default:
-						break;
-					}
-				}
-				if (el != null) {
-					el.addStyleName("dataPanelElement-BorderCorners");
-
-					if (dpe.getHtmlAttrs().getStyleClass() != null) {
-						el.addStyleName(dpe.getHtmlAttrs().getStyleClass());
-					}
-
-					el.setWidth("100%");
-					DOM.setElementAttribute(el.getElement(), "id", dpe.getFullId());
-
-					if (!(dpe.getNeverShowInPanel())) {
-
-						vp1.add(el);
-
-						if (dpe.getCacheData()) {
-							AppCurrContext
-									.getInstance()
-									.getMapOfDataPanelElements()
-									.put(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)),
-											el);
-						}
-
-					}
-				}
-			}
-		} else { // Табличное размещение элементов
-
-			FlexTable ft = new FlexTable();
-			vp1.add(ft);
-
-			ft.getElement().setAttribute("style", dpt.getHtmlAttrs().getStyle());
-			ft.setStylePrimaryName(dpt.getHtmlAttrs().getStyleClass());
-			// ft.setSize("100%", "100%");
-
-			Collection<DataPanelTR> trColl = dpt.getTrs();
-			Integer layoutRowCount = trColl.size();
-
-			Integer currentRowCount = -1;
-			for (DataPanelTR tr : trColl) {
-				currentRowCount++;
-
-				Integer currentColoumnCount = -1;
-				Collection<DataPanelTD> tdColl = tr.getTds();
-
-				for (DataPanelTD td : tdColl) {
-
-					currentColoumnCount++;
-
-					DataPanelElementInfo dpe = td.getElement();
-
-					Widget el = null;
-					// if (dpe.getCacheData()) {
-					// el =
-					// AppCurrContext
-					// .getInstance()
-					// .getMapOfDataPanelElements()
-					// .get(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
-
-					// }
-
-					// if (el == null) {
-					switch (dpe.getType()) {
-					case WEBTEXT:
-						el = generateWebTextElement(dpe);
-						break;
-					case XFORMS:
-						el = generateXFormsElement(dpe);
-						break;
-					case GRID:
-						el = generateGridElement(dpe);
-						break;
-					case CHART:
-						el = generateChartElement(dpe);
-						break;
-					case GEOMAP:
-						el = generateMapElement(dpe);
-						break;
-					default:
-						break;
-					}
-
-					if (el != null) {
-
-						ft.setWidget(currentRowCount, currentColoumnCount, el);
-						el.addStyleName("dataPanelElement-BorderCorners");
-
-						if (dpe.getHtmlAttrs().getStyleClass() != null) {
-							el.addStyleName(dpe.getHtmlAttrs().getStyleClass());
-						}
-
-						el.setWidth("100%");
-						DOM.setElementAttribute(el.getElement(), "id", dpe.getFullId());
-
-					}
-
-					if (td.getColspan() != null) {
-						ft.getFlexCellFormatter().setColSpan(currentRowCount, currentColoumnCount,
-								td.getColspan());
-					}
-
-					if (td.getRowspan() != null) {
-						ft.getFlexCellFormatter().setRowSpan(currentRowCount, currentColoumnCount,
-								td.getRowspan());
-					}
-
-					ft.getFlexCellFormatter().getElement(currentRowCount, currentColoumnCount)
-							.setAttribute("style", td.getHtmlAttrs().getStyle());
-					ft.getFlexCellFormatter().getElement(currentRowCount, currentColoumnCount)
-							.setAttribute("width", td.getWidth());
-					ft.getFlexCellFormatter().setStylePrimaryName(currentRowCount,
-							currentColoumnCount, td.getHtmlAttrs().getStyleClass());
-
-					// if (!(dpe.getNeverShowInPanel())) {
-
-					// vp1.add(el);
-
-					// if (dpe.getCacheData()) {
-					// AppCurrContext
-					// .getInstance()
-					// .getMapOfDataPanelElements()
-					// .put(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)),
-					// el);
-					// }
-
-					// }
-
-				}
-
-				ft.getRowFormatter().getElement(currentRowCount)
-						.setAttribute("style", tr.getHtmlAttrs().getStyle());
-				ft.getRowFormatter().getElement(currentRowCount)
-						.setAttribute("height", tr.getHeight());
-				ft.getRowFormatter().setStylePrimaryName(currentRowCount,
-						tr.getHtmlAttrs().getStyleClass());
-
-			}
+			fillTabWithVerticalLayout(dpt, vp1);
+		} else {
+			fillTabWithTableLayout(dpt, vp1);
 
 		}
 	}
@@ -434,7 +433,7 @@ public class GeneralDataPanel {
 		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
 			dgp = new GridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
 			w = dgp.getPanel();
-			w.setSize("100%", "100%");
+			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		} else {
 			dgp = new GridPanel(dpe);
 			w = dgp.getPanel();
@@ -462,7 +461,7 @@ public class GeneralDataPanel {
 		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
 			wtp = new WebTextPanel(getElementContextForNavigatorAction(dpe), dpe);
 			w = wtp.getPanel();
-			w.setSize("100%", "100%");
+			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		} else {
 			wtp = new WebTextPanel(dpe);
 			w = wtp.getPanel();
@@ -491,7 +490,7 @@ public class GeneralDataPanel {
 
 			wtp = new XFormPanel(getElementContextForNavigatorAction(dpe), dpe, null);
 			w = wtp.getPanel();
-			w.setSize("100%", "100%");
+			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		} else {
 			wtp = new XFormPanel(dpe);
 			w = wtp.getPanel();
