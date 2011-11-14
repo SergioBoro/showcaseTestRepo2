@@ -24,6 +24,8 @@ import com.google.gwt.user.client.ui.*;
  */
 public class Accordeon {
 
+	public static final String SIZE_ONE_HUNDRED_PERCENTS = "100%";
+
 	/**
 	 * Панель содержащая навигатор.
 	 */
@@ -99,8 +101,8 @@ public class Accordeon {
 		// verpan.add(new
 		// HTML(Constants.PLEASE_WAIT_NAVIGATION_DATA_ARE_LOADING));
 
-		accordeon.setSize("100%", "100%");
-		verpan.setSize("100%", "100%");
+		accordeon.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+		verpan.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
 		CompositeContext context = MultiUserData.getCurrentContextFromURL();
 
@@ -212,7 +214,7 @@ public class Accordeon {
 		Tree groupTree = new Tree();
 		uiListOfAccordeonTrees.add(groupTree);
 		sp.add(groupTree);
-		sp.setSize("100%", "100%");
+		sp.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
 		for (int i = 0; i < ng.getElements().size(); i++) {
 
