@@ -101,65 +101,66 @@ public final class ActionExecuter {
 	private static void handleReloadElements(final Action ac) {
 		for (int k = 0; k < ac.getDataPanelLink().getElementLinks().size(); k++) {
 
-			String elementIdForDraw = ac.getDataPanelLink().getElementLinks().get(k).getId();
+			DataPanelElementLink dpel = ac.getDataPanelLink().getElementLinks().get(k);
+			String elementIdForDraw = dpel.getId();
 
 			BasicElementPanel bep = getElementPanelById(elementIdForDraw);
 			if (bep != null) {
-				if ((ac.getShowInMode() == ShowInMode.PANEL)
-						&& (AppCurrContext.getInstance()
-								.getCurrentOpenWindowWithDataPanelElement() != null)) {
-					AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement()
-							.closeWindow();
-				}
-				if ((ac.getShowInMode() == ShowInMode.MODAL_WINDOW)
-						&& (AppCurrContext.getInstance()
-								.getCurrentOpenWindowWithDataPanelElement() == null)) {
 
-					ModalWindowInfo mwi = ac.getModalWindowInfo();
-					WindowWithDataPanelElement modWind = null;
-					if (mwi != null) {
-
-						if ((mwi.getCaption() != null) && (mwi.getWidth() != null)
-								&& (mwi.getHeight() != null)) {
-							modWind =
-								new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
-										mwi.getHeight(), mwi.getShowCloseBottomButton());
-						} else {
-
-							if (mwi.getCaption() != null) {
-								modWind =
-									new WindowWithDataPanelElement(mwi.getCaption(),
-											mwi.getShowCloseBottomButton());
-							} else {
-								modWind =
-									new WindowWithDataPanelElement(mwi.getShowCloseBottomButton());
-							}
-
-						}
-
-					} else {
-						modWind = new WindowWithDataPanelElement(false);
-					}
-
-					modWind.showModalWindow(bep);
-
-				}
-				if (ac.getDataPanelLink().getElementLinks().get(k).doHiding()) {
-					bep.hidePanel();
-					continue;
-				}
-				bep.showPanel();
-
-				boolean keepElementSettings =
-					ac.getDataPanelLink().getElementLinks().get(k).getKeepUserSettings();
-
-				bep.prepareSettings(keepElementSettings);
-
-				bep.reDrawPanel(bep.getElementInfo().getContext(ac), ac.getDataPanelLink()
-						.getElementLinks().get(k).getRefreshContextOnly());
+				handleReloadElement(ac, bep, dpel);
 
 			}
 		}
+	}
+
+	private static void handleReloadElement(final Action ac, final BasicElementPanel bep,
+			final DataPanelElementLink dpel) {
+		if ((ac.getShowInMode() == ShowInMode.PANEL)
+				&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() != null)) {
+			AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement().closeWindow();
+		}
+		if ((ac.getShowInMode() == ShowInMode.MODAL_WINDOW)
+				&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() == null)) {
+
+			ModalWindowInfo mwi = ac.getModalWindowInfo();
+			WindowWithDataPanelElement modWind = null;
+			if (mwi != null) {
+
+				if ((mwi.getCaption() != null) && (mwi.getWidth() != null)
+						&& (mwi.getHeight() != null)) {
+					modWind =
+						new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
+								mwi.getHeight(), mwi.getShowCloseBottomButton());
+				} else {
+
+					if (mwi.getCaption() != null) {
+						modWind =
+							new WindowWithDataPanelElement(mwi.getCaption(),
+									mwi.getShowCloseBottomButton());
+					} else {
+						modWind = new WindowWithDataPanelElement(mwi.getShowCloseBottomButton());
+					}
+
+				}
+
+			} else {
+				modWind = new WindowWithDataPanelElement(false);
+			}
+
+			modWind.showModalWindow(bep);
+
+		}
+		if (dpel.doHiding()) {
+			bep.hidePanel();
+			return;
+		}
+		bep.showPanel();
+
+		boolean keepElementSettings = dpel.getKeepUserSettings();
+
+		bep.prepareSettings(keepElementSettings);
+
+		bep.reDrawPanel(bep.getElementInfo().getContext(ac), dpel.getRefreshContextOnly());
 	}
 
 	private static void handleRefreshTab(final Action ac) {
