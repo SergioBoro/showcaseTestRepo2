@@ -47,36 +47,42 @@ public final class About {
 
 		}
 		// MessageBox.showSimpleMessage("1", "2");
+		final String br = "<br />";
 		String textHTML =
 			"<p><img src='resources/internal/logo.gif' alt='КУРС' /></p>"
 					+ "<img src='resources/internal/favicon32.png' alt='' />&nbsp;Showcase&nbsp;"
 					+ AppCurrContext.getInstance().getServerCurrentState().getAppVersion()
-					+ "<br /><br />"
+					+ br
+					+ br
 					+
 
-					"Copyright ООО 'КУРС-ИТ', 1998-2011 <br />"
-					+ "Тел/факс: +7(495)640-2772<br />"
+					"Copyright ООО 'КУРС-ИТ', 1998-2011 "
+					+ br
+					+ "Тел/факс: +7(495)640-2772"
+					+ br
 					+ "E-mail: <a href='mailto://info@mail.ru'>info@curs.ru</a>"
-					+ " <br/> <a href='http://www.curs.ru' target='_blank'>http://www.curs.ru</a><br />"
+					+ " <br/> <a href='http://www.curs.ru' target='_blank'>http://www.curs.ru</a>"
+					+ br
 
-					+ "<br />Версия SQL сервера: "
+					+ br
+					+ "Версия SQL сервера: "
 					+ AppCurrContext.getInstance().getServerCurrentState().getSqlVersion()
-					+ "<br />"
+					+ br
 					+ "Версия JAVA на сервере: "
 					+ AppCurrContext.getInstance().getServerCurrentState().getJavaVersion()
-					+ "<br />"
+					+ br
 					+ "Версия сервлет контейнера: "
 					+ AppCurrContext.getInstance().getServerCurrentState()
 							.getServletContainerVersion()
-					+ "<br />"
+					+ br
 
 					+ "Тип браузера: "
 					+ ((browserTypeString != null) ? browserTypeString : "не удалось определить")
-					+ "<br />"
+					+ br
 
 					+ "Версия браузера: "
 					+ ((browserVersion != null) ? browserVersion : "не удалось определить")
-					+ "<br />"
+					+ br
 
 					+ "Текущий пользователь '"
 					+ AppCurrContext.getInstance().getServerCurrentState().getUserName()
