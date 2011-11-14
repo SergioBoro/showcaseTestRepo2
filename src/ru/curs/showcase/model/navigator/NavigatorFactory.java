@@ -78,7 +78,7 @@ public final class NavigatorFactory extends SAXTagHandler {
 		NavigatorElement el = new NavigatorElement();
 		setupBaseProps(el, attrs);
 		if (attrs.getIndex(SELECT_ON_LOAD_TAG) > -1) {
-			if (attrs.getValue(SELECT_ON_LOAD_TAG).equalsIgnoreCase("true")) {
+			if ("true".equalsIgnoreCase(attrs.getValue(SELECT_ON_LOAD_TAG))) {
 				result.setAutoSelectElement(el);
 			}
 		}

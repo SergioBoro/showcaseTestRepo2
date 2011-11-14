@@ -1,5 +1,4 @@
-# coding=UTF-8
-# don't work in jython # -*- coding UTF-8 -*-
+# coding: utf-8
 '''
 Created on 02.11.2011
 
@@ -15,8 +14,11 @@ class TestJythonProc(JythonProc):
     def execute(self, context):
         self.context = context;   
         if (not context.getMain()):       
-            raise Exception("не нравится мне этот контекст!");      
-        print "main context is " + context.getMain().encode("utf-8");
+            raise Exception("не нравится мне этот контекст!");   
+          
+        s = context.getMain()
+        # jython print не работает с unicode строками
+        print "main context (type %s) is %s" % (type(s), s.encode("utf-8"));
         print "add context is %s" % (context.getAdditional().encode("utf-8"));
         if (context.getFilter()):
             print "filter context is %s" % (context.getFilter().encode("utf-8"));

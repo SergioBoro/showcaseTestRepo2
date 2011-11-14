@@ -120,7 +120,7 @@ public class ProfileReader {
 		String value = null;
 		value = getStringValue(paramName);
 		if (value != null) {
-			if (!(value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false"))) {
+			if (!("true".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value))) {
 				throw new SettingsFilePropValueFormatException(profileName, paramName,
 						getSettingsType());
 			}
