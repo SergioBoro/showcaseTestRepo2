@@ -96,7 +96,7 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	 */
 	protected void fillMapPanel(final GeoMap aGeoMap) {
 		final String divIdLegend = getElementInfo().getId() + Constants.MAP_LEGEND_DIV_ID_SUFFIX;
-
+		final String div = "<div id='";
 		final String htmlForMap;
 		final int n60 = 60;
 		final int n80 = 80;
@@ -108,20 +108,21 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			// String.valueOf(GeneralDataPanel.getTabPanel().getOffsetWidth()));
 			final int width = GeneralDataPanel.getTabPanel().getOffsetWidth() - n60;
 			final int height = GeneralDataPanel.getTabPanel().getOffsetHeight() - n80;
+
 			htmlForMap =
-				"<div id='" + getDivIdMap() + "' style = 'width: " + String.valueOf(width)
+				div + getDivIdMap() + "' style = 'width: " + String.valueOf(width)
 						+ "px; height: " + String.valueOf(height) + "px'></div>";
 			aGeoMap.applyAutoSizeValuesOnClient(width, height);
 
 		} else {
-			htmlForMap = "<div id='" + getDivIdMap() + "'></div>";
+			htmlForMap = div + getDivIdMap() + "'></div>";
 		}
 
 		// final String htmlForMap =
 		// "<div id='" + divIdMap +
 		// "' style = 'width: 900px; height: 600px'></div>";
 
-		final String htmlForLegend = "<div id='" + divIdLegend + "'></div>";
+		final String htmlForLegend = div + divIdLegend + "'></div>";
 
 		footerHTML = new HTML(aGeoMap.getFooter());
 
