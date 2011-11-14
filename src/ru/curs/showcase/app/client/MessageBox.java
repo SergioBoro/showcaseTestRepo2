@@ -18,6 +18,10 @@ import com.google.gwt.user.client.ui.*;
  */
 public final class MessageBox {
 
+	public static final String SIZE_ONE_HUNDRED_PERCENTS = "100%";
+
+	public static final String NBSP = "&nbsp;";
+
 	private MessageBox() {
 		super();
 	}
@@ -81,9 +85,9 @@ public final class MessageBox {
 			final String hideMessage, final MessageType messageType,
 			final Boolean showDetailedMessage) {
 		final DialogBox dlg = new DialogBox();
-		dlg.setSize("100%", "100%");
+		dlg.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		VerticalPanel dialogContents = new VerticalPanel();
-		dialogContents.setSize("100%", "100%");
+		dialogContents.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		final int n = 10;
 		dialogContents.setSpacing(n);
 		dlg.setWidget(dialogContents);
@@ -135,7 +139,7 @@ public final class MessageBox {
 		if (messageType == MessageType.ERROR) {
 			HorizontalPanel consoleLinkPanel = new HorizontalPanel();
 			dialogContents.add(consoleLinkPanel);
-			consoleLinkPanel.setWidth("100%");
+			consoleLinkPanel.setWidth(SIZE_ONE_HUNDRED_PERCENTS);
 			consoleLinkPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 			Anchor anchor = new Anchor("Веб-консоль", "log/lastLogEvents.jsp", "_blank");
 			consoleLinkPanel.add(anchor);
@@ -151,7 +155,7 @@ public final class MessageBox {
 			im.setUrl(Constants.ARROW_FOR_DISCLOSURE_PANEL_CLOSE_IMAGE);
 
 			hp.add(im);
-			hp.add(new HTML("&nbsp;" + "Показать подробную информацию" + "&nbsp;" + "&nbsp;"));
+			hp.add(new HTML(NBSP + "Показать подробную информацию" + NBSP + NBSP));
 			dp.setHeader(hp);
 
 			dialogContents.add(dp);
@@ -168,7 +172,7 @@ public final class MessageBox {
 					im.setUrl(Constants.ARROW_FOR_DISCLOSURE_PANEL_OPEN_IMAGE);
 					textArea.setSize("600px", "250px");
 					hp.add(im);
-					hp.add(new HTML("&nbsp;" + "Скрыть подробную информацию" + "&nbsp;" + "&nbsp;"));
+					hp.add(new HTML(NBSP + "Скрыть подробную информацию" + NBSP + NBSP));
 					dp.setHeader(hp);
 
 				}
@@ -186,15 +190,15 @@ public final class MessageBox {
 					im.setUrl(Constants.ARROW_FOR_DISCLOSURE_PANEL_CLOSE_IMAGE);
 
 					hp.add(im);
-					hp.add(new HTML("&nbsp;" + "Показать подробную информацию"));
+					hp.add(new HTML(NBSP + "Показать подробную информацию"));
 					dp.setHeader(hp);
 
 				}
 
 			});
 
-			dp.setSize("100%", "100%");
-			textArea.setSize("90%", "100%");
+			dp.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+			textArea.setSize("90%", SIZE_ONE_HUNDRED_PERCENTS);
 			final int n1 = 5;
 			textArea.setVisibleLines(n1);
 			textArea.setText(hideMessage);
