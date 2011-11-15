@@ -405,6 +405,21 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		return is;
 	}
 
+	private InputStream logOutputTextStream(final InputStream is) {
+		if (LOGGER.isInfoEnabled()) {
+			try {
+				StreamConvertor convertor = new StreamConvertor(is);
+				String value =
+					StreamConvertor.inputToOutputStream(is).toString(TextUtils.DEF_ENCODING);
+				logOutputXMLString(value);
+				return convertor.getCopy();
+			} catch (IOException e) {
+				throw new CreateObjectError(e);
+			}
+		}
+		return is;
+	}
+
 	private void logOutputXMLDocument(final Document doc) {
 		if (LOGGER.isInfoEnabled()) {
 			String value = XMLUtils.documentToString(doc);
@@ -436,6 +451,8 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		result.setEncoding(TextUtils.JDBC_ENCODING);
 		if (result.isXMLFile()) {
 			logOutputXMLStream(dup.getCopy());
+		} else if (result.isTextFile()) {
+			logOutputTextStream(dup.getCopy());
 		}
 		return result;
 	}
