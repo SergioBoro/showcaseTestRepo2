@@ -421,6 +421,9 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	protected OutputStreamDataFile
 			getFileForBinaryStream(final int dataIndex, final int nameIndex) throws SQLException {
 		InputStream is = getBinaryStream(dataIndex);
+		if (is == null) {
+			throw new FileIsAbsentException();
+		}
 		String fileName = getStatement().getString(nameIndex);
 		StreamConvertor dup;
 		try {
@@ -431,7 +434,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		ByteArrayOutputStream os = dup.getOutputStream();
 		OutputStreamDataFile result = new OutputStreamDataFile(os, fileName);
 		result.setEncoding(TextUtils.JDBC_ENCODING);
-		if (result.isTextFile()) {
+		if (result.isXMLFile()) {
 			logOutputXMLStream(dup.getCopy());
 		}
 		return result;
@@ -446,6 +449,9 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	 */
 	private InputStream getBinaryStream(final int dataIndex) throws SQLException {
 		byte[] bt = getStatement().getBytes(dataIndex);
+		if (bt == null) {
+			return null;
+		}
 		InputStream is = new ByteArrayInputStream(bt);
 		return is;
 	}

@@ -84,6 +84,15 @@ public class DataFile<T> {
 		return false;
 	}
 
+	public boolean isXMLFile() {
+		String[] stdXMLExtensions = { "xml", "xsd", "xsl", "xslt", "htm", "html" };
+		if (checkExtensionsArray(stdXMLExtensions)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private boolean checkExtensionsArray(final String[] aExtensions) {
 		for (String ext : aExtensions) {
 			if (name.endsWith(ext)) {
