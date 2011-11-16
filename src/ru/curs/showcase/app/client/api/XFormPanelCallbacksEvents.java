@@ -483,7 +483,6 @@ public final class XFormPanelCallbacksEvents {
 		 */
 		final class UploadParam extends JavaScriptObject {
 
-			@SuppressWarnings("unused")
 			protected UploadParam() {
 
 			};
