@@ -7,7 +7,7 @@ import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.*;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.*;
@@ -179,7 +179,7 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 		try {
 			drawMap(getDivIdMap(), divIdLegend, paramMap1, paramMap2);
-		} catch (Exception e) {
+		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
 				MessageBox.showMessageWithDetails(Constants.ERROR_OF_MAP_PAINTING, e.getMessage(),
 						GeneralException.generateDetailedInfo(e.getCause()),
