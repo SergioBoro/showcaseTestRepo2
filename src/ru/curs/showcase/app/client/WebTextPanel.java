@@ -16,6 +16,8 @@ import com.google.gwt.user.client.ui.*;
  */
 public class WebTextPanel extends BasicElementPanelBasis {
 
+	public static final String SIZE_ONE_HUNDRED_PERCENTS = "100%";
+
 	/**
 	 * DataServiceAsync.
 	 */
@@ -37,12 +39,13 @@ public class WebTextPanel extends BasicElementPanelBasis {
 	private HTML thmlwidget = null;
 
 	public WebTextPanel(final CompositeContext context1, final DataPanelElementInfo element1) {
+
 		this.setContext(context1);
 		this.setElementInfo(element1);
 		setIsFirstLoading(true);
 		generalWebTextPanel = new VerticalPanel();
 
-		generalWebTextPanel.setSize("100%", "100%");
+		generalWebTextPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
 		thmlwidget = new HTML(Constants.PLEASE_WAIT_WEBTEXT_DATA_ARE_LOADING);
 
@@ -61,7 +64,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		thmlwidget = new HTML(Constants.PLEASE_WAIT_WEBTEXT_DATA_ARE_LOADING);
 		generalWebTextPanel = new VerticalPanel();
 
-		generalWebTextPanel.setSize("100%", "100%");
+		generalWebTextPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		generalWebTextPanel.add(thmlwidget);
 
 	}
@@ -184,7 +187,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 							webText = awt;
 							if (webText != null) {
 								fillWebTextPanel(awt);
-								getPanel().setHeight("100%");
+								getPanel().setHeight(SIZE_ONE_HUNDRED_PERCENTS);
 								if (getIsFirstLoading() && refreshContextOnly) {
 									webText.updateAddContext(context1);
 								}
@@ -237,7 +240,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 				webText = awt;
 				if (webText != null) {
 					fillWebTextPanel(awt);
-					getPanel().setHeight("100%");
+					getPanel().setHeight(SIZE_ONE_HUNDRED_PERCENTS);
 
 				}
 			}
