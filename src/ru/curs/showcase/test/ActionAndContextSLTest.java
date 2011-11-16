@@ -50,10 +50,25 @@ public class ActionAndContextSLTest extends AbstractTest {
 		Action action = new Action();
 		Activity activity = Activity.newServerActivity("id", "TestJythonProc.py");
 		CompositeContext context =
-			new CompositeContext(
-					generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		context.setMain("Мейн контекст");
 		context.setAdditional(ADD_CONTEXT_TAG);
+		context.setFilter(FILTER_TAG);
+		activity.setContext(context);
+		action.setContext(context);
+		action.getServerActivities().add(activity);
+		ExecServerActionCommand command = new ExecServerActionCommand(action);
+		command.execute();
+	}
+
+	@Test
+	public void testJythonSAXActivity() {
+		Action action = new Action();
+		Activity activity = Activity.newServerActivity("id", "SAXJythonProc.py");
+		CompositeContext context =
+			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+		context.setMain("Мейн контекст");
+		context.setAdditional("<xml wise=\"true\"/>");
 		context.setFilter(FILTER_TAG);
 		activity.setContext(context);
 		action.setContext(context);

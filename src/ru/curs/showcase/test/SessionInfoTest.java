@@ -167,7 +167,7 @@ public class SessionInfoTest extends AbstractTest {
 	 */
 	@Test
 	public void testWriteAndReadIfNoURLParams() throws IOException, SAXException {
-		Map<String, List<String>> params = new TreeMap<String, List<String>>();
+		Map<String, List<String>> params = new TreeMap<>();
 		CompositeContext context = getTestContext3();
 		context.addSessionParams(params);
 		DataPanelElementInfo element = getTestChartInfo();
@@ -205,8 +205,8 @@ public class SessionInfoTest extends AbstractTest {
 				.getCurUserDataId());
 		assertNotNull(AppProps.getUserDataCatalog());
 
-		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
-		ArrayList<String> value3 = new ArrayList<String>();
+		Map<String, ArrayList<String>> params = new TreeMap<>();
+		ArrayList<String> value3 = new ArrayList<>();
 		value3.add(TEST1_USERDATA);
 		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(params);
@@ -219,8 +219,8 @@ public class SessionInfoTest extends AbstractTest {
 	 */
 	@Test(expected = NoSuchUserDataException.class)
 	public void testNotExistUserdata() {
-		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
-		ArrayList<String> value3 = new ArrayList<String>();
+		Map<String, ArrayList<String>> params = new TreeMap<>();
+		ArrayList<String> value3 = new ArrayList<>();
 		value3.add(NOT_EXIST_USERDATA_ID);
 		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(params);
@@ -295,7 +295,7 @@ public class SessionInfoTest extends AbstractTest {
 		decorator.setUserdata("default");
 		AppInfoSingleton.getAppInfo().addLogEvent(decorator);
 
-		Map<String, List<String>> params = new TreeMap<String, List<String>>();
+		Map<String, List<String>> params = new TreeMap<>();
 		params.put(ExchangeConstants.URL_PARAM_USERDATA, Arrays.asList(TEST1_USERDATA));
 		Collection<LoggingEventDecorator> selected =
 			AppInfoSingleton.getAppInfo().getLastLogEvents(params);

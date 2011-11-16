@@ -44,8 +44,8 @@ public class EventsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testEventsClean() {
-		Set<String> ids1 = new HashSet<String>();
-		Set<String> ids2 = new HashSet<String>();
+		Set<String> ids1 = new HashSet<>();
+		Set<String> ids2 = new HashSet<>();
 		String[] ids1Array = { ROW1, ROW2 };
 		String[] ids2Array = { COL1, COL2 };
 		ids1.addAll(Arrays.asList(ids1Array));

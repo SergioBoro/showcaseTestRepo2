@@ -87,7 +87,7 @@ public class GridDBFactory extends AbstractGridFactory {
 	}
 
 	private void checkRecordIdUniqueness() {
-		List<String> ids = new ArrayList<String>();
+		List<String> ids = new ArrayList<>();
 		for (Record rec : getRecordSet().getRecords()) {
 			if (ids.indexOf(rec.getId()) > -1) {
 				throw new ResultSetHandleException(UNIQUE_CHECK_ERROR, getCallContext(),

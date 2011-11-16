@@ -220,7 +220,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 
 	@Test
 	public void testAddParamsToSQLTemplate() {
-		Map<Integer, Object> params = new TreeMap<Integer, Object>();
+		Map<Integer, Object> params = new TreeMap<>();
 		params.put(1, "first\n");
 		params.put(2, 2);
 		String value = "{call test_proc(?,?,?)}";

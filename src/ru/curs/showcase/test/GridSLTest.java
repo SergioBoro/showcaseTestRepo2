@@ -180,7 +180,7 @@ public class GridSLTest extends AbstractTest {
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 
 		GridContext gc = new GridContext();
-		List<Column> aSortedColumns = new ArrayList<Column>();
+		List<Column> aSortedColumns = new ArrayList<>();
 		Column col = new Column();
 		col.setId("Name");
 		col.setSorting(Sorting.ASC);

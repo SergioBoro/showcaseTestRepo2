@@ -46,7 +46,7 @@ public class ActivityJythonGateway implements ActivityGateway {
 		String className = TextUtils.extractFileName(act.getName());
 		PythonInterpreter interpreter = new PythonInterpreter(null, state);
 
-		String cmd = String.format("from %1$s import %1$s\n", className);
+		String cmd = String.format("from %1$s import %1$s", className);
 
 		try {
 			interpreter.exec(cmd);

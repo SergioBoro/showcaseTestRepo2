@@ -34,7 +34,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(SPCallHelper.class);
 
-	private final Map<Integer, Object> params = new TreeMap<Integer, Object>();
+	private final Map<Integer, Object> params = new TreeMap<>();
 	/**
 	 * Соединение с БД.
 	 */

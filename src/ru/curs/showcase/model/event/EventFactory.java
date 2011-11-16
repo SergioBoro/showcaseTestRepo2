@@ -10,7 +10,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.ResultSetHandleException;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.CreateObjectError;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -38,7 +38,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 	/**
 	 * Результат.
 	 */
-	private final Collection<E> result = new ArrayList<E>();
+	private final Collection<E> result = new ArrayList<>();
 	/**
 	 * Фабрика событий.
 	 */
@@ -84,7 +84,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 	/**
 	 * Массив дополнительных обработчиков.
 	 */
-	private final List<SAXTagHandler> handlers = new ArrayList<SAXTagHandler>();
+	private final List<SAXTagHandler> handlers = new ArrayList<>();
 
 	public EventFactory(final Class<? extends Event> aEventClass, final CompositeContext context) {
 		super();

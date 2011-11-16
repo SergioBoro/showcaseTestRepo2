@@ -49,7 +49,7 @@ public class JMXMonitorBeanImpl implements JMXMonitorBean, DynamicMBean {
 
 	@Override
 	public MBeanInfo getMBeanInfo() {
-		SortedSet<String> names = new TreeSet<String>();
+		SortedSet<String> names = new TreeSet<>();
 		names.add(SESSION_COUNT_ATTR);
 		MBeanAttributeInfo[] attrs = new MBeanAttributeInfo[names.size()];
 		int i = 0;

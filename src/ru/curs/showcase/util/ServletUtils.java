@@ -43,14 +43,14 @@ public final class ServletUtils {
 	 */
 	public static SortedMap<String, List<String>>
 			prepareURLParamsMap(final HttpServletRequest req) throws UnsupportedEncodingException {
-		SortedMap<String, List<String>> result = new TreeMap<String, List<String>>();
+		SortedMap<String, List<String>> result = new TreeMap<>();
 		@SuppressWarnings("unchecked")
 		Iterator<String> iterator = req.getParameterMap().keySet().iterator();
 		while (iterator.hasNext()) {
 			String oldKey = iterator.next();
 			String key = checkAndRecodeURLParam(oldKey);
 			String[] oldValues = (String[]) req.getParameterMap().get(oldKey);
-			ArrayList<String> values = new ArrayList<String>();
+			ArrayList<String> values = new ArrayList<>();
 			for (int i = 0; i < oldValues.length; i++) {
 				values.add(checkAndRecodeURLParam(oldValues[i]));
 			}

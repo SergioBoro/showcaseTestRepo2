@@ -45,7 +45,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 	/**
 	 * Файлы, закаченные пользователем.
 	 */
-	private final List<UploadingFile> files = new ArrayList<UploadingFile>();
+	private final List<UploadingFile> files = new ArrayList<>();
 
 	@Override
 	protected void processFiles() {

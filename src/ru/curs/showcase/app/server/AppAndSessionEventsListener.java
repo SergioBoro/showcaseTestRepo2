@@ -34,7 +34,6 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 	@Override
 	public final void sessionCreated(final HttpSessionEvent arg0) {
 		LOGGER.info("сессия Showcase создается... " + arg0.getSession().getId());
-
 	}
 
 	@Override

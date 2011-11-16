@@ -118,8 +118,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	}
 
 	protected void setDefaultUserData() {
-		AppInfoSingleton.getAppInfo().setCurUserDataId(
-				ExchangeConstants.DEFAULT_USERDATA);
+		AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
 	}
 
 	/**
@@ -380,8 +379,7 @@ public class AbstractTest extends GeneralXMLHelper {
 			NavigatorGateway gateway = new NavigatorFileGateway();
 			InputStream stream1 = gateway.getRawData(new CompositeContext(), fileName);
 			CompositeContext context =
-				new CompositeContext(
-						generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+				new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 			NavigatorFactory navFactory = new NavigatorFactory(context);
 			Navigator nav = navFactory.fromStream(stream1);
 			Action action = nav.getGroups().get(groupID).getElements().get(elID).getAction();
@@ -400,15 +398,15 @@ public class AbstractTest extends GeneralXMLHelper {
 	 *            - идентификатор userdata.
 	 */
 	protected Map<String, List<String>> generateTestURLParams(final String userDataId) {
-		Map<String, List<String>> params = new TreeMap<String, List<String>>();
-		ArrayList<String> value1 = new ArrayList<String>();
+		Map<String, List<String>> params = new TreeMap<>();
+		ArrayList<String> value1 = new ArrayList<>();
 		value1.add(VALUE12);
 		params.put(KEY1, value1);
-		ArrayList<String> value2 = new ArrayList<String>();
+		ArrayList<String> value2 = new ArrayList<>();
 		value2.add("value21");
 		value2.add("value22");
 		params.put("key2", value2);
-		ArrayList<String> value3 = new ArrayList<String>();
+		ArrayList<String> value3 = new ArrayList<>();
 		value3.add(userDataId);
 		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
 		return params;
@@ -421,15 +419,15 @@ public class AbstractTest extends GeneralXMLHelper {
 	 *            - идентификатор userdata.
 	 */
 	protected Map<String, ArrayList<String>> generateTestURLParamsForSL(final String userDataId) {
-		Map<String, ArrayList<String>> params = new TreeMap<String, ArrayList<String>>();
-		ArrayList<String> value1 = new ArrayList<String>();
+		Map<String, ArrayList<String>> params = new TreeMap<>();
+		ArrayList<String> value1 = new ArrayList<>();
 		value1.add(VALUE12);
 		params.put(KEY1, value1);
-		ArrayList<String> value2 = new ArrayList<String>();
+		ArrayList<String> value2 = new ArrayList<>();
 		value2.add("value21");
 		value2.add("value22");
 		params.put("key2", value2);
-		ArrayList<String> value3 = new ArrayList<String>();
+		ArrayList<String> value3 = new ArrayList<>();
 		value3.add(userDataId);
 		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
 		return params;
@@ -437,8 +435,7 @@ public class AbstractTest extends GeneralXMLHelper {
 
 	protected void testBaseLastLogEventQueue(final Collection<LoggingEventDecorator> lleq)
 			throws InterruptedException {
-		AppInfoSingleton.getAppInfo().setCurUserDataId(
-				ExchangeConstants.DEFAULT_USERDATA);
+		AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
 		final int eventCount = 405;
 		for (int i = 0; i < eventCount; i++) {
 			Thread.sleep(1);

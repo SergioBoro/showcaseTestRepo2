@@ -76,7 +76,7 @@ public final class AppInfoSingleton {
 
 	public Collection<LoggingEventDecorator> getLastLogEvents(
 			final Map<String, List<String>> params) {
-		Collection<LoggingEventDecorator> result = new ArrayList<LoggingEventDecorator>();
+		Collection<LoggingEventDecorator> result = new ArrayList<>();
 
 		skip: for (LoggingEventDecorator event : lastLogEvents) {
 			if (params != null) {

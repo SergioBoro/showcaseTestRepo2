@@ -230,7 +230,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	}
 
 	private static ArrayList<String> getArraySelectors(final org.w3c.dom.Document xml) {
-		ArrayList<String> selectors = new ArrayList<String>();
+		ArrayList<String> selectors = new ArrayList<>();
 
 		NodeList nl;
 		Node n;
@@ -255,7 +255,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	}
 
 	private static ArrayList<String> getArrayXPaths(final ArrayList<String> selectors) {
-		ArrayList<String> xpaths = new ArrayList<String>();
+		ArrayList<String> xpaths = new ArrayList<>();
 		for (String selector : selectors) {
 			if ((selector.toLowerCase().indexOf(SHOW_SELECTOR.toLowerCase()) > -1)
 					|| (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) > -1)) {
@@ -324,9 +324,9 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 		for (String selector : selectors) {
 			if (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) > -1) {
-				ArrayList<String> localXPaths = new ArrayList<String>();
-				ArrayList<String> xpathMapping = new ArrayList<String>();
-				ArrayList<String> xpathRoot = new ArrayList<String>();
+				ArrayList<String> localXPaths = new ArrayList<>();
+				ArrayList<String> xpathMapping = new ArrayList<>();
+				ArrayList<String> xpathRoot = new ArrayList<>();
 
 				mXPathMapping = pXPathMapping.matcher(selector);
 				if (mXPathMapping.find()) {
