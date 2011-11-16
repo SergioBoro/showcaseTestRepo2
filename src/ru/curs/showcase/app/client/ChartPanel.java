@@ -7,7 +7,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.*;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 
@@ -137,7 +137,7 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 			drawChart(divIdGraph, divIdLegend, paramChart1, paramChart2);
 
-		} catch (Exception e) {
+		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
 				MessageBox.showMessageWithDetails(Constants.ERROR_OF_CHART_PAINTING,
 						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
