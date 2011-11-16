@@ -41,7 +41,7 @@ public class UIDataPanelTab {
 	 * @param adataPanelTabMetaData
 	 *            the dataPanelTabMetaData to set
 	 */
-	public void setDataPanelTabMetaData(final DataPanelTab adataPanelTabMetaData) {
+	public final void setDataPanelTabMetaData(final DataPanelTab adataPanelTabMetaData) {
 		this.dataPanelTabMetaData = adataPanelTabMetaData;
 	}
 
@@ -65,7 +65,7 @@ public class UIDataPanelTab {
 		this.uiElements = auiElements;
 	}
 
-	public void setWidgetDatapanelTab(final Widget awidgetDataPanelTab) {
+	public final void setWidgetDatapanelTab(final Widget awidgetDataPanelTab) {
 		this.widgetDataPanelTab = awidgetDataPanelTab;
 	}
 
