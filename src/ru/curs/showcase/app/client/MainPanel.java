@@ -131,7 +131,7 @@ public class MainPanel {
 			int widthNumber = 0;
 			try {
 				widthNumber = SizeParser.getSize(navigatorWidth);
-			} catch (Exception e) {
+			} catch (NumberFormatException e) {
 
 				MessageBox.showMessageWithDetails(Constants.TRANSFORMATION_NAVIGATOR_WIDTH_ERROR,
 						e.getClass().getName() + ": " + e.getMessage(),
