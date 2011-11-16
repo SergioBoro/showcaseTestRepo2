@@ -20,6 +20,8 @@ import com.google.gwt.user.client.ui.*;
  */
 public class Footer {
 
+	public static final String SIZE_ONE_HUNDRED_PERCENTS = "100%";
+
 	/**
 	 * Генерация заголовка (шапки) приложения Showcase.
 	 * 
@@ -28,7 +30,7 @@ public class Footer {
 	public Widget generateBottom() {
 
 		final SimplePanel tabVerticalPanel = new SimplePanel();
-		tabVerticalPanel.setSize("100%", "100%");
+		tabVerticalPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		HTML ht = new HTML();
 		// ht = new HTML();
 
@@ -72,10 +74,10 @@ public class Footer {
 		}
 		// ===
 
-		ht.setSize("100%", String.valueOf(absolutePixelSize) + "px");
+		ht.setSize(SIZE_ONE_HUNDRED_PERCENTS, String.valueOf(absolutePixelSize) + "px");
 
 		if (AppCurrContext.getInstance().getMainPage().getFooter() == null) {
-			ht.setSize("100%", "0px");
+			ht.setSize(SIZE_ONE_HUNDRED_PERCENTS, "0px");
 		}
 		tabVerticalPanel.add(ht);
 
