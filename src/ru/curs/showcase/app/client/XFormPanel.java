@@ -405,7 +405,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	}
 
 	@Override
-	public void refreshPanel() {
+	public final void refreshPanel() {
 		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
 		p.clear();
