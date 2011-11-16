@@ -3,6 +3,7 @@ package ru.curs.showcase.app.client.utils;
 import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
 import ru.curs.showcase.app.client.api.UploadEndHandler;
 
+import com.google.gwt.core.client.JavaScriptException;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.ui.*;
 
@@ -78,7 +79,7 @@ public class UploadWindow extends DialogBoxWithCaptionButton {
 					if ((fileName != null) && (!fileName.isEmpty())) {
 						closeWindow();
 					}
-				} catch (Exception e) {
+				} catch (JavaScriptException e) {
 					closeWindow();
 				}
 			}
