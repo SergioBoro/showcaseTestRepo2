@@ -47,7 +47,7 @@ public class Footer {
 		try {
 			sizeNumber =
 				SizeParser.getSize(AppCurrContext.getInstance().getMainPage().getFooterHeight());
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
 
 			MessageBox.showMessageWithDetails(
 					Constants.TRANSFORMATION_HEADER_OR_FOOTER_WIDTH_ERROR, e.getClass().getName()
