@@ -1,5 +1,6 @@
 package ru.curs.showcase.runtime;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -156,15 +157,16 @@ public class LoggingEventDecorator implements AbstractCommandContext {
 		Object tempValue = null;
 		try {
 			tempValue = ReflectionUtils.getPropValueByFieldName(this, fieldName);
-		} catch (Exception e) {
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
 			return true;
 		}
 		String realValue = tempValue != null ? tempValue.toString() : null;
 		if ((realValue == null) && (fieldValue == null)) {
 			return true;
+		} else if ((realValue != null) && (fieldValue != null)) {
+			return realValue.equalsIgnoreCase(fieldValue);
 		}
-		return (realValue != null) && (fieldValue != null) ? realValue
-				.equalsIgnoreCase(fieldValue) : false;
+		return false;
 	}
 
 	public void setUserdata(final String aUserdata) {

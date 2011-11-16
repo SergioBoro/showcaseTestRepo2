@@ -111,16 +111,14 @@ public class CopyFileAction implements FileAction {
 	}
 
 	private void copy(final File src, final File dst) throws IOException {
-		InputStream in = new FileInputStream(src);
-		OutputStream out = new FileOutputStream(dst);
-
-		byte[] buf = new byte[COPY_BUF_SIZE];
-		int len;
-		while ((len = in.read(buf)) > 0) {
-			out.write(buf, 0, len);
+		try (InputStream in = new FileInputStream(src);
+				OutputStream out = new FileOutputStream(dst);) {
+			byte[] buf = new byte[COPY_BUF_SIZE];
+			int len;
+			while ((len = in.read(buf)) > 0) {
+				out.write(buf, 0, len);
+			}
 		}
-		in.close();
-		out.close();
 	}
 
 	@Override

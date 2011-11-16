@@ -100,31 +100,24 @@ public final class ServerStateFactory {
 
 	public static String getAppVersion(final String baseDir) throws IOException {
 		InputStream is = FileUtils.loadResToStream(baseDir + VERSION_FILE);
-		BufferedReader buf = new BufferedReader(new InputStreamReader(is));
 		String major;
-		try {
+		try (BufferedReader buf = new BufferedReader(new InputStreamReader(is))) {
 			major = buf.readLine();
-		} finally {
-			buf.close();
 		}
 
 		is = FileUtils.loadResToStream(baseDir + BUILD_FILE);
-		buf = new BufferedReader(new InputStreamReader(is));
 		String build;
-		try {
+		try (BufferedReader buf = new BufferedReader(new InputStreamReader(is));) {
 			build = buf.readLine();
 			Pattern pattern = Pattern.compile("(\\d+|development)");
 			Matcher matcher = pattern.matcher(build);
 			matcher.find();
 			build = matcher.group();
-		} finally {
-			buf.close();
 		}
 		return String.format("%s.%s", major, build);
 	}
 
 	private static String getSQLVersion() throws SQLException {
-		Connection conn = ConnectionFactory.getConnection();
 
 		String fileName =
 			String.format("%s/version_%s.sql", AppProps.SCRIPTSDIR, ConnectionFactory
@@ -140,8 +133,8 @@ public final class ServerStateFactory {
 			throw new SettingsFileOpenException(fileName, SettingsFileType.SQLSCRIPT);
 		}
 
-		PreparedStatement stat = conn.prepareStatement(sql);
-		try {
+		try (Connection conn = ConnectionFactory.getConnection();
+				PreparedStatement stat = conn.prepareStatement(sql)) {
 			boolean hasResult = stat.execute();
 			if (hasResult) {
 				ResultSet rs = stat.getResultSet();
@@ -152,9 +145,6 @@ public final class ServerStateFactory {
 					}
 				}
 			}
-		} finally {
-			stat.close();
-			conn.close();
 		}
 		return null;
 	}

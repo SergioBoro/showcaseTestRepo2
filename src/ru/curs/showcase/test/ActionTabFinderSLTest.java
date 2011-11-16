@@ -21,7 +21,7 @@ import ru.curs.showcase.model.webtext.WebTextGetCommand;
  */
 public class ActionTabFinderSLTest extends AbstractTest {
 	@Test
-	public void testReadFirstTabForDBDPFromNavigatorDynSessionContext() {
+	public void testReadFirstTabFromDBFromNavigatorDynSessionContext() {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
 		NavigatorGetCommand command = new NavigatorGetCommand(context);
@@ -32,7 +32,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testReadFirstTabFromDBFromEventDynMain() {
+	public void testReadFirstTabFromDBFromEventDynMainContext() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.WEBTEXT);
 		elInfo.setProcName("webtext_dyn_dp_main");
@@ -45,7 +45,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testReadFirstTabFromDBFromEventDynSession() {
+	public void testReadFirstTabFromDBFromEventDynSessionContext() {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.WEBTEXT);
@@ -59,7 +59,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testReadFirstTabFromDBFromSettingsDynMain() {
+	public void testReadFirstTabFromDBFromSettingsDynMainContext() {
 		GridContext context = GridContext.createFirstLoadDefault();
 		context.apply(getTestContext1());
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);
@@ -73,7 +73,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testReadFirstTabFromDBFromSettingsDynSession() {
+	public void testReadFirstTabFromDBFromSettingsDynSessionContext() {
 		GridContext context = GridContext.createFirstLoadDefault();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);

@@ -120,12 +120,10 @@ public final class FileUtils {
 
 	public static String getGeneralOptionalParam(final String paramName) {
 		Properties prop = new Properties();
-		InputStreamReader reader = new InputStreamReader(loadResToStream(PATH_PROPERTIES));
+		InputStream is = loadResToStream(PATH_PROPERTIES);
 		try {
-			try {
+			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
 				prop.load(reader);
-			} finally {
-				reader.close();
 			}
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(PATH_PROPERTIES, SettingsFileType.PATH_PROPERTIES);

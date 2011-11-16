@@ -34,20 +34,20 @@ public abstract class ActionTabFinder extends GeneralXMLHelper {
 	 */
 	public String findTabForAction(final CompositeContext context, final DataPanelLink link,
 			final String tabValue) {
-		if (tabValue != null) {
-			if (tabValue.equalsIgnoreCase(FIRST_OR_CURRENT_VALUE)) {
-				link.setFirstOrCurrentTab(true);
-				return getFirstTabId(context, link);
-			} else {
-				if (!tabValue.equalsIgnoreCase(CanBeCurrent.CURRENT_ID)) {
-					if (!link.getDataPanelId().equalsIgnoreCase(CanBeCurrent.CURRENT_ID)) {
-						checkForExists(context, link, tabValue);
-					}
-				}
-				return tabValue;
-			}
-		} else {
+		if (tabValue == null) {
 			return getFirstTabId(context, link);
+		}
+
+		if (tabValue.equalsIgnoreCase(FIRST_OR_CURRENT_VALUE)) {
+			link.setFirstOrCurrentTab(true);
+			return getFirstTabId(context, link);
+		} else {
+			if (!tabValue.equalsIgnoreCase(CanBeCurrent.CURRENT_ID)) {
+				if (!link.getDataPanelId().equalsIgnoreCase(CanBeCurrent.CURRENT_ID)) {
+					checkForExists(context, link, tabValue);
+				}
+			}
+			return tabValue;
 		}
 	}
 

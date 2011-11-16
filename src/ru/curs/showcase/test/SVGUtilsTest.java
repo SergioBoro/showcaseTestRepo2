@@ -15,7 +15,7 @@ import ru.curs.showcase.util.SVGConvertor;
 public class SVGUtilsTest extends AbstractTestWithDefaultUserData {
 
 	@Test
-	public void testSVGFileToJPEGFile() throws IOException {
+	public void testSVGFileToJPGFile() throws IOException {
 		String pathToData = "ru\\curs\\showcase\\test\\";
 		String inputFile = pathToData + "geomap.svg";
 		String outputFile = "tmp/" + "geomap.jpg";
@@ -26,7 +26,7 @@ public class SVGUtilsTest extends AbstractTestWithDefaultUserData {
 		file.createNewFile();
 
 		SVGConvertor convertor = new SVGConvertor();
-		convertor.svgFileToJPEGFile(inputFile, outputFile);
+		convertor.svgFileToJPGFile(inputFile, outputFile);
 	}
 
 	@Test

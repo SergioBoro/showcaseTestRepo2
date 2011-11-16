@@ -21,6 +21,6 @@ public final class JPGGetCommand extends AbstractSVGCommand {
 	protected void mainProc() throws Exception {
 		super.mainProc();
 		SVGConvertor convertor = new SVGConvertor(getSettings());
-		getResult().setData(convertor.svgStringToJPEG(getInput()));
+		getResult().setData(convertor.svgStringToJPG(getInput()));
 	}
 }

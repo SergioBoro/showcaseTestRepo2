@@ -101,8 +101,9 @@ public final class ServletUtils {
 			final String message) throws IOException {
 		response.setContentType("text/html");
 		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-		response.getWriter().append(message);
-		response.getWriter().close();
+		try (PrintWriter writer = response.getWriter()) {
+			writer.append(message);
+		}
 	}
 
 	/**
@@ -116,8 +117,7 @@ public final class ServletUtils {
 	public static boolean isOldIE(final HttpServletRequest request) {
 		String userAgent = getUserAgent(request);
 		boolean isOldIE =
-			((userAgent.indexOf("msie 6.0") != -1) || (userAgent.indexOf("msie 7.0") != -1)) ? true
-					: false;
+			(userAgent.indexOf("msie 6.0") != -1) || (userAgent.indexOf("msie 7.0") != -1);
 		return isOldIE;
 	}
 
@@ -136,19 +136,15 @@ public final class ServletUtils {
 	public static String getRequestAsString(final HttpServletRequest request)
 			throws java.io.IOException {
 		InputStream is = request.getInputStream();
-		BufferedReader requestData =
-			new BufferedReader(new InputStreamReader(is, TextUtils.DEF_ENCODING));
 		String line;
 
-		try {
+		try (BufferedReader requestData =
+			new BufferedReader(new InputStreamReader(is, TextUtils.DEF_ENCODING))) {
 			StringBuffer stringBuffer = new StringBuffer();
 			while ((line = requestData.readLine()) != null) {
 				stringBuffer.append(line);
 			}
 			line = stringBuffer.toString();
-
-		} finally {
-			requestData.close();
 		}
 		return line;
 	}

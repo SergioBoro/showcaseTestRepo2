@@ -1,7 +1,7 @@
 package ru.curs.showcase.model.command;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.UUID;
 
 import org.slf4j.*;
@@ -76,7 +76,9 @@ public abstract class ServiceLayerCommand<T> {
 			logOutput();
 			postProcess();
 			return result;
+			// CHECKSTYLE:OFF
 		} catch (Throwable e) {
+			// CHECKSTYLE:ON
 			throw GeneralExceptionFactory.build(e);
 		}
 	}
@@ -104,7 +106,8 @@ public abstract class ServiceLayerCommand<T> {
 					marker.add(MarkerFactory.getMarker(String.format("class=%s \r\nmethod=%s",
 							method.getReturnType().getSimpleName(), method.getName())));
 					LOGGER.info(marker, serializer.serialize(methodResult));
-				} catch (Exception e) {
+				} catch (IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
 					throw new ServerLogicError(e);
 				}
 			}

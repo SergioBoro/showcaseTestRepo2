@@ -203,7 +203,7 @@ public class GridContext extends CompositeContext {
 		pageInfo = aPageInfo;
 	}
 
-	public void apply(final CompositeContext aContext) {
+	public final void apply(final CompositeContext aContext) {
 		assignNullValues(aContext);
 	}
 

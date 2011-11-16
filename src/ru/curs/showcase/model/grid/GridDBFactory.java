@@ -81,7 +81,7 @@ public class GridDBFactory extends AbstractGridFactory {
 			readRecords();
 			checkRecordIdUniqueness();
 			calcRecordsCount();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
 		}
 	}

@@ -8,7 +8,7 @@ import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.utils.DownloadHelper;
 
 import com.google.gwt.regexp.shared.*;
-import com.google.gwt.user.client.rpc.SerializationStreamFactory;
+import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.FormPanel;
 
 /**
@@ -80,7 +80,7 @@ public final class GeoMapPanelCallbacksEvents {
 			dh.addParam(ImageFormat.class.getName(), imageFormat);
 			dh.addParam("svg", svg);
 			dh.submit();
-		} catch (Exception e) {
+		} catch (SerializationException e) {
 			MessageBox.showSimpleMessage(Constants.EXPORT_TO_PNG_ERROR, e.getMessage());
 		}
 	}

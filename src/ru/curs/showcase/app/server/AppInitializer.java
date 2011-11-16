@@ -50,7 +50,7 @@ public final class AppInitializer {
 		initClassPath();
 		XMLUtils.setupSchemaFactory();
 		XMLUtils.setupTransformer();
-		JMXMBeanRegistrator.register();
+		JMXBeanRegistrator.register();
 		jythonInit();
 	}
 
@@ -81,13 +81,9 @@ public final class AppInitializer {
 	public static void readPathProperties() {
 		Properties paths = new Properties();
 		try {
-			InputStreamReader reader =
-				new InputStreamReader(FileUtils.loadResToStream(FileUtils.PATH_PROPERTIES),
-						TextUtils.DEF_ENCODING);
-			try {
+			InputStream is = FileUtils.loadResToStream(FileUtils.PATH_PROPERTIES);
+			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
 				paths.load(reader);
-			} finally {
-				reader.close();
 			}
 
 			Enumeration<?> en = paths.keys();

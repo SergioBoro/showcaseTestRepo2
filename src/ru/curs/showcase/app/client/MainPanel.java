@@ -76,7 +76,7 @@ public class MainPanel {
 	 */
 	public Widget startMainPanelCreation() {
 		ProgressWindow.showProgressWindow();
-		basicVerticalPanel.add(new DownloadHelper());
+		basicVerticalPanel.add(DownloadHelper.getInstance());
 
 		final int n10 = 20;
 

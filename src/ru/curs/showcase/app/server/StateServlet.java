@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.server;
 
-import java.io.IOException;
+import java.io.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -42,8 +42,9 @@ public final class StateServlet extends HttpServlet {
 		ObjectSerializer serializer = new XMLObjectSerializer();
 		String message = serializer.serialize(sessionState);
 
-		response.getWriter().append(message);
-		response.getWriter().close();
+		try (PrintWriter writer = response.getWriter()) {
+			writer.append(message);
+		}
 	}
 
 }

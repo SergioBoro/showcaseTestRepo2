@@ -30,7 +30,7 @@ public final class SVGConvertor {
 		exportSettings = aExportSettings;
 	}
 
-	public ByteArrayOutputStream svgStringToJPEG(final String svg) {
+	public ByteArrayOutputStream svgStringToJPG(final String svg) {
 		InputStream is;
 		try {
 			is = TextUtils.stringToStream(svg);
@@ -38,7 +38,7 @@ public final class SVGConvertor {
 			throw new SVGConvertException(e);
 		}
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		output = (ByteArrayOutputStream) svgToJPEGBaseMethod(is, output);
+		output = (ByteArrayOutputStream) svgToJPGBaseMethod(is, output);
 		return output;
 	}
 
@@ -54,7 +54,7 @@ public final class SVGConvertor {
 		return output;
 	}
 
-	private OutputStream svgToJPEGBaseMethod(final InputStream is, final OutputStream os) {
+	private OutputStream svgToJPGBaseMethod(final InputStream is, final OutputStream os) {
 		try {
 			ImageTranscoder t = new JPEGTranscoder();
 			final double percentDivider = 100.0;
@@ -69,7 +69,7 @@ public final class SVGConvertor {
 			TranscoderOutput output = new TranscoderOutput(os);
 			t.transcode(input, output);
 			os.flush();
-		} catch (Exception e) {
+		} catch (TranscoderException | IOException e) {
 			throw new SVGConvertException(e);
 		}
 		return os;
@@ -93,21 +93,18 @@ public final class SVGConvertor {
 			TranscoderOutput output = new TranscoderOutput(os);
 			t.transcode(input, output);
 			os.flush();
-		} catch (Exception e) {
+		} catch (TranscoderException | IOException e) {
 			throw new SVGConvertException(e);
 		}
 		return os;
 	}
 
-	public void svgFileToJPEGFile(final String svgFile, final String jpegFile) {
+	public void svgFileToJPGFile(final String svgFile, final String jpegFile) {
 		InputStream is = FileUtils.loadResToStream(svgFile);
-		OutputStream output;
 		try {
-			output = new FileOutputStream(jpegFile);
-			output = svgToJPEGBaseMethod(is, output);
-			output.close();
-		} catch (FileNotFoundException e) {
-			throw new SVGConvertException(e);
+			try (OutputStream output = new FileOutputStream(jpegFile)) {
+				svgToJPGBaseMethod(is, output);
+			}
 		} catch (IOException e) {
 			throw new SVGConvertException(e);
 		}
@@ -115,13 +112,10 @@ public final class SVGConvertor {
 
 	public void svgFileToPNGFile(final String svgFile, final String pngFile) {
 		InputStream is = FileUtils.loadResToStream(svgFile);
-		OutputStream output;
 		try {
-			output = new FileOutputStream(pngFile);
-			output = svgToPNGBaseMethod(is, output);
-			output.close();
-		} catch (FileNotFoundException e) {
-			throw new SVGConvertException(e);
+			try (OutputStream output = new FileOutputStream(pngFile)) {
+				svgToPNGBaseMethod(is, output);
+			}
 		} catch (IOException e) {
 			throw new SVGConvertException(e);
 		}

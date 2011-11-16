@@ -3,9 +3,12 @@ package ru.curs.showcase.model.xform;
 import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.transform.TransformerException;
 
 import org.slf4j.*;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
@@ -64,7 +67,7 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 
 		try {
 			template = db.parse(stream);
-		} catch (Exception e1) {
+		} catch (SAXException | IOException e1) {
 			throw new XMLFormatException(file, e1);
 		}
 
@@ -77,7 +80,7 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 			logOutput();
 			replaceVariables();
 			result.setXFormParts(XFormCutter.xFormParts(html));
-		} catch (Exception e) {
+		} catch (TransformerException | XMLStreamException e) {
 			throw new XSLTTransformException(String.format(XFORMS_CREATE_ERROR, getElementInfo()
 					.getFullId()), e, new DataPanelElementContext(getCallContext(),
 					getElementInfo()));

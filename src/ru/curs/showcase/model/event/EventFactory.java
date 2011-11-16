@@ -3,8 +3,6 @@ package ru.curs.showcase.model.event;
 import java.io.*;
 import java.util.*;
 
-import javax.xml.parsers.SAXParser;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -162,7 +160,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 				String value;
 				try {
 					event = eventClass.newInstance();
-				} catch (Exception e) {
+				} catch (InstantiationException | IllegalAccessException e) {
 					throw new CreateObjectError(e);
 				}
 				if (id1Tag == null) {
@@ -226,7 +224,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 		InputStream xml;
 		try {
 			xml = new ByteArrayInputStream(data.getBytes(TextUtils.DEF_ENCODING));
-		} catch (Exception e) {
+		} catch (UnsupportedEncodingException e) {
 			throw new ResultSetHandleException(e);
 		}
 
@@ -237,12 +235,8 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 	}
 
 	private void stdParseProc(final InputStream stream) {
-		SAXParser parser = XMLUtils.createSAXParser();
-		try {
-			parser.parse(stream, saxHandler);
-		} catch (Exception e) {
-			XMLUtils.stdSAXErrorHandler(e, PROP_COL_ERROR_MES);
-		}
+		SimpleSAX sax = new SimpleSAX(stream, saxHandler, PROP_COL_ERROR_MES);
+		sax.parse();
 	}
 
 	/**

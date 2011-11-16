@@ -464,7 +464,7 @@ public final class XFormPanelCallbacksEvents {
 				dh.addStdPostParamsToBody(new XFormContext(currentXFormPanel.getContext(), data),
 						currentXFormPanel.getElementInfo());
 				dh.submit();
-			} catch (Exception e) {
+			} catch (SerializationException e) {
 				MessageBox.showSimpleMessage(Constants.XFORMS_DOWNLOAD_ERROR, e.getMessage());
 			}
 		}

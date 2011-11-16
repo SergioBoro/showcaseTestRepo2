@@ -3,8 +3,6 @@ package ru.curs.showcase.model.navigator;
 import java.io.InputStream;
 import java.util.*;
 
-import javax.xml.parsers.SAXParser;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -129,8 +127,6 @@ public final class NavigatorFactory extends SAXTagHandler {
 	public Navigator fromStream(final InputStream stream) {
 		InputStream streamForParse = XMLUtils.xsdValidateAppDataSafe(stream, "navigator.xsd");
 
-		SAXParser parser = XMLUtils.createSAXParser();
-
 		DefaultHandler myHandler = new DefaultHandler() {
 			@Override
 			public void startElement(final String namespaceURI, final String lname,
@@ -150,12 +146,9 @@ public final class NavigatorFactory extends SAXTagHandler {
 			}
 		};
 
-		try {
-			parser.parse(streamForParse, myHandler);
-			postProcess();
-		} catch (Exception e) {
-			XMLUtils.stdSAXErrorHandler(e, XML_ERROR_MES);
-		}
+		SimpleSAX sax = new SimpleSAX(streamForParse, myHandler, XML_ERROR_MES);
+		sax.parse();
+		postProcess();
 		return result;
 	}
 

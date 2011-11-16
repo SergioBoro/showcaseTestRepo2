@@ -3,8 +3,6 @@ package ru.curs.showcase.model.datapanel;
 import java.io.InputStream;
 import java.util.regex.*;
 
-import javax.xml.parsers.SAXParser;
-
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -209,13 +207,9 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 
 		};
 
-		SAXParser parser = XMLUtils.createSAXParser();
-		try {
-			parser.parse(file.getData(), myHandler);
-			adjustTableTabWidth();
-		} catch (Exception e) {
-			XMLUtils.stdSAXErrorHandler(e, file.getName());
-		}
+		SimpleSAX sax = new SimpleSAX(file.getData(), myHandler, file.getName());
+		sax.parse();
+		adjustTableTabWidth();
 		return result;
 	}
 

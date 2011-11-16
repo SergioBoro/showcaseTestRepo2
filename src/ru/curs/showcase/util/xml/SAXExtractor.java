@@ -11,7 +11,7 @@ import org.xml.sax.*;
  * @author den
  * 
  */
-public final class SAXXMLExtractor implements XMLExtractor {
+public final class SAXExtractor implements XMLExtractor {
 
 	@Override
 	public Source extract(final XMLSource source) throws SAXException {

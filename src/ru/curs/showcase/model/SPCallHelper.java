@@ -252,7 +252,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 		int errorCode;
 		try {
 			errorCode = getStatement().getInt(1);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			// проверка через metadata почему-то глючит с MSSQL JDBC драйвером
 			return;
 		}
@@ -260,7 +260,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 			String errMess;
 			try {
 				errMess = getStatement().getString(getErrorMesIndex(templateIndex));
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				errMess = "";
 			}
 			UserMessageFactory factory = new UserMessageFactory();

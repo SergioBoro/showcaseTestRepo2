@@ -45,7 +45,7 @@ public class XMLSource {
 		if (document != null) {
 			return new DocumentXMLExtractor();
 		} else if (saxParser != null) {
-			return new SAXXMLExtractor();
+			return new SAXExtractor();
 		} else if (inputStream != null) {
 			return new InputStreamXMLExtractor();
 		}

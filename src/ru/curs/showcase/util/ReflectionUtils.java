@@ -24,7 +24,8 @@ public final class ReflectionUtils {
 			String metName = getAccessMethodNameForField(field);
 			Method met = obj.getClass().getMethod(metName);
 			return met.invoke(obj);
-		} catch (Exception e) {
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
 			throw new ServerLogicError(e);
 		}
 	}

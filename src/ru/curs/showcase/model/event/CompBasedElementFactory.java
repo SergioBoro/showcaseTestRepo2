@@ -2,8 +2,6 @@ package ru.curs.showcase.model.event;
 
 import java.sql.*;
 
-import javax.xml.parsers.SAXParser;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -134,12 +132,8 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 			}
 		};
 
-		SAXParser parser = XMLUtils.createSAXParser();
-		try {
-			parser.parse(getSettings(), myHandler);
-		} catch (Exception e) {
-			XMLUtils.stdSAXErrorHandler(e, getSettingsErrorMes());
-		}
+		SimpleSAX sax = new SimpleSAX(getSettings(), myHandler, getSettingsErrorMes());
+		sax.parse();
 	}
 
 	/**
@@ -185,7 +179,7 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 		} else {
 			try {
 				return (ResultSet) cs.getObject(1);
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				return (ResultSet) cs.getObject(cs.getParameterMetaData().getParameterCount());
 			}
 		}
@@ -194,7 +188,7 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 	@Override
 	protected void checkSourceError() {
 		super.checkSourceError();
-	
+
 		getSource().getSpCallHelper().checkErrorCode();
 	}
 }

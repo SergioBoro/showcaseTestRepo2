@@ -119,7 +119,7 @@ public class XFormSLTest extends AbstractTest {
 		String linkId = "proc4";
 		XFormDownloadCommand command = new XFormDownloadCommand(context, elementInfo, linkId);
 		OutputStreamDataFile file = command.execute();
-		final int navigatorXMLLen = 231478;
+		final int navigatorXMLLen = 231_478;
 		assertNotNull(context.getSession());
 		assertTrue(file.getData().size() > navigatorXMLLen);
 		assertEquals(TextUtils.JDBC_ENCODING, file.getEncoding());

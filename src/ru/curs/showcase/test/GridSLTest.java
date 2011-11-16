@@ -24,7 +24,7 @@ import ru.curs.showcase.util.ServletUtils;
  */
 public class GridSLTest extends AbstractTest {
 
-	private static final Integer CITIES_COUNT = 11111;
+	private static final Integer CITIES_COUNT = 11_111;
 
 	/**
 	 * Основной тест для фабрики гридов.

@@ -2,13 +2,11 @@ package ru.curs.showcase.model.datapanel;
 
 import java.io.InputStream;
 
-import javax.xml.parsers.SAXParser;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.ActionTabFinder;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
 
@@ -39,12 +37,8 @@ public class ActionTabFinderFromXML extends ActionTabFinder {
 		reset();
 		DataFile<InputStream> file = getFile(context, link);
 
-		SAXParser parser = XMLUtils.createSAXParser();
-		try {
-			parser.parse(file.getData(), myHandler);
-		} catch (Exception e) {
-			XMLUtils.stdSAXErrorHandler(e, link.getDataPanelId());
-		}
+		SimpleSAX sax = new SimpleSAX(file.getData(), myHandler, link.getDataPanelId());
+		sax.parse();
 
 		if (firstTabId == null) {
 			throw new XMLFormatException(String.format(NO_TABS_ERROR, link.getDataPanelId()));
@@ -75,15 +69,8 @@ public class ActionTabFinderFromXML extends ActionTabFinder {
 		};
 		DataFile<InputStream> file = getFile(context, link);
 
-		SAXParser parser = XMLUtils.createSAXParser();
-		try {
-			parser.parse(file.getData(), myHandler);
-		} catch (Exception e) {
-			XMLUtils.stdSAXErrorHandler(e, link.getDataPanelId());
-			return true;
-		}
-
-		return false;
+		SimpleSAX sax = new SimpleSAX(file.getData(), myHandler, link.getDataPanelId());
+		return !sax.parse();
 	}
 
 	private DataFile<InputStream>

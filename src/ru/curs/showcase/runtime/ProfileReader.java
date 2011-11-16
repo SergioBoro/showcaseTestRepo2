@@ -1,8 +1,9 @@
 package ru.curs.showcase.runtime;
 
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Properties;
 
+import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.*;
 
 /**
@@ -31,23 +32,20 @@ public class ProfileReader {
 
 	public void init() {
 		try {
-			InputStreamReader reader =
-				new InputStreamReader(AppProps.loadUserDataToStream(profileName));
-			try {
+			InputStream is = AppProps.loadUserDataToStream(profileName);
+			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
 				props.load(reader);
-			} finally {
-				reader.close();
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, profileName, getSettingsType());
 		}
 	}
 
-	protected String getProfileCatalog() {
+	public final String getProfileCatalog() {
 		return getSettingsType().getFileDir();
 	}
 
-	protected SettingsFileType getSettingsType() {
+	public SettingsFileType getSettingsType() {
 		return settingsFileType;
 	}
 
@@ -59,11 +57,11 @@ public class ProfileReader {
 		}
 	}
 
-	protected Properties getProps() {
+	public Properties getProps() {
 		return props;
 	}
 
-	protected String getProfileName() {
+	public String getProfileName() {
 		return profileName;
 	}
 

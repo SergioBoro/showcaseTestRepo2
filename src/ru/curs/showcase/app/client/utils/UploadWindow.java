@@ -44,6 +44,7 @@ public class UploadWindow extends DialogBoxWithCaptionButton {
 		add(holder);
 
 		uploadHelper = new UploadHelper();
+		uploadHelper.init();
 		uploadHelper.setSize("100%", "100%");
 		holder.add(uploadHelper);
 	}

@@ -25,7 +25,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 	 * Проверка значений атрибутов панели по умолчанию.
 	 */
 	@Test
-	public void testCreateDPEI() {
+	public void testCreateDPElementInfo() {
 		DataPanelElementInfo dpei = new DataPanelElementInfo("01", DataPanelElementType.GEOMAP);
 		assertFalse(dpei.getCacheData());
 		assertFalse(dpei.getRefreshByTimer());
@@ -281,7 +281,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test(expected = SPNotExistsException.class)
-	public void testBySLFromDBSPNotExists() {
+	public void testBySLWhenSPNotExists() {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
 		action.setContext(CompositeContext.createCurrent());
 		DataPanelLink dpLink = new DataPanelLink();

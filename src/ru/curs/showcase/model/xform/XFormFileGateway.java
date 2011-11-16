@@ -3,9 +3,11 @@ package ru.curs.showcase.model.xform;
 import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.transform.TransformerException;
 
 import org.slf4j.*;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -46,7 +48,7 @@ public final class XFormFileGateway extends DataCheckGateway implements XFormGat
 				AppProps.loadUserDataToStream(String.format("%s/%s.xml", AppProps.XFORMS_DIR,
 						element.getProcName()));
 			doc = db.parse(stream);
-		} catch (Exception e) {
+		} catch (SAXException | IOException e) {
 			throw new TestFileExchangeException(element.getProcName(), e);
 		}
 		return new HTMLBasedElementRawData(doc, null, element, context);
@@ -65,7 +67,7 @@ public final class XFormFileGateway extends DataCheckGateway implements XFormGat
 			String.format(TMP_TEST_DATA_DIR + "/%s_updated.xml", element.getProcName());
 		try {
 			XMLUtils.stringToXMLFile(data, fileName);
-		} catch (Exception e) {
+		} catch (SAXException | IOException | TransformerException e) {
 			throw new TestFileExchangeException(fileName, e);
 		}
 	}

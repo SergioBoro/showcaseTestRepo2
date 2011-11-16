@@ -3,8 +3,6 @@ package ru.curs.showcase.model;
 import java.io.*;
 import java.sql.SQLException;
 
-import javax.xml.parsers.SAXParser;
-
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -122,12 +120,8 @@ public final class UserMessageFactory {
 			}
 		};
 
-		SAXParser parser = XMLUtils.createSAXParser();
-		try {
-			parser.parse(stream, saxHandler);
-		} catch (Exception e) {
-			XMLUtils.stdSAXErrorHandler(e, SOL_MESSAGES_FILE);
-		}
+		SimpleSAX sax = new SimpleSAX(stream, saxHandler, SOL_MESSAGES_FILE);
+		sax.parse();
 	}
 
 	private static String parse(final Throwable cause) {

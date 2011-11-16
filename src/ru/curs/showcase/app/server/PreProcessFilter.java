@@ -69,8 +69,9 @@ public class PreProcessFilter implements Filter {
 				InputStream is =
 					httpRequest.getSession().getServletContext()
 							.getResourceAsStream("js/course/geo_fake.js");
-				httpResponse.getWriter().append(TextUtils.streamToString(is));
-				httpResponse.getWriter().close();
+				try (PrintWriter writer = httpResponse.getWriter()) {
+					writer.append(TextUtils.streamToString(is));
+				}
 				return true;
 			}
 		}

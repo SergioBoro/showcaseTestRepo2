@@ -90,11 +90,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		try {
 			DataPanelGetCommand command = new DataPanelGetCommand(action);
 			command.execute();
-		} catch (Exception e) {
-			assertEquals(GeneralException.class, e.getClass());
-			assertEquals(SettingsFileOpenException.class.getName(),
-					((GeneralException) e).getOriginalExceptionClass());
-			assertNotNull(((GeneralException) e).getOriginalMessage());
+		} catch (GeneralException e) {
+			assertEquals(SettingsFileOpenException.class.getName(), e.getOriginalExceptionClass());
+			assertNotNull(e.getOriginalMessage());
 			return;
 		}
 		fail();
@@ -111,10 +109,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		try {
 			ChartGetCommand command = new ChartGetCommand(context, element);
 			command.execute();
-		} catch (Exception e) {
-			assertEquals(GeneralException.class, e.getClass());
-			assertEquals(SPNotExistsException.class.getName(),
-					((GeneralException) e).getOriginalExceptionClass());
+		} catch (GeneralException e) {
+			assertEquals(SPNotExistsException.class.getName(), e.getOriginalExceptionClass());
 			return;
 		}
 		fail();
@@ -133,11 +129,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		try {
 			ChartGetCommand command = new ChartGetCommand(context, element);
 			command.execute();
-		} catch (Exception e) {
-			assertEquals(GeneralException.class, e.getClass());
-			assertEquals(DBQueryException.class.getName(),
-					((GeneralException) e).getOriginalExceptionClass());
-			assertTrue(((GeneralException) e).getOriginalMessage().indexOf(procName) > -1);
+		} catch (GeneralException e) {
+			assertEquals(DBQueryException.class.getName(), e.getOriginalExceptionClass());
+			assertTrue(e.getOriginalMessage().indexOf(procName) > -1);
 			return;
 		}
 		fail();
@@ -155,10 +149,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		try {
 			ChartGetCommand command = new ChartGetCommand(context, element);
 			command.execute();
-		} catch (Exception e) {
-			assertEquals(GeneralException.class, e.getClass());
-			assertEquals(DBQueryException.class.getName(),
-					((GeneralException) e).getOriginalExceptionClass());
+		} catch (GeneralException e) {
+			assertEquals(DBQueryException.class.getName(), e.getOriginalExceptionClass());
 			assertTrue(e.getMessage().indexOf(CompBasedElementSPCallHelper.NO_RESULTSET_ERROR) > -1);
 			return;
 		}
@@ -177,11 +169,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 				XFormInfoFactory.generateXFormsSQLSubmissionInfo("no_exist_proc");
 			XFormSQLTransformCommand command = new XFormSQLTransformCommand(context, elInfo);
 			command.execute();
-		} catch (Exception e) {
-			assertEquals(GeneralException.class, e.getClass());
-			assertEquals(SPNotExistsException.class.getName(),
-					((GeneralException) e).getOriginalExceptionClass());
-			assertTrue(((GeneralException) e).getMessage().indexOf("no_exist_proc") > -1);
+		} catch (GeneralException e) {
+			assertEquals(SPNotExistsException.class.getName(), e.getOriginalExceptionClass());
+			assertTrue(e.getMessage().indexOf("no_exist_proc") > -1);
 			return;
 		}
 		fail();
@@ -201,10 +191,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		try {
 			WebTextGetCommand command = new WebTextGetCommand(context, element);
 			command.execute();
-		} catch (Exception e) {
-			assertEquals(GeneralException.class, e.getClass());
-			assertEquals(IncorrectElementException.class.getName(),
-					((GeneralException) e).getOriginalExceptionClass());
+		} catch (GeneralException e) {
+			assertEquals(IncorrectElementException.class.getName(), e.getOriginalExceptionClass());
 			return;
 		}
 		fail();
@@ -393,10 +381,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 
 		try {
 			gateway.getRawData(context, "header_proc_with_error");
-		} catch (Exception e) {
-			assertEquals(ValidateInDBException.class, e.getClass());
-			assertEquals("Ошибка, переданная через @error_mes (1)", ((ValidateInDBException) e)
-					.getUserMessage().getText());
+		} catch (ValidateInDBException e) {
+			assertEquals("Ошибка, переданная через @error_mes (1)", e.getUserMessage().getText());
 			return;
 		}
 		fail();

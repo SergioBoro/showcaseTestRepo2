@@ -10,7 +10,7 @@ import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.*;
-import com.google.gwt.user.client.rpc.SerializationStreamFactory;
+import com.google.gwt.user.client.rpc.*;
 
 /**
  * Класс для загрузки файлов на сервер прямо из XForm.
@@ -108,7 +108,7 @@ public class InlineUploader {
 				form.submit();
 				clearForm(form);
 			}
-		} catch (Exception e) {
+		} catch (SerializationException e) {
 			MessageBox.showSimpleMessage(Constants.XFORMS_UPLOAD_ERROR, e.getMessage());
 		}
 

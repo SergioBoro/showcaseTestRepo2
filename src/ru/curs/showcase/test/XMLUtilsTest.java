@@ -53,7 +53,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		String stmt = "DROP PROCEDURE [dbo].[_DebugXMLProcessor2]";
 		try {
 			st.executeUpdate(stmt);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			stmt = "";
 		}
 		stmt =
@@ -81,8 +81,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		org.w3c.dom.Document doc =
 			db.parse(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML));
 
-		Connection connection = ConnectionFactory.getConnection();
-		try {
+		try (Connection connection = ConnectionFactory.getConnection()) {
 			SQLXML sqlxmlIn = XMLUtils.domToSQLXML(doc, connection);
 			SQLXML sqlxmlOut = getOutputByInputSQLXML(connection, sqlxmlIn);
 			String xsltFileName = TEST_GOOD_XSL;
@@ -92,10 +91,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 			assertTrue(out.indexOf(TEST_STR1) > -1);
 
 			assertTrue(out.indexOf(TEST_STR2) > -1);
-		} finally {
-			connection.close();
 		}
-
 	}
 
 	/**
@@ -105,26 +101,21 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	 * @throws SQLException
 	 */
 	@Test(expected = XSLTTransformException.class)
-	public final void test2XsltTransformForCheckSAXON() throws SAXException, IOException,
+	public final void test2XsltTransformForCheckSaxon() throws SAXException, IOException,
 			SQLException, TransformerException {
 		DocumentBuilder db = XMLUtils.createBuilder();
 
 		org.w3c.dom.Document doc =
 			db.parse(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML));
 
-		Connection connection = ConnectionFactory.getConnection();
-
-		try {
+		try (Connection connection = ConnectionFactory.getConnection()) {
 			SQLXML sqlxmlIn = XMLUtils.domToSQLXML(doc, connection);
 			SQLXML sqlxmlOut = getOutputByInputSQLXML(connection, sqlxmlIn);
 			String xsltFileName = "test_bad.xsl";
 			String out = XMLUtils.xsltTransform(sqlxmlOut, xsltFileName);
 			assertTrue(out.indexOf(TEST_STR1) > -1);
 			assertTrue(out.indexOf(TEST_STR2) > -1);
-		} finally {
-			connection.close();
 		}
-
 	}
 
 	/**

@@ -23,7 +23,7 @@ public class ActionTabFinderTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testReadFirstTabForDBDPFromNavigator() {
+	public void testReadFirstTabFromDBFromNavigator() {
 		final int actionNumber = 3;
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 
@@ -31,7 +31,7 @@ public class ActionTabFinderTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testReadFirstTabForDBDPFromNavigatorDynMainContext() {
+	public void testReadFirstTabFromDBFromNavigatorDynMainContext() {
 		final int actionNumber = 4;
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 
@@ -39,7 +39,7 @@ public class ActionTabFinderTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test(expected = XMLFormatException.class)
-	public void testReadFirstTabIdForDBDPFromNavigatorDynamicEmpty() {
+	public void testReadFirstTabIdFromDBFromNavigatorDynamicEmpty() {
 		getAction("tree_multilevel.wrong2.xml", 0, 0);
 	}
 }

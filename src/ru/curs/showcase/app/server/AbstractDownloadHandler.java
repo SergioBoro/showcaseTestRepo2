@@ -34,9 +34,9 @@ public abstract class AbstractDownloadHandler extends AbstractFilesHandler {
 		setContentType();
 		getResponse().setHeader("Content-Disposition",
 				String.format("attachment; filename=\"%s\"", encName));
-		OutputStream out = getResponse().getOutputStream();
-		out.write(outputFile.getData().toByteArray());
-		out.close();
+		try (OutputStream out = getResponse().getOutputStream()) {
+			out.write(outputFile.getData().toByteArray());
+		}
 	}
 
 	/**

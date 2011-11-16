@@ -12,11 +12,9 @@ import org.slf4j.*;
  * @author den
  * 
  */
-public final class JMXMBeanRegistrator {
-	/**
-	 * LOGGER.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(JMXMBeanRegistrator.class);
+public final class JMXBeanRegistrator {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(JMXBeanRegistrator.class);
 
 	/**
 	 * Сервер JMX Bean.
@@ -37,12 +35,14 @@ public final class JMXMBeanRegistrator {
 				mbs.unregisterMBean(beanName);
 			}
 			mbs.registerMBean(monBean, beanName);
-		} catch (Exception e) {
+		} catch (InstanceAlreadyExistsException | MBeanRegistrationException
+				| NotCompliantMBeanException | InstanceNotFoundException
+				| MalformedObjectNameException e) {
 			LOGGER.error("Ошибка при регистрации MBean " + e.getLocalizedMessage());
 		}
 	}
 
-	private JMXMBeanRegistrator() {
+	private JMXBeanRegistrator() {
 		throw new UnsupportedOperationException();
 	}
 }

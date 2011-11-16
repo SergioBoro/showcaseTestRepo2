@@ -116,7 +116,7 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 		try {
 			rec.setFontSize("%");
 			rec.getFontSizeValue();
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
 			rec.setFontSize("");
 			rec.getFontSizeValue();
 		}

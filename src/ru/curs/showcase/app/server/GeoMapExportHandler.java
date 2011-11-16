@@ -41,6 +41,7 @@ public class GeoMapExportHandler extends AbstractDownloadHandler {
 			// возможно только в данном цикле
 			ByteArrayOutputStream out = StreamConvertor.inputToOutputStream(input);
 			String paramValue = out.toString();
+
 			if (GeoMapExportSettings.class.getName().equals(name)) {
 				settings = (GeoMapExportSettings) deserializeObject(paramValue);
 			} else if (ImageFormat.class.getName().equals(name)) {

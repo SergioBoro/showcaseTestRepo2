@@ -42,14 +42,11 @@ public final class TextUtils {
 			Writer writer = new StringWriter();
 			final int bufMaxLen = 4096;
 			char[] buffer = new char[bufMaxLen];
-			try {
-				Reader reader = new BufferedReader(new InputStreamReader(is, DEF_ENCODING));
+			try (Reader reader = new BufferedReader(new InputStreamReader(is, DEF_ENCODING))) {
 				int n;
 				while ((n = reader.read(buffer)) != -1) {
 					writer.write(buffer, 0, n);
 				}
-			} finally {
-				is.close();
 			}
 			return writer.toString();
 		} else {

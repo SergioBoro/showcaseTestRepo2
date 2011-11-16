@@ -148,7 +148,7 @@ public final class XMLUtils {
 		try {
 			factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
 			parser = factory.newSAXParser();
-		} catch (Exception e) {
+		} catch (SAXException | ParserConfigurationException e) {
 			throw new CreateObjectError(e);
 		}
 		return parser;
@@ -212,7 +212,7 @@ public final class XMLUtils {
 			Transformer tr = createTransformer(xsltFileName);
 			tr.transform(sqlxml.getSource(DOMSource.class), new StreamResult(baos));
 			return baos.toString(TextUtils.DEF_ENCODING);
-		} catch (Exception e) {
+		} catch (IOException | TransformerException | SQLException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
 		}
 	}
@@ -223,7 +223,7 @@ public final class XMLUtils {
 			Transformer tr = createTransformer(xsltFileName);
 			tr.transform(new DOMSource(doc), new StreamResult(baos));
 			return baos.toString(TextUtils.DEF_ENCODING);
-		} catch (Exception e) {
+		} catch (IOException | TransformerException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
 		}
 	}
@@ -238,7 +238,7 @@ public final class XMLUtils {
 			final String result = baos.toString(TextUtils.DEF_ENCODING);
 			logXSLOutput(context, context.getElementInfo().getTransformName(), result);
 			return result;
-		} catch (Exception e) {
+		} catch (IOException | TransformerException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e, context);
 		}
 	}
@@ -255,7 +255,7 @@ public final class XMLUtils {
 			tr.transform(new SAXSource(parser.getXMLReader(), new InputSource(is)),
 					new StreamResult(baos));
 			return baos.toString(TextUtils.DEF_ENCODING);
-		} catch (Exception e) {
+		} catch (IOException | TransformerException | SAXException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
 		}
 	}
@@ -266,7 +266,7 @@ public final class XMLUtils {
 			Transformer tr = createTransformer(xsltFileName);
 			tr.transform(new StreamSource(is), new StreamResult(baos));
 			return baos.toString(TextUtils.DEF_ENCODING);
-		} catch (Exception e) {
+		} catch (IOException | TransformerException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
 		}
 	}
@@ -282,7 +282,7 @@ public final class XMLUtils {
 			String result = baos.toString(TextUtils.DEF_ENCODING);
 			logXSLOutput(context, xsltFileName, result);
 			return result;
-		} catch (Exception e) {
+		} catch (IOException | TransformerException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e, context);
 		}
 	}
@@ -331,7 +331,7 @@ public final class XMLUtils {
 			Transformer tr = createTransformer(null);
 			tr.transform(new StreamSource(is), new StreamResult(baos));
 			return baos.toString(TextUtils.DEF_ENCODING);
-		} catch (Exception e) {
+		} catch (IOException | TransformerException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
 		}
 	}
@@ -360,7 +360,7 @@ public final class XMLUtils {
 			tr.transform(new DOMSource(doc), new StreamResult(baos));
 
 			return baos;
-		} catch (Exception e) {
+		} catch (TransformerFactoryConfigurationError | IOException | TransformerException e) {
 			throw new XSLTTransformException(
 					"Ошибка при выполнении XSLT-преобразования для таблицы: " + e.getMessage(), e);
 		}
@@ -414,7 +414,7 @@ public final class XMLUtils {
 			schemaFactory.setFeature(VALIDATE_ANNOTATIONS_ID, validateAnnotations);
 			schemaFactory.setFeature(GENERATE_SYNTHETIC_ANNOTATIONS_ID,
 					generateSyntheticAnnotations);
-		} catch (Exception e) {
+		} catch (SAXNotRecognizedException | SAXNotSupportedException e) {
 			throw new CreateObjectError(e);
 		}
 		return schemaFactory;
@@ -512,32 +512,6 @@ public final class XMLUtils {
 	public static void xsdValidateUserData(final InputStream is, final String schemaFile) {
 		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
 		validator.validate(new XMLSource(is, schemaFile));
-	}
-
-	/**
-	 * Стандартный обработчик ошибки в SAX парсере, корректно обрабатывающий
-	 * специальный тип SAXError. Если в функцию передано специально прерывающее
-	 * SAX парсер исключение - функция позволяет продолжить выполнение
-	 * программы.
-	 * 
-	 * @param e
-	 *            - исключение.
-	 * 
-	 * @param errorMes
-	 *            - сообщение об ошибке.
-	 */
-	public static void stdSAXErrorHandler(final Throwable e, final String errorMes) {
-		Throwable realExc = e;
-		if (realExc instanceof BreakSAXLoopException) {
-			return;
-		}
-		if (e.getClass() == SAXError.class) {
-			realExc = e.getCause();
-		}
-		if (realExc instanceof BaseException) {
-			throw (BaseException) realExc;
-		}
-		throw new XMLFormatException(errorMes, realExc);
 	}
 
 	/**

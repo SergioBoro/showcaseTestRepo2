@@ -121,13 +121,8 @@ public abstract class SAXTagHandler extends GeneralXMLHelper {
 		try {
 			Method method = this.getClass().getMethod(methodName, Attributes.class);
 			return method.invoke(this, attrs);
-		} catch (SecurityException e) {
-			throw new ServerLogicError(e);
-		} catch (NoSuchMethodException e) {
-			throw new ServerLogicError(e);
-		} catch (IllegalArgumentException e) {
-			throw new ServerLogicError(e);
-		} catch (IllegalAccessException e) {
+		} catch (SecurityException | NoSuchMethodException | IllegalArgumentException
+				| IllegalAccessException e) {
 			throw new ServerLogicError(e);
 		} catch (InvocationTargetException e) {
 			throw new SAXError(e.getTargetException());

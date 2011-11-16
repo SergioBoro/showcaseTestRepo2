@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.Properties;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.*;
 
 /**
@@ -224,12 +225,10 @@ public final class AppProps {
 		}
 
 		Properties prop = new Properties();
-		InputStreamReader reader =
-			new InputStreamReader(loadUserDataToStream(PROPFILENAME, userdataId), "UTF8");
-		try {
+
+		InputStream is = loadUserDataToStream(PROPFILENAME, userdataId);
+		try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
 			prop.load(reader);
-		} finally {
-			reader.close();
 		}
 
 		return prop;

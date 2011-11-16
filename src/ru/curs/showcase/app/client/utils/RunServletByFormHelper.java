@@ -28,9 +28,6 @@ public abstract class RunServletByFormHelper extends FormPanel {
 
 	public RunServletByFormHelper() {
 		super();
-		// setWidget(panel);
-		init();
-		add(panel);
 	}
 
 	public VerticalPanel getPanel() {
@@ -43,6 +40,7 @@ public abstract class RunServletByFormHelper extends FormPanel {
 	protected void init() {
 		initFormProps();
 		initFormView();
+		add(panel);
 		initFormHandlers();
 	}
 
