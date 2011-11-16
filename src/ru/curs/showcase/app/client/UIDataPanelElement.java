@@ -39,7 +39,7 @@ public class UIDataPanelElement {
 	 * @param aelementPanel
 	 *            the obj to set
 	 */
-	public void setElementPanel(final BasicElementPanel aelementPanel) {
+	public final void setElementPanel(final BasicElementPanel aelementPanel) {
 		this.elementPanel = aelementPanel;
 	}
 
