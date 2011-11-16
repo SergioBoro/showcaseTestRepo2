@@ -38,7 +38,7 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 	 * @param ashowCloseBottomButton
 	 *            the showCloseBottomButton to set
 	 */
-	public void setShowCloseBottomButton(final Boolean ashowCloseBottomButton) {
+	public final void setShowCloseBottomButton(final Boolean ashowCloseBottomButton) {
 		this.showCloseBottomButton = ashowCloseBottomButton;
 	}
 
