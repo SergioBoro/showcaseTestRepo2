@@ -24,7 +24,7 @@ public class InlineUploader {
 
 	private final String data;
 	private final XFormPanel currentXFormPanel;
-	@SuppressWarnings("unused")
+
 	private final Action ac;
 
 	private static int counter = 0;
