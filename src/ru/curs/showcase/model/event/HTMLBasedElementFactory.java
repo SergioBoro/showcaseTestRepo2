@@ -22,14 +22,14 @@ public abstract class HTMLBasedElementFactory extends TemplateMethodFactory {
 	 * 
 	 */
 	private void readProperties() {
-		if (getSource().getProperties() == null) {
+		if (getSource().getSettings() == null) {
 			return;
 		}
 
 		EventFactory<HTMLEvent> factory =
 			new EventFactory<HTMLEvent>(HTMLEvent.class, getCallContext());
 		factory.intiForGetSimpleEvents(LINK_ID_TAG, null);
-		Collection<HTMLEvent> events = factory.getSimpleEvents(getSource().getProperties());
+		Collection<HTMLEvent> events = factory.getSimpleEvents(getSource().getSettings());
 		((HTMLEventManager) getResult().getEventManager()).getEvents().addAll(events);
 
 		getResult().setDefaultAction(factory.getDefaultAction());

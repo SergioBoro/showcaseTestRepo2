@@ -5,6 +5,7 @@ Created on 02.11.2011
 @author: den
 '''
 from ru.curs.showcase.model import JythonProc;
+from ru.curs.showcase.app.api import UserMessage;
 #from ru.curs.showcase.util.xml import XMLUtils;  
 #from org.xml.sax.helpers import DefaultHandler;
 #from ru.curs.showcase.util import TextUtils;
@@ -15,7 +16,7 @@ add = ""
 session = ""
 filter = ""
 
-class AbstractJythonProc(JythonProc):        
+class NoValidateJythonProc(JythonProc):        
     def execute(self, context):
         global main, add, session, filter
         main = context.getMain().encode("utf-8")
@@ -27,7 +28,7 @@ class AbstractJythonProc(JythonProc):
         return mainproc()
         
 def mainproc():
-    pass 
+   return UserMessage("test2", unicode("из Jython", "UTF-8")) 
   
 if __name__ == "__main__":       
     mainproc()

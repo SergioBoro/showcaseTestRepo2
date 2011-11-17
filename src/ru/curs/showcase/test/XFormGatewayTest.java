@@ -123,7 +123,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		gateway = new XFormDBGateway();
 		try {
 			gateway.saveData(context, element, content);
-		} catch (ValidateInDBException e) {
+		} catch (ValidateException e) {
 			assertEquals("1", e.getUserMessage().getId());
 			assertEquals("Неуловимая ошибка из БД, связанная с триггерами и блокировками (1)", e
 					.getUserMessage().getText());

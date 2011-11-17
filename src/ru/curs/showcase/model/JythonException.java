@@ -17,4 +17,8 @@ public class JythonException extends BaseException {
 		super(ExceptionType.SOLUTION, mes, e);
 	}
 
+	public JythonException(final String mes) {
+		super(ExceptionType.SOLUTION, mes);
+	}
+
 }

@@ -20,7 +20,8 @@ public final class WebTextGetCommand extends DataPanelElementCommand<WebText> {
 
 	@Override
 	protected void mainProc() throws Exception {
-		WebTextGateway wtgateway = new WebTextDBGateway();
+		WebTextSelector selector = new WebTextSelector(getElementInfo());
+		WebTextGateway wtgateway = selector.getGateway();
 		HTMLBasedElementRawData rawWT = wtgateway.getRawData(getContext(), getElementInfo());
 		WebTextFactory builder = new WebTextFactory(rawWT);
 		setResult(builder.build());

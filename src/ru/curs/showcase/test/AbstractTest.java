@@ -461,4 +461,8 @@ public class AbstractTest extends GeneralXMLHelper {
 					.loadResToStream(linkId)), linkId);
 		return file;
 	}
+
+	protected CompositeContext generateContextWithSessionInfo() {
+		return new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+	}
 }

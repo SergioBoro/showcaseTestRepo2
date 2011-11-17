@@ -1,6 +1,6 @@
 package ru.curs.showcase.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.webtext.*;
+import ru.curs.showcase.util.exception.SettingsFileOpenException;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -18,6 +19,8 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserData {
+	private static final String WEB_TEXT_GET_JYTHON_PROC_PY = "WebTextGetJythonProc.py";
+
 	/**
 	 * Тест на случай, когда не задано преобразование.
 	 * 
@@ -69,5 +72,74 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 	public void testWrongElement3() {
 		WebTextGateway wtgateway = new WebTextDBGateway();
 		wtgateway.getRawData(null, null);
+	}
+
+	@Test(expected = SettingsFileOpenException.class)
+	public void testNotExistsJython() {
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		elInfo.setProcName("webtext_pas.py");
+		CompositeContext context = new CompositeContext();
+		WebTextJythonGateway gateway = new WebTextJythonGateway();
+		gateway.getRawData(context, elInfo);
+	}
+
+	@Test
+	public void testValidateExceptionInJython() {
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		elInfo.setProcName(WEB_TEXT_GET_JYTHON_PROC_PY);
+		CompositeContext context = new CompositeContext();
+		context.setMain("плохой");
+		context.setSession("<sessioninfo/>");
+		WebTextJythonGateway gateway = new WebTextJythonGateway();
+		try {
+			gateway.getRawData(context, elInfo);
+		} catch (ValidateException e) {
+			assertEquals("проверка на ошибку сработала (1)", e.getLocalizedMessage());
+			return;
+		}
+		fail();
+	}
+
+	@Test
+	public void testJythonGetData() {
+		final String region = "Алтайский край";
+
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		elInfo.setProcName(WEB_TEXT_GET_JYTHON_PROC_PY);
+		elInfo.setTransformName("pas.xsl");
+		CompositeContext context = generateContextWithSessionInfo();
+		context.setMain(region);
+		context.setAdditional(ADD_CONDITION);
+		WebTextGetCommand command = new WebTextGetCommand(context, elInfo);
+		WebText webtext = command.execute();
+
+		assertNotNull(webtext);
+		assertNotNull(webtext.getData());
+		assertTrue(webtext.getData().startsWith("<div>"));
+		assertTrue(webtext.getData().indexOf(region) > -1);
+		assertEquals(0, webtext.getEventManager().getEvents().size());
+		assertNull(webtext.getDefaultAction());
+	}
+
+	@Test
+	public void testJythonGetSettings() {
+		final String region = "Алтайский край";
+
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		elInfo.setProcName(WEB_TEXT_GET_JYTHON_PROC_PY);
+		elInfo.setTransformName("pas.xsl");
+		CompositeContext context = generateContextWithSessionInfo();
+		context.setMain(region);
+		context.setAdditional("withsettings");
+		WebTextGetCommand command = new WebTextGetCommand(context, elInfo);
+		WebText webtext = command.execute();
+
+		assertNotNull(webtext);
+		assertNotNull(webtext.getDefaultAction());
+		assertEquals("я оригинальный", webtext.getDefaultAction().getDataPanelLink()
+				.getElementLinkById("d2").getContext().getAdditional());
+		assertEquals(1, webtext.getEventManager().getEvents().size());
+		assertEquals("я оригинальный", webtext.getEventManager().getEvents().get(0).getAction()
+				.getDataPanelLink().getElementLinkById("d2").getContext().getAdditional());
 	}
 }

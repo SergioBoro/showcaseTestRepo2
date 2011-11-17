@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.ValidateInDBException;
+import ru.curs.showcase.model.ValidateException;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.ServletUtils;
@@ -344,8 +344,8 @@ public class GridSLTest extends AbstractTest {
 			GridGetCommand command = new GridGetCommand(context, elInfo, true);
 			command.execute();
 		} catch (GeneralException e) {
-			assertEquals(ValidateInDBException.class, e.getCause().getClass());
-			ValidateInDBException vid = (ValidateInDBException) e.getCause();
+			assertEquals(ValidateException.class, e.getCause().getClass());
+			ValidateException vid = (ValidateException) e.getCause();
 			assertEquals(
 					"Ошибка построения XML c метаданными в процедуре \"grid_cities_metadata_ec\" (1)",
 					vid.getUserMessage().getText());
@@ -362,8 +362,8 @@ public class GridSLTest extends AbstractTest {
 			GridGetCommand command = new GridGetCommand(context, elInfo, true);
 			command.execute();
 		} catch (GeneralException e) {
-			assertEquals(ValidateInDBException.class, e.getCause().getClass());
-			ValidateInDBException vid = (ValidateInDBException) e.getCause();
+			assertEquals(ValidateException.class, e.getCause().getClass());
+			ValidateException vid = (ValidateException) e.getCause();
 			assertEquals("Нет ничего в процедуре \"grid_cities_one_ec\" (1)", vid.getUserMessage()
 					.getText());
 			assertEquals("1", vid.getUserMessage().getId());

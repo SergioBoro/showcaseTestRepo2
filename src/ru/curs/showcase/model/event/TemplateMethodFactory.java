@@ -29,7 +29,7 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 	}
 
 	protected final InputStream getSettings() {
-		return source.getProperties();
+		return source.getSettings();
 	}
 
 	public CompositeContext getCallContext() {

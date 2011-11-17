@@ -19,7 +19,8 @@ public enum SettingsFileType {
 	SCHEMA("Файл XSD схемы"),
 	FRAME("Фрейм главной страницы"),
 	SQLSCRIPT("Файл SQL скрипта"),
-	GEOMAP_PROPERTIES("Профайл настроек карты");
+	GEOMAP_PROPERTIES("Профайл настроек карты"),
+	JYTHON("Jython скрипт");
 
 	/**
 	 * Название файла.

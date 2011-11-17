@@ -255,7 +255,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 					UserMessageFactory.SOL_MES_SUFFIX));
 		assertTrue(UserMessageFactory.isExplicitRaised(exc));
 		UserMessageFactory factory = new UserMessageFactory();
-		ValidateInDBException solEx = new ValidateInDBException(factory.build(exc));
+		ValidateException solEx = new ValidateException(factory.build(exc));
 		assertNotNull(solEx.getUserMessage());
 		assertEquals("test1", solEx.getUserMessage().getId());
 		assertEquals(MessageType.ERROR, solEx.getUserMessage().getType());
@@ -264,7 +264,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 			new SQLException(String.format("%stest2%s", UserMessageFactory.SOL_MES_PREFIX,
 					UserMessageFactory.SOL_MES_SUFFIX));
 		factory = new UserMessageFactory();
-		solEx = new ValidateInDBException(factory.build(exc));
+		solEx = new ValidateException(factory.build(exc));
 		assertEquals("Предупреждение", solEx.getUserMessage().getText());
 	}
 
@@ -278,7 +278,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 			new SQLException(String.format("%stestN%s", UserMessageFactory.SOL_MES_PREFIX,
 					UserMessageFactory.SOL_MES_SUFFIX));
 		UserMessageFactory factory = new UserMessageFactory();
-		throw new ValidateInDBException(factory.build(exc));
+		throw new ValidateException(factory.build(exc));
 	}
 
 	/**
@@ -290,7 +290,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 			new SQLException(String.format("%stest1%s", UserMessageFactory.SOL_MES_PREFIX,
 					UserMessageFactory.SOL_MES_SUFFIX));
 		UserMessageFactory factory = new UserMessageFactory();
-		ValidateInDBException exc2 = new ValidateInDBException(factory.build(exc));
+		ValidateException exc2 = new ValidateException(factory.build(exc));
 		GeneralException gse = GeneralExceptionFactory.build(exc2);
 		assertFalse(GeneralException.needDetailedInfo(gse));
 		assertEquals("Ошибка", exc2.getUserMessage().getText());
@@ -381,7 +381,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 
 		try {
 			gateway.getRawData(context, "header_proc_with_error");
-		} catch (ValidateInDBException e) {
+		} catch (ValidateException e) {
 			assertEquals("Ошибка, переданная через @error_mes (1)", e.getUserMessage().getText());
 			return;
 		}
@@ -455,21 +455,21 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 
 		try {
 			gateway.sqlTransform(procName, context);
-		} catch (ValidateInDBException e) {
+		} catch (ValidateException e) {
 			assertEquals("Ошибка в SP (-1)", e.getMessage());
 		}
 
 		try {
 			context.setFormData("<mesid>555</mesid>");
 			gateway.sqlTransform(procName, context);
-		} catch (ValidateInDBException e) {
+		} catch (ValidateException e) {
 			assertEquals("Отформатированное сообщение: Ошибка в SP. Спасибо!", e.getMessage());
 		}
 
 		try {
 			context.setFormData("<mesid>556</mesid>");
 			gateway.sqlTransform(procName, context);
-		} catch (ValidateInDBException e) {
+		} catch (ValidateException e) {
 			assertEquals("Составное сообщение + Ошибка в SP", e.getMessage());
 		}
 	}
@@ -484,7 +484,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		dpei.setProcName("geomap_ec");
 		try {
 			gateway.getRawData(context, dpei);
-		} catch (ValidateInDBException e) {
+		} catch (ValidateException e) {
 			assertEquals("Составное сообщение + ", e.getMessage());
 		}
 	}

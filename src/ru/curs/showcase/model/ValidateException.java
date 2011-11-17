@@ -14,7 +14,7 @@ import ru.curs.showcase.util.exception.BaseException;
  * @author den
  * 
  */
-public final class ValidateInDBException extends BaseException {
+public final class ValidateException extends BaseException {
 
 	private static final long serialVersionUID = 870894006633410366L;
 
@@ -23,7 +23,7 @@ public final class ValidateInDBException extends BaseException {
 	 */
 	private UserMessage userMessage;
 
-	public ValidateInDBException(final UserMessage aUserMessage) {
+	public ValidateException(final UserMessage aUserMessage) {
 		super(ExceptionType.USER, aUserMessage.getText());
 		userMessage = aUserMessage;
 	}

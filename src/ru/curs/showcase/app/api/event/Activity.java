@@ -43,21 +43,6 @@ public class Activity extends NamedElement implements SerializableElement, Conta
 		super();
 	}
 
-	public ActivityType getType() {
-		ActivityType res;
-		if (getOnServerSide()) {
-			res = ActivityType.SP;
-			if (getName().endsWith(".py")) {
-				return ActivityType.JYTHON;
-			} else if (getName().endsWith(".js")) {
-				return ActivityType.JS;
-			}
-		} else {
-			res = ActivityType.JS;
-		}
-		return res;
-	}
-
 	@Override
 	public CompositeContext getContext() {
 		return context;

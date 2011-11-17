@@ -4,7 +4,7 @@ Created on 02.11.2011
 
 @author: den
 '''
-from ru.curs.showcase.model.event import JythonProc;
+from ru.curs.showcase.model import JythonProc;
 from ru.curs.showcase.util.xml import XMLUtils;  
 from datetime import date;
 

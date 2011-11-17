@@ -10,19 +10,6 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  */
 public class UserMessage implements SerializableElement {
 
-	public UserMessage() {
-		super();
-	}
-
-	public UserMessage(final String aText, final MessageType aType) {
-		super();
-		text = aText;
-		type = aType;
-	}
-
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 7453520039334421681L;
 
 	/**
@@ -39,6 +26,27 @@ public class UserMessage implements SerializableElement {
 	 * Тип сообщения.
 	 */
 	private MessageType type;
+
+	public UserMessage() {
+		super();
+	}
+
+	public UserMessage(final String aText, final MessageType aType) {
+		super();
+		text = aText;
+		type = aType;
+	}
+
+	public UserMessage(final String aText) {
+		super();
+		text = aText;
+	}
+
+	public UserMessage(final String aId, final String aText) {
+		super();
+		id = aId;
+		text = aText;
+	}
 
 	public String getText() {
 		return text;

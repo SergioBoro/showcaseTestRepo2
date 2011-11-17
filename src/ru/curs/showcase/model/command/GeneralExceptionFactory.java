@@ -63,12 +63,12 @@ public final class GeneralExceptionFactory {
 	private static Boolean getNeedDatailedInfo(final Throwable e) {
 		return (e.getClass() != NoSuchUserDataException.class)
 				&& (e.getClass() != SPNotExistsException.class)
-				&& (e.getClass() != ValidateInDBException.class);
+				&& (e.getClass() != ValidateException.class);
 	}
 
 	private static MessageType getMessageType(final Throwable exc) {
-		if (exc instanceof ValidateInDBException) {
-			return ((ValidateInDBException) exc).getUserMessage().getType();
+		if (exc instanceof ValidateException) {
+			return ((ValidateException) exc).getUserMessage().getType();
 		}
 		return MessageType.ERROR;
 	}
@@ -88,8 +88,8 @@ public final class GeneralExceptionFactory {
 	}
 
 	private static String getUserMessage(final Throwable exc) {
-		if (exc instanceof ValidateInDBException) {
-			return ((ValidateInDBException) exc).getUserMessage().getText();
+		if (exc instanceof ValidateException) {
+			return ((ValidateException) exc).getUserMessage().getText();
 		}
 		if (exc.getLocalizedMessage() != null) {
 			return exc.getLocalizedMessage();

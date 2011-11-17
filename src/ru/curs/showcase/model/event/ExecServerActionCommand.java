@@ -6,7 +6,6 @@ import java.util.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.command.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
-import ru.curs.showcase.util.exception.ServerLogicError;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**
@@ -17,7 +16,6 @@ import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
  */
 public final class ExecServerActionCommand extends ServiceLayerCommand<Void> {
 
-	private static final String NO_SERVER_ACTIVIVTY_IMPL_ERROR = "%s серверное действие еще не реализовано";
 	private static final String SERVER_ACTION_EXECUTED = "Выполнено действие на сервере: ";
 
 	@InputParam
@@ -53,17 +51,8 @@ public final class ExecServerActionCommand extends ServiceLayerCommand<Void> {
 	protected void mainProc() throws Exception {
 		ActivityGateway gateway = null;
 		for (Activity act : action.getServerActivities()) {
-			switch (act.getType()) {
-			case SP:
-				gateway = new ActivityDBGateway();
-				break;
-			case JYTHON:
-				gateway = new ActivityJythonGateway();
-				break;
-			default:
-				throw new ServerLogicError(String.format(
-						NO_SERVER_ACTIVIVTY_IMPL_ERROR, act.getType().toString()));
-			}
+			ServerActivitySelector selector = new ServerActivitySelector(act);
+			gateway = selector.getGateway();
 			gateway.exec(act);
 			LOGGER.info(SERVER_ACTION_EXECUTED + getSerializer().serialize(act));
 		}

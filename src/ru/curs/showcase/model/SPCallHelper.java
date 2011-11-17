@@ -169,7 +169,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 	protected final void dbExceptionHandler(final SQLException e) {
 		if (UserMessageFactory.isExplicitRaised(e)) {
 			UserMessageFactory factory = new UserMessageFactory();
-			throw new ValidateInDBException(factory.build(e));
+			throw new ValidateException(factory.build(e));
 		} else {
 			if (!checkProcExists()) {
 				throw new SPNotExistsException(getProcName(), getClass());
@@ -264,7 +264,7 @@ public abstract class SPCallHelper extends DataCheckGateway {
 				errMess = "";
 			}
 			UserMessageFactory factory = new UserMessageFactory();
-			throw new ValidateInDBException(factory.build(errorCode, errMess));
+			throw new ValidateException(factory.build(errorCode, errMess));
 		}
 	}
 

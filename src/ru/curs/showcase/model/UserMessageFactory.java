@@ -55,8 +55,16 @@ public final class UserMessageFactory {
 		return userMessage;
 	}
 
+	public UserMessage build(final UserMessage initial) {
+		return internalBuild(initial.getId(), initial.getText());
+	}
+
 	public UserMessage build(final Integer errorCode, final String errorMes) {
-		loadMessage(errorCode.toString());
+		return internalBuild(errorCode.toString(), errorMes);
+	}
+
+	private UserMessage internalBuild(final String errorCode, final String errorMes) {
+		loadMessage(errorCode);
 		if (userMessage != null) {
 			if (userMessage.getText().indexOf("%s") > -1) {
 				userMessage.setText(String.format(userMessage.getText(), errorMes));
@@ -65,8 +73,8 @@ public final class UserMessageFactory {
 			}
 		} else {
 			userMessage =
-				new UserMessage(String.format("%s (%d)", errorMes, errorCode), MessageType.ERROR);
-			userMessage.setId(errorCode.toString());
+				new UserMessage(String.format("%s (%s)", errorMes, errorCode), MessageType.ERROR);
+			userMessage.setId(errorCode);
 		}
 		return userMessage;
 	}

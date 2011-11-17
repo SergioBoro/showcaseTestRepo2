@@ -1,4 +1,4 @@
-#Tue Nov 15 18:25:42 MSK 2011
+#Thu Nov 17 23:29:13 MSK 2011
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/user.properties=UTF-8
 encoding//WebContent/log/lastLogEvents.jsp=UTF-8
@@ -9,8 +9,10 @@ encoding//userdatas/default/gridproperties/default.properties=UTF-8
 encoding//userdatas/default/gridproperties/gridbal.test.properties=UTF-8
 encoding//userdatas/default/gridproperties/sngl_before_dbl.properties=UTF-8
 encoding//userdatas/default/scripts/jython/AbstractJythonProc.py=utf-8
+encoding//userdatas/default/scripts/jython/NoValidateJythonProc.py=utf-8
 encoding//userdatas/default/scripts/jython/SAXJythonProc.py=utf-8
 encoding//userdatas/default/scripts/jython/TestJythonProc.py=utf-8
+encoding//userdatas/default/scripts/jython/WebTextGetJythonProc.py=utf-8
 encoding//userdatas/pg/gridproperties/default.properties=UTF-8
 encoding//userdatas/test1/gridproperties/default.properties=UTF-8
 encoding//userdatas/test2/gridproperties/default.properties=UTF-8

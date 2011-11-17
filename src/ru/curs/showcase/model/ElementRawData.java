@@ -20,7 +20,7 @@ public class ElementRawData {
 	/**
 	 * Список событий и действие по умолчанию для WebText в формате XML.
 	 */
-	private InputStream properties;
+	private InputStream settings;
 
 	/**
 	 * Описание элемента.
@@ -45,7 +45,7 @@ public class ElementRawData {
 			final CompositeContext aContext) {
 		elementInfo = aElementInfo;
 		callContext = aContext;
-		properties = props;
+		settings = props;
 		spCallHelper = null;
 	}
 
@@ -53,23 +53,23 @@ public class ElementRawData {
 			final DataPanelElementInfo aElementInfo, final CompositeContext aContext) {
 		elementInfo = aElementInfo;
 		callContext = aContext;
-		properties = null;
+		settings = null;
 		spCallHelper = aSPCallHelper;
 	}
 
 	public ElementRawData(final DataPanelElementInfo aElementInfo, final CompositeContext aContext) {
 		elementInfo = aElementInfo;
 		callContext = aContext;
-		properties = null;
+		settings = null;
 		spCallHelper = null;
 	}
 
-	public InputStream getProperties() {
-		return properties;
+	public InputStream getSettings() {
+		return settings;
 	}
 
-	public void setProperties(final InputStream aProps) {
-		properties = aProps;
+	public void setSettings(final InputStream aSettings) {
+		settings = aSettings;
 	}
 
 	public DataPanelElementInfo getElementInfo() {
@@ -94,7 +94,7 @@ public class ElementRawData {
 	 */
 	public void prepareSettings() {
 		try {
-			properties = spCallHelper.getValidatedSettings();
+			settings = spCallHelper.getValidatedSettings();
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
 		}

@@ -7,11 +7,11 @@ import java.util.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.CanBeCurrent;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.model.JythonException;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.*;
 import ru.curs.showcase.util.ReflectionUtils;
 
@@ -89,7 +89,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		assertTrue(clone.containsServerActivity());
 		Activity act = clone.getServerActivities().get(0);
 		assertNotNull(act);
-		assertEquals(ActivityType.SP, act.getType());
 		assertTrue(act.getOnServerSide());
 		assertEquals("01", act.getId());
 		assertEquals(TEST_ACTIVITY_NAME, act.getName());
@@ -99,7 +98,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		assertTrue(clone.containsClientActivity());
 		act = clone.getClientActivities().get(0);
 		assertNotNull(act);
-		assertEquals(ActivityType.JS, act.getType());
 		assertFalse(act.getOnServerSide());
 		assertEquals("01", act.getId());
 		assertEquals("testJS", act.getName());
@@ -567,7 +565,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		Activity sa = action.getServerActivities().get(0);
 		assertEquals("srv01", sa.getId());
 		assertEquals("exec_test", sa.getName());
-		assertEquals(ActivityType.SP, sa.getType());
 		assertTrue(sa.getOnServerSide());
 		assertNotNull(sa.getContext());
 		assertEquals(action.getContext().getMain(), sa.getContext().getMain());
@@ -636,7 +633,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		Activity ac = action.getClientActivities().get(0);
 		assertEquals("show_moscow", ac.getName());
 		assertEquals("cl01", ac.getId());
-		assertEquals(ActivityType.JS, ac.getType());
 		assertFalse(ac.getOnServerSide());
 	}
 
@@ -700,11 +696,21 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 	@Test(expected = JythonException.class)
 	public void testJythonActivityException() {
 		Activity activity = Activity.newServerActivity("id", "TestJythonProc.py");
-		CompositeContext context =
-			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+		CompositeContext context = new CompositeContext();
 		activity.setContext(context);
 		ActivityGateway gateway = new ActivityJythonGateway();
 		gateway.exec(activity);
 	}
 
+	@Test(expected = ValidateException.class)
+	public void testJythonNoValidateActivity() {
+		Activity activity = Activity.newServerActivity("id", "NoValidateJythonProc.py");
+		CompositeContext context = new CompositeContext();
+		context.setMain("Мейн контекст");
+		context.setSession("<sessioninfo/>");
+		activity.setContext(context);
+
+		ActivityGateway gateway = new ActivityJythonGateway();
+		gateway.exec(activity);
+	}
 }

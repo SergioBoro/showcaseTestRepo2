@@ -18,12 +18,6 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public final class HTMLBasedElementRawData extends ElementRawData {
 
-	public HTMLBasedElementRawData(final Document aDataDocument, final InputStream props,
-			final DataPanelElementInfo aElementInfo, final CompositeContext aContext) {
-		super(props, aElementInfo, aContext);
-		data = aDataDocument;
-	}
-
 	/**
 	 * Исходные данные.
 	 */
@@ -41,6 +35,12 @@ public final class HTMLBasedElementRawData extends ElementRawData {
 			final CompositeContext aContext) {
 		super(aElementInfo, aContext);
 		data = XMLUtils.createEmptyDoc("root");
+	}
+
+	public HTMLBasedElementRawData(final Document aDataDocument, final InputStream settings,
+			final DataPanelElementInfo aElementInfo, final CompositeContext aContext) {
+		super(settings, aElementInfo, aContext);
+		data = aDataDocument;
 	}
 
 	public Document getData() {

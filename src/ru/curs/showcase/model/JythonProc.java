@@ -1,5 +1,6 @@
-package ru.curs.showcase.model.event;
+package ru.curs.showcase.model;
 
+import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.AbstractCompositeContext;
 
 /**
@@ -12,5 +13,7 @@ import ru.curs.showcase.app.api.event.AbstractCompositeContext;
  * 
  */
 public interface JythonProc {
-	void execute(AbstractCompositeContext context);
+	UserMessage execute(AbstractCompositeContext context);
+
+	JythonDTO getRawData(AbstractCompositeContext context, String elementId);
 }
