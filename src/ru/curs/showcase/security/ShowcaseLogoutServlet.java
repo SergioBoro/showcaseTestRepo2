@@ -31,12 +31,9 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String sesid;
-		try {
-			sesid = request.getSession().getId();
-		} catch (Exception e) {
-			sesid = null;
-		}
+		String sesid = null;
+
+		sesid = request.getSession().getId();
 
 		if (!(AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(sesid))) {
 			return;
