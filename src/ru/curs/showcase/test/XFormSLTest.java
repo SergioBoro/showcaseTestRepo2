@@ -6,9 +6,10 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.html.xform.*;
 import ru.curs.showcase.util.*;
 
@@ -168,6 +169,34 @@ public class XFormSLTest extends AbstractTest {
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc6";
 		XFormDownloadCommand command = new XFormDownloadCommand(context, elementInfo, linkId);
+		command.execute();
+	}
+
+	@Test
+	public void testJythonGateway() {
+		XFormContext context = new XFormContext(getTestContext1());
+		DataPanelElementInfo elementInfo =
+			new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
+		elementInfo.setProcName("XFormGetJythonProc.py");
+		elementInfo.setTemplateName("Showcase_Template.xml");
+		XFormGetCommand command = new XFormGetCommand(context, elementInfo);
+		XForm xforms = command.execute();
+
+		assertEquals(1, xforms.getEventManager().getEvents().size());
+		assertNotNull(xforms.getDefaultAction());
+		assertNotNull(xforms.getXFormParts().get(0));
+		assertNotNull(xforms.getXFormParts().get(2));
+		assertNotNull(xforms.getXFormParts().get(2 + 1));
+	}
+
+	@Test(expected = GeneralException.class)
+	public void testJythonNotExists() {
+		XFormContext context = new XFormContext(getTestContext1());
+		DataPanelElementInfo elementInfo =
+			new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
+		elementInfo.setProcName("__fake__proc__.py");
+		elementInfo.setTemplateName("Showcase_Template.xml");
+		XFormGetCommand command = new XFormGetCommand(context, elementInfo);
 		command.execute();
 	}
 }
