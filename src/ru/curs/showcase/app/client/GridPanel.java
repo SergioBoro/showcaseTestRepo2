@@ -832,7 +832,7 @@ public class GridPanel extends BasicElementPanelBasis {
 	}
 
 	@Override
-	public void refreshPanel() {
+	public final void refreshPanel() {
 		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
 		hpHeader.clear();
