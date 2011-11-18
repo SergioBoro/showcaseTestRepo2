@@ -35,7 +35,7 @@ public class NavigatorFileGateway implements NavigatorGateway {
 	}
 
 	@Override
-	public void releaseResources() {
+	public void close() {
 		try {
 			if (stream != null) {
 				stream.close();

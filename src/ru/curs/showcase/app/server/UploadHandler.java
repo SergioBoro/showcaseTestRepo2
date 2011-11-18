@@ -11,7 +11,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.model.xform.XFormUploadCommand;
+import ru.curs.showcase.model.html.xform.XFormUploadCommand;
 import ru.curs.showcase.util.*;
 
 import com.google.gwt.user.client.rpc.SerializationException;

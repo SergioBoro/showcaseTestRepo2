@@ -176,7 +176,7 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 		setProcName(proc.getName());
 		OutputStreamDataFile result = null;
 
-		try {
+		try (SPQuery query = this) {
 			try {
 				prepareElementStatementWithErrorMes();
 				setStringParam(RECORD_ID_INDEX, recordId);
@@ -187,8 +187,6 @@ public class GridDBGateway extends CompBasedElementSPCallHelper implements GridG
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
 			}
-		} finally {
-			releaseResources();
 		}
 		return result;
 	}

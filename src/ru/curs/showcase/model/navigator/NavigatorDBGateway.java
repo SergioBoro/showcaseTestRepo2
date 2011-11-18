@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.SPCallHelper;
+import ru.curs.showcase.model.SPQuery;
 import ru.curs.showcase.util.Description;
 
 /**
@@ -15,7 +15,7 @@ import ru.curs.showcase.util.Description;
  * 
  */
 @Description(process = "Загрузка данных для навигатора из БД")
-public class NavigatorDBGateway extends SPCallHelper implements NavigatorGateway {
+public class NavigatorDBGateway extends SPQuery implements NavigatorGateway {
 
 	private static final int SESSION_CONTEXT_INDEX = 2;
 	private static final int NAVIGATOR_INDEX = 3;

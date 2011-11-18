@@ -8,7 +8,8 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.model.*;
-import ru.curs.showcase.model.webtext.*;
+import ru.curs.showcase.model.html.*;
+import ru.curs.showcase.model.html.webtext.*;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -31,7 +32,7 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "2");
 
-		WebTextGateway wtgateway = new WebTextDBGateway();
+		HTMLGateway wtgateway = new WebTextDBGateway();
 		HTMLBasedElementRawData rawWT = wtgateway.getRawData(context, element);
 		String out = XMLUtils.documentToString(rawWT.getData());
 		new WebText(out);
@@ -47,7 +48,7 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		DataPanelElementInfo element =
 			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
 
-		WebTextGateway wtgateway = new WebTextDBGateway();
+		HTMLGateway wtgateway = new WebTextDBGateway();
 		wtgateway.getRawData(null, element);
 	}
 
@@ -60,7 +61,7 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		DataPanelElementInfo element = new DataPanelElementInfo("id", null);
 		element.setProcName("proc");
 
-		WebTextGateway wtgateway = new WebTextDBGateway();
+		HTMLGateway wtgateway = new WebTextDBGateway();
 		wtgateway.getRawData(null, element);
 	}
 
@@ -70,7 +71,7 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 	 */
 	@Test(expected = IncorrectElementException.class)
 	public void testWrongElement3() {
-		WebTextGateway wtgateway = new WebTextDBGateway();
+		HTMLGateway wtgateway = new WebTextDBGateway();
 		wtgateway.getRawData(null, null);
 	}
 
@@ -79,7 +80,7 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
 		elInfo.setProcName("webtext_pas.py");
 		CompositeContext context = new CompositeContext();
-		WebTextJythonGateway gateway = new WebTextJythonGateway();
+		HTMLJythonGateway gateway = new HTMLJythonGateway();
 		gateway.getRawData(context, elInfo);
 	}
 
@@ -90,7 +91,7 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		CompositeContext context = new CompositeContext();
 		context.setMain("плохой");
 		context.setSession("<sessioninfo/>");
-		WebTextJythonGateway gateway = new WebTextJythonGateway();
+		HTMLJythonGateway gateway = new HTMLJythonGateway();
 		try {
 			gateway.getRawData(context, elInfo);
 		} catch (ValidateException e) {

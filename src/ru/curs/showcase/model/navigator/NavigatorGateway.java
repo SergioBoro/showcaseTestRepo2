@@ -32,7 +32,7 @@ public interface NavigatorGateway {
 	 * навигатора.
 	 * 
 	 */
-	void releaseResources();
+	void close();
 
 	void setSourceName(String aSourceName);
 }

@@ -7,8 +7,8 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XForm;
-import ru.curs.showcase.model.HTMLBasedElementRawData;
-import ru.curs.showcase.model.xform.*;
+import ru.curs.showcase.model.html.HTMLBasedElementRawData;
+import ru.curs.showcase.model.html.xform.*;
 
 /**
  * Специальный тестовый класс для проверки замены переменных в HTML блоках в

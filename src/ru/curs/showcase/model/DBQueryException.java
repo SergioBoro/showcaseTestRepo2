@@ -25,7 +25,7 @@ public class DBQueryException extends BaseException {
 
 	public DBQueryException(final SQLException cause, final String aProcName,
 			final DataPanelElementContext aContext,
-			final Class<? extends SPCallHelper> gatewayClass) {
+			final Class<? extends SPQuery> gatewayClass) {
 		super(ExceptionType.SOLUTION, String.format("Процесс: %s. %s %s.",
 				ReflectionUtils.getProcessDescForClass(gatewayClass), ERROR_HEADER, aProcName),
 				cause);

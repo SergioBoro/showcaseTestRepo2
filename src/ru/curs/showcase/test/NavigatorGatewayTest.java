@@ -36,7 +36,7 @@ public class NavigatorGatewayTest extends AbstractTestWithDefaultUserData {
 			InputStream xml = gw.getRawData(new CompositeContext(), selector.getSourceName());
 			doc = builder.parse(xml);
 		} finally {
-			gw.releaseResources();
+			gw.close();
 		}
 		assertEquals(GeneralXMLHelper.NAVIGATOR_TAG, doc.getDocumentElement().getNodeName());
 	}

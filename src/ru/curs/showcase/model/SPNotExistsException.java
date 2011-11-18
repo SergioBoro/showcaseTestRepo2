@@ -20,7 +20,7 @@ public class SPNotExistsException extends BaseException {
 	private static final long serialVersionUID = -1310610425002788976L;
 
 	public SPNotExistsException(final String procName,
-			final Class<? extends SPCallHelper> gatewayClass) {
+			final Class<? extends SPQuery> gatewayClass) {
 		super(ExceptionType.SOLUTION, String.format(ERROR_MES,
 				ReflectionUtils.getProcessDescForClass(gatewayClass), procName));
 	}

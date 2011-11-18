@@ -35,7 +35,19 @@ public abstract class SourceSelector<T> {
 	 */
 	protected abstract String getFileExt();
 
+	protected boolean isEmpty() {
+		return (sourceName == null) || sourceName.isEmpty();
+	}
+
+	/**
+	 * На данный момент случай отсутствия источника обрабатывается в шлюзе для
+	 * БД (выступающего в роли шлюза по умолчанию). Это сделано, чтобы не
+	 * плодить отдельный класс.
+	 */
 	protected boolean isFile() {
+		if (isEmpty()) {
+			return false;
+		}
 		return sourceName.endsWith("." + getFileExt());
 	}
 }

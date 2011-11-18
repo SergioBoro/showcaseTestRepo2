@@ -293,7 +293,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		try {
 			gateway.getRawData(action.getContext());
 		} finally {
-			gateway.releaseResources();
+			gateway.close();
 		}
 	}
 }

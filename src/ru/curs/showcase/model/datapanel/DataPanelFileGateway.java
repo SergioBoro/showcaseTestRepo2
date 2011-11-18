@@ -42,7 +42,7 @@ public class DataPanelFileGateway implements DataPanelGateway {
 	}
 
 	@Override
-	public void releaseResources() {
+	public void close() {
 		try {
 			if (stream != null) {
 				stream.close();

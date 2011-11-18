@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>	
+	<tab id="01" name="Jython как источник данных">
+		<element id="0101" type="webtext" proc="WebTextGetJythonProc.py" transform="pas.xsl"/>
+		<element id="0102" type="xforms" proc="XFormGetJythonProc.py" template="Showcase_Template.xml"/>				
+	</tab>
+</datapanel>

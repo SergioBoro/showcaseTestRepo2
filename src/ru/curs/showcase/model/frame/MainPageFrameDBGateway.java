@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.SPCallHelper;
+import ru.curs.showcase.model.SPQuery;
 import ru.curs.showcase.util.Description;
 
 /**
@@ -14,7 +14,7 @@ import ru.curs.showcase.util.Description;
  * 
  */
 @Description(process = "Загрузка данных для фрейма на главной странице из БД")
-public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFrameGateway {
+public class MainPageFrameDBGateway extends SPQuery implements MainPageFrameGateway {
 
 	private static final int SESSION_CONTEXT_INDEX = 2;
 	private static final int FRAME_DATA_INDEX = 3;
@@ -38,7 +38,7 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 
 	@Override
 	public String getRawData(final CompositeContext context) {
-		try {
+		try (SPQuery query = this) {
 			try {
 				prepareStatementWithErrorMes();
 				setSQLXMLParam(getSessionContextIndex(), context.getSession());
@@ -51,8 +51,6 @@ public class MainPageFrameDBGateway extends SPCallHelper implements MainPageFram
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
 			}
-		} finally {
-			releaseResources();
 		}
 		return null;
 	}

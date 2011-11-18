@@ -36,7 +36,7 @@ public final class DataPanelGetCommand extends ServiceLayerCommand<DataPanel> {
 			DataPanelFactory factory = new DataPanelFactory();
 			setResult(factory.fromStream(file));
 		} finally {
-			gateway.releaseResources();
+			gateway.close();
 		}
 	}
 }

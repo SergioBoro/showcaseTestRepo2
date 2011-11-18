@@ -2,7 +2,7 @@ package ru.curs.showcase.model.event;
 
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.Activity;
-import ru.curs.showcase.model.JythonCallHelper;
+import ru.curs.showcase.model.JythonQuery;
 
 /**
  * Шлюз для работы с Jython Server Activity.
@@ -10,7 +10,7 @@ import ru.curs.showcase.model.JythonCallHelper;
  * @author den
  * 
  */
-public class ActivityJythonGateway extends JythonCallHelper<UserMessage> implements
+public class ActivityJythonGateway extends JythonQuery<UserMessage> implements
 		ActivityGateway {
 	private Activity activity;
 

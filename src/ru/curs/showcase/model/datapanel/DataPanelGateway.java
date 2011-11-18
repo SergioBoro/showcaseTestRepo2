@@ -24,7 +24,7 @@ public interface DataPanelGateway {
 
 	DataFile<InputStream> getRawData(CompositeContext aContext);
 
-	void releaseResources();
+	void close();
 
 	void setSourceName(String name);
 }

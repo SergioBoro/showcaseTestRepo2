@@ -9,7 +9,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
-import ru.curs.showcase.model.xform.*;
+import ru.curs.showcase.model.html.xform.*;
 import ru.curs.showcase.util.*;
 
 /**

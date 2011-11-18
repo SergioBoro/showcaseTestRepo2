@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.Activity;
-import ru.curs.showcase.model.SPCallHelper;
+import ru.curs.showcase.model.SPQuery;
 import ru.curs.showcase.util.Description;
 
 /**
@@ -14,13 +14,13 @@ import ru.curs.showcase.util.Description;
  * 
  */
 @Description(process = "Вызов хранимых процедур на сервере SQL")
-public class ActivityDBGateway extends SPCallHelper implements ActivityGateway {
+public class ActivityDBGateway extends SPQuery implements ActivityGateway {
 
 	private static final int ERROR_MES_INDEX = 6;
 
 	@Override
 	public void exec(final Activity activity) {
-		try {
+		try (SPQuery query = this) {
 			try {
 				setContext(activity.getContext());
 				setProcName(activity.getName());
@@ -31,8 +31,6 @@ public class ActivityDBGateway extends SPCallHelper implements ActivityGateway {
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
 			}
-		} finally {
-			releaseResources();
 		}
 	}
 

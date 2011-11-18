@@ -17,7 +17,7 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.chart.ChartGetCommand;
 import ru.curs.showcase.model.command.ServerStateGetCommand;
 import ru.curs.showcase.model.datapanel.DataPanelGetCommand;
-import ru.curs.showcase.model.xform.*;
+import ru.curs.showcase.model.html.xform.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;

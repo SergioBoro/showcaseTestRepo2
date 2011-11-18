@@ -3,7 +3,7 @@ package ru.curs.showcase.model.event;
 import java.util.Collection;
 
 import ru.curs.showcase.app.api.html.*;
-import ru.curs.showcase.model.HTMLBasedElementRawData;
+import ru.curs.showcase.model.html.HTMLBasedElementRawData;
 
 /**
  * Базовый класс фабрики для элементов, основанных на HTML.

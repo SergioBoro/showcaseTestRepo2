@@ -107,6 +107,6 @@ public class ElementRawData {
 	 * 
 	 */
 	public void releaseResources() {
-		spCallHelper.releaseResources();
+		spCallHelper.close();
 	}
 }

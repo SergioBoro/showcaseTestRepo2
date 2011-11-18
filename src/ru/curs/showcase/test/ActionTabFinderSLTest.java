@@ -10,8 +10,8 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.model.grid.GridGetCommand;
+import ru.curs.showcase.model.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.model.navigator.NavigatorGetCommand;
-import ru.curs.showcase.model.webtext.WebTextGetCommand;
 
 /**
  * Проверка ActionTabFinder через SL.

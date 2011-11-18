@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<datapanel>	
-	<tab id="01" name="Jython как источник данных">
-		<element id="0101" type="webtext" proc="webtext_pas.py" transform="pas.xsl"/>			
-	</tab>
-</datapanel>

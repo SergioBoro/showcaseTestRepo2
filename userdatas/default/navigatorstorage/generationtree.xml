@@ -92,13 +92,21 @@
           <datapanel type="1102.xml" tab="firstOrCurrent" />
         </action>
       </level2>    
-      <level2 id="1103" name="11-й этап, 3 неделя" selectOnLoad="true">
+      <level2 id="1103" name="11-й этап, 3 неделя" selectOnLoad="false">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
           <datapanel type="1103.xml" tab="firstOrCurrent" />
         </action>
       </level2>                              
-    </level1>    
+    </level1>  
+    <level1 id="12" name="12-й этап">
+      <level2 id="1201" name="12-й этап, 1 неделя" selectOnLoad="true">
+        <action>
+          <main_context>Москва</main_context>
+          <datapanel type="1201.xml" tab="firstOrCurrent" />
+        </action>
+      </level2>      
+    </level1>  
   </group>
   <group id="1" name="Балансы продовольственных ресурсов">
     <level1 id="3" name="Балансы зерна">   

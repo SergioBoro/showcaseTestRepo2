@@ -59,7 +59,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 
 			nav = factory.fromStream(stream);
 		} finally {
-			gateway.releaseResources();
+			gateway.close();
 		}
 		assertEquals("200px", nav.getWidth());
 		assertTrue(nav.getHideOnLoad());
@@ -107,7 +107,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			NavigatorFactory factory = new NavigatorFactory(context);
 			factory.fromStream(xml);
 		} finally {
-			gw.releaseResources();
+			gw.close();
 		}
 	}
 
@@ -121,7 +121,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			InputStream stream = gateway.getRawData(context, "tree_multilevel.wrong.2.xml");
 			factory.fromStream(stream);
 		} finally {
-			gateway.releaseResources();
+			gateway.close();
 		}
 	}
 
@@ -135,7 +135,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			InputStream stream = gateway.getRawData(context, "generationtree");
 			factory.fromStream(stream);
 		} finally {
-			gateway.releaseResources();
+			gateway.close();
 		}
 	}
 
@@ -156,7 +156,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			assertTrue(mes.contains("Контекст выполнения:"));
 			return;
 		} finally {
-			gateway.releaseResources();
+			gateway.close();
 		}
 		fail();
 	}

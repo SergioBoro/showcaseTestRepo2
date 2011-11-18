@@ -9,7 +9,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.WebText;
-import ru.curs.showcase.model.webtext.WebTextGetCommand;
+import ru.curs.showcase.model.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.util.ReflectionUtils;
 
 /**

@@ -14,7 +14,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
-public abstract class ElementSPCallHelper extends SPCallHelper {
+public abstract class ElementSPCallHelper extends SPQuery {
 
 	private static final int ELEMENTID_INDEX = 6;
 

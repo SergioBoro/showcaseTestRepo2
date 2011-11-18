@@ -14,8 +14,8 @@ import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.*;
-import ru.curs.showcase.model.HTMLBasedElementRawData;
-import ru.curs.showcase.model.xform.*;
+import ru.curs.showcase.model.html.HTMLBasedElementRawData;
+import ru.curs.showcase.model.html.xform.*;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -37,7 +37,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	/**
-	 * Test method for {@link ru.curs.showcase.model.xform.XFormFactory#build()}
+	 * Test method for {@link ru.curs.showcase.model.html.xform.XFormFactory#build()}
 	 * .
 	 * 
 	 * @throws Exception

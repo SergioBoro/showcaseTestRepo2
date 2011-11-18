@@ -27,7 +27,7 @@ public final class NavigatorGetCommand extends ServiceLayerCommand<Navigator> {
 			NavigatorFactory factory = new NavigatorFactory(getContext());
 			setResult(factory.fromStream(xml));
 		} finally {
-			gw.releaseResources();
+			gw.close();
 		}
 	}
 }

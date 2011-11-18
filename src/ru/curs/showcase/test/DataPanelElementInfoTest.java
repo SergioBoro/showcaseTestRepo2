@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.model.xform.XFormInfoFactory;
+import ru.curs.showcase.model.html.xform.XFormInfoFactory;
 
 /**
  * Класс для тестирования функций DataPanelElementInfo и его наследников.

@@ -21,8 +21,9 @@ import ru.curs.showcase.model.command.GeneralExceptionFactory;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.grid.*;
-import ru.curs.showcase.model.webtext.*;
-import ru.curs.showcase.model.xform.*;
+import ru.curs.showcase.model.html.*;
+import ru.curs.showcase.model.html.webtext.*;
+import ru.curs.showcase.model.html.xform.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
@@ -223,7 +224,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement(TEST_XML, "3", "6");
 
-		WebTextGateway gateway = new WebTextDBGateway();
+		HTMLGateway gateway = new WebTextDBGateway();
 		gateway.getRawData(context, element);
 	}
 
