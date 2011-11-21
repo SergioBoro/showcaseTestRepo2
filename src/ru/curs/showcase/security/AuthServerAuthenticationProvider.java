@@ -1,6 +1,8 @@
 package ru.curs.showcase.security;
 
+import java.io.IOException;
 import java.net.*;
+import java.util.IllegalFormatException;
 
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
@@ -75,7 +77,9 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 					throw new BadCredentialsException("Bad credentials");
 				}
 
-			} catch (Exception e) {
+			} catch (BadCredentialsException | IllegalStateException | SecurityException
+					| IllegalFormatException | NullPointerException | IOException
+					| IndexOutOfBoundsException e) {
 				if ("Bad credentials".equals(e.getMessage())) {
 					throw new BadCredentialsException(e.getMessage(), e);
 				} else {
