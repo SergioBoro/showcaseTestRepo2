@@ -52,9 +52,13 @@ public class MainPageFrameSelector extends SourceSelector<MainPageFrameGateway> 
 	@Override
 	public MainPageFrameGateway getGateway() {
 		MainPageFrameGateway gateway;
-		if (isFile()) {
+		switch (sourceType()) {
+		case JYTHON:
+			throw new RuntimeException("Пока не реализовано");
+		case FILE:
 			gateway = new MainPageFrameFileGateway();
-		} else {
+			break;
+		default:
 			gateway = new MainPageFrameDBGateway();
 		}
 		gateway.setSourceName(getSourceName());

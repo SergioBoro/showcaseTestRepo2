@@ -77,6 +77,7 @@ public class AbstractTest extends GeneralXMLHelper {
 
 	protected void resetUserData() {
 		AppInfoSingleton.getAppInfo().setCurUserDataId((String) null);
+		AppInfoSingleton.getAppInfo().clearSessions();
 	}
 
 	private static void initTestSession() {

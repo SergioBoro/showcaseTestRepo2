@@ -2,20 +2,18 @@ package ru.curs.showcase.model.html.xform;
 
 import java.io.*;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.TransformerException;
 
 import org.slf4j.*;
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.model.*;
-import ru.curs.showcase.model.html.HTMLBasedElementRawData;
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.model.DataCheckGateway;
+import ru.curs.showcase.model.html.*;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.SettingsFileType;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -41,18 +39,8 @@ public final class XFormFileGateway extends DataCheckGateway implements XFormGat
 	@Override
 	public HTMLBasedElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo element) {
-		check(element);
-		DocumentBuilder db = XMLUtils.createBuilder();
-		Document doc;
-		try {
-			InputStream stream =
-				AppProps.loadUserDataToStream(String.format("%s/%s.xml", AppProps.XFORMS_DIR,
-						element.getProcName()));
-			doc = db.parse(stream);
-		} catch (SAXException | IOException e) {
-			throw new TestFileExchangeException(element.getProcName(), e);
-		}
-		return new HTMLBasedElementRawData(doc, null, element, context);
+		HTMLFileGateway gateway = new HTMLFileGateway();
+		return gateway.getRawData(context, element);
 	}
 
 	@Override
@@ -69,7 +57,7 @@ public final class XFormFileGateway extends DataCheckGateway implements XFormGat
 		try {
 			XMLUtils.stringToXMLFile(data, fileName);
 		} catch (SAXException | IOException | TransformerException e) {
-			throw new TestFileExchangeException(fileName, e);
+			throw new SettingsFileExchangeException(fileName, e, SettingsFileType.XML);
 		}
 	}
 
@@ -88,7 +76,7 @@ public final class XFormFileGateway extends DataCheckGateway implements XFormGat
 		try {
 			dup = new StreamConvertor(FileUtils.loadResToStream(linkId));
 		} catch (IOException e) {
-			throw new TestFileExchangeException(linkId, e);
+			throw new SettingsFileExchangeException(linkId, e, SettingsFileType.XML);
 		}
 		OutputStreamDataFile file = new OutputStreamDataFile(dup.getOutputStream(), linkId);
 		file.setEncoding(TextUtils.JDBC_ENCODING);

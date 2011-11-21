@@ -20,17 +20,16 @@ public class WebTextSelector extends SourceSelector<HTMLGateway> {
 	@Override
 	public HTMLGateway getGateway() {
 		HTMLGateway res;
-		if (isFile()) {
+		switch (sourceType()) {
+		case JYTHON:
 			res = new HTMLJythonGateway();
-		} else {
+			break;
+		case FILE:
+			res = new HTMLFileGateway();
+			break;
+		default:
 			res = new WebTextDBGateway();
 		}
 		return res;
 	}
-
-	@Override
-	protected String getFileExt() {
-		return "py";
-	}
-
 }

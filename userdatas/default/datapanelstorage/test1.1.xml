@@ -11,7 +11,7 @@
 		<element id="0203" type="chart" proc="chart_bal" hideOnLoad="true" />
 		<element id="0204" type="grid" proc="grid_bal" hideOnLoad="true" />
 		<element id="0205" type="xforms" template="Showcase_Template.xml"
-			proc="Showcase_Data" />
+			proc="Showcase_Data.xml" />
 		<element id="0206" type="xforms" template="Showcase_Template.xml"
 			proc="xforms_proc1">
 			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />

@@ -19,17 +19,16 @@ public class XFormSelector extends SourceSelector<HTMLGateway> {
 	@Override
 	public HTMLGateway getGateway() {
 		HTMLGateway res;
-		if (isFile()) {
+		switch (sourceType()) {
+		case JYTHON:
 			res = new HTMLJythonGateway();
-		} else {
+			break;
+		case FILE:
+			res = new HTMLFileGateway();
+			break;
+		default:
 			res = new XFormDBGateway();
 		}
 		return res;
 	}
-
-	@Override
-	protected String getFileExt() {
-		return "py";
-	}
-
 }

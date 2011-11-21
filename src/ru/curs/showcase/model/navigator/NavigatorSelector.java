@@ -24,18 +24,16 @@ public class NavigatorSelector extends SourceSelector<NavigatorGateway> {
 	@Override
 	public NavigatorGateway getGateway() {
 		NavigatorGateway res;
-		if (isFile()) {
+		switch (sourceType()) {
+		case JYTHON:
+			throw new RuntimeException("Пока не реализовано");
+		case FILE:
 			res = new NavigatorFileGateway();
-		} else {
+			break;
+		default:
 			res = new NavigatorDBGateway();
 		}
 		res.setSourceName(getSourceName());
 		return res;
 	}
-
-	@Override
-	protected String getFileExt() {
-		return "xml";
-	}
-
 }

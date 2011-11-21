@@ -18,17 +18,15 @@ public class ServerActivitySelector extends SourceSelector<ActivityGateway> {
 	@Override
 	public ActivityGateway getGateway() {
 		ActivityGateway res;
-		if (isFile()) {
+		switch (sourceType()) {
+		case JYTHON:
 			res = new ActivityJythonGateway();
-		} else {
+			break;
+		case FILE:
+			throw new RuntimeException("Нет естественного способа реализации");
+		default:
 			res = new ActivityDBGateway();
 		}
 		return res;
 	}
-
-	@Override
-	protected String getFileExt() {
-		return "py";
-	}
-
 }

@@ -19,18 +19,16 @@ public class DataPanelSelector extends SourceSelector<DataPanelGateway> {
 	@Override
 	public DataPanelGateway getGateway() {
 		DataPanelGateway gateway;
-		if (isFile()) {
+		switch (sourceType()) {
+		case JYTHON:
+			throw new RuntimeException("Пока не реализовано");
+		case FILE:
 			gateway = new DataPanelFileGateway();
-		} else {
+			break;
+		default:
 			gateway = new DataPanelDBGateway();
 		}
 		gateway.setSourceName(getSourceName());
 		return gateway;
 	}
-
-	@Override
-	protected String getFileExt() {
-		return "xml";
-	}
-
 }

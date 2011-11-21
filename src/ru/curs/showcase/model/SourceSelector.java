@@ -33,7 +33,9 @@ public abstract class SourceSelector<T> {
 	 * Возвращает зафиксированное расширение для файлов, содержащих документ
 	 * данного типа.
 	 */
-	protected abstract String getFileExt();
+	protected String getFileExt() {
+		return "xml";
+	}
 
 	protected boolean isEmpty() {
 		return (sourceName == null) || sourceName.isEmpty();
@@ -44,10 +46,15 @@ public abstract class SourceSelector<T> {
 	 * БД (выступающего в роли шлюза по умолчанию). Это сделано, чтобы не
 	 * плодить отдельный класс.
 	 */
-	protected boolean isFile() {
+	protected SourceType sourceType() {
 		if (isEmpty()) {
-			return false;
+			return SourceType.SP;
 		}
-		return sourceName.endsWith("." + getFileExt());
+		if (sourceName.endsWith("." + getFileExt())) {
+			return SourceType.FILE;
+		} else if (sourceName.endsWith(".py")) {
+			return SourceType.JYTHON;
+		}
+		return SourceType.SP;
 	}
 }
