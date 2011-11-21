@@ -21,13 +21,11 @@ public final class NavigatorGetCommand extends ServiceLayerCommand<Navigator> {
 	@Override
 	protected void mainProc() {
 		NavigatorSelector selector = new NavigatorSelector();
-		NavigatorGateway gw = selector.getGateway();
-		try {
+
+		try (NavigatorGateway gw = selector.getGateway()) {
 			InputStream xml = gw.getRawData(getContext());
 			NavigatorFactory factory = new NavigatorFactory(getContext());
 			setResult(factory.fromStream(xml));
-		} finally {
-			gw.close();
 		}
 	}
 }

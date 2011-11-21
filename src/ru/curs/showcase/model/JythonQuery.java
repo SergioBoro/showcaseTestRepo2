@@ -26,6 +26,8 @@ public abstract class JythonQuery<T> {
 	private static final String JYTHON_ERROR =
 		"При вызове Jython Server Activity '%s' произошла ошибка";
 	public static final String SCRIPTS_JYTHON_PATH = "scripts\\\\jython";
+	protected static final String RESULT_FORMAT_ERROR =
+		"Из Jython процедуры данные или настройки переданы в неверном формате";
 
 	private T result;
 	private JythonProc proc;
@@ -45,12 +47,14 @@ public abstract class JythonQuery<T> {
 	 */
 	protected final void runTemplateMethod() {
 		PythonInterpreter interpreter = createInterpretator();
+		String parent = getJythonProcName().replaceAll("([.]\\w+)$", "");
+		parent = parent.replace('/', '.');
 		String className = TextUtils.extractFileName(getJythonProcName());
 		File script = new File(getUserDataScriptDir() + "\\\\" + getJythonProcName());
 		if (!script.exists()) {
 			throw new SettingsFileOpenException(getJythonProcName(), SettingsFileType.JYTHON);
 		}
-		String cmd = String.format("from %1$s import %1$s", className);
+		String cmd = String.format("from %s import %s", parent, className);
 		try {
 			interpreter.exec(cmd);
 

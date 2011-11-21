@@ -9,7 +9,7 @@ import ru.curs.showcase.app.api.UserMessage;
  * @author den
  * 
  */
-public class JythonDTO {
+public final class JythonDTO {
 	/**
 	 * Сообщение для пользователя. По умолчанию не задается. Выдача сообщения
 	 * пользователю означает, что данные получены не были!
@@ -53,6 +53,16 @@ public class JythonDTO {
 		res.data = aData;
 		res.settings = aSettings;
 		return res;
+	}
+
+	public static JythonDTO createResult(final String aData) {
+		JythonDTO res = new JythonDTO();
+		res.data = aData;
+		return res;
+	}
+
+	private JythonDTO() {
+		super();
 	}
 
 	public static JythonDTO createError(final UserMessage aUserMessage) {

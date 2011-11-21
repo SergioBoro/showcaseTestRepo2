@@ -1,6 +1,6 @@
 package ru.curs.showcase.test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.*;
 
@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.navigator.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -23,7 +24,7 @@ import ru.curs.showcase.util.xml.*;
 public class NavigatorGatewayTest extends AbstractTestWithDefaultUserData {
 
 	/**
-	 * Тест функции получения данных для навигатора.
+	 * Тест функции получения данных для навигатора для default userdata.
 	 * 
 	 */
 	@Test
@@ -31,13 +32,21 @@ public class NavigatorGatewayTest extends AbstractTestWithDefaultUserData {
 		DocumentBuilder builder = XMLUtils.createBuilder();
 		Document doc = null;
 		NavigatorSelector selector = new NavigatorSelector();
-		NavigatorGateway gw = selector.getGateway();
-		try {
+		try (NavigatorGateway gw = selector.getGateway()) {
 			InputStream xml = gw.getRawData(new CompositeContext(), selector.getSourceName());
 			doc = builder.parse(xml);
-		} finally {
-			gw.close();
 		}
 		assertEquals(GeneralXMLHelper.NAVIGATOR_TAG, doc.getDocumentElement().getNodeName());
+	}
+
+	@Test
+	public void testJythonNavigator() {
+		AppInfoSingleton.getAppInfo().setCurUserDataId(TEST1_USERDATA);
+		CompositeContext context = new CompositeContext();
+		context.setSession("<sessioninfo/>");
+		NavigatorGateway gateway = new NavigatorJythonGateway();
+		InputStream is = gateway.getRawData(context, "navigator/NavJythonProc.py");
+
+		assertNotNull(is);
 	}
 }

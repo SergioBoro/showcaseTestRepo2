@@ -20,8 +20,6 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public class HTMLJythonGateway extends JythonQuery<JythonDTO> implements HTMLGateway {
 
-	private static final String RESULT_FORMAT_ERROR =
-		"Из Jython процедуры данные или настройки переданы в неверном формате";
 	private static final String ERROR_MES = "Jython процедура не вернула данные";
 	private CompositeContext context;
 	private DataPanelElementInfo elementInfo;

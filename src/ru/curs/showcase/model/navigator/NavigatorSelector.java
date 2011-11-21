@@ -13,12 +13,7 @@ public class NavigatorSelector extends SourceSelector<NavigatorGateway> {
 	private static final String NAVIGATOR_PROCNAME_PARAM = "navigator.proc.name";
 
 	public NavigatorSelector() {
-		super();
-		read();
-	}
-
-	private void read() {
-		setSourceName(AppProps.getRequiredValueByName(NAVIGATOR_PROCNAME_PARAM));
+		super(AppProps.getRequiredValueByName(NAVIGATOR_PROCNAME_PARAM));
 	}
 
 	@Override
@@ -26,7 +21,8 @@ public class NavigatorSelector extends SourceSelector<NavigatorGateway> {
 		NavigatorGateway res;
 		switch (sourceType()) {
 		case JYTHON:
-			throw new RuntimeException("Пока не реализовано");
+			res = new NavigatorJythonGateway();
+			break;
 		case FILE:
 			res = new NavigatorFileGateway();
 			break;

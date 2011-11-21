@@ -9,7 +9,7 @@ import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.html.*;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.exception.CreateObjectError;
+import ru.curs.showcase.util.exception.MemoryResourcesError;
 
 /**
  * Шлюз к БД для получения XForms.
@@ -172,7 +172,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
 			} catch (IOException e2) {
-				throw new CreateObjectError(e2);
+				throw new MemoryResourcesError(e2);
 			}
 		}
 	}

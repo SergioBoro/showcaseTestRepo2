@@ -5,7 +5,7 @@ local.security.authserverurl = http://localhost:8180/AuthServer
 rdbms.connection.url = jdbc:sqlserver://CASTLE\\R2;databasename=CARTRADE
 rdbms.connection.username = sa
 rdbms.connection.password = F708420Dx
-navigator.proc.name = small.navigator.xml
+navigator.proc.name = navigator/NavJythonProc.py
 # general
 navigator.def.icon.name = group_icon_default1.png
 copy.userdata.on.startup = true

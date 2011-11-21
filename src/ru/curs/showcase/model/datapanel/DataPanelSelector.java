@@ -12,8 +12,7 @@ import ru.curs.showcase.model.SourceSelector;
 public class DataPanelSelector extends SourceSelector<DataPanelGateway> {
 
 	public DataPanelSelector(final DataPanelLink dpLink) {
-		super();
-		setSourceName(dpLink.getDataPanelId());
+		super(dpLink.getDataPanelId());
 	}
 
 	@Override

@@ -400,7 +400,7 @@ public abstract class SPQuery extends DataCheckGateway implements Closeable {
 				logOutputXMLString(value);
 				return convertor.getCopy();
 			} catch (IOException e) {
-				throw new CreateObjectError(e);
+				throw new MemoryResourcesError(e);
 			}
 		}
 		return is;
@@ -415,7 +415,7 @@ public abstract class SPQuery extends DataCheckGateway implements Closeable {
 				logOutputXMLString(value);
 				return convertor.getCopy();
 			} catch (IOException e) {
-				throw new CreateObjectError(e);
+				throw new MemoryResourcesError(e);
 			}
 		}
 		return is;
@@ -445,7 +445,7 @@ public abstract class SPQuery extends DataCheckGateway implements Closeable {
 		try {
 			dup = new StreamConvertor(is);
 		} catch (IOException e) {
-			throw new CreateObjectError(e);
+			throw new MemoryResourcesError(e);
 		}
 		ByteArrayOutputStream os = dup.getOutputStream();
 		OutputStreamDataFile result = new OutputStreamDataFile(os, fileName);

@@ -143,4 +143,17 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		assertEquals("я оригинальный", webtext.getEventManager().getEvents().get(0).getAction()
 				.getDataPanelLink().getElementLinkById("d2").getContext().getAdditional());
 	}
+
+	@Test
+	public void testHTMLFileGateway() {
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo elementInfo =
+			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		elementInfo.setProcName("3buttons_enh.xml");
+		HTMLFileGateway gateway = new HTMLFileGateway();
+		HTMLBasedElementRawData raw = gateway.getRawData(context, elementInfo);
+
+		assertNotNull(raw.getData());
+		assertNotNull(raw.getSettings());
+	}
 }

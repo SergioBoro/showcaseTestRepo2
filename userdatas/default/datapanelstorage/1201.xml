@@ -2,7 +2,13 @@
 <datapanel>	
 	<tab id="01" name="Jython как источник данных">
 		<element id="0101" type="webtext" proc="WebTextGetJythonProc.py" transform="pas.xsl"/>
-		<element id="0102" type="xforms" proc="XFormGetJythonProc.py" template="Showcase_Template.xml"/>
-		<element id="0103" type="xforms" proc="Showcase_Data.xml" template="Showcase_Template.xml"/>						
+		<element id="0102" type="xforms" proc="XFormGetJythonProc.py" template="Showcase_Template.xml"/>						
 	</tab>
+	<tab id="02" name="XML как источник данных">
+		<element id="0201" type="webtext" proc="3buttons_enh.xml" />		
+		<element id="0202" type="xforms" proc="Showcase_Data.xml" template="Showcase_Template.xml"/>						
+	</tab>	
+	<tab id="03" name="Jython навигатор">
+		<element id="0301" type="webtext" proc="webtext/WebTextUserData1Proc.py"/>
+	</tab>	
 </datapanel>

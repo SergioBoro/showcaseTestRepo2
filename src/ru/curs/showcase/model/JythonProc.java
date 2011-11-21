@@ -35,4 +35,13 @@ public interface JythonProc {
 	 *         - userMessage должен быть None (null в Java).
 	 */
 	JythonDTO getRawData(AbstractCompositeContext context, String elementId);
+
+	/**
+	 * Возвращает сырые данные для навигатора и инф. панели в XML формате.
+	 * 
+	 * @param context
+	 *            - контекст вызова.
+	 * @return - объект переноса данных Jython.
+	 */
+	JythonDTO getRawData(AbstractCompositeContext context);
 }

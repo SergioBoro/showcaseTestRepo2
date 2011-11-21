@@ -130,7 +130,7 @@ public final class XMLUtils {
 		try {
 			builder = factory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			throw new CreateObjectError(e);
+			throw new MemoryResourcesError(e);
 		}
 		return builder;
 	}
@@ -149,7 +149,7 @@ public final class XMLUtils {
 			factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
 			parser = factory.newSAXParser();
 		} catch (SAXException | ParserConfigurationException e) {
-			throw new CreateObjectError(e);
+			throw new MemoryResourcesError(e);
 		}
 		return parser;
 	}
@@ -299,7 +299,7 @@ public final class XMLUtils {
 			try {
 				convertor = new StreamConvertor((InputStream) source);
 			} catch (IOException e) {
-				throw new CreateObjectError(e);
+				throw new MemoryResourcesError(e);
 			}
 			value = streamToString(convertor.getCopy());
 			sourceCopy = convertor.getCopy();
@@ -415,7 +415,7 @@ public final class XMLUtils {
 			schemaFactory.setFeature(GENERATE_SYNTHETIC_ANNOTATIONS_ID,
 					generateSyntheticAnnotations);
 		} catch (SAXNotRecognizedException | SAXNotSupportedException e) {
-			throw new CreateObjectError(e);
+			throw new MemoryResourcesError(e);
 		}
 		return schemaFactory;
 	}
@@ -490,7 +490,7 @@ public final class XMLUtils {
 		try {
 			duplicator = new StreamConvertor(stream);
 		} catch (IOException e) {
-			throw new CreateObjectError(e);
+			throw new MemoryResourcesError(e);
 		}
 		InputStream stream1 = duplicator.getCopy();
 		InputStream stream2 = duplicator.getCopy();
@@ -560,7 +560,7 @@ public final class XMLUtils {
 		try {
 			duplicator = new StreamConvertor(file.getData());
 		} catch (IOException e) {
-			throw new CreateObjectError(e);
+			throw new MemoryResourcesError(e);
 		}
 		InputStream stream1 = duplicator.getCopy();
 		file.setData(duplicator.getCopy());

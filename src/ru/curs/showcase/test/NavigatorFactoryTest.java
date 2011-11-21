@@ -52,14 +52,11 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context =
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
-		NavigatorGateway gateway = new NavigatorFileGateway();
 		Navigator nav;
-		try {
+		try (NavigatorGateway gateway = new NavigatorFileGateway()) {
 			InputStream stream = gateway.getRawData(new CompositeContext(), TREE_MULTILEVEL_XML);
 
 			nav = factory.fromStream(stream);
-		} finally {
-			gateway.close();
 		}
 		assertEquals("200px", nav.getWidth());
 		assertTrue(nav.getHideOnLoad());
@@ -100,14 +97,11 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testWithSelectro() {
 		NavigatorSelector selector = new NavigatorSelector();
-		NavigatorGateway gw = selector.getGateway();
 		CompositeContext context = new CompositeContext();
-		try {
+		try (NavigatorGateway gw = selector.getGateway()) {
 			InputStream xml = gw.getRawData(context, selector.getSourceName());
 			NavigatorFactory factory = new NavigatorFactory(context);
 			factory.fromStream(xml);
-		} finally {
-			gw.close();
 		}
 	}
 
@@ -116,12 +110,9 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context =
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
-		NavigatorGateway gateway = new NavigatorFileGateway();
-		try {
+		try (NavigatorGateway gateway = new NavigatorFileGateway()) {
 			InputStream stream = gateway.getRawData(context, "tree_multilevel.wrong.2.xml");
 			factory.fromStream(stream);
-		} finally {
-			gateway.close();
 		}
 	}
 
@@ -130,12 +121,9 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context =
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
-		NavigatorGateway gateway = new NavigatorDBGateway();
-		try {
+		try (NavigatorGateway gateway = new NavigatorDBGateway()) {
 			InputStream stream = gateway.getRawData(context, "generationtree");
 			factory.fromStream(stream);
-		} finally {
-			gateway.close();
 		}
 	}
 
@@ -143,9 +131,9 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	public void testFromDBWithException() {
 		CompositeContext context =
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
-		NavigatorGateway gateway = new NavigatorDBGateway();
-		try {
+		try (NavigatorGateway gateway = new NavigatorDBGateway()) {
 			gateway.getRawData(context, "generationtree_re");
+			fail();
 		} catch (DBQueryException e) {
 			GeneralException ge = GeneralExceptionFactory.build(e);
 			assertNotNull(ge.getContext().getCompositeContext());
@@ -155,8 +143,6 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			assertTrue(mes.contains("просто raiserror"));
 			assertTrue(mes.contains("Контекст выполнения:"));
 			return;
-		} finally {
-			gateway.close();
 		}
 		fail();
 	}

@@ -13,7 +13,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.ValidateException;
-import ru.curs.showcase.model.html.HTMLBasedElementRawData;
+import ru.curs.showcase.model.html.*;
 import ru.curs.showcase.model.html.xform.*;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
@@ -269,4 +269,18 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 					new DataPanelElementContext(new CompositeContext(), elementInfo));
 		transformer.checkAndTransform();
 	}
+	
+	@Test
+	public void testHTMLFileGateway() {
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo elementInfo =
+			new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
+		elementInfo.setProcName("Showcase_Data.xml");
+		elementInfo.setTemplateName("some.xml");
+		HTMLFileGateway gateway = new HTMLFileGateway();
+		HTMLBasedElementRawData raw = gateway.getRawData(context, elementInfo);
+
+		assertNotNull(raw.getData());
+		assertNotNull(raw.getSettings());
+	}	
 }

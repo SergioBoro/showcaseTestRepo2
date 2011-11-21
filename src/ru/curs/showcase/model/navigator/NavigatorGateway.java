@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.navigator;
 
-import java.io.InputStream;
+import java.io.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 
@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
  * @author den
  * 
  */
-public interface NavigatorGateway {
+public interface NavigatorGateway extends Closeable {
 
 	/**
 	 * Функция возврата данных для навигатора.
@@ -27,11 +27,11 @@ public interface NavigatorGateway {
 	InputStream getRawData(CompositeContext aCompositeContext, String aSourceName);
 
 	/**
-	 * Функция принудительно освобождает ресурсы, используемые шлюзом для
-	 * получения данных. Должна быть вызвана после работы фабрики по построению
-	 * навигатора.
+	 * В переопределенной версии убрано контролируемое исключение.
 	 * 
+	 * @see java.io.Closeable#close()
 	 */
+	@Override
 	void close();
 
 	void setSourceName(String aSourceName);

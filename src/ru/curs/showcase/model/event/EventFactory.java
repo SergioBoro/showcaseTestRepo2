@@ -9,7 +9,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.ResultSetHandleException;
 import ru.curs.showcase.util.TextUtils;
-import ru.curs.showcase.util.exception.CreateObjectError;
+import ru.curs.showcase.util.exception.MemoryResourcesError;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -161,7 +161,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 				try {
 					event = eventClass.newInstance();
 				} catch (InstantiationException | IllegalAccessException e) {
-					throw new CreateObjectError(e);
+					throw new MemoryResourcesError(e);
 				}
 				if (id1Tag == null) {
 					event.setId1(generalId);
