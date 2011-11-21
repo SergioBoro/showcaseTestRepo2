@@ -2,7 +2,9 @@ package ru.curs.showcase.security;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.List;
+import java.util.*;
+
+import javax.xml.transform.TransformerException;
 
 import org.slf4j.*;
 
@@ -169,7 +171,9 @@ public final class AuthServerUtils {
 			} else {
 				return null;
 			}
-		} catch (Exception e) {
+		} catch (IllegalStateException | TransformerException | SecurityException
+				| IllegalFormatException | NullPointerException | IOException
+				| IndexOutOfBoundsException e) {
 			LOGGER.error("Проверка пользователя", e);
 			return null;
 		}
@@ -204,7 +208,9 @@ public final class AuthServerUtils {
 			} else {
 				return null;
 			}
-		} catch (Exception e) {
+		} catch (IllegalStateException | TransformerException | SecurityException
+				| IllegalFormatException | NullPointerException | IOException
+				| IndexOutOfBoundsException e) {
 			LOGGER.error("Проверка входа в систему", e);
 			return null;
 		}
