@@ -2,7 +2,7 @@ package ru.curs.showcase.model.event;
 
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.Activity;
-import ru.curs.showcase.model.JythonQuery;
+import ru.curs.showcase.model.jython.JythonQuery;
 
 /**
  * Шлюз для работы с Jython Server Activity.

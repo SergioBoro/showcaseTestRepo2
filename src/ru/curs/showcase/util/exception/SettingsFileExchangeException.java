@@ -1,7 +1,6 @@
-package ru.curs.showcase.model.html.xform;
+package ru.curs.showcase.util.exception;
 
 import ru.curs.showcase.app.api.ExceptionType;
-import ru.curs.showcase.util.exception.*;
 
 /**
  * Ошибка при чтении тестового файла.

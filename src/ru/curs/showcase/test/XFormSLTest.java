@@ -179,6 +179,7 @@ public class XFormSLTest extends AbstractTest {
 			new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
 		elementInfo.setProcName("XFormGetJythonProc.py");
 		elementInfo.setTemplateName("Showcase_Template.xml");
+		generateTestTabWithElement(elementInfo);
 		XFormGetCommand command = new XFormGetCommand(context, elementInfo);
 		XForm xforms = command.execute();
 

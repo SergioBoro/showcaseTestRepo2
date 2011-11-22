@@ -1,4 +1,4 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.jython;
 
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.AbstractCompositeContext;
@@ -44,4 +44,16 @@ public interface JythonProc {
 	 * @return - объект переноса данных Jython.
 	 */
 	JythonDTO getRawData(AbstractCompositeContext context);
+
+	/**
+	 * На основе запроса - строки в формате XML - выполняет какие-либо действия
+	 * на сервере или преобразует входные данные. Возвращает XML данные.
+	 * Передать ошибку можно двумя способами: исключением в Jython коде или
+	 * специальными тэгами в тексте результата.
+	 * 
+	 * @param request
+	 *            - XML текст запроса.
+	 * @return - XML текст с результатом запроса.
+	 */
+	String handle(String request);
 }

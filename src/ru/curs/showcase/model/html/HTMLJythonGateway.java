@@ -8,7 +8,7 @@ import org.xml.sax.SAXException;
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.jython.*;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.xml.XMLUtils;
 

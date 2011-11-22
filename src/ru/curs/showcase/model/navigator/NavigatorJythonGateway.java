@@ -4,7 +4,7 @@ import java.io.*;
 
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.jython.*;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.MemoryResourcesError;
 
@@ -14,7 +14,8 @@ import ru.curs.showcase.util.exception.MemoryResourcesError;
  * @author den
  * 
  */
-public class NavigatorJythonGateway extends JythonQuery<JythonDTO> implements PrimaryElementsGateway {
+public class NavigatorJythonGateway extends JythonQuery<JythonDTO> implements
+		PrimaryElementsGateway {
 
 	private static final String JYTHON_PROC_NODATA_ERROR = "Jython процедура не вернула данные";
 	private String sourceName;

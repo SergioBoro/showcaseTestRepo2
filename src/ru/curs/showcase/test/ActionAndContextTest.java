@@ -13,6 +13,7 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.*;
+import ru.curs.showcase.model.jython.JythonException;
 import ru.curs.showcase.util.ReflectionUtils;
 
 /**

@@ -28,7 +28,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
-public class SessionInfoTest extends AbstractTest {
+public class RuntimeTest extends AbstractTest {
 	private static final String LEVEL_LOG_EVENT_PROP = "level";
 	private static final boolean AUTH_VIA_AUTH_SERVER = true;
 	private static final String TEMP_PASS = "pass";

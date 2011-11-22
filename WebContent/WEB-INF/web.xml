@@ -20,6 +20,9 @@
   <listener>
     <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
   </listener>
+    <listener>
+        <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+    </listener>  
   <filter>
     <filter-name>CheckAutenticationFilter</filter-name>
     <filter-class>ru.curs.showcase.security.CheckAutenticationFilter</filter-class>
@@ -170,4 +173,13 @@
     <servlet-name>GeoMapExport</servlet-name>
     <url-pattern>/secured/geoMapExport</url-pattern>
   </servlet-mapping>
+    <servlet>
+        <servlet-name>JAX-WS</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+        </servlet>
+    <servlet-mapping>
+        <servlet-name>JAX-WS</servlet-name>
+        <url-pattern>/forall/webservices</url-pattern>
+    </servlet-mapping>  
 </web-app>

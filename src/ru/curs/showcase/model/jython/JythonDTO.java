@@ -1,4 +1,4 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.jython;
 
 import ru.curs.showcase.app.api.UserMessage;
 

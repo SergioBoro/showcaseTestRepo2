@@ -10,7 +10,6 @@ import org.xml.sax.SAXException;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.DataCheckGateway;
-import ru.curs.showcase.model.html.xform.SettingsFileExchangeException;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.*;

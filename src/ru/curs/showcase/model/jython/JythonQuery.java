@@ -1,4 +1,4 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.jython;
 
 import java.io.File;
 
@@ -6,6 +6,7 @@ import org.python.core.*;
 import org.python.util.PythonInterpreter;
 
 import ru.curs.showcase.app.api.UserMessage;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.*;

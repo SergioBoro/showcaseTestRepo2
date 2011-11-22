@@ -13,7 +13,7 @@ import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.DataCheckGateway;
 import ru.curs.showcase.model.html.*;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.exception.SettingsFileType;
+import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
