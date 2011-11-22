@@ -376,7 +376,7 @@ public class AbstractTest extends GeneralXMLHelper {
 			setDefaultUserData();
 			needReset = true;
 		}
-		try (NavigatorGateway gateway = new NavigatorFileGateway()) {
+		try (PrimaryElementsGateway gateway = new NavigatorFileGateway()) {
 			InputStream stream1 = gateway.getRawData(new CompositeContext(), fileName);
 			CompositeContext context =
 				new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));

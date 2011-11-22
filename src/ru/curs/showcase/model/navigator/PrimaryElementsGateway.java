@@ -5,16 +5,15 @@ import java.io.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 
 /**
- * Интерфейс шлюза данных для навигатора. На основе данного интерфейса может
- * быть сделаны реализация, возвращающая данные из БД или тестовая заглушка.
+ * Интерфейс шлюза данных для навигатора и инф. панели.
  * 
  * @author den
  * 
  */
-public interface NavigatorGateway extends Closeable {
+public interface PrimaryElementsGateway extends Closeable {
 
 	/**
-	 * Функция возврата данных для навигатора.
+	 * Базовая функция возврата данных.
 	 * 
 	 * @return - данные в формате xml.
 	 * @param aContext
@@ -24,6 +23,9 @@ public interface NavigatorGateway extends Closeable {
 	 */
 	InputStream getRawData(CompositeContext aContext);
 
+	/**
+	 * Расширенная функция возврата данных.
+	 */
 	InputStream getRawData(CompositeContext aCompositeContext, String aSourceName);
 
 	/**

@@ -22,7 +22,7 @@ public final class NavigatorGetCommand extends ServiceLayerCommand<Navigator> {
 	protected void mainProc() {
 		NavigatorSelector selector = new NavigatorSelector();
 
-		try (NavigatorGateway gw = selector.getGateway()) {
+		try (PrimaryElementsGateway gw = selector.getGateway()) {
 			InputStream xml = gw.getRawData(getContext());
 			NavigatorFactory factory = new NavigatorFactory(getContext());
 			setResult(factory.fromStream(xml));

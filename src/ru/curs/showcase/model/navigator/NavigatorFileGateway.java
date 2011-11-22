@@ -14,7 +14,7 @@ import ru.curs.showcase.util.exception.*;
  * 
  */
 @Description(process = "Загрузка данных для навигатора из файла")
-public class NavigatorFileGateway implements NavigatorGateway {
+public class NavigatorFileGateway implements PrimaryElementsGateway {
 	/**
 	 * Каталог внутри userdata, в котором содержатся описания навигатора.
 	 */

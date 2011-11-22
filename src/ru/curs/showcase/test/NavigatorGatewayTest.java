@@ -32,7 +32,7 @@ public class NavigatorGatewayTest extends AbstractTestWithDefaultUserData {
 		DocumentBuilder builder = XMLUtils.createBuilder();
 		Document doc = null;
 		NavigatorSelector selector = new NavigatorSelector();
-		try (NavigatorGateway gw = selector.getGateway()) {
+		try (PrimaryElementsGateway gw = selector.getGateway()) {
 			InputStream xml = gw.getRawData(new CompositeContext(), selector.getSourceName());
 			doc = builder.parse(xml);
 		}
@@ -44,7 +44,7 @@ public class NavigatorGatewayTest extends AbstractTestWithDefaultUserData {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(TEST1_USERDATA);
 		CompositeContext context = new CompositeContext();
 		context.setSession("<sessioninfo/>");
-		NavigatorGateway gateway = new NavigatorJythonGateway();
+		PrimaryElementsGateway gateway = new NavigatorJythonGateway();
 		InputStream is = gateway.getRawData(context, "navigator/NavJythonProc.py");
 
 		assertNotNull(is);

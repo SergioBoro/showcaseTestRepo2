@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.navigator;
 
-import ru.curs.showcase.model.SourceSelector;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.AppProps;
 
 /**
@@ -9,7 +9,7 @@ import ru.curs.showcase.runtime.AppProps;
  * @author den
  * 
  */
-public class NavigatorSelector extends SourceSelector<NavigatorGateway> {
+public class NavigatorSelector extends SourceSelector<PrimaryElementsGateway> {
 	private static final String NAVIGATOR_PROCNAME_PARAM = "navigator.proc.name";
 
 	public NavigatorSelector() {
@@ -17,8 +17,8 @@ public class NavigatorSelector extends SourceSelector<NavigatorGateway> {
 	}
 
 	@Override
-	public NavigatorGateway getGateway() {
-		NavigatorGateway res;
+	public PrimaryElementsGateway getGateway() {
+		PrimaryElementsGateway res;
 		switch (sourceType()) {
 		case JYTHON:
 			res = new NavigatorJythonGateway();

@@ -14,8 +14,9 @@ import ru.curs.showcase.util.exception.MemoryResourcesError;
  * @author den
  * 
  */
-public class NavigatorJythonGateway extends JythonQuery<JythonDTO> implements NavigatorGateway {
+public class NavigatorJythonGateway extends JythonQuery<JythonDTO> implements PrimaryElementsGateway {
 
+	private static final String JYTHON_PROC_NODATA_ERROR = "Jython процедура не вернула данные";
 	private String sourceName;
 	private CompositeContext context;
 	private InputStream stream = null;
@@ -28,6 +29,9 @@ public class NavigatorJythonGateway extends JythonQuery<JythonDTO> implements Na
 			stream = TextUtils.stringToStream(getResult().getData());
 		} catch (UnsupportedEncodingException e) {
 			throw new JythonException(RESULT_FORMAT_ERROR);
+		}
+		if (stream == null) {
+			throw new JythonException(JYTHON_PROC_NODATA_ERROR);
 		}
 		return stream;
 	}

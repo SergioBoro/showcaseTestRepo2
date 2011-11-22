@@ -53,7 +53,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
 		Navigator nav;
-		try (NavigatorGateway gateway = new NavigatorFileGateway()) {
+		try (PrimaryElementsGateway gateway = new NavigatorFileGateway()) {
 			InputStream stream = gateway.getRawData(new CompositeContext(), TREE_MULTILEVEL_XML);
 
 			nav = factory.fromStream(stream);
@@ -98,7 +98,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	public void testWithSelectro() {
 		NavigatorSelector selector = new NavigatorSelector();
 		CompositeContext context = new CompositeContext();
-		try (NavigatorGateway gw = selector.getGateway()) {
+		try (PrimaryElementsGateway gw = selector.getGateway()) {
 			InputStream xml = gw.getRawData(context, selector.getSourceName());
 			NavigatorFactory factory = new NavigatorFactory(context);
 			factory.fromStream(xml);
@@ -110,7 +110,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context =
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
-		try (NavigatorGateway gateway = new NavigatorFileGateway()) {
+		try (PrimaryElementsGateway gateway = new NavigatorFileGateway()) {
 			InputStream stream = gateway.getRawData(context, "tree_multilevel.wrong.2.xml");
 			factory.fromStream(stream);
 		}
@@ -121,7 +121,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context =
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
-		try (NavigatorGateway gateway = new NavigatorDBGateway()) {
+		try (PrimaryElementsGateway gateway = new NavigatorDBGateway()) {
 			InputStream stream = gateway.getRawData(context, "generationtree");
 			factory.fromStream(stream);
 		}
@@ -131,7 +131,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	public void testFromDBWithException() {
 		CompositeContext context =
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
-		try (NavigatorGateway gateway = new NavigatorDBGateway()) {
+		try (PrimaryElementsGateway gateway = new NavigatorDBGateway()) {
 			gateway.getRawData(context, "generationtree_re");
 			fail();
 		} catch (DBQueryException e) {
