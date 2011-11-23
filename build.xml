@@ -259,7 +259,7 @@
 
 	<target name="get.gwt.version" depends="info">
 		<echo>Update gwt version</echo>
-		<exec resolveexecutable="true" executable="java" output="WebContent\WEB-INF\classes\gwtversion" dir="${gwt.dir}" description="Write gwt version number to file">
+		<exec resolveexecutable="true" executable="java" output="WebContent\WEB-INF\classes\gwtversion" dir="${gwt.dir}">
 			<arg value="-jar" />
 			<arg value="gwt-dev.jar" />
 		</exec>
@@ -267,8 +267,19 @@
 
 	<target name="get.app.version" depends="info">
 		<echo>Update build number</echo>
-		<exec resolveexecutable="true" executable="svnver\svnversion.exe" output="WebContent\WEB-INF\classes\build" dir="." description="Write build number to file" />
-
+		<exec resolveexecutable="true" executable="svnver\svnversion.exe" output="WebContent\WEB-INF\classes\build" dir="." />
+	</target>
+	
+	<target name="init.ws.tests">
+		<echo>Updating WS test files from ${webapp}/forall/webservices?wsdl</echo>
+		<exec resolveexecutable="true" executable="cmd" dir=".">
+			<arg value="/c"/>
+			<arg value="wsimport"/> 
+			<arg line="-d tmp"/>  
+			<arg line="-s src"/>
+			<arg line="-p ru.curs.showcase.test.ws"/>
+			<arg value="${webapp}/forall/webservices?wsdl"/>
+		</exec>
 	</target>
 
 </project>

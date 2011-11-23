@@ -8,3 +8,4 @@ trunk.deploy.path=\\\\server\\share\\ftp\\development\\Showcase\\trunk
 db.backup.path=x\:showcase.data
 rdbms.name=CASTLE\R2
 sqlutil.path=X\:\\dprojects\\C-COM\\sqlutil\\bin
+webapp=http://localhost/Showcase
