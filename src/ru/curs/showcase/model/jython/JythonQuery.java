@@ -1,7 +1,9 @@
 package ru.curs.showcase.model.jython;
 
 import java.io.File;
+import java.util.regex.*;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
 
@@ -25,7 +27,7 @@ public abstract class JythonQuery<T> {
 		"Каталог с python скриптами не найден";
 	public static final String LIB_JYTHON_PATH = "/WEB-INF/libJython";
 	private static final String JYTHON_ERROR =
-		"При вызове Jython Server Activity '%s' произошла ошибка";
+		"При вызове Jython Server Activity '%s' произошла ошибка: %s";
 	public static final String SCRIPTS_JYTHON_PATH = "scripts\\\\jython";
 	protected static final String RESULT_FORMAT_ERROR =
 		"Из Jython процедуры данные или настройки переданы в неверном формате";
@@ -65,7 +67,14 @@ public abstract class JythonQuery<T> {
 
 			execute();
 		} catch (PyException e) {
-			throw new JythonException(String.format(JYTHON_ERROR, getJythonProcName()), e);
+			String error = StringEscapeUtils.unescapeJava(e.value.toString());
+			Pattern regex = Pattern.compile("^Exception\\(u'(.+)*',\\)$", Pattern.MULTILINE);
+			Matcher regexMatcher = regex.matcher(error);
+			if (regexMatcher.matches()) {
+				error = regexMatcher.group(1);
+			}
+
+			throw new JythonException(String.format(JYTHON_ERROR, getJythonProcName(), error), e);
 		}
 		checkErrors();
 	}

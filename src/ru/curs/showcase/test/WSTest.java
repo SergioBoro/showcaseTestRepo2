@@ -1,6 +1,6 @@
 package ru.curs.showcase.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.*;
 import java.util.Properties;
@@ -41,7 +41,7 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testWSClient() throws IOException {
+	public void testWSClient() throws IOException, ShowcaseExportException_Exception {
 		Properties localprops = new Properties();
 		localprops.load(new FileInputStream("local.properties"));
 		Endpoint.publish(localprops.getProperty("webapp") + "/forall/webservices",
@@ -51,5 +51,23 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 		String response = port.handle(COMMAND_TYPE_GET_DP_PARAM_A_XML, WS_GET_FILE_PY);
 
 		assertTrue(response.indexOf("<tab id=\"6\" name=\"XForms как фильтр\">") > -1);
+	}
+
+	@Test
+	public void testWSClientException() throws IOException {
+		Properties localprops = new Properties();
+		localprops.load(new FileInputStream("local.properties"));
+		Endpoint.publish(localprops.getProperty("webapp") + "/forall/webservices",
+				new ru.curs.showcase.app.server.ShowcaseExternals());
+		ShowcaseExternalsService service = new ShowcaseExternalsService();
+		ShowcaseExternals port = service.getPort(ShowcaseExternals.class);
+		try {
+			port.handle("<command type=\"getНав\" param=\"a.xml\"/>", WS_GET_FILE_PY);
+			fail();
+		} catch (ShowcaseExportException_Exception e) {
+			assertEquals(
+					"При вызове Jython Server Activity 'ws/GetFile.py' произошла ошибка: getНав не реализовано !",
+					e.getMessage());
+		}
 	}
 }

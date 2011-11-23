@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _Handle_QNAME = new QName("http://server.app.showcase.curs.ru/", "handle");
+    private final static QName _ShowcaseExportException_QNAME = new QName("http://server.app.showcase.curs.ru/", "ShowcaseExportException");
     private final static QName _HandleResponse_QNAME = new QName("http://server.app.showcase.curs.ru/", "handleResponse");
 
     /**
@@ -32,6 +33,14 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link ShowcaseExportException }
+     * 
+     */
+    public ShowcaseExportException createShowcaseExportException() {
+        return new ShowcaseExportException();
     }
 
     /**
@@ -57,6 +66,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://server.app.showcase.curs.ru/", name = "handle")
     public JAXBElement<Handle> createHandle(Handle value) {
         return new JAXBElement<Handle>(_Handle_QNAME, Handle.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ShowcaseExportException }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.app.showcase.curs.ru/", name = "ShowcaseExportException")
+    public JAXBElement<ShowcaseExportException> createShowcaseExportException(ShowcaseExportException value) {
+        return new JAXBElement<ShowcaseExportException>(_ShowcaseExportException_QNAME, ShowcaseExportException.class, null, value);
     }
 
     /**

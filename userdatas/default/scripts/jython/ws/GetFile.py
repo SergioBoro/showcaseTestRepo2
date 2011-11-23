@@ -26,8 +26,10 @@ def mainproc():
         filename = requestDoc.getDocumentElement().getAttributes().getNamedItem("param").getNodeValue()
         path = AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\datapanelstorage\\"
         file = open(path + filename)
-        return unicode(file.read(), "utf-8")
-    raise Exception(commandName + " не реализована!") 
+        return unicode(file.read(), "utf-8")    
+    # при работе с Document строки приходят в формате ISO-8859-1!
+    errorMes = commandName.encode("ISO-8859-1") + " не реализовано !"   
+    raise Exception(unicode(errorMes, "utf-8"))
   
 if __name__ == "__main__":       
     mainproc()

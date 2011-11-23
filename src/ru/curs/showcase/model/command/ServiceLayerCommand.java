@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.AppRegistry;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.ObjectSerializer;
@@ -66,21 +67,39 @@ public abstract class ServiceLayerCommand<T> {
 		context = aContext;
 	}
 
-	public T execute() {
+	public final T execute() {
 		try {
-			initSessionContext();
-			initCommandContext();
-			preProcess();
-			logInputParams();
-			mainProc();
-			logOutput();
-			postProcess();
-			return result;
+			return templateMethod();
 			// CHECKSTYLE:OFF
 		} catch (Throwable e) {
 			// CHECKSTYLE:ON
-			throw GeneralExceptionFactory.build(e);
+			throw exceptionFactory(e);
 		}
+	}
+
+	private T templateMethod() throws Exception {
+		initSessionContext();
+		initCommandContext();
+		preProcess();
+		logInputParams();
+		mainProc();
+		logOutput();
+		postProcess();
+		return result;
+	}
+
+	public final T executeForExport() throws ShowcaseExportException {
+		try {
+			return templateMethod();
+			// CHECKSTYLE:OFF
+		} catch (Throwable e) {
+			// CHECKSTYLE:ON
+			throw new ShowcaseExportException(e);
+		}
+	}
+
+	protected GeneralException exceptionFactory(final Throwable e) {
+		return GeneralExceptionFactory.build(e);
 	}
 
 	private void initCommandContext() {

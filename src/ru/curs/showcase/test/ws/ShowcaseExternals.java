@@ -7,6 +7,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.ws.Action;
+import javax.xml.ws.FaultAction;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
@@ -30,16 +31,21 @@ public interface ShowcaseExternals {
      * @param request
      * @return
      *     returns java.lang.String
+     * @throws ShowcaseExportException_Exception
      */
     @WebMethod
-    @WebResult(targetNamespace = "")
+    @WebResult(name = "response", targetNamespace = "")
     @RequestWrapper(localName = "handle", targetNamespace = "http://server.app.showcase.curs.ru/", className = "ru.curs.showcase.test.ws.Handle")
     @ResponseWrapper(localName = "handleResponse", targetNamespace = "http://server.app.showcase.curs.ru/", className = "ru.curs.showcase.test.ws.HandleResponse")
-    @Action(input = "http://server.app.showcase.curs.ru/ShowcaseExternals/handleRequest", output = "http://server.app.showcase.curs.ru/ShowcaseExternals/handleResponse")
+    @Action(input = "http://server.app.showcase.curs.ru/ShowcaseExternals/handleRequest", output = "http://server.app.showcase.curs.ru/ShowcaseExternals/handleResponse", fault = {
+        @FaultAction(className = ShowcaseExportException_Exception.class, value = "http://server.app.showcase.curs.ru/ShowcaseExternals/handle/Fault/ShowcaseExportException")
+    })
     public String handle(
         @WebParam(name = "request", targetNamespace = "")
         String request,
         @WebParam(name = "procName", targetNamespace = "")
-        String procName);
+        String procName)
+        throws ShowcaseExportException_Exception
+    ;
 
 }

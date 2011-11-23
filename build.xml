@@ -274,9 +274,9 @@
 		<echo>Updating WS test files from ${webapp}/forall/webservices?wsdl</echo>
 		<exec resolveexecutable="true" executable="cmd" dir=".">
 			<arg value="/c"/>
-			<arg value="wsimport"/> 
-			<arg line="-d tmp"/>  
+			<arg value="wsimport"/>
 			<arg line="-s src"/>
+			<arg value="-Xnocompile"/>
 			<arg line="-p ru.curs.showcase.test.ws"/>
 			<arg value="${webapp}/forall/webservices?wsdl"/>
 		</exec>
