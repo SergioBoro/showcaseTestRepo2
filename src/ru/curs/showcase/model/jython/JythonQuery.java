@@ -3,7 +3,7 @@ package ru.curs.showcase.model.jython;
 import java.io.File;
 import java.util.regex.*;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
 

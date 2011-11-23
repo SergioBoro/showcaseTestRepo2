@@ -185,4 +185,12 @@
 		<servlet-name>JAX-WS</servlet-name>
 		<url-pattern>/forall/webservices</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>ExternalServlet</servlet-name>
+		<servlet-class>ru.curs.showcase.app.server.ExternalServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ExternalServlet</servlet-name>
+		<url-pattern>/forall/post</url-pattern>
+	</servlet-mapping>	
 </web-app>
