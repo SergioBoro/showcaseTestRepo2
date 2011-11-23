@@ -47,7 +47,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 		generalWebTextPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
-		thmlwidget = new HTML(Constants.PLEASE_WAIT_WEBTEXT_DATA_ARE_LOADING);
+		thmlwidget = new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING);
 
 		dataService = GWT.create(DataService.class);
 		generalWebTextPanel.add(thmlwidget);
@@ -61,7 +61,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		setContext(null);
 		setIsFirstLoading(true);
 
-		thmlwidget = new HTML(Constants.PLEASE_WAIT_WEBTEXT_DATA_ARE_LOADING);
+		thmlwidget = new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING);
 		generalWebTextPanel = new VerticalPanel();
 
 		generalWebTextPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
@@ -172,7 +172,9 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		if ((!getIsFirstLoading()) && refreshContextOnly) {
 			webText.updateAddContext(context1);
 		} else {
-			thmlwidget.setText(Constants.PLEASE_WAIT_WEBTEXT_DATA_ARE_LOADING);
+			if (this.getElementInfo().getShowLoadingMessage()) {
+				thmlwidget.setText(Constants.PLEASE_WAIT_DATA_ARE_LOADING);
+			}
 			if (dataService == null) {
 				dataService = GWT.create(DataService.class);
 			}
@@ -226,7 +228,10 @@ public class WebTextPanel extends BasicElementPanelBasis {
 	public void refreshPanel() {
 
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
-		thmlwidget.setText(Constants.PLEASE_WAIT_WEBTEXT_DATA_ARE_LOADING);
+
+		if (this.getElementInfo().getShowLoadingMessage()) {
+			thmlwidget.setText(Constants.PLEASE_WAIT_DATA_ARE_LOADING);
+		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
@@ -241,11 +246,17 @@ public class WebTextPanel extends BasicElementPanelBasis {
 				if (webText != null) {
 					fillWebTextPanel(awt);
 					getPanel().setHeight(SIZE_ONE_HUNDRED_PERCENTS);
+					// onElementLoadEvent(getElementInfo().getId());
 
 				}
 			}
 		});
 
 	}
+
+	// public static native void onElementLoadEvent(final String id) /*-{
+
+	// $wnd.elementLoadEvent(id);
+	// }-*/;
 
 }

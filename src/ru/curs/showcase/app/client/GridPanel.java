@@ -134,7 +134,7 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		// --------------
 
-		p.add(new HTML(Constants.PLEASE_WAIT_GRID_1));
+		p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
 		if (grid1 == null) {
 			setDataGridPanel(UpdateType.FULL, false);
@@ -177,7 +177,7 @@ public class GridPanel extends BasicElementPanelBasis {
 			if (getIsFirstLoading()) {
 				localContext = null;
 
-				p.add(new HTML(Constants.PLEASE_WAIT_GRID_1));
+				p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
 				if (grid1 == null) {
 					setDataGridPanel(UpdateType.FULL, refreshContextOnly);
@@ -189,14 +189,14 @@ public class GridPanel extends BasicElementPanelBasis {
 
 			} else {
 				p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+				if (this.getElementInfo().getShowLoadingMessage()) {
+					hpHeader.clear();
+					hpHeader.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
-				hpHeader.clear();
-				hpHeader.add(new HTML(Constants.PLEASE_WAIT_GRID_2));
-
-				hpToolbar.setVisible(false);
-				dg.setVisible(false);
-				hpFooter.setVisible(false);
-
+					hpToolbar.setVisible(false);
+					dg.setVisible(false);
+					hpFooter.setVisible(false);
+				}
 				if (grid1 == null) {
 					setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID, refreshContextOnly);
 				} else {
@@ -834,14 +834,14 @@ public class GridPanel extends BasicElementPanelBasis {
 	@Override
 	public final void refreshPanel() {
 		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+		if (this.getElementInfo().getShowLoadingMessage()) {
+			hpHeader.clear();
+			hpHeader.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
-		hpHeader.clear();
-		hpHeader.add(new HTML(Constants.PLEASE_WAIT_GRID_2));
-
-		hpToolbar.setVisible(false);
-		dg.setVisible(false);
-		hpFooter.setVisible(false);
-
+			hpToolbar.setVisible(false);
+			dg.setVisible(false);
+			hpFooter.setVisible(false);
+		}
 		setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID, false);
 
 	}

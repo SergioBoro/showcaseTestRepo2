@@ -17,29 +17,32 @@ public final class Constants {
 		super();
 	}
 
+	public static final String PLEASE_WAIT_DATA_ARE_LOADING =
+		"Пожалуйста подождите...Идет загрузка данных";
 	public static final String CHART_DIV_ID_SUFFIX = "_chart_graph";
 	public static final String CHART_LEGEND_DIV_ID_SUFFIX = "_chart_legend";
 	public static final String MAP_DIV_ID_SUFFIX = "_map_graph";
 	public static final String MAP_LEGEND_DIV_ID_SUFFIX = "_map_legend";
-	public static final String PLEASE_WAIT_NAVIGATION_DATA_ARE_LOADING =
-		"Пожалуйста подождите...Идет загрузка данных навигации";
-	public static final String PLEASE_WAIT_CHART_DATA_ARE_LOADING =
-		"Пожалуйста подождите...Идет загрузка данных графика";
-	public static final String PLEASE_WAIT_NAVIGATION_DATA_ARE_REFRESHING =
-		"Пожалуйста подождите...Идет обновление данных навигатора";
-	public static final String PLEASE_WAIT_MAP_DATA_ARE_LOADING =
-		"Пожалуйста подождите...Идет загрузка данных карты";
-	public static final String PLEASE_WAIT_WEBTEXT_DATA_ARE_LOADING =
-		"Пожалуйста подождите...Идет загрузка текстовых данных";
-	public static final String PLEASE_WAIT_GRID_1 =
-		"Пожалуйста, подождите... идет загрузка данных";
-	public static final String PLEASE_WAIT_GRID_2 =
-		"Пожалуйста, подождите... идет загрузка данных в соответствии с выбранным элементом";
-	public static final String PLEASE_WAIT_XFORM_1 =
-		"Пожалуйста, подождите... идет загрузка данных";
-	public static final String PLEASE_WAIT_XFORM_2 =
-		"Пожалуйста, подождите... идет загрузка данных в соответствии с выбранным элементом";
-	public static final String PLEASE_WAIT_XFORM_3 = "Пожалуйста, подождите...";
+	// public static final String PLEASE_WAIT_NAVIGATION_DATA_ARE_LOADING =
+	// "Пожалуйста подождите...Идет загрузка данных навигации";
+	// public static final String PLEASE_WAIT_CHART_DATA_ARE_LOADING =
+	// "Пожалуйста подождите...Идет загрузка данных графика";
+	// public static final String PLEASE_WAIT_NAVIGATION_DATA_ARE_REFRESHING =
+	// "Пожалуйста подождите...Идет обновление данных навигатора";
+	// public static final String PLEASE_WAIT_MAP_DATA_ARE_LOADING =
+	// "Пожалуйста подождите...Идет загрузка данных карты";
+	// public static final String PLEASE_WAIT_WEBTEXT_DATA_ARE_LOADING =
+	// "Пожалуйста подождите...Идет загрузка текстовых данных";
+	// public static final String PLEASE_WAIT_GRID_1 =
+	// "Пожалуйста, подождите... идет загрузка данных";
+	// public static final String PLEASE_WAIT_GRID_2 =
+	// "Пожалуйста, подождите... идет загрузка данных в соответствии с выбранным элементом";
+	// public static final String PLEASE_WAIT_XFORM_1 =
+	// "Пожалуйста, подождите... идет загрузка данных";
+	// public static final String PLEASE_WAIT_XFORM_2 =
+	// "Пожалуйста, подождите... идет загрузка данных в соответствии с выбранным элементом";
+	// public static final String PLEASE_WAIT_XFORM_3 =
+	// "Пожалуйста, подождите...";
 
 	public static final String WELCOME_TAB_CAPTION = "Добро пожаловать";
 	public static final String ERROR = "Ошибка";

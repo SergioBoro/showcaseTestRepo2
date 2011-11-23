@@ -24,7 +24,7 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 		generalChartPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
-		generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_CHART_DATA_ARE_LOADING));
+		generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
 		dataService = GWT.create(DataService.class);
 
@@ -42,7 +42,7 @@ public class ChartPanel extends BasicElementPanelBasis {
 		// я бы убрал этот код-конец
 
 		generalChartPanel = new VerticalPanel();
-		generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_CHART_DATA_ARE_LOADING));
+		generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 	}
 
 	private void setChartPanel() {
@@ -265,8 +265,10 @@ public class ChartPanel extends BasicElementPanelBasis {
 		if ((!getIsFirstLoading()) && refreshContextOnly) {
 			chart.updateAddContext(context1);
 		} else {
-			generalChartPanel.clear();
-			generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_CHART_DATA_ARE_LOADING));
+			if (this.getElementInfo().getShowLoadingMessage()) {
+				generalChartPanel.clear();
+				generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			}
 			if (dataService == null) {
 				dataService = GWT.create(DataService.class);
 			}
@@ -319,9 +321,11 @@ public class ChartPanel extends BasicElementPanelBasis {
 	public void refreshPanel() {
 
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+		if (this.getElementInfo().getShowLoadingMessage()) {
+			generalChartPanel.clear();
+			generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
-		generalChartPanel.clear();
-		generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_CHART_DATA_ARE_LOADING));
+		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}

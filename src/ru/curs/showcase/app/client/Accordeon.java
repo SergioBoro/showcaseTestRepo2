@@ -421,7 +421,7 @@ public class Accordeon {
 					: "";
 
 		verpan.clear();
-		verpan.add(new HTML(Constants.PLEASE_WAIT_NAVIGATION_DATA_ARE_REFRESHING));
+		verpan.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 		accordeon.clear();
 
 		CompositeContext context = MultiUserData.getCurrentContextFromURL();

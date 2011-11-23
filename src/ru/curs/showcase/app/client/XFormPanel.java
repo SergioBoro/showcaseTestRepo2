@@ -114,7 +114,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 		mainInstance = null;
 
 		p.clear();
-		p.add(new HTML(Constants.PLEASE_WAIT_XFORM_1));
+		p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
 		if (xform1 == null) {
 			setXFormPanel(false);
@@ -155,9 +155,10 @@ public class XFormPanel extends BasicElementPanelBasis {
 			xform.updateAddContext(context);
 		} else {
 			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
-
-			p.clear();
-			p.add(new HTML(Constants.PLEASE_WAIT_XFORM_2));
+			if (this.getElementInfo().getShowLoadingMessage()) {
+				p.clear();
+				p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			}
 
 			if (xform1 == null) {
 				setXFormPanel(refreshContextOnly);
@@ -399,7 +400,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 		fillMainInstance();
 
 		p.clear();
-		p.add(new HTML(Constants.PLEASE_WAIT_XFORM_3));
+		p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
 		xf = null;
 	}
@@ -407,10 +408,10 @@ public class XFormPanel extends BasicElementPanelBasis {
 	@Override
 	public final void refreshPanel() {
 		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
-
-		p.clear();
-		p.add(new HTML(Constants.PLEASE_WAIT_XFORM_2));
-
+		if (this.getElementInfo().getShowLoadingMessage()) {
+			p.clear();
+			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+		}
 		setXFormPanel(false);
 
 	}
