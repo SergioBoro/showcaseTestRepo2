@@ -204,7 +204,8 @@ public class XFormPanelTest extends GWTTestCase {
 		xfp.reDrawBeforeModalWindow();
 
 		assertEquals(1, xfp.getPanel().getWidgetCount());
-		assertEquals(Constants.PLEASE_WAIT_XFORM_3, ((HTML) xfp.getPanel().getWidget(0)).getHTML());
+		assertEquals(Constants.PLEASE_WAIT_DATA_ARE_LOADING,
+				((HTML) xfp.getPanel().getWidget(0)).getHTML());
 
 	}
 
