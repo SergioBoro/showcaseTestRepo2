@@ -15,9 +15,7 @@ public final class FilesFrontController extends HttpServlet {
 
 	private static final String UNKNOWN_COMMAND_ERROR =
 		"Неизвестная команда для FilesFrontController";
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = 7991801050316249555L;
 
 	@Override

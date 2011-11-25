@@ -16,7 +16,7 @@ import ru.curs.showcase.model.*;
  * @author den
  * 
  */
-public abstract class HTMLBasedSPCallHelper extends ElementSPCallHelper {
+public abstract class HTMLBasedSPCallHelper extends ElementSPQuery {
 	/**
 	 * Возвращает индекс OUT параметра с данными элемента. Необходим только для
 	 * HTML-based элементов.

@@ -152,7 +152,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 			command.execute();
 		} catch (GeneralException e) {
 			assertEquals(DBQueryException.class.getName(), e.getOriginalExceptionClass());
-			assertTrue(e.getMessage().indexOf(CompBasedElementSPCallHelper.NO_RESULTSET_ERROR) > -1);
+			assertTrue(e.getMessage().indexOf(CompBasedElementSPQuery.NO_RESULTSET_ERROR) > -1);
 			return;
 		}
 		fail();

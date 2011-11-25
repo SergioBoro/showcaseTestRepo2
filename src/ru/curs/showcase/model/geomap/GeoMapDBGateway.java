@@ -16,7 +16,7 @@ import ru.curs.showcase.util.Description;
  * 
  */
 @Description(process = "Загрузка данных для карты из БД")
-public class GeoMapDBGateway extends CompBasedElementSPCallHelper implements GeoMapGateway {
+public class GeoMapDBGateway extends CompBasedElementSPQuery implements GeoMapGateway {
 
 	private static final int OUT_SETTINGS_PARAM = 7;
 

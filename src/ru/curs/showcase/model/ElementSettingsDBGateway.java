@@ -13,7 +13,7 @@ import ru.curs.showcase.util.Description;
  * 
  */
 @Description(process = "Загрузка метаданных для элемента инф. панели из БД")
-public class ElementSettingsDBGateway extends ElementSPCallHelper implements
+public class ElementSettingsDBGateway extends ElementSPQuery implements
 		ElementSettingsGateway {
 
 	private static final int OUT_SETTINGS_PARAM = 7;

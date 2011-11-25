@@ -13,7 +13,7 @@ import ru.curs.showcase.runtime.*;
  * @author den
  * 
  */
-public abstract class CompBasedElementSPCallHelper extends ElementSPCallHelper {
+public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 	/**
 	 * Стандартная функция выполнения запроса с проверкой на возврат результата.
 	 */
@@ -23,7 +23,7 @@ public abstract class CompBasedElementSPCallHelper extends ElementSPCallHelper {
 			if (!hasResult) {
 				checkErrorCode();
 				throw new DBQueryException(getElementInfo(), getContext(),
-						CompBasedElementSPCallHelper.NO_RESULTSET_ERROR);
+						CompBasedElementSPQuery.NO_RESULTSET_ERROR);
 			}
 		} else {
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {

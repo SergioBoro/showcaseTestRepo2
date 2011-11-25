@@ -35,9 +35,9 @@ public class ElementRawData {
 	/**
 	 * Вспомогательный модуль для получения необходимых данных из БД.
 	 */
-	private final ElementSPCallHelper spCallHelper;
+	private final ElementSPQuery spCallHelper;
 
-	public ElementSPCallHelper getSpCallHelper() {
+	public ElementSPQuery getSpCallHelper() {
 		return spCallHelper;
 	}
 
@@ -49,7 +49,7 @@ public class ElementRawData {
 		spCallHelper = null;
 	}
 
-	public ElementRawData(final ElementSPCallHelper aSPCallHelper,
+	public ElementRawData(final ElementSPQuery aSPCallHelper,
 			final DataPanelElementInfo aElementInfo, final CompositeContext aContext) {
 		elementInfo = aElementInfo;
 		callContext = aContext;

@@ -18,7 +18,7 @@ import ru.curs.showcase.util.*;
  * 
  */
 @Description(process = "Загрузка данных для грида из БД")
-public class GridDBGateway extends CompBasedElementSPCallHelper implements GridGateway {
+public class GridDBGateway extends CompBasedElementSPQuery implements GridGateway {
 
 	private static final String NO_DOWNLOAD_PROC_ERROR =
 		"Не задана процедура для скачивания файлов из сервера для linkId=";

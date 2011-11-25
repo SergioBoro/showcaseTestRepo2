@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="30 seconds" debug="false">
-
+<configuration scan="true" scanPeriod="30 seconds" debug="false"> 
+    
 	<property name="mainPattern"
 		value="sc.log %d{HH:mm:ss.SSS} %-5level [%thread]
 				%class.%method
@@ -12,19 +12,26 @@
 		<encoder>
 			<pattern>${mainPattern}</pattern>
 		</encoder>
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator>
+				<expression>return level &lt; DEBUG;</expression>
+			</evaluator>
+			<OnMismatch>DENY</OnMismatch>
+			<OnMatch>NEUTRAL</OnMatch>
+		</filter>		
 	</appender>
 
-<!-- 	<appender name="FILE" -->
-<!-- 		class="ch.qos.logback.core.rolling.RollingFileAppender"> -->
-<!-- 		<file>c:\\app.log</file> -->
-<!-- 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> -->
-<!-- 			<FileNamePattern>c:\\app.%d{yyyy.MM.dd}.log</FileNamePattern> -->
-<!-- 			<maxHistory>30</maxHistory> -->
-<!-- 		</rollingPolicy> -->
-<!-- 		<encoder> -->
-<!-- 			<Pattern>${mainPattern}</Pattern> -->
-<!-- 		</encoder> -->
-<!-- 	</appender> -->
+	<!-- <appender name="FILE" -->
+	<!-- class="ch.qos.logback.core.rolling.RollingFileAppender"> -->
+	<!-- <file>c:\\app.log</file> -->
+	<!-- <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> -->
+	<!-- <FileNamePattern>c:\\app.%d{yyyy.MM.dd}.log</FileNamePattern> -->
+	<!-- <maxHistory>30</maxHistory> -->
+	<!-- </rollingPolicy> -->
+	<!-- <encoder> -->
+	<!-- <Pattern>${mainPattern}</Pattern> -->
+	<!-- </encoder> -->
+	<!-- </appender> -->
 
 	<appender name="ShowcaseWebConsoleAppender"
 		class="ru.curs.showcase.runtime.ShowcaseWebConsoleAppender">
@@ -34,17 +41,18 @@
 					<Name>ru_curs</Name>
 					<regex>^ru[.]curs.+</regex>
 				</matcher>
-				<expression>ru_curs.matches(logger)</expression>
+				<expression>return level >= INFO &amp;&amp;
+					ru_curs.matches(logger);</expression>
 			</evaluator>
 			<OnMismatch>DENY</OnMismatch>
 			<OnMatch>NEUTRAL</OnMatch>
 		</filter>
 	</appender>
 
-	<root level="info">
+	<root level="trace">
 		<appender-ref ref="ShowcaseWebConsoleAppender" />
-<!-- 		<appender-ref ref="STDOUT" /> -->
-<!-- 		<appender-ref ref="FILE" /> -->
-<!-- 		<appender-ref ref="ShowcaseWebConsoleAppender" /> -->
+		<appender-ref ref="STDOUT" />
+		<!-- <appender-ref ref="FILE" /> -->
+		<!-- <appender-ref ref="ShowcaseWebConsoleAppender" /> -->
 	</root>
 </configuration>

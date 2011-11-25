@@ -16,7 +16,7 @@ import ru.curs.showcase.util.Description;
  * 
  */
 @Description(process = "Загрузка данных для графика из БД")
-public class ChartDBGateway extends CompBasedElementSPCallHelper implements ChartGateway {
+public class ChartDBGateway extends CompBasedElementSPQuery implements ChartGateway {
 
 	private static final int OUT_SETTINGS_PARAM = 7;
 
