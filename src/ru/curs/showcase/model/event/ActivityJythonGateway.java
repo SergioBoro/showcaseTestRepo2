@@ -1,6 +1,5 @@
 package ru.curs.showcase.model.event;
 
-import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.Activity;
 import ru.curs.showcase.model.jython.JythonQuery;
 
@@ -10,8 +9,7 @@ import ru.curs.showcase.model.jython.JythonQuery;
  * @author den
  * 
  */
-public class ActivityJythonGateway extends JythonQuery<UserMessage> implements
-		ActivityGateway {
+public class ActivityJythonGateway extends JythonQuery<Void> implements ActivityGateway {
 	private Activity activity;
 
 	@Override
@@ -26,12 +24,11 @@ public class ActivityJythonGateway extends JythonQuery<UserMessage> implements
 	}
 
 	@Override
-	public void execute() {
-		setResult(getProc().execute(activity.getContext()));
+	public Object execute() {
+		return getProc().execute(activity.getContext());
 	}
 
-	@Override
-	public UserMessage getUserMessage() {
-		return getResult();
+	public ActivityJythonGateway() {
+		super(Void.class);
 	}
 }

@@ -1,7 +1,5 @@
 package ru.curs.showcase.model.jython;
 
-import ru.curs.showcase.app.api.UserMessage;
-
 /**
  * DTO класс с сырыми данными для элементов Showcase: навигатора, инф. панели
  * или ее элементов. Данные передаются в виде строк.
@@ -11,11 +9,6 @@ import ru.curs.showcase.app.api.UserMessage;
  */
 public final class JythonDTO {
 	/**
-	 * Сообщение для пользователя. По умолчанию не задается. Выдача сообщения
-	 * пользователю означает, что данные получены не были!
-	 */
-	private UserMessage userMessage;
-	/**
 	 * Данные (в формате HTML или XML).
 	 */
 	private String data;
@@ -23,14 +16,6 @@ public final class JythonDTO {
 	 * Настройки элемента в формате XML.
 	 */
 	private String settings;
-
-	public UserMessage getUserMessage() {
-		return userMessage;
-	}
-
-	public void setUserMessage(final UserMessage aUserMessage) {
-		userMessage = aUserMessage;
-	}
 
 	public String getData() {
 		return data;
@@ -48,26 +33,14 @@ public final class JythonDTO {
 		settings = aSettings;
 	}
 
-	public static JythonDTO createResult(final String aData, final String aSettings) {
-		JythonDTO res = new JythonDTO();
-		res.data = aData;
-		res.settings = aSettings;
-		return res;
-	}
-
-	public static JythonDTO createResult(final String aData) {
-		JythonDTO res = new JythonDTO();
-		res.data = aData;
-		return res;
-	}
-
-	private JythonDTO() {
+	public JythonDTO(final String aData, final String aSettings) {
 		super();
+		data = aData;
+		settings = aSettings;
 	}
 
-	public static JythonDTO createError(final UserMessage aUserMessage) {
-		JythonDTO res = new JythonDTO();
-		res.userMessage = aUserMessage;
-		return res;
+	public JythonDTO(final String aData) {
+		super();
+		data = aData;
 	}
 }

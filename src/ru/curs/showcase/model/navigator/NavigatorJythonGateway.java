@@ -2,7 +2,6 @@ package ru.curs.showcase.model.navigator;
 
 import java.io.*;
 
-import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.jython.*;
 import ru.curs.showcase.util.TextUtils;
@@ -60,18 +59,17 @@ public class NavigatorJythonGateway extends JythonQuery<JythonDTO> implements
 	}
 
 	@Override
-	protected void execute() {
-		setResult(getProc().getRawData(context));
+	protected Object execute() {
+		return getProc().getRawData(context);
+	}
+
+	public NavigatorJythonGateway() {
+		super(JythonDTO.class);
 	}
 
 	@Override
 	protected String getJythonProcName() {
 		return sourceName;
-	}
-
-	@Override
-	protected UserMessage getUserMessage() {
-		return getResult().getUserMessage();
 	}
 
 }

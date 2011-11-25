@@ -33,10 +33,10 @@ class WebTextUserData1Proc(JythonProc):
         
 def mainproc():
     if main == "плохой":
-        return JythonDTO.createError(UserMessage(u"1", u"проверка на ошибку сработала"))
+        return UserMessage(u"1", u"проверка на ошибку сработала")
     data = u'<div><a href="?userdata=test1" target="_blank">Перейти к userdata test1</a></div>'
     settings = None
-    res = JythonDTO.createResult(data, settings)
+    res = JythonDTO(data, settings)
     return res
   
 if __name__ == "__main__":       

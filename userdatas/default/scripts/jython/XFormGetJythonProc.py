@@ -67,7 +67,7 @@ def mainproc():
                         </action>
                        </event>                                                                                      
                     </properties>''';
-    res = JythonDTO.createResult(data, settings)
+    res = JythonDTO(data, settings)
     return res
   
 if __name__ == "__main__":       

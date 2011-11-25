@@ -20,7 +20,7 @@ class NavJythonProc(JythonProc):
         return mainproc()
         
 def mainproc():
-    return JythonDTO.createResult(
+    return JythonDTO(
 '''<navigator hideOnLoad="true">
     <group id="00" name="Фичи">
         <level1 id="04" name="secret" selectOnLoad="true">

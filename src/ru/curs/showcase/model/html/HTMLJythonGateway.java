@@ -5,7 +5,6 @@ import java.io.*;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.jython.*;
@@ -20,7 +19,10 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public class HTMLJythonGateway extends JythonQuery<JythonDTO> implements HTMLGateway {
 
-	private static final String ERROR_MES = "Jython процедура не вернула данные";
+	public HTMLJythonGateway() {
+		super(JythonDTO.class);
+	}
+
 	private CompositeContext context;
 	private DataPanelElementInfo elementInfo;
 
@@ -46,26 +48,13 @@ public class HTMLJythonGateway extends JythonQuery<JythonDTO> implements HTMLGat
 	}
 
 	@Override
-	protected void checkErrors() {
-		if (getResult() == null) {
-			throw new JythonException(ERROR_MES);
-		}
-		super.checkErrors();
-	}
-
-	@Override
-	protected void execute() {
-		setResult(getProc().getRawData(context, elementInfo.getId()));
+	protected Object execute() {
+		return getProc().getRawData(context, elementInfo.getId());
 	}
 
 	@Override
 	protected String getJythonProcName() {
 		return elementInfo.getProcName();
-	}
-
-	@Override
-	protected UserMessage getUserMessage() {
-		return getResult().getUserMessage();
 	}
 
 }

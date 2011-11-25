@@ -33,7 +33,7 @@ class WebTextGetJythonProc(JythonProc):
         
 def mainproc():
     if main == "плохой":
-        return JythonDTO.createError(UserMessage(u"1", u"проверка на ошибку сработала"))
+        return UserMessage(u"1", u"проверка на ошибку сработала")
     data = u"<root><name>"+unicode(main,"utf-8")+"</name><count>"+unicode(random.randrange(1,10000000), "utf-8")+u"</count></root>"
     settings = None
     if add == "withsettings":
@@ -63,7 +63,7 @@ def mainproc():
                         </action>
                        </event>                                                                                      
                     </properties>''';
-    res = JythonDTO.createResult(data, settings)
+    res = JythonDTO(data, settings)
     return res
   
 if __name__ == "__main__":       

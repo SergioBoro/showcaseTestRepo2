@@ -31,15 +31,24 @@ public abstract class JythonQuery<T> {
 	public static final String SCRIPTS_JYTHON_PATH = "scripts\\\\jython";
 	protected static final String RESULT_FORMAT_ERROR =
 		"Из Jython процедуры данные или настройки переданы в неверном формате";
+	private static final String UNKNOWN_CLASS_ERROR =
+		"Jython процедура вернула объект неизвестного типа";
+	private static final String NO_RESULT_ERROR = "Jython процедура не вернула данные";
 
 	private T result;
-	private JythonProc proc;
+	private final Class<T> resultType;
 
-	protected abstract void execute();
+	protected JythonQuery(final Class<T> aResultType) {
+		super();
+		resultType = aResultType;
+	}
+
+	private JythonProc proc;
+	private UserMessage userMessage;
+
+	protected abstract Object execute();
 
 	protected abstract String getJythonProcName();
-
-	protected abstract UserMessage getUserMessage();
 
 	/**
 	 * Функция вначале инициализирует пути к пользовательским скриптам и
@@ -65,7 +74,7 @@ public abstract class JythonQuery<T> {
 			PyObject pyObj = pyClass.__call__();
 			proc = (JythonProc) pyObj.__tojava__(JythonProc.class);
 
-			execute();
+			analyzeReturn(execute());
 		} catch (PyException e) {
 			String error = StringEscapeUtils.unescapeJava(e.value.toString());
 			Pattern regex = Pattern.compile("^Exception\\(u'(.+)*',\\)$", Pattern.MULTILINE);
@@ -77,6 +86,19 @@ public abstract class JythonQuery<T> {
 			throw new JythonException(String.format(JYTHON_ERROR, getJythonProcName(), error), e);
 		}
 		checkErrors();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void analyzeReturn(final Object ret) {
+		if (ret != null) {
+			if (ret.getClass() == resultType) {
+				result = (T) ret;
+			} else if (ret.getClass() == UserMessage.class) {
+				userMessage = (UserMessage) ret;
+			} else {
+				throw new JythonException(UNKNOWN_CLASS_ERROR);
+			}
+		}
 	}
 
 	private PythonInterpreter createInterpretator() {
@@ -98,11 +120,11 @@ public abstract class JythonQuery<T> {
 				+ SCRIPTS_JYTHON_PATH;
 	}
 
-	protected T getResult() {
+	public T getResult() {
 		return result;
 	}
 
-	protected void setResult(final T aResult) {
+	public void setResult(final T aResult) {
 		result = aResult;
 	}
 
@@ -110,11 +132,21 @@ public abstract class JythonQuery<T> {
 		return proc;
 	}
 
-	protected void checkErrors() {
+	private void checkErrors() {
 		if (getUserMessage() != null) {
 			UserMessageFactory factory = new UserMessageFactory();
 			throw new ValidateException(factory.build(getUserMessage()));
+		} else if ((getResult() == null) && (waitningResult())) {
+			throw new JythonException(NO_RESULT_ERROR);
 		}
+	}
+
+	private boolean waitningResult() {
+		return resultType != Void.class;
+	}
+
+	public final UserMessage getUserMessage() {
+		return userMessage;
 	}
 
 }

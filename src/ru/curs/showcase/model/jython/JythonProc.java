@@ -34,7 +34,7 @@ public interface JythonProc {
 	 *         информацией для пользователя в случае ошибки. Если ошибки не было
 	 *         - userMessage должен быть None (null в Java).
 	 */
-	JythonDTO getRawData(AbstractCompositeContext context, String elementId);
+	Object getRawData(AbstractCompositeContext context, String elementId);
 
 	/**
 	 * Возвращает сырые данные для навигатора и инф. панели в XML формате.
@@ -43,7 +43,7 @@ public interface JythonProc {
 	 *            - контекст вызова.
 	 * @return - объект переноса данных Jython.
 	 */
-	JythonDTO getRawData(AbstractCompositeContext context);
+	Object getRawData(AbstractCompositeContext context);
 
 	/**
 	 * На основе запроса - строки в формате XML - выполняет какие-либо действия

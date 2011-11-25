@@ -1,7 +1,5 @@
 package ru.curs.showcase.model.jython;
 
-import ru.curs.showcase.app.api.UserMessage;
-
 /**
  * Jython шлюз для трансформации данных или выполнения команд, полученных из
  * WebServices или сервлета.
@@ -22,8 +20,8 @@ public class JythonExternalCommandGateway extends JythonQuery<String> {
 	}
 
 	@Override
-	protected void execute() {
-		setResult(getProc().handle(request));
+	protected Object execute() {
+		return getProc().handle(request);
 	}
 
 	@Override
@@ -31,14 +29,8 @@ public class JythonExternalCommandGateway extends JythonQuery<String> {
 		return source;
 	}
 
-	/*
-	 * Не используется в данном шлюзе. (non-Javadoc)
-	 * 
-	 * @see ru.curs.showcase.model.jython.JythonQuery#getUserMessage()
-	 */
-	@Override
-	protected UserMessage getUserMessage() {
-		return null;
+	public JythonExternalCommandGateway() {
+		super(String.class);
 	}
 
 }
