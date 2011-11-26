@@ -93,6 +93,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 		setContext(null);
 		setIsFirstLoading(true);
 
+		setCallbackJSNIFunction();
+
 		// --------------
 
 		mainInstance = null;
@@ -108,6 +110,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 		setContext(context);
 		setElementInfo(element);
 		setIsFirstLoading(true);
+
+		setCallbackJSNIFunction();
 
 		// --------------
 
@@ -269,8 +273,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 		$wnd.showMultiSelector = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showMultiSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
 		$wnd.gwtXFormDownload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::downloadFile(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 		$wnd.gwtXFormUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::uploadFile(Lcom/google/gwt/core/client/JavaScriptObject;);
-		$wnd.gwtXFormSimpleUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::simpleUpload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);		
-		
+		$wnd.gwtXFormSimpleUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::simpleUpload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+		$wnd.gwtXFormOnSubmitComplete = @ru.curs.showcase.app.client.utils.InlineUploader::onSubmitComplete();
 	}-*/;
 
 	// CHECKSTYLE:ON
@@ -301,8 +305,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 		for (int i = 2; i < stringList.size(); i++) {
 			AccessToDomModel.addScript(stringList.get(i));
 		}
-
-		setCallbackJSNIFunction();
 
 		initForm();
 

@@ -100,8 +100,6 @@ public class InlineUploader {
 				}
 			}
 
-			setOnSubmitComplete(form.getAttribute("target"));
-
 			if (isFilesSelected) {
 				counter++;
 				isAtLeastOneFileSelected = true;
@@ -126,31 +124,11 @@ public class InlineUploader {
 		return $wnd.document.getElementById(id);
 	}-*/;
 
-	private static native void setOnSubmitComplete(final String name) /*-{
-		var iframe = $wnd.document.getElementsByName(name)[0];
-
-		if (iframe.attachEvent) {
-			if (iframe.getAttribute("isSetOnSubmitComplete") == "") {
-				iframe
-						.attachEvent(
-								"onload",
-								function() {
-									@ru.curs.showcase.app.client.utils.InlineUploader::onSubmitComplete()();
-								});
-				iframe.setAttribute("isSetOnSubmitComplete", "true")
-			}
-		} else {
-			iframe.onload = function() {
-				@ru.curs.showcase.app.client.utils.InlineUploader::onSubmitComplete()();
-			};
-		}
-	}-*/;
-
 	public static synchronized void onSubmitComplete() {
-
-		// MessageBox.showSimpleMessage("", "Complete");
-
 		if (submitHandler != null) {
+
+			// MessageBox.showSimpleMessage("", "Complete");
+
 			counter--;
 			if (counter == 0) {
 				submitHandler.onComplete(true);

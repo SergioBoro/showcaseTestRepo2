@@ -183,7 +183,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			iframe.setAttribute(NAME_TAG, getUploaderTargetName(element, procId, i));
 			iframe.setAttribute("src", "javascript:''");
 			iframe.setAttribute("style", "position:absolute;width:0;height:0;border:0");
-			iframe.setAttribute("isSetOnSubmitComplete", "");
+			iframe.setAttribute("onload", "gwtXFormOnSubmitComplete();");
 			parent.appendChild(iframe);
 		}
 
