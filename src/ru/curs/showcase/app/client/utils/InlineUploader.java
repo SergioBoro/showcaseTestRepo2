@@ -137,4 +137,15 @@ public class InlineUploader {
 		}
 	}
 
+	public static void onChooseFiles(final String inputName, final String filenamesMapping,
+			final Boolean needClearFilenames) {
+		insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames);
+	}
+
+	private static native void insertFilenamesByXPath(final String inputName,
+			final String filenamesMapping, final Boolean needClearFilenames) /*-{
+		$wnd.insertFilenamesByXPath(inputName, filenamesMapping,
+				needClearFilenames);
+	}-*/;
+
 }

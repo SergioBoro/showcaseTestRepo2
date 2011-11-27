@@ -10009,12 +10009,40 @@ function insertXFormByXPath(ok, selected, xpathRoot, xpathMapping, needClear)
 		}
 	}
 }
+
+function insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames)
+{
+	if(needClearFilenames){
+        (new XFDelete("file", null, null, null, getXPath(filenamesMapping), null, null)).run(null, getXPath(filenamesMapping));
+	}
+	
+	var origin   = "instance('srvdata')/uploaddata/file";
+    var filename = "";	
+	var input    = document.getElementsByName(inputName)[0];
+
+	if (Core.isIE) {
+		filename = input.value;
+   	    (new XFSetvalue(new Binding(false, origin),null,filename,null,null)).run();
+		(new XFInsert(null, null, null, "last", "after", origin, getXPath(filenamesMapping), null, null)).run(null, getXPath(filenamesMapping));
+		
+	}
+	else
+	{
+	    for (var x = 0; x < input.files.length; x++) {
+			filename = input.files[x].name;    	
+	   	    (new XFSetvalue(new Binding(false, origin),null,filename,null,null)).run();
+			(new XFInsert(null, null, null, "last", "after", origin, getXPath(filenamesMapping), null, null)).run(null, getXPath(filenamesMapping));
+	    }
+	}
+}
+
 /*
 function SelectionObject(id, name) {
     this.id   = id;	
     this.name = name;
 }
 */
+
 function getInitSelection(xpathRoot, xpathMapping)
 {
 /*	

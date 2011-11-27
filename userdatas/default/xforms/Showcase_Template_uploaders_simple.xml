@@ -16,6 +16,20 @@
 					</info>
 				</schema>
 			</xf:instance>
+			
+            <xf:instance id="myInstance">
+                <schema xmlns="">
+				  <files1>                
+					<file>Файл11</file>                
+					<file>Файл12</file>
+				  </files1>
+				  <files2>                
+					<file>Файл21</file>                
+					<file>Файл22</file>
+					<file>Файл23</file>					
+				  </files2>
+                </schema>
+           </xf:instance>
 
 			<xf:bind>
 			</xf:bind>
@@ -37,14 +51,47 @@
 	
 		<hr />
 	
+		<br />	
+	
 		<div>
-			Обычная загрузка файла - 1-й					
+			Обычная загрузка файла - 1-й (задан filenamesMapping с предварительной очисткой списка файлов)					
 		</div>
-		<xf:upload id="04" />
+		<xf:upload id="04" filenamesMapping="XPath(instance(quot(myInstance))/files1)" needClearFilenames ="true"  />
 		<div>
-			Обычная загрузка файла - 2-й			
+			Список файлов:	
+        <xf:select1 ref="/schema/info/name">
+            <xf:item>
+                <xf:label>-</xf:label>
+                <xf:value>-</xf:value>
+            </xf:item>
+            <xf:itemset nodeset="instance('myInstance')/files1/file">
+                <xf:label ref="."/>
+                <xf:value ref="."/>
+            </xf:itemset>
+        </xf:select1>
+        </div>
+        
+		<br />		
+		
+		<div>
+			Обычная загрузка файла - 2-й (задан filenamesMapping без предварительной очистки списка файлов)			
 		</div>
-		<xf:upload id="041" />
+		<xf:upload id="041" filenamesMapping="XPath(instance(quot(myInstance))/files2)" />
+		<div>
+			Список файлов:	
+        <xf:select1 ref="/schema/info/growth">
+            <xf:item>
+                <xf:label>-</xf:label>
+                <xf:value>-</xf:value>
+            </xf:item>
+            <xf:itemset nodeset="instance('myInstance')/files2/file">
+                <xf:label ref="."/>
+                <xf:value ref="."/>
+            </xf:itemset>
+        </xf:select1>
+        </div>
+        
+		<br />        
 		
 		<hr />		
 		
