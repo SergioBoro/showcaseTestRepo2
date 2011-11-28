@@ -3,6 +3,7 @@ package ru.curs.showcase.app.client.api;
 import java.util.*;
 
 import ru.beta2.extra.gwt.ui.selector.*;
+import ru.beta2.extra.gwt.ui.selector.api.SelectorAdditionalData;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
@@ -403,8 +404,14 @@ public final class XFormPanelCallbacksEvents {
 				procName = param.procListAndCount();
 			}
 
+			SelectorAdditionalData addData = new SelectorAdditionalData();
+			addData.setData1(currentXFormPanel.getContext().getMain());
+			addData.setData2(currentXFormPanel.getContext().getAdditional());
+			addData.setData3(currentXFormPanel.getContext().getFilter());
+			addData.setData4(currentXFormPanel.getContext().getSession());
+
 			c.initData(getXMLByXPathArray(param.generalFilters()), procName,
-					getValueByXPath(param.currentValue()));
+					getValueByXPath(param.currentValue()), addData);
 		}
 	}
 
