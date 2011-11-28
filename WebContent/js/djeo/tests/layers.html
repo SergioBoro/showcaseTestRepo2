@@ -4,30 +4,20 @@
 
 <link rel="stylesheet" href="../../dijit/themes/claro/claro.css"/>
 
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script src="https://www.google.com/jsapi?key=ABQIAAAA-DMAtggvLwlIYlUJiASaAxRQnCpeV9jusWIeBw0POFqU6SItGxRWZhddpS8pIkVUd2fDQhzwPUWmMA"></script>
-<script src="http://api-maps.yandex.ru/1.1/index.xml?key=AMOPgE4BAAAA9Y-BUwMAonjZ5NBRJDj54c-cDVPzQcYlLNAAAAAAAAAAAACPSuKS9WyCiMuXm9An1ZKCx5Pk-A=="></script>
-
 <script>
-    dojoConfig = {
-        isDebug: true,
+	dojoConfig = {
+		isDebug: true,
 		parseOnLoad: false,
-        paths: {djeo: "../djeo"},
-		djeoEngine: "djeo"
-    };
+		paths: {djeo: "../djeo"},
+		djeoEngine: "djeo",
+		geKey: "ABQIAAAA-DMAtggvLwlIYlUJiASaAxRQnCpeV9jusWIeBw0POFqU6SItGxRWZhddpS8pIkVUd2fDQhzwPUWmMA",
+		ymapsKey: "AMOPgE4BAAAA9Y-BUwMAonjZ5NBRJDj54c-cDVPzQcYlLNAAAAAAAAAAAACPSuKS9WyCiMuXm9An1ZKCx5Pk-A=="
+	};
 </script>
 <script src="util.js"></script>
-
 <script src="../../dojo/dojo.js"></script>
 
 <script>
-DebugUtil.timer.start("loading");
-if (dojo.config.djeoEngine=="ge") dojo.require("djeo.ge.Engine");
-
-dojo.require("dijit.form.Button");
-dojo.require("djeo.Map");
-dojo.require("djeo.control.Navigation");
-
 var features = [
 	{
 		features: [
@@ -67,9 +57,16 @@ var features = [
 	}
 ];
 
-DebugUtil.timer.end("loading");
+DebugUtil.timer.start("loading");
 
-var ready = function() {	
+require([
+	"dijit/form/Button",
+	"djeo/Map",
+	"djeo/control/Navigation",
+	"dojo/domReady!"
+],
+function() {
+	DebugUtil.timer.end("loading");
 	DebugUtil.timer.start("render");
     var map = new djeo.Map("map", {
 		layers: "HYBRID",
@@ -83,19 +80,13 @@ var ready = function() {
 		DebugUtil.timer.end("render");
 		new djeo.control.Navigation(map);
 	});
-}
-
-dojo.ready(ready);
+});
 
 </script>
 
 </head>
 
 <body class="claro">
-
-<div id="highlight">Highlight control</div>
-<div id="tooltip">Tooltip control</div>
-<div id="navigation">Navigation control</div>
 
 <div id="map" style="width:800px;height:400px;"></div>
 

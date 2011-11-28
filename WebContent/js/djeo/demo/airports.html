@@ -16,84 +16,85 @@ html, body, #container{
 }
 </style>
 
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script src="http://www.google.com/jsapi?key=ABQIAAAA-DMAtggvLwlIYlUJiASaAxQY-Fz4NzEHZIQrBIZBoOQoqd-uzBRkVt7VEildDaCi2BXe96yx38L65A"></script>
-<script src="http://api-maps.yandex.ru/1.1/index.xml?key=ANMiq04BAAAA1kB9MQMA7tdsXyQEqy76s-aTjUTaH5v_vPgAAAAAAAAAAAC4kPhFQz2sCMbzqMCJi01lKdvgGA=="></script>
-
 <script>
-    dojoConfig = {
-        isDebug: false,
-		parseOnLoad: true,
-        paths: {djeo: "../djeo"},
-		djeoEngine: "djeo"
-    };
+	dojoConfig = {
+		isDebug: true,
+		//parseOnLoad: true,
+		paths: {djeo: "../djeo"},
+		djeoEngine: "djeo",
+		geKey: "ABQIAAAA-DMAtggvLwlIYlUJiASaAxQY-Fz4NzEHZIQrBIZBoOQoqd-uzBRkVt7VEildDaCi2BXe96yx38L65A",
+		ymapsKey: "ANMiq04BAAAA1kB9MQMA7tdsXyQEqy76s-aTjUTaH5v_vPgAAAAAAAAAAAC4kPhFQz2sCMbzqMCJi01lKdvgGA=="
+	};
 </script>
-
 <script src="../../dojo/dojo.js"></script>
 <script src="util.js"></script>
 
 <script>
 DebugUtil.timer.start("loading");
-if (dojo.config.djeoEngine=="ge") dojo.require("djeo.ge.Engine");
 
-dojo.require("dijit.layout.BorderContainer");
-dojo.require("dijit.layout.ContentPane");
+var requireModules = [
+	"dojo/parser",
+	"dijit/layout/BorderContainer",
+	"dijit/layout/ContentPane",
+	
+	"dojox/grid/DataGrid",
+	"dojo/data/ItemFileReadStore",
+	
+	"djeo/Map",
+	
+	"djeo/control/Navigation",
+	"djeo/control/Highlight",
+	"djeo/control/Tooltip",
+	"djeo/widget/Legend",
+	
+	"djeo/util/jenks",
+	
+	"djeo/demo/data/airports",
+	
+	"dojo/domReady!"
+];
 
-dojo.require("dojox.grid.DataGrid");
-dojo.require("dojo.data.ItemFileReadStore");
-
-dojo.require("djeo.Map");
-
-dojo.require("djeo.control.Navigation");
-dojo.require("djeo.control.Highlight");
-dojo.require("djeo.control.Tooltip");
-dojo.require("djeo.widget.Legend");
-
-dojo.require("djeo.demo.data.airports");
 if (dojo.config.djeoEngine=="djeo") {
-	dojo.require("djeo.tests.data.usa_geometries");
-	dojo.require("djeo.tests.data.usa_features");
+	requireModules.push("djeo/tests/data/usa_geometries", "djeo/tests/data/usa_features");
 }
 
-dojo.require("djeo.util.jenks");
+var ready = function(parser) {
+	DebugUtil.timer.end("loading");
 
-var map, legend, grid, store;
-var normalStyle = {
-	styleClass: "iconSizeByValue",
-	img: {src: "icons/plane_red.png", size: [50, 50]},
-	strokeWidth: 1,
-	name: "Number of enplanements",
-	styleFunction: {
-		getStyle: "djeo.util.numeric.getStyle",
-		options: {
-			numClasses: 8,
-			medianSize: 20,
-			sizeStep: 3,
-			attr: "enplanements",
-			breaks: "djeo.util.jenks.getBreaks",
-			//breaks: [0, 4000000, 10000000, 40000000],
-			calculateStyle: djeo.util.numeric.calculateSizeStyle
-		}
-	},
-	legend:  djeo._getBreaksIconLegend
-};
-var higlightStyle = {
-	theme: "highlight",
-	img: "icons/plane_blue.png"
-};
+	parser.parse();
 
-
-var features = [
-	{
-		id: "airports",
+	var map, legend, grid, store;
+	var normalStyle = {
 		styleClass: "iconSizeByValue",
-		features: djeo.demo.data.airports
-	}
-]
-
-DebugUtil.timer.end("loading");
-
-var ready = function() {
+		img: {src: "icons/plane_red.png", size: [50, 50]},
+		strokeWidth: 1,
+		name: "Number of enplanements",
+		styleFunction: {
+			getStyle: "djeo.util.numeric.getStyle",
+			options: {
+				numClasses: 8,
+				medianSize: 20,
+				sizeStep: 3,
+				attr: "enplanements",
+				breaks: "djeo.util.jenks.getBreaks",
+				//breaks: [0, 4000000, 10000000, 40000000],
+				calculateStyle: djeo.util.numeric.calculateSizeStyle
+			}
+		},
+		legend:  djeo._getBreaksIconLegend
+	};
+	var higlightStyle = {
+		theme: "highlight",
+		img: "icons/plane_blue.png"
+	};
+	var features = [
+		{
+			id: "airports",
+			styleClass: "iconSizeByValue",
+			features: djeo.demo.data.airports
+		}
+	];
+	
 	DebugUtil.timer.start("render");
     map = new djeo.Map("map", {
 		features: features,
@@ -164,7 +165,7 @@ var ready = function() {
 	});
 }
 
-dojo.ready(ready);
+require(requireModules, ready);
 </script>
 
 </head>
