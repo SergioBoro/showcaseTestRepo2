@@ -56,25 +56,31 @@ public final class UserMessageFactory {
 	}
 
 	public UserMessage build(final UserMessage initial) {
-		return internalBuild(initial.getId(), initial.getText());
+		return internalBuild(initial);
 	}
 
 	public UserMessage build(final Integer errorCode, final String errorMes) {
-		return internalBuild(errorCode.toString(), errorMes);
+		return internalBuild(new UserMessage(errorCode.toString(), errorMes));
 	}
 
-	private UserMessage internalBuild(final String errorCode, final String errorMes) {
-		loadMessage(errorCode);
+	private UserMessage internalBuild(final UserMessage initial) {
+		loadMessage(initial.getId());
 		if (userMessage != null) {
 			if (userMessage.getText().indexOf("%s") > -1) {
-				userMessage.setText(String.format(userMessage.getText(), errorMes));
+				userMessage.setText(String.format(userMessage.getText(), initial.getText()));
 			} else {
-				userMessage.setText(userMessage.getText() + " " + errorMes);
+				userMessage.setText(userMessage.getText() + " " + initial.getText());
 			}
 		} else {
-			userMessage =
-				new UserMessage(String.format("%s (%s)", errorMes, errorCode), MessageType.ERROR);
-			userMessage.setId(errorCode);
+			if (initial.getId() != null) {
+				userMessage =
+					new UserMessage(String.format("%s (%s)", initial.getText(), initial.getId()),
+							initial.getType());
+			} else {
+				userMessage =
+					new UserMessage(initial.getText(), initial.getId(), initial.getType());
+			}
+			userMessage.setId(initial.getId());
 		}
 		return userMessage;
 	}

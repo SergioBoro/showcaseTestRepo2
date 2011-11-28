@@ -40,12 +40,21 @@ public class UserMessage implements SerializableElement {
 	public UserMessage(final String aText) {
 		super();
 		text = aText;
+		type = MessageType.ERROR;
 	}
 
 	public UserMessage(final String aId, final String aText) {
 		super();
 		id = aId;
 		text = aText;
+		type = MessageType.ERROR;
+	}
+
+	public UserMessage(final String aId, final String aText, final MessageType aType) {
+		super();
+		id = aId;
+		text = aText;
+		type = aType;
 	}
 
 	public String getText() {
