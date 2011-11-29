@@ -10,6 +10,8 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.*;
+import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.model.IncorrectElementException;
 import ru.curs.showcase.model.geomap.GeoMapGetCommand;
 import ru.curs.showcase.model.svg.*;
 import ru.curs.showcase.util.*;
@@ -130,6 +132,49 @@ public class GeoMapSLTest extends AbstractTest {
 		assertTrue(result.getData().size() > 0);
 		assertNull(result.getTextData());
 		assertTrue(result.getName().endsWith("jpg"));
+	}
+
+	/**
+	 * Проверка на то, что описание элемента не полностью заполнено.
+	 * 
+	 */
+	@Test
+	public void testWrongElement1() {
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.GEOMAP);
+
+		GeoMapGetCommand command = new GeoMapGetCommand(new CompositeContext(), elInfo);
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			assertEquals(IncorrectElementException.class, e.getCause().getClass());
+		}
+	}
+
+	/**
+	 * Проверка на то, что описание элемента не полностью заполнено.
+	 * 
+	 */
+	@Test
+	public void testWrongElement2() {
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", null);
+		elInfo.setProcName("proc");
+
+		GeoMapGetCommand command = new GeoMapGetCommand(new CompositeContext(), elInfo);
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			assertEquals(IncorrectElementException.class, e.getCause().getClass());
+		}
+	}
+
+	@Test
+	public void testForNull() {
+		GeoMapGetCommand command = new GeoMapGetCommand(new CompositeContext(), null);
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			assertEquals(IncorrectElementException.class, e.getCause().getClass());
+		}
 	}
 
 }

@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.html.xform;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.command.*;
 
@@ -21,5 +21,10 @@ public abstract class XFormContextCommand<T> extends DataPanelElementCommand<T> 
 
 	public XFormContextCommand(final XFormContext aContext, final DataPanelElementInfo aElInfo) {
 		super(aContext, aElInfo);
+	}
+
+	@Override
+	protected DataPanelElementType getRequestedElementType() {
+		return DataPanelElementType.XFORMS;
 	}
 }

@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.html.webtext;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.model.command.DataPanelElementCommand;
@@ -25,6 +25,11 @@ public final class WebTextGetCommand extends DataPanelElementCommand<WebText> {
 		HTMLBasedElementRawData rawWT = wtgateway.getRawData(getContext(), getElementInfo());
 		WebTextFactory builder = new WebTextFactory(rawWT);
 		setResult(builder.build());
+	}
+
+	@Override
+	protected DataPanelElementType getRequestedElementType() {
+		return DataPanelElementType.WEBTEXT;
 	}
 
 }

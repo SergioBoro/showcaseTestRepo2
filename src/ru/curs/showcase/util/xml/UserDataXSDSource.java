@@ -2,6 +2,10 @@ package ru.curs.showcase.util.xml;
 
 import java.io.File;
 
+import javax.xml.validation.*;
+
+import org.xml.sax.SAXException;
+
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.exception.*;
@@ -15,15 +19,17 @@ import ru.curs.showcase.util.exception.*;
 public final class UserDataXSDSource implements XSDSource {
 
 	@Override
-	public File getSchema(final String aFileName) {
+	public Schema getSchema(final String sourceName) throws SAXException {
 		String xsdFullFileName =
 			String.format("%s/%s/%s", AppProps.getUserDataCatalog(), AppProps.SCHEMASDIR,
-					aFileName);
+					sourceName);
 		File file = new File(xsdFullFileName);
 		if (!file.exists()) {
 			throw new SettingsFileOpenException(xsdFullFileName, SettingsFileType.SCHEMA);
 		}
-		return file;
+		// передавать InputStream и URL нельзя, т.к. в этом случае парсер не
+		// находит вложенных схем!
+		return XMLUtils.createSchemaForFile(file);
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import org.w3c.dom.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.model.ValidateException;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.html.*;
 import ru.curs.showcase.model.html.xform.*;
 import ru.curs.showcase.runtime.AppProps;
@@ -37,7 +37,8 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	public void testFileGateWay() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", ELEMENT_0205);
-
+		ElementInfoChecker checker = new ElementInfoChecker();
+		checker.check(element, DataPanelElementType.XFORMS);
 		XFormGateway gateway = new XFormFileGateway();
 		gateway.getRawData(context, element);
 	}
@@ -91,6 +92,9 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms1Info();
 
+		ElementInfoChecker checker = new ElementInfoChecker();
+		checker.check(element, DataPanelElementType.XFORMS);
+
 		XFormGateway gateway = new XFormDBGateway();
 		gateway.getRawData(context, element);
 	}
@@ -118,6 +122,9 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	public void testDBGatewayUpdateWithError() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms2Info();
+
+		ElementInfoChecker checker = new ElementInfoChecker();
+		checker.check(element, DataPanelElementType.XFORMS);
 
 		XFormGateway gateway = new XFormDBGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
@@ -269,7 +276,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 					new DataPanelElementContext(new CompositeContext(), elementInfo));
 		transformer.checkAndTransform();
 	}
-	
+
 	@Test
 	public void testHTMLFileGateway() {
 		CompositeContext context = getTestContext2();
@@ -282,5 +289,5 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 
 		assertNotNull(raw.getData());
 		assertNotNull(raw.getSettings());
-	}	
+	}
 }

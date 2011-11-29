@@ -7,7 +7,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.WebText;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.ValidateException;
 import ru.curs.showcase.model.html.*;
 import ru.curs.showcase.model.html.webtext.*;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
@@ -37,42 +37,6 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		String out = XMLUtils.documentToString(rawWT.getData());
 		new WebText(out);
 		assertTrue(out.startsWith(prefix));
-	}
-
-	/**
-	 * Проверка на то, что описание элемента не полностью заполнено.
-	 * 
-	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement1() {
-		DataPanelElementInfo element =
-			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
-
-		HTMLGateway wtgateway = new WebTextDBGateway();
-		wtgateway.getRawData(null, element);
-	}
-
-	/**
-	 * Проверка на то, что описание элемента не полностью заполнено.
-	 * 
-	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement2() {
-		DataPanelElementInfo element = new DataPanelElementInfo("id", null);
-		element.setProcName("proc");
-
-		HTMLGateway wtgateway = new WebTextDBGateway();
-		wtgateway.getRawData(null, element);
-	}
-
-	/**
-	 * Проверка на то, что описание элемента не полностью заполнено.
-	 * 
-	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement3() {
-		HTMLGateway wtgateway = new WebTextDBGateway();
-		wtgateway.getRawData(null, null);
 	}
 
 	@Test(expected = SettingsFileOpenException.class)

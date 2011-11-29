@@ -2,7 +2,6 @@ package ru.curs.showcase.model.event;
 
 import java.sql.SQLException;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.Activity;
 import ru.curs.showcase.model.SPQuery;
 import ru.curs.showcase.util.Description;
@@ -37,11 +36,6 @@ public class ActivityDBGateway extends SPQuery implements ActivityGateway {
 	@Override
 	protected String getSqlTemplate(final int index) {
 		return "{? = call %s(?, ?, ?, ?, ?)}";
-	}
-
-	@Override
-	protected DataPanelElementType getElementType() {
-		return DataPanelElementType.NON_DP_ELEMENT;
 	}
 
 	@Override

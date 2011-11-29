@@ -7,11 +7,11 @@ import java.util.*;
 import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.*;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.ValidateException;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.ServletUtils;
@@ -389,5 +389,52 @@ public class GridSLTest extends AbstractTest {
 
 		assertTrue(grid.getEventManager().getEvents().isEmpty());
 		assertNull(grid.getDefaultAction());
+	}
+
+	/**
+	 * Проверка на то, что описание элемента не полностью заполнено.
+	 * 
+	 */
+	@Test
+	public void testWrongElement1() {
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.GRID);
+
+		GridGetCommand command = new GridGetCommand(new GridContext(), elInfo, true);
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			assertEquals(IncorrectElementException.class, e.getCause().getClass());
+		}
+	}
+
+	/**
+	 * Проверка на то, что описание элемента не полностью заполнено.
+	 * 
+	 */
+	@Test
+	public void testWrongElement2() {
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.CHART);
+		elInfo.setProcName("proc");
+
+		GridGetCommand command = new GridGetCommand(new GridContext(), elInfo, true);
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			assertEquals(IncorrectElementException.class, e.getCause().getClass());
+		}
+	}
+
+	/**
+	 * Проверка на то, что описание элемента не полностью заполнено.
+	 * 
+	 */
+	@Test
+	public void testWrongElement3() {
+		GridGetCommand command = new GridGetCommand(new GridContext(), null, true);
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			assertEquals(IncorrectElementException.class, e.getCause().getClass());
+		}
 	}
 }

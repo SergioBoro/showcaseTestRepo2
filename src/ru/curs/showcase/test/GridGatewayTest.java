@@ -6,7 +6,7 @@ import java.sql.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.model.*;
@@ -31,41 +31,6 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 
 		GridGateway gateway = new GridDBGateway();
 		gateway.getRawDataAndSettings(context, element);
-	}
-
-	/**
-	 * Проверка на то, что описание элемента не полностью заполнено.
-	 * 
-	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement1() {
-		DataPanelElementInfo element = new DataPanelElementInfo("id", DataPanelElementType.GRID);
-
-		GridGateway gateway = new GridDBGateway();
-		gateway.getRawDataAndSettings(null, element);
-	}
-
-	/**
-	 * Проверка на то, что описание элемента не полностью заполнено.
-	 * 
-	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement2() {
-		DataPanelElementInfo element = new DataPanelElementInfo("id", DataPanelElementType.CHART);
-		element.setProcName("proc");
-
-		GridGateway gateway = new GridDBGateway();
-		gateway.getRawDataAndSettings(null, element);
-	}
-
-	/**
-	 * Проверка на то, что описание элемента не полностью заполнено.
-	 * 
-	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement3() {
-		GridGateway gateway = new GridDBGateway();
-		gateway.getRawDataAndSettings(null, null);
 	}
 
 	/**
@@ -105,11 +70,11 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 		assertEquals(gc, res.getCallContext());
 		assertEquals(elInfo, res.getElementInfo());
 		assertNull(res.getSettings());
-		assertNotNull(res.getSpCallHelper());
-		assertFalse(res.getSpCallHelper().getConn().isClosed());
-		assertNotNull(res.getSpCallHelper().getStatement().getResultSet());
+		assertNotNull(res.getSpQuery());
+		assertFalse(res.getSpQuery().getConn().isClosed());
+		assertNotNull(res.getSpQuery().getStatement().getResultSet());
 
-		res.getSpCallHelper().close();
+		res.getSpQuery().close();
 	}
 
 	/**
@@ -130,10 +95,10 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 		assertNull(res.getSettings());
 		res.prepareSettings();
 		assertNotNull(res.getSettings());
-		assertNotNull(res.getSpCallHelper());
-		assertFalse(res.getSpCallHelper().getConn().isClosed());
-		assertNull(res.getSpCallHelper().getStatement().getResultSet());
+		assertNotNull(res.getSpQuery());
+		assertFalse(res.getSpQuery().getConn().isClosed());
+		assertNull(res.getSpQuery().getStatement().getResultSet());
 
-		res.getSpCallHelper().close();
+		res.getSpQuery().close();
 	}
 }

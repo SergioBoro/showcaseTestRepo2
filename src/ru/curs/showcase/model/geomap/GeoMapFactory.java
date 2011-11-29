@@ -304,6 +304,6 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 	}
 
 	private CallableStatement getStatement() {
-		return getSource().getSpCallHelper().getStatement();
+		return getSource().getSpQuery().getStatement();
 	}
 }

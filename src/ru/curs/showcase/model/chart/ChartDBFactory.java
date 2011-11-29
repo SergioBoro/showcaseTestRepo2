@@ -43,7 +43,7 @@ public class ChartDBFactory extends AbstractChartFactory {
 	protected void prepareData() {
 		try {
 			ResultSet rs =
-				getResultSetAccordingToSQLServerType(getSource().getSpCallHelper().getStatement());
+				getResultSetAccordingToSQLServerType(getSource().getSpQuery().getStatement());
 			sql = SQLUtils.cacheResultSet(rs);
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);

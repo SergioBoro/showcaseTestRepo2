@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream;
 import org.w3c.dom.Document;
 
 import ru.curs.gwt.datagrid.model.ColumnSet;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.command.*;
 import ru.curs.showcase.util.ExcelFile;
@@ -33,6 +33,11 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 	@InputParam
 	public ColumnSet getColumnSet() {
 		return columnSet;
+	}
+
+	@Override
+	protected DataPanelElementType getRequestedElementType() {
+		return DataPanelElementType.GRID;
 	}
 
 	public GridExcelExportCommand(final GridContext aContext, final DataPanelElementInfo aElInfo,

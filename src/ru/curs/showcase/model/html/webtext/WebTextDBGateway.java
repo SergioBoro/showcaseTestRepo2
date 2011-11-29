@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.html.webtext;
 
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.html.*;
 import ru.curs.showcase.util.Description;
@@ -31,11 +31,6 @@ public class WebTextDBGateway extends HTMLBasedSPCallHelper implements HTMLGatew
 	@Override
 	public int getOutSettingsParam() {
 		return OUTPUT_INDEX;
-	}
-
-	@Override
-	protected DataPanelElementType getElementType() {
-		return DataPanelElementType.WEBTEXT;
 	}
 
 	@Override

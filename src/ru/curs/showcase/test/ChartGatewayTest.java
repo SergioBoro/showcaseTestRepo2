@@ -2,9 +2,8 @@ package ru.curs.showcase.test;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.IncorrectElementException;
 import ru.curs.showcase.model.chart.*;
 
 /**
@@ -24,40 +23,5 @@ public class ChartGatewayTest extends AbstractTestWithDefaultUserData {
 
 		ChartGateway gateway = new ChartDBGateway();
 		gateway.getRawData(context, element);
-	}
-
-	/**
-	 * Проверка на то, что описание элемента не полностью заполнено.
-	 * 
-	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement1() {
-		DataPanelElementInfo element = new DataPanelElementInfo("id", DataPanelElementType.CHART);
-
-		ChartGateway gateway = new ChartDBGateway();
-		gateway.getRawData(null, element);
-	}
-
-	/**
-	 * Проверка на то, что описание элемента не полностью заполнено.
-	 * 
-	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement2() {
-		DataPanelElementInfo element = new DataPanelElementInfo("id", null);
-		element.setProcName("proc");
-
-		ChartGateway gateway = new ChartDBGateway();
-		gateway.getRawData(null, element);
-	}
-
-	/**
-	 * Проверка на то, что описание элемента не полностью заполнено.
-	 * 
-	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement3() {
-		ChartGateway gateway = new ChartDBGateway();
-		gateway.getRawData(null, null);
 	}
 }

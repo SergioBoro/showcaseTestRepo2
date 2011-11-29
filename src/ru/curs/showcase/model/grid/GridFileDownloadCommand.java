@@ -1,8 +1,8 @@
-package ru.curs.showcase.model.command;
+package ru.curs.showcase.model.grid;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.grid.*;
+import ru.curs.showcase.model.command.*;
 import ru.curs.showcase.util.OutputStreamDataFile;
 
 /**
@@ -22,6 +22,11 @@ public class GridFileDownloadCommand extends DataPanelElementCommand<OutputStrea
 	@InputParam
 	public String getRecordId() {
 		return recordId;
+	}
+
+	@Override
+	protected DataPanelElementType getRequestedElementType() {
+		return DataPanelElementType.GRID;
 	}
 
 	public GridFileDownloadCommand(final CompositeContext aContext,

@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.grid;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.command.*;
@@ -15,6 +15,11 @@ import ru.curs.showcase.runtime.AppInfoSingleton;
 public class GridGetCommand extends DataPanelElementCommand<Grid> {
 
 	private final Boolean applyLocalFormatting;
+
+	@Override
+	protected DataPanelElementType getRequestedElementType() {
+		return DataPanelElementType.GRID;
+	}
 
 	public GridGetCommand(final GridContext aContext, final DataPanelElementInfo aElInfo,
 			final Boolean aApplyLocalFormatting) {

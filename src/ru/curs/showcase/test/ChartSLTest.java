@@ -5,8 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.chart.Chart;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.model.IncorrectElementException;
 import ru.curs.showcase.model.chart.ChartGetCommand;
 
 /**
@@ -33,5 +35,57 @@ public class ChartSLTest extends AbstractTest {
 		assertNotNull(chart.getJsDynamicData());
 		assertTrue(chart.getJsDynamicData().startsWith("{"));
 		assertTrue(chart.getJsDynamicData().endsWith("}"));
+	}
+
+	/**
+	 * Проверка на то, что описание элемента не полностью заполнено.
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@Test(expected = IncorrectElementException.class)
+	public void testWrongElement1() throws Throwable {
+		DataPanelElementInfo element = new DataPanelElementInfo("id", DataPanelElementType.CHART);
+		ChartGetCommand command = new ChartGetCommand(new CompositeContext(), element);
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			throw e.getCause();
+		}
+	}
+
+	/**
+	 * Проверка на то, что описание элемента не полностью заполнено.
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@Test(expected = IncorrectElementException.class)
+	public void testWrongElement2() throws Throwable {
+		DataPanelElementInfo element = new DataPanelElementInfo("id", null);
+		element.setProcName("proc");
+
+		ChartGetCommand command = new ChartGetCommand(new CompositeContext(), element);
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			throw e.getCause();
+		}
+	}
+
+	/**
+	 * Проверка на то, что описание элемента не полностью заполнено.
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@Test(expected = IncorrectElementException.class)
+	public void testWrongElement3() throws Throwable {
+		ChartGetCommand command = new ChartGetCommand(new CompositeContext(), null);
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			throw e.getCause();
+		}
 	}
 }

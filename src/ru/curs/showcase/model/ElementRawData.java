@@ -3,7 +3,7 @@
  */
 package ru.curs.showcase.model;
 
-import java.io.InputStream;
+import java.io.*;
 import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
@@ -16,9 +16,9 @@ import ru.curs.showcase.app.api.event.CompositeContext;
  * @author den
  * 
  */
-public class ElementRawData {
+public class ElementRawData implements Closeable {
 	/**
-	 * Список событий и действие по умолчанию для WebText в формате XML.
+	 * Настройки элемента. Как правило, в формате XML.
 	 */
 	private InputStream settings;
 
@@ -34,11 +34,13 @@ public class ElementRawData {
 
 	/**
 	 * Вспомогательный модуль для получения необходимых данных из БД.
+	 * Используется при необходимости считывания нескольких блоков данных в
+	 * определенном порядке.
 	 */
-	private final ElementSPQuery spCallHelper;
+	private final ElementSPQuery spQuery;
 
-	public ElementSPQuery getSpCallHelper() {
-		return spCallHelper;
+	public ElementSPQuery getSpQuery() {
+		return spQuery;
 	}
 
 	public ElementRawData(final InputStream props, final DataPanelElementInfo aElementInfo,
@@ -46,22 +48,22 @@ public class ElementRawData {
 		elementInfo = aElementInfo;
 		callContext = aContext;
 		settings = props;
-		spCallHelper = null;
+		spQuery = null;
 	}
 
-	public ElementRawData(final ElementSPQuery aSPCallHelper,
-			final DataPanelElementInfo aElementInfo, final CompositeContext aContext) {
+	public ElementRawData(final ElementSPQuery aSPQuery, final DataPanelElementInfo aElementInfo,
+			final CompositeContext aContext) {
 		elementInfo = aElementInfo;
 		callContext = aContext;
 		settings = null;
-		spCallHelper = aSPCallHelper;
+		spQuery = aSPQuery;
 	}
 
 	public ElementRawData(final DataPanelElementInfo aElementInfo, final CompositeContext aContext) {
 		elementInfo = aElementInfo;
 		callContext = aContext;
 		settings = null;
-		spCallHelper = null;
+		spQuery = null;
 	}
 
 	public InputStream getSettings() {
@@ -94,7 +96,7 @@ public class ElementRawData {
 	 */
 	public void prepareSettings() {
 		try {
-			settings = spCallHelper.getValidatedSettings();
+			settings = spQuery.getValidatedSettings();
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
 		}
@@ -106,7 +108,8 @@ public class ElementRawData {
 	 * навигатора.
 	 * 
 	 */
-	public void releaseResources() {
-		spCallHelper.close();
+	@Override
+	public void close() {
+		spQuery.close();
 	}
 }

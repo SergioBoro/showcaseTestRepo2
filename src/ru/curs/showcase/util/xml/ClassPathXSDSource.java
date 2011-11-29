@@ -3,6 +3,10 @@ package ru.curs.showcase.util.xml;
 import java.io.File;
 import java.net.URL;
 
+import javax.xml.validation.Schema;
+
+import org.xml.sax.SAXException;
+
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.FileUtils;
@@ -17,7 +21,7 @@ import ru.curs.showcase.util.exception.*;
 public class ClassPathXSDSource implements XSDSource {
 
 	@Override
-	public File getSchema(final String aFileName) {
+	public Schema getSchema(final String aFileName) throws SAXException {
 		String xsdFullFileName = String.format("%s/%s", AppProps.SCHEMASDIR, aFileName);
 
 		// самый простой способ получить путь к ресурсу в classpath в виде
@@ -33,7 +37,7 @@ public class ClassPathXSDSource implements XSDSource {
 		// создание объекта типа File позволяет работает с путями файловой
 		// системы, содержащими русские символы
 		File file = new File(xsdFullFileName);
-		return file;
+		return XMLUtils.createSchemaForFile(file);
 	}
 
 	@Override

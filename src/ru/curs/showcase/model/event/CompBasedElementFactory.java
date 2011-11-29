@@ -161,7 +161,7 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 
 	@Override
 	protected void releaseResources() {
-		getSource().releaseResources();
+		getSource().close();
 	}
 
 	private void addToHeader(final String data) {
@@ -189,6 +189,6 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 	protected void checkSourceError() {
 		super.checkSourceError();
 
-		getSource().getSpCallHelper().checkErrorCode();
+		getSource().getSpQuery().checkErrorCode();
 	}
 }

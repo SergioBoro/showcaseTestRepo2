@@ -9,7 +9,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.*;
-import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.*;
 
 import net.sf.saxon.lib.NamespaceConstant;
 
@@ -27,6 +27,12 @@ import ru.curs.showcase.util.exception.*;
  * 
  */
 public final class XMLUtils {
+
+	public static Schema createSchemaForFile(final File file) throws SAXException {
+		SchemaFactory schemaFactory = createSchemaFactory();
+		Schema schemaXSD = schemaFactory.newSchema(file);
+		return schemaXSD;
+	}
 
 	public static final String XML_VERSION_1_0_ENCODING_UTF_8 =
 		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>";

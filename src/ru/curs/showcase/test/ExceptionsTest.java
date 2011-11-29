@@ -21,7 +21,7 @@ import ru.curs.showcase.model.command.GeneralExceptionFactory;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.grid.*;
-import ru.curs.showcase.model.html.*;
+import ru.curs.showcase.model.html.HTMLGateway;
 import ru.curs.showcase.model.html.webtext.*;
 import ru.curs.showcase.model.html.xform.*;
 import ru.curs.showcase.runtime.*;
@@ -435,15 +435,12 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test(expected = IncorrectElementException.class)
-	public void testElementActionWrong() throws Exception {
+	public void testElementActionWrong() {
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
 		elInfo.setProcName("xforms_proc_wrong_1");
 		generateTestTabWithElement(elInfo);
-		XFormContext xContext = new XFormContext(getTestContext1());
-		XFormGateway gateway = new XFormDBGateway();
-		HTMLBasedElementRawData raw = gateway.getRawData(xContext, elInfo);
-		XFormFactory factory = new XFormFactory(raw);
-		factory.build();
+		ElementInfoChecker checker = new ElementInfoChecker();
+		checker.check(elInfo, DataPanelElementType.XFORMS);
 	}
 
 	@Test

@@ -1,6 +1,6 @@
 package ru.curs.showcase.util.xml;
 
-import java.io.*;
+import java.io.IOException;
 
 import javax.xml.transform.Source;
 import javax.xml.validation.*;
@@ -24,7 +24,8 @@ public class XMLValidator {
 	private XSDSource xsdSource;
 
 	/**
-	 * Функция проверки XML (Template Method).
+	 * Функция проверки XML (Template Method). Важно: нельзя ловить
+	 * SettingsFileOpenException!
 	 * 
 	 * @param source
 	 *            - источник XML данных.
@@ -36,7 +37,6 @@ public class XMLValidator {
 			synchronized (AppInfoSingleton.getAppInfo()) {
 				validator.validate(prepared);
 			}
-			// нельзя ловить SettingsFileOpenException
 		} catch (SAXException e) {
 			handleException(source, e);
 		} catch (IOException e) {
@@ -59,13 +59,8 @@ public class XMLValidator {
 	}
 
 	private Validator createValidator(final XMLSource aXMLSource) throws SAXException {
-		SchemaFactory schemaFactory = XMLUtils.createSchemaFactory();
-		File file = xsdSource.getSchema(aXMLSource.getSchemaName());
-		// передавать InputStream и URL нельзя, т.к. в этом случае парсер не
-		// находит вложенных схем!
-		Schema schemaXSD = schemaFactory.newSchema(file);
-		Validator validator = schemaXSD.newValidator();
-		return validator;
+		Schema schemaXSD = xsdSource.getSchema(aXMLSource.getSchemaName());
+		return schemaXSD.newValidator();
 	}
 
 	public XMLValidator(final XSDSource aXsdSource) {

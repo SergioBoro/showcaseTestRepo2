@@ -190,6 +190,23 @@ public class XFormSLTest extends AbstractTest {
 		assertNotNull(xforms.getXFormParts().get(2 + 1));
 	}
 
+	@Test
+	public void testJythonTemplateGateway() {
+		XFormContext context = new XFormContext(getTestContext1());
+		DataPanelElementInfo elementInfo =
+			new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
+		elementInfo.setProcName("XFormGetJythonProc.py");
+		elementInfo.setTemplateName("template/Base.py");
+		generateTestTabWithElement(elementInfo);
+		XFormGetCommand command = new XFormGetCommand(context, elementInfo);
+		XForm xforms = command.execute();
+
+		assertNotNull(xforms);
+		assertNotNull(xforms.getXFormParts());
+		final int numParts = 4;
+		assertEquals(numParts, xforms.getXFormParts().size());
+	}
+
 	@Test(expected = GeneralException.class)
 	public void testJythonNotExists() {
 		XFormContext context = new XFormContext(getTestContext1());

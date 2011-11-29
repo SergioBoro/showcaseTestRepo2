@@ -3,7 +3,6 @@ package ru.curs.showcase.model.datapanel;
 import java.io.InputStream;
 import java.sql.SQLException;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.SPQuery;
 import ru.curs.showcase.util.*;
@@ -31,11 +30,6 @@ public class DataPanelDBGateway extends SPQuery implements DataPanelGateway {
 	@Override
 	protected String getSqlTemplate(final int index) {
 		return "{? = call %s(?, ?, ?, ?)}";
-	}
-
-	@Override
-	protected DataPanelElementType getElementType() {
-		return DataPanelElementType.NON_DP_ELEMENT;
 	}
 
 	@Override

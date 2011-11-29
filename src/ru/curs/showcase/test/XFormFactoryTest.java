@@ -1,6 +1,6 @@
 package ru.curs.showcase.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 
@@ -37,8 +37,8 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	/**
-	 * Test method for {@link ru.curs.showcase.model.html.xform.XFormFactory#build()}
-	 * .
+	 * Test method for
+	 * {@link ru.curs.showcase.model.html.xform.XFormFactory#build()} .
 	 * 
 	 * @throws Exception
 	 */
@@ -55,6 +55,23 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		XFormGateway gateway = new XFormDBGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 		return new XFormFactory(raw);
+	}
+
+	@Test
+	public void testDBTemplate() throws Exception {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo element = new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
+		generateTestTabWithElement(element);
+		element.setProcName("xforms_proc_all");
+		element.setTemplateName("xforms_template_uploaders_simple");
+		XFormGateway gateway = new XFormDBGateway();
+		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
+		XFormFactory factory = new XFormFactory(raw);
+		XForm xform = factory.build();
+
+		assertNotNull(xform);
+		final int num = 4;
+		assertEquals(num, xform.getXFormParts().size());
 	}
 
 	@Test

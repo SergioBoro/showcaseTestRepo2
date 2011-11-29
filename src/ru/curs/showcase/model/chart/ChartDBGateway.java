@@ -3,7 +3,7 @@ package ru.curs.showcase.model.chart;
 import java.sql.SQLException;
 
 import oracle.jdbc.OracleTypes;
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.*;
@@ -41,11 +41,6 @@ public class ChartDBGateway extends CompBasedElementSPQuery implements ChartGate
 		} else {
 			return "{? = call %s(?, ?, ?, ?, ?, ?, ?)}";
 		}
-	}
-
-	@Override
-	protected DataPanelElementType getElementType() {
-		return DataPanelElementType.CHART;
 	}
 
 	@Override

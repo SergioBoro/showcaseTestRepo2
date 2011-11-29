@@ -14,6 +14,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
+import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -23,7 +24,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
-public abstract class SPQuery extends DataCheckGateway implements Closeable {
+public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	public static final String SQL_MARKER = "SQL";
 	private static final int MAIN_CONTEXT_INDEX = 2;
 	private static final int ADD_CONTEXT_INDEX = 3;

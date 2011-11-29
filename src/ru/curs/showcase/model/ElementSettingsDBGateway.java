@@ -2,7 +2,7 @@ package ru.curs.showcase.model;
 
 import java.sql.SQLException;
 
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.util.Description;
 
@@ -13,8 +13,7 @@ import ru.curs.showcase.util.Description;
  * 
  */
 @Description(process = "Загрузка метаданных для элемента инф. панели из БД")
-public class ElementSettingsDBGateway extends ElementSPQuery implements
-		ElementSettingsGateway {
+public class ElementSettingsDBGateway extends ElementSPQuery implements ElementSettingsGateway {
 
 	private static final int OUT_SETTINGS_PARAM = 7;
 	private static final int ERROR_MES_INDEX = 8;
@@ -23,7 +22,7 @@ public class ElementSettingsDBGateway extends ElementSPQuery implements
 	public ElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
 		init(context, elementInfo);
-		setProcName(elementInfo.getMetadataProc().getName());
+		setProcName(getProcName());
 
 		try {
 			prepareElementStatementWithErrorMes();
@@ -37,6 +36,11 @@ public class ElementSettingsDBGateway extends ElementSPQuery implements
 	}
 
 	@Override
+	public String getProcName() {
+		return getElementInfo().getMetadataProc().getName();
+	}
+
+	@Override
 	public int getOutSettingsParam() {
 		return OUT_SETTINGS_PARAM;
 	}
@@ -44,11 +48,6 @@ public class ElementSettingsDBGateway extends ElementSPQuery implements
 	@Override
 	protected String getSqlTemplate(final int index) {
 		return "{? = call %s(?, ?, ?, ?, ?, ?, ?)}";
-	}
-
-	@Override
-	protected DataPanelElementType getElementType() {
-		return getElementInfo().getType();
 	}
 
 	@Override

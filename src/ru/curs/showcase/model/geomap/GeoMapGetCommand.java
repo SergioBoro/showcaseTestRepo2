@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.geomap;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.GeoMap;
 import ru.curs.showcase.model.*;
@@ -16,6 +16,11 @@ public final class GeoMapGetCommand extends DataPanelElementCommand<GeoMap> {
 
 	public GeoMapGetCommand(final CompositeContext aContext, final DataPanelElementInfo aElInfo) {
 		super(aContext, aElInfo);
+	}
+
+	@Override
+	protected DataPanelElementType getRequestedElementType() {
+		return DataPanelElementType.GEOMAP;
 	}
 
 	@Override

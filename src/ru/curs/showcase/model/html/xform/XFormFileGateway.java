@@ -7,14 +7,13 @@ import javax.xml.transform.TransformerException;
 import org.slf4j.*;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.model.DataCheckGateway;
 import ru.curs.showcase.model.html.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
-import ru.curs.showcase.util.xml.XMLUtils;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Шлюз для работы с файлами данных XForms. Используется в отладочных целях.
@@ -25,11 +24,8 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 @Description(process = "Загрузка данных для XForm из файлов")
-public final class XFormFileGateway extends DataCheckGateway implements XFormGateway {
+public final class XFormFileGateway extends GeneralXMLHelper implements XFormGateway {
 
-	/**
-	 * LOGGER.
-	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(XFormFileGateway.class);
 	/**
 	 * Тестовый каталог для данных, сохраняемых через шлюз.
@@ -44,14 +40,8 @@ public final class XFormFileGateway extends DataCheckGateway implements XFormGat
 	}
 
 	@Override
-	protected DataPanelElementType getElementType() {
-		return DataPanelElementType.XFORMS;
-	}
-
-	@Override
 	public void saveData(final CompositeContext context, final DataPanelElementInfo element,
 			final String data) {
-		check(element);
 		String fileName =
 			String.format(TMP_TEST_DATA_DIR + "/%s_updated.xml", element.getProcName());
 		try {

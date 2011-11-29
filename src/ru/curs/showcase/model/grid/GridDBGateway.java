@@ -113,11 +113,6 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 	}
 
 	@Override
-	protected DataPanelElementType getElementType() {
-		return DataPanelElementType.GRID;
-	}
-
-	@Override
 	public ElementRawData getRawData(final GridContext context,
 			final DataPanelElementInfo elementInfo) {
 		init(context, elementInfo);

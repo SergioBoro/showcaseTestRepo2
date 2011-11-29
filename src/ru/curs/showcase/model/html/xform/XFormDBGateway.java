@@ -72,11 +72,6 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 	}
 
 	@Override
-	protected DataPanelElementType getElementType() {
-		return DataPanelElementType.XFORMS;
-	}
-
-	@Override
 	public void saveData(final CompositeContext context, final DataPanelElementInfo elementInfo,
 			final String data) {
 		init(context, elementInfo);

@@ -9,6 +9,8 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.WebText;
+import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.model.IncorrectElementException;
 import ru.curs.showcase.model.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.util.ReflectionUtils;
 
@@ -94,5 +96,58 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 		assertTrue(wt.getData().startsWith("<h3>Здесь находится просто статический текст</h3>"));
 		assertTrue(wt.getData().endsWith(
 				"<p>Коля у Светы спёр кассеты, а Света у Коли уперла костет</p>"));
+	}
+
+	/**
+	 * Проверка на то, что описание элемента не полностью заполнено.
+	 * 
+	 * @throws Throwable
+	 */
+	@Test(expected = IncorrectElementException.class)
+	public void testWrongElement1() throws Throwable {
+		DataPanelElementInfo element =
+			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+
+		WebTextGetCommand command = new WebTextGetCommand(new CompositeContext(), element);
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			throw e.getCause();
+		}
+	}
+
+	/**
+	 * Проверка на то, что описание элемента не полностью заполнено.
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@Test(expected = IncorrectElementException.class)
+	public void testWrongElement2() throws Throwable {
+		DataPanelElementInfo element = new DataPanelElementInfo("id", null);
+		element.setProcName("proc");
+
+		WebTextGetCommand command = new WebTextGetCommand(new CompositeContext(), element);
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			throw e.getCause();
+		}
+	}
+
+	/**
+	 * Проверка на то, что описание элемента не полностью заполнено.
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@Test(expected = IncorrectElementException.class)
+	public void testWrongElement3() throws Throwable {
+		WebTextGetCommand command = new WebTextGetCommand(new CompositeContext(), null);
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			throw e.getCause();
+		}
 	}
 }

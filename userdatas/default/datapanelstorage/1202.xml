@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>	
+	<tab id="01" name="Загрузка файлов. Передача названий файлов в XForm">
+		<element id="0101" type="xforms" template="xforms_template_uploaders_simple"
+			proc="xforms_proc_all">
+			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
+			<proc id="04" name="xforms_upload_by_userdata" type="UPLOAD" />
+			<proc id="041" name="xforms_upload_by_userdata" type="UPLOAD" />
+			<proc id="05" name="xforms_upload_by_userdata" type="UPLOAD" />
+			<proc id="051" name="xforms_upload_by_userdata" type="UPLOAD" />			
+		</element>			
+	</tab>
+	<tab id="02" name="Double Jython!">
+		<element id="0102" type="xforms" proc="XFormGetJythonProc.py" template="template/Base.py"/>
+	</tab>
+</datapanel>

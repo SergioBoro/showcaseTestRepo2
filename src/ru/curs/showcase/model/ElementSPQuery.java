@@ -92,7 +92,6 @@ public abstract class ElementSPQuery extends SPQuery {
 	 */
 	protected void init(final CompositeContext aContext, final DataPanelElementInfo aElementInfo) {
 		elementInfo = aElementInfo;
-		check(elementInfo);
 		setContext(aContext);
 		setProcName(elementInfo.getProcName());
 	}
@@ -105,7 +104,12 @@ public abstract class ElementSPQuery extends SPQuery {
 		if (validatedSettings == null) {
 			InputStream settings = getInputStreamForXMLParam(getOutSettingsParam());
 			if (settings != null) {
-				validatedSettings = XMLUtils.xsdValidateAppDataSafe(settings, getSettingsSchema());
+				if (getSettingsSchema() != null) {
+					validatedSettings =
+						XMLUtils.xsdValidateAppDataSafe(settings, getSettingsSchema());
+				} else {
+					validatedSettings = settings;
+				}
 			}
 		}
 		return validatedSettings;
@@ -124,8 +128,8 @@ public abstract class ElementSPQuery extends SPQuery {
 	/**
 	 * Возвращает имя схемы для проверки свойств элемента.
 	 */
-	private String getSettingsSchema() {
-		return getElementType().getSettingsSchemaName();
+	protected String getSettingsSchema() {
+		return getElementInfo().getType().getSettingsSchemaName();
 	}
 
 	protected int getElementIdIndex(final int index) {

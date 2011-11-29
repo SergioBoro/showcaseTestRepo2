@@ -2,7 +2,6 @@ package ru.curs.showcase.model.frame;
 
 import java.sql.SQLException;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.SPQuery;
 import ru.curs.showcase.util.Description;
@@ -29,11 +28,6 @@ public class MainPageFrameDBGateway extends SPQuery implements MainPageFrameGate
 	@Override
 	protected String getSqlTemplate(final int index) {
 		return "{? = call %s(?, ?, ?)}";
-	}
-
-	@Override
-	protected DataPanelElementType getElementType() {
-		return DataPanelElementType.NON_DP_ELEMENT;
 	}
 
 	@Override
