@@ -4,16 +4,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.*;
 import org.junit.runners.Suite.SuiteClasses;
 
-import ru.curs.showcase.test.*;
+import ru.curs.showcase.test.html.FramesSLTest;
 
 /**
- * Все тесты для навигатора.
+ * Тесты для модулей главной страницы.
  * 
  * @author den
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ NavigatorGatewayTest.class, NavigatorFactoryTest.class, NavigatorSLTest.class })
-public class NavigatorTests {
+@SuiteClasses({ FramesSLTest.class })
+public class MainPageTests {
 
 }

@@ -204,7 +204,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		String linkId = "proc8";
-		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
+		final String fileName = "ru/curs/showcase/test/util/TestTextSample.xml";
 		OutputStreamDataFile file = getTestFile(fileName);
 
 		UserXMLTransformer transformer =

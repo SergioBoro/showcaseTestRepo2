@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.util;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.model.command.ExternalCommand;
 import ru.curs.showcase.model.jython.JythonExternalCommandGateway;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.test.ws.*;
 
 /**

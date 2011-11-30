@@ -4,16 +4,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.*;
 import org.junit.runners.Suite.SuiteClasses;
 
-import ru.curs.showcase.test.*;
+import ru.curs.showcase.test.html.*;
 
 /**
- * Все тесты для навигатора.
+ * Все тесты для вебтекста.
  * 
  * @author den
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ NavigatorGatewayTest.class, NavigatorFactoryTest.class, NavigatorSLTest.class })
-public class NavigatorTests {
+@SuiteClasses({ WebTextGatewayAndFactoryTest.class, WebTextSLTest.class })
+public class WebTextTests {
 
 }

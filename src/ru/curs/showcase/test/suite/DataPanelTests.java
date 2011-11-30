@@ -7,13 +7,13 @@ import org.junit.runners.Suite.SuiteClasses;
 import ru.curs.showcase.test.*;
 
 /**
- * Все тесты для навигатора.
+ * Тесты для инф. панели.
  * 
  * @author den
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ NavigatorGatewayTest.class, NavigatorFactoryTest.class, NavigatorSLTest.class })
-public class NavigatorTests {
+@SuiteClasses({ DataPanelElementInfoTest.class, DataPanelFactoryTest.class, DataPanelSLTest.class })
+public class DataPanelTests {
 
 }

@@ -7,13 +7,13 @@ import org.junit.runners.Suite.SuiteClasses;
 import ru.curs.showcase.test.*;
 
 /**
- * Все тесты для навигатора.
+ * Тесты для графиков.
  * 
  * @author den
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ NavigatorGatewayTest.class, NavigatorFactoryTest.class, NavigatorSLTest.class })
-public class NavigatorTests {
+@SuiteClasses({ ChartGatewayTest.class, ChartFactoryTest.class, ChartSLTest.class })
+public class ChartTests {
 
 }

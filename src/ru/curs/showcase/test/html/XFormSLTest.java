@@ -154,7 +154,7 @@ public class XFormSLTest extends AbstractTest {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms2Info();
 		String linkId = "proc7";
-		final String fileName = "ru/curs/showcase/test/TestTextSample.xml";
+		final String fileName = "ru/curs/showcase/test/util/TestTextSample.xml";
 		OutputStreamDataFile file = getTestFile(fileName);
 		XFormUploadCommand command = new XFormUploadCommand(context, element, linkId, file);
 		command.execute();
@@ -198,6 +198,23 @@ public class XFormSLTest extends AbstractTest {
 			new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
 		elementInfo.setProcName("XFormGetJythonProc.py");
 		elementInfo.setTemplateName("template/Base.py");
+		generateTestTabWithElement(elementInfo);
+		XFormGetCommand command = new XFormGetCommand(context, elementInfo);
+		XForm xforms = command.execute();
+
+		assertNotNull(xforms);
+		assertNotNull(xforms.getXFormParts());
+		final int numParts = 4;
+		assertEquals(numParts, xforms.getXFormParts().size());
+	}
+
+	@Test
+	public void testSPTemplateGateway() {
+		XFormContext context = new XFormContext(getTestContext1());
+		DataPanelElementInfo elementInfo =
+			new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
+		elementInfo.setProcName("xforms_proc_all");
+		elementInfo.setTemplateName("xforms_template_uploaders_simple");
 		generateTestTabWithElement(elementInfo);
 		XFormGetCommand command = new XFormGetCommand(context, elementInfo);
 		XForm xforms = command.execute();

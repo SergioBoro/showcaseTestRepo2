@@ -7,13 +7,13 @@ import org.junit.runners.Suite.SuiteClasses;
 import ru.curs.showcase.test.*;
 
 /**
- * Все тесты для навигатора.
+ * Тесты модулей времени выполнения.
  * 
  * @author den
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ NavigatorGatewayTest.class, NavigatorFactoryTest.class, NavigatorSLTest.class })
-public class NavigatorTests {
+@SuiteClasses({ AppPropsTest.class, RuntimeTest.class })
+public class RunTimeTests {
 
 }

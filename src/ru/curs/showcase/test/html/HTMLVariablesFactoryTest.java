@@ -18,7 +18,7 @@ import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
  * @author den
  * 
  */
-public class HTMLVariablesTest extends AbstractTestWithDefaultUserData {
+public class HTMLVariablesFactoryTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Переменные в XForms + подстановка userdata.

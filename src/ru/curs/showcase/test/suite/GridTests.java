@@ -4,16 +4,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.*;
 import org.junit.runners.Suite.SuiteClasses;
 
-import ru.curs.showcase.test.*;
+import ru.curs.showcase.test.grid.*;
 
 /**
- * Все тесты для навигатора.
+ * Все тесты для грида.
  * 
  * @author den
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ NavigatorGatewayTest.class, NavigatorFactoryTest.class, NavigatorSLTest.class })
-public class NavigatorTests {
+@SuiteClasses({ GridGatewayTest.class, GridFactoryTest.class, GridSLTest.class })
+public class GridTests {
 
 }

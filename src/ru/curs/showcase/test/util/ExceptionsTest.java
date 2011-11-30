@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.util;
 
 import static org.junit.Assert.*;
 
@@ -25,6 +25,7 @@ import ru.curs.showcase.model.html.HTMLGateway;
 import ru.curs.showcase.model.html.webtext.*;
 import ru.curs.showcase.model.html.xform.*;
 import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;
