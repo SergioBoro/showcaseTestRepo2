@@ -99,6 +99,30 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 				"<p>Коля у Светы спёр кассеты, а Света у Коли уперла костет</p>"));
 	}
 
+	@Test
+	public void testJythonTransform() {
+		DataPanelElementInfo el = new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		CompositeContext context = getTestContext3();
+		el.setTransformName("transform/pas.py");
+		generateTestTabWithElement(el);
+
+		WebTextGetCommand command = new WebTextGetCommand(context, el);
+		WebText wt = command.execute();
+		assertTrue(wt.getData().indexOf("Паспорт региона") > -1);
+	}
+
+	@Test
+	public void testSPTransform() {
+		DataPanelElementInfo el = new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		CompositeContext context = getTestContext3();
+		el.setTransformName("webtext_pas_tranform");
+		generateTestTabWithElement(el);
+
+		WebTextGetCommand command = new WebTextGetCommand(context, el);
+		WebText wt = command.execute();
+		assertTrue(wt.getData().indexOf("Паспорт региона") > -1);
+	}
+
 	/**
 	 * Проверка на то, что описание элемента не полностью заполнено.
 	 * 

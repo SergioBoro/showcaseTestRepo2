@@ -21,7 +21,7 @@ elementId = ""
 
 class WebTextGetJythonProc(JythonProc):        
     def getRawData(self, context, elId):
-        global main, add, session, filter
+        global main, add, session, filter, elementId
         main = context.getMain().encode("utf-8")
         if context.getAdditional():
             add = context.getAdditional().encode("utf-8")

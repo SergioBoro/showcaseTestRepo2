@@ -1,9 +1,12 @@
 package ru.curs.showcase.model.html.xform;
 
+import java.io.InputStream;
+
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.command.InputParam;
-import ru.curs.showcase.util.OutputStreamDataFile;
+import ru.curs.showcase.model.html.XSLTransformationSelector;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.UserXMLTransformer;
 
 /**
@@ -31,9 +34,15 @@ public final class XFormDownloadCommand extends XFormContextCommand<OutputStream
 	protected void mainProc() throws Exception {
 		XFormGateway gateway = new XFormDBGateway();
 		OutputStreamDataFile file = gateway.downloadFile(getContext(), getElementInfo(), linkId);
+
+		DataPanelElementProc proc = getElementInfo().getProcs().get(linkId);
+		XSLTransformationSelector selector =
+			new XSLTransformationSelector(getContext(), getElementInfo(), proc);
+		DataFile<InputStream> transform = selector.getData();
+
 		UserXMLTransformer transformer =
-			new UserXMLTransformer(file, getElementInfo().getProcs().get(linkId),
-					new DataPanelElementContext(getContext(), getElementInfo()));
+			new UserXMLTransformer(file, proc, transform, new DataPanelElementContext(
+					getContext(), getElementInfo()));
 		transformer.checkAndTransform();
 		setResult(transformer.getOutputStreamResult());
 	}

@@ -30,6 +30,9 @@ import ch.qos.logback.classic.spi.LoggingEvent;
  */
 public class AbstractTest extends GeneralXMLHelper {
 
+	private static final String TEST_GOOD_XSD = "test_good.xsd";
+	private static final String TEST_GOOD_SMALL_XSD = "test_good_small.xsd";
+	private static final String XFORMS_DOWNLOAD2 = "xforms_download2";
 	protected static final String TEST_GOOD_XSL = "test_good.xsl";
 	protected static final String XFORMS_UPLOAD1 = "xforms_upload1";
 	protected static final String TEST_XML = "test.xml";
@@ -240,18 +243,50 @@ public class AbstractTest extends GeneralXMLHelper {
 
 		proc = new DataPanelElementProc();
 		proc.setId("proc6");
-		proc.setName("xforms_download2");
+		proc.setName(XFORMS_DOWNLOAD2);
 		proc.setType(DataPanelElementProcType.DOWNLOAD);
-		proc.setSchemaName("test_good_small.xsd");
+		proc.setSchemaName(TEST_GOOD_SMALL_XSD);
 		proc.setTransformName(TEST_GOOD_XSL);
+		elInfo.getProcs().put(proc.getId(), proc);
+
+		proc = new DataPanelElementProc();
+		proc.setId("proc6j");
+		proc.setName(XFORMS_DOWNLOAD2);
+		proc.setType(DataPanelElementProcType.DOWNLOAD);
+		proc.setSchemaName(TEST_GOOD_SMALL_XSD);
+		proc.setTransformName("transform/TestGood.py");
+		elInfo.getProcs().put(proc.getId(), proc);
+
+		proc = new DataPanelElementProc();
+		proc.setId("proc6sp");
+		proc.setName(XFORMS_DOWNLOAD2);
+		proc.setType(DataPanelElementProcType.DOWNLOAD);
+		proc.setSchemaName(TEST_GOOD_SMALL_XSD);
+		proc.setTransformName("xformTransformTestGood");
 		elInfo.getProcs().put(proc.getId(), proc);
 
 		proc = new DataPanelElementProc();
 		proc.setId("proc7");
 		proc.setName(XFORMS_UPLOAD1);
 		proc.setType(DataPanelElementProcType.UPLOAD);
-		proc.setSchemaName("test_good.xsd");
+		proc.setSchemaName(TEST_GOOD_XSD);
 		proc.setTransformName(TEST_GOOD_XSL);
+		elInfo.getProcs().put(proc.getId(), proc);
+
+		proc = new DataPanelElementProc();
+		proc.setId("proc7j");
+		proc.setName(XFORMS_UPLOAD1);
+		proc.setType(DataPanelElementProcType.UPLOAD);
+		proc.setSchemaName(TEST_GOOD_XSD);
+		proc.setTransformName("transform/TestGood.py");
+		elInfo.getProcs().put(proc.getId(), proc);
+
+		proc = new DataPanelElementProc();
+		proc.setId("proc7sp");
+		proc.setName(XFORMS_UPLOAD1);
+		proc.setType(DataPanelElementProcType.UPLOAD);
+		proc.setSchemaName(TEST_GOOD_XSD);
+		proc.setTransformName("xformTransformTestGood");
 		elInfo.getProcs().put(proc.getId(), proc);
 
 		proc = new DataPanelElementProc();
@@ -272,7 +307,7 @@ public class AbstractTest extends GeneralXMLHelper {
 		proc.setId("proc10");
 		proc.setName("xforms_download3_wrong");
 		proc.setType(DataPanelElementProcType.DOWNLOAD);
-		proc.setSchemaName("test_good_small.xsd");
+		proc.setSchemaName(TEST_GOOD_SMALL_XSD);
 		elInfo.getProcs().put(proc.getId(), proc);
 
 		generateTestTabWithElement(elInfo);

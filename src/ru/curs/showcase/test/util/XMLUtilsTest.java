@@ -75,7 +75,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	 * Тест1 ф-ции xsltTransform.
 	 */
 	@Test
-	public final void test1XsltTransform() throws SAXException, IOException, SQLException,
+	public final void testXSLTransformForSQLXML() throws SAXException, IOException, SQLException,
 			TransformerException {
 		DocumentBuilder db = XMLUtils.createBuilder();
 
@@ -102,7 +102,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	 * @throws SQLException
 	 */
 	@Test(expected = XSLTTransformException.class)
-	public final void test2XsltTransformForCheckSaxon() throws SAXException, IOException,
+	public final void testXSLTransformForCheckSaxon() throws SAXException, IOException,
 			SQLException, TransformerException {
 		DocumentBuilder db = XMLUtils.createBuilder();
 
@@ -123,7 +123,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	 * Тест3 ф-ции xsltTransform.
 	 */
 	@Test
-	public final void test3XsltTransform() throws SAXException, IOException {
+	public final void testXSLTransformForDocument() throws SAXException, IOException {
 		DocumentBuilder db = XMLUtils.createBuilder();
 
 		org.w3c.dom.Document doc =
@@ -140,29 +140,10 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	}
 
 	/**
-	 * Тест4 ф-ции xsltTransform.
-	 */
-	@Test
-	public final void test4XsltTransform() {
-		SAXParser saxParser = XMLUtils.createSAXParser();
-
-		String xsltFileName = TEST_GOOD_XSL;
-
-		String out =
-			XMLUtils.xsltTransform(saxParser,
-					XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML), xsltFileName);
-
-		assertTrue(out.indexOf(TEST_STR1) > -1);
-
-		assertTrue(out.indexOf(TEST_STR2) > -1);
-
-	}
-
-	/**
 	 * Тест5 ф-ции xsltTransform.
 	 */
 	@Test
-	public final void test5XsltTransform() {
+	public final void testXSLTransformForInputStream() {
 
 		String xsltFileName = TEST_GOOD_XSL;
 
@@ -179,7 +160,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	 * Тест ф-ции xsltTransformForGrid.
 	 */
 	@Test
-	public final void testXsltTransformForGrid() throws SAXException, IOException {
+	public final void testXSLTransformForGrid() throws SAXException, IOException {
 		DocumentBuilder db = XMLUtils.createBuilder();
 
 		org.w3c.dom.Document doc =

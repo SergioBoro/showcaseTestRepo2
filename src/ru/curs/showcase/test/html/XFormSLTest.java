@@ -150,10 +150,13 @@ public class XFormSLTest extends AbstractTest {
 	 * @throws IOException
 	 */
 	@Test
-	public void testXFormsXMLUploadGood() throws IOException {
+	public void testXFormsXMLUploadWithFileXSLGood() throws IOException {
+		uploadTestBase("proc7");
+	}
+
+	private void uploadTestBase(final String linkId) throws IOException {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms2Info();
-		String linkId = "proc7";
 		final String fileName = "ru/curs/showcase/test/util/TestTextSample.xml";
 		OutputStreamDataFile file = getTestFile(fileName);
 		XFormUploadCommand command = new XFormUploadCommand(context, element, linkId, file);
@@ -161,16 +164,39 @@ public class XFormSLTest extends AbstractTest {
 		assertNotNull(context.getSession());
 	}
 
+	@Test
+	public void testXFormsXMLUploadWithXSLJythonGood() throws IOException {
+		uploadTestBase("proc7j");
+	}
+
+	@Test
+	public void testXFormsXMLUploadWithXSLStoredProcGood() throws IOException {
+		uploadTestBase("proc7sp");
+	}
+
 	/**
 	 * Проверка скачивания XML файла для XForms через ServiceLayer.
 	 */
 	@Test
-	public void testXFormsXMLDownloadGood() {
+	public void testXFormsXMLDownloadXSLFileGood() {
+		downloadTestBase("proc6");
+	}
+
+	private void downloadTestBase(final String linkId) {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
-		String linkId = "proc6";
 		XFormDownloadCommand command = new XFormDownloadCommand(context, elementInfo, linkId);
 		command.execute();
+	}
+
+	@Test
+	public void testXFormsXMLDownloadXSLJythonGood() {
+		downloadTestBase("proc6j");
+	}
+
+	@Test
+	public void testXFormsXMLDownloadXSLStoredProcGood() {
+		downloadTestBase("proc6sp");
 	}
 
 	@Test

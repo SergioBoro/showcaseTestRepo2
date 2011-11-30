@@ -44,6 +44,11 @@ public final class UserXMLTransformer {
 	private final DataPanelElementContext context;
 
 	/**
+	 * Используемая трансформация.
+	 */
+	private final DataFile<InputStream> transform;
+
+	/**
 	 * Проверяет исходник и трансформирует его если в процедуре трансформации
 	 * описаны соответствующие схема и файл трансформации.
 	 * 
@@ -61,7 +66,7 @@ public final class UserXMLTransformer {
 		}
 		if (proc.getTransformName() != null) {
 			InputStream is = StreamConvertor.outputToInputStream(subject.getData());
-			String res = XMLUtils.xsltTransform(is, context, proc.getTransformName());
+			String res = XMLUtils.xsltTransform(is, context, transform);
 			result = TextUtils.stringToStream(res);
 		}
 	}
@@ -83,25 +88,26 @@ public final class UserXMLTransformer {
 	}
 
 	public UserXMLTransformer(final OutputStreamDataFile aSubject,
-			final DataPanelElementProc aProc, final DataPanelElementContext aContext) {
+			final DataPanelElementProc aProc, final DataFile<InputStream> aTransform,
+			final DataPanelElementContext aContext) {
 		super();
 		subject = aSubject;
 		proc = aProc;
 		context = aContext;
+		transform = aTransform;
 	}
 
 	public UserXMLTransformer(final String aSubject, final DataPanelElementProc aProc,
-			final DataPanelElementContext aContext) throws IOException {
+			final DataFile<InputStream> aTransform, final DataPanelElementContext aContext)
+			throws IOException {
 		super();
 		strSubject = aSubject;
-		// некрасиво, зато меньше кода, по сравнению с вариантом преобразования
-		// в Document
 		if (aSubject != null) {
 			ByteArrayOutputStream os =
 				StreamConvertor.inputToOutputStream(TextUtils.stringToStream(aSubject));
 			subject = new OutputStreamDataFile(os, "данные формы");
 		}
-
+		transform = aTransform;
 		proc = aProc;
 		context = aContext;
 	}

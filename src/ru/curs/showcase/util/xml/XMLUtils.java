@@ -7,7 +7,6 @@ import javax.xml.bind.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.*;
 import javax.xml.validation.*;
 
@@ -179,7 +178,7 @@ public final class XMLUtils {
 	private static Transformer createTransformer(final DataFile<InputStream> transform)
 			throws TransformerConfigurationException {
 		Transformer tr;
-		if (transform != null) {
+		if (transform.getData() != null) {
 			tr =
 				javax.xml.transform.TransformerFactory.newInstance().newTransformer(
 						new StreamSource(transform.getData()));
@@ -252,11 +251,11 @@ public final class XMLUtils {
 			final DataPanelElementContext context, final DataFile<InputStream> transform) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			logXSLInput(doc, context, context.getElementInfo().getTransformName());
+			logXSLInput(doc, context, transform.getName());
 			Transformer tr = createTransformer(transform);
 			tr.transform(new DOMSource(doc), new StreamResult(baos));
 			final String result = baos.toString(TextUtils.DEF_ENCODING);
-			logXSLOutput(context, context.getElementInfo().getTransformName(), result);
+			logXSLOutput(context, transform.getName(), result);
 			return result;
 		} catch (IOException | TransformerException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e, context);
@@ -265,19 +264,6 @@ public final class XMLUtils {
 
 	public static String documentToString(final Document doc) {
 		return xsltTransform(doc, (String) null);
-	}
-
-	public static String xsltTransform(final SAXParser parser, final InputStream is,
-			final String xsltFileName) {
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			Transformer tr = createTransformer(xsltFileName);
-			tr.transform(new SAXSource(parser.getXMLReader(), new InputSource(is)),
-					new StreamResult(baos));
-			return baos.toString(TextUtils.DEF_ENCODING);
-		} catch (IOException | TransformerException | SAXException e) {
-			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
-		}
 	}
 
 	public static String xsltTransform(final InputStream is, final String xsltFileName) {
@@ -292,15 +278,15 @@ public final class XMLUtils {
 	}
 
 	public static String xsltTransform(final InputStream is,
-			final DataPanelElementContext context, final String xsltFileName) {
+			final DataPanelElementContext context, final DataFile<InputStream> transform) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			InputStream source = is;
-			source = (InputStream) logXSLInput(source, context, xsltFileName);
-			Transformer tr = createTransformer(xsltFileName);
+			source = (InputStream) logXSLInput(source, context, transform.getName());
+			Transformer tr = createTransformer(transform);
 			tr.transform(new StreamSource(source), new StreamResult(baos));
 			String result = baos.toString(TextUtils.DEF_ENCODING);
-			logXSLOutput(context, xsltFileName, result);
+			logXSLOutput(context, transform.getName(), result);
 			return result;
 		} catch (IOException | TransformerException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e, context);

@@ -22,7 +22,7 @@ public class ElementPartsDBGateway implements ElementPartsGateway {
 	public DataFile<InputStream> getRawData(final CompositeContext aContext,
 			final DataPanelElementInfo aElementInfo) {
 		if (isEmpty()) {
-			return null;
+			return new DataFile<InputStream>(null, sourceName);
 		}
 		ElementSettingsGateway gateway = new ElementSettingsDBGateway() {
 			@Override
