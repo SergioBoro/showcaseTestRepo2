@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.html;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,7 @@ import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.html.xform.*;
+import ru.curs.showcase.test.AbstractTest;
 import ru.curs.showcase.util.*;
 
 /**

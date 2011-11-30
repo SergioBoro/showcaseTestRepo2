@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.grid;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +10,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.grid.*;
+import ru.curs.showcase.test.AbstractTest;
 import ru.curs.showcase.util.ExcelFile;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 

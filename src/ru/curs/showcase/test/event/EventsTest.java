@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.event;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +10,7 @@ import ru.curs.gwt.datagrid.model.Record;
 import ru.curs.gwt.datagrid.selection.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 

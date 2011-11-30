@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.html;
 
 import static org.junit.Assert.assertTrue;
 
@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XForm;
 import ru.curs.showcase.model.html.HTMLBasedElementRawData;
 import ru.curs.showcase.model.html.xform.*;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 
 /**
  * Специальный тестовый класс для проверки замены переменных в HTML блоках в

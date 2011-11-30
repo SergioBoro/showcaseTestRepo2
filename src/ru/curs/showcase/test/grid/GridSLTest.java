@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.grid;
 
 import static org.junit.Assert.*;
 
@@ -14,6 +14,7 @@ import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.test.AbstractTest;
 import ru.curs.showcase.util.ServletUtils;
 
 /**

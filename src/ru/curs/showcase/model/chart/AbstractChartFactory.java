@@ -6,7 +6,7 @@ import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
-import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.SAXTagHandler;
 
 import com.google.gson.Gson;

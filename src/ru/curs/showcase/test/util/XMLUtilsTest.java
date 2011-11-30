@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.util;
 
 import static org.junit.Assert.*;
 
@@ -19,6 +19,7 @@ import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.runtime.ConnectionFactory;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.ReflectionUtils;
 import ru.curs.showcase.util.xml.*;
 

@@ -4,9 +4,9 @@ import java.io.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.jython.*;
-import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.SettingsFileType;
 
 /**
  * Шлюз к БД для загрузки частей, требуемых для построения элемента.
@@ -14,9 +14,8 @@ import ru.curs.showcase.util.TextUtils;
  * @author den
  * 
  */
-public class ElementPartsJythonGateway extends JythonQuery<String> implements
-		ElementSettingsGateway {
-
+public class ElementPartsJythonGateway extends JythonQuery<String> implements ElementPartsGateway {
+	private String sourceName;
 	private CompositeContext context;
 	private DataPanelElementInfo elementInfo;
 
@@ -25,7 +24,7 @@ public class ElementPartsJythonGateway extends JythonQuery<String> implements
 	}
 
 	@Override
-	public ElementRawData getRawData(final CompositeContext aContext,
+	public DataFile<InputStream> getRawData(final CompositeContext aContext,
 			final DataPanelElementInfo aElementInfo) {
 		context = aContext;
 		elementInfo = aElementInfo;
@@ -36,7 +35,7 @@ public class ElementPartsJythonGateway extends JythonQuery<String> implements
 		} catch (IOException e) {
 			throw new JythonException(RESULT_FORMAT_ERROR);
 		}
-		return new ElementRawData(data, elementInfo, context);
+		return new DataFile<InputStream>(data, sourceName);
 	}
 
 	@Override
@@ -46,7 +45,17 @@ public class ElementPartsJythonGateway extends JythonQuery<String> implements
 
 	@Override
 	protected String getJythonProcName() {
-		return elementInfo.getTemplateName();
+		return sourceName;
+	}
+
+	@Override
+	public void setSource(final String aSourceName) {
+		sourceName = aSourceName;
+	}
+
+	@Override
+	public void setType(final SettingsFileType aType) {
+		// не используется
 	}
 
 }

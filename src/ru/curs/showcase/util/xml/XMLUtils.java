@@ -164,11 +164,25 @@ public final class XMLUtils {
 			throws TransformerConfigurationException, IOException {
 		Transformer tr;
 		if (xsltFileName != null) {
-			String xsltFullFileName = AppProps.XSLTTRANSFORMSDIR + "/" + xsltFileName;
+			String xsltFullFileName = SettingsFileType.XSLT.getFileDir() + "/" + xsltFileName;
 
 			tr =
 				javax.xml.transform.TransformerFactory.newInstance().newTransformer(
 						new StreamSource(AppProps.loadUserDataToStream(xsltFullFileName)));
+		} else {
+			tr = javax.xml.transform.TransformerFactory.newInstance().newTransformer();
+		}
+		setupStdTransformerParams(tr, true);
+		return tr;
+	}
+
+	private static Transformer createTransformer(final DataFile<InputStream> transform)
+			throws TransformerConfigurationException {
+		Transformer tr;
+		if (transform != null) {
+			tr =
+				javax.xml.transform.TransformerFactory.newInstance().newTransformer(
+						new StreamSource(transform.getData()));
 		} else {
 			tr = javax.xml.transform.TransformerFactory.newInstance().newTransformer();
 		}
@@ -201,7 +215,7 @@ public final class XMLUtils {
 	public static void stringToXMLFile(final String content, final String filename)
 			throws SAXException, IOException, TransformerException {
 		Document doc = stringToDocument(content);
-		Transformer tr = createTransformer(null);
+		Transformer tr = createTransformer((String) null);
 		tr.transform(new DOMSource(doc), new StreamResult(new File(filename)));
 	}
 
@@ -235,11 +249,11 @@ public final class XMLUtils {
 	}
 
 	public static String xsltTransform(final org.w3c.dom.Document doc,
-			final DataPanelElementContext context) {
+			final DataPanelElementContext context, final DataFile<InputStream> transform) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			logXSLInput(doc, context, context.getElementInfo().getTransformName());
-			Transformer tr = createTransformer(context.getElementInfo().getTransformName());
+			Transformer tr = createTransformer(transform);
 			tr.transform(new DOMSource(doc), new StreamResult(baos));
 			final String result = baos.toString(TextUtils.DEF_ENCODING);
 			logXSLOutput(context, context.getElementInfo().getTransformName(), result);
@@ -334,7 +348,7 @@ public final class XMLUtils {
 	public static String streamToString(final InputStream is) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			Transformer tr = createTransformer(null);
+			Transformer tr = createTransformer((String) null);
 			tr.transform(new StreamSource(is), new StreamResult(baos));
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (IOException | TransformerException e) {

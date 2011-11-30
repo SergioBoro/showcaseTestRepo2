@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.html;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +12,7 @@ import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.IncorrectElementException;
 import ru.curs.showcase.model.html.webtext.WebTextGetCommand;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.ReflectionUtils;
 
 /**

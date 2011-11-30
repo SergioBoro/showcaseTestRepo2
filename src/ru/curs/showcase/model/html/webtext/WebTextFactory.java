@@ -3,11 +3,13 @@
  */
 package ru.curs.showcase.model.html.webtext;
 
+import java.io.InputStream;
+
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.html.WebText;
-import ru.curs.showcase.model.event.HTMLBasedElementFactory;
-import ru.curs.showcase.model.html.HTMLBasedElementRawData;
+import ru.curs.showcase.model.html.*;
+import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -33,9 +35,12 @@ public final class WebTextFactory extends HTMLBasedElementFactory {
 
 	@Override
 	protected void transformData() {
+		XSLTransformationSelector selector =
+			new XSLTransformationSelector(getCallContext(), getElementInfo());
+		DataFile<InputStream> transform = selector.getData();
 		String out =
 			XMLUtils.xsltTransform(getSource().getData(), new DataPanelElementContext(
-					getCallContext(), getElementInfo()));
+					getCallContext(), getElementInfo()), transform);
 		result.setData(out);
 	}
 

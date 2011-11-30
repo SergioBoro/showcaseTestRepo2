@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.html;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +10,7 @@ import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.model.ValidateException;
 import ru.curs.showcase.model.html.*;
 import ru.curs.showcase.model.html.webtext.*;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 import ru.curs.showcase.util.xml.XMLUtils;
 

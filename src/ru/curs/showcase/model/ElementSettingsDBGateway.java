@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.util.Description;
+import ru.curs.showcase.util.*;
 
 /**
  * Шлюз к БД для получения настроек элементов.

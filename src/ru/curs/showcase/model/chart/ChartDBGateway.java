@@ -7,7 +7,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.Description;
+import ru.curs.showcase.util.*;
 
 /**
  * Шлюз для получения данных для графика из БД.

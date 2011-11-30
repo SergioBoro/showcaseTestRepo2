@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ru.curs.showcase.model;
 
 import java.io.*;

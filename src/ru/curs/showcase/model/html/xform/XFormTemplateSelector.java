@@ -1,8 +1,9 @@
 package ru.curs.showcase.model.html.xform;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.SourceSelector;
 import ru.curs.showcase.model.html.*;
+import ru.curs.showcase.util.exception.SettingsFileType;
 
 /**
  * Класс для выбора источника данных для шаблона XForms.
@@ -10,26 +11,28 @@ import ru.curs.showcase.model.html.*;
  * @author den
  * 
  */
-public class XFormTemplateSelector extends SourceSelector<ElementSettingsGateway> {
+public class XFormTemplateSelector extends SourceSelector<ElementPartsGateway> {
 
 	public XFormTemplateSelector(final DataPanelElementInfo elInfo) {
 		super(elInfo.getTemplateName());
 	}
 
 	@Override
-	public ElementSettingsGateway getGateway() {
-		ElementSettingsGateway res;
+	public ElementPartsGateway getGateway() {
+		ElementPartsGateway gateway;
 		switch (sourceType()) {
 		case JYTHON:
-			res = new ElementPartsJythonGateway();
+			gateway = new ElementPartsJythonGateway();
 			break;
 		case FILE:
-			res = new ElementPartsFileGateway();
+			gateway = new ElementPartsFileGateway();
 			break;
 		default:
-			res = new ElementPartsDBGateway();
+			gateway = new ElementPartsDBGateway();
 		}
-		return res;
+		gateway.setSource(getSourceName());
+		gateway.setType(SettingsFileType.XFORM);
+		return gateway;
 	}
 
 }

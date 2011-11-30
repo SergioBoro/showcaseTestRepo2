@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.chart.*;
-import ru.curs.showcase.util.ReflectionUtils;
+import ru.curs.showcase.util.*;
 
 /**
  * Тесты фабрики графиков.

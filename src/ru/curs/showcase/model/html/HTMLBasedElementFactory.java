@@ -1,9 +1,9 @@
-package ru.curs.showcase.model.event;
+package ru.curs.showcase.model.html;
 
 import java.util.Collection;
 
 import ru.curs.showcase.app.api.html.*;
-import ru.curs.showcase.model.html.HTMLBasedElementRawData;
+import ru.curs.showcase.model.event.*;
 
 /**
  * Базовый класс фабрики для элементов, основанных на HTML.

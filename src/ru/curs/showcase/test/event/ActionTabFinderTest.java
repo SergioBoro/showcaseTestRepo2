@@ -1,10 +1,11 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.event;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.event.Action;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.xml.XMLFormatException;
 
 /**

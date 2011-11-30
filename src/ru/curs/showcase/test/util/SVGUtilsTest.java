@@ -1,9 +1,10 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.util;
 
 import java.io.*;
 
 import org.junit.Test;
 
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.SVGConvertor;
 
 /**

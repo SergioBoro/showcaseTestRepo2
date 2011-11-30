@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.grid;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +12,7 @@ import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.runtime.ConnectionFactory;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 
 /**
  * Тесты для шлюза грида.

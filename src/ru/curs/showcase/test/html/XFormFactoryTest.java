@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.html;
 
 import static org.junit.Assert.*;
 
@@ -17,6 +17,8 @@ import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.model.html.HTMLBasedElementRawData;
 import ru.curs.showcase.model.html.xform.*;
 import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
+import ru.curs.showcase.util.exception.SettingsFileType;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -100,7 +102,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 	public void testGenerateUploaders() throws SAXException, IOException {
 		DocumentBuilder builder = XMLUtils.createBuilder();
 		Document doc =
-			builder.parse(AppProps.loadUserDataToStream(AppProps.XFORMS_DIR
+			builder.parse(AppProps.loadUserDataToStream(SettingsFileType.XFORM.getFileDir()
 					+ "/Showcase_Template_all.xml"));
 		DataPanelElementInfo dpei = new DataPanelElementInfo("01", DataPanelElementType.XFORMS);
 		generateTestTabWithElement(dpei);

@@ -37,7 +37,7 @@ public abstract class SourceSelector<T> {
 		return "xml";
 	}
 
-	protected boolean isEmpty() {
+	private boolean isEmpty() {
 		return (sourceName == null) || sourceName.isEmpty();
 	}
 

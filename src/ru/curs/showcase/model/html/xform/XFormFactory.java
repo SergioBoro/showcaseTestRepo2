@@ -1,6 +1,6 @@
 package ru.curs.showcase.model.html.xform;
 
-import java.io.IOException;
+import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLStreamException;
@@ -13,10 +13,9 @@ import org.xml.sax.SAXException;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.html.XForm;
-import ru.curs.showcase.model.ElementRawData;
-import ru.curs.showcase.model.event.HTMLBasedElementFactory;
-import ru.curs.showcase.model.html.HTMLBasedElementRawData;
+import ru.curs.showcase.model.html.*;
 import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -55,9 +54,10 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 		DocumentBuilder db = XMLUtils.createBuilder();
 		Document template = null;
 		XFormTemplateSelector selector = new XFormTemplateSelector(getElementInfo());
-		ElementRawData data = selector.getGateway().getRawData(getCallContext(), getElementInfo());
+		DataFile<InputStream> data =
+			selector.getGateway().getRawData(getCallContext(), getElementInfo());
 		try {
-			template = db.parse(data.getSettings());
+			template = db.parse(data.getData());
 		} catch (SAXException | IOException e1) {
 			throw new XMLFormatException(getElementInfo().getTemplateName(), e1);
 		}

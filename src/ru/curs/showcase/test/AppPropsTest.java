@@ -11,7 +11,7 @@ import ru.curs.showcase.model.navigator.NavigatorFileGateway;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.SecurityParamsFactory;
 import ru.curs.showcase.util.FileUtils;
-import ru.curs.showcase.util.exception.SettingsFileOpenException;
+import ru.curs.showcase.util.exception.*;
 
 /**
  * Тесты класса AppProps.
@@ -57,12 +57,12 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testDirExists() {
-		checkDir(AppProps.XSLTTRANSFORMSDIR);
+		checkDir(SettingsFileType.XSLT.getFileDir());
 		checkDir(AppProps.XSLTTRANSFORMSFORGRIDDIR);
 		checkDir(DataPanelFileGateway.DP_STORAGE_PARAM_NAME);
 		checkDir(NavigatorFileGateway.NAVIGATORSTORAGE);
 		checkDir(AppProps.SCHEMASDIR);
-		checkDir(AppProps.XFORMS_DIR);
+		checkDir(SettingsFileType.XFORM.getFileDir());
 
 		assertTrue((new File(FileUtils.getResURL(AppProps.SCHEMASDIR).getFile())).exists());
 	}
@@ -83,13 +83,6 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 				AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, TEST1_USERDATA));
 		assertNull(AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP, TEST2_USERDATA));
 		assertNull(AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, TEST2_USERDATA));
-	}
-
-	@Test
-	public void testLogSettings() {
-		final int logSize =
-			Integer.parseInt(FileUtils.getGeneralOptionalParam(LastLogEvents.INTERNAL_LOG_SIZE));
-		assertEquals(logSize, LastLogEvents.getMaxRecords());
 	}
 
 	@Test(expected = NoSuchUserDataException.class)

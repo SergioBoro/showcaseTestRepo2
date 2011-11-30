@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.grid;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +12,7 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.runtime.ProfileReader;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.exception.SettingsFileType;
 
 import com.google.gwt.dom.client.Style.Unit;

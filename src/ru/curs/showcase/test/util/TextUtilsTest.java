@@ -1,9 +1,10 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.util;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.*;
 
 /**

@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.event;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.event.ExecServerActionCommand;
 import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.test.AbstractTest;
 
 /**
  * Тесты для действий и контекста.

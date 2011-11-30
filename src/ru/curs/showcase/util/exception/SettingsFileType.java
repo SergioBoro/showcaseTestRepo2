@@ -13,8 +13,8 @@ public enum SettingsFileType {
 	VERSION("Файл версии приложения"),
 	DATAPANEL("Файл инф. панели"),
 	NAVIGATOR("Файл навигатора"),
-	XFORM("Файл шаблона XForm"),
-	XSLT("Файл XSL трансформации"),
+	XFORM("Файл шаблона XForm", "xforms"),
+	XSLT("Файл XSL трансформации", "xslttransforms"),
 	SOLUTION_MESSAGES("Файл с сообщениями решения для пользователя"),
 	SCHEMA("Файл XSD схемы"),
 	FRAME("Фрейм главной страницы"),
@@ -28,8 +28,19 @@ public enum SettingsFileType {
 	 */
 	private String name;
 
+	/**
+	 * Фиксированное имя каталога для файлов данного типа. Задается только для
+	 * тех типов, для которых оно формируется нестандартным образом.
+	 */
+	private String dir = null;
+
 	SettingsFileType(final String aName) {
 		name = aName;
+	}
+
+	SettingsFileType(final String aName, final String aDir) {
+		name = aName;
+		dir = aDir;
 	}
 
 	public String getName() {
@@ -41,6 +52,10 @@ public enum SettingsFileType {
 	}
 
 	public String getFileDir() {
+		if (dir != null) {
+			return dir;
+		}
 		return this.name().toLowerCase().replace("_", "");
 	}
+
 }

@@ -1,11 +1,11 @@
 package ru.curs.showcase.model.html;
 
-import java.io.IOException;
+import java.io.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.exception.*;
 
 /**
@@ -14,18 +14,30 @@ import ru.curs.showcase.util.exception.*;
  * @author den
  * 
  */
-public class ElementPartsFileGateway implements ElementSettingsGateway {
+public class ElementPartsFileGateway implements ElementPartsGateway {
+	private String sourceName;
+	private SettingsFileType type;
 
 	@Override
-	public ElementRawData getRawData(final CompositeContext context,
+	public DataFile<InputStream> getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
-		String file = String.format("%s/%s", AppProps.XFORMS_DIR, elementInfo.getTemplateName());
+		String file = String.format("%s/%s", type.getFileDir(), sourceName);
 		try {
-			return new ElementRawData(AppProps.loadUserDataToStream(file), elementInfo, context);
+			return new DataFile<InputStream>(AppProps.loadUserDataToStream(file), sourceName);
 		} catch (IOException e) {
-			throw new SettingsFileOpenException(e, elementInfo.getTemplateName(),
-					SettingsFileType.XFORM);
+			throw new SettingsFileOpenException(e, sourceName, type);
 		}
+	}
+
+	@Override
+	public void setSource(final String aSourceName) {
+		sourceName = aSourceName;
+
+	}
+
+	@Override
+	public void setType(final SettingsFileType aType) {
+		type = aType;
 	}
 
 }

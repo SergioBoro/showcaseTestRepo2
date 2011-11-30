@@ -51,10 +51,6 @@ public final class AppProps {
 	 */
 	public static final String PROPFILENAME = "app.properties";
 	/**
-	 * XSLTTRANSFORMSDIR.
-	 */
-	public static final String XSLTTRANSFORMSDIR = "xslttransforms";
-	/**
 	 * XSLTTRANSFORMSFORGRIDDIR.
 	 */
 	public static final String XSLTTRANSFORMSFORGRIDDIR = "xslttransformsforgrid";
@@ -71,11 +67,6 @@ public final class AppProps {
 	 * GRIDDATAXSL.
 	 */
 	public static final String GRIDDATAXSL = "GridData.xsl";
-
-	/**
-	 * Каталог для шаблонов XForms и тестовых данных XForms.
-	 */
-	public static final String XFORMS_DIR = "xforms";
 
 	/**
 	 * NAVIGATOR_ICONS_DIRNAME.

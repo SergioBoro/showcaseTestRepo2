@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.util;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +12,7 @@ import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.server.ProductionModeInitializer;
 import ru.curs.showcase.model.datapanel.DataPanelFileGateway;
 import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -230,4 +231,10 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 		assertEquals("test_proc 'first\n',2,'null'", value);
 	}
 
+	@Test
+	public void testLogSettings() {
+		final int logSize =
+			Integer.parseInt(FileUtils.getGeneralOptionalParam(LastLogEvents.INTERNAL_LOG_SIZE));
+		assertEquals(logSize, LastLogEvents.getMaxRecords());
+	}
 }

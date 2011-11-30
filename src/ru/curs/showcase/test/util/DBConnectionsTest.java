@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.util;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,7 @@ import java.sql.*;
 import org.junit.Test;
 
 import ru.curs.showcase.runtime.ConnectionFactory;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 
 /**
  * Тесты соединения с БД.
