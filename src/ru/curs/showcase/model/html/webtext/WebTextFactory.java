@@ -5,7 +5,6 @@ package ru.curs.showcase.model.html.webtext;
 
 import java.io.InputStream;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.model.html.*;
@@ -38,9 +37,7 @@ public final class WebTextFactory extends HTMLBasedElementFactory {
 		XSLTransformationSelector selector =
 			new XSLTransformationSelector(getCallContext(), getElementInfo());
 		DataFile<InputStream> transform = selector.getData();
-		String out =
-			XMLUtils.xsltTransform(getSource().getData(), new DataPanelElementContext(
-					getCallContext(), getElementInfo()), transform);
+		String out = XMLUtils.xsltTransform(getSource().getData(), transform);
 		result.setData(out);
 	}
 

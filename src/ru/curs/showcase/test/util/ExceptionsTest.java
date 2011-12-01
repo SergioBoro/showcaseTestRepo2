@@ -488,4 +488,22 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		}
 	}
 
+	@Test
+	public void testContextToExceptionApply() {
+		XFormContext context = new XFormContext();
+		context.setMain(MAIN_CONTEXT_TAG);
+		context.setAdditional(ADD_CONDITION);
+		DataPanelElementInfo elInfo =
+			XFormInfoFactory.generateXFormsTransformationInfo("test_bad.xsl");
+
+		XFormXSLTransformCommand command = new XFormXSLTransformCommand(context, elInfo);
+		try {
+			command.execute();
+			fail();
+		} catch (GeneralException e) {
+			assertNotNull(e.getContext());
+			assertEquals(context, e.getContext().getCompositeContext());
+			assertEquals(elInfo, e.getContext().getElementInfo());
+		}
+	}
 }

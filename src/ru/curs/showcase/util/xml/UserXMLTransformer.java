@@ -7,7 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementProc;
 import ru.curs.showcase.util.*;
 
 /**
@@ -39,11 +39,6 @@ public final class UserXMLTransformer {
 	private InputStream result = null;
 
 	/**
-	 * Контекст вызова для преобразования.
-	 */
-	private final DataPanelElementContext context;
-
-	/**
 	 * Используемая трансформация.
 	 */
 	private final DataFile<InputStream> transform;
@@ -66,7 +61,7 @@ public final class UserXMLTransformer {
 		}
 		if (proc.getTransformName() != null) {
 			InputStream is = StreamConvertor.outputToInputStream(subject.getData());
-			String res = XMLUtils.xsltTransform(is, context, transform);
+			String res = XMLUtils.xsltTransform(is, transform);
 			result = TextUtils.stringToStream(res);
 		}
 	}
@@ -88,18 +83,15 @@ public final class UserXMLTransformer {
 	}
 
 	public UserXMLTransformer(final OutputStreamDataFile aSubject,
-			final DataPanelElementProc aProc, final DataFile<InputStream> aTransform,
-			final DataPanelElementContext aContext) {
+			final DataPanelElementProc aProc, final DataFile<InputStream> aTransform) {
 		super();
 		subject = aSubject;
 		proc = aProc;
-		context = aContext;
 		transform = aTransform;
 	}
 
 	public UserXMLTransformer(final String aSubject, final DataPanelElementProc aProc,
-			final DataFile<InputStream> aTransform, final DataPanelElementContext aContext)
-			throws IOException {
+			final DataFile<InputStream> aTransform) throws IOException {
 		super();
 		strSubject = aSubject;
 		if (aSubject != null) {
@@ -109,7 +101,6 @@ public final class UserXMLTransformer {
 		}
 		transform = aTransform;
 		proc = aProc;
-		context = aContext;
 	}
 
 	public void setSubject(final OutputStreamDataFile aSubject) {

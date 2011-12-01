@@ -52,11 +52,7 @@ public abstract class AbstractFilesHandler {
 
 		try {
 			handleTemplateMethod();
-		} catch (SerializationException e) {
-			GeneralExceptionFactory.build(e);
-		} catch (IOException e) {
-			GeneralExceptionFactory.build(e);
-		} catch (FileUploadException e) {
+		} catch (SerializationException | IOException | FileUploadException e) {
 			GeneralExceptionFactory.build(e);
 		}
 	}

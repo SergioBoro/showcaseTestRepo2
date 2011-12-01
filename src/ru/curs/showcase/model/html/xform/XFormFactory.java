@@ -11,7 +11,6 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.html.XForm;
 import ru.curs.showcase.model.html.*;
 import ru.curs.showcase.runtime.*;
@@ -73,8 +72,7 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 			result.setXFormParts(XFormCutter.xFormParts(html));
 		} catch (TransformerException | XMLStreamException e) {
 			throw new XSLTTransformException(String.format(XFORMS_CREATE_ERROR, getElementInfo()
-					.getFullId()), e, new DataPanelElementContext(getCallContext(),
-					getElementInfo()));
+					.getFullId()), e);
 		}
 	}
 

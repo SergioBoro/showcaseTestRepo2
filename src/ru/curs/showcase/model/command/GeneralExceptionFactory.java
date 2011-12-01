@@ -41,17 +41,25 @@ public final class GeneralExceptionFactory {
 	 * @return - исключение.
 	 * @param original
 	 *            - оригинальное исключение.
+	 * @param aCurrentContext
+	 *            - текущий контекст.
 	 */
-	public static GeneralException build(final Throwable original) {
+	public static GeneralException build(final Throwable original,
+			final DataPanelElementContext aCurrentContext) {
 		log(original);
 		GeneralException res = new GeneralException(original, getUserMessage(original));
 		res.setOriginalExceptionClass(original.getClass().getName());
 		res.setOriginalMessage(getOriginalMessage(original));
 		res.setType(getType(original));
-		res.setContext(getContext(original));
+		res.setContext(getContext(original, aCurrentContext));
 		res.setMessageType(getMessageType(original));
 		res.setNeedDatailedInfo(getNeedDatailedInfo(original));
 		return res;
+	}
+
+	public static GeneralException build(final Throwable original) {
+		return build(original, null);
+
 	}
 
 	private static void log(final Throwable original) {
@@ -73,11 +81,16 @@ public final class GeneralExceptionFactory {
 		return MessageType.ERROR;
 	}
 
-	private static DataPanelElementContext getContext(final Throwable e) {
+	private static DataPanelElementContext getContext(final Throwable e,
+			final DataPanelElementContext aCurrentContext) {
 		if (e instanceof BaseException) {
+			DataPanelElementContext result = ((BaseException) e).getContext();
+			if (result == null) {
+				return aCurrentContext;
+			}
 			return ((BaseException) e).getContext();
 		}
-		return null;
+		return aCurrentContext;
 	}
 
 	private static ExceptionType getType(final Throwable e) {

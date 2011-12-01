@@ -40,9 +40,7 @@ public final class XFormDownloadCommand extends XFormContextCommand<OutputStream
 			new XSLTransformationSelector(getContext(), getElementInfo(), proc);
 		DataFile<InputStream> transform = selector.getData();
 
-		UserXMLTransformer transformer =
-			new UserXMLTransformer(file, proc, transform, new DataPanelElementContext(
-					getContext(), getElementInfo()));
+		UserXMLTransformer transformer = new UserXMLTransformer(file, proc, transform);
 		transformer.checkAndTransform();
 		setResult(transformer.getOutputStreamResult());
 	}

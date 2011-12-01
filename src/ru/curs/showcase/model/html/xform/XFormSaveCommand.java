@@ -27,8 +27,7 @@ public final class XFormSaveCommand extends XFormContextCommand<Void> {
 			new XSLTransformationSelector(getContext(), getElementInfo(), proc);
 		DataFile<InputStream> transform = selector.getData();
 		UserXMLTransformer transformer =
-			new UserXMLTransformer(getContext().getFormData(), proc, transform,
-					new DataPanelElementContext(getContext(), getElementInfo()));
+			new UserXMLTransformer(getContext().getFormData(), proc, transform);
 		transformer.checkAndTransform();
 		XFormGateway gateway = new XFormDBGateway();
 		gateway.saveData(getContext(), getElementInfo(), transformer.getStringResult());

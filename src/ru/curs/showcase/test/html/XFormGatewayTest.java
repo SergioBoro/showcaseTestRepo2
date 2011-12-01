@@ -212,9 +212,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 			new XSLTransformationSelector(context, elementInfo, proc);
 		DataFile<InputStream> transform = selector.getData();
 
-		UserXMLTransformer transformer =
-			new UserXMLTransformer(file, proc, transform, new DataPanelElementContext(context,
-					elementInfo));
+		UserXMLTransformer transformer = new UserXMLTransformer(file, proc, transform);
 		transformer.checkAndTransform();
 
 		XFormGateway gateway = new XFormDBGateway();
@@ -240,9 +238,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 			new XSLTransformationSelector(context, elementInfo, proc);
 		DataFile<InputStream> transform = selector.getData();
 
-		UserXMLTransformer transformer =
-			new UserXMLTransformer(file, proc, transform, new DataPanelElementContext(context,
-					elementInfo));
+		UserXMLTransformer transformer = new UserXMLTransformer(file, proc, transform);
 		transformer.checkAndTransform();
 	}
 
@@ -264,10 +260,9 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 			new XSLTransformationSelector(context, elementInfo, proc);
 		DataFile<InputStream> transform = selector.getData();
 
-		UserXMLTransformer transformer =
-			new UserXMLTransformer(content, proc, transform, new DataPanelElementContext(context,
-					elementInfo));
+		UserXMLTransformer transformer = new UserXMLTransformer(content, proc, transform);
 		transformer.checkAndTransform();
+
 		gateway = new XFormDBGateway();
 		gateway.saveData(context, elementInfo, transformer.getStringResult());
 	}
@@ -284,9 +279,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 			new XSLTransformationSelector(context, elementInfo, proc);
 		DataFile<InputStream> transform = selector.getData();
 
-		UserXMLTransformer transformer =
-			new UserXMLTransformer(content, proc, transform, new DataPanelElementContext(context,
-					elementInfo));
+		UserXMLTransformer transformer = new UserXMLTransformer(content, proc, transform);
 		transformer.checkAndTransform();
 	}
 
@@ -302,9 +295,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 			new XSLTransformationSelector(context, elementInfo, proc);
 		DataFile<InputStream> transform = selector.getData();
 
-		UserXMLTransformer transformer =
-			new UserXMLTransformer(content, proc, transform, new DataPanelElementContext(context,
-					elementInfo));
+		UserXMLTransformer transformer = new UserXMLTransformer(content, proc, transform);
 		transformer.checkAndTransform();
 	}
 

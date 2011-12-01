@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.AppRegistry;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.ObjectSerializer;
@@ -73,8 +73,12 @@ public abstract class ServiceLayerCommand<T> {
 			// CHECKSTYLE:OFF
 		} catch (Throwable e) {
 			// CHECKSTYLE:ON
-			throw exceptionFactory(e);
+			throw GeneralExceptionFactory.build(e, generateDataPanelElementContext());
 		}
+	}
+
+	protected DataPanelElementContext generateDataPanelElementContext() {
+		return new DataPanelElementContext(context);
 	}
 
 	private T templateMethod() throws Exception {
@@ -96,10 +100,6 @@ public abstract class ServiceLayerCommand<T> {
 			// CHECKSTYLE:ON
 			throw new ShowcaseExportException(e);
 		}
-	}
-
-	protected GeneralException exceptionFactory(final Throwable e) {
-		return GeneralExceptionFactory.build(e);
 	}
 
 	private void initCommandContext() {

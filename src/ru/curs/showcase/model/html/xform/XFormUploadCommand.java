@@ -51,9 +51,7 @@ public final class XFormUploadCommand extends XFormContextCommand<Void> {
 			new XSLTransformationSelector(getContext(), getElementInfo(), proc);
 		DataFile<InputStream> transform = selector.getData();
 
-		UserXMLTransformer transformer =
-			new UserXMLTransformer(file, proc, transform, new DataPanelElementContext(
-					getContext(), getElementInfo()));
+		UserXMLTransformer transformer = new UserXMLTransformer(file, proc, transform);
 		transformer.checkAndTransform();
 		XFormGateway gateway = new XFormDBGateway();
 		gateway.uploadFile(getContext(), getElementInfo(), linkId,

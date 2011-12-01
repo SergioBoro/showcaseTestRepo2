@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import org.w3c.dom.Document;
 
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.html.XSLTransformationSelector;
 import ru.curs.showcase.util.DataFile;
@@ -28,7 +28,6 @@ public final class XFormXSLTransformCommand extends XFormContextCommand<String> 
 			new XSLTransformationSelector(getContext(), getElementInfo());
 		DataFile<InputStream> transform = selector.getData();
 		Document doc = XMLUtils.stringToDocument(getContext().getFormData());
-		setResult(XMLUtils.xsltTransform(doc, new DataPanelElementContext(getContext(),
-				getElementInfo()), transform));
+		setResult(XMLUtils.xsltTransform(doc, transform));
 	}
 }

@@ -16,7 +16,6 @@ import org.slf4j.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
@@ -248,17 +247,17 @@ public final class XMLUtils {
 	}
 
 	public static String xsltTransform(final org.w3c.dom.Document doc,
-			final DataPanelElementContext context, final DataFile<InputStream> transform) {
+			final DataFile<InputStream> transform) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			logXSLInput(doc, context, transform.getName());
+			logXSLInput(doc, transform.getName());
 			Transformer tr = createTransformer(transform);
 			tr.transform(new DOMSource(doc), new StreamResult(baos));
 			final String result = baos.toString(TextUtils.DEF_ENCODING);
-			logXSLOutput(context, transform.getName(), result);
+			logXSLOutput(transform.getName(), result);
 			return result;
 		} catch (IOException | TransformerException e) {
-			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e, context);
+			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
 		}
 	}
 
@@ -277,24 +276,23 @@ public final class XMLUtils {
 		}
 	}
 
-	public static String xsltTransform(final InputStream is,
-			final DataPanelElementContext context, final DataFile<InputStream> transform) {
+	public static String
+			xsltTransform(final InputStream is, final DataFile<InputStream> transform) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			InputStream source = is;
-			source = (InputStream) logXSLInput(source, context, transform.getName());
+			source = (InputStream) logXSLInput(source, transform.getName());
 			Transformer tr = createTransformer(transform);
 			tr.transform(new StreamSource(source), new StreamResult(baos));
 			String result = baos.toString(TextUtils.DEF_ENCODING);
-			logXSLOutput(context, transform.getName(), result);
+			logXSLOutput(transform.getName(), result);
 			return result;
 		} catch (IOException | TransformerException e) {
-			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e, context);
+			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
 		}
 	}
 
-	private static Object logXSLInput(final Object source, final DataPanelElementContext context,
-			final String xsltFileName) {
+	private static Object logXSLInput(final Object source, final String xsltFileName) {
 		String value = null;
 		Object sourceCopy = source;
 		if ((!LOGGER.isInfoEnabled()) || (xsltFileName == null)) {
@@ -320,8 +318,7 @@ public final class XMLUtils {
 		return sourceCopy;
 	}
 
-	private static void logXSLOutput(final DataPanelElementContext context,
-			final String xsltFileName, final String result) {
+	private static void logXSLOutput(final String xsltFileName, final String result) {
 		if (xsltFileName == null) {
 			return;
 		}

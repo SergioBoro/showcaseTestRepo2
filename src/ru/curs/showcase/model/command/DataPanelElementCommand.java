@@ -36,4 +36,9 @@ public abstract class DataPanelElementCommand<T> extends ServiceLayerCommand<T> 
 	}
 
 	protected abstract DataPanelElementType getRequestedElementType();
+
+	@Override
+	protected DataPanelElementContext generateDataPanelElementContext() {
+		return new DataPanelElementContext(getContext(), elementInfo);
+	}
 }
