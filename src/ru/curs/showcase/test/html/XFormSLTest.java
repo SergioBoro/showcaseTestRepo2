@@ -166,12 +166,12 @@ public class XFormSLTest extends AbstractTest {
 
 	@Test
 	public void testXFormsXMLUploadWithXSLJythonGood() throws IOException {
-		uploadTestBase("proc7j");
+		uploadTestBase("proc7jj");
 	}
 
 	@Test
 	public void testXFormsXMLUploadWithXSLStoredProcGood() throws IOException {
-		uploadTestBase("proc7sp");
+		uploadTestBase("proc7spsp");
 	}
 
 	/**
@@ -191,12 +191,12 @@ public class XFormSLTest extends AbstractTest {
 
 	@Test
 	public void testXFormsXMLDownloadXSLJythonGood() {
-		downloadTestBase("proc6j");
+		downloadTestBase("proc6jj");
 	}
 
 	@Test
 	public void testXFormsXMLDownloadXSLStoredProcGood() {
-		downloadTestBase("proc6sp");
+		downloadTestBase("proc6spsp");
 	}
 
 	@Test

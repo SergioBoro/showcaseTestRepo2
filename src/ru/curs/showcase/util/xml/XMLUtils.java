@@ -28,8 +28,7 @@ public final class XMLUtils {
 
 	public static Schema createSchemaForFile(final File file) throws SAXException {
 		SchemaFactory schemaFactory = createSchemaFactory();
-		Schema schemaXSD = schemaFactory.newSchema(file);
-		return schemaXSD;
+		return schemaFactory.newSchema(file);
 	}
 
 	public static final String XML_VERSION_1_0_ENCODING_UTF_8 =
@@ -590,5 +589,10 @@ public final class XMLUtils {
 		result = result.replace("&lt;", "<");
 		result = result.replace("&gt;", ">");
 		return result;
+	}
+
+	public static Schema createSchemaForStream(final InputStream aData) throws SAXException {
+		SchemaFactory schemaFactory = createSchemaFactory();
+		return schemaFactory.newSchema(new StreamSource(aData));
 	}
 }

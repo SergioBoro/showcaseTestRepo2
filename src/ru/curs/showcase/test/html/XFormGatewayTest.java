@@ -206,14 +206,11 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		String linkId = "proc8";
 		final String fileName = "ru/curs/showcase/test/util/TestTextSample.xml";
 		OutputStreamDataFile file = getTestFile(fileName);
-
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
-		XSLTransformationSelector selector =
-			new XSLTransformationSelector(context, elementInfo, proc);
-		DataFile<InputStream> transform = selector.getData();
 
-		UserXMLTransformer transformer = new UserXMLTransformer(file, proc, transform);
-		transformer.checkAndTransform();
+		SelectableXMLTransformer transformer =
+			new SelectableXMLTransformer(file, proc, context, elementInfo);
+		transformer.transform();
 
 		XFormGateway gateway = new XFormDBGateway();
 		gateway.uploadFile(context, elementInfo, linkId, transformer.getInputStreamResult());
@@ -234,12 +231,10 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		OutputStreamDataFile file = gateway.downloadFile(context, elementInfo, linkId);
 
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
-		XSLTransformationSelector selector =
-			new XSLTransformationSelector(context, elementInfo, proc);
-		DataFile<InputStream> transform = selector.getData();
 
-		UserXMLTransformer transformer = new UserXMLTransformer(file, proc, transform);
-		transformer.checkAndTransform();
+		SelectableXMLTransformer transformer =
+			new SelectableXMLTransformer(file, proc, context, elementInfo);
+		transformer.transform();
 	}
 
 	/**
@@ -256,12 +251,9 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		String content = getNewContentBasedOnExisting(context, elementInfo, gateway);
 
 		DataPanelElementProc proc = elementInfo.getSaveProc();
-		XSLTransformationSelector selector =
-			new XSLTransformationSelector(context, elementInfo, proc);
-		DataFile<InputStream> transform = selector.getData();
-
-		UserXMLTransformer transformer = new UserXMLTransformer(content, proc, transform);
-		transformer.checkAndTransform();
+		SelectableXMLTransformer transformer =
+			new SelectableXMLTransformer(content, proc, context, elementInfo);
+		transformer.transform();
 
 		gateway = new XFormDBGateway();
 		gateway.saveData(context, elementInfo, transformer.getStringResult());
@@ -275,12 +267,9 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 
 		DataPanelElementProc proc = elementInfo.getSaveProc();
 		CompositeContext context = new CompositeContext();
-		XSLTransformationSelector selector =
-			new XSLTransformationSelector(context, elementInfo, proc);
-		DataFile<InputStream> transform = selector.getData();
-
-		UserXMLTransformer transformer = new UserXMLTransformer(content, proc, transform);
-		transformer.checkAndTransform();
+		SelectableXMLTransformer transformer =
+			new SelectableXMLTransformer(content, proc, context, elementInfo);
+		transformer.transform();
 	}
 
 	@Test(expected = NotXMLException.class)
@@ -291,12 +280,10 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 
 		DataPanelElementProc proc = elementInfo.getSaveProc();
 		CompositeContext context = new CompositeContext();
-		XSLTransformationSelector selector =
-			new XSLTransformationSelector(context, elementInfo, proc);
-		DataFile<InputStream> transform = selector.getData();
 
-		UserXMLTransformer transformer = new UserXMLTransformer(content, proc, transform);
-		transformer.checkAndTransform();
+		SelectableXMLTransformer transformer =
+			new SelectableXMLTransformer(content, proc, context, elementInfo);
+		transformer.transform();
 	}
 
 	@Test

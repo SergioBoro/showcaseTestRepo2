@@ -1,13 +1,10 @@
 package ru.curs.showcase.model.html.xform;
 
-import java.io.InputStream;
-
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.command.InputParam;
-import ru.curs.showcase.model.html.XSLTransformationSelector;
-import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.xml.UserXMLTransformer;
+import ru.curs.showcase.model.html.SelectableXMLTransformer;
+import ru.curs.showcase.util.OutputStreamDataFile;
 
 /**
  * Команда загрузки файла на сервер для XForm.
@@ -47,12 +44,11 @@ public final class XFormUploadCommand extends XFormContextCommand<Void> {
 	@Override
 	protected void mainProc() throws Exception {
 		DataPanelElementProc proc = getElementInfo().getProcs().get(linkId);
-		XSLTransformationSelector selector =
-			new XSLTransformationSelector(getContext(), getElementInfo(), proc);
-		DataFile<InputStream> transform = selector.getData();
 
-		UserXMLTransformer transformer = new UserXMLTransformer(file, proc, transform);
-		transformer.checkAndTransform();
+		SelectableXMLTransformer transformer =
+			new SelectableXMLTransformer(file, proc, getContext(), getElementInfo());
+		transformer.transform();
+
 		XFormGateway gateway = new XFormDBGateway();
 		gateway.uploadFile(getContext(), getElementInfo(), linkId,
 				transformer.getInputStreamResult());

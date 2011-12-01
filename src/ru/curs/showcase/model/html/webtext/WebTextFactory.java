@@ -34,8 +34,8 @@ public final class WebTextFactory extends HTMLBasedElementFactory {
 
 	@Override
 	protected void transformData() {
-		XSLTransformationSelector selector =
-			new XSLTransformationSelector(getCallContext(), getElementInfo());
+		XSLTransformSelector selector =
+			new XSLTransformSelector(getCallContext(), getElementInfo());
 		DataFile<InputStream> transform = selector.getData();
 		String out = XMLUtils.xsltTransform(getSource().getData(), transform);
 		result.setData(out);

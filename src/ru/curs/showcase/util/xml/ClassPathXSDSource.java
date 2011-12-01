@@ -31,7 +31,7 @@ public class ClassPathXSDSource implements XSDSource {
 			throw new SettingsFileOpenException(xsdFullFileName, SettingsFileType.SCHEMA);
 		}
 		xsdFullFileName = xsdURL.getFile();
-		// AppProps.getResURL меняет пробелы на их код, что не нужно - это будет
+		// getResURL меняет пробелы на их код, что не нужно - это будет
 		// сделано при создании StreamSource
 		xsdFullFileName = xsdFullFileName.replace("%20", " ");
 		// создание объекта типа File позволяет работает с путями файловой

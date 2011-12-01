@@ -43,6 +43,8 @@ public final class UserXMLTransformer {
 	 */
 	private final DataFile<InputStream> transform;
 
+	private final XSDSource xsdSource;
+
 	/**
 	 * Проверяет исходник и трансформирует его если в процедуре трансформации
 	 * описаны соответствующие схема и файл трансформации.
@@ -56,7 +58,7 @@ public final class UserXMLTransformer {
 
 		if (proc.getSchemaName() != null) {
 			Document doc = checkForXMLandCreateDoc();
-			XMLValidator validator = new XMLValidator(new UserDataXSDSource());
+			XMLValidator validator = new XMLValidator(xsdSource);
 			validator.validate(new XMLSource(doc, subject.getName(), proc.getSchemaName()));
 		}
 		if (proc.getTransformName() != null) {
@@ -83,15 +85,17 @@ public final class UserXMLTransformer {
 	}
 
 	public UserXMLTransformer(final OutputStreamDataFile aSubject,
-			final DataPanelElementProc aProc, final DataFile<InputStream> aTransform) {
+			final DataPanelElementProc aProc, final DataFile<InputStream> aTransform,
+			final XSDSource aXSDSource) {
 		super();
 		subject = aSubject;
 		proc = aProc;
 		transform = aTransform;
+		xsdSource = aXSDSource;
 	}
 
 	public UserXMLTransformer(final String aSubject, final DataPanelElementProc aProc,
-			final DataFile<InputStream> aTransform) throws IOException {
+			final DataFile<InputStream> aTransform, final XSDSource aXSDSource) throws IOException {
 		super();
 		strSubject = aSubject;
 		if (aSubject != null) {
@@ -101,6 +105,7 @@ public final class UserXMLTransformer {
 		}
 		transform = aTransform;
 		proc = aProc;
+		xsdSource = aXSDSource;
 	}
 
 	public void setSubject(final OutputStreamDataFile aSubject) {

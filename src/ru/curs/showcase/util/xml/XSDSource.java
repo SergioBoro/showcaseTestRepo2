@@ -12,7 +12,7 @@ import ru.curs.showcase.app.api.ExceptionType;
  * @author den
  * 
  */
-interface XSDSource {
+public interface XSDSource {
 
 	/**
 	 * Возвращает файл схемы.

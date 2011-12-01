@@ -250,18 +250,18 @@ public class AbstractTest extends GeneralXMLHelper {
 		elInfo.getProcs().put(proc.getId(), proc);
 
 		proc = new DataPanelElementProc();
-		proc.setId("proc6j");
+		proc.setId("proc6jj");
 		proc.setName(XFORMS_DOWNLOAD2);
 		proc.setType(DataPanelElementProcType.DOWNLOAD);
-		proc.setSchemaName(TEST_GOOD_SMALL_XSD);
+		proc.setSchemaName("schema/TestGoodSmall.py");
 		proc.setTransformName("transform/TestGood.py");
 		elInfo.getProcs().put(proc.getId(), proc);
 
 		proc = new DataPanelElementProc();
-		proc.setId("proc6sp");
+		proc.setId("proc6spsp");
 		proc.setName(XFORMS_DOWNLOAD2);
 		proc.setType(DataPanelElementProcType.DOWNLOAD);
-		proc.setSchemaName(TEST_GOOD_SMALL_XSD);
+		proc.setSchemaName("xformSchemaTestGoodSmall");
 		proc.setTransformName("xformTransformTestGood");
 		elInfo.getProcs().put(proc.getId(), proc);
 
@@ -274,18 +274,18 @@ public class AbstractTest extends GeneralXMLHelper {
 		elInfo.getProcs().put(proc.getId(), proc);
 
 		proc = new DataPanelElementProc();
-		proc.setId("proc7j");
+		proc.setId("proc7jj");
 		proc.setName(XFORMS_UPLOAD1);
 		proc.setType(DataPanelElementProcType.UPLOAD);
-		proc.setSchemaName(TEST_GOOD_XSD);
+		proc.setSchemaName("schema/TestGood.py");
 		proc.setTransformName("transform/TestGood.py");
 		elInfo.getProcs().put(proc.getId(), proc);
 
 		proc = new DataPanelElementProc();
-		proc.setId("proc7sp");
+		proc.setId("proc7spsp");
 		proc.setName(XFORMS_UPLOAD1);
 		proc.setType(DataPanelElementProcType.UPLOAD);
-		proc.setSchemaName(TEST_GOOD_XSD);
+		proc.setSchemaName("xformSchemaTestGood");
 		proc.setTransformName("xformTransformTestGood");
 		elInfo.getProcs().put(proc.getId(), proc);
 

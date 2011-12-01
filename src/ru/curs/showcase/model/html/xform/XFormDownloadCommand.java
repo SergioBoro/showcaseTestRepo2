@@ -1,13 +1,10 @@
 package ru.curs.showcase.model.html.xform;
 
-import java.io.InputStream;
-
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.command.InputParam;
-import ru.curs.showcase.model.html.XSLTransformationSelector;
-import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.xml.UserXMLTransformer;
+import ru.curs.showcase.model.html.SelectableXMLTransformer;
+import ru.curs.showcase.util.OutputStreamDataFile;
 
 /**
  * Команда для скачивания файла с сервера в XForms.
@@ -34,14 +31,12 @@ public final class XFormDownloadCommand extends XFormContextCommand<OutputStream
 	protected void mainProc() throws Exception {
 		XFormGateway gateway = new XFormDBGateway();
 		OutputStreamDataFile file = gateway.downloadFile(getContext(), getElementInfo(), linkId);
-
 		DataPanelElementProc proc = getElementInfo().getProcs().get(linkId);
-		XSLTransformationSelector selector =
-			new XSLTransformationSelector(getContext(), getElementInfo(), proc);
-		DataFile<InputStream> transform = selector.getData();
 
-		UserXMLTransformer transformer = new UserXMLTransformer(file, proc, transform);
-		transformer.checkAndTransform();
+		SelectableXMLTransformer transformer =
+			new SelectableXMLTransformer(file, proc, getContext(), getElementInfo());
+		transformer.transform();
+
 		setResult(transformer.getOutputStreamResult());
 	}
 

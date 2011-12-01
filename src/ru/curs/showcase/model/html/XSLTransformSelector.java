@@ -14,19 +14,19 @@ import ru.curs.showcase.util.exception.SettingsFileType;
  * @author den
  * 
  */
-public class XSLTransformationSelector extends SourceSelector<ElementPartsGateway> {
+public class XSLTransformSelector extends SourceSelector<ElementPartsGateway> {
 
 	private final CompositeContext context;
 	private final DataPanelElementInfo elInfo;
 
-	public XSLTransformationSelector(final CompositeContext aContext,
+	public XSLTransformSelector(final CompositeContext aContext,
 			final DataPanelElementInfo aElInfo) {
 		super(aElInfo.getTransformName());
 		context = aContext;
 		elInfo = aElInfo;
 	}
 
-	public XSLTransformationSelector(final CompositeContext aContext,
+	public XSLTransformSelector(final CompositeContext aContext,
 			final DataPanelElementInfo aElInfo, final DataPanelElementProc proc) {
 		super(proc.getTransformName());
 		context = aContext;
