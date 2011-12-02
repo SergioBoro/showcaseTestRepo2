@@ -9,7 +9,6 @@ import javax.xml.transform.dom.DOMSource;
 import org.slf4j.*;
 import org.w3c.dom.Document;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
@@ -188,8 +187,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	 *            - исходное исключение.
 	 */
 	protected void handleDBQueryException(final SQLException e) {
-		throw new DBQueryException(e, getProcName(), new DataPanelElementContext(getContext()),
-				getClass());
+		throw new DBQueryException(e, getProcName(), getClass());
 	}
 
 	/**

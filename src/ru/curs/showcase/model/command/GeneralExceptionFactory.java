@@ -51,7 +51,7 @@ public final class GeneralExceptionFactory {
 		res.setOriginalExceptionClass(original.getClass().getName());
 		res.setOriginalMessage(getOriginalMessage(original));
 		res.setType(getType(original));
-		res.setContext(getContext(original, aCurrentContext));
+		res.setContext(aCurrentContext);
 		res.setMessageType(getMessageType(original));
 		res.setNeedDatailedInfo(getNeedDatailedInfo(original));
 		return res;
@@ -79,18 +79,6 @@ public final class GeneralExceptionFactory {
 			return ((ValidateException) exc).getUserMessage().getType();
 		}
 		return MessageType.ERROR;
-	}
-
-	private static DataPanelElementContext getContext(final Throwable e,
-			final DataPanelElementContext aCurrentContext) {
-		if (e instanceof BaseException) {
-			DataPanelElementContext result = ((BaseException) e).getContext();
-			if (result == null) {
-				return aCurrentContext;
-			}
-			return ((BaseException) e).getContext();
-		}
-		return aCurrentContext;
 	}
 
 	private static ExceptionType getType(final Throwable e) {

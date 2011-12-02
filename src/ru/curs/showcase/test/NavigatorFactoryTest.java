@@ -7,6 +7,7 @@ import java.io.InputStream;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.GeneralException;
@@ -135,7 +136,8 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			gateway.getRawData(context, "generationtree_re");
 			fail();
 		} catch (DBQueryException e) {
-			GeneralException ge = GeneralExceptionFactory.build(e);
+			GeneralException ge =
+				GeneralExceptionFactory.build(e, new DataPanelElementContext(context));
 			assertNotNull(ge.getContext().getCompositeContext());
 			assertNull(ge.getContext().getElementInfo());
 

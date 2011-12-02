@@ -4,7 +4,8 @@ Created on 02.11.2011
 
 @author: den
 '''
-from ru.curs.showcase.model.jython import JythonProc;
+from ru.curs.showcase.model.jython import JythonProc
+from ru.curs.showcase.runtime import AppInfoSingleton
 #from ru.curs.showcase.model.jython import JythonDTO
 #from ru.curs.showcase.app.api import UserMessage;
 #from ru.curs.showcase.util.xml import XMLUtils;  
@@ -21,7 +22,8 @@ elementId = None
 class test(JythonProc):           
     def getRawData(self, context, element):
         global main, add, session, filter, elementId
-        main = context.getMain().encode("utf-8")
+        if context.getMain():
+            main = context.getMain().encode("utf-8")
         if context.getAdditional():
             add = context.getAdditional().encode("utf-8")
         session = context.getSession().encode("utf-8")
@@ -33,7 +35,7 @@ class test(JythonProc):
 def mainproc():
     root = AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\xslttransforms\\"
     file = open(root + "xformsxslttransformation_test.xsl", "r")
-    return file.read();
+    return unicode(file.read(), "utf-8");
   
 if __name__ == "__main__":       
     mainproc()

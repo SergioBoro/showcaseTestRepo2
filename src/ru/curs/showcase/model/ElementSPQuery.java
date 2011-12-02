@@ -3,7 +3,7 @@ package ru.curs.showcase.model;
 import java.io.InputStream;
 import java.sql.SQLException;
 
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -121,8 +121,7 @@ public abstract class ElementSPQuery extends SPQuery {
 
 	@Override
 	protected void handleDBQueryException(final SQLException e) {
-		throw new DBQueryException(e, getProcName(), new DataPanelElementContext(getContext(),
-				getElementInfo()), getClass());
+		throw new DBQueryException(e, getProcName(), getClass());
 	}
 
 	/**

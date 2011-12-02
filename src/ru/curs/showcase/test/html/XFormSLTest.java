@@ -100,12 +100,36 @@ public class XFormSLTest extends AbstractTest {
 	 * Функция тестирования работы XSLT Submission через ServiceLayer.
 	 */
 	@Test
-	public void testXSLTSubmissionBySL() {
+	public void testXSLTSubmission() {
 		String data = TEST_DATA_TAG;
 		XFormContext context = new XFormContext();
 		context.setFormData(data);
 		DataPanelElementInfo elInfo =
 			XFormInfoFactory.generateXFormsTransformationInfo("xformsxslttransformation_test.xsl");
+		XFormXSLTransformCommand command = new XFormXSLTransformCommand(context, elInfo);
+		String res = command.execute();
+		assertNotNull(res);
+	}
+
+	@Test
+	public void testXSLSubmissionInJython() {
+		String data = TEST_DATA_TAG;
+		XFormContext context = new XFormContext();
+		context.setFormData(data);
+		DataPanelElementInfo elInfo =
+			XFormInfoFactory.generateXFormsTransformationInfo("transform/test.py");
+		XFormXSLTransformCommand command = new XFormXSLTransformCommand(context, elInfo);
+		String res = command.execute();
+		assertNotNull(res);
+	}
+
+	@Test
+	public void testXSLSubmissionInSP() {
+		String data = TEST_DATA_TAG;
+		XFormContext context = new XFormContext();
+		context.setFormData(data);
+		DataPanelElementInfo elInfo =
+			XFormInfoFactory.generateXFormsTransformationInfo("xforms_transform_test");
 		XFormXSLTransformCommand command = new XFormXSLTransformCommand(context, elInfo);
 		String res = command.execute();
 		assertNotNull(res);

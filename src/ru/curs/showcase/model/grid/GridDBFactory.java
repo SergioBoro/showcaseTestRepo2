@@ -15,7 +15,7 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.EventFactory;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.SQLUtils;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -90,8 +90,7 @@ public class GridDBFactory extends AbstractGridFactory {
 		List<String> ids = new ArrayList<>();
 		for (Record rec : getRecordSet().getRecords()) {
 			if (ids.indexOf(rec.getId()) > -1) {
-				throw new ResultSetHandleException(UNIQUE_CHECK_ERROR, getCallContext(),
-						getElementInfo());
+				throw new ResultSetHandleException(UNIQUE_CHECK_ERROR);
 			}
 		}
 

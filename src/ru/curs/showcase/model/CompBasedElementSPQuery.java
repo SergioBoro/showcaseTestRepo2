@@ -22,7 +22,7 @@ public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 			boolean hasResult = execute();
 			if (!hasResult) {
 				checkErrorCode();
-				throw new DBQueryException(getElementInfo(), getContext(),
+				throw new DBQueryException(getElementInfo(),
 						CompBasedElementSPQuery.NO_RESULTSET_ERROR);
 			}
 		} else {

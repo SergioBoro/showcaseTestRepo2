@@ -178,8 +178,7 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 			String objectId = indicatorValuesSql.getString(OBJECT_ID_TAG);
 			GeoMapLayer layer = getData().getLayerByObjectId(objectId);
 			if (layer == null) {
-				throw new ResultSetHandleException(WRONG_OBJ_ERROR, getCallContext(),
-						getElementInfo());
+				throw new ResultSetHandleException(WRONG_OBJ_ERROR);
 			}
 			GeoMapFeature feature = layer.getObjectById(objectId);
 			Double value = indicatorValuesSql.getDouble(TextUtils.capitalizeWord(VALUE_TAG));
@@ -193,8 +192,7 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 		String layerId = rowset.getString(LAYER_ID_TAG);
 		GeoMapLayer layer = getData().getLayerById(layerId);
 		if (layer == null) {
-			throw new ResultSetHandleException(WRONG_LAYER_ERROR, getCallContext(),
-					getElementInfo());
+			throw new ResultSetHandleException(WRONG_LAYER_ERROR);
 		}
 		return layer;
 	}
@@ -214,8 +212,7 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 				ResultSet rs = getStatement().getResultSet();
 				layersSql = SQLUtils.cacheResultSet(rs);
 				if (!getStatement().getMoreResults()) {
-					throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR, getCallContext(),
-							getElementInfo());
+					throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR);
 				}
 				rs = getStatement().getResultSet();
 				pointsSql = SQLUtils.cacheResultSet(rs);
@@ -232,8 +229,7 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 				rs = getStatement().getResultSet();
 				indicatorsSql = SQLUtils.cacheResultSet(rs);
 				if (!getStatement().getMoreResults()) {
-					throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR,
-							getCallContext(), getElementInfo());
+					throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR);
 				}
 				rs = getStatement().getResultSet();
 				indicatorValuesSql = SQLUtils.cacheResultSet(rs);
@@ -244,8 +240,7 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 				layersSql = SQLUtils.cacheResultSet(rs);
 
 				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_2)) {
-					throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR, getCallContext(),
-							getElementInfo());
+					throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR);
 				}
 				rs =
 					(ResultSet) getStatement().getObject(
@@ -271,8 +266,7 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 				indicatorsSql = SQLUtils.cacheResultSet(rs);
 
 				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_5)) {
-					throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR,
-							getCallContext(), getElementInfo());
+					throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR);
 				}
 				rs =
 					(ResultSet) getStatement().getObject(

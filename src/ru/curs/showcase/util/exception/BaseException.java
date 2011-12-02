@@ -4,7 +4,6 @@ import org.python.core.PyException;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExceptionType;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 
 /**
  * Базовый класс серверных исключений Showcase. Наследуется от RuntimeException,
@@ -32,12 +31,6 @@ public abstract class BaseException extends RuntimeException {
 	 * Тип исключения.
 	 */
 	private ExceptionType type;
-
-	/**
-	 * Контекст элемента инф. панели в момент возникновения ошибки. Сохраняется
-	 * только в случае, когда данные могут помочь понять причину ошибки.
-	 */
-	private DataPanelElementContext context;
 
 	public BaseException(final ExceptionType aType, final Throwable aCause) {
 		super(aCause);
@@ -101,13 +94,5 @@ public abstract class BaseException extends RuntimeException {
 
 	public String getMainMessage() {
 		return getLocalizedMessage();
-	}
-
-	public DataPanelElementContext getContext() {
-		return context;
-	}
-
-	public void setContext(final DataPanelElementContext aContext) {
-		context = aContext;
 	}
 }

@@ -311,8 +311,9 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		DataPanel dp = factory.fromStream(file);
 
 		DBQueryException dbqe =
-			new DBQueryException(dp.getTabById("2").getElementInfoById("2"), context, "error");
-		GeneralException gse = GeneralExceptionFactory.build(dbqe);
+			new DBQueryException(dp.getTabById("2").getElementInfoById("2"), "error");
+		GeneralException gse =
+			GeneralExceptionFactory.build(dbqe, new DataPanelElementContext(context));
 
 		final String errorMes =
 			"Произошла ошибка при выполнении хранимой процедуры grid_bal. Подробности: error.";

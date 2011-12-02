@@ -66,10 +66,12 @@ public final class ReflectionUtils {
 		throw new UnsupportedOperationException();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static String getProcessDescForClass(final Class classLink) {
-		if (classLink.getAnnotation(Description.class) != null) {
-			return ((Description) classLink.getAnnotation(Description.class)).process();
+	public static String getProcessDescForClass(final Class<?> classLink) {
+		if (classLink.isAnnotationPresent(Description.class)) {
+			return classLink.getAnnotation(Description.class).process();
+		} else if ((classLink.getEnclosingClass() != null)
+				&& (classLink.getEnclosingClass().isAnnotationPresent(Description.class))) {
+			return classLink.getEnclosingClass().getAnnotation(Description.class).process();
 		}
 		return "не задан";
 	}

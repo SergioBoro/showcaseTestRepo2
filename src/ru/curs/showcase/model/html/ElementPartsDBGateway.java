@@ -5,7 +5,7 @@ import java.io.InputStream;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.*;
-import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.SettingsFileType;
 
 /**
@@ -15,6 +15,7 @@ import ru.curs.showcase.util.exception.SettingsFileType;
  * @author den
  * 
  */
+@Description(process = "Загрузка шаблонов, схем или трансформаций для вебтекста или xforms из БД")
 public class ElementPartsDBGateway implements ElementPartsGateway {
 	private String sourceName;
 

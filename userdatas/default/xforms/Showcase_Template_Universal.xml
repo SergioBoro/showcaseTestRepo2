@@ -21,6 +21,15 @@
 			<xf:submission id="xslttransformation" method="post"
 				instance="mainInstance" replace="instance" ref="instance('mainInstance')"
 				action="secured/xslttransformer?xsltfile=transform/test.py">
+				<xf:action ev:event="xforms-submit-done">
+					<xf:message>Submission успешно выполнен</xf:message>
+				</xf:action>
+				<xf:action if="event('response-body')!='null'" ev:event="xforms-submit-error">
+					<xf:message>
+						Ошибка при выполнении submission:
+						<xf:output value="event('response-body')" />
+					</xf:message>
+				</xf:action>				
 			</xf:submission>
 
 			<xf:bind>
