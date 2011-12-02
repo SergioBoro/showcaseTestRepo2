@@ -7304,7 +7304,7 @@ var Writer = {
 
 	            init = true;
 	        }
-
+	        
 	        var atts = node.attributes || [];
 	
 	        for (var j = 0, len = atts.length; j < len; j++) {
@@ -7312,7 +7312,7 @@ var Writer = {
 	        }
 	
 	        st += ">";
-	
+	        
 	        var childs = node.childNodes;
 	
 	        for (var k = 0, len1 = childs.length; k < len1; k++) {
@@ -10010,6 +10010,46 @@ function insertXFormByXPath(ok, selected, xpathRoot, xpathMapping, needClear)
 	}
 }
 
+function getInitSelection(xpathRoot, xpathMapping)
+{
+	var selected = {};
+	
+	for (var xpath in xpathMapping) {
+		var value = xpathMapping[xpath];
+    	var xpathFull = "";
+    	var nodes;
+    	var arrayNames  = [];
+    	var arrayValues = [];
+    	var arr;
+    	var i;
+    	
+    	i = 0;    	
+		for (var col in value) {
+			arrayNames[i] = col;
+			
+		    xpathFull = getXPath(xpathRoot)+"/"+getLastPartXPath(getXPath(xpath))+"/"+value[col];
+		    nodes = (new Binding(false, xpathFull)).evaluate();
+		    
+		    arr = new Array();
+	      	for (var j in nodes) {
+	            arr[j] = getValue(nodes[j]);
+	      	}
+	      	arrayValues[i] = arr;
+	      	
+	      	i++;
+		}
+		
+		selected["columnCount"] = arrayNames.length;
+		selected["recordCount"] = arrayValues[0].length;
+		selected["names"]  = arrayNames;
+		selected["values"] = arrayValues;		
+		
+		break;
+	}
+	
+	return selected;	
+}
+
 function insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames)
 {
 	if(needClearFilenames){
@@ -10034,28 +10074,6 @@ function insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames)
 			(new XFInsert(null, null, null, "last", "after", origin, getXPath(filenamesMapping), null, null)).run(null, getXPath(filenamesMapping));
 	    }
 	}
-}
-
-/*
-function SelectionObject(id, name) {
-    this.id   = id;	
-    this.name = name;
-}
-*/
-
-function getInitSelection(xpathRoot, xpathMapping)
-{
-/*	
-	var selected = [];
-	
-	selected[0] = new SelectionObject("'200'", "'Атлантида200'");
-	selected[1] = new SelectionObject("'201'", "'Атлантида201'");	
-	
-	alert(selected);
-	
-	return selected;
-*/	
-	return null;	
 }
 
 function getValueByXPath(xpath)

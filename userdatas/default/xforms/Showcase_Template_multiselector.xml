@@ -250,7 +250,8 @@
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите значения',
-                       needClear           : false,                       
+                       needClear           : false,  
+                       needInitSelection   : true,
                        xpathRoot		   : 'XPath(instance(quot(myInstance))/infos)',
                        xpathMapping        : {
                                               'XPath(instance(quot(myInstance1))/info)': 

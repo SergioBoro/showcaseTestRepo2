@@ -18,4 +18,10 @@
 		<element id="0302" type="webtext" proc="WebTextGetJythonProc.py" transform="transform/pas.py"/>
 		<element id="0303" type="webtext" proc="WebTextGetJythonProc.py" transform="webtext_pas_tranform"/>
 	</tab>
+	<tab id="04" name="Мультиселектор. Передача начальных значений" layout="VERTICAL">
+		<element id="211" type="xforms" template="Showcase_Template_multiselector.xml"
+			proc="xforms_proc_no_data">
+			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
+		</element>					
+	</tab>
 </datapanel>
