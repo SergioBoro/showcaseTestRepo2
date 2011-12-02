@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="xsltforms/xsltforms.xsl" type="text/xsl"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events"
+	xmlns:xsd="http://www.w3.org/2001/XMLschema" xmlns:fs="http://www.curs.ru/ns/FormServer"
+	xmlns:xf="http://www.w3.org/2002/xforms">
+	<head>
+		<!-- Простейшие контролы ввода и вывода -->
+		<xf:model id="mainModel">
+			<xf:instance id="mainInstance">
+				<schema xmlns="">
+					<info>
+						<name />
+						<growth />
+						<eyescolour />
+						<music />
+						<comment />
+					</info>
+				</schema>
+			</xf:instance>
+
+			<xf:submission id="xslttransformation" method="post"
+				instance="mainInstance" replace="instance" ref="instance('mainInstance')"
+				action="secured/xslttransformer?xsltfile=transform/test.py">
+			</xf:submission>
+
+			<xf:bind>
+			</xf:bind>
+		</xf:model>
+	</head>
+	<body>
+		<div> Загрузка XML файла с проверкой схемы и трансформацией с сервера </div>
+		<xf:trigger>
+			<xf:label>Скачать</xf:label>
+			<xf:action ev:event="DOMActivate">
+				<xf:load
+					resource="javascript:gwtXFormDownload('xformId', '06',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
+			</xf:action>
+		</xf:trigger>
+
+		<hr/>
+
+		<div> Загрузка XML файла на сервер c проверкой схемы и трансформацией </div>
+		<xf:upload id="07"  submit="true" submitLabel="Загрузить файл" singleFile="true"  />
+		<hr/>
+		
+		<div style="font-size: 15px;"> Имя: </div>
+		<div>
+			<xf:input style="width:300px" ref="/schema/info/name">
+			</xf:input>
+		</div>		
+		<div> Jython XSL трансформация </div>
+			<xf:trigger>
+				<xf:label>Сброс значений</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:send submission="xslttransformation" />
+				</xf:action>
+			</xf:trigger>		
+	</body>
+</html>
+
+
+
+
+
+

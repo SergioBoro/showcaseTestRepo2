@@ -358,7 +358,13 @@
 				xformsId: 'xformId',
                 linkId: '07', 
                 onSelectionComplete : function(ok, fileName) {
-                if (ok) {              
+                if (ok) {  
+					var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('comment')[0];
+					setValue(a, fileName);
+		 
+					xforms.ready = false;
+					xforms.refresh();
+					xforms.ready = true;                             
                 }
                 }});" />
 			</xf:action>
