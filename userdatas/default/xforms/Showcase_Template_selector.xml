@@ -482,53 +482,6 @@
 		<div style="font-size: 15px;"> Комментарии: </div>
 		<div>
 			<xf:input ref="/schema/info/comment" />
-			
-			
-        <xf:select1 ref="/schema/info/comment">
-            <xf:item>
-                <xf:label>-</xf:label>
-                <xf:value>-</xf:value>
-            </xf:item>
-            <xf:itemset nodeset="instance('myInstance')/info[1]/name">
-                <xf:label ref="."/>
-                <xf:value ref="."/>
-            </xf:itemset>
-        </xf:select1>
-        
-        <xf:select1 ref="/schema/info/comment">
-            <xf:item>
-                <xf:label>-</xf:label>
-                <xf:value>-</xf:value>
-            </xf:item>
-            <xf:itemset nodeset="instance('myInstance')/info[2]/recordid">
-                <xf:label ref="."/>
-                <xf:value ref="."/>
-            </xf:itemset>
-        </xf:select1>
-        
-			
-			<xf:trigger>
-				<xf:label>MultiSelector</xf:label>
-				<xf:action ev:event="DOMActivate">
-					<xf:load
-						resource="javascript:showMultiSelector({
-			           id : 'xformId',
-                       procListAndCount  : '[dbo].[regions_list_and_count]',
-                       generalFilters      : '',
-                       currentValue        : '',
-                       windowCaption       : 'Выберите значения',
-                       xpathMapping        : {
-                                              'XPath(instance(quot(myInstance))/info[1])': 
-                                              'name', 
-                                              
-                                              'XPath(instance(quot(myInstance))/info[2])': 
-                                              {'id': 'recordid'}
-                                             }
-                       });" />
-				</xf:action>
-			</xf:trigger>
-			
-			
 		</div>
 
 
