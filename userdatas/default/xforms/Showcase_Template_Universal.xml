@@ -45,7 +45,7 @@
 		
 		<div style="font-size: 15px;"> Имя: </div>
 		<div>
-			<xf:input style="width:300px" ref="/schema/info/name">
+			<xf:input class="xforms-long-input" ref="/schema/info/name">
 			</xf:input>
 		</div>		
 		<div> Jython XSL трансформация </div>
