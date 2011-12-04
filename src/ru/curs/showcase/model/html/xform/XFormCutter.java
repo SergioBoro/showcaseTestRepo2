@@ -150,7 +150,7 @@ public final class XFormCutter {
 				} else {
 					try {
 						xmlWriter.writeEndElement();
-					} catch (Exception e) {
+					} catch (XMLStreamException e) {
 						throw new SAXException(e);
 					}
 				}
@@ -218,7 +218,7 @@ public final class XFormCutter {
 				default:
 					break;
 				}
-			} catch (Exception e) {
+			} catch (XMLStreamException e) {
 				throw new SAXException(e);
 			}
 		}

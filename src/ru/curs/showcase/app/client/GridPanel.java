@@ -19,7 +19,7 @@ import ru.curs.showcase.app.client.utils.DownloadHelper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.rpc.SerializationStreamFactory;
+import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -426,6 +426,7 @@ public class GridPanel extends BasicElementPanelBasis {
 		hpFooter.setVisible(true);
 	}
 
+	// CHECKSTYLE:OFF
 	private void afterUpdateGrid(final UpdateType ut) {
 		String recId = null;
 		String colId = null;
@@ -481,6 +482,8 @@ public class GridPanel extends BasicElementPanelBasis {
 		}
 	}
 
+	// CHECKSTYLE:ON
+
 	private void runAction(final Action ac) {
 		if (ac != null) {
 			AppCurrContext.getInstance().setCurrentAction(ac);
@@ -527,7 +530,7 @@ public class GridPanel extends BasicElementPanelBasis {
 
 			dh.submit();
 
-		} catch (Exception e) {
+		} catch (SerializationException e) {
 			MessageBox
 					.showSimpleMessage(Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL, e.getMessage());
 		}
@@ -666,7 +669,7 @@ public class GridPanel extends BasicElementPanelBasis {
 			dh.addParam("recordId", rec.getId());
 
 			dh.submit();
-		} catch (Exception e) {
+		} catch (SerializationException e) {
 			MessageBox.showSimpleMessage(Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD,
 					e.getMessage());
 		}

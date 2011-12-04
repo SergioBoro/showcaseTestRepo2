@@ -402,10 +402,12 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 							s = xpathMapping.get(0) + "/" + localXPath;
 							addIfNotContains(xpaths, s);
 
+							// CHECKSTYLE:OFF
 							if (sLastPartXPath != null) {
 								s = xpathRoot.get(0) + "/" + sLastPartXPath + "/" + localXPath;
 								addIfNotContains(xpaths, s);
 							}
+							// CHECKSTYLE:ON
 						}
 					}
 				}
