@@ -1,5 +1,6 @@
 package ru.curs.showcase.model.geomap;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import org.xml.sax.Attributes;
@@ -8,8 +9,11 @@ import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.xml.SAXTagHandler;
+
+import com.google.gson.*;
 
 /**
  * Класс абстрактной фабрики карт - не содержащий кода для считывания данных из
@@ -20,6 +24,8 @@ import ru.curs.showcase.util.xml.SAXTagHandler;
  */
 public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 
+	private static final String CONNECTION_FILE_NOT_FOUND =
+		"Файл подключения подложки %s для карты из %s не найден";
 	private static final String OBJECT_NAME_TAG = "ObjectName";
 	private static final String LAYER_NAME_TAG = "LayerName";
 	/**
@@ -238,9 +244,30 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 	@Override
 	protected void correctSettingsAndData() {
 		super.correctSettingsAndData();
-
+		checkTemplate();
 		setupHints();
 		replaceVariablesInTemplate();
+	}
+
+	private void checkTemplate() {
+		Gson gson = new Gson();
+		GeoMapCheckTemplate template;
+		try {
+			template = gson.fromJson(getResult().getTemplate(), GeoMapCheckTemplate.class);
+		} catch (JsonSyntaxException e) {
+			throw new GeoMapWrongTemplateException(e, getElementInfo());
+		}
+
+		if (template.getRegisterSolutionMap() != null) {
+			File connectMapFile =
+				new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\js\\"
+						+ template.getRegisterSolutionMap() + ".js");
+			if (!connectMapFile.exists()) {
+				throw new GeoMapWrongTemplateException(String.format(CONNECTION_FILE_NOT_FOUND,
+						template.getRegisterSolutionMap() + ".js", getElementInfo().getProcName()));
+			}
+		}
+
 	}
 
 	private void replaceVariablesInTemplate() {

@@ -6,7 +6,7 @@ import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.xml.SAXTagHandler;
 
 import com.google.gson.Gson;
@@ -213,13 +213,13 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 		correctFlipMode();
 	}
 
+	/**
+	 * Для Pie графика удобнее задавать данные в виде нескольких сессий, в
+	 * каждой из которых - одно значение. Но увы - используемая нами компонента
+	 * не понимает данные в таком формате, так что применяем обратное
+	 * транспонирование.
+	 */
 	private void correctFlipMode() {
-		// Для Pie графика удобнее
-		// задавать данные в виде нескольких сессий, в каждой из которых -
-		// одно
-		// значение. Но увы - используемая нами компонента не понимает
-		// данные в
-		// таком формате, так что применяем обратное транспонирование.
 		boolean realFlip = flip;
 		Gson gson = new Gson();
 		FakeChartTemplate template =
