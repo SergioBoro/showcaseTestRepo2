@@ -367,51 +367,51 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		String s;
 
 		for (String selector : selectors) {
-			if (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) > -1) {
-				ArrayList<String> localXPaths = new ArrayList<>();
-				ArrayList<String> xpathMapping = new ArrayList<>();
-				ArrayList<String> xpathRoot = new ArrayList<>();
+			// TODO Показать Борису
+			if (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) == -1) {
+				continue;
+			}
 
-				mXPathMapping = pXPathMapping.matcher(selector);
-				if (mXPathMapping.find()) {
-					s = mXPathMapping.group(1);
-					addXPathsFromStringToArrayXPaths(s, xpathMapping);
+			ArrayList<String> localXPaths = new ArrayList<>();
+			ArrayList<String> xpathMapping = new ArrayList<>();
+			ArrayList<String> xpathRoot = new ArrayList<>();
 
-					mQuot = pQuot.matcher(s);
-					while (mQuot.find()) {
-						addIfNotContains(localXPaths, mQuot.group(1));
-					}
+			mXPathMapping = pXPathMapping.matcher(selector);
+			if (mXPathMapping.find()) {
+				s = mXPathMapping.group(1);
+				addXPathsFromStringToArrayXPaths(s, xpathMapping);
+
+				mQuot = pQuot.matcher(s);
+				while (mQuot.find()) {
+					addIfNotContains(localXPaths, mQuot.group(1));
+				}
+			}
+
+			mXPathRoot = pXPathRoot.matcher(selector);
+			if (mXPathRoot.find()) {
+				s = mXPathRoot.group(1);
+				addXPathsFromStringToArrayXPaths(s, xpathRoot);
+			}
+
+			if (!xpathMapping.isEmpty()) {
+				String sLastPartXPath = null;
+				mLastPartXPath = pLastPartXPath.matcher(xpathMapping.get(0));
+				if (mLastPartXPath.find()) {
+					sLastPartXPath = mLastPartXPath.group(1);
+					addIfNotContains(xpaths, sLastPartXPath);
 				}
 
-				mXPathRoot = pXPathRoot.matcher(selector);
-				if (mXPathRoot.find()) {
-					s = mXPathRoot.group(1);
-					addXPathsFromStringToArrayXPaths(s, xpathRoot);
-				}
+				for (String localXPath : localXPaths) {
+					if (!localXPath.toLowerCase().contains("XPath".toLowerCase())) {
+						s = xpathMapping.get(0) + "/" + localXPath;
+						addIfNotContains(xpaths, s);
 
-				if (!xpathMapping.isEmpty()) {
-					String sLastPartXPath = null;
-					mLastPartXPath = pLastPartXPath.matcher(xpathMapping.get(0));
-					if (mLastPartXPath.find()) {
-						sLastPartXPath = mLastPartXPath.group(1);
-						addIfNotContains(xpaths, sLastPartXPath);
-					}
-
-					for (String localXPath : localXPaths) {
-						if (!localXPath.toLowerCase().contains("XPath".toLowerCase())) {
-							s = xpathMapping.get(0) + "/" + localXPath;
+						if (sLastPartXPath != null) {
+							s = xpathRoot.get(0) + "/" + sLastPartXPath + "/" + localXPath;
 							addIfNotContains(xpaths, s);
-
-							// CHECKSTYLE:OFF
-							if (sLastPartXPath != null) {
-								s = xpathRoot.get(0) + "/" + sLastPartXPath + "/" + localXPath;
-								addIfNotContains(xpaths, s);
-							}
-							// CHECKSTYLE:ON
 						}
 					}
 				}
-
 			}
 		}
 	}

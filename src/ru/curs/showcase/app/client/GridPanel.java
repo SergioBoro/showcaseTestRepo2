@@ -283,6 +283,20 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		afterUpdateGrid(ut);
 
+		setupTimer();
+
+		if (getIsFirstLoading() && refreshContextOnly) {
+			grid.updateAddContext(getContext());
+		}
+		setIsFirstLoading(false);
+
+		p.setHeight(PROC100);
+
+		bListenersExit = false;
+
+	}
+
+	private void setupTimer() {
 		if (getElementInfo().getRefreshByTimer()) {
 			Timer timer = getTimer();
 			if (timer != null) {
@@ -299,16 +313,6 @@ public class GridPanel extends BasicElementPanelBasis {
 			final int n1000 = 1000;
 			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
 		}
-
-		if (getIsFirstLoading() && refreshContextOnly) {
-			grid.updateAddContext(getContext());
-		}
-		setIsFirstLoading(false);
-
-		p.setHeight(PROC100);
-
-		bListenersExit = false;
-
 	}
 
 	private void beforeUpdateGrid() {
@@ -426,63 +430,75 @@ public class GridPanel extends BasicElementPanelBasis {
 		hpFooter.setVisible(true);
 	}
 
-	// CHECKSTYLE:OFF
+	/**
+	 * Локальный класс для работы с ячейкой грида в Showcase.
+	 * 
+	 * @author den
+	 * 
+	 */
+	class Cell {
+		private String recId;
+		private String colId;
+	}
+
+	/**
+	 * Получает информацию о сохраненном выделении в гриде, при этом user
+	 * settings имеет приоритет над данными из БД.
+	 * 
+	 * @return
+	 */
+	private Cell getStoredRecordId() {
+		Cell cell = new Cell();
+		if ((localContext != null) && (localContext.getCurrentRecordId() != null)) {
+			cell.recId = localContext.getCurrentRecordId();
+			cell.colId = localContext.getCurrentColumnId();
+		} else {
+			cell.recId =
+				grid.getAutoSelectRecord() != null ? grid.getAutoSelectRecord().getId() : null;
+			cell.colId =
+				grid.getAutoSelectColumn() != null ? grid.getAutoSelectColumn().getId() : null;
+		}
+		return cell;
+	}
+
+	// TODO: рассказать на семинаре
 	private void afterUpdateGrid(final UpdateType ut) {
-		String recId = null;
-		String colId = null;
-		boolean selectionSaved = false;
+		Cell selected = getStoredRecordId();
+		boolean selectionSaved =
+			(localContext != null) && (localContext.getCurrentRecordId() != null);
 
 		if (grid.getDataSet().getRecordSet().getPagesTotal() > 0) {
 
 			if (grid.getUISettings().isSelectOnlyRecords()) {
-				if (grid.getAutoSelectRecord() != null) {
-					recId = grid.getAutoSelectRecord().getId();
-					dg.getClickSelection().setClickedRecordById(recId);
+				if (selected.recId != null) {
+					dg.getClickSelection().setClickedRecordById(selected.recId);
 				}
 			} else {
-				if ((grid.getAutoSelectRecord() != null) && (grid.getAutoSelectColumn() != null)) {
-					recId = grid.getAutoSelectRecord().getId();
-					colId = grid.getAutoSelectColumn().getId();
-					dg.getSelection().setSelectedCellById(recId, colId);
-					// dg.getClickSelection().setClickedRecordById(recId);
+				if ((selected.recId != null) && (selected.colId != null)) {
+					dg.getSelection().setSelectedCellById(selected.recId, selected.colId);
 				}
 			}
 
-			// user settings имеет приоритет
 			if (localContext != null) {
-				recId = localContext.getCurrentRecordId();
-				colId = localContext.getCurrentColumnId();
-				if (recId != null) {
-					selectionSaved = true;
-					if ((colId != null) && (!settingsDataGrid.isSelectOnlyRecords())) {
-						dg.getSelection().setSelectedCellById(recId, colId);
-					}
-					dg.getClickSelection().setClickedRecordById(recId);
-				}
 				dg.getSelection().setSelectedRecordsById(localContext.getSelectedRecordIds());
 			}
-
-		}
-
-		if (ut == UpdateType.FULL) {
-			runAction(grid.getActionForDependentElements());
-		} else if ((ut == UpdateType.UPDATE_BY_REDRAWGRID) && (!selectionSaved)) {
-			runAction(grid.getActionForDependentElements());
-		} else {
-			processClick(recId, colId, InteractionType.SINGLE_CLICK);
 		}
 
 		switch (ut) {
 		case FULL:
+			runAction(grid.getActionForDependentElements());
+			resetGridSettingsToCurrent();
+			break;
 		case UPDATE_BY_REDRAWGRID:
+			if (!selectionSaved) {
+				runAction(grid.getActionForDependentElements());
+			}
 			resetGridSettingsToCurrent();
 			break;
 		default:
-			break;
+			processClick(selected.recId, selected.colId, InteractionType.SINGLE_CLICK);
 		}
 	}
-
-	// CHECKSTYLE:ON
 
 	private void runAction(final Action ac) {
 		if (ac != null) {
