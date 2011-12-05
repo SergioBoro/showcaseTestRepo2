@@ -3,10 +3,11 @@
     "-//AspectJ//DTD//EN"
     "aspectj.dtd">
 <aspectj>
-	<weaver>
+	<weaver options="">
 		<include within="ru.curs.showcase..*"/>
 	</weaver>
 	<aspects>
 		<aspect name="ru.curs.showcase.util.ServletExceptionInterceptor" />
+		<aspect name="ru.curs.showcase.test.RepeatAspect" />
 	</aspects>
 </aspectj>
