@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.model.*;
@@ -148,4 +148,61 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 		assertEquals(GeoMapLayer.DEF_POINT_PROJECTION, layer.getProjection());
 	}
 
+	@Test
+	public void testTemplateCheckWrongConnectionFile() throws Exception {
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.GEOMAP);
+		generateTestTabWithElement(elInfo);
+		elInfo.setProcName("geomap_wrong_connfile");
+
+		GeoMapGateway gateway = new GeoMapDBGateway();
+		ElementRawData raw = gateway.getRawData(context, elInfo);
+		GeoMapFactory factory = new GeoMapFactory(raw);
+		try {
+			factory.build();
+			fail();
+		} catch (GeoMapWrongTemplateException e) {
+			assertEquals(
+					"Файл подключения подложки fakeFile001.js для карты из geomap_wrong_connfile не найден",
+					e.getMessage());
+		}
+	}
+
+	@Test
+	public void testTemplateCheckWrongStructure() throws Exception {
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.GEOMAP);
+		generateTestTabWithElement(elInfo);
+		elInfo.setProcName("geomap_wrong_structure");
+
+		GeoMapGateway gateway = new GeoMapDBGateway();
+		ElementRawData raw = gateway.getRawData(context, elInfo);
+		GeoMapFactory factory = new GeoMapFactory(raw);
+		try {
+			factory.build();
+			fail();
+		} catch (GeoMapWrongTemplateException e) {
+			assertTrue(e.getMessage().startsWith(
+					"Шаблон карты в geomap_wrong_structure задан ошибочно"));
+		}
+	}
+
+	@Test
+	public void testTemplateCheckWrongNums() throws Exception {
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.GEOMAP);
+		generateTestTabWithElement(elInfo);
+		elInfo.setProcName("geomap_wrong_nums");
+
+		GeoMapGateway gateway = new GeoMapDBGateway();
+		ElementRawData raw = gateway.getRawData(context, elInfo);
+		GeoMapFactory factory = new GeoMapFactory(raw);
+		try {
+			factory.build();
+			fail();
+		} catch (GeoMapWrongTemplateException e) {
+			assertTrue(e.getMessage().startsWith(
+					"В шаблоне карты в geomap_wrong_nums вместо числа задана строка"));
+		}
+	}
 }

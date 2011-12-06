@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.chart.*;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.ReflectionUtils;
 
 /**
  * Тесты фабрики графиков.
@@ -163,4 +163,5 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		assertEquals(0, chart.getJavaDynamicData().getLabelsY().size());
 		assertNotNull(chart.getEventManager().getEvents());
 	}
+
 }
