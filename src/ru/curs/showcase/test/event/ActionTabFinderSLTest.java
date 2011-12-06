@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.model.grid.GridGetCommand;
 import ru.curs.showcase.model.html.webtext.WebTextGetCommand;
-import ru.curs.showcase.model.navigator.NavigatorGetCommand;
+import ru.curs.showcase.model.primelements.navigator.NavigatorGetCommand;
 import ru.curs.showcase.test.AbstractTest;
 
 /**

@@ -17,6 +17,7 @@ import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.navigator.*;
 import ru.curs.showcase.model.primelements.*;
+import ru.curs.showcase.model.primelements.navigator.NavigatorFactory;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.SettingsFileType;

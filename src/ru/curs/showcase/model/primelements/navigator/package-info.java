@@ -1,4 +1,4 @@
 /**
  * Функции по работе с навигатором.
  */
-package ru.curs.showcase.model.navigator;
+package ru.curs.showcase.model.primelements.navigator;

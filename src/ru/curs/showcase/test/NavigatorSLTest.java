@@ -6,7 +6,7 @@ import org.junit.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.Navigator;
-import ru.curs.showcase.model.navigator.NavigatorGetCommand;
+import ru.curs.showcase.model.primelements.navigator.NavigatorGetCommand;
 
 /**
  * Класс для тестирования фабрики навигаторов.

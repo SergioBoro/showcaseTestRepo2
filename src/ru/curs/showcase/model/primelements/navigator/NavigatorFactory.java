@@ -1,4 +1,4 @@
-package ru.curs.showcase.model.navigator;
+package ru.curs.showcase.model.primelements.navigator;
 
 import java.io.InputStream;
 import java.util.*;

@@ -19,7 +19,7 @@ import ru.curs.showcase.model.geomap.GeoMapGetCommand;
 import ru.curs.showcase.model.grid.GridGetCommand;
 import ru.curs.showcase.model.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.model.html.xform.*;
-import ru.curs.showcase.model.navigator.NavigatorGetCommand;
+import ru.curs.showcase.model.primelements.navigator.NavigatorGetCommand;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
