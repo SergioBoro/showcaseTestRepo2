@@ -2,6 +2,8 @@ package ru.curs.showcase.model.datapanel;
 
 import ru.curs.showcase.app.api.event.DataPanelLink;
 import ru.curs.showcase.model.SourceSelector;
+import ru.curs.showcase.model.navigator.*;
+import ru.curs.showcase.util.exception.SettingsFileType;
 
 /**
  * Класс для выбора источника инф. панели.
@@ -9,20 +11,21 @@ import ru.curs.showcase.model.SourceSelector;
  * @author den
  * 
  */
-public class DataPanelSelector extends SourceSelector<DataPanelGateway> {
+public class DataPanelSelector extends SourceSelector<PrimaryElementsGateway> {
 
 	public DataPanelSelector(final DataPanelLink dpLink) {
 		super(dpLink.getDataPanelId());
 	}
 
 	@Override
-	public DataPanelGateway getGateway() {
-		DataPanelGateway gateway;
+	public PrimaryElementsGateway getGateway() {
+		PrimaryElementsGateway gateway;
 		switch (sourceType()) {
 		case JYTHON:
-			throw new RuntimeException("Пока не реализовано");
+			gateway = new PrimaryElementsJythonGateway();
+			break;
 		case FILE:
-			gateway = new DataPanelFileGateway();
+			gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
 			break;
 		default:
 			gateway = new DataPanelDBGateway();

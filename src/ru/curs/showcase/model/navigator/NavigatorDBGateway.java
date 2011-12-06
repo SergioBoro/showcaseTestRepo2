@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.SPQuery;
-import ru.curs.showcase.util.Description;
+import ru.curs.showcase.util.*;
 
 /**
  * Шлюз к хранимой процедуре в БД, возвращающей данные для навигатора.
@@ -26,7 +26,7 @@ public class NavigatorDBGateway extends SPQuery implements PrimaryElementsGatewa
 	}
 
 	@Override
-	public InputStream getRawData(final CompositeContext context) {
+	public DataFile<InputStream> getRawData(final CompositeContext context) {
 		init(context);
 		try {
 			prepareSQL();
@@ -35,7 +35,7 @@ public class NavigatorDBGateway extends SPQuery implements PrimaryElementsGatewa
 			execute();
 
 			InputStream stream = getInputStreamForXMLParam(NAVIGATOR_INDEX);
-			return stream;
+			return new DataFile<InputStream>(stream, sourceName);
 		} catch (SQLException e) {
 			dbExceptionHandler(e);
 		}
@@ -59,7 +59,8 @@ public class NavigatorDBGateway extends SPQuery implements PrimaryElementsGatewa
 	}
 
 	@Override
-	public InputStream getRawData(final CompositeContext aContext, final String aSourceName) {
+	public DataFile<InputStream> getRawData(final CompositeContext aContext,
+			final String aSourceName) {
 		sourceName = aSourceName;
 		return getRawData(aContext);
 	}

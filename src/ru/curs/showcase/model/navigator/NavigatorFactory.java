@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.model.IncorrectElementException;
 import ru.curs.showcase.model.event.ActionFactory;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.ObjectSerializer;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -124,8 +124,8 @@ public final class NavigatorFactory extends SAXTagHandler {
 	 *            - поток.
 	 * @return - навигатор.
 	 */
-	public Navigator fromStream(final InputStream stream) {
-		InputStream streamForParse = XMLUtils.xsdValidateAppDataSafe(stream, "navigator.xsd");
+	public Navigator fromStream(final DataFile<InputStream> file) {
+		XMLUtils.xsdValidateAppDataSafe(file, "navigator.xsd");
 
 		DefaultHandler myHandler = new DefaultHandler() {
 			@Override
@@ -146,7 +146,7 @@ public final class NavigatorFactory extends SAXTagHandler {
 			}
 		};
 
-		SimpleSAX sax = new SimpleSAX(streamForParse, myHandler, XML_ERROR_MES);
+		SimpleSAX sax = new SimpleSAX(file.getData(), myHandler, XML_ERROR_MES);
 		sax.parse();
 		postProcess();
 		return result;

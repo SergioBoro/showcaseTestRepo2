@@ -3,6 +3,7 @@ package ru.curs.showcase.model.navigator;
 import java.io.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.util.DataFile;
 
 /**
  * Интерфейс шлюза данных для навигатора и инф. панели.
@@ -21,12 +22,12 @@ public interface PrimaryElementsGateway extends Closeable {
 	 * @param sourceName
 	 *            - имя источника - файла или процедуры.
 	 */
-	InputStream getRawData(CompositeContext aContext);
+	DataFile<InputStream> getRawData(CompositeContext aContext);
 
 	/**
 	 * Расширенная функция возврата данных.
 	 */
-	InputStream getRawData(CompositeContext aCompositeContext, String aSourceName);
+	DataFile<InputStream> getRawData(CompositeContext aCompositeContext, String aSourceName);
 
 	/**
 	 * В переопределенной версии убрано контролируемое исключение.

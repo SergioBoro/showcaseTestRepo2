@@ -20,8 +20,7 @@ class NavJythonProc(JythonProc):
         return mainproc()
         
 def mainproc():
-    return JythonDTO(
-'''<navigator hideOnLoad="true">
+    return u'''<navigator hideOnLoad="true">
     <group id="00" name="Фичи">
         <level1 id="04" name="secret" selectOnLoad="true">
             <action>
@@ -32,7 +31,7 @@ def mainproc():
             </action>
         </level1>
     </group>
-</navigator>''') 
+</navigator>'''
   
 if __name__ == "__main__":       
     mainproc()

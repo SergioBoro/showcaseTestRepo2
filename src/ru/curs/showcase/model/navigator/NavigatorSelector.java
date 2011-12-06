@@ -1,7 +1,9 @@
 package ru.curs.showcase.model.navigator;
 
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.SourceSelector;
+import ru.curs.showcase.model.datapanel.PrimaryElementsFileGateway;
 import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.util.exception.SettingsFileType;
 
 /**
  * Селектор для источника данных о навигаторе.
@@ -21,10 +23,10 @@ public class NavigatorSelector extends SourceSelector<PrimaryElementsGateway> {
 		PrimaryElementsGateway res;
 		switch (sourceType()) {
 		case JYTHON:
-			res = new NavigatorJythonGateway();
+			res = new PrimaryElementsJythonGateway();
 			break;
 		case FILE:
-			res = new NavigatorFileGateway();
+			res = new PrimaryElementsFileGateway(SettingsFileType.NAVIGATOR);
 			break;
 		default:
 			res = new NavigatorDBGateway();

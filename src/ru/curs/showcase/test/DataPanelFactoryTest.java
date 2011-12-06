@@ -10,7 +10,9 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.SPNotExistsException;
 import ru.curs.showcase.model.datapanel.*;
+import ru.curs.showcase.model.navigator.PrimaryElementsGateway;
 import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.exception.SettingsFileType;
 import ru.curs.showcase.util.xml.XSDValidateException;
 
 /**
@@ -23,7 +25,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 
 	@Test
 	public void testRichDP() {
-		DataPanelGateway gateway = new DataPanelFileGateway();
+		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
 		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), RICH_DP);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
@@ -63,7 +65,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		final int panelsCount = 3;
 		final int firstPanelSecondTabElCount = 5;
 
-		DataPanelGateway gateway = new DataPanelFileGateway();
+		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
 		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
@@ -111,7 +113,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testXFormsProcLoad() {
-		DataPanelGateway gateway = new DataPanelFileGateway();
+		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
 		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
@@ -134,7 +136,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testDPProcs() {
-		DataPanelGateway gateway = new DataPanelFileGateway();
+		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
 		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
@@ -186,7 +188,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		elLink.setKeepUserSettings(false);
 		dpLink.getElementLinks().add(elLink);
 
-		DataPanelGateway gateway = new DataPanelFileGateway();
+		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
 		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), dataPanelId);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
@@ -202,7 +204,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testMetadataProc() {
-		DataPanelGateway gateway = new DataPanelFileGateway();
+		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
 		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
@@ -215,7 +217,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 
 	@Test
 	public void testReadElementWithRelated() {
-		DataPanelGateway gateway = new DataPanelFileGateway();
+		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
 		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
@@ -228,7 +230,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 
 	@Test
 	public void testWrongReadElementWithRelated() {
-		DataPanelGateway gateway = new DataPanelFileGateway();
+		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
 		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST1_1_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel panel = factory.fromStream(file);
@@ -238,7 +240,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 
 	@Test(expected = XSDValidateException.class)
 	public void testWrongReadElementWithRelated2() {
-		DataPanelGateway gateway = new DataPanelFileGateway();
+		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
 		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), "test.bad2.xml");
 		DataPanelFactory factory = new DataPanelFactory();
 		factory.fromStream(file);
@@ -253,7 +255,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		action.setDataPanelLink(dpLink);
 
 		DataPanelSelector selector = new DataPanelSelector(action.getDataPanelLink());
-		DataPanelGateway gateway = selector.getGateway();
+		PrimaryElementsGateway gateway = selector.getGateway();
 		try {
 			gateway.getRawData(action.getContext());
 		} finally {

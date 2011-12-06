@@ -13,7 +13,10 @@ import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.command.GeneralExceptionFactory;
+import ru.curs.showcase.model.datapanel.PrimaryElementsFileGateway;
 import ru.curs.showcase.model.navigator.*;
+import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.exception.SettingsFileType;
 
 /**
  * Класс для тестирования фабрики навигаторов.
@@ -54,10 +57,12 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
 		Navigator nav;
-		try (PrimaryElementsGateway gateway = new NavigatorFileGateway()) {
-			InputStream stream = gateway.getRawData(new CompositeContext(), TREE_MULTILEVEL_XML);
+		try (PrimaryElementsGateway gateway =
+			new PrimaryElementsFileGateway(SettingsFileType.NAVIGATOR)) {
+			DataFile<InputStream> file =
+				gateway.getRawData(new CompositeContext(), TREE_MULTILEVEL_XML);
 
-			nav = factory.fromStream(stream);
+			nav = factory.fromStream(file);
 		}
 		assertEquals("200px", nav.getWidth());
 		assertTrue(nav.getHideOnLoad());
@@ -100,9 +105,9 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		NavigatorSelector selector = new NavigatorSelector();
 		CompositeContext context = new CompositeContext();
 		try (PrimaryElementsGateway gw = selector.getGateway()) {
-			InputStream xml = gw.getRawData(context, selector.getSourceName());
+			DataFile<InputStream> file = gw.getRawData(context, selector.getSourceName());
 			NavigatorFactory factory = new NavigatorFactory(context);
-			factory.fromStream(xml);
+			factory.fromStream(file);
 		}
 	}
 
@@ -111,9 +116,11 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context =
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
-		try (PrimaryElementsGateway gateway = new NavigatorFileGateway()) {
-			InputStream stream = gateway.getRawData(context, "tree_multilevel.wrong.2.xml");
-			factory.fromStream(stream);
+		try (PrimaryElementsGateway gateway =
+			new PrimaryElementsFileGateway(SettingsFileType.NAVIGATOR)) {
+			DataFile<InputStream> file =
+				gateway.getRawData(context, "tree_multilevel.wrong.2.xml");
+			factory.fromStream(file);
 		}
 	}
 
@@ -123,8 +130,8 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
 		try (PrimaryElementsGateway gateway = new NavigatorDBGateway()) {
-			InputStream stream = gateway.getRawData(context, "generationtree");
-			factory.fromStream(stream);
+			DataFile<InputStream> file = gateway.getRawData(context, "generationtree");
+			factory.fromStream(file);
 		}
 	}
 

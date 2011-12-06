@@ -13,6 +13,7 @@ import org.xml.sax.SAXException;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.navigator.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -33,8 +34,9 @@ public class NavigatorGatewayTest extends AbstractTestWithDefaultUserData {
 		Document doc = null;
 		NavigatorSelector selector = new NavigatorSelector();
 		try (PrimaryElementsGateway gw = selector.getGateway()) {
-			InputStream xml = gw.getRawData(new CompositeContext(), selector.getSourceName());
-			doc = builder.parse(xml);
+			DataFile<InputStream> xml =
+				gw.getRawData(new CompositeContext(), selector.getSourceName());
+			doc = builder.parse(xml.getData());
 		}
 		assertEquals(GeneralXMLHelper.NAVIGATOR_TAG, doc.getDocumentElement().getNodeName());
 	}
@@ -44,9 +46,10 @@ public class NavigatorGatewayTest extends AbstractTestWithDefaultUserData {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(TEST1_USERDATA);
 		CompositeContext context = new CompositeContext();
 		context.setSession("<sessioninfo/>");
-		PrimaryElementsGateway gateway = new NavigatorJythonGateway();
-		InputStream is = gateway.getRawData(context, "navigator/NavJythonProc.py");
+		PrimaryElementsGateway gateway = new PrimaryElementsJythonGateway();
+		DataFile<InputStream> file = gateway.getRawData(context, "navigator/NavJythonProc.py");
 
-		assertNotNull(is);
+		assertNotNull(file);
+		assertNotNull(file.getData());
 	}
 }

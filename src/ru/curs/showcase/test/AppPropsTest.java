@@ -6,8 +6,6 @@ import java.io.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.model.datapanel.DataPanelFileGateway;
-import ru.curs.showcase.model.navigator.NavigatorFileGateway;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.SecurityParamsFactory;
 import ru.curs.showcase.util.FileUtils;
@@ -59,8 +57,8 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 	public void testDirExists() {
 		checkDir(SettingsFileType.XSLT.getFileDir());
 		checkDir(AppProps.XSLTTRANSFORMSFORGRIDDIR);
-		checkDir(DataPanelFileGateway.DP_STORAGE_PARAM_NAME);
-		checkDir(NavigatorFileGateway.NAVIGATORSTORAGE);
+		checkDir(SettingsFileType.DATAPANEL.getFileDir());
+		checkDir(SettingsFileType.NAVIGATOR.getFileDir());
 		checkDir(AppProps.SCHEMASDIR);
 		checkDir(SettingsFileType.XFORM.getFileDir());
 

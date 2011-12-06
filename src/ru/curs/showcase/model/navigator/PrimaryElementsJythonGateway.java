@@ -4,16 +4,16 @@ import java.io.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.jython.*;
-import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.MemoryResourcesError;
 
 /**
- * Jython шлюз для навигатора.
+ * Jython шлюз для основных элементов - навигатора и инф. панели.
  * 
  * @author den
  * 
  */
-public class NavigatorJythonGateway extends JythonQuery<JythonDTO> implements
+public class PrimaryElementsJythonGateway extends JythonQuery<String> implements
 		PrimaryElementsGateway {
 
 	private static final String JYTHON_PROC_NODATA_ERROR = "Jython процедура не вернула данные";
@@ -22,22 +22,23 @@ public class NavigatorJythonGateway extends JythonQuery<JythonDTO> implements
 	private InputStream stream = null;
 
 	@Override
-	public InputStream getRawData(final CompositeContext aContext) {
+	public DataFile<InputStream> getRawData(final CompositeContext aContext) {
 		context = aContext;
 		runTemplateMethod();
 		try {
-			stream = TextUtils.stringToStream(getResult().getData());
+			stream = TextUtils.stringToStream(getResult());
 		} catch (UnsupportedEncodingException e) {
 			throw new JythonException(RESULT_FORMAT_ERROR);
 		}
 		if (stream == null) {
 			throw new JythonException(JYTHON_PROC_NODATA_ERROR);
 		}
-		return stream;
+		return new DataFile<InputStream>(stream, sourceName);
 	}
 
 	@Override
-	public InputStream getRawData(final CompositeContext aContext, final String aSourceName) {
+	public DataFile<InputStream> getRawData(final CompositeContext aContext,
+			final String aSourceName) {
 		sourceName = aSourceName;
 		return getRawData(aContext);
 	}
@@ -63,8 +64,8 @@ public class NavigatorJythonGateway extends JythonQuery<JythonDTO> implements
 		return getProc().getRawData(context);
 	}
 
-	public NavigatorJythonGateway() {
-		super(JythonDTO.class);
+	public PrimaryElementsJythonGateway() {
+		super(String.class);
 	}
 
 	@Override

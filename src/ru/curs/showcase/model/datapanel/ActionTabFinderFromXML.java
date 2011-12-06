@@ -7,6 +7,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.ActionTabFinder;
+import ru.curs.showcase.model.navigator.PrimaryElementsGateway;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
 
@@ -76,7 +77,7 @@ public class ActionTabFinderFromXML extends ActionTabFinder {
 	private DataFile<InputStream>
 			getFile(final CompositeContext context, final DataPanelLink link) {
 		DataPanelSelector selector = new DataPanelSelector(link);
-		DataPanelGateway gateway = selector.getGateway();
+		PrimaryElementsGateway gateway = selector.getGateway();
 		DataFile<InputStream> file = gateway.getRawData(context, link.getDataPanelId());
 		return file;
 	}

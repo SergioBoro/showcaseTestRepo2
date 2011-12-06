@@ -46,6 +46,24 @@ public class DataPanelSLTest extends AbstractTest {
 		DataPanelGetCommand command = new DataPanelGetCommand(action);
 		DataPanel panel = command.execute();
 
+		checkTestDP(panel);
+	}
+
+	@Test
+	public void testBySLFromJython() {
+		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
+		action.setContext(CompositeContext.createCurrent());
+		DataPanelLink dpLink = new DataPanelLink();
+		dpLink.setDataPanelId("datapanel/dp0903.py");
+		action.setDataPanelLink(dpLink);
+
+		DataPanelGetCommand command = new DataPanelGetCommand(action);
+		DataPanel panel = command.execute();
+
+		checkTestDP(panel);
+	}
+
+	private void checkTestDP(final DataPanel panel) {
 		assertEquals("dp0903", panel.getId());
 		final int tabsCount = 5;
 		assertEquals(tabsCount, panel.getTabs().size());

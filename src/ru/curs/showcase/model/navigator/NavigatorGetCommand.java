@@ -5,6 +5,7 @@ import java.io.InputStream;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.model.command.ServiceLayerCommand;
+import ru.curs.showcase.util.DataFile;
 
 /**
  * Команда получения навигатора.
@@ -23,7 +24,7 @@ public final class NavigatorGetCommand extends ServiceLayerCommand<Navigator> {
 		NavigatorSelector selector = new NavigatorSelector();
 
 		try (PrimaryElementsGateway gw = selector.getGateway()) {
-			InputStream xml = gw.getRawData(getContext());
+			DataFile<InputStream> xml = gw.getRawData(getContext());
 			NavigatorFactory factory = new NavigatorFactory(getContext());
 			setResult(factory.fromStream(xml));
 		}

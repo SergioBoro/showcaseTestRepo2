@@ -10,10 +10,10 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.server.ProductionModeInitializer;
-import ru.curs.showcase.model.datapanel.DataPanelFileGateway;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.SettingsFileType;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 import ch.qos.logback.classic.spi.LoggingEvent;
@@ -38,7 +38,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	public void testStreamConvertor() throws IOException {
 		InputStream is =
 			AppProps.loadUserDataToStream(String.format("%s//%s",
-					DataPanelFileGateway.DP_STORAGE_PARAM_NAME, "a.xml"));
+					SettingsFileType.DATAPANEL.getFileDir(), "a.xml"));
 
 		StreamConvertor dup = new StreamConvertor(is);
 		String data = XMLUtils.streamToString(dup.getCopy());

@@ -18,6 +18,7 @@ import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.navigator.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.SettingsFileType;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.LoggingEvent;
@@ -107,7 +108,8 @@ public class AbstractTest extends GeneralXMLHelper {
 			needReset = true;
 		}
 		try {
-			DataPanelGateway gateway = new DataPanelFileGateway();
+			PrimaryElementsGateway gateway =
+				new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
 			DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), fileName);
 			DataPanelFactory dpFactory = new DataPanelFactory();
 			DataPanel panel = dpFactory.fromStream(file);
@@ -411,8 +413,9 @@ public class AbstractTest extends GeneralXMLHelper {
 			setDefaultUserData();
 			needReset = true;
 		}
-		try (PrimaryElementsGateway gateway = new NavigatorFileGateway()) {
-			InputStream stream1 = gateway.getRawData(new CompositeContext(), fileName);
+		try (PrimaryElementsGateway gateway =
+			new PrimaryElementsFileGateway(SettingsFileType.NAVIGATOR)) {
+			DataFile<InputStream> stream1 = gateway.getRawData(new CompositeContext(), fileName);
 			CompositeContext context =
 				new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 			NavigatorFactory navFactory = new NavigatorFactory(context);
