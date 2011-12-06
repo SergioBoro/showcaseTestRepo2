@@ -7,7 +7,7 @@ import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.ElementRawData;
+import ru.curs.showcase.model.sp.ElementRawData;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**

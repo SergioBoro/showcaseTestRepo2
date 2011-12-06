@@ -1,4 +1,4 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.sp;
 
 import java.io.*;
 import java.sql.*;
@@ -10,6 +10,7 @@ import org.slf4j.*;
 import org.w3c.dom.Document;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
@@ -437,7 +438,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 			getFileForBinaryStream(final int dataIndex, final int nameIndex) throws SQLException {
 		InputStream is = getBinaryStream(dataIndex);
 		if (is == null) {
-			throw new FileIsAbsentException();
+			throw new FileIsAbsentInDBException();
 		}
 		String fileName = getStatement().getString(nameIndex);
 		StreamConvertor dup;

@@ -6,8 +6,8 @@ import javax.sql.RowSet;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.showcase.app.api.geomap.*;
-import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.EventFactory;
+import ru.curs.showcase.model.sp.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 

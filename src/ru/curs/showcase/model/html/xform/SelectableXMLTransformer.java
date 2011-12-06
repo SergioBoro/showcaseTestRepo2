@@ -1,10 +1,10 @@
-package ru.curs.showcase.model.html;
+package ru.curs.showcase.model.html.xform;
 
 import java.io.*;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.html.xform.XSDSelector;
+import ru.curs.showcase.model.html.XSLTransformSelector;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
 

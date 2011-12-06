@@ -7,7 +7,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.model.ResultSetHandleException;
+import ru.curs.showcase.model.sp.ResultSetHandleException;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.MemoryResourcesError;
 import ru.curs.showcase.util.xml.*;

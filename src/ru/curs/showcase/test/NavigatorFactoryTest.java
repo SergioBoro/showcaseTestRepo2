@@ -15,6 +15,7 @@ import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.command.GeneralExceptionFactory;
 import ru.curs.showcase.model.primelements.*;
 import ru.curs.showcase.model.primelements.navigator.*;
+import ru.curs.showcase.model.sp.DBQueryException;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.exception.SettingsFileType;
 

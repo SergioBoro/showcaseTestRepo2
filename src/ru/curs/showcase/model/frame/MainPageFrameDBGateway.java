@@ -3,7 +3,7 @@ package ru.curs.showcase.model.frame;
 import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.SPQuery;
+import ru.curs.showcase.model.sp.SPQuery;
 import ru.curs.showcase.util.Description;
 
 /**

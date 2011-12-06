@@ -2,8 +2,8 @@ package ru.curs.showcase.model.grid;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.command.*;
+import ru.curs.showcase.model.sp.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**

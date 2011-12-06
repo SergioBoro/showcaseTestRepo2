@@ -1,4 +1,4 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.sp;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;

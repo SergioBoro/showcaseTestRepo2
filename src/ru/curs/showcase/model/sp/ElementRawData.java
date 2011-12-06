@@ -1,4 +1,4 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.sp;
 
 import java.io.*;
 import java.sql.SQLException;

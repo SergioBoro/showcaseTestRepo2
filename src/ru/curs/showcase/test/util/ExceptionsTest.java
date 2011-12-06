@@ -25,6 +25,7 @@ import ru.curs.showcase.model.html.webtext.*;
 import ru.curs.showcase.model.html.xform.*;
 import ru.curs.showcase.model.primelements.*;
 import ru.curs.showcase.model.primelements.datapanel.*;
+import ru.curs.showcase.model.sp.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.*;

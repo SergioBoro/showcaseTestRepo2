@@ -2,7 +2,6 @@ package ru.curs.showcase.model.html.xform;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.model.html.SelectableXMLTransformer;
 
 /**
  * Команда сохранения xforms.

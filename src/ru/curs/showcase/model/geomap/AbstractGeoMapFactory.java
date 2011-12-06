@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
+import ru.curs.showcase.model.sp.ElementRawData;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.xml.SAXTagHandler;

@@ -8,8 +8,8 @@ import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.model.ElementRawData;
 import ru.curs.showcase.model.chart.*;
+import ru.curs.showcase.model.sp.ElementRawData;
 import ru.curs.showcase.util.ReflectionUtils;
 
 /**

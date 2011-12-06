@@ -7,6 +7,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.sp.*;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.xml.*;
 

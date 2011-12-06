@@ -1,4 +1,4 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.sp;
 
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.util.ReflectionUtils;

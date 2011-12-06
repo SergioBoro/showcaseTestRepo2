@@ -1,10 +1,10 @@
-package ru.curs.showcase.model;
+package ru.curs.showcase.model.sp;
 
 import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.Description;
 
 /**
  * Шлюз к БД для получения настроек элементов.

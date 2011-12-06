@@ -7,7 +7,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.Action;
-import ru.curs.showcase.model.ElementRawData;
+import ru.curs.showcase.model.sp.ElementRawData;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.*;
 

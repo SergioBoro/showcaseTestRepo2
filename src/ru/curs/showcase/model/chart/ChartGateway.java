@@ -2,7 +2,7 @@ package ru.curs.showcase.model.chart;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.ElementRawData;
+import ru.curs.showcase.model.sp.ElementRawData;
 
 /**
  * Шлюз для получения "сырых" данных для построения графика.
