@@ -13,7 +13,6 @@ import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.command.GeneralExceptionFactory;
-import ru.curs.showcase.model.navigator.*;
 import ru.curs.showcase.model.primelements.*;
 import ru.curs.showcase.model.primelements.navigator.*;
 import ru.curs.showcase.util.DataFile;
@@ -58,8 +57,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
 		Navigator nav;
-		try (PrimElementsGateway gateway =
-			new PrimElementsFileGateway(SettingsFileType.NAVIGATOR)) {
+		try (PrimElementsGateway gateway = new PrimElementsFileGateway(SettingsFileType.NAVIGATOR)) {
 			DataFile<InputStream> file =
 				gateway.getRawData(new CompositeContext(), TREE_MULTILEVEL_XML);
 
@@ -117,8 +115,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context =
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
 		NavigatorFactory factory = new NavigatorFactory(context);
-		try (PrimElementsGateway gateway =
-			new PrimElementsFileGateway(SettingsFileType.NAVIGATOR)) {
+		try (PrimElementsGateway gateway = new PrimElementsFileGateway(SettingsFileType.NAVIGATOR)) {
 			DataFile<InputStream> file =
 				gateway.getRawData(context, "tree_multilevel.wrong.2.xml");
 			factory.fromStream(file);

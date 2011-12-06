@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.model.datapanel.DataPanelGetCommand;
+import ru.curs.showcase.model.primelements.datapanel.DataPanelGetCommand;
 
 /**
  * Тесты для фабрики информационных панелей.

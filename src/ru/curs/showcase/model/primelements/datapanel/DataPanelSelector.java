@@ -1,4 +1,4 @@
-package ru.curs.showcase.model.datapanel;
+package ru.curs.showcase.model.primelements.datapanel;
 
 import ru.curs.showcase.app.api.event.DataPanelLink;
 import ru.curs.showcase.model.SourceSelector;

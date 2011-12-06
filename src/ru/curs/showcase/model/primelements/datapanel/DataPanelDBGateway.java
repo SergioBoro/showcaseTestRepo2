@@ -1,4 +1,4 @@
-package ru.curs.showcase.model.datapanel;
+package ru.curs.showcase.model.primelements.datapanel;
 
 import java.io.InputStream;
 import java.sql.SQLException;
