@@ -48,6 +48,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 	private static final String JS_ON_CHOOSE_FILES = "gwtXFormOnChooseFiles('%s', '%s', %s)";
 
+	private static final String JS_ON_SUBMIT_COMPLETE = "gwtXFormOnSubmitComplete('%s')";
+
 	private static final String DEFAULT_SUBMIT_LABEL = "Загрузить";
 
 	private static boolean isFilenamesMapping = false;
@@ -211,7 +213,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			iframe.setAttribute(NAME_TAG, getUploaderTargetName(element, procId, i));
 			iframe.setAttribute("src", "javascript:''");
 			iframe.setAttribute("style", "position:absolute;width:0;height:0;border:0");
-			iframe.setAttribute("onload", "gwtXFormOnSubmitComplete();");
+			iframe.setAttribute("onload", String.format(JS_ON_SUBMIT_COMPLETE,
+					getUploaderTargetName(element, procId, i)));
 			parent.appendChild(iframe);
 		}
 

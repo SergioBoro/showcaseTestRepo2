@@ -124,18 +124,30 @@ public class InlineUploader {
 		return $wnd.document.getElementById(id);
 	}-*/;
 
-	public static synchronized void onSubmitComplete() {
+	public static synchronized void onSubmitComplete(final String iframeName) {
+		Boolean result = true;
+
+		String err = getErrorByIFrame(iframeName);
+		if (err != null) {
+			result = false;
+			MessageBox.showSimpleMessage(Constants.XFORMS_UPLOAD_ERROR, err);
+		}
+
 		if (submitHandler != null) {
 
 			// MessageBox.showSimpleMessage("", "Complete");
 
 			counter--;
 			if (counter == 0) {
-				submitHandler.onComplete(true);
+				submitHandler.onComplete(result);
 				submitHandler = null;
 			}
 		}
 	}
+
+	private static native String getErrorByIFrame(final String iframeName) /*-{
+		return $wnd.getErrorByIFrame(iframeName);
+	}-*/;
 
 	public static void onChooseFiles(final String inputName, final String filenamesMapping,
 			final Boolean needClearFilenames) {
