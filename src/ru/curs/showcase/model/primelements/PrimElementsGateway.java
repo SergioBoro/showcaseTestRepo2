@@ -1,4 +1,4 @@
-package ru.curs.showcase.model.navigator;
+package ru.curs.showcase.model.primelements;
 
 import java.io.*;
 
@@ -11,7 +11,7 @@ import ru.curs.showcase.util.DataFile;
  * @author den
  * 
  */
-public interface PrimaryElementsGateway extends Closeable {
+public interface PrimElementsGateway extends Closeable {
 
 	/**
 	 * Базовая функция возврата данных.

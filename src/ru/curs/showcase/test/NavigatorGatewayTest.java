@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.navigator.*;
+import ru.curs.showcase.model.primelements.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
@@ -33,7 +34,7 @@ public class NavigatorGatewayTest extends AbstractTestWithDefaultUserData {
 		DocumentBuilder builder = XMLUtils.createBuilder();
 		Document doc = null;
 		NavigatorSelector selector = new NavigatorSelector();
-		try (PrimaryElementsGateway gw = selector.getGateway()) {
+		try (PrimElementsGateway gw = selector.getGateway()) {
 			DataFile<InputStream> xml =
 				gw.getRawData(new CompositeContext(), selector.getSourceName());
 			doc = builder.parse(xml.getData());
@@ -46,7 +47,7 @@ public class NavigatorGatewayTest extends AbstractTestWithDefaultUserData {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(TEST1_USERDATA);
 		CompositeContext context = new CompositeContext();
 		context.setSession("<sessioninfo/>");
-		PrimaryElementsGateway gateway = new PrimaryElementsJythonGateway();
+		PrimElementsGateway gateway = new PrimElementsJythonGateway();
 		DataFile<InputStream> file = gateway.getRawData(context, "navigator/NavJythonProc.py");
 
 		assertNotNull(file);

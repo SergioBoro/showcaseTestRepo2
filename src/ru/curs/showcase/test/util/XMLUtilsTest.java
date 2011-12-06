@@ -18,7 +18,7 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.model.datapanel.*;
-import ru.curs.showcase.model.navigator.PrimaryElementsGateway;
+import ru.curs.showcase.model.primelements.*;
 import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.ReflectionUtils;
@@ -276,7 +276,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	public final void testDPGoodValidateXSD() {
 		String xsdFileName = DataPanelFactory.DATAPANEL_XSD;
 
-		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
+		PrimElementsGateway gateway = new PrimElementsFileGateway(SettingsFileType.DATAPANEL);
 		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
 		validator.validate(new XMLSource(gateway.getRawData(new CompositeContext(), TEST_XML)
 				.getData(), TEST_XML, xsdFileName));
@@ -289,7 +289,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	public final void testDPBadValidateXSD() {
 		String xsdFileName = DataPanelFactory.DATAPANEL_XSD;
 
-		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
+		PrimElementsGateway gateway = new PrimElementsFileGateway(SettingsFileType.DATAPANEL);
 		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
 		validator.validate(new XMLSource(gateway.getRawData(new CompositeContext(),
 				"test.bad1.xml").getData(), "test.bad1.xml", xsdFileName));
@@ -392,7 +392,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	public final void testDPTableLayoutXSD() {
 		String xsdFileName = DataPanelFactory.DATAPANEL_XSD;
 
-		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
+		PrimElementsGateway gateway = new PrimElementsFileGateway(SettingsFileType.DATAPANEL);
 		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
 		validator.validate(new XMLSource(gateway.getRawData(new CompositeContext(), RICH_DP)
 				.getData(), RICH_DP, xsdFileName));

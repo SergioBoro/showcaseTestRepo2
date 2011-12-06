@@ -24,7 +24,7 @@ import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.model.html.HTMLGateway;
 import ru.curs.showcase.model.html.webtext.*;
 import ru.curs.showcase.model.html.xform.*;
-import ru.curs.showcase.model.navigator.PrimaryElementsGateway;
+import ru.curs.showcase.model.primelements.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.*;
@@ -72,7 +72,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = SettingsFileOpenException.class)
 	public final void testWrongDP() {
-		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
+		PrimElementsGateway gateway = new PrimElementsFileGateway(SettingsFileType.DATAPANEL);
 		gateway.getRawData(new CompositeContext(), "verysecretandhidden.xml");
 	}
 
@@ -306,7 +306,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testDBQueryExceptionBySL() {
 		CompositeContext context = getTestContext1();
-		PrimaryElementsGateway gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
+		PrimElementsGateway gateway = new PrimElementsFileGateway(SettingsFileType.DATAPANEL);
 		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST_XML);
 		DataPanelFactory factory = new DataPanelFactory();
 		DataPanel dp = factory.fromStream(file);

@@ -1,9 +1,8 @@
-package ru.curs.showcase.model.datapanel;
+package ru.curs.showcase.model.primelements;
 
 import java.io.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.navigator.PrimaryElementsGateway;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
@@ -16,7 +15,7 @@ import ru.curs.showcase.util.exception.*;
  * 
  */
 @Description(process = "Загрузка данных для информационной панели или навигатора из файла")
-public class PrimaryElementsFileGateway implements PrimaryElementsGateway {
+public class PrimElementsFileGateway implements PrimElementsGateway {
 
 	private InputStream stream;
 
@@ -24,7 +23,7 @@ public class PrimaryElementsFileGateway implements PrimaryElementsGateway {
 
 	private final SettingsFileType fileType;
 
-	public PrimaryElementsFileGateway(final SettingsFileType aFileType) {
+	public PrimElementsFileGateway(final SettingsFileType aFileType) {
 		super();
 		fileType = aFileType;
 	}

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.SPQuery;
-import ru.curs.showcase.model.navigator.PrimaryElementsGateway;
+import ru.curs.showcase.model.primelements.PrimElementsGateway;
 import ru.curs.showcase.util.*;
 
 /**
@@ -15,7 +15,7 @@ import ru.curs.showcase.util.*;
  * 
  */
 @Description(process = "Загрузка данных для информационной панели из БД")
-public class DataPanelDBGateway extends SPQuery implements PrimaryElementsGateway {
+public class DataPanelDBGateway extends SPQuery implements PrimElementsGateway {
 
 	private static final int SESSION_CONTEXT_INDEX = 3;
 	private static final int DP_INDEX = 4;

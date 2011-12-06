@@ -16,6 +16,7 @@ import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.model.datapanel.*;
 import ru.curs.showcase.model.navigator.*;
+import ru.curs.showcase.model.primelements.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.SettingsFileType;
@@ -108,8 +109,8 @@ public class AbstractTest extends GeneralXMLHelper {
 			needReset = true;
 		}
 		try {
-			PrimaryElementsGateway gateway =
-				new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
+			PrimElementsGateway gateway =
+				new PrimElementsFileGateway(SettingsFileType.DATAPANEL);
 			DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), fileName);
 			DataPanelFactory dpFactory = new DataPanelFactory();
 			DataPanel panel = dpFactory.fromStream(file);
@@ -413,8 +414,8 @@ public class AbstractTest extends GeneralXMLHelper {
 			setDefaultUserData();
 			needReset = true;
 		}
-		try (PrimaryElementsGateway gateway =
-			new PrimaryElementsFileGateway(SettingsFileType.NAVIGATOR)) {
+		try (PrimElementsGateway gateway =
+			new PrimElementsFileGateway(SettingsFileType.NAVIGATOR)) {
 			DataFile<InputStream> stream1 = gateway.getRawData(new CompositeContext(), fileName);
 			CompositeContext context =
 				new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));

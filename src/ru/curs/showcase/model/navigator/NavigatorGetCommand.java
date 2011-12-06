@@ -5,6 +5,7 @@ import java.io.InputStream;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.model.command.ServiceLayerCommand;
+import ru.curs.showcase.model.primelements.PrimElementsGateway;
 import ru.curs.showcase.util.DataFile;
 
 /**
@@ -23,7 +24,7 @@ public final class NavigatorGetCommand extends ServiceLayerCommand<Navigator> {
 	protected void mainProc() {
 		NavigatorSelector selector = new NavigatorSelector();
 
-		try (PrimaryElementsGateway gw = selector.getGateway()) {
+		try (PrimElementsGateway gw = selector.getGateway()) {
 			DataFile<InputStream> xml = gw.getRawData(getContext());
 			NavigatorFactory factory = new NavigatorFactory(getContext());
 			setResult(factory.fromStream(xml));

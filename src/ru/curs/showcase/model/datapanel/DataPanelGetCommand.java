@@ -5,7 +5,7 @@ import java.io.InputStream;
 import ru.curs.showcase.app.api.datapanel.DataPanel;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.model.command.*;
-import ru.curs.showcase.model.navigator.PrimaryElementsGateway;
+import ru.curs.showcase.model.primelements.PrimElementsGateway;
 import ru.curs.showcase.util.DataFile;
 
 /**
@@ -31,7 +31,7 @@ public final class DataPanelGetCommand extends ServiceLayerCommand<DataPanel> {
 	@Override
 	protected void mainProc() {
 		DataPanelSelector selector = new DataPanelSelector(action.getDataPanelLink());
-		try (PrimaryElementsGateway gateway = selector.getGateway()) {
+		try (PrimElementsGateway gateway = selector.getGateway()) {
 			DataFile<InputStream> file = gateway.getRawData(action.getContext());
 			DataPanelFactory factory = new DataPanelFactory();
 			setResult(factory.fromStream(file));

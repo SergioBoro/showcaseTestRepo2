@@ -1,4 +1,4 @@
-package ru.curs.showcase.model.navigator;
+package ru.curs.showcase.model.primelements;
 
 import java.io.*;
 
@@ -13,8 +13,8 @@ import ru.curs.showcase.util.exception.MemoryResourcesError;
  * @author den
  * 
  */
-public class PrimaryElementsJythonGateway extends JythonQuery<String> implements
-		PrimaryElementsGateway {
+public class PrimElementsJythonGateway extends JythonQuery<String> implements
+		PrimElementsGateway {
 
 	private static final String JYTHON_PROC_NODATA_ERROR = "Jython процедура не вернула данные";
 	private String sourceName;
@@ -64,7 +64,7 @@ public class PrimaryElementsJythonGateway extends JythonQuery<String> implements
 		return getProc().getRawData(context);
 	}
 
-	public PrimaryElementsJythonGateway() {
+	public PrimElementsJythonGateway() {
 		super(String.class);
 	}
 

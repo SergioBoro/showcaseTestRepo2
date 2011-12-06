@@ -2,7 +2,7 @@ package ru.curs.showcase.model.datapanel;
 
 import ru.curs.showcase.app.api.event.DataPanelLink;
 import ru.curs.showcase.model.SourceSelector;
-import ru.curs.showcase.model.navigator.*;
+import ru.curs.showcase.model.primelements.*;
 import ru.curs.showcase.util.exception.SettingsFileType;
 
 /**
@@ -11,21 +11,21 @@ import ru.curs.showcase.util.exception.SettingsFileType;
  * @author den
  * 
  */
-public class DataPanelSelector extends SourceSelector<PrimaryElementsGateway> {
+public class DataPanelSelector extends SourceSelector<PrimElementsGateway> {
 
 	public DataPanelSelector(final DataPanelLink dpLink) {
 		super(dpLink.getDataPanelId());
 	}
 
 	@Override
-	public PrimaryElementsGateway getGateway() {
-		PrimaryElementsGateway gateway;
+	public PrimElementsGateway getGateway() {
+		PrimElementsGateway gateway;
 		switch (sourceType()) {
 		case JYTHON:
-			gateway = new PrimaryElementsJythonGateway();
+			gateway = new PrimElementsJythonGateway();
 			break;
 		case FILE:
-			gateway = new PrimaryElementsFileGateway(SettingsFileType.DATAPANEL);
+			gateway = new PrimElementsFileGateway(SettingsFileType.DATAPANEL);
 			break;
 		default:
 			gateway = new DataPanelDBGateway();
