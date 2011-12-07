@@ -281,7 +281,7 @@ public final class XFormPanelCallbacksEvents {
 		 * @return String
 		 */
 		native Object generalFilters()/*-{
-			return this.generalFilters;
+			return this.generalFilters != null ? this.generalFilters : "";
 		}-*/;
 
 		/**
@@ -290,7 +290,7 @@ public final class XFormPanelCallbacksEvents {
 		 * @return String
 		 */
 		native String currentValue()/*-{
-			return this.currentValue;
+			return this.currentValue != null ? this.currentValue : "";
 		}-*/;
 
 		/**
@@ -309,7 +309,7 @@ public final class XFormPanelCallbacksEvents {
 		 * @return boolean
 		 */
 		native boolean needClear()/*-{
-			return this.needClear;
+			return this.needClear != null ? this.needClear : false;
 		}-*/;
 
 		/**
@@ -318,7 +318,8 @@ public final class XFormPanelCallbacksEvents {
 		 * @return boolean
 		 */
 		native boolean needInitSelection()/*-{
-			return this.needInitSelection;
+			return this.needInitSelection != null ? this.needInitSelection
+					: false;
 		}-*/;
 
 		/**

@@ -23,6 +23,9 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String INPUT_TAG = "input";
 	private static final String SUBMIT_TAG = "submit";
 	private static final String UPLOAD_TAG = "upload";
+	private static final String SELECTOR_TAG = "selector";
+	private static final String MULTISELECTOR_TAG = "multiselector";
+	private static final String SELECTOR_BUTTON_LABEL_TAG = "buttonLabel";
 	private static final String SUBMIT_LABEL_TAG = "submitLabel";
 	private static final String SINGLE_FILE_TAG = "singleFile";
 	private static final String FILENAMES_MAPPING = "filenamesMapping";
@@ -35,6 +38,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 	private static final String LOAD = "load";
 	private static final String RESOURCE = "resource";
+	private static final String ACTION = "action";
 	private static final String VALUE = "value";
 	private static final String SHOW_SELECTOR = "showSelector";
 	private static final String SHOW_MULTISELECTOR = "showMultiSelector";
@@ -46,11 +50,15 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 	// CHECKSTYLE:ON
 
+	private static final String JS_SELECTOR_TEMPLATE = "javascript:%s({%s id:'xformId'});";
+
 	private static final String JS_ON_CHOOSE_FILES = "gwtXFormOnChooseFiles('%s', '%s', %s)";
 
 	private static final String JS_ON_SUBMIT_COMPLETE = "gwtXFormOnSubmitComplete('%s')";
 
 	private static final String DEFAULT_SUBMIT_LABEL = "Загрузить";
+
+	private static final String DEFAULT_SELECTOR_LABEL = "Выбрать";
 
 	private static boolean isFilenamesMapping = false;
 
@@ -106,9 +114,71 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		return null;
 	}
 
+	public static org.w3c.dom.Document generateSelectors(final org.w3c.dom.Document doc) {
+		org.w3c.dom.Document result = generateSingleAndMultiSelector(doc, SELECTOR_TAG);
+		result = generateSingleAndMultiSelector(result, MULTISELECTOR_TAG);
+
+		// LoggerFactory.getLogger(XFormTemplateModificator.class).info(
+		// XMLUtils.documentToString(result));
+
+		return result;
+	}
+
+	public static org.w3c.dom.Document generateSingleAndMultiSelector(
+			final org.w3c.dom.Document doc, final String selectorTag) {
+		String selectorFunc;
+		switch (selectorTag) {
+		case SELECTOR_TAG:
+			selectorFunc = SHOW_SELECTOR;
+			break;
+		case MULTISELECTOR_TAG:
+			selectorFunc = SHOW_MULTISELECTOR;
+			break;
+		default:
+			selectorFunc = SHOW_SELECTOR;
+			break;
+		}
+
+		NodeList nl = doc.getElementsByTagNameNS(XFormProducer.XFORMS_URI, selectorTag);
+		for (int i = nl.getLength() - 1; i >= 0; i--) {
+			Node old = nl.item(i);
+			Node parent = old.getParentNode();
+			String params = "";
+			String buttonLabel = DEFAULT_SELECTOR_LABEL;
+			for (int j = 0; j < old.getAttributes().getLength(); j++) {
+				if (SELECTOR_BUTTON_LABEL_TAG.endsWith(old.getAttributes().item(j).getNodeName())) {
+					buttonLabel = old.getAttributes().item(j).getNodeValue();
+				} else {
+					if (!old.getAttributes().item(j).getNodeValue().trim().isEmpty()) {
+						params =
+							params + old.getAttributes().item(j).getNodeName() + ":"
+									+ old.getAttributes().item(j).getNodeValue() + ",";
+					}
+				}
+			}
+
+			Element trigger = doc.createElementNS(XFormProducer.XFORMS_URI, "trigger");
+			parent.replaceChild(trigger, old);
+
+			Element label = doc.createElementNS(XFormProducer.XFORMS_URI, "label");
+			label.setTextContent(buttonLabel);
+			trigger.appendChild(label);
+
+			Element action = doc.createElementNS(XFormProducer.XFORMS_URI, ACTION);
+			action.setAttributeNS(XFormProducer.EVENTS_URI, "ev:event", "DOMActivate");
+			trigger.appendChild(action);
+
+			Element load = doc.createElementNS(XFormProducer.XFORMS_URI, LOAD);
+			load.setAttribute(RESOURCE, String.format(JS_SELECTOR_TEMPLATE, selectorFunc, params));
+			action.appendChild(load);
+		}
+
+		return doc;
+	}
+
 	public static org.w3c.dom.Document generateUploaders(final org.w3c.dom.Document doc,
 			final DataPanelElementInfo element) {
-		NodeList nl = doc.getElementsByTagNameNS(XFormProducer.XFORMS_URI, "upload");
+		NodeList nl = doc.getElementsByTagNameNS(XFormProducer.XFORMS_URI, UPLOAD_TAG);
 		for (int i = nl.getLength() - 1; i >= 0; i--) {
 			Node old = nl.item(i);
 			String procId = old.getAttributes().getNamedItem(ID_TAG).getTextContent();
@@ -135,7 +205,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			form.setAttribute("accept-charset", "utf-8");
 			form.setAttribute("enctype", "multipart/form-data");
 			form.setAttribute("style", "width: 100%; height: 100%;");
-			form.setAttribute("action", ExchangeConstants.SECURED_SERVLET_PREFIX + "/upload");
+			form.setAttribute(ACTION, ExchangeConstants.SECURED_SERVLET_PREFIX + "/upload");
 			Element input = doc.createElement(INPUT_TAG);
 			input.setAttribute(NAME_TAG, XFormContext.class.getName());
 			input.setAttribute(TYPE_TAG, "hidden");
@@ -199,12 +269,12 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 					label.setTextContent(submitLabel);
 					trigger.appendChild(label);
 
-					Element action = doc.createElementNS(XFormProducer.XFORMS_URI, "action");
+					Element action = doc.createElementNS(XFormProducer.XFORMS_URI, ACTION);
 					action.setAttributeNS(XFormProducer.EVENTS_URI, "ev:event", "DOMActivate");
 					trigger.appendChild(action);
 
-					Element load = doc.createElementNS(XFormProducer.XFORMS_URI, "load");
-					load.setAttribute("resource", String.format(JS_SIMPLE_UPLOAD, procId));
+					Element load = doc.createElementNS(XFormProducer.XFORMS_URI, LOAD);
+					load.setAttribute(RESOURCE, String.format(JS_SIMPLE_UPLOAD, procId));
 					action.appendChild(load);
 				}
 			}
@@ -239,6 +309,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	public static Document modify(final Document aTemplate, final CompositeContext aCallContext,
 			final DataPanelElementInfo aElementInfo) {
 		Document result = addSrvInfo(aTemplate, aCallContext, aElementInfo);
+		result = generateSelectors(result);
 		result = insertDataForSelectors(result);
 		result = generateUploaders(result, aElementInfo);
 		return result;
