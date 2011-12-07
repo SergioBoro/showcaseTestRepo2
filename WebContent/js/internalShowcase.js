@@ -7,6 +7,24 @@ function setCurrentUserNameForViewInHTMLControl(preffix)
 
 }
 
+function getErrorByIFrame(iframeName)
+{
+	var err = null; 
+  
+	var iframe = document.getElementsByName(iframeName)[0];
+	
+	var body = iframe.contentDocument.getElementsByTagName("body")[0];
+	
+	if((body != null) && (typeof body != "undefined")) {
+		var message = body.innerHTML;
+		if(message.trim() != "") {			
+			err = message;
+		}
+	}
+	
+	return err; 
+}
+
 var convertorFunc = function(chartId, chartLegendId, optionSet1, optionSet2) {
 
    if (dojo.isString(optionSet1)) optionSet1 = dojo.fromJson(optionSet1);

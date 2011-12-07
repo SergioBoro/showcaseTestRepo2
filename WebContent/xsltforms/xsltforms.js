@@ -10076,27 +10076,6 @@ function insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames)
 	}
 }
 
-function getErrorByIFrame(iframeName)
-{
-	var err = null; 
-  
-	var iframe = document.getElementsByName(iframeName)[0];
-	
-	var pre = iframe.contentDocument.getElementsByTagName("pre")[0];
-	
-	if((pre != null) && (typeof pre != "undefined")) {
-		var message = pre.innerHTML;
-		if(message.trim() != "") {
-			var arr = /^ru.curs\S*([\S\s]*?)ru.curs/i.exec(message);
-			if((arr != null) && (typeof arr[1] != "undefined")){
-				err = arr[1];
-			}
-		}
-	}
-	
-	return err; 
-}
-
 function getValueByXPath(xpath)
 {
     if (isXPath(xpath)) {
