@@ -27,7 +27,7 @@
 	<property name="servlet.cont.lib.dir" value="" />
 
 	<tstamp>
-		<format property="cur_date" pattern="dd.MM" locale="ru,RU" />
+		<format property="cur_date" pattern="MM.dd" locale="ru,RU" />
 	</tstamp>
 	<property name="db.backup.name" value="showcase-test-${cur_date}" />
 
