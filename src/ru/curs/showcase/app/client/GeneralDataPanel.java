@@ -118,6 +118,8 @@ public class GeneralDataPanel {
 	 * 
 	 */
 	public static void redrowGeneralDataPanelAtnavigatorClick(final DataPanel dp) {
+		XFormPanel.destroyXForms(); // Важно !!!!
+
 		if (testRegTabPanelSelectionHandler != null) {
 			testRegTabPanelSelectionHandler.removeHandler();
 			testRegTabPanelSelectionHandler = null;
