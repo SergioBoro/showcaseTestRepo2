@@ -114,12 +114,18 @@
       </level2>          
     </level1> 
     <level1 id="13" name="13-й этап">
-      <level2 id="1301" name="13-й этап, 1 неделя" selectOnLoad="true">
+      <level2 id="1301" name="13-й этап, 1 неделя" selectOnLoad="false">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
           <datapanel type="datapanel/dp1301.py" tab="firstOrCurrent" />
         </action>
-      </level2>           
+      </level2>    
+      <level2 id="1302" name="13-й этап, 2 неделя" selectOnLoad="true">
+        <action>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
+          <datapanel type="1302.xml" tab="firstOrCurrent" />
+        </action>
+      </level2>                
     </level1>      
   </group>
   <group id="1" name="Балансы продовольственных ресурсов">

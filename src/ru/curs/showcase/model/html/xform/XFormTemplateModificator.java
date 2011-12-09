@@ -441,7 +441,6 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		String s;
 
 		for (String selector : selectors) {
-			// TODO Показать Борису
 			if (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) == -1) {
 				continue;
 			}

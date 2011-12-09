@@ -461,7 +461,6 @@ public class GridPanel extends BasicElementPanelBasis {
 		return cell;
 	}
 
-	// TODO: рассказать на семинаре
 	private void afterUpdateGrid(final UpdateType ut) {
 		Cell selected = getStoredRecordId();
 		boolean selectionSaved =

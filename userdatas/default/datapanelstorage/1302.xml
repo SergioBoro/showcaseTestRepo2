@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>	
+	<tab id="01" name="Грид">
+		<element id="0101" type="grid" proc="grid_col_types">
+		</element>	
+		<element id="0102" type="grid" proc="grid_col_types_data">
+			<proc id="p010201" name="grid_col_types_md" type="METADATA"/>
+		</element>							
+	</tab>
+</datapanel>

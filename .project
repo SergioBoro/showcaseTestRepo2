@@ -40,6 +40,11 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.springframework.ide.eclipse.core.springbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>		
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.ajdt.ui.ajnature</nature>
@@ -51,6 +56,7 @@
 		<nature>com.google.gwt.eclipse.core.gwtNature</nature>
 		<nature>net.sf.eclipsecs.core.CheckstyleNature</nature>
 		<nature>org.python.pydev.pythonNature</nature>
+		<nature>org.springframework.ide.eclipse.core.springnature</nature>		
 	</natures>
 	<filteredResources>
 		<filter>
