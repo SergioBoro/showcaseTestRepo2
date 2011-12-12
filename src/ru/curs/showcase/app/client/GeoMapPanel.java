@@ -418,7 +418,8 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 	private void checkForDefaultAction() {
 		if (geoMap.getActionForDependentElements() != null) {
-			AppCurrContext.getInstance().setCurrentAction(geoMap.getActionForDependentElements());
+			AppCurrContext.getInstance().setCurrentActionFromElement(
+					geoMap.getActionForDependentElements(), geoMap);
 			ActionExecuter.execAction();
 		}
 	}

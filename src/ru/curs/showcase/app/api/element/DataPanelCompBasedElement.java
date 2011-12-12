@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.element;
 
 import javax.xml.bind.annotation.*;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+
 /**
  * Абстрактный класс элемента информационной панели, в основе которого лежит
  * некий компонент (сделанный по технологии GWT или JS) и имеющий Header и
@@ -39,5 +41,13 @@ public abstract class DataPanelCompBasedElement extends DataPanelElement {
 
 	public final void setHeader(final String aHeader) {
 		header = aHeader;
+	}
+
+	public DataPanelCompBasedElement() {
+		super();
+	}
+
+	public DataPanelCompBasedElement(final DataPanelElementInfo aElInfo) {
+		super(aElInfo);
 	}
 }

@@ -120,7 +120,7 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 
 	@Override
 	protected void initResult() {
-		result = new XForm();
+		result = new XForm(getElementInfo());
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package ru.curs.showcase.app.api.html;
 
 import javax.xml.bind.annotation.*;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 
 /**
@@ -16,6 +17,14 @@ import ru.curs.showcase.app.api.element.DataPanelElement;
 public class WebText extends DataPanelElement {
 
 	private static final long serialVersionUID = 2992185048516571628L;
+	/**
+	 * HTML данные для вставки на страницу.
+	 */
+	private String data;
+
+	public WebText(final DataPanelElementInfo aElInfo) {
+		super(aElInfo);
+	}
 
 	public WebText() {
 		super();
@@ -25,11 +34,6 @@ public class WebText extends DataPanelElement {
 		super();
 		this.data = aData;
 	}
-
-	/**
-	 * HTML данные для вставки на страницу.
-	 */
-	private String data;
 
 	public final String getData() {
 		return data;

@@ -67,7 +67,7 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 			fail();
 		} catch (ShowcaseExportException_Exception e) {
 			assertEquals(
-					"При вызове Jython Server Activity 'ws/GetFile.py' произошла ошибка: getНав не реализовано !",
+					"При вызове Jython процедуры 'ws/GetFile.py' произошла ошибка: getНав не реализовано !",
 					e.getMessage());
 		}
 	}

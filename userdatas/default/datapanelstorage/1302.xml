@@ -7,4 +7,12 @@
 			<proc id="p010201" name="grid_col_types_md" type="METADATA"/>
 		</element>							
 	</tab>
+	<tab id="02" name="Server Activity - releated">
+		<element id="0201" type="grid" proc="grid_col_types"/>
+		<element id="0202" type="webtext" proc="webtext_sa" showLoadingMessage="true">
+			<related id="0201"/>
+		</element>		
+		<element id="d1" type="webtext" transform="active_bal.xsl" showLoadingMessage="false" hideOnLoad="true"/>
+		<element id="d2" type="webtext" proc="webtext_show_debug_console" hideOnLoad="true"/>				
+	</tab>	
 </datapanel>

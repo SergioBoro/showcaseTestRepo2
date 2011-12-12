@@ -569,4 +569,14 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 			el.getContext().setMain(data);
 		}
 	}
+
+	public void setRelated(final CompositeContext parentContext) {
+		for (Map.Entry<String, CompositeContext> related : parentContext.getRelated().entrySet()) {
+			context.addRelated(related.getKey(), related.getValue());
+			for (ContainingContext el : getContainingContextChilds()) {
+				el.getContext().addRelated(related.getKey(), related.getValue());
+			}
+		}
+
+	}
 }

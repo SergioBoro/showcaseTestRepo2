@@ -27,7 +27,7 @@ public abstract class JythonQuery<T> {
 		"Каталог с python скриптами не найден";
 	public static final String LIB_JYTHON_PATH = "/WEB-INF/libJython";
 	private static final String JYTHON_ERROR =
-		"При вызове Jython Server Activity '%s' произошла ошибка: %s";
+		"При вызове Jython процедуры '%s' произошла ошибка: %s";
 	public static final String SCRIPTS_JYTHON_PATH = "scripts\\\\jython";
 	protected static final String RESULT_FORMAT_ERROR =
 		"Из Jython процедуры данные или настройки переданы в неверном формате";
@@ -110,6 +110,13 @@ public abstract class JythonQuery<T> {
 			throw new ServerLogicError(PYTHON_SCRIPTS_DIR_NOT_FOUND);
 		}
 		state.path.append(new PyString(jythonLibPath.getAbsolutePath()));
+
+		jythonLibPath =
+			new File(AppInfoSingleton.getAppInfo().getWebAppPath() + LIB_JYTHON_PATH
+					+ "/site-packages");
+		if (jythonLibPath.exists()) {
+			state.path.append(new PyString(jythonLibPath.getAbsolutePath()));
+		}
 
 		PythonInterpreter interpreter = new PythonInterpreter(null, state);
 		return interpreter;

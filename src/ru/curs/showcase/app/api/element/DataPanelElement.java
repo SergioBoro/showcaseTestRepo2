@@ -3,6 +3,7 @@ package ru.curs.showcase.app.api.element;
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 
 /**
@@ -17,6 +18,12 @@ public abstract class DataPanelElement implements SerializableElement {
 	private static final long serialVersionUID = 8787932721898449225L;
 
 	/**
+	 * Идентификатор элемента в панели. По данному идентификатору можно
+	 * сопоставить DataPanelElement и DataPanelElementInfo.
+	 */
+	private String id;
+
+	/**
 	 * Действие по умолчанию. Возможное применение сокрытие зависимых элементов
 	 * при перерисовке главного элемента при условии, что в нем не выделен
 	 * активный элемент.
@@ -28,6 +35,23 @@ public abstract class DataPanelElement implements SerializableElement {
 	 */
 	private EventManager<? extends Event> eventManager = initEventManager();
 
+	public DataPanelElement(final DataPanelElementInfo elInfo) {
+		super();
+		id = elInfo.getId();
+	}
+
+	public DataPanelElement() {
+		super();
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(final String aId) {
+		id = aId;
+	}
+
 	public final Action getDefaultAction() {
 		return defaultAction;
 	}
@@ -36,7 +60,7 @@ public abstract class DataPanelElement implements SerializableElement {
 		defaultAction = aAction;
 	}
 
-	protected final void setEventManager(final EventManager<Event> aEventManager) {
+	protected final void setEventManager(final EventManager<? extends Event> aEventManager) {
 		eventManager = aEventManager;
 	}
 

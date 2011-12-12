@@ -14,7 +14,7 @@ import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
  * @author den
  * 
  */
-public final class ExecServerActionCommand extends ServiceLayerCommand<Void> {
+public final class ExecServerActivityCommand extends ServiceLayerCommand<Void> {
 
 	private static final String SERVER_ACTION_EXECUTED = "Выполнено действие на сервере: ";
 
@@ -25,7 +25,7 @@ public final class ExecServerActionCommand extends ServiceLayerCommand<Void> {
 
 	private final Action action;
 
-	public ExecServerActionCommand(final Action aAction) {
+	public ExecServerActivityCommand(final Action aAction) {
 		super(aAction.getContext());
 		action = aAction;
 	}
@@ -41,7 +41,7 @@ public final class ExecServerActionCommand extends ServiceLayerCommand<Void> {
 			return;
 		}
 		String sessionContext = XMLSessionContextGenerator.generate(context);
-
+		System.out.println(sessionContext);
 		action.setSessionContext(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
 		action.setSessionContext((Map<String, List<String>>) null);

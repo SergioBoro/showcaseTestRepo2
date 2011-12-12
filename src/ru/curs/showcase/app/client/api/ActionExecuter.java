@@ -39,7 +39,6 @@ public final class ActionExecuter {
 	 */
 	public static void execAction() {
 		final Action ac = AppCurrContext.getInstance().getCurrentAction();
-
 		if (ac == null) {
 			return;
 		}
@@ -48,6 +47,15 @@ public final class ActionExecuter {
 			if (dataService == null) {
 				dataService = GWT.create(DataService.class);
 			}
+
+			String elementId = AppCurrContext.getInstance().getCurrentElementId();
+			CompositeContext panelContext = null;
+			if (elementId != null) {
+				BasicElementPanel panel = getElementPanelById(elementId);
+				panelContext = panel.getContext();
+			}
+			ac.setRelated(panelContext);
+
 			dataService.execServerAction(ac, new GWTServiceCallback<Void>(
 					Constants.ERROR_IN_SERVER_ACTIVITY) {
 

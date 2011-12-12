@@ -501,7 +501,7 @@ public class GridPanel extends BasicElementPanelBasis {
 
 	private void runAction(final Action ac) {
 		if (ac != null) {
-			AppCurrContext.getInstance().setCurrentAction(ac);
+			AppCurrContext.getInstance().setCurrentActionFromElement(ac, grid);
 			ActionExecuter.execAction();
 		}
 	}

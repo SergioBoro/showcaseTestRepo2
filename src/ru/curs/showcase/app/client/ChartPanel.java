@@ -307,7 +307,8 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 	private void checkForDefaultAction() {
 		if (chart.getActionForDependentElements() != null) {
-			AppCurrContext.getInstance().setCurrentAction(chart.getActionForDependentElements());
+			AppCurrContext.getInstance().setCurrentActionFromElement(
+					chart.getActionForDependentElements(), chart);
 			ActionExecuter.execAction();
 		}
 	}

@@ -7,7 +7,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.event.ExecServerActionCommand;
+import ru.curs.showcase.model.event.ExecServerActivityCommand;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.test.AbstractTest;
 
@@ -27,7 +27,7 @@ public class ActionAndContextSLTest extends AbstractTest {
 	public void testServerActivityExec() {
 		final int actionNumber = 1;
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
-		ExecServerActionCommand command = new ExecServerActionCommand(action);
+		ExecServerActivityCommand command = new ExecServerActivityCommand(action);
 		command.execute();
 		assertNotNull(action.getServerActivities().get(0).getContext().getSession());
 	}
@@ -42,7 +42,7 @@ public class ActionAndContextSLTest extends AbstractTest {
 		AppInfoSingleton.getAppInfo().setCurUserDataId("test1");
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		action.getContext().setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
-		ExecServerActionCommand command = new ExecServerActionCommand(action);
+		ExecServerActivityCommand command = new ExecServerActivityCommand(action);
 		command.execute();
 	}
 
@@ -58,7 +58,7 @@ public class ActionAndContextSLTest extends AbstractTest {
 		activity.setContext(context);
 		action.setContext(context);
 		action.getServerActivities().add(activity);
-		ExecServerActionCommand command = new ExecServerActionCommand(action);
+		ExecServerActivityCommand command = new ExecServerActivityCommand(action);
 		command.execute();
 	}
 
@@ -74,7 +74,7 @@ public class ActionAndContextSLTest extends AbstractTest {
 		activity.setContext(context);
 		action.setContext(context);
 		action.getServerActivities().add(activity);
-		ExecServerActionCommand command = new ExecServerActionCommand(action);
+		ExecServerActivityCommand command = new ExecServerActivityCommand(action);
 		command.execute();
 	}
 }

@@ -24,7 +24,7 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(XMLSessionContextGenerator.class);
 
-	private static final String SESSION_CONTEXT_TAG = "sessioncontext";
+	public static final String SESSION_CONTEXT_TAG = "sessioncontext";
 	public static final String URL_PARAMS_TAG = "urlparams";
 	public static final String URL_PARAM_TAG = "urlparam";
 	public static final String USERDATA_TAG = ExchangeConstants.URL_PARAM_USERDATA;

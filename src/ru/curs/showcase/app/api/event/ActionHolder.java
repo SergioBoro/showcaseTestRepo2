@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.event;
 
 import java.util.*;
 
+import ru.curs.showcase.app.api.element.DataPanelElement;
+
 import com.google.gwt.core.client.GWT;
 
 /**
@@ -20,6 +22,11 @@ public class ActionHolder {
 	private Action currentAction;
 
 	/**
+	 * Идентификатор элемента, из которого было вызвано действие.
+	 */
+	private String currentElementId;
+
+	/**
 	 * Последний Action, пришедший из навигатора. По нему отрабатываются клики в
 	 * навигаторе и клики по вкладками панели.
 	 */
@@ -36,12 +43,14 @@ public class ActionHolder {
 	 * @param newAction
 	 *            - новый Action.
 	 */
-	public void setCurrentAction(final Action newAction) {
+	public void
+			setCurrentActionFromElement(final Action newAction, final DataPanelElement element) {
 		Action clone = newAction.gwtClone();
 		clone.actualizeBy(navigatorAction);
 		leaveOldFilterForInsideTabAction(clone);
 		setupUserdata(clone);
 		currentAction = clone;
+		currentElementId = element.getId();
 	}
 
 	private void setupUserdata(final Action action) {
@@ -111,5 +120,9 @@ public class ActionHolder {
 				}
 			}
 		}
+	}
+
+	public String getCurrentElementId() {
+		return currentElementId;
 	}
 }

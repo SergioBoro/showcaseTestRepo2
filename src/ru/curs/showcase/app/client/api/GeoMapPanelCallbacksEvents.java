@@ -43,7 +43,7 @@ public final class GeoMapPanelCallbacksEvents {
 
 		List<GeoMapEvent> events = gm.getEventManager().getEventForFeature(featureId);
 		for (GeoMapEvent gmev : events) {
-			AppCurrContext.getInstance().setCurrentAction(gmev.getAction());
+			AppCurrContext.getInstance().setCurrentActionFromElement(gmev.getAction(), gm);
 			ActionExecuter.execAction();
 		}
 	}

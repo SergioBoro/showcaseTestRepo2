@@ -212,7 +212,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 		Action ac = xform.getActionForDependentElements();
 		if (ac != null) {
-			AppCurrContext.getInstance().setCurrentAction(ac);
+			AppCurrContext.getInstance().setCurrentActionFromElement(ac, xform);
 			ActionExecuter.execAction();
 		}
 

@@ -48,7 +48,7 @@ public final class WebTextFactory extends HTMLBasedElementFactory {
 
 	@Override
 	protected void initResult() {
-		result = new WebText();
+		result = new WebText(getElementInfo());
 	}
 
 	@Override

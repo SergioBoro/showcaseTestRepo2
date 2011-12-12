@@ -78,7 +78,7 @@ public final class WebTextPanelCallbacksEvents {
 					break;
 				}
 			}
-			AppCurrContext.getInstance().setCurrentAction(ac);
+			AppCurrContext.getInstance().setCurrentActionFromElement(ac, wt);
 			ActionExecuter.execAction();
 		}
 

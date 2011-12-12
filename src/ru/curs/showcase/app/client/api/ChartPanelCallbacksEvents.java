@@ -38,7 +38,7 @@ public final class ChartPanelCallbacksEvents {
 
 		List<ChartEvent> events = ch.getEventManager().getEventForValue(seriesName, index);
 		for (ChartEvent chev : events) {
-			AppCurrContext.getInstance().setCurrentAction(chev.getAction());
+			AppCurrContext.getInstance().setCurrentActionFromElement(chev.getAction(), ch);
 			ActionExecuter.execAction();
 		}
 

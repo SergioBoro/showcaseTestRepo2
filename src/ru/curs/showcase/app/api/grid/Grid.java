@@ -5,6 +5,7 @@ import java.util.List;
 import javax.xml.bind.annotation.*;
 
 import ru.curs.gwt.datagrid.model.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.*;
 
@@ -44,6 +45,14 @@ public class Grid extends DataPanelCompBasedElement {
 	 * с новыми данными. Если null - ничего делать не надо.
 	 */
 	private Column autoSelectColumn = null;
+
+	public Grid() {
+		super();
+	}
+
+	public Grid(final DataPanelElementInfo aElInfo) {
+		super(aElInfo);
+	}
 
 	@Override
 	public final GridEventManager getEventManager() {

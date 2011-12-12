@@ -8,10 +8,11 @@ import java.util.*;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.CanBeCurrent;
+import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.ValidateException;
 import ru.curs.showcase.model.event.*;
 import ru.curs.showcase.model.jython.JythonException;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
@@ -499,7 +500,8 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		ActionHolder ah = new ActionHolder();
 		ah.setNavigatorAction(first);
 		first.filterBy(FILTER_CONDITION);
-		ah.setCurrentAction(first);
+		ah.setCurrentActionFromElement(first, new Chart(new DataPanelElementInfo("1",
+				DataPanelElementType.CHART)));
 
 		Action insideAction = new Action(DataPanelActionType.REFRESH_TAB);
 		insideAction.setContext(CompositeContext.createCurrent());
@@ -514,7 +516,8 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		act = Activity.newClientActivity("01", TEST_ACTIVITY_NAME);
 		act.setContext(CompositeContext.createCurrent());
 		insideAction.getClientActivities().add(act);
-		ah.setCurrentAction(insideAction);
+		ah.setCurrentActionFromElement(insideAction, new Grid(new DataPanelElementInfo("2",
+				DataPanelElementType.GRID)));
 
 		assertNotNull(ah.getCurrentAction());
 		assertEquals(DataPanelActionType.REFRESH_TAB, ah.getCurrentAction()
@@ -526,6 +529,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 				.getContext().getMain());
 		assertEquals(MAIN_CONDITION, ah.getCurrentAction().getClientActivities().get(0)
 				.getContext().getMain());
+		assertEquals("2", ah.getCurrentElementId());
 	}
 
 	/**
@@ -682,6 +686,25 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 				.getContext().getMain());
 		assertEquals(MAIN_CONDITION, action.getServerActivities().get(0).getContext().getMain());
 		assertEquals(MAIN_CONDITION, action.getClientActivities().get(0).getContext().getMain());
+	}
+
+	@Test
+	public void testSetRelated() {
+		final int actionWithChildNumber = 5;
+		Action action = getAction(TREE_MULTILEVEL_XML, 0, actionWithChildNumber);
+		GridContext related = getExtGridContext(getTestContext1());
+		CompositeContext parent = new CompositeContext();
+		parent.addRelated("id", related);
+		action.setRelated(parent);
+
+		checkForRelated(action.getServerActivities().get(0).getContext());
+		checkForRelated(action.getContext());
+	}
+
+	private void checkForRelated(final CompositeContext saContext) {
+		assertEquals(1, saContext.getRelated().size());
+		assertEquals("curRecordId", ((GridContext) saContext.getRelated().values().iterator()
+				.next()).getCurrentRecordId());
 	}
 
 	@Test

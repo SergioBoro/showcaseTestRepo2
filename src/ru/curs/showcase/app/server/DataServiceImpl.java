@@ -12,7 +12,7 @@ import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.model.chart.ChartGetCommand;
 import ru.curs.showcase.model.command.*;
-import ru.curs.showcase.model.event.ExecServerActionCommand;
+import ru.curs.showcase.model.event.ExecServerActivityCommand;
 import ru.curs.showcase.model.frame.MainPageGetCommand;
 import ru.curs.showcase.model.geomap.GeoMapGetCommand;
 import ru.curs.showcase.model.grid.GridGetCommand;
@@ -100,7 +100,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 
 	@Override
 	public void execServerAction(final Action action) throws GeneralException {
-		ExecServerActionCommand command = new ExecServerActionCommand(action);
+		ExecServerActivityCommand command = new ExecServerActivityCommand(action);
 		command.execute();
 	}
 

@@ -2,6 +2,7 @@ package ru.curs.showcase.app.api.chart;
 
 import javax.xml.bind.annotation.*;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelJSBasedElement;
 
 /**
@@ -39,5 +40,13 @@ public class Chart extends DataPanelJSBasedElement {
 	@Override
 	protected ChartEventManager initEventManager() {
 		return new ChartEventManager();
+	}
+
+	public Chart() {
+		super();
+	}
+
+	public Chart(final DataPanelElementInfo aElInfo) {
+		super(aElInfo);
 	}
 }

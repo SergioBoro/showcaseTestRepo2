@@ -2,6 +2,7 @@ package ru.curs.showcase.app.api.geomap;
 
 import javax.xml.bind.annotation.*;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelJSBasedElement;
 
 /**
@@ -34,8 +35,17 @@ public final class GeoMap extends DataPanelJSBasedElement {
 
 	public GeoMap() {
 		super();
+		init();
+	}
+
+	private void init() {
 		javaDynamicData = new GeoMapData(this);
 		javaDynamicData.initAutoSize();
+	}
+
+	public GeoMap(final DataPanelElementInfo aElementInfo) {
+		super(aElementInfo);
+		init();
 	}
 
 	@Override

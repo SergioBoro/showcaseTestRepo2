@@ -11,6 +11,7 @@ import org.xml.sax.Attributes;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.gwt.datagrid.model.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.event.EventFactory;
 import ru.curs.showcase.model.sp.*;
@@ -55,8 +56,9 @@ public class GridDBFactory extends AbstractGridFactory {
 		super(aRaw, aState);
 	}
 
-	public GridDBFactory(final GridContext context, final GridServerState aState) {
-		super(new ElementRawData(null, context), aState);
+	public GridDBFactory(final GridContext context, final DataPanelElementInfo aElementInfo,
+			final GridServerState aState) {
+		super(new ElementRawData(aElementInfo, context), aState);
 	}
 
 	public GridDBFactory(final ElementRawData aRaw) {

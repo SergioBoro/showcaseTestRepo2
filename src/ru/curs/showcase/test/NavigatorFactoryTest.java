@@ -11,13 +11,14 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.IncorrectElementException;
 import ru.curs.showcase.model.command.GeneralExceptionFactory;
 import ru.curs.showcase.model.primelements.*;
 import ru.curs.showcase.model.primelements.navigator.*;
 import ru.curs.showcase.model.sp.DBQueryException;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.exception.SettingsFileType;
+import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**
  * Класс для тестирования фабрики навигаторов.
@@ -101,9 +102,11 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testWithSelectro() {
+	public void testWithSelector() {
 		NavigatorSelector selector = new NavigatorSelector();
-		CompositeContext context = new CompositeContext();
+		CompositeContext context = getTestContext1();
+		context.setSession("<" + XMLSessionContextGenerator.SESSION_CONTEXT_TAG + "/>");
+
 		try (PrimElementsGateway gw = selector.getGateway()) {
 			DataFile<InputStream> file = gw.getRawData(context, selector.getSourceName());
 			NavigatorFactory factory = new NavigatorFactory(context);

@@ -5,6 +5,7 @@ import java.util.*;
 import ru.beta2.extra.gwt.ui.selector.*;
 import ru.beta2.extra.gwt.ui.selector.api.SelectorAdditionalData;
 import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.client.*;
@@ -68,7 +69,7 @@ public final class XFormPanelCallbacksEvents {
 										// MessageBox.showSimpleMessage("InlineUploaderComplete",
 										// "aRes=" + String.valueOf(aRes));
 
-										runAction(ac);
+										runAction(ac, curXFormPanel.getElement());
 									}
 
 								});
@@ -79,7 +80,7 @@ public final class XFormPanelCallbacksEvents {
 							}
 						});
 			} else {
-				runAction(ac);
+				runAction(ac, curXFormPanel.getElement());
 			}
 		}
 	}
@@ -126,14 +127,14 @@ public final class XFormPanelCallbacksEvents {
 				if (overridenAddContext != null) {
 					ac.setAdditionalContext(overridenAddContext);
 				}
-				runAction(ac);
+				runAction(ac, currentXFormPanel.getElement());
 			}
 		}
 	}
 
-	private static void runAction(final Action ac) {
+	private static void runAction(final Action ac, final DataPanelElement aElement) {
 		if (ac != null) {
-			AppCurrContext.getInstance().setCurrentAction(ac);
+			AppCurrContext.getInstance().setCurrentActionFromElement(ac, aElement);
 			ActionExecuter.execAction();
 		}
 	}
@@ -199,7 +200,7 @@ public final class XFormPanelCallbacksEvents {
 
 			if (ac != null) {
 				ac.filterBy(data);
-				runAction(ac);
+				runAction(ac, currentXFormPanel.getElement());
 			}
 		}
 	}

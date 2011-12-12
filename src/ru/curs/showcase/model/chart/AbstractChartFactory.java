@@ -88,7 +88,7 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 
 	@Override
 	protected void initResult() {
-		result = new Chart();
+		result = new Chart(getElementInfo());
 		result.setJavaDynamicData(new ChartData());
 	}
 

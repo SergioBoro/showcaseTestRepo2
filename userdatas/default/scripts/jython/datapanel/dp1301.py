@@ -13,19 +13,13 @@ from ru.curs.showcase.model.jython import JythonProc;
 
 # init vars
 main = None
-add = None
 session = None
-filter = None
 
 class dp1301(JythonProc):           
     def getRawData(self, context):
-        global main, add, session, filter
+        global main, session
         main = context.getMain().encode("utf-8")
-        if context.getAdditional():
-            add = context.getAdditional().encode("utf-8")
         session = context.getSession().encode("utf-8")
-        if context.getFilter():
-            filter = context.getFilter().encode("utf-8")
         return mainproc()     
         
 def mainproc():

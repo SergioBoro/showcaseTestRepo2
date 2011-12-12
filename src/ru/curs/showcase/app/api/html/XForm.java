@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.*;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 
 /**
@@ -16,13 +17,12 @@ import ru.curs.showcase.app.api.element.DataPanelElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class XForm extends DataPanelElement {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = 2992185048516571628L;
 
 	/**
-	 * List<String> xFormParts.
+	 * Смысловые элементы xforms - html, js, css. В будущем будет разбито на
+	 * отдельные поля.
 	 */
 	private List<String> xFormParts;
 
@@ -42,6 +42,14 @@ public class XForm extends DataPanelElement {
 	@Override
 	public HTMLEventManager getEventManager() {
 		return (HTMLEventManager) super.getEventManager();
+	}
+
+	public XForm() {
+		super();
+	}
+
+	public XForm(final DataPanelElementInfo aElInfo) {
+		super(aElInfo);
 	}
 
 }

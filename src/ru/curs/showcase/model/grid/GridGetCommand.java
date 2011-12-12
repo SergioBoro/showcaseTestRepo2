@@ -56,7 +56,7 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 				factory.buildStepOne();
 				gateway.setConn(sgateway.getConn());
 			} else {
-				factory = new GridDBFactory(getContext(), state);
+				factory = new GridDBFactory(getContext(), getElementInfo(), state);
 				factory.buildStepOneFast();
 			}
 			raw = gateway.getRawData(getContext(), getElementInfo());

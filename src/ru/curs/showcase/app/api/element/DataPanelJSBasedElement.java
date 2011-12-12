@@ -3,6 +3,7 @@ package ru.curs.showcase.app.api.element;
 import javax.xml.bind.annotation.*;
 
 import ru.curs.showcase.app.api.JSONObject;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 
 /**
  * Класс элемента панели управления с легендой. Легенда содержит информацию об
@@ -57,6 +58,14 @@ public abstract class DataPanelJSBasedElement extends DataPanelCompBasedElement 
 
 	public final void setTemplate(final String aTemplate) {
 		template = aTemplate;
+	}
+
+	public DataPanelJSBasedElement() {
+		super();
+	}
+
+	public DataPanelJSBasedElement(final DataPanelElementInfo aElInfo) {
+		super(aElInfo);
 	}
 
 }

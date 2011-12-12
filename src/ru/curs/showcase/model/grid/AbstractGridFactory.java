@@ -7,7 +7,7 @@ import org.xml.sax.Attributes;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.ProfileBasedSettingsApplyStrategy;
 import ru.curs.showcase.model.event.CompBasedElementFactory;
 import ru.curs.showcase.model.sp.*;
 import ru.curs.showcase.runtime.ProfileReader;
@@ -139,7 +139,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 
 	@Override
 	protected void initResult() {
-		result = new Grid();
+		result = new Grid(getElementInfo());
 		initColumns();
 		initRecords();
 		initPages();
