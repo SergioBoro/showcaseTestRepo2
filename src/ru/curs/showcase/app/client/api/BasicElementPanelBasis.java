@@ -58,30 +58,7 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 		return context;
 	}
 
-	/**
-	 * Переменная, отвечающая на ответ, первый раз ли грузится полноценно (с
-	 * прорисовкой) элемент.
-	 */
-	private Boolean isFirstLoading = true;
-	/**
-	 * DataPanelElementInfo.
-	 */
 	private DataPanelElementInfo elementInfo;
-
-	/**
-	 * @param aisFirstLoading
-	 *            the isFirstLoading to set
-	 */
-	public void setIsFirstLoading(final Boolean aisFirstLoading) {
-		this.isFirstLoading = aisFirstLoading;
-	}
-
-	/**
-	 * @return the isFirstLoading
-	 */
-	public Boolean getIsFirstLoading() {
-		return isFirstLoading;
-	}
 
 	@Override
 	public DataPanelElementInfo getElementInfo() {
