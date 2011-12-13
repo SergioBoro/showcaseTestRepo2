@@ -20,7 +20,6 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	public GeoMapPanel(final CompositeContext context1, final DataPanelElementInfo element1) {
 		this.setContext(context1);
 		this.setElementInfo(element1);
-		setIsFirstLoading(true);
 
 		generalMapPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
@@ -58,7 +57,7 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		this.setElementInfo(element1);
 		generalHp = new HorizontalPanel();
 		this.setContext(null);
-		setIsFirstLoading(true);
+
 		// я бы убрал этот код-конец
 		createChildPanels();
 
@@ -369,39 +368,34 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	}-*/;
 
 	@Override
-	public void reDrawPanel(final CompositeContext context1, final Boolean refreshContextOnly) {
+	public void reDrawPanel(final CompositeContext context1) {
 
 		this.setContext(context1);
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
-		if ((!getIsFirstLoading()) && refreshContextOnly) {
-			geoMap.updateAddContext(context1);
-		} else {
-			if (this.getElementInfo().getShowLoadingMessage()) {
-				generalMapPanel.clear();
-				generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-			}
-			if (dataService == null) {
-				dataService = GWT.create(DataService.class);
-			}
 
-			dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
-					Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
-
-				@Override
-				public void onSuccess(final GeoMap aGeoMap) {
-
-					geoMap = aGeoMap;
-					if (geoMap != null) {
-						fillMapPanel(aGeoMap);
-						getPanel().setHeight("100%");
-						if (getIsFirstLoading() && refreshContextOnly) {
-							geoMap.updateAddContext(context1);
-						}
-						setIsFirstLoading(false);
-					}
-				}
-			});
+		if (this.getElementInfo().getShowLoadingMessage()) {
+			generalMapPanel.clear();
+			generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 		}
+		if (dataService == null) {
+			dataService = GWT.create(DataService.class);
+		}
+
+		dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
+				Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
+
+			@Override
+			public void onSuccess(final GeoMap aGeoMap) {
+
+				geoMap = aGeoMap;
+				if (geoMap != null) {
+					fillMapPanel(aGeoMap);
+					getPanel().setHeight("100%");
+
+				}
+			}
+		});
+
 	}
 
 	@Override
@@ -418,8 +412,7 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 	private void checkForDefaultAction() {
 		if (geoMap.getActionForDependentElements() != null) {
-			AppCurrContext.getInstance().setCurrentActionFromElement(
-					geoMap.getActionForDependentElements(), geoMap);
+			AppCurrContext.getInstance().setCurrentAction(geoMap.getActionForDependentElements());
 			ActionExecuter.execAction();
 		}
 	}
