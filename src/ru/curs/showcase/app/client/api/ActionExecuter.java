@@ -168,7 +168,7 @@ public final class ActionExecuter {
 
 		bep.prepareSettings(keepElementSettings);
 
-		bep.reDrawPanel(bep.getElementInfo().getContext(ac), dpel.getRefreshContextOnly());
+		bep.reDrawPanel(bep.getElementInfo().getContext(ac));
 	}
 
 	private static void handleRefreshTab(final Action ac) {
@@ -199,7 +199,7 @@ public final class ActionExecuter {
 				boolean keepElementSettings = bep.getElementInfo().getKeepUserSettings(ac);
 
 				bep.prepareSettings(keepElementSettings);
-				bep.reDrawPanel(bep.getElementInfo().getContext(ac), false);
+				bep.reDrawPanel(bep.getElementInfo().getContext(ac));
 			}
 		}
 	}
@@ -260,7 +260,7 @@ public final class ActionExecuter {
 				if (bep instanceof XFormPanel) {
 					bep.prepareSettings(true);
 					bep.showPanel();
-					bep.reDrawPanel(bep.getElementInfo().getContext(ac), false);
+					bep.reDrawPanel(bep.getElementInfo().getContext(ac));
 
 				}
 			}
