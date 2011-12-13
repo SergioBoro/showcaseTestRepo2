@@ -20,7 +20,6 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 		this.setContext(context1);
 		setElementInfo(element1);
-		setIsFirstLoading(true);
 
 		generalChartPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
@@ -38,7 +37,6 @@ public class ChartPanel extends BasicElementPanelBasis {
 		setElementInfo(element1);
 		generalHp = new HorizontalPanel();
 		this.setContext(null);
-		setIsFirstLoading(true);
 		// я бы убрал этот код-конец
 
 		generalChartPanel = new VerticalPanel();
@@ -258,39 +256,34 @@ public class ChartPanel extends BasicElementPanelBasis {
 	}-*/;
 
 	@Override
-	public void reDrawPanel(final CompositeContext context1, final Boolean refreshContextOnly) {
+	public void reDrawPanel(final CompositeContext context1) {
 
 		this.setContext(context1);
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
-		if ((!getIsFirstLoading()) && refreshContextOnly) {
-			chart.updateAddContext(context1);
-		} else {
-			if (this.getElementInfo().getShowLoadingMessage()) {
-				generalChartPanel.clear();
-				generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-			}
-			if (dataService == null) {
-				dataService = GWT.create(DataService.class);
-			}
 
-			dataService.getChart(getContext(), getElementInfo(), new GWTServiceCallback<Chart>(
-					Constants.ERROR_OF_CHART_DATA_RETRIEVING_FROM_SERVER) {
-
-				@Override
-				public void onSuccess(final Chart achart) {
-
-					chart = achart;
-					if (chart != null) {
-						fillChartPanel(achart);
-						getPanel().setHeight("100%");
-						if (getIsFirstLoading() && refreshContextOnly) {
-							chart.updateAddContext(context1);
-						}
-						setIsFirstLoading(false);
-					}
-				}
-			});
+		if (this.getElementInfo().getShowLoadingMessage()) {
+			generalChartPanel.clear();
+			generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 		}
+		if (dataService == null) {
+			dataService = GWT.create(DataService.class);
+		}
+
+		dataService.getChart(getContext(), getElementInfo(), new GWTServiceCallback<Chart>(
+				Constants.ERROR_OF_CHART_DATA_RETRIEVING_FROM_SERVER) {
+
+			@Override
+			public void onSuccess(final Chart achart) {
+
+				chart = achart;
+				if (chart != null) {
+					fillChartPanel(achart);
+					getPanel().setHeight("100%");
+
+				}
+			}
+		});
+
 	}
 
 	@Override
@@ -307,8 +300,7 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 	private void checkForDefaultAction() {
 		if (chart.getActionForDependentElements() != null) {
-			AppCurrContext.getInstance().setCurrentActionFromElement(
-					chart.getActionForDependentElements(), chart);
+			AppCurrContext.getInstance().setCurrentAction(chart.getActionForDependentElements());
 			ActionExecuter.execAction();
 		}
 	}
