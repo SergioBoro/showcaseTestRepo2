@@ -121,13 +121,13 @@ public class XFormPanel extends BasicElementPanelBasis {
 		p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
 		if (xform1 == null) {
-			setXFormPanel(false);
+			setXFormPanel();
 		} else {
 
 			RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
 			RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
 
-			setXFormPanelByXForms(xform1, false);
+			setXFormPanelByXForms(xform1);
 		}
 
 	}
@@ -135,7 +135,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	@Override
 	public void reDrawPanel(final CompositeContext context, final Boolean refreshContextOnly) {
 
-		reDrawPanelExt(context, refreshContextOnly, null);
+		reDrawPanelExt(context, null);
 
 	}
 
@@ -144,40 +144,32 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 * 
 	 * @param context
 	 *            CompositeContext
-	 * @param refreshContextOnly
-	 *            Boolean
 	 * @param xform1
 	 *            XForms
 	 */
-	public void reDrawPanelExt(final CompositeContext context, final Boolean refreshContextOnly,
-			final XForm xform1) {
+	public void reDrawPanelExt(final CompositeContext context, final XForm xform1) {
 
 		setContext(context);
 		// --------------
 
-		if ((!getIsFirstLoading()) && refreshContextOnly) {
-			xform.updateAddContext(context);
+		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+		if (this.getElementInfo().getShowLoadingMessage()) {
+			p.clear();
+			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+		}
+
+		if (xform1 == null) {
+			setXFormPanel();
 		} else {
-			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
-			if (this.getElementInfo().getShowLoadingMessage()) {
-				p.clear();
-				p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-			}
+			RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
+			RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
 
-			if (xform1 == null) {
-				setXFormPanel(refreshContextOnly);
-			} else {
-				RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
-				RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
-
-				setXFormPanelByXForms(xform1, refreshContextOnly);
-			}
-
+			setXFormPanelByXForms(xform1);
 		}
 
 	}
 
-	private void setXFormPanel(final Boolean refreshContextOnly) {
+	private void setXFormPanel() {
 
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -188,13 +180,13 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 					@Override
 					public void onSuccess(final XForm xform1) {
-						setXFormPanelByXForms(xform1, refreshContextOnly);
+						setXFormPanelByXForms(xform1);
 					}
 				});
 
 	}
 
-	private void setXFormPanelByXForms(final XForm xform1, final Boolean refreshContextOnly) {
+	private void setXFormPanelByXForms(final XForm xform1) {
 		xform = xform1;
 
 		destroy();
@@ -233,9 +225,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
 		}
 
-		if (getIsFirstLoading() && refreshContextOnly) {
-			xform.updateAddContext(getContext());
-		}
 		setIsFirstLoading(false);
 
 		// p.setHeight(PROC100);
@@ -415,7 +404,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 			p.clear();
 			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 		}
-		setXFormPanel(false);
+		setXFormPanel();
 
 	}
 

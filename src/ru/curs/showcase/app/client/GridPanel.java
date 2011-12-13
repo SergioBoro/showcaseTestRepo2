@@ -137,13 +137,13 @@ public class GridPanel extends BasicElementPanelBasis {
 		p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
 		if (grid1 == null) {
-			setDataGridPanel(UpdateType.FULL, false);
+			setDataGridPanel(UpdateType.FULL);
 		} else {
 
 			RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
 			RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
 
-			setDataGridPanelByGrid(grid1, UpdateType.FULL, false);
+			setDataGridPanelByGrid(grid1, UpdateType.FULL);
 
 		}
 
@@ -151,7 +151,7 @@ public class GridPanel extends BasicElementPanelBasis {
 
 	@Override
 	public void reDrawPanel(final CompositeContext context, final Boolean refreshContextOnly) {
-		reDrawPanelExt(context, refreshContextOnly, null);
+		reDrawPanelExt(context, null);
 	}
 
 	/**
@@ -159,54 +159,44 @@ public class GridPanel extends BasicElementPanelBasis {
 	 * 
 	 * @param context
 	 *            CompositeContext
-	 * @param refreshContextOnly
-	 *            Boolean
 	 * @param grid1
 	 *            Grid
 	 */
-	public void reDrawPanelExt(final CompositeContext context, final Boolean refreshContextOnly,
-			final Grid grid1) {
+	public void reDrawPanelExt(final CompositeContext context, final Grid grid1) {
 
 		setContext(context);
 		// --------------
 
-		if ((!getIsFirstLoading()) && refreshContextOnly) {
-			grid.updateAddContext(context);
-		} else {
+		if (getIsFirstLoading()) {
+			localContext = null;
 
-			if (getIsFirstLoading()) {
-				localContext = null;
+			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
-				p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-
-				if (grid1 == null) {
-					setDataGridPanel(UpdateType.FULL, refreshContextOnly);
-				} else {
-					RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
-					RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
-					setDataGridPanelByGrid(grid1, UpdateType.FULL, refreshContextOnly);
-				}
-
+			if (grid1 == null) {
+				setDataGridPanel(UpdateType.FULL);
 			} else {
-				p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
-				if (this.getElementInfo().getShowLoadingMessage()) {
-					hpHeader.clear();
-					hpHeader.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-
-					hpToolbar.setVisible(false);
-					dg.setVisible(false);
-					hpFooter.setVisible(false);
-				}
-				if (grid1 == null) {
-					setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID, refreshContextOnly);
-				} else {
-					RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
-					RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
-					setDataGridPanelByGrid(grid1, UpdateType.UPDATE_BY_REDRAWGRID,
-							refreshContextOnly);
-				}
+				RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
+				RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
+				setDataGridPanelByGrid(grid1, UpdateType.FULL);
 			}
 
+		} else {
+			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+			if (this.getElementInfo().getShowLoadingMessage()) {
+				hpHeader.clear();
+				hpHeader.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+
+				hpToolbar.setVisible(false);
+				dg.setVisible(false);
+				hpFooter.setVisible(false);
+			}
+			if (grid1 == null) {
+				setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID);
+			} else {
+				RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
+				RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
+				setDataGridPanelByGrid(grid1, UpdateType.UPDATE_BY_REDRAWGRID);
+			}
 		}
 
 	}
@@ -238,7 +228,7 @@ public class GridPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	private void setDataGridPanel(final UpdateType ut, final Boolean refreshContextOnly) {
+	private void setDataGridPanel(final UpdateType ut) {
 
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -249,14 +239,13 @@ public class GridPanel extends BasicElementPanelBasis {
 
 			@Override
 			public void onSuccess(final Grid grid1) {
-				setDataGridPanelByGrid(grid1, ut, refreshContextOnly);
+				setDataGridPanelByGrid(grid1, ut);
 			}
 		});
 
 	}
 
-	private void setDataGridPanelByGrid(final Grid grid1, final UpdateType ut,
-			final Boolean refreshContextOnly) {
+	private void setDataGridPanelByGrid(final Grid grid1, final UpdateType ut) {
 
 		grid = grid1;
 
@@ -285,9 +274,6 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		setupTimer();
 
-		if (getIsFirstLoading() && refreshContextOnly) {
-			grid.updateAddContext(getContext());
-		}
 		setIsFirstLoading(false);
 
 		p.setHeight(PROC100);
@@ -782,7 +768,7 @@ public class GridPanel extends BasicElementPanelBasis {
 			localContext.setPageNumber(1);
 			localContext.setSortedColumns(columns);
 			resetSelection();
-			setDataGridPanel(UpdateType.RECORDSET_BY_UPDATERECORDSET, false);
+			setDataGridPanel(UpdateType.RECORDSET_BY_UPDATERECORDSET);
 			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 		}
 
@@ -799,7 +785,7 @@ public class GridPanel extends BasicElementPanelBasis {
 
 			localContext.setPageNumber(newPageNumber);
 			resetSelection();
-			setDataGridPanel(UpdateType.RECORDSET_BY_UPDATERECORDSET, false);
+			setDataGridPanel(UpdateType.RECORDSET_BY_UPDATERECORDSET);
 			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 		}
 
@@ -817,7 +803,7 @@ public class GridPanel extends BasicElementPanelBasis {
 			localContext.setPageNumber(1);
 			localContext.setPageSize(newItemsPerPage);
 			resetSelection();
-			setDataGridPanel(UpdateType.RECORDSET_BY_SHOWDATA, false);
+			setDataGridPanel(UpdateType.RECORDSET_BY_SHOWDATA);
 			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 		}
 
@@ -860,7 +846,7 @@ public class GridPanel extends BasicElementPanelBasis {
 			dg.setVisible(false);
 			hpFooter.setVisible(false);
 		}
-		setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID, false);
+		setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID);
 
 	}
 

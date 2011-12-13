@@ -106,7 +106,7 @@ public class XFormPanelTest extends GWTTestCase {
 
 		XForm xform = XFormTestsCommon.createXForms2();
 
-		xfp.reDrawPanelExt(context, true, xform);
+		xfp.reDrawPanelExt(context, xform);
 		assertNotNull(xfp.getContext());
 
 		generalPartTest(xfp);
@@ -125,7 +125,7 @@ public class XFormPanelTest extends GWTTestCase {
 
 		XForm xform = XFormTestsCommon.createXForms2();
 
-		xfp.reDrawPanelExt(context, true, xform);
+		xfp.reDrawPanelExt(context, xform);
 
 		assertEquals(1, xfp.getPanel().getWidgetCount());
 

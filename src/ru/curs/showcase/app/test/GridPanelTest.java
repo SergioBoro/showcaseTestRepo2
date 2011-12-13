@@ -263,7 +263,7 @@ public class GridPanelTest extends GWTTestCase {
 
 		ru.curs.showcase.app.api.grid.Grid grid = createGrid();
 
-		dgp.reDrawPanelExt(context, true, grid);
+		dgp.reDrawPanelExt(context, grid);
 		assertNotNull(dgp.getContext());
 
 		final int widgetCount1 = 4;
@@ -286,7 +286,7 @@ public class GridPanelTest extends GWTTestCase {
 
 		ru.curs.showcase.app.api.grid.Grid grid = createGrid();
 
-		dgp.reDrawPanelExt(context, true, grid);
+		dgp.reDrawPanelExt(context, grid);
 
 		final int widgetCount1 = 4;
 		assertEquals(widgetCount1, dgp.getPanel().getWidgetCount());
@@ -305,7 +305,7 @@ public class GridPanelTest extends GWTTestCase {
 
 		ru.curs.showcase.app.api.grid.Grid grid = createGrid();
 
-		dgp.reDrawPanelExt(context, false, grid);
+		dgp.reDrawPanelExt(context, grid);
 
 		final int widgetCount1 = 4;
 		assertEquals(widgetCount1, dgp.getPanel().getWidgetCount());
