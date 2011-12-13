@@ -28,7 +28,7 @@ public interface BasicElementPanel {
 	 *            - признак того, что у элемента нужно вызвать функцию
 	 *            обновления контекста для всех его событий.
 	 */
-	void reDrawPanel(final CompositeContext context1, final Boolean refreshContextOnly);
+	void reDrawPanel(final CompositeContext context1);
 
 	/**
 	 * 
