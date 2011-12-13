@@ -11,7 +11,6 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.IncorrectElementException;
 import ru.curs.showcase.model.command.GeneralExceptionFactory;
 import ru.curs.showcase.model.primelements.*;
 import ru.curs.showcase.model.primelements.navigator.*;
@@ -110,18 +109,6 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		try (PrimElementsGateway gw = selector.getGateway()) {
 			DataFile<InputStream> file = gw.getRawData(context, selector.getSourceName());
 			NavigatorFactory factory = new NavigatorFactory(context);
-			factory.fromStream(file);
-		}
-	}
-
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongActionInNavigator() {
-		CompositeContext context =
-			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
-		NavigatorFactory factory = new NavigatorFactory(context);
-		try (PrimElementsGateway gateway = new PrimElementsFileGateway(SettingsFileType.NAVIGATOR)) {
-			DataFile<InputStream> file =
-				gateway.getRawData(context, "tree_multilevel.wrong.2.xml");
 			factory.fromStream(file);
 		}
 	}

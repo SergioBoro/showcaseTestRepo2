@@ -118,22 +118,4 @@ public abstract class DataPanelElement implements SerializableElement {
 		return null;
 	}
 
-	/**
-	 * Обновляет дополнительный контекст у всех событий элемента и у действия по
-	 * умолчанию.
-	 * 
-	 * @param context
-	 *            - новый контекст.
-	 */
-	public void updateAddContext(final CompositeContext context) {
-		for (Event event : eventManager.getEvents()) {
-			Action action = event.getAction();
-			action.refreshContextOnly(context);
-		}
-
-		if (defaultAction != null) {
-			defaultAction.refreshContextOnly(context);
-		}
-	}
-
 }

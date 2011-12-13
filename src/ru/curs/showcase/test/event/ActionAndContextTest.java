@@ -75,8 +75,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		assertEquals(1, link.getElementLinks().size());
 		assertEquals(EL_06, link.getElementLinks().get(0).getId());
 		assertEquals(ADD_CONDITION, link.getElementLinks().get(0).getContext().getAdditional());
-		assertTrue(link.getElementLinks().get(0).getSkipRefreshContextOnly());
-		assertTrue(link.getElementLinks().get(0).getRefreshContextOnly());
 		assertTrue(link.getElementLinks().get(0).getKeepUserSettings());
 
 		assertNotNull(clone.getNavigatorElementLink());
@@ -245,27 +243,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 	 * 
 	 */
 	@Test
-	public void testUpdateAddContext() {
-		Grid grid = createTestGrid();
-		CompositeContext context = new CompositeContext();
-		context.setAdditional(NEW_ADD_CONDITION);
-		grid.updateAddContext(context);
-
-		assertEquals(NEW_ADD_CONDITION, grid.getEventManager().getEvents().get(0).getAction()
-				.getDataPanelLink().getElementLinks().get(0).getContext().getAdditional());
-		assertEquals(NEW_ADD_CONDITION, grid.getDefaultAction().getDataPanelLink()
-				.getElementLinks().get(0).getContext().getAdditional());
-		assertEquals(NEW_ADD_CONDITION, grid.getDefaultAction().getServerActivities().get(0)
-				.getContext().getAdditional());
-		assertEquals(NEW_ADD_CONDITION, grid.getDefaultAction().getClientActivities().get(0)
-				.getContext().getAdditional());
-	}
-
-	/**
-	 * Тест на обновление дополнительного контекста.
-	 * 
-	 */
-	@Test
 	public void testActualizeActions() {
 		Grid grid = createTestGrid();
 		CompositeContext context = new CompositeContext();
@@ -317,19 +294,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		final int el4 = 4;
 		action = getAction(TREE_MULTILEVEL_XML, 0, el4);
 		assertNotNull(action.getNavigatorElementLink().getId());
-	}
-
-	/**
-	 * Проверка считывания опции refresh_context_only. Она не имеет смысла в
-	 * навигаторе, но это же просто тест, а не use case.
-	 * 
-	 */
-	@Test
-	public void testRefreshContextOnlyAction() {
-		final int elNum = 6;
-		Action action = getAction(TREE_MULTILEVEL_XML, 0, elNum);
-		assertTrue(action.getDataPanelLink().getElementLinks().get(0).getRefreshContextOnly());
-		assertTrue(action.getDataPanelLink().getElementLinks().get(1).getSkipRefreshContextOnly());
 	}
 
 	/**
@@ -385,8 +349,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 
 		DataPanelElementLink elLink = action.getDataPanelLink().getElementLinkById(EL_06);
 		elLink.setKeepUserSettings(true);
-		elLink.setRefreshContextOnly(true);
-		elLink.setSkipRefreshContextOnly(true);
 
 		Activity act = Activity.newServerActivity("01", TEST_ACTIVITY_NAME);
 		act.setContext(getComplexTestContext());

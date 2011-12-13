@@ -342,34 +342,6 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	}
 
 	/**
-	 * Обновляет дополнительный контекст у всех зависимых элементов.
-	 * 
-	 * @param addContext
-	 *            - правильный контекст.
-	 * @return - себя.
-	 */
-	public Action refreshContextOnly(final CompositeContext addContext) {
-		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
-			for (DataPanelElementLink link : dataPanelLink.getElementLinks()) {
-				if (!link.getSkipRefreshContextOnly()) {
-					link.getContext().setAdditional(addContext.getAdditional());
-				}
-			}
-		}
-
-		refreshContextOnlyForActivities(serverActivities, addContext);
-		refreshContextOnlyForActivities(clientActivities, addContext);
-		return this;
-	}
-
-	private void refreshContextOnlyForActivities(final List<Activity> aActivities,
-			final CompositeContext addContext) {
-		for (Activity act : aActivities) {
-			act.getContext().setAdditional(addContext.getAdditional());
-		}
-	}
-
-	/**
 	 * Функция обновления add_context у всех дочерних контекстов в действии.
 	 * 
 	 * @param data
@@ -548,20 +520,7 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 
 	@Override
 	public boolean isCorrect() {
-		return (!needGeneralContext() || (context != null))
-				&& ((showInMode != ShowInMode.MODAL_WINDOW) || (!haveRefreshContextOnlyElements()));
-	}
-
-	private boolean haveRefreshContextOnlyElements() {
-		if (dataPanelLink == null) {
-			return false;
-		}
-		for (DataPanelElementLink elLink : dataPanelLink.getElementLinks()) {
-			if (elLink.getRefreshContextOnly()) {
-				return true;
-			}
-		}
-		return false;
+		return !needGeneralContext() || (context != null);
 	}
 
 	public void setMainContext(final String data) {

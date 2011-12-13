@@ -41,7 +41,6 @@ public final class ExecServerActivityCommand extends ServiceLayerCommand<Void> {
 			return;
 		}
 		String sessionContext = XMLSessionContextGenerator.generate(context);
-		System.out.println(sessionContext);
 		action.setSessionContext(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
 		action.setSessionContext((Map<String, List<String>>) null);

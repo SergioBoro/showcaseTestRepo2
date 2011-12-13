@@ -29,9 +29,6 @@
 										<xs:element name="add_context" minOccurs="0" />
 									</xs:sequence>
 									<xs:attribute name="id" type="notNullType" use="required" />
-									<xs:attribute name="refresh_context_only" type="xs:boolean" />
-									<xs:attribute name="skip_refresh_context_only"
-										type="xs:boolean" />
 									<xs:attribute name="keep_user_settings" type="xs:boolean" />
 								</xs:complexType>
 							</xs:element>

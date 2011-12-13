@@ -102,8 +102,6 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(calcContext);
 		assertEquals(context.getMain(), calcContext.getMain());
 		assertNull(calcContext.getSession());
-		assertFalse(event.getAction().getDataPanelLink().getElementLinks().get(0)
-				.getRefreshContextOnly());
 
 		// второй грид со второй вкладки в панели a.xml
 		DataPanelElementInfo secondGrid = getDPElement("test.xml", "2", secondGridId);

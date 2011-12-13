@@ -16,9 +16,7 @@ import ru.curs.showcase.util.xml.*;
 public class ActionFactory extends SAXTagHandler {
 	private static final String SHOW_CLOSE_BOTTOM_BUTTON_TAG = "show_close_bottom_button";
 	private static final String KEEP_USER_SETTINGS_TAG = "keep_user_settings";
-	private static final String SKIP_REFRESH_CONTEXT_ONLY_TAG = "skip_refresh_context_only";
 	private static final String SHOW_IN_MODE_TAG = "show_in";
-	private static final String REFRESH_CONTEXT_ONLY_TAG = "refresh_context_only";
 
 	/**
 	 * Текущее действие.
@@ -141,14 +139,6 @@ public class ActionFactory extends SAXTagHandler {
 
 		curDataPanelElementLink.setId(attrs.getValue(ID_TAG));
 
-		if (attrs.getIndex(REFRESH_CONTEXT_ONLY_TAG) > -1) {
-			value = attrs.getValue(REFRESH_CONTEXT_ONLY_TAG);
-			curDataPanelElementLink.setRefreshContextOnly(Boolean.parseBoolean(value));
-		}
-		if (attrs.getIndex(SKIP_REFRESH_CONTEXT_ONLY_TAG) > -1) {
-			value = attrs.getValue(SKIP_REFRESH_CONTEXT_ONLY_TAG);
-			curDataPanelElementLink.setSkipRefreshContextOnly(Boolean.parseBoolean(value));
-		}
 		if (attrs.getIndex(KEEP_USER_SETTINGS_TAG) > -1) {
 			value = attrs.getValue(KEEP_USER_SETTINGS_TAG);
 			curDataPanelElementLink.setKeepUserSettings(Boolean.parseBoolean(value));

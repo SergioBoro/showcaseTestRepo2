@@ -27,18 +27,6 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 	private CompositeContext context;
 
 	/**
-	 * Признак того, что при перерисовке элемента у него нужно только сменить
-	 * контекст, не выполняя запрос на сервер.
-	 */
-	private Boolean refreshContextOnly = false;
-
-	/**
-	 * Признак того, что при выполнении refreshContextOnly данный элемент нужно
-	 * пропустить.
-	 */
-	private Boolean skipRefreshContextOnly = false;
-
-	/**
 	 * Признак того, что нужно сохранять пользовательские настройки данного
 	 * элемента после выполнения действия. Данная настройка перекрывает
 	 * аналогичную настройку действия (Action).
@@ -92,26 +80,8 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 		DataPanelElementLink res = new DataPanelElementLink();
 		res.id = id;
 		res.context = context.gwtClone();
-		res.refreshContextOnly = refreshContextOnly;
-		res.skipRefreshContextOnly = skipRefreshContextOnly;
 		res.keepUserSettings = keepUserSettings;
 		return res;
-	}
-
-	public Boolean getRefreshContextOnly() {
-		return refreshContextOnly;
-	}
-
-	public void setRefreshContextOnly(final Boolean aRefreshContextOnly) {
-		refreshContextOnly = aRefreshContextOnly;
-	}
-
-	public Boolean getSkipRefreshContextOnly() {
-		return skipRefreshContextOnly;
-	}
-
-	public void setSkipRefreshContextOnly(final Boolean aSkipRefreshContextOnly) {
-		skipRefreshContextOnly = aSkipRefreshContextOnly;
 	}
 
 	public Boolean getKeepUserSettings() {
