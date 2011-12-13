@@ -42,7 +42,6 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 		this.setContext(context1);
 		this.setElementInfo(element1);
-		setIsFirstLoading(true);
 		generalWebTextPanel = new VerticalPanel();
 
 		generalWebTextPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
@@ -59,7 +58,6 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		this.setElementInfo(element1);
 
 		setContext(null);
-		setIsFirstLoading(true);
 
 		thmlwidget = new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING);
 		generalWebTextPanel = new VerticalPanel();
@@ -159,7 +157,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 	}
 
 	@Override
-	public void reDrawPanel(final CompositeContext context1, final Boolean refreshContextOnly) {
+	public void reDrawPanel(final CompositeContext context1) {
 		setContext(context1);
 
 		// generalWebTextPanel.getOffsetHeight()
@@ -169,35 +167,28 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		// String.valueOf(generalWebTextPanel.getOffsetHeight()));
 
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
-		if ((!getIsFirstLoading()) && refreshContextOnly) {
-			webText.updateAddContext(context1);
-		} else {
-			if (this.getElementInfo().getShowLoadingMessage()) {
-				thmlwidget.setText(Constants.PLEASE_WAIT_DATA_ARE_LOADING);
-			}
-			if (dataService == null) {
-				dataService = GWT.create(DataService.class);
-			}
 
-			dataService.getWebText(getContext(), getElementInfo(),
-					new GWTServiceCallback<WebText>(
-							Constants.ERROR_OF_WEBTEXT_DATA_RETRIEVING_FROM_SERVER) {
-
-						@Override
-						public void onSuccess(final WebText awt) {
-
-							webText = awt;
-							if (webText != null) {
-								fillWebTextPanel(awt);
-								getPanel().setHeight(SIZE_ONE_HUNDRED_PERCENTS);
-								if (getIsFirstLoading() && refreshContextOnly) {
-									webText.updateAddContext(context1);
-								}
-								setIsFirstLoading(false);
-							}
-						}
-					});
+		if (this.getElementInfo().getShowLoadingMessage()) {
+			thmlwidget.setText(Constants.PLEASE_WAIT_DATA_ARE_LOADING);
 		}
+		if (dataService == null) {
+			dataService = GWT.create(DataService.class);
+		}
+
+		dataService.getWebText(getContext(), getElementInfo(), new GWTServiceCallback<WebText>(
+				Constants.ERROR_OF_WEBTEXT_DATA_RETRIEVING_FROM_SERVER) {
+
+			@Override
+			public void onSuccess(final WebText awt) {
+
+				webText = awt;
+				if (webText != null) {
+					fillWebTextPanel(awt);
+					getPanel().setHeight(SIZE_ONE_HUNDRED_PERCENTS);
+
+				}
+			}
+		});
 
 	}
 
@@ -214,8 +205,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 	private void checkForDefaultAction() {
 		if (webText.getActionForDependentElements() != null) {
-			AppCurrContext.getInstance().setCurrentActionFromElement(
-					webText.getActionForDependentElements(), webText);
+			AppCurrContext.getInstance().setCurrentAction(webText.getActionForDependentElements());
 			ActionExecuter.execAction();
 		}
 	}
