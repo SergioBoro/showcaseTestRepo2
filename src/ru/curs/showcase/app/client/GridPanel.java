@@ -55,6 +55,16 @@ public class GridPanel extends BasicElementPanelBasis {
 	 */
 	private boolean bListenersExit = true;
 
+	private boolean isFirstLoading = true;
+
+	private boolean isFirstLoading() {
+		return isFirstLoading;
+	}
+
+	private void setFirstLoading(final boolean isFirstLoading1) {
+		isFirstLoading = isFirstLoading1;
+	}
+
 	private String strHeader = "";
 	private String strFooter = "";
 
@@ -116,7 +126,7 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		setElementInfo(element);
 		setContext(null);
-		setIsFirstLoading(true);
+		setFirstLoading(true);
 
 		// --------------
 
@@ -130,7 +140,7 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		this.setContext(context);
 		this.setElementInfo(element);
-		setIsFirstLoading(true);
+		setFirstLoading(true);
 
 		// --------------
 
@@ -150,7 +160,7 @@ public class GridPanel extends BasicElementPanelBasis {
 	}
 
 	@Override
-	public void reDrawPanel(final CompositeContext context, final Boolean refreshContextOnly) {
+	public void reDrawPanel(final CompositeContext context) {
 		reDrawPanelExt(context, null);
 	}
 
@@ -167,7 +177,7 @@ public class GridPanel extends BasicElementPanelBasis {
 		setContext(context);
 		// --------------
 
-		if (getIsFirstLoading()) {
+		if (isFirstLoading()) {
 			localContext = null;
 
 			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
@@ -274,7 +284,7 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		setupTimer();
 
-		setIsFirstLoading(false);
+		setFirstLoading(false);
 
 		p.setHeight(PROC100);
 

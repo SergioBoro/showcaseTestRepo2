@@ -91,7 +91,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 		setElementInfo(element);
 		setContext(null);
-		setIsFirstLoading(true);
 
 		setCallbackJSNIFunction();
 
@@ -109,7 +108,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 		setContext(context);
 		setElementInfo(element);
-		setIsFirstLoading(true);
 
 		setCallbackJSNIFunction();
 
@@ -133,7 +131,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	}
 
 	@Override
-	public void reDrawPanel(final CompositeContext context, final Boolean refreshContextOnly) {
+	public void reDrawPanel(final CompositeContext context) {
 
 		reDrawPanelExt(context, null);
 
@@ -224,8 +222,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 			final int n1000 = 1000;
 			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
 		}
-
-		setIsFirstLoading(false);
 
 		// p.setHeight(PROC100);
 		p.setSize(PROC100, PROC100);

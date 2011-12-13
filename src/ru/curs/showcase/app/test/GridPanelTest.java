@@ -207,7 +207,6 @@ public class GridPanelTest extends GWTTestCase {
 
 		assertEquals("1", dgp.getElementInfo().getId());
 		assertNull(dgp.getContext());
-		assertTrue(dgp.getIsFirstLoading());
 
 		assertNotNull(dgp.getPanel());
 		assertNull(dgp.getElement());
@@ -232,7 +231,6 @@ public class GridPanelTest extends GWTTestCase {
 
 		assertNotNull(dgp.getContext());
 		assertEquals("1", dgp.getElementInfo().getId());
-		assertFalse(dgp.getIsFirstLoading());
 
 		final int widgetCount1 = 4;
 		assertEquals(widgetCount1, dgp.getPanel().getWidgetCount());

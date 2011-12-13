@@ -40,7 +40,6 @@ public class XFormPanelTest extends GWTTestCase {
 
 		assertEquals("1", xfp.getElementInfo().getId());
 		assertNull(xfp.getContext());
-		assertTrue(xfp.getIsFirstLoading());
 
 		assertNotNull(xfp.getSelSrv());
 		assertNotNull(xfp.getPanel());
@@ -72,7 +71,6 @@ public class XFormPanelTest extends GWTTestCase {
 
 		assertNotNull(xfp.getContext());
 		assertEquals("1", xfp.getElementInfo().getId());
-		assertFalse(xfp.getIsFirstLoading());
 
 		generalPartTest(xfp);
 
