@@ -4510,7 +4510,7 @@ XFSelect.prototype.setValue = function(value) {
 			this.select.insertBefore(empty, this.select.firstChild);
 		}
 	} else {
-		if (!this.full && this.select.firstChild.value == "\xA0") {
+		if (!this.full && this.select.firstChild != null && this.select.firstChild.value == "\xA0") {
 			this.select.removeChild(this.select.firstChild);
 		}
 		var vals = value? (this.multiple? value.split(" ") : [value]) : [""];
