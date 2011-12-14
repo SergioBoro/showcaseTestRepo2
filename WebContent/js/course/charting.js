@@ -69,13 +69,19 @@ var chrt = {
 		options.chart = this.chart;
 		var legendNode = dojo.byId(legend.id);
 		if (legendNode) {
-			if (legend.selectable) {
-				var legend = new dojox.charting.widget.SelectableLegend(options, legendNode);
+			try {
+				if (legend.selectable) {
+					legendWidget = new dojox.charting.widget.SelectableLegend(options, legendNode);
+				}
+				else {
+					legendWidget = new dojox.charting.widget.Legend(options, legendNode);
+				}				
+			} finally  {
+				if (legendWidget) {
+					chartRegistry[this.id].legend = legendWidget;
+				}
 			}
-			else {
-				legend = new dojox.charting.widget.Legend(options, legendNode);
-			}
-			chartRegistry[this.id].legend = legend;
+			
 		}
     },
     

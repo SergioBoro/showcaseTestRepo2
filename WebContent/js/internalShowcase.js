@@ -49,9 +49,7 @@ var convertorFunc = function(chartId, chartLegendId, optionSet1, optionSet2) {
 
    // copy legend settings
    if (chartLegendId) {
-	   if (!chartOptions.legend) {
-		   chartOptions.legend = {};
-	   }
+	  chartOptions.legend = chartOptions.legend ? chartOptions.legend : {};
       chartOptions.legend.id = chartLegendId;
       chartOptions.legend.options =  {horizontal: false};
    }

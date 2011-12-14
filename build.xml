@@ -127,6 +127,7 @@
 			<fileset dir="${dist.dir}">
 				<exclude name="js/**" />
 				<exclude name="jython/**" />
+				<exclude name="patches/**" />
 			</fileset>
 		</delete>
 		<delete includeemptydirs="true" failonerror="false">
@@ -236,6 +237,12 @@
 		<unzip src="${dist.dir}/jython/libJython.zip" dest="${webinf.dir}" />
 	</target>
 
+	<target name="copy.patches" depends="info">
+		<copy todir="${war.dir}" overwrite="true">
+			<fileset dir="${dist.dir}/patches"></fileset>
+		</copy>
+	</target>
+	
 	<target name="deploy.trunk" depends="dist">
 		<echo>Deploying trunk distr to server</echo>
 		<zip destfile="${dist.dir}/userdata.zip">

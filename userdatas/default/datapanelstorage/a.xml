@@ -26,7 +26,7 @@
 	</tab>
 	<tab id="5" name="График">
 		<element id="13" type="grid" proc="grid_grid" />
-		<element id="15" type="chart" proc="chart_chart" />
+		<element id="15" type="chart" proc="chart_chart" hideOnLoad="true"/>
 		<element id="16" type="webtext" proc="webtext_grid"
 			hideOnLoad="true" />
 	</tab>	
