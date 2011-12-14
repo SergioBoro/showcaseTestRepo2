@@ -1,7 +1,9 @@
 package ru.curs.showcase.model.command;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.jython.JythonExternalCommandGateway;
+import ru.curs.showcase.model.sp.DBExternalCommandGateway;
 
 /**
  * Внешняя команда. Вызывается с помощью сервлета, веб-сервиса или другого RPC
@@ -37,7 +39,18 @@ public class ExternalCommand extends ServiceLayerCommand<String> {
 
 	@Override
 	protected void mainProc() throws Exception {
-		JythonExternalCommandGateway gateway = new JythonExternalCommandGateway();
+		SourceSelector<ExternalCommandGateway> selector =
+			new SourceSelector<ExternalCommandGateway>(procName) {
+
+				@Override
+				public ExternalCommandGateway getGateway() {
+					if (sourceType() == SourceType.JYTHON) {
+						return new JythonExternalCommandGateway();
+					}
+					return new DBExternalCommandGateway();
+				}
+			};
+		ExternalCommandGateway gateway = selector.getGateway();
 		setResult(gateway.handle(request, procName));
 	}
 
