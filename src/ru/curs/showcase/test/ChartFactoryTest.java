@@ -83,7 +83,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(chart.getDefaultAction());
 		assertEquals(DataPanelActionType.RELOAD_ELEMENTS, chart.getDefaultAction()
 				.getDataPanelActionType());
-		// assertTrue();
+
 		assertEquals(secondGridId, chart.getDefaultAction().getDataPanelLink().getElementLinks()
 				.get(0).getId());
 		assertNotNull(chart.getEventManager().getEvents());

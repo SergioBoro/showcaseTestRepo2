@@ -37,6 +37,14 @@ public class ChartSLTest extends AbstractTest {
 		assertTrue(chart.getJsDynamicData().endsWith("}"));
 	}
 
+	@Test
+	public void testChartCreate() {
+		Chart chart = new Chart();
+
+		assertTrue(chart.getHeader().isEmpty());
+		assertTrue(chart.getFooter().isEmpty());
+	}
+
 	/**
 	 * Проверка на то, что описание элемента не полностью заполнено.
 	 * 

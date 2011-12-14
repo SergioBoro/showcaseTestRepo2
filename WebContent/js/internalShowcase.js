@@ -31,30 +31,29 @@ var convertorFunc = function(chartId, chartLegendId, optionSet1, optionSet2) {
    if (dojo.isString(optionSet2)) optionSet2 = dojo.fromJson(optionSet2);
    var chartOptions = optionSet2;
 
-   // copy id, seriesstrokeWidth: 2,
-   chartOptions.id = chartId;
-   chartOptions.series = optionSet1.series;
-   
-   // copy width and height
+   // copy id, width and height
+   chartOptions.id = chartId;   
    if (optionSet1.width) chartOptions.width = optionSet1.width;
    if (optionSet1.height) chartOptions.height = optionSet1.height;
-
-   // copy legend settings
-   if (chartLegendId) {
-      chartOptions.legend = {id: chartLegendId, options: {horizontal: false}};
-   }
-
-   //copy eventHandler
-   if (optionSet1.eventHandler) chartOptions.eventHandler = optionSet1.eventHandler;
-
-   // copy labels to the chartOptions
-   var axis = chartOptions.axis;
    
+   // copy series
+   chartOptions.series = optionSet1.series;
+   
+   // copy labels to the chartOptions
    if (chartOptions.axisX && optionSet1.labelsX) {
       chartOptions.axisX.labels = optionSet1.labelsX;
    }
    if (chartOptions.axisY && optionSet1.labelsY) {
       chartOptions.axisY.labels = optionSet1.labelsY;
+   }   
+
+   // copy legend settings
+   if (chartLegendId) {
+	   if (!chartOptions.legend) {
+		   chartOptions.legend = {};
+	   }
+      chartOptions.legend.id = chartLegendId;
+      chartOptions.legend.options =  {horizontal: false};
    }
 
    return chartOptions;

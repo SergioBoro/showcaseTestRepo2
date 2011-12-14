@@ -48,7 +48,7 @@ djeo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=
 		projection: "RUSSIA-ALBERS"
 	});
 	
-	if (!data.geometries) data.geometries = courseApp.data.geo.russiaGeometries;
+	if (!data.geometries) data.geometries = courseApp.data.geo.russia_geometries;
 	if (!data.style) data.style = mapStyle;
 	
 //	Supported mapping engines (replace the value for djeoEngine parameter)

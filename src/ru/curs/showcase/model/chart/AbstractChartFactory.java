@@ -117,6 +117,7 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 	 * 
 	 */
 	private class ChartDynamicSettingsReader extends SAXTagHandler {
+
 		/**
 		 * Стартовые тэги, которые будут обработаны.
 		 */
@@ -146,6 +147,7 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 				value = attrs.getValue(LEGEND_TAG);
 				value = value.toUpperCase().trim();
 				getResult().setLegendPosition(ChildPosition.valueOf(value));
+
 				value = attrs.getValue(WIDTH_TAG);
 				intValue = TextUtils.getIntSizeValue(value);
 				getResult().getJavaDynamicData().setWidth(intValue);

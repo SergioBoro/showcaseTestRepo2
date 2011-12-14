@@ -1,7 +1,7 @@
 dojo.provide("course.charting");
 
 dojo.require("dojox.charting.Chart2D");
-dojo.require("dojox.charting.widget.Legend");
+dojo.require("dojox.charting.widget.SelectableLegend");
 
 (function(){
 var dc = dojox.charting;
@@ -63,14 +63,19 @@ var chrt = {
     },
     
     makeLegend: function(legend) {
-		if (!legend) return;
-		dojo.require("dojox.charting.widget.Legend");
+		if (!legend) return;		
 		
 		var options = legend.options ? legend.options : {};
 		options.chart = this.chart;
 		var legendNode = dojo.byId(legend.id);
 		if (legendNode) {
-			chartRegistry[this.id].legend = new dojox.charting.widget.Legend(options, legendNode);
+			if (legend.selectable) {
+				var legend = new dojox.charting.widget.SelectableLegend(options, legendNode);
+			}
+			else {
+				legend = new dojox.charting.widget.Legend(options, legendNode);
+			}
+			chartRegistry[this.id].legend = legend;
 		}
     },
     
