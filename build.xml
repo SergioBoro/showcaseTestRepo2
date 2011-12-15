@@ -249,6 +249,7 @@
 			<zipfileset dir="." includes="userdata*/**" />
 		</zip>
 		<antcall target="backup.db" />
+		<echo>Copy files to server</echo>
 		<move todir="${trunk.deploy.path}" file="${dist.dir}/userdata.zip" overwrite="true" />
 		<move todir="${trunk.deploy.path}" file="${dist.dir}/Showcase.war" overwrite="true" />
 		<copy todir="${trunk.deploy.path}" file="${db.backup.path}\${db.backup.name}.zip" overwrite="true" />
