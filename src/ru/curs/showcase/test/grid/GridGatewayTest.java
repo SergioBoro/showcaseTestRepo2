@@ -65,17 +65,17 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 		GridGateway gateway = new GridDBGateway();
 		GridContext gc = new GridContext(context);
-		ElementRawData res = gateway.getRawData(gc, elInfo);
+		RecordSetElementRawData res = gateway.getRawData(gc, elInfo);
 
 		assertNotNull(res);
 		assertEquals(gc, res.getCallContext());
 		assertEquals(elInfo, res.getElementInfo());
 		assertNull(res.getSettings());
-		assertNotNull(res.getSpQuery());
-		assertFalse(res.getSpQuery().getConn().isClosed());
-		assertNotNull(res.getSpQuery().getStatement().getResultSet());
+		assertNotNull(res.getStatement());
+		assertFalse(res.getStatement().getConnection().isClosed());
+		assertNotNull(res.getStatement().getResultSet());
 
-		res.getSpQuery().close();
+		res.close();
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 		ElementSettingsGateway gateway = new ElementSettingsDBGateway();
-		ElementRawData res = gateway.getRawData(context, elInfo);
+		RecordSetElementRawData res = gateway.getRawData(context, elInfo);
 
 		assertNotNull(res);
 		assertEquals(context, res.getCallContext());
@@ -96,10 +96,9 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 		assertNull(res.getSettings());
 		res.prepareSettings();
 		assertNotNull(res.getSettings());
-		assertNotNull(res.getSpQuery());
-		assertFalse(res.getSpQuery().getConn().isClosed());
-		assertNull(res.getSpQuery().getStatement().getResultSet());
+		assertFalse(res.getStatement().getConnection().isClosed());
+		assertNull(res.getStatement().getResultSet());
 
-		res.getSpQuery().close();
+		res.close();
 	}
 }

@@ -19,7 +19,7 @@ public class ElementSettingsDBGateway extends ElementSPQuery implements ElementS
 	private static final int ERROR_MES_INDEX = 8;
 
 	@Override
-	public ElementRawData getRawData(final CompositeContext context,
+	public RecordSetElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
 		init(context, elementInfo);
 		setProcName(getProcName());
@@ -28,7 +28,7 @@ public class ElementSettingsDBGateway extends ElementSPQuery implements ElementS
 			prepareElementStatementWithErrorMes();
 			getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
 			execute();
-			return new ElementRawData(this, elementInfo, context);
+			return new RecordSetElementRawData(this, elementInfo, context);
 		} catch (SQLException e) {
 			dbExceptionHandler(e);
 		}

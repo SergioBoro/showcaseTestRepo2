@@ -18,5 +18,5 @@ public interface ElementSettingsGateway {
 	 * @param elementInfo
 	 *            - описание элемента.
 	 */
-	ElementRawData getRawData(CompositeContext context, DataPanelElementInfo elementInfo);
+	RecordSetElementRawData getRawData(CompositeContext context, DataPanelElementInfo elementInfo);
 }

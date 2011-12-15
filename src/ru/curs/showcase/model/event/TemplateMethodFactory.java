@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.IncorrectElementException;
 import ru.curs.showcase.model.sp.*;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.xml.*;
@@ -24,6 +24,11 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 	private static final String CHECK_ACTION_ERROR =
 		"Некорректное описание действия в элементе инф. панели: ";
 
+	/**
+	 * Исходные сырые данные для построения элемента.
+	 */
+	private ElementRawData source;
+
 	public TemplateMethodFactory(final ElementRawData aSource) {
 		super();
 		source = aSource;
@@ -37,16 +42,11 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 		return source.getCallContext();
 	}
 
-	/**
-	 * Исходные сырые данные для построения элемента.
-	 */
-	private ElementRawData source;
-
 	public ElementRawData getSource() {
 		return source;
 	}
 
-	public void setSource(final ElementRawData aSource) {
+	public void setSource(final RecordSetElementRawData aSource) {
 		source = aSource;
 	}
 

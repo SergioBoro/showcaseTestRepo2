@@ -37,7 +37,7 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 	protected void mainProc() throws Exception {
 		GridDBGateway gateway = new GridDBGateway();
 		GridDBFactory factory = null;
-		ElementRawData raw = null;
+		RecordSetElementRawData raw = null;
 		ElementSettingsDBGateway sgateway = null;
 		GridServerState state = null;
 

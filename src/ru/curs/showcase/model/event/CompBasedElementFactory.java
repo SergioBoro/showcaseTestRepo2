@@ -7,7 +7,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.Action;
-import ru.curs.showcase.model.sp.ElementRawData;
+import ru.curs.showcase.model.sp.RecordSetElementRawData;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.*;
 
@@ -23,7 +23,7 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 	@Override
 	public abstract DataPanelCompBasedElement getResult();
 
-	public CompBasedElementFactory(final ElementRawData aSource) {
+	public CompBasedElementFactory(final RecordSetElementRawData aSource) {
 		super(aSource);
 	}
 
@@ -172,11 +172,15 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 		getResult().setFooter(getResult().getFooter() + data);
 	}
 
-	protected ResultSet getResultSetAccordingToSQLServerType(final CallableStatement cs)
+	protected ResultSet getResultSetAccordingToSQLServerType(final PreparedStatement stat)
 			throws SQLException {
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return cs.getResultSet();
+			return stat.getResultSet();
 		} else {
+			// TODO Боре - придумать решение как лучше обрабатывать случай
+			// прямых
+			// запросов к БД
+			CallableStatement cs = (CallableStatement) stat;
 			try {
 				return (ResultSet) cs.getObject(1);
 			} catch (SQLException e) {
@@ -189,6 +193,11 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 	protected void checkSourceError() {
 		super.checkSourceError();
 
-		getSource().getSpQuery().checkErrorCode();
+		getSource().checkErrorCode();
+	}
+
+	@Override
+	public RecordSetElementRawData getSource() {
+		return (RecordSetElementRawData) super.getSource();
 	}
 }

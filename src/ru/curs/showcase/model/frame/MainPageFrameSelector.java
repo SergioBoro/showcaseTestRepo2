@@ -2,6 +2,7 @@ package ru.curs.showcase.model.frame;
 
 import ru.curs.showcase.model.SourceSelector;
 import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.util.exception.NotImplementedYetException;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
@@ -54,7 +55,7 @@ public class MainPageFrameSelector extends SourceSelector<MainPageFrameGateway> 
 		MainPageFrameGateway gateway;
 		switch (sourceType()) {
 		case JYTHON:
-			throw new RuntimeException("Пока не реализовано");
+			throw new NotImplementedYetException();
 		case FILE:
 			gateway = new MainPageFrameFileGateway();
 			break;

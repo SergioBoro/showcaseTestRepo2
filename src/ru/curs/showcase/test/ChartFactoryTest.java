@@ -5,12 +5,15 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.chart.*;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.chart.*;
-import ru.curs.showcase.model.sp.ElementRawData;
+import ru.curs.showcase.model.grid.RecordSetElementGateway;
+import ru.curs.showcase.model.jython.RecordSetElementJythonGateway;
+import ru.curs.showcase.model.sp.RecordSetElementRawData;
 import ru.curs.showcase.util.ReflectionUtils;
+import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**
  * Тесты фабрики графиков.
@@ -40,8 +43,8 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement("test2.xml", "2", "22");
 
-		ChartGateway gateway = new ChartDBGateway();
-		ElementRawData raw = gateway.getRawData(context, element);
+		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, element);
 		ChartDBFactory factory = new ChartDBFactory(raw);
 		Chart chart = factory.build();
 
@@ -75,8 +78,8 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		// график со второй вкладки в панели a.xml
 		DataPanelElementInfo element = getTestChartInfo();
 
-		ChartGateway gateway = new ChartDBGateway();
-		ElementRawData raw = gateway.getRawData(context, element);
+		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, element);
 		ChartDBFactory factory = new ChartDBFactory(raw);
 		Chart chart = factory.build();
 
@@ -123,8 +126,8 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		// график со второй вкладки в панели a.xml
 		DataPanelElementInfo element = getTestChartInfo();
 
-		ChartGateway gateway = new ChartDBGateway();
-		ElementRawData raw = gateway.getRawData(context, element);
+		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, element);
 		ChartDBFactory factory = new ChartDBFactory(raw);
 		Chart chart = factory.build();
 		ChartData data = chart.getJavaDynamicData();
@@ -147,8 +150,8 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement("test2.xml", "2", "210");
 
-		ChartGateway gateway = new ChartDBGateway();
-		ElementRawData raw = gateway.getRawData(context, element);
+		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, element);
 		ChartDBFactory factory = new ChartDBFactory(raw);
 		Chart chart = factory.build();
 
@@ -162,4 +165,21 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(chart.getEventManager().getEvents());
 	}
 
+	@Test
+	public void testGetDataFormJython() throws Exception {
+		CompositeContext context = getTestContext1();
+		context.setSession("<" + XMLSessionContextGenerator.SESSION_CONTEXT_TAG + "/>");
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.CHART);
+		elInfo.setProcName("chart/ChartSimple.py");
+		generateTestTabWithElement(elInfo);
+
+		RecordSetElementGateway<CompositeContext> gateway = new RecordSetElementJythonGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, elInfo);
+
+		ChartDBFactory factory = new ChartDBFactory(raw);
+		Chart chart = factory.build();
+
+		assertNotNull(chart);
+		assertEquals(1, chart.getJavaDynamicData().getSeries().size());
+	}
 }

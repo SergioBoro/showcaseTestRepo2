@@ -3,6 +3,8 @@ package ru.curs.showcase.model.jython;
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.AbstractCompositeContext;
 
+import com.ziclix.python.sql.PyConnection;
+
 /**
  * Единый интерфейс для всех (!) Jython процедур. Каждая конкретная процедура на
  * Jython может реализовывать только те функции, которые нужно. Jython версии
@@ -30,11 +32,28 @@ public interface JythonProc {
 	 * @param elementId
 	 *            - идентификатор создаваемого элемента.
 	 * @return - объект переноса данных Jython, включающий в себя данные и
-	 *         настройки элемента в виде двух строк, а также объект с
-	 *         информацией для пользователя в случае ошибки. Если ошибки не было
-	 *         - userMessage должен быть None (null в Java).
+	 *         настройки элемента в виде двух строк или объект с информацией для
+	 *         пользователя в случае ошибки.
 	 */
 	Object getRawData(AbstractCompositeContext context, String elementId);
+
+	/**
+	 * Функция получения данных для элемента, требующего RecordSet. Все
+	 * временные таблицы, которые использует результирующий запрос, должны
+	 * создаваться в переданном соединении.
+	 * 
+	 * @param context
+	 *            - контекст вызова.
+	 * @param elementId
+	 *            - идентификатор создаваемого элемента.
+	 * @return - объект переноса данных Jython, включающий в себя данные и
+	 *         настройки элемента в виде строки запроса для получения данных и
+	 *         строки с метаданными. В случае ошибки может быть возвращен объект
+	 *         с информацией для пользователя UserMessage.
+	 * @param conn
+	 *            - соединение с БД.
+	 */
+	Object getRawData(AbstractCompositeContext context, String elementId, PyConnection conn);
 
 	/**
 	 * Возвращает сырые данные для навигатора и инф. панели в XML формате.

@@ -60,7 +60,7 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 	 */
 	private RowSet indicatorValuesSql;
 
-	public GeoMapFactory(final ElementRawData aSource) {
+	public GeoMapFactory(final RecordSetElementRawData aSource) {
 		super(aSource);
 	}
 
@@ -234,17 +234,15 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 				rs = getStatement().getResultSet();
 				indicatorValuesSql = SQLUtils.cacheResultSet(rs);
 			} else {
+				CallableStatement cs = (CallableStatement) getStatement();
 				ResultSet rs =
-					(ResultSet) getStatement().getObject(
-							GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_1);
+					(ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_1);
 				layersSql = SQLUtils.cacheResultSet(rs);
 
 				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_2)) {
 					throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR);
 				}
-				rs =
-					(ResultSet) getStatement().getObject(
-							GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_2);
+				rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_2);
 				pointsSql = SQLUtils.cacheResultSet(rs);
 
 				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_3)) {
@@ -252,25 +250,19 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 							// точки -
 							// например карту региона.
 				}
-				rs =
-					(ResultSet) getStatement().getObject(
-							GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_3);
+				rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_3);
 				areasSql = SQLUtils.cacheResultSet(rs);
 
 				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_4)) {
 					return; // разрешаем создавать карту без показателей
 				}
-				rs =
-					(ResultSet) getStatement().getObject(
-							GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_4);
+				rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_4);
 				indicatorsSql = SQLUtils.cacheResultSet(rs);
 
 				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_5)) {
 					throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR);
 				}
-				rs =
-					(ResultSet) getStatement().getObject(
-							GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_5);
+				rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_5);
 				indicatorValuesSql = SQLUtils.cacheResultSet(rs);
 
 			}
@@ -281,7 +273,7 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 
 	private boolean isCursorOpen(final int index) {
 		try {
-			getStatement().getObject(index);
+			((CallableStatement) getStatement()).getObject(index);
 			return true;
 		} catch (SQLException e) {
 			return false;
@@ -297,7 +289,7 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 		}
 	}
 
-	private CallableStatement getStatement() {
-		return getSource().getSpQuery().getStatement();
+	private PreparedStatement getStatement() {
+		return getSource().getStatement();
 	}
 }

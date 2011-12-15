@@ -3,8 +3,8 @@ package ru.curs.showcase.model.grid;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.GridContext;
-import ru.curs.showcase.model.sp.ElementRawData;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.model.sp.RecordSetElementRawData;
+import ru.curs.showcase.util.OutputStreamDataFile;
 
 /**
  * Интерфейс шлюза к уровню данных для грида. Возвращает данные и метаданные для
@@ -13,11 +13,9 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-public interface GridGateway {
+public interface GridGateway extends RecordSetElementGateway<GridContext> {
 
-	ElementRawData getRawDataAndSettings(GridContext context, DataPanelElementInfo element);
-
-	ElementRawData getRawData(GridContext context, DataPanelElementInfo element);
+	RecordSetElementRawData getRawDataAndSettings(GridContext context, DataPanelElementInfo element);
 
 	/**
 	 * Возвращает файл для грида.

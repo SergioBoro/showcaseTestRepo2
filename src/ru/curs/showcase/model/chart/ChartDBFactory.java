@@ -35,15 +35,14 @@ public class ChartDBFactory extends AbstractChartFactory {
 	 */
 	private Integer eventRowNumber = 0;
 
-	public ChartDBFactory(final ElementRawData aSource) {
+	public ChartDBFactory(final RecordSetElementRawData aSource) {
 		super(aSource);
 	}
 
 	@Override
 	protected void prepareData() {
 		try {
-			ResultSet rs =
-				getResultSetAccordingToSQLServerType(getSource().getSpQuery().getStatement());
+			ResultSet rs = getResultSetAccordingToSQLServerType(getSource().getStatement());
 			sql = SQLUtils.cacheResultSet(rs);
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);

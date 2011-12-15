@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import oracle.jdbc.OracleTypes;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.model.grid.RecordSetElementGateway;
 import ru.curs.showcase.model.sp.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.Description;
@@ -16,14 +17,15 @@ import ru.curs.showcase.util.Description;
  * 
  */
 @Description(process = "Загрузка данных для графика из БД")
-public class ChartDBGateway extends CompBasedElementSPQuery implements ChartGateway {
+public class ChartDBGateway extends CompBasedElementSPQuery implements
+		RecordSetElementGateway<CompositeContext> {
 
 	private static final int OUT_SETTINGS_PARAM = 7;
 
 	private static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS = 8;
 
 	@Override
-	public ElementRawData getRawData(final CompositeContext context,
+	public RecordSetElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
 		setRetriveResultSets(true);
 		return stdGetData(context, elementInfo);

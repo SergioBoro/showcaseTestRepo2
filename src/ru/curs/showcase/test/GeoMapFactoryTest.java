@@ -7,9 +7,10 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.*;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.AdapterForJS;
 import ru.curs.showcase.model.geomap.*;
-import ru.curs.showcase.model.sp.ElementRawData;
+import ru.curs.showcase.model.grid.RecordSetElementGateway;
+import ru.curs.showcase.model.sp.RecordSetElementRawData;
 
 /**
  * Тесты для фабрики карт.
@@ -71,8 +72,8 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "05");
 
-		GeoMapGateway gateway = new GeoMapDBGateway();
-		ElementRawData raw = gateway.getRawData(context, element);
+		RecordSetElementGateway<CompositeContext> gateway = new GeoMapDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, element);
 		GeoMapFactory factory = new GeoMapFactory(raw);
 		GeoMap map = factory.build();
 
@@ -156,8 +157,8 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 		generateTestTabWithElement(elInfo);
 		elInfo.setProcName("geomap_wrong_connfile");
 
-		GeoMapGateway gateway = new GeoMapDBGateway();
-		ElementRawData raw = gateway.getRawData(context, elInfo);
+		RecordSetElementGateway<CompositeContext> gateway = new GeoMapDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, elInfo);
 		GeoMapFactory factory = new GeoMapFactory(raw);
 		try {
 			factory.build();
@@ -176,8 +177,8 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 		generateTestTabWithElement(elInfo);
 		elInfo.setProcName("geomap_wrong_structure");
 
-		GeoMapGateway gateway = new GeoMapDBGateway();
-		ElementRawData raw = gateway.getRawData(context, elInfo);
+		RecordSetElementGateway<CompositeContext> gateway = new GeoMapDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, elInfo);
 		GeoMapFactory factory = new GeoMapFactory(raw);
 		try {
 			factory.build();
@@ -195,8 +196,8 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 		generateTestTabWithElement(elInfo);
 		elInfo.setProcName("geomap_wrong_nums");
 
-		GeoMapGateway gateway = new GeoMapDBGateway();
-		ElementRawData raw = gateway.getRawData(context, elInfo);
+		RecordSetElementGateway<CompositeContext> gateway = new GeoMapDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, elInfo);
 		GeoMapFactory factory = new GeoMapFactory(raw);
 		try {
 			factory.build();

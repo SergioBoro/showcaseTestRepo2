@@ -7,6 +7,7 @@ Created on 02.11.2011
 from ru.curs.showcase.model.jython import JythonProc;
 from ru.curs.showcase.util.xml import XMLUtils;  
 from datetime import date;
+from ru.curs.showcase.runtime import ConnectionFactory
 
 class TestJythonProc(JythonProc):
     def __init__(self):
@@ -32,3 +33,11 @@ class TestJythonProc(JythonProc):
         el.setAttribute("main", context.getMain());
         # пример работы с модулями Jython
         print "Дата: %s" % date.today();
+        # пример работы с PyConnection
+        pyConn = ConnectionFactory.getPyConnection();
+        try:
+            cur = pyConn.cursor()
+            cur.execute("select top 1 name from geo3")             
+            print cur.fetchone()[0].encode("utf-8")
+        finally:     
+            pyConn.close()       

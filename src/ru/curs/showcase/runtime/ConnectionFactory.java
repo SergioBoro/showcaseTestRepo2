@@ -2,6 +2,8 @@ package ru.curs.showcase.runtime;
 
 import java.sql.*;
 
+import com.ziclix.python.sql.PyConnection;
+
 /**
  * Фабрика для создания соединений с БД.
  * 
@@ -33,6 +35,14 @@ public final class ConnectionFactory {
 						AppProps.getRequiredValueByName(CONNECTION_USERNAME_PARAM),
 						AppProps.getRequiredValueByName(CONNECTION_PASSWORD_PARAM));
 			return result;
+		} catch (SQLException e) {
+			throw new DBConnectException(e);
+		}
+	}
+
+	public static PyConnection getPyConnection() {
+		try {
+			return new PyConnection(getConnection());
 		} catch (SQLException e) {
 			throw new DBConnectException(e);
 		}

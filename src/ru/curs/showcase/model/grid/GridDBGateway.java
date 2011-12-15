@@ -67,7 +67,7 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 	}
 
 	@Override
-	public ElementRawData getRawDataAndSettings(final GridContext context,
+	public RecordSetElementRawData getRawDataAndSettings(final GridContext context,
 			final DataPanelElementInfo elementInfo) {
 		init(context, elementInfo);
 		setRetriveResultSets(true);
@@ -83,7 +83,7 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 			}
 			stdGetResults();
 
-			return new ElementRawData(this, elementInfo, context);
+			return new RecordSetElementRawData(this, elementInfo, context);
 		} catch (SQLException e) {
 			dbExceptionHandler(e);
 		}
@@ -114,7 +114,7 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 	}
 
 	@Override
-	public ElementRawData getRawData(final GridContext context,
+	public RecordSetElementRawData getRawData(final GridContext context,
 			final DataPanelElementInfo elementInfo) {
 		init(context, elementInfo);
 		setRetriveResultSets(true);
@@ -137,7 +137,7 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 			}
 			stdGetResults();
 
-			return new ElementRawData(this, elementInfo, context);
+			return new RecordSetElementRawData(this, elementInfo, context);
 		} catch (SQLException e) {
 			dbExceptionHandler(e);
 		}

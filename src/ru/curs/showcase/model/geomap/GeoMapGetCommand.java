@@ -3,9 +3,10 @@ package ru.curs.showcase.model.geomap;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.GeoMap;
-import ru.curs.showcase.model.*;
+import ru.curs.showcase.model.AdapterForJS;
 import ru.curs.showcase.model.command.DataPanelElementCommand;
-import ru.curs.showcase.model.sp.ElementRawData;
+import ru.curs.showcase.model.grid.RecordSetElementGateway;
+import ru.curs.showcase.model.sp.RecordSetElementRawData;
 
 /**
  * Команда получения карты.
@@ -26,8 +27,8 @@ public final class GeoMapGetCommand extends DataPanelElementCommand<GeoMap> {
 
 	@Override
 	protected void mainProc() throws Exception {
-		GeoMapGateway gateway = new GeoMapDBGateway();
-		ElementRawData raw = gateway.getRawData(getContext(), getElementInfo());
+		RecordSetElementGateway<CompositeContext> gateway = new GeoMapDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(getContext(), getElementInfo());
 		GeoMapFactory factory = new GeoMapFactory(raw);
 		setResult(factory.build());
 	}

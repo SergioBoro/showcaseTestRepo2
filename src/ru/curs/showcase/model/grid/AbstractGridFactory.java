@@ -112,7 +112,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		return (GridContext) super.getCallContext();
 	}
 
-	public AbstractGridFactory(final ElementRawData aSource, final GridServerState aState) {
+	public AbstractGridFactory(final RecordSetElementRawData aSource, final GridServerState aState) {
 		super(aSource);
 		serverState = aState;
 	}

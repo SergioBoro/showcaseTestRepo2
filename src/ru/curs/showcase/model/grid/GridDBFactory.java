@@ -52,24 +52,23 @@ public class GridDBFactory extends AbstractGridFactory {
 	 */
 	private Boolean applyLocalFormatting = true;
 
-	public GridDBFactory(final ElementRawData aRaw, final GridServerState aState) {
+	public GridDBFactory(final RecordSetElementRawData aRaw, final GridServerState aState) {
 		super(aRaw, aState);
 	}
 
 	public GridDBFactory(final GridContext context, final DataPanelElementInfo aElementInfo,
 			final GridServerState aState) {
-		super(new ElementRawData(aElementInfo, context), aState);
+		super(new RecordSetElementRawData(aElementInfo, context), aState);
 	}
 
-	public GridDBFactory(final ElementRawData aRaw) {
+	public GridDBFactory(final RecordSetElementRawData aRaw) {
 		super(aRaw, new GridServerState());
 	}
 
 	@Override
 	protected void prepareData() {
 		try {
-			ResultSet rs =
-				getResultSetAccordingToSQLServerType(getSource().getSpQuery().getStatement());
+			ResultSet rs = getResultSetAccordingToSQLServerType(getSource().getStatement());
 			rowset = SQLUtils.cacheResultSet(rs);
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);

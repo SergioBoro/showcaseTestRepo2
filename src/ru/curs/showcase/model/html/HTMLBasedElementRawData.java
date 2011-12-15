@@ -40,7 +40,7 @@ public final class HTMLBasedElementRawData extends ElementRawData {
 
 	public HTMLBasedElementRawData(final Document aDataDocument, final InputStream settings,
 			final DataPanelElementInfo aElementInfo, final CompositeContext aContext) {
-		super(settings, aElementInfo, aContext);
+		super(aElementInfo, aContext, settings);
 		data = aDataDocument;
 	}
 

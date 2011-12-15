@@ -96,4 +96,18 @@ public class ChartSLTest extends AbstractTest {
 			throw e.getCause();
 		}
 	}
+
+	@Test
+	public void testJython() {
+		CompositeContext context = generateContextWithSessionInfo();
+		context.setMain(MAIN_CONTEXT_TAG);
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.CHART);
+		elInfo.setProcName("chart/ChartSimple.py");
+		generateTestTabWithElement(elInfo);
+
+		ChartGetCommand command = new ChartGetCommand(context, elInfo);
+		Chart chart = command.execute();
+
+		assertNotNull(chart.getJsDynamicData());
+	}
 }

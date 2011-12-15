@@ -45,13 +45,13 @@ public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 	 * @param elementInfo
 	 *            - инф. об элементе.
 	 */
-	protected ElementRawData stdGetData(final CompositeContext context,
+	protected RecordSetElementRawData stdGetData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
 		init(context, elementInfo);
 		try {
 			prepareStdStatement();
 			stdGetResults();
-			return new ElementRawData(this, elementInfo, context);
+			return new RecordSetElementRawData(this, elementInfo, context);
 		} catch (SQLException e) {
 			dbExceptionHandler(e);
 		}

@@ -213,7 +213,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo element = getDPElement(TEST_XML, "3", "5");
 
 		GridGateway gateway = new GridDBGateway();
-		ElementRawData raw = gateway.getRawDataAndSettings(gc, element);
+		RecordSetElementRawData raw = gateway.getRawDataAndSettings(gc, element);
 		GridDBFactory factory = new GridDBFactory(raw);
 		factory.build();
 	}
@@ -434,7 +434,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		GridGateway gateway = new GridDBGateway();
 		GridContext gc = new GridContext();
 		gc.apply(context);
-		ElementRawData res = gateway.getRawData(gc, elInfo);
+		RecordSetElementRawData res = gateway.getRawData(gc, elInfo);
 		res.prepareSettings();
 	}
 
@@ -481,7 +481,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = new CompositeContext();
 		context.setMain(MAIN_CONTEXT_TAG);
 		context.setAdditional("<mesid>556</mesid>");
-		ChartGateway gateway = new ChartDBGateway();
+		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
 		DataPanelElementInfo dpei = new DataPanelElementInfo("id", DataPanelElementType.CHART);
 		dpei.setProcName("geomap_ec");
 		try {

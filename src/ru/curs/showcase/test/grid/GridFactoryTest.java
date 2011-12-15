@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.InteractionType;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.grid.*;
-import ru.curs.showcase.model.sp.ElementRawData;
+import ru.curs.showcase.model.sp.RecordSetElementRawData;
 import ru.curs.showcase.runtime.ProfileReader;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.exception.SettingsFileType;
@@ -37,7 +37,7 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo element = getDPElement("test.xml", "2", "4");
 
 		GridGateway gateway = new GridDBGateway();
-		ElementRawData raw = gateway.getRawDataAndSettings(context, element);
+		RecordSetElementRawData raw = gateway.getRawDataAndSettings(context, element);
 		GridDBFactory factory = new GridDBFactory(raw);
 		Grid grid = factory.build();
 		assertEquals(GRIDBAL_TEST_PROPERTIES, factory.serverState().getProfile());
@@ -77,7 +77,7 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 		generateTestTabWithElement(elInfo);
 
 		GridGateway gateway = new GridDBGateway();
-		ElementRawData raw = gateway.getRawDataAndSettings(context, elInfo);
+		RecordSetElementRawData raw = gateway.getRawDataAndSettings(context, elInfo);
 		GridDBFactory factory = new GridDBFactory(raw);
 		Grid grid = factory.build();
 

@@ -19,6 +19,7 @@ session = None
 filter = None
 elementId = None
 request = None
+pyconn = None
 
 class AbstractJythonProc(JythonProc):        
     def execute(self, context):
@@ -48,7 +49,18 @@ class AbstractJythonProc(JythonProc):
         if context.getFilter():
             filter = context.getFilter().encode("utf-8")
         elementId = element.encode("utf-8")
-        return mainproc()     
+        return mainproc()
+    def getRawData(self, context, elId, conn):
+        global main, add, session, filter, pyconn
+        main = context.getMain().encode("utf-8")
+        if context.getAdditional():
+            add = context.getAdditional().encode("utf-8")
+        session = context.getSession().encode("utf-8")
+        if context.getFilter():
+            filter = context.getFilter().encode("utf-8")
+        elementId = elId.encode("utf-8")
+        pyconn = conn
+        return mainproc()       
     def handle(self, requestString):
         global request
         request = requestString.encode("utf-8")
