@@ -1,0 +1,3 @@
+﻿({
+    _label: "KURS-Showcase"
+})
