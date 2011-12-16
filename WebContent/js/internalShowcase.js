@@ -17,7 +17,7 @@ function getErrorByIFrame(iframeName)
 	
 	if((body != null) && (typeof body != "undefined")) {
 		var message = body.innerHTML;
-		if(message.trim() != "") {			
+		if(message.trim() != "" && message.trim() != "<pre></pre>") {			
 			err = message;
 		}
 	}
