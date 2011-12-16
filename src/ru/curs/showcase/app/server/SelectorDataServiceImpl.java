@@ -231,7 +231,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			DataRecord r = new DataRecord();
 			r.setId(rs.getString(aliasId));
 			r.setName(rs.getString(aliasName));
-			for (int i = NUM5; i <= m.getColumnCount(); i++) {
+			for (int i = NUM1; i <= m.getColumnCount(); i++) {
 				if ((i != aliasId) && (i != aliasName)) {
 					r.addParameter(m.getColumnName(i), rs.getString(i));
 				}
