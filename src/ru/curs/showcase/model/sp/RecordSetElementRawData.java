@@ -22,11 +22,13 @@ public class RecordSetElementRawData extends ElementRawData implements Closeable
 	 */
 	private final ElementSPQuery spQuery;
 
-	private final PreparedStatement statement;
+	private final PreparedStatement[] statement;
+
+	private int statementIndex = 0;
 
 	public RecordSetElementRawData(final InputStream props,
 			final DataPanelElementInfo aElementInfo, final CompositeContext aContext,
-			final PreparedStatement aStatement) {
+			final PreparedStatement[] aStatement) {
 		super(aElementInfo, aContext, props);
 		spQuery = null;
 		statement = aStatement;
@@ -54,14 +56,14 @@ public class RecordSetElementRawData extends ElementRawData implements Closeable
 	 */
 	@Override
 	public void close() {
-		if (spQuery != null) {
-			spQuery.close();
-		} else if (statement != null) {
+		if (statement != null) {
 			try {
-				statement.getConnection().close();
+				statement[0].getConnection().close();
 			} catch (SQLException e) {
 				throw new DBConnectException(e);
 			}
+		} else {
+			spQuery.close();
 		}
 	}
 
@@ -73,9 +75,34 @@ public class RecordSetElementRawData extends ElementRawData implements Closeable
 
 	public PreparedStatement getStatement() {
 		if (statement != null) {
-			return statement;
+			return statement[0];
 		}
 		return spQuery.getStatement();
+	}
+
+	private boolean hasResultSet() throws SQLException {
+		if (statement != null) {
+			return statementIndex < statement.length;
+		}
+		if (statementIndex > 0) {
+			return spQuery.getStatement().getMoreResults();
+		}
+		return true;
+	}
+
+	public ResultSet nextResultSet() {
+		try {
+			if (!hasResultSet()) {
+				return null;
+			}
+			if (statement != null) {
+				return statement[statementIndex++].getResultSet();
+			}
+			statementIndex++;
+			return spQuery.getStatement().getResultSet();
+		} catch (SQLException e) {
+			throw new ResultSetHandleException(e);
+		}
 	}
 
 	/**

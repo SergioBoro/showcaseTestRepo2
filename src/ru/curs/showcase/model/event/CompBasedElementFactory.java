@@ -172,15 +172,15 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 		getResult().setFooter(getResult().getFooter() + data);
 	}
 
-	protected ResultSet getResultSetAccordingToSQLServerType(final PreparedStatement stat)
+	protected ResultSet getResultSetAccordingToSQLServerType(final RecordSetElementRawData raw)
 			throws SQLException {
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return stat.getResultSet();
+			return raw.nextResultSet();
 		} else {
 			// TODO Боре - придумать решение как лучше обрабатывать случай
 			// прямых
 			// запросов к БД
-			CallableStatement cs = (CallableStatement) stat;
+			CallableStatement cs = (CallableStatement) raw.getStatement();
 			try {
 				return (ResultSet) cs.getObject(1);
 			} catch (SQLException e) {

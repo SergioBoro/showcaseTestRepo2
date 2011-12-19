@@ -68,7 +68,7 @@ public class GridDBFactory extends AbstractGridFactory {
 	@Override
 	protected void prepareData() {
 		try {
-			ResultSet rs = getResultSetAccordingToSQLServerType(getSource().getStatement());
+			ResultSet rs = getResultSetAccordingToSQLServerType(getSource());
 			rowset = SQLUtils.cacheResultSet(rs);
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);

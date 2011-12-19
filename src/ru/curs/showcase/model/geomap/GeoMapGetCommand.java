@@ -27,7 +27,8 @@ public final class GeoMapGetCommand extends DataPanelElementCommand<GeoMap> {
 
 	@Override
 	protected void mainProc() throws Exception {
-		RecordSetElementGateway<CompositeContext> gateway = new GeoMapDBGateway();
+		GeoMapSelector selector = new GeoMapSelector(getElementInfo());
+		RecordSetElementGateway<CompositeContext> gateway = selector.getGateway();
 		RecordSetElementRawData raw = gateway.getRawData(getContext(), getElementInfo());
 		GeoMapFactory factory = new GeoMapFactory(raw);
 		setResult(factory.build());

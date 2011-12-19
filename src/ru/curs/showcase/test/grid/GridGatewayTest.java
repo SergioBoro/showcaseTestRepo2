@@ -71,9 +71,9 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 		assertEquals(gc, res.getCallContext());
 		assertEquals(elInfo, res.getElementInfo());
 		assertNull(res.getSettings());
-		assertNotNull(res.getStatement());
+		assertNotNull(res.nextResultSet());
 		assertFalse(res.getStatement().getConnection().isClosed());
-		assertNotNull(res.getStatement().getResultSet());
+		assertNotNull(res.getStatement());
 
 		res.close();
 	}
@@ -96,8 +96,9 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 		assertNull(res.getSettings());
 		res.prepareSettings();
 		assertNotNull(res.getSettings());
+		assertNotNull(res.getStatement());
 		assertFalse(res.getStatement().getConnection().isClosed());
-		assertNull(res.getStatement().getResultSet());
+		assertNull(res.nextResultSet());
 
 		res.close();
 	}

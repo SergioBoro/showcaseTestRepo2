@@ -10,7 +10,9 @@ import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.model.AdapterForJS;
 import ru.curs.showcase.model.geomap.*;
 import ru.curs.showcase.model.grid.RecordSetElementGateway;
+import ru.curs.showcase.model.jython.RecordSetElementJythonGateway;
 import ru.curs.showcase.model.sp.RecordSetElementRawData;
+import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**
  * Тесты для фабрики карт.
@@ -206,5 +208,24 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 			assertTrue(e.getMessage().startsWith(
 					"В шаблоне карты в geomap_wrong_nums вместо числа задана строка"));
 		}
+	}
+
+	@Test
+	public void testJython() throws Exception {
+		CompositeContext context = getTestContext1();
+		context.setSession("</" + XMLSessionContextGenerator.SESSION_CONTEXT_TAG + ">");
+		DataPanelElementInfo element = new DataPanelElementInfo("id", DataPanelElementType.GEOMAP);
+		element.setProcName("geomap/GeoMapSimple.py");
+		generateTestTabWithElement(element);
+
+		RecordSetElementGateway<CompositeContext> gateway = new RecordSetElementJythonGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, element);
+		GeoMapFactory factory = new GeoMapFactory(raw);
+		GeoMap map = factory.build();
+
+		assertEquals(1, map.getJavaDynamicData().getLayers().size());
+		assertEquals(GeoMapFeatureType.POINT, map.getJavaDynamicData().getLayerById("l1")
+				.getType());
+		assertEquals(0, map.getJavaDynamicData().getLayerById("l1").getIndicators().size());
 	}
 }

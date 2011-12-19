@@ -42,7 +42,7 @@ public class ChartDBFactory extends AbstractChartFactory {
 	@Override
 	protected void prepareData() {
 		try {
-			ResultSet rs = getResultSetAccordingToSQLServerType(getSource().getStatement());
+			ResultSet rs = getResultSetAccordingToSQLServerType(getSource());
 			sql = SQLUtils.cacheResultSet(rs);
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);

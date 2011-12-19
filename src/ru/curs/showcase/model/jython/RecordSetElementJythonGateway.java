@@ -53,7 +53,13 @@ public class RecordSetElementJythonGateway extends JythonQuery<JythonDTO> implem
 		elementInfo = aElInfo;
 		conn = ConnectionFactory.getConnection();
 		runTemplateMethod();
-		String query = getResult().getData();
+		String[] query;
+		if (getResult().getData() != null) {
+			String[] tmp = { getResult().getData() };
+			query = tmp;
+		} else {
+			query = getResult().getDataArray();
+		}
 		InputStream settings = null;
 		try {
 			if (getResult().getSettings() != null) {
@@ -62,18 +68,19 @@ public class RecordSetElementJythonGateway extends JythonQuery<JythonDTO> implem
 		} catch (IOException e) {
 			throw new JythonException(RESULT_FORMAT_ERROR);
 		}
-		PreparedStatement statement = null;
-		try {
-			statement = conn.prepareStatement(query);
-			statement.execute();
-		} catch (SQLException e) {
-			if (UserMessageFactory.isExplicitRaised(e)) {
-				UserMessageFactory factory = new UserMessageFactory();
-				throw new ValidateException(factory.build(e));
+		PreparedStatement[] statement = new PreparedStatement[query.length];
+		for (int i = 0; i < query.length; i++) {
+			try {
+				statement[i] = conn.prepareStatement(query[i]);
+				statement[i].execute();
+			} catch (SQLException e) {
+				if (UserMessageFactory.isExplicitRaised(e)) {
+					UserMessageFactory factory = new UserMessageFactory();
+					throw new ValidateException(factory.build(e));
+				}
+				throw new DBConnectException(e);
 			}
-			throw new DBConnectException(e);
 		}
 		return new RecordSetElementRawData(settings, elementInfo, context, statement);
 	}
-
 }

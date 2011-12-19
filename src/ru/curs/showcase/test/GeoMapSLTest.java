@@ -77,6 +77,17 @@ public class GeoMapSLTest extends AbstractTest {
 	}
 
 	@Test
+	public void testJython() {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.GEOMAP);
+		elInfo.setProcName("geomap/GeoMapSimple.py");
+		generateTestTabWithElement(elInfo);
+
+		GeoMapGetCommand command = new GeoMapGetCommand(context, elInfo);
+		command.execute();
+	}
+
+	@Test
 	public void testReplaceVariables() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.GEOMAP);

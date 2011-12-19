@@ -12,6 +12,11 @@ public final class JythonDTO {
 	 * Данные (в формате HTML или XML).
 	 */
 	private String data;
+
+	/**
+	 * Массив с данными. Используется вместо data.
+	 */
+	private String[] dataArray;
 	/**
 	 * Настройки элемента в формате XML.
 	 */
@@ -39,8 +44,22 @@ public final class JythonDTO {
 		settings = aSettings;
 	}
 
+	public JythonDTO(final String[] aData, final String aSettings) {
+		super();
+		dataArray = aData;
+		settings = aSettings;
+	}
+
 	public JythonDTO(final String aData) {
 		super();
 		data = aData;
+	}
+
+	public String[] getDataArray() {
+		return dataArray;
+	}
+
+	public void setDataArray(final String[] aDataArray) {
+		dataArray = aDataArray;
 	}
 }

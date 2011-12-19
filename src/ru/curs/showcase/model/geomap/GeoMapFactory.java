@@ -85,6 +85,9 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 
 	@Override
 	protected void fillPolygons() throws SQLException {
+		if (areasSql == null) {
+			return;
+		}
 		while (areasSql.next()) {
 			GeoMapLayer layer = getLayerForObject(areasSql);
 			GeoMapFeature area =
@@ -209,32 +212,36 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 	protected void prepareData() {
 		try {
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-				ResultSet rs = getStatement().getResultSet();
+				ResultSet rs = getSource().nextResultSet();
 				layersSql = SQLUtils.cacheResultSet(rs);
-				if (!getStatement().getMoreResults()) {
+
+				rs = getSource().nextResultSet();
+				if (rs == null) {
 					throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR);
 				}
-				rs = getStatement().getResultSet();
 				pointsSql = SQLUtils.cacheResultSet(rs);
-				if (!getStatement().getMoreResults()) {
+
+				rs = getSource().nextResultSet();
+				if (rs == null) {
 					return; // разрешаем создавать карту, содержащую только
 							// точки -
 							// например карту региона.
 				}
-				rs = getStatement().getResultSet();
 				areasSql = SQLUtils.cacheResultSet(rs);
-				if (!getStatement().getMoreResults()) {
+
+				rs = getSource().nextResultSet();
+				if (rs == null) {
 					return; // разрешаем создавать карту без показателей.
 				}
-				rs = getStatement().getResultSet();
 				indicatorsSql = SQLUtils.cacheResultSet(rs);
-				if (!getStatement().getMoreResults()) {
+
+				rs = getSource().nextResultSet();
+				if (rs == null) {
 					throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR);
 				}
-				rs = getStatement().getResultSet();
 				indicatorValuesSql = SQLUtils.cacheResultSet(rs);
 			} else {
-				CallableStatement cs = (CallableStatement) getStatement();
+				CallableStatement cs = (CallableStatement) getSource().getStatement();
 				ResultSet rs =
 					(ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_1);
 				layersSql = SQLUtils.cacheResultSet(rs);
@@ -273,7 +280,7 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 
 	private boolean isCursorOpen(final int index) {
 		try {
-			((CallableStatement) getStatement()).getObject(index);
+			((CallableStatement) getSource().getStatement()).getObject(index);
 			return true;
 		} catch (SQLException e) {
 			return false;
@@ -287,9 +294,5 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
 		}
-	}
-
-	private PreparedStatement getStatement() {
-		return getSource().getStatement();
 	}
 }
