@@ -27,6 +27,26 @@ public class Accordeon {
 	public static final String SIZE_ONE_HUNDRED_PERCENTS = "100%";
 
 	/**
+	 * Main_context временный с которым должен выполнится ближайший action.
+	 */
+	private static String tempMainContext = null;
+
+	/**
+	 * @return the tempMainContext
+	 */
+	public static String getTempMainContext() {
+		return tempMainContext;
+	}
+
+	/**
+	 * @param tempMainContext
+	 *            the tempMainContext to set
+	 */
+	public static void setTempMainContext(final String atempMainContext) {
+		Accordeon.tempMainContext = atempMainContext;
+	}
+
+	/**
 	 * Панель содержащая навигатор.
 	 */
 	private final SimplePanel verpan = new SimplePanel();
@@ -161,6 +181,7 @@ public class Accordeon {
 			// ti.getParentItem().setState(true);
 
 			if (ti != null) {
+
 				uiListOfAccordeonTrees.get(n).setSelectedItem(ti, fireEvent);
 				lastSelectedItem = ti;
 
