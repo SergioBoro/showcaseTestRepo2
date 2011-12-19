@@ -53,6 +53,14 @@ public class TreeSelectionHandler implements SelectionHandler<TreeItem> {
 		if (((NavigatorElement) arg0.getSelectedItem().getUserObject()).getAction() != null) {
 
 			Action ac = ((NavigatorElement) arg0.getSelectedItem().getUserObject()).getAction();
+
+			if (Accordeon.getTempMainContext() != null) {
+				Action cloneActionWithTempMainContext = ac.gwtClone();
+				cloneActionWithTempMainContext.setMainContext(Accordeon.getTempMainContext());
+				Accordeon.setTempMainContext(null);
+				ac = cloneActionWithTempMainContext;
+			}
+
 			AppCurrContext.getInstance().setNavigatorAction(ac);
 			generateDatePanel(AppCurrContext.getInstance().getNavigatorAction(),
 					arg0.getSelectedItem());
