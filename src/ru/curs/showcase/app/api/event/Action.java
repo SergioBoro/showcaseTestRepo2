@@ -524,6 +524,7 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	}
 
 	public void setMainContext(final String data) {
+		getContext().setMain(data);
 		for (ContainingContext el : getContainingContextChilds()) {
 			el.getContext().setMain(data);
 		}
