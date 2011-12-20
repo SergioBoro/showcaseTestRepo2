@@ -162,6 +162,8 @@
 <path>/Showcase/WebContent/WEB-INF/lib/xml-apis-ext.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/xml-apis.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/xmlparserv2.jar</path>
+<path>/Showcase/WebContent/WEB-INF/libJython</path>
+<path>/Showcase/WebContent/WEB-INF/libJython/site-packages</path>
 </pydev_pathproperty>
 
 </pydev_project>

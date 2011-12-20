@@ -334,10 +334,6 @@ public final class AppInfoSingleton {
 		getOrInitSessionInfoObject(sessionId).storeElementState(sessionId, dpei, context, state);
 	}
 
-	public boolean initializedUserdata() {
-		return getCurUserDataId() != null;
-	}
-
 	public UserData getCurUserData() {
 		return userdatas.get(getCurUserDataId());
 	}
