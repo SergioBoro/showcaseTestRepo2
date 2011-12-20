@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbook>
+    <sheet name="wiz" col-width="" row-width="">
+        <merge region="0,0,1,4"/>
+        <column-width column="1" width="23"/>
+        <row placement="0">
+            <cell placement="0" style="align:center; text-decoration: bold; valign: center ; border: dotted">
+                <text>My Heading</text>
+            </cell>
+        </row>
+        <row placement="2">
+            <cell placement="0" style="color: dark_red; background:aqua; align: center ; border : double">
+                <text>Hello World!</text>
+            </cell>
+            <cell placement="2">
+                <number>3</number>
+            </cell>
+            <cell placement="4">
+                <date format="dd-MM-yyyy">12-12-2005</date>
+            </cell>
+        </row>
+    </sheet>
+    <!-- Sheet without name -->
+    <sheet>
+        <row placement="1">
+            <cell placement="1">
+                <text>Sheet with default name!</text>
+            </cell>
+        </row>
+    </sheet>
+</workbook>
