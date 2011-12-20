@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.junit.*;
+import org.junit.Test;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.event.ExecServerActivityCommand;
@@ -43,7 +43,6 @@ public class JythonPossibilitiesTest extends AbstractTest {
 	}
 
 	@Test
-	@Ignore
 	public void testXML2SpreadSheet() {
 		testFileCreateBase("poi/XML2SpreadSheetProc.py", TMP_SIMPLE_XLS);
 	}
