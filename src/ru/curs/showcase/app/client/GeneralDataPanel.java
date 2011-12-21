@@ -104,7 +104,7 @@ public class GeneralDataPanel {
 		sp.add(ht);
 		tabVerticalPanel.add(sp);
 		getTabPanel().add(tabVerticalPanel, Constants.WELCOME_TAB_CAPTION);
-		JavaScriptFromGWTFeedbackJSNI.setCurrentUserNameForViewInHTMLControl("WELCOME");
+		JavaScriptFromGWTFeedbackJSNI.setCurrentUserDetailsForViewInHTMLControl("WELCOME");
 
 	}
 
