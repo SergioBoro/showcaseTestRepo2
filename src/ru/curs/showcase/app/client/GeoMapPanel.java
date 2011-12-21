@@ -218,18 +218,22 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		switch (geoMap.getUiSettings().getButtonsPanelPosition()) {
 		case TOP:
 			buttonsPanel = new HorizontalPanel();
+			childTopPanel.clear();
 			childTopPanel.add(buttonsPanel);
 			break;
 		case BOTTOM:
 			buttonsPanel = new HorizontalPanel();
+			childBottomPanel.clear();
 			childBottomPanel.add(buttonsPanel);
 			break;
 		case LEFT:
 			buttonsPanel = new VerticalPanel();
+			childLeftPanel.clear();
 			childLeftPanel.add(buttonsPanel);
 			break;
 		case RIGHT:
 			buttonsPanel = new VerticalPanel();
+			childRightPanel.clear();
 			childRightPanel.add(buttonsPanel);
 			break;
 		default:
