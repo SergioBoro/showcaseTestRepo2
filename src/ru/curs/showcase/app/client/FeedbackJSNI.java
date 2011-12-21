@@ -90,7 +90,7 @@ public final class FeedbackJSNI {
 
 	/**
 	 * 
-	 * Возвращает текущее имя пользователя.
+	 * Возвращает текущее полное имя пользователя.
 	 * 
 	 * @return - String
 	 */
@@ -102,7 +102,7 @@ public final class FeedbackJSNI {
 
 	/**
 	 * 
-	 * Возвращает текущее имя пользователя.
+	 * Возвращает текущий email пользователя.
 	 * 
 	 * @return - String
 	 */
@@ -114,7 +114,7 @@ public final class FeedbackJSNI {
 
 	/**
 	 * 
-	 * Возвращает текущее имя пользователя.
+	 * Возвращает текущей SID пользователя.
 	 * 
 	 * @return - String
 	 */
@@ -126,7 +126,7 @@ public final class FeedbackJSNI {
 
 	/**
 	 * 
-	 * Возвращает текущее имя пользователя.
+	 * Возвращает текущий телефон пользователя.
 	 * 
 	 * @return - String
 	 */
