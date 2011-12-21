@@ -28,8 +28,8 @@ public final class JavaScriptFromGWTFeedbackJSNI {
 	 *            - префикс элемента для которого будет отработана функция.
 	 *            (Возможные значения: HEADER, FOOTER, WELCOM).
 	 */
-	public static native void setCurrentUserNameForViewInHTMLControl(final String preffix) /*-{
-		$wnd.setCurrentUserNameForViewInHTMLControl(preffix);
+	public static native void setCurrentUserDetailsForViewInHTMLControl(final String preffix) /*-{
+		$wnd.setCurrentUserDetailsForViewInHTMLControl(preffix);
 
 	}-*/;
 
