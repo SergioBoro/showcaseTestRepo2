@@ -85,9 +85,12 @@ public final class About {
 					+ br
 
 					+ "Текущий пользователь '"
-					+ AppCurrContext.getInstance().getServerCurrentState().getUserName()
+					+ AppCurrContext.getInstance().getServerCurrentState().getUserInfo()
+							.getCaption()
 					+ "'"
-					+ "	является " + fff;
+					+ "("
+					+ AppCurrContext.getInstance().getServerCurrentState().getUserInfo()
+							.getFullName() + ")" + "	является " + fff;
 
 		// navigator.userAgent.toLowerCase()
 		// ru.curs.showcase.app.api.BrowserType?.detect(String)
