@@ -105,4 +105,4 @@ var timeline_data = {  // save as a global variable
         'link': 'http://www.allposters.com/-sp/Portrait-of-Horace-Brodsky-Posters_i1584413_.htm'
         }
 ]
-}
+};
