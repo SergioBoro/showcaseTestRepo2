@@ -77,13 +77,13 @@ public class App implements EntryPoint {
 		// Showcase
 		Header head = new Header();
 		RootPanel.get("showcaseHeaderContainer").add(head.generateHeader());
-		JavaScriptFromGWTFeedbackJSNI.setCurrentUserNameForViewInHTMLControl("HEADER");
+		JavaScriptFromGWTFeedbackJSNI.setCurrentUserDetailsForViewInHTMLControl("HEADER");
 
 		// генерация и размещение нижней части (колонтитул) приложения
 		// Showcase
 		Footer bottom = new Footer();
 		RootPanel.get("showcaseBottomContainer").add(bottom.generateBottom());
-		JavaScriptFromGWTFeedbackJSNI.setCurrentUserNameForViewInHTMLControl("FOOTER");
+		JavaScriptFromGWTFeedbackJSNI.setCurrentUserDetailsForViewInHTMLControl("FOOTER");
 
 		// генерация и размещение главной части (главной) приложения
 		// Showcase
