@@ -84,7 +84,55 @@ public final class FeedbackJSNI {
 	 */
 	public static String getCurrentUserName() {
 
-		return AppCurrContext.getInstance().getServerCurrentState().getUserName();
+		return AppCurrContext.getInstance().getServerCurrentState().getUserInfo().getCaption();
+
+	}
+
+	/**
+	 * 
+	 * Возвращает текущее имя пользователя.
+	 * 
+	 * @return - String
+	 */
+	public static String getCurrentFullUserName() {
+
+		return AppCurrContext.getInstance().getServerCurrentState().getUserInfo().getFullName();
+
+	}
+
+	/**
+	 * 
+	 * Возвращает текущее имя пользователя.
+	 * 
+	 * @return - String
+	 */
+	public static String getCurrentUserEmailName() {
+
+		return AppCurrContext.getInstance().getServerCurrentState().getUserInfo().getEmail();
+
+	}
+
+	/**
+	 * 
+	 * Возвращает текущее имя пользователя.
+	 * 
+	 * @return - String
+	 */
+	public static String getCurrentUserSIDName() {
+
+		return AppCurrContext.getInstance().getServerCurrentState().getUserInfo().getSid();
+
+	}
+
+	/**
+	 * 
+	 * Возвращает текущее имя пользователя.
+	 * 
+	 * @return - String
+	 */
+	public static String getCurrentUserPhoneName() {
+
+		return AppCurrContext.getInstance().getServerCurrentState().getUserInfo().getPhone();
 
 	}
 
@@ -107,6 +155,18 @@ public final class FeedbackJSNI {
 		@ru.curs.showcase.app.client.About::showAbout();		
 		$wnd.getCurrentUserNameFeedbackJSNIFunction = 
 		@ru.curs.showcase.app.client.FeedbackJSNI::getCurrentUserName();	
+		
+				$wnd.getCurrentUserFullNameFeedbackJSNIFunction = 
+		@ru.curs.showcase.app.client.FeedbackJSNI::getCurrentFullUserName();
+				$wnd.getCurrentUserEMailFeedbackJSNIFunction = 
+		@ru.curs.showcase.app.client.FeedbackJSNI::getCurrentUserEmailName();
+				$wnd.getCurrentUserSIDFeedbackJSNIFunction = 
+		@ru.curs.showcase.app.client.FeedbackJSNI::getCurrentUserSIDName();
+				$wnd.getCurrentUserPhoneFeedbackJSNIFunction = 
+		@ru.curs.showcase.app.client.FeedbackJSNI::getCurrentUserPhoneName();
+		
+		
+		
 		$wnd.showcaseLogout = 
 		@ru.curs.showcase.app.client.ShowcaseLogout::showcaseLogout();	
 	}-*/;
