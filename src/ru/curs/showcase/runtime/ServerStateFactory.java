@@ -5,7 +5,10 @@ import java.net.URL;
 import java.sql.*;
 import java.util.regex.*;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import ru.curs.showcase.app.api.ServerState;
+import ru.curs.showcase.security.UserAndSessionDetails;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 
@@ -41,10 +44,20 @@ public final class ServerStateFactory {
 		state.setAppVersion(getAppVersion());
 		state.setServletContainerVersion(AppInfoSingleton.getAppInfo()
 				.getServletContainerVersion());
-		state.setIsNativeUser(!AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(
-				sessionId));
+
+		if (SecurityContextHolder.getContext().getAuthentication() == null) {
+			state.setIsNativeUser(false);
+		} else {
+			state.setIsNativeUser(!((UserAndSessionDetails) SecurityContextHolder.getContext()
+					.getAuthentication().getDetails()).isAuthViaAuthServer());
+		}
+
 		state.setJavaVersion(System.getProperty("java.version"));
-		state.setUserName(SessionUtils.getCurrentSessionUserName());
+
+		if (SecurityContextHolder.getContext().getAuthentication() != null) {
+			state.setUserInfo(((UserAndSessionDetails) SecurityContextHolder.getContext()
+					.getAuthentication().getDetails()).getUserInfo());
+		}
 		state.setSqlVersion(getSQLVersion());
 		state.setDojoVersion(getDojoVersion());
 		state.setGwtVersion(getGwtVersion());

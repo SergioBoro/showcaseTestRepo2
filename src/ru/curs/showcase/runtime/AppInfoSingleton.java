@@ -256,18 +256,6 @@ public final class AppInfoSingleton {
 		return res;
 	}
 
-	public static String getCurrentUserSID() {
-		SessionInfo si =
-			AppInfoSingleton.getAppInfo().getOrInitSessionInfoObject(
-					SessionUtils.getCurrentSessionId());
-		String sid = si.getSid();
-		if (sid == null) {
-			sid = SessionUtils.getCurrentUserSID();
-			si.setSid(sid);
-		}
-		return sid;
-	}
-
 	/**
 	 * Удаляет информацию о сессии.
 	 * 
