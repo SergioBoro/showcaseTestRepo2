@@ -10,7 +10,7 @@ import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.runtime.SessionUtils;
 import ru.curs.showcase.util.TextUtils;
 
 /**
@@ -29,6 +29,9 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	public static final String URL_PARAM_TAG = "urlparam";
 	public static final String USERDATA_TAG = ExchangeConstants.URL_PARAM_USERDATA;
 	public static final String SID_TAG = "sid";
+	public static final String FULLUSERNAME_TAG = "fullusername";
+	public static final String EMAIL_TAG = "email";
+	public static final String PHONE_TAG = "phone";
 
 	private XMLSessionContextGenerator() {
 		throw new UnsupportedOperationException();
@@ -85,7 +88,19 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 
 		node = info.createElement(SID_TAG);
 		info.getDocumentElement().appendChild(node);
-		node.appendChild(info.createTextNode(AppInfoSingleton.getCurrentUserSID()));
+		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserSID()));
+
+		node = info.createElement(EMAIL_TAG);
+		info.getDocumentElement().appendChild(node);
+		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserEmail()));
+
+		node = info.createElement(FULLUSERNAME_TAG);
+		info.getDocumentElement().appendChild(node);
+		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserFullName()));
+
+		node = info.createElement(PHONE_TAG);
+		info.getDocumentElement().appendChild(node);
+		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserPhone()));
 	}
 
 	private static void
