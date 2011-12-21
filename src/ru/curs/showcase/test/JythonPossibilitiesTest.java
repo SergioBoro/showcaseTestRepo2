@@ -19,7 +19,6 @@ public class JythonPossibilitiesTest extends AbstractTest {
 
 	private static final String TMP_TEST_PDF = "tmp/test.pdf";
 	private static final String TMP_SXSSF_XLSX = "tmp/sxssf.xlsx";
-	private static final String TMP_SIMPLE_XLS = "tmp/simple.xls";
 
 	@Test
 	public void testPOI() {
@@ -40,11 +39,6 @@ public class JythonPossibilitiesTest extends AbstractTest {
 
 		File output = new File(outputFile);
 		assertTrue(output.exists());
-	}
-
-	@Test
-	public void testXML2SpreadSheet() {
-		testFileCreateBase("poi/XML2SpreadSheetProc.py", TMP_SIMPLE_XLS);
 	}
 
 	@Test

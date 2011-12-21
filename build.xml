@@ -7,17 +7,19 @@
 	<property name="datagrid.dir" value="datagrid" />
 	<property name="src.dir" value="src" />
 	<property name="tmp.dir" value="tmp" />
-	<property name="war.dir" value="WebContent" />
+	<property name="runtime.dir" value="runtime" />
+	<property name="webapp.dir" value="WebContent" />
 	<property name="war.file" value="${dist.dir}/${appname}.war" />
-	<property name="images.dir" value="${war.dir}/resources" />
-	<property name="webinf.dir" value="${war.dir}/WEB-INF" />
-	<property name="js.dir" value="${war.dir}/js" />
+	<property name="images.dir" value="${webapp.dir}/resources" />
+	<property name="webinf.dir" value="${webapp.dir}/WEB-INF" />
+	<property name="js.dir" value="${webapp.dir}/js" />
 	<property name="class.dir" value="${webinf.dir}/classes" />
 	<property name="lib.dir" value="${webinf.dir}/lib" />
-	<property name="gwt.compiled.dir" value="${war.dir}/app" />
-	<property name="userdata.dir" value="userdata" />
+	<property name="gwt.compiled.dir" value="${webapp.dir}/app" />
+	<property name="userdata.dir" value="userdatas" />
 	<property name="env.props" value="${env}.properties" />
 	<property name="gwt.src.root.dir" value="${src.dir}\ru\curs\showcase\app" />
+	<property name="general.props.file" value="general.properties"/>
 
 	<property file="${env.props}" />
 	<property file="${userdata.dir}/app.properties" />
@@ -54,11 +56,11 @@
 	<target name="init.local.files" description="Create local files">
 		<copy overwrite="no" verbose="true" file="local.properties.template" tofile="local.properties" />
 		<copy overwrite="no" verbose="true" file=".classpath.template" tofile=".classpath" />
-		<copy overwrite="no" verbose="true" file="${src.dir}/path.properties.template" tofile="${src.dir}/path.properties" />
+		<copy overwrite="no" verbose="true" file="${src.dir}/${general.props.file}.template" tofile="${src.dir}/${general.props.file}" />
 		<copy overwrite="no" verbose="true" file="${userdata.dir}/app.properties.template" tofile="${userdata.dir}/app.properties" />
 		<copy overwrite="no" verbose="true" file="${userdata.dir}/gridproperties/default.properties.template" tofile="${userdata.dir}/gridproperties/default.properties" />
 		<copy overwrite="no" verbose="true" file="${src.dir}/log4j.xml.template" tofile="${src.dir}/log4j.xml" />
-		<echo>Не забудьте указать правильные настройки в файлах local.properties, path.properties и app.properties, а также настроить classpath (Build path) с помощью Eclipse</echo>
+		<echo>Не забудьте указать правильные настройки в файлах local.properties, ${general.props.file} и app.properties, а также настроить classpath (Build path) с помощью Eclipse</echo>
 	</target>
 
 	<target name="init.dirs" depends="info" description="Create some base dirs">
@@ -112,7 +114,7 @@
 				<pathelement path="${gwt.dir}/gwt-user.jar" />
 			</classpath>
 			<classpath refid="master-classpath" />
-			<arg line="-war ${war.dir}" />
+			<arg line="-war ${webapp.dir}" />
 			<arg line="ru.curs.showcase.app.App" />
 			<jvmarg line="-Dgwt.persistentunitcachedir=tmp" />
 		</java>
@@ -152,26 +154,41 @@
 		<antcall target="get.app.version" />
 		<antcall target="get.gwt.version" />
 
+		<echo>Make dir for war and copy compiled data</echo>
+		<mkdir dir="${dist.dir}/war" />
+		<copy todir="${dist.dir}/war">
+			<fileset dir="${webapp.dir}">
+				<include name="**/*" />
+			</fileset>
+		</copy>		
+		
 		<echo>Copy sources to war</echo>
-		<copy todir="${webinf.dir}/src/core">
+		<copy todir="${dist.dir}/war/WEB-INF/src/core">
 			<fileset dir="${src.dir}">
 				<include name="**/*.java" />
 			</fileset>
 		</copy>
-		<copy todir="${webinf.dir}/src/${extragwt.dir}">
+		<copy todir="${dist.dir}/war/WEB-INF/src/${extragwt.dir}">
 			<fileset dir="${extragwt.dir}">
 				<include name="**/*.java" />
 			</fileset>
 		</copy>
-		<copy todir="${webinf.dir}/src/${datagrid.dir}">
+		<copy todir="${dist.dir}/war/WEB-INF/src/${datagrid.dir}">
 			<fileset dir="${datagrid.dir}">
 				<include name="**/*.java" />
 			</fileset>
 		</copy>
 
+		<echo>Copy runtime libs</echo>
+		<copy todir="${dist.dir}/war/WEB-INF/lib">
+			<fileset dir="${runtime.dir}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>		
+
 		<echo>Making war not love</echo>
 		<war destfile="${war.file}">
-			<fileset dir="${war.dir}">
+			<fileset dir="${dist.dir}/war">
 				<include name="**/*" />
 				<exclude name="**/*mock*.jar" />
 				<exclude name="**/*.template" />
@@ -180,21 +197,20 @@
 		</war>
 
 		<echo>Clearing after make war</echo>
-		<delete dir="${webinf.dir}/${src.dir}" failonerror="false" />
+		<delete dir="${dist.dir}/war" failonerror="false" />
 		<copy tofile="WebContent\WEB-INF\classes\build" file="src\build" failonerror="false" overwrite="true" />
 		<copy tofile="${gwt.src.root.dir}\App.gwt.xml" file="${tmp.dir}\App.gwt.xml.re" overwrite="true" />
 	</target>
 
-	<target name="dist.with.userdata" depends="dist" description="Assembles WAR file with test data">
-		<copy todir="${webinf.dir}\${userdata.dir}">
+	<target name="dist.with.userdata" description="Assembles WAR file with test data">
+		<mkdir dir="${dist.dir}/war" />
+		<copy todir="${dist.dir}/war/${userdata.dir}">
 			<fileset dir="${userdata.dir}">
 				<include name="**/*" />
 			</fileset>
 		</copy>
-		<copy file="${src.dir}/path.properties.template" overwrite="true" tofile="${class.dir}/path.properties" />
+		<copy file="${src.dir}/${general.props.file}.template" overwrite="true" tofile="${dist.dir}/war/WEB-INF/classes/${general.props.file}" />
 		<antcall target="dist" />
-		<delete dir="${webinf.dir}/${userdata.dir}" failonerror="false" />
-		<copy file="${src.dir}/path.properties" overwrite="true" tofile="${class.dir}/path.properties" />
 	</target>
 
 
@@ -238,7 +254,7 @@
 	</target>
 
 	<target name="copy.patches" depends="info">
-		<copy todir="${war.dir}" overwrite="true">
+		<copy todir="${webapp.dir}" overwrite="true">
 			<fileset dir="${dist.dir}/patches"></fileset>
 		</copy>
 	</target>
