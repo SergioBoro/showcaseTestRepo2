@@ -95,6 +95,8 @@
 .timeline-event-icon, .timeline-event-label,.timeline-event-tape{
 	position:absolute;
 	cursor:pointer;
+	font-family: "Arial"
+	font-size: 100%
 }
 
 .timeline-event-tape,

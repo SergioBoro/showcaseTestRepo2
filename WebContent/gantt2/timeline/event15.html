@@ -34,13 +34,25 @@
                 Timeline.createBandInfo({
                     width:          45, // set to a minimum, autoWidth will then adjust
                     intervalUnit:   Timeline.DateTime.MONTH, 
-                    intervalPixels: 200,
+                    intervalPixels: 50,
                     eventSource:    eventSource1,
                     date:           d,
                     theme:          theme1,
                     layout:         'original'  // original, overview, detailed
+                }),
+                Timeline.createBandInfo({
+                    width:          45, // set to a minimum, autoWidth will then adjust
+                    intervalUnit:   Timeline.DateTime.YEAR, 
+                    intervalPixels: 200,
+                    eventSource:    eventSource1,
+                    date:           d,
+                    theme:          theme1,
+                    layout:         'overview'  // original, overview, detailed
                 })
             ];
+            
+            bandInfos[1].syncWith = 0;
+            bandInfos[1].highlight = true;            
                                                             
             // create the Timeline
             tl = Timeline.create(tl_el, bandInfos, Timeline.HORIZONTAL);
