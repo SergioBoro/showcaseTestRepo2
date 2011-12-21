@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.HTML;
 /**
  * Класс для тестирования XFormPanel.
  */
-public class XFormPanelTest extends GWTTestCase {
+public class XFormPanelGWTTest extends GWTTestCase {
 
 	private static final String DYNASTYLE = "dynastyle";
 	private static final String TARGET = "target";

@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.*;
 /**
  * Класс для тестирования GridPanel.
  */
-public class GridPanelTest extends GWTTestCase {
+public class GridPanelGWTTest extends GWTTestCase {
 
 	private static final String HEADER = "Это хедер";
 	private static final String FOOTER = "Это футер";

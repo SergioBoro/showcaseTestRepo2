@@ -244,7 +244,7 @@
 				<fileset dir="${class.dir}">
 					<include name="**/*Test.class" />
 					<exclude name="**/Abstract*.class" />
-					<exclude name="ru/curs/showcase/app/test/*.class" />
+					<exclude name="**/*GWTTest.class"/>										
 				</fileset>
 			</batchtest>			
 		</junit>

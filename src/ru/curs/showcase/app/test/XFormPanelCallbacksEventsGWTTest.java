@@ -9,7 +9,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 /**
  * Класс для тестирования XFormPanelCallbacksEvents.
  */
-public class XFormPanelCallbacksEventsTest extends GWTTestCase {
+public class XFormPanelCallbacksEventsGWTTest extends GWTTestCase {
 
 	@Override
 	public String getModuleName() {
