@@ -57,6 +57,8 @@
 	String authGifSrc = String.format("%s/authentication.gif?sesid=%s",
 			SecurityParamsFactory.getAuthServerUrl(), request.getSession()
 					.getId());
+
+    authGifSrc = SecurityParamsFactory.correctAuthGifSrcRequestInCaseOfInaccessibility(authGifSrc);
 %>
 
 
