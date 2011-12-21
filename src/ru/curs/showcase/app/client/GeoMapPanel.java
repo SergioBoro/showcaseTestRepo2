@@ -94,7 +94,8 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	 *            GeoMap
 	 */
 	protected void fillMapPanel(final GeoMap aGeoMap) {
-		final String divIdLegend = getElementInfo().getId() + Constants.MAP_LEGEND_DIV_ID_SUFFIX;
+		final String divIdLegend =
+			getElementInfo().getFullId() + Constants.MAP_LEGEND_DIV_ID_SUFFIX;
 		final String div = "<div id='";
 		final String htmlForMap;
 		final int n60 = 60;
