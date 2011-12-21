@@ -48,6 +48,20 @@
 		</fileset>
 		<pathelement location="${webinf.dir}/classes/" />
 	</path>
+	
+	<path id="test-classpath" description="CLASSPATH for unittests">
+		<fileset dir="${junit.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${runtime.dir}/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${servlet.cont.dir}/bin">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement path="${datagrid.dir}" />
+		<pathelement path="${extragwt.dir}" />		
+	</path>	
 
 	<target name="info" description="Show wise configuration info">
 		<echo>Соединение с SQL Server "${rdbms.name}" и развертывание на контейнере сервлетов "${servlet.cont.dir}"</echo>
@@ -145,7 +159,6 @@
 	<target name="rebuild" depends="clean, build" />
 
 	<target name="dist" description="Assembles WAR file">
-		<antcall target="clean" />
 		<echo>Prepare for GWT build for all browsers</echo>
 		<copy tofile="${tmp.dir}\App.gwt.xml.re" file="${gwt.src.root.dir}\App.gwt.xml" overwrite="true" />
 		<copy tofile="${gwt.src.root.dir}\App.gwt.xml" file="${gwt.src.root.dir}\App.gwt.xml.template" overwrite="true" />
@@ -156,7 +169,7 @@
 
 		<echo>Make dir for war and copy compiled data</echo>
 		<mkdir dir="${dist.dir}/war" />
-		<copy todir="${dist.dir}/war">
+		<copy todir="${dist.dir}/war" overwrite="no">
 			<fileset dir="${webapp.dir}">
 				<include name="**/*" />
 			</fileset>
@@ -204,7 +217,7 @@
 
 	<target name="dist.with.userdata" description="Assembles WAR file with test data">
 		<mkdir dir="${dist.dir}/war" />
-		<copy todir="${dist.dir}/war/${userdata.dir}">
+		<copy todir="${dist.dir}/war/WEB-INF/${userdata.dir}">
 			<fileset dir="${userdata.dir}">
 				<include name="**/*" />
 			</fileset>
@@ -214,21 +227,26 @@
 	</target>
 
 
-	<target name="deploy.tomcat" depends="dist" description="Deploys WAR file with test data to ${deploy.dir}">
+	<target name="deploy.tomcat" depends="clean, dist" description="Deploys WAR file with test data to ${deploy.dir}">
 		<delete failonerror="true" dir="${deploy.dir}/${appname}" />
 		<copy file="${war.file}" todir="${deploy.dir}" />
 	</target>
 
 	<target name="test" depends="compile">
-		<junit printsummary="true" showoutput="yes" filtertrace="false">
-			<classpath refid="master-classpath" />
-			<batchtest fork="yes" todir="tmp">
+		<junit printsummary="true" showoutput="yes" filtertrace="true">
+			<classpath>
+				<path refid="master-classpath"/>
+				<path refid="test-classpath"/>
+			</classpath>
+
+			<batchtest todir="tmp" fork="true" haltonerror="true">				
 				<formatter type="plain" />
 				<fileset dir="${class.dir}">
 					<include name="**/*Test.class" />
 					<exclude name="**/Abstract*.class" />
+					<exclude name="ru/curs/showcase/app/test/*.class" />
 				</fileset>
-			</batchtest>
+			</batchtest>			
 		</junit>
 	</target>
 
@@ -259,7 +277,7 @@
 		</copy>
 	</target>
 	
-	<target name="deploy.trunk" depends="dist">
+	<target name="deploy.trunk" depends="clean, dist">
 		<echo>Deploying trunk distr to server</echo>
 		<zip destfile="${dist.dir}/userdata.zip">
 			<zipfileset dir="." includes="userdata*/**" />

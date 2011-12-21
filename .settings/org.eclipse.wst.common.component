@@ -5,6 +5,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/datagrid"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/extragwt"/>
+        <wb-resource deploy-path="/WEB-INF/lib" source-path="/runtime/lib"/>
         <property name="context-root" value="Showcase"/>
         <property name="java-output-path" value="/Showcase/build/classes"/>
     </wb-module>

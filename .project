@@ -44,7 +44,7 @@
 			<name>org.springframework.ide.eclipse.core.springbuilder</name>
 			<arguments>
 			</arguments>
-		</buildCommand>		
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.ajdt.ui.ajnature</nature>
@@ -56,11 +56,11 @@
 		<nature>com.google.gwt.eclipse.core.gwtNature</nature>
 		<nature>net.sf.eclipsecs.core.CheckstyleNature</nature>
 		<nature>org.python.pydev.pythonNature</nature>
-		<nature>org.springframework.ide.eclipse.core.springnature</nature>		
+		<nature>org.springframework.ide.eclipse.core.springnature</nature>
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1321384601511</id>
+			<id>1324486823082</id>
 			<name></name>
 			<type>26</type>
 			<matcher>

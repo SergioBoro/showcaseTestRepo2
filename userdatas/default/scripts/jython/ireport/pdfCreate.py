@@ -12,9 +12,9 @@ from ru.curs.showcase.model.jython import JythonProc;
 #from org.xml.sax.helpers import DefaultHandler;
 #from ru.curs.showcase.util import TextUtils;
 
-from net.sf.jasperreports.engine import *;
-from net.sf.jasperreports.engine.export import *;
-from java.util import *;
+from net.sf.jasperreports.engine import *
+from net.sf.jasperreports.engine.export import *
+from java.util import *
 import os.path
 
 # init vars
