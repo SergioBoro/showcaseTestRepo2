@@ -8,6 +8,8 @@ import javax.xml.transform.TransformerException;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.app.api.UserInfo;
+
 /**
  * Набор утилит (функций) для работы с сервлетами сервера аутентификации.
  */
@@ -150,7 +152,7 @@ public final class AuthServerUtils {
 	 *            Проверяемый логин
 	 * @return UserData
 	 */
-	public UserData checkUser(final String sesid, final String login) {
+	public UserInfo checkUser(final String sesid, final String login) {
 		if (authServerURL == null) {
 			return null;
 		}
@@ -162,7 +164,7 @@ public final class AuthServerUtils {
 			c.setDoInput(true);
 			c.connect();
 			if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				List<UserData> l = UserInfo.parseStream(c.getInputStream());
+				List<UserInfo> l = UserInfoUtils.parseStream(c.getInputStream());
 				if (l.isEmpty()) {
 					return null;
 				} else {
@@ -187,7 +189,7 @@ public final class AuthServerUtils {
 	 *            текущая сессия
 	 * @return UserData
 	 */
-	public UserData isAuthenticated(final String sesid) {
+	public UserInfo isAuthenticated(final String sesid) {
 		if (authServerURL == null) {
 			return null;
 		}
@@ -199,7 +201,7 @@ public final class AuthServerUtils {
 			c.setDoInput(true);
 			c.connect();
 			if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				List<UserData> l = UserInfo.parseStream(c.getInputStream());
+				List<UserInfo> l = UserInfoUtils.parseStream(c.getInputStream());
 				if (l.isEmpty()) {
 					return null;
 				} else {

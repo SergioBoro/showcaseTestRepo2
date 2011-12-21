@@ -8,6 +8,7 @@ import javax.servlet.http.*;
 import org.springframework.security.core.*;
 import org.springframework.security.web.authentication.*;
 
+import ru.curs.showcase.app.api.UserInfo;
 import ru.curs.showcase.app.server.PreProcessFilter;
 
 //imports omitted
@@ -39,7 +40,12 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 		String password = request.getParameter(PASS_HEADER);
 		SignedUsernamePasswordAuthenticationToken authRequest =
 			new SignedUsernamePasswordAuthenticationToken(username, password);
-		authRequest.setDetails(new WebAuthenticationDetails(request));
+
+		UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
+		// установка деталей внутреннего пользователя
+		userAndSessionDetails.setUserInfo(new UserInfo(username, null, username, null, null));
+
+		authRequest.setDetails(userAndSessionDetails);
 
 		// обработчик устанавливающий что будет происходить в случае когда в
 		// процессе аутентификации произошла ошибка - тоесть redirect на

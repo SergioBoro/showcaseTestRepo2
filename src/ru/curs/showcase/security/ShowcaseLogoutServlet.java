@@ -7,8 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import org.slf4j.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
@@ -35,7 +35,11 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 
 		sesid = request.getSession().getId();
 
-		if (!(AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(sesid))) {
+		if (!((UserAndSessionDetails) SecurityContextHolder.getContext().getAuthentication()
+				.getDetails()).isAuthViaAuthServer()) {
+			// if
+			// (!(AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(sesid)))
+			// {
 			return;
 		}
 

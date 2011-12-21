@@ -6,7 +6,6 @@ import java.util.IllegalFormatException;
 
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
@@ -38,7 +37,7 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		String url = "";
 		String login = arg1.getPrincipal().toString();
 		String pwd = arg1.getCredentials().toString();
-		String sesid = ((WebAuthenticationDetails) arg1.getDetails()).getSessionId();
+		String sesid = ((UserAndSessionDetails) arg1.getDetails()).getSessionId();
 
 		try {
 			url = SecurityParamsFactory.getLocalAuthServerUrl();
@@ -52,6 +51,15 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		if ("9152046062107176349L_default_value".equals(pwd)) {
 			// AppCurrContext.getInstance().setAuthViaAuthServ(true);
 			AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(sesid, true);
+			((UserAndSessionDetails) arg1.getDetails()).setAuthViaAuthServer(true);
+
+			if (AuthServerUtils.getTheAuthServerAlias() == null) {
+				AuthServerUtils.init(url);
+			}
+
+			((UserAndSessionDetails) arg1.getDetails()).setUserInfo(AuthServerUtils
+					.getTheAuthServerAlias().isAuthenticated(sesid));
+
 		} else {
 			AuthServerUtils.init(url);
 
@@ -72,6 +80,10 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 				if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					// AppCurrContext.getInstance();
 					AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(sesid, true);
+					((UserAndSessionDetails) arg1.getDetails()).setAuthViaAuthServer(true);
+					((UserAndSessionDetails) arg1.getDetails()).setUserInfo(AuthServerUtils
+							.getTheAuthServerAlias().isAuthenticated(sesid));
+
 					// AppCurrContext.getInstance().setAuthViaAuthServ(true);
 				} else {
 					throw new BadCredentialsException("Bad credentials");

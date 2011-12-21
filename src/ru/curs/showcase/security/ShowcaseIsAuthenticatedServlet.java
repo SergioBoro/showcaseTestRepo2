@@ -8,7 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.xml.transform.TransformerException;
 
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.app.api.UserInfo;
+import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
@@ -34,24 +35,24 @@ public class ShowcaseIsAuthenticatedServlet extends HttpServlet {
 		String sesid = request.getParameter("sesid");
 
 		if (url != null) {
-			UserData ud = connectToAuthServer(url, sesid);
+			UserInfo ud = connectToAuthServer(url, sesid);
 			if (ud != null) {
 				prepareGoodResponce(response, ud);
 			}
 		}
 	}
 
-	private UserData connectToAuthServer(final String url, final String sesid) throws IOException,
+	private UserInfo connectToAuthServer(final String url, final String sesid) throws IOException,
 			ServletException {
 		URL server = new URL(url + String.format("/isauthenticated?sesid=%s", sesid));
 		HttpURLConnection c = (HttpURLConnection) server.openConnection();
 		c.setRequestMethod("GET");
 		c.setDoInput(true);
 		c.connect();
-		UserData ud = null;
+		UserInfo ud = null;
 		if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
 			try {
-				List<UserData> l = UserInfo.parseStream(c.getInputStream());
+				List<UserInfo> l = UserInfoUtils.parseStream(c.getInputStream());
 				ud = l.get(0);
 				ud.setResponseCode(c.getResponseCode());
 			} catch (TransformerException e) {
@@ -62,7 +63,7 @@ public class ShowcaseIsAuthenticatedServlet extends HttpServlet {
 		return ud;
 	}
 
-	private void prepareGoodResponce(final HttpServletResponse response, final UserData ud)
+	private void prepareGoodResponce(final HttpServletResponse response, final UserInfo ud)
 			throws IOException {
 		response.reset();
 		response.setStatus(ud.getResponseCode());

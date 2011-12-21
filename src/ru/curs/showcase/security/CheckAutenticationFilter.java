@@ -6,12 +6,10 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.*;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
@@ -55,14 +53,16 @@ public class CheckAutenticationFilter implements Filter {
 
 			if (AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(
 					httpReq.getSession().getId())) {
-				UserData ud =
+				UserInfo ud =
 					AuthServerUtils.getTheAuthServerAlias().isAuthenticated(
 							httpReq.getSession().getId());
-				if (SecurityContextHolder.getContext().getAuthentication() != null) {
-					LOGGER.debug("RequestContextHolder = "
-							+ ((WebAuthenticationDetails) SecurityContextHolder.getContext()
-									.getAuthentication().getDetails()).getSessionId());
-				}
+				// if (SecurityContextHolder.getContext().getAuthentication() !=
+				// null) {
+				// LOGGER.debug("RequestContextHolder = "
+				// + ((WebAuthenticationDetails)
+				// SecurityContextHolder.getContext()
+				// .getAuthentication().getDetails()).getSessionId());
+				// }
 				if (ud == null) {
 					response.reset();
 					response.setContentType("text/html");
