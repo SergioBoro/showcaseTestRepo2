@@ -25,9 +25,9 @@ public final class ServerState implements SerializableElement {
 	private String appVersion;
 
 	/**
-	 * Имя текущего пользователя.
+	 * Информация о текущем пользователе (sid, телефон, имя, e-mail).
 	 */
-	private String userName;
+	private UserInfo userInfo;
 
 	/**
 	 * Признак того, что это собственный пользователь приложения. Альтернатива -
@@ -67,12 +67,12 @@ public final class ServerState implements SerializableElement {
 		appVersion = aAppVersion;
 	}
 
-	public String getUserName() {
-		return userName;
+	public UserInfo getUserInfo() {
+		return userInfo;
 	}
 
-	public void setUserName(final String aUserName) {
-		userName = aUserName;
+	public void setUserInfo(final UserInfo aUserInfo) {
+		userInfo = aUserInfo;
 	}
 
 	public Boolean getIsNativeUser() {
