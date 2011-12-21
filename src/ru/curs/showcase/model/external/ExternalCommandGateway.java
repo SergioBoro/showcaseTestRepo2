@@ -1,4 +1,4 @@
-package ru.curs.showcase.model.command;
+package ru.curs.showcase.model.external;
 
 /**
  * Шлюз для выполнения внешней команды (пришедшей посредством вызова

@@ -1,20 +1,21 @@
-package ru.curs.showcase.app.api.event;
+package ru.curs.showcase.app.client.api;
 
 import java.util.*;
 
 import ru.curs.showcase.app.api.element.DataPanelElement;
+import ru.curs.showcase.app.api.event.*;
 
 import com.google.gwt.core.client.GWT;
 
 /**
- * Класс API, служащий для корректного сохранения текущего контекста на
- * клиентской части. Также в данный класс вынесены все правила, по которым
- * происходит смена контекста.
+ * Класс API, служащий для корректного получения текущего контекста на основе
+ * предыдущих контекстов в клиентской части. В данный класс вынесены все
+ * правила, по которым происходит смена контекста.
  * 
  * @author den
  * 
  */
-public class ActionHolder {
+public class ActionTransformer {
 
 	/**
 	 * Текущий Action. По нему отрабатываются клики внутри вкладок.

@@ -9,9 +9,7 @@ import javax.xml.ws.Endpoint;
 
 import org.junit.Test;
 
-import ru.curs.showcase.model.command.*;
-import ru.curs.showcase.model.jython.JythonExternalCommandGateway;
-import ru.curs.showcase.model.sp.DBExternalCommandGateway;
+import ru.curs.showcase.model.external.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.test.ws.*;
 

@@ -6,8 +6,6 @@ import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.*;
-import ru.curs.showcase.model.sp.SPNotExistsException;
-import ru.curs.showcase.runtime.NoSuchUserDataException;
 import ru.curs.showcase.util.exception.BaseException;
 
 /**
@@ -54,7 +52,7 @@ public final class GeneralExceptionFactory {
 		res.setType(getType(original));
 		res.setContext(aCurrentContext);
 		res.setMessageType(getMessageType(original));
-		res.setNeedDatailedInfo(getNeedDatailedInfo(original));
+		res.setNeedDatailedInfo(ExceptionConfig.needDatailedInfoForException(original));
 		return res;
 	}
 
@@ -67,13 +65,6 @@ public final class GeneralExceptionFactory {
 		if (!(original instanceof BaseException)) {
 			logAll(original);
 		}
-	}
-
-	private static Boolean getNeedDatailedInfo(final Throwable e) {
-		return (e.getClass() != NoSuchUserDataException.class)
-				&& (e.getClass() != SPNotExistsException.class)
-				&& (e.getClass() != ValidateException.class)
-				&& (e.getClass() != FileIsAbsentInDBException.class);
 	}
 
 	private static MessageType getMessageType(final Throwable exc) {

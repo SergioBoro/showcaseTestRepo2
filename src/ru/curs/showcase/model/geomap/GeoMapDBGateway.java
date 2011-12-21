@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import oracle.jdbc.OracleTypes;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.grid.RecordSetElementGateway;
 import ru.curs.showcase.model.sp.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.Description;

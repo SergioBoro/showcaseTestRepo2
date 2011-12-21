@@ -3,8 +3,7 @@ package ru.curs.showcase.model.geomap;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.SourceSelector;
-import ru.curs.showcase.model.grid.RecordSetElementGateway;
-import ru.curs.showcase.model.jython.RecordSetElementJythonGateway;
+import ru.curs.showcase.model.sp.*;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
 
 /**

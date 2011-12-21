@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import ru.curs.showcase.model.command.ExternalCommand;
+import ru.curs.showcase.model.external.ExternalCommand;
 import ru.curs.showcase.util.ServletUtils;
 
 /**

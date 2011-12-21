@@ -1,9 +1,8 @@
-package ru.curs.showcase.model.command;
+package ru.curs.showcase.model.external;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.*;
-import ru.curs.showcase.model.jython.JythonExternalCommandGateway;
-import ru.curs.showcase.model.sp.DBExternalCommandGateway;
+import ru.curs.showcase.model.command.*;
 
 /**
  * Внешняя команда. Вызывается с помощью сервлета, веб-сервиса или другого RPC

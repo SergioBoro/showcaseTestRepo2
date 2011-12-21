@@ -35,4 +35,8 @@ public final class AppRegistry {
 	public static ObjectSerializer getObjectSerializer() {
 		return (ObjectSerializer) context.getBean("objectSerializer");
 	}
+
+	public static ExceptionConfig getExceptionConfig() {
+		return (ExceptionConfig) context.getBean("exceptionConfig");
+	}
 }

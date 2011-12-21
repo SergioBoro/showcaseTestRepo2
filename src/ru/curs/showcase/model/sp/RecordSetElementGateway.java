@@ -1,7 +1,6 @@
-package ru.curs.showcase.model.grid;
+package ru.curs.showcase.model.sp;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.model.sp.RecordSetElementRawData;
 
 /**
  * Единый шлюз для элементов инф. панели, основанных на компоненте, данные для

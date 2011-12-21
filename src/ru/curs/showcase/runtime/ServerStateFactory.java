@@ -8,7 +8,6 @@ import java.util.regex.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import ru.curs.showcase.app.api.ServerState;
-import ru.curs.showcase.security.UserAndSessionDetails;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 

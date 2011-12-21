@@ -11,9 +11,6 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  */
 public final class UserInfo implements SerializableElement {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -5321878237734917288L;
 	/**
 	 * Логин пользователя.

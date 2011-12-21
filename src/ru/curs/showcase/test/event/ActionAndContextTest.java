@@ -8,8 +8,7 @@ import java.util.*;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.CanBeCurrent;
-import ru.curs.showcase.app.api.chart.Chart;
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelTab;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.model.ValidateException;
@@ -26,17 +25,12 @@ import ru.curs.showcase.util.ReflectionUtils;
  */
 public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 	private static final String TEST_ACTIVITY_NAME = "test";
-	private static final String MAIN_CONDITION = "Алтайский край";
 	private static final String SESSION_CONDITION =
 		"<sessioncontext><username>master</username><urlparams></urlparams></sessioncontext>";
-	private static final String FILTER_CONDITION = "filter";
 	private static final int DEF_SIZE_VALUE = 100;
 	private static final String NEW_ADD_CONDITION = "New add condition";
 	private static final String MOSCOW_CONTEXT = "Москва";
 	private static final String TAB_1 = "1";
-	private static final String TAB_2_NAME = "Вкладка 2";
-	private static final String EL_06 = "06";
-	private static final String TAB_2 = "2";
 
 	/**
 	 * Тест клонирования Action и составляющих его объектов.
@@ -154,58 +148,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 	}
 
 	/**
-	 * Проверка актуализации Action для Tab на основе Action при обновлении
-	 * данных на открытой вкладке.
-	 * 
-	 * @throws InvocationTargetException
-	 * @throws IllegalAccessException
-	 * @throws NoSuchMethodException
-	 * 
-	 */
-	@Test
-	public void testRefreshTab() throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException {
-		Action first = createSimpleTestAction();
-
-		DataPanelTab tab = createStdTab();
-		ActionHolder ah = new ActionHolder();
-		ah.setNavigatorAction(first.gwtClone());
-		ah.setNavigatorActionFromTab(tab.getAction());
-		Action actual = ah.getNavigatorAction();
-
-		assertEquals(DataPanelActionType.REFRESH_TAB, actual.getDataPanelActionType());
-		assertTrue(actual.getKeepUserSettings());
-		final DataPanelLink dataPanelLink = actual.getDataPanelLink();
-		assertNotNull(dataPanelLink);
-		assertEquals(TEST_XML, dataPanelLink.getDataPanelId());
-		assertEquals(TAB_2, dataPanelLink.getTabId());
-		assertFalse(dataPanelLink.getFirstOrCurrentTab());
-		assertEquals(1, dataPanelLink.getElementLinks().size());
-
-		CompositeContext context = getSimpleTestContext();
-		assertTrue(ReflectionUtils.equals(context, actual.getContext()));
-	}
-
-	/**
-	 * Проверка установки DataPanelActionType.RELOAD_TAB при открытии новой
-	 * вкладки на уже открытой панели.
-	 * 
-	 */
-	@Test
-	public void testSwitchToNewTab() {
-		Action first = createSimpleTestAction();
-		DataPanelTab tab = createStdTab();
-		tab.setId(TAB_1);
-
-		ActionHolder ah = new ActionHolder();
-		ah.setNavigatorAction(first.gwtClone());
-		ah.setNavigatorActionFromTab(tab.getAction());
-		Action actual = ah.getNavigatorAction();
-		assertEquals(DataPanelActionType.REFRESH_TAB, actual.getDataPanelActionType());
-		assertFalse(actual.getKeepUserSettings());
-	}
-
-	/**
 	 * Проверка актуализации действия типа firstOrCurrent.
 	 * 
 	 */
@@ -315,12 +257,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		assertTrue(action.getModalWindowInfo().getShowCloseBottomButton());
 	}
 
-	private DataPanelTab createStdTab() {
-		DataPanel dp = new DataPanel();
-		DataPanelTab tab = dp.add(TAB_2, TAB_2_NAME);
-		return tab;
-	}
-
 	/**
 	 * Создаем тестовое действие с не дефолтными значениями всех возможных
 	 * атрибутов.
@@ -363,24 +299,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		return action;
 	}
 
-	private Action createSimpleTestAction() {
-		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
-		CompositeContext context = getSimpleTestContext();
-		action.setContext(context);
-
-		DataPanelLink link = action.getDataPanelLink();
-		link.setDataPanelId(TEST_XML);
-		link.setTabId(TAB_2);
-		CompositeContext elContext = context.gwtClone();
-		elContext.setAdditional(ADD_CONDITION);
-
-		DataPanelElementLink elLink = new DataPanelElementLink(EL_06, elContext);
-		link.getElementLinks().add(elLink);
-
-		action.determineState();
-		return action;
-	}
-
 	private Action createCurrentTestAction() {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
 		CompositeContext context = CompositeContext.createCurrent();
@@ -404,12 +322,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 
 		action.determineState();
 		return action;
-	}
-
-	private CompositeContext getSimpleTestContext() {
-		CompositeContext context = new CompositeContext();
-		context.setMain(MAIN_CONDITION);
-		return context;
 	}
 
 	private CompositeContext getComplexTestContext() {
@@ -450,48 +362,6 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		assertEquals(
 				"<filter><context>add_context1</context><context>add_context2</context></filter>",
 				filter);
-	}
-
-	/**
-	 * Проверка работы функции setCurrentAction у ActionHolder.
-	 * 
-	 */
-	@Test
-	public void testActionHolderSetCurrentAction() {
-		Action first = createSimpleTestAction();
-		ActionHolder ah = new ActionHolder();
-		ah.setNavigatorAction(first);
-		first.filterBy(FILTER_CONDITION);
-		ah.setCurrentActionFromElement(first, new Chart(new DataPanelElementInfo("1",
-				DataPanelElementType.CHART)));
-
-		Action insideAction = new Action(DataPanelActionType.REFRESH_TAB);
-		insideAction.setContext(CompositeContext.createCurrent());
-		DataPanelLink dpLink = new DataPanelLink();
-		dpLink.setDataPanelId(CanBeCurrent.CURRENT_ID);
-		dpLink.setTabId(TAB_2);
-		insideAction.setDataPanelLink(dpLink);
-		insideAction.determineState();
-		Activity act = Activity.newServerActivity("01", TEST_ACTIVITY_NAME);
-		act.setContext(CompositeContext.createCurrent());
-		insideAction.getServerActivities().add(act);
-		act = Activity.newClientActivity("01", TEST_ACTIVITY_NAME);
-		act.setContext(CompositeContext.createCurrent());
-		insideAction.getClientActivities().add(act);
-		ah.setCurrentActionFromElement(insideAction, new Grid(new DataPanelElementInfo("2",
-				DataPanelElementType.GRID)));
-
-		assertNotNull(ah.getCurrentAction());
-		assertEquals(DataPanelActionType.REFRESH_TAB, ah.getCurrentAction()
-				.getDataPanelActionType());
-		assertEquals(FILTER_CONDITION, ah.getCurrentAction().getContext().getFilter());
-		assertTrue(ah.getCurrentAction().getKeepUserSettings());
-		assertEquals(MAIN_CONDITION, ah.getCurrentAction().getContext().getMain());
-		assertEquals(MAIN_CONDITION, ah.getCurrentAction().getServerActivities().get(0)
-				.getContext().getMain());
-		assertEquals(MAIN_CONDITION, ah.getCurrentAction().getClientActivities().get(0)
-				.getContext().getMain());
-		assertEquals("2", ah.getCurrentElementId());
 	}
 
 	/**

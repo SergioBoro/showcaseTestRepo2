@@ -7,7 +7,7 @@ import java.util.*;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanel;
-import ru.curs.showcase.app.api.event.ActionHolder;
+import ru.curs.showcase.app.client.api.ActionTransformer;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author anlug
  * 
  */
-public final class AppCurrContext extends ActionHolder {
+public final class AppCurrContext extends ActionTransformer {
 
 	/**
 	 * Переменная хранящая в структуре Map закэшированные виджеты в элементами,

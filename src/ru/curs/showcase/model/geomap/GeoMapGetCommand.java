@@ -5,8 +5,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.GeoMap;
 import ru.curs.showcase.model.AdapterForJS;
 import ru.curs.showcase.model.command.DataPanelElementCommand;
-import ru.curs.showcase.model.grid.RecordSetElementGateway;
-import ru.curs.showcase.model.sp.RecordSetElementRawData;
+import ru.curs.showcase.model.sp.*;
 
 /**
  * Команда получения карты.

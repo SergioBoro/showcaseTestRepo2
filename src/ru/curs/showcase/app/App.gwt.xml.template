@@ -30,7 +30,7 @@
 <!--   The supported user agents at the moment of writing were:-->
 <!--   ie6,ie8,gecko,gecko1_8,safari,opera	  -->
 <!--   where safari==chrome, gecko1_8==firefox 2+ -->
-<!-- Для того, чтобы компилировалось все - строчку set-property  -->
+<!-- Для того, чтобы компилировалось все - строчку set-property надо убрать -->
 
 <!-- Установка общих стилей приложения. Рекомендуется устанавливать здесь, чтобы не забыть установить в каждом jsp файле. -->
 <stylesheet src="../css/internalShowcase.css"/>      

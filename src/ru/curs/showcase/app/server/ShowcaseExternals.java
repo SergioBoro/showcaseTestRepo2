@@ -2,7 +2,8 @@ package ru.curs.showcase.app.server;
 
 import javax.jws.*;
 
-import ru.curs.showcase.model.command.*;
+import ru.curs.showcase.model.command.ShowcaseExportException;
+import ru.curs.showcase.model.external.*;
 
 /**
  * Оболочка поверх ExternalCommand для работы с JAX-WS.

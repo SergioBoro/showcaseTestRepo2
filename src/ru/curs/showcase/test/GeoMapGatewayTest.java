@@ -5,8 +5,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.model.geomap.GeoMapDBGateway;
-import ru.curs.showcase.model.grid.RecordSetElementGateway;
-import ru.curs.showcase.model.jython.RecordSetElementJythonGateway;
+import ru.curs.showcase.model.sp.*;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**

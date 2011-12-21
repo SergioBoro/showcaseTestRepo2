@@ -1,6 +1,6 @@
-package ru.curs.showcase.model.jython;
+package ru.curs.showcase.model.external;
 
-import ru.curs.showcase.model.command.ExternalCommandGateway;
+import ru.curs.showcase.model.jython.JythonQuery;
 
 /**
  * Jython шлюз для трансформации данных или выполнения команд, полученных из

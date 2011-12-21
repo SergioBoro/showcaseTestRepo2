@@ -7,7 +7,8 @@ import java.util.IllegalFormatException;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 
-import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.UserAndSessionDetails;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**

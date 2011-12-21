@@ -9,9 +9,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.chart.*;
-import ru.curs.showcase.model.grid.RecordSetElementGateway;
-import ru.curs.showcase.model.jython.RecordSetElementJythonGateway;
-import ru.curs.showcase.model.sp.RecordSetElementRawData;
+import ru.curs.showcase.model.sp.*;
 import ru.curs.showcase.util.ReflectionUtils;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 

@@ -48,13 +48,20 @@ public class AbstractTest extends GeneralXMLHelper {
 	protected static final String TREE_MULTILEVEL_XML = "tree_multilevel.xml";
 	protected static final String TREE_MULTILEVEL_V2_XML = "tree_multilevel.v2.xml";
 
+	protected static final String MAIN_CONDITION = "Алтайский край";
+	protected static final String FILTER_CONDITION = "filter";
 	protected static final String ADD_CONDITION = "add_condition";
+
 	protected static final String TEST_XML_FILE = "logic.xml";
 
 	protected static final String RICH_DP = "m1003.xml";
 
 	protected static final String GEOMAP_WOHEADER_SVG = "geomap_woheader.svg";
 	protected static final String RU_CURS_SHOWCASE_TEST = "ru\\curs\\showcase\\test\\";
+
+	protected static final String TAB_2_NAME = "Вкладка 2";
+	protected static final String EL_06 = "06";
+	protected static final String TAB_2 = "2";
 
 	/**
 	 * Действия, которые должны выполняться перед запуском любых тестовых
@@ -380,7 +387,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	 */
 	protected CompositeContext getTestContext2() {
 		CompositeContext context = new CompositeContext();
-		context.setMain("Алтайский край");
+		context.setMain(MAIN_CONDITION);
 		return context;
 	}
 
@@ -392,7 +399,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	protected CompositeContext getTestContext3() {
 		CompositeContext context = new CompositeContext();
 		context.setMain("Межрегиональный обмен - Всего");
-		context.setAdditional("Алтайский край");
+		context.setAdditional(MAIN_CONDITION);
 		return context;
 	}
 
@@ -501,5 +508,35 @@ public class AbstractTest extends GeneralXMLHelper {
 
 	protected CompositeContext generateContextWithSessionInfo() {
 		return new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+	}
+
+	protected Action createSimpleTestAction() {
+		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
+		CompositeContext context = getSimpleTestContext();
+		action.setContext(context);
+
+		DataPanelLink link = action.getDataPanelLink();
+		link.setDataPanelId(TEST_XML);
+		link.setTabId(TAB_2);
+		CompositeContext elContext = context.gwtClone();
+		elContext.setAdditional(ADD_CONDITION);
+
+		DataPanelElementLink elLink = new DataPanelElementLink(EL_06, elContext);
+		link.getElementLinks().add(elLink);
+
+		action.determineState();
+		return action;
+	}
+
+	protected DataPanelTab createStdTab() {
+		DataPanel dp = new DataPanel();
+		DataPanelTab tab = dp.add(TAB_2, TAB_2_NAME);
+		return tab;
+	}
+
+	protected CompositeContext getSimpleTestContext() {
+		CompositeContext context = new CompositeContext();
+		context.setMain(MAIN_CONDITION);
+		return context;
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.security.web.authentication.*;
 
 import ru.curs.showcase.app.api.UserInfo;
 import ru.curs.showcase.app.server.PreProcessFilter;
+import ru.curs.showcase.util.UserAndSessionDetails;
 
 //imports omitted
 /**

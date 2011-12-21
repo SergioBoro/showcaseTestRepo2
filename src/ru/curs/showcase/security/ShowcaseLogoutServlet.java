@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 import org.slf4j.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import ru.curs.showcase.util.UserAndSessionDetails;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**

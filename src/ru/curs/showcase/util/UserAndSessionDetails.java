@@ -1,4 +1,4 @@
-package ru.curs.showcase.security;
+package ru.curs.showcase.util;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,9 +16,6 @@ import ru.curs.showcase.app.api.UserInfo;
  */
 public class UserAndSessionDetails extends WebAuthenticationDetails {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8550679539357144098L;
 
 	private UserInfo userInfo = null;

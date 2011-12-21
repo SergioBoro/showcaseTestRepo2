@@ -42,7 +42,6 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	 * 
 	 * @param aContext
 	 *            - параметры.
-	 * 
 	 * @return - строку с XML.
 	 * @throws UnsupportedEncodingException
 	 */

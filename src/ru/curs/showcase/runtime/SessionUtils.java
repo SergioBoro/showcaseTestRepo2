@@ -2,7 +2,7 @@ package ru.curs.showcase.runtime;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import ru.curs.showcase.security.UserAndSessionDetails;
+import ru.curs.showcase.util.UserAndSessionDetails;
 
 /**
  * Вспомогательные функции для получение информации о текущей сессии.
@@ -13,13 +13,6 @@ import ru.curs.showcase.security.UserAndSessionDetails;
 public final class SessionUtils {
 
 	/**
-	 * LOGGER.
-	 */
-	// private static final Logger LOGGER =
-	// LoggerFactory.getLogger(SessionUtils.class);
-	public static final String APP_PROP_READ_ERROR =
-		"Не удалось считать security.authserverurl из app.properties";
-	/**
 	 * Идентификатор сессии для модульных тестов.
 	 */
 	public static final String TEST_SESSION = "testSession";
@@ -27,6 +20,15 @@ public final class SessionUtils {
 
 	private SessionUtils() {
 		throw new UnsupportedOperationException();
+	}
+
+	private static UserAndSessionDetails getUserAndSessionDetails() {
+		if (SecurityContextHolder.getContext().getAuthentication() != null) {
+			return (UserAndSessionDetails) SecurityContextHolder.getContext().getAuthentication()
+					.getDetails();
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -48,73 +50,41 @@ public final class SessionUtils {
 	 * @return - идентификатор текущей сессии приложения.
 	 */
 	public static String getCurrentSessionId() {
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			return ((UserAndSessionDetails) SecurityContextHolder.getContext().getAuthentication()
-					.getDetails()).getSessionId();
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getSessionId();
 		} else {
 			return TEST_SESSION;
 		}
 	}
 
-	/**
-	 * Возвращает SID пользователя из текущей сессии приложения.
-	 * 
-	 * @return - SID пользователя.
-	 */
 	public static String getCurrentUserSID() {
-		// String url = null;
-		// try {
-		// url = SecurityParamsFactory.getLocalAuthServerUrl();
-		// } catch (SettingsFileOpenException e) {
-		// LOGGER.error(APP_PROP_READ_ERROR);
-		// }
-		// AuthServerUtils.init(url);
-		// String sessionId = getCurrentSessionId();
-		// if
-		// (AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(sessionId))
-		// {
-		// UserInfo ud =
-		// AuthServerUtils.getTheAuthServerAlias().isAuthenticated(sessionId);
-		// if (ud != null) {
-		// return ud.getSid();
-		// }
-		// } else if (TEST_SESSION.equals(sessionId)) {
-		// return TEST_SID;
-		// }
-		//
-		// return null;
-
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			return ((UserAndSessionDetails) SecurityContextHolder.getContext().getAuthentication()
-					.getDetails()).getUserInfo().getSid();
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getUserInfo().getSid();
 		} else {
-			return null;
+			return TEST_SID;
 		}
 
 	}
 
 	public static String getCurrentUserEmail() {
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			return ((UserAndSessionDetails) SecurityContextHolder.getContext().getAuthentication()
-					.getDetails()).getUserInfo().getEmail();
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getUserInfo().getEmail();
 		} else {
 			return null;
 		}
 	}
 
 	public static String getCurrentUserFullName() {
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			return ((UserAndSessionDetails) SecurityContextHolder.getContext().getAuthentication()
-					.getDetails()).getUserInfo().getFullName();
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getUserInfo().getFullName();
 		} else {
 			return null;
 		}
 	}
 
 	public static String getCurrentUserPhone() {
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			return ((UserAndSessionDetails) SecurityContextHolder.getContext().getAuthentication()
-					.getDetails()).getUserInfo().getPhone();
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getUserInfo().getPhone();
 		} else {
 			return null;
 		}

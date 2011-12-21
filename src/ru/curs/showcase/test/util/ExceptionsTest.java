@@ -17,7 +17,7 @@ import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.*;
 import ru.curs.showcase.model.chart.*;
-import ru.curs.showcase.model.command.GeneralExceptionFactory;
+import ru.curs.showcase.model.command.*;
 import ru.curs.showcase.model.frame.*;
 import ru.curs.showcase.model.grid.*;
 import ru.curs.showcase.model.html.HTMLGateway;
@@ -44,6 +44,13 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 * Имя несуществующей схемы.
 	 */
 	private static final String PHANTOM_XSD = "phantom26052011.xsd";
+
+	@Test
+	public void testExceptionConfig() {
+		ExceptionConfig config = AppRegistry.getExceptionConfig();
+		final int simpleExcCount = 4;
+		assertEquals(simpleExcCount, config.getNoDatailedInfoExceptions().size());
+	}
 
 	/**
 	 * Тест на считывание несуществующего параметра из файла настроек.

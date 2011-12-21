@@ -5,7 +5,7 @@ import java.util.*;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.model.command.*;
-import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**

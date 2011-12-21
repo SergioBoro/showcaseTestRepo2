@@ -1,8 +1,8 @@
-package ru.curs.showcase.model.sp;
+package ru.curs.showcase.model.external;
 
 import java.sql.SQLException;
 
-import ru.curs.showcase.model.command.ExternalCommandGateway;
+import ru.curs.showcase.model.sp.SPQuery;
 import ru.curs.showcase.util.Description;
 
 /**
