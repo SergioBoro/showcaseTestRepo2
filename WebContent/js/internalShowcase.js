@@ -1,9 +1,25 @@
-function setCurrentUserNameForViewInHTMLControl(preffix)
+function setCurrentUserDetailsForViewInHTMLControl(preffix)
 {
 	
 	if (document.getElementById('CURRENT_USER_CONTROL_' + preffix)) {
 	 document.getElementById('CURRENT_USER_CONTROL_' + preffix).innerHTML=getCurrentUserNameFeedbackJSNIFunction();
 	}
+	
+	if (document.getElementById('CURRENT_USER_CONTROL_FULLNAME_' + preffix)) {
+		 document.getElementById('CURRENT_USER_CONTROL_FULLNAME_' + preffix).innerHTML=getCurrentUserFullNameFeedbackJSNIFunction();
+		}
+	
+	if (document.getElementById('CURRENT_USER_CONTROL_EMAIL_' + preffix)) {
+		 document.getElementById('CURRENT_USER_CONTROL_EMAIL_' + preffix).innerHTML=getCurrentUserEMailFeedbackJSNIFunction();
+		}
+
+	if (document.getElementById('CURRENT_USER_CONTROL_SID_' + preffix)) {
+		 document.getElementById('CURRENT_USER_CONTROL_SID_' + preffix).innerHTML=getCurrentUserSIDFeedbackJSNIFunction();
+		}
+
+	if (document.getElementById('CURRENT_USER_CONTROL_PHONE_' + preffix)) {
+		 document.getElementById('CURRENT_USER_CONTROL_PHONE_' + preffix).innerHTML=getCurrentUserPhoneFeedbackJSNIFunction();
+		}	
 
 }
 
