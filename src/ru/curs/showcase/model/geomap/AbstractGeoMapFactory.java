@@ -162,9 +162,11 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 				return null;
 			}
 			if (qname.equalsIgnoreCase(PROPS_TAG)) {
-				value = attrs.getValue(LEGEND_TAG);
-				value = value.toUpperCase().trim();
-				getResult().setLegendPosition(ChildPosition.valueOf(value));
+				if (attrs.getIndex(LEGEND_TAG) > -1) {
+					value = attrs.getValue(LEGEND_TAG);
+					value = value.toUpperCase().trim();
+					getResult().setLegendPosition(ChildPosition.valueOf(value));
+				}
 				if (attrs.getIndex(WIDTH_TAG) > -1) {
 					value = attrs.getValue(WIDTH_TAG);
 					intValue = TextUtils.getIntSizeValue(value);

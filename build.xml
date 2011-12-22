@@ -19,7 +19,7 @@
 	<property name="userdata.dir" value="userdatas" />
 	<property name="env.props" value="${env}.properties" />
 	<property name="gwt.src.root.dir" value="${src.dir}\ru\curs\showcase\app" />
-	<property name="general.props.file" value="general.properties"/>
+	<property name="general.props.file" value="general.properties" />
 
 	<property file="${env.props}" />
 	<property file="${userdata.dir}/app.properties" />
@@ -48,7 +48,7 @@
 		</fileset>
 		<pathelement location="${webinf.dir}/classes/" />
 	</path>
-	
+
 	<path id="test-classpath" description="CLASSPATH for unittests">
 		<fileset dir="${junit.dir}">
 			<include name="*.jar" />
@@ -60,8 +60,8 @@
 			<include name="*.jar" />
 		</fileset>
 		<pathelement path="${datagrid.dir}" />
-		<pathelement path="${extragwt.dir}" />		
-	</path>	
+		<pathelement path="${extragwt.dir}" />
+	</path>
 
 	<target name="info" description="Show wise configuration info">
 		<echo>Соединение с SQL Server "${rdbms.name}" и развертывание на контейнере сервлетов "${servlet.cont.dir}"</echo>
@@ -173,8 +173,8 @@
 			<fileset dir="${webapp.dir}">
 				<include name="**/*" />
 			</fileset>
-		</copy>		
-		
+		</copy>
+
 		<echo>Copy sources to war</echo>
 		<copy todir="${dist.dir}/war/WEB-INF/src/core">
 			<fileset dir="${src.dir}">
@@ -197,7 +197,7 @@
 			<fileset dir="${runtime.dir}/lib">
 				<include name="**/*.jar" />
 			</fileset>
-		</copy>		
+		</copy>
 
 		<echo>Making war not love</echo>
 		<war destfile="${war.file}">
@@ -226,6 +226,13 @@
 		<antcall target="dist" />
 	</target>
 
+	<target name="copy.runtime">
+		<copy todir="${deploy.dir}/${ant.project.name}/WEB-INF/lib" failonerror="false">
+			<fileset dir="${runtime.dir}/lib">
+				<include name="**/*.jar" />
+			</fileset>			
+		</copy>
+	</target>
 
 	<target name="deploy.tomcat" depends="clean, dist" description="Deploys WAR file with test data to ${deploy.dir}">
 		<delete failonerror="true" dir="${deploy.dir}/${appname}" />
@@ -235,18 +242,18 @@
 	<target name="test" depends="compile">
 		<junit printsummary="true" showoutput="yes" filtertrace="true">
 			<classpath>
-				<path refid="master-classpath"/>
-				<path refid="test-classpath"/>
+				<path refid="master-classpath" />
+				<path refid="test-classpath" />
 			</classpath>
 
-			<batchtest todir="tmp" fork="true" haltonerror="true">				
+			<batchtest todir="tmp" fork="true" haltonerror="true">
 				<formatter type="plain" />
 				<fileset dir="${class.dir}">
 					<include name="**/*Test.class" />
 					<exclude name="**/Abstract*.class" />
-					<exclude name="**/*GWTTest.class"/>										
+					<exclude name="**/*GWTTest.class" />
 				</fileset>
-			</batchtest>			
+			</batchtest>
 		</junit>
 	</target>
 
@@ -273,10 +280,11 @@
 
 	<target name="copy.patches" depends="info">
 		<copy todir="${webapp.dir}" overwrite="true">
-			<fileset dir="${dist.dir}/patches"></fileset>
+			<fileset dir="${dist.dir}/patches">
+			</fileset>
 		</copy>
 	</target>
-	
+
 	<target name="deploy.trunk" depends="clean, dist">
 		<echo>Deploying trunk distr to server</echo>
 		<zip destfile="${dist.dir}/userdata.zip">
@@ -301,7 +309,7 @@
 		<zip destfile="${db.backup.path}\${db.backup.name}.zip">
 			<zipfileset file="${db.backup.path}\${db.backup.name}.mbk" />
 		</zip>
-		<delete file="${db.backup.path}\${db.backup.name}.mbk" />		
+		<delete file="${db.backup.path}\${db.backup.name}.mbk" />
 	</target>
 
 	<target name="get.gwt.version" depends="info">

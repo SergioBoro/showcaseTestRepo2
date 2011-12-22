@@ -51,12 +51,12 @@ djeo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=
 	if (!data.geometries) data.geometries = courseApp.data.geo.russia_geometries;
 	if (!data.style) data.style = mapStyle;
 	
-//	Supported mapping engines (replace the value for djeoEngine parameter)
-//	djeo native mapping engine - djeoEngine:'djeo'
-//	Google Maps API - djeoEngine:'gmaps'
-//	Google Earth API - djeoEngine:'ge'
-//	Yandex Maps API - djeoEngine:'ymaps'	
-	data.engine = "djeo";
+//	Supported mapping engines
+//	djeo native mapping engine (default): data.engine = "djeo"
+//	Google Maps API: data.engine = "gmaps"
+//	Google Earth API: - data.engine = "ge"
+//	Yandex Maps API: data.engine = "ymaps"	
+	data.engine = "djeo"
 	
 	map = new djeo.Map(mapNode, data);
 

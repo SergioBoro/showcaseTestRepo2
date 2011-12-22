@@ -57,16 +57,14 @@ def mainproc():
     settings = u'''
 <geomapsettings>
         <labels>
-            <header><p>Карта с раскрашенными по значению показателя регионами</p>
-            <h2>И совершенно бесплатно, только сегодня работает масштабирование колесиком мыши</h2>
-            </header>
-    
+            <header><p>Карта djeo без регионов</p>
+            </header>    
         </labels>
         <properties legend="top" />
         <template> 
     {
-       registerModules: [["solution", "../../solutions/default/js"]],
-       managerModule: "solution.test",    
+       registerSolutionMap: russia_ym,    
+
        style: [
     {
         fid: "l2",
@@ -86,16 +84,13 @@ def mainproc():
         name: "имя"
     },
 {
-       point: {
-            strokeWidth: 2,
-            fill: "blue",
-            shape: "circle"
-       }
+    size: [10, 20],
+    img: "solutions/default/resources/1.jpg"
 }
 ]
       
 }    
-        </template>                      
+        </template>                        
 </geomapsettings>    
     '''
     return JythonDTO(data, settings)

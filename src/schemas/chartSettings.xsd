@@ -42,7 +42,7 @@
     <xs:element name="properties">
         <xs:complexType>
             <xs:attribute name="flip" type="xs:boolean" use="required"/>
-            <xs:attribute name="legend" type="legendPlace" use="required"/>
+            <xs:attribute name="legend" type="legendPlace"/>
             <xs:attribute name="width" type="HtmlSizeType" use="required"/>
             <xs:attribute name="height" type="HtmlSizeType" use="required"/>
             <xs:attribute name="selectorColumn" type="notNullType" use="required"/>

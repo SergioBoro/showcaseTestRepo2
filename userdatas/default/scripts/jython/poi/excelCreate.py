@@ -44,7 +44,7 @@ def mainproc():
     iMemoryRows = 100
     wb = SXSSFWorkbook(iMemoryRows);
     sh = wb.createSheet();
-    for rownum in xrange(1000):
+    for rownum in xrange(50000):
         row = sh.createRow(rownum);
         for cellnum in xrange(10):
             cell = row.createCell(cellnum);
