@@ -67,7 +67,7 @@
       <!-- Gantt chart column -->
       <!-- Defines all Gantt chart setting -->
       <C Name="G" Type="Gantt" MenuName="Gantt chart"/> <!-- Basic setting, type and name in columns menu -->
-      <C Name="G" GanttStart="S" GanttEnd="E" GanttDuration="U" GanttComplete="C" GanttText="NI"/> <!-- Defines source columns for Main tasks -->
+      <C Name="G" GanttStart="S" GanttEnd="E" GanttDuration="U" GanttComplete="C" GanttResources="R" GanttText="NI"/> <!-- Defines source columns for Main tasks -->
       <C Name="G" GanttMinStart="S1" GanttMaxStart="S2" GanttMinEnd="E1" GanttMaxEnd="E2"/> <!-- Start and end date constraints -->
       <C Name="G" GanttSlack="L"/> <!-- Where will be filled information for critical path -->
       <C Name="G" GanttFlow="F" GanttFlowText="FI"/> <!-- Defined source columns for Flow -->
@@ -183,7 +183,23 @@
    <Header SortIcons="2"/> <!-- Hides unused sort icons -->   
    <Solid>
 
-      <Topbar2 id='Project' Space='0' Panel='0' Cells='Base,Finish,Crit,Dep'
+      <!-- Defines the control row with combos to choose grouping, zoom and filter by resources -->
+      <Group id="Group" Space="0" Panel="0" Cells="List,Zoom"
+        
+         ListLeft="5"
+         ListHtmlPrefix='&lt;b>Group by &lt;span style="color:blue;">' ListHtmlPostfix='&lt;/span>&lt;/b>'
+  			List='|none|Task|Complete Task|Complete|Start|End'
+         Cols='||N1|C,N1|C|S|E'
+			ListWidth='108'
+			
+         ZoomType='SelectGanttZoom'
+         ZoomHtmlPrefix='&lt;b>Zoom to &lt;span style="color:blue;">' ZoomHtmlPostfix='&lt;/span>&lt;/b>'
+         ZoomLeft='5'
+         ZoomWidth='170'
+       
+         />
+
+      <Topbar2 id='Project' Space='0' Panel='0' Cells='Base,Finish'
             
          BaseType='Date' BaseCanEdit='1' BaseWidth='100' BaseUndo='1' BaseLeft='5'
          BaseLabel='Baseline'
@@ -205,17 +221,6 @@
          FinishHtmlPostfix='&lt;/span>'
          FinishTip='Finish date of the whole project.&lt;br>If grayed, it is calculated from the last task.&lt;br>It is used to calculate critical path.'     
 
-         CritType='Bool' CritNoColor='1' CritCanEdit='1' CritLeft='5' CritCanFocus='0'
-         CritLabelRight='Show &lt;b style="color:blue;">critical path&lt;/b> only'
-         CritOnChange='Grid.SetFilter("Crit",Value?"L!==&apos;&apos; &amp;&amp; L&lt;=Grid.Cols.G.GanttMinSlack &amp;&amp; C!=100":"")'
-              
-         DepType='Select'
-         DepDefaults='|Ignore problems|Auto correct problems|Alert and confirm problems'
-         DepFormula='Grid.GetDefaultsValue(Row,Col,Grid.Cols.G.GanttCorrectDependencies)'
-         DepOnChange='var v=Grid.GetDefaultsIndex(Row,Col,Value);Grid.Cols.G.GanttCorrectDependencies=v;Grid.Cols.G.GanttCheckExclude=v;Grid.SaveCfg();'
-         DepTip='If the dependent tasks will be updated after some task move or resize'
-         DepWidth='130'
-         DepLeft='5'
          />
 
    </Solid>
