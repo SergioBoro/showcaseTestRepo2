@@ -137,36 +137,44 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 		generalMapPanel.add(childTopPanel);
 		generalHp.add(childLeftPanel);
-		switch (aGeoMap.getLegendPosition()) {
-		case LEFT:
-			generalMapPanel.add(generalHp);
-			generalHp.add(legendHTML);
-			generalHp.add(mapHTML);
-			break;
 
-		case RIGHT:
+		if (aGeoMap.getLegendPosition() == null) {
 			generalMapPanel.add(generalHp);
 			generalHp.add(mapHTML);
-			generalHp.add(legendHTML);
-			break;
-		case TOP:
+		} else {
 
-			generalMapPanel.add(legendHTML);
-			generalMapPanel.add(generalHp);
-			generalHp.add(mapHTML);
-			break;
+			switch (aGeoMap.getLegendPosition()) {
+			case LEFT:
+				generalMapPanel.add(generalHp);
+				generalHp.add(legendHTML);
+				generalHp.add(mapHTML);
+				break;
 
-		case BOTTOM:
+			case RIGHT:
+				generalMapPanel.add(generalHp);
+				generalHp.add(mapHTML);
+				generalHp.add(legendHTML);
+				break;
+			case TOP:
 
-			generalMapPanel.add(generalHp);
-			generalHp.add(mapHTML);
-			generalMapPanel.add(legendHTML);
-			break;
+				generalMapPanel.add(legendHTML);
+				generalMapPanel.add(generalHp);
+				generalHp.add(mapHTML);
+				break;
 
-		default:
-			break;
+			case BOTTOM:
 
+				generalMapPanel.add(generalHp);
+				generalHp.add(mapHTML);
+				generalMapPanel.add(legendHTML);
+				break;
+
+			default:
+				break;
+
+			}
 		}
+
 		generalMapPanel.add(childBottomPanel);
 		generalHp.add(childRightPanel);
 		generalMapPanel.add(footerHTML);
