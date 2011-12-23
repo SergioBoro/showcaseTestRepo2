@@ -15,7 +15,7 @@
    <Cfg ResizingMain="3"/> <!-- Users can resize grid by right bottom edge -->
    <Def>
       <D Name="R" CDef=""/> <!-- The standard rows cannot have children -->
-      <D Name="Group" Calculated="1" CalcOrder="N2HtmlPostfix,S,E,U,C,F,G,P"/> <!-- Grouping row is calculated to show summary for its children -->
+      <D Name="Group" Calculated="1" CalcOrder="N2HtmlPostfix,S,E,U,C,G"/> <!-- Grouping row is calculated to show summary for its children -->
       <D Name="Group" Expanded="1" /> <!-- Grouping row shows its children by default -->
       <D Name="Group" EditCols="Main"/> <!-- When user changes value in main column (N1 - Task), the value is copied also to the children -->
       <D Name="Group" SFormula="ganttstart()"/> <!-- Gets the first start date from its children, including milestones -->
@@ -50,9 +50,6 @@
       <C Name="E" Width="80" DefaultDate="5/1/2008 18:00" Type="Date" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'" EditFormat="MM/dd/yy HH" CanEmpty="1"/> <!-- End date column -->
       <C Name="U" Width="31" Type="Text" Align="Right" MenuName="Duration"/> <!-- Duration column -->
       <C Name="C" Width="37" Type="Float" EditMask="^\d*[\d\.\,]?\d*$" Format="##.##\%;;0\%" MenuName="Complete"/> <!-- Complete column -->
-      <C Name="D" Width="50" Type="Text" Range="1" MenuName="Descendants"/><!-- Descendants, ids of next tasks -->
-      <C Name="A" Width="50" Type="Text" Range="1" MenuName="Ancestors"/><!-- Ancestors, ids of previous tasks -->
-      <C Name="L" Width="40" Type="Float" CanEmpty="1" CanEdit="0" MenuName="Slack"/> <!-- Slack for critical path, automatically filled -->
       <C Name="F" Width="150" Type="Date" DefaultDate="5/1/2008 9:00~5/1/2008 18:00" Range="1" Button="" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'"/> <!-- Real flow column -->
       <C Name="FI" Visible="0" Width="70" MenuName="Real flow info"/> <!-- Real flow info column -->
       <C Name="M" Visible="0" Width="75" Type="Date" Range="1" Button="" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'"/> <!-- Flag column -->
@@ -69,10 +66,8 @@
       <C Name="G" Type="Gantt" MenuName="Gantt chart"/> <!-- Basic setting, type and name in columns menu -->
       <C Name="G" GanttStart="S" GanttEnd="E" GanttDuration="U" GanttComplete="C" GanttResources="R" GanttText="NI"/> <!-- Defines source columns for Main tasks -->
       <C Name="G" GanttMinStart="S1" GanttMaxStart="S2" GanttMinEnd="E1" GanttMaxEnd="E2"/> <!-- Start and end date constraints -->
-      <C Name="G" GanttSlack="L"/> <!-- Where will be filled information for critical path -->
       <C Name="G" GanttFlow="F" GanttFlowText="FI"/> <!-- Defined source columns for Flow -->
       <C Name="G" GanttFlags="M" GanttFlagTexts="I"/> <!-- Defined source columns for Flags -->
-      <C Name="G" GanttDescendants="D" GanttAncestors="A"/> <!-- Defines source columns for Dependencies -->
       <C Name="G" GanttLeft="2" GanttRight="0"/> <!-- At least two units will be let empty on left side (no Exclude applied here) -->
       <C Name="G" GanttMin="1/1/1990" GanttMax="1/1/2040"/> <!-- Limit dates for input and display -->
       <C Name="G" MinWidth="450"/> <!-- Minimal width of the column will be 450 pixels -->
@@ -177,8 +172,8 @@
 
    <!-- Column captions -->
    <Header id="ID" N1="Task" N2="Section" S="Start" E="End" C="Com&lt;br>plete" U="Dura&lt;br>tion" NI="Information" 
-          S1="Min start" S2="Max start" E1="Min end" E2="Max end" L="Slack&lt;br>(critical path)"
-          F="Real flow" FI="Real flow&lt;br>information" D="Descen&lt;br>dants" A="Ances&lt;br>tors"
+          S1="Min start" S2="Max start" E1="Min end" E2="Max end" 
+          F="Real flow" FI="Real flow&lt;br>information" 
           M="Flags" I="Flag Info" G="Gantt" GNoColor="0" NoEscape="1"/>
    <Header SortIcons="2"/> <!-- Hides unused sort icons -->   
    <Solid>
@@ -197,30 +192,6 @@
          ZoomLeft='5'
          ZoomWidth='170'
        
-         />
-
-      <Topbar2 id='Project' Space='0' Panel='0' Cells='Base,Finish'
-            
-         BaseType='Date' BaseCanEdit='1' BaseWidth='100' BaseUndo='1' BaseLeft='5'
-         BaseLabel='Baseline'
-         BaseFormat="ddd M/d/yyyy, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'"
-         BaseEditFormat='M/d/yyyy HH'
-         BaseFormula='Grid.GetGanttBase()'
-         BaseOnChange='Grid.SetGanttBase(Value,2);'
-         BaseHtmlPrefixFormula='Grid.Cols.G.GanttBase===""?"&lt;span style=&apos;color:gray;&apos;>":"&lt;span>"'
-         BaseHtmlPostfix='&lt;/span>'
-         BaseTip='Starting date of the whole project.&lt;br>No task should start before it.&lt;br>It is also used when correcting dependencies.'
-              
-         FinishType='Date' FinishCanEdit='1' FinishWidth='100' FinishUndo='1' FinishLeft='5'
-         FinishLabel='Finish date'
-         FinishFormat="ddd M/d/yyyy, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>&amp;nbsp;'"
-         FinishEditFormat='M/d/yyyy HH'
-         FinishFormula='Grid.GetGanttFinish()'
-         FinishOnChange='Grid.SetGanttFinish(Value);'
-         FinishHtmlPrefixFormula='Grid.Cols.G.GanttFinish===""?"&lt;span style=&apos;color:gray;&apos;>":"&lt;span>"'
-         FinishHtmlPostfix='&lt;/span>'
-         FinishTip='Finish date of the whole project.&lt;br>If grayed, it is calculated from the last task.&lt;br>It is used to calculate critical path.'     
-
          />
 
    </Solid>
