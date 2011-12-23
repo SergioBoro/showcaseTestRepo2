@@ -158,7 +158,14 @@ c.makeChart = function(chartOptions) {
     chartRegistry[o.id] = {chart: chart};
 
     chrt.setChart(o.id);
-    chrt.makePlot(o.plot);
+	if (dojo.isArray(o.plot)) {
+		dojo.forEach(o.plot, function(plot){
+			chrt.makePlot(plot, plot.name);
+		});
+	}
+    else {
+		chrt.makePlot(o.plot);
+	}
     chrt.makeAxes(o.axisX, o.axisY);
     chrt.makeSeries(o.series);
     chrt.makeTheme(o.theme);
