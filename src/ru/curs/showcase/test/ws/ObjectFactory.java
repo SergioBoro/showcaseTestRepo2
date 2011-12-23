@@ -36,6 +36,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Datapanel }
+     * 
+     */
+    public Datapanel createDatapanel() {
+        return new Datapanel();
+    }
+
+    /**
+     * Create an instance of {@link RequestXML }
+     * 
+     */
+    public RequestXML createRequestXML() {
+        return new RequestXML();
+    }
+
+    /**
      * Create an instance of {@link ShowcaseExportException }
      * 
      */
@@ -44,11 +60,67 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Element }
+     * 
+     */
+    public Element createElement() {
+        return new Element();
+    }
+
+    /**
      * Create an instance of {@link Handle }
      * 
      */
     public Handle createHandle() {
         return new Handle();
+    }
+
+    /**
+     * Create an instance of {@link Datapanel.Tab }
+     * 
+     */
+    public Datapanel.Tab createDatapanelTab() {
+        return new Datapanel.Tab();
+    }
+
+    /**
+     * Create an instance of {@link Tr }
+     * 
+     */
+    public Tr createTr() {
+        return new Tr();
+    }
+
+    /**
+     * Create an instance of {@link Td }
+     * 
+     */
+    public Td createTd() {
+        return new Td();
+    }
+
+    /**
+     * Create an instance of {@link ResponseXML }
+     * 
+     */
+    public ResponseXML createResponseXML() {
+        return new ResponseXML();
+    }
+
+    /**
+     * Create an instance of {@link Context }
+     * 
+     */
+    public Context createContext() {
+        return new Context();
+    }
+
+    /**
+     * Create an instance of {@link RequestXML.Command }
+     * 
+     */
+    public RequestXML.Command createRequestXMLCommand() {
+        return new RequestXML.Command();
     }
 
     /**

@@ -5,6 +5,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.ws.Action;
 import javax.xml.ws.FaultAction;
@@ -45,6 +46,25 @@ public interface ShowcaseExternals {
         String request,
         @WebParam(name = "procName", targetNamespace = "")
         String procName)
+        throws ShowcaseExportException_Exception
+    ;
+
+    /**
+     * 
+     * @param requestXML
+     * @return
+     *     returns ru.curs.showcase.test.ws.ResponseXML
+     * @throws ShowcaseExportException_Exception
+     */
+    @WebMethod
+    @WebResult(name = "responseXML", targetNamespace = "http://server.app.showcase.curs.ru/", partName = "responseXML")
+    @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
+    @Action(input = "http://server.app.showcase.curs.ru/ShowcaseExternals/handleXMLRequest", output = "http://server.app.showcase.curs.ru/ShowcaseExternals/handleXMLResponse", fault = {
+        @FaultAction(className = ShowcaseExportException_Exception.class, value = "http://server.app.showcase.curs.ru/ShowcaseExternals/handleXML/Fault/ShowcaseExportException")
+    })
+    public ResponseXML handleXML(
+        @WebParam(name = "requestXML", targetNamespace = "http://server.app.showcase.curs.ru/", partName = "requestXML")
+        RequestXML requestXML)
         throws ShowcaseExportException_Exception
     ;
 

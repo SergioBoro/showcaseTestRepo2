@@ -3,6 +3,7 @@ package ru.curs.showcase.test.ws;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -33,7 +34,9 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class Handle {
 
+    @XmlElement(namespace = "")
     protected String request;
+    @XmlElement(namespace = "")
     protected String procName;
 
     /**
