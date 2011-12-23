@@ -17,4 +17,8 @@ public final class ShowcaseExportException extends Exception {
 		super(e.getMessage());
 	}
 
+	public ShowcaseExportException(final String mes) {
+		super(mes);
+	}
+
 }

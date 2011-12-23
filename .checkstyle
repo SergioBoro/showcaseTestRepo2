@@ -12,6 +12,7 @@
   </filter>
   <filter name="FilesFromPackage" enabled="true">
     <filter-data value="src/ru/curs/showcase/app/jre"/>
+    <filter-data value="src/ru/curs/showcase/app/server/ws"/>
     <filter-data value="src/ru/curs/showcase/test/ws"/>
     <filter-data value="datagrid"/>
   </filter>

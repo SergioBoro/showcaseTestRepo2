@@ -20,13 +20,21 @@ class GetFile(JythonProc):
         return mainproc()
         
 def mainproc():
+    print request
     requestDoc = XMLUtils.stringToDocument(request)
-    commandName = requestDoc.getDocumentElement().getAttributes().getNamedItem("type").getNodeValue() 
+    if requestDoc.getDocumentElement().getNodeName() == "command":
+        commandNode = requestDoc.getDocumentElement()
+    else:
+        commandNode = requestDoc.getElementsByTagName("command").item(0)
+    commandName = commandNode.getAttributes().getNamedItem("type").getNodeValue()    
     if commandName == "getDP":
-        filename = requestDoc.getDocumentElement().getAttributes().getNamedItem("param").getNodeValue()
+        filename = commandNode.getAttributes().getNamedItem("param").getNodeValue()
         path = AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\datapanelstorage\\"
-        file = open(path + filename)
-        return unicode(file.read(), "utf-8")    
+        data = ""
+        for i,line in enumerate(open(path + filename)):
+            if i <> 0: 
+                data += line 
+        return unicode("<responseXML>"+data+"</responseXML>", "utf-8")    
     # при работе с Document строки приходят в формате ISO-8859-1!
     errorMes = commandName.encode("ISO-8859-1") + " не реализовано !"   
     raise Exception(unicode(errorMes, "utf-8"))

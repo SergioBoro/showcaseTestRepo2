@@ -217,6 +217,9 @@ public final class XMLUtils {
 	}
 
 	public static Document stringToDocument(final String content) throws SAXException, IOException {
+		if ((content == null) || content.isEmpty()) {
+			return null;
+		}
 		InputSource is = new InputSource(new StringReader(content));
 		DocumentBuilder db = createBuilder();
 		Document doc = db.parse(is);
@@ -261,6 +264,9 @@ public final class XMLUtils {
 	}
 
 	public static String documentToString(final Document doc) {
+		if (doc == null) {
+			return null;
+		}
 		return xsltTransform(doc, (String) null);
 	}
 

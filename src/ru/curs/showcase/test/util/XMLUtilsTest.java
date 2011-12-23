@@ -30,6 +30,7 @@ import ru.curs.showcase.util.xml.*;
  */
 public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 
+	private static final String TEST_DOC = "<test/>";
 	private static final String TEST_GOOD_XSD = "test_good.xsd";
 	private static final String TEST_BAD_XSD = "test_bad.xsd";
 	private static final String TEST_TEXT_SAMPLE_XML = "TestTextSample.xml";
@@ -396,5 +397,23 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		XMLValidator validator = new XMLValidator(new ClassPathXSDSource());
 		validator.validate(new XMLSource(gateway.getRawData(new CompositeContext(), RICH_DP)
 				.getData(), RICH_DP, xsdFileName));
+	}
+
+	@Test
+	public void testStringToDocument() throws SAXException, IOException {
+		String input = TEST_DOC;
+		assertNotNull(XMLUtils.stringToDocument(input));
+		input = "";
+		assertNull(XMLUtils.stringToDocument(input));
+		input = null;
+		assertNull(XMLUtils.stringToDocument(input));
+	}
+
+	@Test
+	public void testDocumentToString() {
+		Document doc = XMLUtils.createEmptyDoc("test");
+		assertEquals(TEST_DOC, XMLUtils.documentToString(doc));
+		doc = null;
+		assertNull(XMLUtils.documentToString(doc));
 	}
 }

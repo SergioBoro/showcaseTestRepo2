@@ -1,6 +1,11 @@
 <project name="Showcase" basedir="." default="build">
 	<property name="appname" value="${ant.project.name}" />
 	<property name="env" value="local" />
+	
+	<property environment="os"/>
+	<target name="checkProperties">
+	  <fail unless="os.JAVA_HOME">JAVA_HOME must be set</fail>
+	</target>	
 
 	<property name="dist.dir" value="dist" />
 	<property name="extragwt.dir" value="extragwt" />
@@ -335,7 +340,17 @@
 			<arg line="-p ru.curs.showcase.test.ws" />
 			<arg value="${webapp}/forall/webservices?wsdl" />
 		</exec>
-	</target>
+	</target>	
+	
+	<target name="compile.WS.schemas" description="Compile Java classes for WS by XSD Schemas">
+	    <exec executable="${os.JAVA_HOME}/bin/xjc.exe">
+	        <arg value="-d"/>
+	        <arg value="src"/>
+	        <arg value="-p"/>
+	        <arg value="ru.curs.showcase.app.server.ws"/>	    	
+	        <arg value="userdatas/default/schemas/ws"/>
+	    </exec>
+	</target>	
 
 </project>
 
