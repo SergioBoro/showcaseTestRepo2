@@ -64,9 +64,8 @@
       <!-- Gantt chart column -->
       <!-- Defines all Gantt chart setting -->
       <C Name="G" Type="Gantt" MenuName="Gantt chart"/> <!-- Basic setting, type and name in columns menu -->
-      <C Name="G" GanttStart="S" GanttEnd="E" GanttDuration="U" GanttComplete="C" GanttResources="R" GanttText="NI"/> <!-- Defines source columns for Main tasks -->
+      <C Name="G" GanttStart="S" GanttEnd="E" GanttDuration="U" GanttComplete="C" GanttText="NI"/> <!-- Defines source columns for Main tasks -->
       <C Name="G" GanttMinStart="S1" GanttMaxStart="S2" GanttMinEnd="E1" GanttMaxEnd="E2"/> <!-- Start and end date constraints -->
-      <C Name="G" GanttFlow="F" GanttFlowText="FI"/> <!-- Defined source columns for Flow -->
       <C Name="G" GanttFlags="M" GanttFlagTexts="I"/> <!-- Defined source columns for Flags -->
       <C Name="G" GanttLeft="2" GanttRight="0"/> <!-- At least two units will be let empty on left side (no Exclude applied here) -->
       <C Name="G" GanttMin="1/1/1990" GanttMax="1/1/2040"/> <!-- Limit dates for input and display -->
@@ -77,23 +76,14 @@
       <C Name="G" GanttStrict="1"/> <!-- Forces first tasks to start on base date and all other to start immediately when possible -->
       <C Name="G" GanttCorrectDependencies="2" /> <!-- Ask to correct dependencies after main task move or resize or dependency change -->
       <C Name="G" GanttCorrectDependenciesFixed="0"/> <!-- Can move also the changed task when automatically correcting dependencies -->
-      <C Name="G" GanttCheckExclude="2" /> <!-- Ask to move task if it starts on holiday after resize or move -->
       <C Name="G" GanttBase="5/14/2008 9:00"/> <!-- Base project date, all the project should start after this date -->
       <C Name="G" GanttBaseProof="1"/> <!-- The tasks cannot be moved or created before GanttBase -->
       <C Name="G" GanttBackground="M#1/1/2008#5"/> <!-- Highlights these dates in chart (weekends and month ends), some zoom levels change this setting -->
-      <C Name="G" GanttFormat="$&lt;span style='color:#77F'>*P*&lt;/span> *R*"/> <!-- Formats the text next to main task -->
-      <C Name="G" GanttMainTip="*id*. *N1*, *N2* &lt;span style='color:#F77'>(main bar)&lt;/span>&lt;div style='padding-top:5px;padding-bottom:5px;font-weight:bold;'>*Start* - *End*&lt;/div>*Duration* hours, *C* completed&lt;div style='padding-top:5px;'>&lt;b>*L*&lt;/b> hours reserve&lt;/div>&lt;div style='padding-top:5px;'>*Text*&lt;/div>"/> <!-- Specifies tooltip shown for main bar only-->
+      <C Name="G" GanttMainTip="*id*. *N1*, *N2* &lt;span style='color:#F77'>&lt;/span>&lt;div style='padding-top:5px;padding-bottom:5px;font-weight:bold;'>*Start* - *End*&lt;/div>*C* completed&lt;/div>&lt;div style='padding-top:5px;'>*Text*&lt;/div>"/> <!-- Specifies tooltip shown for main bar only-->
       <C Name="G" GanttMilestoneTip="*id*. *N1*, *N2* &lt;span style='color:#F77'>(milestone)&lt;/span>&lt;div style='padding-top:5px;font-weight:bold;'>*Start*&lt;/div>&lt;div style='padding-top:5px;'>&lt;b>*L*&lt;/b> hours reserve&lt;/div>&lt;div style='padding-top:5px;'>*Text*&lt;/div>"/> <!-- Specifies tooltip shown for milestone only-->
       <C Name="G" GanttFlowTip="*id*. *N1*, *N2* &lt;span style='color:#F77'>(*Index*. flow bar)&lt;/span>&lt;div style='padding-top:5px;padding-bottom:5px;font-weight:bold;'>*Start* - *End*&lt;/div>*Duration* hours&lt;div style='padding-top:5px;'>*Text*&lt;/div>"/> <!-- Specifies tooltip shown for flow bar only-->
       <C Name="G" GanttFlagsTip="*Start* - *Text*"/> <!-- Specifies tooltip shown for flag only-->
 
-      <C Name="G" GanttExclude = "d#18:00~9:00; d#13:00~14:00#1; w#1/5/2008~1/7/2008#2; 5/28/2008~5/29/2008#3"/>
-         <!-- Defines excluded dates from Gantt chart, defines as excluded weekends and hours outside 9:00 - 13:00, 14:00 - 18:00 -->
-         <!-- The excluded dates are not used for Gantt calculations and behaves like they don't exist at all -->
-         <!-- The low zoom levels disable the Exclude, because of too many units (hours) in the zoomed chart, 
-                  in this case the correcting dependency should be disabled too, because dependencies become incorrect -->
-      <C Name="G" GanttHideExclude="0"/> <!-- By default are the Excluded dates shown in chart, it can be changed by a user -->
-      
       <C Name="G" GanttZoom="weeks and days"/> <!-- Predefine zoom level name -->
    </RightCols>
 
@@ -172,13 +162,11 @@
 
    <!-- Column captions -->
    <Header id="ID" N1="Task" N2="Section" S="Start" E="End" C="Com&lt;br>plete" U="Dura&lt;br>tion" NI="Information" 
-          S1="Min start" S2="Max start" E1="Min end" E2="Max end" 
-          F="Real flow" FI="Real flow&lt;br>information" 
           M="Flags" I="Flag Info" G="Gantt" GNoColor="0" NoEscape="1"/>
    <Header SortIcons="2"/> <!-- Hides unused sort icons -->   
    <Solid>
 
-      <!-- Defines the control row with combos to choose grouping, zoom and filter by resources -->
+      <!-- Defines the control row with combos to choose grouping, zoom -->
       <Group id="Group" Space="0" Panel="0" Cells="List,Zoom"
         
          ListLeft="5"
