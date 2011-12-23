@@ -21,7 +21,6 @@
       <D Name="Group" SFormula="ganttstart()"/> <!-- Gets the first start date from its children, including milestones -->
       <D Name="Group" EFormula="ganttend()"/> <!-- Gets the last end date from its children, including milestones -->
       <D Name="Group" CFormula="ganttpercent()"/> <!-- Calculates average task completion from its children -->
-      <D Name="Group" FFormula="sumrange()" FCanEdit="0"/> <!-- Merges all date ranges from its children -->
       <D Name="Group" CDef="R"/> <!-- Grouping rows can contain standard rows as children -->
       <D Name="Group" GGanttClass="GanttG" GGanttIcons="1"/> <!-- Gantt setting specific for Group rows, changes colors and adds side icons -->
       <D Name="Group" GGanttSummary="1"/> <!-- Row works as Gantt Summary, when moved, it moves its child tasks too -->
@@ -48,8 +47,6 @@
       <C Name="S" Width="80" DefaultDate="5/1/2008 9:00" Type="Date" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'" EditFormat="MM/dd/yy HH"/> <!-- Start date column -->
       <C Name="E" Width="80" DefaultDate="5/1/2008 18:00" Type="Date" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'" EditFormat="MM/dd/yy HH" CanEmpty="1"/> <!-- End date column -->
       <C Name="C" Width="37" Type="Float" EditMask="^\d*[\d\.\,]?\d*$" Format="##.##\%;;0\%" MenuName="Complete"/> <!-- Complete column -->
-      <C Name="F" Width="150" Type="Date" DefaultDate="5/1/2008 9:00~5/1/2008 18:00" Range="1" Button="" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'"/> <!-- Real flow column -->
-      <C Name="FI" Visible="0" Width="70" MenuName="Real flow info"/> <!-- Real flow info column -->
       <C Name="M" Visible="0" Width="75" Type="Date" Range="1" Button="" Format="MMM dd, '&lt;span style=&quot;color:blue&quot;>'HH'&lt;/span>'"/> <!-- Flag column -->
       <C Name="I" Visible="0" Width="60" Type="Text" Range="1"/> <!-- Flag info column -->
       <C Name="NI" Visible="0" Width="120"/> <!-- Main task info column -->
@@ -75,7 +72,6 @@
       <C Name="G" GanttBackground="M#1/1/2008#5"/> <!-- Highlights these dates in chart (weekends and month ends), some zoom levels change this setting -->
       <C Name="G" GanttMainTip="*id*. *N1*, *N2* &lt;span style='color:#F77'>&lt;/span>&lt;div style='padding-top:5px;padding-bottom:5px;font-weight:bold;'>*Start* - *End*&lt;/div>*C* completed&lt;/div>&lt;div style='padding-top:5px;'>*Text*&lt;/div>"/> <!-- Specifies tooltip shown for main bar only-->
       <C Name="G" GanttMilestoneTip="*id*. *N1*, *N2* &lt;span style='color:#F77'>(milestone)&lt;/span>&lt;div style='padding-top:5px;font-weight:bold;'>*Start*&lt;/div>&lt;div style='padding-top:5px;'>&lt;b>*L*&lt;/b> hours reserve&lt;/div>&lt;div style='padding-top:5px;'>*Text*&lt;/div>"/> <!-- Specifies tooltip shown for milestone only-->
-      <C Name="G" GanttFlowTip="*id*. *N1*, *N2* &lt;span style='color:#F77'>(*Index*. flow bar)&lt;/span>&lt;div style='padding-top:5px;padding-bottom:5px;font-weight:bold;'>*Start* - *End*&lt;/div>&lt;div style='padding-top:5px;'>*Text*&lt;/div>"/> <!-- Specifies tooltip shown for flow bar only-->
       <C Name="G" GanttFlagsTip="*Start* - *Text*"/> <!-- Specifies tooltip shown for flag only-->
 
       <C Name="G" GanttZoom="weeks and days"/> <!-- Predefine zoom level name -->
