@@ -5,7 +5,7 @@ dojo.require("course.chartinggui.Option");
 dojo.declare("course.chartinggui.Plot", course.chartinggui.Option, {
 
     constructor: function(params, srcNodeRef) {
-        params.chartOptions.options
+        params.chartOptions.options;
     },
     
     postCreate: function() {

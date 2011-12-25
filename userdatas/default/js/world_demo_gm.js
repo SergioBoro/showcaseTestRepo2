@@ -19,7 +19,8 @@ dojo.require("djeo.util.jenks");
 (function() {
 
 solution.world_demo_gm.make = function(mapNode, legendNode, data) {
-	var map, legend;
+	var map;
+	var legend = null;
 	
 	data.geometries = solution.world_geometries;
 	data.engine = "gmaps";
@@ -33,6 +34,6 @@ solution.world_demo_gm.make = function(mapNode, legendNode, data) {
 	});
 	
 	return {map: map, legend: legend};
-}
+};
 
 }());

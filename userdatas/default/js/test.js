@@ -24,7 +24,8 @@ djeo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=
 (function() {
 
 	solution.test.make = function(mapNode, legendNode, data) {
-	var map, legend;
+	var map;
+	var legend = null;
 	var mapStyle = {
 		id: "populationDensity",
 		//styleClass: "populationDensity",
@@ -56,7 +57,7 @@ djeo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=
 //	Google Maps API: data.engine = "gmaps"
 //	Google Earth API: - data.engine = "ge"
 //	Yandex Maps API: data.engine = "ymaps"	
-	data.engine = "djeo"
+	data.engine = "djeo";
 	
 	map = new djeo.Map(mapNode, data);
 
@@ -68,6 +69,6 @@ djeo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=
 	});
 	
 	return {map: map, legend: legend};
-}
+};
 
 }());

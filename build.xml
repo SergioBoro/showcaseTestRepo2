@@ -342,7 +342,7 @@
 		</exec>
 	</target>	
 	
-	<target name="compile.WS.schemas" description="Compile Java classes for WS by XSD Schemas">
+	<target name="compile.ws.schemas" description="Compile Java classes for WS by XSD Schemas">
 	    <exec executable="${os.JAVA_HOME}/bin/xjc.exe">
 	        <arg value="-d"/>
 	        <arg value="src"/>

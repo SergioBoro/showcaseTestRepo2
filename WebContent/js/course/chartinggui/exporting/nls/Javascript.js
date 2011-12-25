@@ -1,3 +1,3 @@
 ﻿({
     _label: "Javascript code"
-})
+});

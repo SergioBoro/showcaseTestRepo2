@@ -3,11 +3,37 @@
 
 <pydev_project>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
-<pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">jython 2.7</pydev_property>
+<pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">jython 2.5</pydev_property>
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
 <path>/Showcase/WebContent/WEB-INF/classes</path>
-<path>/Showcase/WebContent/WEB-INF/libJython</path>
-<path>/Showcase/WebContent/WEB-INF/libJython/site-packages</path>
+<path>/Showcase/runtime/lib/bcmail-jdk14-1.38.jar</path>
+<path>/Showcase/runtime/lib/bcmail-jdk14-138.jar</path>
+<path>/Showcase/runtime/lib/bcprov-jdk14-1.38.jar</path>
+<path>/Showcase/runtime/lib/bcprov-jdk14-138.jar</path>
+<path>/Showcase/runtime/lib/bctsp-jdk14-1.38.jar</path>
+<path>/Showcase/runtime/lib/castor-1.2.jar</path>
+<path>/Showcase/runtime/lib/commons-beanutils-1.8.0.jar</path>
+<path>/Showcase/runtime/lib/commons-codec-1.5.jar</path>
+<path>/Showcase/runtime/lib/commons-collections-2.1.jar</path>
+<path>/Showcase/runtime/lib/commons-digester-1.7.jar</path>
+<path>/Showcase/runtime/lib/dom4j-1.6.1.jar</path>
+<path>/Showcase/runtime/lib/geronimo-stax-api_1.0_spec-1.0.jar</path>
+<path>/Showcase/runtime/lib/groovy-all-1.8.4.jar</path>
+<path>/Showcase/runtime/lib/itext-2.1.7.jar</path>
+<path>/Showcase/runtime/lib/jackson-core-lgpl-1.7.4.jar</path>
+<path>/Showcase/runtime/lib/jackson-mapper-lgpl-1.7.4.jar</path>
+<path>/Showcase/runtime/lib/jasperreports-4.5.0.jar</path>
+<path>/Showcase/runtime/lib/jcommon-1.0.15.jar</path>
+<path>/Showcase/runtime/lib/jdtcore-3.1.0.jar</path>
+<path>/Showcase/runtime/lib/jfreechart-1.0.12.jar</path>
+<path>/Showcase/runtime/lib/poi-3.8-beta5-20111217.jar</path>
+<path>/Showcase/runtime/lib/poi-ooxml-3.8-beta5-20111217.jar</path>
+<path>/Showcase/runtime/lib/poi-ooxml-schemas-3.8-beta5-20111217.jar</path>
+<path>/Showcase/runtime/lib/poi-scratchpad-3.8-beta5-20111217.jar</path>
+<path>/Showcase/runtime/lib/stax-api-1.0.1.jar</path>
+<path>/Showcase/runtime/lib/xmlbeans-2.3.0.jar</path>
+<path>/Showcase/userdatas/default/scripts/jython</path>
+<path>/Showcase/userdatas/test1/scripts/jython</path>
 <path>/Showcase/WebContent/WEB-INF/lib/aspectjrt.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/batik-anim.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/batik-awt-util.jar</path>
@@ -91,32 +117,9 @@
 <path>/Showcase/WebContent/WEB-INF/lib/xml-apis-ext.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/xml-apis.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/xmlparserv2.jar</path>
-<path>/Showcase/runtime/lib/bcmail-jdk14-1.38.jar</path>
-<path>/Showcase/runtime/lib/bcmail-jdk14-138.jar</path>
-<path>/Showcase/runtime/lib/bcprov-jdk14-1.38.jar</path>
-<path>/Showcase/runtime/lib/bcprov-jdk14-138.jar</path>
-<path>/Showcase/runtime/lib/bctsp-jdk14-1.38.jar</path>
-<path>/Showcase/runtime/lib/castor-1.2.jar</path>
-<path>/Showcase/runtime/lib/commons-beanutils-1.8.0.jar</path>
-<path>/Showcase/runtime/lib/commons-codec-1.5.jar</path>
-<path>/Showcase/runtime/lib/commons-collections-2.1.jar</path>
-<path>/Showcase/runtime/lib/commons-digester-1.7.jar</path>
-<path>/Showcase/runtime/lib/dom4j-1.6.1.jar</path>
-<path>/Showcase/runtime/lib/geronimo-stax-api_1.0_spec-1.0.jar</path>
-<path>/Showcase/runtime/lib/groovy-all-1.8.4.jar</path>
-<path>/Showcase/runtime/lib/itext-2.1.7.jar</path>
-<path>/Showcase/runtime/lib/jackson-core-lgpl-1.7.4.jar</path>
-<path>/Showcase/runtime/lib/jackson-mapper-lgpl-1.7.4.jar</path>
-<path>/Showcase/runtime/lib/jasperreports-4.5.0.jar</path>
-<path>/Showcase/runtime/lib/jcommon-1.0.15.jar</path>
-<path>/Showcase/runtime/lib/jdtcore-3.1.0.jar</path>
-<path>/Showcase/runtime/lib/jfreechart-1.0.12.jar</path>
-<path>/Showcase/runtime/lib/poi-3.8-beta5-20111217.jar</path>
-<path>/Showcase/runtime/lib/poi-ooxml-3.8-beta5-20111217.jar</path>
-<path>/Showcase/runtime/lib/poi-ooxml-schemas-3.8-beta5-20111217.jar</path>
-<path>/Showcase/runtime/lib/poi-scratchpad-3.8-beta5-20111217.jar</path>
-<path>/Showcase/runtime/lib/stax-api-1.0.1.jar</path>
-<path>/Showcase/runtime/lib/xmlbeans-2.3.0.jar</path>
 </pydev_pathproperty>
 
+<pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
+<path>X:\jprojects\Showcase\WebContent\WEB-INF\libJython\site-packages</path>
+</pydev_pathproperty>
 </pydev_project>

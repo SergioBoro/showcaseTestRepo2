@@ -52,7 +52,7 @@ dojo.declare("course.chartinggui.ExportDialog", [dijit._Widget, dijit._Templated
     },
     
     setExportContent: function(exportContent) {
-        dojo.attr(this.exportContent, "innerHTML", exportContent)
+        dojo.attr(this.exportContent, "innerHTML", exportContent);
     },
     
     addExporter: function(exporterId, exporterLabel, makeCurrent) {

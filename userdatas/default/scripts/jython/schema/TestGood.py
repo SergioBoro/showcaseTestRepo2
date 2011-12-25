@@ -4,35 +4,38 @@ Created on 02.11.2011
 
 @author: den
 '''
-from ru.curs.showcase.model.jython import JythonProc;
+from ru.curs.showcase.model.jython import JythonProc
 #from ru.curs.showcase.model.jython import JythonDTO
-#from ru.curs.showcase.app.api import UserMessage;
-#from ru.curs.showcase.util.xml import XMLUtils;  
-#from org.xml.sax.helpers import DefaultHandler;
-#from ru.curs.showcase.util import TextUtils;
+#from ru.curs.showcase.app.api import UserMessage
+#from ru.curs.showcase.util.xml import XMLUtils
+#from org.xml.sax.helpers import DefaultHandler
+#from ru.curs.showcase.util import TextUtils
 
 # init vars
 main = None
 add = None
 session = None
-filter = None
+filterContext = None
 elementId = None
 
-class TestGood(JythonProc):           
+
+class TestGood(JythonProc):
     def getRawData(self, context, element):
-        global main, add, session, filter, elementId
+        global main, add, session, filterContext, elementId
         main = context.getMain().encode("utf-8")
         if context.getAdditional():
             add = context.getAdditional().encode("utf-8")
         session = context.getSession().encode("utf-8")
         if context.getFilter():
-            filter = context.getFilter().encode("utf-8")
+            filterContext = context.getFilter().encode("utf-8")
         elementId = element.encode("utf-8")
-        return mainproc()     
-        
+        return mainproc()
+
+
 def mainproc():
     return u'''
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified">
   <xs:element name="documentset">
     <xs:complexType>
       <xs:sequence>
@@ -313,7 +316,7 @@ def mainproc():
     </xs:complexType>
   </xs:element>
 </xs:schema>
-    ''' 
-  
-if __name__ == "__main__":       
+    '''
+
+if __name__ == "__main__":
     mainproc()

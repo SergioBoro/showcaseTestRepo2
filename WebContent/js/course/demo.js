@@ -22,7 +22,8 @@ dojo.require("djeo.projection");
 djeo.util.proj4js.addDef("RUSSIA-ALBERS", "+proj=aea +lat_1=52 +lat_2=64 +lat_0=0 +lon_0=105 +x_0=18500000 +y_0=0 +ellps=krass +units=m +towgs84=28,-130,-95,0,0,0,0 +no_defs");
 
 course.demo.make = function(mapNode, legendNode, data) {
-	var map, legend;
+	var map;
+	var legend = null;
 	var mapStyle = {
 		//styleClass: "populationDensity",
 		fid: "l2",
@@ -52,9 +53,9 @@ course.demo.make = function(mapNode, legendNode, data) {
 	map.ready(function(){
 		new djeo.control.Navigation(map);
 		new djeo.control.Highlight(map);
-		new djeo.control.Tooltip(map);
+		new djeo.control.Tooltip(map);		
 		if (legendNode) legend = new djeo.widget.Legend({map: map}, legendNode);
 	});
 	
 	return {map: map, legend: legend};
-}
+};

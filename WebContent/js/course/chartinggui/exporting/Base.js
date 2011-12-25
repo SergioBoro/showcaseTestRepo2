@@ -20,4 +20,4 @@ dojo.declare("course.chartinggui.exporting.Base", null, {
     getGui: function() {
         return null;
     }
-})
+});

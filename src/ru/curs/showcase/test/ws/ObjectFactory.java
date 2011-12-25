@@ -24,31 +24,16 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _Handle_QNAME = new QName("http://server.app.showcase.curs.ru/", "handle");
-    private final static QName _ShowcaseExportException_QNAME = new QName("http://server.app.showcase.curs.ru/", "ShowcaseExportException");
-    private final static QName _HandleResponse_QNAME = new QName("http://server.app.showcase.curs.ru/", "handleResponse");
+    private final static QName _ProcName_QNAME = new QName("http://showcase.curs.ru", "procName");
+    private final static QName _ShowcaseExportException_QNAME = new QName("http://showcase.curs.ru", "ShowcaseExportException");
+    private final static QName _Handle_QNAME = new QName("http://showcase.curs.ru", "handle");
+    private final static QName _HandleResponse_QNAME = new QName("http://showcase.curs.ru", "handleResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ru.curs.showcase.test.ws
      * 
      */
     public ObjectFactory() {
-    }
-
-    /**
-     * Create an instance of {@link Datapanel }
-     * 
-     */
-    public Datapanel createDatapanel() {
-        return new Datapanel();
-    }
-
-    /**
-     * Create an instance of {@link RequestXML }
-     * 
-     */
-    public RequestXML createRequestXML() {
-        return new RequestXML();
     }
 
     /**
@@ -60,11 +45,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Element }
+     * Create an instance of {@link ResponseAnyXML }
      * 
      */
-    public Element createElement() {
-        return new Element();
+    public ResponseAnyXML createResponseAnyXML() {
+        return new ResponseAnyXML();
     }
 
     /**
@@ -76,51 +61,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Datapanel.Tab }
+     * Create an instance of {@link RequestAnyXML }
      * 
      */
-    public Datapanel.Tab createDatapanelTab() {
-        return new Datapanel.Tab();
-    }
-
-    /**
-     * Create an instance of {@link Tr }
-     * 
-     */
-    public Tr createTr() {
-        return new Tr();
-    }
-
-    /**
-     * Create an instance of {@link Td }
-     * 
-     */
-    public Td createTd() {
-        return new Td();
-    }
-
-    /**
-     * Create an instance of {@link ResponseXML }
-     * 
-     */
-    public ResponseXML createResponseXML() {
-        return new ResponseXML();
-    }
-
-    /**
-     * Create an instance of {@link Context }
-     * 
-     */
-    public Context createContext() {
-        return new Context();
-    }
-
-    /**
-     * Create an instance of {@link RequestXML.Command }
-     * 
-     */
-    public RequestXML.Command createRequestXMLCommand() {
-        return new RequestXML.Command();
+    public RequestAnyXML createRequestAnyXML() {
+        return new RequestAnyXML();
     }
 
     /**
@@ -132,28 +77,37 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Handle }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://server.app.showcase.curs.ru/", name = "handle")
-    public JAXBElement<Handle> createHandle(Handle value) {
-        return new JAXBElement<Handle>(_Handle_QNAME, Handle.class, null, value);
+    @XmlElementDecl(namespace = "http://showcase.curs.ru", name = "procName")
+    public JAXBElement<String> createProcName(String value) {
+        return new JAXBElement<String>(_ProcName_QNAME, String.class, null, value);
     }
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ShowcaseExportException }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://server.app.showcase.curs.ru/", name = "ShowcaseExportException")
+    @XmlElementDecl(namespace = "http://showcase.curs.ru", name = "ShowcaseExportException")
     public JAXBElement<ShowcaseExportException> createShowcaseExportException(ShowcaseExportException value) {
         return new JAXBElement<ShowcaseExportException>(_ShowcaseExportException_QNAME, ShowcaseExportException.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Handle }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://showcase.curs.ru", name = "handle")
+    public JAXBElement<Handle> createHandle(Handle value) {
+        return new JAXBElement<Handle>(_Handle_QNAME, Handle.class, null, value);
     }
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link HandleResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://server.app.showcase.curs.ru/", name = "handleResponse")
+    @XmlElementDecl(namespace = "http://showcase.curs.ru", name = "handleResponse")
     public JAXBElement<HandleResponse> createHandleResponse(HandleResponse value) {
         return new JAXBElement<HandleResponse>(_HandleResponse_QNAME, HandleResponse.class, null, value);
     }

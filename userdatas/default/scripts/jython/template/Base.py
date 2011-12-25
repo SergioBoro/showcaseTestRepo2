@@ -4,38 +4,42 @@ Created on 02.11.2011
 
 @author: den
 '''
-from ru.curs.showcase.model.jython import JythonProc;
+from ru.curs.showcase.model.jython import JythonProc
 #from ru.curs.showcase.model.jython import JythonDTO
-#from ru.curs.showcase.app.api import UserMessage;
-#from ru.curs.showcase.util.xml import XMLUtils;  
-#from org.xml.sax.helpers import DefaultHandler;
-#from ru.curs.showcase.util import TextUtils;
+#from ru.curs.showcase.app.api import UserMessage
+#from ru.curs.showcase.util.xml import XMLUtils
+#from org.xml.sax.helpers import DefaultHandler
+#from ru.curs.showcase.util import TextUtils
 
 # init vars
 main = None
 add = None
 session = None
-filter = None
+filterContext = None
 elementId = None
 
-class Base(JythonProc):           
+
+class Base(JythonProc):
     def getRawData(self, context, element):
-        global main, add, session, filter, elementId
+        global main, add, session, filterContext, elementId
         main = context.getMain().encode("utf-8")
         if context.getAdditional():
             add = context.getAdditional().encode("utf-8")
         session = context.getSession().encode("utf-8")
         if context.getFilter():
-            filter = context.getFilter().encode("utf-8")
+            filterContext = context.getFilter().encode("utf-8")
         elementId = element.encode("utf-8")
-        return mainproc()     
-        
+        return mainproc()
+
+
 def mainproc():
     return u'''
 <?xml-stylesheet href="xsltforms/xsltforms.xsl" type="text/xsl"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events"
-    xmlns:xsd="http://www.w3.org/2001/XMLschema" xmlns:fs="http://www.curs.ru/ns/FormServer"
-    xmlns:xf="http://www.w3.org/2002/xforms">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ev="http://www.w3.org/2001/xml-events"
+xmlns:xsd="http://www.w3.org/2001/XMLschema"
+xmlns:fs="http://www.curs.ru/ns/FormServer"
+xmlns:xf="http://www.w3.org/2002/xforms">
     <head>
         <!-- Простейшие контролы ввода и вывода -->
         <xf:model id="mainModel">
@@ -51,13 +55,14 @@ def mainproc():
                 </schema>
             </xf:instance>
 
-
-            <xf:submission id="wrong_save" method="post" instance="mainInstance"
-                replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission11">
+            <xf:submission id="wrong_save" method="post" replace="instance"
+            instance="mainInstance" ref="instance('mainInstance')"
+                action="secured/submit?proc=xforms_submission11">
                 <xf:action ev:event="xforms-submit-done">
                     <xf:message>Submission успешно выполнен</xf:message>
                 </xf:action>
-                <xf:action if="event('response-body')!='null'" ev:event="xforms-submit-error">
+                <xf:action if="event('response-body')!='null'"
+                ev:event="xforms-submit-error">
                     <xf:message>
                         Ошибка при выполнении submission:
                         <xf:output value="event('response-body')" />
@@ -66,11 +71,13 @@ def mainproc():
             </xf:submission>
 
             <xf:submission id="good_save" method="post" instance="mainInstance"
-                replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission1">
+                replace="instance" ref="instance('mainInstance')"
+                action="secured/submit?proc=xforms_submission1">
                 <xf:action ev:event="xforms-submit-done">
                     <xf:message>Submission успешно выполнен</xf:message>
                 </xf:action>
-                <xf:action if="event('response-body')!='null'" ev:event="xforms-submit-error">
+                <xf:action if="event('response-body')!='null'"
+                ev:event="xforms-submit-error">
                     <xf:message>
                         Ошибка при выполнении submission:
                         <xf:output value="event('response-body')" />
@@ -80,7 +87,8 @@ def mainproc():
 
 
             <xf:submission id="xslttransformation" method="post"
-                instance="mainInstance" replace="instance" ref="instance('mainInstance')"
+                instance="mainInstance" replace="instance"
+                ref="instance('mainInstance')"
                 action="secured/xslttransformer?xsltfile=xformsxslttransformation_test.xsl">
             </xf:submission>
 
@@ -107,7 +115,7 @@ def mainproc():
                         resource="javascript:showSelector({
                        id : 'xformId',
                        procCount : '[dbo].[regionscount]',
-                       procList  : '[dbo].[regionslist]',                       
+                       procList  : '[dbo].[regionslist]',
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
@@ -115,7 +123,6 @@ def mainproc():
                     if (ok) {
                     var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('name')[0];
                     setValue(a, selected.name);
-         
                     xforms.ready = false;
                     xforms.refresh();
                     xforms.ready = true;
@@ -268,7 +275,7 @@ def mainproc():
 
     </body>
 </html>    
-    ''' 
-  
-if __name__ == "__main__":       
+    '''
+
+if __name__ == "__main__":
     mainproc()

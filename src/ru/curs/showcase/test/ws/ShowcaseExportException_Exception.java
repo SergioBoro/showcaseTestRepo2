@@ -7,8 +7,7 @@ import javax.xml.ws.WebFault;
  * source version: 2.2
  * 
  */
-@WebFault(name = "ShowcaseExportException",
-		targetNamespace = "http://server.app.showcase.curs.ru/")
+@WebFault(name = "ShowcaseExportException", targetNamespace = "http://showcase.curs.ru")
 public class ShowcaseExportException_Exception extends Exception {
 
 	/**

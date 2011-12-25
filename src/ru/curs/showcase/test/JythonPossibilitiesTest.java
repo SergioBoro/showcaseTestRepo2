@@ -42,8 +42,8 @@ public class JythonPossibilitiesTest extends AbstractTest {
 	}
 
 	@Test
-	public void testIReport() {
-		testFileCreateBase("ireport/pdfCreate.py", TMP_TEST_PDF);
+	public void testJasperReport() {
+		testFileCreateBase("jasperReport/pdfCreate.py", TMP_TEST_PDF);
 	}
 
 }

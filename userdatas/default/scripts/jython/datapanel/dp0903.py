@@ -4,43 +4,47 @@ Created on 02.11.2011
 
 @author: den
 '''
-from ru.curs.showcase.model.jython import JythonProc;
+from ru.curs.showcase.model.jython import JythonProc
 #from ru.curs.showcase.model.jython import JythonDTO
 #from ru.curs.showcase.app.api import UserMessage;
-#from ru.curs.showcase.util.xml import XMLUtils;  
-#from org.xml.sax.helpers import DefaultHandler;
-#from ru.curs.showcase.util import TextUtils;
+#from ru.curs.showcase.util.xml import XMLUtils
+#from org.xml.sax.helpers import DefaultHandler
+#from ru.curs.showcase.util import TextUtils
 
 # init vars
 main = None
 add = None
 session = None
-filter = None
+filterContext = None
 
-class dp0903(JythonProc):           
+
+class dp0903(JythonProc):
     def getRawData(self, context):
-        global main, add, session, filter
+        global main, add, session, filterContext
         main = context.getMain().encode("utf-8")
         if context.getAdditional():
             add = context.getAdditional().encode("utf-8")
         session = context.getSession().encode("utf-8")
         if context.getFilter():
-            filter = context.getFilter().encode("utf-8")
-        return mainproc()     
-        
+            filterContext = context.getFilter().encode("utf-8")
+        return mainproc()
+
+
 def mainproc():
     return u'''
-<datapanel>    
+<datapanel>
     <tab id="01" name="navigtor from file">
         <element id="0101" type="webtext" proc="webtext_context_info"/>
     </tab>
     <tab id="03" name="dynamic add_context">
         <element id="0301" type="webtext" proc="webtext_override_add_context"/>
-        <element id="0302" type="xforms" template="Showcase_Template_update.xml"
-            proc="xforms_proc_override_add_context"/>        
+        <element id="0302" type="xforms"
+        template="Showcase_Template_update.xml"
+        proc="xforms_proc_override_add_context"/>
         <element id="d1" type="webtext" proc="webtext_filter_and_add"
-            hideOnLoad="true" />    
-        <element id="d2" type="webtext" proc="webtext_show_debug_console" transform="xml_in_html.xsl" hideOnLoad="true"/>            
+            hideOnLoad="true" />
+        <element id="d2" type="webtext" proc="webtext_show_debug_console"
+        transform="xml_in_html.xsl" hideOnLoad="true"/>
     </tab>
     <tab id="10" name="get tab elements state">
         <element id="61" type="xforms" template="Showcase_Template.xml"
@@ -50,14 +54,15 @@ def mainproc():
         </element>
         <element id="d01" type="webtext" proc="webtext_filter_and_add"
             hideOnLoad="true" />
-        <element id="d03" type="webtext" proc="webtext_dep62" >    
+        <element id="d03" type="webtext" proc="webtext_dep62">
             <related id="d01"/>
-            <related id="d02"/>                            
+            <related id="d02"/>
         </element>
-        <element id ="d02" type="grid" proc="grid_cities_data" hideOnLoad="true">
+        <element id ="d02" type="grid" proc="grid_cities_data"
+        hideOnLoad="true">
             <proc id="d201" name="grid_cities_metadata" type="METADATA"/>
-        </element>    
-    </tab>    
+        </element>
+    </tab>
     <tab id="04" name="2 fast grid proc">
         <element id ="0401" type="grid" proc="grid_cities_data">
             <proc id="040101" name="grid_cities_metadata" type="METADATA"/>
@@ -67,10 +72,11 @@ def mainproc():
     <tab id="02" name="SP call: tags in add_context">
         <element id="0200" type="webtext" proc="webtext_buttons_uco"/>
         <element id="0201" type="webtext" proc="webtext_call_sp"/>
-        <element id="0202" type="webtext" proc="webtext_show_debug_console" transform="xml_in_html.xsl" hideOnLoad="true"/>    
+        <element id="0202" type="webtext" proc="webtext_show_debug_console"
+        transform="xml_in_html.xsl" hideOnLoad="true"/>
     </tab>
-</datapanel>    
-    ''' 
-  
-if __name__ == "__main__":       
+</datapanel>
+    '''
+
+if __name__ == "__main__":
     mainproc()

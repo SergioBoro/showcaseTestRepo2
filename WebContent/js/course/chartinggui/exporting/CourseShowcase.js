@@ -12,7 +12,7 @@ dojo.declare("course.chartinggui.exporting.CourseShowcase", course.chartinggui.e
     getExportContent: function(chartOptions) {
         var exportContent = {};
         dojo.forEach(this.options, function(o){
-            if (chartOptions[o]) exportContent[o] = chartOptions[o]
+            if (chartOptions[o]) exportContent[o] = chartOptions[o];
         });
         return "<pre>"+dojo.toJson(exportContent, true)+"</pre>";
     },

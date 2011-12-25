@@ -23,7 +23,8 @@ dojo.require("djeo.Map");
 				delete layer.type;
 				if (layer.features)
 					dojo.forEach(layer.features, function(feature) {
-						var coords, type;
+						var coords = undefined;
+						var type = undefined;
 						if (feature.pointCoords) {
 							coords = feature.pointCoords;
 							type = "Point";

@@ -128,8 +128,9 @@ dojo.declare("course.chartinggui.Wrapper", null, {
         this.chartOptions.plot.type = type;
         // load new chart def
         var chartDef = this.chartDefs[type];
+        var defaultDef = undefined;
         if (this.lastChartDef != chartDef) { // otherwise no need to load a new GUI
-            var defaultDef = this.chartDefs['default'];
+            defaultDef = this.chartDefs['default'];
             var optionsOrder = chartDef['order'] ? chartDef['order'] : defaultDef['order'];
             dojo.forEach(optionsOrder, function(optionId){
                 var optionDef = chartDef[optionId] ?  chartDef[optionId] : defaultDef[optionId];
@@ -171,8 +172,9 @@ dojo.declare("course.chartinggui.Wrapper", null, {
         // save chart and legend id
         var chartId = o.id;
         o.id = this.chartDiv;
+        var chartLegendId = undefined;
         if (o.legend) {
-            var chartLegendId = o.legend.id;
+            chartLegendId = o.legend.id;
             o.legend.id = this.chartLegendId;
         }
         

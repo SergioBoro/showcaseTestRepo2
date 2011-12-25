@@ -4,34 +4,36 @@ Created on 02.11.2011
 
 @author: den
 '''
-from ru.curs.showcase.model.jython import JythonProc;
+from ru.curs.showcase.model.jython import JythonProc
 from ru.curs.showcase.model.jython import JythonDTO
-#from ru.curs.showcase.app.api import UserMessage;
-#from ru.curs.showcase.util.xml import XMLUtils;  
-#from org.xml.sax.helpers import DefaultHandler;
-#from ru.curs.showcase.util import TextUtils;
+#from ru.curs.showcase.app.api import UserMessage
+#from ru.curs.showcase.util.xml import XMLUtils
+#from org.xml.sax.helpers import DefaultHandler
+#from ru.curs.showcase.util import TextUtils
 
 # init vars
 main = ""
 add = ""
 session = ""
-filter = ""
+filterContext = ""
 elementId = ""
 pyconn = None
 
-class GeoMapSimple(JythonProc):        
+
+class GeoMapSimple(JythonProc):
     def getRawData(self, context, elId, conn):
-        global main, add, session, filter, pyconn
+        global main, add, session, filterContext, pyconn, elementId
         main = context.getMain().encode("utf-8")
         if context.getAdditional():
             add = context.getAdditional().encode("utf-8")
         session = context.getSession().encode("utf-8")
         if context.getFilter():
-            filter = context.getFilter().encode("utf-8")
+            filterContext = context.getFilter().encode("utf-8")
         elementId = elId.encode("utf-8")
         pyconn = conn
-        return mainproc()  
-        
+        return mainproc()
+
+
 def mainproc():
     cityProps = u'''
 '<properties>
@@ -40,19 +42,18 @@ def mainproc():
                             <main_context>current</main_context>
                             <datapanel type="current" tab="current">
                                 <element id="06">
-                                    <add_context>'+[Name_Ru]+'</add_context>                                                                                             
-                                </element> 
-                                
+                                    <add_context>'+[Name_Ru]+'</add_context>
+                                </element>
                             </datapanel>
                         </action>
                         </event>
-                    </properties>'    
-    ''' 
+                    </properties>'
+    '''
     data = [u'''SELECT 'l1' AS [ID], 'Города' AS [Name], 'POINT' AS [ObjectType], '%LayerName - %ObjectName (%ObjectID) (%Lat - %Lon)' AS [HintFormat]
     ''',
     u'''SELECT [ID], [Name_Ru] AS [Name], 'l1' AS [LayerID], [Lat], [Lon],
     CASE [ID] WHEN 1849 THEN 'Нижний Новгород - город с показателями' ELSE NULL END AS [Tooltip],
-    CASE [ID] WHEN 1849 THEN 'cityStyle' ELSE NULL END AS StyleClass, '''+cityProps+u''' AS [~~properties] FROM [GeoObjects] WHERE [Status_ID]=1 AND [Name_Ru] LIKE '%город'
+    CASE [ID] WHEN 1849 THEN 'cityStyle' ELSE NULL END AS StyleClass, ''' + cityProps + u''' AS [~~properties] FROM [GeoObjects] WHERE [Status_ID]=1 AND [Name_Ru] LIKE '%город'
     ''']
     settings = u'''
 <geomapsettings>
@@ -60,7 +61,7 @@ def mainproc():
             <header><p>Карта djeo без регионов</p>
             </header>    
         </labels>
-        <properties legend="top" />
+        <properties/>
         <template> 
     {
        registerSolutionMap: russia_ym,    
@@ -94,6 +95,6 @@ def mainproc():
 </geomapsettings>    
     '''
     return JythonDTO(data, settings)
-  
-if __name__ == "__main__":       
+
+if __name__ == "__main__":
     mainproc()

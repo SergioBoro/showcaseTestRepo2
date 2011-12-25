@@ -13,4 +13,4 @@ dojo.declare("course.chartinggui.exporting.Javascript", course.chartinggui.expor
     getGui: function() {
         return null;
     }
-})
+});

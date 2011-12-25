@@ -1,4 +1,4 @@
-package ru.curs.showcase.app.server;
+package ru.curs.showcase.app.server.ws;
 
 import java.io.IOException;
 
@@ -8,7 +8,6 @@ import javax.jws.soap.SOAPBinding;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.app.server.ws.*;
 import ru.curs.showcase.model.command.ShowcaseExportException;
 import ru.curs.showcase.model.external.ExternalCommand;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -20,7 +19,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
-@WebService
+@WebService(targetNamespace = "http://showcase.curs.ru")
 public class ShowcaseExternals {
 	@WebMethod
 	@WebResult(name = "response")
@@ -31,20 +30,21 @@ public class ShowcaseExternals {
 	}
 
 	@WebMethod
-	@WebResult(name = "responseXML")
-	@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
-	public ResponseXML handleXML(@WebParam(name = "requestXML") final RequestXML requestXML)
+	@WebResult(name = "responseAnyXML")
+	@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, use = SOAPBinding.Use.LITERAL)
+	public ResponseAnyXML handleXML(
+			@WebParam(name = "requestAnyXML") final RequestAnyXML requestXML, @WebParam(
+					name = "procName", header = true) final String procName)
 			throws ShowcaseExportException {
 		String requestStr = XMLUtils.documentToString(XMLUtils.objectToXML(requestXML));
-		ExternalCommand command = new ExternalCommand(requestStr, requestXML.getProcName());
+		ExternalCommand command = new ExternalCommand(requestStr, procName);
 		String responseStr = command.executeForExport();
 		try {
 			Document doc = XMLUtils.stringToDocument(responseStr);
-			return (ResponseXML) XMLUtils.xmlToObject(doc, ResponseXML.class);
+			return (ResponseAnyXML) XMLUtils.xmlToObject(doc, ResponseAnyXML.class);
 		} catch (SAXException | IOException e) {
 			throw new ShowcaseExportException(
 					"Ошибка решения: рабочая процедура вернула данные не в формате XML");
 		}
-
 	}
 }

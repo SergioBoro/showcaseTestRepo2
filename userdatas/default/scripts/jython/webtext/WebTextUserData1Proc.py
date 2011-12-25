@@ -6,31 +6,32 @@ Created on 02.11.2011
 '''
 from ru.curs.showcase.model.jython import JythonProc
 from ru.curs.showcase.model.jython import JythonDTO
-from ru.curs.showcase.app.api import UserMessage;
-import random;
-#from ru.curs.showcase.util.xml import XMLUtils;  
-#from org.xml.sax.helpers import DefaultHandler;
-#from ru.curs.showcase.util import TextUtils;
+from ru.curs.showcase.app.api import UserMessage
+#from ru.curs.showcase.util.xml import XMLUtils
+#from org.xml.sax.helpers import DefaultHandler
+#from ru.curs.showcase.util import TextUtils
 
 # init vars
 main = ""
 add = ""
 session = ""
-filter = ""
+filterContext = ""
 elementId = ""
 
-class WebTextUserData1Proc(JythonProc):        
+
+class WebTextUserData1Proc(JythonProc):
     def getRawData(self, context, elId):
-        global main, add, session, filter
+        global main, add, session, filterContext, elementId
         main = context.getMain().encode("utf-8")
         if context.getAdditional():
             add = context.getAdditional().encode("utf-8")
         session = context.getSession().encode("utf-8")
         if context.getFilter():
-            filter = context.getFilter().encode("utf-8")
+            filterContext = context.getFilter().encode("utf-8")
         elementId = elId.encode("utf-8")
         return mainproc()
-        
+
+
 def mainproc():
     if main == "плохой":
         return UserMessage(u"1", u"проверка на ошибку сработала")
@@ -38,6 +39,6 @@ def mainproc():
     settings = None
     res = JythonDTO(data, settings)
     return res
-  
-if __name__ == "__main__":       
+
+if __name__ == "__main__":
     mainproc()

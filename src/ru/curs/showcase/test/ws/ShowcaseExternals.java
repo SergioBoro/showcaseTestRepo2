@@ -19,7 +19,7 @@ import javax.xml.ws.ResponseWrapper;
  * Generated source version: 2.2
  * 
  */
-@WebService(name = "ShowcaseExternals", targetNamespace = "http://server.app.showcase.curs.ru/")
+@WebService(name = "ShowcaseExternals", targetNamespace = "http://showcase.curs.ru")
 @XmlSeeAlso({
     ObjectFactory.class
 })
@@ -36,10 +36,10 @@ public interface ShowcaseExternals {
      */
     @WebMethod
     @WebResult(name = "response", targetNamespace = "")
-    @RequestWrapper(localName = "handle", targetNamespace = "http://server.app.showcase.curs.ru/", className = "ru.curs.showcase.test.ws.Handle")
-    @ResponseWrapper(localName = "handleResponse", targetNamespace = "http://server.app.showcase.curs.ru/", className = "ru.curs.showcase.test.ws.HandleResponse")
-    @Action(input = "http://server.app.showcase.curs.ru/ShowcaseExternals/handleRequest", output = "http://server.app.showcase.curs.ru/ShowcaseExternals/handleResponse", fault = {
-        @FaultAction(className = ShowcaseExportException_Exception.class, value = "http://server.app.showcase.curs.ru/ShowcaseExternals/handle/Fault/ShowcaseExportException")
+    @RequestWrapper(localName = "handle", targetNamespace = "http://showcase.curs.ru", className = "ru.curs.showcase.test.ws.Handle")
+    @ResponseWrapper(localName = "handleResponse", targetNamespace = "http://showcase.curs.ru", className = "ru.curs.showcase.test.ws.HandleResponse")
+    @Action(input = "http://showcase.curs.ru/ShowcaseExternals/handleRequest", output = "http://showcase.curs.ru/ShowcaseExternals/handleResponse", fault = {
+        @FaultAction(className = ShowcaseExportException_Exception.class, value = "http://showcase.curs.ru/ShowcaseExternals/handle/Fault/ShowcaseExportException")
     })
     public String handle(
         @WebParam(name = "request", targetNamespace = "")
@@ -51,20 +51,23 @@ public interface ShowcaseExternals {
 
     /**
      * 
-     * @param requestXML
+     * @param procName
+     * @param requestAnyXML
      * @return
-     *     returns ru.curs.showcase.test.ws.ResponseXML
+     *     returns ru.curs.showcase.test.ws.ResponseAnyXML
      * @throws ShowcaseExportException_Exception
      */
     @WebMethod
-    @WebResult(name = "responseXML", targetNamespace = "http://server.app.showcase.curs.ru/", partName = "responseXML")
+    @WebResult(name = "responseAnyXML", targetNamespace = "http://showcase.curs.ru", partName = "responseAnyXML")
     @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
-    @Action(input = "http://server.app.showcase.curs.ru/ShowcaseExternals/handleXMLRequest", output = "http://server.app.showcase.curs.ru/ShowcaseExternals/handleXMLResponse", fault = {
-        @FaultAction(className = ShowcaseExportException_Exception.class, value = "http://server.app.showcase.curs.ru/ShowcaseExternals/handleXML/Fault/ShowcaseExportException")
+    @Action(input = "http://showcase.curs.ru/ShowcaseExternals/handleXMLRequest", output = "http://showcase.curs.ru/ShowcaseExternals/handleXMLResponse", fault = {
+        @FaultAction(className = ShowcaseExportException_Exception.class, value = "http://showcase.curs.ru/ShowcaseExternals/handleXML/Fault/ShowcaseExportException")
     })
-    public ResponseXML handleXML(
-        @WebParam(name = "requestXML", targetNamespace = "http://server.app.showcase.curs.ru/", partName = "requestXML")
-        RequestXML requestXML)
+    public ResponseAnyXML handleXML(
+        @WebParam(name = "requestAnyXML", targetNamespace = "http://showcase.curs.ru", partName = "requestAnyXML")
+        RequestAnyXML requestAnyXML,
+        @WebParam(name = "procName", targetNamespace = "http://showcase.curs.ru", header = true, partName = "procName")
+        String procName)
         throws ShowcaseExportException_Exception
     ;
 

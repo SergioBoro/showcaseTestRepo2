@@ -17,14 +17,14 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "ShowcaseExternalsService", targetNamespace = "http://server.app.showcase.curs.ru/", wsdlLocation = "http://localhost/Showcase/forall/webservices?wsdl")
+@WebServiceClient(name = "ShowcaseExternalsService", targetNamespace = "http://showcase.curs.ru", wsdlLocation = "http://localhost/Showcase/forall/webservices?wsdl")
 public class ShowcaseExternalsService
     extends Service
 {
 
     private final static URL SHOWCASEEXTERNALSSERVICE_WSDL_LOCATION;
     private final static WebServiceException SHOWCASEEXTERNALSSERVICE_EXCEPTION;
-    private final static QName SHOWCASEEXTERNALSSERVICE_QNAME = new QName("http://server.app.showcase.curs.ru/", "ShowcaseExternalsService");
+    private final static QName SHOWCASEEXTERNALSSERVICE_QNAME = new QName("http://showcase.curs.ru", "ShowcaseExternalsService");
 
     static {
         URL url = null;
@@ -69,7 +69,7 @@ public class ShowcaseExternalsService
      */
     @WebEndpoint(name = "ShowcaseExternalsPort")
     public ShowcaseExternals getShowcaseExternalsPort() {
-        return super.getPort(new QName("http://server.app.showcase.curs.ru/", "ShowcaseExternalsPort"), ShowcaseExternals.class);
+        return super.getPort(new QName("http://showcase.curs.ru", "ShowcaseExternalsPort"), ShowcaseExternals.class);
     }
 
     /**
@@ -81,7 +81,7 @@ public class ShowcaseExternalsService
      */
     @WebEndpoint(name = "ShowcaseExternalsPort")
     public ShowcaseExternals getShowcaseExternalsPort(WebServiceFeature... features) {
-        return super.getPort(new QName("http://server.app.showcase.curs.ru/", "ShowcaseExternalsPort"), ShowcaseExternals.class, features);
+        return super.getPort(new QName("http://showcase.curs.ru", "ShowcaseExternalsPort"), ShowcaseExternals.class, features);
     }
 
     private static URL __getWsdlLocation() {

@@ -131,14 +131,14 @@ var chrt = {
 		}
     }
 
-}
+};
 
 c.makeCharts = function(charts) {
     var numCharts = charts.length;
     for (var i1=0; i1<numCharts; i1++) {
         c.makeChart(charts[i1]);
     }
-}
+};
 
 c.makeChart = function(chartOptions) {
     var o = chartOptions; // chartOptions
@@ -176,7 +176,7 @@ c.makeChart = function(chartOptions) {
     chrt.makeLegend(o.legend);
     
     return chart;
-}
+};
 
 c.destroyChart = function(id) {
     if (chartRegistry[id]) {
@@ -184,6 +184,6 @@ c.destroyChart = function(id) {
 	if (chartRegistry[id].legend) chartRegistry[id].legend.destroy(true);
 	delete chartRegistry[id];
     }
-}
+};
 
-}())
+}());

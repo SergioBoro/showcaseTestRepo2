@@ -5,20 +5,21 @@ Created on 02.11.2011
 @author: den
 '''
 from ru.curs.showcase.model.jython import JythonProc
-from ru.curs.showcase.model.jython import JythonDTO
-#from ru.curs.showcase.util.xml import XMLUtils;  
-#from org.xml.sax.helpers import DefaultHandler;
-#from ru.curs.showcase.util import TextUtils;
+#from ru.curs.showcase.util.xml import XMLUtils
+#from org.xml.sax.helpers import DefaultHandler
+#from ru.curs.showcase.util import TextUtils
 
 # init vars
 session = ""
 
-class NavJythonProc(JythonProc):        
+
+class NavJythonProc(JythonProc):
     def getRawData(self, context):
         global session
         session = context.getSession().encode("utf-8")
         return mainproc()
-        
+
+
 def mainproc():
     return u'''<navigator hideOnLoad="true">
     <group id="00" name="Фичи">
@@ -27,11 +28,11 @@ def mainproc():
                 <main_context>
                     Запасы на конец отчетного периода - Всего
                 </main_context>
-                <datapanel type="dp0903dynSession" tab="firstOrCurrent"/>                
+                <datapanel type="dp0903dynSession" tab="firstOrCurrent"/>
             </action>
         </level1>
     </group>
 </navigator>'''
-  
-if __name__ == "__main__":       
+
+if __name__ == "__main__":
     mainproc()

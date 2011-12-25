@@ -23,4 +23,4 @@
     _leftBottom2X: "сверху",
     _leftBottom1Y: "слева",
     _leftBottom2Y: "справа"
-})
+});
