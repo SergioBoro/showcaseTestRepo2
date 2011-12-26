@@ -418,9 +418,15 @@ public class GridPanel extends BasicElementPanelBasis {
 		if ((grid.getDataSet().getColumnSet().getColumns().size() > 0)
 				&& (grid.getDataSet().getRecordSet().getRecordsCount() > 0)) {
 
+			hpToolbar.setVisible(true);
 			dg.setVisible(true);
 			dg.showData(grid.getDataSet());
-			hpToolbar.setVisible(true);
+			hpFooter.setVisible(true);
+
+		} else {
+			hpToolbar.setVisible(false);
+			dg.setVisible(false);
+			hpFooter.setVisible(false);
 		}
 
 		hpFooter.setVisible(true);
