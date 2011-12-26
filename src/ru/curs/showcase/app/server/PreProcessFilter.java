@@ -38,10 +38,10 @@ public class PreProcessFilter implements Filter {
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response,
 			final FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		HttpServletResponse httpResponse = (HttpServletResponse) response;
-
 		if (request instanceof HttpServletRequest) {
+			HttpServletRequest httpRequest = (HttpServletRequest) request;
+			HttpServletResponse httpResponse = (HttpServletResponse) response;
+
 			if (isMainPage(httpRequest)) {
 				initSession(httpRequest); // TODO нужно ли
 			}
@@ -49,10 +49,12 @@ public class PreProcessFilter implements Filter {
 				skipServletCaching(response);
 			}
 			httpRequest.setCharacterEncoding("UTF-8");
+
+			if (handleGeoModule(httpRequest, httpResponse)) {
+				return;
+			}
 		}
-		if (handleGeoModule(httpRequest, httpResponse)) {
-			return;
-		}
+
 		chain.doFilter(request, response);
 		resetThread();
 	}
