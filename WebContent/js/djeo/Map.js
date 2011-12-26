@@ -131,7 +131,7 @@ dojo.declare("djeo.Map", null, {
 
 		restoreMethods(this);
 
-		this.container = container;
+		this.container = dojo.byId(container);
 
 		if(!kwArgs) kwArgs = {};
 		dojo.mixin(this, kwArgs);
