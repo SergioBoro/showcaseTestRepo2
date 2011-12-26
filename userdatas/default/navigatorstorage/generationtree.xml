@@ -126,13 +126,21 @@
           <datapanel type="1302.xml" tab="firstOrCurrent" />
         </action>
       </level2>
-      <level2 id="1303" name="13-й этап, 3 неделя" selectOnLoad="true">
+      <level2 id="1303" name="13-й этап, 3 неделя">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
           <datapanel type="1303.xml" tab="firstOrCurrent" />
         </action>
       </level2>                   
-    </level1>      
+    </level1>
+    <level1 id="20" name="Версия 2.0">
+      <level2 id="206" name="2.0.6" selectOnLoad="true">
+        <action>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
+          <datapanel type="byver/206.xml" tab="firstOrCurrent" />
+        </action>
+      </level2>                   
+    </level1>        
   </group>
   <group id="1" name="Балансы продовольственных ресурсов">
     <level1 id="3" name="Балансы зерна">   
