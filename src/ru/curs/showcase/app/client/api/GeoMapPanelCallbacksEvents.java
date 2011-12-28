@@ -63,6 +63,11 @@ public final class GeoMapPanelCallbacksEvents {
 		return elementId;
 	}
 
+	/**
+	 * Обязательно выставляем ENCODING_MULTIPART - иначе будут проблемы с
+	 * большими картами - например, картой мира.
+	 * 
+	 */
 	public static void exportToPNGSuccess(final String mapDivId, final String imageFormat,
 			final String svg) {
 		DownloadHelper dh = DownloadHelper.getInstance();

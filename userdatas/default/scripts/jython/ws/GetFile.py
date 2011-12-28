@@ -7,6 +7,7 @@ Created on 02.11.2011
 from ru.curs.showcase.model.jython import JythonProc
 from ru.curs.showcase.util.xml import XMLUtils
 from ru.curs.showcase.runtime import AppInfoSingleton
+from ru.curs.showcase.runtime import ConnectionFactory
 #from org.xml.sax.helpers import DefaultHandler
 #from ru.curs.showcase.util import TextUtils
 import re
@@ -22,7 +23,14 @@ class GetFile(JythonProc):
 
 
 def mainproc():
-    print request
+    pyConn = ConnectionFactory.getPyConnection()
+    try:
+        cur = pyConn.cursor()
+        cur.execute("select top 10000 name from geo3")
+        print cur.fetchone()[0].encode("utf-8")
+    finally:
+        pass
+
     requestDoc = XMLUtils.stringToDocument(request)
     if requestDoc.getDocumentElement().getNodeName() == "command":
         commandNode = requestDoc.getDocumentElement()
@@ -39,7 +47,6 @@ def mainproc():
                 line = line.replace("</", "</sc:")
                 line = re.sub(r"<(\w)", r"<sc:\1", line)
                 data += line
-        print data
         return unicode("<responseAnyXML xmlns:sc=\"http://showcase.curs.ru\">"
                        + data + "</responseAnyXML>", "utf-8")
     # при работе с Document строки приходят в формате ISO-8859-1!

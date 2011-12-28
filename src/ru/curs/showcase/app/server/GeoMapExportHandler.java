@@ -34,13 +34,14 @@ public class GeoMapExportHandler extends AbstractDownloadHandler {
 		FileItemIterator iterator = upload.getItemIterator(getRequest());
 		while (iterator.hasNext()) {
 			FileItemStream item = iterator.next();
+
 			String name = item.getFieldName();
 			InputStream input = item.openStream();
 			// несмотря на то, что нам нужен InputStream - его приходится
 			// преобразовывать в OutputStream - т.к. чтение из InputStream
 			// возможно только в данном цикле
 			ByteArrayOutputStream out = StreamConvertor.inputToOutputStream(input);
-			String paramValue = out.toString();
+			String paramValue = out.toString(TextUtils.DEF_ENCODING);
 
 			if (GeoMapExportSettings.class.getName().equals(name)) {
 				settings = (GeoMapExportSettings) deserializeObject(paramValue);

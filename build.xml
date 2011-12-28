@@ -1,93 +1,89 @@
 <project name="Showcase" basedir="." default="build">
 	<property name="appname" value="${ant.project.name}" />
 	<property name="env" value="local" />
-	
-	<property environment="os"/>
-	<target name="checkProperties">
-	  <fail unless="os.JAVA_HOME">JAVA_HOME must be set</fail>
-	</target>	
 
-	<property name="dist.dir" value="dist" />
-	<property name="extragwt.dir" value="extragwt" />
-	<property name="datagrid.dir" value="datagrid" />
-	<property name="src.dir" value="src" />
-	<property name="tmp.dir" value="tmp" />
-	<property name="runtime.dir" value="runtime" />
-	<property name="webapp.dir" value="WebContent" />
-	<property name="war.file" value="${dist.dir}/${appname}.war" />
-	<property name="images.dir" value="${webapp.dir}/resources" />
-	<property name="webinf.dir" value="${webapp.dir}/WEB-INF" />
-	<property name="js.dir" value="${webapp.dir}/js" />
-	<property name="class.dir" value="${webinf.dir}/classes" />
-	<property name="lib.dir" value="${webinf.dir}/lib" />
-	<property name="gwt.compiled.dir" value="${webapp.dir}/app" />
-	<property name="userdata.dir" value="userdatas" />
-	<property name="env.props" value="${env}.properties" />
-	<property name="gwt.src.root.dir" value="${src.dir}\ru\curs\showcase\app" />
-	<property name="general.props.file" value="general.properties" />
+	<property environment="os" />
+	<target name="checkProperties">
+		<fail unless="os.JAVA_HOME">JAVA_HOME must be set</fail>
+	</target>
+
+	<property name="sc.dist.dir" value="dist" />
+	<property name="sc.extragwt.dir" value="extragwt" />
+	<property name="sc.datagrid.dir" value="datagrid" />
+	<property name="sc.src.dir" value="src" />
+	<property name="sc.tmp.dir" value="tmp" />
+	<property name="sc.runtime.dir" value="runtime" />
+	<property name="sc.webapp.dir" value="WebContent" />
+	<property name="sc.war.file" value="${sc.dist.dir}/${appname}.war" />
+	<property name="sc.war_ext.file" value="${sc.dist.dir}/${appname}_ext.war" />
+	<property name="sc.images.dir" value="${sc.webapp.dir}/resources" />
+	<property name="sc.webinf.dir" value="${sc.webapp.dir}/WEB-INF" />
+	<property name="sc.js.dir" value="${sc.webapp.dir}/js" />
+	<property name="sc.class.dir" value="${sc.webinf.dir}/classes" />
+	<property name="sc.lib.dir" value="${sc.webinf.dir}/lib" />
+	<property name="sc.gwt.compiled.dir" value="${sc.webapp.dir}/app" />
+	<property name="sc.userdata.dir" value="userdatas" />
+	<property name="sc.env.props" value="${env}.properties" />
+	<property name="sc.gwt.src.root.dir" value="${sc.src.dir}\ru\curs\showcase\app" />
+	<property name="sc.general.props.file" value="general.properties" />
 
 	<property file="${env.props}" />
-	<property file="${userdata.dir}/app.properties" />
-	<!--  нужно чтобы работали основные функции (!) при отсутствии local.properties -->
-	<property name="servlet.cont.lib.dir" value="" />
-	<property name="deploy.dir" value="" />
-	<property name="servlet.cont.lib.dir" value="" />
 
 	<tstamp>
 		<format property="cur_date" pattern="MM.dd" locale="ru,RU" />
 	</tstamp>
-	<property name="db.backup.name" value="showcase-test-${cur_date}" />
+	<property name="sc.db.backup.name" value="showcase-test-${cur_date}" />
 
 	<path id="master-classpath" description="Master CLASSPATH for this script">
-		<fileset dir="${lib.dir}">
+		<fileset dir="${sc.lib.dir}">
 			<include name="*.jar" />
 		</fileset>
-		<fileset dir="${servlet.cont.lib.dir}">
+		<fileset dir="${sc.servlet.cont.dir}/lib">
 			<include name="*.jar" />
 		</fileset>
-		<fileset dir="${gwt.dir}">
+		<fileset dir="${sc.gwt.dir}">
 			<include name="*.jar" />
 		</fileset>
-		<fileset dir="${junit.dir}">
+		<fileset dir="${sc.junit.dir}">
 			<include name="*.jar" />
 		</fileset>
-		<pathelement location="${webinf.dir}/classes/" />
+		<pathelement location="${sc.webinf.dir}/classes/" />
 	</path>
 
 	<path id="test-classpath" description="CLASSPATH for unittests">
-		<fileset dir="${junit.dir}">
+		<fileset dir="${sc.junit.dir}">
 			<include name="*.jar" />
 		</fileset>
-		<fileset dir="${runtime.dir}/lib">
+		<fileset dir="${sc.runtime.dir}/lib">
 			<include name="*.jar" />
 		</fileset>
-		<fileset dir="${servlet.cont.dir}/bin">
+		<fileset dir="${sc.servlet.cont.dir}/bin">
 			<include name="*.jar" />
 		</fileset>
-		<pathelement path="${datagrid.dir}" />
-		<pathelement path="${extragwt.dir}" />
+		<pathelement path="${sc.datagrid.dir}" />
+		<pathelement path="${sc.extragwt.dir}" />
 	</path>
 
 	<target name="info" description="Show wise configuration info">
-		<echo>Соединение с SQL Server "${rdbms.name}" и развертывание на контейнере сервлетов "${servlet.cont.dir}"</echo>
+		<echo>Соединение с SQL Server "${sc.rdbms.name}" и развертывание на контейнере сервлетов "${sc.servlet.cont.dir}"</echo>
 	</target>
 
 	<target name="init.local.files" description="Create local files">
 		<copy overwrite="no" verbose="true" file="local.properties.template" tofile="local.properties" />
 		<copy overwrite="no" verbose="true" file=".classpath.template" tofile=".classpath" />
-		<copy overwrite="no" verbose="true" file="${src.dir}/${general.props.file}.template" tofile="${src.dir}/${general.props.file}" />
-		<copy overwrite="no" verbose="true" file="${userdata.dir}/app.properties.template" tofile="${userdata.dir}/app.properties" />
-		<copy overwrite="no" verbose="true" file="${userdata.dir}/gridproperties/default.properties.template" tofile="${userdata.dir}/gridproperties/default.properties" />
-		<copy overwrite="no" verbose="true" file="${src.dir}/log4j.xml.template" tofile="${src.dir}/log4j.xml" />
-		<echo>Не забудьте указать правильные настройки в файлах local.properties, ${general.props.file} и app.properties, а также настроить classpath (Build path) с помощью Eclipse</echo>
+		<copy overwrite="no" verbose="true" file="${sc.src.dir}/${sc.general.props.file}.template" tofile="${sc.src.dir}/${sc.general.props.file}" />
+		<copy overwrite="no" verbose="true" file="${sc.userdata.dir}/app.properties.template" tofile="${sc.userdata.dir}/app.properties" />
+		<copy overwrite="no" verbose="true" file="${sc.userdata.dir}/gridproperties/default.properties.template" tofile="${sc.userdata.dir}/gridproperties/default.properties" />
+		<copy overwrite="no" verbose="true" file="${sc.src.dir}/log4j.xml.template" tofile="${sc.src.dir}/log4j.xml" />
+		<echo>Не забудьте указать правильные настройки в файлах local.properties, ${sc.general.props.file} и app.properties, а также настроить classpath (Build path) с помощью Eclipse</echo>
 	</target>
 
 	<target name="init.dirs" depends="info" description="Create some base dirs">
-		<mkdir dir="${dist.dir}" />
-		<mkdir dir="${images.dir}" />
-		<mkdir dir="${class.dir}" />
-		<mkdir dir="${tmp.dir}" />
-		<mkdir dir="${js.dir}" />
+		<mkdir dir="${sc.dist.dir}" />
+		<mkdir dir="${sc.images.dir}" />
+		<mkdir dir="${sc.class.dir}" />
+		<mkdir dir="${sc.tmp.dir}" />
+		<mkdir dir="${sc.js.dir}" />
 	</target>
 
 	<!--<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
@@ -99,7 +95,7 @@
 	<target name="compile" depends="init.dirs" description="Compiles .java files to WAR directory">
 		<!--Вариант с org.aspectj.tools.ant.taskdefs.Ajc11Compiler не работал при запуске из Eclipse-->
 		<!--Сейчас компилируем обычным javac-->
-		<javac source="1.7" target="1.7" includeantruntime="false" encoding="UTF-8" srcdir="${src.dir}; datagrid; extragwt" destdir="${class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java">
+		<javac source="1.7" target="1.7" includeantruntime="false" encoding="UTF-8" srcdir="${sc.src.dir}; datagrid; extragwt" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java">
 		</javac>
 		<!--<iajc source="1.6" target="1.6" encoding="UTF-8" destdir="${class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java">
 			<sourceroots>
@@ -111,8 +107,8 @@
 	</target>
 
 	<target name="build" depends="compile">
-		<copy todir="${class.dir}">
-			<fileset dir="${src.dir}">
+		<copy todir="${sc.class.dir}">
+			<fileset dir="${sc.src.dir}">
 				<include name="**/*" />
 				<exclude name="**/*.java" />
 				<exclude name="**/*.template" />
@@ -125,15 +121,15 @@
 		<java classname="com.google.gwt.dev.Compiler" fork="true">
 			<classpath>
 				<!--  порядок важен! -->
-				<pathelement path="${src.dir}" />
-				<pathelement path="${datagrid.dir}" />
-				<pathelement path="${extragwt.dir}" />
-				<pathelement path="${lib.dir}/${gquery-dnd-bundle}" />
-				<pathelement path="${gwt.dir}/gwt-dev.jar" />
-				<pathelement path="${gwt.dir}/gwt-user.jar" />
+				<pathelement path="${sc.src.dir}" />
+				<pathelement path="${sc.datagrid.dir}" />
+				<pathelement path="${sc.extragwt.dir}" />
+				<pathelement path="${sc.lib.dir}/${sc.gquery-dnd-bundle}" />
+				<pathelement path="${sc.gwt.dir}/gwt-dev.jar" />
+				<pathelement path="${sc.gwt.dir}/gwt-user.jar" />
 			</classpath>
 			<classpath refid="master-classpath" />
-			<arg line="-war ${webapp.dir}" />
+			<arg line="-war ${sc.webapp.dir}" />
 			<arg line="ru.curs.showcase.app.App" />
 			<jvmarg line="-Dgwt.persistentunitcachedir=tmp" />
 		</java>
@@ -141,22 +137,22 @@
 
 	<target name="clean" description="Deletes files from war, tmp and dist directories">
 		<delete includeemptydirs="true" failonerror="false">
-			<fileset dir="${gwt.compiled.dir}">
+			<fileset dir="${sc.gwt.compiled.dir}">
 			</fileset>
 		</delete>
 		<delete includeemptydirs="true" failonerror="false">
-			<fileset dir="${dist.dir}">
+			<fileset dir="${sc.dist.dir}">
 				<exclude name="js/**" />
 				<exclude name="jython/**" />
 				<exclude name="patches/**" />
 			</fileset>
 		</delete>
 		<delete includeemptydirs="true" failonerror="false">
-			<fileset dir="${tmp.dir}">
+			<fileset dir="${sc.tmp.dir}">
 			</fileset>
 		</delete>
 		<delete includeemptydirs="true" failonerror="false">
-			<fileset dir="${class.dir}">
+			<fileset dir="${sc.class.dir}">
 			</fileset>
 		</delete>
 	</target>
@@ -165,48 +161,58 @@
 
 	<target name="dist" description="Assembles WAR file">
 		<echo>Prepare for GWT build for all browsers</echo>
-		<copy tofile="${tmp.dir}\App.gwt.xml.re" file="${gwt.src.root.dir}\App.gwt.xml" overwrite="true" />
-		<copy tofile="${gwt.src.root.dir}\App.gwt.xml" file="${gwt.src.root.dir}\App.gwt.xml.template" overwrite="true" />
+		<copy tofile="${sc.tmp.dir}\App.gwt.xml.re" file="${sc.gwt.src.root.dir}\App.gwt.xml" overwrite="true" />
+		<copy tofile="${sc.gwt.src.root.dir}\App.gwt.xml" file="${sc.gwt.src.root.dir}\App.gwt.xml.template" overwrite="true" />
 		<antcall target="build.with.gwt" />
 
-		<antcall target="get.app.version" />
-		<antcall target="get.gwt.version" />
+		<antcall target="write.app.version" />
+		<antcall target="write.gwt.version" />
 
 		<echo>Make dir for war and copy compiled data</echo>
-		<mkdir dir="${dist.dir}/war" />
-		<copy todir="${dist.dir}/war" overwrite="no">
-			<fileset dir="${webapp.dir}">
+		<mkdir dir="${sc.dist.dir}/war" />
+		<copy todir="${sc.dist.dir}/war" overwrite="no">
+			<fileset dir="${sc.webapp.dir}">
 				<include name="**/*" />
 			</fileset>
 		</copy>
 
 		<echo>Copy sources to war</echo>
-		<copy todir="${dist.dir}/war/WEB-INF/src/core">
-			<fileset dir="${src.dir}">
+		<copy todir="${sc.dist.dir}/war/WEB-INF/src/core">
+			<fileset dir="${sc.src.dir}">
 				<include name="**/*.java" />
 			</fileset>
 		</copy>
-		<copy todir="${dist.dir}/war/WEB-INF/src/${extragwt.dir}">
-			<fileset dir="${extragwt.dir}">
+		<copy todir="${sc.dist.dir}/war/WEB-INF/src/${sc.extragwt.dir}">
+			<fileset dir="${sc.extragwt.dir}">
 				<include name="**/*.java" />
 			</fileset>
 		</copy>
-		<copy todir="${dist.dir}/war/WEB-INF/src/${datagrid.dir}">
-			<fileset dir="${datagrid.dir}">
+		<copy todir="${sc.dist.dir}/war/WEB-INF/src/${sc.datagrid.dir}">
+			<fileset dir="${sc.datagrid.dir}">
 				<include name="**/*.java" />
-			</fileset>
-		</copy>
-
-		<echo>Copy runtime libs</echo>
-		<copy todir="${dist.dir}/war/WEB-INF/lib">
-			<fileset dir="${runtime.dir}/lib">
-				<include name="**/*.jar" />
 			</fileset>
 		</copy>
 
 		<echo>Making war not love</echo>
-		<war destfile="${war.file}">
-			<fileset dir="${dist.dir}/war">
+		<war destfile="${sc.war.file}">
+			<fileset dir="${sc.dist.dir}/war">
+				<include name="**/*" />
+				<exclude name="**/*mock*.jar" />
+				<exclude name="**/*.template" />
+				<exclude name="debug.jsp" />
+			</fileset>
+		</war>
+
+		<echo>Copy runtime libs</echo>
+		<copy todir="${sc.dist.dir}/war/WEB-INF/lib">
+			<fileset dir="${sc.runtime.dir}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+
+		<echo>Making mega war</echo>
+		<war destfile="${sc.war_ext.file}">
+			<fileset dir="${sc.dist.dir}/war">
 				<include name="**/*" />
 				<exclude name="**/*mock*.jar" />
 				<exclude name="**/*.template" />
@@ -215,33 +221,33 @@
 		</war>
 
 		<echo>Clearing after make war</echo>
-		<delete dir="${dist.dir}/war" failonerror="false" />
+		<delete dir="${sc.dist.dir}/war" failonerror="false" />
 		<copy tofile="WebContent\WEB-INF\classes\build" file="src\build" failonerror="false" overwrite="true" />
-		<copy tofile="${gwt.src.root.dir}\App.gwt.xml" file="${tmp.dir}\App.gwt.xml.re" overwrite="true" />
+		<copy tofile="${sc.gwt.src.root.dir}\App.gwt.xml" file="${sc.tmp.dir}\App.gwt.xml.re" overwrite="true" />
 	</target>
 
 	<target name="dist.with.userdata" description="Assembles WAR file with test data">
-		<mkdir dir="${dist.dir}/war" />
-		<copy todir="${dist.dir}/war/WEB-INF/${userdata.dir}">
-			<fileset dir="${userdata.dir}">
+		<mkdir dir="${sc.dist.dir}/war" />
+		<copy todir="${sc.dist.dir}/war/WEB-INF/${sc.userdata.dir}">
+			<fileset dir="${sc.userdata.dir}">
 				<include name="**/*" />
 			</fileset>
 		</copy>
-		<copy file="${src.dir}/${general.props.file}.template" overwrite="true" tofile="${dist.dir}/war/WEB-INF/classes/${general.props.file}" />
+		<copy file="${sc.src.dir}/${sc.general.props.file}.template" overwrite="true" tofile="${sc.dist.dir}/war/WEB-INF/classes/${sc.general.props.file}" />
 		<antcall target="dist" />
 	</target>
 
 	<target name="copy.runtime">
-		<copy todir="${deploy.dir}/${ant.project.name}/WEB-INF/lib" failonerror="false">
-			<fileset dir="${runtime.dir}/lib">
+		<copy todir="${sc.deploy.dir}/${ant.project.name}/WEB-INF/lib" failonerror="false">
+			<fileset dir="${sc.runtime.dir}/lib">
 				<include name="**/*.jar" />
-			</fileset>			
+			</fileset>
 		</copy>
 	</target>
 
-	<target name="deploy.tomcat" depends="clean, dist" description="Deploys WAR file with test data to ${deploy.dir}">
-		<delete failonerror="true" dir="${deploy.dir}/${appname}" />
-		<copy file="${war.file}" todir="${deploy.dir}" />
+	<target name="deploy.tomcat" depends="clean, dist" description="Deploys WAR file with test data to ${sc.deploy.dir}">
+		<delete failonerror="true" dir="${sc.deploy.dir}/${appname}" />
+		<copy file="${sc.war.file}" todir="${sc.deploy.dir}" />
 	</target>
 
 	<target name="test" depends="compile">
@@ -253,7 +259,7 @@
 
 			<batchtest todir="tmp" fork="true" haltonerror="true">
 				<formatter type="plain" />
-				<fileset dir="${class.dir}">
+				<fileset dir="${sc.class.dir}">
 					<include name="**/*Test.class" />
 					<exclude name="**/Abstract*.class" />
 					<exclude name="**/*GWTTest.class" />
@@ -264,93 +270,128 @@
 
 	<target name="init.dojo" depends="info">
 		<echo>Deleting old dojo files</echo>
-		<delete failonerror="false" dir="${js.dir}/dojo" />
-		<delete failonerror="false" dir="${js.dir}/dijit" />
-		<delete failonerror="false" dir="${js.dir}/dojox" />
+		<delete failonerror="false" dir="${sc.js.dir}/dojo" />
+		<delete failonerror="false" dir="${sc.js.dir}/dijit" />
+		<delete failonerror="false" dir="${sc.js.dir}/dojox" />
 		<echo>Unpack new dojo files</echo>
-		<unzip src="${dist.dir}/js/dojo.zip" dest="${js.dir}">
+		<unzip src="${sc.dist.dir}/js/dojo.zip" dest="${sc.js.dir}">
 		</unzip>
-		<unzip src="${dist.dir}/js/dijit.zip" dest="${js.dir}">
+		<unzip src="${sc.dist.dir}/js/dijit.zip" dest="${sc.js.dir}">
 		</unzip>
-		<unzip src="${dist.dir}/js/dojox.zip" dest="${js.dir}">
+		<unzip src="${sc.dist.dir}/js/dojox.zip" dest="${sc.js.dir}">
 		</unzip>
 	</target>
 
 	<target name="init.jython" depends="info">
 		<echo>Deleting old jython files</echo>
-		<delete failonerror="false" dir="${webinf.dir}/libJython" />
+		<delete failonerror="false" dir="${sc.webinf.dir}/libJython" />
 		<echo>Unpack new jython files</echo>
-		<unzip src="${dist.dir}/jython/libJython.zip" dest="${webinf.dir}" />
+		<unzip src="${sc.dist.dir}/jython/libJython.zip" dest="${sc.webinf.dir}" />
 	</target>
 
 	<target name="copy.patches" depends="info">
-		<copy todir="${webapp.dir}" overwrite="true">
-			<fileset dir="${dist.dir}/patches">
+		<copy todir="${sc.webapp.dir}" overwrite="true">
+			<fileset dir="${sc.dist.dir}/patches">
 			</fileset>
 		</copy>
 	</target>
 
 	<target name="deploy.trunk" depends="clean, dist">
 		<echo>Deploying trunk distr to server</echo>
-		<zip destfile="${dist.dir}/userdata.zip">
+		<zip destfile="${sc.dist.dir}/userdata.zip">
 			<zipfileset dir="." includes="userdata*/**" />
 		</zip>
+
 		<antcall target="backup.db" />
+
 		<echo>Copy files to server</echo>
-		<move todir="${trunk.deploy.path}" file="${dist.dir}/userdata.zip" overwrite="true" />
-		<move todir="${trunk.deploy.path}" file="${dist.dir}/Showcase.war" overwrite="true" />
-		<copy todir="${trunk.deploy.path}" file="${db.backup.path}\${db.backup.name}.zip" overwrite="true" />
+		<move todir="${sc.trunk.deploy.path}" file="${sc.dist.dir}/userdata.zip" overwrite="true" />
+		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}" overwrite="true" />
+		<move todir="${sc.trunk.deploy.path}" file="${sc.war_ext.file}" overwrite="true" />
+		<copy todir="${sc.trunk.deploy.path}" file="${sc.db.backup.path}\${sc.db.backup.name}.zip" overwrite="true" />
 	</target>
 
 	<target name="backup.db" depends="info">
 		<echo>Making backup of test DB</echo>
-		<exec executable="${sqlutil.path}\\SQLUtil_n_nokey.exe">
-			<arg value="-server_name=${rdbms.name}" />
+		<exec executable="${sc.sqlutil.path}\\SQLUtil_n_nokey.exe">
+			<arg value="-server_name=${sc.rdbms.name}" />
 			<arg value="-user_name=sa" />
 			<arg value="-user_pass=F708420Dx" />
 			<arg value="-backup" />
-			<arg value="-free_file=${db.backup.path}\${db.backup.name}.mbk" />
+			<arg value="-free_file=${sc.db.backup.path}\${sc.db.backup.name}.mbk" />
 		</exec>
-		<zip destfile="${db.backup.path}\${db.backup.name}.zip">
-			<zipfileset file="${db.backup.path}\${db.backup.name}.mbk" />
+		<zip destfile="${sc.db.backup.path}\${sc.db.backup.name}.zip">
+			<zipfileset file="${sc.db.backup.path}\${sc.db.backup.name}.mbk" />
 		</zip>
-		<delete file="${db.backup.path}\${db.backup.name}.mbk" />
+		<delete file="${sc.db.backup.path}\${sc.db.backup.name}.mbk" />
 	</target>
 
-	<target name="get.gwt.version" depends="info">
+	<target name="write.gwt.version" depends="info">
 		<echo>Update gwt version</echo>
-		<exec resolveexecutable="true" executable="java" output="WebContent\WEB-INF\classes\gwtversion" dir="${gwt.dir}">
+		<exec resolveexecutable="true" executable="java" output="WebContent\WEB-INF\classes\gwtversion" dir="${sc.gwt.dir}">
 			<arg value="-jar" />
 			<arg value="gwt-dev.jar" />
 		</exec>
 	</target>
 
-	<target name="get.app.version" depends="info">
+	<target name="write.app.version" depends="info.svn">
 		<echo>Update build number</echo>
-		<exec resolveexecutable="true" executable="svnver\svnversion.exe" output="WebContent\WEB-INF\classes\build" dir="." />
+		<echo file="WebContent\WEB-INF\classes\build" message="${sc.last.rev}"/>
 	</target>
 
 	<target name="init.ws.tests">
-		<echo>Updating WS test files from ${webapp}/forall/webservices?wsdl</echo>
+		<echo>Updating WS test files from ${sc.webapp}/forall/webservices?wsdl</echo>
 		<exec resolveexecutable="true" executable="cmd" dir=".">
 			<arg value="/c" />
 			<arg value="wsimport" />
 			<arg line="-s src" />
 			<arg value="-Xnocompile" />
 			<arg line="-p ru.curs.showcase.test.ws" />
-			<arg value="${webapp}/forall/webservices?wsdl" />
+			<arg value="${sc.webapp}/forall/webservices?wsdl" />
 		</exec>
-	</target>	
-	
-	<target name="compile.ws.schemas" description="Compile Java classes for WS by XSD Schemas">
-	    <exec executable="${os.JAVA_HOME}/bin/xjc.exe">
-	        <arg value="-d"/>
-	        <arg value="src"/>
-	        <arg value="-p"/>
-	        <arg value="ru.curs.showcase.app.server.ws"/>	    	
-	        <arg value="userdatas/default/schemas/ws"/>
-	    </exec>
-	</target>	
+	</target>
 
+	<target name="compile.ws.schemas" description="Compile Java classes for WS by XSD Schemas">
+		<exec executable="${os.JAVA_HOME}/bin/xjc.exe">
+			<arg value="-d" />
+			<arg value="src" />
+			<arg value="-p" />
+			<arg value="ru.curs.showcase.app.server.ws" />
+			<arg value="userdatas/default/schemas/ws" />
+		</exec>
+	</target>
+
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" />
+
+	<svnSetting javahl="true" svnkit="false" username="Denis" password="dzua1c5r" id="svn.settings" certreject="false"/>
+	
+	<property name="sc.last.rev" value=""/>
+	<target name="info.svn">
+		<svn refid="svn.settings">
+			<singleinfo target="." property="sc.last.rev" request="lastRevision"/>			
+		</svn>
+		<echo>Последняя версия кода в хранилище ${sc.last.rev}</echo>			
+	</target>
+
+	<target name="info.env">
+		<echo>System properties</echo>
+		<echoproperties>
+			<propertyset>
+				<propertyref builtin="system" />
+			</propertyset>
+		</echoproperties>
+		<echo>Local properties</echo>
+		<echoproperties>
+			<propertyset>
+				<propertyref prefix="sc." />
+			</propertyset>
+		</echoproperties>
+	</target>
+	
+	<target name="svn.update">
+		<svn refid="svn.settings">
+			<update dir="." recurse="true"/>		
+		</svn>		
+	</target>	
 </project>
 
