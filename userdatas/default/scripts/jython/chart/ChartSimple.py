@@ -9,7 +9,7 @@ from ru.curs.showcase.model.jython import JythonDTO
 #from ru.curs.showcase.app.api import UserMessage
 #from ru.curs.showcase.util.xml import XMLUtils
 #from org.xml.sax.helpers import DefaultHandler
-#from ru.curs.showcase.util import TextUtils
+
 
 # init vars
 main = ""
