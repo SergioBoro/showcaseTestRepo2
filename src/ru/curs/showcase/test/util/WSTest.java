@@ -94,7 +94,7 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 	private ShowcaseExternals prepareWS() throws IOException {
 		Properties localprops = new Properties();
 		localprops.load(new FileInputStream("local.properties"));
-		Endpoint.publish(localprops.getProperty("webapp") + "/forall/webservices",
+		Endpoint.publish(localprops.getProperty("sc.webapp") + "/forall/webservices",
 				new ru.curs.showcase.app.server.ws.ShowcaseExternals());
 		ShowcaseExternalsService service = new ShowcaseExternalsService();
 		ShowcaseExternals port = service.getPort(ShowcaseExternals.class);

@@ -1,11 +1,8 @@
-<project name="Showcase" basedir="." default="build">
+<project name="Showcase" basedir="." default="build">	
 	<property name="appname" value="${ant.project.name}" />
 	<property name="env" value="local" />
 
 	<property environment="os" />
-	<target name="checkProperties">
-		<fail unless="os.JAVA_HOME">JAVA_HOME must be set</fail>
-	</target>
 
 	<property name="sc.dist.dir" value="dist" />
 	<property name="sc.extragwt.dir" value="extragwt" />
@@ -14,26 +11,38 @@
 	<property name="sc.tmp.dir" value="tmp" />
 	<property name="sc.runtime.dir" value="runtime" />
 	<property name="sc.webapp.dir" value="WebContent" />
-	<property name="sc.war.file" value="${sc.dist.dir}/${appname}.war" />
-	<property name="sc.war_ext.file" value="${sc.dist.dir}/${appname}_ext.war" />
 	<property name="sc.images.dir" value="${sc.webapp.dir}/resources" />
 	<property name="sc.webinf.dir" value="${sc.webapp.dir}/WEB-INF" />
 	<property name="sc.js.dir" value="${sc.webapp.dir}/js" />
 	<property name="sc.class.dir" value="${sc.webinf.dir}/classes" />
 	<property name="sc.lib.dir" value="${sc.webinf.dir}/lib" />
 	<property name="sc.gwt.compiled.dir" value="${sc.webapp.dir}/app" />
-	<property name="sc.userdata.dir" value="userdatas" />
-	<property name="sc.env.props" value="${env}.properties" />
+	<property name="sc.userdata.dir" value="userdatas" />	
 	<property name="sc.gwt.src.root.dir" value="${sc.src.dir}\ru\curs\showcase\app" />
 	<property name="sc.general.props.file" value="general.properties" />
+	<property name="sc.war.file" value="${sc.dist.dir}/${appname}" />	
+	
+	<property name="sc.env.props" value="${env}.properties" />	
+	<property file="${sc.env.props}" />
+	
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" />
 
-	<property file="${env.props}" />
-
+	<svnSetting javahl="false" svnkit="false" 
+		id="svn.settings" certreject="false"/>	
+	
 	<tstamp>
 		<format property="cur_date" pattern="MM.dd" locale="ru,RU" />
 	</tstamp>
 	<property name="sc.db.backup.name" value="showcase-test-${cur_date}" />
-
+	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>	
+	<target name="info.version" depends="info.svn">
+		<loadfile property="sc.version" srcFile="${sc.src.dir}/version"/>			
+		<echo>Версия Showcase ${sc.version}.${sc.last.rev}</echo>
+		<var name="sc.war.file" unset="true"/>
+		<property name="sc.war.file" value="${sc.dist.dir}/${appname}-${sc.version}.${sc.last.rev}" />		
+	</target>
+	
 	<path id="master-classpath" description="Master CLASSPATH for this script">
 		<fileset dir="${sc.lib.dir}">
 			<include name="*.jar" />
@@ -64,6 +73,10 @@
 		<pathelement path="${sc.extragwt.dir}" />
 	</path>
 
+	<target name="checkProperties">
+		<fail unless="os.JAVA_HOME">JAVA_HOME must be set</fail>
+	</target>	
+	
 	<target name="info" description="Show wise configuration info">
 		<echo>Соединение с SQL Server "${sc.rdbms.name}" и развертывание на контейнере сервлетов "${sc.servlet.cont.dir}"</echo>
 	</target>
@@ -157,9 +170,9 @@
 		</delete>
 	</target>
 
-	<target name="rebuild" depends="clean, build" />
+	<target name="rebuild" depends="clean, build" description="clean + build"/>
 
-	<target name="dist" description="Assembles WAR file">
+	<target name="dist" depends="info.version" description="Assembles WAR file">
 		<echo>Prepare for GWT build for all browsers</echo>
 		<copy tofile="${sc.tmp.dir}\App.gwt.xml.re" file="${sc.gwt.src.root.dir}\App.gwt.xml" overwrite="true" />
 		<copy tofile="${sc.gwt.src.root.dir}\App.gwt.xml" file="${sc.gwt.src.root.dir}\App.gwt.xml.template" overwrite="true" />
@@ -194,7 +207,7 @@
 		</copy>
 
 		<echo>Making war not love</echo>
-		<war destfile="${sc.war.file}">
+		<war destfile="${sc.war.file}.war">
 			<fileset dir="${sc.dist.dir}/war">
 				<include name="**/*" />
 				<exclude name="**/*mock*.jar" />
@@ -211,7 +224,7 @@
 		</copy>
 
 		<echo>Making mega war</echo>
-		<war destfile="${sc.war_ext.file}">
+		<war destfile="${sc.war.file}-ext.war">
 			<fileset dir="${sc.dist.dir}/war">
 				<include name="**/*" />
 				<exclude name="**/*mock*.jar" />
@@ -247,7 +260,7 @@
 
 	<target name="deploy.tomcat" depends="clean, dist" description="Deploys WAR file with test data to ${sc.deploy.dir}">
 		<delete failonerror="true" dir="${sc.deploy.dir}/${appname}" />
-		<copy file="${sc.war.file}" todir="${sc.deploy.dir}" />
+		<copy file="${sc.war.file}.war" todir="${sc.deploy.dir}" />
 	</target>
 
 	<target name="test" depends="compile">
@@ -296,18 +309,18 @@
 		</copy>
 	</target>
 
-	<target name="deploy.trunk" depends="clean, dist">
+	<target name="deploy.trunk" depends="clean, svn.update, dist" description="Clean deploying to server with last svn sources">
 		<echo>Deploying trunk distr to server</echo>
-		<zip destfile="${sc.dist.dir}/userdata.zip">
+		<zip destfile="${sc.dist.dir}/userdata-${sc.version}.${sc.last.rev}.zip">
 			<zipfileset dir="." includes="userdata*/**" />
 		</zip>
 
 		<antcall target="backup.db" />
 
 		<echo>Copy files to server</echo>
-		<move todir="${sc.trunk.deploy.path}" file="${sc.dist.dir}/userdata.zip" overwrite="true" />
-		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}" overwrite="true" />
-		<move todir="${sc.trunk.deploy.path}" file="${sc.war_ext.file}" overwrite="true" />
+		<move todir="${sc.trunk.deploy.path}" file="${sc.dist.dir}/userdata-${sc.version}.${sc.last.rev}.zip" overwrite="true" />
+		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}.war" overwrite="true" />
+		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}-ext.war" overwrite="true" />
 		<copy todir="${sc.trunk.deploy.path}" file="${sc.db.backup.path}\${sc.db.backup.name}.zip" overwrite="true" />
 	</target>
 
@@ -360,17 +373,12 @@
 			<arg value="userdatas/default/schemas/ws" />
 		</exec>
 	</target>
-
-	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" />
-
-	<svnSetting javahl="false" svnkit="false" username="Denis" password="dzua1c5r" id="svn.settings" certreject="false"/>
 	
-	<property name="sc.last.rev" value=""/>
 	<target name="info.svn">
 		<svn refid="svn.settings">
 			<singleinfo target="." property="sc.last.rev" request="lastRevision"/>			
 		</svn>
-		<echo>Последняя версия кода в хранилище ${sc.last.rev}</echo>			
+		<echo>Последняя версия кода в хранилище ${sc.last.rev}</echo>	
 	</target>
 
 	<target name="info.env">
@@ -390,8 +398,13 @@
 	
 	<target name="svn.update">
 		<svn refid="svn.settings">
-			<update dir="." recurse="true"/>		
+			<update dir="." recurse="true"/>
 		</svn>		
+	</target>	
+	
+	<target name="test.all">
+		<antcall target="build.with.gwt" />			
+		<antcall target="test" />	
 	</target>	
 </project>
 
