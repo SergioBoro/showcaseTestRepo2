@@ -21,6 +21,11 @@ public class JythonPossibilitiesTest extends AbstractTest {
 	private static final String TMP_SXSSF_XLSX = "tmp/sxssf.xlsx";
 
 	@Test
+	public void testJasperReport() {
+		testFileCreateBase("jasperReport/pdfCreate.py", TMP_TEST_PDF);
+	}
+
+	@Test
 	public void testPOI() {
 		testFileCreateBase("poi/excelCreate.py", TMP_SXSSF_XLSX);
 	}
@@ -39,11 +44,6 @@ public class JythonPossibilitiesTest extends AbstractTest {
 
 		File output = new File(outputFile);
 		assertTrue(output.exists());
-	}
-
-	@Test
-	public void testJasperReport() {
-		testFileCreateBase("jasperReport/pdfCreate.py", TMP_TEST_PDF);
 	}
 
 }

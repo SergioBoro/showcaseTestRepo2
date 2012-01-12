@@ -47,7 +47,7 @@ def mainproc():
                         <action >
                             <main_context>current</main_context>                        
                             <server>
-                                <activity id="srv01" name="ireport/pdfCreate.py">
+                                <activity id="srv01" name="jasperReport/pdfCreate.py">
                                     <add_context>../webapps/Showcase/''' + pdf + u'''</add_context>
                                 </activity>
                             </server>

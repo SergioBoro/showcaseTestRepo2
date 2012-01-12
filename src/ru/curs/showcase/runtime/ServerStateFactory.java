@@ -19,7 +19,7 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class ServerStateFactory {
 
-	private static final String DOJO_VERSION_FILE = "../../js/dojo/package.json";
+	private static final String DOJO_VERSION_FILE = "/js/dojo/package.json";
 	private static final String GWTVERSION_FILE = "gwtversion";
 	private static final String BUILD_FILE = "build";
 	private static final String VERSION_FILE = "version";
@@ -85,14 +85,14 @@ public final class ServerStateFactory {
 	}
 
 	private static String getDojoVersion() {
-		URL url = FileUtils.getResURL(DOJO_VERSION_FILE);
-		if (url == null) {
+		File file = new File(AppInfoSingleton.getAppInfo().getWebAppPath() + DOJO_VERSION_FILE);
+		if (!file.exists()) {
 			return null;
 		}
 
 		String data;
 		try {
-			InputStream is = url.openStream();
+			InputStream is = new FileInputStream(file);
 			data = TextUtils.streamToString(is);
 		} catch (IOException e) {
 			return null;

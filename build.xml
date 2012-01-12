@@ -1,4 +1,4 @@
-<project name="Showcase" basedir="." default="build">	
+<project name="Showcase" basedir="." default="build">
 	<property name="appname" value="${ant.project.name}" />
 	<property name="env" value="local" />
 
@@ -17,32 +17,31 @@
 	<property name="sc.class.dir" value="${sc.webinf.dir}/classes" />
 	<property name="sc.lib.dir" value="${sc.webinf.dir}/lib" />
 	<property name="sc.gwt.compiled.dir" value="${sc.webapp.dir}/app" />
-	<property name="sc.userdata.dir" value="userdatas" />	
+	<property name="sc.userdata.dir" value="userdatas" />
 	<property name="sc.gwt.src.root.dir" value="${sc.src.dir}\ru\curs\showcase\app" />
 	<property name="sc.general.props.file" value="general.properties" />
-	<property name="sc.war.file" value="${sc.dist.dir}/${appname}" />	
-	
-	<property name="sc.env.props" value="${env}.properties" />	
+	<property name="sc.war.file" value="${sc.dist.dir}/${appname}" />
+
+	<property name="sc.env.props" value="${env}.properties" />
 	<property file="${sc.env.props}" />
-	
+
 	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" />
 
-	<svnSetting javahl="false" svnkit="false" 
-		id="svn.settings" certreject="false"/>	
-	
+	<svnSetting javahl="false" svnkit="false" id="svn.settings" certreject="false" />
+
 	<tstamp>
 		<format property="cur_date" pattern="MM.dd" locale="ru,RU" />
 	</tstamp>
 	<property name="sc.db.backup.name" value="showcase-test-${cur_date}" />
-	
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>	
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
 	<target name="info.version" depends="info.svn">
-		<loadfile property="sc.version" srcFile="${sc.src.dir}/version"/>			
+		<loadfile property="sc.version" srcFile="${sc.src.dir}/version" />
 		<echo>Версия Showcase ${sc.version}.${sc.last.rev}</echo>
-		<var name="sc.war.file" unset="true"/>
-		<property name="sc.war.file" value="${sc.dist.dir}/${appname}-${sc.version}.${sc.last.rev}" />		
+		<var name="sc.war.file" unset="true" />
+		<property name="sc.war.file" value="${sc.dist.dir}/${appname}-${sc.version}.${sc.last.rev}" />
 	</target>
-	
+
 	<path id="master-classpath" description="Master CLASSPATH for this script">
 		<fileset dir="${sc.lib.dir}">
 			<include name="*.jar" />
@@ -51,9 +50,6 @@
 			<include name="*.jar" />
 		</fileset>
 		<fileset dir="${sc.gwt.dir}">
-			<include name="*.jar" />
-		</fileset>
-		<fileset dir="${sc.junit.dir}">
 			<include name="*.jar" />
 		</fileset>
 		<pathelement location="${sc.webinf.dir}/classes/" />
@@ -75,8 +71,8 @@
 
 	<target name="checkProperties">
 		<fail unless="os.JAVA_HOME">JAVA_HOME must be set</fail>
-	</target>	
-	
+	</target>
+
 	<target name="info" description="Show wise configuration info">
 		<echo>Соединение с SQL Server "${sc.rdbms.name}" и развертывание на контейнере сервлетов "${sc.servlet.cont.dir}"</echo>
 	</target>
@@ -170,7 +166,7 @@
 		</delete>
 	</target>
 
-	<target name="rebuild" depends="clean, build" description="clean + build"/>
+	<target name="rebuild" depends="clean, build" description="clean + build" />
 
 	<target name="dist" depends="info.version" description="Assembles WAR file">
 		<echo>Prepare for GWT build for all browsers</echo>
@@ -264,16 +260,23 @@
 	</target>
 
 	<target name="test" depends="compile">
-		<junit printsummary="true" showoutput="yes" filtertrace="true">
+		<junit printsummary="true" showoutput="false" filtertrace="true" haltonerror="true" haltonfailure="true">
 			<classpath>
-				<path refid="master-classpath" />
 				<path refid="test-classpath" />
+				<path refid="master-classpath" />
 			</classpath>
 
-			<batchtest todir="tmp" fork="true" haltonerror="true">
+			<batchtest todir="tmp" fork="true">
+				<formatter type="plain" />
+				<fileset dir="${sc.class.dir}">
+					<include name="**/JythonPossibilitiesTest.class" />
+				</fileset>
+			</batchtest>
+			<batchtest todir="tmp" fork="false">
 				<formatter type="plain" />
 				<fileset dir="${sc.class.dir}">
 					<include name="**/*Test.class" />
+					<exclude name="**/JythonPossibilitiesTest.class" />
 					<exclude name="**/Abstract*.class" />
 					<exclude name="**/*GWTTest.class" />
 				</fileset>
@@ -349,7 +352,7 @@
 
 	<target name="write.app.version" depends="info.svn">
 		<echo>Update build number</echo>
-		<echo file="WebContent\WEB-INF\classes\build" message="${sc.last.rev}"/>
+		<echo file="WebContent\WEB-INF\classes\build" message="${sc.last.rev}" />
 	</target>
 
 	<target name="init.ws.tests">
@@ -373,12 +376,12 @@
 			<arg value="userdatas/default/schemas/ws" />
 		</exec>
 	</target>
-	
+
 	<target name="info.svn">
 		<svn refid="svn.settings">
-			<singleinfo target="." property="sc.last.rev" request="lastRevision"/>			
+			<singleinfo target="." property="sc.last.rev" request="lastRevision" />
 		</svn>
-		<echo>Последняя версия кода в хранилище ${sc.last.rev}</echo>	
+		<echo>Последняя версия кода в хранилище ${sc.last.rev}</echo>
 	</target>
 
 	<target name="info.env">
@@ -395,16 +398,16 @@
 			</propertyset>
 		</echoproperties>
 	</target>
-	
+
 	<target name="svn.update">
 		<svn refid="svn.settings">
-			<update dir="." recurse="true"/>
-		</svn>		
-	</target>	
-	
-	<target name="test.all">
-		<antcall target="build.with.gwt" />			
-		<antcall target="test" />	
-	</target>	
+			<update dir="." recurse="true" />
+		</svn>
+	</target>
+
+	<target name="test.unit.and.gwt.compile">
+		<antcall target="build.with.gwt" />
+		<antcall target="test" />
+	</target>
 </project>
 

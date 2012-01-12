@@ -88,7 +88,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(state.getJavaVersion());
 		assertNotNull(state.getServerTime());
 		assertNotNull(state.getSqlVersion());
-		assertNull(state.getDojoVersion());
+		assertNotNull(state.getDojoVersion());
 
 		assertEquals("10.0.0.9999", ServerStateFactory.getAppVersion("ru/curs/showcase/test/"));
 	}

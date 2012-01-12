@@ -12,10 +12,8 @@ from ru.curs.showcase.model.jython import JythonProc
 #from org.xml.sax.helpers import DefaultHandler
 #from ru.curs.showcase.util import TextUtils
 
-from net.sf.jasperreports.engine import *
-from net.sf.jasperreports.engine.export import JRPdfExporter
-from java.util import HashMap
 import os.path
+from course import JasperReportProducer
 
 # init vars
 main = None
@@ -40,17 +38,7 @@ class pdfCreate(JythonProc):
 
 
 def mainproc():
-    fileName = os.path.dirname(__file__) + "/simple.jasper"
-    hm = HashMap()
-    # Fill the report using an empty data source
-    data = JasperFillManager.fillReport(fileName, hm, JREmptyDataSource())
-    # Create a PDF exporter
-    exporter = JRPdfExporter()
-    # Configure the exporter (set output file name and print object)
-    exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outputFile)
-    exporter.setParameter(JRExporterParameter.JASPER_PRINT, data)
-    #Export the PDF file
-    exporter.exportReport()
+    JasperReportProducer.produce(os.path.dirname(__file__) + "/simple.jasper", outputFile)
 
 if __name__ == "__main__":
     mainproc()
