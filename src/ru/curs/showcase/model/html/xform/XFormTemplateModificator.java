@@ -151,8 +151,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 				} else {
 					if (!old.getAttributes().item(j).getNodeValue().trim().isEmpty()) {
 						params =
-							params + old.getAttributes().item(j).getNodeName() + ":"
-									+ old.getAttributes().item(j).getNodeValue() + ",";
+							params + old.getAttributes().item(j).getNodeName() + " : "
+									+ old.getAttributes().item(j).getNodeValue() + ", ";
 					}
 				}
 			}
