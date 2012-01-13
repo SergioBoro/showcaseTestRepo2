@@ -83,7 +83,7 @@
 						resource="javascript:showSelector({
 			           id : 'xformId',
                        procListAndCount  : '[dbo].[regions_list_and_count]',
-                       generalFilters      : 'фильтры',
+                       generalFilters      : ['XPath(/schema/info/name)'],
                        currentValue        : 'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)',
                        windowCaption       : 'Выберите название',
                        xpathMapping        : {
@@ -100,7 +100,7 @@
 		    <xf:selector 
 		        buttonLabel       = "New (Tag), Selector, 1 процедура"  
 		        procListAndCount  = "'[dbo].[regions_list_and_count]'"  
-		        generalFilters    = "'фильтры'"
+		        generalFilters    = "['XPath(/schema/info/name)']"
 		        currentValue      = "'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)'"
 		        windowCaption     = "'Выберите название'"
 		        xpathMapping      = "{'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)' : 'name', 'XPath(/schema/info[index(quot(securityRealEstateRow))]/city2)' : null}"
