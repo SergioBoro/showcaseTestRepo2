@@ -52,13 +52,13 @@
 		<fileset dir="${sc.gwt.dir}">
 			<include name="*.jar" />
 		</fileset>
+		<fileset dir="${sc.junit.dir}">
+			<include name="*.jar" />
+		</fileset>
 		<pathelement location="${sc.webinf.dir}/classes/" />
 	</path>
 
 	<path id="test-classpath" description="CLASSPATH for unittests">
-		<fileset dir="${sc.junit.dir}">
-			<include name="*.jar" />
-		</fileset>
 		<fileset dir="${sc.runtime.dir}/lib">
 			<include name="*.jar" />
 		</fileset>
