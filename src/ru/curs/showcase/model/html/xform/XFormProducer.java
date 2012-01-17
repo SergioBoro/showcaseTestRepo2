@@ -1,15 +1,15 @@
 package ru.curs.showcase.model.html.xform;
 
-import java.io.StringWriter;
+import java.io.*;
 
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.*;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.*;
 
-import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
@@ -95,24 +95,28 @@ public final class XFormProducer extends GeneralXMLHelper {
 	 * 
 	 * @return HTML-фрагмент, пригодный для отображения в браузере
 	 * @throws TransformerException
+	 * @throws IOException
 	 * 
 	 */
 	public static String getHTML(final org.w3c.dom.Document xml,
-			final org.w3c.dom.Document tempData) throws TransformerException {
+			final org.w3c.dom.Document tempData) throws TransformerException, IOException {
 		insertActualData(xml, tempData);
 		return transform(xml);
 	}
 
-	private static String transform(final org.w3c.dom.Document xml) throws TransformerException {
-		TransformerFactory tf = TransformerFactory.newInstance();
-		Transformer tr =
-			tf.newTransformer(new StreamSource(XFormProducer.class
-					.getResourceAsStream(XSLTFORMS_XSL)));
-		tr.setParameter("baseuri", "xsltforms/");
-		tr.setParameter("xsltforms_home", AppInfoSingleton.getAppInfo().getWebAppPath()
-				+ "/xsltforms/");
+	private static String transform(final org.w3c.dom.Document xml) throws TransformerException,
+			IOException {
 		StringWriter sw = new StringWriter(DEFAULT_BUFFER_SIZE);
-		tr.transform(new DOMSource(xml), new StreamResult(sw));
+		Transformer tr = XSLTransformerFactory.getInstance().acquire(XSLTFORMS_XSL);
+		try {
+			tr.setParameter("baseuri", "xsltforms/");
+			tr.setParameter("xsltforms_home", AppInfoSingleton.getAppInfo().getWebAppPath()
+					+ "/xsltforms/");
+			tr.transform(new DOMSource(xml), new StreamResult(sw));
+
+		} finally {
+			XSLTransformerFactory.getInstance().release(tr, XSLTFORMS_XSL);
+		}
 
 		String ret = sw.toString();
 

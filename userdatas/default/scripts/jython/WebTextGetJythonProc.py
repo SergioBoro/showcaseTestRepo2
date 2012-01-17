@@ -23,20 +23,20 @@ elementId = ""
 class WebTextGetJythonProc(JythonProc):
     def getRawData(self, context, elId):
         global main, add, session, filterContext, elementId
-        main = context.getMain().encode("utf-8")
+        main = context.getMain()
         if context.getAdditional():
-            add = context.getAdditional().encode("utf-8")
-        session = context.getSession().encode("utf-8")
+            add = context.getAdditional()
+        session = context.getSession()
         if context.getFilter():
-            filterContext = context.getFilter().encode("utf-8")
-        elementId = elId.encode("utf-8")
+            filterContext = context.getFilter()
+        elementId = elId
         return mainproc()
 
 
 def mainproc():
-    if main == "плохой":
+    if main == u"плохой":
         return UserMessage(u"1", u"проверка на ошибку сработала")
-    data = u"<root><name>" + unicode(main, "utf-8") + "</name><count>" + unicode(random.randrange(1, 10000000), "utf-8") + u"</count></root>"
+    data = u"<root><name>" + main + "</name><count>" + unicode(random.randrange(1, 10000000), "utf-8") + u"</count></root>"
     settings = None
     if add == "withsettings":
         settings = u'''<properties>

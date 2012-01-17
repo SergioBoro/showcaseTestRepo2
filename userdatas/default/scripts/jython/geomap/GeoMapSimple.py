@@ -23,13 +23,13 @@ pyconn = None
 class GeoMapSimple(JythonProc):
     def getRawData(self, context, elId, conn):
         global main, add, session, filterContext, pyconn, elementId
-        main = context.getMain().encode("utf-8")
+        main = context.getMain()
         if context.getAdditional():
-            add = context.getAdditional().encode("utf-8")
-        session = context.getSession().encode("utf-8")
+            add = context.getAdditional()
+        session = context.getSession()
         if context.getFilter():
-            filterContext = context.getFilter().encode("utf-8")
-        elementId = elId.encode("utf-8")
+            filterContext = context.getFilter()
+        elementId = elId
         pyconn = conn
         return mainproc()
 

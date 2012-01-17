@@ -19,8 +19,8 @@ session = None
 class dp1301(JythonProc):
     def getRawData(self, context):
         global main, session
-        main = context.getMain().encode("utf-8")
-        session = context.getSession().encode("utf-8")
+        main = context.getMain()
+        session = context.getSession()
         return mainproc()
 
 

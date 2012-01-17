@@ -26,6 +26,15 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class XMLUtils {
 
+	private static final ThreadLocal<TransformerFactory> TF = new ThreadLocal<>();
+
+	public static TransformerFactory getTransformerFactory() {
+		if (TF.get() == null) {
+			TF.set(TransformerFactory.newInstance());
+		}
+		return TF.get();
+	}
+
 	public static Schema createSchemaForFile(final File file) throws SAXException {
 		SchemaFactory schemaFactory = createSchemaFactory();
 		return schemaFactory.newSchema(file);
@@ -111,13 +120,18 @@ public final class XMLUtils {
 	 *             В случае ошибки
 	 * @throws TransformerException
 	 *             В случае ошибки
+	 * @throws IOException
 	 */
 	public static SQLXML domToSQLXML(final org.w3c.dom.Document doc, final Connection con)
-			throws SQLException, TransformerException {
-		Transformer tr = javax.xml.transform.TransformerFactory.newInstance().newTransformer();
+			throws SQLException, TransformerException, IOException {
 		SQLXML sqlxml = con.createSQLXML();
 		Result result = sqlxml.setResult(null);
-		tr.transform(new DOMSource(doc), result);
+		Transformer tr = XSLTransformerFactory.getInstance().acquire();
+		try {
+			tr.transform(new DOMSource(doc), result);
+		} finally {
+			XSLTransformerFactory.getInstance().release(tr);
+		}
 		return sqlxml;
 	}
 
@@ -157,38 +171,8 @@ public final class XMLUtils {
 		return parser;
 	}
 
-	private static Transformer createTransformer(final String xsltFileName)
-			throws TransformerConfigurationException, IOException {
-		Transformer tr;
-		if (xsltFileName != null) {
-			String xsltFullFileName = SettingsFileType.XSLT.getFileDir() + "/" + xsltFileName;
-
-			tr =
-				javax.xml.transform.TransformerFactory.newInstance().newTransformer(
-						new StreamSource(AppProps.loadUserDataToStream(xsltFullFileName)));
-		} else {
-			tr = javax.xml.transform.TransformerFactory.newInstance().newTransformer();
-		}
-		setupStdTransformerParams(tr, true);
-		return tr;
-	}
-
-	private static Transformer createTransformer(final DataFile<InputStream> transform)
-			throws TransformerConfigurationException {
-		Transformer tr;
-		if (transform.getData() != null) {
-			tr =
-				javax.xml.transform.TransformerFactory.newInstance().newTransformer(
-						new StreamSource(transform.getData()));
-		} else {
-			tr = javax.xml.transform.TransformerFactory.newInstance().newTransformer();
-		}
-		setupStdTransformerParams(tr, true);
-		return tr;
-	}
-
-	private static void setupStdTransformerParams(final Transformer tr,
-			final boolean excludeXmlDecl) {
+	public static void
+			setupStdTransformerParams(final Transformer tr, final boolean excludeXmlDecl) {
 		if (excludeXmlDecl) {
 			tr.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 		}
@@ -212,8 +196,13 @@ public final class XMLUtils {
 	public static void stringToXMLFile(final String content, final String filename)
 			throws SAXException, IOException, TransformerException {
 		Document doc = stringToDocument(content);
-		Transformer tr = createTransformer((String) null);
-		tr.transform(new DOMSource(doc), new StreamResult(new File(filename)));
+		Transformer tr = XSLTransformerFactory.getInstance().acquire();
+		try {
+			setupStdTransformerParams(tr, true);
+			tr.transform(new DOMSource(doc), new StreamResult(new File(filename)));
+		} finally {
+			XSLTransformerFactory.getInstance().release(tr);
+		}
 	}
 
 	public static Document stringToDocument(final String content) throws SAXException, IOException {
@@ -229,8 +218,13 @@ public final class XMLUtils {
 	public static String xsltTransform(final SQLXML sqlxml, final String xsltFileName) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			Transformer tr = createTransformer(xsltFileName);
-			tr.transform(sqlxml.getSource(DOMSource.class), new StreamResult(baos));
+			Transformer tr = XSLTransformerFactory.getInstance().acquire(xsltFileName);
+			try {
+				setupStdTransformerParams(tr, true);
+				tr.transform(sqlxml.getSource(DOMSource.class), new StreamResult(baos));
+			} finally {
+				XSLTransformerFactory.getInstance().release(tr, xsltFileName);
+			}
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (IOException | TransformerException | SQLException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
@@ -240,8 +234,13 @@ public final class XMLUtils {
 	public static String xsltTransform(final org.w3c.dom.Document doc, final String xsltFileName) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			Transformer tr = createTransformer(xsltFileName);
-			tr.transform(new DOMSource(doc), new StreamResult(baos));
+			Transformer tr = XSLTransformerFactory.getInstance().acquire(xsltFileName);
+			try {
+				setupStdTransformerParams(tr, true);
+				tr.transform(new DOMSource(doc), new StreamResult(baos));
+			} finally {
+				XSLTransformerFactory.getInstance().release(tr, xsltFileName);
+			}
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (IOException | TransformerException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
@@ -253,8 +252,20 @@ public final class XMLUtils {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			logXSLInput(doc, transform.getName());
-			Transformer tr = createTransformer(transform);
-			tr.transform(new DOMSource(doc), new StreamResult(baos));
+			Transformer tr = null;
+			if (transform.getData() != null) {
+				tr = getTransformerFactory().newTransformer(new StreamSource(transform.getData()));
+			} else {
+				tr = XSLTransformerFactory.getInstance().acquire();
+			}
+			try {
+				setupStdTransformerParams(tr, true);
+				tr.transform(new DOMSource(doc), new StreamResult(baos));
+			} finally {
+				if (transform.getData() == null) {
+					XSLTransformerFactory.getInstance().release(tr);
+				}
+			}
 			final String result = baos.toString(TextUtils.DEF_ENCODING);
 			logXSLOutput(transform.getName(), result);
 			return result;
@@ -273,8 +284,13 @@ public final class XMLUtils {
 	public static String xsltTransform(final InputStream is, final String xsltFileName) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			Transformer tr = createTransformer(xsltFileName);
-			tr.transform(new StreamSource(is), new StreamResult(baos));
+			Transformer tr = XSLTransformerFactory.getInstance().acquire(xsltFileName);
+			try {
+				setupStdTransformerParams(tr, true);
+				tr.transform(new StreamSource(is), new StreamResult(baos));
+			} finally {
+				XSLTransformerFactory.getInstance().release(tr, xsltFileName);
+			}
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (IOException | TransformerException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
@@ -287,8 +303,22 @@ public final class XMLUtils {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			InputStream source = is;
 			source = (InputStream) logXSLInput(source, transform.getName());
-			Transformer tr = createTransformer(transform);
-			tr.transform(new StreamSource(source), new StreamResult(baos));
+
+			Transformer tr = null;
+			if (transform.getData() != null) {
+				tr = getTransformerFactory().newTransformer(new StreamSource(transform.getData()));
+			} else {
+				tr = XSLTransformerFactory.getInstance().acquire();
+			}
+			try {
+				setupStdTransformerParams(tr, true);
+				tr.transform(new StreamSource(source), new StreamResult(baos));
+			} finally {
+				if (transform.getData() == null) {
+					XSLTransformerFactory.getInstance().release(tr);
+				}
+			}
+
 			String result = baos.toString(TextUtils.DEF_ENCODING);
 			logXSLOutput(transform.getName(), result);
 			return result;
@@ -336,8 +366,13 @@ public final class XMLUtils {
 	public static String streamToString(final InputStream is) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			Transformer tr = createTransformer((String) null);
-			tr.transform(new StreamSource(is), new StreamResult(baos));
+			Transformer tr = XSLTransformerFactory.getInstance().acquire();
+			try {
+				setupStdTransformerParams(tr, true);
+				tr.transform(new StreamSource(is), new StreamResult(baos));
+			} finally {
+				XSLTransformerFactory.getInstance().release(tr);
+			}
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (IOException | TransformerException e) {
 			throw new XSLTTransformException(XSLT_ERROR + e.getMessage(), e);
@@ -355,18 +390,15 @@ public final class XMLUtils {
 	 */
 	public static ByteArrayOutputStream xsltTransformForGrid(final org.w3c.dom.Document doc) {
 		try {
-			String xsltFullFileName =
-				AppProps.XSLTTRANSFORMSFORGRIDDIR + "/" + AppProps.GRIDDATAXSL;
-
+			Transformer tr = null;
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-			Transformer tr =
-				javax.xml.transform.TransformerFactory.newInstance().newTransformer(
-						new StreamSource(AppProps.loadUserDataToStream(xsltFullFileName)));
-			setupStdTransformerParams(tr, false);
-
-			tr.transform(new DOMSource(doc), new StreamResult(baos));
-
+			tr = XSLTransformerFactory.getInstance().acquire(AppProps.GRIDDATAXSL);
+			try {
+				setupStdTransformerParams(tr, false);
+				tr.transform(new DOMSource(doc), new StreamResult(baos));
+			} finally {
+				XSLTransformerFactory.getInstance().release(tr, AppProps.GRIDDATAXSL);
+			}
 			return baos;
 		} catch (TransformerFactoryConfigurationError | IOException | TransformerException e) {
 			throw new XSLTTransformException(

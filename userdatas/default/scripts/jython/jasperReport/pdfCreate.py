@@ -28,12 +28,12 @@ pyconn = None
 class pdfCreate(JythonProc):
     def execute(self, context):
         global main, outputFile, session, filterContext
-        main = context.getMain().encode("utf-8")
+        main = context.getMain()
         if context.getAdditional():
-            outputFile = context.getAdditional().encode("utf-8")
-        session = context.getSession().encode("utf-8")
+            outputFile = context.getAdditional()
+        session = context.getSession()
         if context.getFilter():
-            filterContext = context.getFilter().encode("utf-8")
+            filterContext = context.getFilter()
         return mainproc()
 
 

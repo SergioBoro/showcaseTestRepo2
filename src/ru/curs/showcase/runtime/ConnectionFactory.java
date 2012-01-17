@@ -10,7 +10,7 @@ import com.ziclix.python.sql.PyConnection;
  * @author den
  * 
  */
-public final class ConnectionFactory {
+public final class ConnectionFactory extends PoolByUserdata<Connection> {
 	/**
 	 * Параметр файла настроек приложения, содержащий адрес для соединения с SQL
 	 * сервером через JDBC.
@@ -19,16 +19,26 @@ public final class ConnectionFactory {
 	private static final String CONNECTION_USERNAME_PARAM = "rdbms.connection.username";
 	private static final String CONNECTION_PASSWORD_PARAM = "rdbms.connection.password";
 
+	private static ConnectionFactory instance;
+
 	private ConnectionFactory() {
-		throw new UnsupportedOperationException();
+		super();
 	}
 
-	/**
-	 * Функция получения нового соединения.
-	 * 
-	 * @return - соединение.
-	 */
-	public static Connection getConnection() {
+	public static ConnectionFactory getInstance() {
+		if (instance == null) {
+			instance = new ConnectionFactory();
+		}
+		return instance;
+	}
+
+	@Override
+	protected Pool<Connection> getLock() {
+		return ConnectionFactory.getInstance();
+	}
+
+	@Override
+	protected Connection createReusableItem() {
 		try {
 			Connection result =
 				DriverManager.getConnection(AppProps.getRequiredValueByName(CONNECTION_URL_PARAM),
@@ -42,7 +52,7 @@ public final class ConnectionFactory {
 
 	public static PyConnection getPyConnection() {
 		try {
-			return new PyConnection(getConnection());
+			return new PyConnection(getInstance().acquire());
 		} catch (SQLException e) {
 			throw new DBConnectException(e);
 		}

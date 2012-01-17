@@ -85,7 +85,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 
 	private void getDataByTwoProc(final DataRequest req, final String procCount,
 			final String procList, final DataSet ds) throws SQLException {
-		Connection conn = ConnectionFactory.getConnection();
+		Connection conn = ConnectionFactory.getInstance().acquire();
 		// ЭТАП 1. Подсчёт общего количества записей
 		String stmt = String.format("{call %s(?,?,?,?,?,?,?,?)}", procCount);
 		CallableStatement cs = conn.prepareCall(stmt);
@@ -132,13 +132,13 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			ds.setRecords(l);
 		} finally {
 			cs.close();
-			conn.close();
+			ConnectionFactory.getInstance().release(conn);
 		}
 	}
 
 	private void getDataByOneProc(final DataRequest req, final String procListAndCount,
 			final DataSet ds) throws SQLException {
-		Connection conn = ConnectionFactory.getConnection();
+		Connection conn = ConnectionFactory.getInstance().acquire();
 		String stmt = String.format(getSqlTemplate(BY_ONE_PROC), procListAndCount);
 		CallableStatement cs = conn.prepareCall(stmt);
 		try {
@@ -167,7 +167,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			ds.setRecords(l);
 		} finally {
 			cs.close();
-			conn.close();
+			ConnectionFactory.getInstance().release(conn);
 		}
 	}
 

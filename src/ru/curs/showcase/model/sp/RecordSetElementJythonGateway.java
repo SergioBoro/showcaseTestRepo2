@@ -50,7 +50,7 @@ public class RecordSetElementJythonGateway extends JythonQuery<JythonDTO> implem
 			final DataPanelElementInfo aElInfo) {
 		context = aContext;
 		elementInfo = aElInfo;
-		conn = ConnectionFactory.getConnection();
+		conn = ConnectionFactory.getInstance().acquire();
 		runTemplateMethod();
 		String[] query;
 		if (getResult().getData() != null) {

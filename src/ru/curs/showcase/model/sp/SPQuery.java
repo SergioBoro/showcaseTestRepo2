@@ -152,12 +152,15 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	@Override
 	public void close() {
 		if (conn != null) {
-			try {
-				conn.close();
-				conn = null;
-			} catch (SQLException e) {
-				throw new DBConnectException(e);
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException e) {
+					throw new DBConnectException(e);
+				}
 			}
+			ConnectionFactory.getInstance().release(conn);
+			conn = null;
 		}
 	}
 
@@ -228,7 +231,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	 */
 	protected void prepareSQL() throws SQLException {
 		if (conn == null) {
-			conn = ConnectionFactory.getConnection();
+			conn = ConnectionFactory.getInstance().acquire();
 		}
 		sqlTemplate = String.format(getSqlTemplate(templateIndex), getProcName());
 		setStatement(conn.prepareCall(sqlTemplate));

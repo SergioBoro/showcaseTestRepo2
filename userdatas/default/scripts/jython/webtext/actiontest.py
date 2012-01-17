@@ -21,13 +21,13 @@ elementId = ""
 class actiontest(JythonProc):
     def getRawData(self, context, elId):
         global main, add, session, filterContext, elementId
-        main = context.getMain().encode("utf-8")
+        main = context.getMain()
         if context.getAdditional():
-            add = context.getAdditional().encode("utf-8")
-        session = context.getSession().encode("utf-8")
+            add = context.getAdditional()
+        session = context.getSession()
         if context.getFilter():
-            filterContext = context.getFilter().encode("utf-8")
-        elementId = elId.encode("utf-8")
+            filterContext = context.getFilter()
+        elementId = elId
         return mainproc()
 
 

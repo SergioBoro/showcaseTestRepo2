@@ -8,6 +8,7 @@ from ru.curs.showcase.model.jython import JythonProc
 from ru.curs.showcase.util.xml import XMLUtils
 from datetime import date
 from ru.curs.showcase.runtime import ConnectionFactory
+import sys
 
 
 class TestJythonProc(JythonProc):
@@ -21,11 +22,12 @@ class TestJythonProc(JythonProc):
 
         s = context.getMain()
         # jython print не работает с unicode строками
-        print "main context (type %s) is %s" % (type(s), s.encode("utf-8"))
-        print "add context is %s" % (context.getAdditional().encode("utf-8"))
+        print sys.getdefaultencoding()
+        print u"main контекст (type %s) is %s" % (type(s), s)
+        print "add context is %s" % (context.getAdditional())
         if (context.getFilter()):
-            print "filter context is %s" % (context.getFilter().encode("utf-8"))
-        print "session context is %s" % (context.getSession().encode("utf-8"))
+            print "filter context is %s" % (context.getFilter())
+        print "session context is %s" % (context.getSession())
         # пример работы с функциями Showcase
         session = XMLUtils.stringToDocument(context.getSession())
         print "userdata is %s" % (session.getDocumentElement().getElementsByTagName("userdata").item(0).getChildNodes().item(0).getNodeValue())
@@ -40,6 +42,6 @@ class TestJythonProc(JythonProc):
         try:
             cur = pyConn.cursor()
             cur.execute("select top 1 name from geo3")
-            print cur.fetchone()[0].encode("utf-8")
+            print cur.fetchone()[0]
         finally:
             pyConn.close()

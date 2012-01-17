@@ -145,18 +145,22 @@ public final class ServerStateFactory {
 			throw new SettingsFileOpenException(fileName, SettingsFileType.SQLSCRIPT);
 		}
 
-		try (Connection conn = ConnectionFactory.getConnection();
-				PreparedStatement stat = conn.prepareStatement(sql)) {
-			boolean hasResult = stat.execute();
-			if (hasResult) {
-				ResultSet rs = stat.getResultSet();
-				if (rs.next()) {
-					String fullVersion = rs.getString("Version");
-					if (fullVersion != null) {
-						return fullVersion.split("\t")[0];
+		Connection conn = ConnectionFactory.getInstance().acquire();
+		try {
+			try (PreparedStatement stat = conn.prepareStatement(sql)) {
+				boolean hasResult = stat.execute();
+				if (hasResult) {
+					ResultSet rs = stat.getResultSet();
+					if (rs.next()) {
+						String fullVersion = rs.getString("Version");
+						if (fullVersion != null) {
+							return fullVersion.split("\t")[0];
+						}
 					}
 				}
 			}
+		} finally {
+			ConnectionFactory.getInstance().release(conn);
 		}
 		return null;
 	}

@@ -25,30 +25,30 @@ pyconn = None
 class AbstractJythonProc(JythonProc):
     def execute(self, context):
         global main, add, session, filterContext, elementId
-        main = context.getMain().encode("utf-8")
+        main = context.getMain()
         if context.getAdditional():
-            add = context.getAdditional().encode("utf-8")
-        session = context.getSession().encode("utf-8")
+            add = context.getAdditional()
+        session = context.getSession()
         if context.getFilter():
-            filterContext = context.getFilter().encode("utf-8")
+            filterContext = context.getFilter()
         return mainproc()
 
     def getRawData(self, *args):
         global main, add, session, filterContext, pyconn, elementId
         context = args[0]
-        main = context.getMain().encode("utf-8")
+        main = context.getMain()
         if context.getAdditional():
-            add = context.getAdditional().encode("utf-8")
-        session = context.getSession().encode("utf-8")
+            add = context.getAdditional()
+        session = context.getSession()
         if context.getFilter():
-            filterContext = context.getFilter().encode("utf-8")
-        elementId = args[1].encode("utf-8")
+            filterContext = context.getFilter()
+        elementId = args[1]
         pyconn = args[2]
         return mainproc()
 
     def handle(self, requestString):
         global request
-        request = requestString.encode("utf-8")
+        request = requestString
         return mainproc()
 
 

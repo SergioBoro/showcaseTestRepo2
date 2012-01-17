@@ -15,6 +15,6 @@ class FilesReplaceJythonProc(JythonProc):
         self.context = context
         if (not context.getAdditional()):
             raise Exception("не нравится мне этот контекст!")
-        print "add context is %s" % (context.getAdditional().encode("utf-8"))
+        print "add context is %s" % (context.getAdditional())
         root = AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\xslttransforms\\"
         copyfile(root + context.getAdditional(), root + "active_bal.xsl")

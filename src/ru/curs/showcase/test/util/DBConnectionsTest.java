@@ -24,9 +24,12 @@ public class DBConnectionsTest extends AbstractTestWithDefaultUserData {
 	 * 
 	 */
 	@Test
-	public void testConnectionsSimple() throws SQLException {
-		try (Connection conn1 = ConnectionFactory.getConnection()) {
+	public void testConnectionsSimple() {
+		Connection conn1 = ConnectionFactory.getInstance().acquire();
+		try {
 			assertNotNull(conn1);
+		} finally {
+			ConnectionFactory.getInstance().release(conn1);
 		}
 	}
 
@@ -37,9 +40,10 @@ public class DBConnectionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testConnectionsMany() throws SQLException {
-		try (Connection conn1 = ConnectionFactory.getConnection();
-				Connection conn2 = ConnectionFactory.getConnection();
-				Connection conn3 = ConnectionFactory.getConnection()) {
+		Connection conn1 = ConnectionFactory.getInstance().acquire();
+		Connection conn2 = ConnectionFactory.getInstance().acquire();
+		Connection conn3 = ConnectionFactory.getInstance().acquire();
+		try {
 			assertNotNull(conn1);
 			assertNotNull(conn2);
 			assertNotNull(conn3);
@@ -48,6 +52,10 @@ public class DBConnectionsTest extends AbstractTestWithDefaultUserData {
 			assertFalse(conn1.isClosed());
 			assertFalse(conn2.isClosed());
 			assertFalse(conn3.isClosed());
+		} finally {
+			ConnectionFactory.getInstance().release(conn1);
+			ConnectionFactory.getInstance().release(conn2);
+			ConnectionFactory.getInstance().release(conn3);
 		}
 	}
 }

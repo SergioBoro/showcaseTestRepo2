@@ -13,7 +13,7 @@ import ru.curs.showcase.test.*;
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ AppPropsTest.class, RuntimeTest.class })
+@SuiteClasses({ AppPropsTest.class, RuntimeTest.class, PoolsTest.class })
 public class RunTimeTests {
 
 }

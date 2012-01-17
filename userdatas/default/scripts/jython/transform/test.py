@@ -24,13 +24,13 @@ class test(JythonProc):
     def getRawData(self, context, element):
         global main, add, session, filterContext, elementId
         if context.getMain():
-            main = context.getMain().encode("utf-8")
+            main = context.getMain()
         if context.getAdditional():
-            add = context.getAdditional().encode("utf-8")
-        session = context.getSession().encode("utf-8")
+            add = context.getAdditional()
+        session = context.getSession()
         if context.getFilter():
-            filterContext = context.getFilter().encode("utf-8")
-        elementId = element.encode("utf-8")
+            filterContext = context.getFilter()
+        elementId = element
         return mainproc()
 
 

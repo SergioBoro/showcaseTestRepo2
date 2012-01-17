@@ -176,9 +176,11 @@ public class RuntimeTest extends AbstractTest {
 		command.execute();
 
 		String sessionContext = context.getSession();
+		System.out.println(sessionContext);
 		DocumentBuilder db = XMLUtils.createBuilder();
 		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
 		assertEquals(
+				"Не создан тэг userdata",
 				1,
 				doc.getDocumentElement()
 						.getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG).getLength());

@@ -12,6 +12,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
+import ru.curs.showcase.runtime.XSLTransformerFactory;
 
 /**
  * Класс, разрезающий XForm на содержимое тэгов script и body.
@@ -36,14 +37,17 @@ public final class XFormCutter {
 	 * @throws XMLStreamException
 	 *             в случае ошибки ввода-вывода, ошибки XSLT-преобразования и
 	 *             проч.
+	 * @throws IOException
 	 */
 	public static List<String> xFormParts(final String xFormHTML) throws TransformerException,
-			XMLStreamException {
-		TransformerFactory tf = TransformerFactory.newInstance();
-		Transformer tr = tf.newTransformer();
-
+			XMLStreamException, IOException {
 		BodyFilter saxParser = new BodyFilter();
-		tr.transform(new StreamSource(new StringReader(xFormHTML)), new SAXResult(saxParser));
+		Transformer tr = XSLTransformerFactory.getInstance().acquire();
+		try {
+			tr.transform(new StreamSource(new StringReader(xFormHTML)), new SAXResult(saxParser));
+		} finally {
+			XSLTransformerFactory.getInstance().release(tr);
+		}
 		/*
 		 * Этот список имеет вполне конкретную структуру: сначала идёт тело,
 		 * затем стиль (один), затем идут скрипты (которых может быть

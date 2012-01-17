@@ -18,7 +18,7 @@ request = ""
 class GetFile(JythonProc):
     def handle(self, requestStr):
         global request
-        request = requestStr.encode("utf-8")
+        request = requestStr
         return mainproc()
 
 
@@ -27,9 +27,11 @@ def mainproc():
     try:
         cur = pyConn.cursor()
         cur.execute("select top 10000 name from geo3")
-        print cur.fetchone()[0].encode("utf-8")
+        data = cur.fetchone()[0]
+        print type(data), data
     finally:
-        pass
+        cur.close()
+        pyConn.close()
 
     requestDoc = XMLUtils.stringToDocument(request)
     if requestDoc.getDocumentElement().getNodeName() == "command":
@@ -50,8 +52,8 @@ def mainproc():
         return unicode("<responseAnyXML xmlns:sc=\"http://showcase.curs.ru\">"
                        + data + "</responseAnyXML>", "utf-8")
     # при работе с Document строки приходят в формате ISO-8859-1!
-    errorMes = commandName.encode("ISO-8859-1") + " не реализовано !"
-    raise Exception(unicode(errorMes, "utf-8"))
+    errorMes = commandName + u" не реализовано !"
+    raise Exception(errorMes)
 
 if __name__ == "__main__":
     mainproc()

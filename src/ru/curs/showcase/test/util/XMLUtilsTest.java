@@ -48,21 +48,19 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	 * @return - выходной SQLXML.
 	 * @throws SQLException
 	 */
-	private static SQLXML
-			getOutputByInputSQLXML(final Connection connection, final SQLXML sqlxmlIn)
-					throws SQLException {
-
-		Statement st = connection.createStatement();
-
+	private static CallableStatement getOutputByInputSQLXML(final Connection connection,
+			final SQLXML sqlxmlIn) throws SQLException {
 		String stmt = "DROP PROCEDURE [dbo].[_DebugXMLProcessor2]";
-		try {
+		try (Statement st = connection.createStatement();) {
+			try {
+				st.executeUpdate(stmt);
+			} catch (SQLException e) {
+				stmt = "";
+			}
+			stmt =
+				"CREATE PROCEDURE [dbo].[_DebugXMLProcessor2] @par1 xml, @par2 xml Output AS set @par2 = @par1";
 			st.executeUpdate(stmt);
-		} catch (SQLException e) {
-			stmt = "";
 		}
-		stmt =
-			"CREATE PROCEDURE [dbo].[_DebugXMLProcessor2] @par1 xml, @par2 xml Output AS set @par2 = @par1";
-		st.executeUpdate(stmt);
 
 		stmt = "{call _DebugXMLProcessor2(?,?)}";
 		CallableStatement cs = connection.prepareCall(stmt);
@@ -70,13 +68,10 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		cs.registerOutParameter(2, java.sql.Types.SQLXML);
 		cs.execute();
 
-		SQLXML sqlxmlOut = cs.getSQLXML(2);
-		return sqlxmlOut;
+		return cs;
+
 	}
 
-	/**
-	 * Тест1 ф-ции xsltTransform.
-	 */
 	@Test
 	public final void testXSLTransformForSQLXML() throws SAXException, IOException, SQLException,
 			TransformerException {
@@ -85,25 +80,22 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		org.w3c.dom.Document doc =
 			db.parse(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML));
 
-		try (Connection connection = ConnectionFactory.getConnection()) {
+		Connection connection = ConnectionFactory.getInstance().acquire();
+		try {
 			SQLXML sqlxmlIn = XMLUtils.domToSQLXML(doc, connection);
-			SQLXML sqlxmlOut = getOutputByInputSQLXML(connection, sqlxmlIn);
-			String xsltFileName = TEST_GOOD_XSL;
+			try (CallableStatement cs = getOutputByInputSQLXML(connection, sqlxmlIn);) {
+				SQLXML sqlxmlOut = cs.getSQLXML(2);
+				String xsltFileName = TEST_GOOD_XSL;
+				String out = XMLUtils.xsltTransform(sqlxmlOut, xsltFileName);
 
-			String out = XMLUtils.xsltTransform(sqlxmlOut, xsltFileName);
-
-			assertTrue(out.indexOf(TEST_STR1) > -1);
-
-			assertTrue(out.indexOf(TEST_STR2) > -1);
+				assertTrue(out.indexOf(TEST_STR1) > -1);
+				assertTrue(out.indexOf(TEST_STR2) > -1);
+			}
+		} finally {
+			ConnectionFactory.getInstance().release(connection);
 		}
 	}
 
-	/**
-	 * Тест2 ф-ции xsltTransform.
-	 * 
-	 * @throws TransformerException
-	 * @throws SQLException
-	 */
 	@Test(expected = XSLTTransformException.class)
 	public final void testXSLTransformForCheckSaxon() throws SAXException, IOException,
 			SQLException, TransformerException {
@@ -112,19 +104,19 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		org.w3c.dom.Document doc =
 			db.parse(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML));
 
-		try (Connection connection = ConnectionFactory.getConnection()) {
+		Connection connection = ConnectionFactory.getInstance().acquire();
+		try {
 			SQLXML sqlxmlIn = XMLUtils.domToSQLXML(doc, connection);
-			SQLXML sqlxmlOut = getOutputByInputSQLXML(connection, sqlxmlIn);
-			String xsltFileName = "test_bad.xsl";
-			String out = XMLUtils.xsltTransform(sqlxmlOut, xsltFileName);
-			assertTrue(out.indexOf(TEST_STR1) > -1);
-			assertTrue(out.indexOf(TEST_STR2) > -1);
+			try (CallableStatement cs = getOutputByInputSQLXML(connection, sqlxmlIn);) {
+				SQLXML sqlxmlOut = cs.getSQLXML(2);
+				String xsltFileName = "test_bad.xsl";
+				XMLUtils.xsltTransform(sqlxmlOut, xsltFileName);
+			}
+		} finally {
+			ConnectionFactory.getInstance().release(connection);
 		}
 	}
 
-	/**
-	 * Тест3 ф-ции xsltTransform.
-	 */
 	@Test
 	public final void testXSLTransformForDocument() throws SAXException, IOException {
 		DocumentBuilder db = XMLUtils.createBuilder();
@@ -142,9 +134,6 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 
 	}
 
-	/**
-	 * Тест5 ф-ции xsltTransform.
-	 */
 	@Test
 	public final void testXSLTransformForInputStream() {
 
@@ -159,9 +148,6 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		assertTrue(out.indexOf(TEST_STR2) > -1);
 	}
 
-	/**
-	 * Тест ф-ции xsltTransformForGrid.
-	 */
 	@Test
 	public final void testXSLTransformForGrid() throws SAXException, IOException {
 		DocumentBuilder db = XMLUtils.createBuilder();
@@ -185,9 +171,6 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 
 	}
 
-	/**
-	 * Тест11 ф-ции xsdValidate.
-	 */
 	@Test
 	public final void test11ValidateXSD() throws SAXException, IOException {
 		DocumentBuilder db = XMLUtils.createBuilder();
@@ -201,9 +184,6 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 
 	}
 
-	/**
-	 * Тест12 ф-ции xsdValidate.
-	 */
 	@Test(expected = XSDValidateException.class)
 	public final void test12ValidateXSD() throws SAXException, IOException {
 		DocumentBuilder db = XMLUtils.createBuilder();
@@ -217,9 +197,6 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 
 	}
 
-	/**
-	 * Тест13 ф-ции xsdValidate.
-	 */
 	@Test
 	public final void test13ValidateXSD() {
 		SAXParser saxParser = XMLUtils.createSAXParser();
@@ -231,9 +208,6 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 
 	}
 
-	/**
-	 * Тест14 ф-ции xsdValidate.
-	 */
 	@Test(expected = XSDValidateException.class)
 	public final void test14ValidateXSD() {
 		SAXParser saxParser = XMLUtils.createSAXParser();
@@ -244,9 +218,6 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 				XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML), xsdFileName);
 	}
 
-	/**
-	 * Тест15 ф-ции xsdValidate.
-	 */
 	@Test
 	public final void test15ValidateXSD() {
 
@@ -257,9 +228,6 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 
 	}
 
-	/**
-	 * Тест16 ф-ции xsdValidate.
-	 */
 	@Test(expected = XSDValidateException.class)
 	public final void test16ValidateXSD() {
 
@@ -270,9 +238,6 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 
 	}
 
-	/**
-	 * Тест15 ф-ции xsdValidate.
-	 */
 	@Test
 	public final void testDPGoodValidateXSD() {
 		String xsdFileName = DataPanelFactory.DATAPANEL_XSD;
@@ -283,9 +248,6 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 				.getData(), TEST_XML, xsdFileName));
 	}
 
-	/**
-	 * Тест16 ф-ции xsdValidate.
-	 */
 	@Test(expected = XSDValidateException.class)
 	public final void testDPBadValidateXSD() {
 		String xsdFileName = DataPanelFactory.DATAPANEL_XSD;

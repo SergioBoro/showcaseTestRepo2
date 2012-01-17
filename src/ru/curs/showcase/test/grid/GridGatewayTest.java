@@ -40,12 +40,12 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 	 * @throws SQLException
 	 */
 	@Test
-	public void testGetDataOnly() throws SQLException {
+	public void testGetDataOnly() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestGridInfo2();
 
-		try (Connection conn = ConnectionFactory.getConnection()) {
-			GridGateway gateway = new GridDBGateway(conn);
+		Connection conn = ConnectionFactory.getInstance().acquire();
+		try (GridDBGateway gateway = new GridDBGateway(conn)) {
 			GridContext gc = new GridContext();
 			gc.setPageNumber(2);
 			gc.setPageSize(2);

@@ -20,17 +20,17 @@ filterContext = ""
 class NoValidateJythonProc(JythonProc):
     def execute(self, context):
         global main, add, session, filterContext
-        main = context.getMain().encode("utf-8")
+        main = context.getMain()
         if context.getAdditional():
-            add = context.getAdditional().encode("utf-8")
-        session = context.getSession().encode("utf-8")
+            add = context.getAdditional()
+        session = context.getSession()
         if context.getFilter():
-            filterContext = context.getFilter().encode("utf-8")
+            filterContext = context.getFilter()
         return mainproc()
 
 
 def mainproc():
-    return UserMessage("test2", unicode("из Jython", "UTF-8"))
+    return UserMessage("test2", u"из Jython")
 
 if __name__ == "__main__":
     mainproc()

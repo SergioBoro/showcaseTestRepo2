@@ -70,7 +70,7 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 			logOutput();
 			replaceVariables();
 			result.setXFormParts(XFormCutter.xFormParts(html));
-		} catch (TransformerException | XMLStreamException e) {
+		} catch (TransformerException | XMLStreamException | IOException e) {
 			throw new XSLTTransformException(String.format(XFORMS_CREATE_ERROR, getElementInfo()
 					.getFullId()), e);
 		}

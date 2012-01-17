@@ -270,7 +270,6 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 						template.getRegisterSolutionMap() + ".js", getElementInfo().getProcName()));
 			}
 		}
-
 	}
 
 	private void replaceVariablesInTemplate() {

@@ -70,21 +70,20 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 			final DataPanelElementInfo elementInfo) {
 		GridServerState state;
 		if (context.isFirstLoad()) {
-			state = saveGridServerState(context, elementInfo);
+			state = prepareInitGridServerState(context, elementInfo);
 		} else {
 			state =
 				(GridServerState) AppInfoSingleton.getAppInfo().getElementState(getSessionId(),
 						elementInfo, context);
 			if (state == null) {
-				// состояние по каким-либо причинам не сохранено
-				context.setIsFirstLoad(false);
-				state = saveGridServerState(context, elementInfo);
+				// состояние устарело или память была очищена
+				state = prepareInitGridServerState(context, elementInfo);
 			}
 		}
 		return state;
 	}
 
-	private GridServerState saveGridServerState(final GridContext context,
+	private GridServerState prepareInitGridServerState(final GridContext context,
 			final DataPanelElementInfo elementInfo) {
 		GridServerState state = new GridServerState();
 		AppInfoSingleton.getAppInfo().storeElementState(getSessionId(), elementInfo, context,
