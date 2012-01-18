@@ -90,6 +90,8 @@ public class AbstractTest extends GeneralXMLHelper {
 	protected void resetUserData() {
 		AppInfoSingleton.getAppInfo().setCurUserDataId((String) null);
 		AppInfoSingleton.getAppInfo().clearSessions();
+		AppInfoSingleton.getAppInfo().getCacheManager().clearAll();
+
 	}
 
 	private static void initTestSession() {

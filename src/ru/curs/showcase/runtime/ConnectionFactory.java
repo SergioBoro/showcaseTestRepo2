@@ -84,4 +84,17 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 
 		return st;
 	}
+
+	public static Driver unregisterDrivers() {
+		Driver result = null;
+		while (DriverManager.getDrivers().hasMoreElements()) {
+			try {
+				result = DriverManager.getDrivers().nextElement();
+				DriverManager.deregisterDriver(result);
+			} catch (SQLException e) {
+				throw new DBConnectException(e);
+			}
+		}
+		return result;
+	}
 }

@@ -50,7 +50,6 @@ public final class AppInitializer {
 		initClassPath();
 		XMLUtils.setupSchemaFactory();
 		XMLUtils.setupTransformer();
-		JMXBeanRegistrator.register();
 		jythonInit();
 	}
 

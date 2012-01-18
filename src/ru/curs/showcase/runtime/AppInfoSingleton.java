@@ -6,6 +6,8 @@ import java.util.*;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.ehcache.*;
+
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
@@ -25,9 +27,8 @@ import ru.curs.showcase.util.exception.ServerLogicError;
  */
 public final class AppInfoSingleton {
 
-	/**
-	 * LOGGER.
-	 */
+	public static final String GRID_STATE_CACHE = "gridStateCache";
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(AppInfoSingleton.class);
 
 	/** Список userdata. */
@@ -57,6 +58,8 @@ public final class AppInfoSingleton {
 	private final SortedSet<LoggingEventDecorator> lastLogEvents = new LastLogEvents();
 
 	private String webAppPath;
+
+	private final CacheManager cacheManager = CacheManager.create();
 
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
 		return lastLogEvents;
@@ -314,12 +317,27 @@ public final class AppInfoSingleton {
 
 	public Object getElementState(final String sessionId, final DataPanelElementInfo dpei,
 			final CompositeContext context) {
-		return getOrInitSessionInfoObject(sessionId).getElementState(sessionId, dpei, context);
+		Cache cache = cacheManager.getCache(GRID_STATE_CACHE);
+		String key = getSessionKeyForCaching(sessionId, dpei, context);
+		Element el = cache.get(key);
+		if (el != null) {
+			return el.getValue();
+		}
+		return null;
+	}
+
+	private String getSessionKeyForCaching(final String sessionId,
+			final DataPanelElementInfo dpei, final CompositeContext context) {
+		return sessionId + AppInfoSingleton.getAppInfo().getCurUserDataId()
+				+ dpei.getKeyForCaching(context);
 	}
 
 	public void storeElementState(final String sessionId, final DataPanelElementInfo dpei,
 			final CompositeContext context, final Object state) {
-		getOrInitSessionInfoObject(sessionId).storeElementState(sessionId, dpei, context, state);
+		Cache cache = cacheManager.getCache(GRID_STATE_CACHE);
+		String key = getSessionKeyForCaching(sessionId, dpei, context);
+		Element cacheEl = new Element(key, state);
+		cache.put(cacheEl);
 	}
 
 	public UserData getCurUserData() {
@@ -332,6 +350,10 @@ public final class AppInfoSingleton {
 
 	public void setWebAppPath(final String aPath) {
 		webAppPath = aPath;
+	}
+
+	public CacheManager getCacheManager() {
+		return cacheManager;
 	}
 
 }

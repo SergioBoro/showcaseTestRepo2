@@ -192,11 +192,11 @@ public class GridSLTest extends AbstractTest {
 
 		setDefaultUserData();
 		GridServerState state = new GridServerState();
-		AppInfoSingleton.getAppInfo().storeElementState(ServletUtils.TEST_SESSION, elInfo,
-				context, state);
 		state.setTotalCount(CITIES_COUNT);
 		state.setAutoSelectRecordId(2);
 		state.setAutoSelectRelativeRecord(true);
+		AppInfoSingleton.getAppInfo().storeElementState(ServletUtils.TEST_SESSION, elInfo,
+				context, state);
 
 		GridGetCommand command = new GridGetCommand(gc, elInfo, true);
 		Grid grid = command.execute();
@@ -208,11 +208,13 @@ public class GridSLTest extends AbstractTest {
 		assertEquals(pageNum, grid.getDataSet().getRecordSet().getPageNumber());
 		final int pagesCount = CITIES_COUNT / GridContext.DEF_PAGE_SIZE_VAL + 1;
 		assertEquals(pagesCount, grid.getDataSet().getRecordSet().getPagesTotal());
-		assertEquals("2", grid.getAutoSelectRecord().getId());
+		assertEquals(state.getAutoSelectRecordId().toString(), grid.getAutoSelectRecord().getId());
 	}
 
 	/**
 	 * Проверка получения грида через SL с помощью 2-х процедур.
+	 * 
+	 * @throws InterruptedException
 	 */
 	@Test
 	public void test2StepGridLoadBySLWhenUpdateVar2() {
@@ -228,12 +230,12 @@ public class GridSLTest extends AbstractTest {
 
 		setDefaultUserData();
 		GridServerState state = new GridServerState();
-		AppInfoSingleton.getAppInfo().storeElementState(ServletUtils.TEST_SESSION, elInfo,
-				context, state);
 		state.setTotalCount(CITIES_COUNT);
 		final int autoSelectRecordId = 5;
 		state.setAutoSelectRecordId(autoSelectRecordId);
 		state.setAutoSelectRelativeRecord(false);
+		AppInfoSingleton.getAppInfo().storeElementState(ServletUtils.TEST_SESSION, elInfo,
+				context, state);
 
 		GridGetCommand command = new GridGetCommand(gc, elInfo, true);
 		Grid grid = command.execute();
@@ -264,9 +266,9 @@ public class GridSLTest extends AbstractTest {
 
 		setDefaultUserData();
 		GridServerState state = new GridServerState();
+		state.setTotalCount(CITIES_COUNT);
 		AppInfoSingleton.getAppInfo().storeElementState(ServletUtils.TEST_SESSION, elInfo,
 				context, state);
-		state.setTotalCount(CITIES_COUNT);
 
 		GridGetCommand command = new GridGetCommand(gc, elInfo, true);
 		Grid grid = command.execute();

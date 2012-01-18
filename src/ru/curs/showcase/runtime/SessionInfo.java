@@ -1,10 +1,5 @@
 package ru.curs.showcase.runtime;
 
-import java.util.*;
-
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.app.api.event.CompositeContext;
-
 /**
  * Информация о сессии пользователя.
  * 
@@ -23,29 +18,6 @@ public class SessionInfo {
 	 */
 	private String authServerCrossAppPassword = null;
 
-	private String sid;
-
-	private final Map<String, Object> elementStates = Collections
-			.synchronizedMap(new HashMap<String, Object>());
-
-	public Object getElementState(final String sessionId, final DataPanelElementInfo dpei,
-			final CompositeContext context) {
-		String key = getSessionKeyForCaching(sessionId, dpei, context);
-		return elementStates.get(key);
-	}
-
-	private String getSessionKeyForCaching(final String sessionId, final DataPanelElementInfo dpei,
-			final CompositeContext context) {
-		return sessionId + AppInfoSingleton.getAppInfo().getCurUserDataId()
-				+ dpei.getKeyForCaching(context);
-	}
-
-	public void storeElementState(final String sessionId, final DataPanelElementInfo dpei,
-			final CompositeContext context, final Object state) {
-		String key = getSessionKeyForCaching(sessionId, dpei, context);
-		elementStates.put(key, state);
-	}
-
 	public String getAuthServerCrossAppPassword() {
 		return authServerCrossAppPassword;
 	}
@@ -60,13 +32,5 @@ public class SessionInfo {
 
 	public void setAuthViaAuthServer(final boolean aAuthViaAuthServer) {
 		authViaAuthServer = aAuthViaAuthServer;
-	}
-
-	public String getSid() {
-		return sid;
-	}
-
-	public void setSid(final String aSid) {
-		sid = aSid;
 	}
 }

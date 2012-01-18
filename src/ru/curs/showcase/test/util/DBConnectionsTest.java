@@ -58,4 +58,23 @@ public class DBConnectionsTest extends AbstractTestWithDefaultUserData {
 			ConnectionFactory.getInstance().release(conn3);
 		}
 	}
+
+	@Test
+	public void testUnRegisterDrivers() throws SQLException {
+		ConnectionFactory.getInstance().acquire();
+		Driver driver = ConnectionFactory.unregisterDrivers();
+		DriverManager.registerDriver(driver);
+		ConnectionFactory.getInstance().acquire();
+	}
+
+	@Test
+	public void testUnRegister0Drivers() throws SQLException {
+		Driver driver = ConnectionFactory.unregisterDrivers();
+		try {
+			ConnectionFactory.unregisterDrivers();
+		} finally {
+			DriverManager.registerDriver(driver);
+		}
+
+	}
 }

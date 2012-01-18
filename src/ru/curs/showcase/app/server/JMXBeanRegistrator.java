@@ -4,7 +4,12 @@ import java.lang.management.ManagementFactory;
 
 import javax.management.*;
 
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.management.ManagementService;
+
 import org.slf4j.*;
+
+import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
  * Регистрация локальных JMX bean.
@@ -14,6 +19,8 @@ import org.slf4j.*;
  */
 public final class JMXBeanRegistrator {
 
+	private static final String REGISTER_ERROR = "Ошибка при регистрации MBean Showcase ";
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(JMXBeanRegistrator.class);
 
 	/**
@@ -21,24 +28,52 @@ public final class JMXBeanRegistrator {
 	 */
 	private static MBeanServer mbs = null;
 
+	private static MBeanServer getMBeanServer() {
+		if (mbs == null) {
+			mbs = ManagementFactory.getPlatformMBeanServer();
+		}
+		return mbs;
+	}
+
 	/**
 	 * Функция регистрации JMX bean.
 	 */
 	public static void register() {
-		mbs = ManagementFactory.getPlatformMBeanServer();
+		registerEncacheMBean();
+		registerShowcaseMBean();
+	}
 
+	private static void registerEncacheMBean() {
+		CacheManager manager = AppInfoSingleton.getAppInfo().getCacheManager();
+		ManagementService.registerMBeans(manager, getMBeanServer(), false, false, false, true);
+	}
+
+	private static void registerShowcaseMBean() {
 		JMXMonitorBean monBean = new JMXMonitorBeanImpl();
 		ObjectName beanName = null;
 		try {
-			beanName = new ObjectName("Showcase:name=Showcase.Monitor");
-			if (mbs.isRegistered(beanName)) {
-				mbs.unregisterMBean(beanName);
+			beanName = getShowcaseMBeanName();
+			if (getMBeanServer().isRegistered(beanName)) {
+				getMBeanServer().unregisterMBean(beanName);
 			}
-			mbs.registerMBean(monBean, beanName);
+			getMBeanServer().registerMBean(monBean, beanName);
 		} catch (InstanceAlreadyExistsException | MBeanRegistrationException
 				| NotCompliantMBeanException | InstanceNotFoundException
 				| MalformedObjectNameException e) {
-			LOGGER.error("Ошибка при регистрации MBean " + e.getLocalizedMessage());
+			LOGGER.error(REGISTER_ERROR + e.getLocalizedMessage());
+		}
+	}
+
+	private static ObjectName getShowcaseMBeanName() throws MalformedObjectNameException {
+		return new ObjectName("Showcase:name=Showcase.Monitor");
+	}
+
+	public static void unRegister() {
+		try {
+			getMBeanServer().unregisterMBean(getShowcaseMBeanName());
+		} catch (InstanceNotFoundException | MBeanRegistrationException
+				| MalformedObjectNameException e) {
+			LOGGER.error(REGISTER_ERROR + e.getLocalizedMessage());
 		}
 	}
 

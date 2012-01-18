@@ -71,6 +71,7 @@ public final class ProductionModeInitializer {
 		copyUserDatas(arg0);
 		readCSSs();
 		logUserDatas();
+		JMXBeanRegistrator.register();
 	}
 
 	private static void initClassPath(final ServletContextEvent arg0) {

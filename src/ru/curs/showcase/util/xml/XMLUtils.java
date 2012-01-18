@@ -633,4 +633,10 @@ public final class XMLUtils {
 		SchemaFactory schemaFactory = createSchemaFactory();
 		return schemaFactory.newSchema(new StreamSource(aData));
 	}
+
+	public static void cleanup() {
+		if (TF.get() != null) {
+			TF.remove();
+		}
+	}
 }

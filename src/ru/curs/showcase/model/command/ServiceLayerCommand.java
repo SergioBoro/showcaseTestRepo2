@@ -12,7 +12,7 @@ import ru.curs.showcase.model.AppRegistry;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.ObjectSerializer;
 import ru.curs.showcase.util.exception.ServerLogicError;
-import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Абстрактный класс команды сервисного уровня приложения. Весь функционал
@@ -138,7 +138,7 @@ public abstract class ServiceLayerCommand<T> {
 	}
 
 	protected void postProcess() {
-		// по умолчанию ничего не делаем
+		XMLUtils.cleanup();
 	}
 
 	protected void logOutput() {

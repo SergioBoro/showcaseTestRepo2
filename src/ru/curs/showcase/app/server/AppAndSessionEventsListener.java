@@ -5,7 +5,7 @@ import javax.servlet.http.*;
 
 import org.slf4j.*;
 
-import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.runtime.*;
 
 /**
  * Перехватчик старта приложения и сессии. Служит для инициализации приложения.
@@ -28,7 +28,9 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 	@Override
 	public final void contextDestroyed(final ServletContextEvent arg0) {
-
+		JMXBeanRegistrator.unRegister();
+		AppInfoSingleton.getAppInfo().getCacheManager().shutdown();
+		ConnectionFactory.unregisterDrivers();
 	}
 
 	@Override

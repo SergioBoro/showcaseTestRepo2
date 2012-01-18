@@ -7,6 +7,8 @@ import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 
+import net.sf.ehcache.CacheManager;
+
 import org.junit.Test;
 import org.w3c.dom.*;
 import org.xml.sax.*;
@@ -176,7 +178,6 @@ public class RuntimeTest extends AbstractTest {
 		command.execute();
 
 		String sessionContext = context.getSession();
-		System.out.println(sessionContext);
 		DocumentBuilder db = XMLUtils.createBuilder();
 		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
 		assertEquals(
@@ -340,5 +341,26 @@ public class RuntimeTest extends AbstractTest {
 		clone2.assignNullValues(cc);
 		assertEquals(cc, clone2);
 		assertNotSame(cc, clone2);
+	}
+
+	@Test
+	@SuppressWarnings("rawtypes")
+	public void testCache() {
+		assertNotNull(CacheManager.create());
+		assertTrue(CacheManager.getInstance().cacheExists(AppInfoSingleton.GRID_STATE_CACHE));
+		assertEquals(1, CacheManager.getInstance().getCacheNames().length);
+
+		List list =
+			CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE).getKeys();
+		assertEquals(0, list.size());
+		CompositeContext value = new CompositeContext();
+		final String key = "key";
+		CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE)
+				.put(new net.sf.ehcache.Element(key, value));
+		list = CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE).getKeys();
+		assertEquals(1, list.size());
+		assertEquals(key, list.get(0));
+		assertEquals(value, CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE)
+				.get(key).getValue());
 	}
 }
