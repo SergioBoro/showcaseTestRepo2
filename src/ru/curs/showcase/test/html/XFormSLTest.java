@@ -2,17 +2,20 @@ package ru.curs.showcase.test.html;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
+import java.io.*;
 
 import org.junit.Test;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.model.html.xform.*;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTest;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Тест для шлюзов XForms.
@@ -21,6 +24,9 @@ import ru.curs.showcase.util.*;
  * 
  */
 public class XFormSLTest extends AbstractTest {
+	private static final String SHOWCASE_DATA_XML = "Showcase_Data.xml";
+	private static final String DATA_XFORMS = "data\\xforms\\";
+	private static final String SHOWCASE_DATA_COPY_XML = "Showcase_Data_Copy.xml";
 	private static final String XFORMS_SUBMISSION1 = "xforms_submission1";
 	private static final String TEST_DATA_TAG = "<data>test</data>";
 
@@ -284,5 +290,40 @@ public class XFormSLTest extends AbstractTest {
 		elementInfo.setTemplateName("Showcase_Template.xml");
 		XFormGetCommand command = new XFormGetCommand(context, elementInfo);
 		command.execute();
+	}
+
+	@Test
+	public void testSaveXFormByJython() throws IOException {
+		AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
+		XFormContext context = new XFormContext(generateContextWithSessionInfo());
+		String inputData =
+			XMLUtils.streamToString(AppProps.loadUserDataToStream(DATA_XFORMS + SHOWCASE_DATA_XML));
+		context.setFormData(inputData);
+		context.setAdditional(SHOWCASE_DATA_COPY_XML);
+		File file =
+			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\" + DATA_XFORMS
+					+ SHOWCASE_DATA_COPY_XML);
+		if (file.exists()) {
+			file.delete();
+		}
+		DataPanelElementInfo elementInfo = getTestXForms1Info();
+		DataPanelElementProc proc = new DataPanelElementProc();
+		proc.setId("saveproc");
+		proc.setName("xform/XFormSaveProc.py");
+		proc.setType(DataPanelElementProcType.SAVE);
+		elementInfo.getProcs().clear();
+		elementInfo.getProcs().put(proc.getId(), proc);
+
+		XFormSaveCommand command = new XFormSaveCommand(context, elementInfo);
+		command.execute();
+
+		file =
+			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\" + DATA_XFORMS
+					+ SHOWCASE_DATA_COPY_XML);
+		assertTrue(file.exists());
+		String outputData =
+			XMLUtils.streamToString(AppProps.loadUserDataToStream(DATA_XFORMS
+					+ SHOWCASE_DATA_COPY_XML));
+		assertEquals(inputData, outputData);
 	}
 }

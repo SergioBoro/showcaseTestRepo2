@@ -74,7 +74,7 @@ public abstract class Pool<T> {
 		return null;
 	}
 
-	public synchronized void clear() {
+	public void clear() {
 		synchronized (getLock()) {
 			poolByKey.clear();
 		}

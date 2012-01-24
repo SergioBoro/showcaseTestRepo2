@@ -12,7 +12,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
-import ru.curs.showcase.runtime.XSLTransformerFactory;
+import ru.curs.showcase.runtime.XSLTransformerPoolFactory;
 
 /**
  * Класс, разрезающий XForm на содержимое тэгов script и body.
@@ -42,11 +42,11 @@ public final class XFormCutter {
 	public static List<String> xFormParts(final String xFormHTML) throws TransformerException,
 			XMLStreamException, IOException {
 		BodyFilter saxParser = new BodyFilter();
-		Transformer tr = XSLTransformerFactory.getInstance().acquire();
+		Transformer tr = XSLTransformerPoolFactory.getInstance().acquire();
 		try {
 			tr.transform(new StreamSource(new StringReader(xFormHTML)), new SAXResult(saxParser));
 		} finally {
-			XSLTransformerFactory.getInstance().release(tr);
+			XSLTransformerPoolFactory.getInstance().release(tr);
 		}
 		/*
 		 * Этот список имеет вполне конкретную структуру: сначала идёт тело,

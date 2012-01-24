@@ -53,7 +53,7 @@ public abstract class JythonQuery<T> {
 	 * Задавать путь к скриптам Python для объекта Py.getSystemState() нельзя,
 	 * т.к. он переопределяется для каждого экземпляра интерпретатора.
 	 */
-	protected final void runTemplateMethod() {
+	public final void runTemplateMethod() {
 		PythonInterpreter interpreter = JythonIterpretatorFactory.getInstance().acquire();
 		try {
 			String parent = getJythonProcName().replaceAll("([.]\\w+)$", "");

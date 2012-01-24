@@ -5,7 +5,7 @@ import java.sql.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.runtime.DBConnectException;
+import ru.curs.showcase.runtime.*;
 
 /**
  * Базовый класс, содержащий необработанные XML данные и метаданные элемента
@@ -58,7 +58,7 @@ public class RecordSetElementRawData extends ElementRawData implements Closeable
 	public void close() {
 		if (statement != null) {
 			try {
-				statement[0].getConnection().close();
+				ConnectionFactory.getInstance().release(statement[0].getConnection());
 			} catch (SQLException e) {
 				throw new DBConnectException(e);
 			}

@@ -23,13 +23,25 @@ public class PoolsTest extends AbstractTestWithDefaultUserData {
 
 	@Test
 	public void testXSLTransformerPool() throws TransformerConfigurationException, IOException {
-		checkPool(XSLTransformerFactory.getInstance());
+		checkPool(XSLTransformerPoolFactory.getInstance());
+	}
+
+	@Test
+	public void testXSLTransformerPoolExample() throws TransformerConfigurationException,
+			IOException {
+		XSLTransformerPoolFactory factory = XSLTransformerPoolFactory.getInstance();
+		Transformer xf = factory.acquire();
+		try {
+			xf.clearParameters();
+		} finally {
+			factory.release(xf);
+		}
 	}
 
 	@Test
 	public void testXSLTransformerPoolByFile() throws TransformerConfigurationException,
 			IOException {
-		XSLTransformerFactory factory = XSLTransformerFactory.getInstance();
+		XSLTransformerPoolFactory factory = XSLTransformerPoolFactory.getInstance();
 		factory.clear();
 		Transformer xf = factory.acquire(PAS_XSL);
 		factory.release(xf, PAS_XSL);
@@ -48,7 +60,7 @@ public class PoolsTest extends AbstractTestWithDefaultUserData {
 	@Test(expected = IOException.class)
 	public void testXSLTransformationPoolWrongFile() throws TransformerConfigurationException,
 			IOException {
-		XSLTransformerFactory factory = XSLTransformerFactory.getInstance();
+		XSLTransformerPoolFactory factory = XSLTransformerPoolFactory.getInstance();
 		factory.acquire("fake_trans.xsl");
 	}
 

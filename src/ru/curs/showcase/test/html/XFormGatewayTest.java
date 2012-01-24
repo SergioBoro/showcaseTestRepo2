@@ -41,7 +41,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", ELEMENT_0205);
 		ElementInfoChecker checker = new ElementInfoChecker();
 		checker.check(element, DataPanelElementType.XFORMS);
-		XFormGateway gateway = new XFormFileGateway();
+		HTMLGateway gateway = new HTMLFileGateway();
 		gateway.getRawData(context, element);
 	}
 
@@ -74,7 +74,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", ELEMENT_0205);
 
-		XFormGateway gateway = new XFormFileGateway();
+		HTMLGateway gateway = new HTMLFileGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 
 		DocumentBuilder db = XMLUtils.createBuilder();
@@ -143,7 +143,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	}
 
 	private String getNewContentBasedOnExisting(final CompositeContext context,
-			final DataPanelElementInfo element, final XFormGateway gateway) {
+			final DataPanelElementInfo element, final HTMLGateway gateway) {
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 		Element newChild = raw.getData().createElementNS("", "new");
 		raw.getData().getDocumentElement().appendChild(newChild);

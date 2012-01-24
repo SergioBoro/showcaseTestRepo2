@@ -10,10 +10,10 @@ import org.xml.sax.SAXException;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.model.html.*;
+import ru.curs.showcase.model.html.HTMLFileGateway;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
-import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Шлюз для работы с файлами данных XForms. Используется в отладочных целях.
@@ -24,20 +24,13 @@ import ru.curs.showcase.util.xml.*;
  * 
  */
 @Description(process = "Загрузка данных для XForm из файлов")
-public final class XFormFileGateway extends GeneralXMLHelper implements XFormGateway {
+public final class XFormFileGateway extends HTMLFileGateway implements XFormGateway {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(XFormFileGateway.class);
 	/**
 	 * Тестовый каталог для данных, сохраняемых через шлюз.
 	 */
 	public static final String TMP_TEST_DATA_DIR = "tmp/tmp.test.data";
-
-	@Override
-	public HTMLBasedElementRawData getRawData(final CompositeContext context,
-			final DataPanelElementInfo element) {
-		HTMLFileGateway gateway = new HTMLFileGateway();
-		return gateway.getRawData(context, element);
-	}
 
 	@Override
 	public void saveData(final CompositeContext context, final DataPanelElementInfo element,

@@ -38,6 +38,20 @@ public interface JythonProc {
 	Object getRawData(AbstractCompositeContext context, String elementId);
 
 	/**
+	 * Сохраняет данные (на данный момент, только для XForm).
+	 * 
+	 * @param context
+	 *            - контекст вызова.
+	 * @param elementId
+	 *            - идентификатор создаваемого элемента.
+	 * @param data
+	 *            - данные для сохранения.
+	 * @return - сообщение об ошибке в случае, если она произошла или None (null
+	 *         в Java) в противном случае.
+	 */
+	UserMessage save(AbstractCompositeContext context, String elementId, String data);
+
+	/**
 	 * Функция получения данных для элемента, требующего RecordSet. Все
 	 * временные таблицы, которые использует результирующий запрос, должны
 	 * создаваться в переданном соединении.

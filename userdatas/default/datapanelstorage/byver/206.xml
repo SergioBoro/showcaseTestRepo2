@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<datapanel>
-	<tab id="01" name="Карта - подписи">
-		<element id="0101" type="geomap" proc="_206_geomap_labels" cacheData="false"/>
-	</tab>					
-</datapanel>

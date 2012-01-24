@@ -11,6 +11,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 <!--	<intercept-url pattern="/messageList*" access="ROLE_USER,ROLE_ANONYMOUS" />-->
 
     <intercept-url pattern="/log/*" access="hasRole('ROLE_ADMIN')" />
+    <intercept-url pattern="/control/*" access="hasRole('ROLE_ADMIN')" />    
 
 	<session-management session-authentication-strategy-ref="sas"/>
 	<session-management session-fixation-protection="none"/>

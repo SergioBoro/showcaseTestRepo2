@@ -20,6 +20,7 @@ filterContext = None
 elementId = None
 request = None
 pyconn = None
+data = None
 
 
 class AbstractJythonProc(JythonProc):
@@ -51,9 +52,21 @@ class AbstractJythonProc(JythonProc):
         request = requestString
         return mainproc()
 
+    def save(self, context, elId, adata):
+        global main, add, session, filterContext, elementId, data
+        main = context.getMain()
+        if context.getAdditional():
+            add = context.getAdditional()
+        session = context.getSession()
+        if context.getFilter():
+            filterContext = context.getFilter()
+        elementId = elId
+        data = adata
+        return mainproc()
+
 
 def mainproc():
-    print "all is ok!"
+    print u"all is ok!"
 
 if __name__ == "__main__":
     mainproc()

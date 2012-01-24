@@ -24,7 +24,8 @@ public final class XFormSaveCommand extends XFormContextCommand<Void> {
 					getElementInfo());
 		transformer.transform();
 
-		XFormGateway gateway = new XFormDBGateway();
+		XFormSaveSelector selector = new XFormSaveSelector(proc);
+		XFormGateway gateway = selector.getGateway();
 		gateway.saveData(getContext(), getElementInfo(), transformer.getStringResult());
 	}
 }

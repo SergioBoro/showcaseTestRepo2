@@ -15,17 +15,17 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
-public final class XSLTransformerFactory extends Pool<Transformer> {
+public final class XSLTransformerPoolFactory extends Pool<Transformer> {
 
-	private static XSLTransformerFactory instance;
+	private static XSLTransformerPoolFactory instance;
 
-	private XSLTransformerFactory() {
+	private XSLTransformerPoolFactory() {
 		super();
 	}
 
-	public static XSLTransformerFactory getInstance() {
+	public static XSLTransformerPoolFactory getInstance() {
 		if (instance == null) {
-			instance = new XSLTransformerFactory();
+			instance = new XSLTransformerPoolFactory();
 		}
 		return instance;
 	}
@@ -68,7 +68,7 @@ public final class XSLTransformerFactory extends Pool<Transformer> {
 
 	@Override
 	protected Pool<Transformer> getLock() {
-		return XSLTransformerFactory.getInstance();
+		return XSLTransformerPoolFactory.getInstance();
 	}
 
 }

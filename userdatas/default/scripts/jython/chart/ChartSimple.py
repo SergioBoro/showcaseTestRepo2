@@ -37,11 +37,15 @@ class ChartSimple(JythonProc):
 
 def mainproc():
     cur = pyconn.cursor()
-    cur.execute('''
-    SELECT TOP 10 [Journal_48_Name], [FJField_14]
-    into #tmp
-    FROM [Journal_48]
-    ''')
+    try:
+        cur.execute("IF (OBJECT_ID('tempdb..#tmp') IS NOT NULL) DROP TABLE #tmp")
+        cur.execute('''
+        SELECT TOP 10 [Journal_48_Name], [FJField_14]
+        into #tmp
+        FROM [Journal_48]
+        ''')
+    finally:
+        cur.close()
 
     data = u'SELECT [Journal_48_Name], [FJField_14] FROM #tmp'
     settings = u'''
