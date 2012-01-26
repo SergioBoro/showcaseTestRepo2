@@ -6,19 +6,19 @@
         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
 	<bean id="actionTabFinder"
-		class="ru.curs.showcase.model.primelements.datapanel.ActionTabFinderFromXML">
+		class="ru.curs.showcase.core.primelements.datapanel.ActionTabFinderFromXML">
 	</bean>
 
 	<bean id="objectSerializer" class="ru.curs.showcase.util.xml.XMLObjectSerializer">
 	</bean>
 	
-	<bean id="exceptionConfig" class="ru.curs.showcase.model.ExceptionConfig">
+	<bean id="exceptionConfig" class="ru.curs.showcase.core.ExceptionConfig">
 		<property name="noDatailedInfoExceptions"> 
 			<list>
 				<value>ru.curs.showcase.runtime.NoSuchUserDataException</value>
-				<value>ru.curs.showcase.model.sp.SPNotExistsException</value>
-				<value>ru.curs.showcase.model.ValidateException</value>
-				<value>ru.curs.showcase.model.FileIsAbsentInDBException</value>
+				<value>ru.curs.showcase.core.sp.SPNotExistsException</value>
+				<value>ru.curs.showcase.core.ValidateException</value>
+				<value>ru.curs.showcase.core.FileIsAbsentInDBException</value>
 			</list>
 		</property>
 	</bean>

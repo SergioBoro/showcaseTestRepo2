@@ -7,8 +7,8 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XForm;
-import ru.curs.showcase.model.html.*;
-import ru.curs.showcase.model.html.xform.XFormFactory;
+import ru.curs.showcase.core.html.*;
+import ru.curs.showcase.core.html.xform.XFormFactory;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 
 /**

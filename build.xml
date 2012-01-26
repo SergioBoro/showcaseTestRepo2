@@ -29,10 +29,7 @@
 
 	<svnSetting javahl="false" svnkit="false" id="svn.settings" certreject="false" />
 
-	<tstamp>
-		<format property="cur_date" pattern="MM.dd" locale="ru,RU" />
-	</tstamp>
-	<property name="sc.db.backup.name" value="showcase-test-${cur_date}" />
+	<property name="sc.db.backup.prefix" value="showcase-test" />
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
 	<target name="info.version" depends="info.svn">
@@ -324,7 +321,7 @@
 		<move todir="${sc.trunk.deploy.path}" file="${sc.dist.dir}/userdata-${sc.version}.${sc.last.rev}.zip" overwrite="true" />
 		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}.war" overwrite="true" />
 		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}-ext.war" overwrite="true" />
-		<copy todir="${sc.trunk.deploy.path}" file="${sc.db.backup.path}\${sc.db.backup.name}.zip" overwrite="true" />
+		<copy todir="${sc.trunk.deploy.path}" file="${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.zip" overwrite="true" />
 	</target>
 
 	<target name="backup.db" depends="info">
@@ -334,12 +331,12 @@
 			<arg value="-user_name=sa" />
 			<arg value="-user_pass=F708420Dx" />
 			<arg value="-backup" />
-			<arg value="-free_file=${sc.db.backup.path}\${sc.db.backup.name}.mbk" />
+			<arg value="-free_file=${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.mbk" />
 		</exec>
-		<zip destfile="${sc.db.backup.path}\${sc.db.backup.name}.zip">
-			<zipfileset file="${sc.db.backup.path}\${sc.db.backup.name}.mbk" />
+		<zip destfile="${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.zip">
+			<zipfileset file="${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.mbk" />
 		</zip>
-		<delete file="${sc.db.backup.path}\${sc.db.backup.name}.mbk" />
+		<delete file="${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.mbk" />
 	</target>
 
 	<target name="write.gwt.version" depends="info">

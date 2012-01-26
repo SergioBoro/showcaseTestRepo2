@@ -7,7 +7,7 @@ import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.frame.*;
+import ru.curs.showcase.core.frame.*;
 import ru.curs.showcase.util.ServletUtils;
 
 /**

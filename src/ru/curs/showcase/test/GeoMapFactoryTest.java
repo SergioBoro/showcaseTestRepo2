@@ -7,9 +7,9 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.*;
-import ru.curs.showcase.model.AdapterForJS;
-import ru.curs.showcase.model.geomap.*;
-import ru.curs.showcase.model.sp.*;
+import ru.curs.showcase.core.AdapterForJS;
+import ru.curs.showcase.core.geomap.*;
+import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**

@@ -4,15 +4,12 @@ Created on 02.11.2011
 
 @author: den
 '''
-from ru.curs.showcase.model.jython import JythonProc
-from ru.curs.showcase.model.jython import JythonDTO
+from ru.curs.showcase.core.jython import JythonProc
+from ru.curs.showcase.core.jython import JythonDTO
 from ru.curs.showcase.runtime import AppInfoSingleton
 import codecs
 from os.path import exists
 import re
-#from ru.curs.showcase.util.xml import XMLUtils
-#from org.xml.sax.helpers import DefaultHandler
-#from ru.curs.showcase.util import TextUtils
 
 # init vars
 source = 'jython_save_data.xml'

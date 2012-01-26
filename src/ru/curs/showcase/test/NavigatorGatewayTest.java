@@ -11,8 +11,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.primelements.*;
-import ru.curs.showcase.model.primelements.navigator.NavigatorSelector;
+import ru.curs.showcase.core.primelements.*;
+import ru.curs.showcase.core.primelements.navigator.NavigatorSelector;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;

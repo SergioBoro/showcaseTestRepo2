@@ -7,7 +7,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.*;
-import ru.curs.showcase.model.svg.*;
+import ru.curs.showcase.core.svg.*;
 import ru.curs.showcase.util.*;
 
 import com.google.gwt.user.client.rpc.SerializationException;

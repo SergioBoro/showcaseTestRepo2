@@ -5,7 +5,7 @@ import java.io.*;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamSource;
 
-import ru.curs.showcase.model.html.xform.XFormProducer;
+import ru.curs.showcase.core.html.xform.XFormProducer;
 import ru.curs.showcase.util.exception.SettingsFileType;
 import ru.curs.showcase.util.xml.XMLUtils;
 

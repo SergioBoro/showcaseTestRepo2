@@ -8,8 +8,8 @@ import javax.jws.soap.SOAPBinding;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.model.command.ShowcaseExportException;
-import ru.curs.showcase.model.external.ExternalCommand;
+import ru.curs.showcase.core.command.ShowcaseExportException;
+import ru.curs.showcase.core.external.ExternalCommand;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**

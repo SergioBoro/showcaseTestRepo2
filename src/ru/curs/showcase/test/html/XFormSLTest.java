@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.html.xform.*;
+import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTest;
 import ru.curs.showcase.util.*;

@@ -8,7 +8,7 @@ import org.apache.commons.fileupload.FileUploadException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.command.GeneralExceptionFactory;
+import ru.curs.showcase.core.command.GeneralExceptionFactory;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;

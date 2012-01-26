@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.frame.*;
+import ru.curs.showcase.core.frame.*;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.test.AbstractTest;
 

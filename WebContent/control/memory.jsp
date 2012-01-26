@@ -82,6 +82,7 @@ div {
 			</td>
 		</tr>		
 	</table>
+	
 	<h3>Управление памятью JVM</h3>
 	<table>
 		<tr>

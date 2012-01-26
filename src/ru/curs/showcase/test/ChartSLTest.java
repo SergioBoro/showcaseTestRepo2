@@ -8,8 +8,8 @@ import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.IncorrectElementException;
-import ru.curs.showcase.model.chart.ChartGetCommand;
+import ru.curs.showcase.core.IncorrectElementException;
+import ru.curs.showcase.core.chart.ChartGetCommand;
 
 /**
  * Тесты фабрики графиков.

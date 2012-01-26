@@ -4,8 +4,8 @@ Created on 02.11.2011
 
 @author: den
 '''
-from ru.curs.showcase.model.jython import JythonProc
-#from ru.curs.showcase.model.jython import JythonDTO
+from ru.curs.showcase.core.jython import JythonProc
+#from ru.curs.showcase.core.jython import JythonDTO
 #from ru.curs.showcase.app.api import UserMessage
 #from ru.curs.showcase.util.xml import XMLUtils
 #from org.xml.sax.helpers import DefaultHandler

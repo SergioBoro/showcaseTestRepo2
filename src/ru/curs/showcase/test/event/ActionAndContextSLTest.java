@@ -7,7 +7,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.event.ExecServerActivityCommand;
+import ru.curs.showcase.core.event.ExecServerActivityCommand;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.test.AbstractTest;
 

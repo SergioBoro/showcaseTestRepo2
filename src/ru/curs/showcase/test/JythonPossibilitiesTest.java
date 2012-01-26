@@ -7,7 +7,7 @@ import java.io.File;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.model.event.ExecServerActivityCommand;
+import ru.curs.showcase.core.event.ExecServerActivityCommand;
 
 /**
  * Класс для проверок возможностей Jython и сценариев его использования.

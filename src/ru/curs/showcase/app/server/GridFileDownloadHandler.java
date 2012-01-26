@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.apache.commons.fileupload.FileUploadException;
 
-import ru.curs.showcase.model.grid.GridFileDownloadCommand;
+import ru.curs.showcase.core.grid.GridFileDownloadCommand;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 

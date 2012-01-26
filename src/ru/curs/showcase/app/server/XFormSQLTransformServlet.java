@@ -8,7 +8,7 @@ import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.model.html.xform.*;
+import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.util.ServletUtils;
 
 /**

@@ -7,7 +7,7 @@ import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.ServerState;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.command.ServerStateGetCommand;
+import ru.curs.showcase.core.command.ServerStateGetCommand;
 import ru.curs.showcase.runtime.ClientState;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.XMLObjectSerializer;

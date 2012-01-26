@@ -11,9 +11,9 @@ import ru.curs.showcase.app.api.CanBeCurrent;
 import ru.curs.showcase.app.api.datapanel.DataPanelTab;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.model.ValidateException;
-import ru.curs.showcase.model.event.*;
-import ru.curs.showcase.model.jython.JythonException;
+import ru.curs.showcase.core.ValidateException;
+import ru.curs.showcase.core.event.*;
+import ru.curs.showcase.core.jython.JythonException;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.ReflectionUtils;
 

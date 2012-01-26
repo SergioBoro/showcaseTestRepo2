@@ -8,9 +8,9 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.model.primelements.*;
-import ru.curs.showcase.model.primelements.datapanel.*;
-import ru.curs.showcase.model.sp.SPNotExistsException;
+import ru.curs.showcase.core.primelements.*;
+import ru.curs.showcase.core.primelements.datapanel.*;
+import ru.curs.showcase.core.sp.SPNotExistsException;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.exception.SettingsFileType;
 import ru.curs.showcase.util.xml.XSDValidateException;

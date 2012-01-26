@@ -10,8 +10,8 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.IncorrectElementException;
-import ru.curs.showcase.model.html.webtext.WebTextGetCommand;
+import ru.curs.showcase.core.IncorrectElementException;
+import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.ReflectionUtils;
 

@@ -5,7 +5,7 @@ Created on 19.01.2012
 @author: den
 '''
 
-from ru.curs.showcase.model.jython import JythonProc
+from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.runtime import AppInfoSingleton
 import codecs
 

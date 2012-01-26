@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.model.external.*;
+import ru.curs.showcase.core.external.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.test.ws.*;
 import ru.curs.showcase.util.xml.XMLUtils;

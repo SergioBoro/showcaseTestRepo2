@@ -7,7 +7,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.model.grid.GridExcelExportCommand;
+import ru.curs.showcase.core.grid.GridExcelExportCommand;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 

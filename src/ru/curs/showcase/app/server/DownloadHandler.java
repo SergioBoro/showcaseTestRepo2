@@ -6,7 +6,7 @@ import org.apache.commons.fileupload.FileUploadException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.model.html.xform.XFormDownloadCommand;
+import ru.curs.showcase.core.html.xform.XFormDownloadCommand;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 

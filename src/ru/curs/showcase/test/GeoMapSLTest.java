@@ -11,9 +11,9 @@ import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.model.IncorrectElementException;
-import ru.curs.showcase.model.geomap.GeoMapGetCommand;
-import ru.curs.showcase.model.svg.*;
+import ru.curs.showcase.core.IncorrectElementException;
+import ru.curs.showcase.core.geomap.GeoMapGetCommand;
+import ru.curs.showcase.core.svg.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 

@@ -4,8 +4,8 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.model.chart.ChartDBGateway;
-import ru.curs.showcase.model.sp.*;
+import ru.curs.showcase.core.chart.ChartDBGateway;
+import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**

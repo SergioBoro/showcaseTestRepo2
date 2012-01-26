@@ -10,16 +10,16 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.model.chart.ChartGetCommand;
-import ru.curs.showcase.model.command.*;
-import ru.curs.showcase.model.event.ExecServerActivityCommand;
-import ru.curs.showcase.model.frame.MainPageGetCommand;
-import ru.curs.showcase.model.geomap.GeoMapGetCommand;
-import ru.curs.showcase.model.grid.GridGetCommand;
-import ru.curs.showcase.model.html.webtext.WebTextGetCommand;
-import ru.curs.showcase.model.html.xform.*;
-import ru.curs.showcase.model.primelements.datapanel.DataPanelGetCommand;
-import ru.curs.showcase.model.primelements.navigator.NavigatorGetCommand;
+import ru.curs.showcase.core.chart.ChartGetCommand;
+import ru.curs.showcase.core.command.*;
+import ru.curs.showcase.core.event.ExecServerActivityCommand;
+import ru.curs.showcase.core.frame.MainPageGetCommand;
+import ru.curs.showcase.core.geomap.GeoMapGetCommand;
+import ru.curs.showcase.core.grid.GridGetCommand;
+import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
+import ru.curs.showcase.core.html.xform.*;
+import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
+import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 

@@ -8,8 +8,8 @@ import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.model.chart.*;
-import ru.curs.showcase.model.sp.*;
+import ru.curs.showcase.core.chart.*;
+import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.util.ReflectionUtils;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
