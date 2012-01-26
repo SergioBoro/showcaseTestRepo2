@@ -178,7 +178,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 			XFormContext context = new XFormContext();
 			DataPanelElementInfo elInfo =
 				XFormInfoFactory.generateXFormsSQLSubmissionInfo("no_exist_proc");
-			XFormSQLTransformCommand command = new XFormSQLTransformCommand(context, elInfo);
+			XFormScriptTransformCommand command = new XFormScriptTransformCommand(context, elInfo);
 			command.execute();
 		} catch (GeneralException e) {
 			assertEquals(SPNotExistsException.class.getName(), e.getOriginalExceptionClass());
@@ -463,21 +463,21 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		final String procName = "xforms_submission_ec";
 
 		try {
-			gateway.sqlTransform(procName, context);
+			gateway.scriptTransform(procName, context);
 		} catch (ValidateException e) {
 			assertEquals("Ошибка в SP (-1)", e.getMessage());
 		}
 
 		try {
 			context.setFormData("<mesid>555</mesid>");
-			gateway.sqlTransform(procName, context);
+			gateway.scriptTransform(procName, context);
 		} catch (ValidateException e) {
 			assertEquals("Отформатированное сообщение: Ошибка в SP. Спасибо!", e.getMessage());
 		}
 
 		try {
 			context.setFormData("<mesid>556</mesid>");
-			gateway.sqlTransform(procName, context);
+			gateway.scriptTransform(procName, context);
 		} catch (ValidateException e) {
 			assertEquals("Составное сообщение + Ошибка в SP", e.getMessage());
 		}

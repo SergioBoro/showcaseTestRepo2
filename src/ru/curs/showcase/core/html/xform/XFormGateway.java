@@ -55,7 +55,7 @@ public interface XFormGateway extends HTMLGateway {
 	 * @return - требуемые данные (как правило в формате XML).
 	 * 
 	 */
-	String sqlTransform(String procName, XFormContext context);
+	String scriptTransform(String procName, XFormContext context);
 
 	/**
 	 * Загружает файл в хранилище.

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>
+	<tab id="01" name="XForm - jython submission">
+		<element id="0101" type="xforms" template="Showcase_Template_Submissions.xml"
+			proc="xforms_proc_dep">
+			<proc id="proc1" name="xform/simple_submission.py" type="SUBMISSION" />
+			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
+		</element>
+	</tab>
+</datapanel>

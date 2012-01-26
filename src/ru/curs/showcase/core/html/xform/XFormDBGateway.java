@@ -95,7 +95,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 	}
 
 	@Override
-	public String sqlTransform(final String aProcName, final XFormContext context) {
+	public String scriptTransform(final String aProcName, final XFormContext context) {
 		String out = null;
 		setProcName(aProcName);
 		setContext(context);

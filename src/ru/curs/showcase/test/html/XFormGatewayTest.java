@@ -160,7 +160,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		XFormContext context = new XFormContext();
 		context.setFormData(TEST_DATA_TAG);
 		XFormGateway gateway = new XFormDBGateway();
-		String res = gateway.sqlTransform(XFORMS_SUBMISSION1, context);
+		String res = gateway.scriptTransform(XFORMS_SUBMISSION1, context);
 		assertEquals(TEST_DATA_TAG, res);
 	}
 

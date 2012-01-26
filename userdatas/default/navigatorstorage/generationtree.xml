@@ -134,13 +134,20 @@
       </level2>                   
     </level1>
     <level1 id="20" name="Версия 2.0">
-      <level2 id="208" name="2.0.8" selectOnLoad="true">
+      <level2 id="208" name="2.0.8">
         <action>
           <main_context>jython_save_data.xml</main_context>
           <datapanel type="byver/208.xml" tab="firstOrCurrent" >          
           </datapanel>
         </action>
-      </level2>                   
+      </level2>
+      <level2 id="209" name="2.0.9" selectOnLoad="true">
+        <action>
+          <main_context>jython_save_data.xml</main_context>
+          <datapanel type="byver/209.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>                         
     </level1>        
   </group>
   <group id="1" name="Балансы продовольственных ресурсов">

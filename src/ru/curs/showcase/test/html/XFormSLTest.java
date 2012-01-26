@@ -81,7 +81,7 @@ public class XFormSLTest extends AbstractTest {
 		context.setFormData(data);
 		DataPanelElementInfo elInfo =
 			XFormInfoFactory.generateXFormsSQLSubmissionInfo(XFORMS_SUBMISSION1);
-		XFormSQLTransformCommand command = new XFormSQLTransformCommand(context, elInfo);
+		XFormScriptTransformCommand command = new XFormScriptTransformCommand(context, elInfo);
 		String res = command.execute();
 		assertEquals(data, res);
 	}
@@ -97,7 +97,7 @@ public class XFormSLTest extends AbstractTest {
 		context.setFormData(content);
 		DataPanelElementInfo elInfo =
 			XFormInfoFactory.generateXFormsSQLSubmissionInfo(XFORMS_SUBMISSION1);
-		XFormSQLTransformCommand command = new XFormSQLTransformCommand(context, elInfo);
+		XFormScriptTransformCommand command = new XFormScriptTransformCommand(context, elInfo);
 		String res = command.execute();
 		assertEquals("handleSQLSubmission должен вернуть пустую строку в ответ на null", "", res);
 	}
@@ -106,7 +106,7 @@ public class XFormSLTest extends AbstractTest {
 	 * Функция тестирования работы XSLT Submission через ServiceLayer.
 	 */
 	@Test
-	public void testXSLTSubmission() {
+	public void testXSLTSubmissionByFile() {
 		String data = TEST_DATA_TAG;
 		XFormContext context = new XFormContext();
 		context.setFormData(data);
@@ -118,7 +118,7 @@ public class XFormSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testXSLSubmissionInJython() {
+	public void testXSLSubmissionByJython() {
 		String data = TEST_DATA_TAG;
 		XFormContext context = new XFormContext();
 		context.setFormData(data);
@@ -130,7 +130,7 @@ public class XFormSLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testXSLSubmissionInSP() {
+	public void testXSLSubmissionBySP() {
 		String data = TEST_DATA_TAG;
 		XFormContext context = new XFormContext();
 		context.setFormData(data);
@@ -139,6 +139,18 @@ public class XFormSLTest extends AbstractTest {
 		XFormXSLTransformCommand command = new XFormXSLTransformCommand(context, elInfo);
 		String res = command.execute();
 		assertNotNull(res);
+	}
+
+	@Test
+	public void testJythonSubmission() {
+		String data = TEST_DATA_TAG;
+		XFormContext context = new XFormContext();
+		context.setFormData(data);
+		DataPanelElementInfo elInfo =
+			XFormInfoFactory.generateXFormsSQLSubmissionInfo("xform/submission.py");
+		XFormScriptTransformCommand command = new XFormScriptTransformCommand(context, elInfo);
+		String res = command.execute();
+		assertEquals("<data>test_handled</data>", res);
 	}
 
 	/**

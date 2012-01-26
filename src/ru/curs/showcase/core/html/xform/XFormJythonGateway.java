@@ -10,7 +10,8 @@ import ru.curs.showcase.core.jython.JythonQuery;
 import ru.curs.showcase.util.*;
 
 /**
- * Шлюз для XForms для работы с Jython.
+ * Шлюз для XForms для работы с Jython. Некоторые функции - работа с файлами -
+ * пока не реализованы.
  * 
  * @author den
  * 
@@ -18,6 +19,7 @@ import ru.curs.showcase.util.*;
 public class XFormJythonGateway implements XFormGateway {
 	private CompositeContext context;
 	private DataPanelElementInfo elementInfo;
+	private String procName;
 	private String data;
 
 	/**
@@ -43,15 +45,42 @@ public class XFormJythonGateway implements XFormGateway {
 		}
 	}
 
-	@Override
-	public OutputStreamDataFile downloadFile(final XFormContext aContext,
-			final DataPanelElementInfo aElementInfo, final String aLinkId) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Класс Jython шлюза для сохранения данных XForm.
+	 * 
+	 * @author den
+	 * 
+	 */
+	class XFormTransformJythonGateway extends JythonQuery<String> {
+
+		@Override
+		protected Object execute() {
+			return getProc().transform(context, data);
+		}
+
+		@Override
+		protected String getJythonProcName() {
+			return procName;
+		}
+
+		public XFormTransformJythonGateway() {
+			super(String.class);
+		}
 	}
 
 	@Override
-	public String sqlTransform(final String aProcName, final XFormContext aContext) {
+	public String scriptTransform(final String aProcName, final XFormContext aContext) {
+		context = aContext;
+		procName = aProcName;
+		data = aContext.getFormData();
+		XFormTransformJythonGateway gateway = new XFormTransformJythonGateway();
+		gateway.runTemplateMethod();
+		return gateway.getResult();
+	}
+
+	@Override
+	public OutputStreamDataFile downloadFile(final XFormContext aContext,
+			final DataPanelElementInfo aElementInfo, final String aLinkId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

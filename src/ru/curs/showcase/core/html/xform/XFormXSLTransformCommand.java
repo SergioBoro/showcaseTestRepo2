@@ -11,7 +11,7 @@ import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
- * Команда получения xforms.
+ * Команда преобразования XForm c помощью XSL.
  * 
  * @author den
  * 
@@ -24,8 +24,7 @@ public final class XFormXSLTransformCommand extends XFormContextCommand<String> 
 
 	@Override
 	protected void mainProc() throws Exception {
-		XSLTransformSelector selector =
-			new XSLTransformSelector(getContext(), getElementInfo());
+		XSLTransformSelector selector = new XSLTransformSelector(getContext(), getElementInfo());
 		DataFile<InputStream> transform = selector.getData();
 		Document doc = XMLUtils.stringToDocument(getContext().getFormData());
 		setResult(XMLUtils.xsltTransform(doc, transform));

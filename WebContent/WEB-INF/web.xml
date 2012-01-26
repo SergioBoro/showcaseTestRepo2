@@ -91,13 +91,14 @@
     <url-pattern>/secured/upload</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>XFormSQLTransformServlet</servlet-name>
-    <servlet-class>ru.curs.showcase.app.server.XFormSQLTransformServlet</servlet-class>
+    <servlet-name>XFormScriptTransformServlet</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.XFormScriptTransformServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>XFormSQLTransformServlet</servlet-name>
+    <servlet-name>XFormScriptTransformServlet</servlet-name>
     <url-pattern>/secured/submit</url-pattern>
     <url-pattern>/secured/sqlTransform</url-pattern>
+    <url-pattern>/secured/jythonTransform</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>SelectorDataService</servlet-name>

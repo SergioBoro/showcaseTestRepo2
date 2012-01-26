@@ -1,14 +1,15 @@
 package ru.curs.showcase.core.jython;
 
 import ru.curs.showcase.app.api.UserMessage;
-import ru.curs.showcase.app.api.event.AbstractCompositeContext;
+import ru.curs.showcase.app.api.event.*;
 
 import com.ziclix.python.sql.PyConnection;
 
 /**
  * Единый интерфейс для всех (!) Jython процедур. Каждая конкретная процедура на
  * Jython может реализовывать только те функции, которые нужно. Jython версии
- * (проверено на версии 2.5.2) это позволяет.
+ * (проверено на версии 2.5.2) это позволяет. Единый интерфейс введен для
+ * упрощения - чтобы в Jython файле нужно было импортировать только один модуль.
  * 
  * @author den
  * 
@@ -89,4 +90,16 @@ public interface JythonProc {
 	 * @return - XML текст с результатом запроса.
 	 */
 	String handle(String request);
+
+	/**
+	 * Процедура трансформации данных. Получает на вход строку и возвращает
+	 * строку.
+	 * 
+	 * @param aContext
+	 *            - контекст. Заполнено только поле session.
+	 * @param aData
+	 *            - данные, как правило, в формате XML.
+	 * @return - преобразованные данные.
+	 */
+	Object transform(CompositeContext aContext, String aData);
 }

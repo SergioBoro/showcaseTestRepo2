@@ -12,16 +12,15 @@ import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.util.ServletUtils;
 
 /**
- * Сервлет, обрабатывающий submission из XForms.
+ * Сервлет, обрабатывающий SQL и Jython submission из XForms. Является
+ * универсальным обработчиком для не XSL преобразований XForm.
  */
-public class XFormSQLTransformServlet extends HttpServlet {
+public class XFormScriptTransformServlet extends HttpServlet {
 
 	private static final String PROC_PARAM = "proc";
 	private static final String PROC_PARAM_ERROR =
 		"В XFormsSQLTransformServlet не передан обязательный параметр proc";
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = -1387485389229827545L;
 
 	@Override
@@ -38,7 +37,7 @@ public class XFormSQLTransformServlet extends HttpServlet {
 		XFormContext context = new XFormContext(params, content);
 		DataPanelElementInfo elInfo = XFormInfoFactory.generateXFormsSQLSubmissionInfo(procName);
 
-		XFormSQLTransformCommand command = new XFormSQLTransformCommand(context, elInfo);
+		XFormScriptTransformCommand command = new XFormScriptTransformCommand(context, elInfo);
 		String res = command.execute();
 
 		response.setStatus(HttpServletResponse.SC_OK);

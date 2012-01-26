@@ -14,6 +14,7 @@ import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.*;
+import ru.curs.showcase.core.ValidateException;
 import ru.curs.showcase.core.html.HTMLBasedElementRawData;
 import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.runtime.AppProps;
@@ -112,5 +113,14 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		proc.setName("upload1_proc");
 		dpei.getProcs().put(proc.getId(), proc);
 		XFormTemplateModificator.generateUploaders(doc, dpei);
+	}
+
+	@Test(expected = ValidateException.class)
+	public void testJythonSubmissionException() {
+		String data = null;
+		XFormContext context = new XFormContext();
+		context.setFormData(data);
+		XFormGateway gateway = new XFormJythonGateway();
+		gateway.scriptTransform("xform/submission.py", context);
 	}
 }

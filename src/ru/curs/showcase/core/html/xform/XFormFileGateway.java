@@ -45,7 +45,7 @@ public final class XFormFileGateway extends HTMLFileGateway implements XFormGate
 	}
 
 	@Override
-	public String sqlTransform(final String aProcName, final XFormContext aInputData) {
+	public String scriptTransform(final String aProcName, final XFormContext aInputData) {
 		LOGGER.info(String.format(
 				"Заглушка: выполнение Submission процедуры '%s' c данными формы  %s", aProcName,
 				aInputData));

@@ -4,7 +4,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementProc;
 import ru.curs.showcase.core.SourceSelector;
 
 /**
- * Выбор источника для получения сырых данных для построения XForms.
+ * Выбор источника для сохранения XForms.
  * 
  * @author den
  * 
