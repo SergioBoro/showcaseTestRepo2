@@ -80,7 +80,7 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 		Marker marker = MarkerFactory.getDetachedMarker(XMLUtils.XSL_MARKER);
 		marker.add(MarkerFactory.getMarker(LastLogEvents.OUTPUT));
 		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s",
-				XFormProducer.XSLTFORMS_XSL)));
+				XSLTransformerPoolFactory.XSLTFORMS_XSL)));
 		LOGGER.info(marker, html);
 	}
 
@@ -91,7 +91,7 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 		Marker marker = MarkerFactory.getDetachedMarker(XMLUtils.XSL_MARKER);
 		marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
 		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s",
-				XFormProducer.XSLTFORMS_XSL)));
+				XSLTransformerPoolFactory.XSLTFORMS_XSL)));
 		LOGGER.info(marker, XMLUtils.documentToString(template));
 	}
 

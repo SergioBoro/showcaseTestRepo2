@@ -138,7 +138,7 @@ public abstract class ServiceLayerCommand<T> {
 	}
 
 	protected void postProcess() {
-		XMLUtils.cleanup();
+		XSLTransformerPoolFactory.cleanup();
 	}
 
 	protected void logOutput() {

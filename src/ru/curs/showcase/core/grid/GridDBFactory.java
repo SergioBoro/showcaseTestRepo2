@@ -2,7 +2,7 @@ package ru.curs.showcase.core.grid;
 
 import java.sql.*;
 import java.text.*;
-import java.util.*;
+import java.util.Locale;
 import java.util.regex.*;
 
 import javax.sql.RowSet;
@@ -26,8 +26,6 @@ import ru.curs.showcase.util.xml.*;
  * 
  */
 public class GridDBFactory extends AbstractGridFactory {
-	private static final String UNIQUE_CHECK_ERROR =
-		"В отображаемом наборе присутствуют записи с неуникальным id";
 	private static final String DEF_DATE_VALUES_FORMAT = "def.date.values.format";
 	/**
 	 * Не локальная Locale по умолчанию :) Используется для передачи данных в
@@ -87,14 +85,9 @@ public class GridDBFactory extends AbstractGridFactory {
 		}
 	}
 
-	private void checkRecordIdUniqueness() {
-		List<String> ids = new ArrayList<>();
-		for (Record rec : getRecordSet().getRecords()) {
-			if (ids.indexOf(rec.getId()) > -1) {
-				throw new ResultSetHandleException(UNIQUE_CHECK_ERROR);
-			}
-		}
-
+	@Override
+	public void initResult() {
+		super.initResult();
 	}
 
 	private void readRecords() throws SQLException {

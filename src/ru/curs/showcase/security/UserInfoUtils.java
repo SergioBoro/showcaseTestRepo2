@@ -11,7 +11,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.UserInfo;
-import ru.curs.showcase.util.xml.XMLUtils;
+import ru.curs.showcase.runtime.XSLTransformerPoolFactory;
 
 /**
  * Класс утилит для получения информации о пользователе (деталей, таких как
@@ -50,7 +50,7 @@ public final class UserInfoUtils {
 			}
 		};
 		// TODO нужна ли здесь трансформация или хватит про SAXParser
-		XMLUtils.getTransformerFactory().newTransformer()
+		XSLTransformerPoolFactory.getTransformerFactory().newTransformer()
 				.transform(new StreamSource(is), new SAXResult(ch));
 		return result;
 	}

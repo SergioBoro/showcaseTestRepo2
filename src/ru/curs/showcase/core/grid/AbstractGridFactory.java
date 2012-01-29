@@ -22,6 +22,9 @@ import ru.curs.showcase.util.xml.*;
  * 
  */
 public abstract class AbstractGridFactory extends CompBasedElementFactory {
+	private static final String UNIQUE_CHECK_ERROR =
+		"В отображаемом наборе присутствуют записи с неуникальным id";
+
 	private static final String AUTO_SELECT_RELATIVE_RECORD_DISABLED =
 		"Опция AutoSelectRelativeRecord отключена из-за недостаточного размера страницы грида";
 
@@ -469,4 +472,13 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 		record.setAttributes(recAttrs);
 	}
 
+	public void checkRecordIdUniqueness() {
+		List<String> ids = new ArrayList<>();
+		for (Record rec : getRecordSet().getRecords()) {
+			if (ids.indexOf(rec.getId()) > -1) {
+				throw new ResultSetHandleException(UNIQUE_CHECK_ERROR);
+			}
+			ids.add(rec.getId());
+		}
+	}
 }

@@ -26,15 +26,6 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class XMLUtils {
 
-	private static final ThreadLocal<TransformerFactory> TF = new ThreadLocal<>();
-
-	public static TransformerFactory getTransformerFactory() {
-		if (TF.get() == null) {
-			TF.set(TransformerFactory.newInstance());
-		}
-		return TF.get();
-	}
-
 	public static Schema createSchemaForFile(final File file) throws SAXException {
 		SchemaFactory schemaFactory = createSchemaFactory();
 		return schemaFactory.newSchema(file);
@@ -254,7 +245,7 @@ public final class XMLUtils {
 			logXSLInput(doc, transform.getName());
 			Transformer tr = null;
 			if (transform.getData() != null) {
-				tr = getTransformerFactory().newTransformer(new StreamSource(transform.getData()));
+				tr = XSLTransformerPoolFactory.getTransformerFactory().newTransformer(new StreamSource(transform.getData()));
 			} else {
 				tr = XSLTransformerPoolFactory.getInstance().acquire();
 			}
@@ -306,7 +297,7 @@ public final class XMLUtils {
 
 			Transformer tr = null;
 			if (transform.getData() != null) {
-				tr = getTransformerFactory().newTransformer(new StreamSource(transform.getData()));
+				tr = XSLTransformerPoolFactory.getTransformerFactory().newTransformer(new StreamSource(transform.getData()));
 			} else {
 				tr = XSLTransformerPoolFactory.getInstance().acquire();
 			}
@@ -632,11 +623,5 @@ public final class XMLUtils {
 	public static Schema createSchemaForStream(final InputStream aData) throws SAXException {
 		SchemaFactory schemaFactory = createSchemaFactory();
 		return schemaFactory.newSchema(new StreamSource(aData));
-	}
-
-	public static void cleanup() {
-		if (TF.get() != null) {
-			TF.remove();
-		}
 	}
 }

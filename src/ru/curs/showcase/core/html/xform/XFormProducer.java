@@ -17,8 +17,6 @@ import ru.curs.showcase.util.xml.GeneralXMLHelper;
  */
 public final class XFormProducer extends GeneralXMLHelper {
 	public static final String XF_INSTANCE = "xf:instance";
-	public static final String XSLTFORMS_XSL = "xsltforms.xsl";
-
 	public static final String XFORMS_URI = "http://www.w3.org/2002/xforms";
 	public static final String EVENTS_URI = "http://www.w3.org/2001/xml-events";
 
@@ -107,7 +105,7 @@ public final class XFormProducer extends GeneralXMLHelper {
 	private static String transform(final org.w3c.dom.Document xml) throws TransformerException,
 			IOException {
 		StringWriter sw = new StringWriter(DEFAULT_BUFFER_SIZE);
-		Transformer tr = XSLTransformerPoolFactory.getInstance().acquire(XSLTFORMS_XSL);
+		Transformer tr = XSLTransformerPoolFactory.getInstance().acquire(XSLTransformerPoolFactory.XSLTFORMS_XSL);
 		try {
 			tr.setParameter("baseuri", "xsltforms/");
 			tr.setParameter("xsltforms_home", AppInfoSingleton.getAppInfo().getWebAppPath()
@@ -115,7 +113,7 @@ public final class XFormProducer extends GeneralXMLHelper {
 			tr.transform(new DOMSource(xml), new StreamResult(sw));
 
 		} finally {
-			XSLTransformerPoolFactory.getInstance().release(tr, XSLTFORMS_XSL);
+			XSLTransformerPoolFactory.getInstance().release(tr, XSLTransformerPoolFactory.XSLTFORMS_XSL);
 		}
 
 		String ret = sw.toString();

@@ -5,9 +5,7 @@ import java.io.*;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamSource;
 
-import ru.curs.showcase.core.html.xform.XFormProducer;
 import ru.curs.showcase.util.exception.SettingsFileType;
-import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Пул фабрик XSL трансформации (они не thread-safe, использовать одну нельзя).
@@ -17,6 +15,8 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public final class XSLTransformerPoolFactory extends Pool<Transformer> {
 
+	private static final ThreadLocal<TransformerFactory> TF = new ThreadLocal<>();
+	public static final String XSLTFORMS_XSL = "xsltforms.xsl";
 	private static XSLTransformerPoolFactory instance;
 
 	private XSLTransformerPoolFactory() {
@@ -40,18 +40,19 @@ public final class XSLTransformerPoolFactory extends Pool<Transformer> {
 	protected Transformer createReusableItem(final String xsltFileName)
 			throws TransformerConfigurationException, IOException {
 		if (xsltFileName == null) {
-			return XMLUtils.getTransformerFactory().newTransformer();
+			return XSLTransformerPoolFactory.getTransformerFactory().newTransformer();
 		} else {
 			InputStream is = getInputStream(xsltFileName);
-			return XMLUtils.getTransformerFactory().newTransformer(new StreamSource(is));
+			return XSLTransformerPoolFactory.getTransformerFactory().newTransformer(
+					new StreamSource(is));
 		}
 	}
 
 	private InputStream getInputStream(final String xsltFileName) throws IOException {
 		InputStream is = null;
 		switch (xsltFileName) {
-		case XFormProducer.XSLTFORMS_XSL:
-			is = XFormProducer.class.getResourceAsStream(xsltFileName);
+		case XSLTFORMS_XSL:
+			is = XSLTransformerPoolFactory.class.getResourceAsStream(xsltFileName);
 			break;
 		case AppProps.GRIDDATAXSL:
 			is =
@@ -69,6 +70,19 @@ public final class XSLTransformerPoolFactory extends Pool<Transformer> {
 	@Override
 	protected Pool<Transformer> getLock() {
 		return XSLTransformerPoolFactory.getInstance();
+	}
+
+	public static void cleanup() {
+		if (TF.get() != null) {
+			TF.remove();
+		}
+	}
+
+	public static TransformerFactory getTransformerFactory() {
+		if (TF.get() == null) {
+			TF.set(TransformerFactory.newInstance());
+		}
+		return TF.get();
 	}
 
 }
