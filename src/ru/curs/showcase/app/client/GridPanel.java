@@ -463,6 +463,12 @@ public class GridPanel extends BasicElementPanelBasis {
 		return cell;
 	}
 
+	/**
+	 * Замечание: сбрасывать состояние грида нужно обязательно до вызова
+	 * отрисовки зависимых элементов. Иначе потеряем выделенную запись или
+	 * ячейку в related!
+	 * 
+	 */
 	private void afterUpdateGrid(final UpdateType ut) {
 		Cell selected = getStoredRecordId();
 		boolean selectionSaved =
@@ -487,14 +493,14 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		switch (ut) {
 		case FULL:
-			runAction(grid.getActionForDependentElements());
 			resetGridSettingsToCurrent();
+			runAction(grid.getActionForDependentElements());
 			break;
 		case UPDATE_BY_REDRAWGRID:
+			resetGridSettingsToCurrent();
 			if (!selectionSaved) {
 				runAction(grid.getActionForDependentElements());
 			}
-			resetGridSettingsToCurrent();
 			break;
 		default:
 			processClick(selected.recId, selected.colId, InteractionType.SINGLE_CLICK);
