@@ -6,7 +6,7 @@ Created on 02.11.2011
 '''
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.core.jython import JythonDTO
-
+from ru.curs.showcase.runtime import AppInfoSingleton
 # init vars
 main = ""
 add = ""
@@ -45,7 +45,7 @@ def mainproc():
                             <main_context>current</main_context>                        
                             <server>
                                 <activity id="srv01" name="jasperReport/pdfCreate.py">
-                                    <add_context>../webapps/Showcase/''' + pdf + u'''</add_context>
+                                    <add_context>''' + AppInfoSingleton.getAppInfo().getWebAppPath() + '/' + pdf + u'''</add_context>
                                 </activity>
                             </server>
                         </action>
@@ -55,7 +55,7 @@ def mainproc():
                             <main_context>current</main_context>                                                  
                             <server>
                                 <activity id="srv02" name="poi/excelCreate.py">
-                                    <add_context>d:/PR.dev/java/Tomcat-7.0.8/webapps/Showcase/''' + excel + '''</add_context>
+                                    <add_context>''' + AppInfoSingleton.getAppInfo().getWebAppPath() + '/' + excel + '''</add_context>
                                 </activity>
                             </server>
                         </action>
