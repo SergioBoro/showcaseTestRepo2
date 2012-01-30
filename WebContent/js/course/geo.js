@@ -111,6 +111,10 @@ dojo.require("djeo.Map");
 			map = g.mapRegistry[mapId].map;
 		if (!map)
 			return;
+		if (map.engine.type != "djeo") {
+			window.alert('Данная карта имеет подложку типа "' + map.engine.type + '". Для любых внешних подложек (Яндекс, Google) экспорт невозможен.');
+			return;
+		}
 
 		dojo.require("dojox.gfx.utils");
 
