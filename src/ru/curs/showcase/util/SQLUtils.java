@@ -57,6 +57,29 @@ public final class SQLUtils {
 	}
 
 	/**
+	 * Определяет индекс столбца с определенным названием в ResultSet (в случае
+	 * отсутствия возвращается -1).
+	 * 
+	 * @param md
+	 *            - метаданные ResultSet.
+	 * @param name
+	 *            - название столбца.
+	 * @return - индекс столбца.
+	 * @throws SQLException
+	 */
+	public static int getColumnIndex(final ResultSetMetaData md, final String name)
+			throws SQLException {
+		int index = -1;
+		for (int i = 1; i <= md.getColumnCount(); i++) {
+			if (name.equalsIgnoreCase(md.getColumnName(i))) {
+				index = i;
+				break;
+			}
+		}
+		return index;
+	}
+
+	/**
 	 * Определяет, является ли тип SQL датой .
 	 * 
 	 * @param aSqlType

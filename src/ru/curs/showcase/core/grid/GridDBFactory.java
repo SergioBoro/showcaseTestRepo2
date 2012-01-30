@@ -2,7 +2,7 @@ package ru.curs.showcase.core.grid;
 
 import java.sql.*;
 import java.text.*;
-import java.util.Locale;
+import java.util.*;
 import java.util.regex.*;
 
 import javax.sql.RowSet;
@@ -15,7 +15,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.event.EventFactory;
 import ru.curs.showcase.core.sp.*;
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.SQLUtils;
 import ru.curs.showcase.util.xml.*;
 
@@ -259,7 +259,28 @@ public class GridDBFactory extends AbstractGridFactory {
 		if (date == null) {
 			return "";
 		}
+		date = adjustDate(rowset, col.getId(), date);
 		return df.format(date);
+	}
+
+	private java.util.Date adjustDate(final RowSet rs, final String colId,
+			final java.util.Date date) throws SQLException {
+		java.util.Date result = date;
+
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			int index = SQLUtils.getColumnIndex(rs.getMetaData(), colId);
+			if (index > -1) {
+				String type = rs.getMetaData().getColumnTypeName(index);
+				if (("date".equalsIgnoreCase(type)) || ("datetime2".equalsIgnoreCase(type))) {
+					Calendar c = Calendar.getInstance();
+					c.setTime(result);
+					c.add(Calendar.DAY_OF_MONTH, 2);
+					result = c.getTime();
+				}
+			}
+		}
+
+		return result;
 	}
 
 	private void calcRecordsCount() throws SQLException {
