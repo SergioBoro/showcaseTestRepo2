@@ -86,4 +86,5 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 		assertEquals("grid-record-bold grid-record-italic", grid.getDataSet().getRecordSet()
 				.getRecords().get(0).getAttributes().getValue(GeneralConstants.STYLE_CLASS_TAG));
 	}
+
 }

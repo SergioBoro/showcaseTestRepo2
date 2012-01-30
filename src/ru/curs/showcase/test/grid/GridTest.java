@@ -5,9 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.Record;
-import ru.curs.showcase.app.api.grid.Grid;
-import ru.curs.showcase.core.grid.GridDBFactory;
-import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.test.AbstractTest;
 
 import com.google.gwt.dom.client.Style.Unit;
@@ -53,35 +50,5 @@ public class GridTest extends AbstractTest {
 			rec.getFontSizeValue();
 		}
 		fail();
-	}
-
-	@Test
-	public void testCheckIdUniquenessOk() {
-		Record rec1 = new Record();
-		rec1.setId("1");
-		Record rec2 = new Record();
-		rec2.setId("2");
-		GridDBFactory factory =
-			new GridDBFactory(
-					new RecordSetElementRawData(getTestGridInfo(), getTestGridContext1()));
-		factory.initResult();
-		Grid grid = factory.getResult();
-		grid.getDataSet().getRecordSet().getRecords().add(rec1);
-		grid.getDataSet().getRecordSet().getRecords().add(rec2);
-		factory.checkRecordIdUniqueness();
-	}
-
-	@Test(expected = ResultSetHandleException.class)
-	public void testCheckIdUniquenessOFailed() {
-		Record rec1 = new Record();
-		rec1.setId("1");
-		GridDBFactory factory =
-			new GridDBFactory(
-					new RecordSetElementRawData(getTestGridInfo(), getTestGridContext1()));
-		factory.initResult();
-		Grid grid = factory.getResult();
-		grid.getDataSet().getRecordSet().getRecords().add(rec1);
-		grid.getDataSet().getRecordSet().getRecords().add(rec1);
-		factory.checkRecordIdUniqueness();
 	}
 }
