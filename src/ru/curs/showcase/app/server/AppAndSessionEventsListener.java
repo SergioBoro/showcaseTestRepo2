@@ -23,7 +23,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 	public final void contextInitialized(final ServletContextEvent arg0) {
 		LOGGER.info(SHOWCASE_LOADING);
 		AppInitializer.initialize();
-		ProductionModeInitializer.initialize(arg0);
+		ProductionModeInitializer.initialize(arg0.getServletContext());
 	}
 
 	@Override

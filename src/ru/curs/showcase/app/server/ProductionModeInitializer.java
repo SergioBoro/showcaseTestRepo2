@@ -3,7 +3,7 @@ package ru.curs.showcase.app.server;
 import java.io.*;
 import java.util.Enumeration;
 
-import javax.servlet.*;
+import javax.servlet.ServletContext;
 
 import org.slf4j.*;
 
@@ -23,7 +23,7 @@ import ru.curs.showcase.util.exception.*;
 public final class ProductionModeInitializer {
 
 	private static final String SHOWCASE_ROOTPATH_USERDATA_PARAM = "showcase.rootpath.userdata";
-	public static final String DIR_SVN = ".svn";
+
 	private static final String USER_DATA_INFO =
 		"Добавлен userdata на основе rootpath из context.xml с идентификатором '%s' и путем '%s'";
 	private static final String FILE_COPY_ERROR = "Ошибка копирования файла при старте Tomcat: %s";
@@ -54,46 +54,32 @@ public final class ProductionModeInitializer {
 	/**
 	 * Основной метод инициализатора.
 	 * 
-	 * @param arg0
+	 * @param aServletContext
 	 *            - ServletContextEvent.
 	 */
-	public static void initialize(final ServletContextEvent arg0) {
-		initClassPath(arg0);
-		readServletContext(arg0); // считываем пути к userdata'м вначале
-		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
-			AppInitializer.readPathProperties();
-		}
-		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
-			throw new NoRootPathUserDataException();
-		}
-
-		AppProps.checkUserdatas();
-		copyUserDatas(arg0);
+	public static void initialize(final ServletContext aServletContext) {
+		initClassPath(aServletContext);
+		initUserDatas(aServletContext);
 		readCSSs();
-		logUserDatas();
 		JMXBeanRegistrator.register();
 	}
 
-	private static void initClassPath(final ServletContextEvent arg0) {
-		String path = arg0.getServletContext().getRealPath("index.jsp");
+	public static void initUserDatas(final ServletContext aServletContext) {
+		readServletContext(aServletContext);
+		AppInitializer.readDefaultUserDatasAndCheck();
+		AppProps.checkUserdatas();
+		copyUserDatas(aServletContext);
+	}
+
+	private static void initClassPath(final ServletContext aServletContext) {
+		String path = aServletContext.getRealPath("index.jsp");
 		path = path.substring(0, path.lastIndexOf("\\"));
 		path = path.replaceAll("\\\\", "/");
 		AppInfoSingleton.getAppInfo().setWebAppPath(path);
 
 	}
 
-	private static void logUserDatas() {
-		LOGGER.info("Сформирован массив UserData:");
-		for (String id : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
-			LOGGER.info(id + " | "
-					+ AppInfoSingleton.getAppInfo().getUserdatas().get(id).getPath() + " | "
-					+ AppInfoSingleton.getAppInfo().getUserdatas().get(id).getGridColumnGapWidth());
-		}
-	}
-
-	private static void readServletContext(final ServletContextEvent arg0) {
-		ServletContext sc = arg0.getServletContext();
-
+	private static void readServletContext(final ServletContext sc) {
 		Enumeration<?> en = sc.getInitParameterNames();
 		while (en.hasMoreElements()) {
 			String name = en.nextElement().toString();
@@ -105,7 +91,7 @@ public final class ProductionModeInitializer {
 				}
 				String value;
 				for (String id : dir.list()) {
-					if (!DIR_SVN.equalsIgnoreCase(id)) {
+					if (!AppInitializer.DIR_SVN.equalsIgnoreCase(id)) {
 						value = rootpath + "\\\\" + id;
 						AppInfoSingleton.getAppInfo().addUserData(id, value);
 						LOGGER.info(String.format(USER_DATA_INFO, id, value));
@@ -151,15 +137,15 @@ public final class ProductionModeInitializer {
 		}
 	}
 
-	private static void copyUserDatas(final ServletContextEvent arg0) {
+	private static void copyUserDatas(final ServletContext aServletContext) {
 		if (checkForCopyUserData(ExchangeConstants.DEFAULT_USERDATA)) {
-			copyUserData(arg0, ExchangeConstants.DEFAULT_USERDATA);
+			copyUserData(aServletContext, ExchangeConstants.DEFAULT_USERDATA);
 		}
 
 		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
 			if (!(ExchangeConstants.DEFAULT_USERDATA.equals(userdataId))) {
 				if (checkForCopyUserData(userdataId)) {
-					copyUserData(arg0, userdataId);
+					copyUserData(aServletContext, userdataId);
 				}
 			}
 		}
@@ -180,7 +166,8 @@ public final class ProductionModeInitializer {
 		return false;
 	}
 
-	private static void copyUserData(final ServletContextEvent arg0, final String userdataId) {
+	private static void
+			copyUserData(final ServletContext aServletContext, final String userdataId) {
 		String userDataCatalog = "";
 		UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
 		if (us == null) {
@@ -209,7 +196,8 @@ public final class ProductionModeInitializer {
 			}
 			isAllFilesCopied =
 				isAllFilesCopied
-						&& copyUserDataDir(arg0, userDataCatalog, dirsForCopy[i], userdataId);
+						&& copyUserDataDir(aServletContext, userDataCatalog, dirsForCopy[i],
+								userdataId);
 		}
 
 		if (!isAllFilesCopied) {
@@ -217,15 +205,15 @@ public final class ProductionModeInitializer {
 		}
 	}
 
-	private static Boolean copyUserDataDir(final ServletContextEvent arg0,
+	private static Boolean copyUserDataDir(final ServletContext aServletContext,
 			final String userDataCatalog, final String dirName, final String userdataId) {
 		Boolean isAllFilesCopied = true;
 		BatchFileProcessor fprocessor =
 			new BatchFileProcessor(userDataCatalog + "/" + dirName, new RegexFilenameFilter(
 					"^[.].*", false));
 		try {
-			fprocessor.process(new CopyFileAction(arg0.getServletContext().getRealPath(
-					"/" + AppProps.SOLUTIONS_DIR + "/" + userdataId + "/" + dirName)));
+			fprocessor.process(new CopyFileAction(aServletContext.getRealPath("/"
+					+ AppProps.SOLUTIONS_DIR + "/" + userdataId + "/" + dirName)));
 		} catch (IOException e) {
 			isAllFilesCopied = false;
 			LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));

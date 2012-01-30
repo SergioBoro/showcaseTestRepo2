@@ -19,25 +19,27 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public final class AppInitializer {
 
+	public static final String DIR_SVN = ".svn";
+
 	private static final String SHOWCASE_ROOTPATH_USERDATA_PARAM = "rootpath.userdata";
 
-	/**
-	 * PATH_PROPERTIES_ERROR.
-	 */
 	private static final String PATH_PROPERTIES_ERROR = "Ошибка чтения файла "
 			+ FileUtils.PATH_PROPERTIES;
 
-	/**
-	 * USER_DATA_INFO.
-	 */
 	private static final String USER_DATA_INFO = "Добавлен userdata на основе rootpath из "
 			+ FileUtils.PATH_PROPERTIES + " с идентификатором '%s' и путем '%s'";
 
-	/**
-	 * LOGGER.
-	 */
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AppAndSessionEventsListener.class);
+
+	public static void readDefaultUserDatasAndCheck() {
+		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
+			readPathProperties();
+		}
+		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
+			throw new NoUserDatasException();
+		}
+	}
 
 	private AppInitializer() {
 		throw new UnsupportedOperationException();
@@ -96,7 +98,7 @@ public final class AppInitializer {
 					}
 					String value;
 					for (String id : dir.list()) {
-						if (!ProductionModeInitializer.DIR_SVN.equalsIgnoreCase(id)) {
+						if (!DIR_SVN.equalsIgnoreCase(id)) {
 							value = rootpath + "\\" + id;
 							AppInfoSingleton.getAppInfo().addUserData(id, value);
 							LOGGER.info(String.format(USER_DATA_INFO, id, value));

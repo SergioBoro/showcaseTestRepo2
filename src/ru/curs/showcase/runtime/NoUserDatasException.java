@@ -8,14 +8,14 @@ import ru.curs.showcase.util.exception.BaseException;
  * Исключение, генерируемое в случае отсутствия rootpath userdata.
  * 
  */
-public class NoRootPathUserDataException extends BaseException {
+public class NoUserDatasException extends BaseException {
 	private static final long serialVersionUID = 7395563849883634373L;
 
 	private static final String ERROR_MES =
-		"Корневой каталог пользовательских данных(userdata) не задан в context.xml или "
-				+ FileUtils.PATH_PROPERTIES + ", либо он пуст";
+		"Не задано ни одного каталога для пользовательских данных(userdata): ни в context.xml, ни в "
+				+ FileUtils.PATH_PROPERTIES;
 
-	public NoRootPathUserDataException() {
+	public NoUserDatasException() {
 		super(ExceptionType.USER, ERROR_MES);
 	}
 

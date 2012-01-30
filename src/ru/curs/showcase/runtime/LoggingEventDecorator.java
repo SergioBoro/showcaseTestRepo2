@@ -59,10 +59,6 @@ public class LoggingEventDecorator implements AbstractCommandContext {
 		src = src.replace("<", "&lt;");
 		src = src.replace(">", "&gt;");
 
-		src = src.replace("\\r\\n", ExchangeConstants.LINE_SEPARATOR);
-		src = src.replace("\\n", "\n");
-		src = src.replace("\\\"", "&quot;");
-		src = src.replace("\\t", "\t");
 		src = src.replace("&amp;", "&");
 		src = src.replace("&quot;", "\"");
 		src = src.replace("&apos;", "'");

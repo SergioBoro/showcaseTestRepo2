@@ -30,7 +30,7 @@ form {
 	text-align: center;
 }
 div {
-	text-align: center;
+	text-align: center;	
 }
 -->
 </style>
@@ -61,6 +61,7 @@ div {
 						type="submit" value="Сбросить пул Jython интерпретаторов"
 						onclick="window.setInterval('refresh()',1000);" />
 				</form>
+				<div style="font-style: italic">Сброс нужен после изменения любого Jython файла</div>				
 			</td>
 			<td width="30%">
 				<div>Число XSL трансформаций: <%=XSLTransformerPoolFactory.getInstance().getAllCount()%></div>
@@ -69,6 +70,7 @@ div {
 						type="submit" value="Сбросить пул XSL трансформаций"
 						onclick="window.setInterval('refresh()',1000);" />
 				</form>
+				<div style="font-style: italic">Сброс нужен после изменения любой XSL трансформации</div>
 			</td>
 		</tr>
 		<tr>
@@ -109,7 +111,21 @@ div {
 			</td>
 		</tr>	
 	</table>
-
+	
+	<h3>Управление userdata</h3>
+	<table>
+		<tr>
+			<td width="30%">	
+				<form target="fake" method="get" action="reset">
+					<input type="hidden" name="userdata" value="reload" /> 
+					<input type="submit"
+						value="Перезагрузить userdata"/>
+				</form>
+				<div style="font-style: italic">На перезагрузку userdata потребуется 10-30 секунд!</div>
+			</td>
+		</tr>		
+	</table>
+	
 	<iframe name="fake"
 		style="position: absolute; width: 0; height: 0; border: 0"
 		src="javascript:''" />

@@ -18,8 +18,10 @@ public class ControlMemoryServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String pool = request.getParameter("pool");
 		String gc = request.getParameter("gc");
-		if ((pool == null) && (gc == null)) {
-			throw new ServletException("Должен быть задан один из параметров: pool или gc");
+		String userdata = request.getParameter("userdata");
+		if ((pool == null) && (gc == null) && (userdata == null)) {
+			throw new ServletException(
+					"Должен быть задан один из параметров: pool, gc или userdata");
 		}
 		if (pool != null) {
 			switch (pool) {
@@ -43,6 +45,9 @@ public class ControlMemoryServlet extends HttpServlet {
 		}
 		if (gc != null) {
 			Runtime.getRuntime().gc();
+		}
+		if (userdata != null) {
+			ProductionModeInitializer.initUserDatas(request.getSession().getServletContext());
 		}
 	}
 }
