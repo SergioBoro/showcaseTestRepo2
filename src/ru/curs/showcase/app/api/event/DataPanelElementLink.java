@@ -3,7 +3,7 @@ package ru.curs.showcase.app.api.event;
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.GWTClonable;
+import ru.curs.showcase.app.api.*;
 
 /**
  * Ссылка на элемент информационной панели.
@@ -12,7 +12,8 @@ import ru.curs.showcase.app.api.GWTClonable;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DataPanelElementLink implements SerializableElement, GWTClonable, ContainingContext {
+public class DataPanelElementLink implements SerializableElement, GWTClonable, ContainingContext,
+		SizeEstimate {
 
 	private static final long serialVersionUID = 8381576475440574251L;
 
@@ -90,5 +91,13 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 
 	public void setKeepUserSettings(final Boolean aKeepUserSettings) {
 		keepUserSettings = aKeepUserSettings;
+	}
+
+	@Override
+	public long sizeEstimate() {
+		long result = Integer.SIZE / Byte.SIZE;
+		result += id.length();
+		result += context.sizeEstimate();
+		return result;
 	}
 }

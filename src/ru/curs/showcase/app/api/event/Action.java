@@ -17,7 +17,7 @@ import ru.curs.showcase.app.api.*;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Action implements SerializableElement, GWTClonable, ContainingContext,
-		SelfCheckObject {
+		SelfCheckObject, SizeEstimate {
 
 	private static final long serialVersionUID = -5014034913652092038L;
 
@@ -538,5 +538,26 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 			}
 		}
 
+	}
+
+	@Override
+	public long sizeEstimate() {
+		long result = Integer.SIZE / Byte.SIZE;
+		if (context != null) {
+			context.sizeEstimate();
+		}
+		if (dataPanelLink != null) {
+			result += dataPanelLink.sizeEstimate();
+		}
+		if (modalWindowInfo != null) {
+			result += modalWindowInfo.sizeEstimate();
+		}
+		for (Activity activity : getClientActivities()) {
+			result += activity.sizeEstimate();
+		}
+		for (Activity activity : getServerActivities()) {
+			result += activity.sizeEstimate();
+		}
+		return result;
 	}
 }

@@ -245,7 +245,9 @@ public final class XMLUtils {
 			logXSLInput(doc, transform.getName());
 			Transformer tr = null;
 			if (transform.getData() != null) {
-				tr = XSLTransformerPoolFactory.getTransformerFactory().newTransformer(new StreamSource(transform.getData()));
+				tr =
+					XSLTransformerPoolFactory.getTransformerFactory().newTransformer(
+							new StreamSource(transform.getData()));
 			} else {
 				tr = XSLTransformerPoolFactory.getInstance().acquire();
 			}
@@ -297,7 +299,9 @@ public final class XMLUtils {
 
 			Transformer tr = null;
 			if (transform.getData() != null) {
-				tr = XSLTransformerPoolFactory.getTransformerFactory().newTransformer(new StreamSource(transform.getData()));
+				tr =
+					XSLTransformerPoolFactory.getTransformerFactory().newTransformer(
+							new StreamSource(transform.getData()));
 			} else {
 				tr = XSLTransformerPoolFactory.getInstance().acquire();
 			}

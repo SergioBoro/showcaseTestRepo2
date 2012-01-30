@@ -15,7 +15,7 @@ import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.grid.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.test.AbstractTest;
-import ru.curs.showcase.util.ServletUtils;
+import ru.curs.showcase.util.*;
 
 /**
  * Тестовый класс для фабрики гридов.
@@ -439,5 +439,17 @@ public class GridSLTest extends AbstractTest {
 		} catch (GeneralException e) {
 			assertEquals(IncorrectElementException.class, e.getCause().getClass());
 		}
+	}
+
+	@Test
+	public void testGridEstimate() {
+		GridContext context = getTestGridContext1();
+		DataPanelElementInfo elInfo = getTestGridInfo2();
+
+		GridGetCommand command = new GridGetCommand(context, elInfo, true);
+		Grid grid = command.execute();
+		long estimateSize = grid.sizeEstimate();
+		assertTrue(estimateSize > 0);
+		assertTrue(ReflectionUtils.getObjectSizeBySerialize(grid) > 0);
 	}
 }

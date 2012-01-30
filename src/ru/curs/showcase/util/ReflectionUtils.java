@@ -1,11 +1,12 @@
 package ru.curs.showcase.util;
 
+import java.io.*;
 import java.lang.reflect.*;
 import java.util.Map;
 
 import net.sf.saxon.functions.Collection;
 import ru.curs.showcase.app.api.ExcludeFromSerialization;
-import ru.curs.showcase.util.exception.ServerLogicError;
+import ru.curs.showcase.util.exception.*;
 
 /**
  * Статический класс, содержащий общие функции для работы с Java Reflection.
@@ -143,5 +144,18 @@ public final class ReflectionUtils {
 	private static boolean isProperty(final int modifier) {
 		return Modifier.isPrivate(modifier) && !Modifier.isStatic(modifier)
 				&& !Modifier.isTransient(modifier) && !Modifier.isFinal(modifier);
+	}
+
+	public static int getObjectSizeBySerialize(final Serializable object) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(baos);
+			oos.writeObject(object);
+			oos.close();
+		} catch (IOException e) {
+			throw new MemoryResourcesError(e);
+		}
+		return baos.size();
 	}
 }

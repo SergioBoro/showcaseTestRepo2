@@ -21,7 +21,8 @@ import ru.curs.showcase.app.api.*;
 @XmlRootElement(name = Action.CONTEXT_TAG)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CompositeContext extends TransferableElement implements CanBeCurrent,
-		SerializableElement, Assignable<CompositeContext>, GWTClonable, AbstractCompositeContext {
+		SerializableElement, Assignable<CompositeContext>, GWTClonable, AbstractCompositeContext,
+		SizeEstimate {
 
 	@Override
 	public String toString() {
@@ -321,5 +322,23 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 
 	public void setRelated(final Map<String, CompositeContext> aRelated) {
 		related = aRelated;
+	}
+
+	@Override
+	public long sizeEstimate() {
+		long result = 0;
+		if (main != null) {
+			result += main.getBytes().length;
+		}
+		if (additional != null) {
+			result += additional.getBytes().length;
+		}
+		if (session != null) {
+			result += session.getBytes().length;
+		}
+		if (filter != null) {
+			result += filter.getBytes().length;
+		}
+		return result;
 	}
 }

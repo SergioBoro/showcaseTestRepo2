@@ -3,6 +3,7 @@ package ru.curs.showcase.app.api.event;
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SizeEstimate;
 
 /**
  * Обобщенный класс события в UI, от которого наследуются события грида,
@@ -15,7 +16,7 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Event implements SerializableElement {
+public class Event implements SerializableElement, SizeEstimate {
 
 	private static final long serialVersionUID = 3610656112304171914L;
 
@@ -108,5 +109,16 @@ public class Event implements SerializableElement {
 
 	public Event() {
 		super();
+	}
+
+	@Override
+	public long sizeEstimate() {
+		long result = Integer.SIZE / Byte.SIZE;
+		result += id1.length();
+		if (id2 != null) {
+			result += id2.length();
+		}
+		result += action.sizeEstimate();
+		return result;
 	}
 }

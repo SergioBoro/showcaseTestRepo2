@@ -4,6 +4,8 @@ import java.io.*;
 
 import javax.xml.bind.annotation.*;
 
+import ru.curs.showcase.app.api.SizeEstimate;
+
 /**
  * Файл, в котором данные хранятся в ByteArrayOutputStream.
  * 
@@ -12,7 +14,7 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
-public class OutputStreamDataFile extends DataFile<ByteArrayOutputStream> {
+public class OutputStreamDataFile extends DataFile<ByteArrayOutputStream> implements SizeEstimate {
 
 	public OutputStreamDataFile() {
 		super();
@@ -31,5 +33,17 @@ public class OutputStreamDataFile extends DataFile<ByteArrayOutputStream> {
 
 	public final void setTextData(final String aData) {
 		// парный метод, не используется
+	}
+
+	@Override
+	public long sizeEstimate() {
+		long result = Integer.SIZE / Byte.SIZE;
+		if (getName() != null) {
+			result += getName().getBytes().length;
+		}
+		if (getData() != null) {
+			result += getData().size();
+		}
+		return result;
 	}
 }

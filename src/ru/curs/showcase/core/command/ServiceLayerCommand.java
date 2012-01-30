@@ -6,13 +6,14 @@ import java.util.UUID;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.app.api.SizeEstimate;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.AppRegistry;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.ObjectSerializer;
 import ru.curs.showcase.util.exception.ServerLogicError;
-import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**
  * Абстрактный класс команды сервисного уровня приложения. Весь функционал
@@ -24,6 +25,8 @@ import ru.curs.showcase.util.xml.*;
  *            - класс результата работы команды.
  */
 public abstract class ServiceLayerCommand<T> {
+
+	private static final int MAX_LOG_OBJECT_SIZE = 100_000;
 
 	public static final String SERVLET_MARKER = "Servlet";
 
@@ -102,7 +105,7 @@ public abstract class ServiceLayerCommand<T> {
 		}
 	}
 
-	private void initCommandContext() {
+	protected void initCommandContext() {
 		commandContext =
 			new CommandContext(this.getClass().getSimpleName(), UUID.randomUUID().toString());
 		commandContext.toMDC();
@@ -141,6 +144,10 @@ public abstract class ServiceLayerCommand<T> {
 		XSLTransformerPoolFactory.cleanup();
 	}
 
+	/**
+	 * Примечание: в виде эксперимента - вызываем явно уборку мусора, если
+	 * объект получился слишком большой.
+	 */
 	protected void logOutput() {
 		if (!LOGGER.isInfoEnabled()) {
 			return;
@@ -153,6 +160,19 @@ public abstract class ServiceLayerCommand<T> {
 		marker.add(MarkerFactory.getMarker(LastLogEvents.OUTPUT));
 		marker.add(MarkerFactory.getMarker(String.format("class=%s", result.getClass()
 				.getSimpleName())));
+		if (result instanceof SizeEstimate) {
+			SizeEstimate se = (SizeEstimate) result;
+			long esimateValue = se.sizeEstimate();
+			if (esimateValue > MAX_LOG_OBJECT_SIZE) {
+				Runtime.getRuntime().gc();
+				LOGGER.info(
+						marker,
+						String.format(
+								"Оценка размера возвращаемого объекта: %d байт. Объект не будет выведен в лог.",
+								esimateValue));
+				return;
+			}
+		}
 		LOGGER.info(marker, serializer.serialize(result));
 	}
 

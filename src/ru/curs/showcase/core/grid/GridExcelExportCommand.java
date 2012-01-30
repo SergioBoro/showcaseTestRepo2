@@ -70,13 +70,21 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 
 		GridGetCommand command = new GridGetCommand(getContext(), getElementInfo(), false);
 		grid = command.execute();
+		initCommandContext();
 	}
 
 	@Override
 	protected void mainProc() throws Exception {
-		GridToExcelXMLFactory builder = new GridToExcelXMLFactory(grid);
-		Document xml = builder.build(columnSet);
+		GridToExcelXMLFactory factory = new GridToExcelXMLFactory(grid);
+		Document xml = factory.build(columnSet);
 		ByteArrayOutputStream stream = XMLUtils.xsltTransformForGrid(xml);
 		setResult(new ExcelFile(stream));
+	}
+
+	@Override
+	protected void postProcess() {
+		super.postProcess();
+		LOGGER.info(String.format("Размер возвращаемого файла: %d байт", getResult().getData()
+				.size()));
 	}
 }

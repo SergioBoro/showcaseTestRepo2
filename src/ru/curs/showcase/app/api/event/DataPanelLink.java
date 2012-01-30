@@ -13,7 +13,7 @@ import ru.curs.showcase.app.api.*;
  * @author den
  * 
  */
-public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClonable {
+public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClonable, SizeEstimate {
 
 	private static final long serialVersionUID = 5921173204380210732L;
 
@@ -135,6 +135,17 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 		DataPanelLink result = new DataPanelLink();
 		result.setDataPanelId(CURRENT_ID);
 		result.setTabId(CURRENT_ID);
+		return result;
+	}
+
+	@Override
+	public long sizeEstimate() {
+		long result = Integer.SIZE / Byte.SIZE;
+		result += dataPanelId.length();
+		result += tabId.length();
+		for (DataPanelElementLink link : elementLinks) {
+			result += link.sizeEstimate();
+		}
 		return result;
 	}
 }

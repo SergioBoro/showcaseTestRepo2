@@ -5,6 +5,7 @@ import java.util.List;
 import javax.xml.bind.annotation.*;
 
 import ru.curs.gwt.datagrid.model.*;
+import ru.curs.showcase.app.api.SizeEstimate;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.*;
@@ -18,7 +19,7 @@ import ru.curs.showcase.app.api.event.*;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Grid extends DataPanelCompBasedElement {
+public class Grid extends DataPanelCompBasedElement implements SizeEstimate {
 
 	private static final long serialVersionUID = -8875148764868361032L;
 
@@ -150,5 +151,43 @@ public class Grid extends DataPanelCompBasedElement {
 	@Override
 	protected GridEventManager initEventManager() {
 		return new GridEventManager();
+	}
+
+	@Override
+	public long sizeEstimate() {
+		long result = Integer.SIZE / Byte.SIZE;
+		for (Event ev : getEventManager().getEvents()) {
+			result += ev.sizeEstimate();
+		}
+		for (Record rec : dataSet.getRecordSet().getRecords()) {
+			result += rec.getId().length();
+			if (rec.getBackgroundColor() != null) {
+				result += rec.getBackgroundColor().length();
+			}
+			if (rec.getTextColor() != null) {
+				result += rec.getTextColor().length();
+			}
+			if (rec.getFontSize() != null) {
+				result += rec.getFontSize().length();
+			}
+			for (java.util.Map.Entry<String, String> entry : rec.getValues().entrySet()) {
+				result += entry.getKey().length();
+				if (entry.getValue() != null) {
+					result += entry.getValue().getBytes().length;
+				}
+			}
+
+			for (java.util.Map.Entry<String, String> entry : rec.getAttributes().getValues()
+					.entrySet()) {
+				result += entry.getKey().length();
+				if (entry.getValue() != null) {
+					result += entry.getValue().getBytes().length;
+				}
+			}
+			if (rec.getIndex() != null) {
+				result += Integer.SIZE / Byte.SIZE;
+			}
+		}
+		return result;
 	}
 }

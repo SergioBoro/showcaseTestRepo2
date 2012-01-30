@@ -3,7 +3,7 @@ package ru.curs.showcase.app.api.event;
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.NamedElement;
+import ru.curs.showcase.app.api.*;
 
 /**
  * Описание действия на сервере или клиенте, не связанного напрямую с элементами
@@ -16,7 +16,8 @@ import ru.curs.showcase.app.api.NamedElement;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Activity extends NamedElement implements SerializableElement, ContainingContext {
+public class Activity extends NamedElement implements SerializableElement, ContainingContext,
+		SizeEstimate {
 
 	private static final long serialVersionUID = -3677230519093999292L;
 
@@ -64,5 +65,14 @@ public class Activity extends NamedElement implements SerializableElement, Conta
 
 	public void setOnServerSide(final Boolean aOnServerSide) {
 		onServerSide = aOnServerSide;
+	}
+
+	@Override
+	public long sizeEstimate() {
+		long result = Integer.SIZE / Byte.SIZE;
+		result += getId().length();
+		result += getName().length();
+		result += context.sizeEstimate();
+		return result;
 	}
 }

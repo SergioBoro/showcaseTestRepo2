@@ -1,7 +1,7 @@
 package ru.curs.showcase.app.api.event;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.GWTClonable;
+import ru.curs.showcase.app.api.*;
 
 /**
  * Информация о модальном окне, которое должно быть отображено при выполнении
@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.GWTClonable;
  * @author den
  * 
  */
-public final class ModalWindowInfo implements SerializableElement, GWTClonable {
+public final class ModalWindowInfo implements SerializableElement, GWTClonable, SizeEstimate {
 
 	private static final long serialVersionUID = 9177503564264889964L;
 
@@ -75,5 +75,20 @@ public final class ModalWindowInfo implements SerializableElement, GWTClonable {
 		res.width = width;
 		res.showCloseBottomButton = showCloseBottomButton;
 		return res;
+	}
+
+	@Override
+	public long sizeEstimate() {
+		long result = Integer.SIZE / Byte.SIZE;
+		if (caption != null) {
+			result += caption.length();
+		}
+		if (height != null) {
+			result += Integer.SIZE / Byte.SIZE;
+		}
+		if (width != null) {
+			result += Integer.SIZE / Byte.SIZE;
+		}
+		return result;
 	}
 }
