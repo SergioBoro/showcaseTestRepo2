@@ -31,11 +31,13 @@
 	<property name="sc.db.backup.prefix" value="showcase-test" />
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
-	<target name="info.version" depends="info.svn">
+	<target name="write.app.version" depends="info.svn">
 		<loadfile property="sc.version" srcFile="${sc.src.dir}/version" />
 		<echo>Версия Showcase ${sc.version}.${sc.last.rev}</echo>
 		<var name="sc.war.file" unset="true" />
 		<property name="sc.war.file" value="${sc.dist.dir}/${appname}-${sc.version}.${sc.last.rev}" />
+		<echo>Update build number</echo>
+		<echo file="WebContent\WEB-INF\classes\build" message="${sc.last.rev}" />		
 	</target>
 
 	<path id="master-classpath" description="Master CLASSPATH for this script">
@@ -166,13 +168,12 @@
 
 	<target name="ci.build" depends="clean, init.dirs, init.local.files, init.dojo, init.jython, copy.patches, dist"/>
 	
-	<target name="dist" depends="info.version" description="Assembles WAR file">
+	<target name="dist" depends="write.app.version" description="Assembles WAR file">
 		<echo>Prepare for GWT build for all browsers</echo>
 		<copy tofile="${sc.tmp.dir}\App.gwt.xml.re" file="${sc.gwt.src.root.dir}\App.gwt.xml" overwrite="true" />
 		<copy tofile="${sc.gwt.src.root.dir}\App.gwt.xml" file="${sc.gwt.src.root.dir}\App.gwt.xml.template" overwrite="true" />
 		<antcall target="build.with.gwt" />
 
-		<antcall target="write.app.version" />
 		<antcall target="write.gwt.version" />
 
 		<echo>Make dir for war and copy compiled data</echo>
@@ -348,11 +349,6 @@
 		</exec>
 	</target>
 
-	<target name="write.app.version" depends="info.svn">
-		<echo>Update build number</echo>
-		<echo file="WebContent\WEB-INF\classes\build" message="${sc.last.rev}" />
-	</target>
-
 	<target name="init.ws.tests">
 		<echo>Updating WS test files from ${sc.webapp}/forall/webservices?wsdl</echo>
 		<exec resolveexecutable="true" executable="cmd" dir=".">
@@ -376,9 +372,17 @@
 	</target>
 
 	<target name="info.svn">
-		<svn refid="svn.settings">
-			<singleinfo target="." property="sc.last.rev" request="lastRevision" />
-		</svn>
+		<if>
+			<isset property="${os.SVN_REVISION}"/>
+			 <then>
+			   <property name="sc.last.rev" value="${os.SVN_REVISION}"/>
+			 </then>
+			 <else>
+				<svn refid="svn.settings">
+					<singleinfo target="." property="sc.last.rev" request="lastRevision" />
+				</svn>
+			 </else>			
+		</if>
 		<echo>Последняя версия кода в хранилище ${sc.last.rev}</echo>
 	</target>
 
