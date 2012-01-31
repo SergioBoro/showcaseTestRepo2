@@ -212,8 +212,11 @@ public final class ActionExecuter {
 				ac.getNavigatorActionType() == NavigatorActionType.CHANGE_NODE_AND_DO_ACTION;
 			Accordeon acrd = AppCurrContext.getInstance().getMainPanel().getAccordeon();
 
-			if (ac.getContext() != null) {
-				Accordeon.setTempMainContext(ac.getContext().getMain());
+			if ((ac.getDataPanelLink() == null) && (!ac.containsServerActivity())) {
+				if (ac.getContext() != null) {
+
+					Accordeon.setTempMainContext(ac.getContext().getMain());
+				}
 			}
 			if (ac.getNavigatorElementLink().getRefresh()) {
 				acrd.refreshAccordeon(ac.getNavigatorElementLink().getId(), fireSelectionAction);
