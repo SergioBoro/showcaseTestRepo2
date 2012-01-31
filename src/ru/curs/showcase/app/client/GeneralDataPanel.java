@@ -431,12 +431,34 @@ public class GeneralDataPanel {
 		Widget w = null;
 
 		DataPanelElementSubType subtype = dpe.getSubType();
-		if ((subtype == DataPanelElementSubType.EXT_LIVE_GRID)
-				|| (subtype == DataPanelElementSubType.EXT_PAGING_GRID)) {
+		if (subtype == null) {
+			subtype = DataPanelElementSubType.PAGING_GRID;
+		}
+		switch (subtype) {
+		case EXT_LIVE_GRID:
+		case EXT_PAGING_GRID:
+			ExtGridPanel edgp = null;
 
-			MessageBox.showSimpleMessage("generateGridElement", "Grid из ExtGWT");
+			if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+				edgp = new ExtGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
+				w = edgp.getPanel();
+				w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+			} else {
+				edgp = new ExtGridPanel(dpe);
+				w = edgp.getPanel();
+				edgp.hidePanel();
+			}
 
-		} else {
+			getUiElements(dpe).add(new UIDataPanelElement(edgp));
+
+			break;
+
+		case EXT_TREE_GRID:
+			MessageBox.showSimpleMessage("generateGridElement", "TreeGrid из ExtGWT");
+			break;
+
+		case PAGING_GRID: // существующий грид
+		default:
 			GridPanel dgp = null;
 
 			if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
@@ -450,6 +472,8 @@ public class GeneralDataPanel {
 			}
 
 			getUiElements(dpe).add(new UIDataPanelElement(dgp));
+
+			break;
 		}
 
 		return w;
