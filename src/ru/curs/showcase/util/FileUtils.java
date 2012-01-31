@@ -4,7 +4,6 @@
 package ru.curs.showcase.util;
 
 import java.io.*;
-import java.net.URL;
 import java.util.Properties;
 
 import org.slf4j.*;
@@ -18,33 +17,6 @@ import ru.curs.showcase.util.exception.*;
  * 
  */
 public final class FileUtils {
-
-	/**
-	 * Универсальная функция получения URL внутренних ресурсов Web-приложения по
-	 * относительному пути, используя Java ClassLoader (например, файлов
-	 * конфигурации). Загрузка идет из папки classes.
-	 * 
-	 * @param fileName
-	 *            - путь к загружаемому ресурсу
-	 * @return URL ресурса
-	 */
-	public static URL getResURL(final String fileName) {
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-		URL result = classLoader.getResource(fileName);
-		return result;
-	}
-
-	/**
-	 * Возвращает путь к classes. getResURL(".") использовать нельзя, т.к. он
-	 * некорректно работает на Tomcat, возвращая путь к ${Tomcat}\lib.
-	 */
-	public static String getClassPath() {
-		URL url = getResURL("ru/curs/showcase/util/FileUtils.class");
-		File tmp = new File(url.getPath());
-		return tmp.getParent().substring(0,
-				tmp.getParent().length() - "\\ru\\curs\\showcase\\util".length());
-	}
 
 	/**
 	 * Универсальная функция загрузки внутренних ресурсов Web-приложения по

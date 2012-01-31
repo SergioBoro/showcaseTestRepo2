@@ -49,10 +49,6 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 				AppProps.getOptionalValueByName("navigator.def.icon.name", TEST1_USERDATA));
 	}
 
-	/**
-	 * Тест ф-ции getValueByName.
-	 * 
-	 */
 	@Test
 	public void testDirExists() {
 		checkDir(SettingsFileType.XSLT.getFileDir());
@@ -62,7 +58,8 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 		checkDir(AppProps.SCHEMASDIR);
 		checkDir(SettingsFileType.XFORM.getFileDir());
 
-		assertTrue((new File(FileUtils.getResURL(AppProps.SCHEMASDIR).getFile())).exists());
+		assertTrue("Папка с XSD схемами не найдена", (new File(AppInfoSingleton.getAppInfo()
+				.getWebAppPath() + "/WEB-INF/classes/" + AppProps.SCHEMASDIR)).exists());
 	}
 
 	private void checkDir(final String dirName) {

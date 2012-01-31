@@ -1,7 +1,6 @@
 package ru.curs.showcase.runtime;
 
 import java.io.*;
-import java.net.URL;
 import java.sql.*;
 import java.util.regex.*;
 
@@ -64,18 +63,14 @@ public final class ServerStateFactory {
 	}
 
 	private static String getGwtVersion() {
-		URL url = FileUtils.getResURL(GWTVERSION_FILE);
-		if (url == null) {
-			return null;
-		}
-
 		String data;
 		try {
-			InputStream is = url.openStream();
+			InputStream is = FileUtils.loadResToStream(GWTVERSION_FILE);
 			data = TextUtils.streamToString(is);
 		} catch (IOException e) {
 			return null;
 		}
+
 		Pattern pattern = Pattern.compile("Google Web Toolkit ([0-9.]+)");
 		Matcher matcher = pattern.matcher(data);
 		if (matcher.find()) {
