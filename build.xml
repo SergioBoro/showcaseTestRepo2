@@ -82,6 +82,7 @@
 		<copy verbose="true" file="${sc.userdata.dir}/default/app.${env}.template.properties" tofile="${sc.userdata.dir}/default/app.properties" />		
 		<copy verbose="true" file="${sc.userdata.dir}/default/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/default/gridproperties/default.properties" />
 		<copy verbose="true" file="${sc.src.dir}/logback.template.xml" tofile="${sc.src.dir}/logback.xml" />
+		<copy verbose="true" file="${sc.gwt.src.root.dir}/template.App.gwt.xml" tofile="${sc.gwt.src.root.dir}/App.gwt.xml" />
 		<echo>Не забудьте указать правильные настройки в файлах local.properties, ${sc.general.props.file} и app.properties, а также настроить classpath (Build path) с помощью Eclipse</echo>
 	</target>
 
@@ -170,8 +171,8 @@
 	
 	<target name="dist" depends="write.app.version" description="Assembles WAR file">
 		<echo>Prepare for GWT build for all browsers</echo>
-		<copy tofile="${sc.tmp.dir}\App.gwt.xml.re" file="${sc.gwt.src.root.dir}\App.gwt.xml" overwrite="true" />
-		<copy tofile="${sc.gwt.src.root.dir}\App.gwt.xml" file="${sc.gwt.src.root.dir}\App.gwt.xml.template" overwrite="true" />
+		<copy file="${sc.gwt.src.root.dir}\App.gwt.xml" tofile="${sc.tmp.dir}\App.gwt.xml.re" overwrite="true" />
+		<copy file="${sc.gwt.src.root.dir}\template.App.gwt.xml" tofile="${sc.gwt.src.root.dir}\App.gwt.xml" overwrite="true" />
 		<antcall target="build.with.gwt" />
 
 		<antcall target="write.gwt.version" />
@@ -391,6 +392,7 @@
 		<echoproperties>
 			<propertyset>
 				<propertyref builtin="system" />
+				<propertyref builtin="commandline"/>
 			</propertyset>
 		</echoproperties>
 		<echo>Local properties</echo>
