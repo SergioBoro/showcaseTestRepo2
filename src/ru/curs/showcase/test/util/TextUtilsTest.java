@@ -21,7 +21,8 @@ public class TextUtilsTest extends AbstractTestWithDefaultUserData {
 	private static final String RUS_NAME_WITH_EXT = "русское имя.ext";
 
 	/**
-	 * Проверка функции {@link ru.curs.showcase.util.UTF8Checker#getRealEncoding
+	 * Проверка функции
+	 * {@link ru.curs.showcase.util.UTF8Checker#getRealEncoding
 	 * TextUtils.getRealEncoding}.
 	 * 
 	 */

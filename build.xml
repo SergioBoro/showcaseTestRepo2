@@ -80,7 +80,7 @@
 		<copy overwrite="no" verbose="true" file="${sc.src.dir}/${sc.general.props.file}.template" tofile="${sc.src.dir}/${sc.general.props.file}" />
 		<copy overwrite="no" verbose="true" file="${sc.userdata.dir}/app.properties.template" tofile="${sc.userdata.dir}/app.properties" />
 		<copy overwrite="no" verbose="true" file="${sc.userdata.dir}/gridproperties/default.properties.template" tofile="${sc.userdata.dir}/gridproperties/default.properties" />
-		<copy overwrite="no" verbose="true" file="${sc.src.dir}/log4j.xml.template" tofile="${sc.src.dir}/log4j.xml" />
+		<copy overwrite="no" verbose="true" file="${sc.src.dir}/logback.xml.template" tofile="${sc.src.dir}/logback.xml" />
 		<echo>Не забудьте указать правильные настройки в файлах local.properties, ${sc.general.props.file} и app.properties, а также настроить classpath (Build path) с помощью Eclipse</echo>
 	</target>
 
@@ -165,6 +165,8 @@
 
 	<target name="rebuild" depends="clean, build" description="clean + build" />
 
+	<target name="ci.build" depends="clean, init.dirs, init.local.files, dist"/>
+	
 	<target name="dist" depends="info.version" description="Assembles WAR file">
 		<echo>Prepare for GWT build for all browsers</echo>
 		<copy tofile="${sc.tmp.dir}\App.gwt.xml.re" file="${sc.gwt.src.root.dir}\App.gwt.xml" overwrite="true" />

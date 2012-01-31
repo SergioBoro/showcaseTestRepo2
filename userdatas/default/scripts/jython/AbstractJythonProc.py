@@ -6,7 +6,7 @@ Created on 02.11.2011
 '''
 from ru.curs.showcase.core.jython import JythonProc
 #from ru.curs.showcase.runtime import AppInfoSingleton
-#from ru.curs.showcase.model.jython import JythonDTO
+#from ru.curs.showcase.core.jython import JythonDTO
 #from ru.curs.showcase.app.api import UserMessage
 #from ru.curs.showcase.util.xml import XMLUtils
 #from org.xml.sax.helpers import DefaultHandler
@@ -61,6 +61,17 @@ class AbstractJythonProc(JythonProc):
         if context.getFilter():
             filterContext = context.getFilter()
         elementId = elId
+        data = adata
+        return mainproc()
+
+    def transform(self, context, adata):
+        global main, add, session, filterContext, data
+        main = context.getMain()
+        if context.getAdditional():
+            add = context.getAdditional()
+        session = context.getSession()
+        if context.getFilter():
+            filterContext = context.getFilter()
         data = adata
         return mainproc()
 
