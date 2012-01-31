@@ -165,7 +165,7 @@
 
 	<target name="rebuild" depends="clean, build" description="clean + build" />
 
-	<target name="ci.build" depends="clean, init.dirs, init.local.files, dist"/>
+	<target name="ci.build" depends="clean, init.dirs, init.local.files, init.dojo, init.jython, copy.patches, dist"/>
 	
 	<target name="dist" depends="info.version" description="Assembles WAR file">
 		<echo>Prepare for GWT build for all browsers</echo>
@@ -245,7 +245,7 @@
 		<antcall target="dist" />
 	</target>
 
-	<target name="copy.runtime">
+	<target name="deploy.runtime.tomcat">
 		<copy todir="${sc.deploy.dir}/${ant.project.name}/WEB-INF/lib" failonerror="false">
 			<fileset dir="${sc.runtime.dir}/lib">
 				<include name="**/*.jar" />
