@@ -9985,6 +9985,10 @@ function insertXFormByXPath(ok, selected, xpathRoot, xpathMapping, needClear)
                 (new XFDelete(getLastPartXPath(getXPath(xpath)), null, null, null, getXPath(xpathRoot), null, null)).run(null, getXPath(xpathRoot));
         	}
         	
+        	if(selected==""){
+        		break;
+        	}
+        	
         	var map = {};  
    		    for (var col in value) {
     			    xpathFull = getXPath(xpath)+"/"+value[col];
