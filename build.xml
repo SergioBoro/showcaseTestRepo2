@@ -74,12 +74,12 @@
 	</target>
 
 	<target name="init.local.files" description="Create local files">
-		<copy overwrite="no" verbose="true" file="local.properties.template" tofile="local.properties" />
-		<copy overwrite="no" verbose="true" file=".classpath.template" tofile=".classpath" />
-		<copy overwrite="no" verbose="true" file="${sc.src.dir}/${sc.general.props.file}.template" tofile="${sc.src.dir}/${sc.general.props.file}" />
-		<copy overwrite="no" verbose="true" file="${sc.userdata.dir}/default/app.template.properties" tofile="${sc.userdata.dir}/default/app.properties" />
-		<copy overwrite="no" verbose="true" file="${sc.userdata.dir}/default/gridproperties/default.properties.template" tofile="${sc.userdata.dir}/default/gridproperties/default.properties" />
-		<copy overwrite="no" verbose="true" file="${sc.src.dir}/logback.xml.template" tofile="${sc.src.dir}/logback.xml" />
+		<copy verbose="true" file="local.properties.template" tofile="local.properties" />
+		<copy verbose="true" file="template.classpath" tofile=".classpath" />
+		<copy verbose="true" file="${sc.src.dir}/general.${env}.template.properties" tofile="${sc.src.dir}/${sc.general.props.file}" />
+		<copy verbose="true" file="${sc.userdata.dir}/default/app.${env}.template.properties" tofile="${sc.userdata.dir}/default/app.properties" />		
+		<copy verbose="true" file="${sc.userdata.dir}/default/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/default/gridproperties/default.properties" />
+		<copy verbose="true" file="${sc.src.dir}/logback.template.xml" tofile="${sc.src.dir}/logback.xml" />
 		<echo>Не забудьте указать правильные настройки в файлах local.properties, ${sc.general.props.file} и app.properties, а также настроить classpath (Build path) с помощью Eclipse</echo>
 	</target>
 
