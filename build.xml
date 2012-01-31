@@ -166,7 +166,7 @@
 
 	<target name="rebuild" depends="clean, build" description="clean + build" />
 
-	<target name="ci.build" depends="clean, init.dirs, init.local.files, init.dojo, init.jython, copy.patches, dist"/>
+	<target name="ci.build" depends="clean, init.dirs, init.local.files, init.dojo, init.jython, copy.patches, info.env, dist"/>
 	
 	<target name="dist" depends="write.app.version" description="Assembles WAR file">
 		<echo>Prepare for GWT build for all browsers</echo>
@@ -373,7 +373,7 @@
 
 	<target name="info.svn">
 		<if>
-			<isset property="${os.SVN_REVISION}"/>
+			<isset property="os.SVN_REVISION"/>
 			 <then>
 			   <property name="sc.last.rev" value="${os.SVN_REVISION}"/>
 			 </then>
