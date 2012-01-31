@@ -44,6 +44,16 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	private DataPanelElementType type;
 
 	/**
+	 * Подтип элемента панели управления.
+	 */
+	private DataPanelElementSubType subtype = null;
+
+	/**
+	 * Признак редактируемости элемента (пока только для гридов из ExtGWT).
+	 */
+	private Boolean editable = false;
+
+	/**
 	 * Наименование хранимой процедуры, которая загружает данные в элемент. Для
 	 * тестовых файловых шлюзов - имя файла, из которого загружаются данные.
 	 */
@@ -184,6 +194,22 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 
 	public final DataPanelElementType getType() {
 		return type;
+	}
+
+	public final DataPanelElementSubType getSubType() {
+		return subtype;
+	}
+
+	public final void setSubType(final DataPanelElementSubType aSubtype) {
+		this.subtype = aSubtype;
+	}
+
+	public final Boolean getEditable() {
+		return editable;
+	}
+
+	public final void setEditable(final Boolean aEditable) {
+		this.editable = aEditable;
 	}
 
 	public final void setType(final DataPanelElementType aType) {

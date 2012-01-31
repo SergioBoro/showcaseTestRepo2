@@ -428,21 +428,29 @@ public class GeneralDataPanel {
 	 * @return - Widget
 	 */
 	public static Widget generateGridElement(final DataPanelElementInfo dpe) {
-
-		GridPanel dgp = null;
 		Widget w = null;
 
-		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-			dgp = new GridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
-			w = dgp.getPanel();
-			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
-		} else {
-			dgp = new GridPanel(dpe);
-			w = dgp.getPanel();
-			dgp.hidePanel();
-		}
+		DataPanelElementSubType subtype = dpe.getSubType();
+		if ((subtype == DataPanelElementSubType.EXT_LIVE_GRID)
+				|| (subtype == DataPanelElementSubType.EXT_PAGING_GRID)) {
 
-		getUiElements(dpe).add(new UIDataPanelElement(dgp));
+			MessageBox.showSimpleMessage("generateGridElement", "Grid из ExtGWT");
+
+		} else {
+			GridPanel dgp = null;
+
+			if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+				dgp = new GridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
+				w = dgp.getPanel();
+				w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+			} else {
+				dgp = new GridPanel(dpe);
+				w = dgp.getPanel();
+				dgp.hidePanel();
+			}
+
+			getUiElements(dpe).add(new UIDataPanelElement(dgp));
+		}
 
 		return w;
 	}

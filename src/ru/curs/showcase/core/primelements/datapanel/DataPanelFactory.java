@@ -28,6 +28,8 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 	private static final String REFRESH_INTERVAL_TAG = "refreshInterval";
 	private static final String REFRESH_BY_TIMER_TAG = "refreshByTimer";
 	private static final String COLSPAN_TAG = "colspan";
+	private static final String SUB_TYPE_TAG = "subtype";
+	private static final String EDITABLE_TAG = "editable";
 
 	/**
 	 * Создаваемая панель.
@@ -104,12 +106,14 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		}
 	}
 
+	// CHECKSTYLE:OFF
 	public void elementSTARTTAGHandler(final Attributes attrs) {
 		String value;
 		DataPanelElementInfo el = new DataPanelElementInfo(elCounter++, currentTab);
 		el.setId(attrs.getValue(ID_TAG));
 		el.setType(DataPanelElementType.valueOf(attrs.getValue(TYPE_TAG).toUpperCase()));
 		handleHTMLAttrs(attrs, el.getHtmlAttrs());
+
 		if (attrs.getIndex(PROC_ATTR_NAME) > -1) {
 			el.setProcName(attrs.getValue(PROC_ATTR_NAME));
 		}
@@ -148,7 +152,17 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		} else {
 			currentTD.setElement(el);
 		}
+		if (attrs.getIndex(SUB_TYPE_TAG) > -1) {
+			el.setSubType(DataPanelElementSubType.valueOf(attrs.getValue(SUB_TYPE_TAG)
+					.toUpperCase()));
+		}
+		if (attrs.getIndex(EDITABLE_TAG) > -1) {
+			value = attrs.getValue(EDITABLE_TAG);
+			el.setEditable(Boolean.valueOf(value));
+		}
 	}
+
+	// CHECKSTYLE:ON
 
 	public void handleHTMLAttrs(final Attributes attrs, final HTMLAttrs aHtmlAttrs) {
 		if (attrs.getIndex(GeneralConstants.STYLE_CLASS_TAG) > -1) {

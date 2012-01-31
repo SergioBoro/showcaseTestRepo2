@@ -25,6 +25,19 @@
 			<xs:enumeration value="XFORMS" />			
 		</xs:restriction>
 	</xs:simpleType>
+	
+	<xs:simpleType name="subTypeElement">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="paging_grid" />
+			<xs:enumeration value="ext_live_grid" />
+			<xs:enumeration value="ext_paging_grid" />
+			<xs:enumeration value="ext_tree_grid" />
+			<xs:enumeration value="PAGING_GRID" />
+			<xs:enumeration value="EXT_LIVE_GRID" />
+			<xs:enumeration value="EXT_PAGING_GRID" />
+			<xs:enumeration value="EXT_TREE_GRID" />
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:simpleType name="pictureType">
 		<xs:restriction base="xs:string">

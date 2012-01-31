@@ -72,6 +72,8 @@
 				default="false" />
 			<xs:attribute name="neverShowInPanel" type="xs:boolean"
 				default="false" />
+			<xs:attribute name="subtype" type="subTypeElement" />
+			<xs:attribute name="editable" type="xs:boolean" />
 			<xs:attribute name="proc" type="notNullType" />
 			<xs:attribute name="template" type="xmlType" />
 			<xs:attribute name="transform" type="xslType" />
