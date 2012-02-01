@@ -68,7 +68,7 @@ public interface DataService extends RemoteService {
 	 */
 	Grid getGrid(GridContext context, DataPanelElementInfo element) throws GeneralException;
 
-	Grid getExtGridMetadata(GridContext context, DataPanelElementInfo element)
+	ExtGridMetadata getExtGridMetadata(GridContext context, DataPanelElementInfo element)
 			throws GeneralException;
 
 	Grid getExtGridData(GridContext context, DataPanelElementInfo element) throws GeneralException;

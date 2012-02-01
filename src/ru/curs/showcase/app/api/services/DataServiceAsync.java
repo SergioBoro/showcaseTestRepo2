@@ -63,7 +63,7 @@ public interface DataServiceAsync {
 	void getGrid(GridContext context, DataPanelElementInfo element, AsyncCallback<Grid> callback);
 
 	void getExtGridMetadata(GridContext context, DataPanelElementInfo element,
-			AsyncCallback<Grid> callback);
+			AsyncCallback<ExtGridMetadata> callback);
 
 	void getExtGridData(GridContext context, DataPanelElementInfo element,
 			AsyncCallback<Grid> callback);
