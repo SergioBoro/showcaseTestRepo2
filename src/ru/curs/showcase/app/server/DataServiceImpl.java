@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.core.chart.ChartGetCommand;
-import ru.curs.showcase.core.command.*;
+import ru.curs.showcase.core.command.ServerStateGetCommand;
 import ru.curs.showcase.core.event.ExecServerActivityCommand;
 import ru.curs.showcase.core.frame.MainPageGetCommand;
 import ru.curs.showcase.core.geomap.GeoMapGetCommand;
@@ -52,6 +52,20 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 
 	@Override
 	public Grid getGrid(final GridContext context, final DataPanelElementInfo element)
+			throws GeneralException {
+		GridGetCommand command = new GridGetCommand(context, element, true);
+		return command.execute();
+	}
+
+	@Override
+	public Grid getExtGridMetadata(GridContext context, DataPanelElementInfo element)
+			throws GeneralException {
+		GridGetCommand command = new GridGetCommand(context, element, true);
+		return command.execute();
+	}
+
+	@Override
+	public Grid getExtGridData(GridContext context, DataPanelElementInfo element)
 			throws GeneralException {
 		GridGetCommand command = new GridGetCommand(context, element, true);
 		return command.execute();
@@ -109,4 +123,5 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		MainPageGetCommand command = new MainPageGetCommand(context);
 		return command.execute();
 	}
+
 }

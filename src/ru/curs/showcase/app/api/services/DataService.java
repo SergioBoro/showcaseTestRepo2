@@ -68,6 +68,11 @@ public interface DataService extends RemoteService {
 	 */
 	Grid getGrid(GridContext context, DataPanelElementInfo element) throws GeneralException;
 
+	Grid getExtGridMetadata(GridContext context, DataPanelElementInfo element)
+			throws GeneralException;
+
+	Grid getExtGridData(GridContext context, DataPanelElementInfo element) throws GeneralException;
+
 	/**
 	 * Возвращает данные для отрисовки графика по переданным контексту и
 	 * описанию элемента.
