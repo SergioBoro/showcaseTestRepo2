@@ -24,6 +24,8 @@
     
     <link rel="stylesheet" href="js/dijit/themes/claro/claro.css"/>
     
+    <link rel="stylesheet" type="text/css" href="resources/extgwt/css/gxt-all.css" />    
+    
     <script type="text/javascript">
         var dojoConfig = {
             parseOnLoad: false,
