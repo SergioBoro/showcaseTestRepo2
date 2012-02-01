@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import org.slf4j.*;
 import org.w3c.dom.*;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.SessionUtils;
 import ru.curs.showcase.util.TextUtils;
@@ -60,14 +60,14 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	}
 
 	private static void addRelatedContext(final Document info,
-			final Map<String, CompositeContext> aRelated) {
+			final Map<ID, CompositeContext> aRelated) {
 		Element root = info.createElement(RELATED_TAG);
 		info.getDocumentElement().appendChild(root);
-		for (Entry<String, CompositeContext> rc : aRelated.entrySet()) {
+		for (Entry<ID, CompositeContext> rc : aRelated.entrySet()) {
 			Document doc = XMLUtils.objectToXML(rc.getValue());
 			Element inserted = doc.getDocumentElement();
 			Element child = (Element) info.importNode(inserted, true);
-			child.setAttribute(ID_TAG, rc.getKey());
+			child.setAttribute(ID_TAG, rc.getKey().getString());
 			root.appendChild(child);
 		}
 	}

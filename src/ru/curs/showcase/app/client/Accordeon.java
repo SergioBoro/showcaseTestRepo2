@@ -5,6 +5,7 @@ package ru.curs.showcase.app.client;
 
 import java.util.*;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.*;
@@ -167,7 +168,7 @@ public class Accordeon {
 	 *            событие клика на дереве в навигаторе при выделении.
 	 * 
 	 */
-	public void selectNesessaryItemInAccordion(final String id, final Boolean fireEvent) {
+	public void selectNesessaryItemInAccordion(final ID id, final Boolean fireEvent) {
 		if ((id == null) || id.isEmpty()) {
 			return;
 		}
@@ -324,7 +325,7 @@ public class Accordeon {
 	 *            - уникальный Id для элемента дерева
 	 * @return - TreeItem для элемента дерева
 	 */
-	public TreeItem getTreeItemInAccordeonById(final String id) {
+	public TreeItem getTreeItemInAccordeonById(final ID id) {
 		// TODO Auto-generated method stub
 		TreeItem ti = null;
 		if (id == null) {
@@ -358,7 +359,7 @@ public class Accordeon {
 
 	}
 
-	private TreeItem getChildItemsInTreeElement(final TreeItem ti, final String id) {
+	private TreeItem getChildItemsInTreeElement(final TreeItem ti, final ID id) {
 
 		if (!(ti.getChildCount() > 0)) {
 			return null;
@@ -390,7 +391,7 @@ public class Accordeon {
 	 *            - уникальный Id для элемента дерева
 	 * @return - Integer - номер группы аккардеона
 	 */
-	public Integer getGroupNamberInAccordeonById(final String id) {
+	public Integer getGroupNamberInAccordeonById(final ID id) {
 
 		TreeItem ti = null;
 		if (id == null) {
@@ -434,12 +435,12 @@ public class Accordeon {
 	 *            событие клика на дереве в навигаторе при выделении, либо узел
 	 *            будет выделен без какого-либо действия.
 	 */
-	public void refreshAccordeon(final String selectionId, final boolean fireEventSelection) {
+	public void refreshAccordeon(final ID selectionId, final boolean fireEventSelection) {
 
-		final String idToSelect =
+		final ID idToSelect =
 			(accordeon.getVisibleIndex() > -1) ? ((NavigatorElement) uiListOfAccordeonTrees
 					.get(accordeon.getVisibleIndex()).getSelectedItem().getUserObject()).getId()
-					: "";
+					: new ID("");
 
 		verpan.clear();
 		verpan.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));

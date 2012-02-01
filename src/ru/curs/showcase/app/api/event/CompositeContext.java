@@ -78,7 +78,7 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	 */
 	@XmlTransient
 	@ExcludeFromSerialization
-	private Map<String, CompositeContext> related = new HashMap<String, CompositeContext>();
+	private Map<ID, CompositeContext> related = new HashMap<ID, CompositeContext>();
 
 	public CompositeContext(final Map<String, List<String>> aParams) {
 		super();
@@ -216,7 +216,7 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 			}
 			res.sessionParamsMap.put(entry.getKey(), values);
 		}
-		for (Entry<String, CompositeContext> entry : related.entrySet()) {
+		for (Entry<ID, CompositeContext> entry : related.entrySet()) {
 			res.related.put(entry.getKey(), entry.getValue().gwtClone());
 		}
 		return res;
@@ -306,7 +306,7 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		sessionParamsMap = aSessionParamsMap;
 	}
 
-	public void addRelated(final String aId, final CompositeContext aContext) {
+	public void addRelated(final ID aId, final CompositeContext aContext) {
 		CompositeContext context = aContext.gwtClone();
 		// в БД не должно идти ничего лишнего
 		context.setMain(null);
@@ -316,11 +316,15 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		related.put(aId, context);
 	}
 
-	public Map<String, CompositeContext> getRelated() {
+	public void addRelated(final String id, final CompositeContext context) {
+		addRelated(new ID(id), context);
+	}
+
+	public Map<ID, CompositeContext> getRelated() {
 		return related;
 	}
 
-	public void setRelated(final Map<String, CompositeContext> aRelated) {
+	public void setRelated(final Map<ID, CompositeContext> aRelated) {
 		related = aRelated;
 	}
 

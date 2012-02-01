@@ -57,7 +57,7 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 		WebText wt = command.execute();
 
 		assertEquals(1, wt.getEventManager().getEvents().size());
-		assertEquals("0", wt.getEventManager().getEvents().get(0).getId1());
+		assertEquals("0", wt.getEventManager().getEvents().get(0).getId1().getString());
 
 		Action action = wt.getEventManager().getEvents().get(0).getAction();
 		assertEquals(DataPanelActionType.RELOAD_ELEMENTS, action.getDataPanelActionType());

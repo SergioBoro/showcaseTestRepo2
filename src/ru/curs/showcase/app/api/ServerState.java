@@ -59,6 +59,8 @@ public final class ServerState implements SerializableElement {
 
 	private String dojoVersion;
 
+	private Boolean caseSensivityIDs;
+
 	public String getAppVersion() {
 		return appVersion;
 	}
@@ -129,6 +131,14 @@ public final class ServerState implements SerializableElement {
 
 	public void setDojoVersion(final String aDojoVersion) {
 		dojoVersion = aDojoVersion;
+	}
+
+	public Boolean getCaseSensivityIDs() {
+		return caseSensivityIDs;
+	}
+
+	public void setCaseSensivityIDs(final Boolean aCaseSensivityIDs) {
+		caseSensivityIDs = aCaseSensivityIDs;
 	}
 
 }

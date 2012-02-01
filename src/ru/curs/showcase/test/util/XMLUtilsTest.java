@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.GridContext;
@@ -302,7 +303,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		context.setMain(null);
 		context.setSession(null);
 		GridContext gc = getExtGridContext(context);
-		Document doc = XMLUtils.objectToXML(context.getRelated().get("01"));
+		Document doc = XMLUtils.objectToXML(context.getRelated().get(new ID("01")));
 		GridContext gc2 =
 			(GridContext) XMLUtils.xmlToObject(doc.getDocumentElement(), GridContext.class);
 
@@ -317,7 +318,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 		xc.setFormData("<schema/>");
 		xc.setAdditional(ADD_CONDITION);
 		context.addRelated("01", xc);
-		Document doc = XMLUtils.objectToXML(context.getRelated().get("01"));
+		Document doc = XMLUtils.objectToXML(context.getRelated().get(new ID("01")));
 		XFormContext xc2 =
 			(XFormContext) XMLUtils.xmlToObject(doc.getDocumentElement(), XFormContext.class);
 

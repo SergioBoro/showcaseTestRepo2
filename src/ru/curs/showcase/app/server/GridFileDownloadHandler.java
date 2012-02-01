@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.commons.fileupload.FileUploadException;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.core.grid.GridFileDownloadCommand;
 
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -18,7 +19,7 @@ public class GridFileDownloadHandler extends AbstractDownloadHandler {
 	/**
 	 * Ссылка на хранимую процедуру получения файла.
 	 */
-	private String linkId;
+	private ID linkId;
 
 	/**
 	 * Идентификатор записи грида для скачивания файла.
@@ -35,11 +36,11 @@ public class GridFileDownloadHandler extends AbstractDownloadHandler {
 	@Override
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
 		super.getParams();
-		linkId = getRequest().getParameter("linkId");
+		linkId = new ID(getRequest().getParameter("linkId"));
 		recordId = getRequest().getParameter("recordId");
 	}
 
-	public String getLinkId() {
+	public ID getLinkId() {
 		return linkId;
 	}
 

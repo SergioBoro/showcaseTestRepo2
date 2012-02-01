@@ -2,6 +2,7 @@ package ru.curs.showcase.app.client.api;
 
 import java.util.*;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.*;
 
@@ -25,7 +26,7 @@ public class ActionTransformer {
 	/**
 	 * Идентификатор элемента, из которого было вызвано действие.
 	 */
-	private String currentElementId;
+	private ID currentElementId;
 
 	/**
 	 * Последний Action, пришедший из навигатора. По нему отрабатываются клики в
@@ -123,7 +124,7 @@ public class ActionTransformer {
 		}
 	}
 
-	public String getCurrentElementId() {
+	public ID getCurrentElementId() {
 		return currentElementId;
 	}
 }

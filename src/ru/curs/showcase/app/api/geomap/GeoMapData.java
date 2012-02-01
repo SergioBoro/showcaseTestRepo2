@@ -5,6 +5,7 @@ import java.util.*;
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.element.Size;
 
 /**
@@ -86,7 +87,7 @@ public class GeoMapData extends Size implements SerializableElement {
 	 *            - ID слоя.
 	 * @return - слой.
 	 */
-	public GeoMapLayer getLayerById(final String aLayerId) {
+	public GeoMapLayer getLayerById(final ID aLayerId) {
 		if (aLayerId == null) {
 			return null;
 		}
@@ -98,6 +99,10 @@ public class GeoMapData extends Size implements SerializableElement {
 		return null;
 	}
 
+	public GeoMapLayer getLayerById(final String aLayerId) {
+		return getLayerById(new ID(aLayerId));
+	}
+
 	/**
 	 * Возвращает слой по идентификатору добавленного в него объекта.
 	 * 
@@ -105,7 +110,7 @@ public class GeoMapData extends Size implements SerializableElement {
 	 *            - идентификатор объекта.
 	 * @return - слой.
 	 */
-	public GeoMapLayer getLayerByObjectId(final String aObjectId) {
+	public GeoMapLayer getLayerByObjectId(final ID aObjectId) {
 		if (aObjectId == null) {
 			return null;
 		}
@@ -117,5 +122,9 @@ public class GeoMapData extends Size implements SerializableElement {
 			}
 		}
 		return null;
+	}
+
+	public GeoMapLayer getLayerByObjectId(final String aObjectId) {
+		return getLayerByObjectId(new ID(aObjectId));
 	}
 }

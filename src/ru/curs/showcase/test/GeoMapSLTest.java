@@ -51,7 +51,7 @@ public class GeoMapSLTest extends AbstractTest {
 		assertEquals(NavigatorActionType.CHANGE_NODE, action.getNavigatorActionType());
 		assertNotNull(action.getNavigatorElementLink());
 		assertEquals("9EF5F299-0AB3-486B-A810-5818D17047AC", action.getNavigatorElementLink()
-				.getId());
+				.getId().getString());
 
 		assertEquals(ChildPosition.BOTTOM, map.getLegendPosition());
 		assertNotNull(map.getJsDynamicData());

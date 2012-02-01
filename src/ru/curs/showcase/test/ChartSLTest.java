@@ -7,8 +7,9 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.core.IncorrectElementException;
+import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.chart.ChartGetCommand;
 
 /**
@@ -109,5 +110,15 @@ public class ChartSLTest extends AbstractTest {
 		Chart chart = command.execute();
 
 		assertNotNull(chart.getJsDynamicData());
+	}
+
+	@Test
+	public void testIdJSONAdaptor() {
+		GeoMap map = new GeoMap();
+		map.setJavaDynamicData(new GeoMapData());
+		map.getJavaDynamicData().addLayer(GeoMapFeatureType.LINESTRING).setId("test");
+		AdapterForJS adapter = new AdapterForJS();
+		adapter.adapt(map);
+		assertTrue(map.getJsDynamicData().contains("\"id\":\"test\""));
 	}
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.commons.fileupload.FileUploadException;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.html.xform.XFormDownloadCommand;
@@ -21,7 +22,7 @@ public final class DownloadHandler extends AbstractDownloadHandler {
 	/**
 	 * Ссылка на файл.
 	 */
-	private String linkId;
+	private ID linkId;
 
 	@Override
 	protected void processFiles() {
@@ -43,10 +44,10 @@ public final class DownloadHandler extends AbstractDownloadHandler {
 	@Override
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
 		super.getParams();
-		linkId = getRequest().getParameter("linkId");
+		linkId = new ID(getRequest().getParameter("linkId"));
 	}
 
-	public String getLinkId() {
+	public ID getLinkId() {
 		return linkId;
 	}
 

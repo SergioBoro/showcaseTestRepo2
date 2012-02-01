@@ -11,26 +11,28 @@ import ru.curs.showcase.app.api.*;
  * 
  */
 public class NavigatorElementLink implements SerializableElement, GWTClonable {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = 748495253205916621L;
 	/**
 	 * Идентификатор элемента навигатора, который нужно выделить.
 	 */
-	private String id;
+	private ID id;
 
 	/**
 	 * Признак того, что навигатор нужно обновить.
 	 */
 	private Boolean refresh = false;
 
-	public final String getId() {
+	public final ID getId() {
 		return id;
 	}
 
-	public final void setId(final String aId) {
+	public final void setId(final ID aId) {
 		this.id = aId;
+	}
+
+	public final void setId(final String aId) {
+		this.id = new ID(aId);
 	}
 
 	/**

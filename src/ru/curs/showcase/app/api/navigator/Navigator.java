@@ -5,6 +5,7 @@ import java.util.*;
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.ID;
 
 /**
  * Класс навигатора. Навигатор служит для перехода между различными вкладками и
@@ -76,7 +77,7 @@ public class Navigator implements SerializableElement {
 	 *            - id.
 	 * @return - группа.
 	 */
-	public NavigatorGroup getGroupById(final String id) {
+	public NavigatorGroup getGroupById(final ID id) {
 		if (id == null) {
 			return null;
 		}
@@ -86,6 +87,10 @@ public class Navigator implements SerializableElement {
 			}
 		}
 		return null;
+	}
+
+	public NavigatorGroup getGroupById(final String id) {
+		return getGroupById(new ID(id));
 	}
 
 	public Boolean getHideOnLoad() {

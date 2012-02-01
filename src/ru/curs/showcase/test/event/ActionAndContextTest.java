@@ -7,7 +7,7 @@ import java.util.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.CanBeCurrent;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelTab;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
@@ -64,15 +64,15 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		DataPanelLink link = clone.getDataPanelLink();
 		assertNotNull(link);
 		assertFalse(link.getFirstOrCurrentTab());
-		assertEquals(TEST_XML, link.getDataPanelId());
-		assertEquals(TAB_2, link.getTabId());
+		assertEquals(TEST_XML, link.getDataPanelId().getString());
+		assertEquals(TAB_2, link.getTabId().getString());
 		assertEquals(1, link.getElementLinks().size());
-		assertEquals(EL_06, link.getElementLinks().get(0).getId());
+		assertEquals(EL_06, link.getElementLinks().get(0).getId().getString());
 		assertEquals(ADD_CONDITION, link.getElementLinks().get(0).getContext().getAdditional());
 		assertTrue(link.getElementLinks().get(0).getKeepUserSettings());
 
 		assertNotNull(clone.getNavigatorElementLink());
-		assertEquals("nLink", clone.getNavigatorElementLink().getId());
+		assertEquals("nLink", clone.getNavigatorElementLink().getId().getString());
 		assertTrue(clone.getNavigatorElementLink().getRefresh());
 
 		assertNotSame(action, clone);
@@ -85,7 +85,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		Activity act = clone.getServerActivities().get(0);
 		assertNotNull(act);
 		assertTrue(act.getOnServerSide());
-		assertEquals("01", act.getId());
+		assertEquals("01", act.getId().getString());
 		assertEquals(TEST_ACTIVITY_NAME, act.getName());
 		assertEquals(ADD_CONDITION, act.getContext().getAdditional());
 		assertNotSame(action.getServerActivities().get(0), act);
@@ -94,7 +94,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		act = clone.getClientActivities().get(0);
 		assertNotNull(act);
 		assertFalse(act.getOnServerSide());
-		assertEquals("01", act.getId());
+		assertEquals("01", act.getId().getString());
 		assertEquals("testJS", act.getName());
 		assertEquals(ADD_CONDITION, act.getContext().getAdditional());
 		assertNotSame(action.getClientActivities().get(0), act);
@@ -119,8 +119,8 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testCreateRefreshElementsAction() {
 		Action action = new Action(DataPanelActionType.RELOAD_ELEMENTS);
-		assertEquals(CanBeCurrent.CURRENT_ID, action.getDataPanelLink().getDataPanelId());
-		assertEquals(CanBeCurrent.CURRENT_ID, action.getDataPanelLink().getTabId());
+		assertEquals(ID.createCurrentID(), action.getDataPanelLink().getDataPanelId());
+		assertEquals(ID.createCurrentID(), action.getDataPanelLink().getTabId());
 		assertTrue(action.getContext().mainIsCurrent());
 		assertTrue(action.getContext().addIsCurrent());
 		assertEquals(ShowInMode.PANEL, action.getShowInMode());
@@ -141,8 +141,8 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 
 		final DataPanelLink dataPanelLink = action.getDataPanelLink();
 		assertNotNull(dataPanelLink);
-		assertEquals(CanBeCurrent.CURRENT_ID, dataPanelLink.getDataPanelId());
-		assertEquals(TAB_2, dataPanelLink.getTabId());
+		assertEquals(ID.createCurrentID(), dataPanelLink.getDataPanelId());
+		assertEquals(TAB_2, dataPanelLink.getTabId().getString());
 		assertFalse(dataPanelLink.getFirstOrCurrentTab());
 		assertEquals(0, dataPanelLink.getElementLinks().size());
 	}
@@ -174,8 +174,8 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 
 		final DataPanelLink dataPanelLink = actual.getDataPanelLink();
 		assertNotNull(dataPanelLink);
-		assertEquals(TEST_XML, dataPanelLink.getDataPanelId());
-		assertEquals(TAB_2, dataPanelLink.getTabId()); // !
+		assertEquals(TEST_XML, dataPanelLink.getDataPanelId().getString());
+		assertEquals(new ID(TAB_2), dataPanelLink.getTabId()); // !
 		assertTrue(dataPanelLink.getFirstOrCurrentTab()); // !
 		assertEquals(0, dataPanelLink.getElementLinks().size()); // !
 	}
@@ -401,7 +401,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		assertTrue(action.containsServerActivity());
 		assertEquals(1, action.getServerActivities().size());
 		Activity sa = action.getServerActivities().get(0);
-		assertEquals("srv01", sa.getId());
+		assertEquals("srv01", sa.getId().getString());
 		assertEquals("exec_test", sa.getName());
 		assertTrue(sa.getOnServerSide());
 		assertNotNull(sa.getContext());
@@ -470,7 +470,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		assertEquals(1, action.getClientActivities().size());
 		Activity ac = action.getClientActivities().get(0);
 		assertEquals("show_moscow", ac.getName());
-		assertEquals("cl01", ac.getId());
+		assertEquals("cl01", ac.getId().getString());
 		assertFalse(ac.getOnServerSide());
 	}
 
@@ -483,7 +483,7 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		related.setFilter(FILTER_CONDITION);
 		related.setSession(SESSION_CONDITION);
 		related.setSessionParamsMap(new TreeMap<String, ArrayList<String>>());
-		related.getRelated().put("rrid", new CompositeContext());
+		related.getRelated().put(new ID("rrid"), new CompositeContext());
 		parent.addRelated("rid", related);
 
 		assertEquals(1, parent.getRelated().size());

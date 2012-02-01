@@ -54,7 +54,7 @@ public class Activity extends NamedElement implements SerializableElement, Conta
 	}
 
 	public Activity gwtClone() {
-		Activity res = new Activity(getId(), getName(), onServerSide);
+		Activity res = new Activity(getId().getString(), getName(), onServerSide);
 		res.setContext(context.gwtClone());
 		return res;
 	}

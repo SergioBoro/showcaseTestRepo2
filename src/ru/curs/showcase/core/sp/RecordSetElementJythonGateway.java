@@ -37,7 +37,7 @@ public class RecordSetElementJythonGateway extends JythonQuery<JythonDTO> implem
 		} catch (SQLException e) {
 			throw new DBConnectException(e);
 		}
-		return getProc().getRawData(context, elementInfo.getId(), pyConn);
+		return getProc().getRawData(context, elementInfo.getId().getString(), pyConn);
 	}
 
 	@Override

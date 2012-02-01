@@ -1,5 +1,6 @@
 package ru.curs.showcase.app.api.grid;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.event.Event;
 
 /**
@@ -9,12 +10,9 @@ import ru.curs.showcase.app.api.event.Event;
  */
 public final class GridEvent extends Event {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 7882082734060929373L;
 
-	public String getRecordId() {
+	public ID getRecordId() {
 		return getId1();
 	}
 
@@ -28,7 +26,7 @@ public final class GridEvent extends Event {
 		setId1(aRecordId);
 	}
 
-	public String getColId() {
+	public ID getColId() {
 		return getId2();
 	}
 

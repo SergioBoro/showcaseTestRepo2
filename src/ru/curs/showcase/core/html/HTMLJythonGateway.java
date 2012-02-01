@@ -49,7 +49,7 @@ public class HTMLJythonGateway extends JythonQuery<JythonDTO> implements HTMLGat
 
 	@Override
 	protected Object execute() {
-		return getProc().getRawData(context, elementInfo.getId());
+		return getProc().getRawData(context, elementInfo.getId().getString());
 	}
 
 	@Override

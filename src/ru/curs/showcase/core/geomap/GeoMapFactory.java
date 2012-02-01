@@ -5,6 +5,7 @@ import java.sql.*;
 import javax.sql.RowSet;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.core.event.EventFactory;
 import ru.curs.showcase.core.sp.*;
@@ -178,7 +179,7 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 			return;
 		}
 		while (indicatorValuesSql.next()) {
-			String objectId = indicatorValuesSql.getString(OBJECT_ID_TAG);
+			ID objectId = new ID(indicatorValuesSql.getString(OBJECT_ID_TAG));
 			GeoMapLayer layer = getData().getLayerByObjectId(objectId);
 			if (layer == null) {
 				throw new ResultSetHandleException(WRONG_OBJ_ERROR);
@@ -186,13 +187,13 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 			GeoMapFeature feature = layer.getObjectById(objectId);
 			Double value = indicatorValuesSql.getDouble(TextUtils.capitalizeWord(VALUE_TAG));
 			String dbId = indicatorValuesSql.getString(INDICATOR_ID);
-			feature.setValue(layer.getAttrIdByDBId(dbId), value);
+			feature.setValue(layer.getAttrIdByDBId(dbId).getString(), value);
 		}
 
 	}
 
 	private GeoMapLayer getLayerForObject(final RowSet rowset) throws SQLException {
-		String layerId = rowset.getString(LAYER_ID_TAG);
+		ID layerId = new ID(rowset.getString(LAYER_ID_TAG));
 		GeoMapLayer layer = getData().getLayerById(layerId);
 		if (layer == null) {
 			throw new ResultSetHandleException(WRONG_LAYER_ERROR);
@@ -200,7 +201,7 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 		return layer;
 	}
 
-	private void readEvents(final String objectId, final String value) {
+	private void readEvents(final ID objectId, final String value) {
 		EventFactory<GeoMapEvent> factory =
 			new EventFactory<GeoMapEvent>(GeoMapEvent.class, getCallContext());
 		factory.initForGetSimpleSubSetOfEvents(getElementInfo().getType().getPropsSchemaName());

@@ -69,8 +69,8 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		assertEquals(nav.getGroups().get(0).getElements().get(1), nav.getAutoSelectElement());
 		final NavigatorGroup firstGroup = nav.getGroupById("1");
 		assertEquals("C6CC2BA4-A6ED-4630-8E58-CBBFA9C8C0A9", firstGroup.getElements().get(1)
-				.getId());
-		assertEquals("1", firstGroup.getId());
+				.getId().getString());
+		assertEquals("1", firstGroup.getId().getString());
 		assertEquals("Балансы зерна", firstGroup.getName());
 		assertEquals("solutions/default/resources/group_icon_default.png", firstGroup.getImageId());
 		assertEquals(FIRST_GRP_ELEMENTS_COUNT, firstGroup.getElements().size());
@@ -81,19 +81,20 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(testEl.getAction());
 		assertEquals(DataPanelActionType.RELOAD_PANEL, testEl.getAction().getDataPanelActionType());
 		assertEquals(NavigatorActionType.DO_NOTHING, testEl.getAction().getNavigatorActionType());
-		assertEquals("C6CC2BA4-A6ED-4630-8E58-CBBFA9C8C0A8", testEl.getElements().get(0).getId());
+		assertEquals("C6CC2BA4-A6ED-4630-8E58-CBBFA9C8C0A8", testEl.getElements().get(0).getId()
+				.getString());
 		assertEquals(TEST_ELEMEMNT_NAME, testEl.getElements().get(0).getName());
 		Action action = testEl.getElements().get(0).getAction();
 		assertNotNull(action);
 		DataPanelLink link = action.getDataPanelLink();
 		assertNotNull(link);
-		assertEquals("test.xml", link.getDataPanelId());
-		assertEquals("1", link.getTabId());
+		assertEquals("test.xml", link.getDataPanelId().getString());
+		assertEquals("1", link.getTabId().getString());
 		assertNotNull(action.getContext());
 		assertEquals(TEST_ELEMEMNT_NAME, action.getContext().getMain());
 		assertNull(action.getContext().getAdditional());
 		assertEquals(1, link.getElementLinks().size());
-		assertEquals("1", link.getElementLinks().get(0).getId());
+		assertEquals("1", link.getElementLinks().get(0).getId().getString());
 		assertNotNull(link.getElementLinks().get(0).getContext());
 		assertEquals(TEST_ELEMEMNT_NAME, link.getElementLinks().get(0).getContext().getMain());
 		assertNull(link.getElementLinks().get(0).getContext().getSession());

@@ -1,7 +1,7 @@
 package ru.curs.showcase.app.api.datapanel;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 
 /**
@@ -45,9 +45,9 @@ public class DataPanelElementContext implements SerializableElement {
 		}
 		if (elementInfo != null) {
 			res =
-				res + ExchangeConstants.LINE_SEPARATOR + "panel=" + getPanel()
-						+ ExchangeConstants.LINE_SEPARATOR + "elementId=" + getElementId()
-						+ ExchangeConstants.LINE_SEPARATOR;
+				res + ExchangeConstants.LINE_SEPARATOR + "panel=" + getPanelId().getString()
+						+ ExchangeConstants.LINE_SEPARATOR + "elementId="
+						+ getElementId().getString() + ExchangeConstants.LINE_SEPARATOR;
 		}
 		return res;
 	}
@@ -63,14 +63,14 @@ public class DataPanelElementContext implements SerializableElement {
 		compositeContext = aContext;
 	}
 
-	public String getPanel() {
+	public ID getPanelId() {
 		if (elementInfo != null) {
 			return elementInfo.getTab().getDataPanel().getId();
 		}
 		return null;
 	}
 
-	public String getElementId() {
+	public ID getElementId() {
 		if (elementInfo != null) {
 			return elementInfo.getId();
 		}

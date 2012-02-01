@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.navigator;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.NamedElement;
+import ru.curs.showcase.app.api.*;
 
 /**
  * Класс группы элементов навигатора.
@@ -11,9 +11,7 @@ import ru.curs.showcase.app.api.NamedElement;
  * 
  */
 public class NavigatorGroup extends NamedElement {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = 2639632044936098205L;
 
 	/**
@@ -50,7 +48,7 @@ public class NavigatorGroup extends NamedElement {
 	 *            - id.
 	 * @return - элемент.
 	 */
-	public NavigatorElement getElementById(final String id) {
+	public NavigatorElement getElementById(final ID id) {
 		if (id == null) {
 			return null;
 		}
@@ -60,5 +58,9 @@ public class NavigatorGroup extends NamedElement {
 			}
 		}
 		return null;
+	}
+
+	public NavigatorElement getElementById(final String id) {
+		return getElementById(new ID(id));
 	}
 }

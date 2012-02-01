@@ -81,7 +81,7 @@ public class DataPanelTab extends NamedElement {
 	 *            - id.
 	 * @return - элемент.
 	 */
-	public DataPanelElementInfo getElementInfoById(final String id) {
+	public DataPanelElementInfo getElementInfoById(final ID id) {
 		if (id == null) {
 			return null;
 		}
@@ -98,6 +98,10 @@ public class DataPanelTab extends NamedElement {
 			}
 		}
 		return null;
+	}
+
+	public DataPanelElementInfo getElementInfoById(final String id) {
+		return getElementInfoById(new ID(id));
 	}
 
 	/**

@@ -5,7 +5,7 @@ import java.util.*;
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.NamedElement;
+import ru.curs.showcase.app.api.*;
 
 /**
  * Класс слоя на карте. Слой может содержать объекты только одного типа. Кроме
@@ -173,7 +173,7 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 	 *            - идентификатор.
 	 * @return - показатель.
 	 */
-	public GeoMapIndicator getIndicatorById(final String aId) {
+	public GeoMapIndicator getIndicatorById(final ID aId) {
 		if (aId == null) {
 			return null;
 		}
@@ -183,6 +183,10 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 			}
 		}
 		return null;
+	}
+
+	public GeoMapIndicator getIndicatorById(final String aId) {
+		return getIndicatorById(new ID(aId));
 	}
 
 	public final String getHintFormat() {
@@ -196,20 +200,24 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 	/**
 	 * Получение ГИС объекта по его идентификатору.
 	 * 
-	 * @param aId
+	 * @param aObjectId
 	 *            - идентификатор объекта.
 	 * @return - объект или null.
 	 */
-	public GeoMapFeature getObjectById(final String aId) {
-		if (aId == null) {
+	public GeoMapFeature getObjectById(final ID aObjectId) {
+		if (aObjectId == null) {
 			return null;
 		}
 		for (GeoMapFeature cur : features) {
-			if (aId.equals(cur.getId())) {
+			if (aObjectId.equals(cur.getId())) {
 				return cur;
 			}
 		}
 		return null;
+	}
+
+	public GeoMapFeature getObjectById(final String aObjectId) {
+		return getObjectById(new ID(aObjectId));
 	}
 
 	public String getProjection() {
@@ -241,7 +249,7 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 	 *            - DB идентификатор.
 	 * @return - основной идентификатор.
 	 */
-	public String getAttrIdByDBId(final String aDbId) {
+	public ID getAttrIdByDBId(final String aDbId) {
 		for (GeoMapIndicator ind : indicators) {
 			if (ind.getDbId().equals(aDbId)) {
 				return ind.getId();

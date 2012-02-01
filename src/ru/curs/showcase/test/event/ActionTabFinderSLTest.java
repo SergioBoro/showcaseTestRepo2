@@ -29,7 +29,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 		Navigator navigator = command.execute();
 
 		assertEquals("1", navigator.getGroupById("00").getElementById("04").getAction()
-				.getDataPanelLink().getTabId());
+				.getDataPanelLink().getTabId().getString());
 	}
 
 	@Test
@@ -42,7 +42,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 		WebText webtext = command.execute();
 
 		assertEquals("01", webtext.getEventManager().getEvents().get(0).getAction()
-				.getDataPanelLink().getTabId());
+				.getDataPanelLink().getTabId().getString());
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 		WebText webtext = command.execute();
 
 		assertEquals("1", webtext.getEventManager().getEvents().get(0).getAction()
-				.getDataPanelLink().getTabId());
+				.getDataPanelLink().getTabId().getString());
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 		GridGetCommand command = new GridGetCommand(context, elInfo, true);
 		Grid grid = command.execute();
 
-		assertEquals("01", grid.getDefaultAction().getDataPanelLink().getTabId());
+		assertEquals("01", grid.getDefaultAction().getDataPanelLink().getTabId().getString());
 	}
 
 	@Test
@@ -84,6 +84,6 @@ public class ActionTabFinderSLTest extends AbstractTest {
 		GridGetCommand command = new GridGetCommand(context, elInfo, true);
 		Grid grid = command.execute();
 
-		assertEquals("1", grid.getDefaultAction().getDataPanelLink().getTabId());
+		assertEquals("1", grid.getDefaultAction().getDataPanelLink().getTabId().getString());
 	}
 }

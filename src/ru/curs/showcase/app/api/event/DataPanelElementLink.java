@@ -20,7 +20,7 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 	/**
 	 * Идентификатор элемента.
 	 */
-	private String id;
+	private ID id;
 
 	/**
 	 * Переопределенный контекст элемента.
@@ -40,16 +40,20 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 
 	public DataPanelElementLink(final String aId, final CompositeContext aContext) {
 		super();
-		id = aId;
+		id = new ID(aId);
 		context = aContext;
 	}
 
-	public final String getId() {
+	public final ID getId() {
 		return id;
 	}
 
-	public final void setId(final String aId) {
+	public final void setId(final ID aId) {
 		id = aId;
+	}
+
+	public final void setId(final String aId) {
+		id = new ID(aId);
 	}
 
 	@Override

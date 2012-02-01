@@ -73,7 +73,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		DataPanelTab tab;
 		DataPanelElementInfo el;
 
-		assertEquals("test", panel.getId());
+		assertEquals("test", panel.getId().getString());
 		assertEquals(panelsCount, panel.getTabs().size());
 		assertNotNull(panel.getTabById("1"));
 		el = panel.getTabById("1").getElementInfoById("1");
@@ -86,14 +86,14 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 
 		tab = panel.getTabById("2");
 		assertNotNull(tab);
-		assertEquals("2", tab.getId());
+		assertEquals("2", tab.getId().getString());
 		assertEquals(1, tab.getPosition().intValue());
 		assertEquals("Балансы", tab.getName());
 		assertEquals(firstPanelSecondTabElCount, tab.getElements().size());
 		assertNotNull(tab.getElementInfoById("2"));
 		el = tab.getElementInfoById("3");
 		assertNotNull(el);
-		assertEquals("3", el.getId());
+		assertEquals("3", el.getId().getString());
 		assertEquals(DataPanelElementType.CHART, el.getType());
 		assertEquals("chart_bal", el.getProcName());
 		assertTrue(el.getHideOnLoad());
@@ -121,9 +121,9 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(el);
 		assertEquals(2, el.getProcs().values().size());
 		assertEquals("xforms_saveproc1", el.getSaveProc().getName());
-		DataPanelElementProc proc = el.getProcs().get("proc2");
+		DataPanelElementProc proc = el.getProcById("proc2");
 		assertNotNull(proc);
-		assertEquals("proc2", proc.getId());
+		assertEquals("proc2", proc.getId().getString());
 		assertEquals("xforms_submission1", proc.getName());
 		assertEquals(DataPanelElementProcType.SUBMISSION, proc.getType());
 		assertFalse(el.getNeverShowInPanel());
@@ -144,22 +144,22 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(el);
 		final int numProc = 8;
 		assertEquals(numProc, el.getProcs().values().size());
-		DataPanelElementProc proc = el.getProcs().get("proc3");
+		DataPanelElementProc proc = el.getProcById("proc3");
 		assertNull(proc.getTransformName());
 		assertNull(proc.getSchemaName());
-		proc = el.getProcs().get("proc6");
+		proc = el.getProcById("proc6");
 		assertEquals(DataPanelElementProcType.DOWNLOAD, proc.getType());
 		assertEquals(TEST_GOOD_XSL, proc.getTransformName());
 		assertEquals("test_good_small.xsd", proc.getSchemaName());
-		proc = el.getProcs().get("proc7");
+		proc = el.getProcById("proc7");
 		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
 		assertEquals(TEST_GOOD_XSL, proc.getTransformName());
 		assertEquals("test_good.xsd", proc.getSchemaName());
-		proc = el.getProcs().get("proc8");
+		proc = el.getProcById("proc8");
 		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
 		assertNull(proc.getTransformName());
 		assertEquals("test_bad.xsd", proc.getSchemaName());
-		proc = el.getProcs().get("proc9");
+		proc = el.getProcById("proc9");
 		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
 		assertEquals(TEST_GOOD_XSL, proc.getTransformName());
 		assertNull(proc.getSchemaName());
@@ -224,8 +224,8 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo el = panel.getTabById("10").getElementInfoById("1001");
 		el.isCorrect();
 		assertEquals(2, el.getRelated().size());
-		assertEquals("1002", el.getRelated().get(0));
-		assertEquals("1003", el.getRelated().get(1));
+		assertEquals("1002", el.getRelated().get(0).getString());
+		assertEquals("1003", el.getRelated().get(1).getString());
 	}
 
 	@Test

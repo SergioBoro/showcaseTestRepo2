@@ -4,10 +4,11 @@ import java.sql.*;
 
 import oracle.jdbc.OracleTypes;
 import ru.curs.gwt.datagrid.model.Column;
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.GridContext;
-import ru.curs.showcase.core.*;
+import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
@@ -162,7 +163,7 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 
 	@Override
 	public OutputStreamDataFile downloadFile(final CompositeContext context,
-			final DataPanelElementInfo elementInfo, final String linkId, final String recordId) {
+			final DataPanelElementInfo elementInfo, final ID linkId, final String recordId) {
 		init(context, elementInfo);
 		setTemplateIndex(FILE_DOWNLOAD);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);

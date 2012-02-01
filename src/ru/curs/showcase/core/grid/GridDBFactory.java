@@ -11,6 +11,7 @@ import org.xml.sax.Attributes;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.gwt.datagrid.model.*;
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.event.EventFactory;
@@ -208,7 +209,7 @@ public class GridDBFactory extends AbstractGridFactory {
 		};
 		factory.addHandler(recPropHandler);
 		getResult().getEventManager().getEvents()
-				.addAll(factory.getSubSetOfEvents(record.getId(), data));
+				.addAll(factory.getSubSetOfEvents(new ID(record.getId()), data));
 	}
 
 	private String getStringValueOfNumber(final Column col) throws SQLException {

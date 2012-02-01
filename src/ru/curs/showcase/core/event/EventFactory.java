@@ -6,6 +6,7 @@ import java.util.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.core.sp.ResultSetHandleException;
 import ru.curs.showcase.util.TextUtils;
@@ -67,7 +68,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 	/**
 	 * Общий идентификатор id1.
 	 */
-	private String generalId;
+	private ID generalId;
 
 	/**
 	 * Действие по умолчанию. Может быть задано вместе с набором событий.
@@ -218,7 +219,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 	 *            - строка с XML данными.
 	 * @return - коллекция событий.
 	 */
-	public Collection<E> getSubSetOfEvents(final String aGeneralId, final String data) {
+	public Collection<E> getSubSetOfEvents(final ID aGeneralId, final String data) {
 		generalId = aGeneralId;
 
 		InputStream xml;

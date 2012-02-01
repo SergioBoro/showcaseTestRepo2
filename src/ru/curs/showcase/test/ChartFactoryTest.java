@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.ChildPosition;
@@ -70,7 +71,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testGetEventsAndColors() throws Exception {
 		final String seriesName = "Алтайский край";
-		final String secondGridId = "4";
+		final ID secondGridId = new ID("4");
 
 		CompositeContext context = getTestContext3();
 		// график со второй вкладки в панели a.xml
@@ -93,7 +94,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		Event event = chart.getEventManager().getEvents().get(0);
 		assertEquals(InteractionType.SINGLE_CLICK, event.getInteractionType());
 		assertNull(event.getId2());
-		assertEquals(seriesName, event.getId1());
+		assertEquals(seriesName, event.getId1().getString());
 
 		assertNotNull(event.getAction());
 		assertEquals(DataPanelActionType.RELOAD_ELEMENTS, event.getAction()
@@ -105,7 +106,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		assertNull(calcContext.getSession());
 
 		// второй грид со второй вкладки в панели a.xml
-		DataPanelElementInfo secondGrid = getDPElement("test.xml", "2", secondGridId);
+		DataPanelElementInfo secondGrid = getDPElement("test.xml", "2", secondGridId.getString());
 		calcContext = secondGrid.getContext(event.getAction());
 		assertNotNull(calcContext);
 		assertTrue(ReflectionUtils.equals(context, calcContext));

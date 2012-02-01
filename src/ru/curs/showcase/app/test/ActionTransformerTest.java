@@ -47,8 +47,8 @@ public class ActionTransformerTest extends AbstractTest {
 		assertTrue(actual.getKeepUserSettings());
 		final DataPanelLink dataPanelLink = actual.getDataPanelLink();
 		assertNotNull(dataPanelLink);
-		assertEquals(TEST_XML, dataPanelLink.getDataPanelId());
-		assertEquals(TAB_2, dataPanelLink.getTabId());
+		assertEquals(TEST_XML, dataPanelLink.getDataPanelId().getString());
+		assertEquals(TAB_2, dataPanelLink.getTabId().getString());
 		assertFalse(dataPanelLink.getFirstOrCurrentTab());
 		assertEquals(1, dataPanelLink.getElementLinks().size());
 
@@ -114,7 +114,7 @@ public class ActionTransformerTest extends AbstractTest {
 				.getContext().getMain());
 		assertEquals(MAIN_CONDITION, ah.getCurrentAction().getClientActivities().get(0)
 				.getContext().getMain());
-		assertEquals("2", ah.getCurrentElementId());
+		assertEquals("2", ah.getCurrentElementId().getString());
 	}
 
 }

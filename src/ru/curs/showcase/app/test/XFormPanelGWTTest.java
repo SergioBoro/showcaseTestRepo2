@@ -38,7 +38,7 @@ public class XFormPanelGWTTest extends GWTTestCase {
 		XFormPanel xfp = XFormTestsCommon.createXFormPanelForTests1();
 		assertNotNull(xfp);
 
-		assertEquals("1", xfp.getElementInfo().getId());
+		assertEquals("1", xfp.getElementInfo().getId().getString());
 		assertNull(xfp.getContext());
 
 		assertNotNull(xfp.getSelSrv());
@@ -70,7 +70,7 @@ public class XFormPanelGWTTest extends GWTTestCase {
 		assertNotNull(xfp);
 
 		assertNotNull(xfp.getContext());
-		assertEquals("1", xfp.getElementInfo().getId());
+		assertEquals("1", xfp.getElementInfo().getId().getString());
 
 		generalPartTest(xfp);
 

@@ -1,5 +1,6 @@
 package ru.curs.showcase.core.grid;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.command.*;
@@ -11,11 +12,11 @@ import ru.curs.showcase.util.OutputStreamDataFile;
  */
 public class GridFileDownloadCommand extends DataPanelElementCommand<OutputStreamDataFile> {
 
-	private final String linkId;
+	private final ID linkId;
 	private final String recordId;
 
 	@InputParam
-	public String getLinkId() {
+	public ID getLinkId() {
 		return linkId;
 	}
 
@@ -30,7 +31,7 @@ public class GridFileDownloadCommand extends DataPanelElementCommand<OutputStrea
 	}
 
 	public GridFileDownloadCommand(final CompositeContext aContext,
-			final DataPanelElementInfo aElInfo, final String aLinkId, final String aRecordId) {
+			final DataPanelElementInfo aElInfo, final ID aLinkId, final String aRecordId) {
 		super(aContext, aElInfo);
 		linkId = aLinkId;
 		recordId = aRecordId;

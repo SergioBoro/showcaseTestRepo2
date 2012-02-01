@@ -20,7 +20,7 @@ public class ActionTabFinderTest extends AbstractTestWithDefaultUserData {
 		final int actionNumber = 1;
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 
-		assertEquals("1", action.getDataPanelLink().getTabId());
+		assertEquals("1", action.getDataPanelLink().getTabId().getString());
 	}
 
 	@Test
@@ -28,7 +28,7 @@ public class ActionTabFinderTest extends AbstractTestWithDefaultUserData {
 		final int actionNumber = 3;
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 
-		assertEquals("01", action.getDataPanelLink().getTabId());
+		assertEquals("01", action.getDataPanelLink().getTabId().getString());
 	}
 
 	@Test
@@ -36,7 +36,7 @@ public class ActionTabFinderTest extends AbstractTestWithDefaultUserData {
 		final int actionNumber = 4;
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 
-		assertEquals("01", action.getDataPanelLink().getTabId());
+		assertEquals("01", action.getDataPanelLink().getTabId().getString());
 	}
 
 	@Test(expected = XMLFormatException.class)

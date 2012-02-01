@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilder;
 import org.junit.Test;
 import org.w3c.dom.*;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
@@ -171,7 +172,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testXFormsFileGatewayDownload() {
 		XFormGateway gateway = new XFormFileGateway();
-		final String linkId = TEST_XML_FILE;
+		final ID linkId = new ID(TEST_XML_FILE);
 		XFormContext context = new XFormContext(getTestContext1());
 		OutputStreamDataFile file = gateway.downloadFile(context, null, linkId);
 		assertNotNull(file);
@@ -192,7 +193,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 			new DataFile<InputStream>(FileUtils.loadResToStream(linkId), linkId);
 
 		assertEquals(TextUtils.DEF_ENCODING, file.getEncoding());
-		gateway.uploadFile(new XFormContext(), null, linkId, file);
+		gateway.uploadFile(new XFormContext(), null, new ID(linkId), file);
 	}
 
 	/**
@@ -203,7 +204,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	public void testXFormsXMLUploadBad() throws IOException {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
-		String linkId = "proc8";
+		ID linkId = new ID("proc8");
 		final String fileName = "ru/curs/showcase/test/util/TestTextSample.xml";
 		OutputStreamDataFile file = getTestFile(fileName);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
@@ -225,7 +226,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	public void testXFormsXMLDownloadBad() throws IOException {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
-		String linkId = "proc10";
+		ID linkId = new ID("proc10");
 
 		XFormGateway gateway = new XFormDBGateway();
 		OutputStreamDataFile file = gateway.downloadFile(context, elementInfo, linkId);

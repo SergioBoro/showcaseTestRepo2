@@ -46,6 +46,8 @@ public class App implements EntryPoint {
 				if (serverCurrentState != null) {
 
 					AppCurrContext.getInstance().setServerCurrentState(serverCurrentState);
+					IDSettings.getInstance().setCaseSensivity(
+							serverCurrentState.getCaseSensivityIDs());
 					getAndFillMainPage();
 				}
 			}

@@ -6,7 +6,7 @@ import java.util.regex.*;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import ru.curs.showcase.app.api.ServerState;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 
@@ -59,6 +59,7 @@ public final class ServerStateFactory {
 		state.setSqlVersion(getSQLVersion());
 		state.setDojoVersion(getDojoVersion());
 		state.setGwtVersion(getGwtVersion());
+		state.setCaseSensivityIDs(IDSettings.getInstance().getCaseSensivity());
 		return state;
 	}
 

@@ -64,7 +64,7 @@ public class DataPanelSLTest extends AbstractTest {
 	}
 
 	private void checkTestDP(final DataPanel panel) {
-		assertEquals("dp0903", panel.getId());
+		assertEquals("dp0903", panel.getId().getString());
 		final int tabsCount = 5;
 		assertEquals(tabsCount, panel.getTabs().size());
 		final int elCount = 3;

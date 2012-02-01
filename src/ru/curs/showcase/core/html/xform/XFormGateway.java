@@ -2,6 +2,7 @@ package ru.curs.showcase.core.html.xform;
 
 import java.io.InputStream;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
@@ -37,12 +38,12 @@ public interface XFormGateway extends HTMLGateway {
 	 *            - контекст.
 	 * @param elementInfo
 	 *            - описание элемента.
-	 * @param linkId
+	 * @param aLinkId
 	 *            - идентификатор ссылки на файл
 	 * @return - файл.
 	 */
 	OutputStreamDataFile downloadFile(XFormContext context, DataPanelElementInfo elementInfo,
-			String linkId);
+			ID aLinkId);
 
 	/**
 	 * Загружает (или модифицирует) дополнительные данные через Submission.
@@ -64,11 +65,11 @@ public interface XFormGateway extends HTMLGateway {
 	 *            - контекст.
 	 * @param elementInfo
 	 *            - описание элемента.
-	 * @param linkId
+	 * @param aLinkId
 	 *            - ссылка на файл.
 	 * @param aFile
 	 *            - файл.
 	 * **/
-	void uploadFile(XFormContext context, DataPanelElementInfo elementInfo, String linkId,
+	void uploadFile(XFormContext context, DataPanelElementInfo elementInfo, ID aLinkId,
 			DataFile<InputStream> aFile);
 }

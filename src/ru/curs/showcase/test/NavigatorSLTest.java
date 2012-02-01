@@ -56,7 +56,7 @@ public class NavigatorSLTest extends AbstractTest {
 		assertEquals(1, nav.getGroups().size());
 		final int l1ElementsCount = 1;
 		assertEquals(l1ElementsCount, nav.getGroups().get(0).getElements().size());
-		assertEquals("04", nav.getAutoSelectElement().getId());
+		assertEquals("04", nav.getAutoSelectElement().getId().getString());
 		final int l2ElementsCount = 0;
 		assertEquals(l2ElementsCount, nav.getGroups().get(0).getElements().get(0).getElements()
 				.size());

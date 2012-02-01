@@ -2,6 +2,7 @@ package ru.curs.showcase.app.client.utils;
 
 import java.util.Map.Entry;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.XFormContext;
@@ -51,9 +52,10 @@ public class InlineUploader {
 		counter = 0;
 		isAtLeastOneFileSelected = false;
 
-		for (Entry<String, DataPanelElementProc> entry : dpei.getProcs().entrySet()) {
+		for (Entry<ID, DataPanelElementProc> entry : dpei.getProcs().entrySet()) {
 			if (entry.getValue().getType() == DataPanelElementProcType.UPLOAD) {
-				JavaScriptObject form = getElementById(dpei.getUploaderId(entry.getKey()));
+				JavaScriptObject form =
+					getElementById(dpei.getUploaderId(entry.getKey().getString()));
 				if (form != null) {
 					submitInlineForm(dpei, form);
 				}

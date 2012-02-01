@@ -1,5 +1,6 @@
 package ru.curs.showcase.core.html.xform;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.command.InputParam;
@@ -13,15 +14,15 @@ import ru.curs.showcase.util.OutputStreamDataFile;
  */
 public final class XFormDownloadCommand extends XFormContextCommand<OutputStreamDataFile> {
 
-	private final String linkId;
+	private final ID linkId;
 
 	@InputParam
-	public String getLinkId() {
+	public ID getLinkId() {
 		return linkId;
 	}
 
 	public XFormDownloadCommand(final XFormContext aContext, final DataPanelElementInfo aElInfo,
-			final String aLinkId) {
+			final ID aLinkId) {
 		super(aContext, aElInfo);
 		linkId = aLinkId;
 	}

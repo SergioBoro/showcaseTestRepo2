@@ -10,9 +10,6 @@ import ru.curs.showcase.app.api.NamedElement;
  */
 public final class DataPanelElementProc extends NamedElement {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 8875550160233655449L;
 
 	/**

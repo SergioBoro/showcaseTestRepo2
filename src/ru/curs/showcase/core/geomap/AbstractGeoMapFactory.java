@@ -299,10 +299,10 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 
 	private String generateTooltip(final GeoMapLayer layer, final GeoMapObject obj) {
 		String toolTip = layer.getHintFormat();
-		toolTip = TextUtils.replaceCI(toolTip, "%" + LAYER_ID_TAG, layer.getId());
+		toolTip = TextUtils.replaceCI(toolTip, "%" + LAYER_ID_TAG, layer.getId().getString());
 		toolTip = TextUtils.replaceCI(toolTip, "%" + LAYER_NAME_TAG, layer.getName());
 		toolTip = TextUtils.replaceCI(toolTip, "%" + OBJECT_TYPE_TAG, layer.getType().toString());
-		toolTip = TextUtils.replaceCI(toolTip, "%" + OBJECT_ID_TAG, obj.getId());
+		toolTip = TextUtils.replaceCI(toolTip, "%" + OBJECT_ID_TAG, obj.getId().getString());
 		toolTip = TextUtils.replaceCI(toolTip, "%" + OBJECT_NAME_TAG, obj.getName());
 		if (layer.getType() == GeoMapFeatureType.POINT) {
 			toolTip =

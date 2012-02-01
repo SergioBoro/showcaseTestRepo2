@@ -5,6 +5,7 @@ package ru.curs.showcase.app.client.api;
 
 import java.util.*;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.*;
@@ -48,7 +49,7 @@ public final class ActionExecuter {
 				dataService = GWT.create(DataService.class);
 			}
 
-			String elementId = AppCurrContext.getInstance().getCurrentElementId();
+			ID elementId = AppCurrContext.getInstance().getCurrentElementId();
 			CompositeContext panelContext = null;
 			if (elementId != null) {
 				BasicElementPanel panel = getElementPanelById(elementId);
@@ -110,7 +111,7 @@ public final class ActionExecuter {
 		for (int k = 0; k < ac.getDataPanelLink().getElementLinks().size(); k++) {
 
 			DataPanelElementLink dpel = ac.getDataPanelLink().getElementLinks().get(k);
-			String elementIdForDraw = dpel.getId();
+			ID elementIdForDraw = dpel.getId();
 
 			BasicElementPanel bep = getElementPanelById(elementIdForDraw);
 			if (bep != null) {
@@ -228,13 +229,7 @@ public final class ActionExecuter {
 		}
 	}
 
-	/**
-	 * @param id
-	 *            - Id элемента для которого необходимо вернуть
-	 *            BasicElementPanel.
-	 * @return - BasicElementPanel
-	 */
-	public static BasicElementPanel getElementPanelById(final String id) {
+	public static BasicElementPanel getElementPanelById(final ID id) {
 		List<UIDataPanelTab> uiDataPanel = AppCurrContext.getInstance().getUiDataPanel();
 		for (int i = 0; i < uiDataPanel.size(); i++) {
 			List<UIDataPanelElement> uiElements = uiDataPanel.get(i).getUiElements();
@@ -245,6 +240,10 @@ public final class ActionExecuter {
 			}
 		}
 		return null;
+	}
+
+	public static BasicElementPanel getElementPanelById(final String id) {
+		return getElementPanelById(new ID(id));
 	}
 
 	/**

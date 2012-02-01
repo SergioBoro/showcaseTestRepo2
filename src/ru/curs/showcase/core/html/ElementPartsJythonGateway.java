@@ -40,7 +40,7 @@ public class ElementPartsJythonGateway extends JythonQuery<String> implements El
 
 	@Override
 	protected Object execute() {
-		return getProc().getRawData(context, elementInfo.getId());
+		return getProc().getRawData(context, elementInfo.getId().getString());
 	}
 
 	@Override

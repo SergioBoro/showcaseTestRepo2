@@ -1,5 +1,6 @@
 package ru.curs.showcase.app.api.chart;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.event.Event;
 
 /**
@@ -12,7 +13,7 @@ public final class ChartEvent extends Event {
 
 	private static final long serialVersionUID = 6740690372017535475L;
 
-	public String getSeriesId() {
+	public ID getSeriesId() {
 		return getId1();
 	}
 
@@ -27,7 +28,10 @@ public final class ChartEvent extends Event {
 	}
 
 	public Integer getX() {
-		return Integer.valueOf(getId2());
+		if (getId2() != null) {
+			return Integer.valueOf(getId2().getString());
+		}
+		return null;
 	}
 
 	/**

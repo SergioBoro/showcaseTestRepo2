@@ -14,7 +14,7 @@ import ru.curs.showcase.util.exception.SettingsFileType;
 public class DataPanelSelector extends SourceSelector<PrimElementsGateway> {
 
 	public DataPanelSelector(final DataPanelLink dpLink) {
-		super(dpLink.getDataPanelId());
+		super(dpLink.getDataPanelId().getString());
 	}
 
 	@Override

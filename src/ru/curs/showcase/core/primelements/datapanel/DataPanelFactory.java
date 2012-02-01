@@ -7,7 +7,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
-import ru.curs.showcase.app.api.HTMLAttrs;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
@@ -197,7 +197,7 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 	}
 
 	public void relatedSTARTTAGHandler(final Attributes attrs) {
-		getLastElement().getRelated().add(attrs.getValue(ID_TAG));
+		getLastElement().getRelated().add(new ID(attrs.getValue(ID_TAG)));
 	}
 
 	/**

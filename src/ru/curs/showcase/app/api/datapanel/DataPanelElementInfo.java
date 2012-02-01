@@ -31,7 +31,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	/**
 	 * Идентификатор элемента.
 	 */
-	private String id;
+	private ID id;
 
 	/**
 	 * Позиция элемента на вкладке.
@@ -119,13 +119,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 * Дополнительные процедуры для элемента панели управления. Используются для
 	 * элементов XForms.
 	 */
-	private Map<String, DataPanelElementProc> procs = new TreeMap<String, DataPanelElementProc>();
+	private Map<ID, DataPanelElementProc> procs = new TreeMap<ID, DataPanelElementProc>();
 
 	/**
 	 * Идентификаторы связанных с данным элементов. Контексты связанных
 	 * элементов передаются в БД.
 	 */
-	private List<String> related = new ArrayList<String>();
+	private List<ID> related = new ArrayList<ID>();
 
 	/**
 	 * Ссылка на вкладку панели, на которой расположен элемент.
@@ -170,7 +170,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	}
 
 	private boolean checkRelatedExistances() {
-		for (String key : related) {
+		for (ID key : related) {
 			if (tab.getElementInfoById(key) == null) {
 				return false;
 			}
@@ -180,16 +180,20 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 
 	public DataPanelElementInfo(final String aId, final DataPanelElementType aType) {
 		super();
-		id = aId;
+		id = new ID(aId);
 		type = aType;
 	}
 
-	public final String getId() {
+	public final ID getId() {
 		return id;
 	}
 
-	public final void setId(final String aId) {
+	public final void setId(final ID aId) {
 		this.id = aId;
+	}
+
+	public final void setId(final String aId) {
+		this.id = new ID(aId);
 	}
 
 	public final DataPanelElementType getType() {
@@ -289,11 +293,11 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		templateName = aTemplateName;
 	}
 
-	public Map<String, DataPanelElementProc> getProcs() {
+	public Map<ID, DataPanelElementProc> getProcs() {
 		return procs;
 	}
 
-	public void setProcs(final Map<String, DataPanelElementProc> aProcs) {
+	public void setProcs(final Map<ID, DataPanelElementProc> aProcs) {
 		procs = aProcs;
 	}
 
@@ -408,11 +412,11 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		return getMetadataProc() == null;
 	}
 
-	public List<String> getRelated() {
+	public List<ID> getRelated() {
 		return related;
 	}
 
-	public void setRelated(final List<String> aRelated) {
+	public void setRelated(final List<ID> aRelated) {
 		related = aRelated;
 	}
 
@@ -434,5 +438,9 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 
 	public void setShowLoadingMessage(final Boolean aShowLoadingMessage) {
 		showLoadingMessage = aShowLoadingMessage;
+	}
+
+	public DataPanelElementProc getProcById(final String procId) {
+		return procs.get(new ID(procId));
 	}
 }

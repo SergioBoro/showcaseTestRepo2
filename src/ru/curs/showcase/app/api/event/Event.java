@@ -3,7 +3,7 @@ package ru.curs.showcase.app.api.event;
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.SizeEstimate;
+import ru.curs.showcase.app.api.*;
 
 /**
  * Обобщенный класс события в UI, от которого наследуются события грида,
@@ -23,7 +23,7 @@ public class Event implements SerializableElement, SizeEstimate {
 	/**
 	 * Первый идентификатор для события. Является обязательным!
 	 */
-	private String id1;
+	private ID id1;
 
 	/**
 	 * Второй идентификатор для события. Не является обязательным - если он не
@@ -31,7 +31,7 @@ public class Event implements SerializableElement, SizeEstimate {
 	 * происходить при любом значении второй "координаты". Координатами
 	 * являются, к примеру, строка и столбец в гриде.
 	 */
-	private String id2;
+	private ID id2;
 
 	/**
 	 * Тип взаимодействия пользователя с элементом UI.
@@ -46,8 +46,8 @@ public class Event implements SerializableElement, SizeEstimate {
 	public Event(final String aId1, final String aId2, final InteractionType aInteractionType) {
 		super();
 		interactionType = aInteractionType;
-		id1 = aId1;
-		id2 = aId2;
+		id1 = new ID(aId1);
+		id2 = new ID(aId2);
 	}
 
 	public final InteractionType getInteractionType() {
@@ -66,20 +66,28 @@ public class Event implements SerializableElement, SizeEstimate {
 		action = aAction;
 	}
 
-	public final String getId1() {
+	public final ID getId1() {
 		return id1;
 	}
 
-	public final void setId1(final String aId1) {
+	public final void setId1(final ID aId1) {
 		id1 = aId1;
 	}
 
-	public final String getId2() {
+	public final void setId1(final String aId1) {
+		id1 = new ID(aId1);
+	}
+
+	public final ID getId2() {
 		return id2;
 	}
 
-	public final void setId2(final String aId2) {
+	public final void setId2(final ID aId2) {
 		id2 = aId2;
+	}
+
+	public final void setId2(final String aId2) {
+		id2 = new ID(aId2);
 	}
 
 	/**

@@ -43,13 +43,13 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 		final String pointName = "Москва";
 		assertNotNull(layer.addPoint(pointId, pointName));
 		GeoMapFeature feature = layer.getFeatures().get(0);
-		assertEquals(pointId, feature.getId());
+		assertEquals(pointId, feature.getId().getString());
 		assertEquals(pointName, feature.getName());
 		final String indId = "12345";
 		final String indName = "Надои";
 		GeoMapIndicator ind = layer.addIndicator(indId, indName);
 		assertNotNull(ind);
-		assertEquals(indId, ind.getId());
+		assertEquals(indId, ind.getId().getString());
 		assertEquals(indName, layer.getIndicatorById(indId).getName());
 		final double value = 1.0;
 		feature.setValue(indId, value);
@@ -101,14 +101,14 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 		assertEquals(altay.getGeometryId(), altay.getStyleClass());
 		final int indValue1 = 1000;
 		assertNotSame("ind1", layer.getIndicators().get(0).getId());
-		assertEquals("ind0", layer.getAttrIdByDBId("ind1"));
+		assertEquals("ind0", layer.getAttrIdByDBId("ind1").toString());
 		assertEquals(false, layer.getIndicators().get(0).getIsMain());
 		assertEquals("#2AAA2E", layer.getIndicators().get(0).getStyle());
 		assertEquals(indValue1, altay.getValueForIndicator(layer.getIndicators().get(0))
 				.doubleValue(), 0);
 		final int indValue2 = 10;
-		assertEquals(GeoMapLayer.MAIN_IND_NAME, layer.getIndicators().get(1).getId());
-		assertEquals(GeoMapLayer.MAIN_IND_NAME, layer.getAttrIdByDBId("ind2"));
+		assertEquals(GeoMapLayer.MAIN_IND_NAME, layer.getIndicators().get(1).getId().getString());
+		assertEquals(GeoMapLayer.MAIN_IND_NAME, layer.getAttrIdByDBId("ind2").getString());
 		assertEquals(layer.getMainIndicator(), layer.getIndicators().get(1));
 		assertEquals(true, layer.getIndicators().get(1).getIsMain());
 		assertEquals(indValue2, altay.getValueForIndicator(layer.getIndicators().get(1))

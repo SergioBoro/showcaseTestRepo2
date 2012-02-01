@@ -3,10 +3,11 @@ package ru.curs.showcase.core.html.xform;
 import java.io.*;
 import java.sql.SQLException;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.core.*;
+import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.core.sp.SPQuery;
 import ru.curs.showcase.util.*;
@@ -122,7 +123,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 
 	@Override
 	public OutputStreamDataFile downloadFile(final XFormContext context,
-			final DataPanelElementInfo elementInfo, final String linkId) {
+			final DataPanelElementInfo elementInfo, final ID linkId) {
 		init(context, elementInfo);
 		setTemplateIndex(FILE_TEMPLATE_IND);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
@@ -149,7 +150,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 
 	@Override
 	public void uploadFile(final XFormContext context, final DataPanelElementInfo elementInfo,
-			final String linkId, final DataFile<InputStream> file) {
+			final ID linkId, final DataFile<InputStream> file) {
 		init(context, elementInfo);
 		setTemplateIndex(FILE_TEMPLATE_IND);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);

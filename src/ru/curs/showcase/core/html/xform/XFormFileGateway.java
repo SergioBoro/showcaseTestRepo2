@@ -7,6 +7,7 @@ import javax.xml.transform.TransformerException;
 import org.slf4j.*;
 import org.xml.sax.SAXException;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
@@ -54,21 +55,22 @@ public final class XFormFileGateway extends HTMLFileGateway implements XFormGate
 
 	@Override
 	public OutputStreamDataFile downloadFile(final XFormContext context,
-			final DataPanelElementInfo elementInfo, final String linkId) {
+			final DataPanelElementInfo elementInfo, final ID linkId) {
 		StreamConvertor dup;
 		try {
-			dup = new StreamConvertor(FileUtils.loadResToStream(linkId));
+			dup = new StreamConvertor(FileUtils.loadResToStream(linkId.getString()));
 		} catch (IOException e) {
-			throw new SettingsFileExchangeException(linkId, e, SettingsFileType.XML);
+			throw new SettingsFileExchangeException(linkId.getString(), e, SettingsFileType.XML);
 		}
-		OutputStreamDataFile file = new OutputStreamDataFile(dup.getOutputStream(), linkId);
+		OutputStreamDataFile file =
+			new OutputStreamDataFile(dup.getOutputStream(), linkId.getString());
 		file.setEncoding(TextUtils.JDBC_ENCODING);
 		return file;
 	}
 
 	@Override
 	public void uploadFile(final XFormContext aContext, final DataPanelElementInfo aElementInfo,
-			final String aLinkId, final DataFile<InputStream> aFile) {
+			final ID aLinkId, final DataFile<InputStream> aFile) {
 		LOGGER.info(String
 				.format("Заглушка: сохранение файла '%s' с контекстом %s из элемента %s, ссылка %s, данные формы %s",
 						aFile.getName(), aContext, aElementInfo, aLinkId, aContext.getFormData()));

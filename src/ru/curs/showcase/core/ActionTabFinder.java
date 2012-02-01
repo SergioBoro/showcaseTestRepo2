@@ -1,6 +1,6 @@
 package ru.curs.showcase.core;
 
-import ru.curs.showcase.app.api.CanBeCurrent;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
@@ -43,7 +43,7 @@ public abstract class ActionTabFinder extends GeneralXMLHelper {
 			return getFirstTabId(context, link);
 		} else {
 			if (!tabValue.equalsIgnoreCase(CanBeCurrent.CURRENT_ID)) {
-				if (!link.getDataPanelId().equalsIgnoreCase(CanBeCurrent.CURRENT_ID)) {
+				if (!ID.createCurrentID().equals(link.getDataPanelId())) {
 					checkForExists(context, link, tabValue);
 				}
 			}

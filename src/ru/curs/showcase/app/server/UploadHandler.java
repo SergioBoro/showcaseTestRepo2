@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.*;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.html.xform.XFormUploadCommand;
@@ -32,12 +32,12 @@ public final class UploadHandler extends AbstractFilesHandler {
 	 * 
 	 */
 	private class UploadingFile {
-		private final String linkId;
+		private final ID linkId;
 		private final OutputStreamDataFile file;
 
 		public UploadingFile(final String aLinkId, final OutputStreamDataFile aFile) {
 			super();
-			linkId = aLinkId;
+			linkId = new ID(aLinkId);
 			file = aFile;
 		}
 	}

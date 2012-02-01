@@ -36,7 +36,7 @@ public abstract class ElementSPQuery extends SPQuery {
 	protected void setupGeneralElementParameters() throws SQLException {
 		setupGeneralParameters();
 
-		setStringParam(getElementIdIndex(getTemplateIndex()), elementInfo.getId());
+		setStringParam(getElementIdIndex(getTemplateIndex()), elementInfo.getId().getString());
 	}
 
 	/**

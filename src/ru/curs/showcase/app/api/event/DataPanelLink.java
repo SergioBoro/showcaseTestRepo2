@@ -20,12 +20,12 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 	/**
 	 * Ссылка на информационную панель.
 	 */
-	private String dataPanelId;
+	private ID dataPanelId;
 
 	/**
 	 * Ссылка на вкладку панели, которая должна быть активизирована.
 	 */
-	private String tabId;
+	private ID tabId;
 
 	/**
 	 * Признак того, что нужно открывать либо первую страницу в случае смены
@@ -45,7 +45,7 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 	 * @return результат проверки.
 	 */
 	public Boolean isCurrentPanel() {
-		return CURRENT_ID.equals(dataPanelId);
+		return ID.createCurrentID().equals(dataPanelId);
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 	 * @return результат проверки.
 	 */
 	public Boolean isCurrentTab() {
-		return CURRENT_ID.equals(tabId);
+		return ID.createCurrentID().equals(tabId);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 	 *            - идентификатор.
 	 * @return - ссылка на элемент.
 	 */
-	public DataPanelElementLink getElementLinkById(final String id) {
+	public DataPanelElementLink getElementLinkById(final ID id) {
 		if (id == null) {
 			return null;
 		}
@@ -76,6 +76,10 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 		return null;
 	}
 
+	public DataPanelElementLink getElementLinkById(final String id) {
+		return getElementLinkById(new ID(id));
+	}
+
 	public final List<DataPanelElementLink> getElementLinks() {
 		return elementLinks;
 	}
@@ -84,20 +88,28 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 		this.elementLinks = aElementLinks;
 	}
 
-	public final String getDataPanelId() {
+	public final ID getDataPanelId() {
 		return dataPanelId;
 	}
 
-	public final void setDataPanelId(final String aDataPanelId) {
+	public final void setDataPanelId(final ID aDataPanelId) {
 		this.dataPanelId = aDataPanelId;
 	}
 
-	public final String getTabId() {
+	public final void setDataPanelId(final String aDataPanelId) {
+		this.dataPanelId = new ID(aDataPanelId);
+	}
+
+	public final ID getTabId() {
 		return tabId;
 	}
 
-	public final void setTabId(final String aTabId) {
+	public final void setTabId(final ID aTabId) {
 		this.tabId = aTabId;
+	}
+
+	public final void setTabId(final String aTabId) {
+		this.tabId = new ID(aTabId);
 	}
 
 	public Boolean getFirstOrCurrentTab() {

@@ -5,6 +5,7 @@ import java.util.*;
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.event.Action;
 
 /**
@@ -18,16 +19,13 @@ import ru.curs.showcase.app.api.event.Action;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DataPanel implements SerializableElement {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 1182249077845843177L;
 
 	/**
 	 * Идентификатор панели. В случае хранения панели в файле - имя файла без
 	 * расширения.
 	 */
-	private String id;
+	private ID id;
 
 	/**
 	 * Набор вкладок панели.
@@ -36,7 +34,7 @@ public class DataPanel implements SerializableElement {
 
 	public DataPanel(final String aId) {
 		super();
-		id = aId;
+		id = new ID(aId);
 	}
 
 	public DataPanel() {
@@ -66,13 +64,17 @@ public class DataPanel implements SerializableElement {
 	 *            - id.
 	 * @return вкладку.
 	 */
-	public DataPanelTab getTabById(final String aTabId) {
+	public DataPanelTab getTabById(final ID aTabId) {
 		for (DataPanelTab current : tabs) {
 			if (current.getId().equals(aTabId)) {
 				return current;
 			}
 		}
 		return null;
+	}
+
+	public DataPanelTab getTabById(final String aTabId) {
+		return getTabById(new ID(aTabId));
 	}
 
 	public final List<DataPanelTab> getTabs() {
@@ -102,12 +104,15 @@ public class DataPanel implements SerializableElement {
 		return res;
 	}
 
-	public String getId() {
+	public ID getId() {
 		return id;
 	}
 
-	public void setId(final String aId) {
+	public void setId(final ID aId) {
 		id = aId;
 	}
 
+	public void setId(final String aId) {
+		id = new ID(aId);
+	}
 }

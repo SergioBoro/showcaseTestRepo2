@@ -3,6 +3,7 @@ package ru.curs.showcase.app.api.element;
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 
@@ -21,7 +22,7 @@ public abstract class DataPanelElement implements SerializableElement {
 	 * Идентификатор элемента в панели. По данному идентификатору можно
 	 * сопоставить DataPanelElement и DataPanelElementInfo.
 	 */
-	private String id;
+	private ID id;
 
 	/**
 	 * Действие по умолчанию. Возможное применение сокрытие зависимых элементов
@@ -44,12 +45,16 @@ public abstract class DataPanelElement implements SerializableElement {
 		super();
 	}
 
-	public String getId() {
+	public ID getId() {
 		return id;
 	}
 
-	public void setId(final String aId) {
+	public void setId(final ID aId) {
 		id = aId;
+	}
+
+	public void setId(final String aId) {
+		id = new ID(aId);
 	}
 
 	public final Action getDefaultAction() {

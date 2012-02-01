@@ -6,6 +6,7 @@ import javax.sql.RowSet;
 
 import org.xml.sax.Attributes;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.core.event.EventFactory;
 import ru.curs.showcase.core.sp.*;
@@ -215,6 +216,6 @@ public class ChartDBFactory extends AbstractChartFactory {
 		};
 		factory.addHandler(colorHandler);
 		getResult().getEventManager().getEvents()
-				.addAll(factory.getSubSetOfEvents(series.getName(), value));
+				.addAll(factory.getSubSetOfEvents(new ID(series.getName()), value));
 	}
 }

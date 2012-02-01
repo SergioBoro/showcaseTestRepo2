@@ -3,6 +3,7 @@
  */
 package ru.curs.showcase.app.client.api;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 
@@ -46,7 +47,7 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 
 	@Override
 	public CompositeContext getContext() {
-		for (String id : elementInfo.getRelated()) {
+		for (ID id : elementInfo.getRelated()) {
 			// панель может быть еще не отрисована
 			final BasicElementPanel elementPanel = ActionExecuter.getElementPanelById(id);
 			if ((elementPanel != null) && (elementPanel.getContext() != null)) {

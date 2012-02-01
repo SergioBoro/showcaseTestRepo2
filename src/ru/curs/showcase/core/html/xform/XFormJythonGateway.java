@@ -2,6 +2,7 @@ package ru.curs.showcase.core.html.xform;
 
 import java.io.InputStream;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
@@ -32,7 +33,7 @@ public class XFormJythonGateway implements XFormGateway {
 
 		@Override
 		protected Object execute() {
-			return getProc().save(context, elementInfo.getId(), data);
+			return getProc().save(context, elementInfo.getId().getString(), data);
 		}
 
 		@Override
@@ -80,14 +81,14 @@ public class XFormJythonGateway implements XFormGateway {
 
 	@Override
 	public OutputStreamDataFile downloadFile(final XFormContext aContext,
-			final DataPanelElementInfo aElementInfo, final String aLinkId) {
+			final DataPanelElementInfo aElementInfo, final ID aLinkId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void uploadFile(final XFormContext aContext, final DataPanelElementInfo aElementInfo,
-			final String aLinkId, final DataFile<InputStream> aFile) {
+			final ID aLinkId, final DataFile<InputStream> aFile) {
 		// TODO Auto-generated method stub
 	}
 

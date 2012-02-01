@@ -6,7 +6,7 @@ import java.io.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
@@ -45,14 +45,14 @@ public class XFormSLTest extends AbstractTest {
 		Action action = xforms.getActionForDependentElements();
 		assertNotNull(action);
 		assertEquals(1, action.getDataPanelLink().getElementLinks().size());
-		assertEquals("62", action.getDataPanelLink().getElementLinks().get(0).getId());
+		assertEquals("62", action.getDataPanelLink().getElementLinks().get(0).getId().getString());
 		assertEquals("xforms default action", action.getDataPanelLink().getElementLinks().get(0)
 				.getContext().getAdditional());
 
 		assertEquals(2, xforms.getEventManager().getEvents().size());
 		action = xforms.getEventManager().getEvents().get(0).getAction();
 		assertEquals(1, action.getDataPanelLink().getElementLinks().size());
-		assertEquals("62", action.getDataPanelLink().getElementLinks().get(0).getId());
+		assertEquals("62", action.getDataPanelLink().getElementLinks().get(0).getId().getString());
 		assertEquals("save click on xforms (with filtering)", action.getDataPanelLink()
 				.getElementLinks().get(0).getContext().getAdditional());
 
@@ -160,7 +160,7 @@ public class XFormSLTest extends AbstractTest {
 	public void testXFormsFileDownloadBySL() {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
-		String linkId = "proc4";
+		ID linkId = new ID("proc4");
 		XFormDownloadCommand command = new XFormDownloadCommand(context, elementInfo, linkId);
 		OutputStreamDataFile file = command.execute();
 		final int navigatorXMLLen = 231_478;
@@ -178,7 +178,7 @@ public class XFormSLTest extends AbstractTest {
 	public void testXFormsFileUploadBySL() throws IOException {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms2Info();
-		String linkId = "proc5";
+		ID linkId = new ID("proc5");
 		final String fileName = TEST_XML_FILE;
 		OutputStreamDataFile file = getTestFile(fileName);
 		XFormUploadCommand command = new XFormUploadCommand(context, element, linkId, file);
@@ -201,7 +201,8 @@ public class XFormSLTest extends AbstractTest {
 		DataPanelElementInfo element = getTestXForms2Info();
 		final String fileName = "ru/curs/showcase/test/util/TestTextSample.xml";
 		OutputStreamDataFile file = getTestFile(fileName);
-		XFormUploadCommand command = new XFormUploadCommand(context, element, linkId, file);
+		XFormUploadCommand command =
+			new XFormUploadCommand(context, element, new ID(linkId), file);
 		command.execute();
 		assertNotNull(context.getSession());
 	}
@@ -227,7 +228,8 @@ public class XFormSLTest extends AbstractTest {
 	private void downloadTestBase(final String linkId) {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
-		XFormDownloadCommand command = new XFormDownloadCommand(context, elementInfo, linkId);
+		XFormDownloadCommand command =
+			new XFormDownloadCommand(context, elementInfo, new ID(linkId));
 		command.execute();
 	}
 

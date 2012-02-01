@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.Record;
 import ru.curs.gwt.datagrid.selection.*;
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
@@ -45,10 +46,10 @@ public class EventsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testEventsClean() {
-		Set<String> ids1 = new HashSet<>();
-		Set<String> ids2 = new HashSet<>();
-		String[] ids1Array = { ROW1, ROW2 };
-		String[] ids2Array = { COL1, COL2 };
+		Set<ID> ids1 = new HashSet<>();
+		Set<ID> ids2 = new HashSet<>();
+		ID[] ids1Array = { new ID(ROW1), new ID(ROW2) };
+		ID[] ids2Array = { new ID(COL1), new ID(COL2) };
 		ids1.addAll(Arrays.asList(ids1Array));
 		ids2.addAll(Arrays.asList(ids2Array));
 		GridEventManager mgr = createStdMgr();
@@ -66,15 +67,15 @@ public class EventsTest extends AbstractTestWithDefaultUserData {
 		GridEventManager mgr = createStdMgr();
 		List<GridEvent> events = mgr.getEventForCell(ROW1, null, InteractionType.SINGLE_CLICK);
 		assertEquals(1, events.size());
-		assertEquals(ROW1, events.get(0).getId1());
+		assertEquals(ROW1, events.get(0).getId1().getString());
 		assertNull(events.get(0).getId2());
 		events = mgr.getEventForCell(ROW1, COL1, InteractionType.SINGLE_CLICK);
 		assertEquals(1, events.size());
-		assertEquals(ROW1, events.get(0).getId1());
-		assertEquals(COL1, events.get(0).getId2());
+		assertEquals(ROW1, events.get(0).getId1().getString());
+		assertEquals(COL1, events.get(0).getId2().getString());
 		events = mgr.getEventForCell(ROW1, COL3, InteractionType.SINGLE_CLICK);
 		assertEquals(1, events.size());
-		assertEquals(ROW1, events.get(0).getId1());
+		assertEquals(ROW1, events.get(0).getId1().getString());
 		assertNull(events.get(0).getId2());
 		events = mgr.getEventForCell(ROW4, COL3, InteractionType.SINGLE_CLICK);
 		assertEquals(0, events.size());

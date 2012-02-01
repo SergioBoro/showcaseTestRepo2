@@ -38,7 +38,8 @@ public class ActionTabFinderFromXML extends ActionTabFinder {
 		reset();
 		DataFile<InputStream> file = getFile(context, link);
 
-		SimpleSAX sax = new SimpleSAX(file.getData(), myHandler, link.getDataPanelId());
+		SimpleSAX sax =
+			new SimpleSAX(file.getData(), myHandler, link.getDataPanelId().getString());
 		sax.parse();
 
 		if (firstTabId == null) {
@@ -70,7 +71,8 @@ public class ActionTabFinderFromXML extends ActionTabFinder {
 		};
 		DataFile<InputStream> file = getFile(context, link);
 
-		SimpleSAX sax = new SimpleSAX(file.getData(), myHandler, link.getDataPanelId());
+		SimpleSAX sax =
+			new SimpleSAX(file.getData(), myHandler, link.getDataPanelId().getString());
 		return !sax.parse();
 	}
 
@@ -78,7 +80,8 @@ public class ActionTabFinderFromXML extends ActionTabFinder {
 			getFile(final CompositeContext context, final DataPanelLink link) {
 		DataPanelSelector selector = new DataPanelSelector(link);
 		PrimElementsGateway gateway = selector.getGateway();
-		DataFile<InputStream> file = gateway.getRawData(context, link.getDataPanelId());
+		DataFile<InputStream> file =
+			gateway.getRawData(context, link.getDataPanelId().getString());
 		return file;
 	}
 

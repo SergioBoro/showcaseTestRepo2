@@ -22,7 +22,7 @@ public abstract class NamedElement implements SerializableElement {
 	 * быстрой идентификации элемента в коде программы. Содержимое строки
 	 * идентификатора не определено - это может быть и число, и GUID.
 	 */
-	private String id;
+	private ID id;
 
 	/**
 	 * Имя (заголовок) визуального элемента. Отображается в UI, служит для
@@ -30,12 +30,16 @@ public abstract class NamedElement implements SerializableElement {
 	 */
 	private String name;
 
-	public final String getId() {
+	public final ID getId() {
 		return id;
 	}
 
-	public final void setId(final String aId) {
+	public final void setId(final ID aId) {
 		this.id = aId;
+	}
+
+	public final void setId(final String aId) {
+		this.id = new ID(aId);
 	}
 
 	public final String getName() {
@@ -90,7 +94,7 @@ public abstract class NamedElement implements SerializableElement {
 
 	public NamedElement(final String aId, final String aName) {
 		super();
-		id = aId;
+		id = new ID(aId);
 		name = aName;
 	}
 }

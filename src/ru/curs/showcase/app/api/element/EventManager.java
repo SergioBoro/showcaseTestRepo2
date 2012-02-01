@@ -3,6 +3,7 @@ package ru.curs.showcase.app.api.element;
 import java.util.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.event.*;
 
 /**
@@ -94,7 +95,7 @@ public abstract class EventManager<T extends Event> implements SerializableEleme
 	 *            - набор возможных id2.
 	 * @return - число удаленных элементов.
 	 */
-	public int clean(final Set<String> ids1, final Set<String> ids2) {
+	public int clean(final Set<ID> ids1, final Set<ID> ids2) {
 		int initSize = events.size();
 		Iterator<T> iterator = events.iterator();
 		while (iterator.hasNext()) {

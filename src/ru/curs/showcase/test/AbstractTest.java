@@ -8,7 +8,7 @@ import java.util.*;
 import org.junit.*;
 
 import ru.curs.gwt.datagrid.model.*;
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.GridContext;
@@ -86,7 +86,7 @@ public class AbstractTest extends GeneralXMLHelper {
 		AppInfoSingleton.getAppInfo().setCurUserDataId((String) null);
 		AppInfoSingleton.getAppInfo().clearSessions();
 		AppInfoSingleton.getAppInfo().getCacheManager().clearAll();
-
+		IDSettings.getInstance().reset();
 	}
 
 	private static void initTestSession() {
