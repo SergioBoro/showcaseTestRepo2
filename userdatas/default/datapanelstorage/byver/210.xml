@@ -7,4 +7,10 @@
 			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
 		</element>
 	</tab>
+	<tab id="02" name="Case Sensivity ID">
+		<element id="0201" type="webtext" proc="webtext/webtext_ci.py"/>		
+	</tab>
+	<tab id="03" name="Карта Яндекс без экспорта">
+		<element id="0301" type="geomap" proc="geomap/GeoMapSimple.py" showLoadingMessage="true"/>
+	</tab>		
 </datapanel>
