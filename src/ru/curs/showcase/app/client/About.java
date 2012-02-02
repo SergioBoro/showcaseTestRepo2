@@ -32,6 +32,14 @@ public final class About {
 		String fff =
 			(AppCurrContext.getInstance().getServerCurrentState().getIsNativeUser()) ? "внутренним"
 					: "внешним";
+
+		String caseSensivityIDsSummaryPrefix =
+			(AppCurrContext.getInstance().getServerCurrentState().getCaseSensivityIDs()) ? ""
+					: " не";
+
+		String caseSensivityIDsSummary =
+			"Идентификаторы" + caseSensivityIDsSummaryPrefix + " чувствительны к регистру.";
+
 		// MessageBox.showSimpleMessage("1", "12");
 		String userAgent = getUserAgent();
 		BrowserType browserType = null;
@@ -90,7 +98,12 @@ public final class About {
 					+ "'"
 					+ "("
 					+ AppCurrContext.getInstance().getServerCurrentState().getUserInfo()
-							.getFullName() + ")" + "	является " + fff;
+							.getFullName()
+					+ ")"
+					+ "	является "
+					+ fff
+					+ br
+					+ caseSensivityIDsSummary;
 
 		// navigator.userAgent.toLowerCase()
 		// ru.curs.showcase.app.api.BrowserType?.detect(String)
