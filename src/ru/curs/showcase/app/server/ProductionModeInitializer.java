@@ -73,10 +73,9 @@ public final class ProductionModeInitializer {
 
 	private static void initClassPath(final ServletContext aServletContext) {
 		String path = aServletContext.getRealPath("index.jsp");
-		path = path.substring(0, path.lastIndexOf("\\"));
 		path = path.replaceAll("\\\\", "/");
+		path = path.substring(0, path.lastIndexOf("/"));
 		AppInfoSingleton.getAppInfo().setWebAppPath(path);
-
 	}
 
 	private static void readServletContext(final ServletContext sc) {
@@ -85,6 +84,9 @@ public final class ProductionModeInitializer {
 			String name = en.nextElement().toString();
 			if (SHOWCASE_ROOTPATH_USERDATA_PARAM.equalsIgnoreCase(name)) {
 				String rootpath = sc.getInitParameter(name);
+
+				rootpath = rootpath.replaceAll("\\\\", "/");
+
 				File dir = new File(rootpath);
 				if (!dir.exists()) {
 					throw new NoSuchRootPathUserDataException(rootpath);
@@ -92,7 +94,7 @@ public final class ProductionModeInitializer {
 				String value;
 				for (String id : dir.list()) {
 					if (!AppInitializer.DIR_SVN.equalsIgnoreCase(id)) {
-						value = rootpath + "\\\\" + id;
+						value = rootpath + "/" + id;
 						AppInfoSingleton.getAppInfo().addUserData(id, value);
 						LOGGER.info(String.format(USER_DATA_INFO, id, value));
 					}
