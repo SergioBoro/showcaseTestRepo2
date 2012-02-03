@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.client;
 
-import java.util.List;
+import java.util.*;
 
 import ru.curs.gwt.datagrid.DataGridListener;
 import ru.curs.gwt.datagrid.event.*;
@@ -16,10 +16,19 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.DownloadHelper;
 
+import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.*;
+import com.extjs.gxt.ui.client.event.*;
+import com.extjs.gxt.ui.client.event.GridEvent;
+import com.extjs.gxt.ui.client.fx.*;
+import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.grid.*;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.toolbar.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
@@ -285,6 +294,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		// все настройки - в т.ч. по умолчанию - устанавливаются сервером
 	}
 
+	// CHECKSTYLE:OFF
 	private void updateGridFull() {
 
 		// // -------------------------
@@ -333,19 +343,154 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		}
 
 		p.clear();
-		// p.add(hpHeader);
-		// p.add(hpToolbar);
+		p.add(hpHeader);
+		p.add(hpToolbar);
 		// p.add(dg);
+
+		// ------------------------------------------------------------------------------
+
+		// final ExampleServiceAsync service = (ExampleServiceAsync) GWT
+		// .create(ExampleService.class);
+
+		RpcProxy<PagingLoadResult<ExtGridData>> proxy =
+			new RpcProxy<PagingLoadResult<ExtGridData>>() {
+				@Override
+				public void load(final Object loadConfig,
+						final AsyncCallback<PagingLoadResult<ExtGridData>> callback) {
+
+					dataService.getExtGridData(getDetailedContext(), getElementInfo(),
+							(PagingLoadConfig) loadConfig, callback);
+				}
+			};
+
+		// loader
+		final PagingLoader<PagingLoadResult<ModelData>> loader =
+			new BasePagingLoader<PagingLoadResult<ModelData>>(proxy);
+		loader.setRemoteSort(true);
+
+		final ListStore<ExtGridData> store = new ListStore<ExtGridData>(loader);
+		// store.setMonitorChanges(true);
+
+		List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
+
+		// ------------
+		ColumnConfig column = new ColumnConfig("forum", "Forum", 150);
+		columns.add(column);
+		// ------------
+		column = new ColumnConfig("username", "Username", 100);
+		columns.add(column);
+		// ------------
+		column = new ColumnConfig("subject", "Subject", 200);
+		columns.add(column);
+		// ------------
+		ColumnConfig date = new ColumnConfig("date", "Date", 100);
+		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
+		columns.add(date);
+		// ------------
+		date = new ColumnConfig("date", "Date2", 100);
+		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
+		columns.add(date);
+		// ------------
+		date = new ColumnConfig("date", "Date3", 100);
+		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
+		columns.add(date);
+		// ------------
+		date = new ColumnConfig("date", "Date4", 100);
+		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
+		columns.add(date);
+		// ------------
+		date = new ColumnConfig("date", "Date5", 100);
+		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
+		columns.add(date);
+		// ------------
+		date = new ColumnConfig("date", "Date6", 100);
+		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
+		columns.add(date);
+		// ------------
+		date = new ColumnConfig("date", "Date7", 100);
+		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
+		columns.add(date);
+		// ------------
+
+		ColumnModel cm = new ColumnModel(columns);
+
+		final EditorGrid<ExtGridData> grid = new EditorGrid<ExtGridData>(store, cm);
+		// final Grid<Post> grid = new Grid<Post>(store, cm);
+		grid.setColumnReordering(true);
+		grid.setStateId("pagingGridExample");
+		grid.setStateful(true);
+		grid.addListener(Events.Attach, new Listener<GridEvent<ExtGridData>>() {
+			@Override
+			public void handleEvent(GridEvent<ExtGridData> be) {
+				// Это начальная загрузка, отрабатывает 1 раз
+				PagingLoadConfig config = new BasePagingLoadConfig();
+				config.setOffset(0);
+				config.setLimit(50);
+
+				Map<String, Object> state = grid.getState();
+				if (state.containsKey("offset")) {
+					int offset = (Integer) state.get("offset");
+					int limit = (Integer) state.get("limit");
+					config.setOffset(offset);
+					config.setLimit(limit);
+				}
+				if (state.containsKey("sortField")) {
+					config.setSortField((String) state.get("sortField"));
+					config.setSortDir(SortDir.valueOf((String) state.get("sortDir")));
+				}
+				loader.load(config);
+			}
+		});
+
+		// ---------------------------
+
+		grid.setLoadMask(true);
+		grid.setBorders(true);
+		// grid.setAutoExpandColumn("forum");
+
+		LiveGridView liveView = new LiveGridView();
+		liveView.setEmptyText("No rows available on the server.");
+		// liveView.setRowHeight(32);
+		grid.setView(liveView);
+
+		// ------------
+		final CellSelectionModel<ExtGridData> cellSelectionModel =
+			new CellSelectionModel<ExtGridData>();
+		cellSelectionModel.bindGrid(grid);
+		// ------------
+
+		// ------------
+		Draggable d = new Draggable(cp, cp.getHeader());
+		d.setUseProxy(true);
+		Resizable r = new Resizable(cp);
+		r.setDynamic(false);
+		// ------------
 
 		cp.setFrame(true);
 		cp.setCollapsible(true);
-		cp.setAnimCollapse(true); // вначале было false
+		cp.setAnimCollapse(false);
 		cp.setHeading("Live Grid");
 		cp.setLayout(new FitLayout());
-		// cp.add(grid);
-		cp.add(hpHeader);
-		cp.add(hpToolbar);
+		grid.getAriaSupport().setLabelledBy(cp.getHeader().getId() + "-label");
+		cp.add(grid);
 		// cp.setSize(600, 450);
+		cp.setHeight(500);
+
+		// ------------
+		ToolBar toolBar = new ToolBar();
+
+		cp.setTopComponent(toolBar);
+
+		// ------------
+		ToolBar toolBar2 = new ToolBar();
+		toolBar2.add(new FillToolItem());
+		LiveToolItem item = new LiveToolItem();
+		item.bindGrid(grid);
+		toolBar2.add(item);
+		cp.setBottomComponent(toolBar2);
+		// ------------
+
+		// ------------------------------------------------------------------------------
 
 		p.add(cp);
 		p.add(hpFooter);
@@ -365,6 +510,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		// }
 
 	}
+
+	// CHECKSTYLE:ON
 
 	@SuppressWarnings("unused")
 	private void updateGridRecordsetByUpdateRecordset() {
@@ -478,6 +625,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		// }
 	}
 
+	@SuppressWarnings("unused")
 	private void runAction(final Action ac) {
 		if (ac != null) {
 			AppCurrContext.getInstance().setCurrentActionFromElement(ac, grid);
@@ -526,8 +674,9 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			dh.submit();
 
 		} catch (SerializationException e) {
-			MessageBox
-					.showSimpleMessage(Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL, e.getMessage());
+
+			ru.curs.showcase.app.client.MessageBox.showSimpleMessage(
+					Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL, e.getMessage());
 		}
 	}
 
@@ -629,15 +778,16 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 	private void processClick(final String rowId, final String colId,
 			final InteractionType interactionType) {
-		Action ac = null;
-
-		List<GridEvent> events =
-			grid.getEventManager().getEventForCell(rowId, colId, interactionType);
-
-		for (GridEvent ev : events) {
-			ac = ev.getAction();
-			runAction(ac);
-		}
+		// Action ac = null;
+		//
+		// List<GridEvent> events =
+		// grid.getEventManager().getEventForCell(rowId, colId,
+		// interactionType);
+		//
+		// for (GridEvent ev : events) {
+		// ac = ev.getAction();
+		// runAction(ac);
+		// }
 	}
 
 	private void processFileDownload(final Record rec, final Column col) {
@@ -655,8 +805,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 			dh.submit();
 		} catch (SerializationException e) {
-			MessageBox.showSimpleMessage(Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD,
-					e.getMessage());
+			ru.curs.showcase.app.client.MessageBox.showSimpleMessage(
+					Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD, e.getMessage());
 		}
 	}
 
