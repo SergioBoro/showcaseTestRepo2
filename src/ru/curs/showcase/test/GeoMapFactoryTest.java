@@ -100,7 +100,7 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 		assertEquals("#FAEC7B", altay.getStyle());
 		assertEquals(altay.getGeometryId(), altay.getStyleClass());
 		final int indValue1 = 1000;
-		assertNotSame("ind1", layer.getIndicators().get(0).getId());
+		assertNotSame("ind1", layer.getIndicators().get(0).getId().getString());
 		assertEquals("ind0", layer.getAttrIdByDBId("ind1").toString());
 		assertEquals(false, layer.getIndicators().get(0).getIsMain());
 		assertEquals("#2AAA2E", layer.getIndicators().get(0).getStyle());
