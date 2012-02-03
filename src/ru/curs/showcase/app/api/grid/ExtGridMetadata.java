@@ -11,10 +11,7 @@ import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.*;
 
 /**
- * Класс грида с данными и настройками оформления. Содержит всю информацию,
- * необходимую для отрисовки грида в UI.
- * 
- * @author den
+ * Класс грида из ExtGWT с метаданными.
  * 
  */
 @XmlRootElement

@@ -2,6 +2,8 @@ package ru.curs.showcase.core.grid;
 
 import ru.curs.showcase.app.api.grid.*;
 
+import com.extjs.gxt.ui.client.data.*;
+
 /**
  * Класс, преобразующий Grid в ExtGrid.
  * 
@@ -21,9 +23,12 @@ public final class GridTransformer {
 		return egm;
 	}
 
-	public static Grid gridToExtGridData(final Grid grid) {
+	public static PagingLoadResult<ExtGridData> gridToExtGridData(final Grid grid,
+			final PagingLoadConfig loadConfig) {
 
-		return grid;
+		// return grid;
+
+		return null;
 	}
 
 }

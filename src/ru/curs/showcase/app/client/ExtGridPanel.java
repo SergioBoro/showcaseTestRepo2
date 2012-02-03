@@ -2,7 +2,7 @@ package ru.curs.showcase.app.client;
 
 import java.util.List;
 
-import ru.curs.gwt.datagrid.*;
+import ru.curs.gwt.datagrid.DataGridListener;
 import ru.curs.gwt.datagrid.event.*;
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.gwt.datagrid.selection.*;
@@ -16,6 +16,8 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.DownloadHelper;
 
+import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.Timer;
@@ -28,11 +30,11 @@ import com.google.gwt.user.client.ui.*;
 public class ExtGridPanel extends BasicElementPanelBasis {
 
 	private static final String PROC100 = "100%";
-	private static final String SHOWCASE_APP_CONTAINER = "showcaseAppContainer";
 
 	private final VerticalPanel p = new VerticalPanel();
 	private final HorizontalPanel hpHeader = new HorizontalPanel();
 	private final HorizontalPanel hpToolbar = new HorizontalPanel();
+	private final ContentPanel cp = new ContentPanel();
 	private final HorizontalPanel hpFooter = new HorizontalPanel();
 
 	private final PushButton exportToExcelCurrentPage = new PushButton(new Image(
@@ -43,17 +45,12 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
 
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
-	private DataGrid dg = null;
-	private ColumnSet cs = null;
+	// private DataGrid dg = null;
+	private final ColumnSet cs = null;
 	private Timer selectionTimer = null;
 	private DataServiceAsync dataService = null;
 	private GridContext localContext = null;
-	private Grid grid = null;
-
-	/**
-	 * Для предотвращения повторного срабатывания обработчиков.
-	 */
-	private boolean bListenersExit = true;
+	private ExtGridMetadata grid = null;
 
 	private boolean isFirstLoading = true;
 
@@ -67,32 +64,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 	private String strHeader = "";
 	private String strFooter = "";
-
-	/**
-	 * Тип обновления грида.
-	 */
-	private enum UpdateType {
-		/**
-		 * Полный.
-		 */
-		FULL,
-
-		/**
-		 * Только записи вызовом ф-ции updateRecordSet.
-		 */
-		RECORDSET_BY_UPDATERECORDSET,
-
-		/**
-		 * Только записи вызовом ф-ции showData.
-		 */
-		RECORDSET_BY_SHOWDATA,
-
-		/**
-		 * Обновление при вызове ф-ции redrawGrid.
-		 */
-		UPDATE_BY_REDRAWGRID
-
-	}
 
 	/**
 	 * Ф-ция, возвращающая панель с гридом.
@@ -146,16 +117,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
-		if (grid1 == null) {
-			setDataGridPanel(UpdateType.FULL);
-		} else {
-
-			RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
-			RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
-
-			setDataGridPanelByGrid(grid1, UpdateType.FULL);
-
-		}
+		setDataGridPanel();
 
 	}
 
@@ -182,13 +144,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
-			if (grid1 == null) {
-				setDataGridPanel(UpdateType.FULL);
-			} else {
-				RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
-				RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
-				setDataGridPanelByGrid(grid1, UpdateType.FULL);
-			}
+			setDataGridPanel();
 
 		} else {
 			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
@@ -197,90 +153,87 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 				hpHeader.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
 				hpToolbar.setVisible(false);
-				dg.setVisible(false);
+				// dg.setVisible(false);
 				hpFooter.setVisible(false);
 			}
-			if (grid1 == null) {
-				setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID);
-			} else {
-				RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
-				RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
-				setDataGridPanelByGrid(grid1, UpdateType.UPDATE_BY_REDRAWGRID);
-			}
+
+			setDataGridPanel();
 		}
 
 	}
 
 	private void resetSelection() {
-		localContext.getSelectedRecordIds().clear();
-		localContext.setCurrentColumnId(null);
-		localContext.setCurrentRecordId(null);
+		// localContext.getSelectedRecordIds().clear();
+		// localContext.setCurrentColumnId(null);
+		// localContext.setCurrentRecordId(null);
 	}
 
 	private void saveCurrentCheckBoxSelection() {
-		localContext.getSelectedRecordIds().clear();
-
-		List<Record> records = dg.getSelection().getSelectedRecords();
-		if (records != null) {
-			for (Record rec : records) {
-				localContext.getSelectedRecordIds().add(rec.getId());
-			}
-		}
+		// localContext.getSelectedRecordIds().clear();
+		//
+		// List<Record> records = dg.getSelection().getSelectedRecords();
+		// if (records != null) {
+		// for (Record rec : records) {
+		// localContext.getSelectedRecordIds().add(rec.getId());
+		// }
+		// }
 	}
 
 	private void saveCurrentClickSelection(final DataCell cell) {
-		localContext.setCurrentColumnId(null);
-		localContext.setCurrentRecordId(null);
-
-		if (cell != null) {
-			localContext.setCurrentRecordId(cell.getRecord().getId());
-			localContext.setCurrentColumnId(cell.getColumn().getId());
-		}
+		// localContext.setCurrentColumnId(null);
+		// localContext.setCurrentRecordId(null);
+		//
+		// if (cell != null) {
+		// localContext.setCurrentRecordId(cell.getRecord().getId());
+		// localContext.setCurrentColumnId(cell.getColumn().getId());
+		// }
 	}
 
-	private void setDataGridPanel(final UpdateType ut) {
+	private void setDataGridPanel() {
 
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getGrid(getDetailedContext(), getElementInfo(), new GWTServiceCallback<Grid>(
-				"при получении данных таблицы с сервера") {
+		dataService.getExtGridMetadata(getDetailedContext(), getElementInfo(),
+				new GWTServiceCallback<ExtGridMetadata>("при получении данных таблицы с сервера") {
 
-			@Override
-			public void onSuccess(final Grid grid1) {
-				setDataGridPanelByGrid(grid1, ut);
-			}
-		});
+					@Override
+					public void onSuccess(final ExtGridMetadata grid1) {
+						// MessageBox.showSimpleMessage("Debug", "");
+
+						setDataGridPanelByGrid(grid1);
+					}
+				});
 
 	}
 
-	private void setDataGridPanelByGrid(final Grid grid1, final UpdateType ut) {
+	private void setDataGridPanelByGrid(final ExtGridMetadata grid1) {
 
 		grid = grid1;
 
-		bListenersExit = true;
-
 		beforeUpdateGrid();
 
-		switch (ut) {
-		case FULL:
-			updateGridFull();
-			break;
-		case RECORDSET_BY_UPDATERECORDSET:
-			updateGridRecordsetByUpdateRecordset();
-			break;
-		case RECORDSET_BY_SHOWDATA:
-			updateGridRecordsetByShowData();
-			break;
-		case UPDATE_BY_REDRAWGRID:
-			updateGridRedrawGrid();
-			break;
-		default:
-			throw new Error("Неизвестный тип UpdateType");
-		}
-
-		afterUpdateGrid(ut);
+		updateGridFull(); // вместо нижнего switch
+		//
+		// switch (ut) {
+		// case FULL:
+		// updateGridFull();
+		// break;
+		// case RECORDSET_BY_UPDATERECORDSET:
+		// updateGridRecordsetByUpdateRecordset();
+		// break;
+		// case RECORDSET_BY_SHOWDATA:
+		// updateGridRecordsetByShowData();
+		// break;
+		// case UPDATE_BY_REDRAWGRID:
+		// updateGridRedrawGrid();
+		// break;
+		// default:
+		// throw new Error("Неизвестный тип UpdateType");
+		// }
+		//
+		afterUpdateGrid();
 
 		setupTimer();
 
@@ -288,27 +241,25 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		p.setHeight(PROC100);
 
-		bListenersExit = false;
-
 	}
 
 	private void setupTimer() {
-		if (getElementInfo().getRefreshByTimer()) {
-			Timer timer = getTimer();
-			if (timer != null) {
-				timer.cancel();
-			}
-			timer = new Timer() {
-
-				@Override
-				public void run() {
-					refreshPanel();
-				}
-
-			};
-			final int n1000 = 1000;
-			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
-		}
+		// if (getElementInfo().getRefreshByTimer()) {
+		// Timer timer = getTimer();
+		// if (timer != null) {
+		// timer.cancel();
+		// }
+		// timer = new Timer() {
+		//
+		// @Override
+		// public void run() {
+		// refreshPanel();
+		// }
+		//
+		// };
+		// final int n1000 = 1000;
+		// timer.schedule(getElementInfo().getRefreshInterval() * n1000);
+		// }
 	}
 
 	private void beforeUpdateGrid() {
@@ -319,7 +270,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		if (!grid.getHeader().isEmpty()) {
 			strHeader = grid.getHeader();
 		}
-		header.setHTML("LiveGrid   " + strHeader);
+		header.setHTML(strHeader);
 		hpHeader.add(header);
 
 		hpFooter.clear();
@@ -336,19 +287,19 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 	private void updateGridFull() {
 
-		// -------------------------
-		dg = new DataGrid(settingsDataGrid);
-
-		// -------------------------
-
+		// // -------------------------
+		// dg = new DataGrid(settingsDataGrid);
+		//
+		// // -------------------------
+		//
 		p.setSize(PROC100, PROC100);
 
 		hpHeader.setSize(PROC100, PROC100);
 		hpFooter.setSize(PROC100, PROC100);
 		// dg.setSize(PROC100, PROC100);
 		hpToolbar.setHeight(PROC100);
-		dg.setWidth("95%");
-
+		// dg.setWidth("95%");
+		//
 		hpToolbar.setSpacing(1);
 		if (grid.getUISettings().isVisibleExportToExcelCurrentPage()) {
 			exportToExcelCurrentPage.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE);
@@ -382,54 +333,69 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		}
 
 		p.clear();
-		p.add(hpHeader);
-		p.add(hpToolbar);
-		p.add(dg);
+		// p.add(hpHeader);
+		// p.add(hpToolbar);
+		// p.add(dg);
+
+		cp.setFrame(true);
+		cp.setCollapsible(true);
+		cp.setAnimCollapse(true); // вначале было false
+		cp.setHeading("Live Grid");
+		cp.setLayout(new FitLayout());
+		// cp.add(grid);
+		cp.add(hpHeader);
+		cp.add(hpToolbar);
+		// cp.setSize(600, 450);
+
+		p.add(cp);
 		p.add(hpFooter);
-
-		cs = grid.getDataSet().getColumnSet();
-
-		dg.addDataGridListener(new GridListener());
-		dg.getSelection().addListener(new SelectionListener());
-		dg.addDataClickHandler(new DataClickHandler("DataClickHandler1"));
-
-		if ((grid.getDataSet().getColumnSet().getColumns().size() > 0)
-				&& (grid.getDataSet().getRecordSet().getRecordsCount() > 0)) {
-			dg.showData(grid.getDataSet());
-		} else {
-			hpToolbar.setVisible(false);
-			dg.setVisible(false);
-		}
+		//
+		// cs = grid.getDataSet().getColumnSet();
+		//
+		// dg.addDataGridListener(new GridListener());
+		// dg.getSelection().addListener(new SelectionListener());
+		// dg.addDataClickHandler(new DataClickHandler("DataClickHandler1"));
+		//
+		// if ((grid.getDataSet().getColumnSet().getColumns().size() > 0)
+		// && (grid.getDataSet().getRecordSet().getRecordsCount() > 0)) {
+		// dg.showData(grid.getDataSet());
+		// } else {
+		// hpToolbar.setVisible(false);
+		// dg.setVisible(false);
+		// }
 
 	}
 
+	@SuppressWarnings("unused")
 	private void updateGridRecordsetByUpdateRecordset() {
-		dg.updateRecordSet(grid.getDataSet().getRecordSet());
+		// dg.updateRecordSet(grid.getDataSet().getRecordSet());
 	}
 
+	@SuppressWarnings("unused")
 	private void updateGridRecordsetByShowData() {
-		grid.getDataSet().setColumnSet(cs);
-		dg.showData(grid.getDataSet());
+		// grid.getDataSet().setColumnSet(cs);
+		// dg.showData(grid.getDataSet());
 	}
 
+	@SuppressWarnings("unused")
 	private void updateGridRedrawGrid() {
-		cs = grid.getDataSet().getColumnSet();
-
-		if ((grid.getDataSet().getColumnSet().getColumns().size() > 0)
-				&& (grid.getDataSet().getRecordSet().getRecordsCount() > 0)) {
-
-			hpToolbar.setVisible(true);
-			dg.setVisible(true);
-			dg.showData(grid.getDataSet());
-			hpFooter.setVisible(true);
-
-		} else {
-			hpToolbar.setVisible(false);
-			dg.setVisible(false);
-			hpFooter.setVisible(false);
-		}
-
-		hpFooter.setVisible(true);
+		// cs = grid.getDataSet().getColumnSet();
+		//
+		// if ((grid.getDataSet().getColumnSet().getColumns().size() > 0)
+		// && (grid.getDataSet().getRecordSet().getRecordsCount() > 0)) {
+		//
+		// hpToolbar.setVisible(true);
+		// dg.setVisible(true);
+		// dg.showData(grid.getDataSet());
+		// hpFooter.setVisible(true);
+		//
+		// } else {
+		// hpToolbar.setVisible(false);
+		// dg.setVisible(false);
+		// hpFooter.setVisible(false);
+		// }
+		//
+		// hpFooter.setVisible(true);
 	}
 
 	/**
@@ -438,6 +404,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	 * @author den
 	 * 
 	 */
+	@SuppressWarnings("unused")
 	class Cell {
 		private String recId;
 		private String colId;
@@ -449,6 +416,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private Cell getStoredRecordId() {
 		Cell cell = new Cell();
 		if ((localContext != null) && (localContext.getCurrentRecordId() != null)) {
@@ -469,42 +437,45 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	 * ячейку в related!
 	 * 
 	 */
-	private void afterUpdateGrid(final UpdateType ut) {
-		Cell selected = getStoredRecordId();
-		boolean selectionSaved =
-			(localContext != null) && (localContext.getCurrentRecordId() != null);
-
-		if (grid.getDataSet().getRecordSet().getPagesTotal() > 0) {
-
-			if (grid.getUISettings().isSelectOnlyRecords()) {
-				if (selected.recId != null) {
-					dg.getClickSelection().setClickedRecordById(selected.recId);
-				}
-			} else {
-				if ((selected.recId != null) && (selected.colId != null)) {
-					dg.getSelection().setSelectedCellById(selected.recId, selected.colId);
-				}
-			}
-
-			if (localContext != null) {
-				dg.getSelection().setSelectedRecordsById(localContext.getSelectedRecordIds());
-			}
-		}
-
-		switch (ut) {
-		case FULL:
-			resetGridSettingsToCurrent();
-			runAction(grid.getActionForDependentElements());
-			break;
-		case UPDATE_BY_REDRAWGRID:
-			resetGridSettingsToCurrent();
-			if (!selectionSaved) {
-				runAction(grid.getActionForDependentElements());
-			}
-			break;
-		default:
-			processClick(selected.recId, selected.colId, InteractionType.SINGLE_CLICK);
-		}
+	private void afterUpdateGrid() {
+		// Cell selected = getStoredRecordId();
+		// boolean selectionSaved =
+		// (localContext != null) && (localContext.getCurrentRecordId() !=
+		// null);
+		//
+		// if (grid.getDataSet().getRecordSet().getPagesTotal() > 0) {
+		//
+		// if (grid.getUISettings().isSelectOnlyRecords()) {
+		// if (selected.recId != null) {
+		// dg.getClickSelection().setClickedRecordById(selected.recId);
+		// }
+		// } else {
+		// if ((selected.recId != null) && (selected.colId != null)) {
+		// dg.getSelection().setSelectedCellById(selected.recId,
+		// selected.colId);
+		// }
+		// }
+		//
+		// if (localContext != null) {
+		// dg.getSelection().setSelectedRecordsById(localContext.getSelectedRecordIds());
+		// }
+		// }
+		//
+		// switch (ut) {
+		// case FULL:
+		// resetGridSettingsToCurrent();
+		// runAction(grid.getActionForDependentElements());
+		// break;
+		// case UPDATE_BY_REDRAWGRID:
+		// resetGridSettingsToCurrent();
+		// if (!selectionSaved) {
+		// runAction(grid.getActionForDependentElements());
+		// }
+		// break;
+		// default:
+		// processClick(selected.recId, selected.colId,
+		// InteractionType.SINGLE_CLICK);
+		// }
 	}
 
 	private void runAction(final Action ac) {
@@ -514,20 +485,21 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void resetGridSettingsToCurrent() {
-		localContext = new GridContext();
-		localContext.setPageNumber(grid.getDataSet().getRecordSet().getPageNumber());
-		localContext.setPageSize(grid.getDataSet().getRecordSet().getPageSize());
-		saveCurrentCheckBoxSelection();
-		DataCell cell = dg.getSelection().getSelectedCell();
-		if (cell != null) {
-			saveCurrentClickSelection(cell);
-		} else {
-			// если выделена не ячейка, а запись целиком
-			if (dg.getClickSelection().getClickedRecord() != null) {
-				localContext.setCurrentRecordId(dg.getClickSelection().getClickedRecord().getId());
-			}
-		}
+		// localContext = new GridContext();
+		// localContext.setPageNumber(grid.getDataSet().getRecordSet().getPageNumber());
+		// localContext.setPageSize(grid.getDataSet().getRecordSet().getPageSize());
+		// saveCurrentCheckBoxSelection();
+		// DataCell cell = dg.getSelection().getSelectedCell();
+		// if (cell != null) {
+		// saveCurrentClickSelection(cell);
+		// } else {
+		// // если выделена не ячейка, а запись целиком
+		// if (dg.getClickSelection().getClickedRecord() != null) {
+		// localContext.setCurrentRecordId(dg.getClickSelection().getClickedRecord().getId());
+		// }
+		// }
 	}
 
 	/**
@@ -567,34 +539,34 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	 */
 	public ClipboardDialog copyToClipboard() {
 		StringBuilder b = new StringBuilder();
-		List<Column> columns = cs.getVisibleColumnsByIndex();
-
-		String d = "";
-		for (Column c : columns) {
-			b.append(d).append(c.getCaption());
-			d = "\t";
-		}
-		b.append("\n");
-
-		if (dg.getSelection().hasSelectedRecords()) {
-			for (Record r : dg.getSelection().getSelectedRecords()) {
-				d = "";
-				for (Column c : columns) {
-					b.append(d).append(r.getValues().get(c.getId()));
-					d = "\t";
-				}
-				b.append("\n");
-			}
-		} else {
-			for (Record r : grid.getDataSet().getRecordSet().getRecords()) {
-				d = "";
-				for (Column c : columns) {
-					b.append(d).append(r.getValues().get(c.getId()));
-					d = "\t";
-				}
-				b.append("\n");
-			}
-		}
+		// List<Column> columns = cs.getVisibleColumnsByIndex();
+		//
+		// String d = "";
+		// for (Column c : columns) {
+		// b.append(d).append(c.getCaption());
+		// d = "\t";
+		// }
+		// b.append("\n");
+		//
+		// if (dg.getSelection().hasSelectedRecords()) {
+		// for (Record r : dg.getSelection().getSelectedRecords()) {
+		// d = "";
+		// for (Column c : columns) {
+		// b.append(d).append(r.getValues().get(c.getId()));
+		// d = "\t";
+		// }
+		// b.append("\n");
+		// }
+		// } else {
+		// for (Record r : grid.getDataSet().getRecordSet().getRecords()) {
+		// d = "";
+		// for (Column c : columns) {
+		// b.append(d).append(r.getValues().get(c.getId()));
+		// d = "\t";
+		// }
+		// b.append("\n");
+		// }
+		// }
 
 		ClipboardDialog cd = new ClipboardDialog(b.toString());
 		cd.center();
@@ -606,12 +578,12 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	/**
 	 * DataClickHandler.
 	 */
+	@SuppressWarnings("unused")
 	private final class DataClickHandler implements GridClickHandler<DataCell> {
 
 		/**
 		 * label.
 		 */
-		@SuppressWarnings("unused")
 		private final String label;
 
 		private DataClickHandler(final String label1) {
@@ -620,16 +592,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		@Override
 		public void onClick(final GridClickEvent<DataCell> event) {
-			// log("data click (" + label + "): " + event.getClickType() +
-			// ", record="
-			// + event.getTarget().getRecord().getId() + ", column="
-			// + event.getTarget().getColumn().getId());
-
-			// event.preventDefault();
-
-			if (bListenersExit) {
-				return;
-			}
 
 			saveCurrentClickSelection(event.getTarget());
 
@@ -701,17 +663,10 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	/**
 	 * SelectionListener.
 	 */
+	@SuppressWarnings("unused")
 	private class SelectionListener implements DataSelectionListener {
 		@Override
 		public void selectedRecordsChanged(final DataSelection selection) {
-
-			// log("selectedRecordsChanged: " +
-			// selection.hasSelectedRecords() + ", "
-			// + recordsToString(selection.getSelectedRecords()));
-
-			if (bListenersExit) {
-				return;
-			}
 
 			if (selectionTimer != null) {
 				selectionTimer.cancel();
@@ -730,122 +685,63 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		@Override
 		public void selectedCellChanged(final DataSelection selection) {
-			// log("selectedCellChanged: " + (selection.isCellSelected()
-			// ? "record=" + selection.getSelectedCell().getRecord().getId() +
-			// ", column=" + selection.getSelectedCell().getColumn().getId()
-			// : "not selected"));
 		}
 	}
 
 	private void processSelectionRecords() {
 
-		if (bListenersExit) {
-			return;
-		}
-
-		Action ac =
-			grid.getEventManager().getSelectionActionForDependentElements(dg.getSelection());
-
-		runAction(ac);
+		// Action ac =
+		// grid.getEventManager().getSelectionActionForDependentElements(dg.getSelection());
+		//
+		// runAction(ac);
 
 	}
 
 	/**
 	 * GridListener.
 	 */
+	@SuppressWarnings("unused")
 	private class GridListener implements DataGridListener {
 		@Override
 		public void columnWidthChanged(final Column column) {
-			// log("columnWidthChanged, column=" + column.getId() + ", width=" +
-			// column.getWidth());
-
-			if (bListenersExit) {
-				return;
-			}
 
 			cs.getColumns().get(column.getIndex()).setWidth(column.getWidth());
-
-			// log("columnsLayoutChanged");
-			// StringBuilder b = new StringBuilder();
-			// for (Column c : cs.getColumns()) {
-			// b.append(c.getId()).append(": ").append(c.getWidth()).append(" ");
-			// }
-			// log("(columns width: " + b.toString() + ")");
 
 		}
 
 		@Override
 		public void sortingChanged(final List<Column> columns) {
 
-			// StringBuilder b = new StringBuilder();
-			// for (Column c : columns) {
-			// b.append(c.getId()).append("[").append(c.getSorting()).append("] ");
-			// }
-			// log("sortingChanged, columns: " + b.toString());
-
-			if (bListenersExit) {
-				return;
-			}
-
 			localContext.setPageNumber(1);
 			localContext.setSortedColumns(columns);
 			resetSelection();
-			setDataGridPanel(UpdateType.RECORDSET_BY_UPDATERECORDSET);
-			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
+			setDataGridPanel();
+
 		}
 
 		@Override
 		public void pageNumberChanged(final int newPageNumber) {
-			// log("pageNumberChanged: " + newPageNumber);
-			// rs.setPageNumber(newPageNumber);
-			// r1.setValue("aa", "page no " + newPageNumber);
-			// dg.updateRecordSet(rs);
-
-			if (bListenersExit) {
-				return;
-			}
 
 			localContext.setPageNumber(newPageNumber);
 			resetSelection();
-			setDataGridPanel(UpdateType.RECORDSET_BY_UPDATERECORDSET);
-			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
+			setDataGridPanel();
+
 		}
 
 		@Override
 		public void pageSizeChanged(final int newItemsPerPage) {
-			// log("pageSizeChanged: " + newItemsPerPage);
-			// rs.setPageSize(newItemsPerPage);
-			// r1.setValue("cc", "pagesize is " + newItemsPerPage);
-			// dg.updateRecordSet(rs);
-
-			if (bListenersExit) {
-				return;
-			}
-
 			localContext.setPageNumber(1);
 			localContext.setPageSize(newItemsPerPage);
 			resetSelection();
-			setDataGridPanel(UpdateType.RECORDSET_BY_SHOWDATA);
-			// dg.updateRecordSet(grid.getDataSet().getRecordSet());
+			setDataGridPanel();
+
 		}
 
 		@Override
 		public void columnsLayoutChanged() {
-			// log("columnsLayoutChanged");
-			// StringBuilder b = new StringBuilder();
-			// for (Column c : cs.getColumns()) {
-			// b.append(c.getId()).append(": ").append(c.getWidth()).append(" ");
-			// }
-			// log("(columns width: " + b.toString() + ")");
+
 			// dg.updateColumnSet(cs);
 
-			if (bListenersExit) {
-				return;
-			}
-
-			bListenersExit = true;
-			dg.updateColumnSet(cs);
-			bListenersExit = false;
 		}
 
 	}
@@ -865,10 +761,10 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			hpHeader.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
 			hpToolbar.setVisible(false);
-			dg.setVisible(false);
+			// dg.setVisible(false);
 			hpFooter.setVisible(false);
 		}
-		setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID);
+		setDataGridPanel();
 
 	}
 

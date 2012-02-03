@@ -10,6 +10,7 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 
+import com.extjs.gxt.ui.client.data.*;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -66,7 +67,7 @@ public interface DataServiceAsync {
 			AsyncCallback<ExtGridMetadata> callback);
 
 	void getExtGridData(GridContext context, DataPanelElementInfo element,
-			AsyncCallback<Grid> callback);
+			PagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<ExtGridData>> callback);
 
 	/**
 	 * Асинхронная версия.

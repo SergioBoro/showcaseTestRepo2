@@ -15,7 +15,9 @@
   <!-- Other module inherits                                      -->
   <inherits name='ru.curs.gwt.datagrid'/>
   <inherits name='ru.beta2.extra.gwt.ExtraUI'/>
-  <inherits name="com.google.gwt.http.HTTP"/>  
+  <inherits name="com.google.gwt.http.HTTP"/>
+  
+  <inherits name='com.extjs.gxt.ui.GXT'/>
   
   <super-source path="jre"></super-source>
 
