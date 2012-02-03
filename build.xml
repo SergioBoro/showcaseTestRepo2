@@ -37,7 +37,10 @@
 		<var name="sc.war.file" unset="true" />
 		<property name="sc.war.file" value="${sc.dist.dir}/${appname}-${sc.version}.${sc.last.rev}" />
 		<echo>Update build number</echo>
-		<echo file="WebContent\WEB-INF\classes\build" message="${sc.last.rev}" />		
+		<echo file="WebContent\WEB-INF\classes\build" message="${sc.last.rev}" />
+		<propertyfile file="WebContent\WEB-INF\classes\version.properties">
+		    <entry key="app.version" value="${sc.version}.${sc.last.rev}"/>
+		</propertyfile>		
 	</target>
 
 	<path id="master-classpath" description="Master CLASSPATH for this script">
@@ -239,7 +242,7 @@
 
 		<echo>Clearing after make war</echo>
 		<delete dir="${sc.dist.dir}/war" failonerror="false" />
-		<copy tofile="WebContent\WEB-INF\classes\build" file="src\build" failonerror="false" overwrite="true" />
+		<copy todir="WebContent\WEB-INF\classes" file="src\build" failonerror="false" overwrite="true" />
 		<copy tofile="${sc.gwt.src.root.dir}\App.gwt.xml" file="${sc.tmp.dir}\App.gwt.xml.re" overwrite="true" />
 	</target>
 
