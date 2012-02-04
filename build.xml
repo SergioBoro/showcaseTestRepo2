@@ -277,13 +277,13 @@
 				<path refid="master-classpath" />
 			</classpath>
 
-			<batchtest todir="tmp" fork="true">
+			<batchtest todir="tmp/junit" fork="true">
 				<formatter type="plain" />
 				<fileset dir="${sc.class.dir}">
 					<include name="**/JythonPossibilitiesTest.class" />
 				</fileset>
 			</batchtest>
-			<batchtest todir="tmp" fork="false">
+			<batchtest todir="tmp/junit" fork="false">
 				<formatter type="plain" />
 				<fileset dir="${sc.class.dir}">
 					<include name="**/*Test.class" />
