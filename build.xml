@@ -19,7 +19,7 @@
 	<property name="sc.userdata.dir" value="userdatas" />
 	<property name="sc.gwt.src.root.dir" value="${sc.src.dir}\ru\curs\showcase\app" />
 	<property name="sc.general.props.file" value="general.properties" />
-	<property name="sc.war.file" value="${sc.build.dir}/${appname}" />
+	<property name="sc.war.file" value="" />
 
 	<property name="sc.env.props" value="${env}.properties" />
 	<property file="${sc.env.props}" />
@@ -52,7 +52,7 @@
 		<loadfile property="sc.version" srcFile="${sc.src.dir}/version" />
 		<echo>Версия Showcase ${sc.version}.${sc.last.rev}</echo>
 		<var name="sc.war.file" unset="true" />
-		<property name="sc.war.file" value="${sc.build.dir}/${appname}-${sc.version}.${sc.last.rev}" />
+		<property name="sc.war.file" value="${sc.build.dir}/artifacts/${appname}-${sc.version}.${sc.last.rev}" />
 		<echo>Update build number</echo>
 		<echo file="${sc.build.dir}\war\WEB-INF\classes\build" message="${sc.last.rev}" />	
 	</target>
@@ -127,6 +127,7 @@
 		<mkdir dir="${sc.build.dir}/junit" />
 		<mkdir dir="${sc.build.dir}/war" />
 		<mkdir dir="${sc.build.dir}/checkstyle" />
+		<mkdir dir="${sc.build.dir}/artifacts" />
 	</target>
 
 	<!--<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
@@ -212,7 +213,7 @@
 	<target name="rebuild" depends="clean, build" description="clean + build" />
 
 	<target name="ci.build" depends="checkProperties, info.env, clean, 
-		init.dirs, init.dojo, init.jython, copy.patches, 
+		init.local.files, init.dirs, init.dojo, init.jython, copy.patches, 
 		build, checkstyle, build.gwt, test, 
 		dist, backup.userdata" 
 		description="Target for CI build"/>
@@ -343,7 +344,7 @@
 		<antcall target="backup.db" />
 
 		<echo>Copy files to server</echo>
-		<move todir="${sc.trunk.deploy.path}" file="${sc.build.dir}/userdata-${sc.version}.${sc.last.rev}.zip" overwrite="true" />
+		<move todir="${sc.trunk.deploy.path}" file="${sc.build.dir}/artifacts/userdata-${sc.version}.${sc.last.rev}.zip" overwrite="true" />
 		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}.war" overwrite="true" />
 		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}-ext.war" overwrite="true" />
 		<copy todir="${sc.trunk.deploy.path}" file="${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.zip" overwrite="true" />
@@ -351,7 +352,7 @@
 	
 	<target name="backup.userdata" description="Makes archive with all test userdatas">
 		<echo>Makes archive with all test userdatas</echo>		
-		<zip destfile="${sc.build.dir}/userdata-${sc.version}.${sc.last.rev}.zip">
+		<zip destfile="${sc.build.dir}/artifacts/userdata-${sc.version}.${sc.last.rev}.zip">
 			<zipfileset dir="." includes="userdata*/**" />
 		</zip>		
 	</target>
@@ -430,5 +431,6 @@
 		  		<fileset dir="extragwt" includes="**/*.java"/>			  	 	
 		  </checkstyle>		
 	</target>
+		
 </project>
 
