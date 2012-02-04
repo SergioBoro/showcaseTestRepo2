@@ -25,6 +25,8 @@
 	<property file="${sc.env.props}" />
 
 	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" />
+	
+	<taskdef resource="checkstyletask.properties"/>
 
 	<svnSetting javahl="false" svnkit="false" id="svn.settings" certreject="false" />
 
@@ -124,6 +126,7 @@
 		<mkdir dir="${sc.tmp.dir}" />
 		<mkdir dir="${sc.build.dir}/junit" />
 		<mkdir dir="${sc.build.dir}/war" />
+		<mkdir dir="${sc.build.dir}/checkstyle" />
 	</target>
 
 	<!--<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
@@ -156,7 +159,7 @@
 		</copy>
 	</target>
 
-	<target name="build.with.gwt" depends="build" description="Build GWT code for all browsers">
+	<target name="build.gwt" depends="init.dirs" description="Build GWT code for all browsers">
 		<echo>Prepare for GWT build for all browsers</echo>
 		<copy file="${sc.gwt.src.root.dir}\App.gwt.xml" tofile="${sc.tmp.dir}\App.gwt.xml.re" overwrite="true" />
 		<copy file="${sc.gwt.src.root.dir}\template.App.gwt.xml" tofile="${sc.gwt.src.root.dir}\App.gwt.xml" overwrite="true" />		
@@ -208,7 +211,7 @@
 
 	<target name="rebuild" depends="clean, build" description="clean + build" />
 
-	<target name="ci.build" depends="checkProperties, clean, init.dirs, init.local.files, init.dojo, init.jython, copy.patches, info.env, build.with.gwt, test, dist" 
+	<target name="ci.build" depends="checkProperties, clean, init.dirs, init.local.files, init.dojo, init.jython, copy.patches, info.env, build, checkstyle, build.gwt, test, dist" 
 		description="Target for CI build"/>
 	
 	<target name="dist" depends="write.app.version, write.gwt.version" description="Assembles WAR file">
@@ -275,7 +278,7 @@
 		</copy>
 	</target>
 
-	<target name="deploy.tomcat" depends="clean, build.with.gwt, dist" description="Deploys WAR file with test data to ${sc.deploy.dir}">
+	<target name="deploy.tomcat" depends="rebuild, build.gwt, dist" description="Deploys WAR file with test data to ${sc.deploy.dir}">
 		<delete failonerror="true" dir="${sc.deploy.dir}/${appname}" />
 		<copy file="${sc.war.file}.war" todir="${sc.deploy.dir}" />
 	</target>
@@ -332,7 +335,7 @@
 		</copy>
 	</target>
 
-	<target name="deploy.trunk" depends="clean, svn.update, build.with.gwt, dist" description="Clean deploying to server with last svn sources">
+	<target name="deploy.trunk" depends="svn.update, rebuild, build.gwt, dist" description="Clean deploying to server with last svn sources">
 		<echo>Deploying trunk distr to server</echo>
 		<zip destfile="${sc.build.dir}/userdata-${sc.version}.${sc.last.rev}.zip">
 			<zipfileset dir="." includes="userdata*/**" />
@@ -405,6 +408,21 @@
 	</target>
 
 	<target name="test.unit.and.gwt" depends="test.gwt, test" description="Check gwt compilation and unit and module tests">
+	</target>
+	
+	<target name="checkstyle" depends="init.dirs, compile" description="Runs Checkstyle checks">
+		  <checkstyle config="global.conf/Curs.Def.CheckStyle.config"
+		              failureProperty="checkstyle.failure"
+		              failOnViolation="true" classpathref="master-classpath">
+		    	<formatter type="xml" tofile="${sc.build.dir}/checkstyle/report.xml"/>
+		  	    <formatter type="plain"/>
+		    	<fileset dir="src">
+					<include name="**/*.java" />
+					<exclude name="ru/curs/showcase/app/jre/**" />
+					<exclude name="ru/curs/showcase/test/ws/**" />		    		
+		    	</fileset>
+		  		<fileset dir="extragwt" includes="**/*.java"/>			  	 	
+		  </checkstyle>		
 	</target>
 </project>
 

@@ -30,13 +30,13 @@ import javax.xml.bind.annotation.*;
 public class ResponseAnyXML {
 
 	@XmlAnyElement(lax = true)
-	protected Object any;
+	private Object any;
 
 	public Object getAny() {
 		return any;
 	}
 
-	public void setAny(Object value) {
+	public void setAny(final Object value) {
 		this.any = value;
 	}
 
