@@ -9,9 +9,6 @@ package ru.curs.showcase.app.api;
  */
 public class AppLogicError extends RuntimeException {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -6492472604858673829L;
 
 	public AppLogicError() {

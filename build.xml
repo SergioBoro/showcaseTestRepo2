@@ -3,7 +3,7 @@
 
 	<property environment="os" />
 
-	<property name="sc.dist.dir" value="dist" />
+	<property name="sc.build.dir" value="build" />
 	<property name="sc.extragwt.dir" value="extragwt" />
 	<property name="sc.datagrid.dir" value="datagrid" />
 	<property name="sc.src.dir" value="src" />
@@ -19,7 +19,7 @@
 	<property name="sc.userdata.dir" value="userdatas" />
 	<property name="sc.gwt.src.root.dir" value="${sc.src.dir}\ru\curs\showcase\app" />
 	<property name="sc.general.props.file" value="general.properties" />
-	<property name="sc.war.file" value="${sc.dist.dir}/${appname}" />
+	<property name="sc.war.file" value="${sc.build.dir}/${appname}" />
 
 	<property name="sc.env.props" value="${env}.properties" />
 	<property file="${sc.env.props}" />
@@ -30,17 +30,29 @@
 
 	<property name="sc.db.backup.prefix" value="showcase-test" />
 
+	<target name="info.svn" description="Read svn revision">
+		<if>
+			<isset property="os.SVN_REVISION"/>
+			 <then>
+			   <property name="sc.last.rev" value="${os.SVN_REVISION}"/>
+			 </then>
+			 <else>
+				<svn refid="svn.settings">
+					<singleinfo target="." property="sc.last.rev" request="lastRevision" />
+				</svn>
+			 </else>			
+		</if>
+		<echo>Последняя версия кода в хранилище ${sc.last.rev}</echo>
+	</target>	
+	
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
-	<target name="write.app.version" depends="info.svn">
+	<target name="write.app.version" depends="info.svn" description="Write current app version to file">
 		<loadfile property="sc.version" srcFile="${sc.src.dir}/version" />
 		<echo>Версия Showcase ${sc.version}.${sc.last.rev}</echo>
 		<var name="sc.war.file" unset="true" />
-		<property name="sc.war.file" value="${sc.dist.dir}/${appname}-${sc.version}.${sc.last.rev}" />
+		<property name="sc.war.file" value="${sc.build.dir}/${appname}-${sc.version}.${sc.last.rev}" />
 		<echo>Update build number</echo>
-		<echo file="WebContent\WEB-INF\classes\build" message="${sc.last.rev}" />
-		<propertyfile file="WebContent\WEB-INF\classes\version.properties">
-		    <entry key="app.version" value="${sc.version}.${sc.last.rev}"/>
-		</propertyfile>		
+		<echo file="${sc.build.dir}\war\WEB-INF\classes\build" message="${sc.last.rev}" />	
 	</target>
 
 	<path id="master-classpath" description="Master CLASSPATH for this script">
@@ -69,8 +81,18 @@
 		<pathelement path="${sc.datagrid.dir}" />
 		<pathelement path="${sc.extragwt.dir}" />
 	</path>
+	
+	<path id="gwt-classpath" description="CLASSPATH for GWT">
+		<!--  порядок важен! -->
+		<pathelement path="${sc.src.dir}" />
+		<pathelement path="${sc.datagrid.dir}" />
+		<pathelement path="${sc.extragwt.dir}" />
+		<pathelement path="${sc.lib.dir}/${sc.gquery-dnd-bundle}" />
+		<pathelement path="${sc.gwt.dir}/gwt-dev.jar" />
+		<pathelement path="${sc.gwt.dir}/gwt-user.jar" />
+	</path>	
 
-	<target name="checkProperties">
+	<target name="checkProperties" description="Check required environment varianbles: JAVA_HOME">
 		<fail unless="os.JAVA_HOME">JAVA_HOME must be set</fail>
 	</target>
 
@@ -78,7 +100,7 @@
 		<echo>Соединение с SQL Server "${sc.rdbms.name}" и развертывание на контейнере сервлетов "${sc.servlet.cont.dir}"</echo>
 	</target>
 
-	<target name="init.local.files" description="Create local files">
+	<target name="init.local.files" description="Create local settings files from templates"> 
 		<copy verbose="true" file="local.template.properties" tofile="local.properties" />
 		<copy verbose="true" file="template.classpath" tofile=".classpath" />
 		<copy verbose="true" file="${sc.src.dir}/general.template.properties" tofile="${sc.src.dir}/${sc.general.props.file}" />
@@ -98,11 +120,10 @@
 	</target>
 
 	<target name="init.dirs" depends="info" description="Create some base dirs">
-		<mkdir dir="${sc.dist.dir}" />
-		<mkdir dir="${sc.images.dir}" />
 		<mkdir dir="${sc.class.dir}" />
 		<mkdir dir="${sc.tmp.dir}" />
-		<mkdir dir="${sc.js.dir}" />
+		<mkdir dir="${sc.build.dir}/junit" />
+		<mkdir dir="${sc.build.dir}/war" />
 	</target>
 
 	<!--<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
@@ -135,24 +156,32 @@
 		</copy>
 	</target>
 
-	<target name="build.with.gwt" depends="build">
+	<target name="build.with.gwt" depends="build" description="Build GWT code for all browsers">
+		<echo>Prepare for GWT build for all browsers</echo>
+		<copy file="${sc.gwt.src.root.dir}\App.gwt.xml" tofile="${sc.tmp.dir}\App.gwt.xml.re" overwrite="true" />
+		<copy file="${sc.gwt.src.root.dir}\template.App.gwt.xml" tofile="${sc.gwt.src.root.dir}\App.gwt.xml" overwrite="true" />		
 		<echo>Compiling GWT Javascript</echo>
 		<java classname="com.google.gwt.dev.Compiler" fork="true">
-			<classpath>
-				<!--  порядок важен! -->
-				<pathelement path="${sc.src.dir}" />
-				<pathelement path="${sc.datagrid.dir}" />
-				<pathelement path="${sc.extragwt.dir}" />
-				<pathelement path="${sc.lib.dir}/${sc.gquery-dnd-bundle}" />
-				<pathelement path="${sc.gwt.dir}/gwt-dev.jar" />
-				<pathelement path="${sc.gwt.dir}/gwt-user.jar" />
-			</classpath>
+			<classpath refid="gwt-classpath" />
 			<classpath refid="master-classpath" />
 			<arg line="-war ${sc.webapp.dir}" />
+			<arg line="-optimize 9" />
 			<arg line="ru.curs.showcase.app.App" />
 			<jvmarg line="-Dgwt.persistentunitcachedir=tmp" />
 		</java>
+		<copy tofile="${sc.gwt.src.root.dir}\App.gwt.xml" file="${sc.tmp.dir}\App.gwt.xml.re" overwrite="true" />		
 	</target>
+	
+	<target name="test.gwt" depends="build" description="Check GWT build">	
+		<java classname="com.google.gwt.dev.Compiler" fork="true">
+			<classpath refid="gwt-classpath" />
+			<classpath refid="master-classpath" />
+			<arg line="-validateOnly" />
+			<arg line="ru.curs.showcase.app.App" />
+			<jvmarg line="-Dgwt.persistentunitcachedir=tmp" />			
+		</java>	
+		<echo>Test GWT successfully completed!</echo>
+	</target>	
 
 	<target name="clean" description="Deletes files from war, tmp and dist directories">
 		<delete includeemptydirs="true" failonerror="false">
@@ -160,10 +189,11 @@
 			</fileset>
 		</delete>
 		<delete includeemptydirs="true" failonerror="false">
-			<fileset dir="${sc.dist.dir}">
-				<exclude name="js/**" />
-				<exclude name="jython/**" />
-				<exclude name="patches/**" />
+			<fileset dir="${sc.webinf.dir}/deploy">
+			</fileset>
+		</delete>		
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${sc.build.dir}">
 			</fileset>
 		</delete>
 		<delete includeemptydirs="true" failonerror="false">
@@ -178,36 +208,29 @@
 
 	<target name="rebuild" depends="clean, build" description="clean + build" />
 
-	<target name="ci.build" depends="clean, init.dirs, init.local.files, init.dojo, init.jython, copy.patches, info.env, dist, test"/>
+	<target name="ci.build" depends="checkProperties, clean, init.dirs, init.local.files, init.dojo, init.jython, copy.patches, info.env, build.with.gwt, test, dist" 
+		description="Target for CI build"/>
 	
-	<target name="dist" depends="write.app.version" description="Assembles WAR file">
-		<echo>Prepare for GWT build for all browsers</echo>
-		<copy file="${sc.gwt.src.root.dir}\App.gwt.xml" tofile="${sc.tmp.dir}\App.gwt.xml.re" overwrite="true" />
-		<copy file="${sc.gwt.src.root.dir}\template.App.gwt.xml" tofile="${sc.gwt.src.root.dir}\App.gwt.xml" overwrite="true" />
-		<antcall target="build.with.gwt" />
-
-		<antcall target="write.gwt.version" />
-
-		<echo>Make dir for war and copy compiled data</echo>
-		<mkdir dir="${sc.dist.dir}/war" />
-		<copy todir="${sc.dist.dir}/war" overwrite="no">
+	<target name="dist" depends="write.app.version, write.gwt.version" description="Assembles WAR file">
+		<echo>Copy compiled data</echo>
+		<copy todir="${sc.build.dir}/war" overwrite="no">
 			<fileset dir="${sc.webapp.dir}">
 				<include name="**/*" />
 			</fileset>
 		</copy>
-
+		
 		<echo>Copy sources to war</echo>
-		<copy todir="${sc.dist.dir}/war/WEB-INF/src/core">
+		<copy todir="${sc.build.dir}/war/WEB-INF/src/core">
 			<fileset dir="${sc.src.dir}">
 				<include name="**/*.java" />
 			</fileset>
-		</copy>
-		<copy todir="${sc.dist.dir}/war/WEB-INF/src/${sc.extragwt.dir}">
+		</copy>		
+		<copy todir="${sc.build.dir}/war/WEB-INF/src/${sc.extragwt.dir}">
 			<fileset dir="${sc.extragwt.dir}">
 				<include name="**/*.java" />
 			</fileset>
 		</copy>
-		<copy todir="${sc.dist.dir}/war/WEB-INF/src/${sc.datagrid.dir}">
+		<copy todir="${sc.build.dir}/war/WEB-INF/src/${sc.datagrid.dir}">
 			<fileset dir="${sc.datagrid.dir}">
 				<include name="**/*.java" />
 			</fileset>
@@ -215,7 +238,7 @@
 
 		<echo>Making war not love</echo>
 		<war destfile="${sc.war.file}.war">
-			<fileset dir="${sc.dist.dir}/war">
+			<fileset dir="${sc.build.dir}/war">
 				<include name="**/*" />
 				<exclude name="**/*mock*.jar" />
 				<exclude name="**/*.template" />
@@ -224,7 +247,7 @@
 		</war>
 
 		<echo>Copy runtime libs</echo>
-		<copy todir="${sc.dist.dir}/war/WEB-INF/lib">
+		<copy todir="${sc.build.dir}/war/WEB-INF/lib">
 			<fileset dir="${sc.runtime.dir}/lib">
 				<include name="**/*.jar" />
 			</fileset>
@@ -232,7 +255,7 @@
 
 		<echo>Making mega war</echo>
 		<war destfile="${sc.war.file}-ext.war">
-			<fileset dir="${sc.dist.dir}/war">
+			<fileset dir="${sc.build.dir}/war">
 				<include name="**/*" />
 				<exclude name="**/*mock*.jar" />
 				<exclude name="**/*.template" />
@@ -241,23 +264,10 @@
 		</war>
 
 		<echo>Clearing after make war</echo>
-		<delete dir="${sc.dist.dir}/war" failonerror="false" />
-		<copy todir="WebContent\WEB-INF\classes" file="src\build" failonerror="false" overwrite="true" />
-		<copy tofile="${sc.gwt.src.root.dir}\App.gwt.xml" file="${sc.tmp.dir}\App.gwt.xml.re" overwrite="true" />
+		<delete dir="${sc.build.dir}/war" failonerror="false" />
 	</target>
 
-	<target name="dist.with.userdata" description="Assembles WAR file with test data">
-		<mkdir dir="${sc.dist.dir}/war" />
-		<copy todir="${sc.dist.dir}/war/WEB-INF/${sc.userdata.dir}">
-			<fileset dir="${sc.userdata.dir}">
-				<include name="**/*" />
-			</fileset>
-		</copy>
-		<copy file="${sc.src.dir}/${sc.general.props.file}.template" overwrite="true" tofile="${sc.dist.dir}/war/WEB-INF/classes/${sc.general.props.file}" />
-		<antcall target="dist" />
-	</target>
-
-	<target name="deploy.runtime.tomcat">
+	<target name="deploy.runtime.tomcat" description="Copy runtime libs to Tomcat">
 		<copy todir="${sc.deploy.dir}/${ant.project.name}/WEB-INF/lib" failonerror="false">
 			<fileset dir="${sc.runtime.dir}/lib">
 				<include name="**/*.jar" />
@@ -265,26 +275,25 @@
 		</copy>
 	</target>
 
-	<target name="deploy.tomcat" depends="clean, dist" description="Deploys WAR file with test data to ${sc.deploy.dir}">
+	<target name="deploy.tomcat" depends="clean, build.with.gwt, dist" description="Deploys WAR file with test data to ${sc.deploy.dir}">
 		<delete failonerror="true" dir="${sc.deploy.dir}/${appname}" />
 		<copy file="${sc.war.file}.war" todir="${sc.deploy.dir}" />
 	</target>
 
-	<target name="test" depends="compile">
+	<target name="test" depends="build" description="Unit and component tests run">
+		<mkdir dir="tmp/junit" />
 		<junit printsummary="true" showoutput="false" filtertrace="true" haltonerror="true" haltonfailure="true">
 			<classpath>
 				<path refid="test-classpath" />
 				<path refid="master-classpath" />
 			</classpath>
-
-			<batchtest todir="tmp/junit" fork="true">
-				<formatter type="plain" />
+			<formatter type="xml" usefile="true" />
+			<batchtest todir="${sc.build.dir}/junit" fork="true">				
 				<fileset dir="${sc.class.dir}">
 					<include name="**/JythonPossibilitiesTest.class" />
 				</fileset>
 			</batchtest>
-			<batchtest todir="tmp/junit" fork="false">
-				<formatter type="plain" />
+			<batchtest todir="${sc.build.dir}/junit" fork="false">
 				<fileset dir="${sc.class.dir}">
 					<include name="**/*Test.class" />
 					<exclude name="**/JythonPossibilitiesTest.class" />
@@ -295,50 +304,50 @@
 		</junit>
 	</target>
 
-	<target name="init.dojo" depends="info">
+	<target name="init.dojo" depends="info" description="Copy dojo source files to webapp folder">
 		<echo>Deleting old dojo files</echo>
 		<delete failonerror="false" dir="${sc.js.dir}/dojo" />
 		<delete failonerror="false" dir="${sc.js.dir}/dijit" />
 		<delete failonerror="false" dir="${sc.js.dir}/dojox" />
 		<echo>Unpack new dojo files</echo>
-		<unzip src="${sc.dist.dir}/js/dojo.zip" dest="${sc.js.dir}">
+		<unzip src="dist/js/dojo.zip" dest="${sc.js.dir}">
 		</unzip>
-		<unzip src="${sc.dist.dir}/js/dijit.zip" dest="${sc.js.dir}">
+		<unzip src="dist/js/dijit.zip" dest="${sc.js.dir}">
 		</unzip>
-		<unzip src="${sc.dist.dir}/js/dojox.zip" dest="${sc.js.dir}">
+		<unzip src="dist/js/dojox.zip" dest="${sc.js.dir}">
 		</unzip>
 	</target>
 
-	<target name="init.jython" depends="info">
+	<target name="init.jython" depends="info" description="Copy jython source files to webapp folder">
 		<echo>Deleting old jython files</echo>
 		<delete failonerror="false" dir="${sc.webinf.dir}/libJython" />
 		<echo>Unpack new jython files</echo>
-		<unzip src="${sc.dist.dir}/jython/libJython.zip" dest="${sc.webinf.dir}" />
+		<unzip src="dist/jython/libJython.zip" dest="${sc.webinf.dir}" />
 	</target>
 
-	<target name="copy.patches" depends="info">
+	<target name="copy.patches" depends="info" description="Apply patches to external source packages: dojo, jython...">
 		<copy todir="${sc.webapp.dir}" overwrite="true">
-			<fileset dir="${sc.dist.dir}/patches">
+			<fileset dir="dist/patches">
 			</fileset>
 		</copy>
 	</target>
 
-	<target name="deploy.trunk" depends="clean, svn.update, dist" description="Clean deploying to server with last svn sources">
+	<target name="deploy.trunk" depends="clean, svn.update, build.with.gwt, dist" description="Clean deploying to server with last svn sources">
 		<echo>Deploying trunk distr to server</echo>
-		<zip destfile="${sc.dist.dir}/userdata-${sc.version}.${sc.last.rev}.zip">
+		<zip destfile="${sc.build.dir}/userdata-${sc.version}.${sc.last.rev}.zip">
 			<zipfileset dir="." includes="userdata*/**" />
 		</zip>
 
 		<antcall target="backup.db" />
 
 		<echo>Copy files to server</echo>
-		<move todir="${sc.trunk.deploy.path}" file="${sc.dist.dir}/userdata-${sc.version}.${sc.last.rev}.zip" overwrite="true" />
+		<move todir="${sc.trunk.deploy.path}" file="${sc.build.dir}/userdata-${sc.version}.${sc.last.rev}.zip" overwrite="true" />
 		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}.war" overwrite="true" />
 		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}-ext.war" overwrite="true" />
 		<copy todir="${sc.trunk.deploy.path}" file="${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.zip" overwrite="true" />
 	</target>
 
-	<target name="backup.db" depends="info">
+	<target name="backup.db" depends="info" description="Makes test DB backup by SQLUtil">
 		<echo>Making backup of test DB</echo>
 		<exec executable="${sc.sqlutil.path}\\SQLUtil_n_nokey.exe">
 			<arg value="-server_name=${sc.rdbms.name}" />
@@ -353,15 +362,15 @@
 		<delete file="${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.mbk" />
 	</target>
 
-	<target name="write.gwt.version" depends="info">
+	<target name="write.gwt.version" depends="init.dirs" description="Write gwt version to file">
 		<echo>Update gwt version</echo>
-		<exec resolveexecutable="true" executable="java" output="WebContent\WEB-INF\classes\gwtversion" dir="${sc.gwt.dir}">
+		<exec resolveexecutable="true" executable="java" output="${sc.build.dir}\war\WEB-INF\classes\gwtversion" dir="${sc.gwt.dir}">
 			<arg value="-jar" />
 			<arg value="gwt-dev.jar" />
 		</exec>
 	</target>
 
-	<target name="init.ws.tests">
+	<target name="init.ws.tests" description="Write JAX-WS client Java files for tests">
 		<echo>Updating WS test files from ${sc.webapp}/forall/webservices?wsdl</echo>
 		<exec resolveexecutable="true" executable="cmd" dir=".">
 			<arg value="/c" />
@@ -373,32 +382,7 @@
 		</exec>
 	</target>
 
-	<target name="compile.ws.schemas" description="Compile Java classes for WS by XSD Schemas">
-		<exec executable="${os.JAVA_HOME}/bin/xjc.exe">
-			<arg value="-d" />
-			<arg value="src" />
-			<arg value="-p" />
-			<arg value="ru.curs.showcase.app.server.ws" />
-			<arg value="userdatas/default/schemas/ws" />
-		</exec>
-	</target>
-
-	<target name="info.svn">
-		<if>
-			<isset property="os.SVN_REVISION"/>
-			 <then>
-			   <property name="sc.last.rev" value="${os.SVN_REVISION}"/>
-			 </then>
-			 <else>
-				<svn refid="svn.settings">
-					<singleinfo target="." property="sc.last.rev" request="lastRevision" />
-				</svn>
-			 </else>			
-		</if>
-		<echo>Последняя версия кода в хранилище ${sc.last.rev}</echo>
-	</target>
-
-	<target name="info.env">
+	<target name="info.env" description="Write to output current environment variables">
 		<echo>System properties</echo>
 		<echoproperties>
 			<propertyset>
@@ -414,15 +398,13 @@
 		</echoproperties>
 	</target>
 
-	<target name="svn.update">
+	<target name="svn.update" description="Update all project files from svn">
 		<svn refid="svn.settings">
 			<update dir="." recurse="true" />
 		</svn>
 	</target>
 
-	<target name="test.unit.and.gwt.compile">
-		<antcall target="build.with.gwt" />
-		<antcall target="test" />
+	<target name="test.unit.and.gwt" depends="test.gwt, test" description="Check gwt compilation and unit and module tests">
 	</target>
 </project>
 
