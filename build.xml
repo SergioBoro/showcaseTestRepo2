@@ -211,7 +211,10 @@
 
 	<target name="rebuild" depends="clean, build" description="clean + build" />
 
-	<target name="ci.build" depends="checkProperties, clean, init.dirs, init.local.files, init.dojo, init.jython, copy.patches, info.env, build, checkstyle, build.gwt, test, dist" 
+	<target name="ci.build" depends="checkProperties, info.env, clean, 
+		init.dirs, init.dojo, init.jython, copy.patches, 
+		build, checkstyle, build.gwt, test, 
+		dist, backup.userdata" 
 		description="Target for CI build"/>
 	
 	<target name="dist" depends="write.app.version, write.gwt.version" description="Assembles WAR file">
@@ -336,11 +339,7 @@
 	</target>
 
 	<target name="deploy.trunk" depends="svn.update, rebuild, build.gwt, dist" description="Clean deploying to server with last svn sources">
-		<echo>Deploying trunk distr to server</echo>
-		<zip destfile="${sc.build.dir}/userdata-${sc.version}.${sc.last.rev}.zip">
-			<zipfileset dir="." includes="userdata*/**" />
-		</zip>
-
+		<antcall target="backup.userdata" />
 		<antcall target="backup.db" />
 
 		<echo>Copy files to server</echo>
@@ -348,6 +347,13 @@
 		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}.war" overwrite="true" />
 		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}-ext.war" overwrite="true" />
 		<copy todir="${sc.trunk.deploy.path}" file="${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.zip" overwrite="true" />
+	</target>
+	
+	<target name="backup.userdata" description="Makes archive with all test userdatas">
+		<echo>Makes archive with all test userdatas</echo>		
+		<zip destfile="${sc.build.dir}/userdata-${sc.version}.${sc.last.rev}.zip">
+			<zipfileset dir="." includes="userdata*/**" />
+		</zip>		
 	</target>
 
 	<target name="backup.db" depends="info" description="Makes test DB backup by SQLUtil">
