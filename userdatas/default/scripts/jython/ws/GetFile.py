@@ -8,6 +8,7 @@ from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.util.xml import XMLUtils
 from ru.curs.showcase.runtime import AppInfoSingleton
 from ru.curs.showcase.runtime import ConnectionFactory
+#from ru.curs.showcase.app.api import UserMessage
 import re
 
 # init vars
@@ -52,6 +53,7 @@ def mainproc():
                        + data + "</responseAnyXML>", "utf-8")
     # при работе с Document строки приходят в формате ISO-8859-1!
     errorMes = commandName + u" не реализовано !"
+    #return UserMessage(errorMes)
     raise Exception(errorMes)
 
 if __name__ == "__main__":

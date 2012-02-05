@@ -89,7 +89,7 @@ public interface JythonProc {
 	 *            - XML текст запроса.
 	 * @return - XML текст с результатом запроса.
 	 */
-	String handle(String request);
+	Object handle(String request);
 
 	/**
 	 * Процедура трансформации данных. Получает на вход строку и возвращает

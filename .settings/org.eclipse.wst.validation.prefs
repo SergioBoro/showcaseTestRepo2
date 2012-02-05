@@ -1,4 +1,4 @@
-#Sat Feb 04 16:22:14 MSK 2012
+#Mon Feb 06 02:41:21 MSK 2012
 DELEGATES_PREFERENCE=delegateValidatorList
 USER_BUILD_PREFERENCE=enabledBuildValidatorListorg.eclipse.jst.j2ee.internal.classpathdep.ClasspathDependencyValidator;
 USER_MANUAL_PREFERENCE=enabledManualValidatorListorg.eclipse.jst.j2ee.internal.classpathdep.ClasspathDependencyValidator;
@@ -10,5 +10,5 @@ vals/org.eclipse.wst.html.ui.HTMLValidator/global=TT01
 vals/org.eclipse.wst.html.ui.HTMLValidator/groups=0107include06111contentType136org.eclipse.wst.html.core.htmlsourceT07fileext04htmlF07fileext05xhtmlF07fileext03htmF07fileext04htplF07fileext03wmlF0107exclude0604file113WebContent/jsF0204file08gui.htmlF0104file09gui3.htmlF0104file03tmpF0204file128WebContent/WEB-INF/libJythonF0204file116WebContent/ganttF02
 vals/org.eclipse.wst.xsd.core.xsd/groups=0107include0107fileext03xsdF0107exclude0304file111src/schemasF0204file110WebContentF0204file05buildF02
 vals/org.eclipse.wst.xsl.core.xsl/global=TT02
-vals/org.eclipse.wst.xsl.core.xsl/groups=0107include0207fileext03xslF111contentType134org.eclipse.wst.xml.core.xslsourceT0107exclude0504file110WebContentF0204file136src/ru/curs/showcase/app/test/publicF0204file113xsltforms.xslF0104file122xsltforms_original.xslF0104file03tmpF02
+vals/org.eclipse.wst.xsl.core.xsl/groups=0107include0207fileext03xslF111contentType134org.eclipse.wst.xml.core.xslsourceT0107exclude0604file110WebContentF0204file136src/ru/curs/showcase/app/test/publicF0204file113xsltforms.xslF0104file122xsltforms_original.xslF0104file03tmpF0204file04confF02
 vf.version=3
