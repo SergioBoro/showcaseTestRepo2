@@ -1,4 +1,4 @@
-#Thu Feb 02 15:09:09 MSK 2012
+#Mon Feb 06 16:29:58 MSK 2012
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/user.properties=UTF-8
 encoding//WebContent/log/lastLogEvents.jsp=UTF-8
@@ -6,6 +6,7 @@ encoding//WebContent/login.jsp=UTF-8
 encoding//userdatas/default/app.properties=UTF-8
 encoding//userdatas/default/geomapproperties/default.properties=UTF-8
 encoding//userdatas/default/gridproperties/default.properties=UTF-8
+encoding//userdatas/default/gridproperties/default.template.properties=UTF-8
 encoding//userdatas/default/gridproperties/gridbal.test.properties=UTF-8
 encoding//userdatas/default/gridproperties/sngl_before_dbl.properties=UTF-8
 encoding//userdatas/default/scripts/jython/AbstractJythonProc.py=utf-8

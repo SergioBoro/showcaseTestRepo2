@@ -132,6 +132,7 @@
 		<mkdir dir="${sc.build.dir}/checkstyle" />
 		<mkdir dir="${sc.build.dir}/artifacts" />
 		<mkdir dir="${sc.build.dir}/coverage" />
+		<mkdir dir="${sc.build.dir}/jdepend" />
 	</target>
 
 	<!--<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
@@ -218,7 +219,7 @@
 
 	<target name="ci.build" depends="checkProperties, info.env, clean, 
 		init.local.files, init.dirs, init.dojo, init.jython, init.patches, 
-		build, checkstyle, build.gwt, test.coverage, 
+		build, checkstyle, build.gwt, test.coverage, jdepend,
 		dist, backup.userdata" 
 		description="Target for CI build"/>
 	
@@ -471,6 +472,22 @@
 		<xslt in="${sc.build.dir}/coverage/jacoco.xml" out="${sc.build.dir}/coverage/coverage.xml" style="conf/jacoco_to_emma.xslt" >
 			  <classpath refid="master-classpath"/>		
 		</xslt>		
+	</target>
+	
+	<target name="jdepend" depends="init.dirs, build" description="Calc package circular dependencies and packages couplings metrics">
+	  <jdepend format="xml" outputfile="${sc.build.dir}/jdepend/jdepend-report.xml">
+	      <exclude name="java.*"/>
+	      <exclude name="javax.*"/>
+	  	  <exclude name="com.*"/>
+	  	  <exclude name="org.*"/>
+	  	  <exclude name="net.*"/>
+	  	  <exclude name="gwtquery.*"/>
+	  	  <exclude name="ch.qos.*"/>
+	      <classespath>
+	      	<pathelement location="${sc.webinf.dir}/classes/" />	      	
+	      </classespath>	  	
+	  </jdepend>
+
 	</target>	
 </project> 
 
