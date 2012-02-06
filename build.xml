@@ -219,7 +219,7 @@
 
 	<target name="ci.build" depends="checkProperties, info.env, clean, 
 		init.local.files, init.dirs, init.dojo, init.jython, init.patches, 
-		build, checkstyle, build.gwt, test.coverage, jdepend,
+		build, checkstyle, test.coverage, jdepend, build.gwt,
 		dist, backup.userdata" 
 		description="Target for CI build"/>
 	
