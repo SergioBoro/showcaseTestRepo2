@@ -30,7 +30,8 @@ public final class HTMLBasedElementRawData extends ElementRawData {
 	 * 
 	 * @param aElementInfo
 	 *            - описание элемента.
-	 * @param aCompositeContext
+	 * @param aContext
+	 *            - контекст.
 	 */
 	public HTMLBasedElementRawData(final DataPanelElementInfo aElementInfo,
 			final CompositeContext aContext) {

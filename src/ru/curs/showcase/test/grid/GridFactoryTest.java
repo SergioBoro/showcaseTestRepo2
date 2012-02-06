@@ -54,8 +54,7 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Проверка работы функции
-	 * {@link ru.curs.showcase.core.grid.GridDBFactory#replaceXMLServiceSymbols}
-	 * .
+	 * {@link ru.curs.showcase.core.grid.GridDBFactory#makeSafeXMLAttrValues} .
 	 */
 	@Test
 	public void testGridLinkReplaceXMLServiceSymbols() {

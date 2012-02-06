@@ -26,32 +26,18 @@ public class UserAndSessionDetails extends WebAuthenticationDetails {
 		super(request);
 	}
 
-	/**
-	 * @return the userInfo
-	 */
 	public UserInfo getUserInfo() {
 		return userInfo;
 	}
 
-	/**
-	 * @param userInfo
-	 *            the userInfo to set
-	 */
 	public void setUserInfo(final UserInfo auserInfo) {
 		this.userInfo = auserInfo;
 	}
 
-	/**
-	 * @return the authViaAuthServer
-	 */
 	public Boolean isAuthViaAuthServer() {
 		return authViaAuthServer;
 	}
 
-	/**
-	 * @param authViaAuthServer
-	 *            the authViaAuthServer to set
-	 */
 	public void setAuthViaAuthServer(final Boolean aauthViaAuthServer) {
 		this.authViaAuthServer = aauthViaAuthServer;
 	}

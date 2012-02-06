@@ -118,10 +118,10 @@ public final class NavigatorFactory extends SAXTagHandler {
 	}
 
 	/**
-	 * Функция построения навигатора из потока, содержащего XML данные.
+	 * Функция построения навигатора из файла, содержащего XML данные.
 	 * 
-	 * @param stream
-	 *            - поток.
+	 * @param file
+	 *            - файл с данными.
 	 * @return - навигатор.
 	 */
 	public Navigator fromStream(final DataFile<InputStream> file) {

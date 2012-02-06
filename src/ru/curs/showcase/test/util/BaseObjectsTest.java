@@ -73,9 +73,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	/**
 	 * Проверка работы построителя ServerCurrentState.
 	 * 
-	 * @throws IOException
-	 * @throws SQLException
-	 * @see ru.curs.showcase.util.ServerState ServerCurrentState
+	 * @see ru.curs.showcase.app.api.ServerState ServerCurrentState
 	 * @see ru.curs.showcase.runtime.ServerStateFactory
 	 *      ServerCurrentStateBuilder
 	 */

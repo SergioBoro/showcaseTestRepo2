@@ -99,7 +99,6 @@ public abstract class SAXTagHandler extends GeneralXMLHelper {
 	 *            - начальная позиция в тексте.
 	 * @param arg2
 	 *            - длина текста.
-	 * @return
 	 */
 	public abstract void handleCharacters(final char[] arg0, final int arg1, final int arg2);
 

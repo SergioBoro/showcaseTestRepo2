@@ -221,7 +221,7 @@
 	<target name="ci.build" depends="checkProperties, info.env, clean, 
 		init.local.files, init.dirs, init.dojo, init.jython, init.patches, 
 		build, checkstyle, test.coverage, jdepend, build.gwt,
-		dist, backup.userdata" 
+		dist, backup.userdata, javadoc" 
 		description="Target for CI build"/>
 	
 	<target name="dist" depends="write.app.version, write.gwt.version" description="Assembles WAR file">
@@ -489,7 +489,35 @@
 	      	<pathelement location="${sc.webinf.dir}/classes/" />	      	
 	      </classespath>	  	
 	  </jdepend>
-
 	</target>	
+	
+	<target name="javadoc" depends="init.dirs" 
+		description="Generates JavaDoc for app and test sources (no ext. lib includes)">
+		  <javadoc classpathref="master-classpath"
+		           destdir="${sc.build.dir}/javadoc"
+		           author="true"
+		           version="true"
+		           use="true"
+		           windowtitle="Showcase JavaDoc"
+		  		   encoding="UTF-8"
+		  		   docencoding="UTF-8"		  	
+		  		   linksource="true">
+
+		    <packageset dir="${sc.src.dir}" defaultexcludes="yes">
+            	<include name="ru/curs/showcase/**"/>
+				<exclude name="ru/curs/showcase/app/jre/**" />
+				<exclude name="ru/curs/showcase/test/ws/**" />	
+		    </packageset>
+
+		    <doctitle><![CDATA[<h1>Showcase</h1>]]></doctitle>
+		    <bottom><![CDATA[<i>Copyright &#169; 2010-2012 Course IT Ltd. All Rights Reserved.</i>]]></bottom>	    
+		    <group title="API Packages" packages="ru.curs.showcase.app.api*"/>
+		  	<group title="Core Packages" packages="ru.curs.showcase.core*"/>
+		  	<group title="Server Packages" packages="ru.curs.showcase.app.server*"/>
+			<group title="Client Packages" packages="ru.curs.showcase.app.client*"/>
+		  	<group title="Util Packages" packages="ru.curs.showcase.util*"/>		  	
+		  	<group title="Test Packages" packages="ru.curs.showcase.test*:ru.curs.showcase.app.test*"/>
+		  </javadoc>		
+	</target>
 </project> 
 

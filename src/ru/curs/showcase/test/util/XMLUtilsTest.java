@@ -261,7 +261,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Проверка функции
-	 * {@link ru.curs.showcase.util.xml.XMLUtils#testXmlServiceSymbolsToNormal
+	 * {@link ru.curs.showcase.util.xml.XMLUtils#xmlServiceSymbolsToNormal
 	 * XMLUtils.testXmlServiceSymbolsToNormal}.
 	 * 
 	 */

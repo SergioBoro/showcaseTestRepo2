@@ -19,15 +19,18 @@ public interface PrimElementsGateway extends Closeable {
 	 * @return - данные в формате xml.
 	 * @param aContext
 	 *            - контекст.
-	 * @param sourceName
-	 *            - имя источника - файла или процедуры.
 	 */
 	DataFile<InputStream> getRawData(CompositeContext aContext);
 
 	/**
 	 * Расширенная функция возврата данных.
+	 * 
+	 * @param aContext
+	 *            - контекст.
+	 * @param aSourceName
+	 *            - имя источника - файла или процедуры.
 	 */
-	DataFile<InputStream> getRawData(CompositeContext aCompositeContext, String aSourceName);
+	DataFile<InputStream> getRawData(CompositeContext aContext, String aSourceName);
 
 	/**
 	 * В переопределенной версии убрано контролируемое исключение.
