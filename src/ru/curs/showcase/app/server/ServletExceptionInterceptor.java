@@ -1,4 +1,4 @@
-package ru.curs.showcase.util;
+package ru.curs.showcase.app.server;
 
 import java.io.IOException;
 
@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.*;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.util.ServletUtils;
 import ru.curs.showcase.util.exception.BaseException;
 
 /**

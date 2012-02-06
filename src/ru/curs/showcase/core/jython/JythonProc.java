@@ -1,7 +1,7 @@
 package ru.curs.showcase.core.jython;
 
-import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.core.UserMessage;
 
 import com.ziclix.python.sql.PyConnection;
 

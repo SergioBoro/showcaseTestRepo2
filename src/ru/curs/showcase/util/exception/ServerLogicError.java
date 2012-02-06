@@ -11,9 +11,6 @@ import ru.curs.showcase.app.api.ExceptionType;
  */
 public class ServerLogicError extends BaseException {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 4193893671079202405L;
 
 	public ServerLogicError(final String aMessage) {

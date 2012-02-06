@@ -5,7 +5,7 @@ import java.util.*;
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.ExcludeFromSerialization;
 
 /**
  * Аналог HTML tr для группировки элементов на вкладке.
@@ -15,18 +15,11 @@ import ru.curs.showcase.app.api.*;
  */
 @XmlRootElement(name = "tr")
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class DataPanelTR implements SerializableElement {
+public final class DataPanelTR extends HTMLElement implements SerializableElement {
 
-	private static final long serialVersionUID = -5308488538331779152L;
-
-	/**
-	 * HTML id.
-	 */
-	private String id;
+	private static final long serialVersionUID = -5308488538331779152L;;
 
 	private String height;
-
-	private HTMLAttrs htmlAttrs = new HTMLAttrs();
 
 	private List<DataPanelTD> tds = new ArrayList<DataPanelTD>();
 
@@ -42,28 +35,12 @@ public final class DataPanelTR implements SerializableElement {
 		tab = aTab;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(final String aId) {
-		id = aId;
-	}
-
 	public String getHeight() {
 		return height;
 	}
 
 	public void setHeight(final String aHeight) {
 		height = aHeight;
-	}
-
-	public HTMLAttrs getHtmlAttrs() {
-		return htmlAttrs;
-	}
-
-	public void setHtmlAttrs(final HTMLAttrs aHtmlAttrs) {
-		htmlAttrs = aHtmlAttrs;
 	}
 
 	public List<DataPanelTD> getTds() {

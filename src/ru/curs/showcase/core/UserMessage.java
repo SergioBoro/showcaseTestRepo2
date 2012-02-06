@@ -1,6 +1,7 @@
-package ru.curs.showcase.app.api;
+package ru.curs.showcase.core;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.MessageType;
 
 /**
  * Сообщение для пользователя решения, созданного с помощью Showcase.

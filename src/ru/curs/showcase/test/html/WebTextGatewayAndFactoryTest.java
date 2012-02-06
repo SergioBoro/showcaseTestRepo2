@@ -21,7 +21,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserData {
-	private static final String WEB_TEXT_GET_JYTHON_PROC_PY = "WebTextGetJythonProc.py";
+	private static final String WEB_TEXT_GET_JYTHON_PROC_PY = "webtext/GetJythonProc.py";
 
 	/**
 	 * Тест на случай, когда не задано преобразование.

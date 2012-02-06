@@ -14,9 +14,7 @@ public class CSSReadException extends BaseException {
 	 * Сообщение об ошибке.
 	 */
 	private static final String ERROR_MES = "Ошибка при загрузке или разборе CSS";
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = -7795606248492441994L;
 
 	public CSSReadException(final Throwable aCause) {

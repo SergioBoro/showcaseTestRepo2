@@ -13,22 +13,15 @@ import ru.curs.showcase.app.api.*;
  */
 @XmlRootElement(name = "td")
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class DataPanelTD implements SerializableElement {
+public final class DataPanelTD extends HTMLElement implements SerializableElement {
 
 	private static final long serialVersionUID = -6437752427735919361L;
-
-	/**
-	 * HTML id.
-	 */
-	private String id;
 
 	private String width;
 
 	private Integer rowspan;
 
 	private Integer colspan;
-
-	private HTMLAttrs htmlAttrs = new HTMLAttrs();
 
 	private DataPanelElementInfo element;
 
@@ -46,14 +39,6 @@ public final class DataPanelTD implements SerializableElement {
 
 	public DataPanelTD() {
 		super();
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(final String aId) {
-		id = aId;
 	}
 
 	public String getHeight() {
@@ -85,14 +70,6 @@ public final class DataPanelTD implements SerializableElement {
 
 	public void setColspan(final Integer aColspan) {
 		colspan = aColspan;
-	}
-
-	public HTMLAttrs getHtmlAttrs() {
-		return htmlAttrs;
-	}
-
-	public void setHtmlAttrs(final HTMLAttrs aHtmlAttrs) {
-		htmlAttrs = aHtmlAttrs;
 	}
 
 	public DataPanelTR getTR() {

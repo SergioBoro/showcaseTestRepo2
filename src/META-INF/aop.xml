@@ -7,7 +7,7 @@
 		<include within="ru.curs.showcase..*"/>
 	</weaver>
 	<aspects>
-		<aspect name="ru.curs.showcase.util.ServletExceptionInterceptor" />
+		<aspect name="ru.curs.showcase.app.server.ServletExceptionInterceptor" />
 		<aspect name="ru.curs.showcase.test.RepeatAspect" />
 	</aspects>
 </aspectj>

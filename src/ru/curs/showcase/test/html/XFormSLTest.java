@@ -248,7 +248,7 @@ public class XFormSLTest extends AbstractTest {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo =
 			new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
-		elementInfo.setProcName("XFormGetJythonProc.py");
+		elementInfo.setProcName("xform/GetJythonProc.py");
 		elementInfo.setTemplateName("Showcase_Template.xml");
 		generateTestTabWithElement(elementInfo);
 		XFormGetCommand command = new XFormGetCommand(context, elementInfo);
@@ -266,7 +266,7 @@ public class XFormSLTest extends AbstractTest {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo =
 			new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
-		elementInfo.setProcName("XFormGetJythonProc.py");
+		elementInfo.setProcName("xform/GetJythonProc.py");
 		elementInfo.setTemplateName("template/Base.py");
 		generateTestTabWithElement(elementInfo);
 		XFormGetCommand command = new XFormGetCommand(context, elementInfo);

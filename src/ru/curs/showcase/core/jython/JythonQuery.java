@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
 
-import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.runtime.JythonIterpretatorFactory;
 import ru.curs.showcase.util.TextUtils;

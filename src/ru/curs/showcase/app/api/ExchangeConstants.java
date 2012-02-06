@@ -39,9 +39,6 @@ public final class ExchangeConstants implements SerializableElement {
 	 */
 	public static final String LINE_SEPARATOR = "\r\n";
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 6722656736605297948L;
 
 	/**

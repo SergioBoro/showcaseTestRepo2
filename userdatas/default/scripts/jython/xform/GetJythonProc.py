@@ -18,7 +18,7 @@ filterContext = ""
 elementId = ""
 
 
-class XFormGetJythonProc(JythonProc):
+class GetJythonProc(JythonProc):
     def getRawData(self, context, elId):
         global main, add, session, filterContext, elementId
         main = context.getMain()

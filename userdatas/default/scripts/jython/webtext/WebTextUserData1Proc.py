@@ -6,7 +6,7 @@ Created on 02.11.2011
 '''
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.core.jython import JythonDTO
-from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.core import UserMessage
 
 # init vars
 main = ""

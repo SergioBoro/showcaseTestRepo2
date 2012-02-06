@@ -14,9 +14,6 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class ServerState implements SerializableElement {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -6409374109173355019L;
 
 	/**

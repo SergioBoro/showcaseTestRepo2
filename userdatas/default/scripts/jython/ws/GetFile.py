@@ -8,7 +8,7 @@ from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.util.xml import XMLUtils
 from ru.curs.showcase.runtime import AppInfoSingleton
 from ru.curs.showcase.runtime import ConnectionFactory
-#from ru.curs.showcase.app.api import UserMessage
+#from ru.curs.showcase.core import UserMessage
 import re
 
 # init vars

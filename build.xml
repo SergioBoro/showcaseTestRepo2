@@ -133,6 +133,7 @@
 		<mkdir dir="${sc.build.dir}/artifacts" />
 		<mkdir dir="${sc.build.dir}/coverage" />
 		<mkdir dir="${sc.build.dir}/jdepend" />
+		<mkdir dir="${sc.build.dir}/javadoc" />
 	</target>
 
 	<!--<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
@@ -483,6 +484,7 @@
 	  	  <exclude name="net.*"/>
 	  	  <exclude name="gwtquery.*"/>
 	  	  <exclude name="ch.qos.*"/>
+	  	  <exclude name="ru.curs.showcase.test.ws"/>
 	      <classespath>
 	      	<pathelement location="${sc.webinf.dir}/classes/" />	      	
 	      </classespath>	  	

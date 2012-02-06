@@ -6,7 +6,7 @@ Created on 19.01.2012
 '''
 
 from ru.curs.showcase.core.jython import JythonProc
-from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.core import UserMessage
 import xml.dom.minidom as minidom
 
 # init vars

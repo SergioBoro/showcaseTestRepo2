@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datapanel>	
 	<tab id="01" name="Jython как источник данных">
-		<element id="0101" type="webtext" proc="WebTextGetJythonProc.py" transform="pas.xsl"/>
-		<element id="0102" type="xforms" proc="XFormGetJythonProc.py" template="Showcase_Template.xml"/>						
+		<element id="0101" type="webtext" proc="webtext/GetJythonProc.py" transform="pas.xsl"/>
+		<element id="0102" type="xforms" proc="xform/GetJythonProc.py" template="Showcase_Template.xml"/>						
 	</tab>
 	<tab id="02" name="XML как источник данных">
 		<element id="0201" type="webtext" proc="3buttons_enh.xml" />		
@@ -13,7 +13,7 @@
 	</tab>
 	<tab id="01dop" name="Jython - возврат ошибок">
 		<element id="0801" type="webtext" proc="webtext_sa_error" showLoadingMessage="true"/>
-		<element id="d1" type="webtext" proc="WebTextGetJythonProc.py" showLoadingMessage="true"/>							
+		<element id="d1" type="webtext" proc="webtext/GetJythonProc.py" showLoadingMessage="true"/>							
 	</tab>		
 	<tab id="04" name="showLoadingMessage - отключено">
 		<element id="0401" type="grid" proc="grid_bal_multiaction" />

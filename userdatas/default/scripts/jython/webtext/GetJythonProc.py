@@ -6,11 +6,8 @@ Created on 02.11.2011
 '''
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.core.jython import JythonDTO
-from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.core import UserMessage
 import random
-#from ru.curs.showcase.util.xml import XMLUtils
-#from org.xml.sax.helpers import DefaultHandler;
-#from ru.curs.showcase.util import TextUtils;
 
 # init vars
 main = ""
@@ -20,7 +17,7 @@ filterContext = ""
 elementId = ""
 
 
-class WebTextGetJythonProc(JythonProc):
+class GetJythonProc(JythonProc):
     def getRawData(self, context, elId):
         global main, add, session, filterContext, elementId
         main = context.getMain()
