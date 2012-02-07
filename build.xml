@@ -1,4 +1,5 @@
-<project name="Showcase" basedir="." default="build">
+<project name="Showcase" basedir="." default="build" 
+	xmlns:doxygen="antlib:org.doxygen.tools" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle" xmlns:jacoco="antlib:org.jacoco.ant">
 	<property name="appname" value="${ant.project.name}" />
 
 	<property environment="os" />
@@ -20,44 +21,28 @@
 	<property name="sc.gwt.src.root.dir" value="${sc.src.dir}\ru\curs\showcase\app" />
 	<property name="sc.general.props.file" value="general.properties" />
 	<property name="sc.war.file" value="" />
-
+	<property name="sc.db.backup.prefix" value="showcase-test" />
+	
 	<property name="sc.env.props" value="${env}.properties" />
 	<property file="${sc.env.props}" />
 
 	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" />
 	
-	<taskdef resource="checkstyletask.properties"/>
-
-    <taskdef resource="org/jacoco/ant/antlib.xml"/>
-	
-	<svnSetting javahl="false" svnkit="false" id="svn.settings" certreject="false" />
-
-	<property name="sc.db.backup.prefix" value="showcase-test" />
-
-	<target name="info.svn" description="Read svn revision">
-		<if>
-			<isset property="os.SVN_REVISION"/>
-			 <then>
-			   <property name="sc.last.rev" value="${os.SVN_REVISION}"/>
-			 </then>
-			 <else>
-				<svn refid="svn.settings">
-					<singleinfo target="." property="sc.last.rev" request="lastRevision" />
-				</svn>
-			 </else>			
-		</if>
-		<echo>Последняя версия кода в хранилище ${sc.last.rev}</echo>
-	</target>	
+	<taskdef name="javancss" classname="javancss.JavancssAntTask" />	
 	
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
-	<target name="write.app.version" depends="info.svn" description="Write current app version to file">
-		<loadfile property="sc.version" srcFile="${sc.src.dir}/version" />
-		<echo>Версия Showcase ${sc.version}.${sc.last.rev}</echo>
-		<var name="sc.war.file" unset="true" />
-		<property name="sc.war.file" value="${sc.build.dir}/artifacts/${appname}-${sc.version}.${sc.last.rev}" />
-		<echo>Update build number</echo>
-		<echo file="${sc.build.dir}\war\WEB-INF\classes\build" message="${sc.last.rev}" />	
-	</target>
+	
+	<taskdef resource="cargo.tasks">
+		 <classpath path="${ant.library.dir}"/>
+	</taskdef>
+	
+	<!--<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+		<classpath>
+			<pathelement location="${ANT.HOME}/aspectjtools.jar" />
+		</classpath>
+	</taskdef>-->	
+	
+	<svnSetting javahl="false" svnkit="false" id="svn.settings" certreject="false" />
 
 	<path id="master-classpath" description="Master CLASSPATH for this script">
 		<fileset dir="${sc.lib.dir}">
@@ -97,6 +82,30 @@
 		<pathelement path="${sc.gwt.dir}/gwt-user.jar" />
 	</path>	
 
+	<target name="info.svn" description="Read svn revision">
+		<if>
+			<isset property="os.SVN_REVISION"/>
+			 <then>
+			   <property name="sc.last.rev" value="${os.SVN_REVISION}"/>
+			 </then>
+			 <else>
+				<svn refid="svn.settings">
+					<singleinfo target="." property="sc.last.rev" request="lastRevision" />
+				</svn>
+			 </else>			
+		</if>
+		<echo>Последняя версия кода в хранилище ${sc.last.rev}</echo>
+	</target>	
+	
+	<target name="write.app.version" depends="info.svn" description="Write current app version to file">
+		<loadfile property="sc.version" srcFile="${sc.src.dir}/version" />
+		<echo>Версия Showcase ${sc.version}.${sc.last.rev}</echo>
+		<var name="sc.war.file" unset="true" />
+		<property name="sc.war.file" value="${sc.build.dir}/artifacts/${appname}-${sc.version}.${sc.last.rev}" />
+		<echo>Update build number</echo>
+		<echo file="${sc.build.dir}\war\WEB-INF\classes\build" message="${sc.last.rev}" />	
+	</target>	
+	
 	<target name="checkProperties" description="Check required environment varianbles: JAVA_HOME">
 		<fail unless="os.JAVA_HOME">JAVA_HOME must be set</fail>
 	</target>
@@ -134,13 +143,9 @@
 		<mkdir dir="${sc.build.dir}/coverage" />
 		<mkdir dir="${sc.build.dir}/jdepend" />
 		<mkdir dir="${sc.build.dir}/javadoc" />
+		<mkdir dir="${sc.build.dir}/metrics" />
+		<mkdir dir="${sc.build.dir}/tomcat" />
 	</target>
-
-	<!--<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
-		<classpath>
-			<pathelement location="${ANT.HOME}/aspectjtools.jar" />
-		</classpath>
-	</taskdef>-->
 
 	<target name="compile" depends="init.dirs" description="Compiles .java files to WAR directory">
 		<!--Вариант с org.aspectj.tools.ant.taskdefs.Ajc11Compiler не работал при запуске из Eclipse-->
@@ -218,10 +223,10 @@
 
 	<target name="rebuild" depends="clean, build" description="clean + build" />
 
-	<target name="ci.build" depends="checkProperties, info.env, clean, 
+	<target name="ci.build" depends="checkProperties, info.env, clean,  
 		init.local.files, init.dirs, init.dojo, init.jython, init.patches, 
 		build, checkstyle, test.coverage, jdepend, build.gwt,
-		dist, backup.userdata, javadoc" 
+		dist, backup.userdata, javadoc, deploy.tomcat" 
 		description="Target for CI build"/>
 	
 	<target name="dist" depends="write.app.version, write.gwt.version" description="Assembles WAR file">
@@ -288,9 +293,20 @@
 		</copy>
 	</target>
 
-	<target name="deploy.tomcat" depends="rebuild, build.gwt, dist" description="Deploys WAR file with test data to ${sc.deploy.dir}">
-		<delete failonerror="true" dir="${sc.deploy.dir}/${appname}" />
-		<copy file="${sc.war.file}.war" todir="${sc.deploy.dir}" />
+	<target name="deploy.tomcat" depends="init.dirs, build, write.app.version" description="Deploys WAR file with test data to ${sc.deploy.dir}">
+		<!--<delete failonerror="true" dir="${sc.deploy.dir}/${appname}" />
+		<copy file="${sc.war.file}.war" todir="${sc.deploy.dir}" />-->
+	  	<copy file="${sc.war.file}.war" tofile="${sc.build.dir}/tomcat/showcase.war"/>
+		<cargo containerId="tomcat7x" type="remote" output="${sc.build.dir}/tomcat/output.log"
+		    log="${sc.build.dir}/tomcat/cargo.log" action="redeploy">
+		  <configuration type="runtime">
+		  	<property name="cargo.hostname" value="${sc.servlet.cont.host}"/>
+		    <property name="cargo.servlet.port" value="${sc.servlet.cont.port}"/>
+		  	<property name="cargo.remote.username" value="${sc.servlet.cont.user}"/>
+		    <property name="cargo.remote.password" value="${sc.servlet.cont.user}"/>
+		    <deployable type="war" file="${sc.build.dir}/tomcat/showcase.war"/>
+		  </configuration>
+		</cargo>		
 	</target>
 
 	<target name="test" depends="build" description="Unit and component tests run">
@@ -412,7 +428,7 @@
 	</target>
 	
 	<target name="checkstyle" depends="init.dirs, compile" description="Runs Checkstyle checks">
-		  <checkstyle config="global.conf/Curs.Def.CheckStyle.config"
+		  <cs:checkstyle config="global.conf/Curs.Def.CheckStyle.config"
 		              failureProperty="checkstyle.failure"
 		              failOnViolation="true" classpathref="master-classpath">
 		    	<formatter type="xml" tofile="${sc.build.dir}/checkstyle/report.xml"/>
@@ -423,11 +439,11 @@
 					<exclude name="ru/curs/showcase/test/ws/**" />		    		
 		    	</fileset>
 		  		<fileset dir="extragwt" includes="**/*.java"/>			  	 	
-		  </checkstyle>		
+		  </cs:checkstyle>		
 	</target>
 
 	<target name="test.coverage" depends="init.dirs, build" description="Runs coverage tests">
-		<coverage destfile="${sc.build.dir}/coverage/jacoco.exec" append="false" includes="ru/curs/showcase/*"
+		<jacoco:coverage destfile="${sc.build.dir}/coverage/jacoco.exec" append="false" includes="ru/curs/showcase/*"
 			excludes="ru/curs/showcase/test/*:ru/curs/showcase/app/client/*:ru/curs/showcase/app/test/*:ru/curs/showcase/app/jre/*">					  
 			<junit printsummary="true" showoutput="false" filtertrace="true" haltonerror="true" haltonfailure="true" fork="true" >
 				<classpath refid="test-classpath"/>
@@ -439,8 +455,8 @@
 				</batchtest>
 				<jvmarg value="-XX:MaxPermSize=384m"/>
 			</junit>
-		</coverage>
-		<report>		                     
+		</jacoco:coverage>
+		<jacoco:report>		                     
 		    <executiondata>
 		        <file file="${sc.build.dir}/coverage/jacoco.exec"/>
 		    </executiondata>
@@ -467,7 +483,7 @@
 		    </structure>
 		                        
 		    <xml destfile="${sc.build.dir}/coverage/jacoco.xml" encoding="UTF-8"/>		                       
-		</report>
+		</jacoco:report>
 		
 		<copy verbose="true" file="conf/report.dtd" todir="${sc.build.dir}/coverage" />
 		<xslt in="${sc.build.dir}/coverage/jacoco.xml" out="${sc.build.dir}/coverage/coverage.xml" style="conf/jacoco_to_emma.xslt" >
@@ -519,5 +535,28 @@
 		  	<group title="Test Packages" packages="ru.curs.showcase.test*:ru.curs.showcase.app.test*"/>
 		  </javadoc>		
 	</target>
+	
+	<target name="doxygen" depends="init.dirs" description="Generates Doxygen documentation">
+		<doxygen:doxygen>
+			<property name="INPUT" value="${sc.src.dir}" />
+			<property name="RECURSIVE" value="yes" />
+			<property name="GENERATE_LATEX" value="false" />
+			<property name="PROJECT_NAME" value="Showcase" />
+			<property name="OUTPUT_DIRECTORY" value="${sc.build.dir}/doxygen" />
+		</doxygen:doxygen>		
+	</target>
+	
+	<target name="calc.metrics" depends="init.dirs" description="Calc Java code metrics">
+		<javancss srcdir="${sc.src.dir}" defaultexcludes="yes"
+		            generateReport="true"
+		            outputfile="${sc.build.dir}/metrics/javancss_metrics.xml"
+		            format="xml" abortOnFail="false">
+        	<include name="ru/curs/showcase/**/*.java"/>
+			<exclude name="ru/curs/showcase/app/jre/**" />
+			<exclude name="ru/curs/showcase/test/ws/**" />			   	
+		</javancss>
+	</target>
+
+	
 </project> 
 
