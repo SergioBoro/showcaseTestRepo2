@@ -231,6 +231,32 @@
     max-width: 26px;
 }
 
+
+
+.headerCheckNotVisible {
+    width: 0px;
+    min-width: 0px;
+    max-width: 0px;
+}
+.headerCheckGapNotVisible {
+    width: 0px;
+    min-width: 0px;
+    max-width: 0px;
+}
+.dataCheckNotVisible {
+    width: 0px;
+    min-width: 0px;
+    max-width: 0px;
+}
+.dataCheckGapNotVisible {
+    width: 0px;
+    min-width: 0px;
+    max-width: 0px;
+}
+
+
+
+
 /*
     test min column width
 */
