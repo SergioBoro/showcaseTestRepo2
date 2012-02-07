@@ -21,7 +21,7 @@ import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
 
-import com.extjs.gxt.ui.client.data.*;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -67,9 +67,9 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 
 	@Override
 	public PagingLoadResult<ExtGridData> getExtGridData(GridContext context,
-			DataPanelElementInfo element, PagingLoadConfig loadConfig) throws GeneralException {
+			DataPanelElementInfo element) throws GeneralException {
 		Grid grid = getGrid(context, element);
-		return GridTransformer.gridToExtGridData(grid, loadConfig);
+		return GridTransformer.gridToExtGridData(context, grid);
 	}
 
 	@Override

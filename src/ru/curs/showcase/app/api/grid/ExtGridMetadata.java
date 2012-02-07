@@ -18,7 +18,9 @@ import ru.curs.showcase.app.api.event.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEstimate {
 
-	private static final long serialVersionUID = -8875148764868361032L;
+	private static final long serialVersionUID = 2492137452715570464L;
+
+	private List<ExtGridColumnConfig> columns = null;
 
 	/**
 	 * Набор данных для грида. Содержит описания столбцов, строк, страниц и
@@ -42,7 +44,7 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 	 * Столбец, который должен быть выделен автоматически при перерисовке грида
 	 * с новыми данными. Если null - ничего делать не надо.
 	 */
-	private Column autoSelectColumn = null;
+	private ExtGridColumnConfig autoSelectColumn = null;
 
 	public ExtGridMetadata() {
 		super();
@@ -81,11 +83,11 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 		dataSet = aDataSet;
 	}
 
-	public final Column getAutoSelectColumn() {
+	public final ExtGridColumnConfig getAutoSelectColumn() {
 		return autoSelectColumn;
 	}
 
-	public final void setAutoSelectColumn(final Column aAutoSelectColumn) {
+	public final void setAutoSelectColumn(final ExtGridColumnConfig aAutoSelectColumn) {
 		autoSelectColumn = aAutoSelectColumn;
 	}
 
@@ -186,5 +188,13 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 			}
 		}
 		return result;
+	}
+
+	public List<ExtGridColumnConfig> getColumns() {
+		return columns;
+	}
+
+	public void setColumns(final List<ExtGridColumnConfig> aColumns) {
+		this.columns = aColumns;
 	}
 }

@@ -358,8 +358,9 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 				public void load(final Object loadConfig,
 						final AsyncCallback<PagingLoadResult<ExtGridData>> callback) {
 
-					dataService.getExtGridData(getDetailedContext(), getElementInfo(),
-							(PagingLoadConfig) loadConfig, callback);
+					// (PagingLoadConfig) loadConfig
+
+					dataService.getExtGridData(getDetailedContext(), getElementInfo(), callback);
 				}
 			};
 
@@ -373,49 +374,27 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
 
+		for (ExtGridColumnConfig egcc : grid.getColumns()) {
+			ColumnConfig column =
+				new ColumnConfig(egcc.getId(), egcc.getCaption(), egcc.getWidth());
+
+			column.setToolTip(column.getHeader());
+
+			if (egcc.getDateTimeFormat() != null) {
+				column.setDateTimeFormat(DateTimeFormat.getFormat(egcc.getDateTimeFormat()));
+			}
+
+			columns.add(column);
+		}
+
 		// ------------
-		ColumnConfig column = new ColumnConfig("forum", "Forum", 150);
-		columns.add(column);
-		// ------------
-		column = new ColumnConfig("username", "Username", 100);
-		columns.add(column);
-		// ------------
-		column = new ColumnConfig("subject", "Subject", 200);
-		columns.add(column);
-		// ------------
-		ColumnConfig date = new ColumnConfig("date", "Date", 100);
-		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
-		columns.add(date);
-		// ------------
-		date = new ColumnConfig("date", "Date2", 100);
-		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
-		columns.add(date);
-		// ------------
-		date = new ColumnConfig("date", "Date3", 100);
-		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
-		columns.add(date);
-		// ------------
-		date = new ColumnConfig("date", "Date4", 100);
-		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
-		columns.add(date);
-		// ------------
-		date = new ColumnConfig("date", "Date5", 100);
-		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
-		columns.add(date);
-		// ------------
-		date = new ColumnConfig("date", "Date6", 100);
-		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
-		columns.add(date);
-		// ------------
-		date = new ColumnConfig("date", "Date7", 100);
-		date.setDateTimeFormat(DateTimeFormat.getFormat("yyyy MMM dd"));
-		columns.add(date);
+		// ru.curs.showcase.app.client.MessageBox.showSimpleMessage("",
+		// grid.column.getHeader());
 		// ------------
 
 		ColumnModel cm = new ColumnModel(columns);
 
 		final EditorGrid<ExtGridData> grid = new EditorGrid<ExtGridData>(store, cm);
-		// final Grid<Post> grid = new Grid<Post>(store, cm);
 		grid.setColumnReordering(true);
 		grid.setStateId("pagingGridExample");
 		grid.setStateful(true);
@@ -473,8 +452,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		cp.setLayout(new FitLayout());
 		grid.getAriaSupport().setLabelledBy(cp.getHeader().getId() + "-label");
 		cp.add(grid);
-		// cp.setSize(600, 450);
-		cp.setHeight(500);
+		cp.setSize(1200, 500);
+		// cp.setHeight(500);
 
 		// ------------
 		ToolBar toolBar = new ToolBar();
