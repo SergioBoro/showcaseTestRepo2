@@ -2,7 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  
-<%@page import="ru.curs.showcase.security.SecurityParamsFactory"%>    
+<%@page import="ru.curs.showcase.security.SecurityParamsFactory"%>
+<%@page import="ru.curs.showcase.runtime.AppProps"%>      
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -37,14 +38,15 @@
 
 	<script src="js/dojo/dojo.js" data-dojo-config="
     djeoEngine: 'djeo',
-    geKey: 'ABQIAAAA-DMAtggvLwlIYlUJiASaAxRQnCpeV9jusWIeBw0POFqU6SItGxRWZhddpS8pIkVUd2fDQhzwPUWmMA',
-    ymapsKey: 'AMOPgE4BAAAA9Y-BUwMAonjZ5NBRJDj54c-cDVPzQcYlLNAAAAAAAAAAAACPSuKS9WyCiMuXm9An1ZKCx5Pk-A==',
+    geKey: '<%=AppProps.getGeoMapKey("geKey", request.getServerName()) %>',
+    ymapsKey: '<%=AppProps.getGeoMapKey("ymapsKey", request.getServerName()) %>',
     paths: {djeo:'../djeo'}">
 	</script>
 	
 <!-- if you plan to use Google Earth browser plugin on non localhost server - copy your own key; apply for a key at http://code.google.com/apis/maps/signup.html -->
 <!-- if you plan to use Yandex Maps on non localhost server - copy your own key; apply for a key at http://api.yandex.ru/maps/form.xml	-->
-	              
+<!-- for store keys use files in userdata root!  -->
+
     <script src="js/internalShowcase.js"></script>
     <script src="solutions/<%=userdataId%>/js/solution.js"></script>
     

@@ -1,7 +1,7 @@
 package ru.curs.showcase.app.server;
 
 import java.io.*;
-import java.util.*;
+import java.util.Properties;
 
 import org.python.util.PythonInterpreter;
 import org.slf4j.*;
@@ -21,8 +21,6 @@ public final class AppInitializer {
 
 	public static final String DIR_SVN = ".svn";
 
-	private static final String SHOWCASE_ROOTPATH_USERDATA_PARAM = "rootpath.userdata";
-
 	private static final String PATH_PROPERTIES_ERROR = "Ошибка чтения файла "
 			+ FileUtils.PATH_PROPERTIES;
 
@@ -32,7 +30,7 @@ public final class AppInitializer {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AppAndSessionEventsListener.class);
 
-	public static void readDefaultUserDatasAndCheck() {
+	public static void readDefaultUserDatas() {
 		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
 			readPathProperties();
 		}
@@ -87,22 +85,19 @@ public final class AppInitializer {
 				paths.load(reader);
 			}
 
-			Enumeration<?> en = paths.keys();
-			while (en.hasMoreElements()) {
-				String name = en.nextElement().toString();
-				if (SHOWCASE_ROOTPATH_USERDATA_PARAM.equalsIgnoreCase(name)) {
-					String rootpath = paths.getProperty(name);
-					File dir = new File(rootpath);
-					if (!dir.exists()) {
-						throw new NoSuchRootPathUserDataException(rootpath);
-					}
-					String value;
-					for (String id : dir.list()) {
-						if (!DIR_SVN.equalsIgnoreCase(id)) {
-							value = rootpath + "\\" + id;
-							AppInfoSingleton.getAppInfo().addUserData(id, value);
-							LOGGER.info(String.format(USER_DATA_INFO, id, value));
-						}
+			String rootpath = FileUtils.getTestUserdataRoot();
+			if (rootpath != null) {
+				File dir = new File(rootpath);
+				if (!dir.exists()) {
+					throw new NoSuchRootPathUserDataException(rootpath);
+				}
+				AppInfoSingleton.getAppInfo().setUserdataRoot(rootpath);
+				String value;
+				for (String id : dir.list()) {
+					if (!DIR_SVN.equalsIgnoreCase(id)) {
+						value = rootpath + "\\" + id;
+						AppInfoSingleton.getAppInfo().addUserData(id, value);
+						LOGGER.info(String.format(USER_DATA_INFO, id, value));
 					}
 				}
 			}

@@ -18,6 +18,8 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class FileUtils {
 
+	private static final String SHOWCASE_ROOTPATH_USERDATA_PARAM = "rootpath.userdata";
+
 	/**
 	 * Универсальная функция загрузки внутренних ресурсов Web-приложения по
 	 * относительному пути, используя Java ClassLoader (например, файлов
@@ -101,5 +103,9 @@ public final class FileUtils {
 			throw new SettingsFileOpenException(PATH_PROPERTIES, SettingsFileType.PATH_PROPERTIES);
 		}
 		return prop.getProperty(paramName);
+	}
+
+	public static String getTestUserdataRoot() {
+		return getGeneralOptionalParam(SHOWCASE_ROOTPATH_USERDATA_PARAM);
 	}
 }

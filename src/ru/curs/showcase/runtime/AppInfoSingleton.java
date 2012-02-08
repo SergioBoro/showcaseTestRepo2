@@ -59,6 +59,8 @@ public final class AppInfoSingleton {
 
 	private String webAppPath;
 
+	private String userdataRoot;
+
 	private final CacheManager cacheManager = CacheManager.create();
 
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
@@ -354,6 +356,14 @@ public final class AppInfoSingleton {
 
 	public CacheManager getCacheManager() {
 		return cacheManager;
+	}
+
+	public String getUserdataRoot() {
+		return userdataRoot;
+	}
+
+	public void setUserdataRoot(final String aUserdataRoot) {
+		userdataRoot = aUserdataRoot;
 	}
 
 }

@@ -16,6 +16,10 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 
+	private static final String GE_KEY_NAME = "geKey";
+	private static final String GE_KEY =
+		"ABQIAAAA-DMAtggvLwlIYlUJiASaAxRQnCpeV9jusWIeBw0POFqU6SItGxRWZhddpS8pIkVUd2fDQhzwPUWmMA";
+
 	/**
 	 * Тест ф-ции loadResToStream.
 	 */
@@ -90,4 +94,13 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 		AppInfoSingleton.getAppInfo().getUserdatas().put("test34", new UserData("c:\\"));
 		AppProps.checkUserdatas();
 	}
+
+	@Test
+	public void testGeoMapKeys() {
+		assertEquals(GE_KEY, AppProps.getGeoMapKey(GE_KEY_NAME, "localhost"));
+		assertEquals(GE_KEY, AppProps.getGeoMapKey(GE_KEY_NAME, "127.0.0.1"));
+		assertEquals(GE_KEY, AppProps.getGeoMapKey(GE_KEY_NAME, "mail.ru"));
+		assertEquals("", AppProps.getGeoMapKey("", "localhost"));
+	}
+
 }

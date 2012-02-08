@@ -12,6 +12,35 @@ import ru.curs.showcase.util.exception.*;
  * 
  */
 public final class AppProps {
+
+	public static String getGeoMapKey(final String engine, final String host) {
+		String realHost = host;
+		final String localhost = "localhost";
+		if ("127.0.0.1".equals(host)) {
+			realHost = localhost;
+		}
+		String userdataRoot = AppInfoSingleton.getAppInfo().getUserdataRoot();
+		String path = String.format("%s/geomap.key.%s.properties", userdataRoot, realHost);
+		Properties props = new Properties();
+
+		FileInputStream is;
+		try {
+			is = new FileInputStream(path);
+			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
+				props.load(reader);
+			} catch (IOException e) {
+				throw new SettingsFileOpenException(e, path, SettingsFileType.GEOMAP_KEYS);
+			}
+		} catch (FileNotFoundException e) {
+			if (localhost.equals(realHost)) {
+				return "";
+			} else {
+				return getGeoMapKey(engine, localhost);
+			}
+		}
+		return props.getProperty(engine, "");
+	}
+
 	public static void checkUserdatas() {
 		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
 			checkAppPropsExists(userdataId);

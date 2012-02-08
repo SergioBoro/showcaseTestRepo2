@@ -70,7 +70,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	@BeforeClass
 	public static void beforeClass() {
 		AppInitializer.initialize();
-		AppInitializer.readDefaultUserDatasAndCheck();
+		AppInitializer.readDefaultUserDatas();
 		initTestSession();
 	}
 

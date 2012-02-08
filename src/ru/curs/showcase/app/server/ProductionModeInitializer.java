@@ -66,7 +66,7 @@ public final class ProductionModeInitializer {
 
 	public static void initUserDatas(final ServletContext aServletContext) {
 		readServletContext(aServletContext);
-		AppInitializer.readDefaultUserDatasAndCheck();
+		AppInitializer.readDefaultUserDatas();
 		AppProps.checkUserdatas();
 		copyUserDatas(aServletContext);
 	}
@@ -91,10 +91,14 @@ public final class ProductionModeInitializer {
 				if (!dir.exists()) {
 					throw new NoSuchRootPathUserDataException(rootpath);
 				}
+				AppInfoSingleton.getAppInfo().setUserdataRoot(rootpath);
 				String value;
 				for (String id : dir.list()) {
 					if (!AppInitializer.DIR_SVN.equalsIgnoreCase(id)) {
 						value = rootpath + "/" + id;
+						if (!new File(value).isDirectory()) {
+							continue;
+						}
 						AppInfoSingleton.getAppInfo().addUserData(id, value);
 						LOGGER.info(String.format(USER_DATA_INFO, id, value));
 					}
