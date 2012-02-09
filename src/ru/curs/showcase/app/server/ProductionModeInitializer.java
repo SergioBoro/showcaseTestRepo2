@@ -1,7 +1,6 @@
 package ru.curs.showcase.app.server;
 
 import java.io.*;
-import java.util.Enumeration;
 
 import javax.servlet.ServletContext;
 
@@ -24,8 +23,6 @@ public final class ProductionModeInitializer {
 
 	private static final String SHOWCASE_ROOTPATH_USERDATA_PARAM = "showcase.rootpath.userdata";
 
-	private static final String USER_DATA_INFO =
-		"Добавлен userdata на основе rootpath из context.xml с идентификатором '%s' и путем '%s'";
 	private static final String FILE_COPY_ERROR = "Ошибка копирования файла при старте Tomcat: %s";
 	private static final String COPY_USERDATA_DIRS_PARAM = "copy.userdata.dirs";
 	private static final String USER_DATA_DIR_NOT_FOUND_ERROR =
@@ -69,6 +66,7 @@ public final class ProductionModeInitializer {
 		AppInitializer.readDefaultUserDatas();
 		AppProps.checkUserdatas();
 		copyUserDatas(aServletContext);
+		AppInfoSingleton.getAppInfo().setServletContainerVersion(aServletContext.getServerInfo());
 	}
 
 	private static void initClassPath(final ServletContext aServletContext) {
@@ -79,35 +77,8 @@ public final class ProductionModeInitializer {
 	}
 
 	private static void readServletContext(final ServletContext sc) {
-		Enumeration<?> en = sc.getInitParameterNames();
-		while (en.hasMoreElements()) {
-			String name = en.nextElement().toString();
-			if (SHOWCASE_ROOTPATH_USERDATA_PARAM.equalsIgnoreCase(name)) {
-				String rootpath = sc.getInitParameter(name);
-
-				rootpath = rootpath.replaceAll("\\\\", "/");
-
-				File dir = new File(rootpath);
-				if (!dir.exists()) {
-					throw new NoSuchRootPathUserDataException(rootpath);
-				}
-				AppInfoSingleton.getAppInfo().setUserdataRoot(rootpath);
-				String value;
-				for (String id : dir.list()) {
-					if (!AppInitializer.DIR_SVN.equalsIgnoreCase(id)) {
-						value = rootpath + "/" + id;
-						if (!new File(value).isDirectory()) {
-							continue;
-						}
-						AppInfoSingleton.getAppInfo().addUserData(id, value);
-						LOGGER.info(String.format(USER_DATA_INFO, id, value));
-					}
-				}
-			}
-		}
-
-		AppInfoSingleton.getAppInfo().setServletContainerVersion(sc.getServerInfo());
-
+		String rootpath = sc.getInitParameter(SHOWCASE_ROOTPATH_USERDATA_PARAM);
+		AppInitializer.checkUserDataDir(rootpath, "context.xml");
 	}
 
 	private static void readCSSs() {

@@ -24,8 +24,8 @@ public final class AppInitializer {
 	private static final String PATH_PROPERTIES_ERROR = "Ошибка чтения файла "
 			+ FileUtils.PATH_PROPERTIES;
 
-	private static final String USER_DATA_INFO = "Добавлен userdata на основе rootpath из "
-			+ FileUtils.PATH_PROPERTIES + " с идентификатором '%s' и путем '%s'";
+	private static final String USER_DATA_INFO =
+		"Добавлен userdata на основе rootpath из '%s' с идентификатором '%s' и путем '%s'";
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AppAndSessionEventsListener.class);
@@ -86,23 +86,31 @@ public final class AppInitializer {
 			}
 
 			String rootpath = FileUtils.getTestUserdataRoot();
-			if (rootpath != null) {
-				File dir = new File(rootpath);
-				if (!dir.exists()) {
-					throw new NoSuchRootPathUserDataException(rootpath);
-				}
-				AppInfoSingleton.getAppInfo().setUserdataRoot(rootpath);
-				String value;
-				for (String id : dir.list()) {
-					if (!DIR_SVN.equalsIgnoreCase(id)) {
-						value = rootpath + "\\" + id;
-						AppInfoSingleton.getAppInfo().addUserData(id, value);
-						LOGGER.info(String.format(USER_DATA_INFO, id, value));
-					}
-				}
-			}
+			checkUserDataDir(rootpath, FileUtils.PATH_PROPERTIES);
 		} catch (IOException e) {
 			LOGGER.error(PATH_PROPERTIES_ERROR);
+		}
+	}
+
+	public static void checkUserDataDir(final String path, final String file) {
+		if (path != null) {
+			String rootpath = path.replaceAll("\\\\", "/");
+			File dir = new File(rootpath);
+			if (!dir.exists()) {
+				throw new NoSuchRootPathUserDataException(rootpath);
+			}
+			AppInfoSingleton.getAppInfo().setUserdataRoot(rootpath);
+			String value;
+			for (String id : dir.list()) {
+				if (!DIR_SVN.equalsIgnoreCase(id)) {
+					value = rootpath + "/" + id;
+					if (!new File(value).isDirectory()) {
+						continue;
+					}
+					AppInfoSingleton.getAppInfo().addUserData(id, value);
+					LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
+				}
+			}
 		}
 	}
 }

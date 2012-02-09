@@ -306,7 +306,8 @@
 		    <property name="cargo.remote.password" value="${sc.servlet.cont.user}"/>
 		    <deployable type="war" file="${sc.build.dir}/tomcat/showcase.war"/>
 		  </configuration>
-		</cargo>		
+		</cargo>	
+		<get src="http://${sc.servlet.cont.host}:${sc.servlet.cont.port}/showcase" dest="${sc.build.dir}/tomcat/check.html" maxtime="20" retries="3"/>
 	</target>
 
 	<target name="test" depends="build" description="Unit and component tests run">
