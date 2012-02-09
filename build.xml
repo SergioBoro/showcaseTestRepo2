@@ -89,7 +89,7 @@
 			   <property name="sc.last.rev" value="${os.SVN_REVISION}"/>
 			 </then>
 			 <else>
-				<svn refid="svn.settings">
+				<svn refid="svn.settings">					
 					<singleinfo target="." property="sc.last.rev" request="lastRevision" />
 				</svn>
 			 </else>			
