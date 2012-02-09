@@ -94,7 +94,7 @@
 				</svn>
 			 </else>			
 		</if>
-		<echo>Последняя версия кода в хранилище ${sc.last.rev}</echo>
+		<echo>Последняя версия кода в репозитории ${sc.last.rev}</echo>
 	</target>	
 	
 	<target name="write.app.version" depends="info.svn" description="Write current app version to file">
