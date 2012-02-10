@@ -376,7 +376,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 				}
 			}
 
-			destroy();
+			// destroy();
 
 		}
 	}
