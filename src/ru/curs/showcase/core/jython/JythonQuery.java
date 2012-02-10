@@ -1,12 +1,14 @@
 package ru.curs.showcase.core.jython;
 
-import java.io.File;
+import java.io.*;
 import java.util.regex.*;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
+import org.slf4j.*;
 
+import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.runtime.JythonIterpretatorFactory;
 import ru.curs.showcase.util.TextUtils;
@@ -22,6 +24,7 @@ import ru.curs.showcase.util.exception.*;
  *            - тип результата.
  */
 public abstract class JythonQuery<T> {
+	public static final String JYTHON_MARKER = "jython";
 	private static final String JYTHON_ERROR =
 		"При вызове Jython процедуры '%s' произошла ошибка: %s";
 	protected static final String RESULT_FORMAT_ERROR =
@@ -32,6 +35,8 @@ public abstract class JythonQuery<T> {
 
 	private T result;
 	private final Class<T> resultType;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(AppInitializer.class);
 
 	protected JythonQuery(final Class<T> aResultType) {
 		super();
@@ -69,6 +74,30 @@ public abstract class JythonQuery<T> {
 						"from org.python.core import codecs; codecs.setDefaultEncoding('utf-8'); from %s import %s",
 						parent, className);
 			try {
+
+				interpreter.setOut(new Writer() {
+
+					@Override
+					public void write(final char[] data, final int offset, final int count)
+							throws IOException {
+						String value = String.valueOf(data, offset, count);
+						if (!value.trim().isEmpty()) {
+							Marker marker = MarkerFactory.getDetachedMarker(JYTHON_MARKER);
+							LOGGER.info(marker, value);
+						}
+					}
+
+					@Override
+					public void flush() throws IOException {
+						// ничего не делаем
+					}
+
+					@Override
+					public void close() throws IOException {
+						// ничего не делаем
+					}
+				});
+				LOGGER.info("Инициализировал");
 				interpreter.exec(cmd);
 
 				PyObject pyClass = interpreter.get(className);

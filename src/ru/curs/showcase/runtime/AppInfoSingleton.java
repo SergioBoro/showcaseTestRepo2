@@ -37,7 +37,7 @@ public final class AppInfoSingleton {
 	/**
 	 * Синглетон.
 	 */
-	private static final AppInfoSingleton SINGLETON = new AppInfoSingleton();
+	private static AppInfoSingleton instance;
 
 	/**
 	 * Карта пользовательских сессий.
@@ -61,7 +61,7 @@ public final class AppInfoSingleton {
 
 	private String userdataRoot;
 
-	private final CacheManager cacheManager = CacheManager.create();
+	private final CacheManager cacheManager = new CacheManager();
 
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
 		return lastLogEvents;
@@ -117,7 +117,10 @@ public final class AppInfoSingleton {
 	}
 
 	public static AppInfoSingleton getAppInfo() {
-		return SINGLETON;
+		if (instance == null) {
+			instance = new AppInfoSingleton();
+		}
+		return instance;
 	}
 
 	/**

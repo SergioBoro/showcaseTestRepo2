@@ -42,7 +42,7 @@
 		</classpath>
 	</taskdef>-->	
 	
-	<svnSetting javahl="false" svnkit="false" id="svn.settings" certreject="false" />
+	<svnSetting javahl="false" svnkit="true" id="svn.settings" certreject="false" />
 
 	<path id="master-classpath" description="Master CLASSPATH for this script">
 		<fileset dir="${sc.lib.dir}">
@@ -82,22 +82,23 @@
 		<pathelement path="${sc.gwt.dir}/gwt-user.jar" />
 	</path>	
 
-	<target name="info.svn" description="Read svn revision">
+	<target name="svn.info" description="Read svn revision">
 		<if>
 			<isset property="os.SVN_REVISION"/>
 			 <then>
 			   <property name="sc.last.rev" value="${os.SVN_REVISION}"/>
 			 </then>
-			 <else>
-				<svn refid="svn.settings">					
-					<singleinfo target="." property="sc.last.rev" request="lastRevision" />
+			 <else>			 	
+				<svn refid="svn.settings">
+					<wcVersion path= "." prefix="svn." />
 				</svn>
+			 	<property name="sc.last.rev" value="${svn.revision.max}"/>
 			 </else>			
 		</if>
 		<echo>Последняя версия кода в репозитории ${sc.last.rev}</echo>
 	</target>	
 	
-	<target name="write.app.version" depends="info.svn" description="Write current app version to file">
+	<target name="write.app.version" depends="svn.info" description="Write current app version to file">
 		<loadfile property="sc.version" srcFile="${sc.src.dir}/version" />
 		<echo>Версия Showcase ${sc.version}.${sc.last.rev}</echo>
 		<var name="sc.war.file" unset="true" />

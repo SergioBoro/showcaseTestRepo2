@@ -15,7 +15,7 @@ import ru.curs.showcase.util.exception.ServerLogicError;
  */
 public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterpreter> {
 	private static final String PYTHON_SCRIPTS_DIR_NOT_FOUND =
-		"Каталог с python скриптами не найден";
+		"Каталог со стандартными python скриптами '%s' не найден";
 	public static final String LIB_JYTHON_PATH = "/WEB-INF/libJython";
 	public static final String SCRIPTS_JYTHON_PATH = "scripts\\\\jython";
 
@@ -45,7 +45,8 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 		File jythonLibPath =
 			new File(AppInfoSingleton.getAppInfo().getWebAppPath() + LIB_JYTHON_PATH);
 		if (!jythonLibPath.exists()) {
-			throw new ServerLogicError(PYTHON_SCRIPTS_DIR_NOT_FOUND);
+			throw new ServerLogicError(
+					String.format(PYTHON_SCRIPTS_DIR_NOT_FOUND, LIB_JYTHON_PATH));
 		}
 		state.path.append(new PyString(jythonLibPath.getAbsolutePath()));
 

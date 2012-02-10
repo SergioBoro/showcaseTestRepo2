@@ -104,5 +104,4 @@ public class GridServerState implements SerializableElement {
 	public void setDefaultAction(final Action aDefaultAction) {
 		defaultAction = aDefaultAction;
 	}
-
 }

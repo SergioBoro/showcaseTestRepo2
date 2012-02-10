@@ -18,11 +18,14 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.core.chart.ChartGetCommand;
 import ru.curs.showcase.core.command.ServerStateGetCommand;
+import ru.curs.showcase.core.event.ExecServerActivityCommand;
 import ru.curs.showcase.core.html.xform.*;
+import ru.curs.showcase.core.jython.JythonQuery;
 import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
+import ch.qos.logback.classic.Level;
 
 /**
  * Тесты на получение информации о сессии пользователя.
@@ -362,5 +365,34 @@ public class RuntimeTest extends AbstractTest {
 		assertEquals(key, list.get(0));
 		assertEquals(value, CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE)
 				.get(key).getValue());
+	}
+
+	@Test
+	public void testJythonMessages() {
+		Action action = new Action();
+		Activity activity = Activity.newServerActivity("id", "TestWriteToLog.py");
+		CompositeContext context =
+			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+		context.setMain(MAIN_CONDITION);
+		activity.setContext(context);
+		action.setContext(context);
+		action.getServerActivities().add(activity);
+		ExecServerActivityCommand command = new ExecServerActivityCommand(action);
+		command.execute();
+		int jythonEvents = 0;
+		String expected1 = MAIN_CONDITION + " из jython";
+		String expected2 = "из jython 2";
+		for (LoggingEventDecorator event : AppInfoSingleton.getAppInfo().getLastLogEvents()) {
+			if (JythonQuery.JYTHON_MARKER.equals(event.getProcess())) {
+				if (expected1.equals(event.getMessage()) || expected2.equals(event.getMessage())) {
+					assertEquals(Level.INFO, event.getLevel());
+					assertEquals(ExchangeConstants.DEFAULT_USERDATA, event.getUserdata());
+					assertEquals(ExecServerActivityCommand.class.getSimpleName(),
+							event.getCommandName());
+					jythonEvents++;
+				}
+			}
+		}
+		assertEquals(jythonEvents, 2);
 	}
 }

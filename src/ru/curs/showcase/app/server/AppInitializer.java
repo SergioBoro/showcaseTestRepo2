@@ -27,8 +27,7 @@ public final class AppInitializer {
 	private static final String USER_DATA_INFO =
 		"Добавлен userdata на основе rootpath из '%s' с идентификатором '%s' и путем '%s'";
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AppAndSessionEventsListener.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AppInitializer.class);
 
 	public static void readDefaultUserDatas() {
 		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {

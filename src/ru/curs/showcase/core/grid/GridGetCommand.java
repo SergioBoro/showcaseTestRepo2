@@ -33,15 +33,20 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 		return (GridContext) super.getContext();
 	}
 
+	/**
+	 * Явное сохранение состояния в конце нужно на случай удаления состояния по
+	 * таймауту к этому моменту. Например, в случае долгого выполнения функции
+	 * или не правильных настроек кэша.
+	 * 
+	 * @see ru.curs.showcase.core.command.ServiceLayerCommand#mainProc()
+	 **/
 	@Override
 	protected void mainProc() throws Exception {
 		GridDBGateway gateway = new GridDBGateway();
 		GridDBFactory factory = null;
 		RecordSetElementRawData raw = null;
 		ElementSettingsDBGateway sgateway = null;
-		GridServerState state = null;
-
-		state = getGridState(getContext(), getElementInfo());
+		GridServerState state = getGridState(getContext(), getElementInfo());
 
 		if (getElementInfo().loadByOneProc()) {
 			raw = gateway.getRawDataAndSettings(getContext(), getElementInfo());
@@ -64,6 +69,8 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 			factory.setApplyLocalFormatting(applyLocalFormatting);
 			setResult(factory.buildStepTwo());
 		}
+		AppInfoSingleton.getAppInfo().storeElementState(getSessionId(), getElementInfo(),
+				getContext(), state);
 	}
 
 	private GridServerState getGridState(final GridContext context,

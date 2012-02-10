@@ -2,7 +2,7 @@ package ru.curs.showcase.test.util;
 
 import static org.junit.Assert.*;
 
-import java.io.InputStream;
+import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -17,7 +17,7 @@ import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.chart.*;
-import ru.curs.showcase.core.command.*;
+import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.frame.*;
 import ru.curs.showcase.core.grid.*;
 import ru.curs.showcase.core.html.HTMLGateway;
@@ -516,4 +516,29 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 			assertEquals(elInfo, e.getContext().getElementInfo());
 		}
 	}
+
+	@Test
+	public void testJythonLibDirError() {
+		File jythonLibPath =
+			new File(AppInfoSingleton.getAppInfo().getWebAppPath()
+					+ JythonIterpretatorFactory.LIB_JYTHON_PATH);
+		File tmp =
+			new File(AppInfoSingleton.getAppInfo().getWebAppPath()
+					+ JythonIterpretatorFactory.LIB_JYTHON_PATH + "_");
+		jythonLibPath.renameTo(tmp);
+		try {
+			try {
+				JythonIterpretatorFactory.getInstance().acquire();
+				fail();
+			} catch (ServerLogicError e) {
+				assertEquals(
+						"Каталог со стандартными python скриптами '/WEB-INF/libJython' не найден",
+						e.getMessage());
+			}
+		} finally {
+			tmp.renameTo(jythonLibPath);
+		}
+
+	}
+
 }

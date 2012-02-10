@@ -45,7 +45,7 @@ public final class JMXBeanRegistrator {
 
 	private static void registerEncacheMBean() {
 		CacheManager manager = AppInfoSingleton.getAppInfo().getCacheManager();
-		ManagementService.registerMBeans(manager, getMBeanServer(), false, false, false, true);
+		ManagementService.registerMBeans(manager, getMBeanServer(), true, false, false, true);
 	}
 
 	private static void registerShowcaseMBean() {

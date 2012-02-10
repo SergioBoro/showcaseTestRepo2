@@ -1,32 +1,21 @@
 ﻿
- <table style="margin-top: -1%;  margin-left: 2%; width: 95%">
+ <table style="margin-top: -1%;  margin-left: 2%; padding:0%; width: 95%">
    <tr>
-     <td style="width: 25%">
+     <td>
       <a href="" class="linkStyle" >На главную</a>
      </td>
-     <td style="width: 25%">
-      <a href="log/lastLogEvents.jsp" class="linkStyle" target="_blank">Открыть веб-консоль</a>
-<!--       <a href="gantt/dojoGantt.html" target="_blank">Гант1</a> -->
-<!--       <a href="gantt/dhtmlxGantt.html" target="_blank">Гант2</a> -->
-<!--       <a href="gantt/ejsGantt/Gantt.html" target="_blank">Гант3</a> -->
-<!--       <a href="gantt/extGantt/advanced.html" target="_blank">Гант4</a>       -->
-<!--       <a href="gantt/timeline/local_example.html" target="_blank">Timeline</a> -->
+     <td >
+      <a href="log/lastLogEvents.jsp" class="linkStyle" target="_blank">Веб-консоль</a>&nbsp;&nbsp;
+      <a href="control/memory.jsp" class="linkStyle" target="_blank">Контроль памяти</a>
      </td>
-     <td style="width: 20%">
-      <a href="control/memory.jsp" class="linkStyle" target="_blank">Открыть контроль памяти</a>
-<!--       <a href="gantt2/project5.html" target="_blank">Проект 5</a> -->
-<!--       <a href="gantt2/timeline/event15.html" target="_blank">Мероприятие 1.5</a> -->
-<!--       <a href="gantt2/project52/Gantt.html" target="_blank">Проект 52</a> -->
+     <td>
+      <a onclick="showAboutFeedbackJSNIFunction()" class="linkStyle" >О программе</a><br/> 
      </td>
-     <td style="width: 15%">
-      <a onclick="showAboutFeedbackJSNIFunction()" class="linkStyle" > О программе...</a><br/> 
+     <td>
+     <table><tr><td>Текущий пользователь:</td><td><div id="CURRENT_USER_CONTROL_FULLNAME_HEADER"></div></td></tr></table>
      </td>
-     <td style="width: 30%">
-      <table><tr><td>Текущий пользователь: </td><td id = "CURRENT_USER_CONTROL_FULLNAME_HEADER"/> </tr></table>  
-     </td>     
      <td align="right">
-      <a onclick="showcaseLogout()" class="linkStyle" > Выход</a><br/>      
-     </td>
-     
+      <a onclick="showcaseLogout()" class="linkStyle" >Выход</a>      
+     </td> 
    </tr>
  </table>
