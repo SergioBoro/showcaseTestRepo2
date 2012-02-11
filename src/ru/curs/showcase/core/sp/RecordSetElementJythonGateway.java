@@ -1,6 +1,6 @@
 package ru.curs.showcase.core.sp;
 
-import java.io.*;
+import java.io.InputStream;
 import java.sql.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
@@ -60,12 +60,8 @@ public class RecordSetElementJythonGateway extends JythonQuery<JythonDTO> implem
 			query = getResult().getDataArray();
 		}
 		InputStream settings = null;
-		try {
-			if (getResult().getSettings() != null) {
-				settings = TextUtils.stringToStream(getResult().getSettings());
-			}
-		} catch (IOException e) {
-			throw new JythonException(RESULT_FORMAT_ERROR);
+		if (getResult().getSettings() != null) {
+			settings = TextUtils.stringToStream(getResult().getSettings());
 		}
 		PreparedStatement[] statement = new PreparedStatement[query.length];
 		for (int i = 0; i < query.length; i++) {

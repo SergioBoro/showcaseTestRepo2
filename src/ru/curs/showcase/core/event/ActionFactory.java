@@ -271,12 +271,4 @@ public class ActionFactory extends SAXTagHandler {
 		}
 	}
 
-	public CompositeContext getCallContext() {
-		return callContext;
-	}
-
-	public void setCallContext(final CompositeContext aCallContext) {
-		callContext = aCallContext;
-	}
-
 }

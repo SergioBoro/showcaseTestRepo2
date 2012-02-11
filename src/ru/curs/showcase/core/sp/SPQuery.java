@@ -403,7 +403,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 				logOutputXMLString(value);
 				return convertor.getCopy();
 			} catch (IOException e) {
-				throw new MemoryResourcesError(e);
+				throw new ServerObjectCreateCloseException(e);
 			}
 		}
 		return is;
@@ -418,7 +418,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 				logOutputXMLString(value);
 				return convertor.getCopy();
 			} catch (IOException e) {
-				throw new MemoryResourcesError(e);
+				throw new ServerObjectCreateCloseException(e);
 			}
 		}
 		return is;
@@ -448,7 +448,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 		try {
 			dup = new StreamConvertor(is);
 		} catch (IOException e) {
-			throw new MemoryResourcesError(e);
+			throw new ServerObjectCreateCloseException(e);
 		}
 		ByteArrayOutputStream os = dup.getOutputStream();
 		OutputStreamDataFile result = new OutputStreamDataFile(os, fileName);

@@ -154,7 +154,7 @@ public final class ReflectionUtils {
 			oos.writeObject(object);
 			oos.close();
 		} catch (IOException e) {
-			throw new MemoryResourcesError(e);
+			throw new ServerObjectCreateCloseException(e);
 		}
 		return baos.size();
 	}

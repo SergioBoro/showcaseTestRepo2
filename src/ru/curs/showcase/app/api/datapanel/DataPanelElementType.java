@@ -10,10 +10,6 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  */
 public enum DataPanelElementType implements SerializableElement {
 	/**
-	 * Не элемент панели.
-	 */
-	NON_DP_ELEMENT,
-	/**
 	 * Грид.
 	 */
 	GRID,

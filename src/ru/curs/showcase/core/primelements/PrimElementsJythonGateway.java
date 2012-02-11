@@ -5,7 +5,7 @@ import java.io.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.jython.*;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.exception.MemoryResourcesError;
+import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
 
 /**
  * Jython шлюз для основных элементов - навигатора и инф. панели.
@@ -13,8 +13,7 @@ import ru.curs.showcase.util.exception.MemoryResourcesError;
  * @author den
  * 
  */
-public class PrimElementsJythonGateway extends JythonQuery<String> implements
-		PrimElementsGateway {
+public class PrimElementsJythonGateway extends JythonQuery<String> implements PrimElementsGateway {
 
 	private static final String JYTHON_PROC_NODATA_ERROR = "Jython процедура не вернула данные";
 	private String sourceName;
@@ -25,11 +24,7 @@ public class PrimElementsJythonGateway extends JythonQuery<String> implements
 	public DataFile<InputStream> getRawData(final CompositeContext aContext) {
 		context = aContext;
 		runTemplateMethod();
-		try {
-			stream = TextUtils.stringToStream(getResult());
-		} catch (UnsupportedEncodingException e) {
-			throw new JythonException(RESULT_FORMAT_ERROR);
-		}
+		stream = TextUtils.stringToStream(getResult());
 		if (stream == null) {
 			throw new JythonException(JYTHON_PROC_NODATA_ERROR);
 		}
@@ -50,7 +45,7 @@ public class PrimElementsJythonGateway extends JythonQuery<String> implements
 				stream.close();
 			}
 		} catch (IOException e) {
-			throw new MemoryResourcesError(e);
+			throw new ServerObjectCreateCloseException(e);
 		}
 	}
 

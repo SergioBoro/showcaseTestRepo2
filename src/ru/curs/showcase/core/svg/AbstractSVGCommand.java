@@ -49,7 +49,9 @@ public abstract class AbstractSVGCommand extends ServiceLayerCommand<OutputStrea
 	}
 
 	private String checkSVGEncoding(final String aSvg) {
-		if (aSvg.startsWith(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8)) {
+		String preambula =
+			aSvg.substring(0, XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.length() * 2).toLowerCase();
+		if (preambula.contains(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8)) {
 			return aSvg;
 		} else {
 			return XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8 + "\n" + aSvg;

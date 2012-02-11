@@ -28,7 +28,7 @@ public abstract class HTMLBasedElementFactory extends TemplateMethodFactory {
 
 		EventFactory<HTMLEvent> factory =
 			new EventFactory<HTMLEvent>(HTMLEvent.class, getCallContext());
-		factory.intiForGetSimpleEvents(LINK_ID_TAG, null);
+		factory.intiForGetSimpleEvents(LINK_ID_TAG);
 		Collection<HTMLEvent> events = factory.getSimpleEvents(getSource().getSettings());
 		((HTMLEventManager) getResult().getEventManager()).getEvents().addAll(events);
 

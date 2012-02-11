@@ -1,13 +1,13 @@
 package ru.curs.showcase.test.event;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.core.event.ExecServerActivityCommand;
+import ru.curs.showcase.core.event.*;
+import ru.curs.showcase.core.sp.DBQueryException;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.test.AbstractTest;
 
@@ -29,21 +29,42 @@ public class ActionAndContextSLTest extends AbstractTest {
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		ExecServerActivityCommand command = new ExecServerActivityCommand(action);
 		command.execute();
+
 		assertNotNull(action.getServerActivities().get(0).getContext().getSession());
+	}
+
+	/**
+	 * Имитируем вызов команды ExecServerActivityCommand из другой команды -
+	 * проверка правильной инициализации контекста сессии и userdata.
+	 */
+	@Test
+	public void testServerActivityExecTwice() {
+		final int actionNumber = 1;
+		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
+		ExecServerActivityCommand command = new ExecServerActivityCommand(action);
+		command.execute();
+		String sessionContext = action.getContext().getSession();
+
+		command = new ExecServerActivityCommand(action);
+		command.execute();
+
+		assertEquals(sessionContext, action.getContext().getSession());
 	}
 
 	/**
 	 * Проверка выполнения действия на сервере, приводящего к ошибке.
 	 * 
 	 */
-	@Test(expected = GeneralException.class)
+	@Test(expected = DBQueryException.class)
 	public void testServerActivityExecFail() {
 		final int actionNumber = 2;
 		AppInfoSingleton.getAppInfo().setCurUserDataId("test1");
 		Action action = getAction(TREE_MULTILEVEL_V2_XML, 0, actionNumber);
 		action.getContext().setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
-		ExecServerActivityCommand command = new ExecServerActivityCommand(action);
-		command.execute();
+		Activity act = action.getServerActivities().get(0);
+		ServerActivitySelector selector = new ServerActivitySelector(act);
+		ActivityGateway gateway = selector.getGateway();
+		gateway.exec(act);
 	}
 
 	@Test

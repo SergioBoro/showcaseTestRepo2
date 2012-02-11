@@ -18,9 +18,10 @@ import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.chart.*;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
+import ru.curs.showcase.core.event.ServerActivitySelector;
 import ru.curs.showcase.core.frame.*;
 import ru.curs.showcase.core.grid.*;
-import ru.curs.showcase.core.html.HTMLGateway;
+import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.core.html.webtext.*;
 import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.core.primelements.*;
@@ -34,7 +35,9 @@ import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
- * Тесты для серверных исключений.
+ * Тесты для серверных исключений. Как правило сюда включены тесты, не
+ * относящиеся к конкретному компоненту: навигатору, инф. панели или ее
+ * элементу.
  * 
  * @author den
  * 
@@ -538,7 +541,30 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		} finally {
 			tmp.renameTo(jythonLibPath);
 		}
+	}
 
+	@Test(expected = IncorrectElementException.class)
+	public void testIncorrectElementException() throws Exception {
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo element =
+			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		final String webtextFile = "wrong2.xml";
+		element.setProcName(webtextFile);
+
+		HTMLGateway wtgateway = new HTMLFileGateway();
+		HTMLBasedElementRawData rawWT = wtgateway.getRawData(context, element);
+		WebTextFactory factory = new WebTextFactory(rawWT);
+		factory.build();
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void testErrorForXMLServerActivity() {
+		Activity activity = Activity.newServerActivity("id", "Test.xml");
+		CompositeContext context =
+			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+		activity.setContext(context);
+		ServerActivitySelector selector = new ServerActivitySelector(activity);
+		selector.getGateway();
 	}
 
 }

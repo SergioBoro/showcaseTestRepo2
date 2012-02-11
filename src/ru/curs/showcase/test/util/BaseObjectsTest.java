@@ -61,7 +61,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 			throws UnsupportedEncodingException {
 		String data;
 		data = outStream.toString(TextUtils.DEF_ENCODING);
-		assertTrue(data.startsWith(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8));
+		assertTrue(data.toLowerCase().startsWith(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8));
 		assertTrue(data.endsWith("</" + GeneralXMLHelper.DP_TAG + ">"));
 	}
 

@@ -32,7 +32,7 @@ public final class XMLUtils {
 	}
 
 	public static final String XML_VERSION_1_0_ENCODING_UTF_8 =
-		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+		"<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 
 	public static final String XSL_MARKER = "XSL";
 
@@ -138,7 +138,7 @@ public final class XMLUtils {
 		try {
 			builder = factory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			throw new MemoryResourcesError(e);
+			throw new ServerObjectCreateCloseException(e);
 		}
 		return builder;
 	}
@@ -157,7 +157,7 @@ public final class XMLUtils {
 			factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
 			parser = factory.newSAXParser();
 		} catch (SAXException | ParserConfigurationException e) {
-			throw new MemoryResourcesError(e);
+			throw new ServerObjectCreateCloseException(e);
 		}
 		return parser;
 	}
@@ -333,7 +333,7 @@ public final class XMLUtils {
 			try {
 				convertor = new StreamConvertor((InputStream) source);
 			} catch (IOException e) {
-				throw new MemoryResourcesError(e);
+				throw new ServerObjectCreateCloseException(e);
 			}
 			value = streamToString(convertor.getCopy());
 			sourceCopy = convertor.getCopy();
@@ -358,6 +358,12 @@ public final class XMLUtils {
 		LOGGER.info(marker, result);
 	}
 
+	/**
+	 * В отличие от аналогичной функции в TextUtils для преобразования
+	 * использует стандартную XSTL трансформацию. Отсюда как минимум 2
+	 * следствия: 1) на вход должен подаваться XML файл. 2) из файла будет
+	 * убрана преамбула при ее наличии.
+	 */
 	public static String streamToString(final InputStream is) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -450,7 +456,7 @@ public final class XMLUtils {
 			schemaFactory.setFeature(GENERATE_SYNTHETIC_ANNOTATIONS_ID,
 					generateSyntheticAnnotations);
 		} catch (SAXNotRecognizedException | SAXNotSupportedException e) {
-			throw new MemoryResourcesError(e);
+			throw new ServerObjectCreateCloseException(e);
 		}
 		return schemaFactory;
 	}
@@ -525,7 +531,7 @@ public final class XMLUtils {
 		try {
 			duplicator = new StreamConvertor(stream);
 		} catch (IOException e) {
-			throw new MemoryResourcesError(e);
+			throw new ServerObjectCreateCloseException(e);
 		}
 		InputStream stream1 = duplicator.getCopy();
 		InputStream stream2 = duplicator.getCopy();
@@ -595,7 +601,7 @@ public final class XMLUtils {
 		try {
 			duplicator = new StreamConvertor(file.getData());
 		} catch (IOException e) {
-			throw new MemoryResourcesError(e);
+			throw new ServerObjectCreateCloseException(e);
 		}
 		InputStream stream1 = duplicator.getCopy();
 		file.setData(duplicator.getCopy());

@@ -6,6 +6,7 @@ import java.io.*;
 
 import org.junit.Test;
 
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
@@ -186,6 +187,25 @@ public class GeoMapSLTest extends AbstractTest {
 		} catch (GeneralException e) {
 			assertEquals(IncorrectElementException.class, e.getCause().getClass());
 		}
+	}
+
+	/**
+	 * В данной функции тестируется простейший случай - когда приходит 100%
+	 * правильный svg и его нужно только лишь передать обратно.
+	 */
+	@Test
+	public void testSimpleSVGGet() throws IOException {
+		String inputFile = RU_CURS_SHOWCASE_TEST + GEOMAP_WITH_HEADER_SVG;
+		InputStream is = FileUtils.loadResToStream(inputFile);
+		String svg = TextUtils.streamToString(is);
+		CompositeContext context =
+			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+
+		SVGGetCommand scommand = new SVGGetCommand(context, new GeoMapExportSettings(), svg);
+		OutputStreamDataFile result = scommand.execute();
+
+		assertTrue(result.getTextData().startsWith(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8));
+		assertEquals(svg.length(), result.getTextData().length());
 	}
 
 }

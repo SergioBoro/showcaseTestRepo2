@@ -2,16 +2,21 @@ package ru.curs.showcase.test.event;
 
 import static org.junit.Assert.*;
 
+import java.io.*;
 import java.util.*;
 
 import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.Record;
 import ru.curs.gwt.datagrid.selection.*;
-import ru.curs.showcase.app.api.ID;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.html.HTMLEvent;
+import ru.curs.showcase.core.event.EventFactory;
+import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
+import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 
@@ -198,6 +203,35 @@ public class EventsTest extends AbstractTestWithDefaultUserData {
 		event.setId2(COL3);
 		mgr.getEvents().add(event);
 		return mgr;
+	}
+
+	@Test
+	public void testEventCreation() throws IOException {
+		CompositeContext context = new CompositeContext();
+		context.setMain(MAIN_CONDITION);
+		EventFactory<HTMLEvent> factory = new EventFactory<HTMLEvent>(HTMLEvent.class, context);
+		factory.intiForGetSimpleEvents(LINK_ID_TAG);
+		InputStream stream =
+			AppProps.loadUserDataToStream("data/webtext/3buttons_enh.settings.xml");
+		Collection<HTMLEvent> events = factory.getSimpleEvents(stream);
+
+		final int eventsCount = 3;
+		assertEquals(eventsCount, events.size());
+		assertEquals(CanBeCurrent.CURRENT_ID, events.iterator().next().getAction().getContext()
+				.getMain());
+		assertNull(events.iterator().next().getAction().getContext().getAdditional());
+		assertNull(events.iterator().next().getAction().getContext().getSession());
+	}
+
+	@Test(expected = ServerObjectCreateCloseException.class)
+	public void testEventCreationException() throws IOException {
+		CompositeContext context = new CompositeContext();
+		context.setMain(MAIN_CONDITION);
+		EventFactory<WrongEvent> factory = new EventFactory<WrongEvent>(WrongEvent.class, context);
+		factory.intiForGetSimpleEvents(LINK_ID_TAG);
+		InputStream stream =
+			AppProps.loadUserDataToStream("data/webtext/3buttons_enh.settings.xml");
+		factory.getSimpleEvents(stream);
 	}
 
 }

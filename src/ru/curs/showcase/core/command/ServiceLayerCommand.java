@@ -188,6 +188,11 @@ public abstract class ServiceLayerCommand<T> {
 
 	protected abstract void mainProc() throws Exception;
 
+	/**
+	 * Инициализация userdata и формирование строки с контекстом сессии для
+	 * текущего мультиконтекста. Не выполняется если строка контекста сессии уже
+	 * сформирована - что означает выполнение одной команды из другой.
+	 */
 	protected void initSessionContext() throws UnsupportedEncodingException {
 		if (getContext().getSession() != null) {
 			return;

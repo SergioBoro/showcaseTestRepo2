@@ -9,7 +9,7 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
  * Абстрактная фабрика с шаблонным методом построения сложных объектов -
@@ -126,8 +126,7 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 		getResult().actualizeActions(getCallContext());
 		Action wrong = getResult().checkActions();
 		if (wrong != null) {
-			throw new IncorrectElementException(CHECK_ACTION_ERROR
-					+ XMLUtils.documentToString(XMLUtils.objectToXML(wrong)));
+			throw new IncorrectElementException(CHECK_ACTION_ERROR, wrong);
 		}
 		correctSettingsAndData();
 	}

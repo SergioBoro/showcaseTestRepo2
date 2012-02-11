@@ -114,7 +114,7 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	 * 
 	 */
 	public final NavigatorActionType getNavigatorActionType() {
-		if (navigatorElementLink == null) {
+		if ((navigatorElementLink == null) || (navigatorElementLink.getId() == null)) {
 			return NavigatorActionType.DO_NOTHING;
 		}
 		if (dataPanelLink == null) {
@@ -510,6 +510,11 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 				|| containsClientActivity();
 	}
 
+	private boolean canHaveGeneralContext() {
+		return needGeneralContext()
+				|| ((getNavigatorActionType() != NavigatorActionType.DO_NOTHING));
+	}
+
 	public List<Activity> getClientActivities() {
 		return clientActivities;
 	}
@@ -520,7 +525,7 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 
 	@Override
 	public boolean isCorrect() {
-		return !needGeneralContext() || (context != null);
+		return canHaveGeneralContext() || (context == null);
 	}
 
 	public void setMainContext(final String data) {

@@ -107,6 +107,10 @@ public abstract class DataPanelElement implements SerializableElement {
 		}
 	}
 
+	/**
+	 * Проверяет действия на корректность вызовом функции самопроверки.
+	 * Возвращает первое некорректное действие.
+	 */
 	public Action checkActions() {
 		for (Event event : eventManager.getEvents()) {
 			Action action = event.getAction();

@@ -1,10 +1,10 @@
 package ru.curs.showcase.core.html;
 
-import java.io.*;
+import java.io.InputStream;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.core.jython.*;
+import ru.curs.showcase.core.jython.JythonQuery;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.SettingsFileType;
 
@@ -29,12 +29,7 @@ public class ElementPartsJythonGateway extends JythonQuery<String> implements El
 		context = aContext;
 		elementInfo = aElementInfo;
 		runTemplateMethod();
-		InputStream data = null;
-		try {
-			data = TextUtils.stringToStream(getResult());
-		} catch (IOException e) {
-			throw new JythonException(RESULT_FORMAT_ERROR);
-		}
+		InputStream data = TextUtils.stringToStream(getResult());
 		return new DataFile<InputStream>(data, sourceName);
 	}
 

@@ -5,6 +5,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.regex.*;
 
+import ru.curs.showcase.util.exception.UTF8Exception;
+
 /**
  * Класс, содержащий общие функции для работы с текстом.
  * 
@@ -63,8 +65,12 @@ public final class TextUtils {
 	 * @return - InputStream.
 	 * @throws UnsupportedEncodingException
 	 */
-	public static InputStream stringToStream(final String str) throws UnsupportedEncodingException {
-		return new ByteArrayInputStream(str.getBytes(DEF_ENCODING));
+	public static InputStream stringToStream(final String str) {
+		try {
+			return new ByteArrayInputStream(str.getBytes(DEF_ENCODING));
+		} catch (UnsupportedEncodingException e) {
+			throw new UTF8Exception();
+		}
 
 	}
 

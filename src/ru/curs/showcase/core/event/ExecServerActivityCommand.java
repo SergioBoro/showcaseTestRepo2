@@ -5,7 +5,7 @@ import java.util.*;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.core.command.*;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**
@@ -30,13 +30,14 @@ public final class ExecServerActivityCommand extends ServiceLayerCommand<Void> {
 		action = aAction;
 	}
 
+	/**
+	 * Контекст действия в случае server activity должен быть задан.
+	 * 
+	 * @see ru.curs.showcase.core.command.ServiceLayerCommand#initSessionContext()
+	 **/
 	@Override
 	protected void initSessionContext() throws UnsupportedEncodingException {
-		if (action.getContext() == null) {
-			return;
-		}
 		CompositeContext context = action.getContext();
-
 		if (context.getSession() != null) {
 			return;
 		}

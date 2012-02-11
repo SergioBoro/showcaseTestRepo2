@@ -1,6 +1,6 @@
 package ru.curs.showcase.core.event;
 
-import java.io.*;
+import java.io.InputStream;
 import java.util.*;
 
 import org.xml.sax.Attributes;
@@ -8,9 +8,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.core.sp.ResultSetHandleException;
 import ru.curs.showcase.util.TextUtils;
-import ru.curs.showcase.util.exception.MemoryResourcesError;
+import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -99,11 +98,11 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 	 * @param aSchemaSource
 	 *            - имя схемы.
 	 */
-	public void intiForGetSimpleEvents(final String aId1Tag, final String aSchemaSource) {
+	public void intiForGetSimpleEvents(final String aId1Tag) {
 		id1Tag = aId1Tag;
 		id2Tag = "faketag";
 		id2Prefix = "fakeprefix";
-		schemaName = aSchemaSource;
+		schemaName = null;
 	}
 
 	/**
@@ -162,7 +161,7 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 				try {
 					event = eventClass.newInstance();
 				} catch (InstantiationException | IllegalAccessException e) {
-					throw new MemoryResourcesError(e);
+					throw new ServerObjectCreateCloseException(e);
 				}
 				if (id1Tag == null) {
 					event.setId1(generalId);
@@ -221,16 +220,8 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 	 */
 	public Collection<E> getSubSetOfEvents(final ID aGeneralId, final String data) {
 		generalId = aGeneralId;
-
-		InputStream xml;
-		try {
-			xml = new ByteArrayInputStream(data.getBytes(TextUtils.DEF_ENCODING));
-		} catch (UnsupportedEncodingException e) {
-			throw new ResultSetHandleException(e);
-		}
-
+		InputStream xml = TextUtils.stringToStream(data);
 		xml = XMLUtils.xsdValidateAppDataSafe(xml, schemaName);
-
 		stdParseProc(xml);
 		return result;
 	}
@@ -242,18 +233,15 @@ public class EventFactory<E extends Event> extends GeneralXMLHelper {
 
 	/**
 	 * Основная функция фабрики - получение коллекции "простых" событий из
-	 * потока.
+	 * потока. Проверка схемы при этом не производится: если settings и
+	 * properties объединены - это не нужно.
 	 * 
 	 * @param stream
 	 *            - поток с XML данными.
 	 * @return - коллекция событий.
 	 */
 	public Collection<E> getSimpleEvents(final InputStream stream) {
-		InputStream data = stream;
-		if (schemaName != null) {
-			data = XMLUtils.xsdValidateAppDataSafe(data, schemaName);
-		}
-		stdParseProc(data);
+		stdParseProc(stream);
 		return result;
 	}
 

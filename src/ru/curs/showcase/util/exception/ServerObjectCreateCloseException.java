@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.ExceptionType;
  * @author den
  * 
  */
-public class MemoryResourcesError extends BaseException {
+public class ServerObjectCreateCloseException extends BaseException {
 	/**
 	 * Сообщение об ошибке.
 	 */
@@ -19,7 +19,7 @@ public class MemoryResourcesError extends BaseException {
 
 	private static final long serialVersionUID = -7749067251383439818L;
 
-	public MemoryResourcesError(final Throwable cause) {
+	public ServerObjectCreateCloseException(final Throwable cause) {
 		super(ExceptionType.APP, ERROR_MES, cause);
 	}
 

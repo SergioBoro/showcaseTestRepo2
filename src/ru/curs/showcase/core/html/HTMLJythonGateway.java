@@ -36,11 +36,11 @@ public class HTMLJythonGateway extends JythonQuery<JythonDTO> implements HTMLGat
 		InputStream settings = null;
 		try {
 			data = XMLUtils.stringToDocument(getResult().getData());
-			if (getResult().getSettings() != null) {
-				settings = TextUtils.stringToStream(getResult().getSettings());
-			}
 		} catch (SAXException | IOException e) {
 			throw new JythonException(RESULT_FORMAT_ERROR);
+		}
+		if (getResult().getSettings() != null) {
+			settings = TextUtils.stringToStream(getResult().getSettings());
 		}
 		HTMLBasedElementRawData rawData =
 			new HTMLBasedElementRawData(data, settings, elementInfo, context);

@@ -1,7 +1,9 @@
 package ru.curs.showcase.core;
 
 import ru.curs.showcase.app.api.ExceptionType;
+import ru.curs.showcase.util.ObjectSerializer;
 import ru.curs.showcase.util.exception.BaseException;
+import ru.curs.showcase.util.xml.XMLObjectSerializer;
 
 /**
  * Исключение, вызванное тем, что на сервер из клиентской части или из слоя
@@ -16,6 +18,15 @@ public class IncorrectElementException extends BaseException {
 
 	public IncorrectElementException(final String message) {
 		super(ExceptionType.SOLUTION, message);
+	}
+
+	public IncorrectElementException(final String message, final Object obj) {
+		super(ExceptionType.SOLUTION, message + generateMessage(obj));
+	}
+
+	private static Object generateMessage(final Object obj) {
+		ObjectSerializer serializer = new XMLObjectSerializer();
+		return serializer.serialize(obj);
 	}
 
 }

@@ -31,24 +31,15 @@ public final class SVGConvertor {
 	}
 
 	public ByteArrayOutputStream svgStringToJPG(final String svg) {
-		InputStream is;
-		try {
-			is = TextUtils.stringToStream(svg);
-		} catch (UnsupportedEncodingException e) {
-			throw new SVGConvertException(e);
-		}
+		InputStream is = TextUtils.stringToStream(svg);
+
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		output = (ByteArrayOutputStream) svgToJPGBaseMethod(is, output);
 		return output;
 	}
 
 	public ByteArrayOutputStream svgStringToPNG(final String svg) {
-		InputStream is;
-		try {
-			is = TextUtils.stringToStream(svg);
-		} catch (UnsupportedEncodingException e) {
-			throw new SVGConvertException(e);
-		}
+		InputStream is = TextUtils.stringToStream(svg);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		output = (ByteArrayOutputStream) svgToPNGBaseMethod(is, output);
 		return output;

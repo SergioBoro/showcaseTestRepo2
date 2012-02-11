@@ -11,7 +11,7 @@ import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.core.sp.SPQuery;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.exception.MemoryResourcesError;
+import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
 
 /**
  * Шлюз к БД для получения XForms.
@@ -169,7 +169,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 			} catch (SQLException e) {
 				dbExceptionHandler(e);
 			} catch (IOException e2) {
-				throw new MemoryResourcesError(e2);
+				throw new ServerObjectCreateCloseException(e2);
 			}
 		}
 	}

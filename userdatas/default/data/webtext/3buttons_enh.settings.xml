@@ -6,7 +6,7 @@
 			<modalwindow caption="Тестовая карточка - новая запись"
 				width="500" height="150" show_close_bottom_button="true" />
 			<datapanel type="current" tab="current">
-				<element id="card1" skip_refresh_context_only="true">
+				<element id="card1">
 					<add_context>
 						<name></name>
 						<table>geo3</table>

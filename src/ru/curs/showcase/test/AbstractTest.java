@@ -57,6 +57,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	protected static final String RICH_DP = "m1003.xml";
 
 	protected static final String GEOMAP_WOHEADER_SVG = "geomap_woheader.svg";
+	protected static final String GEOMAP_WITH_HEADER_SVG = "geomap.svg";
 	protected static final String RU_CURS_SHOWCASE_TEST = "ru\\curs\\showcase\\test\\";
 
 	protected static final String TAB_2_NAME = "Вкладка 2";

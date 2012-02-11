@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.event.ActionFactory;
 import ru.curs.showcase.runtime.AppProps;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -169,9 +169,7 @@ public final class NavigatorFactory extends SAXTagHandler {
 		if (action != null) {
 			action.determineState();
 			if (!action.isCorrect()) {
-				ObjectSerializer serializer = new XMLObjectSerializer();
-				throw new IncorrectElementException(WRONG_ACTION_IN_NAVIGATOR_ERROR
-						+ serializer.serialize(action));
+				throw new IncorrectElementException(WRONG_ACTION_IN_NAVIGATOR_ERROR, action);
 			}
 		}
 	}

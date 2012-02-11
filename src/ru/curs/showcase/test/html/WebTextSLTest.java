@@ -2,9 +2,14 @@ package ru.curs.showcase.test.html;
 
 import static org.junit.Assert.*;
 
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
@@ -12,8 +17,10 @@ import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
+import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.ReflectionUtils;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Тест для WebTextDBGateway.
@@ -26,7 +33,7 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 	 * Основной тест для проверки работы WebTextDBGateway.
 	 */
 	@Test
-	public void testGetData() {
+	public void testGetDataBySP() {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "1");
 
@@ -37,6 +44,30 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 		assertEquals(0, wt.getEventManager().getEvents().size());
 		assertNull(wt.getDefaultAction());
 		assertNotNull(wt.getData());
+	}
+
+	@Test
+	public void testGetDataByFile() throws IOException, SAXException {
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo element =
+			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		final String webtextFile = "3buttons_enh.xml";
+		element.setProcName(webtextFile);
+
+		WebTextGetCommand command = new WebTextGetCommand(context, element);
+		WebText wt = command.execute();
+
+		Document doc = XMLUtils.stringToDocument(wt.getData());
+		DocumentBuilder db = XMLUtils.createBuilder();
+		InputStream stream = AppProps.loadUserDataToStream("data/webtext/" + webtextFile);
+		Document expected = db.parse(stream);
+
+		assertEquals(expected.getDocumentElement().getNodeName(), doc.getDocumentElement()
+				.getNodeName());
+		assertEquals(expected.getDocumentElement().getChildNodes().getLength(), doc
+				.getDocumentElement().getChildNodes().getLength());
+		assertEquals(expected.getDocumentElement().getChildNodes().item(0).getNodeName(), doc
+				.getDocumentElement().getChildNodes().item(0).getNodeName());
 	}
 
 	/**
