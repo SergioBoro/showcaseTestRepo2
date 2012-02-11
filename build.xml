@@ -294,10 +294,11 @@
 		</copy>
 	</target>
 
-	<target name="deploy.tomcat" depends="init.dirs, build, write.app.version" description="Deploys WAR file with test data to ${sc.deploy.dir}">
+	<target name="deploy.tomcat" depends="init.dirs, build, write.app.version" description="Deploys WAR file to ${sc.servlet.cont.host}:${sc.servlet.cont.port}/showcase">
 		<!--<delete failonerror="true" dir="${sc.deploy.dir}/${appname}" />
 		<copy file="${sc.war.file}.war" todir="${sc.deploy.dir}" />-->
-	  	<copy file="${sc.war.file}.war" tofile="${sc.build.dir}/tomcat/showcase.war"/>
+		<echo>Deploing WAR file to ${sc.servlet.cont.host}:${sc.servlet.cont.port}/showcase</echo>
+	  	<copy file="${sc.war.file}.war" tofile="${sc.build.dir}/tomcat/showcase.war" verbose="true"/>
 		<cargo containerId="tomcat7x" type="remote" output="${sc.build.dir}/tomcat/output.log"
 		    log="${sc.build.dir}/tomcat/cargo.log" action="redeploy">
 		  <configuration type="runtime">
