@@ -20,10 +20,10 @@ public final class HTMLEvent extends Event {
 	/**
 	 * Устанавливает идентификатор серии у события.
 	 * 
-	 * @param seriesId
+	 * @param linkId
 	 *            - идентификатор серии.
 	 */
-	public void setLinkId(final String seriesId) {
-		setId1(seriesId);
+	public void setLinkId(final String linkId) {
+		setId1(linkId);
 	}
 }

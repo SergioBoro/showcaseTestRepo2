@@ -89,4 +89,37 @@ public class DataPanelSLTest extends AbstractTest {
 		assertFalse(new DataPanelElementInfo().getShowLoadingMessage());
 	}
 
+	@Test
+	public void testGridElementAttrsReading() {
+		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
+		action.setContext(CompositeContext.createCurrent());
+		DataPanelLink dpLink = new DataPanelLink();
+		dpLink.setDataPanelId("test.xml");
+		action.setDataPanelLink(dpLink);
+
+		DataPanelGetCommand command = new DataPanelGetCommand(action);
+		DataPanel panel = command.execute();
+
+		DataPanelElementInfo elementInfo = panel.getTabById("4").getElementInfoById("401");
+		assertNotNull(elementInfo);
+		assertEquals(DataPanelElementSubType.EXT_TREE_GRID, elementInfo.getSubType());
+		assertEquals(true, elementInfo.getEditable());
+	}
+
+	@Test
+	public void testComplexTableReading() {
+		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
+		action.setContext(CompositeContext.createCurrent());
+		DataPanelLink dpLink = new DataPanelLink();
+		dpLink.setDataPanelId("test.xml");
+		action.setDataPanelLink(dpLink);
+
+		DataPanelGetCommand command = new DataPanelGetCommand(action);
+		DataPanel panel = command.execute();
+
+		DataPanelElementInfo elementInfo = panel.getTabById("5").getElementInfoById("e502");
+		assertNotNull(elementInfo);
+		assertEquals(1, elementInfo.getProcs().size());
+		assertEquals(1, elementInfo.getRelated().size());
+	}
 }

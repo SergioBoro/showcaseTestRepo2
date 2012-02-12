@@ -2,7 +2,6 @@ package ru.curs.showcase.core;
 
 import java.util.List;
 
-
 /**
  * Класс, содержащий информацию, относящуюся к настройке исключений Showcase.
  * Например, нужно ли для конкретного исключения отображать пользователю
@@ -26,9 +25,6 @@ public class ExceptionConfig {
 
 	public static Boolean needDatailedInfoForException(final Throwable e) {
 		ExceptionConfig config = AppRegistry.getExceptionConfig();
-		if (config.noDatailedInfoExceptions != null) {
-			return !config.noDatailedInfoExceptions.contains(e.getClass());
-		}
-		return true;
+		return !config.noDatailedInfoExceptions.contains(e.getClass());
 	}
 }

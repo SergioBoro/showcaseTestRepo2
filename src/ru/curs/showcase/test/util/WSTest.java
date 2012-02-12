@@ -11,6 +11,7 @@ import org.junit.*;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import ru.curs.showcase.core.command.ShowcaseExportException;
 import ru.curs.showcase.core.external.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.test.ws.*;
@@ -24,6 +25,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public class WSTest extends AbstractTestWithDefaultUserData {
 
+	private static final String WRONG_COMMAND = "<command type=\"getНав\" param=\"a.xml\"/>";
 	private static final String RU_AD_RESULT = "RU-AD";
 	private static final String WS_HANDLE_PROC = "wsHandle";
 	private static final String WS_GET_FILE_PY = "ws/GetFile.py";
@@ -68,6 +70,25 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 			new ExternalCommand(COMMAND_TYPE_GET_DP_PARAM_A_XML, WS_GET_FILE_PY);
 		String res = command.execute();
 		assertTrue(res.indexOf("<sc:element id=\"6\" type=\"webtext\" transform=\"bal.xsl\" />") > -1);
+	}
+
+	@Test(expected = ShowcaseExportException.class)
+	public void testJythonCommandException() throws ShowcaseExportException {
+		ExternalCommand command = new ExternalCommand(WRONG_COMMAND, WS_GET_FILE_PY);
+		command.executeForExport();
+	}
+
+	@Test
+	public void testJythonCommandException2() {
+		ru.curs.showcase.app.server.ws.ShowcaseExternals ws =
+			new ru.curs.showcase.app.server.ws.ShowcaseExternals();
+		try {
+			ws.handleXML(new ru.curs.showcase.app.server.ws.RequestAnyXML(), "ws/GetNotXMLFile.py");
+			fail();
+		} catch (ShowcaseExportException e) {
+			assertEquals(ru.curs.showcase.app.server.ws.ShowcaseExternals.NOT_XML_OUTPUT_ERROR,
+					e.getLocalizedMessage());
+		}
 	}
 
 	@Test
@@ -118,7 +139,7 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 	public void testWSClientExceptioninJython() {
 		ShowcaseExternals port = prepareWS();
 		try {
-			port.handle("<command type=\"getНав\" param=\"a.xml\"/>", WS_GET_FILE_PY);
+			port.handle(WRONG_COMMAND, WS_GET_FILE_PY);
 			fail();
 		} catch (ShowcaseExportException_Exception e) {
 			assertEquals(

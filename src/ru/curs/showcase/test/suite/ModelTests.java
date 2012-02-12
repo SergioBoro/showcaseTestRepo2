@@ -17,7 +17,7 @@ import ru.curs.showcase.test.JythonPossibilitiesTest;
 @SuiteClasses({
 		UtilTests.class, EventAndActionTests.class, RunTimeTests.class, DataPanelTests.class,
 		ActionTabFinderTests.class, NavigatorTests.class, MainPageTests.class,
-		HTMLVariablesTests.class, GridTests.class, ChartTests.class, GeoMapTests.class,
+		HTMLTests.class, GridTests.class, ChartTests.class, GeoMapTests.class,
 		WebTextTests.class, XFormTests.class, JythonPossibilitiesTest.class,
 		ActionTransformerTest.class })
 public class ModelTests {

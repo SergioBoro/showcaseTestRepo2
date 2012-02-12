@@ -38,9 +38,8 @@ public class NavigatorDBGateway extends SPQuery implements PrimElementsGateway {
 			InputStream stream = getInputStreamForXMLParam(NAVIGATOR_INDEX);
 			return new DataFile<InputStream>(stream, sourceName);
 		} catch (SQLException e) {
-			dbExceptionHandler(e);
+			throw dbExceptionHandler(e);
 		}
-		return null;
 	}
 
 	private void init(final CompositeContext context) {

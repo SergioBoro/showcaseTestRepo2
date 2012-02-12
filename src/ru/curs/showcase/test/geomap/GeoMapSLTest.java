@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.geomap;
 
 import static org.junit.Assert.*;
 
@@ -15,6 +15,7 @@ import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.geomap.GeoMapGetCommand;
 import ru.curs.showcase.core.svg.*;
+import ru.curs.showcase.test.AbstractTest;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -85,7 +86,9 @@ public class GeoMapSLTest extends AbstractTest {
 		generateTestTabWithElement(elInfo);
 
 		GeoMapGetCommand command = new GeoMapGetCommand(context, elInfo);
-		command.execute();
+		GeoMap map = command.execute();
+
+		assertEquals(1, map.getEventManager().getEventForFeature("1849").size());
 	}
 
 	@Test

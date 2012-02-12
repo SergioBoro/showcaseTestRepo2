@@ -19,7 +19,7 @@ class NavJythonProc(JythonProc):
 
 def mainproc():
     return u'''<navigator hideOnLoad="true">
-    <group id="00" name="Фичи">
+    <group id="00" name="Фичи" icon="group_icon_default1.png">
         <level1 id="04" name="secret" selectOnLoad="true">
             <action>
                 <main_context>

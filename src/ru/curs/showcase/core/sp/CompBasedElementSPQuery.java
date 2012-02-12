@@ -53,9 +53,8 @@ public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 			stdGetResults();
 			return new RecordSetElementRawData(this, elementInfo, context);
 		} catch (SQLException e) {
-			dbExceptionHandler(e);
+			throw dbExceptionHandler(e);
 		}
-		return null;
 	}
 
 	@Override

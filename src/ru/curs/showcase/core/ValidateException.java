@@ -1,6 +1,6 @@
 package ru.curs.showcase.core;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.util.exception.BaseException;
 
 /**
@@ -21,7 +21,7 @@ public final class ValidateException extends BaseException {
 	/**
 	 * Сообщение, выдаваемое пользователю.
 	 */
-	private UserMessage userMessage;
+	private final UserMessage userMessage;
 
 	public ValidateException(final UserMessage aUserMessage) {
 		super(ExceptionType.USER, aUserMessage.getText());
@@ -30,10 +30,6 @@ public final class ValidateException extends BaseException {
 
 	public UserMessage getUserMessage() {
 		return userMessage;
-	}
-
-	public void setUserMessage(final UserMessage aUserMessage) {
-		userMessage = aUserMessage;
 	}
 
 }

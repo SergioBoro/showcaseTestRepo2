@@ -19,19 +19,18 @@ public class DBExternalCommandGateway extends SPQuery implements ExternalCommand
 	@Override
 	public String handle(final String aRequest, final String aSource) {
 		setProcName(aSource);
-		String out = null;
 		try (SPQuery query = this) {
 			try {
 				prepareStatementWithErrorMes();
 				setStringParam(2, aRequest);
 				getStatement().registerOutParameter(OUTPUTDATA_PARAM, java.sql.Types.VARCHAR);
 				execute();
-				out = getStatement().getString(OUTPUTDATA_PARAM);
+				String out = getStatement().getString(OUTPUTDATA_PARAM);
+				return out;
 			} catch (SQLException e) {
-				dbExceptionHandler(e);
+				throw dbExceptionHandler(e);
 			}
 		}
-		return out;
 	}
 
 	@Override

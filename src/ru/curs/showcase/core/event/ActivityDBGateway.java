@@ -28,7 +28,7 @@ public class ActivityDBGateway extends SPQuery implements ActivityGateway {
 				setupGeneralParameters();
 				execute();
 			} catch (SQLException e) {
-				dbExceptionHandler(e);
+				throw dbExceptionHandler(e);
 			}
 		}
 	}

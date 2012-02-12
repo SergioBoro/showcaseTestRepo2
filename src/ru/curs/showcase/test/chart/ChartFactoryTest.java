@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.chart;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,7 @@ import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.core.chart.*;
 import ru.curs.showcase.core.sp.*;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.ReflectionUtils;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
@@ -155,7 +156,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		Chart chart = factory.build();
 
 		assertEquals(seriesCount, chart.getJavaDynamicData().getSeries().size());
-		assertEquals(FIRST_COL_CAPTION, chart.getJavaDynamicData().getSeries().get(0).getName());
+		assertNotNull(chart.getJavaDynamicData().getSeriesById(FIRST_COL_CAPTION));
 		assertEquals(labelsXCount + 1, chart.getJavaDynamicData().getLabelsX().size());
 		assertEquals("", chart.getJavaDynamicData().getLabelsX().get(0).getText());
 		assertEquals(SELECTOR_COL_FIRST_VALUE, chart.getJavaDynamicData().getLabelsX().get(1)

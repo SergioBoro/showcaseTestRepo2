@@ -43,6 +43,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 public class ExceptionsTest extends AbstractTestWithDefaultUserData {
+	private static final String ERROR_USER_MESSAGE = "Ошибка";
 	/**
 	 * Имя несуществующей схемы.
 	 */
@@ -273,7 +274,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(solEx.getUserMessage());
 		assertEquals("test1", solEx.getUserMessage().getId());
 		assertEquals(MessageType.ERROR, solEx.getUserMessage().getType());
-		assertEquals("Ошибка", solEx.getUserMessage().getText());
+		assertEquals(ERROR_USER_MESSAGE, solEx.getUserMessage().getText());
 		exc =
 			new SQLException(String.format("%stest2%s", UserMessageFactory.SOL_MES_PREFIX,
 					UserMessageFactory.SOL_MES_SUFFIX));
@@ -307,7 +308,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		ValidateException exc2 = new ValidateException(factory.build(exc));
 		GeneralException gse = GeneralExceptionFactory.build(exc2);
 		assertFalse(GeneralException.needDetailedInfo(gse));
-		assertEquals("Ошибка", exc2.getUserMessage().getText());
+		assertEquals(ERROR_USER_MESSAGE, exc2.getUserMessage().getText());
 		GeneralException.generateDetailedInfo(gse);
 	}
 
@@ -567,4 +568,74 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		selector.getGateway();
 	}
 
+	@Test
+	public void testUserMessageByException() {
+		XFormContext context = new XFormContext();
+		context.setFormData("<model/>");
+		XFormGateway gateway = new XFormDBGateway();
+		try {
+			gateway.scriptTransform("xforms_submission_um", context);
+			fail();
+		} catch (ValidateException e) {
+			assertEquals(ERROR_USER_MESSAGE, e.getLocalizedMessage());
+		}
+	}
+
+	@Test
+	public void testUserMessageStorageAbsent() {
+		UserMessageFactory ufactory = new UserMessageFactory();
+		File umFile =
+			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/"
+					+ UserMessageFactory.SOL_MESSAGES_FILE);
+		File tmp =
+			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/"
+					+ UserMessageFactory.SOL_MESSAGES_FILE + "_");
+		umFile.renameTo(tmp);
+		try {
+			try {
+				ufactory.build(1, "Error mes");
+				fail();
+			} catch (SettingsFileOpenException e) {
+				assertEquals(SettingsFileType.SOLUTION_MESSAGES, e.getFileType());
+			}
+		} finally {
+			tmp.renameTo(umFile);
+		}
+	}
+
+	@Test(expected = FileIsAbsentInDBException.class)
+	public void testFileIsAbsentInDBException() {
+		GridGateway gateway = new GridDBGateway();
+		DataPanelElementInfo elementInfo =
+			new DataPanelElementInfo("1", DataPanelElementType.GRID);
+		ID procID = new ID("1");
+		DataPanelElementProc proc = new DataPanelElementProc();
+		proc.setId(procID);
+		proc.setName("grid_download_null");
+		proc.setType(DataPanelElementProcType.DOWNLOAD);
+		elementInfo.getProcs().put(procID, proc);
+		generateTestTabWithElement(elementInfo);
+		gateway.downloadFile(getTestGridContext1(), elementInfo, procID, "1");
+	}
+
+	@Test
+	public void testExceptionInfo() {
+		GeneralException exc = GeneralExceptionFactory.build(new RuntimeException());
+
+		assertTrue(exc.getNeedDatailedInfo());
+		assertEquals(ExceptionType.JAVA, exc.getType());
+		assertEquals(ExceptionType.JAVA, GeneralException.getType(exc));
+		assertEquals(MessageType.ERROR, GeneralException.getMessageType(exc));
+
+	}
+
+	@Test
+	public void testGeneralExceptionCreation() {
+		GeneralException exc = new GeneralException();
+
+		assertNull(exc.getType());
+		assertNull(exc.getMessage());
+		assertNull(exc.getType());
+		assertNull(exc.getNeedDatailedInfo());
+	}
 }

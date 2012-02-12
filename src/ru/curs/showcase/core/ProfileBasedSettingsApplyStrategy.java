@@ -10,10 +10,6 @@ import ru.curs.showcase.runtime.ProfileReader;
  */
 public abstract class ProfileBasedSettingsApplyStrategy {
 
-	public ProfileBasedSettingsApplyStrategy() {
-		super();
-	}
-
 	public ProfileBasedSettingsApplyStrategy(final ProfileReader aPropsReader) {
 		super();
 		reader = aPropsReader;
@@ -28,17 +24,9 @@ public abstract class ProfileBasedSettingsApplyStrategy {
 
 	protected abstract void applyByDefault();
 
-	private ProfileReader reader;
+	private final ProfileReader reader;
 
 	public ProfileReader reader() {
 		return reader;
-	}
-
-	public ProfileReader getReader() {
-		return reader;
-	}
-
-	public void setReader(final ProfileReader aReader) {
-		reader = aReader;
 	}
 }

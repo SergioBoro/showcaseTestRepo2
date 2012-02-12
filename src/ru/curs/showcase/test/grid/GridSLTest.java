@@ -7,6 +7,7 @@ import java.util.*;
 import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.*;
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
@@ -451,5 +452,26 @@ public class GridSLTest extends AbstractTest {
 		long estimateSize = grid.sizeEstimate();
 		assertTrue(estimateSize > 0);
 		assertTrue(ReflectionUtils.getObjectSizeBySerialize(grid) > 0);
+	}
+
+	@Test
+	public void testGridFileDownloadCommand() {
+		ID linkId = new ID("grid_download1");
+		String recordId = "1";
+		GridContext context = getTestGridContext1();
+		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);
+		elInfo.setProcName("grid_download_load");
+		DataPanelElementProc proc = new DataPanelElementProc();
+		proc.setId(linkId);
+		proc.setName("grid_download1");
+		elInfo.getProcs().put(linkId, proc);
+		generateTestTabWithElement(elInfo);
+		GridFileDownloadCommand command =
+			new GridFileDownloadCommand(context, elInfo, linkId, recordId);
+		OutputStreamDataFile file = command.execute();
+
+		assertNotNull(file.getData());
+		assertNotNull(file.getName());
+		assertEquals(TextUtils.JDBC_ENCODING, file.getEncoding());
 	}
 }

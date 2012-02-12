@@ -90,14 +90,13 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 				setSQLXMLParam(getDataParam(), data);
 				execute();
 			} catch (SQLException e) {
-				dbExceptionHandler(e);
+				throw dbExceptionHandler(e);
 			}
 		}
 	}
 
 	@Override
 	public String scriptTransform(final String aProcName, final XFormContext context) {
-		String out = null;
 		setProcName(aProcName);
 		setContext(context);
 		setTemplateIndex(SUBMISSION_TEMPLATE_IND);
@@ -108,12 +107,12 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 				setSQLXMLParam(INPUTDATA_INDEX, context.getFormData());
 				getStatement().registerOutParameter(OUTPUTDATA_INDEX, java.sql.Types.SQLXML);
 				execute();
-				out = getStringForXMLParam(OUTPUTDATA_INDEX);
+				String out = getStringForXMLParam(OUTPUTDATA_INDEX);
+				return out;
 			} catch (SQLException e) {
-				dbExceptionHandler(e);
+				throw dbExceptionHandler(e);
 			}
 		}
-		return out;
 	}
 
 	@Override
@@ -131,7 +130,6 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR + linkId);
 		}
 		setProcName(proc.getName());
-		OutputStreamDataFile result = null;
 
 		try (SPQuery query = this) {
 			try {
@@ -140,12 +138,12 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 				getStatement().registerOutParameter(FILENAME_INDEX, java.sql.Types.VARCHAR);
 				getStatement().registerOutParameter(FILE_INDEX, getBinarySQLType());
 				execute();
-				result = getFileForBinaryStream(FILE_INDEX, FILENAME_INDEX);
+				OutputStreamDataFile result = getFileForBinaryStream(FILE_INDEX, FILENAME_INDEX);
+				return result;
 			} catch (SQLException e) {
-				dbExceptionHandler(e);
+				throw dbExceptionHandler(e);
 			}
 		}
-		return result;
 	}
 
 	@Override
@@ -167,7 +165,7 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 				setBinaryStream(FILE_INDEX, file);
 				execute();
 			} catch (SQLException e) {
-				dbExceptionHandler(e);
+				throw dbExceptionHandler(e);
 			} catch (IOException e2) {
 				throw new ServerObjectCreateCloseException(e2);
 			}

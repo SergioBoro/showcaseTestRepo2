@@ -49,7 +49,7 @@ public class ActionTabFinderFromXML extends ActionTabFinder {
 	}
 
 	/**
-	 * Spring IoC засоряет мусором firstTabId.
+	 * Необходимо, т.к. Spring IoC заполняет мусором firstTabId.
 	 */
 	private void reset() {
 		firstTabId = null;

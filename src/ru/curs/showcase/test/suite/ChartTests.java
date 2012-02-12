@@ -4,7 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.*;
 import org.junit.runners.Suite.SuiteClasses;
 
-import ru.curs.showcase.test.*;
+import ru.curs.showcase.test.chart.*;
 
 /**
  * Тесты для графиков.
@@ -13,7 +13,7 @@ import ru.curs.showcase.test.*;
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ ChartGatewayTest.class, ChartFactoryTest.class, ChartSLTest.class })
+@SuiteClasses({ ChartGatewayTest.class, ChartFactoryTest.class, ChartSLTest.class, ChartTest.class })
 public class ChartTests {
 
 }

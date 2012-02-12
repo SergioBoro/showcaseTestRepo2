@@ -55,10 +55,9 @@ public abstract class HTMLBasedSPCallHelper extends ElementSPQuery {
 				return new HTMLBasedElementRawData(data, validatedSettings, getElementInfo(),
 						getContext());
 			} catch (SQLException e) {
-				dbExceptionHandler(e);
+				throw dbExceptionHandler(e);
 			}
 		}
-		return null;
 	}
 
 }

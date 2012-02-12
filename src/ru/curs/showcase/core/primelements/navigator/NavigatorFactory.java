@@ -21,7 +21,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
-public final class NavigatorFactory extends SAXTagHandler {
+public final class NavigatorFactory extends StartTagSAXHandler {
 	private static final String WRONG_ACTION_IN_NAVIGATOR_ERROR =
 		"Некорректное описание действия в навигаторе: ";
 	private static final String SELECT_ON_LOAD_TAG = "selectOnLoad";
@@ -34,10 +34,6 @@ public final class NavigatorFactory extends SAXTagHandler {
 	 */
 	private static final String[] START_TAGS = { NAVIGATOR_TAG, GROUP_TAG };
 
-	/**
-	 * Конечные тэги, которые будут обработаны.
-	 */
-	private static final String[] END_TAGS = { EL_ON_LEVEL_NODE_NAME };
 	/**
 	 * Путь к каталогу для иконок.
 	 */
@@ -103,6 +99,17 @@ public final class NavigatorFactory extends SAXTagHandler {
 		currentGroup.setImageId(String.format("%s/%s", groupIconsDir, imageFile));
 	}
 
+	/**
+	 * Класс, возврат которого является признаком того, что нужно продолжать
+	 * искать требуемый обработчик тэга.
+	 * 
+	 * @author den
+	 * 
+	 */
+	private class ContinueObject {
+
+	}
+
 	public Object navigatorSTARTTAGHandler(final Attributes attrs) {
 		if (result == null) {
 			result = new Navigator();
@@ -112,9 +119,9 @@ public final class NavigatorFactory extends SAXTagHandler {
 			if (attrs.getIndex(WIDTH_TAG) > -1) {
 				result.setWidth(attrs.getValue(WIDTH_TAG));
 			}
-			return result;
+			return null;
 		}
-		return null;
+		return new ContinueObject();
 	}
 
 	/**
@@ -180,15 +187,10 @@ public final class NavigatorFactory extends SAXTagHandler {
 	}
 
 	@Override
-	protected String[] getEndTrags() {
-		return END_TAGS;
-	}
-
-	@Override
 	public Object handleStartTag(final String namespaceURI, final String lname,
 			final String qname, final Attributes attrs) {
 		if (canHandleStartTag(qname)) {
-			if (super.handleStartTag(namespaceURI, lname, qname, attrs) != null) {
+			if (super.handleStartTag(namespaceURI, lname, qname, attrs) == null) {
 				return null;
 			}
 		}
@@ -224,4 +226,5 @@ public final class NavigatorFactory extends SAXTagHandler {
 	public void handleCharacters(final char[] arg0, final int arg1, final int arg2) {
 		actionFactory.handleCharacters(arg0, arg1, arg2);
 	}
+
 }

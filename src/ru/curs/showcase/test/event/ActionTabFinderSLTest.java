@@ -86,4 +86,18 @@ public class ActionTabFinderSLTest extends AbstractTest {
 
 		assertEquals("1", grid.getDefaultAction().getDataPanelLink().getTabId().getString());
 	}
+
+	@Test
+	public void testTabIdCheck() {
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo element =
+			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		final String webtextFile = "test01.xml";
+		element.setProcName(webtextFile);
+
+		WebTextGetCommand command = new WebTextGetCommand(context, element);
+		WebText wt = command.execute();
+		assertEquals("2", wt.getEventManager().getEventForLink("1").get(0).getAction()
+				.getDataPanelLink().getTabId().toString());
+	}
 }

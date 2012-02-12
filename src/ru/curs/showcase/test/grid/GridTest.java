@@ -5,6 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.Record;
+import ru.curs.showcase.app.api.ID;
+import ru.curs.showcase.app.api.event.Event;
+import ru.curs.showcase.app.api.grid.GridEvent;
 import ru.curs.showcase.test.AbstractTest;
 
 import com.google.gwt.dom.client.Style.Unit;
@@ -50,5 +53,25 @@ public class GridTest extends AbstractTest {
 			rec.getFontSizeValue();
 		}
 		fail();
+	}
+
+	@Test
+	public void testGridEvent() {
+		Event event = new GridEvent();
+		ID id1 = new ID("id1");
+		ID id2 = new ID("2");
+		event.setId1(id1);
+		event.setId2(id2);
+
+		GridEvent gEvent = (GridEvent) event;
+		assertEquals(id1, gEvent.getRecordId());
+		assertEquals(id2, gEvent.getColId());
+
+		final String recId = "recId";
+		gEvent.setRecordId(recId);
+		final String colId = "colId";
+		gEvent.setColId(colId);
+		assertEquals(recId, event.getId1().toString());
+		assertEquals(colId, event.getId2().toString());
 	}
 }

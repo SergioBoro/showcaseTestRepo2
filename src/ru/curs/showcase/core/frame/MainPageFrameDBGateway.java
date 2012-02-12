@@ -43,10 +43,9 @@ public class MainPageFrameDBGateway extends SPQuery implements MainPageFrameGate
 				String result = getStatement().getString(FRAME_DATA_INDEX);
 				return result;
 			} catch (SQLException e) {
-				dbExceptionHandler(e);
+				throw dbExceptionHandler(e);
 			}
 		}
-		return null;
 	}
 
 	@Override

@@ -17,9 +17,7 @@ import ru.curs.showcase.app.api.event.*;
  *            - тип событий.
  */
 public abstract class EventManager<T extends Event> implements SerializableElement {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = -464983712459253702L;
 	/**
 	 * Набор возможных событий для элемента инф. панели.

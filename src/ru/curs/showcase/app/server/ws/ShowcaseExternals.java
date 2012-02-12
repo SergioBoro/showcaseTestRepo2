@@ -21,6 +21,8 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 @WebService(targetNamespace = "http://showcase.curs.ru")
 public class ShowcaseExternals {
+	public static final String NOT_XML_OUTPUT_ERROR = "Ошибка решения: рабочая процедура вернула данные не в формате XML";
+
 	@WebMethod
 	@WebResult(name = "response")
 	public String handle(@WebParam(name = "request") final String request, @WebParam(
@@ -44,7 +46,8 @@ public class ShowcaseExternals {
 			return (ResponseAnyXML) XMLUtils.xmlToObject(doc, ResponseAnyXML.class);
 		} catch (SAXException | IOException e) {
 			throw new ShowcaseExportException(
-					"Ошибка решения: рабочая процедура вернула данные не в формате XML");
+					NOT_XML_OUTPUT_ERROR);
 		}
 	}
+
 }

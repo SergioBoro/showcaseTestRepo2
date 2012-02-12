@@ -86,9 +86,8 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 
 			return new RecordSetElementRawData(this, elementInfo, context);
 		} catch (SQLException e) {
-			dbExceptionHandler(e);
+			throw dbExceptionHandler(e);
 		}
-		return null;
 	}
 
 	@Override
@@ -140,9 +139,8 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 
 			return new RecordSetElementRawData(this, elementInfo, context);
 		} catch (SQLException e) {
-			dbExceptionHandler(e);
+			throw dbExceptionHandler(e);
 		}
-		return null;
 	}
 
 	@Override
@@ -171,7 +169,6 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR + linkId);
 		}
 		setProcName(proc.getName());
-		OutputStreamDataFile result = null;
 
 		try (SPQuery query = this) {
 			try {
@@ -180,12 +177,12 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 				getStatement().registerOutParameter(FILENAME_INDEX, java.sql.Types.VARCHAR);
 				getStatement().registerOutParameter(FILE_INDEX, getBinarySQLType());
 				execute();
-				result = getFileForBinaryStream(FILE_INDEX, FILENAME_INDEX);
+				OutputStreamDataFile result = getFileForBinaryStream(FILE_INDEX, FILENAME_INDEX);
+				return result;
 			} catch (SQLException e) {
-				dbExceptionHandler(e);
+				throw dbExceptionHandler(e);
 			}
 		}
-		return result;
 	}
 
 }

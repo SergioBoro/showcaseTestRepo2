@@ -45,9 +45,8 @@ public class DataPanelDBGateway extends SPQuery implements PrimElementsGateway {
 			InputStream stream = getInputStreamForXMLParam(DP_INDEX);
 			return new DataFile<InputStream>(stream, getProcName());
 		} catch (SQLException e) {
-			dbExceptionHandler(e);
+			throw dbExceptionHandler(e);
 		}
-		return null;
 	}
 
 	@Override

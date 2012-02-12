@@ -171,27 +171,16 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	 * @param e
 	 *            - исходное исключение.
 	 */
-	protected final void dbExceptionHandler(final SQLException e) {
+	protected final BaseException dbExceptionHandler(final SQLException e) {
 		if (UserMessageFactory.isExplicitRaised(e)) {
 			UserMessageFactory factory = new UserMessageFactory();
-			throw new ValidateException(factory.build(e));
+			return new ValidateException(factory.build(e));
 		} else {
 			if (!checkProcExists()) {
-				throw new SPNotExistsException(getProcName(), getClass());
+				return new SPNotExistsException(getProcName(), getClass());
 			}
-			handleDBQueryException(e);
+			return new DBQueryException(e, getProcName(), getClass());
 		}
-	}
-
-	/**
-	 * Часть стандартного обработчика исключений, отвечающая за работу с
-	 * DBQueryException.
-	 * 
-	 * @param e
-	 *            - исходное исключение.
-	 */
-	protected void handleDBQueryException(final SQLException e) {
-		throw new DBQueryException(e, getProcName(), getClass());
 	}
 
 	/**

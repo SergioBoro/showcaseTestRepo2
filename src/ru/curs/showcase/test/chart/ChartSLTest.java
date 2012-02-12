@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.chart;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,7 @@ import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.chart.ChartGetCommand;
+import ru.curs.showcase.test.AbstractTest;
 
 /**
  * Тесты фабрики графиков.
@@ -36,14 +37,6 @@ public class ChartSLTest extends AbstractTest {
 		assertNotNull(chart.getJsDynamicData());
 		assertTrue(chart.getJsDynamicData().startsWith("{"));
 		assertTrue(chart.getJsDynamicData().endsWith("}"));
-	}
-
-	@Test
-	public void testChartCreate() {
-		Chart chart = new Chart();
-
-		assertTrue(chart.getHeader().isEmpty());
-		assertTrue(chart.getFooter().isEmpty());
 	}
 
 	/**
@@ -110,6 +103,7 @@ public class ChartSLTest extends AbstractTest {
 		Chart chart = command.execute();
 
 		assertNotNull(chart.getJsDynamicData());
+		assertEquals(0, chart.getEventManager().getEventForValue("series", 1).size());
 	}
 
 	@Test

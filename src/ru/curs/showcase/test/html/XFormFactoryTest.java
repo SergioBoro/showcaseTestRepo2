@@ -19,6 +19,7 @@ import ru.curs.showcase.core.html.HTMLBasedElementRawData;
 import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
+import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.SettingsFileType;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -122,5 +123,29 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		context.setFormData(data);
 		XFormGateway gateway = new XFormJythonGateway();
 		gateway.scriptTransform("xform/submission.py", context);
+	}
+
+	@Test
+	public void testSimpleSelectors() throws Exception {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo element = new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
+		generateTestTabWithElement(element);
+		element.setProcName("xforms_proc_no_data");
+		final String templateName = "Showcase_Template_multiselector_simple.xml";
+		element.setTemplateName(templateName);
+		XFormGateway gateway = new XFormDBGateway();
+		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
+
+		String input =
+			TextUtils.streamToString(AppProps.loadUserDataToStream(SettingsFileType.XFORM
+					.getFileDir() + "/" + templateName));
+		assertTrue(input.contains("xf:selector"));
+		assertTrue(input.contains("xf:multiselector"));
+
+		XFormFactory factory = new XFormFactory(raw);
+		XForm xform = factory.build();
+
+		assertFalse(xform.getXFormParts().get(0).contains("xf:selector"));
+		assertFalse(xform.getXFormParts().get(0).contains("xf:multiselector"));
 	}
 }

@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.test.chart;
 
 import org.junit.Test;
 
@@ -6,6 +6,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.chart.ChartDBGateway;
 import ru.curs.showcase.core.sp.*;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**

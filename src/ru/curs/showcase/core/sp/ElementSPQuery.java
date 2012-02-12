@@ -119,11 +119,6 @@ public abstract class ElementSPQuery extends SPQuery {
 		validatedSettings = aValidatedSettings;
 	}
 
-	@Override
-	protected void handleDBQueryException(final SQLException e) {
-		throw new DBQueryException(e, getProcName(), getClass());
-	}
-
 	/**
 	 * Возвращает имя схемы для проверки свойств элемента.
 	 */
