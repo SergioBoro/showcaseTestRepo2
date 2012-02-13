@@ -48,6 +48,12 @@ public final class GridTransformer {
 
 		// -------------------------------------------------------
 
+		egm.getLiveInfo().setOffset(grid.getLiveInfo().getOffset());
+		egm.getLiveInfo().setLimit(grid.getDataSet().getRecordSet().getPageSize());
+		egm.getLiveInfo().setTotalCount(grid.getLiveInfo().getTotalCount());
+
+		// -------------------------------------------------------
+
 		return egm;
 	}
 
@@ -62,8 +68,7 @@ public final class GridTransformer {
 		return result;
 	}
 
-	public static PagingLoadResult<ExtGridData> gridToExtGridData(final GridContext context,
-			final Grid grid) {
+	public static PagingLoadResult<ExtGridData> gridToExtGridData(final Grid grid) {
 
 		// -------------------------------------------------------
 
@@ -81,12 +86,8 @@ public final class GridTransformer {
 
 		// -------------------------------------------------------
 
-		final int offset = 0;
-
-		// Общее кол - во записей
-		final int totalLength = 200;
-
-		return new BasePagingLoadResult<ExtGridData>(sublist, offset, totalLength);
+		return new BasePagingLoadResult<ExtGridData>(sublist, grid.getLiveInfo().getOffset(), grid
+				.getLiveInfo().getTotalCount());
 
 	}
 

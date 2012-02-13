@@ -69,7 +69,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	public PagingLoadResult<ExtGridData> getExtGridData(GridContext context,
 			DataPanelElementInfo element) throws GeneralException {
 		Grid grid = getGrid(context, element);
-		return GridTransformer.gridToExtGridData(context, grid);
+		return GridTransformer.gridToExtGridData(grid);
 	}
 
 	@Override

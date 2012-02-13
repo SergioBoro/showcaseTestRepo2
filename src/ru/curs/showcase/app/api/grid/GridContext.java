@@ -5,6 +5,7 @@ import java.util.*;
 import javax.xml.bind.annotation.*;
 
 import ru.curs.gwt.datagrid.model.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementSubType;
 import ru.curs.showcase.app.api.event.CompositeContext;
 
 /**
@@ -31,6 +32,9 @@ public class GridContext extends CompositeContext {
 	 */
 	private static final int DEF_PAGE_NUMBER = 1;
 
+	private static final int DEF_OFFSET = 0;
+	private static final int DEF_LIMIT = 50;
+
 	public GridContext(final CompositeContext aContext) {
 		super();
 		apply(aContext);
@@ -54,6 +58,11 @@ public class GridContext extends CompositeContext {
 	private List<Column> sortedColumns = new ArrayList<Column>();
 
 	private PageInfo pageInfo = new PageInfo(DEF_PAGE_NUMBER, DEF_PAGE_SIZE_VAL);
+
+	private ExtGridLiveInfo liveInfo = new ExtGridLiveInfo(DEF_OFFSET, DEF_LIMIT);
+
+	private DataPanelElementSubType subtype = null;
+
 	/**
 	 * Идентификатор выделенной по клику в гриде записи.
 	 */
@@ -201,6 +210,22 @@ public class GridContext extends CompositeContext {
 
 	public void setPageInfo(final PageInfo aPageInfo) {
 		pageInfo = aPageInfo;
+	}
+
+	public ExtGridLiveInfo getLiveInfo() {
+		return liveInfo;
+	}
+
+	public void setLiveInfo(final ExtGridLiveInfo aLiveInfo) {
+		this.liveInfo = aLiveInfo;
+	}
+
+	public DataPanelElementSubType getSubtype() {
+		return subtype;
+	}
+
+	public void setSubtype(final DataPanelElementSubType aSubtype) {
+		this.subtype = aSubtype;
 	}
 
 	public final void apply(final CompositeContext aContext) {

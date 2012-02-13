@@ -7,7 +7,7 @@ import ru.curs.gwt.datagrid.event.*;
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.gwt.datagrid.selection.*;
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
@@ -16,18 +16,17 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.DownloadHelper;
 
-import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.*;
-import com.extjs.gxt.ui.client.event.*;
-import com.extjs.gxt.ui.client.event.GridEvent;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.fx.*;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.util.IconHelper;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.grid.*;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.*;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.*;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
@@ -42,16 +41,15 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 	private final VerticalPanel p = new VerticalPanel();
 	private final HorizontalPanel hpHeader = new HorizontalPanel();
-	private final HorizontalPanel hpToolbar = new HorizontalPanel();
 	private final ContentPanel cp = new ContentPanel();
 	private final HorizontalPanel hpFooter = new HorizontalPanel();
 
-	private final PushButton exportToExcelCurrentPage = new PushButton(new Image(
-			Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE));
-	private final PushButton exportToExcelAll = new PushButton(new Image(
-			Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL));
-	private final PushButton copyToClipboard = new PushButton(new Image(
-			Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
+	private final Button exportToExcelCurrentPage = new Button("",
+			IconHelper.create(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE));
+	private final Button exportToExcelAll = new Button("",
+			IconHelper.create(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL));
+	private final Button copyToClipboard = new Button("",
+			IconHelper.create(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
 
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
 	// private DataGrid dg = null;
@@ -59,7 +57,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	private Timer selectionTimer = null;
 	private DataServiceAsync dataService = null;
 	private GridContext localContext = null;
-	private ExtGridMetadata grid = null;
+	private ExtGridMetadata gridMetadata = null;
 
 	private boolean isFirstLoading = true;
 
@@ -96,7 +94,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 	@Override
 	public DataPanelElement getElement() {
-		return grid;
+		return gridMetadata;
 	}
 
 	/**
@@ -161,7 +159,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 				hpHeader.clear();
 				hpHeader.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
-				hpToolbar.setVisible(false);
 				// dg.setVisible(false);
 				hpFooter.setVisible(false);
 			}
@@ -217,9 +214,9 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 	}
 
-	private void setDataGridPanelByGrid(final ExtGridMetadata grid1) {
+	private void setDataGridPanelByGrid(final ExtGridMetadata aGridMetadata) {
 
-		grid = grid1;
+		gridMetadata = aGridMetadata;
 
 		beforeUpdateGrid();
 
@@ -276,21 +273,21 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		// изменении контекста грида
 		hpHeader.clear();
 		HTML header = new HTML();
-		if (!grid.getHeader().isEmpty()) {
-			strHeader = grid.getHeader();
+		if (!gridMetadata.getHeader().isEmpty()) {
+			strHeader = gridMetadata.getHeader();
 		}
 		header.setHTML(strHeader);
 		hpHeader.add(header);
 
 		hpFooter.clear();
 		HTML footer = new HTML();
-		if (!grid.getFooter().isEmpty()) {
-			strFooter = grid.getFooter();
+		if (!gridMetadata.getFooter().isEmpty()) {
+			strFooter = gridMetadata.getFooter();
 		}
 		footer.setHTML(strFooter);
 		hpFooter.add(footer);
 
-		settingsDataGrid.assign(grid.getUISettings());
+		settingsDataGrid.assign(gridMetadata.getUISettings());
 		// все настройки - в т.ч. по умолчанию - устанавливаются сервером
 	}
 
@@ -307,50 +304,14 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		hpHeader.setSize(PROC100, PROC100);
 		hpFooter.setSize(PROC100, PROC100);
 		// dg.setSize(PROC100, PROC100);
-		hpToolbar.setHeight(PROC100);
 		// dg.setWidth("95%");
 		//
-		hpToolbar.setSpacing(1);
-		if (grid.getUISettings().isVisibleExportToExcelCurrentPage()) {
-			exportToExcelCurrentPage.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE);
-			exportToExcelCurrentPage.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(final ClickEvent event) {
-					exportToExcel(GridToExcelExportType.CURRENTPAGE);
-				}
-			});
-			hpToolbar.add(exportToExcelCurrentPage);
-		}
-		if (grid.getUISettings().isVisibleExportToExcelAll()) {
-			exportToExcelAll.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_ALL);
-			exportToExcelAll.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(final ClickEvent event) {
-					exportToExcel(GridToExcelExportType.ALL);
-				}
-			});
-			hpToolbar.add(exportToExcelAll);
-		}
-		if (grid.getUISettings().isVisibleCopyToClipboard()) {
-			copyToClipboard.setTitle(Constants.GRID_CAPTION_COPY_TO_CLIPBOARD);
-			copyToClipboard.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(final ClickEvent event) {
-					copyToClipboard();
-				}
-			});
-			hpToolbar.add(copyToClipboard);
-		}
 
 		p.clear();
 		p.add(hpHeader);
-		p.add(hpToolbar);
 		// p.add(dg);
 
 		// ------------------------------------------------------------------------------
-
-		// final ExampleServiceAsync service = (ExampleServiceAsync) GWT
-		// .create(ExampleService.class);
 
 		RpcProxy<PagingLoadResult<ExtGridData>> proxy =
 			new RpcProxy<PagingLoadResult<ExtGridData>>() {
@@ -358,9 +319,12 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 				public void load(final Object loadConfig,
 						final AsyncCallback<PagingLoadResult<ExtGridData>> callback) {
 
-					// (PagingLoadConfig) loadConfig
+					GridContext gridContext = getDetailedContext();
+					gridContext.getLiveInfo().setOffset(
+							((PagingLoadConfig) loadConfig).getOffset());
+					gridContext.getLiveInfo().setLimit(((PagingLoadConfig) loadConfig).getLimit());
 
-					dataService.getExtGridData(getDetailedContext(), getElementInfo(), callback);
+					dataService.getExtGridData(gridContext, getElementInfo(), callback);
 				}
 			};
 
@@ -374,7 +338,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
 
-		for (ExtGridColumnConfig egcc : grid.getColumns()) {
+		for (ExtGridColumnConfig egcc : gridMetadata.getColumns()) {
 			ColumnConfig column =
 				new ColumnConfig(egcc.getId(), egcc.getCaption(), egcc.getWidth());
 
@@ -387,39 +351,12 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			columns.add(column);
 		}
 
-		// ------------
-		// ru.curs.showcase.app.client.MessageBox.showSimpleMessage("",
-		// grid.column.getHeader());
-		// ------------
-
 		ColumnModel cm = new ColumnModel(columns);
 
 		final EditorGrid<ExtGridData> grid = new EditorGrid<ExtGridData>(store, cm);
 		grid.setColumnReordering(true);
-		grid.setStateId("pagingGridExample");
-		grid.setStateful(true);
-		grid.addListener(Events.Attach, new Listener<GridEvent<ExtGridData>>() {
-			@Override
-			public void handleEvent(GridEvent<ExtGridData> be) {
-				// Это начальная загрузка, отрабатывает 1 раз
-				PagingLoadConfig config = new BasePagingLoadConfig();
-				config.setOffset(0);
-				config.setLimit(50);
-
-				Map<String, Object> state = grid.getState();
-				if (state.containsKey("offset")) {
-					int offset = (Integer) state.get("offset");
-					int limit = (Integer) state.get("limit");
-					config.setOffset(offset);
-					config.setLimit(limit);
-				}
-				if (state.containsKey("sortField")) {
-					config.setSortField((String) state.get("sortField"));
-					config.setSortDir(SortDir.valueOf((String) state.get("sortDir")));
-				}
-				loader.load(config);
-			}
-		});
+		// grid.setStateId("pagingGridExample");
+		// grid.setStateful(true);
 
 		// ---------------------------
 
@@ -430,12 +367,13 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		LiveGridView liveView = new LiveGridView();
 		liveView.setEmptyText("No rows available on the server.");
 		// liveView.setRowHeight(32);
+		liveView.setCacheSize(gridMetadata.getLiveInfo().getLimit());
 		grid.setView(liveView);
 
 		// ------------
-		final CellSelectionModel<ExtGridData> cellSelectionModel =
-			new CellSelectionModel<ExtGridData>();
-		cellSelectionModel.bindGrid(grid);
+		final GridSelectionModel<ExtGridData> selectionModel =
+			new GridSelectionModel<ExtGridData>();
+		selectionModel.bindGrid(grid);
 		// ------------
 
 		// ------------
@@ -449,6 +387,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		cp.setCollapsible(true);
 		cp.setAnimCollapse(false);
 		cp.setHeading("Live Grid");
+		// cp.setHeaderVisible(false);
 		cp.setLayout(new FitLayout());
 		grid.getAriaSupport().setLabelledBy(cp.getHeader().getId() + "-label");
 		cp.add(grid);
@@ -457,7 +396,39 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		// ------------
 		ToolBar toolBar = new ToolBar();
-
+		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
+			exportToExcelCurrentPage.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE);
+			exportToExcelCurrentPage
+					.addSelectionListener(new com.extjs.gxt.ui.client.event.SelectionListener<ButtonEvent>() {
+						@Override
+						public void componentSelected(ButtonEvent ce) {
+							exportToExcel(GridToExcelExportType.CURRENTPAGE);
+						}
+					});
+			toolBar.add(exportToExcelCurrentPage);
+		}
+		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
+			exportToExcelAll.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_ALL);
+			exportToExcelAll
+					.addSelectionListener(new com.extjs.gxt.ui.client.event.SelectionListener<ButtonEvent>() {
+						@Override
+						public void componentSelected(ButtonEvent ce) {
+							exportToExcel(GridToExcelExportType.ALL);
+						}
+					});
+			toolBar.add(exportToExcelAll);
+		}
+		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
+			copyToClipboard.setTitle(Constants.GRID_CAPTION_COPY_TO_CLIPBOARD);
+			copyToClipboard
+					.addSelectionListener(new com.extjs.gxt.ui.client.event.SelectionListener<ButtonEvent>() {
+						@Override
+						public void componentSelected(ButtonEvent ce) {
+							copyToClipboard();
+						}
+					});
+			toolBar.add(copyToClipboard);
+		}
 		cp.setTopComponent(toolBar);
 
 		// ------------
@@ -550,9 +521,11 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			cell.colId = localContext.getCurrentColumnId();
 		} else {
 			cell.recId =
-				grid.getAutoSelectRecord() != null ? grid.getAutoSelectRecord().getId() : null;
+				gridMetadata.getAutoSelectRecord() != null ? gridMetadata.getAutoSelectRecord()
+						.getId() : null;
 			cell.colId =
-				grid.getAutoSelectColumn() != null ? grid.getAutoSelectColumn().getId() : null;
+				gridMetadata.getAutoSelectColumn() != null ? gridMetadata.getAutoSelectColumn()
+						.getId() : null;
 		}
 		return cell;
 	}
@@ -607,7 +580,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	@SuppressWarnings("unused")
 	private void runAction(final Action ac) {
 		if (ac != null) {
-			AppCurrContext.getInstance().setCurrentActionFromElement(ac, grid);
+			AppCurrContext.getInstance().setCurrentActionFromElement(ac, gridMetadata);
 			ActionExecuter.execAction();
 		}
 	}
@@ -889,7 +862,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			hpHeader.clear();
 			hpHeader.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
-			hpToolbar.setVisible(false);
 			// dg.setVisible(false);
 			hpFooter.setVisible(false);
 		}
@@ -902,6 +874,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		GridContext result = localContext;
 		if (result == null) {
 			result = GridContext.createFirstLoadDefault();
+			result.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 		}
 		result.apply(getContext());
 		return result;

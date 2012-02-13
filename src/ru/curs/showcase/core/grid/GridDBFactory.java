@@ -12,7 +12,7 @@ import org.xml.sax.Attributes;
 import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.ID;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.event.EventFactory;
 import ru.curs.showcase.core.sp.*;
@@ -91,10 +91,20 @@ public class GridDBFactory extends AbstractGridFactory {
 		super.initResult();
 	}
 
+	// CHECKSTYLE:OFF
 	private void readRecords() throws SQLException {
 		ColumnSet cs = getResult().getDataSet().getColumnSet();
-		int counter = getRecordSet().getPageInfo().getFirstRecord();
-		int lastNumber = counter + getRecordSet().getPageSize();
+
+		int counter;
+		int lastNumber;
+		if (getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID) {
+			counter = getResult().getLiveInfo().getFirstRecord();
+			lastNumber = counter + getResult().getLiveInfo().getLimit();
+		} else {
+			counter = getRecordSet().getPageInfo().getFirstRecord();
+			lastNumber = counter + getRecordSet().getPageSize();
+		}
+
 		for (; rowset.next() && (counter < lastNumber); counter++) {
 			Record curRecord = new Record();
 			if (SQLUtils.existsColumn(rowset.getMetaData(), ID_SQL_TAG)) {
@@ -138,6 +148,8 @@ public class GridDBFactory extends AbstractGridFactory {
 			}
 		}
 	}
+
+	// CHECKSTYLE:ON
 
 	/**
 	 * Функция для замены служебных символов XML (только XML, не HTML!) в
@@ -293,6 +305,10 @@ public class GridDBFactory extends AbstractGridFactory {
 		getRecordSet().setPagesTotal(
 				(int) Math.ceil((float) serverState().getTotalCount()
 						/ getRecordSet().getPageSize()));
+
+		if (getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID) {
+			getResult().getLiveInfo().setTotalCount(serverState().getTotalCount());
+		}
 	}
 
 	private void scrollToRequiredPage() throws SQLException {
@@ -300,15 +316,30 @@ public class GridDBFactory extends AbstractGridFactory {
 			return;
 		}
 
-		int recNum = 1;
-		rowset.setFetchSize(getRecordSet().getPageSize());
-		while (recNum++ < getRecordSet().getPageInfo().getFirstRecord()) {
-			if (!rowset.next()) {
-				// возвращаем 0 записей, если переданная страница не существует
-				rowset.previous();
-				break;
+		if (getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID) {
+			int recNum = 1;
+			rowset.setFetchSize(getResult().getLiveInfo().getLimit());
+			while (recNum++ < getResult().getLiveInfo().getFirstRecord()) {
+				if (!rowset.next()) {
+					// возвращаем 0 записей, если переданная страница не
+					// существует
+					rowset.previous();
+					break;
+				}
+			}
+		} else {
+			int recNum = 1;
+			rowset.setFetchSize(getRecordSet().getPageSize());
+			while (recNum++ < getRecordSet().getPageInfo().getFirstRecord()) {
+				if (!rowset.next()) {
+					// возвращаем 0 записей, если переданная страница не
+					// существует
+					rowset.previous();
+					break;
+				}
 			}
 		}
+
 	}
 
 	@Override

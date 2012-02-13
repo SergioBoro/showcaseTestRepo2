@@ -5,23 +5,26 @@ import javax.xml.bind.annotation.*;
 import ru.beta2.extra.gwt.ui.SerializableElement;
 
 /**
- * Информация о LiveGrid - offset, limit и идентификатор первого элемента на
- * странице.
+ * Информация о LiveGrid - offset, limit, totalCount и идентификатор первого
+ * элемента на странице.
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ExtGridLiveInfo implements SerializableElement {
 
-	private static final long serialVersionUID = 7112172183806266451L;
+	private static final long serialVersionUID = -8228599035165877092L;
 
 	@XmlAttribute
-	private int number;
+	private int offset;
 	@XmlAttribute
-	private int size;
+	private int limit;
+	@XmlAttribute
+	private int totalCount;
 
-	public ExtGridLiveInfo(final int aDefPageNumber, final int aDefPageSizeVal) {
-		number = aDefPageNumber;
-		size = aDefPageSizeVal;
+	public ExtGridLiveInfo(final int aDefOffset, final int aDefLimit) {
+		offset = aDefOffset;
+		limit = aDefLimit;
+		totalCount = 0;
 	}
 
 	public ExtGridLiveInfo() {
@@ -30,35 +33,46 @@ public class ExtGridLiveInfo implements SerializableElement {
 
 	@Override
 	public String toString() {
-		return "PageInfo [pageNumber=" + number + ", pageSize=" + size + "]";
+		return "ExtGridLiveInfo [offset=" + offset + ", limit=" + limit + ", totalCount="
+				+ totalCount + "]";
 	}
 
 	public int getFirstRecord() {
-		return size * (number - 1) + 1;
+		// return limit * (offset - 1) + 1;
+		return offset + 1;
 	}
 
-	public int getNumber() {
-		return number;
+	public int getOffset() {
+		return offset;
 	}
 
-	public void setNumber(final int aPageNumber) {
-		number = aPageNumber;
+	public void setOffset(final int aOffset) {
+		offset = aOffset;
 	}
 
-	public int getSize() {
-		return size;
+	public int getLimit() {
+		return limit;
 	}
 
-	public void setSize(final int aPageSize) {
-		size = aPageSize;
+	public void setLimit(final int aLimit) {
+		limit = aLimit;
+	}
+
+	public int getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(final int aTotalCount) {
+		totalCount = aTotalCount;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + number;
-		result = prime * result + size;
+		result = prime * result + offset;
+		result = prime * result + limit;
+		result = prime * result + totalCount;
 		return result;
 	}
 
@@ -74,10 +88,10 @@ public class ExtGridLiveInfo implements SerializableElement {
 			return false;
 		}
 		ExtGridLiveInfo other = (ExtGridLiveInfo) obj;
-		if (number != other.number) {
+		if (offset != other.offset) {
 			return false;
 		}
-		if (size != other.size) {
+		if (limit != other.limit) {
 			return false;
 		}
 		return true;

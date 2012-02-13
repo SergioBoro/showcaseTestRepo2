@@ -138,6 +138,7 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	 */
 	private void initPages() {
 		getRecordSet().setPageInfo(getCallContext().getPageInfo());
+		getResult().setLiveInfo(getCallContext().getLiveInfo());
 	}
 
 	@Override
