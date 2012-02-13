@@ -64,7 +64,7 @@ public final class About {
 					+ br
 					+
 
-					"Copyright ООО 'КУРС-ИТ', 1998-2011 "
+					"Copyright ООО 'КУРС-ИТ', 1998-2012 "
 					+ br
 					+ "Тел/факс: +7(495)640-2772"
 					+ br
