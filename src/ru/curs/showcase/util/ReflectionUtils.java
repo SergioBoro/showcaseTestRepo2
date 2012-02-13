@@ -6,7 +6,7 @@ import java.util.Map;
 
 import net.sf.saxon.functions.Collection;
 import ru.curs.showcase.app.api.ExcludeFromSerialization;
-import ru.curs.showcase.util.exception.*;
+import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
 
 /**
  * Статический класс, содержащий общие функции для работы с Java Reflection.
@@ -19,16 +19,14 @@ public final class ReflectionUtils {
 	/**
 	 * Возвращает значение свойства по имени поля, используя для доступа get
 	 * метод.
+	 * 
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws NoSuchMethodException
 	 */
-	public static Object getPropValueForField(final Object obj, final Field field) {
-		try {
-			String metName = getAccessMethodNameForField(field);
-			Method met = obj.getClass().getMethod(metName);
-			return met.invoke(obj);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException e) {
-			throw new ServerLogicError(e);
-		}
+	public static Object getPropValueForField(final Object obj, final Field field)
+			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		return getPropValueByFieldName(obj, field.getName());
 	}
 
 	/**
@@ -42,16 +40,6 @@ public final class ReflectionUtils {
 		String metName = getAccessMethodNameForField(fieldName);
 		Method met = obj.getClass().getMethod(metName);
 		return met.invoke(obj);
-	}
-
-	/**
-	 * Возвращает имя метода доступа к поля по имени поля согласно принятым в
-	 * Java нормам наименования.
-	 * 
-	 */
-	private static String getAccessMethodNameForField(final Field field) {
-		String fldName = field.getName();
-		return getAccessMethodNameForField(fldName);
 	}
 
 	private static String getAccessMethodNameForField(final String fldName) {

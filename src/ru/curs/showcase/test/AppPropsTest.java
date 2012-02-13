@@ -25,7 +25,7 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testLoadResToStream() {
-		assertNotNull(FileUtils.loadResToStream(FileUtils.PATH_PROPERTIES));
+		assertNotNull(FileUtils.loadResToStream(FileUtils.GENERAL_PROPERTIES));
 	}
 
 	/**

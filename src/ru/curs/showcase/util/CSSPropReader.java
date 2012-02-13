@@ -1,13 +1,11 @@
 package ru.curs.showcase.util;
 
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
 
 import org.w3c.css.sac.*;
 import org.w3c.flute.parser.Parser;
 
 import ru.curs.showcase.util.exception.CSSReadException;
-
 
 /**
  * Класс для считывания свойств из CSS. Код в основном заимствован из GWT.
@@ -119,10 +117,11 @@ public final class CSSPropReader {
 			}
 		});
 
-		URL style;
 		try {
-			style = Thread.currentThread().getContextClassLoader().getResource(cssPath);
-			p.parseStyleSheet(style.toString());
+			if (!(new File(cssPath).exists())) {
+				throw new CSSReadException(String.format("Файл CSS '%s' не найден", cssPath));
+			}
+			p.parseStyleSheet(cssPath);
 		} catch (CSSException e) {
 			throw new CSSReadException(e);
 		} catch (IOException e) {

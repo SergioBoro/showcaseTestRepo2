@@ -164,25 +164,6 @@ public final class AppProps {
 	}
 
 	/**
-	 * Получает значение обязательного параметра по его имени из userdata с
-	 * идентификатором userdataId.
-	 * 
-	 * @param propName
-	 *            - имя параметра.
-	 * @param userdataId
-	 *            идентификатор userdata, из которого будет считан параметр
-	 * @return - значение параметра.
-	 */
-	public static String getRequiredValueByName(final String propName, final String userdataId) {
-		String result = generalReadFunc(propName, userdataId);
-		if (result == null) {
-			throw new SettingsFileRequiredPropException(PROPFILENAME, propName,
-					SettingsFileType.APP_PROPERTIES);
-		}
-		return result;
-	}
-
-	/**
 	 * Получает значение необязательного параметра по его имени из текущей
 	 * userdata.
 	 * 

@@ -35,7 +35,7 @@ public enum BrowserType implements SerializableElement {
 	 */
 	SAFARI("Apple Safari");
 
-	private static final String VERSION_NOT_DEFINED = "не определена";
+	public static final String VERSION_NOT_DEFINED = "не определена";
 	/**
 	 * Имя браузера.
 	 */
@@ -112,10 +112,11 @@ public enum BrowserType implements SerializableElement {
 	private static String findVersion(final String source, final String regex) {
 		RegExp pattern = RegExp.compile(regex, "i");
 		MatchResult res = pattern.exec(source);
-		if (res.getGroupCount() == 2) {
-			return res.getGroup(1);
+		if (res != null) {
+			if (res.getGroupCount() == 2) {
+				return res.getGroup(1);
+			}
 		}
-
 		return VERSION_NOT_DEFINED;
 	}
 }

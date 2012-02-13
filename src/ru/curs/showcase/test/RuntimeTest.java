@@ -240,6 +240,10 @@ public class RuntimeTest extends AbstractTest {
 		CompositeContext context = new CompositeContext();
 		ServerStateGetCommand command = new ServerStateGetCommand(context);
 		ServerState scs = command.execute();
+		checkServerState(scs);
+	}
+
+	private void checkServerState(final ServerState scs) {
 		assertNotNull(scs);
 		assertEquals(AppInfoSingleton.getAppInfo().getServletContainerVersion(),
 				scs.getServletContainerVersion());
@@ -394,5 +398,23 @@ public class RuntimeTest extends AbstractTest {
 			}
 		}
 		assertEquals(jythonEvents, 2);
+	}
+
+	@Test
+	public void testClientState() {
+		CompositeContext context = generateContextWithSessionInfo();
+		ServerStateGetCommand command = new ServerStateGetCommand(context);
+		ServerState serverState = command.execute();
+		ClientState clientState =
+			new ClientState(serverState, "Opera/9.20 (Windows NT 6.0; U; en)");
+
+		checkServerState(clientState.getServerState());
+		assertEquals(BrowserType.OPERA, clientState.getBrowserType());
+		assertEquals(BrowserType.VERSION_NOT_DEFINED, clientState.getBrowserVersion());
+
+		clientState =
+			new ClientState(serverState,
+					"Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
+		assertEquals("2.0.0.6", clientState.getBrowserVersion());
 	}
 }

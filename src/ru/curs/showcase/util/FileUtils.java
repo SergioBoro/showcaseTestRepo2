@@ -42,7 +42,7 @@ public final class FileUtils {
 	 * либо от папки с Tomcat и не является постоянным. При задании пути нужно
 	 * использовать двойной обратный слэш в качестве разделителя.
 	 */
-	public static final String PATH_PROPERTIES = "general.properties";
+	public static final String GENERAL_PROPERTIES = "general.properties";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
@@ -52,7 +52,8 @@ public final class FileUtils {
 
 	/**
 	 * 
-	 * Процедура копирования файла.
+	 * Процедура копирования файла. В случае отсутствия файла ошибка не
+	 * выдается.
 	 * 
 	 * @param source
 	 *            - полный путь к файлу, который будет скопирован (с указанием
@@ -66,18 +67,19 @@ public final class FileUtils {
 	public static boolean copyFile(final String source, final String destination) {
 		try {
 			File sourceFile = new File(source);
+			if (!sourceFile.exists()) {
+				LOGGER.error(String.format("Файл или каталог '%s' не существует", source));
+				return false;
+			}
 			BatchFileProcessor fprocessor =
-				new BatchFileProcessor(sourceFile.getPath(), new RegexFilenameFilter(
+				new BatchFileProcessor(sourceFile.getParent(), new RegexFilenameFilter(
 						sourceFile.getName(), true));
 			fprocessor.process(new CopyFileAction(destination));
 			return true;
-		} catch (FileNotFoundException ex) {
+		} catch (IOException ex) {
 			LOGGER.error(ex.getMessage());
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
+			return false;
 		}
-
-		return false;
 	}
 
 	/**
@@ -93,19 +95,23 @@ public final class FileUtils {
 	}
 
 	public static String getGeneralOptionalParam(final String paramName) {
+		return getGeneralOptionalParam(GENERAL_PROPERTIES, paramName);
+	}
+
+	private static String getGeneralOptionalParam(final String file, final String paramName) {
 		Properties prop = new Properties();
-		InputStream is = loadResToStream(PATH_PROPERTIES);
+		InputStream is = loadResToStream(file);
 		try {
 			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
 				prop.load(reader);
 			}
 		} catch (IOException e) {
-			throw new SettingsFileOpenException(PATH_PROPERTIES, SettingsFileType.PATH_PROPERTIES);
+			throw new SettingsFileOpenException(file, SettingsFileType.PATH_PROPERTIES);
 		}
 		return prop.getProperty(paramName);
 	}
 
-	public static String getTestUserdataRoot() {
-		return getGeneralOptionalParam(SHOWCASE_ROOTPATH_USERDATA_PARAM);
+	public static String getTestUserdataRoot(final String file) {
+		return getGeneralOptionalParam(file, SHOWCASE_ROOTPATH_USERDATA_PARAM);
 	}
 }

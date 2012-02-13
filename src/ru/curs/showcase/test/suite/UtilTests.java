@@ -15,7 +15,8 @@ import ru.curs.showcase.test.util.*;
 @RunWith(Suite.class)
 @SuiteClasses({
 		BaseObjectsTest.class, DBConnectionsTest.class, TextUtilsTest.class, XMLUtilsTest.class,
-		ExceptionsTest.class, SVGUtilsTest.class, WSTest.class })
+		ExceptionsTest.class, SVGUtilsTest.class, WSTest.class, MemoryControllerTest.class,
+		CSSPropReaderTest.class, ReflectionUtilsTest.class })
 public class UtilTests {
 
 }

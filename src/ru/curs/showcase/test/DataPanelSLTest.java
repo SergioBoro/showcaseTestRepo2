@@ -21,7 +21,7 @@ public class DataPanelSLTest extends AbstractTest {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
 		action.setContext(CompositeContext.createCurrent());
 		DataPanelLink dpLink = new DataPanelLink();
-		dpLink.setDataPanelId("test2.xml");
+		dpLink.setDataPanelId(TEST2_XML);
 		dpLink.setTabId("1");
 		action.setDataPanelLink(dpLink);
 
@@ -121,5 +121,33 @@ public class DataPanelSLTest extends AbstractTest {
 		assertNotNull(elementInfo);
 		assertEquals(1, elementInfo.getProcs().size());
 		assertEquals(1, elementInfo.getRelated().size());
+	}
+
+	@Test
+	public void testGetActiveTabForAction() {
+		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
+		action.setContext(CompositeContext.createCurrent());
+		DataPanelLink dpLink = new DataPanelLink();
+		dpLink.setDataPanelId(TEST2_XML);
+		dpLink.setTabId("1");
+		action.setDataPanelLink(dpLink);
+
+		DataPanelGetCommand command = new DataPanelGetCommand(action);
+		DataPanel panel = command.execute();
+
+		action = new Action();
+		NavigatorElementLink nlink = new NavigatorElementLink();
+		nlink.setRefresh(true);
+		action.setNavigatorElementLink(nlink);
+
+		assertEquals(panel.getTabs().get(0), panel.getActiveTabForAction(action));
+
+		action = new Action();
+		DataPanelLink dlink = new DataPanelLink();
+		dlink.setDataPanelId(TEST2_XML);
+		dlink.setTabId("3");
+		action.setDataPanelLink(dlink);
+
+		assertEquals(panel.getTabs().get(2), panel.getActiveTabForAction(action));
 	}
 }

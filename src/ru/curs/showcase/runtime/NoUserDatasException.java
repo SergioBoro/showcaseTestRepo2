@@ -13,7 +13,7 @@ public class NoUserDatasException extends BaseException {
 
 	private static final String ERROR_MES =
 		"Не задано ни одного каталога для пользовательских данных(userdata): ни в context.xml, ни в "
-				+ FileUtils.PATH_PROPERTIES;
+				+ FileUtils.GENERAL_PROPERTIES;
 
 	public NoUserDatasException() {
 		super(ExceptionType.USER, ERROR_MES);

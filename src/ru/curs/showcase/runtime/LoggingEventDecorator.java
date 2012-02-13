@@ -19,6 +19,8 @@ import ch.qos.logback.classic.spi.*;
  */
 public class LoggingEventDecorator implements AbstractCommandContext {
 
+	public static final String EXCEPTION_SOURCE = "Источник ошибки:";
+
 	private final ILoggingEvent original;
 
 	private CommandContext commandContext = new CommandContext();
@@ -82,7 +84,7 @@ public class LoggingEventDecorator implements AbstractCommandContext {
 		if (throwableProxy.getCause() != null) {
 			sb.append(ExchangeConstants.LINE_SEPARATOR);
 			sb.append(ExchangeConstants.LINE_SEPARATOR);
-			sb.append("Источник ошибки:");
+			sb.append(EXCEPTION_SOURCE);
 			sb.append(ExchangeConstants.LINE_SEPARATOR);
 			sb.append(logExceptionStack(throwableProxy.getCause()));
 		}

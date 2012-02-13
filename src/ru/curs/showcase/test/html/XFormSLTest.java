@@ -34,7 +34,7 @@ public class XFormSLTest extends AbstractTest {
 	 * Тест функции получения XForms из сервисного уровня.
 	 */
 	@Test
-	public void testServiceLayer() {
+	public void testGet() {
 		XFormContext xcontext = new XFormContext(getTestContext1());
 		DataPanelElementInfo element = getTestXForms1Info();
 
@@ -64,8 +64,7 @@ public class XFormSLTest extends AbstractTest {
 	public void testSaveXForms() {
 		String data =
 			"<schema xmlns=\"\"><info><name/><growth/><eyescolour/><music/><comment/></info></schema>";
-		XFormContext xcontext = new XFormContext(getTestContext1());
-		xcontext.setFormData(data);
+		XFormContext xcontext = new XFormContext(getTestContext1(), data);
 		DataPanelElementInfo element = getTestXForms1Info();
 		XFormSaveCommand command = new XFormSaveCommand(xcontext, element);
 		command.execute();
@@ -132,8 +131,8 @@ public class XFormSLTest extends AbstractTest {
 	@Test
 	public void testXSLSubmissionBySP() {
 		String data = TEST_DATA_TAG;
-		XFormContext context = new XFormContext();
-		context.setFormData(data);
+		XFormContext context =
+			new XFormContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA), data);
 		DataPanelElementInfo elInfo =
 			XFormInfoFactory.generateXFormsTransformationInfo("xforms_transform_test");
 		XFormXSLTransformCommand command = new XFormXSLTransformCommand(context, elInfo);
@@ -309,10 +308,9 @@ public class XFormSLTest extends AbstractTest {
 	@Test
 	public void testSaveXFormByJython() throws IOException {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
-		XFormContext context = new XFormContext(generateContextWithSessionInfo());
 		String inputData =
 			XMLUtils.streamToString(AppProps.loadUserDataToStream(DATA_XFORMS + SHOWCASE_DATA_XML));
-		context.setFormData(inputData);
+		XFormContext context = new XFormContext(generateContextWithSessionInfo(), inputData);
 		context.setAdditional(SHOWCASE_DATA_COPY_XML);
 		File file =
 			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\" + DATA_XFORMS

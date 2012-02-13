@@ -35,7 +35,7 @@ public final class ProductionModeInitializer {
 	private static final String COPY_USERDATA_ON_STARTUP_PARAM = "copy.userdata.on.startup";
 	private static final String GET_USERDATA_PATH_ERROR =
 		"Невозможно получить путь к каталогу с пользовательскими данными";
-	private static final String SHOWCASE_DATA_GRID_CSS = "../../" + AppProps.SOLUTIONS_DIR
+	private static final String SHOWCASE_DATA_GRID_CSS = "/" + AppProps.SOLUTIONS_DIR
 			+ "/%s/css/solutionGrid.css";
 	public static final String WIDTH_PROP = "width";
 	public static final String HEADER_GAP_SELECTOR = ".webmain-SmartGrid .headerGap";
@@ -93,7 +93,9 @@ public final class ProductionModeInitializer {
 		String width = null;
 		try {
 			width =
-				reader.read(String.format(SHOWCASE_DATA_GRID_CSS, userdataId),
+				reader.read(
+						AppInfoSingleton.getAppInfo().getWebAppPath()
+								+ String.format(SHOWCASE_DATA_GRID_CSS, userdataId),
 						HEADER_GAP_SELECTOR, WIDTH_PROP);
 		} catch (CSSReadException e) {
 			LOGGER.error(e.getLocalizedMessage());

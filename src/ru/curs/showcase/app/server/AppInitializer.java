@@ -7,7 +7,7 @@ import org.python.util.PythonInterpreter;
 import org.slf4j.*;
 
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.FileUtils;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -21,17 +21,19 @@ public final class AppInitializer {
 
 	public static final String DIR_SVN = ".svn";
 
-	private static final String PATH_PROPERTIES_ERROR = "Ошибка чтения файла "
-			+ FileUtils.PATH_PROPERTIES;
-
 	private static final String USER_DATA_INFO =
 		"Добавлен userdata на основе rootpath из '%s' с идентификатором '%s' и путем '%s'";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AppInitializer.class);
 
 	public static void readDefaultUserDatas() {
+		readDefaultUserDatas(FileUtils.GENERAL_PROPERTIES);
+	}
+
+	public static void readDefaultUserDatas(final String file) {
 		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
-			readPathProperties();
+			String rootpath = FileUtils.getTestUserdataRoot(file);
+			checkUserDataDir(rootpath, file);
 		}
 		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0) {
 			throw new NoUserDatasException();
@@ -66,29 +68,6 @@ public final class AppInitializer {
 		Properties newProps = new Properties();
 		newProps.put("python.cachedir", "..\\tmp");
 		PythonInterpreter.initialize(System.getProperties(), newProps, new String[0]);
-	}
-
-	/**
-	 * Считывает userdata's из FileUtils.PATH_PROPERTIES. Вызывается 1.В
-	 * ProductionMode, если в context.xml нет userdata 2.В режиме модульных
-	 * тестов
-	 * 
-	 * @throws IOException
-	 * @throws UnsupportedEncodingException
-	 */
-	public static void readPathProperties() {
-		Properties paths = new Properties();
-		try {
-			InputStream is = FileUtils.loadResToStream(FileUtils.PATH_PROPERTIES);
-			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
-				paths.load(reader);
-			}
-
-			String rootpath = FileUtils.getTestUserdataRoot();
-			checkUserDataDir(rootpath, FileUtils.PATH_PROPERTIES);
-		} catch (IOException e) {
-			LOGGER.error(PATH_PROPERTIES_ERROR);
-		}
 	}
 
 	public static void checkUserDataDir(final String path, final String file) {

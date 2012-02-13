@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import org.junit.Test;
+import org.slf4j.*;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.*;
@@ -15,6 +16,7 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.chart.*;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
@@ -523,12 +525,11 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 
 	@Test
 	public void testJythonLibDirError() {
-		File jythonLibPath =
-			new File(AppInfoSingleton.getAppInfo().getWebAppPath()
-					+ JythonIterpretatorFactory.LIB_JYTHON_PATH);
-		File tmp =
-			new File(AppInfoSingleton.getAppInfo().getWebAppPath()
-					+ JythonIterpretatorFactory.LIB_JYTHON_PATH + "_");
+		final String path =
+			AppInfoSingleton.getAppInfo().getWebAppPath()
+					+ JythonIterpretatorFactory.LIB_JYTHON_PATH;
+		File jythonLibPath = new File(path);
+		File tmp = new File(path + "_");
 		jythonLibPath.renameTo(tmp);
 		try {
 			try {
@@ -584,12 +585,11 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testUserMessageStorageAbsent() {
 		UserMessageFactory ufactory = new UserMessageFactory();
-		File umFile =
-			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/"
-					+ UserMessageFactory.SOL_MESSAGES_FILE);
-		File tmp =
-			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/"
-					+ UserMessageFactory.SOL_MESSAGES_FILE + "_");
+		final String path =
+			AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/"
+					+ UserMessageFactory.SOL_MESSAGES_FILE;
+		File umFile = new File(path);
+		File tmp = new File(path + "_");
 		umFile.renameTo(tmp);
 		try {
 			try {
@@ -637,5 +637,58 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		assertNull(exc.getMessage());
 		assertNull(exc.getType());
 		assertNull(exc.getNeedDatailedInfo());
+	}
+
+	@Test
+	public void testLogExceptionStack() {
+		final String loggerName = ExceptionsTest.class.getName();
+		Logger logger = LoggerFactory.getLogger(loggerName);
+		final String message = "message text";
+		final String excMessage = "exception text";
+		final String causeMessage = "cause text";
+		final String testMarker = "testMarker";
+		Marker marker = MarkerFactory.getDetachedMarker(testMarker);
+		marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
+		final String params = "exception params";
+		marker.add(MarkerFactory.getDetachedMarker(params));
+		logger.warn(marker, message, new RuntimeException(excMessage, new RuntimeException(
+				causeMessage)));
+		for (LoggingEventDecorator event : AppInfoSingleton.getAppInfo().getLastLogEvents()) {
+			if (testMarker.equals(event.getProcess())) {
+				assertEquals(LastLogEvents.INPUT.toString(), event.getDirection());
+				assertEquals(params, event.getParams());
+				assertTrue(event.getMessage().contains(message));
+				assertTrue(event.getMessage().contains(excMessage));
+				assertTrue(event.getMessage().contains(LoggingEventDecorator.EXCEPTION_SOURCE));
+				assertTrue(event.getMessage().contains(causeMessage));
+				assertTrue(event.getMessage().contains(RuntimeException.class.getSimpleName()));
+				assertTrue(event.getMessage().contains(loggerName));
+				assertNotNull(event.getTime());
+				return;
+			}
+		}
+		fail();
+	}
+
+	@Test(expected = NoSuchRootPathUserDataException.class)
+	public void testNoSuchRootPathUserDataException() {
+		String testProps = "ru/curs/showcase/test/" + FileUtils.GENERAL_PROPERTIES;
+
+		AppInfoSingleton.getAppInfo().getUserdatas().clear();
+		try {
+			String rootpath = FileUtils.getTestUserdataRoot(testProps);
+			AppInitializer.checkUserDataDir(rootpath, testProps);
+		} finally {
+			AppInitializer.readDefaultUserDatas();
+		}
+	}
+
+	@Test(expected = NotImplementedYetException.class)
+	public void testNotImplementedYetException() {
+		DataPanelElementInfo elementInfo =
+			new DataPanelElementInfo("id", DataPanelElementType.CHART);
+		elementInfo.setProcName("chart.xml");
+		ChartSelector selector = new ChartSelector(elementInfo);
+		selector.getGateway();
 	}
 }

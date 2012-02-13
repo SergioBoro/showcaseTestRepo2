@@ -26,7 +26,11 @@ public class ExcelFile extends OutputStreamDataFile {
 	private static final String FILEEXT = "xls";
 
 	public ExcelFile(final ByteArrayOutputStream aData) {
-		super(aData, String.format("%s.%s", DEF_FILENAME, FILEEXT));
+		super(aData, generateName());
+	}
+
+	private static String generateName() {
+		return String.format("%s.%s", DEF_FILENAME, FILEEXT);
 	}
 
 	public ExcelFile() {

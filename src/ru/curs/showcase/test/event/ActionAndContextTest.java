@@ -8,7 +8,7 @@ import java.util.*;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.api.datapanel.DataPanelTab;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.ValidateException;
@@ -569,5 +569,64 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 
 		ActivityGateway gateway = new ActivityJythonGateway();
 		gateway.exec(activity);
+	}
+
+	@Test
+	public void testComplexDataPanelElementContext() {
+		DataPanelElementInfo elementInfo = getTestGridInfo();
+		DataPanelElementContext test =
+			new DataPanelElementContext(CompositeContext.createCurrent(), elementInfo);
+
+		assertEquals(CompositeContext.createCurrent().getMain(), test.getCompositeContext()
+				.getMain());
+		assertEquals(CompositeContext.createCurrent().getSession(), test.getCompositeContext()
+				.getSession());
+		assertEquals(elementInfo, test.getElementInfo());
+		assertEquals(elementInfo.getTab().getDataPanel().getId(), test.getPanelId());
+		assertEquals(elementInfo.getId(), test.getElementId());
+		assertNotNull(test.toString());
+	}
+
+	@Test
+	public void testSimpleDataPanelElementContext() {
+		DataPanelElementContext test =
+			new DataPanelElementContext(CompositeContext.createCurrent());
+
+		assertEquals(CompositeContext.createCurrent().getMain(), test.getCompositeContext()
+				.getMain());
+		assertEquals(CompositeContext.createCurrent().getSession(), test.getCompositeContext()
+				.getSession());
+		assertNull(test.getElementInfo());
+		assertNull(test.getPanelId());
+		assertNull(test.getElementId());
+		assertNotNull(test.toString());
+	}
+
+	@Test(expected = AppLogicError.class)
+	public void testWrongGetKeepUserSettings() {
+		DataPanelElementInfo elementInfo =
+			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		Action ac = new Action();
+		NavigatorElementLink nlink = new NavigatorElementLink();
+		nlink.setId("id");
+		ac.setNavigatorElementLink(nlink);
+		elementInfo.getKeepUserSettings(ac);
+	}
+
+	@Test
+	public void testGetKeepUserSettings() {
+		final String id = "id";
+		DataPanelElementInfo elementInfo =
+			new DataPanelElementInfo(id, DataPanelElementType.WEBTEXT);
+		Action ac = new Action(DataPanelActionType.REFRESH_TAB);
+		DataPanelLink dLink = new DataPanelLink();
+		dLink.setDataPanelId("a.xml");
+		dLink.setTabId("1");
+		ac.setDataPanelLink(dLink);
+		ac.setKeepUserSettings(true);
+
+		assertEquals(ac.getKeepUserSettings(), elementInfo.getKeepUserSettings(ac));
+		ac.setKeepUserSettings(false);
+		assertEquals(ac.getKeepUserSettings(), elementInfo.getKeepUserSettings(ac));
 	}
 }

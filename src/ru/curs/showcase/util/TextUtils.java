@@ -40,20 +40,20 @@ public final class TextUtils {
 	 * @throws IOException
 	 */
 	public static String streamToString(final InputStream is) throws IOException {
-		if (is != null) {
-			Writer writer = new StringWriter();
-			final int bufMaxLen = 4096;
-			char[] buffer = new char[bufMaxLen];
-			try (Reader reader = new BufferedReader(new InputStreamReader(is, DEF_ENCODING))) {
-				int n;
-				while ((n = reader.read(buffer)) != -1) {
-					writer.write(buffer, 0, n);
-				}
-			}
-			return writer.toString();
-		} else {
+		if (is == null) {
 			return "";
 		}
+
+		Writer writer = new StringWriter();
+		final int bufMaxLen = 4096;
+		char[] buffer = new char[bufMaxLen];
+		try (Reader reader = new BufferedReader(new InputStreamReader(is, DEF_ENCODING))) {
+			int n;
+			while ((n = reader.read(buffer)) != -1) {
+				writer.write(buffer, 0, n);
+			}
+		}
+		return writer.toString();
 	}
 
 	/**

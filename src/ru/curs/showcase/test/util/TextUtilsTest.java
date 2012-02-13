@@ -1,6 +1,8 @@
 package ru.curs.showcase.test.util;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
+import java.io.*;
 
 import org.junit.Test;
 
@@ -47,6 +49,7 @@ public class TextUtilsTest extends AbstractTestWithDefaultUserData {
 	public void testExtractFileNameWithExt() {
 		assertEquals(RUS_NAME_WITH_EXT, TextUtils.extractFileNameWithExt(RUS_PATH1));
 		assertEquals(RUS_NAME_WITH_EXT, TextUtils.extractFileNameWithExt(RUS_PATH2));
+		assertNull(TextUtils.extractFileNameWithExt(null));
 	}
 
 	/**
@@ -62,6 +65,31 @@ public class TextUtilsTest extends AbstractTestWithDefaultUserData {
 		assertEquals(procName, TextUtils.extractFileName(procName));
 		assertEquals("calc", TextUtils.extractFileName("calc.exe"));
 		assertEquals("calc", TextUtils.extractFileName("C:\\windows\\calc"));
+		assertNull(TextUtils.extractFileName(null));
 	}
 
+	@Test
+	public void testArrayToString() {
+		String[] array = { "a", "bb", "ццц" };
+		String result = TextUtils.arrayToString(array, " ");
+		assertEquals("a bb ццц", result);
+		result = TextUtils.arrayToString(array, "");
+		assertEquals("abbццц", result);
+		assertNull(TextUtils.arrayToString(array, null));
+		assertNull(TextUtils.arrayToString(null, ","));
+	}
+
+	@Test
+	public void testRecode() throws UnsupportedEncodingException {
+		String source = "СЂР°СЃС‡РµС‚Р°";
+		String result = TextUtils.recode(source, "cp1251", "utf8");
+		assertEquals("расчета", result);
+	}
+
+	@Test
+	public void testStreamToString() throws IOException {
+		assertEquals("", TextUtils.streamToString(null));
+		String source = "some data\n";
+		assertEquals(source, TextUtils.streamToString(TextUtils.stringToStream(source)));
+	}
 }

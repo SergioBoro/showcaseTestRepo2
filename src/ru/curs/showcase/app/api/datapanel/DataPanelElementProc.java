@@ -68,13 +68,6 @@ public final class DataPanelElementProc extends NamedElement {
 	}
 
 	@Override
-	public String toString() {
-		return "DataPanelElementProc [type=" + type + ", transformName=" + transformName
-				+ ", schemaName=" + schemaName + ", getId()=" + getId() + ", getName()="
-				+ getName() + "]";
-	}
-
-	@Override
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;

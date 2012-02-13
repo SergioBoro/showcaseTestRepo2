@@ -21,4 +21,8 @@ public class CSSReadException extends BaseException {
 		super(ExceptionType.SOLUTION, ERROR_MES, aCause);
 	}
 
+	public CSSReadException(final String mes) {
+		super(ExceptionType.SOLUTION, mes);
+	}
+
 }

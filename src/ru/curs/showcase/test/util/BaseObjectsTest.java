@@ -9,7 +9,7 @@ import java.util.*;
 import org.junit.Test;
 
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.server.ProductionModeInitializer;
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.*;
@@ -25,8 +25,6 @@ import ch.qos.logback.classic.spi.LoggingEvent;
  * 
  */
 public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
-
-	private static final String TEST_CSS = "ru\\curs\\showcase\\test\\ShowcaseDataGrid_test.css";
 
 	/**
 	 * Проверка работы StreamConvertor.
@@ -89,20 +87,6 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(state.getDojoVersion());
 
 		assertEquals("10.0.0.9999", ServerStateFactory.getAppVersion("ru/curs/showcase/test/"));
-	}
-
-	/**
-	 * Проверка считывания из CSS ".webmain-SmartGrid .headerGap".
-	 * 
-	 * @see ru.curs.showcase.util.CSSPropReader CSSPropReader
-	 */
-	@Test
-	public void testGridColumnGapRead() {
-		CSSPropReader reader = new CSSPropReader();
-		String width =
-			reader.read(TEST_CSS, ProductionModeInitializer.HEADER_GAP_SELECTOR,
-					ProductionModeInitializer.WIDTH_PROP);
-		assertNotNull(width);
 	}
 
 	/**
@@ -235,4 +219,56 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 			Integer.parseInt(FileUtils.getGeneralOptionalParam(LastLogEvents.INTERNAL_LOG_SIZE));
 		assertEquals(logSize, LastLogEvents.getMaxRecords());
 	}
+
+	@Test
+	public void testJSONObjectSerializer() {
+		ObjectSerializer serializer = new JSONObjectSerializer();
+		CompositeContext context = CompositeContext.createCurrent();
+		String data = serializer.serialize(context);
+
+		String expected =
+			"{\n" + "  \"main\": \"current\",\n" + "  \"additional\": \"current\",\n"
+					+ "  \"session\": null,\n" + "  \"filter\": null\n" + "}";
+		assertEquals(expected, data);
+	}
+
+	@Test
+	public void testCopyFile() {
+		File test =
+			new File(AppInfoSingleton.getAppInfo().getWebAppPath() + "/WEB-INF/classes/ru/"
+					+ FileUtils.GENERAL_PROPERTIES);
+		if (test.exists()) {
+			test.delete();
+		}
+
+		assertFalse(test.exists());
+		try {
+			boolean result =
+				FileUtils.copyFile(AppInfoSingleton.getAppInfo().getWebAppPath()
+						+ "/WEB-INF/classes/" + FileUtils.GENERAL_PROPERTIES, test.getParent());
+			assertTrue(result);
+			assertTrue(test.exists());
+		} finally {
+			if (test.exists()) {
+				test.delete();
+			}
+		}
+	}
+
+	@Test
+	public void testCopyNonExistsFile() {
+		boolean result =
+			FileUtils.copyFile("fake.file", AppInfoSingleton.getAppInfo().getWebAppPath());
+		assertFalse(result);
+	}
+
+	@Test
+	public void testExcelFile() {
+		ExcelFile excel = new ExcelFile();
+		excel.setName("test.xls");
+
+		assertTrue(excel.isTextFile());
+		assertFalse(excel.isXMLFile());
+	}
+
 }

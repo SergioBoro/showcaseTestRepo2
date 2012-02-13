@@ -42,6 +42,7 @@ public class GridFileDownloadCommand extends DataPanelElementCommand<OutputStrea
 		GridGateway gateway = new GridDBGateway();
 		OutputStreamDataFile file =
 			gateway.downloadFile(getContext(), getElementInfo(), linkId, recordId);
+		// TODO Борису - подключить UserXMLTransformer
 		// UserXMLTransformer transformer =
 		// new UserXMLTransformer(file, getElementInfo().getProcs().get(linkId),
 		// new DataPanelElementContext(getContext(), getElementInfo()));
