@@ -16,10 +16,10 @@ import ru.curs.showcase.test.JythonPossibilitiesTest;
 @RunWith(Suite.class)
 @SuiteClasses({
 		UtilTests.class, EventAndActionTests.class, RunTimeTests.class, DataPanelTests.class,
-		ActionTabFinderTests.class, NavigatorTests.class, MainPageTests.class,
-		HTMLTests.class, GridTests.class, ChartTests.class, GeoMapTests.class,
-		WebTextTests.class, XFormTests.class, JythonPossibilitiesTest.class,
-		ActionTransformerTest.class })
+		ActionTabFinderTests.class, NavigatorTests.class, MainPageTests.class, HTMLTests.class,
+		GridTests.class, ChartTests.class, GeoMapTests.class, WebTextTests.class,
+		XFormTests.class, JythonPossibilitiesTest.class, ActionTransformerTest.class,
+		ServletTests.class })
 public class ModelTests {
 
 }

@@ -27,7 +27,7 @@ public final class StateServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
+	public void doGet(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 		CompositeContext context = ServletUtils.prepareURLParamsContext(request);
 		String userAgent = ServletUtils.getUserAgent(request);

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.MessageType;
 import ru.curs.showcase.runtime.AppProps;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;
@@ -40,6 +40,8 @@ public final class UserMessageFactory {
 	 */
 	private boolean mesFound = false;
 
+	private String messageFile = SOL_MESSAGES_FILE;
+
 	/**
 	 * Имя файла с описанием сообщений.
 	 */
@@ -49,7 +51,7 @@ public final class UserMessageFactory {
 		String mesId = parse(cause);
 		loadMessage(mesId);
 		if (userMessage == null) {
-			throw new SettingsFileRequiredPropException(SOL_MESSAGES_FILE, mesId,
+			throw new SettingsFileRequiredPropException(messageFile, mesId,
 					SettingsFileType.SOLUTION_MESSAGES);
 		}
 		return userMessage;
@@ -88,10 +90,9 @@ public final class UserMessageFactory {
 	private void loadMessage(final String mesId) {
 		InputStream stream;
 		try {
-			stream = AppProps.loadUserDataToStream(SOL_MESSAGES_FILE);
+			stream = AppProps.loadUserDataToStream(messageFile);
 		} catch (IOException e) {
-			throw new SettingsFileOpenException(e, SOL_MESSAGES_FILE,
-					SettingsFileType.SOLUTION_MESSAGES);
+			throw new SettingsFileOpenException(e, messageFile, SettingsFileType.SOLUTION_MESSAGES);
 		}
 
 		DefaultHandler saxHandler = new DefaultHandler() {
@@ -134,7 +135,7 @@ public final class UserMessageFactory {
 			}
 		};
 
-		SimpleSAX sax = new SimpleSAX(stream, saxHandler, SOL_MESSAGES_FILE);
+		SimpleSAX sax = new SimpleSAX(stream, saxHandler, messageFile);
 		sax.parse();
 	}
 
@@ -155,5 +156,9 @@ public final class UserMessageFactory {
 	public static boolean isExplicitRaised(final SQLException exc) {
 		return exc.getMessage().contains(SOL_MES_PREFIX)
 				&& exc.getMessage().contains(SOL_MES_SUFFIX);
+	}
+
+	public void setMessageFile(final String aMessageFile) {
+		messageFile = aMessageFile;
 	}
 }

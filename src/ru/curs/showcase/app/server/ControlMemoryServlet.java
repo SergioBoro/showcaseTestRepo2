@@ -11,17 +11,22 @@ import ru.curs.showcase.runtime.*;
  * Сервлет для контроля используемой Showcase памяти.
  */
 public class ControlMemoryServlet extends HttpServlet {
+	public static final String UNKNOWN_PARAM_ERROR = "Неизвестное значение параметра pool";
+	public static final String NO_PARAMS_ERROR =
+		"Должен быть задан один из параметров: pool, gc или userdata";
+	public static final String USERDATA_PARAM = "userdata";
+	public static final String GC_PARAM = "gc";
+	public static final String POOL_PARAM = "pool";
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void service(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
-		String pool = request.getParameter("pool");
-		String gc = request.getParameter("gc");
-		String userdata = request.getParameter("userdata");
+		String pool = request.getParameter(POOL_PARAM);
+		String gc = request.getParameter(GC_PARAM);
+		String userdata = request.getParameter(USERDATA_PARAM);
 		if ((pool == null) && (gc == null) && (userdata == null)) {
-			throw new ServletException(
-					"Должен быть задан один из параметров: pool, gc или userdata");
+			throw new ServletException(NO_PARAMS_ERROR);
 		}
 		if (pool != null) {
 			switch (pool) {
@@ -40,7 +45,7 @@ public class ControlMemoryServlet extends HttpServlet {
 				XSLTransformerPoolFactory.getInstance().clear();
 				break;
 			default:
-				throw new ServletException("Неизвестное значение параметра pool");
+				throw new ServletException(UNKNOWN_PARAM_ERROR);
 			}
 		}
 		if (gc != null) {

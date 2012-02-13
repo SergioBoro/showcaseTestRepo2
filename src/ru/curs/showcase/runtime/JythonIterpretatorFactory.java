@@ -21,6 +21,16 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 
 	private static JythonIterpretatorFactory instance;
 
+	private String libDir = LIB_JYTHON_PATH;
+
+	public void setLibDir(final String aLibDir) {
+		libDir = aLibDir;
+	}
+
+	public void resetLibDir() {
+		libDir = LIB_JYTHON_PATH;
+	}
+
 	private JythonIterpretatorFactory() {
 		super();
 	}
@@ -42,17 +52,14 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 	protected PythonInterpreter createReusableItem() {
 		PySystemState state = new PySystemState();
 		state.path.append(new PyString(getUserDataScriptDir()));
-		File jythonLibPath =
-			new File(AppInfoSingleton.getAppInfo().getWebAppPath() + LIB_JYTHON_PATH);
+		File jythonLibPath = new File(AppInfoSingleton.getAppInfo().getWebAppPath() + libDir);
 		if (!jythonLibPath.exists()) {
-			throw new ServerLogicError(
-					String.format(PYTHON_SCRIPTS_DIR_NOT_FOUND, LIB_JYTHON_PATH));
+			throw new ServerLogicError(String.format(PYTHON_SCRIPTS_DIR_NOT_FOUND, libDir));
 		}
 		state.path.append(new PyString(jythonLibPath.getAbsolutePath()));
 
 		jythonLibPath =
-			new File(AppInfoSingleton.getAppInfo().getWebAppPath() + LIB_JYTHON_PATH
-					+ "/site-packages");
+			new File(AppInfoSingleton.getAppInfo().getWebAppPath() + libDir + "/site-packages");
 		if (jythonLibPath.exists()) {
 			state.path.append(new PyString(jythonLibPath.getAbsolutePath()));
 		}

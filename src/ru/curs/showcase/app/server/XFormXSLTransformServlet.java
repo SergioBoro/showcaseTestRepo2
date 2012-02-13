@@ -8,7 +8,6 @@ import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.util.ServletUtils;
 
@@ -17,22 +16,16 @@ import ru.curs.showcase.util.ServletUtils;
  */
 public class XFormXSLTransformServlet extends HttpServlet {
 
-	private static final String XSLTFILE_PARAM = "xsltfile";
+	public static final String XSLTFILE_PARAM = "xsltfile";
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 382470453045525219L;
 
-	private static final String XSLTFILE_PARAM_ERROR =
-		"В XFormsXSLTransformServlet не передан обязательный параметр xsltfile";
-
 	@Override
-	protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
+	public void doPost(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 		String xsltFile = request.getParameter(XSLTFILE_PARAM);
 		if (xsltFile == null) {
-			throw new ServletException(XSLTFILE_PARAM_ERROR);
+			throw new HTTPRequestRequiredParamAbsentException(XSLTFILE_PARAM);
 		}
 
 		Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(request);
@@ -46,7 +39,6 @@ public class XFormXSLTransformServlet extends HttpServlet {
 
 		response.setStatus(HttpServletResponse.SC_OK);
 		ServletUtils.makeResponseFromString(response, res);
-		throw new GeneralException(new Exception("error"), "error");
 	}
 
 }

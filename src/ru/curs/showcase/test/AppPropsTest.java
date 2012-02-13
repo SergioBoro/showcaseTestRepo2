@@ -6,6 +6,7 @@ import java.io.*;
 
 import org.junit.Test;
 
+import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.SecurityParamsFactory;
 import ru.curs.showcase.util.FileUtils;
@@ -91,8 +92,13 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 
 	@Test(expected = SettingsFileOpenException.class)
 	public void testCheckUserdatas() {
-		AppInfoSingleton.getAppInfo().getUserdatas().put("test34", new UserData("c:\\"));
-		AppProps.checkUserdatas();
+		try {
+			AppInfoSingleton.getAppInfo().getUserdatas().put("test34", new UserData("c:\\"));
+			AppProps.checkUserdatas();
+		} finally {
+			AppInfoSingleton.getAppInfo().getUserdatas().clear();
+			AppInitializer.readDefaultUserDatas();
+		}
 	}
 
 	@Test

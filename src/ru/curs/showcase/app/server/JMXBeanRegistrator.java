@@ -43,8 +43,19 @@ public final class JMXBeanRegistrator {
 		registerShowcaseMBean();
 	}
 
+	/**
+	 * Для модульных тестов нужна проверка на то, что bean уже зарегистрирован.
+	 * Если это так, то повторно не регистрируем - для простоты.
+	 */
 	private static void registerEncacheMBean() {
 		CacheManager manager = AppInfoSingleton.getAppInfo().getCacheManager();
+		try {
+			if (getMBeanServer().isRegistered(getEhcasheMBeanName(manager))) {
+				return;
+			}
+		} catch (MalformedObjectNameException e) {
+			LOGGER.error(REGISTER_ERROR + e.getLocalizedMessage());
+		}
 		ManagementService.registerMBeans(manager, getMBeanServer(), true, false, false, true);
 	}
 
@@ -66,6 +77,11 @@ public final class JMXBeanRegistrator {
 
 	private static ObjectName getShowcaseMBeanName() throws MalformedObjectNameException {
 		return new ObjectName("Showcase:name=Showcase.Monitor");
+	}
+
+	private static ObjectName getEhcasheMBeanName(final CacheManager manager)
+			throws MalformedObjectNameException {
+		return new ObjectName("net.sf.ehcache:type=CacheManager,name=" + manager.toString());
 	}
 
 	public static void unRegister() {

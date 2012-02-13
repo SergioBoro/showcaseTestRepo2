@@ -17,18 +17,16 @@ import ru.curs.showcase.util.ServletUtils;
  */
 public class XFormScriptTransformServlet extends HttpServlet {
 
-	private static final String PROC_PARAM = "proc";
-	private static final String PROC_PARAM_ERROR =
-		"В XFormsSQLTransformServlet не передан обязательный параметр proc";
+	public static final String PROC_PARAM = "proc";
 
 	private static final long serialVersionUID = -1387485389229827545L;
 
 	@Override
-	protected void doPost(final HttpServletRequest req, final HttpServletResponse response)
+	public void doPost(final HttpServletRequest req, final HttpServletResponse response)
 			throws ServletException, IOException {
 		String procName = req.getParameter(PROC_PARAM);
 		if (procName == null) {
-			throw new ServletException(PROC_PARAM_ERROR);
+			throw new HTTPRequestRequiredParamAbsentException(PROC_PARAM);
 		}
 
 		Map<String, List<String>> params = ServletUtils.prepareURLParamsMap(req);

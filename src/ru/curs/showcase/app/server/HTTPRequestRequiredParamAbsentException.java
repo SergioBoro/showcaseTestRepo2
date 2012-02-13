@@ -15,10 +15,8 @@ public class HTTPRequestRequiredParamAbsentException extends BaseException {
 	/**
 	 * Сообщение об ошибке.
 	 */
-	private static final String ERROR_MES = "Не передан обязательный параметр: ";
-	/**
-	 * serialVersionUID.
-	 */
+	public static final String ERROR_MES = "Не передан обязательный параметр: ";
+
 	private static final long serialVersionUID = -3430283606302382887L;
 
 	public HTTPRequestRequiredParamAbsentException(final String param) {

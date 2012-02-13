@@ -2,7 +2,7 @@ package ru.curs.showcase.test.util;
 
 import static org.junit.Assert.*;
 
-import java.io.*;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -525,23 +525,20 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 
 	@Test
 	public void testJythonLibDirError() {
-		final String path =
-			AppInfoSingleton.getAppInfo().getWebAppPath()
-					+ JythonIterpretatorFactory.LIB_JYTHON_PATH;
-		File jythonLibPath = new File(path);
-		File tmp = new File(path + "_");
-		jythonLibPath.renameTo(tmp);
+		final String path = JythonIterpretatorFactory.LIB_JYTHON_PATH;
 		try {
 			try {
+				JythonIterpretatorFactory.getInstance().setLibDir(path + "_");
+				JythonIterpretatorFactory.getInstance().clear();
 				JythonIterpretatorFactory.getInstance().acquire();
 				fail();
 			} catch (ServerLogicError e) {
 				assertEquals(
-						"Каталог со стандартными python скриптами '/WEB-INF/libJython' не найден",
+						"Каталог со стандартными python скриптами '/WEB-INF/libJython_' не найден",
 						e.getMessage());
 			}
 		} finally {
-			tmp.renameTo(jythonLibPath);
+			JythonIterpretatorFactory.getInstance().resetLibDir();
 		}
 	}
 
@@ -585,21 +582,12 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testUserMessageStorageAbsent() {
 		UserMessageFactory ufactory = new UserMessageFactory();
-		final String path =
-			AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/"
-					+ UserMessageFactory.SOL_MESSAGES_FILE;
-		File umFile = new File(path);
-		File tmp = new File(path + "_");
-		umFile.renameTo(tmp);
+		ufactory.setMessageFile(UserMessageFactory.SOL_MESSAGES_FILE + "_");
 		try {
-			try {
-				ufactory.build(1, "Error mes");
-				fail();
-			} catch (SettingsFileOpenException e) {
-				assertEquals(SettingsFileType.SOLUTION_MESSAGES, e.getFileType());
-			}
-		} finally {
-			tmp.renameTo(umFile);
+			ufactory.build(1, "Error mes");
+			fail();
+		} catch (SettingsFileOpenException e) {
+			assertEquals(SettingsFileType.SOLUTION_MESSAGES, e.getFileType());
 		}
 	}
 

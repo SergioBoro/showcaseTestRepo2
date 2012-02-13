@@ -21,19 +21,17 @@ public class ExternalServlet extends HttpServlet {
 	private static final long serialVersionUID = -4937856990909960895L;
 
 	private static final String PROC_PARAM = "proc";
-	private static final String PROC_PARAM_ERROR =
-		"В ExternalServlet не передан обязательный параметр proc";
 
 	@Override
 	protected void doPost(final HttpServletRequest hreq, final HttpServletResponse hresp)
 			throws ServletException, IOException {
 		String procName = hreq.getParameter(PROC_PARAM);
 		if (procName == null) {
-			throw new ServletException(PROC_PARAM_ERROR);
+			throw new HTTPRequestRequiredParamAbsentException(PROC_PARAM);
 		}
 		String request = hreq.getParameter(REQUEST_STRING);
 		if (request == null) {
-			throw new ServletException(REQUEST_STRING);
+			throw new HTTPRequestRequiredParamAbsentException(REQUEST_STRING);
 		}
 
 		ExternalCommand command = new ExternalCommand(request, procName);

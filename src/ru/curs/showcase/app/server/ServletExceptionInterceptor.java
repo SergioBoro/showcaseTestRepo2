@@ -26,7 +26,7 @@ public final class ServletExceptionInterceptor {
 			.getLogger(ServletExceptionInterceptor.class);
 
 	@SuppressWarnings("unused")
-	@Pointcut("args(request, response) && execution(protected void javax.servlet.http.HttpServlet.do*(..))")
+	@Pointcut("args(request, response) && execution(public void javax.servlet.http.HttpServlet.do*(..))")
 	private
 			void servletExecutionPointcut(final HttpServletRequest request,
 					final HttpServletResponse response) {
