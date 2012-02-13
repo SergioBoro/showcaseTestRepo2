@@ -93,13 +93,17 @@ public final class ActionExecuter {
 
 		switch (dpat) {
 		case DO_NOTHING:
+			// MessageBox.showSimpleMessage("1", "DO_NOTHING");
 			break;
 		case RELOAD_PANEL:
+			// MessageBox.showSimpleMessage("1", "RELOAD_PANEL");
 			break;
 		case REFRESH_TAB:
+			// MessageBox.showSimpleMessage("1", "231");
 			handleRefreshTab(ac);
 			break;
 		case RELOAD_ELEMENTS:
+			// MessageBox.showSimpleMessage("1", "232");
 			handleReloadElements(ac);
 			break;
 		default:
@@ -207,7 +211,12 @@ public final class ActionExecuter {
 
 	private static void handleNavigatorBlock(final Action ac) {
 
-		if (ac.getNavigatorActionType() != NavigatorActionType.DO_NOTHING) {
+		if (ac.getNavigatorElementLink() != null) {
+
+			// }
+
+			// if (ac.getNavigatorActionType() !=
+			// NavigatorActionType.DO_NOTHING) {
 
 			boolean fireSelectionAction =
 				ac.getNavigatorActionType() == NavigatorActionType.CHANGE_NODE_AND_DO_ACTION;
