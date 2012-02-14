@@ -41,6 +41,9 @@ public final class GridTransformer {
 				column.setDateTimeFormat("yyyy MMM dd");
 			}
 
+			column.setHorizontalAlignment(com.extjs.gxt.ui.client.Style.HorizontalAlignment
+					.valueOf(c.getHorizontalAlignment().toString()));
+
 			columns.add(column);
 		}
 
@@ -83,7 +86,18 @@ public final class GridTransformer {
 			int index = 0;
 			for (Column c : grid.getDataSet().getColumnSet().getColumns()) {
 				index++;
-				egd.set("col" + String.valueOf(index), rec.getValue(c));
+				String colId = "col" + String.valueOf(index);
+				String val = null;
+
+				switch (c.getValueType()) {
+				case IMAGE:
+					val = "<a><img border=\"0\" src=\"" + rec.getValue(c) + "\"></a>";
+					break;
+				default:
+					val = rec.getValue(c);
+					break;
+				}
+				egd.set(colId, val);
 			}
 			sublist.add(egd);
 		}

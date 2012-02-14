@@ -376,6 +376,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 				column.setDateTimeFormat(DateTimeFormat.getFormat(egcc.getDateTimeFormat()));
 			}
 
+			column.setAlignment(egcc.getHorizontalAlignment());
+
 			columns.add(column);
 		}
 

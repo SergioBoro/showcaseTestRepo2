@@ -28,7 +28,7 @@ public class ExtGridColumnConfig implements SerializableElement {
 	@XmlTransient
 	private int index;
 	@XmlTransient
-	private HorizontalAlignment horizontalAlignment;
+	private com.extjs.gxt.ui.client.Style.HorizontalAlignment horizontalAlignment;
 	@XmlAttribute
 	private Sorting sorting;
 	@XmlTransient
@@ -101,11 +101,12 @@ public class ExtGridColumnConfig implements SerializableElement {
 		this.index = index1;
 	}
 
-	public HorizontalAlignment getHorizontalAlignment() {
+	public com.extjs.gxt.ui.client.Style.HorizontalAlignment getHorizontalAlignment() {
 		return horizontalAlignment;
 	}
 
-	public void setHorizontalAlignment(final HorizontalAlignment horizontalAlignment1) {
+	public void setHorizontalAlignment(
+			final com.extjs.gxt.ui.client.Style.HorizontalAlignment horizontalAlignment1) {
 		this.horizontalAlignment = horizontalAlignment1;
 	}
 
