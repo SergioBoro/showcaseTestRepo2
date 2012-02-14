@@ -3,7 +3,6 @@ package ru.curs.showcase.app.client;
 import java.util.*;
 
 import ru.curs.gwt.datagrid.DataGridListener;
-import ru.curs.gwt.datagrid.event.*;
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.gwt.datagrid.selection.*;
 import ru.curs.showcase.app.api.ExchangeConstants;
@@ -17,7 +16,8 @@ import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.DownloadHelper;
 
 import com.extjs.gxt.ui.client.data.*;
-import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.*;
+import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.fx.*;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.IconHelper;
@@ -185,6 +185,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		// }
 	}
 
+	@SuppressWarnings("unused")
 	private void saveCurrentClickSelection(final DataCell cell) {
 		// localContext.setCurrentColumnId(null);
 		// localContext.setCurrentRecordId(null);
@@ -390,6 +391,60 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		// ---------------------------
 
+		grid.addListener(Events.CellClick, new Listener<GridEvent<ExtGridData>>() {
+			@Override
+			public void handleEvent(GridEvent<ExtGridData> be) {
+				// saveCurrentClickSelection(event.getTarget());
+
+				InteractionType interactionType = InteractionType.SINGLE_CLICK;
+				processClick(be.getModel().getId(),
+						grid.getColumnModel().getColumn(be.getColIndex()).getHeader(),
+						interactionType);
+
+				// if (event.isClickFromAdditionalButton()) {
+				// event.preventDefault();
+				// if (event.getTarget().getColumn().getValueType() ==
+				// GridValueType.DOWNLOAD) {
+				// processFileDownload(event.getTarget().getRecord(),
+				// event.getTarget()
+				// .getColumn());
+				// }
+				// } else {
+				// processClick(event.getTarget().getRecord().getId(),
+				// event.getTarget().getColumn()
+				// .getId(), interactionType);
+				// }
+			}
+		});
+
+		grid.addListener(Events.CellDoubleClick, new Listener<GridEvent<ExtGridData>>() {
+			@Override
+			public void handleEvent(GridEvent<ExtGridData> be) {
+				// saveCurrentClickSelection(event.getTarget());
+
+				InteractionType interactionType = InteractionType.SINGLE_CLICK;
+				processClick(be.getModel().getId(),
+						grid.getColumnModel().getColumn(be.getColIndex()).getHeader(),
+						interactionType);
+
+				// if (event.isClickFromAdditionalButton()) {
+				// event.preventDefault();
+				// if (event.getTarget().getColumn().getValueType() ==
+				// GridValueType.DOWNLOAD) {
+				// processFileDownload(event.getTarget().getRecord(),
+				// event.getTarget()
+				// .getColumn());
+				// }
+				// } else {
+				// processClick(event.getTarget().getRecord().getId(),
+				// event.getTarget().getColumn()
+				// .getId(), interactionType);
+				// }
+			}
+		});
+
+		// ---------------------------
+
 		grid.setLoadMask(true);
 		grid.setBorders(true);
 		// grid.setAutoExpandColumn("forum");
@@ -492,6 +547,47 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	}
 
 	// CHECKSTYLE:ON
+
+	private void processClick(final String rowId, final String colId,
+			final InteractionType interactionType) {
+		Action ac = null;
+
+		List<ru.curs.showcase.app.api.grid.GridEvent> events =
+			gridMetadata.getEventManager().getEventForCell(rowId, colId, interactionType);
+
+		for (ru.curs.showcase.app.api.grid.GridEvent ev : events) {
+			ac = ev.getAction();
+			runAction(ac);
+		}
+	}
+
+	private void runAction(final Action ac) {
+		if (ac != null) {
+			AppCurrContext.getInstance().setCurrentActionFromElement(ac, gridMetadata);
+			ActionExecuter.execAction();
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private void processFileDownload(final Record rec, final Column col) {
+		DownloadHelper dh = DownloadHelper.getInstance();
+		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
+		dh.clear();
+
+		dh.setErrorCaption(Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD);
+		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
+
+		try {
+			dh.addParam("linkId", col.getLinkId());
+			dh.addStdPostParamsToBody(getContext(), getElementInfo());
+			dh.addParam("recordId", rec.getId());
+
+			dh.submit();
+		} catch (SerializationException e) {
+			ru.curs.showcase.app.client.MessageBox.showSimpleMessage(
+					Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD, e.getMessage());
+		}
+	}
 
 	@SuppressWarnings("unused")
 	private void updateGridRecordsetByUpdateRecordset() {
@@ -608,14 +704,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	}
 
 	@SuppressWarnings("unused")
-	private void runAction(final Action ac) {
-		if (ac != null) {
-			AppCurrContext.getInstance().setCurrentActionFromElement(ac, gridMetadata);
-			ActionExecuter.execAction();
-		}
-	}
-
-	@SuppressWarnings("unused")
 	private void resetGridSettingsToCurrent() {
 		// localContext = new GridContext();
 		// localContext.setPageNumber(grid.getDataSet().getRecordSet().getPageNumber());
@@ -705,92 +793,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	}
 
 	// -------------------------------------------------------
-
-	/**
-	 * DataClickHandler.
-	 */
-	@SuppressWarnings("unused")
-	private final class DataClickHandler implements GridClickHandler<DataCell> {
-
-		/**
-		 * label.
-		 */
-		private final String label;
-
-		private DataClickHandler(final String label1) {
-			this.label = label1;
-		}
-
-		@Override
-		public void onClick(final GridClickEvent<DataCell> event) {
-
-			saveCurrentClickSelection(event.getTarget());
-
-			InteractionType interactionType;
-			switch (event.getClickType()) {
-			case SINGLE:
-				interactionType = InteractionType.SINGLE_CLICK;
-				break;
-			case DOUBLE:
-				interactionType = InteractionType.DOUBLE_CLICK;
-				break;
-			case RIGHT:
-				interactionType = InteractionType.RIGHT_CLICK;
-				break;
-			case MIDDLE:
-				interactionType = InteractionType.MIDDLE_CLICK;
-				break;
-			default:
-				interactionType = InteractionType.SINGLE_CLICK;
-				break;
-			}
-
-			if (event.isClickFromAdditionalButton()) {
-				event.preventDefault();
-				if (event.getTarget().getColumn().getValueType() == GridValueType.DOWNLOAD) {
-					processFileDownload(event.getTarget().getRecord(), event.getTarget()
-							.getColumn());
-				}
-			} else {
-				processClick(event.getTarget().getRecord().getId(), event.getTarget().getColumn()
-						.getId(), interactionType);
-			}
-		}
-	}
-
-	private void processClick(final String rowId, final String colId,
-			final InteractionType interactionType) {
-		// Action ac = null;
-		//
-		// List<GridEvent> events =
-		// grid.getEventManager().getEventForCell(rowId, colId,
-		// interactionType);
-		//
-		// for (GridEvent ev : events) {
-		// ac = ev.getAction();
-		// runAction(ac);
-		// }
-	}
-
-	private void processFileDownload(final Record rec, final Column col) {
-		DownloadHelper dh = DownloadHelper.getInstance();
-		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
-		dh.clear();
-
-		dh.setErrorCaption(Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD);
-		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
-
-		try {
-			dh.addParam("linkId", col.getLinkId());
-			dh.addStdPostParamsToBody(getContext(), getElementInfo());
-			dh.addParam("recordId", rec.getId());
-
-			dh.submit();
-		} catch (SerializationException e) {
-			ru.curs.showcase.app.client.MessageBox.showSimpleMessage(
-					Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD, e.getMessage());
-		}
-	}
 
 	/**
 	 * SelectionListener.

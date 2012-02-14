@@ -26,6 +26,8 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 
 	private List<Column> originalColumns = null;
 
+	private GridEventManager gridEventManager = null;
+
 	/**
 	 * Набор данных для грида. Содержит описания столбцов, строк, страниц и
 	 * внешнего вида собственно грида.
@@ -60,7 +62,11 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 
 	@Override
 	public final GridEventManager getEventManager() {
-		return (GridEventManager) super.getEventManager();
+		return gridEventManager;
+	}
+
+	public void setGridEventManager(final GridEventManager aGridEventManager) {
+		gridEventManager = aGridEventManager;
 	}
 
 	/**

@@ -61,6 +61,10 @@ public final class GridTransformer {
 
 		// -------------------------------------------------------
 
+		egm.setGridEventManager(grid.getEventManager());
+
+		// -------------------------------------------------------
+
 		return egm;
 	}
 
@@ -83,6 +87,9 @@ public final class GridTransformer {
 
 		for (Record rec : grid.getDataSet().getRecordSet().getRecords()) {
 			ExtGridData egd = new ExtGridData();
+
+			egd.setId(rec.getId());
+
 			int index = 0;
 			for (Column c : grid.getDataSet().getColumnSet().getColumns()) {
 				index++;

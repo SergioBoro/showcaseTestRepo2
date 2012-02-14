@@ -22,4 +22,12 @@ public class ExtGridData extends BaseTreeModel implements Serializable {
 
 	}
 
+	public String getId() {
+		return (String) get("id");
+	}
+
+	public void setId(final String id) {
+		set("id", id);
+	}
+
 }
