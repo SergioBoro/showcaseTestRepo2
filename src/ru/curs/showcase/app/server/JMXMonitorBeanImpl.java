@@ -17,11 +17,6 @@ public class JMXMonitorBeanImpl implements JMXMonitorBean, DynamicMBean {
 	private static final String SESSION_COUNT_ATTR = "SessionCount";
 
 	@Override
-	public void setDebugLevel(final String aLevel) {
-		// TODO
-	}
-
-	@Override
 	public String getSessionCount() {
 		return String.valueOf(AppInfoSingleton.getAppInfo().getSessionInfoMap().size());
 	}

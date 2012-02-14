@@ -24,14 +24,19 @@ public abstract class AbstractDownloadHandler extends AbstractFilesHandler {
 	 */
 	private OutputStreamDataFile outputFile;
 
+	/**
+	 * Особенности: 1) Перекодирование нужно для корректной передачи русских
+	 * символов в имени файла. Работает в IE, Chrome и Opera, не работает в
+	 * Firefox и Safari. На английские символы перекодировка не влияет. 2)
+	 * encoding для response ставим для единообразия - везде UTF-8
+	 * 
+	 * @see ru.curs.showcase.app.server.AbstractFilesHandler#fillResponse()
+	 **/
 	@Override
 	protected void fillResponse() throws IOException {
 		String encName = URLEncoder.encode(outputFile.getName(), TextUtils.DEF_ENCODING);
-		// Перекодирование нужно для корректной передачи русских символов в
-		// имени файла.
-		// Работает в IE, Chrome и Opera, не работает в Firefox и Safari.
-		// На английские символы перекодировка не влияет.
 		setContentType();
+		getResponse().setCharacterEncoding(TextUtils.DEF_ENCODING);
 		getResponse().setHeader("Content-Disposition",
 				String.format("attachment; filename=\"%s\"", encName));
 		try (OutputStream out = getResponse().getOutputStream()) {

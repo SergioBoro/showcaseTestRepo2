@@ -11,7 +11,8 @@ import com.google.gwt.user.client.rpc.SerializationException;
 
 /**
  * Класс-обработчик на получение файла из БД с помощью хранимой процедуры.
- * Используется для скачивания файлов из грида.
+ * Используется для скачивания файлов из грида. TODO: подумать над тем, чтобы
+ * возвращать linkId и recordId в GridContext.
  * 
  */
 public class GridFileDownloadHandler extends AbstractDownloadHandler {
@@ -37,7 +38,13 @@ public class GridFileDownloadHandler extends AbstractDownloadHandler {
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
 		super.getParams();
 		linkId = new ID(getRequest().getParameter("linkId"));
+		if (linkId == null) {
+			throw new HTTPRequestRequiredParamAbsentException("linkId");
+		}
 		recordId = getRequest().getParameter("recordId");
+		if (recordId == null) {
+			throw new HTTPRequestRequiredParamAbsentException("recordId");
+		}
 	}
 
 	public ID getLinkId() {

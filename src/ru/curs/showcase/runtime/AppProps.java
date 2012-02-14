@@ -138,9 +138,8 @@ public final class AppProps {
 	 * @return поток с файлом.
 	 * @throws IOException
 	 */
-	private static InputStream
-			loadUserDataToStream(final String fileName, final String userdataId)
-					throws IOException {
+	public static InputStream loadUserDataToStream(final String fileName, final String userdataId)
+			throws IOException {
 		FileInputStream result =
 			new FileInputStream(getUserDataCatalog(userdataId) + File.separator + fileName);
 		return result;

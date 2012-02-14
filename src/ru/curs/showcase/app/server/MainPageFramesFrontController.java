@@ -15,13 +15,11 @@ import ru.curs.showcase.util.ServletUtils;
  * в главную страницу приложения.
  */
 public final class MainPageFramesFrontController extends HttpServlet {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = 7991801050316249555L;
 
 	@Override
-	protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
+	public void doGet(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 		String servlet = request.getServletPath();
 		servlet =
@@ -31,6 +29,9 @@ public final class MainPageFramesFrontController extends HttpServlet {
 		CompositeContext context = ServletUtils.prepareURLParamsContext(request);
 		MainPageFrameGetCommand command = new MainPageFrameGetCommand(context, type);
 		String html = command.execute();
+		if (html == null) {
+			html = "";
+		}
 		response.setStatus(HttpServletResponse.SC_OK);
 		ServletUtils.makeResponseFromString(response, html);
 	}

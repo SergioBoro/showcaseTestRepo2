@@ -8,14 +8,6 @@ package ru.curs.showcase.app.server;
  */
 public interface JMXMonitorBean {
 	/**
-	 * Установка уровня отладки.
-	 * 
-	 * @param level
-	 *            - уровень.
-	 */
-	void setDebugLevel(String level);
-
-	/**
 	 * Получить число пользовательских сессий.
 	 * 
 	 * @return - число сессий.

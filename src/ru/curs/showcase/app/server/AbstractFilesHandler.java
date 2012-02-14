@@ -53,7 +53,7 @@ public abstract class AbstractFilesHandler {
 		try {
 			handleTemplateMethod();
 		} catch (SerializationException | IOException | FileUploadException e) {
-			GeneralExceptionFactory.build(e);
+			throw GeneralExceptionFactory.build(e);
 		}
 	}
 
@@ -118,16 +118,8 @@ public abstract class AbstractFilesHandler {
 		return request;
 	}
 
-	public void setRequest(final HttpServletRequest aRequest) {
-		request = aRequest;
-	}
-
 	public HttpServletResponse getResponse() {
 		return response;
-	}
-
-	public void setResponse(final HttpServletResponse aResponse) {
-		response = aResponse;
 	}
 
 	public void setContext(final CompositeContext aContext) {

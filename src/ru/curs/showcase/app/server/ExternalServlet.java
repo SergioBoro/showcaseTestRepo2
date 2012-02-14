@@ -16,14 +16,14 @@ import ru.curs.showcase.util.ServletUtils;
  */
 public class ExternalServlet extends HttpServlet {
 
-	private static final String REQUEST_STRING = "requestString";
+	public static final String REQUEST_STRING = "requestString";
 
 	private static final long serialVersionUID = -4937856990909960895L;
 
-	private static final String PROC_PARAM = "proc";
+	public static final String PROC_PARAM = "proc";
 
 	@Override
-	protected void doPost(final HttpServletRequest hreq, final HttpServletResponse hresp)
+	protected void service(final HttpServletRequest hreq, final HttpServletResponse hresp)
 			throws ServletException, IOException {
 		String procName = hreq.getParameter(PROC_PARAM);
 		if (procName == null) {
@@ -38,6 +38,7 @@ public class ExternalServlet extends HttpServlet {
 		String response = command.execute();
 
 		hresp.setStatus(HttpServletResponse.SC_OK);
-		ServletUtils.makeResponseFromString(hresp, response);
+		ServletUtils.makeXMLResponseFromString(hresp, response);
+
 	}
 }

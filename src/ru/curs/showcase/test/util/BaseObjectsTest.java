@@ -26,8 +26,6 @@ import ch.qos.logback.classic.spi.LoggingEvent;
  */
 public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 
-	public static final String FIREFOX_UA = "mozilla/5.0 (windows nt 6.1; wow64; rv:2.0.1) gecko/20100101 firefox/4.0.1";
-
 	/**
 	 * Проверка работы StreamConvertor.
 	 * 

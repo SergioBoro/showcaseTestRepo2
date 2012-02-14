@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.server;
 
-import java.io.*;
+import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -35,16 +35,11 @@ public final class StateServlet extends HttpServlet {
 		ServerState serverState = command.execute();
 		ClientState sessionState = new ClientState(serverState, userAgent);
 
-		response.setStatus(HttpServletResponse.SC_OK);
-		response.setContentType("text/xml");
-		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-
 		ObjectSerializer serializer = new XMLObjectSerializer();
 		String message = serializer.serialize(sessionState);
 
-		try (PrintWriter writer = response.getWriter()) {
-			writer.append(message);
-		}
+		response.setStatus(HttpServletResponse.SC_OK);
+		ServletUtils.makeXMLResponseFromString(response, message);
 	}
 
 }

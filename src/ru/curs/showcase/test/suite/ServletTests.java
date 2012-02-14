@@ -14,8 +14,10 @@ import ru.curs.showcase.test.servlets.*;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-		ControlMemoryServletTest.class, StateServletTest.class,
-		XFormScriptTransformServletTest.class, XFormXSLTransformServletTest.class })
+		BaseServletTest.class, FiltersTest.class, ControlMemoryServletTest.class,
+		StateServletTest.class, XFormScriptTransformServletTest.class,
+		XFormXSLTransformServletTest.class, FilesFrontControllerTest.class,
+		MainPageFramesFrontControllerTest.class, ExternalServletTest.class })
 public class ServletTests {
 
 }

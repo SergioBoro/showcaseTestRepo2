@@ -100,6 +100,18 @@ public final class ServletUtils {
 	public static void makeResponseFromString(final HttpServletResponse response,
 			final String message) throws IOException {
 		response.setContentType("text/html");
+		makeStdResponse(response, message);
+	}
+
+	public static void makeXMLResponseFromString(final HttpServletResponse response,
+			final String message) throws IOException {
+		response.setContentType("text/xml");
+		makeStdResponse(response, message);
+	}
+
+	protected static void
+			makeStdResponse(final HttpServletResponse response, final String message)
+					throws IOException {
 		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
 		try (PrintWriter writer = response.getWriter()) {
 			writer.append(message);

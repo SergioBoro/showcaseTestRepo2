@@ -1,0 +1,1 @@
+7|0|7|http://localhost:8080/Showcase/secured/|B47384DB23F70300784CDC8F9D89A623|ru.curs.showcase.app.api.html.XFormContext/4033847919|<schema xmlns=""><info><name></name><growth></growth><eyescolour></eyescolour><music></music><comment></comment></info></schema>|main_context|java.util.HashMap/1797211028|java.util.TreeMap/1493889780|1|2|3|4|0|0|5|6|0|0|7|0|0|

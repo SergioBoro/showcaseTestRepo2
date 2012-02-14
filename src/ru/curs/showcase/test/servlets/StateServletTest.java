@@ -1,6 +1,6 @@
 package ru.curs.showcase.test.servlets;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import org.junit.*;
 
 import ru.curs.showcase.app.server.StateServlet;
-import ru.curs.showcase.test.util.BaseObjectsTest;
 
 /**
  * Тесты для StateServlet.
@@ -30,7 +29,6 @@ public class StateServletTest extends AbstractServletTest {
 
 	@Test
 	public void testDoGet() throws ServletException, IOException {
-		request().addHeader("User-Agent", BaseObjectsTest.FIREFOX_UA);
 		servlet.doGet(request(), response());
 
 		checkOkResponse("text/xml");

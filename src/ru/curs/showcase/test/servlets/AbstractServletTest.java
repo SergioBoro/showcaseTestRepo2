@@ -2,6 +2,8 @@ package ru.curs.showcase.test.servlets;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.*;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,12 +30,22 @@ public abstract class AbstractServletTest extends AbstractTest {
 
 	private MockHttpServletRequest request;
 	private MockHttpServletResponse response;
+	protected static final String TEXT_HTML = "text/html";
 	private static ServletContext servletContext;
 
 	@Before
 	public void setUp() {
-		request = new MockHttpServletRequest(servletContext);
+		initRequest();
 		response = new MockHttpServletResponse();
+	}
+
+	protected void setRequest(final MockHttpServletRequest aRequest) {
+		request = aRequest;
+	}
+
+	protected void initRequest() {
+		request = new MockHttpServletRequest(servletContext);
+		request.addHeader("User-Agent", FIREFOX_UA);
 	}
 
 	@After
@@ -69,6 +81,11 @@ public abstract class AbstractServletTest extends AbstractTest {
 		assertEquals(HttpServletResponse.SC_OK, response().getStatus());
 		assertEquals(ctype, response().getContentType());
 		assertEquals(TextUtils.DEF_ENCODING, response().getCharacterEncoding());
+	}
+
+	protected String loadTestData(final String file) throws IOException {
+		InputStream cis = FilesFrontControllerTest.class.getResourceAsStream(file);
+		return TextUtils.streamToString(cis);
 	}
 
 }

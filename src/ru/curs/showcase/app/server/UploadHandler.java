@@ -59,6 +59,9 @@ public final class UploadHandler extends AbstractFilesHandler {
 	@Override
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
 		ServletFileUpload upload = new ServletFileUpload();
+		if (!ServletFileUpload.isMultipartContent(getRequest())) {
+			throw new FileUploadException("Требуется multipart/form-data");
+		}
 		FileItemIterator iterator = upload.getItemIterator(getRequest());
 		while (iterator.hasNext()) {
 			FileItemStream item = iterator.next();

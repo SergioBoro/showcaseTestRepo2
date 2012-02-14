@@ -16,6 +16,8 @@ import ru.curs.showcase.util.*;
  * 
  */
 public class PreProcessFilter implements Filter {
+	private static final String GEO_JS = "geo.js";
+
 	/**
 	 * Префикс сервлетов, используемых в механизме аутентификации.
 	 */
@@ -29,6 +31,8 @@ public class PreProcessFilter implements Filter {
 	 * Имя страницы логина приложения.
 	 */
 	public static final String LOGIN_PAGE = "login.jsp";
+
+	private String geoCheckFile = GEO_JS;
 
 	/**
 	 * Выставляем кодировку UTF-8 у всех вызовов. Раньше на этом сыпался GWT,
@@ -48,7 +52,7 @@ public class PreProcessFilter implements Filter {
 			if (isDynamicDataServlet(httpRequest)) {
 				skipServletCaching(response);
 			}
-			httpRequest.setCharacterEncoding("UTF-8");
+			httpRequest.setCharacterEncoding(TextUtils.DEF_ENCODING);
 
 			if (handleGeoModule(httpRequest, httpResponse)) {
 				return;
@@ -61,18 +65,22 @@ public class PreProcessFilter implements Filter {
 
 	private boolean handleGeoModule(final HttpServletRequest httpRequest,
 			final HttpServletResponse httpResponse) throws IOException {
-		if (httpRequest.getRequestURI().endsWith("geo.js")) {
+		if (httpRequest.getRequestURI().endsWith("js/course/" + geoCheckFile)) {
 			File file =
 				new File(httpRequest.getSession().getServletContext()
-						.getRealPath("js/course/geo.js"));
+						.getRealPath("js/course/" + geoCheckFile));
 			if (!file.exists()) {
 				httpResponse.setContentType("text/javascript");
 				httpResponse.setStatus(HttpServletResponse.SC_OK);
 				InputStream is =
 					httpRequest.getSession().getServletContext()
 							.getResourceAsStream("js/course/geo_fake.js");
-				try (PrintWriter writer = httpResponse.getWriter()) {
-					writer.append(TextUtils.streamToString(is));
+				try {
+					try (PrintWriter writer = httpResponse.getWriter()) {
+						writer.append(TextUtils.streamToString(is));
+					}
+				} finally {
+					is.close();
 				}
 				return true;
 			}
@@ -115,6 +123,10 @@ public class PreProcessFilter implements Filter {
 
 	@Override
 	public void destroy() {
+	}
+
+	public void setGeoCheckFile(final String aGeoCheckFile) {
+		geoCheckFile = aGeoCheckFile;
 	}
 
 }
