@@ -52,7 +52,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			IconHelper.create(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
 
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
-	// private DataGrid dg = null;
+	private EditorGrid<ExtGridData> grid = null;
 	private final ColumnSet cs = null;
 	private Timer selectionTimer = null;
 	private DataServiceAsync dataService = null;
@@ -319,10 +319,38 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 				public void load(final Object loadConfig,
 						final AsyncCallback<PagingLoadResult<ExtGridData>> callback) {
 
+					PagingLoadConfig plc = (PagingLoadConfig) loadConfig;
+
+					// --------------
+
 					GridContext gridContext = getDetailedContext();
-					gridContext.getLiveInfo().setOffset(
-							((PagingLoadConfig) loadConfig).getOffset());
-					gridContext.getLiveInfo().setLimit(((PagingLoadConfig) loadConfig).getLimit());
+					gridContext.getLiveInfo().setOffset(plc.getOffset());
+					gridContext.getLiveInfo().setLimit(plc.getLimit());
+
+					// --------------
+
+					ColumnConfig colConfig =
+						grid.getColumnModel().getColumnById(plc.getSortField());
+					if (colConfig != null) {
+						Column colOriginal = null;
+						for (Column c : gridMetadata.getOriginalColumns()) {
+							if (colConfig.getHeader().equals(c.getId())) {
+								colOriginal = c;
+								break;
+							}
+						}
+						if (colOriginal != null) {
+							List<Column> sortOriginalCols = new ArrayList<Column>();
+
+							colOriginal.setSorting(Sorting.valueOf(plc.getSortDir().name()));
+
+							sortOriginalCols.add(colOriginal);
+
+							gridContext.setSortedColumns(sortOriginalCols);
+						}
+					}
+
+					// --------------
 
 					dataService.getExtGridData(gridContext, getElementInfo(), callback);
 				}
@@ -353,7 +381,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		ColumnModel cm = new ColumnModel(columns);
 
-		final EditorGrid<ExtGridData> grid = new EditorGrid<ExtGridData>(store, cm);
+		grid = new EditorGrid<ExtGridData>(store, cm);
 		grid.setColumnReordering(true);
 		// grid.setStateId("pagingGridExample");
 		// grid.setStateful(true);

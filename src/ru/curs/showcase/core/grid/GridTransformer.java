@@ -54,6 +54,10 @@ public final class GridTransformer {
 
 		// -------------------------------------------------------
 
+		egm.setOriginalColumns(grid.getDataSet().getColumnSet().getColumns());
+
+		// -------------------------------------------------------
+
 		return egm;
 	}
 

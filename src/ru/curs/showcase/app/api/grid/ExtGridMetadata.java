@@ -24,6 +24,8 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 
 	private ExtGridLiveInfo liveInfo = new ExtGridLiveInfo();
 
+	private List<Column> originalColumns = null;
+
 	/**
 	 * Набор данных для грида. Содержит описания столбцов, строк, страниц и
 	 * внешнего вида собственно грида.
@@ -206,5 +208,13 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 
 	public void setLiveInfo(final ExtGridLiveInfo aLiveInfo) {
 		liveInfo = aLiveInfo;
+	}
+
+	public List<Column> getOriginalColumns() {
+		return originalColumns;
+	}
+
+	public void setOriginalColumns(final List<Column> aOriginalColumns) {
+		originalColumns = aOriginalColumns;
 	}
 }
