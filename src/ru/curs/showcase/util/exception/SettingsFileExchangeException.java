@@ -10,7 +10,8 @@ import ru.curs.showcase.app.api.ExceptionType;
  */
 public final class SettingsFileExchangeException extends BaseException {
 
-	private static final String ERROR_MES = "%s '%s' - ошибка при обмене данными";
+	private static final String ERROR_MES =
+		"%s '%s' - ошибка при обмене данными. Возможно файл поврежден или указан ошибочно.";
 
 	private static final long serialVersionUID = 6810662604700277735L;
 

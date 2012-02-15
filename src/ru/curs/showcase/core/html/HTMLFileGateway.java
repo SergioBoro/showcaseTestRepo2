@@ -40,7 +40,7 @@ public class HTMLFileGateway extends GeneralXMLHelper implements HTMLGateway {
 		File file =
 			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/" + fileName);
 		if (!file.exists()) {
-			throw new SettingsFileOpenException(elementInfo.getProcName(), SettingsFileType.XML);
+			throw new SettingsFileOpenException(elementInfo.getProcName(), SettingsFileType.XM_DATA);
 		}
 		try {
 			DocumentBuilder db = XMLUtils.createBuilder();
@@ -48,7 +48,7 @@ public class HTMLFileGateway extends GeneralXMLHelper implements HTMLGateway {
 			doc = db.parse(stream);
 		} catch (SAXException | IOException e) {
 			throw new SettingsFileExchangeException(elementInfo.getProcName(), e,
-					SettingsFileType.XML);
+					SettingsFileType.XM_DATA);
 		}
 		fileName =
 			String.format("%s/%s/%s", DATA_DIR, elementInfo.getType().toString().toLowerCase(),
@@ -59,7 +59,7 @@ public class HTMLFileGateway extends GeneralXMLHelper implements HTMLGateway {
 				settings = AppProps.loadUserDataToStream(fileName);
 			} catch (IOException e) {
 				throw new SettingsFileExchangeException(getSettingsFileName(), e,
-						SettingsFileType.XML);
+						SettingsFileType.XM_DATA);
 			}
 		}
 		return new HTMLBasedElementRawData(doc, settings, elementInfo, context);

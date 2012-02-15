@@ -20,12 +20,13 @@ import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.chart.*;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
-import ru.curs.showcase.core.event.ServerActivitySelector;
+import ru.curs.showcase.core.event.*;
 import ru.curs.showcase.core.frame.*;
 import ru.curs.showcase.core.grid.*;
 import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.core.html.webtext.*;
 import ru.curs.showcase.core.html.xform.*;
+import ru.curs.showcase.core.jython.JythonWrongClassException;
 import ru.curs.showcase.core.primelements.*;
 import ru.curs.showcase.core.primelements.datapanel.*;
 import ru.curs.showcase.core.sp.*;
@@ -678,5 +679,42 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		elementInfo.setProcName("chart.xml");
 		ChartSelector selector = new ChartSelector(elementInfo);
 		selector.getGateway();
+	}
+
+	@Test
+	public void testWrongJythonFile() {
+		final String source = "WrongJythonProc";
+		Activity activity = Activity.newServerActivity("id", source + ".py");
+		CompositeContext context =
+			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+		context.setMain(MAIN_CONDITION);
+		activity.setContext(context);
+		ActivityGateway gateway = new ActivityJythonGateway();
+		try {
+			gateway.exec(activity);
+			fail();
+		} catch (JythonWrongClassException e) {
+			assertEquals(
+					"Имя Jython класса-обработчика команд Showacase должно совпадать с именем файла 'WrongJythonProc'",
+					e.getLocalizedMessage());
+		}
+	}
+
+	@Test
+	public void testSettingsFileExchangeException() {
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo element =
+			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		element.setProcName("WrongXML.xm");
+
+		HTMLGateway gateway = new HTMLFileGateway();
+		try {
+			gateway.getRawData(context, element);
+			fail();
+		} catch (SettingsFileExchangeException e) {
+			assertEquals(
+					"XML-файл с данными 'WrongXML.xm' - ошибка при обмене данными. Возможно файл поврежден или указан ошибочно.",
+					e.getLocalizedMessage());
+		}
 	}
 }

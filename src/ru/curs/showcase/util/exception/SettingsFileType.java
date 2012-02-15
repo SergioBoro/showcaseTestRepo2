@@ -21,7 +21,7 @@ public enum SettingsFileType {
 	SQLSCRIPT("Файл SQL скрипта"),
 	GEOMAP_PROPERTIES("Профайл настроек карты"),
 	JYTHON("Jython скрипт"),
-	XML("XML-файл с данными"),
+	XM_DATA("XML-файл с данными"),
 	GEOMAP_KEYS("Файл с ключами API для карт");
 
 	/**

@@ -6,7 +6,7 @@ import java.sql.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.runtime.ConnectionFactory;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 
 /**
@@ -75,6 +75,16 @@ public class DBConnectionsTest extends AbstractTestWithDefaultUserData {
 		} finally {
 			DriverManager.registerDriver(driver);
 		}
+	}
 
+	@Test
+	public void testDBConnectException() {
+		AppInfoSingleton.getAppInfo().setCurUserDataId("ora");
+		try {
+			ConnectionFactory.getInstance().acquire();
+			fail();
+		} catch (DBConnectException e) {
+			assertEquals("Ошибка при соединении с БД (userdata 'ora')", e.getLocalizedMessage());
+		}
 	}
 }

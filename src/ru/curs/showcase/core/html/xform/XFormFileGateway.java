@@ -41,7 +41,7 @@ public final class XFormFileGateway extends HTMLFileGateway implements XFormGate
 		try {
 			XMLUtils.stringToXMLFile(data, fileName);
 		} catch (SAXException | IOException | TransformerException e) {
-			throw new SettingsFileExchangeException(fileName, e, SettingsFileType.XML);
+			throw new SettingsFileExchangeException(fileName, e, SettingsFileType.XM_DATA);
 		}
 	}
 
@@ -60,7 +60,7 @@ public final class XFormFileGateway extends HTMLFileGateway implements XFormGate
 		try {
 			dup = new StreamConvertor(FileUtils.loadResToStream(linkId.getString()));
 		} catch (IOException e) {
-			throw new SettingsFileExchangeException(linkId.getString(), e, SettingsFileType.XML);
+			throw new SettingsFileExchangeException(linkId.getString(), e, SettingsFileType.XM_DATA);
 		}
 		OutputStreamDataFile file =
 			new OutputStreamDataFile(dup.getOutputStream(), linkId.getString());

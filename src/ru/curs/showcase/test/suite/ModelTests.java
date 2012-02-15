@@ -19,7 +19,7 @@ import ru.curs.showcase.test.JythonPossibilitiesTest;
 		ActionTabFinderTests.class, NavigatorTests.class, MainPageTests.class, HTMLTests.class,
 		GridTests.class, ChartTests.class, GeoMapTests.class, WebTextTests.class,
 		XFormTests.class, JythonPossibilitiesTest.class, ActionTransformerTest.class,
-		ServletTests.class })
+		ServletTests.class, StatAnalysisTests.class })
 public class ModelTests {
 
 }

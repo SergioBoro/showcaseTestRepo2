@@ -8,7 +8,6 @@ import org.python.core.*;
 import org.python.util.PythonInterpreter;
 import org.slf4j.*;
 
-import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.runtime.JythonIterpretatorFactory;
 import ru.curs.showcase.util.TextUtils;
@@ -36,7 +35,7 @@ public abstract class JythonQuery<T> {
 	private T result;
 	private final Class<T> resultType;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AppInitializer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(JythonQuery.class);
 
 	protected JythonQuery(final Class<T> aResultType) {
 		super();
@@ -106,13 +105,14 @@ public abstract class JythonQuery<T> {
 
 				analyzeReturn(execute());
 			} catch (PyException e) {
-				String error = StringEscapeUtils.unescapeJava(e.value.toString());
-				Pattern regex = Pattern.compile("^Exception\\(u'(.+)*',\\)$", Pattern.MULTILINE);
-				Matcher regexMatcher = regex.matcher(error);
-				if (regexMatcher.matches()) {
-					error = regexMatcher.group(1);
+
+				JythonWrongClassException exc =
+					JythonWrongClassException.checkForImportError(e.toString(), className);
+				if (exc != null) {
+					throw exc;
 				}
 
+				String error = handleJythonException(e.value.toString());
 				throw new JythonException(String.format(JYTHON_ERROR, getJythonProcName(), error),
 						e);
 			}
@@ -120,6 +120,16 @@ public abstract class JythonQuery<T> {
 			JythonIterpretatorFactory.getInstance().release(interpreter);
 		}
 		checkErrors();
+	}
+
+	private String handleJythonException(final String value) {
+		String error = StringEscapeUtils.unescapeJava(value);
+		Pattern regex = Pattern.compile("^Exception\\(u'(.+)*',\\)$", Pattern.MULTILINE);
+		Matcher regexMatcher = regex.matcher(error);
+		if (regexMatcher.matches()) {
+			return regexMatcher.group(1);
+		}
+		return error;
 	}
 
 	@SuppressWarnings("unchecked")
