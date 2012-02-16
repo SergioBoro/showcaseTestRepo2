@@ -34,8 +34,6 @@ public abstract class ServiceLayerCommand<T> {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ServiceLayerCommand.class);
 
-	private CommandContext commandContext;
-
 	/**
 	 * Идентификатор текущей HTTP сессии.
 	 */
@@ -109,7 +107,7 @@ public abstract class ServiceLayerCommand<T> {
 	}
 
 	protected void initCommandContext() {
-		commandContext =
+		CommandContext commandContext =
 			new CommandContext(this.getClass().getSimpleName(), UUID.randomUUID().toString());
 		commandContext.toMDC();
 	}

@@ -4,7 +4,6 @@ import java.util.Map.Entry;
 
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.api.*;
@@ -26,8 +25,6 @@ public class InlineUploader {
 	private final String data;
 	private final XFormPanel currentXFormPanel;
 
-	private final Action ac;
-
 	private static int counter = 0;
 
 	private boolean isAtLeastOneFileSelected = false;
@@ -37,12 +34,11 @@ public class InlineUploader {
 	 */
 	private static CompleteHandler submitHandler = null;
 
-	public InlineUploader(final String aData, final XFormPanel aCurrentXFormPanel, final Action aAc) {
+	public InlineUploader(final String aData, final XFormPanel aCurrentXFormPanel) {
 		super();
 
 		data = aData;
 		currentXFormPanel = aCurrentXFormPanel;
-		ac = aAc;
 	}
 
 	public void checkForUpload(final CompleteHandler uplSubmitEndHandler) {

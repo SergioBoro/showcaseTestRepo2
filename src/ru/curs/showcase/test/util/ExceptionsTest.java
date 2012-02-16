@@ -557,16 +557,6 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		factory.build();
 	}
 
-	@Test(expected = RuntimeException.class)
-	public void testErrorForXMLServerActivity() {
-		Activity activity = Activity.newServerActivity("id", "Test.xml");
-		CompositeContext context =
-			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
-		activity.setContext(context);
-		ServerActivitySelector selector = new ServerActivitySelector(activity);
-		selector.getGateway();
-	}
-
 	@Test
 	public void testUserMessageByException() {
 		XFormContext context = new XFormContext();

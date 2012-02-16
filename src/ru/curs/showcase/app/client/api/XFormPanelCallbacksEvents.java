@@ -60,8 +60,7 @@ public final class XFormPanelCallbacksEvents {
 
 							@Override
 							public void onSuccess(final Void result) {
-								InlineUploader uploader =
-									new InlineUploader(data, curXFormPanel, ac);
+								InlineUploader uploader = new InlineUploader(data, curXFormPanel);
 								uploader.checkForUpload(new CompleteHandler() {
 
 									@Override
@@ -100,7 +99,7 @@ public final class XFormPanelCallbacksEvents {
 	public static void simpleUpload(final String xformId, final String linkId, final String data) {
 		final XFormPanel curXFormPanel = getCurrentPanel(xformId);
 
-		InlineUploader uploader = new InlineUploader(data, curXFormPanel, null);
+		InlineUploader uploader = new InlineUploader(data, curXFormPanel);
 		uploader.singleFormUpload(linkId);
 	}
 

@@ -476,7 +476,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		cp.setLayout(new FitLayout());
 		grid.getAriaSupport().setLabelledBy(cp.getHeader().getId() + "-label");
 		cp.add(grid);
-		cp.setSize(1200, 500);
+		cp.setSize(1000, 500);
 		// cp.setHeight(500);
 
 		// ------------

@@ -86,11 +86,6 @@ public class GridDBFactory extends AbstractGridFactory {
 		}
 	}
 
-	@Override
-	public void initResult() {
-		super.initResult();
-	}
-
 	// CHECKSTYLE:OFF
 	private void readRecords() throws SQLException {
 		ColumnSet cs = getResult().getDataSet().getColumnSet();

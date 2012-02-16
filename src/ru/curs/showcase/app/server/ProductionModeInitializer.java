@@ -72,7 +72,7 @@ public final class ProductionModeInitializer {
 	private static void initClassPath(final ServletContext aServletContext) {
 		String path = aServletContext.getRealPath("index.jsp");
 		path = path.replaceAll("\\\\", "/");
-		path = path.substring(0, path.lastIndexOf("/"));
+		path = path.substring(0, path.lastIndexOf('/'));
 		AppInfoSingleton.getAppInfo().setWebAppPath(path);
 	}
 

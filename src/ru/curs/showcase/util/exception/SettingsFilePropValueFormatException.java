@@ -37,7 +37,7 @@ public class SettingsFilePropValueFormatException extends SettingsFileOpenExcept
 
 	protected SettingsFilePropValueFormatException(final String aFileName, final String aPropName,
 			final SettingsFileType aType, final String aTemplate) {
-		super(generateMessage(ERROR_MES, aFileName, aPropName, aType), aFileName, aType);
+		super(generateMessage(aTemplate, aFileName, aPropName, aType), aFileName, aType);
 		propName = aPropName;
 	}
 

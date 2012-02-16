@@ -22,8 +22,6 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		ru.curs.showcase.app.api.SelfCheckObject {
 	private static final String KEEP_USER_SETTINGS_ERROR =
 		"Невозможно получить значение keepUserSettings для действия, не содержащего блока для работы с инф. панелью";
-	private static final String UNKNOWN_ELEMENT_TYPE =
-		"Неизвестный тип элемента информационной панели";
 	public static final int DEF_TIMER_INTERVAL = 600;
 
 	private static final long serialVersionUID = -6461216659708261808L;
@@ -154,18 +152,20 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 
 	@Override
 	public boolean isCorrect() {
-		Boolean checkRes = (id != null) && checkRelatedExistances();
+		if ((id == null) || !checkRelatedExistances()) {
+			return false;
+		}
 		switch (type) {
 		case WEBTEXT:
-			return checkRes && ((procName != null) || (transformName != null));
+			return (procName != null) || (transformName != null);
 		case GRID:
 		case CHART:
 		case GEOMAP:
-			return checkRes && (procName != null);
+			return procName != null;
 		case XFORMS:
-			return checkRes && (templateName != null);
+			return templateName != null;
 		default:
-			throw new Error(UNKNOWN_ELEMENT_TYPE);
+			return true;
 		}
 	}
 

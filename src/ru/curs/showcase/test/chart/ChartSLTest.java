@@ -45,14 +45,15 @@ public class ChartSLTest extends AbstractTest {
 	 * @throws Throwable
 	 * 
 	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement1() throws Throwable {
+	@Test
+	public void testWrongElement1() {
 		DataPanelElementInfo element = new DataPanelElementInfo("id", DataPanelElementType.CHART);
 		ChartGetCommand command = new ChartGetCommand(new CompositeContext(), element);
 		try {
 			command.execute();
+			fail();
 		} catch (GeneralException e) {
-			throw e.getCause();
+			assertEquals(IncorrectElementException.class, e.getCause().getClass());
 		}
 	}
 
@@ -62,16 +63,17 @@ public class ChartSLTest extends AbstractTest {
 	 * @throws Throwable
 	 * 
 	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement2() throws Throwable {
+	@Test
+	public void testWrongElement2() {
 		DataPanelElementInfo element = new DataPanelElementInfo("id", null);
 		element.setProcName("proc");
 
 		ChartGetCommand command = new ChartGetCommand(new CompositeContext(), element);
 		try {
 			command.execute();
+			fail();
 		} catch (GeneralException e) {
-			throw e.getCause();
+			assertEquals(IncorrectElementException.class, e.getCause().getClass());
 		}
 	}
 
@@ -81,13 +83,14 @@ public class ChartSLTest extends AbstractTest {
 	 * @throws Throwable
 	 * 
 	 */
-	@Test(expected = IncorrectElementException.class)
-	public void testWrongElement3() throws Throwable {
+	@Test
+	public void testWrongElement3() {
 		ChartGetCommand command = new ChartGetCommand(new CompositeContext(), null);
 		try {
 			command.execute();
+			fail();
 		} catch (GeneralException e) {
-			throw e.getCause();
+			assertEquals(IncorrectElementException.class, e.getCause().getClass());
 		}
 	}
 

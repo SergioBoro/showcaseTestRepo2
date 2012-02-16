@@ -22,8 +22,6 @@ public class ServerActivitySelector extends SourceSelector<ActivityGateway> {
 		case JYTHON:
 			res = new ActivityJythonGateway();
 			break;
-		case FILE:
-			throw new RuntimeException("Нет естественного способа реализации");
 		default:
 			res = new ActivityDBGateway();
 		}

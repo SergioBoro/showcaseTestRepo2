@@ -1,5 +1,5 @@
 <project name="Showcase" basedir="." default="build" 
-	xmlns:doxygen="antlib:org.doxygen.tools" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle" xmlns:jacoco="antlib:org.jacoco.ant">
+	xmlns:doxygen="antlib:org.doxygen.tools" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle" xmlns:jacoco="antlib:org.jacoco.ant" xmlns:sonar="antlib:org.sonar.ant">
 	<property name="appname" value="${ant.project.name}" />
 
 	<property environment="os" />
@@ -503,6 +503,7 @@
 	  	  <exclude name="net.*"/>
 	  	  <exclude name="gwtquery.*"/>
 	  	  <exclude name="ch.qos.*"/>
+	  	  <exclude name="jdepend.*"/>
 	  	  <exclude name="ru.curs.showcase.test.ws"/>
 	      <classespath>
 	      	<pathelement location="${sc.webinf.dir}/classes/" />	      	
@@ -560,6 +561,20 @@
 		</javancss>
 	</target>
 
+	<target name="sonar" depends="build" description="Run analysis for Sonar">
+		<property name="sonar.java.source" value="1.7" />
+		<property name="sonar.sourceEncoding" value="UTF-8" />
+		<property name="sonar.host.url" value="http://localhost:9000" />
+		<property name="sonar.dynamicAnalysis" value="false" />
+		<property name="sonar.exclusions" value="ru/curs/showcase/app/jre/**,ru/curs/showcase/test/ws/**" />
+		<property name="sonar.libraries" value="${sc.lib.dir}" />
+	    <sonar:sonar key="ru.curs.showcase:showcase" version="2.1-SNAPSHOT">	 
+	      <!-- source directories (required) -->
+	      <sources>
+	        <path location="${sc.src.dir}" />
+	      </sources>	      	 			
+	    </sonar:sonar>
+	  </target>	
 	
 </project> 
 

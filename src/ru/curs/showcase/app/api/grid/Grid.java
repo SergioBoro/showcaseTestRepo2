@@ -124,25 +124,28 @@ public class Grid extends DataPanelCompBasedElement implements SizeEstimate {
 				columnId = autoSelectColumn.getId();
 			}
 
-			List<GridEvent> events =
-				getEventManager().getEventForCell(autoSelectRecord.getId(), columnId,
-						InteractionType.SINGLE_CLICK);
-			GridEvent res = getConcreteEvent(events);
+			Action res = getActionForClickType(columnId, InteractionType.SINGLE_CLICK);
 			if (res != null) {
-				return res.getAction();
+				return res;
 			}
-
-			events =
-				getEventManager().getEventForCell(autoSelectRecord.getId(), columnId,
-						InteractionType.DOUBLE_CLICK);
-			res = getConcreteEvent(events);
+			res = getActionForClickType(columnId, InteractionType.DOUBLE_CLICK);
 			if (res != null) {
-				return res.getAction();
+				return res;
 			}
 		} else {
 			return getDefaultAction();
 		}
 
+		return null;
+	}
+
+	private Action getActionForClickType(final String columnId, final InteractionType aClickType) {
+		List<GridEvent> events =
+			getEventManager().getEventForCell(autoSelectRecord.getId(), columnId, aClickType);
+		GridEvent res = getConcreteEvent(events);
+		if (res != null) {
+			return res.getAction();
+		}
 		return null;
 	}
 

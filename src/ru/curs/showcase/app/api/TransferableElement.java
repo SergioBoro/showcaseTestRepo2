@@ -24,7 +24,6 @@ public abstract class TransferableElement {
 		SerializationStreamWriter writer =
 			((SerializationStreamFactory) factory).createStreamWriter();
 		writer.writeObject(this);
-		String content = writer.toString();
-		return content;
+		return writer.toString();
 	}
 }
