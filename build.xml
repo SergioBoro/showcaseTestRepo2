@@ -225,13 +225,13 @@
 	<target name="rebuild" depends="clean, build" description="clean + build" />
 
 	<target name="ci.build" depends="checkProperties, info.env, clean,  
-		init.local.files, init.dirs, init.dojo, init.jython, init.patches, 
+		init.dirs, init.dojo, init.jython, init.patches, 
 		build, checkstyle, test.coverage, jdepend, build.gwt,
 		dist, backup.userdata, javadoc, deploy.tomcat" 
 		description="Target for CI build"/>
 	
 	<target name="ci.sonar.analyzer" depends="checkProperties, info.env, clean,  
-		init.local.files, init.dirs, build, test.coverage, sonar" 
+		init.dirs, init.jython, build, test.coverage, sonar" 
 		description="Target for Sonar"/>	
 	
 	<target name="dist" depends="write.app.version, write.gwt.version" description="Assembles WAR file">
