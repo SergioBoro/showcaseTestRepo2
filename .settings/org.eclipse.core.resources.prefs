@@ -1,4 +1,4 @@
-#Thu Feb 16 16:31:48 MSK 2012
+#Fri Feb 17 23:42:47 MSK 2012
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/user.properties=UTF-8
 encoding//WebContent/log/lastLogEvents.jsp=UTF-8
@@ -41,7 +41,6 @@ encoding//userdatas/default/scripts/jython/xform/GetJythonProc.py=utf-8
 encoding//userdatas/default/scripts/jython/xform/XFormSaveProc.py=utf-8
 encoding//userdatas/default/scripts/jython/xform/simple_submission.py=UTF-8
 encoding//userdatas/default/scripts/jython/xform/submission.py=utf-8
-encoding//userdatas/pg/gridproperties/default.properties=UTF-8
 encoding//userdatas/test1/gridproperties/default.properties=UTF-8
 encoding//userdatas/test1/scripts/jython/navigator/NavJythonProc.py=utf-8
 encoding//userdatas/test2/gridproperties/default.properties=UTF-8
