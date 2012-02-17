@@ -231,7 +231,7 @@
 		description="Target for CI build"/>
 	
 	<target name="ci.sonar.analyzer" depends="checkProperties, info.env, clean,  
-		init.dirs, init.jython, build, test.coverage, sonar" 
+		init.dirs, init.dojo, init.jython, build, test.coverage, sonar" 
 		description="Target for Sonar"/>	
 	
 	<target name="dist" depends="write.app.version, write.gwt.version" description="Assembles WAR file">
