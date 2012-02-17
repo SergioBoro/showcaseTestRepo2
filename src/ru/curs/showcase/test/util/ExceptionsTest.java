@@ -634,7 +634,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 				causeMessage)));
 		for (LoggingEventDecorator event : AppInfoSingleton.getAppInfo().getLastLogEvents()) {
 			if (testMarker.equals(event.getProcess())) {
-				assertEquals(LastLogEvents.INPUT.toString(), event.getDirection());
+				assertEquals(LastLogEvents.INPUT, event.getDirection());
 				assertEquals(params, event.getParams());
 				assertTrue(event.getMessage().contains(message));
 				assertTrue(event.getMessage().contains(excMessage));

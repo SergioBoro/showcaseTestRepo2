@@ -23,7 +23,7 @@
 	<property name="sc.war.file" value="" />
 	<property name="sc.db.backup.prefix" value="showcase-test" />
 	
-	<property name="sc.env.props" value="${env}.properties" />
+	<property name="sc.env.props" value="local.properties" />
 	<property file="${sc.env.props}" />
 
 	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" />
@@ -57,7 +57,7 @@
 		<fileset dir="${sc.junit.dir}">
 			<include name="*.jar" />
 		</fileset>
-		<pathelement location="${sc.webinf.dir}/classes/" />
+		<pathelement location="${sc.class.dir}" />
 	</path>
 
 	<path id="test-classpath" description="CLASSPATH for unittests">
@@ -229,6 +229,10 @@
 		build, checkstyle, test.coverage, jdepend, build.gwt,
 		dist, backup.userdata, javadoc, deploy.tomcat" 
 		description="Target for CI build"/>
+	
+	<target name="ci.sonar.analyzer" depends="checkProperties, info.env, clean,  
+		init.local.files, init.dirs, build, test.coverage, sonar" 
+		description="Target for Sonar"/>	
 	
 	<target name="dist" depends="write.app.version, write.gwt.version" description="Assembles WAR file">
 		<echo>Copy compiled data</echo>
@@ -447,7 +451,8 @@
 
 	<target name="test.coverage" depends="init.dirs, build" description="Runs coverage tests">
 		<jacoco:coverage destfile="${sc.build.dir}/coverage/jacoco.exec" append="false" includes="ru/curs/showcase/*"
-			excludes="ru/curs/showcase/test/*:ru/curs/showcase/app/client/*:ru/curs/showcase/app/test/*:ru/curs/showcase/app/jre/*">					  
+			excludes="ru/curs/showcase/app/jre/*">		
+			<!--ru/curs/showcase/test/*:ru/curs/showcase/app/client/*:ru/curs/showcase/app/test/*-->
 			<junit printsummary="true" showoutput="false" filtertrace="true" haltonerror="true" haltonfailure="true" fork="true" >
 				<classpath refid="test-classpath"/>
 				<formatter type="xml" usefile="true" />
@@ -561,19 +566,19 @@
 		</javancss>
 	</target>
 
-	<target name="sonar" depends="build" description="Run analysis for Sonar">
+	<target name="sonar" depends="init.dirs, build, write.app.version" description="Run analysis for Sonar">
 		<property name="sonar.java.source" value="1.7" />
 		<property name="sonar.sourceEncoding" value="UTF-8" />
 		<property name="sonar.host.url" value="http://localhost:9000" />
-		<property name="sonar.dynamicAnalysis" value="false" />
+		<property name="sonar.dynamicAnalysis" value="reuseReports" />
+		<property name="sonar.jacoco.reportPath" value="${sc.build.dir}/coverage/jacoco.exec" />
 		<property name="sonar.exclusions" value="ru/curs/showcase/app/jre/**,ru/curs/showcase/test/ws/**" />
-		<property name="sonar.libraries" value="${sc.lib.dir}" />
-	    <sonar:sonar key="ru.curs.showcase:showcase" version="2.1-SNAPSHOT">	 
-	      <!-- source directories (required) -->
-	      <sources>
-	        <path location="${sc.src.dir}" />
-	      </sources>	      	 			
-	    </sonar:sonar>
+
+		<property name="sonar.sources" value="${sc.src.dir}" />
+	    <pathconvert property='sonar.libraries' refid='test-classpath' pathsep=','/>
+		<property name='sonar.binaries' value='${sc.class.dir}'/>
+		
+	    <sonar:sonar key="ru.curs.showcase:showcase" version="${sc.version}.${sc.last.rev}"/>
 	  </target>	
 	
 </project> 

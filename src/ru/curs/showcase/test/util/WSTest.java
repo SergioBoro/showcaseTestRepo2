@@ -41,8 +41,8 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 	public static void beforeClass() {
 		AbstractTestWithDefaultUserData.beforeClass();
 		Properties localprops = new Properties();
-		try {
-			localprops.load(new FileInputStream("local.properties"));
+		try (InputStream is = new FileInputStream("local.properties")) {
+			localprops.load(is);
 		} catch (IOException e) {
 			fail();
 		}

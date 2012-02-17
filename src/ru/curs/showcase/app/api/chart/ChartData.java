@@ -68,8 +68,9 @@ public class ChartData extends Size implements SerializableElement {
 	 * @return - подпись.
 	 */
 	public ChartLabel getLabelsYByValue(final double aY) {
+		final double floatError = .0000001;
 		for (ChartLabel cur : labelsY) {
-			if (aY == cur.getValue().doubleValue()) {
+			if (Math.abs(aY - cur.getValue().doubleValue()) < floatError) {
 				return cur;
 			}
 		}

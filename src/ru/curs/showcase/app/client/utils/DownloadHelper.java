@@ -24,7 +24,6 @@ public final class DownloadHelper extends RunServletByFormHelper {
 	 */
 	private DownloadHelper() {
 		super();
-		DownloadHelper.instance = this;
 	}
 
 	/**

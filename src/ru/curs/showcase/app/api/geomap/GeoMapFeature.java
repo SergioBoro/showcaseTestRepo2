@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.xml.bind.annotation.*;
 
+import ru.curs.showcase.app.api.ID;
+
 /**
  * Класс ГИС объекта (feature) на карте. Применяется для описания точки и
  * полигона, а также любых других типов объектов, которые появятся в будущем.
@@ -125,7 +127,7 @@ public class GeoMapFeature extends GeoMapObject {
 			return null;
 		}
 		for (String key : attrs.keySet()) {
-			if (ind.getId().equals(key)) {
+			if (ind.getId().equals(new ID(key))) {
 				return attrs.get(key);
 			}
 		}

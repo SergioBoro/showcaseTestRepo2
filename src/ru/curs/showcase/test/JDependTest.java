@@ -58,7 +58,8 @@ public class JDependTest extends AbstractTest {
 				}
 			}
 			fail("Между следующими пакетами есть циклическая связь:"
-					+ TextUtils.arrayToString(packagesList.toArray(new String[0]), ","));
+					+ TextUtils.arrayToString(
+							packagesList.toArray(new String[packagesList.size()]), ","));
 		}
 	}
 }

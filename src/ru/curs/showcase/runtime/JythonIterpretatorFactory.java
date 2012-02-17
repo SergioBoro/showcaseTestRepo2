@@ -19,7 +19,7 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 	public static final String LIB_JYTHON_PATH = "/WEB-INF/libJython";
 	public static final String SCRIPTS_JYTHON_PATH = "scripts\\\\jython";
 
-	private static JythonIterpretatorFactory instance;
+	private static volatile JythonIterpretatorFactory instance;
 
 	private String libDir = LIB_JYTHON_PATH;
 

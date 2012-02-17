@@ -74,6 +74,6 @@ public class BaseServletTest extends AbstractServletTest {
 	public static void checkForNoCashe(final MockHttpServletResponse response) {
 		assertEquals("no-cache", response.getHeader("Pragma"));
 		assertEquals("must-revalidate,no-store,no-cache", response.getHeader("Cache-Control"));
-		assertEquals(new Long(0), response.getHeader("Expires"));
+		assertEquals(Long.valueOf(0), response.getHeader("Expires"));
 	}
 }

@@ -91,9 +91,7 @@ public class XFormSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testSQLSubmissionBySLWithNullData() {
-		String content = null;
 		XFormContext context = new XFormContext();
-		context.setFormData(content);
 		DataPanelElementInfo elInfo =
 			XFormInfoFactory.generateXFormsSQLSubmissionInfo(XFORMS_SUBMISSION1);
 		XFormScriptTransformCommand command = new XFormScriptTransformCommand(context, elInfo);

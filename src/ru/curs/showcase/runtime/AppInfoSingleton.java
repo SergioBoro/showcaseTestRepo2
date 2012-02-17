@@ -37,7 +37,7 @@ public final class AppInfoSingleton {
 	/**
 	 * Синглетон.
 	 */
-	private static AppInfoSingleton instance;
+	private static volatile AppInfoSingleton instance;
 
 	/**
 	 * Карта пользовательских сессий.

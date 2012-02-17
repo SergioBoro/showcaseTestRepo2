@@ -15,7 +15,7 @@ public final class MemoryController {
 	private static final int KB_MB = 1024;
 
 	private static String mbOutHandler(final long value) {
-		return Math.round(value / KB_MB / KB_MB) + " Мб";
+		return value / KB_MB / KB_MB + " Мб";
 	}
 
 	public static String getMaxHeap() {

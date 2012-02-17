@@ -118,9 +118,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 
 	@Test(expected = ValidateException.class)
 	public void testJythonSubmissionException() {
-		String data = null;
 		XFormContext context = new XFormContext();
-		context.setFormData(data);
 		XFormGateway gateway = new XFormJythonGateway();
 		gateway.scriptTransform("xform/submission.py", context);
 	}
