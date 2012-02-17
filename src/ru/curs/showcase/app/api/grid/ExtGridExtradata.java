@@ -16,15 +16,13 @@ import ru.curs.showcase.app.api.event.*;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEstimate {
+public class ExtGridExtradata extends DataPanelCompBasedElement implements SizeEstimate {
 
-	private static final long serialVersionUID = 2492137452715570464L;
+	private static final long serialVersionUID = -2429397174443684120L;
 
 	private List<ExtGridColumnConfig> columns = null;
 
-	private ExtGridLiveInfo liveInfo = new ExtGridLiveInfo();
-
-	private List<Column> originalColumns = null;
+	private GridEventManager gridEventManager = null;
 
 	/**
 	 * Набор данных для грида. Содержит описания столбцов, строк, страниц и
@@ -50,17 +48,21 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 	 */
 	private ExtGridColumnConfig autoSelectColumn = null;
 
-	public ExtGridMetadata() {
+	public ExtGridExtradata() {
 		super();
 	}
 
-	public ExtGridMetadata(final DataPanelElementInfo aElInfo) {
+	public ExtGridExtradata(final DataPanelElementInfo aElInfo) {
 		super(aElInfo);
 	}
 
 	@Override
 	public final GridEventManager getEventManager() {
-		return (GridEventManager) super.getEventManager();
+		return gridEventManager;
+	}
+
+	public void setGridEventManager(final GridEventManager aGridEventManager) {
+		gridEventManager = aGridEventManager;
 	}
 
 	/**
@@ -202,19 +204,4 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 		columns = aColumns;
 	}
 
-	public ExtGridLiveInfo getLiveInfo() {
-		return liveInfo;
-	}
-
-	public void setLiveInfo(final ExtGridLiveInfo aLiveInfo) {
-		liveInfo = aLiveInfo;
-	}
-
-	public List<Column> getOriginalColumns() {
-		return originalColumns;
-	}
-
-	public void setOriginalColumns(final List<Column> aOriginalColumns) {
-		originalColumns = aOriginalColumns;
-	}
 }

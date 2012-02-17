@@ -6,8 +6,6 @@ import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.util.TextUtils;
 
-import com.extjs.gxt.ui.client.data.*;
-
 /**
  * Класс, преобразующий Grid в ExtGrid.
  * 
@@ -61,8 +59,6 @@ public final class GridTransformer {
 
 		// -------------------------------------------------------
 
-		egm.setGridEventManager(grid.getEventManager());
-
 		// -------------------------------------------------------
 
 		return egm;
@@ -79,7 +75,7 @@ public final class GridTransformer {
 		return result;
 	}
 
-	public static PagingLoadResult<ExtGridData> gridToExtGridData(final Grid grid) {
+	public static ExtGridPagingLoadResult<ExtGridData> gridToExtGridData(final Grid grid) {
 
 		// -------------------------------------------------------
 
@@ -105,14 +101,22 @@ public final class GridTransformer {
 					break;
 				}
 				egd.set(colId, val);
+
 			}
 			sublist.add(egd);
 		}
 
 		// -------------------------------------------------------
 
-		return new BasePagingLoadResult<ExtGridData>(sublist, grid.getLiveInfo().getOffset(), grid
-				.getLiveInfo().getTotalCount());
+		ExtGridPagingLoadResult<ExtGridData> egplr =
+			new ExtGridPagingLoadResult<ExtGridData>(sublist, grid.getLiveInfo().getOffset(), grid
+					.getLiveInfo().getTotalCount());
+
+		ExtGridExtradata ege = new ExtGridExtradata();
+		ege.setGridEventManager(grid.getEventManager());
+		egplr.setExtGridExtradata(ege);
+
+		return egplr;
 
 	}
 

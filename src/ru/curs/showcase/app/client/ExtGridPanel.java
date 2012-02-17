@@ -58,6 +58,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	private DataServiceAsync dataService = null;
 	private GridContext localContext = null;
 	private ExtGridMetadata gridMetadata = null;
+	private ExtGridExtradata gridExtradata = null;
 
 	private boolean isFirstLoading = true;
 
@@ -354,6 +355,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 					// --------------
 
 					dataService.getExtGridData(gridContext, getElementInfo(), callback);
+
 				}
 			};
 
@@ -361,6 +363,14 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		final PagingLoader<PagingLoadResult<ModelData>> loader =
 			new BasePagingLoader<PagingLoadResult<ModelData>>(proxy);
 		loader.setRemoteSort(true);
+		loader.addListener(Loader.Load, new Listener<LoadEvent>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void handleEvent(LoadEvent be) {
+				gridExtradata =
+					((ExtGridPagingLoadResult<ExtGridData>) be.getData()).getExtGridExtradata();
+			}
+		});
 
 		final ListStore<ExtGridData> store = new ListStore<ExtGridData>(loader);
 		// store.setMonitorChanges(true);
@@ -394,52 +404,14 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		grid.addListener(Events.CellClick, new Listener<GridEvent<ExtGridData>>() {
 			@Override
 			public void handleEvent(GridEvent<ExtGridData> be) {
-				// saveCurrentClickSelection(event.getTarget());
-
-				InteractionType interactionType = InteractionType.SINGLE_CLICK;
-				processClick(be.getModel().getId(),
-						grid.getColumnModel().getColumn(be.getColIndex()).getHeader(),
-						interactionType);
-
-				// if (event.isClickFromAdditionalButton()) {
-				// event.preventDefault();
-				// if (event.getTarget().getColumn().getValueType() ==
-				// GridValueType.DOWNLOAD) {
-				// processFileDownload(event.getTarget().getRecord(),
-				// event.getTarget()
-				// .getColumn());
-				// }
-				// } else {
-				// processClick(event.getTarget().getRecord().getId(),
-				// event.getTarget().getColumn()
-				// .getId(), interactionType);
-				// }
+				handleClick(be, InteractionType.SINGLE_CLICK);
 			}
 		});
 
 		grid.addListener(Events.CellDoubleClick, new Listener<GridEvent<ExtGridData>>() {
 			@Override
 			public void handleEvent(GridEvent<ExtGridData> be) {
-				// saveCurrentClickSelection(event.getTarget());
-
-				InteractionType interactionType = InteractionType.SINGLE_CLICK;
-				processClick(be.getModel().getId(),
-						grid.getColumnModel().getColumn(be.getColIndex()).getHeader(),
-						interactionType);
-
-				// if (event.isClickFromAdditionalButton()) {
-				// event.preventDefault();
-				// if (event.getTarget().getColumn().getValueType() ==
-				// GridValueType.DOWNLOAD) {
-				// processFileDownload(event.getTarget().getRecord(),
-				// event.getTarget()
-				// .getColumn());
-				// }
-				// } else {
-				// processClick(event.getTarget().getRecord().getId(),
-				// event.getTarget().getColumn()
-				// .getId(), interactionType);
-				// }
+				handleClick(be, InteractionType.DOUBLE_CLICK);
 			}
 		});
 
@@ -548,12 +520,36 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 	// CHECKSTYLE:ON
 
+	private void
+			handleClick(final GridEvent<ExtGridData> be, final InteractionType interactionType) {
+
+		// saveCurrentClickSelection(event.getTarget());
+
+		processClick(be.getModel().getId(), grid.getColumnModel().getColumn(be.getColIndex())
+				.getHeader(), interactionType);
+
+		// if (event.isClickFromAdditionalButton()) {
+		// event.preventDefault();
+		// if (event.getTarget().getColumn().getValueType() ==
+		// GridValueType.DOWNLOAD) {
+		// processFileDownload(event.getTarget().getRecord(),
+		// event.getTarget()
+		// .getColumn());
+		// }
+		// } else {
+		// processClick(event.getTarget().getRecord().getId(),
+		// event.getTarget().getColumn()
+		// .getId(), interactionType);
+		// }
+
+	}
+
 	private void processClick(final String rowId, final String colId,
 			final InteractionType interactionType) {
 		Action ac = null;
 
 		List<ru.curs.showcase.app.api.grid.GridEvent> events =
-			gridMetadata.getEventManager().getEventForCell(rowId, colId, interactionType);
+			gridExtradata.getEventManager().getEventForCell(rowId, colId, interactionType);
 
 		for (ru.curs.showcase.app.api.grid.GridEvent ev : events) {
 			ac = ev.getAction();
