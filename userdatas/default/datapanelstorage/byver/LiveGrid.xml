@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>
+	<tab id="1" name="1">
+		<element id="1" type="webtext" transform="bal.xsl" />
+		<element id="6" type="webtext" transform="bal.xsl" />
+	</tab>
+	<tab id="2" name="LiveGrid. Начало">
+		<element id="2" type="GRID"  subtype="EXT_LIVE_GRID" proc="grid_bal_extgridlive" />
+		<element id="5" type="WEBTEXT" proc="webtext_bal" hideOnLoad="true" />
+		<element id="3" type="chart" proc="chart_bal_extgridlive" hideOnLoad="true" />
+	</tab>
+</datapanel>

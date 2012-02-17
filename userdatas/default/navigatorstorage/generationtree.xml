@@ -134,6 +134,13 @@
       </level2>                   
     </level1>
     <level1 id="20" name="Версия 2">
+      <level2 id="LiveGrid" name="LiveGrid">
+        <action>
+          <main_context>jython_save_data.xml</main_context>
+          <datapanel type="byver/LiveGrid.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
       <level2 id="208" name="2.0.8">
         <action>
           <main_context>jython_save_data.xml</main_context>
