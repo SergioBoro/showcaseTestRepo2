@@ -2414,7 +2414,11 @@ div.x-toolbar-no-items {
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   padding: 3px 3px 3px 5px;
+  
+/*  
   white-space: nowrap;
+*/  
+  white-space: normal !important;  
 }
 
 .x-grid3-hd-inner {
