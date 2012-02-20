@@ -1,6 +1,9 @@
 package ru.curs.showcase.core.grid;
 
+import java.io.IOException;
 import java.util.*;
+
+import org.xml.sax.SAXException;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.*;
@@ -64,17 +67,6 @@ public final class GridTransformer {
 		return egm;
 	}
 
-	private static Integer getIntWidthByStringWidth(final String w) {
-		Integer result = DEF_COLUMN_WIDTH;
-		if (w != null) {
-			result = TextUtils.getIntSizeValue(w);
-		}
-		if (result == null) {
-			result = DEF_COLUMN_WIDTH;
-		}
-		return result;
-	}
-
 	public static ExtGridPagingLoadResult<ExtGridData> gridToExtGridData(final Grid grid) {
 
 		// -------------------------------------------------------
@@ -95,6 +87,9 @@ public final class GridTransformer {
 				switch (c.getValueType()) {
 				case IMAGE:
 					val = "<a><img border=\"0\" src=\"" + rec.getValue(c) + "\"></a>";
+					break;
+				case LINK:
+					val = getLink(rec.getValue(c));
 					break;
 				default:
 					val = rec.getValue(c);
@@ -120,4 +115,53 @@ public final class GridTransformer {
 
 	}
 
+	private static Integer getIntWidthByStringWidth(final String w) {
+		Integer result = DEF_COLUMN_WIDTH;
+		if (w != null) {
+			result = TextUtils.getIntSizeValue(w);
+		}
+		if (result == null) {
+			result = DEF_COLUMN_WIDTH;
+		}
+		return result;
+	}
+
+	private static String getLink(final String value) {
+		String result = null;
+
+		try {
+			org.w3c.dom.Element el =
+				ru.curs.showcase.util.xml.XMLUtils.stringToDocument(value).getDocumentElement();
+
+			String href = el.getAttribute("href");
+			String text = el.getAttribute("text");
+			if ((text == null) || text.isEmpty()) {
+				text = href;
+			}
+			String image = el.getAttribute("image");
+			String openInNewTab = el.getAttribute("openInNewTab");
+			String target = null;
+			if (Boolean.parseBoolean(openInNewTab)) {
+				target = "_blank";
+			}
+
+			result = "<a class=\"gwt-Anchor\" href=\"" + href + "\" ";
+			if (target != null) {
+				result = result + "target=\"_blank\"";
+			}
+			result = result + ">";
+			if ((image == null) || image.isEmpty()) {
+				result = result + text;
+			} else {
+				String alt = text != null ? " alt=\"" + text + "\"" : "";
+				result = result + "<img border=\"0\" src=\"" + image + "\"" + alt + "/>";
+			}
+			result = result + "</a>";
+
+		} catch (SAXException | IOException e) {
+			result = null;
+		}
+
+		return result;
+	}
 }

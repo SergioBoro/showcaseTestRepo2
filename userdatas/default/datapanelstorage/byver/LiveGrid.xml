@@ -23,4 +23,7 @@
 		</element>
 		<element id="0402" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_cities_one"/>
 	</tab>
+	<tab id="5" name="Ссылки в гриде">
+		<element id="511" type="grid" subtype="EXT_LIVE_GRID" proc="grid_portals" />
+	</tab>
 </datapanel>
