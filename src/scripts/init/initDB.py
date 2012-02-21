@@ -21,7 +21,9 @@ def initDB(args):
     root = os.path.abspath(os.path.curdir)
     errorlog = open("error.log", mode = "w")
     print "Look for sql files in " + root
-    for script in os.listdir(root):
+    scripts = [s for s in os.listdir(root)]
+    scripts.sort()
+    for script in scripts:
         if not checkErrorLog():
             raise Exception("Errors occur during previous stage. Break script execution. See error.log")
         fname, ext = os.path.splitext(script)
