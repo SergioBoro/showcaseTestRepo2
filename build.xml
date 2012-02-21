@@ -237,7 +237,7 @@
 	<target name="ci.build" depends="checkProperties, info.env, clean,  
 		init.dirs, init.dojo, init.jython, init.patches, 
 		build, checkstyle, init.db, test.coverage, build.gwt, jdepend,
-		dist, deploy.tomcat, javadoc, backup.userdata, backup.sql.scripts" 
+		dist, javadoc, backup.userdata, backup.sql.scripts" 
 		description="Target for CI build"/>
 	
 	<target name="ci.sonar.analyzer" depends="checkProperties, info.env, clean,  
@@ -546,7 +546,7 @@
 		</doxygen:doxygen>		
 	</target>
 	
-	<target name="calc.metrics" depends="init.dirs" description="Calc Java code metrics">
+	<target name="calc.javancss.metrics" depends="init.dirs" description="Calc Java code metrics">
 		<javancss srcdir="${sc.src.dir}" defaultexcludes="yes"
 		            generateReport="true"
 		            outputfile="${sc.build.dir}/metrics/javancss_metrics.xml"
