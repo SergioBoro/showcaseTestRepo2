@@ -108,7 +108,17 @@
 	</target>	
 	
 	<target name="checkProperties" description="Check required environment varianbles: JAVA_HOME">
+		<echo>Checking for JAVA_HOME...</echo>
 		<fail unless="os.JAVA_HOME">JAVA_HOME must be set</fail>
+		<echo>OK</echo>
+		<echo>Checking for python...</echo>
+		<exec executable="python.exe" />
+		<echo>OK</echo>
+		<echo>Checking for sqlcmd...</echo>
+		<exec executable="sqlcmd.exe" outputproperty="sc.temp">
+			<arg line="-?"/>
+		</exec>
+		<echo>OK</echo>
 	</target>
 
 	<target name="info" description="Show wise configuration info">
@@ -226,8 +236,8 @@
 
 	<target name="ci.build" depends="checkProperties, info.env, clean,  
 		init.dirs, init.dojo, init.jython, init.patches, 
-		build, checkstyle, test.coverage, jdepend, build.gwt,
-		dist, backup.userdata, javadoc, deploy.tomcat" 
+		build, checkstyle, init.db, test.coverage, build.gwt, jdepend,
+		dist, deploy.tomcat, javadoc, backup.userdata, backup.sql.scripts" 
 		description="Target for CI build"/>
 	
 	<target name="ci.sonar.analyzer" depends="checkProperties, info.env, clean,  
@@ -355,39 +365,20 @@
 			</fileset>
 		</copy>
 	</target>
-
-	<target name="deploy.trunk" depends="svn.update, rebuild, build.gwt, dist" description="Clean deploying to server with last svn sources">
-		<antcall target="backup.userdata" />
-		<antcall target="backup.db" />
-
-		<echo>Copy files to server</echo>
-		<move todir="${sc.trunk.deploy.path}" file="${sc.build.dir}/artifacts/userdata-${sc.version}.${sc.last.rev}.zip" overwrite="true" />
-		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}.war" overwrite="true" />
-		<move todir="${sc.trunk.deploy.path}" file="${sc.war.file}-ext.war" overwrite="true" />
-		<copy todir="${sc.trunk.deploy.path}" file="${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.zip" overwrite="true" />
-	</target>
 	
-	<target name="backup.userdata" description="Makes archive with all test userdatas">
+	<target name="backup.userdata" depends="init.dirs, write.app.version" description="Makes archive with all test userdatas">
 		<echo>Makes archive with all test userdatas</echo>		
 		<zip destfile="${sc.build.dir}/artifacts/userdata-${sc.version}.${sc.last.rev}.zip">
 			<zipfileset dir="." includes="userdata*/**" />
 		</zip>		
 	</target>
-
-	<target name="backup.db" depends="info" description="Makes test DB backup by SQLUtil">
-		<echo>Making backup of test DB</echo>
-		<exec executable="${sc.sqlutil.path}\\SQLUtil_n_nokey.exe">
-			<arg value="-server_name=${sc.rdbms.name}" />
-			<arg value="-user_name=sa" />
-			<arg value="-user_pass=F708420Dx" />
-			<arg value="-backup" />
-			<arg value="-free_file=${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.mbk" />
-		</exec>
-		<zip destfile="${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.zip">
-			<zipfileset file="${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.mbk" />
-		</zip>
-		<delete file="${sc.db.backup.path}\${sc.db.backup.prefix}-${sc.version}.${sc.last.rev}.mbk" />
-	</target>
+	
+	<target name="backup.sql.scripts" depends="init.dirs, write.app.version" description="Makes archive with all test init db scripts">
+		<echo>Making archive with all test init db scripts</echo>		
+		<zip destfile="${sc.build.dir}/artifacts/sql-scripts-${sc.version}.${sc.last.rev}.zip">
+			<zipfileset dir="${sc.src.dir}/scripts/init" includes="*.*" />
+		</zip>		
+	</target>	
 
 	<target name="write.gwt.version" depends="init.dirs" description="Write gwt version to file">
 		<echo>Update gwt version</echo>
@@ -579,7 +570,16 @@
 		<property name='sonar.binaries' value='${sc.class.dir}'/>
 		
 	    <sonar:sonar key="ru.curs.showcase:showcase" version="${sc.version}.${sc.last.rev}"/>
-	  </target>	
+	</target>	
+	
+	<target name="init.db" depends="init.dirs" description="Initialized DB by running sql scripts">
+		<exec resolveexecutable="true" executable="python.exe" dir="${sc.src.dir}/scripts/init">
+			<arg line="initDB.py" />
+			<arg line="-U ${sc.db.user}" />
+			<arg line="-P ${sc.db.pass}" />
+			<arg line="-S ${sc.rdbms.name}" />			
+		</exec>		
+	</target>
 	
 </project> 
 

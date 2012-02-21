@@ -1,8 +1,10 @@
-#Fri Feb 17 23:42:47 MSK 2012
+#Tue Feb 21 12:58:33 MSK 2012
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/user.properties=UTF-8
+encoding//WebContent/log/executedProcs.jsp=UTF-8
 encoding//WebContent/log/lastLogEvents.jsp=UTF-8
 encoding//WebContent/login.jsp=UTF-8
+encoding//src/scripts/init/initDB.py=utf-8
 encoding//userdatas/default/app.properties=UTF-8
 encoding//userdatas/default/geomapproperties/default.properties=UTF-8
 encoding//userdatas/default/gridproperties/default.properties=UTF-8

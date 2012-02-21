@@ -14,7 +14,7 @@ import ru.curs.showcase.test.grid.*;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-		GridGatewayTest.class, GridFactoryTest.class, GridSLTest.class, GridTest.class,
+		GridTest.class, GridGatewayTest.class, GridFactoryTest.class, GridSLTest.class,
 		GridExportToExcelSLTest.class })
 public class GridTests {
 

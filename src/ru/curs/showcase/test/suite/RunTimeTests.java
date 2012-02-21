@@ -1,10 +1,9 @@
 package ru.curs.showcase.test.suite;
 
+import org.junit.extensions.cpsuite.*;
+import org.junit.extensions.cpsuite.ClasspathSuite.ClassnameFilters;
+import org.junit.extensions.cpsuite.ClasspathSuite.IncludeJars;
 import org.junit.runner.RunWith;
-import org.junit.runners.*;
-import org.junit.runners.Suite.SuiteClasses;
-
-import ru.curs.showcase.test.*;
 
 /**
  * Тесты модулей времени выполнения.
@@ -12,8 +11,9 @@ import ru.curs.showcase.test.*;
  * @author den
  * 
  */
-@RunWith(Suite.class)
-@SuiteClasses({ AppPropsTest.class, RuntimeTest.class, PoolsTest.class, IDTest.class })
+@RunWith(ClasspathSuite.class)
+@IncludeJars(false)
+@ClassnameFilters({ "ru.curs.showcase.test.runtime.*" })
 public class RunTimeTests {
 
 }

@@ -1,10 +1,11 @@
 package ru.curs.showcase.test.suite;
 
+import org.junit.extensions.cpsuite.*;
+import org.junit.extensions.cpsuite.ClasspathSuite.BaseTypeFilter;
+import org.junit.extensions.cpsuite.ClasspathSuite.IncludeJars;
 import org.junit.runner.RunWith;
-import org.junit.runners.*;
-import org.junit.runners.Suite.SuiteClasses;
 
-import ru.curs.showcase.test.servlets.*;
+import ru.curs.showcase.test.servlets.AbstractServletTest;
 
 /**
  * Сборка тестов сервлетов.
@@ -12,12 +13,9 @@ import ru.curs.showcase.test.servlets.*;
  * @author den
  * 
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-		BaseServletTest.class, FiltersTest.class, ControlMemoryServletTest.class,
-		StateServletTest.class, XFormScriptTransformServletTest.class,
-		XFormXSLTransformServletTest.class, FilesFrontControllerTest.class,
-		MainPageFramesFrontControllerTest.class, ExternalServletTest.class })
+@RunWith(ClasspathSuite.class)
+@IncludeJars(false)
+@BaseTypeFilter(AbstractServletTest.class)
 public class ServletTests {
 
 }

@@ -28,10 +28,17 @@ public abstract class Pool<T> {
 			List<T> current = getReusables(key);
 			if (current.size() > 0) {
 				T result = current.remove(0);
-				return result;
+				if (checkForValidity(result)) {
+					return result;
+				}
+				return createReusableItem(key);
 			}
 			return createReusableItem(key);
 		}
+	}
+
+	protected boolean checkForValidity(final T aResult) {
+		return true;
 	}
 
 	protected abstract T createReusableItem(final String key)

@@ -328,6 +328,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 		marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
 		LOGGER.info(marker, value);
 		boolean res = getStatement().execute();
+		AppInfoSingleton.getAppInfo().addExecutedProc(getProcName());
 		if (!retriveResultSets) {
 			checkErrorCode();
 		}

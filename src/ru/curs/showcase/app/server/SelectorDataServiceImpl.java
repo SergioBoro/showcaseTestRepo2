@@ -98,6 +98,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			cs.setBoolean(NUM7, req.isStartsWith());
 			cs.registerOutParameter(NUM8, Types.INTEGER);
 			cs.execute();
+			AppInfoSingleton.getAppInfo().addExecutedProc(procCount);
 			c = cs.getInt(NUM8);
 
 			ds.setTotalCount(c);
@@ -124,6 +125,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			cs.setInt(getRecordCountIndex(), req.getRecordCount());
 
 			ResultSet rs = getResultSet(cs);
+			AppInfoSingleton.getAppInfo().addExecutedProc(procList);
 
 			// Мы заранее примерно знаем размер, так что используем
 			// ArrayList.
@@ -141,6 +143,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		Connection conn = ConnectionFactory.getInstance().acquire();
 		String stmt = String.format(getSqlTemplate(BY_ONE_PROC), procListAndCount);
 		CallableStatement cs = conn.prepareCall(stmt);
+
 		try {
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
 				cs.registerOutParameter(NUM5, OracleTypes.CURSOR);
@@ -154,6 +157,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			cs.registerOutParameter(getCountAllRecordsIndex(), Types.INTEGER);
 
 			ResultSet rs = getResultSet(cs);
+			AppInfoSingleton.getAppInfo().addExecutedProc(procListAndCount);
 
 			// Мы заранее примерно знаем размер, так что используем
 			// ArrayList.

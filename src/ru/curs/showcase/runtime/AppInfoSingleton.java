@@ -45,6 +45,9 @@ public final class AppInfoSingleton {
 	private final Map<String, SessionInfo> sessionInfoMap = Collections
 			.synchronizedMap(new HashMap<String, SessionInfo>());
 
+	private final SortedSet<String> executedProc = Collections
+			.synchronizedSortedSet(new TreeSet<String>());
+
 	/**
 	 * Идентификатор userdata в текущем запросе.
 	 */
@@ -369,4 +372,11 @@ public final class AppInfoSingleton {
 		userdataRoot = aUserdataRoot;
 	}
 
+	public SortedSet<String> getExecutedProc() {
+		return executedProc;
+	}
+
+	public void addExecutedProc(final String procName) {
+		executedProc.add(procName);
+	}
 }

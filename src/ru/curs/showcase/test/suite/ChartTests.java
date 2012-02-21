@@ -13,7 +13,7 @@ import ru.curs.showcase.test.chart.*;
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ ChartGatewayTest.class, ChartFactoryTest.class, ChartSLTest.class, ChartTest.class })
+@SuiteClasses({ ChartTest.class, ChartGatewayTest.class, ChartFactoryTest.class, ChartSLTest.class })
 public class ChartTests {
 
 }

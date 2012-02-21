@@ -13,7 +13,7 @@ import ru.curs.showcase.test.html.*;
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ HTMLVariablesFactoryTest.class, HTMLVariablesSLTest.class, HTMLBaseTest.class })
+@SuiteClasses({ HTMLBaseTest.class, HTMLVariablesFactoryTest.class, HTMLVariablesSLTest.class })
 public class HTMLTests {
 
 }

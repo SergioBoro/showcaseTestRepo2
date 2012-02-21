@@ -50,6 +50,15 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 		}
 	}
 
+	@Override
+	protected boolean checkForValidity(final Connection conn) {
+		try {
+			return conn.isValid(0);
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+
 	public static PyConnection getPyConnection() {
 		try {
 			return new PyConnection(getInstance().acquire());

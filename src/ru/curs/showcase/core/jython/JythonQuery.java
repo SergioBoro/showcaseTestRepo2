@@ -96,7 +96,6 @@ public abstract class JythonQuery<T> {
 						// ничего не делаем
 					}
 				});
-				LOGGER.info("Инициализировал");
 				interpreter.exec(cmd);
 
 				PyObject pyClass = interpreter.get(className);

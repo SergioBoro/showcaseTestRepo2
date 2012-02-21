@@ -14,7 +14,7 @@ import ru.curs.showcase.test.geomap.*;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-		GeoMapGatewayTest.class, GeoMapFactoryTest.class, GeoMapSLTest.class, GeoMapTest.class })
+		GeoMapTest.class, GeoMapGatewayTest.class, GeoMapFactoryTest.class, GeoMapSLTest.class })
 public class GeoMapTests {
 
 }
