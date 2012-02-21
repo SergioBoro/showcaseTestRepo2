@@ -1,7 +1,7 @@
 ﻿-- SQL Manager 2011 for SQL Server 3.7.0.2
 -- ---------------------------------------
 -- Хост         : CASTLE\R2
--- База данных  : CARTRADE
+-- База данных  : showcase
 -- Версия       : Microsoft SQL Server  10.50.2500.0
 
 

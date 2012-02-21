@@ -1,7 +1,7 @@
 ﻿-- SQL Manager 2011 for SQL Server 3.7.0.2
 -- ---------------------------------------
 -- Хост         : CASTLE\R2
--- База данных  : CARTRADE
+-- База данных  : showcase
 -- Версия       : Microsoft SQL Server  10.50.2500.0
 
 
@@ -12881,7 +12881,7 @@ BEGIN
     SET NOCOUNT ON;
 
 if (@add_context = 'test1') 
-INSERT INTO [CARTRADE].[dbo].[UserMessagesTest]
+INSERT INTO [dbo].[UserMessagesTest]
            ([test1]
            ,[test2]
            ,[test3])
@@ -12892,7 +12892,7 @@ INSERT INTO [CARTRADE].[dbo].[UserMessagesTest]
            'test33')
            
 if (@add_context = 'test2') 
-INSERT INTO [CARTRADE].[dbo].[UserMessagesTest]
+INSERT INTO [dbo].[UserMessagesTest]
            ([test1]
            ,[test2]
            ,[test3])
