@@ -78,6 +78,9 @@ public final class GridTransformer {
 
 			egd.setId(rec.getId());
 
+			egd.setRowStyle(rec.getAttributes().getValue(
+					ru.beta2.extra.gwt.ui.GeneralConstants.STYLE_CLASS_TAG));
+
 			int index = 0;
 			for (Column c : grid.getDataSet().getColumnSet().getColumns()) {
 				index++;

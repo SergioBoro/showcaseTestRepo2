@@ -26,4 +26,10 @@
 	<tab id="5" name="Ссылки в гриде">
 		<element id="511" type="grid" subtype="EXT_LIVE_GRID" proc="grid_portals" />
 	</tab>
+	<tab id="6" name="задание css и id для строки грида">
+		<element id="0201" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_portals_id_and_css" />
+		<element id="0203" type="webtext" proc="webtext_dep62">
+			<related id="0201" />
+		</element>
+	</tab>
 </datapanel>

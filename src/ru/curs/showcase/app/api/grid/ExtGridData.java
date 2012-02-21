@@ -30,4 +30,12 @@ public class ExtGridData extends BaseTreeModel implements Serializable {
 		set("id", id);
 	}
 
+	public String getRowStyle() {
+		return (String) get("rowstyle");
+	}
+
+	public void setRowStyle(final String rowstyle) {
+		set("rowstyle", rowstyle);
+	}
+
 }

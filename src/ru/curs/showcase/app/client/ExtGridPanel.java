@@ -380,11 +380,26 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		liveView.setCacheSize(gridMetadata.getLiveInfo().getLimit());
 		grid.setView(liveView);
 
-		// ------------
+		// ---------------------------
+
+		// Стили для записей
+		GridViewConfig gvc = new GridViewConfig() {
+			@Override
+			public String getRowStyle(ModelData model, int rowIndex, ListStore<ModelData> ds) {
+				ExtGridData egd = (ExtGridData) model;
+				String rowstyle = egd.getRowStyle();
+				return rowstyle;
+			}
+		};
+		grid.getView().setViewConfig(gvc);
+
+		// ---------------------------
+
 		final GridSelectionModel<ExtGridData> selectionModel =
 			new GridSelectionModel<ExtGridData>();
 		selectionModel.bindGrid(grid);
-		// ------------
+
+		// ---------------------------
 
 		ToolBar buttonBar = new ToolBar();
 		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
