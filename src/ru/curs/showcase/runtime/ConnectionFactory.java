@@ -40,6 +40,7 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 	@Override
 	protected Connection createReusableItem() {
 		try {
+			registerDriver();
 			Connection result =
 				DriverManager.getConnection(AppProps.getRequiredValueByName(CONNECTION_URL_PARAM),
 						AppProps.getRequiredValueByName(CONNECTION_USERNAME_PARAM),
@@ -101,6 +102,20 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 				result = DriverManager.getDrivers().nextElement();
 				DriverManager.deregisterDriver(result);
 			} catch (SQLException e) {
+				throw new DBConnectException(e);
+			}
+		}
+		return result;
+	}
+
+	protected static Driver registerDriver() {
+		Driver result = null;
+		if (getSQLServerType() == SQLServerType.POSTGRESQL) {
+			try {
+				result = (Driver) Class.forName("org.postgresql.Driver").newInstance();
+				DriverManager.registerDriver(result);
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException
+					| SQLException e) {
 				throw new DBConnectException(e);
 			}
 		}
