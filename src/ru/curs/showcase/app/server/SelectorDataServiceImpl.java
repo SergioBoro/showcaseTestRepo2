@@ -112,10 +112,10 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			cs = conn.prepareCall(stmt);
 
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
-				cs.registerOutParameter(NUM5, Types.OTHER);
+				cs.registerOutParameter(NUM10, Types.OTHER);
 			}
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
-				cs.registerOutParameter(NUM5, OracleTypes.CURSOR);
+				cs.registerOutParameter(NUM10, OracleTypes.CURSOR);
 			}
 			setupGeneralParameters(cs, req, false);
 			cs.setString(getParamsIndex(), req.getParams());
@@ -146,7 +146,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 
 		try {
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
-				cs.registerOutParameter(NUM5, OracleTypes.CURSOR);
+				cs.registerOutParameter(NUM10, OracleTypes.CURSOR);
 			}
 			setupGeneralParameters(cs, req, false);
 			cs.setString(getParamsIndex(), req.getParams());
@@ -210,7 +210,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
 			return cs.getResultSet();
 		} else {
-			return (ResultSet) cs.getObject(NUM5);
+			return (ResultSet) cs.getObject(NUM10);
 		}
 	}
 
@@ -244,84 +244,44 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		}
 	}
 
-	private int getMainContextIndex(final boolean isForRecordCount) {
-		if (isForRecordCount || (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL)) {
-			return NUM1;
-		} else {
-			return NUM1 + 1;
-		}
+	private int getMainContextIndex() {
+		return NUM1;
 	}
 
-	private int getAdditionalContextIndex(final boolean isForRecordCount) {
-		if (isForRecordCount || (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL)) {
-			return NUM2;
-		} else {
-			return NUM2 + 1;
-		}
+	private int getAdditionalContextIndex() {
+		return NUM2;
 	}
 
-	private int getFilterContextIndex(final boolean isForRecordCount) {
-		if (isForRecordCount || (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL)) {
-			return NUM3;
-		} else {
-			return NUM3 + 1;
-		}
+	private int getFilterContextIndex() {
+		return NUM3;
 	}
 
-	private int getSessionContextIndex(final boolean isForRecordCount) {
-		if (isForRecordCount || (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL)) {
-			return NUM4;
-		} else {
-			return NUM4 + 1;
-		}
+	private int getSessionContextIndex() {
+		return NUM4;
 	}
 
 	private int getParamsIndex() {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return NUM5;
-		} else {
-			return NUM5 + 1;
-		}
+		return NUM5;
 	}
 
 	private int getCurValueIndex() {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return NUM6;
-		} else {
-			return NUM6 + 1;
-		}
+		return NUM6;
 	}
 
 	private int getIsStartsWithIndex() {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return NUM7;
-		} else {
-			return NUM7 + 1;
-		}
+		return NUM7;
 	}
 
 	private int getFirstRecordIndex() {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return NUM8;
-		} else {
-			return NUM8 + 1;
-		}
+		return NUM8;
 	}
 
 	private int getRecordCountIndex() {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return NUM9;
-		} else {
-			return NUM9 + 1;
-		}
+		return NUM9;
 	}
 
 	private int getCountAllRecordsIndex() {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return NUM10;
-		} else {
-			return NUM10 + 1;
-		}
+		return NUM10;
 	}
 
 	private void setStringParam(final CallableStatement cs, final int index, final String value)
@@ -355,24 +315,24 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 
 	private void setupGeneralParameters(final CallableStatement cs, final DataRequest req,
 			final boolean isForRecordCount) throws SQLException {
-		setStringParam(cs, getMainContextIndex(isForRecordCount), "");
-		setStringParam(cs, getAdditionalContextIndex(isForRecordCount), "");
-		setSQLXMLParam(cs, getFilterContextIndex(isForRecordCount), "");
-		setSQLXMLParam(cs, getSessionContextIndex(isForRecordCount), "");
+		setStringParam(cs, getMainContextIndex(), "");
+		setStringParam(cs, getAdditionalContextIndex(), "");
+		setSQLXMLParam(cs, getFilterContextIndex(), "");
+		setSQLXMLParam(cs, getSessionContextIndex(), "");
 
 		if (req.getAddData().getData1() != null) {
-			setStringParam(cs, getMainContextIndex(isForRecordCount), req.getAddData().getData1());
+			setStringParam(cs, getMainContextIndex(), req.getAddData().getData1());
 		}
 		if (req.getAddData().getData2() != null) {
-			setStringParam(cs, getAdditionalContextIndex(isForRecordCount), req.getAddData()
+			setStringParam(cs, getAdditionalContextIndex(), req.getAddData()
 					.getData2());
 		}
 		if (req.getAddData().getData3() != null) {
-			setSQLXMLParam(cs, getFilterContextIndex(isForRecordCount), req.getAddData()
+			setSQLXMLParam(cs, getFilterContextIndex(), req.getAddData()
 					.getData3());
 		}
 		if (req.getAddData().getData4() != null) {
-			setSQLXMLParam(cs, getSessionContextIndex(isForRecordCount), req.getAddData()
+			setSQLXMLParam(cs, getSessionContextIndex(), req.getAddData()
 					.getData4());
 		}
 
