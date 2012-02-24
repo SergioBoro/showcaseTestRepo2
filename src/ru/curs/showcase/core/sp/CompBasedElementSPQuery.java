@@ -66,12 +66,4 @@ public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 
 	protected abstract void registerOutParameterCursor() throws SQLException;
 
-	protected int getAdjustParamIndexAccordingToSQLServerType(final int index) {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return index;
-		} else {
-			return index + 1;
-		}
-	}
-
 }
