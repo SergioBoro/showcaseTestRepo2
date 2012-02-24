@@ -8,9 +8,7 @@ import ru.curs.showcase.util.exception.BaseException;
  * XMLUtils.xsdValidate.
  */
 public class XSDValidateException extends BaseException {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = -4848505926999363486L;
 
 	/**

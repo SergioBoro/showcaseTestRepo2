@@ -16,9 +16,6 @@ public class NotXMLException extends BaseException {
 
 	private static final String ERROR_MES = "Файл '%s' не является файлом в формате XML";
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -7588997404313831091L;
 
 	/**

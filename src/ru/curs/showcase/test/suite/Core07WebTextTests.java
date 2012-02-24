@@ -4,16 +4,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.*;
 import org.junit.runners.Suite.SuiteClasses;
 
-import ru.curs.showcase.test.html.FramesSLTest;
+import ru.curs.showcase.test.html.*;
 
 /**
- * Тесты для модулей главной страницы.
+ * Все тесты для вебтекста.
  * 
  * @author den
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ FramesSLTest.class })
-public class MainPageTests {
+@SuiteClasses({ WebTextGatewayAndFactoryTest.class, WebTextSLTest.class })
+public class Core07WebTextTests {
 
 }

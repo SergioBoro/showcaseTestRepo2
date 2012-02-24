@@ -14,6 +14,6 @@ import ru.curs.showcase.test.*;
  */
 @RunWith(Suite.class)
 @SuiteClasses({ NavigatorGatewayTest.class, NavigatorFactoryTest.class, NavigatorSLTest.class })
-public class NavigatorTests {
+public class Core01NavigatorTests {
 
 }

@@ -11,9 +11,6 @@ import ru.curs.showcase.util.exception.BaseException;
  */
 public class BreakSAXLoopException extends BaseException {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 5726882721367127175L;
 
 	public BreakSAXLoopException() {

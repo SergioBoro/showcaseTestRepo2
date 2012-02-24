@@ -1,6 +1,5 @@
 package ru.curs.showcase.util.exception;
 
-
 /**
  * Исключение, генерируемое при отсутствии в файле настроек приложения
  * необходимого свойства.
@@ -10,9 +9,6 @@ package ru.curs.showcase.util.exception;
  */
 public final class SettingsFileRequiredPropException extends SettingsFilePropValueFormatException {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -2886682990651933862L;
 
 	/**

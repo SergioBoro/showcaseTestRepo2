@@ -3,6 +3,7 @@ package ru.curs.showcase.test.runtime;
 import static org.junit.Assert.*;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -24,6 +25,7 @@ import ru.curs.showcase.core.jython.JythonQuery;
 import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTest;
+import ru.curs.showcase.util.exception.SettingsFileOpenException;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 import ch.qos.logback.classic.Level;
@@ -435,5 +437,48 @@ public class RuntimeTest extends AbstractTest {
 		command.execute();
 
 		assertTrue(AppInfoSingleton.getAppInfo().getExecutedProc().contains(procName));
+	}
+
+	/**
+	 * Проверка работы построителя ServerCurrentState.
+	 * 
+	 * @see ru.curs.showcase.app.api.ServerState ServerCurrentState
+	 * @see ru.curs.showcase.runtime.ServerStateFactory
+	 *      ServerCurrentStateBuilder
+	 */
+	@Test
+	public void serverStateFactoryShouldReturnCorrectState() throws SQLException {
+		AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
+		ServerState state = ServerStateFactory.build("fake");
+		assertNotNull(state);
+		assertNotNull(state.getAppVersion());
+		assertTrue(state.getAppVersion().endsWith("development"));
+		assertNotNull(state.getJavaVersion());
+		assertNotNull(state.getServerTime());
+		assertNotNull(state.getSqlVersion());
+		assertNotNull(state.getDojoVersion());
+
+		assertEquals("10.0.0.9999", ServerStateFactory.getAppVersion("ru/curs/showcase/test/"));
+	}
+
+	@Test
+	public void serverStateFactoryShouldRaiseExceptionWhenVersionFileAbsent() {
+		try {
+			ServerStateFactory.getAppVersion("ru/curs/showcase/test/util/");
+			fail();
+		} catch (SettingsFileOpenException e) {
+			assertTrue(e.getLocalizedMessage().contains(
+					"ru/curs/showcase/test/util/version.properties"));
+		}
+	}
+
+	@Test
+	public void serverStateFactoryShouldRaiseExceptionWhenBuildFileAbsent() {
+		try {
+			ServerStateFactory.getAppVersion("ru/curs/showcase/test/runtime/");
+			fail();
+		} catch (SettingsFileOpenException e) {
+			assertTrue(e.getLocalizedMessage().contains("ru/curs/showcase/test/runtime/build"));
+		}
 	}
 }

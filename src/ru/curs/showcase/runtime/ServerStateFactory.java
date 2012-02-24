@@ -2,6 +2,7 @@ package ru.curs.showcase.runtime;
 
 import java.io.*;
 import java.sql.*;
+import java.util.Properties;
 import java.util.regex.*;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +22,7 @@ public final class ServerStateFactory {
 	private static final String DOJO_VERSION_FILE = "/js/dojo/package.json";
 	private static final String GWTVERSION_FILE = "gwtversion";
 	private static final String BUILD_FILE = "build";
-	private static final String VERSION_FILE = "version";
+	private static final String VERSION_FILE = "version.properties";
 
 	private ServerStateFactory() {
 		throw new UnsupportedOperationException();
@@ -36,7 +37,7 @@ public final class ServerStateFactory {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	public static ServerState build(final String sessionId) throws SQLException, IOException {
+	public static ServerState build(final String sessionId) throws SQLException {
 		ServerState state = new ServerState();
 		state.setServerTime(TextUtils.getCurrentLocalDate());
 		state.setAppVersion(getAppVersion());
@@ -102,25 +103,34 @@ public final class ServerStateFactory {
 		return null;
 	}
 
-	private static String getAppVersion() throws IOException {
+	private static String getAppVersion() {
 		return getAppVersion("");
 	}
 
-	public static String getAppVersion(final String baseDir) throws IOException {
-		InputStream is = FileUtils.loadResToStream(baseDir + VERSION_FILE);
-		String major;
-		try (BufferedReader buf = new BufferedReader(new InputStreamReader(is))) {
-			major = buf.readLine();
+	public static String getAppVersion(final String baseDir) {
+		Properties prop = new Properties();
+		try {
+			InputStream is = FileUtils.loadResToStream(baseDir + VERSION_FILE);
+			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
+				prop.load(reader);
+			}
+		} catch (IOException | NullPointerException e) {
+			throw new SettingsFileOpenException(baseDir + VERSION_FILE, SettingsFileType.VERSION);
 		}
+		String major = prop.getProperty("version");
 
-		is = FileUtils.loadResToStream(baseDir + BUILD_FILE);
 		String build;
-		try (BufferedReader buf = new BufferedReader(new InputStreamReader(is));) {
-			build = buf.readLine();
-			Pattern pattern = Pattern.compile("(\\d+|development)");
-			Matcher matcher = pattern.matcher(build);
-			matcher.find();
-			build = matcher.group();
+		try {
+			InputStream is = FileUtils.loadResToStream(baseDir + BUILD_FILE);
+			try (BufferedReader buf = new BufferedReader(new InputStreamReader(is));) {
+				build = buf.readLine();
+				Pattern pattern = Pattern.compile("(\\d+|development)");
+				Matcher matcher = pattern.matcher(build);
+				matcher.find();
+				build = matcher.group();
+			}
+		} catch (IOException | NullPointerException e) {
+			throw new SettingsFileOpenException(baseDir + BUILD_FILE, SettingsFileType.VERSION);
 		}
 		return String.format("%s.%s", major, build);
 	}

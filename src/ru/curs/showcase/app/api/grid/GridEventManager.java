@@ -14,9 +14,7 @@ import ru.curs.showcase.app.api.event.*;
  * 
  */
 public class GridEventManager extends EventManager<GridEvent> {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = -4188170257316586043L;
 
 	/**

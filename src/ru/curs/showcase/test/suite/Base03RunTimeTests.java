@@ -6,14 +6,14 @@ import org.junit.extensions.cpsuite.ClasspathSuite.IncludeJars;
 import org.junit.runner.RunWith;
 
 /**
- * Тесты для utils.
+ * Тесты модулей времени выполнения.
  * 
  * @author den
  * 
  */
 @RunWith(ClasspathSuite.class)
 @IncludeJars(false)
-@ClassnameFilters({ "ru.curs.showcase.test.util.*" })
-public class UtilTests {
+@ClassnameFilters({ "ru.curs.showcase.test.runtime.*" })
+public class Base03RunTimeTests {
 
 }

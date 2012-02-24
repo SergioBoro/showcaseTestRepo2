@@ -21,6 +21,7 @@
 	<property name="sc.gwt.src.root.dir" value="${sc.src.dir}\ru\curs\showcase\app" />
 	<property name="sc.general.props.file" value="general.properties" />
 	<property name="sc.war.file" value="" />
+	<property name="sc.version" value="" />
 	<property name="sc.db.backup.prefix" value="showcase-test" />
 	
 	<property name="sc.env.props" value="local.properties" />
@@ -86,24 +87,29 @@
 		<if>
 			<isset property="os.SVN_REVISION"/>
 			 <then>
+			   <echo>Reading revision version from environment var SVN_REVISION</echo>
 			   <property name="sc.last.rev" value="${os.SVN_REVISION}"/>
 			 </then>
 			 <else>			 	
+				<echo>Reading revision version from svn repository</echo>			 	
 				<svn refid="svn.settings">
 					<wcVersion path= "." prefix="svn." />
 				</svn>
 			 	<property name="sc.last.rev" value="${svn.revision.max}"/>
 			 </else>			
 		</if>
-		<echo>Последняя версия кода в репозитории ${sc.last.rev}</echo>
+		<echo>Last revision of code is ${sc.last.rev}</echo>
 	</target>	
 	
 	<target name="write.app.version" depends="svn.info" description="Write current app version to file">
-		<loadfile property="sc.version" srcFile="${sc.src.dir}/version" />
-		<echo>Версия Showcase ${sc.version}.${sc.last.rev}</echo>
+		<echo>Reading major version from ${sc.src.dir}/version.properties</echo>
+		<property prefix="sc.major." file="${sc.src.dir}/version.properties"  />
+		<var name="sc.version" unset="true" />
+		<property name="sc.version" value="${sc.major.version}.${sc.last.rev}" />
+		<echo>Версия Showcase ${sc.version}</echo>
 		<var name="sc.war.file" unset="true" />
-		<property name="sc.war.file" value="${sc.build.dir}/artifacts/${appname}-${sc.version}.${sc.last.rev}" />
-		<echo>Update build number</echo>
+		<property name="sc.war.file" value="${sc.build.dir}/artifacts/${appname}-${sc.version}" />
+		<echo>Updating build number file</echo>
 		<echo file="${sc.build.dir}\war\WEB-INF\classes\build" message="${sc.last.rev}" />	
 	</target>	
 	
@@ -327,14 +333,15 @@
 	</target>
 
 	<target name="test" depends="build" description="Unit and component tests run">
-		<junit printsummary="true" showoutput="false" filtertrace="true" haltonerror="true" haltonfailure="true">
+		<junit printsummary="true" showoutput="false" filtertrace="true" haltonerror="true" haltonfailure="true" fork="true">
 			<classpath refid="test-classpath"/>
 			<formatter type="xml" usefile="true" />
-			<batchtest todir="${sc.build.dir}/junit" fork="true">
+			
+			<batchtest todir="${sc.build.dir}/junit" >				
 				<fileset dir="${sc.class.dir}">
-					<include name="**/ModelTests.class" />
+					<include name="**/suite/*Tests.class"/>
 				</fileset>
-			</batchtest>
+			</batchtest>		
 		</junit>
 	</target>
 
@@ -368,14 +375,14 @@
 	
 	<target name="backup.userdata" depends="init.dirs, write.app.version" description="Makes archive with all test userdatas">
 		<echo>Makes archive with all test userdatas</echo>		
-		<zip destfile="${sc.build.dir}/artifacts/userdata-${sc.version}.${sc.last.rev}.zip">
+		<zip destfile="${sc.build.dir}/artifacts/userdata-${sc.version}.zip">
 			<zipfileset dir="." includes="userdata*/**" />
 		</zip>		
 	</target>
 	
 	<target name="backup.sql.scripts" depends="init.dirs, write.app.version" description="Makes archive with all test init db scripts">
 		<echo>Making archive with all test init db scripts</echo>		
-		<zip destfile="${sc.build.dir}/artifacts/sql-scripts-${sc.version}.${sc.last.rev}.zip">
+		<zip destfile="${sc.build.dir}/artifacts/sql-scripts-${sc.version}.zip">
 			<zipfileset dir="${sc.src.dir}/scripts/init" includes="*.*" />
 		</zip>		
 	</target>	
@@ -449,7 +456,7 @@
 				<formatter type="xml" usefile="true" />
 				<batchtest todir="${sc.build.dir}/junit">
 					<fileset dir="${sc.class.dir}">
-						<include name="**/ModelTests.class" />
+						<include name="**/suite/*Tests.class"/>
 					</fileset>
 				</batchtest>
 				<jvmarg value="-XX:MaxPermSize=384m"/>
@@ -569,7 +576,7 @@
 	    <pathconvert property='sonar.libraries' refid='test-classpath' pathsep=','/>
 		<property name='sonar.binaries' value='${sc.class.dir}'/>
 		
-	    <sonar:sonar key="ru.curs.showcase:showcase" version="${sc.version}.${sc.last.rev}"/>
+	    <sonar:sonar key="ru.curs.showcase:showcase" version="${sc.version}"/>
 	</target>	
 	
 	<target name="init.db" depends="init.dirs" description="Initialized DB by running sql scripts">

@@ -11,9 +11,7 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GeoMapIndicator extends GeoMapObject {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = 1236534208108835700L;
 
 	/**

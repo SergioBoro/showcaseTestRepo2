@@ -7,13 +7,13 @@ import org.junit.runners.Suite.SuiteClasses;
 import ru.curs.showcase.test.event.*;
 
 /**
- * Тесты для модуля поиска вкладки для действия.
+ * Тесты для действий и событий.
  * 
  * @author den
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ ActionTabFinderTest.class, ActionTabFinderSLTest.class })
-public class ActionTabFinderTests {
+@SuiteClasses({ ActionAndContextTest.class, ActionAndContextSLTest.class, EventsTest.class })
+public class Base02EventAndActionTests {
 
 }

@@ -17,9 +17,6 @@ public final class SAXError extends BaseException {
 		super(ExceptionType.APP, aCause);
 	}
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 5024218668352683986L;
 
 }

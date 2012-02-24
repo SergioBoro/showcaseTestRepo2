@@ -27,7 +27,6 @@ public class App implements EntryPoint {
 	 */
 	@Override
 	public void onModuleLoad() {
-		addUserDataCSS();
 		FeedbackJSNI.initFeedbackJSNIFunctions();
 		// AppCurrContext.appCurrContext = AppCurrContext.getInstance();
 		AppCurrContext.getInstance();
@@ -92,6 +91,8 @@ public class App implements EntryPoint {
 		MainPanel mainPanel = new MainPanel();
 		AppCurrContext.getInstance().setMainPanel(mainPanel);
 		RootPanel.get("showcaseAppContainer").add(mainPanel.startMainPanelCreation());
+		// добавляем свои стили после инициализации GWT-шных
+		addUserDataCSS();
 	}
 
 	private CompositeContext getCurrentContext() {

@@ -14,6 +14,6 @@ import ru.curs.showcase.test.chart.*;
  */
 @RunWith(Suite.class)
 @SuiteClasses({ ChartTest.class, ChartGatewayTest.class, ChartFactoryTest.class, ChartSLTest.class })
-public class ChartTests {
+public class Core05ChartTests {
 
 }

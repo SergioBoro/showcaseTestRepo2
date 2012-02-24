@@ -3,12 +3,11 @@ package ru.curs.showcase.test.util;
 import static org.junit.Assert.*;
 
 import java.io.*;
-import java.sql.SQLException;
 import java.util.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.BrowserType;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
@@ -66,27 +65,6 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	private void checkForDP(final String data) {
 		assertTrue(data.startsWith("<" + GeneralXMLHelper.DP_TAG));
 		assertTrue(data.endsWith("</" + GeneralXMLHelper.DP_TAG + ">"));
-	}
-
-	/**
-	 * Проверка работы построителя ServerCurrentState.
-	 * 
-	 * @see ru.curs.showcase.app.api.ServerState ServerCurrentState
-	 * @see ru.curs.showcase.runtime.ServerStateFactory
-	 *      ServerCurrentStateBuilder
-	 */
-	@Test
-	public void testServerCurrentStateBuilder() throws IOException, SQLException {
-		ServerState state = ServerStateFactory.build("fake");
-		assertNotNull(state);
-		assertNotNull(state.getAppVersion());
-		assertTrue(state.getAppVersion().endsWith("development"));
-		assertNotNull(state.getJavaVersion());
-		assertNotNull(state.getServerTime());
-		assertNotNull(state.getSqlVersion());
-		assertNotNull(state.getDojoVersion());
-
-		assertEquals("10.0.0.9999", ServerStateFactory.getAppVersion("ru/curs/showcase/test/"));
 	}
 
 	/**

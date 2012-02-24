@@ -26,9 +26,6 @@ public class GeoMapLayer extends NamedElement implements SerializableElement {
 	 */
 	public static final String DEF_POINT_PROJECTION = "EPSG:4326";
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = -3953726500515923129L;
 
 	/**

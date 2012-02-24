@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.navigator;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.NamedElement;
 import ru.curs.showcase.app.api.event.Action;
 
 /**
@@ -14,9 +14,7 @@ import ru.curs.showcase.app.api.event.Action;
  * 
  */
 public class NavigatorElement extends NamedElement {
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = 8722430867190906156L;
 
 	/**

@@ -14,6 +14,6 @@ import ru.curs.showcase.test.*;
  */
 @RunWith(Suite.class)
 @SuiteClasses({ DataPanelElementInfoTest.class, DataPanelFactoryTest.class, DataPanelSLTest.class })
-public class DataPanelTests {
+public class Base04DataPanelTests {
 
 }

@@ -14,9 +14,7 @@ public class SettingsFilePropValueFormatException extends SettingsFileOpenExcept
 	 */
 	private static final String ERROR_MES =
 		"%s '%s' содержит параметр '%s' c неверным форматом значения";
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = -8355753684819986193L;
 
 	/**

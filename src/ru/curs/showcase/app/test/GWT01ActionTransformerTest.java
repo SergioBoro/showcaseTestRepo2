@@ -21,7 +21,7 @@ import ru.curs.showcase.util.ReflectionUtils;
  * @author den
  * 
  */
-public class ActionTransformerTest extends AbstractTest {
+public class GWT01ActionTransformerTest extends AbstractTest {
 
 	/**
 	 * Проверка актуализации Action для Tab на основе Action при обновлении

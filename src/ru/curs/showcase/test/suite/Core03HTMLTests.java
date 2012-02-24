@@ -7,13 +7,13 @@ import org.junit.runners.Suite.SuiteClasses;
 import ru.curs.showcase.test.html.*;
 
 /**
- * Все тесты для XForm.
+ * Все тесты для HTML переменных.
  * 
  * @author den
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ XFormGatewayTest.class, XFormFactoryTest.class, XFormSLTest.class })
-public class XFormTests {
+@SuiteClasses({ HTMLBaseTest.class, HTMLVariablesFactoryTest.class, HTMLVariablesSLTest.class })
+public class Core03HTMLTests {
 
 }

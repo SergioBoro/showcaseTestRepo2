@@ -22,9 +22,7 @@ public class Navigator implements SerializableElement {
 	 * Ширина навигатора по умолчанию.
 	 */
 	private static final String DEF_NAV_WIDTH = "300px";
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = 582764293154975973L;
 	/**
 	 * Список групп в навигаторе.
