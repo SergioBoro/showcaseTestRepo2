@@ -35,11 +35,7 @@
 		</element>
 	</tab>
 	<tab id="5" name="График">
-		<element id="13" type="grid" proc="grid_grid" />
-		<element id="15" type="chart" proc="chart_chart" />
-		<element id="16" type="webtext" proc="webtext_grid"
-			hideOnLoad="true" />
-	</tab>	
+        <element id="0" type="chart" proc="chart_pas"/>	</tab>	
 	<tab id="7" name="Карта. Раскраска стилями">
 		<element id="72" type="geomap" proc="geomap_bal"/>
 	</tab>			
