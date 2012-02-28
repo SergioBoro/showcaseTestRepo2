@@ -447,9 +447,10 @@
 		  </cs:checkstyle>		
 	</target>
 
-	<target name="test.coverage" depends="init.dirs, build" description="Runs coverage tests">
-		<jacoco:coverage destfile="${sc.build.dir}/coverage/jacoco.exec" append="false" includes="ru/curs/showcase/*"
-			excludes="ru/curs/showcase/app/jre/*">		
+	<target name="test.coverage" depends="init.dirs, build" description="Runs coverage tests">		
+		<delete file="${sc.build.dir}/coverage/jacoco.xml" quiet="true" /> 
+		<jacoco:coverage destfile="${sc.build.dir}/coverage/jacoco.exec" append="true" includes="ru/curs/showcase/*"
+			excludes="ru/curs/showcase/app/jre/*" >		
 			<!--ru/curs/showcase/test/*:ru/curs/showcase/app/client/*:ru/curs/showcase/app/test/*-->
 			<junit printsummary="true" showoutput="false" filtertrace="true" haltonerror="true" haltonfailure="true" fork="true" >
 				<classpath refid="test-classpath"/>
