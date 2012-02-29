@@ -86,7 +86,6 @@ public class GridDBFactory extends AbstractGridFactory {
 		}
 	}
 
-	// CHECKSTYLE:OFF
 	private void readRecords() throws SQLException {
 		ColumnSet cs = getResult().getDataSet().getColumnSet();
 
@@ -110,32 +109,8 @@ public class GridDBFactory extends AbstractGridFactory {
 			curRecord.setIndex(counter);
 			setupStdRecordProps(curRecord);
 
-			String value = null;
 			for (Column col : cs.getColumns()) {
-				if (rowset.getObject(col.getId()) == null) {
-					value = "";
-				} else if (col.getValueType() == GridValueType.IMAGE) {
-					value =
-						String.format("%s/%s",
-								AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR),
-								rowset.getString(col.getId()));
-				} else if (col.getValueType() == GridValueType.LINK) {
-					value = rowset.getString(col.getId());
-					value = AppProps.replaceVariables(value);
-					value = makeSafeXMLAttrValues(value);
-				} else if (col.getValueType() == GridValueType.DOWNLOAD) {
-					value = rowset.getString(col.getId());
-					value = AppProps.replaceVariables(value);
-					// value = makeSafeXMLAttrValues(value);
-				} else if (col.getValueType().isDate()) {
-					value = getStringValueOfDate(col);
-				} else if (col.getValueType().isNumber()) {
-					value = getStringValueOfNumber(col);
-				} else {
-					value = rowset.getString(col.getId());
-				}
-
-				curRecord.setValue(col.getId(), value);
+				curRecord.setValue(col.getId(), getCellValue(col));
 			}
 			getRecordSet().getRecords().add(curRecord);
 			if (SQLUtils.existsColumn(rowset.getMetaData(), PROPERTIES_SQL_TAG)) {
@@ -144,7 +119,32 @@ public class GridDBFactory extends AbstractGridFactory {
 		}
 	}
 
-	// CHECKSTYLE:ON
+	private String getCellValue(final Column col) throws SQLException {
+		String value;
+		if (rowset.getObject(col.getId()) == null) {
+			value = "";
+		} else if (col.getValueType() == GridValueType.IMAGE) {
+			value =
+				String.format("%s/%s",
+						AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR),
+						rowset.getString(col.getId()));
+		} else if (col.getValueType() == GridValueType.LINK) {
+			value = rowset.getString(col.getId());
+			value = AppProps.replaceVariables(value);
+			value = makeSafeXMLAttrValues(value);
+		} else if (col.getValueType() == GridValueType.DOWNLOAD) {
+			value = rowset.getString(col.getId());
+			value = AppProps.replaceVariables(value);
+			// value = makeSafeXMLAttrValues(value);
+		} else if (col.getValueType().isDate()) {
+			value = getStringValueOfDate(col);
+		} else if (col.getValueType().isNumber()) {
+			value = getStringValueOfNumber(col);
+		} else {
+			value = rowset.getString(col.getId());
+		}
+		return value;
+	}
 
 	/**
 	 * Функция для замены служебных символов XML (только XML, не HTML!) в

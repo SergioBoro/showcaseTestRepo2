@@ -135,8 +135,8 @@ public class Grid extends DataPanelCompBasedElement implements SizeEstimate {
 		} else {
 			return getDefaultAction();
 		}
-
 		return null;
+
 	}
 
 	private Action getActionForClickType(final String columnId, final InteractionType aClickType) {
@@ -150,7 +150,10 @@ public class Grid extends DataPanelCompBasedElement implements SizeEstimate {
 	}
 
 	private GridEvent getConcreteEvent(final List<GridEvent> events) {
-		return (GridEvent) events.toArray()[events.size() - 1];
+		if (events.size() > 0) {
+			return events.get(events.size() - 1);
+		}
+		return null;
 	}
 
 	public final DataGridSettings getUISettings() {
