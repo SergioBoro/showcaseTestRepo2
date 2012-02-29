@@ -524,7 +524,7 @@ public class GridPanel extends BasicElementPanelBasis {
 			saveCurrentClickSelection(cell);
 		} else {
 			// если выделена не ячейка, а запись целиком
-			if (dg.getClickSelection().getClickedRecord() != null) {
+			if (dg.isVisible() && (dg.getClickSelection().getClickedRecord() != null)) {
 				localContext.setCurrentRecordId(dg.getClickSelection().getClickedRecord().getId());
 			}
 		}
