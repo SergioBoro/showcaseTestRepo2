@@ -38,12 +38,12 @@
 
 	<script src="js/dojo/dojo.js" data-dojo-config="
     djeoEngine: 'djeo',
-    geKey: '<%=AppProps.getGeoMapKey("geKey", request.getServerName()) %>',
+    geKey: '',
     ymapsKey: '<%=AppProps.getGeoMapKey("ymapsKey", request.getServerName()) %>',
     paths: {djeo:'../djeo'}">
 	</script>
 	
-<!-- if you plan to use Google Earth browser plugin on non localhost server - copy your own key; apply for a key at http://code.google.com/apis/maps/signup.html -->
+<!-- Google Earth not need keys now! -->
 <!-- if you plan to use Yandex Maps on non localhost server - copy your own key; apply for a key at http://api.yandex.ru/maps/form.xml	-->
 <!-- for store keys use files in userdata root!  -->
 
