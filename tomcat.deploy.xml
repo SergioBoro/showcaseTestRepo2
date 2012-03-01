@@ -41,7 +41,7 @@
 		<cargo containerId="tomcat7x" home="${sc.servlet.cont.dir}"
 			output="${sc.build.dir}/tomcat/output.log" log="${sc.build.dir}/tomcat/cargo.log"
 			action="stop">
-			<configuration />
+			<configuration home="${sc.build.dir}/tomcat/testconf"/>
 		</cargo>
 	</target>
 
