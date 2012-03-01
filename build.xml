@@ -316,7 +316,8 @@
 		</copy>
 	</target>
 
-	<target name="ci.smoke.test" depends="init.dirs, tomcat.prepare.war, tomcat.stop, tomcat.start.for.test, tomcat.check.main.page, tomcat.stop.for.test, tomcat.copy.war, tomcat.start" 
+	<target name="ci.smoke.test" depends="init.dirs, tomcat.prepare.war, tomcat.stop, tomcat.start.for.test, 
+		tomcat.check.main.page, tomcat.stop.for.test, tomcat.copy.war, tomcat.start" 
 		description="Check app deploying to Tomcat on ${sc.servlet.cont.host}:${sc.servlet.cont.port}"> 
 	</target>
 
