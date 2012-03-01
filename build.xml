@@ -126,6 +126,7 @@
 		<exec executable="sqlcmd.exe" outputproperty="sc.temp">
 			<arg line="-?"/>
 		</exec>
+		<var name="sc.temp" unset="true" />
 		<echo>OK</echo>
 	</target>
 
