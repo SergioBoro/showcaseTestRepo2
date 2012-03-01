@@ -1,0 +1,65 @@
+<project>
+	<target name="tomcat.stop">
+		<echo>Tomcat service ${sc.tomcat.service.name} stopping...</echo>
+		<exec resolveexecutable="true" executable="net" failonerror="false"
+			outputproperty="tmp">
+			<arg value="stop" />
+			<arg value="${sc.tomcat.service.name}" />
+		</exec>
+		<var name="tmp" unset="true" />
+	</target>
+
+	<target name="tomcat.start">
+		<echo>Tomcat service ${sc.tomcat.service.name} starting...</echo>
+		<exec resolveexecutable="true" executable="net" failonerror="true"
+			outputproperty="tmp">
+			<arg value="start" />
+			<arg value="${sc.tomcat.service.name}" />
+		</exec>
+		<var name="tmp" unset="true" />
+	</target>
+
+	<target name="tomcat.check.main.page">
+		<get src="http://${sc.servlet.cont.host}:${sc.servlet.cont.port}/showcase"
+			dest="${sc.build.dir}/tomcat/check.html" maxtime="20" retries="3" />
+	</target>
+
+	<target name="tomcat.start.for.test">
+		<cargo containerId="tomcat7x" home="${sc.servlet.cont.dir}"
+			output="${sc.build.dir}/tomcat/output.log" log="${sc.build.dir}/tomcat/cargo.log"
+			action="start">
+			<configuration home="${sc.build.dir}/tomcat/testconf">
+				<property name="cargo.servlet.port" value="${sc.servlet.cont.port}" />
+				<property name="cargo.servlet.uriencoding" value="utf-8" />
+				<property name="cargo.jvmargs" value="-XX:MaxPermSize=412m" />
+				<deployable type="war" file="${sc.build.dir}/tomcat/showcase.war" />
+			</configuration>
+		</cargo>
+	</target>
+
+	<target name="tomcat.stop.for.test">
+		<cargo containerId="tomcat7x" home="${sc.servlet.cont.dir}"
+			output="${sc.build.dir}/tomcat/output.log" log="${sc.build.dir}/tomcat/cargo.log"
+			action="stop">
+			<configuration />
+		</cargo>
+	</target>
+
+	<target name="tomcat.prepare.war" depends="write.app.version">
+		<copy file="${sc.war.file}.war" tofile="${sc.build.dir}/tomcat/showcase.war"
+			verbose="true" />
+	</target>
+
+	<target name="tomcat.copy.war">
+		<if>
+			<available file="${sc.deploy.dir}/${appname}" type="dir" />
+			<then>
+				<echo>Deleting old installation...</echo>
+				<delete failonerror="true" dir="${sc.deploy.dir}/showcase" />
+			</then>
+		</if>
+		<echo>Copying new war...</echo>
+		<copy file="${sc.build.dir}/tomcat/showcase.war" todir="${sc.deploy.dir}" />
+	</target>
+</project>
+

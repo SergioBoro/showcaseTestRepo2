@@ -3,6 +3,8 @@
 	<property name="appname" value="${ant.project.name}" />
 
 	<property environment="os" />
+	
+	<import file="./tomcat.deploy.xml"/> 	 
 
 	<property name="sc.build.dir" value="build" />
 	<property name="sc.extragwt.dir" value="extragwt" />
@@ -161,7 +163,7 @@
 		<mkdir dir="${sc.build.dir}/jdepend" />
 		<mkdir dir="${sc.build.dir}/javadoc" />
 		<mkdir dir="${sc.build.dir}/metrics" />
-		<mkdir dir="${sc.build.dir}/tomcat" />
+		<mkdir dir="${sc.build.dir}/tomcat/testconf" />
 	</target>
 
 	<target name="compile" depends="init.dirs" description="Compiles .java files to WAR directory">
@@ -314,22 +316,8 @@
 		</copy>
 	</target>
 
-	<target name="deploy.tomcat" depends="init.dirs, build, write.app.version" description="Deploys WAR file to ${sc.servlet.cont.host}:${sc.servlet.cont.port}/showcase">
-		<!--<delete failonerror="true" dir="${sc.deploy.dir}/${appname}" />
-		<copy file="${sc.war.file}.war" todir="${sc.deploy.dir}" />-->
-		<echo>Deploing WAR file to ${sc.servlet.cont.host}:${sc.servlet.cont.port}/showcase</echo>
-	  	<copy file="${sc.war.file}.war" tofile="${sc.build.dir}/tomcat/showcase.war" verbose="true"/>
-		<cargo containerId="tomcat7x" type="remote" output="${sc.build.dir}/tomcat/output.log"
-		    log="${sc.build.dir}/tomcat/cargo.log" action="redeploy">
-		  <configuration type="runtime">
-		  	<property name="cargo.hostname" value="${sc.servlet.cont.host}"/>
-		    <property name="cargo.servlet.port" value="${sc.servlet.cont.port}"/>
-		  	<property name="cargo.remote.username" value="${sc.servlet.cont.user}"/>
-		    <property name="cargo.remote.password" value="${sc.servlet.cont.user}"/>
-		    <deployable type="war" file="${sc.build.dir}/tomcat/showcase.war"/>
-		  </configuration>
-		</cargo>	
-		<get src="http://${sc.servlet.cont.host}:${sc.servlet.cont.port}/showcase" dest="${sc.build.dir}/tomcat/check.html" maxtime="20" retries="3"/>
+	<target name="ci.smoke.test" depends="init.dirs, tomcat.prepare.war, tomcat.stop, tomcat.start.for.test, tomcat.check.main.page, tomcat.stop.for.test, tomcat.copy.war, tomcat.start" 
+		description="Check app deploying to Tomcat on ${sc.servlet.cont.host}:${sc.servlet.cont.port}"> 
 	</target>
 
 	<target name="test" depends="build" description="Unit and component tests run">

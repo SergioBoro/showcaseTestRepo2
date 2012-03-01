@@ -15,4 +15,5 @@
     <filter-data value="src/ru/curs/showcase/test/ws"/>
     <filter-data value="datagrid"/>
   </filter>
+  <filter name="NonSrcDirs" enabled="true"/>
 </fileset-config>
