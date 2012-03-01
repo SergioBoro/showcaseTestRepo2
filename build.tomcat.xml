@@ -33,7 +33,7 @@
 				<property name="cargo.servlet.uriencoding" value="utf-8" />
 				<property name="cargo.jvmargs" value="-XX:MaxPermSize=412m" />
 				<property name="cargo.tomcat.ajp.port" value="8989" />
-				<deployable type="war" file="${sc.build.dir}/tomcat/showcase.war" />
+				<deployable type="war" file="${basedir}/build/tomcat/showcase" />				
 			</configuration>
 		</cargo>
 	</target>
@@ -50,8 +50,7 @@
 	</target>
 
 	<target name="tomcat.prepare.war" depends="write.app.version">
-		<copy file="${sc.war.file}.war" tofile="${sc.build.dir}/tomcat/showcase.war"
-			verbose="true" />
+		<unzip src="${sc.war.file}.war" dest="${sc.build.dir}/tomcat/showcase"/>			
 	</target>
 
 	<target name="tomcat.copy.war">
@@ -63,7 +62,9 @@
 			</then>
 		</if>
 		<echo>Copying new war...</echo>
-		<copy file="${sc.build.dir}/tomcat/showcase.war" todir="${sc.deploy.dir}" />
+		<copy todir="${sc.deploy.dir}" >
+			<fileset dir="${sc.build.dir}/tomcat/showcase"/>
+		</copy>
 	</target>
 </project>
 
