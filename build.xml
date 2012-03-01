@@ -4,7 +4,7 @@
 
 	<property environment="os" />
 	
-	<import file="./tomcat.deploy.xml"/> 	 
+	<import file="./build.tomcat.xml"/>	 
 
 	<property name="sc.build.dir" value="build" />
 	<property name="sc.extragwt.dir" value="extragwt" />

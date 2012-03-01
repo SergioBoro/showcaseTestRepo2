@@ -20,7 +20,7 @@
 	</target>
 
 	<target name="tomcat.check.main.page">
-		<get src="http://${sc.servlet.cont.host}:${sc.servlet.cont.port}/showcase"
+		<get src="http://localhost:8181/showcase"
 			dest="${sc.build.dir}/tomcat/check.html" maxtime="20" retries="3" />
 	</target>
 
@@ -29,9 +29,10 @@
 			output="${sc.build.dir}/tomcat/output.log" log="${sc.build.dir}/tomcat/cargo.log"
 			action="start">
 			<configuration home="${sc.build.dir}/tomcat/testconf">
-				<property name="cargo.servlet.port" value="${sc.servlet.cont.port}" />
+				<property name="cargo.servlet.port" value="8181" />
 				<property name="cargo.servlet.uriencoding" value="utf-8" />
 				<property name="cargo.jvmargs" value="-XX:MaxPermSize=412m" />
+				<property name="cargo.tomcat.ajp.port" value="8989" />
 				<deployable type="war" file="${sc.build.dir}/tomcat/showcase.war" />
 			</configuration>
 		</cargo>
@@ -41,7 +42,10 @@
 		<cargo containerId="tomcat7x" home="${sc.servlet.cont.dir}"
 			output="${sc.build.dir}/tomcat/output.log" log="${sc.build.dir}/tomcat/cargo.log"
 			action="stop">
-			<configuration home="${sc.build.dir}/tomcat/testconf"/>
+			<configuration home="${sc.build.dir}/tomcat/testconf">
+				<property name="cargo.servlet.port" value="8181" />
+				<property name="cargo.tomcat.ajp.port" value="8989" />			
+			</configuration>
 		</cargo>
 	</target>
 
