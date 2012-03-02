@@ -1,16 +1,19 @@
 package ru.curs.showcase.core.chart;
 
+import java.io.*;
 import java.sql.*;
 
 import javax.sql.RowSet;
+import javax.xml.stream.*;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.core.event.EventFactory;
 import ru.curs.showcase.core.sp.*;
-import ru.curs.showcase.util.SQLUtils;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -23,7 +26,7 @@ public class ChartDBFactory extends AbstractChartFactory {
 	/**
 	 * SQL ResultSet с данными грида.
 	 */
-	private RowSet sql;
+	private RowSet sql = null;
 
 	/**
 	 * Признак того, что в RecordSet заданы события.
@@ -44,9 +47,20 @@ public class ChartDBFactory extends AbstractChartFactory {
 	protected void prepareData() {
 		try {
 			ResultSet rs = getResultSetAccordingToSQLServerType(getSource());
-			sql = SQLUtils.cacheResultSet(rs);
+			if (rs != null) {
+				sql = SQLUtils.cacheResultSet(rs);
+			}
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
+		}
+	}
+
+	private static final String NO_RESULTSET_ERROR = "хранимая процедура не возвратила данные";
+
+	@Override
+	protected void checkSourceError() {
+		if ((sql == null) && (getXmlDS() == null)) {
+			throw new DBQueryException(getElementInfo(), NO_RESULTSET_ERROR);
 		}
 	}
 
@@ -218,4 +232,146 @@ public class ChartDBFactory extends AbstractChartFactory {
 		getResult().getEventManager().getEvents()
 				.addAll(factory.getSubSetOfEvents(new ID(series.getName()), value));
 	}
+
+	private static final String SAX_ERROR_MES = "XML-датасет графика";
+
+	@Override
+	protected void fillLabelsXAndSeriesByXmlDS() {
+
+		addZeroLabelForX();
+
+		SimpleSAX sax = new SimpleSAX(getXmlDS(), new XmlDSHandler(), SAX_ERROR_MES);
+		sax.parse();
+
+	}
+
+	/**
+	 * Формирует LabelsX и Series на основе XML-датасета.
+	 */
+	private class XmlDSHandler extends DefaultHandler {
+
+		private static final String RECORD_TAG = "rec";
+
+		private boolean processRecord = false;
+		private boolean processProps = false;
+		private boolean processSelectorColumn = false;
+
+		private int counterLabel = 1;
+		private int counterRecord = 0;
+		private ChartSeries series = null;
+
+		private ByteArrayOutputStream osProps = null;
+		private XMLStreamWriter writerProps = null;
+
+		@Override
+		public void startElement(final String uri, final String localName, final String name,
+				final Attributes atts) {
+			if (RECORD_TAG.equals(localName)) {
+				counterRecord++;
+				processRecord = true;
+				series = new ChartSeries();
+				return;
+			}
+
+			if (getSelectorColumn().equals(localName)) {
+				processSelectorColumn = true;
+				return;
+			}
+
+			if (PROPS_TAG.equals(localName)) {
+				processProps = true;
+				osProps = new ByteArrayOutputStream();
+				try {
+					writerProps =
+						XMLOutputFactory.newInstance().createXMLStreamWriter(osProps,
+								TextUtils.DEF_ENCODING);
+				} catch (XMLStreamException e) {
+					throw new SAXError(e);
+				}
+			}
+
+			if (processProps) {
+				try {
+					writerProps.writeStartElement(localName);
+					for (int i = 0; i < atts.getLength(); i++) {
+						writerProps.writeAttribute(atts.getQName(i), atts.getValue(i));
+					}
+				} catch (XMLStreamException e) {
+					throw new SAXError(e);
+				}
+				return;
+			}
+
+			if (!processRecord || processProps || processSelectorColumn) {
+				return;
+			}
+
+			if (counterRecord == 1) {
+				ChartLabel curLabel = new ChartLabel();
+				curLabel.setValue(counterLabel++);
+				curLabel.setText(localName);
+				getResult().getJavaDynamicData().getLabelsX().add(curLabel);
+			}
+		}
+
+		@Override
+		public void characters(final char[] ch, final int start, final int length) {
+			if (processSelectorColumn) {
+				String name = new String(ch, start, length);
+				if (series.getName() != null) {
+					name = series.getName() + name;
+				}
+				series.setName(name);
+				return;
+			}
+
+			if (processProps) {
+				try {
+					writerProps.writeCharacters(ch, start, length);
+				} catch (XMLStreamException e) {
+					throw new SAXError(e);
+				}
+				return;
+			}
+
+			if (processRecord) {
+				String value = new String(ch, start, length);
+				addValueToSeries(series, value);
+				return;
+			}
+		}
+
+		@Override
+		public void endElement(final String uri, final String localName, final String name) {
+			if (getSelectorColumn().equals(localName)) {
+				processSelectorColumn = false;
+				return;
+			}
+
+			if (processProps) {
+				try {
+					writerProps.writeEndElement();
+				} catch (XMLStreamException e) {
+					throw new SAXError(e);
+				}
+			}
+
+			if (PROPS_TAG.equals(localName)) {
+				try {
+					readEvents(series, osProps.toString(TextUtils.DEF_ENCODING));
+				} catch (UnsupportedEncodingException e) {
+					throw new SAXError(e);
+				}
+				processProps = false;
+				return;
+			}
+
+			if (RECORD_TAG.equals(localName)) {
+				processRecord = false;
+				getResult().getJavaDynamicData().getSeries().add(series);
+				return;
+			}
+		}
+	}
+
 }

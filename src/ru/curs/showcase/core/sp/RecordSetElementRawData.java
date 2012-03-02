@@ -26,6 +26,11 @@ public class RecordSetElementRawData extends ElementRawData implements Closeable
 
 	private int statementIndex = 0;
 
+	/**
+	 * Данные, полученные из тега поля settings.
+	 */
+	private InputStream xmlDS = null;
+
 	public RecordSetElementRawData(final InputStream props,
 			final DataPanelElementInfo aElementInfo, final CompositeContext aContext,
 			final PreparedStatement[] aStatement) {
@@ -105,6 +110,14 @@ public class RecordSetElementRawData extends ElementRawData implements Closeable
 		}
 	}
 
+	public InputStream getXmlDS() {
+		return xmlDS;
+	}
+
+	public void setXmlDS(final InputStream aXmlDS) {
+		xmlDS = aXmlDS;
+	}
+
 	/**
 	 * Подготавливает настройки элемента.
 	 * 
@@ -115,6 +128,7 @@ public class RecordSetElementRawData extends ElementRawData implements Closeable
 		}
 		try {
 			setSettings(spQuery.getValidatedSettings());
+			setXmlDS(spQuery.getXmlDS());
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
 		}

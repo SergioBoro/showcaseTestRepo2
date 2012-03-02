@@ -29,6 +29,11 @@ public abstract class ElementSPQuery extends SPQuery {
 	private InputStream validatedSettings;
 
 	/**
+	 * Данные, полученные из тега поля settings.
+	 */
+	private InputStream xmlDS = null;
+
+	/**
 	 * Функция для настройки общих параметров запроса: контекста и фильтров.
 	 * 
 	 * @throws SQLException
@@ -102,21 +107,32 @@ public abstract class ElementSPQuery extends SPQuery {
 	 */
 	protected InputStream getValidatedSettings() throws SQLException {
 		if (validatedSettings == null) {
-			InputStream settings = getInputStreamForXMLParam(getOutSettingsParam());
-			if (settings != null) {
-				if (getSettingsSchema() != null) {
-					validatedSettings =
-						XMLUtils.xsdValidateAppDataSafe(settings, getSettingsSchema());
-				} else {
-					validatedSettings = settings;
-				}
-			}
+			fillValidatedSettings();
 		}
 		return validatedSettings;
 	}
 
+	protected void fillValidatedSettings() throws SQLException {
+		InputStream settings = getInputStreamForXMLParam(getOutSettingsParam());
+		if (settings != null) {
+			if (getSettingsSchema() != null) {
+				validatedSettings = XMLUtils.xsdValidateAppDataSafe(settings, getSettingsSchema());
+			} else {
+				validatedSettings = settings;
+			}
+		}
+	}
+
 	protected void setValidatedSettings(final InputStream aValidatedSettings) {
 		validatedSettings = aValidatedSettings;
+	}
+
+	public InputStream getXmlDS() {
+		return xmlDS;
+	}
+
+	public void setXmlDS(final InputStream aXmlDS) {
+		xmlDS = aXmlDS;
 	}
 
 	/**
