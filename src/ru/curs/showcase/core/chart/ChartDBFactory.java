@@ -253,12 +253,14 @@ public class ChartDBFactory extends AbstractChartFactory {
 		private static final String RECORD_TAG = "rec";
 
 		private boolean processRecord = false;
+		private boolean processValue = false;
 		private boolean processProps = false;
 		private boolean processSelectorColumn = false;
 
 		private int counterLabel = 1;
 		private int counterRecord = 0;
 		private ChartSeries series = null;
+		private String value = "";
 
 		private ByteArrayOutputStream osProps = null;
 		private XMLStreamWriter writerProps = null;
@@ -306,6 +308,9 @@ public class ChartDBFactory extends AbstractChartFactory {
 				return;
 			}
 
+			processValue = true;
+			value = "";
+
 			if (counterRecord == 1) {
 				ChartLabel curLabel = new ChartLabel();
 				curLabel.setValue(counterLabel++);
@@ -334,9 +339,8 @@ public class ChartDBFactory extends AbstractChartFactory {
 				return;
 			}
 
-			if (processRecord) {
-				String value = new String(ch, start, length);
-				addValueToSeries(series, value);
+			if (processValue) {
+				value = value + new String(ch, start, length);
 				return;
 			}
 		}
@@ -370,6 +374,11 @@ public class ChartDBFactory extends AbstractChartFactory {
 				processRecord = false;
 				getResult().getJavaDynamicData().getSeries().add(series);
 				return;
+			}
+
+			if (processValue) {
+				addValueToSeries(series, value);
+				processValue = false;
 			}
 		}
 	}
