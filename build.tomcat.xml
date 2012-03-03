@@ -49,10 +49,6 @@
 		</cargo>
 	</target>
 
-	<target name="tomcat.prepare.war" depends="write.app.version">
-		<unzip src="${sc.war.file}.war" dest="${sc.build.dir}/tomcat/showcase"/>			
-	</target>
-
 	<target name="tomcat.copy.war">
 		<if>
 			<available file="${sc.deploy.dir}/${appname}" type="dir" />
@@ -62,7 +58,7 @@
 			</then>
 		</if>
 		<echo>Copying new war...</echo>
-		<copy todir="${sc.deploy.dir}" >
+		<copy todir="${sc.deploy.dir}/showcase" >
 			<fileset dir="${sc.build.dir}/tomcat/showcase"/>
 		</copy>
 	</target>

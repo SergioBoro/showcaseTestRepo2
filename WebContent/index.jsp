@@ -27,21 +27,18 @@
     
     <link rel="stylesheet" type="text/css" href="resources/extgwt/css/gxt-all.css" />    
     
-    <script type="text/javascript">
+    <script>
         var dojoConfig = {
             parseOnLoad: false,
-            isDebug: false,
+            isDebug: false,            
+            djeoEngine: 'djeo',
+            geKey: '',
+            ymapsKey: '<%=AppProps.getGeoMapKey("ymapsKey", request.getServerName()) %>',            
             paths: {'course': '../course', 'djeo': '../djeo', 'courseApp': '../..'},
             gfxRenderer: 'svg,silverlight,vml'
         };
      </script>   
-
-	<script src="js/dojo/dojo.js" data-dojo-config="
-    djeoEngine: 'djeo',
-    geKey: '',
-    ymapsKey: '<%=AppProps.getGeoMapKey("ymapsKey", request.getServerName()) %>',
-    paths: {djeo:'../djeo'}">
-	</script>
+     <script src="js/dojo/dojo.js"></script>   
 	
 <!-- Google Earth not need keys now! -->
 <!-- if you plan to use Yandex Maps on non localhost server - copy your own key; apply for a key at http://api.yandex.ru/maps/form.xml	-->

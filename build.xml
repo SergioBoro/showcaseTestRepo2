@@ -254,6 +254,10 @@
 		description="Check app deploying to Tomcat on ${sc.servlet.cont.host}:${sc.servlet.cont.port}"> 
 	</target>	
 	
+	<target name="tomcat.prepare.war" depends="write.app.version">
+		<unzip src="${sc.war.file}.war" dest="${sc.build.dir}/tomcat/showcase"/>			
+	</target>	
+	
 	<target name="ci.sonar.analyzer" depends="checkProperties, info.env, clean,  
 		init.dirs, init.dojo, init.jython, build, test.coverage, sonar" 
 		description="Target for Sonar"/>	

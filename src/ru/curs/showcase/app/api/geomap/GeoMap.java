@@ -7,7 +7,7 @@ import ru.curs.showcase.app.api.element.DataPanelJSBasedElement;
 
 /**
  * Класс карты - элемента информационной панели. На карте отображаются
- * географические данные.
+ * географические данные. TODO - перенести width и height в GeoMap.
  * 
  * @author den
  * 
@@ -81,9 +81,10 @@ public final class GeoMap extends DataPanelJSBasedElement {
 	 */
 	void determineAutoSize() {
 		if (javaDynamicData != null) {
-			autoSize =
-				(GeoMapData.AUTOSIZE_CONSTANT.equals(javaDynamicData.getHeight()))
-						&& (GeoMapData.AUTOSIZE_CONSTANT.equals(javaDynamicData.getWidth()));
+			autoSize = (GeoMapData.AUTOSIZE_CONSTANT.equals(javaDynamicData
+					.getHeight()))
+					&& (GeoMapData.AUTOSIZE_CONSTANT.equals(javaDynamicData
+							.getWidth()));
 		}
 	}
 
@@ -104,9 +105,11 @@ public final class GeoMap extends DataPanelJSBasedElement {
 	}
 
 	public void applyAutoSizeValuesOnClient(final int width, final int height) {
-		setJsDynamicData(getJsDynamicData().replace("\"width\":" + GeoMapData.AUTOSIZE_CONSTANT,
+		setJsDynamicData(getJsDynamicData().replace(
+				"\"width\":" + GeoMapData.AUTOSIZE_CONSTANT,
 				"\"width\":" + width));
-		setJsDynamicData(getJsDynamicData().replace("\"height\":" + GeoMapData.AUTOSIZE_CONSTANT,
+		setJsDynamicData(getJsDynamicData().replace(
+				"\"height\":" + GeoMapData.AUTOSIZE_CONSTANT,
 				"\"height\":" + height));
 	}
 }
