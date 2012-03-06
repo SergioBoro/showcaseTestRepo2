@@ -314,7 +314,7 @@ public class ChartDBFactory extends AbstractChartFactory {
 			if (counterRecord == 1) {
 				ChartLabel curLabel = new ChartLabel();
 				curLabel.setValue(counterLabel++);
-				curLabel.setText(localName);
+				curLabel.setText(XMLUtils.unEscapeTagXml(localName));
 				getResult().getJavaDynamicData().getLabelsX().add(curLabel);
 			}
 		}

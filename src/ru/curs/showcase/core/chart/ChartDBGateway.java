@@ -37,7 +37,11 @@ public class ChartDBGateway extends CompBasedElementSPQuery implements
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "{? = call %s(?, ?, ?, ?, ?, ?)}";
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
+			return "{? = call %s(?, ?, ?, ?, ?, ?, ?)}";
+		} else {
+			return "{? = call %s(?, ?, ?, ?, ?, ?)}";
+		}
 	}
 
 	@Override
