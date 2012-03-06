@@ -21,5 +21,10 @@
         <element id="31" type="chart" proc="chart_pas_phantom"/>        
         <element id="32" type="chart" proc="chart_pas_no_res"/>
         <element id="33" type="chart" proc="chart_pas_wrong_param"/>  
-    </tab>      
+    </tab>  
+	<tab id="4" name="Плагин демо">
+		<element id="0401" type="plugin" proc="pluginRadarInfo" plugin="radar">
+			<proc id="040101" name="plugin/handleRadar.py" type="POSTPROCESS" />
+		</element>
+	</tab>        
 </datapanel>

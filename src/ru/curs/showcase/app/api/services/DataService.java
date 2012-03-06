@@ -165,4 +165,15 @@ public interface DataService extends RemoteService {
 	 * @throws GeneralException
 	 */
 	MainPage getMainPage(CompositeContext context) throws GeneralException;
+
+	/**
+	 * Возвращает данные для формирования UI плагина.
+	 * 
+	 * @param context
+	 *            - контекст.
+	 * @param element
+	 *            - описание элемента.
+	 */
+	Plugin getPlugin(CompositeContext context, DataPanelElementInfo elementInfo)
+			throws GeneralException;
 }

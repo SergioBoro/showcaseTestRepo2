@@ -16,6 +16,7 @@ import ru.curs.showcase.core.event.ExecServerActivityCommand;
 import ru.curs.showcase.core.frame.MainPageGetCommand;
 import ru.curs.showcase.core.geomap.GeoMapGetCommand;
 import ru.curs.showcase.core.grid.*;
+import ru.curs.showcase.core.html.plugin.PluginCommand;
 import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
@@ -122,6 +123,13 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	@Override
 	public MainPage getMainPage(final CompositeContext context) throws GeneralException {
 		MainPageGetCommand command = new MainPageGetCommand(context);
+		return command.execute();
+	}
+
+	@Override
+	public Plugin getPlugin(CompositeContext aContext, DataPanelElementInfo aElementInfo)
+			throws GeneralException {
+		PluginCommand command = new PluginCommand(aContext, aElementInfo);
 		return command.execute();
 	}
 

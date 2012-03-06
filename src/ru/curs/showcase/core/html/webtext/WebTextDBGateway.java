@@ -11,7 +11,7 @@ import ru.curs.showcase.util.Description;
  * @author den
  * 
  */
-@Description(process = "Загрузка данных для вебтекста из БД")
+@Description(process = "Загрузка данных для вебтекста или UI плагина из БД")
 public class WebTextDBGateway extends HTMLBasedSPCallHelper implements HTMLGateway {
 
 	private static final int DATA_INDEX = 7;

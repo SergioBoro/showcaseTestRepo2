@@ -162,4 +162,17 @@ public interface DataServiceAsync {
 	 */
 	void getMainPage(CompositeContext context, AsyncCallback<MainPage> callback);
 
+	/**
+	 * Асинхронная версия getPlugin.
+	 * 
+	 * @param context
+	 *            - текущий контекст.
+	 * @param element
+	 *            - описание элемента.
+	 * @param callback
+	 *            - функция обратного вызова для GWT.
+	 */
+	void getPlugin(CompositeContext context, DataPanelElementInfo elementInfo,
+			AsyncCallback<Plugin> callback);
+
 }

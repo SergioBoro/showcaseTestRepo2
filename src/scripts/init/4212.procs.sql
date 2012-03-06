@@ -1,0 +1,46 @@
+CREATE PROCEDURE [dbo].[pluginRadarInfo]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+    @element_id varchar(512) ='',    
+    @data xml output,
+    @settings xml output
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
+
+set    @data=CAST(
+'<root>
+<data>
+<series name="Россия" data1="63.82" data2="17.18" data3="7.77"/>
+<series name="Москва" data1="47.22" data2="19.12" data3="20.21"/>
+<series name="Питер" data1="58.77" data2="13.06" data3="15.22"/>
+</data>
+</root>' as xml)
+
+set @settings='<properties>    
+                                
+                       <event name="single_click" linkId="1">
+                        <action >
+                            <main_context>current</main_context>                        
+							<datapanel type="current" tab="current">
+                                <element id="d1">
+	                                <add_context>add</add_context>
+                                </element>                                                             
+                                <element id="d2">
+	                                <add_context>add</add_context>
+                                </element> 
+                                <element id="d3">
+	                                <add_context>add</add_context>
+                                </element>                                                                 
+                            </datapanel>
+                        </action>
+                       </event>  
+                                                                      
+                    </properties>'
+
+END

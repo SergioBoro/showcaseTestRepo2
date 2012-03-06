@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>
+	<tab id="01" name="Плагин демо">
+		<element id="0101" type="plugin" proc="pluginRadarInfo" plugin="radar">
+			<proc id="010101" name="plugin/handleRadar.py" type="POSTPOROCESS" />
+		</element>
+	</tab>
+</datapanel>

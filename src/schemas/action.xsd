@@ -51,7 +51,7 @@
 				</xs:element>
 				<xs:element name="server" minOccurs="0">
 					<xs:complexType>
-						<xs:all>
+						<xs:sequence>
 							<xs:element name="activity" minOccurs="0" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:sequence>
@@ -60,7 +60,7 @@
 									<xs:attributeGroup ref="identGroup" />								
 								</xs:complexType>
 							</xs:element>
-						</xs:all>
+						</xs:sequence>
 					</xs:complexType>
 					<xs:unique name="sActivityId">
 						<xs:selector xpath="activity" />
@@ -69,7 +69,7 @@
 				</xs:element>
 				<xs:element name="client" minOccurs="0">
 					<xs:complexType>
-						<xs:all>
+						<xs:sequence>
 							<xs:element name="activity" minOccurs="0" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:sequence>
@@ -78,7 +78,7 @@
 									<xs:attributeGroup ref="identGroup" />
 								</xs:complexType>
 							</xs:element>
-						</xs:all>
+						</xs:sequence>
 					</xs:complexType>
 					<xs:unique name="cActivityId">
 						<xs:selector xpath="activity" />

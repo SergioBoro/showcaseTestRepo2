@@ -269,14 +269,14 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	}
 
 	/**
-	 * Возвращает процедуру определенного типа. Использовать данную процедуру
-	 * имеет смысл только с теми типами, который могут содержаться в одном
-	 * экземпляре.
+	 * Возвращает процедуру определенного типа. Использовать данную функция
+	 * имеет смысл только с теми типами процедур, который должны быть в одном
+	 * экземпляре в элементе.
 	 * 
 	 * @param procType
 	 *            - тип процедуры.
 	 */
-	private DataPanelElementProc getProcByType(final DataPanelElementProcType procType) {
+	public DataPanelElementProc getProcByType(final DataPanelElementProcType procType) {
 		for (DataPanelElementProc cur : procs.values()) {
 			if (cur.getType() == procType) {
 				return cur;

@@ -28,7 +28,11 @@ public enum DataPanelElementType implements SerializableElement {
 	/**
 	 * XForm - форма для редактирования или фильтрации.
 	 */
-	XFORMS;
+	XFORMS,
+	/**
+	 * UI плагин - произвольная внешняя компонента JavaScript или Flash.
+	 */
+	PLUGIN;
 
 	/**
 	 * Возвращает имя схемы для проверки общих настроек элемента.

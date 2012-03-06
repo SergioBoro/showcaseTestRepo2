@@ -8,6 +8,7 @@
 			<xs:enumeration value="DOWNLOAD" />
 			<xs:enumeration value="UPLOAD" />
 			<xs:enumeration value="METADATA" />
+			<xs:enumeration value="POSTPROCESS" />
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ElementLayoutType">
@@ -25,10 +26,10 @@
 			<xs:sequence>
 				<xs:element name="tab" minOccurs="1" maxOccurs="unbounded">
 					<xs:complexType>
-						<xs:all>
-							<xs:element ref="element" minOccurs="0" maxOccurs="unbounded" />
-							<xs:element ref="tr" minOccurs="0" maxOccurs="unbounded" />
-						</xs:all>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="element" />
+							<xs:element ref="tr"/>
+						</xs:choice>
 						<xs:attributeGroup ref="identGroup" />
 						<xs:attributeGroup ref="StyleGroup" />
 						<xs:attribute name="layout" type="ElementLayoutType" />
@@ -48,9 +49,9 @@
 		</xs:unique>		
 	</xs:element>
 	<xs:element name="element">
-		<xs:complexType>
-			<xs:all>
-				<xs:element name="proc" minOccurs="0" maxOccurs="unbounded">
+		<xs:complexType>	
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="proc" >
 					<xs:complexType>
 						<xs:attributeGroup ref="identGroup" />
 						<xs:attribute name="type" use="required" type="typeProc" />
@@ -58,13 +59,13 @@
 						<xs:attribute name="schema" type="xsdType" />
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="related" minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="related">
 					<xs:complexType>
 						<xs:attribute name="id" use="required" type="notNullType" />
 						<xs:assert test="../@id != @id" />
 					</xs:complexType>
 				</xs:element>
-			</xs:all>
+			</xs:choice>
 			<xs:attributeGroup ref="StyleGroup" />			
 			<xs:attribute name="id" use="required" type="notNullType" />
 			<xs:attribute name="type" use="required" type="typeElement" />
@@ -81,6 +82,7 @@
 			<xs:attribute name="showLoadingMessage" type="xs:boolean" />
 			<xs:attribute name="refreshByTimer" type="xs:boolean" />
 			<xs:attribute name="refreshInterval" type="xs:positiveInteger" />
+			<xs:attribute name="plugin" type="notNullType" />
 			<xs:assert
 				test="(@type='webtext' and count(@proc)+count(@transform)>0) or (@type='xforms' and count(@template)=1) or (@type!='webtext' and @type!='xforms' and count(@proc)=1 and count(@transform)=0) " />
 			<xs:assert test="count(proc/@type[.='SAVE']) &lt;= 1" />
@@ -98,9 +100,9 @@
 
 	<xs:element name="tr">
 		<xs:complexType>
-			<xs:all>
+			<xs:sequence>
 				<xs:element ref="td" maxOccurs="unbounded" />
-			</xs:all>
+			</xs:sequence>
 			<xs:attribute name="id" type="notNullType" />
 			<xs:attribute name="height" type="HtmlSizeType" />
 			<xs:attributeGroup ref="StyleGroup" />
@@ -109,9 +111,9 @@
 
 	<xs:element name="td">
 		<xs:complexType>
-			<xs:all>
+			<xs:sequence>
 				<xs:element ref="element" minOccurs="0" maxOccurs="unbounded" />
-			</xs:all>
+			</xs:sequence>
 			<xs:attribute name="id" type="notNullType" />
 			<xs:attribute name="width" type="HtmlSizeType" />
 			<xs:attribute name="rowspan" type="xs:positiveInteger" />
