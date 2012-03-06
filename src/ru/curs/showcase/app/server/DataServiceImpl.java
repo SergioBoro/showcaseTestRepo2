@@ -1,11 +1,10 @@
 package ru.curs.showcase.app.server;
 
-import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.geomap.*;
+import ru.curs.showcase.app.api.geomap.GeoMap;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
@@ -78,12 +77,6 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 			throws GeneralException {
 		ChartGetCommand command = new ChartGetCommand(context, element);
 		return command.execute();
-	}
-
-	@Override
-	public void saveColumnSet(final ColumnSet aCs, final GeoMapExportSettings settings)
-			throws GeneralException {
-		// fake метод для корректной сериализации
 	}
 
 	@Override

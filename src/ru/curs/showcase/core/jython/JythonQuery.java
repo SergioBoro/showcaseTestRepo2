@@ -73,29 +73,7 @@ public abstract class JythonQuery<T> {
 						"from org.python.core import codecs; codecs.setDefaultEncoding('utf-8'); from %s import %s",
 						parent, className);
 			try {
-
-				interpreter.setOut(new Writer() {
-
-					@Override
-					public void write(final char[] data, final int offset, final int count)
-							throws IOException {
-						String value = String.valueOf(data, offset, count);
-						if (!value.trim().isEmpty()) {
-							Marker marker = MarkerFactory.getDetachedMarker(JYTHON_MARKER);
-							LOGGER.info(marker, value);
-						}
-					}
-
-					@Override
-					public void flush() throws IOException {
-						// ничего не делаем
-					}
-
-					@Override
-					public void close() throws IOException {
-						// ничего не делаем
-					}
-				});
+				setupJythonLogging(interpreter);
 				interpreter.exec(cmd);
 
 				PyObject pyClass = interpreter.get(className);
@@ -104,7 +82,6 @@ public abstract class JythonQuery<T> {
 
 				analyzeReturn(execute());
 			} catch (PyException e) {
-
 				JythonWrongClassException exc =
 					JythonWrongClassException.checkForImportError(e.toString(), className);
 				if (exc != null) {
@@ -119,6 +96,31 @@ public abstract class JythonQuery<T> {
 			JythonIterpretatorFactory.getInstance().release(interpreter);
 		}
 		checkErrors();
+	}
+
+	private void setupJythonLogging(final PythonInterpreter interpreter) {
+		interpreter.setOut(new Writer() {
+
+			@Override
+			public void write(final char[] data, final int offset, final int count)
+					throws IOException {
+				String value = String.valueOf(data, offset, count);
+				if (!value.trim().isEmpty()) {
+					Marker marker = MarkerFactory.getDetachedMarker(JYTHON_MARKER);
+					LOGGER.info(marker, value);
+				}
+			}
+
+			@Override
+			public void flush() throws IOException {
+				// ничего не делаем
+			}
+
+			@Override
+			public void close() throws IOException {
+				// ничего не делаем
+			}
+		});
 	}
 
 	private String handleJythonException(final String value) {

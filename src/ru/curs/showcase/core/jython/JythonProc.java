@@ -102,4 +102,18 @@ public interface JythonProc {
 	 * @return - преобразованные данные.
 	 */
 	Object transform(CompositeContext aContext, String aData);
+
+	/**
+	 * Процедура пост-обработки данных для элементов информационной панели.
+	 * 
+	 * @param aContext
+	 *            - контекст.
+	 * @param elementId
+	 *            - идентификатор элемента.
+	 * @param aData
+	 *            - исходные данные.
+	 * @return - массив строк в JythonDTO, являющихся параметрами элемента или
+	 *         UserMessage в случае ошибки.
+	 */
+	Object postProcess(CompositeContext aContext, String elementId, String aData);
 }

@@ -16,6 +16,10 @@ import ru.curs.showcase.test.AbstractTest;
  */
 public class PluginTest extends AbstractTest {
 
+	private static final String PLUGIN_NAME = "flash";
+	private static final String PROC_NAME = "getPluginInfo";
+	private static final String JYTHON_PROC_NAME = "handleFlash";
+
 	@Test
 	public void pluginShouldHaveEmptyPropValuesAfterCreation() {
 		Plugin plugin = new Plugin();
@@ -29,19 +33,26 @@ public class PluginTest extends AbstractTest {
 	}
 
 	@Test
+	public void correctPluginInfoShouldHavePluginProp() {
+		PluginInfo pi = new PluginInfo("id", null, PROC_NAME);
+		assertFalse(pi.isCorrect());
+		pi.setPlugin(PLUGIN_NAME);
+		assertTrue(pi.isCorrect());
+	}
+
+	@Test
 	public void pluginInfoIsDataPanelElementInfoWithPluginData() {
-		final String pluginName = "flash";
-		final String procName = "getPluginInfo";
-		final String jythonProcName = "handleFlash";
-		PluginInfo pi = new PluginInfo("id", pluginName, procName);
-		pi.addPostProcessProc(jythonProcName, jythonProcName);
+		PluginInfo pi = new PluginInfo("id", PLUGIN_NAME, PROC_NAME);
+		pi.addPostProcessProc(JYTHON_PROC_NAME, JYTHON_PROC_NAME);
 
 		assertTrue(pi instanceof DataPanelElementInfo);
-		assertEquals(procName, pi.getProcName());
-		assertEquals(pluginName, pi.getPlugin());
+		assertEquals(PROC_NAME, pi.getProcName());
+		assertEquals(PLUGIN_NAME, pi.getPlugin());
 		assertEquals(1, pi.getProcs().size());
-		assertEquals(jythonProcName, pi.getProcByType(DataPanelElementProcType.POSTPROCESS)
+		assertEquals(JYTHON_PROC_NAME, pi.getProcByType(DataPanelElementProcType.POSTPROCESS)
 				.getName());
+		assertEquals(pi.getPostProcessProcName(),
+				pi.getProcByType(DataPanelElementProcType.POSTPROCESS).getName());
 	}
 
 }

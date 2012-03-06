@@ -22,7 +22,8 @@ public enum SettingsFileType {
 	GEOMAP_PROPERTIES("Профайл настроек карты"),
 	JYTHON("Jython скрипт"),
 	XM_DATA("XML-файл с данными"),
-	GEOMAP_KEYS("Файл с ключами API для карт");
+	GEOMAP_KEYS("Файл с ключами API для карт"),
+	IMPORT_LIST("Список импортируемых компонент для плагина");
 
 	/**
 	 * Название файла.

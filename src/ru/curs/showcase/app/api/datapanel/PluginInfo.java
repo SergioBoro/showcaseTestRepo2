@@ -26,7 +26,7 @@ public final class PluginInfo extends DataPanelElementInfo {
 		return plugin;
 	}
 
-	public void setPluginName(final String aPlugin) {
+	public void setPlugin(final String aPlugin) {
 		plugin = aPlugin;
 	}
 
@@ -36,10 +36,21 @@ public final class PluginInfo extends DataPanelElementInfo {
 		proc.setName(name);
 		proc.setType(DataPanelElementProcType.POSTPROCESS);
 		getProcs().put(proc.getId(), proc);
+	}
 
+	public String getPostProcessProcName() {
+		if (getProcByType(DataPanelElementProcType.POSTPROCESS) != null) {
+			return getProcByType(DataPanelElementProcType.POSTPROCESS).getName();
+		}
+		return null;
 	}
 
 	public PluginInfo() {
 		super();
+	}
+
+	@Override
+	public boolean isCorrect() {
+		return super.isCorrect() && (plugin != null);
 	}
 }

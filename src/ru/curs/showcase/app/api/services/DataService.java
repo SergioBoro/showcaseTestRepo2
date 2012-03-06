@@ -1,11 +1,10 @@
 package ru.curs.showcase.app.api.services;
 
-import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.geomap.*;
+import ru.curs.showcase.app.api.geomap.GeoMap;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
@@ -88,16 +87,6 @@ public interface DataService extends RemoteService {
 	 * @throws GeneralException
 	 */
 	Chart getChart(CompositeContext context, DataPanelElementInfo element) throws GeneralException;
-
-	/**
-	 * Fake функция для того, чтобы заработала сериализация GWT для класса
-	 * ColumnSet. Не удалять!
-	 * 
-	 * @param cs
-	 *            - набор столбцов.
-	 * @throws GeneralException
-	 */
-	void saveColumnSet(ColumnSet cs, GeoMapExportSettings settings) throws GeneralException;
 
 	/**
 	 * Возвращает данные для отрисовки карты.

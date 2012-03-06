@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.xml.bind.annotation.*;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.*;
 import ru.curs.showcase.app.api.event.Event;
 
@@ -72,5 +73,9 @@ public final class Plugin extends DataPanelElement {
 
 	public Plugin() {
 		super();
+	}
+
+	public Plugin(final DataPanelElementInfo aElInfo) {
+		super(aElInfo);
 	}
 }

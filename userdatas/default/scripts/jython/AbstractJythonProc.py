@@ -75,6 +75,18 @@ class AbstractJythonProc(JythonProc):
         data = adata
         return mainproc()
 
+    def postProcess(self, context, elId, adata):
+        global main, add, session, filterContext, elementId, data
+        main = context.getMain()
+        if context.getAdditional():
+            add = context.getAdditional()
+        session = context.getSession()
+        if context.getFilter():
+            filterContext = context.getFilter()
+        elementId = elId
+        data = adata
+        return mainproc()
+
 
 def mainproc():
     print u"all is ok!"
