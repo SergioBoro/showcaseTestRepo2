@@ -44,9 +44,9 @@ public class PluginSLTest extends AbstractTestWithDefaultUserData {
 		assertEquals(width, plugin.getSize().getWidth().intValue());
 		assertEquals(height, plugin.getSize().getHeight().intValue());
 		assertEquals("one param expected", 1, plugin.getParams().size());
-		assertEquals("[{name: 'Россия', data1: 63.82, data2: 17.18, data3: 7.77}"
-				+ "{name: 'Москва', data1: 47.22, data2: 19.12, data3: 20.21}"
-				+ "{name: 'Питер', data1: 58.77, data2: 13.06, data3: 15.22}]", plugin.getParams()
+		assertEquals("[{name: 'Russia', data1: 63.82, data2: 17.18, data3: 7.77}"
+				+ "{name: 'Moscow', data1: 47.22, data2: 19.12, data3: 20.21}"
+				+ "{name: 'Piter', data1: 58.77, data2: 13.06, data3: 15.22}]", plugin.getParams()
 				.get(0));
 	}
 

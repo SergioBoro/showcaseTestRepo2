@@ -1,7 +1,5 @@
 package ru.curs.showcase.core.html.plugin;
 
-import org.python.core.PyString;
-
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.jython.*;
@@ -33,7 +31,7 @@ public final class PluginPostProcessJythonGateway extends JythonQuery<JythonDTO>
 
 	@Override
 	protected Object execute() {
-		return getProc().postProcess(context, elementInfo.getId().getString(), new PyString(data));
+		return getProc().postProcess(context, elementInfo.getId().getString(), data);
 	}
 
 	@Override

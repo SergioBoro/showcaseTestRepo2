@@ -16,9 +16,9 @@ BEGIN
 set    @data=CAST(
 '<root>
 <data>
-<series name="Россия" data1="63.82" data2="17.18" data3="7.77"/>
-<series name="Москва" data1="47.22" data2="19.12" data3="20.21"/>
-<series name="Питер" data1="58.77" data2="13.06" data3="15.22"/>
+<series name="Russia" data1="63.82" data2="17.18" data3="7.77"/>
+<series name="Moscow" data1="47.22" data2="19.12" data3="20.21"/>
+<series name="Piter" data1="58.77" data2="13.06" data3="15.22"/>
 </data>
 </root>' as xml)
 
