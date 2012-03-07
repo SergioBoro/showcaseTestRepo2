@@ -7,7 +7,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
@@ -30,6 +30,7 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 	private static final String COLSPAN_TAG = "colspan";
 	private static final String SUB_TYPE_TAG = "subtype";
 	private static final String EDITABLE_TAG = "editable";
+	private static final String PLUGIN_TAG = "plugin";
 
 	/**
 	 * Создаваемая панель.
@@ -106,22 +107,14 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		}
 	}
 
-	// CHECKSTYLE:OFF
 	public void elementSTARTTAGHandler(final Attributes attrs) {
 		String value;
-		DataPanelElementInfo el = new DataPanelElementInfo(elCounter++, currentTab);
+		DataPanelElementInfo el = createInfo(attrs);
 		el.setId(attrs.getValue(ID_TAG));
-		el.setType(DataPanelElementType.valueOf(attrs.getValue(TYPE_TAG).toUpperCase()));
 		handleHTMLAttrs(attrs, el.getHtmlAttrs());
 
 		if (attrs.getIndex(PROC_ATTR_NAME) > -1) {
 			el.setProcName(attrs.getValue(PROC_ATTR_NAME));
-		}
-		if (el.getType() == DataPanelElementType.WEBTEXT) {
-			el.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));
-		}
-		if (el.getType() == DataPanelElementType.XFORMS) {
-			el.setTemplateName(attrs.getValue(TEMPLATE_TAG));
 		}
 		if (attrs.getIndex(HIDE_ON_LOAD_TAG) > -1) {
 			value = attrs.getValue(HIDE_ON_LOAD_TAG);
@@ -147,11 +140,6 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 			value = attrs.getValue(REFRESH_INTERVAL_TAG);
 			el.setRefreshInterval(Integer.valueOf(value));
 		}
-		if (currentTab.getLayout() == DataPanelTabLayout.VERTICAL) {
-			currentTab.getElements().add(el);
-		} else {
-			currentTD.setElement(el);
-		}
 		if (attrs.getIndex(SUB_TYPE_TAG) > -1) {
 			el.setSubType(DataPanelElementSubType.valueOf(attrs.getValue(SUB_TYPE_TAG)
 					.toUpperCase()));
@@ -160,9 +148,45 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 			value = attrs.getValue(EDITABLE_TAG);
 			el.setEditable(Boolean.valueOf(value));
 		}
+
+		readElementSpecificAttrs(attrs, el);
+
+		if (currentTab.getLayout() == DataPanelTabLayout.VERTICAL) {
+			currentTab.getElements().add(el);
+		} else {
+			currentTD.setElement(el);
+		}
 	}
 
-	// CHECKSTYLE:ON
+	private void readElementSpecificAttrs(final Attributes attrs, final DataPanelElementInfo el) {
+		switch (el.getType()) {
+		case PLUGIN:
+			((PluginInfo) el).setPlugin(attrs.getValue(PLUGIN_TAG));
+			el.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));
+			break;
+		case WEBTEXT:
+			el.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));
+			break;
+		case XFORMS:
+			el.setTemplateName(attrs.getValue(TEMPLATE_TAG));
+			break;
+		default:
+			break;
+		}
+	}
+
+	private DataPanelElementInfo createInfo(final Attributes attrs) {
+		DataPanelElementType type =
+			DataPanelElementType.valueOf(attrs.getValue(TYPE_TAG).toUpperCase());
+		DataPanelElementInfo elInfo;
+		if (type != DataPanelElementType.PLUGIN) {
+			elInfo = new DataPanelElementInfo(elCounter++, currentTab);
+			elInfo.setType(type);
+		} else {
+			elInfo = new PluginInfo(elCounter++, currentTab);
+		}
+		return elInfo;
+	}
 
 	public void handleHTMLAttrs(final Attributes attrs, final HTMLAttrs aHtmlAttrs) {
 		if (attrs.getIndex(GeneralConstants.STYLE_CLASS_TAG) > -1) {

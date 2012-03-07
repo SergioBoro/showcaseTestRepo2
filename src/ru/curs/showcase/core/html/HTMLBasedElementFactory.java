@@ -29,10 +29,15 @@ public abstract class HTMLBasedElementFactory extends TemplateMethodFactory {
 		EventFactory<HTMLEvent> factory =
 			new EventFactory<HTMLEvent>(HTMLEvent.class, getCallContext());
 		factory.intiForGetSimpleEvents(LINK_ID_TAG);
+		addHandlers(factory);
 		Collection<HTMLEvent> events = factory.getSimpleEvents(getSource().getSettings());
 		((HTMLEventManager) getResult().getEventManager()).getEvents().addAll(events);
 
 		getResult().setDefaultAction(factory.getDefaultAction());
+	}
+
+	protected void addHandlers(final EventFactory<HTMLEvent> factory) {
+		// по умолчанию доп. обработчиков нет
 	}
 
 	@Override

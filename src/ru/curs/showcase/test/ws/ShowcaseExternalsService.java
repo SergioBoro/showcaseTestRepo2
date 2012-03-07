@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "ShowcaseExternalsService", targetNamespace = "http://showcase.curs.ru", wsdlLocation = "http://localhost/Showcase/forall/webservices?wsdl")
+@WebServiceClient(name = "ShowcaseExternalsService", targetNamespace = "http://showcase.curs.ru", wsdlLocation = "http://localhost:7777/Showcase/forall/webservices?wsdl")
 public class ShowcaseExternalsService
     extends Service
 {
@@ -30,7 +30,7 @@ public class ShowcaseExternalsService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("http://localhost/Showcase/forall/webservices?wsdl");
+            url = new URL("http://localhost:7777/Showcase/forall/webservices?wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

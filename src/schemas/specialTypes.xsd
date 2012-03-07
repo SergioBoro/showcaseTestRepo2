@@ -84,6 +84,12 @@
 			<xs:pattern value="[0-9]+(px){0,1}|100%|[0-9]{0,1}[0-9]{1}%"></xs:pattern>
 		</xs:restriction>
 	</xs:simpleType>
+	
+	<xs:simpleType name="HtmlPxSizeType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]+(px){0,1}"></xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>	
 
 	<xs:simpleType name="colorType">
 		<xs:restriction base="xs:string">

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.*;
  * @author den
  * 
  */
-@XmlRootElement(name = "element")
+@XmlRootElement(name = "pluginElement")
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class PluginInfo extends DataPanelElementInfo {
 
@@ -47,6 +47,11 @@ public final class PluginInfo extends DataPanelElementInfo {
 
 	public PluginInfo() {
 		super();
+	}
+
+	public PluginInfo(final int aIndex, final DataPanelTab aTab) {
+		super(aIndex, aTab);
+		setType(DataPanelElementType.PLUGIN);
 	}
 
 	@Override

@@ -239,6 +239,10 @@
 			<fileset dir="${sc.class.dir}">
 			</fileset>
 		</delete>
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${sc.webapp.dir}/solutions">
+			</fileset>
+		</delete>		
 	</target>
 
 	<target name="rebuild" depends="clean, build" description="clean + build" />
@@ -391,7 +395,7 @@
 
 	<target name="init.ws.tests" description="Write JAX-WS client Java files for tests">
 		<echo>Updating WS test files from ${sc.webapp}/forall/webservices?wsdl</echo>
-		<exec resolveexecutable="true" executable="cmd" dir=".">
+		<exec resolveexecutable="true" executable="cmd" dir="." failonerror="true">
 			<arg value="/c" />
 			<arg value="wsimport" />
 			<arg line="-s src" />

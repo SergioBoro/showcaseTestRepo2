@@ -35,8 +35,8 @@
     <xs:element name="properties">
         <xs:complexType>
             <xs:attribute name="legend" type="legendPlace" />
-            <xs:attribute name="width" type="HtmlSizeType"/>
-            <xs:attribute name="height" type="HtmlSizeType"/>
+            <xs:attribute name="width" type="HtmlPxSizeType"/>
+            <xs:attribute name="height" type="HtmlPxSizeType"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>

@@ -23,7 +23,7 @@
         <element id="33" type="chart" proc="chart_pas_wrong_param"/>  
     </tab>  
 	<tab id="4" name="Плагин демо">
-		<element id="0401" type="plugin" proc="pluginRadarInfo" plugin="radar">
+		<element id="0401" type="plugin" proc="pluginRadarInfo" plugin="radar" transform="fake.xsl">
 			<proc id="040101" name="plugin/handleRadar.py" type="POSTPROCESS" />
 		</element>
 	</tab>        

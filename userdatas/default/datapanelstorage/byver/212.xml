@@ -2,7 +2,7 @@
 <datapanel>
 	<tab id="01" name="Плагин демо">
 		<element id="0101" type="plugin" proc="pluginRadarInfo" plugin="radar">
-			<proc id="010101" name="plugin/handleRadar.py" type="POSTPOROCESS" />
+			<proc id="010101" name="plugin/handleRadar.py" type="POSTPROCESS" />
 		</element>
-	</tab>
+	</tab>	
 </datapanel>

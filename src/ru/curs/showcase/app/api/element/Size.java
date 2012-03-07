@@ -1,5 +1,9 @@
 package ru.curs.showcase.app.api.element;
 
+import javax.xml.bind.annotation.*;
+
+import ru.beta2.extra.gwt.ui.SerializableElement;
+
 /**
  * Данные о размере элемента. Являются базовым классом для данных графика и
  * карты.
@@ -7,8 +11,12 @@ package ru.curs.showcase.app.api.element;
  * @author den
  * 
  */
-public abstract class Size {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Size implements SerializableElement {
 
+	private static final long serialVersionUID = 9180510243385481114L;
+
+	public static final Integer AUTOSIZE_CONSTANT = -999;
 	/**
 	 * Ширина элемента.
 	 */
@@ -32,6 +40,15 @@ public abstract class Size {
 
 	public void setHeight(final Integer aHeight) {
 		height = aHeight;
+	}
+
+	public void initAutoSize() {
+		setHeight(AUTOSIZE_CONSTANT);
+		setWidth(AUTOSIZE_CONSTANT);
+	}
+
+	public boolean getAutoSize() {
+		return (AUTOSIZE_CONSTANT.equals(width)) && (AUTOSIZE_CONSTANT.equals(height));
 	}
 
 }

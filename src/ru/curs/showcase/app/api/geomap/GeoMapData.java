@@ -24,16 +24,9 @@ public class GeoMapData extends Size implements SerializableElement {
 	 */
 	private List<GeoMapLayer> layers = new ArrayList<GeoMapLayer>();
 
-	public static final Integer AUTOSIZE_CONSTANT = -999;
-
 	public GeoMapData(final GeoMap aParent) {
 		super();
 		parent = aParent;
-	}
-
-	void initAutoSize() {
-		setHeight(AUTOSIZE_CONSTANT);
-		setWidth(AUTOSIZE_CONSTANT);
 	}
 
 	public GeoMapData() {

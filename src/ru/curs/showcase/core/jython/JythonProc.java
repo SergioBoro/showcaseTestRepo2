@@ -1,5 +1,7 @@
 package ru.curs.showcase.core.jython;
 
+import org.python.core.PyString;
+
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.core.UserMessage;
 
@@ -115,5 +117,5 @@ public interface JythonProc {
 	 * @return - массив строк в JythonDTO, являющихся параметрами элемента или
 	 *         UserMessage в случае ошибки.
 	 */
-	Object postProcess(CompositeContext aContext, String elementId, String aData);
+	Object postProcess(CompositeContext aContext, String elementId, PyString aData);
 }

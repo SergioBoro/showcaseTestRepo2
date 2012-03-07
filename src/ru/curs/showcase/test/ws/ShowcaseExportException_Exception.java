@@ -10,9 +10,6 @@ import javax.xml.ws.WebFault;
 @WebFault(name = "ShowcaseExportException", targetNamespace = "http://showcase.curs.ru")
 public class ShowcaseExportException_Exception extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7562181886054422201L;
 	/**
 	 * Java type that goes as soapenv:Fault detail element.

@@ -22,8 +22,7 @@ set    @data=CAST(
 </data>
 </root>' as xml)
 
-set @settings='<properties>    
-                                
+set @settings='<properties width="800px" height="600px">                                    
                        <event name="single_click" linkId="1">
                         <action >
                             <main_context>current</main_context>                        
@@ -39,8 +38,7 @@ set @settings='<properties>
                                 </element>                                                                 
                             </datapanel>
                         </action>
-                       </event>  
-                                                                      
+                       </event>                                                                     
                     </properties>'
 
 END

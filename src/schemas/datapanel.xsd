@@ -84,7 +84,7 @@
 			<xs:attribute name="refreshInterval" type="xs:positiveInteger" />
 			<xs:attribute name="plugin" type="notNullType" />
 			<xs:assert
-				test="(@type='webtext' and count(@proc)+count(@transform)>0) or (@type='xforms' and count(@template)=1) or (@type!='webtext' and @type!='xforms' and count(@proc)=1 and count(@transform)=0) " />
+				test="(@type='webtext' and count(@proc)+count(@transform)>0) or (@type='xforms' and count(@template)=1) or (@type='plugin' and count(@proc)=1 and count(@plugin)=1) or (count(@proc)=1 and count(@transform)=0) " />
 			<xs:assert test="count(proc/@type[.='SAVE']) &lt;= 1" />
 			<xs:assert test="count(proc/@type[.='METADATA']) &lt;= 1" />
 		</xs:complexType>
