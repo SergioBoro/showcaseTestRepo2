@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:include schemaLocation="specialTypes.xsd" />
-	<xs:simpleType name="showInMode">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="PANEL" />
-			<xs:enumeration value="MODAL_WINDOW" />
-			<xs:enumeration value="BROWSER_TAB" />
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:element name="action">
 		<xs:complexType>
 			<xs:all>

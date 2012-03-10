@@ -18,7 +18,7 @@ class myHandler(DefaultHandler):
     def startElement(self, namespaceURI, lname, qname, attrs):
         global result
         if (qname == "series") and (attrs.getIndex("name") > -1):
-            result += u"{name: '%s', data1: %s, data2: %s, data3: %s}" % (attrs.getValue('name'), attrs.getValue('data1'), attrs.getValue('data2'), attrs.getValue('data3'))
+            result += u"{name: '%s', data1: %s, data2: %s, data3: %s}," % (attrs.getValue('name'), attrs.getValue('data1'), attrs.getValue('data2'), attrs.getValue('data3'))
 
 
 class handleRadar(JythonProc):

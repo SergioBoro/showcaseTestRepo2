@@ -1,26 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:include schemaLocation="specialTypes.xsd" />
-	<xs:simpleType name="typeProc">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="SAVE" />
-			<xs:enumeration value="SUBMISSION" />
-			<xs:enumeration value="DOWNLOAD" />
-			<xs:enumeration value="UPLOAD" />
-			<xs:enumeration value="METADATA" />
-			<xs:enumeration value="POSTPROCESS" />
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="ElementLayoutType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="VERTICAL" />
-			<xs:enumeration value="TABLE" />
-		</xs:restriction>
-	</xs:simpleType>
+
 	<xs:attributeGroup name="StyleGroup">
 		<xs:attribute name="style" type="notNullType" />
 		<xs:attribute name="styleClass" type="notNullType" />
 	</xs:attributeGroup>
+	
 	<xs:element name="datapanel">
 		<xs:complexType>
 			<xs:sequence>
@@ -32,7 +18,7 @@
 						</xs:choice>
 						<xs:attributeGroup ref="identGroup" />
 						<xs:attributeGroup ref="StyleGroup" />
-						<xs:attribute name="layout" type="ElementLayoutType" />
+						<xs:attribute name="layout" type="dataPanelTabLayout" />
 						<xs:assert
 							test="if (@layout='TABLE') then count(element[child::*])=0 else count(tr[child::*])=0" />
 					</xs:complexType>
@@ -54,7 +40,7 @@
 				<xs:element name="proc" >
 					<xs:complexType>
 						<xs:attributeGroup ref="identGroup" />
-						<xs:attribute name="type" use="required" type="typeProc" />
+						<xs:attribute name="type" use="required" type="dataPanelElementProcType" />
 						<xs:attribute name="transform" type="xslType" />
 						<xs:attribute name="schema" type="xsdType" />
 					</xs:complexType>
@@ -68,12 +54,12 @@
 			</xs:choice>
 			<xs:attributeGroup ref="StyleGroup" />			
 			<xs:attribute name="id" use="required" type="notNullType" />
-			<xs:attribute name="type" use="required" type="typeElement" />
+			<xs:attribute name="type" use="required" type="dataPanelElementType" />
 			<xs:attribute name="hideOnLoad" type="xs:boolean"
 				default="false" />
 			<xs:attribute name="neverShowInPanel" type="xs:boolean"
 				default="false" />
-			<xs:attribute name="subtype" type="subTypeElement" />
+			<xs:attribute name="subtype" type="dataPanelElementSubType" />
 			<xs:attribute name="editable" type="xs:boolean" />
 			<xs:attribute name="proc" type="notNullType" />
 			<xs:attribute name="template" type="xmlType" />
