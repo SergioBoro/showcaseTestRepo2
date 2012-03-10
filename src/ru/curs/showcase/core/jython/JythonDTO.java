@@ -50,6 +50,11 @@ public final class JythonDTO {
 		settings = aSettings;
 	}
 
+	public JythonDTO(final String[] aData) {
+		super();
+		dataArray = aData;
+	}
+
 	public JythonDTO(final String aData) {
 		super();
 		data = aData;

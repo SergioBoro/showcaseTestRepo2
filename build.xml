@@ -108,7 +108,7 @@
 		<property prefix="sc.major." file="${sc.src.dir}/version.properties"  />
 		<var name="sc.version" unset="true" />
 		<property name="sc.version" value="${sc.major.version}.${sc.last.rev}" />
-		<echo>Версия Showcase ${sc.version}</echo>
+		<echo>Showcase version ${sc.version}</echo>
 		<var name="sc.war.file" unset="true" />
 		<property name="sc.war.file" value="${sc.build.dir}/artifacts/${appname}-${sc.version}" />
 		<echo>Updating build number file</echo>
@@ -131,7 +131,7 @@
 	</target>
 
 	<target name="info" description="Show wise configuration info">
-		<echo>Соединение с SQL Server "${sc.rdbms.name}" и развертывание на контейнере сервлетов "${sc.servlet.cont.dir}"</echo>
+		<echo>Connect to SQL Server "${sc.rdbms.name}" и deploy on "${sc.servlet.cont.dir}"</echo>
 	</target>
 
 	<target name="init.local.files" description="Create local settings files from templates"> 
@@ -150,10 +150,11 @@
 		<copy verbose="true" file="${sc.userdata.dir}/ora/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/ora/gridproperties/default.properties" />			
 		<copy verbose="true" file="${sc.src.dir}/logback.template.xml" tofile="${sc.src.dir}/logback.xml" />
 		<copy verbose="true" file="${sc.gwt.src.root.dir}/template.App.gwt.xml" tofile="${sc.gwt.src.root.dir}/App.gwt.xml" />
-		<echo>Не забудьте указать правильные настройки в файлах local.properties, ${sc.general.props.file} и app.properties, а также настроить classpath (Build path) с помощью Eclipse</echo>
+		<echo>Don't forget setup correct settings in local.properties, ${sc.general.props.file} и app.properties and setup classpath (Build path) in Eclipse</echo>
 	</target>
 
 	<target name="init.dirs" depends="info" description="Create some base dirs">
+		<echo>Check and create required dirs</echo>
 		<mkdir dir="${sc.class.dir}" />
 		<mkdir dir="${sc.tmp.dir}" />
 		<mkdir dir="${sc.build.dir}/junit" />
@@ -181,7 +182,8 @@
 		</iajc>-->
 	</target>
 
-	<target name="build" depends="compile">
+	<target name="build" depends="compile" description="Compile Java sources and copy config files to build dir">
+		<echo>Compiling Java sources and coping config files to build dir</echo>
 		<copy todir="${sc.class.dir}">
 			<fileset dir="${sc.src.dir}">
 				<include name="**/*" />
@@ -255,7 +257,7 @@
 	
 	<target name="ci.smoke.test" depends="init.dirs, tomcat.prepare.war, tomcat.stop, tomcat.start.for.test, 
 		tomcat.check.main.page, tomcat.stop.for.test, tomcat.copy.war, tomcat.start" 
-		description="Check app deploying to Tomcat on ${sc.servlet.cont.host}:${sc.servlet.cont.port}"> 
+		description="Check app deploying to Tomcat"> 
 	</target>	
 	
 	<target name="tomcat.prepare.war" depends="write.app.version">

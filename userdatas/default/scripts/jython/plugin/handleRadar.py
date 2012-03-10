@@ -36,7 +36,7 @@ def mainproc():
     stream = TextUtils.stringToStream(data)
     parser.parse(stream, myHandler())
     result += u']'
-    return JythonDTO([result], None)
+    return JythonDTO([result])
 
 if __name__ == "__main__":
     from org.python.core import codecs
