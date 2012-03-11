@@ -24,10 +24,10 @@ public final class AccessToDomModel {
 		ss1.setAttribute('type', 'text/css');
 		ss1.setAttribute('id', 'dynastyle');
 		if (ss1.styleSheet) { // IE
-		ss1.styleSheet.cssText = cssdef;
+			ss1.styleSheet.cssText = cssdef;
 		} else { // the world
-		var tt1 = $doc.createTextNode(cssdef);
-		ss1.appendChild(tt1);
+			var tt1 = $doc.createTextNode(cssdef);
+			ss1.appendChild(tt1);
 		}
 		var hh1 = $doc.getElementsByTagName('head')[0];
 		hh1.appendChild(ss1);
@@ -45,6 +45,24 @@ public final class AccessToDomModel {
 		newscript.type = "text/javascript";
 		var div = $doc.getElementById('target');
 		div.appendChild(newscript);
+	}-*/;
+
+	/**
+	 * Динамически вставляет в страницу ссылуку нa javascript-file.
+	 * 
+	 * @param code
+	 *            Javacript-код, который необходимо вставить
+	 */
+	public static native void addScriptLink(final String link) /*-{
+
+		var script = document.createElement('script');
+		script.setAttribute('type', 'text/javascript');
+		script.setAttribute('src', "../" + link);
+		// InsertBefore for IE.
+		// IE crashes on using appendChild before the head tag has been closed.
+		var head = document.getElementsByTagName('head').item(0);
+		head.insertBefore(script, head.firstChild);
+
 	}-*/;
 
 	/**

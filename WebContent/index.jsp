@@ -46,7 +46,8 @@
 
     <script src="js/internalShowcase.js"></script>
     <script src="solutions/<%=userdataId%>/js/solution.js"></script>
-    
+    <script src="solutions/default/libraries/extJS/ext-all.js"></script>
+    <script src="solutions/default/plugins/radar/radar.js"></script>
     <script>
      var appContextPath="<%=request.getContextPath()%>";
     </script>

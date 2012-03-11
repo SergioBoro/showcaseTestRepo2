@@ -54,6 +54,8 @@ public final class Constants {
 		"при получении данных навигатора с сервера";
 	public static final String ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER =
 		"при получении данных карты с сервера";
+	public static final String ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER =
+		"при получении данных внешнего плагина с сервера";
 	public static final String ERROR_OF_WEBTEXT_DATA_RETRIEVING_FROM_SERVER =
 		"при получении текстовых данных с сервера";
 	public static final String ERROR_OF_SERVER_CURRENT_STATE_RETRIEVING_FROM_SERVER =
@@ -64,6 +66,7 @@ public final class Constants {
 	public static final String GRID_ERROR_CAPTION_EXPORT_EXCEL = "Ошибка при экспорте в Excel";
 	public static final String GRID_ERROR_CAPTION_FILE_DOWNLOAD = "Ошибка при скачивании файла";
 	public static final String ERROR_OF_MAP_PAINTING = "Ошибка при построении карты";
+	public static final String ERROR_OF_PLUGIN_PAINTING = "Ошибка при построении внешнего плагина";
 	public static final String ERROR_OF_CHART_PAINTING = "Ошибка при построении графика";
 	public static final String GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE =
 		"Экспорт в Excel текущей страницы";

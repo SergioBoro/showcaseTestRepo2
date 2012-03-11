@@ -213,6 +213,9 @@ public class GeneralDataPanel {
 		case GEOMAP:
 			return generateMapElement(dpe);
 
+		case PLUGIN:
+			return generatePluginElement(dpe);
+
 		default:
 			return null;
 
@@ -534,6 +537,37 @@ public class GeneralDataPanel {
 		getUiElements(dpe).add(new UIDataPanelElement(wtp));
 
 		return w;
+	}
+
+	/**
+	 * 
+	 * создает и возвращает виджет для элемента типа Plugin.
+	 * 
+	 * @param dpe
+	 *            - DataPanelElement
+	 * 
+	 * @return - Widget
+	 */
+	public static Widget generatePluginElement(final DataPanelElementInfo dpe) {
+
+		BasicElementPanelBasis mp = null;
+		Widget w = null;
+		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+
+			mp = new PluginPanel(getElementContextForNavigatorAction(dpe), dpe);
+
+			w = mp.getPanel();
+		} else {
+			// в случае когда у данного элемента есть главный элемент
+			mp = new PluginPanel(dpe);
+			w = mp.getPanel();
+			mp.hidePanel();
+
+		}
+
+		getUiElements(dpe).add(new UIDataPanelElement(mp));
+		return w;
+
 	}
 
 	/**
