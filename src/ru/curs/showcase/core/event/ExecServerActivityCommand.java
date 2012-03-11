@@ -1,6 +1,5 @@
 package ru.curs.showcase.core.event;
 
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 import ru.curs.showcase.app.api.event.*;
@@ -36,12 +35,13 @@ public final class ExecServerActivityCommand extends ServiceLayerCommand<Void> {
 	 * @see ru.curs.showcase.core.command.ServiceLayerCommand#initSessionContext()
 	 **/
 	@Override
-	protected void initSessionContext() throws UnsupportedEncodingException {
+	protected void initSessionContext() {
 		CompositeContext context = action.getContext();
 		if (context.getSession() != null) {
 			return;
 		}
-		String sessionContext = XMLSessionContextGenerator.generate(context);
+		XMLSessionContextGenerator generator = new XMLSessionContextGenerator(context);
+		String sessionContext = generator.generate();
 		action.setSessionContext(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
 		action.setSessionContext((Map<String, List<String>>) null);

@@ -9,9 +9,11 @@ import org.slf4j.*;
 import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.SessionUtils;
 import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.util.exception.UTF8Exception;
 
 /**
  * Класс, содержащий функции для получения информации о текущей сессией
@@ -25,17 +27,18 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	private static final Logger LOGGER = LoggerFactory.getLogger(XMLSessionContextGenerator.class);
 
 	public static final String SESSION_CONTEXT_TAG = "sessioncontext";
-	public static final String URL_PARAMS_TAG = "urlparams";
-	public static final String URL_PARAM_TAG = "urlparam";
-	public static final String USERDATA_TAG = ExchangeConstants.URL_PARAM_USERDATA;
-	public static final String SID_TAG = "sid";
-	public static final String FULLUSERNAME_TAG = "fullusername";
-	public static final String EMAIL_TAG = "email";
-	public static final String PHONE_TAG = "phone";
+	private static final String URL_PARAMS_TAG = "urlparams";
+	private static final String URL_PARAM_TAG = "urlparam";
+	private static final String SID_TAG = "sid";
+	private static final String FULLUSERNAME_TAG = "fullusername";
+	private static final String EMAIL_TAG = "email";
+	private static final String PHONE_TAG = "phone";
 
-	private XMLSessionContextGenerator() {
-		throw new UnsupportedOperationException();
-	}
+	private final CompositeContext context;
+
+	private DataPanelElementInfo elInfo;
+
+	private final Document info = createXML();
 
 	/**
 	 * Формирует контекст сессии в виде XML объекта.
@@ -45,13 +48,11 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	 * @return - строку с XML.
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String generate(final CompositeContext aContext)
-			throws UnsupportedEncodingException {
-		Document info = createXML();
-		addUserNode(info);
-		fillURLParams(info, aContext.getSessionParamsMap());
-		addUserData(info, aContext.getSessionParamsMap());
-		addRelatedContext(info, aContext.getRelated());
+	public String generate() {
+		addUserNode();
+		fillURLParams(context.getSessionParamsMap());
+		addUserData(context.getSessionParamsMap());
+		addRelatedContext(context.getRelated());
 		String result = XMLUtils.documentToString(info);
 		result = XMLUtils.xmlServiceSymbolsToNormal(result);
 		LOGGER.debug("XMLSessionContextGenerator.generate()"
@@ -59,17 +60,23 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		return result;
 	}
 
-	private static void addRelatedContext(final Document info,
-			final Map<ID, CompositeContext> aRelated) {
+	private void addRelatedContext(final Map<ID, CompositeContext> aRelated) {
 		Element root = info.createElement(RELATED_TAG);
 		info.getDocumentElement().appendChild(root);
-		for (Entry<ID, CompositeContext> rc : aRelated.entrySet()) {
-			Document doc = XMLUtils.objectToXML(rc.getValue());
-			Element inserted = doc.getDocumentElement();
-			Element child = (Element) info.importNode(inserted, true);
-			child.setAttribute(ID_TAG, rc.getKey().getString());
-			root.appendChild(child);
+		if ((elInfo != null) && (elInfo.getRelated().indexOf(elInfo.getId()) > -1)) {
+			addContextNode(root, elInfo.getId(), context);
 		}
+		for (Entry<ID, CompositeContext> rc : aRelated.entrySet()) {
+			addContextNode(root, rc.getKey(), rc.getValue());
+		}
+	}
+
+	private void addContextNode(final Element root, final ID key, final CompositeContext value) {
+		Document doc = XMLUtils.objectToXML(value);
+		Element inserted = doc.getDocumentElement();
+		Element child = (Element) info.importNode(inserted, true);
+		child.setAttribute(ID_TAG, key.getString());
+		root.appendChild(child);
 	}
 
 	private static Document createXML() {
@@ -79,7 +86,7 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		return info;
 	}
 
-	private static void addUserNode(final Document info) {
+	private void addUserNode() {
 		Element node = info.createElement(USERNAME_TAG);
 		info.getDocumentElement().appendChild(node);
 		node.appendChild(info.createTextNode(ru.curs.showcase.runtime.SessionUtils
@@ -102,9 +109,8 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserPhone()));
 	}
 
-	private static void
-			addUserData(final Document info, final Map<String, ArrayList<String>> aMap) {
-		Element node = info.createElement(USERDATA_TAG);
+	private void addUserData(final Map<String, ArrayList<String>> aMap) {
+		Element node = info.createElement(ExchangeConstants.URL_PARAM_USERDATA);
 		info.getDocumentElement().appendChild(node);
 		String value = null;
 		if (aMap.get(ExchangeConstants.URL_PARAM_USERDATA) != null) {
@@ -124,8 +130,7 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	 * символов ключ содержит URL коды.
 	 * 
 	 */
-	private static void fillURLParams(final Document info,
-			final Map<String, ArrayList<String>> aMap) throws UnsupportedEncodingException {
+	private void fillURLParams(final Map<String, ArrayList<String>> aMap) {
 		Element node;
 
 		if (!aMap.isEmpty()) {
@@ -137,8 +142,12 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 					Element child = info.createElement(URL_PARAM_TAG);
 					node.appendChild(child);
 
-					child.setAttribute(NAME_TAG,
-							URLDecoder.decode(entry.getKey(), TextUtils.DEF_ENCODING));
+					try {
+						child.setAttribute(NAME_TAG,
+								URLDecoder.decode(entry.getKey(), TextUtils.DEF_ENCODING));
+					} catch (UnsupportedEncodingException e) {
+						throw new UTF8Exception();
+					}
 					String value = "";
 					if (entry.getValue() != null) {
 						value = Arrays.toString(entry.getValue().toArray());
@@ -147,5 +156,17 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 				}
 			}
 		}
+	}
+
+	public XMLSessionContextGenerator(final CompositeContext aContext) {
+		super();
+		context = aContext;
+	}
+
+	public XMLSessionContextGenerator(final CompositeContext aContext,
+			final DataPanelElementInfo aElInfo) {
+		super();
+		context = aContext;
+		elInfo = aElInfo;
 	}
 }

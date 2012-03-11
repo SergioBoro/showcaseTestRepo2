@@ -1,6 +1,5 @@
 package ru.curs.showcase.core.command;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.*;
 import java.util.UUID;
 
@@ -191,15 +190,20 @@ public abstract class ServiceLayerCommand<T> {
 	 * текущего мультиконтекста. Не выполняется если строка контекста сессии уже
 	 * сформирована - что означает выполнение одной команды из другой.
 	 */
-	protected void initSessionContext() throws UnsupportedEncodingException {
+	protected void initSessionContext() {
 		if (getContext().getSession() != null) {
 			return;
 		}
-		String sessionContext = XMLSessionContextGenerator.generate(getContext());
+		XMLSessionContextGenerator generator = setupGenerator();
+		String sessionContext = generator.generate();
 
 		getContext().setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(getContext().getSessionParamsMap());
 		getContext().getSessionParamsMap().clear();
+	}
+
+	protected XMLSessionContextGenerator setupGenerator() {
+		return new XMLSessionContextGenerator(getContext());
 	}
 
 	public String getSessionId() {

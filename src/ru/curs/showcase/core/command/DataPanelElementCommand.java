@@ -3,6 +3,7 @@ package ru.curs.showcase.core.command;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.ElementInfoChecker;
+import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**
  * Базовый класс команды для работы с элементом инф. панели - его загрузкой или
@@ -40,5 +41,10 @@ public abstract class DataPanelElementCommand<T> extends ServiceLayerCommand<T> 
 	@Override
 	protected DataPanelElementContext generateDataPanelElementContext() {
 		return new DataPanelElementContext(getContext(), elementInfo);
+	}
+
+	@Override
+	protected XMLSessionContextGenerator setupGenerator() {
+		return new XMLSessionContextGenerator(getContext(), elementInfo);
 	}
 }

@@ -180,9 +180,9 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		prepareContext(context);
 	}
 
-	private void prepareContext(final CompositeContext context)
-			throws UnsupportedEncodingException {
-		String sessionContext = XMLSessionContextGenerator.generate(context);
+	private void prepareContext(final CompositeContext context) {
+		XMLSessionContextGenerator generator = new XMLSessionContextGenerator(context);
+		String sessionContext = generator.generate();
 
 		context.setSession(sessionContext);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
@@ -324,16 +324,13 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			setStringParam(cs, getMainContextIndex(), req.getAddData().getData1());
 		}
 		if (req.getAddData().getData2() != null) {
-			setStringParam(cs, getAdditionalContextIndex(), req.getAddData()
-					.getData2());
+			setStringParam(cs, getAdditionalContextIndex(), req.getAddData().getData2());
 		}
 		if (req.getAddData().getData3() != null) {
-			setSQLXMLParam(cs, getFilterContextIndex(), req.getAddData()
-					.getData3());
+			setSQLXMLParam(cs, getFilterContextIndex(), req.getAddData().getData3());
 		}
 		if (req.getAddData().getData4() != null) {
-			setSQLXMLParam(cs, getSessionContextIndex(), req.getAddData()
-					.getData4());
+			setSQLXMLParam(cs, getSessionContextIndex(), req.getAddData().getData4());
 		}
 
 	}

@@ -2,17 +2,12 @@ package ru.curs.showcase.test.runtime;
 
 import static org.junit.Assert.*;
 
-import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
-
-import javax.xml.parsers.DocumentBuilder;
 
 import net.sf.ehcache.CacheManager;
 
 import org.junit.Test;
-import org.w3c.dom.*;
-import org.xml.sax.*;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
@@ -26,8 +21,6 @@ import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTest;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
-import ru.curs.showcase.util.xml.*;
-import ru.curs.showcase.util.xml.XMLUtils;
 import ch.qos.logback.classic.Level;
 
 /**
@@ -76,12 +69,9 @@ public class RuntimeTest extends AbstractTest {
 
 	/**
 	 * Базовый тест на запись и чтение URLParams.
-	 * 
-	 * @throws IOException
-	 * @throws SAXException
 	 */
 	@Test
-	public void testSessionInfoForGetChart() throws IOException, SAXException {
+	public void testSessionInfoForGetChart() {
 		Map<String, List<String>> params = generateTestURLParams(TEST1_USERDATA);
 
 		AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(FAKE_SESSION_ID,
@@ -96,7 +86,6 @@ public class RuntimeTest extends AbstractTest {
 		ChartGetCommand command = new ChartGetCommand(context, element);
 		command.execute();
 
-		checkTestUrlParams(context);
 		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());
 		assertEquals(AUTH_VIA_AUTH_SERVER, AppInfoSingleton.getAppInfo()
 				.getAuthViaAuthServerForSession(FAKE_SESSION_ID));
@@ -105,56 +94,11 @@ public class RuntimeTest extends AbstractTest {
 
 	}
 
-	private void checkTestUrlParams(final CompositeContext context) throws SAXException,
-			IOException {
-		String sessionContext = context.getSession();
-		DocumentBuilder db = XMLUtils.createBuilder();
-		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
-
-		assertEquals(
-				1,
-				doc.getDocumentElement()
-						.getElementsByTagName(XMLSessionContextGenerator.USERNAME_TAG).getLength());
-		assertEquals(1,
-				doc.getDocumentElement().getElementsByTagName(XMLSessionContextGenerator.SID_TAG)
-						.getLength());
-		assertEquals(SessionUtils.TEST_SID,
-				doc.getDocumentElement().getElementsByTagName(XMLSessionContextGenerator.SID_TAG)
-						.item(0).getChildNodes().item(0).getNodeValue());
-		assertEquals(
-				1,
-				doc.getDocumentElement()
-						.getElementsByTagName(XMLSessionContextGenerator.URL_PARAMS_TAG)
-						.getLength());
-		Node node =
-			doc.getDocumentElement()
-					.getElementsByTagName(XMLSessionContextGenerator.URL_PARAMS_TAG).item(0);
-		assertEquals(XMLSessionContextGenerator.URL_PARAM_TAG, node.getChildNodes().item(1)
-				.getNodeName());
-		assertEquals(2, node.getChildNodes().item(1).getAttributes().getLength());
-		assertEquals(KEY1, node.getChildNodes().item(1).getAttributes().getNamedItem(NAME_TAG)
-				.getNodeValue());
-		assertEquals("[" + VALUE12 + "]", node.getChildNodes().item(1).getAttributes()
-				.getNamedItem(VALUE_TAG).getNodeValue());
-
-		assertEquals(
-				1,
-				doc.getDocumentElement()
-						.getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG).getLength());
-		node =
-			doc.getDocumentElement().getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG)
-					.item(0);
-		assertEquals(TEST1_USERDATA, node.getTextContent());
-	}
-
 	/**
 	 * Проверка установки информации о сессии для функции получения инф. панели.
-	 * 
-	 * @throws IOException
-	 * @throws SAXException
 	 */
 	@Test
-	public void testSessionInfoForGetDP() throws IOException, SAXException {
+	public void testSessionInfoForGetDP() {
 		Map<String, List<String>> params = generateTestURLParams(TEST1_USERDATA);
 		final int elID = 5;
 		Action action = getAction(TREE_MULTILEVEL_XML, 0, elID);
@@ -164,43 +108,6 @@ public class RuntimeTest extends AbstractTest {
 		command.execute();
 
 		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());
-		checkTestUrlParams(action.getContext());
-	}
-
-	/**
-	 * Проверка считывания информации о сессии, если userdata не задана.
-	 * 
-	 * @throws IOException
-	 * @throws SAXException
-	 */
-	@Test
-	public void testWriteAndReadIfNoURLParams() throws IOException, SAXException {
-		Map<String, List<String>> params = new TreeMap<>();
-		CompositeContext context = getTestContext3();
-		context.addSessionParams(params);
-		DataPanelElementInfo element = getTestChartInfo();
-
-		ChartGetCommand command = new ChartGetCommand(context, element);
-		command.execute();
-
-		String sessionContext = context.getSession();
-		DocumentBuilder db = XMLUtils.createBuilder();
-		Document doc = db.parse(new InputSource(new StringReader(sessionContext)));
-		assertEquals(
-				"Не создан тэг userdata",
-				1,
-				doc.getDocumentElement()
-						.getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG).getLength());
-		assertEquals(ExchangeConstants.DEFAULT_USERDATA, doc.getDocumentElement()
-				.getElementsByTagName(XMLSessionContextGenerator.USERDATA_TAG).item(0)
-				.getTextContent());
-
-		assertEquals(
-				0,
-				doc.getDocumentElement()
-						.getElementsByTagName(XMLSessionContextGenerator.URL_PARAMS_TAG)
-						.getLength());
-
 	}
 
 	/**
@@ -251,17 +158,6 @@ public class RuntimeTest extends AbstractTest {
 		assertEquals(AppInfoSingleton.getAppInfo().getServletContainerVersion(),
 				scs.getServletContainerVersion());
 		assertEquals(System.getProperty("java.version"), scs.getJavaVersion());
-	}
-
-	@Test
-	public void testRelatedData() throws UnsupportedEncodingException {
-		CompositeContext context = CompositeContext.createCurrent();
-		getExtGridContext(context);
-		String res = XMLSessionContextGenerator.generate(context);
-		assertTrue(res.contains("<selectedRecordId>r2</selectedRecordId>"));
-		assertTrue(res.contains("<currentColumnId>curColumnId</currentColumnId>"));
-		assertTrue(res.contains("size=\"2\""));
-		assertTrue(res.contains("<add>value</add>"));
 	}
 
 	@Test
