@@ -110,7 +110,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 		generalPluginPanel.add(generalHp);
 		generalHp.add(pluginHTML);
 
-		String params = getDivIdPlugin();
+		String params = "'" + getDivIdPlugin() + "'";
 		for (String param : aPlugin.getParams()) {
 			params = params + ", " + param;
 		}

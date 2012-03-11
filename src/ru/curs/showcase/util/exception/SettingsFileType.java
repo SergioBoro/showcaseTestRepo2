@@ -23,7 +23,9 @@ public enum SettingsFileType {
 	JYTHON("Jython скрипт"),
 	XM_DATA("XML-файл с данными"),
 	GEOMAP_KEYS("Файл с ключами API для карт"),
-	IMPORT_LIST("Список импортируемых компонент для плагина");
+	IMPORT_LIST("Список импортируемых компонент для плагина"),
+	PLUGIN_ADAPTER("Адаптер для плагина"),
+	LIBRARY_ADAPTER("Файл библиотеки");
 
 	/**
 	 * Название файла.

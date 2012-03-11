@@ -13,7 +13,7 @@ import ru.curs.showcase.test.plugin.*;
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ PluginTest.class, PluginSLTest.class })
+@SuiteClasses({ PluginTest.class, PluginFactoryTest.class, PluginSLTest.class })
 public class Core09PluginTests {
 
 }

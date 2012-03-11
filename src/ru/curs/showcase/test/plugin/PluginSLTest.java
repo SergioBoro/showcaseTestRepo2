@@ -2,19 +2,12 @@ package ru.curs.showcase.test.plugin;
 
 import static org.junit.Assert.*;
 
-import java.io.InputStream;
-
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.html.Plugin;
 import ru.curs.showcase.core.html.plugin.PluginCommand;
-import ru.curs.showcase.core.primelements.*;
-import ru.curs.showcase.core.primelements.datapanel.DataPanelFactory;
-import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
-import ru.curs.showcase.util.DataFile;
-import ru.curs.showcase.util.exception.SettingsFileType;
+import ru.curs.showcase.test.AbstractTest;
 
 /**
  * Тесты для команды создания UI плагина.
@@ -22,11 +15,7 @@ import ru.curs.showcase.util.exception.SettingsFileType;
  * @author den
  * 
  */
-public class PluginSLTest extends AbstractTestWithDefaultUserData {
-
-	private static final String PLUGIN_HANDLE_RADAR_PY = "plugin/handleRadar.py";
-	private static final String PLUGIN_RADAR_PROC = "pluginRadarInfo";
-	private static final String RADAR_COMP = "radar";
+public class PluginSLTest extends AbstractTest {
 
 	@Test
 	public void pluginCommandShouldReadDataFromDBAndCanRunPostProcessJython() {
@@ -51,7 +40,7 @@ public class PluginSLTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void pluginCommandShouldAddComponentsJSAndCSS() {
+	public void pluginCommandShouldAddLibraryJS() {
 		PluginInfo elInfo = new PluginInfo("id", RADAR_COMP, PLUGIN_RADAR_PROC);
 		String jythonProcName = PLUGIN_HANDLE_RADAR_PY;
 		elInfo.addPostProcessProc(jythonProcName, jythonProcName);
@@ -66,6 +55,41 @@ public class PluginSLTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
+	public void pluginCommandShouldHandleEmptyImportFile() {
+		PluginInfo elInfo = new PluginInfo("id", "flashD", PLUGIN_RADAR_PROC);
+		String jythonProcName = "plugin/handleFlashD.py";
+		elInfo.addPostProcessProc(jythonProcName, jythonProcName);
+
+		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
+		Plugin plugin = command.execute();
+
+		assertEquals(1, plugin.getRequiredJS().size());
+		assertEquals(0, plugin.getRequiredCSS().size());
+	}
+
+	@Test
+	public void pluginCommandShouldHandleNoImportFile() {
+		PluginInfo elInfo = new PluginInfo("id", "fake1", PLUGIN_RADAR_PROC);
+
+		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
+		Plugin plugin = command.execute();
+
+		assertEquals(1, plugin.getRequiredJS().size());
+		assertEquals(0, plugin.getRequiredCSS().size());
+	}
+
+	@Test
+	public void pluginCommandShouldAddLibraryCSS() {
+		PluginInfo elInfo = new PluginInfo("id", "fakeLibPlugin", PLUGIN_RADAR_PROC);
+
+		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
+		Plugin plugin = command.execute();
+
+		assertEquals(1, plugin.getRequiredJS().size());
+		assertEquals(1, plugin.getRequiredCSS().size());
+	}
+
+	@Test
 	public void pluginCommandCanBeExecutedWithoutPostProcess() {
 		PluginInfo elInfo = new PluginInfo("id", RADAR_COMP, PLUGIN_RADAR_PROC);
 		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
@@ -77,19 +101,4 @@ public class PluginSLTest extends AbstractTestWithDefaultUserData {
 		assertTrue(plugin.getParams().get(0).startsWith("<root>"));
 	}
 
-	@Test
-	public void datapanelFactoryMustReadPluginInfo() {
-		PrimElementsGateway gateway = new PrimElementsFileGateway(SettingsFileType.DATAPANEL);
-		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST2_XML);
-		DataPanelFactory factory = new DataPanelFactory();
-		DataPanel panel = factory.fromStream(file);
-		final PluginInfo elementInfo =
-			(PluginInfo) panel.getTabById("4").getElementInfoById("0401");
-
-		assertNotNull(elementInfo);
-		assertEquals(DataPanelElementType.PLUGIN, elementInfo.getType());
-		assertEquals(RADAR_COMP, elementInfo.getPlugin());
-		assertEquals("fake.xsl", elementInfo.getTransformName());
-		assertEquals(PLUGIN_HANDLE_RADAR_PY, elementInfo.getPostProcessProcName());
-	}
 }

@@ -69,10 +69,23 @@ public final class PluginFactory extends HTMLBasedElementFactory {
 	@Override
 	protected void correctSettingsAndData() {
 		result.setCreateProc("create" + TextUtils.capitalizeWord(getElementInfo().getPlugin()));
-		result.getRequiredJS().add(
-				String.format("%s/%s/%s/%s.js", AppProps.SOLUTIONS_DIR, AppProps.getUserDataId(),
-						getPluginDir(), getElementInfo().getPlugin()));
+		String adapterOnTomcat =
+			checkImport(getPluginDir(), getElementInfo().getPlugin() + ".js",
+					SettingsFileType.PLUGIN_ADAPTER);
+		result.getRequiredJS().add(adapterOnTomcat);
 		readComponents();
+	}
+
+	private String checkImport(final String dir, final String adapterFile,
+			final SettingsFileType fileType) {
+		String adapter = String.format("%s/%s", dir, adapterFile);
+		String adapterOnTomcat =
+			String.format("%s/%s/%s", AppProps.SOLUTIONS_DIR, AppProps.getUserDataId(), adapter);
+		File file = new File(AppProps.getUserDataCatalog() + "/" + adapter);
+		if (!file.exists()) {
+			throw new SettingsFileOpenException(adapter, fileType);
+		}
+		return adapterOnTomcat;
 	}
 
 	private void readComponents() {
@@ -89,8 +102,9 @@ public final class PluginFactory extends HTMLBasedElementFactory {
 			if (dep.trim().isEmpty()) {
 				continue;
 			}
-			list.add(String.format("%s/%s/%s/%s/%s", AppProps.SOLUTIONS_DIR,
-					AppProps.getUserDataId(), COMPONENTS_DIR, comp, dep));
+			String adapterOnTomcat =
+				checkImport(COMPONENTS_DIR + "/" + comp, dep, SettingsFileType.LIBRARY_ADAPTER);
+			list.add(adapterOnTomcat);
 		}
 	}
 

@@ -63,7 +63,12 @@ public class AbstractTest extends GeneralXMLHelper {
 	protected static final String TAB_2_NAME = "Вкладка 2";
 	protected static final String EL_06 = "06";
 	protected static final String TAB_2 = "2";
-	public static final String FIREFOX_UA = "mozilla/5.0 (windows nt 6.1; wow64; rv:2.0.1) gecko/20100101 firefox/4.0.1";
+	public static final String FIREFOX_UA =
+		"mozilla/5.0 (windows nt 6.1; wow64; rv:2.0.1) gecko/20100101 firefox/4.0.1";
+
+	protected static final String PLUGIN_HANDLE_RADAR_PY = "plugin/handleRadar.py";
+	protected static final String PLUGIN_RADAR_PROC = "pluginRadarInfo";
+	protected static final String RADAR_COMP = "radar";
 
 	/**
 	 * Действия, которые должны выполняться перед запуском любых тестовых
