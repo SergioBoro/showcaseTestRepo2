@@ -78,6 +78,7 @@ public class GridDBFactory extends AbstractGridFactory {
 
 	@Override
 	protected void checkSourceError() {
+		super.checkSourceError();
 		if ((rowset == null) && (getXmlDS() == null)) {
 			throw new DBQueryException(getElementInfo(), NO_RESULTSET_ERROR);
 		}

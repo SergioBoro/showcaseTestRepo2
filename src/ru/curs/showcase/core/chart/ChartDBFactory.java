@@ -57,6 +57,7 @@ public class ChartDBFactory extends AbstractChartFactory {
 
 	@Override
 	protected void checkSourceError() {
+		super.checkSourceError();
 		if ((sql == null) && (getXmlDS() == null)) {
 			throw new DBQueryException(getElementInfo(), NO_RESULTSET_ERROR);
 		}

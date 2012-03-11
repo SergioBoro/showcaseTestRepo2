@@ -103,6 +103,9 @@ public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 				setXmlDS(StreamConvertor.outputToInputStream(osDS));
 			}
 
+		} else {
+			setValidatedSettings(null);
+			setXmlDS(null);
 		}
 	}
 
