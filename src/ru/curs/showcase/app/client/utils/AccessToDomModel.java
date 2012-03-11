@@ -55,13 +55,14 @@ public final class AccessToDomModel {
 	 */
 	public static native void addScriptLink(final String link) /*-{
 
-		var script = document.createElement('script');
+		var script = $doc.createElement('script');
 		script.setAttribute('type', 'text/javascript');
-		script.setAttribute('src', "../" + link);
+		script.setAttribute('src', link);
 		// InsertBefore for IE.
 		// IE crashes on using appendChild before the head tag has been closed.
-		var head = document.getElementsByTagName('head').item(0);
-		head.insertBefore(script, head.firstChild);
+		var head = $doc.getElementsByTagName('head').item(0);
+		//head.insertBefore(script, head.firstChild);
+		head.appendChild(script);
 
 	}-*/;
 
