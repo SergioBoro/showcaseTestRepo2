@@ -73,11 +73,11 @@ public class PluginPanel extends BasicElementPanelBasis {
 	 * @param Plugin
 	 *            plugin
 	 */
-	protected void fillPluginPanel(final Plugin plugin) {
+	protected void fillPluginPanel(final Plugin aPlugin) {
 		final String div = "<div id='";
 		final String htmlForPlugin;
-		final int n60 = 60;
-		final int n80 = 80;
+		// final int n60 = 60;
+		// final int n80 = 80;
 		// if (aGeoMap.getAutoSize()) {
 		// final int width = GeneralDataPanel.getTabPanel().getOffsetWidth() -
 		// n60;
@@ -94,8 +94,8 @@ public class PluginPanel extends BasicElementPanelBasis {
 		// plugin.getSize().MessageBox.showSimpleMessage("111",
 		// plugin.getSize());
 		htmlForPlugin =
-			div + getDivIdPlugin() + "' style='width:" + plugin.getSize().getWidth()
-					+ "px; height:" + plugin.getSize().getHeight() + "px'></div>";
+			div + getDivIdPlugin() + "' style='width:" + aPlugin.getSize().getWidth()
+					+ "px; height:" + aPlugin.getSize().getHeight() + "px'></div>";
 		// }
 		// MessageBox.showSimpleMessage("456", htmlForPlugin);
 		// final String htmlForMap =
@@ -111,19 +111,19 @@ public class PluginPanel extends BasicElementPanelBasis {
 		generalHp.add(pluginHTML);
 
 		String params = getDivIdPlugin();
-		for (String param : plugin.getParams()) {
+		for (String param : aPlugin.getParams()) {
 			params = params + ", " + param;
 		}
 
-		for (String param : plugin.getRequiredJS()) {
+		for (String param : aPlugin.getRequiredJS()) {
 			AccessToDomModel.addScriptLink(param);
 		}
 
-		for (String param : plugin.getRequiredCSS()) {
+		for (String param : aPlugin.getRequiredCSS()) {
 			AccessToDomModel.addCSSLink(param);
 		}
 		try {
-			drawPlugin(plugin.getCreateProc(), params);
+			drawPlugin(aPlugin.getCreateProc(), params);
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
 				MessageBox.showMessageWithDetails(Constants.ERROR_OF_PLUGIN_PAINTING,
