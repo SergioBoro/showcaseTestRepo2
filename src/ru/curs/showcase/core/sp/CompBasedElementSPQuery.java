@@ -29,7 +29,7 @@ public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 	protected void stdGetResults() throws SQLException {
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
 			boolean hasResult = execute();
-			if (getElementInfo().getType() != DataPanelElementType.CHART) {
+			if (getElementInfo().getType() == DataPanelElementType.GEOMAP) {
 				// временно, пока идет работа над XML-датасетами
 				if (!hasResult) {
 					checkErrorCode();
@@ -40,8 +40,6 @@ public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 		} else {
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
 				getConn().setAutoCommit(false);
-				// TODO проверить как поведет себя вышележащий код при
-				// отсутствии датасета
 			}
 			execute();
 		}

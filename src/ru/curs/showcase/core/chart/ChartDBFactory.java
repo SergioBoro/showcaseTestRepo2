@@ -55,8 +55,6 @@ public class ChartDBFactory extends AbstractChartFactory {
 		}
 	}
 
-	private static final String NO_RESULTSET_ERROR = "хранимая процедура не возвратила данные";
-
 	@Override
 	protected void checkSourceError() {
 		if ((sql == null) && (getXmlDS() == null)) {

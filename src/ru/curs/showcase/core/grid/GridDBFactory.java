@@ -68,9 +68,18 @@ public class GridDBFactory extends AbstractGridFactory {
 	protected void prepareData() {
 		try {
 			ResultSet rs = getResultSetAccordingToSQLServerType(getSource());
-			rowset = SQLUtils.cacheResultSet(rs);
+			if (rs != null) {
+				rowset = SQLUtils.cacheResultSet(rs);
+			}
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
+		}
+	}
+
+	@Override
+	protected void checkSourceError() {
+		if ((rowset == null) && (getXmlDS() == null)) {
+			throw new DBQueryException(getElementInfo(), NO_RESULTSET_ERROR);
 		}
 	}
 
@@ -396,5 +405,10 @@ public class GridDBFactory extends AbstractGridFactory {
 
 	public void setApplyLocalFormatting(final Boolean aApplyLocalFormatting) {
 		applyLocalFormatting = aApplyLocalFormatting;
+	}
+
+	@Override
+	protected void fillColumnsAndRecordsAndEventsByXmlDS() {
+
 	}
 }

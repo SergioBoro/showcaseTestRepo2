@@ -1,5 +1,6 @@
 package ru.curs.showcase.core.event;
 
+import java.io.InputStream;
 import java.sql.*;
 
 import org.xml.sax.Attributes;
@@ -19,6 +20,21 @@ import ru.curs.showcase.util.xml.*;
  * 
  */
 public abstract class CompBasedElementFactory extends TemplateMethodFactory {
+
+	protected static final String NO_RESULTSET_ERROR = "хранимая процедура не возвратила данные";
+
+	/**
+	 * Данные, полученные из тега поля settings.
+	 */
+	private InputStream xmlDS;
+
+	public InputStream getXmlDS() {
+		return xmlDS;
+	}
+
+	public void setXmlDS(final InputStream aXmlDS) {
+		xmlDS = aXmlDS;
+	}
 
 	@Override
 	public abstract DataPanelCompBasedElement getResult();

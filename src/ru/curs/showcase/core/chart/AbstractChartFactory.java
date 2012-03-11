@@ -1,7 +1,5 @@
 package ru.curs.showcase.core.chart;
 
-import java.io.InputStream;
-
 import org.xml.sax.Attributes;
 
 import ru.curs.showcase.app.api.chart.*;
@@ -52,19 +50,6 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 	 */
 	private boolean flip;
 
-	/**
-	 * Данные, полученные из тега поля settings.
-	 */
-	private InputStream xmlDS;
-
-	public InputStream getXmlDS() {
-		return xmlDS;
-	}
-
-	public void setXmlDS(final InputStream aXmlDS) {
-		xmlDS = aXmlDS;
-	}
-
 	protected final String getSelectorColumn() {
 		return selectorColumn;
 	}
@@ -110,12 +95,12 @@ public abstract class AbstractChartFactory extends CompBasedElementFactory {
 	@Override
 	protected void prepareSettings() {
 		super.prepareSettings();
-		xmlDS = getSource().getXmlDS();
+		setXmlDS(getSource().getXmlDS());
 	}
 
 	@Override
 	protected void fillResultByData() {
-		if (xmlDS == null) {
+		if (getXmlDS() == null) {
 			fillLabelsX();
 			fillSeries();
 		} else {

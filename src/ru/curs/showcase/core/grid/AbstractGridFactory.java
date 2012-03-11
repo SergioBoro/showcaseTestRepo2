@@ -133,6 +133,12 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	protected abstract void fillRecordsAndEvents();
 
 	/**
+	 * Функция заполнения грида на основе XML-датасета.
+	 * 
+	 */
+	protected abstract void fillColumnsAndRecordsAndEventsByXmlDS();
+
+	/**
 	 * Настройка страничного отображения в гриде.
 	 * 
 	 */
@@ -150,9 +156,19 @@ public abstract class AbstractGridFactory extends CompBasedElementFactory {
 	}
 
 	@Override
+	protected void prepareSettings() {
+		super.prepareSettings();
+		setXmlDS(getSource().getXmlDS());
+	}
+
+	@Override
 	protected void fillResultByData() {
-		fillColumns();
-		fillRecordsAndEvents();
+		if (getXmlDS() == null) {
+			fillColumns();
+			fillRecordsAndEvents();
+		} else {
+			fillColumnsAndRecordsAndEventsByXmlDS();
+		}
 	}
 
 	private RecordSet initRecords() {
