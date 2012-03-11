@@ -45,11 +45,21 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 		this.context = acontext;
 	}
 
+	/**
+	 * Расширенная функция получения контекста. Создает related элементы
+	 * контекста. При этом учитывается ситуация, когда related панель еще не
+	 * отрисована. Кроме того, не передаются данные о себе - они добавляются на
+	 * сервере чтобы избежать дублирования данных при передаче.
+	 * 
+	 * @see ru.curs.showcase.app.client.api.BasicElementPanel#getContext()
+	 **/
 	@Override
 	public CompositeContext getContext() {
 		for (ID id : elementInfo.getRelated()) {
-			// панель может быть еще не отрисована
 			final BasicElementPanel elementPanel = ActionExecuter.getElementPanelById(id);
+			if (elementPanel == this) {
+				continue;
+			}
 			if ((elementPanel != null) && (elementPanel.getContext() != null)) {
 				context.addRelated(id, elementPanel.getDetailedContext());
 			} else {

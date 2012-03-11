@@ -36,6 +36,7 @@ public final class ActionExecuter {
 	/**
 	 * 
 	 * Функция, которая "исполняет" текущее действие при клике на элемент.
+	 * Устанавливает related элементы для передачи их в server activity.
 	 * 
 	 */
 	public static void execAction() {

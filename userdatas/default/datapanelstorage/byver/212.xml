@@ -4,5 +4,18 @@
 		<element id="0101" type="plugin" proc="pluginRadarInfo" plugin="radar">
 			<proc id="010101" name="plugin/handleRadar.py" type="POSTPROCESS" />
 		</element>
-	</tab>	
+	</tab>
+	<tab id="02" name="Self related">
+		<element id="0201" type="grid" proc="grid_portals_id_and_css" />
+		<element id="0202" type="webtext" proc="webtext_dep62">
+			<related id="0201" />
+		</element>	
+		<element id="0203" type="webtext" proc="webtext/UpdateGrid1.py">
+		</element>		
+		<element id="grid1" type="grid" proc="grid_cities_data" showLoadingMessage="true" >
+			<proc id="d101" name="grid_cities_metadata" type="METADATA" />
+			<related id="0201" />
+			<related id="grid1" />		
+		</element>		
+	</tab>		
 </datapanel>

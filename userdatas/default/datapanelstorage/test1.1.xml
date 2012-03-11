@@ -72,6 +72,7 @@
 		<element id="1101" type="grid" proc="grid_cities_data">
 			<related id="1102" />
 			<related id="1103" />
+			<related id="1101" />
 		</element>
 	</tab>
 </datapanel>

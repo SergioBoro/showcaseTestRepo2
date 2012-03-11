@@ -155,20 +155,27 @@
           </datapanel>
         </action>
       </level2>
-      <level2 id="210" name="2.1.0" selectOnLoad="false">
+      <level2 id="210" name="2.1.0">
         <action>
           <main_context>jython_save_data.xml</main_context>
           <datapanel type="byver/210.xml" tab="firstOrCurrent" >          
           </datapanel>
         </action>
       </level2>   
-      <level2 id="211" name="2.1.1" selectOnLoad="true">
+      <level2 id="211" name="2.1.1">
         <action>
           <main_context>jython_save_data.xml</main_context>
           <datapanel type="byver/211.xml" tab="firstOrCurrent" >          
           </datapanel>
         </action>
-      </level2>                             
+      </level2>    
+      <level2 id="212" name="2.1.2" selectOnLoad="true">
+        <action>
+          <main_context>jython_save_data.xml</main_context>
+          <datapanel type="byver/212.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>                                 
     </level1>        
   </group>
   <group id="1" name="Балансы продовольственных ресурсов">
