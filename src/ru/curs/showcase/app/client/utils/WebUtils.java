@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.client.utils;
 
-import ru.curs.showcase.app.api.services.DataService;
+import ru.curs.showcase.app.api.services.*;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -132,5 +132,9 @@ public final class WebUtils {
 	 */
 	public static SerializationStreamFactory createStdGWTSerializer() {
 		return (SerializationStreamFactory) GWT.create(DataService.class);
+	}
+
+	public static SerializationStreamFactory createAddGWTSerializer() {
+		return (SerializationStreamFactory) GWT.create(FakeService.class);
 	}
 }

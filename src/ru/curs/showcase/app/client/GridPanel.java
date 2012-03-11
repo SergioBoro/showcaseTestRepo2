@@ -549,6 +549,8 @@ public class GridPanel extends BasicElementPanelBasis {
 
 			SerializationStreamFactory ssf = dh.getObjectSerializer();
 			dh.addStdPostParamsToBody(getDetailedContext(), getElementInfo());
+
+			ssf = dh.getAddObjectSerializer();
 			dh.addParam(cs.getClass().getName(), cs.toParamForHttpPost(ssf));
 
 			dh.submit();

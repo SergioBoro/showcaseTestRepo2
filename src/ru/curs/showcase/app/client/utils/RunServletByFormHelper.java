@@ -12,14 +12,19 @@ import com.google.gwt.user.client.ui.*;
 public abstract class RunServletByFormHelper extends FormPanel {
 
 	/**
-	 * VerticalPanel panel.
+	 * Панель, которая лежит внутри формы и на которую добавляются поля формы.
 	 */
 	private final VerticalPanel panel = new VerticalPanel();
 
 	/**
-	 * SerializationStreamFactory ssf.
+	 * Основная фабрика для GWT сериализации.
 	 */
 	private SerializationStreamFactory ssf = null;
+
+	/**
+	 * Дополнительная фабрика для GWT сериализации.
+	 */
+	private SerializationStreamFactory addSSF = null;
 
 	/**
 	 * Заголовок сообщения об ошибке.
@@ -111,6 +116,13 @@ public abstract class RunServletByFormHelper extends FormPanel {
 			ssf = WebUtils.createStdGWTSerializer();
 		}
 		return ssf;
+	}
+
+	public SerializationStreamFactory getAddObjectSerializer() {
+		if (addSSF == null) {
+			addSSF = WebUtils.createAddGWTSerializer();
+		}
+		return addSSF;
 	}
 
 	/**
