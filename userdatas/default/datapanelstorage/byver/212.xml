@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datapanel>
-	<tab id="01" name="Плагин демо">
-		<element id="0101" type="plugin" proc="pluginRadarInfo" plugin="radar">
-			<proc id="010101" name="plugin/handleRadar.py" type="POSTPROCESS" />
-		</element>
-	</tab>
 	<tab id="02" name="Self related">
 		<element id="0201" type="grid" proc="grid_portals_id_and_css" />
 		<element id="0202" type="webtext" proc="webtext_dep62">
@@ -17,5 +12,10 @@
 			<related id="0201" />
 			<related id="grid1" />		
 		</element>		
+	</tab>	
+	<tab id="01" name="Плагин демо">
+		<element id="0101" type="plugin" proc="pluginRadarInfo" plugin="radar">
+			<proc id="010101" name="plugin/handleRadar.py" type="POSTPROCESS" />
+		</element>
 	</tab>		
 </datapanel>

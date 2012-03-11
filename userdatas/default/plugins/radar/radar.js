@@ -1,15 +1,17 @@
 function createRadar(parentId, data, template) {
-	Ext.require(['Ext.data.*']);
+	
+	Ext.require('Ext.data.*');
 	Ext.require('Ext.chart.*');
 	
-	Ext.onReady(function() { 
-		
+	Ext.EventManager.fireDocReady();
+	
+	Ext.onReady(function() { 		
 		var store = Ext.create('Ext.data.JsonStore', {
 		fields: ['name', 'data1', 'data2', 'data3'],
 	    data : data,
 		});	
 		
-		var parent = Ext.get(parentId);
+		var parent = Ext.get(parentId);		
 		
 		Ext.create('Ext.chart.Chart', {
 		    width: parent.getWidth(),

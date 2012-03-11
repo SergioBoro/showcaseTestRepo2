@@ -122,6 +122,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 		for (String param : aPlugin.getRequiredCSS()) {
 			AccessToDomModel.addCSSLink(param);
 		}
+
 		try {
 			drawPlugin(aPlugin.getCreateProc(), params);
 		} catch (JavaScriptException e) {
@@ -219,7 +220,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 	 * 
 	 */
 	public native void drawPlugin(final String procName, final String params) /*-{
-		$wnd.eval("window['" + procName + "'](" + params + ");");
+		$wnd.eval(procName + "(" + params + ");");
 	}-*/;
 
 	@Override
@@ -307,6 +308,6 @@ public class PluginPanel extends BasicElementPanelBasis {
 	}
 
 	private String getDivIdPlugin() {
-		return getElementInfo().getFullId();
+		return getElementInfo().getFullId() + "_plugin";
 	}
 }

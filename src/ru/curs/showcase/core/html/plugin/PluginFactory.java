@@ -86,6 +86,9 @@ public final class PluginFactory extends HTMLBasedElementFactory {
 	private void addImport(final String comp, final String fileName, final List<String> list) {
 		List<String> deps = readImportFile(COMPONENTS_DIR + "/" + comp + "/" + fileName);
 		for (String dep : deps) {
+			if (dep.trim().isEmpty()) {
+				continue;
+			}
 			list.add(String.format("%s/%s/%s/%s/%s", AppProps.SOLUTIONS_DIR,
 					AppProps.getUserDataId(), COMPONENTS_DIR, comp, dep));
 		}
@@ -107,6 +110,9 @@ public final class PluginFactory extends HTMLBasedElementFactory {
 		}
 		String[] compNames = list.split("\\r?\\n");
 		for (String name : compNames) {
+			if (name.trim().isEmpty()) {
+				continue;
+			}
 			res.add(name);
 		}
 		return res;

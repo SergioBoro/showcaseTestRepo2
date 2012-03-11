@@ -62,9 +62,7 @@ public class PluginSLTest extends AbstractTestWithDefaultUserData {
 		assertEquals(2, plugin.getRequiredJS().size());
 		assertEquals("solutions/default/plugins/radar/radar.js", plugin.getRequiredJS().get(0));
 		assertEquals("solutions/default/libraries/extJS/ext-all.js", plugin.getRequiredJS().get(1));
-		assertEquals(1, plugin.getRequiredCSS().size());
-		assertEquals("solutions/default/libraries/extJS/resources/css/ext-all.css", plugin
-				.getRequiredCSS().get(0));
+		assertEquals(0, plugin.getRequiredCSS().size());
 	}
 
 	@Test

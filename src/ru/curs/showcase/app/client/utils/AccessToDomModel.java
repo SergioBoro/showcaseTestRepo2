@@ -37,7 +37,7 @@ public final class AccessToDomModel {
 	 * Динамически вставляет в страницу блок javascript-кода.
 	 * 
 	 * @param code
-	 *            Javacript-код, который необходимо вставить
+	 *            Javascript-код, который необходимо вставить
 	 */
 	public static native void addScript(final String code) /*-{
 		var newscript = $doc.createElement('script');
@@ -54,16 +54,7 @@ public final class AccessToDomModel {
 	 *            Javacript-код, который необходимо вставить
 	 */
 	public static native void addScriptLink(final String link) /*-{
-
-		var script = $doc.createElement('script');
-		script.setAttribute('type', 'text/javascript');
-		script.setAttribute('src', link);
-		// InsertBefore for IE.
-		// IE crashes on using appendChild before the head tag has been closed.
-		var head = $doc.getElementsByTagName('head').item(0);
-		//head.insertBefore(script, head.firstChild);
-		head.appendChild(script);
-
+		$wnd.safeIncludeJS(link);
 	}-*/;
 
 	/**

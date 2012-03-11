@@ -23,6 +23,26 @@ function setCurrentUserDetailsForViewInHTMLControl(preffix)
 
 }
 
+function safeIncludeJS(jsFile) { 
+	        dojo.xhrGet({ 
+	                url: jsFile, 
+	                sync: true,
+	                load: function(responce, ioArgs) { 
+	                        if (responce != null) { 
+                                var newscript = document.createElement('script'); 
+	                                newscript.text = responce; 
+	                                newscript.type = "text/javascript"; 
+	                                var body = document.body; 
+	                                body.appendChild(newscript); 
+                        } 
+	                else { 
+                        console.log("failed load script!");    
+	                     } 
+	              }                
+	        }); 
+	
+}
+
 function getErrorByIFrame(iframeName)
 {
 	var err = null; 
