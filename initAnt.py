@@ -9,6 +9,7 @@ from zipfile import ZipFile
 import shutil
 import logging
 import _winreg
+import sys
 
 log = logging.getLogger("init")
 
@@ -62,10 +63,13 @@ def addLibs():
             toPath = libRoot + "/" + dist.replace("___", "/")
             files = [s for s in os.listdir(distPath)]
             for file in files:
+                if file[0] == ".":
+                    continue;
                 shutil.copy(distPath + "/" + file, toPath + "/" + file)
     print "libs added to ant packages..."
 
 def setAntHomeAndPath():
+    print "Checking for env vars..."
     antRoot = libRoot + "\\ant"
     envKey = "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"
     try:
@@ -87,6 +91,7 @@ if __name__ == '__main__':
     prepare()
     initPackages()
     addLibs()
-    setAntHomeAndPath()
+    if (len(sys.argv) == 1) or (sys.argv[1] != 'noreg'):
+        setAntHomeAndPath()
     print "Initialization done!"
 
