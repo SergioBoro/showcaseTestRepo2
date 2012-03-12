@@ -115,12 +115,17 @@ public class PluginPanel extends BasicElementPanelBasis {
 			params = params + ", " + param;
 		}
 
-		for (String param : aPlugin.getRequiredJS()) {
-			AccessToDomModel.addScriptLink(param);
-		}
+		if (AppCurrContext.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel().indexOf(
+				getDivIdPlugin()) < 0) {
+			AppCurrContext.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel().add(
+					getDivIdPlugin());
+			for (String param : aPlugin.getRequiredJS()) {
+				AccessToDomModel.addScriptLink(param);
+			}
 
-		for (String param : aPlugin.getRequiredCSS()) {
-			AccessToDomModel.addCSSLink(param);
+			for (String param : aPlugin.getRequiredCSS()) {
+				AccessToDomModel.addCSSLink(param);
+			}
 		}
 
 		try {

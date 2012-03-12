@@ -22,6 +22,16 @@ import com.google.gwt.user.client.ui.Widget;
 public final class AppCurrContext extends ActionTransformer {
 
 	/**
+	 * Список id элементов, для которых были добавлены js и css из внешних
+	 * файлов в DOM-модель главной страницы index.jsp (например, элементу
+	 * информационной панели Plugin для работы внешнего компонента FleshD
+	 * требуется подключить внешние js и css файлы). Данная переменная
+	 * необходима для исключения дублирования кода в index.jsp
+	 */
+	private static List<String> listOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel =
+		new ArrayList<String>();
+
+	/**
 	 * Переменная хранящая в структуре Map закэшированные виджеты в элементами,
 	 * которые "закэшированы".
 	 */
@@ -232,6 +242,24 @@ public final class AppCurrContext extends ActionTransformer {
 	 */
 	public MainPage getMainPage() {
 		return mainPage;
+	}
+
+	/**
+	 * @return the listOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel
+	 */
+	public static List<String> getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel() {
+		return listOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel;
+	}
+
+	/**
+	 * @param listOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel
+	 *            the listOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel
+	 *            to set
+	 */
+	public static void setListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel(
+			final List<String> aListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel) {
+		AppCurrContext.listOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel =
+			aListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel;
 	}
 
 }
