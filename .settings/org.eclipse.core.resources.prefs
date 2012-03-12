@@ -49,3 +49,4 @@ encoding//userdatas/test1/gridproperties/default.properties=UTF-8
 encoding//userdatas/test1/scripts/jython/navigator/NavJythonProc.py=utf-8
 encoding//userdatas/test2/gridproperties/default.properties=UTF-8
 encoding/<project>=UTF-8
+encoding/initAnt.py=Cp1251

@@ -25,6 +25,8 @@
 	<property name="sc.war.file" value="" />
 	<property name="sc.version" value="" />
 	<property name="sc.db.backup.prefix" value="showcase-test" />
+	<property name="sc.gwt.dir" value="devtime/gwt" />
+	<property name="sc.junit.dir" value="devtime/junit" />
 	
 	<property name="sc.env.props" value="local.properties" />
 	<property file="${sc.env.props}" />

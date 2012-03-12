@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:fn="http://www.w3.org/2005/xpath-functions"
+           version="1.0">
    <xs:simpleType name="dataPanelElementProcType">
       <xs:restriction base="xs:string">
          <xs:enumeration value="POSTPROCESS"/>
