@@ -406,10 +406,7 @@ public final class XFormPanelCallbacksEvents {
 			}
 
 			SelectorAdditionalData addData = new SelectorAdditionalData();
-			addData.setData1(currentXFormPanel.getContext().getMain());
-			addData.setData2(currentXFormPanel.getContext().getAdditional());
-			addData.setData3(currentXFormPanel.getContext().getFilter());
-			addData.setData4(currentXFormPanel.getContext().getSession());
+			addData.setContext(currentXFormPanel.getContext());
 
 			c.initData(getXMLByXPathArray(param.generalFilters()), procName,
 					getValueByXPath(param.currentValue()), addData);

@@ -320,17 +320,22 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		setSQLXMLParam(cs, getFilterContextIndex(), "");
 		setSQLXMLParam(cs, getSessionContextIndex(), "");
 
-		if (req.getAddData().getData1() != null) {
-			setStringParam(cs, getMainContextIndex(), req.getAddData().getData1());
+		CompositeContext context = (CompositeContext) req.getAddData().getContext();
+
+		XMLSessionContextGenerator generator = new XMLSessionContextGenerator(context);
+		String sessionContext = generator.generate();
+
+		if (context.getMain() != null) {
+			setStringParam(cs, getMainContextIndex(), context.getMain());
 		}
-		if (req.getAddData().getData2() != null) {
-			setStringParam(cs, getAdditionalContextIndex(), req.getAddData().getData2());
+		if (context.getAdditional() != null) {
+			setStringParam(cs, getAdditionalContextIndex(), context.getAdditional());
 		}
-		if (req.getAddData().getData3() != null) {
-			setSQLXMLParam(cs, getFilterContextIndex(), req.getAddData().getData3());
+		if (context.getFilter() != null) {
+			setSQLXMLParam(cs, getFilterContextIndex(), context.getFilter());
 		}
-		if (req.getAddData().getData4() != null) {
-			setSQLXMLParam(cs, getSessionContextIndex(), req.getAddData().getData4());
+		if (context.getSession() != null) {
+			setSQLXMLParam(cs, getSessionContextIndex(), sessionContext);
 		}
 
 	}
