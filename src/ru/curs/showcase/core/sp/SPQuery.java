@@ -337,6 +337,11 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 
 	protected void setBinaryStream(final int parameterIndex, final DataFile<InputStream> file)
 			throws SQLException, IOException {
+
+		StreamConvertor sc = new StreamConvertor(file.getData());
+		InputStream copyData = sc.getCopy();
+		file.setData(sc.getCopy());
+
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
 			getStatement().setBinaryStream(parameterIndex, file.getData());
 		} else {
@@ -345,7 +350,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 			getStatement().setBytes(parameterIndex, os.toByteArray());
 		}
 		if (file.isTextFile()) {
-			storeParamValue(parameterIndex, file.getData());
+			storeParamValue(parameterIndex, copyData);
 		}
 	}
 
