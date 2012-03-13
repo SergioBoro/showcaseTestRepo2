@@ -74,8 +74,11 @@ def setAntHomeAndPath():
     envKey = "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"
     try:
         key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, envKey, 0, _winreg.KEY_ALL_ACCESS)
-        oldValue = _winreg.QueryValueEx(key, "ANT_HOME")[0]
-        log.info("old ANT_HOME registry value is " + str(oldValue))
+        try:
+            oldValue = _winreg.QueryValueEx(key, "ANT_HOME")[0]
+            log.info("old ANT_HOME registry value is " + str(oldValue))
+        except:
+            pass
         _winreg.SetValueEx(key, "ANT_HOME", 0, _winreg.REG_SZ, antRoot)
         if os.environ['PATH'].find(antRoot) == -1:
             oldValue = _winreg.QueryValueEx(key, "PATH")[0]
