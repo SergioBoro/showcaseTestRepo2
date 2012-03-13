@@ -13,11 +13,9 @@ import sys
 
 log = logging.getLogger("init")
 
-targetDir = "devtime"
-distDir = "global.lib"
-distRoot = os.path.abspath(os.path.curdir) + "\\" + distDir
-libRoot = os.path.abspath(os.path.curdir) + "\\" + targetDir
-
+targetDir = "..\\devtime"
+distRoot = os.path.abspath(os.path.curdir)
+libRoot = os.path.abspath(os.path.curdir + "\\" + targetDir)
 
 def logError(func, path, exc_info):
     log.error(unicode(str(exc_info), "Cp1251"))
@@ -26,7 +24,7 @@ def initdirs():
     if not os.path.exists(libRoot):
         print "creating devtime dir: " + libRoot
         os.mkdir(libRoot)
-    stream = open("devtime/error.log", "w")
+    stream = open(libRoot + "/error.log", "w")
     logging.basicConfig(level = logging.INFO, stream = stream)
 
 def prepare():
@@ -46,6 +44,8 @@ def initPackages():
             continue;
         distPath = distRoot + "/" + dist
         if os.path.isdir(distPath):
+            continue
+        if not distPath.endswith(".zip"):
             continue
         print "Unpacking lib " + dist
         arc = ZipFile(distPath, mode = "r")
@@ -80,7 +80,7 @@ def setAntHomeAndPath():
         if os.environ['PATH'].find(antRoot) == -1:
             oldValue = _winreg.QueryValueEx(key, "PATH")[0]
             log.info("old path registry value is " + str(oldValue))
-            _winreg.SetValueEx(key, "PATH", 0, _winreg.REG_SZ, oldValue + ";" + antRoot + "\\bin")
+            _winreg.SetValueEx(key, "PATH", 0, _winreg.REG_SZ, antRoot + "\\bin" + ";" + oldValue)
     finally:
         _winreg.CloseKey(key)
 
