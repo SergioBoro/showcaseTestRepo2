@@ -6,7 +6,6 @@ function createFlashD(parentId, data) {
     obj.title="";
     obj.width="100%";
     obj.height="100%";
-    obj.style="position:relative;";
     var param = document.createElement('param');
     param.name = "FlashVars";
     param.value = "data=" + (JSON.stringify(data));
