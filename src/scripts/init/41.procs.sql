@@ -16542,3 +16542,482 @@ END
 GO
 
 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[grid_portals_id_and_css_xmlds]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+    @gridsettings xml output,
+	@error_mes varchar(512) output    
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	
+--        DECLARE @err VARCHAR(MAX)
+--        set @err = CAST(@session_context as varchar(5120))
+--		  raiserror (@err,12,1)	
+	
+
+/*
+SELECT [Name] AS "Название", 'imagesingrid/test.jpg' AS [Картинка], [File1] AS "Файл1", [File2] AS "Файл2", [Logo] AS "Логотип", [Url] as "URL", Id AS "~~id",  cast( '<properties>
+			<styleClass name="grid-record-bold"/>
+			<styleClass name="grid-record-italic"/>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>                        
+                            <datapanel type="current" tab="current">
+                                <element id="d1">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="d2">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element>                                
+                            </datapanel>
+                        </action>
+                    </event>  			
+            </properties>' as xml)  as [~~properties] FROM [dbo].[Websites]
+WHERE [IsPortal]=1
+*/
+
+
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str=
+'<gridsettings>
+<labels>
+<header>
+<h3>Порталы</h3>
+</header>
+</labels>
+        <columns>
+        <col id="Название" width="100px" /> 
+        <col id="Картинка" width="20px" type="IMAGE"/>        
+        <col id="Файл1"  width="130px" type="DOWNLOAD" linkId="11"/>                 
+        <col id="Файл2"  width="100px" type="DOWNLOAD" linkId="12"/>                         
+        <col id="Логотип" width="250px" type="LINK"/>
+        <col id="URL" width="100px" type="LINK"/>
+        </columns>
+<properties flip="false" pagesize="2" profile="grid.nowidth.properties" autoSelectRecordId="3" 
+ autoSelectRelativeRecord="false" autoSelectColumnId="URL"/>
+ 
+ 
+<records> 
+<rec>
+  <Название>Советский<br>Яндекс</br>ведущий<br>поисковик</br>Рунета</Название>
+  <Картинка>imagesingrid/test.jpg</Картинка>
+  <Файл1><div style="text-align:center">Файл c навигатором в имени которого содержится GUID записи</div></Файл1>
+  <Файл2></Файл2>
+  <Логотип><link href="http://yandex.ru" image="${images.in.grid.dir}/imagesingrid/yandex.png" text="Яндекс" openInNewTab="true"/></Логотип>
+  <URL> <link href="http://yandex.ru/yandsearch?text=КУРС-ИТ" text="Яндекс" openInNewTab="true"/></URL>
+  <id>7451DF70-ACC3-48CC-8CC0-3092F8A237BE</id>
+    <properties>
+      <styleClass name="grid-record-bold" />
+      <styleClass name="grid-record-italic" />
+      <event name="row_single_click">
+        <action>
+          <main_context>current</main_context>
+          <datapanel type="current" tab="current">
+            <element id="d1">
+              <add_context><br>Яндекс</br> ведущий <br/>поисковик <br/>Рунета</add_context>
+            </element>
+            <element id="d2">
+              <add_context><br>Яндекс</br> ведущий <br/>поисковик <br/>Рунета</add_context>
+            </element>
+          </datapanel>
+        </action>
+      </event>
+    </properties>
+</rec>
+<rec>
+  <Название>РБК</Название>
+  <Картинка>imagesingrid/test.jpg</Картинка>
+  <Файл1>Файл12</Файл1>
+  <Файл2>Файл22</Файл2>
+  <Логотип><link href="http://rbc.ru" image="${images.in.grid.dir}/imagesingrid/rbc.gif" text="rbc.ru" openInNewTab="true"/></Логотип>
+  <URL><link href="http://rbc.ru"  openInNewTab="true"/></URL>
+  <id>8BC3D54A-AE03-4728-AFCD-54DC092B0823</id>
+    <properties>
+      <styleClass name="grid-record-bold" />
+      <styleClass name="grid-record-italic" />
+      <event name="row_single_click">
+        <action>
+          <main_context>current</main_context>
+          <datapanel type="current" tab="current">
+            <element id="d1">
+              <add_context>РБК</add_context>
+            </element>
+            <element id="d2">
+              <add_context>РБК</add_context>
+            </element>
+          </datapanel>
+        </action>
+      </event>
+    </properties>
+</rec>
+<rec>
+  <Название>Рамблер</Название>
+  <Картинка>imagesingrid/test.jpg</Картинка>
+  <Файл1>Файл13</Файл1>
+  <Файл2>Файл23</Файл2>
+  <Логотип><link href="http://rambler.ru" image="${images.in.grid.dir}/imagesingrid/rambler.gif" text="rambler.ru" openInNewTab="true"/></Логотип>
+  <URL><link href="http://rambler.ru" text="rambler.ru" openInNewTab="true"/></URL>
+  <id>77F60A7C-42EB-4E32-B23D-F179E58FB138</id>
+    <properties>
+      <styleClass name="grid-record-bold" />
+      <styleClass name="grid-record-italic" />
+      <event name="row_single_click">
+        <action>
+          <main_context>current</main_context>
+          <datapanel type="current" tab="current">
+            <element id="d1">
+              <add_context>Рамблер</add_context>
+            </element>
+            <element id="d2">
+              <add_context>Рамблер</add_context>
+            </element>
+          </datapanel>
+        </action>
+      </event>
+    </properties>
+</rec>
+<rec>
+  <Название>Mail.ru</Название>
+  <Картинка>imagesingrid/test.jpg</Картинка>
+  <Файл1>Файл14</Файл1>
+  <Файл2>Файл24</Файл2>
+  <Логотип><link href="http://mail.ru" image="${images.in.grid.dir}/imagesingrid/mailru.gif" text="mail.ru" openInNewTab="true"/></Логотип>
+  <URL><link href="http://mail.ru" text="mail.ru" openInNewTab="true"/></URL>
+  <id>856ACCF2-53AB-4AF0-A956-F6E85601D0B4</id>
+    <properties>
+      <styleClass name="grid-record-bold" />
+      <styleClass name="grid-record-italic" />
+      <event name="row_single_click">
+        <action>
+          <main_context>current</main_context>
+          <datapanel type="current" tab="current">
+            <element id="d1">
+              <add_context>Mail.ru</add_context>
+            </element>
+            <element id="d2">
+              <add_context>Mail.ru</add_context>
+            </element>
+          </datapanel>
+        </action>
+      </event>
+    </properties>
+</rec>
+</records>		 
+ 
+</gridsettings>' 
+
+set    @gridsettings=CAST(@gridsettings_str as xml)
+
+END
+GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[grid_col_types_xmlds]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+	@gridsettings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
+/*    
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [_Id]';
+    else
+    SET @orderby = @sortcols;
+    
+	EXEC grid_col_types_getquery @sql = @sql OUTPUT    
+    
+    SET @sql =  '
+         WITH result AS 	('+@sql+',                      
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[Journal_41])
+      SELECT
+         * FROM result 
+          ORDER by rnum';
+   EXEC(@sql)	
+*/   
+   
+       
+DECLARE @gridsettings_str varchar(max)
+DECLARE @rec_count int
+SELECT @rec_count = COUNT(*) FROM [dbo].[Journal_41]
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Грид с различными типами столбцов</h3></header>
+        </labels>
+        <columns>
+        <col id="_Id" type="INT"/>        
+        <col id="UpdateRowTime" type="DATETIME"/>        
+        <col id="UpdateRowDate" type="DATE"/>                        
+        <col id="Сайт" type="LINK"/>
+        <col id="rnum" type="INT"/>              
+          
+        </columns>
+							<action>
+							<main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="d1"> 
+                                <add_context>add</add_context>  
+                                </element>
+                                <element id="d2">
+                                <add_context>add</add_context>  
+                                </element>                                                              
+                                <element id="d3">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d4">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d5">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d6">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d7">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d8">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d9">
+                                <add_context>add</add_context>  
+                                </element>                                                                
+                                <element id="d10"> 
+                                <add_context>add</add_context>  
+                                </element>                                                                                                   
+                            </datapanel>
+                        </action>
+<properties pagesize="20" profile="sngl_before_dbl.properties" totalCount="'+
+CAST(@rec_count as varchar(max))+'"/>
+
+<records>
+<rec>
+  <_Id>1</_Id>
+  <Journal_41_Name>Зерно</Journal_41_Name>
+  <UpdateRowTime>2009-11-13T12:50:11.250</UpdateRowTime>
+  <UpdateRowDate>2009-11-13</UpdateRowDate>
+  <Сайт><link href="http://Зерно.рф" openInNewTab="true"/></Сайт>
+      <properties>
+      <event name="row_single_click">
+        <action>
+          <main_context>current</main_context>
+          <datapanel type="current" tab="current">
+            <element id="d1">
+              <add_context>Зерно</add_context>
+            </element>
+            <element id="d2">
+              <add_context>Зерно</add_context>
+            </element>
+            <element id="d3">
+              <add_context>Зерно</add_context>
+            </element>
+            <element id="d4">
+              <add_context>Зерно</add_context>
+            </element>
+            <element id="d5">
+              <add_context>Зерно</add_context>
+            </element>
+            <element id="d6">
+              <add_context>Зерно</add_context>
+            </element>
+            <element id="d7">
+              <add_context>Зерно</add_context>
+            </element>
+            <element id="d8">
+              <add_context>Зерно</add_context>
+            </element>
+            <element id="d9">
+              <add_context>Зерно</add_context>
+            </element>
+            <element id="d10">
+              <add_context>Зерно</add_context>
+            </element>
+          </datapanel>
+        </action>
+      </event>
+    </properties>
+  <rnum>1</rnum>
+</rec>
+<rec>
+  <_Id>2</_Id>
+  <Journal_41_Name>Пшеница</Journal_41_Name>
+  <UpdateRowTime>2009-11-23T14:07:09.063</UpdateRowTime>
+  <UpdateRowDate>2009-11-23</UpdateRowDate>
+  <Сайт><link href="http://Пшеница.рф" openInNewTab="true"/></Сайт>
+    <properties>
+      <event name="row_single_click">
+        <action>
+          <main_context>current</main_context>
+          <datapanel type="current" tab="current">
+            <element id="d1">
+              <add_context>Пшеница</add_context>
+            </element>
+            <element id="d2">
+              <add_context>Пшеница</add_context>
+            </element>
+            <element id="d3">
+              <add_context>Пшеница</add_context>
+            </element>
+            <element id="d4">
+              <add_context>Пшеница</add_context>
+            </element>
+            <element id="d5">
+              <add_context>Пшеница</add_context>
+            </element>
+            <element id="d6">
+              <add_context>Пшеница</add_context>
+            </element>
+            <element id="d7">
+              <add_context>Пшеница</add_context>
+            </element>
+            <element id="d8">
+              <add_context>Пшеница</add_context>
+            </element>
+            <element id="d9">
+              <add_context>Пшеница</add_context>
+            </element>
+            <element id="d10">
+              <add_context>Пшеница</add_context>
+            </element>
+          </datapanel>
+        </action>
+      </event>
+    </properties>
+  <rnum>2</rnum>
+</rec>
+<rec>
+  <_Id>3</_Id>
+  <Journal_41_Name>Мясо</Journal_41_Name>
+  <UpdateRowTime>2010-04-26T12:42:46.850</UpdateRowTime>
+  <UpdateRowDate>2010-04-26</UpdateRowDate>
+  <Сайт><link href="http://Мясо.рф" openInNewTab="true"/></Сайт>
+    <properties>
+      <event name="row_single_click">
+        <action>
+          <main_context>current</main_context>
+          <datapanel type="current" tab="current">
+            <element id="d1">
+              <add_context>Мясо</add_context>
+            </element>
+            <element id="d2">
+              <add_context>Мясо</add_context>
+            </element>
+            <element id="d3">
+              <add_context>Мясо</add_context>
+            </element>
+            <element id="d4">
+              <add_context>Мясо</add_context>
+            </element>
+            <element id="d5">
+              <add_context>Мясо</add_context>
+            </element>
+            <element id="d6">
+              <add_context>Мясо</add_context>
+            </element>
+            <element id="d7">
+              <add_context>Мясо</add_context>
+            </element>
+            <element id="d8">
+              <add_context>Мясо</add_context>
+            </element>
+            <element id="d9">
+              <add_context>Мясо</add_context>
+            </element>
+            <element id="d10">
+              <add_context>Мясо</add_context>
+            </element>
+          </datapanel>
+        </action>
+      </event>
+    </properties>
+  <rnum>3</rnum>
+</rec>
+<rec>
+  <_Id>4</_Id>
+  <Journal_41_Name>Молоко</Journal_41_Name>
+  <UpdateRowTime>2010-04-26T12:42:59.413</UpdateRowTime>
+  <UpdateRowDate>2010-04-26</UpdateRowDate>
+  <Сайт><link href="http://Молоко.рф" openInNewTab="true"/></Сайт>
+    <properties>
+      <event name="row_single_click">
+        <action>
+          <main_context>current</main_context>
+          <datapanel type="current" tab="current">
+            <element id="d1">
+              <add_context>Молоко</add_context>
+            </element>
+            <element id="d2">
+              <add_context>Молоко</add_context>
+            </element>
+            <element id="d3">
+              <add_context>Молоко</add_context>
+            </element>
+            <element id="d4">
+              <add_context>Молоко</add_context>
+            </element>
+            <element id="d5">
+              <add_context>Молоко</add_context>
+            </element>
+            <element id="d6">
+              <add_context>Молоко</add_context>
+            </element>
+            <element id="d7">
+              <add_context>Молоко</add_context>
+            </element>
+            <element id="d8">
+              <add_context>Молоко</add_context>
+            </element>
+            <element id="d9">
+              <add_context>Молоко</add_context>
+            </element>
+            <element id="d10">
+              <add_context>Молоко</add_context>
+            </element>
+          </datapanel>
+        </action>
+      </event>
+    </properties>
+  <rnum>4</rnum>
+</rec>
+</records>
+
+
+</gridsettings>' 
+
+set  @gridsettings=CAST(@gridsettings_str as xml)
+END
+GO
+
+
+
+
+
+

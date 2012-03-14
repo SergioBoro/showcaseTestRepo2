@@ -1,13 +1,17 @@
 package ru.curs.showcase.core.grid;
 
+import java.io.*;
 import java.sql.*;
 import java.text.*;
 import java.util.*;
 import java.util.regex.*;
 
 import javax.sql.RowSet;
+import javax.xml.stream.*;
 
+import org.joda.time.DateTime;
 import org.xml.sax.Attributes;
+import org.xml.sax.helpers.DefaultHandler;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.gwt.datagrid.model.*;
@@ -17,8 +21,9 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.event.EventFactory;
 import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.SQLUtils;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Фабрика для создания гридов получающая на вход сырые исходные данные из БД.
@@ -231,6 +236,10 @@ public class GridDBFactory extends AbstractGridFactory {
 
 	private String getStringValueOfNumber(final Column col) throws SQLException {
 		Double value = rowset.getDouble(col.getId());
+		return getStringValueOfNumber(value, col);
+	}
+
+	private String getStringValueOfNumber(final Double value, final Column col) {
 		NumberFormat nf;
 		if (applyLocalFormatting) {
 			nf = NumberFormat.getNumberInstance();
@@ -246,6 +255,21 @@ public class GridDBFactory extends AbstractGridFactory {
 
 	private String getStringValueOfDate(final Column col) throws SQLException {
 		java.util.Date date = null;
+		if (col.getValueType() == GridValueType.DATE) {
+			date = rowset.getDate(col.getId());
+		} else if (col.getValueType() == GridValueType.TIME) {
+			date = rowset.getTime(col.getId());
+		} else if (col.getValueType() == GridValueType.DATETIME) {
+			date = rowset.getTimestamp(col.getId());
+		}
+		if (date == null) {
+			return "";
+		}
+		date = adjustDate(rowset, col.getId(), date);
+		return getStringValueOfDate(date, col);
+	}
+
+	private String getStringValueOfDate(final java.util.Date date, final Column col) {
 		DateFormat df = null;
 		String value = getGridProps().getStringValue(DEF_DATE_VALUES_FORMAT);
 		Integer style = DateFormat.DEFAULT;
@@ -253,31 +277,24 @@ public class GridDBFactory extends AbstractGridFactory {
 			style = DateTimeFormat.valueOf(value).ordinal();
 		}
 		if (col.getValueType() == GridValueType.DATE) {
-			date = rowset.getDate(col.getId());
 			if (applyLocalFormatting) {
 				df = DateFormat.getDateInstance(style);
 			} else {
 				df = DateFormat.getDateInstance(style, DEF_NON_LOCAL_LOCALE);
 			}
 		} else if (col.getValueType() == GridValueType.TIME) {
-			date = rowset.getTime(col.getId());
 			if (applyLocalFormatting) {
 				df = DateFormat.getTimeInstance(style);
 			} else {
 				df = DateFormat.getTimeInstance(style, DEF_NON_LOCAL_LOCALE);
 			}
 		} else if (col.getValueType() == GridValueType.DATETIME) {
-			date = rowset.getTimestamp(col.getId());
 			if (applyLocalFormatting) {
 				df = DateFormat.getDateTimeInstance(style, style);
 			} else {
 				df = DateFormat.getDateTimeInstance(style, style, DEF_NON_LOCAL_LOCALE);
 			}
 		}
-		if (date == null) {
-			return "";
-		}
-		date = adjustDate(rowset, col.getId(), date);
 		return df.format(date);
 	}
 
@@ -302,7 +319,7 @@ public class GridDBFactory extends AbstractGridFactory {
 	}
 
 	private void calcRecordsCount() throws SQLException {
-		if (getElementInfo().loadByOneProc()) {
+		if (getElementInfo().loadByOneProc() && (getXmlDS() == null)) {
 			rowset.last();
 			serverState().setTotalCount(rowset.getRow());
 		}
@@ -321,30 +338,27 @@ public class GridDBFactory extends AbstractGridFactory {
 			return;
 		}
 
+		int recNum = 1;
+		int fetchSize;
+		int firstRecord;
+
 		if (getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID) {
-			int recNum = 1;
-			rowset.setFetchSize(getResult().getLiveInfo().getLimit());
-			while (recNum++ < getResult().getLiveInfo().getFirstRecord()) {
-				if (!rowset.next()) {
-					// возвращаем 0 записей, если переданная страница не
-					// существует
-					rowset.previous();
-					break;
-				}
-			}
+			fetchSize = getResult().getLiveInfo().getLimit();
+			firstRecord = getResult().getLiveInfo().getFirstRecord();
 		} else {
-			int recNum = 1;
-			rowset.setFetchSize(getRecordSet().getPageSize());
-			while (recNum++ < getRecordSet().getPageInfo().getFirstRecord()) {
-				if (!rowset.next()) {
-					// возвращаем 0 записей, если переданная страница не
-					// существует
-					rowset.previous();
-					break;
-				}
-			}
+			fetchSize = getRecordSet().getPageSize();
+			firstRecord = getRecordSet().getPageInfo().getFirstRecord();
 		}
 
+		rowset.setFetchSize(fetchSize);
+		while (recNum++ < firstRecord) {
+			if (!rowset.next()) {
+				// возвращаем 0 записей, если переданная страница не
+				// существует
+				rowset.previous();
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -375,8 +389,16 @@ public class GridDBFactory extends AbstractGridFactory {
 	}
 
 	private boolean isServiceColumn(final String aColumnLabel) {
-		return PROPERTIES_SQL_TAG.equalsIgnoreCase(aColumnLabel)
-				|| ID_SQL_TAG.equalsIgnoreCase(aColumnLabel);
+		boolean result = false;
+		if (getXmlDS() == null) {
+			result =
+				PROPERTIES_SQL_TAG.equalsIgnoreCase(aColumnLabel)
+						|| ID_SQL_TAG.equalsIgnoreCase(aColumnLabel);
+		} else {
+			result =
+				PROPS_TAG.equalsIgnoreCase(aColumnLabel) || ID_TAG.equalsIgnoreCase(aColumnLabel);
+		}
+		return result;
 	}
 
 	private void determineValueType(final Column column, final int sqlType) {
@@ -408,8 +430,226 @@ public class GridDBFactory extends AbstractGridFactory {
 		applyLocalFormatting = aApplyLocalFormatting;
 	}
 
+	private static final String SAX_ERROR_MES = "XML-датасет грида";
+
 	@Override
 	protected void fillColumnsAndRecordsAndEventsByXmlDS() {
 
+		XmlDSHandler handler = new XmlDSHandler();
+		SimpleSAX sax = new SimpleSAX(getXmlDS(), handler, SAX_ERROR_MES);
+		sax.parse();
+
+		try {
+			postProcessingByXmlDS();
+			checkRecordIdUniqueness();
+			serverState().setTotalCount(handler.getCounterRecord());
+			calcRecordsCount();
+		} catch (SQLException e) {
+			throw new ResultSetHandleException(e);
+		}
+
 	}
+
+	/**
+	 * Формирует грид на основе XML-датасета.
+	 */
+	private class XmlDSHandler extends DefaultHandler {
+
+		private static final String RECORD_TAG = "rec";
+
+		private boolean processRecord = false;
+		private boolean processValue = false;
+
+		private int firstNumber;
+		private int lastNumber;
+		private int counterRecord = 0;
+		private int counterColumn = 1;
+
+		private Column curColumn = null;
+		private Record curRecord = null;
+		private ByteArrayOutputStream osValue = null;
+		private XMLStreamWriter writerValue = null;
+
+		public XmlDSHandler() {
+			super();
+
+			if (getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID) {
+				firstNumber = getResult().getLiveInfo().getFirstRecord();
+				lastNumber = firstNumber + getResult().getLiveInfo().getLimit();
+			} else {
+				firstNumber = getRecordSet().getPageInfo().getFirstRecord();
+				lastNumber = firstNumber + getRecordSet().getPageSize();
+			}
+		}
+
+		private int getCounterRecord() {
+			return counterRecord;
+		}
+
+		private boolean isRequiredPage() {
+			return (firstNumber <= counterRecord) && (counterRecord < lastNumber);
+		}
+
+		@Override
+		public void startElement(final String uri, final String localName, final String name,
+				final Attributes atts) {
+			if (RECORD_TAG.equals(localName)) {
+				counterRecord++;
+				if (isRequiredPage()) {
+					processRecord = true;
+					curRecord = new Record();
+					return;
+				}
+			}
+
+			if (!processRecord || !isRequiredPage()) {
+				return;
+			}
+
+			if (processValue) {
+				try {
+					writerValue.writeStartElement(localName);
+					for (int i = 0; i < atts.getLength(); i++) {
+						writerValue.writeAttribute(atts.getQName(i), atts.getValue(i));
+					}
+				} catch (XMLStreamException e) {
+					throw new SAXError(e);
+				}
+				return;
+			} else {
+				String colId = XMLUtils.unEscapeTagXml(localName);
+				curColumn = getResult().getColumnById(colId);
+
+				if (counterRecord == firstNumber) {
+					if (curColumn == null) {
+						curColumn = createColumn(colId);
+						getResult().getDataSet().getColumnSet().getColumns().add(curColumn);
+					}
+					curColumn.setIndex(counterColumn - 1);
+					determineValueType(curColumn, Types.VARCHAR);
+					setupStdColumnProps(curColumn);
+					curColumn.setSorting(getCallContext().getSortingForColumn(curColumn));
+					counterColumn++;
+				}
+
+				processValue = true;
+				osValue = new ByteArrayOutputStream();
+				try {
+					writerValue =
+						XMLOutputFactory.newInstance().createXMLStreamWriter(osValue,
+								TextUtils.DEF_ENCODING);
+				} catch (XMLStreamException e) {
+					throw new SAXError(e);
+				}
+			}
+		}
+
+		@Override
+		public void characters(final char[] ch, final int start, final int length) {
+			if (!isRequiredPage()) {
+				return;
+			}
+
+			if (processValue) {
+				try {
+					writerValue.writeCharacters(ch, start, length);
+				} catch (XMLStreamException e) {
+					throw new SAXError(e);
+				}
+				return;
+			}
+		}
+
+		@Override
+		public void endElement(final String uri, final String localName, final String name) {
+			if (!isRequiredPage()) {
+				return;
+			}
+
+			if (RECORD_TAG.equals(localName)) {
+				curRecord.setIndex(counterRecord);
+				setupStdRecordProps(curRecord);
+				getRecordSet().getRecords().add(curRecord);
+				processRecord = false;
+				return;
+			}
+
+			if (processValue) {
+				String colId = XMLUtils.unEscapeTagXml(localName);
+				try {
+					if (curColumn == getResult().getColumnById(colId)) {
+						curRecord.setValue(curColumn.getId(),
+								osValue.toString(TextUtils.DEF_ENCODING));
+						processValue = false;
+					} else {
+						writerValue.writeEndElement();
+					}
+				} catch (XMLStreamException | UnsupportedEncodingException e) {
+					throw new SAXError(e);
+				}
+			}
+		}
+
+	}
+
+	private void postProcessingByXmlDS() {
+		Column idColumn = getResult().getColumnById(ID_TAG);
+		Column propsColumn = getResult().getColumnById(PROPS_TAG);
+		for (Record rec : getRecordSet().getRecords()) {
+			if (idColumn != null) {
+				rec.setId(rec.getValue(idColumn));
+			} else {
+				rec.setId(String.valueOf(rec.getIndex()));
+			}
+			if (propsColumn != null) {
+				readEvents(rec, "<" + PROPS_TAG + ">" + rec.getValue(propsColumn) + "</"
+						+ PROPS_TAG + ">");
+			}
+		}
+		if (idColumn != null) {
+			getResult().getDataSet().getColumnSet().getColumns().remove(idColumn);
+		}
+		if (propsColumn != null) {
+			getResult().getDataSet().getColumnSet().getColumns().remove(propsColumn);
+		}
+
+		for (Record rec : getRecordSet().getRecords()) {
+			for (Column col : getResult().getDataSet().getColumnSet().getColumns()) {
+				rec.setValue(col.getId(), getCellValueForXmlDS(rec.getValue(col), col));
+			}
+		}
+	}
+
+	private String getCellValueForXmlDS(final String aValue, final Column col) {
+		String value = aValue;
+		if (value == null) {
+			value = "";
+		}
+		if (col.getValueType() == GridValueType.IMAGE) {
+			value =
+				String.format("%s/%s",
+						AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR), value);
+		} else if (col.getValueType() == GridValueType.LINK) {
+			value = AppProps.replaceVariables(value);
+			value = normalizeLink(value);
+			value = makeSafeXMLAttrValues(value);
+		} else if (col.getValueType() == GridValueType.DOWNLOAD) {
+			value = AppProps.replaceVariables(value);
+		} else if (col.getValueType().isDate()) {
+			DateTime dt = new DateTime(value);
+			java.util.Date date = dt.toDate();
+			value = getStringValueOfDate(date, col);
+		} else if (col.getValueType().isNumber()) {
+			value = getStringValueOfNumber(Double.valueOf(value), col);
+		}
+		return value;
+	}
+
+	private static String normalizeLink(final String aValue) {
+		String value = aValue.trim();
+		value = value.replace("></" + GridValueType.LINK.toString().toLowerCase() + ">", "/>");
+
+		return value;
+	}
+
 }
