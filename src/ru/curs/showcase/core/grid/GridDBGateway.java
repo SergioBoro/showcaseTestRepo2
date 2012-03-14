@@ -99,10 +99,10 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 	protected String getSqlTemplate(final int index) {
 		switch (index) {
 		case DATA_AND_SETTINS_QUERY:
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-				return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?)}";
-			} else {
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
 				return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+			} else {
+				return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?)}";
 			}
 		case DATA_ONLY_QUERY:
 			return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?)}";

@@ -231,6 +231,32 @@
     max-width: 26px;
 }
 
+
+
+.headerCheckNotVisible {
+    width: 0px;
+    min-width: 0px;
+    max-width: 0px;
+}
+.headerCheckGapNotVisible {
+    width: 0px;
+    min-width: 0px;
+    max-width: 0px;
+}
+.dataCheckNotVisible {
+    width: 0px;
+    min-width: 0px;
+    max-width: 0px;
+}
+.dataCheckGapNotVisible {
+    width: 0px;
+    min-width: 0px;
+    max-width: 0px;
+}
+
+
+
+
 /*
     test min column width
 */
@@ -252,8 +278,27 @@
     empty-cells: show;
 }
 
+.grid-record-bold {
+	font-weight: bold ;
+}
+.grid-record-italic {
+	font-style: italic;
+}	
 
 /*.webmain-DataGrid .columnGap {*/
     /*width: 5px !important;*/
 /*}*/
+
+
+
+
+
+.extlivegrid-record-bold .x-grid3-cell{
+	font-weight: bold;
+}
+.extlivegrid-record-italic .x-grid3-cell{
+	font-style: italic;
+}	
+
+
 

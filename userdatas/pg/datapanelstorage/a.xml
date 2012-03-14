@@ -29,15 +29,25 @@
 		<element id="22" type="webtext" proc="webtext_filter_and_add"
 			hideOnLoad="true" />		
 	</tab>
-	<tab id="4" name="Грид">
+	<tab id="41" name="Грид(2 процедуры)">
 		<element id ="0401" type="grid" proc="grid_cities_data">
 			<proc id="040101" name="grid_cities_metadata" type="METADATA"/>
 		</element>
 	</tab>
+	<tab id="42" name="Грид(xml). Задание css и id для строки грида">
+		<element id="0201" type="grid" proc="grid_portals_id_and_css_xmlds"> 
+			<proc id="11" name="grid_download1" type="DOWNLOAD" />
+			<proc id="12" name="grid_download2" type="DOWNLOAD" />
+		</element>
+	</tab>
+	<tab id="43" name="Грид(xml). Различные типы столбцов">
+		<element id="0101" type="grid" proc="grid_col_types_xmlds">
+		</element>	
+	</tab>
 	<tab id="5" name="График">
         <element id="0" type="chart" proc="chart_pas_xmlds"/>        
     </tab>	
-	<tab id="7" name="Карта. Раскраска стилями">
+	<tab id="7" name="Карта">
 		<element id="72" type="geomap" proc="geomap_bal"/>
 	</tab>			
 </datapanel>
