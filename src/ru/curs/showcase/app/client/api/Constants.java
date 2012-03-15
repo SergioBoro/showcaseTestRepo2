@@ -23,6 +23,7 @@ public final class Constants {
 	public static final String CHART_LEGEND_DIV_ID_SUFFIX = "_chart_legend";
 	public static final String MAP_DIV_ID_SUFFIX = "_map_graph";
 	public static final String MAP_LEGEND_DIV_ID_SUFFIX = "_map_legend";
+	public static final String PLUGIN_DIV_ID_SUFFIX = "_plugin";
 	// public static final String PLEASE_WAIT_NAVIGATION_DATA_ARE_LOADING =
 	// "Пожалуйста подождите...Идет загрузка данных навигации";
 	// public static final String PLEASE_WAIT_CHART_DATA_ARE_LOADING =

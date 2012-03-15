@@ -312,7 +312,21 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 	}
 
+	// CHECKSTYLE:OFF
+	/**
+	 * 
+	 * Процедура определяющая функцию, которая будет выполняться по клику в
+	 * Plugin.
+	 * 
+	 */
+	public native void setCollbackJSNIFunction() /*-{
+		$wnd.gwtPluginFunc = 
+		@ru.curs.showcase.app.client.api.PluginPanelCallbacksEvents::pluginPanelClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+	}-*/;
+
+	// CHECKSTYLE:ON
+
 	private String getDivIdPlugin() {
-		return getElementInfo().getFullId() + "_plugin";
+		return getElementInfo().getFullId() + Constants.PLUGIN_DIV_ID_SUFFIX;
 	}
 }
