@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datapanel>
-	<tab id="1" name="1">
+	<tab id="1" name="Введение">
 		<element id="1" type="webtext" transform="bal.xsl" />
 		<element id="6" type="webtext" transform="bal.xsl" />
 	</tab>
