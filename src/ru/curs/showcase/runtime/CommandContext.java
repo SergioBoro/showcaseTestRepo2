@@ -135,6 +135,7 @@ public class CommandContext implements SerializableElement, Assignable<CommandCo
 		return requestId != null ? requestId : "";
 	}
 
+	@Override
 	public void setRequestId(final String aRequestId) {
 		requestId = aRequestId;
 	}
@@ -148,6 +149,7 @@ public class CommandContext implements SerializableElement, Assignable<CommandCo
 		return commandName != null ? commandName : "";
 	}
 
+	@Override
 	public void setCommandName(final String aCommandName) {
 		commandName = aCommandName;
 	}
@@ -161,6 +163,7 @@ public class CommandContext implements SerializableElement, Assignable<CommandCo
 		return userName != null ? userName : "";
 	}
 
+	@Override
 	public void setUserName(final String aUserName) {
 		userName = aUserName;
 	}
@@ -174,6 +177,7 @@ public class CommandContext implements SerializableElement, Assignable<CommandCo
 		return userdata != null ? userdata : "";
 	}
 
+	@Override
 	public void setUserdata(final String aUserdata) {
 		userdata = aUserdata;
 	}

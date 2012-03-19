@@ -63,7 +63,7 @@ public final class ProductionModeInitializer {
 
 	public static void initUserDatas(final ServletContext aServletContext) {
 		readServletContext(aServletContext);
-		AppInitializer.readDefaultUserDatas();
+		AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
 		AppProps.checkUserdatas();
 		copyUserDatas(aServletContext);
 		AppInfoSingleton.getAppInfo().setServletContainerVersion(aServletContext.getServerInfo());

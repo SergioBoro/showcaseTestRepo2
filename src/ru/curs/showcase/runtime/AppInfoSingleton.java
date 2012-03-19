@@ -64,6 +64,8 @@ public final class AppInfoSingleton {
 
 	private String userdataRoot;
 
+	private String userDataLogConfFile = "logback.xml";
+
 	private final CacheManager cacheManager = new CacheManager();
 
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
@@ -378,5 +380,13 @@ public final class AppInfoSingleton {
 
 	public void addExecutedProc(final String procName) {
 		executedProc.add(procName);
+	}
+
+	public String getUserDataLogConfFile() {
+		return userDataLogConfFile;
+	}
+
+	public void setUserDataLogConfFile(final String aUserDataLogConfFile) {
+		userDataLogConfFile = aUserDataLogConfFile;
 	}
 }

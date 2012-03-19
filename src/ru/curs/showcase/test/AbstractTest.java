@@ -1,11 +1,10 @@
 package ru.curs.showcase.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.*;
 import java.sql.*;
 import java.util.*;
-import java.util.Date;
 
 import org.junit.*;
 
@@ -19,12 +18,10 @@ import ru.curs.showcase.app.server.AppInitializer;
 import ru.curs.showcase.core.primelements.*;
 import ru.curs.showcase.core.primelements.datapanel.DataPanelFactory;
 import ru.curs.showcase.core.primelements.navigator.NavigatorFactory;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.SettingsFileType;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.spi.LoggingEvent;
 
 /**
  * Класс абстрактного теста, использующего тестовые файлы с данными.
@@ -80,7 +77,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	@BeforeClass
 	public static void beforeClass() {
 		AppInitializer.initialize();
-		AppInitializer.readDefaultUserDatas();
+		AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
 		initTestSession();
 	}
 
@@ -518,28 +515,6 @@ public class AbstractTest extends GeneralXMLHelper {
 		return params;
 	}
 
-	protected void testBaseLastLogEventQueue(final Collection<LoggingEventDecorator> lleq)
-			throws InterruptedException {
-		AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
-		final int eventCount = 405;
-		for (int i = 0; i < eventCount; i++) {
-			Thread.sleep(1);
-			LoggingEvent original = generateTestLoggingEvent();
-			lleq.add(new LoggingEventDecorator(original));
-		}
-
-		assertEquals(LastLogEvents.getMaxRecords(), lleq.size());
-	}
-
-	protected LoggingEvent generateTestLoggingEvent() {
-		LoggingEvent event = new LoggingEvent();
-		event.setMessage("message");
-		event.setLevel(Level.ERROR);
-		Date date = new Date();
-		event.setTimeStamp(date.getTime());
-		return event;
-	}
-
 	protected OutputStreamDataFile getTestFile(final String linkId) throws IOException {
 		OutputStreamDataFile file =
 			new OutputStreamDataFile(StreamConvertor.inputToOutputStream(FileUtils
@@ -579,5 +554,17 @@ public class AbstractTest extends GeneralXMLHelper {
 		CompositeContext context = new CompositeContext();
 		context.setMain(MAIN_CONDITION);
 		return context;
+	}
+
+	protected Action generateActionWithServerAactivity(final String procName) {
+		Action action = new Action();
+		Activity activity = Activity.newServerActivity("id", procName);
+		CompositeContext context =
+			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+		context.setMain(MAIN_CONDITION);
+		activity.setContext(context);
+		action.setContext(context);
+		action.getServerActivities().add(activity);
+		return action;
 	}
 }

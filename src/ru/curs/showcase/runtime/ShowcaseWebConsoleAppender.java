@@ -15,7 +15,7 @@ public class ShowcaseWebConsoleAppender extends AppenderBase<ILoggingEvent> {
 	protected void append(final ILoggingEvent event) {
 		CommandContext commandContext = new CommandContext();
 		commandContext.fromMDC();
-		LoggingEventDecorator eventDecorator = new LoggingEventDecorator(event, commandContext);
+		LogBackLoggingEventDecorator eventDecorator = new LogBackLoggingEventDecorator(event, commandContext);
 		AppInfoSingleton.getAppInfo().addLogEvent(eventDecorator);
 	}
 

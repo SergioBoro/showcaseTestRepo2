@@ -98,7 +98,7 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 			AppProps.checkUserdatas();
 		} finally {
 			AppInfoSingleton.getAppInfo().getUserdatas().clear();
-			AppInitializer.readDefaultUserDatas();
+			AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
 		}
 	}
 

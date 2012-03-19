@@ -638,7 +638,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 				assertEquals(params, event.getParams());
 				assertTrue(event.getMessage().contains(message));
 				assertTrue(event.getMessage().contains(excMessage));
-				assertTrue(event.getMessage().contains(LoggingEventDecorator.EXCEPTION_SOURCE));
+				assertTrue(event.getMessage().contains(
+						LoggingEventDecorator.EXCEPTION_SOURCE));
 				assertTrue(event.getMessage().contains(causeMessage));
 				assertTrue(event.getMessage().contains(RuntimeException.class.getSimpleName()));
 				assertTrue(event.getMessage().contains(loggerName));
@@ -658,7 +659,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 			String rootpath = FileUtils.getTestUserdataRoot(testProps);
 			AppInitializer.checkUserDataDir(rootpath, testProps);
 		} finally {
-			AppInitializer.readDefaultUserDatas();
+			AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
 		}
 	}
 
