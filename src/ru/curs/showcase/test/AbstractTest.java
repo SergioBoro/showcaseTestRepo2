@@ -3,7 +3,9 @@ package ru.curs.showcase.test;
 import static org.junit.Assert.*;
 
 import java.io.*;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 import org.junit.*;
 
@@ -69,6 +71,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	protected static final String PLUGIN_HANDLE_RADAR_PY = "plugin/handleRadar.py";
 	protected static final String PLUGIN_RADAR_PROC = "pluginRadarInfo";
 	protected static final String RADAR_COMP = "radar";
+	protected static final String TEST_TEXT_SAMPLE_XML = "TestTextSample.xml";
 
 	/**
 	 * Действия, которые должны выполняться перед запуском любых тестовых
@@ -99,6 +102,40 @@ public class AbstractTest extends GeneralXMLHelper {
 	private static void initTestSession() {
 		AppInfoSingleton.getAppInfo().clearSessions();
 		AppInfoSingleton.getAppInfo().addSession(ServletUtils.TEST_SESSION);
+	}
+
+	/**
+	 * Получает выходной SQLXML по входному.
+	 * 
+	 * @param connection
+	 *            - соединение.
+	 * @param sqlxmlIn
+	 *            - входной SQLXML.
+	 * @return - выходной SQLXML.
+	 * @throws SQLException
+	 */
+	protected static CallableStatement getOutputByInputSQLXML(final Connection connection,
+			final SQLXML sqlxmlIn) throws SQLException {
+		String stmt = "DROP PROCEDURE [dbo].[_DebugXMLProcessor2]";
+		try (Statement st = connection.createStatement();) {
+			try {
+				st.executeUpdate(stmt);
+			} catch (SQLException e) {
+				stmt = "";
+			}
+			stmt =
+				"CREATE PROCEDURE [dbo].[_DebugXMLProcessor2] @par1 xml, @par2 xml Output AS set @par2 = @par1";
+			st.executeUpdate(stmt);
+		}
+
+		stmt = "{call _DebugXMLProcessor2(?,?)}";
+		CallableStatement cs = connection.prepareCall(stmt);
+		cs.setSQLXML(1, sqlxmlIn);
+		cs.registerOutParameter(2, java.sql.Types.SQLXML);
+		cs.execute();
+
+		return cs;
+
 	}
 
 	/**

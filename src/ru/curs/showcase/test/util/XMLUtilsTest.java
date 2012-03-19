@@ -34,44 +34,9 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	private static final String TEST_DOC = "<test/>";
 	private static final String TEST_GOOD_XSD = "test_good.xsd";
 	private static final String TEST_BAD_XSD = "test_bad.xsd";
-	private static final String TEST_TEXT_SAMPLE_XML = "TestTextSample.xml";
 	private static final String TEST_GOOD_XSL = "test_good.xsl";
 	private static final String TEST_STR2 = "учреждениях";
 	private static final String TEST_STR1 = ">II. Индикаторы задач проекта</td>";
-
-	/**
-	 * Получает выходной SQLXML по входному.
-	 * 
-	 * @param connection
-	 *            - соединение.
-	 * @param sqlxmlIn
-	 *            - входной SQLXML.
-	 * @return - выходной SQLXML.
-	 * @throws SQLException
-	 */
-	private static CallableStatement getOutputByInputSQLXML(final Connection connection,
-			final SQLXML sqlxmlIn) throws SQLException {
-		String stmt = "DROP PROCEDURE [dbo].[_DebugXMLProcessor2]";
-		try (Statement st = connection.createStatement();) {
-			try {
-				st.executeUpdate(stmt);
-			} catch (SQLException e) {
-				stmt = "";
-			}
-			stmt =
-				"CREATE PROCEDURE [dbo].[_DebugXMLProcessor2] @par1 xml, @par2 xml Output AS set @par2 = @par1";
-			st.executeUpdate(stmt);
-		}
-
-		stmt = "{call _DebugXMLProcessor2(?,?)}";
-		CallableStatement cs = connection.prepareCall(stmt);
-		cs.setSQLXML(1, sqlxmlIn);
-		cs.registerOutParameter(2, java.sql.Types.SQLXML);
-		cs.execute();
-
-		return cs;
-
-	}
 
 	@Test
 	public final void testXSLTransformForSQLXML() throws SAXException, IOException, SQLException,
@@ -91,27 +56,6 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 
 				assertTrue(out.indexOf(TEST_STR1) > -1);
 				assertTrue(out.indexOf(TEST_STR2) > -1);
-			}
-		} finally {
-			ConnectionFactory.getInstance().release(connection);
-		}
-	}
-
-	@Test(expected = XSLTTransformException.class)
-	public final void testXSLTransformForCheckSaxon() throws SAXException, IOException,
-			SQLException, TransformerException {
-		DocumentBuilder db = XMLUtils.createBuilder();
-
-		org.w3c.dom.Document doc =
-			db.parse(XMLUtilsTest.class.getResourceAsStream(TEST_TEXT_SAMPLE_XML));
-
-		Connection connection = ConnectionFactory.getInstance().acquire();
-		try {
-			SQLXML sqlxmlIn = XMLUtils.domToSQLXML(doc, connection);
-			try (CallableStatement cs = getOutputByInputSQLXML(connection, sqlxmlIn);) {
-				SQLXML sqlxmlOut = cs.getSQLXML(2);
-				String xsltFileName = "test_bad.xsl";
-				XMLUtils.xsltTransform(sqlxmlOut, xsltFileName);
 			}
 		} finally {
 			ConnectionFactory.getInstance().release(connection);
