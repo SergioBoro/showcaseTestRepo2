@@ -321,7 +321,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 	 */
 	public native void setCollbackJSNIFunction() /*-{
 		$wnd.gwtPluginFunc = 
-		@ru.curs.showcase.app.client.api.PluginPanelCallbacksEvents::pluginPanelClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+		@ru.curs.showcase.app.client.api.PluginPanelCallbacksEvents::pluginPanelClick(Ljava/lang/String;Ljava/lang/String;);
 	}-*/;
 
 	// CHECKSTYLE:ON

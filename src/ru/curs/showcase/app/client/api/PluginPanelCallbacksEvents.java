@@ -30,8 +30,7 @@ public final class PluginPanelCallbacksEvents {
 	 *            координаты точки или название экранного элемента, по которому
 	 *            кликнул пользователь.
 	 * */
-	public static void pluginPanelClick(final String pluginDivId, final String eventId,
-			final String overridenValue, final String replaseWhat, final String id) {
+	public static void pluginPanelClick(final String pluginDivId, final String eventId) {
 
 		Plugin pl =
 			((PluginPanel) ActionExecuter.getElementPanelById(pluginDivId.substring(0,
