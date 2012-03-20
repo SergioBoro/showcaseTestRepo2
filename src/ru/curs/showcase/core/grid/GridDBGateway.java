@@ -226,7 +226,7 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 	private InputStream fillXmlDS(final RowSet rowset) {
 		try {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
-			PrintWriter writer = new PrintWriter(os);
+			OutputStreamWriter writer = new OutputStreamWriter(os, TextUtils.DEF_ENCODING);
 
 			ResultSetMetaData md = rowset.getMetaData();
 			writer.append("<" + XML_DATASET_TAG + ">");
@@ -262,7 +262,7 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 			writer.flush();
 
 			return StreamConvertor.outputToInputStream(os);
-		} catch (SQLException e) {
+		} catch (SQLException | IOException e) {
 			throw new SAXError(e);
 		}
 
