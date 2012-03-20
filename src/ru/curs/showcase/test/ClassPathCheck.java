@@ -23,7 +23,7 @@ import ru.curs.showcase.util.xml.*;
 public class ClassPathCheck extends AbstractTestWithDefaultUserData {
 
 	@Test
-	public void webAppLibsShouldBeBeforeJRELibs() throws SAXException {
+	public void webAppLibsShouldBeBeforeGWTandJRELibs() throws SAXException {
 		try {
 			XMLUtils.createSchemaForFile(new File(AppInfoSingleton.getAppInfo().getWebAppPath()
 					+ "/WEB-INF/classes/schemas/action.xsd"));
