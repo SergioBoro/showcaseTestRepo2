@@ -35,7 +35,7 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 
 		GridGateway gateway = new GridDBGateway();
 		RecordSetElementRawData raw = gateway.getRawDataAndSettings(context, element);
-		GridDBFactory factory = new GridDBFactory(raw);
+		GridFactory factory = new GridFactory(raw);
 		Grid grid = factory.build();
 		assertEquals(GRIDBAL_TEST_PROPERTIES, factory.serverState().getProfile());
 
@@ -54,13 +54,13 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Проверка работы функции
-	 * {@link ru.curs.showcase.core.grid.GridDBFactory#makeSafeXMLAttrValues} .
+	 * {@link ru.curs.showcase.core.grid.GridFactory#makeSafeXMLAttrValues} .
 	 */
 	@Test
 	public void testGridLinkReplaceXMLServiceSymbols() {
 		assertEquals("<link href=\"ya.ru?search=aa&amp;bla&amp;ab\" "
 				+ "image=\"xxx.jpg\"  text=\"&lt;&quot; &lt;&gt; &gt; a&apos;&quot;\"  />",
-				GridDBFactory.makeSafeXMLAttrValues("<link href=\"ya.ru?search=aa&amp;bla&ab\" "
+				GridFactory.makeSafeXMLAttrValues("<link href=\"ya.ru?search=aa&amp;bla&ab\" "
 						+ "image=\"xxx.jpg\"  text=\"<&quot; &lt;&gt; > a'\"\"  />"));
 	}
 
@@ -74,7 +74,7 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 
 		GridGateway gateway = new GridDBGateway();
 		RecordSetElementRawData raw = gateway.getRawDataAndSettings(context, elInfo);
-		GridDBFactory factory = new GridDBFactory(raw);
+		GridFactory factory = new GridFactory(raw);
 		Grid grid = factory.build();
 
 		assertNotNull(grid.getAutoSelectRecord());

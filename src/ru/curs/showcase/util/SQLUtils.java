@@ -113,6 +113,17 @@ public final class SQLUtils {
 	}
 
 	/**
+	 * Определяет, является ли тип "обобщенной" SQL датой .
+	 * 
+	 * @param aSqlType
+	 *            - тип SQL.
+	 * @return - результат проверки.
+	 */
+	public static boolean isGeneralizedDateType(final int aSqlType) {
+		return isDateType(aSqlType) || isTimeType(aSqlType) || isDateTimeType(aSqlType);
+	}
+
+	/**
 	 * Определяет, является ли тип SQL целым числом.
 	 * 
 	 * @param aSqlType

@@ -128,7 +128,9 @@ public class RecordSetElementRawData extends ElementRawData implements Closeable
 		}
 		try {
 			setSettings(spQuery.getValidatedSettings());
-			setXmlDS(spQuery.getXmlDS());
+			if (getXmlDS() == null) {
+				setXmlDS(spQuery.getXmlDS());
+			}
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
 		}

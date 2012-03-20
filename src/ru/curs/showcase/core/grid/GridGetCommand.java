@@ -43,25 +43,25 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 	@Override
 	protected void mainProc() throws Exception {
 		GridDBGateway gateway = new GridDBGateway();
-		GridDBFactory factory = null;
+		GridFactory factory = null;
 		RecordSetElementRawData raw = null;
 		ElementSettingsDBGateway sgateway = null;
 		GridServerState state = getGridState(getContext(), getElementInfo());
 
 		if (getElementInfo().loadByOneProc()) {
 			raw = gateway.getRawDataAndSettings(getContext(), getElementInfo());
-			factory = new GridDBFactory(raw, state);
+			factory = new GridFactory(raw, state);
 			factory.setApplyLocalFormatting(applyLocalFormatting);
 			setResult(factory.build());
 		} else {
 			if (getContext().isFirstLoad()) {
 				sgateway = new ElementSettingsDBGateway();
 				raw = sgateway.getRawData(getContext(), getElementInfo());
-				factory = new GridDBFactory(raw, state);
+				factory = new GridFactory(raw, state);
 				factory.buildStepOne();
 				gateway.setConn(sgateway.getConn());
 			} else {
-				factory = new GridDBFactory(getContext(), getElementInfo(), state);
+				factory = new GridFactory(getContext(), getElementInfo(), state);
 				factory.buildStepOneFast();
 			}
 			raw = gateway.getRawData(getContext(), getElementInfo());

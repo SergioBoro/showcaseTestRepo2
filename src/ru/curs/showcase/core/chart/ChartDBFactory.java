@@ -249,8 +249,6 @@ public class ChartDBFactory extends AbstractChartFactory {
 	 */
 	private class XmlDSHandler extends DefaultHandler {
 
-		private static final String RECORD_TAG = "rec";
-
 		private boolean processRecord = false;
 		private boolean processValue = false;
 		private boolean processProps = false;

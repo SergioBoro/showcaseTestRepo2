@@ -228,7 +228,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 
 		GridGateway gateway = new GridDBGateway();
 		RecordSetElementRawData raw = gateway.getRawDataAndSettings(gc, element);
-		GridDBFactory factory = new GridDBFactory(raw);
+		GridFactory factory = new GridFactory(raw);
 		factory.build();
 	}
 
