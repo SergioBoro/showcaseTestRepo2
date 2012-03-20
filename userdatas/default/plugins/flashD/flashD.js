@@ -9,7 +9,11 @@ function createFlashD(parentId, data) {
     var param = document.createElement('param');
     param.name = "FlashVars";
     param.value = "data=" + (JSON.stringify(data));
-    var parent = document.getElementById(parentId); 
-    obj.appendChild(param);
-    parent.appendChild(obj); 
+    var parent = document.getElementById(parentId);    	
+    obj.appendChild(param); 
+    var param1 = document.createElement('param');
+    param1.name = "wmode";
+    param1.value = "opaque";
+    obj.appendChild(param1);       
+    parent.appendChild(obj);
 }
