@@ -650,6 +650,9 @@ public final class XMLUtils {
 			{ "_x0034_", "4" }, { "_x0035_", "5" }, { "_x0036_", "6" }, { "_x0037_", "7" },
 			{ "_x0038_", "8" }, { "_x0039_", "9" } };
 
+	private static String[][] escapeValue = {
+			{ "_x0026_", "&" }, { "_x003c_", "<" }, { "_x003e_", ">" }, };
+
 	/**
 	 * Функция, заменяющая специальные символы в названиях XML тегов на
 	 * служебные.
@@ -662,10 +665,12 @@ public final class XMLUtils {
 		if ((text == null) || text.trim().isEmpty()) {
 			return text;
 		}
-		for (int i = 0; i < escapeTagFirstDigit.length; i++) {
-			if (escapeTagFirstDigit[i][1].equalsIgnoreCase(text.substring(0, 1))) {
-				text = escapeTagFirstDigit[i][0] + text.substring(1);
-				break;
+		if (Character.isDigit(text.charAt(0))) {
+			for (int i = 0; i < escapeTagFirstDigit.length; i++) {
+				if (escapeTagFirstDigit[i][1].equalsIgnoreCase(text.substring(0, 1))) {
+					text = escapeTagFirstDigit[i][0] + text.substring(1);
+					break;
+				}
 			}
 		}
 		for (int i = 0; i < escapeTag.length; i++) {
@@ -695,6 +700,45 @@ public final class XMLUtils {
 		for (int i = 0; i < escapeTagFirstDigit.length; i++) {
 			while (text.indexOf(escapeTagFirstDigit[i][0]) != -1) {
 				text = text.replace(escapeTagFirstDigit[i][0], escapeTagFirstDigit[i][1]);
+			}
+		}
+		return text;
+	}
+
+	/**
+	 * Функция, заменяющая специальные символы в содержимом XML тегов на
+	 * служебные.
+	 * 
+	 * @param original
+	 *            - исходная строка.
+	 */
+	public static String escapeValueXml(final String original) {
+		String text = original;
+		if ((text == null) || text.trim().isEmpty()) {
+			return text;
+		}
+		for (int i = 0; i < escapeValue.length; i++) {
+			while (text.indexOf(escapeValue[i][1]) != -1) {
+				text = text.replace(escapeValue[i][1], escapeValue[i][0]);
+			}
+		}
+		return text;
+	}
+
+	/**
+	 * Функция, заменяющая служебные символы в содержимом XML тегов на обычные.
+	 * 
+	 * @param original
+	 *            - исходная строка.
+	 */
+	public static String unEscapeValueXml(final String original) {
+		String text = original;
+		if ((text == null) || text.trim().isEmpty()) {
+			return text;
+		}
+		for (int i = 0; i < escapeValue.length; i++) {
+			while (text.indexOf(escapeValue[i][0]) != -1) {
+				text = text.replace(escapeValue[i][0], escapeValue[i][1]);
 			}
 		}
 		return text;

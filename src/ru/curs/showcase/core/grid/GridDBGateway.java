@@ -248,8 +248,11 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 						String value;
 						if (SQLUtils.isGeneralizedDateType(md.getColumnType(i))) {
 							value = getStringValueOfDate(rowset, i);
+						} else if (SQLUtils.isStringType(md.getColumnType(i))) {
+							value =
+								XMLUtils.escapeValueXml(rowset.getString(md.getColumnLabel(i)));
 						} else {
-							value = XMLUtils.escapeTagXml(rowset.getString(md.getColumnLabel(i)));
+							value = rowset.getString(md.getColumnLabel(i));
 						}
 						s = s + value + "</" + tagName + ">";
 						writer.append(s);
@@ -259,7 +262,7 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 			}
 			writer.append("</" + XML_DATASET_TAG + ">");
 
-			writer.flush();
+			writer.close();
 
 			return StreamConvertor.outputToInputStream(os);
 		} catch (SQLException | IOException e) {

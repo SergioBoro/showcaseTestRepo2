@@ -702,6 +702,14 @@ public class GridFactory extends CompBasedElementFactory {
 		SimpleSAX sax = new SimpleSAX(getXmlDS(), handler, SAX_ERROR_MES);
 		sax.parse();
 
+		try {
+			getXmlDS().close();
+			setXmlDS(null);
+			getSource().setXmlDS(null);
+		} catch (IOException e) {
+			throw new SAXError(e);
+		}
+
 		postProcessingByXmlDS();
 		checkRecordIdUniqueness();
 		if (getElementInfo().loadByOneProc()) {
@@ -864,8 +872,12 @@ public class GridFactory extends CompBasedElementFactory {
 				String colId = XMLUtils.unEscapeTagXml(localName);
 				try {
 					if (curColumn == getResult().getColumnById(colId)) {
-						curRecord.setValue(curColumn.getId(),
-								XMLUtils.unEscapeTagXml(osValue.toString(TextUtils.DEF_ENCODING)));
+						String value = osValue.toString(TextUtils.DEF_ENCODING);
+						if (curColumn.getValueType().isGeneralizedString()) {
+							value = XMLUtils.unEscapeValueXml(value);
+						}
+						curRecord.setValue(curColumn.getId(), value);
+						writerValue.close();
 						processValue = false;
 					} else {
 						writerValue.writeEndElement();
@@ -875,7 +887,6 @@ public class GridFactory extends CompBasedElementFactory {
 				}
 			}
 		}
-
 	}
 
 	private void postProcessingByXmlDS() {

@@ -242,6 +242,14 @@ public class ChartDBFactory extends AbstractChartFactory {
 		SimpleSAX sax = new SimpleSAX(getXmlDS(), new XmlDSHandler(), SAX_ERROR_MES);
 		sax.parse();
 
+		try {
+			getXmlDS().close();
+			setXmlDS(null);
+			getSource().setXmlDS(null);
+		} catch (IOException e) {
+			throw new SAXError(e);
+		}
+
 	}
 
 	/**
@@ -360,7 +368,8 @@ public class ChartDBFactory extends AbstractChartFactory {
 			if (PROPS_TAG.equals(localName)) {
 				try {
 					readEvents(series, osProps.toString(TextUtils.DEF_ENCODING));
-				} catch (UnsupportedEncodingException e) {
+					writerProps.close();
+				} catch (UnsupportedEncodingException | XMLStreamException e) {
 					throw new SAXError(e);
 				}
 				processProps = false;
