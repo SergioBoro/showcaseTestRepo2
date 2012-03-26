@@ -282,7 +282,7 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		afterUpdateGrid(ut);
 
-		setupTimer1();
+		setupTimer();
 
 		setFirstLoading(false);
 
@@ -290,25 +290,6 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		bListenersExit = false;
 
-	}
-
-	private void setupTimer1() {
-		if (getElementInfo().getRefreshByTimer()) {
-			Timer timer = getTimer();
-			if (timer != null) {
-				timer.cancel();
-			}
-			timer = new Timer() {
-
-				@Override
-				public void run() {
-					refreshPanel();
-				}
-
-			};
-			final int n1000 = 1000;
-			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
-		}
 	}
 
 	private void beforeUpdateGrid() {

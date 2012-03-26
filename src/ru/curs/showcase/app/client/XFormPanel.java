@@ -12,7 +12,7 @@ import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.*;
 
@@ -206,22 +206,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 			ActionExecuter.execAction();
 		}
 
-		if (getElementInfo().getRefreshByTimer()) {
-			Timer timer = getTimer();
-			if (timer != null) {
-				timer.cancel();
-			}
-			timer = new Timer() {
-
-				@Override
-				public void run() {
-					refreshPanel();
-				}
-
-			};
-			final int n1000 = 1000;
-			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
-		}
+		setupTimer();
 
 		// p.setHeight(PROC100);
 		p.setSize(PROC100, PROC100);
