@@ -175,6 +175,7 @@ public class GridPanel extends BasicElementPanelBasis {
 		setContext(context);
 
 		if (isFirstLoading()) {
+			setNeedResetLocalContext(true);
 			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 			setupRootPanelAndGridPanel(grid1, UpdateType.FULL);
 		} else {
@@ -285,6 +286,7 @@ public class GridPanel extends BasicElementPanelBasis {
 	private void beforeUpdateGrid() {
 		if (isNeedResetLocalContext()) {
 			localContext = null;
+			setNeedResetLocalContext(false);
 		}
 
 		// Header и Footer - считаем статическими элементами, не меняющимися при
@@ -850,6 +852,19 @@ public class GridPanel extends BasicElementPanelBasis {
 		}
 		result.apply(getContext());
 		return result;
+	}
+
+	/**
+	 * Кроме установки признака сброса контекста панели нужно также установить
+	 * признак перезагрузки параметров грида на сервере (isFirstLoad == true -
+	 * переметры перезагружаются из источника данных).
+	 **/
+	@Override
+	public final void setNeedResetLocalContext(final boolean aNeedResetLocalContext) {
+		super.setNeedResetLocalContext(aNeedResetLocalContext);
+		if (localContext != null) {
+			localContext.setIsFirstLoad(aNeedResetLocalContext);
+		}
 	}
 
 }

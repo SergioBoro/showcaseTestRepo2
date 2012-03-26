@@ -187,6 +187,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	private void setXFormPanelByXForms(final XForm xform1) {
 		if (isNeedResetLocalContext()) {
 			mainInstance = null;
+			setNeedResetLocalContext(false);
 		}
 		xform = xform1;
 
