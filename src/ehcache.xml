@@ -2,6 +2,7 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
 	monitoring="autodetect" dynamicConfig="true">
+<!-- 	if you want use overflowToDisk or diskPersistent - setup different diskStorePath for every showcase instance on PC!  -->
 	<cache name="gridStateCache" maxElementsInMemory="10000"
 		maxElementsOnDisk="1000" eternal="false" overflowToDisk="false"
 		diskSpoolBufferSizeMB="20" timeToIdleSeconds="300" timeToLiveSeconds="3600"
