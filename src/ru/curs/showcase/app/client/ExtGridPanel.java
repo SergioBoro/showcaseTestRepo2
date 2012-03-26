@@ -233,31 +233,14 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		//
 		afterUpdateGrid();
 
-		setupTimer1();
+		// setupTimer();
+		// Нужно раскомментировать !!!!!!!!!!!!!!!!!!!!!
+		// Это вызов ф-ции из базового класса
 
 		setFirstLoading(false);
 
 		p.setHeight(PROC100);
 
-	}
-
-	private void setupTimer1() {
-		// if (getElementInfo().getRefreshByTimer()) {
-		// Timer timer = getTimer();
-		// if (timer != null) {
-		// timer.cancel();
-		// }
-		// timer = new Timer() {
-		//
-		// @Override
-		// public void run() {
-		// refreshPanel();
-		// }
-		//
-		// };
-		// final int n1000 = 1000;
-		// timer.schedule(getElementInfo().getRefreshInterval() * n1000);
-		// }
 	}
 
 	private void beforeUpdateGrid() {
