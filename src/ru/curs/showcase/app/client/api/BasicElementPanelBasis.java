@@ -71,6 +71,22 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 	}
 
 	private DataPanelElementInfo elementInfo;
+	/**
+	 * Опция определяет, нужно ли очищать локальный контекст после загрузки
+	 * новых данных грида. Значение зависит от опции keepUserSettings в
+	 * действии, обновляющем грид.
+	 */
+	private boolean needResetLocalContext = true;
+
+	@Override
+	public boolean isNeedResetLocalContext() {
+		return needResetLocalContext;
+	}
+
+	@Override
+	public void setNeedResetLocalContext(final boolean aNeedResetLocalContext) {
+		needResetLocalContext = aNeedResetLocalContext;
+	}
 
 	@Override
 	public DataPanelElementInfo getElementInfo() {
@@ -84,11 +100,6 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 	@Override
 	public CompositeContext getDetailedContext() {
 		return getContext();
-	}
-
-	@Override
-	public void prepareSettings(final boolean aKeepElementSettings) {
-		// ничего не делаем для элементов, не имеющих настроек
 	}
 
 	/**

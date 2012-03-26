@@ -161,8 +161,8 @@ public class XFormPanelGWTTest extends GWTTestCase {
 		XFormPanel xfp = XFormTestsCommon.createXFormPanelForTests2();
 		assertNotNull(xfp);
 
-		xfp.prepareSettings(false);
-		xfp.prepareSettings(true);
+		xfp.setNeedResetLocalContext(true);
+		xfp.setNeedResetLocalContext(false);
 
 		com.google.gwt.user.client.Element dynastyle = DOM.getElementById(DYNASTYLE);
 		assertEquals(1, dynastyle.getChildCount());

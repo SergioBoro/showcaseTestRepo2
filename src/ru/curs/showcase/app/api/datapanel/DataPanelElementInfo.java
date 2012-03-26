@@ -443,4 +443,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	public DataPanelElementProc getProcById(final String procId) {
 		return procs.get(new ID(procId));
 	}
+
+	public void addDataAndMetaDataProcs(final String prefix) {
+		procName = prefix + "_data";
+		DataPanelElementProc proc = new DataPanelElementProc();
+		proc.setId(id.toString() + "_mdproc");
+		proc.setName(prefix + "_metadata");
+		proc.setType(DataPanelElementProcType.METADATA);
+		procs.put(proc.getId(), proc);
+	}
 }

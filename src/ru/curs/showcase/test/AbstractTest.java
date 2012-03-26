@@ -1,6 +1,6 @@
 package ru.curs.showcase.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.*;
 import java.sql.*;
@@ -566,5 +566,31 @@ public class AbstractTest extends GeneralXMLHelper {
 		action.setContext(context);
 		action.getServerActivities().add(activity);
 		return action;
+	}
+
+	protected GridContext generateReloadContextForGridBalProc(final int pageSize, final int pageNum, final String firstColName) {
+		final int maxColIndex = 5;
+		GridContext gc = new GridContext();
+		gc.setPageNumber(pageNum);
+		gc.setPageSize(pageSize);
+		addSortedColumn(gc, "3кв. 2007г.", maxColIndex);
+		addSortedColumn(gc, "3кв. 2006г.", 1);
+		addSortedColumn(gc, firstColName, 0);
+		assertNull(gc.getCurrentColumnId());
+		assertNull(gc.getCurrentRecordId());
+		assertEquals(0, gc.getSelectedRecordIds().size());
+		gc.setCurrentColumnId(firstColName);
+		gc.setCurrentRecordId("1");
+		gc.getSelectedRecordIds().add("1");
+		gc.apply(getTestContext1());
+		return gc;
+	}
+
+	private void addSortedColumn(final GridContext settings, final String name, final int index) {
+		Column col = new Column();
+		col.setId(name);
+		col.setSorting(Sorting.ASC);
+		col.setIndex(index);
+		settings.getSortedColumns().add(col);
 	}
 }

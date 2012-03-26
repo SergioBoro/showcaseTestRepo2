@@ -1,6 +1,7 @@
 package ru.curs.showcase.test.runtime;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
+import static org.junit.Assert.fail;
 
 import java.io.*;
 import java.util.*;
@@ -11,8 +12,10 @@ import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.chart.ChartGetCommand;
+import ru.curs.showcase.core.grid.GridGetCommand;
 import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.test.AbstractTest;
 import ru.curs.showcase.util.TextUtils;
@@ -58,7 +61,21 @@ public class XMLSessionContextGeneratorTest extends AbstractTest {
 
 		String example = getTestData("sessionContextWithSelfRelated.xml");
 		assertXMLEqual(example, res);
+	}
 
+	@Test
+	public void gridSelfRelatedContextIncludesAllData() throws IOException, SAXException {
+		GridContext context = generateReloadContextForGridBalProc(2, 2, "3кв. 2005г.");
+		DataPanelElementInfo element = getTestGridInfo();
+		element.getRelated().add(element.getId());
+
+		GridGetCommand command = new GridGetCommand(context, element, true);
+		command.execute();
+
+		String actualSC = context.getSession();
+		String exampleSC = getTestData("gridContextWithSelfRelated.xml");
+
+		assertXMLEqual(exampleSC, actualSC);
 	}
 
 	@Test
@@ -81,6 +98,9 @@ public class XMLSessionContextGeneratorTest extends AbstractTest {
 
 	private String getTestData(final String file) throws IOException {
 		InputStream is = XMLSessionContextGeneratorTest.class.getResourceAsStream(file);
+		if (is == null) {
+			fail(String.format("Файл '%s' с тестовыми данными не найден", file));
+		}
 		return TextUtils.streamToString(is);
 	}
 

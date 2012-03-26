@@ -45,7 +45,17 @@ def mainproc():
                              <add_context>
                                  add_context для действия.
                              </add_context>  
-                        </element>     
+                        </element>
+                         <element id="xform1">
+                             <add_context>
+                                 add_context для действия.
+                             </add_context>  
+                        </element> 
+                         <element id="livegrid1">
+                             <add_context>
+                                 add_context для действия.
+                             </add_context>  
+                        </element>                                                    
                     </datapanel>                      
             </action>
         </event>                                                                                             

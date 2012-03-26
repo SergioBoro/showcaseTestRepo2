@@ -173,7 +173,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getXForms(new XFormContext(getContext(), mainInstance), getElementInfo(),
+		dataService.getXForms(getDetailedContext(), getElementInfo(),
 				new GWTServiceCallback<XForm>("при получении данных XForm с сервера") {
 
 					@Override
@@ -185,6 +185,9 @@ public class XFormPanel extends BasicElementPanelBasis {
 	}
 
 	private void setXFormPanelByXForms(final XForm xform1) {
+		if (isNeedResetLocalContext()) {
+			mainInstance = null;
+		}
 		xform = xform1;
 
 		destroy();
@@ -219,34 +222,36 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 * 
 	 */
 	public String fillAndGetMainInstance() {
-		fillMainInstance();
+		if (xf != null) {
+			fillMainInstance();
+		}
 		return mainInstance;
 	}
 
 	private native void fillMainInstance() /*-{
-		if ($wnd.xforms.defaultModel != null) {
-			this.@ru.curs.showcase.app.client.XFormPanel::mainInstance = $wnd.Writer
-					.toString($wnd.xforms.defaultModel
-							.getInstanceDocument('mainInstance'));
-		}
-	}-*/;
+											if ($wnd.xforms.defaultModel != null) {
+											this.@ru.curs.showcase.app.client.XFormPanel::mainInstance = $wnd.Writer
+											.toString($wnd.xforms.defaultModel
+											.getInstanceDocument('mainInstance'));
+											}
+											}-*/;
 
 	/**
 	 * Установка процедур обратного вызова.
 	 */
 	// CHECKSTYLE:OFF
 	private static native void setCallbackJSNIFunction() /*-{
-		$wnd.gwtXFormSave = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickSave(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
-		$wnd.gwtXFormFilter = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickFilter(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
-		$wnd.gwtXFormUpdate = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickUpdate(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
-		$wnd.showSelector =	@ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
-		$wnd.showMultiSelector = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showMultiSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
-		$wnd.gwtXFormDownload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::downloadFile(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
-		$wnd.gwtXFormUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::uploadFile(Lcom/google/gwt/core/client/JavaScriptObject;);
-		$wnd.gwtXFormSimpleUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::simpleUpload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
-		$wnd.gwtXFormOnSubmitComplete = @ru.curs.showcase.app.client.utils.InlineUploader::onSubmitComplete(Ljava/lang/String;);
-		$wnd.gwtXFormOnChooseFiles = @ru.curs.showcase.app.client.utils.InlineUploader::onChooseFiles(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;);
-	}-*/;
+															$wnd.gwtXFormSave = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickSave(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtXFormFilter = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickFilter(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtXFormUpdate = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickUpdate(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.showSelector =	@ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
+															$wnd.showMultiSelector = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showMultiSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
+															$wnd.gwtXFormDownload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::downloadFile(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtXFormUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::uploadFile(Lcom/google/gwt/core/client/JavaScriptObject;);
+															$wnd.gwtXFormSimpleUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::simpleUpload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtXFormOnSubmitComplete = @ru.curs.showcase.app.client.utils.InlineUploader::onSubmitComplete(Ljava/lang/String;);
+															$wnd.gwtXFormOnChooseFiles = @ru.curs.showcase.app.client.utils.InlineUploader::onChooseFiles(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;);
+															}-*/;
 
 	// CHECKSTYLE:ON
 
@@ -254,8 +259,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 * Инициализирует X-форму, запуская инструментующий javascript.
 	 */
 	private static native void initForm() /*-{
-		$wnd.init();
-	}-*/;
+											$wnd.init();
+											}-*/;
 
 	/**
 	 * Инструментует панель с формой.
@@ -286,27 +291,27 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 * динамически созданные скрипты и стили.
 	 */
 	private static native void destroy() /*-{
-		//Деинициализируем механизм XSLTForms
-		if ($wnd.xforms != null)
-			$wnd.xforms.close();
+											//Деинициализируем механизм XSLTForms
+											if ($wnd.xforms != null)
+											$wnd.xforms.close();
 
-		//Подчищаем динамические стили
-		var hdr = $doc.getElementsByTagName('head')[0];
-		var ss1 = $doc.getElementById('dynastyle');
-		if (ss1 != null)
-			hdr.removeChild(ss1);
+											//Подчищаем динамические стили
+											var hdr = $doc.getElementsByTagName('head')[0];
+											var ss1 = $doc.getElementById('dynastyle');
+											if (ss1 != null)
+											hdr.removeChild(ss1);
 
-		//Подчищаем
-		ss1 = $doc.getElementById('xf-model-config');
-		if (ss1 != null)
-			hdr.removeChild(ss1);
+											//Подчищаем
+											ss1 = $doc.getElementById('xf-model-config');
+											if (ss1 != null)
+											hdr.removeChild(ss1);
 
-		//Подчищаем динамические скрипты
-		var div = $doc.getElementById('target');
-		while (div.childNodes.length > 0)
-			div.removeChild(div.firstChild);
+											//Подчищаем динамические скрипты
+											var div = $doc.getElementById('target');
+											while (div.childNodes.length > 0)
+											div.removeChild(div.firstChild);
 
-	}-*/;
+											}-*/;
 
 	/**
 	 * Закрывает форму, снимая всю ранее выставленную Javascript-инструментовку.
@@ -325,17 +330,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 			}
 		}
 
-	}
-
-	@Override
-	public void prepareSettings(final boolean keepElementSettings) {
-		if (keepElementSettings) {
-			if (xf != null) {
-				fillMainInstance();
-			}
-		} else {
-			mainInstance = null;
-		}
 	}
 
 	/**
@@ -390,7 +384,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	}
 
 	@Override
-	public CompositeContext getDetailedContext() {
+	public XFormContext getDetailedContext() {
 		return new XFormContext(getContext(), fillAndGetMainInstance());
 	}
 }

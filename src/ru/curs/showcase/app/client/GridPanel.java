@@ -49,7 +49,6 @@ public class GridPanel extends BasicElementPanelBasis {
 	private DataServiceAsync dataService = null;
 	private GridContext localContext = null;
 	private Grid grid = null;
-
 	/**
 	 * Для предотвращения повторного срабатывания обработчиков.
 	 */
@@ -173,23 +172,11 @@ public class GridPanel extends BasicElementPanelBasis {
 	 *            Grid
 	 */
 	public void reDrawPanelExt(final CompositeContext context, final Grid grid1) {
-
 		setContext(context);
-		// --------------
 
 		if (isFirstLoading()) {
-			localContext = null;
-
 			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-
-			if (grid1 == null) {
-				setDataGridPanel(UpdateType.FULL);
-			} else {
-				RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
-				RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
-				setDataGridPanelByGrid(grid1, UpdateType.FULL);
-			}
-
+			setupRootPanelAndGridPanel(grid1, UpdateType.FULL);
 		} else {
 			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 			if (this.getElementInfo().getShowLoadingMessage()) {
@@ -200,15 +187,18 @@ public class GridPanel extends BasicElementPanelBasis {
 				dg.setVisible(false);
 				hpFooter.setVisible(false);
 			}
-			if (grid1 == null) {
-				setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID);
-			} else {
-				RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
-				RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
-				setDataGridPanelByGrid(grid1, UpdateType.UPDATE_BY_REDRAWGRID);
-			}
+			setupRootPanelAndGridPanel(grid1, UpdateType.UPDATE_BY_REDRAWGRID);
 		}
+	}
 
+	private void setupRootPanelAndGridPanel(final Grid grid1, final UpdateType updateType) {
+		if (grid1 == null) {
+			setDataGridPanel(updateType);
+		} else {
+			RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
+			RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
+			setDataGridPanelByGrid(grid1, updateType);
+		}
 	}
 
 	private void resetSelection() {
@@ -293,6 +283,10 @@ public class GridPanel extends BasicElementPanelBasis {
 	}
 
 	private void beforeUpdateGrid() {
+		if (isNeedResetLocalContext()) {
+			localContext = null;
+		}
+
 		// Header и Footer - считаем статическими элементами, не меняющимися при
 		// изменении контекста грида
 		hpHeader.clear();
@@ -831,13 +825,6 @@ public class GridPanel extends BasicElementPanelBasis {
 			bListenersExit = false;
 		}
 
-	}
-
-	@Override
-	public void prepareSettings(final boolean keepElementSettings) {
-		if (!keepElementSettings) {
-			localContext = null;
-		}
 	}
 
 	@Override

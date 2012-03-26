@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
-import org.junit.Test;
+import org.junit.*;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.ID;
@@ -102,26 +102,12 @@ public class GridSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testWithRequestedSettings() {
-		final int maxColIndex = 5;
 		final int pageSize = 5;
 		final int pageNum = 10;
 		final String firstColName = "3кв. 2005г.";
-		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 
-		GridContext gc = new GridContext();
-		gc.setPageNumber(pageNum);
-		gc.setPageSize(pageSize);
-		addSortedColumn(gc, "3кв. 2007г.", maxColIndex);
-		addSortedColumn(gc, "3кв. 2006г.", 1);
-		addSortedColumn(gc, firstColName, 0);
-		assertNull(gc.getCurrentColumnId());
-		assertNull(gc.getCurrentRecordId());
-		assertEquals(0, gc.getSelectedRecordIds().size());
-		gc.setCurrentColumnId(firstColName);
-		gc.setCurrentRecordId("1");
-		gc.getSelectedRecordIds().add("1");
-		gc.apply(context);
+		GridContext gc = generateReloadContextForGridBalProc(pageSize, pageNum, firstColName);
 
 		GridGetCommand command = new GridGetCommand(gc, element, true);
 		Grid grid = command.execute();
@@ -374,14 +360,6 @@ public class GridSLTest extends AbstractTest {
 		}
 	}
 
-	private void addSortedColumn(final GridContext settings, final String name, final int index) {
-		Column col = new Column();
-		col.setId(name);
-		col.setSorting(Sorting.ASC);
-		col.setIndex(index);
-		settings.getSortedColumns().add(col);
-	}
-
 	@Test
 	public void testGridNoEventsAndDefAction() {
 		GridContext context = getTestGridContext1();
@@ -473,5 +451,23 @@ public class GridSLTest extends AbstractTest {
 		assertNotNull(file.getData());
 		assertNotNull(file.getName());
 		assertEquals(TextUtils.JDBC_ENCODING, file.getEncoding());
+	}
+
+	@Test
+	@Ignore
+	public void gridWithTwoProcsShouldReloadWithoutExceptionsIfStateAbsentInCashe() {
+		GridContext context = new GridContext(getTestContext1());
+		context.setIsFirstLoad(false);
+		context.setCurrentRecordId("01");
+		context.setPageInfo(new PageInfo(2, 2));
+		context.setCurrentColumnId("Name");
+
+		DataPanelElementInfo element = new DataPanelElementInfo("01", DataPanelElementType.GRID);
+		element.addDataAndMetaDataProcs("grid_cities");
+		generateTestTabWithElement(element);
+		element.getRelated().add(element.getId());
+
+		GridGetCommand command = new GridGetCommand(context, element, true);
+		command.execute();
 	}
 }

@@ -345,8 +345,8 @@ public class GridPanelGWTTest extends GWTTestCase {
 		GridPanel dgp = createGridPanelForTests2();
 		assertNotNull(dgp);
 
-		dgp.prepareSettings(true);
-		dgp.prepareSettings(false);
+		dgp.setNeedResetLocalContext(false);
+		dgp.setNeedResetLocalContext(true);
 
 	}
 

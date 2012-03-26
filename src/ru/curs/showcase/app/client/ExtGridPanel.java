@@ -57,7 +57,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	private GridContext localContext = null;
 	private ExtGridMetadata gridMetadata = null;
 	private ExtGridExtradata gridExtradata = null;
-
 	private boolean isFirstLoading = true;
 
 	private boolean isFirstLoading() {
@@ -244,6 +243,9 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	}
 
 	private void beforeUpdateGrid() {
+		if (isNeedResetLocalContext()) {
+			localContext = null;
+		}
 		// все настройки - в т.ч. по умолчанию - устанавливаются сервером
 		settingsDataGrid.assign(gridMetadata.getUISettings());
 	}
@@ -838,13 +840,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		}
 
-	}
-
-	@Override
-	public void prepareSettings(final boolean keepElementSettings) {
-		if (!keepElementSettings) {
-			localContext = null;
-		}
 	}
 
 	@Override

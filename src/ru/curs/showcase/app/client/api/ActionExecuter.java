@@ -83,9 +83,10 @@ public final class ActionExecuter {
 	}
 
 	private static native void runClientActivity(final String procName, final String mainContext,
-			final String addContext, final String filterContext) /*-{
+			final String addContext, final String filterContext)
+	/*-{
 		var exp = '$wnd.' + procName + "('" + mainContext + "', '" + addContext
-				+ "', '" + filterContext + "')";
+		+ "', '" + filterContext + "')";
 		eval(exp);
 	}-*/;
 
@@ -171,8 +172,7 @@ public final class ActionExecuter {
 		bep.showPanel();
 
 		boolean keepElementSettings = dpel.getKeepUserSettings();
-
-		bep.prepareSettings(keepElementSettings);
+		bep.setNeedResetLocalContext(!keepElementSettings);
 
 		bep.reDrawPanel(bep.getElementInfo().getContext(ac));
 	}
@@ -204,7 +204,7 @@ public final class ActionExecuter {
 
 				boolean keepElementSettings = bep.getElementInfo().getKeepUserSettings(ac);
 
-				bep.prepareSettings(keepElementSettings);
+				bep.setNeedResetLocalContext(!keepElementSettings);
 				bep.reDrawPanel(bep.getElementInfo().getContext(ac));
 			}
 		}
@@ -275,7 +275,7 @@ public final class ActionExecuter {
 			if (!dpe.getNeverShowInPanel()) {
 				BasicElementPanel bep = getElementPanelById(dpe.getId());
 				if (bep instanceof XFormPanel) {
-					bep.prepareSettings(true);
+					bep.setNeedResetLocalContext(false);
 					bep.showPanel();
 					bep.reDrawPanel(bep.getElementInfo().getContext(ac));
 
