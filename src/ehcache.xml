@@ -3,7 +3,7 @@
 	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
 	monitoring="autodetect" dynamicConfig="true">
 	<cache name="gridStateCache" maxElementsInMemory="10000"
-		maxElementsOnDisk="1000" eternal="false" overflowToDisk="true"
+		maxElementsOnDisk="1000" eternal="false" overflowToDisk="false"
 		diskSpoolBufferSizeMB="20" timeToIdleSeconds="300" timeToLiveSeconds="3600"
 		memoryStoreEvictionPolicy="LFU" transactionalMode="off" diskPersistent="false" statistics="true"/>
 </ehcache>

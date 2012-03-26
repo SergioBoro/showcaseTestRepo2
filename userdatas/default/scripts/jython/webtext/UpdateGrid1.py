@@ -33,7 +33,7 @@ def mainproc():
     if main == "плохой":
         return UserMessage(u"1", u"проверка на ошибку сработала")
     data = u'''<div>
-    <button type="button" onclick="gwtWebTextFunc('${elementId}','testId');">Обновить элемент с ID grid1</button>
+    <button type="button" onclick="gwtWebTextFunc('${elementId}','testId');">Обновить нижележащие элементы</button>
     </div>'''
     settings = u'''
     <properties>           

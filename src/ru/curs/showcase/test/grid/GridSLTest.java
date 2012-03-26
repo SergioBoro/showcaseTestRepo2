@@ -4,17 +4,17 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
-import org.junit.*;
+import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.*;
-import ru.curs.showcase.app.api.ID;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.grid.*;
-import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTest;
 import ru.curs.showcase.util.*;
 
@@ -109,6 +109,10 @@ public class GridSLTest extends AbstractTest {
 
 		GridContext gc = generateReloadContextForGridBalProc(pageSize, pageNum, firstColName);
 
+		AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
+		AppInfoSingleton.getAppInfo().storeElementState(SessionUtils.TEST_SESSION, element, gc,
+				generateTestGridServerState());
+
 		GridGetCommand command = new GridGetCommand(gc, element, true);
 		Grid grid = command.execute();
 
@@ -182,6 +186,7 @@ public class GridSLTest extends AbstractTest {
 		state.setTotalCount(CITIES_COUNT);
 		state.setAutoSelectRecordId(2);
 		state.setAutoSelectRelativeRecord(true);
+
 		AppInfoSingleton.getAppInfo().storeElementState(ServletUtils.TEST_SESSION, elInfo,
 				context, state);
 
@@ -254,6 +259,8 @@ public class GridSLTest extends AbstractTest {
 		setDefaultUserData();
 		GridServerState state = new GridServerState();
 		state.setTotalCount(CITIES_COUNT);
+
+		AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
 		AppInfoSingleton.getAppInfo().storeElementState(ServletUtils.TEST_SESSION, elInfo,
 				context, state);
 
@@ -274,7 +281,7 @@ public class GridSLTest extends AbstractTest {
 	 * несуществующих данных.
 	 */
 	@Test
-	public void test1StepGridLoadBySLWhenUpdateOutOfBounds() {
+	public void test1StepGridLoadWhenUpdateOutOfBounds() {
 		DataPanelElementInfo elInfo = getTestGridInfo();
 		final int pageSize = 100;
 		final int pageNumber = 200;
@@ -284,6 +291,10 @@ public class GridSLTest extends AbstractTest {
 		gc.setPageSize(pageSize);
 		gc.apply(context);
 
+		AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
+		AppInfoSingleton.getAppInfo().storeElementState(SessionUtils.TEST_SESSION, elInfo, gc,
+				generateTestGridServerState());
+
 		GridGetCommand command = new GridGetCommand(gc, elInfo, true);
 		Grid grid = command.execute();
 
@@ -291,6 +302,14 @@ public class GridSLTest extends AbstractTest {
 		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
 		assertEquals(pageNumber, grid.getDataSet().getRecordSet().getPageNumber());
 		assertEquals(0, grid.getDataSet().getRecordSet().getRecordsCount());
+	}
+
+	private GridServerState generateTestGridServerState() {
+		GridServerState state = new GridServerState();
+		state.setProfile("default.properties");
+		final int totalCount = 81;
+		state.setTotalCount(totalCount);
+		return state;
 	}
 
 	/**
@@ -454,8 +473,7 @@ public class GridSLTest extends AbstractTest {
 	}
 
 	@Test
-	@Ignore
-	public void gridWithTwoProcsShouldReloadWithoutExceptionsIfStateAbsentInCashe() {
+	public void gridWithTwoProcsShouldReloadWithoutExceptionsIfStateAbsentInCache() {
 		GridContext context = new GridContext(getTestContext1());
 		context.setIsFirstLoad(false);
 		context.setCurrentRecordId("01");

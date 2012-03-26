@@ -85,6 +85,7 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 			if (state == null) {
 				// состояние устарело или память была очищена
 				state = prepareInitGridServerState(context, elementInfo);
+				context.setIsFirstLoad(true);
 			}
 		}
 		return state;
