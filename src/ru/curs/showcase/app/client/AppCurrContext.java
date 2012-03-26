@@ -247,7 +247,7 @@ public final class AppCurrContext extends ActionTransformer {
 	/**
 	 * @return the listOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel
 	 */
-	public static List<String> getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel() {
+	public List<String> getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel() {
 		return listOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel;
 	}
 
@@ -256,7 +256,7 @@ public final class AppCurrContext extends ActionTransformer {
 	 *            the listOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel
 	 *            to set
 	 */
-	public static void setListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel(
+	public void setListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel(
 			final List<String> aListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel) {
 		AppCurrContext.listOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel =
 			aListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel;

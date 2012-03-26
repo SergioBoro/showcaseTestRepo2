@@ -9,7 +9,7 @@ import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.core.client.*;
 import com.google.gwt.event.dom.client.*;
-import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -17,8 +17,7 @@ import com.google.gwt.user.client.ui.*;
  */
 public class GeoMapPanel extends BasicElementPanelBasis {
 
-	public GeoMapPanel(final CompositeContext context1,
-			final DataPanelElementInfo element1) {
+	public GeoMapPanel(final CompositeContext context1, final DataPanelElementInfo element1) {
 		this.setContext(context1);
 		this.setElementInfo(element1);
 
@@ -43,17 +42,13 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 	private void createChildPanels() {
 		childLeftPanel = new HorizontalPanel();
-		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "left"
-				+ getDivIdMap());
+		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "left" + getDivIdMap());
 		childRightPanel = new HorizontalPanel();
-		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "right"
-				+ getDivIdMap());
+		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "right" + getDivIdMap());
 		childTopPanel = new VerticalPanel();
-		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "top"
-				+ getDivIdMap());
+		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "top" + getDivIdMap());
 		childBottomPanel = new VerticalPanel();
-		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "bottom"
-				+ getDivIdMap());
+		DOM.setElementAttribute(childLeftPanel.getElement(), "id", "bottom" + getDivIdMap());
 	}
 
 	public GeoMapPanel(final DataPanelElementInfo element1) {
@@ -76,19 +71,18 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getGeoMap(getContext(), getElementInfo(),
-				new GWTServiceCallback<GeoMap>(
-						Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
+		dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
+				Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
 
-					@Override
-					public void onSuccess(final GeoMap aGeoMap) {
+			@Override
+			public void onSuccess(final GeoMap aGeoMap) {
 
-						geoMap = aGeoMap;
-						if (geoMap != null) {
-							fillMapPanel(aGeoMap);
-						}
-					}
-				});
+				geoMap = aGeoMap;
+				if (geoMap != null) {
+					fillMapPanel(aGeoMap);
+				}
+			}
+		});
 
 	}
 
@@ -100,8 +94,8 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	 *            GeoMap
 	 */
 	protected void fillMapPanel(final GeoMap aGeoMap) {
-		final String divIdLegend = getElementInfo().getFullId()
-				+ Constants.MAP_LEGEND_DIV_ID_SUFFIX;
+		final String divIdLegend =
+			getElementInfo().getFullId() + Constants.MAP_LEGEND_DIV_ID_SUFFIX;
 		final String div = "<div id='";
 		final String htmlForMap;
 		final int n60 = 60;
@@ -112,14 +106,12 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			// String.valueOf(GeneralDataPanel.getTabPanel().getOffsetWidth()));
 			// MessageBox.showSimpleMessage("cap",
 			// String.valueOf(GeneralDataPanel.getTabPanel().getOffsetWidth()));
-			final int width = GeneralDataPanel.getTabPanel().getOffsetWidth()
-					- n60;
-			final int height = GeneralDataPanel.getTabPanel().getOffsetHeight()
-					- n80;
+			final int width = GeneralDataPanel.getTabPanel().getOffsetWidth() - n60;
+			final int height = GeneralDataPanel.getTabPanel().getOffsetHeight() - n80;
 
-			htmlForMap = div + getDivIdMap() + "' style = 'width: "
-					+ String.valueOf(width) + "px; height: "
-					+ String.valueOf(height) + "px'></div>";
+			htmlForMap =
+				div + getDivIdMap() + "' style = 'width: " + String.valueOf(width)
+						+ "px; height: " + String.valueOf(height) + "px'></div>";
 			aGeoMap.applyAutoSizeValuesOnClient(width, height);
 
 		} else {
@@ -197,35 +189,17 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			drawMap(getDivIdMap(), divIdLegend, paramMap1, paramMap2);
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
-				MessageBox.showMessageWithDetails(
-						Constants.ERROR_OF_MAP_PAINTING, e.getMessage(),
+				MessageBox.showMessageWithDetails(Constants.ERROR_OF_MAP_PAINTING, e.getMessage(),
 						GeneralException.generateDetailedInfo(e.getCause()),
 						GeneralException.getMessageType(e.getCause()),
 						GeneralException.needDetailedInfo(e.getCause()));
 			} else {
-				MessageBox.showSimpleMessage(Constants.ERROR_OF_MAP_PAINTING,
-						e.getMessage());
+				MessageBox.showSimpleMessage(Constants.ERROR_OF_MAP_PAINTING, e.getMessage());
 			}
 		}
 
 		checkForDefaultAction();
-
-		if (getElementInfo().getRefreshByTimer()) {
-			Timer timer = getTimer();
-			if (timer != null) {
-				timer.cancel();
-			}
-			timer = new Timer() {
-
-				@Override
-				public void run() {
-					refreshPanel();
-				}
-
-			};
-			final int n1000 = 1000;
-			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
-		}
+		setupTimer();
 
 	}
 
@@ -258,8 +232,7 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		default:
 			break;
 		}
-		DOM.setElementAttribute(buttonsPanel.getElement(), "id", "buttons"
-				+ getDivIdMap());
+		DOM.setElementAttribute(buttonsPanel.getElement(), "id", "buttons" + getDivIdMap());
 
 		if (geoMap.getUiSettings().getExportToPNGButtonVisible()) {
 			createButton(buttonsPanel, ImageFormat.PNG);
@@ -272,18 +245,17 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	private void createButton(final CellPanel buttonsPanel,
-			final ImageFormat imageFormat) {
+	private void createButton(final CellPanel buttonsPanel, final ImageFormat imageFormat) {
 		final String fileName = "ExportTo" + imageFormat.toString() + ".png";
-		Button button = new Button(
-				"<nobr><img height=\"16\" width=\"16\" src=\"resources/internal/"
-						+ fileName + "\"/>", new ClickHandler() {
-					@Override
-					public void onClick(final ClickEvent aEvent) {
-						export(getDivIdMap(), imageFormat.toString());
-					}
+		Button button =
+			new Button("<nobr><img height=\"16\" width=\"16\" src=\"resources/internal/"
+					+ fileName + "\"/>", new ClickHandler() {
+				@Override
+				public void onClick(final ClickEvent aEvent) {
+					export(getDivIdMap(), imageFormat.toString());
+				}
 
-				});
+			});
 		buttonsPanel.add(button);
 	}
 
@@ -396,33 +368,30 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	public void reDrawPanel(final CompositeContext context1) {
 
 		this.setContext(context1);
-		getPanel().setHeight(
-				String.valueOf(getPanel().getOffsetHeight()) + "px");
+		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalMapPanel.clear();
-			generalMapPanel
-					.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getGeoMap(getContext(), getElementInfo(),
-				new GWTServiceCallback<GeoMap>(
-						Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
+		dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
+				Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
 
-					@Override
-					public void onSuccess(final GeoMap aGeoMap) {
+			@Override
+			public void onSuccess(final GeoMap aGeoMap) {
 
-						geoMap = aGeoMap;
-						if (geoMap != null) {
-							fillMapPanel(aGeoMap);
-							getPanel().setHeight("100%");
+				geoMap = aGeoMap;
+				if (geoMap != null) {
+					fillMapPanel(aGeoMap);
+					getPanel().setHeight("100%");
 
-						}
-					}
-				});
+				}
+			}
+		});
 
 	}
 
@@ -454,31 +423,28 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	@Override
 	public void refreshPanel() {
 
-		getPanel().setHeight(
-				String.valueOf(getPanel().getOffsetHeight()) + "px");
+		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalMapPanel.clear();
-			generalMapPanel
-					.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getGeoMap(getContext(), getElementInfo(),
-				new GWTServiceCallback<GeoMap>(
-						Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
+		dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
+				Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
 
-					@Override
-					public void onSuccess(final GeoMap aGeoMap) {
+			@Override
+			public void onSuccess(final GeoMap aGeoMap) {
 
-						geoMap = aGeoMap;
-						if (geoMap != null) {
-							fillMapPanel(aGeoMap);
-							getPanel().setHeight("100%");
-						}
-					}
-				});
+				geoMap = aGeoMap;
+				if (geoMap != null) {
+					fillMapPanel(aGeoMap);
+					getPanel().setHeight("100%");
+				}
+			}
+		});
 
 	}
 

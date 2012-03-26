@@ -282,7 +282,7 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		afterUpdateGrid(ut);
 
-		setupTimer();
+		setupTimer1();
 
 		setFirstLoading(false);
 
@@ -292,7 +292,7 @@ public class GridPanel extends BasicElementPanelBasis {
 
 	}
 
-	private void setupTimer() {
+	private void setupTimer1() {
 		if (getElementInfo().getRefreshByTimer()) {
 			Timer timer = getTimer();
 			if (timer != null) {

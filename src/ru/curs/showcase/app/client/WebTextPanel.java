@@ -8,7 +8,6 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -99,26 +98,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		thmlwidget.setHTML(aWebText.getData());
 		setCollbackJSNIFunction();
 		checkForDefaultAction();
-
-		if (getElementInfo().getRefreshByTimer()) {
-			Timer timer = getTimer();
-			if (timer != null) {
-				timer.cancel();
-				// MessageBox.showSimpleMessage("fff", "timer cancel");
-			}
-			timer = new Timer() {
-
-				@Override
-				public void run() {
-					refreshPanel();
-				}
-
-			};
-			setTimer(timer);
-			final int n1000 = 1000;
-			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
-
-		}
+		setupTimer();
 
 	}
 

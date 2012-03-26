@@ -233,7 +233,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		//
 		afterUpdateGrid();
 
-		setupTimer();
+		setupTimer1();
 
 		setFirstLoading(false);
 
@@ -241,7 +241,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 	}
 
-	private void setupTimer() {
+	private void setupTimer1() {
 		// if (getElementInfo().getRefreshByTimer()) {
 		// Timer timer = getTimer();
 		// if (timer != null) {

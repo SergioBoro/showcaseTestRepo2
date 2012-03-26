@@ -7,7 +7,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanel;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.navigator.NavigatorElement;
 import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.app.client.api.Constants;
+import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.*;
@@ -88,6 +88,7 @@ public class TreeSelectionHandler implements SelectionHandler<TreeItem> {
 
 			@Override
 			public void onSuccess(final DataPanel dp) {
+				BasicElementPanelBasis.switchOffAllTimers();
 				GeneralDataPanel.redrowGeneralDataPanelAtnavigatorClick(dp);
 				Accordeon.unselectAllTreesItemsExcludingLastSelecter(selectedTreeItem);
 

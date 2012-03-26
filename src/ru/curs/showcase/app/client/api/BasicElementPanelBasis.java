@@ -6,6 +6,7 @@ package ru.curs.showcase.app.client.api;
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.client.*;
 
 import com.google.gwt.user.client.Timer;
 
@@ -88,6 +89,60 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 	@Override
 	public void prepareSettings(final boolean aKeepElementSettings) {
 		// ничего не делаем для элементов, не имеющих настроек
+	}
+
+	/**
+	 * Функция, устанавливающая (включающая) в случае необходимости таймер
+	 * обновления элемента информационной панели.
+	 */
+	protected void setupTimer() {
+
+		if (getElementInfo().getRefreshByTimer()) {
+			Timer tm = getTimer();
+			if (tm != null) {
+				tm.cancel();
+			}
+			tm = new Timer() {
+
+				@Override
+				public void run() {
+					refreshPanel();
+				}
+
+			};
+			setTimer(tm);
+			final int n1000 = 1000;
+			tm.schedule(getElementInfo().getRefreshInterval() * n1000);
+		}
+
+	}
+
+	/**
+	 * Функция, отключающая таймер обновления элемента информационной панели.
+	 */
+	protected void cancelTimer() {
+		if (getElementInfo().getRefreshByTimer()) {
+			Timer tm = getTimer();
+			if (tm != null) {
+				tm.cancel();
+				setTimer(null);
+			}
+		}
+	}
+
+	/**
+	 * Функция, отключающая все таймеры обновления всех элементов информационной
+	 * панели, в случае если они (таймеры) есть.
+	 */
+	public static void switchOffAllTimers() {
+
+		for (UIDataPanelTab panelTab : AppCurrContext.getInstance().getUiDataPanel()) {
+
+			for (UIDataPanelElement dataPanelElement : panelTab.getUiElements()) {
+				((BasicElementPanelBasis) dataPanelElement.getElementPanel()).cancelTimer();
+			}
+		}
+
 	}
 
 }

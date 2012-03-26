@@ -9,7 +9,6 @@ import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.AccessToDomModel;
 
 import com.google.gwt.core.client.*;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -115,10 +114,12 @@ public class PluginPanel extends BasicElementPanelBasis {
 			params = params + ", " + param;
 		}
 
-		if (AppCurrContext.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel().indexOf(
-				getDivIdPlugin()) < 0) {
-			AppCurrContext.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel().add(
-					getDivIdPlugin());
+		if (AppCurrContext.getInstance()
+				.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel()
+				.indexOf(getDivIdPlugin()) < 0) {
+			AppCurrContext.getInstance()
+					.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel()
+					.add(getDivIdPlugin());
 			for (String param : aPlugin.getRequiredJS()) {
 				AccessToDomModel.addScriptLink(param);
 			}
@@ -142,23 +143,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 		}
 
 		checkForDefaultAction();
-
-		if (getElementInfo().getRefreshByTimer()) {
-			Timer timer = getTimer();
-			if (timer != null) {
-				timer.cancel();
-			}
-			timer = new Timer() {
-
-				@Override
-				public void run() {
-					refreshPanel();
-				}
-
-			};
-			final int n1000 = 1000;
-			timer.schedule(getElementInfo().getRefreshInterval() * n1000);
-		}
+		setupTimer();
 
 	}
 
