@@ -242,10 +242,13 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 	}
 
+	@Override
+	protected void internalResetLocalContext() {
+		localContext = null;
+	}
+
 	private void beforeUpdateGrid() {
-		if (isNeedResetLocalContext()) {
-			localContext = null;
-		}
+		resetLocalContext();
 		// все настройки - в т.ч. по умолчанию - устанавливаются сервером
 		settingsDataGrid.assign(gridMetadata.getUISettings());
 	}
@@ -860,7 +863,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			result = GridContext.createFirstLoadDefault();
 			result.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 		}
-		result.apply(getContext());
+		result.setIsFirstLoad(isNeedResetLocalContext());
+		result.assignNullValues(getContext());
 		return result;
 	}
 

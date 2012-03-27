@@ -431,7 +431,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		col.setSorting(Sorting.ASC);
 		aSortedColumns.add(col);
 		gc.setSortedColumns(aSortedColumns);
-		gc.apply(context);
+		gc.assignNullValues(context);
 
 		GridGateway gateway = new GridDBGateway();
 		gateway.getRawData(gc, elInfo);
@@ -447,7 +447,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 		GridGateway gateway = new GridDBGateway();
 		GridContext gc = new GridContext();
-		gc.apply(context);
+		gc.assignNullValues(context);
 		RecordSetElementRawData res = gateway.getRawData(gc, elInfo);
 		res.prepareSettings();
 	}

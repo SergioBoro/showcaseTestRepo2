@@ -11,6 +11,7 @@ import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.ValidateException;
 import ru.curs.showcase.core.event.*;
 import ru.curs.showcase.core.jython.JythonException;
@@ -628,5 +629,45 @@ public class ActionAndContextTest extends AbstractTestWithDefaultUserData {
 		assertEquals(ac.getKeepUserSettings(), elementInfo.getKeepUserSettings(ac));
 		ac.setKeepUserSettings(false);
 		assertEquals(ac.getKeepUserSettings(), elementInfo.getKeepUserSettings(ac));
+	}
+
+	@Test
+	public void gwtCloneMustCloneAllXFormContextAttributes() throws IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException {
+		XFormContext xcontext = new XFormContext(CompositeContext.createCurrent());
+		final String formData = "<test/>";
+		xcontext.setFormData(formData);
+		xcontext.setKeepUserSettings(false);
+		xcontext.addRelated(new ID("01"), xcontext);
+		XFormContext xcontext2 = xcontext.gwtClone();
+		assertTrue(ReflectionUtils.equals(xcontext, xcontext2));
+
+		XFormContext relatedContext = (XFormContext) xcontext2.getRelated().get(new ID("01"));
+		assertEquals(formData, relatedContext.getFormData());
+		assertFalse(relatedContext.getKeepUserSettings());
+	}
+
+	@Test
+	public void xformContextSetKeepUserSettingsToTrueByDefault() {
+		XFormContext xcontext = new XFormContext();
+		assertTrue(xcontext.getKeepUserSettings());
+	}
+
+	@Test
+	public void applyCompositeContextShouldOverwriteAllCompositeContextAtributes() {
+		GridContext gcontext = new GridContext(CompositeContext.createCurrent());
+		final String currentRecordId = "recId";
+		gcontext.setCurrentRecordId(currentRecordId);
+		gcontext.addRelated(new ID("01"), gcontext);
+
+		assertEquals(CanBeCurrent.CURRENT_ID, gcontext.getMain());
+		assertEquals(1, gcontext.getRelated().size());
+
+		CompositeContext appliedContext = getTestContext2();
+		gcontext.applyCompositeContext(appliedContext);
+
+		assertEquals(currentRecordId, gcontext.getCurrentRecordId());
+		assertEquals(MAIN_CONDITION, gcontext.getMain());
+		assertEquals(0, gcontext.getRelated().size());
 	}
 }

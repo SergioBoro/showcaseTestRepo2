@@ -392,9 +392,8 @@ public class AbstractTest extends GeneralXMLHelper {
 	}
 
 	protected GridContext getTestGridContext1() {
-		CompositeContext context = getTestContext1();
 		GridContext gc = GridContext.createFirstLoadDefault();
-		gc.apply(context);
+		gc.assignNullValues(getTestContext1());
 		return gc;
 	}
 
@@ -568,7 +567,8 @@ public class AbstractTest extends GeneralXMLHelper {
 		return action;
 	}
 
-	protected GridContext generateReloadContextForGridBalProc(final int pageSize, final int pageNum, final String firstColName) {
+	protected GridContext generateReloadContextForGridBalProc(final int pageSize,
+			final int pageNum, final String firstColName) {
 		final int maxColIndex = 5;
 		GridContext gc = new GridContext();
 		gc.setPageNumber(pageNum);
@@ -582,7 +582,7 @@ public class AbstractTest extends GeneralXMLHelper {
 		gc.setCurrentColumnId(firstColName);
 		gc.setCurrentRecordId("1");
 		gc.getSelectedRecordIds().add("1");
-		gc.apply(getTestContext1());
+		gc.assignNullValues(getTestContext1());
 		return gc;
 	}
 

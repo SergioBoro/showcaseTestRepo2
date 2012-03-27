@@ -83,7 +83,5 @@ public interface BasicElementPanel {
 	 */
 	CompositeContext getDetailedContext();
 
-	boolean isNeedResetLocalContext();
-
 	void setNeedResetLocalContext(final boolean aNeedResetLocalContext);
 }

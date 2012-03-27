@@ -179,7 +179,7 @@ public class GridSLTest extends AbstractTest {
 		col.setWidth("200px");
 		aSortedColumns.add(col);
 		gc.setSortedColumns(aSortedColumns);
-		gc.apply(context);
+		gc.assignNullValues(context);
 
 		setDefaultUserData();
 		GridServerState state = new GridServerState();
@@ -218,7 +218,7 @@ public class GridSLTest extends AbstractTest {
 		gc.setPageNumber(pageNumber);
 		final int pageSize = 10;
 		gc.setPageSize(pageSize);
-		gc.apply(context);
+		gc.assignNullValues(context);
 
 		setDefaultUserData();
 		GridServerState state = new GridServerState();
@@ -254,7 +254,7 @@ public class GridSLTest extends AbstractTest {
 		GridContext gc = new GridContext();
 		gc.setPageNumber(pageNumber);
 		gc.setPageSize(pageSize);
-		gc.apply(context);
+		gc.assignNullValues(context);
 
 		setDefaultUserData();
 		GridServerState state = new GridServerState();
@@ -289,7 +289,7 @@ public class GridSLTest extends AbstractTest {
 		GridContext gc = new GridContext();
 		gc.setPageNumber(pageNumber);
 		gc.setPageSize(pageSize);
-		gc.apply(context);
+		gc.assignNullValues(context);
 
 		AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
 		AppInfoSingleton.getAppInfo().storeElementState(SessionUtils.TEST_SESSION, elInfo, gc,
@@ -332,7 +332,7 @@ public class GridSLTest extends AbstractTest {
 		GridContext gc = new GridContext();
 		gc.setPageNumber(pageNumber);
 		gc.setPageSize(pageSize);
-		gc.apply(context);
+		gc.assignNullValues(context);
 		command = new GridGetCommand(gc, elInfo, true);
 		grid = command.execute();
 

@@ -64,7 +64,7 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		Element root = info.createElement(RELATED_TAG);
 		info.getDocumentElement().appendChild(root);
 		if ((elInfo != null) && (elInfo.getRelated().indexOf(elInfo.getId()) > -1)) {
-			addContextNode(root, elInfo.getId(), context);
+			context.addRelated(elInfo.getId(), context);
 		}
 		for (Entry<ID, CompositeContext> rc : aRelated.entrySet()) {
 			addContextNode(root, rc.getKey(), rc.getValue());

@@ -105,7 +105,9 @@ public final class XFormProducer extends GeneralXMLHelper {
 	private static String transform(final org.w3c.dom.Document xml) throws TransformerException,
 			IOException {
 		StringWriter sw = new StringWriter(DEFAULT_BUFFER_SIZE);
-		Transformer tr = XSLTransformerPoolFactory.getInstance().acquire(XSLTransformerPoolFactory.XSLTFORMS_XSL);
+		Transformer tr =
+			XSLTransformerPoolFactory.getInstance().acquire(
+					XSLTransformerPoolFactory.XSLTFORMS_XSL);
 		try {
 			tr.setParameter("baseuri", "xsltforms/");
 			tr.setParameter("xsltforms_home", AppInfoSingleton.getAppInfo().getWebAppPath()
@@ -113,7 +115,8 @@ public final class XFormProducer extends GeneralXMLHelper {
 			tr.transform(new DOMSource(xml), new StreamResult(sw));
 
 		} finally {
-			XSLTransformerPoolFactory.getInstance().release(tr, XSLTransformerPoolFactory.XSLTFORMS_XSL);
+			XSLTransformerPoolFactory.getInstance().release(tr,
+					XSLTransformerPoolFactory.XSLTFORMS_XSL);
 		}
 
 		String ret = sw.toString();

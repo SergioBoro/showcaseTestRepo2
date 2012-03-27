@@ -49,7 +49,7 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 			GridContext gc = new GridContext();
 			gc.setPageNumber(2);
 			gc.setPageSize(2);
-			gc.apply(context);
+			gc.assignNullValues(context);
 			gateway.getRawData(gc, element);
 		}
 	}

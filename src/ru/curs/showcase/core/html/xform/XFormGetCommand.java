@@ -21,7 +21,7 @@ public final class XFormGetCommand extends XFormContextCommand<XForm> {
 		XFormSelector selector = new XFormSelector(getElementInfo());
 		HTMLGateway gateway = selector.getGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(getContext(), getElementInfo());
-		if (getContext().getFormData() != null) {
+		if (getContext().getKeepUserSettings() && (getContext().getFormData() != null)) {
 			raw.setData(getContext().getFormData());
 		}
 		XFormFactory factory = new XFormFactory(raw);

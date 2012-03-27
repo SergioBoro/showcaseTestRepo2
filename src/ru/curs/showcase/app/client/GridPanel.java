@@ -230,7 +230,6 @@ public class GridPanel extends BasicElementPanelBasis {
 	}
 
 	private void setDataGridPanel(final UpdateType ut) {
-
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
@@ -243,7 +242,6 @@ public class GridPanel extends BasicElementPanelBasis {
 				setDataGridPanelByGrid(grid1, ut);
 			}
 		});
-
 	}
 
 	private void setDataGridPanelByGrid(final Grid grid1, final UpdateType ut) {
@@ -283,11 +281,13 @@ public class GridPanel extends BasicElementPanelBasis {
 
 	}
 
+	@Override
+	protected void internalResetLocalContext() {
+		localContext = null;
+	}
+
 	private void beforeUpdateGrid() {
-		if (isNeedResetLocalContext()) {
-			localContext = null;
-			setNeedResetLocalContext(false);
-		}
+		resetLocalContext();
 
 		// Header и Footer - считаем статическими элементами, не меняющимися при
 		// изменении контекста грида
@@ -850,21 +850,9 @@ public class GridPanel extends BasicElementPanelBasis {
 		if (result == null) {
 			result = GridContext.createFirstLoadDefault();
 		}
-		result.apply(getContext());
+		result.setIsFirstLoad(isNeedResetLocalContext());
+		result.applyCompositeContext(getContext());
 		return result;
-	}
-
-	/**
-	 * Кроме установки признака сброса контекста панели нужно также установить
-	 * признак перезагрузки параметров грида на сервере (isFirstLoad == true -
-	 * переметры перезагружаются из источника данных).
-	 **/
-	@Override
-	public final void setNeedResetLocalContext(final boolean aNeedResetLocalContext) {
-		super.setNeedResetLocalContext(aNeedResetLocalContext);
-		if (localContext != null) {
-			localContext.setIsFirstLoad(aNeedResetLocalContext);
-		}
 	}
 
 }

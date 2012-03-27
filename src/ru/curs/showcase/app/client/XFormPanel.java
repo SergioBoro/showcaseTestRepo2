@@ -184,11 +184,14 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 	}
 
+	@Override
+	protected void internalResetLocalContext() {
+		mainInstance = null;
+	}
+
 	private void setXFormPanelByXForms(final XForm xform1) {
-		if (isNeedResetLocalContext()) {
-			mainInstance = null;
-			setNeedResetLocalContext(false);
-		}
+		resetLocalContext();
+
 		xform = xform1;
 
 		destroy();
@@ -386,6 +389,9 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 	@Override
 	public XFormContext getDetailedContext() {
-		return new XFormContext(getContext(), fillAndGetMainInstance());
+		XFormContext context = new XFormContext(getContext(), fillAndGetMainInstance());
+		context.setKeepUserSettings(!isNeedResetLocalContext());
+		return context;
 	}
+
 }

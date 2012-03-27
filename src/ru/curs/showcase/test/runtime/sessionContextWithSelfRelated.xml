@@ -7,7 +7,6 @@
    <userdata>default</userdata>
    <related>
       <xformsContext id="08">
-         <main>current</main>
          <additional>current</additional>
          <formData><model/></formData>
       </xformsContext>

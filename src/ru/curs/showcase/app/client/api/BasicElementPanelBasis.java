@@ -76,9 +76,8 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 	 * новых данных грида. Значение зависит от опции keepUserSettings в
 	 * действии, обновляющем грид.
 	 */
-	private boolean needResetLocalContext = false;
+	private boolean needResetLocalContext = true;
 
-	@Override
 	public boolean isNeedResetLocalContext() {
 		return needResetLocalContext;
 	}
@@ -86,6 +85,17 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 	@Override
 	public void setNeedResetLocalContext(final boolean aNeedResetLocalContext) {
 		needResetLocalContext = aNeedResetLocalContext;
+	}
+
+	protected void resetLocalContext() {
+		if (needResetLocalContext) {
+			internalResetLocalContext();
+			needResetLocalContext = false;
+		}
+	}
+
+	protected void internalResetLocalContext() {
+		// по умолчанию ничего не делаем
 	}
 
 	@Override

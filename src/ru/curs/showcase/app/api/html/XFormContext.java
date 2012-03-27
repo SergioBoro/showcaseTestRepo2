@@ -19,6 +19,12 @@ public class XFormContext extends CompositeContext {
 
 	private String formData;
 
+	/**
+	 * Признак того, что нужно сохранить введенные пользователем данные.
+	 */
+	@XmlTransient
+	private Boolean keepUserSettings = true;
+
 	public XFormContext(final CompositeContext baseContext) {
 		super();
 		assignNullValues(baseContext);
@@ -50,6 +56,7 @@ public class XFormContext extends CompositeContext {
 	@Override
 	public XFormContext gwtClone() {
 		XFormContext result = (XFormContext) super.gwtClone();
+		result.keepUserSettings = keepUserSettings;
 		result.formData = formData;
 		return result;
 	}
@@ -62,6 +69,14 @@ public class XFormContext extends CompositeContext {
 	@Override
 	public String toString() {
 		return "XFormsContext [formData=" + formData + ", toString()=" + super.toString() + "]";
+	}
+
+	public Boolean getKeepUserSettings() {
+		return keepUserSettings;
+	}
+
+	public void setKeepUserSettings(final Boolean aKeepUserSettings) {
+		keepUserSettings = aKeepUserSettings;
 	}
 
 }

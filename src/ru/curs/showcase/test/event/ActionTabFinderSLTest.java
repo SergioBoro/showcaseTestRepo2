@@ -61,8 +61,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 
 	@Test
 	public void testReadFirstTabFromDBFromSettingsDynMainContext() {
-		GridContext context = GridContext.createFirstLoadDefault();
-		context.apply(getTestContext1());
+		GridContext context = getTestGridContext1();
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);
 		elInfo.setProcName("grid_dyn_dp_main");
 		generateTestTabWithElement(elInfo);

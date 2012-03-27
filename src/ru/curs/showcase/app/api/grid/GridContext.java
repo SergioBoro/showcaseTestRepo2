@@ -37,7 +37,7 @@ public class GridContext extends CompositeContext {
 
 	public GridContext(final CompositeContext aContext) {
 		super();
-		apply(aContext);
+		assignNullValues(aContext);
 	}
 
 	@Override
@@ -81,8 +81,9 @@ public class GridContext extends CompositeContext {
 	private List<String> selectedRecordIds = new ArrayList<String>();
 
 	/**
-	 * Признак того, что грид обновляется после взаимодействия с ним
-	 * пользователя.
+	 * Признак того, как нужно обновлять элемент. Если isFirstLoad == true - то
+	 * полностью, в противном случае - введенные пользователем данные должны
+	 * сохраниться.
 	 */
 	@XmlTransient
 	private Boolean isFirstLoad = false;
@@ -228,10 +229,6 @@ public class GridContext extends CompositeContext {
 		this.subtype = aSubtype;
 	}
 
-	public final void apply(final CompositeContext aContext) {
-		assignNullValues(aContext);
-	}
-
 	/**
 	 * "Тупое" клонирование объекта, работающее в gwt. Заглушка до тех пор, пока
 	 * в GWT не будет официальной реализации clone.
@@ -258,5 +255,18 @@ public class GridContext extends CompositeContext {
 	@Override
 	protected GridContext newInstance() {
 		return new GridContext();
+	}
+
+	public void applyCompositeContext(final CompositeContext aContext) {
+		if (aContext == null) {
+			return;
+		}
+		setMain(aContext.getMain());
+		setAdditional(aContext.getAdditional());
+		setFilter(aContext.getFilter());
+		setSession(aContext.getSession());
+		setSessionParamsMap(aContext.getSessionParamsMap());
+		setRelated(aContext.getRelated());
+
 	}
 }

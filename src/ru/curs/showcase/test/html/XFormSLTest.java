@@ -336,4 +336,40 @@ public class XFormSLTest extends AbstractTest {
 					+ SHOWCASE_DATA_COPY_XML));
 		assertEquals(inputData, outputData);
 	}
+
+	@Test
+	public void keepUserSettingsShouldControlPersistenceOfXFormData() {
+		XFormContext xcontext = new XFormContext(getTestContext1());
+		xcontext.setKeepUserSettings(true);
+		DataPanelElementInfo element = getTestXForms1Info();
+
+		XFormGetCommand command = new XFormGetCommand(xcontext, element);
+		XForm xforms = command.execute();
+
+		final String controlWord =
+			"new XFInstance(\"mainInstance\",xf_model_0,null,"
+					+ "'<schema><info><name/><growth/><eyescolour>Зеленый</eyescolour><music/><comment/></info></schema>');";
+		assertTrue(xforms.getXFormParts().get(2).indexOf(controlWord) == -1);
+
+		xcontext = new XFormContext(getTestContext1());
+		xcontext.setKeepUserSettings(true);
+		final String formData =
+			"<schema xmlns=\"\"><info><name></name><growth></growth><eyescolour>Зеленый</eyescolour>"
+					+ "<music></music><comment></comment></info></schema>";
+		xcontext.setFormData(formData);
+
+		command = new XFormGetCommand(xcontext, element);
+		xforms = command.execute();
+
+		assertTrue(xforms.getXFormParts().get(2).indexOf(controlWord) > -1);
+
+		xcontext = new XFormContext(getTestContext1());
+		xcontext.setKeepUserSettings(false);
+		xcontext.setFormData(formData);
+
+		command = new XFormGetCommand(xcontext, element);
+		xforms = command.execute();
+
+		assertTrue(xforms.getXFormParts().get(2).indexOf(controlWord) == -1);
+	}
 }
