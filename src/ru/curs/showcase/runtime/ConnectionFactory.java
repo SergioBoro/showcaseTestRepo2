@@ -19,17 +19,14 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 	private static final String CONNECTION_USERNAME_PARAM = "rdbms.connection.username";
 	private static final String CONNECTION_PASSWORD_PARAM = "rdbms.connection.password";
 
-	private static volatile ConnectionFactory instance;
+	private static final ConnectionFactory INSTANCE = new ConnectionFactory();
 
 	private ConnectionFactory() {
 		super();
 	}
 
 	public static ConnectionFactory getInstance() {
-		if (instance == null) {
-			instance = new ConnectionFactory();
-		}
-		return instance;
+		return INSTANCE;
 	}
 
 	@Override

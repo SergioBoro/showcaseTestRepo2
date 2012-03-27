@@ -19,7 +19,7 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 	public static final String LIB_JYTHON_PATH = "/WEB-INF/libJython";
 	public static final String SCRIPTS_JYTHON_PATH = "scripts\\\\jython";
 
-	private static volatile JythonIterpretatorFactory instance;
+	private static final JythonIterpretatorFactory INSTANCE = new JythonIterpretatorFactory();
 
 	private String libDir = LIB_JYTHON_PATH;
 
@@ -36,10 +36,7 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 	}
 
 	public static JythonIterpretatorFactory getInstance() {
-		if (instance == null) {
-			instance = new JythonIterpretatorFactory();
-		}
-		return instance;
+		return INSTANCE;
 	}
 
 	@Override

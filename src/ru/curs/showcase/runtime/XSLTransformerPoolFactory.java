@@ -17,17 +17,15 @@ public final class XSLTransformerPoolFactory extends Pool<Transformer> {
 
 	private static final ThreadLocal<TransformerFactory> TF = new ThreadLocal<>();
 	public static final String XSLTFORMS_XSL = "xsltforms.xsl";
-	private static volatile XSLTransformerPoolFactory instance;
+
+	private static final XSLTransformerPoolFactory INSTANCE = new XSLTransformerPoolFactory();
 
 	private XSLTransformerPoolFactory() {
 		super();
 	}
 
 	public static XSLTransformerPoolFactory getInstance() {
-		if (instance == null) {
-			instance = new XSLTransformerPoolFactory();
-		}
-		return instance;
+		return INSTANCE;
 	}
 
 	@Override

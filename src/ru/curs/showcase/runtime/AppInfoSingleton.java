@@ -37,7 +37,7 @@ public final class AppInfoSingleton {
 	/**
 	 * Синглетон.
 	 */
-	private static volatile AppInfoSingleton instance;
+	private static final AppInfoSingleton INSTANCE = new AppInfoSingleton();
 
 	/**
 	 * Карта пользовательских сессий.
@@ -122,10 +122,7 @@ public final class AppInfoSingleton {
 	}
 
 	public static AppInfoSingleton getAppInfo() {
-		if (instance == null) {
-			instance = new AppInfoSingleton();
-		}
-		return instance;
+		return INSTANCE;
 	}
 
 	/**
