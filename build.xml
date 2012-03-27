@@ -277,6 +277,16 @@
 				<include name="**/*" />
 			</fileset>
 		</copy>
+
+		<echo>Making war not love</echo>
+		<war destfile="${sc.war.file}.war">
+			<fileset dir="${sc.build.dir}/war">
+				<include name="**/*" />
+				<exclude name="**/*mock*.jar" />
+				<exclude name="**/*.template" />
+				<exclude name="debug.jsp" />
+			</fileset>
+		</war>
 		
 		<echo>Copy sources to war</echo>
 		<copy todir="${sc.build.dir}/war/WEB-INF/src/core">
@@ -293,17 +303,7 @@
 			<fileset dir="${sc.datagrid.dir}">
 				<include name="**/*.java" />
 			</fileset>
-		</copy>
-
-		<echo>Making war not love</echo>
-		<war destfile="${sc.war.file}.war">
-			<fileset dir="${sc.build.dir}/war">
-				<include name="**/*" />
-				<exclude name="**/*mock*.jar" />
-				<exclude name="**/*.template" />
-				<exclude name="debug.jsp" />
-			</fileset>
-		</war>
+		</copy>		
 
 		<echo>Copy runtime libs</echo>
 		<copy todir="${sc.build.dir}/war/WEB-INF/lib">
