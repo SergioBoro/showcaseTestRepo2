@@ -25,6 +25,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 	private static final String FIRST_COL_CAPTION = "3кв. 2005г.";
 	private static final String SELECTOR_COL_FIRST_VALUE =
 		"Запасы на конец отчетного периода - Всего";
+	private static final String FIRST_PERIOD_CAPTION = "Период 1";
 
 	/**
 	 * Основной тест.
@@ -41,11 +42,11 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		final int labelyCount = 2;
 
 		CompositeContext context = getTestContext2();
-		DataPanelElementInfo element = getDPElement("test2.xml", "2", "22");
+		DataPanelElementInfo element = getDPElement(TEST2_XML, "2", "22");
 
 		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
 		RecordSetElementRawData raw = gateway.getRawData(context, element);
-		ChartDBFactory factory = new ChartDBFactory(raw);
+		ChartFactory factory = new ChartFactory(raw);
 		Chart chart = factory.build();
 
 		assertFalse(chart.getHeader().isEmpty());
@@ -80,7 +81,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 
 		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
 		RecordSetElementRawData raw = gateway.getRawData(context, element);
-		ChartDBFactory factory = new ChartDBFactory(raw);
+		ChartFactory factory = new ChartFactory(raw);
 		Chart chart = factory.build();
 
 		assertNotNull(chart.getDefaultAction());
@@ -107,7 +108,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		assertNull(calcContext.getSession());
 
 		// второй грид со второй вкладки в панели a.xml
-		DataPanelElementInfo secondGrid = getDPElement("test.xml", "2", secondGridId.getString());
+		DataPanelElementInfo secondGrid = getDPElement(TEST_XML, "2", secondGridId.getString());
 		calcContext = secondGrid.getContext(event.getAction());
 		assertNotNull(calcContext);
 		assertTrue(ReflectionUtils.equals(context, calcContext));
@@ -128,7 +129,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 
 		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
 		RecordSetElementRawData raw = gateway.getRawData(context, element);
-		ChartDBFactory factory = new ChartDBFactory(raw);
+		ChartFactory factory = new ChartFactory(raw);
 		Chart chart = factory.build();
 		ChartData data = chart.getJavaDynamicData();
 		ChartSeriesValue value = data.getSeries().get(0).getData().get(0);
@@ -148,11 +149,11 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		final int seriesCount = 24;
 		final int labelsXCount = 9;
 		CompositeContext context = getTestContext2();
-		DataPanelElementInfo element = getDPElement("test2.xml", "2", "210");
+		DataPanelElementInfo element = getDPElement(TEST2_XML, "2", "210");
 
 		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
 		RecordSetElementRawData raw = gateway.getRawData(context, element);
-		ChartDBFactory factory = new ChartDBFactory(raw);
+		ChartFactory factory = new ChartFactory(raw);
 		Chart chart = factory.build();
 
 		assertEquals(seriesCount, chart.getJavaDynamicData().getSeries().size());
@@ -163,6 +164,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 				.getText());
 		assertEquals(0, chart.getJavaDynamicData().getLabelsY().size());
 		assertNotNull(chart.getEventManager().getEvents());
+		assertEquals(0, chart.getEventManager().getEvents().size());
 	}
 
 	@Test
@@ -176,10 +178,117 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		RecordSetElementGateway<CompositeContext> gateway = new RecordSetElementJythonGateway();
 		RecordSetElementRawData raw = gateway.getRawData(context, elInfo);
 
-		ChartDBFactory factory = new ChartDBFactory(raw);
+		ChartFactory factory = new ChartFactory(raw);
 		Chart chart = factory.build();
 
 		assertNotNull(chart);
 		assertEquals(1, chart.getJavaDynamicData().getSeries().size());
 	}
+
+	/**
+	 * Тест, проверяющий формирование графика на основе xml-датасета.
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Test
+	public void testLoadByXmlDs() throws Exception {
+		final int seriesCount = 9;
+		final ChildPosition defaultPos = ChildPosition.BOTTOM;
+		final int defaultWidth = 500;
+		final int defaultHeight = 300;
+		final int labelyCount = 2;
+
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo element = getDPElement(TEST2_XML, "5", "51");
+
+		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, element);
+		ChartFactory factory = new ChartFactory(raw);
+		Chart chart = factory.build();
+
+		assertFalse(chart.getHeader().isEmpty());
+		assertTrue(chart.getFooter().isEmpty());
+		assertEquals(seriesCount, chart.getJavaDynamicData().getSeries().size());
+		assertTrue(chart.getTemplate().length() > 0);
+		assertEquals(defaultWidth, chart.getJavaDynamicData().getWidth().intValue());
+		assertEquals(defaultHeight, chart.getJavaDynamicData().getHeight().intValue());
+		assertTrue(chart.getJavaDynamicData().getLabelsX().size() > 0);
+		assertEquals(labelyCount, chart.getJavaDynamicData().getLabelsY().size());
+		assertEquals("", chart.getJavaDynamicData().getLabelsX().get(0).getText());
+		assertEquals(FIRST_COL_CAPTION, chart.getJavaDynamicData().getLabelsX().get(1).getText());
+		assertEquals(defaultPos, chart.getLegendPosition());
+		assertEquals(SELECTOR_COL_FIRST_VALUE, chart.getJavaDynamicData().getSeries().get(0)
+				.getName());
+		assertNotNull(chart.getEventManager().getEvents());
+		assertTrue(chart.getEventManager().getEvents().size() > 0);
+
+		assertNull(chart.getDefaultAction());
+
+		Event event = chart.getEventManager().getEvents().get(0);
+		assertEquals(InteractionType.SINGLE_CLICK, event.getInteractionType());
+		assertNull(event.getId2());
+		assertEquals(SELECTOR_COL_FIRST_VALUE, event.getId1().getString());
+
+		assertNotNull(event.getAction());
+		assertEquals(DataPanelActionType.RELOAD_ELEMENTS, event.getAction()
+				.getDataPanelActionType());
+		assertEquals(NavigatorActionType.DO_NOTHING, event.getAction().getNavigatorActionType());
+		CompositeContext calcContext = element.getContext(event.getAction());
+		assertNotNull(calcContext);
+		assertEquals(context.getMain(), calcContext.getMain());
+		assertNull(calcContext.getSession());
+
+		assertEquals("#0000FF", chart.getJavaDynamicData().getSeries().get(0).getColor());
+
+		ChartData data = chart.getJavaDynamicData();
+		ChartSeriesValue value = data.getSeries().get(0).getData().get(0);
+		assertEquals(data.getLabelsX().get(1).getText(), value.getLegend());
+	}
+
+	/**
+	 * Тест, проверяющий формирование графика на основе xml-датасета, если
+	 * данные транспонированы.
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Test
+	public void testLoadByXmlDsFliped() throws Exception {
+		final int seriesCount = 24;
+		final int labelsXCount = 9;
+		final ChildPosition defaultPos = ChildPosition.BOTTOM;
+		final int defaultWidth = 500;
+		final int defaultHeight = 300;
+		final int labelyCount = 2;
+
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo element = getDPElement(TEST2_XML, "5", "52");
+
+		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, element);
+		ChartFactory factory = new ChartFactory(raw);
+		Chart chart = factory.build();
+
+		assertFalse(chart.getHeader().isEmpty());
+		assertTrue(chart.getFooter().isEmpty());
+		assertEquals(seriesCount, chart.getJavaDynamicData().getSeries().size());
+		assertTrue(chart.getTemplate().length() > 0);
+		assertEquals(defaultWidth, chart.getJavaDynamicData().getWidth().intValue());
+		assertEquals(defaultHeight, chart.getJavaDynamicData().getHeight().intValue());
+		assertTrue(chart.getJavaDynamicData().getLabelsX().size() > 0);
+		assertEquals(labelyCount, chart.getJavaDynamicData().getLabelsY().size());
+		assertEquals(defaultPos, chart.getLegendPosition());
+		assertNotNull(chart.getEventManager().getEvents());
+		assertEquals(0, chart.getEventManager().getEvents().size());
+
+		assertNull(chart.getDefaultAction());
+		assertNotNull(chart.getJavaDynamicData().getSeriesById(FIRST_COL_CAPTION));
+		assertEquals(labelsXCount + 1, chart.getJavaDynamicData().getLabelsX().size());
+		assertEquals("", chart.getJavaDynamicData().getLabelsX().get(0).getText());
+		assertEquals(FIRST_PERIOD_CAPTION, chart.getJavaDynamicData().getLabelsX().get(1)
+				.getText());
+
+	}
+
 }

@@ -1,7 +1,6 @@
 package ru.curs.showcase.core.event;
 
 import java.io.InputStream;
-import java.sql.*;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
@@ -9,7 +8,6 @@ import org.xml.sax.helpers.DefaultHandler;
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.core.sp.RecordSetElementRawData;
-import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -186,23 +184,6 @@ public abstract class CompBasedElementFactory extends TemplateMethodFactory {
 
 	private void addToFooter(final String data) {
 		getResult().setFooter(getResult().getFooter() + data);
-	}
-
-	protected ResultSet getResultSetAccordingToSQLServerType(final RecordSetElementRawData raw)
-			throws SQLException {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return raw.nextResultSet();
-		} else {
-			// TODO Боре - придумать решение как лучше обрабатывать случай
-			// прямых
-			// запросов к БД
-			CallableStatement cs = (CallableStatement) raw.getStatement();
-			try {
-				return (ResultSet) cs.getObject(1);
-			} catch (SQLException e) {
-				return (ResultSet) cs.getObject(cs.getParameterMetaData().getParameterCount());
-			}
-		}
 	}
 
 	@Override

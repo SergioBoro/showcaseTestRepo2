@@ -27,7 +27,10 @@ public class ChartDBGateway extends CompBasedElementSPQuery implements
 	public RecordSetElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
 		setRetriveResultSets(true);
-		return stdGetData(context, elementInfo);
+
+		RecordSetElementRawData raw = stdGetData(context, elementInfo);
+		raw.prepareXmlDS();
+		return raw;
 	}
 
 	@Override

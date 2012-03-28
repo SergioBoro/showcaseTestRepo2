@@ -47,7 +47,10 @@
 	<tab id="5" name="График">
         <element id="0" type="chart" proc="chart_pas_xmlds"/>        
     </tab>	
-	<tab id="7" name="Карта">
-		<element id="72" type="geomap" proc="geomap_bal"/>
-	</tab>			
+	<tab id="51" name="График. fliped">
+        <element id="051" type="chart" proc="chart_pas_xmlds_fliped"/>        
+    </tab>	
+<!-- 	<tab id="7" name="Карта"> -->
+<!-- 		<element id="72" type="geomap" proc="geomap_bal"/> -->
+<!-- 	</tab>			 -->
 </datapanel>

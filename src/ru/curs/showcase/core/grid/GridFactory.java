@@ -197,7 +197,6 @@ public class GridFactory extends CompBasedElementFactory {
 
 	@Override
 	protected void fillResultByData() {
-		// setXmlDS(getSource().getXmlDS());
 		fillColumnsAndRecordsAndEventsByXmlDS();
 	}
 

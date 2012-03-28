@@ -112,12 +112,12 @@ public abstract class GeneralXMLHelper {
 	/**
 	 * Имя колонки или строки с XML документом, содержащим обработчики.
 	 */
-	protected static final String PROPERTIES_SQL_TAG = "~~" + PROPS_TAG;
-	protected static final String ID_SQL_TAG = "~~" + ID_TAG;
+	public static final String PROPERTIES_SQL_TAG = "~~" + PROPS_TAG;
+	public static final String ID_SQL_TAG = "~~" + ID_TAG;
 
-	protected static final String XML_DATASET_TAG = "records";
-	protected static final String RECORD_TAG = "rec";
-	protected static final String SQLTYPE_ATTR = "sqltype";
+	public static final String XML_DATASET_TAG = "records";
+	public static final String RECORD_TAG = "rec";
+	public static final String SQLTYPE_ATTR = "sqltype";
 
 	/**
 	 * Установка базовых свойств - id и name - у элемента.

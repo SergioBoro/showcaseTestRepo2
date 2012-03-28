@@ -76,6 +76,9 @@ public class RecordSetElementJythonGateway extends JythonQuery<JythonDTO> implem
 				throw new DBConnectException(e);
 			}
 		}
-		return new RecordSetElementRawData(settings, elementInfo, context, statement);
+		RecordSetElementRawData raw =
+			new RecordSetElementRawData(settings, elementInfo, context, statement);
+		raw.prepareXmlDS();
+		return raw;
 	}
 }

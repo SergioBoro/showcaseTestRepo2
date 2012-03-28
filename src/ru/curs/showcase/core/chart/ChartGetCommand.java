@@ -32,7 +32,7 @@ public final class ChartGetCommand extends DataPanelElementCommand<Chart> {
 			new ChartSelector(getElementInfo());
 		RecordSetElementGateway<CompositeContext> gateway = selector.getGateway();
 		RecordSetElementRawData raw = gateway.getRawData(getContext(), getElementInfo());
-		ChartDBFactory factory = new ChartDBFactory(raw);
+		ChartFactory factory = new ChartFactory(raw);
 		setResult(factory.build());
 	}
 

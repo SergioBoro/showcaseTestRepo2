@@ -7,6 +7,9 @@
 	<tab id="2" name="График">
         <element id="0" type="chart" proc="chart_pas_xmlds"/>	
     </tab>
+	<tab id="21" name="График. fliped">
+        <element id="09" type="chart" proc="chart_pas_xmlds_fliped"/>	
+    </tab>
 	<tab id="3" name="Грид1. Задание css и id для строки грида">
 		<element id="0201" type="grid" proc="grid_portals_id_and_css_xmlds"> 
 			<proc id="11" name="grid_download1" type="DOWNLOAD" />

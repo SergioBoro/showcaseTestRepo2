@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(ClasspathSuite.class)
 @SuiteTypes(org.junit.extensions.cpsuite.SuiteType.RUN_WITH_CLASSES)
-@ClassnameFilters({ "!.*ModelTests" })
+@ClassnameFilters({ "!.*ModelTests", "!.*PostgreSQLTests" })
 public class ModelTests {
 
 }

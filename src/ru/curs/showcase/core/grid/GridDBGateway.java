@@ -1,15 +1,8 @@
 package ru.curs.showcase.core.grid;
 
-import java.io.*;
 import java.sql.*;
 
-import javax.sql.RowSet;
-
 import oracle.jdbc.OracleTypes;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.*;
-
 import ru.curs.gwt.datagrid.model.Column;
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -19,7 +12,6 @@ import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.xml.*;
 
 /**
  * Шлюз к БД для грида.
@@ -93,7 +85,7 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 			stdGetResults();
 
 			RecordSetElementRawData raw = new RecordSetElementRawData(this, elementInfo, context);
-			prepareXmlDS(raw);
+			raw.prepareXmlDS();
 			return raw;
 		} catch (SQLException e) {
 			throw dbExceptionHandler(e);
@@ -146,7 +138,7 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 			stdGetResults();
 
 			RecordSetElementRawData raw = new RecordSetElementRawData(this, elementInfo, context);
-			prepareXmlDS(raw);
+			raw.prepareXmlDS();
 			return raw;
 		} catch (SQLException e) {
 			throw dbExceptionHandler(e);
@@ -193,111 +185,6 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 				throw dbExceptionHandler(e);
 			}
 		}
-	}
-
-	private void prepareXmlDS(final RecordSetElementRawData raw) {
-		try {
-			ResultSet rs = getResultSetAccordingToSQLServerType(raw);
-			if (rs != null) {
-				RowSet rowset = SQLUtils.cacheResultSet(rs);
-				InputStream is = fillXmlDS(rowset);
-				raw.setXmlDS(is);
-			}
-		} catch (SQLException e) {
-			throw new ResultSetHandleException(e);
-		}
-
-	}
-
-	private ResultSet getResultSetAccordingToSQLServerType(final RecordSetElementRawData raw)
-			throws SQLException {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return raw.nextResultSet();
-		} else {
-			CallableStatement cs = (CallableStatement) raw.getStatement();
-			try {
-				return (ResultSet) cs.getObject(1);
-			} catch (SQLException e) {
-				return (ResultSet) cs.getObject(cs.getParameterMetaData().getParameterCount());
-			}
-		}
-	}
-
-	private InputStream fillXmlDS(final RowSet rowset) {
-		try {
-			ByteArrayOutputStream os = new ByteArrayOutputStream();
-			OutputStreamWriter writer = new OutputStreamWriter(os, TextUtils.DEF_ENCODING);
-
-			ResultSetMetaData md = rowset.getMetaData();
-			writer.append("<" + XML_DATASET_TAG + ">");
-			while (rowset.next()) {
-				writer.append("<" + RECORD_TAG + ">");
-				for (int i = 1; i <= md.getColumnCount(); i++) {
-					if (PROPERTIES_SQL_TAG.equalsIgnoreCase(md.getColumnLabel(i))) {
-						writer.append(rowset.getString(md.getColumnLabel(i)));
-					} else if (ID_SQL_TAG.equalsIgnoreCase(md.getColumnLabel(i))) {
-						writer.append("<" + ID_TAG + ">" + rowset.getString(md.getColumnLabel(i))
-								+ "</" + ID_TAG + ">");
-					} else {
-						String tagName = XMLUtils.escapeTagXml(md.getColumnLabel(i));
-						String s = "<" + tagName;
-						s =
-							s + " " + SQLTYPE_ATTR + "=\"" + String.valueOf(md.getColumnType(i))
-									+ "\"";
-						s = s + ">";
-						String value;
-						if (SQLUtils.isGeneralizedDateType(md.getColumnType(i))) {
-							value = getStringValueOfDate(rowset, i);
-						} else if (SQLUtils.isStringType(md.getColumnType(i))) {
-							value =
-								XMLUtils.escapeValueXml(rowset.getString(md.getColumnLabel(i)));
-						} else {
-							value = rowset.getString(md.getColumnLabel(i));
-						}
-						s = s + value + "</" + tagName + ">";
-						writer.append(s);
-					}
-				}
-				writer.append("</" + RECORD_TAG + ">");
-			}
-			writer.append("</" + XML_DATASET_TAG + ">");
-
-			writer.close();
-
-			return StreamConvertor.outputToInputStream(os);
-		} catch (SQLException | IOException e) {
-			throw new SAXError(e);
-		}
-
-	}
-
-	private String getStringValueOfDate(final RowSet rowset, final int colIndex)
-			throws SQLException {
-		ResultSetMetaData md = rowset.getMetaData();
-		int sqltype = md.getColumnType(colIndex);
-		String colName = md.getColumnLabel(colIndex);
-
-		java.util.Date date = null;
-		if (SQLUtils.isDateType(sqltype)) {
-			date = rowset.getDate(colName);
-		} else if (SQLUtils.isTimeType(sqltype)) {
-			date = rowset.getTime(colName);
-		} else if (SQLUtils.isDateTimeType(sqltype)) {
-			date = rowset.getTimestamp(colName);
-		}
-		if (date == null) {
-			return "";
-		}
-
-		DateTime dt = new DateTime(date);
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			String type = md.getColumnTypeName(colIndex);
-			if (("date".equalsIgnoreCase(type)) || ("datetime2".equalsIgnoreCase(type))) {
-				dt = dt.plusDays(2);
-			}
-		}
-		DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
-		return fmt.print(dt);
 	}
 
 }
