@@ -4,54 +4,16 @@ import java.io.*;
 import java.util.Properties;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 
 /**
- * Получает проперти приложения из файла properties.
+ * Получает настройки приложения приложения из файлов properties в каталоге
+ * пользовательских данных (userdatas).
  * 
  */
-public final class AppProps {
+public final class UserdataUtils {
 
-	public static String getGeoMapKey(final String engine, final String host) {
-		String realHost = host;
-		final String localhost = "localhost";
-		if ("127.0.0.1".equals(host)) {
-			realHost = localhost;
-		}
-		String userdataRoot = AppInfoSingleton.getAppInfo().getUserdataRoot();
-		String path = String.format("%s/geomap.key.%s.properties", userdataRoot, realHost);
-		Properties props = new Properties();
-
-		FileInputStream is;
-		try {
-			is = new FileInputStream(path);
-			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
-				props.load(reader);
-			} catch (IOException e) {
-				throw new SettingsFileOpenException(e, path, SettingsFileType.GEOMAP_KEYS);
-			}
-		} catch (FileNotFoundException e) {
-			if (localhost.equals(realHost)) {
-				return "";
-			} else {
-				return getGeoMapKey(engine, localhost);
-			}
-		}
-		return props.getProperty(engine, "");
-
-	}
-
-	public static void checkUserdatas() {
-		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
-			checkAppPropsExists(userdataId);
-		}
-	}
-
-	/**
-	 * Шаблон для пути к текущей userdata в WebContent относительно корня
-	 * веб-приложения.
-	 */
 	public static final String IMAGES_IN_GRID_DIR = "images.in.grid.dir";
 
 	public static final String CURRENT_USERDATA_TEMPLATE = "${userdata.dir}";
@@ -65,8 +27,8 @@ public final class AppProps {
 	public static final String FOOTER_HEIGHT_PROP = "footer.height";
 
 	/**
-	 * Каталог на сервере с решениями (сейчас туда копируются userdata при
-	 * старте сервера).
+	 * Каталог на работающем сервере с решениями (сейчас туда копируются
+	 * userdata при старте сервера).
 	 */
 	public static final String SOLUTIONS_DIR = "solutions";
 
@@ -80,35 +42,22 @@ public final class AppProps {
 	 * Имя файла с настройками приложения.
 	 */
 	public static final String PROPFILENAME = "app.properties";
-	/**
-	 * XSLTTRANSFORMSFORGRIDDIR.
-	 */
+
 	public static final String XSLTTRANSFORMSFORGRIDDIR = "xslttransformsforgrid";
-	/**
-	 * SCHEMASDIR.
-	 */
+
 	public static final String SCHEMASDIR = "schemas";
-	/**
-	 * SCRIPTSDIR.
-	 */
+
 	public static final String SCRIPTSDIR = "scripts";
 
-	/**
-	 * GRIDDATAXSL.
-	 */
 	public static final String GRIDDATAXSL = "GridData.xsl";
 
-	/**
-	 * NAVIGATOR_ICONS_DIRNAME.
-	 */
 	private static final String NAVIGATOR_ICONS_DIR_NAME = "navigator.icons.dir.name";
 
-	/**
-	 * DIR_IN_SOLUTIONS.
-	 */
 	private static final String DIR_IN_SOLUTIONS = SOLUTIONS_DIR + "/%s/%s";
 
-	private AppProps() {
+	private static final String WEB_CONSOLE_ADD_TEXT_FILES_PARAM = "web.console.add.text.files";
+
+	private UserdataUtils() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -139,7 +88,7 @@ public final class AppProps {
 	 * @return поток с файлом.
 	 * @throws IOException
 	 */
-	public static InputStream loadUserDataToStream(final String fileName, final String userdataId)
+	static InputStream loadUserDataToStream(final String fileName, final String userdataId)
 			throws IOException {
 		FileInputStream result =
 			new FileInputStream(getUserDataCatalog(userdataId) + File.separator + fileName);
@@ -154,7 +103,7 @@ public final class AppProps {
 	 *            - имя параметра.
 	 * @return - значение параметра.
 	 */
-	public static String getRequiredValueByName(final String propName) {
+	public static String getRequiredProp(final String propName) {
 		String result = generalReadFunc(propName, null);
 		if (result == null) {
 			throw new SettingsFileRequiredPropException(PROPFILENAME, propName,
@@ -171,7 +120,7 @@ public final class AppProps {
 	 *            - имя параметра.
 	 * @return - значение параметра.
 	 */
-	public static String getOptionalValueByName(final String propName) {
+	public static String getOptionalProp(final String propName) {
 		return generalReadFunc(propName, null);
 	}
 
@@ -185,7 +134,7 @@ public final class AppProps {
 	 *            идентификатор userdata, из которого будет считан параметр
 	 * @return - значение параметра.
 	 */
-	public static String getOptionalValueByName(final String propName, final String userdataId) {
+	public static String getOptionalProp(final String propName, final String userdataId) {
 		return generalReadFunc(propName, userdataId);
 	}
 
@@ -300,11 +249,84 @@ public final class AppProps {
 	 */
 	public static String replaceVariables(final String source) {
 		String value =
-			source.replace("${" + IMAGES_IN_GRID_DIR + "}",
-					getRequiredValueByName(IMAGES_IN_GRID_DIR));
+			source.replace("${" + IMAGES_IN_GRID_DIR + "}", getRequiredProp(IMAGES_IN_GRID_DIR));
 		value =
 			value.replace(CURRENT_USERDATA_TEMPLATE, String.format("solutions/%s",
 					AppInfoSingleton.getAppInfo().getCurUserDataId()));
 		return value;
+	}
+
+	public static String getGeneralOptionalProp(final String paramName) {
+		Properties prop = new Properties();
+		try {
+			InputStream is =
+				new FileInputStream(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+						+ PROPFILENAME);
+			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
+				prop.load(reader);
+			}
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(AppInfoSingleton.getAppInfo().getUserdataRoot()
+					+ "/" + PROPFILENAME, SettingsFileType.GENERAL_APP_PROPERTIES);
+		}
+		return prop.getProperty(paramName);
+	}
+
+	public static String getGeneralRequiredProp(final String propName) {
+		String value = getGeneralOptionalProp(propName);
+		if (value == null) {
+			throw new SettingsFileRequiredPropException(PROPFILENAME, propName,
+					SettingsFileType.GENERAL_APP_PROPERTIES);
+		}
+		return value;
+	}
+
+	public static String getGeoMapKey(final String engine, final String host) {
+		String realHost = host;
+		final String localhost = "localhost";
+		if ("127.0.0.1".equals(host)) {
+			realHost = localhost;
+		}
+		String userdataRoot = AppInfoSingleton.getAppInfo().getUserdataRoot();
+		String path = String.format("%s/geomap.key.%s.properties", userdataRoot, realHost);
+		Properties props = new Properties();
+
+		FileInputStream is;
+		try {
+			is = new FileInputStream(path);
+			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
+				props.load(reader);
+			} catch (IOException e) {
+				throw new SettingsFileOpenException(e, path, SettingsFileType.GEOMAP_KEYS);
+			}
+		} catch (FileNotFoundException e) {
+			if (localhost.equals(realHost)) {
+				return "";
+			} else {
+				return getGeoMapKey(engine, localhost);
+			}
+		}
+		return props.getProperty(engine, "");
+
+	}
+
+	public static void checkUserdatas() {
+		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+			checkAppPropsExists(userdataId);
+		}
+	}
+
+	public static Boolean isTextFile(final Object obj) {
+		DataFile<?> file = (DataFile<?>) obj;
+		String fromAppProps = getGeneralOptionalProp(WEB_CONSOLE_ADD_TEXT_FILES_PARAM);
+		if (fromAppProps != null) {
+			String[] userTextExtensions = fromAppProps.split(":");
+			for (String ext : userTextExtensions) {
+				if (file.getName().endsWith(ext)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

@@ -18,9 +18,6 @@ import ru.curs.showcase.util.exception.SettingsFileOpenException;
  */
 public class CheckAutenticationFilter implements Filter {
 
-	/**
-	 * LOGGER.
-	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CheckAutenticationFilter.class);
 
 	@Override
@@ -47,7 +44,7 @@ public class CheckAutenticationFilter implements Filter {
 			try {
 				url = SecurityParamsFactory.getLocalAuthServerUrl();
 			} catch (SettingsFileOpenException e) {
-				throw new ServletException(AuthServerUtils.APP_PROP_READ_ERROR, e);
+				throw new ServletException(SecurityParamsFactory.APP_PROP_READ_ERROR, e);
 			}
 			AuthServerUtils.init(url);
 

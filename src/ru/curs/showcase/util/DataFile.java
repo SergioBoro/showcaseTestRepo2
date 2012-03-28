@@ -15,8 +15,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 public class DataFile<T> {
 
-	private static final String WEB_CONSOLE_ADD_TEXT_FILES_PARAM = "web.console.add.text.files";
-
 	/**
 	 * Данные файла.
 	 */
@@ -68,30 +66,18 @@ public class DataFile<T> {
 		return TextUtils.extractFileName(name);
 	}
 
+	@DoAfterCheck(className = "ru.curs.showcase.runtime.UserdataUtils", methodName = "isTextFile")
 	public boolean isTextFile() {
 		String[] stdTextExtensions =
 			{
 					"txt", "xml", "xsd", "xsl", "sql", "ini", "properties", "htm", "html", "java",
 					"cmd", "py", "svg" };
-		if (checkExtensionsArray(stdTextExtensions)) {
-			return true;
-		}
-
-		String fromAppProps = FileUtils.getGeneralOptionalParam(WEB_CONSOLE_ADD_TEXT_FILES_PARAM);
-		if (fromAppProps != null) {
-			String[] userTextExtensions = fromAppProps.split(":");
-			return checkExtensionsArray(userTextExtensions);
-		}
-		return false;
+		return checkExtensionsArray(stdTextExtensions);
 	}
 
 	public boolean isXMLFile() {
 		String[] stdXMLExtensions = { "xml", "xsd", "xsl", "xslt", "htm", "html" };
-		if (checkExtensionsArray(stdXMLExtensions)) {
-			return true;
-		}
-
-		return false;
+		return checkExtensionsArray(stdXMLExtensions);
 	}
 
 	private boolean checkExtensionsArray(final String[] aExtensions) {

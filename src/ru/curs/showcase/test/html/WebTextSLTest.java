@@ -17,7 +17,7 @@ import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.runtime.UserdataUtils;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.ReflectionUtils;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -59,7 +59,7 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 
 		Document doc = XMLUtils.stringToDocument(wt.getData());
 		DocumentBuilder db = XMLUtils.createBuilder();
-		InputStream stream = AppProps.loadUserDataToStream("data/webtext/" + webtextFile);
+		InputStream stream = UserdataUtils.loadUserDataToStream("data/webtext/" + webtextFile);
 		Document expected = db.parse(stream);
 
 		assertEquals(expected.getDocumentElement().getNodeName(), doc.getDocumentElement()

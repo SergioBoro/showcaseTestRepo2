@@ -8,7 +8,7 @@ import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.sp.*;
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.runtime.UserdataUtils;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
 /**
@@ -189,7 +189,7 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 	protected String replaceVariables(final String in) {
 		String out = in;
 		out = out.replace(ELEMENT_ID, getElementInfo().getId());
-		out = AppProps.replaceVariables(out);
+		out = UserdataUtils.replaceVariables(out);
 		return out;
 	}
 

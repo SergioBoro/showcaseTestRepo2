@@ -16,16 +16,12 @@ import ru.curs.showcase.util.exception.SettingsFileOpenException;
  * Servlet implementation class ShowcaseIsAuthenticatedServlet.
  */
 public class ShowcaseLogoutServlet extends HttpServlet {
-	/**
-	 * LOGGER.
-	 */
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShowcaseLogoutServlet.class);
 	private static final String LOGOUT_INFO = "Сессия %s закрыта";
 	private static final String ERROR_LOGOUT_INFO =
 		"Сессия %s не была закрыта на сервере аутентификафии. AuthServer недоступен.";
-	/**
-	 * serialVersionUID.
-	 */
+
 	private static final long serialVersionUID = -2981309424890139659L;
 
 	@Override
@@ -48,7 +44,7 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 		try {
 			url = SecurityParamsFactory.getLocalAuthServerUrl();
 		} catch (SettingsFileOpenException e) {
-			throw new ServletException(AuthServerUtils.APP_PROP_READ_ERROR);
+			throw new ServletException(SecurityParamsFactory.APP_PROP_READ_ERROR);
 		}
 
 		if (url != null) {

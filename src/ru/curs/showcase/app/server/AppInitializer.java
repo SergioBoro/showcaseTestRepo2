@@ -34,6 +34,7 @@ public final class AppInitializer {
 		readDefaultUserDatas(FileUtils.GENERAL_PROPERTIES);
 		checkAnyUserdataExists();
 		setupUserdataLogging();
+		AppInfoSingleton.getAppInfo().initWebConsole();
 	}
 
 	public static void setupUserdataLogging() {

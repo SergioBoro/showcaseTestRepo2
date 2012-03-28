@@ -20,7 +20,7 @@ public class ClassPathXSDSource implements XSDSource {
 
 	@Override
 	public Schema getSchema(final String aFileName) throws SAXException {
-		String xsdFullFileName = String.format("%s/%s", AppProps.SCHEMASDIR, aFileName);
+		String xsdFullFileName = String.format("%s/%s", UserdataUtils.SCHEMASDIR, aFileName);
 		File file =
 			new File(AppInfoSingleton.getAppInfo().getWebAppPath() + "/WEB-INF/classes/"
 					+ xsdFullFileName);

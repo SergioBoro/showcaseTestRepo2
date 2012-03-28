@@ -2,7 +2,7 @@ package ru.curs.showcase.core.frame;
 
 import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.runtime.UserdataUtils;
 
 /**
  * Команда для получения всей информации о главной странице приложения.
@@ -19,17 +19,17 @@ public final class MainPageGetCommand extends AbstractMainPageFrameCommand<MainP
 	@Override
 	protected void mainProc() throws Exception {
 		MainPage mp = new MainPage();
-		String value = AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP);
+		String value = UserdataUtils.getOptionalProp(UserdataUtils.HEADER_HEIGHT_PROP);
 		if (value != null) {
 			mp.setHeaderHeight(value);
 		} else {
-			mp.setHeaderHeight(AppProps.DEF_HEADER_HEIGTH);
+			mp.setHeaderHeight(UserdataUtils.DEF_HEADER_HEIGTH);
 		}
-		value = AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP);
+		value = UserdataUtils.getOptionalProp(UserdataUtils.FOOTER_HEIGHT_PROP);
 		if (value != null) {
 			mp.setFooterHeight(value);
 		} else {
-			mp.setFooterHeight(AppProps.DEF_FOOTER_HEIGTH);
+			mp.setFooterHeight(UserdataUtils.DEF_FOOTER_HEIGTH);
 		}
 
 		MainPageFrameFactory factory = new MainPageFrameFactory(false);

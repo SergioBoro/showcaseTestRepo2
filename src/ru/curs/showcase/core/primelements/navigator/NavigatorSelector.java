@@ -2,7 +2,7 @@ package ru.curs.showcase.core.primelements.navigator;
 
 import ru.curs.showcase.core.SourceSelector;
 import ru.curs.showcase.core.primelements.*;
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.runtime.UserdataUtils;
 import ru.curs.showcase.util.exception.SettingsFileType;
 
 /**
@@ -15,7 +15,7 @@ public class NavigatorSelector extends SourceSelector<PrimElementsGateway> {
 	private static final String NAVIGATOR_PROCNAME_PARAM = "navigator.proc.name";
 
 	public NavigatorSelector() {
-		super(AppProps.getRequiredValueByName(NAVIGATOR_PROCNAME_PARAM));
+		super(UserdataUtils.getRequiredProp(NAVIGATOR_PROCNAME_PARAM));
 	}
 
 	@Override

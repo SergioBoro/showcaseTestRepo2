@@ -16,13 +16,8 @@ import ru.curs.showcase.app.api.UserInfo;
 public final class AuthServerUtils {
 	private static final String REQUEST_METHOD = "GET";
 
-	public static final String APP_PROP_READ_ERROR =
-		"Не удалось считать security.authserverurl из app.properties";
-
 	private static final String LOGOUT_WARN = "Не удалось разлогиниться с AuthServer";
-	/**
-	 * LOGGER.
-	 */
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthServerUtils.class);
 
 	public static final String AUTH_SERVER_DATA_ERROR =

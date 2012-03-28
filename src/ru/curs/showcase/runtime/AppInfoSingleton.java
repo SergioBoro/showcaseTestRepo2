@@ -58,7 +58,7 @@ public final class AppInfoSingleton {
 	 */
 	private String servletContainerVersion;
 
-	private final SortedSet<LoggingEventDecorator> lastLogEvents = new LastLogEvents();
+	private SortedSet<LoggingEventDecorator> lastLogEvents;
 
 	private String webAppPath;
 
@@ -385,5 +385,9 @@ public final class AppInfoSingleton {
 
 	public void setUserDataLogConfFile(final String aUserDataLogConfFile) {
 		userDataLogConfFile = aUserDataLogConfFile;
+	}
+
+	public void initWebConsole() {
+		lastLogEvents = new LastLogEvents();
 	}
 }

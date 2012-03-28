@@ -928,13 +928,13 @@ public class GridFactory extends CompBasedElementFactory {
 		if (col.getValueType() == GridValueType.IMAGE) {
 			value =
 				String.format("%s/%s",
-						AppProps.getRequiredValueByName(AppProps.IMAGES_IN_GRID_DIR), value);
+						UserdataUtils.getRequiredProp(UserdataUtils.IMAGES_IN_GRID_DIR), value);
 		} else if (col.getValueType() == GridValueType.LINK) {
-			value = AppProps.replaceVariables(value);
+			value = UserdataUtils.replaceVariables(value);
 			value = normalizeLink(value);
 			value = makeSafeXMLAttrValues(value);
 		} else if (col.getValueType() == GridValueType.DOWNLOAD) {
-			value = AppProps.replaceVariables(value);
+			value = UserdataUtils.replaceVariables(value);
 		} else if (col.getValueType().isDate()) {
 			DateTime dt = new DateTime(value);
 			java.util.Date date = dt.toDate();

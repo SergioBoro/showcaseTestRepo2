@@ -65,7 +65,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = SettingsFileRequiredPropException.class)
 	public final void testReadNotExistingValue() {
-		AppProps.getRequiredValueByName("blabla");
+		UserdataUtils.getRequiredProp("blabla");
 	}
 
 	/**

@@ -33,7 +33,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testStreamConvertor() throws IOException {
 		InputStream is =
-			AppProps.loadUserDataToStream(String.format("%s//%s",
+			UserdataUtils.loadUserDataToStream(String.format("%s//%s",
 					SettingsFileType.DATAPANEL.getFileDir(), "a.xml"));
 
 		StreamConvertor dup = new StreamConvertor(is);
@@ -169,7 +169,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testLogSettings() {
 		final int logSize =
-			Integer.parseInt(FileUtils.getGeneralOptionalParam(LastLogEvents.INTERNAL_LOG_SIZE));
+			Integer.parseInt(UserdataUtils.getGeneralOptionalProp(LastLogEvents.INTERNAL_LOG_SIZE));
 		assertEquals(logSize, LastLogEvents.getMaxRecords());
 	}
 

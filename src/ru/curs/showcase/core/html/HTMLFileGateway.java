@@ -44,7 +44,7 @@ public class HTMLFileGateway extends GeneralXMLHelper implements HTMLGateway {
 		}
 		try {
 			DocumentBuilder db = XMLUtils.createBuilder();
-			InputStream stream = AppProps.loadUserDataToStream(fileName);
+			InputStream stream = UserdataUtils.loadUserDataToStream(fileName);
 			doc = db.parse(stream);
 		} catch (SAXException | IOException e) {
 			throw new SettingsFileExchangeException(elementInfo.getProcName(), e,
@@ -56,7 +56,7 @@ public class HTMLFileGateway extends GeneralXMLHelper implements HTMLGateway {
 		file = new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/" + fileName);
 		if (file.exists()) {
 			try {
-				settings = AppProps.loadUserDataToStream(fileName);
+				settings = UserdataUtils.loadUserDataToStream(fileName);
 			} catch (IOException e) {
 				throw new SettingsFileExchangeException(getSettingsFileName(), e,
 						SettingsFileType.XM_DATA);

@@ -20,7 +20,7 @@
 	<property name="sc.lib.dir" value="${sc.webinf.dir}/lib" />
 	<property name="sc.gwt.compiled.dir" value="${sc.webapp.dir}/app" />
 	<property name="sc.userdata.dir" value="userdatas" />
-	<property name="sc.gwt.src.root.dir" value="${sc.src.dir}\ru\curs\showcase\app" />
+	<property name="sc.gwt.src.root.dir" value="${sc.src.dir}/ru/curs/showcase/app" />
 	<property name="sc.general.props.file" value="general.properties" />
 	<property name="sc.war.file" value="" />
 	<property name="sc.version" value="" />
@@ -151,6 +151,7 @@
 		<copy verbose="true" file="${sc.userdata.dir}/pg/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/pg/gridproperties/default.properties" />
 		<copy verbose="true" file="${sc.userdata.dir}/ora/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/ora/gridproperties/default.properties" />			
 		<copy verbose="true" file="${sc.userdata.dir}/logback.template.xml" tofile="${sc.userdata.dir}/logback.xml" />
+		<copy verbose="true" file="${sc.userdata.dir}/app.template.properties" tofile="${sc.userdata.dir}/app.properties" />
 		<copy verbose="true" file="${sc.gwt.src.root.dir}/template.App.gwt.xml" tofile="${sc.gwt.src.root.dir}/App.gwt.xml" />
 		<echo>Don't forget setup correct settings in local.properties, ${sc.general.props.file} и app.properties and setup classpath (Build path) in Eclipse</echo>
 	</target>
@@ -344,7 +345,10 @@
 					<include name="**/suite/*Tests.class"/>
 					<exclude name="**/suite/PostgreSQLTests.class" />
 				</fileset>
-			</batchtest>		
+			</batchtest>	
+			
+			<jvmarg value="-XX:MaxPermSize=384m"/>
+			<jvmarg value="-javaagent:${basedir}/${sc.webinf.dir}/lib/aspectjweaver.jar"/>
 		</junit>
 	</target>
 
@@ -465,6 +469,7 @@
 					</fileset>
 				</batchtest>
 				<jvmarg value="-XX:MaxPermSize=384m"/>
+				<jvmarg value="-javaagent:${basedir}/${sc.webinf.dir}/lib/aspectjweaver.jar"/>
 			</junit>
 		</jacoco:coverage>
 		<jacoco:report>		                     

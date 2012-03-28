@@ -37,7 +37,7 @@ public class PoolsTest extends AbstractTestWithDefaultUserData {
 		Transformer transformer = factory.acquire();
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			try (InputStream is = AppProps.loadUserDataToStream("user.messages.xml")) {
+			try (InputStream is = UserdataUtils.loadUserDataToStream("user.messages.xml")) {
 				transformer.transform(new StreamSource(is), new StreamResult(baos));
 			}
 		} finally {

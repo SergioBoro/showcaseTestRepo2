@@ -19,6 +19,7 @@ import ru.curs.showcase.core.html.xform.XFormDownloadCommand;
 import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTest;
+import ru.curs.showcase.util.OutputStreamDataFile;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
@@ -116,7 +117,7 @@ public class RuntimeTest extends AbstractTest {
 				new TreeMap<String, ArrayList<String>>());
 		assertEquals(ExchangeConstants.DEFAULT_USERDATA, AppInfoSingleton.getAppInfo()
 				.getCurUserDataId());
-		assertNotNull(AppProps.getUserDataCatalog());
+		assertNotNull(UserdataUtils.getUserDataCatalog());
 
 		Map<String, ArrayList<String>> params = new TreeMap<>();
 		ArrayList<String> value3 = new ArrayList<>();
@@ -124,7 +125,7 @@ public class RuntimeTest extends AbstractTest {
 		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(params);
 		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());
-		assertNotNull(AppProps.getUserDataCatalog());
+		assertNotNull(UserdataUtils.getUserDataCatalog());
 	}
 
 	/**
@@ -271,5 +272,16 @@ public class RuntimeTest extends AbstractTest {
 		} catch (SettingsFileOpenException e) {
 			assertTrue(e.getLocalizedMessage().contains("ru/curs/showcase/test/runtime/build"));
 		}
+	}
+
+	@Test
+	public void testDoAfterCheck() {
+		OutputStreamDataFile file = new OutputStreamDataFile();
+		file.setName("test.py");
+		assertTrue(file.isTextFile());
+		file.setName("test.php");
+		assertTrue(file.isTextFile());
+		file.setName("test.xyz");
+		assertFalse(file.isTextFile());
 	}
 }

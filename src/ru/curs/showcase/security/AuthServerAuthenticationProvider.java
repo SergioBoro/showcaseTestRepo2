@@ -43,7 +43,7 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		try {
 			url = SecurityParamsFactory.getLocalAuthServerUrl();
 		} catch (SettingsFileOpenException e1) {
-			throw new AuthenticationServiceException(AuthServerUtils.APP_PROP_READ_ERROR, e1);
+			throw new AuthenticationServiceException(SecurityParamsFactory.APP_PROP_READ_ERROR, e1);
 		}
 
 		// AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(sesid,

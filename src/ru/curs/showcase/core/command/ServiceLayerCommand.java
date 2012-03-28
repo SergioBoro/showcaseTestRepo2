@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.AppRegistry;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.ObjectSerializer;
 import ru.curs.showcase.util.exception.ServerLogicError;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
@@ -112,7 +112,7 @@ public abstract class ServiceLayerCommand<T> {
 	}
 
 	public void initIDSettings() {
-		String idCS = FileUtils.getGeneralOptionalParam(ID_CASESENSITIVE);
+		String idCS = UserdataUtils.getGeneralOptionalProp(ID_CASESENSITIVE);
 		if (idCS != null) {
 			IDSettings.getInstance().setCaseSensivity(Boolean.valueOf(idCS));
 		}

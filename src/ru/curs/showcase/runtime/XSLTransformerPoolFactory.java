@@ -52,14 +52,14 @@ public final class XSLTransformerPoolFactory extends Pool<Transformer> {
 		case XSLTFORMS_XSL:
 			is = XSLTransformerPoolFactory.class.getResourceAsStream(xsltFileName);
 			break;
-		case AppProps.GRIDDATAXSL:
+		case UserdataUtils.GRIDDATAXSL:
 			is =
-				AppProps.loadUserDataToStream(AppProps.XSLTTRANSFORMSFORGRIDDIR + "/"
+				UserdataUtils.loadUserDataToStream(UserdataUtils.XSLTTRANSFORMSFORGRIDDIR + "/"
 						+ xsltFileName);
 			break;
 		default:
 			is =
-				AppProps.loadUserDataToStream(SettingsFileType.XSLT.getFileDir() + "/"
+				UserdataUtils.loadUserDataToStream(SettingsFileType.XSLT.getFileDir() + "/"
 						+ xsltFileName);
 		}
 		return is;

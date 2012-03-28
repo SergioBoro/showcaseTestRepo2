@@ -38,7 +38,7 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testLoadUserDataToStream() throws IOException {
-		assertNotNull(AppProps.loadUserDataToStream(AppProps.PROPFILENAME));
+		assertNotNull(UserdataUtils.loadUserDataToStream(UserdataUtils.PROPFILENAME));
 	}
 
 	/**
@@ -47,29 +47,29 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testGetValueByName() {
-		AppProps.getRequiredValueByName(SecurityParamsFactory.AUTH_SERVER_URL_PARAM);
-		AppProps.getRequiredValueByName(ConnectionFactory.CONNECTION_URL_PARAM);
-		assertNotNull(AppProps.getOptionalValueByName(ConnectionFactory.CONNECTION_URL_PARAM));
+		UserdataUtils.getGeneralRequiredProp(SecurityParamsFactory.AUTH_SERVER_URL_PARAM);
+		UserdataUtils.getRequiredProp(ConnectionFactory.CONNECTION_URL_PARAM);
+		assertNotNull(UserdataUtils.getOptionalProp(ConnectionFactory.CONNECTION_URL_PARAM));
 
 		assertEquals("group_icon_default1.png",
-				AppProps.getOptionalValueByName("navigator.def.icon.name", TEST1_USERDATA));
+				UserdataUtils.getOptionalProp("navigator.def.icon.name", TEST1_USERDATA));
 	}
 
 	@Test
 	public void testDirExists() {
 		checkDir(SettingsFileType.XSLT.getFileDir());
-		checkDir(AppProps.XSLTTRANSFORMSFORGRIDDIR);
+		checkDir(UserdataUtils.XSLTTRANSFORMSFORGRIDDIR);
 		checkDir(SettingsFileType.DATAPANEL.getFileDir());
 		checkDir(SettingsFileType.NAVIGATOR.getFileDir());
-		checkDir(AppProps.SCHEMASDIR);
+		checkDir(UserdataUtils.SCHEMASDIR);
 		checkDir(SettingsFileType.XFORM.getFileDir());
 
 		assertTrue("Папка с XSD схемами не найдена", (new File(AppInfoSingleton.getAppInfo()
-				.getWebAppPath() + "/WEB-INF/classes/" + AppProps.SCHEMASDIR)).exists());
+				.getWebAppPath() + "/WEB-INF/classes/" + UserdataUtils.SCHEMASDIR)).exists());
 	}
 
 	private void checkDir(final String dirName) {
-		File dir = new File(AppProps.getUserDataCatalog() + File.separator + dirName);
+		File dir = new File(UserdataUtils.getUserDataCatalog() + File.separator + dirName);
 		assertTrue(dir.exists());
 	}
 
@@ -78,24 +78,26 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testReadMainPageInfo() {
-		assertEquals("100px",
-				AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP, TEST1_USERDATA));
-		assertEquals("50px",
-				AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, TEST1_USERDATA));
-		assertNull(AppProps.getOptionalValueByName(AppProps.HEADER_HEIGHT_PROP, TEST2_USERDATA));
-		assertNull(AppProps.getOptionalValueByName(AppProps.FOOTER_HEIGHT_PROP, TEST2_USERDATA));
+		assertEquals("100px", UserdataUtils.getOptionalProp(
+				UserdataUtils.HEADER_HEIGHT_PROP, TEST1_USERDATA));
+		assertEquals("50px", UserdataUtils.getOptionalProp(
+				UserdataUtils.FOOTER_HEIGHT_PROP, TEST1_USERDATA));
+		assertNull(UserdataUtils.getOptionalProp(UserdataUtils.HEADER_HEIGHT_PROP,
+				TEST2_USERDATA));
+		assertNull(UserdataUtils.getOptionalProp(UserdataUtils.FOOTER_HEIGHT_PROP,
+				TEST2_USERDATA));
 	}
 
 	@Test(expected = NoSuchUserDataException.class)
 	public void testAppPropsExists() {
-		AppProps.checkAppPropsExists("test33");
+		UserdataUtils.checkAppPropsExists("test33");
 	}
 
 	@Test(expected = SettingsFileOpenException.class)
 	public void testCheckUserdatas() {
 		try {
 			AppInfoSingleton.getAppInfo().getUserdatas().put("test34", new UserData("c:\\"));
-			AppProps.checkUserdatas();
+			UserdataUtils.checkUserdatas();
 		} finally {
 			AppInfoSingleton.getAppInfo().getUserdatas().clear();
 			AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
@@ -104,10 +106,10 @@ public final class AppPropsTest extends AbstractTestWithDefaultUserData {
 
 	@Test
 	public void testGeoMapKeys() {
-		assertEquals(YM_KEY, AppProps.getGeoMapKey(GE_KEY_NAME, "localhost"));
-		assertEquals(YM_KEY, AppProps.getGeoMapKey(GE_KEY_NAME, "127.0.0.1"));
-		assertEquals(YM_KEY, AppProps.getGeoMapKey(GE_KEY_NAME, "mail.ru"));
-		assertEquals("", AppProps.getGeoMapKey("", "localhost"));
+		assertEquals(YM_KEY, UserdataUtils.getGeoMapKey(GE_KEY_NAME, "localhost"));
+		assertEquals(YM_KEY, UserdataUtils.getGeoMapKey(GE_KEY_NAME, "127.0.0.1"));
+		assertEquals(YM_KEY, UserdataUtils.getGeoMapKey(GE_KEY_NAME, "mail.ru"));
+		assertEquals("", UserdataUtils.getGeoMapKey("", "localhost"));
 	}
 
 }

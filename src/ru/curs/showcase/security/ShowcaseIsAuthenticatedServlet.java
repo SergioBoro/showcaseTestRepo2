@@ -17,9 +17,6 @@ import ru.curs.showcase.util.exception.SettingsFileOpenException;
  */
 public class ShowcaseIsAuthenticatedServlet extends HttpServlet {
 
-	/**
-	 * serialVersionUID.
-	 */
 	private static final long serialVersionUID = 9152046062107176349L;
 
 	@Override
@@ -29,7 +26,7 @@ public class ShowcaseIsAuthenticatedServlet extends HttpServlet {
 		try {
 			url = SecurityParamsFactory.getLocalAuthServerUrl();
 		} catch (SettingsFileOpenException e) {
-			throw new ServletException(AuthServerUtils.APP_PROP_READ_ERROR, e);
+			throw new ServletException(SecurityParamsFactory.APP_PROP_READ_ERROR, e);
 		}
 
 		String sesid = request.getParameter("sesid");

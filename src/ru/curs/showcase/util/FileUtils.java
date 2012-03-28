@@ -18,7 +18,17 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class FileUtils {
 
+	/**
+	 * Имя файла с настройками путей приложения. Пути рекомендуется задавать
+	 * абсолютно, т.к. относительный путь отсчитывается либо от папки с eclipse,
+	 * либо от папки с Tomcat и не является постоянным. При задании пути нужно
+	 * использовать двойной обратный слэш в качестве разделителя.
+	 */
+	public static final String GENERAL_PROPERTIES = "general.properties";
+
 	private static final String SHOWCASE_ROOTPATH_USERDATA_PARAM = "rootpath.userdata";
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
 	/**
 	 * Универсальная функция загрузки внутренних ресурсов Web-приложения по
@@ -35,16 +45,6 @@ public final class FileUtils {
 		InputStream result = classLoader.getResourceAsStream(fileName);
 		return result;
 	}
-
-	/**
-	 * Имя файла с настройками путей приложения. Пути рекомендуется задавать
-	 * абсолютно, т.к. относительный путь отсчитывается либо от папки с eclipse,
-	 * либо от папки с Tomcat и не является постоянным. При задании пути нужно
-	 * использовать двойной обратный слэш в качестве разделителя.
-	 */
-	public static final String GENERAL_PROPERTIES = "general.properties";
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
 	private FileUtils() {
 		throw new UnsupportedOperationException();
@@ -94,11 +94,7 @@ public final class FileUtils {
 		fprocessor.process(new DeleteFileAction());
 	}
 
-	public static String getGeneralOptionalParam(final String paramName) {
-		return getGeneralOptionalParam(GENERAL_PROPERTIES, paramName);
-	}
-
-	private static String getGeneralOptionalParam(final String file, final String paramName) {
+	public static String getTestUserdataRoot(final String file) {
 		Properties prop = new Properties();
 		InputStream is = loadResToStream(file);
 		try {
@@ -106,12 +102,8 @@ public final class FileUtils {
 				prop.load(reader);
 			}
 		} catch (IOException e) {
-			throw new SettingsFileOpenException(file, SettingsFileType.PATH_PROPERTIES);
+			throw new SettingsFileOpenException(file, SettingsFileType.GENERAL_PROPERTIES);
 		}
-		return prop.getProperty(paramName);
-	}
-
-	public static String getTestUserdataRoot(final String file) {
-		return getGeneralOptionalParam(file, SHOWCASE_ROOTPATH_USERDATA_PARAM);
+		return prop.getProperty(SHOWCASE_ROOTPATH_USERDATA_PARAM);
 	}
 }

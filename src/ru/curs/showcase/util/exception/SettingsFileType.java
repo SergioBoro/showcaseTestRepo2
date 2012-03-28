@@ -7,7 +7,7 @@ package ru.curs.showcase.util.exception;
  * 
  */
 public enum SettingsFileType {
-	PATH_PROPERTIES("Файл с общими настройками приложения"),
+	GENERAL_PROPERTIES("Файл с общими настройками приложения"),
 	APP_PROPERTIES("Файл с настройками userdata"),
 	GRID_PROPERTIES("Профайл настроек грида"),
 	VERSION("Файл версии приложения"),
@@ -25,7 +25,8 @@ public enum SettingsFileType {
 	GEOMAP_KEYS("Файл с ключами API для карт"),
 	IMPORT_LIST("Список импортируемых компонент для плагина"),
 	PLUGIN_ADAPTER("Адаптер для плагина"),
-	LIBRARY_ADAPTER("Файл библиотеки");
+	LIBRARY_ADAPTER("Файл библиотеки"),
+	GENERAL_APP_PROPERTIES("Файл с общими настройками userdata");
 
 	/**
 	 * Название файла.

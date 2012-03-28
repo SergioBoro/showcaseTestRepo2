@@ -2,7 +2,6 @@ package ru.curs.showcase.runtime;
 
 import java.util.*;
 
-import ru.curs.showcase.util.FileUtils;
 
 /**
  * Очередь для последних событий, записанных в лог. Длина очереди
@@ -22,7 +21,7 @@ public class LastLogEvents extends TreeSet<LoggingEventDecorator> {
 	private static final long serialVersionUID = 9039619678848110139L;
 
 	public static int getMaxRecords() {
-		String res = FileUtils.getGeneralOptionalParam(INTERNAL_LOG_SIZE);
+		String res = UserdataUtils.getGeneralOptionalProp(INTERNAL_LOG_SIZE);
 		return res == null ? DEF_MAX_RECORDS : Integer.parseInt(res);
 	}
 

@@ -3,7 +3,7 @@ package ru.curs.showcase.security;
 import java.io.IOException;
 import java.net.*;
 
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.runtime.UserdataUtils;
 
 /**
  * @author anlug
@@ -11,27 +11,15 @@ import ru.curs.showcase.runtime.AppProps;
  *         Класс, позволяющий получить url для сервера аутентификации.
  * 
  */
-/**
- * @author anlug
- *
- */
-/**
- * @author anlug
- * 
- */
 public final class SecurityParamsFactory {
 
-	/**
-	 * LOGGER.
-	 */
-	// private static final Logger LOGGER =
-	// LoggerFactory.getLogger(SecurityParamsFactory.class);
-	// private static final String LOGIN_INFO =
-	// "Сервер аутентификации AuthServer недоступен.";
 	/**
 	 * Имя параметра в файле настроек, содержащего путь к AuthServer.
 	 */
 	public static final String AUTH_SERVER_URL_PARAM = "security.authserverurl";
+
+	public static final String APP_PROP_READ_ERROR = "Не удалось считать " + AUTH_SERVER_URL_PARAM
+			+ " из app.properties";
 
 	/**
 	 * Имя параметра в файле настроек, содержащего локальный путь к AuthServer.
@@ -50,7 +38,7 @@ public final class SecurityParamsFactory {
 	 */
 	public static String getAuthServerUrl() {
 
-		return AppProps.getRequiredValueByName(AUTH_SERVER_URL_PARAM);
+		return UserdataUtils.getGeneralRequiredProp(AUTH_SERVER_URL_PARAM);
 
 	}
 
@@ -87,7 +75,6 @@ public final class SecurityParamsFactory {
 	// }
 	//
 	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
 	// LOGGER.info(String.format(LOGIN_INFO));
 	// }
 	//
@@ -96,12 +83,11 @@ public final class SecurityParamsFactory {
 	// }
 
 	public static String getLocalAuthServerUrl() {
-		String result = AppProps.getOptionalValueByName(LOCAL_AUTH_SERVER_URL_PARAM);
+		String result = UserdataUtils.getGeneralOptionalProp(LOCAL_AUTH_SERVER_URL_PARAM);
 		if (result == null) {
 			result = getAuthServerUrl();
 		}
 		return result;
-		// try
 	}
 
 	/**

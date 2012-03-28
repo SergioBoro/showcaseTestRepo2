@@ -3,7 +3,7 @@ package ru.curs.showcase.core.frame;
 import java.io.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.runtime.AppProps;
+import ru.curs.showcase.runtime.UserdataUtils;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 
@@ -28,7 +28,7 @@ public class MainPageFrameFileGateway implements MainPageFrameGateway {
 	public String getRawData(final CompositeContext aContext) {
 		String filepath = String.format("%s/%s", "html", fileName);
 		try {
-			InputStream is = AppProps.loadUserDataToStream(filepath);
+			InputStream is = UserdataUtils.loadUserDataToStream(filepath);
 			return TextUtils.streamToString(is);
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, filepath, SettingsFileType.FRAME);
