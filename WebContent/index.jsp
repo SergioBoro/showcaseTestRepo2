@@ -13,11 +13,15 @@
 	if (userdataId == null) {
 		userdataId = "default";
 	}
+	String title = "Showcase index page";
+	if (UserDataUtils.getOptionalProp("index.title", userdataId) != null) {
+		title = UserDataUtils.getOptionalProp("index.title", userdataId);
+	}
 %>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
-	<title>Showcase index page</title>
+	<title><%=title%></title>
     <link rel="stylesheet" href="xsltforms/xsltforms.css" type="text/css" />	
 	<link rel="shortcut icon" href="solutions/<%=userdataId%>/resources/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="solutions/<%=userdataId%>/resources/favicon.ico" type="image/x-icon" />

@@ -2,14 +2,21 @@
 pageEncoding="UTF-8"%>
 
 <%@page import="ru.curs.showcase.security.SecurityParamsFactory"%>   
+<%@page import="ru.curs.showcase.runtime.UserDataUtils"%> 
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
+<%
+	String title = "Авторизация в КУРС: Showcase";
+	if (UserDataUtils.getGeneralOptionalProp("login.title") != null) {
+		title = UserDataUtils.getGeneralOptionalProp("login.title");
+	}
+%>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
-	<title>Авторизация в КУРС: Showcase</title>
+	<title><%=title%></title>
 	<link rel="shortcut icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />
 	
