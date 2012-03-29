@@ -16,7 +16,7 @@ import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.core.html.xform.*;
-import ru.curs.showcase.runtime.UserdataUtils;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.SettingsFileType;
@@ -80,7 +80,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 
 		DocumentBuilder db = XMLUtils.createBuilder();
 		InputStream stream =
-			UserdataUtils.loadUserDataToStream(String.format("%s/%s",
+			UserDataUtils.loadUserDataToStream(String.format("%s/%s",
 					SettingsFileType.XFORM.getFileDir(), element.getTemplateName()));
 		Document doc = db.parse(stream);
 		XFormProducer.getHTML(doc, raw.getData());

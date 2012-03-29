@@ -59,36 +59,16 @@
     <url-pattern>/secured/data</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>GridToExcel</servlet-name>
+    <servlet-name>FilesFrontController</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.FilesFrontController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>GridToExcel</servlet-name>
+    <servlet-name>FilesFrontController</servlet-name>
     <url-pattern>/secured/gridToExcel</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>GridFileDownload</servlet-name>
-    <servlet-class>ru.curs.showcase.app.server.FilesFrontController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>GridFileDownload</servlet-name>
-    <url-pattern>/secured/gridFileDownload</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>Download</servlet-name>
-    <servlet-class>ru.curs.showcase.app.server.FilesFrontController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Download</servlet-name>
+    <url-pattern>/secured/gridFileDownload</url-pattern>  
     <url-pattern>/secured/download</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>Upload</servlet-name>
-    <servlet-class>ru.curs.showcase.app.server.FilesFrontController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Upload</servlet-name>
     <url-pattern>/secured/upload</url-pattern>
+    <url-pattern>/secured/geoMapExport</url-pattern>        
   </servlet-mapping>
   <servlet>
     <servlet-name>XFormScriptTransformServlet</servlet-name>
@@ -98,7 +78,7 @@
     <servlet-name>XFormScriptTransformServlet</servlet-name>
     <url-pattern>/secured/submit</url-pattern>
     <url-pattern>/secured/sqlTransform</url-pattern>
-    <url-pattern>/secured/jythonTransform</url-pattern>
+    <url-pattern>/secured/jythonTransform</url-pattern> 
   </servlet-mapping>
   <servlet>
     <servlet-name>SelectorDataService</servlet-name>
@@ -165,14 +145,6 @@
   <servlet-mapping>
     <servlet-name>StateServlet</servlet-name>
     <url-pattern>/forall/state</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>GeoMapExport</servlet-name>
-    <servlet-class>ru.curs.showcase.app.server.FilesFrontController</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>GeoMapExport</servlet-name>
-    <url-pattern>/secured/geoMapExport</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>JAX-WS</servlet-name>

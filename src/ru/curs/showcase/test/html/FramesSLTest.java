@@ -7,7 +7,7 @@ import org.junit.Test;
 import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.frame.*;
-import ru.curs.showcase.runtime.UserdataUtils;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.test.AbstractTest;
 
 /**
@@ -90,7 +90,7 @@ public final class FramesSLTest extends AbstractTest {
 		context = new CompositeContext(generateTestURLParams(TEST2_USERDATA));
 		command = new MainPageGetCommand(context);
 		mp = command.execute();
-		assertEquals(UserdataUtils.DEF_HEADER_HEIGTH, mp.getHeaderHeight());
-		assertEquals(UserdataUtils.DEF_FOOTER_HEIGTH, mp.getFooterHeight());
+		assertEquals(UserDataUtils.DEF_HEADER_HEIGTH, mp.getHeaderHeight());
+		assertEquals(UserDataUtils.DEF_FOOTER_HEIGTH, mp.getFooterHeight());
 	}
 }

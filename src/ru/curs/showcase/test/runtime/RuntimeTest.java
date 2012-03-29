@@ -117,7 +117,7 @@ public class RuntimeTest extends AbstractTest {
 				new TreeMap<String, ArrayList<String>>());
 		assertEquals(ExchangeConstants.DEFAULT_USERDATA, AppInfoSingleton.getAppInfo()
 				.getCurUserDataId());
-		assertNotNull(UserdataUtils.getUserDataCatalog());
+		assertNotNull(UserDataUtils.getUserDataCatalog());
 
 		Map<String, ArrayList<String>> params = new TreeMap<>();
 		ArrayList<String> value3 = new ArrayList<>();
@@ -125,7 +125,7 @@ public class RuntimeTest extends AbstractTest {
 		params.put(ExchangeConstants.URL_PARAM_USERDATA, value3);
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(params);
 		assertEquals(TEST1_USERDATA, AppInfoSingleton.getAppInfo().getCurUserDataId());
-		assertNotNull(UserdataUtils.getUserDataCatalog());
+		assertNotNull(UserDataUtils.getUserDataCatalog());
 	}
 
 	/**

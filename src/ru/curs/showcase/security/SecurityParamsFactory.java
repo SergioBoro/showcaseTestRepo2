@@ -3,7 +3,7 @@ package ru.curs.showcase.security;
 import java.io.IOException;
 import java.net.*;
 
-import ru.curs.showcase.runtime.UserdataUtils;
+import ru.curs.showcase.runtime.UserDataUtils;
 
 /**
  * @author anlug
@@ -38,7 +38,7 @@ public final class SecurityParamsFactory {
 	 */
 	public static String getAuthServerUrl() {
 
-		return UserdataUtils.getGeneralRequiredProp(AUTH_SERVER_URL_PARAM);
+		return UserDataUtils.getGeneralRequiredProp(AUTH_SERVER_URL_PARAM);
 
 	}
 
@@ -83,7 +83,7 @@ public final class SecurityParamsFactory {
 	// }
 
 	public static String getLocalAuthServerUrl() {
-		String result = UserdataUtils.getGeneralOptionalProp(LOCAL_AUTH_SERVER_URL_PARAM);
+		String result = UserDataUtils.getGeneralOptionalProp(LOCAL_AUTH_SERVER_URL_PARAM);
 		if (result == null) {
 			result = getAuthServerUrl();
 		}

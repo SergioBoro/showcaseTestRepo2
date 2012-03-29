@@ -1,6 +1,6 @@
 package ru.curs.showcase.core.frame;
 
-import ru.curs.showcase.runtime.UserdataUtils;
+import ru.curs.showcase.runtime.UserDataUtils;
 
 /**
  * Фабрика для создания фреймов главной формы. Отвечает за дополнительную
@@ -55,7 +55,7 @@ public final class MainPageFrameFactory {
 	}
 
 	private void replaceTemplates() {
-		result = UserdataUtils.replaceVariables(result);
+		result = UserDataUtils.replaceVariables(result);
 	}
 
 	public String getSource() {

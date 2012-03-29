@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.event.ActionFactory;
-import ru.curs.showcase.runtime.UserdataUtils;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -63,8 +63,8 @@ public final class NavigatorFactory extends StartTagSAXHandler {
 
 	public NavigatorFactory(final CompositeContext aCallContext) {
 		super();
-		groupIconsDir = UserdataUtils.getRequiredProp(GRP_ICONS_DIR_PARAM_NAME);
-		groupDefIcon = UserdataUtils.getRequiredProp(GRP_DEF_ICON_PARAM_NAME);
+		groupIconsDir = UserDataUtils.getRequiredProp(GRP_ICONS_DIR_PARAM_NAME);
+		groupDefIcon = UserDataUtils.getRequiredProp(GRP_DEF_ICON_PARAM_NAME);
 		actionFactory = new ActionFactory(aCallContext);
 	}
 

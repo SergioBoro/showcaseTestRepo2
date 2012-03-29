@@ -393,12 +393,12 @@ public final class XMLUtils {
 		try {
 			Transformer tr = null;
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			tr = XSLTransformerPoolFactory.getInstance().acquire(UserdataUtils.GRIDDATAXSL);
+			tr = XSLTransformerPoolFactory.getInstance().acquire(UserDataUtils.GRIDDATAXSL);
 			try {
 				setupStdTransformerParams(tr, false);
 				tr.transform(new DOMSource(doc), new StreamResult(baos));
 			} finally {
-				XSLTransformerPoolFactory.getInstance().release(tr, UserdataUtils.GRIDDATAXSL);
+				XSLTransformerPoolFactory.getInstance().release(tr, UserDataUtils.GRIDDATAXSL);
 			}
 			return baos;
 		} catch (TransformerFactoryConfigurationError | IOException | TransformerException e) {

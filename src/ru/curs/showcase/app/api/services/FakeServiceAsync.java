@@ -13,6 +13,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface FakeServiceAsync {
 
-	void saveColumnSet(ColumnSet cs, GeoMapExportSettings settings, AsyncCallback<Void> callback);
+	void serializeColumnSet(ColumnSet cs, AsyncCallback<Void> callback);
+
+	void
+			serializeGeoMapExportSettings(GeoMapExportSettings settings,
+					AsyncCallback<Void> callback);
 
 }

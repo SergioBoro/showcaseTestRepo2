@@ -9,7 +9,7 @@ import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.core.event.EventFactory;
 import ru.curs.showcase.core.html.*;
-import ru.curs.showcase.runtime.UserdataUtils;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;
@@ -80,8 +80,8 @@ public final class PluginFactory extends HTMLBasedElementFactory {
 			final SettingsFileType fileType) {
 		String adapter = String.format("%s/%s", dir, adapterFile);
 		String adapterOnTomcat =
-			String.format("%s/%s/%s", UserdataUtils.SOLUTIONS_DIR, UserdataUtils.getUserDataId(), adapter);
-		File file = new File(UserdataUtils.getUserDataCatalog() + "/" + adapter);
+			String.format("%s/%s/%s", UserDataUtils.SOLUTIONS_DIR, UserDataUtils.getUserDataId(), adapter);
+		File file = new File(UserDataUtils.getUserDataCatalog() + "/" + adapter);
 		if (!file.exists()) {
 			throw new SettingsFileOpenException(adapter, fileType);
 		}
@@ -110,14 +110,14 @@ public final class PluginFactory extends HTMLBasedElementFactory {
 
 	private List<String> readImportFile(final String fileName) {
 		List<String> res = new ArrayList<>();
-		File compList = new File(UserdataUtils.getUserDataCatalog() + "/" + fileName);
+		File compList = new File(UserDataUtils.getUserDataCatalog() + "/" + fileName);
 		if (!compList.exists()) {
 			return res;
 		}
 
 		String list;
 		try {
-			InputStream is = UserdataUtils.loadUserDataToStream(fileName);
+			InputStream is = UserDataUtils.loadUserDataToStream(fileName);
 			list = TextUtils.streamToString(is);
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(fileName, SettingsFileType.IMPORT_LIST);

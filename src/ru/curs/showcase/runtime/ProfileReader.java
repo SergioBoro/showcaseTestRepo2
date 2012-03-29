@@ -32,7 +32,7 @@ public class ProfileReader {
 
 	public void init() {
 		try {
-			InputStream is = UserdataUtils.loadUserDataToStream(profileName);
+			InputStream is = UserDataUtils.loadUserDataToStream(profileName);
 			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
 				props.load(reader);
 			}

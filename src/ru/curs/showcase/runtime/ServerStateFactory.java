@@ -138,7 +138,7 @@ public final class ServerStateFactory {
 	private static String getSQLVersion() throws SQLException {
 
 		String fileName =
-			String.format("%s/version_%s.sql", UserdataUtils.SCRIPTSDIR, ConnectionFactory
+			String.format("%s/version_%s.sql", UserDataUtils.SCRIPTSDIR, ConnectionFactory
 					.getSQLServerType().toString().toLowerCase());
 
 		String sql = "";

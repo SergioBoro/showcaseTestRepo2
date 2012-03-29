@@ -188,7 +188,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	 */
 	private boolean checkProcExists() {
 		String fileName =
-			String.format("%s/checkProcExists_%s.sql", UserdataUtils.SCRIPTSDIR, ConnectionFactory
+			String.format("%s/checkProcExists_%s.sql", UserDataUtils.SCRIPTSDIR, ConnectionFactory
 					.getSQLServerType().toString().toLowerCase());
 
 		String sql = "";

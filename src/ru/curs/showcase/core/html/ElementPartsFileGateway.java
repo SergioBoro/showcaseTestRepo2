@@ -4,7 +4,7 @@ import java.io.*;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.runtime.UserdataUtils;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.exception.*;
 
@@ -23,7 +23,7 @@ public class ElementPartsFileGateway implements ElementPartsGateway {
 			final DataPanelElementInfo elementInfo) {
 		String file = String.format("%s/%s", type.getFileDir(), sourceName);
 		try {
-			return new DataFile<InputStream>(UserdataUtils.loadUserDataToStream(file), sourceName);
+			return new DataFile<InputStream>(UserDataUtils.loadUserDataToStream(file), sourceName);
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, sourceName, type);
 		}

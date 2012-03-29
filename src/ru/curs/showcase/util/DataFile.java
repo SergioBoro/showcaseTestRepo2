@@ -66,7 +66,7 @@ public class DataFile<T> {
 		return TextUtils.extractFileName(name);
 	}
 
-	@DoAfterCheck(className = "ru.curs.showcase.runtime.UserdataUtils", methodName = "isTextFile")
+	@DoAfterCheck(className = "ru.curs.showcase.runtime.UserDataUtils", methodName = "isTextFile")
 	public boolean isTextFile() {
 		String[] stdTextExtensions =
 			{

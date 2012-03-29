@@ -17,7 +17,7 @@ import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.core.ValidateException;
 import ru.curs.showcase.core.html.HTMLBasedElementRawData;
 import ru.curs.showcase.core.html.xform.*;
-import ru.curs.showcase.runtime.UserdataUtils;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.SettingsFileType;
@@ -104,7 +104,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 	public void testGenerateUploaders() throws SAXException, IOException {
 		DocumentBuilder builder = XMLUtils.createBuilder();
 		Document doc =
-			builder.parse(UserdataUtils.loadUserDataToStream(SettingsFileType.XFORM.getFileDir()
+			builder.parse(UserDataUtils.loadUserDataToStream(SettingsFileType.XFORM.getFileDir()
 					+ "/Showcase_Template_all.xml"));
 		DataPanelElementInfo dpei = new DataPanelElementInfo("01", DataPanelElementType.XFORMS);
 		generateTestTabWithElement(dpei);
@@ -135,7 +135,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 
 		String input =
-			TextUtils.streamToString(UserdataUtils.loadUserDataToStream(SettingsFileType.XFORM
+			TextUtils.streamToString(UserDataUtils.loadUserDataToStream(SettingsFileType.XFORM
 					.getFileDir() + "/" + templateName));
 		assertTrue(input.contains("xf:selector"));
 		assertTrue(input.contains("xf:multiselector"));

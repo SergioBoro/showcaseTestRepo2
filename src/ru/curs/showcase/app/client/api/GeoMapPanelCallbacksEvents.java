@@ -79,7 +79,7 @@ public final class GeoMapPanelCallbacksEvents {
 		dh.setEncoding(FormPanel.ENCODING_MULTIPART);
 		try {
 			GeoMap map = getPanel(mapDivId).getMap();
-			SerializationStreamFactory ssf = dh.getObjectSerializer();
+			SerializationStreamFactory ssf = dh.getAddObjectSerializer();
 			dh.addParam(map.getExportSettings().getClass().getName(), map.getExportSettings()
 					.toParamForHttpPost(ssf));
 			dh.addParam(ImageFormat.class.getName(), imageFormat);

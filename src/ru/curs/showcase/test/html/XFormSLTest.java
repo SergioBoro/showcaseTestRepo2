@@ -307,7 +307,7 @@ public class XFormSLTest extends AbstractTest {
 	public void testSaveXFormByJython() throws IOException {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
 		String inputData =
-			XMLUtils.streamToString(UserdataUtils.loadUserDataToStream(DATA_XFORMS + SHOWCASE_DATA_XML));
+			XMLUtils.streamToString(UserDataUtils.loadUserDataToStream(DATA_XFORMS + SHOWCASE_DATA_XML));
 		XFormContext context = new XFormContext(generateContextWithSessionInfo(), inputData);
 		context.setAdditional(SHOWCASE_DATA_COPY_XML);
 		File file =
@@ -332,7 +332,7 @@ public class XFormSLTest extends AbstractTest {
 					+ SHOWCASE_DATA_COPY_XML);
 		assertTrue(file.exists());
 		String outputData =
-			XMLUtils.streamToString(UserdataUtils.loadUserDataToStream(DATA_XFORMS
+			XMLUtils.streamToString(UserDataUtils.loadUserDataToStream(DATA_XFORMS
 					+ SHOWCASE_DATA_COPY_XML));
 		assertEquals(inputData, outputData);
 	}

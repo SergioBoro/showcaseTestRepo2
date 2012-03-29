@@ -35,7 +35,7 @@ public final class ProductionModeInitializer {
 	private static final String COPY_USERDATA_ON_STARTUP_PARAM = "copy.userdata.on.startup";
 	private static final String GET_USERDATA_PATH_ERROR =
 		"Невозможно получить путь к каталогу с пользовательскими данными";
-	private static final String SHOWCASE_DATA_GRID_CSS = "/" + UserdataUtils.SOLUTIONS_DIR
+	private static final String SHOWCASE_DATA_GRID_CSS = "/" + UserDataUtils.SOLUTIONS_DIR
 			+ "/%s/css/solutionGrid.css";
 	public static final String WIDTH_PROP = "width";
 	public static final String HEADER_GAP_SELECTOR = ".webmain-SmartGrid .headerGap";
@@ -64,7 +64,7 @@ public final class ProductionModeInitializer {
 	public static void initUserDatas(final ServletContext aServletContext) {
 		readServletContext(aServletContext);
 		AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
-		UserdataUtils.checkUserdatas();
+		UserDataUtils.checkUserdatas();
 		copyUserDatas(aServletContext);
 		AppInfoSingleton.getAppInfo().setServletContainerVersion(aServletContext.getServerInfo());
 	}
@@ -134,7 +134,7 @@ public final class ProductionModeInitializer {
 	private static boolean checkForCopyUserData(final String userdataId) {
 		try {
 			String value =
-				UserdataUtils.getOptionalProp(COPY_USERDATA_ON_STARTUP_PARAM, userdataId);
+				UserDataUtils.getOptionalProp(COPY_USERDATA_ON_STARTUP_PARAM, userdataId);
 			if (value != null) {
 				return Boolean.parseBoolean(value);
 			}
@@ -157,7 +157,7 @@ public final class ProductionModeInitializer {
 
 		String dirsForCopyStr;
 		try {
-			dirsForCopyStr = UserdataUtils.getOptionalProp(COPY_USERDATA_DIRS_PARAM, userdataId);
+			dirsForCopyStr = UserDataUtils.getOptionalProp(COPY_USERDATA_DIRS_PARAM, userdataId);
 		} catch (SettingsFileOpenException e) {
 			LOGGER.error(GET_USERDATA_PATH_ERROR);
 			return;
@@ -192,7 +192,7 @@ public final class ProductionModeInitializer {
 					"^[.].*", false));
 		try {
 			fprocessor.process(new CopyFileAction(aServletContext.getRealPath("/"
-					+ UserdataUtils.SOLUTIONS_DIR + "/" + userdataId + "/" + dirName)));
+					+ UserDataUtils.SOLUTIONS_DIR + "/" + userdataId + "/" + dirName)));
 		} catch (IOException e) {
 			isAllFilesCopied = false;
 			LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));

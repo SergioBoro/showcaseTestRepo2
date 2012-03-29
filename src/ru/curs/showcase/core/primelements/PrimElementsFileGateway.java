@@ -3,7 +3,7 @@ package ru.curs.showcase.core.primelements;
 import java.io.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.runtime.UserdataUtils;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 
@@ -59,7 +59,7 @@ public class PrimElementsFileGateway implements PrimElementsGateway {
 	public DataFile<InputStream> getRawData(final CompositeContext aContext) {
 		try {
 			stream =
-				UserdataUtils.loadUserDataToStream(String.format("%s/%s", fileType.getFileDir(),
+				UserDataUtils.loadUserDataToStream(String.format("%s/%s", fileType.getFileDir(),
 						fileName));
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, fileName, SettingsFileType.DATAPANEL);

@@ -9,7 +9,7 @@ import net.sf.ehcache.management.ManagementService;
 
 import org.slf4j.*;
 
-import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.runtime.*;
 
 /**
  * Регистрация локальных JMX bean.
@@ -19,14 +19,18 @@ import ru.curs.showcase.runtime.AppInfoSingleton;
  */
 public final class JMXBeanRegistrator {
 
-	private static final String REGISTER_ERROR = "Ошибка при регистрации MBean Showcase ";
+	private static final String REGISTER_ERROR = "Ошибка при регистрации MBean ";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(JMXBeanRegistrator.class);
+
+	private static final String UNREGISTER_ERROR = "Ошибка при отмене регистрации MBean ";
 
 	/**
 	 * Сервер JMX Bean.
 	 */
 	private static MBeanServer mbs = null;
+
+	private static boolean needDisable = false;
 
 	private static MBeanServer getMBeanServer() {
 		if (mbs == null) {
@@ -39,8 +43,12 @@ public final class JMXBeanRegistrator {
 	 * Функция регистрации JMX bean.
 	 */
 	public static void register() {
-		registerEncacheMBean();
-		registerShowcaseMBean();
+		boolean jmxEnable = Boolean.valueOf(UserDataUtils.getGeneralOptionalProp("jmx.enable"));
+		needDisable = needDisable || jmxEnable;
+		if (jmxEnable) {
+			registerEncacheMBean();
+			registerShowcaseMBean();
+		}
 	}
 
 	/**
@@ -75,7 +83,7 @@ public final class JMXBeanRegistrator {
 		}
 	}
 
-	private static ObjectName getShowcaseMBeanName() throws MalformedObjectNameException {
+	public static ObjectName getShowcaseMBeanName() throws MalformedObjectNameException {
 		return new ObjectName("Showcase:name=Showcase.Monitor");
 	}
 
@@ -85,11 +93,13 @@ public final class JMXBeanRegistrator {
 	}
 
 	public static void unRegister() {
-		try {
-			getMBeanServer().unregisterMBean(getShowcaseMBeanName());
-		} catch (InstanceNotFoundException | MBeanRegistrationException
-				| MalformedObjectNameException e) {
-			LOGGER.error(REGISTER_ERROR + e.getLocalizedMessage());
+		if (needDisable) {
+			try {
+				getMBeanServer().unregisterMBean(getShowcaseMBeanName());
+			} catch (InstanceNotFoundException | MBeanRegistrationException
+					| MalformedObjectNameException e) {
+				LOGGER.error(UNREGISTER_ERROR + e.getLocalizedMessage());
+			}
 		}
 	}
 

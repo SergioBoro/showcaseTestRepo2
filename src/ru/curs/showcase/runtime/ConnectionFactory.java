@@ -39,9 +39,9 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 		try {
 			registerDriver();
 			Connection result =
-				DriverManager.getConnection(UserdataUtils.getRequiredProp(CONNECTION_URL_PARAM),
-						UserdataUtils.getRequiredProp(CONNECTION_USERNAME_PARAM),
-						UserdataUtils.getRequiredProp(CONNECTION_PASSWORD_PARAM));
+				DriverManager.getConnection(UserDataUtils.getRequiredProp(CONNECTION_URL_PARAM),
+						UserDataUtils.getRequiredProp(CONNECTION_USERNAME_PARAM),
+						UserDataUtils.getRequiredProp(CONNECTION_PASSWORD_PARAM));
 			return result;
 		} catch (SQLException e) {
 			throw new DBConnectException(e);
@@ -69,7 +69,7 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 	 * Возвращает тип SQL сервера.
 	 */
 	public static SQLServerType getSQLServerType() {
-		String url = UserdataUtils.getRequiredProp(CONNECTION_URL_PARAM).toLowerCase();
+		String url = UserDataUtils.getRequiredProp(CONNECTION_URL_PARAM).toLowerCase();
 
 		// TODO regexp
 		final String mssql = "sqlserver";

@@ -1,7 +1,7 @@
 package ru.curs.showcase.core.frame;
 
 import ru.curs.showcase.core.SourceSelector;
-import ru.curs.showcase.runtime.UserdataUtils;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 
@@ -31,7 +31,7 @@ public class MainPageFrameSelector extends SourceSelector<MainPageFrameGateway> 
 	private void read() {
 		String frameParam =
 			String.format("%s.%s", type.toString().toLowerCase(), GeneralXMLHelper.SOURCE_TAG);
-		setSourceName(UserdataUtils.getOptionalProp(frameParam));
+		setSourceName(UserDataUtils.getOptionalProp(frameParam));
 		if (getSourceName() == null) {
 			setSourceName(getDefaultValue());
 		} else if (PROC_DISABLED.equalsIgnoreCase(getSourceName().trim())) {

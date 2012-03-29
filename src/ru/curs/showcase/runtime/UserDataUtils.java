@@ -12,7 +12,7 @@ import ru.curs.showcase.util.exception.*;
  * пользовательских данных (userdatas).
  * 
  */
-public final class UserdataUtils {
+public final class UserDataUtils {
 
 	public static final String IMAGES_IN_GRID_DIR = "images.in.grid.dir";
 
@@ -57,7 +57,13 @@ public final class UserdataUtils {
 
 	private static final String WEB_CONSOLE_ADD_TEXT_FILES_PARAM = "web.console.add.text.files";
 
-	private UserdataUtils() {
+	private static String generalPropFile;
+
+	public static void setGeneralPropFile(final String aGeneralPropFile) {
+		generalPropFile = aGeneralPropFile;
+	}
+
+	private UserDataUtils() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -259,17 +265,22 @@ public final class UserdataUtils {
 	public static String getGeneralOptionalProp(final String paramName) {
 		Properties prop = new Properties();
 		try {
-			InputStream is =
-				new FileInputStream(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-						+ PROPFILENAME);
+			InputStream is = new FileInputStream(getGeneralPropFile());
 			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
 				prop.load(reader);
 			}
 		} catch (IOException e) {
-			throw new SettingsFileOpenException(AppInfoSingleton.getAppInfo().getUserdataRoot()
-					+ "/" + PROPFILENAME, SettingsFileType.GENERAL_APP_PROPERTIES);
+			throw new SettingsFileOpenException(getGeneralPropFile(),
+					SettingsFileType.GENERAL_APP_PROPERTIES);
 		}
 		return prop.getProperty(paramName);
+	}
+
+	private static String getGeneralPropFile() {
+		if (generalPropFile == null) {
+			return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + PROPFILENAME;
+		}
+		return generalPropFile;
 	}
 
 	public static String getGeneralRequiredProp(final String propName) {

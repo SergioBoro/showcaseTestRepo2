@@ -14,7 +14,7 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.HTMLEvent;
 import ru.curs.showcase.core.event.EventFactory;
-import ru.curs.showcase.runtime.UserdataUtils;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
 
@@ -212,7 +212,7 @@ public class EventsTest extends AbstractTestWithDefaultUserData {
 		EventFactory<HTMLEvent> factory = new EventFactory<HTMLEvent>(HTMLEvent.class, context);
 		factory.intiForGetSimpleEvents(LINK_ID_TAG);
 		InputStream stream =
-			UserdataUtils.loadUserDataToStream("data/webtext/3buttons_enh.settings.xml");
+			UserDataUtils.loadUserDataToStream("data/webtext/3buttons_enh.settings.xml");
 		Collection<HTMLEvent> events = factory.getSimpleEvents(stream);
 
 		final int eventsCount = 3;
@@ -230,7 +230,7 @@ public class EventsTest extends AbstractTestWithDefaultUserData {
 		EventFactory<WrongEvent> factory = new EventFactory<WrongEvent>(WrongEvent.class, context);
 		factory.intiForGetSimpleEvents(LINK_ID_TAG);
 		InputStream stream =
-			UserdataUtils.loadUserDataToStream("data/webtext/3buttons_enh.settings.xml");
+			UserDataUtils.loadUserDataToStream("data/webtext/3buttons_enh.settings.xml");
 		factory.getSimpleEvents(stream);
 	}
 

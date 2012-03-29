@@ -31,13 +31,13 @@ public class HTMLVariablesSLTest extends AbstractTest {
 		MainPageFrameSelector selector = new MainPageFrameSelector(MainPageFrameType.WELCOME);
 		MainPageFrameGateway gateway = selector.getGateway();
 		String raw = gateway.getRawData(context, selector.getSourceName());
-		assertTrue(raw.indexOf(UserdataUtils.CURRENT_USERDATA_TEMPLATE) > -1);
-		assertTrue(raw.indexOf(UserdataUtils.IMAGES_IN_GRID_DIR) > -1);
+		assertTrue(raw.indexOf(UserDataUtils.CURRENT_USERDATA_TEMPLATE) > -1);
+		assertTrue(raw.indexOf(UserDataUtils.IMAGES_IN_GRID_DIR) > -1);
 
-		assertEquals(-1, page.getWelcome().indexOf(UserdataUtils.CURRENT_USERDATA_TEMPLATE));
-		assertEquals(-1, page.getWelcome().indexOf(UserdataUtils.IMAGES_IN_GRID_DIR));
+		assertEquals(-1, page.getWelcome().indexOf(UserDataUtils.CURRENT_USERDATA_TEMPLATE));
+		assertEquals(-1, page.getWelcome().indexOf(UserDataUtils.IMAGES_IN_GRID_DIR));
 		assertTrue(page.getWelcome().indexOf(AppInfoSingleton.getAppInfo().getCurUserDataId()) > -1);
 		assertTrue(page.getWelcome().indexOf(
-				UserdataUtils.getRequiredProp(UserdataUtils.IMAGES_IN_GRID_DIR)) > -1);
+				UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR)) > -1);
 	}
 }

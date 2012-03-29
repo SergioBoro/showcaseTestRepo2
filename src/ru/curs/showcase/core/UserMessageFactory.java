@@ -7,7 +7,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.MessageType;
-import ru.curs.showcase.runtime.UserdataUtils;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;
 
@@ -90,7 +90,7 @@ public final class UserMessageFactory {
 	private void loadMessage(final String mesId) {
 		InputStream stream;
 		try {
-			stream = UserdataUtils.loadUserDataToStream(messageFile);
+			stream = UserDataUtils.loadUserDataToStream(messageFile);
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, messageFile, SettingsFileType.SOLUTION_MESSAGES);
 		}

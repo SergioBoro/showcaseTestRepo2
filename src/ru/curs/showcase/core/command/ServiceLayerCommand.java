@@ -112,7 +112,7 @@ public abstract class ServiceLayerCommand<T> {
 	}
 
 	public void initIDSettings() {
-		String idCS = UserdataUtils.getGeneralOptionalProp(ID_CASESENSITIVE);
+		String idCS = UserDataUtils.getGeneralOptionalProp(ID_CASESENSITIVE);
 		if (idCS != null) {
 			IDSettings.getInstance().setCaseSensivity(Boolean.valueOf(idCS));
 		}
