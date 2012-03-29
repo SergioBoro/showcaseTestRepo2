@@ -91,7 +91,7 @@ public final class SVGConvertor {
 	}
 
 	public void svgFileToJPGFile(final String svgFile, final String jpegFile) {
-		InputStream is = FileUtils.loadResToStream(svgFile);
+		InputStream is = FileUtils.loadClassPathResToStream(svgFile);
 		try {
 			try (OutputStream output = new FileOutputStream(jpegFile)) {
 				svgToJPGBaseMethod(is, output);
@@ -102,7 +102,7 @@ public final class SVGConvertor {
 	}
 
 	public void svgFileToPNGFile(final String svgFile, final String pngFile) {
-		InputStream is = FileUtils.loadResToStream(svgFile);
+		InputStream is = FileUtils.loadClassPathResToStream(svgFile);
 		try {
 			try (OutputStream output = new FileOutputStream(pngFile)) {
 				svgToPNGBaseMethod(is, output);

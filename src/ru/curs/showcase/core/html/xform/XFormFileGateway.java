@@ -58,7 +58,7 @@ public final class XFormFileGateway extends HTMLFileGateway implements XFormGate
 			final DataPanelElementInfo elementInfo, final ID linkId) {
 		StreamConvertor dup;
 		try {
-			dup = new StreamConvertor(FileUtils.loadResToStream(linkId.getString()));
+			dup = new StreamConvertor(FileUtils.loadClassPathResToStream(linkId.getString()));
 		} catch (IOException e) {
 			throw new SettingsFileExchangeException(linkId.getString(), e, SettingsFileType.XM_DATA);
 		}

@@ -67,7 +67,7 @@ public final class ServerStateFactory {
 	private static String getGwtVersion() {
 		String data;
 		try {
-			InputStream is = FileUtils.loadResToStream(GWTVERSION_FILE);
+			InputStream is = FileUtils.loadClassPathResToStream(GWTVERSION_FILE);
 			data = TextUtils.streamToString(is);
 		} catch (IOException e) {
 			return null;
@@ -110,7 +110,7 @@ public final class ServerStateFactory {
 	public static String getAppVersion(final String baseDir) {
 		Properties prop = new Properties();
 		try {
-			InputStream is = FileUtils.loadResToStream(baseDir + VERSION_FILE);
+			InputStream is = FileUtils.loadClassPathResToStream(baseDir + VERSION_FILE);
 			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
 				prop.load(reader);
 			}
@@ -121,7 +121,7 @@ public final class ServerStateFactory {
 
 		String build;
 		try {
-			InputStream is = FileUtils.loadResToStream(baseDir + BUILD_FILE);
+			InputStream is = FileUtils.loadClassPathResToStream(baseDir + BUILD_FILE);
 			try (BufferedReader buf = new BufferedReader(new InputStreamReader(is));) {
 				build = buf.readLine();
 				Pattern pattern = Pattern.compile("(\\d+|development)");
@@ -143,7 +143,7 @@ public final class ServerStateFactory {
 
 		String sql = "";
 		try {
-			sql = TextUtils.streamToString(FileUtils.loadResToStream(fileName));
+			sql = TextUtils.streamToString(FileUtils.loadClassPathResToStream(fileName));
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, fileName, SettingsFileType.SQLSCRIPT);
 		}

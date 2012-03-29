@@ -193,7 +193,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 
 		String sql = "";
 		try {
-			sql = TextUtils.streamToString(FileUtils.loadResToStream(fileName));
+			sql = TextUtils.streamToString(FileUtils.loadClassPathResToStream(fileName));
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, fileName, SettingsFileType.SQLSCRIPT);
 		}

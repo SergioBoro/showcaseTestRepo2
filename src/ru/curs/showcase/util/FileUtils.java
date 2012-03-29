@@ -39,7 +39,7 @@ public final class FileUtils {
 	 *            - путь к загружаемому файлу
 	 * @return поток с файлом.
 	 */
-	public static InputStream loadResToStream(final String fileName) {
+	public static InputStream loadClassPathResToStream(final String fileName) {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
 		InputStream result = classLoader.getResourceAsStream(fileName);
@@ -96,7 +96,7 @@ public final class FileUtils {
 
 	public static String getTestUserdataRoot(final String file) {
 		Properties prop = new Properties();
-		InputStream is = loadResToStream(file);
+		InputStream is = loadClassPathResToStream(file);
 		try {
 			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
 				prop.load(reader);

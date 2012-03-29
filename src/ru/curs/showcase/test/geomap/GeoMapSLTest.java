@@ -109,7 +109,7 @@ public class GeoMapSLTest extends AbstractTest {
 	@Test
 	public void testSVGGet() throws IOException {
 		String inputFile = RU_CURS_SHOWCASE_TEST + GEOMAP_WOHEADER_SVG;
-		InputStream is = FileUtils.loadResToStream(inputFile);
+		InputStream is = FileUtils.loadClassPathResToStream(inputFile);
 		String svg = TextUtils.streamToString(is);
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		SVGGetCommand scommand = new SVGGetCommand(context, new GeoMapExportSettings(), svg);
@@ -124,7 +124,7 @@ public class GeoMapSLTest extends AbstractTest {
 	@Test
 	public void testPNGGet() throws IOException {
 		String inputFile = RU_CURS_SHOWCASE_TEST + GEOMAP_WOHEADER_SVG;
-		InputStream is = FileUtils.loadResToStream(inputFile);
+		InputStream is = FileUtils.loadClassPathResToStream(inputFile);
 		String svg = TextUtils.streamToString(is);
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		PNGGetCommand command = new PNGGetCommand(context, new GeoMapExportSettings(), svg);
@@ -138,7 +138,7 @@ public class GeoMapSLTest extends AbstractTest {
 	@Test
 	public void testJPGGet() throws IOException {
 		String inputFile = RU_CURS_SHOWCASE_TEST + GEOMAP_WOHEADER_SVG;
-		InputStream is = FileUtils.loadResToStream(inputFile);
+		InputStream is = FileUtils.loadClassPathResToStream(inputFile);
 		String svg = TextUtils.streamToString(is);
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		JPGGetCommand command = new JPGGetCommand(context, new GeoMapExportSettings(), svg);
@@ -199,7 +199,7 @@ public class GeoMapSLTest extends AbstractTest {
 	@Test
 	public void testSimpleSVGGet() throws IOException {
 		String inputFile = RU_CURS_SHOWCASE_TEST + GEOMAP_WITH_HEADER_SVG;
-		InputStream is = FileUtils.loadResToStream(inputFile);
+		InputStream is = FileUtils.loadClassPathResToStream(inputFile);
 		String svg = TextUtils.streamToString(is);
 		CompositeContext context =
 			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));

@@ -517,7 +517,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	protected OutputStreamDataFile getTestFile(final String linkId) throws IOException {
 		OutputStreamDataFile file =
 			new OutputStreamDataFile(StreamConvertor.inputToOutputStream(FileUtils
-					.loadResToStream(linkId)), linkId);
+					.loadClassPathResToStream(linkId)), linkId);
 		return file;
 	}
 

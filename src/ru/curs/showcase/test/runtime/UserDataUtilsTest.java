@@ -30,7 +30,7 @@ public final class UserDataUtilsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testLoadResToStream() {
-		assertNotNull(FileUtils.loadResToStream(FileUtils.GENERAL_PROPERTIES));
+		assertNotNull(FileUtils.loadClassPathResToStream(FileUtils.GENERAL_PROPERTIES));
 	}
 
 	/**

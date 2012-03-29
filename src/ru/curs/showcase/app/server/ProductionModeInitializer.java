@@ -62,7 +62,7 @@ public final class ProductionModeInitializer {
 	}
 
 	public static void initUserDatas(final ServletContext aServletContext) {
-		readServletContext(aServletContext);
+		AppInitializer.checkUserDataDir(aServletContext.getInitParameter(SHOWCASE_ROOTPATH_USERDATA_PARAM), "context.xml");
 		AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
 		UserDataUtils.checkUserdatas();
 		copyUserDatas(aServletContext);
@@ -74,11 +74,6 @@ public final class ProductionModeInitializer {
 		path = path.replaceAll("\\\\", "/");
 		path = path.substring(0, path.lastIndexOf('/'));
 		AppInfoSingleton.getAppInfo().setWebAppPath(path);
-	}
-
-	private static void readServletContext(final ServletContext sc) {
-		String rootpath = sc.getInitParameter(SHOWCASE_ROOTPATH_USERDATA_PARAM);
-		AppInitializer.checkUserDataDir(rootpath, "context.xml");
 	}
 
 	private static void readCSSs() {
@@ -117,10 +112,12 @@ public final class ProductionModeInitializer {
 	}
 
 	private static void copyUserDatas(final ServletContext aServletContext) {
-		if (checkForCopyUserData(ExchangeConstants.DEFAULT_USERDATA)) {
-			copyUserData(aServletContext, ExchangeConstants.DEFAULT_USERDATA);
-		}
+		copyGeneralResources(aServletContext);
+		copyDefaultUserData(aServletContext);
+		copyOtherUserDatas(aServletContext);
+	}
 
+	private static void copyOtherUserDatas(final ServletContext aServletContext) {
 		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
 			if (!(ExchangeConstants.DEFAULT_USERDATA.equals(userdataId))) {
 				if (checkForCopyUserData(userdataId)) {
@@ -128,7 +125,39 @@ public final class ProductionModeInitializer {
 				}
 			}
 		}
+	}
 
+	private static void copyDefaultUserData(final ServletContext aServletContext) {
+		if (checkForCopyUserData(ExchangeConstants.DEFAULT_USERDATA)) {
+			copyUserData(aServletContext, ExchangeConstants.DEFAULT_USERDATA);
+		}
+	}
+
+	private static void copyGeneralResources(final ServletContext aServletContext) {
+		File generalResRoot =
+			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + UserDataUtils.GENERAL_RES_ROOT);
+		Boolean isAllFilesCopied = true;
+		if (generalResRoot.exists()) {
+			for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+				File userDataDir =
+					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/"
+							+ userdataId));
+				userDataDir.mkdir();
+
+				BatchFileProcessor fprocessor =
+					new BatchFileProcessor(generalResRoot.getAbsolutePath(),
+							new RegexFilenameFilter("^[.].*", false));
+				try {
+					fprocessor.process(new CopyFileAction(userDataDir.getAbsolutePath()));
+				} catch (IOException e) {
+					isAllFilesCopied = false;
+					LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
+				}
+			}
+		}
+		if (!isAllFilesCopied) {
+			LOGGER.error(NOT_ALL_FILES_COPIED_ERROR);
+		}
 	}
 
 	private static boolean checkForCopyUserData(final String userdataId) {
@@ -170,7 +199,7 @@ public final class ProductionModeInitializer {
 		for (int i = 0; i < dirsForCopy.length; i++) {
 			File dir = new File(userDataCatalog + "/" + dirsForCopy[i]);
 			if (!dir.exists()) {
-				LOGGER.error(String.format(USER_DATA_DIR_NOT_FOUND_ERROR, dirsForCopy[i]));
+				LOGGER.warn(String.format(USER_DATA_DIR_NOT_FOUND_ERROR, dirsForCopy[i]));
 				continue;
 			}
 			isAllFilesCopied =

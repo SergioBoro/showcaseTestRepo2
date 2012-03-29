@@ -9,7 +9,7 @@ import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.core.event.EventFactory;
 import ru.curs.showcase.core.html.*;
-import ru.curs.showcase.runtime.UserDataUtils;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;
@@ -69,28 +69,43 @@ public final class PluginFactory extends HTMLBasedElementFactory {
 	@Override
 	protected void correctSettingsAndData() {
 		result.setCreateProc("create" + TextUtils.capitalizeWord(getElementInfo().getPlugin()));
-		String adapterOnTomcat =
-			checkImport(getPluginDir(), getElementInfo().getPlugin() + ".js",
-					SettingsFileType.PLUGIN_ADAPTER);
-		result.getRequiredJS().add(adapterOnTomcat);
+		checkImport(getPluginDir(), getElementInfo().getPlugin() + ".js",
+				SettingsFileType.PLUGIN_ADAPTER);
+		result.getRequiredJS().add(
+				getAdapterForWebServer(getPluginDir(), getElementInfo().getPlugin() + ".js"));
 		readComponents();
 	}
 
-	private String checkImport(final String dir, final String adapterFile,
+	private void checkImport(final String dir, final String adapterFile,
 			final SettingsFileType fileType) {
+		String adapter = String.format("%s/%s/%s", getPluginsRoot(), dir, adapterFile);
+		File file = new File(adapter);
+		if (!file.exists()) {
+			throw new SettingsFileOpenException(String.format("%s/%s", dir, adapterFile), fileType);
+		}
+	}
+
+	private String getAdapterForWebServer(final String dir, final String adapterFile) {
 		String adapter = String.format("%s/%s", dir, adapterFile);
 		String adapterOnTomcat =
-			String.format("%s/%s/%s", UserDataUtils.SOLUTIONS_DIR, UserDataUtils.getUserDataId(), adapter);
-		File file = new File(UserDataUtils.getUserDataCatalog() + "/" + adapter);
-		if (!file.exists()) {
-			throw new SettingsFileOpenException(adapter, fileType);
-		}
+			String.format("%s/%s/%s", UserDataUtils.SOLUTIONS_DIR, UserDataUtils.getUserDataId(),
+					adapter);
 		return adapterOnTomcat;
+	}
+
+	private String getPluginsRoot() {
+		return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+				+ UserDataUtils.GENERAL_RES_ROOT;
 	}
 
 	private void readComponents() {
 		List<String> comps = readImportFile(getPluginDir() + "/" + IMPORT_TXT);
 		for (String comp : comps) {
+			String compDirName = String.format("%s/%s/%s", getPluginsRoot(), COMPONENTS_DIR, comp);
+			File comDir = new File(compDirName);
+			if (!comDir.exists()) {
+				throw new RuntimeException(String.format("Компонент '%s' не найден", comp));
+			}
 			addImport(comp, "scriptList.txt", result.getRequiredJS());
 			addImport(comp, "styleList.txt", result.getRequiredCSS());
 		}
@@ -102,22 +117,21 @@ public final class PluginFactory extends HTMLBasedElementFactory {
 			if (dep.trim().isEmpty()) {
 				continue;
 			}
-			String adapterOnTomcat =
-				checkImport(COMPONENTS_DIR + "/" + comp, dep, SettingsFileType.LIBRARY_ADAPTER);
-			list.add(adapterOnTomcat);
+			checkImport(COMPONENTS_DIR + "/" + comp, dep, SettingsFileType.LIBRARY_ADAPTER);
+			list.add(getAdapterForWebServer(COMPONENTS_DIR + "/" + comp, dep));
 		}
 	}
 
 	private List<String> readImportFile(final String fileName) {
 		List<String> res = new ArrayList<>();
-		File compList = new File(UserDataUtils.getUserDataCatalog() + "/" + fileName);
-		if (!compList.exists()) {
+		File importFile = new File(getPluginsRoot() + "/" + fileName);
+		if (!importFile.exists()) {
 			return res;
 		}
 
 		String list;
 		try {
-			InputStream is = UserDataUtils.loadUserDataToStream(fileName);
+			InputStream is = new FileInputStream(importFile.getAbsolutePath());
 			list = TextUtils.streamToString(is);
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(fileName, SettingsFileType.IMPORT_LIST);

@@ -14,6 +14,8 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class UserDataUtils {
 
+	public static final String GENERAL_RES_ROOT = "general";
+
 	public static final String IMAGES_IN_GRID_DIR = "images.in.grid.dir";
 
 	public static final String CURRENT_USERDATA_TEMPLATE = "${userdata.dir}";

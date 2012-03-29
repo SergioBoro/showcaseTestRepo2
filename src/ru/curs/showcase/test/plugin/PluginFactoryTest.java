@@ -63,6 +63,23 @@ public class PluginFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
+	public void pluginCommandShouldRaiseExceptionWhenNoCompDir() throws Exception {
+		PluginInfo elInfo = new PluginInfo("id", "fakeComp", PLUGIN_RADAR_PROC);
+
+		HTMLGateway wtgateway = new WebTextDBGateway();
+		HTMLBasedElementRawData rawWT = wtgateway.getRawData(getSimpleTestContext(), elInfo);
+		PluginFactory factory = new PluginFactory(rawWT);
+		try {
+			factory.build();
+			fail();
+			// CHECKSTYLE:OFF
+		} catch (RuntimeException e) {
+			// CHECKSTYLE:ON
+			assertEquals("Компонент 'extJS2' не найден", e.getLocalizedMessage());
+		}
+	}
+
+	@Test
 	public void datapanelFactoryMustReadPluginInfo() {
 		PrimElementsGateway gateway = new PrimElementsFileGateway(SettingsFileType.DATAPANEL);
 		DataFile<InputStream> file = gateway.getRawData(new CompositeContext(), TEST2_XML);

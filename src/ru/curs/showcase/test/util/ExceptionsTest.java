@@ -250,7 +250,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = SettingsFileOpenException.class)
 	public void testUserXSDNotFoundException() {
-		XMLUtils.xsdValidateUserData(FileUtils.loadResToStream(TEST_XML_FILE), PHANTOM_XSD);
+		XMLUtils.xsdValidateUserData(FileUtils.loadClassPathResToStream(TEST_XML_FILE), PHANTOM_XSD);
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = SettingsFileOpenException.class)
 	public void testXSDNotFoundException() {
-		XMLUtils.xsdValidateAppDataSafe(FileUtils.loadResToStream(TEST_XML_FILE), PHANTOM_XSD);
+		XMLUtils.xsdValidateAppDataSafe(FileUtils.loadClassPathResToStream(TEST_XML_FILE), PHANTOM_XSD);
 	}
 
 	/**

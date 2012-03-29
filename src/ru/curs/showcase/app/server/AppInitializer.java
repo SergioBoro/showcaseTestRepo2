@@ -23,8 +23,6 @@ import ch.qos.logback.core.joran.spi.JoranException;
  */
 public final class AppInitializer {
 
-	public static final String DIR_SVN = ".svn";
-
 	private static final String USER_DATA_INFO =
 		"Добавлен userdata на основе rootpath из '%s' с идентификатором '%s' и путем '%s'";
 
@@ -108,14 +106,19 @@ public final class AppInitializer {
 			AppInfoSingleton.getAppInfo().setUserdataRoot(rootpath);
 			String value;
 			for (String id : dir.list()) {
-				if (!DIR_SVN.equalsIgnoreCase(id)) {
-					value = rootpath + "/" + id;
-					if (!new File(value).isDirectory()) {
-						continue;
-					}
-					AppInfoSingleton.getAppInfo().addUserData(id, value);
-					LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
+				if (id.startsWith(".")) {
+					continue;
 				}
+				if (UserDataUtils.GENERAL_RES_ROOT.equalsIgnoreCase(id)) {
+					continue;
+				}
+				value = rootpath + "/" + id;
+				if (!new File(value).isDirectory()) {
+					continue;
+				}
+				AppInfoSingleton.getAppInfo().addUserData(id, value);
+				LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
+
 			}
 		}
 	}

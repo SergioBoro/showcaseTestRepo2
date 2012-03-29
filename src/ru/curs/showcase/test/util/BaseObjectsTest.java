@@ -102,13 +102,13 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testXMLSourceCreate() {
-		XMLSource source = new XMLSource(FileUtils.loadResToStream(TEST_XML_FILE), "");
+		XMLSource source = new XMLSource(FileUtils.loadClassPathResToStream(TEST_XML_FILE), "");
 		assertNotNull(source.getInputStream());
 		assertNull(source.getDocument());
 		assertNull(source.getSaxParser());
 
 		source =
-			new XMLSource(FileUtils.loadResToStream(TEST_XML_FILE), XMLUtils.createSAXParser(), "");
+			new XMLSource(FileUtils.loadClassPathResToStream(TEST_XML_FILE), XMLUtils.createSAXParser(), "");
 		assertNotNull(source.getInputStream());
 		assertNull(source.getDocument());
 		assertNotNull(source.getSaxParser());
