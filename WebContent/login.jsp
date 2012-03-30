@@ -78,6 +78,7 @@ pageEncoding="UTF-8"%>
     authGifSrc = SecurityParamsFactory.correctAuthGifSrcRequestInCaseOfInaccessibility(authGifSrc);
 %>
 <c:if test="${not empty param.error}">
+<div id="accessDenied">
   <font color="red">
   <b>Ошибка!</b>
   <br/>
@@ -86,6 +87,7 @@ pageEncoding="UTF-8"%>
   Ответ сервера: ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message} 
   <br/>
   </font>
+  </div>
 </c:if>
 <span id="helloMessage" style="font-size: 27px;color:green">Авторизация в КУРС: Showcase</span>
 <span id="informationMessage" style="font-family: sans-serif;"></span>
