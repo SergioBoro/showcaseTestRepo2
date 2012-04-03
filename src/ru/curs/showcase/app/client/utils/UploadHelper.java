@@ -134,7 +134,8 @@ public final class UploadHelper extends RunServletByFormHelper {
 		addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
 			@Override
 			public void onSubmitComplete(final SubmitCompleteEvent event) {
-				if ((event.getResults() == null) || (event.getResults().isEmpty())) {
+				if ((event.getResults() == null) || (event.getResults().isEmpty())
+						|| ("<pre></pre>".equalsIgnoreCase(event.getResults().trim()))) {
 					submitHandler.onComplete(true);
 				} else {
 					MessageBox.showSimpleMessage(UPLOAD_ERROR, event.getResults());
