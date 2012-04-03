@@ -204,8 +204,8 @@ public class RecordSetElementRawData extends ElementRawData implements Closeable
 					if (GeneralXMLHelper.PROPERTIES_SQL_TAG.equalsIgnoreCase(md.getColumnLabel(i))) {
 						writer.append(rowset.getString(md.getColumnLabel(i)));
 					} else if (GeneralXMLHelper.ID_SQL_TAG.equalsIgnoreCase(md.getColumnLabel(i))) {
-						writer.append("<" + GeneralXMLHelper.ID_TAG + ">"
-								+ rowset.getString(md.getColumnLabel(i)) + "</"
+						writer.append("<_x007e__x007e_" + GeneralXMLHelper.ID_TAG + ">"
+								+ rowset.getString(md.getColumnLabel(i)) + "</_x007e__x007e_"
 								+ GeneralXMLHelper.ID_TAG + ">");
 					} else {
 						String tagName = XMLUtils.escapeTagXml(md.getColumnLabel(i));

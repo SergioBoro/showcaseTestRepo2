@@ -79,7 +79,7 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 		Grid grid = factory.build();
 
 		assertNotNull(grid.getAutoSelectRecord());
-		final String recId = "77F60A7C-42EB-4E32-B23D-F179E58FB138";
+		final String recId = "<id>77F60A7C-42EB-4E32-B23D-F179E58FB138</id>";
 		assertEquals(recId, grid.getAutoSelectRecord().getId());
 		assertNotNull(grid.getEventManager().getEventForCell(recId, "URL",
 				InteractionType.SINGLE_CLICK));

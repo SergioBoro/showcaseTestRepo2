@@ -10573,6 +10573,7 @@ SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
 
+
 CREATE PROCEDURE [dbo].[grid_portals_id_and_css]
     @main_context varchar(512) ='',
     @add_context varchar(512) ='',
@@ -10601,7 +10602,7 @@ set @gridsettings_str='<gridsettings>
  autoSelectRelativeRecord="false" autoSelectColumnId="URL"/>
 </gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
-SELECT [Name] AS "Название", [Logo] AS "Логотип", [Url] as "URL", Id AS "~~id",  cast( '<properties>
+SELECT [Name] AS "Название", [Logo] AS "Логотип", [Url] as "URL", '<id>'+ cast(Id as varchar(max))+'</id>' AS "~~id",  cast( '<properties>
 			<styleClass name="grid-record-bold"/>
 			<styleClass name="grid-record-italic"/>
                     <event name="row_single_click">
@@ -10620,6 +10621,7 @@ SELECT [Name] AS "Название", [Logo] AS "Логотип", [Url] as "URL",
             </properties>' as xml)  as [~~properties] FROM [dbo].[Websites]
 WHERE [IsPortal]=1
 END
+
 GO
 
 --
@@ -16547,6 +16549,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+
 CREATE PROCEDURE [dbo].[grid_portals_id_and_css_xmlds]
     @main_context varchar(512) ='',
     @add_context varchar(512) ='',
@@ -16616,7 +16619,7 @@ set @gridsettings_str=
   <Файл2></Файл2>
   <Логотип><link href="http://yandex.ru" image="${images.in.grid.dir}/imagesingrid/yandex.png" text="Яндекс" openInNewTab="true"/></Логотип>
   <URL> <link href="http://yandex.ru/yandsearch?text=КУРС-ИТ" text="Яндекс" openInNewTab="true"/></URL>
-  <id>7451DF70-ACC3-48CC-8CC0-3092F8A237BE</id>
+  <_x007e__x007e_id>7451DF70-ACC3-48CC-8CC0-3092F8A237BE</_x007e__x007e_id>
     <properties>
       <styleClass name="grid-record-bold" />
       <styleClass name="grid-record-italic" />
@@ -16642,7 +16645,7 @@ set @gridsettings_str=
   <Файл2>Файл22</Файл2>
   <Логотип><link href="http://rbc.ru" image="${images.in.grid.dir}/imagesingrid/rbc.gif" text="rbc.ru" openInNewTab="true"/></Логотип>
   <URL><link href="http://rbc.ru"  openInNewTab="true"/></URL>
-  <id>8BC3D54A-AE03-4728-AFCD-54DC092B0823</id>
+  <_x007e__x007e_id>8BC3D54A-AE03-4728-AFCD-54DC092B0823</_x007e__x007e_id>
     <properties>
       <styleClass name="grid-record-bold" />
       <styleClass name="grid-record-italic" />
@@ -16668,7 +16671,7 @@ set @gridsettings_str=
   <Файл2>Файл23</Файл2>
   <Логотип><link href="http://rambler.ru" image="${images.in.grid.dir}/imagesingrid/rambler.gif" text="rambler.ru" openInNewTab="true"/></Логотип>
   <URL><link href="http://rambler.ru" text="rambler.ru" openInNewTab="true"/></URL>
-  <id>77F60A7C-42EB-4E32-B23D-F179E58FB138</id>
+  <_x007e__x007e_id>77F60A7C-42EB-4E32-B23D-F179E58FB138</_x007e__x007e_id>
     <properties>
       <styleClass name="grid-record-bold" />
       <styleClass name="grid-record-italic" />
@@ -16694,7 +16697,7 @@ set @gridsettings_str=
   <Файл2>Файл24</Файл2>
   <Логотип><link href="http://mail.ru" image="${images.in.grid.dir}/imagesingrid/mailru.gif" text="mail.ru" openInNewTab="true"/></Логотип>
   <URL><link href="http://mail.ru" text="mail.ru" openInNewTab="true"/></URL>
-  <id>856ACCF2-53AB-4AF0-A956-F6E85601D0B4</id>
+  <_x007e__x007e_id>856ACCF2-53AB-4AF0-A956-F6E85601D0B4</_x007e__x007e_id>
     <properties>
       <styleClass name="grid-record-bold" />
       <styleClass name="grid-record-italic" />
@@ -16720,6 +16723,7 @@ set @gridsettings_str=
 set    @gridsettings=CAST(@gridsettings_str as xml)
 
 END
+
 GO
 
 

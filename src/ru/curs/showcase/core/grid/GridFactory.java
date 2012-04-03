@@ -36,6 +36,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 public class GridFactory extends CompBasedElementFactory {
+
 	private static final String UNIQUE_CHECK_ERROR =
 		"В отображаемом наборе присутствуют записи с неуникальным id";
 
@@ -889,7 +890,7 @@ public class GridFactory extends CompBasedElementFactory {
 	}
 
 	private void postProcessingByXmlDS() {
-		Column idColumn = getResult().getColumnById(ID_TAG);
+		Column idColumn = getResult().getColumnById("~~" + ID_TAG);
 		Column propsColumn = getResult().getColumnById(PROPS_TAG);
 		for (Record rec : getRecordSet().getRecords()) {
 			if (idColumn != null) {
