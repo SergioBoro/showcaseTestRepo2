@@ -229,15 +229,22 @@ public class GeneralDataPanel {
 		for (DataPanelElementInfo dpe : tabscoll) {
 			Widget el = null;
 			if (dpe.getCacheData()) {
-				el =
+
+				BasicElementPanelBasis bepb =
 					AppCurrContext.getInstance().getMapOfDataPanelElements()
 							.get(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
+				if (bepb != null) {
+					el = bepb.getPanel();
+
+					getUiElements(dpe).add(new UIDataPanelElement(bepb));
+				}
 
 			}
 
 			if (el == null) {
 				el = generateElement(dpe);
 			}
+
 			if (el != null) {
 				el.addStyleName("dataPanelElement-BorderCorners");
 
@@ -252,13 +259,13 @@ public class GeneralDataPanel {
 
 					vp1.add(el);
 
-					if (dpe.getCacheData()) {
-						AppCurrContext
-								.getInstance()
-								.getMapOfDataPanelElements()
-								.put(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)),
-										el);
-					}
+					// if (dpe.getCacheData()) {
+					// AppCurrContext
+					// .getInstance()
+					// .getMapOfDataPanelElements()
+					// .put(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)),
+					// el);
+					// }
 
 				}
 			}
@@ -416,6 +423,7 @@ public class GeneralDataPanel {
 		}
 
 		getUiElements(dpe).add(new UIDataPanelElement(chp));
+		addDataPanelForCaching(dpe, chp);
 		return w;
 
 	}
@@ -453,6 +461,7 @@ public class GeneralDataPanel {
 			}
 
 			getUiElements(dpe).add(new UIDataPanelElement(edgp));
+			addDataPanelForCaching(dpe, edgp);
 
 			break;
 
@@ -475,6 +484,7 @@ public class GeneralDataPanel {
 			}
 
 			getUiElements(dpe).add(new UIDataPanelElement(dgp));
+			addDataPanelForCaching(dpe, dgp);
 
 			break;
 		}
@@ -507,7 +517,32 @@ public class GeneralDataPanel {
 
 		getUiElements(dpe).add(new UIDataPanelElement(wtp));
 
+		addDataPanelForCaching(dpe, wtp);
+
 		return w;
+	}
+
+	/**
+	 * Процедуры, которая добавляет в структуру Map закэшированный элемент
+	 * информационной панели типа BasicElementPanelBasis.
+	 * 
+	 * @param dpe
+	 *            - dpe
+	 * @param bepb
+	 *            - элемент типа BasicElementPanelBasis
+	 */
+	private static void addDataPanelForCaching(final DataPanelElementInfo dpe,
+			final BasicElementPanelBasis bepb) {
+
+		if (!(dpe.getNeverShowInPanel())) {
+
+			if (dpe.getCacheData()) {
+				AppCurrContext.getInstance().getMapOfDataPanelElements()
+						.put(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)), bepb);
+			}
+
+		}
+
 	}
 
 	/**
@@ -535,6 +570,7 @@ public class GeneralDataPanel {
 		}
 
 		getUiElements(dpe).add(new UIDataPanelElement(wtp));
+		addDataPanelForCaching(dpe, wtp);
 
 		return w;
 	}
@@ -566,6 +602,7 @@ public class GeneralDataPanel {
 		}
 
 		getUiElements(dpe).add(new UIDataPanelElement(mp));
+		addDataPanelForCaching(dpe, mp);
 		return w;
 
 	}
@@ -597,6 +634,7 @@ public class GeneralDataPanel {
 		}
 
 		getUiElements(dpe).add(new UIDataPanelElement(mp));
+		addDataPanelForCaching(dpe, mp);
 		return w;
 
 	}
