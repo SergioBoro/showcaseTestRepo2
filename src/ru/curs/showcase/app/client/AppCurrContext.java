@@ -7,10 +7,9 @@ import java.util.*;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanel;
-import ru.curs.showcase.app.client.api.ActionTransformer;
+import ru.curs.showcase.app.client.api.*;
 
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * 
@@ -32,16 +31,16 @@ public final class AppCurrContext extends ActionTransformer {
 		new ArrayList<String>();
 
 	/**
-	 * Переменная хранящая в структуре Map закэшированные виджеты в элементами,
-	 * которые "закэшированы".
+	 * Переменная хранящая в структуре Map закэшированные элементы
+	 * BasicElementPanelBasis, которые "закэшированы".
 	 */
-	private static HashMap<String, Widget> mapOfDataPanelElementsToBeCached =
-		new HashMap<String, Widget>();
+	private static HashMap<String, BasicElementPanelBasis> mapOfDataPanelElementsToBeCached =
+		new HashMap<String, BasicElementPanelBasis>();
 
 	/**
 	 * @return the mapOfDataPanelElements
 	 */
-	public HashMap<String, Widget> getMapOfDataPanelElements() {
+	public HashMap<String, BasicElementPanelBasis> getMapOfDataPanelElements() {
 		return mapOfDataPanelElementsToBeCached;
 	}
 
@@ -49,7 +48,8 @@ public final class AppCurrContext extends ActionTransformer {
 	 * @param amapOfDataPanelElements
 	 *            the mapOfDataPanelElements to set
 	 */
-	public void setMapOfDataPanelElements(final HashMap<String, Widget> amapOfDataPanelElements) {
+	public void setMapOfDataPanelElements(
+			final HashMap<String, BasicElementPanelBasis> amapOfDataPanelElements) {
 		AppCurrContext.mapOfDataPanelElementsToBeCached = amapOfDataPanelElements;
 	}
 
