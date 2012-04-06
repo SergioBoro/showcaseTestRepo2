@@ -10124,6 +10124,27 @@ function getXMLByXPathArray(xpathArray)
 	return xml;
 }
 
+
+function getXFormCacheInstances()
+{
+	var cacheInstances = {};
 	
+	for (var id in xforms.defaultModel.instances) {
+		var inst = xforms.defaultModel.instances[id];
+		cacheInstances[id] = Writer.toString(inst.doc);
+	}
+
+	return cacheInstances;
+}
+
+function setXFormCacheInstances(cacheInstances)
+{
+	for (var id in cacheInstances) {
+		xforms.defaultModel.instances[id].setDoc(cacheInstances[id]);
+	}
+	xforms.refresh();
+}
+
+
 	
 	

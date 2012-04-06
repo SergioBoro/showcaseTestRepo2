@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.*;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.*;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.*;
@@ -29,6 +29,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 	private XForm xform = null;
 	private String mainInstance;
+
+	private JavaScriptObject cacheInstances;
 
 	/**
 	 * Окно для загрузки файлов на сервер.
@@ -321,9 +323,30 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 * Закрывает форму, снимая всю ранее выставленную Javascript-инструментовку.
 	 */
 	public static synchronized void destroyXForms() {
-		destroy();
+		XFormPanel currentXFormPanel = null;
 
 		List<UIDataPanelTab> uiDataPanel = AppCurrContext.getInstance().getUiDataPanel();
+		for (int i = 0; i < uiDataPanel.size(); i++) {
+			if (currentXFormPanel != null) {
+				break;
+			}
+			List<UIDataPanelElement> uiElements = uiDataPanel.get(i).getUiElements();
+			for (int j = 0; j < uiElements.size(); j++) {
+				if (uiElements.get(j).getElementPanel().getElementInfo().getType() == DataPanelElementType.XFORMS) {
+					if (((XFormPanel) uiElements.get(j).getElementPanel()).xf != null) {
+						currentXFormPanel = (XFormPanel) uiElements.get(j).getElementPanel();
+						break;
+					}
+				}
+			}
+		}
+
+		if ((currentXFormPanel != null) && currentXFormPanel.getElementInfo().getCacheData()) {
+			currentXFormPanel.cacheInstances = getXFormCacheInstances();
+		}
+
+		destroy();
+
 		for (int i = 0; i < uiDataPanel.size(); i++) {
 			List<UIDataPanelElement> uiElements = uiDataPanel.get(i).getUiElements();
 			for (int j = 0; j < uiElements.size(); j++) {
@@ -373,11 +396,15 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 		List<UIDataPanelTab> uiDataPanel = AppCurrContext.getInstance().getUiDataPanel();
 		for (int i = 0; i < uiDataPanel.size(); i++) {
+			if (cacheXFormPanel != null) {
+				break;
+			}
 			List<UIDataPanelElement> uiElements = uiDataPanel.get(i).getUiElements();
 			for (int j = 0; j < uiElements.size(); j++) {
 				if ((uiElements.get(j).getElementPanel().getElementInfo().getType() == DataPanelElementType.XFORMS)
 						&& (uiElements.get(j).getElementPanel().getPanel() == el)) {
 					cacheXFormPanel = (XFormPanel) uiElements.get(j).getElementPanel();
+					break;
 				}
 			}
 		}
@@ -397,7 +424,17 @@ public class XFormPanel extends BasicElementPanelBasis {
 		setNeedResetLocalContext(false);
 
 		setXFormPanelByXForms(xform);
+
+		setXFormCacheInstances(cacheInstances);
 	}
+
+	private static native JavaScriptObject getXFormCacheInstances() /*-{
+		return $wnd.getXFormCacheInstances();
+	}-*/;
+
+	private static native void setXFormCacheInstances(final JavaScriptObject xFormCacheInstances) /*-{
+		$wnd.setXFormCacheInstances(xFormCacheInstances);
+	}-*/;
 
 	/**
 	 * Вызывается перед показом модального окна, содержащего XFormPanel.
