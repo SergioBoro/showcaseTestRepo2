@@ -233,12 +233,12 @@ public class XFormPanel extends BasicElementPanelBasis {
 	}
 
 	private native void fillMainInstance() /*-{
-											if ($wnd.xforms.defaultModel != null) {
-											this.@ru.curs.showcase.app.client.XFormPanel::mainInstance = $wnd.Writer
-											.toString($wnd.xforms.defaultModel
-											.getInstanceDocument('mainInstance'));
-											}
-											}-*/;
+		if ($wnd.xforms.defaultModel != null) {
+			this.@ru.curs.showcase.app.client.XFormPanel::mainInstance = $wnd.Writer
+					.toString($wnd.xforms.defaultModel
+							.getInstanceDocument('mainInstance'));
+		}
+	}-*/;
 
 	/**
 	 * Установка процедур обратного вызова.
@@ -263,8 +263,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 * Инициализирует X-форму, запуская инструментующий javascript.
 	 */
 	private static native void initForm() /*-{
-											$wnd.init();
-											}-*/;
+		$wnd.init();
+	}-*/;
 
 	/**
 	 * Инструментует панель с формой.
@@ -295,27 +295,27 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 * динамически созданные скрипты и стили.
 	 */
 	private static native void destroy() /*-{
-											//Деинициализируем механизм XSLTForms
-											if ($wnd.xforms != null)
-											$wnd.xforms.close();
+		//Деинициализируем механизм XSLTForms
+		if ($wnd.xforms != null)
+			$wnd.xforms.close();
 
-											//Подчищаем динамические стили
-											var hdr = $doc.getElementsByTagName('head')[0];
-											var ss1 = $doc.getElementById('dynastyle');
-											if (ss1 != null)
-											hdr.removeChild(ss1);
+		//Подчищаем динамические стили
+		var hdr = $doc.getElementsByTagName('head')[0];
+		var ss1 = $doc.getElementById('dynastyle');
+		if (ss1 != null)
+			hdr.removeChild(ss1);
 
-											//Подчищаем
-											ss1 = $doc.getElementById('xf-model-config');
-											if (ss1 != null)
-											hdr.removeChild(ss1);
+		//Подчищаем
+		ss1 = $doc.getElementById('xf-model-config');
+		if (ss1 != null)
+			hdr.removeChild(ss1);
 
-											//Подчищаем динамические скрипты
-											var div = $doc.getElementById('target');
-											while (div.childNodes.length > 0)
-											div.removeChild(div.firstChild);
+		//Подчищаем динамические скрипты
+		var div = $doc.getElementById('target');
+		while (div.childNodes.length > 0)
+			div.removeChild(div.firstChild);
 
-											}-*/;
+	}-*/;
 
 	/**
 	 * Закрывает форму, снимая всю ранее выставленную Javascript-инструментовку.
@@ -362,6 +362,41 @@ public class XFormPanel extends BasicElementPanelBasis {
 			// destroy();
 
 		}
+	}
+
+	/**
+	 * Восстанавливает закешированную XFormPanel.
+	 * 
+	 */
+	public static void restoreCacheXForm(final Widget el) {
+		XFormPanel cacheXFormPanel = null;
+
+		List<UIDataPanelTab> uiDataPanel = AppCurrContext.getInstance().getUiDataPanel();
+		for (int i = 0; i < uiDataPanel.size(); i++) {
+			List<UIDataPanelElement> uiElements = uiDataPanel.get(i).getUiElements();
+			for (int j = 0; j < uiElements.size(); j++) {
+				if ((uiElements.get(j).getElementPanel().getElementInfo().getType() == DataPanelElementType.XFORMS)
+						&& (uiElements.get(j).getElementPanel().getPanel() == el)) {
+					cacheXFormPanel = (XFormPanel) uiElements.get(j).getElementPanel();
+				}
+			}
+		}
+
+		if (cacheXFormPanel == null) {
+			return;
+		}
+
+		if (cacheXFormPanel.getElement() == null) {
+			return;
+		}
+
+		cacheXFormPanel.restoreCacheData();
+	}
+
+	private void restoreCacheData() {
+		setNeedResetLocalContext(false);
+
+		setXFormPanelByXForms(xform);
 	}
 
 	/**

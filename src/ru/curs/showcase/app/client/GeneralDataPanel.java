@@ -259,6 +259,10 @@ public class GeneralDataPanel {
 
 					vp1.add(el);
 
+					if (dpe.getCacheData() && (dpe.getType() == DataPanelElementType.XFORMS)) {
+						XFormPanel.restoreCacheXForm(el);
+					}
+
 					// if (dpe.getCacheData()) {
 					// AppCurrContext
 					// .getInstance()
