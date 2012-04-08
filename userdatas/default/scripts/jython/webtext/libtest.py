@@ -34,33 +34,33 @@ def mainproc():
     data = u'''<div>
     <button type="button" onclick="gwtWebTextFunc('${elementId}','1');">Сгенерировать PDF</button>
     <button type="button" onclick="gwtWebTextFunc('${elementId}','2');">Сгенерировать Excel</button>
-    <hr/>    
+    <hr/>
     <a href="''' + pdf + u'''" target="_blank">Открыть сгенерированный PDF</a>
     <a href="''' + excel + u'''" target="_blank">Открыть сгенерированный Excel</a>
     </div>'''
     settings = '''
-<properties>           
+<properties>
                       <event name="single_click" linkId="1">
                         <action >
-                            <main_context>current</main_context>                        
+                            <main_context>current</main_context>
                             <server>
                                 <activity id="srv01" name="jasperReport/pdfCreate.py">
                                     <add_context>''' + AppInfoSingleton.getAppInfo().getWebAppPath() + '/' + pdf + u'''</add_context>
                                 </activity>
                             </server>
                         </action>
-                       </event>        
+                       </event>
                       <event name="single_click" linkId="2">
                         <action >
-                            <main_context>current</main_context>                                                  
+                            <main_context>current</main_context>
                             <server>
                                 <activity id="srv02" name="poi/excelCreate.py">
                                     <add_context>''' + AppInfoSingleton.getAppInfo().getWebAppPath() + '/' + excel + '''</add_context>
                                 </activity>
                             </server>
                         </action>
-                       </event>                                                                                      
-                    </properties>    
+                       </event>
+                    </properties>
     '''
     res = JythonDTO(data, settings)
     return res

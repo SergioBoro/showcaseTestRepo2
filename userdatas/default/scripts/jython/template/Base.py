@@ -254,7 +254,6 @@ xmlns:xf="http://www.w3.org/2002/xforms">
                         resource="javascript:gwtXFormFilter('xformId', '2',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
                 </xf:action>
             </xf:trigger>
-            
             <xf:trigger>
                 <xf:label>Обновить</xf:label>
                 <xf:action ev:event="DOMActivate">
@@ -269,7 +268,7 @@ xmlns:xf="http://www.w3.org/2002/xforms">
 
 
     </body>
-</html>    
+</html>
     '''
 
 if __name__ == "__main__":

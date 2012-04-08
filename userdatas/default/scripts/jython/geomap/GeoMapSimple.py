@@ -59,12 +59,12 @@ def mainproc():
 <geomapsettings>
         <labels>
             <header><p>Карта djeo без регионов</p>
-            </header>    
+            </header>
         </labels>
         <properties/>
-        <template> 
+        <template>
     {
-       registerSolutionMap: russia_ym,    
+       registerSolutionMap: russia_ym,
 
        style: [
     {
@@ -89,10 +89,10 @@ def mainproc():
     img: "solutions/default/resources/1.jpg"
 }
 ]
-      
-}    
-        </template>                        
-</geomapsettings>    
+
+}
+        </template>
+</geomapsettings>
     '''
     return JythonDTO(data, settings)
 

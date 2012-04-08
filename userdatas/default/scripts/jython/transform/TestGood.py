@@ -109,7 +109,6 @@ def mainproc():
                                                 style="text-align: center; background-color: white; color: black; border-bottom: 1px solid #CCDDEE">
                                                 <xsl:value-of
                                                     select="concat('1','.',count(../../../preceding-sibling::document/Schema/Objective/Indicator)+count(../../preceding-sibling::Schema/Objective/Indicator)+position())"/>
-                                                
                                             </td>
                                             <td
                                                 style="text-align: center; background-color: white; color: black; border-bottom: 1px solid #CCDDEE; border-left: 1px solid #CCDDEE">
@@ -201,7 +200,6 @@ def mainproc():
                                                     style="text-align: center; background-color: white; color: black; border-bottom: 1px solid #CCDDEE">
                                                     <xsl:value-of
                                                         select="concat('2','.',count(../../../preceding-sibling::document/Schema/Task/Indicator)+count(../../preceding-sibling::Schema/Task/Indicator)+position())"/>
-                                                    
                                                 </td>
                                                 <td
                                                     style="text-align: center; background-color: white; color: black; border-bottom: 1px solid #CCDDEE; border-left: 1px solid #CCDDEE">
@@ -253,7 +251,6 @@ def mainproc():
                                                     </xsl:choose>
                                                 </td>
                                             </tr>
-                                            
                                         </xsl:for-each>
                                     </xsl:for-each>
                                 </xsl:for-each>
@@ -261,7 +258,7 @@ def mainproc():
                         </body>
                     </html>
                 </xsl:template>
-            </xsl:stylesheet>  
+            </xsl:stylesheet>
     '''
 
 if __name__ == "__main__":

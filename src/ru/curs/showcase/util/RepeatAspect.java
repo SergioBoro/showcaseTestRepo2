@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.util;
 
 import java.lang.reflect.*;
 
@@ -6,6 +6,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.*;
+
 
 /**
  * Аспект для @Repeat в модульных тестах.
@@ -18,7 +19,7 @@ public final class RepeatAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RepeatAspect.class);
 
 	@SuppressWarnings("unused")
-	@Pointcut("execution(@ru.curs.showcase.test.Repeat public void ru.curs.showcase.test.*.*())")
+	@Pointcut("execution(@ru.curs.showcase.util.Repeat public void ru.curs.showcase..*())")
 	private void testWithRepeat() {
 	};
 

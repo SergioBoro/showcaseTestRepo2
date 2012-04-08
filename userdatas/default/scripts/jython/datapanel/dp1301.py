@@ -47,12 +47,12 @@ def mainproc():
         <element id="0502" type="xforms" template="Showcase_Template_multiselector_simple.xml"
             proc="xforms_proc_no_data">
             <proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
-        </element>                    
+        </element>
     </tab>
     <tab id="08" name="Проверка шаблона карты на сервере">
-        <element id="08" type="geomap" proc="geomap_world" cacheData="false"/>    
-    </tab>    
-</datapanel>   
+        <element id="08" type="geomap" proc="geomap_world" cacheData="false"/>
+    </tab>
+</datapanel>
     '''
 
 if __name__ == "__main__":

@@ -36,7 +36,7 @@ def mainproc():
     <button type="button" onclick="gwtWebTextFunc('${elementId}','testId');">Обновить нижележащие элементы</button>
     </div>'''
     settings = u'''
-    <properties>           
+    <properties>
         <event name="single_click" linkId="testId">
              <action>
                  <main_context>current</main_context>
@@ -44,22 +44,22 @@ def mainproc():
                          <element id="grid1">
                              <add_context>
                                  add_context для действия.
-                             </add_context>  
+                             </add_context>
                         </element>
                          <element id="xform1">
                              <add_context>
                                  add_context для действия.
-                             </add_context>  
-                        </element> 
+                             </add_context>
+                        </element>
                          <element id="livegrid1">
                              <add_context>
                                  add_context для действия.
-                             </add_context>  
-                        </element>                                                    
-                    </datapanel>                      
+                             </add_context>
+                        </element>
+                    </datapanel>
             </action>
-        </event>                                                                                             
-    </properties>    
+        </event>
+    </properties>
     '''
     res = JythonDTO(data, settings)
     return res

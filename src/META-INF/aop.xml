@@ -8,7 +8,7 @@
 	</weaver>
 	<aspects>
 		<aspect name="ru.curs.showcase.app.server.ServletExceptionInterceptor" />
-		<aspect name="ru.curs.showcase.test.RepeatAspect" />
+		<aspect name="ru.curs.showcase.util.RepeatAspect" />
 		<aspect name="ru.curs.showcase.util.DoAfterCheckAspect" />
 	</aspects>
 </aspectj>

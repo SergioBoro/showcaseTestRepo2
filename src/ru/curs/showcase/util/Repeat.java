@@ -1,4 +1,4 @@
-package ru.curs.showcase.test;
+package ru.curs.showcase.util;
 
 import java.lang.annotation.*;
 

@@ -38,16 +38,15 @@ def mainproc():
             <h3 align="center">Общие сведения</h3>
             <div>
                 <span>
-                    <xsl:value-of select="concat('Название региона - ', /root/name)"/> 
+                    <xsl:value-of select="concat('Название региона - ', /root/name)"/>
                 </span>
             </div>
             <div>
-                <span style="position:relative;vertical-align:40px;"> Флаг - &nbsp;&nbsp;&nbsp;&nbsp;</span>                
+                <span style="position:relative;vertical-align:40px;"> Флаг - &nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <img src="solutions/default/resources/webtext/Flag_of_Russia.png" alt="" style="border: 1px solid black;"/>
             </div>
-            
             <div>
-                <span style="position:relative;vertical-align:50px;"> Герб - 
+                <span style="position:relative;vertical-align:50px;"> Герб -
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <img src="solutions/default/resources/webtext/Gerb_of_Russia.png" alt="" style=""/>
             </div>
@@ -59,7 +58,7 @@ def mainproc():
             </div>
         </div>
     </xsl:template>
-</xsl:stylesheet>   
+</xsl:stylesheet>
     '''
 
 if __name__ == "__main__":

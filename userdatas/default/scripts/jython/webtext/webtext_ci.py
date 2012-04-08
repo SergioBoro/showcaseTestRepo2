@@ -33,7 +33,7 @@ def mainproc():
     <button type="button" onclick="gwtWebTextFunc('${elementId}','testID');">Показать сообщение</button>
     </div>'''
     settings = u'''
-    <properties>           
+    <properties>
         <event name="single_click" linkId="testId">
              <action >
                  <main_context>Москва</main_context>
@@ -41,12 +41,12 @@ def mainproc():
                          <activity id="activityID" name="showcaseShowAddContext">
                              <add_context>
                                  add_context для действия.
-                             </add_context>  
-                        </activity>     
-                    </client>                      
+                             </add_context>
+                        </activity>
+                    </client>
             </action>
-        </event>                                                                                             
-    </properties>    
+        </event>
+    </properties>
     '''
     res = JythonDTO(data, settings)
     return res

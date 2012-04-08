@@ -33,14 +33,14 @@ def mainproc():
     <button type="button" onclick="gwtWebTextFunc('${elementId}','1');">Перейти на панель 12.1 c контекстом Москва</button>
     </div>'''
     settings = u'''
-<properties>           
+<properties>
                       <event name="single_click" linkId="1">
                         <action >
                             <main_context>Москва</main_context>
-                            <navigator element="1201"/>                        
+                            <navigator element="1201"/>
                         </action>
-                       </event>                                                                                             
-                    </properties>    
+                       </event>
+                    </properties>
     '''
     res = JythonDTO(data, settings)
     return res
