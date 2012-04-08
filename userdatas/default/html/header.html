@@ -2,20 +2,20 @@
  <table style="margin-top: -1%;  margin-left: 2%; padding:0%; width: 95%">
    <tr>
      <td>
-      <a href="" class="linkStyle" >На главную</a>
+      <a href="" id="backToMainPageLink" class="linkStyle" >На главную</a>
      </td>
      <td >
       <a href="log/lastLogEvents.jsp" class="linkStyle" target="_blank">Веб-консоль</a>&nbsp;&nbsp;
       <a href="control/memory.jsp" class="linkStyle" target="_blank">Контроль памяти</a>
      </td>
      <td>
-      <a onclick="showAboutFeedbackJSNIFunction()" class="linkStyle" >О программе</a><br/> 
+      <a id="showAboutWindow" onclick="showAboutFeedbackJSNIFunction()" class="linkStyle" >О программе</a><br/> 
      </td>
      <td>
      <table><tr><td>Текущий пользователь:</td><td><div id="CURRENT_USER_CONTROL_FULLNAME_HEADER"></div></td></tr></table>
      </td>
      <td align="right">
-      <a onclick="showcaseLogout()" class="linkStyle" >Выход</a>      
+      <a id="logoutLink" onclick="showcaseLogout()" class="linkStyle" >Выход</a>      
      </td> 
    </tr>
  </table>
