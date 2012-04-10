@@ -336,7 +336,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		if (context.getFilter() != null) {
 			setSQLXMLParam(cs, getFilterContextIndex(), context.getFilter());
 		}
-		if (context.getSession() != null) {
+		if (sessionContext != null) {
 			setSQLXMLParam(cs, getSessionContextIndex(), sessionContext);
 		}
 
