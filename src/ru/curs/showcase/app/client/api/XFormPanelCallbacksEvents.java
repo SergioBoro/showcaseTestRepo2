@@ -407,6 +407,7 @@ public final class XFormPanelCallbacksEvents {
 
 			SelectorAdditionalData addData = new SelectorAdditionalData();
 			addData.setContext(currentXFormPanel.getContext());
+			addData.setElementInfo(currentXFormPanel.getElementInfo());
 
 			c.initData(getXMLByXPathArray(param.generalFilters()), procName,
 					getValueByXPath(param.currentValue()), addData);

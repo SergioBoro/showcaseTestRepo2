@@ -9,6 +9,7 @@ import oracle.jdbc.OracleTypes;
 import org.slf4j.*;
 
 import ru.beta2.extra.gwt.ui.selector.api.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.ServletUtils;
@@ -321,8 +322,9 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		setSQLXMLParam(cs, getSessionContextIndex(), "");
 
 		CompositeContext context = (CompositeContext) req.getAddData().getContext();
+		DataPanelElementInfo elInfo = (DataPanelElementInfo) req.getAddData().getElementInfo();
 
-		XMLSessionContextGenerator generator = new XMLSessionContextGenerator(context);
+		XMLSessionContextGenerator generator = new XMLSessionContextGenerator(context, elInfo);
 		String sessionContext = generator.generate();
 
 		if (context.getMain() != null) {
