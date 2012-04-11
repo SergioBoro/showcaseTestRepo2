@@ -58,9 +58,10 @@ public abstract class JythonQuery<T> {
 	 */
 	public final void runTemplateMethod() {
 		PythonInterpreter interpreter = JythonIterpretatorFactory.getInstance().acquire();
+		String parent = getJythonProcName().replaceAll("([.]\\w+)$", "");
+		parent = parent.replace('/', '.');
+		boolean isLoaded = false;
 		try {
-			String parent = getJythonProcName().replaceAll("([.]\\w+)$", "");
-			parent = parent.replace('/', '.');
 			String className = TextUtils.extractFileName(getJythonProcName());
 			File script =
 				new File(JythonIterpretatorFactory.getUserDataScriptDir() + "\\\\"
@@ -75,6 +76,7 @@ public abstract class JythonQuery<T> {
 			try {
 				setupJythonLogging(interpreter);
 				interpreter.exec(cmd);
+				isLoaded = true;
 
 				PyObject pyClass = interpreter.get(className);
 				PyObject pyObj = pyClass.__call__();
@@ -93,6 +95,9 @@ public abstract class JythonQuery<T> {
 						e);
 			}
 		} finally {
+			if (isLoaded) {
+				interpreter.exec("import sys; del sys.modules['" + parent + "']");
+			}
 			JythonIterpretatorFactory.getInstance().release(interpreter);
 		}
 		checkErrors();

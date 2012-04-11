@@ -75,6 +75,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	 * классов.
 	 */
 	@BeforeClass
+	@org.testng.annotations.BeforeClass
 	public static void beforeClass() {
 		AppInitializer.initialize();
 		AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
@@ -85,6 +86,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	 * Очистка информации о текущей userdata после каждого теста.
 	 */
 	@After
+	@org.testng.annotations.AfterTest
 	public void afterTest() {
 		resetUserData();
 	}

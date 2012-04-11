@@ -61,8 +61,7 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 			state.path.append(new PyString(jythonLibPath.getAbsolutePath()));
 		}
 
-		PythonInterpreter interpreter = new PythonInterpreter(null, state);
-		return interpreter;
+		return new PythonInterpreter(null, state);
 	}
 
 	public static String getUserDataScriptDir() {
@@ -72,6 +71,6 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 
 	@Override
 	protected Pool<PythonInterpreter> getLock() {
-		return JythonIterpretatorFactory.getInstance();
+		return INSTANCE;
 	}
 }

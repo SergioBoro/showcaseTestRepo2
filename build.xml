@@ -41,6 +41,8 @@
 	
 	<taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask"/>
 	
+	<taskdef resource="testngtasks"/>
+	
 	<!--<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties"/>-->	
 	
 	<svnSetting javahl="false" svnkit="true" id="svn.settings" certreject="false" />
@@ -610,6 +612,14 @@
 		<xslt in="${sc.tmp.dir}/javaEnumRaw.xsd" out="${sc.src.dir}/schemas/javaEnum.xsd" style="conf/enumCaseInsensivity.xsl" >
 			  <classpath refid="master-classpath"/>		
 		</xslt>			
+	</target>
+	
+	<target name="test.stress" description="Run stress test with TestNG">
+		<testng classpathref="test-classpath"
+		        outputDir="${sc.build.dir}/stresstest"
+		        haltOnFailure="true" verbose="2">
+		    <classfileset dir="${sc.class.dir}/ru/curs/showcase/test/stress" includes="**/*.class" />
+		</testng>		
 	</target>
 	
 </project> 
