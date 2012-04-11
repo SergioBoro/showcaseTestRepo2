@@ -253,10 +253,10 @@
 	<target name="ci.build" depends="checkProperties, info.env, clean,  
 		init.dirs, init.dojo, init.jython, init.patches, 
 		build, checkstyle, init.db, test.coverage, build.gwt, jdepend,
-		dist, javadoc, backup.userdata, backup.sql.scripts" 
+		dist, javadoc, backup.userdata, backup.sql.scripts, tomcat.prepare.war" 
 		description="Target for CI build"/>
 	
-	<target name="ci.smoke.test" depends="init.dirs, tomcat.prepare.war, tomcat.stop, tomcat.start.for.test, 
+	<target name="ci.smoke.test" depends="init.dirs, tomcat.stop, tomcat.start.for.test, 
 		tomcat.check.main.page, tomcat.stop.for.test, tomcat.copy.war, tomcat.start" 
 		description="Check app deploying to Tomcat"> 
 	</target>	
