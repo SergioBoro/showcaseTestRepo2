@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>
+	<tab id="1" name="1">
+		<element id="1" type="webtext" transform="bal.xsl" />
+		<element id="6" type="webtext" transform="bal.xsl" />
+	</tab>
+	<tab id="2" name="Профайлы грида">
+		<element id="0101" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_default_profile"/>
+		<element id="0102" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_special_profile"/>
+	</tab>	
+	<tab id="3" name="Грид - различные типы столбцов">
+		<element id="00101" type="grid" subtype="EXT_LIVE_GRID" proc="grid_col_types">
+		</element>	
+		<element id="00102" type="grid" subtype="EXT_LIVE_GRID" proc="grid_col_types_data">
+			<proc id="p010201" name="grid_col_types_md" type="METADATA"/>
+		</element>							
+	</tab>
+</datapanel>
