@@ -20,6 +20,7 @@
 %>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="gwt:property" content="locale=ru"/>	
 	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
 	<title><%=title%></title>
     <link rel="stylesheet" href="xsltforms/xsltforms.css" type="text/css" />	
