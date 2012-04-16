@@ -136,14 +136,14 @@
     <level1 id="20" name="Версия 2">
       <level2 id="LiveGrid1" name="LiveGrid1">
         <action>
-          <main_context>jython_save_data.xml</main_context>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
           <datapanel type="byver/LiveGrid.xml" tab="firstOrCurrent" >          
           </datapanel>
         </action>
       </level2>
       <level2 id="LiveGrid2" name="LiveGrid2">
         <action>
-          <main_context>jython_save_data.xml</main_context>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
           <datapanel type="byver/LiveGrid2.xml" tab="firstOrCurrent" >          
           </datapanel>
         </action>
