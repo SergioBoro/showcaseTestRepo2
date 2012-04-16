@@ -29,6 +29,7 @@ public final class GridTransformer {
 		egm.setFooter(grid.getFooter());
 
 		// -------------------------------------------------------
+
 		List<ExtGridColumnConfig> columns = new ArrayList<ExtGridColumnConfig>();
 
 		int index = 0;
@@ -45,10 +46,21 @@ public final class GridTransformer {
 			column.setHorizontalAlignment(com.extjs.gxt.ui.client.Style.HorizontalAlignment
 					.valueOf(c.getHorizontalAlignment().toString()));
 
+			column.setValueType(c.getValueType());
+
+			column.setLinkId(c.getLinkId());
+
 			columns.add(column);
+
+			if (c == grid.getAutoSelectColumn()) {
+				egm.setAutoSelectColumn(column);
+
+			}
 		}
 
 		egm.setColumns(columns);
+
+		egm.setAutoSelectRecord(grid.getAutoSelectRecord());
 
 		// -------------------------------------------------------
 
@@ -58,9 +70,11 @@ public final class GridTransformer {
 
 		// -------------------------------------------------------
 
-		egm.setOriginalColumns(grid.getDataSet().getColumnSet().getColumns());
+		egm.setOriginalColumnSet(grid.getDataSet().getColumnSet());
 
 		// -------------------------------------------------------
+
+		egm.setUISettings(grid.getUISettings());
 
 		// -------------------------------------------------------
 
@@ -112,6 +126,7 @@ public final class GridTransformer {
 
 		ExtGridExtradata ege = new ExtGridExtradata();
 		ege.setGridEventManager(grid.getEventManager());
+		ege.setAutoSelectRecord(grid.getAutoSelectRecord());
 		egplr.setExtGridExtradata(ege);
 
 		return egplr;

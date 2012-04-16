@@ -2,9 +2,7 @@ package ru.curs.showcase.app.client;
 
 import java.util.*;
 
-import ru.curs.gwt.datagrid.DataGridListener;
 import ru.curs.gwt.datagrid.model.*;
-import ru.curs.gwt.datagrid.selection.*;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
@@ -51,7 +49,9 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
 	private ContentPanel cpGrid = null;
 	private EditorGrid<ExtGridData> grid = null;
-	private final ColumnSet cs = null;
+	private final GridSelectionModel<ExtGridData> selectionModel =
+		new GridSelectionModel<ExtGridData>();
+	private ColumnSet cs = null;
 	private Timer selectionTimer = null;
 	private DataServiceAsync dataService = null;
 	private GridContext localContext = null;
@@ -63,8 +63,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		return isFirstLoading;
 	}
 
-	private void setFirstLoading(final boolean isFirstLoading1) {
-		isFirstLoading = isFirstLoading1;
+	private void setFirstLoading(final boolean aIsFirstLoading) {
+		isFirstLoading = aIsFirstLoading;
 	}
 
 	/**
@@ -96,13 +96,9 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	 * Конструктор класса GridPanel без начального показа грида.
 	 */
 	public ExtGridPanel(final DataPanelElementInfo element) {
-
-		setElementInfo(element);
 		setContext(null);
+		setElementInfo(element);
 		setFirstLoading(true);
-
-		// --------------
-
 	}
 
 	/**
@@ -110,17 +106,12 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	 */
 	public ExtGridPanel(final CompositeContext context, final DataPanelElementInfo element,
 			final Grid grid1) {
-
-		this.setContext(context);
-		this.setElementInfo(element);
+		setContext(context);
+		setElementInfo(element);
 		setFirstLoading(true);
 
-		// --------------
-
 		p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-
 		setDataGridPanel();
-
 	}
 
 	@Override
@@ -137,9 +128,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	 *            Grid
 	 */
 	public void reDrawPanelExt(final CompositeContext context, final Grid grid1) {
-
 		setContext(context);
-		// --------------
 
 		if (isFirstLoading()) {
 			localContext = null;
@@ -147,49 +136,22 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
 			setDataGridPanel();
-
 		} else {
-			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
-			if (this.getElementInfo().getShowLoadingMessage()) {
-				p.clear();
-				p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-			}
-
-			setDataGridPanel();
+			refreshPanel();
 		}
-
 	}
 
-	private void resetSelection() {
-		// localContext.getSelectedRecordIds().clear();
-		// localContext.setCurrentColumnId(null);
-		// localContext.setCurrentRecordId(null);
-	}
-
-	private void saveCurrentCheckBoxSelection() {
-		// localContext.getSelectedRecordIds().clear();
-		//
-		// List<Record> records = dg.getSelection().getSelectedRecords();
-		// if (records != null) {
-		// for (Record rec : records) {
-		// localContext.getSelectedRecordIds().add(rec.getId());
-		// }
-		// }
-	}
-
-	@SuppressWarnings("unused")
-	private void saveCurrentClickSelection(final DataCell cell) {
-		// localContext.setCurrentColumnId(null);
-		// localContext.setCurrentRecordId(null);
-		//
-		// if (cell != null) {
-		// localContext.setCurrentRecordId(cell.getRecord().getId());
-		// localContext.setCurrentColumnId(cell.getColumn().getId());
-		// }
+	@Override
+	public final void refreshPanel() {
+		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+		if (this.getElementInfo().getShowLoadingMessage()) {
+			p.clear();
+			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+		}
+		setDataGridPanel();
 	}
 
 	private void setDataGridPanel() {
-
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
@@ -198,48 +160,22 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 				new GWTServiceCallback<ExtGridMetadata>("при получении данных таблицы с сервера") {
 
 					@Override
-					public void onSuccess(final ExtGridMetadata grid1) {
-						setDataGridPanelByGrid(grid1);
+					public void onSuccess(final ExtGridMetadata aGridMetadata) {
+						setDataGridPanelByGrid(aGridMetadata);
 					}
 				});
-
 	}
 
 	private void setDataGridPanelByGrid(final ExtGridMetadata aGridMetadata) {
-
 		gridMetadata = aGridMetadata;
 
 		beforeUpdateGrid();
 
-		updateGridFull(); // вместо нижнего switch
-		//
-		// switch (ut) {
-		// case FULL:
-		// updateGridFull();
-		// break;
-		// case RECORDSET_BY_UPDATERECORDSET:
-		// updateGridRecordsetByUpdateRecordset();
-		// break;
-		// case RECORDSET_BY_SHOWDATA:
-		// updateGridRecordsetByShowData();
-		// break;
-		// case UPDATE_BY_REDRAWGRID:
-		// updateGridRedrawGrid();
-		// break;
-		// default:
-		// throw new Error("Неизвестный тип UpdateType");
-		// }
-		//
-		afterUpdateGrid();
+		updateGridFull();
 
-		// setupTimer();
-		// Нужно раскомментировать !!!!!!!!!!!!!!!!!!!!!
-		// Это вызов ф-ции из базового класса
-
-		setFirstLoading(false);
+		setupTimer();
 
 		p.setHeight(PROC100);
-
 	}
 
 	@Override
@@ -276,7 +212,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 						grid.getColumnModel().getColumnById(plc.getSortField());
 					if (colConfig != null) {
 						Column colOriginal = null;
-						for (Column c : gridMetadata.getOriginalColumns()) {
+						for (Column c : gridMetadata.getOriginalColumnSet().getColumns()) {
 							if (colConfig.getHeader().equals(c.getId())) {
 								colOriginal = c;
 								break;
@@ -300,7 +236,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 				}
 			};
 
-		// loader
 		final PagingLoader<PagingLoadResult<ModelData>> loader =
 			new BasePagingLoader<PagingLoadResult<ModelData>>(proxy);
 		loader.setRemoteSort(true);
@@ -310,6 +245,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			public void handleEvent(LoadEvent be) {
 				gridExtradata =
 					((ExtGridPagingLoadResult<ExtGridData>) be.getData()).getExtGridExtradata();
+
+				resetSelection();
 			}
 		});
 
@@ -318,7 +255,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
 
-		for (ExtGridColumnConfig egcc : gridMetadata.getColumns()) {
+		for (final ExtGridColumnConfig egcc : gridMetadata.getColumns()) {
 			ColumnConfig column =
 				new ColumnConfig(egcc.getId(), egcc.getCaption(), egcc.getWidth());
 
@@ -330,12 +267,53 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 			column.setAlignment(egcc.getHorizontalAlignment());
 
+			if (egcc.getValueType() == GridValueType.DOWNLOAD) {
+				column.setRenderer(new GridCellRenderer<ExtGridData>() {
+					@Override
+					public Object render(final ExtGridData model, String property,
+							ColumnData config, int rowIndex, int colIndex,
+							ListStore<ExtGridData> store,
+							com.extjs.gxt.ui.client.widget.grid.Grid<ExtGridData> grid) {
+						com.google.gwt.user.client.ui.Grid g =
+							new com.google.gwt.user.client.ui.Grid(1, 2);
+						g.setWidth("100%");
+
+						g.setWidget(0, 0, new HTML("<nowrap>" + (String) model.get(property)
+								+ "</nowrap>"));
+
+						Button bt =
+							new Button("", IconHelper.create(settingsDataGrid
+									.getUrlImageFileDownload()));
+						bt.setTitle("Загрузить файл с сервера");
+
+						bt.addSelectionListener(new com.extjs.gxt.ui.client.event.SelectionListener<ButtonEvent>() {
+							@Override
+							public void componentSelected(ButtonEvent ce) {
+								processFileDownload(model.getId(), egcc.getLinkId());
+
+							}
+						});
+
+						g.setWidget(0, 1, bt);
+
+						g.getCellFormatter().setWidth(0, 1, "30px");
+						g.getCellFormatter().setHorizontalAlignment(0, 1,
+								HasHorizontalAlignment.ALIGN_CENTER);
+						g.getCellFormatter().setVerticalAlignment(0, 1,
+								HasVerticalAlignment.ALIGN_MIDDLE);
+
+						return g;
+					}
+				});
+			}
+
 			columns.add(column);
 		}
 
 		ColumnModel cm = new ColumnModel(columns);
 
 		grid = new EditorGrid<ExtGridData>(store, cm);
+		selectionModel.bindGrid(grid);
 		grid.setColumnReordering(true);
 		grid.setLoadMask(true);
 		grid.setBorders(true);
@@ -362,7 +340,14 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		// ---------------------------
 
 		LiveGridView liveView = new LiveGridView();
-		liveView.setEmptyText("No rows available on the server.");
+
+		liveView.addListener(Events.LiveGridViewUpdate, new Listener<BaseEvent>() {
+			@Override
+			public void handleEvent(BaseEvent be) {
+				afterUpdateGrid();
+			}
+		});
+
 		// liveView.setRowHeight(32);
 		// liveView.setPrefetchFactor(0);
 		liveView.setCacheSize(gridMetadata.getLiveInfo().getLimit());
@@ -380,12 +365,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			}
 		};
 		grid.getView().setViewConfig(gvc);
-
-		// ---------------------------
-
-		final GridSelectionModel<ExtGridData> selectionModel =
-			new GridSelectionModel<ExtGridData>();
-		selectionModel.bindGrid(grid);
 
 		// ---------------------------
 
@@ -427,6 +406,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		// ------------
 		ToolBar liveBar = new ToolBar();
+		LabelToolItem footer = new LabelToolItem(gridMetadata.getFooter());
+		liveBar.add(footer);
 		liveBar.add(new FillToolItem());
 		LiveToolItem item = new LiveToolItem();
 		item.bindGrid(grid);
@@ -459,10 +440,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		cpGrid.add(grid);
 		cpGrid.add(liveBar);
 
-		com.extjs.gxt.ui.client.widget.Header footer = new com.extjs.gxt.ui.client.widget.Header();
-		footer.setText(gridMetadata.getFooter());
-		cpGrid.setBottomComponent(footer);
-
 		// ------------------------------------------------------------------------------
 
 		p.setSize(PROC100, PROC100);
@@ -471,19 +448,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		// ------------------------------------------------------------------------------
 
-		// cs = grid.getDataSet().getColumnSet();
-		//
-		// dg.addDataGridListener(new GridListener());
-		// dg.getSelection().addListener(new SelectionListener());
-		// dg.addDataClickHandler(new DataClickHandler("DataClickHandler1"));
-		//
-		// if ((grid.getDataSet().getColumnSet().getColumns().size() > 0)
-		// && (grid.getDataSet().getRecordSet().getRecordsCount() > 0)) {
-		// dg.showData(grid.getDataSet());
-		// } else {
-		// hpToolbar.setVisible(false);
-		// dg.setVisible(false);
-		// }
+		cs = gridMetadata.getOriginalColumnSet();
 
 	}
 
@@ -492,25 +457,12 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	private void
 			handleClick(final GridEvent<ExtGridData> be, final InteractionType interactionType) {
 
-		// saveCurrentClickSelection(event.getTarget());
+		saveCurrentClickSelection(be);
+
+		selectedRecordsChanged();
 
 		processClick(be.getModel().getId(), grid.getColumnModel().getColumn(be.getColIndex())
 				.getHeader(), interactionType);
-
-		// if (event.isClickFromAdditionalButton()) {
-		// event.preventDefault();
-		// if (event.getTarget().getColumn().getValueType() ==
-		// GridValueType.DOWNLOAD) {
-		// processFileDownload(event.getTarget().getRecord(),
-		// event.getTarget()
-		// .getColumn());
-		// }
-		// } else {
-		// processClick(event.getTarget().getRecord().getId(),
-		// event.getTarget().getColumn()
-		// .getId(), interactionType);
-		// }
-
 	}
 
 	private void processClick(final String rowId, final String colId,
@@ -533,57 +485,68 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	@SuppressWarnings("unused")
-	private void processFileDownload(final Record rec, final Column col) {
-		DownloadHelper dh = DownloadHelper.getInstance();
-		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
-		dh.clear();
-
-		dh.setErrorCaption(Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD);
-		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
-
-		try {
-			dh.addParam("linkId", col.getLinkId());
-			dh.addStdPostParamsToBody(getContext(), getElementInfo());
-			dh.addParam("recordId", rec.getId());
-
-			dh.submit();
-		} catch (SerializationException e) {
-			ru.curs.showcase.app.client.MessageBox.showSimpleMessage(
-					Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD, e.getMessage());
+	private void selectedRecordsChanged() {
+		if (selectionTimer != null) {
+			selectionTimer.cancel();
 		}
+
+		selectionTimer = new Timer() {
+			@Override
+			public void run() {
+				processSelectionRecords();
+			}
+		};
+		selectionTimer.schedule(Constants.GRID_SELECTION_DELAY);
+
+		saveCurrentCheckBoxSelection();
 	}
 
-	@SuppressWarnings("unused")
-	private void updateGridRecordsetByUpdateRecordset() {
-		// dg.updateRecordSet(grid.getDataSet().getRecordSet());
+	private void processSelectionRecords() {
+		List<String> selectedRecordIds = new ArrayList<String>();
+		for (ExtGridData egd : selectionModel.getSelectedItems()) {
+			selectedRecordIds.add(egd.getId());
+		}
+
+		Action ac =
+			gridExtradata.getEventManager().getSelectionActionForDependentElements(
+					selectedRecordIds);
+
+		runAction(ac);
 	}
 
-	@SuppressWarnings("unused")
-	private void updateGridRecordsetByShowData() {
-		// grid.getDataSet().setColumnSet(cs);
-		// dg.showData(grid.getDataSet());
-	}
+	/**
+	 * Замечание: сбрасывать состояние грида нужно обязательно до вызова
+	 * отрисовки зависимых элементов. Иначе потеряем выделенную запись или
+	 * ячейку в related!
+	 * 
+	 */
+	private void afterUpdateGrid() {
+		if (!isFirstLoading) {
+			return;
+		}
 
-	@SuppressWarnings("unused")
-	private void updateGridRedrawGrid() {
-		// cs = grid.getDataSet().getColumnSet();
-		//
-		// if ((grid.getDataSet().getColumnSet().getColumns().size() > 0)
-		// && (grid.getDataSet().getRecordSet().getRecordsCount() > 0)) {
-		//
-		// hpToolbar.setVisible(true);
-		// dg.setVisible(true);
-		// dg.showData(grid.getDataSet());
-		// hpFooter.setVisible(true);
-		//
-		// } else {
-		// hpToolbar.setVisible(false);
-		// dg.setVisible(false);
-		// hpFooter.setVisible(false);
+		if (grid.getStore().getModels().size() == 0) {
+			return;
+		}
+
+		Cell selected = getStoredRecordId();
+
+		for (ExtGridData egd : grid.getStore().getModels()) {
+			if (egd.getId().equals(selected.recId)) {
+				selectionModel.select(egd, false);
+				break;
+			}
+		}
+
+		// if (localContext != null) {
+		// dg.getSelection().setSelectedRecordsById(localContext.getSelectedRecordIds());
 		// }
-		//
-		// hpFooter.setVisible(true);
+
+		resetGridSettingsToCurrent(); // Это вместо нижнего switch
+
+		runAction(gridExtradata.getActionForDependentElements());
+
+		setFirstLoading(false);
 	}
 
 	/**
@@ -598,13 +561,39 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		private String colId;
 	}
 
+	private void resetSelection() {
+		if (localContext == null) {
+			return;
+
+		}
+		localContext.getSelectedRecordIds().clear();
+		localContext.setCurrentColumnId(null);
+		localContext.setCurrentRecordId(null);
+	}
+
+	private void saveCurrentCheckBoxSelection() {
+		localContext.getSelectedRecordIds().clear();
+
+		for (ExtGridData egd : selectionModel.getSelectedItems()) {
+			localContext.getSelectedRecordIds().add(egd.getId());
+		}
+	}
+
+	private void saveCurrentClickSelection(final GridEvent<ExtGridData> be) {
+		localContext.setCurrentColumnId(null);
+		localContext.setCurrentRecordId(null);
+
+		localContext.setCurrentRecordId(be.getModel().getId());
+		localContext.setCurrentColumnId(grid.getColumnModel().getColumn(be.getColIndex())
+				.getHeader());
+	}
+
 	/**
 	 * Получает информацию о сохраненном выделении в гриде, при этом user
 	 * settings имеет приоритет над данными из БД.
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("unused")
 	private Cell getStoredRecordId() {
 		Cell cell = new Cell();
 		if ((localContext != null) && (localContext.getCurrentRecordId() != null)) {
@@ -616,73 +605,16 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 						.getId() : null;
 			cell.colId =
 				gridMetadata.getAutoSelectColumn() != null ? gridMetadata.getAutoSelectColumn()
-						.getId() : null;
+						.getCaption() : null;
 		}
 		return cell;
 	}
 
-	/**
-	 * Замечание: сбрасывать состояние грида нужно обязательно до вызова
-	 * отрисовки зависимых элементов. Иначе потеряем выделенную запись или
-	 * ячейку в related!
-	 * 
-	 */
-	private void afterUpdateGrid() {
-		// Cell selected = getStoredRecordId();
-		// boolean selectionSaved =
-		// (localContext != null) && (localContext.getCurrentRecordId() !=
-		// null);
-		//
-		// if (grid.getDataSet().getRecordSet().getPagesTotal() > 0) {
-		//
-		// if (grid.getUISettings().isSelectOnlyRecords()) {
-		// if (selected.recId != null) {
-		// dg.getClickSelection().setClickedRecordById(selected.recId);
-		// }
-		// } else {
-		// if ((selected.recId != null) && (selected.colId != null)) {
-		// dg.getSelection().setSelectedCellById(selected.recId,
-		// selected.colId);
-		// }
-		// }
-		//
-		// if (localContext != null) {
-		// dg.getSelection().setSelectedRecordsById(localContext.getSelectedRecordIds());
-		// }
-		// }
-		//
-		// switch (ut) {
-		// case FULL:
-		// resetGridSettingsToCurrent();
-		// runAction(grid.getActionForDependentElements());
-		// break;
-		// case UPDATE_BY_REDRAWGRID:
-		// resetGridSettingsToCurrent();
-		// if (!selectionSaved) {
-		// runAction(grid.getActionForDependentElements());
-		// }
-		// break;
-		// default:
-		// processClick(selected.recId, selected.colId,
-		// InteractionType.SINGLE_CLICK);
-		// }
-	}
-
-	@SuppressWarnings("unused")
 	private void resetGridSettingsToCurrent() {
-		// localContext = new GridContext();
-		// localContext.setPageNumber(grid.getDataSet().getRecordSet().getPageNumber());
-		// localContext.setPageSize(grid.getDataSet().getRecordSet().getPageSize());
-		// saveCurrentCheckBoxSelection();
-		// DataCell cell = dg.getSelection().getSelectedCell();
-		// if (cell != null) {
-		// saveCurrentClickSelection(cell);
-		// } else {
-		// // если выделена не ячейка, а запись целиком
-		// if (dg.getClickSelection().getClickedRecord() != null) {
-		// localContext.setCurrentRecordId(dg.getClickSelection().getClickedRecord().getId());
-		// }
-		// }
+		localContext = new GridContext();
+		localContext.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
+
+		saveCurrentCheckBoxSelection();
 	}
 
 	/**
@@ -702,16 +634,15 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		try {
 			dh.addParam(exportType.getClass().getName(), exportType.toString());
 
-			SerializationStreamFactory ssf = dh.getObjectSerializer();
+			SerializationStreamFactory ssf = dh.getAddObjectSerializer();
 			dh.addStdPostParamsToBody(getDetailedContext(), getElementInfo());
 			dh.addParam(cs.getClass().getName(), cs.toParamForHttpPost(ssf));
 
 			dh.submit();
 
 		} catch (SerializationException e) {
-
-			ru.curs.showcase.app.client.MessageBox.showSimpleMessage(
-					Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL, e.getMessage());
+			MessageBox
+					.showSimpleMessage(Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL, e.getMessage());
 		}
 	}
 
@@ -723,137 +654,55 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	 */
 	public ClipboardDialog copyToClipboard() {
 		StringBuilder b = new StringBuilder();
-		// List<Column> columns = cs.getVisibleColumnsByIndex();
-		//
-		// String d = "";
-		// for (Column c : columns) {
-		// b.append(d).append(c.getCaption());
-		// d = "\t";
-		// }
-		// b.append("\n");
-		//
-		// if (dg.getSelection().hasSelectedRecords()) {
-		// for (Record r : dg.getSelection().getSelectedRecords()) {
-		// d = "";
-		// for (Column c : columns) {
-		// b.append(d).append(r.getValues().get(c.getId()));
-		// d = "\t";
-		// }
-		// b.append("\n");
-		// }
-		// } else {
-		// for (Record r : grid.getDataSet().getRecordSet().getRecords()) {
-		// d = "";
-		// for (Column c : columns) {
-		// b.append(d).append(r.getValues().get(c.getId()));
-		// d = "\t";
-		// }
-		// b.append("\n");
-		// }
-		// }
+
+		List<ColumnConfig> columns = grid.getColumnModel().getColumns();
+
+		String d = "";
+		for (ColumnConfig c : columns) {
+			b.append(d).append(c.getHeader());
+			d = "\t";
+		}
+		b.append("\n");
+
+		List<ExtGridData> models;
+		if (selectionModel.getSelectedItems().size() > 0) {
+			models = selectionModel.getSelectedItems();
+		} else {
+			models = grid.getStore().getModels();
+		}
+
+		for (ExtGridData egd : models) {
+			d = "";
+			for (ColumnConfig c : columns) {
+				b.append(d).append(egd.get(c.getId()));
+				d = "\t";
+			}
+			b.append("\n");
+		}
 
 		ClipboardDialog cd = new ClipboardDialog(b.toString());
 		cd.center();
 		return cd;
 	}
 
-	// -------------------------------------------------------
+	private void processFileDownload(final String recId, final String colLinkId) {
+		DownloadHelper dh = DownloadHelper.getInstance();
+		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
+		dh.clear();
 
-	/**
-	 * SelectionListener.
-	 */
-	@SuppressWarnings("unused")
-	private class SelectionListener implements DataSelectionListener {
-		@Override
-		public void selectedRecordsChanged(final DataSelection selection) {
+		dh.setErrorCaption(Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD);
+		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
 
-			if (selectionTimer != null) {
-				selectionTimer.cancel();
-			}
+		try {
+			dh.addParam("linkId", colLinkId);
+			dh.addStdPostParamsToBody(getContext(), getElementInfo());
+			dh.addParam("recordId", recId);
 
-			selectionTimer = new Timer() {
-				@Override
-				public void run() {
-					processSelectionRecords();
-				}
-			};
-			selectionTimer.schedule(Constants.GRID_SELECTION_DELAY);
-
-			saveCurrentCheckBoxSelection();
+			dh.submit();
+		} catch (SerializationException e) {
+			ru.curs.showcase.app.client.MessageBox.showSimpleMessage(
+					Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD, e.getMessage());
 		}
-
-		@Override
-		public void selectedCellChanged(final DataSelection selection) {
-		}
-	}
-
-	private void processSelectionRecords() {
-
-		// Action ac =
-		// grid.getEventManager().getSelectionActionForDependentElements(dg.getSelection());
-		//
-		// runAction(ac);
-
-	}
-
-	/**
-	 * GridListener.
-	 */
-	@SuppressWarnings("unused")
-	private class GridListener implements DataGridListener {
-		@Override
-		public void columnWidthChanged(final Column column) {
-
-			cs.getColumns().get(column.getIndex()).setWidth(column.getWidth());
-
-		}
-
-		@Override
-		public void sortingChanged(final List<Column> columns) {
-
-			localContext.setPageNumber(1);
-			localContext.setSortedColumns(columns);
-			resetSelection();
-			setDataGridPanel();
-
-		}
-
-		@Override
-		public void pageNumberChanged(final int newPageNumber) {
-
-			localContext.setPageNumber(newPageNumber);
-			resetSelection();
-			setDataGridPanel();
-
-		}
-
-		@Override
-		public void pageSizeChanged(final int newItemsPerPage) {
-			localContext.setPageNumber(1);
-			localContext.setPageSize(newItemsPerPage);
-			resetSelection();
-			setDataGridPanel();
-
-		}
-
-		@Override
-		public void columnsLayoutChanged() {
-
-			// dg.updateColumnSet(cs);
-
-		}
-
-	}
-
-	@Override
-	public final void refreshPanel() {
-		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
-		if (this.getElementInfo().getShowLoadingMessage()) {
-			p.clear();
-			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-		}
-		setDataGridPanel();
-
 	}
 
 	@Override

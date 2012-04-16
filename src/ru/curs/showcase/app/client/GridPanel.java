@@ -60,8 +60,8 @@ public class GridPanel extends BasicElementPanelBasis {
 		return isFirstLoading;
 	}
 
-	private void setFirstLoading(final boolean isFirstLoading1) {
-		isFirstLoading = isFirstLoading1;
+	private void setFirstLoading(final boolean aIsFirstLoading) {
+		isFirstLoading = aIsFirstLoading;
 	}
 
 	private String strHeader = "";
@@ -524,10 +524,8 @@ public class GridPanel extends BasicElementPanelBasis {
 		try {
 			dh.addParam(exportType.getClass().getName(), exportType.toString());
 
-			SerializationStreamFactory ssf = dh.getObjectSerializer();
+			SerializationStreamFactory ssf = dh.getAddObjectSerializer();
 			dh.addStdPostParamsToBody(getDetailedContext(), getElementInfo());
-
-			ssf = dh.getAddObjectSerializer();
 			dh.addParam(cs.getClass().getName(), cs.toParamForHttpPost(ssf));
 
 			dh.submit();

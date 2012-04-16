@@ -3773,7 +3773,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                                 
                             </datapanel>
                         </action>
-<properties flip="false" pagesize="50" autoSelectRecordId="16"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>' 
+<properties flip="false" pagesize="50" autoSelectRecordId="9"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO

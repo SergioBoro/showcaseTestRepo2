@@ -95,6 +95,9 @@ public class GridContext extends CompositeContext {
 	public void resetForReturnAllRecords() {
 		setPageNumber(1);
 		setPageSize(Integer.MAX_VALUE - 1);
+
+		liveInfo.setOffset(0);
+		liveInfo.setLimit(Integer.MAX_VALUE - 1);
 	}
 
 	/**
