@@ -479,6 +479,9 @@ public class GridPanel extends BasicElementPanelBasis {
 				runAction(grid.getActionForDependentElements());
 			}
 			break;
+		case RECORDSET_BY_UPDATERECORDSET:
+			runAction(grid.getActionForDependentElements());
+			break;
 		default:
 			processClick(selected.recId, selected.colId, InteractionType.SINGLE_CLICK);
 		}
