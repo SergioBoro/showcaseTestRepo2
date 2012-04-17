@@ -33,7 +33,7 @@ public final class GridTransformer {
 		List<ExtGridColumnConfig> columns = new ArrayList<ExtGridColumnConfig>();
 
 		int index = 0;
-		for (Column c : grid.getDataSet().getColumnSet().getColumns()) {
+		for (Column c : grid.getDataSet().getColumnSet().getColumnsByIndex()) {
 			index++;
 			ExtGridColumnConfig column =
 				new ExtGridColumnConfig("col" + String.valueOf(index), c.getCaption(),
@@ -96,7 +96,7 @@ public final class GridTransformer {
 					ru.beta2.extra.gwt.ui.GeneralConstants.STYLE_CLASS_TAG));
 
 			int index = 0;
-			for (Column c : grid.getDataSet().getColumnSet().getColumns()) {
+			for (Column c : grid.getDataSet().getColumnSet().getColumnsByIndex()) {
 				index++;
 				String colId = "col" + String.valueOf(index);
 				String val = null;

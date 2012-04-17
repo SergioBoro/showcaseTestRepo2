@@ -8982,7 +8982,7 @@ DECLARE @rec_count int
 SELECT @rec_count = COUNT(*) FROM [dbo].[Journal_41]
 set @gridsettings_str='<gridsettings>
         <labels>
-            <header><h3 class="testStyle">Грид с различными типа столбцов</h3></header>
+            <header><h3 class="testStyle">Грид с различными типами столбцов</h3></header>
         </labels>
         <columns>
         <col id="Сайт" type="LINK"/>
@@ -9101,7 +9101,7 @@ DECLARE @rec_count int
 SELECT @rec_count = COUNT(*) FROM [dbo].[Journal_41]
 set @gridsettings_str='<gridsettings>
         <labels>
-            <header><h3 class="testStyle">Грид с различными типа столбцов</h3></header>
+            <header><h3 class="testStyle">Грид с различными типами столбцов</h3></header>
         </labels>
         <columns>
         <col id="Сайт" type="LINK"/>
