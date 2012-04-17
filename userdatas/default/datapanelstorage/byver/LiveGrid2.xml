@@ -4,15 +4,38 @@
 		<element id="1" type="webtext" transform="bal.xsl" />
 		<element id="6" type="webtext" transform="bal.xsl" />
 	</tab>
+	
+	
+	<tab id="Old_2" name="Old. Профайлы грида">
+		<element id="Old_0101" type="grid" proc="grid_default_profile"/>
+		<element id="Old_0102" type="grid" proc="grid_special_profile"/>
+	</tab>			
+	
 	<tab id="2" name="Профайлы грида">
 		<element id="0101" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_default_profile"/>
 		<element id="0102" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_special_profile"/>
 	</tab>	
+	
+	
+	<tab id="Old_3" name="Old. Грид - различные типы столбцов">
+		<element id="Old_00101" type="grid" proc="grid_col_types">
+		</element>	
+		<element id="Old_00102" type="grid" proc="grid_col_types_data">
+			<proc id="p010201" name="grid_col_types_md" type="METADATA"/>
+		</element>							
+	</tab>
+	
 	<tab id="3" name="Грид - различные типы столбцов">
 		<element id="00101" type="grid" subtype="EXT_LIVE_GRID" proc="grid_col_types">
 		</element>	
 		<element id="00102" type="grid" subtype="EXT_LIVE_GRID" proc="grid_col_types_data">
 			<proc id="p010201" name="grid_col_types_md" type="METADATA"/>
 		</element>							
+	</tab>
+	
+	
+	<tab id="4" name="Настройки GridHeight, RowHeight">
+		<element id="41" type="GRID"  subtype="EXT_LIVE_GRID" proc="extlivegrid_RowHeight1"/>
+		<element id="42" type="GRID"  subtype="EXT_LIVE_GRID" proc="extlivegrid_RowHeight2"/>		
 	</tab>
 </datapanel>

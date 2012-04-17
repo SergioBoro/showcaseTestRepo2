@@ -348,7 +348,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			}
 		});
 
-		// liveView.setRowHeight(32);
+		liveView.setRowHeight(gridMetadata.getUISettings().getRowHeight());
 		// liveView.setPrefetchFactor(0);
 		liveView.setCacheSize(gridMetadata.getLiveInfo().getLimit());
 		grid.setView(liveView);
@@ -434,7 +434,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		cpGrid.setTopComponent(buttonBar);
 
 		grid.setWidth(PROC100);
-		grid.setHeight(400);
+		grid.setHeight(gridMetadata.getUISettings().getGridHeight());
+
 		// grid.setAutoWidth(true);
 		// grid.setAutoHeight(true);
 		cpGrid.add(grid);

@@ -70,10 +70,15 @@ public class GridFactory extends CompBasedElementFactory {
 	private static final String AUTO_SELECT_REC_TAG = "autoSelectRecordId";
 	private static final String AUTO_SELECT_COL_TAG = "autoSelectColumnId";
 	private static final String AUTO_SELECT_RELATIVE = "autoSelectRelativeRecord";
+	private static final String GRID_HEIGHT_TAG = "gridHeight";
+	private static final String ROW_HEIGHT_TAG = "rowHeight";
 	private static final String PRECISION_TAG = "precision";
 	private static final String PROFILE_TAG = "profile";
 
 	private ProfileReader gridProps = null;
+
+	private static final int GRID_HEIGHT_DEF_VALUE = 400;
+	private static final int ROW_HEIGHT_DEF_VALUE = 20;
 
 	/**
 	 * Не локальная Locale по умолчанию :) Используется для передачи данных в
@@ -333,6 +338,16 @@ public class GridFactory extends CompBasedElementFactory {
 			if (attrs.getIndex(AUTO_SELECT_COL_TAG) > -1) {
 				serverState().setAutoSelectColumnId(attrs.getValue(AUTO_SELECT_COL_TAG));
 			}
+			serverState().setGridHeight(GRID_HEIGHT_DEF_VALUE);
+			if (attrs.getIndex(GRID_HEIGHT_TAG) > -1) {
+				value = attrs.getValue(GRID_HEIGHT_TAG);
+				serverState().setGridHeight(Integer.parseInt(value));
+			}
+			serverState().setRowHeight(ROW_HEIGHT_DEF_VALUE);
+			if (attrs.getIndex(ROW_HEIGHT_TAG) > -1) {
+				value = attrs.getValue(ROW_HEIGHT_TAG);
+				serverState().setRowHeight(Integer.parseInt(value));
+			}
 			if (attrs.getIndex(PROFILE_TAG) > -1) {
 				serverState().setProfile(attrs.getValue(PROFILE_TAG));
 			}
@@ -396,6 +411,7 @@ public class GridFactory extends CompBasedElementFactory {
 			loadStoredState();
 		}
 		calcAutoSelectRecordId();
+		loadLiveGridUISettings();
 	}
 
 	private void loadStoredState() {
@@ -412,6 +428,11 @@ public class GridFactory extends CompBasedElementFactory {
 		ProfileBasedSettingsApplyStrategy strategy =
 			new DefaultGridSettingsApplyStrategy(gridProps, getResult().getUISettings());
 		strategy.apply();
+	}
+
+	private void loadLiveGridUISettings() {
+		getResult().getUISettings().setGridHeight(serverState.getGridHeight());
+		getResult().getUISettings().setRowHeight(serverState.getRowHeight());
 	}
 
 	private void calcAutoSelectRecordId() {

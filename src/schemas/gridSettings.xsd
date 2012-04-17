@@ -53,6 +53,8 @@
             <xs:attribute name="selectMode" type="rowOrCell"/>
             <xs:attribute name="totalCount" type="xs:unsignedInt"/>
             <xs:attribute name="fireGeneralAndConcreteEvents" type="xs:boolean"/>
+            <xs:attribute name="gridHeight" type="xs:unsignedInt"/>
+            <xs:attribute name="rowHeight" type="xs:unsignedInt"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>

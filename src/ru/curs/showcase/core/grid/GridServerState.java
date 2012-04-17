@@ -45,6 +45,32 @@ public class GridServerState implements SerializableElement {
 	 */
 	private Boolean autoSelectRelativeRecord = true;
 
+	/**
+	 * Высота грида. В настоящий момент имеет смысл только для LiveGrid.
+	 */
+	private Integer gridHeight = null;
+
+	/**
+	 * Высота строки грида. В настоящий момент имеет смысл только для LiveGrid.
+	 */
+	private Integer rowHeight = null;
+
+	public Integer getGridHeight() {
+		return gridHeight;
+	}
+
+	public void setGridHeight(final Integer aGridHeight) {
+		gridHeight = aGridHeight;
+	}
+
+	public Integer getRowHeight() {
+		return rowHeight;
+	}
+
+	public void setRowHeight(final Integer aRowHeight) {
+		rowHeight = aRowHeight;
+	}
+
 	private ColumnSet columnSet = null;
 
 	private Action defaultAction = null;
