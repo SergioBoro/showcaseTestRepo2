@@ -16039,9 +16039,46 @@ set  @settings=CAST(@settings_str as xml)
 END
 GO
 
---
--- Definition for stored procedure extlivegrid_portals_id_and_css : 
---
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[extlivegrid_portals]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+    @gridsettings xml output,
+	@error_mes varchar(512) output    
+AS
+BEGIN
+	SET NOCOUNT ON;
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+<labels>
+<header>
+<h3>Порталы</h3>
+</header>
+</labels>
+        <columns>
+        <col id="Название" /> 
+        <col id="Логотип" width="250px" type="LINK"/>
+        <col id="URL" width="100px" type="LINK"/>
+        </columns>
+<properties flip="false" pagesize="15" rowHeight = "50"
+totalCount="0" profile="grid.nowidth.properties"/>
+</gridsettings>' 
+set    @gridsettings=CAST(@gridsettings_str as xml)
+SELECT [Name] AS [Название], [Logo] AS [Логотип], [Url] as [URL], cast( '<properties>                                    
+            </properties>' as xml)  as [~~properties] FROM [dbo].[Websites]
+WHERE [IsPortal]=1
+END
+GO
+
 
 SET ANSI_NULLS ON
 GO
@@ -16072,7 +16109,7 @@ set @gridsettings_str='<gridsettings>
         <col id="Логотип" width="250px" type="LINK"/>
         <col id="URL" width="150px" type="LINK"/>
         </columns>
-<properties flip="false" pagesize="20" profile="grid.nowidth.properties" autoSelectRecordId="3" 
+<properties flip="false" pagesize="20" rowHeight = "50" profile="grid.nowidth.properties" autoSelectRecordId="3" 
  autoSelectRelativeRecord="false" autoSelectColumnId="URL"/>
 </gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)

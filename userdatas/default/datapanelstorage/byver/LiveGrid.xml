@@ -25,7 +25,7 @@
 		<element id="0402" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_cities_one"/>
 	</tab>
 	<tab id="5" name="Ссылки в гриде">
-		<element id="511" type="grid" subtype="EXT_LIVE_GRID" proc="grid_portals" />
+		<element id="511" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_portals" />
 	</tab>
 	<tab id="6" name="задание css и id для строки грида">
 		<element id="0201" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_portals_id_and_css" />
