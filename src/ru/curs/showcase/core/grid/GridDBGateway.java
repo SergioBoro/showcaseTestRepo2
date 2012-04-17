@@ -126,8 +126,19 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 
 			prepareSQL();
 			setupGeneralElementParameters();
-			setIntParam(FIRST_RECORD_INDEX, context.getPageInfo().getFirstRecord());
-			setIntParam(PAGE_SIZE_INDEX, context.getPageSize());
+
+			int firstRecord;
+			int pageSize;
+			if (context.getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID) {
+				firstRecord = context.getLiveInfo().getFirstRecord();
+				pageSize = context.getLiveInfo().getLimit();
+			} else {
+				firstRecord = context.getPageInfo().getFirstRecord();
+				pageSize = context.getPageSize();
+			}
+			setIntParam(FIRST_RECORD_INDEX, firstRecord);
+			setIntParam(PAGE_SIZE_INDEX, pageSize);
+
 			setupSorting(context);
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
 				getStatement().registerOutParameter(1, Types.OTHER);
