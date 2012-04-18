@@ -251,6 +251,12 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		final ListStore<ExtGridData> store = new ListStore<ExtGridData>(loader);
 		// store.setMonitorChanges(true);
+		store.setKeyProvider(new ModelKeyProvider<ExtGridData>() {
+			@Override
+			public String getKey(ExtGridData model) {
+				return model.getId();
+			}
+		});
 
 		List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
 
