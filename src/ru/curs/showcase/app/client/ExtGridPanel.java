@@ -49,8 +49,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
 	private ContentPanel cpGrid = null;
 	private EditorGrid<ExtGridData> grid = null;
-	private final GridSelectionModel<ExtGridData> selectionModel =
-		new GridSelectionModel<ExtGridData>();
+	private GridSelectionModel<ExtGridData> selectionModel = null;
 	private ColumnSet cs = null;
 	private Timer selectionTimer = null;
 	private DataServiceAsync dataService = null;
@@ -255,6 +254,13 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
 
+		if (gridMetadata.getUISettings().isSelectOnlyRecords()) {
+			selectionModel = new CheckBoxSelectionModel<ExtGridData>();
+			columns.add(((CheckBoxSelectionModel<ExtGridData>) selectionModel).getColumn());
+		} else {
+			selectionModel = new CellSelectionModel<ExtGridData>();
+		}
+
 		for (final ExtGridColumnConfig egcc : gridMetadata.getColumns()) {
 			ColumnConfig column =
 				new ColumnConfig(egcc.getId(), egcc.getCaption(), egcc.getWidth());
@@ -313,7 +319,10 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		ColumnModel cm = new ColumnModel(columns);
 
 		grid = new EditorGrid<ExtGridData>(store, cm);
-		selectionModel.bindGrid(grid);
+
+		grid.setSelectionModel(selectionModel);
+		// selectionModel.bindGrid(grid);
+
 		grid.setColumnReordering(true);
 		grid.setLoadMask(true);
 		grid.setBorders(true);
@@ -460,7 +469,9 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		saveCurrentClickSelection(be);
 
-		selectedRecordsChanged();
+		if (!(selectionModel instanceof CellSelectionModel)) {
+			selectedRecordsChanged();
+		}
 
 		processClick(be.getModel().getId(), grid.getColumnModel().getColumn(be.getColIndex())
 				.getHeader(), interactionType);
@@ -532,10 +543,29 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		Cell selected = getStoredRecordId();
 
-		for (ExtGridData egd : grid.getStore().getModels()) {
-			if (egd.getId().equals(selected.recId)) {
-				selectionModel.select(egd, false);
-				break;
+		if (selectionModel instanceof CellSelectionModel) {
+			final int row = 1;
+			final int col = 2;
+
+			// for (ExtGridData egd : grid.getStore().getModels()) {
+			// if (egd.getId().equals(selected.recId)) {
+			//
+			// // grid.getr . getStore().getRecord(egd).
+			//
+			// grid.getView().getRow(egd).get.getStore().getRecord(egd).getModel().
+			//
+			// selectionModel.select(egd, false);
+			// break;
+			// }
+			// }
+
+			((CellSelectionModel<ExtGridData>) selectionModel).selectCell(row, col);
+		} else {
+			for (ExtGridData egd : grid.getStore().getModels()) {
+				if (egd.getId().equals(selected.recId)) {
+					selectionModel.select(egd, false);
+					break;
+				}
 			}
 		}
 

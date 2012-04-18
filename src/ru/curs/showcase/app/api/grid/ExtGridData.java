@@ -38,4 +38,18 @@ public class ExtGridData extends BaseTreeModel implements Serializable {
 		set("rowstyle", rowstyle);
 	}
 
+	@Override
+	public boolean equals(final Object obj) {
+		if ((obj != null) && (obj instanceof ExtGridData)) {
+			ExtGridData egd = (ExtGridData) obj;
+			return getId().equals(egd.getId());
+		}
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		return getId().hashCode();
+	}
+
 }
