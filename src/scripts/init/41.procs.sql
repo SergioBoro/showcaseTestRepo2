@@ -18634,7 +18634,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                                 
                             </datapanel>
                         </action>
-<properties flip="false" pagesize="50" autoSelectRecordId="2" autoSelectRelativeRecord="false" autoSelectColumnId="4кв. 2005г." totalCount="0" profile="grid.nowidth.properties"/></gridsettings>' 
+<properties flip="false" pagesize="50" autoSelectRecordId="9" autoSelectRelativeRecord="false" autoSelectColumnId="4кв. 2005г." totalCount="0" profile="grid.nowidth.properties"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO

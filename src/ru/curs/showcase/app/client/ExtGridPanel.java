@@ -550,22 +550,11 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		Cell selected = getStoredRecordId();
 
 		if (selectionModel instanceof CellSelectionModel) {
-			final int row = 1;
-			final int col = 2;
-
-			// for (ExtGridData egd : grid.getStore().getModels()) {
-			// if (egd.getId().equals(selected.recId)) {
-			//
-			// // grid.getr . getStore().getRecord(egd).
-			//
-			// grid.getView().getRow(egd).get.getStore().getRecord(egd).getModel().
-			//
-			// selectionModel.select(egd, false);
-			// break;
-			// }
-			// }
-
-			((CellSelectionModel<ExtGridData>) selectionModel).selectCell(row, col);
+			int row = getRecordIndexById(selected.recId);
+			int col = getColumnIndexById(selected.colId);
+			if ((row >= 0) && (col >= 0)) {
+				((CellSelectionModel<ExtGridData>) selectionModel).selectCell(row, col);
+			}
 		} else {
 			for (ExtGridData egd : grid.getStore().getModels()) {
 				if (egd.getId().equals(selected.recId)) {
@@ -586,13 +575,42 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		setFirstLoading(false);
 	}
 
+	private int getRecordIndexById(final String recId) {
+		int index = -1;
+		if (recId != null) {
+			int i = 0;
+			for (ExtGridData egd : grid.getStore().getModels()) {
+				if (egd.getId().equals(recId)) {
+					index = i;
+					break;
+				}
+				i++;
+			}
+		}
+		return index;
+	}
+
+	private int getColumnIndexById(final String colId) {
+		int index = -1;
+		if (colId != null) {
+			int i = 0;
+			for (ColumnConfig col : grid.getColumnModel().getColumns()) {
+				if (col.getHeader().equals(colId)) {
+					index = i;
+					break;
+				}
+				i++;
+			}
+		}
+		return index;
+	}
+
 	/**
 	 * Локальный класс для работы с ячейкой грида в Showcase.
 	 * 
 	 * @author den
 	 * 
 	 */
-	@SuppressWarnings("unused")
 	class Cell {
 		private String recId;
 		private String colId;
