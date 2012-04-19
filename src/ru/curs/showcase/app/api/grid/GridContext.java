@@ -43,9 +43,10 @@ public class GridContext extends CompositeContext {
 	@Override
 	public String toString() {
 		return "GridContext [sortedColumns=" + sortedColumns + ", pageInfo=" + pageInfo
-				+ ", currentRecordId=" + currentRecordId + ", currentColumnId=" + currentColumnId
-				+ ", selectedRecordIds=" + selectedRecordIds + ", isFirstLoad=" + isFirstLoad
-				+ ", toString()=" + super.toString() + "]";
+				+ ", liveInfo=" + liveInfo + ", currentRecordId=" + currentRecordId
+				+ ", currentColumnId=" + currentColumnId + ", selectedRecordIds="
+				+ selectedRecordIds + ", isFirstLoad=" + isFirstLoad + ", toString()="
+				+ super.toString() + "]";
 	}
 
 	private static final long serialVersionUID = 2005065362465664382L;

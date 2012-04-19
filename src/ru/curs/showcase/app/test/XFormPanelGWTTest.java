@@ -184,10 +184,10 @@ public class XFormPanelGWTTest extends GWTTestCase {
 		XFormPanel.beforeModalWindow(bep);
 
 		com.google.gwt.user.client.Element dynastyle = DOM.getElementById(DYNASTYLE);
-		assertNull(dynastyle);
+		assertNotNull(dynastyle);
 
 		com.google.gwt.user.client.Element target = DOM.getElementById(TARGET);
-		assertEquals(0, target.getChildCount());
+		assertEquals(2, target.getChildCount());
 
 	}
 

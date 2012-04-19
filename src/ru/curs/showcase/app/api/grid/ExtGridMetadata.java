@@ -8,7 +8,6 @@ import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.SizeEstimate;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
-import ru.curs.showcase.app.api.event.*;
 
 /**
  * Класс грида из ExtGWT с метаданными.
@@ -25,12 +24,6 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 	private ExtGridLiveInfo liveInfo = new ExtGridLiveInfo();
 
 	private ColumnSet originalColumnSet = null;
-
-	/**
-	 * Набор данных для грида. Содержит описания столбцов, строк, страниц и
-	 * внешнего вида собственно грида.
-	 */
-	private DataSet dataSet = new DataSet();
 
 	/**
 	 * Настройки UI для грида. Как правило, задаются по умолчанию для всех
@@ -58,35 +51,6 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 		super(aElInfo);
 	}
 
-	@Override
-	public final GridEventManager getEventManager() {
-		return (GridEventManager) super.getEventManager();
-	}
-
-	/**
-	 * Возвращает столбец по его id.
-	 * 
-	 * @param id
-	 *            - id.
-	 * @return - столбец.
-	 */
-	public Column getColumnById(final String id) {
-		for (Column current : getDataSet().getColumnSet().getColumns()) {
-			if (current.getId().equals(id)) {
-				return current;
-			}
-		}
-		return null;
-	}
-
-	public final DataSet getDataSet() {
-		return dataSet;
-	}
-
-	public final void setDataSet(final DataSet aDataSet) {
-		dataSet = aDataSet;
-	}
-
 	public final ExtGridColumnConfig getAutoSelectColumn() {
 		return autoSelectColumn;
 	}
@@ -103,46 +67,6 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 		autoSelectRecord = aAutoSelectRecord;
 	}
 
-	/**
-	 * Возвращает действие для отрисовки зависимого элемента.
-	 * 
-	 * @return - действие.
-	 */
-	@Override
-	public Action getActionForDependentElements() {
-		if (autoSelectRecord != null) {
-			String columnId = null;
-
-			if (autoSelectColumn != null) {
-				columnId = autoSelectColumn.getId();
-			}
-
-			List<GridEvent> events =
-				getEventManager().getEventForCell(autoSelectRecord.getId(), columnId,
-						InteractionType.SINGLE_CLICK);
-			GridEvent res = getConcreteEvent(events);
-			if (res != null) {
-				return res.getAction();
-			}
-
-			events =
-				getEventManager().getEventForCell(autoSelectRecord.getId(), columnId,
-						InteractionType.DOUBLE_CLICK);
-			res = getConcreteEvent(events);
-			if (res != null) {
-				return res.getAction();
-			}
-		} else {
-			return getDefaultAction();
-		}
-
-		return null;
-	}
-
-	private GridEvent getConcreteEvent(final List<GridEvent> events) {
-		return (GridEvent) events.toArray()[events.size() - 1];
-	}
-
 	public final DataGridSettings getUISettings() {
 		return uiSettings;
 	}
@@ -153,44 +77,12 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 
 	@Override
 	protected GridEventManager initEventManager() {
-		return new GridEventManager();
+		return null;
 	}
 
 	@Override
 	public long sizeEstimate() {
 		long result = Integer.SIZE / Byte.SIZE;
-		for (Event ev : getEventManager().getEvents()) {
-			result += ev.sizeEstimate();
-		}
-		for (Record rec : dataSet.getRecordSet().getRecords()) {
-			result += rec.getId().length();
-			if (rec.getBackgroundColor() != null) {
-				result += rec.getBackgroundColor().length();
-			}
-			if (rec.getTextColor() != null) {
-				result += rec.getTextColor().length();
-			}
-			if (rec.getFontSize() != null) {
-				result += rec.getFontSize().length();
-			}
-			for (java.util.Map.Entry<String, String> entry : rec.getValues().entrySet()) {
-				result += entry.getKey().length();
-				if (entry.getValue() != null) {
-					result += entry.getValue().getBytes().length;
-				}
-			}
-
-			for (java.util.Map.Entry<String, String> entry : rec.getAttributes().getValues()
-					.entrySet()) {
-				result += entry.getKey().length();
-				if (entry.getValue() != null) {
-					result += entry.getValue().getBytes().length;
-				}
-			}
-			if (rec.getIndex() != null) {
-				result += Integer.SIZE / Byte.SIZE;
-			}
-		}
 		return result;
 	}
 
