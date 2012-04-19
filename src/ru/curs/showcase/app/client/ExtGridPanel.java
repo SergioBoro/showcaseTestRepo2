@@ -473,7 +473,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	private void
 			handleClick(final GridEvent<ExtGridData> be, final InteractionType interactionType) {
 
-		saveCurrentClickSelection(be);
+		saveCurrentClickSelection(be.getModel().getId(),
+				grid.getColumnModel().getColumn(be.getColIndex()).getHeader());
 
 		if (!(selectionModel instanceof CellSelectionModel)) {
 			selectedRecordsChanged();
@@ -568,7 +569,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		// dg.getSelection().setSelectedRecordsById(localContext.getSelectedRecordIds());
 		// }
 
-		resetGridSettingsToCurrent(); // Это вместо нижнего switch
+		resetGridSettingsToCurrent();
 
 		runAction(gridExtradata.getActionForDependentElements());
 
@@ -634,13 +635,9 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	private void saveCurrentClickSelection(final GridEvent<ExtGridData> be) {
-		localContext.setCurrentColumnId(null);
-		localContext.setCurrentRecordId(null);
-
-		localContext.setCurrentRecordId(be.getModel().getId());
-		localContext.setCurrentColumnId(grid.getColumnModel().getColumn(be.getColIndex())
-				.getHeader());
+	private void saveCurrentClickSelection(final String recId, final String colId) {
+		localContext.setCurrentRecordId(recId);
+		localContext.setCurrentColumnId(colId);
 	}
 
 	/**
@@ -670,6 +667,9 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		localContext.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 
 		saveCurrentCheckBoxSelection();
+
+		Cell selected = getStoredRecordId();
+		saveCurrentClickSelection(selected.recId, selected.colId);
 	}
 
 	/**
