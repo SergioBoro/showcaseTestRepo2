@@ -49,7 +49,7 @@ def initDB(args):
                 for arg in args:
                     command += arg + " "
                 command += db + " -i " + script
-                subprocess.call(command, stderr = errorlog, stdout = subprocess.PIPE)
+                subprocess.call(command, stderr = errorlog)
         finally:
             if extracted:
                 os.remove(script)
