@@ -428,16 +428,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			buttonBar.add(copyToClipboard);
 		}
 
-		// ------------
-		ToolBar liveBar = new ToolBar();
-		LabelToolItem footer = new LabelToolItem(gridMetadata.getFooter());
-		liveBar.add(footer);
-		liveBar.add(new FillToolItem());
-		LiveToolItem item = new LiveToolItem();
-		item.bindGrid(grid);
-		liveBar.add(item);
-		// ------------
-
 		// ------------------------------------------------------------------------------
 
 		cpGrid = new ContentPanel();
@@ -465,7 +455,18 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		// grid.setAutoWidth(true);
 		// grid.setAutoHeight(true);
 		cpGrid.add(grid);
-		cpGrid.add(liveBar);
+
+		if (gridMetadata.getUISettings().isVisiblePager()) {
+			ToolBar liveBar = new ToolBar();
+			LabelToolItem footer = new LabelToolItem(gridMetadata.getFooter());
+			liveBar.add(footer);
+			liveBar.add(new FillToolItem());
+			LiveToolItem item = new LiveToolItem();
+			item.bindGrid(grid);
+			liveBar.add(item);
+
+			cpGrid.add(liveBar);
+		}
 
 		// ------------------------------------------------------------------------------
 
