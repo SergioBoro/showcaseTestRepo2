@@ -4,10 +4,6 @@
 		<element id="1" type="webtext" transform="bal.xsl" />
 		<element id="6" type="webtext" transform="bal.xsl" />
 	</tab>
-	<tab id="2_Old" name="Grid. Профайлы">
-		<element id="Old_0101" type="grid" proc="grid_default_profile"/>
-		<element id="Old_0102" type="grid" proc="grid_special_profile"/>
-	</tab>
 	<tab id="2" name="LiveGrid. Профайлы">
 		<element id="0101" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_default_profile"/>
 		<element id="0102" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_special_profile"/>

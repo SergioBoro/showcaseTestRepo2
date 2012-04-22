@@ -279,6 +279,13 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 			column.setAlignment(egcc.getHorizontalAlignment());
 
+			String style = getColumnStyle();
+			if (!style.isEmpty()) {
+				column.setStyle(style);
+			}
+
+			column.setMenuDisabled(!gridMetadata.getUISettings().isVisibleColumnsCustomizer());
+
 			if (egcc.getValueType() == GridValueType.DOWNLOAD) {
 				column.setRenderer(new GridCellRenderer<ExtGridData>() {
 					@Override
@@ -335,6 +342,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		grid.getAriaSupport().setLabelledBy(grid.getId() + "-label");
 		// grid.setStateId("pagingGridExample");
 		// grid.setStateful(true);
+
+		grid.setHideHeaders(!gridMetadata.getUISettings().isVisibleColumnsHeader());
 
 		// ---------------------------
 
@@ -446,7 +455,9 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		cpGrid.setHeading(gridMetadata.getHeader());
 
-		cpGrid.setTopComponent(buttonBar);
+		if (buttonBar.getItemCount() > 0) {
+			cpGrid.setTopComponent(buttonBar);
+		}
 
 		grid.setWidth(PROC100);
 		grid.setHeight(gridMetadata.getUISettings().getGridHeight());
@@ -606,6 +617,43 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		return index;
 	}
 
+	private String getColumnStyle() {
+		String style = "";
+
+		if (gridMetadata.getTextColor() != null) {
+			style = style + "color:" + gridMetadata.getTextColor() + ";";
+		}
+
+		if (gridMetadata.getBackgroundColor() != null) {
+			style = style + "background-color:" + gridMetadata.getBackgroundColor() + ";";
+		}
+
+		if (gridMetadata.getFontSize() != null) {
+			style = style + "font-size:" + gridMetadata.getFontSize() + ";";
+		}
+
+		for (FontModifier fm : gridMetadata.getFontModifiers()) {
+			switch (fm) {
+			case ITALIC:
+				style = style + "font-style:italic;";
+				continue;
+			case BOLD:
+				style = style + "font-weight:bold;";
+				continue;
+			case STRIKETHROUGH:
+				style = style + "text-decoration:line-through;";
+				continue;
+			case UNDERLINE:
+				style = style + "text-decoration:underline;";
+				continue;
+			default:
+				continue;
+			}
+		}
+
+		return style;
+	}
+
 	/**
 	 * Локальный класс для работы с ячейкой грида в Showcase.
 	 * 
@@ -620,7 +668,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	private void resetSelection() {
 		if (localContext == null) {
 			return;
-
 		}
 		localContext.getSelectedRecordIds().clear();
 		localContext.setCurrentColumnId(null);
@@ -652,12 +699,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			cell.recId = localContext.getCurrentRecordId();
 			cell.colId = localContext.getCurrentColumnId();
 		} else {
-			cell.recId =
-				gridMetadata.getAutoSelectRecord() != null ? gridMetadata.getAutoSelectRecord()
-						.getId() : null;
-			cell.colId =
-				gridMetadata.getAutoSelectColumn() != null ? gridMetadata.getAutoSelectColumn()
-						.getCaption() : null;
+			cell.recId = gridExtradata.getAutoSelectRecordId();
+			cell.colId = gridExtradata.getAutoSelectColumnId();
 		}
 		return cell;
 	}

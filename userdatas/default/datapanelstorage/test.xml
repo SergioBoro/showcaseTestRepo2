@@ -35,4 +35,10 @@
 			</td>
 		</tr>
 	</tab>
+	<tab id="6" name="LiveGrid1">
+		<element id="61" type="GRID"  subtype="EXT_LIVE_GRID" proc="extlivegrid_bal"/>
+		<element id ="62" type="grid" subtype="EXT_LIVE_GRID" proc="grid_cities_data">
+			<proc id="040101" name="extlivegrid_cities_metadata" type="METADATA"/>
+		</element>
+	</tab>
 </datapanel>

@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.*;
 
-import ru.curs.gwt.datagrid.model.Record;
 import ru.curs.showcase.app.api.SizeEstimate;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelElement;
@@ -23,16 +22,16 @@ public class ExtGridExtradata extends DataPanelElement implements SizeEstimate {
 	private GridEventManager gridEventManager = null;
 
 	/**
-	 * Строка, которая должна быть выделена автоматически при перерисовке грида
-	 * с новыми данными. Если null - ничего делать не надо.
+	 * Идентификатор строки, которая должна быть выделена автоматически при
+	 * перерисовке грида с новыми данными. Если null - ничего делать не надо.
 	 */
-	private Record autoSelectRecord = null;
+	private String autoSelectRecordId = null;
 
 	/**
-	 * Столбец, который должен быть выделен автоматически при перерисовке грида
-	 * с новыми данными. Если null - ничего делать не надо.
+	 * Идентификатор столбца, который должен быть выделен автоматически при
+	 * перерисовке грида с новыми данными. Если null - ничего делать не надо.
 	 */
-	private ExtGridColumnConfig autoSelectColumn = null;
+	private String autoSelectColumnId = null;
 
 	public ExtGridExtradata() {
 		super();
@@ -51,20 +50,20 @@ public class ExtGridExtradata extends DataPanelElement implements SizeEstimate {
 		gridEventManager = aGridEventManager;
 	}
 
-	public final ExtGridColumnConfig getAutoSelectColumn() {
-		return autoSelectColumn;
+	public final String getAutoSelectColumnId() {
+		return autoSelectColumnId;
 	}
 
-	public final void setAutoSelectColumn(final ExtGridColumnConfig aAutoSelectColumn) {
-		autoSelectColumn = aAutoSelectColumn;
+	public final void setAutoSelectColumnId(final String aAutoSelectColumnId) {
+		autoSelectColumnId = aAutoSelectColumnId;
 	}
 
-	public final Record getAutoSelectRecord() {
-		return autoSelectRecord;
+	public final String getAutoSelectRecordId() {
+		return autoSelectRecordId;
 	}
 
-	public final void setAutoSelectRecord(final Record aAutoSelectRecord) {
-		autoSelectRecord = aAutoSelectRecord;
+	public final void setAutoSelectRecordId(final String aAutoSelectRecordId) {
+		autoSelectRecordId = aAutoSelectRecordId;
 	}
 
 	/**
@@ -74,15 +73,15 @@ public class ExtGridExtradata extends DataPanelElement implements SizeEstimate {
 	 */
 	@Override
 	public Action getActionForDependentElements() {
-		if (autoSelectRecord != null) {
+		if (autoSelectRecordId != null) {
 			String columnId = null;
 
-			if (autoSelectColumn != null) {
-				columnId = autoSelectColumn.getId();
+			if (autoSelectColumnId != null) {
+				columnId = autoSelectColumnId;
 			}
 
 			List<GridEvent> events =
-				getEventManager().getEventForCell(autoSelectRecord.getId(), columnId,
+				getEventManager().getEventForCell(autoSelectRecordId, columnId,
 						InteractionType.SINGLE_CLICK);
 			GridEvent res = getConcreteEvent(events);
 			if (res != null) {
@@ -90,7 +89,7 @@ public class ExtGridExtradata extends DataPanelElement implements SizeEstimate {
 			}
 
 			events =
-				getEventManager().getEventForCell(autoSelectRecord.getId(), columnId,
+				getEventManager().getEventForCell(autoSelectRecordId, columnId,
 						InteractionType.DOUBLE_CLICK);
 			res = getConcreteEvent(events);
 			if (res != null) {

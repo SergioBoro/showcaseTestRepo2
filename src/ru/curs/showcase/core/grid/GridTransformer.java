@@ -39,10 +39,6 @@ public final class GridTransformer {
 				new ExtGridColumnConfig("col" + String.valueOf(index), c.getCaption(),
 						getIntWidthByStringWidth(c.getWidth()));
 
-			if (c.getValueType().isDate()) {
-				column.setDateTimeFormat("yyyy MMM dd");
-			}
-
 			column.setHorizontalAlignment(com.extjs.gxt.ui.client.Style.HorizontalAlignment
 					.valueOf(c.getHorizontalAlignment().toString()));
 
@@ -51,16 +47,9 @@ public final class GridTransformer {
 			column.setLinkId(c.getLinkId());
 
 			columns.add(column);
-
-			if (c == grid.getAutoSelectColumn()) {
-				egm.setAutoSelectColumn(column);
-
-			}
 		}
 
 		egm.setColumns(columns);
-
-		egm.setAutoSelectRecord(grid.getAutoSelectRecord());
 
 		// -------------------------------------------------------
 
@@ -75,6 +64,15 @@ public final class GridTransformer {
 		// -------------------------------------------------------
 
 		egm.setUISettings(grid.getUISettings());
+
+		if ((grid.getDataSet().getRecordSet().getRecords() != null)
+				&& (grid.getDataSet().getRecordSet().getRecords().get(0) != null)) {
+			Record record = grid.getDataSet().getRecordSet().getRecords().get(0);
+			egm.setTextColor(record.getTextColor());
+			egm.setBackgroundColor(record.getBackgroundColor());
+			egm.setFontSize(record.getFontSize());
+			egm.setFontModifiers(record.getFontModifiers());
+		}
 
 		// -------------------------------------------------------
 
@@ -126,7 +124,19 @@ public final class GridTransformer {
 
 		ExtGridExtradata ege = new ExtGridExtradata();
 		ege.setGridEventManager(grid.getEventManager());
-		ege.setAutoSelectRecord(grid.getAutoSelectRecord());
+
+		String autoSelectRecordId = null;
+		if (grid.getAutoSelectRecord() != null) {
+			autoSelectRecordId = grid.getAutoSelectRecord().getId();
+		}
+		ege.setAutoSelectRecordId(autoSelectRecordId);
+
+		String autoSelectColumnId = null;
+		if (grid.getAutoSelectColumn() != null) {
+			autoSelectColumnId = grid.getAutoSelectColumn().getId();
+		}
+		ege.setAutoSelectColumnId(autoSelectColumnId);
+
 		egplr.setExtGridExtradata(ege);
 
 		return egplr;

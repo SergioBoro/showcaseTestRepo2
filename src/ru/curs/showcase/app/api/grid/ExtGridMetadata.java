@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.grid;
 
-import java.util.List;
+import java.util.*;
 
 import javax.xml.bind.annotation.*;
 
@@ -25,23 +25,16 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 
 	private ColumnSet originalColumnSet = null;
 
+	private String textColor = null;
+	private String backgroundColor = null;
+	private String fontSize = null;
+	private Set<FontModifier> fontModifiers = null;
+
 	/**
 	 * Настройки UI для грида. Как правило, задаются по умолчанию для всех
 	 * гридов в файле настроек приложения.
 	 */
 	private DataGridSettings uiSettings = new DataGridSettings();
-
-	/**
-	 * Строка, которая должна быть выделена автоматически при перерисовке грида
-	 * с новыми данными. Если null - ничего делать не надо.
-	 */
-	private Record autoSelectRecord = null;
-
-	/**
-	 * Столбец, который должен быть выделен автоматически при перерисовке грида
-	 * с новыми данными. Если null - ничего делать не надо.
-	 */
-	private ExtGridColumnConfig autoSelectColumn = null;
 
 	public ExtGridMetadata() {
 		super();
@@ -49,22 +42,6 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 
 	public ExtGridMetadata(final DataPanelElementInfo aElInfo) {
 		super(aElInfo);
-	}
-
-	public final ExtGridColumnConfig getAutoSelectColumn() {
-		return autoSelectColumn;
-	}
-
-	public final void setAutoSelectColumn(final ExtGridColumnConfig aAutoSelectColumn) {
-		autoSelectColumn = aAutoSelectColumn;
-	}
-
-	public final Record getAutoSelectRecord() {
-		return autoSelectRecord;
-	}
-
-	public final void setAutoSelectRecord(final Record aAutoSelectRecord) {
-		autoSelectRecord = aAutoSelectRecord;
 	}
 
 	public final DataGridSettings getUISettings() {
@@ -108,6 +85,38 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 
 	public void setOriginalColumnSet(final ColumnSet aOriginalColumnSet) {
 		originalColumnSet = aOriginalColumnSet;
+	}
+
+	public String getTextColor() {
+		return textColor;
+	}
+
+	public void setTextColor(final String aTextColor) {
+		textColor = aTextColor;
+	}
+
+	public String getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public void setBackgroundColor(final String aBackgroundColor) {
+		backgroundColor = aBackgroundColor;
+	}
+
+	public String getFontSize() {
+		return fontSize;
+	}
+
+	public void setFontSize(final String aFontSize) {
+		fontSize = aFontSize;
+	}
+
+	public Set<FontModifier> getFontModifiers() {
+		return fontModifiers;
+	}
+
+	public void setFontModifiers(final Set<FontModifier> aFontModifiers) {
+		fontModifiers = aFontModifiers;
 	}
 
 }
