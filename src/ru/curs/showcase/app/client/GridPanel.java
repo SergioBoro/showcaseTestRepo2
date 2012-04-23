@@ -230,6 +230,12 @@ public class GridPanel extends BasicElementPanelBasis {
 	}
 
 	private void setDataGridPanel(final UpdateType ut) {
+
+		if ((ut == UpdateType.RECORDSET_BY_UPDATERECORDSET)
+				|| (ut == UpdateType.RECORDSET_BY_SHOWDATA)) {
+			ProgressWindow.showProgressWindow();
+		}
+
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
@@ -240,12 +246,20 @@ public class GridPanel extends BasicElementPanelBasis {
 			@Override
 			public void onSuccess(final Grid grid1) {
 				setDataGridPanelByGrid(grid1, ut);
+
+				ProgressWindow.closeProgressWindow();
+			}
+
+			@Override
+			public void onFailure(final Throwable caught) {
+				ProgressWindow.closeProgressWindow();
+
+				super.onFailure(caught);
 			}
 		});
 	}
 
 	private void setDataGridPanelByGrid(final Grid grid1, final UpdateType ut) {
-
 		grid = grid1;
 
 		bListenersExit = true;
@@ -278,7 +292,6 @@ public class GridPanel extends BasicElementPanelBasis {
 		p.setHeight(PROC100);
 
 		bListenersExit = false;
-
 	}
 
 	@Override
