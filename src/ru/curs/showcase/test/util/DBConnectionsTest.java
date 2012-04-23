@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
+import ru.curs.showcase.util.Repeat;
 
 /**
  * Тесты соединения с БД.
@@ -39,6 +40,7 @@ public class DBConnectionsTest extends AbstractTestWithDefaultUserData {
 	 * @throws SQLException
 	 */
 	@Test
+	@Repeat(count = 2)
 	public void testConnectionsMany() throws SQLException {
 		Connection conn1 = ConnectionFactory.getInstance().acquire();
 		Connection conn2 = ConnectionFactory.getInstance().acquire();

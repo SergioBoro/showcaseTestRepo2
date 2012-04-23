@@ -28,7 +28,7 @@
 			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
 			<proc id="04" name="xforms_upload_by_userdata" type="UPLOAD" />
 			<proc id="041" name="xforms_upload_by_userdata" type="UPLOAD" />
-			<proc id="05" name="xforms_upload_by_userdata" type="UPLOAD" />
+			<proc id="05" name="xforms_upload_by_userdata_err" type="UPLOAD" />
 			<proc id="051" name="xforms_upload_by_userdata" type="UPLOAD" />			
 		</element>	
 	</tab>

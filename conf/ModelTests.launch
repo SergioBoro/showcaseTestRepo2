@@ -51,5 +51,5 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="ru.curs.showcase.test.ModelTests"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Showcase"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-XX:MaxPermSize=384m&#13;&#10;-javaagent:d:\PR.dev\java\Tomcat-7.0.8\lib\aspectjweaver.jar"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-XX:MaxPermSize=384m"/>
 </launchConfiguration>
