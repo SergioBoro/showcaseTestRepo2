@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.primelements.PrimElementsGateway;
-import ru.curs.showcase.core.primelements.navigator.MSSQLExecGateway;
+import ru.curs.showcase.core.sp.MSSQLExecGateway;
 import ru.curs.showcase.util.*;
 
 /**

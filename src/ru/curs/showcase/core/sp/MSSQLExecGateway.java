@@ -1,9 +1,8 @@
-package ru.curs.showcase.core.primelements.navigator;
+package ru.curs.showcase.core.sp;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-import ru.curs.showcase.core.sp.SPQuery;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.*;
