@@ -25,7 +25,7 @@ public class WebTextDBGateway extends HTMLBasedSPCallHelper implements HTMLGatew
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "{? = call %s(?, ?, ?, ?, ?, ?, ?)}";
+		return "{? = call %s (?, ?, ?, ?, ?, ?, ?)}";
 	}
 
 	@Override

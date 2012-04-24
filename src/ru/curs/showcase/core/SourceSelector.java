@@ -54,6 +54,8 @@ public abstract class SourceSelector<T> {
 			return SourceType.FILE;
 		} else if (sourceName.endsWith(".py")) {
 			return SourceType.JYTHON;
+		} else if (sourceName.endsWith(".sql")) {
+			return SourceType.SQL;
 		}
 		return SourceType.SP;
 	}

@@ -11,6 +11,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.core.ValidateException;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.primelements.*;
 import ru.curs.showcase.core.primelements.navigator.*;
@@ -116,8 +117,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 
 	@Test
 	public void testFromDB() {
-		CompositeContext context =
-			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+		CompositeContext context = generateContextWithSessionInfo();
 		NavigatorFactory factory = new NavigatorFactory(context);
 		try (PrimElementsGateway gateway = new NavigatorDBGateway()) {
 			DataFile<InputStream> file = gateway.getRawData(context, "generationtree");
@@ -127,8 +127,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 
 	@Test
 	public void testFromDBWithException() {
-		CompositeContext context =
-			new CompositeContext(generateTestURLParams(ExchangeConstants.DEFAULT_USERDATA));
+		CompositeContext context = generateContextWithSessionInfo();
 		try (PrimElementsGateway gateway = new NavigatorDBGateway()) {
 			gateway.getRawData(context, "generationtree_re");
 			fail();
@@ -145,4 +144,36 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		}
 		fail();
 	}
+
+	@Test
+	public void navigatorCanBeCreatedByExecutingMSSQLFile() {
+		CompositeContext context = generateContextWithSessionInfo();
+		NavigatorFactory factory = new NavigatorFactory(context);
+		try (PrimElementsGateway gateway = new NavigatorMSSQLExecGateway()) {
+			DataFile<InputStream> file =
+				gateway.getRawData(context, "navigator/generate.tree.sql");
+			Navigator navigator = factory.fromStream(file);
+
+			assertNotNull(navigator);
+			final int groupsCount = 3;
+			assertEquals(groupsCount, navigator.getGroups().size());
+			assertFalse(navigator.getHideOnLoad());
+			assertEquals("199px", navigator.getWidth());
+		}
+	}
+
+	@Test
+	public void codeFromMSSQLFileCanReturnErrorCodeAndMessageInParams() {
+		CompositeContext context = generateContextWithSessionInfo();
+		try (PrimElementsGateway gateway = new NavigatorMSSQLExecGateway()) {
+			gateway.getRawData(context, "navigator/generate.error.sql");
+			fail();
+		} catch (ValidateException e) {
+			assertTrue(e.getLocalizedMessage().contains(
+					"Ошибка при построении навигатора: нет данных! (1)"));
+			return;
+		}
+		fail();
+	}
+
 }

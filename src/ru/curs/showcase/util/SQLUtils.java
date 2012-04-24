@@ -173,18 +173,21 @@ public final class SQLUtils {
 			Object paramValue = params.get(i++);
 			if (paramValue instanceof Integer) {
 				matcher.appendReplacement(result, ((Integer) paramValue).toString());
+			} else if (paramValue == null) {
+				matcher.appendReplacement(result, "null");
 			} else {
 				String tmpValue = (String) paramValue;
 				if (tmpValue != null) {
 					tmpValue = tmpValue.replace("\\", "\\\\");
 					tmpValue = tmpValue.replace("$", "\\$");
+					tmpValue = tmpValue.replace("'", "''");
 				}
-				matcher.appendReplacement(result, String.format("'%s'", tmpValue));
+				matcher.appendReplacement(result, String.format("N'%s'", tmpValue));
 			}
 		}
 		matcher.appendTail(result);
 
-		pattern = Pattern.compile("call (.+)\\(([\\s\\S]+)\\)");
+		pattern = Pattern.compile("call (\\w+)\\s\\(([\\s\\S]+)\\)");
 		matcher = pattern.matcher(result.toString());
 		if (matcher.find()) {
 			value = matcher.group(1) + " " + matcher.group(2);

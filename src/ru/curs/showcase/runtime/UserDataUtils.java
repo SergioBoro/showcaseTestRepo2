@@ -3,6 +3,8 @@ package ru.curs.showcase.runtime;
 import java.io.*;
 import java.util.Properties;
 
+import org.slf4j.MDC;
+
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
@@ -112,9 +114,9 @@ public final class UserDataUtils {
 	 * @return - значение параметра.
 	 */
 	public static String getRequiredProp(final String propName) {
-		String result = generalReadFunc(propName, null);
+		String result = propReadFunc(propName, null);
 		if (result == null) {
-			throw new SettingsFileRequiredPropException(PROPFILENAME, propName,
+			throw new SettingsFileRequiredPropException(getCurrentPropFile(), propName,
 					SettingsFileType.APP_PROPERTIES);
 		}
 		return result;
@@ -129,7 +131,7 @@ public final class UserDataUtils {
 	 * @return - значение параметра.
 	 */
 	public static String getOptionalProp(final String propName) {
-		return generalReadFunc(propName, null);
+		return propReadFunc(propName, null);
 	}
 
 	/**
@@ -143,10 +145,10 @@ public final class UserDataUtils {
 	 * @return - значение параметра.
 	 */
 	public static String getOptionalProp(final String propName, final String userdataId) {
-		return generalReadFunc(propName, userdataId);
+		return propReadFunc(propName, userdataId);
 	}
 
-	private static String generalReadFunc(final String propName, final String aUserdataId) {
+	private static String propReadFunc(final String propName, final String aUserdataId) {
 		try {
 			String userdataId = aUserdataId;
 			if (propName.trim().contains(AUTHSERVERURL_PART)) {
@@ -160,7 +162,8 @@ public final class UserDataUtils {
 			}
 			return result;
 		} catch (IOException e) {
-			throw new SettingsFileOpenException(e, PROPFILENAME, SettingsFileType.APP_PROPERTIES);
+			throw new SettingsFileOpenException(e, getCurrentPropFile(),
+					SettingsFileType.APP_PROPERTIES);
 		}
 	}
 
@@ -184,7 +187,7 @@ public final class UserDataUtils {
 
 		Properties prop = new Properties();
 
-		InputStream is = loadUserDataToStream(PROPFILENAME, userdataId);
+		InputStream is = loadUserDataToStream(getCurrentPropFile(), userdataId);
 		try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
 			prop.load(reader);
 		}
@@ -341,5 +344,13 @@ public final class UserDataUtils {
 			}
 		}
 		return false;
+	}
+
+	public static String getCurrentPropFile() {
+		String overrided = MDC.get(CommandContext.PROP_FILE_TAG);
+		if ((overrided != null) && (!overrided.isEmpty())) {
+			return overrided;
+		}
+		return PROPFILENAME;
 	}
 }

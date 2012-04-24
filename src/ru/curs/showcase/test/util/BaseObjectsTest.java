@@ -108,7 +108,8 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 		assertNull(source.getSaxParser());
 
 		source =
-			new XMLSource(FileUtils.loadClassPathResToStream(TEST_XML_FILE), XMLUtils.createSAXParser(), "");
+			new XMLSource(FileUtils.loadClassPathResToStream(TEST_XML_FILE),
+					XMLUtils.createSAXParser(), "");
 		assertNotNull(source.getInputStream());
 		assertNull(source.getDocument());
 		assertNotNull(source.getSaxParser());
@@ -159,11 +160,11 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 		Map<Integer, Object> params = new TreeMap<>();
 		params.put(1, "first\n");
 		params.put(2, 2);
-		String value = "{call test_proc(?,?,?)}";
+		String value = "{call test_proc (?,?,?)}";
 
 		value = SQLUtils.addParamsToSQLTemplate(value, params);
 
-		assertEquals("test_proc 'first\n',2,'null'", value);
+		assertEquals("test_proc N'first\n',2,null", value);
 	}
 
 	@Test

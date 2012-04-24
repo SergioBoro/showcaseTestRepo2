@@ -17,6 +17,8 @@ import ru.curs.showcase.util.xml.GeneralXMLHelper;
 public class CommandContext implements SerializableElement, Assignable<CommandContext>,
 		GWTClonable, AbstractCommandContext {
 
+	public static final String PROP_FILE_TAG = "propFile";
+
 	private static final long serialVersionUID = 8694977102691236398L;
 
 	private String commandName;
@@ -30,6 +32,20 @@ public class CommandContext implements SerializableElement, Assignable<CommandCo
 
 	private String userdata;
 
+	/**
+	 * Имя файла с настройками userdata. Если null - используется файл по
+	 * умолчанию.
+	 */
+	private String propFile;
+
+	public String getPropFile() {
+		return propFile;
+	}
+
+	public void setPropFile(final String aPropFile) {
+		propFile = aPropFile;
+	}
+
 	public CommandContext() {
 		super();
 	}
@@ -42,18 +58,19 @@ public class CommandContext implements SerializableElement, Assignable<CommandCo
 		userName = SessionUtils.getCurrentSessionUserName();
 	}
 
-	// CHECKSTYLE:OFF
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((commandName == null) ? 0 : commandName.hashCode());
+		result = prime * result + ((propFile == null) ? 0 : propFile.hashCode());
 		result = prime * result + ((requestId == null) ? 0 : requestId.hashCode());
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		result = prime * result + ((userdata == null) ? 0 : userdata.hashCode());
 		return result;
 	}
 
+	// CHECKSTYLE:OFF
 	@Override
 	public boolean equals(final Object obj) {
 		if (this == obj) {
@@ -71,6 +88,13 @@ public class CommandContext implements SerializableElement, Assignable<CommandCo
 				return false;
 			}
 		} else if (!commandName.equals(other.commandName)) {
+			return false;
+		}
+		if (propFile == null) {
+			if (other.propFile != null) {
+				return false;
+			}
+		} else if (!propFile.equals(other.propFile)) {
 			return false;
 		}
 		if (requestId == null) {
@@ -104,6 +128,7 @@ public class CommandContext implements SerializableElement, Assignable<CommandCo
 		CommandContext context = new CommandContext(commandName, requestId);
 		context.userdata = userdata;
 		context.userName = userName;
+		context.propFile = propFile;
 		return context;
 	}
 
@@ -123,6 +148,9 @@ public class CommandContext implements SerializableElement, Assignable<CommandCo
 		}
 		if (userName == null) {
 			userName = aSource.userName;
+		}
+		if (propFile == null) {
+			propFile = aSource.propFile;
 		}
 	}
 
@@ -177,6 +205,10 @@ public class CommandContext implements SerializableElement, Assignable<CommandCo
 		return userdata != null ? userdata : "";
 	}
 
+	public String getPropFileSafe() {
+		return propFile != null ? propFile : "";
+	}
+
 	@Override
 	public void setUserdata(final String aUserdata) {
 		userdata = aUserdata;
@@ -187,6 +219,7 @@ public class CommandContext implements SerializableElement, Assignable<CommandCo
 		MDC.put(ExchangeConstants.URL_PARAM_USERDATA, getUserdataSafe());
 		MDC.put(GeneralXMLHelper.REQUEST_ID_TAG, getRequestIdSafe());
 		MDC.put(GeneralXMLHelper.COMMAND_NAME_TAG, getCommandNameSafe());
+		MDC.put(PROP_FILE_TAG, getPropFileSafe());
 	}
 
 	public void fromMDC() {
@@ -197,6 +230,7 @@ public class CommandContext implements SerializableElement, Assignable<CommandCo
 			setUserdata(params.get(ExchangeConstants.URL_PARAM_USERDATA));
 			setRequestId(params.get(GeneralXMLHelper.REQUEST_ID_TAG));
 			setCommandName(params.get(GeneralXMLHelper.COMMAND_NAME_TAG));
+			setPropFile(params.get(PROP_FILE_TAG));
 		}
 	}
 

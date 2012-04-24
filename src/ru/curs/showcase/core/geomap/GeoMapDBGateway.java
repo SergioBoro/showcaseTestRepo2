@@ -42,9 +42,9 @@ public class GeoMapDBGateway extends CompBasedElementSPQuery implements
 	@Override
 	protected String getSqlTemplate(final int index) {
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return "{? = call %s(?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s (?, ?, ?, ?, ?, ?)}";
 		} else {
-			return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 		}
 	}
 

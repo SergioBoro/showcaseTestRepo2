@@ -35,7 +35,7 @@ public class DBExternalCommandGateway extends SPQuery implements ExternalCommand
 
 	@Override
 	protected String getSqlTemplate(final int aIndex) {
-		return "{? = call %s(?, ?, ?)}";
+		return "{? = call %s (?, ?, ?)}";
 	}
 
 	@Override

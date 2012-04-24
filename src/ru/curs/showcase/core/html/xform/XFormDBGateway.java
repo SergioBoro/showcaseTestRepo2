@@ -61,13 +61,13 @@ public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XForm
 	protected String getSqlTemplate(final int index) {
 		switch (index) {
 		case 0:
-			return "{? = call %s(?, ?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s (?, ?, ?, ?, ?, ?, ?)}";
 		case SAVE_TEMPLATE_IND:
-			return "{? = call %s(?, ?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s (?, ?, ?, ?, ?, ?, ?)}";
 		case SUBMISSION_TEMPLATE_IND:
-			return "{? = call %s(?, ?, ?)}";
+			return "{? = call %s (?, ?, ?)}";
 		case FILE_TEMPLATE_IND:
-			return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 		default:
 			return null;
 		}

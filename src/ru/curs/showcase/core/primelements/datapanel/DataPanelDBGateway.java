@@ -30,7 +30,7 @@ public class DataPanelDBGateway extends SPQuery implements PrimElementsGateway {
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "{? = call %s(?, ?, ?, ?)}";
+		return "{? = call %s (?, ?, ?, ?)}";
 	}
 
 	@Override

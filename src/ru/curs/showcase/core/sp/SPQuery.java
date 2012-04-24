@@ -80,7 +80,6 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	}
 
 	protected static final String SESSION_CONTEXT_PARAM = "session_context";
-	private String sqlTemplate;
 
 	/**
 	 * Функция для настройки общих параметров запроса: контекста и фильтров.
@@ -176,11 +175,15 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 			UserMessageFactory factory = new UserMessageFactory();
 			return new ValidateException(factory.build(e));
 		} else {
-			if (!checkProcExists()) {
+			if (isStoredProc() && !checkProcExists()) {
 				return new SPNotExistsException(getProcName(), getClass());
 			}
 			return new DBQueryException(e, getProcName(), getClass());
 		}
+	}
+
+	private boolean isStoredProc() {
+		return !procName.endsWith(".sql");
 	}
 
 	/**
@@ -222,9 +225,12 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 		if (conn == null) {
 			conn = ConnectionFactory.getInstance().acquire();
 		}
-		sqlTemplate = String.format(getSqlTemplate(templateIndex), getProcName());
-		setStatement(conn.prepareCall(sqlTemplate));
+		setStatement(conn.prepareCall(getSqlText()));
 		getStatement().registerOutParameter(1, java.sql.Types.INTEGER);
+	}
+
+	protected String getSqlText() {
+		return String.format(getSqlTemplate(templateIndex), getProcName());
 	}
 
 	/**
@@ -244,7 +250,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	public void checkErrorCode() {
 		int errorCode;
 		try {
-			errorCode = getStatement().getInt(1);
+			errorCode = getStatement().getInt(getReturnParamIndex());
 		} catch (SQLException e) {
 			// проверка через metadata почему-то глючит с MSSQL JDBC драйвером
 			return;
@@ -259,6 +265,10 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 			UserMessageFactory factory = new UserMessageFactory();
 			throw new ValidateException(factory.build(errorCode, errMess));
 		}
+	}
+
+	protected int getReturnParamIndex() {
+		return 1;
 	}
 
 	public int getTemplateIndex() {
@@ -323,7 +333,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	}
 
 	protected boolean execute() throws SQLException {
-		String value = SQLUtils.addParamsToSQLTemplate(sqlTemplate, params);
+		String value = SQLUtils.addParamsToSQLTemplate(getSqlText(), params);
 		Marker marker = MarkerFactory.getDetachedMarker(SQL_MARKER);
 		marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
 		LOGGER.info(marker, value);
@@ -471,4 +481,5 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 		InputStream is = new ByteArrayInputStream(bt);
 		return is;
 	}
+
 }

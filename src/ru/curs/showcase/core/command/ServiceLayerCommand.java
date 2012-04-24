@@ -42,12 +42,19 @@ public abstract class ServiceLayerCommand<T> {
 
 	private final ObjectSerializer serializer = AppRegistry.getObjectSerializer();
 
+	/**
+	 * Имя файла с настройками userdata для переопределения значения по
+	 * умолчанию.
+	 */
+	private String propFile;
+
 	protected ObjectSerializer getSerializer() {
 		return serializer;
 	}
 
 	/**
-	 * Контекст вызова команды. Должен быть у любой команды!
+	 * Контекст вызова команды. Должен быть у любой команды! При этом может
+	 * содержать только один атрибут - session.
 	 */
 	private final CompositeContext context;
 
@@ -108,6 +115,7 @@ public abstract class ServiceLayerCommand<T> {
 	protected void initCommandContext() {
 		CommandContext commandContext =
 			new CommandContext(this.getClass().getSimpleName(), UUID.randomUUID().toString());
+		commandContext.setPropFile(propFile);
 		commandContext.toMDC();
 	}
 
@@ -208,5 +216,13 @@ public abstract class ServiceLayerCommand<T> {
 
 	public String getSessionId() {
 		return sessionId;
+	}
+
+	public String getPropFile() {
+		return propFile;
+	}
+
+	public void setPropFile(final String aPropFile) {
+		propFile = aPropFile;
 	}
 }

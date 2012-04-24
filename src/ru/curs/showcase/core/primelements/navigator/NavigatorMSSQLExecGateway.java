@@ -5,20 +5,20 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.primelements.PrimElementsGateway;
-import ru.curs.showcase.core.sp.SPQuery;
 import ru.curs.showcase.util.*;
 
 /**
- * Шлюз к хранимой процедуре в БД, возвращающей данные для навигатора.
+ * Шлюз к SQL коду, хранящемуся в файловой системе, который нужно выполнить,
+ * чтобы получить данные для навигатора.
  * 
  * @author den
  * 
  */
-@Description(process = "Загрузка данных для навигатора из БД")
-public class NavigatorDBGateway extends SPQuery implements PrimElementsGateway {
+@Description(process = "Загрузка данных для навигатора из БД с помощью выполнения SQL файла")
+public class NavigatorMSSQLExecGateway extends MSSQLExecGateway implements PrimElementsGateway {
 
-	private static final int SESSION_CONTEXT_INDEX = 2;
-	private static final int NAVIGATOR_INDEX = 3;
+	private static final int SESSION_CONTEXT_INDEX = 3;
+	private static final int NAVIGATOR_INDEX = 4;
 
 	@Override
 	public DataFile<InputStream> getRawData(final CompositeContext context) {
@@ -27,8 +27,9 @@ public class NavigatorDBGateway extends SPQuery implements PrimElementsGateway {
 			prepareSQL();
 			setSQLXMLParam(SESSION_CONTEXT_INDEX, context.getSession());
 			getStatement().registerOutParameter(NAVIGATOR_INDEX, java.sql.Types.SQLXML);
+			addErrorMesParams();
 			execute();
-
+			checkErrorCode();
 			InputStream stream = getInputStreamForXMLParam(NAVIGATOR_INDEX);
 			return new DataFile<InputStream>(stream, getProcName());
 		} catch (SQLException e) {
@@ -37,8 +38,8 @@ public class NavigatorDBGateway extends SPQuery implements PrimElementsGateway {
 	}
 
 	@Override
-	protected String getSqlTemplate(final int index) {
-		return "{? = call %s(?, ?)}";
+	protected String getParamsDeclaration() {
+		return "@session_context xml, @navigator xml output, @return int output, @error_mes varchar(256) output";
 	}
 
 	@Override
@@ -53,5 +54,4 @@ public class NavigatorDBGateway extends SPQuery implements PrimElementsGateway {
 		setProcName(aSourceName);
 		return getRawData(aContext);
 	}
-
 }

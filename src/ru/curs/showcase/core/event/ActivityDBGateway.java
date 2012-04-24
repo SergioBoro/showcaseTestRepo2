@@ -35,7 +35,7 @@ public class ActivityDBGateway extends SPQuery implements ActivityGateway {
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "{? = call %s(?, ?, ?, ?, ?)}";
+		return "{? = call %s (?, ?, ?, ?, ?)}";
 	}
 
 	@Override

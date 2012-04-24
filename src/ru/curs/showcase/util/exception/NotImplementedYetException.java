@@ -13,7 +13,7 @@ public final class NotImplementedYetException extends BaseException {
 	private static final long serialVersionUID = 4439432562578743266L;
 
 	public NotImplementedYetException() {
-		super(ExceptionType.SOLUTION, "Пока не реализовано");
+		super(ExceptionType.SOLUTION, "Функционал еще не реализован");
 	}
 
 }

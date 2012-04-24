@@ -102,14 +102,14 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 		switch (index) {
 		case DATA_AND_SETTINS_QUERY:
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
-				return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+				return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 			} else {
-				return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?)}";
+				return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?)}";
 			}
 		case DATA_ONLY_QUERY:
-			return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?)}";
 		case FILE_DOWNLOAD:
-			return "{? = call %s(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+			return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 		default:
 			return null;
 		}

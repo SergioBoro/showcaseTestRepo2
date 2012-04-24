@@ -26,7 +26,8 @@ public enum SettingsFileType {
 	IMPORT_LIST("Список импортируемых компонент для плагина"),
 	PLUGIN_ADAPTER("Адаптер для плагина"),
 	LIBRARY_ADAPTER("Файл библиотеки"),
-	GENERAL_APP_PROPERTIES("Файл с общими настройками userdata");
+	GENERAL_APP_PROPERTIES("Файл с общими настройками userdata"),
+	SQL("SQL скрипт");
 
 	/**
 	 * Название файла.

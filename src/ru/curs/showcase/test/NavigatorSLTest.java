@@ -6,7 +6,9 @@ import org.junit.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.Navigator;
+import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
+import ru.curs.showcase.util.exception.*;
 
 /**
  * Класс для тестирования фабрики навигаторов.
@@ -15,9 +17,6 @@ import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
  * 
  */
 public class NavigatorSLTest extends AbstractTest {
-	/**
-	 * Тест навигатора, построенного на основе данных из БД.
-	 */
 	@Test
 	public void testNavigatorFromXML() {
 		NavigatorGetCommand command = new NavigatorGetCommand(new CompositeContext());
@@ -26,9 +25,42 @@ public class NavigatorSLTest extends AbstractTest {
 		assertEquals("180px", nav.getWidth());
 	}
 
-	/**
-	 * Тест навигатора, построенного на основе данных из файла.
-	 */
+	@Test
+	public void testNavigatorFromMSSQL() {
+		NavigatorGetCommand command = new NavigatorGetCommand(new CompositeContext());
+		command.setPropFile("t01.app.properties");
+		Navigator nav = command.execute();
+		assertEquals("199px", nav.getWidth());
+	}
+
+	@Test
+	public void mssqlFilesNotAllowedForPostgreSQL() {
+		CompositeContext context = new CompositeContext();
+		context.setSessionParamsMap(generateTestURLParamsForSL("pg"));
+		NavigatorGetCommand command = new NavigatorGetCommand(context);
+		command.setPropFile("t01.app.properties");
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			assertEquals(NotImplementedYetException.class, e.getCause().getClass());
+			return;
+		}
+		fail();
+	}
+
+	@Test
+	public void appShouldCheckForExistanceSQLFile() {
+		NavigatorGetCommand command = new NavigatorGetCommand(new CompositeContext());
+		command.setPropFile("t02.app.properties");
+		try {
+			command.execute();
+		} catch (GeneralException e) {
+			assertEquals(SettingsFileOpenException.class, e.getCause().getClass());
+			return;
+		}
+		fail();
+	}
+
 	@Test
 	@Ignore
 	public void testNavigatorFromDB() {

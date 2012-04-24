@@ -27,7 +27,7 @@ public class MainPageFrameDBGateway extends SPQuery implements MainPageFrameGate
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "{? = call %s(?, ?, ?)}";
+		return "{? = call %s (?, ?, ?)}";
 	}
 
 	@Override
