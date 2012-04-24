@@ -16,6 +16,8 @@ import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
  */
 public class DataPanelSLTest extends AbstractTest {
 
+	private static final String DATAPANEL_TEST_SQL = "datapanel/test221.sql";
+
 	@Test
 	public void testBySLFromFile() {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
@@ -47,6 +49,22 @@ public class DataPanelSLTest extends AbstractTest {
 		DataPanel panel = command.execute();
 
 		checkTestDP(panel);
+	}
+
+	@Test
+	public void datapanelCanBeGeneratedByMSSQLScript() {
+		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
+		action.setContext(CompositeContext.createCurrent());
+		DataPanelLink dpLink = new DataPanelLink();
+		dpLink.setDataPanelId(DATAPANEL_TEST_SQL);
+		action.setDataPanelLink(dpLink);
+
+		DataPanelGetCommand command = new DataPanelGetCommand(action);
+		DataPanel panel = command.execute();
+		assertNotNull(panel);
+		assertEquals("test221", panel.getId().toString());
+		final int tabsCount = 3;
+		assertEquals(tabsCount, panel.getTabs().size());
 	}
 
 	@Test

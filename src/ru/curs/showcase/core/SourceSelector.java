@@ -46,7 +46,7 @@ public abstract class SourceSelector<T> {
 	 * БД (выступающего в роли шлюза по умолчанию). Это сделано, чтобы не
 	 * плодить отдельный класс.
 	 */
-	protected SourceType sourceType() {
+	public SourceType sourceType() {
 		if (isEmpty()) {
 			return SourceType.SP;
 		}

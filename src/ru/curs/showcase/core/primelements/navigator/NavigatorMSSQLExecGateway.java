@@ -27,9 +27,8 @@ public class NavigatorMSSQLExecGateway extends MSSQLExecGateway implements PrimE
 			prepareSQL();
 			setSQLXMLParam(SESSION_CONTEXT_INDEX, context.getSession());
 			getStatement().registerOutParameter(NAVIGATOR_INDEX, java.sql.Types.SQLXML);
-			addErrorMesParams();
 			execute();
-			checkErrorCode();
+
 			InputStream stream = getInputStreamForXMLParam(NAVIGATOR_INDEX);
 			return new DataFile<InputStream>(stream, getProcName());
 		} catch (SQLException e) {
@@ -39,7 +38,7 @@ public class NavigatorMSSQLExecGateway extends MSSQLExecGateway implements PrimE
 
 	@Override
 	protected String getParamsDeclaration() {
-		return "@session_context xml, @navigator xml output, @return int output, @error_mes varchar(256) output";
+		return "@session_context xml, @navigator xml output, " + super.getParamsDeclaration();
 	}
 
 	@Override

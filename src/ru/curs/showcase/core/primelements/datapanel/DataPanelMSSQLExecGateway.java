@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.primelements.PrimElementsGateway;
-import ru.curs.showcase.core.sp.SPQuery;
+import ru.curs.showcase.core.primelements.navigator.MSSQLExecGateway;
 import ru.curs.showcase.util.*;
 
 /**
@@ -15,11 +15,11 @@ import ru.curs.showcase.util.*;
  * 
  */
 @Description(process = "Загрузка данных для информационной панели из БД")
-public class DataPanelDBGateway extends SPQuery implements PrimElementsGateway {
+public class DataPanelMSSQLExecGateway extends MSSQLExecGateway implements PrimElementsGateway {
 
-	private static final int SESSION_CONTEXT_INDEX = 3;
-	private static final int DP_INDEX = 4;
-	private static final int ERROR_MES_INDEX = 5;
+	private static final int MAIN_CONTEXT_INDEX = 3;
+	private static final int SESSION_CONTEXT_INDEX = 4;
+	private static final int DP_INDEX = 5;
 
 	@Override
 	public DataFile<InputStream> getRawData(final CompositeContext context,
@@ -29,19 +29,21 @@ public class DataPanelDBGateway extends SPQuery implements PrimElementsGateway {
 	}
 
 	@Override
-	protected String getSqlTemplate(final int index) {
-		return "{? = call %s (?, ?, ?, ?)}";
+	protected String getParamsDeclaration() {
+		return "@main_context varchar(MAX), @session_context xml, @datapanel xml output, "
+				+ super.getParamsDeclaration();
 	}
 
 	@Override
 	public DataFile<InputStream> getRawData(final CompositeContext context) {
 		try {
 			setContext(context);
-			prepareStatementWithErrorMes();
+			prepareSQL();
+			setStringParam(MAIN_CONTEXT_INDEX, context.getMain());
 			setSQLXMLParam(SESSION_CONTEXT_INDEX, context.getSession());
-			setStringParam(getMainContextIndex(), context.getMain());
 			getStatement().registerOutParameter(DP_INDEX, java.sql.Types.SQLXML);
 			execute();
+
 			InputStream stream = getInputStreamForXMLParam(DP_INDEX);
 			return new DataFile<InputStream>(stream, getProcName());
 		} catch (SQLException e) {
@@ -53,10 +55,4 @@ public class DataPanelDBGateway extends SPQuery implements PrimElementsGateway {
 	public void setSourceName(final String aName) {
 		setProcName(aName);
 	}
-
-	@Override
-	protected int getErrorMesIndex(final int index) {
-		return ERROR_MES_INDEX;
-	}
-
 }

@@ -25,7 +25,9 @@ public abstract class MSSQLExecGateway extends SPQuery {
 		super();
 	}
 
-	protected abstract String getParamsDeclaration();
+	protected String getParamsDeclaration() {
+		return "@return int output, @error_mes varchar(MAX) output";
+	}
 
 	@Override
 	protected int getReturnParamIndex() {
@@ -50,6 +52,7 @@ public abstract class MSSQLExecGateway extends SPQuery {
 			throw new SettingsFileOpenException(getFileName(), SettingsFileType.SQL);
 		}
 		setStringParam(2, getParamsDeclaration());
+		addErrorMesParams();
 	}
 
 	protected String getFileName() {

@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.core.SourceType;
 import ru.curs.showcase.core.primelements.*;
 import ru.curs.showcase.core.primelements.datapanel.*;
 import ru.curs.showcase.core.sp.SPNotExistsException;
@@ -261,5 +262,15 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		} finally {
 			gateway.close();
 		}
+	}
+
+	@Test
+	public void datapanelSelectorShouldKnowSQLFiles() {
+		DataPanelLink dpLink = new DataPanelLink();
+		dpLink.setDataPanelId("datapanel/test221.sql");
+		DataPanelSelector selector = new DataPanelSelector(dpLink);
+
+		assertEquals(SourceType.SQL, selector.sourceType());
+		assertEquals(DataPanelMSSQLExecGateway.class, selector.getGateway().getClass());
 	}
 }
