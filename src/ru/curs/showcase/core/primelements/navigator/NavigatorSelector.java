@@ -12,7 +12,7 @@ import ru.curs.showcase.util.exception.*;
  * 
  */
 public class NavigatorSelector extends SourceSelector<PrimElementsGateway> {
-	private static final String NAVIGATOR_PROCNAME_PARAM = "navigator.proc.name";
+	public static final String NAVIGATOR_PROCNAME_PARAM = "navigator.proc.name";
 
 	public NavigatorSelector() {
 		super(UserDataUtils.getRequiredProp(NAVIGATOR_PROCNAME_PARAM));

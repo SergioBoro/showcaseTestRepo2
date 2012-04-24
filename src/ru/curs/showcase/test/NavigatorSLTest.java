@@ -2,12 +2,14 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
+import java.util.*;
+
 import org.junit.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
+import ru.curs.showcase.core.primelements.navigator.*;
 import ru.curs.showcase.util.exception.*;
 
 /**
@@ -28,17 +30,21 @@ public class NavigatorSLTest extends AbstractTest {
 	@Test
 	public void testNavigatorFromMSSQL() {
 		NavigatorGetCommand command = new NavigatorGetCommand(new CompositeContext());
-		command.setPropFile("t01.app.properties");
+		Map<String, String> map = new HashMap<>();
+		map.put(NavigatorSelector.NAVIGATOR_PROCNAME_PARAM, "navigator/generate.tree.sql");
+		command.setProps(map);
 		Navigator nav = command.execute();
 		assertEquals("199px", nav.getWidth());
 	}
 
 	@Test
-	public void mssqlFilesNotAllowedForPostgreSQL() {
+	public void sqlFilesNotAllowedForPostgreSQL() {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL("pg"));
 		NavigatorGetCommand command = new NavigatorGetCommand(context);
-		command.setPropFile("t01.app.properties");
+		Map<String, String> map = new HashMap<>();
+		map.put(NavigatorSelector.NAVIGATOR_PROCNAME_PARAM, "navigator/generate.tree.sql");
+		command.setProps(map);
 		try {
 			command.execute();
 		} catch (GeneralException e) {
@@ -51,7 +57,9 @@ public class NavigatorSLTest extends AbstractTest {
 	@Test
 	public void appShouldCheckForExistanceSQLFile() {
 		NavigatorGetCommand command = new NavigatorGetCommand(new CompositeContext());
-		command.setPropFile("t02.app.properties");
+		Map<String, String> map = new HashMap<>();
+		map.put(NavigatorSelector.NAVIGATOR_PROCNAME_PARAM, "fake.sql");
+		command.setProps(map);
 		try {
 			command.execute();
 		} catch (GeneralException e) {

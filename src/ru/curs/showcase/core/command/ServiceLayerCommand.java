@@ -1,7 +1,8 @@
 package ru.curs.showcase.core.command;
 
 import java.lang.reflect.*;
-import java.util.UUID;
+import java.util.*;
+import java.util.Map.Entry;
 
 import org.slf4j.*;
 
@@ -47,6 +48,8 @@ public abstract class ServiceLayerCommand<T> {
 	 * умолчанию.
 	 */
 	private String propFile;
+
+	private Map<String, String> props;
 
 	protected ObjectSerializer getSerializer() {
 		return serializer;
@@ -113,9 +116,15 @@ public abstract class ServiceLayerCommand<T> {
 	}
 
 	protected void initCommandContext() {
+		MDC.clear();
 		CommandContext commandContext =
 			new CommandContext(this.getClass().getSimpleName(), UUID.randomUUID().toString());
 		commandContext.setPropFile(propFile);
+		if (props != null) {
+			for (Entry<String, String> prop : props.entrySet()) {
+				MDC.put(prop.getKey(), prop.getValue());
+			}
+		}
 		commandContext.toMDC();
 	}
 
@@ -218,11 +227,11 @@ public abstract class ServiceLayerCommand<T> {
 		return sessionId;
 	}
 
-	public String getPropFile() {
-		return propFile;
-	}
-
 	public void setPropFile(final String aPropFile) {
 		propFile = aPropFile;
+	}
+
+	public void setProps(final Map<String, String> aProps) {
+		props = aProps;
 	}
 }

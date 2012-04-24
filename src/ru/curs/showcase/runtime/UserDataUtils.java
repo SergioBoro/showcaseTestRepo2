@@ -114,7 +114,7 @@ public final class UserDataUtils {
 	 * @return - значение параметра.
 	 */
 	public static String getRequiredProp(final String propName) {
-		String result = propReadFunc(propName, null);
+		String result = getOverridenProp(propName);
 		if (result == null) {
 			throw new SettingsFileRequiredPropException(getCurrentPropFile(), propName,
 					SettingsFileType.APP_PROPERTIES);
@@ -352,5 +352,13 @@ public final class UserDataUtils {
 			return overrided;
 		}
 		return PROPFILENAME;
+	}
+
+	private static String getOverridenProp(final String aPropName) {
+		String overrided = MDC.get(aPropName);
+		if ((overrided != null) && (!overrided.isEmpty())) {
+			return overrided;
+		}
+		return propReadFunc(aPropName, null);
 	}
 }
