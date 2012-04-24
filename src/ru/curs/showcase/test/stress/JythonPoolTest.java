@@ -24,9 +24,9 @@ public class JythonPoolTest extends AbstractTest {
 
 	private static final int USERDATA_COUNT = 3;
 
-	private static final int INVOCATION_COUNT = 1000;
+	private static final int INVOCATION_COUNT = 10000;
 
-	private static final int THREAD_POOL_SIZE = 3;
+	private static final int THREAD_POOL_SIZE = 10;
 
 	private static final AtomicInteger COUNTER = new AtomicInteger(0);
 
