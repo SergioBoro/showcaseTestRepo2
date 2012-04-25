@@ -16,6 +16,7 @@ public class AbstractTestWithDefaultUserData extends AbstractTest {
 	@Override
 	@Before
 	public void beforeTest() {
+		super.beforeTest();
 		setDefaultUserData();
 	}
 }
