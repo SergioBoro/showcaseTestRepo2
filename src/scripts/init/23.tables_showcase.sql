@@ -78,6 +78,16 @@ CREATE TABLE [dbo].[XFormsTest] (
 ON [PRIMARY]
 GO
 
+CREATE TABLE [dbo].[XFormsUnitTest] (
+  [XFormsUnitTest_Id] uniqueidentifier CONSTRAINT [XFormsUnitTestD0] DEFAULT newid() ROWGUIDCOL NOT NULL,
+  [data] xml NULL,
+  [UpdateRowTime] datetime NULL,
+  [datetime] datetime NULL,
+  [date] date NULL
+)
+ON [PRIMARY]
+GO
+
 --
 -- Data for table dbo.DebugConsole  (LIMIT 0,500)
 --
@@ -133,6 +143,11 @@ GO
 INSERT INTO [dbo].[XFormsTest] ([XFormsTest_Id], [data], [UpdateRowTime], [datetime], [date])
 VALUES 
   (N'{4ACBB735-31CD-40B6-99C4-AD80D3199763}', N'<schema xmlns=""><info><name>Белгородская обл.</name><growth/><eyescolour/><music/><comment/></info></schema>', '20120220 19:34:15.087', NULL, N'2011-02-03')
+GO
+
+INSERT INTO [dbo].[XFormsUnitTest] ([XFormsUnitTest_Id], [data], [UpdateRowTime], [datetime], [date])
+VALUES 
+  (N'{4ACBB735-31CD-40B6-99C4-AD80D3199763}', N'<schema xmlns=""><info><name/><growth/><eyescolour/><music/><comment/></info></schema>', '20120220 19:34:15.087', NULL, N'2011-02-03')
 GO
 
 --

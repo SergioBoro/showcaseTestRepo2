@@ -30,34 +30,60 @@ public class XFormSLTest extends AbstractTest {
 	private static final String XFORMS_SUBMISSION1 = "xforms_submission1";
 	private static final String TEST_DATA_TAG = "<data>test</data>";
 
-	/**
-	 * Тест функции получения XForms из сервисного уровня.
-	 */
 	@Test
-	public void testGet() {
+	public void xformCanBeCreatedWithDataFromSPCall() {
 		XFormContext xcontext = new XFormContext(getTestContext1());
-		DataPanelElementInfo element = getTestXForms1Info();
+		DataPanelElementInfo element = new DataPanelElementInfo("1", DataPanelElementType.XFORMS);
+		element.setProcName("xforms_proc_test");
+		element.setTemplateName(SHOWCASE_TEMPLATE_XML);
+		generateTestTabWithElement(element);
 
 		XFormGetCommand command = new XFormGetCommand(xcontext, element);
-		XForm xforms = command.execute();
+		XForm xform = command.execute();
 
 		assertNotNull(xcontext.getSession());
-		Action action = xforms.getActionForDependentElements();
+		Action action = xform.getActionForDependentElements();
 		assertNotNull(action);
 		assertEquals(1, action.getDataPanelLink().getElementLinks().size());
 		assertEquals("62", action.getDataPanelLink().getElementLinks().get(0).getId().getString());
 		assertEquals("xforms default action", action.getDataPanelLink().getElementLinks().get(0)
 				.getContext().getAdditional());
 
-		assertEquals(2, xforms.getEventManager().getEvents().size());
-		action = xforms.getEventManager().getEvents().get(0).getAction();
+		assertEquals(2, xform.getEventManager().getEvents().size());
+		action = xform.getEventManager().getEvents().get(0).getAction();
 		assertEquals(1, action.getDataPanelLink().getElementLinks().size());
 		assertEquals("62", action.getDataPanelLink().getElementLinks().get(0).getId().getString());
 		assertEquals("save click on xforms (with filtering)", action.getDataPanelLink()
 				.getElementLinks().get(0).getContext().getAdditional());
 
-		assertNotNull(xforms.getXFormParts());
-		assertTrue(xforms.getXFormParts().size() > 0);
+		checkForEmptyMainInstance(xform);
+	}
+
+	@Test
+	public void xformCanBeCreatedWithDataFromSQLScript() {
+		XFormContext xcontext = new XFormContext(getTestContext1());
+		DataPanelElementInfo element = new DataPanelElementInfo("1", DataPanelElementType.XFORMS);
+		element.setProcName("xform/procTest.sql");
+		element.setTemplateName(SHOWCASE_TEMPLATE_XML);
+		generateTestTabWithElement(element);
+
+		XFormGetCommand command = new XFormGetCommand(xcontext, element);
+		XForm xform = command.execute();
+
+		assertNotNull(xform);
+		assertEquals(2, xform.getEventManager().getEvents().size());
+		assertNotNull(xform.getDefaultAction());
+		assertEquals("1", xform.getId().toString());
+
+		checkForEmptyMainInstance(xform);
+	}
+
+	protected void checkForEmptyMainInstance(final XForm xform) {
+		assertNotNull(xform.getXFormParts());
+		final String controlWord =
+			"new XFInstance(\"mainInstance\",xf_model_0,null,"
+					+ "'<schema><info><name/><growth/><eyescolour/><music/><comment/></info></schema>');";
+		assertTrue(xform.getXFormParts().get(2).contains(controlWord));
 	}
 
 	@Test
@@ -246,7 +272,7 @@ public class XFormSLTest extends AbstractTest {
 		DataPanelElementInfo elementInfo =
 			new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
 		elementInfo.setProcName("xform/GetJythonProc.py");
-		elementInfo.setTemplateName("Showcase_Template.xml");
+		elementInfo.setTemplateName(SHOWCASE_TEMPLATE_XML);
 		generateTestTabWithElement(elementInfo);
 		XFormGetCommand command = new XFormGetCommand(context, elementInfo);
 		XForm xforms = command.execute();
@@ -298,7 +324,7 @@ public class XFormSLTest extends AbstractTest {
 		DataPanelElementInfo elementInfo =
 			new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
 		elementInfo.setProcName("__fake__proc__.py");
-		elementInfo.setTemplateName("Showcase_Template.xml");
+		elementInfo.setTemplateName(SHOWCASE_TEMPLATE_XML);
 		XFormGetCommand command = new XFormGetCommand(context, elementInfo);
 		command.execute();
 	}
@@ -307,7 +333,8 @@ public class XFormSLTest extends AbstractTest {
 	public void testSaveXFormByJython() throws IOException {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
 		String inputData =
-			XMLUtils.streamToString(UserDataUtils.loadUserDataToStream(DATA_XFORMS + SHOWCASE_DATA_XML));
+			XMLUtils.streamToString(UserDataUtils.loadUserDataToStream(DATA_XFORMS
+					+ SHOWCASE_DATA_XML));
 		XFormContext context = new XFormContext(generateContextWithSessionInfo(), inputData);
 		context.setAdditional(SHOWCASE_DATA_COPY_XML);
 		File file =
@@ -349,7 +376,7 @@ public class XFormSLTest extends AbstractTest {
 		final String controlWord =
 			"new XFInstance(\"mainInstance\",xf_model_0,null,"
 					+ "'<schema><info><name/><growth/><eyescolour>Зеленый</eyescolour><music/><comment/></info></schema>');";
-		assertTrue(xforms.getXFormParts().get(2).indexOf(controlWord) == -1);
+		assertFalse(xforms.getXFormParts().get(2).contains(controlWord));
 
 		xcontext = new XFormContext(getTestContext1());
 		xcontext.setKeepUserSettings(true);
@@ -361,7 +388,7 @@ public class XFormSLTest extends AbstractTest {
 		command = new XFormGetCommand(xcontext, element);
 		xforms = command.execute();
 
-		assertTrue(xforms.getXFormParts().get(2).indexOf(controlWord) > -1);
+		assertTrue(xforms.getXFormParts().get(2).contains(controlWord));
 
 		xcontext = new XFormContext(getTestContext1());
 		xcontext.setKeepUserSettings(false);
@@ -370,6 +397,6 @@ public class XFormSLTest extends AbstractTest {
 		command = new XFormGetCommand(xcontext, element);
 		xforms = command.execute();
 
-		assertTrue(xforms.getXFormParts().get(2).indexOf(controlWord) == -1);
+		assertFalse(xforms.getXFormParts().get(2).contains(controlWord));
 	}
 }

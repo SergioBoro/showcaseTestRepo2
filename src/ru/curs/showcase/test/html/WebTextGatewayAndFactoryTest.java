@@ -128,7 +128,7 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		DataPanelElementInfo elementInfo =
 			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
 		elementInfo.setProcName("webtext/testErrorReturn.sql");
-		HTMLGateway gateway = new WebTextMSSQLExecGateway();
+		HTMLGateway gateway = new HTMLBasedElementMSSQLExecGateway();
 		gateway.getRawData(context, elementInfo);
 
 	}
@@ -139,7 +139,7 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		DataPanelElementInfo elementInfo =
 			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
 		elementInfo.setProcName("webtext/testRaiseException.sql");
-		HTMLGateway gateway = new WebTextMSSQLExecGateway();
+		HTMLGateway gateway = new HTMLBasedElementMSSQLExecGateway();
 		gateway.getRawData(context, elementInfo);
 
 	}

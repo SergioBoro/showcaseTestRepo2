@@ -20,7 +20,7 @@ import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
  * 
  */
 @Description(process = "Загрузка данных для XForm из БД")
-public final class XFormDBGateway extends HTMLBasedSPCallHelper implements XFormGateway {
+public final class XFormDBGateway extends HTMLBasedElementQuery implements XFormGateway {
 
 	private static final String NO_UPLOAD_PROC_ERROR =
 		"Не задана процедура для загрузки файлов на сервер для linkId=";

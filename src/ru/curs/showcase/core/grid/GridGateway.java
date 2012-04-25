@@ -35,4 +35,13 @@ public interface GridGateway extends RecordSetElementGateway<GridContext> {
 	OutputStreamDataFile downloadFile(CompositeContext context, DataPanelElementInfo elementInfo,
 			ID aLinkId, String recordId);
 
+	/**
+	 * Указывает на то, что шлюз должен продолжать сессию, переданную ему в
+	 * параметре. Имеет смысл только для соединений с БД.
+	 * 
+	 * @param sessionHolder
+	 *            - объект-хранитель сессии.
+	 */
+	void continueSession(ElementSettingsGateway sessionHolder);
+
 }

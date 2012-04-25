@@ -2,6 +2,7 @@ package ru.curs.showcase.core.grid;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.core.SourceSelector;
 import ru.curs.showcase.core.command.*;
 import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
@@ -42,10 +43,10 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 	 **/
 	@Override
 	protected void mainProc() throws Exception {
-		GridDBGateway gateway = new GridDBGateway();
+		SourceSelector<GridGateway> selector = new GridSelector(getElementInfo());
+		GridGateway gateway = selector.getGateway();
 		GridFactory factory = null;
 		RecordSetElementRawData raw = null;
-		ElementSettingsDBGateway sgateway = null;
 		GridServerState state = getGridState(getContext(), getElementInfo());
 
 		if (getElementInfo().loadByOneProc()) {
@@ -55,11 +56,13 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 			setResult(factory.build());
 		} else {
 			if (getContext().isFirstLoad()) {
-				sgateway = new ElementSettingsDBGateway();
+				SourceSelector<ElementSettingsGateway> sselector =
+					new GridSettingsSelector(getElementInfo());
+				ElementSettingsGateway sgateway = sselector.getGateway();
 				raw = sgateway.getRawData(getContext(), getElementInfo());
 				factory = new GridFactory(raw, state);
 				factory.buildStepOne();
-				gateway.setConn(sgateway.getConn());
+				gateway.continueSession(sgateway);
 			} else {
 				factory = new GridFactory(getContext(), getElementInfo(), state);
 				factory.buildStepOneFast();

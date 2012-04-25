@@ -28,7 +28,7 @@ public class WebTextSelector extends SourceSelector<HTMLGateway> {
 			break;
 		case SQL:
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-				res = new WebTextMSSQLExecGateway();
+				res = new HTMLBasedElementMSSQLExecGateway();
 			} else {
 				throw new NotImplementedYetException();
 			}

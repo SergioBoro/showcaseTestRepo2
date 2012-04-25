@@ -3,13 +3,11 @@ package ru.curs.showcase.core.grid;
 import java.sql.*;
 
 import oracle.jdbc.OracleTypes;
-import ru.curs.gwt.datagrid.model.Column;
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.core.IncorrectElementException;
-import ru.curs.showcase.core.sp.*;
+import ru.curs.showcase.core.sp.SPQuery;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 
@@ -20,7 +18,7 @@ import ru.curs.showcase.util.*;
  * 
  */
 @Description(process = "Загрузка данных для грида из БД")
-public class GridDBGateway extends CompBasedElementSPQuery implements GridGateway {
+public class GridDBGateway extends AbstractGridDBGateway {
 
 	private static final String NO_DOWNLOAD_PROC_ERROR =
 		"Не задана процедура для скачивания файлов из сервера для linkId=";
@@ -33,10 +31,6 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 
 	private static final int FIRST_RECORD_INDEX = 8;
 	private static final int PAGE_SIZE_INDEX = 9;
-
-	private static final int DATA_AND_SETTINS_QUERY = 0;
-	private static final int DATA_ONLY_QUERY = 1;
-	private static final int FILE_DOWNLOAD = 2;
 
 	private static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS = 10;
 
@@ -54,41 +48,18 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 		setConn(aConn);
 	}
 
-	private void setupSorting(final GridContext settings) throws SQLException {
-		if (settings.sortingEnabled()) {
-			StringBuilder builder = new StringBuilder("ORDER BY ");
-			for (Column col : settings.getSortedColumns()) {
-				builder.append(String.format("\"%s\" %s,", col.getId(), col.getSorting()));
-			}
-			String sortStatement = builder.substring(0, builder.length() - 1);
-			setStringParam(SORTCOLS_INDEX, sortStatement);
-		} else {
-			setStringParam(SORTCOLS_INDEX, "");
-		}
+	@Override
+	protected int getSortColsIndex() {
+		return SORTCOLS_INDEX;
 	}
 
 	@Override
-	public RecordSetElementRawData getRawDataAndSettings(final GridContext context,
-			final DataPanelElementInfo elementInfo) {
-		init(context, elementInfo);
-		setRetriveResultSets(true);
-		try {
-			context.normalize();
-
-			prepareElementStatementWithErrorMes();
-			getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
-			setupSorting(context);
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
-				getStatement().registerOutParameter(ORA_CURSOR_INDEX_DATA_AND_SETTINS,
-						OracleTypes.CURSOR);
-			}
-			stdGetResults();
-
-			RecordSetElementRawData raw = new RecordSetElementRawData(this, elementInfo, context);
-			raw.prepareXmlDS();
-			return raw;
-		} catch (SQLException e) {
-			throw dbExceptionHandler(e);
+	protected void prepareForGetDataAndSettings() throws SQLException {
+		prepareElementStatementWithErrorMes();
+		getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
+			getStatement().registerOutParameter(ORA_CURSOR_INDEX_DATA_AND_SETTINS,
+					OracleTypes.CURSOR);
 		}
 	}
 
@@ -116,44 +87,28 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 	}
 
 	@Override
-	public RecordSetElementRawData getRawData(final GridContext context,
-			final DataPanelElementInfo elementInfo) {
-		init(context, elementInfo);
-		setRetriveResultSets(true);
-		setTemplateIndex(DATA_ONLY_QUERY);
-		try {
-			context.normalize();
+	protected void prepareForGetData() throws SQLException {
+		prepareSQL();
+		setupGeneralElementParameters();
 
-			prepareSQL();
-			setupGeneralElementParameters();
+		setupRange();
 
-			int firstRecord;
-			int pageSize;
-			if (context.getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID) {
-				firstRecord = context.getLiveInfo().getFirstRecord();
-				pageSize = context.getLiveInfo().getLimit();
-			} else {
-				firstRecord = context.getPageInfo().getFirstRecord();
-				pageSize = context.getPageSize();
-			}
-			setIntParam(FIRST_RECORD_INDEX, firstRecord);
-			setIntParam(PAGE_SIZE_INDEX, pageSize);
-
-			setupSorting(context);
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
-				getStatement().registerOutParameter(1, Types.OTHER);
-			}
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
-				getStatement().registerOutParameter(1, OracleTypes.CURSOR);
-			}
-			stdGetResults();
-
-			RecordSetElementRawData raw = new RecordSetElementRawData(this, elementInfo, context);
-			raw.prepareXmlDS();
-			return raw;
-		} catch (SQLException e) {
-			throw dbExceptionHandler(e);
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+			getStatement().registerOutParameter(1, Types.OTHER);
 		}
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
+			getStatement().registerOutParameter(1, OracleTypes.CURSOR);
+		}
+	}
+
+	@Override
+	protected int getPageSizeIndex() {
+		return PAGE_SIZE_INDEX;
+	}
+
+	@Override
+	protected int getFirstRecordIndex() {
+		return FIRST_RECORD_INDEX;
 	}
 
 	@Override
@@ -166,10 +121,6 @@ public class GridDBGateway extends CompBasedElementSPQuery implements GridGatewa
 		default:
 			return -1;
 		}
-	}
-
-	@Override
-	protected void registerOutParameterCursor() throws SQLException {
 	}
 
 	@Override

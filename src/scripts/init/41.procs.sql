@@ -13946,6 +13946,59 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[xforms_proc_test]
+	@main_context varchar(512),
+	@add_context varchar(512),
+	@filterinfo xml,
+	@session_context xml,
+	@element_Id varchar(512),
+	@xformsdata xml output,
+	@xformssettings xml output
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+   SET @xformsdata=(SELECT TOP 1 [data] FROM [dbo].[XFormsUnitTest]);
+   
+	SET @xformssettings=
+	'<properties>
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="62">
+	                                <add_context>xforms default action</add_context>
+                                </element>                                                             
+                                
+                            </datapanel>
+                        </action>
+						<event name="single_click" linkId="1">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="62">
+	                                <add_context>save click on xforms (with filtering)</add_context>
+                                </element>                                                             
+                                
+                            </datapanel>
+                        </action>
+                    </event>
+						<event name="single_click" linkId="2">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="62">
+	                                <add_context>filter click on xforms</add_context>
+                                </element>                                                             
+                                
+                            </datapanel>
+                        </action>
+                    </event>                    
+</properties>';
+END
+GO
+
 --
 -- Definition for stored procedure xforms_proc2 : 
 --

@@ -3,7 +3,16 @@
 	<tab id="1" name="Веб-текст, плагин и sql скрипт">
 		<element id="11" type="webtext" proc="webtext/3buttons.sql"/>
 		<element id="12" type="plugin"  proc="plugin/radarInfo.sql" plugin="radar">
-			<proc id="010101" name="plugin/handleRadar.py" type="POSTPROCESS" />
+			<proc id="010201" name="plugin/handleRadar.py" type="POSTPROCESS" />
+		</element>	
+	</tab>
+	<tab id="2" name="xform и sql скрипт">
+		<element id="21" type="xforms" proc="xform/proc1.sql" template="Showcase_Template.xml"/>	
+	</tab>
+	<tab id="3" name="грид и sql скрипт">
+		<element id="31" type="grid" proc="grid/gridbal.sql" />	
+		<element id="32" type="grid"  proc="grid/citiesData.sql">
+			<proc id="030201" name="grid/citiesMetadata.sql" type="METADATA" />
 		</element>	
 	</tab>
 	<tab id="4" name="Настройки GridHeight, RowHeight">

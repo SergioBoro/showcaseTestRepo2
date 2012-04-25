@@ -33,17 +33,21 @@ public class GridSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testGetData() {
-		final int colCount = 26;
-		final int pagesCount = 6;
-		final int pageSize = 15;
-		final Integer autoSelectRecord = 16;
-		final String precision = "2";
-
 		GridContext context = getTestGridContext1();
 		DataPanelElementInfo element = getTestGridInfo();
 
 		GridGetCommand command = new GridGetCommand(context, element, true);
 		Grid grid = command.execute();
+
+		checkGridBalCallResult(context, grid);
+	}
+
+	private void checkGridBalCallResult(final GridContext context, final Grid grid) {
+		final int colCount = 26;
+		final int pagesCount = 6;
+		final int pageSize = 15;
+		final Integer autoSelectRecord = 16;
+		final String precision = "2";
 
 		assertNotNull(context.getSession());
 		assertNotNull(grid);
@@ -95,6 +99,18 @@ public class GridSLTest extends AbstractTest {
 		assertFalse(grid.getUISettings().isSingleClickBeforeDoubleClick());
 		assertNotNull(grid.getEventManager().getEventForCell(autoSelectRecord.toString(), null,
 				InteractionType.SELECTION));
+	}
+
+	@Test
+	public void gridCanBeCreatedWithCallSQLScript() {
+		GridContext context = getTestGridContext1();
+		DataPanelElementInfo element = getTestGridInfo();
+		element.setProcName("grid/gridbal.sql");
+
+		GridGetCommand command = new GridGetCommand(context, element, true);
+		Grid grid = command.execute();
+
+		checkGridBalCallResult(context, grid);
 	}
 
 	/**
@@ -156,11 +172,32 @@ public class GridSLTest extends AbstractTest {
 
 		GridGetCommand command = new GridGetCommand(context, elInfo, true);
 		Grid grid = command.execute();
+
+		checkGridCitiesCall(grid);
+	}
+
+	private void checkGridCitiesCall(final Grid grid) {
 		assertNotNull(grid);
 		final int pageSize = 15;
 		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
 		final int pageNum = 3;
 		assertEquals(pageNum, grid.getDataSet().getRecordSet().getPageNumber());
+	}
+
+	/**
+	 * Проверка получения грида через SL с помощью 2-х процедур.
+	 */
+	@Test
+	public void gridCanBeCreatedWith2SQLScriptCalls() {
+		GridContext context = getTestGridContext1();
+		DataPanelElementInfo elInfo = getTestGridInfo2();
+		elInfo.setProcName("grid/citiesData.sql");
+		elInfo.getMetadataProc().setName("grid/citiesMetadata.sql");
+
+		GridGetCommand command = new GridGetCommand(context, elInfo, true);
+		Grid grid = command.execute();
+
+		checkGridCitiesCall(grid);
 	}
 
 	/**

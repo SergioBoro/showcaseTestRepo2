@@ -70,6 +70,7 @@ public class AbstractTest extends GeneralXMLHelper {
 	protected static final String PLUGIN_RADAR_PROC = "pluginRadarInfo";
 	protected static final String RADAR_COMP = "radar";
 	protected static final String TEST_TEXT_SAMPLE_XML = "TestTextSample.xml";
+	protected static final String SHOWCASE_TEMPLATE_XML = "Showcase_Template.xml";
 
 	/**
 	 * Действия, которые должны выполняться перед запуском любых тестовых
@@ -250,7 +251,7 @@ public class AbstractTest extends GeneralXMLHelper {
 		final int position = 6;
 		elInfo.setPosition(position);
 		elInfo.setProcName("xforms_proc1");
-		elInfo.setTemplateName("Showcase_Template.xml");
+		elInfo.setTemplateName(SHOWCASE_TEMPLATE_XML);
 
 		DataPanelElementProc proc = new DataPanelElementProc();
 		proc.setId("proc1");

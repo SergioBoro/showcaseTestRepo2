@@ -255,9 +255,10 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		SelectableXMLTransformer transformer =
 			new SelectableXMLTransformer(content, proc, context, elementInfo);
 		transformer.transform();
+		content = transformer.getStringResult();
 
 		gateway = new XFormDBGateway();
-		gateway.saveData(context, elementInfo, transformer.getStringResult());
+		gateway.saveData(context, elementInfo, content);
 	}
 
 	@Test(expected = XSDValidateException.class)

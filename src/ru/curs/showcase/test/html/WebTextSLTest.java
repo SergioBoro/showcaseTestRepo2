@@ -63,7 +63,6 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(wt);
 		assertEquals(1, wt.getEventManager().getEvents().size());
 		assertNotNull(wt.getDefaultAction());
-		System.out.println(wt.getData());
 		assertXMLEqual("<div><a onclick=\"gwtWebTextFunc('7', '1')\" class=\"linkStyle\" >"
 				+ ADD_CONDITION + "</a></div>", wt.getData());
 	}

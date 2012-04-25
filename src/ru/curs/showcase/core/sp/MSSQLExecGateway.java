@@ -48,7 +48,7 @@ public abstract class MSSQLExecGateway extends SPQuery {
 	}
 
 	@Override
-	public int getErrorMesIndex(final int aIndex) {
+	public int getErrorMesIndex(final int index) {
 		return getParamCount();
 	}
 
@@ -82,13 +82,18 @@ public abstract class MSSQLExecGateway extends SPQuery {
 	}
 
 	@Override
-	public String getSqlTemplate(final int aIndex) {
+	public String getSqlTemplate(final int index) {
 		String template = "{call sp_executesql (?, ?, %s ?, ?)}";
 		String specialParams = "";
 		for (int i = 0; i < getParamCount() - 2 - 2; i++) {
 			specialParams += "?, ";
 		}
 		return String.format(template, specialParams);
+	}
+
+	@Override
+	public int getTemplateIndex() {
+		return self().getTemplateIndex();
 	}
 
 }

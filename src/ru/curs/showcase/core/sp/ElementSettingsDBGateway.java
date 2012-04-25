@@ -54,4 +54,9 @@ public class ElementSettingsDBGateway extends ElementSPQuery implements ElementS
 		return ERROR_MES_INDEX;
 	}
 
+	@Override
+	public Object getSession() {
+		return getConn();
+	}
+
 }

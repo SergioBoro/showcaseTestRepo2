@@ -1,22 +1,22 @@
-package ru.curs.showcase.core.html.webtext;
+package ru.curs.showcase.core.html;
 
 import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.core.sp.MSSQLExecGateway;
 import ru.curs.showcase.util.Description;
 
 /**
- * Реализация шлюза к БД с sql скриптами для получения данных для элемента инф.
- * панели WebText.
+ * Реализация шлюза к БД с sql скриптами для получения данных для элементов инф.
+ * панели типа вебтекст, xform и UI плагин.
  * 
  * @author den
  * 
  */
-@Description(process = "Загрузка данных для вебтекста или UI плагина из БД с помощью sql скрипта")
-public class WebTextMSSQLExecGateway extends HTMLBasedSPCallHelper implements HTMLGateway {
+@Description(
+		process = "Загрузка данных для вебтекста, xform или UI плагина из БД с помощью sql скрипта")
+public class HTMLBasedElementMSSQLExecGateway extends HTMLBasedElementQuery implements HTMLGateway {
 
 	private static final int MAIN_CONTEXT_INDEX = 3;
 	private static final int OUT_SETTINGS_PARAM_INDEX = 9;
@@ -25,8 +25,8 @@ public class WebTextMSSQLExecGateway extends HTMLBasedSPCallHelper implements HT
 	private final MSSQLExecGateway mssql = new MSSQLExecGateway(this) {
 		@Override
 		protected String getParamsDeclaration() {
-			return "@main_context varchar(MAX), @add_context varchar(MAX), @filterinfo xml,"
-					+ " @session_context xml, @element_Id varchar(MAX), @data xml output, @settings xml output, "
+			return "@main_context varchar(MAX), @add_context varchar(MAX), @filterinfo xml, "
+					+ "@session_context xml, @element_Id varchar(MAX), @data xml output, @settings xml output, "
 					+ super.getParamsDeclaration();
 		}
 	};

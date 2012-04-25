@@ -12,7 +12,7 @@ import ru.curs.showcase.util.Description;
  * 
  */
 @Description(process = "Загрузка данных для вебтекста или UI плагина из БД")
-public class WebTextDBGateway extends HTMLBasedSPCallHelper implements HTMLGateway {
+public class WebTextDBGateway extends HTMLBasedElementQuery implements HTMLGateway {
 
 	private static final int DATA_INDEX = 7;
 	private static final int OUTPUT_INDEX = 8;

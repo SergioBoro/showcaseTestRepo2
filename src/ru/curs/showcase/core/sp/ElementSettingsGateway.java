@@ -19,4 +19,11 @@ public interface ElementSettingsGateway {
 	 *            - описание элемента.
 	 */
 	RecordSetElementRawData getRawData(CompositeContext context, DataPanelElementInfo elementInfo);
+
+	/**
+	 * 
+	 * Должен вернуть объект-хранитель активной сессии, в рамках которой были
+	 * получены данные.
+	 */
+	Object getSession();
 }
