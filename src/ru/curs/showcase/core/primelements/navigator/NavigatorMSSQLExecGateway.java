@@ -39,7 +39,7 @@ public class NavigatorMSSQLExecGateway extends MSSQLExecGateway implements PrimE
 
 	@Override
 	protected String getParamsDeclaration() {
-		return "@session_context xml, @navigator xml output, " + super.getParamsDeclaration();
+		return "@session_context xml, @data xml output, " + super.getParamsDeclaration();
 	}
 
 	@Override

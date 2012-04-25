@@ -140,9 +140,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 			String mes = GeneralException.generateDetailedInfo(ge);
 			assertTrue(mes.contains("просто raiserror"));
 			assertTrue(mes.contains("Контекст выполнения:"));
-			return;
 		}
-		fail();
 	}
 
 	@Test
@@ -171,9 +169,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 		} catch (ValidateException e) {
 			assertTrue(e.getLocalizedMessage().contains(
 					"Ошибка при построении навигатора: нет данных! (1)"));
-			return;
 		}
-		fail();
 	}
 
 }

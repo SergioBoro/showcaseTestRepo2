@@ -6,6 +6,7 @@ import java.io.*;
 import java.sql.*;
 import java.util.*;
 
+import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.*;
 
 import ru.curs.gwt.datagrid.model.*;
@@ -80,6 +81,14 @@ public class AbstractTest extends GeneralXMLHelper {
 		AppInitializer.initialize();
 		AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
 		initTestSession();
+	}
+
+	@Before
+	public void beforeTest() {
+		XMLUnit.setIgnoreAttributeOrder(true);
+		XMLUnit.setIgnoreComments(true);
+		XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true);
+		XMLUnit.setIgnoreWhitespace(true);
 	}
 
 	/**

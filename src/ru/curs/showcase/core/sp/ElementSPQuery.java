@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -15,8 +14,6 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 public abstract class ElementSPQuery extends SPQuery {
-
-	private static final int ELEMENTID_INDEX = 6;
 
 	/**
 	 * Информация об элементе, данные которого загружает процедура.
@@ -142,16 +139,8 @@ public abstract class ElementSPQuery extends SPQuery {
 		return getElementInfo().getType().getSettingsSchemaName();
 	}
 
-	protected int getElementIdIndex(final int index) {
-		return ELEMENTID_INDEX;
-	}
-
-	protected int getBinarySQLType() {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			return java.sql.Types.BLOB;
-		} else {
-			return java.sql.Types.BINARY;
-		}
+	private int getElementIdIndex(final int index) {
+		return getMainContextIndex() + 2 + 2;
 	}
 
 }

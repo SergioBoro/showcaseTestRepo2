@@ -20,8 +20,22 @@ public abstract class MSSQLExecGateway extends SPQuery {
 
 	public static final String SCRIPTS_SQL_DIR = "scripts/sql/";
 
+	private SPQuery external;
+
 	public MSSQLExecGateway() {
 		super();
+	}
+
+	public MSSQLExecGateway(final SPQuery aExternal) {
+		super();
+		external = aExternal;
+	}
+
+	private SPQuery self() {
+		if (external != null) {
+			return external;
+		}
+		return this;
 	}
 
 	protected String getParamsDeclaration() {
@@ -29,57 +43,52 @@ public abstract class MSSQLExecGateway extends SPQuery {
 	}
 
 	@Override
-	protected int getReturnParamIndex() {
+	public int getReturnParamIndex() {
 		return getParamCount() - 1;
 	}
 
 	@Override
-	protected int getErrorMesIndex(final int aIndex) {
+	public int getErrorMesIndex(final int aIndex) {
 		return getParamCount();
 	}
 
 	@Override
-	protected void prepareSQL() throws SQLException {
-		if (getConn() == null) {
-			setConn(ConnectionFactory.getInstance().acquire());
+	public void prepareSQL() throws SQLException {
+		if (self().getConn() == null) {
+			self().setConn(ConnectionFactory.getInstance().acquire());
 		}
-		setStatement(getConn().prepareCall(getSqlText()));
+		self().setStatement(self().getConn().prepareCall(self().getSqlText()));
 		try {
-			setStringParam(1,
+			self().setStringParam(1,
 					TextUtils.streamToString(UserDataUtils.loadUserDataToStream(getFileName())));
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(getFileName(), SettingsFileType.SQL);
 		}
-		setStringParam(2, getParamsDeclaration());
+		self().setStringParam(2, getParamsDeclaration());
 		addErrorMesParams();
 	}
 
-	protected String getFileName() {
-		return SCRIPTS_SQL_DIR + getProcName();
+	private String getFileName() {
+		return SCRIPTS_SQL_DIR + self().getProcName();
 	}
 
-	protected void addErrorMesParams() throws SQLException {
-		getStatement().registerOutParameter(getParamCount() - 1, java.sql.Types.INTEGER);
-		getStatement().registerOutParameter(getParamCount(), java.sql.Types.VARCHAR);
+	private void addErrorMesParams() throws SQLException {
+		self().getStatement().registerOutParameter(getReturnParamIndex(), java.sql.Types.INTEGER);
+		self().getStatement().registerOutParameter(getErrorMesIndex(0), java.sql.Types.VARCHAR);
 	}
 
-	protected int getParamCount() {
+	private int getParamCount() {
 		return getParamsDeclaration().split(",").length + 2;
 	}
 
 	@Override
-	protected String getSqlTemplate(final int aIndex) {
+	public String getSqlTemplate(final int aIndex) {
 		String template = "{call sp_executesql (?, ?, %s ?, ?)}";
 		String specialParams = "";
 		for (int i = 0; i < getParamCount() - 2 - 2; i++) {
 			specialParams += "?, ";
 		}
 		return String.format(template, specialParams);
-	}
-
-	@Override
-	protected String getSqlText() {
-		return getSqlTemplate(0);
 	}
 
 }

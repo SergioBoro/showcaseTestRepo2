@@ -6,8 +6,7 @@ import static org.junit.Assert.fail;
 import java.io.*;
 import java.util.*;
 
-import org.custommonkey.xmlunit.XMLUnit;
-import org.junit.*;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.datapanel.*;
@@ -28,14 +27,6 @@ import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
  * 
  */
 public class XMLSessionContextGeneratorTest extends AbstractTest {
-
-	@Before
-	public void beforeTest() {
-		XMLUnit.setIgnoreAttributeOrder(true);
-		XMLUnit.setIgnoreComments(true);
-		XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true);
-		XMLUnit.setIgnoreWhitespace(true);
-	}
 
 	@Test
 	public void generatorShouldAddRelatedDataToSessionContext() throws SAXException, IOException {

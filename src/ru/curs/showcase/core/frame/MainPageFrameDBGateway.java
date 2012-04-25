@@ -35,7 +35,7 @@ public class MainPageFrameDBGateway extends SPQuery implements MainPageFrameGate
 		try (SPQuery query = this) {
 			try {
 				prepareStatementWithErrorMes();
-				setSQLXMLParam(getSessionContextIndex(), context.getSession());
+				setSQLXMLParam(SESSION_CONTEXT_INDEX, context.getSession());
 				getStatement().registerOutParameter(FRAME_DATA_INDEX, java.sql.Types.VARCHAR);
 				setContext(context);
 				execute();
@@ -51,11 +51,6 @@ public class MainPageFrameDBGateway extends SPQuery implements MainPageFrameGate
 	@Override
 	public void setSourceName(final String aName) {
 		setProcName(aName);
-	}
-
-	@Override
-	protected int getSessionContextIndex() {
-		return SESSION_CONTEXT_INDEX;
 	}
 
 	@Override

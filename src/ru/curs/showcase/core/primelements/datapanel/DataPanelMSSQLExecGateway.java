@@ -14,7 +14,8 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-@Description(process = "Загрузка данных для информационной панели из БД")
+@Description(
+		process = "Загрузка данных для информационной панели из БД с помощью выполнения sql скрипта")
 public class DataPanelMSSQLExecGateway extends MSSQLExecGateway implements PrimElementsGateway {
 
 	private static final int MAIN_CONTEXT_INDEX = 3;
@@ -30,7 +31,7 @@ public class DataPanelMSSQLExecGateway extends MSSQLExecGateway implements PrimE
 
 	@Override
 	protected String getParamsDeclaration() {
-		return "@main_context varchar(MAX), @session_context xml, @datapanel xml output, "
+		return "@main_context varchar(MAX), @session_context xml, @data xml output, "
 				+ super.getParamsDeclaration();
 	}
 

@@ -121,4 +121,26 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		assertNotNull(raw.getData());
 		assertNotNull(raw.getSettings());
 	}
+
+	@Test(expected = ValidateException.class)
+	public void webtextSQLScriptsCanReturnErrorCodeAndMessage() {
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo elementInfo =
+			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		elementInfo.setProcName("webtext/testErrorReturn.sql");
+		HTMLGateway gateway = new WebTextMSSQLExecGateway();
+		gateway.getRawData(context, elementInfo);
+
+	}
+
+	@Test(expected = ValidateException.class)
+	public void webtextSQLScriptsCanReturnScecialExceptionWithCode() {
+		CompositeContext context = getTestContext2();
+		DataPanelElementInfo elementInfo =
+			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
+		elementInfo.setProcName("webtext/testRaiseException.sql");
+		HTMLGateway gateway = new WebTextMSSQLExecGateway();
+		gateway.getRawData(context, elementInfo);
+
+	}
 }

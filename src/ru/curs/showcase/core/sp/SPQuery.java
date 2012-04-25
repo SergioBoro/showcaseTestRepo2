@@ -27,9 +27,6 @@ import ru.curs.showcase.util.xml.XMLUtils;
 public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	public static final String SQL_MARKER = "SQL";
 	private static final int MAIN_CONTEXT_INDEX = 2;
-	private static final int ADD_CONTEXT_INDEX = 3;
-	private static final int FILTER_INDEX = 4;
-	private static final int SESSION_CONTEXT_INDEX = 5;
 
 	private static final int ERROR_MES_INDEX = -1;
 
@@ -81,6 +78,14 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 
 	protected static final String SESSION_CONTEXT_PARAM = "session_context";
 
+	private int getAddContextIndex() {
+		return getMainContextIndex() + 1;
+	}
+
+	private int getFilterContextIndex() {
+		return getMainContextIndex() + 2;
+	}
+
 	/**
 	 * Функция для настройки общих параметров запроса: контекста и фильтров.
 	 * 
@@ -88,18 +93,18 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	 */
 	protected void setupGeneralParameters() throws SQLException {
 		setStringParam(getMainContextIndex(), "");
-		setStringParam(ADD_CONTEXT_INDEX, "");
-		setSQLXMLParam(FILTER_INDEX, "");
+		setStringParam(getAddContextIndex(), "");
+		setSQLXMLParam(getFilterContextIndex(), "");
 		setSQLXMLParam(getSessionContextIndex(), "");
 		if (context != null) {
 			if (context.getMain() != null) {
 				setStringParam(getMainContextIndex(), context.getMain());
 			}
 			if (context.getAdditional() != null) {
-				setStringParam(ADD_CONTEXT_INDEX, context.getAdditional());
+				setStringParam(getAddContextIndex(), context.getAdditional());
 			}
 			if (context.getFilter() != null) {
-				setSQLXMLParam(FILTER_INDEX, context.getFilter());
+				setSQLXMLParam(getFilterContextIndex(), context.getFilter());
 			}
 			if (context.getSession() != null) {
 				setSQLXMLParam(getSessionContextIndex(), context.getSession());
@@ -229,8 +234,12 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 		getStatement().registerOutParameter(1, java.sql.Types.INTEGER);
 	}
 
-	protected String getSqlText() {
-		return String.format(getSqlTemplate(templateIndex), getProcName());
+	protected final String getSqlText() {
+		if (getSqlTemplate(templateIndex).contains("%s")) {
+			return String.format(getSqlTemplate(templateIndex), getProcName());
+		} else {
+			return getSqlTemplate(templateIndex);
+		}
 	}
 
 	/**
@@ -324,8 +333,8 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 		return MAIN_CONTEXT_INDEX;
 	}
 
-	protected int getSessionContextIndex() {
-		return SESSION_CONTEXT_INDEX;
+	private int getSessionContextIndex() {
+		return getMainContextIndex() + 2 + 1;
 	}
 
 	protected int getErrorMesIndex(final int index) {
@@ -480,6 +489,14 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 		}
 		InputStream is = new ByteArrayInputStream(bt);
 		return is;
+	}
+
+	protected int getBinarySQLType() {
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			return java.sql.Types.BLOB;
+		} else {
+			return java.sql.Types.BINARY;
+		}
 	}
 
 }

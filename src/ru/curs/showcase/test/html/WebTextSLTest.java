@@ -1,5 +1,6 @@
 package ru.curs.showcase.test.html;
 
+import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
 import static org.junit.Assert.*;
 
 import java.io.*;
@@ -29,6 +30,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 public class WebTextSLTest extends AbstractTestWithDefaultUserData {
+
 	/**
 	 * Основной тест для проверки работы WebTextDBGateway.
 	 */
@@ -44,6 +46,25 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 		assertEquals(0, wt.getEventManager().getEvents().size());
 		assertNull(wt.getDefaultAction());
 		assertNotNull(wt.getData());
+	}
+
+	@Test
+	public void testGetDataBySQLScript() throws SAXException, IOException {
+		CompositeContext context = new CompositeContext();
+		context.setMain(MAIN_CONDITION);
+		context.setAdditional(ADD_CONDITION);
+		DataPanelElementInfo element = new DataPanelElementInfo("1", DataPanelElementType.WEBTEXT);
+		element.setProcName("webtext/test.sql");
+		generateTestTabWithElement(element);
+
+		WebTextGetCommand command = new WebTextGetCommand(context, element);
+		WebText wt = command.execute();
+
+		assertNotNull(wt);
+		assertEquals(1, wt.getEventManager().getEvents().size());
+		assertNotNull(wt.getDefaultAction());
+		assertXMLEqual("<div><a onclick=\"gwtWebTextFunc('7', '1')\" class=\"linkStyle\" >"
+				+ ADD_CONDITION + "</a></div>", wt.getData());
 	}
 
 	@Test

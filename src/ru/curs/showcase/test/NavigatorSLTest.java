@@ -47,11 +47,10 @@ public class NavigatorSLTest extends AbstractTest {
 		command.setProps(map);
 		try {
 			command.execute();
+			fail();
 		} catch (GeneralException e) {
 			assertEquals(NotImplementedYetException.class, e.getCause().getClass());
-			return;
 		}
-		fail();
 	}
 
 	@Test
@@ -62,11 +61,10 @@ public class NavigatorSLTest extends AbstractTest {
 		command.setProps(map);
 		try {
 			command.execute();
+			fail();
 		} catch (GeneralException e) {
 			assertEquals(SettingsFileOpenException.class, e.getCause().getClass());
-			return;
 		}
-		fail();
 	}
 
 	@Test

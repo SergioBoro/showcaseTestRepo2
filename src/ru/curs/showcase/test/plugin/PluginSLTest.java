@@ -26,6 +26,11 @@ public class PluginSLTest extends AbstractTest {
 		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
 		Plugin plugin = command.execute();
 
+		checkRadarInfo(plugin);
+	}
+
+	protected void checkRadarInfo(final Plugin plugin) {
+		assertNotNull(plugin);
 		assertNull(plugin.getDefaultAction());
 		assertEquals("createRadar", plugin.getCreateProc());
 		final int width = 800;
@@ -99,6 +104,18 @@ public class PluginSLTest extends AbstractTest {
 		assertEquals("createRadar", plugin.getCreateProc());
 		assertEquals("one param expected", 1, plugin.getParams().size());
 		assertTrue(plugin.getParams().get(0).startsWith("<root>"));
+	}
+
+	@Test
+	public void pluginCommandCanReadDataFromSQLScript() {
+		PluginInfo elInfo = new PluginInfo("id", RADAR_COMP, "plugin/radarInfo.sql");
+		String jythonProcName = PLUGIN_HANDLE_RADAR_PY;
+		elInfo.addPostProcessProc(jythonProcName, jythonProcName);
+
+		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
+		Plugin plugin = command.execute();
+
+		checkRadarInfo(plugin);
 	}
 
 }

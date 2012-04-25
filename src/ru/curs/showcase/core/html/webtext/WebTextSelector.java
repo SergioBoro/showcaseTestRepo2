@@ -3,6 +3,8 @@ package ru.curs.showcase.core.html.webtext;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.core.SourceSelector;
 import ru.curs.showcase.core.html.*;
+import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.exception.NotImplementedYetException;
 
 /**
  * Выбор шлюза для элемента в зависимости от текущей конфигурации: например,
@@ -23,6 +25,13 @@ public class WebTextSelector extends SourceSelector<HTMLGateway> {
 		switch (sourceType()) {
 		case JYTHON:
 			res = new HTMLJythonGateway();
+			break;
+		case SQL:
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+				res = new WebTextMSSQLExecGateway();
+			} else {
+				throw new NotImplementedYetException();
+			}
 			break;
 		case FILE:
 			res = new HTMLFileGateway();

@@ -1,4 +1,4 @@
-    SET @datapanel = '
+    SET @data = '
 <datapanel>	
 	<tab id="4" name="Настройки GridHeight, RowHeight">
 		<element id="41" type="GRID"  subtype="EXT_LIVE_GRID" proc="extlivegrid_RowHeight1"/>

@@ -1,5 +1,11 @@
-    SET @datapanel = '
+    SET @data = '
 <datapanel>	
+	<tab id="1" name="Веб-текст, плагин и sql скрипт">
+		<element id="11" type="webtext" proc="webtext/3buttons.sql"/>
+		<element id="12" type="plugin"  proc="plugin/radarInfo.sql" plugin="radar">
+			<proc id="010101" name="plugin/handleRadar.py" type="POSTPROCESS" />
+		</element>	
+	</tab>
 	<tab id="4" name="Настройки GridHeight, RowHeight">
 		<element id="41" type="GRID"  subtype="EXT_LIVE_GRID" proc="extlivegrid_RowHeight1"/>
 		<element id="42" type="GRID"  subtype="EXT_LIVE_GRID" proc="extlivegrid_RowHeight2"/>		

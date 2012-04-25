@@ -1,4 +1,4 @@
-set @navigator= (Select top 1 '199px' as width, 
+set @data= (Select top 1 '199px' as width, 
 
 (select top 1 '00' as id, 'Фичи' as name, 
 	(Select top 1 '07' as id, '7-й этап' as name,

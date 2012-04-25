@@ -13,6 +13,7 @@ public class AbstractTestWithDefaultUserData extends AbstractTest {
 	/**
 	 * Установка userdata по умолчанию для тестов, не вызывающих функции SL.
 	 */
+	@Override
 	@Before
 	public void beforeTest() {
 		setDefaultUserData();
