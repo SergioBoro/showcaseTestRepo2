@@ -1,22 +1,20 @@
-package ru.curs.showcase.core.html.webtext;
+package ru.curs.showcase.core.html;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.core.SourceSelector;
-import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
 
 /**
- * Выбор шлюза для элемента в зависимости от текущей конфигурации: например,
- * типа процедуры, определяемого по суффиксу.
+ * Выбор источника для получения сырых данных для построения XForms.
  * 
  * @author den
  * 
  */
-public class WebTextSelector extends SourceSelector<HTMLGateway> {
+public class HtmlSelector extends SourceSelector<HTMLGateway> {
 
-	public WebTextSelector(final DataPanelElementInfo aElInfo) {
-		super(aElInfo.getProcName());
+	public HtmlSelector(final DataPanelElementInfo elInfo) {
+		super(elInfo.getProcName());
 	}
 
 	@Override
@@ -28,7 +26,7 @@ public class WebTextSelector extends SourceSelector<HTMLGateway> {
 			break;
 		case SQL:
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-				res = new HTMLBasedElementMSSQLExecGateway();
+				res = new HtmlMSSQLExecGateway();
 			} else {
 				throw new NotImplementedYetException();
 			}
@@ -37,7 +35,7 @@ public class WebTextSelector extends SourceSelector<HTMLGateway> {
 			res = new HTMLFileGateway();
 			break;
 		default:
-			res = new WebTextDBGateway();
+			res = new HtmlDBGateway();
 		}
 		return res;
 	}

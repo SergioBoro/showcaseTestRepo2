@@ -5,8 +5,10 @@ import java.sql.SQLException;
 
 import org.w3c.dom.Document;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.html.XFormContext;
+import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.sp.*;
 
 /**
@@ -16,7 +18,14 @@ import ru.curs.showcase.core.sp.*;
  * @author den
  * 
  */
-public abstract class HTMLBasedElementQuery extends ElementSPQuery {
+public abstract class HTMLBasedElementQuery extends ElementSPQuery implements HTMLAdvGateway {
+
+	protected static final int GET_DATA_TEMPALTE_IND = 0;
+	protected static final int SAVE_TEMPLATE_IND = 1;
+	protected static final int SUBMISSION_TEMPLATE_IND = 2;
+	protected static final int FILE_TEMPLATE_IND = 3;
+	private static final String NO_SAVE_PROC_ERROR = "Не задана процедура для сохранения XForms";
+
 	/**
 	 * Возвращает индекс OUT параметра с данными элемента. Необходим только для
 	 * HTML-based элементов.
@@ -39,7 +48,8 @@ public abstract class HTMLBasedElementQuery extends ElementSPQuery {
 	 * @param elementInfo
 	 *            - инф. об элементе.
 	 */
-	protected HTMLBasedElementRawData stdGetData(final CompositeContext context,
+	@Override
+	public HTMLBasedElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
 		init(context, elementInfo);
 		if (getProcName() == null) {
@@ -59,5 +69,50 @@ public abstract class HTMLBasedElementQuery extends ElementSPQuery {
 			}
 		}
 	}
+
+	@Override
+	public void saveData(final CompositeContext context, final DataPanelElementInfo elementInfo,
+			final String data) {
+		setTemplateIndex(SAVE_TEMPLATE_IND);
+		init(context, elementInfo);
+		DataPanelElementProc proc = elementInfo.getSaveProc();
+		if (proc == null) {
+			throw new IncorrectElementException(NO_SAVE_PROC_ERROR);
+		}
+		setProcName(proc.getName());
+
+		try (SPQuery query = this) {
+			try {
+				prepareElementStatementWithErrorMes();
+				setSQLXMLParam(getDataParam(), data);
+				execute();
+			} catch (SQLException e) {
+				throw dbExceptionHandler(e);
+			}
+		}
+	}
+
+	@Override
+	public String scriptTransform(final String procName, final XFormContext context) {
+		setTemplateIndex(SUBMISSION_TEMPLATE_IND);
+		setProcName(procName);
+		setContext(context);
+
+		try (SPQuery query = this) {
+			try {
+				prepareStatementWithErrorMes();
+				setSQLXMLParam(getInputSubmissionIndex(), context.getFormData());
+				getStatement().registerOutParameter(getOutputSubmissionIndex(), java.sql.Types.SQLXML);
+				execute();
+				return getStringForXMLParam(getOutputSubmissionIndex());
+			} catch (SQLException e) {
+				throw dbExceptionHandler(e);
+			}
+		}
+	}
+
+	protected abstract int getOutputSubmissionIndex();
+
+	protected abstract int getInputSubmissionIndex();
 
 }

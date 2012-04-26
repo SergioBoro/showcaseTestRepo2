@@ -15,7 +15,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.core.ValidateException;
-import ru.curs.showcase.core.html.HTMLBasedElementRawData;
+import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
@@ -56,7 +56,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms1Info();
 
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 		return new XFormFactory(raw);
 	}
@@ -68,7 +68,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		generateTestTabWithElement(element);
 		element.setProcName("xforms_proc_all");
 		element.setTemplateName("xforms_template_uploaders_simple");
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 		XFormFactory factory = new XFormFactory(raw);
 		XForm xform = factory.build();
@@ -85,7 +85,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		elInfo.setTemplateName("Showcase_Template_all.xml");
 		XFormContext context = new XFormContext(getTestContext1());
 		generateTestTabWithElement(elInfo);
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, elInfo);
 		XFormFactory factory = new XFormFactory(raw);
 		XForm result = factory.build();
@@ -119,7 +119,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 	@Test(expected = ValidateException.class)
 	public void testJythonSubmissionException() {
 		XFormContext context = new XFormContext();
-		XFormGateway gateway = new XFormJythonGateway();
+		HTMLAdvGateway gateway = new XFormJythonGateway();
 		gateway.scriptTransform("xform/submission.py", context);
 	}
 
@@ -131,7 +131,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		element.setProcName("xforms_proc_no_data");
 		final String templateName = "Showcase_Template_multiselector_simple.xml";
 		element.setTemplateName(templateName);
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 
 		String input =

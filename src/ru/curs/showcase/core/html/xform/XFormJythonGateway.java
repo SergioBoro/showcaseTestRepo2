@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.core.jython.JythonQuery;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.exception.NotImplementedYetException;
 
 /**
  * Шлюз для XForms для работы с Jython. Некоторые функции - работа с файлами -
@@ -17,7 +18,7 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-public class XFormJythonGateway implements XFormGateway {
+public class XFormJythonGateway implements HTMLAdvGateway {
 	private CompositeContext context;
 	private DataPanelElementInfo elementInfo;
 	private String procName;
@@ -82,14 +83,13 @@ public class XFormJythonGateway implements XFormGateway {
 	@Override
 	public OutputStreamDataFile downloadFile(final XFormContext aContext,
 			final DataPanelElementInfo aElementInfo, final ID aLinkId) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedYetException();
 	}
 
 	@Override
 	public void uploadFile(final XFormContext aContext, final DataPanelElementInfo aElementInfo,
 			final ID aLinkId, final DataFile<InputStream> aFile) {
-		// TODO Auto-generated method stub
+		throw new NotImplementedYetException();
 	}
 
 	@Override

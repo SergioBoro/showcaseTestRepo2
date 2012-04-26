@@ -2,6 +2,7 @@ package ru.curs.showcase.core.html.xform;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
+import ru.curs.showcase.core.html.HTMLAdvGateway;
 
 /**
  * Команда сохранения xforms.
@@ -25,7 +26,7 @@ public final class XFormSaveCommand extends XFormContextCommand<Void> {
 		transformer.transform();
 
 		XFormSaveSelector selector = new XFormSaveSelector(proc);
-		XFormGateway gateway = selector.getGateway();
+		HTMLAdvGateway gateway = selector.getGateway();
 		gateway.saveData(getContext(), getElementInfo(), transformer.getStringResult());
 	}
 }

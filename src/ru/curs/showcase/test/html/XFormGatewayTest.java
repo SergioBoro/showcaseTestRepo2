@@ -55,7 +55,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement(TEST1_1_XML, "2", ELEMENT_0205);
 
-		XFormGateway gateway = new XFormFileGateway();
+		HTMLAdvGateway gateway = new XFormFileGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
 		gateway = new XFormFileGateway();
 		gateway.saveData(context, element, content);
@@ -98,7 +98,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		ElementInfoChecker checker = new ElementInfoChecker();
 		checker.check(element, DataPanelElementType.XFORMS);
 
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		gateway.getRawData(context, element);
 	}
 
@@ -111,9 +111,9 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms1Info();
 
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
-		gateway = new XFormDBGateway();
+		gateway = new HtmlDBGateway();
 		gateway.saveData(context, element, content);
 	}
 
@@ -129,9 +129,9 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		ElementInfoChecker checker = new ElementInfoChecker();
 		checker.check(element, DataPanelElementType.XFORMS);
 
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		String content = getNewContentBasedOnExisting(context, element, gateway);
-		gateway = new XFormDBGateway();
+		gateway = new HtmlDBGateway();
 		try {
 			gateway.saveData(context, element, content);
 		} catch (ValidateException e) {
@@ -160,7 +160,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	public void testSQLTransform() {
 		XFormContext context = new XFormContext();
 		context.setFormData(TEST_DATA_TAG);
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		String res = gateway.scriptTransform(XFORMS_SUBMISSION1, context);
 		assertEquals(TEST_DATA_TAG, res);
 	}
@@ -171,7 +171,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testXFormsFileGatewayDownload() {
-		XFormGateway gateway = new XFormFileGateway();
+		HTMLAdvGateway gateway = new XFormFileGateway();
 		final ID linkId = new ID(TEST_XML_FILE);
 		XFormContext context = new XFormContext(getTestContext1());
 		OutputStreamDataFile file = gateway.downloadFile(context, null, linkId);
@@ -187,7 +187,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testXFormsFileGatewayUpload() {
-		XFormGateway gateway = new XFormFileGateway();
+		HTMLAdvGateway gateway = new XFormFileGateway();
 		final String linkId = TEST_XML_FILE;
 		DataFile<InputStream> file =
 			new DataFile<InputStream>(FileUtils.loadClassPathResToStream(linkId), linkId);
@@ -213,7 +213,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 			new SelectableXMLTransformer(file, proc, context, elementInfo);
 		transformer.transform();
 
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		gateway.uploadFile(context, elementInfo, linkId, transformer.getInputStreamResult());
 	}
 
@@ -228,7 +228,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		DataPanelElementInfo elementInfo = getTestXForms2Info();
 		ID linkId = new ID("proc10");
 
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		OutputStreamDataFile file = gateway.downloadFile(context, elementInfo, linkId);
 
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
@@ -248,7 +248,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elementInfo = getDPElement(TEST1_1_XML, "2", "0208");
 
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		String content = getNewContentBasedOnExisting(context, elementInfo, gateway);
 
 		DataPanelElementProc proc = elementInfo.getSaveProc();
@@ -257,7 +257,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 		transformer.transform();
 		content = transformer.getStringResult();
 
-		gateway = new XFormDBGateway();
+		gateway = new HtmlDBGateway();
 		gateway.saveData(context, elementInfo, content);
 	}
 

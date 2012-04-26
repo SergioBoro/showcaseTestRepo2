@@ -7,7 +7,10 @@
 		</element>	
 	</tab>
 	<tab id="2" name="xform и sql скрипт">
-		<element id="21" type="xforms" proc="xform/proc1.sql" template="Showcase_Template.xml"/>	
+		<element id="21" type="xforms" proc="xform/proc1.sql" template="Showcase_Template_SqlScript.xml">
+			<proc id="proc1" name="xform/saveproc1.sql" type="SAVE" />
+			<proc id="proc2" name="xform/submission1.sql" type="SUBMISSION" />
+		</element>	
 	</tab>
 	<tab id="3" name="грид и sql скрипт">
 		<element id="31" type="grid" proc="grid/gridbal.sql" />	

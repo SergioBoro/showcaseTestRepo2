@@ -1,30 +1,27 @@
-package ru.curs.showcase.core.html.xform;
+package ru.curs.showcase.core.html;
 
 import java.io.*;
 import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.IncorrectElementException;
-import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.core.sp.SPQuery;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
 
 /**
- * Шлюз к БД для получения XForms.
+ * Шлюз к БД для получения XForms, вебтеста и UI плагина из БД.
  * 
  * @author den
  * 
  */
-@Description(process = "Загрузка данных для XForm из БД")
-public final class XFormDBGateway extends HTMLBasedElementQuery implements XFormGateway {
+@Description(process = "Загрузка данных для XForm, вебтеста и плагина из БД")
+public final class HtmlDBGateway extends HTMLBasedElementQuery {
 
 	private static final String NO_UPLOAD_PROC_ERROR =
 		"Не задана процедура для загрузки файлов на сервер для linkId=";
-	private static final String NO_SAVE_PROC_ERROR = "Не задана процедура для сохранения XForms";
 	private static final String NO_DOWNLOAD_PROC_ERROR =
 		"Не задана процедура для скачивания файлов из сервера для linkId=";
 
@@ -42,16 +39,6 @@ public final class XFormDBGateway extends HTMLBasedElementQuery implements XForm
 	private static final int INPUTDATA_INDEX = 2;
 	private static final int OUTPUTDATA_INDEX = 3;
 
-	private static final int SAVE_TEMPLATE_IND = 1;
-	private static final int SUBMISSION_TEMPLATE_IND = 2;
-	private static final int FILE_TEMPLATE_IND = 3;
-
-	@Override
-	public HTMLBasedElementRawData getRawData(final CompositeContext context,
-			final DataPanelElementInfo elementInfo) {
-		return stdGetData(context, elementInfo);
-	}
-
 	@Override
 	public int getOutSettingsParam() {
 		return OUTPUT_INDEX;
@@ -60,8 +47,7 @@ public final class XFormDBGateway extends HTMLBasedElementQuery implements XForm
 	@Override
 	protected String getSqlTemplate(final int index) {
 		switch (index) {
-		case 0:
-			return "{? = call %s (?, ?, ?, ?, ?, ?, ?)}";
+		case GET_DATA_TEMPALTE_IND:
 		case SAVE_TEMPLATE_IND:
 			return "{? = call %s (?, ?, ?, ?, ?, ?, ?)}";
 		case SUBMISSION_TEMPLATE_IND:
@@ -70,48 +56,6 @@ public final class XFormDBGateway extends HTMLBasedElementQuery implements XForm
 			return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 		default:
 			return null;
-		}
-	}
-
-	@Override
-	public void saveData(final CompositeContext context, final DataPanelElementInfo elementInfo,
-			final String data) {
-		init(context, elementInfo);
-		setTemplateIndex(SAVE_TEMPLATE_IND);
-		DataPanelElementProc proc = elementInfo.getSaveProc();
-		if (proc == null) {
-			throw new IncorrectElementException(NO_SAVE_PROC_ERROR);
-		}
-		setProcName(proc.getName());
-
-		try (SPQuery query = this) {
-			try {
-				prepareElementStatementWithErrorMes();
-				setSQLXMLParam(getDataParam(), data);
-				execute();
-			} catch (SQLException e) {
-				throw dbExceptionHandler(e);
-			}
-		}
-	}
-
-	@Override
-	public String scriptTransform(final String aProcName, final XFormContext context) {
-		setProcName(aProcName);
-		setContext(context);
-		setTemplateIndex(SUBMISSION_TEMPLATE_IND);
-
-		try (SPQuery query = this) {
-			try {
-				prepareStatementWithErrorMes();
-				setSQLXMLParam(INPUTDATA_INDEX, context.getFormData());
-				getStatement().registerOutParameter(OUTPUTDATA_INDEX, java.sql.Types.SQLXML);
-				execute();
-				String out = getStringForXMLParam(OUTPUTDATA_INDEX);
-				return out;
-			} catch (SQLException e) {
-				throw dbExceptionHandler(e);
-			}
 		}
 	}
 
@@ -184,6 +128,16 @@ public final class XFormDBGateway extends HTMLBasedElementQuery implements XForm
 		default:
 			return -1;
 		}
+	}
+
+	@Override
+	protected int getOutputSubmissionIndex() {
+		return OUTPUTDATA_INDEX;
+	}
+
+	@Override
+	protected int getInputSubmissionIndex() {
+		return INPUTDATA_INDEX;
 	}
 
 }

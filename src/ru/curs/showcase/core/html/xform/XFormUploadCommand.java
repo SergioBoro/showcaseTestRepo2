@@ -4,6 +4,7 @@ import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.command.InputParam;
+import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.util.OutputStreamDataFile;
 
 /**
@@ -49,7 +50,7 @@ public final class XFormUploadCommand extends XFormContextCommand<Void> {
 			new SelectableXMLTransformer(file, proc, getContext(), getElementInfo());
 		transformer.transform();
 
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		gateway.uploadFile(getContext(), getElementInfo(), linkId,
 				transformer.getInputStreamResult());
 	}

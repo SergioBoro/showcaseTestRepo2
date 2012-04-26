@@ -9,7 +9,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.core.ValidateException;
 import ru.curs.showcase.core.html.*;
-import ru.curs.showcase.core.html.webtext.*;
+import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -33,7 +33,7 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "2");
 
-		HTMLGateway wtgateway = new WebTextDBGateway();
+		HTMLGateway wtgateway = new HtmlDBGateway();
 		HTMLBasedElementRawData rawWT = wtgateway.getRawData(context, element);
 		String out = XMLUtils.documentToString(rawWT.getData());
 		new WebText(out);
@@ -128,7 +128,7 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		DataPanelElementInfo elementInfo =
 			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
 		elementInfo.setProcName("webtext/testErrorReturn.sql");
-		HTMLGateway gateway = new HTMLBasedElementMSSQLExecGateway();
+		HTMLGateway gateway = new HtmlMSSQLExecGateway();
 		gateway.getRawData(context, elementInfo);
 
 	}
@@ -139,7 +139,7 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 		DataPanelElementInfo elementInfo =
 			new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
 		elementInfo.setProcName("webtext/testRaiseException.sql");
-		HTMLGateway gateway = new HTMLBasedElementMSSQLExecGateway();
+		HTMLGateway gateway = new HtmlMSSQLExecGateway();
 		gateway.getRawData(context, elementInfo);
 
 	}

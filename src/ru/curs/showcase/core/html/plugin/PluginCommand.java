@@ -5,7 +5,6 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.Plugin;
 import ru.curs.showcase.core.command.DataPanelElementCommand;
 import ru.curs.showcase.core.html.*;
-import ru.curs.showcase.core.html.webtext.WebTextSelector;
 
 /**
  * Команда для создания UI плагина.
@@ -26,7 +25,7 @@ public final class PluginCommand extends DataPanelElementCommand<Plugin> {
 
 	@Override
 	protected void mainProc() throws Exception {
-		WebTextSelector selector = new WebTextSelector(getElementInfo());
+		HtmlSelector selector = new HtmlSelector(getElementInfo());
 		HTMLGateway wtgateway = selector.getGateway();
 		HTMLBasedElementRawData rawWT = wtgateway.getRawData(getContext(), getElementInfo());
 		PluginFactory factory = new PluginFactory(rawWT);

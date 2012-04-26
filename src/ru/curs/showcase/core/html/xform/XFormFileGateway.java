@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.core.html.HTMLFileGateway;
+import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -25,7 +25,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 @Description(process = "Загрузка данных для XForm из файлов")
-public final class XFormFileGateway extends HTMLFileGateway implements XFormGateway {
+public final class XFormFileGateway extends HTMLFileGateway implements HTMLAdvGateway {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(XFormFileGateway.class);
 	/**

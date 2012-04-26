@@ -1,4 +1,4 @@
-package ru.curs.showcase.core.html.xform;
+package ru.curs.showcase.core.html;
 
 import java.io.InputStream;
 
@@ -6,7 +6,6 @@ import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.core.html.HTMLGateway;
 import ru.curs.showcase.util.*;
 
 /**
@@ -16,7 +15,7 @@ import ru.curs.showcase.util.*;
  * @author den
  * 
  */
-public interface XFormGateway extends HTMLGateway {
+public interface HTMLAdvGateway extends HTMLGateway {
 
 	/**
 	 * Сохраняет данные, введенные в карточке на основе XForms.

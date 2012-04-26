@@ -18,7 +18,7 @@ public final class XFormGetCommand extends XFormContextCommand<XForm> {
 
 	@Override
 	protected void mainProc() throws Exception {
-		XFormSelector selector = new XFormSelector(getElementInfo());
+		HtmlSelector selector = new HtmlSelector(getElementInfo());
 		HTMLGateway gateway = selector.getGateway();
 		HTMLBasedElementRawData raw = gateway.getRawData(getContext(), getElementInfo());
 		if (getContext().getKeepUserSettings() && (getContext().getFormData() != null)) {

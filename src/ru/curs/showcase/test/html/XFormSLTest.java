@@ -96,16 +96,36 @@ public class XFormSLTest extends AbstractTest {
 		command.execute();
 	}
 
-	/**
-	 * Функция тестирования работы SQL Submission через ServiceLayer.
-	 */
 	@Test
-	public void testSQLSubmissionBySL() {
+	public void xformAllowSaveByMSSQLScript() {
+		String data =
+			"<schema xmlns=\"\"><info><name/><growth/><eyescolour/><music/><comment/></info></schema>";
+		XFormContext xcontext = new XFormContext(getTestContext1(), data);
+		DataPanelElementInfo element = getTestXForms1Info();
+		element.getSaveProc().setName("xform/saveproc1.sql");
+		XFormSaveCommand command = new XFormSaveCommand(xcontext, element);
+		command.execute();
+	}
+
+	@Test
+	public void xformAllowSPScriptSubmission() {
 		String data = TEST_DATA_TAG;
 		XFormContext context = new XFormContext();
 		context.setFormData(data);
 		DataPanelElementInfo elInfo =
 			XFormInfoFactory.generateXFormsSQLSubmissionInfo(XFORMS_SUBMISSION1);
+		XFormScriptTransformCommand command = new XFormScriptTransformCommand(context, elInfo);
+		String res = command.execute();
+		assertEquals(data, res);
+	}
+
+	@Test
+	public void xformAllowMSSQLScriptSubmission() {
+		String data = TEST_DATA_TAG;
+		XFormContext context = new XFormContext();
+		context.setFormData(data);
+		DataPanelElementInfo elInfo =
+			XFormInfoFactory.generateXFormsSQLSubmissionInfo("xform/submission1.sql");
 		XFormScriptTransformCommand command = new XFormScriptTransformCommand(context, elInfo);
 		String res = command.execute();
 		assertEquals(data, res);

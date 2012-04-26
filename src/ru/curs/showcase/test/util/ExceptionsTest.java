@@ -241,7 +241,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getDPElement(TEST_XML, "3", "6");
 
-		HTMLGateway gateway = new WebTextDBGateway();
+		HTMLGateway gateway = new HtmlDBGateway();
 		gateway.getRawData(context, element);
 	}
 
@@ -250,7 +250,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = SettingsFileOpenException.class)
 	public void testUserXSDNotFoundException() {
-		XMLUtils.xsdValidateUserData(FileUtils.loadClassPathResToStream(TEST_XML_FILE), PHANTOM_XSD);
+		XMLUtils.xsdValidateUserData(FileUtils.loadClassPathResToStream(TEST_XML_FILE),
+				PHANTOM_XSD);
 	}
 
 	/**
@@ -258,7 +259,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test(expected = SettingsFileOpenException.class)
 	public void testXSDNotFoundException() {
-		XMLUtils.xsdValidateAppDataSafe(FileUtils.loadClassPathResToStream(TEST_XML_FILE), PHANTOM_XSD);
+		XMLUtils.xsdValidateAppDataSafe(FileUtils.loadClassPathResToStream(TEST_XML_FILE),
+				PHANTOM_XSD);
 	}
 
 	/**
@@ -466,7 +468,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		XFormContext context = new XFormContext();
 		context.setMain(MAIN_CONTEXT_TAG);
 		context.setAdditional(ADD_CONDITION);
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		final String procName = "xforms_submission_ec";
 
 		try {
@@ -561,7 +563,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	public void testUserMessageByException() {
 		XFormContext context = new XFormContext();
 		context.setFormData("<model/>");
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		try {
 			gateway.scriptTransform("xforms_submission_um", context);
 			fail();
@@ -638,8 +640,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 				assertEquals(params, event.getParams());
 				assertTrue(event.getMessage().contains(message));
 				assertTrue(event.getMessage().contains(excMessage));
-				assertTrue(event.getMessage().contains(
-						LoggingEventDecorator.EXCEPTION_SOURCE));
+				assertTrue(event.getMessage().contains(LoggingEventDecorator.EXCEPTION_SOURCE));
 				assertTrue(event.getMessage().contains(causeMessage));
 				assertTrue(event.getMessage().contains(RuntimeException.class.getSimpleName()));
 				assertTrue(event.getMessage().contains(loggerName));

@@ -10,7 +10,6 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.core.html.plugin.PluginFactory;
-import ru.curs.showcase.core.html.webtext.WebTextDBGateway;
 import ru.curs.showcase.core.primelements.*;
 import ru.curs.showcase.core.primelements.datapanel.DataPanelFactory;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
@@ -29,7 +28,7 @@ public class PluginFactoryTest extends AbstractTestWithDefaultUserData {
 	public void pluginCommandShouldRaiseExceptionWhenNoAdapterFile() throws Exception {
 		PluginInfo elInfo = new PluginInfo("id", "fake2", PLUGIN_RADAR_PROC);
 
-		HTMLGateway wtgateway = new WebTextDBGateway();
+		HTMLGateway wtgateway = new HtmlDBGateway();
 		HTMLBasedElementRawData rawWT = wtgateway.getRawData(getSimpleTestContext(), elInfo);
 		PluginFactory factory = new PluginFactory(rawWT);
 		try {
@@ -47,7 +46,7 @@ public class PluginFactoryTest extends AbstractTestWithDefaultUserData {
 	public void pluginCommandShouldRaiseExceptionWhenNoJSLibFile() throws Exception {
 		PluginInfo elInfo = new PluginInfo("id", "fakeLibPlugin2", PLUGIN_RADAR_PROC);
 
-		HTMLGateway wtgateway = new WebTextDBGateway();
+		HTMLGateway wtgateway = new HtmlDBGateway();
 		HTMLBasedElementRawData rawWT = wtgateway.getRawData(getSimpleTestContext(), elInfo);
 		PluginFactory factory = new PluginFactory(rawWT);
 		try {
@@ -66,7 +65,7 @@ public class PluginFactoryTest extends AbstractTestWithDefaultUserData {
 	public void pluginCommandShouldRaiseExceptionWhenNoCompDir() throws Exception {
 		PluginInfo elInfo = new PluginInfo("id", "fakeComp", PLUGIN_RADAR_PROC);
 
-		HTMLGateway wtgateway = new WebTextDBGateway();
+		HTMLGateway wtgateway = new HtmlDBGateway();
 		HTMLBasedElementRawData rawWT = wtgateway.getRawData(getSimpleTestContext(), elInfo);
 		PluginFactory factory = new PluginFactory(rawWT);
 		try {

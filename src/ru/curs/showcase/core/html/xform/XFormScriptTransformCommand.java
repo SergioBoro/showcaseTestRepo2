@@ -2,7 +2,10 @@ package ru.curs.showcase.core.html.xform;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.core.*;
+import ru.curs.showcase.core.SourceSelector;
+import ru.curs.showcase.core.html.*;
+import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.exception.NotImplementedYetException;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -25,18 +28,25 @@ public final class XFormScriptTransformCommand extends XFormContextCommand<Strin
 		getContext().setFormData(decodedContent);
 		String procName = getElementInfo().getProcName();
 
-		SourceSelector<XFormGateway> selector = new SourceSelector<XFormGateway>(procName) {
-
+		SourceSelector<HTMLAdvGateway> selector = new SourceSelector<HTMLAdvGateway>(procName) {
 			@Override
-			public XFormGateway getGateway() {
-				if (sourceType() == SourceType.JYTHON) {
+			public HTMLAdvGateway getGateway() {
+				switch (sourceType()) {
+				case JYTHON:
 					return new XFormJythonGateway();
+				case SQL:
+					if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+						return new HtmlMSSQLExecGateway();
+					} else {
+						throw new NotImplementedYetException();
+					}
+				default:
+					return new HtmlDBGateway();
 				}
-				return new XFormDBGateway();
 			}
 		};
 
-		XFormGateway gateway = selector.getGateway();
+		HTMLAdvGateway gateway = selector.getGateway();
 		setResult(gateway.scriptTransform(procName, getContext()));
 	}
 }

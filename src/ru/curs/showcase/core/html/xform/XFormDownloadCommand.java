@@ -4,6 +4,7 @@ import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.command.InputParam;
+import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.util.OutputStreamDataFile;
 
 /**
@@ -29,7 +30,7 @@ public final class XFormDownloadCommand extends XFormContextCommand<OutputStream
 
 	@Override
 	protected void mainProc() throws Exception {
-		XFormGateway gateway = new XFormDBGateway();
+		HTMLAdvGateway gateway = new HtmlDBGateway();
 		OutputStreamDataFile file = gateway.downloadFile(getContext(), getElementInfo(), linkId);
 		DataPanelElementProc proc = getElementInfo().getProcs().get(linkId);
 
