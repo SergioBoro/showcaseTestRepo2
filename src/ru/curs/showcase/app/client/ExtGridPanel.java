@@ -16,7 +16,6 @@ import ru.curs.showcase.app.client.utils.DownloadHelper;
 import com.extjs.gxt.ui.client.data.*;
 import com.extjs.gxt.ui.client.event.*;
 import com.extjs.gxt.ui.client.event.GridEvent;
-import com.extjs.gxt.ui.client.fx.*;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.IconHelper;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -191,6 +190,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	// CHECKSTYLE:OFF
 	private void updateGridFull() {
 
+		cs = gridMetadata.getOriginalColumnSet();
+
 		RpcProxy<PagingLoadResult<ExtGridData>> proxy =
 			new RpcProxy<PagingLoadResult<ExtGridData>>() {
 				@Override
@@ -261,8 +262,12 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
 
 		if (gridMetadata.getUISettings().isSelectOnlyRecords()) {
-			selectionModel = new CheckBoxSelectionModel<ExtGridData>();
-			columns.add(((CheckBoxSelectionModel<ExtGridData>) selectionModel).getColumn());
+			if (gridMetadata.getUISettings().isVisibleRecordsSelector()) {
+				selectionModel = new CheckBoxSelectionModel<ExtGridData>();
+				columns.add(((CheckBoxSelectionModel<ExtGridData>) selectionModel).getColumn());
+			} else {
+				selectionModel = new GridSelectionModel<ExtGridData>();
+			}
 		} else {
 			selectionModel = new CellSelectionModel<ExtGridData>();
 		}
@@ -432,14 +437,14 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		cpGrid = new ContentPanel();
 		// ------------
-		Draggable d = new Draggable(cpGrid, cpGrid.getHeader());
-		d.setUseProxy(true);
-		Resizable r = new Resizable(cpGrid);
-		r.setDynamic(false);
+		// Draggable d = new Draggable(cpGrid, cpGrid.getHeader());
+		// d.setUseProxy(true);
+		// Resizable r = new Resizable(cpGrid);
+		// r.setDynamic(false);
 		// ------------
 		cpGrid.setFrame(true);
 		cpGrid.setCollapsible(true);
-		cpGrid.setAnimCollapse(false);
+		// cpGrid.setAnimCollapse(false);
 		cpGrid.setLayout(new FitLayout());
 		// ------------
 
@@ -451,9 +456,9 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		grid.setWidth(PROC100);
 		grid.setHeight(gridMetadata.getUISettings().getGridHeight());
-
 		// grid.setAutoWidth(true);
 		// grid.setAutoHeight(true);
+
 		cpGrid.add(grid);
 
 		if (gridMetadata.getUISettings().isVisiblePager()) {
@@ -475,8 +480,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		p.add(cpGrid);
 
 		// ------------------------------------------------------------------------------
-
-		cs = gridMetadata.getOriginalColumnSet();
 
 	}
 
@@ -650,6 +653,13 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			default:
 				continue;
 			}
+		}
+
+		if ((cs.getColumns().get(0) != null)
+				&& (cs.getColumns().get(0).getDisplayMode() != ColumnValueDisplayMode.SINGLELINE)) {
+			style = style + "white-space:normal;";
+		} else {
+			style = style + "white-space:nowrap;";
 		}
 
 		return style;
