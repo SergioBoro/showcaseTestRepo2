@@ -5,11 +5,11 @@
 		<element id="6" type="webtext" transform="bal.xsl" />
 	</tab>
 	<tab id="3" name="Вебтекст">		
-		<element id="77" type="webtext" proc="webtext_self_refresh" />
+		<element id="77" type="webtext" proc="WebText_self_refresh" />
 	</tab>
 	<tab id="6" name="XForms как фильтр">
 		<element id="61" type="xforms" template="Showcase_Template.xml"
-			proc="xforms_proc1">
+			proc="xForms_proc1">
 			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
 			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
 		</element>
@@ -18,7 +18,7 @@
 	</tab>
 	<tab id="2" name="Файлы в XForms">
 		<element id="21" type="xforms" template="Showcase_Template21.xml"
-			proc="xforms_proc21">
+			proc="xForms_proc21">
 			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
 			<proc id="03" name="xforms_download1" type="DOWNLOAD" />
 			<proc id="04" name="xforms_upload1" type="UPLOAD" />

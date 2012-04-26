@@ -236,7 +236,11 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 
 	protected final String getSqlText() {
 		if (getSqlTemplate(templateIndex).contains("%s")) {
-			return String.format(getSqlTemplate(templateIndex), getProcName());
+			String proc = getProcName();
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+				proc = "\"" + proc + "\"";
+			}
+			return String.format(getSqlTemplate(templateIndex), proc);
 		} else {
 			return getSqlTemplate(templateIndex);
 		}
