@@ -150,4 +150,36 @@ public class LiveGridModuleTest extends AbstractTest {
 
 	}
 
+	@Test
+	public void testExtGridDataSerialize() {
+		ExtGridData egd = new ExtGridData();
+
+		egd.set("id", REC_ID);
+		egd.set("rowstyle", ROWSTYLE);
+
+		org.w3c.dom.Document doc = ru.curs.showcase.util.xml.XMLUtils.objectToXML(egd);
+		assertNotNull(doc);
+	}
+
+	@Test
+	public void testExtGridPagingLoadResultSerialize() {
+		ArrayList<ExtGridData> sublist = new ArrayList<ExtGridData>();
+		ExtGridData egd = new ExtGridData();
+		egd.setId(REC_ID);
+		sublist.add(egd);
+
+		ExtGridPagingLoadResult<ExtGridData> egplr =
+			new ExtGridPagingLoadResult<ExtGridData>(sublist, LIVE_INFO_OFFSET,
+					LIVE_INFO_TOTALCOUNT);
+
+		ExtGridExtradata ege = new ExtGridExtradata();
+		ege.setAutoSelectRecordId(REC_ID);
+
+		egplr.setExtGridExtradata(ege);
+
+		org.w3c.dom.Document doc = ru.curs.showcase.util.xml.XMLUtils.objectToXML(egplr);
+		assertNotNull(doc);
+
+	}
+
 }

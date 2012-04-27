@@ -53,9 +53,8 @@ public class LiveGridComponentTest extends AbstractTest {
 		context.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 		DataPanelElementInfo elInfo = getDPElement(TEST_XML, "6", "61");
 
-		GridGetCommand command = new GridGetCommand(context, elInfo, true);
-		Grid grid = command.execute();
-		ExtGridMetadata egm = GridTransformer.gridToExtGridMetadata(grid);
+		ExtGridMetadataGetCommand command = new ExtGridMetadataGetCommand(context, elInfo);
+		ExtGridMetadata egm = command.execute();
 
 		assertEquals(HEADER, egm.getHeader());
 		assertEquals(FOOTER, egm.getFooter());
@@ -90,9 +89,8 @@ public class LiveGridComponentTest extends AbstractTest {
 		context.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 		DataPanelElementInfo elInfo = getDPElement(TEST_XML, "6", "61");
 
-		GridGetCommand command = new GridGetCommand(context, elInfo, true);
-		Grid grid = command.execute();
-		ExtGridPagingLoadResult<ExtGridData> egplr = GridTransformer.gridToExtGridData(grid);
+		ExtGridDataGetCommand command = new ExtGridDataGetCommand(context, elInfo);
+		ExtGridPagingLoadResult<ExtGridData> egplr = command.execute();
 
 		assertEquals(LIVE_INFO_OFFSET, egplr.getOffset());
 		assertEquals(LIVE_INFO_TOTALCOUNT, egplr.getTotalLength());
@@ -115,9 +113,8 @@ public class LiveGridComponentTest extends AbstractTest {
 		context.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 		DataPanelElementInfo elInfo = getDPElement(TEST_XML, "6", "62");
 
-		GridGetCommand command = new GridGetCommand(context, elInfo, true);
-		Grid grid = command.execute();
-		ExtGridMetadata egm = GridTransformer.gridToExtGridMetadata(grid);
+		ExtGridMetadataGetCommand command = new ExtGridMetadataGetCommand(context, elInfo);
+		ExtGridMetadata egm = command.execute();
 
 		assertEquals(HEADER2, egm.getHeader());
 		assertEquals("", egm.getFooter());
@@ -142,9 +139,8 @@ public class LiveGridComponentTest extends AbstractTest {
 		context.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 		DataPanelElementInfo elInfo = getDPElement(TEST_XML, "6", "62");
 
-		GridGetCommand command = new GridGetCommand(context, elInfo, true);
-		Grid grid = command.execute();
-		ExtGridPagingLoadResult<ExtGridData> egplr = GridTransformer.gridToExtGridData(grid);
+		ExtGridDataGetCommand command = new ExtGridDataGetCommand(context, elInfo);
+		ExtGridPagingLoadResult<ExtGridData> egplr = command.execute();
 
 		assertEquals(LIVE_INFO_OFFSET, egplr.getOffset());
 		assertEquals(LIVE_INFO_TOTALCOUNT2, egplr.getTotalLength());

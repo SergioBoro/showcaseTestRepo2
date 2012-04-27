@@ -9,7 +9,6 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.client.rpc.*;
 
 /**
@@ -73,9 +72,8 @@ public interface DataService extends RemoteService {
 	ExtGridMetadata getExtGridMetadata(GridContext context, DataPanelElementInfo element)
 			throws GeneralException;
 
-	PagingLoadResult<ExtGridData>
-			getExtGridData(GridContext context, DataPanelElementInfo element)
-					throws GeneralException;
+	ExtGridPagingLoadResult<ExtGridData> getExtGridData(GridContext context,
+			DataPanelElementInfo element) throws GeneralException;
 
 	/**
 	 * Возвращает данные для отрисовки графика по переданным контексту и

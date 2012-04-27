@@ -192,11 +192,11 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		cs = gridMetadata.getOriginalColumnSet();
 
-		RpcProxy<PagingLoadResult<ExtGridData>> proxy =
-			new RpcProxy<PagingLoadResult<ExtGridData>>() {
+		RpcProxy<ExtGridPagingLoadResult<ExtGridData>> proxy =
+			new RpcProxy<ExtGridPagingLoadResult<ExtGridData>>() {
 				@Override
 				public void load(final Object loadConfig,
-						final AsyncCallback<PagingLoadResult<ExtGridData>> callback) {
+						final AsyncCallback<ExtGridPagingLoadResult<ExtGridData>> callback) {
 
 					PagingLoadConfig plc = (PagingLoadConfig) loadConfig;
 
@@ -236,8 +236,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 				}
 			};
 
-		final PagingLoader<PagingLoadResult<ModelData>> loader =
-			new BasePagingLoader<PagingLoadResult<ModelData>>(proxy);
+		final PagingLoader<ExtGridPagingLoadResult<ModelData>> loader =
+			new BasePagingLoader<ExtGridPagingLoadResult<ModelData>>(proxy);
 		loader.setRemoteSort(true);
 		loader.addListener(Loader.Load, new Listener<LoadEvent>() {
 			@SuppressWarnings("unchecked")

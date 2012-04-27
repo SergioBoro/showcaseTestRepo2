@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.grid;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
+
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 
 /**
@@ -10,6 +12,9 @@ import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
  * @param <Data>
  *            тип данных
  */
+@XmlRootElement
+@XmlSeeAlso(ExtGridData.class)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ExtGridPagingLoadResult<Data> extends BasePagingLoadResult<Data> {
 
 	private static final long serialVersionUID = 3460463555489064222L;
