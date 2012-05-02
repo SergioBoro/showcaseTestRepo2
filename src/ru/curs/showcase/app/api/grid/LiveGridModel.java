@@ -11,11 +11,11 @@ import com.extjs.gxt.ui.client.data.BaseModel;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ExtGridData extends BaseModel implements Serializable {
+public class LiveGridModel extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = -3660786754868736757L;
 
-	public ExtGridData() {
+	public LiveGridModel() {
 
 	}
 
@@ -37,8 +37,8 @@ public class ExtGridData extends BaseModel implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if ((obj != null) && (obj instanceof ExtGridData)) {
-			ExtGridData egd = (ExtGridData) obj;
+		if ((obj != null) && (obj instanceof LiveGridModel)) {
+			LiveGridModel egd = (LiveGridModel) obj;
 			return getId().equals(egd.getId());
 		}
 		return super.equals(obj);

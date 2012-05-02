@@ -9,7 +9,7 @@ import ru.curs.gwt.datagrid.model.*;
  * Столбец.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ExtGridColumnConfig implements SerializableElement {
+public class LiveGridColumnConfig implements SerializableElement {
 
 	private static final long serialVersionUID = -5349384847976436436L;
 
@@ -52,10 +52,10 @@ public class ExtGridColumnConfig implements SerializableElement {
 	@XmlTransient
 	private String linkId;
 
-	public ExtGridColumnConfig() {
+	public LiveGridColumnConfig() {
 	}
 
-	public ExtGridColumnConfig(final String aId, final String aCaption, final Integer aWidth) {
+	public LiveGridColumnConfig(final String aId, final String aCaption, final Integer aWidth) {
 		id = aId;
 		caption = aCaption;
 		width = aWidth;
@@ -195,10 +195,10 @@ public class ExtGridColumnConfig implements SerializableElement {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof ExtGridColumnConfig)) {
+		if (!(obj instanceof LiveGridColumnConfig)) {
 			return false;
 		}
-		ExtGridColumnConfig other = (ExtGridColumnConfig) obj;
+		LiveGridColumnConfig other = (LiveGridColumnConfig) obj;
 		if (caption == null) {
 			if (other.caption != null) {
 				return false;

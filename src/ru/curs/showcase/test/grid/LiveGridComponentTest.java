@@ -48,111 +48,111 @@ public class LiveGridComponentTest extends AbstractTest {
 	private static final int DATA_SIZE = 50;
 
 	@Test
-	public void testExtGridMetadata1Proc() {
+	public void testLiveGridMetadata1Proc() {
 		GridContext context = getTestGridContext1();
 		context.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 		DataPanelElementInfo elInfo = getDPElement(TEST_XML, "6", "61");
 
-		ExtGridMetadataGetCommand command = new ExtGridMetadataGetCommand(context, elInfo);
-		ExtGridMetadata egm = command.execute();
+		LiveGridMetadataGetCommand command = new LiveGridMetadataGetCommand(context, elInfo);
+		LiveGridMetadata lgm = command.execute();
 
-		assertEquals(HEADER, egm.getHeader());
-		assertEquals(FOOTER, egm.getFooter());
+		assertEquals(HEADER, lgm.getHeader());
+		assertEquals(FOOTER, lgm.getFooter());
 
-		assertEquals(LIVE_INFO_OFFSET, egm.getLiveInfo().getOffset());
-		assertEquals(LIVE_INFO_LIMIT, egm.getLiveInfo().getLimit());
-		assertEquals(LIVE_INFO_TOTALCOUNT, egm.getLiveInfo().getTotalCount());
+		assertEquals(LIVE_INFO_OFFSET, lgm.getLiveInfo().getOffset());
+		assertEquals(LIVE_INFO_LIMIT, lgm.getLiveInfo().getLimit());
+		assertEquals(LIVE_INFO_TOTALCOUNT, lgm.getLiveInfo().getTotalCount());
 
-		assertEquals(UI_SETTINGS_GRID_HEIGHT, egm.getUISettings().getGridHeight());
-		assertEquals(UI_SETTINGS_ROW_HEIGHT, egm.getUISettings().getRowHeight());
+		assertEquals(UI_SETTINGS_GRID_HEIGHT, lgm.getUISettings().getGridHeight());
+		assertEquals(UI_SETTINGS_ROW_HEIGHT, lgm.getUISettings().getRowHeight());
 
-		assertEquals(COL_ID, egm.getColumns().get(0).getId());
-		assertEquals(COL_CAPTION, egm.getColumns().get(0).getCaption());
+		assertEquals(COL_ID, lgm.getColumns().get(0).getId());
+		assertEquals(COL_CAPTION, lgm.getColumns().get(0).getCaption());
 		assertEquals(com.extjs.gxt.ui.client.Style.HorizontalAlignment.LEFT,
-				egm.getColumns().get(0).getHorizontalAlignment());
-		assertEquals(COL_CAPTION, egm.getOriginalColumnSet().getColumns().get(0).getId());
+				lgm.getColumns().get(0).getHorizontalAlignment());
+		assertEquals(COL_CAPTION, lgm.getOriginalColumnSet().getColumns().get(0).getId());
 
-		assertEquals(FONT_SIZE, egm.getFontSize());
+		assertEquals(FONT_SIZE, lgm.getFontSize());
 
-		assertNull(egm.getTextColor());
-		assertNull(egm.getBackgroundColor());
-		assertFalse(egm.getFontModifiers().contains(FontModifier.BOLD));
-		assertFalse(egm.getFontModifiers().contains(FontModifier.ITALIC));
-		assertFalse(egm.getFontModifiers().contains(FontModifier.UNDERLINE));
-		assertFalse(egm.getFontModifiers().contains(FontModifier.STRIKETHROUGH));
+		assertNull(lgm.getTextColor());
+		assertNull(lgm.getBackgroundColor());
+		assertFalse(lgm.getFontModifiers().contains(FontModifier.BOLD));
+		assertFalse(lgm.getFontModifiers().contains(FontModifier.ITALIC));
+		assertFalse(lgm.getFontModifiers().contains(FontModifier.UNDERLINE));
+		assertFalse(lgm.getFontModifiers().contains(FontModifier.STRIKETHROUGH));
 
 	}
 
 	@Test
-	public void testExtGridData1Proc() {
+	public void testLiveGridData1Proc() {
 		GridContext context = getTestGridContext1();
 		context.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 		DataPanelElementInfo elInfo = getDPElement(TEST_XML, "6", "61");
 
-		ExtGridDataGetCommand command = new ExtGridDataGetCommand(context, elInfo);
-		ExtGridPagingLoadResult<ExtGridData> egplr = command.execute();
+		LiveGridDataGetCommand command = new LiveGridDataGetCommand(context, elInfo);
+		LiveGridData<LiveGridModel> lgd = command.execute();
 
-		assertEquals(LIVE_INFO_OFFSET, egplr.getOffset());
-		assertEquals(LIVE_INFO_TOTALCOUNT, egplr.getTotalLength());
-		assertEquals(DATA_SIZE, egplr.getData().size());
+		assertEquals(LIVE_INFO_OFFSET, lgd.getOffset());
+		assertEquals(LIVE_INFO_TOTALCOUNT, lgd.getTotalLength());
+		assertEquals(DATA_SIZE, lgd.getData().size());
 
-		ExtGridExtradata ege = egplr.getExtGridExtradata();
+		LiveGridExtradata lge = lgd.getLiveGridExtradata();
 
-		assertNull(ege.getAutoSelectColumnId());
-		assertEquals(REC_ID, ege.getAutoSelectRecordId());
+		assertNull(lge.getAutoSelectColumnId());
+		assertEquals(REC_ID, lge.getAutoSelectRecordId());
 
-		assertEquals("1", ege.getEventManager().getEvents().get(0).getId1().getString());
-		assertEquals(InteractionType.SINGLE_CLICK, ege.getEventManager().getEvents().get(0)
+		assertEquals("1", lge.getEventManager().getEvents().get(0).getId1().getString());
+		assertEquals(InteractionType.SINGLE_CLICK, lge.getEventManager().getEvents().get(0)
 				.getInteractionType());
 
 	}
 
 	@Test
-	public void testExtGridMetadata2Proc() {
+	public void testLiveGridMetadata2Proc() {
 		GridContext context = getTestGridContext1();
 		context.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 		DataPanelElementInfo elInfo = getDPElement(TEST_XML, "6", "62");
 
-		ExtGridMetadataGetCommand command = new ExtGridMetadataGetCommand(context, elInfo);
-		ExtGridMetadata egm = command.execute();
+		LiveGridMetadataGetCommand command = new LiveGridMetadataGetCommand(context, elInfo);
+		LiveGridMetadata lgm = command.execute();
 
-		assertEquals(HEADER2, egm.getHeader());
-		assertEquals("", egm.getFooter());
+		assertEquals(HEADER2, lgm.getHeader());
+		assertEquals("", lgm.getFooter());
 
-		assertEquals(LIVE_INFO_OFFSET, egm.getLiveInfo().getOffset());
-		assertEquals(LIVE_INFO_LIMIT2, egm.getLiveInfo().getLimit());
-		assertEquals(LIVE_INFO_TOTALCOUNT2, egm.getLiveInfo().getTotalCount());
+		assertEquals(LIVE_INFO_OFFSET, lgm.getLiveInfo().getOffset());
+		assertEquals(LIVE_INFO_LIMIT2, lgm.getLiveInfo().getLimit());
+		assertEquals(LIVE_INFO_TOTALCOUNT2, lgm.getLiveInfo().getTotalCount());
 
-		assertEquals(UI_SETTINGS_GRID_HEIGHT, egm.getUISettings().getGridHeight());
-		assertEquals(UI_SETTINGS_ROW_HEIGHT, egm.getUISettings().getRowHeight());
+		assertEquals(UI_SETTINGS_GRID_HEIGHT, lgm.getUISettings().getGridHeight());
+		assertEquals(UI_SETTINGS_ROW_HEIGHT, lgm.getUISettings().getRowHeight());
 
-		assertEquals(COL_ID, egm.getColumns().get(0).getId());
-		assertEquals(COL_CAPTION2, egm.getColumns().get(0).getCaption());
-		assertEquals(com.extjs.gxt.ui.client.Style.HorizontalAlignment.RIGHT, egm.getColumns()
+		assertEquals(COL_ID, lgm.getColumns().get(0).getId());
+		assertEquals(COL_CAPTION2, lgm.getColumns().get(0).getCaption());
+		assertEquals(com.extjs.gxt.ui.client.Style.HorizontalAlignment.RIGHT, lgm.getColumns()
 				.get(0).getHorizontalAlignment());
-		assertEquals(COL_CAPTION2, egm.getOriginalColumnSet().getColumns().get(0).getId());
+		assertEquals(COL_CAPTION2, lgm.getOriginalColumnSet().getColumns().get(0).getId());
 	}
 
 	@Test
-	public void testExtGridData2Proc() {
+	public void testLiveGridData2Proc() {
 		GridContext context = getTestGridContext1();
 		context.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 		DataPanelElementInfo elInfo = getDPElement(TEST_XML, "6", "62");
 
-		ExtGridDataGetCommand command = new ExtGridDataGetCommand(context, elInfo);
-		ExtGridPagingLoadResult<ExtGridData> egplr = command.execute();
+		LiveGridDataGetCommand command = new LiveGridDataGetCommand(context, elInfo);
+		LiveGridData<LiveGridModel> lgd = command.execute();
 
-		assertEquals(LIVE_INFO_OFFSET, egplr.getOffset());
-		assertEquals(LIVE_INFO_TOTALCOUNT2, egplr.getTotalLength());
-		assertEquals(DATA_SIZE, egplr.getData().size());
+		assertEquals(LIVE_INFO_OFFSET, lgd.getOffset());
+		assertEquals(LIVE_INFO_TOTALCOUNT2, lgd.getTotalLength());
+		assertEquals(DATA_SIZE, lgd.getData().size());
 
-		ExtGridExtradata ege = egplr.getExtGridExtradata();
+		LiveGridExtradata lge = lgd.getLiveGridExtradata();
 
-		assertNull(ege.getAutoSelectColumnId());
-		assertEquals(REC_ID2, ege.getAutoSelectRecordId());
+		assertNull(lge.getAutoSelectColumnId());
+		assertEquals(REC_ID2, lge.getAutoSelectRecordId());
 
-		assertEquals("2", ege.getEventManager().getEvents().get(1).getId1().getString());
-		assertEquals(InteractionType.SINGLE_CLICK, ege.getEventManager().getEvents().get(1)
+		assertEquals("2", lge.getEventManager().getEvents().get(1).getId1().getString());
+		assertEquals(InteractionType.SINGLE_CLICK, lge.getEventManager().getEvents().get(1)
 				.getInteractionType());
 
 	}

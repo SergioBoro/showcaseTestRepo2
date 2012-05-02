@@ -58,16 +58,16 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public ExtGridMetadata getExtGridMetadata(GridContext context, DataPanelElementInfo element)
+	public LiveGridMetadata getLiveGridMetadata(GridContext context, DataPanelElementInfo element)
 			throws GeneralException {
-		ExtGridMetadataGetCommand command = new ExtGridMetadataGetCommand(context, element);
+		LiveGridMetadataGetCommand command = new LiveGridMetadataGetCommand(context, element);
 		return command.execute();
 	}
 
 	@Override
-	public ExtGridPagingLoadResult<ExtGridData> getExtGridData(GridContext context,
+	public LiveGridData<LiveGridModel> getLiveGridData(GridContext context,
 			DataPanelElementInfo element) throws GeneralException {
-		ExtGridDataGetCommand command = new ExtGridDataGetCommand(context, element);
+		LiveGridDataGetCommand command = new LiveGridDataGetCommand(context, element);
 		return command.execute();
 	}
 

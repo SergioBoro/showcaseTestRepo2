@@ -60,7 +60,7 @@ public class GridContext extends CompositeContext {
 
 	private PageInfo pageInfo = new PageInfo(DEF_PAGE_NUMBER, DEF_PAGE_SIZE_VAL);
 
-	private ExtGridLiveInfo liveInfo = new ExtGridLiveInfo(DEF_OFFSET, DEF_LIMIT);
+	private LiveInfo liveInfo = new LiveInfo(DEF_OFFSET, DEF_LIMIT);
 
 	private DataPanelElementSubType subtype = null;
 
@@ -217,11 +217,11 @@ public class GridContext extends CompositeContext {
 		pageInfo = aPageInfo;
 	}
 
-	public ExtGridLiveInfo getLiveInfo() {
+	public LiveInfo getLiveInfo() {
 		return liveInfo;
 	}
 
-	public void setLiveInfo(final ExtGridLiveInfo aLiveInfo) {
+	public void setLiveInfo(final LiveInfo aLiveInfo) {
 		this.liveInfo = aLiveInfo;
 	}
 

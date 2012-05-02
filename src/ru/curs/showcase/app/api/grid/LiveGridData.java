@@ -13,34 +13,34 @@ import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
  *            тип данных
  */
 @XmlRootElement
-@XmlSeeAlso(ExtGridData.class)
+@XmlSeeAlso(LiveGridModel.class)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ExtGridPagingLoadResult<Data> extends BasePagingLoadResult<Data> {
+public class LiveGridData<Data> extends BasePagingLoadResult<Data> {
 
 	private static final long serialVersionUID = 3460463555489064222L;
 
-	public ExtGridPagingLoadResult(final List<Data> data) {
+	public LiveGridData(final List<Data> data) {
 		super(data);
 
 	}
 
-	public ExtGridPagingLoadResult(final List<Data> data, final int offset, final int totalLength) {
+	public LiveGridData(final List<Data> data, final int offset, final int totalLength) {
 		super(data, offset, totalLength);
 
 	}
 
-	ExtGridPagingLoadResult() {
+	LiveGridData() {
 		this(null);
 	}
 
-	private ExtGridExtradata extGridExtradata = null;
+	private LiveGridExtradata liveGridExtradata = null;
 
-	public ExtGridExtradata getExtGridExtradata() {
-		return extGridExtradata;
+	public LiveGridExtradata getLiveGridExtradata() {
+		return liveGridExtradata;
 	}
 
-	public void setExtGridExtradata(final ExtGridExtradata aExtGridExtradata) {
-		extGridExtradata = aExtGridExtradata;
+	public void setLiveGridExtradata(final LiveGridExtradata aLiveGridExtradata) {
+		liveGridExtradata = aLiveGridExtradata;
 	}
 
 }

@@ -8,14 +8,15 @@ import ru.curs.showcase.core.command.*;
  * Команда получения метаданных для LiveGrid.
  * 
  */
-public class ExtGridMetadataGetCommand extends DataPanelElementCommand<ExtGridMetadata> {
+public class LiveGridMetadataGetCommand extends DataPanelElementCommand<LiveGridMetadata> {
 
 	@Override
 	protected DataPanelElementType getRequestedElementType() {
 		return DataPanelElementType.GRID;
 	}
 
-	public ExtGridMetadataGetCommand(final GridContext aContext, final DataPanelElementInfo aElInfo) {
+	public LiveGridMetadataGetCommand(final GridContext aContext,
+			final DataPanelElementInfo aElInfo) {
 		super(aContext, aElInfo);
 
 	}
@@ -33,7 +34,7 @@ public class ExtGridMetadataGetCommand extends DataPanelElementCommand<ExtGridMe
 	protected void mainProc() throws Exception {
 		GridGetCommand command = new GridGetCommand(getContext(), getElementInfo(), true);
 		Grid grid = command.execute();
-		setResult(GridTransformer.gridToExtGridMetadata(grid));
+		setResult(GridTransformer.gridToLiveGridMetadata(grid));
 	}
 
 }

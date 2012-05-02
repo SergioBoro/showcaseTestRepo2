@@ -29,7 +29,7 @@ public class Grid extends DataPanelCompBasedElement implements SizeEstimate {
 	 */
 	private DataSet dataSet = new DataSet();
 
-	private ExtGridLiveInfo liveInfo = new ExtGridLiveInfo();
+	private LiveInfo liveInfo = new LiveInfo();
 
 	/**
 	 * Настройки UI для грида. Как правило, задаются по умолчанию для всех
@@ -86,11 +86,11 @@ public class Grid extends DataPanelCompBasedElement implements SizeEstimate {
 		dataSet = aDataSet;
 	}
 
-	public final ExtGridLiveInfo getLiveInfo() {
+	public final LiveInfo getLiveInfo() {
 		return liveInfo;
 	}
 
-	public final void setLiveInfo(final ExtGridLiveInfo aLiveInfo) {
+	public final void setLiveInfo(final LiveInfo aLiveInfo) {
 		this.liveInfo = aLiveInfo;
 	}
 

@@ -15,13 +15,13 @@ import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEstimate {
+public class LiveGridMetadata extends DataPanelCompBasedElement implements SizeEstimate {
 
 	private static final long serialVersionUID = 2492137452715570464L;
 
-	private List<ExtGridColumnConfig> columns = null;
+	private List<LiveGridColumnConfig> columns = null;
 
-	private ExtGridLiveInfo liveInfo = new ExtGridLiveInfo();
+	private LiveInfo liveInfo = new LiveInfo();
 
 	private ColumnSet originalColumnSet = null;
 
@@ -36,11 +36,11 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 	 */
 	private DataGridSettings uiSettings = new DataGridSettings();
 
-	public ExtGridMetadata() {
+	public LiveGridMetadata() {
 		super();
 	}
 
-	public ExtGridMetadata(final DataPanelElementInfo aElInfo) {
+	public LiveGridMetadata(final DataPanelElementInfo aElInfo) {
 		super(aElInfo);
 	}
 
@@ -63,19 +63,19 @@ public class ExtGridMetadata extends DataPanelCompBasedElement implements SizeEs
 		return result;
 	}
 
-	public List<ExtGridColumnConfig> getColumns() {
+	public List<LiveGridColumnConfig> getColumns() {
 		return columns;
 	}
 
-	public void setColumns(final List<ExtGridColumnConfig> aColumns) {
+	public void setColumns(final List<LiveGridColumnConfig> aColumns) {
 		columns = aColumns;
 	}
 
-	public ExtGridLiveInfo getLiveInfo() {
+	public LiveInfo getLiveInfo() {
 		return liveInfo;
 	}
 
-	public void setLiveInfo(final ExtGridLiveInfo aLiveInfo) {
+	public void setLiveInfo(final LiveInfo aLiveInfo) {
 		liveInfo = aLiveInfo;
 	}
 

@@ -8,15 +8,15 @@ import ru.curs.showcase.core.command.*;
  * Команда получения данных для LiveGrid.
  * 
  */
-public class ExtGridDataGetCommand extends
-		DataPanelElementCommand<ExtGridPagingLoadResult<ExtGridData>> {
+public class LiveGridDataGetCommand extends
+		DataPanelElementCommand<LiveGridData<LiveGridModel>> {
 
 	@Override
 	protected DataPanelElementType getRequestedElementType() {
 		return DataPanelElementType.GRID;
 	}
 
-	public ExtGridDataGetCommand(final GridContext aContext, final DataPanelElementInfo aElInfo) {
+	public LiveGridDataGetCommand(final GridContext aContext, final DataPanelElementInfo aElInfo) {
 		super(aContext, aElInfo);
 
 	}
@@ -34,7 +34,7 @@ public class ExtGridDataGetCommand extends
 	protected void mainProc() throws Exception {
 		GridGetCommand command = new GridGetCommand(getContext(), getElementInfo(), true);
 		Grid grid = command.execute();
-		setResult(GridTransformer.gridToExtGridData(grid));
+		setResult(GridTransformer.gridToLiveGridData(grid));
 	}
 
 }

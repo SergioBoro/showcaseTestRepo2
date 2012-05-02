@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.util.TextUtils;
 
 /**
- * Класс, преобразующий Grid в ExtGrid.
+ * Класс, преобразующий Grid в LiveGrid.
  * 
  */
 public final class GridTransformer {
@@ -21,22 +21,22 @@ public final class GridTransformer {
 		throw new UnsupportedOperationException();
 	}
 
-	public static ExtGridMetadata gridToExtGridMetadata(final Grid grid) {
+	public static LiveGridMetadata gridToLiveGridMetadata(final Grid grid) {
 
-		ExtGridMetadata egm = new ExtGridMetadata();
+		LiveGridMetadata lgm = new LiveGridMetadata();
 
-		egm.setHeader(grid.getHeader());
-		egm.setFooter(grid.getFooter());
+		lgm.setHeader(grid.getHeader());
+		lgm.setFooter(grid.getFooter());
 
 		// -------------------------------------------------------
 
-		List<ExtGridColumnConfig> columns = new ArrayList<ExtGridColumnConfig>();
+		List<LiveGridColumnConfig> columns = new ArrayList<LiveGridColumnConfig>();
 
 		int index = 0;
 		for (Column c : grid.getDataSet().getColumnSet().getColumnsByIndex()) {
 			index++;
-			ExtGridColumnConfig column =
-				new ExtGridColumnConfig("col" + String.valueOf(index), c.getCaption(),
+			LiveGridColumnConfig column =
+				new LiveGridColumnConfig("col" + String.valueOf(index), c.getCaption(),
 						getIntWidthByStringWidth(c.getWidth()));
 
 			column.setHorizontalAlignment(com.extjs.gxt.ui.client.Style.HorizontalAlignment
@@ -49,48 +49,48 @@ public final class GridTransformer {
 			columns.add(column);
 		}
 
-		egm.setColumns(columns);
+		lgm.setColumns(columns);
 
 		// -------------------------------------------------------
 
-		egm.getLiveInfo().setOffset(grid.getLiveInfo().getOffset());
-		egm.getLiveInfo().setLimit(grid.getDataSet().getRecordSet().getPageSize());
-		egm.getLiveInfo().setTotalCount(grid.getLiveInfo().getTotalCount());
+		lgm.getLiveInfo().setOffset(grid.getLiveInfo().getOffset());
+		lgm.getLiveInfo().setLimit(grid.getDataSet().getRecordSet().getPageSize());
+		lgm.getLiveInfo().setTotalCount(grid.getLiveInfo().getTotalCount());
 
 		// -------------------------------------------------------
 
-		egm.setOriginalColumnSet(grid.getDataSet().getColumnSet());
+		lgm.setOriginalColumnSet(grid.getDataSet().getColumnSet());
 
 		// -------------------------------------------------------
 
-		egm.setUISettings(grid.getUISettings());
+		lgm.setUISettings(grid.getUISettings());
 
 		if ((grid.getDataSet().getRecordSet().getRecords() != null)
 				&& (grid.getDataSet().getRecordSet().getRecords().get(0) != null)) {
 			Record record = grid.getDataSet().getRecordSet().getRecords().get(0);
-			egm.setTextColor(record.getTextColor());
-			egm.setBackgroundColor(record.getBackgroundColor());
-			egm.setFontSize(record.getFontSize());
-			egm.setFontModifiers(record.getFontModifiers());
+			lgm.setTextColor(record.getTextColor());
+			lgm.setBackgroundColor(record.getBackgroundColor());
+			lgm.setFontSize(record.getFontSize());
+			lgm.setFontModifiers(record.getFontModifiers());
 		}
 
 		// -------------------------------------------------------
 
-		return egm;
+		return lgm;
 	}
 
-	public static ExtGridPagingLoadResult<ExtGridData> gridToExtGridData(final Grid grid) {
+	public static LiveGridData<LiveGridModel> gridToLiveGridData(final Grid grid) {
 
 		// -------------------------------------------------------
 
-		ArrayList<ExtGridData> sublist = new ArrayList<ExtGridData>();
+		ArrayList<LiveGridModel> sublist = new ArrayList<LiveGridModel>();
 
 		for (Record rec : grid.getDataSet().getRecordSet().getRecords()) {
-			ExtGridData egd = new ExtGridData();
+			LiveGridModel lgm = new LiveGridModel();
 
-			egd.setId(rec.getId());
+			lgm.setId(rec.getId());
 
-			egd.setRowStyle(rec.getAttributes().getValue(
+			lgm.setRowStyle(rec.getAttributes().getValue(
 					ru.beta2.extra.gwt.ui.GeneralConstants.STYLE_CLASS_TAG));
 
 			int index = 0;
@@ -110,36 +110,36 @@ public final class GridTransformer {
 					val = rec.getValue(c);
 					break;
 				}
-				egd.set(colId, val);
+				lgm.set(colId, val);
 
 			}
-			sublist.add(egd);
+			sublist.add(lgm);
 		}
 
 		// -------------------------------------------------------
 
-		ExtGridPagingLoadResult<ExtGridData> egplr =
-			new ExtGridPagingLoadResult<ExtGridData>(sublist, grid.getLiveInfo().getOffset(), grid
+		LiveGridData<LiveGridModel> lgd =
+			new LiveGridData<LiveGridModel>(sublist, grid.getLiveInfo().getOffset(), grid
 					.getLiveInfo().getTotalCount());
 
-		ExtGridExtradata ege = new ExtGridExtradata();
-		ege.setGridEventManager(grid.getEventManager());
+		LiveGridExtradata lge = new LiveGridExtradata();
+		lge.setGridEventManager(grid.getEventManager());
 
 		String autoSelectRecordId = null;
 		if (grid.getAutoSelectRecord() != null) {
 			autoSelectRecordId = grid.getAutoSelectRecord().getId();
 		}
-		ege.setAutoSelectRecordId(autoSelectRecordId);
+		lge.setAutoSelectRecordId(autoSelectRecordId);
 
 		String autoSelectColumnId = null;
 		if (grid.getAutoSelectColumn() != null) {
 			autoSelectColumnId = grid.getAutoSelectColumn().getId();
 		}
-		ege.setAutoSelectColumnId(autoSelectColumnId);
+		lge.setAutoSelectColumnId(autoSelectColumnId);
 
-		egplr.setExtGridExtradata(ege);
+		lgd.setLiveGridExtradata(lge);
 
-		return egplr;
+		return lgd;
 
 	}
 

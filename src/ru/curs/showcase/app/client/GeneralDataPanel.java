@@ -452,14 +452,14 @@ public class GeneralDataPanel {
 		switch (subtype) {
 		case EXT_LIVE_GRID:
 		case EXT_PAGING_GRID:
-			ExtGridPanel edgp = null;
+			LiveGridPanel edgp = null;
 
 			if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-				edgp = new ExtGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
+				edgp = new LiveGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
 				w = edgp.getPanel();
 				w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 			} else {
-				edgp = new ExtGridPanel(dpe);
+				edgp = new LiveGridPanel(dpe);
 				w = edgp.getPanel();
 				edgp.hidePanel();
 			}

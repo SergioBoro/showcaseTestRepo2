@@ -32,7 +32,7 @@ import com.google.gwt.user.client.ui.*;
 /**
  * Класс панели с гридом.
  */
-public class ExtGridPanel extends BasicElementPanelBasis {
+public class LiveGridPanel extends BasicElementPanelBasis {
 
 	private static final String PROC100 = "100%";
 
@@ -47,14 +47,14 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
 	private ContentPanel cpGrid = null;
-	private EditorGrid<ExtGridData> grid = null;
-	private GridSelectionModel<ExtGridData> selectionModel = null;
+	private EditorGrid<LiveGridModel> grid = null;
+	private GridSelectionModel<LiveGridModel> selectionModel = null;
 	private ColumnSet cs = null;
 	private Timer selectionTimer = null;
 	private DataServiceAsync dataService = null;
 	private GridContext localContext = null;
-	private ExtGridMetadata gridMetadata = null;
-	private ExtGridExtradata gridExtradata = null;
+	private LiveGridMetadata gridMetadata = null;
+	private LiveGridExtradata gridExtradata = null;
 	private boolean isFirstLoading = true;
 
 	private boolean isFirstLoading() {
@@ -93,7 +93,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	/**
 	 * Конструктор класса GridPanel без начального показа грида.
 	 */
-	public ExtGridPanel(final DataPanelElementInfo element) {
+	public LiveGridPanel(final DataPanelElementInfo element) {
 		setContext(null);
 		setElementInfo(element);
 		setFirstLoading(true);
@@ -102,7 +102,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	/**
 	 * Конструктор класса GridPanel.
 	 */
-	public ExtGridPanel(final CompositeContext context, final DataPanelElementInfo element,
+	public LiveGridPanel(final CompositeContext context, final DataPanelElementInfo element,
 			final Grid grid1) {
 		setContext(context);
 		setElementInfo(element);
@@ -154,17 +154,19 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getExtGridMetadata(getDetailedContext(), getElementInfo(),
-				new GWTServiceCallback<ExtGridMetadata>("при получении данных таблицы с сервера") {
+		dataService
+				.getLiveGridMetadata(getDetailedContext(), getElementInfo(),
+						new GWTServiceCallback<LiveGridMetadata>(
+								"при получении данных таблицы с сервера") {
 
-					@Override
-					public void onSuccess(final ExtGridMetadata aGridMetadata) {
-						setDataGridPanelByGrid(aGridMetadata);
-					}
-				});
+							@Override
+							public void onSuccess(final LiveGridMetadata aGridMetadata) {
+								setDataGridPanelByGrid(aGridMetadata);
+							}
+						});
 	}
 
-	private void setDataGridPanelByGrid(final ExtGridMetadata aGridMetadata) {
+	private void setDataGridPanelByGrid(final LiveGridMetadata aGridMetadata) {
 		gridMetadata = aGridMetadata;
 
 		beforeUpdateGrid();
@@ -192,69 +194,67 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		cs = gridMetadata.getOriginalColumnSet();
 
-		RpcProxy<ExtGridPagingLoadResult<ExtGridData>> proxy =
-			new RpcProxy<ExtGridPagingLoadResult<ExtGridData>>() {
-				@Override
-				public void load(final Object loadConfig,
-						final AsyncCallback<ExtGridPagingLoadResult<ExtGridData>> callback) {
+		RpcProxy<LiveGridData<LiveGridModel>> proxy = new RpcProxy<LiveGridData<LiveGridModel>>() {
+			@Override
+			public void load(final Object loadConfig,
+					final AsyncCallback<LiveGridData<LiveGridModel>> callback) {
 
-					PagingLoadConfig plc = (PagingLoadConfig) loadConfig;
+				PagingLoadConfig plc = (PagingLoadConfig) loadConfig;
 
-					// --------------
+				// --------------
 
-					GridContext gridContext = getDetailedContext();
-					gridContext.getLiveInfo().setOffset(plc.getOffset());
-					gridContext.getLiveInfo().setLimit(plc.getLimit());
+				GridContext gridContext = getDetailedContext();
+				gridContext.getLiveInfo().setOffset(plc.getOffset());
+				gridContext.getLiveInfo().setLimit(plc.getLimit());
 
-					// --------------
+				// --------------
 
-					ColumnConfig colConfig =
-						grid.getColumnModel().getColumnById(plc.getSortField());
-					if (colConfig != null) {
-						Column colOriginal = null;
-						for (Column c : gridMetadata.getOriginalColumnSet().getColumns()) {
-							if (colConfig.getHeader().equals(c.getId())) {
-								colOriginal = c;
-								break;
-							}
-						}
-						if (colOriginal != null) {
-							List<Column> sortOriginalCols = new ArrayList<Column>();
-
-							colOriginal.setSorting(Sorting.valueOf(plc.getSortDir().name()));
-
-							sortOriginalCols.add(colOriginal);
-
-							gridContext.setSortedColumns(sortOriginalCols);
+				ColumnConfig colConfig = grid.getColumnModel().getColumnById(plc.getSortField());
+				if (colConfig != null) {
+					Column colOriginal = null;
+					for (Column c : gridMetadata.getOriginalColumnSet().getColumns()) {
+						if (colConfig.getHeader().equals(c.getId())) {
+							colOriginal = c;
+							break;
 						}
 					}
+					if (colOriginal != null) {
+						List<Column> sortOriginalCols = new ArrayList<Column>();
 
-					// --------------
+						colOriginal.setSorting(Sorting.valueOf(plc.getSortDir().name()));
 
-					dataService.getExtGridData(gridContext, getElementInfo(), callback);
+						sortOriginalCols.add(colOriginal);
 
+						gridContext.setSortedColumns(sortOriginalCols);
+					}
 				}
-			};
 
-		final PagingLoader<ExtGridPagingLoadResult<ModelData>> loader =
-			new BasePagingLoader<ExtGridPagingLoadResult<ModelData>>(proxy);
+				// --------------
+
+				dataService.getLiveGridData(gridContext, getElementInfo(), callback);
+
+			}
+		};
+
+		final PagingLoader<LiveGridData<ModelData>> loader =
+			new BasePagingLoader<LiveGridData<ModelData>>(proxy);
 		loader.setRemoteSort(true);
 		loader.addListener(Loader.Load, new Listener<LoadEvent>() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void handleEvent(LoadEvent be) {
 				gridExtradata =
-					((ExtGridPagingLoadResult<ExtGridData>) be.getData()).getExtGridExtradata();
+					((LiveGridData<LiveGridModel>) be.getData()).getLiveGridExtradata();
 
 				resetSelection();
 			}
 		});
 
-		final ListStore<ExtGridData> store = new ListStore<ExtGridData>(loader);
+		final ListStore<LiveGridModel> store = new ListStore<LiveGridModel>(loader);
 		// store.setMonitorChanges(true);
-		store.setKeyProvider(new ModelKeyProvider<ExtGridData>() {
+		store.setKeyProvider(new ModelKeyProvider<LiveGridModel>() {
 			@Override
-			public String getKey(ExtGridData model) {
+			public String getKey(LiveGridModel model) {
 				return model.getId();
 			}
 		});
@@ -263,16 +263,16 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		if (gridMetadata.getUISettings().isSelectOnlyRecords()) {
 			if (gridMetadata.getUISettings().isVisibleRecordsSelector()) {
-				selectionModel = new CheckBoxSelectionModel<ExtGridData>();
-				columns.add(((CheckBoxSelectionModel<ExtGridData>) selectionModel).getColumn());
+				selectionModel = new CheckBoxSelectionModel<LiveGridModel>();
+				columns.add(((CheckBoxSelectionModel<LiveGridModel>) selectionModel).getColumn());
 			} else {
-				selectionModel = new GridSelectionModel<ExtGridData>();
+				selectionModel = new GridSelectionModel<LiveGridModel>();
 			}
 		} else {
-			selectionModel = new CellSelectionModel<ExtGridData>();
+			selectionModel = new CellSelectionModel<LiveGridModel>();
 		}
 
-		for (final ExtGridColumnConfig egcc : gridMetadata.getColumns()) {
+		for (final LiveGridColumnConfig egcc : gridMetadata.getColumns()) {
 			ColumnConfig column =
 				new ColumnConfig(egcc.getId(), egcc.getCaption(), egcc.getWidth());
 
@@ -292,12 +292,12 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			column.setMenuDisabled(!gridMetadata.getUISettings().isVisibleColumnsCustomizer());
 
 			if (egcc.getValueType() == GridValueType.DOWNLOAD) {
-				column.setRenderer(new GridCellRenderer<ExtGridData>() {
+				column.setRenderer(new GridCellRenderer<LiveGridModel>() {
 					@Override
-					public Object render(final ExtGridData model, String property,
+					public Object render(final LiveGridModel model, String property,
 							ColumnData config, int rowIndex, int colIndex,
-							ListStore<ExtGridData> store,
-							com.extjs.gxt.ui.client.widget.grid.Grid<ExtGridData> grid) {
+							ListStore<LiveGridModel> store,
+							com.extjs.gxt.ui.client.widget.grid.Grid<LiveGridModel> grid) {
 						com.google.gwt.user.client.ui.Grid g =
 							new com.google.gwt.user.client.ui.Grid(1, 2);
 						g.setWidth("100%");
@@ -336,7 +336,7 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		ColumnModel cm = new ColumnModel(columns);
 
-		grid = new EditorGrid<ExtGridData>(store, cm);
+		grid = new EditorGrid<LiveGridModel>(store, cm);
 
 		grid.setSelectionModel(selectionModel);
 		// selectionModel.bindGrid(grid);
@@ -352,16 +352,16 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 		// ---------------------------
 
-		grid.addListener(Events.CellClick, new Listener<GridEvent<ExtGridData>>() {
+		grid.addListener(Events.CellClick, new Listener<GridEvent<LiveGridModel>>() {
 			@Override
-			public void handleEvent(GridEvent<ExtGridData> be) {
+			public void handleEvent(GridEvent<LiveGridModel> be) {
 				handleClick(be, InteractionType.SINGLE_CLICK);
 			}
 		});
 
-		grid.addListener(Events.CellDoubleClick, new Listener<GridEvent<ExtGridData>>() {
+		grid.addListener(Events.CellDoubleClick, new Listener<GridEvent<LiveGridModel>>() {
 			@Override
-			public void handleEvent(GridEvent<ExtGridData> be) {
+			public void handleEvent(GridEvent<LiveGridModel> be) {
 				handleClick(be, InteractionType.DOUBLE_CLICK);
 			}
 		});
@@ -388,8 +388,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		GridViewConfig gvc = new GridViewConfig() {
 			@Override
 			public String getRowStyle(ModelData model, int rowIndex, ListStore<ModelData> ds) {
-				ExtGridData egd = (ExtGridData) model;
-				String rowstyle = egd.getRowStyle();
+				LiveGridModel lgm = (LiveGridModel) model;
+				String rowstyle = lgm.getRowStyle();
 				return rowstyle;
 			}
 		};
@@ -426,7 +426,6 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 					.addSelectionListener(new com.extjs.gxt.ui.client.event.SelectionListener<ButtonEvent>() {
 						@Override
 						public void componentSelected(ButtonEvent ce) {
-							// cpGrid.setAutoWidth(true);
 							copyToClipboard();
 						}
 					});
@@ -485,8 +484,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 	// CHECKSTYLE:ON
 
-	private void
-			handleClick(final GridEvent<ExtGridData> be, final InteractionType interactionType) {
+	private void handleClick(final GridEvent<LiveGridModel> be,
+			final InteractionType interactionType) {
 
 		saveCurrentClickSelection(be.getModel().getId(),
 				grid.getColumnModel().getColumn(be.getColIndex()).getHeader());
@@ -537,8 +536,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 
 	private void processSelectionRecords() {
 		List<String> selectedRecordIds = new ArrayList<String>();
-		for (ExtGridData egd : selectionModel.getSelectedItems()) {
-			selectedRecordIds.add(egd.getId());
+		for (LiveGridModel lgm : selectionModel.getSelectedItems()) {
+			selectedRecordIds.add(lgm.getId());
 		}
 
 		Action ac =
@@ -569,12 +568,12 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 			int row = getRecordIndexById(selected.recId);
 			int col = getColumnIndexById(selected.colId);
 			if ((row >= 0) && (col >= 0)) {
-				((CellSelectionModel<ExtGridData>) selectionModel).selectCell(row, col);
+				((CellSelectionModel<LiveGridModel>) selectionModel).selectCell(row, col);
 			}
 		} else {
-			for (ExtGridData egd : grid.getStore().getModels()) {
-				if (egd.getId().equals(selected.recId)) {
-					selectionModel.select(egd, false);
+			for (LiveGridModel lgm : grid.getStore().getModels()) {
+				if (lgm.getId().equals(selected.recId)) {
+					selectionModel.select(lgm, false);
 					break;
 				}
 			}
@@ -595,8 +594,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		int index = -1;
 		if (recId != null) {
 			int i = 0;
-			for (ExtGridData egd : grid.getStore().getModels()) {
-				if (egd.getId().equals(recId)) {
+			for (LiveGridModel lgm : grid.getStore().getModels()) {
+				if (lgm.getId().equals(recId)) {
 					index = i;
 					break;
 				}
@@ -688,8 +687,8 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 	private void saveCurrentCheckBoxSelection() {
 		localContext.getSelectedRecordIds().clear();
 
-		for (ExtGridData egd : selectionModel.getSelectedItems()) {
-			localContext.getSelectedRecordIds().add(egd.getId());
+		for (LiveGridModel lgm : selectionModel.getSelectedItems()) {
+			localContext.getSelectedRecordIds().add(lgm.getId());
 		}
 	}
 
@@ -773,17 +772,17 @@ public class ExtGridPanel extends BasicElementPanelBasis {
 		}
 		b.append("\n");
 
-		List<ExtGridData> models;
+		List<LiveGridModel> models;
 		if (selectionModel.getSelectedItems().size() > 0) {
 			models = selectionModel.getSelectedItems();
 		} else {
 			models = grid.getStore().getModels();
 		}
 
-		for (ExtGridData egd : models) {
+		for (LiveGridModel lgm : models) {
 			d = "";
 			for (ColumnConfig c : columns) {
-				b.append(d).append(egd.get(c.getId()));
+				b.append(d).append(lgm.get(c.getId()));
 				d = "\t";
 			}
 			b.append("\n");

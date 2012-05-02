@@ -61,11 +61,11 @@ public interface DataServiceAsync {
 	 */
 	void getGrid(GridContext context, DataPanelElementInfo element, AsyncCallback<Grid> callback);
 
-	void getExtGridMetadata(GridContext context, DataPanelElementInfo element,
-			AsyncCallback<ExtGridMetadata> callback);
+	void getLiveGridMetadata(GridContext context, DataPanelElementInfo element,
+			AsyncCallback<LiveGridMetadata> callback);
 
-	void getExtGridData(GridContext context, DataPanelElementInfo element,
-			AsyncCallback<ExtGridPagingLoadResult<ExtGridData>> callback);
+	void getLiveGridData(GridContext context, DataPanelElementInfo element,
+			AsyncCallback<LiveGridData<LiveGridModel>> callback);
 
 	/**
 	 * Асинхронная версия.

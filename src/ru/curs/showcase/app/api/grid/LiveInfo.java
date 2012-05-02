@@ -10,7 +10,7 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ExtGridLiveInfo implements SerializableElement {
+public class LiveInfo implements SerializableElement {
 
 	private static final long serialVersionUID = -8228599035165877092L;
 
@@ -21,20 +21,20 @@ public class ExtGridLiveInfo implements SerializableElement {
 	@XmlAttribute
 	private int totalCount;
 
-	public ExtGridLiveInfo(final int aDefOffset, final int aDefLimit) {
+	public LiveInfo(final int aDefOffset, final int aDefLimit) {
 		offset = aDefOffset;
 		limit = aDefLimit;
 		totalCount = 0;
 	}
 
-	public ExtGridLiveInfo() {
+	public LiveInfo() {
 		super();
 	}
 
 	@Override
 	public String toString() {
-		return "ExtGridLiveInfo [offset=" + offset + ", limit=" + limit + ", totalCount="
-				+ totalCount + "]";
+		return "LiveInfo [offset=" + offset + ", limit=" + limit + ", totalCount=" + totalCount
+				+ "]";
 	}
 
 	public int getFirstRecord() {
@@ -84,10 +84,10 @@ public class ExtGridLiveInfo implements SerializableElement {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof ExtGridLiveInfo)) {
+		if (!(obj instanceof LiveInfo)) {
 			return false;
 		}
-		ExtGridLiveInfo other = (ExtGridLiveInfo) obj;
+		LiveInfo other = (LiveInfo) obj;
 		if (offset != other.offset) {
 			return false;
 		}

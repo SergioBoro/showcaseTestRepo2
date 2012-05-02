@@ -15,7 +15,7 @@ import ru.curs.showcase.app.api.event.*;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ExtGridExtradata extends DataPanelElement implements SizeEstimate {
+public class LiveGridExtradata extends DataPanelElement implements SizeEstimate {
 
 	private static final long serialVersionUID = -2429397174443684120L;
 
@@ -33,11 +33,11 @@ public class ExtGridExtradata extends DataPanelElement implements SizeEstimate {
 	 */
 	private String autoSelectColumnId = null;
 
-	public ExtGridExtradata() {
+	public LiveGridExtradata() {
 		super();
 	}
 
-	public ExtGridExtradata(final DataPanelElementInfo aElInfo) {
+	public LiveGridExtradata(final DataPanelElementInfo aElInfo) {
 		super(aElInfo);
 	}
 

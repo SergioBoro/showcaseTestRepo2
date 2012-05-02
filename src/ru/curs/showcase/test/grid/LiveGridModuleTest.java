@@ -39,49 +39,49 @@ public class LiveGridModuleTest extends AbstractTest {
 	private static final String ROWSTYLE = "extlivegrid-record-bold";
 
 	@Test
-	public void testTransformGridToExtGridMetadata() {
+	public void testTransformGridToLiveGridMetadata() {
 		Grid grid = generateTestGrid();
-		ExtGridMetadata egm = GridTransformer.gridToExtGridMetadata(grid);
+		LiveGridMetadata lgm = GridTransformer.gridToLiveGridMetadata(grid);
 
-		assertEquals(HEADER, egm.getHeader());
-		assertEquals(FOOTER, egm.getFooter());
+		assertEquals(HEADER, lgm.getHeader());
+		assertEquals(FOOTER, lgm.getFooter());
 
-		assertEquals(LIVE_INFO_OFFSET, egm.getLiveInfo().getOffset());
-		assertEquals(LIVE_INFO_LIMIT, egm.getLiveInfo().getLimit());
-		assertEquals(LIVE_INFO_TOTALCOUNT, egm.getLiveInfo().getTotalCount());
+		assertEquals(LIVE_INFO_OFFSET, lgm.getLiveInfo().getOffset());
+		assertEquals(LIVE_INFO_LIMIT, lgm.getLiveInfo().getLimit());
+		assertEquals(LIVE_INFO_TOTALCOUNT, lgm.getLiveInfo().getTotalCount());
 
-		assertEquals(UI_SETTINGS_GRID_HEIGHT, egm.getUISettings().getGridHeight());
-		assertEquals(UI_SETTINGS_ROW_HEIGHT, egm.getUISettings().getRowHeight());
+		assertEquals(UI_SETTINGS_GRID_HEIGHT, lgm.getUISettings().getGridHeight());
+		assertEquals(UI_SETTINGS_ROW_HEIGHT, lgm.getUISettings().getRowHeight());
 
-		assertEquals(COL_CAPTION, egm.getColumns().get(0).getCaption());
-		assertEquals(com.extjs.gxt.ui.client.Style.HorizontalAlignment.RIGHT, egm.getColumns()
+		assertEquals(COL_CAPTION, lgm.getColumns().get(0).getCaption());
+		assertEquals(com.extjs.gxt.ui.client.Style.HorizontalAlignment.RIGHT, lgm.getColumns()
 				.get(0).getHorizontalAlignment());
 
-		assertEquals(COL_ID, egm.getOriginalColumnSet().getColumns().get(0).getId());
+		assertEquals(COL_ID, lgm.getOriginalColumnSet().getColumns().get(0).getId());
 
-		assertEquals(FONT_SIZE, egm.getFontSize());
-		assertEquals(TEXT_COLOR, egm.getTextColor());
-		assertEquals(BACKGROUND_COLOR, egm.getBackgroundColor());
-		assertTrue(egm.getFontModifiers().contains(FontModifier.BOLD));
-		assertTrue(egm.getFontModifiers().contains(FontModifier.ITALIC));
-		assertFalse(egm.getFontModifiers().contains(FontModifier.UNDERLINE));
-		assertFalse(egm.getFontModifiers().contains(FontModifier.STRIKETHROUGH));
+		assertEquals(FONT_SIZE, lgm.getFontSize());
+		assertEquals(TEXT_COLOR, lgm.getTextColor());
+		assertEquals(BACKGROUND_COLOR, lgm.getBackgroundColor());
+		assertTrue(lgm.getFontModifiers().contains(FontModifier.BOLD));
+		assertTrue(lgm.getFontModifiers().contains(FontModifier.ITALIC));
+		assertFalse(lgm.getFontModifiers().contains(FontModifier.UNDERLINE));
+		assertFalse(lgm.getFontModifiers().contains(FontModifier.STRIKETHROUGH));
 
 	}
 
 	@Test
-	public void testTransformGridToExtGridData() {
+	public void testTransformGridToLiveGridData() {
 		Grid grid = generateTestGrid();
-		ExtGridPagingLoadResult<ExtGridData> egplr = GridTransformer.gridToExtGridData(grid);
+		LiveGridData<LiveGridModel> lgd = GridTransformer.gridToLiveGridData(grid);
 
-		assertEquals(LIVE_INFO_OFFSET, egplr.getOffset());
-		assertEquals(LIVE_INFO_TOTALCOUNT, egplr.getTotalLength());
-		assertEquals(1, egplr.getData().size());
+		assertEquals(LIVE_INFO_OFFSET, lgd.getOffset());
+		assertEquals(LIVE_INFO_TOTALCOUNT, lgd.getTotalLength());
+		assertEquals(1, lgd.getData().size());
 
-		ExtGridExtradata ege = egplr.getExtGridExtradata();
+		LiveGridExtradata lge = lgd.getLiveGridExtradata();
 
-		assertEquals(COL_ID, ege.getAutoSelectColumnId());
-		assertEquals(REC_ID, ege.getAutoSelectRecordId());
+		assertEquals(COL_ID, lge.getAutoSelectColumnId());
+		assertEquals(REC_ID, lge.getAutoSelectRecordId());
 
 	}
 
@@ -127,57 +127,56 @@ public class LiveGridModuleTest extends AbstractTest {
 	}
 
 	@Test
-	public void testExtGridData() {
-		ExtGridData egd = new ExtGridData();
+	public void testLiveGridData() {
+		LiveGridModel lgm = new LiveGridModel();
 
-		egd.set("id", REC_ID);
-		assertEquals(REC_ID, egd.getId());
+		lgm.set("id", REC_ID);
+		assertEquals(REC_ID, lgm.getId());
 
-		egd.set("rowstyle", ROWSTYLE);
-		assertEquals(ROWSTYLE, egd.getRowStyle());
+		lgm.set("rowstyle", ROWSTYLE);
+		assertEquals(ROWSTYLE, lgm.getRowStyle());
 
-		ExtGridData egd1 = new ExtGridData();
-		egd1.setId("1");
-		ExtGridData egd2 = new ExtGridData();
-		egd2.setId("1");
-		assertTrue(egd1.equals(egd2));
+		LiveGridModel lgm1 = new LiveGridModel();
+		lgm1.setId("1");
+		LiveGridModel lgm2 = new LiveGridModel();
+		lgm2.setId("1");
+		assertTrue(lgm1.equals(lgm2));
 
 		Object obj = new Object();
-		assertFalse(egd1.equals(obj));
+		assertFalse(lgm1.equals(obj));
 
-		egd2.setId("2");
-		assertFalse(egd1.equals(egd2));
+		lgm2.setId("2");
+		assertFalse(lgm1.equals(lgm2));
 
 	}
 
 	@Test
-	public void testExtGridDataSerialize() {
-		ExtGridData egd = new ExtGridData();
+	public void testLiveGridDataSerialize() {
+		LiveGridModel lgm = new LiveGridModel();
 
-		egd.set("id", REC_ID);
-		egd.set("rowstyle", ROWSTYLE);
+		lgm.set("id", REC_ID);
+		lgm.set("rowstyle", ROWSTYLE);
 
-		org.w3c.dom.Document doc = ru.curs.showcase.util.xml.XMLUtils.objectToXML(egd);
+		org.w3c.dom.Document doc = ru.curs.showcase.util.xml.XMLUtils.objectToXML(lgm);
 		assertNotNull(doc);
 	}
 
 	@Test
-	public void testExtGridPagingLoadResultSerialize() {
-		ArrayList<ExtGridData> sublist = new ArrayList<ExtGridData>();
-		ExtGridData egd = new ExtGridData();
-		egd.setId(REC_ID);
-		sublist.add(egd);
+	public void testLiveGridPagingLoadResultSerialize() {
+		ArrayList<LiveGridModel> sublist = new ArrayList<LiveGridModel>();
+		LiveGridModel lgm = new LiveGridModel();
+		lgm.setId(REC_ID);
+		sublist.add(lgm);
 
-		ExtGridPagingLoadResult<ExtGridData> egplr =
-			new ExtGridPagingLoadResult<ExtGridData>(sublist, LIVE_INFO_OFFSET,
-					LIVE_INFO_TOTALCOUNT);
+		LiveGridData<LiveGridModel> lgd =
+			new LiveGridData<LiveGridModel>(sublist, LIVE_INFO_OFFSET, LIVE_INFO_TOTALCOUNT);
 
-		ExtGridExtradata ege = new ExtGridExtradata();
-		ege.setAutoSelectRecordId(REC_ID);
+		LiveGridExtradata lge = new LiveGridExtradata();
+		lge.setAutoSelectRecordId(REC_ID);
 
-		egplr.setExtGridExtradata(ege);
+		lgd.setLiveGridExtradata(lge);
 
-		org.w3c.dom.Document doc = ru.curs.showcase.util.xml.XMLUtils.objectToXML(egplr);
+		org.w3c.dom.Document doc = ru.curs.showcase.util.xml.XMLUtils.objectToXML(lgd);
 		assertNotNull(doc);
 
 	}
