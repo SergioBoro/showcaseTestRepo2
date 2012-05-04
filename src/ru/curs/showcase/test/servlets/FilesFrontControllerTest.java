@@ -61,7 +61,6 @@ public class FilesFrontControllerTest extends AbstractServletTest {
 	}
 
 	@Test
-	@Ignore
 	public void testExportToExcel() throws ServletException, IOException {
 		request().setServletPath("/secured/gridToExcel");
 		request().addParameter(GridToExcelExportType.class.getName(),
