@@ -47,7 +47,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
 	private ContentPanel cpGrid = null;
-	private EditorGrid<LiveGridModel> grid = null;
+	private com.extjs.gxt.ui.client.widget.grid.Grid<LiveGridModel> grid = null;
 	private GridSelectionModel<LiveGridModel> selectionModel = null;
 	private ColumnSet cs = null;
 	private Timer selectionTimer = null;
@@ -336,7 +336,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 		ColumnModel cm = new ColumnModel(columns);
 
-		grid = new EditorGrid<LiveGridModel>(store, cm);
+		grid = new com.extjs.gxt.ui.client.widget.grid.Grid<LiveGridModel>(store, cm);
 
 		grid.setSelectionModel(selectionModel);
 		// selectionModel.bindGrid(grid);
