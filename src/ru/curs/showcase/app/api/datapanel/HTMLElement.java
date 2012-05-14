@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.datapanel;
 
 import javax.xml.bind.annotation.*;
 
+import ru.beta2.extra.gwt.ui.SerializableElement;
+
 /**
  * Абстрактный класс элемента инф. панели, соответствующего определенному HTML
  * элементу и содержащего базовые HTML атрибуты.
@@ -10,7 +12,9 @@ import javax.xml.bind.annotation.*;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class HTMLElement {
+public abstract class HTMLElement implements SerializableElement {
+
+	private static final long serialVersionUID = -6437752423735910377L;
 
 	public HTMLElement() {
 		super();
