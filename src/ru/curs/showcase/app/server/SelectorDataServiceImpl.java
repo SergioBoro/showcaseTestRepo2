@@ -70,9 +70,18 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 							req.getProcName().indexOf(PROCNAME_SEPARATOR)
 									+ PROCNAME_SEPARATOR.length());
 
+				if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+					procCount = "\"" + procCount + "\"";
+					procList = "\"" + procList + "\"";
+				}
+
 				getDataByTwoProc(req, procCount, procList, ds);
 			} else {
-				getDataByOneProc(req, req.getProcName(), ds);
+				String procList = req.getProcName();
+				if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+					procList = "\"" + procList + "\"";
+				}
+				getDataByOneProc(req, procList, ds);
 			}
 
 		} catch (UnsupportedEncodingException | SQLException e) {
