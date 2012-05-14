@@ -14,8 +14,8 @@
 		<element id="62" type="webtext" proc="webtext_filter_and_add"
 			hideOnLoad="true" />		
 	</tab>
-	<tab id="01" name="Табличная раскладка" layout="TABLE" style="background: yellow;" styleClass="css-class">
-		<tr id="r01" height="500px" style="border-width: medium" styleClass="css-class">
+	<tab id="01" name="Табличная раскладка" layout="TABLE" style="width: 600px; background: yellow;" styleClass="css-class">
+		<tr id="r01" height="100px" style="border-width: medium" styleClass="css-class">
 			<td id="d0101" width="600px" style="border-width: medium; background: green;" styleClass="css-class" colspan="2" >
 				<element id="0101" type="webtext" proc="webtext_3buttons"
 					style="border-width: medium" styleClass="css-class" />					
