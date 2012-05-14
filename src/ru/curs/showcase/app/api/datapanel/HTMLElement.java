@@ -14,7 +14,7 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class HTMLElement implements SerializableElement {
 
-	private static final long serialVersionUID = -6437752423735910377L;
+	private static final long serialVersionUID = -3437752423735910377L;
 
 	public HTMLElement() {
 		super();
