@@ -360,8 +360,8 @@
 					<xf:load
 						resource="javascript:showSelector({
 			           id : 'xformId',
-                       procCount : 'companycount',
-                       procList  : 'companylist',                       
+                       procCount : 'companyCount',
+                       procList  : 'companyList',                       
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
