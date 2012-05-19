@@ -470,7 +470,7 @@ public class GeneralDataPanel {
 			break;
 
 		case EXT_TREE_GRID:
-			MessageBox.showSimpleMessage("generateGridElement", "TreeGrid из ExtGWT");
+			MessageBox.showSimpleMessage("generateGridElement", "TreeGrid из GXT");
 			break;
 
 		case PAGING_GRID: // существующий грид

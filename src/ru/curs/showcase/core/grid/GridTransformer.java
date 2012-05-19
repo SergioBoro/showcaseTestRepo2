@@ -39,8 +39,7 @@ public final class GridTransformer {
 				new LiveGridColumnConfig("col" + String.valueOf(index), c.getCaption(),
 						getIntWidthByStringWidth(c.getWidth()));
 
-			column.setHorizontalAlignment(com.extjs.gxt.ui.client.Style.HorizontalAlignment
-					.valueOf(c.getHorizontalAlignment().toString()));
+			column.setHorizontalAlignment(c.getHorizontalAlignment());
 
 			column.setValueType(c.getValueType());
 
@@ -192,4 +191,5 @@ public final class GridTransformer {
 
 		return result;
 	}
+
 }

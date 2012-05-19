@@ -20,7 +20,6 @@
 %>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="gwt:property" content="locale=ru"/>	
 	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
 	<title><%=title%></title>
     <link rel="stylesheet" href="xsltforms/xsltforms.css" type="text/css" />	
@@ -29,8 +28,6 @@
     <script type="text/javascript" language="javascript" src="secured/secured.nocache.js"></script>
     
     <link rel="stylesheet" href="js/dijit/themes/claro/claro.css"/>
-    
-    <link rel="stylesheet" type="text/css" href="resources/extgwt/css/gxt-all.css" />    
     
     <script>
         var dojoConfig = {

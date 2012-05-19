@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelCompBasedElement;
 
 /**
- * Класс грида из ExtGWT с метаданными.
+ * Класс грида из GXT с метаданными.
  * 
  */
 @XmlRootElement

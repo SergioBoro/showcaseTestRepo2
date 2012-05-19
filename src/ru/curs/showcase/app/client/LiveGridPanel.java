@@ -13,21 +13,31 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.DownloadHelper;
 
-import com.extjs.gxt.ui.client.data.*;
-import com.extjs.gxt.ui.client.event.*;
-import com.extjs.gxt.ui.client.event.GridEvent;
-import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.util.IconHelper;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.grid.*;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.toolbar.*;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.core.client.*;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.safecss.shared.SafeStylesUtils;
+import com.google.gwt.safehtml.shared.*;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
+import com.sencha.gxt.cell.core.client.ButtonCell.IconAlign;
+import com.sencha.gxt.core.client.*;
+import com.sencha.gxt.core.client.resources.*;
+import com.sencha.gxt.core.client.util.IconHelper;
+import com.sencha.gxt.data.client.loader.RpcProxy;
+import com.sencha.gxt.data.shared.*;
+import com.sencha.gxt.data.shared.loader.*;
+import com.sencha.gxt.widget.core.client.FramedPanel;
+import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.container.*;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.*;
+import com.sencha.gxt.widget.core.client.event.CellClickEvent.CellClickHandler;
+import com.sencha.gxt.widget.core.client.event.CellDoubleClickEvent.CellDoubleClickHandler;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.grid.*;
+import com.sencha.gxt.widget.core.client.toolbar.*;
 
 /**
  * Класс панели с гридом.
@@ -37,17 +47,16 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	private static final String PROC100 = "100%";
 
 	private final VerticalPanel p = new VerticalPanel();
-
-	private final Button exportToExcelCurrentPage = new Button("",
-			IconHelper.create(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE));
-	private final Button exportToExcelAll = new Button("",
-			IconHelper.create(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL));
-	private final Button copyToClipboard = new Button("",
-			IconHelper.create(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
-
+	private final TextButton exportToExcelCurrentPage = new TextButton("",
+			IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE),
+					16, 16));
+	private final TextButton exportToExcelAll = new TextButton("", IconHelper.getImageResource(
+			UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL), 16, 16));
+	private final TextButton copyToClipboard = new TextButton("", IconHelper.getImageResource(
+			UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
-	private ContentPanel cpGrid = null;
-	private com.extjs.gxt.ui.client.widget.grid.Grid<LiveGridModel> grid = null;
+	private com.sencha.gxt.widget.core.client.grid.Grid<LiveGridModel> grid = null;
 	private GridSelectionModel<LiveGridModel> selectionModel = null;
 	private ColumnSet cs = null;
 	private Timer selectionTimer = null;
@@ -146,6 +155,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			p.clear();
 			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 		}
+		setFirstLoading(true);
 		setDataGridPanel();
 	}
 
@@ -194,77 +204,85 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 		cs = gridMetadata.getOriginalColumnSet();
 
-		RpcProxy<LiveGridData<LiveGridModel>> proxy = new RpcProxy<LiveGridData<LiveGridModel>>() {
-			@Override
-			public void load(final Object loadConfig,
-					final AsyncCallback<LiveGridData<LiveGridModel>> callback) {
+		RpcProxy<PagingLoadConfig, LiveGridData<LiveGridModel>> proxy =
+			new RpcProxy<PagingLoadConfig, LiveGridData<LiveGridModel>>() {
 
-				PagingLoadConfig plc = (PagingLoadConfig) loadConfig;
+				@Override
+				public void load(final PagingLoadConfig loadConfig,
+						final AsyncCallback<LiveGridData<LiveGridModel>> callback) {
 
-				// --------------
+					GridContext gridContext = getDetailedContext();
+					gridContext.getLiveInfo().setOffset(loadConfig.getOffset());
+					gridContext.getLiveInfo().setLimit(loadConfig.getLimit());
 
-				GridContext gridContext = getDetailedContext();
-				gridContext.getLiveInfo().setOffset(plc.getOffset());
-				gridContext.getLiveInfo().setLimit(plc.getLimit());
+					if (!loadConfig.getSortInfo().isEmpty()) {
+						ColumnConfig<LiveGridModel, ?> colConfig =
+							grid.getColumnModel().getColumn(
+									getColumnIndexByLiveId(loadConfig.getSortInfo().get(0)
+											.getSortField()));
+						if (colConfig != null) {
+							Column colOriginal = null;
+							for (Column c : gridMetadata.getOriginalColumnSet().getColumns()) {
+								if (colConfig.getHeader().asString().equals(c.getId())) {
+									colOriginal = c;
+									break;
+								}
+							}
+							if (colOriginal != null) {
+								List<Column> sortOriginalCols = new ArrayList<Column>();
 
-				// --------------
+								colOriginal.setSorting(Sorting.valueOf(loadConfig.getSortInfo()
+										.get(0).getSortDir().name()));
 
-				ColumnConfig colConfig = grid.getColumnModel().getColumnById(plc.getSortField());
-				if (colConfig != null) {
-					Column colOriginal = null;
-					for (Column c : gridMetadata.getOriginalColumnSet().getColumns()) {
-						if (colConfig.getHeader().equals(c.getId())) {
-							colOriginal = c;
-							break;
+								sortOriginalCols.add(colOriginal);
+
+								gridContext.setSortedColumns(sortOriginalCols);
+							}
 						}
 					}
-					if (colOriginal != null) {
-						List<Column> sortOriginalCols = new ArrayList<Column>();
 
-						colOriginal.setSorting(Sorting.valueOf(plc.getSortDir().name()));
+					dataService.getLiveGridData(gridContext, getElementInfo(),
+							new AsyncCallback<LiveGridData<LiveGridModel>>() {
+								@Override
+								public void onFailure(Throwable caught) {
+									callback.onFailure(caught);
+								}
 
-						sortOriginalCols.add(colOriginal);
+								@Override
+								public void onSuccess(LiveGridData<LiveGridModel> result) {
+									callback.onSuccess(result);
 
-						gridContext.setSortedColumns(sortOriginalCols);
-					}
+									gridExtradata = result.getLiveGridExtradata();
+									resetSelection();
+									afterUpdateGrid();
+								}
+							});
 				}
 
-				// --------------
+			};
 
-				dataService.getLiveGridData(gridContext, getElementInfo(), callback);
+		final ListStore<LiveGridModel> store =
+			new ListStore<LiveGridModel>(new ModelKeyProvider<LiveGridModel>() {
+				@Override
+				public String getKey(LiveGridModel model) {
+					return model.getId();
+				}
+			});
 
-			}
-		};
-
-		final PagingLoader<LiveGridData<ModelData>> loader =
-			new BasePagingLoader<LiveGridData<ModelData>>(proxy);
+		final PagingLoader<PagingLoadConfig, LiveGridData<LiveGridModel>> loader =
+			new PagingLoader<PagingLoadConfig, LiveGridData<LiveGridModel>>(proxy);
 		loader.setRemoteSort(true);
-		loader.addListener(Loader.Load, new Listener<LoadEvent>() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void handleEvent(LoadEvent be) {
-				gridExtradata =
-					((LiveGridData<LiveGridModel>) be.getData()).getLiveGridExtradata();
 
-				resetSelection();
-			}
-		});
-
-		final ListStore<LiveGridModel> store = new ListStore<LiveGridModel>(loader);
-		// store.setMonitorChanges(true);
-		store.setKeyProvider(new ModelKeyProvider<LiveGridModel>() {
-			@Override
-			public String getKey(LiveGridModel model) {
-				return model.getId();
-			}
-		});
-
-		List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
+		List<ColumnConfig<LiveGridModel, ?>> columns =
+			new ArrayList<ColumnConfig<LiveGridModel, ?>>();
 
 		if (gridMetadata.getUISettings().isSelectOnlyRecords()) {
 			if (gridMetadata.getUISettings().isVisibleRecordsSelector()) {
-				selectionModel = new CheckBoxSelectionModel<LiveGridModel>();
-				columns.add(((CheckBoxSelectionModel<LiveGridModel>) selectionModel).getColumn());
+				IdentityValueProvider<LiveGridModel> identity =
+					new IdentityValueProvider<LiveGridModel>();
+				selectionModel = new CheckBoxSelectionModel<LiveGridModel>(identity);
+				// columns.add(((CheckBoxSelectionModel<LiveGridModel>)
+				// selectionModel).getColumn());
 			} else {
 				selectionModel = new GridSelectionModel<LiveGridModel>();
 			}
@@ -273,60 +291,46 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		}
 
 		for (final LiveGridColumnConfig egcc : gridMetadata.getColumns()) {
-			ColumnConfig column =
-				new ColumnConfig(egcc.getId(), egcc.getCaption(), egcc.getWidth());
+			ColumnConfig<LiveGridModel, String> column =
+				new ColumnConfig<LiveGridModel, String>(new LiveGridModelProvider(egcc.getId()),
+						egcc.getWidth(), egcc.getCaption());
 
 			column.setToolTip(column.getHeader());
 
-			if (egcc.getDateTimeFormat() != null) {
-				column.setDateTimeFormat(DateTimeFormat.getFormat(egcc.getDateTimeFormat()));
-			}
-
-			column.setAlignment(egcc.getHorizontalAlignment());
-
-			String style = getColumnStyle();
-			if (!style.isEmpty()) {
-				column.setStyle(style);
-			}
+			column.setAlignment(HorizontalAlignment.getHorizontalAlignmentConstant(egcc
+					.getHorizontalAlignment()));
 
 			column.setMenuDisabled(!gridMetadata.getUISettings().isVisibleColumnsCustomizer());
 
+			String style = getColumnStyle();
+			if (!style.isEmpty()) {
+				column.setColumnTextStyle(SafeStylesUtils.fromTrustedString(style));
+			}
+
 			if (egcc.getValueType() == GridValueType.DOWNLOAD) {
-				column.setRenderer(new GridCellRenderer<LiveGridModel>() {
+				column.setColumnTextClassName(CommonStyles.get().inlineBlock());
+				column.setColumnTextStyle(SafeStylesUtils.fromTrustedString("padding: 1px 3px;"));
+
+				com.sencha.gxt.cell.core.client.TextButtonCell button =
+					new com.sencha.gxt.cell.core.client.TextButtonCell();
+				button.setIcon(IconHelper.getImageResource(
+						UriUtils.fromSafeConstant(settingsDataGrid.getUrlImageFileDownload()), 16,
+						16));
+				button.setIconAlign(IconAlign.RIGHT);
+				button.addSelectHandler(new SelectHandler() {
 					@Override
-					public Object render(final LiveGridModel model, String property,
-							ColumnData config, int rowIndex, int colIndex,
-							ListStore<LiveGridModel> store,
-							com.extjs.gxt.ui.client.widget.grid.Grid<LiveGridModel> grid) {
-						com.google.gwt.user.client.ui.Grid g =
-							new com.google.gwt.user.client.ui.Grid(1, 2);
-						g.setWidth("100%");
-
-						g.setWidget(0, 0, new HTML("<nowrap>" + (String) model.get(property)
-								+ "</nowrap>"));
-
-						Button bt =
-							new Button("", IconHelper.create(settingsDataGrid
-									.getUrlImageFileDownload()));
-						bt.setTitle("Загрузить файл с сервера");
-
-						bt.addSelectionListener(new com.extjs.gxt.ui.client.event.SelectionListener<ButtonEvent>() {
-							@Override
-							public void componentSelected(ButtonEvent ce) {
-								processFileDownload(model.getId(), egcc.getLinkId());
-
-							}
-						});
-
-						g.setWidget(0, 1, bt);
-
-						g.getCellFormatter().setWidth(0, 1, "30px");
-						g.getCellFormatter().setHorizontalAlignment(0, 1,
-								HasHorizontalAlignment.ALIGN_CENTER);
-						g.getCellFormatter().setVerticalAlignment(0, 1,
-								HasVerticalAlignment.ALIGN_MIDDLE);
-
-						return g;
+					public void onSelect(SelectEvent event) {
+						processFileDownload(grid.getStore().get(event.getContext().getIndex())
+								.getId(), egcc.getLinkId());
+					}
+				});
+				column.setCell(button);
+			} else {
+				column.setCell(new AbstractCell<String>() {
+					@Override
+					public void render(com.google.gwt.cell.client.Cell.Context context,
+							String value, SafeHtmlBuilder sb) {
+						sb.appendHtmlConstant(value);
 					}
 				});
 			}
@@ -334,148 +338,152 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			columns.add(column);
 		}
 
-		ColumnModel cm = new ColumnModel(columns);
+		ColumnModel<LiveGridModel> cm = new ColumnModel<LiveGridModel>(columns);
 
-		grid = new com.extjs.gxt.ui.client.widget.grid.Grid<LiveGridModel>(store, cm);
+		// ---------------------------
 
+		final LiveGridView<LiveGridModel> liveView = new LiveGridView<LiveGridModel>();
+		liveView.setRowHeight(gridMetadata.getUISettings().getRowHeight());
+		liveView.setCacheSize(gridMetadata.getLiveInfo().getLimit());
+
+		// ---------------------------
+
+		grid = new com.sencha.gxt.widget.core.client.grid.Grid<LiveGridModel>(store, cm) {
+			@Override
+			protected void onAfterFirstAttach() {
+				super.onAfterFirstAttach();
+				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+					@Override
+					public void execute() {
+						loader.load(0, liveView.getCacheSize());
+					}
+				});
+			}
+		};
 		grid.setSelectionModel(selectionModel);
-		// selectionModel.bindGrid(grid);
-
+		grid.setLoader(loader);
+		grid.setView(liveView);
 		grid.setColumnReordering(true);
 		grid.setLoadMask(true);
 		grid.setBorders(true);
-		grid.getAriaSupport().setLabelledBy(grid.getId() + "-label");
-		// grid.setStateId("pagingGridExample");
-		// grid.setStateful(true);
-
 		grid.setHideHeaders(!gridMetadata.getUISettings().isVisibleColumnsHeader());
 
 		// ---------------------------
 
-		grid.addListener(Events.CellClick, new Listener<GridEvent<LiveGridModel>>() {
+		grid.addCellClickHandler(new CellClickHandler() {
 			@Override
-			public void handleEvent(GridEvent<LiveGridModel> be) {
-				handleClick(be, InteractionType.SINGLE_CLICK);
+			public void onCellClick(CellClickEvent event) {
+				handleClick(grid.getStore().get(event.getRowIndex()).getId(), grid
+						.getColumnModel().getColumn(event.getCellIndex()).getHeader().asString(),
+						InteractionType.SINGLE_CLICK);
 			}
 		});
-
-		grid.addListener(Events.CellDoubleClick, new Listener<GridEvent<LiveGridModel>>() {
+		grid.addCellDoubleClickHandler(new CellDoubleClickHandler() {
 			@Override
-			public void handleEvent(GridEvent<LiveGridModel> be) {
-				handleClick(be, InteractionType.DOUBLE_CLICK);
+			public void onCellClick(CellDoubleClickEvent event) {
+				handleClick(grid.getStore().get(event.getRowIndex()).getId(), grid
+						.getColumnModel().getColumn(event.getCellIndex()).getHeader().asString(),
+						InteractionType.DOUBLE_CLICK);
 			}
 		});
 
 		// ---------------------------
-
-		LiveGridView liveView = new LiveGridView();
-
-		liveView.addListener(Events.LiveGridViewUpdate, new Listener<BaseEvent>() {
-			@Override
-			public void handleEvent(BaseEvent be) {
-				afterUpdateGrid();
-			}
-		});
-
-		liveView.setRowHeight(gridMetadata.getUISettings().getRowHeight());
-		// liveView.setPrefetchFactor(0);
-		liveView.setCacheSize(gridMetadata.getLiveInfo().getLimit());
-		grid.setView(liveView);
-
-		// ---------------------------
-
 		// Стили для записей
-		GridViewConfig gvc = new GridViewConfig() {
+		GridViewConfig<LiveGridModel> gvc = new GridViewConfig<LiveGridModel>() {
 			@Override
-			public String getRowStyle(ModelData model, int rowIndex, ListStore<ModelData> ds) {
-				LiveGridModel lgm = (LiveGridModel) model;
-				String rowstyle = lgm.getRowStyle();
-				return rowstyle;
+			public String getColStyle(LiveGridModel model,
+					ValueProvider<? super LiveGridModel, ?> valueProvider, int rowIndex,
+					int colIndex) {
+				return "";
+			}
+
+			@Override
+			public String getRowStyle(LiveGridModel model, int rowIndex) {
+				String rowStyle = model.getRowStyle();
+				if (rowStyle == null) {
+					rowStyle = "";
+				}
+				return rowStyle;
 			}
 		};
 		grid.getView().setViewConfig(gvc);
-
 		// ---------------------------
 
 		ToolBar buttonBar = new ToolBar();
 		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
 			exportToExcelCurrentPage.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE);
-			exportToExcelCurrentPage
-					.addSelectionListener(new com.extjs.gxt.ui.client.event.SelectionListener<ButtonEvent>() {
-						@Override
-						public void componentSelected(ButtonEvent ce) {
-							exportToExcel(GridToExcelExportType.CURRENTPAGE);
-						}
-					});
+			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(SelectEvent event) {
+					exportToExcel(GridToExcelExportType.CURRENTPAGE);
+				}
+			});
 			buttonBar.add(exportToExcelCurrentPage);
 		}
 		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
 			exportToExcelAll.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_ALL);
-			exportToExcelAll
-					.addSelectionListener(new com.extjs.gxt.ui.client.event.SelectionListener<ButtonEvent>() {
-						@Override
-						public void componentSelected(ButtonEvent ce) {
-							exportToExcel(GridToExcelExportType.ALL);
-						}
-					});
+			exportToExcelAll.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(SelectEvent event) {
+					exportToExcel(GridToExcelExportType.ALL);
+				}
+			});
 			buttonBar.add(exportToExcelAll);
 		}
 		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
 			copyToClipboard.setTitle(Constants.GRID_CAPTION_COPY_TO_CLIPBOARD);
-			copyToClipboard
-					.addSelectionListener(new com.extjs.gxt.ui.client.event.SelectionListener<ButtonEvent>() {
-						@Override
-						public void componentSelected(ButtonEvent ce) {
-							copyToClipboard();
-						}
-					});
+			copyToClipboard.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(SelectEvent event) {
+					copyToClipboard();
+				}
+			});
 			buttonBar.add(copyToClipboard);
 		}
 
 		// ------------------------------------------------------------------------------
 
-		cpGrid = new ContentPanel();
-		// ------------
-		// Draggable d = new Draggable(cpGrid, cpGrid.getHeader());
-		// d.setUseProxy(true);
-		// Resizable r = new Resizable(cpGrid);
-		// r.setDynamic(false);
-		// ------------
-		cpGrid.setFrame(true);
-		cpGrid.setCollapsible(true);
-		// cpGrid.setAnimCollapse(false);
-		cpGrid.setLayout(new FitLayout());
-		// ------------
+		VerticalLayoutContainer con = new VerticalLayoutContainer();
+		con.setBorders(true);
 
-		cpGrid.setHeading(gridMetadata.getHeader());
-
-		if (buttonBar.getItemCount() > 0) {
-			cpGrid.setTopComponent(buttonBar);
+		if (buttonBar.getWidgetCount() > 0) {
+			con.add(buttonBar, new VerticalLayoutData(1, -1));
 		}
-
-		grid.setWidth(PROC100);
-		grid.setHeight(gridMetadata.getUISettings().getGridHeight());
-		// grid.setAutoWidth(true);
-		// grid.setAutoHeight(true);
-
-		cpGrid.add(grid);
-
+		con.add(grid, new VerticalLayoutData(1, 1));
 		if (gridMetadata.getUISettings().isVisiblePager()) {
 			ToolBar liveBar = new ToolBar();
-			LabelToolItem footer = new LabelToolItem(gridMetadata.getFooter());
-			liveBar.add(footer);
-			liveBar.add(new FillToolItem());
-			LiveToolItem item = new LiveToolItem();
-			item.bindGrid(grid);
+			liveBar.addStyleName(ThemeStyles.getStyle().borderTop());
+			liveBar.getElement().getStyle().setProperty("borderBottom", "none");
+
+			LiveToolItem item = new LiveToolItem(grid);
+			item.getElement().getStyle().setProperty("top", "4px");
+			item.setHeight(PROC100);
 			liveBar.add(item);
 
-			cpGrid.add(liveBar);
+			con.add(liveBar, new VerticalLayoutData(1, 25));
 		}
+		if ((gridMetadata.getFooter() != null) && (!gridMetadata.getFooter().isEmpty())) {
+			ToolBar footerBar = new ToolBar();
+			footerBar.addStyleName(ThemeStyles.getStyle().borderTop());
+			footerBar.getElement().getStyle().setProperty("borderBottom", "none");
+
+			LabelToolItem footer = new LabelToolItem(gridMetadata.getFooter());
+			footerBar.add(footer);
+
+			con.add(footerBar, new VerticalLayoutData(1, -1));
+		}
+
+		FramedPanel cpGrid = new FramedPanel();
+		cpGrid.setCollapsible(true);
+		cpGrid.setHeadingText(gridMetadata.getHeader());
+		grid.setWidth("10%");
+		grid.setHeight(gridMetadata.getUISettings().getGridHeight());
+		cpGrid.setWidget(con);
 
 		// ------------------------------------------------------------------------------
 
-		p.setSize(PROC100, PROC100);
 		p.clear();
+		p.setSize(PROC100, PROC100);
 		p.add(cpGrid);
 
 		// ------------------------------------------------------------------------------
@@ -484,18 +492,17 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 	// CHECKSTYLE:ON
 
-	private void handleClick(final GridEvent<LiveGridModel> be,
+	private void handleClick(final String recId, final String colId,
 			final InteractionType interactionType) {
 
-		saveCurrentClickSelection(be.getModel().getId(),
-				grid.getColumnModel().getColumn(be.getColIndex()).getHeader());
+		saveCurrentClickSelection(recId, colId);
 
 		if (!(selectionModel instanceof CellSelectionModel)) {
 			selectedRecordsChanged();
 		}
 
-		processClick(be.getModel().getId(), grid.getColumnModel().getColumn(be.getColIndex())
-				.getHeader(), interactionType);
+		processClick(recId, colId, interactionType);
+
 	}
 
 	private void processClick(final String rowId, final String colId,
@@ -553,17 +560,17 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	 * ячейку в related!
 	 * 
 	 */
+
 	private void afterUpdateGrid() {
 		if (!isFirstLoading) {
 			return;
 		}
 
-		if (grid.getStore().getModels().size() == 0) {
+		if (grid.getStore().getAll().size() == 0) {
 			return;
 		}
 
 		Cell selected = getStoredRecordId();
-
 		if (selectionModel instanceof CellSelectionModel) {
 			int row = getRecordIndexById(selected.recId);
 			int col = getColumnIndexById(selected.colId);
@@ -571,17 +578,13 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 				((CellSelectionModel<LiveGridModel>) selectionModel).selectCell(row, col);
 			}
 		} else {
-			for (LiveGridModel lgm : grid.getStore().getModels()) {
+			for (LiveGridModel lgm : grid.getStore().getAll()) {
 				if (lgm.getId().equals(selected.recId)) {
 					selectionModel.select(lgm, false);
 					break;
 				}
 			}
 		}
-
-		// if (localContext != null) {
-		// dg.getSelection().setSelectedRecordsById(localContext.getSelectedRecordIds());
-		// }
 
 		resetGridSettingsToCurrent();
 
@@ -594,7 +597,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		int index = -1;
 		if (recId != null) {
 			int i = 0;
-			for (LiveGridModel lgm : grid.getStore().getModels()) {
+			for (LiveGridModel lgm : grid.getStore().getAll()) {
 				if (lgm.getId().equals(recId)) {
 					index = i;
 					break;
@@ -609,8 +612,23 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		int index = -1;
 		if (colId != null) {
 			int i = 0;
-			for (ColumnConfig col : grid.getColumnModel().getColumns()) {
-				if (col.getHeader().equals(colId)) {
+			for (ColumnConfig<LiveGridModel, ?> col : grid.getColumnModel().getColumns()) {
+				if (col.getHeader().asString().equals(colId)) {
+					index = i;
+					break;
+				}
+				i++;
+			}
+		}
+		return index;
+	}
+
+	private int getColumnIndexByLiveId(final String liveId) {
+		int index = -1;
+		if (liveId != null) {
+			int i = 0;
+			for (ColumnConfig<LiveGridModel, ?> col : grid.getColumnModel().getColumns()) {
+				if (col.getValueProvider().getPath().equals(liveId)) {
 					index = i;
 					break;
 				}
@@ -676,6 +694,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	}
 
 	private void resetSelection() {
+		selectionModel.deselectAll();
 		if (localContext == null) {
 			return;
 		}
@@ -763,11 +782,11 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	public ClipboardDialog copyToClipboard() {
 		StringBuilder b = new StringBuilder();
 
-		List<ColumnConfig> columns = grid.getColumnModel().getColumns();
+		List<ColumnConfig<LiveGridModel, ?>> columns = grid.getColumnModel().getColumns();
 
 		String d = "";
-		for (ColumnConfig c : columns) {
-			b.append(d).append(c.getHeader());
+		for (ColumnConfig<LiveGridModel, ?> c : columns) {
+			b.append(d).append(c.getHeader().asString());
 			d = "\t";
 		}
 		b.append("\n");
@@ -776,13 +795,13 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		if (selectionModel.getSelectedItems().size() > 0) {
 			models = selectionModel.getSelectedItems();
 		} else {
-			models = grid.getStore().getModels();
+			models = grid.getStore().getAll();
 		}
 
 		for (LiveGridModel lgm : models) {
 			d = "";
-			for (ColumnConfig c : columns) {
-				b.append(d).append(lgm.get(c.getId()));
+			for (ColumnConfig<LiveGridModel, ?> c : columns) {
+				b.append(d).append(lgm.get(c.getValueProvider().getPath()));
 				d = "\t";
 			}
 			b.append("\n");

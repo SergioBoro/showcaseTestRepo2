@@ -13,15 +13,15 @@ public enum DataPanelElementSubType implements SerializableElement {
 	 */
 	PAGING_GRID,
 	/**
-	 * Грид из ExtGWT. Live.
+	 * Грид из GXT. Live.
 	 */
 	EXT_LIVE_GRID,
 	/**
-	 * Грид из ExtGWT. Paging.
+	 * Грид из GXT. Paging.
 	 */
 	EXT_PAGING_GRID,
 	/**
-	 * Грид из ExtGWT. Tree.
+	 * Грид из GXT. Tree.
 	 */
 	EXT_TREE_GRID;
 

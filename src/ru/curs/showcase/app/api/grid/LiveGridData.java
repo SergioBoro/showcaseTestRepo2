@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.xml.bind.annotation.*;
 
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
 
 /**
- * Класс грида из ExtGWT с результатом загрузки.
+ * Класс грида из GXT с результатом загрузки.
  * 
  * @param <Data>
  *            тип данных
@@ -15,22 +15,16 @@ import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 @XmlRootElement
 @XmlSeeAlso(LiveGridModel.class)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class LiveGridData<Data> extends BasePagingLoadResult<Data> {
+public class LiveGridData<Data> extends PagingLoadResultBean<Data> {
 
 	private static final long serialVersionUID = 3460463555489064222L;
 
-	public LiveGridData(final List<Data> data) {
-		super(data);
-
-	}
-
 	public LiveGridData(final List<Data> data, final int offset, final int totalLength) {
-		super(data, offset, totalLength);
-
+		super(data, totalLength, offset);
 	}
 
 	LiveGridData() {
-		this(null);
+		super();
 	}
 
 	private LiveGridExtradata liveGridExtradata = null;

@@ -54,8 +54,7 @@ public class LiveGridModuleTest extends AbstractTest {
 		assertEquals(UI_SETTINGS_ROW_HEIGHT, lgm.getUISettings().getRowHeight());
 
 		assertEquals(COL_CAPTION, lgm.getColumns().get(0).getCaption());
-		assertEquals(com.extjs.gxt.ui.client.Style.HorizontalAlignment.RIGHT, lgm.getColumns()
-				.get(0).getHorizontalAlignment());
+		assertEquals(HorizontalAlignment.RIGHT, lgm.getColumns().get(0).getHorizontalAlignment());
 
 		assertEquals(COL_ID, lgm.getOriginalColumnSet().getColumns().get(0).getId());
 

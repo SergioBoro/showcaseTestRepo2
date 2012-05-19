@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ru.curs.gwt.datagrid.model.FontModifier;
+import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.InteractionType;
 import ru.curs.showcase.app.api.grid.*;
@@ -68,8 +68,7 @@ public class LiveGridComponentTest extends AbstractTest {
 
 		assertEquals(COL_ID, lgm.getColumns().get(0).getId());
 		assertEquals(COL_CAPTION, lgm.getColumns().get(0).getCaption());
-		assertEquals(com.extjs.gxt.ui.client.Style.HorizontalAlignment.LEFT,
-				lgm.getColumns().get(0).getHorizontalAlignment());
+		assertEquals(HorizontalAlignment.LEFT, lgm.getColumns().get(0).getHorizontalAlignment());
 		assertEquals(COL_CAPTION, lgm.getOriginalColumnSet().getColumns().get(0).getId());
 
 		assertEquals(FONT_SIZE, lgm.getFontSize());
@@ -128,8 +127,7 @@ public class LiveGridComponentTest extends AbstractTest {
 
 		assertEquals(COL_ID, lgm.getColumns().get(0).getId());
 		assertEquals(COL_CAPTION2, lgm.getColumns().get(0).getCaption());
-		assertEquals(com.extjs.gxt.ui.client.Style.HorizontalAlignment.RIGHT, lgm.getColumns()
-				.get(0).getHorizontalAlignment());
+		assertEquals(HorizontalAlignment.RIGHT, lgm.getColumns().get(0).getHorizontalAlignment());
 		assertEquals(COL_CAPTION2, lgm.getOriginalColumnSet().getColumns().get(0).getId());
 	}
 

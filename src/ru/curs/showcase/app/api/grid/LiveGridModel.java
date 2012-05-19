@@ -4,19 +4,37 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.*;
 
-import com.extjs.gxt.ui.client.data.BaseModel;
+import com.sencha.gxt.core.shared.FastMap;
 
 /**
- * Класс грида из ExtGWT с данными.
+ * Класс грида из GXT с данными.
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class LiveGridModel extends BaseModel implements Serializable {
+public class LiveGridModel implements Serializable {
 
 	private static final long serialVersionUID = -3660786754868736757L;
 
-	public LiveGridModel() {
+	private FastMap<Object> map;
 
+	public FastMap<Object> getMap() {
+		return map;
+	}
+
+	public void setMap(final FastMap<Object> aMap) {
+		map = aMap;
+	}
+
+	public LiveGridModel() {
+		map = new FastMap<Object>();
+	}
+
+	public Object get(final String key) {
+		return map.get(key);
+	}
+
+	public void set(final String key, final Object value) {
+		map.put(key, value);
 	}
 
 	public String getId() {

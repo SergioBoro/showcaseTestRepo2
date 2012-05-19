@@ -47,7 +47,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	private DataPanelElementSubType subtype = null;
 
 	/**
-	 * Признак редактируемости элемента (пока только для гридов из ExtGWT).
+	 * Признак редактируемости элемента (пока только для гридов из GXT).
 	 */
 	private Boolean editable = false;
 
