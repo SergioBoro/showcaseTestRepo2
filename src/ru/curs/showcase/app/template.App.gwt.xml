@@ -37,6 +37,9 @@
 <!--   where safari==chrome, gecko1_8==firefox 2+ -->
 <!-- Для того, чтобы компилировалось все - строчку set-property надо убрать -->
 
+<!-- <set-property name="gxt.user.agent" value="chrome"/> -->
+<!-- Нужно раскомментировать, чтобы компилировалась только одна пермутация в Sencha GXT  -->
+
 <!-- Установка общих стилей приложения. Рекомендуется устанавливать здесь, чтобы не забыть установить в каждом jsp файле. -->
 <stylesheet src="../css/internalShowcase.css"/>      
 </module>
