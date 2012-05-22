@@ -199,19 +199,21 @@
 		<copy file="${sc.gwt.src.root.dir}\App.gwt.xml" tofile="${sc.tmp.dir}\App.gwt.xml.re" overwrite="true" />
 		<copy file="${sc.gwt.src.root.dir}\template.App.gwt.xml" tofile="${sc.gwt.src.root.dir}\App.gwt.xml" overwrite="true" />		
 		<echo>Compiling GWT Javascript</echo>
-		<java classname="com.google.gwt.dev.Compiler" fork="true">
+		<java classname="com.google.gwt.dev.Compiler" fork="true" failonerror="true">
 			<classpath refid="gwt-classpath" />
 			<classpath refid="master-classpath" />
 			<arg line="-war ${sc.webapp.dir}" />
 			<arg line="-optimize 9" />
 			<arg line="ru.curs.showcase.app.App" />
 			<jvmarg line="-Dgwt.persistentunitcachedir=tmp" />
+			<jvmarg line="-Xmx500m" />
+			<jvmarg value="-XX:MaxPermSize=384m"/>
 		</java>
 		<copy tofile="${sc.gwt.src.root.dir}\App.gwt.xml" file="${sc.tmp.dir}\App.gwt.xml.re" overwrite="true" />		
 	</target>
 	
 	<target name="test.gwt" depends="build" description="Check GWT build">	
-		<java classname="com.google.gwt.dev.Compiler" fork="true">
+		<java classname="com.google.gwt.dev.Compiler" fork="true" failonerror="true">
 			<classpath refid="gwt-classpath" />
 			<classpath refid="master-classpath" />
 			<arg line="-validateOnly" />
