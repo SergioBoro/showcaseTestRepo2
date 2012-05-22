@@ -18,7 +18,7 @@
 	<property name="sc.js.dir" value="${sc.webapp.dir}/js" />
 	<property name="sc.class.dir" value="${sc.webinf.dir}/classes" />
 	<property name="sc.lib.dir" value="${sc.webinf.dir}/lib" />
-	<property name="sc.gwt.compiled.dir" value="${sc.webapp.dir}/app" />
+	<property name="sc.gwt.compiled.dir" value="${sc.webapp.dir}/secured" />
 	<property name="sc.userdata.dir" value="userdatas" />
 	<property name="sc.gwt.src.root.dir" value="${sc.src.dir}/ru/curs/showcase/app" />
 	<property name="sc.general.props.file" value="general.properties" />
