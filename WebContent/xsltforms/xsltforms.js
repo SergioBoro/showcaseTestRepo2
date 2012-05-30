@@ -668,12 +668,14 @@ var I8N = {
 
         if (!pattern) { pattern = I8N.get("format.datetime"); }
         var d = new Date();
-        I8N._parse(d, "Year", str, pattern, "yyyy");
-        I8N._parse(d, "Month", str, pattern, "MM");
-        I8N._parse(d, "Date", str, pattern, "dd");
-        I8N._parse(d, "Hours", str, pattern, "hh");
-        I8N._parse(d, "Minutes", str, pattern, "mm");
+	    // [KURS
         I8N._parse(d, "Seconds", str, pattern, "ss");
+        I8N._parse(d, "Minutes", str, pattern, "mm");        
+        I8N._parse(d, "Hours", str, pattern, "hh");
+        I8N._parse(d, "Date", str, pattern, "dd");
+        I8N._parse(d, "Month", str, pattern, "MM");
+        I8N._parse(d, "Year", str, pattern, "yyyy");
+	    // KURS]
 
         return d;
     },
@@ -4829,9 +4831,11 @@ function Calendar() {
         if (value != "") {
 	        cal.day = value;
     	    var date = new Date();
-        	date.setYear(cal.inputYear.value);
-	        date.setMonth(cal.selectMonth.value);
+    	    // [KURS
     	    date.setDate(cal.day);
+	        date.setMonth(cal.selectMonth.value);
+        	date.setYear(cal.inputYear.value);
+    	    // KURS]
     	    
             if (cal.isTimestamp) {
 							date.setSeconds(cal.inputSec.value);
