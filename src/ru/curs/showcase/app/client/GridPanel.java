@@ -220,13 +220,25 @@ public class GridPanel extends BasicElementPanelBasis {
 	}
 
 	private void saveCurrentClickSelection(final DataCell cell) {
+		if (localContext == null) {
+			return;
+		}
+
 		localContext.setCurrentColumnId(null);
 		localContext.setCurrentRecordId(null);
 
 		if (cell != null) {
-			localContext.setCurrentRecordId(cell.getRecord().getId());
-			localContext.setCurrentColumnId(cell.getColumn().getId());
+			saveCurrentClickSelection(cell.getRecord().getId(), cell.getColumn().getId());
 		}
+	}
+
+	private void saveCurrentClickSelection(final String recId, final String colId) {
+		if (localContext == null) {
+			return;
+		}
+
+		localContext.setCurrentRecordId(recId);
+		localContext.setCurrentColumnId(colId);
 	}
 
 	private void setDataGridPanel(final UpdateType ut) {
@@ -493,6 +505,7 @@ public class GridPanel extends BasicElementPanelBasis {
 			}
 			break;
 		case RECORDSET_BY_UPDATERECORDSET:
+			saveCurrentClickSelection(selected.recId, selected.colId);
 			runAction(grid.getActionForDependentElements());
 			break;
 		default:
