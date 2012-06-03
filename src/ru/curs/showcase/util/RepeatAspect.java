@@ -7,7 +7,6 @@ import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.*;
 
-
 /**
  * Аспект для @Repeat в модульных тестах.
  * 

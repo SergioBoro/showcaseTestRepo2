@@ -6,7 +6,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 
-
 /**
  * Аспект для подключения пост-проверки к методу, возвращающему boolean, с
  * помощью аннотации DoAfterCheck.
@@ -17,7 +16,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 @Aspect
 public class DoAfterCheckAspect {
 
-	@SuppressWarnings({ "unused" })
+	@SuppressWarnings("unused")
 	@Pointcut("execution(public boolean ru.curs.showcase..*()) && @annotation(annotation)")
 	private void doAfterCheckCondition(final DoAfterCheck annotation) {
 	};
