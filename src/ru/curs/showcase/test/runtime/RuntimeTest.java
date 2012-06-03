@@ -201,7 +201,7 @@ public class RuntimeTest extends AbstractTest {
 	}
 
 	@Test
-	public void testClientState() {
+	public void serverStateGetCommandShouldCorrectDetermineBrowserTypeAndVersion() {
 		CompositeContext context = generateContextWithSessionInfo();
 		ServerStateGetCommand command = new ServerStateGetCommand(context);
 		ServerState serverState = command.execute();
@@ -249,6 +249,8 @@ public class RuntimeTest extends AbstractTest {
 		assertNotNull(state.getServerTime());
 		assertNotNull(state.getSqlVersion());
 		assertNotNull(state.getDojoVersion());
+		assertNotNull(state.getCaseSensivityIDs());
+		assertNotNull(state.getEnableClientLog());
 
 		assertEquals("10.0.0.9999", ServerStateFactory.getAppVersion("ru/curs/showcase/test/"));
 	}

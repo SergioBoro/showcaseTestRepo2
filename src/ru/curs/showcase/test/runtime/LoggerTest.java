@@ -6,9 +6,10 @@ import java.util.*;
 
 import org.junit.Test;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.app.api.event.Action;
-import ru.curs.showcase.app.server.AppInitializer;
+import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.server.*;
+import ru.curs.showcase.core.command.WriteToLogFromClientCommand;
 import ru.curs.showcase.core.event.ExecServerActivityCommand;
 import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.core.jython.JythonQuery;
@@ -156,5 +157,40 @@ public class LoggerTest extends AbstractTestWithDefaultUserData {
 			}
 		}
 		assertEquals(jythonEvents, 2);
+	}
+
+	@Test
+	public void directionObjectShouldGenerateRightSL4JMarker() {
+		assertNotNull(HandlingDirection.OUTPUT.getMarker());
+		assertNotNull(HandlingDirection.INPUT.getMarker());
+		assertEquals("OUTPUT", HandlingDirection.OUTPUT.getMarker().getName());
+		assertEquals("INPUT", HandlingDirection.INPUT.getMarker().getName());
+	}
+
+	@Test
+	public void writeToLogShouldAddMessageToWebConsole() {
+		AppInfoSingleton.getAppInfo().getLastLogEvents().clear();
+		DataServiceImpl servlet = new DataServiceImpl();
+		servlet.writeToLog(new CompositeContext(), "message01", MessageType.WARNING);
+
+		Map<String, List<String>> params = null;
+		Collection<LoggingEventDecorator> selected =
+			AppInfoSingleton.getAppInfo().getLastLogEvents(params);
+
+		assertEquals(2, selected.size());
+		Iterator<LoggingEventDecorator> iterator = selected.iterator();
+		LoggingEventDecorator event = null;
+		while (iterator.hasNext()) {
+			event = iterator.next();
+			if ("WARN".equals(event.getLevel())) {
+				assertEquals("message01", event.getMessage());
+				assertEquals(WriteToLogFromClientCommand.CLIENT_LABEL, event.getProcess());
+				assertNull(event.getDirection());
+				assertEquals(WriteToLogFromClientCommand.class.getSimpleName(),
+						event.getCommandName());
+				return;
+			}
+		}
+		fail();
 	}
 }

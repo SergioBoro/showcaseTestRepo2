@@ -10,7 +10,7 @@ import org.slf4j.*;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.html.XForm;
 import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.runtime.*;
@@ -78,7 +78,7 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 
 	private void logOutput() {
 		Marker marker = MarkerFactory.getDetachedMarker(XMLUtils.XSL_MARKER);
-		marker.add(MarkerFactory.getMarker(LastLogEvents.OUTPUT));
+		marker.add(HandlingDirection.OUTPUT.getMarker());
 		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s",
 				XSLTransformerPoolFactory.XSLTFORMS_XSL)));
 		LOGGER.info(marker, html);
@@ -89,7 +89,7 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 			return;
 		}
 		Marker marker = MarkerFactory.getDetachedMarker(XMLUtils.XSL_MARKER);
-		marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
+		marker.add(HandlingDirection.INPUT.getMarker());
 		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s",
 				XSLTransformerPoolFactory.XSLTFORMS_XSL)));
 		LOGGER.info(marker, XMLUtils.documentToString(template));

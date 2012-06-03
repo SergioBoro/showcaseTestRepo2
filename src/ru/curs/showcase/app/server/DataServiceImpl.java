@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.core.chart.ChartGetCommand;
-import ru.curs.showcase.core.command.ServerStateGetCommand;
+import ru.curs.showcase.core.command.*;
 import ru.curs.showcase.core.event.ExecServerActivityCommand;
 import ru.curs.showcase.core.frame.MainPageGetCommand;
 import ru.curs.showcase.core.geomap.GeoMapGetCommand;
@@ -119,10 +119,17 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public Plugin getPlugin(CompositeContext aContext, DataPanelElementInfo aElementInfo)
-			throws GeneralException {
+	public Plugin getPlugin(final CompositeContext aContext,
+			final DataPanelElementInfo aElementInfo) throws GeneralException {
 		PluginCommand command = new PluginCommand(aContext, aElementInfo);
 		return command.execute();
 	}
 
+	@Override
+	public void writeToLog(final CompositeContext aContext, final String aMessage,
+			final MessageType aMessageType) throws GeneralException {
+		WriteToLogFromClientCommand command =
+			new WriteToLogFromClientCommand(aContext, aMessage, aMessageType);
+		command.execute();
+	}
 }

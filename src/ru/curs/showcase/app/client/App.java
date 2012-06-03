@@ -52,6 +52,15 @@ public class App implements EntryPoint {
 			}
 		});
 
+		dataService.writeToLog(context, "from client сообщение", MessageType.WARNING,
+				new GWTServiceCallback<Void>(Constants.ERROR_IN_SERVER_ACTIVITY) {
+
+					@Override
+					public void onSuccess(final Void fakeRes) {
+
+					}
+
+				});
 	}
 
 	private void getAndFillMainPage() {

@@ -342,7 +342,7 @@ public final class XMLUtils {
 		}
 
 		Marker marker = MarkerFactory.getDetachedMarker(XSL_MARKER);
-		marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
+		marker.add(HandlingDirection.INPUT.getMarker());
 		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s", xsltFileName)));
 		LOGGER.info(marker, value);
 		return sourceCopy;
@@ -353,7 +353,7 @@ public final class XMLUtils {
 			return;
 		}
 		Marker marker = MarkerFactory.getDetachedMarker(XSL_MARKER);
-		marker.add(MarkerFactory.getMarker(LastLogEvents.OUTPUT));
+		marker.add(HandlingDirection.OUTPUT.getMarker());
 		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s", xsltFileName)));
 		LOGGER.info(marker, result);
 	}

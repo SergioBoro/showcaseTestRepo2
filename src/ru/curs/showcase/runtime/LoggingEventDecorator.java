@@ -1,5 +1,6 @@
 package ru.curs.showcase.runtime;
 
+
 /**
  * Интерфейс декоратора события лога. Реализация для конкретного логгера также
  * должна имплементировать AbstractCommandContext.

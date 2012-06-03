@@ -165,4 +165,19 @@ public interface DataService extends RemoteService {
 	 */
 	Plugin getPlugin(CompositeContext context, DataPanelElementInfo elementInfo)
 			throws GeneralException;
+
+	/**
+	 * Функция для записи в лог приложения на сервере из клиентской части. Все
+	 * клиентские сообщения попадут в веб-консоль со специальным значением
+	 * атрибута process = client.
+	 * 
+	 * @param context
+	 *            - контекст.
+	 * @param message
+	 *            - сообщение.
+	 * @param messageType
+	 *            - тип сообщения: информация, предупреждение или ошибка.
+	 */
+	void writeToLog(CompositeContext aContext, String message, MessageType messageType)
+			throws GeneralException;
 }

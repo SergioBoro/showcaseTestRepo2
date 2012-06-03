@@ -19,6 +19,7 @@ import ru.curs.showcase.util.exception.*;
  */
 public final class ServerStateFactory {
 
+	private static final String ENABLE_CLIENT_LOG = "enable.client.log";
 	private static final String DOJO_VERSION_FILE = "/js/dojo/package.json";
 	private static final String GWTVERSION_FILE = "gwtversion";
 	private static final String BUILD_FILE = "build";
@@ -61,6 +62,11 @@ public final class ServerStateFactory {
 		state.setDojoVersion(getDojoVersion());
 		state.setGwtVersion(getGwtVersion());
 		state.setCaseSensivityIDs(IDSettings.getInstance().getCaseSensivity());
+
+		String value = UserDataUtils.getGeneralOptionalProp(ENABLE_CLIENT_LOG);
+		Boolean boolValue = Boolean.valueOf(value);
+		state.setEnableClientLog(boolValue);
+
 		return state;
 	}
 

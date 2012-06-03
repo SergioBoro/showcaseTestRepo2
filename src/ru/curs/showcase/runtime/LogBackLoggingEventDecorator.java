@@ -124,7 +124,7 @@ public class LogBackLoggingEventDecorator implements LoggingEventDecorator {
 		if ((marker != null) && marker.hasReferences()) {
 			return ((Marker) marker.iterator().next()).getName();
 		}
-		return "";
+		return null;
 	}
 
 	@Override

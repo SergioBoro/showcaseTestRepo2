@@ -629,14 +629,14 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		final String causeMessage = "cause text";
 		final String testMarker = "testMarker";
 		Marker marker = MarkerFactory.getDetachedMarker(testMarker);
-		marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
+		marker.add(HandlingDirection.INPUT.getMarker());
 		final String params = "exception params";
 		marker.add(MarkerFactory.getDetachedMarker(params));
 		logger.warn(marker, message, new RuntimeException(excMessage, new RuntimeException(
 				causeMessage)));
 		for (LoggingEventDecorator event : AppInfoSingleton.getAppInfo().getLastLogEvents()) {
 			if (testMarker.equals(event.getProcess())) {
-				assertEquals(LastLogEvents.INPUT, event.getDirection());
+				assertEquals(HandlingDirection.INPUT.name(), event.getDirection());
 				assertEquals(params, event.getParams());
 				assertTrue(event.getMessage().contains(message));
 				assertTrue(event.getMessage().contains(excMessage));

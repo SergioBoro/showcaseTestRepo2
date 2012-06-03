@@ -2,7 +2,6 @@ package ru.curs.showcase.runtime;
 
 import java.util.*;
 
-
 /**
  * Очередь для последних событий, записанных в лог. Длина очереди
  * устанавливается в файле общих настроек приложения.
@@ -12,7 +11,6 @@ import java.util.*;
  */
 public class LastLogEvents extends TreeSet<LoggingEventDecorator> {
 
-	public static final String INPUT = "input";
 	public static final String OUTPUT = "output";
 
 	public static final String INTERNAL_LOG_SIZE = "web.console.size";

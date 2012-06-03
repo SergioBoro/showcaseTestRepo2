@@ -58,6 +58,13 @@ public final class ServerState implements SerializableElement {
 
 	private Boolean caseSensivityIDs;
 
+	/**
+	 * Признак того, что разрешена запись в веб-консоль и лог сообщений из
+	 * клиента. Отключить данную опцию имеет смысл из соображений
+	 * производительности.
+	 */
+	private Boolean enableClientLog;
+
 	public String getAppVersion() {
 		return appVersion;
 	}
@@ -136,6 +143,14 @@ public final class ServerState implements SerializableElement {
 
 	public void setCaseSensivityIDs(final Boolean aCaseSensivityIDs) {
 		caseSensivityIDs = aCaseSensivityIDs;
+	}
+
+	public Boolean getEnableClientLog() {
+		return enableClientLog;
+	}
+
+	public void setEnableClientLog(final Boolean aEnableClientLog) {
+		enableClientLog = aEnableClientLog;
 	}
 
 }

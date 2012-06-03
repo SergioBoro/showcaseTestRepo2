@@ -348,7 +348,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	protected boolean execute() throws SQLException {
 		String value = SQLUtils.addParamsToSQLTemplate(getSqlText(), params);
 		Marker marker = MarkerFactory.getDetachedMarker(SQL_MARKER);
-		marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
+		marker.add(HandlingDirection.INPUT.getMarker());
 		LOGGER.info(marker, value);
 		boolean res = getStatement().execute();
 		AppInfoSingleton.getAppInfo().addExecutedProc(getProcName());
@@ -451,7 +451,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 
 	private void logOutputXMLString(final String value) {
 		Marker marker = MarkerFactory.getDetachedMarker(SQL_MARKER);
-		marker.add(MarkerFactory.getMarker(LastLogEvents.OUTPUT));
+		marker.add(HandlingDirection.OUTPUT.getMarker());
 		LOGGER.info(marker, value);
 	}
 

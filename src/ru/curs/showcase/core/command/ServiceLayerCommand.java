@@ -148,7 +148,7 @@ public abstract class ServiceLayerCommand<T> {
 						continue;
 					}
 					Marker marker = MarkerFactory.getDetachedMarker(SERVLET_MARKER);
-					marker.add(MarkerFactory.getMarker(LastLogEvents.INPUT));
+					marker.add(HandlingDirection.INPUT.getMarker());
 					marker.add(MarkerFactory.getMarker(String.format("class=%s \r\nmethod=%s",
 							method.getReturnType().getSimpleName(), method.getName())));
 					LOGGER.info(marker, serializer.serialize(methodResult));
@@ -166,6 +166,7 @@ public abstract class ServiceLayerCommand<T> {
 
 	protected void postProcess() {
 		XSLTransformerPoolFactory.cleanup();
+		MDC.clear();
 	}
 
 	/**
@@ -181,7 +182,7 @@ public abstract class ServiceLayerCommand<T> {
 		}
 
 		Marker marker = MarkerFactory.getDetachedMarker(SERVLET_MARKER);
-		marker.add(MarkerFactory.getMarker(LastLogEvents.OUTPUT));
+		marker.add(HandlingDirection.OUTPUT.getMarker());
 		marker.add(MarkerFactory.getMarker(String.format("class=%s", result.getClass()
 				.getSimpleName())));
 		if (result instanceof SizeEstimate) {
