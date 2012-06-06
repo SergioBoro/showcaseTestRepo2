@@ -307,7 +307,7 @@
 
 
 			<xf:submission id="wrong_save" method="post" instance="mainInstance"
-				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission11">
+				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission_ec">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
