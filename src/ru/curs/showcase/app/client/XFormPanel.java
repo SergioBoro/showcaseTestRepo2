@@ -32,6 +32,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 	private JavaScriptObject cacheInstances;
 
+	private Boolean needReload = true;
+
 	/**
 	 * Окно для загрузки файлов на сервер.
 	 */
@@ -121,6 +123,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 		p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 
 		if (xform1 == null) {
+			needReload = true;
 			setXFormPanel();
 		} else {
 
@@ -135,6 +138,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	@Override
 	public void reDrawPanel(final CompositeContext context) {
 
+		needReload = true;
 		reDrawPanelExt(context, null);
 
 	}
@@ -448,6 +452,17 @@ public class XFormPanel extends BasicElementPanelBasis {
 		xf = null;
 	}
 
+	/**
+	 * Вызывается после показом модального окна, содержащего XFormPanel.
+	 * 
+	 * @param context
+	 *            CompositeContext
+	 */
+	public void reDrawAfterModalWindowShown(final CompositeContext context) {
+		needReload = false;
+		reDrawPanelExt(context, null);
+	}
+
 	@Override
 	public final void refreshPanel() {
 		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
@@ -455,6 +470,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 			p.clear();
 			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 		}
+		needReload = true;
 		setXFormPanel();
 
 	}
@@ -463,6 +479,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	public XFormContext getDetailedContext() {
 		XFormContext context = new XFormContext(getContext(), fillAndGetMainInstance());
 		context.setKeepUserSettings(!isNeedResetLocalContext());
+		context.setNeedReload(needReload);
 		return context;
 	}
 

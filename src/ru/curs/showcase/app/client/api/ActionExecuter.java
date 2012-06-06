@@ -86,7 +86,7 @@ public final class ActionExecuter {
 			final String addContext, final String filterContext)
 	/*-{
 		var exp = '$wnd.' + procName + "('" + mainContext + "', '" + addContext
-		+ "', '" + filterContext + "')";
+				+ "', '" + filterContext + "')";
 		eval(exp);
 	}-*/;
 
@@ -277,11 +277,10 @@ public final class ActionExecuter {
 				if (bep instanceof XFormPanel) {
 					bep.setNeedResetLocalContext(false);
 					bep.showPanel();
-					bep.reDrawPanel(bep.getElementInfo().getContext(ac));
-
+					((XFormPanel) bep).reDrawAfterModalWindowShown(bep.getElementInfo()
+							.getContext(ac));
 				}
 			}
 		}
 	}
-
 }

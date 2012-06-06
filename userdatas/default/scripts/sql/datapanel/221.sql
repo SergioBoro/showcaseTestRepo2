@@ -32,5 +32,15 @@
 		<element id="65" type="webtext" proc="webtext_filter_and_add" hideOnLoad="true" />
 		<element id="63" type="chart" proc="chart_bal_extgridlive" hideOnLoad="true" />
 	</tab>
+	<tab id="8" name="XForms. needReload">		
+		<element id="81" type="xforms" template="Showcase_Template2.xml"
+			proc="xforms_proc2"/>
+		<element id="82" type="webtext" proc="webtext_3buttons" hideOnLoad="true"/>
+		<element id="83" type="grid" proc="grid_bal_articles"/>	
+		<element id="84" type="xforms" template="Showcase_Template3.xml"
+			proc="xforms_proc3" neverShowInPanel="true">
+			<proc id="proc1" name="xforms_saveproc3" type="SAVE"/>
+		</element>
+	</tab>				
 </datapanel>    
     ';

@@ -35,6 +35,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String ROOT_SRV_DATA_TAG = "srvdata";
 	private static final String ORIGIN = "instance('" + ROOT_SRV_DATA_TAG + "')/"
 			+ UPLOAD_DATA_TAG + "/%s";
+	private static final String NEED_RELOAD_TAG = "needReload";
 
 	private static final String LOAD = "load";
 	private static final String RESOURCE = "resource";
@@ -88,8 +89,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		el = doc.createElement(SCHEMA_TAG);
 		srv = srv.appendChild(el);
 
-		addServerElement(doc, srv, context);
-		addServerElement(doc, srv, element);
+		addServerElement(context, doc, srv, context);
+		addServerElement(context, doc, srv, element);
 
 		doc.normalizeDocument();
 
@@ -299,10 +300,15 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		return String.format("%s_%s__%s", element.getUploaderId(procId), index, "hidden_target");
 	}
 
-	private static void addServerElement(final org.w3c.dom.Document doc, final Node srv,
-			final Object xsrElement) {
+	private static void addServerElement(final CompositeContext context,
+			final org.w3c.dom.Document doc, final Node srv, final Object xsrElement) {
 		Element inserted = XMLUtils.objectToXML(xsrElement).getDocumentElement();
 		Node nn = doc.importNode(inserted, true);
+		if ((xsrElement instanceof DataPanelElementInfo) && (context instanceof XFormContext)) {
+			Element needReload = doc.createElement(NEED_RELOAD_TAG);
+			needReload.setTextContent(String.valueOf(((XFormContext) context).getNeedReload()));
+			nn.appendChild(needReload);
+		}
 		srv.appendChild(nn);
 	}
 

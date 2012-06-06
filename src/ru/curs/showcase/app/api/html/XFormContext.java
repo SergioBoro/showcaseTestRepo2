@@ -25,6 +25,12 @@ public class XFormContext extends CompositeContext {
 	@XmlTransient
 	private Boolean keepUserSettings = true;
 
+	/**
+	 * Признак того, что нужно обновлять форму.
+	 */
+	@XmlTransient
+	private Boolean needReload = true;
+
 	public XFormContext(final CompositeContext baseContext) {
 		super();
 		assignNullValues(baseContext);
@@ -77,6 +83,14 @@ public class XFormContext extends CompositeContext {
 
 	public void setKeepUserSettings(final Boolean aKeepUserSettings) {
 		keepUserSettings = aKeepUserSettings;
+	}
+
+	public Boolean getNeedReload() {
+		return needReload;
+	}
+
+	public void setNeedReload(final Boolean aNeedReload) {
+		needReload = aNeedReload;
 	}
 
 }
