@@ -25,7 +25,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public class XFormSLTest extends AbstractTest {
 	private static final String SHOWCASE_DATA_XML = "Showcase_Data.xml";
-	private static final String DATA_XFORMS = "data\\xforms\\";
+	private static final String DATA_XFORMS = "data/xforms/";
 	private static final String SHOWCASE_DATA_COPY_XML = "Showcase_Data_Copy.xml";
 	private static final String XFORMS_SUBMISSION1 = "xforms_submission1";
 	private static final String TEST_DATA_TAG = "<data>test</data>";
@@ -358,7 +358,7 @@ public class XFormSLTest extends AbstractTest {
 		XFormContext context = new XFormContext(generateContextWithSessionInfo(), inputData);
 		context.setAdditional(SHOWCASE_DATA_COPY_XML);
 		File file =
-			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\" + DATA_XFORMS
+			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/" + DATA_XFORMS
 					+ SHOWCASE_DATA_COPY_XML);
 		if (file.exists()) {
 			file.delete();
@@ -375,7 +375,7 @@ public class XFormSLTest extends AbstractTest {
 		command.execute();
 
 		file =
-			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\" + DATA_XFORMS
+			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/" + DATA_XFORMS
 					+ SHOWCASE_DATA_COPY_XML);
 		assertTrue(file.exists());
 		String outputData =

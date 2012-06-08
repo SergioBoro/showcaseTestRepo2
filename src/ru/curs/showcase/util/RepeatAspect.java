@@ -19,10 +19,10 @@ public final class RepeatAspect {
 
 	@SuppressWarnings("unused")
 	@Pointcut("execution(@ru.curs.showcase.util.Repeat public void ru.curs.showcase..*())")
-	private void testWithRepeat() {
+	private void repeatPointcut() {
 	};
 
-	@Around("testWithRepeat() && !cflow(adviceexecution())")
+	@Around("repeatPointcut() && !cflow(adviceexecution())")
 	public void repeat(final ProceedingJoinPoint jp) throws IllegalAccessException,
 			InvocationTargetException {
 		Method method = ((MethodSignature) jp.getSignature()).getMethod();

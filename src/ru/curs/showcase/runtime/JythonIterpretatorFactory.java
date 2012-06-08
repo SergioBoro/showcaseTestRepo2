@@ -17,7 +17,7 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 	private static final String PYTHON_SCRIPTS_DIR_NOT_FOUND =
 		"Каталог со стандартными python скриптами '%s' не найден";
 	public static final String LIB_JYTHON_PATH = "/WEB-INF/libJython";
-	public static final String SCRIPTS_JYTHON_PATH = "scripts\\\\jython";
+	public static final String SCRIPTS_JYTHON_PATH = "scripts/jython";
 
 	private static final JythonIterpretatorFactory INSTANCE = new JythonIterpretatorFactory();
 
@@ -65,7 +65,7 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 	}
 
 	public static String getUserDataScriptDir() {
-		return AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\\\"
+		return AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/"
 				+ SCRIPTS_JYTHON_PATH;
 	}
 

@@ -64,7 +64,7 @@ public abstract class JythonQuery<T> {
 		try {
 			String className = TextUtils.extractFileName(getJythonProcName());
 			File script =
-				new File(JythonIterpretatorFactory.getUserDataScriptDir() + "\\\\"
+				new File(JythonIterpretatorFactory.getUserDataScriptDir() + "/"
 						+ getJythonProcName());
 			if (!script.exists()) {
 				throw new SettingsFileOpenException(getJythonProcName(), SettingsFileType.JYTHON);

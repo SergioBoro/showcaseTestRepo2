@@ -263,7 +263,7 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 
 		if (template.getRegisterSolutionMap() != null) {
 			File connectMapFile =
-				new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\js\\"
+				new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/js/"
 						+ template.getRegisterSolutionMap() + ".js");
 			if (!connectMapFile.exists()) {
 				throw new GeoMapWrongTemplateException(String.format(CONNECTION_FILE_NOT_FOUND,

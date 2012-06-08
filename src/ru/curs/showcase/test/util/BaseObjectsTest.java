@@ -75,8 +75,8 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testBatchFileProcessorAndDeleteDir() throws IOException {
-		String sourceDir = "userdatas\\default\\css";
-		String destDir = "tmp\\css";
+		String sourceDir = "userdatas/default/css";
+		String destDir = "tmp/css";
 
 		File dir = new File(destDir);
 		FileUtils.deleteDir(destDir);
@@ -87,10 +87,10 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 		fprocessor.process(new CopyFileAction(destDir));
 
 		assertTrue(dir.exists());
-		dir = new File(destDir + "\\level2");
+		dir = new File(destDir + "/level2");
 		assertTrue(dir.exists());
 		assertTrue(dir.isDirectory());
-		File file = new File(destDir + "\\level2\\test.css");
+		File file = new File(destDir + "/level2/test.css");
 		assertTrue(file.exists());
 		assertTrue(file.isFile());
 

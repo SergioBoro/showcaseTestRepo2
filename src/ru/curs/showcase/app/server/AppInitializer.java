@@ -82,7 +82,7 @@ public final class AppInitializer {
 
 	private static void initClassPath() {
 		File file = new File(".");
-		AppInfoSingleton.getAppInfo().setWebAppPath(file.getAbsolutePath() + "\\WebContent");
+		AppInfoSingleton.getAppInfo().setWebAppPath(file.getAbsolutePath() + "/WebContent");
 	}
 
 	/**
@@ -92,7 +92,7 @@ public final class AppInitializer {
 	 */
 	private static void jythonInit() {
 		Properties newProps = new Properties();
-		newProps.put("python.cachedir", "..\\tmp");
+		newProps.put("python.cachedir", "../tmp");
 		PythonInterpreter.initialize(System.getProperties(), newProps, new String[0]);
 	}
 

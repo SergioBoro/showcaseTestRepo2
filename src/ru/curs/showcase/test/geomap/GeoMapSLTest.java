@@ -108,7 +108,7 @@ public class GeoMapSLTest extends AbstractTest {
 
 	@Test
 	public void testSVGGet() throws IOException {
-		String inputFile = RU_CURS_SHOWCASE_TEST + GEOMAP_WOHEADER_SVG;
+		String inputFile = TEST_ROOT + GEOMAP_WOHEADER_SVG;
 		InputStream is = FileUtils.loadClassPathResToStream(inputFile);
 		String svg = TextUtils.streamToString(is);
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
@@ -123,7 +123,7 @@ public class GeoMapSLTest extends AbstractTest {
 
 	@Test
 	public void testPNGGet() throws IOException {
-		String inputFile = RU_CURS_SHOWCASE_TEST + GEOMAP_WOHEADER_SVG;
+		String inputFile = TEST_ROOT + GEOMAP_WOHEADER_SVG;
 		InputStream is = FileUtils.loadClassPathResToStream(inputFile);
 		String svg = TextUtils.streamToString(is);
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
@@ -137,7 +137,7 @@ public class GeoMapSLTest extends AbstractTest {
 
 	@Test
 	public void testJPGGet() throws IOException {
-		String inputFile = RU_CURS_SHOWCASE_TEST + GEOMAP_WOHEADER_SVG;
+		String inputFile = TEST_ROOT + GEOMAP_WOHEADER_SVG;
 		InputStream is = FileUtils.loadClassPathResToStream(inputFile);
 		String svg = TextUtils.streamToString(is);
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
@@ -198,7 +198,7 @@ public class GeoMapSLTest extends AbstractTest {
 	 */
 	@Test
 	public void testSimpleSVGGet() throws IOException {
-		String inputFile = RU_CURS_SHOWCASE_TEST + GEOMAP_WITH_HEADER_SVG;
+		String inputFile = TEST_ROOT + GEOMAP_WITH_HEADER_SVG;
 		InputStream is = FileUtils.loadClassPathResToStream(inputFile);
 		String svg = TextUtils.streamToString(is);
 		CompositeContext context =
