@@ -68,10 +68,12 @@ public final class SVGConvertor {
 
 	private void setTranscodeOptions(final ImageTranscoder t) {
 		if (exportSettings.getHeight() != null) {
-			t.addTranscodingHint(ImageTranscoder.KEY_HEIGHT, new Float(exportSettings.getHeight()));
+			t.addTranscodingHint(ImageTranscoder.KEY_HEIGHT,
+					Float.valueOf(exportSettings.getHeight()));
 		}
 		if (exportSettings.getWidth() != null) {
-			t.addTranscodingHint(ImageTranscoder.KEY_WIDTH, new Float(exportSettings.getWidth()));
+			t.addTranscodingHint(ImageTranscoder.KEY_WIDTH,
+					Float.valueOf(exportSettings.getWidth()));
 		}
 		t.addTranscodingHint(ImageTranscoder.KEY_FORCE_TRANSPARENT_WHITE, true);
 	}

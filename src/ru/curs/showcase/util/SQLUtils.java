@@ -177,11 +177,7 @@ public final class SQLUtils {
 				matcher.appendReplacement(result, "null");
 			} else {
 				String tmpValue = (String) paramValue;
-				if (tmpValue != null) {
-					tmpValue = tmpValue.replace("\\", "\\\\");
-					tmpValue = tmpValue.replace("$", "\\$");
-					tmpValue = tmpValue.replace("'", "''");
-				}
+				tmpValue = tmpValue.replace("\\", "\\\\").replace("$", "\\$").replace("'", "''");
 				matcher.appendReplacement(result, String.format("N'%s'", tmpValue));
 			}
 		}

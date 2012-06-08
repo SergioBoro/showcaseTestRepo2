@@ -91,7 +91,7 @@ public class XFormGatewayTest extends AbstractTestWithDefaultUserData {
 	 * 
 	 */
 	@Test
-	public void testDBgateway() {
+	public void testDBGateway() {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = getTestXForms1Info();
 

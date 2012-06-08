@@ -120,7 +120,7 @@ public class DataPanelSLTest extends AbstractTest {
 
 		DataPanelElementInfo elementInfo = panel.getTabById("4").getElementInfoById("401");
 		assertNotNull(elementInfo);
-		assertEquals(DataPanelElementSubType.EXT_TREE_GRID, elementInfo.getSubType());
+		assertEquals(DataPanelElementSubType.EXT_TREE_GRID, elementInfo.getSubtype());
 		assertEquals(true, elementInfo.getEditable());
 	}
 

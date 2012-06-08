@@ -84,11 +84,11 @@ public abstract class MSSQLExecGateway extends SPQuery {
 	@Override
 	public String getSqlTemplate(final int index) {
 		String template = "{call sp_executesql (?, ?, %s ?, ?)}";
-		String specialParams = "";
+		StringBuilder specialParams = new StringBuilder();
 		for (int i = 0; i < getParamCount() - 2 - 2; i++) {
-			specialParams += "?, ";
+			specialParams.append("?, ");
 		}
-		return String.format(template, specialParams);
+		return String.format(template, specialParams.toString());
 	}
 
 	@Override

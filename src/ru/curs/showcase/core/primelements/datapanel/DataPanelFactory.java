@@ -141,7 +141,7 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 			el.setRefreshInterval(Integer.valueOf(value));
 		}
 		if (attrs.getIndex(SUB_TYPE_TAG) > -1) {
-			el.setSubType(DataPanelElementSubType.valueOf(attrs.getValue(SUB_TYPE_TAG)
+			el.setSubtype(DataPanelElementSubType.valueOf(attrs.getValue(SUB_TYPE_TAG)
 					.toUpperCase()));
 		}
 		if (attrs.getIndex(EDITABLE_TAG) > -1) {

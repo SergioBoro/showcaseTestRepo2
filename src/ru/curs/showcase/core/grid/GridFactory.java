@@ -672,6 +672,8 @@ public class GridFactory extends CompBasedElementFactory {
 			} else {
 				df = DateFormat.getDateTimeInstance(style, style, DEF_NON_LOCAL_LOCALE);
 			}
+		} else {
+			df = DateFormat.getDateTimeInstance(style, style);
 		}
 		return df.format(date);
 	}

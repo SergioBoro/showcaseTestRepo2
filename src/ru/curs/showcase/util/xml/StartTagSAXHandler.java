@@ -1,7 +1,5 @@
 package ru.curs.showcase.util.xml;
 
-
-
 /**
  * Стандартный упрощенный обработчик для случая, когда нужно обрабатывать только
  * начальные тэги.
@@ -13,8 +11,7 @@ public abstract class StartTagSAXHandler extends SAXTagHandler {
 
 	@Override
 	protected String[] getEndTrags() {
-		String[] empty = {};
-		return empty;
+		return new String[0];
 	}
 
 	@Override

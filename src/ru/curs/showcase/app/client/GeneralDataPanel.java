@@ -445,7 +445,7 @@ public class GeneralDataPanel {
 	public static Widget generateGridElement(final DataPanelElementInfo dpe) {
 		Widget w = null;
 
-		DataPanelElementSubType subtype = dpe.getSubType();
+		DataPanelElementSubType subtype = dpe.getSubtype();
 		if (subtype == null) {
 			subtype = DataPanelElementSubType.PAGING_GRID;
 		}

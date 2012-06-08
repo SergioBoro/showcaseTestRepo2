@@ -200,11 +200,11 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		return type;
 	}
 
-	public final DataPanelElementSubType getSubType() {
+	public final DataPanelElementSubType getSubtype() {
 		return subtype;
 	}
 
-	public final void setSubType(final DataPanelElementSubType aSubtype) {
+	public final void setSubtype(final DataPanelElementSubType aSubtype) {
 		this.subtype = aSubtype;
 	}
 

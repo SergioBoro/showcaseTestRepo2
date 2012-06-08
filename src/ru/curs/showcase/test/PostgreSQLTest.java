@@ -170,7 +170,6 @@ public class PostgreSQLTest extends AbstractTest {
 		assertEquals(GridValueType.IMAGE, col.getValueType());
 		assertEquals("solutions/pg/resources/imagesingrid/test.jpg", grid.getDataSet()
 				.getRecordSet().getRecords().get(0).getValue(col));
-		col = grid.getDataSet().getColumnSet().getColumns().get(2);
 
 		assertEquals(grid.getDataSet().getRecordSet().getPageSize(), grid.getDataSet()
 				.getRecordSet().getRecordsCount());
