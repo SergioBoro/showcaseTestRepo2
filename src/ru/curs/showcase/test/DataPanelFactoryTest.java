@@ -63,7 +63,7 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testGetData() {
-		final int panelsCount = 6;
+		final int panelsCount = 7;
 		final int firstPanelSecondTabElCount = 5;
 
 		PrimElementsGateway gateway = new PrimElementsFileGateway(SettingsFileType.DATAPANEL);

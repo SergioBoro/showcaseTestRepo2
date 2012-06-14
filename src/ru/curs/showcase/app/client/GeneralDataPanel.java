@@ -452,25 +452,39 @@ public class GeneralDataPanel {
 		switch (subtype) {
 		case EXT_LIVE_GRID:
 		case EXT_PAGING_GRID:
-			LiveGridPanel edgp = null;
+			LiveGridPanel lgp = null;
 
 			if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-				edgp = new LiveGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
-				w = edgp.getPanel();
+				lgp = new LiveGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
+				w = lgp.getPanel();
 				w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 			} else {
-				edgp = new LiveGridPanel(dpe);
-				w = edgp.getPanel();
-				edgp.hidePanel();
+				lgp = new LiveGridPanel(dpe);
+				w = lgp.getPanel();
+				lgp.hidePanel();
 			}
 
-			getUiElements(dpe).add(new UIDataPanelElement(edgp));
-			addDataPanelForCaching(dpe, edgp);
+			getUiElements(dpe).add(new UIDataPanelElement(lgp));
+			addDataPanelForCaching(dpe, lgp);
 
 			break;
 
 		case EXT_TREE_GRID:
-			MessageBox.showSimpleMessage("generateGridElement", "TreeGrid из GXT");
+			TreeGridPanel tgp = null;
+
+			if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+				tgp = new TreeGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
+				w = tgp.getPanel();
+				w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+			} else {
+				tgp = new TreeGridPanel(dpe);
+				w = tgp.getPanel();
+				tgp.hidePanel();
+			}
+
+			getUiElements(dpe).add(new UIDataPanelElement(tgp));
+			addDataPanelForCaching(dpe, tgp);
+
 			break;
 
 		case PAGING_GRID: // существующий грид

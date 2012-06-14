@@ -45,8 +45,8 @@ public class GridContext extends CompositeContext {
 		return "GridContext [sortedColumns=" + sortedColumns + ", pageInfo=" + pageInfo
 				+ ", liveInfo=" + liveInfo + ", currentRecordId=" + currentRecordId
 				+ ", currentColumnId=" + currentColumnId + ", selectedRecordIds="
-				+ selectedRecordIds + ", isFirstLoad=" + isFirstLoad + ", toString()="
-				+ super.toString() + "]";
+				+ selectedRecordIds + ", isFirstLoad=" + isFirstLoad + ", parentId=" + parentId
+				+ ", toString()=" + super.toString() + "]";
 	}
 
 	private static final long serialVersionUID = 2005065362465664382L;
@@ -63,6 +63,11 @@ public class GridContext extends CompositeContext {
 	private LiveInfo liveInfo = new LiveInfo(DEF_OFFSET, DEF_LIMIT);
 
 	private DataPanelElementSubType subtype = null;
+
+	/**
+	 * Идентификатор parent-записи. Имеет смысл только для tree-грида.
+	 */
+	private String parentId = null;
 
 	/**
 	 * Идентификатор выделенной по клику в гриде записи.
@@ -222,7 +227,7 @@ public class GridContext extends CompositeContext {
 	}
 
 	public void setLiveInfo(final LiveInfo aLiveInfo) {
-		this.liveInfo = aLiveInfo;
+		liveInfo = aLiveInfo;
 	}
 
 	public DataPanelElementSubType getSubtype() {
@@ -230,7 +235,15 @@ public class GridContext extends CompositeContext {
 	}
 
 	public void setSubtype(final DataPanelElementSubType aSubtype) {
-		this.subtype = aSubtype;
+		subtype = aSubtype;
+	}
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(final String aParentId) {
+		parentId = aParentId;
 	}
 
 	/**

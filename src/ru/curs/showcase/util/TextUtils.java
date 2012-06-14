@@ -208,4 +208,18 @@ public final class TextUtils {
 		}
 		return result.toString();
 	}
+
+	/**
+	 * Расширенное преобразование строки в Boolean.
+	 */
+	public static boolean stringToBoolean(final String s) {
+		boolean b = false;
+		String str = s.trim();
+		if ("true".equalsIgnoreCase(str) || "yes".equalsIgnoreCase(str)
+				|| "1".equalsIgnoreCase(str)) {
+			b = true;
+		}
+		return b;
+	}
+
 }

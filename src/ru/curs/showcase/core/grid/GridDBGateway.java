@@ -24,10 +24,10 @@ public class GridDBGateway extends AbstractGridDBGateway {
 		"Не задана процедура для скачивания файлов из сервера для linkId=";
 
 	private static final int SORTCOLS_INDEX = 7;
-
 	private static final int OUT_SETTINGS_PARAM = 8;
-
 	private static final int ERROR_MES_INDEX_DATA_AND_SETTINGS = 9;
+
+	private static final int PARENT_ID = 8;
 
 	private static final int FIRST_RECORD_INDEX = 8;
 	private static final int PAGE_SIZE_INDEX = 9;
@@ -56,6 +56,9 @@ public class GridDBGateway extends AbstractGridDBGateway {
 	@Override
 	protected void prepareForGetDataAndSettings() throws SQLException {
 		prepareElementStatementWithErrorMes();
+		if (getContext().getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
+			setStringParam(PARENT_ID, getContext().getParentId());
+		}
 		getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
 		if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
 			getStatement().registerOutParameter(ORA_CURSOR_INDEX_DATA_AND_SETTINS,
@@ -65,7 +68,11 @@ public class GridDBGateway extends AbstractGridDBGateway {
 
 	@Override
 	public int getOutSettingsParam() {
-		return OUT_SETTINGS_PARAM;
+		if (getContext().getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
+			return OUT_SETTINGS_PARAM + 1;
+		} else {
+			return OUT_SETTINGS_PARAM;
+		}
 	}
 
 	@Override
@@ -75,7 +82,11 @@ public class GridDBGateway extends AbstractGridDBGateway {
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
 				return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 			} else {
-				return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?)}";
+				if (getContext().getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
+					return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?, ? )}";
+				} else {
+					return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?)}";
+				}
 			}
 		case DATA_ONLY_QUERY:
 			return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?)}";
@@ -115,7 +126,11 @@ public class GridDBGateway extends AbstractGridDBGateway {
 	protected int getErrorMesIndex(final int index) {
 		switch (index) {
 		case DATA_AND_SETTINS_QUERY:
-			return ERROR_MES_INDEX_DATA_AND_SETTINGS;
+			if (getContext().getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
+				return ERROR_MES_INDEX_DATA_AND_SETTINGS + 1;
+			} else {
+				return ERROR_MES_INDEX_DATA_AND_SETTINGS;
+			}
 		case FILE_DOWNLOAD:
 			return ERROR_MES_INDEX_FILE_DOWNLOAD;
 		default:

@@ -14,11 +14,9 @@ import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.DownloadHelper;
 
 import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.core.client.*;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.safecss.shared.SafeStylesUtils;
 import com.google.gwt.safehtml.shared.*;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
 import com.sencha.gxt.cell.core.client.ButtonCell.IconAlign;
@@ -27,6 +25,7 @@ import com.sencha.gxt.core.client.resources.*;
 import com.sencha.gxt.core.client.util.IconHelper;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.*;
+import com.sencha.gxt.data.shared.event.StoreSortEvent;
 import com.sencha.gxt.data.shared.loader.*;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.button.TextButton;
@@ -38,11 +37,12 @@ import com.sencha.gxt.widget.core.client.event.CellDoubleClickEvent.CellDoubleCl
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.*;
 import com.sencha.gxt.widget.core.client.toolbar.*;
+import com.sencha.gxt.widget.core.client.treegrid.TreeGrid;
 
 /**
- * Класс панели с гридом.
+ * Класс панели с tree-гридом.
  */
-public class LiveGridPanel extends BasicElementPanelBasis {
+public class TreeGridPanel extends BasicElementPanelBasis {
 
 	private static final String PROC100 = "100%";
 
@@ -56,14 +56,14 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	private final TextButton copyToClipboard = new TextButton("", IconHelper.getImageResource(
 			UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
-	private com.sencha.gxt.widget.core.client.grid.Grid<LiveGridModel> grid = null;
-	private GridSelectionModel<LiveGridModel> selectionModel = null;
+	private TreeGrid<TreeGridModel> grid = null;
+	private GridSelectionModel<TreeGridModel> selectionModel = null;
 	private ColumnSet cs = null;
-	private Timer selectionTimer = null;
+	private com.google.gwt.user.client.Timer selectionTimer = null;
 	private DataServiceAsync dataService = null;
 	private GridContext localContext = null;
 	private LiveGridMetadata gridMetadata = null;
-	private LiveGridExtradata gridExtradata = null;
+	private LiveGridExtradata gridExtradataLevel0 = null;
 	private boolean isFirstLoading = true;
 
 	private boolean isFirstLoading() {
@@ -102,7 +102,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	/**
 	 * Конструктор класса GridPanel без начального показа грида.
 	 */
-	public LiveGridPanel(final DataPanelElementInfo element) {
+	public TreeGridPanel(final DataPanelElementInfo element) {
 		setContext(null);
 		setElementInfo(element);
 		setFirstLoading(true);
@@ -111,7 +111,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	/**
 	 * Конструктор класса GridPanel.
 	 */
-	public LiveGridPanel(final CompositeContext context, final DataPanelElementInfo element,
+	public TreeGridPanel(final CompositeContext context, final DataPanelElementInfo element,
 			final Grid grid1) {
 		setContext(context);
 		setElementInfo(element);
@@ -204,22 +204,24 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 		cs = gridMetadata.getOriginalColumnSet();
 
-		RpcProxy<PagingLoadConfig, LiveGridData<LiveGridModel>> proxy =
-			new RpcProxy<PagingLoadConfig, LiveGridData<LiveGridModel>>() {
-
+		RpcProxy<TreeGridModel, List<TreeGridModel>> proxy =
+			new RpcProxy<TreeGridModel, List<TreeGridModel>>() {
 				@Override
-				public void load(final PagingLoadConfig loadConfig,
-						final AsyncCallback<LiveGridData<LiveGridModel>> callback) {
+				public void load(final TreeGridModel loadConfig,
+						final AsyncCallback<List<TreeGridModel>> callback) {
 
 					GridContext gridContext = getDetailedContext();
-					gridContext.getLiveInfo().setOffset(loadConfig.getOffset());
-					gridContext.getLiveInfo().setLimit(loadConfig.getLimit());
+					gridContext.resetForReturnAllRecords();
+					gridContext.setParentId(null);
+					if (loadConfig != null) {
+						gridContext.setParentId(loadConfig.getId());
+					}
 
-					if (!loadConfig.getSortInfo().isEmpty()) {
-						ColumnConfig<LiveGridModel, ?> colConfig =
+					if (!grid.getTreeStore().getSortInfo().isEmpty()) {
+						ColumnConfig<TreeGridModel, ?> colConfig =
 							grid.getColumnModel().getColumn(
-									getColumnIndexByLiveId(loadConfig.getSortInfo().get(0)
-											.getSortField()));
+									getColumnIndexByLiveId(grid.getTreeStore().getSortInfo()
+											.get(0).getPath()));
 						if (colConfig != null) {
 							Column colOriginal = null;
 							for (Column c : gridMetadata.getOriginalColumnSet().getColumns()) {
@@ -231,8 +233,8 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 							if (colOriginal != null) {
 								List<Column> sortOriginalCols = new ArrayList<Column>();
 
-								colOriginal.setSorting(Sorting.valueOf(loadConfig.getSortInfo()
-										.get(0).getSortDir().name()));
+								colOriginal.setSorting(Sorting.valueOf(grid.getTreeStore()
+										.getSortInfo().get(0).getDirection().name()));
 
 								sortOriginalCols.add(colOriginal);
 
@@ -241,59 +243,87 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 						}
 					}
 
-					dataService.getLiveGridData(gridContext, getElementInfo(),
-							new AsyncCallback<LiveGridData<LiveGridModel>>() {
+					dataService.getTreeGridData(gridContext, getElementInfo(),
+							new AsyncCallback<List<TreeGridModel>>() {
 								@Override
 								public void onFailure(Throwable caught) {
 									callback.onFailure(caught);
 								}
 
 								@Override
-								public void onSuccess(LiveGridData<LiveGridModel> result) {
+								public void onSuccess(List<TreeGridModel> result) {
 									callback.onSuccess(result);
 
-									gridExtradata = result.getLiveGridExtradata();
-									resetSelection();
-									afterUpdateGrid();
+									TreeGridData<TreeGridModel> tgd =
+										(TreeGridData<TreeGridModel>) result;
+
+									if (loadConfig == null) {
+										gridExtradataLevel0 = tgd.getLiveGridExtradata();
+
+										resetSelection();
+										afterUpdateGrid();
+									} else {
+										gridExtradataLevel0
+												.getEventManager()
+												.getEvents()
+												.addAll(tgd.getLiveGridExtradata()
+														.getEventManager().getEvents());
+									}
 								}
 							});
 				}
-
 			};
 
-		final ListStore<LiveGridModel> store =
-			new ListStore<LiveGridModel>(new ModelKeyProvider<LiveGridModel>() {
+		final TreeLoader<TreeGridModel> loader = new TreeLoader<TreeGridModel>(proxy) {
+			@Override
+			public boolean hasChildren(TreeGridModel parent) {
+				return parent.isHasChildren();
+			}
+		};
+
+		final TreeStore<TreeGridModel> store =
+			new TreeStore<TreeGridModel>(new ModelKeyProvider<TreeGridModel>() {
 				@Override
-				public String getKey(LiveGridModel model) {
+				public String getKey(TreeGridModel model) {
 					return model.getId();
 				}
-			});
+			}) {
+				@Override
+				public void applySort(boolean suppressEvent) {
+					if (!suppressEvent) {
+						fireEvent(new StoreSortEvent<TreeGridModel>());
+						loader.load();
+					}
+				}
 
-		final PagingLoader<PagingLoadConfig, LiveGridData<LiveGridModel>> loader =
-			new PagingLoader<PagingLoadConfig, LiveGridData<LiveGridModel>>(proxy);
-		loader.setRemoteSort(true);
+				@Override
+				protected boolean isSorted() {
+					return false;
+				}
+			};
+		loader.addLoadHandler(new ChildTreeStoreBinding<TreeGridModel>(store));
 
-		List<ColumnConfig<LiveGridModel, ?>> columns =
-			new ArrayList<ColumnConfig<LiveGridModel, ?>>();
+		List<ColumnConfig<TreeGridModel, ?>> columns =
+			new ArrayList<ColumnConfig<TreeGridModel, ?>>();
 
 		if (gridMetadata.getUISettings().isSelectOnlyRecords()) {
 			if (gridMetadata.getUISettings().isVisibleRecordsSelector()) {
-				IdentityValueProvider<LiveGridModel> identity =
-					new IdentityValueProvider<LiveGridModel>();
-				selectionModel = new CheckBoxSelectionModel<LiveGridModel>(identity);
-				// columns.add(((CheckBoxSelectionModel<LiveGridModel>)
+				IdentityValueProvider<TreeGridModel> identity =
+					new IdentityValueProvider<TreeGridModel>();
+				selectionModel = new CheckBoxSelectionModel<TreeGridModel>(identity);
+				// columns.add(((CheckBoxSelectionModel<TreeGridModel>)
 				// selectionModel).getColumn());
 			} else {
-				selectionModel = new GridSelectionModel<LiveGridModel>();
+				selectionModel = new GridSelectionModel<TreeGridModel>();
 			}
 		} else {
-			selectionModel = new CellSelectionModel<LiveGridModel>();
+			selectionModel = new CellSelectionModel<TreeGridModel>();
 		}
 
 		String styleColumn = getColumnStyle();
 		for (final LiveGridColumnConfig egcc : gridMetadata.getColumns()) {
-			ColumnConfig<LiveGridModel, String> column =
-				new ColumnConfig<LiveGridModel, String>(new LiveGridModelProvider(egcc.getId()),
+			ColumnConfig<TreeGridModel, String> column =
+				new ColumnConfig<TreeGridModel, String>(new TreeGridModelProvider(egcc.getId()),
 						egcc.getWidth(), egcc.getCaption());
 
 			column.setToolTip(column.getHeader());
@@ -338,31 +368,14 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			columns.add(column);
 		}
 
-		ColumnModel<LiveGridModel> cm = new ColumnModel<LiveGridModel>(columns);
+		ColumnModel<TreeGridModel> cm = new ColumnModel<TreeGridModel>(columns);
 
 		// ---------------------------
-
-		final LiveGridView<LiveGridModel> liveView = new LiveGridView<LiveGridModel>();
-		liveView.setRowHeight(gridMetadata.getUISettings().getRowHeight());
-		liveView.setCacheSize(gridMetadata.getLiveInfo().getLimit());
-
-		// ---------------------------
-
-		grid = new com.sencha.gxt.widget.core.client.grid.Grid<LiveGridModel>(store, cm) {
-			@Override
-			protected void onAfterFirstAttach() {
-				super.onAfterFirstAttach();
-				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-					@Override
-					public void execute() {
-						loader.load(0, liveView.getCacheSize());
-					}
-				});
-			}
-		};
+		grid = new TreeGrid<TreeGridModel>(store, cm, columns.get(0));
 		grid.setSelectionModel(selectionModel);
-		grid.setLoader(loader);
-		grid.setView(liveView);
+
+		grid.setTreeLoader(loader);
+		grid.getView().setTrackMouseOver(false);
 		grid.setColumnReordering(true);
 		grid.setLoadMask(true);
 		grid.setBorders(true);
@@ -389,16 +402,16 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 		// ---------------------------
 		// Стили для записей
-		GridViewConfig<LiveGridModel> gvc = new GridViewConfig<LiveGridModel>() {
+		GridViewConfig<TreeGridModel> gvc = new GridViewConfig<TreeGridModel>() {
 			@Override
-			public String getColStyle(LiveGridModel model,
-					ValueProvider<? super LiveGridModel, ?> valueProvider, int rowIndex,
+			public String getColStyle(TreeGridModel model,
+					ValueProvider<? super TreeGridModel, ?> valueProvider, int rowIndex,
 					int colIndex) {
 				return "";
 			}
 
 			@Override
-			public String getRowStyle(LiveGridModel model, int rowIndex) {
+			public String getRowStyle(TreeGridModel model, int rowIndex) {
 				String rowStyle = model.getRowStyle();
 				if (rowStyle == null) {
 					rowStyle = "";
@@ -420,6 +433,8 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			});
 			buttonBar.add(exportToExcelCurrentPage);
 		}
+
+		gridMetadata.getUISettings().setVisibleExportToExcelAll(false);
 		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
 			exportToExcelAll.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_ALL);
 			exportToExcelAll.addSelectHandler(new SelectHandler() {
@@ -450,18 +465,6 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			con.add(buttonBar, new VerticalLayoutData(1, -1));
 		}
 		con.add(grid, new VerticalLayoutData(1, 1));
-		if (gridMetadata.getUISettings().isVisiblePager()) {
-			ToolBar liveBar = new ToolBar();
-			liveBar.addStyleName(ThemeStyles.getStyle().borderTop());
-			liveBar.getElement().getStyle().setProperty("borderBottom", "none");
-
-			LiveToolItem item = new LiveToolItem(grid);
-			item.getElement().getStyle().setProperty("top", "4px");
-			item.setHeight(PROC100);
-			liveBar.add(item);
-
-			con.add(liveBar, new VerticalLayoutData(1, 25));
-		}
 		if ((gridMetadata.getFooter() != null) && (!gridMetadata.getFooter().isEmpty())) {
 			ToolBar footerBar = new ToolBar();
 			footerBar.addStyleName(ThemeStyles.getStyle().borderTop());
@@ -510,7 +513,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		Action ac = null;
 
 		List<ru.curs.showcase.app.api.grid.GridEvent> events =
-			gridExtradata.getEventManager().getEventForCell(rowId, colId, interactionType);
+			gridExtradataLevel0.getEventManager().getEventForCell(rowId, colId, interactionType);
 
 		for (ru.curs.showcase.app.api.grid.GridEvent ev : events) {
 			ac = ev.getAction();
@@ -530,7 +533,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			selectionTimer.cancel();
 		}
 
-		selectionTimer = new Timer() {
+		selectionTimer = new com.google.gwt.user.client.Timer() {
 			@Override
 			public void run() {
 				processSelectionRecords();
@@ -543,12 +546,12 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 	private void processSelectionRecords() {
 		List<String> selectedRecordIds = new ArrayList<String>();
-		for (LiveGridModel lgm : selectionModel.getSelectedItems()) {
+		for (TreeGridModel lgm : selectionModel.getSelectedItems()) {
 			selectedRecordIds.add(lgm.getId());
 		}
 
 		Action ac =
-			gridExtradata.getEventManager().getSelectionActionForDependentElements(
+			gridExtradataLevel0.getEventManager().getSelectionActionForDependentElements(
 					selectedRecordIds);
 
 		runAction(ac);
@@ -575,10 +578,10 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			int row = getRecordIndexById(selected.recId);
 			int col = getColumnIndexById(selected.colId);
 			if ((row >= 0) && (col >= 0)) {
-				((CellSelectionModel<LiveGridModel>) selectionModel).selectCell(row, col);
+				((CellSelectionModel<TreeGridModel>) selectionModel).selectCell(row, col);
 			}
 		} else {
-			for (LiveGridModel lgm : grid.getStore().getAll()) {
+			for (TreeGridModel lgm : grid.getStore().getAll()) {
 				if (lgm.getId().equals(selected.recId)) {
 					selectionModel.select(lgm, false);
 					break;
@@ -588,7 +591,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 		resetGridSettingsToCurrent();
 
-		runAction(gridExtradata.getActionForDependentElements());
+		runAction(gridExtradataLevel0.getActionForDependentElements());
 
 		setFirstLoading(false);
 	}
@@ -597,7 +600,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		int index = -1;
 		if (recId != null) {
 			int i = 0;
-			for (LiveGridModel lgm : grid.getStore().getAll()) {
+			for (TreeGridModel lgm : grid.getStore().getAll()) {
 				if (lgm.getId().equals(recId)) {
 					index = i;
 					break;
@@ -612,7 +615,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		int index = -1;
 		if (colId != null) {
 			int i = 0;
-			for (ColumnConfig<LiveGridModel, ?> col : grid.getColumnModel().getColumns()) {
+			for (ColumnConfig<TreeGridModel, ?> col : grid.getColumnModel().getColumns()) {
 				if (col.getHeader().asString().equals(colId)) {
 					index = i;
 					break;
@@ -627,7 +630,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		int index = -1;
 		if (liveId != null) {
 			int i = 0;
-			for (ColumnConfig<LiveGridModel, ?> col : grid.getColumnModel().getColumns()) {
+			for (ColumnConfig<TreeGridModel, ?> col : grid.getColumnModel().getColumns()) {
 				if (col.getValueProvider().getPath().equals(liveId)) {
 					index = i;
 					break;
@@ -706,7 +709,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	private void saveCurrentCheckBoxSelection() {
 		localContext.getSelectedRecordIds().clear();
 
-		for (LiveGridModel lgm : selectionModel.getSelectedItems()) {
+		for (TreeGridModel lgm : selectionModel.getSelectedItems()) {
 			localContext.getSelectedRecordIds().add(lgm.getId());
 		}
 	}
@@ -728,15 +731,17 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			cell.recId = localContext.getCurrentRecordId();
 			cell.colId = localContext.getCurrentColumnId();
 		} else {
-			cell.recId = gridExtradata.getAutoSelectRecordId();
-			cell.colId = gridExtradata.getAutoSelectColumnId();
+			cell.recId = gridExtradataLevel0.getAutoSelectRecordId();
+			cell.colId = gridExtradataLevel0.getAutoSelectColumnId();
 		}
 		return cell;
 	}
 
 	private void resetGridSettingsToCurrent() {
 		localContext = new GridContext();
-		localContext.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
+		localContext.setSubtype(DataPanelElementSubType.EXT_TREE_GRID);
+		localContext.setParentId(null);
+		localContext.resetForReturnAllRecords();
 
 		saveCurrentCheckBoxSelection();
 
@@ -751,6 +756,16 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	 *            GridToExcelExportType
 	 */
 	public void exportToExcel(final GridToExcelExportType exportType) {
+		GridContext context = getDetailedContext();
+		context.setParentId(null);
+		TreeGridModel child = selectionModel.getSelectedItem();
+		if (child != null) {
+			TreeGridModel parent = grid.getTreeStore().getParent(child);
+			if (parent != null) {
+				context.setParentId(parent.getId());
+			}
+		}
+
 		DownloadHelper dh = DownloadHelper.getInstance();
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
@@ -762,7 +777,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			dh.addParam(exportType.getClass().getName(), exportType.toString());
 
 			SerializationStreamFactory ssf = dh.getAddObjectSerializer();
-			dh.addStdPostParamsToBody(getDetailedContext(), getElementInfo());
+			dh.addStdPostParamsToBody(context, getElementInfo());
 			dh.addParam(cs.getClass().getName(), cs.toParamForHttpPost(ssf));
 
 			dh.submit();
@@ -782,25 +797,25 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	public ClipboardDialog copyToClipboard() {
 		StringBuilder b = new StringBuilder();
 
-		List<ColumnConfig<LiveGridModel, ?>> columns = grid.getColumnModel().getColumns();
+		List<ColumnConfig<TreeGridModel, ?>> columns = grid.getColumnModel().getColumns();
 
 		String d = "";
-		for (ColumnConfig<LiveGridModel, ?> c : columns) {
+		for (ColumnConfig<TreeGridModel, ?> c : columns) {
 			b.append(d).append(c.getHeader().asString());
 			d = "\t";
 		}
 		b.append("\n");
 
-		List<LiveGridModel> models;
+		List<TreeGridModel> models;
 		if (selectionModel.getSelectedItems().size() > 0) {
 			models = selectionModel.getSelectedItems();
 		} else {
 			models = grid.getStore().getAll();
 		}
 
-		for (LiveGridModel lgm : models) {
+		for (TreeGridModel lgm : models) {
 			d = "";
-			for (ColumnConfig<LiveGridModel, ?> c : columns) {
+			for (ColumnConfig<TreeGridModel, ?> c : columns) {
 				b.append(d).append(lgm.get(c.getValueProvider().getPath()));
 				d = "\t";
 			}
@@ -837,9 +852,11 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		GridContext result = localContext;
 		if (result == null) {
 			result = GridContext.createFirstLoadDefault();
-			result.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
+			result.setSubtype(DataPanelElementSubType.EXT_TREE_GRID);
+			result.setParentId(null);
 		}
 		result.setIsFirstLoad(isNeedResetLocalContext());
+		result.resetForReturnAllRecords();
 		result.assignNullValues(getContext());
 		return result;
 	}

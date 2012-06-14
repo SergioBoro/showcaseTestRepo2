@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.services;
 
+import java.util.List;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -73,6 +75,9 @@ public interface DataService extends RemoteService {
 			throws GeneralException;
 
 	LiveGridData<LiveGridModel> getLiveGridData(GridContext context, DataPanelElementInfo element)
+			throws GeneralException;
+
+	List<TreeGridModel> getTreeGridData(GridContext context, DataPanelElementInfo element)
 			throws GeneralException;
 
 	/**

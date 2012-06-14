@@ -155,6 +155,20 @@
           </datapanel>
         </action>
       </level2>
+      <level2 id="TreeGrid1" name="TreeGrid1">
+        <action>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
+          <datapanel type="byver/TreeGrid.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
+      <level2 id="TreeGrid2" name="TreeGrid2">
+        <action>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
+          <datapanel type="byver/TreeGrid2.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
       <level2 id="208" name="2.0.8">
         <action>
           <main_context>jython_save_data.xml</main_context>

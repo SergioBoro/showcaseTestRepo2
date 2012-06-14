@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.server;
 
+import java.util.List;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -68,6 +70,13 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	public LiveGridData<LiveGridModel> getLiveGridData(GridContext context,
 			DataPanelElementInfo element) throws GeneralException {
 		LiveGridDataGetCommand command = new LiveGridDataGetCommand(context, element);
+		return command.execute();
+	}
+
+	@Override
+	public List<TreeGridModel> getTreeGridData(GridContext context, DataPanelElementInfo element)
+			throws GeneralException {
+		TreeGridDataGetCommand command = new TreeGridDataGetCommand(context, element);
 		return command.execute();
 	}
 

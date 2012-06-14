@@ -292,12 +292,30 @@
 
 
 
-.extlivegrid-record-bold .GFVDMX3AIC{
+.extlivegrid-record-bold .GFVDMX3EIC {
 	font-weight: bold;
 }
-.extlivegrid-record-italic .GFVDMX3AIC{
+.extlivegrid-record-italic .GFVDMX3EIC {
+	font-style: italic;
+}
+
+
+.exttreegrid-record-bold .GFVDMX3DOB{
+	font-weight: bold;
+}
+.exttreegrid-record-italic .GFVDMX3DOB{
+	font-style: italic;
+}
+
+.exttreegrid-record-bold2 .GFVDMX3CIC{
+	font-weight: bold;
+}
+.exttreegrid-record-italic2 .GFVDMX3CIC{
 	font-style: italic;
 }	
+
+
+
 
 
 

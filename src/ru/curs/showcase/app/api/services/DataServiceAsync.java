@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.services;
 
+import java.util.List;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -34,6 +36,9 @@ public interface DataServiceAsync {
 
 	void getLiveGridData(GridContext context, DataPanelElementInfo element,
 			AsyncCallback<LiveGridData<LiveGridModel>> callback);
+
+	void getTreeGridData(GridContext context, DataPanelElementInfo element,
+			AsyncCallback<List<TreeGridModel>> callback);
 
 	void getChart(CompositeContext context, DataPanelElementInfo element,
 			AsyncCallback<Chart> callback);

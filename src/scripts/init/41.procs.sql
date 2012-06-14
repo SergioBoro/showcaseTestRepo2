@@ -18691,3 +18691,1949 @@ set @gridsettings_str=@gridsettings_str+'</columns>
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO
+
+
+/****** Object:  StoredProcedure [dbo].[exttreegrid_portals_id_and_css]    Script Date: 06/14/2012 10:45:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[exttreegrid_portals_id_and_css]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+	@parent_id varchar(512) ='',            
+    @gridsettings xml output,
+	@error_mes varchar(512) output    
+AS
+BEGIN
+	SET NOCOUNT ON;
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+<labels>
+<header>
+<h3>Порталы</h3>
+</header>
+</labels>
+        <columns>
+        <col id="Название" /> 
+        <col id="Название2" />         
+        <col id="Логотип" width="250px" type="LINK"/>
+        <col id="URL" width="150px" type="LINK"/>
+        </columns>
+<properties flip="false" pagesize="20" rowHeight = "50" profile="grid.nowidth.properties" autoSelectRecordId="3" 
+ autoSelectRelativeRecord="false" autoSelectColumnId="URL"/>
+</gridsettings>' 
+set    @gridsettings=CAST(@gridsettings_str as xml)
+SELECT [Name] AS "Название", [Name] AS "Название2", [Logo] AS "Логотип", [Url] as "URL", Id AS "~~id",  cast( '<properties>
+			<styleClass name="exttreegrid-record-bold exttreegrid-record-bold2"/>
+			<styleClass name="exttreegrid-record-italic exttreegrid-record-italic2"/>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>                        
+                            <datapanel type="current" tab="current">
+                                <element id="d1">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="d2">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element>                                
+                            </datapanel>
+                        </action>
+                    </event>  			
+            </properties>' as xml)  as [~~properties] FROM [dbo].[Websites]
+WHERE [IsPortal]=1
+END
+GO
+/****** Object:  StoredProcedure [dbo].[exttreegrid_portals]    Script Date: 06/14/2012 10:45:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[exttreegrid_portals]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+	@parent_id varchar(512) ='',            
+    @gridsettings xml output,
+	@error_mes varchar(512) output    
+AS
+BEGIN
+	SET NOCOUNT ON;
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+<labels>
+<header>
+<h3>Порталы</h3>
+</header>
+</labels>
+        <columns>
+        <col id="Название" /> 
+        <col id="Название2" />         
+        <col id="Логотип" width="250px" type="LINK"/>
+        <col id="URL" width="100px" type="LINK"/>
+        </columns>
+<properties flip="false" pagesize="15" rowHeight = "50"
+totalCount="0" profile="grid.nowidth.properties"/>
+</gridsettings>' 
+set    @gridsettings=CAST(@gridsettings_str as xml)
+SELECT [Name] AS [Название], [Name] AS [Название2], [Logo] AS [Логотип], [Url] as [URL], cast( '<properties>                                    
+            </properties>' as xml)  as [~~properties] FROM [dbo].[Websites]
+WHERE [IsPortal]=1
+END
+GO
+/****** Object:  StoredProcedure [dbo].[exttreegrid_geo]    Script Date: 06/14/2012 10:45:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[exttreegrid_geo]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',    
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+	@parent_id varchar(512) ='',        
+    @gridsettings xml output,
+    @error_mes varchar(512) output
+AS
+BEGIN
+SET NOCOUNT ON;
+
+declare @Sql varchar(8000);
+
+IF (@parent_id IS NULL) OR (LTrim(@parent_id) = '')
+BEGIN
+ set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo6_Id as "~~id", cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo6 where Id IS NOT NULL'
+END
+
+IF (select COUNT(*) from geo6 where geo6_Id = @parent_id) > 0
+BEGIN
+ set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo5_Id as "~~id", cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo5 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)' 
+END
+
+IF (select COUNT(*) from geo5 where geo5_Id = @parent_id) > 0
+BEGIN
+ set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo3 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)'  
+END
+
+IF (select COUNT(*) from geo3 where geo3_Id = @parent_id) > 0
+BEGIN
+ SET @error_mes = 'Вызов процедуры для города' 
+ RETURN 1
+END
+
+IF LTRIM(@sortcols)!=''
+BEGIN
+ set @Sql = @Sql+' '+@sortcols
+END
+
+EXEC(@Sql)
+
+
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Хедер tree-грида</h3></header>
+            <footer><h3 class="testStyle">Футер tree-грида</h3></footer>            
+        </labels>
+        <columns>
+			<col id="Название" width="200px"/>        
+			<col id="Код" width="50px"/>
+			<col id="Картинка" width="50px" type="IMAGE"/>
+        </columns>        
+						<action>
+							<main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+	                                <add_context>current</add_context>
+                                </element>                                                                   
+                            </datapanel>
+                        </action>
+         <properties flip="false" pagesize="50" gridHeight="500" autoSelectRecordId="9"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>'         
+set @gridsettings=CAST(@gridsettings_str as xml)
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[exttreegrid_download_load]    Script Date: 06/14/2012 10:45:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[exttreegrid_download_load]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',
+	@parent_id varchar(512) ='',            	
+    @gridsettings xml output,
+	@error_mes varchar(512) output    
+AS
+BEGIN
+	SET NOCOUNT ON;
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+<labels>
+<header>
+<h3>Порталы</h3>
+</header>
+</labels>
+        <columns>
+        <col id="Название" width="100px" /> 
+        <col id="Файл1"  width="130px" type="DOWNLOAD" linkId="11"/>         
+        <col id="Логотип" width="250px" type="LINK"/>
+        <col id="Файл2"  width="100px" type="DOWNLOAD" linkId="12"/>                 
+        <col id="URL" width="150px" type="LINK"/>
+        </columns>
+<properties flip="false" pagesize="22" profile="grid.nowidth.properties" autoSelectRecordId="3" 
+ autoSelectRelativeRecord="false" autoSelectColumnId="URL"/>
+</gridsettings>' 
+set    @gridsettings=CAST(@gridsettings_str as xml)
+SELECT 
+       [Name] AS "Название", 
+       [File1] AS "Файл1",        
+       [Logo] AS "Логотип", 
+       [File2] AS "Файл2",               
+       [Url] as "URL", 
+       Id AS "~~id",  
+       cast( '<properties>
+			<styleClass name="grid-record-bold"/>
+			<styleClass name="grid-record-italic"/>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>                        
+                            <datapanel type="current" tab="current">
+                                <element id="d1">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="d2">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element>                                
+                            </datapanel>
+                        </action>
+                    </event>  			
+            </properties>' as xml)  as [~~properties] FROM [dbo].[Websites]
+WHERE [IsPortal]=1
+END
+GO
+/****** Object:  StoredProcedure [dbo].[exttreegrid_col_types]    Script Date: 06/14/2012 10:45:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[exttreegrid_col_types]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+	@parent_id varchar(512) ='',            
+	@gridsettings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+    
+    DECLARE @sql varchar(max)    
+	EXEC grid_col_types_getquery @sql = @sql OUTPUT
+	
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [_Id]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql = @sql + 'FROM [dbo].[Journal_41] ' + @orderby	
+    
+    EXEC(@sql)	    
+    
+DECLARE @gridsettings_str varchar(max)
+DECLARE @rec_count int
+SELECT @rec_count = COUNT(*) FROM [dbo].[Journal_41]
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Грид с различными типами столбцов</h3></header>
+        </labels>
+        <columns>
+        <col id="Сайт" type="LINK"/>
+        </columns>
+							<action>
+							<main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="d1"> 
+                                <add_context>add</add_context>  
+                                </element>
+                                <element id="d2">
+                                <add_context>add</add_context>  
+                                </element>                                                              
+                                <element id="d3">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d4">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d5">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d6">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d7">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d8">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d9">
+                                <add_context>add</add_context>  
+                                </element>                                                                
+                                <element id="d10"> 
+                                <add_context>add</add_context>  
+                                </element>                                                                                                   
+                            </datapanel>
+                        </action>
+<properties pagesize="20" profile="sngl_before_dbl.properties" totalCount="'+
+CAST(@rec_count as varchar(max))+'"/></gridsettings>' 
+
+set  @gridsettings=CAST(@gridsettings_str as xml)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[exttreegrid_exttreegrid1]    Script Date: 06/14/2012 10:45:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:        <Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:    <Description,,>
+-- =============================================
+CREATE  PROCEDURE [dbo].[exttreegrid_exttreegrid1]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+	@parent_id varchar(512) ='',            
+    @gridsettings xml output,
+	@error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+    
+set @main_context = 'Потери - Всего';        
+   
+declare @filters as varchar(1024)
+declare @ordering as varchar(1024)
+
+IF OBJECT_ID('tempdb.dbo.#Per') is not null 
+drop table #Per
+IF OBJECT_ID('tempdb.dbo.#Reg_year') is not null 
+drop table #Reg_year
+IF OBJECT_ID('tempdb.dbo.#Columns_Name') is not null 
+drop table #Columns_Name
+IF OBJECT_ID('tempdb.dbo.#Tab1') is not null 
+drop table #Tab1
+
+declare @year as varchar(50)
+declare @quater as varchar(50)
+declare @params as varchar(8000)
+Set @year='2010'
+Set @quater='3'
+Set @params=''
+Select
+    [Год],
+    [Квартал]
+Into #Per
+From
+    (Select 
+        Journal_45_Name as [Год],
+        '1' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '2' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '3' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '4' as [Квартал]
+    From Journal_45
+    ) a
+
+Select
+    newid() as id__,
+    geo5_id,
+    geo5.NAME as [Регион],
+    Journal_45_Name,
+    Journal_45_Id,
+    geo6.Name as [Федеральный округ],
+    #Per.[Квартал] ,
+      Case
+            When geo6.Name='Южный ФО' then 3
+            When geo6.Name='Уральский ФО' then 5
+            When geo6.Name='Сибирский ФО' then 6
+            When geo6.Name='Приволжский ФО' then 4
+            When geo6.Name='Дальневосточный ФО' then 7
+            When geo6.Name='Центральный ФО' then 1
+            When geo6.Name='Северо-Западный ФО' then 2
+            Else 0
+         End as sort     
+Into #Reg_year
+From Journal_45 Inner Join #Per
+    On #Per.[Год]= Journal_45_Name,
+    geo5 left Join geo6
+    On geo5.FJField_9=geo6_Id
+Where geo5.FJField_16=1   and
+ cast( Journal_45_Name as float)
+   + cast(#Per.[Квартал] as float)/10 >= cast(cast(@year as int)-5  as float)+cast(@quater as float)/10
+ and
+ cast( Journal_45_Name as float)
+     + cast(#Per.[Квартал] as float)/10 < cast(cast(@year as int)+1  as float)+cast(@quater as float)/10
+Select distinct    
+    [Квартал]  +'кв. ' +Journal_45_Name+ 'г.' as Col_Id,
+    Journal_45_Name,
+     [Квартал]
+Into #Columns_Name
+From #Reg_year
+Order by Journal_45_Name, [Квартал]
+
+select Journal_44.FJField_17 as [~Всего, тыс тонн],
+       Journal_44.FJField_20,
+       Journal_44.FJField_18,
+        geo5.Name as [регион],
+        Journal_41.Journal_41_Name,
+        Journal_40_Name,
+        Journal_45.Journal_45_Name as [год],
+       Journal_44.FJField_16 as [квартал],
+       Case
+            When geo6.Name in ('Южный ФО','Уральский ФО','Сибирский ФО',
+                'Приволжский ФО','Дальневосточный ФО','Центральный ФО','Северо-Западный ФО','Российская Федерация') then 0
+            Else 1
+         End as sort2,
+         geo6.Name
+Into #Tab1
+From Journal_44
+    Inner Join geo5
+    On geo5.geo5_Id=Journal_44.FJField_18
+    Inner Join Journal_40
+    On Journal_40_Id=Journal_44.FJField_14
+    Inner Join Journal_41
+    On Journal_41_Id=Journal_44.FJField_12
+    left Join geo6
+    On geo5.FJField_9=geo6_Id
+    Inner Join Journal_45
+    On Journal_45_Id=Journal_44.FJField_21
+    Where geo5.FJField_16=1    and
+                  Journal_40_Name= @main_context
+
+and
+(((cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)>=(cast(cast(@year as int)  as float)+ cast(@quater as float)/10 )
+
+               and (cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)<(cast((cast(@year as int)+1 )  as float)+cast(@quater as float)/10)
+                and Journal_44.FJField_20='Прогноз')
+        or
+                (( cast( Journal_45.Journal_45_Name as float)
+                   + cast(Journal_44.FJField_16 as float)/10 )< (cast(cast(@year as int)  as float)+cast(@quater as float)/10 )
+                   and Journal_44.FJField_20='Факт'))
+                   
+                   
+select @params = @params + ', [' + RTRIM(#Columns_Name.Col_Id)+']' FROM #Columns_Name
+set @params = substring(@params, 3, len(@params) - 1);
+
+
+
+Insert into #Tab1 (#Tab1.[~Всего, тыс тонн],#Tab1.FJField_20,#Tab1.[регион],
+        #Tab1.Journal_41_Name,#Tab1.Journal_40_Name,#Tab1.год,#Tab1.квартал,#Tab1.sort2)
+select sum([~Всего, тыс тонн]),
+       #Tab1.FJField_20,
+       'dfgfdg',
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал,
+        -1
+        From #Tab1
+   Group by
+   #Tab1.FJField_20,
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал
+
+Set @ordering=(Select
+    Case
+     When @sortcols='' then 'Order by sort2'
+     Else @sortcols 
+    End)     
+declare @Sql varchar(8000);
+set @Sql = 
+'Select [Регион],' + @params+',cast( ''<properties>
+            <event name="row_single_click">
+                        <action>
+                       <main_context>current</main_context>                        
+                       <datapanel type="current" tab="current">
+                                <element id="10">
+									<add_context>''+[Регион]+'' 1 раз по строке</add_context>                                                                                             
+                                </element> 
+                                                             
+                            </datapanel>
+                        </action>
+                    </event> 
+                                <event name="row_double_click">
+                        <action>
+                       <main_context>current</main_context>                        
+                       <datapanel type="current" tab="current">
+                                <element id="10">
+									<add_context>''+[Регион]+'' 2 раза по строке</add_context>                                                                                             
+                                </element> 
+                                                             
+                            </datapanel>
+                        </action>
+                    </event>   
+                          <event name="cell_single_click" column="Регион">
+                        <action>
+                       <main_context>current</main_context>                                                
+                       <datapanel type="current" tab="current">
+                                <element id="10">
+									<add_context>''+[Регион]+'' 1 раз по ячейке Регион</add_context>                                                                                             
+                                </element> 
+                                                             
+                            </datapanel>
+                        </action>
+                    </event> 
+                    
+                          <event name="cell_double_click" column="Регион">
+                        <action>
+                       <main_context>current</main_context>                                                
+                       <datapanel type="current" tab="current">
+                                <element id="10">
+									<add_context>''+[Регион]+'' 2 раза по ячейке Регион</add_context>                                                                                             
+                                </element> 
+                                                             
+                            </datapanel>
+                        </action>
+                    </event>   
+                            
+                    
+                                           <event name="cell_single_click" column="нет такой">
+                        <action>
+                       <main_context>current</main_context>                        
+                       <datapanel type="current" tab="current">
+                                <element id="10">
+									<add_context>''+[Регион]+'' 1 раз по несуществующей ячейке</add_context>                                                                                             
+                                </element> 
+                                                             
+                            </datapanel>
+                        </action>
+                    </event>  
+                    
+            
+                    
+                                           <event name="cell_single_click" column="3кв. 2005г.">
+                        <action>
+                       <main_context>current</main_context>                                                
+                       <datapanel type="current" tab="current">
+                                <element id="10">
+									<add_context>''+[Регион]+'' 1 раз по  ячейке 3кв. 2005г.</add_context>                                                                                             
+                                </element> 
+                                                             
+                            </datapanel>
+                        </action>
+                    </event>  
+                                                              
+            </properties>'' as xml)  as [~~properties] FROM('+
+'SELECT top 1 [Регион],sort2,' + @params+
+' FROM' +
+' (Select
+     cast (#Tab1.[~Всего, тыс тонн] as numeric(10,2))as t1,
+     #Reg_year.[Регион] ,
+     #Tab1.квартал+''кв. ''+#Reg_year.[Journal_45_Name]+''г.'' as [Квартал],     
+     #Reg_year.[Федеральный округ],
+      #Tab1.sort2,
+     ''Зерно''  as [~Продовольственный ресурс]
+      
+FROM #Reg_year
+    Left join #Tab1
+        On #Reg_year.[Регион]=#Tab1.[регион] and
+         #Reg_year.Journal_45_Name=#Tab1.год and 
+         #Reg_year.Квартал =#Tab1.квартал
+   where #Reg_year.[Регион] = '''+@add_context+'''  ) p '+
+         
+' PIVOT ('+
+'    max(t1)'+
+'    FOR [Квартал] in('+@params+')'+
+' ) AS pvt )p  '+@ordering
+EXEC(@Sql)
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+
+        <labels>
+            <header><h3>'+@main_context+' зерна, тыс. тонн </h3></header>
+        </labels>
+        <columns>
+        <col id="Регион" width="250px"/>'
+        
+select     @gridsettings_str=@gridsettings_str+'<col id="'+#Columns_Name.Col_Id+'" width="90px"/>' From #Columns_Name
+set @gridsettings_str=@gridsettings_str+'</columns>
+<action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="110">
+	                                <add_context>hide</add_context>
+                                </element>                                                             
+                                               
+                            </datapanel>
+                        </action>
+' 
+set @gridsettings_str=@gridsettings_str+'
+
+ <properties flip="false" gridHeight="100" selectMode="cell" totalCount="0" autoSelectRecordId = "5" autoSelectRelativeRecord="false"/>
+</gridsettings>' 
+set    @gridsettings=CAST(@gridsettings_str as xml)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[exttreegrid_exttreegrid]    Script Date: 06/14/2012 10:45:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:        <Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:    <Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[exttreegrid_exttreegrid]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',   
+    @sortcols varchar(1024) ='',	
+	@parent_id varchar(512) ='',            
+    @gridsettings xml output,
+	@error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+    
+set @main_context = 'Потери - Всего';        
+    
+declare @filters as varchar(1024)
+declare @ordering as varchar(1024)
+
+IF OBJECT_ID('tempdb.dbo.#Per') is not null 
+drop table #Per
+IF OBJECT_ID('tempdb.dbo.#Reg_year') is not null 
+drop table #Reg_year
+IF OBJECT_ID('tempdb.dbo.#Columns_Name') is not null 
+drop table #Columns_Name
+IF OBJECT_ID('tempdb.dbo.#Tab1') is not null 
+drop table #Tab1
+
+declare @year as varchar(50)
+declare @quater as varchar(50)
+declare @params as varchar(8000)
+Set @year='2010'
+Set @quater='3'
+Set @params=''
+Select
+    [Год],
+    [Квартал]
+Into #Per
+From
+    (Select 
+        Journal_45_Name as [Год],
+        '1' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '2' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '3' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '4' as [Квартал]
+    From Journal_45
+    ) a
+
+Select
+    newid() as id__,
+    geo5_id,
+    geo5.NAME as [Регион],
+    Journal_45_Name,
+    Journal_45_Id,
+    geo6.Name as [Федеральный округ],
+    #Per.[Квартал] ,
+      Case
+            When geo6.Name='Южный ФО' then 3
+            When geo6.Name='Уральский ФО' then 5
+            When geo6.Name='Сибирский ФО' then 6
+            When geo6.Name='Приволжский ФО' then 4
+            When geo6.Name='Дальневосточный ФО' then 7
+            When geo6.Name='Центральный ФО' then 1
+            When geo6.Name='Северо-Западный ФО' then 2
+            Else 0
+         End as sort     
+Into #Reg_year
+From Journal_45 Inner Join #Per
+    On #Per.[Год]= Journal_45_Name,
+    geo5 left Join geo6
+    On geo5.FJField_9=geo6_Id
+Where geo5.FJField_16=1   and
+ cast( Journal_45_Name as float)
+   + cast(#Per.[Квартал] as float)/10 >= cast(cast(@year as int)-5  as float)+cast(@quater as float)/10
+ and
+ cast( Journal_45_Name as float)
+     + cast(#Per.[Квартал] as float)/10 < cast(cast(@year as int)+1  as float)+cast(@quater as float)/10
+Select distinct    
+    [Квартал]  +'кв. ' +Journal_45_Name+ 'г.' as Col_Id,
+    Journal_45_Name,
+     [Квартал]
+Into #Columns_Name
+From #Reg_year
+Order by Journal_45_Name, [Квартал]
+
+select Journal_44.FJField_17 as [~Всего, тыс тонн],
+       Journal_44.FJField_20,
+       Journal_44.FJField_18,
+        geo5.Name as [регион],
+        Journal_41.Journal_41_Name,
+        Journal_40_Name,
+        Journal_45.Journal_45_Name as [год],
+       Journal_44.FJField_16 as [квартал],
+       Case
+            When geo6.Name in ('Южный ФО','Уральский ФО','Сибирский ФО',
+                'Приволжский ФО','Дальневосточный ФО','Центральный ФО','Северо-Западный ФО','Российская Федерация') then 0
+            Else 1
+         End as sort2,
+         geo6.Name
+Into #Tab1
+From Journal_44
+    Inner Join geo5
+    On geo5.geo5_Id=Journal_44.FJField_18
+    Inner Join Journal_40
+    On Journal_40_Id=Journal_44.FJField_14
+    Inner Join Journal_41
+    On Journal_41_Id=Journal_44.FJField_12
+    left Join geo6
+    On geo5.FJField_9=geo6_Id
+    Inner Join Journal_45
+    On Journal_45_Id=Journal_44.FJField_21
+    Where geo5.FJField_16=1    and
+                  Journal_40_Name= @main_context
+
+and
+(((cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)>=(cast(cast(@year as int)  as float)+ cast(@quater as float)/10 )
+
+               and (cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)<(cast((cast(@year as int)+1 )  as float)+cast(@quater as float)/10)
+                and Journal_44.FJField_20='Прогноз')
+        or
+                (( cast( Journal_45.Journal_45_Name as float)
+                   + cast(Journal_44.FJField_16 as float)/10 )< (cast(cast(@year as int)  as float)+cast(@quater as float)/10 )
+                   and Journal_44.FJField_20='Факт'))
+                   
+                   
+select @params = @params + ', [' + RTRIM(#Columns_Name.Col_Id)+']' FROM #Columns_Name
+set @params = substring(@params, 3, len(@params) - 1);
+
+
+
+Insert into #Tab1 (#Tab1.[~Всего, тыс тонн],#Tab1.FJField_20,#Tab1.[регион],
+        #Tab1.Journal_41_Name,#Tab1.Journal_40_Name,#Tab1.год,#Tab1.квартал,#Tab1.sort2)
+select sum([~Всего, тыс тонн]),
+       #Tab1.FJField_20,
+       'Итого по россии',
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал,
+        -1
+        From #Tab1
+   Group by
+   #Tab1.FJField_20,
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал
+
+Set @ordering=(Select
+				Case
+					When @sortcols='' then 'Order by sort2'
+					Else @sortcols 
+				End)     
+declare @Sql varchar(8000);
+
+declare @a as varchar(255)
+
+if @element_id = '12'  set @a = '7'
+if @element_id = '14'  set @a = '11'
+if @element_id = '13'  set @a = '15'
+if @element_id = '140'  set @a = '110'
+
+set @Sql = 
+'Select [Регион],' + @params+',cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                       <main_context>current</main_context>
+                       <datapanel type="current" tab="current">
+                                <element id="' + @a +'">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="100">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                                                               
+                       </datapanel>
+                        </action>
+                    </event>                    
+            </properties>'' as xml)  as [~~properties] FROM('+
+'SELECT [Регион],sort2,' + @params+
+' FROM' +
+' (Select
+     cast (#Tab1.[~Всего, тыс тонн] as numeric(10,2))as t1,
+     #Reg_year.[Регион] ,
+     #Tab1.квартал+''кв. ''+#Reg_year.[Journal_45_Name]+''г.'' as [Квартал],     
+     #Reg_year.[Федеральный округ],
+      #Tab1.sort2,
+     ''Зерно''  as [~Продовольственный ресурс]
+      
+FROM #Reg_year
+    Left join #Tab1
+        On #Reg_year.[Регион]=#Tab1.[регион] and
+         #Reg_year.Journal_45_Name=#Tab1.год and 
+         #Reg_year.Квартал =#Tab1.квартал
+         ) p '+
+         
+' PIVOT ('+
+'    max(t1)'+
+'    FOR [Квартал] in('+@params+')'+
+' ) AS pvt Where [3кв. 2005г.] is Not NULL )p '+@ordering
+EXEC(@Sql)
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+
+        <labels>
+            <header><h3>'+@main_context+' зерна, тыс. тонн </h3></header>
+        </labels>
+        <columns>
+        <col id="Регион" width="250px" precision="2"/>'
+        
+select     @gridsettings_str=@gridsettings_str+'<col id="'+#Columns_Name.Col_Id+'" width="90px" precision="10"/>' From #Columns_Name
+set @gridsettings_str=@gridsettings_str+'</columns>
+							
+
+<properties flip="true" pagesize="50"  selectMode = "row" autoSelectRelativeRecord="false" totalCount="10"/></gridsettings>' 
+set    @gridsettings=CAST(@gridsettings_str as xml)
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[exttreegrid_default_profile]    Script Date: 06/14/2012 10:45:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[exttreegrid_default_profile]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',
+	@parent_id varchar(512) ='',            	
+    @gridsettings xml output,
+	@error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+  
+declare @filters as varchar(1024)
+declare @ordering as varchar(1024)
+
+IF OBJECT_ID('tempdb.dbo.#Per') is not null 
+drop table #Per
+IF OBJECT_ID('tempdb.dbo.#Reg_year') is not null 
+drop table #Reg_year
+IF OBJECT_ID('tempdb.dbo.#Columns_Name') is not null 
+drop table #Columns_Name
+IF OBJECT_ID('tempdb.dbo.#Tab1') is not null 
+drop table #Tab1
+
+declare @year as varchar(50)
+declare @quater as varchar(50)
+declare @params as varchar(8000)
+Set @year='2010'
+Set @quater='3'
+Set @params=''
+Select
+    [Год],
+    [Квартал]
+Into #Per
+From
+    (Select 
+        Journal_45_Name as [Год],
+        '1' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '2' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '3' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '4' as [Квартал]
+    From Journal_45
+    ) a
+Where a.Год = 2005   
+
+Select
+    newid() as id__,
+    geo5_id,
+    geo5.NAME as [Регион],
+    Journal_45_Name,
+    Journal_45_Id,
+    geo6.Name as [Федеральный округ],
+    #Per.[Квартал] ,
+      Case
+            When geo6.Name='Южный ФО' then 3
+            When geo6.Name='Уральский ФО' then 5
+            When geo6.Name='Сибирский ФО' then 6
+            When geo6.Name='Приволжский ФО' then 4
+            When geo6.Name='Дальневосточный ФО' then 7
+            When geo6.Name='Центральный ФО' then 1
+            When geo6.Name='Северо-Западный ФО' then 2
+            Else 0
+         End as sort     
+Into #Reg_year
+From Journal_45 Inner Join #Per
+    On #Per.[Год]= Journal_45_Name,
+    geo5 left Join geo6
+    On geo5.FJField_9=geo6_Id
+Where geo5.FJField_16=1   and
+ cast( Journal_45_Name as float)
+   + cast(#Per.[Квартал] as float)/10 >= cast(cast(@year as int)-5  as float)+cast(@quater as float)/10
+ and
+ cast( Journal_45_Name as float)
+     + cast(#Per.[Квартал] as float)/10 < cast(cast(@year as int)+1  as float)+cast(@quater as float)/10
+Select distinct    
+    [Квартал]  +'кв. ' +Journal_45_Name+ 'г.' as Col_Id,
+    Journal_45_Name,
+     [Квартал]
+Into #Columns_Name
+From #Reg_year
+Order by Journal_45_Name, [Квартал]
+
+select Journal_44.FJField_17 as [~Всего, тыс тонн],
+       Journal_44.FJField_20,
+       Journal_44.FJField_18,
+        geo5.Name as [регион],
+        Journal_41.Journal_41_Name,
+        Journal_40_Name,
+        Journal_45.Journal_45_Name as [год],
+       Journal_44.FJField_16 as [квартал],
+       Case
+            When geo6.Name in ('Южный ФО','Уральский ФО','Сибирский ФО',
+                'Приволжский ФО','Дальневосточный ФО','Центральный ФО','Северо-Западный ФО','Российская Федерация') then 0
+            Else 1
+         End as sort2,
+         geo6.Name
+Into #Tab1
+From Journal_44
+    Inner Join geo5
+    On geo5.geo5_Id=Journal_44.FJField_18
+    Inner Join Journal_40
+    On Journal_40_Id=Journal_44.FJField_14
+    Inner Join Journal_41
+    On Journal_41_Id=Journal_44.FJField_12
+    left Join geo6
+    On geo5.FJField_9=geo6_Id
+    Inner Join Journal_45
+    On Journal_45_Id=Journal_44.FJField_21
+    Where geo5.FJField_16=1    and
+                  Journal_40_Name= @main_context
+
+and
+(((cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)>=(cast(cast(@year as int)  as float)+ cast(@quater as float)/10 )
+
+               and (cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)<(cast((cast(@year as int)+1 )  as float)+cast(@quater as float)/10)
+                and Journal_44.FJField_20='Прогноз')
+        or
+                (( cast( Journal_45.Journal_45_Name as float)
+                   + cast(Journal_44.FJField_16 as float)/10 )< (cast(cast(@year as int)  as float)+cast(@quater as float)/10 )
+                   and Journal_44.FJField_20='Факт'))
+                   
+                   
+select @params = @params + ', [' + RTRIM(#Columns_Name.Col_Id)+']' FROM #Columns_Name
+set @params = substring(@params, 3, len(@params) - 1);
+
+
+
+Insert into #Tab1 (#Tab1.[~Всего, тыс тонн],#Tab1.FJField_20,#Tab1.[регион],
+        #Tab1.Journal_41_Name,#Tab1.Journal_40_Name,#Tab1.год,#Tab1.квартал,#Tab1.sort2)
+select sum([~Всего, тыс тонн]),
+       #Tab1.FJField_20,
+       'Итого по россии',
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал,
+        -1
+        From #Tab1
+   Group by
+   #Tab1.FJField_20,
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал
+
+Set @ordering=(Select
+				Case
+					When @sortcols='' then 'Order by sort2'
+					Else @sortcols 
+				End)     
+declare @Sql varchar(8000);
+set @Sql = 
+'Select [Регион], [Регион] as "Регион2", getdate() as [Сейчас],  ''imagesingrid/test.jpg'' AS [Картинка],' + @params+',cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>                        
+                            <datapanel type="current" tab="current">
+                                <element id="3">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="5">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>                        
+                            <datapanel type="current" tab="current">
+                                <element id="3">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="5">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] FROM('+
+'SELECT [Регион], sort2,' + @params+
+' FROM' +
+' (Select
+     cast (#Tab1.[~Всего, тыс тонн] as numeric(10,2))as t1,
+     #Reg_year.[Регион] ,
+     #Tab1.квартал+''кв. ''+#Reg_year.[Journal_45_Name]+''г.'' as [Квартал],     
+     #Reg_year.[Федеральный округ],
+      #Tab1.sort2,
+     ''Зерно''  as [~Продовольственный ресурс]
+      
+FROM #Reg_year
+    Left join #Tab1
+        On #Reg_year.[Регион]=#Tab1.[регион] and
+         #Reg_year.Journal_45_Name=#Tab1.год and 
+         #Reg_year.Квартал =#Tab1.квартал
+         ) p '+
+         
+' PIVOT ('+
+'    max(t1)'+
+'    FOR [Квартал] in('+@params+')'+
+' ) AS pvt Where [3кв. 2005г.] is Not NULL )p '+@ordering
+EXEC(@Sql)
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">'+@main_context+' зерна, тыс. тонн </h3></header>
+        </labels>
+        <columns>
+        <col id="Регион" width="150px"/> 
+        <col id="Регион2" width="150px"/>         
+        <col id="Картинка" width="40px" type="IMAGE"/>'
+        
+        
+select     @gridsettings_str=@gridsettings_str+'<col id="'+#Columns_Name.Col_Id+'" width="60px" precision="2"/>' From #Columns_Name
+set @gridsettings_str=@gridsettings_str+'</columns>
+							<action>
+							<main_context>current</main_context>							
+                            <datapanel type="current" tab="current">
+                                <element id="3">
+	                                <add_context>current</add_context>
+                                </element>   
+                                <element id="5">
+	                                <add_context>current</add_context>
+                                </element>                                                                   
+                                
+                            </datapanel>
+                        </action>
+<properties flip="false" pagesize="50" totalCount="0"/></gridsettings>' 
+set    @gridsettings=CAST(@gridsettings_str as xml)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[exttreegrid_bal2]    Script Date: 06/14/2012 10:45:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[exttreegrid_bal2]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',    
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+	@parent_id varchar(512) ='',            
+    @gridsettings xml output,
+    @error_mes varchar(512) output
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+    
+set @main_context = 'Потери - Всего';    
+    
+    
+    
+declare @filters as varchar(1024)
+declare @ordering as varchar(1024)
+
+IF OBJECT_ID('tempdb.dbo.#Per') is not null 
+drop table #Per
+IF OBJECT_ID('tempdb.dbo.#Reg_year') is not null 
+drop table #Reg_year
+IF OBJECT_ID('tempdb.dbo.#Columns_Name') is not null 
+drop table #Columns_Name
+IF OBJECT_ID('tempdb.dbo.#Tab1') is not null 
+drop table #Tab1
+
+declare @year as varchar(50)
+declare @quater as varchar(50)
+declare @params as varchar(8000)
+Set @year='2010'
+Set @quater='3'
+Set @params=''
+Select
+    [Год],
+    [Квартал]
+Into #Per
+From
+    (Select 
+        Journal_45_Name as [Год],
+        '1' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '2' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '3' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '4' as [Квартал]
+    From Journal_45
+    ) a
+
+Select
+    newid() as id__,
+    geo5_id,
+    geo5.NAME as [Регион],
+    Journal_45_Name,
+    Journal_45_Id,
+    geo6.Name as [Федеральный округ],
+    #Per.[Квартал] ,
+      Case
+            When geo6.Name='Южный ФО' then 3
+            When geo6.Name='Уральский ФО' then 5
+            When geo6.Name='Сибирский ФО' then 6
+            When geo6.Name='Приволжский ФО' then 4
+            When geo6.Name='Дальневосточный ФО' then 7
+            When geo6.Name='Центральный ФО' then 1
+            When geo6.Name='Северо-Западный ФО' then 2
+            Else 0
+         End as sort     
+Into #Reg_year
+From Journal_45 Inner Join #Per
+    On #Per.[Год]= Journal_45_Name,
+    geo5 left Join geo6
+    On geo5.FJField_9=geo6_Id
+Where geo5.FJField_16=1   and
+ cast( Journal_45_Name as float)
+   + cast(#Per.[Квартал] as float)/10 >= cast(cast(@year as int)-5  as float)+cast(@quater as float)/10
+ and
+ cast( Journal_45_Name as float)
+     + cast(#Per.[Квартал] as float)/10 < cast(cast(@year as int)+1  as float)+cast(@quater as float)/10
+Select distinct    
+    [Квартал]  +'кв. ' +Journal_45_Name+ 'г.' as Col_Id,
+    Journal_45_Name,
+     [Квартал]
+Into #Columns_Name
+From #Reg_year
+Order by Journal_45_Name, [Квартал]
+
+select Journal_44.FJField_17 as [~Всего, тыс тонн],
+       Journal_44.FJField_20,
+       Journal_44.FJField_18,
+        geo5.Name as [регион],
+        Journal_41.Journal_41_Name,
+        Journal_40_Name,
+        Journal_45.Journal_45_Name as [год],
+       Journal_44.FJField_16 as [квартал],
+       Case
+            When geo6.Name in ('Южный ФО','Уральский ФО','Сибирский ФО',
+                'Приволжский ФО','Дальневосточный ФО','Центральный ФО','Северо-Западный ФО','Российская Федерация') then 0
+            Else 1
+         End as sort2,
+         geo6.Name
+Into #Tab1
+From Journal_44
+    Inner Join geo5
+    On geo5.geo5_Id=Journal_44.FJField_18
+    Inner Join Journal_40
+    On Journal_40_Id=Journal_44.FJField_14
+    Inner Join Journal_41
+    On Journal_41_Id=Journal_44.FJField_12
+    left Join geo6
+    On geo5.FJField_9=geo6_Id
+    Inner Join Journal_45
+    On Journal_45_Id=Journal_44.FJField_21
+    Where geo5.FJField_16=1    and
+                  Journal_40_Name= @main_context
+
+and
+(((cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)>=(cast(cast(@year as int)  as float)+ cast(@quater as float)/10 )
+
+               and (cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)<(cast((cast(@year as int)+1 )  as float)+cast(@quater as float)/10)
+                and Journal_44.FJField_20='Прогноз')
+        or
+                (( cast( Journal_45.Journal_45_Name as float)
+                   + cast(Journal_44.FJField_16 as float)/10 )< (cast(cast(@year as int)  as float)+cast(@quater as float)/10 )
+                   and Journal_44.FJField_20='Факт'))
+                   
+                   
+select @params = @params + ', [' + RTRIM(#Columns_Name.Col_Id)+']' FROM #Columns_Name
+set @params = substring(@params, 3, len(@params) - 1);
+
+
+
+Insert into #Tab1 (#Tab1.[~Всего, тыс тонн],#Tab1.FJField_20,#Tab1.[регион],
+        #Tab1.Journal_41_Name,#Tab1.Journal_40_Name,#Tab1.год,#Tab1.квартал,#Tab1.sort2)
+select sum([~Всего, тыс тонн]),
+       #Tab1.FJField_20,
+       'Итого по россии',
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал,
+        -1
+        From #Tab1
+   Group by
+   #Tab1.FJField_20,
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал
+
+Set @ordering=(Select
+				Case
+					When @sortcols='' then 'Order by sort2'
+					Else @sortcols 
+				End)     
+declare @Sql varchar(8000);
+set @Sql = 
+'Select [Регион], ''imagesingrid/test.jpg'' AS [Картинка],' + @params+',cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="63">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="65">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="65">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] FROM('+
+'SELECT [Регион], sort2,' + @params+
+' FROM' +
+' (Select
+     cast (#Tab1.[~Всего, тыс тонн] as numeric(10,2))as t1,
+     #Reg_year.[Регион] ,
+     #Tab1.квартал+''кв. ''+#Reg_year.[Journal_45_Name]+''г.'' as [Квартал],     
+     #Reg_year.[Федеральный округ],
+      #Tab1.sort2,
+     ''Зерно''  as [~Продовольственный ресурс]
+      
+FROM #Reg_year
+    Left join #Tab1
+        On #Reg_year.[Регион]=#Tab1.[регион] and
+         #Reg_year.Journal_45_Name=#Tab1.год and 
+         #Reg_year.Квартал =#Tab1.квартал
+         ) p '+
+         
+' PIVOT ('+
+'    max(t1)'+
+'    FOR [Квартал] in('+@params+')'+
+' ) AS pvt Where [3кв. 2005г.] is Not NULL )p '+@ordering
+EXEC(@Sql)
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">'+@main_context+' зерна, тыс. тонн </h3></header>
+            <footer><h3 class="testStyle">Футер. '+@main_context+' зерна, тыс. тонн </h3></footer>            
+        </labels>
+        <columns>
+        <col id="Регион" width="250px"/> <col id="Картинка" width="50px" type="IMAGE"/>'
+        
+select     @gridsettings_str=@gridsettings_str+'<col id="'+#Columns_Name.Col_Id+'" width="85px" precision="2"/>' From #Columns_Name
+set @gridsettings_str=@gridsettings_str+'</columns>
+							<action>
+							<main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="3">
+	                                <add_context>current</add_context>
+                                </element>   
+                                <element id="5">
+	                                <add_context>current</add_context>
+                                </element>                                                                   
+                                
+                            </datapanel>
+                        </action>
+<properties flip="false" pagesize="50" autoSelectRecordId="9" autoSelectRelativeRecord="false" autoSelectColumnId="4кв. 2005г." totalCount="0" profile="grid.nowidth.properties"/></gridsettings>' 
+set    @gridsettings=CAST(@gridsettings_str as xml)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[exttreegrid_bal]    Script Date: 06/14/2012 10:45:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:        <Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:    <Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[exttreegrid_bal]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',    
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+	@parent_id varchar(512) ='',            
+    @gridsettings xml output,
+    @error_mes varchar(512) output
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+    
+set @main_context = 'Потери - Всего';    
+    
+    
+    
+declare @filters as varchar(1024)
+declare @ordering as varchar(1024)
+
+IF OBJECT_ID('tempdb.dbo.#Per') is not null 
+drop table #Per
+IF OBJECT_ID('tempdb.dbo.#Reg_year') is not null 
+drop table #Reg_year
+IF OBJECT_ID('tempdb.dbo.#Columns_Name') is not null 
+drop table #Columns_Name
+IF OBJECT_ID('tempdb.dbo.#Tab1') is not null 
+drop table #Tab1
+
+declare @year as varchar(50)
+declare @quater as varchar(50)
+declare @params as varchar(8000)
+Set @year='2010'
+Set @quater='3'
+Set @params=''
+Select
+    [Год],
+    [Квартал]
+Into #Per
+From
+    (Select 
+        Journal_45_Name as [Год],
+        '1' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '2' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '3' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '4' as [Квартал]
+    From Journal_45
+    ) a
+
+Select
+    newid() as id__,
+    geo5_id,
+    geo5.NAME as [Регион],
+    Journal_45_Name,
+    Journal_45_Id,
+    geo6.Name as [Федеральный округ],
+    #Per.[Квартал] ,
+      Case
+            When geo6.Name='Южный ФО' then 3
+            When geo6.Name='Уральский ФО' then 5
+            When geo6.Name='Сибирский ФО' then 6
+            When geo6.Name='Приволжский ФО' then 4
+            When geo6.Name='Дальневосточный ФО' then 7
+            When geo6.Name='Центральный ФО' then 1
+            When geo6.Name='Северо-Западный ФО' then 2
+            Else 0
+         End as sort     
+Into #Reg_year
+From Journal_45 Inner Join #Per
+    On #Per.[Год]= Journal_45_Name,
+    geo5 left Join geo6
+    On geo5.FJField_9=geo6_Id
+Where geo5.FJField_16=1   and
+ cast( Journal_45_Name as float)
+   + cast(#Per.[Квартал] as float)/10 >= cast(cast(@year as int)-5  as float)+cast(@quater as float)/10
+ and
+ cast( Journal_45_Name as float)
+     + cast(#Per.[Квартал] as float)/10 < cast(cast(@year as int)+1  as float)+cast(@quater as float)/10
+Select distinct    
+    [Квартал]  +'кв. ' +Journal_45_Name+ 'г.' as Col_Id,
+    Journal_45_Name,
+     [Квартал]
+Into #Columns_Name
+From #Reg_year
+Order by Journal_45_Name, [Квартал]
+
+select Journal_44.FJField_17 as [~Всего, тыс тонн],
+       Journal_44.FJField_20,
+       Journal_44.FJField_18,
+        geo5.Name as [регион],
+        Journal_41.Journal_41_Name,
+        Journal_40_Name,
+        Journal_45.Journal_45_Name as [год],
+       Journal_44.FJField_16 as [квартал],
+       Case
+            When geo6.Name in ('Южный ФО','Уральский ФО','Сибирский ФО',
+                'Приволжский ФО','Дальневосточный ФО','Центральный ФО','Северо-Западный ФО','Российская Федерация') then 0
+            Else 1
+         End as sort2,
+         geo6.Name
+Into #Tab1
+From Journal_44
+    Inner Join geo5
+    On geo5.geo5_Id=Journal_44.FJField_18
+    Inner Join Journal_40
+    On Journal_40_Id=Journal_44.FJField_14
+    Inner Join Journal_41
+    On Journal_41_Id=Journal_44.FJField_12
+    left Join geo6
+    On geo5.FJField_9=geo6_Id
+    Inner Join Journal_45
+    On Journal_45_Id=Journal_44.FJField_21
+    Where geo5.FJField_16=1    and
+                  Journal_40_Name= @main_context
+
+and
+(((cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)>=(cast(cast(@year as int)  as float)+ cast(@quater as float)/10 )
+
+               and (cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)<(cast((cast(@year as int)+1 )  as float)+cast(@quater as float)/10)
+                and Journal_44.FJField_20='Прогноз')
+        or
+                (( cast( Journal_45.Journal_45_Name as float)
+                   + cast(Journal_44.FJField_16 as float)/10 )< (cast(cast(@year as int)  as float)+cast(@quater as float)/10 )
+                   and Journal_44.FJField_20='Факт'))
+                   
+                   
+select @params = @params + ', [' + RTRIM(#Columns_Name.Col_Id)+']' FROM #Columns_Name
+set @params = substring(@params, 3, len(@params) - 1);
+
+
+
+Insert into #Tab1 (#Tab1.[~Всего, тыс тонн],#Tab1.FJField_20,#Tab1.[регион],
+        #Tab1.Journal_41_Name,#Tab1.Journal_40_Name,#Tab1.год,#Tab1.квартал,#Tab1.sort2)
+select sum([~Всего, тыс тонн]),
+       #Tab1.FJField_20,
+       'Итого по россии',
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал,
+        -1
+        From #Tab1
+   Group by
+   #Tab1.FJField_20,
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал
+
+Set @ordering=(Select
+				Case
+					When @sortcols='' then 'Order by sort2'
+					Else @sortcols 
+				End)     
+declare @Sql varchar(8000);
+set @Sql = 
+'Select [Регион], ''imagesingrid/test.jpg'' AS [Картинка],' + @params+',cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="3">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="5">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="5">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] FROM('+
+'SELECT [Регион], sort2,' + @params+
+' FROM' +
+' (Select
+     cast (#Tab1.[~Всего, тыс тонн] as numeric(10,2))as t1,
+     #Reg_year.[Регион] ,
+     #Tab1.квартал+''кв. ''+#Reg_year.[Journal_45_Name]+''г.'' as [Квартал],     
+     #Reg_year.[Федеральный округ],
+      #Tab1.sort2,
+     ''Зерно''  as [~Продовольственный ресурс]
+      
+FROM #Reg_year
+    Left join #Tab1
+        On #Reg_year.[Регион]=#Tab1.[регион] and
+         #Reg_year.Journal_45_Name=#Tab1.год and 
+         #Reg_year.Квартал =#Tab1.квартал
+         ) p '+
+         
+' PIVOT ('+
+'    max(t1)'+
+'    FOR [Квартал] in('+@params+')'+
+' ) AS pvt Where [3кв. 2005г.] is Not NULL )p '+@ordering
+EXEC(@Sql)
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">'+@main_context+' зерна, тыс. тонн </h3></header>
+            <footer><h3 class="testStyle">Футер. '+@main_context+' зерна, тыс. тонн </h3></footer>            
+        </labels>
+        <columns>
+        <col id="Регион" width="250px"/> <col id="Картинка" width="50px" type="IMAGE"/>'
+        
+select     @gridsettings_str=@gridsettings_str+'<col id="'+#Columns_Name.Col_Id+'" width="85px" precision="2"/>' From #Columns_Name
+set @gridsettings_str=@gridsettings_str+'</columns>
+							<action>
+							<main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="3">
+	                                <add_context>current</add_context>
+                                </element>   
+                                <element id="5">
+	                                <add_context>current</add_context>
+                                </element>                                                                   
+                                
+                            </datapanel>
+                        </action>
+<properties flip="false" pagesize="50" autoSelectRecordId="9"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>' 
+set    @gridsettings=CAST(@gridsettings_str as xml)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[exttreegrid_special_profile]    Script Date: 06/14/2012 10:45:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[exttreegrid_special_profile]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+	@parent_id varchar(512) ='',            
+    @gridsettings xml output,
+	@error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+    
+declare @filters as varchar(1024)
+declare @ordering as varchar(1024)
+
+IF OBJECT_ID('tempdb.dbo.#Per') is not null 
+drop table #Per
+IF OBJECT_ID('tempdb.dbo.#Reg_year') is not null 
+drop table #Reg_year
+IF OBJECT_ID('tempdb.dbo.#Columns_Name') is not null 
+drop table #Columns_Name
+IF OBJECT_ID('tempdb.dbo.#Tab1') is not null 
+drop table #Tab1
+
+declare @year as varchar(50)
+declare @quater as varchar(50)
+declare @params as varchar(8000)
+Set @year='2010'
+Set @quater='3'
+Set @params=''
+Select
+    [Год],
+    [Квартал]
+Into #Per
+From
+    (Select 
+        Journal_45_Name as [Год],
+        '1' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '2' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '3' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '4' as [Квартал]
+    From Journal_45
+    ) a
+Where a.Год = 2005   
+
+Select
+    newid() as id__,
+    geo5_id,
+    geo5.NAME as [Регион],
+    Journal_45_Name,
+    Journal_45_Id,
+    geo6.Name as [Федеральный округ],
+    #Per.[Квартал] ,
+      Case
+            When geo6.Name='Южный ФО' then 3
+            When geo6.Name='Уральский ФО' then 5
+            When geo6.Name='Сибирский ФО' then 6
+            When geo6.Name='Приволжский ФО' then 4
+            When geo6.Name='Дальневосточный ФО' then 7
+            When geo6.Name='Центральный ФО' then 1
+            When geo6.Name='Северо-Западный ФО' then 2
+            Else 0
+         End as sort     
+Into #Reg_year
+From Journal_45 Inner Join #Per
+    On #Per.[Год]= Journal_45_Name,
+    geo5 left Join geo6
+    On geo5.FJField_9=geo6_Id
+Where geo5.FJField_16=1   and
+ cast( Journal_45_Name as float)
+   + cast(#Per.[Квартал] as float)/10 >= cast(cast(@year as int)-5  as float)+cast(@quater as float)/10
+ and
+ cast( Journal_45_Name as float)
+     + cast(#Per.[Квартал] as float)/10 < cast(cast(@year as int)+1  as float)+cast(@quater as float)/10
+Select distinct    
+    [Квартал]  +'кв. ' +Journal_45_Name+ 'г.' as Col_Id,
+    Journal_45_Name,
+     [Квартал]
+Into #Columns_Name
+From #Reg_year
+Order by Journal_45_Name, [Квартал]
+
+select Journal_44.FJField_17 as [~Всего, тыс тонн],
+       Journal_44.FJField_20,
+       Journal_44.FJField_18,
+        geo5.Name as [регион],
+        Journal_41.Journal_41_Name,
+        Journal_40_Name,
+        Journal_45.Journal_45_Name as [год],
+       Journal_44.FJField_16 as [квартал],
+       Case
+            When geo6.Name in ('Южный ФО','Уральский ФО','Сибирский ФО',
+                'Приволжский ФО','Дальневосточный ФО','Центральный ФО','Северо-Западный ФО','Российская Федерация') then 0
+            Else 1
+         End as sort2,
+         geo6.Name
+Into #Tab1
+From Journal_44
+    Inner Join geo5
+    On geo5.geo5_Id=Journal_44.FJField_18
+    Inner Join Journal_40
+    On Journal_40_Id=Journal_44.FJField_14
+    Inner Join Journal_41
+    On Journal_41_Id=Journal_44.FJField_12
+    left Join geo6
+    On geo5.FJField_9=geo6_Id
+    Inner Join Journal_45
+    On Journal_45_Id=Journal_44.FJField_21
+    Where geo5.FJField_16=1    and
+                  Journal_40_Name= @main_context
+
+and
+(((cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)>=(cast(cast(@year as int)  as float)+ cast(@quater as float)/10 )
+
+               and (cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)<(cast((cast(@year as int)+1 )  as float)+cast(@quater as float)/10)
+                and Journal_44.FJField_20='Прогноз')
+        or
+                (( cast( Journal_45.Journal_45_Name as float)
+                   + cast(Journal_44.FJField_16 as float)/10 )< (cast(cast(@year as int)  as float)+cast(@quater as float)/10 )
+                   and Journal_44.FJField_20='Факт'))
+                   
+                   
+select @params = @params + ', [' + RTRIM(#Columns_Name.Col_Id)+']' FROM #Columns_Name
+set @params = substring(@params, 3, len(@params) - 1);
+
+
+
+Insert into #Tab1 (#Tab1.[~Всего, тыс тонн],#Tab1.FJField_20,#Tab1.[регион],
+        #Tab1.Journal_41_Name,#Tab1.Journal_40_Name,#Tab1.год,#Tab1.квартал,#Tab1.sort2)
+select sum([~Всего, тыс тонн]),
+       #Tab1.FJField_20,
+       'Итого по россии',
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал,
+        -1
+        From #Tab1
+   Group by
+   #Tab1.FJField_20,
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал
+
+Set @ordering=(Select
+				Case
+					When @sortcols='' then 'Order by sort2'
+					Else @sortcols 
+				End)     
+declare @Sql varchar(8000);
+set @Sql = 
+'Select [Регион], [Регион] as "Регион2", getdate() as [Сейчас],  ''imagesingrid/test.jpg'' AS [Картинка],' + @params+',cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>                        
+                            <datapanel type="current" tab="current">
+                                <element id="3">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="5">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>                        
+                            <datapanel type="current" tab="current">
+                                <element id="3">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="5">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] FROM('+
+'SELECT [Регион], sort2,' + @params+
+' FROM' +
+' (Select
+     cast (#Tab1.[~Всего, тыс тонн] as numeric(10,2))as t1,
+     #Reg_year.[Регион] ,
+     #Tab1.квартал+''кв. ''+#Reg_year.[Journal_45_Name]+''г.'' as [Квартал],     
+     #Reg_year.[Федеральный округ],
+      #Tab1.sort2,
+     ''Зерно''  as [~Продовольственный ресурс]
+      
+FROM #Reg_year
+    Left join #Tab1
+        On #Reg_year.[Регион]=#Tab1.[регион] and
+         #Reg_year.Journal_45_Name=#Tab1.год and 
+         #Reg_year.Квартал =#Tab1.квартал
+         ) p '+
+         
+' PIVOT ('+
+'    max(t1)'+
+'    FOR [Квартал] in('+@params+')'+
+' ) AS pvt Where [3кв. 2005г.] is Not NULL )p '+@ordering
+EXEC(@Sql)
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">'+@main_context+' зерна, тыс. тонн </h3></header>
+        </labels>
+        <columns>
+        <col id="Регион" width="150px"/> 
+        <col id="Регион2" width="150px"/>                 
+        <col id="Картинка" width="40px" type="IMAGE"/>'
+        
+        
+select     @gridsettings_str=@gridsettings_str+'<col id="'+#Columns_Name.Col_Id+'" width="60px" precision="2"/>' From #Columns_Name
+set @gridsettings_str=@gridsettings_str+'</columns>
+							<action>
+							<main_context>current</main_context>							
+                            <datapanel type="current" tab="current">
+                                <element id="3">
+	                                <add_context>current</add_context>
+                                </element>   
+                                <element id="5">
+	                                <add_context>current</add_context>
+                                </element>                                                                   
+                                
+                            </datapanel>
+                        </action>
+<properties flip="false" pagesize="50" profile="special.properties" totalCount="0"/></gridsettings>' 
+set    @gridsettings=CAST(@gridsettings_str as xml)
+END
+GO

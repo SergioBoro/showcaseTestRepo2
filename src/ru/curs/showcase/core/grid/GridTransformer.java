@@ -34,6 +34,10 @@ public final class GridTransformer {
 
 		int index = 0;
 		for (Column c : grid.getDataSet().getColumnSet().getColumnsByIndex()) {
+			if ("hasChildren".equalsIgnoreCase(c.getCaption())) {
+				continue;
+			}
+
 			index++;
 			LiveGridColumnConfig column =
 				new LiveGridColumnConfig("col" + String.valueOf(index), c.getCaption(),
@@ -190,6 +194,71 @@ public final class GridTransformer {
 		}
 
 		return result;
+	}
+
+	public static TreeGridData<TreeGridModel> gridToTreeGridData(final Grid grid) {
+
+		// -------------------------------------------------------
+
+		TreeGridData<TreeGridModel> models = new TreeGridData<TreeGridModel>();
+
+		for (Record rec : grid.getDataSet().getRecordSet().getRecords()) {
+			TreeGridModel tgm = new TreeGridModel();
+
+			tgm.setId(rec.getId());
+
+			tgm.setRowStyle(rec.getAttributes().getValue(
+					ru.beta2.extra.gwt.ui.GeneralConstants.STYLE_CLASS_TAG));
+
+			int index = 0;
+			for (Column c : grid.getDataSet().getColumnSet().getColumnsByIndex()) {
+				if ("hasChildren".equalsIgnoreCase(c.getCaption())) {
+					tgm.setHasChildren(TextUtils.stringToBoolean(rec.getValue(c)));
+				} else {
+					index++;
+					String colId = "col" + String.valueOf(index);
+					String val = null;
+
+					switch (c.getValueType()) {
+					case IMAGE:
+						val = "<a><img border=\"0\" src=\"" + rec.getValue(c) + "\"></a>";
+						break;
+					case LINK:
+						val = getLink(rec.getValue(c));
+						break;
+					default:
+						val = rec.getValue(c);
+						break;
+					}
+					tgm.set(colId, val);
+				}
+			}
+			models.add(tgm);
+		}
+
+		// -------------------------------------------------------
+
+		LiveGridExtradata lge = new LiveGridExtradata();
+		lge.setGridEventManager(grid.getEventManager());
+
+		String autoSelectRecordId = null;
+		if (grid.getAutoSelectRecord() != null) {
+			autoSelectRecordId = grid.getAutoSelectRecord().getId();
+		}
+		lge.setAutoSelectRecordId(autoSelectRecordId);
+
+		String autoSelectColumnId = null;
+		if (grid.getAutoSelectColumn() != null) {
+			autoSelectColumnId = grid.getAutoSelectColumn().getId();
+		}
+		lge.setAutoSelectColumnId(autoSelectColumnId);
+
+		models.setLiveGridExtradata(lge);
+
+		// -------------------------------------------------------
+
+		return models;
+
 	}
 
 }
