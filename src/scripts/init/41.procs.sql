@@ -18729,8 +18729,8 @@ set @gridsettings_str='<gridsettings>
 </gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 SELECT [Name] AS "Название", [Name] AS "Название2", [Logo] AS "Логотип", [Url] as "URL", Id AS "~~id",  cast( '<properties>
-			<styleClass name="exttreegrid-record-bold exttreegrid-record-bold2"/>
-			<styleClass name="exttreegrid-record-italic exttreegrid-record-italic2"/>
+			<styleClass name="exttreegrid-record-bold extlivegrid-record-bold"/>
+			<styleClass name="exttreegrid-record-italic extlivegrid-record-italic"/>
                     <event name="row_single_click">
                         <action>
                             <main_context>current</main_context>                        
