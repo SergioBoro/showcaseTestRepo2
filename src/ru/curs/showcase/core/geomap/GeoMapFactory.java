@@ -9,7 +9,7 @@ import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.core.event.EventFactory;
 import ru.curs.showcase.core.sp.*;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.util.*;
 
 /**
@@ -67,6 +67,11 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 
 	@Override
 	protected void fillLayers() throws SQLException {
+
+		if (layersSql == null) {
+			return;
+		}
+
 		while (layersSql.next()) {
 			String value = layersSql.getString(OBJECT_TYPE_TAG).toUpperCase().trim();
 			GeoMapLayer layer = getData().addLayer(GeoMapFeatureType.valueOf(value));
@@ -122,6 +127,11 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 
 	@Override
 	protected void fillPoints() throws SQLException {
+
+		if (pointsSql == null) {
+			return;
+		}
+
 		while (pointsSql.next()) {
 			GeoMapLayer layer = getLayerForObject(pointsSql);
 			GeoMapFeature point =
@@ -209,11 +219,16 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 				.addAll(factory.getSubSetOfEvents(objectId, value));
 	}
 
+	// CHECKSTYLE:OFF
 	@Override
 	protected void prepareData() {
 		try {
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-				ResultSet rs = getSource().nextResultSet();
+
+			ResultSet rs;
+
+			switch (ConnectionFactory.getSQLServerType()) {
+			case MSSQL:
+				rs = getSource().nextResultSet();
 				layersSql = SQLUtils.cacheResultSet(rs);
 
 				rs = getSource().nextResultSet();
@@ -241,10 +256,21 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 					throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR);
 				}
 				indicatorValuesSql = SQLUtils.cacheResultSet(rs);
-			} else {
+
+				break;
+
+			case POSTGRESQL:
+				layersSql = null;
+				pointsSql = null;
+				areasSql = null;
+				indicatorsSql = null;
+				indicatorValuesSql = null;
+
+				break;
+
+			case ORACLE:
 				CallableStatement cs = (CallableStatement) getSource().getStatement();
-				ResultSet rs =
-					(ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_1);
+				rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_1);
 				layersSql = SQLUtils.cacheResultSet(rs);
 
 				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_2)) {
@@ -273,11 +299,23 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 				rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_5);
 				indicatorValuesSql = SQLUtils.cacheResultSet(rs);
 
+				break;
+			default:
+				layersSql = null;
+				pointsSql = null;
+				areasSql = null;
+				indicatorsSql = null;
+				indicatorValuesSql = null;
+
+				break;
 			}
+
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
 		}
 	}
+
+	// CHECKSTYLE:ON
 
 	private boolean isCursorOpen(final int index) {
 		try {
