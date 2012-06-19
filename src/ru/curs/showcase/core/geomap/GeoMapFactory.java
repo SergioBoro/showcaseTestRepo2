@@ -219,103 +219,99 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 				.addAll(factory.getSubSetOfEvents(objectId, value));
 	}
 
-	// CHECKSTYLE:OFF
 	@Override
 	protected void prepareData() {
 		try {
-
-			ResultSet rs;
-
 			switch (ConnectionFactory.getSQLServerType()) {
 			case MSSQL:
-				rs = getSource().nextResultSet();
-				layersSql = SQLUtils.cacheResultSet(rs);
-
-				rs = getSource().nextResultSet();
-				if (rs == null) {
-					throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR);
-				}
-				pointsSql = SQLUtils.cacheResultSet(rs);
-
-				rs = getSource().nextResultSet();
-				if (rs == null) {
-					return; // разрешаем создавать карту, содержащую только
-							// точки -
-							// например карту региона.
-				}
-				areasSql = SQLUtils.cacheResultSet(rs);
-
-				rs = getSource().nextResultSet();
-				if (rs == null) {
-					return; // разрешаем создавать карту без показателей.
-				}
-				indicatorsSql = SQLUtils.cacheResultSet(rs);
-
-				rs = getSource().nextResultSet();
-				if (rs == null) {
-					throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR);
-				}
-				indicatorValuesSql = SQLUtils.cacheResultSet(rs);
-
+				prepareDataForMSSQL();
 				break;
-
 			case POSTGRESQL:
-				layersSql = null;
-				pointsSql = null;
-				areasSql = null;
-				indicatorsSql = null;
-				indicatorValuesSql = null;
-
+				prepareDataForPostgreSQL();
 				break;
-
 			case ORACLE:
-				CallableStatement cs = (CallableStatement) getSource().getStatement();
-				rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_1);
-				layersSql = SQLUtils.cacheResultSet(rs);
-
-				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_2)) {
-					throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR);
-				}
-				rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_2);
-				pointsSql = SQLUtils.cacheResultSet(rs);
-
-				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_3)) {
-					return; // разрешаем создавать карту, содержащую только
-							// точки -
-							// например карту региона.
-				}
-				rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_3);
-				areasSql = SQLUtils.cacheResultSet(rs);
-
-				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_4)) {
-					return; // разрешаем создавать карту без показателей
-				}
-				rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_4);
-				indicatorsSql = SQLUtils.cacheResultSet(rs);
-
-				if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_5)) {
-					throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR);
-				}
-				rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_5);
-				indicatorValuesSql = SQLUtils.cacheResultSet(rs);
-
+				prepareDataForOracle();
 				break;
 			default:
-				layersSql = null;
-				pointsSql = null;
-				areasSql = null;
-				indicatorsSql = null;
-				indicatorValuesSql = null;
-
+				prepareDataForPostgreSQL();
 				break;
 			}
-
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);
 		}
 	}
 
-	// CHECKSTYLE:ON
+	private void prepareDataForMSSQL() throws SQLException {
+		ResultSet rs = getSource().nextResultSet();
+		layersSql = SQLUtils.cacheResultSet(rs);
+
+		rs = getSource().nextResultSet();
+		if (rs == null) {
+			throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR);
+		}
+		pointsSql = SQLUtils.cacheResultSet(rs);
+
+		rs = getSource().nextResultSet();
+		if (rs == null) {
+			return; // разрешаем создавать карту, содержащую только
+					// точки -
+					// например карту региона.
+		}
+		areasSql = SQLUtils.cacheResultSet(rs);
+
+		rs = getSource().nextResultSet();
+		if (rs == null) {
+			return; // разрешаем создавать карту без показателей.
+		}
+		indicatorsSql = SQLUtils.cacheResultSet(rs);
+
+		rs = getSource().nextResultSet();
+		if (rs == null) {
+			throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR);
+		}
+		indicatorValuesSql = SQLUtils.cacheResultSet(rs);
+	}
+
+	private void prepareDataForPostgreSQL() {
+		layersSql = null;
+		pointsSql = null;
+		areasSql = null;
+		indicatorsSql = null;
+		indicatorValuesSql = null;
+	}
+
+	private void prepareDataForOracle() throws SQLException {
+		CallableStatement cs = (CallableStatement) getSource().getStatement();
+		ResultSet rs =
+			(ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_1);
+		layersSql = SQLUtils.cacheResultSet(rs);
+
+		if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_2)) {
+			throw new ResultSetHandleException(NO_POINTS_TABLE_ERROR);
+		}
+		rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_2);
+		pointsSql = SQLUtils.cacheResultSet(rs);
+
+		if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_3)) {
+			return; // разрешаем создавать карту, содержащую только
+					// точки -
+					// например карту региона.
+		}
+		rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_3);
+		areasSql = SQLUtils.cacheResultSet(rs);
+
+		if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_4)) {
+			return; // разрешаем создавать карту без показателей
+		}
+		rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_4);
+		indicatorsSql = SQLUtils.cacheResultSet(rs);
+
+		if (!isCursorOpen(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_5)) {
+			throw new ResultSetHandleException(NO_IND_VALUES_TABLE_ERROR);
+		}
+		rs = (ResultSet) cs.getObject(GeoMapDBGateway.ORA_CURSOR_INDEX_DATA_AND_SETTINS_5);
+		indicatorValuesSql = SQLUtils.cacheResultSet(rs);
+	}
 
 	private boolean isCursorOpen(final int index) {
 		try {
