@@ -3,7 +3,7 @@ package ru.curs.showcase.core.primelements.datapanel;
 import ru.curs.showcase.app.api.event.DataPanelLink;
 import ru.curs.showcase.core.SourceSelector;
 import ru.curs.showcase.core.primelements.*;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.util.exception.*;
 
 /**
@@ -26,9 +26,14 @@ public class DataPanelSelector extends SourceSelector<PrimElementsGateway> {
 			gateway = new PrimElementsJythonGateway();
 			break;
 		case SQL:
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			switch (ConnectionFactory.getSQLServerType()) {
+			case MSSQL:
 				gateway = new DataPanelMSSQLExecGateway();
-			} else {
+				break;
+			case POSTGRESQL:
+				gateway = new DataPanelPostgreSQLExecGateway();
+				break;
+			default:
 				throw new NotImplementedYetException();
 			}
 			break;

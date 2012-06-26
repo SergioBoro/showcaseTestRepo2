@@ -18,7 +18,7 @@ import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
  * 
  */
 @Description(process = "Загрузка данных для XForm, вебтеста и плагина из БД")
-public final class HtmlDBGateway extends HTMLBasedElementQuery {
+public class HtmlDBGateway extends HTMLBasedElementQuery {
 
 	private static final String NO_UPLOAD_PROC_ERROR =
 		"Не задана процедура для загрузки файлов на сервер для linkId=";
@@ -52,7 +52,8 @@ public final class HtmlDBGateway extends HTMLBasedElementQuery {
 			return "{? = call %s (?, ?, ?, ?, ?, ?, ?)}";
 		case SUBMISSION_TEMPLATE_IND:
 			return "{? = call %s (?, ?, ?)}";
-		case FILE_TEMPLATE_IND:
+		case DOWNLOAD_FILE_TEMPLATE_IND:
+		case UPLOAD_FILE_TEMPLATE_IND:
 			return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 		default:
 			return null;
@@ -68,7 +69,7 @@ public final class HtmlDBGateway extends HTMLBasedElementQuery {
 	public OutputStreamDataFile downloadFile(final XFormContext context,
 			final DataPanelElementInfo elementInfo, final ID linkId) {
 		init(context, elementInfo);
-		setTemplateIndex(FILE_TEMPLATE_IND);
+		setTemplateIndex(DOWNLOAD_FILE_TEMPLATE_IND);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
 		if (proc == null) {
 			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR + linkId);
@@ -94,7 +95,7 @@ public final class HtmlDBGateway extends HTMLBasedElementQuery {
 	public void uploadFile(final XFormContext context, final DataPanelElementInfo elementInfo,
 			final ID linkId, final DataFile<InputStream> file) {
 		init(context, elementInfo);
-		setTemplateIndex(FILE_TEMPLATE_IND);
+		setTemplateIndex(UPLOAD_FILE_TEMPLATE_IND);
 		DataPanelElementProc proc = elementInfo.getProcs().get(linkId);
 		if (proc == null) {
 			throw new IncorrectElementException(NO_UPLOAD_PROC_ERROR + linkId);
@@ -123,7 +124,8 @@ public final class HtmlDBGateway extends HTMLBasedElementQuery {
 			return ERROR_MES_INDEX_SAVE;
 		case SUBMISSION_TEMPLATE_IND:
 			return ERROR_MES_INDEX_SUBMISSION;
-		case FILE_TEMPLATE_IND:
+		case DOWNLOAD_FILE_TEMPLATE_IND:
+		case UPLOAD_FILE_TEMPLATE_IND:
 			return ERROR_MES_INDEX_FILE;
 		default:
 			return -1;

@@ -2,6 +2,8 @@ package ru.curs.showcase.test;
 
 import static org.junit.Assert.*;
 
+import java.util.*;
+
 import org.junit.*;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
@@ -15,9 +17,10 @@ import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.core.chart.*;
 import ru.curs.showcase.core.grid.GridGetCommand;
+import ru.curs.showcase.core.html.plugin.PluginCommand;
 import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.core.html.xform.XFormGetCommand;
-import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
+import ru.curs.showcase.core.primelements.navigator.*;
 import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 
@@ -28,13 +31,17 @@ import ru.curs.showcase.runtime.AppInfoSingleton;
 public class PostgreSQLTest extends AbstractTest {
 
 	private static final String PG_USERDATA = "pg";
-	private static final String PG_XML = "a.xml";
+	private static final String PG_XML_SP = "funcs.xml";
+	private static final String PG_XML_SCRIPTS = "scripts.xml";
 
 	private static final Integer CITIES_COUNT = 10_428;
 	private static final String FIRST_COL_CAPTION = "3кв. 2005г.";
 	private static final String SELECTOR_COL_FIRST_VALUE =
 		"Запасы на конец отчетного периода - Всего";
 	private static final String FIRST_PERIOD_CAPTION = "Период 1";
+
+	private static final int PLUGIN_WIDTH = 800;
+	private static final int PLUGIN_HEIGHT = 600;
 
 	private void setPGUserData() {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(PG_USERDATA);
@@ -49,7 +56,7 @@ public class PostgreSQLTest extends AbstractTest {
 	 * Проверка получения навигатора.
 	 */
 	@Test
-	public void testNavigator() {
+	public void testNavigatorFromSP() {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
 		NavigatorGetCommand command = new NavigatorGetCommand(context);
@@ -63,14 +70,35 @@ public class PostgreSQLTest extends AbstractTest {
 				.size());
 	}
 
+	@Test
+	public void testNavigatorFromScript() {
+		CompositeContext context = new CompositeContext();
+		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
+		NavigatorGetCommand command = new NavigatorGetCommand(context);
+		Map<String, String> map = new HashMap<>();
+		map.put(NavigatorSelector.NAVIGATOR_PROCNAME_PARAM, "navigator/generationtree.sql");
+		command.setProps(map);
+		Navigator nav = command.execute();
+		assertEquals("200px", nav.getWidth());
+	}
+
 	/**
 	 * Проверка получения вебтекста.
 	 */
 	@Test
-	public void testWebText() {
+	public void testWebTextFromSP() {
+		runWebText(PG_XML_SP);
+	}
+
+	@Test
+	public void testWebTextFromScript() {
+		runWebText(PG_XML_SCRIPTS);
+	}
+
+	private void runWebText(final String fileName) {
 		CompositeContext context = getTestContext2();
 		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
-		DataPanelElementInfo element = getDPElement(PG_XML, "3", "77");
+		DataPanelElementInfo element = getDPElement(fileName, "3", "77");
 
 		WebTextGetCommand command = new WebTextGetCommand(context, element);
 		WebText wt = command.execute();
@@ -85,10 +113,19 @@ public class PostgreSQLTest extends AbstractTest {
 	 * Проверка получения XForm.
 	 */
 	@Test
-	public void testXForm() {
+	public void testXFormFromSP() {
+		runXForm(PG_XML_SP);
+	}
+
+	@Test
+	public void testXFormFromScript() {
+		runXForm(PG_XML_SCRIPTS);
+	}
+
+	private void runXForm(final String fileName) {
 		XFormContext xcontext = new XFormContext(getTestContext1());
 		xcontext.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
-		DataPanelElementInfo element = getDPElement(PG_XML, "6", "61");
+		DataPanelElementInfo element = getDPElement(fileName, "6", "61");
 
 		XFormGetCommand command = new XFormGetCommand(xcontext, element);
 		XForm xforms = command.execute();
@@ -113,13 +150,54 @@ public class PostgreSQLTest extends AbstractTest {
 	}
 
 	/**
+	 * Проверка получения плагина.
+	 */
+	@Test
+	public void testPluginFromSP() {
+		testPlugin(PG_XML_SP);
+	}
+
+	@Test
+	public void testPluginFromScript() {
+		testPlugin(PG_XML_SCRIPTS);
+	}
+
+	private void testPlugin(final String fileName) {
+		CompositeContext context = getSimpleTestContext();
+		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
+		DataPanelElementInfo element = getDPElement(fileName, "7", "12");
+
+		PluginCommand command = new PluginCommand(context, element);
+		Plugin plugin = command.execute();
+
+		assertEquals(1, plugin.getParams().size());
+		assertEquals("[{name: 'Russia', data1: 63.82, data2: 17.18, data3: 7.77},"
+				+ "{name: 'Moscow', data1: 47.22, data2: 19.12, data3: 20.21},"
+				+ "{name: 'Piter', data1: 58.77, data2: 13.06, data3: 15.22},]", plugin
+				.getParams().get(0));
+		assertEquals("createRadar", plugin.getCreateProc());
+		assertEquals(PLUGIN_HEIGHT, plugin.getSize().getHeight().intValue());
+		assertEquals(PLUGIN_WIDTH, plugin.getSize().getWidth().intValue());
+
+	}
+
+	/**
 	 * Проверка получения грида с помощью 2-х процедур.
 	 */
 	@Test
-	public void testGrid2Proc() {
+	public void testGrid2ProcFromSP() {
+		runGrid2Proc(PG_XML_SP);
+	}
+
+	@Test
+	public void testGrid2ProcFromScript() {
+		runGrid2Proc(PG_XML_SCRIPTS);
+	}
+
+	private void runGrid2Proc(final String fileName) {
 		GridContext context = getTestGridContext1();
 		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
-		DataPanelElementInfo elInfo = getDPElement(PG_XML, "41", "0401");
+		DataPanelElementInfo elInfo = getDPElement(fileName, "41", "0401");
 
 		GridGetCommand command = new GridGetCommand(context, elInfo, true);
 		Grid grid = command.execute();
@@ -139,14 +217,23 @@ public class PostgreSQLTest extends AbstractTest {
 	 * 
 	 */
 	@Test
-	public void testGridXmlDs() {
-		final int colCount = 6;
+	public void testGridXmlDsFromSP() {
+		runGridXmlDs(PG_XML_SP);
+	}
+
+	@Test
+	public void testGridXmlDsFromScript() {
+		runGridXmlDs(PG_XML_SCRIPTS);
+	}
+
+	private void runGridXmlDs(final String fileName) {
+		final int colCount = 7;
 		final int pagesCount = 2;
 		final int pageSize = 2;
 
 		GridContext context = getTestGridContext1();
 		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
-		DataPanelElementInfo element = getDPElement(PG_XML, "42", "0201");
+		DataPanelElementInfo element = getDPElement(fileName, "42", "0201");
 
 		GridGetCommand command = new GridGetCommand(context, element, true);
 		Grid grid = command.execute();
@@ -181,7 +268,7 @@ public class PostgreSQLTest extends AbstractTest {
 		assertFalse(grid.getUISettings().isSelectOnlyRecords());
 
 		assertNotNull(grid.getAutoSelectRecord());
-		final String recId = "77F60A7C-42EB-4E32-B23D-F179E58FB138";
+		final String recId = "3";
 		assertEquals(recId, grid.getAutoSelectRecord().getId());
 		assertNotNull(grid.getEventManager().getEventForCell(recId, "URL",
 				InteractionType.SINGLE_CLICK));
@@ -197,7 +284,11 @@ public class PostgreSQLTest extends AbstractTest {
 	 * 
 	 */
 	@Test
-	public void testChartXmlDs() throws Exception {
+	public void testChartXmlDsFromSP() throws Exception {
+		runChartXmlDs(PG_XML_SP);
+	}
+
+	private void runChartXmlDs(final String fileName) throws Exception {
 		final int seriesCount = 9;
 		final ChildPosition defaultPos = ChildPosition.BOTTOM;
 		final int defaultWidth = 500;
@@ -206,7 +297,7 @@ public class PostgreSQLTest extends AbstractTest {
 
 		CompositeContext context = getTestContext2();
 		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
-		DataPanelElementInfo element = getDPElement(PG_XML, "5", "0");
+		DataPanelElementInfo element = getDPElement(fileName, "5", "0");
 
 		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
 		RecordSetElementRawData raw = gateway.getRawData(context, element);
@@ -260,7 +351,11 @@ public class PostgreSQLTest extends AbstractTest {
 	 * 
 	 */
 	@Test
-	public void testChartXmlDsFliped() throws Exception {
+	public void testChartXmlDsFlipedFromSP() throws Exception {
+		runChartXmlDsFliped(PG_XML_SP);
+	}
+
+	private void runChartXmlDsFliped(final String fileName) throws Exception {
 		final int seriesCount = 24;
 		final int labelsXCount = 9;
 		final ChildPosition defaultPos = ChildPosition.BOTTOM;
@@ -270,7 +365,7 @@ public class PostgreSQLTest extends AbstractTest {
 
 		CompositeContext context = getTestContext2();
 		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
-		DataPanelElementInfo element = getDPElement(PG_XML, "51", "051");
+		DataPanelElementInfo element = getDPElement(fileName, "51", "051");
 
 		RecordSetElementGateway<CompositeContext> gateway = new ChartDBGateway();
 		RecordSetElementRawData raw = gateway.getRawData(context, element);

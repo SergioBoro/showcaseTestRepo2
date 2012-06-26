@@ -25,6 +25,11 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
+
+	protected static final String SCRIPTS_SQL_DIR = "scripts/sql/";
+
+	protected static final String POSTGRESQL_TEMP_SCHEMA = "pg_temp";
+
 	public static final String SQL_MARKER = "SQL";
 	private static final int MAIN_CONTEXT_INDEX = 2;
 
@@ -195,6 +200,11 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	 * Проверяет наличие хранимой процедуры в БД.
 	 */
 	private boolean checkProcExists() {
+		if ((ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL)
+				&& (procName.toLowerCase().contains(POSTGRESQL_TEMP_SCHEMA))) {
+			return true;
+		}
+
 		String fileName =
 			String.format("%s/checkProcExists_%s.sql", UserDataUtils.SCRIPTSDIR, ConnectionFactory
 					.getSQLServerType().toString().toLowerCase());
@@ -238,7 +248,9 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 		if (getSqlTemplate(templateIndex).contains("%s")) {
 			String proc = getProcName();
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
-				proc = "\"" + proc + "\"";
+				if (!proc.toLowerCase().contains(POSTGRESQL_TEMP_SCHEMA)) {
+					proc = "\"" + proc + "\"";
+				}
 			}
 			return String.format(getSqlTemplate(templateIndex), proc);
 		} else {

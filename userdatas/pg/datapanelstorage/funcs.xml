@@ -29,6 +29,11 @@
 		<element id="22" type="webtext" proc="webtext_filter_and_add"
 			hideOnLoad="true" />		
 	</tab>
+	<tab id="7" name="Плагин">
+		<element id="12" type="plugin"  proc="radarInfo" plugin="radar">
+			<proc id="010201" name="plugin/handleRadar.py" type="POSTPROCESS" />
+		</element>	
+	</tab>
 	<tab id="41" name="Грид(2 процедуры)">
 		<element id ="0401" type="grid" proc="grid_cities_data">
 			<proc id="040101" name="grid_cities_metadata" type="METADATA"/>

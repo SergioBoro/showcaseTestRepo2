@@ -10,7 +10,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.core.primelements.navigator.*;
-import ru.curs.showcase.util.exception.*;
+import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
  * Класс для тестирования фабрики навигаторов.
@@ -35,22 +35,6 @@ public class NavigatorSLTest extends AbstractTest {
 		command.setProps(map);
 		Navigator nav = command.execute();
 		assertEquals("199px", nav.getWidth());
-	}
-
-	@Test
-	public void sqlFilesNotAllowedForPostgreSQL() {
-		CompositeContext context = new CompositeContext();
-		context.setSessionParamsMap(generateTestURLParamsForSL("pg"));
-		NavigatorGetCommand command = new NavigatorGetCommand(context);
-		Map<String, String> map = new HashMap<>();
-		map.put(NavigatorSelector.NAVIGATOR_PROCNAME_PARAM, "navigator/generate.tree.sql");
-		command.setProps(map);
-		try {
-			command.execute();
-			fail();
-		} catch (GeneralException e) {
-			assertEquals(NotImplementedYetException.class, e.getCause().getClass());
-		}
 	}
 
 	@Test

@@ -2,7 +2,7 @@ package ru.curs.showcase.core.grid;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.core.SourceSelector;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
 
 /**
@@ -22,9 +22,14 @@ public class GridSelector extends SourceSelector<GridGateway> {
 		GridGateway res;
 		switch (sourceType()) {
 		case SQL:
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			switch (ConnectionFactory.getSQLServerType()) {
+			case MSSQL:
 				res = new GridMSSQLExecGateway();
-			} else {
+				break;
+			case POSTGRESQL:
+				res = new GridPostgreSQLExecGateway();
+				break;
+			default:
 				throw new NotImplementedYetException();
 			}
 			break;

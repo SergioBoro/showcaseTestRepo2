@@ -3,7 +3,7 @@ package ru.curs.showcase.core.html.xform;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementProc;
 import ru.curs.showcase.core.SourceSelector;
 import ru.curs.showcase.core.html.*;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
 
 /**
@@ -26,9 +26,14 @@ public class XFormSaveSelector extends SourceSelector<HTMLAdvGateway> {
 			res = new XFormJythonGateway();
 			break;
 		case SQL:
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			switch (ConnectionFactory.getSQLServerType()) {
+			case MSSQL:
 				res = new HtmlMSSQLExecGateway();
-			} else {
+				break;
+			case POSTGRESQL:
+				res = new HtmlPostgreSQLExecGateway();
+				break;
+			default:
 				throw new NotImplementedYetException();
 			}
 			break;

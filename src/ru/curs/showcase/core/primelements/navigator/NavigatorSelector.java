@@ -26,9 +26,14 @@ public class NavigatorSelector extends SourceSelector<PrimElementsGateway> {
 			res = new PrimElementsJythonGateway();
 			break;
 		case SQL:
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			switch (ConnectionFactory.getSQLServerType()) {
+			case MSSQL:
 				res = new NavigatorMSSQLExecGateway();
-			} else {
+				break;
+			case POSTGRESQL:
+				res = new NavigatorPostgreSQLExecGateway();
+				break;
+			default:
 				throw new NotImplementedYetException();
 			}
 			break;

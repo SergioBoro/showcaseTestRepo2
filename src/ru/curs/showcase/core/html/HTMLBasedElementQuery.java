@@ -23,7 +23,8 @@ public abstract class HTMLBasedElementQuery extends ElementSPQuery implements HT
 	protected static final int GET_DATA_TEMPALTE_IND = 0;
 	protected static final int SAVE_TEMPLATE_IND = 1;
 	protected static final int SUBMISSION_TEMPLATE_IND = 2;
-	protected static final int FILE_TEMPLATE_IND = 3;
+	protected static final int DOWNLOAD_FILE_TEMPLATE_IND = 3;
+	protected static final int UPLOAD_FILE_TEMPLATE_IND = 4;
 	private static final String NO_SAVE_PROC_ERROR = "Не задана процедура для сохранения XForms";
 
 	/**
@@ -102,7 +103,8 @@ public abstract class HTMLBasedElementQuery extends ElementSPQuery implements HT
 			try {
 				prepareStatementWithErrorMes();
 				setSQLXMLParam(getInputSubmissionIndex(), context.getFormData());
-				getStatement().registerOutParameter(getOutputSubmissionIndex(), java.sql.Types.SQLXML);
+				getStatement().registerOutParameter(getOutputSubmissionIndex(),
+						java.sql.Types.SQLXML);
 				execute();
 				return getStringForXMLParam(getOutputSubmissionIndex());
 			} catch (SQLException e) {

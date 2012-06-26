@@ -4,7 +4,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.SourceSelector;
 import ru.curs.showcase.core.html.*;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -35,9 +35,12 @@ public final class XFormScriptTransformCommand extends XFormContextCommand<Strin
 				case JYTHON:
 					return new XFormJythonGateway();
 				case SQL:
-					if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+					switch (ConnectionFactory.getSQLServerType()) {
+					case MSSQL:
 						return new HtmlMSSQLExecGateway();
-					} else {
+					case POSTGRESQL:
+						return new HtmlPostgreSQLExecGateway();
+					default:
 						throw new NotImplementedYetException();
 					}
 				default:
