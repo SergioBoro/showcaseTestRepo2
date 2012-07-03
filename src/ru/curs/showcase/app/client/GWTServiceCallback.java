@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.client;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.utils.AccessToDomModel;
 
@@ -36,8 +36,13 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 
 		} else {
 
-			String str = GeneralException.getMessageType(caught).getName() + " ";
-			MessageBox.showMessageWithDetails(str + msgErrorCaption, caught.getMessage(),
+			String str = GeneralException.getMessageType(caught).getName();
+			if (GeneralException.getMessageType(caught) == MessageType.ERROR) {
+				// str = str + " " + msgErrorCaption;
+				str = msgErrorCaption;
+			}
+
+			MessageBox.showMessageWithDetails(str, caught.getMessage(),
 					GeneralException.generateDetailedInfo(caught),
 					GeneralException.getMessageType(caught),
 					GeneralException.needDetailedInfo(caught));
