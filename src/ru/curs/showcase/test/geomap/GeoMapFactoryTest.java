@@ -188,4 +188,54 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 				.getType());
 		assertEquals(0, map.getJavaDynamicData().getLayerById("l1").getIndicators().size());
 	}
+
+	/**
+	 * Тест, проверяющий формирование карты на основе xml-датасета.
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Test
+	public void testLoadByXmlDs() throws Exception {
+		CompositeContext context = getTestContext1();
+		DataPanelElementInfo element = getDPElement(TEST2_XML, "5", "54");
+
+		RecordSetElementGateway<CompositeContext> gateway = new GeoMapDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, element);
+		GeoMapFactory factory = new GeoMapFactory(raw);
+		GeoMap map = factory.build();
+
+		GeoMapData data = map.getJavaDynamicData();
+		assertEquals(2, data.getLayers().size());
+		assertNotNull(data.getLayerById("l1"));
+		assertNotNull(data.getLayerById("l2"));
+		assertNotNull(data.getLayerByObjectId("1849"));
+		GeoMapLayer layer = data.getLayerByObjectId(RU_AL_ID);
+		assertNull(layer.getProjection());
+		assertNull(data.getLayerByObjectId("fake"));
+		assertNull(layer.getHintFormat());
+		assertEquals(GeoMapFeatureType.POLYGON, layer.getType());
+		final int areasCount = 83;
+		assertEquals(areasCount, layer.getFeatures().size());
+		assertEquals(1, layer.getIndicators().size());
+		GeoMapFeature altay = layer.getObjectById(RU_AL_ID);
+		assertEquals("Республика Алтай - производство", altay.getTooltip());
+		assertNull(altay.getStyle());
+		assertEquals(altay.getGeometryId(), altay.getStyleClass());
+		final double indValue1 = 3.8;
+		final double delta = 0.01;
+		assertNotSame("ind1", layer.getIndicators().get(0).getId().getString());
+		assertEquals("mainInd", layer.getAttrIdByDBId("ind1").toString());
+		assertEquals(true, layer.getIndicators().get(0).getIsMain());
+		assertEquals("#2AAA2E", layer.getIndicators().get(0).getStyle());
+		assertEquals(indValue1, altay.getValueForIndicator(layer.getIndicators().get(0))
+				.doubleValue(), delta);
+		assertEquals(layer.getMainIndicator(), layer.getIndicators().get(0));
+		layer = data.getLayerById("l1");
+		GeoMapFeature novgorod = layer.getObjectById("2532");
+		assertEquals(String.format("%s - %s (%s) (%s - %s)", layer.getName(), novgorod.getName(),
+				novgorod.getId(), novgorod.getLat(), novgorod.getLon()), novgorod.getTooltip());
+		assertNull(novgorod.getStyleClass());
+	}
+
 }

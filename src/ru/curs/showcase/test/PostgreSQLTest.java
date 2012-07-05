@@ -12,10 +12,12 @@ import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.core.chart.*;
+import ru.curs.showcase.core.geomap.*;
 import ru.curs.showcase.core.grid.GridGetCommand;
 import ru.curs.showcase.core.html.plugin.PluginCommand;
 import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
@@ -32,6 +34,7 @@ public class PostgreSQLTest extends AbstractTest {
 
 	private static final String PG_USERDATA = "pg";
 	private static final String PG_XML_SP = "funcs.xml";
+	private static final String PG_XML_SP_2 = "funcs2.xml";
 	private static final String PG_XML_SCRIPTS = "scripts.xml";
 
 	private static final Integer CITIES_COUNT = 10_428;
@@ -65,7 +68,7 @@ public class PostgreSQLTest extends AbstractTest {
 		assertEquals(groupsCount, nav.getGroups().size());
 		final int elementsCount = 1;
 		assertEquals(elementsCount, nav.getGroups().get(0).getElements().size());
-		final int subElementsCount = 8;
+		final int subElementsCount = 9;
 		assertEquals(subElementsCount, nav.getGroups().get(0).getElements().get(0).getElements()
 				.size());
 	}
@@ -285,7 +288,7 @@ public class PostgreSQLTest extends AbstractTest {
 	 */
 	@Test
 	public void testChartXmlDsFromSP() throws Exception {
-		runChartXmlDs(PG_XML_SP);
+		runChartXmlDs(PG_XML_SP_2);
 	}
 
 	private void runChartXmlDs(final String fileName) throws Exception {
@@ -352,7 +355,7 @@ public class PostgreSQLTest extends AbstractTest {
 	 */
 	@Test
 	public void testChartXmlDsFlipedFromSP() throws Exception {
-		runChartXmlDsFliped(PG_XML_SP);
+		runChartXmlDsFliped(PG_XML_SP_2);
 	}
 
 	private void runChartXmlDsFliped(final String fileName) throws Exception {
@@ -390,6 +393,62 @@ public class PostgreSQLTest extends AbstractTest {
 		assertEquals("", chart.getJavaDynamicData().getLabelsX().get(0).getText());
 		assertEquals(FIRST_PERIOD_CAPTION, chart.getJavaDynamicData().getLabelsX().get(1)
 				.getText());
+
+	}
+
+	/**
+	 * Проверка получения карты на основе xml-датасета.
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Test
+	public void testGeoMapXmlDsFromSP() throws Exception {
+		runGeoMapXmlDs(PG_XML_SP_2);
+	}
+
+	private void runGeoMapXmlDs(final String fileName) throws Exception {
+
+		CompositeContext context = getTestContext1();
+		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
+		DataPanelElementInfo element = getDPElement(fileName, "8", "81");
+
+		RecordSetElementGateway<CompositeContext> gateway = new GeoMapDBGateway();
+		RecordSetElementRawData raw = gateway.getRawData(context, element);
+		GeoMapFactory factory = new GeoMapFactory(raw);
+		GeoMap map = factory.build();
+
+		GeoMapData data = map.getJavaDynamicData();
+		assertEquals(2, data.getLayers().size());
+		assertNotNull(data.getLayerById("l1"));
+		assertNotNull(data.getLayerById("l2"));
+		assertNotNull(data.getLayerByObjectId("1849"));
+		GeoMapLayer layer = data.getLayerByObjectId("2");
+		assertNull(layer.getProjection());
+		assertNull(data.getLayerByObjectId("fake"));
+		assertNull(layer.getHintFormat());
+		assertEquals(GeoMapFeatureType.POLYGON, layer.getType());
+		final int areasCount = 83;
+		assertEquals(areasCount, layer.getFeatures().size());
+		assertEquals(1, layer.getIndicators().size());
+		GeoMapFeature altay = layer.getObjectById("2");
+		assertEquals("Республика Алтай - производство", altay.getTooltip());
+		assertNull(altay.getStyle());
+		assertEquals(altay.getGeometryId(), altay.getStyleClass());
+		final double indValue1 = 3.8;
+		final double delta = 0.01;
+		assertNotSame("ind1", layer.getIndicators().get(0).getId().getString());
+		assertEquals("mainInd", layer.getAttrIdByDBId("ind1").toString());
+		assertEquals(true, layer.getIndicators().get(0).getIsMain());
+		assertEquals("#2AAA2E", layer.getIndicators().get(0).getStyle());
+		assertEquals(indValue1, altay.getValueForIndicator(layer.getIndicators().get(0))
+				.doubleValue(), delta);
+		assertEquals(layer.getMainIndicator(), layer.getIndicators().get(0));
+		layer = data.getLayerById("l1");
+		GeoMapFeature novgorod = layer.getObjectById("2532");
+		assertEquals(String.format("%s - %s (%s) (%s - %s)", layer.getName(), novgorod.getName(),
+				novgorod.getId(), novgorod.getLat(), novgorod.getLon()), novgorod.getTooltip());
+		assertNull(novgorod.getStyleClass());
 
 	}
 

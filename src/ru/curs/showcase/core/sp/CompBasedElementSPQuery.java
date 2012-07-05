@@ -8,7 +8,7 @@ import javax.xml.stream.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
@@ -27,22 +27,11 @@ public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 	 * Стандартная функция выполнения запроса с проверкой на возврат результата.
 	 */
 	protected void stdGetResults() throws SQLException {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			boolean hasResult = execute();
-			if (getElementInfo().getType() == DataPanelElementType.GEOMAP) {
-				// временно, пока идет работа над XML-датасетами
-				if (!hasResult) {
-					checkErrorCode();
-					throw new DBQueryException(getElementInfo(),
-							CompBasedElementSPQuery.NO_RESULTSET_ERROR);
-				}
-			}
-		} else {
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
-				getConn().setAutoCommit(false);
-			}
-			execute();
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+			getConn().setAutoCommit(false);
 		}
+
+		execute();
 	}
 
 	public static final String NO_RESULTSET_ERROR = "хранимая процедура не возвратила данные";
@@ -116,6 +105,7 @@ public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 	private class StreamDivider extends DefaultHandler {
 
 		private static final String XML_DATASET_TAG = "records";
+		private static final String XML_DATASET_TAG_GEO = "tables";
 
 		private final XMLStreamWriter writerSettings;
 		private final XMLStreamWriter writerDS;
@@ -145,11 +135,16 @@ public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 			}
 		}
 
+		private boolean isXmlDatasetTag(final String localName) {
+			return XML_DATASET_TAG.equalsIgnoreCase(localName)
+					|| XML_DATASET_TAG_GEO.equalsIgnoreCase(localName);
+		}
+
 		@Override
 		public void startElement(final String uri, final String localName, final String name,
 				final Attributes atts) {
 			try {
-				if (XML_DATASET_TAG.equalsIgnoreCase(localName)) {
+				if (isXmlDatasetTag(localName)) {
 					forDS = true;
 				}
 
@@ -177,7 +172,7 @@ public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 			try {
 				getWriter().writeEndElement();
 
-				if (XML_DATASET_TAG.equalsIgnoreCase(localName)) {
+				if (isXmlDatasetTag(localName)) {
 					forDS = false;
 				}
 			} catch (XMLStreamException e) {

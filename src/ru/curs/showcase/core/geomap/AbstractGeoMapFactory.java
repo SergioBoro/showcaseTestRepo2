@@ -75,7 +75,7 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 	 * сейчас задается одна функция для расчета цветов для раскраски, и поэтому
 	 * нужно единое название показателя.
 	 */
-	private void correctIndicators() {
+	protected void correctIndicators() {
 		for (GeoMapLayer layer : result.getJavaDynamicData().getLayers()) {
 			layer.generateIndicatorsIds();
 		}

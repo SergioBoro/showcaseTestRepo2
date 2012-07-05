@@ -20637,3 +20637,6165 @@ set @gridsettings_str=@gridsettings_str+'</columns>
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO
+
+/****** Object:  StoredProcedure [dbo].[geomap_world_gm_xmlds]    Script Date: 07/05/2012 09:18:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[geomap_world_gm_xmlds]
+	@main_context varchar(512)='',
+	@add_context varchar(512)='',
+	@filterinfo xml='',
+	@session_context xml ='',
+	@element_id varchar(512) ='',
+	@geomapsettings xml='' output
+AS
+BEGIN
+SET NOCOUNT ON;
+
+Declare @settings_str as varchar(max)
+set @settings_str=
+'<geomapsettings>
+		<labels>	
+		</labels>
+		<exportSettings width="2560" jpegQuality="10" filename="map"/>
+		<properties legend="top" />
+		<template> 
+	{
+	   registerSolutionMap: world_demo_gm,
+	   
+       style: [
+{
+       stroke: "yellow",
+       fill: "green",
+       strokeWidth: 1
+},
+{
+       	point: {
+			strokeWidth: 2,
+			fill: "blue",
+			shape: "circle"      
+		} 
+},
+{	  
+    styleClass: "cityStyle",
+    point: {
+		shape:"star",
+       strokeWidth: 1,
+       stroke: "black",
+       fill: "red",
+       text: {
+               attr: "name",
+               fill: "black",
+               font: {size:"20px"}
+       }          
+    }
+},
+{
+	   theme: "highlight",
+	   styleClass: "RU-AL",	
+       stroke: "black",
+       fill: "yellow"
+}
+]
+      
+}	
+		</template>              		
+
+
+<tables>
+
+  <layers>
+		<rec>
+			<ID>l1</ID>
+			<Name>Города</Name>
+			<ObjectType>POINT</ObjectType>
+			<HintFormat>%LayerName - %ObjectName (%ObjectID) (%Lat - %Lon)</HintFormat>
+		</rec>
+		<rec>
+			<ID>l2</ID>
+			<Name>Регионы</Name>
+			<ObjectType>POLYGON</ObjectType>
+			<HintFormat>%LayerName - %ObjectName (%ObjectID)</HintFormat>
+		</rec>  
+	</layers>
+
+  <polygons> 
+    <rec>
+      <ID>2</ID>
+      <Name>GUATEMALA</Name>
+      <Code>GT</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>3</ID>
+      <Name>BOLIVIA</Name>
+      <Code>BO</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>4</ID>
+      <Name>PARAGUAY</Name>
+      <Code>PY</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>5</ID>
+      <Name>URUGUAY</Name>
+      <Code>UY</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>6</ID>
+      <Name>SURINAME</Name>
+      <Code>SR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>7</ID>
+      <Name>FRENCH GUIANA</Name>
+      <Code>GF</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>8</ID>
+      <Name>WESTERN SAHARA</Name>
+      <Code>EH</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>9</ID>
+      <Name>GAMBIA</Name>
+      <Code>GM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>10</ID>
+      <Name>MOROCCO</Name>
+      <Code>MA</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>11</ID>
+      <Name>MALI</Name>
+      <Code>ML</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>12</ID>
+      <Name>LIBERIA</Name>
+      <Code>LR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>13</ID>
+      <Name>ALGERIA</Name>
+      <Code>DZ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>14</ID>
+      <Name>COTE D''IVOIRE</Name>
+      <Code>CI</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>15</ID>
+      <Name>BURKINA FASO</Name>
+      <Code>BF</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>16</ID>
+      <Name>GHANA</Name>
+      <Code>GH</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>17</ID>
+      <Name>TOGO</Name>
+      <Code>TG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>18</ID>
+      <Name>NIGER</Name>
+      <Code>NE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>19</ID>
+      <Name>BENIN</Name>
+      <Code>BJ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>20</ID>
+      <Name>BELGIUM</Name>
+      <Code>BE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>21</ID>
+      <Name>LUXEMBOURG</Name>
+      <Code>LU</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>22</ID>
+      <Name>SAN MARINO</Name>
+      <Code>SM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>23</ID>
+      <Name>LIBYA, ARAB JAMAHIRIY_</Name>
+      <Code>LY</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>24</ID>
+      <Name>AUSTRIA</Name>
+      <Code>AT</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>25</ID>
+      <Name>CZECH REPUBLIC</Name>
+      <Code>CZ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>26</ID>
+      <Name>SLOVENIA</Name>
+      <Code>SI</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>27</ID>
+      <Name>CHAD</Name>
+      <Code>TD</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>28</ID>
+      <Name>CENTRAL AFRICAN REPUBLIC</Name>
+      <Code>CF</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>29</ID>
+      <Name>HUNGARY</Name>
+      <Code>HU</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>30</ID>
+      <Name>LESOTHO</Name>
+      <Code>LS</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>31</ID>
+      <Name>SLOVAKIA</Name>
+      <Code>SK</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>32</ID>
+      <Name>YUGOSLAVIA</Name>
+      <Code>RS</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>33</ID>
+      <Name>BOSNIA AND HERZEGOVINA</Name>
+      <Code>BA</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>34</ID>
+      <Name>ALBANIA</Name>
+      <Code>AL</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>35</ID>
+      <Name>BOTSWANA</Name>
+      <Code>BW</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>36</ID>
+      <Name>MACEDONIA, THE FORMER YUGOSLAV REPUBLIC</Name>
+      <Code>MK</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>37</ID>
+      <Name>LITHUANIA</Name>
+      <Code>LT</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>38</ID>
+      <Name>LATVIA</Name>
+      <Code>LV</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>39</ID>
+      <Name>ZAMBIA</Name>
+      <Code>ZM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>40</ID>
+      <Name>BULGARIA</Name>
+      <Code>BG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>41</ID>
+      <Name>BELARUS</Name>
+      <Code>BY</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>42</ID>
+      <Name>ZIMBABWE</Name>
+      <Code>ZW</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>43</ID>
+      <Name>MOLDOVA, REPUBLIC OF</Name>
+      <Code>MD</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>44</ID>
+      <Name>BURUNDI</Name>
+      <Code>BI</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>45</ID>
+      <Name>RWANDA</Name>
+      <Code>RW</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>46</ID>
+      <Name>UGANDA</Name>
+      <Code>UG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>47</ID>
+      <Name>SWAZILAND</Name>
+      <Code>SZ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>48</ID>
+      <Name>MALAWI</Name>
+      <Code>MW</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>49</ID>
+      <Name>ISRAEL</Name>
+      <Code>IL</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>50</ID>
+      <Name>JORDAN</Name>
+      <Code>JO</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>51</ID>
+      <Name>LEBANON</Name>
+      <Code>LB</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>52</ID>
+      <Name>SYRIA</Name>
+      <Code>SY</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>53</ID>
+      <Name>IRAQ</Name>
+      <Code>IQ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>54</ID>
+      <Name>GEORGIA</Name>
+      <Code>GE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>55</ID>
+      <Name>DJIBOUTI</Name>
+      <Code>DJ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>56</ID>
+      <Name>ARMENIA</Name>
+      <Code>AM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>57</ID>
+      <Name>KAZAKHSTAN</Name>
+      <Code>KZ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>58</ID>
+      <Name>TURKMENISTAN</Name>
+      <Code>TM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>59</ID>
+      <Name>UZBEKISTAN</Name>
+      <Code>UZ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>60</ID>
+      <Name>AFGHANISTAN</Name>
+      <Code>AF</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>61</ID>
+      <Name>PAKISTAN</Name>
+      <Code>PK</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>62</ID>
+      <Name>TAJIKISTAN</Name>
+      <Code>TJ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>63</ID>
+      <Name>KYRGYZSTAN</Name>
+      <Code>KG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>64</ID>
+      <Name>NEPAL</Name>
+      <Code>NP</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>65</ID>
+      <Name>MONGOLIA</Name>
+      <Code>MN</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>66</ID>
+      <Name>BHUTAN</Name>
+      <Code>BT</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>67</ID>
+      <Name>LAO PEOPLE''S DEMOCRATIC REPUBLIC</Name>
+      <Code>LA</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>68</ID>
+      <Name>BRUNEI DARUSSALAM</Name>
+      <Code>BN</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>69</ID>
+      <Name>DOMINICA</Name>
+      <Code>DM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>70</ID>
+      <Name>SAINT LUCIA</Name>
+      <Code>LC</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>71</ID>
+      <Name>BARBADOS</Name>
+      <Code>BB</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>72</ID>
+      <Name>CYPRUS</Name>
+      <Code>CY</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>73</ID>
+      <Name>BAHRAIN</Name>
+      <Code>BH</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>74</ID>
+      <Name>SINGAPORE</Name>
+      <Code>SG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>75</ID>
+      <Name>QATAR</Name>
+      <Code>QA</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>76</ID>
+      <Name>BAHAMAS</Name>
+      <Code>BS</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>77</ID>
+      <Name>HAITI</Name>
+      <Code>HT</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>78</ID>
+      <Name>GREENLAND</Name>
+      <Code>GL</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>79</ID>
+      <Name>DOMINICAN REPUBLIC</Name>
+      <Code>DO</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>80</ID>
+      <Name>IRELAND</Name>
+      <Code>IE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>81</ID>
+      <Name>ICELAND</Name>
+      <Code>IS</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>82</ID>
+      <Name>SPAIN</Name>
+      <Code>ES</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>83</ID>
+      <Name>KOREA, DEMOCRATIC PEOPLE''S  REPUBLIC OF</Name>
+      <Code>KP</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>84</ID>
+      <Name>JAPAN</Name>
+      <Code>JP</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>85</ID>
+      <Name>JAMAICA</Name>
+      <Code>JM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>86</ID>
+      <Name>SRI LANKA</Name>
+      <Code>LK</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>87</ID>
+      <Name>SWEDEN</Name>
+      <Code>SE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>88</ID>
+      <Name>CHILE</Name>
+      <Code>CL</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>89</ID>
+      <Name>FINLAND</Name>
+      <Code>FI</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>90</ID>
+      <Name>PHILIPPINES</Name>
+      <Code>PH</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>91</ID>
+      <Name>TURKEY</Name>
+      <Code>TR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>92</ID>
+      <Name>TRINIDAD AND TOBAGO</Name>
+      <Code>TT</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>93</ID>
+      <Name>TAIWAN, PROVINCE OF CHINA</Name>
+      <Code>TW</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>94</ID>
+      <Name>THAILAND</Name>
+      <Code>TH</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>95</ID>
+      <Name>SOLOMON ISLANDS</Name>
+      <Code>SB</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>96</ID>
+      <Name>SEYCHELLES</Name>
+      <Code>SC</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>97</ID>
+      <Name>RUSSIAN FEDERATION</Name>
+      <Code>RU</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>98</ID>
+      <Name>MALAYSIA</Name>
+      <Code>MY</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>99</ID>
+      <Name>GREECE</Name>
+      <Code>GR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>100</ID>
+      <Name>INDIA</Name>
+      <Code>IN</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>101</ID>
+      <Name>AZERBAIJAN</Name>
+      <Code>AZ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>102</ID>
+      <Name>GRENADA</Name>
+      <Code>GD</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>103</ID>
+      <Name>MEXICO</Name>
+      <Code>MX</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>104</ID>
+      <Name>PORTUGAL</Name>
+      <Code>PT</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>105</ID>
+      <Name>MADAGASCAR</Name>
+      <Code>MG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>106</ID>
+      <Name>SOUTH AFRICA</Name>
+      <Code>ZA</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>107</ID>
+      <Name>ARGENTINA</Name>
+      <Code>AR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>108</ID>
+      <Name>POLAND</Name>
+      <Code>PL</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>109</ID>
+      <Name>NORWAY</Name>
+      <Code>NO</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>110</ID>
+      <Name>GERMANY</Name>
+      <Code>DE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>111</ID>
+      <Name>ESTONIA</Name>
+      <Code>EE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>112</ID>
+      <Name>BELIZE</Name>
+      <Code>BZ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>113</ID>
+      <Name>EL SALVADOR</Name>
+      <Code>SV</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>114</ID>
+      <Name>HONDURAS</Name>
+      <Code>HN</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>115</ID>
+      <Name>CUBA</Name>
+      <Code>CU</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>116</ID>
+      <Name>NICARAGUA</Name>
+      <Code>NI</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>117</ID>
+      <Name>COLOMBIA</Name>
+      <Code>CO</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>118</ID>
+      <Name>CAPE VERDE</Name>
+      <Code>CV</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>119</ID>
+      <Name>SENEGAL</Name>
+      <Code>SN</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>120</ID>
+      <Name>MAURITANIA</Name>
+      <Code>MR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>121</ID>
+      <Name>TUNISIA</Name>
+      <Code>TN</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>122</ID>
+      <Name>MALTA</Name>
+      <Code>MT</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>123</ID>
+      <Name>CROATIA</Name>
+      <Code>HR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>124</ID>
+      <Name>ROMANIA</Name>
+      <Code>RO</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>125</ID>
+      <Name>UKRAINE</Name>
+      <Code>UA</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>126</ID>
+      <Name>SUDAN</Name>
+      <Code>SD</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>127</ID>
+      <Name>SAUDI ARABIA</Name>
+      <Code>SA</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>128</ID>
+      <Name>YEMEN</Name>
+      <Code>YE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>129</ID>
+      <Name>IRAN</Name>
+      <Code>IR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>130</ID>
+      <Name>OMAN</Name>
+      <Code>OM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>131</ID>
+      <Name>UNITED ARAB EMIRATES</Name>
+      <Code>AE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>132</ID>
+      <Name>KUWAIT</Name>
+      <Code>KW</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>133</ID>
+      <Name>BANGLADESH</Name>
+      <Code>BD</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>134</ID>
+      <Name>MYANMAR</Name>
+      <Code>MM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>135</ID>
+      <Name>VIETNAM</Name>
+      <Code>VN</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>136</ID>
+      <Name>KOREA, REPUBLIC OF</Name>
+      <Code>KR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>137</ID>
+      <Name>PAPUA NEW GUINEA</Name>
+      <Code>PG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>138</ID>
+      <Name>ECUADOR</Name>
+      <Code>EC</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>139</ID>
+      <Name>COSTA RICA</Name>
+      <Code>CR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>140</ID>
+      <Name>PANAMA</Name>
+      <Code>PA</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>141</ID>
+      <Name>PERU</Name>
+      <Code>PE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>142</ID>
+      <Name>GUYANA</Name>
+      <Code>GY</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>143</ID>
+      <Name>BRAZIL</Name>
+      <Code>BR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>144</ID>
+      <Name>GUINEA-BISSAU</Name>
+      <Code>GW</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>145</ID>
+      <Name>GUINEA</Name>
+      <Code>GN</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>146</ID>
+      <Name>SIERRA LEONE</Name>
+      <Code>SL</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>147</ID>
+      <Name>NIGERIA</Name>
+      <Code>NG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>148</ID>
+      <Name>SAO TOME AND PRINCIPE</Name>
+      <Code>ST</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>149</ID>
+      <Name>GABON</Name>
+      <Code>GA</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>150</ID>
+      <Name>EQUATORIAL GUINEA</Name>
+      <Code>GQ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>151</ID>
+      <Name>CAMEROON</Name>
+      <Code>CM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>152</ID>
+      <Name>CONGO</Name>
+      <Code>CG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>153</ID>
+      <Name>CONGO, THE DEMOCRATIC REPUBLIC OF THE</Name>
+      <Code>CD</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>154</ID>
+      <Name>MOZAMBIQUE</Name>
+      <Code>MZ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>155</ID>
+      <Name>TANZANIA</Name>
+      <Code>TZ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>156</ID>
+      <Name>SOMALIA</Name>
+      <Code>SO</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>157</ID>
+      <Name>KENYA</Name>
+      <Code>KE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>158</ID>
+      <Name>MAURITIUS</Name>
+      <Code>MU</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>159</ID>
+      <Name>MALDIVES</Name>
+      <Code>MV</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>160</ID>
+      <Name>CAMBODIA</Name>
+      <Code>KH</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>161</ID>
+      <Name>VANUATU</Name>
+      <Code>VU</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>162</ID>
+      <Name>TONGA</Name>
+      <Code>TO</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>163</ID>
+      <Name>FALKLAND ISLANDS (MALVINAS)</Name>
+      <Code>FK</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>164</ID>
+      <Name>NAMIBIA</Name>
+      <Code>NA</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>165</ID>
+      <Name>ANGOLA</Name>
+      <Code>AO</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>166</ID>
+      <Name>PALESTINE</Name>
+      <Code>PS</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>167</ID>
+      <Name>EGYPT</Name>
+      <Code>EG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>168</ID>
+      <Name>PUERTO RICO</Name>
+      <Code>PR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>169</ID>
+      <Name>SAINT KITTS AND NEVIS</Name>
+      <Code>KN</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>170</ID>
+      <Name>GUADELOUPE</Name>
+      <Code>GP</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>171</ID>
+      <Name>MARTINIQUE</Name>
+      <Code>MQ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>172</ID>
+      <Name>SAINT VINCENT AND THE GRENADINES</Name>
+      <Code>VC</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>173</ID>
+      <Name>ARUBA</Name>
+      <Code>AW</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>174</ID>
+      <Name>NETHERLANDS</Name>
+      <Code>NL</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>175</ID>
+      <Name>VENEZUELA</Name>
+      <Code>VE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>176</ID>
+      <Name>BERMUDA</Name>
+      <Code>BM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>177</ID>
+      <Name>WESTERN SAMOA</Name>
+      <Code>WS</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>178</ID>
+      <Name>AMERICAN SAMOA</Name>
+      <Code>AS</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>179</ID>
+      <Name>COCOS (KEELING) ISLANDS</Name>
+      <Code>CC</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>180</ID>
+      <Name>CHRISTMAS ISLAND</Name>
+      <Code>CX</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>181</ID>
+      <Name>FRENCH POLYNESIA</Name>
+      <Code>PF</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>182</ID>
+      <Name>ANGUILLA</Name>
+      <Code>AI</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>183</ID>
+      <Name>BRITISH INDIAN OCEAN TERRITORY</Name>
+      <Code>IO</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>184</ID>
+      <Name>CAYMAN ISLANDS</Name>
+      <Code>KY</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>185</ID>
+      <Name>MAYOTTE</Name>
+      <Code>YT</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>186</ID>
+      <Name>COMOROS</Name>
+      <Code>KM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>187</ID>
+      <Name>SOUTH GEORGIA AND THE SOUTH SANDWICH ISL</Name>
+      <Code>GS</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>188</ID>
+      <Name>GUAM</Name>
+      <Code>GU</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>189</ID>
+      <Name>JERSEY</Name>
+      <Code>JE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>190</ID>
+      <Name>GUERNSEY</Name>
+      <Code>GG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>191</ID>
+      <Name>MICRONESIA, FEDERATED STATES OF</Name>
+      <Code>FM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>192</ID>
+      <Name>NAURU</Name>
+      <Code>NR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>193</ID>
+      <Name>KIRIBATI</Name>
+      <Code>KI</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>194</ID>
+      <Name>NIUE</Name>
+      <Code>NU</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>195</ID>
+      <Name>NORFOLK ISLAND</Name>
+      <Code>NF</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>196</ID>
+      <Name>AUSTRALIA</Name>
+      <Code>AU</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>197</ID>
+      <Name>COOK ISLANDS</Name>
+      <Code>CK</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>198</ID>
+      <Name>NEW ZEALAND</Name>
+      <Code>NZ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>199</ID>
+      <Name>PALAU</Name>
+      <Code>PW</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>200</ID>
+      <Name>REUNION</Name>
+      <Code>RE</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>201</ID>
+      <Name>TURKS AND CAICOS ISLANDS</Name>
+      <Code>TC</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>202</ID>
+      <Name>NORTHERN MARIANA ISLANDS</Name>
+      <Code>MP</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>203</ID>
+      <Name>SAINT PIERRE AND MIQUELON</Name>
+      <Code>PM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>204</ID>
+      <Name>WALLIS AND FUTUNA ISLANDS</Name>
+      <Code>WF</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>205</ID>
+      <Name>FAROE ISLANDS</Name>
+      <Code>FO</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>206</ID>
+      <Name>DENMARK</Name>
+      <Code>DK</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>207</ID>
+      <Name>FRENCH SOUTHERN TERRITORIES</Name>
+      <Code>TF</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>208</ID>
+      <Name>FIJI</Name>
+      <Code>FJ</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>209</ID>
+      <Name>TUVALU</Name>
+      <Code>TV</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>210</ID>
+      <Name>MACAU</Name>
+      <Code>MO</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>211</ID>
+      <Name>CHINA</Name>
+      <Code>CN</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>212</ID>
+      <Name>MONACO</Name>
+      <Code>MC</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>213</ID>
+      <Name>ANDORRA</Name>
+      <Code>AD</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>214</ID>
+      <Name>LIECHTENSTEIN</Name>
+      <Code>LI</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>215</ID>
+      <Name>SWITZERLAND</Name>
+      <Code>CH</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>216</ID>
+      <Name>INDONESIA</Name>
+      <Code>ID</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>217</ID>
+      <Name>EAST TIMOR</Name>
+      <Code>TL</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>218</ID>
+      <Name>SAINT HELENA</Name>
+      <Code>SH</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>219</ID>
+      <Name>ISLE OF MAN</Name>
+      <Code>IM</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>220</ID>
+      <Name>UNITED KINGDOM</Name>
+      <Code>GB</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>221</ID>
+      <Name>UNITED STATES</Name>
+      <Code>US</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>222</ID>
+      <Name>NEW CALEDONIA</Name>
+      <Code>NC</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>223</ID>
+      <Name>FRANCE</Name>
+      <Code>FR</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>224</ID>
+      <Name>MONTSERRAT</Name>
+      <Code>MS</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>225</ID>
+      <Name>ANTIGUA AND BARBUDA</Name>
+      <Code>AG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>226</ID>
+      <Name>VATICAN CITY (HOLY SEE)</Name>
+      <Code>VA</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>227</ID>
+      <Name>ITALY</Name>
+      <Code>IT</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>228</ID>
+      <Name>VIRGIN ISLANDS</Name>
+      <Code>VG</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>229</ID>
+      <Name>VIRGIN ISLANDS (U.S.)</Name>
+      <Code>VI</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>230</ID>
+      <Name>ETHIOPIA</Name>
+      <Code>ET</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>231</ID>
+      <Name>ERITREA</Name>
+      <Code>ER</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>232</ID>
+      <Name>CANADA</Name>
+      <Code>CA</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+    <rec>
+      <ID>233</ID>
+      <Name>MARSHALL ISLANDS</Name>
+      <Code>MH</Code>
+      <LayerID>l2</LayerID>
+    </rec>
+	</polygons>
+
+</tables>		
+
+
+</geomapsettings>' 
+set	@geomapsettings=CAST(@settings_str as xml)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[geomap_func2_ym_xmlds]    Script Date: 07/05/2012 09:18:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[geomap_func2_ym_xmlds]
+	@main_context varchar(512)='',
+	@add_context varchar(512)='',
+	@filterinfo xml='',
+	@session_context xml ='',
+	@element_id varchar(512) ='',
+	@geomapsettings xml='' output
+AS
+BEGIN
+SET NOCOUNT ON;
+
+Declare @settings_str as varchar(max)
+set @settings_str=
+'<geomapsettings>
+		<labels>
+			<header>
+				<h2>Карта с раскрашенными по значению показателя регионами</h2>
+			</header>
+	
+		</labels>
+		<properties legend="top" />
+		<template> 
+	{
+	   registerSolutionMap: russia_ym,	
+
+       style: [
+	{
+		fid: "l2",
+		stroke: "black",
+		strokeWidth: 1,
+		styleFunction: {
+			getStyle: "djeo.util.numeric.getStyle",
+			options: {
+				numClasses: 7,
+				colorSchemeName: "Reds",
+				attr: "mainInd",
+				breaks: "djeo.util.jenks.getBreaks",
+				calculateStyle: "djeo.util.colorbrewer.calculateStyle"
+			}
+		},
+		legend: "djeo._getBreaksAreaLegend",
+		name: "имя"
+	},
+{
+       point: {
+			strokeWidth: 2,
+			fill: "blue",
+			shape: "circle"
+       }
+}
+]
+      
+}	
+		</template>    
+
+<tables>
+
+  <layers>
+		<rec>
+			<ID>l1</ID>
+			<Name>Города</Name>
+			<ObjectType>POINT</ObjectType>
+			<HintFormat>%LayerName - %ObjectName (%ObjectID) (%Lat - %Lon)</HintFormat>
+		</rec>
+		<rec>
+			<ID>l2</ID>
+			<Name>Регионы</Name>
+			<ObjectType>POLYGON</ObjectType>
+			<HintFormat>%LayerName - %ObjectName (%ObjectID)</HintFormat>
+		</rec>  
+	</layers>
+
+  <points>
+		<rec>
+			<ID>1107</ID>
+			<Name>Славгород</Name>
+			<LayerID>l1</LayerID>
+			<Lat>5.2990311e+001</Lat>
+			<Lon>7.8648598e+001</Lon>
+			<properties>
+								<event name="single_click">
+														<action>
+																<main_context>current</main_context>
+																<datapanel type="current" tab="current">
+																		<element id="06">
+											<add_context>Славгород</add_context>                                                                                             
+																		</element> 
+																		
+																</datapanel>
+														</action>
+									</event>
+							</properties>
+		</rec>
+		<rec>
+			<ID>1849</ID>
+			<Name>Нижний Новгород</Name>
+			<LayerID>l1</LayerID>
+			<Lat>5.6329918e+001</Lat>
+			<Lon>4.4009193e+001</Lon>
+			<Tooltip>Нижний Новгород - город с показателями</Tooltip>
+			<StyleClass>cityStyle</StyleClass>
+			<properties>
+								<event name="single_click">
+														<action>
+																<main_context>current</main_context>
+																<datapanel type="current" tab="current">
+																		<element id="06">
+											<add_context>Нижний Новгород</add_context>                                                                                             
+																		</element> 
+																		
+																</datapanel>
+														</action>
+									</event>
+							</properties>
+		</rec>
+		<rec>
+			<ID>2532</ID>
+			<Name>Великий Новгород</Name>
+			<LayerID>l1</LayerID>
+			<Lat>5.8544971e+001</Lat>
+			<Lon>3.1269119e+001</Lon>
+			<properties>
+								<event name="single_click">
+														<action>
+																<main_context>current</main_context>
+																<datapanel type="current" tab="current">
+																		<element id="06">
+											<add_context>Великий Новгород</add_context>                                                                                             
+																		</element> 
+																		
+																</datapanel>
+														</action>
+									</event>
+							</properties>
+		</rec>
+		<rec>
+			<ID>3674</ID>
+			<Name>Белгород</Name>
+			<LayerID>l1</LayerID>
+			<Lat>5.0596611e+001</Lat>
+			<Lon>3.6609211e+001</Lon>
+			<properties>
+								<event name="single_click">
+														<action>
+																<main_context>current</main_context>
+																<datapanel type="current" tab="current">
+																		<element id="06">
+											<add_context>Белгород</add_context>                                                                                             
+																		</element> 
+																		
+																</datapanel>
+														</action>
+									</event>
+							</properties>
+		</rec>
+		<rec>
+			<ID>3742</ID>
+			<Name>Звенигород</Name>
+			<LayerID>l1</LayerID>
+			<Lat>5.5731331e+001</Lat>
+			<Lon>3.6866138e+001</Lon>
+			<properties>
+								<event name="single_click">
+														<action>
+																<main_context>current</main_context>
+																<datapanel type="current" tab="current">
+																		<element id="06">
+											<add_context>Звенигород</add_context>                                                                                             
+																		</element> 
+																		
+																</datapanel>
+														</action>
+									</event>
+							</properties>
+		</rec>
+		<rec>
+			<ID>4826</ID>
+			<Name>Ужгород</Name>
+			<LayerID>l1</LayerID>
+			<Lat>4.8624031e+001</Lat>
+			<Lon>2.2293961e+001</Lon>
+			<properties>
+								<event name="single_click">
+														<action>
+																<main_context>current</main_context>
+																<datapanel type="current" tab="current">
+																		<element id="06">
+											<add_context>Ужгород</add_context>                                                                                             
+																		</element> 
+																		
+																</datapanel>
+														</action>
+									</event>
+							</properties>
+		</rec>
+  </points>
+
+  <polygons> 
+    <rec>
+      <ID>1</ID>
+      <Name>Республика Адыгея</Name>
+      <Code>RU-AD</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Адыгея - производство</Tooltip>
+      <StyleClass>RU-AD</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Адыгея</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>2</ID>
+      <Name>Республика Алтай</Name>
+      <Code>RU-AL</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Алтай - производство</Tooltip>
+      <StyleClass>RU-AL</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Алтай</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>3</ID>
+      <Name>Алтайский край</Name>
+      <Code>RU-ALT</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Алтайский край - производство</Tooltip>
+      <StyleClass>RU-ALT</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Алтайский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>4</ID>
+      <Name>Амурская область</Name>
+      <Code>RU-AMU</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Амурская область - производство</Tooltip>
+      <StyleClass>RU-AMU</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Амурская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>5</ID>
+      <Name>Архангельская область</Name>
+      <Code>RU-ARK</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Архангельская область - производство</Tooltip>
+      <StyleClass>RU-ARK</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Архангельская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>6</ID>
+      <Name>Астраханская область</Name>
+      <Code>RU-AST</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Астраханская область - производство</Tooltip>
+      <StyleClass>RU-AST</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Астраханская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>7</ID>
+      <Name>Республика Башкортостан</Name>
+      <Code>RU-BA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Башкортостан - производство</Tooltip>
+      <StyleClass>RU-BA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Башкортостан</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>8</ID>
+      <Name>Белгородская область</Name>
+      <Code>RU-BEL</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Белгородская область - производство</Tooltip>
+      <StyleClass>RU-BEL</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Белгородская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>9</ID>
+      <Name>Брянская область</Name>
+      <Code>RU-BRY</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Брянская область - производство</Tooltip>
+      <StyleClass>RU-BRY</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Брянская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>10</ID>
+      <Name>Республика Бурятия</Name>
+      <Code>RU-BU</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Бурятия - производство</Tooltip>
+      <StyleClass>RU-BU</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Бурятия</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>11</ID>
+      <Name>Чеченская Республика</Name>
+      <Code>RU-CE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Чеченская Республика - производство</Tooltip>
+      <StyleClass>RU-CE</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Чеченская Республика</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>12</ID>
+      <Name>Челябинская область</Name>
+      <Code>RU-CHE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Челябинская область - производство</Tooltip>
+      <StyleClass>RU-CHE</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Челябинская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>13</ID>
+      <Name>Чукотский автономный округ</Name>
+      <Code>RU-CHU</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Чукотский автономный округ - производство</Tooltip>
+      <StyleClass>RU-CHU</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Чукотский автономный округ</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>14</ID>
+      <Name>Чувашская Республика</Name>
+      <Code>RU-CU</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Чувашская Республика - производство</Tooltip>
+      <StyleClass>RU-CU</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Чувашская Республика</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>15</ID>
+      <Name>Республика Дагестан</Name>
+      <Code>RU-DA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Дагестан - производство</Tooltip>
+      <StyleClass>RU-DA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Дагестан</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>16</ID>
+      <Name>Республика Ингушетия</Name>
+      <Code>RU-IN</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Ингушетия - производство</Tooltip>
+      <StyleClass>RU-IN</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Ингушетия</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>17</ID>
+      <Name>Иркутская область</Name>
+      <Code>RU-IRK</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Иркутская область - производство</Tooltip>
+      <StyleClass>RU-IRK</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Иркутская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>18</ID>
+      <Name>Ивановская область</Name>
+      <Code>RU-IVA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ивановская область - производство</Tooltip>
+      <StyleClass>RU-IVA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ивановская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>19</ID>
+      <Name>Камчатский край</Name>
+      <Code>RU-KAM</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Камчатский край - производство</Tooltip>
+      <StyleClass>RU-KAM</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Камчатский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>20</ID>
+      <Name>Кабардино-Балкарская Республика</Name>
+      <Code>RU-KB</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Кабардино-Балкарская Республика - производство</Tooltip>
+      <StyleClass>RU-KB</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Кабардино-Балкарская Республика</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>21</ID>
+      <Name>Карачаево-Черкесская Республика</Name>
+      <Code>RU-KC</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Карачаево-Черкесская Республика - производство</Tooltip>
+      <StyleClass>RU-KC</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Карачаево-Черкесская Республика</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>22</ID>
+      <Name>Краснодарский край</Name>
+      <Code>RU-KDA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Краснодарский край - производство</Tooltip>
+      <StyleClass>RU-KDA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Краснодарский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>23</ID>
+      <Name>Кемеровская область</Name>
+      <Code>RU-KEM</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Кемеровская область - производство</Tooltip>
+      <StyleClass>RU-KEM</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Кемеровская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>24</ID>
+      <Name>Калининградская область</Name>
+      <Code>RU-KGD</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Калининградская область - производство</Tooltip>
+      <StyleClass>RU-KGD</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Калининградская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>25</ID>
+      <Name>Курганская область</Name>
+      <Code>RU-KGN</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Курганская область - производство</Tooltip>
+      <StyleClass>RU-KGN</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Курганская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>26</ID>
+      <Name>Хабаровский край</Name>
+      <Code>RU-KHA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Хабаровский край - производство</Tooltip>
+      <StyleClass>RU-KHA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Хабаровский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>27</ID>
+      <Name>Ханты-Мансийский автономный округ</Name>
+      <Code>RU-KHM</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ханты-Мансийский автономный округ - производство</Tooltip>
+      <StyleClass>RU-KHM</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ханты-Мансийский автономный округ</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>28</ID>
+      <Name>Красноярский край</Name>
+      <Code>RU-KYA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Красноярский край - производство</Tooltip>
+      <StyleClass>RU-KYA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Красноярский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>29</ID>
+      <Name>Кировская область</Name>
+      <Code>RU-KIR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Кировская область - производство</Tooltip>
+      <StyleClass>RU-KIR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Кировская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>30</ID>
+      <Name>Республика Хакасия</Name>
+      <Code>RU-KK</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Хакасия - производство</Tooltip>
+      <StyleClass>RU-KK</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Хакасия</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>31</ID>
+      <Name>Республика Калмыкия</Name>
+      <Code>RU-KL</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Калмыкия - производство</Tooltip>
+      <StyleClass>RU-KL</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Калмыкия</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>32</ID>
+      <Name>Калужская область</Name>
+      <Code>RU-KLU</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Калужская область - производство</Tooltip>
+      <StyleClass>RU-KLU</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Калужская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>33</ID>
+      <Name>Республика Коми</Name>
+      <Code>RU-KO</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Коми - производство</Tooltip>
+      <StyleClass>RU-KO</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Коми</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>34</ID>
+      <Name>Костромская область</Name>
+      <Code>RU-KOS</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Костромская область - производство</Tooltip>
+      <StyleClass>RU-KOS</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Костромская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>35</ID>
+      <Name>Республика Карелия</Name>
+      <Code>RU-KR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Карелия - производство</Tooltip>
+      <StyleClass>RU-KR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Карелия</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>36</ID>
+      <Name>Курская область</Name>
+      <Code>RU-KRS</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Курская область - производство</Tooltip>
+      <StyleClass>RU-KRS</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Курская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>37</ID>
+      <Name>Ленинградская область</Name>
+      <Code>RU-LEN</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ленинградская область - производство</Tooltip>
+      <StyleClass>RU-LEN</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ленинградская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>38</ID>
+      <Name>Липецкая область</Name>
+      <Code>RU-LIP</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Липецкая область - производство</Tooltip>
+      <StyleClass>RU-LIP</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Липецкая область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>39</ID>
+      <Name>Магаданская область</Name>
+      <Code>RU-MAG</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Магаданская область - производство</Tooltip>
+      <StyleClass>RU-MAG</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Магаданская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>40</ID>
+      <Name>Республика Марий Эл</Name>
+      <Code>RU-ME</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Марий Эл - производство</Tooltip>
+      <StyleClass>RU-ME</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Марий Эл</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>41</ID>
+      <Name>Республика Мордовия</Name>
+      <Code>RU-MO</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Мордовия - производство</Tooltip>
+      <StyleClass>RU-MO</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Мордовия</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>42</ID>
+      <Name>Московская область</Name>
+      <Code>RU-MOS</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Московская область - производство</Tooltip>
+      <StyleClass>RU-MOS</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Московская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>43</ID>
+      <Name>Москва</Name>
+      <Code>RU-MOW</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Москва - производство</Tooltip>
+      <StyleClass>RU-MOW</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Москва</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>44</ID>
+      <Name>Мурманская область</Name>
+      <Code>RU-MUR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Мурманская область - производство</Tooltip>
+      <StyleClass>RU-MUR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Мурманская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>45</ID>
+      <Name>Ненецкий автономный округ</Name>
+      <Code>RU-NEN</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ненецкий автономный округ - производство</Tooltip>
+      <StyleClass>RU-NEN</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ненецкий автономный округ</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>46</ID>
+      <Name>Новгородская область</Name>
+      <Code>RU-NGR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Новгородская область - производство</Tooltip>
+      <StyleClass>RU-NGR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Новгородская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>47</ID>
+      <Name>Нижегородская область</Name>
+      <Code>RU-NIZ</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Нижегородская область - производство</Tooltip>
+      <StyleClass>RU-NIZ</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Нижегородская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>48</ID>
+      <Name>Новосибирская область</Name>
+      <Code>RU-NVS</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Новосибирская область - производство</Tooltip>
+      <StyleClass>RU-NVS</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Новосибирская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>49</ID>
+      <Name>Омская область</Name>
+      <Code>RU-OMS</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Омская область - производство</Tooltip>
+      <StyleClass>RU-OMS</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Омская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>50</ID>
+      <Name>Оренбургская область</Name>
+      <Code>RU-ORE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Оренбургская область - производство</Tooltip>
+      <StyleClass>RU-ORE</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Оренбургская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>51</ID>
+      <Name>Орловская область</Name>
+      <Code>RU-ORL</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Орловская область - производство</Tooltip>
+      <StyleClass>RU-ORL</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Орловская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>52</ID>
+      <Name>Пермский край</Name>
+      <Code>RU-PER</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Пермский край - производство</Tooltip>
+      <StyleClass>RU-PER</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Пермский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>53</ID>
+      <Name>Пензенская область</Name>
+      <Code>RU-PNZ</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Пензенская область - производство</Tooltip>
+      <StyleClass>RU-PNZ</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Пензенская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>54</ID>
+      <Name>Приморский край</Name>
+      <Code>RU-PRI</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Приморский край - производство</Tooltip>
+      <StyleClass>RU-PRI</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Приморский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>55</ID>
+      <Name>Псковская область</Name>
+      <Code>RU-PSK</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Псковская область - производство</Tooltip>
+      <StyleClass>RU-PSK</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Псковская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>56</ID>
+      <Name>Ростовская область</Name>
+      <Code>RU-ROS</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ростовская область - производство</Tooltip>
+      <StyleClass>RU-ROS</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ростовская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>57</ID>
+      <Name>Рязанская область</Name>
+      <Code>RU-RYA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Рязанская область - производство</Tooltip>
+      <StyleClass>RU-RYA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Рязанская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>58</ID>
+      <Name>Республика Саха (Якутия)</Name>
+      <Code>RU-SA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Саха (Якутия) - производство</Tooltip>
+      <StyleClass>RU-SA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Саха (Якутия)</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>59</ID>
+      <Name>Сахалинская область</Name>
+      <Code>RU-SAK</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Сахалинская область - производство</Tooltip>
+      <StyleClass>RU-SAK</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Сахалинская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>60</ID>
+      <Name>Самарская область</Name>
+      <Code>RU-SAM</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Самарская область - производство</Tooltip>
+      <StyleClass>RU-SAM</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Самарская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>61</ID>
+      <Name>Саратовская область</Name>
+      <Code>RU-SAR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Саратовская область - производство</Tooltip>
+      <StyleClass>RU-SAR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Саратовская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>62</ID>
+      <Name>Республика Северная Осетия-Алания</Name>
+      <Code>RU-SE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Северная Осетия-Алания - производство</Tooltip>
+      <StyleClass>RU-SE</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Северная Осетия-Алания</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>63</ID>
+      <Name>Смоленская область</Name>
+      <Code>RU-SMO</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Смоленская область - производство</Tooltip>
+      <StyleClass>RU-SMO</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Смоленская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>64</ID>
+      <Name>Санкт-Петербург</Name>
+      <Code>RU-SPE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Санкт-Петербург - производство</Tooltip>
+      <StyleClass>RU-SPE</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Санкт-Петербург</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>65</ID>
+      <Name>Ставропольский край</Name>
+      <Code>RU-STA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ставропольский край - производство</Tooltip>
+      <StyleClass>RU-STA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ставропольский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>66</ID>
+      <Name>Свердловская область</Name>
+      <Code>RU-SVE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Свердловская область - производство</Tooltip>
+      <StyleClass>RU-SVE</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Свердловская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>67</ID>
+      <Name>Республика Татарстан</Name>
+      <Code>RU-TA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Татарстан - производство</Tooltip>
+      <StyleClass>RU-TA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Татарстан</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>68</ID>
+      <Name>Тамбовская область</Name>
+      <Code>RU-TAM</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Тамбовская область - производство</Tooltip>
+      <StyleClass>RU-TAM</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Тамбовская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>69</ID>
+      <Name>Томская область</Name>
+      <Code>RU-TOM</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Томская область - производство</Tooltip>
+      <StyleClass>RU-TOM</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Томская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>70</ID>
+      <Name>Тульская область</Name>
+      <Code>RU-TUL</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Тульская область - производство</Tooltip>
+      <StyleClass>RU-TUL</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Тульская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>71</ID>
+      <Name>Тверская область</Name>
+      <Code>RU-TVE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Тверская область - производство</Tooltip>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Тверская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>72</ID>
+      <Name>Республика Тыва</Name>
+      <Code>RU-TY</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Тыва - производство</Tooltip>
+      <StyleClass>RU-TY</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Тыва</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>73</ID>
+      <Name>Тюменская область</Name>
+      <Code>RU-TYU</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Тюменская область - производство</Tooltip>
+      <StyleClass>RU-TYU</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Тюменская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>74</ID>
+      <Name>Удмуртская Республика</Name>
+      <Code>RU-UD</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Удмуртская Республика - производство</Tooltip>
+      <StyleClass>RU-UD</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Удмуртская Республика</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>75</ID>
+      <Name>Ульяновская область</Name>
+      <Code>RU-ULY</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ульяновская область - производство</Tooltip>
+      <StyleClass>RU-ULY</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ульяновская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>76</ID>
+      <Name>Волгоградская область</Name>
+      <Code>RU-VGG</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Волгоградская область - производство</Tooltip>
+      <StyleClass>RU-VGG</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Волгоградская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>77</ID>
+      <Name>Владимирская область</Name>
+      <Code>RU-VLA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Владимирская область - производство</Tooltip>
+      <StyleClass>RU-VLA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Владимирская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>78</ID>
+      <Name>Вологодская область</Name>
+      <Code>RU-VLG</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Вологодская область - производство</Tooltip>
+      <StyleClass>RU-VLG</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Вологодская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>79</ID>
+      <Name>Воронежская область</Name>
+      <Code>RU-VOR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Воронежская область - производство</Tooltip>
+      <StyleClass>RU-VOR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Воронежская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>80</ID>
+      <Name>Ямало-Ненецкий автономный округ</Name>
+      <Code>RU-YAN</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ямало-Ненецкий автономный округ - производство</Tooltip>
+      <StyleClass>RU-YAN</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ямало-Ненецкий автономный округ</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>81</ID>
+      <Name>Ярославская область</Name>
+      <Code>RU-YAR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ярославская область - производство</Tooltip>
+      <StyleClass>RU-YAR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ярославская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>82</ID>
+      <Name>Еврейская автономная область</Name>
+      <Code>RU-YEV</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Еврейская автономная область - производство</Tooltip>
+      <StyleClass>RU-YEV</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Еврейская автономная область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>83</ID>
+      <Name>Забайкальский край</Name>
+      <Code>RU-ZAB</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Забайкальский край - производство</Tooltip>
+      <StyleClass>RU-ZAB</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Забайкальский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+  </polygons>
+
+  <indicators>
+		<rec>
+			<ID>ind1</ID>
+			<Name>Производство (тыс. тонн)</Name>
+			<LayerID>l2</LayerID>
+			<IsMain>1</IsMain>
+			<Color>#2AAA2E</Color>
+		</rec>
+  </indicators>
+
+  <indicatorValues>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>1</ObjectID>
+      <VALUE>3.967000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>2</ObjectID>
+      <VALUE>3.800000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>4</ObjectID>
+      <VALUE>2.851000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>5</ObjectID>
+      <VALUE>2.700000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>6</ObjectID>
+      <VALUE>2.400000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>7</ObjectID>
+      <VALUE>2.859500000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>8</ObjectID>
+      <VALUE>2.153800000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>9</ObjectID>
+      <VALUE>5.786000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>10</ObjectID>
+      <VALUE>2.220000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>11</ObjectID>
+      <VALUE>1.425000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>12</ObjectID>
+      <VALUE>1.017300000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>13</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>14</ObjectID>
+      <VALUE>5.390000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>15</ObjectID>
+      <VALUE>1.475000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>16</ObjectID>
+      <VALUE>4.530000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>17</ObjectID>
+      <VALUE>4.163000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>18</ObjectID>
+      <VALUE>1.236000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>19</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>20</ObjectID>
+      <VALUE>4.580000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>21</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>23</ObjectID>
+      <VALUE>9.524000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>24</ObjectID>
+      <VALUE>2.488000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>25</ObjectID>
+      <VALUE>1.303500000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>29</ObjectID>
+      <VALUE>6.720000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>30</ObjectID>
+      <VALUE>4.460000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>31</ObjectID>
+      <VALUE>3.805000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>32</ObjectID>
+      <VALUE>1.911000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>33</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>34</ObjectID>
+      <VALUE>8.050000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>35</ObjectID>
+      <VALUE>3.000000000000000e-001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>36</ObjectID>
+      <VALUE>2.898600000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>37</ObjectID>
+      <VALUE>9.580000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>38</ObjectID>
+      <VALUE>2.472900000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>39</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>40</ObjectID>
+      <VALUE>2.653000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>41</ObjectID>
+      <VALUE>1.284300000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>42</ObjectID>
+      <VALUE>2.144000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>43</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>44</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>46</ObjectID>
+      <VALUE>1.460000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>47</ObjectID>
+      <VALUE>1.383900000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>48</ObjectID>
+      <VALUE>1.753100000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>49</ObjectID>
+      <VALUE>2.096000000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>50</ObjectID>
+      <VALUE>2.291100000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>51</ObjectID>
+      <VALUE>2.325600000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>52</ObjectID>
+      <VALUE>3.811000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>53</ObjectID>
+      <VALUE>1.416300000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>55</ObjectID>
+      <VALUE>3.320000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>56</ObjectID>
+      <VALUE>5.832100000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>57</ObjectID>
+      <VALUE>1.536200000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>58</ObjectID>
+      <VALUE>6.300000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>59</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>60</ObjectID>
+      <VALUE>1.013600000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>61</ObjectID>
+      <VALUE>2.585400000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>62</ObjectID>
+      <VALUE>8.709999999999999e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>63</ObjectID>
+      <VALUE>1.532000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>64</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>66</ObjectID>
+      <VALUE>5.729000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>67</ObjectID>
+      <VALUE>4.247600000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>68</ObjectID>
+      <VALUE>2.580700000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>69</ObjectID>
+      <VALUE>2.946000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>70</ObjectID>
+      <VALUE>1.453400000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>71</ObjectID>
+      <VALUE>1.112000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>72</ObjectID>
+      <VALUE>2.730000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>73</ObjectID>
+      <VALUE>1.314200000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>74</ObjectID>
+      <VALUE>6.444000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>75</ObjectID>
+      <VALUE>1.092900000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>76</ObjectID>
+      <VALUE>3.502900000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>77</ObjectID>
+      <VALUE>1.845000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>78</ObjectID>
+      <VALUE>2.263000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>79</ObjectID>
+      <VALUE>3.219200000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>81</ObjectID>
+      <VALUE>1.004000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>82</ObjectID>
+      <VALUE>2.230000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>83</ObjectID>
+      <VALUE>5.850000000000000e+001</VALUE>
+    </rec>
+  </indicatorValues>
+
+</tables>
+
+          		
+</geomapsettings>' 
+set	@geomapsettings=CAST(@settings_str as xml)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[geomap_func2_xmlds]    Script Date: 07/05/2012 09:18:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[geomap_func2_xmlds]
+	@main_context varchar(512)='',
+	@add_context varchar(512)='',
+	@filterinfo xml='',
+	@session_context xml ='',
+	@element_id varchar(512) ='',
+	@geomapsettings xml='' output
+AS
+BEGIN
+SET NOCOUNT ON;
+
+Declare @settings_str as varchar(max)
+set @settings_str=
+'<geomapsettings>
+		<labels>
+			<header>
+				<h2>Карта с раскрашенными по значению показателя регионами</h2>
+			</header>
+	
+		</labels>
+		<properties legend="top" />
+		<template> 
+	{
+	   registerModules: [["solution", "../../solutions/default/js"]],
+	   managerModule: "solution.test",	
+       style: [
+	{
+		fid: "l2",
+		stroke: "black",
+		strokeWidth: 1,
+		styleFunction: {
+			getStyle: "djeo.util.numeric.getStyle",
+			options: {
+				numClasses: 7,
+				colorSchemeName: "Reds",
+				attr: "mainInd",
+				breaks: "djeo.util.jenks.getBreaks",
+				calculateStyle: "djeo.util.colorbrewer.calculateStyle"
+			}
+		},
+		legend: "djeo._getBreaksAreaLegend",
+		name: "имя"
+	},
+{
+       point: {
+			strokeWidth: 2,
+			fill: "blue",
+			shape: "circle"
+       }
+}
+]
+      
+}	
+		</template>              	
+
+
+
+<tables>
+
+  <layers>
+		<rec>
+			<ID>l1</ID>
+			<Name>Города</Name>
+			<ObjectType>POINT</ObjectType>
+			<HintFormat>%LayerName - %ObjectName (%ObjectID) (%Lat - %Lon)</HintFormat>
+		</rec>
+		<rec>
+			<ID>l2</ID>
+			<Name>Регионы</Name>
+			<ObjectType>POLYGON</ObjectType>
+			<HintFormat>%LayerName - %ObjectName (%ObjectID)</HintFormat>
+		</rec>
+  </layers>
+
+  <points>
+		<rec>
+			<ID>1107</ID>
+			<Name>Славгород</Name>
+			<LayerID>l1</LayerID>
+			<Lat>5.2990311e+001</Lat>
+			<Lon>7.8648598e+001</Lon>
+			<properties>
+								<event name="single_click">
+														<action>
+																<main_context>current</main_context>
+																<datapanel type="current" tab="current">
+																		<element id="06">
+											<add_context>Славгород</add_context>                                                                                             
+																		</element> 
+																		
+																</datapanel>
+														</action>
+									</event>
+							</properties>
+		</rec>
+		<rec>
+			<ID>1849</ID>
+			<Name>Нижний Новгород</Name>
+			<LayerID>l1</LayerID>
+			<Lat>5.6329918e+001</Lat>
+			<Lon>4.4009193e+001</Lon>
+			<Tooltip>Нижний Новгород - город с показателями</Tooltip>
+			<StyleClass>cityStyle</StyleClass>
+			<properties>
+								<event name="single_click">
+														<action>
+																<main_context>current</main_context>
+																<datapanel type="current" tab="current">
+																		<element id="06">
+											<add_context>Нижний Новгород</add_context>                                                                                             
+																		</element> 
+																		
+																</datapanel>
+														</action>
+									</event>
+							</properties>
+		</rec>
+		<rec>
+			<ID>2532</ID>
+			<Name>Великий Новгород</Name>
+			<LayerID>l1</LayerID>
+			<Lat>5.8544971e+001</Lat>
+			<Lon>3.1269119e+001</Lon>
+			<properties>
+								<event name="single_click">
+														<action>
+																<main_context>current</main_context>
+																<datapanel type="current" tab="current">
+																		<element id="06">
+											<add_context>Великий Новгород</add_context>                                                                                             
+																		</element> 
+																		
+																</datapanel>
+														</action>
+									</event>
+							</properties>
+		</rec>
+		<rec>
+			<ID>3674</ID>
+			<Name>Белгород</Name>
+			<LayerID>l1</LayerID>
+			<Lat>5.0596611e+001</Lat>
+			<Lon>3.6609211e+001</Lon>
+			<properties>
+								<event name="single_click">
+														<action>
+																<main_context>current</main_context>
+																<datapanel type="current" tab="current">
+																		<element id="06">
+											<add_context>Белгород</add_context>                                                                                             
+																		</element> 
+																		
+																</datapanel>
+														</action>
+									</event>
+							</properties>
+		</rec>
+		<rec>
+			<ID>3742</ID>
+			<Name>Звенигород</Name>
+			<LayerID>l1</LayerID>
+			<Lat>5.5731331e+001</Lat>
+			<Lon>3.6866138e+001</Lon>
+			<properties>
+								<event name="single_click">
+														<action>
+																<main_context>current</main_context>
+																<datapanel type="current" tab="current">
+																		<element id="06">
+											<add_context>Звенигород</add_context>                                                                                             
+																		</element> 
+																		
+																</datapanel>
+														</action>
+									</event>
+							</properties>
+		</rec>
+		<rec>
+			<ID>4826</ID>
+			<Name>Ужгород</Name>
+			<LayerID>l1</LayerID>
+			<Lat>4.8624031e+001</Lat>
+			<Lon>2.2293961e+001</Lon>
+			<properties>
+								<event name="single_click">
+														<action>
+																<main_context>current</main_context>
+																<datapanel type="current" tab="current">
+																		<element id="06">
+											<add_context>Ужгород</add_context>                                                                                             
+																		</element> 
+																		
+																</datapanel>
+														</action>
+									</event>
+							</properties>
+		</rec>
+  </points>
+
+  <polygons> 
+    <rec>
+      <ID>1</ID>
+      <Name>Республика Адыгея</Name>
+      <Code>RU-AD</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Адыгея - производство</Tooltip>
+      <StyleClass>RU-AD</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Адыгея</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>2</ID>
+      <Name>Республика Алтай</Name>
+      <Code>RU-AL</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Алтай - производство</Tooltip>
+      <StyleClass>RU-AL</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Алтай</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>3</ID>
+      <Name>Алтайский край</Name>
+      <Code>RU-ALT</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Алтайский край - производство</Tooltip>
+      <StyleClass>RU-ALT</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Алтайский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>4</ID>
+      <Name>Амурская область</Name>
+      <Code>RU-AMU</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Амурская область - производство</Tooltip>
+      <StyleClass>RU-AMU</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Амурская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>5</ID>
+      <Name>Архангельская область</Name>
+      <Code>RU-ARK</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Архангельская область - производство</Tooltip>
+      <StyleClass>RU-ARK</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Архангельская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>6</ID>
+      <Name>Астраханская область</Name>
+      <Code>RU-AST</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Астраханская область - производство</Tooltip>
+      <StyleClass>RU-AST</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Астраханская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>7</ID>
+      <Name>Республика Башкортостан</Name>
+      <Code>RU-BA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Башкортостан - производство</Tooltip>
+      <StyleClass>RU-BA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Башкортостан</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>8</ID>
+      <Name>Белгородская область</Name>
+      <Code>RU-BEL</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Белгородская область - производство</Tooltip>
+      <StyleClass>RU-BEL</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Белгородская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>9</ID>
+      <Name>Брянская область</Name>
+      <Code>RU-BRY</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Брянская область - производство</Tooltip>
+      <StyleClass>RU-BRY</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Брянская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>10</ID>
+      <Name>Республика Бурятия</Name>
+      <Code>RU-BU</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Бурятия - производство</Tooltip>
+      <StyleClass>RU-BU</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Бурятия</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>11</ID>
+      <Name>Чеченская Республика</Name>
+      <Code>RU-CE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Чеченская Республика - производство</Tooltip>
+      <StyleClass>RU-CE</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Чеченская Республика</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>12</ID>
+      <Name>Челябинская область</Name>
+      <Code>RU-CHE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Челябинская область - производство</Tooltip>
+      <StyleClass>RU-CHE</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Челябинская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>13</ID>
+      <Name>Чукотский автономный округ</Name>
+      <Code>RU-CHU</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Чукотский автономный округ - производство</Tooltip>
+      <StyleClass>RU-CHU</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Чукотский автономный округ</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>14</ID>
+      <Name>Чувашская Республика</Name>
+      <Code>RU-CU</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Чувашская Республика - производство</Tooltip>
+      <StyleClass>RU-CU</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Чувашская Республика</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>15</ID>
+      <Name>Республика Дагестан</Name>
+      <Code>RU-DA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Дагестан - производство</Tooltip>
+      <StyleClass>RU-DA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Дагестан</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>16</ID>
+      <Name>Республика Ингушетия</Name>
+      <Code>RU-IN</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Ингушетия - производство</Tooltip>
+      <StyleClass>RU-IN</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Ингушетия</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>17</ID>
+      <Name>Иркутская область</Name>
+      <Code>RU-IRK</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Иркутская область - производство</Tooltip>
+      <StyleClass>RU-IRK</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Иркутская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>18</ID>
+      <Name>Ивановская область</Name>
+      <Code>RU-IVA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ивановская область - производство</Tooltip>
+      <StyleClass>RU-IVA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ивановская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>19</ID>
+      <Name>Камчатский край</Name>
+      <Code>RU-KAM</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Камчатский край - производство</Tooltip>
+      <StyleClass>RU-KAM</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Камчатский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>20</ID>
+      <Name>Кабардино-Балкарская Республика</Name>
+      <Code>RU-KB</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Кабардино-Балкарская Республика - производство</Tooltip>
+      <StyleClass>RU-KB</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Кабардино-Балкарская Республика</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>21</ID>
+      <Name>Карачаево-Черкесская Республика</Name>
+      <Code>RU-KC</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Карачаево-Черкесская Республика - производство</Tooltip>
+      <StyleClass>RU-KC</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Карачаево-Черкесская Республика</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>22</ID>
+      <Name>Краснодарский край</Name>
+      <Code>RU-KDA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Краснодарский край - производство</Tooltip>
+      <StyleClass>RU-KDA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Краснодарский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>23</ID>
+      <Name>Кемеровская область</Name>
+      <Code>RU-KEM</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Кемеровская область - производство</Tooltip>
+      <StyleClass>RU-KEM</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Кемеровская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>24</ID>
+      <Name>Калининградская область</Name>
+      <Code>RU-KGD</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Калининградская область - производство</Tooltip>
+      <StyleClass>RU-KGD</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Калининградская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>25</ID>
+      <Name>Курганская область</Name>
+      <Code>RU-KGN</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Курганская область - производство</Tooltip>
+      <StyleClass>RU-KGN</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Курганская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>26</ID>
+      <Name>Хабаровский край</Name>
+      <Code>RU-KHA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Хабаровский край - производство</Tooltip>
+      <StyleClass>RU-KHA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Хабаровский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>27</ID>
+      <Name>Ханты-Мансийский автономный округ</Name>
+      <Code>RU-KHM</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ханты-Мансийский автономный округ - производство</Tooltip>
+      <StyleClass>RU-KHM</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ханты-Мансийский автономный округ</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>28</ID>
+      <Name>Красноярский край</Name>
+      <Code>RU-KYA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Красноярский край - производство</Tooltip>
+      <StyleClass>RU-KYA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Красноярский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>29</ID>
+      <Name>Кировская область</Name>
+      <Code>RU-KIR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Кировская область - производство</Tooltip>
+      <StyleClass>RU-KIR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Кировская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>30</ID>
+      <Name>Республика Хакасия</Name>
+      <Code>RU-KK</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Хакасия - производство</Tooltip>
+      <StyleClass>RU-KK</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Хакасия</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>31</ID>
+      <Name>Республика Калмыкия</Name>
+      <Code>RU-KL</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Калмыкия - производство</Tooltip>
+      <StyleClass>RU-KL</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Калмыкия</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>32</ID>
+      <Name>Калужская область</Name>
+      <Code>RU-KLU</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Калужская область - производство</Tooltip>
+      <StyleClass>RU-KLU</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Калужская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>33</ID>
+      <Name>Республика Коми</Name>
+      <Code>RU-KO</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Коми - производство</Tooltip>
+      <StyleClass>RU-KO</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Коми</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>34</ID>
+      <Name>Костромская область</Name>
+      <Code>RU-KOS</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Костромская область - производство</Tooltip>
+      <StyleClass>RU-KOS</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Костромская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>35</ID>
+      <Name>Республика Карелия</Name>
+      <Code>RU-KR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Карелия - производство</Tooltip>
+      <StyleClass>RU-KR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Карелия</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>36</ID>
+      <Name>Курская область</Name>
+      <Code>RU-KRS</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Курская область - производство</Tooltip>
+      <StyleClass>RU-KRS</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Курская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>37</ID>
+      <Name>Ленинградская область</Name>
+      <Code>RU-LEN</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ленинградская область - производство</Tooltip>
+      <StyleClass>RU-LEN</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ленинградская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>38</ID>
+      <Name>Липецкая область</Name>
+      <Code>RU-LIP</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Липецкая область - производство</Tooltip>
+      <StyleClass>RU-LIP</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Липецкая область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>39</ID>
+      <Name>Магаданская область</Name>
+      <Code>RU-MAG</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Магаданская область - производство</Tooltip>
+      <StyleClass>RU-MAG</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Магаданская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>40</ID>
+      <Name>Республика Марий Эл</Name>
+      <Code>RU-ME</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Марий Эл - производство</Tooltip>
+      <StyleClass>RU-ME</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Марий Эл</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>41</ID>
+      <Name>Республика Мордовия</Name>
+      <Code>RU-MO</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Мордовия - производство</Tooltip>
+      <StyleClass>RU-MO</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Мордовия</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>42</ID>
+      <Name>Московская область</Name>
+      <Code>RU-MOS</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Московская область - производство</Tooltip>
+      <StyleClass>RU-MOS</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Московская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>43</ID>
+      <Name>Москва</Name>
+      <Code>RU-MOW</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Москва - производство</Tooltip>
+      <StyleClass>RU-MOW</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Москва</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>44</ID>
+      <Name>Мурманская область</Name>
+      <Code>RU-MUR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Мурманская область - производство</Tooltip>
+      <StyleClass>RU-MUR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Мурманская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>45</ID>
+      <Name>Ненецкий автономный округ</Name>
+      <Code>RU-NEN</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ненецкий автономный округ - производство</Tooltip>
+      <StyleClass>RU-NEN</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ненецкий автономный округ</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>46</ID>
+      <Name>Новгородская область</Name>
+      <Code>RU-NGR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Новгородская область - производство</Tooltip>
+      <StyleClass>RU-NGR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Новгородская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>47</ID>
+      <Name>Нижегородская область</Name>
+      <Code>RU-NIZ</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Нижегородская область - производство</Tooltip>
+      <StyleClass>RU-NIZ</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Нижегородская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>48</ID>
+      <Name>Новосибирская область</Name>
+      <Code>RU-NVS</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Новосибирская область - производство</Tooltip>
+      <StyleClass>RU-NVS</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Новосибирская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>49</ID>
+      <Name>Омская область</Name>
+      <Code>RU-OMS</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Омская область - производство</Tooltip>
+      <StyleClass>RU-OMS</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Омская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>50</ID>
+      <Name>Оренбургская область</Name>
+      <Code>RU-ORE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Оренбургская область - производство</Tooltip>
+      <StyleClass>RU-ORE</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Оренбургская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>51</ID>
+      <Name>Орловская область</Name>
+      <Code>RU-ORL</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Орловская область - производство</Tooltip>
+      <StyleClass>RU-ORL</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Орловская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>52</ID>
+      <Name>Пермский край</Name>
+      <Code>RU-PER</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Пермский край - производство</Tooltip>
+      <StyleClass>RU-PER</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Пермский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>53</ID>
+      <Name>Пензенская область</Name>
+      <Code>RU-PNZ</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Пензенская область - производство</Tooltip>
+      <StyleClass>RU-PNZ</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Пензенская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>54</ID>
+      <Name>Приморский край</Name>
+      <Code>RU-PRI</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Приморский край - производство</Tooltip>
+      <StyleClass>RU-PRI</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Приморский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>55</ID>
+      <Name>Псковская область</Name>
+      <Code>RU-PSK</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Псковская область - производство</Tooltip>
+      <StyleClass>RU-PSK</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Псковская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>56</ID>
+      <Name>Ростовская область</Name>
+      <Code>RU-ROS</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ростовская область - производство</Tooltip>
+      <StyleClass>RU-ROS</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ростовская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>57</ID>
+      <Name>Рязанская область</Name>
+      <Code>RU-RYA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Рязанская область - производство</Tooltip>
+      <StyleClass>RU-RYA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Рязанская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>58</ID>
+      <Name>Республика Саха (Якутия)</Name>
+      <Code>RU-SA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Саха (Якутия) - производство</Tooltip>
+      <StyleClass>RU-SA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Саха (Якутия)</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>59</ID>
+      <Name>Сахалинская область</Name>
+      <Code>RU-SAK</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Сахалинская область - производство</Tooltip>
+      <StyleClass>RU-SAK</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Сахалинская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>60</ID>
+      <Name>Самарская область</Name>
+      <Code>RU-SAM</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Самарская область - производство</Tooltip>
+      <StyleClass>RU-SAM</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Самарская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>61</ID>
+      <Name>Саратовская область</Name>
+      <Code>RU-SAR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Саратовская область - производство</Tooltip>
+      <StyleClass>RU-SAR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Саратовская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>62</ID>
+      <Name>Республика Северная Осетия-Алания</Name>
+      <Code>RU-SE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Северная Осетия-Алания - производство</Tooltip>
+      <StyleClass>RU-SE</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Северная Осетия-Алания</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>63</ID>
+      <Name>Смоленская область</Name>
+      <Code>RU-SMO</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Смоленская область - производство</Tooltip>
+      <StyleClass>RU-SMO</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Смоленская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>64</ID>
+      <Name>Санкт-Петербург</Name>
+      <Code>RU-SPE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Санкт-Петербург - производство</Tooltip>
+      <StyleClass>RU-SPE</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Санкт-Петербург</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>65</ID>
+      <Name>Ставропольский край</Name>
+      <Code>RU-STA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ставропольский край - производство</Tooltip>
+      <StyleClass>RU-STA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ставропольский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>66</ID>
+      <Name>Свердловская область</Name>
+      <Code>RU-SVE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Свердловская область - производство</Tooltip>
+      <StyleClass>RU-SVE</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Свердловская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>67</ID>
+      <Name>Республика Татарстан</Name>
+      <Code>RU-TA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Татарстан - производство</Tooltip>
+      <StyleClass>RU-TA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Татарстан</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>68</ID>
+      <Name>Тамбовская область</Name>
+      <Code>RU-TAM</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Тамбовская область - производство</Tooltip>
+      <StyleClass>RU-TAM</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Тамбовская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>69</ID>
+      <Name>Томская область</Name>
+      <Code>RU-TOM</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Томская область - производство</Tooltip>
+      <StyleClass>RU-TOM</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Томская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>70</ID>
+      <Name>Тульская область</Name>
+      <Code>RU-TUL</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Тульская область - производство</Tooltip>
+      <StyleClass>RU-TUL</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Тульская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>71</ID>
+      <Name>Тверская область</Name>
+      <Code>RU-TVE</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Тверская область - производство</Tooltip>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Тверская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>72</ID>
+      <Name>Республика Тыва</Name>
+      <Code>RU-TY</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Республика Тыва - производство</Tooltip>
+      <StyleClass>RU-TY</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Республика Тыва</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>73</ID>
+      <Name>Тюменская область</Name>
+      <Code>RU-TYU</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Тюменская область - производство</Tooltip>
+      <StyleClass>RU-TYU</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Тюменская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>74</ID>
+      <Name>Удмуртская Республика</Name>
+      <Code>RU-UD</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Удмуртская Республика - производство</Tooltip>
+      <StyleClass>RU-UD</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Удмуртская Республика</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>75</ID>
+      <Name>Ульяновская область</Name>
+      <Code>RU-ULY</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ульяновская область - производство</Tooltip>
+      <StyleClass>RU-ULY</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ульяновская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>76</ID>
+      <Name>Волгоградская область</Name>
+      <Code>RU-VGG</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Волгоградская область - производство</Tooltip>
+      <StyleClass>RU-VGG</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Волгоградская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>77</ID>
+      <Name>Владимирская область</Name>
+      <Code>RU-VLA</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Владимирская область - производство</Tooltip>
+      <StyleClass>RU-VLA</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Владимирская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>78</ID>
+      <Name>Вологодская область</Name>
+      <Code>RU-VLG</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Вологодская область - производство</Tooltip>
+      <StyleClass>RU-VLG</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Вологодская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>79</ID>
+      <Name>Воронежская область</Name>
+      <Code>RU-VOR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Воронежская область - производство</Tooltip>
+      <StyleClass>RU-VOR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Воронежская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>80</ID>
+      <Name>Ямало-Ненецкий автономный округ</Name>
+      <Code>RU-YAN</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ямало-Ненецкий автономный округ - производство</Tooltip>
+      <StyleClass>RU-YAN</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ямало-Ненецкий автономный округ</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>81</ID>
+      <Name>Ярославская область</Name>
+      <Code>RU-YAR</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Ярославская область - производство</Tooltip>
+      <StyleClass>RU-YAR</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Ярославская область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>82</ID>
+      <Name>Еврейская автономная область</Name>
+      <Code>RU-YEV</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Еврейская автономная область - производство</Tooltip>
+      <StyleClass>RU-YEV</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Еврейская автономная область</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+    <rec>
+      <ID>83</ID>
+      <Name>Забайкальский край</Name>
+      <Code>RU-ZAB</Code>
+      <LayerID>l2</LayerID>
+      <Tooltip>Забайкальский край - производство</Tooltip>
+      <StyleClass>RU-ZAB</StyleClass>
+      <properties>
+						    <event name="single_click">
+                            <action>
+                                <main_context>current</main_context>
+                                <datapanel type="current" tab="current">
+                                    <element id="06">
+									    <add_context>Забайкальский край</add_context>                                                                                             
+                                    </element> 
+                                    
+                                </datapanel>
+                            </action>
+					        </event>
+					    </properties>
+    </rec>
+  </polygons>
+
+  <indicators>
+		<rec>
+			<ID>ind1</ID>
+			<Name>Производство (тыс. тонн)</Name>
+			<LayerID>l2</LayerID>
+			<IsMain>1</IsMain>
+			<Color>#2AAA2E</Color>
+		</rec>
+  </indicators>
+
+  <indicatorValues>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>1</ObjectID>
+      <VALUE>3.967000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>2</ObjectID>
+      <VALUE>3.800000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>4</ObjectID>
+      <VALUE>2.851000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>5</ObjectID>
+      <VALUE>2.700000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>6</ObjectID>
+      <VALUE>2.400000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>7</ObjectID>
+      <VALUE>2.859500000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>8</ObjectID>
+      <VALUE>2.153800000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>9</ObjectID>
+      <VALUE>5.786000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>10</ObjectID>
+      <VALUE>2.220000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>11</ObjectID>
+      <VALUE>1.425000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>12</ObjectID>
+      <VALUE>1.017300000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>13</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>14</ObjectID>
+      <VALUE>5.390000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>15</ObjectID>
+      <VALUE>1.475000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>16</ObjectID>
+      <VALUE>4.530000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>17</ObjectID>
+      <VALUE>4.163000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>18</ObjectID>
+      <VALUE>1.236000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>19</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>20</ObjectID>
+      <VALUE>4.580000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>21</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>23</ObjectID>
+      <VALUE>9.524000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>24</ObjectID>
+      <VALUE>2.488000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>25</ObjectID>
+      <VALUE>1.303500000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>29</ObjectID>
+      <VALUE>6.720000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>30</ObjectID>
+      <VALUE>4.460000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>31</ObjectID>
+      <VALUE>3.805000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>32</ObjectID>
+      <VALUE>1.911000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>33</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>34</ObjectID>
+      <VALUE>8.050000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>35</ObjectID>
+      <VALUE>3.000000000000000e-001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>36</ObjectID>
+      <VALUE>2.898600000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>37</ObjectID>
+      <VALUE>9.580000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>38</ObjectID>
+      <VALUE>2.472900000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>39</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>40</ObjectID>
+      <VALUE>2.653000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>41</ObjectID>
+      <VALUE>1.284300000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>42</ObjectID>
+      <VALUE>2.144000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>43</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>44</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>46</ObjectID>
+      <VALUE>1.460000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>47</ObjectID>
+      <VALUE>1.383900000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>48</ObjectID>
+      <VALUE>1.753100000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>49</ObjectID>
+      <VALUE>2.096000000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>50</ObjectID>
+      <VALUE>2.291100000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>51</ObjectID>
+      <VALUE>2.325600000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>52</ObjectID>
+      <VALUE>3.811000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>53</ObjectID>
+      <VALUE>1.416300000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>55</ObjectID>
+      <VALUE>3.320000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>56</ObjectID>
+      <VALUE>5.832100000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>57</ObjectID>
+      <VALUE>1.536200000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>58</ObjectID>
+      <VALUE>6.300000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>59</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>60</ObjectID>
+      <VALUE>1.013600000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>61</ObjectID>
+      <VALUE>2.585400000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>62</ObjectID>
+      <VALUE>8.709999999999999e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>63</ObjectID>
+      <VALUE>1.532000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>64</ObjectID>
+      <VALUE>0.000000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>66</ObjectID>
+      <VALUE>5.729000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>67</ObjectID>
+      <VALUE>4.247600000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>68</ObjectID>
+      <VALUE>2.580700000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>69</ObjectID>
+      <VALUE>2.946000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>70</ObjectID>
+      <VALUE>1.453400000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>71</ObjectID>
+      <VALUE>1.112000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>72</ObjectID>
+      <VALUE>2.730000000000000e+000</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>73</ObjectID>
+      <VALUE>1.314200000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>74</ObjectID>
+      <VALUE>6.444000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>75</ObjectID>
+      <VALUE>1.092900000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>76</ObjectID>
+      <VALUE>3.502900000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>77</ObjectID>
+      <VALUE>1.845000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>78</ObjectID>
+      <VALUE>2.263000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>79</ObjectID>
+      <VALUE>3.219200000000000e+003</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>81</ObjectID>
+      <VALUE>1.004000000000000e+002</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>82</ObjectID>
+      <VALUE>2.230000000000000e+001</VALUE>
+    </rec>
+    <rec>
+      <IndicatorID>ind1</IndicatorID>
+      <ObjectID>83</ObjectID>
+      <VALUE>5.850000000000000e+001</VALUE>
+    </rec>
+  </indicatorValues>
+
+</tables>		
+
+	
+</geomapsettings>' 
+set	@geomapsettings=CAST(@settings_str as xml)
+END
+GO

@@ -31,5 +31,6 @@
         <element id="51" type="chart" proc="chart_pas_xmlds"/>
         <element id="52" type="chart" proc="chart_pas_xmlds_fliped"/>
 		<element id="53" type="grid" proc="grid_portals_id_and_css_xmlds"/>
+		<element id="54" type="geomap" proc="geomap_func2_xmlds"/>		
 	</tab>        
 </datapanel>
