@@ -261,14 +261,14 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 	// CHECKSTYLE:OFF
 	private native void export(final String mapId, final String exportType) /*-{
-		$wnd.gwtGeoMapExportSuccess =                   
-		@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::exportToPNGSuccess(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
-		$wnd.gwtGeoMapExportError =                   
-		@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::exportToPNGError(Ljava/lang/String;Ljava/lang/String;);
+																			$wnd.gwtGeoMapExportSuccess =                   
+																			@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::exportToPNGSuccess(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+																			$wnd.gwtGeoMapExportError =                   
+																			@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::exportToPNGError(Ljava/lang/String;Ljava/lang/String;);
 
-		$wnd.dojo.require("course.geo");		
-		$wnd.course.geo.toSvg(mapId, exportType, $wnd.gwtGeoMapExportSuccess, $wnd.gwtGeoMapExportError);
-	}-*/;
+																			//		$wnd.dojo.require("course.geo");		
+																			$wnd.course.geo.toSvg(mapId, exportType, $wnd.gwtGeoMapExportSuccess, $wnd.gwtGeoMapExportError);
+																			}-*/;
 
 	// CHECKSTYLE:ON
 
@@ -356,13 +356,13 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	 */
 	public native void drawMap(final String mapId, final String divIdLegend,
 			final String jsonStr1, final String jsonStr2) /*-{
-		$wnd.gwtMapFunc =                   
-		@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::mapPanelClick(Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtMapFunc =                   
+															@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::mapPanelClick(Ljava/lang/String;Ljava/lang/String;);
 
-		$wnd.dojo.require("course.geo");
-		// course.geo.makeMap("map", optionSet1, optionSet2, mapConvertorFunc);
-		$wnd.course.geo.makeMap(mapId, divIdLegend, jsonStr1, jsonStr2);
-	}-*/;
+															//$wnd.dojo.require("course.geo");
+															// course.geo.makeMap("map", optionSet1, optionSet2, mapConvertorFunc);
+															$wnd.course.geo.makeMap(mapId, divIdLegend, jsonStr1, jsonStr2);
+															}-*/;
 
 	@Override
 	public void reDrawPanel(final CompositeContext context1) {
