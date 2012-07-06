@@ -69,6 +69,7 @@ public final class GridTransformer {
 		lgm.setUISettings(grid.getUISettings());
 
 		if ((grid.getDataSet().getRecordSet().getRecords() != null)
+				&& (grid.getDataSet().getRecordSet().getRecords().size() > 0)
 				&& (grid.getDataSet().getRecordSet().getRecords().get(0) != null)) {
 			Record record = grid.getDataSet().getRecordSet().getRecords().get(0);
 			lgm.setTextColor(record.getTextColor());

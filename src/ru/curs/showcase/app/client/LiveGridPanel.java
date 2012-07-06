@@ -298,8 +298,10 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 			column.setToolTip(column.getHeader());
 
-			column.setAlignment(HorizontalAlignment.getHorizontalAlignmentConstant(egcc
-					.getHorizontalAlignment()));
+			if (egcc.getHorizontalAlignment() != null) {
+				column.setAlignment(HorizontalAlignment.getHorizontalAlignmentConstant(egcc
+						.getHorizontalAlignment()));
+			}
 
 			column.setMenuDisabled(!gridMetadata.getUISettings().isVisibleColumnsCustomizer());
 
@@ -653,22 +655,24 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			style = style + "font-size:" + gridMetadata.getFontSize() + ";";
 		}
 
-		for (FontModifier fm : gridMetadata.getFontModifiers()) {
-			switch (fm) {
-			case ITALIC:
-				style = style + "font-style:italic;";
-				continue;
-			case BOLD:
-				style = style + "font-weight:bold;";
-				continue;
-			case STRIKETHROUGH:
-				style = style + "text-decoration:line-through;";
-				continue;
-			case UNDERLINE:
-				style = style + "text-decoration:underline;";
-				continue;
-			default:
-				continue;
+		if (gridMetadata.getFontSize() != null) {
+			for (FontModifier fm : gridMetadata.getFontModifiers()) {
+				switch (fm) {
+				case ITALIC:
+					style = style + "font-style:italic;";
+					continue;
+				case BOLD:
+					style = style + "font-weight:bold;";
+					continue;
+				case STRIKETHROUGH:
+					style = style + "text-decoration:line-through;";
+					continue;
+				case UNDERLINE:
+					style = style + "text-decoration:underline;";
+					continue;
+				default:
+					continue;
+				}
 			}
 		}
 
@@ -751,6 +755,13 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	 *            GridToExcelExportType
 	 */
 	public void exportToExcel(final GridToExcelExportType exportType) {
+
+		if (grid.getStore().getAll().size() == 0) {
+			MessageBox.showSimpleMessage("Экспорт в Excel",
+					"Таблица пуста. Экспорт в Excel выполнен не будет.");
+			return;
+		}
+
 		DownloadHelper dh = DownloadHelper.getInstance();
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
