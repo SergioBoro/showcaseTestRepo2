@@ -28,6 +28,8 @@ public final class GridTransformer {
 		lgm.setHeader(grid.getHeader());
 		lgm.setFooter(grid.getFooter());
 
+		lgm.setId(grid.getId());
+
 		// -------------------------------------------------------
 
 		List<LiveGridColumnConfig> columns = new ArrayList<LiveGridColumnConfig>();
