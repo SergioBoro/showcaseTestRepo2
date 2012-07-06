@@ -339,6 +339,7 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		return generalMapPanel;
 	}
 
+	// CHECKSTYLE:OFF
 	/**
 	 * 
 	 * Процедура прорисовки карты с помощью библиотеки dojo.
@@ -356,13 +357,14 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	 */
 	public native void drawMap(final String mapId, final String divIdLegend,
 			final String jsonStr1, final String jsonStr2) /*-{
-															$wnd.gwtMapFunc =                   
-															@ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::mapPanelClick(Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtMapFunc =  @ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::mapPanelClick(Ljava/lang/String;Ljava/lang/String;);
 
 															//$wnd.dojo.require("course.geo");
 															// course.geo.makeMap("map", optionSet1, optionSet2, mapConvertorFunc);
 															$wnd.course.geo.makeMap(mapId, divIdLegend, jsonStr1, jsonStr2);
 															}-*/;
+
+	// CHECKSTYLE:ON
 
 	@Override
 	public void reDrawPanel(final CompositeContext context1) {
