@@ -73,7 +73,7 @@ g.makeMap = function(mapDivId, mapLegendId, data, options) {
 	// append features from options to data.features
 	if (options.features) {
 		array.forEach(options.features, function(f){
-			data.features.append(f);
+			data.features.push(f);
 		});
 		delete options.features;
 	}
