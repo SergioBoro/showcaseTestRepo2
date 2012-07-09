@@ -69,9 +69,13 @@ g.makeMap = function(mapDivId, mapLegendId, data, options) {
 	}
 	if (!options) options = {};
 
-	// if options have features, data is ignored
-	if (!options.features) {
-		convertData(data);
+	convertData(data);
+	// append features from options to data.features
+	if (options.features) {
+		array.forEach(options.features, function(f){
+			data.features.append(f);
+		});
+		delete options.features;
 	}
 
 	var mapNode = dom.byId(mapDivId);
