@@ -89,14 +89,8 @@ g.makeMap = function(mapDivId, mapLegendId, data, options) {
 		// clean up options
 		delete options.managerModule, options.managerFunction, options.registerModules;
 
-		if (options.features) {
-			// if options have features, data is ignored
-			data = options;
-		}
-		else {
-			// otherwise perform mixin
-			lang.mixin(data, options);
-		}	
+		lang.mixin(data, options);
+
 		// patch data
 		if (!data.engine) {
 			data.engine = defaultMapEngine;
