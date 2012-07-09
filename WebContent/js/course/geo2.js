@@ -65,7 +65,7 @@ g.makeMap = function(mapDivId, mapLegendId, data, options) {
 		data = json.parse(data);
 	}
 	if (lang.isString(options)) {
-		options = json.parse(options);
+		options = dojo.fromJson(options);
 	}
 	if (!options) options = {};
 
