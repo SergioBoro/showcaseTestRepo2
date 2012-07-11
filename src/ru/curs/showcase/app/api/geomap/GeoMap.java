@@ -111,11 +111,11 @@ public final class GeoMap extends DataPanelJSBasedElement {
 		exportSettings = aExportSettings;
 	}
 
-	public void applyAutoSizeValuesOnClient(final int width, final int height) {
+	public void applyAutoSizeValuesOnClient(final int awidth, final int aheight) {
 		setJsDynamicData(getJsDynamicData().replace("\"width\":" + GeoMapData.AUTOSIZE_CONSTANT,
-				"\"width\":" + width));
+				"\"width\":" + awidth));
 		setJsDynamicData(getJsDynamicData().replace("\"height\":" + GeoMapData.AUTOSIZE_CONSTANT,
-				"\"height\":" + height));
+				"\"height\":" + aheight));
 	}
 
 	/**
