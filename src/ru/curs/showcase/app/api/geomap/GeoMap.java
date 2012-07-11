@@ -29,6 +29,16 @@ public final class GeoMap extends DataPanelJSBasedElement {
 	 */
 	private Boolean autoSize = false;
 
+	/**
+	 * Ширина карты для отображения.
+	 */
+	private int width;
+
+	/**
+	 * Высота карты для отображения.
+	 */
+	private int height;
+
 	private GeoMapUISettings uiSettings = new GeoMapUISettings();
 
 	private GeoMapExportSettings exportSettings = new GeoMapExportSettings();
@@ -106,5 +116,35 @@ public final class GeoMap extends DataPanelJSBasedElement {
 				"\"width\":" + width));
 		setJsDynamicData(getJsDynamicData().replace("\"height\":" + GeoMapData.AUTOSIZE_CONSTANT,
 				"\"height\":" + height));
+	}
+
+	/**
+	 * @return the width
+	 */
+	public int getWidth() {
+		return width;
+	}
+
+	/**
+	 * @param width
+	 *            the width to set
+	 */
+	public void setWidth(final int awidth) {
+		this.width = awidth;
+	}
+
+	/**
+	 * @return the height
+	 */
+	public int getHeight() {
+		return height;
+	}
+
+	/**
+	 * @param height
+	 *            the height to set
+	 */
+	public void setHeight(final int aheight) {
+		this.height = aheight;
 	}
 }

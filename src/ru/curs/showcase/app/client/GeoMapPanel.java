@@ -100,6 +100,7 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		final String htmlForMap;
 		final int n60 = 60;
 		final int n80 = 80;
+
 		if (aGeoMap.getAutoSize()) {
 			// MessageBox.showSimpleMessage("cap",
 			// //
@@ -115,7 +116,13 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			aGeoMap.applyAutoSizeValuesOnClient(width, height);
 
 		} else {
-			htmlForMap = div + getDivIdMap() + "'></div>";
+			// htmlForMap = div + getDivIdMap() + "'></div>";
+
+			htmlForMap =
+				div + getDivIdMap() + "' style = 'width: " + String.valueOf(aGeoMap.getWidth())
+						+ "px; height: " + String.valueOf(aGeoMap.getHeight()) + "px'></div>";
+			// aGeoMap.applyAutoSizeValuesOnClient(width, height);
+
 		}
 
 		// final String htmlForMap =

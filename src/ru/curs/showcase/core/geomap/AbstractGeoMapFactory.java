@@ -171,11 +171,13 @@ public abstract class AbstractGeoMapFactory extends CompBasedElementFactory {
 					value = attrs.getValue(WIDTH_TAG);
 					intValue = TextUtils.getIntSizeValue(value);
 					getResult().getJavaDynamicData().setWidth(intValue);
+					getResult().setWidth(intValue);
 				}
 				if (attrs.getIndex(HEIGHT_TAG) > -1) {
 					value = attrs.getValue(HEIGHT_TAG);
 					intValue = TextUtils.getIntSizeValue(value);
 					getResult().getJavaDynamicData().setHeight(intValue);
+					getResult().setHeight(intValue);
 				}
 				return null;
 			}
