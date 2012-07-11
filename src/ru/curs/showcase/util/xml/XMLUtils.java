@@ -480,6 +480,10 @@ public final class XMLUtils {
 
 		System.setProperty("javax.xml.xpath.XPathFactory:" + NamespaceConstant.OBJECT_MODEL_SAXON,
 				"net.sf.saxon.xpath.XPathFactoryImpl");
+
+		System.setProperty("javax.xml.stream.XMLOutputFactory",
+				"com.sun.xml.internal.stream.XMLOutputFactoryImpl");
+
 	}
 
 	/**
