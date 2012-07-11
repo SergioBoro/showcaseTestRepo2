@@ -22,10 +22,11 @@ return function(mapNode, legendNode, data) {
 	map.ready(function(){
 		new Navigation(map);
 		//new Highlight(map);
-		new Tooltip(map);
+		var tooltipControl = new Tooltip(map);
 		map.document.on("click", function(event){
-        gwtMapFunc(mapNode, event.feature.id)
-});
+			tooltipControl.hideTooltip();
+			gwtMapFunc(mapNode, event.feature.id)
+		});
 	});
 	
 	return {map: map};
