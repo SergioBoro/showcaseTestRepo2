@@ -13,9 +13,9 @@ define([
 return function(mapNode, legendNode, data) {
 
 	data.extent = [33,43,45,45];
-	data.layers = "webtiles:../../mil/tiles";
+	data.layers = "webtiles:js/mil/tiles";
 	data.style = style;
-	data.iconBasePath = "../../mil/demos/"
+	data.iconBasePath = "js/mil/demos/"
 	
 	var map = new Map(mapNode, data);
 
@@ -23,6 +23,9 @@ return function(mapNode, legendNode, data) {
 		new Navigation(map);
 		//new Highlight(map);
 		new Tooltip(map);
+		map.document.on("click", function(event){
+        gwtMapFunc(mapNode, event.feature.id)
+});
 	});
 	
 	return {map: map};
