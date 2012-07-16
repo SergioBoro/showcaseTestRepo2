@@ -24,11 +24,10 @@ public final class GridTransformer {
 	public static LiveGridMetadata gridToLiveGridMetadata(final Grid grid) {
 
 		LiveGridMetadata lgm = new LiveGridMetadata();
+		lgm.setId(grid.getId());
 
 		lgm.setHeader(grid.getHeader());
 		lgm.setFooter(grid.getFooter());
-
-		lgm.setId(grid.getId());
 
 		// -------------------------------------------------------
 
@@ -129,6 +128,9 @@ public final class GridTransformer {
 					.getLiveInfo().getTotalCount());
 
 		LiveGridExtradata lge = new LiveGridExtradata();
+		lge.setId(grid.getId());
+
+		lge.setDefaultAction(grid.getDefaultAction());
 		lge.setGridEventManager(grid.getEventManager());
 
 		String autoSelectRecordId = null;
@@ -242,6 +244,9 @@ public final class GridTransformer {
 		// -------------------------------------------------------
 
 		LiveGridExtradata lge = new LiveGridExtradata();
+		lge.setId(grid.getId());
+
+		lge.setDefaultAction(grid.getDefaultAction());
 		lge.setGridEventManager(grid.getEventManager());
 
 		String autoSelectRecordId = null;

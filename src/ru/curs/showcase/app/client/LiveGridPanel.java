@@ -568,9 +568,9 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			return;
 		}
 
-		if (grid.getStore().getAll().size() == 0) {
-			return;
-		}
+		// if (grid.getStore().getAll().size() == 0) {
+		// return;
+		// }
 
 		Cell selected = getStoredRecordId();
 		if (selectionModel instanceof CellSelectionModel) {
