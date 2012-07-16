@@ -700,10 +700,11 @@ public final class XMLUtils {
 		for (int i = 0; i < escapeTag.length; i++) {
 			while (text.indexOf(escapeTag[i][0]) != -1) {
 				text = text.replace(escapeTag[i][0], escapeTag[i][1]);
+			}
 
-				text =
-					text.replace(escapeTag[i][0].toUpperCase().replace("_X", "_x"),
-							escapeTag[i][1]);
+			String repl = escapeTag[i][0].toUpperCase().replace("_X", "_x");
+			while (text.indexOf(repl) != -1) {
+				text = text.replace(repl, escapeTag[i][1]);
 			}
 		}
 		for (int i = 0; i < escapeTagFirstDigit.length; i++) {
