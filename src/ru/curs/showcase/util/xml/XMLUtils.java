@@ -647,7 +647,7 @@ public final class XMLUtils {
 			{ "_x003a_", ":" }, { "_x0022_", "\"" }, { "_x007c_", "|" }, { "_x003b_", ";" },
 			{ "_x0027_", "'" }, { "_x005c_", "\\" }, { "_x003c_", "<" }, { "_x003e_", ">" },
 			{ "_x003f_", "?" }, { "_x002c_", "," }, { "_x002e_", "." }, { "_x002f_", "/" },
-			{ "_x0060_", "`" }, { "_x0020_", " " }, { "_y0051_", "№" } };
+			{ "_x0060_", "`" }, { "_x0020_", " " }, { "_y0051_", "№" }, { "_x2116_", "№" } };
 
 	private static String[][] escapeTagFirstDigit = {
 			{ "_x0030_", "0" }, { "_x0031_", "1" }, { "_x0032_", "2" }, { "_x0033_", "3" },
@@ -700,6 +700,10 @@ public final class XMLUtils {
 		for (int i = 0; i < escapeTag.length; i++) {
 			while (text.indexOf(escapeTag[i][0]) != -1) {
 				text = text.replace(escapeTag[i][0], escapeTag[i][1]);
+
+				text =
+					text.replace(escapeTag[i][0].toUpperCase().replace("_X", "_x"),
+							escapeTag[i][1]);
 			}
 		}
 		for (int i = 0; i < escapeTagFirstDigit.length; i++) {
