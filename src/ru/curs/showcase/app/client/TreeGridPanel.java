@@ -210,7 +210,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				public void load(final TreeGridModel loadConfig,
 						final AsyncCallback<List<TreeGridModel>> callback) {
 
-					GridContext gridContext = getDetailedContext();
+					final GridContext gridContext = getDetailedContext();
 					gridContext.resetForReturnAllRecords();
 					gridContext.setParentId(null);
 					if (loadConfig != null) {
@@ -252,6 +252,30 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 
 								@Override
 								public void onSuccess(List<TreeGridModel> result) {
+
+									if (gridContext.getParentId() != null) {
+										String id;
+										List<TreeGridModel> models = grid.getStore().getAll();
+										for (TreeGridModel res : result) {
+											id = res.getId();
+											if (id == null) {
+												continue;
+											}
+
+											for (TreeGridModel old : models) {
+												if (id.equals(old.getId())) {
+													MessageBox
+															.showSimpleMessage(
+																	"Загрузка данных",
+																	"Загружаемая запись с идентификатором "
+																			+ res.getId()
+																			+ " уже присутствует в гриде. Записи загружены не будут.");
+													return;
+												}
+											}
+										}
+									}
+
 									callback.onSuccess(result);
 
 									TreeGridData<TreeGridModel> tgd =
@@ -291,6 +315,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				@Override
 				public void applySort(boolean suppressEvent) {
 					if (!suppressEvent) {
+						gridExtradataLevel0.getEventManager().getEvents().clear();
 						fireEvent(new StoreSortEvent<TreeGridModel>());
 						loader.load();
 					}
