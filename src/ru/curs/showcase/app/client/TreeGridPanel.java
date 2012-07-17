@@ -407,6 +407,9 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		grid.setLoadMask(true);
 		grid.setBorders(true);
 		grid.setHideHeaders(!gridMetadata.getUISettings().isVisibleColumnsHeader());
+		grid.getStyle().setLeafIcon(
+				IconHelper.getImageResource(
+						UriUtils.fromSafeConstant(Constants.TREE_GRID_IMAGE_LEAF_NODE), 16, 16));
 
 		// ---------------------------
 
