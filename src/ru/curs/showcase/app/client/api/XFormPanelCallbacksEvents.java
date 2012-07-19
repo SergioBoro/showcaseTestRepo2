@@ -3,6 +3,7 @@ package ru.curs.showcase.app.client.api;
 import java.util.*;
 
 import ru.beta2.extra.gwt.ui.selector.*;
+import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.Options;
 import ru.beta2.extra.gwt.ui.selector.api.SelectorAdditionalData;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.element.DataPanelElement;
@@ -353,6 +354,37 @@ public final class XFormPanelCallbacksEvents {
 			return this.xpathMapping;
 		}-*/;
 
+		/**
+		 * Ширина списка с данными.
+		 * 
+		 * @return String
+		 */
+		native String dataWidth()/*-{
+			return this.dataWidth;
+		}-*/;
+
+		/**
+		 * Высота списка с данными.
+		 * 
+		 * @return String
+		 */
+		native String dataHeight()/*-{
+			return this.dataHeight;
+		}-*/;
+
+		/**
+		 * Мультиселектор. Ширина списка с выбранными данными.
+		 * 
+		 * @return String
+		 */
+		native String selectedDataWidth()/*-{
+			return this.selectedDataWidth;
+		}-*/;
+
+		native String visibleRecordCount()/*-{
+			return this.visibleRecordCount;
+		}-*/;
+
 	}
 
 	private static void showSingleAndMultiSelector(final JavaScriptObject o,
@@ -363,8 +395,27 @@ public final class XFormPanelCallbacksEvents {
 		XFormPanel currentXFormPanel = (XFormPanel) ActionExecuter.getElementPanelById(param.id());
 
 		if (currentXFormPanel != null) {
+			Options options = new Options();
+			String defaultSelectedDataWidth = options.getSelectedDataWidth();
+			if (param.dataWidth() != null) {
+				options.dataWidth(param.dataWidth());
+			}
+			if (param.dataHeight() != null) {
+				options.dataHeight(param.dataHeight());
+			}
+			if (param.selectedDataWidth() != null) {
+				options.selectedDataWidth(param.selectedDataWidth());
+			}
+			if (param.visibleRecordCount() != null) {
+				options.visibleRecordCount(Integer.valueOf(param.visibleRecordCount()));
+			}
+
 			BaseSelectorComponent c;
 			if (isMultiSelector) {
+				if (param.dataWidth() == null) {
+					options.dataWidth(defaultSelectedDataWidth);
+				}
+
 				JavaScriptObject initSelection;
 				if (param.needInitSelection()) {
 					initSelection = getInitSelection(param.xpathRoot(), param.xpathMapping());
@@ -374,9 +425,11 @@ public final class XFormPanelCallbacksEvents {
 
 				c =
 					new MultiSelectorComponent(currentXFormPanel.getSelSrv(),
-							param.windowCaption(), initSelection);
+							param.windowCaption(), initSelection, options);
 			} else {
-				c = new SelectorComponent(currentXFormPanel.getSelSrv(), param.windowCaption());
+				c =
+					new SelectorComponent(currentXFormPanel.getSelSrv(), param.windowCaption(),
+							options);
 			}
 			c.setSelectorListener(new BaseSelectorComponent.SelectorListener() {
 				@Override

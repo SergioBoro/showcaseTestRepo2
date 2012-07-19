@@ -82,7 +82,10 @@
 					<xf:load
 						resource="javascript:showSelector({
 			           id : 'xformId',
-                       procListAndCount  : '[dbo].[regions_list_and_count]',
+                       dataWidth           : '600px',
+                       dataHeight          : '450px', 
+                       visibleRecordCount  : '25',                     
+                       procListAndCount    : '[dbo].[regions_list_and_count]',
                        generalFilters      : ['XPath(/schema/info/name)'],
                        currentValue        : 'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)',
                        windowCaption       : 'Выберите название',
@@ -93,17 +96,20 @@
                                               'XPath(/schema/info[index(quot(securityRealEstateRow))]/city2)': 
                                               null
                                              }
-                       });;" />
+                       });" />
 				</xf:action>
 			</xf:trigger>
 			
 		    <xf:selector 
-		        buttonLabel       = "New (Tag), Selector, 1 процедура"  
-		        procListAndCount  = "'[dbo].[regions_list_and_count]'"  
-		        generalFilters    = "['XPath(/schema/info/name)']"
-		        currentValue      = "'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)'"
-		        windowCaption     = "'Выберите название'"
-		        xpathMapping      = "{'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)' : 'name', 'XPath(/schema/info[index(quot(securityRealEstateRow))]/city2)' : null}"
+		        buttonLabel        = "New (Tag), Selector, 1 процедура"
+                dataWidth          = "'600px'"
+                dataHeight         = "'450px'"
+                visibleRecordCount = "'25'"
+		        procListAndCount   = "'[dbo].[regions_list_and_count]'"  
+		        generalFilters     = "['XPath(/schema/info/name)']"
+		        currentValue       = "'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)'"
+		        windowCaption      = "'Выберите название'"
+		        xpathMapping       = "{'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)' : 'name', 'XPath(/schema/info[index(quot(securityRealEstateRow))]/city2)' : null}"
 		    />			
 			
 
@@ -187,6 +193,10 @@
 					<xf:load
 						resource="javascript:showMultiSelector({
 			           id : 'xformId',
+                       dataWidth           : '600px',
+                       dataHeight          : '450px',
+                       selectedDataWidth   : '500px',
+                       visibleRecordCount  : '25',                       
                        procListAndCount    : '[dbo].[regions_list_and_count]',
                        generalFilters      : [ 
                                               'XPath(instance(quot(myInstance))/infos/info[3]/name4)',  
@@ -206,7 +216,11 @@
 			</xf:trigger>
 			
 		    <xf:multiselector 
-		        buttonLabel       = "New (Tag), MultiSelector, 1 процедура"  
+		        buttonLabel       = "New (Tag), MultiSelector, 1 процедура"
+                dataWidth         = "'600px'"
+                dataHeight        = "'450px'"
+                selectedDataWidth = "'500px'"
+                visibleRecordCount = "'25'"                
 		        procListAndCount  = "'[dbo].[regions_list_and_count]'"  
 		        generalFilters    = "['XPath(instance(quot(myInstance))/infos/info[3]/name4)', 'XPath(instance(quot(myInstance))/infos/info[3]/name4/@id)']"
 		        currentValue      = "''"
