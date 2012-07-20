@@ -145,8 +145,6 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 	public final void refreshPanel() {
 
 		if (isFirstLoading()) {
-			localContext = null;
-
 			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
 		} else {
 			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
@@ -157,6 +155,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		}
 
 		if (isFirstLoading() || isNeedResetLocalContext()) {
+			localContext = null;
 			setFirstLoading(true);
 			setDataGridPanel();
 		} else {
