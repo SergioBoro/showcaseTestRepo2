@@ -74,6 +74,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		isFirstLoading = aIsFirstLoading;
 	}
 
+	private final List<String> expandedIds = new ArrayList<String>();
+
 	/**
 	 * Ф-ция, возвращающая панель с гридом.
 	 * 
@@ -117,8 +119,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		setElementInfo(element);
 		setFirstLoading(true);
 
-		p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-		setDataGridPanel();
+		refreshPanel();
 	}
 
 	@Override
@@ -137,26 +138,41 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 	public void reDrawPanelExt(final CompositeContext context, final Grid grid1) {
 		setContext(context);
 
-		if (isFirstLoading()) {
-			localContext = null;
-
-			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-
-			setDataGridPanel();
-		} else {
-			refreshPanel();
-		}
+		refreshPanel();
 	}
 
 	@Override
 	public final void refreshPanel() {
-		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
-		if (this.getElementInfo().getShowLoadingMessage()) {
-			p.clear();
+
+		if (isFirstLoading()) {
+			localContext = null;
+
 			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+		} else {
+			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+			if (this.getElementInfo().getShowLoadingMessage()) {
+				p.clear();
+				p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			}
 		}
-		setFirstLoading(true);
-		setDataGridPanel();
+
+		if (isFirstLoading() || isNeedResetLocalContext()) {
+			setFirstLoading(true);
+			setDataGridPanel();
+		} else {
+			expandedIds.clear();
+			List<TreeGridModel> models = grid.getStore().getAll();
+			for (TreeGridModel old : models) {
+				if (grid.isExpanded(old)) {
+					expandedIds.add(old.getId());
+				}
+			}
+
+			setFirstLoading(false);
+			grid.getTreeLoader().load();
+
+		}
+
 	}
 
 	private void setDataGridPanel() {
@@ -283,16 +299,30 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 
 									if (loadConfig == null) {
 										gridExtradataLevel0 = tgd.getLiveGridExtradata();
-
-										resetSelection();
-										afterUpdateGrid();
 									} else {
-										gridExtradataLevel0
-												.getEventManager()
-												.getEvents()
-												.addAll(tgd.getLiveGridExtradata()
-														.getEventManager().getEvents());
+										boolean needAdd;
+										for (ru.curs.showcase.app.api.grid.GridEvent ev : tgd
+												.getLiveGridExtradata().getEventManager()
+												.getEvents()) {
+											needAdd = true;
+											for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridExtradataLevel0
+													.getEventManager().getEvents()) {
+												if (ev.getId1().equals(evOld.getId1())
+														&& ev.getId2().equals(evOld.getId2())
+														&& (ev.getInteractionType() == evOld
+																.getInteractionType())) {
+													needAdd = false;
+													break;
+												}
+											}
+											if (needAdd) {
+												gridExtradataLevel0.getEventManager().getEvents()
+														.add(ev);
+											}
+										}
 									}
+
+									afterUpdateGrid();
 								}
 							});
 				}
@@ -315,7 +345,6 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				@Override
 				public void applySort(boolean suppressEvent) {
 					if (!suppressEvent) {
-						gridExtradataLevel0.getEventManager().getEvents().clear();
 						fireEvent(new StoreSortEvent<TreeGridModel>());
 						loader.load();
 					}
@@ -595,13 +624,17 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 	 */
 
 	private void afterUpdateGrid() {
-		if (!isFirstLoading) {
-			return;
-		}
 
-		// if (grid.getStore().getAll().size() == 0) {
-		// return;
-		// }
+		if (isFirstLoading) {
+			resetSelection();
+		} else {
+			for (String id : expandedIds) {
+				TreeGridModel tgm = grid.getStore().findModelWithKey(id);
+				if (tgm != null) {
+					grid.setExpanded(tgm, true);
+				}
+			}
+		}
 
 		Cell selected = getStoredRecordId();
 		if (selectionModel instanceof CellSelectionModel) {
@@ -619,9 +652,13 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 			}
 		}
 
-		resetGridSettingsToCurrent();
+		if (isFirstLoading) {
+			resetGridSettingsToCurrent();
 
-		runAction(gridExtradataLevel0.getActionForDependentElements());
+			runAction(gridExtradataLevel0.getActionForDependentElements());
+		} else {
+			processClick(selected.recId, selected.colId, InteractionType.SINGLE_CLICK);
+		}
 
 		setFirstLoading(false);
 	}
