@@ -322,7 +322,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 										}
 									}
 
-									afterUpdateGrid();
+									afterUpdateGrid(loadConfig);
 								}
 							});
 				}
@@ -623,7 +623,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 	 * 
 	 */
 
-	private void afterUpdateGrid() {
+	private void afterUpdateGrid(final TreeGridModel loadConfig) {
 
 		if (isFirstLoading) {
 			resetSelection();
@@ -634,6 +634,11 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 					grid.setExpanded(tgm, true);
 				}
 			}
+
+			if ((loadConfig != null) && (expandedIds.indexOf(loadConfig) == -1)) {
+				expandedIds.clear();
+			}
+
 		}
 
 		Cell selected = getStoredRecordId();
