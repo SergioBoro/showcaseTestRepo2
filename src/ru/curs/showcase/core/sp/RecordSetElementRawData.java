@@ -179,16 +179,27 @@ public class RecordSetElementRawData extends ElementRawData implements Closeable
 	}
 
 	private ResultSet getResultSetAccordingToSQLServerType() throws SQLException {
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+		switch (ConnectionFactory.getSQLServerType()) {
+		case MSSQL:
 			return nextResultSet();
-		} else {
+		case POSTGRESQL:
 			CallableStatement cs = (CallableStatement) getStatement();
+			if (cs.getObject(1) instanceof ResultSet) {
+				return (ResultSet) cs.getObject(1);
+			} else {
+				return null;
+			}
+		case ORACLE:
+			cs = (CallableStatement) getStatement();
 			try {
 				return (ResultSet) cs.getObject(1);
 			} catch (SQLException e) {
 				return (ResultSet) cs.getObject(cs.getParameterMetaData().getParameterCount());
 			}
+		default:
+			return null;
 		}
+
 	}
 
 	private InputStream fillXmlDSForGrid(final RowSet rowset) {

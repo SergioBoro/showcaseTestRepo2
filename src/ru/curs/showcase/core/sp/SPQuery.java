@@ -281,12 +281,15 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 			return;
 		}
 		if (errorCode != 0) {
-			String errMess;
-			try {
-				errMess = getStatement().getString(getErrorMesIndex(templateIndex));
-			} catch (SQLException e) {
-				errMess = "";
+			String errMess = "";
+			if (getErrorMesIndex(templateIndex) != ERROR_MES_INDEX) {
+				try {
+					errMess = getStatement().getString(getErrorMesIndex(templateIndex));
+				} catch (SQLException e) {
+					errMess = "";
+				}
 			}
+
 			UserMessageFactory factory = new UserMessageFactory();
 			throw new ValidateException(factory.build(errorCode, errMess));
 		}
