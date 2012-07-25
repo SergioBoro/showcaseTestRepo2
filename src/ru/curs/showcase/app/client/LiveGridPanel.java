@@ -117,8 +117,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		setElementInfo(element);
 		setFirstLoading(true);
 
-		p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-		setDataGridPanel();
+		refreshPanel();
 	}
 
 	@Override
@@ -137,26 +136,31 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	public void reDrawPanelExt(final CompositeContext context, final Grid grid1) {
 		setContext(context);
 
-		if (isFirstLoading()) {
-			localContext = null;
-
-			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-
-			setDataGridPanel();
-		} else {
-			refreshPanel();
-		}
+		refreshPanel();
 	}
 
 	@Override
 	public final void refreshPanel() {
-		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
-		if (this.getElementInfo().getShowLoadingMessage()) {
-			p.clear();
+
+		if (isFirstLoading()) {
 			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+		} else {
+			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
+			if (this.getElementInfo().getShowLoadingMessage()) {
+				p.clear();
+				p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			}
 		}
-		setFirstLoading(true);
-		setDataGridPanel();
+
+		if (isFirstLoading() || isNeedResetLocalContext()) {
+			localContext = null;
+			setFirstLoading(true);
+			setDataGridPanel();
+		} else {
+			setFirstLoading(false);
+			grid.getLoader().load();
+		}
+
 	}
 
 	private void setDataGridPanel() {
@@ -253,7 +257,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 									callback.onSuccess(result);
 
 									gridExtradata = result.getLiveGridExtradata();
-									resetSelection();
+
 									afterUpdateGrid();
 								}
 							});
@@ -564,13 +568,10 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	 */
 
 	private void afterUpdateGrid() {
-		if (!isFirstLoading) {
-			return;
-		}
 
-		// if (grid.getStore().getAll().size() == 0) {
-		// return;
-		// }
+		if (isFirstLoading) {
+			resetSelection();
+		}
 
 		Cell selected = getStoredRecordId();
 		if (selectionModel instanceof CellSelectionModel) {
@@ -588,9 +589,13 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			}
 		}
 
-		resetGridSettingsToCurrent();
+		if (isFirstLoading) {
+			resetGridSettingsToCurrent();
 
-		runAction(gridExtradata.getActionForDependentElements());
+			runAction(gridExtradata.getActionForDependentElements());
+		} else {
+			processClick(selected.recId, selected.colId, InteractionType.SINGLE_CLICK);
+		}
 
 		setFirstLoading(false);
 	}
