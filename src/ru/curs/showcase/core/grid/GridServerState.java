@@ -46,14 +46,30 @@ public class GridServerState implements SerializableElement {
 	private Boolean autoSelectRelativeRecord = true;
 
 	/**
-	 * Высота грида. В настоящий момент имеет смысл только для LiveGrid.
+	 * Ширина грида. В настоящий момент имеет смысл только для LiveGrid,
+	 * TreeGrid.
+	 */
+	private String gridWidth = null;
+
+	/**
+	 * Высота грида. В настоящий момент имеет смысл только для LiveGrid,
+	 * TreeGrid.
 	 */
 	private Integer gridHeight = null;
 
 	/**
-	 * Высота строки грида. В настоящий момент имеет смысл только для LiveGrid.
+	 * Высота строки грида. В настоящий момент имеет смысл только для LiveGrid,
+	 * TreeGrid.
 	 */
 	private Integer rowHeight = null;
+
+	public String getGridWidth() {
+		return gridWidth;
+	}
+
+	public void setGridWidth(final String aGridWidth) {
+		gridWidth = aGridWidth;
+	}
 
 	public Integer getGridHeight() {
 		return gridHeight;

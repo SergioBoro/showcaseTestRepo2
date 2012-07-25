@@ -16,6 +16,7 @@ import ru.curs.showcase.app.client.utils.DownloadHelper;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.*;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.safecss.shared.SafeStylesUtils;
 import com.google.gwt.safehtml.shared.*;
 import com.google.gwt.user.client.Timer;
@@ -479,10 +480,17 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			con.add(footerBar, new VerticalLayoutData(1, -1));
 		}
 
-		FramedPanel cpGrid = new FramedPanel();
+		final FramedPanel cpGrid = new FramedPanel();
+		cpGrid.addResizeHandler(new ResizeHandler() {
+			@Override
+			public void onResize(ResizeEvent event) {
+				cpGrid.setWidth(event.getWidth() + "px");
+			}
+		});
 		cpGrid.setCollapsible(true);
 		cpGrid.setHeadingText(gridMetadata.getHeader());
-		grid.setWidth("10%");
+		cpGrid.setWidth(gridMetadata.getUISettings().getGridWidth());
+		// grid.setWidth("100%");
 		grid.setHeight(gridMetadata.getUISettings().getGridHeight());
 		cpGrid.setWidget(con);
 

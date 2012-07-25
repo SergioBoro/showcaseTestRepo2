@@ -70,6 +70,7 @@ public class GridFactory extends CompBasedElementFactory {
 	private static final String AUTO_SELECT_REC_TAG = "autoSelectRecordId";
 	private static final String AUTO_SELECT_COL_TAG = "autoSelectColumnId";
 	private static final String AUTO_SELECT_RELATIVE = "autoSelectRelativeRecord";
+	private static final String GRID_WIDTH_TAG = "gridWidth";
 	private static final String GRID_HEIGHT_TAG = "gridHeight";
 	private static final String ROW_HEIGHT_TAG = "rowHeight";
 	private static final String PRECISION_TAG = "precision";
@@ -77,6 +78,7 @@ public class GridFactory extends CompBasedElementFactory {
 
 	private ProfileReader gridProps = null;
 
+	private static final String GRID_WIDTH_DEF_VALUE = "95%";
 	private static final int GRID_HEIGHT_DEF_VALUE = 400;
 	private static final int ROW_HEIGHT_DEF_VALUE = 20;
 
@@ -338,6 +340,10 @@ public class GridFactory extends CompBasedElementFactory {
 			if (attrs.getIndex(AUTO_SELECT_COL_TAG) > -1) {
 				serverState().setAutoSelectColumnId(attrs.getValue(AUTO_SELECT_COL_TAG));
 			}
+			serverState().setGridWidth(GRID_WIDTH_DEF_VALUE);
+			if (attrs.getIndex(GRID_WIDTH_TAG) > -1) {
+				serverState().setGridWidth(attrs.getValue(GRID_WIDTH_TAG));
+			}
 			serverState().setGridHeight(GRID_HEIGHT_DEF_VALUE);
 			if (attrs.getIndex(GRID_HEIGHT_TAG) > -1) {
 				value = attrs.getValue(GRID_HEIGHT_TAG);
@@ -431,6 +437,7 @@ public class GridFactory extends CompBasedElementFactory {
 	}
 
 	private void loadLiveGridUISettings() {
+		getResult().getUISettings().setGridWidth(serverState.getGridWidth());
 		getResult().getUISettings().setGridHeight(serverState.getGridHeight());
 		getResult().getUISettings().setRowHeight(serverState.getRowHeight());
 	}
