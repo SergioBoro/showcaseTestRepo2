@@ -67,7 +67,7 @@
 <path>/Showcase/WebContent/WEB-INF/lib/gquery-dnd-bundle-1.0.4.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/gson-1.7.1.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/gwt-servlet.jar</path>
-<path>/Showcase/WebContent/WEB-INF/lib/gxt-3.0.0.jar</path>
+<path>/Showcase/WebContent/WEB-INF/lib/gxt-3.0.0b.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/ha-api.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/icu4j.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/janino.jar</path>
