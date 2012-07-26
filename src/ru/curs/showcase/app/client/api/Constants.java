@@ -81,9 +81,6 @@ public final class Constants {
 	public static final String GRID_IMAGE_COPY_TO_CLIPBOARD =
 		"resources/internal/CopyToClipboard.png";
 
-	public static final String TREE_GRID_IMAGE_LEAF_NODE =
-		"resources/internal/TreeGridLeafNode.png";
-
 	public static final String ARROW_FOR_DISCLOSURE_PANEL_CLOSE_IMAGE =
 		"resources/internal/arrow_for_disclosure_panel_close.png";
 	public static final String ARROW_FOR_DISCLOSURE_PANEL_OPEN_IMAGE =

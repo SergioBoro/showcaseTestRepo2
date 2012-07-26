@@ -14,6 +14,7 @@ encoding//userdatas/default/gridproperties/default.properties=UTF-8
 encoding//userdatas/default/gridproperties/default.template.properties=UTF-8
 encoding//userdatas/default/gridproperties/gridbal.test.properties=UTF-8
 encoding//userdatas/default/gridproperties/sngl_before_dbl.properties=UTF-8
+encoding//userdatas/default/gridproperties/treegrid.icons.properties=UTF-8
 encoding//userdatas/default/scripts/jython/AbstractJythonProc.py=utf-8
 encoding//userdatas/default/scripts/jython/NoValidateJythonProc.py=utf-8
 encoding//userdatas/default/scripts/jython/SAXJythonProc.py=utf-8

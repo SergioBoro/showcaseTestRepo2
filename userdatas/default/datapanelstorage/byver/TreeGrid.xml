@@ -9,6 +9,10 @@
 <!--         refreshByTimer="true" refreshInterval="5" 		 -->
 		<element id="105" type="webtext" proc="webtext_filter_and_add" hideOnLoad="true" />
 	</tab>
+	<tab id="15" name="Картинки на ноды">
+		<element id="152" type="GRID"  subtype="EXT_TREE_GRID" proc="exttreegrid_geo_icons"/>
+		<element id="155" type="webtext" proc="webtext_filter_and_add" hideOnLoad="true" />
+	</tab>
 	<tab id="2" name="Начало">
 		<element id="2" type="GRID"  subtype="EXT_TREE_GRID" proc="exttreegrid_bal"/>  
 		<element id="5" type="webtext" proc="webtext_filter_and_add" hideOnLoad="true" />

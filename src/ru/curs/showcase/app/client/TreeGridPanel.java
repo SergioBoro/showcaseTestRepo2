@@ -436,9 +436,33 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		grid.setLoadMask(true);
 		grid.setBorders(true);
 		grid.setHideHeaders(!gridMetadata.getUISettings().isVisibleColumnsHeader());
-		grid.getStyle().setLeafIcon(
-				IconHelper.getImageResource(
-						UriUtils.fromSafeConstant(Constants.TREE_GRID_IMAGE_LEAF_NODE), 16, 16));
+
+		String url;
+		url = gridMetadata.getUISettings().getUrlIconNodeClose();
+		if (url != null) {
+			grid.getStyle().setNodeCloseIcon(
+					IconHelper.getImageResource(UriUtils.fromSafeConstant(url), 16, 16));
+		}
+		url = gridMetadata.getUISettings().getUrlIconNodeOpen();
+		if (url != null) {
+			grid.getStyle().setNodeOpenIcon(
+					IconHelper.getImageResource(UriUtils.fromSafeConstant(url), 16, 16));
+		}
+		url = gridMetadata.getUISettings().getUrlIconJointClose();
+		if (url != null) {
+			grid.getStyle().setJointCloseIcon(
+					IconHelper.getImageResource(UriUtils.fromSafeConstant(url), 16, 16));
+		}
+		url = gridMetadata.getUISettings().getUrlIconJointOpen();
+		if (url != null) {
+			grid.getStyle().setJointOpenIcon(
+					IconHelper.getImageResource(UriUtils.fromSafeConstant(url), 16, 16));
+		}
+		url = gridMetadata.getUISettings().getUrlIconLeaf();
+		if (url != null) {
+			grid.getStyle().setLeafIcon(
+					IconHelper.getImageResource(UriUtils.fromSafeConstant(url), 16, 16));
+		}
 
 		// ---------------------------
 

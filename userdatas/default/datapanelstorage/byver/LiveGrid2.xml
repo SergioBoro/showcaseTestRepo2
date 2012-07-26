@@ -9,10 +9,10 @@
 		<element id="0102" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_special_profile"/>
 	</tab>
 	<tab id="3" name="Грид - различные типы столбцов">
-		<element id="00101" type="grid" subtype="EXT_LIVE_GRID" proc="grid_col_types">
+		<element id="00101" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_col_types">
 		</element>	
 		<element id="00102" type="grid" subtype="EXT_LIVE_GRID" proc="grid_col_types_data">
-			<proc id="p010201" name="grid_col_types_md" type="METADATA"/>
+			<proc id="p010201" name="extlivegrid_col_types_md" type="METADATA"/>
 		</element>							
 	</tab>
 	<tab id="4" name="Настройки GridHeight, RowHeight">

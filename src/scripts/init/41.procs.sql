@@ -3773,7 +3773,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                                 
                             </datapanel>
                         </action>
-<properties flip="false" pagesize="50" autoSelectRecordId="9"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>' 
+<properties flip="false" pagesize="50"  gridWidth="55%"  autoSelectRecordId="9"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO
@@ -3846,7 +3846,7 @@ set @gridsettings_str='<gridsettings>
                                 </element>                                                                                                   
                             </datapanel>
                         </action>
-<properties flip="false" pagesize="100" autoSelectRecordId="36"  autoSelectRelativeRecord="false" totalCount="'+
+<properties flip="false" pagesize="100"  gridWidth="700px"  autoSelectRecordId="36"  autoSelectRelativeRecord="false" totalCount="'+
 CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
 set  @settings=CAST(@gridsettings_str as xml)
 
@@ -3975,7 +3975,7 @@ set @gridsettings_str='<gridsettings>
                                 </element>                                                                                                   
                             </datapanel>
                         </action>
-<properties flip="false" pagesize="100" autoSelectRecordId="36"  autoSelectRelativeRecord="false" totalCount="'+
+<properties flip="false" pagesize="100"  gridWidth="700px"  autoSelectRecordId="36"  autoSelectRelativeRecord="false" totalCount="'+
 CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
 set  @gridsettings=CAST(@gridsettings_str as xml)
 END
@@ -4221,7 +4221,7 @@ select     @gridsettings_str=@gridsettings_str+'<col id="'+#Columns_Name.Col_Id+
 set @gridsettings_str=@gridsettings_str+'</columns>
 							
 
-<properties flip="true" pagesize="50"  selectMode = "row" autoSelectRelativeRecord="false" totalCount="10"/></gridsettings>' 
+<properties flip="true" pagesize="50"  gridWidth="1000px" selectMode = "row" autoSelectRelativeRecord="false" totalCount="10"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 
 END
@@ -4528,7 +4528,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
 ' 
 set @gridsettings_str=@gridsettings_str+'
 
- <properties flip="false"  selectMode="cell" totalCount="0" autoSelectRecordId = "5" autoSelectRelativeRecord="false"/>
+ <properties flip="false"  gridWidth="1000px" selectMode="cell" totalCount="0" autoSelectRecordId = "5" autoSelectRelativeRecord="false"/>
 </gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
@@ -17677,7 +17677,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                                 
                             </datapanel>
                         </action>
-<properties pagesize="50" totalCount="0"/></gridsettings>' 
+<properties pagesize="50"  gridWidth="1000px" totalCount="0"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO
@@ -17926,7 +17926,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                                 
                             </datapanel>
                         </action>
-<properties pagesize="50" gridHeight="700" rowHeight="120" totalCount="0"/></gridsettings>' 
+<properties pagesize="50"  gridWidth="1000px"  gridHeight="700" rowHeight="120" totalCount="0"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO
@@ -18180,7 +18180,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                                 
                             </datapanel>
                         </action>
-<properties flip="false" pagesize="50" totalCount="0"/></gridsettings>' 
+<properties flip="false" pagesize="50"  gridWidth="750px"  totalCount="0"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO
@@ -18434,7 +18434,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                                 
                             </datapanel>
                         </action>
-<properties flip="false" pagesize="50" profile="special.properties" totalCount="0"/></gridsettings>' 
+<properties flip="false" pagesize="50"   gridWidth="750px"  profile="special.properties" totalCount="0"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO
@@ -18687,7 +18687,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                                 
                             </datapanel>
                         </action>
-<properties flip="false" pagesize="50" autoSelectRecordId="9" autoSelectRelativeRecord="false" autoSelectColumnId="4кв. 2005г." totalCount="0" profile="grid.nowidth.properties"/></gridsettings>' 
+<properties flip="false" pagesize="50"  gridWidth="55%"   autoSelectRecordId="9" autoSelectRelativeRecord="false" autoSelectColumnId="4кв. 2005г." totalCount="0" profile="grid.nowidth.properties"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO
@@ -19372,7 +19372,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
 ' 
 set @gridsettings_str=@gridsettings_str+'
 
- <properties flip="false" gridHeight="100" selectMode="cell" totalCount="0" autoSelectRecordId = "5" autoSelectRelativeRecord="false"/>
+ <properties flip="false" gridWidth="1000px" gridHeight="100" selectMode="cell" totalCount="0" autoSelectRecordId = "5" autoSelectRelativeRecord="false"/>
 </gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
@@ -19615,7 +19615,7 @@ select     @gridsettings_str=@gridsettings_str+'<col id="'+#Columns_Name.Col_Id+
 set @gridsettings_str=@gridsettings_str+'</columns>
 							
 
-<properties flip="true" pagesize="50"  selectMode = "row" autoSelectRelativeRecord="false" totalCount="10"/></gridsettings>' 
+<properties flip="true" pagesize="50" gridWidth="1000px"  selectMode = "row" autoSelectRelativeRecord="false" totalCount="10"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 
 END
@@ -19870,7 +19870,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                                 
                             </datapanel>
                         </action>
-<properties flip="false" pagesize="50" totalCount="0"/></gridsettings>' 
+<properties flip="false" pagesize="50" gridWidth="750px" totalCount="0"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO
@@ -20633,7 +20633,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                                 
                             </datapanel>
                         </action>
-<properties flip="false" pagesize="50" profile="special.properties" totalCount="0"/></gridsettings>' 
+<properties flip="false" pagesize="50" gridWidth="750px" profile="special.properties" totalCount="0"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO
@@ -26799,3 +26799,301 @@ set @settings_str=
 set	@geomapsettings=CAST(@settings_str as xml)
 END
 GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[exttreegrid_geo_icons]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',    
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+	@parent_id varchar(512) ='',        
+    @gridsettings xml output,
+    @error_mes varchar(512) output
+AS
+BEGIN
+SET NOCOUNT ON;
+
+declare @Sql varchar(8000);
+
+IF (@parent_id IS NULL) OR (LTrim(@parent_id) = '')
+BEGIN
+ set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo6_Id as "~~id", cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo6 where Id IS NOT NULL'
+END
+
+IF (select COUNT(*) from geo6 where geo6_Id = @parent_id) > 0
+BEGIN
+ set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo5_Id as "~~id", cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo5 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)' 
+END
+
+IF (select COUNT(*) from geo5 where geo5_Id = @parent_id) > 0
+BEGIN
+ set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo3 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)'  
+END
+
+IF (select COUNT(*) from geo3 where geo3_Id = @parent_id) > 0
+BEGIN
+ SET @error_mes = 'Вызов процедуры для города' 
+ RETURN 1
+END
+
+IF LTRIM(@sortcols)!=''
+BEGIN
+ set @Sql = @Sql+' '+@sortcols
+END
+
+EXEC(@Sql)
+
+
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Хедер tree-грида</h3></header>
+            <footer><h3 class="testStyle">Футер tree-грида</h3></footer>            
+        </labels>
+        <columns>
+			<col id="Название" width="200px"/>        
+			<col id="Код" width="50px"/>
+			<col id="Картинка" width="50px" type="IMAGE"/>
+        </columns>        
+						<action>
+							<main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+	                                <add_context>current</add_context>
+                                </element>                                                                   
+                            </datapanel>
+                        </action>
+         <properties flip="false" profile="treegrid.icons.properties" pagesize="50" gridWidth="500px" gridHeight="500" autoSelectRecordId="9"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>'         
+set @gridsettings=CAST(@gridsettings_str as xml)
+
+END
+GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[extlivegrid_col_types]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+	@gridsettings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+    
+    DECLARE @sql varchar(max)    
+	EXEC grid_col_types_getquery @sql = @sql OUTPUT
+	
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [_Id]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql = @sql + 'FROM [dbo].[Journal_41] ' + @orderby	
+    
+    EXEC(@sql)	    
+    
+DECLARE @gridsettings_str varchar(max)
+DECLARE @rec_count int
+SELECT @rec_count = COUNT(*) FROM [dbo].[Journal_41]
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Грид с различными типами столбцов</h3></header>
+        </labels>
+        <columns>
+        <col id="Сайт" type="LINK"/>
+        </columns>
+							<action>
+							<main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="d1"> 
+                                <add_context>add</add_context>  
+                                </element>
+                                <element id="d2">
+                                <add_context>add</add_context>  
+                                </element>                                                              
+                                <element id="d3">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d4">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d5">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d6">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d7">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d8">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d9">
+                                <add_context>add</add_context>  
+                                </element>                                                                
+                                <element id="d10"> 
+                                <add_context>add</add_context>  
+                                </element>                                                                                                   
+                            </datapanel>
+                        </action>
+<properties pagesize="50" gridWidth="750px"  gridHeight="250" profile="sngl_before_dbl.properties" totalCount="'+
+CAST(@rec_count as varchar(max))+'"/></gridsettings>' 
+
+set  @gridsettings=CAST(@gridsettings_str as xml)
+END
+GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[extlivegrid_col_types_md]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    	
+	@gridsettings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;    
+    
+DECLARE @gridsettings_str varchar(max)
+DECLARE @rec_count int
+SELECT @rec_count = COUNT(*) FROM [dbo].[Journal_41]
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Грид с различными типами столбцов</h3></header>
+        </labels>
+        <columns>
+        <col id="Сайт" type="LINK"/>
+        </columns>        
+							<action>
+							<main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="d1"> 
+                                <add_context>add</add_context>  
+                                </element>
+                                <element id="d2">
+                                <add_context>add</add_context>  
+                                </element>                                                              
+                                <element id="d3">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d4">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d5">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d6">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d7">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d8">
+                                <add_context>add</add_context>  
+                                </element>                                 
+                                <element id="d9">
+                                <add_context>add</add_context>  
+                                </element>                                                                
+                                <element id="d10"> 
+                                <add_context>add</add_context>  
+                                </element>                                                                                                   
+                            </datapanel>
+                        </action>
+<properties pagesize="50" gridWidth="750px" gridHeight="250"  profile="sngl_before_dbl.properties" totalCount="'+
+CAST(@rec_count as varchar(max))+'"/></gridsettings>' 
+
+set  @gridsettings=CAST(@gridsettings_str as xml)
+END
+GO
+

@@ -30,6 +30,14 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 
 	private static final String URL_IMAGE_FILE_DOWNLOAD = "resources/internal/fileDownload.PNG";
 
+	private static final String DEF_TREEGRID_ICON_NODECLOSE = "def.treegrid.icon.nodeclose";
+	private static final String DEF_TREEGRID_ICON_NODEOPEN = "def.treegrid.icon.nodeopen";
+	private static final String DEF_TREEGRID_ICON_JOINTCLOSE = "def.treegrid.icon.jointclose";
+	private static final String DEF_TREEGRID_ICON_JOINTOPEN = "def.treegrid.icon.jointopen";
+	private static final String DEF_TREEGRID_ICON_LEAF = "def.treegrid.icon.leaf";
+	public static final String DEFAULT_TREEGRID_ICON_LEAF =
+		"resources/internal/TreeGridLeafNode.png";
+
 	/**
 	 * Настройки грида.
 	 */
@@ -80,6 +88,7 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 			settings.setSingleClickBeforeDoubleClick(boolValue);
 		}
 		applyVisibilitySettings();
+		applyTreeGridNodeIcons();
 	}
 
 	private void applyVisibilitySettings() {
@@ -115,5 +124,49 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 		if (boolValue != null) {
 			settings.setVisibleColumnsHeader(boolValue);
 		}
+	}
+
+	private void applyTreeGridNodeIcons() {
+		String value = reader().getStringValue(DEF_TREEGRID_ICON_NODECLOSE);
+		if (value != null) {
+			value =
+				String.format("%s/%s",
+						UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR), value);
+		}
+		settings.setUrlIconNodeClose(value);
+
+		value = reader().getStringValue(DEF_TREEGRID_ICON_NODEOPEN);
+		if (value != null) {
+			value =
+				String.format("%s/%s",
+						UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR), value);
+		}
+		settings.setUrlIconNodeOpen(value);
+
+		value = reader().getStringValue(DEF_TREEGRID_ICON_JOINTCLOSE);
+		if (value != null) {
+			value =
+				String.format("%s/%s",
+						UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR), value);
+		}
+		settings.setUrlIconJointClose(value);
+
+		value = reader().getStringValue(DEF_TREEGRID_ICON_JOINTOPEN);
+		if (value != null) {
+			value =
+				String.format("%s/%s",
+						UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR), value);
+		}
+		settings.setUrlIconJointOpen(value);
+
+		value = reader().getStringValue(DEF_TREEGRID_ICON_LEAF);
+		if (value != null) {
+			value =
+				String.format("%s/%s",
+						UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR), value);
+		} else {
+			value = DEFAULT_TREEGRID_ICON_LEAF;
+		}
+		settings.setUrlIconLeaf(value);
 	}
 }
