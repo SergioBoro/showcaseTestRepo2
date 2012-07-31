@@ -314,8 +314,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 	public static Document modify(final Document aTemplate, final CompositeContext aCallContext,
 			final DataPanelElementInfo aElementInfo) {
-		Document result = addSrvInfo(aTemplate, aCallContext, aElementInfo);
-		result = generateSelectors(result);
+		// Document result = addSrvInfo(aTemplate, aCallContext, aElementInfo);
+		Document result = generateSelectors(aTemplate);
 		result = insertDataForSelectors(result);
 		result = generateUploaders(result, aElementInfo);
 		return result;
