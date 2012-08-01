@@ -321,6 +321,7 @@ public class XFormSLTest extends AbstractTest {
 		assertEquals(numParts, xforms.getXFormParts().size());
 	}
 
+	@Test
 	public void testSPTemplateGateway() {
 		XFormContext context = new XFormContext(getTestContext1());
 		DataPanelElementInfo elementInfo =

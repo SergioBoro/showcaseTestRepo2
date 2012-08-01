@@ -61,6 +61,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		return new XFormFactory(raw);
 	}
 
+	@Test
 	public void testDBTemplate() throws Exception {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo element = new DataPanelElementInfo("id", DataPanelElementType.XFORMS);
