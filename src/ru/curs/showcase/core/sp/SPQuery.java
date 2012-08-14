@@ -250,6 +250,15 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
 				if (!proc.toLowerCase().contains(POSTGRESQL_TEMP_SCHEMA)) {
 					proc = "\"" + proc + "\"";
+					proc = proc.replace(".", "\".\""); // строка, которая
+														// добавляет кавычки в
+														// выражение, где
+														// обозначается схема
+														// например
+														// "tasks.navigator"
+														// заменяется на
+														// "tasks"."navigator"
+
 				}
 			}
 			return String.format(getSqlTemplate(templateIndex), proc);
