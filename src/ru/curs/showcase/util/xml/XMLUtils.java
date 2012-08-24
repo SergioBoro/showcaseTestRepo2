@@ -169,7 +169,10 @@ public final class XMLUtils {
 		}
 		tr.setOutputProperty(OutputKeys.INDENT, "yes");
 		tr.setOutputProperty(OutputKeys.ENCODING, TextUtils.DEF_ENCODING);
-		tr.setOutputProperty(OutputKeys.METHOD, "xml");
+		// tr.setOutputProperty(OutputKeys.METHOD, "xml"); //Andrey
+		// закоментировал это свойство, так как при трансформации с out method =
+		// xml пустые тэги div были самозакрывающиеся, что не поддерживается в
+		// спецификации html
 	}
 
 	/**
