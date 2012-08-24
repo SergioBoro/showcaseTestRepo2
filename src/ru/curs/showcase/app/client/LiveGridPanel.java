@@ -487,6 +487,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 				cpGrid.setWidth(event.getWidth() + "px");
 			}
 		});
+		cpGrid.getElement().setZIndex(0);
 		cpGrid.setCollapsible(true);
 		cpGrid.setHeadingText(gridMetadata.getHeader());
 		cpGrid.setWidth(gridMetadata.getUISettings().getGridWidth());
