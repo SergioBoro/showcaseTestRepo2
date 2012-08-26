@@ -149,9 +149,11 @@ g.toSvg = function(mapId, exportType, gwtSuccessCallback, gwtFailureCallback) {
 g.exposeFunctions = function(numeric, jenks, colorbrewer, Legend) {
 	g.colorbrewer = {};
 	course.geo.composeStyle = numeric.composeStyle;
+	course.geo.composeSizeStyle = numeric.composeSizeStyle;
 	course.geo.getBreaks = jenks.getBreaks;
 	course.geo.colorbrewer.composeStyle = colorbrewer.composeStyle;
 	course.geo.getBreaksAreaLegend = Legend._getBreaksAreaLegend;
+	course.geo.getBreaksIconLegend = Legend._getBreaksIconLegend;
 }
 
 });
