@@ -393,6 +393,11 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				column.setColumnTextStyle(SafeStylesUtils.fromTrustedString(styleColumn));
 			}
 
+			if ((cs.getColumns().get(0) != null)
+					&& (cs.getColumns().get(0).getDisplayMode() != ColumnValueDisplayMode.SINGLELINE)) {
+				column.setColumnHeaderClassName("ext-grid-header-wrap");
+			}
+
 			if (egcc.getValueType() == GridValueType.DOWNLOAD) {
 				column.setColumnTextClassName(CommonStyles.get().inlineBlock());
 				column.setColumnTextStyle(SafeStylesUtils.fromTrustedString("padding: 1px 3px;"));
