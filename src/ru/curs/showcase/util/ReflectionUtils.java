@@ -2,9 +2,8 @@ package ru.curs.showcase.util;
 
 import java.io.*;
 import java.lang.reflect.*;
-import java.util.Map;
+import java.util.*;
 
-import net.sf.saxon.functions.Collection;
 import ru.curs.showcase.app.api.ExcludeFromSerialization;
 import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
 
