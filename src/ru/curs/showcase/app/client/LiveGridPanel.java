@@ -38,6 +38,7 @@ import com.sencha.gxt.widget.core.client.event.CellClickEvent.CellClickHandler;
 import com.sencha.gxt.widget.core.client.event.CellDoubleClickEvent.CellDoubleClickHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.*;
+import com.sencha.gxt.widget.core.client.tips.QuickTip;
 import com.sencha.gxt.widget.core.client.toolbar.*;
 
 /**
@@ -342,7 +343,10 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 					@Override
 					public void render(com.google.gwt.cell.client.Cell.Context context,
 							String value, SafeHtmlBuilder sb) {
-						sb.appendHtmlConstant(value);
+
+						// sb.appendHtmlConstant(value);
+						sb.appendHtmlConstant("<span qtip='" + value + "'>" + value + "</span>");
+
 					}
 				});
 			}
@@ -379,6 +383,8 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		grid.setLoadMask(true);
 		grid.setBorders(true);
 		grid.setHideHeaders(!gridMetadata.getUISettings().isVisibleColumnsHeader());
+
+		new QuickTip(grid); // чтобы работали хинты на ячейки
 
 		// ---------------------------
 
