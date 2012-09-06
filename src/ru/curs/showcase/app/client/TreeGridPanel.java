@@ -394,9 +394,16 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				column.setColumnTextStyle(SafeStylesUtils.fromTrustedString(styleColumn));
 			}
 
-			if ((cs.getColumns().get(0) != null)
-					&& (cs.getColumns().get(0).getDisplayMode() != ColumnValueDisplayMode.SINGLELINE)) {
-				column.setColumnHeaderClassName("ext-grid-header-wrap");
+			if (cs.getColumns().get(0) != null) {
+
+				String s = "";
+				if (cs.getColumns().get(0).getDisplayMode() != ColumnValueDisplayMode.SINGLELINE) {
+					s = "ext-grid-header-wrap";
+				}
+
+				s = s + " ext-grid-header";
+
+				column.setColumnHeaderClassName(s);
 			}
 
 			if (egcc.getValueType() == GridValueType.DOWNLOAD) {
