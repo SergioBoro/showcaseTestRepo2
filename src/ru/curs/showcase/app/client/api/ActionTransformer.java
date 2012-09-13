@@ -117,7 +117,7 @@ public class ActionTransformer {
 		if ((clone.getDataPanelActionType() == DataPanelActionType.REFRESH_TAB)
 				|| (clone.getDataPanelActionType() == DataPanelActionType.RELOAD_ELEMENTS)) {
 			if (!clone.isFiltered()) {
-				if (currentAction != null) {
+				if ((currentAction != null) && (currentAction.getContext() != null)) {
 					clone.filterBy(currentAction.getContext().getFilter());
 				}
 			}
