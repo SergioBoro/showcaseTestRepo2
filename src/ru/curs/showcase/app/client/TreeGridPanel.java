@@ -693,16 +693,18 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		}
 
 		Cell selected = getStoredRecordId();
+		int row = getRecordIndexById(selected.recId);
 		if (selectionModel instanceof CellSelectionModel) {
-			int row = getRecordIndexById(selected.recId);
 			int col = getColumnIndexById(selected.colId);
 			if ((row >= 0) && (col >= 0)) {
 				((CellSelectionModel<TreeGridModel>) selectionModel).selectCell(row, col);
+				grid.getTreeView().focusCell(row, col, true);
 			}
 		} else {
 			for (TreeGridModel lgm : grid.getStore().getAll()) {
 				if (lgm.getId().equals(selected.recId)) {
 					selectionModel.select(lgm, false);
+					grid.getTreeView().focusRow(row);
 					break;
 				}
 			}
