@@ -637,6 +637,27 @@ public final class XMLUtils {
 		return result;
 	}
 
+	/**
+	 * Функция, частично заменяющая служебные XML символы на обычные (кроме
+	 * двойных кавычек). Важное замечание: заменяются только XML, но не HTML
+	 * символы!
+	 * 
+	 * @param original
+	 *            - исходная строка.
+	 */
+	public static String xmlServiceSymbolsToNormalWithoutDoubleQuotes(final String original) {
+		if (original == null) {
+			return null;
+		}
+		String result = original;
+		result = result.replace("&amp;", "&");
+		// result = result.replace("&quot;", "\"");
+		result = result.replace("&apos;", "'");
+		result = result.replace("&lt;", "<");
+		result = result.replace("&gt;", ">");
+		return result;
+	}
+
 	public static Schema createSchemaForStream(final InputStream aData) throws SAXException {
 		SchemaFactory schemaFactory = createSchemaFactory();
 		return schemaFactory.newSchema(new StreamSource(aData));
