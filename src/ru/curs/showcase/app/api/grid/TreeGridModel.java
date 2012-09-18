@@ -13,6 +13,8 @@ public class TreeGridModel extends LiveGridModel {
 
 	private boolean hasChildren = false;
 
+	private boolean expandedByGrid = false;
+
 	public TreeGridModel() {
 		super();
 	}
@@ -23,6 +25,14 @@ public class TreeGridModel extends LiveGridModel {
 
 	public void setHasChildren(final boolean aHasChildren) {
 		hasChildren = aHasChildren;
+	}
+
+	public boolean isExpandedByGrid() {
+		return expandedByGrid;
+	}
+
+	public void setExpandedByGrid(final boolean aExpandedByGrid) {
+		expandedByGrid = aExpandedByGrid;
 	}
 
 }

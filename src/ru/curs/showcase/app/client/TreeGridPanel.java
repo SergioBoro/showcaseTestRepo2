@@ -217,6 +217,112 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 	}
 
 	// CHECKSTYLE:OFF
+	private synchronized void loadRecords(final TreeGridModel loadConfig,
+			final AsyncCallback<List<TreeGridModel>> callback) {
+
+		final GridContext gridContext = getDetailedContext();
+		gridContext.resetForReturnAllRecords();
+		gridContext.setParentId(null);
+		if (loadConfig != null) {
+			gridContext.setParentId(loadConfig.getId());
+		}
+
+		if (!grid.getTreeStore().getSortInfo().isEmpty()) {
+			ColumnConfig<TreeGridModel, ?> colConfig =
+				grid.getColumnModel()
+						.getColumn(
+								getColumnIndexByLiveId(grid.getTreeStore().getSortInfo().get(0)
+										.getPath()));
+			if (colConfig != null) {
+				Column colOriginal = null;
+				for (Column c : gridMetadata.getOriginalColumnSet().getColumns()) {
+					if (colConfig.getHeader().asString().equals(c.getId())) {
+						colOriginal = c;
+						break;
+					}
+				}
+				if (colOriginal != null) {
+					List<Column> sortOriginalCols = new ArrayList<Column>();
+
+					colOriginal.setSorting(Sorting.valueOf(grid.getTreeStore().getSortInfo()
+							.get(0).getDirection().name()));
+
+					sortOriginalCols.add(colOriginal);
+
+					gridContext.setSortedColumns(sortOriginalCols);
+				}
+			}
+		}
+
+		dataService.getTreeGridData(gridContext, getElementInfo(),
+				new AsyncCallback<List<TreeGridModel>>() {
+					@Override
+					public void onFailure(final Throwable caught) {
+						callback.onFailure(caught);
+					}
+
+					@Override
+					public void onSuccess(final List<TreeGridModel> result) {
+
+						if (gridContext.getParentId() != null) {
+							String id;
+							List<TreeGridModel> models = grid.getStore().getAll();
+							for (TreeGridModel res : result) {
+								id = res.getId();
+								if (id == null) {
+									continue;
+								}
+
+								for (TreeGridModel old : models) {
+									if (id.equals(old.getId())) {
+										MessageBox
+												.showSimpleMessage(
+														"Загрузка данных",
+														"Загружаемая запись с идентификатором "
+																+ res.getId()
+																+ " уже присутствует в гриде. Записи загружены не будут.");
+										return;
+									}
+								}
+							}
+						}
+
+						callback.onSuccess(result);
+
+						TreeGridData<TreeGridModel> tgd = (TreeGridData<TreeGridModel>) result;
+
+						if (loadConfig == null) {
+							gridExtradataLevel0 = tgd.getLiveGridExtradata();
+						} else {
+							boolean needAdd;
+							for (ru.curs.showcase.app.api.grid.GridEvent ev : tgd
+									.getLiveGridExtradata().getEventManager().getEvents()) {
+								needAdd = true;
+								for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridExtradataLevel0
+										.getEventManager().getEvents()) {
+									if (ev.getId1().equals(evOld.getId1())
+											&& ev.getId2().equals(evOld.getId2())
+											&& (ev.getInteractionType() == evOld
+													.getInteractionType())) {
+										needAdd = false;
+										break;
+									}
+								}
+								if (needAdd) {
+									gridExtradataLevel0.getEventManager().getEvents().add(ev);
+								}
+							}
+						}
+
+						afterUpdateGrid(loadConfig);
+					}
+				});
+
+	}
+
+	// CHECKSTYLE:ON
+
+	// CHECKSTYLE:OFF
 	private void updateGridFull() {
 
 		cs = gridMetadata.getOriginalColumnSet();
@@ -227,105 +333,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				public void load(final TreeGridModel loadConfig,
 						final AsyncCallback<List<TreeGridModel>> callback) {
 
-					final GridContext gridContext = getDetailedContext();
-					gridContext.resetForReturnAllRecords();
-					gridContext.setParentId(null);
-					if (loadConfig != null) {
-						gridContext.setParentId(loadConfig.getId());
-					}
+					loadRecords(loadConfig, callback);
 
-					if (!grid.getTreeStore().getSortInfo().isEmpty()) {
-						ColumnConfig<TreeGridModel, ?> colConfig =
-							grid.getColumnModel().getColumn(
-									getColumnIndexByLiveId(grid.getTreeStore().getSortInfo()
-											.get(0).getPath()));
-						if (colConfig != null) {
-							Column colOriginal = null;
-							for (Column c : gridMetadata.getOriginalColumnSet().getColumns()) {
-								if (colConfig.getHeader().asString().equals(c.getId())) {
-									colOriginal = c;
-									break;
-								}
-							}
-							if (colOriginal != null) {
-								List<Column> sortOriginalCols = new ArrayList<Column>();
-
-								colOriginal.setSorting(Sorting.valueOf(grid.getTreeStore()
-										.getSortInfo().get(0).getDirection().name()));
-
-								sortOriginalCols.add(colOriginal);
-
-								gridContext.setSortedColumns(sortOriginalCols);
-							}
-						}
-					}
-
-					dataService.getTreeGridData(gridContext, getElementInfo(),
-							new AsyncCallback<List<TreeGridModel>>() {
-								@Override
-								public void onFailure(Throwable caught) {
-									callback.onFailure(caught);
-								}
-
-								@Override
-								public void onSuccess(List<TreeGridModel> result) {
-
-									if (gridContext.getParentId() != null) {
-										String id;
-										List<TreeGridModel> models = grid.getStore().getAll();
-										for (TreeGridModel res : result) {
-											id = res.getId();
-											if (id == null) {
-												continue;
-											}
-
-											for (TreeGridModel old : models) {
-												if (id.equals(old.getId())) {
-													MessageBox
-															.showSimpleMessage(
-																	"Загрузка данных",
-																	"Загружаемая запись с идентификатором "
-																			+ res.getId()
-																			+ " уже присутствует в гриде. Записи загружены не будут.");
-													return;
-												}
-											}
-										}
-									}
-
-									callback.onSuccess(result);
-
-									TreeGridData<TreeGridModel> tgd =
-										(TreeGridData<TreeGridModel>) result;
-
-									if (loadConfig == null) {
-										gridExtradataLevel0 = tgd.getLiveGridExtradata();
-									} else {
-										boolean needAdd;
-										for (ru.curs.showcase.app.api.grid.GridEvent ev : tgd
-												.getLiveGridExtradata().getEventManager()
-												.getEvents()) {
-											needAdd = true;
-											for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridExtradataLevel0
-													.getEventManager().getEvents()) {
-												if (ev.getId1().equals(evOld.getId1())
-														&& ev.getId2().equals(evOld.getId2())
-														&& (ev.getInteractionType() == evOld
-																.getInteractionType())) {
-													needAdd = false;
-													break;
-												}
-											}
-											if (needAdd) {
-												gridExtradataLevel0.getEventManager().getEvents()
-														.add(ev);
-											}
-										}
-									}
-
-									afterUpdateGrid(loadConfig);
-								}
-							});
 				}
 			};
 
@@ -674,52 +683,77 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 	 * 
 	 */
 
+	// CHECKSTYLE:OFF
 	private void afterUpdateGrid(final TreeGridModel loadConfig) {
 
 		if (isFirstLoading) {
 			resetSelection();
-		} else {
-			for (String id : expandedIds) {
-				TreeGridModel tgm = grid.getStore().findModelWithKey(id);
-				if (tgm != null) {
-					grid.setExpanded(tgm, true);
+
+			Cell selected = getStoredRecordId();
+			int row = getRecordIndexById(selected.recId);
+			if (selectionModel instanceof CellSelectionModel) {
+				int col = getColumnIndexById(selected.colId);
+				if ((row >= 0) && (col >= 0)) {
+					((CellSelectionModel<TreeGridModel>) selectionModel).selectCell(row, col);
+					grid.getTreeView().focusCell(row, col, true);
+				}
+			} else {
+				for (TreeGridModel lgm : grid.getStore().getAll()) {
+					if (lgm.getId().equals(selected.recId)) {
+						selectionModel.select(lgm, false);
+						grid.getTreeView().focusRow(row);
+						break;
+					}
 				}
 			}
 
-			if ((loadConfig != null) && (expandedIds.indexOf(loadConfig) == -1)) {
-				expandedIds.clear();
-			}
-
-		}
-
-		Cell selected = getStoredRecordId();
-		int row = getRecordIndexById(selected.recId);
-		if (selectionModel instanceof CellSelectionModel) {
-			int col = getColumnIndexById(selected.colId);
-			if ((row >= 0) && (col >= 0)) {
-				((CellSelectionModel<TreeGridModel>) selectionModel).selectCell(row, col);
-				grid.getTreeView().focusCell(row, col, true);
-			}
-		} else {
-			for (TreeGridModel lgm : grid.getStore().getAll()) {
-				if (lgm.getId().equals(selected.recId)) {
-					selectionModel.select(lgm, false);
-					grid.getTreeView().focusRow(row);
-					break;
-				}
-			}
-		}
-
-		if (isFirstLoading) {
 			resetGridSettingsToCurrent();
 
 			runAction(gridExtradataLevel0.getActionForDependentElements());
+
+			setFirstLoading(false);
+
 		} else {
-			processClick(selected.recId, selected.colId, InteractionType.SINGLE_CLICK);
+
+			if ((loadConfig == null) || loadConfig.isExpandedByGrid()) {
+
+				for (String id : expandedIds) {
+					TreeGridModel tgm = grid.getStore().findModelWithKey(id);
+					if ((tgm != null) && (!grid.isExpanded(tgm))) {
+						tgm.setExpandedByGrid(true);
+						grid.setExpanded(tgm, true);
+					}
+				}
+
+				Cell selected = getStoredRecordId();
+				int row = getRecordIndexById(selected.recId);
+				if (selectionModel instanceof CellSelectionModel) {
+					int col = getColumnIndexById(selected.colId);
+					if ((row >= 0) && (col >= 0)) {
+						((CellSelectionModel<TreeGridModel>) selectionModel).selectCell(row, col);
+						grid.getTreeView().focusCell(row, col, true);
+					}
+				} else {
+					for (TreeGridModel lgm : grid.getStore().getAll()) {
+						if (lgm.getId().equals(selected.recId)) {
+							selectionModel.select(lgm, false);
+							grid.getTreeView().focusRow(row);
+							break;
+						}
+					}
+				}
+
+				processClick(selected.recId, selected.colId, InteractionType.SINGLE_CLICK);
+			}
+
+			if (loadConfig != null) {
+				loadConfig.setExpandedByGrid(false);
+			}
 		}
 
-		setFirstLoading(false);
 	}
+
+	// CHECKSTYLE:ON
 
 	private int getRecordIndexById(final String recId) {
 		int index = -1;
