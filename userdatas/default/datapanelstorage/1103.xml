@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datapanel>	
-	<tab id="06" name="XForms. Календарь">
+	<tab id="6" name="XForms. Календарь">
 		<element id="61" type="xforms" template="dateButton_card_template.xml"
 			proc="xforms_date">
 			<proc id="proc1" name="xforms_date_save" type="SAVE" />
