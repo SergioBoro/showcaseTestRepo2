@@ -25,7 +25,7 @@
 			<calendar.month10>Ноябрь</calendar.month10>
 			<calendar.month11>Декабрь</calendar.month11>
 			<format.date>dd.MM.yyyy</format.date>
-			<format.datetime>dd.MM.yyyy hh:mm</format.datetime>
+			<format.datetime>dd.MM.yyyy hh:mm:ss</format.datetime>
 			<format.decimal>,</format.decimal>
 			<status>... Загрузка ...</status>
 		</properties>

@@ -340,7 +340,12 @@
 			
         </div>
         <div style="clear: both;">
+<!--
             <xf:output ref="'Выбран тип статьи баланса ' + /schema/info/name  "/>
+-->
+            <xf:output value="'Выбран тип статьи баланса '"/> 
+            <xf:output value="/schema/info/name"/>  
+            
         </div>
         
 

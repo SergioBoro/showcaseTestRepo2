@@ -208,8 +208,12 @@ xmlns:xf="http://www.w3.org/2002/xforms">
             <xf:textarea ref="/schema/info/comment" />
         </div>
         <div style="clear: both;">
-            <xf:output
-                ref="'Уважаемый ' + /schema/info/name                              + '! Ваш рост:' + /schema/info/growth                              + ', ваш цвет глаз:' + /schema/info/eyescolour                             + ', ваш музыкальные предпочения:' + /schema/info/music" />
+        
+             <xf:output value="'Уважаемый '"/> 
+             <xf:output value="/schema/info/name"/>  
+             <xf:output value="'! Ваш рост: '"/>
+             <xf:output value="/schema/info/growth"/>
+                 
         </div>
         <div>
 

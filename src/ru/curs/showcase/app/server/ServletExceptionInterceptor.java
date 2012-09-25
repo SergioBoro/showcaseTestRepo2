@@ -8,6 +8,7 @@ import javax.servlet.http.*;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.*;
 
+import ru.curs.showcase.app.api.BrowserType;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.util.ServletUtils;
 import ru.curs.showcase.util.exception.BaseException;
@@ -46,6 +47,16 @@ public final class ServletExceptionInterceptor {
 		if (!(exc instanceof GeneralException) && !(exc instanceof BaseException)) {
 			LOGGER.error(ERROR_MES, exc);
 		}
-		ServletUtils.fillErrorResponce(response, exc.getLocalizedMessage());
+
+		String mess = exc.getLocalizedMessage();
+
+		String userAgent = ServletUtils.getUserAgent(request);
+		BrowserType browserType = BrowserType.detect(userAgent);
+		if ((browserType == BrowserType.CHROME) || (browserType == BrowserType.FIREFOX)
+				|| (browserType == BrowserType.IE)) {
+			mess = "<root>" + mess + "</root>";
+		}
+
+		ServletUtils.fillErrorResponce(response, mess);
 	}
 }

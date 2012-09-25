@@ -200,12 +200,14 @@ public final class ActionExecuter {
 			if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
 				BasicElementPanel bep = getElementPanelById(dpe.getId());
 
-				bep.showPanel();
+				if (bep != null) {
+					bep.showPanel();
 
-				boolean keepElementSettings = bep.getElementInfo().getKeepUserSettings(ac);
+					boolean keepElementSettings = bep.getElementInfo().getKeepUserSettings(ac);
 
-				bep.setNeedResetLocalContext(!keepElementSettings);
-				bep.reDrawPanel(bep.getElementInfo().getContext(ac));
+					bep.setNeedResetLocalContext(!keepElementSettings);
+					bep.reDrawPanel(bep.getElementInfo().getContext(ac));
+				}
 			}
 		}
 	}
@@ -274,7 +276,7 @@ public final class ActionExecuter {
 		for (DataPanelElementInfo dpe : dpt.getElements()) {
 			if (!dpe.getNeverShowInPanel()) {
 				BasicElementPanel bep = getElementPanelById(dpe.getId());
-				if (bep instanceof XFormPanel) {
+				if ((bep != null) && (bep instanceof XFormPanel)) {
 					bep.setNeedResetLocalContext(false);
 					bep.showPanel();
 					((XFormPanel) bep).reDrawAfterModalWindowShown(bep.getElementInfo()

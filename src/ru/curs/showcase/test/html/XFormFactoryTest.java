@@ -74,7 +74,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		XForm xform = factory.build();
 
 		assertNotNull(xform);
-		final int num = 4;
+		final int num = 6;
 		assertEquals(num, xform.getXFormParts().size());
 	}
 
@@ -90,9 +90,10 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		XFormFactory factory = new XFormFactory(raw);
 		XForm result = factory.build();
 
+		final int index = 4;
 		assertTrue(result
 				.getXFormParts()
-				.get(2)
+				.get(index)
 				.indexOf(
 						String.format("%s/%s?%s=%s&", ExchangeConstants.SECURED_SERVLET_PREFIX,
 								ExchangeConstants.SUBMIT_SERVLET,

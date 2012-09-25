@@ -41,10 +41,14 @@ public final class XFormCutter {
 	 */
 	public static List<String> xFormParts(final String xFormHTML) throws TransformerException,
 			XMLStreamException, IOException {
+
+		// переход на новую версию XForms
+		String xFormHTML2 = xFormHTML.replace("xmlns=\"\"", "");
+
 		BodyFilter saxParser = new BodyFilter();
 		Transformer tr = XSLTransformerPoolFactory.getInstance().acquire();
 		try {
-			tr.transform(new StreamSource(new StringReader(xFormHTML)), new SAXResult(saxParser));
+			tr.transform(new StreamSource(new StringReader(xFormHTML2)), new SAXResult(saxParser));
 		} finally {
 			XSLTransformerPoolFactory.getInstance().release(tr);
 		}

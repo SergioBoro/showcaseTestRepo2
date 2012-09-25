@@ -86,7 +86,7 @@
                        dataHeight          : '450px', 
                        visibleRecordCount  : '25',                     
                        procListAndCount    : '[dbo].[regions_list_and_count]',
-                       generalFilters      : ['XPath(/schema/info/name)'],
+                       generalFilters      : ['XPath(instance(quot(myInstance))/infos/info/@id)'],
                        currentValue        : 'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)',
                        windowCaption       : 'Выберите название',
                        xpathMapping        : {
@@ -106,7 +106,7 @@
                 dataHeight         = "'450px'"
                 visibleRecordCount = "'25'"
 		        procListAndCount   = "'[dbo].[regions_list_and_count]'"  
-		        generalFilters     = "['XPath(/schema/info/name)']"
+		        generalFilters     = "['XPath(instance(quot(myInstance))/infos/info/name)']"
 		        currentValue       = "'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)'"
 		        windowCaption      = "'Выберите название'"
 		        xpathMapping       = "{'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)' : 'name', 'XPath(/schema/info[index(quot(securityRealEstateRow))]/city2)' : null}"
@@ -140,11 +140,14 @@
 				</xf:action>
 			</xf:trigger>
 			
+<!--
+-->
+			
 		    <xf:selector 
 		        buttonLabel       = "New (Tag), Selector, 2 процедуры"  
 		        procCount         = "'[dbo].[regionscount]'"  
-		        procList          = "'[dbo].[regionslist]'"		        
-		        generalFilters    = " ['фильтры','XPath(/schema/info/name)',]"
+		        procList          = "'[dbo].[regionslist]'"
+                generalFilters    = " ['фильтры','XPath(/schema/info/name)',]"
 		        windowCaption     = "'Выберите название'"
 		        xpathMapping      = "{'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)' : 'name', 'XPath(/schema/info[index(quot(securityRealEstateRow))]/city2)' : 'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)'}"
 		    />			
@@ -268,8 +271,17 @@
 		</div>
 <hr/>
 		<div style="clear: both;">
+		
+<!--
 			<xf:output
 				ref="'Город 1: ' + /schema/info/city1 + ' Город 2: ' + /schema/info/city2" />
+-->		
+				
+			<xf:output value="'Город 1: '"/> 
+			<xf:output value="/schema/info/city1"/>
+ 			<xf:output value="' Город 2: '"/>
+			<xf:output value="/schema/info/city2"/>
+ 				
 		</div>
 		
 <hr/>		

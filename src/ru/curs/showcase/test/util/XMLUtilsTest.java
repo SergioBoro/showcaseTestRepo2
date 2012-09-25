@@ -319,7 +319,7 @@ public class XMLUtilsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void testDocumentToString() {
 		Document doc = XMLUtils.createEmptyDoc("test");
-		assertEquals(TEST_DOC, XMLUtils.documentToString(doc));
+		assertEquals(TEST_DOC, XMLUtils.documentToString(doc).trim());
 		doc = null;
 		assertNull(XMLUtils.documentToString(doc));
 	}

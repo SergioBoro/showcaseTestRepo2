@@ -81,9 +81,9 @@ public class XFormSLTest extends AbstractTest {
 	protected void checkForEmptyMainInstance(final XForm xform) {
 		assertNotNull(xform.getXFormParts());
 		final String controlWord =
-			"new XFInstance(\"mainInstance\",xf_model_0,null,"
-					+ "'<schema><info><name/><growth/><eyescolour/><music/><comment/></info></schema>');";
-		assertTrue(xform.getXFormParts().get(2).contains(controlWord));
+			"'<schema><info><name/><growth/><eyescolour/><music/><comment/></info></schema>');";
+		final int index = 4;
+		assertTrue(xform.getXFormParts().get(index).contains(controlWord));
 	}
 
 	@Test
@@ -317,7 +317,7 @@ public class XFormSLTest extends AbstractTest {
 
 		assertNotNull(xforms);
 		assertNotNull(xforms.getXFormParts());
-		final int numParts = 4;
+		final int numParts = 6;
 		assertEquals(numParts, xforms.getXFormParts().size());
 	}
 
@@ -334,7 +334,7 @@ public class XFormSLTest extends AbstractTest {
 
 		assertNotNull(xforms);
 		assertNotNull(xforms.getXFormParts());
-		final int numParts = 4;
+		final int numParts = 6;
 		assertEquals(numParts, xforms.getXFormParts().size());
 	}
 
@@ -386,6 +386,8 @@ public class XFormSLTest extends AbstractTest {
 
 	@Test
 	public void keepUserSettingsShouldControlPersistenceOfXFormData() {
+		final int index = 4;
+
 		XFormContext xcontext = new XFormContext(getTestContext1());
 		xcontext.setKeepUserSettings(true);
 		DataPanelElementInfo element = getTestXForms1Info();
@@ -394,9 +396,9 @@ public class XFormSLTest extends AbstractTest {
 		XForm xforms = command.execute();
 
 		final String controlWord =
-			"new XFInstance(\"mainInstance\",xf_model_0,null,"
-					+ "'<schema><info><name/><growth/><eyescolour>Зеленый</eyescolour><music/><comment/></info></schema>');";
-		assertFalse(xforms.getXFormParts().get(2).contains(controlWord));
+
+			"'<schema><info><name/><growth/><eyescolour>Зеленый</eyescolour><music/><comment/></info></schema>');";
+		assertFalse(xforms.getXFormParts().get(index).contains(controlWord));
 
 		xcontext = new XFormContext(getTestContext1());
 		xcontext.setKeepUserSettings(true);
@@ -408,7 +410,7 @@ public class XFormSLTest extends AbstractTest {
 		command = new XFormGetCommand(xcontext, element);
 		xforms = command.execute();
 
-		assertTrue(xforms.getXFormParts().get(2).contains(controlWord));
+		assertTrue(xforms.getXFormParts().get(index).contains(controlWord));
 
 		xcontext = new XFormContext(getTestContext1());
 		xcontext.setKeepUserSettings(false);
@@ -417,6 +419,6 @@ public class XFormSLTest extends AbstractTest {
 		command = new XFormGetCommand(xcontext, element);
 		xforms = command.execute();
 
-		assertFalse(xforms.getXFormParts().get(2).contains(controlWord));
+		assertFalse(xforms.getXFormParts().get(index).contains(controlWord));
 	}
 }

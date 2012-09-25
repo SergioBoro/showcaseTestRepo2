@@ -264,8 +264,14 @@
 		</div>
 <hr/>
 		<div style="clear: both;">
+<!--
 			<xf:output
 				ref="'Город 1: ' + /schema/info/city1 + ' Город 2: ' + /schema/info/city2" />
+-->		
+            <xf:output value="'Город 1: '"/> 				
+            <xf:output value="/schema/info/city1"/>
+            <xf:output value="' Город 2: '"/>
+            <xf:output value="/schema/info/city2"/>            
 		</div>
 		
 <hr/>		

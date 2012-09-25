@@ -269,7 +269,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 * Инициализирует X-форму, запуская инструментующий javascript.
 	 */
 	private static native void initForm() /*-{
-		$wnd.init();
+		$wnd.xsltforms_init();
 	}-*/;
 
 	/**
@@ -313,6 +313,10 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 		//Подчищаем
 		ss1 = $doc.getElementById('xf-model-config');
+		if (ss1 != null)
+			hdr.removeChild(ss1);
+
+		ss1 = $doc.getElementById('xsltforms-mainform-model-config');
 		if (ss1 != null)
 			hdr.removeChild(ss1);
 

@@ -20,7 +20,9 @@
 %>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--
 	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
+-->	
 	<title><%=title%></title>
     <link rel="stylesheet" href="xsltforms/xsltforms.css" type="text/css" />	
 	<link rel="shortcut icon" href="solutions/<%=userdataId%>/resources/favicon.ico" type="image/x-icon" />

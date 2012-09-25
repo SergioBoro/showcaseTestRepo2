@@ -173,8 +173,12 @@
 			<xf:textarea ref="/schema/info/comment" />
 		</div>
 		<div style="clear: both;">
+<!--
 			<xf:output
 				ref="'Выбраны значения: регион ' + /schema/info/name                              +  ', цвет глаз:' + /schema/info/eyescolour                             + ',  музыкальные предпочения:' + /schema/info/music" />
+-->			
+            <xf:output value="'Выбраны значения: регион '"/> 
+            <xf:output value="/schema/info/name"/>  
 		</div>
 		<div>
 

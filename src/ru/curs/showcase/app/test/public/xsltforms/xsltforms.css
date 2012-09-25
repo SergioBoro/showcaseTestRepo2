@@ -1,10 +1,10 @@
-/*
+/* Rev. 555
 
-Copyright (C) 2008-2009 <agenceXML> - Alain COUTHURES
-Contact at : <info@agencexml.com>
+Copyright (C) 2008-2012 agenceXML - Alain COUTHURES
+Contact at : xsltforms@agencexml.com
 
 Copyright (C) 2006 AJAXForms S.L.
-Contact at: <info@ajaxforms.com>
+Contact at: info@ajaxforms.com
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -68,6 +68,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 .calendar .title input {
 	width				: 4em;
+	-moz-box-sizing		: border-box;
+	box-sizing			: border-box;
 	background			: #f8f8f8;
 }
 
@@ -77,6 +79,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 .calendar tfoot input {
 	width				: 2em;
+	-moz-box-sizing		: border-box;
+	box-sizing			: border-box;
 	text-align			: center;
 	background			: #f0f0f0;
 }
@@ -93,6 +97,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 .calendar .day {
 	width				: 2em;
+	-moz-box-sizing		: border-box;
+	box-sizing			: border-box;
 	text-align			: right;
 	padding				: 2px 4px 2px 2px;
 }
@@ -125,6 +131,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	padding				: 0;
 	margin				: 0;
 	width				: 55px;
+	-moz-box-sizing		: border-box;
+	box-sizing			: border-box;
 }
 
 .calendarList li {
@@ -142,7 +150,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 }
 	
 		
-#console {
+#xsltforms_console {
 	font-size			: 0.8em;
 	color				: #888888;
 	border-top			: thin solid #888888;
@@ -162,6 +170,8 @@ div.xforms-dialog {
 	border-right		: 3px solid black;
 	padding				: 10px;
 	z-index				: 10;
+	-moz-box-sizing		: border-box;
+	box-sizing			: border-box;
 }
 
 #xforms-dialog-surround {
@@ -186,15 +196,21 @@ body {
 }
 	
 		
-span.xforms-alert, span.xforms-help, span.xforms-hint {
+span.xforms-required-icon, span.xforms-alert, span.xforms-help, span.xforms-hint {
 	vertical-align		: top;
 }
 
 .xforms-required-icon {
     display				: none;
+    color				: red;
 }
 
-div.xforms-help-value, div.xforms-alert-value, div.xforms-hint-value { 
+.xforms-required .xforms-required-icon {
+    display				: inline;
+    margin-left			: 3px;
+}
+
+span.xforms-help-value, span.xforms-alert-value, span.xforms-hint-value { 
 	display				: none;
 	background-color	: #ffffee;
 	position			: absolute;
@@ -204,6 +220,9 @@ div.xforms-help-value, div.xforms-alert-value, div.xforms-hint-value {
 	margin-top			: 16px;
 	margin-left			: -16px;
 	padding				: 5px;
+	-moz-box-sizing		: border-box;
+	-webkit-box-sizing	: border-box;
+	box-sizing			: border-box;
 }
 
 span.xforms-alert {
@@ -214,15 +233,17 @@ span.xforms-alert {
 	display				: inline;
 }
 
-div.xforms-alert-value {
+span.xforms-alert-value {
 	background-color	: #ffeeee;
 }
 
 span.xforms-alert-icon, span.xforms-help-icon, span.xforms-hint-icon {
-	cursor				: default; /*(Roman) default cursor*/  
+	cursor				: help;
 	padding-left		: 16px;
 	padding-bottom		: 1px;
 	width				: 16px;
+	-moz-box-sizing		: border-box;
+	box-sizing			: border-box;
 }
 
 span.xforms-alert-icon {
@@ -236,9 +257,9 @@ span.xforms-help-icon {
 }
 
 span.xforms-hint-icon {
-	background-image	: url(icon_hint.gif);
+	background-image	: url(icon_hint.gif); 
 	background-repeat : no-repeat;
-}	
+}
 
 span.focus {
 	display:none;
@@ -250,8 +271,29 @@ span.xforms-message {
 }
 	
 		
+.xsltforms-range-rail {
+	width: 200px;
+	height: 4px;
+	border: 1px solid #999999;
+	position: relative;
+	margin: 6px 15px 0px 10px;
+	display: inline-block;
+}
+	
+.xsltforms-range-cursor {
+	margin: 0px;
+	margin-top: -8px;
+	margin-left: -5px;
+	width: 17px; 
+	height: 17px;
+	position: absolute;
+	background-image:url('ball.png');
+	outline-style: none;
+}
+	
+		
 .xforms-readonly input, .xforms-readonly textarea, .xforms-readonly select, .xforms-readonly option {
-	background-color	: #cecece;
+	background-color	: #f8f8f8;
 	color				: #333333;
 }
 	
@@ -268,19 +310,35 @@ div#statusPanel {
 	text-align			: center;
 	background-color	: #eeeeee;
 	opacity				: 0.85;
+	filter				: alpha(opacity=85);
 	border				: 1px solid black;
 	font				: bold 20px Arial, Verdana;
 	z-index				: 11;
+	-moz-box-sizing		: border-box;
+	box-sizing			: border-box;
 }
 	
 		
 .xforms-trigger a, .xforms-trigger a:link, .xforms-trigger a:hover, .xforms-trigger a:visited {
-	text-decoration				: none;
-	color 													: #000000;
+	text-decoration: none;
+	color: #000000;
+	border: none !important;
+	cursor: pointer;
+}
+
+.xforms-label img{
+	border: none !important;
 }
 
 img.xforms-value {
-	border : 0;
+	border: 0;
+}
+
+.ajx-tabs-list, .ajx-tabs-list a:link, .ajx-tabs-list a:hover, .ajx-tabs-list a:visited {
+	text-decoration: none;
+	color: #000000;
+	border: none !important;
+	cursor: pointer;
 }
 	
 	

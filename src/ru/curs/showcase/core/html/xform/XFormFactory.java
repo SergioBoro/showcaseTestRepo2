@@ -8,13 +8,13 @@ import javax.xml.transform.TransformerException;
 
 import org.slf4j.*;
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
+import org.xml.sax.*;
 
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.html.XForm;
 import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -56,7 +56,21 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 		DataFile<InputStream> data =
 			selector.getGateway().getRawData(getCallContext(), getElementInfo());
 		try {
-			template = db.parse(data.getData());
+			// Было
+			// template = db.parse(data.getData());
+
+			// Переход на новую версию XForms. Begin
+			String templ = TextUtils.streamToString(data.getData(), data.getEncoding());
+			templ = UserDataUtils.replaceVariables(templ);
+			StringReader reader = new StringReader(templ);
+			try {
+				InputSource inputSource = new InputSource(reader);
+				template = db.parse(inputSource);
+			} finally {
+				reader.close();
+			}
+			// Переход на новую версию XForms. End
+
 		} catch (SAXException | IOException e1) {
 			throw new XMLFormatException(getElementInfo().getTemplateName(), e1);
 		}

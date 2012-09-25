@@ -39,7 +39,9 @@ public class ElementPartsDBGateway implements ElementPartsGateway {
 
 		try (RecordSetElementRawData data = gateway.getRawData(aContext, aElementInfo)) {
 			data.prepareSettings();
-			return new DataFile<InputStream>(data.getSettings(), sourceName);
+			DataFile<InputStream> df = new DataFile<InputStream>(data.getSettings(), sourceName);
+			df.setEncoding(TextUtils.JDBC_ENCODING);
+			return df;
 		}
 	}
 

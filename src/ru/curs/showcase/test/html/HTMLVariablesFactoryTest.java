@@ -35,6 +35,7 @@ public class HTMLVariablesFactoryTest extends AbstractTestWithDefaultUserData {
 		HTMLBasedElementRawData raw = gateway.getRawData(context, element);
 		XFormFactory factory = new XFormFactory(raw);
 		XForm xforms = factory.build();
-		assertTrue(xforms.getXFormParts().get(2).indexOf("?userdata=default") > -1);
+		final int ind = 4;
+		assertTrue(xforms.getXFormParts().get(ind).indexOf("?userdata=default") > -1);
 	}
 }

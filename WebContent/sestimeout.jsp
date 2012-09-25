@@ -8,7 +8,9 @@ pageEncoding="UTF-8"%>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--
 	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
+-->	
 	<title>Пользовательская сессия Showcase закрыта</title>
 	<link rel="shortcut icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />

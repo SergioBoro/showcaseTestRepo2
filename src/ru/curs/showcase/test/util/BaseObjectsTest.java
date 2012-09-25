@@ -63,7 +63,7 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 
 	private void checkForDP(final String data) {
 		assertTrue(data.startsWith("<" + GeneralXMLHelper.DP_TAG));
-		assertTrue(data.endsWith("</" + GeneralXMLHelper.DP_TAG + ">"));
+		assertTrue(data.trim().endsWith("</" + GeneralXMLHelper.DP_TAG + ">"));
 	}
 
 	/**

@@ -20,10 +20,12 @@ class simple_submission(JythonProc):
 
 def mainproc():
     return u'''
+<!--
 <?xml version="1.0" encoding="UTF-8"?>
+-->    
 <schema>
    <info>
-      <name>Борис</name>
+      <name>Николай</name>
       <growth/>
       <eyescolour/>
       <music>Классическая Эстрадная</music>

@@ -40,6 +40,20 @@ public final class TextUtils {
 	 * @throws IOException
 	 */
 	public static String streamToString(final InputStream is) throws IOException {
+		return streamToString(is, DEF_ENCODING);
+	}
+
+	/**
+	 * Преобразует InputStream в кодировке encoding в строку. Может
+	 * использоваться при работе с Gateway классами и\или при отладке.
+	 * 
+	 * @param is
+	 *            - InputStream
+	 * @return - строка с содержимым InputStream.
+	 * @throws IOException
+	 */
+	public static String streamToString(final InputStream is, final String encoding)
+			throws IOException {
 		if (is == null) {
 			return "";
 		}
@@ -47,7 +61,7 @@ public final class TextUtils {
 		Writer writer = new StringWriter();
 		final int bufMaxLen = 4096;
 		char[] buffer = new char[bufMaxLen];
-		try (Reader reader = new BufferedReader(new InputStreamReader(is, DEF_ENCODING))) {
+		try (Reader reader = new BufferedReader(new InputStreamReader(is, encoding))) {
 			int n;
 			while ((n = reader.read(buffer)) != -1) {
 				writer.write(buffer, 0, n);

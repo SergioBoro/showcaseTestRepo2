@@ -139,13 +139,19 @@
 			<xf:textarea ref="/schema/info/comment" />
 		</div>
 		<div style="clear: both;">
+<!--
 			<xf:output
 				ref="'Выбраны значения: регион ' + /schema/info/name                              +  ', цвет глаз:' + /schema/info/eyescolour                             + ',  музыкальные предпочения:' + /schema/info/music" />
+-->
+            <xf:output value="'Выбраны значения: регион '"/> 
+            <xf:output value="/schema/info/name"/>  
+				
 		</div>
 		<div>
 <h1>userdata.dir=${userdata.dir}</h1>
 <h1>images.in.grid.dir=${images.in.grid.dir}</h1>
 <h2>elementId=${elementId}</h2>
+
 <img src="${images.in.grid.dir}/header.jpg"/>
 
 
