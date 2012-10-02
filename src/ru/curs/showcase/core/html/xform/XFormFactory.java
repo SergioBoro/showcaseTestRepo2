@@ -61,6 +61,7 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 
 			// Переход на новую версию XForms. Begin
 			String templ = TextUtils.streamToString(data.getData(), data.getEncoding());
+			templ = TextUtils.removeUTF8BOM(templ);
 			templ = UserDataUtils.replaceVariables(templ);
 			StringReader reader = new StringReader(templ);
 			try {

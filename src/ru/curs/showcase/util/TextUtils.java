@@ -26,6 +26,8 @@ public final class TextUtils {
 	 */
 	public static final String JDBC_ENCODING = "UTF-16";
 
+	public static final String UTF8_BOM = "\uFEFF";
+
 	private TextUtils() {
 		throw new UnsupportedOperationException();
 	}
@@ -68,6 +70,14 @@ public final class TextUtils {
 			}
 		}
 		return writer.toString();
+	}
+
+	public static String removeUTF8BOM(final String in) {
+		String s = in;
+		if (s.startsWith(UTF8_BOM)) {
+			s = s.substring(1);
+		}
+		return s;
 	}
 
 	/**
