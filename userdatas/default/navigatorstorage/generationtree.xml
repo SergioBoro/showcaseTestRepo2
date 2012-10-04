@@ -169,6 +169,13 @@
           </datapanel>
         </action>
       </level2>
+      <level2 id="XForms" name="XForms" selectOnLoad="true">
+        <action>
+          <main_context>jython_save_data.xml</main_context>
+          <datapanel type="byver/XForms.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
       <level2 id="208" name="2.0.8">
         <action>
           <main_context>jython_save_data.xml</main_context>
@@ -204,7 +211,7 @@
           </datapanel>
         </action>
       </level2>
-      <level2 id="222" name="2.2.2" selectOnLoad="true">
+      <level2 id="222" name="2.2.2">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
           <datapanel type="byver/222.xml" tab="firstOrCurrent" >          

@@ -33,6 +33,8 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 
 	private static final String COLUMN_NAME = "NAME";
 
+	private static final String POSTGRESQL_TEMP_SCHEMA = "pg_temp";
+
 	private static final int NUM1 = 1;
 	private static final int NUM2 = 2;
 	private static final int NUM3 = 3;
@@ -73,6 +75,12 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 				if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
 					procCount = "\"" + procCount + "\"";
 					procList = "\"" + procList + "\"";
+					if (!procCount.toLowerCase().contains(POSTGRESQL_TEMP_SCHEMA)) {
+						procCount = procCount.replace(".", "\".\"");
+					}
+					if (!procList.toLowerCase().contains(POSTGRESQL_TEMP_SCHEMA)) {
+						procList = procList.replace(".", "\".\"");
+					}
 				}
 
 				getDataByTwoProc(req, procCount, procList, ds);
@@ -80,6 +88,9 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 				String procList = req.getProcName();
 				if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
 					procList = "\"" + procList + "\"";
+					if (!procList.toLowerCase().contains(POSTGRESQL_TEMP_SCHEMA)) {
+						procList = procList.replace(".", "\".\"");
+					}
 				}
 				getDataByOneProc(req, procList, ds);
 			}
