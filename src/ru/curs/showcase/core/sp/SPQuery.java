@@ -218,7 +218,12 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 		if (sql.trim().isEmpty()) {
 			throw new SettingsFileOpenException(fileName, SettingsFileType.SQLSCRIPT);
 		}
-		sql = String.format(sql, procName);
+
+		String proc = procName;
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
+			proc = proc.substring(proc.indexOf(".") + 1);
+		}
+		sql = String.format(sql, proc);
 
 		try {
 			setStatement(conn.prepareCall(sql));
