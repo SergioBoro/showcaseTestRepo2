@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="xsltforms/xsltforms.xsl" type="text/xsl"?>
+<?xsltforms-options debug="yes"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:xf="http://www.w3.org/2002/xforms" 
+      xmlns:ev="http://www.w3.org/2001/xml-events" 
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<head>
+		<title>Writers (Subforms)</title>
+		<xf:model id="mainModel">
+			<xf:instance id="mainInstance">
+				<schema xmlns="">			
+					<writers>
+						<writer firstname="Albert" lastname="Camus" selected="false">
+							<book year="1938" title="Caligula"/>
+							<book year="1942" title="L'étranger"/>
+							<book year="1947" title="La peste"/>
+							<book year="1951" title="L'homme révolté"/>
+						</writer>
+					</writers>
+				</schema>				
+			</xf:instance>
+		</xf:model>
+	</head>
+	<body>
+		<h3>Writers (Subforms)</h3>
+		
+		<xf:repeat nodeset="/schema/writers/writer" appearance="compact">
+			<p>
+				<xf:output ref="@firstname"/>&#160;<xf:output ref="@lastname"/>&#160;
+				<xf:trigger>
+					<xf:label><xf:output value="choose(@selected != 'true','Show','Hide')"/> Books</xf:label>
+					<xf:action ev:event="DOMActivate">
+					
+						<xf:load if="@selected != 'true'" show="embed" targetid="subform" resource="solutions/default/xforms/books2.xml"/>
+						<xf:unload if="@selected = 'true'" targetid="subform"/>
+						<xf:setvalue ref="@selected" value=". != 'true'"/>
+						
+					</xf:action>
+				</xf:trigger>
+				
+
+				<xf:group id="subform"/>
+				
+
+			</p>
+		</xf:repeat>
+		
+	</body>
+</html>

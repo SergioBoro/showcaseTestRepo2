@@ -6,14 +6,30 @@
 		<element id="6" type="webtext" transform="bal.xsl" />
 	</tab>
 	
+	
+	
+	
+	<tab id="53" name="Пример">
+		<element id="503" type="xforms" template="writers2.xml"
+			proc="xforms_proc_no_data">
+		</element>
+		<element id="803" type="webtext" proc="webtext_3buttons"/>		
+    	<element id="50303" type="webtext" proc="webtext_variables" />
+	</tab>
+	
+	
+	
+	
 	<tab id="51" name="Подформы">
 		<element id="501" type="xforms" template="writers.xml"
 			proc="xforms_proc_no_data">
 		</element>
-		
     	<element id="50301" type="webtext" proc="webtext_variables" />
-    	
 	</tab>
+	
+
+	
+	
 	
 	<tab id="8" name="Карточка">
 	
