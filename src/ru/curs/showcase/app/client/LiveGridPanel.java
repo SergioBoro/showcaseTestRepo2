@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.grid.Grid;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
-import ru.curs.showcase.app.client.utils.DownloadHelper;
+import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.*;
@@ -57,6 +57,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL), 16, 16));
 	private final TextButton copyToClipboard = new TextButton("", IconHelper.getImageResource(
 			UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
+	private final MessagePopup mp = new MessagePopup(Constants.GRID_MESSAGE_POPUP_EXPORT_TO_EXCEL);
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
 	private com.sencha.gxt.widget.core.client.grid.Grid<LiveGridModel> grid = null;
 	private GridSelectionModel<LiveGridModel> selectionModel = null;
@@ -440,7 +441,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(SelectEvent event) {
-					exportToExcel(GridToExcelExportType.CURRENTPAGE);
+					exportToExcel(exportToExcelCurrentPage, GridToExcelExportType.CURRENTPAGE);
 				}
 			});
 			buttonBar.add(exportToExcelCurrentPage);
@@ -450,7 +451,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			exportToExcelAll.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(SelectEvent event) {
-					exportToExcel(GridToExcelExportType.ALL);
+					exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
 				}
 			});
 			buttonBar.add(exportToExcelAll);
@@ -786,7 +787,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	 * @param exportType
 	 *            GridToExcelExportType
 	 */
-	public void exportToExcel(final GridToExcelExportType exportType) {
+	public void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
 
 		if (grid.getStore().getAll().size() == 0) {
 			MessageBox.showSimpleMessage("Экспорт в Excel",
@@ -810,7 +811,11 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 			dh.submit();
 
+			mp.hide();
+			mp.show(wFrom);
+
 		} catch (SerializationException e) {
+			mp.hide();
 			MessageBox
 					.showSimpleMessage(Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL, e.getMessage());
 		}

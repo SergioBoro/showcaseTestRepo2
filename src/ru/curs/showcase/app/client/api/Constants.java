@@ -74,6 +74,10 @@ public final class Constants {
 	public static final String GRID_CAPTION_EXPORT_TO_EXCEL_ALL = "Экспорт в Excel всей таблицы";
 	public static final String GRID_CAPTION_COPY_TO_CLIPBOARD = "Копировать в буфер обмена";
 
+	public static final String GRID_MESSAGE_POPUP_EXPORT_TO_EXCEL =
+		"Начат экспорт в Excel. Это может занять несколько минут. Кликните сюда, чтобы скрыть сообщение";
+	public static final int GRID_MESSAGE_POPUP_EXPORT_TO_EXCEL_DELAY = 3000;
+
 	public static final String GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE =
 		"resources/internal/ExportToExcelCurrentPage.png";
 	public static final String GRID_IMAGE_EXPORT_TO_EXCEL_ALL =

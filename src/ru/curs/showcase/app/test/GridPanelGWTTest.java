@@ -318,8 +318,8 @@ public class GridPanelGWTTest extends GWTTestCase {
 		GridPanel dgp = createGridPanelForTests2();
 		assertNotNull(dgp);
 
-		dgp.exportToExcel(GridToExcelExportType.CURRENTPAGE);
-		dgp.exportToExcel(GridToExcelExportType.ALL);
+		dgp.exportToExcel(dgp.getExportToExcelCurrentPage(), GridToExcelExportType.CURRENTPAGE);
+		dgp.exportToExcel(dgp.getExportToExcelAll(), GridToExcelExportType.ALL);
 
 	}
 

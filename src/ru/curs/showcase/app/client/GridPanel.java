@@ -14,7 +14,7 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.grid.Grid;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
-import ru.curs.showcase.app.client.utils.DownloadHelper;
+import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
@@ -41,6 +41,16 @@ public class GridPanel extends BasicElementPanelBasis {
 			Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL));
 	private final PushButton copyToClipboard = new PushButton(new Image(
 			Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
+
+	public PushButton getExportToExcelCurrentPage() {
+		return exportToExcelCurrentPage;
+	}
+
+	public PushButton getExportToExcelAll() {
+		return exportToExcelAll;
+	}
+
+	private final MessagePopup mp = new MessagePopup(Constants.GRID_MESSAGE_POPUP_EXPORT_TO_EXCEL);
 
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
 	private DataGrid dg = null;
@@ -357,7 +367,7 @@ public class GridPanel extends BasicElementPanelBasis {
 			exportToExcelCurrentPage.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
-					exportToExcel(GridToExcelExportType.CURRENTPAGE);
+					exportToExcel(exportToExcelCurrentPage, GridToExcelExportType.CURRENTPAGE);
 				}
 			});
 			hpToolbar.add(exportToExcelCurrentPage);
@@ -367,7 +377,7 @@ public class GridPanel extends BasicElementPanelBasis {
 			exportToExcelAll.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
-					exportToExcel(GridToExcelExportType.ALL);
+					exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
 				}
 			});
 			hpToolbar.add(exportToExcelAll);
@@ -542,7 +552,7 @@ public class GridPanel extends BasicElementPanelBasis {
 	 * @param exportType
 	 *            GridToExcelExportType
 	 */
-	public void exportToExcel(final GridToExcelExportType exportType) {
+	public void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
 		DownloadHelper dh = DownloadHelper.getInstance();
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
@@ -559,7 +569,11 @@ public class GridPanel extends BasicElementPanelBasis {
 
 			dh.submit();
 
+			mp.hide();
+			mp.show(wFrom);
+
 		} catch (SerializationException e) {
+			mp.hide();
 			MessageBox
 					.showSimpleMessage(Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL, e.getMessage());
 		}

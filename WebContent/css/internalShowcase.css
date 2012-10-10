@@ -63,3 +63,15 @@ padding: 0px 20px 0px 0px;
 }
 
 
+.message-popup-panel   {
+   background-color: yellow;
+   cursor: default;
+}
+
+.message-popup-label   {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
