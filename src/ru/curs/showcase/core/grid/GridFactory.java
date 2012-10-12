@@ -528,6 +528,7 @@ public class GridFactory extends CompBasedElementFactory {
 		res.setId(colId);
 		res.setCaption(colId);
 		res.setMinWidthPx(0);
+		res.setValueType(GridValueType.STRING);
 		return res;
 	}
 
