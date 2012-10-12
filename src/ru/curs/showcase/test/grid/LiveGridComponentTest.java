@@ -127,7 +127,7 @@ public class LiveGridComponentTest extends AbstractTest {
 
 		assertEquals(COL_ID, lgm.getColumns().get(0).getId());
 		assertEquals(COL_CAPTION2, lgm.getColumns().get(0).getCaption());
-		assertEquals(HorizontalAlignment.RIGHT, lgm.getColumns().get(0).getHorizontalAlignment());
+		assertEquals(HorizontalAlignment.LEFT, lgm.getColumns().get(0).getHorizontalAlignment());
 		assertEquals(COL_CAPTION2, lgm.getOriginalColumnSet().getColumns().get(0).getId());
 	}
 
