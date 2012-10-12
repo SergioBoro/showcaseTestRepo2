@@ -61,9 +61,9 @@ public class GridExportToExcelSLTest extends AbstractTest {
 		assertEquals(GridValueType.STRING.toStringForExcel(),
 				xml.getDocumentElement().getLastChild().getFirstChild().getAttributes()
 						.getNamedItem(GeneralXMLHelper.TYPE_TAG).getNodeValue());
-		assertEquals(GridValueType.STRING.toStringForExcel(),
-				xml.getDocumentElement().getLastChild().getLastChild().getAttributes()
-						.getNamedItem(GeneralXMLHelper.TYPE_TAG).getNodeValue());
+		assertEquals(GridValueType.INT.toStringForExcel(), xml.getDocumentElement().getLastChild()
+				.getLastChild().getAttributes().getNamedItem(GeneralXMLHelper.TYPE_TAG)
+				.getNodeValue());
 	}
 
 	/**

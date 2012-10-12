@@ -104,16 +104,20 @@ public final class GridTransformer {
 				String colId = "col" + String.valueOf(index);
 				String val = null;
 
-				switch (c.getValueType()) {
-				case IMAGE:
-					val = "<a><img border=\"0\" src=\"" + rec.getValue(c) + "\"></a>";
-					break;
-				case LINK:
-					val = getLink(rec.getValue(c));
-					break;
-				default:
+				if (c.getValueType() == null) {
 					val = rec.getValue(c);
-					break;
+				} else {
+					switch (c.getValueType()) {
+					case IMAGE:
+						val = "<a><img border=\"0\" src=\"" + rec.getValue(c) + "\"></a>";
+						break;
+					case LINK:
+						val = getLink(rec.getValue(c));
+						break;
+					default:
+						val = rec.getValue(c);
+						break;
+					}
 				}
 				lgm.set(colId, val);
 
@@ -224,16 +228,20 @@ public final class GridTransformer {
 					String colId = "col" + String.valueOf(index);
 					String val = null;
 
-					switch (c.getValueType()) {
-					case IMAGE:
-						val = "<a><img border=\"0\" src=\"" + rec.getValue(c) + "\"></a>";
-						break;
-					case LINK:
-						val = getLink(rec.getValue(c));
-						break;
-					default:
+					if (c.getValueType() == null) {
 						val = rec.getValue(c);
-						break;
+					} else {
+						switch (c.getValueType()) {
+						case IMAGE:
+							val = "<a><img border=\"0\" src=\"" + rec.getValue(c) + "\"></a>";
+							break;
+						case LINK:
+							val = getLink(rec.getValue(c));
+							break;
+						default:
+							val = rec.getValue(c);
+							break;
+						}
 					}
 					tgm.set(colId, val);
 				}

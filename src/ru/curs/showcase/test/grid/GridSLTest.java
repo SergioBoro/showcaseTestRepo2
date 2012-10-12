@@ -70,7 +70,7 @@ public class GridSLTest extends AbstractTest {
 		assertEquals("solutions/default/resources/imagesingrid/test.jpg", grid.getDataSet()
 				.getRecordSet().getRecords().get(0).getValue(col));
 		col = grid.getDataSet().getColumnSet().getColumns().get(2);
-		assertEquals(HorizontalAlignment.LEFT, col.getHorizontalAlignment());
+		assertEquals(HorizontalAlignment.RIGHT, col.getHorizontalAlignment());
 		assertEquals(precision, col.getFormat());
 
 		assertEquals(grid.getDataSet().getRecordSet().getPageSize(), grid.getDataSet()
