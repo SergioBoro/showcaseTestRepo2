@@ -55,7 +55,7 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 			factory.setApplyLocalFormatting(applyLocalFormatting);
 			setResult(factory.build());
 		} else {
-			if (getContext().isFirstLoad()) {
+			if (getContext().isFirstLoad() || state.isForceLoadSettings()) {
 				SourceSelector<ElementSettingsGateway> sselector =
 					new GridSettingsSelector(getElementInfo());
 				ElementSettingsGateway sgateway = sselector.getGateway();

@@ -63,6 +63,12 @@ public class GridServerState implements SerializableElement {
 	 */
 	private Integer rowHeight = null;
 
+	/**
+	 * Признак того, что при загрузке грида 2 процедурами нужно вместе с данными
+	 * каждый раз грузить настройки.
+	 */
+	private boolean forceLoadSettings = false;
+
 	public String getGridWidth() {
 		return gridWidth;
 	}
@@ -85,6 +91,14 @@ public class GridServerState implements SerializableElement {
 
 	public void setRowHeight(final Integer aRowHeight) {
 		rowHeight = aRowHeight;
+	}
+
+	public boolean isForceLoadSettings() {
+		return forceLoadSettings;
+	}
+
+	public void setForceLoadSettings(final boolean aForceLoadSettings) {
+		forceLoadSettings = aForceLoadSettings;
 	}
 
 	private ColumnSet columnSet = null;

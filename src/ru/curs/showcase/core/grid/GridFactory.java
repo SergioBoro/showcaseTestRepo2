@@ -73,6 +73,7 @@ public class GridFactory extends CompBasedElementFactory {
 	private static final String GRID_WIDTH_TAG = "gridWidth";
 	private static final String GRID_HEIGHT_TAG = "gridHeight";
 	private static final String ROW_HEIGHT_TAG = "rowHeight";
+	private static final String FORCE_LOAD_SETTINGS = "forceLoadSettings";
 	private static final String PRECISION_TAG = "precision";
 	private static final String PROFILE_TAG = "profile";
 
@@ -354,6 +355,10 @@ public class GridFactory extends CompBasedElementFactory {
 				value = attrs.getValue(ROW_HEIGHT_TAG);
 				serverState().setRowHeight(Integer.parseInt(value));
 			}
+			if (attrs.getIndex(FORCE_LOAD_SETTINGS) > -1) {
+				value = attrs.getValue(FORCE_LOAD_SETTINGS);
+				serverState().setForceLoadSettings(Boolean.valueOf(value));
+			}
 			if (attrs.getIndex(PROFILE_TAG) > -1) {
 				serverState().setProfile(attrs.getValue(PROFILE_TAG));
 			}
@@ -413,6 +418,9 @@ public class GridFactory extends CompBasedElementFactory {
 			super.setupDynamicSettings();
 			loadStaticSettings();
 		} else {
+			if (serverState().isForceLoadSettings()) {
+				super.setupDynamicSettings();
+			}
 			loadStaticSettings();
 			loadStoredState();
 		}
