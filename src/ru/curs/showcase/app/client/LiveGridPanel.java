@@ -59,6 +59,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
 	private final MessagePopup mp = new MessagePopup(Constants.GRID_MESSAGE_POPUP_EXPORT_TO_EXCEL);
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
+	private final FramedPanel cpGrid = new FramedPanel();
 	private com.sencha.gxt.widget.core.client.grid.Grid<LiveGridModel> grid = null;
 	private GridSelectionModel<LiveGridModel> selectionModel = null;
 	private ColumnSet cs = null;
@@ -76,6 +77,8 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	private void setFirstLoading(final boolean aIsFirstLoading) {
 		isFirstLoading = aIsFirstLoading;
 	}
+
+	private boolean needRestoreAfterShowLoadingMessage = false;
 
 	/**
 	 * Ф-ция, возвращающая панель с гридом.
@@ -150,8 +153,12 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		} else {
 			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 			if (this.getElementInfo().getShowLoadingMessage()) {
-				p.clear();
-				p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+				// p.clear();
+				// p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+
+				cpGrid.setEnabled(false);
+
+				needRestoreAfterShowLoadingMessage = true;
 			}
 		}
 
@@ -499,7 +506,6 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			con.add(footerBar, new VerticalLayoutData(1, -1));
 		}
 
-		final FramedPanel cpGrid = new FramedPanel();
 		cpGrid.addResizeHandler(new ResizeHandler() {
 			@Override
 			public void onResize(ResizeEvent event) {
@@ -596,6 +602,15 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	 */
 
 	private void afterUpdateGrid() {
+
+		if (needRestoreAfterShowLoadingMessage) {
+			// p.clear();
+			// p.add(cpGrid);
+
+			needRestoreAfterShowLoadingMessage = false;
+
+			cpGrid.setEnabled(true);
+		}
 
 		if (isFirstLoading) {
 			resetSelection();
