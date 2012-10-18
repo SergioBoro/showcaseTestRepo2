@@ -16,6 +16,8 @@
          <currentColumnId>curColumnId</currentColumnId>
          <selectedRecordId>r1</selectedRecordId>
          <selectedRecordId>r2</selectedRecordId>
+         <proposedGridWidth>0</proposedGridWidth>
+         <proposedGridHeight>0</proposedGridHeight>         
       </gridContext>
    </related>
 </sessioncontext>

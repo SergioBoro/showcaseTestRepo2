@@ -15,6 +15,8 @@
          <currentRecordId>1</currentRecordId>
          <currentColumnId>3кв. 2005г.</currentColumnId>
          <selectedRecordId>1</selectedRecordId>
+         <proposedGridWidth>0</proposedGridWidth>
+         <proposedGridHeight>0</proposedGridHeight>
       </gridContext>
    </related>
 </sessioncontext>
