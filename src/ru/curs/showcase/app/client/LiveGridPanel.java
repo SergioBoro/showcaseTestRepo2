@@ -255,6 +255,12 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 						}
 					}
 
+					gridContext.setProposedGridWidth(GeneralDataPanel.getTabPanel()
+							.getOffsetWidth());
+
+					gridContext.setProposedGridHeight(GeneralDataPanel.getTabPanel()
+							.getOffsetHeight());
+
 					dataService.getLiveGridData(gridContext, getElementInfo(),
 							new AsyncCallback<LiveGridData<LiveGridModel>>() {
 								@Override

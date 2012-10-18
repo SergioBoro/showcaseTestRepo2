@@ -75,6 +75,18 @@ public class GridContext extends CompositeContext {
 	private String currentRecordId = null;
 
 	/**
+	 * Предлагаемая ширина грида, соответствующая ширине доступного
+	 * пространства.
+	 */
+	private Integer proposedGridWidth = 0;
+
+	/**
+	 * Предлагаемая высота грида, соответствующая высоте доступного
+	 * пространства.
+	 */
+	private Integer proposedGridHeight = 0;
+
+	/**
 	 * Идентификатор выделенного по клику в гриде столбца. Имеет смысл только в
 	 * режиме выделения ячеек.
 	 */
@@ -286,4 +298,21 @@ public class GridContext extends CompositeContext {
 		setRelated(aContext.getRelated());
 
 	}
+
+	public Integer getProposedGridWidth() {
+		return proposedGridWidth;
+	}
+
+	public void setProposedGridWidth(final Integer aProposedGridWidth) {
+		this.proposedGridWidth = aProposedGridWidth;
+	}
+
+	public Integer getProposedGridHeight() {
+		return proposedGridHeight;
+	}
+
+	public void setProposedGridHeight(final Integer aProposedGridHeight) {
+		this.proposedGridHeight = aProposedGridHeight;
+	}
+
 }
