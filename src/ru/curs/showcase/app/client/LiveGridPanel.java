@@ -178,8 +178,13 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
+		GridContext gc = getDetailedContext();
+		gc.setProposedGridWidth(GeneralDataPanel.getTabPanel().getOffsetWidth());
+
+		gc.setProposedGridHeight(GeneralDataPanel.getTabPanel().getOffsetHeight());
+
 		dataService
-				.getLiveGridMetadata(getDetailedContext(), getElementInfo(),
+				.getLiveGridMetadata(gc, getElementInfo(),
 						new GWTServiceCallback<LiveGridMetadata>(
 								"при получении данных таблицы с сервера") {
 
@@ -255,11 +260,11 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 						}
 					}
 
-					gridContext.setProposedGridWidth(GeneralDataPanel.getTabPanel()
-							.getOffsetWidth());
+					// gridContext.setProposedGridWidth(GeneralDataPanel.getTabPanel()
+					// .getOffsetWidth());
 
-					gridContext.setProposedGridHeight(GeneralDataPanel.getTabPanel()
-							.getOffsetHeight());
+					// gridContext.setProposedGridHeight(GeneralDataPanel.getTabPanel()
+					// .getOffsetHeight());
 
 					dataService.getLiveGridData(gridContext, getElementInfo(),
 							new AsyncCallback<LiveGridData<LiveGridModel>>() {
