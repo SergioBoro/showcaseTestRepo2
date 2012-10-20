@@ -118,4 +118,15 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 		}
 		return result;
 	}
+
+	@Override
+	protected void cleanReusable(final Connection aReusable) {
+		if (getSQLServerType() == SQLServerType.POSTGRESQL) {
+			try {
+				aReusable.commit();
+			} catch (SQLException e) {
+
+			}
+		}
+	}
 }
