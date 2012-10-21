@@ -196,7 +196,7 @@ public final class FeedbackJSNI {
 		
 				$wnd.setAndApplySolutionCSSToDomModel = 
 		@ru.curs.showcase.app.client.FeedbackJSNI::setAndApplySolutionCSSToDomModel(Ljava/lang/String;);		
-						$wnd.setAndApplySolutionCSSToDomModel = 
+				$wnd.setAndApplySolutionGridCSSToDomModel = 
 		@ru.curs.showcase.app.client.FeedbackJSNI::setAndApplySolutionGridCSSToDomModel(Ljava/lang/String;);	
 		
 		$wnd.showcaseLogout = 
