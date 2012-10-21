@@ -4,6 +4,7 @@
 package ru.curs.showcase.app.client;
 
 import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.utils.*;
 
 /**
  * 
@@ -138,6 +139,34 @@ public final class FeedbackJSNI {
 
 	/**
 	 * 
+	 * Функция которая загружает и применяет в DOM модель страницы стили решения
+	 * из файла.
+	 * 
+	 * @param cssFileName
+	 *            - имя файла
+	 */
+	public static void setAndApplySolutionCSSToDomModel(final String cssFileName) {
+
+		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/" + cssFileName));
+
+	}
+
+	/**
+	 * 
+	 * Функция которая загружает и применяет в DOM модель страницы стили для
+	 * Grid из файла.
+	 * 
+	 * @param cssFileName
+	 *            - имя файла
+	 */
+	public static void setAndApplySolutionGridCSSToDomModel(final String cssFileName) {
+
+		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/" + cssFileName));
+
+	}
+
+	/**
+	 * 
 	 * Процедура инициализирующая Java функции gwt клиентского кода
 	 * (JSNI-технология), которые будут выполняться при их вызове в javaScript
 	 * из dom-модели Showcase. Данная функция должна вызываться при
@@ -165,7 +194,10 @@ public final class FeedbackJSNI {
 				$wnd.getCurrentUserPhoneFeedbackJSNIFunction = 
 		@ru.curs.showcase.app.client.FeedbackJSNI::getCurrentUserPhoneName();
 		
-		
+				$wnd.setAndApplySolutionCSSToDomModel = 
+		@ru.curs.showcase.app.client.FeedbackJSNI::setAndApplySolutionCSSToDomModel(Ljava/lang/String;);		
+						$wnd.setAndApplySolutionCSSToDomModel = 
+		@ru.curs.showcase.app.client.FeedbackJSNI::setAndApplySolutionGridCSSToDomModel(Ljava/lang/String;);	
 		
 		$wnd.showcaseLogout = 
 		@ru.curs.showcase.app.client.ShowcaseLogout::showcaseLogout();	
