@@ -1532,6 +1532,11 @@ XsltForms_browser.getType = function(node) {
 };
 
 XsltForms_browser.getNil = function(node) {
+	
+	// [KURS  Ticket #441
+	return false;
+	// KURS]	
+	
 	if (node.nodeType === XsltForms_nodeType.ELEMENT) {
 		if (node.getAttributeNS) {
 			return XsltForms_globals.booleanValue(node.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil"));
