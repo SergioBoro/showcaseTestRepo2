@@ -340,13 +340,8 @@ public class GeneralDataPanel {
 							td.getRowspan());
 				}
 
-				ft.getFlexCellFormatter().getElement(currentRowCount, currentColoumnCount)
-						.setAttribute(STYLE, td.getHtmlAttrs().getStyle());
-				ft.getFlexCellFormatter().getElement(currentRowCount, currentColoumnCount)
-						.setAttribute("width", td.getWidth());
-				ft.getFlexCellFormatter().setStylePrimaryName(currentRowCount,
-						currentColoumnCount, td.getHtmlAttrs().getStyleClass());
-
+				setStyleAndHeightAttributesForTableLayoutColoumn(ft, td, currentRowCount,
+						currentColoumnCount);
 				// if (!(dpe.getNeverShowInPanel())) {
 
 				// vp1.add(el);
@@ -363,13 +358,47 @@ public class GeneralDataPanel {
 
 			}
 
-			ft.getRowFormatter().getElement(currentRowCount)
-					.setAttribute(STYLE, tr.getHtmlAttrs().getStyle());
-			ft.getRowFormatter().getElement(currentRowCount)
-					.setAttribute("height", tr.getHeight());
-			ft.getRowFormatter().setStylePrimaryName(currentRowCount,
-					tr.getHtmlAttrs().getStyleClass());
+			setStyleAndHeightAttributesForTableLayoutRow(ft, tr, currentRowCount);
 
+		}
+	}
+
+	private static void
+			setStyleAndHeightAttributesForTableLayoutColoumn(final FlexTable ft,
+					final DataPanelTD td, final Integer currentRowCount,
+					final Integer currentColoumnCount) {
+		String s = td.getHtmlAttrs().getStyle();
+		if (s != null) {
+			ft.getFlexCellFormatter().getElement(currentRowCount, currentColoumnCount)
+					.setAttribute(STYLE, s);
+		}
+		String w = td.getWidth();
+		if (w != null) {
+			ft.getFlexCellFormatter().getElement(currentRowCount, currentColoumnCount)
+					.setAttribute("width", w);
+		}
+		String sc = td.getHtmlAttrs().getStyleClass();
+		if (sc != null) {
+			ft.getFlexCellFormatter()
+					.setStylePrimaryName(currentRowCount, currentColoumnCount, sc);
+		}
+	}
+
+	private static void setStyleAndHeightAttributesForTableLayoutRow(final FlexTable ft,
+			final DataPanelTR tr, final Integer currentRowCount) {
+		String s = tr.getHtmlAttrs().getStyle();
+		if (s != null) {
+			ft.getRowFormatter().getElement(currentRowCount).setAttribute(STYLE, s);
+		}
+
+		String h = tr.getHeight();
+		if (h != null) {
+			ft.getRowFormatter().getElement(currentRowCount).setAttribute("height", h);
+		}
+
+		String sc = tr.getHtmlAttrs().getStyleClass();
+		if (sc != null) {
+			ft.getRowFormatter().setStylePrimaryName(currentRowCount, sc);
 		}
 	}
 
