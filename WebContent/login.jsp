@@ -115,7 +115,7 @@ pageEncoding="UTF-8"%>
   </tr>
   <tr>
   <td>
-  <a href="forall/state" target="_black">О программе</a>
+  <a href="forall/state" target="_blank">О программе</a>
   </td>
   </tr>
 </table>
