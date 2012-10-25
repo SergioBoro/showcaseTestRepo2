@@ -8,8 +8,10 @@ import javax.servlet.ServletException;
 
 import org.junit.*;
 
+import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.util.TextUtils;
@@ -60,26 +62,25 @@ public class FilesFrontControllerTest extends AbstractServletTest {
 
 	@Test
 	public void testExportToExcel() throws ServletException, IOException {
-		// request().setServletPath("/secured/gridToExcel");
-		// request().addParameter(GridToExcelExportType.class.getName(),
-		// GridToExcelExportType.CURRENTPAGE.toString());
-		//
-		// String data = loadTestData(GridContext.class.getSimpleName() + TXT);
-		// request().addParameter(GridContext.class.getName(), data);
-		// data =
-		// loadTestData(DataPanelElementInfo.class.getSimpleName()
-		// + DataPanelElementType.GRID.toString() + TXT);
-		// request().addParameter(DataPanelElementInfo.class.getName(), data);
-		// data = loadTestData(ColumnSet.class.getSimpleName() + TXT);
-		// request().addParameter(ColumnSet.class.getName(), data);
-		//
-		// controller.doPost(request(), response());
-		//
-		// checkOkResponse("application/vnd.ms-excel");
-		// assertTrue(response().getContentAsString().contains(
-		// "<?mso-application progid=\"Excel.Sheet\""));
-		// assertEquals("attachment; filename=\"table.xls\"",
-		// response().getHeader(CONTENT_DISPOSITION));
+		request().setServletPath("/secured/gridToExcel");
+		request().addParameter(GridToExcelExportType.class.getName(),
+				GridToExcelExportType.CURRENTPAGE.toString());
+		String data = loadTestData(GridContext.class.getSimpleName() + TXT);
+		request().addParameter(GridContext.class.getName(), data);
+		data =
+			loadTestData(DataPanelElementInfo.class.getSimpleName()
+					+ DataPanelElementType.GRID.toString() + TXT);
+		request().addParameter(DataPanelElementInfo.class.getName(), data);
+		data = loadTestData(ColumnSet.class.getSimpleName() + TXT);
+		request().addParameter(ColumnSet.class.getName(), data);
+
+		controller.doPost(request(), response());
+
+		checkOkResponse("application/vnd.ms-excel");
+		assertTrue(response().getContentAsString().contains(
+				"<?mso-application progid=\"Excel.Sheet\""));
+		assertEquals("attachment; filename=\"table.xls\"",
+				response().getHeader(CONTENT_DISPOSITION));
 	}
 
 	@Test
