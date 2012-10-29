@@ -78,13 +78,13 @@ public class GridContext extends CompositeContext {
 	 * Предлагаемая ширина грида, соответствующая ширине доступного
 	 * пространства.
 	 */
-	private Integer proposedGridWidth = 0;
+	private Integer сurrentDatapanelWidth = 0;
 
 	/**
 	 * Предлагаемая высота грида, соответствующая высоте доступного
 	 * пространства.
 	 */
-	private Integer proposedGridHeight = 0;
+	private Integer сurrentDatapanelHeight = 0;
 
 	/**
 	 * Идентификатор выделенного по клику в гриде столбца. Имеет смысл только в
@@ -299,20 +299,20 @@ public class GridContext extends CompositeContext {
 
 	}
 
-	public Integer getProposedGridWidth() {
-		return proposedGridWidth;
+	public Integer getCurrentDatapanelWidth() {
+		return сurrentDatapanelWidth;
 	}
 
-	public void setProposedGridWidth(final Integer aProposedGridWidth) {
-		this.proposedGridWidth = aProposedGridWidth;
+	public void setCurrentDatapanelWidth(final Integer acurrentDatapanelWidth) {
+		this.сurrentDatapanelWidth = acurrentDatapanelWidth;
 	}
 
-	public Integer getProposedGridHeight() {
-		return proposedGridHeight;
+	public Integer getCurrentDatapanelHeight() {
+		return сurrentDatapanelHeight;
 	}
 
-	public void setProposedGridHeight(final Integer aProposedGridHeight) {
-		this.proposedGridHeight = aProposedGridHeight;
+	public void setCurrentDatapanelHeight(final Integer acurrentDatapanelHeight) {
+		this.сurrentDatapanelHeight = acurrentDatapanelHeight;
 	}
 
 }

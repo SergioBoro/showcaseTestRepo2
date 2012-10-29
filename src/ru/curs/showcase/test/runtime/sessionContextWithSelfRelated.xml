@@ -20,8 +20,8 @@
          <currentColumnId>curColumnId</currentColumnId>
          <selectedRecordId>r1</selectedRecordId>
          <selectedRecordId>r2</selectedRecordId>
-         <proposedGridWidth>0</proposedGridWidth>
-         <proposedGridHeight>0</proposedGridHeight>         
+         <currentDatapanelWidth>0</currentDatapanelWidth>
+         <currentDatapanelHeight>0</currentDatapanelHeight>         
       </gridContext>
    </related>
 </sessioncontext>

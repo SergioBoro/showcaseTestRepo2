@@ -35,23 +35,23 @@ public class LiveGridMetadataGetCommand extends DataPanelElementCommand<LiveGrid
 	 **/
 	@Override
 	protected void mainProc() throws Exception {
-		includeProposedWidthAndHeightInSessionContext();
+		includeDataPanelWidthAndHeightInSessionContext();
 		GridGetCommand command = new GridGetCommand(getContext(), getElementInfo(), true);
 		Grid grid = command.execute();
 		setResult(GridTransformer.gridToLiveGridMetadata(grid));
 	}
 
-	private void includeProposedWidthAndHeightInSessionContext() throws Exception {
+	private void includeDataPanelWidthAndHeightInSessionContext() throws Exception {
 
 		Document doc = XMLUtils.stringToDocument(getContext().getSession());
 
-		Element node = doc.createElement("proposedGridWidth");
+		Element node = doc.createElement("currentDatapanelWidth");
 		doc.getDocumentElement().appendChild(node);
-		node.appendChild(doc.createTextNode(getContext().getProposedGridWidth().toString()));
+		node.appendChild(doc.createTextNode(getContext().getCurrentDatapanelWidth().toString()));
 
-		node = doc.createElement("proposedGridHeight");
+		node = doc.createElement("currentDatapanelHeight");
 		doc.getDocumentElement().appendChild(node);
-		node.appendChild(doc.createTextNode(getContext().getProposedGridHeight().toString()));
+		node.appendChild(doc.createTextNode(getContext().getCurrentDatapanelHeight().toString()));
 
 		String result = XMLUtils.documentToString(doc);
 		getContext().setSession(result);

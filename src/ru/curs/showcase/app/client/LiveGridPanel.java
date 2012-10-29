@@ -179,9 +179,9 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		}
 
 		GridContext gc = getDetailedContext();
-		gc.setProposedGridWidth(GeneralDataPanel.getTabPanel().getOffsetWidth());
+		gc.setCurrentDatapanelWidth(GeneralDataPanel.getTabPanel().getOffsetWidth());
 
-		gc.setProposedGridHeight(GeneralDataPanel.getTabPanel().getOffsetHeight());
+		gc.setCurrentDatapanelHeight(GeneralDataPanel.getTabPanel().getOffsetHeight());
 
 		dataService
 				.getLiveGridMetadata(gc, getElementInfo(),
