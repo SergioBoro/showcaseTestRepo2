@@ -77,9 +77,10 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 				(width > Window.getClientWidth() - n100) ? Window.getClientWidth() - n100 : width;
 		}
 		if (heigth != null) {
+
 			heigth =
-				(heigth > Window.getClientWidth() - n100) ? Window.getClientHeight() - n100
-						: heigth;
+
+			(heigth > Window.getClientHeight() - n100) ? Window.getClientHeight() - n100 : heigth;
 		}
 
 		if ((width != null) && (heigth != null)) {
