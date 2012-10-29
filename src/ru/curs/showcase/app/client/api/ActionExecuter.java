@@ -141,17 +141,18 @@ public final class ActionExecuter {
 			WindowWithDataPanelElement modWind = null;
 			if (mwi != null) {
 
-				if ((mwi.getCaption() != null) && (mwi.getWidth() != null)
-						&& (mwi.getHeight() != null)) {
+				if (mwi.getCaption() != null) {
 					modWind =
 						new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
 								mwi.getHeight(), mwi.getShowCloseBottomButton());
 				} else {
 
 					if (mwi.getCaption() != null) {
+
 						modWind =
 							new WindowWithDataPanelElement(mwi.getCaption(),
 									mwi.getShowCloseBottomButton());
+
 					} else {
 						modWind = new WindowWithDataPanelElement(mwi.getShowCloseBottomButton());
 					}

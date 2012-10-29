@@ -19,6 +19,8 @@ import com.google.gwt.user.client.ui.*;
  */
 public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 
+	private final int n100 = 100;
+
 	/**
 	 * ScrollPanel, которая содержит содержимое модального окна.
 	 */
@@ -52,7 +54,6 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 	public WindowWithDataPanelElement(final Boolean ashowCloseBottomButton) {
 		super();
 		setShowCloseBottomButton(ashowCloseBottomButton);
-		final int n100 = 100;
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
 				String.valueOf(Window.getClientHeight() - n100) + "px");
 	}
@@ -60,18 +61,42 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 	public WindowWithDataPanelElement(final String caption, final Boolean ashowCloseBottomButton) {
 		super(caption);
 		setShowCloseBottomButton(ashowCloseBottomButton);
-		final int n100 = 100;
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
 				String.valueOf(Window.getClientHeight() - n100) + "px");
 	}
 
-	public WindowWithDataPanelElement(final String caption, final Integer width,
-			final Integer heigth, final Boolean ashowCloseBottomButton) {
+	public WindowWithDataPanelElement(final String caption, final Integer width1,
+			final Integer heigth1, final Boolean ashowCloseBottomButton) {
 
 		super(caption);
 
-		sp.setSize(String.valueOf(width) + "px", String.valueOf(heigth) + "px");
+		Integer width = width1;
+		Integer heigth = heigth1;
+		if (width != null) {
+			width =
+				(width > Window.getClientWidth() - n100) ? Window.getClientWidth() - n100 : width;
+		}
+		if (heigth != null) {
+			heigth =
+				(heigth > Window.getClientWidth() - n100) ? Window.getClientHeight() - n100
+						: heigth;
+		}
 
+		if ((width != null) && (heigth != null)) {
+			sp.setSize(String.valueOf(width) + "px", String.valueOf(heigth) + "px");
+		} else {
+
+			if (width != null) {
+				sp.setSize(String.valueOf(width) + "px",
+						String.valueOf(Window.getClientHeight() - n100) + "px");
+			}
+
+			if (heigth != null) {
+				sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
+						String.valueOf(heigth) + "px");
+			}
+
+		}
 		setShowCloseBottomButton(ashowCloseBottomButton);
 	}
 
