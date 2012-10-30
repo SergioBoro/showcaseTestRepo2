@@ -50,7 +50,7 @@
 } 
 
 .rowSelected .cell {
-  background-color: #DFE8F6 !important;
+  background-color: #DFE8F6;
   border-color: #A3BAE9;
   border-style: dotted;
 }
@@ -105,7 +105,7 @@
 }
 
 .cellSelected {
-  background-color: #b8cfee !important;
+  background-color: #b8cfee;
   color: #000;
 }
 
@@ -140,7 +140,7 @@
 }
 
 .rowSelected .cell, .rowSelected .rowWrap {
-  background-color: #DFE8F6 !important;
+  background-color: #DFE8F6;
   border-color: #A3BAE9;
   border-style: dotted;
 }

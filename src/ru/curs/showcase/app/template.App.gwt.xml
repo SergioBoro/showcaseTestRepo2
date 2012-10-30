@@ -40,6 +40,8 @@
 <!-- <set-property name="gxt.user.agent" value="chrome"/> -->
 <!-- Нужно раскомментировать, чтобы компилировалась только одна пермутация в Sencha GXT  -->
 
+<set-configuration-property name="CssResource.style" value="stable"/>
+
 <!-- Установка общих стилей приложения. Рекомендуется устанавливать здесь, чтобы не забыть установить в каждом jsp файле. -->
 <stylesheet src="../css/internalShowcase.css"/>      
 </module>

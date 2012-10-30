@@ -291,7 +291,8 @@
 
 
 
-
+/*
+   
 .extlivegrid-record-bold .GB2UA-DDEIC {
 	font-weight: bold;
 }
@@ -304,6 +305,24 @@
 	font-weight: bold;
 }
 .exttreegrid-record-italic .GB2UA-DDHOB{
+	font-style: italic;
+}
+
+*/
+
+
+.extlivegrid-record-bold .com-sencha-gxt-widget-core-client-grid-GridView-GridDataTableStyles-cell {
+	font-weight: bold;
+}
+.extlivegrid-record-italic .com-sencha-gxt-widget-core-client-grid-GridView-GridDataTableStyles-cell {
+	font-style: italic;
+}
+
+
+.exttreegrid-record-bold .com-sencha-gxt-theme-base-client-tree-TreeBaseAppearance-TreeBaseStyle-text{
+	font-weight: bold;
+}
+.exttreegrid-record-italic .com-sencha-gxt-theme-base-client-tree-TreeBaseAppearance-TreeBaseStyle-text{
 	font-style: italic;
 }
 
