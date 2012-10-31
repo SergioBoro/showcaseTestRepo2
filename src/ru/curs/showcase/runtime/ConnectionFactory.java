@@ -2,7 +2,7 @@ package ru.curs.showcase.runtime;
 
 import java.sql.*;
 
-import ru.curs.showcase.core.command.GeneralExceptionFactory;
+import org.slf4j.*;
 
 import com.ziclix.python.sql.PyConnection;
 
@@ -22,6 +22,8 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 	private static final String CONNECTION_PASSWORD_PARAM = "rdbms.connection.password";
 
 	private static final ConnectionFactory INSTANCE = new ConnectionFactory();
+
+	protected static final Logger LOGGER = LoggerFactory.getLogger(ConnectionFactory.class);
 
 	private ConnectionFactory() {
 		super();
@@ -121,6 +123,8 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 		return result;
 	}
 
+	private static final String ERROR_CAPTION = "Сообщение об ошибке";
+
 	@Override
 	protected void cleanReusable(final Connection aReusable) {
 		if (getSQLServerType() == SQLServerType.POSTGRESQL) {
@@ -129,7 +133,7 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 					aReusable.commit();
 				}
 			} catch (SQLException e) {
-				GeneralExceptionFactory.build(e);
+				LOGGER.error(ERROR_CAPTION, e);
 			}
 		}
 	}
