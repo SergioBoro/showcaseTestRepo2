@@ -3,11 +3,13 @@ package ru.curs.showcase.core.grid;
 import java.io.IOException;
 import java.util.*;
 
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Класс, преобразующий Grid в LiveGrid.
@@ -275,6 +277,24 @@ public final class GridTransformer {
 
 		return models;
 
+	}
+
+	public static void
+			includeDataPanelWidthAndHeightInSessionContext(final GridContext gridContext)
+					throws Exception {
+
+		Document doc = XMLUtils.stringToDocument(gridContext.getSession());
+
+		Element node = doc.createElement("currentDatapanelWidth");
+		doc.getDocumentElement().appendChild(node);
+		node.appendChild(doc.createTextNode(gridContext.getCurrentDatapanelWidth().toString()));
+
+		node = doc.createElement("currentDatapanelHeight");
+		doc.getDocumentElement().appendChild(node);
+		node.appendChild(doc.createTextNode(gridContext.getCurrentDatapanelHeight().toString()));
+
+		String result = XMLUtils.documentToString(doc);
+		gridContext.setSession(result);
 	}
 
 }

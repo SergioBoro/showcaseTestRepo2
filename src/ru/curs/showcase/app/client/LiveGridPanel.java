@@ -180,7 +180,6 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 		GridContext gc = getDetailedContext();
 		gc.setCurrentDatapanelWidth(GeneralDataPanel.getTabPanel().getOffsetWidth());
-
 		gc.setCurrentDatapanelHeight(GeneralDataPanel.getTabPanel().getOffsetHeight());
 
 		dataService
@@ -231,6 +230,11 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 						final AsyncCallback<LiveGridData<LiveGridModel>> callback) {
 
 					GridContext gridContext = getDetailedContext();
+					gridContext.setCurrentDatapanelWidth(GeneralDataPanel.getTabPanel()
+							.getOffsetWidth());
+					gridContext.setCurrentDatapanelHeight(GeneralDataPanel.getTabPanel()
+							.getOffsetHeight());
+
 					gridContext.getLiveInfo().setOffset(loadConfig.getOffset());
 					gridContext.getLiveInfo().setLimit(loadConfig.getLimit());
 

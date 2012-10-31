@@ -8,8 +8,7 @@ import ru.curs.showcase.core.command.*;
  * Команда получения данных для LiveGrid.
  * 
  */
-public class LiveGridDataGetCommand extends
-		DataPanelElementCommand<LiveGridData<LiveGridModel>> {
+public class LiveGridDataGetCommand extends DataPanelElementCommand<LiveGridData<LiveGridModel>> {
 
 	@Override
 	protected DataPanelElementType getRequestedElementType() {
@@ -32,6 +31,7 @@ public class LiveGridDataGetCommand extends
 	 **/
 	@Override
 	protected void mainProc() throws Exception {
+		GridTransformer.includeDataPanelWidthAndHeightInSessionContext(getContext());
 		GridGetCommand command = new GridGetCommand(getContext(), getElementInfo(), true);
 		Grid grid = command.execute();
 		setResult(GridTransformer.gridToLiveGridData(grid));
