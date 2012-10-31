@@ -2,6 +2,8 @@ package ru.curs.showcase.runtime;
 
 import java.sql.*;
 
+import ru.curs.showcase.core.command.GeneralExceptionFactory;
+
 import com.ziclix.python.sql.PyConnection;
 
 /**
@@ -123,9 +125,11 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 	protected void cleanReusable(final Connection aReusable) {
 		if (getSQLServerType() == SQLServerType.POSTGRESQL) {
 			try {
-				aReusable.commit();
+				if (!aReusable.getAutoCommit()) {
+					aReusable.commit();
+				}
 			} catch (SQLException e) {
-
+				GeneralExceptionFactory.build(e);
 			}
 		}
 	}
