@@ -1046,7 +1046,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		}
 		result.setIsFirstLoad(isNeedResetLocalContext());
 		result.resetForReturnAllRecords();
-		result.assignNullValues(getContext());
+		// result.assignNullValues(getContext());
+		result.applyCompositeContext(getContext());
 		return result;
 	}
 
