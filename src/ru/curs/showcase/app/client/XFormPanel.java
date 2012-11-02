@@ -448,7 +448,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 * Вызывается перед показом модального окна, содержащего XFormPanel.
 	 */
 	public void reDrawBeforeModalWindow() {
-		fillMainInstance();
+		fillAndGetMainInstance();
 
 		p.clear();
 		p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
@@ -457,7 +457,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 	}
 
 	/**
-	 * Вызывается после показом модального окна, содержащего XFormPanel.
+	 * Вызывается после показа модального окна, содержащего XFormPanel.
 	 * 
 	 * @param context
 	 *            CompositeContext
