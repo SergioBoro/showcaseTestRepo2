@@ -96,6 +96,12 @@ public final class ActionExecuter {
 		switch (dpat) {
 		case DO_NOTHING:
 			// MessageBox.showSimpleMessage("1", "DO_NOTHING");
+
+			if ((ac.getShowInMode() == ShowInMode.PANEL)
+					&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() != null)) {
+				AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement()
+						.closeWindow();
+			}
 			break;
 		case RELOAD_PANEL:
 			// MessageBox.showSimpleMessage("1", "RELOAD_PANEL");
