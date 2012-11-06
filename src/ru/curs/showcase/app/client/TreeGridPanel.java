@@ -18,6 +18,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.safecss.shared.SafeStylesUtils;
 import com.google.gwt.safehtml.shared.*;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
 import com.sencha.gxt.cell.core.client.ButtonCell.IconAlign;
@@ -64,6 +65,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 	private GridSelectionModel<TreeGridModel> selectionModel = null;
 	private ColumnSet cs = null;
 	private com.google.gwt.user.client.Timer selectionTimer = null;
+	private Timer clickTimer = null;
+	private boolean doubleClick = false;
 	private DataServiceAsync dataService = null;
 	private GridContext localContext = null;
 	private LiveGridMetadata gridMetadata = null;
@@ -506,15 +509,40 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 
 		grid.addCellClickHandler(new CellClickHandler() {
 			@Override
-			public void onCellClick(CellClickEvent event) {
-				handleClick(grid.getStore().get(event.getRowIndex()).getId(), grid
-						.getColumnModel().getColumn(event.getCellIndex()).getHeader().asString(),
-						InteractionType.SINGLE_CLICK);
+			public void onCellClick(final CellClickEvent event) {
+				if (gridMetadata.getUISettings().isSingleClickBeforeDoubleClick()) {
+					handleClick(grid.getStore().get(event.getRowIndex()).getId(), grid
+							.getColumnModel().getColumn(event.getCellIndex()).getHeader()
+							.asString(), InteractionType.SINGLE_CLICK);
+				} else {
+
+					doubleClick = false;
+
+					if (clickTimer != null) {
+						clickTimer.cancel();
+					}
+
+					clickTimer = new Timer() {
+						@Override
+						public void run() {
+							if (!doubleClick) {
+								handleClick(grid.getStore().get(event.getRowIndex()).getId(), grid
+										.getColumnModel().getColumn(event.getCellIndex())
+										.getHeader().asString(), InteractionType.SINGLE_CLICK);
+							}
+						}
+					};
+					clickTimer.schedule(gridMetadata.getUISettings().getDoubleClickTime());
+
+				}
 			}
 		});
 		grid.addCellDoubleClickHandler(new CellDoubleClickHandler() {
 			@Override
 			public void onCellClick(CellDoubleClickEvent event) {
+
+				doubleClick = true;
+
 				handleClick(grid.getStore().get(event.getRowIndex()).getId(), grid
 						.getColumnModel().getColumn(event.getCellIndex()).getHeader().asString(),
 						InteractionType.DOUBLE_CLICK);
