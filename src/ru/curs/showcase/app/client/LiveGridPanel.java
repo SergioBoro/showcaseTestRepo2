@@ -65,6 +65,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	private ColumnSet cs = null;
 	private Timer selectionTimer = null;
 	private Timer clickTimer = null;
+	private Timer firstSelectionTimer = null;
 	private boolean doubleClick = false;
 	private DataServiceAsync dataService = null;
 	private GridContext localContext = null;
@@ -658,9 +659,23 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 				((CellSelectionModel<LiveGridModel>) selectionModel).selectCell(row, col);
 			}
 		} else {
-			for (LiveGridModel lgm : grid.getStore().getAll()) {
+			for (final LiveGridModel lgm : grid.getStore().getAll()) {
 				if (lgm.getId().equals(selected.recId)) {
-					selectionModel.select(lgm, false);
+
+					if (firstSelectionTimer != null) {
+						firstSelectionTimer.cancel();
+					}
+
+					firstSelectionTimer = new Timer() {
+						@Override
+						public void run() {
+							selectionModel.select(lgm, false);
+						}
+					};
+					final int firstSelectionTimerDelay = 100;
+					firstSelectionTimer.schedule(firstSelectionTimerDelay);
+
+					// selectionModel.select(lgm, false);
 					break;
 				}
 			}
