@@ -35,7 +35,7 @@ public class LiveGridMetadataGetCommand extends DataPanelElementCommand<LiveGrid
 		GridTransformer.includeDataPanelWidthAndHeightInSessionContext(getContext());
 		GridGetCommand command = new GridGetCommand(getContext(), getElementInfo(), true);
 		Grid grid = command.execute();
-		setResult(GridTransformer.gridToLiveGridMetadata(grid));
+		setResult(GridTransformer.gridToLiveGridMetadata(grid, getContext().getSubtype()));
 	}
 
 }

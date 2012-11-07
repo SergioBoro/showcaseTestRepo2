@@ -259,28 +259,27 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 						}
 					}
 
-					// gridContext.setProposedGridWidth(GeneralDataPanel.getTabPanel()
-					// .getOffsetWidth());
+					if (isFirstLoading()) {
+						callback.onSuccess(gridMetadata.getLiveGridData());
+						gridExtradata = gridMetadata.getLiveGridData().getLiveGridExtradata();
+						afterUpdateGrid();
+					} else {
+						dataService.getLiveGridData(gridContext, getElementInfo(),
+								new AsyncCallback<LiveGridData<LiveGridModel>>() {
+									@Override
+									public void onFailure(Throwable caught) {
+										callback.onFailure(caught);
+									}
 
-					// gridContext.setProposedGridHeight(GeneralDataPanel.getTabPanel()
-					// .getOffsetHeight());
+									@Override
+									public void onSuccess(LiveGridData<LiveGridModel> result) {
+										callback.onSuccess(result);
+										gridExtradata = result.getLiveGridExtradata();
+										afterUpdateGrid();
+									}
+								});
+					}
 
-					dataService.getLiveGridData(gridContext, getElementInfo(),
-							new AsyncCallback<LiveGridData<LiveGridModel>>() {
-								@Override
-								public void onFailure(Throwable caught) {
-									callback.onFailure(caught);
-								}
-
-								@Override
-								public void onSuccess(LiveGridData<LiveGridModel> result) {
-									callback.onSuccess(result);
-
-									gridExtradata = result.getLiveGridExtradata();
-
-									afterUpdateGrid();
-								}
-							});
 				}
 
 			};

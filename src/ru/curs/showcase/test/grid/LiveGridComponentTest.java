@@ -46,6 +46,7 @@ public class LiveGridComponentTest extends AbstractTest {
 	private static final String REC_ID2 = "36";
 
 	private static final int DATA_SIZE = 50;
+	private static final int DATA_SIZE2 = 100;
 
 	@Test
 	public void testLiveGridMetadata1Proc() {
@@ -142,7 +143,7 @@ public class LiveGridComponentTest extends AbstractTest {
 
 		assertEquals(LIVE_INFO_OFFSET, lgd.getOffset());
 		assertEquals(LIVE_INFO_TOTALCOUNT2, lgd.getTotalLength());
-		assertEquals(DATA_SIZE, lgd.getData().size());
+		assertEquals(DATA_SIZE2, lgd.getData().size());
 
 		LiveGridExtradata lge = lgd.getLiveGridExtradata();
 

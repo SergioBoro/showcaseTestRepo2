@@ -7,6 +7,7 @@ import java.util.*;
 import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementSubType;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.grid.GridTransformer;
 import ru.curs.showcase.test.AbstractTest;
@@ -41,7 +42,8 @@ public class LiveGridModuleTest extends AbstractTest {
 	@Test
 	public void testTransformGridToLiveGridMetadata() {
 		Grid grid = generateTestGrid();
-		LiveGridMetadata lgm = GridTransformer.gridToLiveGridMetadata(grid);
+		LiveGridMetadata lgm =
+			GridTransformer.gridToLiveGridMetadata(grid, DataPanelElementSubType.EXT_LIVE_GRID);
 
 		assertEquals(HEADER, lgm.getHeader());
 		assertEquals(FOOTER, lgm.getFooter());

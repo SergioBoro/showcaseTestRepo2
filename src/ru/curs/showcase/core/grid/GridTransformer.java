@@ -7,6 +7,7 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import ru.curs.gwt.datagrid.model.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementSubType;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -23,7 +24,8 @@ public final class GridTransformer {
 		throw new UnsupportedOperationException();
 	}
 
-	public static LiveGridMetadata gridToLiveGridMetadata(final Grid grid) {
+	public static LiveGridMetadata gridToLiveGridMetadata(final Grid grid,
+			final DataPanelElementSubType subtype) {
 
 		LiveGridMetadata lgm = new LiveGridMetadata();
 		lgm.setId(grid.getId());
@@ -79,6 +81,12 @@ public final class GridTransformer {
 			lgm.setBackgroundColor(record.getBackgroundColor());
 			lgm.setFontSize(record.getFontSize());
 			lgm.setFontModifiers(record.getFontModifiers());
+		}
+
+		// -------------------------------------------------------
+
+		if (subtype == DataPanelElementSubType.EXT_LIVE_GRID) {
+			lgm.setLiveGridData(gridToLiveGridData(grid));
 		}
 
 		// -------------------------------------------------------

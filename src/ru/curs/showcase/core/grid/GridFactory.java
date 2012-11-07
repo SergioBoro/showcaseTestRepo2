@@ -370,6 +370,9 @@ public class GridFactory extends CompBasedElementFactory {
 				value = attrs.getValue(PAGESIZE_TAG);
 				intValue = Integer.valueOf(value);
 				getResult().getDataSet().getRecordSet().setPageSize(intValue);
+
+				getResult().getLiveInfo().setLimit(intValue);
+
 			}
 			if (!getElementInfo().loadByOneProc()) {
 				value = attrs.getValue(TOTAL_COUNT_TAG);

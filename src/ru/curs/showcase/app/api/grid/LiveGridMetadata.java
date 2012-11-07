@@ -30,6 +30,8 @@ public class LiveGridMetadata extends DataPanelCompBasedElement implements SizeE
 	private String fontSize = null;
 	private Set<FontModifier> fontModifiers = null;
 
+	private LiveGridData<LiveGridModel> liveGridData;
+
 	/**
 	 * Настройки UI для грида. Как правило, задаются по умолчанию для всех
 	 * гридов в файле настроек приложения.
@@ -117,6 +119,14 @@ public class LiveGridMetadata extends DataPanelCompBasedElement implements SizeE
 
 	public void setFontModifiers(final Set<FontModifier> aFontModifiers) {
 		fontModifiers = aFontModifiers;
+	}
+
+	public LiveGridData<LiveGridModel> getLiveGridData() {
+		return liveGridData;
+	}
+
+	public void setLiveGridData(final LiveGridData<LiveGridModel> aLiveGridData) {
+		liveGridData = aLiveGridData;
 	}
 
 }
