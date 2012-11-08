@@ -30,7 +30,8 @@ public class LiveGridMetadata extends DataPanelCompBasedElement implements SizeE
 	private String fontSize = null;
 	private Set<FontModifier> fontModifiers = null;
 
-	private LiveGridData<LiveGridModel> liveGridData;
+	private LiveGridData<LiveGridModel> liveGridData = null;
+	private TreeGridData<TreeGridModel> treeGridData = null;
 
 	/**
 	 * Настройки UI для грида. Как правило, задаются по умолчанию для всех
@@ -127,6 +128,14 @@ public class LiveGridMetadata extends DataPanelCompBasedElement implements SizeE
 
 	public void setLiveGridData(final LiveGridData<LiveGridModel> aLiveGridData) {
 		liveGridData = aLiveGridData;
+	}
+
+	public TreeGridData<TreeGridModel> getTreeGridData() {
+		return treeGridData;
+	}
+
+	public void setTreeGridData(final TreeGridData<TreeGridModel> aTreeGridData) {
+		treeGridData = aTreeGridData;
 	}
 
 }

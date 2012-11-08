@@ -89,6 +89,10 @@ public final class GridTransformer {
 			lgm.setLiveGridData(gridToLiveGridData(grid));
 		}
 
+		if (subtype == DataPanelElementSubType.EXT_TREE_GRID) {
+			lgm.setTreeGridData(gridToTreeGridData(grid));
+		}
+
 		// -------------------------------------------------------
 
 		return lgm;

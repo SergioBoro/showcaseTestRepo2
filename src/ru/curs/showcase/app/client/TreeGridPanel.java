@@ -193,8 +193,11 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
+		GridContext gc = getDetailedContext();
+		gc.setParentId(null);
+
 		dataService
-				.getLiveGridMetadata(getDetailedContext(), getElementInfo(),
+				.getLiveGridMetadata(gc, getElementInfo(),
 						new GWTServiceCallback<LiveGridMetadata>(
 								"при получении данных таблицы с сервера") {
 
@@ -233,7 +236,6 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 			final AsyncCallback<List<TreeGridModel>> callback) {
 
 		final GridContext gridContext = getDetailedContext();
-		gridContext.resetForReturnAllRecords();
 		gridContext.setParentId(null);
 		if (loadConfig != null) {
 			gridContext.setParentId(loadConfig.getId());
@@ -266,69 +268,75 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 			}
 		}
 
-		dataService.getTreeGridData(gridContext, getElementInfo(),
-				new AsyncCallback<List<TreeGridModel>>() {
-					@Override
-					public void onFailure(final Throwable caught) {
-						callback.onFailure(caught);
-					}
+		if (isFirstLoading()) {
+			callback.onSuccess(gridMetadata.getTreeGridData());
+			gridExtradataLevel0 = gridMetadata.getTreeGridData().getLiveGridExtradata();
+			afterUpdateGrid(null);
+		} else {
+			dataService.getTreeGridData(gridContext, getElementInfo(),
+					new AsyncCallback<List<TreeGridModel>>() {
+						@Override
+						public void onFailure(final Throwable caught) {
+							callback.onFailure(caught);
+						}
 
-					@Override
-					public void onSuccess(final List<TreeGridModel> result) {
+						@Override
+						public void onSuccess(final List<TreeGridModel> result) {
 
-						if (gridContext.getParentId() != null) {
-							String id;
-							List<TreeGridModel> models = grid.getStore().getAll();
-							for (TreeGridModel res : result) {
-								id = res.getId();
-								if (id == null) {
-									continue;
-								}
+							if (gridContext.getParentId() != null) {
+								String id;
+								List<TreeGridModel> models = grid.getStore().getAll();
+								for (TreeGridModel res : result) {
+									id = res.getId();
+									if (id == null) {
+										continue;
+									}
 
-								for (TreeGridModel old : models) {
-									if (id.equals(old.getId())) {
-										MessageBox
-												.showSimpleMessage(
-														"Загрузка данных",
-														"Загружаемая запись с идентификатором "
-																+ res.getId()
-																+ " уже присутствует в гриде. Записи загружены не будут.");
-										return;
+									for (TreeGridModel old : models) {
+										if (id.equals(old.getId())) {
+											MessageBox
+													.showSimpleMessage(
+															"Загрузка данных",
+															"Загружаемая запись с идентификатором "
+																	+ res.getId()
+																	+ " уже присутствует в гриде. Записи загружены не будут.");
+											return;
+										}
 									}
 								}
 							}
-						}
 
-						callback.onSuccess(result);
+							callback.onSuccess(result);
 
-						TreeGridData<TreeGridModel> tgd = (TreeGridData<TreeGridModel>) result;
+							TreeGridData<TreeGridModel> tgd = (TreeGridData<TreeGridModel>) result;
 
-						if (loadConfig == null) {
-							gridExtradataLevel0 = tgd.getLiveGridExtradata();
-						} else {
-							boolean needAdd;
-							for (ru.curs.showcase.app.api.grid.GridEvent ev : tgd
-									.getLiveGridExtradata().getEventManager().getEvents()) {
-								needAdd = true;
-								for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridExtradataLevel0
-										.getEventManager().getEvents()) {
-									if (ev.getId1().equals(evOld.getId1())
-											&& ev.getId2().equals(evOld.getId2())
-											&& (ev.getInteractionType() == evOld
-													.getInteractionType())) {
-										needAdd = false;
-										break;
+							if (loadConfig == null) {
+								gridExtradataLevel0 = tgd.getLiveGridExtradata();
+							} else {
+								boolean needAdd;
+								for (ru.curs.showcase.app.api.grid.GridEvent ev : tgd
+										.getLiveGridExtradata().getEventManager().getEvents()) {
+									needAdd = true;
+									for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridExtradataLevel0
+											.getEventManager().getEvents()) {
+										if (ev.getId1().equals(evOld.getId1())
+												&& ev.getId2().equals(evOld.getId2())
+												&& (ev.getInteractionType() == evOld
+														.getInteractionType())) {
+											needAdd = false;
+											break;
+										}
+									}
+									if (needAdd) {
+										gridExtradataLevel0.getEventManager().getEvents().add(ev);
 									}
 								}
-								if (needAdd) {
-									gridExtradataLevel0.getEventManager().getEvents().add(ev);
-								}
 							}
-						}
 
-						afterUpdateGrid(loadConfig);
-					}
-				});
+							afterUpdateGrid(loadConfig);
+						}
+					});
+		}
 
 	}
 
