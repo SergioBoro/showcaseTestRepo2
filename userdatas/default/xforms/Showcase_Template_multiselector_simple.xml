@@ -232,6 +232,9 @@
 		        needInitSelection = "true"
 		        xpathRoot         = "'XPath(instance(quot(myInstance))/infos)'"
 		        xpathMapping      = "{'XPath(instance(quot(myInstance1))/info)':{'id': '@id','name':'name'}}"
+		        
+		        onSelectionComplete = "function(ok, selected){if (ok) {alert('Это вызов onSelectionComplete');}}"		        
+		        
 		    />			
 			
 			

@@ -6,6 +6,15 @@
 		<element id="6" type="webtext" transform="bal.xsl" />
 	</tab>
 	
+
+
+    <tab id="101" name="XForms. Задание размеров селекторов" layout="VERTICAL">
+        <element id="0502" type="xforms" template="Showcase_Template_multiselector_simple.xml"
+            proc="xforms_proc_no_data">
+            <proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
+        </element>
+    </tab>
+
 	
 	
 	
@@ -115,11 +124,5 @@
 
 -->	
 	
-    <tab id="101" name="XForms. Задание размеров селекторов" layout="VERTICAL">
-        <element id="0502" type="xforms" template="Showcase_Template_multiselector_simple.xml"
-            proc="xforms_proc_no_data">
-            <proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
-        </element>
-    </tab>
 	
 </datapanel>

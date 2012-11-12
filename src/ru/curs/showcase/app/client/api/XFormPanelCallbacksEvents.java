@@ -333,7 +333,9 @@ public final class XFormPanelCallbacksEvents {
 		 *            JavaScriptObject
 		 */
 		native void onSelectionComplete(final boolean ok, final JavaScriptObject selected)/*-{
-			this.onSelectionComplete(ok, selected);
+			if (this.onSelectionComplete != null) {
+				this.onSelectionComplete(ok, selected);
+			}
 		}-*/;
 
 		/**
@@ -445,6 +447,10 @@ public final class XFormPanelCallbacksEvents {
 							setXFormByXPath(selector.isOK(), selector.getSelectedAsJsObject(),
 									param.xpathMapping());
 						}
+
+						param.onSelectionComplete(selector.isOK(),
+								selector.getSelectedAsJsObject());
+
 					}
 				}
 			});
