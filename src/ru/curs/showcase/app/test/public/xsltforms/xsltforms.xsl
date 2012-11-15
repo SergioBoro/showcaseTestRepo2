@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<!-- Rev. 555
+<!-- Rev. 560
 Copyright (C) 2008-2012 agenceXML - Alain COUTHURES
 Contact at : info@agencexml.com
 
@@ -23,11 +23,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 <xsl:stylesheet xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ajx="http://www.ajaxforms.net/2006/ajx" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:exslt="http://exslt.org/common" xmlns:txs="http://www.agencexml.com/txs" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:default="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" exclude-result-prefixes="xhtml xforms ev exslt msxsl"><rdf:RDF>
 		<rdf:Description rdf:about="http://www.agencexml.com/xsltforms/xsltforms.xsl">
 			<dcterms:title>XSLT 1.0 Stylesheet for XSLTForms</dcterms:title>
-			<dcterms:hasVersion>555</dcterms:hasVersion>
+			<dcterms:hasVersion>560</dcterms:hasVersion>
 			<dcterms:creator>Alain Couthures - agenceXML</dcterms:creator>
 			<dcterms:conformsTo>XForms 1.1</dcterms:conformsTo>
-			<dcterms:created>2012-07-22</dcterms:created>
-			<dcterms:description>NSResolver fix for Firefox</dcterms:description>
+			<dcterms:created>2012-11-02</dcterms:created>
+			<dcterms:description>upload/filename and dispatch/property support</dcterms:description>
 			<dcterms:format>text/xsl</dcterms:format>
 		</rdf:Description>
 	</rdf:RDF><xsl:output method="html" encoding="utf-8" omit-xml-declaration="no" indent="no" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
@@ -37,10 +37,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		<xsl:param xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="pwd"/>
 		<xsl:param xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="xsltforms_home"/>
 		<xsl:param xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="xsltforms_caller"/>
+		<xsl:param xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="xsltforms_chain"/>
 		<xsl:param xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="xsltforms_config"/>
 		<xsl:param xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="xsltforms_debug"/>
 		<xsl:param xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="xsltforms_lang"/>
-		<xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="configdoc" select="document(concat($xsltforms_home,'config.xsl'))/xsl:stylesheet/xsl:template[@name='config']"/>
+		<xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="configdoc" select="document(concat($xsltforms_home,'config_ru.xsl'))/xsl:stylesheet/xsl:template[@name='config']"/>
 		<xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="doc_id" select="'xsltforms-mainform'"/>
 		<xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="id_pf" select="'xsltforms-mainform-'"/>
 		<xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="jsid_pf" select="'xsltforms_subform.id + &quot;-'"/>
@@ -105,6 +106,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 					</xsl:choose>
 				</config>
 			</script>
+		</xsl:variable>
+		<xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="xsltformspivalue" select="translate(normalize-space(/processing-instruction('xsltforms-options')[1]), ' ', '')"/>
+		<xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="required-position">
+			<xsl:choose>
+				<xsl:when test="$configdoc/properties/required-position">
+					<xsl:value-of select="$configdoc/config/properties/required-position"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:variable name="requiredquote" select="substring(substring-after($xsltformspivalue, 'required-position='), 1, 1)"/>
+					<xsl:value-of select="substring-before(substring-after($xsltformspivalue, concat('required-position=', $requiredquote)), $requiredquote)"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="main" select="/"/>
 		<xsl:variable xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="profiler">
@@ -256,6 +269,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 					<xsl:when test="$baseuri != ''">
 						<xsl:value-of select="$baseuri"/>
 					</xsl:when>
+					<xsl:when test="$xsltforms_home != ''">
+						<xsl:value-of select="$xsltforms_home"/>
+					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="substring-before($href, 'xsltforms.xsl')"/>
 					</xsl:otherwise>
@@ -268,7 +284,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 						<xsl:value-of select="$script/config/properties/language"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:variable name="xsltformspivalue" select="translate(normalize-space(/processing-instruction('xsltforms-options')[1]), ' ', '')"/>
 						<xsl:variable name="langquote" select="substring(substring-after($xsltformspivalue, 'lang='), 1, 1)"/>
 						<xsl:value-of select="substring-before(substring-after($xsltformspivalue, concat('lang=', $langquote)), $langquote)"/>
 					</xsl:otherwise>
@@ -276,7 +291,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			</xsl:variable>
 			<html xmlns="http://www.w3.org/1999/xhtml">
 				<xsl:copy-of select="@*"/>
-				<xsl:comment>HTML elements and Javascript instructions generated by XSLTForms r555 - Copyright (C) 2008-2012 &lt;agenceXML&gt; - Alain COUTHURES - http://www.agencexml.com</xsl:comment>
+				<xsl:comment>HTML elements and Javascript instructions generated by XSLTForms r560 - Copyright (C) 2008-2012 &lt;agenceXML&gt; - Alain COUTHURES - http://www.agencexml.com</xsl:comment>
 				<xsl:variable name="option"> debug="yes" </xsl:variable>
 				<xsl:variable name="displaydebug">
 					<xsl:choose>
@@ -318,6 +333,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 					<script id="xsltforms-generatedscript" type="text/javascript">
 						<xsl:text>/* XsltForms_MagicSeparator */
 </xsl:text>
+						<xsl:text>function </xsl:text>
+						<xsl:value-of select="$vn_pf"/>
+						<xsl:text>initImpl() {
+</xsl:text>
 						<xsl:text>XsltForms_globals.language = "</xsl:text>
 						<xsl:choose>
 							<xsl:when test="$lang != ''">
@@ -340,10 +359,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 							<xsl:otherwise><xsl:text> </xsl:text></xsl:otherwise>
 						</xsl:choose>
 						<xsl:text>";
-</xsl:text>
-						<xsl:text>function </xsl:text>
-						<xsl:value-of select="$vn_pf"/>
-						<xsl:text>initImpl() {
 </xsl:text>
 						<xsl:text>XsltForms_globals.debugMode = </xsl:text>
 						<xsl:value-of select="$displaydebug"/>
@@ -511,7 +526,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 						<xsl:text>} /* XsltForms_MagicSeparator */ };
 </xsl:text>
 						<xsl:if test="$xsltforms_caller = 'true'">
-							<xsl:value-of select="$vn_pf"/><xsl:text>init();if (window.xf_user_init) xf_user_init();</xsl:text>
+							<xsl:value-of select="$vn_pf"/><xsl:text>initImpl();if (window.xf_user_init) xf_user_init();</xsl:text>
 							<xsl:value-of select="$initdebug"/>
 							<xsl:value-of select="xhtml:body/@onload"/>
 							<xsl:value-of select="body/@onload"/>
@@ -570,6 +585,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 					<div id="xsltforms_console">&#xA0;<xsl:text/></div>
 					<div id="statusPanel"><xsl:value-of select="$script/config/properties/status"/>&#xA0;<xsl:text/></div>
 					<xsl:comment>XsltForms_MagicSeparator</xsl:comment>
+					<xsl:if test="$xsltforms_chain = 'true'">
+						<script id="xsltforms-chain" type="text/javascript">
+							<xsl:text>if (XsltForms_browser.isMozilla) {</xsl:text>
+							<xsl:value-of select="$vn_pf"/><xsl:text>init();if (window.xf_user_init) xf_user_init();</xsl:text>
+							<xsl:value-of select="$initdebug"/>
+							<xsl:value-of select="xhtml:body/@onload"/>
+							<xsl:value-of select="body/@onload"/>
+							<xsl:text>;}
+</xsl:text>
+						</script>
+					</xsl:if>
 				</body>
 			</html>
 		</xsl:template>
@@ -597,6 +623,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 			<xsl:param name="parentworkid"/>
 			<xsl:param name="workid" select="concat(position(),'_',$parentworkid)"/>
 			<optgroup label="{xforms:label/text()}">
+				<xsl:call-template name="genid">
+					<xsl:with-param name="workid" select="$workid"/>
+				</xsl:call-template>
 				<xsl:apply-templates select="node()" mode="item">
 					<xsl:with-param name="parentworkid" select="$workid"/>
 				</xsl:apply-templates>
@@ -633,7 +662,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="text()" mode="item"/>
 		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="xforms:setvalue|xforms:insert|xforms:delete|xforms:dispatch|xforms:action|xforms:load|xforms:toggle|xforms:send|xforms:setfocus" priority="2"/>
 		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="xforms:setindex|xforms:setnode|xforms:reset|xforms:refresh|xforms:rebuild|xforms:recalculate|xforms:revalidate|xforms:unload" priority="2"/>
-		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="xforms:hint|xforms:alert|xforms:help|xforms:value|xforms:item|xforms:itemset|xforms:choices" priority="2"/>
+		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="xforms:hint|xforms:alert|xforms:help|xforms:value|xforms:item|xforms:itemset|xforms:choices|xforms:filename" priority="2"/>
 		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="xforms:model|xforms:show|xforms:hide" priority="2"/>
 		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="xforms:*" priority="1">
 			<script type="text/javascript">
@@ -1150,6 +1179,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 					<xsl:with-param name="class">xforms-switch</xsl:with-param>
 				</xsl:call-template>
 				<xsl:variable name="noselected" select="count(xforms:case[@selected='true']) = 0"/>
+				<xsl:variable name="caseref" select="@caseref != ''"/>
 				<xsl:for-each select="node()">
 					<xsl:if test="self::xforms:case">
 						<xsl:variable name="nopreviousselected" select="count(preceding-sibling::xforms:case[@selected='true']) = 0"/>
@@ -1160,7 +1190,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 							<xsl:call-template name="style">
 								<xsl:with-param name="class">xforms-case</xsl:with-param>
 							</xsl:call-template>
-							<xsl:if test="not(($noselected and count(preceding-sibling::xforms:case) = 0) or (@selected = 'true' and $nopreviousselected))">
+							<xsl:if test="$caseref or not(($noselected and count(preceding-sibling::xforms:case) = 0) or (@selected = 'true' and $nopreviousselected))">
 								<xsl:attribute name="style">display:none;</xsl:attribute>
 							</xsl:if>
 							<xsl:apply-templates select="node()">
@@ -1406,107 +1436,112 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:if>
+						<xsl:if test="local-name() != 'output' and $required-position = 'left' and xforms:label/node()">
+							<span class="xforms-required-icon">*</span>
+						</xsl:if>
 						<span class="value">
 							<xsl:copy-of select="$body"/>
 						</span>
 						<xsl:if test="@ajx:aid-button = 'true'">
 							<button type="button" class="aid-button">...</button>
 						</xsl:if>
-						<xsl:if test="local-name() != 'output'">
+						<xsl:if test="local-name() != 'output' and not($required-position = 'left' and xforms:label/node())">
 							<span class="xforms-required-icon">*</span>
 						</xsl:if>
-						<span class="xforms-alert">
-							<span class="xforms-alert-icon">
+						<xsl:if test="local-name() != 'output'">
+							<span class="xforms-alert">
+								<span class="xforms-alert-icon">
+									<xsl:if test="xforms:alert">
+										<xsl:attribute name="onmouseover">XsltForms_browser.show(this, null, true)</xsl:attribute>
+										<xsl:attribute name="onmouseout">XsltForms_browser.show(this, null, false)</xsl:attribute>
+									</xsl:if>
+									<xsl:text>&#xA0;</xsl:text>
+								</span>
 								<xsl:if test="xforms:alert">
-									<xsl:attribute name="onmouseover">XsltForms_browser.show(this, null, true)</xsl:attribute>
-									<xsl:attribute name="onmouseout">XsltForms_browser.show(this, null, false)</xsl:attribute>
+									<xsl:variable name="aid">
+										<xsl:choose>
+											<xsl:when test="xforms:alert/@id"><xsl:value-of select="xforms:alert/@id"/></xsl:when>
+											<xsl:otherwise>
+												<xsl:for-each select="node()">
+													<xsl:if test="self::xforms:alert and not(preceding-sibling::xforms:alert)">
+														<xsl:value-of select="concat($id_pf,'alert-',position(),'_',$workid)"/>
+													</xsl:if>
+												</xsl:for-each>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:variable>
+									<xsl:variable name="alertworkid">
+										<xsl:for-each select="node()">
+											<xsl:if test="self::xforms:alert and not(preceding-sibling::xforms:alert)">
+												<xsl:value-of select="concat(position(),'_',$workid)"/>
+											</xsl:if>
+										</xsl:for-each>
+									</xsl:variable>
+									<span class="xforms-alert-value" id="{$aid}">
+										<xsl:apply-templates select="xforms:alert/node()">
+											<xsl:with-param name="parentworkid" select="$alertworkid"/>
+										</xsl:apply-templates>
+									</span>
 								</xsl:if>
-								<xsl:text>&#xA0;</xsl:text>
 							</span>
-							<xsl:if test="xforms:alert">
-								<xsl:variable name="aid">
-									<xsl:choose>
-										<xsl:when test="xforms:alert/@id"><xsl:value-of select="xforms:alert/@id"/></xsl:when>
-										<xsl:otherwise>
-											<xsl:for-each select="node()">
-												<xsl:if test="self::xforms:alert and not(preceding-sibling::xforms:alert)">
-													<xsl:value-of select="concat($id_pf,'alert-',position(),'_',$workid)"/>
-												</xsl:if>
-											</xsl:for-each>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<xsl:variable name="alertworkid">
-									<xsl:for-each select="node()">
-										<xsl:if test="self::xforms:alert and not(preceding-sibling::xforms:alert)">
-											<xsl:value-of select="concat(position(),'_',$workid)"/>
-										</xsl:if>
-									</xsl:for-each>
-								</xsl:variable>
-								<span class="xforms-alert-value" id="{$aid}">
-									<xsl:apply-templates select="xforms:alert/node()">
-										<xsl:with-param name="parentworkid" select="$alertworkid"/>
-									</xsl:apply-templates>
+							<xsl:if test="xforms:hint">
+								<span class="xforms-hint">
+									<span class="xforms-hint-icon" onmouseover="XsltForms_browser.show(this, 'hint', true)" onmouseout="XsltForms_browser.show(this, 'hint', false)">&#xA0;<xsl:text/></span>
+									<xsl:variable name="hid">
+										<xsl:choose>
+											<xsl:when test="xforms:hint/@id"><xsl:value-of select="xforms:hint/@id"/></xsl:when>
+											<xsl:otherwise>
+												<xsl:for-each select="node()">
+													<xsl:if test="self::xforms:hint and not(preceding-sibling::xforms:hint)">
+														<xsl:value-of select="concat($id_pf,'hint-',position(),'_',$workid)"/>
+													</xsl:if>
+												</xsl:for-each>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:variable>
+									<xsl:variable name="hintworkid">
+										<xsl:for-each select="node()">
+											<xsl:if test="self::xforms:hint and not(preceding-sibling::xforms:hint)">
+												<xsl:value-of select="concat(position(),'_',$workid)"/>
+											</xsl:if>
+										</xsl:for-each>
+									</xsl:variable>
+									<span class="xforms-hint-value" id="{$hid}">
+										<xsl:apply-templates select="xforms:hint/node()">
+											<xsl:with-param name="parentworkid" select="$hintworkid"/>
+										</xsl:apply-templates>
+									</span>
 								</span>
 							</xsl:if>
-						</span>
-						<xsl:if test="xforms:hint">
-							<span class="xforms-hint">
-								<span class="xforms-hint-icon" onmouseover="XsltForms_browser.show(this, 'hint', true)" onmouseout="XsltForms_browser.show(this, 'hint', false)">&#xA0;<xsl:text/></span>
-								<xsl:variable name="hid">
-									<xsl:choose>
-										<xsl:when test="xforms:hint/@id"><xsl:value-of select="xforms:hint/@id"/></xsl:when>
-										<xsl:otherwise>
-											<xsl:for-each select="node()">
-												<xsl:if test="self::xforms:hint and not(preceding-sibling::xforms:hint)">
-													<xsl:value-of select="concat($id_pf,'hint-',position(),'_',$workid)"/>
-												</xsl:if>
-											</xsl:for-each>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<xsl:variable name="hintworkid">
-									<xsl:for-each select="node()">
-										<xsl:if test="self::xforms:hint and not(preceding-sibling::xforms:hint)">
-											<xsl:value-of select="concat(position(),'_',$workid)"/>
-										</xsl:if>
-									</xsl:for-each>
-								</xsl:variable>
-								<span class="xforms-hint-value" id="{$hid}">
-									<xsl:apply-templates select="xforms:hint/node()">
-										<xsl:with-param name="parentworkid" select="$hintworkid"/>
-									</xsl:apply-templates>
+							<xsl:if test="xforms:help[not(@appearance='minimal')]">
+								<span class="xforms-help">
+									<span class="xforms-help-icon" onmouseover="XsltForms_browser.show(this, 'help', true)" onmouseout="XsltForms_browser.show(this, 'help', false)">&#xA0;<xsl:text/></span>
+									<xsl:variable name="hid">
+										<xsl:choose>
+											<xsl:when test="xforms:help/@id"><xsl:value-of select="xforms:help/@id"/></xsl:when>
+											<xsl:otherwise>
+												<xsl:for-each select="node()">
+													<xsl:if test="self::xforms:help and not(preceding-sibling::xforms:help)">
+														<xsl:value-of select="concat($id_pf,'help-',position(),'_',$workid)"/>
+													</xsl:if>
+												</xsl:for-each>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:variable>
+									<xsl:variable name="helpworkid">
+										<xsl:for-each select="node()">
+											<xsl:if test="self::xforms:help and not(preceding-sibling::xforms:help)">
+												<xsl:value-of select="concat(position(),'_',$workid)"/>
+											</xsl:if>
+										</xsl:for-each>
+									</xsl:variable>
+									<span class="xforms-help-value" id="{$hid}">
+										<xsl:apply-templates select="xforms:help/node()">
+											<xsl:with-param name="parentworkid" select="$helpworkid"/>
+										</xsl:apply-templates>
+									</span>
 								</span>
-							</span>
-						</xsl:if>
-						<xsl:if test="xforms:help[not(@appearance='minimal')]">
-							<span class="xforms-help">
-								<span class="xforms-help-icon" onmouseover="XsltForms_browser.show(this, 'help', true)" onmouseout="XsltForms_browser.show(this, 'help', false)">&#xA0;<xsl:text/></span>
-								<xsl:variable name="hid">
-									<xsl:choose>
-										<xsl:when test="xforms:help/@id"><xsl:value-of select="xforms:help/@id"/></xsl:when>
-										<xsl:otherwise>
-											<xsl:for-each select="node()">
-												<xsl:if test="self::xforms:help and not(preceding-sibling::xforms:help)">
-													<xsl:value-of select="concat($id_pf,'help-',position(),'_',$workid)"/>
-												</xsl:if>
-											</xsl:for-each>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<xsl:variable name="helpworkid">
-									<xsl:for-each select="node()">
-										<xsl:if test="self::xforms:help and not(preceding-sibling::xforms:help)">
-											<xsl:value-of select="concat(position(),'_',$workid)"/>
-										</xsl:if>
-									</xsl:for-each>
-								</xsl:variable>
-								<span class="xforms-help-value" id="{$hid}">
-									<xsl:apply-templates select="xforms:help/node()">
-										<xsl:with-param name="parentworkid" select="$helpworkid"/>
-									</xsl:apply-templates>
-								</span>
-							</span>
+							</xsl:if>
 						</xsl:if>
 					</span>
 				</xsl:otherwise>
@@ -2824,7 +2859,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		</xsl:template>
 	
 		
-		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="@at | @calculate | @constraint | @context | @if | @index | @inner | @iterate | @nodeset | @origin | @outer | @readonly | @ref | @relevant | @required | @target | @targetref | @value | @while" mode="scriptattr" priority="1">
+		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="@at | @calculate | @caseref | @constraint | @context | @if | @index | @inner | @iterate | @nodeset | @origin | @outer | @readonly | @ref | @relevant | @required | @target | @targetref | @value | @while" mode="scriptattr" priority="1">
 			<xexpr xmlns=""><xsl:value-of select="."/></xexpr>
 		</xsl:template>
 		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="@model[not(../@ref)]" mode="scriptattr" priority="1">
@@ -2874,7 +2909,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="xforms:bind" mode="script" priority="1">
 			<xsl:param name="parentworkid"/>
 			<xsl:param name="workid" select="concat(position(),'_',$parentworkid)"/>
-			<xsl:if test="not(@nodeset)">
+			<xsl:if test="not(@nodeset) and not(@ref)">
 				<xexpr>.</xexpr>
 			</xsl:if>
 			<xsl:apply-templates select="@*" mode="scriptattr"/>
@@ -2903,6 +2938,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				<xsl:variable name="nodeset">
 					<xsl:choose>
 						<xsl:when test="@nodeset"><xsl:value-of select="@nodeset"/></xsl:when>
+						<xsl:when test="@ref"><xsl:value-of select="@ref"/></xsl:when>
 						<xsl:otherwise>.</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
@@ -2935,27 +2971,60 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				<xsl:with-param name="parentworkid" select="$workid"/>
 			</xsl:apply-templates>
 			<xsl:call-template name="listeners"/>
-			<case xmlns="">
-				<xsl:variable name="noselected" select="count(../xforms:case[@selected='true']) = 0"/>
-				<xsl:variable name="nopreviousselected" select="count(preceding-sibling::xforms:case[@selected='true']) = 0"/>
-				<xsl:if test="($noselected and count(preceding-sibling::xforms:case) = 0) or (@selected = 'true' and $nopreviousselected)">
-					<xsl:variable name="rid">
-						<xsl:choose>
-							<xsl:when test="@id"><xsl:value-of select="@id"/></xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="$jsid_pf"/>
-								<xsl:text>case-</xsl:text>
-								<xsl:value-of select="$workid"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:text>XsltForms_xmlevents.dispatch(document.getElementById('</xsl:text>
-					<xsl:value-of select="$rid"/>
-					<xsl:text>'), "xforms-select");
+			<xsl:if test="parent::xforms:switch and not(parent::xforms:switch/@caseref)">
+				<case xmlns="">
+					<xsl:variable name="noselected" select="count(../xforms:case[@selected='true']) = 0"/>
+					<xsl:variable name="nopreviousselected" select="count(preceding-sibling::xforms:case[@selected='true']) = 0"/>
+					<xsl:if test="($noselected and count(preceding-sibling::xforms:case) = 0) or (@selected = 'true' and $nopreviousselected)">
+						<xsl:variable name="rid">
+							<xsl:choose>
+								<xsl:when test="@id">"<xsl:value-of select="@id"/></xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$jsid_pf"/>
+									<xsl:text>case-</xsl:text>
+									<xsl:value-of select="$workid"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<xsl:text>XsltForms_xmlevents.dispatch(document.getElementById(</xsl:text>
+						<xsl:value-of select="$rid"/>
+						<xsl:text>"), "xforms-select");
 </xsl:text>
-				</xsl:if>
-			</case>
+					</xsl:if>
+				</case>
+			</xsl:if>
 		</xsl:template>
+	
+		
+		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="xforms:choices[xforms:label[@ref or @bind]]" mode="script" priority="1">
+			<xsl:param name="parentworkid"/>
+			<xsl:param name="workid" select="concat(position(),'_',$parentworkid)"/>
+			<xsl:apply-templates select="@*" mode="scriptattr"/>
+			<js xmlns="">
+				<xsl:variable name="lname" select="local-name()"/>
+				<xsl:text>new XsltForms_label(</xsl:text>
+				<xsl:value-of select="$vn_subform"/>
+				<xsl:text>,</xsl:text>
+				<xsl:choose>
+					<xsl:when test="@id">"<xsl:value-of select="@id"/></xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$jsid_pf"/>
+						<xsl:value-of select="$lname"/>
+						<xsl:text>-</xsl:text>
+						<xsl:value-of select="$workid"/>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>",</xsl:text>
+				<xsl:call-template name="toScriptBinding"><xsl:with-param name="p" select="xforms:label/@ref | xforms:label/@bind"/></xsl:call-template>
+				<xsl:text>);</xsl:text>
+			</js>
+			<xsl:apply-templates select="node()" mode="script">
+				<xsl:with-param name="parentworkid" select="$workid"/>
+			</xsl:apply-templates>
+			<xsl:call-template name="listeners">
+				<xsl:with-param name="workid" select="$workid"/>
+			</xsl:call-template>
+		</xsl:template>	    
 	
 		
 		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="xforms:delete" mode="script" priority="1">
@@ -2970,7 +3039,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				<xsl:text> = new XsltForms_delete(</xsl:text>
 				<xsl:value-of select="$vn_subform"/>
 				<xsl:text>,"</xsl:text>
-				<xsl:call-template name="toXPathExpr"><xsl:with-param name="p" select="@nodeset"/></xsl:call-template>
+				<xsl:call-template name="toXPathExpr"><xsl:with-param name="p" select="@nodeset | @ref"/></xsl:call-template>
 				<xsl:text>",</xsl:text>
 				<xsl:call-template name="toScriptParam"><xsl:with-param name="p" select="@model"/></xsl:call-template>
 				<xsl:text>,</xsl:text>
@@ -3044,7 +3113,24 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 						<xsl:call-template name="toScriptParam"><xsl:with-param name="p" select="@targetid"/></xsl:call-template>
 					</xsl:otherwise>
 				</xsl:choose>
-				<xsl:text>,</xsl:text>
+				<xsl:text>,{</xsl:text>
+				<xsl:for-each select="xforms:property">
+					<xsl:text>"</xsl:text>
+					<xsl:value-of select="@name"/>
+					<xsl:text>":</xsl:text>
+					<xsl:choose>
+						<xsl:when test="@value">
+							<xsl:call-template name="toScriptBinding"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="toScriptParam"><xsl:with-param name="p" select="normalize-space(text())"/></xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:if test="position() != last()">
+						<xsl:text>,</xsl:text>
+					</xsl:if>
+				</xsl:for-each>
+				<xsl:text>},</xsl:text>
 				<xsl:call-template name="toScriptParam"><xsl:with-param name="p" select="@if"/></xsl:call-template>
 				<xsl:text>,</xsl:text>
 				<xsl:call-template name="toScriptParam"><xsl:with-param name="p" select="@while"/></xsl:call-template>
@@ -3182,6 +3268,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				</xsl:choose>
 				<xsl:text>",</xsl:text>
 				<xsl:choose>
+					<xsl:when test="xforms:label/node() and $required-position = 'left'">3</xsl:when>
 					<xsl:when test="xforms:label/node()">2</xsl:when>
 					<xsl:otherwise>0</xsl:otherwise>
 				</xsl:choose>
@@ -3226,7 +3313,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				<xsl:text> = new XsltForms_insert(</xsl:text>
 				<xsl:value-of select="$vn_subform"/>
 				<xsl:text>,"</xsl:text>
-				<xsl:call-template name="toXPathExpr"><xsl:with-param name="p" select="@nodeset"/></xsl:call-template>
+				<xsl:call-template name="toXPathExpr"><xsl:with-param name="p" select="@nodeset | @ref"/></xsl:call-template>
 				<xsl:text>",</xsl:text>
 				<xsl:call-template name="toScriptParam"><xsl:with-param name="p" select="@model"/></xsl:call-template>
 				<xsl:text>,</xsl:text>
@@ -3362,7 +3449,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:text>",</xsl:text>
-					<xsl:call-template name="toScriptBinding"><xsl:with-param name="p" select="@nodeset"/></xsl:call-template>
+					<xsl:call-template name="toScriptBinding"><xsl:with-param name="p" select="@nodeset | @ref"/></xsl:call-template>
 					<xsl:text>);
 </xsl:text>
 			</xsl:if>
@@ -3424,7 +3511,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>",</xsl:text>
-				<xsl:call-template name="toScriptBinding"><xsl:with-param name="p" select="@nodeset"/></xsl:call-template>
+				<xsl:call-template name="toScriptBinding"><xsl:with-param name="p" select="@nodeset | @ref"/></xsl:call-template>
 				<xsl:if test="xforms:label">
 					<xsl:text>,</xsl:text>
 					<xsl:for-each select="xforms:label[1]">
@@ -3639,7 +3726,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		</xsl:template>
 	
 		
-		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="xforms:output | xforms:label[(@ref or @bind) and not(parent::xforms:item) and not(parent::xforms:itemset)]" mode="script" priority="1">
+		<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" match="xforms:output | xforms:label[(@ref or @bind) and not(parent::xforms:item) and not(parent::xforms:itemset) and not(parent::xforms:choices)]" mode="script" priority="1">
 			<xsl:param name="parentworkid"/>
 			<xsl:param name="workid" select="concat(position(),'_',$parentworkid)"/>
 			<xsl:apply-templates select="@*" mode="scriptattr"/>
@@ -3739,7 +3826,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 						<xsl:value-of select="concat('fromtostep(',@from,',',@to,',',$step,')')"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="@nodeset"/>
+						<xsl:value-of select="@nodeset | @ref"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
@@ -4332,7 +4419,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				<xsl:text>)</xsl:text>
 				<xsl:for-each select="xforms:header">
 					<xsl:text>.header(</xsl:text>
-					<xsl:call-template name="toScriptBinding"><xsl:with-param name="p" select="@nodeset"/></xsl:call-template>
+					<xsl:call-template name="toScriptBinding"><xsl:with-param name="p" select="@nodeset | @ref"/></xsl:call-template>
 					<xsl:text>,</xsl:text>
 					<xsl:call-template name="toScriptParam"><xsl:with-param name="p" select="@combine"/><xsl:with-param name="default">"append"</xsl:with-param></xsl:call-template>
 					<xsl:text>,</xsl:text>
@@ -4463,6 +4550,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				</xsl:choose>
 				<xsl:text>",</xsl:text>
 				<xsl:call-template name="toScriptBinding"><xsl:with-param name="p" select="@ref"/></xsl:call-template>
+				<xsl:text>,</xsl:text>
+				<xsl:choose>
+					<xsl:when test="@caseref != ''">
+						<xsl:call-template name="toScriptBinding"><xsl:with-param name="p" select="@caseref"/></xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>null</xsl:otherwise>
+				</xsl:choose>
 				<xsl:text>);</xsl:text>
 			</js>
 			<xsl:apply-templates select="node()" mode="script">
@@ -4602,7 +4696,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 				<xsl:text>,</xsl:text>
 				<xsl:call-template name="toScriptParam"><xsl:with-param name="p" select="@incremental"/></xsl:call-template>
 				<xsl:text>,</xsl:text>
-				<xsl:call-template name="toScriptParam"><xsl:with-param name="p" select="@filename"/></xsl:call-template>
+				<xsl:choose>
+					<xsl:when test="xforms:filename">
+						<xsl:for-each select="xforms:filename[1]">
+							<xsl:call-template name="toScriptBinding"><xsl:with-param name="p" select="@ref"/></xsl:call-template>
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise>null</xsl:otherwise>
+				</xsl:choose>
 				<xsl:text>,</xsl:text>
 				<xsl:call-template name="toScriptParam"><xsl:with-param name="p" select="@mediatype"/></xsl:call-template>
 				<xsl:text>,</xsl:text>
