@@ -240,7 +240,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		ResultSetMetaData m = rs.getMetaData();
 		int aliasId = -1;
 		int aliasName = -1;
-		for (int i = NUM5; i <= m.getColumnCount(); i++) {
+		for (int i = NUM1; i <= m.getColumnCount(); i++) {
 			if (COLUMN_ID.equalsIgnoreCase(m.getColumnName(i))) {
 				aliasId = i;
 			}
