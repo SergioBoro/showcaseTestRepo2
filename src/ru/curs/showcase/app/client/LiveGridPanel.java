@@ -24,6 +24,7 @@ import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
 import com.sencha.gxt.cell.core.client.ButtonCell.IconAlign;
 import com.sencha.gxt.core.client.*;
+import com.sencha.gxt.core.client.Style.ScrollDirection;
 import com.sencha.gxt.core.client.resources.*;
 import com.sencha.gxt.core.client.util.IconHelper;
 import com.sencha.gxt.data.client.loader.RpcProxy;
@@ -72,6 +73,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	private LiveGridMetadata gridMetadata = null;
 	private LiveGridExtradata gridExtradata = null;
 	private boolean isFirstLoading = true;
+	private int lastScrollLeft = 0;
 
 	private boolean isFirstLoading() {
 		return isFirstLoading;
@@ -229,6 +231,8 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 				@Override
 				public void load(final PagingLoadConfig loadConfig,
 						final AsyncCallback<LiveGridData<LiveGridModel>> callback) {
+
+					lastScrollLeft = grid.getView().getScroller().getScrollLeft();
 
 					GridContext gridContext = getDetailedContext();
 					gridContext.getLiveInfo().setOffset(loadConfig.getOffset());
@@ -649,6 +653,8 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 		if (isFirstLoading) {
 			resetSelection();
+		} else {
+			grid.getView().getScroller().scrollTo(ScrollDirection.LEFT, lastScrollLeft);
 		}
 
 		Cell selected = getStoredRecordId();
@@ -690,6 +696,7 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		}
 
 		setFirstLoading(false);
+
 	}
 
 	private int getRecordIndexById(final String recId) {
