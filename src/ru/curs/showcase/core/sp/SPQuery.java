@@ -220,9 +220,8 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 		}
 
 		String proc = procName;
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
-			proc = proc.substring(proc.indexOf(".") + 1);
-		}
+		proc = proc.substring(proc.indexOf(".") + 1);
+
 		sql = String.format(sql, proc);
 
 		try {
