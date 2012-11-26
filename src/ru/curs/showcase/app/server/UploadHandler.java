@@ -73,7 +73,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 			ByteArrayOutputStream out = StreamConvertor.inputToOutputStream(input);
 
 			if (item.isFormField()) {
-				String paramValue = out.toString();
+				String paramValue = out.toString(TextUtils.DEF_ENCODING);
 				if (XFormContext.class.getName().equals(name)) {
 					setContext((XFormContext) deserializeObject(paramValue));
 				} else if (DataPanelElementInfo.class.getName().equals(name)) {
