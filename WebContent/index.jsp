@@ -77,9 +77,9 @@
 
 <div id="target"></div>
 
-	<div id=showcaseHeaderContainer></div>
-	<div id=showcaseAppContainer></div>
-	<div id=showcaseBottomContainer></div>
+	<div id="showcaseHeaderContainer"></div>
+	<div id="showcaseAppContainer"></div>
+	<div id="showcaseBottomContainer"></div>
 	
     <img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden; width: 0px; height: 0px" />
     
