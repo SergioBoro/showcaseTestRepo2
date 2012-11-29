@@ -108,6 +108,7 @@
 		        procListAndCount   = "'[dbo].[regions_list_and_count]'"  
 		        generalFilters     = "['XPath(instance(quot(myInstance))/infos/info/name)']"
 		        currentValue       = "'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)'"
+		        startWith          = "false"		        
 		        windowCaption      = "'Выберите название'"
 		        xpathMapping       = "{'XPath(/schema/info[index(quot(securityRealEstateRow))]/city1)' : 'name', 'XPath(/schema/info[index(quot(securityRealEstateRow))]/city2)' : null}"
 		    />			
@@ -227,6 +228,7 @@
 		        procListAndCount  = "'[dbo].[regions_list_and_count]'"  
 		        generalFilters    = "['XPath(instance(quot(myInstance))/infos/info[3]/name4)', 'XPath(instance(quot(myInstance))/infos/info[3]/name4/@id)']"
 		        currentValue      = "''"
+		        startWith          = "false"		        
 		        windowCaption     = "'Выберите значения'"
 		        needClear         = "true"
 		        needInitSelection = "true"

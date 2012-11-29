@@ -295,6 +295,16 @@ public final class XFormPanelCallbacksEvents {
 		}-*/;
 
 		/**
+		 * 
+		 * начальное значение галочки "Начинается с".
+		 * 
+		 * @return boolean
+		 */
+		native boolean startWith()/*-{
+			return this.startWith != null ? this.startWith : true;
+		}-*/;
+
+		/**
 		 * заголовок окна для выбора из больших списков.
 		 * 
 		 * @return String
@@ -411,6 +421,8 @@ public final class XFormPanelCallbacksEvents {
 			if (param.visibleRecordCount() != null) {
 				options.visibleRecordCount(Integer.valueOf(param.visibleRecordCount()));
 			}
+
+			options.startsWithChecked(param.startWith());
 
 			BaseSelectorComponent c;
 			if (isMultiSelector) {
