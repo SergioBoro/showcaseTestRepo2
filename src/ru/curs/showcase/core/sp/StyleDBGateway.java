@@ -16,6 +16,10 @@ public class StyleDBGateway extends SPQuery implements StyleGateway {
 
 	private static final int ERROR_MES_INDEX = 5;
 
+	private static final int FIRST_OUT_PARAM_INDEX = 3;
+
+	private static final int SECOND_OU_PARAM_INDEX = 4;
+
 	@Override
 	public String[] getRawData(final CompositeContext context, final String procName) {
 		// init(context, elementInfo);
@@ -31,18 +35,19 @@ public class StyleDBGateway extends SPQuery implements StyleGateway {
 
 			setSQLXMLParam(2, "");
 			if (context != null) {
-			}
-			if (context.getSession() != null) {
-				setSQLXMLParam(2, context.getSession());
+
+				if (context.getSession() != null) {
+					setSQLXMLParam(2, context.getSession());
+				}
 			}
 
-			getStatement().registerOutParameter(3, java.sql.Types.VARCHAR);
-			getStatement().registerOutParameter(4, java.sql.Types.VARCHAR);
+			getStatement().registerOutParameter(FIRST_OUT_PARAM_INDEX, java.sql.Types.VARCHAR);
+			getStatement().registerOutParameter(SECOND_OU_PARAM_INDEX, java.sql.Types.VARCHAR);
 			execute();
 
 			String[] str = new String[2];
-			str[0] = getStatement().getString(3);
-			str[1] = getStatement().getString(4);
+			str[0] = getStatement().getString(FIRST_OUT_PARAM_INDEX);
+			str[1] = getStatement().getString(SECOND_OU_PARAM_INDEX);
 			// getStatement().getst
 			return str; // new RecordSetElementRawData(this, elementInfo,
 						// context);
