@@ -2,6 +2,7 @@ package ru.curs.showcase.core.frame;
 
 import ru.curs.showcase.app.api.MainPage;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.core.sp.StyleDBGateway;
 import ru.curs.showcase.runtime.UserDataUtils;
 
 /**
@@ -44,6 +45,18 @@ public final class MainPageGetCommand extends AbstractMainPageFrameCommand<MainP
 		html = getRawMainPageFrame(getContext(), MainPageFrameType.WELCOME);
 		html = factory.build(html);
 		mp.setWelcome(html);
+
+		String cssProcName = UserDataUtils.getOptionalProp(UserDataUtils.CSS_PROC_NAME_PROP);
+		if (cssProcName == null || "none".equals(cssProcName)) {
+			mp.setSolutionCSSFileName(null);
+			mp.setSolutionGridCSSFileName(null);
+		} else {
+			StyleDBGateway sgw = new StyleDBGateway();
+			String[] cssResult = sgw.getRawData(getContext(), cssProcName);
+			sgw.close();
+			mp.setSolutionCSSFileName(cssResult[0]);
+			mp.setSolutionGridCSSFileName(cssResult[1]);
+		}
 
 		setResult(mp);
 	}

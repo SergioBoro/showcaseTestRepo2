@@ -28,6 +28,8 @@ public final class UserDataUtils {
 
 	public static final String HEADER_HEIGHT_PROP = "header.height";
 
+	public static final String CSS_PROC_NAME_PROP = "scc.proc.name";
+
 	public static final String FOOTER_HEIGHT_PROP = "footer.height";
 
 	/**

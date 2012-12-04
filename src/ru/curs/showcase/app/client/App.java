@@ -76,6 +76,7 @@ public class App implements EntryPoint {
 		// генерация и размещение заглавной части (шапки) приложения
 		// Showcase
 		Header head = new Header();
+
 		RootPanel.get("showcaseHeaderContainer").add(head.generateHeader());
 		JavaScriptFromGWTFeedbackJSNI.setCurrentUserDetailsForViewInHTMLControl("HEADER");
 
@@ -91,7 +92,16 @@ public class App implements EntryPoint {
 		AppCurrContext.getInstance().setMainPanel(mainPanel);
 		RootPanel.get("showcaseAppContainer").add(mainPanel.startMainPanelCreation());
 		// добавляем свои стили после инициализации GWT-шных
-		addUserDataCSS();
+
+		if (AppCurrContext.getInstance().getMainPage().getSolutionCSSFileName() != null
+				&& AppCurrContext.getInstance().getMainPage().getSolutionGridCSSFileName() != null) {
+
+			addUserDataCSS(AppCurrContext.getInstance().getMainPage().getSolutionCSSFileName(),
+					AppCurrContext.getInstance().getMainPage().getSolutionGridCSSFileName());
+
+		} else {
+			addUserDataCSS("solution.css", "solutionGrid.css");
+		}
 	}
 
 	private CompositeContext getCurrentContext() {
@@ -102,8 +112,8 @@ public class App implements EntryPoint {
 		return context;
 	}
 
-	private void addUserDataCSS() {
-		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/solution.css"));
-		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/solutionGrid.css"));
+	private void addUserDataCSS(final String solutionCSS, final String solutionGridCSS) {
+		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/" + solutionCSS));
+		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/" + solutionGridCSS));
 	}
 }

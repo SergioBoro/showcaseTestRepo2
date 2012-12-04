@@ -32,6 +32,16 @@ public class MainPage implements SerializableElement {
 	private String header;
 
 	/**
+	 * Имя CSS файла для общих настроек стилей решения.
+	 */
+	private String solutionCSSFileName;
+
+	/**
+	 * Имя CSS файла для настроект стилей грида решения.
+	 */
+	private String solutionGridCSSFileName;
+
+	/**
 	 * Код нижнего колонтитула главной страницы.
 	 */
 	private String footer;
@@ -79,5 +89,21 @@ public class MainPage implements SerializableElement {
 
 	public void setWelcome(final String aWelcome) {
 		welcome = aWelcome;
+	}
+
+	public String getSolutionCSSFileName() {
+		return solutionCSSFileName;
+	}
+
+	public void setSolutionCSSFileName(final String asolutionCSSFileName) {
+		this.solutionCSSFileName = asolutionCSSFileName;
+	}
+
+	public String getSolutionGridCSSFileName() {
+		return solutionGridCSSFileName;
+	}
+
+	public void setSolutionGridCSSFileName(final String asolutionGridCSSFileName) {
+		this.solutionGridCSSFileName = asolutionGridCSSFileName;
 	}
 }
