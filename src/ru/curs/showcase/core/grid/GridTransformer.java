@@ -43,6 +43,10 @@ public final class GridTransformer {
 				continue;
 			}
 
+			if ("~~id".equalsIgnoreCase(c.getCaption().trim())) {
+				continue;
+			}
+
 			index++;
 			LiveGridColumnConfig column =
 				new LiveGridColumnConfig("col" + String.valueOf(index), c.getCaption(),
@@ -235,6 +239,11 @@ public final class GridTransformer {
 
 			int index = 0;
 			for (Column c : grid.getDataSet().getColumnSet().getColumnsByIndex()) {
+
+				if ("~~id".equalsIgnoreCase(c.getCaption().trim())) {
+					continue;
+				}
+
 				if ("hasChildren".equalsIgnoreCase(c.getCaption())) {
 					tgm.setHasChildren(TextUtils.stringToBoolean(rec.getValue(c)));
 				} else {
