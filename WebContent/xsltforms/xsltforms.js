@@ -12383,6 +12383,7 @@ var Writer = {
 	    toString : function(node, relevant, indent) {
 	    	var ret = XsltForms_browser.saveXML(node, relevant, indent);
 	    	ret = ret.replace("<schema>", "<schema xmlns=\"\">");
+	    	ret = ret.replace("<?xml version=\"1.0\"?>", "");
 			return ret;
 	    },
 	    loadNS : function(node, map) {
@@ -12884,6 +12885,9 @@ function insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames)
 
 	if (XsltForms_browser.isIE) {
 		filename = input.value;
+		
+		alert(filename);
+		
   	    (new XsltForms_setvalue(null, new XsltForms_binding(null, origin),null,filename,null,null)).run();
 		(new XsltForms_insert(null, null, null, null, "last", "after", origin, getXPath(filenamesMapping), null, null)).run(null, getXPath(filenamesMapping));
 		
@@ -12891,7 +12895,10 @@ function insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames)
 	else
 	{
 	    for (var x = 0; x < input.files.length; x++) {
-			filename = input.files[x].name;    	
+			filename = input.files[x].name;
+			
+			alert(filename);
+			
 	   	    (new XsltForms_setvalue(null, new XsltForms_binding(null, origin),null,filename,null,null)).run();
 			(new XsltForms_insert(null, null, null, null, "last", "after", origin, getXPath(filenamesMapping), null, null)).run(null, getXPath(filenamesMapping));
 	    }
