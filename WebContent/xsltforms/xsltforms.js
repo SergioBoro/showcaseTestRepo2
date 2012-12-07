@@ -9247,10 +9247,31 @@ var XsltForms_xmlevents = {
 		if (!evcontext) {
 			evcontext = {};
 		}
-		evcontext.type = type;
-		evcontext.targetid = targetid;
-		evcontext.bubbles = bubbles;
-		evcontext.cancelable = cancelable;
+		
+		// [KURS
+		
+//		evcontext.type = type;
+//		evcontext.targetid = targetid;
+//		evcontext.bubbles = bubbles;
+//		evcontext.cancelable = cancelable;
+		
+		if (XsltForms_browser.isIE && !XsltForms_browser.isIE9) {
+			evcontext[type] = type;
+			evcontext[targetid] = targetid;
+			evcontext[bubbles] = bubbles;
+			evcontext[cancelable] = cancelable;
+		}
+		else
+		{
+			evcontext.type = type;
+			evcontext.targetid = targetid;
+			evcontext.bubbles = bubbles;
+			evcontext.cancelable = cancelable;
+			
+		}
+		
+		// KURS]		
+		
 		return evcontext;
 	}
 };
