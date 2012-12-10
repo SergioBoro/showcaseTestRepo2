@@ -364,7 +364,7 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	 */
 	public native void drawMap(final String mapId, final String divIdLegend,
 			final String jsonStr1, final String jsonStr2) /*-{
-															$wnd.gwtMapFunc =  @ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::mapPanelClick(Ljava/lang/String;Ljava/lang/String;);
+			                                               	$wnd.gwtMapFunc =  @ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::mapPanelClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 
 															//$wnd.dojo.require("course.geo");
 															// course.geo.makeMap("map", optionSet1, optionSet2, mapConvertorFunc);
