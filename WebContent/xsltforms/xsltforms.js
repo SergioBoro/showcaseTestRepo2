@@ -7087,7 +7087,11 @@ XsltForms_select.prototype.setValue = function(value) {
 			this.select.selectedIndex = 0;
 		}
 	} else {
-		if (!this.full && this.select.firstChild.value === "\xA0") {
+		// [KURS (правка от Алана)		
+		if (!this.full && this.select.firstChild && this.select.firstChild.value === "\xA0") {		
+//		if (!this.full && this.select.firstChild.value === "\xA0") {
+		// [KURS			
+			
 			//this.select.removeChild(this.select.firstChild);
 			this.select.remove(0);
 		}
