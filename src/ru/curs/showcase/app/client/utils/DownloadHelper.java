@@ -60,7 +60,11 @@ public final class DownloadHelper extends RunServletByFormHelper {
 		addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
 			@Override
 			public void onSubmitComplete(final SubmitCompleteEvent event) {
-				MessageBox.showSimpleMessage(getErrorCaption(), event.getResults());
+				String mess = "";
+				if (event.getResults() != null) {
+					mess = event.getResults().replace("<root>", "").replace("</root>", "");
+				}
+				MessageBox.showSimpleMessage(getErrorCaption(), mess);
 			}
 
 		});
