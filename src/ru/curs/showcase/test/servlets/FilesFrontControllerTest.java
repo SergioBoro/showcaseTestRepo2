@@ -56,7 +56,7 @@ public class FilesFrontControllerTest extends AbstractServletTest {
 		checkOkResponse("application/octet-stream");
 		InputStream ris = FilesFrontControllerTest.class.getResourceAsStream("result.xml");
 		assertEquals(TextUtils.streamToString(ris), response().getContentAsString());
-		assertEquals("attachment; filename=\"navigator.xml\"",
+		assertEquals("attachment; filename*=\"navigator.xml\"",
 				response().getHeader(CONTENT_DISPOSITION));
 	}
 
@@ -79,7 +79,7 @@ public class FilesFrontControllerTest extends AbstractServletTest {
 		checkOkResponse("application/vnd.ms-excel");
 		assertTrue(response().getContentAsString().contains(
 				"<?mso-application progid=\"Excel.Sheet\""));
-		assertEquals("attachment; filename=\"table.xls\"",
+		assertEquals("attachment; filename*=\"table.xls\"",
 				response().getHeader(CONTENT_DISPOSITION));
 	}
 
@@ -101,8 +101,8 @@ public class FilesFrontControllerTest extends AbstractServletTest {
 		checkOkResponse("application/octet-stream");
 		InputStream ris = FilesFrontControllerTest.class.getResourceAsStream("result.xml");
 		assertEquals(TextUtils.streamToString(ris), response().getContentAsString());
-		assertEquals("attachment; filename=\"navigator_" + recId + ".xml\"",
-				response().getHeader(CONTENT_DISPOSITION));
+		assertEquals("attachment; filename*=\"navigator_" + recId + ".xml\"", response()
+				.getHeader(CONTENT_DISPOSITION));
 	}
 
 	@Test
