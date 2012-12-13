@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 
 import org.apache.commons.fileupload.FileUploadException;
 
+import ru.curs.showcase.app.api.BrowserType;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.util.*;
@@ -37,8 +38,19 @@ public abstract class AbstractDownloadHandler extends AbstractFilesHandler {
 		String encName = URLEncoder.encode(outputFile.getName(), TextUtils.DEF_ENCODING);
 		setContentType();
 		getResponse().setCharacterEncoding(TextUtils.DEF_ENCODING);
-		getResponse().setHeader("Content-Disposition",
-				String.format("attachment; filename=\"%s\"", encName));
+
+		String userAgent = ServletUtils.getUserAgent(getRequest());
+		BrowserType browserType = BrowserType.detect(userAgent);
+		if (browserType == BrowserType.FIREFOX) {
+			// для корректной передачи русского названия файла
+			getResponse().setHeader("Content-Disposition",
+					String.format("attachment; filename*=\"%s\"", encName));
+
+		} else {
+			getResponse().setHeader("Content-Disposition",
+					String.format("attachment; filename=\"%s\"", encName));
+		}
+
 		try (OutputStream out = getResponse().getOutputStream()) {
 			out.write(outputFile.getData().toByteArray());
 		}
