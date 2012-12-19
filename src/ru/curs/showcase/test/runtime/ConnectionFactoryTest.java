@@ -4,9 +4,10 @@ import static org.junit.Assert.*;
 
 import java.sql.Connection;
 
-import org.junit.*;
+import org.junit.Test;
 
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.runtime.ConnectionFactory;
+import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 
 import com.ziclix.python.sql.PyConnection;
 
@@ -16,33 +17,7 @@ import com.ziclix.python.sql.PyConnection;
  * @author bogatov
  * 
  */
-public class ConnectionFactoryTest {
-	/**
-	 * Имя userdata.
-	 */
-	private static final String USERDATAID = "default";
-
-	/**
-	 * Путь к userdata.
-	 */
-	private static final String USERDATAPATH =
-		"c:/_WORK/lancelot/src/workspace/showcase/userdatas/";
-
-	/**
-	 * Инициализация userdata, фабрики соединений.
-	 */
-	@BeforeClass
-	public static void beforeClass() {
-		// AppInitializer.initialize();
-		AppInfoSingleton app = AppInfoSingleton.getAppInfo();
-		app.setCurUserDataId(USERDATAID);
-		app.addUserData(USERDATAID, USERDATAPATH + USERDATAID);
-	}
-
-	@AfterClass
-	public static void afterClass() {
-		ConnectionFactory.getInstance().clear();
-	}
+public class ConnectionFactoryTest extends AbstractTestWithDefaultUserData {
 
 	/**
 	 * Тест получения соединения.
