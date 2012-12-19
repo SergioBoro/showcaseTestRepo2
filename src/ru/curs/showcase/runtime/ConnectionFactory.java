@@ -111,14 +111,18 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 
 	protected static Driver registerDriver() {
 		Driver result = null;
-		if (getSQLServerType() == SQLServerType.POSTGRESQL) {
-			try {
+		try {
+			if (getSQLServerType() == SQLServerType.POSTGRESQL) {
 				result = (Driver) Class.forName("org.postgresql.Driver").newInstance();
-				DriverManager.registerDriver(result);
-			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException
-					| SQLException e) {
-				throw new DBConnectException(e);
+			} else if (getSQLServerType() == SQLServerType.ORACLE) {
+				result = (Driver) Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+			} else {
+				return null;
 			}
+			DriverManager.registerDriver(result);
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException
+				| SQLException e) {
+			throw new DBConnectException(e);
 		}
 		return result;
 	}
