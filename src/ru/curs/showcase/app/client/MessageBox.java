@@ -8,6 +8,8 @@ import ru.curs.showcase.app.client.api.Constants;
 
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.*;
+import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -62,6 +64,23 @@ public final class MessageBox {
 		return dlg;
 	}
 
+	public static DialogBox createDialogBoxWithClosingOnEsc() {
+
+		return new DialogBox() {
+			@Override
+			protected void onPreviewNativeEvent(final NativePreviewEvent event) {
+
+				// закрытие окна по кнопке esc
+				if ((event.getTypeInt() == Event.ONKEYUP)
+						&& (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE)) {
+					hide();
+				}
+
+				super.onPreviewNativeEvent(event);
+			}
+		};
+	}
+
 	/**
 	 * 
 	 * Процедура вывода сообщения с одной кнопкой ОК в стиле gwt c текстом для
@@ -84,7 +103,8 @@ public final class MessageBox {
 	public static DialogBox showMessageWithDetails(final String caption, final String message,
 			final String hideMessage, final MessageType messageType,
 			final Boolean showDetailedMessage) {
-		final DialogBox dlg = new DialogBox();
+		final DialogBox dlg = createDialogBoxWithClosingOnEsc();
+
 		dlg.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		VerticalPanel dialogContents = new VerticalPanel();
 		dialogContents.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
