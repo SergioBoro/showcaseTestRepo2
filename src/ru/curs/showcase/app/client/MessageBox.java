@@ -64,13 +64,20 @@ public final class MessageBox {
 		return dlg;
 	}
 
+	/**
+	 * 
+	 * Функция создания окна DialogBox, которое закрывается горячей клавишей
+	 * ESC.
+	 * 
+	 * @return возвращает DialogBox
+	 * 
+	 */
 	public static DialogBox createDialogBoxWithClosingOnEsc() {
 
 		return new DialogBox() {
 			@Override
 			protected void onPreviewNativeEvent(final NativePreviewEvent event) {
 
-				// закрытие окна по кнопке esc
 				if ((event.getTypeInt() == Event.ONKEYUP)
 						&& (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE)) {
 					hide();
