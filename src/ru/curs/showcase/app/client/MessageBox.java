@@ -67,7 +67,7 @@ public final class MessageBox {
 	/**
 	 * 
 	 * Функция создания окна DialogBox, которое закрывается горячей клавишей
-	 * ESC. fdfj12
+	 * ESC. fdfj12e
 	 * 
 	 * @return возвращает DialogBox
 	 * 
