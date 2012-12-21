@@ -215,8 +215,6 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 
 		updateGridFull();
 
-		setupTimer();
-
 		p.setHeight(PROC100);
 	}
 
@@ -352,6 +350,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				@Override
 				public void load(final TreeGridModel loadConfig,
 						final AsyncCallback<List<TreeGridModel>> callback) {
+
+					cancelTimer();
 
 					loadRecords(loadConfig, callback);
 
@@ -803,6 +803,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				loadConfig.setExpandedByGrid(false);
 			}
 		}
+
+		setupTimer();
 
 	}
 

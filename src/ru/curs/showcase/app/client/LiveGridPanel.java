@@ -204,8 +204,6 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 
 		updateGridFull();
 
-		setupTimer();
-
 		p.setHeight(PROC100);
 	}
 
@@ -231,6 +229,8 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 				@Override
 				public void load(final PagingLoadConfig loadConfig,
 						final AsyncCallback<LiveGridData<LiveGridModel>> callback) {
+
+					cancelTimer();
 
 					lastScrollLeft = grid.getView().getScroller().getScrollLeft();
 
@@ -694,6 +694,8 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 		} else {
 			processClick(selected.recId, selected.colId, InteractionType.SINGLE_CLICK);
 		}
+
+		setupTimer();
 
 		setFirstLoading(false);
 
