@@ -67,9 +67,9 @@ public final class MessageBox {
 	/**
 	 * 
 	 * Функция создания окна DialogBox, которое закрывается горячей клавишей
-	 * ESC.
+	 * ESC. gfg
 	 * 
-	 * @return возвращает DialogBox!
+	 * @return возвращает DialogBox
 	 * 
 	 */
 	public static DialogBox createDialogBoxWithClosingOnEsc() {
