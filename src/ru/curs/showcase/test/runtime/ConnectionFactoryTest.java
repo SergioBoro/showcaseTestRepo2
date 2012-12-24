@@ -1,6 +1,6 @@
 package ru.curs.showcase.test.runtime;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.sql.Connection;
 
@@ -25,13 +25,16 @@ public class ConnectionFactoryTest extends AbstractTestWithDefaultUserData {
 	@Test
 	public void connectionTest() {
 		ConnectionFactory cf = ConnectionFactory.getInstance();
+
+		cf.clear();
+
 		Connection conn = cf.acquire();
 		try {
 			assertNotNull(conn);
 		} finally {
 			cf.release(conn);
 		}
-		// assertEquals(1, cf.getAllCount());
+		assertEquals(1, cf.getAllCount());
 	}
 
 	/**
