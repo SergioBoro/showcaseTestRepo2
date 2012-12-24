@@ -28,6 +28,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String SELECTOR_BUTTON_LABEL_TAG = "buttonLabel";
 	private static final String SUBMIT_LABEL_TAG = "submitLabel";
 	private static final String SINGLE_FILE_TAG = "singleFile";
+	private static final String ADD_UPLOAD_TAG = "addUpload";
+	private static final String ADD_UPLOAD_LABEL_TAG = "addUploadLabel";
 	private static final String FILENAMES_MAPPING = "filenamesMapping";
 	private static final String NEEDCLEAR_FILENAMES = "needClearFilenames";
 	private static final String FILE = "file";
@@ -37,6 +39,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			+ UPLOAD_DATA_TAG + "/%s";
 	private static final String NEED_RELOAD_TAG = "needReload";
 
+	private static final String DOM_ACTIVATE = "DOMActivate";
 	private static final String LOAD = "load";
 	private static final String RESOURCE = "resource";
 	private static final String ACTION = "action";
@@ -51,15 +54,20 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 	// CHECKSTYLE:ON
 
+	private static final String JS_ADD_UPLOAD = "javascript:addUpload('%s')";
+
 	private static final String JS_SELECTOR_TEMPLATE = "javascript:%s({%s id:'xformId'});";
 
-	private static final String JS_ON_CHOOSE_FILES = "gwtXFormOnChooseFiles('%s', '%s', %s)";
+	private static final String JS_ON_CHOOSE_FILES =
+		"gwtXFormOnChooseFiles('%s', '%s', %s, 'add_upload_index_0')";
 
 	private static final String JS_ON_SUBMIT_COMPLETE = "gwtXFormOnSubmitComplete('%s')";
 
 	private static final String DEFAULT_SUBMIT_LABEL = "Загрузить";
 
 	private static final String DEFAULT_SELECTOR_LABEL = "Выбрать";
+
+	private static final String DEFAULT_ADD_UPLOAD_LABEL = "Добавить выбор файла";
 
 	private static boolean isFilenamesMapping = false;
 
@@ -166,7 +174,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			trigger.appendChild(label);
 
 			Element action = doc.createElementNS(XFormProducer.XFORMS_URI, ACTION);
-			action.setAttributeNS(XFormProducer.EVENTS_URI, "ev:event", "DOMActivate");
+			action.setAttributeNS(XFormProducer.EVENTS_URI, "ev:event", DOM_ACTIVATE);
 			trigger.appendChild(action);
 
 			Element load = doc.createElementNS(XFormProducer.XFORMS_URI, LOAD);
@@ -177,6 +185,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		return doc;
 	}
 
+	// CHECKSTYLE:OFF
 	public static org.w3c.dom.Document generateUploaders(final org.w3c.dom.Document doc,
 			final DataPanelElementInfo element) {
 		NodeList nl = doc.getElementsByTagNameNS(XFormProducer.XFORMS_URI, UPLOAD_TAG);
@@ -246,6 +255,42 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			form.setAttribute("class", "sc-uploader-comp");
 			form.appendChild(input);
 
+			node = old.getAttributes().getNamedItem(ADD_UPLOAD_TAG);
+			if (node != null) {
+				boolean addUpload = Boolean.parseBoolean(node.getTextContent());
+				if (addUpload) {
+					String addUploadLabel;
+					node = old.getAttributes().getNamedItem(ADD_UPLOAD_LABEL_TAG);
+					if (node != null) {
+						addUploadLabel = node.getTextContent();
+					} else {
+						addUploadLabel = DEFAULT_ADD_UPLOAD_LABEL;
+					}
+
+					table.setAttribute("cols", "3");
+
+					td = doc.createElement("td");
+					tr.appendChild(td);
+
+					Element trigger = doc.createElementNS(XFormProducer.XFORMS_URI, "trigger");
+					td.appendChild(trigger);
+
+					Element label = doc.createElementNS(XFormProducer.XFORMS_URI, "label");
+					label.setTextContent(addUploadLabel);
+					trigger.appendChild(label);
+
+					Element action = doc.createElementNS(XFormProducer.XFORMS_URI, ACTION);
+					action.setAttributeNS(XFormProducer.EVENTS_URI, "ev:event", DOM_ACTIVATE);
+					trigger.appendChild(action);
+
+					Element load = doc.createElementNS(XFormProducer.XFORMS_URI, LOAD);
+					load.setAttribute(RESOURCE,
+							String.format(JS_ADD_UPLOAD, element.getUploaderId(procId)));
+					action.appendChild(load);
+
+				}
+			}
+
 			node = old.getAttributes().getNamedItem(SUBMIT_TAG);
 			if (node != null) {
 				boolean submit = Boolean.parseBoolean(node.getTextContent());
@@ -271,7 +316,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 					trigger.appendChild(label);
 
 					Element action = doc.createElementNS(XFormProducer.XFORMS_URI, ACTION);
-					action.setAttributeNS(XFormProducer.EVENTS_URI, "ev:event", "DOMActivate");
+					action.setAttributeNS(XFormProducer.EVENTS_URI, "ev:event", DOM_ACTIVATE);
 					trigger.appendChild(action);
 
 					Element load = doc.createElementNS(XFormProducer.XFORMS_URI, LOAD);
@@ -294,6 +339,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 		return doc;
 	}
+
+	// CHECKSTYLE:ON
 
 	private static String getUploaderTargetName(final DataPanelElementInfo element,
 			final String procId, final int index) {

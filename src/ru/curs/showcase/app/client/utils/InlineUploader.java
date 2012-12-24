@@ -54,6 +54,8 @@ public class InlineUploader {
 					getElementById(dpei.getUploaderId(entry.getKey().getString()));
 				if (form != null) {
 					submitInlineForm(dpei, form);
+
+					submitAddedUploaders(entry.getKey().getString(), dpei, form);
 				}
 			}
 		}
@@ -74,6 +76,25 @@ public class InlineUploader {
 		JavaScriptObject form = getElementById(dpei.getUploaderId(linkId));
 		if (form != null) {
 			submitInlineForm(dpei, form);
+
+			submitAddedUploaders(linkId, dpei, form);
+		}
+
+	}
+
+	private void submitAddedUploaders(final String linkId, final DataPanelElementInfo dpei,
+			final JavaScriptObject element) {
+		FormElement form = (FormElement) FormElement.as(element);
+		String lastAddingId = form.getAttribute("lastAddingId");
+		if (!((lastAddingId == null) || "".equals(lastAddingId.trim()))) {
+			int count = Integer.valueOf(lastAddingId);
+			for (int i = 1; i <= count; i++) {
+				JavaScriptObject addForm =
+					getElementById(dpei.getUploaderId(linkId) + "_add_" + String.valueOf(i));
+				if (addForm != null) {
+					submitInlineForm(dpei, addForm);
+				}
+			}
 		}
 	}
 
@@ -148,14 +169,15 @@ public class InlineUploader {
 	}-*/;
 
 	public static void onChooseFiles(final String inputName, final String filenamesMapping,
-			final Boolean needClearFilenames) {
-		insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames);
+			final Boolean needClearFilenames, final String addUploadIndex) {
+		insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames, addUploadIndex);
 	}
 
 	private static native void insertFilenamesByXPath(final String inputName,
-			final String filenamesMapping, final Boolean needClearFilenames) /*-{
+			final String filenamesMapping, final Boolean needClearFilenames,
+			final String addUploadIndex) /*-{
 		$wnd.insertFilenamesByXPath(inputName, filenamesMapping,
-				needClearFilenames);
+				needClearFilenames, addUploadIndex);
 	}-*/;
 
 }

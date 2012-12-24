@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="xsltforms/xsltforms.xsl" type="text/xsl"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events"
 	xmlns:xsd="http://www.w3.org/2001/XMLschema" xmlns:fs="http://www.curs.ru/ns/FormServer"
@@ -249,7 +249,20 @@
 		</div>
 
 
+		<hr />
+		<br />	
+		<div>
+			Загрузка файла. Размножение upload'ов 			
+		</div>
 
+		<xf:upload id="051"  submit="true" submitLabel="Загрузить файлы" 
+		    singleFile="true"
+		    addUpload="true" addUploadLabel="Добавить еще один upload"  
+		/>
+		
+		<br />	
+		
+		
 
 	</body>
 </html>

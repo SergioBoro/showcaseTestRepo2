@@ -6,6 +6,48 @@
 		<element id="6" type="webtext" transform="bal.xsl" />
 	</tab>
 	
+	
+	<tab id="21" name="XForms как фильтр">
+		<element id="61" type="xforms" template="Showcase_Template.xml"
+			proc="xforms_proc1">
+			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
+			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
+			<proc id="051" name="xforms_upload_by_userdata" type="UPLOAD" />			
+		</element>
+		<element id="62" type="webtext" proc="webtext_filter_and_add"
+			hideOnLoad="true" />		
+	</tab>
+	
+	
+	<tab id="01" name="Передача названий файлов в XForm">
+		<element id="0101" type="xforms" template="xforms_template_uploaders_simple"
+			proc="xforms_proc_all">
+			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
+			<proc id="04" name="xforms_upload_by_userdata" type="UPLOAD" />
+			<proc id="041" name="xforms_upload_by_userdata" type="UPLOAD" />
+			<proc id="05" name="xforms_upload_by_userdata" type="UPLOAD" />
+			<proc id="051" name="xforms_upload_by_userdata" type="UPLOAD" />			
+		</element>			
+	</tab>
+	
+	
+	
+	<tab id="09" name="Упрощенная загрузка файлов">
+		<element id="0001" type="xforms" template="Showcase_Template_uploaders_simple.xml"
+			proc="xforms_proc_all">
+			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
+			<proc id="04" name="xforms_upload_by_userdata" type="UPLOAD" />
+			<proc id="041" name="xforms_upload_by_userdata" type="UPLOAD" />
+			<proc id="05" name="xforms_upload_by_userdata_err" type="UPLOAD" />
+			<proc id="051" name="xforms_upload_by_userdata" type="UPLOAD" />			
+		</element>	
+	</tab>
+
+	
+	
+	
+	
+	
 
 
     <tab id="101" name="XForms. Задание размеров селекторов" layout="VERTICAL">
@@ -70,43 +112,12 @@
 		</element>
 	</tab>
 	
-	<tab id="09" name="Упрощенная загрузка файлов">
-		<element id="0001" type="xforms" template="Showcase_Template_uploaders_simple.xml"
-			proc="xforms_proc_all">
-			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
-			<proc id="04" name="xforms_upload_by_userdata" type="UPLOAD" />
-			<proc id="041" name="xforms_upload_by_userdata" type="UPLOAD" />
-			<proc id="05" name="xforms_upload_by_userdata_err" type="UPLOAD" />
-			<proc id="051" name="xforms_upload_by_userdata" type="UPLOAD" />			
-		</element>	
-	</tab>
-
-	<tab id="01" name="Передача названий файлов в XForm">
-		<element id="0101" type="xforms" template="xforms_template_uploaders_simple"
-			proc="xforms_proc_all">
-			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
-			<proc id="04" name="xforms_upload_by_userdata" type="UPLOAD" />
-			<proc id="041" name="xforms_upload_by_userdata" type="UPLOAD" />
-			<proc id="05" name="xforms_upload_by_userdata" type="UPLOAD" />
-			<proc id="051" name="xforms_upload_by_userdata" type="UPLOAD" />			
-		</element>			
-	</tab>
 	
 	<tab id="03" name="Переменные в HTML">
 		<element id="0301" type="webtext" proc="webtext_variables" />
 		<element id="0302" type="xforms" proc="xforms_variables" template="Showcase_Template_Variables.xml"/>
 	</tab>				
 	
-	<tab id="21" name="XForms как фильтр">
-		<element id="61" type="xforms" template="Showcase_Template.xml"
-		
-			proc="xforms_proc1">
-			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
-			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
-		</element>
-		<element id="62" type="webtext" proc="webtext_filter_and_add"
-			hideOnLoad="true" />		
-	</tab>
 
 <!--
 

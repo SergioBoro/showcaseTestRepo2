@@ -61,6 +61,64 @@ function getErrorByIFrame(iframeName)
 	return err; 
 }
 
+function addUpload(formId)
+{
+	var baseForm = document.getElementById(formId); 
+	
+	var form = baseForm.cloneNode(true);
+	
+	var lastAddingId = baseForm.getAttribute("lastAddingId");
+	if(lastAddingId)
+	{
+		lastAddingId++; 
+	}
+	else
+	{
+		lastAddingId = 1;
+	}
+	baseForm.setAttribute("lastAddingId",lastAddingId);
+	form.setAttribute("id", baseForm.getAttribute("id")+"_add_"+lastAddingId);
+	
+	var baseTarget = baseForm.getAttribute("target");	
+	var target = baseTarget+"_add_"+lastAddingId;
+	form.setAttribute("target", target);	
+	
+	
+	var inputs = form.getElementsByTagName("input");
+	for (var i=0; i<inputs.length; i++)
+	{
+		var name = inputs[i].getAttribute("name");
+		if(name.indexOf("@@filedata@@") > -1)
+		{
+			var onchange = inputs[i].getAttribute("onchange");
+			if(onchange)
+			{
+				onchange = onchange.replace("add_upload_index_0", "add_upload_index_"+lastAddingId);
+				inputs[i].setAttribute("onchange", onchange);
+			}
+			break;
+		}	
+	}
+	
+	
+	baseForm.parentNode.appendChild(form);
+	
+//--------------	
+	
+	var baseFrame = document.getElementsByName(baseTarget)[0];
+	
+	var frame = baseFrame.cloneNode(true);
+
+	frame.setAttribute("name", target);
+	
+	var onload = frame.getAttribute("onload");
+	onload = onload.replace(baseTarget, target);
+	frame.setAttribute("onload", onload);
+	
+	baseFrame.parentNode.appendChild(frame);
+	
+}
+
 var convertorFunc = function(chartId, chartLegendId, optionSet1, optionSet2) {
 
    if (dojo.isString(optionSet1)) optionSet1 = dojo.fromJson(optionSet1);

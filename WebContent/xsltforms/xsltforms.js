@@ -12898,20 +12898,23 @@ function insertXFormByXPath(ok, selected, xpathRoot, xpathMapping, needClear)
 }
 
 
-function insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames)
+function insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames, addUploadIndex)
 {
 	if(needClearFilenames){
        (new XsltForms_delete(null, "file", null, null, null, getXPath(filenamesMapping), null, null)).run(null, getXPath(filenamesMapping));
 	}
 	
 	var origin   = "instance('srvdata')/uploaddata/file";
-    var filename = "";	
-	var input    = document.getElementsByName(inputName)[0];
+    var filename = "";
+    
+	addUploadIndex = addUploadIndex.replace("add_upload_index_", "");    
+	var input    = document.getElementsByName(inputName)[addUploadIndex];
 
 	if (XsltForms_browser.isIE) {
 		filename = input.value;
 		
-		alert(filename);
+//		alert(filename);
+//		alert(input.size);		
 		
   	    (new XsltForms_setvalue(null, new XsltForms_binding(null, origin),null,filename,null,null)).run();
 		(new XsltForms_insert(null, null, null, null, "last", "after", origin, getXPath(filenamesMapping), null, null)).run(null, getXPath(filenamesMapping));
@@ -12922,7 +12925,8 @@ function insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames)
 	    for (var x = 0; x < input.files.length; x++) {
 			filename = input.files[x].name;
 			
-			alert(filename);
+//			alert(filename);
+//			alert(input.files[x].size);			
 			
 	   	    (new XsltForms_setvalue(null, new XsltForms_binding(null, origin),null,filename,null,null)).run();
 			(new XsltForms_insert(null, null, null, null, "last", "after", origin, getXPath(filenamesMapping), null, null)).run(null, getXPath(filenamesMapping));
