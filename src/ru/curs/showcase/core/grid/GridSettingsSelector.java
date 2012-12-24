@@ -37,6 +37,9 @@ public class GridSettingsSelector extends SourceSelector<ElementSettingsGateway>
 		case SP:
 			res = new ElementSettingsDBGateway();
 			break;
+		case JYTHON:
+			res = new GridJythonSettingsGateway();
+			break;
 		default:
 			throw new NotImplementedYetException();
 		}

@@ -75,7 +75,9 @@ public class RecordSetElementRawData extends ElementRawData implements Closeable
 				throw new DBConnectException(e);
 			}
 		} else {
-			spQuery.close();
+			if (spQuery != null) {
+				spQuery.close();
+			}
 		}
 	}
 
@@ -134,9 +136,11 @@ public class RecordSetElementRawData extends ElementRawData implements Closeable
 			return;
 		}
 		try {
-			setSettings(spQuery.getValidatedSettings());
-			if (getXmlDS() == null) {
-				setXmlDS(spQuery.getXmlDS());
+			if (spQuery != null) {
+				setSettings(spQuery.getValidatedSettings());
+				if (getXmlDS() == null) {
+					setXmlDS(spQuery.getXmlDS());
+				}
 			}
 		} catch (SQLException e) {
 			throw new ResultSetHandleException(e);

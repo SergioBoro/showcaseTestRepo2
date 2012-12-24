@@ -1,7 +1,7 @@
 package ru.curs.showcase.core.grid;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.core.SourceSelector;
+import ru.curs.showcase.core.*;
 import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
 
@@ -35,6 +35,9 @@ public class GridSelector extends SourceSelector<GridGateway> {
 			break;
 		case SP:
 			res = new GridDBGateway();
+			break;
+		case JYTHON:
+			res = new GridJythonGateway();
 			break;
 		default:
 			throw new NotImplementedYetException();
