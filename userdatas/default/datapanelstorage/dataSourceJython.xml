@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>		
+	<tab id="simpleGridJython" name="grid">
+		<element id="0101" type="grid" proc="testGridJython.py">
+		</element>
+	</tab>
+	<tab id="liveGridJython" name="Live grid">
+		<element id="0102" type="grid" subtype="EXT_LIVE_GRID" proc="testLiveGridJython.py">
+			<proc id="010201" name="testLiveGridJythonSettings.py" type="METADATA"/>
+		</element>
+	</tab>
+</datapanel>
