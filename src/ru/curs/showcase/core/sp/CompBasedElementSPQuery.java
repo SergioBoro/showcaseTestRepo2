@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.core.grid.DataGridSaxHandler;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.StreamConvertor;
 import ru.curs.showcase.util.xml.*;
@@ -71,7 +70,7 @@ public abstract class CompBasedElementSPQuery extends ElementSPQuery {
 			ByteArrayOutputStream osDS = new ByteArrayOutputStream();
 
 			SimpleSAX sax =
-				new SimpleSAX(settings, new DataGridSaxHandler(osSettings, osDS), SAX_ERROR_MES);
+				new SimpleSAX(settings, new StreamDivider(osSettings, osDS), SAX_ERROR_MES);
 			sax.parse();
 
 			InputStream isSettings = StreamConvertor.outputToInputStream(osSettings);

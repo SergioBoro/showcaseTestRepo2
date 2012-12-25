@@ -74,7 +74,7 @@ public class GridJythonGateway extends JythonQuery<JythonDTO> implements GridGat
 			ByteArrayOutputStream osDS = new ByteArrayOutputStream();
 
 			SimpleSAX sax =
-				new SimpleSAX(inSettings, new DataGridSaxHandler(osSettings, osDS), SAX_ERROR_MES);
+				new SimpleSAX(inSettings, new StreamDivider(osSettings, osDS), SAX_ERROR_MES);
 			sax.parse();
 
 			InputStream isSettings = StreamConvertor.outputToInputStream(osSettings);

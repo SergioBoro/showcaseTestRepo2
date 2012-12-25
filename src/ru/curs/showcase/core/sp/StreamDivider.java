@@ -1,4 +1,4 @@
-package ru.curs.showcase.core.grid;
+package ru.curs.showcase.core.sp;
 
 import java.io.OutputStream;
 
@@ -11,13 +11,13 @@ import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.xml.SAXError;
 
 /**
- * SaxHandler предназначен для разбора xml для элемента grid и выделение из него
- * блок данных и настроек. (Вынесен из CompBasedElementSPQuery)
+ *  Делитель поля settings на 2 потока -- собственно сами настройки и
+ *  данные(XML-датасет). (Вынесен из CompBasedElementSPQuery)
  * 
  * @author bogatov
  * 
  */
-public class DataGridSaxHandler extends DefaultHandler {
+public class StreamDivider extends DefaultHandler {
 	private static final String XML_DATASET_TAG = "records";
 	private static final String XML_DATASET_TAG_GEO = "tables";
 
@@ -26,7 +26,7 @@ public class DataGridSaxHandler extends DefaultHandler {
 
 	private boolean forDS = false;
 
-	public DataGridSaxHandler(final OutputStream osSettings, final OutputStream osDS) {
+	public StreamDivider(final OutputStream osSettings, final OutputStream osDS) {
 		try {
 			writerSettings =
 				XMLOutputFactory.newInstance().createXMLStreamWriter(osSettings,
