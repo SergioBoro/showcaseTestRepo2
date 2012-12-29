@@ -2,6 +2,7 @@ package ru.curs.showcase.core.jython;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.core.UserMessage;
+import ru.curs.showcase.core.selector.DataSelectorAttributes;
 
 import com.ziclix.python.sql.PyConnection;
 
@@ -116,4 +117,17 @@ public interface JythonProc {
 	 *         UserMessage в случае ошибки.
 	 */
 	Object postProcess(CompositeContext aContext, String elementId, String aData);
+
+	/**
+	 * Получить данные для селектора.
+	 * 
+	 * @param aContext
+	 *            - контекст.
+	 * @param aAttributes
+	 *            - атрибуты запроса.
+	 * @return - объект класса ResultSelectorData, содержащий как данные так и -
+	 *         кол-во записей.
+	 */
+	Object getSelectorData(CompositeContext aContext, DataSelectorAttributes aAttributes);
+
 }
