@@ -9,4 +9,8 @@
 			<proc id="010201" name="testLiveGridJythonSettings.py" type="METADATA"/>
 		</element>
 	</tab>
+	<tab id="04" name="XForms - селектор">
+		<element id="0401" type="xforms" template="SelectorJython_Template.xml" proc="xforms_proc_all">
+		</element>
+	</tab>
 </datapanel>
