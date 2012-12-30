@@ -6,7 +6,7 @@ Created on 27.12.2012
 '''
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.core.selector import ResultSelectorData
-from ru.curs.showcase.core.selector import DataSelectorAttributes
+from ru.curs.showcase.core.jython import DataSelectorAttributes
 from ru.beta2.extra.gwt.ui.selector.api import DataRecord
 from jarray import array
 from ru.curs.showcase.runtime import ConnectionFactory
