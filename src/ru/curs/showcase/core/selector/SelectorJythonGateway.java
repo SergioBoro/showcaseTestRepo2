@@ -2,7 +2,7 @@ package ru.curs.showcase.core.selector;
 
 import ru.beta2.extra.gwt.ui.selector.api.DataRequest;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.core.jython.JythonQuery;
+import ru.curs.showcase.core.jython.*;
 
 /**
  * Шлюз для получения данных, источником которых являются Jython скрипты.

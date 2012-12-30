@@ -2,7 +2,6 @@ package ru.curs.showcase.core.jython;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.core.UserMessage;
-import ru.curs.showcase.core.selector.DataSelectorAttributes;
 
 import com.ziclix.python.sql.PyConnection;
 

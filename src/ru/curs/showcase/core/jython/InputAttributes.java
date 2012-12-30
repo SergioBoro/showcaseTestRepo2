@@ -1,4 +1,4 @@
-package ru.curs.showcase.core.selector;
+package ru.curs.showcase.core.jython;
 
 /**
  * Входные атрибуты для получения данных.

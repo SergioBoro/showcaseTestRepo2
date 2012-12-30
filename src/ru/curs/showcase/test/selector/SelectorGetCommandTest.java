@@ -11,7 +11,7 @@ import ru.curs.showcase.core.selector.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 
 /**
- * Тесты для шлюза клманды получения данных селектора.
+ * Тесты для команды получения данных селектора.
  * 
  * @author bogatov
  * 
