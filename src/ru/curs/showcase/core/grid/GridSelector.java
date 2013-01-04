@@ -1,7 +1,7 @@
 package ru.curs.showcase.core.grid;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.core.*;
+import ru.curs.showcase.core.SourceSelector;
 import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
 
@@ -15,6 +15,10 @@ public class GridSelector extends SourceSelector<GridGateway> {
 
 	public GridSelector(final DataPanelElementInfo elInfo) {
 		super(elInfo.getProcName());
+	}
+
+	public GridSelector(final String procName) {
+		super(procName);
 	}
 
 	@Override

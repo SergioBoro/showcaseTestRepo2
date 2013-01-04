@@ -39,7 +39,9 @@ public class GridFileDownloadCommand extends DataPanelElementCommand<OutputStrea
 
 	@Override
 	protected void mainProc() throws Exception {
-		GridGateway gateway = new GridDBGateway();
+		DataPanelElementProc proc = getElementInfo().getProcs().get(linkId);
+		GridSelector gridSelector = new GridSelector(proc != null ? proc.getName() : null);
+		GridGateway gateway = gridSelector.getGateway();
 		OutputStreamDataFile file =
 			gateway.downloadFile(getContext(), getElementInfo(), linkId, recordId);
 		// TODO Борису - подключить UserXMLTransformer

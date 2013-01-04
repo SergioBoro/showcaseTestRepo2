@@ -6,10 +6,11 @@ import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.GridContext;
+import ru.curs.showcase.core.FileIsAbsentInDBException;
 import ru.curs.showcase.core.jython.*;
 import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.exception.NotImplementedYetException;
+import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -23,7 +24,7 @@ public class GridJythonGateway extends JythonQuery<JythonDTO> implements GridGat
 
 	private static final String SAX_ERROR_MES = "обобщенные настройки (настройки плюс данные)";
 
-	private CompositeContext context;
+	private GridContext context;
 	private DataPanelElementInfo element;
 
 	public GridJythonGateway() {
@@ -96,8 +97,26 @@ public class GridJythonGateway extends JythonQuery<JythonDTO> implements GridGat
 
 	@Override
 	public OutputStreamDataFile downloadFile(final CompositeContext aContext,
-			final DataPanelElementInfo elementInfo, final ID aLinkId, final String recordId) {
-		throw new NotImplementedYetException();
+			final DataPanelElementInfo aElement, final ID aLinkId, final String recordId) {
+		GridJythonDownloadHelper gjdh =
+			new GridJythonDownloadHelper(aContext, aElement, aLinkId, recordId);
+		gjdh.runTemplateMethod();
+		JythonDownloadResultForGrid jythonResult = gjdh.getResult();
+
+		InputStream is = jythonResult.getInputStream();
+		if (is == null) {
+			throw new FileIsAbsentInDBException();
+		}
+		String fileName = jythonResult.getFileName();
+		try {
+			StreamConvertor dup = new StreamConvertor(is);
+			ByteArrayOutputStream os = dup.getOutputStream();
+			OutputStreamDataFile result = new OutputStreamDataFile(os, fileName);
+			result.setEncoding(TextUtils.JDBC_ENCODING);
+			return result;
+		} catch (IOException e) {
+			throw new ServerObjectCreateCloseException(e);
+		}
 	}
 
 	@Override
@@ -109,7 +128,8 @@ public class GridJythonGateway extends JythonQuery<JythonDTO> implements GridGat
 
 	@Override
 	protected Object execute() {
-		return getProc().getRawData(context, element.getId().getString());
+		return getProc().getRawData(context, element.getId().getString(),
+				context.getSortedColumns());
 	}
 
 	@Override

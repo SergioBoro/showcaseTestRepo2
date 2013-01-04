@@ -1,5 +1,8 @@
 package ru.curs.showcase.core.jython;
 
+import java.util.List;
+
+import ru.curs.gwt.datagrid.model.Column;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.core.UserMessage;
 
@@ -37,6 +40,21 @@ public interface JythonProc {
 	 *         пользователя в случае ошибки.
 	 */
 	Object getRawData(AbstractCompositeContext context, String elementId);
+
+	/**
+	 * Возвращает сырые данные для компонента grid.
+	 * 
+	 * @param context
+	 *            - контекст вызова.
+	 * @param elementId
+	 *            - идентификатор создаваемого элемента.
+	 * @param sortcols
+	 *            - список столбцов для которых выполняется сортировка.
+	 * @return - объект переноса данных Jython, включающий в себя данные и
+	 *         настройки элемента в виде двух строк или объект с информацией для
+	 *         пользователя в случае ошибки.
+	 */
+	Object getRawData(AbstractCompositeContext context, String elementId, List<Column> sortcols);
 
 	/**
 	 * Сохраняет данные (на данный момент, только для XForm).
@@ -128,5 +146,17 @@ public interface JythonProc {
 	 *         кол-во записей.
 	 */
 	Object getSelectorData(CompositeContext aContext, DataSelectorAttributes aAttributes);
+
+	/**
+	 * Получить InputStream для загрузки файла из компонента grid.
+	 * 
+	 * @param aContext
+	 *            - контекст.
+	 * @param attributes
+	 *            - атрибуты запроса
+	 * @return объект класса JythonDownloadResultForGrid
+	 */
+	JythonDownloadResultForGrid getInputStreamForGrid(AbstractCompositeContext aContext,
+			GridDownloadAttributes attributes);
 
 }
