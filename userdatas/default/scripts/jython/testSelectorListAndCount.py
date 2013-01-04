@@ -46,11 +46,7 @@ def mainproc(attributes):
     finally:
         ConnectionFactory.getInstance().release(conn)        
         
-    record1 = DataRecord()
-    record1.setId('1')
-    record1.setName('Item1');
-    res = ResultSelectorData(array([record1], DataRecord), 0)
-    return res
+    return ResultSelectorData(None, 0)
 
 def setSQLXMLParam(stmt, index, value):
     sqlxml = stmt.getConnection().createSQLXML()

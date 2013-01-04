@@ -13,11 +13,12 @@ add = ""
 session = ""
 filterContext = ""
 elementId = ""
+sortcols = None #объект типа java.util.List<ru.curs.gwt.datagrid.model.Column>
 
 
 class testGridJython(JythonProc):
-    def getRawData(self, context, elId):
-        global main, add, session, filterContext, elementId
+    def getRawData(self, context, elId, scols):
+        global main, add, session, filterContext, elementId, sortcols
         main = context.getMain()
         if context.getAdditional():
             add = context.getAdditional()
@@ -25,6 +26,7 @@ class testGridJython(JythonProc):
         if context.getFilter():
             filterContext = context.getFilter()
         elementId = elId
+        sortcols = scols
         return mainproc()
 
 
