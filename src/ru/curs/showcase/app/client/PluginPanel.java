@@ -111,7 +111,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 		String params = "'" + getDivIdPlugin() + "'";
 		for (String param : aPlugin.getParams()) {
-			params = params + ", " + param;
+			params = params + ", " + param.trim();
 		}
 
 		if (AppCurrContext.getInstance()
