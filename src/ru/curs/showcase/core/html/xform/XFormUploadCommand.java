@@ -4,7 +4,7 @@ import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.command.InputParam;
-import ru.curs.showcase.core.html.*;
+import ru.curs.showcase.core.html.HTMLAdvGateway;
 import ru.curs.showcase.util.OutputStreamDataFile;
 
 /**
@@ -45,12 +45,14 @@ public final class XFormUploadCommand extends XFormContextCommand<Void> {
 	@Override
 	protected void mainProc() throws Exception {
 		DataPanelElementProc proc = getElementInfo().getProcs().get(linkId);
+		XFormSaveSelector xFormSaveSelector =
+			new XFormSaveSelector(proc != null ? proc.getName() : null);
+		HTMLAdvGateway gateway = xFormSaveSelector.getGateway();
 
 		SelectableXMLTransformer transformer =
 			new SelectableXMLTransformer(file, proc, getContext(), getElementInfo());
 		transformer.transform();
 
-		HTMLAdvGateway gateway = new HtmlDBGateway();
 		gateway.uploadFile(getContext(), getElementInfo(), linkId,
 				transformer.getInputStreamResult());
 	}

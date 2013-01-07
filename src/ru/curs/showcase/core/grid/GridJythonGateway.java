@@ -101,7 +101,7 @@ public class GridJythonGateway extends JythonQuery<JythonDTO> implements GridGat
 		GridJythonDownloadHelper gjdh =
 			new GridJythonDownloadHelper(aContext, aElement, aLinkId, recordId);
 		gjdh.runTemplateMethod();
-		JythonDownloadResultForGrid jythonResult = gjdh.getResult();
+		JythonDownloadResult jythonResult = gjdh.getResult();
 
 		InputStream is = jythonResult.getInputStream();
 		if (is == null) {

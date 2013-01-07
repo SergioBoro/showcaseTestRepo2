@@ -1,32 +1,30 @@
-package ru.curs.showcase.core.grid;
+package ru.curs.showcase.core.html.xform;
 
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.jython.*;
 
 /**
- * Загрузка файла с использованием Jython скрипта для компонента grid.
+ * Загрузка файла с использованием Jython скрипта для компонента XForm.
  * 
  * @author bogatov
  * 
  */
-public class GridJythonDownloadHelper extends JythonQuery<JythonDownloadResult> {
+public class XFormJythonDownloadHelper extends JythonQuery<JythonDownloadResult> {
 	private static final String NO_DOWNLOAD_PROC_ERROR =
 		"Не задана процедура для скачивания файлов из сервера для linkId=";
 
 	private final DataPanelElementInfo elementInfo;
-	private final CompositeContext context;
+	private final XFormContext context;
 	private final String jythonProcName;
-	private final String recordId;
 
-	protected GridJythonDownloadHelper(final CompositeContext aContext,
-			final DataPanelElementInfo aElement, final ID aLinkId, final String aRecordId) {
+	protected XFormJythonDownloadHelper(final XFormContext aContext,
+			final DataPanelElementInfo aElement, final ID aLinkId) {
 		super(JythonDownloadResult.class);
 		this.context = aContext;
 		this.elementInfo = aElement;
-		this.recordId = aRecordId;
 
 		DataPanelElementProc proc = aElement.getProcs().get(aLinkId);
 		if (proc == null) {
@@ -37,7 +35,7 @@ public class GridJythonDownloadHelper extends JythonQuery<JythonDownloadResult> 
 
 	@Override
 	protected Object execute() {
-		GridDownloadAttributes attr = new GridDownloadAttributes();
+		XFormDownloadAttributes attr = new XFormDownloadAttributes();
 		setParameters(attr);
 		return getProc().getInputStream(context, attr);
 	}
@@ -54,9 +52,9 @@ public class GridJythonDownloadHelper extends JythonQuery<JythonDownloadResult> 
 		aAttributes.setSessionContext(context.getSession());
 	}
 
-	private void setParameters(final GridDownloadAttributes aAttributes) {
+	private void setParameters(final XFormDownloadAttributes aAttributes) {
 		setGeneralParameters(aAttributes);
-		aAttributes.setRecordId(recordId);
+		aAttributes.setFormData(context.getFormData());
 		aAttributes.setElementId(elementInfo.getId().getString());
 	}
 }

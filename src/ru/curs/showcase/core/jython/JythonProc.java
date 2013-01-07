@@ -148,7 +148,7 @@ public interface JythonProc {
 	Object getSelectorData(CompositeContext aContext, DataSelectorAttributes aAttributes);
 
 	/**
-	 * Получить InputStream для загрузки файла из компонента grid.
+	 * Получить InputStream для загрузки файла.
 	 * 
 	 * @param aContext
 	 *            - контекст.
@@ -156,7 +156,18 @@ public interface JythonProc {
 	 *            - атрибуты запроса
 	 * @return объект класса JythonDownloadResultForGrid
 	 */
-	JythonDownloadResultForGrid getInputStreamForGrid(AbstractCompositeContext aContext,
-			GridDownloadAttributes attributes);
+	<T extends InputAttributes> JythonDownloadResult getInputStream(
+			AbstractCompositeContext aContext, T attributes);
 
+	/**
+	 * Загрузить файл на сервер.
+	 * 
+	 * @param aContext
+	 *            - контекст.
+	 * @param attributes
+	 *            - атрибуты запроса
+	 * @return в случае ошибки объект JythonErrorResult
+	 */
+	<T extends InputAttributes> JythonErrorResult doUpload(AbstractCompositeContext aContext,
+			T attributes);
 }

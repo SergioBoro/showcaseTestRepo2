@@ -18,6 +18,10 @@ public class XFormSaveSelector extends SourceSelector<HTMLAdvGateway> {
 		super(proc.getName());
 	}
 
+	public XFormSaveSelector(final String procName) {
+		super(procName);
+	}
+
 	@Override
 	public HTMLAdvGateway getGateway() {
 		HTMLAdvGateway res;

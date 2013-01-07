@@ -1,15 +1,16 @@
 package ru.curs.showcase.core.html.xform;
 
-import java.io.InputStream;
+import java.io.*;
 
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
+import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.html.*;
-import ru.curs.showcase.core.jython.JythonQuery;
+import ru.curs.showcase.core.jython.*;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.exception.NotImplementedYetException;
+import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
 
 /**
  * Шлюз для XForms для работы с Jython. Некоторые функции - работа с файлами -
@@ -83,13 +84,50 @@ public class XFormJythonGateway implements HTMLAdvGateway {
 	@Override
 	public OutputStreamDataFile downloadFile(final XFormContext aContext,
 			final DataPanelElementInfo aElementInfo, final ID aLinkId) {
-		throw new NotImplementedYetException();
+		XFormJythonDownloadHelper xjdh =
+			new XFormJythonDownloadHelper(aContext, aElementInfo, aLinkId);
+		xjdh.runTemplateMethod();
+		JythonDownloadResult jythonResult = xjdh.getResult();
+
+		JythonErrorResult error = jythonResult.getError();
+		if (error != null && error.getErrorCode() != 0) {
+			UserMessageFactory factory = new UserMessageFactory();
+			throw new ValidateException(factory.build(error.getErrorCode(), error.getMessage()));
+		}
+
+		InputStream is = jythonResult.getInputStream();
+		if (is == null) {
+			throw new FileIsAbsentInDBException();
+		}
+		String fileName = jythonResult.getFileName();
+		try {
+			StreamConvertor dup = new StreamConvertor(is);
+			ByteArrayOutputStream os = dup.getOutputStream();
+			OutputStreamDataFile result = new OutputStreamDataFile(os, fileName);
+			result.setEncoding(TextUtils.JDBC_ENCODING);
+			return result;
+		} catch (IOException e) {
+			throw new ServerObjectCreateCloseException(e);
+		}
 	}
 
 	@Override
 	public void uploadFile(final XFormContext aContext, final DataPanelElementInfo aElementInfo,
 			final ID aLinkId, final DataFile<InputStream> aFile) {
-		throw new NotImplementedYetException();
+		XFormJythonUploadHelper xjuh;
+		try {
+			xjuh = new XFormJythonUploadHelper(aContext, aElementInfo, aLinkId, aFile);
+			xjuh.runTemplateMethod();
+			JythonErrorResult error = xjuh.getResult();
+			if (error != null && error.getErrorCode() != 0) {
+				UserMessageFactory factory = new UserMessageFactory();
+				throw new ValidateException(
+						factory.build(error.getErrorCode(), error.getMessage()));
+			}
+		} catch (IOException e) {
+			throw new ServerObjectCreateCloseException(e);
+		}
+
 	}
 
 	@Override
