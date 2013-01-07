@@ -9,12 +9,12 @@ from ru.curs.showcase.core.jython import JythonDTO
 from ru.curs.showcase.runtime import ConnectionFactory
 from java.sql import Types
 from java.io import ByteArrayInputStream
-from ru.curs.showcase.core.jython import JythonDownloadResultForGrid
+from ru.curs.showcase.core.jython import JythonDownloadResult
 from ru.curs.showcase.core.jython import GridDownloadAttributes
 
 
 class gridDownload1(JythonProc):
-    def getInputStreamForGrid(self, context, attributes):
+    def getInputStream(self, context, attributes):
         return mainproc(attributes)
 
 
@@ -38,9 +38,9 @@ def mainproc(attributes):
             fileName = stmt.getString(7)
             bt = stmt.getBytes(8)
             if bt!=None:
-                return JythonDownloadResultForGrid(ByteArrayInputStream(bt),fileName)
+                return JythonDownloadResult(ByteArrayInputStream(bt),fileName)
             else:
-                return JythonDownloadResultForGrid(None,fileName)
+                return JythonDownloadResult(None,fileName)
         finally:
             stmt.close()
     finally:

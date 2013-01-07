@@ -19,4 +19,12 @@
 		<element id="0401" type="xforms" template="SelectorJython_Template.xml" proc="xforms_proc_all">
 		</element>
 	</tab>
+	<tab id="05" name="XForms - скачать/загрузить файл">
+		<element id="0501" type="xforms" template="DownloadUpload_Jython_Template.xml" proc="xforms_proc_all">
+			<proc id="050101" name="xform/XFormsDownloadByUserdata.py" type="DOWNLOAD" />
+			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
+			<proc id="050102" name="xform/XFormsUploadByUserdata.py" type="UPLOAD" />
+		</element>
+	</tab>	
+	
 </datapanel>
