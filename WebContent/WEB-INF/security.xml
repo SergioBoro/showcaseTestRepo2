@@ -31,6 +31,10 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 	 <intercept-url pattern="/solutions/default/resources/favicon.ico*" filters="none"/>
 	 <intercept-url pattern="/auth/isAuthenticatedServlet*" filters="none"/>
 	 <intercept-url pattern="/resources/login_content/*" filters="none"/> 
+	 
+	 <intercept-url pattern="/resources/internal/arrow_for_disclosure_panel_close.png*" filters="none"/>
+	 <intercept-url pattern="/resources/internal/arrow_for_disclosure_panel_open.png*" filters="none"/>
+	 <intercept-url pattern="/resources/internal/message_error.png*" filters="none"/>
 	
 	<intercept-url pattern="/forall/*" filters="none"/>  
 	
