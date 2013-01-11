@@ -43,7 +43,6 @@ import com.sencha.gxt.widget.core.client.tips.QuickTip;
 import com.sencha.gxt.widget.core.client.toolbar.*;
 
 /**
- * 
  * Класс панели с гридом.
  */
 public class LiveGridPanel extends BasicElementPanelBasis {
