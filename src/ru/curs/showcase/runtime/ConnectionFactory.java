@@ -116,6 +116,10 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 				result = (Driver) Class.forName("org.postgresql.Driver").newInstance();
 			} else if (getSQLServerType() == SQLServerType.ORACLE) {
 				result = (Driver) Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+			} else if (getSQLServerType() == SQLServerType.MSSQL) {
+				result =
+					(Driver) Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver")
+							.newInstance();
 			} else {
 				return null;
 			}
