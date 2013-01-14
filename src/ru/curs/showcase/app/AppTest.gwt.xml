@@ -35,8 +35,9 @@
   <script src="xsltforms/xsltforms.js"></script>
   
   <stylesheet src="solutions/default/css/solution.css" />
-  <stylesheet src="solutions/default/css/solutionGrid.css" />  
-       
+  <stylesheet src="solutions/default/css/solutionGrid.css" />
+    
+<!--Для компиляции проекта требуется GWT версии 2.5.0-->        
 <!--  <set-property name="user.agent" value="safari" /> -->
 <!-- Должны быть включены ВСЕ агенты, иначе не запускаются GWT-тесты   -->    
 <!-- для GridPanel в development mode во встроенном броузере       -->
