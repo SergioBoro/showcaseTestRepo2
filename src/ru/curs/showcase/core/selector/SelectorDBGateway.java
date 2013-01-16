@@ -5,10 +5,8 @@ import java.util.ArrayList;
 
 import oracle.jdbc.OracleTypes;
 import ru.beta2.extra.gwt.ui.selector.api.*;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
 /**
  * Шлюз для получения данных, источником которых являются хранимые процедуры.
@@ -296,10 +294,6 @@ public class SelectorDBGateway implements SelectorGateway {
 		setSQLXMLParam(cs, getSessionContextIndex(), "");
 
 		CompositeContext context = (CompositeContext) req.getAddData().getContext();
-		DataPanelElementInfo elInfo = (DataPanelElementInfo) req.getAddData().getElementInfo();
-
-		XMLSessionContextGenerator generator = new XMLSessionContextGenerator(context, elInfo);
-		String sessionContext = generator.generate();
 
 		if (context.getMain() != null) {
 			setStringParam(cs, getMainContextIndex(), context.getMain());
@@ -310,8 +304,17 @@ public class SelectorDBGateway implements SelectorGateway {
 		if (context.getFilter() != null) {
 			setSQLXMLParam(cs, getFilterContextIndex(), context.getFilter());
 		}
-		if (sessionContext != null) {
-			setSQLXMLParam(cs, getSessionContextIndex(), sessionContext);
+
+		// DataPanelElementInfo elInfo = (DataPanelElementInfo)
+		// req.getAddData().getElementInfo();
+		// XMLSessionContextGenerator generator = new
+		// XMLSessionContextGenerator(context, elInfo);
+		// String sessionContext = generator.generate();
+		// if (sessionContext != null) {
+		// setSQLXMLParam(cs, getSessionContextIndex(), sessionContext);
+		// }
+		if (context.getSession() != null) {
+			setSQLXMLParam(cs, getSessionContextIndex(), context.getSession());
 		}
 
 	}
