@@ -45,4 +45,10 @@
 		<element id="71" type="GRID"  subtype="EXT_TREE_GRID" proc="exttreegrid_bal"/>	
 		<element id="72" type="GRID"  subtype="EXT_TREE_GRID" proc="exttreegrid_geo"/>
 	</tab>
+	<tab id="8" name="PageGrid1">
+		<element id="81" type="GRID"  subtype="EXT_PAGE_GRID" proc="extpagegrid_bal"/>
+		<element id ="82" type="grid" subtype="EXT_PAGE_GRID" proc="grid_cities_data">
+			<proc id="040101" name="extlivegrid_cities_metadata" type="METADATA"/>
+		</element>
+	</tab>
 </datapanel>

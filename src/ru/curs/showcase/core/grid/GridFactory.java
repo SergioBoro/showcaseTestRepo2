@@ -701,7 +701,8 @@ public class GridFactory extends CompBasedElementFactory {
 				(int) Math.ceil((float) serverState().getTotalCount()
 						/ getRecordSet().getPageSize()));
 
-		if (getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID) {
+		if ((getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
+				|| (getCallContext().getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
 			getResult().getLiveInfo().setTotalCount(serverState().getTotalCount());
 		}
 	}
@@ -782,7 +783,8 @@ public class GridFactory extends CompBasedElementFactory {
 			super();
 
 			if (getElementInfo().loadByOneProc()) {
-				if (getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID) {
+				if ((getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
+						|| (getCallContext().getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
 					firstNumber = getResult().getLiveInfo().getFirstRecord();
 					lastNumber = firstNumber + getResult().getLiveInfo().getLimit();
 				} else {
@@ -791,7 +793,8 @@ public class GridFactory extends CompBasedElementFactory {
 				}
 			} else {
 				firstNumber = 1;
-				if (getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID) {
+				if ((getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
+						|| (getCallContext().getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
 					lastNumber = firstNumber + getResult().getLiveInfo().getLimit();
 				} else {
 					lastNumber = firstNumber + getRecordSet().getPageSize();
@@ -802,7 +805,8 @@ public class GridFactory extends CompBasedElementFactory {
 		private int getRecordIndex() {
 			int index = counterRecord;
 			if (!getElementInfo().loadByOneProc()) {
-				if (getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID) {
+				if ((getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
+						|| (getCallContext().getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
 					index = index + getResult().getLiveInfo().getFirstRecord() - 1;
 				} else {
 					index = index + getRecordSet().getPageInfo().getFirstRecord() - 1;

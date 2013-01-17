@@ -140,7 +140,21 @@
           <datapanel type="dataSourceJython.xml" tab="firstOrCurrent" >          
           </datapanel>
         </action>
-      </level2>      
+      </level2>
+      <level2 id="PageGrid1" name="PageGrid1" selectOnLoad="true">
+        <action>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
+          <datapanel type="byver/PageGrid.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
+      <level2 id="PageGrid2" name="PageGrid2">
+        <action>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
+          <datapanel type="byver/PageGrid2.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
       <level2 id="LiveGrid1" name="LiveGrid1">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
@@ -176,7 +190,7 @@
           </datapanel>
         </action>
       </level2>
-      <level2 id="XForms" name="XForms" selectOnLoad="true">
+      <level2 id="XForms" name="XForms">
         <action>
           <main_context>jython_save_data.xml</main_context>
           <datapanel type="byver/XForms.xml" tab="firstOrCurrent" >          

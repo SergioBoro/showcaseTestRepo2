@@ -94,7 +94,8 @@ public abstract class AbstractGridDBGateway extends CompBasedElementSPQuery impl
 	protected void setupRange() throws SQLException {
 		int firstRecord;
 		int pageSize;
-		if (getContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID) {
+		if ((getContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
+				|| (getContext().getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
 			firstRecord = getContext().getLiveInfo().getFirstRecord();
 			pageSize = getContext().getLiveInfo().getLimit();
 		} else {

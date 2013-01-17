@@ -17,9 +17,9 @@ public enum DataPanelElementSubType implements SerializableElement {
 	 */
 	EXT_LIVE_GRID,
 	/**
-	 * Грид из GXT. Paging.
+	 * Грид из GXT. Page.
 	 */
-	EXT_PAGING_GRID,
+	EXT_PAGE_GRID,
 	/**
 	 * Грид из GXT. Tree.
 	 */

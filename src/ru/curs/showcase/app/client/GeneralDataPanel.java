@@ -480,61 +480,105 @@ public class GeneralDataPanel {
 		}
 		switch (subtype) {
 		case EXT_LIVE_GRID:
-		case EXT_PAGING_GRID:
-			LiveGridPanel lgp = null;
+			w = generateExtLiveGridElement(dpe);
+			break;
 
-			if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-				lgp = new LiveGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
-				w = lgp.getPanel();
-				w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
-			} else {
-				lgp = new LiveGridPanel(dpe);
-				w = lgp.getPanel();
-				lgp.hidePanel();
-			}
-
-			getUiElements(dpe).add(new UIDataPanelElement(lgp));
-			addDataPanelForCaching(dpe, lgp);
-
+		case EXT_PAGE_GRID:
+			w = generateExtPageGridElement(dpe);
 			break;
 
 		case EXT_TREE_GRID:
-			TreeGridPanel tgp = null;
-
-			if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-				tgp = new TreeGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
-				w = tgp.getPanel();
-				w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
-			} else {
-				tgp = new TreeGridPanel(dpe);
-				w = tgp.getPanel();
-				tgp.hidePanel();
-			}
-
-			getUiElements(dpe).add(new UIDataPanelElement(tgp));
-			addDataPanelForCaching(dpe, tgp);
-
+			w = generateExtTreeGridElement(dpe);
 			break;
 
 		case PAGING_GRID: // существующий грид
 		default:
-			GridPanel dgp = null;
-
-			if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-				dgp = new GridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
-				w = dgp.getPanel();
-				w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
-			} else {
-				dgp = new GridPanel(dpe);
-				w = dgp.getPanel();
-				dgp.hidePanel();
-			}
-
-			getUiElements(dpe).add(new UIDataPanelElement(dgp));
-			addDataPanelForCaching(dpe, dgp);
-
+			w = generatePagingGridElement(dpe);
 			break;
 		}
+
+		return w;
+	}
+
+	private static Widget generateExtLiveGridElement(final DataPanelElementInfo dpe) {
+		Widget w = null;
+		LiveGridPanel lgp = null;
+
+		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+			lgp = new LiveGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
+			w = lgp.getPanel();
+			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+		} else {
+			lgp = new LiveGridPanel(dpe);
+			w = lgp.getPanel();
+			lgp.hidePanel();
+		}
+
+		getUiElements(dpe).add(new UIDataPanelElement(lgp));
+		addDataPanelForCaching(dpe, lgp);
+
+		return w;
+	}
+
+	private static Widget generateExtPageGridElement(final DataPanelElementInfo dpe) {
+		Widget w = null;
+
+		PageGridPanel pgp = null;
+
+		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+			pgp = new PageGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
+			w = pgp.getPanel();
+			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+		} else {
+			pgp = new PageGridPanel(dpe);
+			w = pgp.getPanel();
+			pgp.hidePanel();
+		}
+
+		getUiElements(dpe).add(new UIDataPanelElement(pgp));
+		addDataPanelForCaching(dpe, pgp);
+
+		return w;
+	}
+
+	private static Widget generateExtTreeGridElement(final DataPanelElementInfo dpe) {
+		Widget w = null;
+
+		TreeGridPanel tgp = null;
+
+		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+			tgp = new TreeGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
+			w = tgp.getPanel();
+			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+		} else {
+			tgp = new TreeGridPanel(dpe);
+			w = tgp.getPanel();
+			tgp.hidePanel();
+		}
+
+		getUiElements(dpe).add(new UIDataPanelElement(tgp));
+		addDataPanelForCaching(dpe, tgp);
+
+		return w;
+	}
+
+	private static Widget generatePagingGridElement(final DataPanelElementInfo dpe) {
+		Widget w = null;
+
+		GridPanel dgp = null;
+
+		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+			dgp = new GridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
+			w = dgp.getPanel();
+			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+		} else {
+			dgp = new GridPanel(dpe);
+			w = dgp.getPanel();
+			dgp.hidePanel();
+		}
+
+		getUiElements(dpe).add(new UIDataPanelElement(dgp));
+		addDataPanelForCaching(dpe, dgp);
 
 		return w;
 	}

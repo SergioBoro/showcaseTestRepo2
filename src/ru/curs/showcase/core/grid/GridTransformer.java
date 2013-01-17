@@ -89,7 +89,8 @@ public final class GridTransformer {
 
 		// -------------------------------------------------------
 
-		if (subtype == DataPanelElementSubType.EXT_LIVE_GRID) {
+		if ((subtype == DataPanelElementSubType.EXT_LIVE_GRID)
+				|| (subtype == DataPanelElementSubType.EXT_PAGE_GRID)) {
 			lgm.setLiveGridData(gridToLiveGridData(grid));
 		}
 
