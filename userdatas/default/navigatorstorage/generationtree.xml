@@ -141,6 +141,13 @@
           </datapanel>
         </action>
       </level2>
+	  <level2 id="extJsTreePlugin" name="Плагин extJsTree">
+        <action>
+          <main_context>none</main_context>
+          <datapanel type="extJsTree.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
       <level2 id="PageGrid1" name="PageGrid1" selectOnLoad="true">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
