@@ -120,12 +120,11 @@ public class PluginPanel extends BasicElementPanelBasis {
 			AppCurrContext.getInstance()
 					.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel()
 					.add(getDivIdPlugin());
-			for (String param : aPlugin.getRequiredJS()) {
-				AccessToDomModel.addScriptLink(param);
-			}
-
 			for (String param : aPlugin.getRequiredCSS()) {
 				AccessToDomModel.addCSSLink(param);
+			}
+			for (String param : aPlugin.getRequiredJS()) {
+				AccessToDomModel.addScriptLink(param);
 			}
 		}
 
@@ -210,8 +209,8 @@ public class PluginPanel extends BasicElementPanelBasis {
 	 * 
 	 */
 	public native void drawPlugin(final String procName, final String params) /*-{
-		$wnd.eval(procName + "(" + params + ");");
-	}-*/;
+																				$wnd.eval(procName + "(" + params + ");");
+																				}-*/;
 
 	@Override
 	public void reDrawPanel(final CompositeContext context1) {
@@ -305,9 +304,9 @@ public class PluginPanel extends BasicElementPanelBasis {
 	 * 
 	 */
 	public native void setCollbackJSNIFunction() /*-{
-		$wnd.gwtPluginFunc = 
-		@ru.curs.showcase.app.client.api.PluginPanelCallbacksEvents::pluginPanelClick(Ljava/lang/String;Ljava/lang/String;);
-	}-*/;
+													$wnd.gwtPluginFunc = 
+													@ru.curs.showcase.app.client.api.PluginPanelCallbacksEvents::pluginPanelClick(Ljava/lang/String;Ljava/lang/String;);
+													}-*/;
 
 	// CHECKSTYLE:ON
 

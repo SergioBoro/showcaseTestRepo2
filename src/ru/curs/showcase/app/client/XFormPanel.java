@@ -261,6 +261,7 @@ public class XFormPanel extends BasicElementPanelBasis {
 															$wnd.gwtXFormSimpleUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::simpleUpload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtXFormOnSubmitComplete = @ru.curs.showcase.app.client.utils.InlineUploader::onSubmitComplete(Ljava/lang/String;);
 															$wnd.gwtXFormOnChooseFiles = @ru.curs.showcase.app.client.utils.InlineUploader::onChooseFiles(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/String;);
+															$wnd.createPlugin =	@ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::createPlugin(Lcom/google/gwt/core/client/JavaScriptObject;);
 															}-*/;
 
 	// CHECKSTYLE:ON
