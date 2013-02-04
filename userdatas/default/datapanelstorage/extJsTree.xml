@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datapanel>
-	<tab id="extJsTreeXFormsTab" name="extJsTree в качестве селлектора в XForms">
-		<!--<element id="extJsTreeXFormsTab01" type="webtext" proc="webtext/ShowExtJsTreeXFormsSelector.py"/>-->
+	<tab id="extJsTreeXFormsTab" name="extJsTree в качестве селлектора в XForms">		
 		<element id="extJsTreeXFormsSelector" type="xforms" template="extJsTree_Template.xml" proc="xforms_proc_all">
-		</element>
-	</tab>
-	<tab id="extJsTreeTab" name="Плагин выбора данных из дерева на основе ExtJS">
-		<element id="0101" type="plugin" proc="plugin/extJsTree.py" plugin="extJsTree">
-			<proc id="010101" name="plugin/handleExtJsTree.py" type="POSTPROCESS" />
 		</element>
 	</tab>	
 </datapanel>
