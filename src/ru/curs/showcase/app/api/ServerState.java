@@ -59,6 +59,11 @@ public final class ServerState implements SerializableElement {
 	private Boolean caseSensivityIDs;
 
 	/**
+	 * SesionContext на момент старта приложения (загрузки главной страницы).
+	 */
+	private String startingAppSessionContext;
+
+	/**
 	 * Признак того, что разрешена запись в веб-консоль и лог сообщений из
 	 * клиента. Отключить данную опцию имеет смысл из соображений
 	 * производительности.
@@ -151,6 +156,14 @@ public final class ServerState implements SerializableElement {
 
 	public void setEnableClientLog(final Boolean aEnableClientLog) {
 		enableClientLog = aEnableClientLog;
+	}
+
+	public String getStartingAppSessionContext() {
+		return startingAppSessionContext;
+	}
+
+	public void setStartingAppSessionContext(final String astartingAppSessionContext) {
+		this.startingAppSessionContext = astartingAppSessionContext;
 	}
 
 }

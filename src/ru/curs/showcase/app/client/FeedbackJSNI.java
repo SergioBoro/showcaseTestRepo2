@@ -139,6 +139,19 @@ public final class FeedbackJSNI {
 
 	/**
 	 * 
+	 * Возвращает SesionContext на момент старта приложения (загрузки главной
+	 * страницы).
+	 * 
+	 * @return - String
+	 */
+	public static String getStartingAppSessionContext() {
+
+		return AppCurrContext.getInstance().getServerCurrentState().getStartingAppSessionContext();
+
+	}
+
+	/**
+	 * 
 	 * Функция которая загружает и применяет в DOM модель страницы стили решения
 	 * из файла.
 	 * 
@@ -184,7 +197,7 @@ public final class FeedbackJSNI {
 		@ru.curs.showcase.app.client.About::showAbout();	
 		//CHECKSTYLE:OFF	
         $wnd.showModalWindowWithHTMLContent =
-        @ru.curs.showcase.app.client.ModalWindowWithHTMLContent::showWindow(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;);	
+        @ru.curs.showcase.app.client.ModalWindowWithHTMLContent::showWindow(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Integer;Ljava/lang/Integer;);	
         //CHECKSTYLE:ON    
         $wnd.closeModalWindowWithHTMLContent =
         @ru.curs.showcase.app.client.ModalWindowWithHTMLContent::closeWindow();	         			
@@ -199,6 +212,8 @@ public final class FeedbackJSNI {
 		@ru.curs.showcase.app.client.FeedbackJSNI::getCurrentUserSIDName();
 				$wnd.getCurrentUserPhoneFeedbackJSNIFunction = 
 		@ru.curs.showcase.app.client.FeedbackJSNI::getCurrentUserPhoneName();
+				$wnd.getStartingAppSessionContextFeedbackJSNIFunction = 
+		@ru.curs.showcase.app.client.FeedbackJSNI::getStartingAppSessionContext();
 		
 				$wnd.setAndApplySolutionCSSToDomModel = 
 		@ru.curs.showcase.app.client.FeedbackJSNI::setAndApplySolutionCSSToDomModel(Ljava/lang/String;);		

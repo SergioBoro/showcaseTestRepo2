@@ -19,8 +19,6 @@ public final class ModalWindowWithHTMLContent {
 
 	private static DialogBox currentOpenModalWindowsl = null;
 
-	// public static DialogBox currentOpenModalWindowsl;
-
 	private ModalWindowWithHTMLContent() {
 		throw new UnsupportedOperationException();
 	}
@@ -34,24 +32,30 @@ public final class ModalWindowWithHTMLContent {
 	 *            - HTML, который будет отображаться внутри окна.
 	 * @param showCloseButton
 	 *            - параметр определяющий будет ли показываться кнопка "Закрыть"
-	 *            и действовать клавиша Esc на закрытие окна.
+	 * @param windowWidth
+	 *            - параметр определяющий ширину html области окна
+	 * @param windowHeight
+	 *            - параметр определяющий высоту html области окна
+	 * 
 	 * 
 	 */
 	public static void showWindow(final String caption, final String textHTML,
-			final Boolean showCloseButton) {
+			final Boolean showCloseButton, final Integer windowWidth, final Integer windowHeight) {
 
 		if (getCurrentOpenModalWindowsl() == null) {
 
 			if (showCloseButton) {
-				showWindowWithCloseButton(caption, textHTML);
+				showWindowWithCloseButton(caption, textHTML, windowWidth, windowHeight);
 			} else {
-				showWindowWithoutCloseButton(caption, textHTML);
+
+				showWindowWithoutCloseButton(caption, textHTML, windowWidth, windowHeight);
 			}
 		}
 
 	}
 
-	public static void showWindowWithCloseButton(final String caption, final String textHTML) {
+	public static void showWindowWithCloseButton(final String caption, final String textHTML,
+			final Integer windowWidth, final Integer windowHeight) {
 		DialogBoxWithCaptionButton db = new DialogBoxWithCaptionButton(caption) {
 
 			@Override
@@ -65,14 +69,19 @@ public final class ModalWindowWithHTMLContent {
 		html.setHTML(textHTML);
 		final int n500 = 500;
 		final int n400 = 400;
-		html.setPixelSize(n500, n400);
+		if ((windowWidth == null) || (windowHeight == null)) {
+			html.setPixelSize(n500, n400);
+		} else {
+			html.setPixelSize(windowWidth, windowWidth);
+		}
 		db.add(html);
 		setCurrentOpenModalWindowsl(db);
 		db.center();
 		db.show();
 	}
 
-	public static void showWindowWithoutCloseButton(final String caption, final String textHTML) {
+	public static void showWindowWithoutCloseButton(final String caption, final String textHTML,
+			final Integer windowWidth, final Integer windowHeight) {
 
 		DialogBox db = new DialogBox();
 
@@ -83,7 +92,11 @@ public final class ModalWindowWithHTMLContent {
 		html.setHTML(textHTML);
 		final int n500 = 500;
 		final int n400 = 400;
-		html.setPixelSize(n500, n400);
+		if ((windowWidth == null) || (windowHeight == null)) {
+			html.setPixelSize(n500, n400);
+		} else {
+			html.setPixelSize(windowWidth, windowWidth);
+		}
 		db.add(html);
 		setCurrentOpenModalWindowsl(db);
 		db.center();

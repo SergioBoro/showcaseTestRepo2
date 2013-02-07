@@ -21,4 +21,10 @@ public final class ServerStateGetCommand extends ServiceLayerCommand<ServerState
 		setResult(ServerStateFactory.build(getSessionId()));
 	}
 
+	@Override
+	public void setResult(final ServerState aResult) {
+		aResult.setStartingAppSessionContext(getContext().getSession());
+		super.setResult(aResult);
+	}
+
 }
