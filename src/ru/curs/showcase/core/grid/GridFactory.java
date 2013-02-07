@@ -661,6 +661,9 @@ public class GridFactory extends CompBasedElementFactory {
 		if (col.getFormat() != null) {
 			nf.setMinimumFractionDigits(Integer.parseInt(col.getFormat()));
 			nf.setMaximumFractionDigits(Integer.parseInt(col.getFormat()));
+		} else {
+			final int maximumFractionDigits = 20;
+			nf.setMaximumFractionDigits(maximumFractionDigits);
 		}
 		return nf.format(value);
 	}
