@@ -27,7 +27,7 @@ public final class ModalWindowWithHTMLContent {
 	 * Процедура показывающая окно.
 	 * 
 	 * @param caption
-	 *            - заголовок окна, которое будет показано пользователю.
+	 *            - заголовок окна.
 	 * @param textHTML
 	 *            - HTML, который будет отображаться внутри окна.
 	 * @param showCloseButton
