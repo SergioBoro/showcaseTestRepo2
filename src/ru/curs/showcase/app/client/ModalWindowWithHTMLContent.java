@@ -1,7 +1,4 @@
-﻿/**
- * 
- */
-package ru.curs.showcase.app.client;
+﻿package ru.curs.showcase.app.client;
 
 import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
 
@@ -29,7 +26,7 @@ public final class ModalWindowWithHTMLContent {
 	 * @param caption
 	 *            - заголовок окна.
 	 * @param textHTML
-	 *            - HTML, который будет отображаться внутри окна.
+	 *            - HTML.
 	 * @param showCloseButton
 	 *            - параметр определяющий будет ли показываться кнопка "Закрыть"
 	 * @param windowWidth
