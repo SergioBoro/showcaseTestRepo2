@@ -1,4 +1,4 @@
-﻿package ru.curs.showcase.app.client;
+package ru.curs.showcase.app.client;
 
 import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
 
