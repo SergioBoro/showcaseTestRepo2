@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 
  */
 package ru.curs.showcase.app.client;
@@ -27,7 +27,7 @@ public final class ModalWindowWithHTMLContent {
 	 * Процедура показывающая окно.
 	 * 
 	 * @param caption
-	 *            - заголовок окна.
+	 *            - заголовок окна, которое будет показано пользователю.
 	 * @param textHTML
 	 *            - HTML, который будет отображаться внутри окна.
 	 * @param showCloseButton
