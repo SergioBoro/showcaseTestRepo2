@@ -20,9 +20,12 @@ result = u'''{expanded: true, children: '''
 
 
 class myHandler(DefaultHandler):
+    isFirst = 1
     def startElement(self, namespaceURI, lname, qname, attrs):
         global result
         if (qname == "item"):
+            if (myHandler.isFirst != 1):
+                result += u','
             result += u'{'
             result += u"text: '" + attrs.getValue('text') + "'"
             if (attrs.getIndex("cls") > -1):
@@ -35,13 +38,14 @@ class myHandler(DefaultHandler):
                 result += u", checked: " + attrs.getValue('checked') 
         if (qname == "children"):
             result += u", children: ["
+            myHandler.isFirst = 1
     def endElement(self, namespaceURI, lname, qname):
         global result
         if (qname == "item"):
-            result += u'},'
-        if (qname == "children"):
-            result += u"]"    
-        
+            result += u'}'            
+            myHandler.isFirst = 0
+        elif (qname == "children"):
+            result += u"]"
 
 class handleExtJsTree(JythonProc):
 
@@ -51,13 +55,14 @@ class handleExtJsTree(JythonProc):
         return mainproc()
 
 
-def mainproc():
+def mainproc():	
     global result
-    result += u'['
+    result += u'['	
     parser = XMLUtils.createSAXParser()
     stream = TextUtils.stringToStream(data)
-    parser.parse(stream, myHandler())
+    parser.parse(stream, myHandler())    
     result += u']}'
+    
     return JythonDTO([result])
 
 if __name__ == "__main__":
