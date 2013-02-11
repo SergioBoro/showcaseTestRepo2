@@ -26,7 +26,7 @@ public final class ModalWindowWithHTMLContent {
 	 * @param caption
 	 *            - заголовок окна (название).
 	 * @param textHTML
-	 *            - HTML.
+	 *            - HTML, который будет отображаться внутри окна.
 	 * @param showCloseButton
 	 *            - параметр определяющий будет ли показываться кнопка "Закрыть"
 	 * @param windowWidth
@@ -37,7 +37,7 @@ public final class ModalWindowWithHTMLContent {
 	 * 
 	 */
 	public static void showWindow(final String caption, final String textHTML,
-			final Boolean showCloseButton, final Integer windowWidth, final Integer windowHeight) {
+			final boolean showCloseButton, final int windowWidth, final int windowHeight) {
 
 		if (getCurrentOpenModalWindowsl() == null) {
 

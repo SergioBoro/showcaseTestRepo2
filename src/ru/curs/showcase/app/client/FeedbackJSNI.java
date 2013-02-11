@@ -197,7 +197,7 @@ public final class FeedbackJSNI {
 		@ru.curs.showcase.app.client.About::showAbout();	
 		//CHECKSTYLE:OFF	
         $wnd.showModalWindowWithHTMLContent =
-        @ru.curs.showcase.app.client.ModalWindowWithHTMLContent::showWindow(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Integer;Ljava/lang/Integer;);	
+        @ru.curs.showcase.app.client.ModalWindowWithHTMLContent::showWindow(Ljava/lang/String;Ljava/lang/String;ZII);	
         //CHECKSTYLE:ON    
         $wnd.closeModalWindowWithHTMLContent =
         @ru.curs.showcase.app.client.ModalWindowWithHTMLContent::closeWindow();	         			
