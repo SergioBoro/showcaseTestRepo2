@@ -69,7 +69,7 @@ public final class ModalWindowWithHTMLContent {
 		if ((windowWidth == null) || (windowHeight == null)) {
 			html.setPixelSize(n500, n400);
 		} else {
-			html.setPixelSize(windowWidth, windowWidth);
+			html.setPixelSize(windowWidth, windowHeight);
 		}
 		db.add(html);
 		setCurrentOpenModalWindowsl(db);
@@ -92,7 +92,7 @@ public final class ModalWindowWithHTMLContent {
 		if ((windowWidth == null) || (windowHeight == null)) {
 			html.setPixelSize(n500, n400);
 		} else {
-			html.setPixelSize(windowWidth, windowWidth);
+			html.setPixelSize(windowWidth, windowHeight);
 		}
 		db.add(html);
 		setCurrentOpenModalWindowsl(db);
