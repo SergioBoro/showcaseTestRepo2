@@ -170,4 +170,17 @@ public interface JythonProc {
 	 */
 	<T extends InputAttributes> JythonErrorResult doUpload(AbstractCompositeContext aContext,
 			T attributes);
+
+	/**
+	 * Получить данные для gkfubyf.
+	 * 
+	 * @param aContext
+	 *            - контекст.
+	 * @param aAttributes
+	 *            - атрибуты запроса.
+	 * @return - объект класса
+	 *         {@link ru.curs.showcase.core.plugin.ResultPluginData}, содержащий
+	 *         данные.
+	 */
+	Object getPluginData(CompositeContext aContext, PluginAttributes aAttributes);
 }

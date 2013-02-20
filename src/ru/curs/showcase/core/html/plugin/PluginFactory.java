@@ -53,6 +53,9 @@ public final class PluginFactory extends HTMLBasedElementFactory {
 
 	@Override
 	protected void transformData() {
+		if (getSource().getData() == null) {
+			return;
+		}
 		StandartXMLTransformer transformer = new StandartXMLTransformer(getSource());
 		String data = transformer.transform();
 		data = replaceVariables(data);

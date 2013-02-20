@@ -27,7 +27,12 @@ public final class PluginCommand extends DataPanelElementCommand<Plugin> {
 	protected void mainProc() throws Exception {
 		HtmlSelector selector = new HtmlSelector(getElementInfo());
 		HTMLGateway wtgateway = selector.getGateway();
-		HTMLBasedElementRawData rawWT = wtgateway.getRawData(getContext(), getElementInfo());
+		HTMLBasedElementRawData rawWT = null;
+		if (getElementInfo().getProcName() != null) {
+			rawWT = wtgateway.getRawData(getContext(), getElementInfo());
+		} else {
+			rawWT = new HTMLBasedElementRawData(getElementInfo(), getContext());
+		}
 		PluginFactory factory = new PluginFactory(rawWT);
 		setResult(factory.build());
 	}

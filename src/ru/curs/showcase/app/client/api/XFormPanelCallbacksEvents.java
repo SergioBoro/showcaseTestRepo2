@@ -2,7 +2,6 @@ package ru.curs.showcase.app.client.api;
 
 import java.util.*;
 
-import ru.beta2.extra.gwt.ui.plugin.*;
 import ru.beta2.extra.gwt.ui.selector.*;
 import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.Options;
 import ru.beta2.extra.gwt.ui.selector.api.SelectorAdditionalData;
@@ -10,11 +9,10 @@ import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
-import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.utils.*;
 
-import com.google.gwt.core.client.*;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.client.ui.FormPanel;
 
@@ -229,40 +227,6 @@ public final class XFormPanelCallbacksEvents {
 	 */
 	public static void showMultiSelector(final JavaScriptObject o) {
 		showSingleAndMultiSelector(o, true);
-	}
-
-	/**
-	 * Статический метод для создания элемента плагина. Может быть использован
-	 * непосредственно в javscript-е на форме.
-	 * 
-	 * @param o
-	 *            Объект-хендлер плагина
-	 */
-	public static void createPlugin(final JavaScriptObject o) {
-		final PluginParam param = (PluginParam) o;
-		XFormPanel currentXFormPanel = (XFormPanel) ActionExecuter.getElementPanelById(param.id());
-		if (currentXFormPanel != null) {
-			PluginComponent pluginComponent =
-				new PluginComponentImpl(currentXFormPanel.getContext(),
-						currentXFormPanel.getElementInfo(), param);
-			if (param.parentId() == null || param.parentId().isEmpty()) {
-				// плагин будет отображен во всплывающем окне
-				pluginComponent = new WindowPluginDecorator(pluginComponent);
-			}
-			try {
-				pluginComponent.draw();
-			} catch (JavaScriptException e) {
-				if (e.getCause() != null) {
-					MessageBox.showMessageWithDetails(Constants.ERROR_OF_PLUGIN_PAINTING,
-							e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
-							GeneralException.getMessageType(e.getCause()),
-							GeneralException.needDetailedInfo(e.getCause()));
-				} else {
-					MessageBox.showSimpleMessage(Constants.ERROR_OF_PLUGIN_PAINTING,
-							e.getMessage());
-				}
-			}
-		}
 	}
 
 	/**

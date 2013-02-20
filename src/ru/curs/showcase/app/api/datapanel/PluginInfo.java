@@ -15,6 +15,7 @@ public final class PluginInfo extends DataPanelElementInfo {
 	private static final long serialVersionUID = -1192137836340386361L;
 
 	private String plugin;
+	private String getDataProcName;
 
 	public PluginInfo(final String id, final String aPlugin, final String aProcName) {
 		super(id, DataPanelElementType.PLUGIN);
@@ -58,4 +59,13 @@ public final class PluginInfo extends DataPanelElementInfo {
 	public boolean isCorrect() {
 		return super.isCorrect() && (plugin != null);
 	}
+
+	public String getGetDataProcName() {
+		return getDataProcName;
+	}
+
+	public void setGetDataProcName(final String sGetDataProcName) {
+		this.getDataProcName = sGetDataProcName;
+	}
+
 }
