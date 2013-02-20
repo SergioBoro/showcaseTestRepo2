@@ -34,19 +34,22 @@
 				<xf:label>Вызов ExtJsTree плагина</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
-						resource="javascript:createPlugin({
+						resource="javascript:gwtCreatePlugin({
 							id:'xformId',
 							/*parentId:'pluginWraper',*/
 							plugin:'extJsTree',
 							proc:'plugin/extJsTree.py',
 							postProcessProc:'plugin/handleExtJsTree.py',
+							/*getDataProcName:'extJsTree_getData',*/
+							getDataProcName:'plugin/extJsTreeGetData.py',
 							params:{
+								id:'xformId',
 								title: 'Элементы дерева',
 								listeners: {
 									checkchange: {
 										fn: function(node, checked, eOpts) {
 											if (checked) {
-												alert('CheckChange event. Select node '+node.get('text'));
+												alert('CheckChange event. Select node '+node.get('name')+'(id:'+node.get('id')+')');
 											}
 										}
 									}
@@ -61,7 +64,7 @@
 										var records = plugin.getView().getChecked();
 										names = [];
 										Ext.Array.each(records, function(rec){
-											names.push(rec.get('text'));
+											names.push(rec.get('name'));
 										});
 										var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('name')[0];
 										setValue(a, names.join('|'));

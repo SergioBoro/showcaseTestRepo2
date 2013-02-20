@@ -16,18 +16,23 @@ data = '''
             <item text="item 1.1" leaf="true" checked="false"/>
         </children>
     </item>'''
-result = u'''{expanded: true, children: '''
+result = u''
 
 
 class myHandler(DefaultHandler):
     isFirst = 1
     def startElement(self, namespaceURI, lname, qname, attrs):
         global result
-        if (qname == "item"):
+        if (qname == "items"):
+            result += u'['
+        elif (qname == "item"):
             if (myHandler.isFirst != 1):
                 result += u','
-            result += u'{'
-            result += u"text: '" + attrs.getValue('text') + "'"
+            result += u'{'            
+            if (attrs.getIndex("id") > -1):
+                result += u"id: '" + attrs.getValue('id') + "'"
+            if (attrs.getIndex("name") > -1):
+                result += u", name: '" + attrs.getValue('name') + "'"            
             if (attrs.getIndex("cls") > -1):
                 result += u", cls: '" + attrs.getValue('cls') + "'"
             if (attrs.getIndex("expanded") > -1):
@@ -36,12 +41,14 @@ class myHandler(DefaultHandler):
                 result += u", leaf: " + attrs.getValue('leaf')
             if (attrs.getIndex("checked") > -1):
                 result += u", checked: " + attrs.getValue('checked') 
-        if (qname == "children"):
+        elif (qname == "children"):
             result += u", children: ["
             myHandler.isFirst = 1
     def endElement(self, namespaceURI, lname, qname):
         global result
-        if (qname == "item"):
+        if (qname == "items"):
+            result += u']'
+        elif (qname == "item"):
             result += u'}'            
             myHandler.isFirst = 0
         elif (qname == "children"):
@@ -57,12 +64,9 @@ class handleExtJsTree(JythonProc):
 
 def mainproc():	
     global result
-    result += u'['	
     parser = XMLUtils.createSAXParser()
     stream = TextUtils.stringToStream(data)
-    parser.parse(stream, myHandler())    
-    result += u']}'
-    
+    parser.parse(stream, myHandler())
     return JythonDTO([result])
 
 if __name__ == "__main__":

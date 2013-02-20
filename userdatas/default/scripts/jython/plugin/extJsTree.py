@@ -31,37 +31,38 @@ class extJsTree(JythonProc):
 def mainproc():
     data = u'''
     <items>
-        <item text="Расходование денежных средств" cls="folder">
-			<children>
-				<item text="Оплата поставщикам за товар" leaf="true" checked="false"/>
-				<item text="Расходы по таможенному оформлению" leaf="true" checked="false"/>
-				<item text="Расходы  на аренду, коммунальные услуги" cls="folder">
-					<children>
-						<item text="Аренда недвижимости" leaf="true" checked="false"/>
-						<item text="Коммунальные услуги" leaf="true" checked="false"/>
-						<item text="Расходы на содержание сооружений и оборудования" leaf="true" checked="false"/>
-					</children>
-				</item>
-				<item text="Расходы на персонал" cls="folder">
-					<children>
-						<item text="Расходы на оплату труда" leaf="true" checked="false"/>
-						<item text="Страхование персонала, мед.услуги" leaf="true" checked="false"/>
-						<item text="Матпомощь, подарки" leaf="true" checked="false"/>
-					</children>
-				</item>
-				<item text="Услуги связи" leaf="true" checked="false"/>
-				<item text="Маркетинг и реклама" leaf="true" checked="false"/>
-				<item text="Обеспечение безопасности" leaf="true" checked="false"/>
-            </children>   
-        </item>
-		<item text="Поступление денежных средств" cls="folder">
-			<children>
-				<item text="Доход от продажи товара" leaf="true" checked="false"/>
-				<item text="Расходы по таможенному оформлению" leaf="true" checked="false"/>
-				<item text="Возврат денежных средств от контрагентов" leaf="true" checked="false"/>				
-				<item text="Проценты по депозитам" leaf="true" checked="false"/>
-            </children>   
-        </item>
+			<item id="1" name="Lazy load item" leaf="false"/>
+			<item id="2" name="Расходование денежных средств" cls="folder">
+				<children>
+					<item id="21" name="Оплата поставщикам за товар" leaf="true" checked="false"/>
+					<item id="22" name="Расходы по таможенному оформлению" leaf="true" checked="false"/>
+					<item id="23" name="Расходы  на аренду, коммунальные услуги" cls="folder">
+						<children>
+							<item id="231" name="Аренда недвижимости" leaf="true" checked="false"/>
+							<item id="232" name="Коммунальные услуги" leaf="true" checked="false"/>
+							<item id="233" name="Расходы на содержание сооружений и оборудования" leaf="true" checked="false"/>
+						</children>
+					</item>
+					<item id="24" name="Расходы на персонал" cls="folder">
+						<children>
+							<item id="241" name="Расходы на оплату труда" leaf="true" checked="false"/>
+							<item id="242" name="Страхование персонала, мед.услуги" leaf="true" checked="false"/>
+							<item id="243" name="Матпомощь, подарки" leaf="true" checked="false"/>
+						</children>
+					</item>
+					<item id="25" name="Услуги связи" leaf="true" checked="false"/>
+					<item id="26" name="Маркетинг и реклама" leaf="true" checked="false"/>
+					<item id="27" name="Обеспечение безопасности" leaf="true" checked="false"/>
+				</children>   
+			</item>
+			<item id="3" name="Поступление денежных средств" cls="folder">
+				<children>
+					<item id="31" name="Доход от продажи товара" leaf="true" checked="false"/>
+					<item id="32" name="Расходы по таможенному оформлению" leaf="true" checked="false"/>
+					<item id="33" name="Возврат денежных средств от контрагентов" leaf="true" checked="false"/>				
+					<item id="34" name="Проценты по депозитам" leaf="true" checked="false"/>
+				</children>   
+			</item>
     </items>'''
     settings = u'''
     <properties height="400px" width="300px">
