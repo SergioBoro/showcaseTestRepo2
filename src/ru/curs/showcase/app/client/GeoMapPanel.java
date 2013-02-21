@@ -24,7 +24,6 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		generalMapPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
 		generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-		// getElementInfo().getFullId();
 		createChildPanels();
 		dataService = GWT.create(DataService.class);
 
