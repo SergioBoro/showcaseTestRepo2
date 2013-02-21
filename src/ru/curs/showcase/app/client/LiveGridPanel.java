@@ -691,9 +691,11 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			resetGridSettingsToCurrent();
 
 			runAction(gridExtradata.getActionForDependentElements());
-		} else {
-			processClick(selected.recId, selected.colId, InteractionType.SINGLE_CLICK);
 		}
+		// else {
+		// processClick(selected.recId, selected.colId,
+		// InteractionType.SINGLE_CLICK);
+		// }
 
 		setupTimer();
 
