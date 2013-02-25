@@ -89,6 +89,14 @@
     <url-pattern>/secured/SelectorDataService</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>PluginDataService</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.PluginDataServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PluginDataService</servlet-name>
+    <url-pattern>/secured/PluginDataService</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>isAuthenticatedServlet</servlet-name>
     <servlet-class>ru.curs.showcase.security.ShowcaseIsAuthenticatedServlet</servlet-class>
   </servlet>
