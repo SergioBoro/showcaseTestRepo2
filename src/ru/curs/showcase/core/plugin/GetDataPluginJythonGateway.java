@@ -13,7 +13,7 @@ public class GetDataPluginJythonGateway extends JythonQuery<JythonDTO> implement
 		GetDataPluginGateway {
 	private RequestData request;
 
-	protected GetDataPluginJythonGateway() {
+	public GetDataPluginJythonGateway() {
 		super(JythonDTO.class);
 	}
 

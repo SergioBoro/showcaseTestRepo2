@@ -194,6 +194,9 @@ public final class PluginPanelCallbacksEvents {
 								e.getMessage());
 					}
 				}
+			} else {
+				MessageBox.showSimpleMessage(Constants.ERROR_OF_PLUGIN_GETDATA,
+						"Не найден ElementPanel. Id=" + param.id());
 			}
 		}
 	}
