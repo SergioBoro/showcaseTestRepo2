@@ -43,7 +43,6 @@
 							/*getDataProcName:'extJsTree_getData',*/
 							getDataProcName:'plugin/extJsTreeGetData.py',
 							params:{
-								id:'xformId',
 								title: 'Элементы дерева',
 								listeners: {
 									checkchange: {
@@ -53,6 +52,9 @@
 											}
 										}
 									}
+								},
+								filter:{
+									startsWith:true
 								}
 							},
 							options: {

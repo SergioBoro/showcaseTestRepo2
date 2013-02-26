@@ -65,7 +65,7 @@ def mainproc():
 			</item>
     </items>'''
     settings = u'''
-    <properties height="400px" width="300px">
+    <properties>
     </properties>
     '''
     res = JythonDTO(data, settings)
