@@ -164,7 +164,7 @@ function createExtJsTree(parentId, pluginParams, data) {
             width: parentEl.getWidth(),
             height: parentEl.getHeight()-filterEl.getHeight()-2
 		};
-        option = Ext.apply(option, pluginParams.tree);
+        option = Ext.apply(option, pluginParams.treePanel);
         var tree = Ext.create('Ext.tree.Panel', option);
 				
 		if (Ext.isFunction(pluginParams.onDrawPluginComplete)) {

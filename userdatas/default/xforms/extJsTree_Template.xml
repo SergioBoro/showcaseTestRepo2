@@ -43,7 +43,7 @@
 							/*getDataProcName:'extJsTree_getData',*/
 							getDataProcName:'plugin/extJsTreeGetData.py',
 							params:{
-								tree: {
+								treePanel: {
 									title: 'Элементы дерева',
 									listeners: {
 										checkchange: {
