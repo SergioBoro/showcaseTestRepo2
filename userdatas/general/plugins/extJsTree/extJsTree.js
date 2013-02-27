@@ -1,6 +1,6 @@
 function createExtJsTree(parentId, pluginParams, data) {
-	if (!pluginParams.filter) {
-		pluginParams.filter = {};
+	if (!pluginParams.core.filter) {
+		pluginParams.core.filter = {};
 	}
 	var DataLoader = function(store, curVal, delay) {
 		this.timeoutId = false;
@@ -104,7 +104,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 				}
 			}
     });
-	var dataLoader = new DataLoader(store, {}, pluginParams.filter.delay);	
+	var dataLoader = new DataLoader(store, {}, pluginParams.core.filter.delay);	
     Ext.onReady(function() { 
 		//добавление фильтра поиска
 		var dh = Ext.DomHelper;
@@ -138,7 +138,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 		
 		var inputEl = Ext.get(inputId);		
 		var checkBoxEl = Ext.get(checkboxId);		
-		if (pluginParams.filter.startsWith) {
+		if (pluginParams.core.filter.startsWith) {
 			checkBoxEl.set({checked:'checked'});
 		}		
 		dataLoader.setCurValue(inputEl.getValue(), checkBoxEl.dom.checked);
@@ -164,7 +164,7 @@ function createExtJsTree(parentId, pluginParams, data) {
             width: parentEl.getWidth(),
             height: parentEl.getHeight()-filterEl.getHeight()-2
 		};
-        option = Ext.apply(option, pluginParams);
+        option = Ext.apply(option, pluginParams.tree);
         var tree = Ext.create('Ext.tree.Panel', option);
 				
 		if (Ext.isFunction(pluginParams.onDrawPluginComplete)) {

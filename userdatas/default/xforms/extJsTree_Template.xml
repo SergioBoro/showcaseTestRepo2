@@ -43,18 +43,23 @@
 							/*getDataProcName:'extJsTree_getData',*/
 							getDataProcName:'plugin/extJsTreeGetData.py',
 							params:{
-								title: 'Элементы дерева',
-								listeners: {
-									checkchange: {
-										fn: function(node, checked, eOpts) {
-											if (checked) {
-												alert('CheckChange event. Select node '+node.get('name')+'(id:'+node.get('id')+')');
+								tree: {
+									title: 'Элементы дерева',
+									listeners: {
+										checkchange: {
+											fn: function(node, checked, eOpts) {
+												if (checked) {
+													alert('CheckChange event. Select node '+node.get('name')+'(id:'+node.get('id')+')');
+												}
 											}
 										}
 									}
 								},
-								filter:{
-									startsWith:true
+								core: {
+									filter:{
+										startsWith:true,
+										delay:900
+									}
 								}
 							},
 							options: {
