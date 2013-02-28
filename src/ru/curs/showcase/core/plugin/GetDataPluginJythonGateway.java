@@ -30,7 +30,7 @@ public class GetDataPluginJythonGateway extends JythonQuery<JythonDTO> implement
 	@Override
 	protected Object execute() {
 		PluginAttributes pluginAttributes = new PluginAttributes();
-		pluginAttributes.setParamMap(this.request.getParamMap());
+		pluginAttributes.setXmlParams(this.request.getXmlParams());
 		return getProc().getPluginData(request.getContext(), pluginAttributes);
 	}
 

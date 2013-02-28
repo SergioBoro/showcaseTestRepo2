@@ -35,7 +35,7 @@ public class GetDataPluginCommandTest extends AbstractTestWithDefaultUserData {
 		requestData.setContext(context);
 		requestData.setElInfo(elInfo);
 		
-		requestData.addParam("id", "parentId");
+		requestData.setXmlParams("<params><id>parentId</id></params>");
 		return requestData;
 	}
 

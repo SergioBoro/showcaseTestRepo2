@@ -1,6 +1,5 @@
 package ru.curs.showcase.core.jython;
 
-import java.util.Map;
 
 /**
  * Входные атрибуты получения данных для плагина.
@@ -9,20 +8,14 @@ import java.util.Map;
  * 
  */
 public class PluginAttributes {
-	private Map<String, String> paramMap;
+	private String xmlParams;
 
-	/**
-	 * Получить параметры.
-	 * 
-	 * @return Map<String, Object> где key - имя параметра, value - значение
-	 *         параметра
-	 */
-	public Map<String, String> getParamMap() {
-		return paramMap;
+	public String getXmlParams() {
+		return this.xmlParams;
 	}
 
-	public void setParamMap(final Map<String, String> mParamMap) {
-		this.paramMap = mParamMap;
+	public void setXmlParams(final String sXmlParams) {
+		this.xmlParams = sXmlParams;
 	}
 
 }

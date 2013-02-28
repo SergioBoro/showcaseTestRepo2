@@ -6,6 +6,7 @@ Created on 15.02.2013
 '''
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.core.jython import JythonDTO
+import xml.etree.ElementTree as ET
 
 # init vars
 main = ""
@@ -29,14 +30,15 @@ class extJsTreeGetData(JythonProc):
 def mainproc(attributes):
     parentId=''
     curValue=''
-    paramMap = attributes.getParamMap()
-    if paramMap!=None:
-        pId = paramMap.get('id')
+    xmlParams = attributes.getXmlParams()
+    if xmlParams!=None:
+        root = ET.fromstring(xmlParams)        
+        pId = root.find('.//id')
         if (pId!=None):
-            parentId=pId+'.'
-        pCurValue = paramMap.get('curValue')
+            parentId=pId.text+'.'
+        pCurValue = root.find('.//curValue')
         if (pCurValue!=None):
-            curValue=' ['+pCurValue+']'
+            curValue=' ['+pCurValue.text+']'
     data = u'''
     <items>
 		<item id="'''+parentId+'''1" name="Lazy loaded item '''+parentId+'''1'''+curValue+'''" leaf="false"/>

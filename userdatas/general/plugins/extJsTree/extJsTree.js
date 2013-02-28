@@ -2,20 +2,21 @@ function createExtJsTree(parentId, pluginParams, data) {
 	if (!pluginParams.core.filter) {
 		pluginParams.core.filter = {};
 	}
-	var DataLoader = function(store, curVal, delay) {
+	var DataLoader = function(store, curVal, delay, generalFilters) {
 		this.timeoutId = false;
 		this.curVal = curVal || {},
 		this.store = store;
 		this.store.proxy.dataLoader = this;
 		this.store.proxy.read=this.loadNode;
 		this.delay = delay || 900;
+		this.generalFilters = generalFilters || {};
 	};
 	DataLoader.prototype = {			
 			load:function(operation, callback, scope) {
 				gwtGetDataPlugin({
 					id:pluginParams.elementPanelId,
 					parentId:parentId,
-					params: operation.params,
+					params: Ext.apply(operation.params, {generalFilters:this.generalFilters}),
 					callbackFn: function(data) {
 						if (data) {
 							if (!Ext.isArray(data)) {
@@ -104,7 +105,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 				}
 			}
     });
-	var dataLoader = new DataLoader(store, {}, pluginParams.core.filter.delay);	
+	var dataLoader = new DataLoader(store, {}, pluginParams.core.filter.delay, pluginParams.generalFilters);	
     Ext.onReady(function() { 
 		//добавление фильтра поиска
 		var dh = Ext.DomHelper;

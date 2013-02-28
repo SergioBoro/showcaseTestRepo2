@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.client.api;
 
-import java.util.*;
+import java.util.List;
 
 import ru.beta2.extra.gwt.ui.plugin.*;
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
@@ -165,7 +165,7 @@ public final class PluginPanelCallbacksEvents {
 				requestData.setProcName(pluginInfo.getGetDataProcName());
 				if (param.params() != null) {
 					JSONObject json = new JSONObject(param.params());
-					addParams("param", json, requestData.getParamMap());
+					requestData.setXmlParams(createXmlByJSONValue("params", json));
 				}
 				try {
 					GetDataPluginHelper helper =
@@ -201,27 +201,35 @@ public final class PluginPanelCallbacksEvents {
 		}
 	}
 
-	private static void addParams(final String name, final JSONValue jsonVal,
-			final Map<String, String> map) {
-		if (jsonVal.isNull() == null) {
+	private static String createXmlByJSONValue(final String name, final JSONValue jsonVal) {
+		StringBuilder sb = new StringBuilder();
+		if (jsonVal.isNull() == null) {			
 			if (jsonVal.isObject() != null) {
+				sb.append("<").append(name).append(">");
 				JSONObject jsonObject = jsonVal.isObject();
 				for (String key : jsonObject.keySet()) {
-					addParams(key, jsonObject.get(key), map);
+					sb.append(createXmlByJSONValue(key, jsonObject.get(key)));
 				}
+				sb.append("</").append(name).append(">");
 			} else if (jsonVal.isArray() != null) {
 				JSONArray jsonArray = jsonVal.isArray();
 				for (int i = 0; i < jsonArray.size(); i++) {
-					addParams(name, jsonArray.get(i), map);
+					sb.append(createXmlByJSONValue(name, jsonArray.get(i)));
 				}
-			} else if (jsonVal.isString() != null) {
-				JSONString jsonString = jsonVal.isString();
-				String val = jsonString.stringValue();
-				map.put(name, val);
 			} else {
-				map.put(name, jsonVal.toString());
-			}
+				sb.append("<").append(name).append(">");
+				String val;
+				if (jsonVal.isString() != null) {
+					JSONString jsonString = jsonVal.isString();
+					val = jsonString.stringValue();
+				} else {
+					val = jsonVal.toString();
+				}
+				sb.append(val);
+				sb.append("</").append(name).append(">");
+			}			
 		}
+		return sb.toString();
 	}
 
 	/**
