@@ -74,36 +74,53 @@ function createExtJsTree(parentId, pluginParams, data) {
 				};
 			}
 	};
-	
+	function applyFieldsToModel(fields, addFields) {
+		var result = addFields || [];
+		for (i = 0; i < fields.length; i++) {
+			var isContains = false;
+            for (j = 0; j < addFields.length; j++) {
+				if (fields[i].name==addFields[j].name) {
+					isContains = true;
+					break;
+				}
+			}
+			if (!isContains) {
+				result.push(fields[i]);
+			}
+        }
+		return result;
+	}
+	////////////////////////////////////////////////
     Ext.require([
         'Ext.tree.*',
         'Ext.data.*'
         ]);
     var parentEl = Ext.get(parentId);
-	Ext.define('Item', {
-			extend: 'Ext.data.Model',
-			fields: [
-				{ name: 'id', type: 'string' },
-				{ name: 'name', type: 'string' }
-			]
-	});
+	var modelOptions = Ext.apply((pluginParams.dataModel || {}), {
+		extend: 'Ext.data.Model'
+	}, {});
+	modelOptions.fields = applyFieldsToModel([
+		{name:'id',type:'string'},
+		{name:'name',type:'string'}
+	], modelOptions.fields||[]);
+	Ext.define('ExtJsTree.DataModel', modelOptions);	
 	var root = !data ? [] : {
-			id:'root',
-			name:'/',
-			expanded:true,
-			leaf:false,
-			icon:Ext.BLANK_IMAGE_URL,
-			children:data
+		id:'root',
+		name:'/',
+		expanded:true,
+		leaf:false,
+		icon:Ext.BLANK_IMAGE_URL,
+		children:data
 	};	
 	var store = Ext.create('Ext.data.TreeStore', {
-			model: 'Item',
-            root: root,
-            proxy: {
-				type: 'memory',
-				reader: {
-					type: 'json'
-				}
+		model: 'ExtJsTree.DataModel',
+        root: root,
+        proxy: {
+		type: 'memory',
+			reader: {
+				type: 'json'
 			}
+		}
     });
 	var dataLoader = new DataLoader(store, {}, pluginParams.core.filter.delay, pluginParams.generalFilters);	
     Ext.onReady(function() { 

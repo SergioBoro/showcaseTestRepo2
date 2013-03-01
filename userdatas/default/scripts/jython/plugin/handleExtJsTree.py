@@ -40,7 +40,9 @@ class myHandler(DefaultHandler):
             if (attrs.getIndex("leaf") > -1):
                 result += u", leaf: " + attrs.getValue('leaf')
             if (attrs.getIndex("checked") > -1):
-                result += u", checked: " + attrs.getValue('checked') 
+                result += u", checked: " + attrs.getValue('checked')
+            if (attrs.getIndex("attr1") > -1):
+                result += u", attr1: '" + attrs.getValue('attr1') + "'"     
         elif (qname == "children"):
             result += u", children: ["
             myHandler.isFirst = 1

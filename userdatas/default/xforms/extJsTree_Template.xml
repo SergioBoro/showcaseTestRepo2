@@ -50,7 +50,7 @@
 										checkchange: {
 											fn: function(node, checked, eOpts) {
 												if (checked) {
-													alert('CheckChange event. Select node '+node.get('name')+'(id:'+node.get('id')+')');
+													alert('CheckChange event. Select node '+node.get('name')+'(id:'+node.get('id')+', attr1:'+node.get('attr1')+')');
 												}
 											}
 										}
@@ -61,6 +61,11 @@
 										startsWith:true,
 										delay:900
 									}
+								},
+								dataModel:{
+									fields:[
+										{name: 'attr1', type: 'string'}
+									]
 								}
 							},
 							options: {								
