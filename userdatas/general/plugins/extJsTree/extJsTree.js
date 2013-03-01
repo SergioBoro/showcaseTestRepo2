@@ -4,9 +4,11 @@ function createExtJsTree(parentId, pluginParams, data) {
 	}
 	var DataLoader = function(store, curVal, delay, generalFilters) {
 		this.timeoutId = false;
-		this.curVal = curVal || {},
+		this.setCurValue(),
 		this.store = store;
-		this.store.proxy.dataLoader = this;
+		this.store.proxy.ExtJsTree = {
+			self: this
+		};
 		this.store.proxy.read=this.loadNode;
 		this.delay = delay || 900;
 		this.generalFilters = generalFilters || {};
@@ -31,21 +33,24 @@ function createExtJsTree(parentId, pluginParams, data) {
 				});
 			},
 			loadNode:function(operation, callback, scope) {
+				var dataLoader = this.ExtJsTree.self;
 				if (operation.node != store.getRootNode()) {
 					var dataNode = operation.node.data;
 					operation.params={
 						id:dataNode.id,
-						name:dataNode.name
+						name:dataNode.name,
+						curValue:dataLoader.curVal.val,
+						startsWith:dataLoader.curIsChecked
 					};		
 				}
-				this.dataLoader.load(operation, callback, scope);
+				dataLoader.load(operation, callback, scope);
 			},
-			_doEvent:function(val, isChecked) {
+			_doEvent:function() {
 				var rootNode = this.store.getRootNode();
 				rootNode.removeAll();
 				this.store.load({node: rootNode, params:{
-						curValue:val,
-						startsWith:isChecked
+						curValue:this.curVal.val,
+						startsWith:this.curIsChecked
 					}
 				});
 			},
@@ -60,17 +65,17 @@ function createExtJsTree(parentId, pluginParams, data) {
 						this.timeoutId = setTimeout(function() {
 							self.timeoutId = false;
 							self.setCurValue(val,isChecked);
-							self._doEvent(val, isChecked);
+							self._doEvent();
 						},this.delay);
 					} else {
-						this._doEvent(val, isChecked);
+						this._doEvent();
 					}
 				}
 			},
 			setCurValue: function(curVal, curIsChecked) {
 				this.curVal = {
-					val:curVal,
-					curIsChecked:curIsChecked
+					val:curVal || '',
+					curIsChecked:curIsChecked || false
 				};
 			}
 	};

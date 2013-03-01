@@ -34,10 +34,10 @@ def mainproc(attributes):
     if xmlParams!=None:
         root = ET.fromstring(xmlParams)        
         pId = root.find('.//id')
-        if (pId!=None):
+        if pId!=None and pId.text!=None:
             parentId=pId.text+'.'
         pCurValue = root.find('.//curValue')
-        if (pCurValue!=None):
+        if pCurValue!=None and pCurValue.text!=None:
             curValue=' ['+pCurValue.text+']'
     data = u'''
     <items>
