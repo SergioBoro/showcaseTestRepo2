@@ -2,9 +2,9 @@ function createExtJsTree(parentId, pluginParams, data) {
 	if (!pluginParams.core.filter) {
 		pluginParams.core.filter = {};
 	}
-	var DataLoader = function(store, curVal, delay, generalFilters) {
+	var DataLoader = function(store, delay, generalFilters) {
 		this.timeoutId = false;
-		this.setCurValue(),
+		this.setCurValue();
 		this.store = store;
 		this.store.proxy.ExtJsTree = {
 			self: this
@@ -40,7 +40,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 						id:dataNode.id,
 						name:dataNode.name,
 						curValue:dataLoader.curVal.val,
-						startsWith:dataLoader.curIsChecked
+						startsWith:dataLoader.curVal.curIsChecked
 					};		
 				}
 				dataLoader.load(operation, callback, scope);
@@ -50,7 +50,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 				rootNode.removeAll();
 				this.store.load({node: rootNode, params:{
 						curValue:this.curVal.val,
-						startsWith:this.curIsChecked
+						startsWith:this.curVal.curIsChecked
 					}
 				});
 			},
@@ -127,7 +127,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 			}
 		}
     });
-	var dataLoader = new DataLoader(store, {}, pluginParams.core.filter.delay, pluginParams.generalFilters);	
+	var dataLoader = new DataLoader(store, pluginParams.core.filter.delay, pluginParams.generalFilters);	
     Ext.onReady(function() { 
 		//добавление фильтра поиска
 		var dh = Ext.DomHelper;
