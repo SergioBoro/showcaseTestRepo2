@@ -189,7 +189,27 @@ function createExtJsTree(parentId, pluginParams, data) {
 		};
         option = Ext.apply(option, pluginParams.treePanel);
         var tree = Ext.create('Ext.tree.Panel', option);
-				
+		tree.utils = {
+			singleXpathMapping: function(xpathMapping) {
+				var records = tree.getView().getChecked();
+				if (records.length>0) {
+					var selected = records[0].getData();
+					setXFormByXPath(true, selected, xpathMapping)
+				}				
+			},
+			multiXpathMapping: function(xpath, needClear) {
+				var records = tree.getView().getChecked();
+				if (records.length>0) {
+					var selected = [];
+					for (i in records) {
+						var selectedItem = records[i].getData();
+						selected.push(selectedItem);
+					}
+					insertXFormByXPath(true, selected, xpath.xpathRoot, xpath.xpathMapping, needClear)
+				}				
+			}
+		};
+		
 		if (Ext.isFunction(pluginParams.onDrawPluginComplete)) {
 			pluginParams.onDrawPluginComplete(tree);
 		};		

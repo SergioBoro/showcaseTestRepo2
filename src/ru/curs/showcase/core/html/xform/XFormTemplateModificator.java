@@ -46,6 +46,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String VALUE = "value";
 	private static final String SHOW_SELECTOR = "showSelector";
 	private static final String SHOW_MULTISELECTOR = "showMultiSelector";
+	private static final String CREATEPLUGIN = "gwtCreatePlugin";
 	private static final String TEMP_TAG_FOR_SELECTOR_ID = "tempTagForSelector";
 
 	// CHECKSTYLE:OFF
@@ -417,7 +418,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 		for (String selector : selectors) {
 			if ((selector.toLowerCase().indexOf(SHOW_SELECTOR.toLowerCase()) > -1)
-					|| (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) > -1)) {
+					|| (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) > -1)
+					|| (selector.toLowerCase().indexOf(CREATEPLUGIN.toLowerCase()) > -1)) {
 				addXPathsFromStringToArrayXPaths(selector, xpaths);
 			}
 		}
@@ -494,7 +496,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		String s;
 
 		for (String selector : selectors) {
-			if (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) == -1) {
+			if (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) == -1
+					&& selector.toLowerCase().indexOf(CREATEPLUGIN.toLowerCase()) == -1) {
 				continue;
 			}
 

@@ -7,16 +7,24 @@
 		<xf:model id="mainModel">
 			<xf:instance id="mainInstance">
 				<schema xmlns="">
-					<info>
-						<name />
-						<growth />
-						<eyescolour />
-						<music />
-						<comment />
-					</info>
 				</schema>
 			</xf:instance>
+			
+			<xf:instance id="myInstance">
+			  <schema xmlns="">
+				<items />
+			  </schema>
+			</xf:instance>
+			
+			<xf:instance id="myInstance1">
+			  <schema xmlns="">
+				<item id="">
+					<name></name>
+				</item>
+			  </schema>
+			</xf:instance>
 
+			
 			<xf:bind>
 			</xf:bind>
 		</xf:model>
@@ -24,9 +32,11 @@
 	<body>
 		<div style="font-size: 15px;"> Текстовое поле: </div>
 		<div>
-			<xf:input ref="/schema/info/name">
-				<xf:help>Справка</xf:help>
-				<xf:hint>Дополнительная информация</xf:hint>
+			<xf:input ref="instance('myInstance1')/item/@id">
+				<xf:hint>Содержит идентификатор выбранной записи (первой записи в случае множественного выбора)</xf:hint>
+			</xf:input>
+			<xf:input ref="instance('myInstance1')/item/name">
+				<xf:hint>Содержит название выбранной записи (первой записи в случае множественного выбора)</xf:hint>
 			</xf:input>
 
 
@@ -42,7 +52,7 @@
 							postProcessProc:'plugin/handleExtJsTree.py',
 							/*getDataProcName:'extJsTree_getData',*/
 							getDataProcName:'plugin/extJsTreeGetData.py',
-							generalFilters:['XPath(/schema/info/name)'],
+							generalFilters:['XPath(instance(quot(myInstance1))/item/name)'],
 							params:{
 								treePanel: {
 									title: 'Элементы дерева',
@@ -74,7 +84,16 @@
 								windowCaption: 'Выбор данных из дерева',
 								onSelectionComplete: function(ok, plugin) {
 									if (ok) {
-										var records = plugin.getView().getChecked();
+										plugin.utils.singleXpathMapping({
+											'XPath(instance(quot(myInstance1))/item/name)':'name',
+											'XPath(instance(quot(myInstance1))/item/@id)':'id'
+										});
+										plugin.utils.multiXpathMapping({
+											xpathRoot:'XPath(instance(quot(myInstance))/items)',
+											xpathMapping:{'XPath(instance(quot(myInstance1))/item)':{'id': '@id','name':'name'}}
+										}, true);
+										
+										/*var records = plugin.getView().getChecked();
 										names = [];
 										Ext.Array.each(records, function(rec){
 											names.push(rec.get('name'));
@@ -84,14 +103,20 @@
 										
 										xforms.ready = false;
 										xforms.refresh();
-										xforms.ready = true;
+										xforms.ready = true;*/
 									}
 								}
 							}
 						});" />
 				</xf:action>
 			</xf:trigger>
-
+			
+			<xf:repeat id="itemRow" nodeset="instance('myInstance')/items">
+              <div>
+                <xf:output ref="."/>
+              </div>
+            </xf:repeat>
+			
 			<div id="pluginWraper"></div>
 		</div>
 		
@@ -99,9 +124,3 @@
 		
 	</body>
 </html>
-
-
-
-
-
-
