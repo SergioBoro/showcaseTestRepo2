@@ -13057,13 +13057,16 @@ function getValueByXPath(xpath)
  */   
 }
 
-function getXMLByXPathArray(xpathArray)
+function getXMLByXPathArray(xpathArray, createSchema)
 {
 	if( typeof xpathArray == "string" ) {
 		return xpathArray.toString();
 	}
+	if (createSchema == undefined) {
+		createSchema = true;
+	}
 
-	var xml = '<schema xmlns="">';
+	var xml = createSchema?'<schema xmlns="">':'';
 	for (var i in xpathArray) {
 	    if (isXPath(xpathArray[i])) {
            var nodes = (new XsltForms_binding(null, getXPath(xpathArray[i]))).evaluate();
@@ -13087,8 +13090,10 @@ function getXMLByXPathArray(xpathArray)
 			xml = xml+'<filter xmlns="">'+xpathArray[i]+'</filter>';
 	    }
 	}	
-	xml = xml+"</schema>";
-	
+	if (createSchema) {
+		xml = xml+"</schema>";
+	}
+		
 	return xml;
 	
 /*
@@ -13124,33 +13129,6 @@ function getXMLByXPathArray(xpathArray)
 	
 	return xml;
  */	
-}
-
-function getJsObjectByXPathArray(xpathArray) {
-	if (typeof xpathArray == "string") {
-		return xpathArray.toString();
-	}
-	var result = {};
-	for (var i in xpathArray) {
-		if (isXPath(xpathArray[i])) {
-			var nodes = (new XsltForms_binding(null,getXPath(xpathArray[i]))).evaluate();
-			if (nodes.length && nodes.length > 0) {
-				for (var j in nodes) {
-					if (nodes[j].nodeType == XsltForms_nodeType.ATTRIBUTE) {
-						result[nodes[j].nodeName] = nodes[j].nodeValue;
-					} else {
-						result[nodes[j].nodeName] = nodes[j].textContent;
-					}
-				}
-			}
-		} else {
-			if (!result.filter) {
-				result.filter = new Array();
-			}
-			result.filter.push(xpathArray[i]);
-		}
-	}
-	return result;
 }
 
 function getInitSelection(xpathRoot, xpathMapping)

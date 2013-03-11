@@ -11,7 +11,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 		};
 		this.store.proxy.read=this.loadNode;
 		this.delay = delay || 900;
-		this.generalFilters = generalFilters || {};
+		this.generalFilters = generalFilters || '';
 	};
 	DataLoader.prototype = {			
 			load:function(operation, callback, scope) {
