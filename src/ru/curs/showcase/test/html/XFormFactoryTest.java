@@ -74,7 +74,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		XForm xform = factory.build();
 
 		assertNotNull(xform);
-		final int num = 6;
+		final int num = 2;
 		assertEquals(num, xform.getXFormParts().size());
 	}
 
@@ -90,7 +90,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		XFormFactory factory = new XFormFactory(raw);
 		XForm result = factory.build();
 
-		final int index = 4;
+		final int index = 0;
 		assertTrue(result
 				.getXFormParts()
 				.get(index)
@@ -114,7 +114,7 @@ public class XFormFactoryTest extends AbstractTestWithDefaultUserData {
 		proc.setType(DataPanelElementProcType.UPLOAD);
 		proc.setName("upload1_proc");
 		dpei.getProcs().put(proc.getId(), proc);
-		XFormTemplateModificator.generateUploaders(doc, dpei);
+		XFormTemplateModificator.generateUploaders(doc, dpei, "testSubformId");
 	}
 
 	@Test(expected = ValidateException.class)

@@ -4,19 +4,19 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLschema" xmlns:fs="http://www.curs.ru/ns/FormServer"
 	xmlns:xf="http://www.w3.org/2002/xforms">
 	<head>
-		<xf:model id="mainModel">
-			<xf:instance id="mainInstance">
+		<xf:model id="xformId_mainModel">
+			<xf:instance id="xformId_mainInstance">
 				<schema xmlns="">
 				</schema>
 			</xf:instance>
 			
-			<xf:instance id="myInstance">
+			<xf:instance id="xformId_myInstance">
 			  <schema xmlns="">
 				<items />
 			  </schema>
 			</xf:instance>
 			
-			<xf:instance id="myInstance1">
+			<xf:instance id="xformId_myInstance1">
 			  <schema xmlns="">
 				<item id="">
 					<name></name>
@@ -32,10 +32,10 @@
 	<body>
 		<div style="font-size: 15px;"> Текстовое поле: </div>
 		<div>
-			<xf:input ref="instance('myInstance1')/item/@id">
+			<xf:input ref="instance('xformId_myInstance1')/item/@id">
 				<xf:hint>Содержит идентификатор выбранной записи (первой записи в случае множественного выбора)</xf:hint>
 			</xf:input>
-			<xf:input ref="instance('myInstance1')/item/name">
+			<xf:input ref="instance('xformId_myInstance1')/item/name">
 				<xf:hint>Содержит название выбранной записи (первой записи в случае множественного выбора)</xf:hint>
 			</xf:input>
 
@@ -52,7 +52,7 @@
 							postProcessProc:'plugin/handleExtJsTree.py',
 							/*getDataProcName:'extJsTree_getData',*/
 							getDataProcName:'plugin/extJsTreeGetData.py',
-							generalFilters:['XPath(instance(quot(myInstance1))/item/name)'],
+							generalFilters:['XPath(instance(quot(xformId_myInstance1))/item/name)'],
 							params:{
 								treePanel: {
 									title: 'Элементы дерева',
@@ -85,12 +85,12 @@
 								onSelectionComplete: function(ok, plugin) {
 									if (ok) {
 										plugin.utils.singleXpathMapping({
-											'XPath(instance(quot(myInstance1))/item/name)':'name',
-											'XPath(instance(quot(myInstance1))/item/@id)':'id'
+											'XPath(instance(quot(xformId_myInstance1))/item/name)':'name',
+											'XPath(instance(quot(xformId_myInstance1))/item/@id)':'id'
 										});
 										plugin.utils.multiXpathMapping({
-											xpathRoot:'XPath(instance(quot(myInstance))/items)',
-											xpathMapping:{'XPath(instance(quot(myInstance1))/item)':{'id': '@id','name':'name'}}
+											xpathRoot:'XPath(instance(quot(xformId_myInstance))/items)',
+											xpathMapping:{'XPath(instance(quot(xformId_myInstance1))/item)':{'id': '@id','name':'name'}}
 										}, true);
 										
 										/*var records = plugin.getView().getChecked();
@@ -98,7 +98,7 @@
 										Ext.Array.each(records, function(rec){
 											names.push(rec.get('name'));
 										});
-										var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('name')[0];
+ 					                    var a = getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance').getElementsByTagName('info')[0].getElementsByTagName('name')[0];
 										setValue(a, names.join('|'));
 										
 										xforms.ready = false;
@@ -111,7 +111,7 @@
 				</xf:action>
 			</xf:trigger>
 			
-			<xf:repeat id="itemRow" nodeset="instance('myInstance')/items">
+			<xf:repeat id="itemRow" nodeset="instance('xformId_myInstance')/items">
               <div>
                 <xf:output ref="."/>
               </div>

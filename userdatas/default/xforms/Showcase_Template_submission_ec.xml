@@ -5,8 +5,8 @@
 	xmlns:xf="http://www.w3.org/2002/xforms">
 	<head>
 
-		<xf:model id="mainModel">
-			<xf:instance id="mainInstance">
+		<xf:model id="xformId_mainModel">
+			<xf:instance id="xformId_mainInstance">
 				<schema xmlns="">
 					<info>
 						<name />
@@ -17,16 +17,16 @@
 					</info>
 				</schema>
 			</xf:instance>
-			<xf:instance id="instanse555">
+			<xf:instance id="xformId_instanse555">
 				<mesid xmlns="">555</mesid>
 			</xf:instance>
-			<xf:instance id="instanse556">
+			<xf:instance id="xformId_instanse556">
 				<mesid xmlns="">556</mesid>
 			</xf:instance>							
 
 			
-			<xf:submission id="submit_ec" method="post" instance="mainInstance"
-				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission_ec">
+			<xf:submission id="xformId_submit_ec" method="post" instance="xformId_mainInstance"
+				replace="instance" ref="instance('xformId_mainInstance')" action="secured/submit?proc=xforms_submission_ec">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -38,8 +38,8 @@
 				</xf:action>
 			</xf:submission>	
 			
-			<xf:submission id="submit_ec555" method="post" instance="instanse555"
-				replace="instance" ref="instance('instanse555')" action="secured/submit?proc=xforms_submission_ec">
+			<xf:submission id="xformId_submit_ec555" method="post" instance="xformId_instanse555"
+				replace="instance" ref="instance('xformId_instanse555')" action="secured/submit?proc=xforms_submission_ec">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -51,8 +51,8 @@
 				</xf:action>
 			</xf:submission>	
 			
-			<xf:submission id="submit_ec556" method="post" instance="instanse556"
-				replace="instance" ref="instance('instanse556')" action="secured/submit?proc=xforms_submission_ec">
+			<xf:submission id="xformId_submit_ec556" method="post" instance="xformId_instanse556"
+				replace="instance" ref="instance('xformId_instanse556')" action="secured/submit?proc=xforms_submission_ec">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -64,8 +64,8 @@
 				</xf:action>
 			</xf:submission>							
 			
-			<xf:submission id="submit_um" method="post" instance="mainInstance"
-				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission_um">
+			<xf:submission id="xformId_submit_um" method="post" instance="xformId_mainInstance"
+				replace="instance" ref="instance('xformId_mainInstance')" action="secured/submit?proc=xforms_submission_um">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -77,8 +77,8 @@
 				</xf:action>
 			</xf:submission>						
 
-			<xf:submission id="submit_re" method="post" instance="mainInstance"
-				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission_re">
+			<xf:submission id="xformId_submit_re" method="post" instance="xformId_mainInstance"
+				replace="instance" ref="instance('xformId_mainInstance')" action="secured/submit?proc=xforms_submission_re">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -103,7 +103,7 @@
 			<xf:trigger>
 				<xf:label>Вызов sql transform с ошибкой: просто код возврата</xf:label>
 				<xf:action ev:event="DOMActivate">
-					<xf:send submission="submit_ec" />
+					<xf:send submission="xformId_submit_ec" />
 				</xf:action>
 			</xf:trigger>
 		</div>		
@@ -112,7 +112,7 @@
 			<xf:trigger>
 				<xf:label>Вызов sql transform с ошибкой: user.messages.xml</xf:label>
 				<xf:action ev:event="DOMActivate">
-					<xf:send submission="submit_um" />
+					<xf:send submission="xformId_submit_um" />
 				</xf:action>
 			</xf:trigger>
 		</div>
@@ -121,7 +121,7 @@
 			<xf:trigger>
 				<xf:label>Вызов sql transform с ошибкой: просто RAISE</xf:label>
 				<xf:action ev:event="DOMActivate">
-					<xf:send submission="submit_re" />
+					<xf:send submission="xformId_submit_re" />
 				</xf:action>
 			</xf:trigger>
 		</div>
@@ -130,7 +130,7 @@
 			<xf:trigger>
 				<xf:label>Вызов sql transform с ошибкой: код возврата - форматирование</xf:label>
 				<xf:action ev:event="DOMActivate">
-					<xf:send submission="submit_ec555" />
+					<xf:send submission="xformId_submit_ec555" />
 				</xf:action>
 			</xf:trigger>
 		</div>	
@@ -139,7 +139,7 @@
 			<xf:trigger>
 				<xf:label>Вызов sql transform с ошибкой: код возврата - вставка</xf:label>
 				<xf:action ev:event="DOMActivate">
-					<xf:send submission="submit_ec556" />
+					<xf:send submission="xformId_submit_ec556" />
 				</xf:action>
 			</xf:trigger>
 		</div>		

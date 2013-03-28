@@ -53,7 +53,8 @@
     <script>
      var appContextPath="<%=request.getContextPath()%>";
     </script>
-              
+
+     
 </head>
 <body class="claro">
 
@@ -75,15 +76,20 @@
 	/* */
 </script>
 
+
 <div id="target"></div>
+<div id="mainXForm" style="display: none;"></div>
+
 
      <!--[if lte IE 7]>
      <p style="margin: 0.2em 0; background: #ccc; color: #000; padding: 0.2em 0;">Ваша текущая версия Internet explorer устарела. Приложение будет работать некорректно. <a href="http://browsehappy.com/">Обновите свой браузер!</a></p>
      <![endif]-->
 
 	<div id="showcaseHeaderContainer"></div>
-	<div id="showcaseAppContainer"></div>
+	<div id="showcaseAppContainer">
+	</div>
 	<div id="showcaseBottomContainer"></div>
+	
 	
     <img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden; width: 0px; height: 0px" />
     

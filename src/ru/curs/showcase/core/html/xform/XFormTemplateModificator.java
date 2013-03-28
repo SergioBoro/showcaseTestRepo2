@@ -35,7 +35,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String FILE = "file";
 	private static final String UPLOAD_DATA_TAG = "uploaddata";
 	private static final String ROOT_SRV_DATA_TAG = "srvdata";
-	private static final String ORIGIN = "instance('" + ROOT_SRV_DATA_TAG + "')/"
+	private static final String ORIGIN = "instance('%s" + ROOT_SRV_DATA_TAG + "')/"
 			+ UPLOAD_DATA_TAG + "/%s";
 	private static final String NEED_RELOAD_TAG = "needReload";
 
@@ -51,7 +51,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 	// CHECKSTYLE:OFF
 	private static final String JS_SIMPLE_UPLOAD =
-		"javascript:gwtXFormSimpleUpload('xformId', '%s', Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))";
+		"javascript:gwtXFormSimpleUpload('xformId', '%s', Writer.toString(getSubformInstanceDocument('%smainModel', '%smainInstance')))";
 
 	// CHECKSTYLE:ON
 
@@ -60,7 +60,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String JS_SELECTOR_TEMPLATE = "javascript:%s({%s id:'xformId'});";
 
 	private static final String JS_ON_CHOOSE_FILES =
-		"gwtXFormOnChooseFiles('%s', '%s', %s, 'add_upload_index_0')";
+		"gwtXFormOnChooseFiles('%s', '%s', '%s', %s, 'add_upload_index_0')";
 
 	private static final String JS_ON_SUBMIT_COMPLETE = "gwtXFormOnSubmitComplete('%s')";
 
@@ -88,12 +88,13 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	 *            - описание элемента инф. панели.
 	 */
 	public static org.w3c.dom.Document addSrvInfo(final org.w3c.dom.Document doc,
-			final CompositeContext context, final DataPanelElementInfo element) {
+			final CompositeContext context, final DataPanelElementInfo element,
+			final String subformId) {
 		Node node = XFormProducer.getMainInstance(doc);
 		Node parent = node.getParentNode();
 
 		Element el = doc.createElementNS("", XFormProducer.XF_INSTANCE);
-		el.setAttribute(ID_TAG, ROOT_SRV_DATA_TAG);
+		el.setAttribute(ID_TAG, subformId + ROOT_SRV_DATA_TAG);
 		Node srv = parent.appendChild(el);
 		el = doc.createElement(SCHEMA_TAG);
 		srv = srv.appendChild(el);
@@ -113,11 +114,11 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	 *            - документ шаблона.
 	 * @return - элемент c id=ROOT_SRV_DATA_TAG.
 	 */
-	public static Node getSrvDataInstance(final org.w3c.dom.Document doc) {
+	public static Node getSrvDataInstance(final org.w3c.dom.Document doc, final String subformId) {
 		NodeList l = doc.getElementsByTagName(XFormProducer.XF_INSTANCE);
 		for (int i = 0; i < l.getLength(); i++) {
 			Node n = l.item(i).getAttributes().getNamedItem(ID_TAG);
-			if ((n != null) && (ROOT_SRV_DATA_TAG.equals(n.getTextContent()))) {
+			if ((n != null) && ((subformId + ROOT_SRV_DATA_TAG).equals(n.getTextContent()))) {
 				return l.item(i);
 			}
 		}
@@ -188,7 +189,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 	// CHECKSTYLE:OFF
 	public static org.w3c.dom.Document generateUploaders(final org.w3c.dom.Document doc,
-			final DataPanelElementInfo element) {
+			final DataPanelElementInfo element, final String subformId) {
 		NodeList nl = doc.getElementsByTagNameNS(XFormProducer.XFORMS_URI, UPLOAD_TAG);
 		for (int i = nl.getLength() - 1; i >= 0; i--) {
 			Node old = nl.item(i);
@@ -248,8 +249,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 				if (node != null) {
 					needClearFilenames = Boolean.parseBoolean(node.getTextContent());
 				}
-				input.setAttribute("onchange", String.format(JS_ON_CHOOSE_FILES, "@@filedata@@"
-						+ procId, filenamesMapping, needClearFilenames));
+				input.setAttribute("onchange", String.format(JS_ON_CHOOSE_FILES, subformId,
+						"@@filedata@@" + procId, filenamesMapping, needClearFilenames));
 			}
 
 			input.setAttribute(TYPE_TAG, "file");
@@ -321,7 +322,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 					trigger.appendChild(action);
 
 					Element load = doc.createElementNS(XFormProducer.XFORMS_URI, LOAD);
-					load.setAttribute(RESOURCE, String.format(JS_SIMPLE_UPLOAD, procId));
+					load.setAttribute(RESOURCE,
+							String.format(JS_SIMPLE_UPLOAD, procId, subformId, subformId));
 					action.appendChild(load);
 				}
 			}
@@ -361,15 +363,16 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	}
 
 	public static Document modify(final Document aTemplate, final CompositeContext aCallContext,
-			final DataPanelElementInfo aElementInfo) {
-		Document result = addSrvInfo(aTemplate, aCallContext, aElementInfo);
+			final DataPanelElementInfo aElementInfo, final String subformId) {
+		Document result = addSrvInfo(aTemplate, aCallContext, aElementInfo, subformId);
 		result = generateSelectors(result);
-		result = insertDataForSelectors(result);
-		result = generateUploaders(result, aElementInfo);
+		result = insertDataForSelectors(result, subformId);
+		result = generateUploaders(result, aElementInfo, subformId);
 		return result;
 	}
 
-	private static Document insertDataForSelectors(final org.w3c.dom.Document xml) {
+	private static Document insertDataForSelectors(final org.w3c.dom.Document xml,
+			final String subformId) {
 
 		isFilenamesMapping = false;
 
@@ -379,7 +382,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 		adjustArrayXPathsForMultiSelectors(selectors, xpaths);
 
-		Document result = setDataForSelectors(xml, xpaths);
+		Document result = setDataForSelectors(xml, xpaths, subformId);
 
 		// LoggerFactory.getLogger(XFormTemplateModificator.class).info(
 		// XMLUtils.documentToString(result));
@@ -473,6 +476,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		}
 	}
 
+	// CHECKSTYLE:OFF
 	private static void adjustArrayXPathsForMultiSelectors(final ArrayList<String> selectors,
 			final ArrayList<String> xpaths) {
 		Pattern pXPathMapping =
@@ -512,7 +516,9 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 				mQuot = pQuot.matcher(s);
 				while (mQuot.find()) {
-					addIfNotContains(localXPaths, mQuot.group(1));
+					if (!"xformId".equalsIgnoreCase(mQuot.group(1))) {
+						addIfNotContains(localXPaths, mQuot.group(1));
+					}
 				}
 			}
 
@@ -545,13 +551,15 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		}
 	}
 
+	// CHECKSTYLE:ON
+
 	private static Document setDataForSelectors(final org.w3c.dom.Document xml,
-			final ArrayList<String> xpaths) {
+			final ArrayList<String> xpaths, final String subformId) {
 		if (isFilenamesMapping) {
 			addIfNotContains(xpaths, FILE);
-			addIfNotContains(xpaths, String.format(ORIGIN, FILE));
+			addIfNotContains(xpaths, String.format(ORIGIN, subformId, FILE));
 
-			Node srv = getSrvDataInstance(xml);
+			Node srv = getSrvDataInstance(xml, subformId);
 
 			Element data = xml.createElement(UPLOAD_DATA_TAG);
 			srv.getFirstChild().appendChild(data);

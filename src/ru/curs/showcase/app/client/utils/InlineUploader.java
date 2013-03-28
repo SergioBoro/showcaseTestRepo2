@@ -168,15 +168,17 @@ public class InlineUploader {
 		return $wnd.getErrorByIFrame(iframeName);
 	}-*/;
 
-	public static void onChooseFiles(final String inputName, final String filenamesMapping,
-			final Boolean needClearFilenames, final String addUploadIndex) {
-		insertFilenamesByXPath(inputName, filenamesMapping, needClearFilenames, addUploadIndex);
+	public static void onChooseFiles(final String subformId, final String inputName,
+			final String filenamesMapping, final Boolean needClearFilenames,
+			final String addUploadIndex) {
+		insertFilenamesByXPath(subformId, inputName, filenamesMapping, needClearFilenames,
+				addUploadIndex);
 	}
 
-	private static native void insertFilenamesByXPath(final String inputName,
-			final String filenamesMapping, final Boolean needClearFilenames,
-			final String addUploadIndex) /*-{
-		$wnd.insertFilenamesByXPath(inputName, filenamesMapping,
+	private static native void insertFilenamesByXPath(final String subformId,
+			final String inputName, final String filenamesMapping,
+			final Boolean needClearFilenames, final String addUploadIndex) /*-{
+		$wnd.insertFilenamesByXPath(subformId, inputName, filenamesMapping,
 				needClearFilenames, addUploadIndex);
 	}-*/;
 

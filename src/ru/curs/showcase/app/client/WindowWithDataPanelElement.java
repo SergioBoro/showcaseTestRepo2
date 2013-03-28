@@ -4,7 +4,7 @@
 package ru.curs.showcase.app.client;
 
 import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
-import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.api.BasicElementPanel;
 
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.*;
@@ -122,10 +122,6 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 
 		bep = bep1;
 
-		if (bep instanceof XFormPanel) {
-			XFormPanel.beforeModalWindow(bep);
-		}
-
 		VerticalPanel dialogContents = new VerticalPanel();
 		DOM.setElementAttribute(dialogContents.getElement(), "id", "showcaseModalWindow");
 
@@ -218,16 +214,10 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 	public void closeWindow() {
 		super.closeWindow();
 		AppCurrContext.getInstance().setCurrentOpenWindowWithDataPanelElement(null);
-		if (bep != null) {
-			if (bep instanceof XFormPanel) {
-				XFormPanel.destroyXForms();
-			}
+		if ((bep != null) && (bep instanceof XFormPanel)) {
+			((XFormPanel) bep).unloadSubform();
 		}
 		bep = null;
 
-		// если на вкладке есть XForms - прорисовываем ее
-		ActionExecuter.drawXFormPanelsAfterModalWindowShown(AppCurrContext.getInstance()
-				.getCurrentAction());
 	}
-
 }

@@ -6,8 +6,8 @@
 	<head>
 
 		<!-- Простейшие контролы ввода и вывода -->
-		<xf:model id="mainModel">
-			<xf:instance id="mainInstance">
+		<xf:model id="xformId_mainModel">
+			<xf:instance id="xformId_mainInstance">
 				<schema xmlns="">
 					<info>
 						<name />
@@ -20,8 +20,8 @@
 			</xf:instance>
 
 
-			<xf:submission id="wrong_save" method="post" instance="mainInstance"
-				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission11">
+			<xf:submission id="xformId_wrong_save" method="post" instance="xformId_mainInstance"
+				replace="instance" ref="instance('xformId_mainInstance')" action="secured/submit?proc=xforms_submission11">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -33,8 +33,8 @@
 				</xf:action>
 			</xf:submission>
 
-			<xf:submission id="good_save" method="post" instance="mainInstance"
-				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission1">
+			<xf:submission id="xformId_good_save" method="post" instance="xformId_mainInstance"
+				replace="instance" ref="instance('xformId_mainInstance')" action="secured/submit?proc=xforms_submission1">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -47,8 +47,8 @@
 			</xf:submission>
 
 
-			<xf:submission id="xslttransformation" method="post"
-				instance="mainInstance" replace="instance" ref="instance('mainInstance')"
+			<xf:submission id="xformId_xslttransformation" method="post"
+				instance="xformId_mainInstance" replace="instance" ref="instance('xformId_mainInstance')"
 				action="secured/xslttransformer?xsltfile=xformsxslttransformation_test.xsl">
 			</xf:submission>
 
@@ -61,7 +61,7 @@
 
 		<div style="font-size: 15px;"> Имя: </div>
 		<div>
-			<xf:input ref="/schema/info/name">
+			<xf:input ref="instance('xformId_mainInstance')/info/name">
 				<xf:help>Справка</xf:help>
 				<xf:hint>Дополнительная информация</xf:hint>
 			</xf:input>
@@ -73,14 +73,14 @@
 					<xf:load
 						resource="javascript:showSelector({
 			           id : 'xformId',
-                       procCount : '[dbo].[companycount]',
-                       procList  : '[dbo].[companylist]',                       
+                       procCount : '[dbo].[regionscount]',
+                       procList  : '[dbo].[regionslist]',                       
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
                        onSelectionComplete : function(ok, selected){
 					if (ok) {
-					var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('name')[0];
+					var a = getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance').getElementsByTagName('info')[0].getElementsByTagName('name')[0];
 					setValue(a, selected.name);
 		 
 					xforms.ready = false;
@@ -94,7 +94,7 @@
 		</div>
 		<div style="font-size: 15px;"> Цвет глаз (1): </div>
 		<div>
-			<xf:select1 appearance="full" ref="/schema/info/eyescolour">
+			<xf:select1 appearance="full" ref="instance('xformId_mainInstance')/info/eyescolour">
 				<xf:item>
 					<xf:label>Голубой</xf:label>
 					<xf:value>Голубой</xf:value>
@@ -115,7 +115,7 @@
 		</div>
 		<div style="font-size: 15px;"> Цвет глаз (2): </div>
 		<div>
-			<xf:select1 ref="/schema/info/eyescolour">
+			<xf:select1 ref="instance('xformId_mainInstance')/info/eyescolour">
 				<xf:item>
 					<xf:label>Голубой</xf:label>
 					<xf:value>Голубой</xf:value>
@@ -136,7 +136,7 @@
 		</div>
 		<div style="font-size: 15px;"> Любимая музыка (1): </div>
 		<div>
-			<xf:select appearance="full" ref="/schema/info/music">
+			<xf:select appearance="full" ref="instance('xformId_mainInstance')/info/music">
 				<xf:item>
 					<xf:label>Классическая</xf:label>
 					<xf:value>Классическая</xf:value>
@@ -153,7 +153,7 @@
 		</div>
 		<div style="font-size: 15px;"> Любимая музыка (2): </div>
 		<div>
-			<xf:select ref="/schema/info/music">
+			<xf:select ref="instance('xformId_mainInstance')/info/music">
 				<xf:item>
 					<xf:label>Классическая</xf:label>
 					<xf:value>Классическая</xf:value>
@@ -170,32 +170,32 @@
 		</div>
 		<div style="font-size: 15px;"> Комментарии: </div>
 		<div>
-			<xf:textarea ref="/schema/info/comment" />
+			<xf:textarea ref="instance('xformId_mainInstance')/info/comment" />
 		</div>
 		<div style="clear: both;">
-			<xf:output
-				ref="'Выбраны значения: регион ' + /schema/info/name                              +  ', цвет глаз:' + /schema/info/eyescolour                             + ',  музыкальные предпочения:' + /schema/info/music" />
+            <xf:output value="'Выбраны значения: регион '"/> 
+            <xf:output value="instance('xformId_mainInstance')/info/name"/>  
 		</div>
 		<div>
 
 			<xf:trigger>
 				<xf:label>Вызов XFormsSubmissionServlet</xf:label>
 				<xf:action ev:event="DOMActivate">
-					<xf:send submission="good_save" />
+					<xf:send submission="xformId_good_save" />
 				</xf:action>
 			</xf:trigger>
 
 			<xf:trigger>
 				<xf:label>Вызов XFormsSubmissionServlet с ошибкой</xf:label>
 				<xf:action ev:event="DOMActivate">
-					<xf:send submission="wrong_save" />
+					<xf:send submission="xformId_wrong_save" />
 				</xf:action>
 			</xf:trigger>
 
 			<xf:trigger>
 				<xf:label>Вызов XFormsTransformationServlet</xf:label>
 				<xf:action ev:event="DOMActivate">
-					<xf:send submission="xslttransformation" />
+					<xf:send submission="xformId_xslttransformation" />
 				</xf:action>
 			</xf:trigger>
 

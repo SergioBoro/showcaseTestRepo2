@@ -4,8 +4,8 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLschema" xmlns:fs="http://www.curs.ru/ns/FormServer"
 	xmlns:xf="http://www.w3.org/2002/xforms">
 	<head>
-		<xf:model id="mainModel">
-			<xf:instance id="mainInstance">
+		<xf:model id="xformId_mainModel">
+			<xf:instance id="xformId_mainInstance">
 				<schema xmlns="">
 					<info>
 						<name />
@@ -27,7 +27,7 @@
 			<xf:label>Скачать файл</xf:label>
 			<xf:action ev:event="DOMActivate">
 				<xf:load
-					resource="javascript:gwtXFormDownload('xformId', '050101',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
+					resource="javascript:gwtXFormDownload('xformId', '050101',  Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
 			</xf:action>
 		</xf:trigger>	
 		
@@ -40,7 +40,7 @@
 				<xf:label>Запустить закачку на сервер (через gwtXFormSave)</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
-						resource="javascript:gwtXFormSave('xformId', '050102', Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
+						resource="javascript:gwtXFormSave('xformId', '050102', Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
 				</xf:action>
 			</xf:trigger>
 		</div>

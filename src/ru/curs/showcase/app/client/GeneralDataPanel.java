@@ -118,7 +118,7 @@ public class GeneralDataPanel {
 	 * 
 	 */
 	public static void redrowGeneralDataPanelAtnavigatorClick(final DataPanel dp) {
-		XFormPanel.destroyXForms(); // Важно !!!!
+		XFormPanel.unloadAllSubforms(); // Важно !!!!
 
 		if (testRegTabPanelSelectionHandler != null) {
 			testRegTabPanelSelectionHandler.removeHandler();
@@ -226,11 +226,12 @@ public class GeneralDataPanel {
 
 		// Вертикальное размещение элементов
 		Collection<DataPanelElementInfo> tabscoll = dpt.getElements();
+		BasicElementPanelBasis bepb = null;
 		for (DataPanelElementInfo dpe : tabscoll) {
 			Widget el = null;
 			if (dpe.getCacheData()) {
 
-				BasicElementPanelBasis bepb =
+				bepb =
 					AppCurrContext.getInstance().getMapOfDataPanelElements()
 							.get(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
 				if (bepb != null) {
@@ -259,8 +260,9 @@ public class GeneralDataPanel {
 
 					vp1.add(el);
 
-					if (dpe.getCacheData() && (dpe.getType() == DataPanelElementType.XFORMS)) {
-						XFormPanel.restoreCacheXForm(el);
+					if (dpe.getCacheData() && (dpe.getType() == DataPanelElementType.XFORMS)
+							&& (bepb != null)) {
+						((XFormPanel) bepb).restoreCacheXForm(el);
 					}
 
 					// if (dpe.getCacheData()) {
@@ -410,7 +412,7 @@ public class GeneralDataPanel {
 	 */
 	public static void fillTabContent(final int tabIndex) {
 
-		XFormPanel.destroyXForms(); // Важно !!!!
+		XFormPanel.unloadAllSubforms(); // Важно !!!!
 		// очистка текущей вкладки полностью
 		SimplePanel vp = (SimplePanel) getTabPanel().getWidget(tabIndex);
 		vp.clear();

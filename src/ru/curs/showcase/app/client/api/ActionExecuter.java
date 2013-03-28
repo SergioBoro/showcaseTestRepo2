@@ -265,31 +265,4 @@ public final class ActionExecuter {
 		return getElementPanelById(new ID(id));
 	}
 
-	/**
-	 * 
-	 * Функция перерисовки всех xForm элементов на вкладке (tab) (необходима
-	 * из-за особого механизма работы с XForm).
-	 * 
-	 * @param ac
-	 *            Action
-	 */
-	public static void drawXFormPanelsAfterModalWindowShown(final Action ac) {
-		if (ac == null) {
-			return;
-		}
-		DataPanelTab dpt =
-			AppCurrContext.getInstance().getDataPanelMetaData().getActiveTabForAction(ac);
-
-		for (DataPanelElementInfo dpe : dpt.getElements()) {
-			if (!dpe.getNeverShowInPanel()) {
-				BasicElementPanel bep = getElementPanelById(dpe.getId());
-				if ((bep != null) && (bep instanceof XFormPanel)) {
-					bep.setNeedResetLocalContext(false);
-					bep.showPanel();
-					((XFormPanel) bep).reDrawAfterModalWindowShown(bep.getElementInfo()
-							.getContext(ac));
-				}
-			}
-		}
-	}
 }

@@ -26,12 +26,22 @@ public class XForm extends DataPanelElement {
 	 */
 	private List<String> xFormParts;
 
-	public void setXFormParts(final List<String> xFormParts1) {
-		this.xFormParts = xFormParts1;
+	private String subformId;
+
+	public void setXFormParts(final List<String> aXFormParts) {
+		xFormParts = aXFormParts;
 	}
 
 	public final List<String> getXFormParts() {
 		return xFormParts;
+	}
+
+	public String getSubformId() {
+		return subformId;
+	}
+
+	public void setSubformId(final String aSubformId) {
+		subformId = aSubformId;
 	}
 
 	@Override

@@ -292,8 +292,8 @@
 
 
 		<!-- Простейшие контролы ввода и вывода -->
-		<xf:model id="mainModel">
-			<xf:instance id="mainInstance">
+		<xf:model id="xformId_mainModel">
+			<xf:instance id="xformId_mainInstance">
 				<schema xmlns="">
 					<info>
 						<name />
@@ -306,7 +306,7 @@
 			</xf:instance>
 			
 			
-            <xf:instance id="myInstance">
+            <xf:instance id="xformId_myInstance">
                 <schema xmlns="">
 					<info>                
                       <name>Василий1</name>
@@ -320,8 +320,8 @@
            </xf:instance>
 
 
-			<xf:submission id="wrong_save" method="post" instance="mainInstance"
-				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission11">
+			<xf:submission id="xformId_wrong_save" method="post" instance="xformId_mainInstance"
+				replace="instance" ref="instance('xformId_mainInstance')" action="secured/submit?proc=xforms_submission11">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -333,8 +333,8 @@
 				</xf:action>
 			</xf:submission>
 
-			<xf:submission id="good_save" method="post" instance="mainInstance"
-				replace="instance" ref="instance('mainInstance')" action="secured/submit?proc=xforms_submission1">
+			<xf:submission id="xformId_good_save" method="post" instance="xformId_mainInstance"
+				replace="instance" ref="instance('xformId_mainInstance')" action="secured/submit?proc=xforms_submission1">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -347,8 +347,8 @@
 			</xf:submission>
 
 
-			<xf:submission id="xslttransformation" method="post"
-				instance="mainInstance" replace="instance" ref="instance('mainInstance')"
+			<xf:submission id="xformId_xslttransformation" method="post"
+				instance="xformId_mainInstance" replace="instance" ref="instance('xformId_mainInstance')"
 				action="secured/xslttransformer?xsltfile=xformsxslttransformation_test.xsl">
 			</xf:submission>
 
@@ -360,11 +360,11 @@
 	<body>
 
 
-<xf:repeat id="securityRealEstateRow" nodeset="/schema/info">
+<xf:repeat id="xformId_securityRealEstateRow" nodeset="instance('xformId_mainInstance')/info">
 
 		<div style="font-size: 15px;"> Имя: </div>
 		<div>
-			<xf:input ref="/schema/info/name">
+			<xf:input ref="instance('xformId_mainInstance')/info/name">
 				<xf:help>Справка</xf:help>
 				<xf:hint>Дополнительная информация</xf:hint>
 			</xf:input>
@@ -381,10 +381,10 @@
                        windowCaption       : 'Выберите название',
                        onSelectionComplete : function(ok, selected){
 					if (ok) {
-					var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('name')[0];
+					var a = getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance').getElementsByTagName('info')[0].getElementsByTagName('name')[0];
 					setValue(a, selected.name);
 
-					a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('comment')[0];
+					var a = getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance').getElementsByTagName('info')[0].getElementsByTagName('comment')[0];					
 					setValue(a, selected.CreateRowUser);
 		 
 					xforms.ready = false;
@@ -408,10 +408,10 @@
                        windowCaption       : 'Выберите название',
                        onSelectionComplete : function(ok, selected){
 					if (ok) {
-					var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('name')[0];
+					var a = getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance').getElementsByTagName('info')[0].getElementsByTagName('name')[0];					
 					setValue(a, selected.name);
 					
-					a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('comment')[0];
+					var a = getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance').getElementsByTagName('info')[0].getElementsByTagName('comment')[0];					
 					setValue(a, null);
 		 
 					xforms.ready = false;
@@ -431,13 +431,13 @@
 			           id : 'xformId',
                        procListAndCount  : '[dbo].[regions_list_and_count]',
                        generalFilters      : 'фильтры',
-                       currentValue        : 'XPath(/schema/info[index(quot(securityRealEstateRow))]/name)',
+                       currentValue        : 'XPath(instance('xformId_mainInstance')/info[index(quot(xformId_securityRealEstateRow))]/name)',
                        windowCaption       : 'Выберите название',
                        xpathMapping        : {
-                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/name)': 
+                                              'XPath(instance('xformId_mainInstance')/info[index(quot(xformId_securityRealEstateRow))]/name)': 
                                               'name', 
                                               
-                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/comment)': 
+                                              'XPathinstance('xformId_mainInstance')/info[index(quot(xformId_securityRealEstateRow))]/comment)': 
                                               'CreateRowUser'
                                              }
                        });;" />
@@ -455,18 +455,18 @@
                                               
                        generalFilters      : [
                                               'фильтры',                       
-                                              'XPath(/schema/info/name)', 
-                                              'XPath(/schema/info/eyescolour)'
+                                              'XPath(instance('xformId_mainInstance')/info/name)', 
+                                              'XPath(instance('xformId_mainInstance')/info/eyescolour)'
                                              ],
                        
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
                        xpathMapping        : {
-                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/name)': 
+                                              'XPath(instance('xformId_mainInstance')/info[index(quot(xformId_securityRealEstateRow))]/name)': 
                                               'name', 
                                               
-                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/comment)': 
-                                              'XPath(/schema/info[index(quot(securityRealEstateRow))]/eyescolour)'
+                                              'XPath(instance('xformId_mainInstance')/info[index(quot(xformId_securityRealEstateRow))]/comment)': 
+                                              'XPath(instance('xformId_mainInstance')/info[index(quot(xformId_securityRealEstateRow))]/eyescolour)'
                                              }
 					   });;" />
 				</xf:action>
@@ -481,14 +481,14 @@
 
 		<div style="font-size: 15px;"> Комментарии: </div>
 		<div>
-			<xf:input ref="/schema/info/comment" />
+			<xf:input ref="instance('xformId_mainInstance')/info/comment" />
 		</div>
 
 
 		
 		<div style="font-size: 15px;"> Цвет глаз (1): </div>
 		<div>
-			<xf:select1 appearance="full" ref="/schema/info/eyescolour">
+			<xf:select1 appearance="full" ref="instance('xformId_mainInstance')/info/eyescolour">
 				<xf:item>
 					<xf:label>Голубой</xf:label>
 					<xf:value>Голубой</xf:value>
@@ -509,7 +509,7 @@
 		</div>
 		<div style="font-size: 15px;"> Цвет глаз (2): </div>
 		<div>
-			<xf:select1 ref="/schema/info/eyescolour">
+			<xf:select1 ref="instance('xformId_mainInstance')/info/eyescolour">
 				<xf:item>
 					<xf:label>Голубой</xf:label>
 					<xf:value>Голубой</xf:value>
@@ -530,7 +530,7 @@
 		</div>
 		<div style="font-size: 15px;"> Любимая музыка (1): </div>
 		<div>
-			<xf:select appearance="full" ref="/schema/info/music">
+			<xf:select appearance="full" ref="instance('xformId_mainInstance')/info/music">
 				<xf:item>
 					<xf:label>Классическая</xf:label>
 					<xf:value>Классическая</xf:value>
@@ -547,7 +547,7 @@
 		</div>
 		<div style="font-size: 15px;"> Любимая музыка (2): </div>
 		<div>
-			<xf:select ref="/schema/info/music">
+			<xf:select ref="instance('xformId_mainInstance')/info/music">
 				<xf:item>
 					<xf:label>Классическая</xf:label>
 					<xf:value>Классическая</xf:value>
@@ -564,34 +564,34 @@
 		</div>
 		<div style="clear: both;">
  <xf:output value="'Уважаемый '"/> 
- <xf:output value="/schema/info/name"/>  
+ <xf:output value="instance('xformId_mainInstance')/info/name"/>  
  <xf:output value="'! Ваш рост: '"/>
- <xf:output value="/schema/info/growth"/>
+ <xf:output value="instance('xformId_mainInstance')/info/growth"/>
  <xf:output value="', ваш цвет глаз: '"/>
- <xf:output value="/schema/info/eyescolour"/>
+ <xf:output value="instance('xformId_mainInstance')/info/eyescolour"/>
  <xf:output value="', ваш музыкальные предпочения: '"/>
- <xf:output value="/schema/info/music"/>
+ <xf:output value="instance('xformId_mainInstance')/info/music"/>
 		</div>
 		<div>
 
 			<xf:trigger>
 				<xf:label>Вызов XFormsSubmissionServlet</xf:label>
 				<xf:action ev:event="DOMActivate">
-					<xf:send submission="good_save" />
+					<xf:send submission="xformId_good_save" />
 				</xf:action>
 			</xf:trigger>
 
 			<xf:trigger>
 				<xf:label>Вызов XFormsSubmissionServlet с ошибкой</xf:label>
 				<xf:action ev:event="DOMActivate">
-					<xf:send submission="wrong_save" />
+					<xf:send submission="xformId_wrong_save" />
 				</xf:action>
 			</xf:trigger>
 
 			<xf:trigger>
 				<xf:label>Вызов XFormsTransformationServlet</xf:label>
 				<xf:action ev:event="DOMActivate">
-					<xf:send submission="xslttransformation" />
+					<xf:send submission="xformId_xslttransformation" />
 				</xf:action>
 			</xf:trigger>
 
@@ -603,7 +603,7 @@
 				<xf:label>Сохранить</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
-						resource="javascript:gwtXFormSave('xformId', '1',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
+						resource="javascript:gwtXFormSave('xformId', '1',  Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
 				</xf:action>
 			</xf:trigger>
 
@@ -611,7 +611,7 @@
 				<xf:label>Отфильтровать</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
-						resource="javascript:gwtXFormFilter('xformId', '2',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
+						resource="javascript:gwtXFormFilter('xformId', '2',  Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
 				</xf:action>
 			</xf:trigger>
 			
@@ -619,7 +619,7 @@
 				<xf:label>Обновить</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
-						resource="javascript:gwtXFormUpdate('xformId', '3',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
+						resource="javascript:gwtXFormUpdate('xformId', '3',  Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
 				</xf:action>
 			</xf:trigger>
 		</div>

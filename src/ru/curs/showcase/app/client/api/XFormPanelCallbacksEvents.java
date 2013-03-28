@@ -51,6 +51,11 @@ public final class XFormPanelCallbacksEvents {
 		final XFormPanel curXFormPanel = getCurrentPanel(xformId);
 
 		if (curXFormPanel != null) {
+
+			// MessageBox.showSimpleMessage("xFormPanelClickSave. xformId=" +
+			// xformId + ", linkId="
+			// + linkId, data);
+
 			final Action ac = getActionByLinkId(linkId, curXFormPanel);
 
 			if (curXFormPanel.getElementInfo().getSaveProc() != null) {
@@ -118,6 +123,11 @@ public final class XFormPanelCallbacksEvents {
 	 */
 	public static void xFormPanelClickUpdate(final String xformId, final String linkId,
 			final String overridenAddContext) {
+
+		// MessageBox.showSimpleMessage("xFormPanelClickUpdate. xformId=" +
+		// xformId + ", linkId="
+		// + linkId, overridenAddContext);
+
 		XFormPanel currentXFormPanel = getCurrentPanel(xformId);
 
 		if (currentXFormPanel != null) {
@@ -192,9 +202,9 @@ public final class XFormPanelCallbacksEvents {
 		XFormPanel currentXFormPanel = getCurrentPanel(xformId);
 
 		if (currentXFormPanel != null) {
-			// MessageBox
-			// .showSimpleMessage("Filter. xformId=" + xformId + ", linkId=" +
-			// linkId, data);
+			// MessageBox.showSimpleMessage("xFormPanelClickFilter. xformId=" +
+			// xformId + ", linkId="
+			// + linkId, data);
 
 			Action ac = getActionByLinkId(linkId, currentXFormPanel);
 
@@ -214,6 +224,9 @@ public final class XFormPanelCallbacksEvents {
 	 * 
 	 */
 	public static void showSelector(final JavaScriptObject o) {
+
+		// MessageBox.showSimpleMessage("showSelector", "showSelector");
+
 		showSingleAndMultiSelector(o, false);
 	}
 
@@ -403,6 +416,9 @@ public final class XFormPanelCallbacksEvents {
 			final boolean isMultiSelector) {
 
 		final SelectorParam param = (SelectorParam) o;
+
+		// MessageBox.showSimpleMessage(param.windowCaption(),
+		// param.windowCaption());
 
 		XFormPanel currentXFormPanel = (XFormPanel) ActionExecuter.getElementPanelById(param.id());
 

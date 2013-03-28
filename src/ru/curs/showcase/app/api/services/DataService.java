@@ -120,6 +120,14 @@ public interface DataService extends RemoteService {
 	XForm getXForms(XFormContext context, DataPanelElementInfo element) throws GeneralException;
 
 	/**
+	 * Возвращает данные для отрисовки главной формы.
+	 * 
+	 * @return - главная форма.
+	 * @throws GeneralException
+	 */
+	List<String> getMainXForms() throws GeneralException;
+
+	/**
 	 * Сохраняет данные карточки на основе XForms.
 	 * 
 	 * @param context

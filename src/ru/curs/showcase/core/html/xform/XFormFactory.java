@@ -1,6 +1,7 @@
 package ru.curs.showcase.core.html.xform;
 
 import java.io.*;
+import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLStreamException;
@@ -16,6 +17,7 @@ import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Фабрика по созданию объектов XForms.
@@ -55,15 +57,18 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 		XFormTemplateSelector selector = new XFormTemplateSelector(getElementInfo());
 		DataFile<InputStream> data =
 			selector.getGateway().getRawData(getCallContext(), getElementInfo());
+
+		String stringTemplate = null;
 		try {
 			// Было
 			// template = db.parse(data.getData());
 
 			// Переход на новую версию XForms. Begin
-			String templ = TextUtils.streamToString(data.getData(), data.getEncoding());
-			templ = TextUtils.removeUTF8BOM(templ);
-			templ = UserDataUtils.replaceVariables(templ);
-			StringReader reader = new StringReader(templ);
+			stringTemplate = TextUtils.streamToString(data.getData(), data.getEncoding());
+			stringTemplate = TextUtils.removeUTF8BOM(stringTemplate);
+			stringTemplate = UserDataUtils.replaceVariables(stringTemplate);
+			stringTemplate = stringTemplate.replace("xformId", getElementInfo().getId());
+			StringReader reader = new StringReader(stringTemplate);
 			try {
 				InputSource inputSource = new InputSource(reader);
 				template = db.parse(inputSource);
@@ -76,15 +81,31 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 			throw new XMLFormatException(getElementInfo().getTemplateName(), e1);
 		}
 
+		String subformId = XFormProducer.getSubformId(template);
+		result.setSubformId(subformId);
+
+		template =
+			XFormTemplateModificator.modify(template, getSource().getCallContext(),
+					getElementInfo(), result.getSubformId());
+		logInput(template);
+
 		try {
-			template =
-				XFormTemplateModificator.modify(template, getSource().getCallContext(),
-						getElementInfo());
-			logInput(template);
 			html = XFormProducer.getHTML(template, getSource().getData());
+			// html = XFormProducer.getTemplateWithData(template,
+			// getSource().getData());
+
 			logOutput();
 			replaceVariables();
-			result.setXFormParts(XFormCutter.xFormParts(html));
+
+			List<String> lst = new ArrayList<String>(2);
+			lst.add(html);
+
+			List<String> cuttered = XFormCutter.xFormParts(stringTemplate);
+			if (cuttered.size() > 1) {
+				lst.add(cuttered.get(1));
+			}
+
+			result.setXFormParts(lst);
 		} catch (TransformerException | XMLStreamException | IOException e) {
 			throw new XSLTTransformException(String.format(XFORMS_CREATE_ERROR, getElementInfo()
 					.getFullId()), e);
@@ -123,6 +144,7 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 					+ "?";
 		String userDataParam =
 			"userdata=" + AppInfoSingleton.getAppInfo().getCurUserDataId() + "&amp;";
+
 		html = html.replace(servletQuery, servletQuery + userDataParam);
 		servletQuery = ExchangeConstants.SECURED_SERVLET_PREFIX + "/xslttransformer?";
 		html = html.replace(servletQuery, servletQuery + userDataParam);

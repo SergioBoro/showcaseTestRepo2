@@ -6,8 +6,8 @@
 	<head>
 
 		<!-- Простейшие контролы ввода и вывода -->
-		<xf:model id="mainModel">
-			<xf:instance id="mainInstance">
+		<xf:model id="xformId_mainModel">
+			<xf:instance id="xformId_mainInstance">
 				<schema xmlns="">
 					<info>
 						<name />
@@ -27,7 +27,7 @@
 
 		<div style="font-size: 15px;"> Имя: </div>
 		<div>
-			<xf:input ref="/schema/info/name">
+			<xf:input ref="instance('xformId_mainInstance')/info/name">
 				<xf:help>Справка</xf:help>
 				<xf:hint>Дополнительная информация</xf:hint>
 			</xf:input>
@@ -39,14 +39,14 @@
 					<xf:load
 						resource="javascript:showSelector({
 			           id : 'xformId',
-                       procCount : '[dbo].[companycount]',
-                       procList  : '[dbo].[companylist]',                       
+                       procCount : '[dbo].[regionscount]',
+                       procList  : '[dbo].[regionslist]',                       
                        generalFilters      : '',
                        currentValue        : '',
                        windowCaption       : 'Выберите название',
                        onSelectionComplete : function(ok, selected){
 					if (ok) {
-					var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('name')[0];
+					var a = getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance').getElementsByTagName('info')[0].getElementsByTagName('name')[0];					
 					setValue(a, selected.name);
 		 
 					xforms.ready = false;
@@ -60,7 +60,7 @@
 		</div>
 		<div style="font-size: 15px;"> Цвет глаз (1): </div>
 		<div>
-			<xf:select1 appearance="full" ref="/schema/info/eyescolour">
+			<xf:select1 appearance="full" ref="instance('xformId_mainInstance')/info/eyescolour">
 				<xf:item>
 					<xf:label>Голубой</xf:label>
 					<xf:value>Голубой</xf:value>
@@ -81,7 +81,7 @@
 		</div>
 		<div style="font-size: 15px;"> Цвет глаз (2): </div>
 		<div>
-			<xf:select1 ref="/schema/info/eyescolour">
+			<xf:select1 ref="instance('xformId_mainInstance')/info/eyescolour">
 				<xf:item>
 					<xf:label>Голубой</xf:label>
 					<xf:value>Голубой</xf:value>
@@ -102,7 +102,7 @@
 		</div>
 		<div style="font-size: 15px;"> Любимая музыка (1): </div>
 		<div>
-			<xf:select appearance="full" ref="/schema/info/music">
+			<xf:select appearance="full" ref="instance('xformId_mainInstance')/info/music">
 				<xf:item>
 					<xf:label>Классическая</xf:label>
 					<xf:value>Классическая</xf:value>
@@ -119,7 +119,7 @@
 		</div>
 		<div style="font-size: 15px;"> Любимая музыка (2): </div>
 		<div>
-			<xf:select ref="/schema/info/music">
+			<xf:select ref="instance('xformId_mainInstance')/info/music">
 				<xf:item>
 					<xf:label>Классическая</xf:label>
 					<xf:value>Классическая</xf:value>
@@ -136,16 +136,18 @@
 		</div>
 		<div style="font-size: 15px;"> Комментарии: </div>
 		<div>
-			<xf:textarea ref="/schema/info/comment" />
+			<xf:textarea ref="instance('xformId_mainInstance')/info/comment" />
 		</div>
 		<div style="clear: both;">
-			<xf:output
-				ref="'Выбраны значения: регион ' + /schema/info/name                              +  ', цвет глаз:' + /schema/info/eyescolour                             + ',  музыкальные предпочения:' + /schema/info/music" />
+            <xf:output value="'Выбраны значения: регион '"/> 
+            <xf:output value="instance('xformId_mainInstance')/info/name"/>  
+				
 		</div>
 		<div>
 <h1>userdata.dir=${userdata.dir}</h1>
 <h1>images.in.grid.dir=${images.in.grid.dir}</h1>
 <h2>elementId=${elementId}</h2>
+
 <img src="${images.in.grid.dir}/header.jpg"/>
 
 

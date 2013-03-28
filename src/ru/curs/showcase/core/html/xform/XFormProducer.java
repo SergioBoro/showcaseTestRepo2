@@ -10,7 +10,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.*;
 
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.xml.GeneralXMLHelper;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Класс, преобразующий документ в HTML-код XForm.
@@ -73,11 +73,40 @@ public final class XFormProducer extends GeneralXMLHelper {
 		NodeList l = doc.getElementsByTagName(XF_INSTANCE);
 		for (int i = 0; i < l.getLength(); i++) {
 			Node n = l.item(i).getAttributes().getNamedItem(ID_TAG);
-			if ((n != null) && (MAIN_INSTANCE.equals(n.getTextContent()))) {
+
+			// if ((n != null) && (MAIN_INSTANCE.equals(n.getTextContent()))) {
+
+			if ((n != null)
+					&& (n.getTextContent().toLowerCase().contains(MAIN_INSTANCE.toLowerCase()))) {
+
 				return l.item(i);
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Возвращает id подформы.
+	 * 
+	 * @param doc
+	 *            - документ шаблона.
+	 * @return - id подформы.
+	 */
+	public static String getSubformId(final org.w3c.dom.Document doc) {
+		String subformId = "subform_default_id_";
+
+		Node mainInstance = getMainInstance(doc);
+		if (mainInstance != null) {
+			String s = mainInstance.getAttributes().getNamedItem(ID_TAG).getNodeValue();
+			// s = s.toLowerCase().replace(MAIN_INSTANCE.toLowerCase(), "");
+			s = s.replace(MAIN_INSTANCE, "");
+
+			if (!s.trim().isEmpty()) {
+				subformId = s;
+			}
+		}
+
+		return subformId;
 	}
 
 	/**
@@ -100,6 +129,12 @@ public final class XFormProducer extends GeneralXMLHelper {
 			final org.w3c.dom.Document tempData) throws TransformerException, IOException {
 		insertActualData(xml, tempData);
 		return transform(xml);
+	}
+
+	public static String getTemplateWithData(final org.w3c.dom.Document xml,
+			final org.w3c.dom.Document tempData) {
+		insertActualData(xml, tempData);
+		return XMLUtils.documentToString(xml);
 	}
 
 	private static String transform(final org.w3c.dom.Document xml) throws TransformerException,
@@ -130,7 +165,14 @@ public final class XFormProducer extends GeneralXMLHelper {
 			NodeList nl = xml.getElementsByTagNameNS(XFORMS_URI, INSTANCE);
 			for (int i = 0; i < nl.getLength(); i++) {
 				Node n = nl.item(i);
-				if (MAIN_INSTANCE.equals(n.getAttributes().getNamedItem(ID_TAG).getTextContent())) {
+
+				// if
+				// (MAIN_INSTANCE.equals(n.getAttributes().getNamedItem(ID_TAG).getTextContent()))
+				// {
+
+				if (n.getAttributes().getNamedItem(ID_TAG).getTextContent().toLowerCase()
+						.contains(MAIN_INSTANCE.toLowerCase())) {
+
 					n.setTextContent("");
 					Node nn = xml.importNode(tempData.getDocumentElement(), true);
 					n.appendChild(nn);

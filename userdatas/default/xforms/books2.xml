@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="xsltforms/xsltforms.xsl" type="text/xsl"?>
 <?xsltforms-options debug="yes"?>
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
@@ -7,40 +6,43 @@
       xmlns:xf="http://www.w3.org/2002/xforms">
     <head>
         <title>Books</title>
-        <model xmlns="http://www.w3.org/2002/xforms">
-            <instance>
-                <data xmlns="">
+        <xf:model  id="xformId_mainModel">
+            <xf:instance id="xformId_mainInstance">
+                <schema xmlns="">
                     <book year="" title=""/>
-                </data>
-            </instance>
+                </schema>
+            </xf:instance>
 			
-			<xf:instance id="myInstance">
+			<xf:instance id="xformId_myInstance1">
 				<schema xmlns="">
                 <data>
-                    <book year="2012" title="XForms with XSLTForms 2012"/>
-                    <book year="2013" title="XForms with XSLTForms 2013"/>
-                    <book year="2014" title="XForms with XSLTForms 2014"/>
+                    <book year="xformId_myInstance1_2012" title="XForms with XSLTForms 2012"/>
+                    <book year="xformId_myInstance1_2013" title="XForms with XSLTForms 2013"/>
+                    <book year="xformId_myInstance1_2014" title="XForms with XSLTForms 2014"/>
                 </data>
 				</schema>
 			</xf:instance>
 			
-			<xf:instance id="myInstance2">
+			<xf:instance id="xformId_myInstance2">
 				<schema xmlns="">
                 <data>
-                    <book const1="text1"/>
-                    <book const2="text2"/>                    
+                    <book const1="xformId_myInstance2_text1"/>
+                    <book const2="xformId_myInstance2_text2"/>                    
                 </data>
 				</schema>
 			</xf:instance>			
-        </model>
+        </xf:model>
     </head>
+    
+    
     <body>
+		<h1>Шаблон xformId</h1>    
 
-		<xf:repeat nodeset="instance('myInstance')/data/book/">
+		<xf:repeat nodeset="instance('xformId_myInstance1')/data/book/">
 			<xf:output value="@year"/> 
           - <xf:output value="@title"/>
-          - <xf:output value="instance('myInstance2')/data/book/@const1"/>
-          - <xf:output value="instance('myInstance2')/data/book/@const2"/>          
+          - <xf:output value="instance('xformId_myInstance2')/data/book/@const1"/>
+          - <xf:output value="instance('xformId_myInstance2')/data/book/@const2"/>          
 		</xf:repeat>
 		
     </body>

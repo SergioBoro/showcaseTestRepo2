@@ -5,8 +5,8 @@
 	xmlns:xf="http://www.w3.org/2002/xforms">
 	<head>
 
-		<xf:model id="mainModel">
-			<xf:instance id="mainInstance">
+		<xf:model id="xformId_mainModel">
+			<xf:instance id="xformId_mainInstance">
 				<schema xmlns="">
 					<info>
 						<name />
@@ -28,7 +28,7 @@
 
 		<div style="font-size: 15px;"> Просто текстовое поле: </div>
 		<div>
-			<xf:input ref="/schema/info/name">
+			<xf:input ref="instance('xformId_mainInstance')/info/name">
 				<xf:hint>Текстовое поле</xf:hint>
 			</xf:input>
 		</div>
@@ -50,14 +50,14 @@
 				</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
-						resource="javascript:gwtXFormSave('xformId', '1', Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
+						resource="javascript:gwtXFormSave('xformId', '1', Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
 				</xf:action>
 			</xf:trigger>
 		</div>
 		<hr />
 		<div>
 			Загрузка файла по старому:
-			<xf:output ref="/schema/info/comment" />
+			<xf:output ref="instance('xformId_mainInstance')/info/comment" />
 		</div>
 		<xf:trigger>
 			<xf:label>Выбрать файл</xf:label>
@@ -68,7 +68,7 @@
                 linkId: '04', 
                 onSelectionComplete : function(ok, fileName) {
                 if (ok) {
-					var a = xforms.defaultModel.defaultInstance.doc.getElementsByTagName('info')[0].getElementsByTagName('comment')[0];
+					var a = getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance').getElementsByTagName('info')[0].getElementsByTagName('comment')[0];
 					setValue(a, fileName);
 		 
 					xforms.ready = false;
@@ -85,7 +85,7 @@
 				</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
-						resource="javascript:gwtXFormSave('xformId', null, Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
+						resource="javascript:gwtXFormSave('xformId', null, Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
 				</xf:action>
 			</xf:trigger>
 		</div>
@@ -97,7 +97,7 @@
 			<xf:label>Скачать</xf:label>
 			<xf:action ev:event="DOMActivate">
 				<xf:load
-					resource="javascript:gwtXFormDownload('xformId', '03',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))" />
+					resource="javascript:gwtXFormDownload('xformId', '03',  Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
 			</xf:action>
 		</xf:trigger>
 	</body>

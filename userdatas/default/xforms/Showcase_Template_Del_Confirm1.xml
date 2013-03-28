@@ -5,8 +5,8 @@
       xmlns:xf="http://www.w3.org/2002/xforms">
     <head>	
         <!-- Простейшие контролы ввода и вывода -->
-        <xf:model id="mainModel">
-            <xf:instance id="mainInstance">
+        <xf:model id="xformId_mainModel">
+            <xf:instance id="xformId_mainInstance">
                 <schema xmlns="">
                     <info>
                         <name/>
@@ -26,9 +26,11 @@
                             + ' из журнала ' + /schema/info/table"/>        			 
 -->
 			<xf:output value="'Удалить запись '"/> 
-			<xf:output value="/schema/info/name"/>  
+			<xf:output value="instance('xformId_mainInstance')/info/name"/>  
  			<xf:output value="' из журнала '"/>
- 			<xf:output value="/schema/info/table"/>
+ 			<xf:output value="instance('xformId_mainInstance')/info/table"/>
+        
+        
         
         </div>   
 
@@ -36,7 +38,7 @@
             <xf:trigger>
                 <xf:label>Удалить</xf:label>
                 <xf:action ev:event="DOMActivate">
-                <xf:load resource="javascript:gwtXFormSave('xformId', '1',  Writer.toString(xforms.defaultModel.getInstanceDocument('mainInstance')))"/>
+                <xf:load resource="javascript:gwtXFormSave('xformId', '1',  Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
                 </xf:action>
             </xf:trigger>
             

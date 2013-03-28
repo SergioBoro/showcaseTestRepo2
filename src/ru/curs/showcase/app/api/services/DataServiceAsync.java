@@ -49,6 +49,8 @@ public interface DataServiceAsync {
 	void getXForms(XFormContext context, DataPanelElementInfo element,
 			AsyncCallback<XForm> callback);
 
+	void getMainXForms(AsyncCallback<List<String>> callback);
+
 	void saveXForms(XFormContext context, DataPanelElementInfo element,
 			AsyncCallback<Void> callback);
 

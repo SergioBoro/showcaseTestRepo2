@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<navigator width="180px">
+<navigator width="200px">
   <group id="00" name="Фичи">
     <level1 id="07" name="7-й этап">
       <action>
@@ -148,7 +148,7 @@
           </datapanel>
         </action>
       </level2>
-      <level2 id="PageGrid1" name="PageGrid1" selectOnLoad="true">
+      <level2 id="PageGrid1" name="PageGrid1">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
           <datapanel type="byver/PageGrid.xml" tab="firstOrCurrent" >          
@@ -201,6 +201,41 @@
         <action>
           <main_context>jython_save_data.xml</main_context>
           <datapanel type="byver/XForms.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
+      <level2 id="SubForms1" name="Подформы1" selectOnLoad="true">
+        <action>
+          <main_context>jython_save_data.xml</main_context>
+          <datapanel type="byver/SubForms.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
+      <level2 id="SubForms2" name="Подформы2">
+        <action>
+          <main_context>jython_save_data.xml</main_context>
+          <datapanel type="byver/SubForms2.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
+      <level2 id="SubForms31" name="Подформы31">
+        <action>
+          <main_context>jython_save_data.xml</main_context>
+          <datapanel type="byver/SubForms31.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
+      <level2 id="SubForms32" name="Подформы32" >
+        <action>
+          <main_context>jython_save_data.xml</main_context>
+          <datapanel type="byver/SubForms32.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
+      <level2 id="SubForms4" name="Подформы4" >
+        <action>
+          <main_context>jython_save_data.xml</main_context>
+          <datapanel type="byver/SubForms4.xml" tab="firstOrCurrent" >          
           </datapanel>
         </action>
       </level2>

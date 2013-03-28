@@ -24,7 +24,7 @@ public class NavigatorSLTest extends AbstractTest {
 		NavigatorGetCommand command = new NavigatorGetCommand(new CompositeContext());
 		Navigator nav = command.execute();
 		assertFalse(nav.getHideOnLoad());
-		assertEquals("180px", nav.getWidth());
+		assertEquals("200px", nav.getWidth());
 	}
 
 	@Test

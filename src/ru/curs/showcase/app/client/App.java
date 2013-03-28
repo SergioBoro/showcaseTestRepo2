@@ -27,6 +27,7 @@ public class App implements EntryPoint {
 	 */
 	@Override
 	public void onModuleLoad() {
+		XFormsUtils.initXForms();
 		FeedbackJSNI.initFeedbackJSNIFunctions();
 		// AppCurrContext.appCurrContext = AppCurrContext.getInstance();
 		AppCurrContext.getInstance();

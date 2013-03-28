@@ -102,6 +102,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
+	public List<String> getMainXForms() throws GeneralException {
+		MainXFormGetCommand command = new MainXFormGetCommand();
+		return command.execute();
+	}
+
+	@Override
 	public void saveXForms(final XFormContext context, final DataPanelElementInfo element)
 			throws GeneralException {
 		XFormSaveCommand command = new XFormSaveCommand(context, element);
@@ -141,4 +147,5 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 			new WriteToLogFromClientCommand(aContext, aMessage, aMessageType);
 		command.execute();
 	}
+
 }
