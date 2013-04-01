@@ -482,7 +482,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		grid.setBorders(true);
 		grid.setHideHeaders(!gridMetadata.getUISettings().isVisibleColumnsHeader());
 
-		new QuickTip(grid); // чтобы работали хинты на ячейки
+		QuickTip qt = new QuickTip(grid); // чтобы работали хинты на ячейки
+		qt.getToolTipConfig().setDismissDelay(0);
 
 		// ---------------------------
 
