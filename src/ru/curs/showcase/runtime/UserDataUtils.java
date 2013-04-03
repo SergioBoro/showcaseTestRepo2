@@ -2,6 +2,7 @@ package ru.curs.showcase.runtime;
 
 import java.io.*;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.slf4j.MDC;
 
@@ -64,6 +65,9 @@ public final class UserDataUtils {
 	private static final String WEB_CONSOLE_ADD_TEXT_FILES_PARAM = "web.console.add.text.files";
 
 	private static String generalPropFile;
+
+	private static final String INDEX_TITLE = "index.title";
+	private static final String LOGIN_TITLE = "login.title";
 
 	public static void setGeneralPropFile(final String aGeneralPropFile) {
 		generalPropFile = aGeneralPropFile;
@@ -280,7 +284,21 @@ public final class UserDataUtils {
 			throw new SettingsFileOpenException(getGeneralPropFile(),
 					SettingsFileType.GENERAL_APP_PROPERTIES);
 		}
-		return prop.getProperty(paramName);
+		return getGeneralProperties().getProperty(paramName);
+	}
+
+	private static Properties getGeneralProperties() {
+		Properties props = new Properties();
+		try {
+			InputStream is = new FileInputStream(getGeneralPropFile());
+			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
+				props.load(reader);
+			}
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(getGeneralPropFile(),
+					SettingsFileType.GENERAL_APP_PROPERTIES);
+		}
+		return props;
 	}
 
 	private static String getGeneralPropFile() {
@@ -332,6 +350,86 @@ public final class UserDataUtils {
 		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
 			checkAppPropsExists(userdataId);
 		}
+
+		try {
+			Properties props = getGeneralProperties();
+			checkAppPropsForWrongSymbols("", props);
+
+			for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+				props = getProperties(userdataId);
+				checkAppPropsForWrongSymbols(userdataId, props);
+			}
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(e, getCurrentPropFile(),
+					SettingsFileType.APP_PROPERTIES);
+		}
+
+		checkUserdataFilesNamesForWrongSymbols(AppInfoSingleton.getAppInfo().getUserdataRoot()
+				+ "/" + GENERAL_RES_ROOT);
+
+		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+			checkUserdataFilesNamesForWrongSymbols(AppInfoSingleton.getAppInfo()
+					.getUserData(userdataId).getPath());
+		}
+
+	}
+
+	private static void checkUserdataFilesNamesForWrongSymbols(final String userDataCatalog) {
+		BatchFileProcessor fprocessor =
+			new BatchFileProcessor(userDataCatalog, new RegexFilenameFilter("^[.].*", false));
+		try {
+			fprocessor.process(new CheckFileNameAction());
+		} catch (IOException e) {
+			throw new CheckFilesNameException(e.getMessage());
+		}
+	}
+
+	private static void checkAppPropsForWrongSymbols(final String userdataId,
+			final Properties props) {
+		String prop;
+		String value;
+		for (Object opr : props.keySet()) {
+			prop = (String) opr;
+			if ("﻿#".equalsIgnoreCase(prop.trim())) {
+				continue;
+			}
+			if (INDEX_TITLE.equalsIgnoreCase(prop.trim())) {
+				continue;
+			}
+			if (LOGIN_TITLE.equalsIgnoreCase(prop.trim())) {
+				continue;
+			}
+
+			value = props.getProperty(prop);
+			if (checkValueForSpace(value.trim())) {
+				if ("".equalsIgnoreCase(userdataId)) {
+					throw new GeneralAppPropsValueContainsSpaceException(prop, value);
+				} else {
+					throw new AppPropsValueContainsSpaceException(userdataId, prop, value);
+				}
+			}
+			if (checkValueForCyrillicSymbols(value.trim())) {
+				if ("".equalsIgnoreCase(userdataId)) {
+					throw new GeneralAppPropsValueContainsCyrillicSymbolException(prop, value);
+				} else {
+					throw new AppPropsValueContainsCyrillicSymbolException(userdataId, prop, value);
+				}
+			}
+		}
+	}
+
+	public static boolean checkValueForSpace(final String value) {
+		Pattern pSpace = Pattern.compile("\\s", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
+		return pSpace.matcher(value).find();
+	}
+
+	public static boolean checkValueForCyrillicSymbols(final String value) {
+		// Pattern pCyr =
+		// Pattern.compile("[^a-z0-9]", Pattern.CASE_INSENSITIVE +
+		// Pattern.UNICODE_CASE);
+
+		Pattern pCyr = Pattern.compile("[а-яё]", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
+		return pCyr.matcher(value).find();
 	}
 
 	public static Boolean isTextFile(final Object obj) {
