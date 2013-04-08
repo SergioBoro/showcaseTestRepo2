@@ -8,6 +8,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.GeoMap;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.grid.toolbar.GridToolBar;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.services.*;
@@ -17,6 +18,7 @@ import ru.curs.showcase.core.event.ExecServerActivityCommand;
 import ru.curs.showcase.core.frame.MainPageGetCommand;
 import ru.curs.showcase.core.geomap.GeoMapGetCommand;
 import ru.curs.showcase.core.grid.*;
+import ru.curs.showcase.core.grid.toolbar.GridToolBarCommand;
 import ru.curs.showcase.core.html.plugin.PluginCommand;
 import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.core.html.xform.*;
@@ -148,4 +150,9 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		command.execute();
 	}
 
+	@Override
+	public GridToolBar getGridToolBar(final CompositeContext context, final DataPanelElementInfo elInfo) throws GeneralException {
+		GridToolBarCommand command = new GridToolBarCommand(context, elInfo);
+		return command.execute();
+	}
 }

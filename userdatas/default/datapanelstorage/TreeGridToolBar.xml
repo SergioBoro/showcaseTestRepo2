@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>
+	<tab id="01" name="Dynamic ToolBar">
+		<element id="0101" type="GRID" subtype="EXT_TREE_GRID" proc="exttreegrid_geo_icons">
+			<proc id="010101" name="treeGridToolBar" type="TOOLBAR"/>
+		</element>
+		<element id="selectedRowWriter" type="webtext" proc="webtext/selectedRowWriter.py" hideOnLoad="true" />
+	</tab>	
+</datapanel>

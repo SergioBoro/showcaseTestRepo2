@@ -8,6 +8,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.GeoMap;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.grid.toolbar.GridToolBar;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 
@@ -193,4 +194,15 @@ public interface DataService extends RemoteService {
 	 */
 	void writeToLog(CompositeContext aContext, String message, MessageType messageType)
 			throws GeneralException;
+
+	/**
+	 * Функция получения панели инструментов грида
+	 * 
+	 * @param context
+	 *            - контекст.
+	 * @param element
+	 *            - описание элемента.
+	 * @return панель инструментов
+	 */
+	GridToolBar getGridToolBar(final CompositeContext context, final DataPanelElementInfo element) throws GeneralException;
 }

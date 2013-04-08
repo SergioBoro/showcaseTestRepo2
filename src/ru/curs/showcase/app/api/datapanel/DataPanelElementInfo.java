@@ -260,6 +260,20 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		return getProcByType(DataPanelElementProcType.METADATA);
 	}
 
+	/**
+	 * Возвращает процедуру для получения панели инструментов.
+	 */
+	public DataPanelElementProc getToolBarProc() {
+		return getProcByType(DataPanelElementProcType.TOOLBAR);
+	}
+
+	/**
+	 * @return true если задана TOOLBAR процедура, иначе false
+	 */
+	public boolean isToolBarProc() {
+		return getToolBarProc() != null;
+	}
+
 	public final Boolean getHideOnLoad() {
 		return hideOnLoad;
 	}

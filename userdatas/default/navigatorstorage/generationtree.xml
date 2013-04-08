@@ -190,6 +190,13 @@
           </datapanel>
         </action>
       </level2>
+	  <level2 id="TreeGridToolBar" name="Панель инструментов для TreeGrid" selectOnLoad="true">
+        <action>
+          <main_context>none</main_context>
+          <datapanel type="TreeGridToolBar.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
       <level2 id="xmlDS" name="XML-датасеты">
         <action>
           <main_context>jython_save_data.xml</main_context>

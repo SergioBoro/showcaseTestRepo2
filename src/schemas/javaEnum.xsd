@@ -16,6 +16,8 @@
          <xs:enumeration value="submission"/>
          <xs:enumeration value="SAVE"/>
          <xs:enumeration value="save"/>
+         <xs:enumeration value="TOOLBAR"/>
+         <xs:enumeration value="toolbar"/>
       </xs:restriction>
    </xs:simpleType>
 

@@ -8,6 +8,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.GeoMap;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.grid.toolbar.GridToolBar;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 
@@ -65,5 +66,8 @@ public interface DataServiceAsync {
 
 	void writeToLog(CompositeContext aContext, String message, MessageType messageType,
 			AsyncCallback<Void> callback);
+
+	void getGridToolBar(CompositeContext context, DataPanelElementInfo element,
+			AsyncCallback<GridToolBar> callback);
 
 }

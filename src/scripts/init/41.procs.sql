@@ -27887,4 +27887,61 @@ set @gridsettings_str=@gridsettings_str+'</columns>
 <properties flip="false" pagesize="15"  gridWidth="95%" gridHeight="400"  autoSelectRecordId="9"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[treeGridToolBar]
+   @main_context nvarchar(512)='',  
+   @add_context nvarchar(512)='',  
+   @filterinfo xml='',  
+   @session_context xml='',
+   @data xml output
+AS
+BEGIN
+declare
+	@id nvarchar(50)=''
+
+set @id = @filterinfo.value('(/selectedItem/item/id)[1]','nvarchar(50)');
+if @id is null begin 
+	set @id = ''
+end
+
+set @data='
+	<gridtoolbar>
+		<separator/>
+		<item text="Item1" img="imagesingrid/test.jpg" hint="Item one" disable="false">
+			<action>
+				<main_context>current</main_context>
+				<datapanel type="current" tab="current">
+					<element id="selectedRowWriter">
+						<add_context>Item1 click.  Id='+@id+'</add_context>
+					</element>
+				</datapanel>
+			</action>
+		</item>
+		<group text="Item2Group" >
+			<item text="Item21" hint="Item two" disable="true" />
+			<separator/>
+			<item text="Item22" hint="Item three" disable="false" />
+			<group text="Item23Group" >
+				<item text="Item231" hint="Item two" disable="true" />
+				<separator/>
+				<item text="Item232" hint="Item three" disable="false">
+					<action>
+						<main_context>current</main_context>
+						<datapanel type="current" tab="current">
+							<element id="selectedRowWriter">
+								<add_context>Item232 click.  Id='+@id+'</add_context>
+							</element>
+						</datapanel>
+					</action>
+				</item>
+			</group>
+		</group>
+    </gridtoolbar>
+	';
+END
 GO

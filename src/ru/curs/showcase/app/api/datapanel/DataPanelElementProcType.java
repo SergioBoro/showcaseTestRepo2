@@ -36,5 +36,9 @@ public enum DataPanelElementProcType implements SerializableElement {
 	 * Пример использования: получаем данные из БД хранимой процедурой и
 	 * обрабатываем их в Jython.
 	 */
-	POSTPROCESS
+	POSTPROCESS,
+	/**
+	 * Имя процедуры для получения панели инструментов.
+	 */
+	TOOLBAR
 }
