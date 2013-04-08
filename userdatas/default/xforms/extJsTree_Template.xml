@@ -23,20 +23,7 @@
 				</item>
 			  </schema>
 			</xf:instance>
-			
-			<xf:instance id="businessLineFilterInstance">
-				<selector xmlns="">
-				  <sprav>bl</sprav>
-				  <separator>.</separator>
-				  <filterfields>
-					<field name="dateT" cond="eq">2099-01-01</field>
-				  </filterfields>
-				  <showfields>
-					<field>name</field>
-				  </showfields>
-				  <returnfields></returnfields>
-				</selector>
-			  </xf:instance>
+
 			
 			<xf:bind>
 			</xf:bind>
@@ -65,7 +52,7 @@
 							postProcessProc:'plugin/handleExtJsTree.py',
 							/*getDataProcName:'extJsTree_getData',*/
 							getDataProcName:'plugin/extJsTreeGetData.py',
-							generalFilters:['XPath(instance(quot(businessLineFilterInstance)))'],
+							generalFilters:['XPath(instance(quot(xformId_myInstance1))/item/name)'],
 							params:{
 								treePanel: {
 									title: 'Элементы дерева',
