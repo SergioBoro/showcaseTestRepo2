@@ -211,7 +211,7 @@
           </datapanel>
         </action>
       </level2>
-      <level2 id="SubForms1" name="Подформы1" selectOnLoad="true">
+      <level2 id="SubForms1" name="Подформы1">
         <action>
           <main_context>jython_save_data.xml</main_context>
           <datapanel type="byver/SubForms.xml" tab="firstOrCurrent" >          
