@@ -27893,7 +27893,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE [dbo].[treeGridToolBar]
+CREATE PROCEDURE [dbo].[treeGridToolBar]
    @main_context nvarchar(512)='',  
    @add_context nvarchar(512)='',  
    @filterinfo xml='',  
