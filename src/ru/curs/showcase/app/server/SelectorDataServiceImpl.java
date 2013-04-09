@@ -31,9 +31,13 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			ds.setTotalCount(result.getCount());
 
 		} catch (Exception e) {
-			ds.setTotalCount(0);
 			// вернётся пустой датасет.
+			ds.setTotalCount(0);
+
 			LOGGER.error(SELECTOR_ERROR + e.getMessage());
+
+			throw new ru.beta2.extra.gwt.ui.selector.api.SelectorDataServiceException(
+					e.getMessage());
 		}
 
 		return ds;

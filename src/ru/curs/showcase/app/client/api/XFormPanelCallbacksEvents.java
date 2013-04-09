@@ -3,9 +3,10 @@ package ru.curs.showcase.app.client.api;
 import java.util.*;
 
 import ru.beta2.extra.gwt.ui.selector.*;
+import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.ErrorHandler;
 import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.Options;
 import ru.beta2.extra.gwt.ui.selector.api.SelectorAdditionalData;
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
@@ -439,6 +440,16 @@ public final class XFormPanelCallbacksEvents {
 			}
 
 			options.startsWithChecked(param.startWith());
+
+			ErrorHandler errHandler = new ErrorHandler() {
+				@Override
+				public void onDataServiceFailure(final Throwable throwable) {
+					MessageBox.showMessageWithDetails("Ошибка при получении данных для селектора",
+							throwable.getMessage(), throwable.getMessage(), MessageType.ERROR,
+							false);
+				}
+			};
+			options.errorHandler(errHandler);
 
 			BaseSelectorComponent c;
 			if (isMultiSelector) {
