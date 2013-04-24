@@ -148,6 +148,8 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 		html = html.replace(servletQuery, servletQuery + userDataParam);
 		servletQuery = ExchangeConstants.SECURED_SERVLET_PREFIX + "/xslttransformer?";
 		html = html.replace(servletQuery, servletQuery + userDataParam);
+		servletQuery = ExchangeConstants.SECURED_SERVLET_PREFIX + "/xslTransform?";
+		html = html.replace(servletQuery, servletQuery + userDataParam);
 	}
 
 	@Override
