@@ -485,7 +485,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		grid.setBorders(true);
 		grid.setHideHeaders(!gridMetadata.getUISettings().isVisibleColumnsHeader());
 
-		QuickTip qt = new QuickTip(grid); // чтобы работали хинты на ячейки
+		final QuickTip qt = new QuickTip(grid); // чтобы работали хинты на
+												// ячейки
 		qt.getToolTipConfig().setDismissDelay(0);
 
 		// ---------------------------
@@ -527,6 +528,9 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		grid.addCellClickHandler(new CellClickHandler() {
 			@Override
 			public void onCellClick(final CellClickEvent event) {
+
+				qt.hide();
+
 				if (gridMetadata.getUISettings().isSingleClickBeforeDoubleClick()) {
 					handleClick(grid.getStore().get(event.getRowIndex()).getId(), grid
 							.getColumnModel().getColumn(event.getCellIndex()).getHeader()
@@ -557,6 +561,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		grid.addCellDoubleClickHandler(new CellDoubleClickHandler() {
 			@Override
 			public void onCellClick(CellDoubleClickEvent event) {
+
+				qt.hide();
 
 				doubleClick = true;
 
