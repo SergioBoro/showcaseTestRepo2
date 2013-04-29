@@ -219,6 +219,14 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 			throw new SettingsFileOpenException(fileName, SettingsFileType.SQLSCRIPT);
 		}
 
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+			int index = procName.indexOf(".");
+			if (index > -1) {
+				String schema = procName.substring(0, index).trim();
+				sql = sql.replace("[dbo]", "[" + schema + "]");
+			}
+		}
+
 		String proc = procName;
 		proc = proc.substring(proc.indexOf(".") + 1);
 
