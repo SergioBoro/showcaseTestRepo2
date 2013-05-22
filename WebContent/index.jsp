@@ -43,6 +43,7 @@
         };
      </script>   
      <script src="js/dojo/dojo.js"></script>   
+	 <script src="js/jscolor/jscolor.js"></script>     
 	
 <!-- Google Earth not need keys now! -->
 <!-- if you plan to use Yandex Maps on non localhost server - copy your own key; apply for a key at http://api.yandex.ru/maps/form.xml	-->
