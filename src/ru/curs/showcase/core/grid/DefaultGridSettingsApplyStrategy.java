@@ -38,6 +38,9 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 	public static final String DEFAULT_TREEGRID_ICON_LEAF =
 		"resources/internal/TreeGridLeafNode.png";
 
+	private static final String DEF_VISIBLE_STRIPEROWS = "def.visible.striperows";
+	private static final String DEF_COLUMN_SHOWLINES = "def.column.showlines";
+
 	/**
 	 * Настройки грида.
 	 */
@@ -87,6 +90,17 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 		if (boolValue != null) {
 			settings.setSingleClickBeforeDoubleClick(boolValue);
 		}
+
+		boolValue = reader().getBoolValue(DEF_VISIBLE_STRIPEROWS);
+		if (boolValue != null) {
+			settings.setStripeRows(boolValue);
+		}
+
+		boolValue = reader().getBoolValue(DEF_COLUMN_SHOWLINES);
+		if (boolValue != null) {
+			settings.setColumnLines(boolValue);
+		}
+
 		applyVisibilitySettings();
 		applyTreeGridNodeIcons();
 	}

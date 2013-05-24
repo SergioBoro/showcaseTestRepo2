@@ -593,6 +593,9 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		};
 		grid.getView().setViewConfig(gvc);
 
+		grid.getView().setStripeRows(gridMetadata.getUISettings().isStripeRows());
+		grid.getView().setColumnLines(gridMetadata.getUISettings().isColumnLines());
+
 		VerticalLayoutContainer con = new VerticalLayoutContainer();
 		con.setBorders(true);
 

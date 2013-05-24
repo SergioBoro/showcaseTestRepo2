@@ -486,6 +486,10 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 			}
 		};
 		grid.getView().setViewConfig(gvc);
+
+		grid.getView().setStripeRows(gridMetadata.getUISettings().isStripeRows());
+		grid.getView().setColumnLines(gridMetadata.getUISettings().isColumnLines());
+
 		// ---------------------------
 
 		ToolBar buttonBar = new ToolBar();
