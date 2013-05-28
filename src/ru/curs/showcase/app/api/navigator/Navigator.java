@@ -52,6 +52,11 @@ public class Navigator implements SerializableElement {
 	 */
 	private NavigatorElement autoSelectElement = null;
 
+	/**
+	 * Название вкладки приветствия.
+	 */
+	private String welcomeTabCaption = null;
+
 	public final List<NavigatorGroup> getGroups() {
 		return groups;
 	}
@@ -106,4 +111,13 @@ public class Navigator implements SerializableElement {
 	public void setWidth(final String aWidth) {
 		width = aWidth;
 	}
+
+	public String getWelcomeTabCaption() {
+		return welcomeTabCaption;
+	}
+
+	public void setWelcomeTabCaption(final String aWelcomeTabCaption) {
+		welcomeTabCaption = aWelcomeTabCaption;
+	}
+
 }

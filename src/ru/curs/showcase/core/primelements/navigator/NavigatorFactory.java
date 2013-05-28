@@ -156,6 +156,8 @@ public final class NavigatorFactory extends StartTagSAXHandler {
 		SimpleSAX sax = new SimpleSAX(file.getData(), myHandler, XML_ERROR_MES);
 		sax.parse();
 		postProcess();
+		result.setWelcomeTabCaption(UserDataUtils
+				.getOptionalProp(UserDataUtils.INDEX_WELCOME_TAB_CAPTION));
 		return result;
 	}
 

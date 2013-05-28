@@ -48,7 +48,7 @@ public class GeneralDataPanel {
 	 * 
 	 * @return возвращает виджет GeneralDataPanel типа SimplePanel.
 	 */
-	public Widget generateDataPanel() {
+	public Widget generateDataPanel(final String welcomeTabCaption) {
 
 		final int n87 = 87;
 		final int n73 = 73;
@@ -81,14 +81,14 @@ public class GeneralDataPanel {
 
 		// tabPanel.setSize("400px", "400px");
 
-		showWelcomPage();
+		showWelcomPage(welcomeTabCaption);
 		// generateTestPanels();
 		getTabPanel().selectTab(0);
 
 		return basicDataVerticalPanel;
 	}
 
-	private void showWelcomPage() {
+	private void showWelcomPage(final String welcomeTabCaption) {
 		final SimplePanel tabVerticalPanel = new SimplePanel();
 
 		ScrollPanel sp = new ScrollPanel();
@@ -103,7 +103,11 @@ public class GeneralDataPanel {
 
 		sp.add(ht);
 		tabVerticalPanel.add(sp);
-		getTabPanel().add(tabVerticalPanel, Constants.WELCOME_TAB_CAPTION);
+		if (welcomeTabCaption == null) {
+			getTabPanel().add(tabVerticalPanel, Constants.WELCOME_TAB_CAPTION);
+		} else {
+			getTabPanel().add(tabVerticalPanel, welcomeTabCaption);
+		}
 		JavaScriptFromGWTFeedbackJSNI.setCurrentUserDetailsForViewInHTMLControl("WELCOME");
 
 	}

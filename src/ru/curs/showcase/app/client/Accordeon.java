@@ -138,8 +138,11 @@ public class Accordeon {
 			@Override
 			public void onSuccess(final Navigator navigator) {
 				ProgressWindow.closeProgressWindow();
-				AppCurrContext.getInstance().getMainPanel()
-						.generateMainPanel(!navigator.getHideOnLoad(), navigator.getWidth());
+				AppCurrContext
+						.getInstance()
+						.getMainPanel()
+						.generateMainPanel(!navigator.getHideOnLoad(), navigator.getWidth(),
+								navigator.getWelcomeTabCaption());
 
 				// navigator.getWidth()
 				fillAccordeon(navigator);

@@ -124,7 +124,8 @@ public class MainPanel {
 	 *            - переменная которая содержит значение шириныв навигатора в
 	 *            пикселях или процентах (напр. "500px" или "30%").
 	 */
-	public void generateMainPanel(final boolean showNavigator, final String navigatorWidth) {
+	public void generateMainPanel(final boolean showNavigator, final String navigatorWidth,
+			final String welcomeTabCaption) {
 
 		if (showNavigator) {
 
@@ -162,7 +163,7 @@ public class MainPanel {
 
 		}
 
-		gp = (new GeneralDataPanel()).generateDataPanel();
+		gp = (new GeneralDataPanel()).generateDataPanel(welcomeTabCaption);
 
 		p.setSplitterDragHandler(new SplitterDragHandler() {
 

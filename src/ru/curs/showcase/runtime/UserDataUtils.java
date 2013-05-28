@@ -58,6 +58,8 @@ public final class UserDataUtils {
 
 	public static final String GRIDDATAXSL = "GridData.xsl";
 
+	public static final String INDEX_WELCOME_TAB_CAPTION = "index.welcometabcaption";
+
 	private static final String NAVIGATOR_ICONS_DIR_NAME = "navigator.icons.dir.name";
 
 	private static final String DIR_IN_SOLUTIONS = SOLUTIONS_DIR + "/%s/%s";
@@ -394,6 +396,9 @@ public final class UserDataUtils {
 				continue;
 			}
 			if (INDEX_TITLE.equalsIgnoreCase(prop.trim())) {
+				continue;
+			}
+			if (INDEX_WELCOME_TAB_CAPTION.equalsIgnoreCase(prop.trim())) {
 				continue;
 			}
 			if (LOGIN_TITLE.equalsIgnoreCase(prop.trim())) {
