@@ -4,8 +4,12 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import org.slf4j.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.security.logging.*;
 
 /**
  * Перехватчик старта приложения и сессии. Служит для инициализации приложения.
@@ -31,6 +35,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		JMXBeanRegistrator.unRegister();
 		AppInfoSingleton.getAppInfo().getCacheManager().shutdown();
 		ConnectionFactory.unregisterDrivers();
+		SecurityEventHandler.getInstance().shutdown();
 	}
 
 	@Override
@@ -40,7 +45,23 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 	@Override
 	public void sessionDestroyed(final HttpSessionEvent arg0) {
-		LOGGER.info("сессия Showcase удаляется..." + arg0.getSession().getId());
-		AppInfoSingleton.getAppInfo().removeSessionInfo(arg0.getSession().getId());
+		HttpSession destrHttpSession = arg0.getSession();
+		LOGGER.info("сессия Showcase удаляется..." + destrHttpSession.getId());
+		AppInfoSingleton.getAppInfo().removeSessionInfo(destrHttpSession.getId());
+
+		String userName = null; // SessionUtils.getCurrentSessionUserName();
+		SecurityContext context =
+			(SecurityContext) destrHttpSession
+					.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+		if (context != null) {
+			Authentication auth = context.getAuthentication();
+			if (auth != null) {
+				userName = auth.getName();
+				Event event = new Event(Event.TypeEvent.LOGOUT);
+				event.setUsername(userName);
+				event.setSessionid(destrHttpSession.getId());
+				SecurityEventHandler.getInstance().addEvent(event);
+			}
+		}
 	}
 }

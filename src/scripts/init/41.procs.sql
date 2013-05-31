@@ -27945,3 +27945,15 @@ set @data='
 	';
 END
 GO
+
+CREATE PROCEDURE [dbo].[securitylogging]
+   @sessionid nvarchar(32)='',
+   @username nvarchar(max)='',
+   @ipaddres nvarchar(31)='',
+   @type nvarchar(10)
+AS
+BEGIN
+	PRINT @sessionid;
+END	
+
+GO

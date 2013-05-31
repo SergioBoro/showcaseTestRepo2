@@ -10,6 +10,7 @@ import org.springframework.security.web.authentication.*;
 
 import ru.curs.showcase.app.api.UserInfo;
 import ru.curs.showcase.app.server.PreProcessFilter;
+import ru.curs.showcase.security.logging.*;
 import ru.curs.showcase.util.UserAndSessionDetails;
 
 //imports omitted
@@ -63,7 +64,14 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 			}
 
 		});
-
-		return this.getAuthenticationManager().authenticate(authRequest);
+		Authentication authentication = this.getAuthenticationManager().authenticate(authRequest);
+		if (authentication.isAuthenticated()) {
+			Event event = new Event(Event.TypeEvent.LOGIN);
+			event.setIp(request.getRemoteAddr());
+			event.setUsername(username);
+			event.setSessionid(request.getSession().getId());
+			SecurityEventHandler.getInstance().addEvent(event);
+		}
+		return authentication;
 	}
 }
