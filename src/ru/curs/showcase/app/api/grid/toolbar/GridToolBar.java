@@ -23,16 +23,8 @@ public class GridToolBar implements SerializableElement {
 		super();
 	}
 
-	public void add(final ToolBarItem item) {
+	public void add(final AbstractToolBarItem item) {
 		items.add(item);
-	}
-
-	public void add(final ToolBarGroup item) {
-		items.add(item);
-	}
-
-	public void add(final ToolBarSeparator separator) {
-		items.add(separator);
 	}
 
 	/**

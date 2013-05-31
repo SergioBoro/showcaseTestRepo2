@@ -1,6 +1,7 @@
 package ru.curs.showcase.core.grid.toolbar;
 
 import java.io.InputStream;
+import java.util.Stack;
 
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
@@ -37,12 +38,12 @@ public class GridToolBarFactory {
 	 */
 	private final class XmlHandler extends DefaultHandler {
 
-		private ActionFactory actionFactory = new ActionFactory(context);
+		private final ActionFactory actionFactory = new ActionFactory(context);
 
 		private GridToolBar gridToolBar;
-		private ToolBarGroup curGroupToolBar;
 		private ToolBarItem curItemToolBar;
 		private StringBuilder cutValueTag;
+		private final Stack<ToolBarGroup> toolBarGroupStack = new Stack<ToolBarGroup>();
 
 		private XmlHandler() {
 		}
@@ -55,28 +56,16 @@ public class GridToolBarFactory {
 			} else if (GRID_TOOLBAR_ITEM_TAG.equalsIgnoreCase(name)) {
 				ToolBarItem itemToolBar = new ToolBarItem();
 				fillBaseItemByAttr(itemToolBar, attr);
-				if (this.curGroupToolBar != null) {
-					this.curGroupToolBar.add(itemToolBar);
-				} else {
-					this.gridToolBar.add(itemToolBar);
-				}
+				addItemToolBar(itemToolBar);
 				this.curItemToolBar = itemToolBar;
 			} else if (GRID_TOOLBAR_GROUP_TAG.equalsIgnoreCase(name)) {
 				ToolBarGroup groupToolBar = new ToolBarGroup();
 				fillBaseItemByAttr(groupToolBar, attr);
-				if (this.curGroupToolBar != null) {
-					this.curGroupToolBar.add(groupToolBar);
-				} else {
-				gridToolBar.add(groupToolBar);
-				}
-				this.curGroupToolBar = groupToolBar;
+				addItemToolBar(groupToolBar);
+				toolBarGroupStack.push(groupToolBar);
 			} else if (GRID_TOOLBAR_SEPARATOR_TAG.equalsIgnoreCase(name)) {
 				ToolBarSeparator separatorToolBar = new ToolBarSeparator();
-				if (this.curGroupToolBar != null) {
-					this.curGroupToolBar.add(separatorToolBar);
-				} else {
-					gridToolBar.add(separatorToolBar);
-				}
+				addItemToolBar(separatorToolBar);
 			} else if (actionFactory.canHandleStartTag(name)) {
 				Action action = actionFactory.handleStartTag(uri, localName, name, attr);
 				this.curItemToolBar.setAction(action);
@@ -98,7 +87,9 @@ public class GridToolBarFactory {
 			if (GRID_TOOLBAR_ITEM_TAG.equalsIgnoreCase(name)) {
 				this.curItemToolBar = null;
 			} else if (GRID_TOOLBAR_GROUP_TAG.equalsIgnoreCase(name)) {
-				this.curGroupToolBar = null;
+				if (!toolBarGroupStack.isEmpty()) {
+					toolBarGroupStack.pop();
+				}
 			} else if (actionFactory.canHandleEndTag(name)) {
 				Action action = actionFactory.handleEndTag(uri, localName, name);
 				this.curItemToolBar.setAction(action);
@@ -138,6 +129,18 @@ public class GridToolBarFactory {
 				}
 			}
 			return null;
+		}
+
+		private void addItemToolBar(final AbstractToolBarItem itemToolBar) {
+			ToolBarGroup curGroupToolBar = null;
+			if (!toolBarGroupStack.isEmpty()) {
+				curGroupToolBar = toolBarGroupStack.peek();
+			}
+			if (curGroupToolBar != null) {
+				curGroupToolBar.add(itemToolBar);
+			} else {
+				this.gridToolBar.add(itemToolBar);
+			}
 		}
 	}
 

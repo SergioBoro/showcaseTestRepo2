@@ -27902,22 +27902,29 @@ CREATE PROCEDURE [dbo].[treeGridToolBar]
 AS
 BEGIN
 declare
-	@id nvarchar(50)=''
+	@id nvarchar(50)='',
+	@columnName nvarchar(150)=''
 
-set @id = @filterinfo.value('(/selectedItem/item/id)[1]','nvarchar(50)');
+set @id = @session_context.value('(/sessioncontext/related/gridContext/selectedRecordId)[1]','nvarchar(50)');
 if @id is null begin 
 	set @id = ''
+end
+
+set @columnName = @session_context.value('(/sessioncontext/related/gridContext/currentColumnId)[1]','nvarchar(150)');
+if @columnName is null begin 
+	set @columnName = ''
 end
 
 set @data='
 	<gridtoolbar>
 		<separator/>
 		<item text="Item1" img="imagesingrid/test.jpg" hint="Item one" disable="false">
-			<action>
+			<action show_in="MODAL_WINDOW">
 				<main_context>current</main_context>
+				<modalwindow caption="Item1 click" height="200" width="600"/>
 				<datapanel type="current" tab="current">
 					<element id="selectedRowWriter">
-						<add_context>Item1 click.  Id='+@id+'</add_context>
+						<add_context>Name='+@columnName+', Id='+@id+'</add_context>
 					</element>
 				</datapanel>
 			</action>
@@ -27925,25 +27932,36 @@ set @data='
 		<group text="Item2Group" >
 			<item text="Item21" hint="Item two" disable="true" />
 			<separator/>
-			<item text="Item22" hint="Item three" disable="false" />
+			<item text="Item22" hint="Item three" disable="false">
+				<action show_in="MODAL_WINDOW">
+					<main_context>current</main_context>
+					<modalwindow caption="Item22 click." height="200" width="600"/>
+					<datapanel type="current" tab="current">
+						<element id="selectedRowWriter">
+							<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+						</element>
+					</datapanel>
+				</action>
+			</item>
 			<group text="Item23Group" >
 				<item text="Item231" hint="Item two" disable="true" />
 				<separator/>
 				<item text="Item232" hint="Item three" disable="false">
-					<action>
+					<action show_in="MODAL_WINDOW">
 						<main_context>current</main_context>
+						<modalwindow caption="Item232 click." height="200" width="600"/>
 						<datapanel type="current" tab="current">
 							<element id="selectedRowWriter">
-								<add_context>Item232 click.  Id='+@id+'</add_context>
+								<add_context>Name='+@columnName+', Id='+@id+'</add_context>
 							</element>
 						</datapanel>
 					</action>
 				</item>
 			</group>
 		</group>
-    </gridtoolbar>
-	';
+    </gridtoolbar>';
 END
+
 GO
 
 CREATE PROCEDURE [dbo].[securitylogging]

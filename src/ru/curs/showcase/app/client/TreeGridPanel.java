@@ -1,7 +1,6 @@
 package ru.curs.showcase.app.client;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.ExchangeConstants;
@@ -36,16 +35,12 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.*;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.*;
-import com.sencha.gxt.widget.core.client.event.ActivateEvent.ActivateHandler;
 import com.sencha.gxt.widget.core.client.event.CellClickEvent.CellClickHandler;
 import com.sencha.gxt.widget.core.client.event.CellDoubleClickEvent.CellDoubleClickHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.*;
 import com.sencha.gxt.widget.core.client.menu.*;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
-import com.sencha.gxt.widget.core.client.selection.*;
-import com.sencha.gxt.widget.core.client.selection.CellSelectionChangedEvent.CellSelectionChangedHandler;
-import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.SelectionChangedHandler;
 import com.sencha.gxt.widget.core.client.tips.QuickTip;
 import com.sencha.gxt.widget.core.client.toolbar.*;
 import com.sencha.gxt.widget.core.client.treegrid.TreeGrid;
@@ -405,7 +400,6 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		} else {
 			selectionModel = new CellSelectionModel<TreeGridModel>();
 		}
-		addSelectionChangedHandle(selectionModel);
 
 		String styleColumn = getColumnStyle();
 		for (final LiveGridColumnConfig egcc : gridMetadata.getColumns()) {
@@ -605,6 +599,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 			gridToolBarPanel.add(toolBar);
 		}
 		if (getElementInfo().isToolBarProc()) {
+			refreshDynamicToolBar(gridToolBarPanel);
 			con.add(gridToolBarPanel, new VerticalLayoutData(1, 27));
 		} else {
 			con.add(gridToolBarPanel, new VerticalLayoutData(1, -1));
@@ -655,6 +650,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 			selectedRecordsChanged();
 		}
 
+		refreshDynamicToolBar(gridToolBarPanel);
 		processClick(recId, colId, interactionType);
 
 	}
@@ -1187,9 +1183,9 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 			MenuItem menuItem = createMenuItem(item);
 			if (menuItem != null) {
 				if (item.getAction() != null) {
-					menuItem.addActivateHandler(new ActivateHandler<Item>() {
+					menuItem.addSelectionHandler(new SelectionHandler<Item>() {
 						@Override
-						public void onActivate(final ActivateEvent<Item> event) {
+						public void onSelection(final SelectionEvent<Item> event) {
 							runAction(item.getAction());
 						}
 					});
@@ -1246,24 +1242,6 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		return toolBar;
 	}
 
-	private String getModelXml() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<selectedItem>");
-		for (TreeGridModel model : selectionModel.getSelectedItems()) {
-			sb.append("<item>");
-			for (Entry<String, Object> entry : model.getMap().entrySet()) {
-				sb.append("<" + entry.getKey() + ">");
-				sb.append("<![CDATA[")
-						.append(entry.getValue() != null ? entry.getValue().toString() : "")
-						.append("]]>");
-				sb.append("</" + entry.getKey() + ">");
-			}
-			sb.append("</item>");
-		}
-		sb.append("</selectedItem>");
-		return sb.toString();
-	}
-
 	private void refreshDynamicToolBar(final Panel panel) {
 		final DataPanelElementInfo elInfo = getElementInfo();
 		if (elInfo.isToolBarProc()) {
@@ -1275,15 +1253,16 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				public void run() {
 					panel.clear();
 
-					GridContext gridContext = getDetailedContext();
-					CompositeContext toolBarContext = new CompositeContext();
-					toolBarContext.setSessionParamsMap(gridContext.getSessionParamsMap());
-					toolBarContext.setSession(gridContext.getSession());
-					toolBarContext.setMain(gridContext.getMain());
-					toolBarContext.setAdditional(gridContext.getAdditional());
-					toolBarContext.setFilter(getModelXml());
+					CompositeContext context = new CompositeContext();
+					CompositeContext elContext = getContext();
+					context.setMain(elContext.getMain());
+					context.setAdditional(elContext.getAdditional());
+					context.setFilter(elContext.getFilter());
+					context.setSession(elContext.getSession());
+					context.setSessionParamsMap(elContext.getSessionParamsMap());
+					context.addRelated(getElementInfo().getId(), getDetailedContext());
 
-					dataService.getGridToolBar(toolBarContext, elInfo,
+					dataService.getGridToolBar(context, elInfo,
 							new GWTServiceCallback<GridToolBar>(
 									"при получении данных панели инструментов грида с сервера") {
 
@@ -1298,33 +1277,6 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				}
 			};
 			toolBarRefreshTimer.schedule(Constants.GRID_SELECTION_DELAY);
-		}
-	}
-
-	private void
-			addSelectionChangedHandle(final GridSelectionModel<TreeGridModel> oSelectionModel) {
-		if (oSelectionModel instanceof CellSelectionModel) {
-			((CellSelectionModel<TreeGridModel>) oSelectionModel)
-					.addCellSelectionChangedHandler(new CellSelectionChangedHandler<TreeGridModel>() {
-
-						@Override
-						public void onCellSelectionChanged(
-								final CellSelectionChangedEvent<TreeGridModel> event) {
-							refreshDynamicToolBar(gridToolBarPanel);
-						}
-
-					});
-		} else {
-			oSelectionModel
-					.addSelectionChangedHandler(new SelectionChangedHandler<TreeGridModel>() {
-
-						@Override
-						public void onSelectionChanged(
-								final SelectionChangedEvent<TreeGridModel> event) {
-							refreshDynamicToolBar(gridToolBarPanel);
-						}
-
-					});
 		}
 	}
 }
