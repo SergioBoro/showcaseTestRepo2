@@ -1,13 +1,13 @@
 package ru.curs.showcase.security;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
 import java.util.IllegalFormatException;
 
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.UserAndSessionDetails;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
@@ -71,8 +71,7 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 				URL server =
 					new URL(url
 							+ String.format("/login?sesid=%s&login=%s&pwd=%s", sesid,
-									URLEncoder.encode(login, "UTF-8"),
-									URLEncoder.encode(pwd, "UTF-8")));
+									encodeParam(login), encodeParam(pwd)));
 
 				HttpURLConnection c = (HttpURLConnection) server.openConnection();
 				c.setRequestMethod("GET");
@@ -117,6 +116,14 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 	@Override
 	public boolean supports(final Class<? extends Object> arg0) {
 		return SignedUsernamePasswordAuthenticationToken.class.isAssignableFrom(arg0);
+	}
+
+	private String encodeParam(final String param) throws UnsupportedEncodingException {
+		String s = param;
+		s = s.replace("%", "AB4AFD63A4C");
+		s = s.replace("+", "D195B4C989F");
+		s = URLEncoder.encode(s, "ISO8859_1");
+		return s;
 	}
 
 }
