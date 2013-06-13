@@ -128,7 +128,9 @@ public final class GridTransformer {
 				} else {
 					switch (c.getValueType()) {
 					case IMAGE:
-						val = "<a><img border=\"0\" src=\"" + rec.getValue(c) + "\"></a>";
+						val =
+							"<a><img border=\"0\" src=\""
+									+ XMLUtils.unEscapeTagXml(rec.getValue(c)) + "\"></a>";
 						break;
 					case LINK:
 						val = getLink(rec.getValue(c));
@@ -213,7 +215,9 @@ public final class GridTransformer {
 				result = result + text;
 			} else {
 				String alt = text != null ? " alt=\"" + text + "\"" : "";
-				result = result + "<img border=\"0\" src=\"" + image + "\"" + alt + "/>";
+				result =
+					result + "<img border=\"0\" src=\"" + XMLUtils.unEscapeTagXml(image) + "\""
+							+ alt + "/>";
 			}
 			result = result + "</a>";
 
@@ -257,7 +261,9 @@ public final class GridTransformer {
 					} else {
 						switch (c.getValueType()) {
 						case IMAGE:
-							val = "<a><img border=\"0\" src=\"" + rec.getValue(c) + "\"></a>";
+							val =
+								"<a><img border=\"0\" src=\""
+										+ XMLUtils.unEscapeTagXml(rec.getValue(c)) + "\"></a>";
 							break;
 						case LINK:
 							val = getLink(rec.getValue(c));
