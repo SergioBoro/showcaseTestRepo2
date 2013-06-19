@@ -319,6 +319,16 @@ public final class XFormPanelCallbacksEvents {
 		}-*/;
 
 		/**
+		 * 
+		 * признак того, что надо скрыть галочку "Начинается с".
+		 * 
+		 * @return boolean
+		 */
+		native boolean hideStartWith()/*-{
+			return this.hideStartWith != null ? this.hideStartWith : false;
+		}-*/;
+
+		/**
 		 * заголовок окна для выбора из больших списков.
 		 * 
 		 * @return String
@@ -440,6 +450,8 @@ public final class XFormPanelCallbacksEvents {
 			}
 
 			options.startsWithChecked(param.startWith());
+
+			options.hideStartsWith(param.hideStartWith());
 
 			ErrorHandler errHandler = new ErrorHandler() {
 				@Override
