@@ -44,8 +44,7 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 
 		UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
 		// установка деталей внутреннего пользователя
-		userAndSessionDetails.setUserInfo(new UserInfo(username, null, username, null, null,
-				request.getRemoteAddr()));
+		userAndSessionDetails.setUserInfo(new UserInfo(username, null, username, null, null));
 
 		authRequest.setDetails(userAndSessionDetails);
 
