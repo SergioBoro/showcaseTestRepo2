@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.logging.*;
 
@@ -49,16 +50,14 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		LOGGER.info("сессия Showcase удаляется..." + destrHttpSession.getId());
 		AppInfoSingleton.getAppInfo().removeSessionInfo(destrHttpSession.getId());
 
-		String userName = null; // SessionUtils.getCurrentSessionUserName();
 		SecurityContext context =
 			(SecurityContext) destrHttpSession
 					.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
 		if (context != null) {
 			Authentication auth = context.getAuthentication();
 			if (auth != null) {
-				userName = auth.getName();
 				Event event = new Event(Event.TypeEvent.LOGOUT);
-				event.setUsername(userName);
+				event.setContext(new CompositeContext());
 				event.setSessionid(destrHttpSession.getId());
 				SecurityEventHandler.getInstance().addEvent(event);
 			}

@@ -1,5 +1,7 @@
 package ru.curs.showcase.security.logging;
 
+import ru.curs.showcase.app.api.event.CompositeContext;
+
 /**
  * Событие.
  * 
@@ -9,32 +11,41 @@ package ru.curs.showcase.security.logging;
 public class Event {
 	/**
 	 * Тип события.
-	 *
+	 * 
 	 */
 	public enum TypeEvent {
 		LOGIN, LOGOUT
 	}
 
-	private TypeEvent typeEvent;
+	private final TypeEvent typeEvent;
+	private CompositeContext context;
 	private String sessionid;
-	private String username;
 	private String ip;
 
 	public Event(final TypeEvent eTypeEvent) {
 		super();
 		this.typeEvent = eTypeEvent;
 	}
-	
-	public Event(final TypeEvent eTypeEvent, final String sSessionid, final String sUsername, final String sIp) {
+
+	public Event(final TypeEvent eTypeEvent, final CompositeContext oContext,
+			final String sSessionid, final String sIp) {
 		super();
 		this.typeEvent = eTypeEvent;
-		this.username = sUsername;
+		this.context = oContext;
 		this.ip = sIp;
 		this.sessionid = sSessionid;
 	}
 
 	public TypeEvent getTypeEvent() {
 		return typeEvent;
+	}
+
+	public CompositeContext getContext() {
+		return context;
+	}
+
+	public void setContext(final CompositeContext oContext) {
+		this.context = oContext;
 	}
 
 	public String getSessionid() {
@@ -45,14 +56,6 @@ public class Event {
 		this.sessionid = sSessionid;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(final String sUsername) {
-		this.username = sUsername;
-	}
-
 	public String getIp() {
 		return ip;
 	}
@@ -60,5 +63,5 @@ public class Event {
 	public void setIp(final String sIp) {
 		this.ip = sIp;
 	}
-		
+
 }

@@ -2,6 +2,8 @@ package ru.curs.showcase.app.server;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -24,6 +26,9 @@ import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
+import ru.curs.showcase.security.logging.*;
+import ru.curs.showcase.security.logging.Event.TypeEvent;
+import ru.curs.showcase.security.logging.Event;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -131,6 +136,13 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 
 	@Override
 	public MainPage getMainPage(final CompositeContext context) throws GeneralException {
+		// вызов процедуры логирования
+		HttpServletRequest request = getThreadLocalRequest();
+		Event event =
+			new Event(TypeEvent.LOGIN, context.gwtClone(), request.getSession().getId(),
+					request.getRemoteAddr());
+		SecurityEventHandler.getInstance().addEvent(event);
+
 		MainPageGetCommand command = new MainPageGetCommand(context);
 		return command.execute();
 	}
@@ -151,7 +163,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public GridToolBar getGridToolBar(final CompositeContext context, final DataPanelElementInfo elInfo) throws GeneralException {
+	public GridToolBar getGridToolBar(final CompositeContext context,
+			final DataPanelElementInfo elInfo) throws GeneralException {
 		GridToolBarCommand command = new GridToolBarCommand(context, elInfo);
 		return command.execute();
 	}

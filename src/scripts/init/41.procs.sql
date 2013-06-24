@@ -27965,8 +27965,8 @@ END
 GO
 
 CREATE PROCEDURE [dbo].[securitylogging]
+   @session_context xml='',
    @sessionid nvarchar(32)='',
-   @username nvarchar(max)='',
    @ipaddres nvarchar(31)='',
    @type nvarchar(10)
 AS

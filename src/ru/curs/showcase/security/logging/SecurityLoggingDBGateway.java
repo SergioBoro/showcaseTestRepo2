@@ -2,6 +2,7 @@ package ru.curs.showcase.security.logging;
 
 import java.sql.*;
 
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.ConnectionFactory;
 
 /**
@@ -11,11 +12,11 @@ import ru.curs.showcase.runtime.ConnectionFactory;
  * 
  */
 public class SecurityLoggingDBGateway implements SecurityLoggingGateway {
-	private static final int PARAM_SESSIONID = 1;
-	private static final int PARAM_USERNAME = 2;
+	private static final int PARAM_SESSIO_CONTEXT = 1;
+	private static final int PARAM_SESSIONID = 2;
 	private static final int PARAM_IP = 3;
 	private static final int PARAM_TYPE = 4;
-	private String procName;
+	private final String procName;
 
 	public SecurityLoggingDBGateway(final String sProcName) {
 		super();
@@ -27,8 +28,19 @@ public class SecurityLoggingDBGateway implements SecurityLoggingGateway {
 		Connection conn = ConnectionFactory.getInstance().acquire();
 		try {
 			CallableStatement cs = conn.prepareCall("{call " + this.procName + "(?,?,?,?)}");
+
+			String sessionXml = "";
+			CompositeContext context = event.getContext();
+			if (context != null) {
+				String session = context.getSession();
+				if (session != null) {
+					sessionXml = session;
+				}
+			}
+			SQLXML sqlxml = conn.createSQLXML();
+			sqlxml.setString(sessionXml);
+			cs.setSQLXML(PARAM_SESSIO_CONTEXT, sqlxml);
 			cs.setString(PARAM_SESSIONID, event.getSessionid());
-			cs.setString(PARAM_USERNAME, event.getUsername());
 			cs.setString(PARAM_IP, event.getIp());
 			cs.setString(PARAM_TYPE, event.getTypeEvent().name());
 

@@ -4,9 +4,6 @@ import java.util.concurrent.*;
 
 import org.slf4j.*;
 
-import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.runtime.*;
-
 /**
  * Обработчик событий.
  * 
@@ -26,24 +23,18 @@ public class SecurityEventHandler {
 	 * 
 	 */
 	private class EventTask implements Runnable {
-		private SecurityLoggingGateway gateway;
-		private Event event;
+		private final Event event;
 
-		public EventTask(final SecurityLoggingGateway oGateway, final Event oEvent) {
+		public EventTask(final Event oEvent) {
 			super();
-			this.gateway = oGateway;
 			this.event = oEvent;
 		}
 
 		@Override
 		public void run() {
 			try {
-				AppInfoSingleton.getAppInfo().setCurUserDataId(ExchangeConstants.DEFAULT_USERDATA);
-				if (this.gateway != null) {
-					this.gateway.doLogging(event);
-				} else {
-					LOGGER.warn("SecurityLoggingGateway is null.");
-				}
+				SecurityLoggingCommand command = new SecurityLoggingCommand(event);
+				command.execute();
 			} catch (Exception ex) {
 				LOGGER.error("Error logging.", ex);
 			}
@@ -52,8 +43,7 @@ public class SecurityEventHandler {
 	}
 
 	private static SecurityEventHandler instance = new SecurityEventHandler();
-	private ThreadPoolExecutor threadPoolExecutor;
-	private SecurityLoggingGateway gateway;
+	private final ThreadPoolExecutor threadPoolExecutor;
 
 	public static SecurityEventHandler getInstance() {
 		return instance;
@@ -61,24 +51,19 @@ public class SecurityEventHandler {
 
 	public SecurityEventHandler() {
 		super();
-		String procName = UserDataUtils.getGeneralOptionalProp("security.logging.proc");
-		if (procName != null && !procName.isEmpty()) {
-			SecurityLoggingSelector selector = new SecurityLoggingSelector(procName);
-			this.gateway = selector.getGateway();
-			BlockingQueue<Runnable> queue = new ArrayBlockingQueue<Runnable>(corePoolSize * 2);
-			this.threadPoolExecutor =
-				new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, queue);
-		}
+		BlockingQueue<Runnable> queue = new ArrayBlockingQueue<Runnable>(corePoolSize * 2);
+		this.threadPoolExecutor =
+			new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, queue);
 	}
 
 	public void addEvent(final Event event) {
 		if (this.threadPoolExecutor != null) {
-			this.threadPoolExecutor.execute(new EventTask(this.gateway, event));
+			this.threadPoolExecutor.execute(new EventTask(event));
 		} else {
 			LOGGER.warn("SecurityEventHandler is not init.");
 		}
 	}
-	
+
 	public void shutdown() {
 		if (this.threadPoolExecutor != null) {
 			this.threadPoolExecutor.shutdown();
