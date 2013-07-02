@@ -17,8 +17,8 @@ sortcols = None #объект типа java.util.List<ru.curs.gwt.datagrid.model
 
 
 class testLiveGridJython(JythonProc):
-    def getRawData(self, context, elId, scols):
-        global main, add, session, filterContext, elementId, sortcols
+    def getRawData(self, context, elId, scols, frecord, psize):
+        global main, add, session, filterContext, elementId, sortcols, firstrecord, pagesize
         main = context.getMain()
         if context.getAdditional():
             add = context.getAdditional()
@@ -27,6 +27,8 @@ class testLiveGridJython(JythonProc):
             filterContext = context.getFilter()
         elementId = elId
         sortcols = scols
+        firstrecord = frecord
+        pagesize = psize
         return mainproc()
 
 
@@ -38,6 +40,11 @@ def mainproc():
         </rec>
     </records>'''
     res = JythonDTO(data)
+    
+    
+#    print 'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'
+    
+    
     return res
     
 

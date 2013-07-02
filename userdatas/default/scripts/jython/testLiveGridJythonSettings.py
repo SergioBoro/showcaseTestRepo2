@@ -39,7 +39,7 @@ def mainproc():
       <columns>
         <col id="name" />
       </columns>
-      <properties flip="false" pagesize="15" totalCount="0" profile="grid.nowidth.properties"/>
+      <properties flip="false" pagesize="75" totalCount="1" profile="grid.nowidth.properties"/>
    </gridsettings>'''
     res = JythonDTO(None, settings)
     return res

@@ -42,7 +42,8 @@ public interface JythonProc {
 	Object getRawData(AbstractCompositeContext context, String elementId);
 
 	/**
-	 * Возвращает сырые данные для компонента grid.
+	 * Возвращает сырые данные для компонента grid в случае задания одной
+	 * процедурой.
 	 * 
 	 * @param context
 	 *            - контекст вызова.
@@ -55,6 +56,27 @@ public interface JythonProc {
 	 *         пользователя в случае ошибки.
 	 */
 	Object getRawData(AbstractCompositeContext context, String elementId, List<Column> sortcols);
+
+	/**
+	 * Возвращает сырые данные для компонента grid в случае задания двумя
+	 * процедурами.
+	 * 
+	 * @param context
+	 *            - контекст вызова.
+	 * @param elementId
+	 *            - идентификатор создаваемого элемента.
+	 * @param sortcols
+	 *            - список столбцов для которых выполняется сортировка.
+	 * @param firstrecord
+	 *            - первая запись.
+	 * @param pagesize
+	 *            - количество возвращаемых записей.
+	 * @return - объект переноса данных Jython, включающий в себя данные и
+	 *         настройки элемента в виде двух строк или объект с информацией для
+	 *         пользователя в случае ошибки.
+	 */
+	Object getRawData(AbstractCompositeContext context, String elementId, List<Column> sortcols,
+			int firstrecord, int pagesize);
 
 	/**
 	 * Сохраняет данные (на данный момент, только для XForm).

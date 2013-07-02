@@ -3,7 +3,7 @@ package ru.curs.showcase.core.grid;
 import java.io.*;
 
 import ru.curs.showcase.app.api.ID;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.core.FileIsAbsentInDBException;
@@ -128,8 +128,26 @@ public class GridJythonGateway extends JythonQuery<JythonDTO> implements GridGat
 
 	@Override
 	protected Object execute() {
-		return getProc().getRawData(context, element.getId().getString(),
-				context.getSortedColumns());
+		if (element.loadByOneProc()) {
+			return getProc().getRawData(context, element.getId().getString(),
+					context.getSortedColumns());
+		} else {
+
+			int firstrecord;
+			int pagesize;
+
+			if ((context.getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
+					|| (context.getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
+				firstrecord = context.getLiveInfo().getFirstRecord();
+				pagesize = context.getLiveInfo().getLimit();
+			} else {
+				firstrecord = context.getPageInfo().getFirstRecord();
+				pagesize = context.getPageSize();
+			}
+
+			return getProc().getRawData(context, element.getId().getString(),
+					context.getSortedColumns(), firstrecord, pagesize);
+		}
 	}
 
 	@Override
