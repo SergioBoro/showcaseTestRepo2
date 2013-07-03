@@ -49,14 +49,16 @@ function getErrorByIFrame(iframeName)
   
 	var iframe = document.getElementsByName(iframeName)[0];
 	
-	var body = iframe.contentDocument.getElementsByTagName("body")[0];
-	
-	if((body != null) && (typeof body != "undefined")) {
-		var message = body.innerHTML;
-		if(message.trim() != "" && message.trim() != "<pre></pre>") {			
-			err = message;
+	if(iframe.contentDocument != null){
+		var body = iframe.contentDocument.getElementsByTagName("body")[0];
+		
+		if((body != null) && (typeof body != "undefined")) {
+			var message = body.innerHTML;
+			if(message.trim() != "" && message.trim() != "<pre></pre>") {			
+				err = message;
+			}
 		}
-	}
+	} 
 	
 	return err; 
 }
