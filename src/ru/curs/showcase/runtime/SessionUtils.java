@@ -89,4 +89,11 @@ public final class SessionUtils {
 			return null;
 		}
 	}
+
+	public static String getRemoteAddress() {
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getRemoteAddress();
+		}
+		return null;
+	}
 }

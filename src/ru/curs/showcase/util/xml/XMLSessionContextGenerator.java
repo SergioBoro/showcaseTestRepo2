@@ -33,6 +33,7 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	private static final String FULLUSERNAME_TAG = "fullusername";
 	private static final String EMAIL_TAG = "email";
 	private static final String PHONE_TAG = "phone";
+	private static final String IP_TAG = "ip";
 
 	private final CompositeContext context;
 
@@ -107,6 +108,10 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		node = info.createElement(PHONE_TAG);
 		info.getDocumentElement().appendChild(node);
 		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserPhone()));
+
+		node = info.createElement(IP_TAG);
+		info.getDocumentElement().appendChild(node);
+		node.appendChild(info.createTextNode(SessionUtils.getRemoteAddress()));
 	}
 
 	private void addUserData(final Map<String, ArrayList<String>> aMap) {
