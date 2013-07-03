@@ -10,6 +10,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.security.logging.Event.TypeEvent;
 import ru.curs.showcase.security.logging.*;
 
 /**
@@ -36,7 +37,6 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		JMXBeanRegistrator.unRegister();
 		AppInfoSingleton.getAppInfo().getCacheManager().shutdown();
 		ConnectionFactory.unregisterDrivers();
-		SecurityEventHandler.getInstance().shutdown();
 	}
 
 	@Override
@@ -56,10 +56,9 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		if (context != null) {
 			Authentication auth = context.getAuthentication();
 			if (auth != null) {
-				Event event = new Event(Event.TypeEvent.LOGOUT);
-				event.setContext(new CompositeContext());
-				event.setSessionid(destrHttpSession.getId());
-				SecurityEventHandler.getInstance().addEvent(event);
+				SecurityLoggingCommand logCommand =
+					new SecurityLoggingCommand(new CompositeContext(), null, TypeEvent.LOGOUT);
+				logCommand.execute();
 			}
 		}
 	}
