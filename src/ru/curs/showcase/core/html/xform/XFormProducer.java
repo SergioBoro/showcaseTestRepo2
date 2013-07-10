@@ -7,6 +7,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.slf4j.*;
 import org.w3c.dom.*;
 
 import ru.curs.showcase.runtime.*;
@@ -16,14 +17,16 @@ import ru.curs.showcase.util.xml.*;
  * Класс, преобразующий документ в HTML-код XForm.
  */
 public final class XFormProducer extends GeneralXMLHelper {
-	public static final String XF_INSTANCE = "xf:instance";
+	// public static final String XF_INSTANCE = "xf:instance";
+	public static final String INSTANCE = "instance";
 	public static final String XFORMS_URI = "http://www.w3.org/2002/xforms";
 	public static final String EVENTS_URI = "http://www.w3.org/2001/xml-events";
 
 	private static final int DEFAULT_BUFFER_SIZE = 1024;
 
 	private static final String MAIN_INSTANCE = "mainInstance";
-	private static final String INSTANCE = "instance";
+
+	protected static final Logger LOGGER = LoggerFactory.getLogger(XFormProducer.class);
 
 	private XFormProducer() {
 		throw new UnsupportedOperationException();
@@ -70,7 +73,7 @@ public final class XFormProducer extends GeneralXMLHelper {
 	 * @return - элемент mainInstance.
 	 */
 	public static Node getMainInstance(final org.w3c.dom.Document doc) {
-		NodeList l = doc.getElementsByTagName(XF_INSTANCE);
+		NodeList l = doc.getElementsByTagNameNS(XFORMS_URI, INSTANCE);
 		for (int i = 0; i < l.getLength(); i++) {
 			Node n = l.item(i).getAttributes().getNamedItem(ID_TAG);
 
@@ -128,6 +131,9 @@ public final class XFormProducer extends GeneralXMLHelper {
 	public static String getHTML(final org.w3c.dom.Document xml,
 			final org.w3c.dom.Document tempData) throws TransformerException, IOException {
 		insertActualData(xml, tempData);
+
+		LOGGER.info("debugg_после вставки реальных данных_" + XMLUtils.documentToString(xml));
+
 		return transform(xml);
 	}
 
@@ -173,7 +179,22 @@ public final class XFormProducer extends GeneralXMLHelper {
 				if (n.getAttributes().getNamedItem(ID_TAG).getTextContent().toLowerCase()
 						.contains(MAIN_INSTANCE.toLowerCase())) {
 
+
+					LOGGER.info("debugg_mainInstance_количество детей в начале_1__"
+							+ n.getChildNodes().getLength());
+
+					while (n.getFirstChild() != null) {
+						n.removeChild(n.getFirstChild());
+					}
+
+					LOGGER.info("debugg_mainInstance_количество детей после первого удаления_2__"
+							+ n.getChildNodes().getLength());
+
 					n.setTextContent("");
+
+					LOGGER.info("debugg_mainInstance_количество детей после второго удаления_3__"
+							+ n.getChildNodes().getLength());
+
 					Node nn = xml.importNode(tempData.getDocumentElement(), true);
 					n.appendChild(nn);
 					break;

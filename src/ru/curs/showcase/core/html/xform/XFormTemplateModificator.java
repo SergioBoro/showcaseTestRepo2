@@ -93,7 +93,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		Node node = XFormProducer.getMainInstance(doc);
 		Node parent = node.getParentNode();
 
-		Element el = doc.createElementNS("", XFormProducer.XF_INSTANCE);
+		// Element el = doc.createElementNS("", XFormProducer.XF_INSTANCE);
+		Element el = doc.createElementNS(XFormProducer.XFORMS_URI, XFormProducer.INSTANCE);
 		el.setAttribute(ID_TAG, subformId + ROOT_SRV_DATA_TAG);
 		Node srv = parent.appendChild(el);
 		el = doc.createElement(SCHEMA_TAG);
@@ -115,7 +116,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	 * @return - элемент c id=ROOT_SRV_DATA_TAG.
 	 */
 	public static Node getSrvDataInstance(final org.w3c.dom.Document doc, final String subformId) {
-		NodeList l = doc.getElementsByTagName(XFormProducer.XF_INSTANCE);
+		NodeList l = doc.getElementsByTagNameNS(XFormProducer.XFORMS_URI, XFormProducer.INSTANCE);
+
 		for (int i = 0; i < l.getLength(); i++) {
 			Node n = l.item(i).getAttributes().getNamedItem(ID_TAG);
 			if ((n != null) && ((subformId + ROOT_SRV_DATA_TAG).equals(n.getTextContent()))) {
