@@ -135,6 +135,10 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 		html = super.replaceVariables(html);
 		html = html.replace("xformId", getElementInfo().getId());
 		addUserDataToSubmissions();
+
+		html = html.replace("&lt;", "<");
+		html = html.replace("&gt;", ">");
+
 		return html;
 	}
 
