@@ -1,10 +1,213 @@
 function createExtJsTree(parentId, pluginParams, data) {
-	if (!pluginParams.core.filter) {
-		pluginParams.core.filter = {};
+	//////////////////////// ExtJsTree ////////////////////////
+	var ExtJsTree = function(el, pluginParams) {
+		var self = this;
+		this.el = el;
+		this.filter = {};//данные относящиеся к фильтру поиска
+		this.pluginParams = pluginParams || {};
+		var treePanel = this.pluginParams.treePanel;
+		if (treePanel == undefined) {
+			this.pluginParams.treePanel = treePanel = {};
+		}
+		if (treePanel.listeners == undefined) {
+			treePanel.listeners = {}
+		}
+		//перехватываем обработчик события checkchange, для хранения выбранных значений
+		var checkchangeFn = undefined;
+		if (treePanel.listeners.checkchange) {
+			checkchangeFn = treePanel.listeners.checkchange.fn;
+		}
+		treePanel.listeners.checkchange = {
+			fn: function(node, checked, eOpts) {
+				self._doCheckchange(checkchangeFn, node, checked, eOpts);
+			}
+		}
+		
+		this.selectedItems = new Array();//выбранные значения
+		this.idPref = '_';//префикс идентификатора выбранного значения
+		
+		this._init();
+	};
+	ExtJsTree.prototype = {
+		_init: function() {
+			//DataModel
+			var modelOptions = Ext.apply((this.pluginParams.dataModel || {}), {
+				extend: 'Ext.data.Model'
+			}, {});
+			modelOptions.fields = this._applyFieldsToModel([
+				{name:'id',type:'string'},
+				{name:'name',type:'string'}
+			], modelOptions.fields||[]);
+			Ext.define('ExtJsTree.DataModel', modelOptions);
+			
+			this.store=this._createStore();
+			this.dataLoader = this._createDataLoader();
+			this.dataLoader.callback = {
+				'target':this,
+				'loadData':this._doLoadData
+			};
+			
+			this._addDomElement(this.el);
+			this.treePanel = this._createExtTreePanel(this.el);
+						
+		},
+		_addDomElement: function(parentEl) {
+			//добавление фильтра поиска
+			var self = this;
+			var dh = Ext.DomHelper;
+			var inputId = Ext.id();
+			var checkboxId = Ext.id();
+			var filterEl = new Ext.dom.Element(dh.createDom({
+				tag:'div',
+				style:'text-align:center;',
+				children: [{
+					tag:'input',
+					id:inputId,
+					type:'text',
+					autocomplete:'off',
+					style:'width:'+(parentEl.getWidth()-5)+'px;'
+				},{
+					tag:'div',
+					style:'text-align:left;',
+					children: [{
+						tag:'input',
+						id:checkboxId,
+						type:'checkbox',
+						value:true
+					},{
+						tag:'label',
+						'for':checkboxId,
+						html:'Начинается с'
+					}]
+				}]
+			}));		
+			parentEl.appendChild(filterEl);				
+						
+			var inputEl = Ext.get(inputId);		
+			var checkBoxEl = Ext.get(checkboxId);						
+			if (pluginParams.core.filter.startsWith) {
+				checkBoxEl.set({checked:'checked'});
+			}
+			checkBoxEl.on('click', function(event, htmlEl, o) {
+				self._doClickFilterCheckBox(htmlEl);
+			});
+			inputEl.on('keyup', function(event, htmlEl, o) {
+				self._doKeyupFilterInput(htmlEl);
+			});
+			
+			this.filter = {
+				'filterEl':filterEl,
+				'inputEl':inputEl,
+				'checkBoxEl':checkBoxEl
+			};
+		},
+		_createExtTreePanel: function(parentEl) {
+			//Построение элемента Ext.tree.Panel								
+			var option = {
+				store: this.store,
+				columns: [
+					{xtype: 'treecolumn', header: 'Название', dataIndex: 'name', flex: 1}
+				],
+				rootVisible:false,
+				hideHeaders:true,
+				useArrows: true,
+				frame: true,
+				title: 'Check Tree',
+				renderTo: parentEl,
+				width: parentEl.getWidth(),
+				height: parentEl.getHeight()-this.filter.filterEl.getHeight()-2
+			};
+			
+			option = Ext.apply(option, pluginParams.treePanel || {});
+			var tree = Ext.create('Ext.tree.Panel', option);
+			return tree;
+		},
+		_doClickFilterCheckBox: function(el) {
+			this.dataLoader.doFilter(this.filter.inputEl.getValue(), el.checked, false);
+		},
+		_doKeyupFilterInput: function(el) {
+			this.dataLoader.doFilter(el.value, this.filter.checkBoxEl.dom.checked);
+		},
+		_doCheckchange: function(callbackFn, node, checked, eOpts) {
+			if (checked) {
+				this.addItem(node.get('id'), node);
+			} else {
+				this.removeItem(node.get('id'));
+			}
+			if (callbackFn!=undefined && Ext.isFunction(callbackFn)) {
+				callbackFn.call(this, node, checked, eOpts);
+			}
+		},
+		_doLoadData: function(data) {
+			for (i in data) {
+				if (this.getValue(data[i].id)) {
+					data[i].checked=true;
+				}
+				if (data[i].children) {
+					this._doLoadData(data[i].children);
+				}
+			}
+		},
+		_applyFieldsToModel: function(fields, addFields) {
+			var result = addFields || [];
+			for (i = 0; i < fields.length; i++) {
+				var isContains = false;
+				for (j = 0; j < addFields.length; j++) {
+					if (fields[i].name==addFields[j].name) {
+						isContains = true;
+						break;
+					}
+				}
+				if (!isContains) {
+					result.push(fields[i]);
+				}
+			}
+			return result;
+		},
+		_createStore: function() {
+			var root = !data ? [] : {
+				id:'root',
+				name:'/',
+				expanded:true,
+				leaf:false,
+				icon:Ext.BLANK_IMAGE_URL,
+				children:data
+			};	
+			var store = Ext.create('Ext.data.TreeStore', {
+				model: 'ExtJsTree.DataModel',
+				root: root,
+				proxy: {
+				type: 'memory',
+					reader: {
+						type: 'json'
+					}
+				}
+			});
+			return store;
+		},
+		_createDataLoader: function() {
+			var dataLoader = this.dataLoader = new DataLoader(this.store, this.pluginParams.core.filter.delay, this.pluginParams.generalFilters);		
+			return dataLoader;
+		},
+		addItem: function(id, data) {
+			this.selectedItems[this.idPref+id] = data;
+		},
+		removeItem: function(id) {
+			delete this.selectedItems[this.idPref+id];
+		},
+		getValue: function(id) {
+			return this.selectedItems[this.idPref+id];
+		},
+		getValues: function() {
+			return this.selectedItems;
+		}
 	}
+	//////////////////////// END ExtJsTree ////////////////////
+	
+	//////////////////////// DataLoader ////////////////////////
 	var DataLoader = function(store, delay, generalFilters) {
 		this.timeoutId = false;
-		this.setCurValue();
+		this.setFilterValue('',true);
 		this.store = store;
 		this.store.proxy.ExtJsTree = {
 			self: this
@@ -15,6 +218,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 	};
 	DataLoader.prototype = {			
 			load:function(operation, callback, scope) {
+				var self = this;
 				gwtGetDataPlugin({
 					id:pluginParams.elementPanelId,
 					parentId:parentId,
@@ -24,7 +228,10 @@ function createExtJsTree(parentId, pluginParams, data) {
 							if (!Ext.isArray(data)) {
 								data = [data];
 							}
-							operation.resultSet = store.proxy.getReader().read(data);	
+							if (self.callback!=undefined && Ext.isFunction(self.callback.loadData)) {
+								self.callback.loadData.call(self.callback.target, data);
+							}
+							operation.resultSet = self.store.proxy.getReader().read(data);	
 						}							
 						operation.setCompleted();
 						operation.setSuccessful();
@@ -34,7 +241,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 			},
 			loadNode:function(operation, callback, scope) {
 				var dataLoader = this.ExtJsTree.self;
-				if (operation.node != store.getRootNode()) {
+				if (operation.node != dataLoader.store.getRootNode()) {
 					var dataNode = operation.node.data;
 					operation.params={
 						id:dataNode.id,
@@ -44,7 +251,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 					};		
 				}
 				dataLoader.load(operation, callback, scope);
-			},
+			},			
 			_doEvent:function() {
 				var rootNode = this.store.getRootNode();
 				rootNode.removeAll();
@@ -64,7 +271,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 						var self = this;
 						this.timeoutId = setTimeout(function() {
 							self.timeoutId = false;
-							self.setCurValue(val,isChecked);
+							self.setFilterValue(val,isChecked);
 							self._doEvent();
 						},this.delay);
 					} else {
@@ -72,134 +279,39 @@ function createExtJsTree(parentId, pluginParams, data) {
 					}
 				}
 			},
-			setCurValue: function(curVal, curIsChecked) {
+			setFilterValue: function(curVal, curIsChecked) {
 				this.curVal = {
 					val:curVal || '',
 					curIsChecked:curIsChecked || false
 				};
 			}
 	};
-	function applyFieldsToModel(fields, addFields) {
-		var result = addFields || [];
-		for (i = 0; i < fields.length; i++) {
-			var isContains = false;
-            for (j = 0; j < addFields.length; j++) {
-				if (fields[i].name==addFields[j].name) {
-					isContains = true;
-					break;
-				}
-			}
-			if (!isContains) {
-				result.push(fields[i]);
-			}
-        }
-		return result;
-	}
-	////////////////////////////////////////////////
-    Ext.require([
+	//////////////////////// END DataLoader ////////////////////////
+	
+	if (!pluginParams.core.filter) {
+		pluginParams.core.filter = {};
+	}	
+	Ext.require([
         'Ext.tree.*',
         'Ext.data.*'
-        ]);
-    var parentEl = Ext.get(parentId);
-	var modelOptions = Ext.apply((pluginParams.dataModel || {}), {
-		extend: 'Ext.data.Model'
-	}, {});
-	modelOptions.fields = applyFieldsToModel([
-		{name:'id',type:'string'},
-		{name:'name',type:'string'}
-	], modelOptions.fields||[]);
-	Ext.define('ExtJsTree.DataModel', modelOptions);	
-	var root = !data ? [] : {
-		id:'root',
-		name:'/',
-		expanded:true,
-		leaf:false,
-		icon:Ext.BLANK_IMAGE_URL,
-		children:data
-	};	
-	var store = Ext.create('Ext.data.TreeStore', {
-		model: 'ExtJsTree.DataModel',
-        root: root,
-        proxy: {
-		type: 'memory',
-			reader: {
-				type: 'json'
-			}
-		}
-    });
-	var dataLoader = new DataLoader(store, pluginParams.core.filter.delay, pluginParams.generalFilters);	
-    Ext.onReady(function() { 
-		//добавление фильтра поиска
-		var dh = Ext.DomHelper;
-		var inputId = Ext.id();
-		var checkboxId = Ext.id();
-		var filterEl = new Ext.dom.Element(dh.createDom({
-			tag:'div',
-			style:'text-align:center;',
-			children: [{
-				tag:'input',
-				id:inputId,
-				type:'text',
-				autocomplete:'off',
-				style:'width:'+(parentEl.getWidth()-5)+'px;'
-			},{
-				tag:'div',
-				style:'text-align:left;',
-				children: [{
-					tag:'input',
-					id:checkboxId,
-					type:'checkbox',
-					value:true
-				},{
-					tag:'label',
-					'for':checkboxId,
-					html:'Начинается с'
-				}]
-			}]
-		}));		
-		parentEl.appendChild(filterEl);				
-		
-		var inputEl = Ext.get(inputId);		
-		var checkBoxEl = Ext.get(checkboxId);		
-		if (pluginParams.core.filter.startsWith) {
-			checkBoxEl.set({checked:'checked'});
-		}		
-		dataLoader.setCurValue(inputEl.getValue(), checkBoxEl.dom.checked);
-		checkBoxEl.on('click', function(event, htmlEl, o) {
-			dataLoader.doFilter(inputEl.getValue(), htmlEl.checked, false);
-		});
-		inputEl.on('keyup', function(event, htmlEl, o) {
-			dataLoader.doFilter(htmlEl.value, checkBoxEl.dom.checked);
-		});
-		
-		//Построение элемента Ext.tree.Panel								
-		var option = {
-			store: store,
-			columns: [
-				{xtype: 'treecolumn', header: 'Название', dataIndex: 'name', flex: 1}
-			],
-			rootVisible:false,
-			hideHeaders:true,
-            useArrows: true,
-            frame: true,
-            title: 'Check Tree',
-            renderTo: parentEl,
-            width: parentEl.getWidth(),
-            height: parentEl.getHeight()-filterEl.getHeight()-2
-		};
-        option = Ext.apply(option, pluginParams.treePanel);
-        var tree = Ext.create('Ext.tree.Panel', option);
-		tree.utils = {
+        ]);    		
+    Ext.onReady(function() {
+		var parentEl = Ext.get(parentId);
+		var extJsTree = new ExtJsTree(parentEl, pluginParams);
+		extJsTree.utils = {
 			singleXpathMapping: function(xpathMapping) {
-				var records = tree.getView().getChecked();
-				if (records.length>0) {
-					var selected = records[0].getData();
-					setXFormByXPath(true, selected, xpathMapping)
+				var records = extJsTree.getValues();//extJsTree.treePanel.getView().getChecked();
+				if (records!=undefined) {
+					for (i in records) {
+						var selected = records[i].getData();
+						setXFormByXPath(true, selected, xpathMapping)
+						break;
+					}
 				}				
 			},
 			multiXpathMapping: function(xpath, needClear) {
-				var records = tree.getView().getChecked();
-				if (records.length>0) {
+				var records = extJsTree.getValues();//extJsTree.treePanel.getView().getChecked();
+				if (records!=undefined) {
 					var selected = [];
 					for (i in records) {
 						var selectedItem = records[i].getData();
@@ -211,7 +323,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 		};
 		
 		if (Ext.isFunction(pluginParams.onDrawPluginComplete)) {
-			pluginParams.onDrawPluginComplete(tree);
+			pluginParams.onDrawPluginComplete(extJsTree);
 		};		
     });
 };

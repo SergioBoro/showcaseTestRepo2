@@ -93,7 +93,7 @@
 											xpathMapping:{'XPath(instance(quot(xformId_myInstance1))/item)':{'id': '@id','name':'name'}}
 										}, true);
 										
-										/*var records = plugin.getView().getChecked();
+										/*var records = plugin.getValues();
 										names = [];
 										Ext.Array.each(records, function(rec){
 											names.push(rec.get('name'));
