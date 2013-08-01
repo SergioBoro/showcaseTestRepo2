@@ -74,6 +74,7 @@
 			<xs:assert test="count(proc/@type[.='METADATA']) &lt;= 1" />
 			<xs:assert test="count(proc/@type[.='POSTPROCESS']) &lt;= 1" />
 			<xs:assert test="count(proc/@type[.='TOOLBAR']) &lt;= 1" />
+			<xs:assert test="count(proc/@type[.='EXPORTDATA']) &lt;= 1" />
 		</xs:complexType>
 		<xs:unique name="relatedElementId">
 			<xs:selector xpath="related" />

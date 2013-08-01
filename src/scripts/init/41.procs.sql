@@ -27974,4 +27974,18 @@ BEGIN
 	PRINT @sessionid;
 END	
 
+CREATE PROCEDURE [dbo].[liveGrid_exportData]
+   @main_context nvarchar(512)='',  
+   @add_context nvarchar(512)='',  
+   @filterinfo xml='',  
+   @session_context xml=''
+AS
+BEGIN
+	select CONVERT(DATE, '2013-07-29') as dateCol, 11 as intCol, 11.99 as floatCol, 'уташузхць' as stringCol
+	union
+	select CONVERT(DATE, '2013-01-30') as dateCol, 23 as intCol, 3.543 as floatCol, 'kjernfke' as stringCol
+	union
+	select CONVERT(DATE, '2014-05-21') as dateCol, 467 as intCol, 87.79 as floatCol, 'Арцу huiHJ' as stringCol;
+END	
+
 GO

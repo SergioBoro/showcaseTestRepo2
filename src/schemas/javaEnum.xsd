@@ -18,6 +18,8 @@
          <xs:enumeration value="save"/>
          <xs:enumeration value="TOOLBAR"/>
          <xs:enumeration value="toolbar"/>
+         <xs:enumeration value="EXPORTDATA"/>
+         <xs:enumeration value="exportdata"/>
       </xs:restriction>
    </xs:simpleType>
 

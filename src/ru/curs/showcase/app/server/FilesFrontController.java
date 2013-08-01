@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.core.grid.export.ExportDataHandler;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
 
 /**
@@ -34,8 +35,9 @@ public final class FilesFrontController extends HttpServlet {
 			handler = new DownloadHandler();
 			break;
 		case GRIDTOEXCEL:
-			handler = new GridToExcelHandler();
-			break;
+			ExportDataHandler edHandler = new ExportDataHandler();
+			edHandler.handle(request, response);
+			return;
 		case GRIDFILEDOWNLOAD:
 			handler = new GridFileDownloadHandler();
 			break;

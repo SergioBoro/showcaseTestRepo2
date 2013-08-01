@@ -268,6 +268,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	}
 
 	/**
+	 * Возвращает процедуру для получения данных экспорта в Excel.
+	 */
+	public DataPanelElementProc getExportDataProc() {
+		return getProcByType(DataPanelElementProcType.EXPORTDATA);
+	}
+
+	/**
 	 * @return true если задана TOOLBAR процедура, иначе false
 	 */
 	public boolean isToolBarProc() {

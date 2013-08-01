@@ -40,5 +40,9 @@ public enum DataPanelElementProcType implements SerializableElement {
 	/**
 	 * Имя процедуры для получения панели инструментов.
 	 */
-	TOOLBAR
+	TOOLBAR,
+	/**
+	 * Имя процедуры для получения данных экспорта в Excel.
+	 */
+	EXPORTDATA
 }
