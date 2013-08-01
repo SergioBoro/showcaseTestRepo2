@@ -133,7 +133,14 @@
         </action>
       </level2>                   
     </level1>
-    <level1 id="20" name="Версия 2">	  
+    <level1 id="20" name="Версия 2">
+	  <level2 id="levelGridExportData" name="Выгрузка данных">
+        <action>
+          <main_context>none</main_context>
+          <datapanel type="gridExportData.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
       <level2 id="gridJython" name="Источник данных Jython">
         <action>
           <main_context>none</main_context>
