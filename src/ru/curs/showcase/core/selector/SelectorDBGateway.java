@@ -40,6 +40,13 @@ public class SelectorDBGateway implements SelectorGateway {
 
 	@Override
 	public ResultSelectorData getData(final DataRequest req) throws Exception {
+
+		String curValue = req.getCurValue();
+		curValue = curValue.replace("&", "&amp;");
+		curValue = curValue.replace("<", "&lt;");
+		curValue = curValue.replace(">", "&gt;");
+		req.setCurValue(curValue);
+
 		if (req.getProcName().indexOf(Constants.PROCNAME_SEPARATOR) > -1) {
 			String procCount =
 				req.getProcName().substring(0,
@@ -207,7 +214,13 @@ public class SelectorDBGateway implements SelectorGateway {
 		while (rs.next()) {
 			DataRecord r = new DataRecord();
 			r.setId(rs.getString(aliasId));
-			r.setName(rs.getString(aliasName));
+
+			String name = rs.getString(aliasName);
+			name = name.replace("&lt;", "<");
+			name = name.replace("&gt;", ">");
+			name = name.replace("&amp;", "&");
+			r.setName(name);
+
 			for (int i = NUM1; i <= m.getColumnCount(); i++) {
 				if ((i != aliasId) && (i != aliasName)) {
 					r.addParameter(m.getColumnName(i), rs.getString(i));
