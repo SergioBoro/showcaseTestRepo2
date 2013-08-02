@@ -207,6 +207,13 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		if (attrs.getIndex(SCHEMA_TAG) > -1) {
 			proc.setSchemaName(attrs.getValue(SCHEMA_TAG));
 		}
+
+		// Подправляем id процедуры, в связи с переходом на новые xforms для
+		// корректной работы uploader'ов
+		if (proc.getType() == DataPanelElementProcType.UPLOAD) {
+			proc.setId(getLastElement().getId().getString() + "_" + proc.getId().getString());
+		}
+
 		getLastElement().getProcs().put(proc.getId(), proc);
 	}
 
