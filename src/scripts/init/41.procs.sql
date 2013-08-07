@@ -27974,7 +27974,9 @@ BEGIN
 	PRINT @sessionid;
 END	
 
-CREATE PROCEDURE [dbo].[liveGrid_exportData]
+GO
+
+CREATE PROCEDURE [dbo].[extliveGrid_exportData]
    @main_context nvarchar(512)='',  
    @add_context nvarchar(512)='',  
    @filterinfo xml='',  
