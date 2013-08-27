@@ -18,7 +18,7 @@
                 </schema>
             </xf:instance>  
             
-            <xf:action ev:event="xforms-ready">
+            <xf:action ev:event="xforms-subform-ready">
                 <xf:action if="instance('xformId_srvdata')/element/needReload = 'true'">
                     <xf:message>Действие на загрузку</xf:message>
                 </xf:action>

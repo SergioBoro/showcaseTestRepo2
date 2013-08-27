@@ -38,6 +38,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String ORIGIN = "instance('%s" + ROOT_SRV_DATA_TAG + "')/"
 			+ UPLOAD_DATA_TAG + "/%s";
 	private static final String NEED_RELOAD_TAG = "needReload";
+	private static final String XMLNS = "xmlns";
 
 	private static final String DOM_ACTIVATE = "DOMActivate";
 	private static final String LOAD = "load";
@@ -106,6 +107,21 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		doc.normalizeDocument();
 
 		return doc;
+	}
+
+	public static org.w3c.dom.Document adjustSrvInfo(final org.w3c.dom.Document doc,
+			final String subformId) {
+
+		Node srv = getSrvDataInstance(doc, subformId);
+
+		Node xlmns = srv.getAttributes().getNamedItem(XMLNS);
+		if (xlmns != null) {
+			xlmns.setTextContent("");
+			xlmns.setNodeValue("");
+		}
+
+		return doc;
+
 	}
 
 	/**
@@ -370,6 +386,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		result = generateSelectors(result);
 		result = insertDataForSelectors(result, subformId);
 		result = generateUploaders(result, aElementInfo, subformId);
+		result = adjustSrvInfo(result, subformId);
 		return result;
 	}
 
