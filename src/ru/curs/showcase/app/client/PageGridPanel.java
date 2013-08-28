@@ -16,6 +16,7 @@ import ru.curs.showcase.app.client.utils.*;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.*;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.safecss.shared.SafeStylesUtils;
 import com.google.gwt.safehtml.shared.*;
@@ -60,6 +61,10 @@ public class PageGridPanel extends BasicElementPanelBasis {
 			UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
 	private final MessagePopup mp = new MessagePopup(Constants.GRID_MESSAGE_POPUP_EXPORT_TO_EXCEL);
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
+	private PagingToolBar toolBarTop = null;
+	private PagingToolBar toolBarBottom = null;
+	private TextBox pageSizeTop = null;
+	private TextBox pageSizeBottom = null;
 	private final FramedPanel cpGrid = new FramedPanel();
 	private com.sencha.gxt.widget.core.client.grid.Grid<LiveGridModel> grid = null;
 	private GridSelectionModel<LiveGridModel> selectionModel = null;
@@ -303,17 +308,19 @@ public class PageGridPanel extends BasicElementPanelBasis {
 		loader.addLoadHandler(new LoadResultListStoreBinding<PagingLoadConfig, LiveGridModel, LiveGridData<LiveGridModel>>(
 				store));
 
-		PagingToolBar toolBarTop = null;
-		PagingToolBar toolBarBottom = null;
 		if (gridMetadata.getUISettings().isVisiblePager()) {
 			toolBarTop = new PagingToolBar(gridMetadata.getLiveInfo().getLimit());
 			toolBarTop.getElement().getStyle().setProperty("borderBottom", "none");
+			pageSizeTop = new TextBox();
+			addPageSizeToPagingToolBar(toolBarTop, pageSizeTop);
 			toolBarTop.bind(loader);
 
 			if (gridMetadata.getLiveInfo().getLimit() > gridMetadata.getUISettings()
 					.getPagerDuplicateRecords()) {
 				toolBarBottom = new PagingToolBar(gridMetadata.getLiveInfo().getLimit());
 				toolBarBottom.getElement().getStyle().setProperty("borderBottom", "none");
+				pageSizeBottom = new TextBox();
+				addPageSizeToPagingToolBar(toolBarBottom, pageSizeBottom);
 				toolBarBottom.bind(loader);
 			}
 		}
@@ -585,6 +592,34 @@ public class PageGridPanel extends BasicElementPanelBasis {
 	}
 
 	// CHECKSTYLE:ON
+
+	private void addPageSizeToPagingToolBar(final PagingToolBar toolBar, final TextBox pageSize) {
+		pageSize.setValue(Integer.toString(toolBar.getPageSize()), false);
+		pageSize.setWidth("30px");
+		pageSize.addKeyDownHandler(new KeyDownHandler() {
+			@Override
+			public void onKeyDown(final KeyDownEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					if (toolBarTop != null) {
+						toolBarTop.setPageSize(Integer.parseInt(pageSize.getValue()));
+						pageSizeTop.setValue(Integer.toString(toolBarTop.getPageSize()), false);
+					}
+					if (toolBarBottom != null) {
+						toolBarBottom.setPageSize(Integer.parseInt(pageSize.getValue()));
+						pageSizeBottom.setValue(Integer.toString(toolBarBottom.getPageSize()),
+								false);
+					}
+
+					toolBar.refresh();
+				}
+			}
+		});
+
+		final int widgetIndex = 6;
+		toolBar.insert(pageSize, widgetIndex);
+		toolBar.insert(new HTML("Показывать не более "), widgetIndex);
+		toolBar.insert(new SeparatorToolItem(), widgetIndex);
+	}
 
 	private void handleClick(final String recId, final String colId,
 			final InteractionType interactionType) {
