@@ -23,7 +23,7 @@ public class DBExternalCommandGateway extends SPQuery implements ExternalCommand
 			try {
 				prepareStatementWithErrorMes();
 				setStringParam(2, aRequest);
-				getStatement().registerOutParameter(OUTPUTDATA_PARAM, java.sql.Types.VARCHAR);
+				getStatement().registerOutParameter(OUTPUTDATA_PARAM, java.sql.Types.LONGNVARCHAR);
 				execute();
 				String out = getStatement().getString(OUTPUTDATA_PARAM);
 				return out;
