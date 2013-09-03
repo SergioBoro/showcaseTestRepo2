@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.client;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.beta2.extra.gwt.ui.plugin.RequestData;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.Plugin;
@@ -49,8 +50,11 @@ public class PluginPanel extends BasicElementPanelBasis {
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
+		RequestData requestData = new RequestData();
+		requestData.setContext(getContext());
+		requestData.setElInfo((PluginInfo) getElementInfo());
 
-		dataService.getPlugin(getContext(), getElementInfo(), new GWTServiceCallback<Plugin>(
+		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(
 				Constants.ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER) {
 
 			@Override
@@ -209,8 +213,8 @@ public class PluginPanel extends BasicElementPanelBasis {
 	 * 
 	 */
 	public native void drawPlugin(final String procName, final String params) /*-{
-																				$wnd.eval(procName + "(" + params + ");");
-																				}-*/;
+		$wnd.eval(procName + "(" + params + ");");
+	}-*/;
 
 	@Override
 	public void reDrawPanel(final CompositeContext context1) {
@@ -226,7 +230,11 @@ public class PluginPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getPlugin(getContext(), getElementInfo(), new GWTServiceCallback<Plugin>(
+		RequestData requestData = new RequestData();
+		requestData.setContext(getContext());
+		requestData.setElInfo((PluginInfo) getElementInfo());
+
+		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(
 				Constants.ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER) {
 
 			@Override
@@ -280,7 +288,11 @@ public class PluginPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getPlugin(getContext(), getElementInfo(), new GWTServiceCallback<Plugin>(
+		RequestData requestData = new RequestData();
+		requestData.setContext(getContext());
+		requestData.setElInfo((PluginInfo) getElementInfo());
+
+		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(
 				Constants.ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER) {
 
 			@Override

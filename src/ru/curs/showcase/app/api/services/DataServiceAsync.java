@@ -2,6 +2,7 @@ package ru.curs.showcase.app.api.services;
 
 import java.util.List;
 
+import ru.beta2.extra.gwt.ui.plugin.RequestData;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -61,8 +62,7 @@ public interface DataServiceAsync {
 
 	void getMainPage(CompositeContext context, AsyncCallback<MainPage> callback);
 
-	void getPlugin(CompositeContext context, DataPanelElementInfo elementInfo,
-			AsyncCallback<Plugin> callback);
+	void getPlugin(RequestData requestData, AsyncCallback<Plugin> callback);
 
 	void writeToLog(CompositeContext aContext, String message, MessageType messageType,
 			AsyncCallback<Void> callback);

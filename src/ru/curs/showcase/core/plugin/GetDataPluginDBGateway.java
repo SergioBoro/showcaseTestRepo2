@@ -20,11 +20,10 @@ public class GetDataPluginDBGateway extends SPQuery implements GetDataPluginGate
 		return "{? = call %s(?,?,?,?,?,?)}";
 	}
 
-
 	@Override
 	public ResultPluginData getData(final RequestData request) throws Exception {
 		ResultPluginData result = new ResultPluginData();
-		setProcName(request.getProcName());
+		setProcName(request.getElInfo().getGetDataProcName());
 		setContext(request.getContext());
 		try {
 			try {

@@ -48,6 +48,7 @@
 							id:'xformId',
 							/*parentId:'pluginWraper',*/
 							plugin:'extJsTree',
+							/*proc:'pluginExtJsTree',*/
 							proc:'plugin/extJsTree.py',
 							postProcessProc:'plugin/handleExtJsTree.py',
 							/*getDataProcName:'extJsTree_getData',*/

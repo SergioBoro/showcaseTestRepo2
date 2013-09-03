@@ -205,4 +205,19 @@ public interface JythonProc {
 	 *         данные.
 	 */
 	Object getPluginData(CompositeContext aContext, PluginAttributes aAttributes);
+
+	/**
+	 * Возвращает сырые данные для HTML элемента в XML формате.
+	 * 
+	 * @param context
+	 *            - контекст вызова.
+	 * @param elementId
+	 *            - идентификатор создаваемого элемента.
+	 * @param xmlParams
+	 *            - дополнительные параметры вызова.
+	 * @return - объект переноса данных Jython, включающий в себя данные и
+	 *         настройки элемента в виде двух строк или объект с информацией для
+	 *         пользователя в случае ошибки.
+	 */
+	Object getPluginRawData(AbstractCompositeContext context, String elementId, String xmlParams);
 }

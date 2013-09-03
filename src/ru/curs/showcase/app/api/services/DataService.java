@@ -2,6 +2,7 @@ package ru.curs.showcase.app.api.services;
 
 import java.util.List;
 
+import ru.beta2.extra.gwt.ui.plugin.RequestData;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -172,13 +173,10 @@ public interface DataService extends RemoteService {
 	/**
 	 * Возвращает данные для формирования UI плагина.
 	 * 
-	 * @param context
-	 *            - контекст.
-	 * @param element
-	 *            - описание элемента.
+	 * @param requestData
+	 *            - параметры запроса.
 	 */
-	Plugin getPlugin(CompositeContext context, DataPanelElementInfo elementInfo)
-			throws GeneralException;
+	Plugin getPlugin(RequestData requestData) throws GeneralException;
 
 	/**
 	 * Функция для записи в лог приложения на сервере из клиентской части. Все
@@ -204,5 +202,6 @@ public interface DataService extends RemoteService {
 	 *            - описание элемента.
 	 * @return панель инструментов
 	 */
-	GridToolBar getGridToolBar(final CompositeContext context, final DataPanelElementInfo element) throws GeneralException;
+	GridToolBar getGridToolBar(final CompositeContext context, final DataPanelElementInfo element)
+			throws GeneralException;
 }

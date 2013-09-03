@@ -2,6 +2,7 @@ package ru.curs.showcase.app.server;
 
 import java.util.List;
 
+import ru.beta2.extra.gwt.ui.plugin.RequestData;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -142,9 +143,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public Plugin getPlugin(final CompositeContext aContext,
-			final DataPanelElementInfo aElementInfo) throws GeneralException {
-		PluginCommand command = new PluginCommand(aContext, aElementInfo);
+	public Plugin getPlugin(final RequestData requestData) throws GeneralException {
+		PluginCommand command = new PluginCommand(requestData);
 		return command.execute();
 	}
 

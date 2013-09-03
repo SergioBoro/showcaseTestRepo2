@@ -13,11 +13,12 @@ add = ""
 session = ""
 filterContext = ""
 elementId = ""
+xmlParams = ""
 
 
 class extJsTree(JythonProc):
-    def getRawData(self, context, elId):
-        global main, add, session, filterContext, elementId
+    def getPluginRawData(self, context, elId, params):
+        global main, add, session, filterContext, elementId, xmlParams
         main = context.getMain()
         if context.getAdditional():
             add = context.getAdditional()
@@ -25,6 +26,7 @@ class extJsTree(JythonProc):
         if context.getFilter():
             filterContext = context.getFilter()
         elementId = elId
+        xmlParams = params
         return mainproc()
 
 

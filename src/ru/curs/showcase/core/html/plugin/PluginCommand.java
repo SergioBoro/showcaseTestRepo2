@@ -1,10 +1,11 @@
 package ru.curs.showcase.core.html.plugin;
 
-import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.beta2.extra.gwt.ui.plugin.RequestData;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.html.Plugin;
 import ru.curs.showcase.core.command.DataPanelElementCommand;
 import ru.curs.showcase.core.html.*;
+import ru.curs.showcase.core.plugin.PluginSelector;
 
 /**
  * Команда для создания UI плагина.
@@ -13,9 +14,11 @@ import ru.curs.showcase.core.html.*;
  * 
  */
 public final class PluginCommand extends DataPanelElementCommand<Plugin> {
+	private final RequestData requestData;
 
-	public PluginCommand(final CompositeContext aContext, final DataPanelElementInfo aElementInfo) {
-		super(aContext, aElementInfo);
+	public PluginCommand(final RequestData oRequestData) {
+		super(oRequestData.getContext(), oRequestData.getElInfo());
+		this.requestData = oRequestData;
 	}
 
 	@Override
@@ -25,7 +28,7 @@ public final class PluginCommand extends DataPanelElementCommand<Plugin> {
 
 	@Override
 	protected void mainProc() throws Exception {
-		HtmlSelector selector = new HtmlSelector(getElementInfo());
+		PluginSelector selector = new PluginSelector(requestData);
 		HTMLGateway wtgateway = selector.getGateway();
 		HTMLBasedElementRawData rawWT = null;
 		if (getElementInfo().getProcName() != null) {

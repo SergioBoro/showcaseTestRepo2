@@ -1,10 +1,10 @@
     SET @data = '
 <datapanel>	
-	<tab id="1" name="Веб-текст, плагин и sql скрипт">
+	<tab id="1" name="Веб-текст, sql скрипт">
 		<element id="11" type="webtext" proc="webtext/3buttons.sql"/>
-		<element id="12" type="plugin"  proc="plugin/radarInfo.sql" plugin="radar">
+		<!--<element id="12" type="plugin"  proc="plugin/radarInfo.sql" plugin="radar">
 			<proc id="010201" name="plugin/handleRadar.py" type="POSTPROCESS" />
-		</element>	
+		</element>-->
 	</tab>
 	<tab id="2" name="xform и sql скрипт">
 		<element id="21" type="xforms" proc="xform/proc1.sql" template="Showcase_Template_SqlScript.xml">

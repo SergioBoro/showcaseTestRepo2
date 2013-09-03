@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ru.beta2.extra.gwt.ui.plugin.RequestData;
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.html.Plugin;
 import ru.curs.showcase.core.html.plugin.PluginCommand;
@@ -23,7 +24,7 @@ public class PluginSLTest extends AbstractTest {
 		String jythonProcName = PLUGIN_HANDLE_RADAR_PY;
 		elInfo.addPostProcessProc(jythonProcName, jythonProcName);
 
-		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
+		PluginCommand command = getPluginCommand(elInfo);
 		Plugin plugin = command.execute();
 
 		checkRadarInfo(plugin);
@@ -50,7 +51,7 @@ public class PluginSLTest extends AbstractTest {
 		String jythonProcName = PLUGIN_HANDLE_RADAR_PY;
 		elInfo.addPostProcessProc(jythonProcName, jythonProcName);
 
-		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
+		PluginCommand command = getPluginCommand(elInfo);
 		Plugin plugin = command.execute();
 
 		assertEquals(2, plugin.getRequiredJS().size());
@@ -65,7 +66,7 @@ public class PluginSLTest extends AbstractTest {
 		String jythonProcName = "plugin/handleFlashD.py";
 		elInfo.addPostProcessProc(jythonProcName, jythonProcName);
 
-		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
+		PluginCommand command = getPluginCommand(elInfo);
 		Plugin plugin = command.execute();
 
 		assertEquals(1, plugin.getRequiredJS().size());
@@ -76,7 +77,7 @@ public class PluginSLTest extends AbstractTest {
 	public void pluginCommandShouldHandleNoImportFile() {
 		PluginInfo elInfo = new PluginInfo("id", "fake1", PLUGIN_RADAR_PROC);
 
-		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
+		PluginCommand command = getPluginCommand(elInfo);
 		Plugin plugin = command.execute();
 
 		assertEquals(1, plugin.getRequiredJS().size());
@@ -87,7 +88,7 @@ public class PluginSLTest extends AbstractTest {
 	public void pluginCommandShouldAddLibraryCSS() {
 		PluginInfo elInfo = new PluginInfo("id", "fakeLibPlugin", PLUGIN_RADAR_PROC);
 
-		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
+		PluginCommand command = getPluginCommand(elInfo);
 		Plugin plugin = command.execute();
 
 		assertEquals(1, plugin.getRequiredJS().size());
@@ -97,7 +98,7 @@ public class PluginSLTest extends AbstractTest {
 	@Test
 	public void pluginCommandCanBeExecutedWithoutPostProcess() {
 		PluginInfo elInfo = new PluginInfo("id", RADAR_COMP, PLUGIN_RADAR_PROC);
-		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
+		PluginCommand command = getPluginCommand(elInfo);
 		Plugin plugin = command.execute();
 
 		assertNull(plugin.getDefaultAction());
@@ -112,10 +113,18 @@ public class PluginSLTest extends AbstractTest {
 		String jythonProcName = PLUGIN_HANDLE_RADAR_PY;
 		elInfo.addPostProcessProc(jythonProcName, jythonProcName);
 
-		PluginCommand command = new PluginCommand(getSimpleTestContext(), elInfo);
+		PluginCommand command = getPluginCommand(elInfo);
 		Plugin plugin = command.execute();
 
 		checkRadarInfo(plugin);
 	}
 
+	private PluginCommand getPluginCommand(final PluginInfo elInfo) {
+		RequestData requestData = new RequestData();
+		requestData.setContext(getSimpleTestContext());
+		requestData.setElInfo(elInfo);
+
+		PluginCommand command = new PluginCommand(requestData);
+		return command;
+	}
 }

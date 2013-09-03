@@ -7,9 +7,10 @@ import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.*;
+import ru.curs.showcase.app.client.utils.JSONUtils;
 
 import com.google.gwt.core.client.*;
-import com.google.gwt.json.client.*;
+import com.google.gwt.json.client.JSONObject;
 
 /**
  * 
@@ -113,7 +114,7 @@ public final class PluginPanelCallbacksEvents {
 		}-*/;
 
 		/**
-		 * Id элемента панели.
+		 * Дополнительные параметры передаваемые в процедуру получения данных.
 		 * 
 		 * @return String
 		 */
@@ -162,10 +163,9 @@ public final class PluginPanelCallbacksEvents {
 				}
 
 				requestData.setElInfo(pluginInfo);
-				requestData.setProcName(pluginInfo.getGetDataProcName());
 				if (param.params() != null) {
 					JSONObject json = new JSONObject(param.params());
-					requestData.setXmlParams(createXmlByJSONValue("params", json));
+					requestData.setXmlParams(JSONUtils.createXmlByJSONValue("params", json));
 				}
 				try {
 					GetDataPluginHelper helper =
@@ -199,37 +199,6 @@ public final class PluginPanelCallbacksEvents {
 						"Не найден ElementPanel. Id=" + param.id());
 			}
 		}
-	}
-
-	private static String createXmlByJSONValue(final String name, final JSONValue jsonVal) {
-		StringBuilder sb = new StringBuilder();
-		if (jsonVal == null || jsonVal.isNull() != null) {
-			sb.append("<").append(name).append(">").append("</").append(name).append(">");
-		} else if (jsonVal.isObject() != null) {
-			sb.append("<").append(name).append(">");
-			JSONObject jsonObject = jsonVal.isObject();
-			for (String key : jsonObject.keySet()) {
-				sb.append(createXmlByJSONValue(key, jsonObject.get(key)));
-			}
-			sb.append("</").append(name).append(">");
-		} else if (jsonVal.isArray() != null) {
-			JSONArray jsonArray = jsonVal.isArray();
-			for (int i = 0; i < jsonArray.size(); i++) {
-				sb.append(createXmlByJSONValue(name, jsonArray.get(i)));
-			}
-		} else {
-			sb.append("<").append(name).append(">");
-			String val;
-			if (jsonVal.isString() != null) {
-				JSONString jsonString = jsonVal.isString();
-				val = jsonString.stringValue();
-			} else {
-				val = jsonVal.toString();
-			}
-			sb.append(val);
-			sb.append("</").append(name).append(">");
-		}
-		return sb.toString();
 	}
 
 	/**

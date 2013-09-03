@@ -21,7 +21,7 @@ public class GetDataPluginCommand extends ServiceLayerCommand<ResultPluginData> 
 	@Override
 	protected void mainProc() throws Exception {
 		GetDataPluginGatewayFactory gf =
-			new GetDataPluginGatewayFactory(this.requestData.getProcName());
+			new GetDataPluginGatewayFactory(this.requestData.getElInfo().getGetDataProcName());
 		GetDataPluginGateway gateway = gf.getGateway();
 		ResultPluginData result = gateway.getData(this.requestData);
 		if (this.requestData.getElInfo().getPostProcessProcName() != null) {

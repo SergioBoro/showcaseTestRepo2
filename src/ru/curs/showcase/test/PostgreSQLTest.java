@@ -7,9 +7,10 @@ import java.util.*;
 import org.junit.*;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
+import ru.beta2.extra.gwt.ui.plugin.RequestData;
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.chart.*;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.*;
@@ -170,7 +171,11 @@ public class PostgreSQLTest extends AbstractTest {
 		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
 		DataPanelElementInfo element = getDPElement(fileName, "7", "12");
 
-		PluginCommand command = new PluginCommand(context, element);
+		RequestData requestData = new RequestData();
+		requestData.setContext(context);
+		requestData.setElInfo((PluginInfo) element);
+
+		PluginCommand command = new PluginCommand(requestData);
 		Plugin plugin = command.execute();
 
 		assertEquals(1, plugin.getParams().size());

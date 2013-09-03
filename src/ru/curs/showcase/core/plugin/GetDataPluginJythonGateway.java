@@ -36,7 +36,7 @@ public class GetDataPluginJythonGateway extends JythonQuery<JythonDTO> implement
 
 	@Override
 	protected String getJythonProcName() {
-		return this.request.getProcName();
+		return this.request.getElInfo().getGetDataProcName();
 	}
 
 }
