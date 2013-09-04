@@ -24,6 +24,8 @@ public final class MessageBox {
 
 	public static final String NBSP = "&nbsp;";
 
+	private static final int Z_INDEX = 103;
+
 	private MessageBox() {
 		super();
 	}
@@ -41,6 +43,9 @@ public final class MessageBox {
 	 */
 	public static DialogBox showSimpleMessage(final String caption, final String message) {
 		final DialogBox dlg = new DialogBox();
+
+		dlg.getElement().getStyle().setZIndex(Z_INDEX);
+
 		VerticalPanel dialogContents = new VerticalPanel();
 		final int n = 10;
 		dialogContents.setSpacing(n);
@@ -111,6 +116,8 @@ public final class MessageBox {
 			final String hideMessage, final MessageType messageType,
 			final Boolean showDetailedMessage) {
 		final DialogBox dlg = createDialogBoxWithClosingOnEsc();
+
+		dlg.getElement().getStyle().setZIndex(Z_INDEX);
 
 		dlg.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		VerticalPanel dialogContents = new VerticalPanel();
