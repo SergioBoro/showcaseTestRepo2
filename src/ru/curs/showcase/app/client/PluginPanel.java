@@ -1,10 +1,10 @@
 package ru.curs.showcase.app.client;
 
-import ru.beta2.extra.gwt.ui.plugin.RequestData;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.Plugin;
+import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.AccessToDomModel;

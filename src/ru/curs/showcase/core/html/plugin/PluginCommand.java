@@ -1,11 +1,11 @@
 package ru.curs.showcase.core.html.plugin;
 
-import ru.beta2.extra.gwt.ui.plugin.RequestData;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementType;
 import ru.curs.showcase.app.api.html.Plugin;
+import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.core.command.DataPanelElementCommand;
 import ru.curs.showcase.core.html.*;
-import ru.curs.showcase.core.plugin.PluginSelector;
+import ru.curs.showcase.core.plugin.*;
 
 /**
  * Команда для создания UI плагина.

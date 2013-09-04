@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ru.beta2.extra.gwt.ui.plugin.RequestData;
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.html.Plugin;
+import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.core.html.plugin.PluginCommand;
 import ru.curs.showcase.test.AbstractTest;
 

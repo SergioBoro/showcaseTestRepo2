@@ -2,7 +2,7 @@ package ru.curs.showcase.core.plugin;
 
 import java.sql.SQLException;
 
-import ru.beta2.extra.gwt.ui.plugin.RequestData;
+import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.core.sp.SPQuery;
 
 /**

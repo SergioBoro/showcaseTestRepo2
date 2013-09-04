@@ -2,9 +2,9 @@ package ru.curs.showcase.app.client.api;
 
 import java.util.List;
 
-import ru.beta2.extra.gwt.ui.plugin.*;
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.html.*;
+import ru.curs.showcase.app.api.plugin.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.utils.JSONUtils;

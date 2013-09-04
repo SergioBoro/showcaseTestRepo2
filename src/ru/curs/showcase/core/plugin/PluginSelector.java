@@ -1,6 +1,6 @@
 package ru.curs.showcase.core.plugin;
 
-import ru.beta2.extra.gwt.ui.plugin.RequestData;
+import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.core.SourceSelector;
 import ru.curs.showcase.core.html.HTMLGateway;
 import ru.curs.showcase.runtime.ConnectionFactory;

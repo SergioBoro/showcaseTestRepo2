@@ -2,7 +2,6 @@ package ru.curs.showcase.app.server;
 
 import java.util.List;
 
-import ru.beta2.extra.gwt.ui.plugin.RequestData;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -12,6 +11,7 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.grid.toolbar.GridToolBar;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
+import ru.curs.showcase.app.api.plugin.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.core.chart.ChartGetCommand;
 import ru.curs.showcase.core.command.*;
@@ -23,6 +23,7 @@ import ru.curs.showcase.core.grid.toolbar.GridToolBarCommand;
 import ru.curs.showcase.core.html.plugin.PluginCommand;
 import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.core.html.xform.*;
+import ru.curs.showcase.core.plugin.*;
 import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
@@ -146,6 +147,15 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	public Plugin getPlugin(final RequestData requestData) throws GeneralException {
 		PluginCommand command = new PluginCommand(requestData);
 		return command.execute();
+	}
+
+	@Override
+	public ResponceData getPluginData(final RequestData requestData) {
+		ResponceData responceData = new ResponceData();
+		GetDataPluginCommand command = new GetDataPluginCommand(requestData);
+		ResultPluginData result = command.execute();
+		responceData.setJsonData(result.getData());
+		return responceData;
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import java.util.*;
 import org.junit.*;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
-import ru.beta2.extra.gwt.ui.plugin.RequestData;
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -17,6 +16,7 @@ import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
+import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.core.chart.*;
 import ru.curs.showcase.core.geomap.*;
 import ru.curs.showcase.core.grid.GridGetCommand;

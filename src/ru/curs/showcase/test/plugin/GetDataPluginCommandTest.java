@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ru.beta2.extra.gwt.ui.plugin.RequestData;
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.core.plugin.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
 

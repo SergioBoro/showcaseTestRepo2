@@ -2,7 +2,6 @@ package ru.curs.showcase.app.api.services;
 
 import java.util.List;
 
-import ru.beta2.extra.gwt.ui.plugin.RequestData;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -12,6 +11,7 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.grid.toolbar.GridToolBar;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
+import ru.curs.showcase.app.api.plugin.*;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -69,5 +69,7 @@ public interface DataServiceAsync {
 
 	void getGridToolBar(CompositeContext context, DataPanelElementInfo element,
 			AsyncCallback<GridToolBar> callback);
+
+	void getPluginData(RequestData request, AsyncCallback<ResponceData> callback);
 
 }
