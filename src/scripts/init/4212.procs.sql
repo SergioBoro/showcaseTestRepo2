@@ -1,9 +1,10 @@
-CREATE PROCEDURE [dbo].[pluginRadarInfo]
+ALTER PROCEDURE [dbo].[pluginRadarInfo]
     @main_context varchar(512) ='',
     @add_context varchar(512) ='',
     @filterinfo xml='',
     @session_context xml ='',
     @element_id varchar(512) ='',    
+	@params xml='',
     @data xml output,
     @settings xml output
 AS
