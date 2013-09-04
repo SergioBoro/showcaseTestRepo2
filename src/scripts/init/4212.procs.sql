@@ -1,4 +1,4 @@
-ALTER PROCEDURE [dbo].[pluginRadarInfo]
+CREATE PROCEDURE [dbo].[pluginRadarInfo]
     @main_context varchar(512) ='',
     @add_context varchar(512) ='',
     @filterinfo xml='',
