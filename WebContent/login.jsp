@@ -37,8 +37,10 @@ pageEncoding="UTF-8"%>
 		var w = pic.offsetWidth;  
 		
 		if (w == 178) {	
-			dojo.attr("helloMessage", "innerHTML", "");
-			dojo.attr("informationMessage", "innerHTML", "Идет проверка подлинности пользователя...<br>Пожалуйста подождите...");
+			if (document.getElementById('helloMessage')) 
+		 		dojo.attr("helloMessage", "innerHTML", "");
+			if (document.getElementById('informationMessage')) 
+				dojo.attr("informationMessage", "innerHTML", "Идет проверка подлинности пользователя...<br>Пожалуйста подождите...");
 			id = setTimeout("checkIsAuthenticatedSession()",1000);
 		}
 		else {			
@@ -101,6 +103,24 @@ pageEncoding="UTF-8"%>
 <span id="informationMessage" style="font-family: sans-serif;"></span>
 <form name="formlogin" method="POST" action="<c:url value="/j_spring_security_check" />" style="display:none">
 <table>
+
+<%=SecurityParamsFactory.getHTMLTextForPrividerGroupsComboBoxSecector(authGifSrc)%>
+
+
+<!--   <tr> -->
+<!--     <td align="rigfht">Домен</td> -->
+<!--     <td> -->
+<!--      <select id="j_domain" type="text" name="j_domain"> -->
+<!--       <option value="Группа1">Группа1</option> -->
+<!--       <option selected  value="Группа2">Группа2</option> -->
+<!--      </select> -->
+<!--     </td> -->
+<!--   </tr> -->
+  
+  
+  
+  
+  
   <tr>
     <td align="right">Имя пользователя</td>
     <td><input id="j_username" type="text" name="j_username" /></td>
