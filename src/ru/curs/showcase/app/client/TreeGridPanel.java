@@ -9,7 +9,7 @@ import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.grid.Grid;
-import ru.curs.showcase.app.api.grid.toolbar.*;
+import ru.curs.showcase.app.api.grid.toolbar.ToolBarHelper;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.*;
@@ -39,8 +39,6 @@ import com.sencha.gxt.widget.core.client.event.CellClickEvent.CellClickHandler;
 import com.sencha.gxt.widget.core.client.event.CellDoubleClickEvent.CellDoubleClickHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.*;
-import com.sencha.gxt.widget.core.client.menu.*;
-import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.tips.QuickTip;
 import com.sencha.gxt.widget.core.client.toolbar.*;
 import com.sencha.gxt.widget.core.client.treegrid.TreeGrid;
@@ -67,8 +65,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 	private LiveGridMetadata gridMetadata = null;
 	private LiveGridExtradata gridExtradataLevel0 = null;
 	private boolean isFirstLoading = true;
-	private final SimplePanel gridToolBarPanel = new SimplePanel();
-	private Timer toolBarRefreshTimer = null;
+	private ToolBarHelper toolBarHelper;
 
 	private boolean isFirstLoading() {
 		return isFirstLoading;
@@ -593,17 +590,9 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		VerticalLayoutContainer con = new VerticalLayoutContainer();
 		con.setBorders(true);
 
-		ToolBar toolBar = new ToolBar();
-		addStaticItemToToolBar(toolBar);
-		if (toolBar.getWidgetCount() > 0) {
-			gridToolBarPanel.add(toolBar);
-		}
-		if (getElementInfo().isToolBarProc()) {
-			refreshDynamicToolBar(gridToolBarPanel);
-			con.add(gridToolBarPanel, new VerticalLayoutData(1, 27));
-		} else {
-			con.add(gridToolBarPanel, new VerticalLayoutData(1, -1));
-		}
+		ToolBarHelper toolBarHelper = getToolBarHelper();
+		toolBarHelper.fillToolBar();
+		con.add(toolBarHelper.getToolBarPanel(), new VerticalLayoutData(1, 27));
 		con.add(grid, new VerticalLayoutData(1, 1));
 		if ((gridMetadata.getFooter() != null) && (!gridMetadata.getFooter().isEmpty())) {
 			ToolBar footerBar = new ToolBar();
@@ -650,7 +639,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 			selectedRecordsChanged();
 		}
 
-		refreshDynamicToolBar(gridToolBarPanel);
+		getToolBarHelper().fillToolBar();
+
 		processClick(recId, colId, interactionType);
 
 	}
@@ -1073,7 +1063,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		return result;
 	}
 
-	private void addStaticItemToToolBar(final ToolBar oToolBar) {
+	private void addStaticItemToToolBar(final ToolBar toolBar) {
 		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
 			final TextButton exportToExcelCurrentPage =
 				new TextButton("", IconHelper.getImageResource(UriUtils
@@ -1086,7 +1076,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 					exportToExcel(exportToExcelCurrentPage, GridToExcelExportType.CURRENTPAGE);
 				}
 			});
-			oToolBar.add(exportToExcelCurrentPage);
+			toolBar.add(exportToExcelCurrentPage);
 		}
 
 		gridMetadata.getUISettings().setVisibleExportToExcelAll(false);
@@ -1102,7 +1092,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 					exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
 				}
 			});
-			oToolBar.add(exportToExcelAll);
+			toolBar.add(exportToExcelAll);
 		}
 		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
 			final TextButton copyToClipboard =
@@ -1116,167 +1106,26 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 					copyToClipboard();
 				}
 			});
-			oToolBar.add(copyToClipboard);
+			toolBar.add(copyToClipboard);
 		}
 	}
 
-	private TextButton createTextButton(final BaseToolBarItem item) {
-		TextButton textButton = null;
-		if (item.isVisible()) {
-			textButton = new TextButton();
-			if (item.isDisable()) {
-				textButton.setEnabled(false);
-			}
-			if (item.getText() != null && !item.getText().isEmpty()) {
-				textButton.setText(item.getText());
-			}
-			if (item.getImg() != null && !item.getImg().isEmpty()) {
-				textButton.setIcon(IconHelper.getImageResource(
-						UriUtils.fromSafeConstant(item.getImg()), ICON_SIZE, ICON_SIZE));
-			}
-			if (item.getHint() != null) {
-				textButton.setTitle(item.getHint());
-			}
-		}
-		return textButton;
-	}
+	private ToolBarHelper getToolBarHelper() {
+		if (this.toolBarHelper == null) {
+			final TreeGridPanel treeGridPanel = this;
+			this.toolBarHelper = new ToolBarHelper(dataService, this) {
 
-	private MenuItem createMenuItem(final BaseToolBarItem item) {
-		MenuItem menuItem = null;
-		if (item.isVisible()) {
-			menuItem = new MenuItem();
-			if (item.isDisable()) {
-				menuItem.setEnabled(false);
-			}
-			if (item.getText() != null && !item.getText().isEmpty()) {
-				menuItem.setText(item.getText());
-			}
-			if (item.getImg() != null && !item.getImg().isEmpty()) {
-				menuItem.setIcon(IconHelper.getImageResource(
-						UriUtils.fromSafeConstant(item.getImg()), ICON_SIZE, ICON_SIZE));
-			}
-			if (item.getHint() != null) {
-				menuItem.setTitle(item.getHint());
-			}
-		}
-		return menuItem;
-	}
-
-	private void addToolBarItem(final ToolBarItem item, final Container toolBar) {
-		TextButton textButton = createTextButton(item);
-		if (textButton != null && item.getAction() != null) {
-			if (item.getAction() != null) {
-				textButton.addSelectHandler(new SelectHandler() {
-					@Override
-					public void onSelect(final SelectEvent event) {
-						runAction(item.getAction());
-					}
-				});
-			}
-			toolBar.add(textButton);
-		}
-	}
-
-	private void createMenuItemToolBar(final AbstractToolBarItem obj, final Menu menu) {
-		if (obj instanceof ToolBarItem) {
-			final ToolBarItem item = (ToolBarItem) obj;
-			MenuItem menuItem = createMenuItem(item);
-			if (menuItem != null) {
-				if (item.getAction() != null) {
-					menuItem.addSelectionHandler(new SelectionHandler<Item>() {
-						@Override
-						public void onSelection(final SelectionEvent<Item> event) {
-							runAction(item.getAction());
-						}
-					});
-				}
-				menu.add(menuItem);
-			}
-		} else if (obj instanceof ToolBarGroup) {
-			ToolBarGroup group = (ToolBarGroup) obj;
-			MenuItem menuItem = createMenuItem(group);
-			if (menuItem != null) {
-				Menu groupMenu = new Menu();
-				for (AbstractToolBarItem item : group.getItems()) {
-					createMenuItemToolBar(item, groupMenu);
-				}
-				menuItem.setSubMenu(groupMenu);
-				menu.add(menuItem);
-			}
-		} else if (obj instanceof ToolBarSeparator) {
-			SeparatorMenuItem separator = new SeparatorMenuItem();
-			menu.add(separator);
-		}
-
-	}
-
-	private void createDynamicToolBar(final AbstractToolBarItem obj, final ToolBar toolBar) {
-		if (obj instanceof ToolBarItem) {
-			final ToolBarItem item = (ToolBarItem) obj;
-			addToolBarItem(item, toolBar);
-		} else if (obj instanceof ToolBarGroup) {
-			ToolBarGroup group = (ToolBarGroup) obj;
-			TextButton textButton = createTextButton(group);
-			if (textButton != null) {
-				Menu menu = new Menu();
-				for (AbstractToolBarItem item : group.getItems()) {
-					createMenuItemToolBar(item, menu);
-				}
-				textButton.setMenu(menu);
-				toolBar.add(textButton);
-			}
-		} else if (obj instanceof ToolBarSeparator) {
-			SeparatorToolItem separator = new SeparatorToolItem();
-			toolBar.add(separator);
-		}
-	}
-
-	private ToolBar createDynamicToolBar(final GridToolBar oGridToolBar, final ToolBar oToolBar) {
-		ToolBar toolBar = oToolBar;
-		if (toolBar == null) {
-			toolBar = new ToolBar();
-		}
-		for (AbstractToolBarItem obj : oGridToolBar.getItems()) {
-			createDynamicToolBar(obj, toolBar);
-		}
-		return toolBar;
-	}
-
-	private void refreshDynamicToolBar(final Panel panel) {
-		final DataPanelElementInfo elInfo = getElementInfo();
-		if (elInfo.isToolBarProc()) {
-			if (toolBarRefreshTimer != null) {
-				toolBarRefreshTimer.cancel();
-			}
-			toolBarRefreshTimer = new Timer() {
 				@Override
-				public void run() {
-					panel.clear();
+				public void addStaticItemToToolBar(final ToolBar toolBar) {
+					treeGridPanel.addStaticItemToToolBar(toolBar);
+				}
 
-					CompositeContext context = new CompositeContext();
-					CompositeContext elContext = getContext();
-					context.setMain(elContext.getMain());
-					context.setAdditional(elContext.getAdditional());
-					context.setFilter(elContext.getFilter());
-					context.setSession(elContext.getSession());
-					context.setSessionParamsMap(elContext.getSessionParamsMap());
-					context.addRelated(getElementInfo().getId(), getDetailedContext());
-
-					dataService.getGridToolBar(context, elInfo,
-							new GWTServiceCallback<GridToolBar>(
-									"при получении данных панели инструментов грида с сервера") {
-
-								@Override
-								public void onSuccess(final GridToolBar result) {
-									ToolBar toolBar = new ToolBar();
-									addStaticItemToToolBar(toolBar);
-									createDynamicToolBar(result, toolBar);
-									panel.add(toolBar);
-								}
-							});
+				@Override
+				public void runAction(final Action ac) {
+					treeGridPanel.runAction(ac);
 				}
 			};
-			toolBarRefreshTimer.schedule(Constants.GRID_SELECTION_DELAY);
 		}
+		return this.toolBarHelper;
 	}
 }

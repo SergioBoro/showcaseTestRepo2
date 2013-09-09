@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.grid.Grid;
+import ru.curs.showcase.app.api.grid.toolbar.ToolBarHelper;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.*;
@@ -51,14 +52,6 @@ public class PageGridPanel extends BasicElementPanelBasis {
 	private static final String PROC100 = "100%";
 
 	private final VerticalPanel p = new VerticalPanel();
-	private final TextButton exportToExcelCurrentPage = new TextButton("",
-			IconHelper.getImageResource(
-					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE),
-					16, 16));
-	private final TextButton exportToExcelAll = new TextButton("", IconHelper.getImageResource(
-			UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL), 16, 16));
-	private final TextButton copyToClipboard = new TextButton("", IconHelper.getImageResource(
-			UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
 	private final MessagePopup mp = new MessagePopup(Constants.GRID_MESSAGE_POPUP_EXPORT_TO_EXCEL);
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
 	private PagingToolBar toolBarTop = null;
@@ -79,6 +72,7 @@ public class PageGridPanel extends BasicElementPanelBasis {
 	private LiveGridExtradata gridExtradata = null;
 	private boolean isFirstLoading = true;
 	private int lastScrollLeft = 0;
+	private ToolBarHelper toolBarHelper;
 
 	private boolean isFirstLoading() {
 		return isFirstLoading;
@@ -507,48 +501,13 @@ public class PageGridPanel extends BasicElementPanelBasis {
 		grid.getView().setStripeRows(gridMetadata.getUISettings().isStripeRows());
 		grid.getView().setColumnLines(gridMetadata.getUISettings().isColumnLines());
 
-		// ---------------------------
-
-		ToolBar buttonBar = new ToolBar();
-		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
-			exportToExcelCurrentPage.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE);
-			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(SelectEvent event) {
-					exportToExcel(exportToExcelCurrentPage, GridToExcelExportType.CURRENTPAGE);
-				}
-			});
-			buttonBar.add(exportToExcelCurrentPage);
-		}
-		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
-			exportToExcelAll.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_ALL);
-			exportToExcelAll.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(SelectEvent event) {
-					exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
-				}
-			});
-			buttonBar.add(exportToExcelAll);
-		}
-		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
-			copyToClipboard.setTitle(Constants.GRID_CAPTION_COPY_TO_CLIPBOARD);
-			copyToClipboard.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(SelectEvent event) {
-					copyToClipboard();
-				}
-			});
-			buttonBar.add(copyToClipboard);
-		}
-
-		// ------------------------------------------------------------------------------
-
 		VerticalLayoutContainer con = new VerticalLayoutContainer();
 		con.setBorders(true);
 
-		if (buttonBar.getWidgetCount() > 0) {
-			con.add(buttonBar, new VerticalLayoutData(1, -1));
-		}
+		ToolBarHelper toolBarHelper = getToolBarHelper();
+		toolBarHelper.fillToolBar();
+		con.add(toolBarHelper.getToolBarPanel(), new VerticalLayoutData(1, 27));
+
 		if (toolBarTop != null) {
 			con.add(toolBarTop, new VerticalLayoutData(1, -1));
 		}
@@ -629,6 +588,8 @@ public class PageGridPanel extends BasicElementPanelBasis {
 		if (!(selectionModel instanceof CellSelectionModel)) {
 			selectedRecordsChanged();
 		}
+
+		getToolBarHelper().fillToolBar();
 
 		processClick(recId, colId, interactionType);
 
@@ -1020,4 +981,66 @@ public class PageGridPanel extends BasicElementPanelBasis {
 		return result;
 	}
 
+	private void addStaticItemToToolBar(final ToolBar toolBar) {
+		final TextButton exportToExcelCurrentPage =
+			new TextButton("", IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE),
+					16, 16));
+		final TextButton exportToExcelAll =
+			new TextButton("", IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL), 16, 16));
+		final TextButton copyToClipboard =
+			new TextButton("", IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
+		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
+			exportToExcelCurrentPage.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE);
+			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+					exportToExcel(exportToExcelCurrentPage, GridToExcelExportType.CURRENTPAGE);
+				}
+			});
+			toolBar.add(exportToExcelCurrentPage);
+		}
+		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
+			exportToExcelAll.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_ALL);
+			exportToExcelAll.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+					exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
+				}
+			});
+			toolBar.add(exportToExcelAll);
+		}
+		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
+			copyToClipboard.setTitle(Constants.GRID_CAPTION_COPY_TO_CLIPBOARD);
+			copyToClipboard.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+					copyToClipboard();
+				}
+			});
+			toolBar.add(copyToClipboard);
+		}
+
+	}
+
+	private ToolBarHelper getToolBarHelper() {
+		if (this.toolBarHelper == null) {
+			final PageGridPanel pageGridPanel = this;
+			this.toolBarHelper = new ToolBarHelper(dataService, this) {
+
+				@Override
+				public void addStaticItemToToolBar(final ToolBar toolBar) {
+					pageGridPanel.addStaticItemToToolBar(toolBar);
+				}
+
+				@Override
+				public void runAction(final Action ac) {
+					pageGridPanel.runAction(ac);
+				}
+			};
+		}
+		return this.toolBarHelper;
+	}
 }

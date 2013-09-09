@@ -27893,7 +27893,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[treeGridToolBar]
+CREATE PROCEDURE [dbo].[gridToolBar]
    @main_context nvarchar(512)='',  
    @add_context nvarchar(512)='',  
    @filterinfo xml='',  
@@ -27923,7 +27923,13 @@ set @data='
 				<main_context>current</main_context>
 				<modalwindow caption="Item1 click" height="200" width="600"/>
 				<datapanel type="current" tab="current">
-					<element id="selectedRowWriter">
+					<element id="0102">
+						<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+					<element id="0202">
+						<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+					<element id="0302">
 						<add_context>Name='+@columnName+', Id='+@id+'</add_context>
 					</element>
 				</datapanel>
@@ -27937,7 +27943,13 @@ set @data='
 					<main_context>current</main_context>
 					<modalwindow caption="Item22 click." height="200" width="600"/>
 					<datapanel type="current" tab="current">
-						<element id="selectedRowWriter">
+						<element id="0102">
+							<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+						</element>
+						<element id="0202">
+							<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+						</element>
+						<element id="0302">
 							<add_context>Name='+@columnName+', Id='+@id+'</add_context>
 						</element>
 					</datapanel>
@@ -27951,7 +27963,13 @@ set @data='
 						<main_context>current</main_context>
 						<modalwindow caption="Item232 click." height="200" width="600"/>
 						<datapanel type="current" tab="current">
-							<element id="selectedRowWriter">
+							<element id="0102">
+								<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+							</element>
+							<element id="0202">
+								<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+							</element>
+							<element id="0302">
 								<add_context>Name='+@columnName+', Id='+@id+'</add_context>
 							</element>
 						</datapanel>

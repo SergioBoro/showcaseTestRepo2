@@ -197,7 +197,7 @@
           </datapanel>
         </action>
       </level2>
-	  <level2 id="TreeGridToolBar" name="Панель инструментов для TreeGrid" selectOnLoad="true">
+	  <level2 id="GridToolBar" name="Панель инструментов для Grid (Tree, Live, Page)" selectOnLoad="true">
         <action>
           <main_context>none</main_context>
           <datapanel type="TreeGridToolBar.xml" tab="firstOrCurrent" >          

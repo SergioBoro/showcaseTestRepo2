@@ -29,10 +29,10 @@ public class GridToolBarCommandTest extends AbstractTestWithDefaultUserData {
 		generateTestTabWithElement(elInfo);
 		DataPanelElementProc proc = new DataPanelElementProc();
 		proc.setId("010101");
-		proc.setName("treeGridToolBar");
+		proc.setName("gridToolBar");
 		proc.setType(DataPanelElementProcType.TOOLBAR);
 		elInfo.getProcs().put(proc.getId(), proc);
-		
+
 		GridToolBarCommand command = new GridToolBarCommand(context, elInfo);
 		GridToolBar result = command.execute();
 		assertNotNull(result);
