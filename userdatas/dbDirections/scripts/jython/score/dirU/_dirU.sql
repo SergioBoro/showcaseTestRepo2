@@ -28,7 +28,7 @@ viewTypeId int foreign key references dirU.viewTypes(id)--,
 --viewDescription image 
 );
 
-create table fieldTypes (
+create table fieldsTypes (
 id int not null primary key,  
 name nvarchar(30),
 celestaType nvarchar(30),
@@ -45,7 +45,7 @@ dirId int foreign key references dirU.directions(id),
 name nvarchar(100),
 prefix nvarchar(100),
 dbFieldName nvarchar(100) not null,
-fieldTypeId int foreign key references dirU.fieldTypes(id),
+fieldTypeId int foreign key references dirU.fieldsTypes(id),
 length int,
 precision int,
 fieldOrderInGrid int,
@@ -85,13 +85,14 @@ sortOrder bit
 create table filtersConditions (
 id int not null primary key,
 name nvarchar(100),
+prefix nvarchar(100),
 pythonCond nvarchar(100),
 visualCond nvarchar(100)
 );
 
 create table filtersForTypes (
 id int not null primary key,
-fieldTypeId int foreign key references dirU.fieldTypes(id),
+fieldTypeId int foreign key references dirU.fieldsTypes(id),
 filterCondition int foreign key references dirU.filtersConditions(id)
 );
 
