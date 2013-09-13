@@ -172,4 +172,16 @@
     <servlet-name>ControlMemoryServlet</servlet-name>
     <url-pattern>/control/reset</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>GetImageServlet</display-name>
+    <servlet-name>GetImageServlet</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.servlets.GetImageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetImageServlet</servlet-name>
+    <url-pattern>/getImage</url-pattern>
+  </servlet-mapping>  
+  
 </web-app>
