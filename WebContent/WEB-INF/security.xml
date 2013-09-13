@@ -25,6 +25,8 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 	 <intercept-url pattern="/js/dojo/dojo.js" filters="none"/>
 	 <intercept-url pattern="/js/dojo/_firebug/firebug.js" filters="none"/>
 	  <intercept-url pattern="/js/dojo/selector/acme.js" filters="none"/>
+	  
+	  <intercept-url pattern="/getImage*" filters="none"/>
 	 
 	 
 	 <intercept-url pattern="/js/course/geo/ge/resources/icons/*" filters="none"/>
