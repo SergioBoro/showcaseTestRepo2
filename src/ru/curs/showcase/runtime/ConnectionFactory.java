@@ -96,6 +96,33 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 		return st;
 	}
 
+	/**
+	 * Возвращает тип SQL сервера для userdata по умолчанию.
+	 */
+	public static SQLServerType getSQLServerTypeForDefaultUserdata() {
+		String url = UserDataUtils.getOptionalProp(CONNECTION_URL_PARAM, "default").toLowerCase();
+
+		// TODO regexp
+		final String mssql = "sqlserver";
+		final String postgresql = "postgresql";
+		final String oracle = "oracle";
+
+		SQLServerType st = null;
+		if (url.indexOf(mssql) > -1) {
+			st = SQLServerType.MSSQL;
+		} else {
+			if (url.indexOf(postgresql) > -1) {
+				st = SQLServerType.POSTGRESQL;
+			} else {
+				if (url.indexOf(oracle) > -1) {
+					st = SQLServerType.ORACLE;
+				}
+			}
+		}
+
+		return st;
+	}
+
 	public static Driver unregisterDrivers() {
 		Driver result = null;
 		while (DriverManager.getDrivers().hasMoreElements()) {
