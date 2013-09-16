@@ -90,10 +90,10 @@ pythonCond nvarchar(100),
 visualCond nvarchar(100)
 );
 
-create table filtersForTypes (
+create table filtersConditionsByTypes (
 id int not null primary key,
 fieldTypeId int foreign key references dirU.fieldsTypes(id),
-filterCondition int foreign key references dirU.filtersConditions(id)
+filterConditionId int foreign key references dirU.filtersConditions(id)
 );
 
 create table filters (

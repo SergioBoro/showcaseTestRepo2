@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filterConditions>
+	<row>
+		<id>1</id>
+		<name>равно</name>
+		<prefix>eq</prefix>
+		<pythonCond>([F]=V)</pythonCond>
+		<visualCond>([F] равно V)</visualCond>
+	</row>
+	<row>
+		<id>2</id>
+		<name>не равно</name>
+		<prefix>neq</prefix>
+		<pythonCond>([F]!=V)</pythonCond>
+		<visualCond>([F] не равно V)</visualCond>
+	</row>
+	<row>
+		<id>3</id>
+		<name>больше</name>
+		<prefix>gt</prefix>
+		<pythonCond>([F]&gt;V)</pythonCond>
+		<visualCond>([F] больше V)</visualCond>
+	</row>
+	<row>
+		<id>4</id>
+		<name>больше или равно</name>
+		<prefix>egt</prefix>
+		<pythonCond>([F]&gt;=V)</pythonCond>
+		<visualCond>([F] больше или равно V)</visualCond>
+	</row>
+	<row>
+		<id>5</id>
+		<name>меньше</name>
+		<prefix>lt</prefix>
+		<pythonCond>([F]&lt;V)</pythonCond>
+		<visualCond>([F] меньше V)</visualCond>
+	</row>
+	<row>
+		<id>6</id>
+		<name>меньше или равно</name>
+		<prefix>elt</prefix>
+		<pythonCond>([F]&lt;=V)</pythonCond>
+		<visualCond>([F] меньше или равно V)</visualCond>
+	</row>
+	<row>
+		<id>7</id>
+		<name>начинается с</name>
+		<prefix>sl</prefix>
+		<pythonCond>([F] like &apos;V%&apos;)</pythonCond>
+		<visualCond>([F] начинается с &apos;V&apos;)</visualCond>
+	</row>
+	<row>
+		<id>8</id>
+		<name>не начинается с</name>
+		<prefix>nsl</prefix>
+		<pythonCond>([F] not like &apos;V%&apos;)</pythonCond>
+		<visualCond>([F] не начинается с &apos;V&apos;)</visualCond>
+	</row>
+	<row>
+		<id>9</id>
+		<name>заканчивается на</name>
+		<prefix>el</prefix>
+		<pythonCond>([F] like &apos;%V&apos;)</pythonCond>
+		<visualCond>([F] заканчивается на &apos;V&apos;)</visualCond>
+	</row>
+	<row>
+		<id>10</id>
+		<name>не заканчивается на</name>
+		<prefix>nel</prefix>
+		<pythonCond>([F] not like &apos;%V&apos;)</pythonCond>
+		<visualCond>([F] не заканчивается на &apos;V&apos;)</visualCond>
+	</row>
+	<row>
+		<id>11</id>
+		<name>содержит</name>
+		<prefix>lk</prefix>
+		<pythonCond>([F] like &apos;%V%&apos;)</pythonCond>
+		<visualCond>([F] содержит &apos;V&apos;)</visualCond>
+	</row>
+	<row>
+		<id>12</id>
+		<name>не содержит</name>
+		<prefix>nlk</prefix>
+		<pythonCond>([F] not like &apos;%V%&apos;)</pythonCond>
+		<visualCond>([F] не содержит &apos;V&apos;)</visualCond>
+	</row>
+	<row>
+		<id>13</id>
+		<name>в списке значений</name>
+		<prefix>in</prefix>
+		<pythonCond>([F] in (V))</pythonCond>
+		<visualCond>([F] в списке значений (V))</visualCond>
+	</row>
+	<row>
+		<id>14</id>
+		<name>не в списке значений</name>
+		<prefix>nin</prefix>
+		<pythonCond>([F] not in (V))</pythonCond>
+		<visualCond>([F] не в списке значений (V))</visualCond>
+	</row>
+	<row>
+		<id>15</id>
+		<name>пусто</name>
+		<prefix>nl</prefix>
+		<pythonCond>([F] is null)</pythonCond>
+		<visualCond>([F] пустое)</visualCond>
+	</row>
+	<row>
+		<id>16</id>
+		<name>не пусто</name>
+		<prefix>ntnl</prefix>
+		<pythonCond>(not [F] is null)</pythonCond>
+		<visualCond>([F] не пустое)</visualCond>
+	</row>
+	<row>
+		<id>17</id>
+		<name>между</name>
+		<prefix>bt</prefix>
+		<pythonCond>([F] between V and V2)</pythonCond>
+		<visualCond>([F] между V и V2)</visualCond>
+	</row>
+</filterConditions>
