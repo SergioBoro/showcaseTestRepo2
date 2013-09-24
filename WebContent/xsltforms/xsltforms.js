@@ -3608,6 +3608,11 @@ XsltForms_instance.prototype.setDocFromReq = function(req, isReset, preserveOld)
 			this.archive = arch;
 			break;
 		case "text/xml":
+			
+		// [KURS
+		case "text/html":		
+		// KURS]			
+			
 		case "application/xml":
 			break;
 		default:
