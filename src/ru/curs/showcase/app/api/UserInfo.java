@@ -12,6 +12,11 @@ import ru.beta2.extra.gwt.ui.SerializableElement;
 public final class UserInfo implements SerializableElement {
 
 	private static final long serialVersionUID = -5321878237734917288L;
+
+	/**
+	 * Группа провайдеров пользователя или домен.
+	 */
+	private String groupProviders;
 	/**
 	 * Логин пользователя.
 	 */
@@ -39,12 +44,23 @@ public final class UserInfo implements SerializableElement {
 	private int responseCode;
 
 	public UserInfo(final String aLogin, final String aSid, final String aName,
+			final String aEmail, final String aPhone, final String agroupProviders) {
+		this.login = aLogin;
+		this.sid = aSid;
+		this.name = aName;
+		this.email = aEmail;
+		this.phone = aPhone;
+		this.groupProviders = agroupProviders;
+	}
+
+	public UserInfo(final String aLogin, final String aSid, final String aName,
 			final String aEmail, final String aPhone) {
 		this.login = aLogin;
 		this.sid = aSid;
 		this.name = aName;
 		this.email = aEmail;
 		this.phone = aPhone;
+		this.groupProviders = null;
 	}
 
 	public UserInfo() {
@@ -77,5 +93,13 @@ public final class UserInfo implements SerializableElement {
 
 	public void setResponseCode(final int aResponseCode) {
 		responseCode = aResponseCode;
+	}
+
+	public String getGroupProviders() {
+		return groupProviders;
+	}
+
+	public void setGrouProviders(final String agroupProviders) {
+		this.groupProviders = agroupProviders;
 	}
 }
