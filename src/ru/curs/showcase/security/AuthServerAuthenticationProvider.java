@@ -39,6 +39,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		String login = arg1.getPrincipal().toString();
 		String pwd = arg1.getCredentials().toString();
 		String sesid = ((UserAndSessionDetails) arg1.getDetails()).getSessionId();
+		String groupProviders =
+			((UserAndSessionDetails) arg1.getDetails()).getUserInfo().getGroupProviders();
 
 		try {
 			url = SecurityParamsFactory.getLocalAuthServerUrl();
@@ -68,10 +70,19 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 			// AuthServerUtils.getTheAuthServerAlias().isAuthenticated(sesid);
 			// if (ud == null) {
 			try {
-				URL server =
-					new URL(url
-							+ String.format("/login?sesid=%s&login=%s&pwd=%s", sesid,
-									encodeParam(login), encodeParam(pwd)));
+				URL server;
+				if (groupProviders == null) {
+					server =
+						new URL(url
+								+ String.format("/login?sesid=%s&login=%s&pwd=%s", sesid,
+										encodeParam(login), encodeParam(pwd)));
+				} else {
+					server =
+						new URL(url
+								+ String.format("/login?sesid=%s&login=%s&pwd=%s&gp=%s", sesid,
+										encodeParam(login), encodeParam(pwd),
+										encodeParam(groupProviders)));
+				}
 
 				HttpURLConnection c = (HttpURLConnection) server.openConnection();
 				c.setRequestMethod("GET");

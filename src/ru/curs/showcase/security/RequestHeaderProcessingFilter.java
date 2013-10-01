@@ -34,17 +34,21 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 	 */
 	private static final String PASS_HEADER = "j_password";
 
+	private static final String DOMAIN = "j_domain";
+
 	@Override
 	public Authentication attemptAuthentication(final HttpServletRequest request,
 			final HttpServletResponse response) throws IOException, ServletException {
 		String username = request.getParameter(USERNAME_HEADER);
 		String password = request.getParameter(PASS_HEADER);
+		String domain = request.getParameter(DOMAIN);
 		SignedUsernamePasswordAuthenticationToken authRequest =
 			new SignedUsernamePasswordAuthenticationToken(username, password);
 
 		UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
 		// установка деталей внутреннего пользователя
-		userAndSessionDetails.setUserInfo(new UserInfo(username, null, username, null, null));
+		userAndSessionDetails.setUserInfo(new UserInfo(username, null, username, null, null,
+				domain));
 
 		authRequest.setDetails(userAndSessionDetails);
 

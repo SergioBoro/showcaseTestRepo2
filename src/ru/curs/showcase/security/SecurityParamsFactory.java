@@ -1,6 +1,6 @@
 package ru.curs.showcase.security;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
 
 import ru.curs.showcase.runtime.UserDataUtils;
@@ -123,4 +123,49 @@ public final class SecurityParamsFactory {
 
 	}
 
+	/**
+	 * 
+	 * .
+	 * 
+	 * @param authGifSrc
+	 *            - url для проверки
+	 * @return
+	 */
+	public static String getHTMLTextForPrividerGroupsComboBoxSecector(final String authGifSrc) {
+		String result = "";
+
+		URL server;
+		try {
+			server = new URL(getAuthServerUrl() + "/importgroupsproviders");
+
+			HttpURLConnection c = (HttpURLConnection) server.openConnection();
+			c.setRequestMethod("GET");
+			c.setDoInput(true);
+			c.connect();
+
+			if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
+				BufferedReader in =
+					new BufferedReader(new InputStreamReader(c.getInputStream(), "UTF-8"));
+				String d = in.readLine();
+
+				String[] аWer = d.split(" ", 0);
+				result =
+					"<tr>			    <td align='right'>Домен</td>		    <td>     <select id='j_domain' type='text' name='j_domain'>";
+				for (int i = 0; i <= аWer.length - 1; i++) {
+					result = result + "<option value='" + аWer[i] + "'>" + аWer[i] + "</option>";
+				}
+
+				result = result + "</select>			    </td>			  </tr>";
+
+			}
+
+		} catch (IOException e) {
+
+			result = "";
+		}
+
+		return result;
+
+	}
 }
