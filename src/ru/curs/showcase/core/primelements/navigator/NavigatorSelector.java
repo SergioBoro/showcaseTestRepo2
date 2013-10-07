@@ -40,6 +40,9 @@ public class NavigatorSelector extends SourceSelector<PrimElementsGateway> {
 		case FILE:
 			res = new PrimElementsFileGateway(SettingsFileType.NAVIGATOR);
 			break;
+		case CELESTA:
+			res = new NavigatorCelestaGataway();
+			break;
 		default:
 			res = new NavigatorDBGateway();
 		}

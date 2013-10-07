@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
+import ru.curs.celesta.Celesta;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
@@ -29,7 +30,14 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 	public final void contextInitialized(final ServletContextEvent arg0) {
 		LOGGER.info(SHOWCASE_LOADING);
 		AppInitializer.initialize();
+
 		ProductionModeInitializer.initialize(arg0.getServletContext());
+
+		try {
+			Celesta.initialize();
+		} catch (Exception ex) {
+			LOGGER.error("Ошибка инициализации celesta", ex);
+		}
 	}
 
 	@Override
