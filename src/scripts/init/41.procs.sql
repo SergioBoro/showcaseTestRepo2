@@ -16187,6 +16187,61 @@ WHERE [IsPortal]=1
 END
 GO
 
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[jslivegrid_portals_id_and_css]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+    @gridsettings xml output,
+	@error_mes varchar(512) output    
+AS
+BEGIN
+	SET NOCOUNT ON;
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+<labels>
+<header>
+<h3>Порталы</h3>
+</header>
+</labels>
+        <columns>
+        <col id="Название" /> 
+        <col id="Логотип" width="250px" type="LINK"/>
+        <col id="URL" width="150px" type="LINK"/>
+        </columns>
+<properties flip="false" pagesize="20" gridWidth="700px" rowHeight = "50" profile="grid.nowidth.properties" autoSelectRecordId="3" 
+ autoSelectRelativeRecord="false" autoSelectColumnId="URL"/>
+</gridsettings>' 
+set    @gridsettings=CAST(@gridsettings_str as xml)
+SELECT [Name] AS "Название", [Logo] AS "Логотип", [Url] as "URL", Id AS "~~id",  cast( '<properties>
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>                        
+                            <datapanel type="current" tab="current">
+                                <element id="d1">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="d2">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element>                                
+                            </datapanel>
+                        </action>
+                    </event>  			
+            </properties>' as xml)  as [~~properties] FROM [dbo].[Websites]
+WHERE [IsPortal]=1
+END
+GO
+
 --
 -- Definition for stored procedure chart_pas_xmlds : 
 --
