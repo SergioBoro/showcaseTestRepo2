@@ -39,6 +39,9 @@ public class HtmlSelector extends SourceSelector<HTMLGateway> {
 		case FILE:
 			res = new HTMLFileGateway();
 			break;
+		case CELESTA:
+			res = new HTMLCelestaGateway();
+			break;
 		default:
 			res = new HtmlDBGateway();
 		}

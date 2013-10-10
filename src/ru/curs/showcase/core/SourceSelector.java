@@ -56,7 +56,8 @@ public abstract class SourceSelector<T> {
 			return SourceType.JYTHON;
 		} else if (sourceName.endsWith(".sql")) {
 			return SourceType.SQL;
-		} else if (sourceName.endsWith(".celesta") || sourceName.endsWith(".cl")) {
+		} else if (sourceName.endsWith(".celesta")
+				|| sourceName.endsWith(".cl")) {
 			return SourceType.CELESTA;
 		}
 		return SourceType.SP;
