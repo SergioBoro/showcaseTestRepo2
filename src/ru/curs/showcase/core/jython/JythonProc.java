@@ -220,4 +220,13 @@ public interface JythonProc {
 	 *         пользователя в случае ошибки.
 	 */
 	Object getPluginRawData(AbstractCompositeContext context, String elementId, String xmlParams);
+
+	/**
+	 * Возвращает сырые данные для панели инструментов.
+	 * 
+	 * @param context
+	 *            - контекст вызова.
+	 * @return - xml данные панели инструментов.
+	 */
+	String getGridToolBarData(AbstractCompositeContext context);
 }

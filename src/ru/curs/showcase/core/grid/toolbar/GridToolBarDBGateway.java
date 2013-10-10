@@ -21,17 +21,17 @@ public class GridToolBarDBGateway extends SPQuery implements GridToolBarGateway 
 		return "{? = call %s(?,?,?,?,?)}";
 	}
 
-
 	@Override
-	public GridToolBarRawData getGridToolBarRawData(final CompositeContext context, final DataPanelElementInfo elInfo) {
+	public GridToolBarRawData getGridToolBarRawData(
+			final CompositeContext context, final DataPanelElementInfo elInfo) {
 		setProcName(elInfo.getToolBarProc().getName());
 		setContext(context);
 		try {
 			try {
 				prepareSQL();
 				setupGeneralParameters();
-				//setSQLXMLParam(PARAMS_INDEX, request.getXmlParams());
-				getStatement().registerOutParameter(OTPUTDATA_INDEX, java.sql.Types.SQLXML);
+				getStatement().registerOutParameter(OTPUTDATA_INDEX,
+						java.sql.Types.SQLXML);
 				execute();
 				String data = getStringForXMLParam(OTPUTDATA_INDEX);
 				return new GridToolBarRawData(data);

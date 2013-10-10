@@ -18,4 +18,10 @@
 		</element>
 		<element id="0302" type="webtext" proc="webtext/selectedRowWriter.py" hideOnLoad="true" />
 	</tab>
+	<tab id="04" name="Jython source">
+		<element id="0401" type="GRID" subtype="EXT_TREE_GRID" proc="exttreegrid_geo_icons">
+			<proc id="040101" name="gridToolBar.py" type="TOOLBAR"/>
+		</element>
+		<element id="0402" type="webtext" proc="webtext/selectedRowWriter.py" hideOnLoad="true" />
+	</tab>
 </datapanel>

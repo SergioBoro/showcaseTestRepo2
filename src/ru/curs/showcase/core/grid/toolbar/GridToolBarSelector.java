@@ -29,6 +29,7 @@ public class GridToolBarSelector extends SourceSelector<GridToolBarGateway> {
 		case SP:
 			return new GridToolBarDBGateway();
 		case JYTHON:
+			return new GridToolBarJythonGateway();
 		default:
 		}
 
