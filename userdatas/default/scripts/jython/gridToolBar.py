@@ -8,11 +8,11 @@ from ru.curs.showcase.core.jython import JythonProc
 
 
 class gridToolBar(JythonProc):
-    def getGridToolBarData(self, context):
-        return mainproc()
+    def getGridToolBarData(self, context, elementId):
+        return mainproc(context, elementId)
 
 
-def mainproc():
+def mainproc(context, elementId):
     data = u'''
     <gridtoolbar>
         <separator/>
@@ -22,7 +22,7 @@ def mainproc():
                 <modalwindow caption="Item1 click" height="200" width="600"/>
                 <datapanel type="current" tab="current">
                     <element id="0402">
-                        <add_context>Add context value</add_context>
+                        <add_context>ElementId='''+elementId+''' Add context value</add_context>
                     </element>
                 </datapanel>
             </action>
@@ -36,7 +36,7 @@ def mainproc():
                     <modalwindow caption="Item22 click." height="200" width="600"/>
                     <datapanel type="current" tab="current">
                         <element id="0402">
-                            <add_context>Add context value</add_context>
+                            <add_context>ElementId='''+elementId+''' Add context value</add_context>
                         </element>
                     </datapanel>
                 </action>
@@ -50,7 +50,7 @@ def mainproc():
                         <modalwindow caption="Item232 click." height="200" width="600"/>
                         <datapanel type="current" tab="current">
                             <element id="0402">
-                                <add_context>Add context value</add_context>
+                                <add_context>ElementId='''+elementId+''' Add context value</add_context>
                             </element>
                         </datapanel>
                     </action>

@@ -27953,6 +27953,7 @@ CREATE PROCEDURE [dbo].[gridToolBar]
    @add_context nvarchar(512)='',  
    @filterinfo xml='',  
    @session_context xml='',
+   @elementId nvarchar(512)='',
    @data xml output
 AS
 BEGIN
@@ -27979,13 +27980,13 @@ set @data='
 				<modalwindow caption="Item1 click" height="200" width="600"/>
 				<datapanel type="current" tab="current">
 					<element id="0102">
-						<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
 					</element>
 					<element id="0202">
-						<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
 					</element>
 					<element id="0302">
-						<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
 					</element>
 				</datapanel>
 			</action>
@@ -27999,13 +28000,13 @@ set @data='
 					<modalwindow caption="Item22 click." height="200" width="600"/>
 					<datapanel type="current" tab="current">
 						<element id="0102">
-							<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+							<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
 						</element>
 						<element id="0202">
-							<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+							<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
 						</element>
 						<element id="0302">
-							<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+							<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
 						</element>
 					</datapanel>
 				</action>
@@ -28019,13 +28020,13 @@ set @data='
 						<modalwindow caption="Item232 click." height="200" width="600"/>
 						<datapanel type="current" tab="current">
 							<element id="0102">
-								<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+								<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
 							</element>
 							<element id="0202">
-								<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+								<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
 							</element>
 							<element id="0302">
-								<add_context>Name='+@columnName+', Id='+@id+'</add_context>
+								<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
 							</element>
 						</datapanel>
 					</action>

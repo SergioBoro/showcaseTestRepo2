@@ -55,7 +55,8 @@ public interface JythonProc {
 	 *         настройки элемента в виде двух строк или объект с информацией для
 	 *         пользователя в случае ошибки.
 	 */
-	Object getRawData(AbstractCompositeContext context, String elementId, List<Column> sortcols);
+	Object getRawData(AbstractCompositeContext context, String elementId,
+			List<Column> sortcols);
 
 	/**
 	 * Возвращает сырые данные для компонента grid в случае задания двумя
@@ -75,8 +76,8 @@ public interface JythonProc {
 	 *         настройки элемента в виде двух строк или объект с информацией для
 	 *         пользователя в случае ошибки.
 	 */
-	Object getRawData(AbstractCompositeContext context, String elementId, List<Column> sortcols,
-			int firstrecord, int pagesize);
+	Object getRawData(AbstractCompositeContext context, String elementId,
+			List<Column> sortcols, int firstrecord, int pagesize);
 
 	/**
 	 * Сохраняет данные (на данный момент, только для XForm).
@@ -90,7 +91,8 @@ public interface JythonProc {
 	 * @return - сообщение об ошибке в случае, если она произошла или None (null
 	 *         в Java) в противном случае.
 	 */
-	UserMessage save(AbstractCompositeContext context, String elementId, String data);
+	UserMessage save(AbstractCompositeContext context, String elementId,
+			String data);
 
 	/**
 	 * Функция получения данных для элемента, требующего RecordSet. Все
@@ -108,7 +110,8 @@ public interface JythonProc {
 	 * @param conn
 	 *            - соединение с БД.
 	 */
-	Object getRawData(AbstractCompositeContext context, String elementId, PyConnection conn);
+	Object getRawData(AbstractCompositeContext context, String elementId,
+			PyConnection conn);
 
 	/**
 	 * Возвращает сырые данные для навигатора и инф. панели в XML формате.
@@ -167,7 +170,8 @@ public interface JythonProc {
 	 * @return - объект класса ResultSelectorData, содержащий как данные так и -
 	 *         кол-во записей.
 	 */
-	Object getSelectorData(CompositeContext aContext, DataSelectorAttributes aAttributes);
+	Object getSelectorData(CompositeContext aContext,
+			DataSelectorAttributes aAttributes);
 
 	/**
 	 * Получить InputStream для загрузки файла.
@@ -190,8 +194,8 @@ public interface JythonProc {
 	 *            - атрибуты запроса
 	 * @return в случае ошибки объект JythonErrorResult
 	 */
-	<T extends InputAttributes> JythonErrorResult doUpload(AbstractCompositeContext aContext,
-			T attributes);
+	<T extends InputAttributes> JythonErrorResult doUpload(
+			AbstractCompositeContext aContext, T attributes);
 
 	/**
 	 * Получить данные для gkfubyf.
@@ -219,14 +223,17 @@ public interface JythonProc {
 	 *         настройки элемента в виде двух строк или объект с информацией для
 	 *         пользователя в случае ошибки.
 	 */
-	Object getPluginRawData(AbstractCompositeContext context, String elementId, String xmlParams);
+	Object getPluginRawData(AbstractCompositeContext context, String elementId,
+			String xmlParams);
 
 	/**
 	 * Возвращает сырые данные для панели инструментов.
 	 * 
 	 * @param context
 	 *            - контекст вызова.
+	 * @param elementId
+	 *            - идентификатор создаваемого элемента.
 	 * @return - xml данные панели инструментов.
 	 */
-	String getGridToolBarData(AbstractCompositeContext context);
+	String getGridToolBarData(AbstractCompositeContext context, String elementId);
 }

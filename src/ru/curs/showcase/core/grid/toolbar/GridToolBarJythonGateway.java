@@ -33,7 +33,8 @@ public class GridToolBarJythonGateway extends JythonQuery<String> implements
 
 	@Override
 	protected Object execute() {
-		return getProc().getGridToolBarData(context);
+		return getProc().getGridToolBarData(context,
+				elementInfo.getId().getString());
 	}
 
 	@Override

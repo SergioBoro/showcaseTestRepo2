@@ -13,12 +13,12 @@ import ru.curs.showcase.core.sp.SPQuery;
  * 
  */
 public class GridToolBarDBGateway extends SPQuery implements GridToolBarGateway {
-	//private static final int PARAMS_INDEX = 6;
-	private static final int OTPUTDATA_INDEX = 6;
+	private static final int ELEMENTID_INDEX = 6;
+	private static final int OTPUTDATA_INDEX = 7;
 
 	@Override
 	protected String getSqlTemplate(final int index) {
-		return "{? = call %s(?,?,?,?,?)}";
+		return "{? = call %s(?,?,?,?,?,?)}";
 	}
 
 	@Override
@@ -30,6 +30,7 @@ public class GridToolBarDBGateway extends SPQuery implements GridToolBarGateway 
 			try {
 				prepareSQL();
 				setupGeneralParameters();
+				setStringParam(ELEMENTID_INDEX, elInfo.getId().getString());
 				getStatement().registerOutParameter(OTPUTDATA_INDEX,
 						java.sql.Types.SQLXML);
 				execute();
