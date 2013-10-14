@@ -164,6 +164,12 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 			((PluginInfo) el).setPlugin(attrs.getValue(PLUGIN_TAG));
 			el.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));
 			break;
+		case GRID:
+			if ((el.getSubtype() != null) && el.getSubtype().isJSGrid()) {
+				((PluginInfo) el).setPlugin(attrs.getValue(PLUGIN_TAG));
+				el.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));
+			}
+			break;
 		case WEBTEXT:
 			el.setTransformName(attrs.getValue(TRANSFORM_ATTR_NAME));
 			break;
@@ -178,9 +184,17 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 	private DataPanelElementInfo createInfo(final Attributes attrs) {
 		DataPanelElementType type =
 			DataPanelElementType.valueOf(attrs.getValue(TYPE_TAG).toUpperCase());
+		DataPanelElementSubType subtype = null;
+		if (attrs.getIndex(SUB_TYPE_TAG) > -1) {
+			subtype = DataPanelElementSubType.valueOf(attrs.getValue(SUB_TYPE_TAG).toUpperCase());
+		}
 		DataPanelElementInfo elInfo;
 		if (type != DataPanelElementType.PLUGIN) {
-			elInfo = new DataPanelElementInfo(elCounter++, currentTab);
+			if ((subtype != null) && subtype.isJSGrid()) {
+				elInfo = new PluginInfo(elCounter++, currentTab);
+			} else {
+				elInfo = new DataPanelElementInfo(elCounter++, currentTab);
+			}
 			elInfo.setType(type);
 		} else {
 			elInfo = new PluginInfo(elCounter++, currentTab);

@@ -9,9 +9,9 @@ import org.apache.commons.fileupload.FileUploadException;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
+import ru.curs.showcase.util.ServletUtils;
 
 import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;
 
 /**
  * Базовый обработчик для работы с файлами.
@@ -99,11 +99,7 @@ public abstract class AbstractFilesHandler {
 	 * @throws SerializationException
 	 */
 	protected Object deserializeObject(final String data) throws SerializationException {
-		ServerSerializationStreamReader streamReader =
-			new ServerSerializationStreamReader(Thread.currentThread().getContextClassLoader(),
-					null);
-		streamReader.prepareToRead(data);
-		return streamReader.readObject();
+		return ServletUtils.deserializeObject(data);
 	}
 
 	public CompositeContext getContext() {

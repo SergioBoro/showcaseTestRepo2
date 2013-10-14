@@ -9,6 +9,9 @@ import org.slf4j.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 
+import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;
+
 /**
  * Вспомогательные функции для работы с сервлетами.
  * 
@@ -191,4 +194,21 @@ public final class ServletUtils {
 		}
 		return param;
 	}
+
+	/**
+	 * Функция десериализации объекта, переданного в теле запроса.
+	 * 
+	 * @param data
+	 *            - строка с urlencoded объектом.
+	 * @return - объект.
+	 * @throws SerializationException
+	 */
+	public static Object deserializeObject(final String data) throws SerializationException {
+		ServerSerializationStreamReader streamReader =
+			new ServerSerializationStreamReader(Thread.currentThread().getContextClassLoader(),
+					null);
+		streamReader.prepareToRead(data);
+		return streamReader.readObject();
+	}
+
 }

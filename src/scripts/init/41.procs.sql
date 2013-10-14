@@ -3727,7 +3727,7 @@ set @Sql =
                             </datapanel>
                         </action>
                     </event>                                       
-            </properties>'' as xml)  as [~~properties] FROM('+
+            </properties>'' as xml)  as [~~properties], [Регион] as [~~id] FROM('+
 'SELECT [Регион], sort2,' + @params+
 ' FROM' +
 ' (Select
@@ -4185,7 +4185,7 @@ set @Sql =
                        </datapanel>
                         </action>
                     </event>                    
-            </properties>'' as xml)  as [~~properties] FROM('+
+            </properties>'' as xml)  as [~~properties], [Регион] as [~~id] FROM('+
 'SELECT [Регион],sort2,' + @params+
 ' FROM' +
 ' (Select
@@ -4482,7 +4482,7 @@ set @Sql =
                         </action>
                     </event>  
                                                               
-            </properties>'' as xml)  as [~~properties] FROM('+
+            </properties>'' as xml)  as [~~properties], [Регион] as [~~id] FROM('+
 'SELECT top 1 [Регион],sort2,' + @params+
 ' FROM' +
 ' (Select
@@ -18696,7 +18696,7 @@ set @Sql =
                             </datapanel>
                         </action>
                     </event>                                       
-            </properties>'' as xml)  as [~~properties] FROM('+
+            </properties>'' as xml)  as [~~properties], [Регион] as [~~id] FROM('+
 'SELECT [Регион], sort2,' + @params+
 ' FROM' +
 ' (Select

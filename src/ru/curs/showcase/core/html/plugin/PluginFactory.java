@@ -23,7 +23,7 @@ import ru.curs.showcase.util.xml.*;
 public final class PluginFactory extends HTMLBasedElementFactory {
 
 	public static final String COMPONENTS_DIR = "libraries";
-	private static final String IMPORT_TXT = "import.txt";
+	public static final String IMPORT_TXT = "import.txt";
 	public static final String PLUGINS_DIR = "plugins";
 	private Plugin result;
 

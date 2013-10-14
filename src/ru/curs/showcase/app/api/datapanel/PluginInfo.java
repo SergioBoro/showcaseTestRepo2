@@ -57,7 +57,8 @@ public final class PluginInfo extends DataPanelElementInfo {
 
 	@Override
 	public boolean isCorrect() {
-		return super.isCorrect() && (plugin != null);
+		return ((getSubtype() != null) && getSubtype().isJSGrid())
+				|| (super.isCorrect() && (plugin != null));
 	}
 
 	public String getGetDataProcName() {

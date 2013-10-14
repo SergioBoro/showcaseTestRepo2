@@ -33,6 +33,8 @@
          <xs:enumeration value="ext_live_grid"/>
          <xs:enumeration value="PAGING_GRID"/>
          <xs:enumeration value="paging_grid"/>
+         <xs:enumeration value="JS_LIVE_GRID"/>
+         <xs:enumeration value="js_live_grid"/>
       </xs:restriction>
    </xs:simpleType>
 

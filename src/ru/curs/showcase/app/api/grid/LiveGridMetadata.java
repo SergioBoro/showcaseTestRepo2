@@ -23,6 +23,8 @@ public class LiveGridMetadata extends DataPanelCompBasedElement implements SizeE
 
 	private LiveInfo liveInfo = new LiveInfo();
 
+	private JSInfo jsInfo = new JSInfo();
+
 	private ColumnSet originalColumnSet = null;
 
 	private String textColor = null;
@@ -80,6 +82,14 @@ public class LiveGridMetadata extends DataPanelCompBasedElement implements SizeE
 
 	public void setLiveInfo(final LiveInfo aLiveInfo) {
 		liveInfo = aLiveInfo;
+	}
+
+	public JSInfo getJSInfo() {
+		return jsInfo;
+	}
+
+	public void setJSInfo(final JSInfo aJsInfo) {
+		jsInfo = aJsInfo;
 	}
 
 	public ColumnSet getOriginalColumnSet() {

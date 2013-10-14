@@ -73,6 +73,8 @@ public final class GridTransformer {
 
 		lgm.setOriginalColumnSet(grid.getDataSet().getColumnSet());
 
+		lgm.setJSInfo(grid.getJSInfo());
+
 		// -------------------------------------------------------
 
 		lgm.setUISettings(grid.getUISettings());

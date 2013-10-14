@@ -20,10 +20,11 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.ProfileBasedSettingsApplyStrategy;
 import ru.curs.showcase.core.event.*;
+import ru.curs.showcase.core.html.plugin.PluginFactory;
 import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.exception.SettingsFileType;
+import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -126,6 +127,73 @@ public class GridFactory extends CompBasedElementFactory {
 		calcPageCount();
 
 		updateServerState();
+
+		if ((getElementInfo().getSubtype() != null) && (getElementInfo().getSubtype().isJSGrid())) {
+			result.getJSInfo()
+					.setCreateProc(
+							"create"
+									+ TextUtils.capitalizeWord(((PluginInfo) getElementInfo())
+											.getPlugin()));
+			result.getJSInfo()
+					.setRefreshProc(
+							"refresh"
+									+ TextUtils.capitalizeWord(((PluginInfo) getElementInfo())
+											.getPlugin()));
+
+			result.getJSInfo()
+					.getRequiredJS()
+					.add(getAdapterForWebServer(getPluginDir(),
+							((PluginInfo) getElementInfo()).getPlugin() + ".js"));
+
+			List<String> comps = readImportFile(getPluginDir() + "/" + PluginFactory.IMPORT_TXT);
+			for (String comp : comps) {
+				result.getJSInfo().getRequiredJS()
+						.add(getAdapterForWebServer(getPluginDir(), comp));
+			}
+
+		}
+	}
+
+	private String getAdapterForWebServer(final String dir, final String adapterFile) {
+		String adapter = String.format("%s/%s", dir, adapterFile);
+		String adapterOnTomcat =
+			String.format("%s/%s/%s", UserDataUtils.SOLUTIONS_DIR, UserDataUtils.getUserDataId(),
+					adapter);
+		return adapterOnTomcat;
+	}
+
+	private String getPluginDir() {
+		return String.format("%s/%s", PluginFactory.PLUGINS_DIR,
+				((PluginInfo) getElementInfo()).getPlugin());
+	}
+
+	private String getPluginsRoot() {
+		return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+				+ UserDataUtils.GENERAL_RES_ROOT;
+	}
+
+	private List<String> readImportFile(final String fileName) {
+		List<String> res = new ArrayList<>();
+		File importFile = new File(getPluginsRoot() + "/" + fileName);
+		if (!importFile.exists()) {
+			return res;
+		}
+
+		String list;
+		try {
+			InputStream is = new FileInputStream(importFile.getAbsolutePath());
+			list = TextUtils.streamToString(is);
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(fileName, SettingsFileType.IMPORT_LIST);
+		}
+		String[] compNames = list.split("\\r?\\n");
+		for (String name : compNames) {
+			if (name.trim().isEmpty()) {
+				continue;
+			}
+			res.add(name);
+		}
+		return res;
 	}
 
 	private void updateServerState() {

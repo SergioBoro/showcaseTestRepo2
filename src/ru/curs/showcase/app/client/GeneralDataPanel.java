@@ -489,6 +489,10 @@ public class GeneralDataPanel {
 			w = generateExtLiveGridElement(dpe);
 			break;
 
+		case JS_LIVE_GRID:
+			w = generateJSLiveGridElement(dpe);
+			break;
+
 		case EXT_PAGE_GRID:
 			w = generateExtPageGridElement(dpe);
 			break;
@@ -523,6 +527,24 @@ public class GeneralDataPanel {
 		getUiElements(dpe).add(new UIDataPanelElement(lgp));
 		addDataPanelForCaching(dpe, lgp);
 
+		return w;
+	}
+
+	private static Widget generateJSLiveGridElement(final DataPanelElementInfo dpe) {
+		BasicElementPanelBasis mp = null;
+		Widget w = null;
+		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+			mp = new JSLiveGridPluginPanel(getElementContextForNavigatorAction(dpe), dpe);
+			w = mp.getPanel();
+		} else {
+			// в случае когда у данного элемента есть главный элемент
+			mp = new JSLiveGridPluginPanel(dpe);
+			w = mp.getPanel();
+			mp.hidePanel();
+		}
+
+		getUiElements(dpe).add(new UIDataPanelElement(mp));
+		addDataPanelForCaching(dpe, mp);
 		return w;
 	}
 
@@ -686,13 +708,20 @@ public class GeneralDataPanel {
 		BasicElementPanelBasis mp = null;
 		Widget w = null;
 		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-
-			mp = new PluginPanel(getElementContextForNavigatorAction(dpe), dpe);
+			if ("dgridServerGrid".equalsIgnoreCase(((PluginInfo) dpe).getPlugin())) {
+				mp = new JSLiveGridPluginPanel(getElementContextForNavigatorAction(dpe), dpe);
+			} else {
+				mp = new PluginPanel(getElementContextForNavigatorAction(dpe), dpe);
+			}
 
 			w = mp.getPanel();
 		} else {
 			// в случае когда у данного элемента есть главный элемент
-			mp = new PluginPanel(dpe);
+			if ("dgridServerGrid".equalsIgnoreCase(((PluginInfo) dpe).getPlugin())) {
+				mp = new JSLiveGridPluginPanel(dpe);
+			} else {
+				mp = new PluginPanel(dpe);
+			}
 			w = mp.getPanel();
 			mp.hidePanel();
 

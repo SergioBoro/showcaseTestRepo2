@@ -59,6 +59,14 @@
     <url-pattern>/secured/data</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>JSGridService</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.JSGridService</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JSGridService</servlet-name>
+    <url-pattern>/secured/JSGridService</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>FilesFrontController</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.FilesFrontController</servlet-class>
   </servlet>

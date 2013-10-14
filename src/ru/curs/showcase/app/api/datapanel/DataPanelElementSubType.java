@@ -23,6 +23,15 @@ public enum DataPanelElementSubType implements SerializableElement {
 	/**
 	 * Грид из GXT. Tree.
 	 */
-	EXT_TREE_GRID;
+	EXT_TREE_GRID,
+
+	/**
+	 * JS-Грид. Live.
+	 */
+	JS_LIVE_GRID;
+
+	public boolean isJSGrid() {
+		return this == JS_LIVE_GRID;
+	}
 
 }

@@ -31,6 +31,8 @@ public class Grid extends DataPanelCompBasedElement implements SizeEstimate {
 
 	private LiveInfo liveInfo = new LiveInfo();
 
+	private JSInfo jsInfo = new JSInfo();
+
 	/**
 	 * Настройки UI для грида. Как правило, задаются по умолчанию для всех
 	 * гридов в файле настроек приложения.
@@ -92,6 +94,14 @@ public class Grid extends DataPanelCompBasedElement implements SizeEstimate {
 
 	public final void setLiveInfo(final LiveInfo aLiveInfo) {
 		this.liveInfo = aLiveInfo;
+	}
+
+	public JSInfo getJSInfo() {
+		return jsInfo;
+	}
+
+	public void setJSInfo(final JSInfo aJsInfo) {
+		jsInfo = aJsInfo;
 	}
 
 	public final Column getAutoSelectColumn() {
