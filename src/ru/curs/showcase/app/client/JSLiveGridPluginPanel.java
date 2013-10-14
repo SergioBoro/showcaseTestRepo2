@@ -339,6 +339,10 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 				@Override
 				public void onClick(final ClickEvent event) {
 					// copyToClipboard();
+					MessageBox
+							.showSimpleMessage("Сообщение",
+									"Копирование в буфер обмена пока не реализовано. Временно можно использовать экспорт в Excel.");
+
 				}
 			});
 			hpToolbar.add(copyToClipboard);
