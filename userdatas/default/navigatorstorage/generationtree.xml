@@ -272,6 +272,24 @@
       </level2>
       
       
+      <level2 id="JSPageGrid1" name="JSPageGrid1">
+        <action>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
+          <datapanel type="byver/JSPageGrid.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
+      
+      <level2 id="JSPageGrid2" name="JSPageGrid2">
+        <action>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
+          <datapanel type="byver/JSPageGrid2.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
+      
+      
+      
       
       <level2 id="208" name="2.0.8">
         <action>

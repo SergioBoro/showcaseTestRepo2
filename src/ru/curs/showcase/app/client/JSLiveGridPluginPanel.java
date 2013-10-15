@@ -53,6 +53,11 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	private boolean doubleClick = false;
 	private DataServiceAsync dataService = null;
 	private GridContext localContext = null;
+
+	public GridContext getLocalContext() {
+		return localContext;
+	}
+
 	private LiveGridMetadata gridMetadata = null;
 	private LiveGridExtradata gridExtradata = null;
 	private String stringSelectedRecordIds = null;
@@ -758,7 +763,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		return cell;
 	}
 
-	private void resetGridSettingsToCurrent() {
+	protected void resetGridSettingsToCurrent() {
 		localContext = new GridContext();
 		localContext.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 

@@ -489,16 +489,20 @@ public class GeneralDataPanel {
 			w = generateExtLiveGridElement(dpe);
 			break;
 
-		case JS_LIVE_GRID:
-			w = generateJSLiveGridElement(dpe);
-			break;
-
 		case EXT_PAGE_GRID:
 			w = generateExtPageGridElement(dpe);
 			break;
 
 		case EXT_TREE_GRID:
 			w = generateExtTreeGridElement(dpe);
+			break;
+
+		case JS_LIVE_GRID:
+			w = generateJSLiveGridElement(dpe);
+			break;
+
+		case JS_PAGE_GRID:
+			w = generateJSPageGridElement(dpe);
 			break;
 
 		case PAGING_GRID: // существующий грид
@@ -539,6 +543,24 @@ public class GeneralDataPanel {
 		} else {
 			// в случае когда у данного элемента есть главный элемент
 			mp = new JSLiveGridPluginPanel(dpe);
+			w = mp.getPanel();
+			mp.hidePanel();
+		}
+
+		getUiElements(dpe).add(new UIDataPanelElement(mp));
+		addDataPanelForCaching(dpe, mp);
+		return w;
+	}
+
+	private static Widget generateJSPageGridElement(final DataPanelElementInfo dpe) {
+		BasicElementPanelBasis mp = null;
+		Widget w = null;
+		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+			mp = new JSPageGridPluginPanel(getElementContextForNavigatorAction(dpe), dpe);
+			w = mp.getPanel();
+		} else {
+			// в случае когда у данного элемента есть главный элемент
+			mp = new JSPageGridPluginPanel(dpe);
 			w = mp.getPanel();
 			mp.hidePanel();
 		}
