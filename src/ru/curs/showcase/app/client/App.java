@@ -5,7 +5,6 @@ import java.util.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.*;
@@ -28,9 +27,6 @@ public class App implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 
-		// MessageBox.showSimpleMessage("123", AppCurrContext.getInstance()
-		// .getInternationalizedMessages().sendButtonText());
-
 		XFormsUtils.initXForms();
 		FeedbackJSNI.initFeedbackJSNIFunctions();
 		// AppCurrContext.appCurrContext = AppCurrContext.getInstance();
@@ -42,7 +38,8 @@ public class App implements EntryPoint {
 		}
 
 		dataService.getServerCurrentState(context, new GWTServiceCallback<ServerState>(
-				Constants.ERROR_OF_SERVER_CURRENT_STATE_RETRIEVING_FROM_SERVER) {
+				AppCurrContext.getInstance().getInternationalizedMessages()
+						.error_of_server_current_state_retrieving_from_server()) {
 
 			@Override
 			public void onSuccess(final ServerState serverCurrentState) {
@@ -63,8 +60,9 @@ public class App implements EntryPoint {
 			dataService = GWT.create(DataService.class);
 		}
 		CompositeContext context = getCurrentContext();
-		dataService.getMainPage(context, new GWTServiceCallback<MainPage>(
-				Constants.ERROR_OF_MAIN_PAGE_RETRIEVING_FROM_SERVER) {
+		dataService.getMainPage(context, new GWTServiceCallback<MainPage>(AppCurrContext
+				.getInstance().getInternationalizedMessages()
+				.error_of_main_page_retrieving_from_server()) {
 
 			@Override
 			public void onSuccess(final MainPage mainPage) {
