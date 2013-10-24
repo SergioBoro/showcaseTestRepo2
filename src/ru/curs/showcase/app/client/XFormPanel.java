@@ -218,7 +218,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 		}
 
 		dataService.getXForms(getDetailedContext(), getElementInfo(),
-				new GWTServiceCallback<XForm>("при получении данных XForm с сервера") {
+				new GWTServiceCallback<XForm>(AppCurrContext.getInstance()
+						.getInternationalizedMessages().xformsErrorGetData()) {
 					@Override
 					public void onSuccess(final XForm aXform) {
 						setXFormPanelByXForms(aXform);

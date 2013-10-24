@@ -39,6 +39,12 @@ public interface constantsShowcase extends Messages {
 	@DefaultMessage("already present in the grid. Entries are not loaded.")
 	String treeGridLoadingDataDuplicateRecord2();
 
+	@DefaultMessage("when receiving data from the server XForm")
+	String xformsErrorGetData();
+
+	@DefaultMessage("when receiving data from the server to the main XForm")
+	String xformsErrorGetMainData();
+
 	@DefaultMessage("Пожалуйста, подождите...Идет загрузка данных")
 	String please_wait_data_are_loading();
 

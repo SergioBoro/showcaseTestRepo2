@@ -3,7 +3,7 @@ package ru.curs.showcase.app.client.utils;
 import java.util.List;
 
 import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.app.client.GWTServiceCallback;
+import ru.curs.showcase.app.client.*;
 
 import com.google.gwt.core.client.GWT;
 
@@ -26,8 +26,8 @@ public final class XFormsUtils {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getMainXForms(new GWTServiceCallback<List<String>>(
-				"при получении данных главной XForm с сервера") {
+		dataService.getMainXForms(new GWTServiceCallback<List<String>>(AppCurrContext
+				.getInstance().getInternationalizedMessages().xformsErrorGetMainData()) {
 			@Override
 			public void onSuccess(final List<String> mainXForm) {
 				// destroy();
