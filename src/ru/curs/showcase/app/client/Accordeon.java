@@ -9,7 +9,6 @@ import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.MultiUserData;
 
 import com.google.gwt.core.client.GWT;
@@ -127,8 +126,9 @@ public class Accordeon {
 
 		CompositeContext context = MultiUserData.getCurrentContextFromURL();
 
-		dataService.getNavigator(context, new GWTServiceCallback<Navigator>(
-				Constants.ERROR_OF_NAVIGATOR_DATA_RETRIEVING_FROM_SERVER) {
+		dataService.getNavigator(context, new GWTServiceCallback<Navigator>(AppCurrContext
+				.getInstance().getInternationalizedMessages()
+				.error_of_navigator_data_retrieving_from_server()) {
 			@Override
 			public void onFailure(final Throwable caught) {
 				ProgressWindow.closeProgressWindow();
@@ -231,7 +231,7 @@ public class Accordeon {
 	private Widget getGroupTreeWidget(final NavigatorGroup ng) {
 
 		if (!(ng.getElements().size() > 0)) {
-			return new HTML(Constants.EMPTY);
+			return new HTML(AppCurrContext.getInstance().getInternationalizedMessages().empty());
 		}
 		SimplePanel simpPanel = new SimplePanel();
 		ScrollPanel sp = new ScrollPanel();
@@ -329,7 +329,7 @@ public class Accordeon {
 	 * @return - TreeItem для элемента дерева
 	 */
 	public TreeItem getTreeItemInAccordeonById(final ID id) {
-		// TODO Auto-generated method stub
+
 		TreeItem ti = null;
 		if (id == null) {
 			return ti;
@@ -446,12 +446,14 @@ public class Accordeon {
 					: new ID("");
 
 		verpan.clear();
-		verpan.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+		verpan.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+				.please_wait_data_are_loading()));
 		accordeon.clear();
 
 		CompositeContext context = MultiUserData.getCurrentContextFromURL();
-		dataService.getNavigator(context, new GWTServiceCallback<Navigator>(
-				Constants.ERROR_OF_NAVIGATOR_DATA_RETRIEVING_FROM_SERVER) {
+		dataService.getNavigator(context, new GWTServiceCallback<Navigator>(AppCurrContext
+				.getInstance().getInternationalizedMessages()
+				.error_of_navigator_data_retrieving_from_server()) {
 			@Override
 			public void onFailure(final Throwable caught) {
 

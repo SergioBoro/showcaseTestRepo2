@@ -6,7 +6,7 @@ import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.client.*;
-import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.api.CompleteHandler;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.*;
@@ -126,7 +126,8 @@ public class InlineUploader {
 				clearForm(form);
 			}
 		} catch (SerializationException e) {
-			MessageBox.showSimpleMessage(Constants.XFORMS_UPLOAD_ERROR, e.getMessage());
+			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+					.getInternationalizedMessages().xforms_upload_error(), e.getMessage());
 		}
 
 	}
@@ -149,7 +150,8 @@ public class InlineUploader {
 		String err = getErrorByIFrame(iframeName);
 		if (err != null) {
 			result = false;
-			MessageBox.showSimpleMessage(Constants.XFORMS_UPLOAD_ERROR, err);
+			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+					.getInternationalizedMessages().xforms_upload_error(), err);
 		}
 
 		if (submitHandler != null) {

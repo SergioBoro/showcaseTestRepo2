@@ -42,7 +42,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL));
 	private final PushButton copyToClipboard = new PushButton(new Image(
 			Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
-	private final MessagePopup mp = new MessagePopup(Constants.GRID_MESSAGE_POPUP_EXPORT_TO_EXCEL);
+	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance()
+			.getInternationalizedMessages().grid_message_popup_export_to_excel());
 
 	/**
 	 * Основная фабрика для GWT сериализации.
@@ -145,7 +146,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	@Override
 	public void refreshPanel() {
 		if (isFirstLoading()) {
-			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+					.please_wait_data_are_loading()));
 		} else {
 			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 			if (this.getElementInfo().getShowLoadingMessage()) {
@@ -318,7 +320,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		hpToolbar.setSpacing(1);
 		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
-			exportToExcelCurrentPage.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE);
+			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
+					.getInternationalizedMessages().grid_caption_export_to_excel_current_page());
 			exportToExcelCurrentPage.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -328,7 +331,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			hpToolbar.add(exportToExcelCurrentPage);
 		}
 		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
-			exportToExcelAll.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_ALL);
+			exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_export_to_excel_all());
 			exportToExcelAll.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -338,7 +342,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			hpToolbar.add(exportToExcelAll);
 		}
 		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
-			copyToClipboard.setTitle(Constants.GRID_CAPTION_COPY_TO_CLIPBOARD);
+			copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_copy_to_clipboard());
 			copyToClipboard.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -374,12 +379,16 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			drawPlugin(gridMetadata.getJSInfo().getCreateProc(), params);
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
-				MessageBox.showMessageWithDetails(Constants.ERROR_OF_PLUGIN_PAINTING,
+				MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+						.getInternationalizedMessages().error_of_plugin_painting(),
 						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
 						GeneralException.getMessageType(e.getCause()),
 						GeneralException.needDetailedInfo(e.getCause()));
 			} else {
-				MessageBox.showSimpleMessage(Constants.ERROR_OF_PLUGIN_PAINTING, e.getMessage());
+				MessageBox
+						.showSimpleMessage(AppCurrContext.getInstance()
+								.getInternationalizedMessages().error_of_plugin_painting(),
+								e.getMessage());
 			}
 		}
 
@@ -419,7 +428,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 			dh.clear();
 
-			dh.setErrorCaption(Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD);
+			dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_error_caption_file_download());
 			dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
 
 			try {
@@ -434,8 +444,9 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 				dh.submit();
 			} catch (SerializationException e) {
-				ru.curs.showcase.app.client.MessageBox.showSimpleMessage(
-						Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD, e.getMessage());
+				ru.curs.showcase.app.client.MessageBox.showSimpleMessage(AppCurrContext
+						.getInstance().getInternationalizedMessages()
+						.grid_error_caption_file_download(), e.getMessage());
 			}
 		}
 	}
@@ -783,7 +794,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
 
-		dh.setErrorCaption(Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL);
+		dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
+				.grid_error_caption_export_excel());
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridToExcel");
 
 		try {
@@ -806,8 +818,9 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		} catch (SerializationException e) {
 			mp.hide();
-			MessageBox
-					.showSimpleMessage(Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL, e.getMessage());
+			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+					.getInternationalizedMessages().grid_error_caption_export_excel(),
+					e.getMessage());
 		}
 	}
 

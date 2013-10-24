@@ -151,7 +151,8 @@ public final class GeoMapPanelCallbacksEvents {
 		DownloadHelper dh = DownloadHelper.getInstance();
 		dh.clear();
 
-		dh.setErrorCaption(Constants.EXPORT_TO_PNG_ERROR);
+		dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
+				.export_to_png_error());
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/geoMapExport"
 				+ com.google.gwt.user.client.Window.Location.getQueryString());
 		dh.setEncoding(FormPanel.ENCODING_MULTIPART);
@@ -164,11 +165,14 @@ public final class GeoMapPanelCallbacksEvents {
 			dh.addParam("svg", svg);
 			dh.submit();
 		} catch (SerializationException e) {
-			MessageBox.showSimpleMessage(Constants.EXPORT_TO_PNG_ERROR, e.getMessage());
+			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+					.getInternationalizedMessages().export_to_png_error(), e.getMessage());
 		}
 	}
 
 	public static void exportToPNGError(final String mapDivId, final String error) {
-		MessageBox.showSimpleMessage(Constants.EXPORT_TO_PNG_ERROR + "(djeo)", error);
+		MessageBox.showSimpleMessage(AppCurrContext.getInstance().getInternationalizedMessages()
+				.export_to_png_error()
+				+ "(djeo)", error);
 	}
 }

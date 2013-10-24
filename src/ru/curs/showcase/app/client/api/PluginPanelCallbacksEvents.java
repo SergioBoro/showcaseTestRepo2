@@ -72,12 +72,14 @@ public final class PluginPanelCallbacksEvents {
 				pluginComponent.draw();
 			} catch (JavaScriptException e) {
 				if (e.getCause() != null) {
-					MessageBox.showMessageWithDetails(Constants.ERROR_OF_PLUGIN_PAINTING,
+					MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+							.getInternationalizedMessages().error_of_plugin_painting(),
 							e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
 							GeneralException.getMessageType(e.getCause()),
 							GeneralException.needDetailedInfo(e.getCause()));
 				} else {
-					MessageBox.showSimpleMessage(Constants.ERROR_OF_PLUGIN_PAINTING,
+					MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+							.getInternationalizedMessages().error_of_plugin_painting(),
 							e.getMessage());
 				}
 			}
@@ -157,7 +159,8 @@ public final class PluginPanelCallbacksEvents {
 							.getElementInfoById(
 									PluginComponent.PLUGININFO_ID_PREF + param.parentId());
 				if (pluginInfo == null) {
-					MessageBox.showSimpleMessage(Constants.ERROR_OF_PLUGIN_GETDATA,
+					MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+							.getInternationalizedMessages().error_of_plugin_getdata(),
 							"Не найден PluginInfo");
 					return;
 				}
@@ -184,18 +187,21 @@ public final class PluginPanelCallbacksEvents {
 					helper.getData();
 				} catch (JavaScriptException e) {
 					if (e.getCause() != null) {
-						MessageBox.showMessageWithDetails(Constants.ERROR_OF_PLUGIN_GETDATA,
+						MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+								.getInternationalizedMessages().error_of_plugin_getdata(),
 								e.getMessage(),
 								GeneralException.generateDetailedInfo(e.getCause()),
 								GeneralException.getMessageType(e.getCause()),
 								GeneralException.needDetailedInfo(e.getCause()));
 					} else {
-						MessageBox.showSimpleMessage(Constants.ERROR_OF_PLUGIN_GETDATA,
+						MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+								.getInternationalizedMessages().error_of_plugin_getdata(),
 								e.getMessage());
 					}
 				}
 			} else {
-				MessageBox.showSimpleMessage(Constants.ERROR_OF_PLUGIN_GETDATA,
+				MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+						.getInternationalizedMessages().error_of_plugin_getdata(),
 						"Не найден ElementPanel. Id=" + param.id());
 			}
 		}

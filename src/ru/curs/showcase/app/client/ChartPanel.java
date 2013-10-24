@@ -22,7 +22,8 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 		generalChartPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
-		generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+		generalChartPanel.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+				.please_wait_data_are_loading()));
 
 		dataService = GWT.create(DataService.class);
 
@@ -39,7 +40,8 @@ public class ChartPanel extends BasicElementPanelBasis {
 		// я бы убрал этот код-конец
 
 		generalChartPanel = new VerticalPanel();
-		generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+		generalChartPanel.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+				.please_wait_data_are_loading()));
 	}
 
 	private void setChartPanel() {
@@ -49,7 +51,8 @@ public class ChartPanel extends BasicElementPanelBasis {
 		}
 
 		dataService.getChart(getContext(), getElementInfo(), new GWTServiceCallback<Chart>(
-				Constants.ERROR_OF_CHART_DATA_RETRIEVING_FROM_SERVER) {
+				AppCurrContext.getInstance().getInternationalizedMessages()
+						.error_of_chart_data_retrieving_from_server()) {
 
 			@Override
 			public void onSuccess(final Chart achart) {
@@ -136,12 +139,14 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
-				MessageBox.showMessageWithDetails(Constants.ERROR_OF_CHART_PAINTING,
-						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
+				MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+						.getInternationalizedMessages().error_of_chart_painting(), e.getMessage(),
+						GeneralException.generateDetailedInfo(e.getCause()),
 						GeneralException.getMessageType(e.getCause()),
 						GeneralException.needDetailedInfo(e.getCause()));
 			} else {
-				MessageBox.showSimpleMessage(Constants.ERROR_OF_CHART_PAINTING, e.getMessage());
+				MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+						.getInternationalizedMessages().error_of_chart_painting(), e.getMessage());
 			}
 		}
 
@@ -246,14 +251,16 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalChartPanel.clear();
-			generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			generalChartPanel.add(new HTML(AppCurrContext.getInstance()
+					.getInternationalizedMessages().please_wait_data_are_loading()));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
 		dataService.getChart(getContext(), getElementInfo(), new GWTServiceCallback<Chart>(
-				Constants.ERROR_OF_CHART_DATA_RETRIEVING_FROM_SERVER) {
+				AppCurrContext.getInstance().getInternationalizedMessages()
+						.error_of_chart_data_retrieving_from_server()) {
 
 			@Override
 			public void onSuccess(final Chart achart) {
@@ -300,7 +307,8 @@ public class ChartPanel extends BasicElementPanelBasis {
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalChartPanel.clear();
-			generalChartPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			generalChartPanel.add(new HTML(AppCurrContext.getInstance()
+					.getInternationalizedMessages().please_wait_data_are_loading()));
 
 		}
 		if (dataService == null) {
@@ -308,7 +316,8 @@ public class ChartPanel extends BasicElementPanelBasis {
 		}
 
 		dataService.getChart(getContext(), getElementInfo(), new GWTServiceCallback<Chart>(
-				Constants.ERROR_OF_CHART_DATA_RETRIEVING_FROM_SERVER) {
+				AppCurrContext.getInstance().getInternationalizedMessages()
+						.error_of_chart_data_retrieving_from_server()) {
 
 			@Override
 			public void onSuccess(final Chart achart) {

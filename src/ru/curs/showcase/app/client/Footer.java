@@ -49,10 +49,11 @@ public class Footer {
 				SizeParser.getSize(AppCurrContext.getInstance().getMainPage().getFooterHeight());
 		} catch (NumberFormatException e) {
 
-			MessageBox.showMessageWithDetails(
-					Constants.TRANSFORMATION_HEADER_OR_FOOTER_WIDTH_ERROR, e.getClass().getName()
-							+ ": " + e.getMessage(), GeneralException.generateDetailedInfo(e),
-					MessageType.ERROR, GeneralException.needDetailedInfo(e));
+			MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+					.getInternationalizedMessages().transformation_header_or_footer_width_error(),
+					e.getClass().getName() + ": " + e.getMessage(),
+					GeneralException.generateDetailedInfo(e), MessageType.ERROR,
+					GeneralException.needDetailedInfo(e));
 		}
 
 		switch (SizeParser.getSizeType(AppCurrContext.getInstance().getMainPage()

@@ -45,7 +45,9 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 		generalWebTextPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
-		thmlwidget = new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING);
+		thmlwidget =
+			new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+					.please_wait_data_are_loading());
 
 		dataService = GWT.create(DataService.class);
 		generalWebTextPanel.add(thmlwidget);
@@ -58,7 +60,9 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 		setContext(null);
 
-		thmlwidget = new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING);
+		thmlwidget =
+			new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+					.please_wait_data_are_loading());
 		generalWebTextPanel = new VerticalPanel();
 
 		generalWebTextPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
@@ -72,7 +76,8 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		}
 
 		dataService.getWebText(getContext(), getElementInfo(), new GWTServiceCallback<WebText>(
-				Constants.ERROR_OF_WEBTEXT_DATA_RETRIEVING_FROM_SERVER) {
+				AppCurrContext.getInstance().getInternationalizedMessages()
+						.error_of_webtext_data_retrieving_from_server()) {
 
 			@Override
 			public void onSuccess(final WebText awt) {
@@ -149,14 +154,16 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
-			thmlwidget.setText(Constants.PLEASE_WAIT_DATA_ARE_LOADING);
+			thmlwidget.setText(AppCurrContext.getInstance().getInternationalizedMessages()
+					.please_wait_data_are_loading());
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
 		dataService.getWebText(getContext(), getElementInfo(), new GWTServiceCallback<WebText>(
-				Constants.ERROR_OF_WEBTEXT_DATA_RETRIEVING_FROM_SERVER) {
+				AppCurrContext.getInstance().getInternationalizedMessages()
+						.error_of_webtext_data_retrieving_from_server()) {
 
 			@Override
 			public void onSuccess(final WebText awt) {
@@ -202,14 +209,16 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
-			thmlwidget.setText(Constants.PLEASE_WAIT_DATA_ARE_LOADING);
+			thmlwidget.setText(AppCurrContext.getInstance().getInternationalizedMessages()
+					.please_wait_data_are_loading());
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
 		dataService.getWebText(getContext(), getElementInfo(), new GWTServiceCallback<WebText>(
-				Constants.ERROR_OF_WEBTEXT_DATA_RETRIEVING_FROM_SERVER) {
+				AppCurrContext.getInstance().getInternationalizedMessages()
+						.error_of_webtext_data_retrieving_from_server()) {
 
 			@Override
 			public void onSuccess(final WebText awt) {

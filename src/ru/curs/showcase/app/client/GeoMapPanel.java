@@ -23,7 +23,8 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 		generalMapPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
-		generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+		generalMapPanel.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+				.please_wait_data_are_loading()));
 		createChildPanels();
 		dataService = GWT.create(DataService.class);
 
@@ -61,7 +62,8 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		createChildPanels();
 
 		generalMapPanel = new VerticalPanel();
-		generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+		generalMapPanel.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+				.please_wait_data_are_loading()));
 	}
 
 	private void setMapPanel() {
@@ -71,7 +73,8 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		}
 
 		dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
-				Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
+				AppCurrContext.getInstance().getInternationalizedMessages()
+						.error_of_map_data_retrieving_from_server()) {
 
 			@Override
 			public void onSuccess(final GeoMap aGeoMap) {
@@ -195,12 +198,14 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			drawMap(getDivIdMap(), divIdLegend, paramMap1, paramMap2);
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
-				MessageBox.showMessageWithDetails(Constants.ERROR_OF_MAP_PAINTING, e.getMessage(),
+				MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+						.getInternationalizedMessages().error_of_map_painting(), e.getMessage(),
 						GeneralException.generateDetailedInfo(e.getCause()),
 						GeneralException.getMessageType(e.getCause()),
 						GeneralException.needDetailedInfo(e.getCause()));
 			} else {
-				MessageBox.showSimpleMessage(Constants.ERROR_OF_MAP_PAINTING, e.getMessage());
+				MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+						.getInternationalizedMessages().error_of_map_painting(), e.getMessage());
 			}
 		}
 
@@ -380,14 +385,16 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalMapPanel.clear();
-			generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			generalMapPanel.add(new HTML(AppCurrContext.getInstance()
+					.getInternationalizedMessages().please_wait_data_are_loading()));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
 		dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
-				Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
+				AppCurrContext.getInstance().getInternationalizedMessages()
+						.error_of_map_data_retrieving_from_server()) {
 
 			@Override
 			public void onSuccess(final GeoMap aGeoMap) {
@@ -434,14 +441,16 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalMapPanel.clear();
-			generalMapPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			generalMapPanel.add(new HTML(AppCurrContext.getInstance()
+					.getInternationalizedMessages().please_wait_data_are_loading()));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
 		dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
-				Constants.ERROR_OF_MAP_DATA_RETRIEVING_FROM_SERVER) {
+				AppCurrContext.getInstance().getInternationalizedMessages()
+						.error_of_map_data_retrieving_from_server()) {
 
 			@Override
 			public void onSuccess(final GeoMap aGeoMap) {

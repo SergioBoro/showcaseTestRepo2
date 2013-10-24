@@ -58,8 +58,8 @@ public final class ActionExecuter {
 			}
 			ac.setRelated(panelContext);
 
-			dataService.execServerAction(ac, new GWTServiceCallback<Void>(
-					Constants.ERROR_IN_SERVER_ACTIVITY) {
+			dataService.execServerAction(ac, new GWTServiceCallback<Void>(AppCurrContext
+					.getInstance().getInternationalizedMessages().error_in_server_activity()) {
 
 				@Override
 				public void onSuccess(final Void fakeRes) {

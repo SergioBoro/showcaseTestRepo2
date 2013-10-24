@@ -50,7 +50,8 @@ public class GridPanel extends BasicElementPanelBasis {
 		return exportToExcelAll;
 	}
 
-	private final MessagePopup mp = new MessagePopup(Constants.GRID_MESSAGE_POPUP_EXPORT_TO_EXCEL);
+	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance()
+			.getInternationalizedMessages().grid_message_popup_export_to_excel());
 
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
 	private DataGrid dg = null;
@@ -153,7 +154,8 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		// --------------
 
-		p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+		p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+				.please_wait_data_are_loading()));
 
 		if (grid1 == null) {
 			setDataGridPanel(UpdateType.FULL);
@@ -186,13 +188,15 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		if (isFirstLoading()) {
 			setNeedResetLocalContext(true);
-			p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+					.please_wait_data_are_loading()));
 			setupRootPanelAndGridPanel(grid1, UpdateType.FULL);
 		} else {
 			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 			if (this.getElementInfo().getShowLoadingMessage()) {
 				hpHeader.clear();
-				hpHeader.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+				hpHeader.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+						.please_wait_data_are_loading()));
 
 				hpToolbar.setVisible(false);
 				dg.setVisible(false);
@@ -363,7 +367,8 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		hpToolbar.setSpacing(1);
 		if (grid.getUISettings().isVisibleExportToExcelCurrentPage()) {
-			exportToExcelCurrentPage.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_CURRENT_PAGE);
+			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
+					.getInternationalizedMessages().grid_caption_export_to_excel_current_page());
 			exportToExcelCurrentPage.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -373,7 +378,8 @@ public class GridPanel extends BasicElementPanelBasis {
 			hpToolbar.add(exportToExcelCurrentPage);
 		}
 		if (grid.getUISettings().isVisibleExportToExcelAll()) {
-			exportToExcelAll.setTitle(Constants.GRID_CAPTION_EXPORT_TO_EXCEL_ALL);
+			exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_export_to_excel_all());
 			exportToExcelAll.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -383,7 +389,8 @@ public class GridPanel extends BasicElementPanelBasis {
 			hpToolbar.add(exportToExcelAll);
 		}
 		if (grid.getUISettings().isVisibleCopyToClipboard()) {
-			copyToClipboard.setTitle(Constants.GRID_CAPTION_COPY_TO_CLIPBOARD);
+			copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_copy_to_clipboard());
 			copyToClipboard.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -557,7 +564,8 @@ public class GridPanel extends BasicElementPanelBasis {
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
 
-		dh.setErrorCaption(Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL);
+		dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
+				.grid_error_caption_export_excel());
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridToExcel");
 
 		try {
@@ -574,8 +582,9 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		} catch (SerializationException e) {
 			mp.hide();
-			MessageBox
-					.showSimpleMessage(Constants.GRID_ERROR_CAPTION_EXPORT_EXCEL, e.getMessage());
+			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+					.getInternationalizedMessages().grid_error_caption_export_excel(),
+					e.getMessage());
 		}
 	}
 
@@ -703,7 +712,8 @@ public class GridPanel extends BasicElementPanelBasis {
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
 
-		dh.setErrorCaption(Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD);
+		dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
+				.grid_error_caption_file_download());
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
 
 		try {
@@ -713,7 +723,8 @@ public class GridPanel extends BasicElementPanelBasis {
 
 			dh.submit();
 		} catch (SerializationException e) {
-			MessageBox.showSimpleMessage(Constants.GRID_ERROR_CAPTION_FILE_DOWNLOAD,
+			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+					.getInternationalizedMessages().grid_error_caption_file_download(),
 					e.getMessage());
 		}
 	}
@@ -875,7 +886,8 @@ public class GridPanel extends BasicElementPanelBasis {
 		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			hpHeader.clear();
-			hpHeader.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			hpHeader.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+					.please_wait_data_are_loading()));
 
 			hpToolbar.setVisible(false);
 			dg.setVisible(false);

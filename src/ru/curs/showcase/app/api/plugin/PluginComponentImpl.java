@@ -7,8 +7,7 @@ import ru.curs.showcase.app.api.element.Size;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.Plugin;
 import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.app.client.GWTServiceCallback;
-import ru.curs.showcase.app.client.api.Constants;
+import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.*;
@@ -97,8 +96,9 @@ public class PluginComponentImpl implements PluginComponent {
 			requestData.setXmlParams(JSONUtils.createXmlByJSONValue("params", json));
 		}
 
-		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(
-				Constants.ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER) {
+		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
+				.getInstance().getInternationalizedMessages()
+				.error_of_plugin_data_retrieving_from_server()) {
 
 			@Override
 			public void onFailure(final Throwable caught) {
@@ -173,7 +173,8 @@ public class PluginComponentImpl implements PluginComponent {
 		Element element = DOM.getElementById(renderToId);
 		if (element != null) {
 			VerticalPanel generalPluginPanel = new VerticalPanel();
-			generalPluginPanel.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
+			generalPluginPanel.add(new HTML(AppCurrContext.getInstance()
+					.getInternationalizedMessages().please_wait_data_are_loading()));
 			waitElement = generalPluginPanel.getElement();
 			element.appendChild(waitElement);
 		}

@@ -63,7 +63,8 @@ public final class XFormPanelCallbacksEvents {
 				curXFormPanel.getDataService().saveXForms(
 						new XFormContext(curXFormPanel.getContext(), data),
 						curXFormPanel.getElementInfo(),
-						new GWTServiceCallback<Void>(Constants.XFORM_SAVE_DATA_ERROR) {
+						new GWTServiceCallback<Void>(AppCurrContext.getInstance()
+								.getInternationalizedMessages().xform_save_data_error()) {
 
 							@Override
 							public void onSuccess(final Void result) {
@@ -171,7 +172,8 @@ public final class XFormPanelCallbacksEvents {
 			XFormContext xcontext = new XFormContext(currentXFormPanel.getContext(), data);
 			uh.addStdPostParamsToBody(xcontext, currentXFormPanel.getElementInfo());
 		} catch (SerializationException e) {
-			MessageBox.showSimpleMessage(Constants.XFORMS_UPLOAD_ERROR, e.getMessage());
+			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+					.getInternationalizedMessages().xforms_upload_error(), e.getMessage());
 		}
 
 		currentXFormPanel.getPanel().add(uh);
@@ -572,7 +574,8 @@ public final class XFormPanelCallbacksEvents {
 			DownloadHelper dh = DownloadHelper.getInstance();
 			dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 			dh.clear();
-			dh.setErrorCaption(Constants.XFORMS_DOWNLOAD_ERROR);
+			dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
+					.xforms_download_error());
 			dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/download");
 
 			try {
@@ -581,7 +584,8 @@ public final class XFormPanelCallbacksEvents {
 						currentXFormPanel.getElementInfo());
 				dh.submit();
 			} catch (SerializationException e) {
-				MessageBox.showSimpleMessage(Constants.XFORMS_DOWNLOAD_ERROR, e.getMessage());
+				MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+						.getInternationalizedMessages().xforms_download_error(), e.getMessage());
 			}
 		}
 	}
@@ -641,10 +645,12 @@ public final class XFormPanelCallbacksEvents {
 		if (currentXFormPanel != null) {
 
 			if (currentXFormPanel.getUw() == null) {
-				currentXFormPanel.setUw(new UploadWindow(Constants.XFORM_UPLOAD_CAPTION));
+				currentXFormPanel.setUw(new UploadWindow(AppCurrContext.getInstance()
+						.getInternationalizedMessages().xform_upload_caption()));
 				currentXFormPanel.getPanel().add(currentXFormPanel.getUw());
 				UploadHelper uh = currentXFormPanel.getUw().getUploadHelper();
-				uh.setErrorCaption(Constants.XFORMS_UPLOAD_ERROR);
+				uh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
+						.xforms_upload_error());
 				uh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/upload");
 			}
 			currentXFormPanel.getUw().runUpload(param.linkId(), new UploadEndHandler() {

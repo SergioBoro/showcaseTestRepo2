@@ -8,7 +8,7 @@ import java.util.*;
 import ru.beta2.extra.gwt.ui.panels.CursScrolledTabLayoutPanel;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.api.BasicElementPanelBasis;
 
 import com.google.gwt.dom.client.*;
 import com.google.gwt.dom.client.Style.Unit;
@@ -104,7 +104,10 @@ public class GeneralDataPanel {
 		sp.add(ht);
 		tabVerticalPanel.add(sp);
 		if (welcomeTabCaption == null) {
-			getTabPanel().add(tabVerticalPanel, Constants.WELCOME_TAB_CAPTION);
+			getTabPanel().add(
+					tabVerticalPanel,
+					AppCurrContext.getInstance().getInternationalizedMessages()
+							.welcome_tab_caption());
 		} else {
 			getTabPanel().add(tabVerticalPanel, welcomeTabCaption);
 		}

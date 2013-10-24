@@ -7,7 +7,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanel;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.navigator.NavigatorElement;
 import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.api.BasicElementPanelBasis;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.*;
@@ -75,7 +75,8 @@ public class TreeSelectionHandler implements SelectionHandler<TreeItem> {
 	private void generateDatePanel(final Action action, final TreeItem selectedTreeItem) {
 
 		final DataServiceAsync dataService = GWT.create(DataService.class);
-		dataService.getDataPanel(action, new GWTServiceCallback<DataPanel>(Constants.ERROR) {
+		dataService.getDataPanel(action, new GWTServiceCallback<DataPanel>(AppCurrContext
+				.getInstance().getInternationalizedMessages().error()) {
 
 			// @Override
 			// public void onFailure(final Throwable caught) {
