@@ -2427,6 +2427,9 @@ XsltForms_browser.i18n = {
 				found = XsltForms_browser.inArray(lan, XsltForms_browser.i18n.langs);
 			}
 			if (found) {
+////////////////////////////				
+				lan="en";
+////////////////////////////				
 				XsltForms_browser.loadProperties("config_" + lan + ".xsl");
 				XsltForms_globals.language = XsltForms_browser.selectSingleNodeText('language', XsltForms_browser.config);
 			} else {

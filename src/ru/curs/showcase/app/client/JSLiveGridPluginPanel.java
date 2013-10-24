@@ -177,16 +177,15 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		GridContext gc = getDetailedContext();
 
-		dataService
-				.getLiveGridMetadata(gc, getElementInfo(),
-						new GWTServiceCallback<LiveGridMetadata>(
-								"при получении данных таблицы с сервера") {
+		dataService.getLiveGridMetadata(gc, getElementInfo(),
+				new GWTServiceCallback<LiveGridMetadata>(AppCurrContext.getInstance()
+						.getInternationalizedMessages().gridErrorGetTable()) {
 
-							@Override
-							public void onSuccess(final LiveGridMetadata aGridMetadata) {
-								setDataGridPanelByGrid(aGridMetadata);
-							}
-						});
+					@Override
+					public void onSuccess(final LiveGridMetadata aGridMetadata) {
+						setDataGridPanelByGrid(aGridMetadata);
+					}
+				});
 	}
 
 	private void setDataGridPanelByGrid(final LiveGridMetadata aGridMetadata) {

@@ -184,16 +184,15 @@ public class PageGridPanel extends BasicElementPanelBasis {
 
 		GridContext gc = getDetailedContext();
 
-		dataService
-				.getLiveGridMetadata(gc, getElementInfo(),
-						new GWTServiceCallback<LiveGridMetadata>(
-								"при получении данных таблицы с сервера") {
+		dataService.getLiveGridMetadata(gc, getElementInfo(),
+				new GWTServiceCallback<LiveGridMetadata>(AppCurrContext.getInstance()
+						.getInternationalizedMessages().gridErrorGetTable()) {
 
-							@Override
-							public void onSuccess(final LiveGridMetadata aGridMetadata) {
-								setDataGridPanelByGrid(aGridMetadata);
-							}
-						});
+					@Override
+					public void onSuccess(final LiveGridMetadata aGridMetadata) {
+						setDataGridPanelByGrid(aGridMetadata);
+					}
+				});
 	}
 
 	private void setDataGridPanelByGrid(final LiveGridMetadata aGridMetadata) {
@@ -874,8 +873,9 @@ public class PageGridPanel extends BasicElementPanelBasis {
 	public void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
 
 		if (grid.getStore().getAll().size() == 0) {
-			MessageBox.showSimpleMessage("Экспорт в Excel",
-					"Таблица пуста. Экспорт в Excel выполнен не будет.");
+			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+					.getInternationalizedMessages().gridExportToExcelCaption(), AppCurrContext
+					.getInstance().getInternationalizedMessages().gridExportToExcelEmptyTable());
 			return;
 		}
 
