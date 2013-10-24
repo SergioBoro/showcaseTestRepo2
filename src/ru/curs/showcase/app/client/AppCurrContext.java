@@ -8,7 +8,9 @@ import java.util.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanel;
 import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.internationalization.constantsShowcase;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
@@ -20,6 +22,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
  */
 public final class AppCurrContext extends ActionTransformer {
 
+	private final constantsShowcase internationalizedMessages = GWT
+			.create(constantsShowcase.class);
+
 	/**
 	 * Список id элементов, для которых были добавлены js и css из внешних
 	 * файлов в DOM-модель главной страницы index.jsp (например, элементу
@@ -29,6 +34,10 @@ public final class AppCurrContext extends ActionTransformer {
 	 */
 	private static List<String> listOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel =
 		new ArrayList<String>();
+
+	public constantsShowcase getInternationalizedMessages() {
+		return internationalizedMessages;
+	}
 
 	/**
 	 * Переменная хранящая в структуре Map закэшированные элементы
