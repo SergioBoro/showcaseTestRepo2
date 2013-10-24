@@ -6,6 +6,7 @@ import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.Constants;
+import ru.curs.showcase.app.client.internationalization.constantsShowcase;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.*;
@@ -22,11 +23,16 @@ public class App implements EntryPoint {
 	 */
 	private DataServiceAsync dataService;
 
+	private final constantsShowcase messages = GWT.create(constantsShowcase.class);
+
 	/**
 	 * Метод точки входа в приложение Showcase.
 	 */
 	@Override
 	public void onModuleLoad() {
+
+		// MessageBox.showSimpleMessage("123", messages.sendButtonText());
+
 		XFormsUtils.initXForms();
 		FeedbackJSNI.initFeedbackJSNIFunctions();
 		// AppCurrContext.appCurrContext = AppCurrContext.getInstance();
