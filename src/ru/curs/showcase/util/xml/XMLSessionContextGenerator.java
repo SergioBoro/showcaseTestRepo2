@@ -28,6 +28,7 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 
 	public static final String SESSION_CONTEXT_TAG = "sessioncontext";
 	private static final String URL_PARAMS_TAG = "urlparams";
+	private static final String SESSIONID_TAG = "sessionid";
 	private static final String URL_PARAM_TAG = "urlparam";
 	private static final String SID_TAG = "sid";
 	private static final String FULLUSERNAME_TAG = "fullusername";
@@ -96,6 +97,10 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		node = info.createElement(SID_TAG);
 		info.getDocumentElement().appendChild(node);
 		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserSID()));
+
+		node = info.createElement(SESSIONID_TAG);
+		info.getDocumentElement().appendChild(node);
+		node.appendChild(info.createTextNode(SessionUtils.getCurrentSessionId()));
 
 		node = info.createElement(EMAIL_TAG);
 		info.getDocumentElement().appendChild(node);
