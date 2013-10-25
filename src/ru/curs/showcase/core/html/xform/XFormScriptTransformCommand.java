@@ -15,7 +15,8 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
-public final class XFormScriptTransformCommand extends XFormContextCommand<String> {
+public final class XFormScriptTransformCommand extends
+		XFormContextCommand<String> {
 
 	public XFormScriptTransformCommand(final XFormContext aContext,
 			final DataPanelElementInfo aElInfo) {
@@ -26,7 +27,8 @@ public final class XFormScriptTransformCommand extends XFormContextCommand<Strin
 	protected void mainProc() throws Exception {
 		String procName = getElementInfo().getProcName();
 
-		SourceSelector<HTMLAdvGateway> selector = new SourceSelector<HTMLAdvGateway>(procName) {
+		SourceSelector<HTMLAdvGateway> selector = new SourceSelector<HTMLAdvGateway>(
+				procName) {
 			@Override
 			public HTMLAdvGateway getGateway() {
 				switch (sourceType()) {
@@ -41,6 +43,8 @@ public final class XFormScriptTransformCommand extends XFormContextCommand<Strin
 					default:
 						throw new NotImplementedYetException();
 					}
+				case CELESTA:
+					return new XFormCelestaGateway();
 				default:
 					return new HtmlDBGateway();
 				}
@@ -50,7 +54,8 @@ public final class XFormScriptTransformCommand extends XFormContextCommand<Strin
 		String decodedContent = getContext().getFormData();
 		if (((selector.sourceType() == SourceType.SP) || (selector.sourceType() == SourceType.SQL))
 				&& (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL)) {
-			decodedContent = XMLUtils.xmlServiceSymbolsToNormalWithoutDoubleQuotes(decodedContent);
+			decodedContent = XMLUtils
+					.xmlServiceSymbolsToNormalWithoutDoubleQuotes(decodedContent);
 		} else {
 			decodedContent = XMLUtils.xmlServiceSymbolsToNormal(decodedContent);
 		}

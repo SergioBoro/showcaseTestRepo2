@@ -17,21 +17,51 @@
 				</schema>
 			</xf:instance>
 
+			
+			<xf:submission id="subform_transformation_submit" method="post"
+				instance="xformId_mainInstance" replace="instance" ref="instance('xformId_mainInstance')"
+				action="secured/submit?proc=g1.xform.submit.celesta">
+				<xf:action ev:event="xforms-submit-done">
+					<xf:message>Submission успешно выполнен</xf:message>
+				</xf:action>
+				<xf:action ev:event="xforms-submit-error">
+					<xf:message>Ошибка при выполнении submission</xf:message>
+				</xf:action>				
+			</xf:submission>
+			
 			<xf:bind>
 			</xf:bind>
 		</xf:model>
 	</head>
 	<body>
-		<h1>Hello, world!</h1>
-
 		<div style="font-size: 15px;"> Текстовое поле: </div>
 		<div>
 			<xf:input ref="instance('xformId_mainInstance')/info/name">
 				<xf:help>Справка</xf:help>
 				<xf:hint>Дополнительная информация</xf:hint>
 			</xf:input>
+		</div>
+		<hr/>
+		<div>		
+			<xf:trigger>
+				<xf:label>Сохранить данные (gwtXFormSave)</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:load
+						resource="javascript:gwtXFormSave('xformId', null,  Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
+				</xf:action>
+			</xf:trigger>		
 		</div>		
-		<hr/>		
+		<hr/>
+		<div>
+			<xf:trigger>
+				<xf:label>Вызов XFormsTransformationServlet(secured/submit)</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:send submission="subform_transformation_submit" />
+				</xf:action>
+			</xf:trigger>
+		</div>
+		
+		
 	</body>
 </html>
 

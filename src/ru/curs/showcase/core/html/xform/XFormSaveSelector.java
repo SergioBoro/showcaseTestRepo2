@@ -44,6 +44,8 @@ public class XFormSaveSelector extends SourceSelector<HTMLAdvGateway> {
 		case FILE:
 			res = new XFormFileGateway();
 			break;
+		case CELESTA:
+			return new XFormCelestaGateway();
 		default:
 			res = new HtmlDBGateway();
 		}

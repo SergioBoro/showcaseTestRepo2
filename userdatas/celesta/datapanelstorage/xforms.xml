@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datapanel>
-	<tab id="01" name="Simple">
-		<element id="0101" type="xforms" template="Template.xml" proc="g1.main.xform.celesta" />
+	<tab id="01" name="Samples">
+		<element id="0101" type="xforms" template="Template.xml" proc="g1.xform.main.celesta">
+			<proc id="proc1" name="g1.xform.save.celesta" type="SAVE" />
+		</element>
 	</tab>
 </datapanel>

@@ -60,29 +60,3 @@ def webtext(context, main, add, filterinfo, session, elementId):
     </properties>
     '''    
     return JythonDTO(data, settings)
-
-def xform(context, main, add, filterinfo, session, elementId):
-    print 'Get navigator data from Celesta Python procedure.'
-    print 'User %s' % context.userId
-    print 'main "%s".' % main
-    print 'add "%s".' % add
-    print 'filterinfo "%s".' % filterinfo
-    print 'session "%s".' % session
-    print 'elementId "%s".' % elementId
-    
-    data = u'''
-    <schema xmlns="">
-      <info>
-        <name>Белгородская обл.</name>
-        <growth />
-        <eyescolour />
-        <music />
-        <comment />
-      </info>
-    </schema>
-    '''
-    settings = u'''
-    <properties>        
-    </properties>
-    '''    
-    return JythonDTO(data, settings)

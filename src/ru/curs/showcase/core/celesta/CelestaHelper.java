@@ -59,7 +59,10 @@ public class CelestaHelper<T> {
 				return null;
 			}
 			Object obj = result.__tojava__(resultType);
-			if (obj != null && obj.getClass().isAssignableFrom(resultType)) {
+			if (obj == null) {
+				return null;
+			}
+			if (obj.getClass().isAssignableFrom(resultType)) {
 				return resultType.cast(obj);
 			} else {
 				throw new CelestaWorkerException("Result is not instance of "
