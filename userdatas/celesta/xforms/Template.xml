@@ -60,7 +60,24 @@
 				</xf:action>
 			</xf:trigger>
 		</div>
-		
+		<hr/>
+		<div>
+			<xf:trigger>
+				<xf:label>Вызов Selector</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:load
+						resource="javascript:showSelector({
+			           id : 'xformId',
+                       procCount : 'g1.selector.procCount.celesta',
+                       procList  : 'g1.selector.procList.celesta',
+					   /*procListAndCount    : 'g1.selector.procListAndCount.celesta',*/
+                       generalFilters      : '',
+                       currentValue        : '',
+                       windowCaption       : 'Выберите_название',
+                       });" />
+				</xf:action>
+			</xf:trigger>
+		</div>
 		
 	</body>
 </html>

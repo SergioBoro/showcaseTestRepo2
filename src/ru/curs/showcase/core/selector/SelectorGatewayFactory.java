@@ -35,6 +35,9 @@ public class SelectorGatewayFactory extends SourceSelector<SelectorGateway> {
 		case JYTHON:
 			result = new SelectorJythonGateway();
 			break;
+		case CELESTA:
+			result = new SelectorCelestaGateway();
+			break;
 		default:
 		}
 		if (result == null) {
