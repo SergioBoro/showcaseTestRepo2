@@ -12,9 +12,9 @@ import ru.curs.showcase.core.jython.*;
  * @author bogatov
  * 
  */
-public class XFormJythonDownloadHelper extends JythonQuery<JythonDownloadResult> {
-	private static final String NO_DOWNLOAD_PROC_ERROR =
-		"Не задана процедура для скачивания файлов из сервера для linkId=";
+public class XFormJythonDownloadHelper extends
+		JythonQuery<JythonDownloadResult> {
+	private static final String NO_DOWNLOAD_PROC_ERROR = "Не задана процедура скачивания файлов c сервера для linkId=";
 
 	private final DataPanelElementInfo elementInfo;
 	private final XFormContext context;
@@ -28,7 +28,8 @@ public class XFormJythonDownloadHelper extends JythonQuery<JythonDownloadResult>
 
 		DataPanelElementProc proc = aElement.getProcs().get(aLinkId);
 		if (proc == null) {
-			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR + aLinkId);
+			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR
+					+ aLinkId);
 		}
 		this.jythonProcName = proc.getName();
 	}

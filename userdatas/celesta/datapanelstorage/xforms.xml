@@ -3,6 +3,8 @@
 	<tab id="01" name="Samples">
 		<element id="0101" type="xforms" template="Template.xml" proc="g1.xform.main.celesta">
 			<proc id="proc1" name="g1.xform.save.celesta" type="SAVE" />
+			<proc id="upload" name="g1.xform.uploadFile.celesta" type="UPLOAD" />
+			<proc id="download" name="g1.xform.downloadFile.celesta" type="DOWNLOAD" />
 		</element>
 	</tab>
 </datapanel>

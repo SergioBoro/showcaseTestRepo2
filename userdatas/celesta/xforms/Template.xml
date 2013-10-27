@@ -78,7 +78,18 @@
 				</xf:action>
 			</xf:trigger>
 		</div>
-		
+		<hr/>
+		<div>Загрузка файла</div>		
+		<xf:upload id="0101_upload" submit="true" submitLabel="Загрузить файлы" singleFile="true"/>
+		<hr/>
+		<div> Загрузка файла app.properties </div>
+		<xf:trigger>
+			<xf:label>Скачать файл</xf:label>
+			<xf:action ev:event="DOMActivate">
+				<xf:load
+					resource="javascript:gwtXFormDownload('xformId', 'download',  Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
+			</xf:action>
+		</xf:trigger>
 	</body>
 </html>
 

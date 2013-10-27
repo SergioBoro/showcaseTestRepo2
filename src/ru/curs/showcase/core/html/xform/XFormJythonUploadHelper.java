@@ -16,8 +16,7 @@ import ru.curs.showcase.util.*;
  * 
  */
 public class XFormJythonUploadHelper extends JythonQuery<JythonErrorResult> {
-	private static final String NO_DOWNLOAD_PROC_ERROR =
-		"Не задана процедура для загрузки файлов из сервера для linkId=";
+	private static final String NO_UPLOAD_PROC_ERROR = "Не задана процедура загрузки файлов на сервер для linkId=";
 
 	private final DataPanelElementInfo elementInfo;
 	private final XFormContext context;
@@ -34,7 +33,7 @@ public class XFormJythonUploadHelper extends JythonQuery<JythonErrorResult> {
 
 		DataPanelElementProc proc = aElement.getProcs().get(aLinkId);
 		if (proc == null) {
-			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR + aLinkId);
+			throw new IncorrectElementException(NO_UPLOAD_PROC_ERROR + aLinkId);
 		}
 		this.jythonProcName = proc.getName();
 
