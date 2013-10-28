@@ -18779,7 +18779,7 @@ set @gridsettings_str='<gridsettings>
         <col id="Логотип" width="250px" type="LINK"/>
         <col id="URL" width="150px" type="LINK"/>
         </columns>
-<properties flip="false" pagesize="20" rowHeight = "50" profile="grid.nowidth.properties" autoSelectRecordId="3" 
+<properties flip="false" pagesize="20" gridWidth="1200px" rowHeight = "50" profile="grid.nowidth.properties" autoSelectRecordId="3" 
  autoSelectRelativeRecord="false" autoSelectColumnId="URL"/>
 </gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
@@ -18834,7 +18834,7 @@ set @gridsettings_str='<gridsettings>
         <col id="Логотип" width="250px" type="LINK"/>
         <col id="URL" width="100px" type="LINK"/>
         </columns>
-<properties flip="false" pagesize="15" rowHeight = "50"
+<properties flip="false" pagesize="15" gridWidth="1200px" rowHeight = "50"
 totalCount="0" profile="grid.nowidth.properties"/>
 </gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
@@ -18975,7 +18975,7 @@ set @gridsettings_str='<gridsettings>
                                 </element>                                                                   
                             </datapanel>
                         </action>
-         <properties flip="false" pagesize="50" gridHeight="500" autoSelectRecordId="9"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>'         
+         <properties flip="false" pagesize="50" gridWidth="1200px" gridHeight="500" autoSelectRecordId="9"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>'         
 set @gridsettings=CAST(@gridsettings_str as xml)
 
 END
@@ -19122,7 +19122,7 @@ set @gridsettings_str='<gridsettings>
                                 </element>                                                                                                   
                             </datapanel>
                         </action>
-<properties pagesize="20" profile="sngl_before_dbl.properties" totalCount="'+
+<properties pagesize="20" gridWidth="1200px"  profile="sngl_before_dbl.properties" totalCount="'+
 CAST(@rec_count as varchar(max))+'"/></gridsettings>' 
 
 set  @gridsettings=CAST(@gridsettings_str as xml)
@@ -20177,7 +20177,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                                 
                             </datapanel>
                         </action>
-<properties flip="false" pagesize="50" autoSelectRecordId="9" autoSelectRelativeRecord="false" autoSelectColumnId="4кв. 2005г." totalCount="0" profile="grid.nowidth.properties"/></gridsettings>' 
+<properties flip="false" pagesize="50" gridWidth="1200px" autoSelectRecordId="9" autoSelectRelativeRecord="false" autoSelectColumnId="4кв. 2005г." totalCount="0" profile="grid.nowidth.properties"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO
@@ -20434,7 +20434,7 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                                 
                             </datapanel>
                         </action>
-<properties flip="false" pagesize="50" autoSelectRecordId="9"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>' 
+<properties flip="false" pagesize="50" gridWidth="1200px"  autoSelectRecordId="9"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
 END
 GO
