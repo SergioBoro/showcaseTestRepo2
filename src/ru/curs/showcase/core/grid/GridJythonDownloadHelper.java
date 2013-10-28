@@ -13,8 +13,7 @@ import ru.curs.showcase.core.jython.*;
  * 
  */
 public class GridJythonDownloadHelper extends JythonQuery<JythonDownloadResult> {
-	private static final String NO_DOWNLOAD_PROC_ERROR =
-		"Не задана процедура для скачивания файлов из сервера для linkId=";
+	private static final String NO_DOWNLOAD_PROC_ERROR = "Не задана процедура скачивания файлов с сервера для linkId=";
 
 	private final DataPanelElementInfo elementInfo;
 	private final CompositeContext context;
@@ -22,7 +21,8 @@ public class GridJythonDownloadHelper extends JythonQuery<JythonDownloadResult> 
 	private final String recordId;
 
 	protected GridJythonDownloadHelper(final CompositeContext aContext,
-			final DataPanelElementInfo aElement, final ID aLinkId, final String aRecordId) {
+			final DataPanelElementInfo aElement, final ID aLinkId,
+			final String aRecordId) {
 		super(JythonDownloadResult.class);
 		this.context = aContext;
 		this.elementInfo = aElement;
@@ -30,7 +30,8 @@ public class GridJythonDownloadHelper extends JythonQuery<JythonDownloadResult> 
 
 		DataPanelElementProc proc = aElement.getProcs().get(aLinkId);
 		if (proc == null) {
-			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR + aLinkId);
+			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR
+					+ aLinkId);
 		}
 		this.jythonProcName = proc.getName();
 	}

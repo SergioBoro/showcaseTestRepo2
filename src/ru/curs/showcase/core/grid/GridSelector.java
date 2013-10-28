@@ -43,6 +43,9 @@ public class GridSelector extends SourceSelector<GridGateway> {
 		case JYTHON:
 			res = new GridJythonGateway();
 			break;
+		case CELESTA:
+			res = new GridCelestaGateway();
+			break;
 		default:
 			throw new NotImplementedYetException();
 		}

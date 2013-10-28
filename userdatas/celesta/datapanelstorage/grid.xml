@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>
+	<tab id="01" name="Grid">
+		<element id="0101" type="grid" proc="g1.grid.getDataAndSetting.celesta" />
+	</tab>
+	<tab id="02" name="Live grid">
+		<element id="0201" type="grid" subtype="EXT_LIVE_GRID" proc="g1.grid.getData.celesta">
+			<proc id="metadata" name="g1.grid.getSetting.celesta" type="METADATA"/>
+			<proc id="download" name="g1.grid.downloadFile.celesta" type="DOWNLOAD" />
+		</element>
+	</tab>
+</datapanel>

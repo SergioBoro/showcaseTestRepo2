@@ -43,7 +43,7 @@ def save(context, main, add, filterinfo, session, elementId, data):
     print 'data "%s".' % data
     
 def submit(context, main, add, filterinfo, session, data):
-    print 'Transform xform data from Celesta Python procedure.'
+    print 'Submit xform data from Celesta Python procedure.'
     print 'User %s' % context.userId
     print 'main "%s".' % main
     print 'add "%s".' % add
@@ -54,7 +54,7 @@ def submit(context, main, add, filterinfo, session, data):
     return data;
 
 def uploadFile(context, main, add, filterinfo, session, elementId, data, fileName, file):
-    print 'Save xform data from Celesta Python procedure.'
+    print 'Upload file xform from Celesta Python procedure.'
     print 'User %s' % context.userId
     print 'main "%s".' % main
     print 'add "%s".' % add
@@ -65,7 +65,7 @@ def uploadFile(context, main, add, filterinfo, session, elementId, data, fileNam
     print 'fileName "%s".' % fileName
 
 def downloadFile(context, main, add, filterinfo, session, elementId, data):
-    print 'Save xform data from Celesta Python procedure.'
+    print 'Download file xform from Celesta Python procedure.'
     print 'User %s' % context.userId
     print 'main "%s".' % main
     print 'add "%s".' % add

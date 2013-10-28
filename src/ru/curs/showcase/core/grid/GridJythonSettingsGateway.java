@@ -30,10 +30,12 @@ public class GridJythonSettingsGateway extends JythonQuery<JythonDTO> implements
 		this.context = aContext;
 		this.element = aElement;
 
-		RecordSetElementRawData rawData = new RecordSetElementRawData(aElement, aContext);
+		RecordSetElementRawData rawData = new RecordSetElementRawData(aElement,
+				aContext);
 		runTemplateMethod();
 		if (getResult().getSettings() != null) {
-			InputStream inSettings = TextUtils.stringToStream(getResult().getSettings());
+			InputStream inSettings = TextUtils.stringToStream(getResult()
+					.getSettings());
 			rawData.setSettings(inSettings);
 		}
 
@@ -47,7 +49,7 @@ public class GridJythonSettingsGateway extends JythonQuery<JythonDTO> implements
 
 	@Override
 	protected Object execute() {
-		return getProc().getRawData(context, element.getMetadataProc().getId().getString());
+		return getProc().getRawData(context, element.getId().getString());
 	}
 
 	@Override

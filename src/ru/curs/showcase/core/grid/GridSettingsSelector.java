@@ -12,7 +12,8 @@ import ru.curs.showcase.util.exception.NotImplementedYetException;
  * @author den
  * 
  */
-public class GridSettingsSelector extends SourceSelector<ElementSettingsGateway> {
+public class GridSettingsSelector extends
+		SourceSelector<ElementSettingsGateway> {
 
 	public GridSettingsSelector(final DataPanelElementInfo elInfo) {
 		super(elInfo.getMetadataProc().getName());
@@ -39,6 +40,9 @@ public class GridSettingsSelector extends SourceSelector<ElementSettingsGateway>
 			break;
 		case JYTHON:
 			res = new GridJythonSettingsGateway();
+			break;
+		case CELESTA:
+			res = new GridCelestaSettingsGateway();
 			break;
 		default:
 			throw new NotImplementedYetException();
