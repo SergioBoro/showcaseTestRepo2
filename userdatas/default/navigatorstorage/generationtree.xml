@@ -255,14 +255,13 @@
       </level2>
       
       
-      <level2 id="JSLiveGrid1" name="JSLiveGrid1" selectOnLoad="true">
+      <level2 id="JSLiveGrid1" name="JSLiveGrid1">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
           <datapanel type="byver/JSLiveGrid.xml" tab="firstOrCurrent" >          
           </datapanel>
         </action>
       </level2>
-      
       <level2 id="JSLiveGrid2" name="JSLiveGrid2">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
@@ -270,8 +269,6 @@
           </datapanel>
         </action>
       </level2>
-      
-      
       <level2 id="JSPageGrid1" name="JSPageGrid1">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
@@ -279,7 +276,6 @@
           </datapanel>
         </action>
       </level2>
-      
       <level2 id="JSPageGrid2" name="JSPageGrid2">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
@@ -287,6 +283,24 @@
           </datapanel>
         </action>
       </level2>
+      
+      
+      
+      <level2 id="JSTreeGrid1" name="JSTreeGrid1" selectOnLoad="true">
+        <action>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
+          <datapanel type="byver/JSTreeGrid.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
+      <level2 id="JSTreeGrid2" name="JSTreeGrid2">
+        <action>
+          <main_context>Запасы на конец отчетного периода - Всего</main_context>
+          <datapanel type="byver/JSTreeGrid2.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
+      
       
       
       

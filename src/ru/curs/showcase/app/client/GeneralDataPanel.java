@@ -508,6 +508,10 @@ public class GeneralDataPanel {
 			w = generateJSPageGridElement(dpe);
 			break;
 
+		case JS_TREE_GRID:
+			w = generateJSTreeGridElement(dpe);
+			break;
+
 		case PAGING_GRID: // существующий грид
 		default:
 			w = generatePagingGridElement(dpe);
@@ -564,6 +568,24 @@ public class GeneralDataPanel {
 		} else {
 			// в случае когда у данного элемента есть главный элемент
 			mp = new JSPageGridPluginPanel(dpe);
+			w = mp.getPanel();
+			mp.hidePanel();
+		}
+
+		getUiElements(dpe).add(new UIDataPanelElement(mp));
+		addDataPanelForCaching(dpe, mp);
+		return w;
+	}
+
+	private static Widget generateJSTreeGridElement(final DataPanelElementInfo dpe) {
+		BasicElementPanelBasis mp = null;
+		Widget w = null;
+		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+			mp = new JSTreeGridPluginPanel(getElementContextForNavigatorAction(dpe), dpe);
+			w = mp.getPanel();
+		} else {
+			// в случае когда у данного элемента есть главный элемент
+			mp = new JSTreeGridPluginPanel(dpe);
 			w = mp.getPanel();
 			mp.hidePanel();
 		}

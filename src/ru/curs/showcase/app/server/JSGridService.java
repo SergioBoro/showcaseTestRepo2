@@ -7,7 +7,7 @@ import javax.servlet.http.*;
 
 import org.json.simple.JSONArray;
 
-import ru.curs.showcase.app.api.datapanel.PluginInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.FakeService;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
@@ -57,15 +57,22 @@ public class JSGridService extends HttpServlet {
 		hresp.setCharacterEncoding("UTF-8");
 
 		// ---------------------------------------------
+		int firstIndex = 0;
+		int lastIndex = 0;
+		int totalCount = 0;
+		if (context.getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
+			totalCount = lgd.getData().size();
+			firstIndex = 0;
+			lastIndex = totalCount - 1;
+		} else {
+			totalCount = context.getLiveInfo().getTotalCount();
+			firstIndex = context.getLiveInfo().getOffset();
+			lastIndex = context.getLiveInfo().getOffset() + context.getLiveInfo().getLimit() - 1;
+		}
 
-		hresp.setHeader(
-				"Content-Range",
-				"items "
-						+ String.valueOf(context.getLiveInfo().getOffset())
-						+ "-"
-						+ String.valueOf(context.getLiveInfo().getOffset()
-								+ context.getLiveInfo().getLimit() - 1) + "/"
-						+ String.valueOf(context.getLiveInfo().getTotalCount()));
+		hresp.setHeader("Content-Range",
+				"items " + String.valueOf(firstIndex) + "-" + String.valueOf(lastIndex) + "/"
+						+ String.valueOf(totalCount));
 
 		// -------------------------------
 
