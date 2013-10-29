@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="xsltforms/xsltforms.xsl" type="text/xsl"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events"
+	xmlns:xsd="http://www.w3.org/2001/XMLschema" xmlns:fs="http://www.curs.ru/ns/FormServer"
+	xmlns:xf="http://www.w3.org/2002/xforms">
+	<head>
+		<xf:model id="xformId_mainModel">
+			<xf:instance id="xformId_mainInstance">
+				<schema xmlns="">
+					<info>
+						<name />
+						<growth />
+						<eyescolour />
+						<music />
+						<comment />
+					</info>
+				</schema>
+			</xf:instance>
+			
+			<xf:bind>
+			</xf:bind>
+		</xf:model>
+	</head>
+	<body>
+		<div>
+			<xf:trigger>
+				<xf:label>Вызов ExtJsTree плагина</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:load
+						resource="javascript:gwtCreatePlugin({
+							id:'xformId',
+							plugin:'extJsTree',
+							proc:'g1.plugin.pluginDataAndSettings.celesta',
+							postProcessProc:'handleExtJsTree.py',
+							getDataProcName:'g1.plugin.pluginData.celesta',
+							generalFilters:['XPath(instance(quot(xformId_mainInstance))/info/name)'],
+							params:{
+								treePanel: {
+									title: 'Элементы дерева',
+									listeners: {
+										checkchange: {
+											fn: function(node, checked, eOpts) {
+												if (checked) {
+													alert('CheckChange event. Select node '+node.get('name')+'(id:'+node.get('id')+', attr1:'+node.get('attr1')+')');
+												}
+											}
+										}
+									}
+								},
+								core: {
+									filter:{
+										startsWith:true,
+										delay:900
+									}
+								},
+								dataModel:{
+									fields:[
+										{name: 'attr1', type: 'string'}
+									]
+								}
+							},
+							options: {								
+								dataWidth: '500px',
+								dataHeight: '450px',
+								windowCaption: 'Выбор данных из дерева',
+								onSelectionComplete: function(ok, plugin) {
+									if (ok) {
+									}
+								}
+							}
+						});" />
+				</xf:action>
+			</xf:trigger>
+		</div>
+	</body>
+</html>
+
+
+
+
+
+

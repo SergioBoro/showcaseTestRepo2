@@ -10,7 +10,8 @@ import ru.curs.showcase.util.exception.NotImplementedYetException;
  * @author bogatov
  * 
  */
-public class GetDataPluginGatewayFactory extends SourceSelector<GetDataPluginGateway> {
+public class GetDataPluginGatewayFactory extends
+		SourceSelector<GetDataPluginGateway> {
 
 	public GetDataPluginGatewayFactory(final String procName) {
 		super(procName);
@@ -34,6 +35,9 @@ public class GetDataPluginGatewayFactory extends SourceSelector<GetDataPluginGat
 			break;
 		case JYTHON:
 			result = new GetDataPluginJythonGateway();
+			break;
+		case CELESTA:
+			result = new GetDataPluginCelestaGateway();
 			break;
 		default:
 		}

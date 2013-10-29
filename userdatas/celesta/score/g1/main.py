@@ -28,6 +28,12 @@ def navigator(context, session):
                         <main_context></main_context>
                         <datapanel type="grid.xml" tab="firstOrCurrent"></datapanel>
                     </action>
+                </level2>
+                <level2 id="114" name="Plugin">
+                    <action>
+                        <main_context></main_context>
+                        <datapanel type="plugin.xml" tab="firstOrCurrent"></datapanel>
+                    </action>
                 </level2>     
             </level1>
         </group>

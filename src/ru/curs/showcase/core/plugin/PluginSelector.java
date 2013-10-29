@@ -2,7 +2,7 @@ package ru.curs.showcase.core.plugin;
 
 import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.core.SourceSelector;
-import ru.curs.showcase.core.html.HTMLGateway;
+import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
 
@@ -34,6 +34,8 @@ public class PluginSelector extends SourceSelector<HTMLGateway> {
 			default:
 			}
 			break;
+		case CELESTA:
+			return new HTMLCelestaGateway();
 		default:
 			return new PluginDBGateway(requestData.getXmlParams());
 		}
