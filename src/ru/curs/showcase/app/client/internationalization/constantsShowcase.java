@@ -48,6 +48,9 @@ public interface constantsShowcase extends Messages {
 	@DefaultMessage("when receiving data from the server to the main XForm")
 	String xformsErrorGetMainData();
 
+	@DefaultMessage("An error occurred during downloading files")
+	String uploadError();
+
 	@DefaultMessage("Пожалуйста, подождите...Идет загрузка данных")
 	String please_wait_data_are_loading();
 

@@ -2428,7 +2428,7 @@ XsltForms_browser.i18n = {
 			}
 			if (found) {
 ////////////////////////////				
-				lan="en";
+//				lan="en";
 ////////////////////////////				
 				XsltForms_browser.loadProperties("config_" + lan + ".xsl");
 				XsltForms_globals.language = XsltForms_browser.selectSingleNodeText('language', XsltForms_browser.config);

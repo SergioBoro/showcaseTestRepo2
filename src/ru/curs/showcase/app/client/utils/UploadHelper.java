@@ -3,7 +3,7 @@ package ru.curs.showcase.app.client.utils;
 import java.util.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.app.client.MessageBox;
+import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.api.CompleteHandler;
 
 import com.google.gwt.event.dom.client.*;
@@ -19,7 +19,8 @@ import com.google.gwt.user.client.ui.*;
  */
 public final class UploadHelper extends RunServletByFormHelper {
 
-	private static final String UPLOAD_ERROR = "При загрузке файлов произошла ошибка";
+	private static final String UPLOAD_ERROR = AppCurrContext.getInstance()
+			.getInternationalizedMessages().uploadError();
 
 	private static final String SC_UPLOADER_CSS = "sc-uploader-comp";
 
