@@ -30,6 +30,9 @@ public interface constantsShowcase extends Messages {
 	@DefaultMessage("The table is empty. Export to Excel will not run.")
 	String gridExportToExcelEmptyTable();
 
+	@DefaultMessage("Show at most")
+	String pageGridShowAtMost();
+
 	@DefaultMessage("Loading data")
 	String treeGridLoadingData();
 

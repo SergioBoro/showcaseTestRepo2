@@ -577,7 +577,9 @@ public class PageGridPanel extends BasicElementPanelBasis {
 
 		final int widgetIndex = 6;
 		toolBar.insert(pageSize, widgetIndex);
-		toolBar.insert(new HTML("Показывать не более "), widgetIndex);
+		toolBar.insert(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+				.pageGridShowAtMost()
+				+ " "), widgetIndex);
 		toolBar.insert(new SeparatorToolItem(), widgetIndex);
 	}
 
