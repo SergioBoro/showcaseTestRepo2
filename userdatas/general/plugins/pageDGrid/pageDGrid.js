@@ -2,8 +2,8 @@ var arrGrids = {};
 
 
 function createPageDGrid(elementId, parentId, metadata) {
-	require(["dgrid/Grid", "dgrid/extensions/Pagination", "dgrid/extensions/ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
-	function(Grid, Pagination, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect){
+	require(["dojo/on", "dgrid/Grid", "dgrid/extensions/Pagination", "dgrid/extensions/ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
+	function(on, Grid, Pagination, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect){
 		
 		var firstLoading = true;
 		
@@ -83,13 +83,20 @@ function createPageDGrid(elementId, parentId, metadata) {
 			selectionMode = "single";			
 		}
 		
+		
+//		var isVisiblePager = false;
+//		if(metadata["common"]["isVisiblePager"]){
+//			isVisiblePager = true;	
+//		}
+		
+		
 	    var	grid = new declareGrid({
 				store: store,
 				getBeforePut: false,
 				
-				pagingLinks: true,
+				pagingLinks: 2,
 				pagingTextBox: true,
-				firstLastArrows: true,
+	            firstLastArrows: true,
 				pageSizeOptions: [25, 50, 75, 100],
 				rowsPerPage: parseInt(metadata["common"]["limit"]),
 				

@@ -270,6 +270,10 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			common.put("selColId", new JSONString(selected.colId));
 		}
 
+		if (gridMetadata.getUISettings().isVisiblePager()) {
+			common.put("isVisiblePager", new JSONString("true"));
+		}
+
 		metadata.put("common", common);
 
 		JSONObject columns = new JSONObject();

@@ -2,8 +2,8 @@ var arrGrids = {};
 
 
 function createLiveDGrid(elementId, parentId, metadata) {
-	require(["dgrid/List", "dgrid/OnDemandGrid", "dgrid/extensions/ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
-	function(List, Grid, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect){
+	require(["dojo/on", "dgrid/List", "dgrid/OnDemandGrid", "dgrid/extensions/ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
+	function(on, List, Grid, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect){
 		
 		var firstLoading = true;
 		

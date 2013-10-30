@@ -33,6 +33,7 @@
     
     <script>
         var dojoConfig = {
+        	deps: [ "dojox/mobile", "dojox/mobile/parser", "dojox/mobile/compat" ],
             parseOnLoad: false,
             isDebug: false,            
             djeoEngine: 'djeo',
