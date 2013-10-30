@@ -102,7 +102,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 				
 				selectionMode: selectionMode,
 				loadingMessage: "Загрузка...",
-				noDataMessage: "Таблица пуста",
+//				noDataMessage: "Таблица пуста",
 				pagingDelay: 50,
 				deselectOnRefresh: false,				
 				keepScrollPosition: true,

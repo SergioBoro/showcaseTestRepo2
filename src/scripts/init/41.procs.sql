@@ -18783,6 +18783,11 @@ set @gridsettings_str='<gridsettings>
  autoSelectRelativeRecord="false" autoSelectColumnId="URL"/>
 </gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
+
+IF @parent_id is NULL
+BEGIN
+
+
 SELECT [Name] AS "Название", [Name] AS "Название2", [Logo] AS "Логотип", [Url] as "URL", Id AS "~~id",  cast( '<properties>
 			<styleClass name="jslivegrid-record-bold"/>
 			<styleClass name="jslivegrid-record-italic"/>
@@ -18801,6 +18806,17 @@ SELECT [Name] AS "Название", [Name] AS "Название2", [Logo] AS "�
                     </event>  			
             </properties>' as xml)  as [~~properties] FROM [dbo].[Websites]
 WHERE [IsPortal]=1
+
+END
+ELSE
+BEGIN
+
+ 
+Select top(0) 5 as name
+ 
+
+END
+
 END
 GO
 /****** Object:  StoredProcedure [dbo].[exttreegrid_portals]    Script Date: 06/14/2012 10:45:32 ******/
@@ -18838,9 +18854,26 @@ set @gridsettings_str='<gridsettings>
 totalCount="0" profile="grid.nowidth.properties"/>
 </gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
+
+IF @parent_id is NULL
+BEGIN
+
+
 SELECT [Name] AS [Название], [Name] AS [Название2], [Logo] AS [Логотип], [Url] as [URL], cast( '<properties>                                    
             </properties>' as xml)  as [~~properties] FROM [dbo].[Websites]
 WHERE [IsPortal]=1
+
+END
+ELSE
+BEGIN
+
+ 
+Select top(0) 5 as name
+ 
+
+END
+
+
 END
 GO
 /****** Object:  StoredProcedure [dbo].[exttreegrid_geo]    Script Date: 06/14/2012 10:45:32 ******/
@@ -18944,8 +18977,32 @@ END
 
 IF (select COUNT(*) from geo3 where geo3_Id = @parent_id) > 0
 BEGIN
- SET @error_mes = 'Вызов процедуры для города' 
- RETURN 1
+-- SET @error_mes = 'Вызов процедуры для города' 
+-- RETURN 1
+
+ set @Sql = 'select top(0) Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo3 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)'  
+	
 END
 
 IF LTRIM(@sortcols)!=''
@@ -19016,6 +19073,11 @@ set @gridsettings_str='<gridsettings>
  autoSelectRelativeRecord="false" autoSelectColumnId="URL"/>
 </gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
+
+IF @parent_id is NULL
+BEGIN
+
+
 SELECT 
        [Name] AS "Название", 
        [File1] AS "Файл1",        
@@ -19041,6 +19103,17 @@ SELECT
                     </event>  			
             </properties>' as xml)  as [~~properties] FROM [dbo].[Websites]
 WHERE [IsPortal]=1
+
+END
+ELSE
+BEGIN
+
+ 
+Select top(0) 5 as name
+ 
+
+END
+
 END
 GO
 /****** Object:  StoredProcedure [dbo].[exttreegrid_col_types]    Script Date: 06/14/2012 10:45:32 ******/
@@ -19073,7 +19146,21 @@ BEGIN
     else
     SET @orderby = @sortcols;
     
-    SET @sql = @sql + 'FROM [dbo].[Journal_41] ' + @orderby	
+IF @parent_id is NULL
+BEGIN
+    
+    
+    SET @sql = @sql + 'FROM [dbo].[Journal_41] ' + @orderby
+    
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as name'
+ 
+
+END    
     
     EXEC(@sql)	    
     
@@ -19306,6 +19393,11 @@ Set @ordering=(Select
      Else @sortcols 
     End)     
 declare @Sql varchar(8000);
+
+IF @parent_id is NULL
+BEGIN
+
+
 set @Sql = 
 'Select [Регион],' + @params+',cast( ''<properties>
             <event name="row_single_click">
@@ -19403,6 +19495,18 @@ FROM #Reg_year
 '    max(t1)'+
 '    FOR [Квартал] in('+@params+')'+
 ' ) AS pvt )p  '+@ordering
+
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as name'
+ 
+
+END
+
+
 EXEC(@Sql)
 Declare @gridsettings_str as varchar(max)
 set @gridsettings_str='<gridsettings>
@@ -19618,6 +19722,10 @@ if @element_id = '14'  set @a = '11'
 if @element_id = '13'  set @a = '15'
 if @element_id = '140'  set @a = '110'
 
+IF @parent_id is NULL
+BEGIN
+
+
 set @Sql = 
 'Select [Регион],' + @params+',cast( ''<properties>
                     <event name="row_single_click">
@@ -19656,6 +19764,17 @@ FROM #Reg_year
 '    max(t1)'+
 '    FOR [Квартал] in('+@params+')'+
 ' ) AS pvt Where [3кв. 2005г.] is Not NULL )p '+@ordering
+
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as name'
+ 
+
+END
+
 EXEC(@Sql)
 Declare @gridsettings_str as varchar(max)
 set @gridsettings_str='<gridsettings>
@@ -19847,6 +19966,11 @@ Set @ordering=(Select
 					Else @sortcols 
 				End)     
 declare @Sql varchar(8000);
+
+IF @parent_id is NULL
+BEGIN
+
+
 set @Sql = 
 'Select [Регион], [Регион] as "Регион2", getdate() as [Сейчас],  ''imagesingrid/test.jpg'' AS [Картинка],' + @params+',cast( ''<properties>
                     <event name="row_single_click">
@@ -19899,6 +20023,17 @@ FROM #Reg_year
 '    max(t1)'+
 '    FOR [Квартал] in('+@params+')'+
 ' ) AS pvt Where [3кв. 2005г.] is Not NULL )p '+@ordering
+
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as name'
+ 
+
+END
+
 EXEC(@Sql)
 Declare @gridsettings_str as varchar(max)
 set @gridsettings_str='<gridsettings>
@@ -20104,6 +20239,10 @@ Set @ordering=(Select
 					Else @sortcols 
 				End)     
 declare @Sql varchar(8000);
+
+IF @parent_id is NULL
+BEGIN
+
 set @Sql = 
 'Select [Регион], ''imagesingrid/test.jpg'' AS [Картинка],' + @params+',cast( ''<properties>
                     <event name="row_single_click">
@@ -20153,6 +20292,18 @@ FROM #Reg_year
 '    max(t1)'+
 '    FOR [Квартал] in('+@params+')'+
 ' ) AS pvt Where [3кв. 2005г.] is Not NULL )p '+@ordering
+
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as name'
+ 
+
+END
+
+
 EXEC(@Sql)
 Declare @gridsettings_str as varchar(max)
 set @gridsettings_str='<gridsettings>
@@ -20361,6 +20512,11 @@ Set @ordering=(Select
 					Else @sortcols 
 				End)     
 declare @Sql varchar(8000);
+
+IF @parent_id is NULL
+BEGIN
+
+
 set @Sql = 
 'Select [Регион], ''imagesingrid/test.jpg'' AS [Картинка],' + @params+',cast( ''<properties>
                     <event name="row_single_click">
@@ -20410,6 +20566,18 @@ FROM #Reg_year
 '    max(t1)'+
 '    FOR [Квартал] in('+@params+')'+
 ' ) AS pvt Where [3кв. 2005г.] is Not NULL )p '+@ordering
+
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as name'
+ 
+
+END
+
+
 EXEC(@Sql)
 Declare @gridsettings_str as varchar(max)
 set @gridsettings_str='<gridsettings>
@@ -20610,6 +20778,12 @@ Set @ordering=(Select
 					Else @sortcols 
 				End)     
 declare @Sql varchar(8000);
+
+
+IF @parent_id is NULL
+BEGIN
+
+
 set @Sql = 
 'Select [Регион], [Регион] as "Регион2", getdate() as [Сейчас],  ''imagesingrid/test.jpg'' AS [Картинка],' + @params+',cast( ''<properties>
                     <event name="row_single_click">
@@ -20662,6 +20836,18 @@ FROM #Reg_year
 '    max(t1)'+
 '    FOR [Квартал] in('+@params+')'+
 ' ) AS pvt Where [3кв. 2005г.] is Not NULL )p '+@ordering
+
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as name'
+ 
+
+END
+
+
 EXEC(@Sql)
 Declare @gridsettings_str as varchar(max)
 set @gridsettings_str='<gridsettings>
@@ -26957,8 +27143,32 @@ END
 
 IF (select COUNT(*) from geo3 where geo3_Id = @parent_id) > 0
 BEGIN
- SET @error_mes = 'Вызов процедуры для города' 
- RETURN 1
+-- SET @error_mes = 'Вызов процедуры для города' 
+-- RETURN 1
+
+ set @Sql = 'select top(0) Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo3 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)'  
+	
 END
 
 IF LTRIM(@sortcols)!=''

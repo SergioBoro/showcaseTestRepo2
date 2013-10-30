@@ -55,7 +55,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		for(var k in metadata["columns"]) {
 			var column = null;
 			if(count == 0){
-				column = tree({});	
+				column = tree({});
 			}
 			else
 			{
@@ -102,7 +102,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				minRowsPerPage: parseInt(metadata["common"]["limit"]),
 				selectionMode: selectionMode,
 				loadingMessage: "Загрузка...",
-				noDataMessage: "Таблица пуста",
+//				noDataMessage: "Таблица пуста",
 				pagingDelay: 50,
 				deselectOnRefresh: false,				
 				keepScrollPosition: true,

@@ -89,7 +89,7 @@ function createLiveDGrid(elementId, parentId, metadata) {
 				minRowsPerPage: parseInt(metadata["common"]["limit"]),
 				selectionMode: selectionMode,
 				loadingMessage: "Загрузка...",
-				noDataMessage: "Таблица пуста",
+//				noDataMessage: "Таблица пуста",
 				pagingDelay: 50,
 				deselectOnRefresh: false,				
 				keepScrollPosition: true,
