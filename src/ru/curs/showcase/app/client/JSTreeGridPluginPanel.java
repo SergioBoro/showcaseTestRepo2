@@ -326,7 +326,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		hpToolbar.setSpacing(1);
 		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
 			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
-					.getInternationalizedMessages().grid_caption_export_to_excel_current_page());
+					.getInternationalizedMessages().jsTreeGridExportToExcelChilds());
 			exportToExcelCurrentPage.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -335,10 +335,9 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			});
 			hpToolbar.add(exportToExcelCurrentPage);
 		}
-		gridMetadata.getUISettings().setVisibleExportToExcelAll(false);
 		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
 			exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_export_to_excel_all());
+					.jsTreeGridExportToExcel0Level());
 			exportToExcelAll.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -806,8 +805,10 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	 *            GridToExcelExportType
 	 */
 	public void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
-
-		String parentId = getStoredRecordId().recId;
+		String parentId = null;
+		if (exportType == GridToExcelExportType.CURRENTPAGE) {
+			parentId = getStoredRecordId().recId;
+		}
 		GridContext gridContext = getDetailedContext();
 		gridContext.setParentId(parentId);
 

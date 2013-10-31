@@ -60,6 +60,12 @@ public interface constantsShowcase extends Messages {
 	@DefaultMessage("Loading...")
 	String jsGridLoadingMessage();
 
+	@DefaultMessage("Export to Excel descendants of the current record")
+	String jsTreeGridExportToExcelChilds();
+
+	@DefaultMessage("Export to Excel records 0-level")
+	String jsTreeGridExportToExcel0Level();
+
 	@DefaultMessage("Пожалуйста, подождите...Идет загрузка данных")
 	String please_wait_data_are_loading();
 
