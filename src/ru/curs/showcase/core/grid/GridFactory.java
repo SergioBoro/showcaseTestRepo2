@@ -141,6 +141,12 @@ public class GridFactory extends CompBasedElementFactory {
 											.getPlugin()));
 
 			result.getJSInfo()
+					.setClipboardProc(
+							"clipboard"
+									+ TextUtils.capitalizeWord(((PluginInfo) getElementInfo())
+											.getPlugin()));
+
+			result.getJSInfo()
 					.getRequiredJS()
 					.add(getAdapterForWebServer(getPluginDir(),
 							((PluginInfo) getElementInfo()).getPlugin() + ".js"));

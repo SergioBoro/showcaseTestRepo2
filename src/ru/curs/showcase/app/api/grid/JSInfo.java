@@ -16,6 +16,7 @@ public class JSInfo implements SerializableElement {
 
 	private String createProc;
 	private String refreshProc;
+	private String clipboardProc;
 
 	private List<String> requiredJS = new ArrayList<String>();
 
@@ -33,6 +34,14 @@ public class JSInfo implements SerializableElement {
 
 	public void setRefreshProc(final String aRefreshProc) {
 		refreshProc = aRefreshProc;
+	}
+
+	public String getClipboardProc() {
+		return clipboardProc;
+	}
+
+	public void setClipboardProc(final String aClipboardProc) {
+		clipboardProc = aClipboardProc;
 	}
 
 	public List<String> getRequiredJS() {

@@ -51,6 +51,15 @@ public interface constantsShowcase extends Messages {
 	@DefaultMessage("An error occurred during downloading files")
 	String uploadError();
 
+	@DefaultMessage("Error during serialization parameters for Http-request plug.")
+	String jsGridSerializationError();
+
+	@DefaultMessage("An error occurred while deserializing an object")
+	String jsGridDeserializationError();
+
+	@DefaultMessage("Loading...")
+	String jsGridLoadingMessage();
+
 	@DefaultMessage("Пожалуйста, подождите...Идет загрузка данных")
 	String please_wait_data_are_loading();
 

@@ -101,7 +101,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 				rowsPerPage: parseInt(metadata["common"]["limit"]),
 				
 				selectionMode: selectionMode,
-				loadingMessage: "Загрузка...",
+				loadingMessage: metadata["common"]["loadingMessage"],
 //				noDataMessage: "Таблица пуста",
 				pagingDelay: 50,
 				deselectOnRefresh: false,				
@@ -172,3 +172,25 @@ function refreshPageDGrid(parentId){
 	arrGrids[parentId].refresh();
 }
 
+function clipboardPageDGrid(parentId){
+	var str = "";
+	
+	var grid = arrGrids[parentId];
+	
+	for(var col in grid.columns){
+		str = str + grid.columns[col].label + "\t";
+	}
+	
+	str = str + "\n";
+		
+    for(var id in grid.selection){
+        if(grid.selection[id]){
+        	for(var col in grid.columns){
+        		str = str + grid.row(id).data[col] + "\t";
+        	}
+        	str = str + "\n";
+        }
+    }
+	
+	return str;
+}

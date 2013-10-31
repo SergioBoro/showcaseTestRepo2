@@ -272,6 +272,9 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			common.put("selColId", new JSONString(selected.colId));
 		}
 
+		common.put("loadingMessage", new JSONString(AppCurrContext.getInstance()
+				.getInternationalizedMessages().jsGridLoadingMessage()));
+
 		metadata.put("common", common);
 
 		JSONObject columns = new JSONObject();
@@ -350,11 +353,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			copyToClipboard.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
-					// copyToClipboard();
-					MessageBox
-							.showSimpleMessage("Сообщение",
-									"Копирование в буфер обмена пока не реализовано. Временно можно использовать экспорт в Excel.");
-
+					copyToClipboard();
 				}
 			});
 			hpToolbar.add(copyToClipboard);
@@ -415,6 +414,10 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 	private native void pluginRefresh(final String procName, final String params) /*-{
 		$wnd.eval(procName + "(" + params + ");");
+	}-*/;
+
+	private native String pluginClipboard(final String procName, final String params) /*-{
+		return $wnd.eval(procName + "(" + params + ");");
 	}-*/;
 
 	public void pluginProcessFileDownload(final String recId, final String colId) {
@@ -486,8 +489,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			params.put("elementInfoValue",
 					new JSONString(getElementInfo().toParamForHttpPost(getObjectSerializer())));
 		} catch (SerializationException e) {
-			params.put("error", new JSONString(
-					"Ошибка при сериализации параметров для Http-запроса плагина."));
+			params.put("error", new JSONString(AppCurrContext.getInstance()
+					.getInternationalizedMessages().jsGridSerializationError()));
 		}
 
 		return params;
@@ -517,8 +520,9 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			}
 
 		} catch (SerializationException e) {
-			MessageBox.showSimpleMessage("afterHttpPostFromPlugin",
-					"Ошибка при десериализации объекта LiveGridExtradata: " + e.getMessage());
+			MessageBox.showSimpleMessage("afterHttpPostFromPlugin", AppCurrContext.getInstance()
+					.getInternationalizedMessages().jsGridDeserializationError()
+					+ " LiveGridExtradata: " + e.getMessage());
 		}
 
 		afterUpdateGrid();
@@ -647,6 +651,12 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		}
 
 		if (isFirstLoading) {
+
+			// pluginHTML.setWidth(String.valueOf(pluginHTML.getOffsetWidth() +
+			// 1) + "px");
+
+			// pluginHTML.setWidth(String.valueOf("800px"));
+
 			resetSelection();
 
 			resetGridSettingsToCurrent();
@@ -796,6 +806,11 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	 *            GridToExcelExportType
 	 */
 	public void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
+
+		String parentId = getStoredRecordId().recId;
+		GridContext gridContext = getDetailedContext();
+		gridContext.setParentId(parentId);
+
 		DownloadHelper dh = DownloadHelper.getInstance();
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
@@ -809,8 +824,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 			SerializationStreamFactory ssfExcel = dh.getAddObjectSerializer();
 
-			dh.addParam(getDetailedContext().getClass().getName(), getDetailedContext()
-					.toParamForHttpPost(getObjectSerializer()));
+			dh.addParam(getDetailedContext().getClass().getName(),
+					gridContext.toParamForHttpPost(getObjectSerializer()));
 			dh.addParam(DataPanelElementInfo.class.getName(),
 					getElementInfo().toParamForHttpPost(getObjectSerializer()));
 
@@ -828,6 +843,21 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 					.getInternationalizedMessages().grid_error_caption_export_excel(),
 					e.getMessage());
 		}
+	}
+
+	/**
+	 * Передача в буфер обмена.
+	 * 
+	 * @return ClipboardDialog
+	 * 
+	 */
+	public ClipboardDialog copyToClipboard() {
+		String params = "'" + getDivIdPlugin() + "'";
+		String s = pluginClipboard(gridMetadata.getJSInfo().getClipboardProc(), params);
+
+		ClipboardDialog cd = new ClipboardDialog(s);
+		cd.center();
+		return cd;
 	}
 
 	@Override

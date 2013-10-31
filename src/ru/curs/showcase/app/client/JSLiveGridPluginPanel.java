@@ -274,6 +274,9 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			common.put("isVisiblePager", new JSONString("true"));
 		}
 
+		common.put("loadingMessage", new JSONString(AppCurrContext.getInstance()
+				.getInternationalizedMessages().jsGridLoadingMessage()));
+
 		metadata.put("common", common);
 
 		JSONObject columns = new JSONObject();
@@ -351,11 +354,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			copyToClipboard.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
-					// copyToClipboard();
-					MessageBox
-							.showSimpleMessage("Сообщение",
-									"Копирование в буфер обмена пока не реализовано. Временно можно использовать экспорт в Excel.");
-
+					copyToClipboard();
 				}
 			});
 			hpToolbar.add(copyToClipboard);
@@ -416,6 +415,10 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 	private native void pluginRefresh(final String procName, final String params) /*-{
 		$wnd.eval(procName + "(" + params + ");");
+	}-*/;
+
+	private native String pluginClipboard(final String procName, final String params) /*-{
+		return $wnd.eval(procName + "(" + params + ");");
 	}-*/;
 
 	public void pluginProcessFileDownload(final String recId, final String colId) {
@@ -486,8 +489,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			params.put("elementInfoValue",
 					new JSONString(getElementInfo().toParamForHttpPost(getObjectSerializer())));
 		} catch (SerializationException e) {
-			params.put("error", new JSONString(
-					"Ошибка при сериализации параметров для Http-запроса плагина."));
+			params.put("error", new JSONString(AppCurrContext.getInstance()
+					.getInternationalizedMessages().jsGridSerializationError()));
 		}
 
 		return params;
@@ -517,8 +520,9 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			}
 
 		} catch (SerializationException e) {
-			MessageBox.showSimpleMessage("afterHttpPostFromPlugin",
-					"Ошибка при десериализации объекта LiveGridExtradata: " + e.getMessage());
+			MessageBox.showSimpleMessage("afterHttpPostFromPlugin", AppCurrContext.getInstance()
+					.getInternationalizedMessages().jsGridDeserializationError()
+					+ " LiveGridExtradata: " + e.getMessage());
 		}
 
 		afterUpdateGrid();
@@ -826,6 +830,21 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 					.getInternationalizedMessages().grid_error_caption_export_excel(),
 					e.getMessage());
 		}
+	}
+
+	/**
+	 * Передача в буфер обмена.
+	 * 
+	 * @return ClipboardDialog
+	 * 
+	 */
+	public ClipboardDialog copyToClipboard() {
+		String params = "'" + getDivIdPlugin() + "'";
+		String s = pluginClipboard(gridMetadata.getJSInfo().getClipboardProc(), params);
+
+		ClipboardDialog cd = new ClipboardDialog(s);
+		cd.center();
+		return cd;
 	}
 
 	@Override

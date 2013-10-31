@@ -255,7 +255,7 @@
       </level2>
       
       
-      <level2 id="JSLiveGrid1" name="JSLiveGrid1">
+      <level2 id="JSLiveGrid1" name="JSLiveGrid1" selectOnLoad="true">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
           <datapanel type="byver/JSLiveGrid.xml" tab="firstOrCurrent" >          
@@ -286,7 +286,7 @@
       
       
       
-      <level2 id="JSTreeGrid1" name="JSTreeGrid1" selectOnLoad="true">
+      <level2 id="JSTreeGrid1" name="JSTreeGrid1">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
           <datapanel type="byver/JSTreeGrid.xml" tab="firstOrCurrent" >          

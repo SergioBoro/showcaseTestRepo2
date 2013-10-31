@@ -101,7 +101,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				getBeforePut: false,
 				minRowsPerPage: parseInt(metadata["common"]["limit"]),
 				selectionMode: selectionMode,
-				loadingMessage: "Загрузка...",
+				loadingMessage: metadata["common"]["loadingMessage"],
 //				noDataMessage: "Таблица пуста",
 				pagingDelay: 50,
 				deselectOnRefresh: false,				
@@ -114,6 +114,11 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				return;
 			}
 			gwtAfterClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
+			
+						
+//			console.log(grid.row(event));
+			
+			
 		});
 		grid.on(".dgrid-row:dblclick", function(event){
 			if(event.toElement.nodeName.toUpperCase() == "DIV"){
@@ -179,3 +184,25 @@ function refreshTreeDGrid(parentId){
 	arrGrids[parentId].refresh();
 }
 
+function clipboardTreeDGrid(parentId){
+	var str = "";
+	
+	var grid = arrGrids[parentId];
+	
+	for(var col in grid.columns){
+		str = str + grid.columns[col].label + "\t";
+	}
+	
+	str = str + "\n";
+		
+    for(var id in grid.selection){
+        if(grid.selection[id]){
+        	for(var col in grid.columns){
+        		str = str + grid.row(id).data[col] + "\t";
+        	}
+        	str = str + "\n";
+        }
+    }
+	
+	return str;
+}
