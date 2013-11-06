@@ -2,8 +2,8 @@ var arrGrids = {};
 
 
 function createTreeDGrid(elementId, parentId, metadata) {
-	require(["dojo/on", "dgrid/tree", "dgrid/OnDemandGrid", "dgrid/extensions/ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
-	function(on, tree, Grid, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect){
+	require(["dojo/store/util/QueryResults", "dojo/on", "dgrid/tree", "dgrid/OnDemandGrid", "dgrid/extensions/ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
+	function(QueryResults, on, tree, Grid, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect){
 		
 		var firstLoading = true;
 		
@@ -13,35 +13,46 @@ function createTreeDGrid(elementId, parentId, metadata) {
 			idProperty: "id",
 			
 			query: function(query, options){
-				var sortColId  = null;
-				var sortColDir = null;
-				if(options && options.sort){
-					for(var i = 0; i<options.sort.length; i++){
-						var sort = options.sort[i];
-						sortColId = grid.columns[sort.attribute].label;
-						if(sort.descending){
-							sortColDir = "DESC";
+				
+				var results = null;
+				
+				if(firstLoading){
+                    results = QueryResults(metadata["data"]["rows"]);
+                    results.total = parseInt(metadata["data"]["total"]);
+                    
+					gwtAfterLoadData(elementId, "");
+				}else{
+					var sortColId  = null;
+					var sortColDir = null;
+					if(options && options.sort){
+						for(var i = 0; i<options.sort.length; i++){
+							var sort = options.sort[i];
+							sortColId = grid.columns[sort.attribute].label;
+							if(sort.descending){
+								sortColDir = "DESC";
+							}
+							else{
+								sortColDir = "ASC";
+							}
+							break;
 						}
-						else{
-							sortColDir = "ASC";
-						}
-						break;
 					}
+
+		 	    	var httpParams = gwtGetHttpParams(elementId, options.start, options.count, sortColId, sortColDir, query.parent);
+		 	    	httpParams = eval('('+httpParams+')');	 	 
+		 	    	
+				    var params = {};
+				    params[httpParams["gridContextName"]] = httpParams["gridContextValue"];	
+				    params[httpParams["elementInfoName"]] = httpParams["elementInfoValue"];			    
+
+					results = JsonRest.prototype.query.call(this, query, options, params);
+					results.then(function(results){
+						if(results[0]){
+							gwtAfterLoadData(elementId, results[0]["liveGridExtradata"]);						
+						}
+					});				
 				}
-
-	 	    	var httpParams = gwtGetHttpParams(elementId, options.start, options.count, sortColId, sortColDir, query.parent);
-	 	    	httpParams = eval('('+httpParams+')');	 	 
-	 	    	
-			    var params = {};
-			    params[httpParams["gridContextName"]] = httpParams["gridContextValue"];	
-			    params[httpParams["elementInfoName"]] = httpParams["elementInfoValue"];			    
-
-				var results = JsonRest.prototype.query.call(this, query, options, params);
-				results.then(function(results){
-					if(results[0]){
-						gwtAfterLoadData(elementId, results[0]["liveGridExtradata"]);						
-					}
-				});				
+				
 				return results;
 			},
 		
@@ -51,17 +62,16 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		};
 		
 		
-		var columns = []; var count=0;
+		var columns = [];
 		for(var k in metadata["columns"]) {
 			var column = null;
-			if(count == 0){
+			if(metadata["columns"][k]["id"] == "col1"){
 				column = tree({});
 			}
 			else
 			{
 				column = {};	
 			}	
-			count++;		
 
 			column["id"]    = metadata["columns"][k]["id"];
 			column["field"] = metadata["columns"][k]["id"];			
@@ -76,9 +86,20 @@ function createTreeDGrid(elementId, parentId, metadata) {
 					return div;
 		        };
 			}else{
-				column["formatter"] = function columnFormatter(item){
-					return item;
-				};
+				if(column["id"] == "col1"){
+					column["formatter"] = function columnFormatter(item){
+						return item;
+					};
+				}else{
+					column["renderCell"] = function actionRenderCell(object, value, node, options) {
+						var div = document.createElement("div");
+						if(object.rowstyle && (object.rowstyle != "")){
+							div.className = object.rowstyle;						
+						}
+						div.innerHTML = value;					
+						return div;
+			        };
+				}
 			}
 			
 			columns.push(column);
@@ -95,10 +116,15 @@ function createTreeDGrid(elementId, parentId, metadata) {
 			selectionMode = "single";			
 		}
 		
+		var isVisibleColumnsHeader = false;
+		if(metadata["common"]["isVisibleColumnsHeader"]){
+			isVisibleColumnsHeader = true;	
+		}
 		
 	    var	grid = new declareGrid({
 				store: store,
 				getBeforePut: false,
+				showHeader: isVisibleColumnsHeader,
 				minRowsPerPage: parseInt(metadata["common"]["limit"]),
 				selectionMode: selectionMode,
 				loadingMessage: metadata["common"]["loadingMessage"],
@@ -110,18 +136,13 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		}, parentId);
 	    arrGrids[parentId] = grid;
 		grid.on(".dgrid-row:click,", function(event){
-			if(event.toElement.nodeName.toUpperCase() == "DIV"){
+			if(event.toElement.className.indexOf("expando-icon") != -1){
 				return;
 			}
 			gwtAfterClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
-			
-						
-//			console.log(grid.row(event));
-			
-			
 		});
 		grid.on(".dgrid-row:dblclick", function(event){
-			if(event.toElement.nodeName.toUpperCase() == "DIV"){
+			if(event.toElement.className.indexOf("expando-icon") != -1){
 				return;
 			}
 			gwtAfterDoubleClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
@@ -165,7 +186,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		for(var k in metadata["columns"]) {
 			grid.styleColumn(metadata["columns"][k]["id"], metadata["columns"][k]["style"]);
 		}
-		
+/*		
 		aspect.around(grid, 'renderRow', function(origMethod) {
 			return function(object, options) {
 				var html = origMethod.apply(this, arguments);
@@ -175,7 +196,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				return html;
 			};
 		});	
-		
+*/		
 		
 	});
 }

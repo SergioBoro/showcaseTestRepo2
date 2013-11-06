@@ -2,8 +2,8 @@ var arrGrids = {};
 
 
 function createPageDGrid(elementId, parentId, metadata) {
-	require(["dojo/on", "dgrid/Grid", "dgrid/extensions/Pagination", "dgrid/extensions/ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
-	function(on, Grid, Pagination, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect){
+	require(["dojo/store/util/QueryResults", "dojo/on", "dgrid/Grid", "dgrid/extensions/Pagination", "dgrid/extensions/ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
+	function(QueryResults, on, Grid, Pagination, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect){
 		
 		var firstLoading = true;
 		
@@ -13,35 +13,46 @@ function createPageDGrid(elementId, parentId, metadata) {
 			idProperty: "id",
 			
 			query: function(query, options){
-				var sortColId  = null;
-				var sortColDir = null;
-				if(options && options.sort){
-					for(var i = 0; i<options.sort.length; i++){
-						var sort = options.sort[i];
-						sortColId = grid.columns[sort.attribute].label;
-						if(sort.descending){
-							sortColDir = "DESC";
+				
+				var results = null;
+				
+				if(firstLoading){
+                    results = QueryResults(metadata["data"]["rows"]);
+                    results.total = parseInt(metadata["data"]["total"]);
+                    
+					gwtAfterLoadData(elementId, "");
+				}else{
+					var sortColId  = null;
+					var sortColDir = null;
+					if(options && options.sort){
+						for(var i = 0; i<options.sort.length; i++){
+							var sort = options.sort[i];
+							sortColId = grid.columns[sort.attribute].label;
+							if(sort.descending){
+								sortColDir = "DESC";
+							}
+							else{
+								sortColDir = "ASC";
+							}
+							break;
 						}
-						else{
-							sortColDir = "ASC";
-						}
-						break;
 					}
+					
+		 	    	var httpParams = gwtGetHttpParams(elementId, options.start, options.count, sortColId, sortColDir);
+		 	    	httpParams = eval('('+httpParams+')');	 	 
+		 	    	
+				    var params = {};
+				    params[httpParams["gridContextName"]] = httpParams["gridContextValue"];	
+				    params[httpParams["elementInfoName"]] = httpParams["elementInfoValue"];			    
+
+					results = JsonRest.prototype.query.call(this, query, options, params);
+					results.then(function(results){
+						if(results[0]){
+							gwtAfterLoadData(elementId, results[0]["liveGridExtradata"]);						
+						}
+					});				
 				}
 				
-	 	    	var httpParams = gwtGetHttpParams(elementId, options.start, options.count, sortColId, sortColDir);
-	 	    	httpParams = eval('('+httpParams+')');	 	 
-	 	    	
-			    var params = {};
-			    params[httpParams["gridContextName"]] = httpParams["gridContextValue"];	
-			    params[httpParams["elementInfoName"]] = httpParams["elementInfoValue"];			    
-
-				var results = JsonRest.prototype.query.call(this, query, options, params);
-				results.then(function(results){
-					if(results[0]){
-						gwtAfterLoadData(elementId, results[0]["liveGridExtradata"]);						
-					}
-				});				
 				return results;
 			}
 		}), Memory());
@@ -64,9 +75,19 @@ function createPageDGrid(elementId, parentId, metadata) {
 					return div;
 		        };
 			}else{
+				column["renderCell"] = function actionRenderCell(object, value, node, options) {
+					var div = document.createElement("div");
+					if(object.rowstyle && (object.rowstyle != "")){
+						div.className = object.rowstyle;						
+					}
+					div.innerHTML = value;					
+					return div;
+		        };
+/*				
 				column["formatter"] = function columnFormatter(item){
 					return item;
 				};
+*/				
 			}
 			
 			columns.push(column);
@@ -83,23 +104,27 @@ function createPageDGrid(elementId, parentId, metadata) {
 			selectionMode = "single";			
 		}
 		
-		
-//		var isVisiblePager = false;
-//		if(metadata["common"]["isVisiblePager"]){
-//			isVisiblePager = true;	
-//		}
-		
+		var isVisiblePager = false;
+		if(metadata["common"]["isVisiblePager"]){
+			isVisiblePager = true;	
+		}
+		var isVisibleColumnsHeader = false;
+		if(metadata["common"]["isVisibleColumnsHeader"]){
+			isVisibleColumnsHeader = true;	
+		}
 		
 	    var	grid = new declareGrid({
 				store: store,
 				getBeforePut: false,
 				
+				showFooter: isVisiblePager,
 				pagingLinks: 2,
 				pagingTextBox: true,
 	            firstLastArrows: true,
 				pageSizeOptions: [25, 50, 75, 100],
 				rowsPerPage: parseInt(metadata["common"]["limit"]),
-				
+
+				showHeader: isVisibleColumnsHeader,
 				selectionMode: selectionMode,
 				loadingMessage: metadata["common"]["loadingMessage"],
 //				noDataMessage: "Таблица пуста",
@@ -153,7 +178,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 		for(var k in metadata["columns"]) {
 			grid.styleColumn(metadata["columns"][k]["id"], metadata["columns"][k]["style"]);
 		}
-		
+/*		
 		aspect.around(grid, 'renderRow', function(origMethod) {
 			return function(object, options) {
 				var html = origMethod.apply(this, arguments);
@@ -163,7 +188,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 				return html;
 			};
 		});	
-		
+*/		
 		
 	});
 }

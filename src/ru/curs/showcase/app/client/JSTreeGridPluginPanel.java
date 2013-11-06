@@ -272,6 +272,10 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			common.put("selColId", new JSONString(selected.colId));
 		}
 
+		if (gridMetadata.getUISettings().isVisibleColumnsHeader()) {
+			common.put("isVisibleColumnsHeader", new JSONString("true"));
+		}
+
 		common.put("loadingMessage", new JSONString(AppCurrContext.getInstance()
 				.getInternationalizedMessages().jsGridLoadingMessage()));
 
@@ -296,6 +300,29 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			columns.put(egcc.getId(), column);
 		}
 		metadata.put("columns", columns);
+
+		JSONObject data = new JSONObject();
+		JSONArray rows = new JSONArray();
+		int i = 0;
+		for (TreeGridModel lgm : gridMetadata.getTreeGridData().getTreeGridData()) {
+			JSONObject row = new JSONObject();
+			for (String key : lgm.getMap().keySet()) {
+				if (lgm.getMap().get(key) == null) {
+					row.put(key, null);
+				} else {
+					row.put(key, new JSONString((String) lgm.getMap().get(key)));
+				}
+			}
+			rows.set(i, row);
+			i++;
+		}
+		data.put("rows", rows);
+		data.put(
+				"total",
+				new JSONString(Integer.toString(gridMetadata.getTreeGridData().getTreeGridData()
+						.size())));
+
+		metadata.put("data", data);
 
 		params = params + ", " + metadata;
 
@@ -496,32 +523,35 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	}
 
 	public void pluginAfterLoadData(final String stringLiveGridExtradata) {
-		try {
-			LiveGridExtradata gridExtradataNew =
-				(LiveGridExtradata) getObjectSerializer().createStreamReader(
-						stringLiveGridExtradata).readObject();
+		if (!stringLiveGridExtradata.isEmpty()) {
+			try {
+				LiveGridExtradata gridExtradataNew =
+					(LiveGridExtradata) getObjectSerializer().createStreamReader(
+							stringLiveGridExtradata).readObject();
 
-			boolean needAdd;
-			for (ru.curs.showcase.app.api.grid.GridEvent ev : gridExtradataNew.getEventManager()
-					.getEvents()) {
-				needAdd = true;
-				for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridExtradata
+				boolean needAdd;
+				for (ru.curs.showcase.app.api.grid.GridEvent ev : gridExtradataNew
 						.getEventManager().getEvents()) {
-					if (ev.getId1().equals(evOld.getId1()) && ev.getId2().equals(evOld.getId2())
-							&& (ev.getInteractionType() == evOld.getInteractionType())) {
-						needAdd = false;
-						break;
+					needAdd = true;
+					for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridExtradata
+							.getEventManager().getEvents()) {
+						if (ev.getId1().equals(evOld.getId1())
+								&& ev.getId2().equals(evOld.getId2())
+								&& (ev.getInteractionType() == evOld.getInteractionType())) {
+							needAdd = false;
+							break;
+						}
+					}
+					if (needAdd) {
+						gridExtradata.getEventManager().getEvents().add(ev);
 					}
 				}
-				if (needAdd) {
-					gridExtradata.getEventManager().getEvents().add(ev);
-				}
-			}
 
-		} catch (SerializationException e) {
-			MessageBox.showSimpleMessage("afterHttpPostFromPlugin", AppCurrContext.getInstance()
-					.getInternationalizedMessages().jsGridDeserializationError()
-					+ " LiveGridExtradata: " + e.getMessage());
+			} catch (SerializationException e) {
+				MessageBox.showSimpleMessage("afterHttpPostFromPlugin", AppCurrContext
+						.getInstance().getInternationalizedMessages().jsGridDeserializationError()
+						+ " LiveGridExtradata: " + e.getMessage());
+			}
 		}
 
 		afterUpdateGrid();
