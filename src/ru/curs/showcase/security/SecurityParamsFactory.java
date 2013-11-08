@@ -150,13 +150,12 @@ public final class SecurityParamsFactory {
 				String d = in.readLine();
 
 				String[] аWer = d.split(" ", 0);
-				result =
-					"<tr>			    <td align='right'>Домен</td>		    <td>     <select id='j_domain' type='text' name='j_domain'>";
+				result = "		    <td>     <select id='j_domain' type='text' name='j_domain'>";
 				for (int i = 0; i <= аWer.length - 1; i++) {
 					result = result + "<option value='" + аWer[i] + "'>" + аWer[i] + "</option>";
 				}
 
-				result = result + "</select>			    </td>			  </tr>";
+				result = result + "</select>			    </td>			  ";
 
 			}
 
