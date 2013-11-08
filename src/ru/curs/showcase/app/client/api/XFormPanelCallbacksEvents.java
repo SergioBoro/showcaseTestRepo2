@@ -107,6 +107,11 @@ public final class XFormPanelCallbacksEvents {
 		}
 
 		com.google.gwt.user.client.Element el = DOM.getElementById(elementId);
+
+		if (el == null) {
+			return;
+		}
+
 		if (state) {
 			el.getParentElement().removeAttribute("disabled");
 		} else {
