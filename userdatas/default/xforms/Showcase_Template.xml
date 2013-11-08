@@ -223,13 +223,14 @@ ref="instance('xformId_mainInstance')"				instance="xformId_mainInstance" replac
 
 
 		<div>
+		
 			<xf:trigger>
-				<xf:label>Сохранить</xf:label>
+				<xf:label id = "xformId_Save">Сохранить</xf:label>
 				<xf:action ev:event="DOMActivate">
-					<xf:load
-						resource="javascript:gwtXFormSave('xformId', '1',  Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
+					<xf:load resource="javascript:gwtXFormSave('xformId', '1',  Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')), 'xformId_Save')"/>
 				</xf:action>
 			</xf:trigger>
+			
 			<xf:trigger>
 				<xf:label>Отфильтровать</xf:label>
 				<xf:action ev:event="DOMActivate">

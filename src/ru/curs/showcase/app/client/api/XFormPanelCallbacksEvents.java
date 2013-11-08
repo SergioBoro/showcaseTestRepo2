@@ -14,6 +14,7 @@ import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.client.ui.FormPanel;
 
@@ -48,7 +49,7 @@ public final class XFormPanelCallbacksEvents {
 	 *            - Данные xForm'ы
 	 */
 	public static void xFormPanelClickSave(final String xformId, final String linkId,
-			final String data) {
+			final String data, final String elementId) {
 		final XFormPanel curXFormPanel = getCurrentPanel(xformId);
 
 		if (curXFormPanel != null) {
@@ -60,6 +61,9 @@ public final class XFormPanelCallbacksEvents {
 			final Action ac = getActionByLinkId(linkId, curXFormPanel);
 
 			if (curXFormPanel.getElementInfo().getSaveProc() != null) {
+
+				setEnableDisableState(elementId, false);
+
 				curXFormPanel.getDataService().saveXForms(
 						new XFormContext(curXFormPanel.getContext(), data),
 						curXFormPanel.getElementInfo(),
@@ -68,6 +72,9 @@ public final class XFormPanelCallbacksEvents {
 
 							@Override
 							public void onSuccess(final Void result) {
+
+								// setEnableDisableState(elementId, true);
+
 								InlineUploader uploader = new InlineUploader(data, curXFormPanel);
 								uploader.checkForUpload(new CompleteHandler() {
 
@@ -77,6 +84,8 @@ public final class XFormPanelCallbacksEvents {
 										// "aRes=" + String.valueOf(aRes));
 
 										runAction(ac, curXFormPanel.getElement());
+
+										setEnableDisableState(elementId, true);
 									}
 
 								});
@@ -90,6 +99,20 @@ public final class XFormPanelCallbacksEvents {
 				runAction(ac, curXFormPanel.getElement());
 			}
 		}
+	}
+
+	private static void setEnableDisableState(final String elementId, final boolean state) {
+		if (elementId == null) {
+			return;
+		}
+
+		com.google.gwt.user.client.Element el = DOM.getElementById(elementId);
+		if (state) {
+			el.getParentElement().removeAttribute("disabled");
+		} else {
+			el.getParentElement().setAttribute("disabled", "");
+		}
+
 	}
 
 	/**
