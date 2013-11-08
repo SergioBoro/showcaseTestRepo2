@@ -104,9 +104,12 @@ pageEncoding="UTF-8"%>
 <form name="formlogin" method="POST" action="<c:url value="/j_spring_security_check" />" style="display:none">
 <table>
 
+
+<tr>			    <td align='right'>Домен</td>
+
 <%=SecurityParamsFactory.getHTMLTextForPrividerGroupsComboBoxSecector(authGifSrc)%>
 
-
+</tr>
 <!--   <tr> -->
 <!--     <td align="rigfht">Домен</td> -->
 <!--     <td> -->
