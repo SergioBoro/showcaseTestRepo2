@@ -14,7 +14,8 @@ import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.client.ui.FormPanel;
 
@@ -106,18 +107,24 @@ public final class XFormPanelCallbacksEvents {
 			return;
 		}
 
-		com.google.gwt.user.client.Element el = DOM.getElementById(elementId);
+		final com.google.gwt.user.client.Element el = DOM.getElementById(elementId);
 
 		if (el == null) {
 			return;
 		}
 
 		if (state) {
-			el.getParentElement().removeAttribute("disabled");
+			Timer enabledTimer = new Timer() {
+				@Override
+				public void run() {
+					el.getParentElement().removeAttribute("disabled");
+				}
+			};
+			final int delay = 3000;
+			enabledTimer.schedule(delay);
 		} else {
 			el.getParentElement().setAttribute("disabled", "");
 		}
-
 	}
 
 	/**
