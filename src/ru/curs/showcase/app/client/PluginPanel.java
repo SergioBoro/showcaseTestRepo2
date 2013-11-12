@@ -21,6 +21,8 @@ public class PluginPanel extends BasicElementPanelBasis {
 		this.setContext(context1);
 		this.setElementInfo(element1);
 
+		setCollbackJSNIFunction();
+
 		generalPluginPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
 		generalPluginPanel.add(new HTML(AppCurrContext.getInstance()
@@ -42,9 +44,12 @@ public class PluginPanel extends BasicElementPanelBasis {
 		// я бы убрал этот код-конец
 		// createChildPanels();
 
+		setCollbackJSNIFunction();
+
 		generalPluginPanel = new VerticalPanel();
 		generalPluginPanel.add(new HTML(AppCurrContext.getInstance()
 				.getInternationalizedMessages().please_wait_data_are_loading()));
+
 	}
 
 	private void setPluginPanel() {
@@ -334,6 +339,9 @@ public class PluginPanel extends BasicElementPanelBasis {
 	// CHECKSTYLE:ON
 
 	private String getDivIdPlugin() {
-		return getElementInfo().getFullId() + Constants.PLUGIN_DIV_ID_SUFFIX;
+		// return getElementInfo().getFullId() + Constants.PLUGIN_DIV_ID_SUFFIX;
+
+		return "dpe_" + getElementInfo().getTab().getDataPanel().getId() + "__E40F6599F809__"
+				+ getElementInfo().getId() + Constants.PLUGIN_DIV_ID_SUFFIX;
 	}
 }

@@ -29,6 +29,7 @@ encoding//userdatas/default/scripts/jython/datapanel/dp1301.py=utf-8
 encoding//userdatas/default/scripts/jython/geomap/GeoMapSimple.py=utf-8
 encoding//userdatas/default/scripts/jython/jasperReport/pdfCreate.py=utf-8
 encoding//userdatas/default/scripts/jython/plugin/extJsTree.py=utf-8
+encoding//userdatas/default/scripts/jython/plugin/handleCalendar.py=utf-8
 encoding//userdatas/default/scripts/jython/plugin/handleExtJsTree.py=utf-8
 encoding//userdatas/default/scripts/jython/plugin/handleFlashD.py=utf-8
 encoding//userdatas/default/scripts/jython/plugin/handleRadar.py=utf-8

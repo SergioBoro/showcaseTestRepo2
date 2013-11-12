@@ -39,11 +39,18 @@ public final class PluginPanelCallbacksEvents {
 	 * */
 	public static void pluginPanelClick(final String pluginDivId, final String eventId) {
 
-		Plugin pl =
-			((PluginPanel) ActionExecuter.getElementPanelById(pluginDivId.substring(0,
-					pluginDivId.length() - Constants.PLUGIN_DIV_ID_SUFFIX.length()))).getPlugin();
+		final String commonPart = "E40F6599F809__";
+
+		String elementId =
+			pluginDivId.substring(0,
+					pluginDivId.length() - Constants.PLUGIN_DIV_ID_SUFFIX.length());
+
+		elementId = elementId.substring(elementId.indexOf(commonPart) + commonPart.length());
+
+		Plugin pl = ((PluginPanel) ActionExecuter.getElementPanelById(elementId)).getPlugin();
 
 		List<HTMLEvent> events = pl.getEventManager().getEventForLink(eventId);
+
 		for (HTMLEvent chev : events) {
 			AppCurrContext.getInstance().setCurrentActionFromElement(chev.getAction(), pl);
 			ActionExecuter.execAction();

@@ -28275,3 +28275,80 @@ BEGIN
 END	
 
 GO
+
+
+GO
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[pluginCalendarInfo]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+    @element_id varchar(512) ='',    
+	@params xml='',
+    @data xml output,
+    @settings xml output
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
+
+set    @data=CAST(
+'<root>
+
+<metadata date="new Date(2012, 0, 5)" minHours="10" maxHours="20" 
+          dateInterval="week" style="position:relative;width:900px;height:800px"
+/>
+
+<data>
+<event id="''id1''" summary="''Событие 1''" startTime="new Date(2012, 0, 2, 10, 0)" endTime="new Date(2012, 0, 2, 12, 15)" allDay=""/>
+<event id="''id2''" summary="''Событие 2''" startTime="new Date(2012, 0, 3, 15, 0)" endTime="new Date(2012, 0, 4, 12, 45)" allDay=""/>
+<event id="''id3''" summary="''Событие 3''" startTime="new Date(2012, 0, 4, 0, 0)" endTime="new Date(2012, 0, 5, 23, 59)" allDay="true"/>
+</data>
+
+</root>' as xml)
+
+set @settings='<properties width="800px" height="600px">                                    
+
+                       <event name="single_click" linkId="id1">
+                        <action >
+                            <main_context>current</main_context>                        
+							              <datapanel type="current" tab="current">
+                                <element id="5">
+	                                <add_context>id1</add_context>
+                                </element>                                                             
+                            </datapanel>
+                        </action>
+                       </event>                                                                     
+
+                       <event name="single_click" linkId="id2">
+                        <action >
+                            <main_context>current</main_context>                        
+							              <datapanel type="current" tab="current">
+                                <element id="5">
+	                                <add_context>id2</add_context>
+                                </element>                                                             
+                            </datapanel>
+                        </action>
+                       </event>                                                                     
+
+                       <event name="single_click" linkId="id3">
+                        <action >
+                            <main_context>current</main_context>                        
+							              <datapanel type="current" tab="current">
+                                <element id="5">
+	                                <add_context>id3</add_context>
+                                </element>                                                             
+                            </datapanel>
+                        </action>
+                       </event>                                                                     
+
+                    </properties>'
+
+END
+GO

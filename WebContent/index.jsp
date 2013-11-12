@@ -30,6 +30,8 @@
     <script type="text/javascript" language="javascript" src="secured/secured.nocache.js"></script>
     
     <link rel="stylesheet" href="js/dijit/themes/claro/claro.css"/>
+    <link rel="stylesheet" href="js/dojox/calendar/themes/claro/Calendar.css"/>
+    <link rel="stylesheet" href="js/dojox/calendar/themes/claro/MonthColumnView.css"/>
     
     <script>
         var dojoConfig = {
