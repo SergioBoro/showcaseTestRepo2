@@ -71,6 +71,12 @@ public final class UserDataUtils {
 	private static final String INDEX_TITLE = "index.title";
 	private static final String LOGIN_TITLE = "login.title";
 
+	public static final String CELESTA_PREFIX = "celesta.";
+	public static final String CELESTA_SCORE_PATH = "score.path";
+	public static final String CELESTA_DATABASE_CLASSNAME = "database.classname";
+	public static final String CELESTA_DATABASE_CONNECTION = "database.connection";
+	public static final String CELESTA_PYLIB_PATH = "pylib.path";
+
 	public static void setGeneralPropFile(final String aGeneralPropFile) {
 		generalPropFile = aGeneralPropFile;
 	}
@@ -301,6 +307,34 @@ public final class UserDataUtils {
 					SettingsFileType.GENERAL_APP_PROPERTIES);
 		}
 		return props;
+	}
+
+	public static Properties getGeneralCelestaProperties() {
+		Properties generalProps = getGeneralProperties();
+		String scorePath = generalProps.getProperty(CELESTA_PREFIX
+				+ CELESTA_SCORE_PATH);
+		if (scorePath == null || scorePath.isEmpty()) {
+			return null;
+		}
+		Properties celestaProps = new Properties();
+		celestaProps.put(CELESTA_SCORE_PATH, scorePath);
+		celestaProps.put(
+				CELESTA_DATABASE_CLASSNAME,
+				generalProps.getProperty(CELESTA_PREFIX
+						+ CELESTA_DATABASE_CLASSNAME));
+		celestaProps.put(
+				CELESTA_DATABASE_CONNECTION,
+				generalProps.getProperty(CELESTA_PREFIX
+						+ CELESTA_DATABASE_CONNECTION));
+		String pyLibPath = generalProps.getProperty(CELESTA_PREFIX
+				+ CELESTA_PYLIB_PATH);
+		if (pyLibPath == null || pyLibPath.isEmpty()) {
+			pyLibPath = JythonIterpretatorFactory.getInstance()
+					.getLibJythonDir();
+		}
+		celestaProps.put(CELESTA_PYLIB_PATH, pyLibPath);
+
+		return celestaProps;
 	}
 
 	private static String getGeneralPropFile() {

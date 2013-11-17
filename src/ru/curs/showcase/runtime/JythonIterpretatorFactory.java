@@ -13,9 +13,9 @@ import ru.curs.showcase.util.exception.ServerLogicError;
  * @author den
  * 
  */
-public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterpreter> {
-	private static final String PYTHON_SCRIPTS_DIR_NOT_FOUND =
-		"Каталог со стандартными python скриптами '%s' не найден";
+public final class JythonIterpretatorFactory extends
+		PoolByUserdata<PythonInterpreter> {
+	private static final String PYTHON_SCRIPTS_DIR_NOT_FOUND = "Каталог со стандартными python скриптами '%s' не найден";
 	public static final String LIB_JYTHON_PATH = "/WEB-INF/libJython";
 	public static final String SCRIPTS_JYTHON_PATH = "scripts/jython";
 
@@ -49,14 +49,16 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 	protected PythonInterpreter createReusableItem() {
 		PySystemState state = new PySystemState();
 		state.path.append(new PyString(getUserDataScriptDir()));
-		File jythonLibPath = new File(AppInfoSingleton.getAppInfo().getWebAppPath() + libDir);
+		File jythonLibPath = new File(AppInfoSingleton.getAppInfo()
+				.getWebAppPath() + libDir);
 		if (!jythonLibPath.exists()) {
-			throw new ServerLogicError(String.format(PYTHON_SCRIPTS_DIR_NOT_FOUND, libDir));
+			throw new ServerLogicError(String.format(
+					PYTHON_SCRIPTS_DIR_NOT_FOUND, libDir));
 		}
 		state.path.append(new PyString(jythonLibPath.getAbsolutePath()));
 
-		jythonLibPath =
-			new File(AppInfoSingleton.getAppInfo().getWebAppPath() + libDir + "/site-packages");
+		jythonLibPath = new File(AppInfoSingleton.getAppInfo().getWebAppPath()
+				+ libDir + "/site-packages");
 		if (jythonLibPath.exists()) {
 			state.path.append(new PyString(jythonLibPath.getAbsolutePath()));
 		}
@@ -67,6 +69,10 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 	public static String getUserDataScriptDir() {
 		return AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/"
 				+ SCRIPTS_JYTHON_PATH;
+	}
+
+	public String getLibJythonDir() {
+		return AppInfoSingleton.getAppInfo().getWebAppPath() + libDir;
 	}
 
 	@Override

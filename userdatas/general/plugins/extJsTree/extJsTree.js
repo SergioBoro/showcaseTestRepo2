@@ -128,10 +128,28 @@ function createExtJsTree(parentId, pluginParams, data) {
 		_doKeyupFilterInput: function(el) {
 			this.dataLoader.doFilter(el.value, this.filter.checkBoxEl.dom.checked);
 		},
-		_doCheckchange: function(callbackFn, node, checked, eOpts) {
+		_selectParentNodes: function (node, checked) {
+			var parentNode = node.parentNode;
+			if (parentNode && parentNode.get('id')!='root')  {
+				parentNode.set('checked', checked);
+				this._selectParentNodes(parentNode, checked);
+				if (checked) {
+					this.addItem(parentNode.get('id'), parentNode);
+				} else {
+					this.removeItem(parentNode.get('id'));
+				}
+			}
+		},
+		_doCheckchange: function(callbackFn, node, checked, eOpts) {			
 			if (checked) {
+				if (this.pluginParams.core.checkParent) {
+					this._selectParentNodes(node, true);
+				}
 				this.addItem(node.get('id'), node);
 			} else {
+				if (this.pluginParams.core.checkParent) {
+					this._selectParentNodes(node, false);
+				}
 				this.removeItem(node.get('id'));
 			}
 			if (callbackFn!=undefined && Ext.isFunction(callbackFn)) {

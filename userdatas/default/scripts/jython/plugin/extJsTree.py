@@ -33,7 +33,7 @@ class extJsTree(JythonProc):
 def mainproc():
     data = u'''
     <items>
-			<item id="1" name="Lazy load item" leaf="false"/>
+			<item id="1" name="Lazy load item" leaf="false" checked="false"/>
 			<item id="2" name="Расходование денежных средств" cls="folder">
 				<children>
 					<item id="21" name="Оплата поставщикам за товар" leaf="true" attr1="a" checked="false"/>
