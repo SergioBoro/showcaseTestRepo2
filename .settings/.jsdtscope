@@ -9,7 +9,7 @@
 	<classpathentry kind="src" path="userdatas/default/js"/>
 	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.WebProject">
-		<attributes>
+		<attributes> 
 			<attribute name="hide" value="true"/>
 		</attributes>
 	</classpathentry>
