@@ -28302,7 +28302,7 @@ set    @data=CAST(
 '<root>
 
 <metadata date="new Date(2012, 0, 5)" minHours="10" maxHours="20" 
-          dateInterval="week" style="position:relative;width:900px;height:800px"
+          dateInterval="week" style="position:relative;width:900px;height:800px" editable="false"
 />
 
 <data>

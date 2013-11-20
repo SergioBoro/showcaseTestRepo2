@@ -11,8 +11,9 @@ function createCalendar(parentId, data, template) {
 			    		  date: data.metadata.date,
 			    		  columnViewProps:{minHours:data.metadata.minHours, maxHours:data.metadata.maxHours},
 			    		  store: new Memory({data: data.data}),
-			    		  dateInterval: data.metadata.dateInterval,			    		  
-			    		  style: data.metadata.style
+			    		  dateInterval: data.metadata.dateInterval,
+			    		  style: data.metadata.style,
+			    		  editable: data.metadata.editable
 			    		}, parentId);
 			    	
 			    	calendar.on("itemClick", function(e){
