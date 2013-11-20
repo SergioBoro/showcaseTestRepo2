@@ -15,7 +15,7 @@ class myHandler(DefaultHandler):
         global resultMetadata
         global resultData
         if (qname == "metadata"):
-            resultMetadata = u"{date: %s, minHours: %s, maxHours: %s, dateInterval: '%s', style: '%s', editable: %s}" % (attrs.getValue('date'), attrs.getValue('minHours'), attrs.getValue('maxHours'), attrs.getValue('dateInterval'), attrs.getValue('style'), attrs.getValue('editable'))
+            resultMetadata = u"{date: %s, minHours: %s, maxHours: %s, dateInterval: '%s', style: '%s', editable: %s, toolbarVisible: %s}" % (attrs.getValue('date'), attrs.getValue('minHours'), attrs.getValue('maxHours'), attrs.getValue('dateInterval'), attrs.getValue('style'), attrs.getValue('editable'), attrs.getValue('toolbarVisible'))
         if (qname == "event"):
             resultData += u"{id: %s, summary: %s, startTime: %s, endTime: %s, allDay: '%s'}," % (attrs.getValue('id'), attrs.getValue('summary'), attrs.getValue('startTime'), attrs.getValue('endTime'), attrs.getValue('allDay'))
 

@@ -20,6 +20,25 @@ function createCalendar(parentId, data, template) {
 //			    		  console.log("Item clicked", e.item);
 			    		gwtPluginFunc(parentId, e.item.id);
 			    	});
+			    	
+			    	
+			    	if(!data.metadata.toolbarVisible){
+				        var div = document.getElementById(parentId).parentNode;
+				        if(div){
+					        var div2 = div.firstChild;
+					        if(div2){
+					        	for (var index = 0; index < div2.childNodes.length; index++) {
+					        		if(div2.childNodes[index].className == "buttonContainer"){
+					        			div2.removeChild(div2.childNodes[index]);
+					        		}
+					        	}
+					        }
+				        }
+			    	}
+			    	
+			    	
+			    	
+			    	
 			      
 			  }
 	);
