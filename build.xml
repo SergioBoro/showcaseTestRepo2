@@ -135,23 +135,22 @@
 	</target>
 
 	<target name="init.local.files" description="Create local settings files from templates"> 
-		<echo>Anlug start"</echo>
-		<copy verbose="true" file="local.template.properties" tofile="local.properties" />
-		<copy verbose="true" file="template.classpath" tofile=".classpath" />
-		<copy verbose="true" file="${sc.src.dir}/general.template.properties" tofile="${sc.src.dir}/${sc.general.props.file}" />
-		<copy verbose="true" file="${sc.userdata.dir}/default/app.template.properties" tofile="${sc.userdata.dir}/default/app.properties" />
-		<copy verbose="true" file="${sc.userdata.dir}/test1/app.template.properties" tofile="${sc.userdata.dir}/test1/app.properties" />
-		<copy verbose="true" file="${sc.userdata.dir}/test2/app.template.properties" tofile="${sc.userdata.dir}/test2/app.properties" />
-		<copy verbose="true" file="${sc.userdata.dir}/pg/app.template.properties" tofile="${sc.userdata.dir}/pg/app.properties" />
-		<copy verbose="true" file="${sc.userdata.dir}/ora/app.template.properties" tofile="${sc.userdata.dir}/ora/app.properties" />		
-		<copy verbose="true" file="${sc.userdata.dir}/default/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/default/gridproperties/default.properties" />
-		<copy verbose="true" file="${sc.userdata.dir}/test1/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/test1/gridproperties/default.properties" />
-		<copy verbose="true" file="${sc.userdata.dir}/test2/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/test2/gridproperties/default.properties" />
-		<copy verbose="true" file="${sc.userdata.dir}/pg/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/pg/gridproperties/default.properties" />
-		<copy verbose="true" file="${sc.userdata.dir}/ora/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/ora/gridproperties/default.properties" />			
-		<copy verbose="true" file="${sc.userdata.dir}/logback.template.xml" tofile="${sc.userdata.dir}/logback.xml" />
-		<copy verbose="true" file="${sc.userdata.dir}/app.template.properties" tofile="${sc.userdata.dir}/app.properties" />
-		<copy verbose="true" file="${sc.gwt.src.root.dir}/template.App.gwt.xml" tofile="${sc.gwt.src.root.dir}/App.gwt.xml" />
+		<copy verbose="true" overwrite="true" file="local.template.properties" tofile="local.properties" />
+		<copy verbose="true" overwrite="true" file="template.classpath" tofile=".classpath" />
+		<copy verbose="true" overwrite="true" file="${sc.src.dir}/general.template.properties" tofile="${sc.src.dir}/${sc.general.props.file}" />
+		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/default/app.template.properties" tofile="${sc.userdata.dir}/default/app.properties" />
+		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/test1/app.template.properties" tofile="${sc.userdata.dir}/test1/app.properties" />
+		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/test2/app.template.properties" tofile="${sc.userdata.dir}/test2/app.properties" />
+		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/pg/app.template.properties" tofile="${sc.userdata.dir}/pg/app.properties" />
+		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/ora/app.template.properties" tofile="${sc.userdata.dir}/ora/app.properties" />		
+		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/default/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/default/gridproperties/default.properties" />
+		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/test1/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/test1/gridproperties/default.properties" />
+		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/test2/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/test2/gridproperties/default.properties" />
+		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/pg/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/pg/gridproperties/default.properties" />
+		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/ora/gridproperties/default.template.properties" tofile="${sc.userdata.dir}/ora/gridproperties/default.properties" />			
+		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/logback.template.xml" tofile="${sc.userdata.dir}/logback.xml" />
+		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/app.template.properties" tofile="${sc.userdata.dir}/app.properties" />
+		<copy verbose="true" overwrite="true" file="${sc.gwt.src.root.dir}/template.App.gwt.xml" tofile="${sc.gwt.src.root.dir}/App.gwt.xml" />
 		<echo>Don't forget setup correct settings in local.properties, ${sc.general.props.file} и app.properties and setup classpath (Build path) in Eclipse</echo>
 	</target>
 
