@@ -8,7 +8,10 @@
 	
 	<tab id="10" name="Геодерево">
 		<element id="102" type="GRID"  subtype="JS_TREE_GRID" proc="exttreegrid_geo"
-		    plugin="treeDGrid"/>
+		    plugin="treeDGrid">
+			    <proc id="020101" name="gridToolBar" type="TOOLBAR"/>		    
+		</element>		    
+		<element id="0202" type="webtext" proc="webtext/selectedRowWriter.py" hideOnLoad="true" />		    
 		<element id="105" type="webtext" proc="webtext_filter_and_add" hideOnLoad="true" />
 	</tab>
 	<tab id="15" name="Картинки на ноды">

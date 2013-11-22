@@ -136,13 +136,13 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		}, parentId);
 	    arrGrids[parentId] = grid;
 		grid.on(".dgrid-row:click,", function(event){
-			if(event.toElement.className.indexOf("expando-icon") != -1){
+			if(event.target.className.indexOf("expando-icon") != -1){
 				return;
 			}
 			gwtAfterClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
 		});
 		grid.on(".dgrid-row:dblclick", function(event){
-			if(event.toElement.className.indexOf("expando-icon") != -1){
+			if(event.target.className.indexOf("expando-icon") != -1){
 				return;
 			}
 			gwtAfterDoubleClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());

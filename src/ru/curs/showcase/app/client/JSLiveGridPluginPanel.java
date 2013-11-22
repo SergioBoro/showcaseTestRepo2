@@ -8,16 +8,22 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.grid.toolbar.ToolBarHelper;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.*;
-import com.google.gwt.event.dom.client.*;
 import com.google.gwt.json.client.*;
+import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
+import com.sencha.gxt.core.client.util.IconHelper;
+import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.event.*;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 /**
  * Класс-адаптер панели с внешним плагином типа JSLiveGrid.
@@ -36,12 +42,13 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	private final HorizontalPanel hpToolbar = new HorizontalPanel();
 	private final HorizontalPanel hpFooter = new HorizontalPanel();
 
-	private final PushButton exportToExcelCurrentPage = new PushButton(new Image(
-			Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE));
-	private final PushButton exportToExcelAll = new PushButton(new Image(
-			Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL));
-	private final PushButton copyToClipboard = new PushButton(new Image(
-			Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
+	// private final PushButton exportToExcelCurrentPage = new PushButton(new
+	// Image(
+	// Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE));
+	// private final PushButton exportToExcelAll = new PushButton(new Image(
+	// Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL));
+	// private final PushButton copyToClipboard = new PushButton(new Image(
+	// Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
 	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance()
 			.getInternationalizedMessages().grid_message_popup_export_to_excel());
 
@@ -73,6 +80,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	}
 
 	private boolean needRestoreAfterShowLoadingMessage = false;
+
+	private ToolBarHelper toolBarHelper = null;
 
 	@Override
 	public VerticalPanel getPanel() {
@@ -346,60 +355,60 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		hpHeader.setSize(PROC100, PROC100);
 		hpFooter.setSize(PROC100, PROC100);
-		// // dg.setSize(PROC100, PROC100);
-		hpToolbar.setHeight(PROC100);
-		// dg.setWidth("95%");
 
-		hpToolbar.setSpacing(1);
-		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
-			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
-					.getInternationalizedMessages().grid_caption_export_to_excel_current_page());
-			exportToExcelCurrentPage.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(final ClickEvent event) {
-					exportToExcel(exportToExcelCurrentPage, GridToExcelExportType.CURRENTPAGE);
-				}
-			});
-			hpToolbar.add(exportToExcelCurrentPage);
-		}
-		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
-			exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_export_to_excel_all());
-			exportToExcelAll.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(final ClickEvent event) {
-					exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
-				}
-			});
-			hpToolbar.add(exportToExcelAll);
-		}
-		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
-			copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_copy_to_clipboard());
-			copyToClipboard.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(final ClickEvent event) {
-					copyToClipboard();
-				}
-			});
-			hpToolbar.add(copyToClipboard);
-		}
+		// hpToolbar.setHeight(PROC100);
+		// hpToolbar.setSpacing(1);
+		// if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage())
+		// {
+		// exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
+		// .getInternationalizedMessages().grid_caption_export_to_excel_current_page());
+		// exportToExcelCurrentPage.addClickHandler(new ClickHandler() {
+		// @Override
+		// public void onClick(final ClickEvent event) {
+		// exportToExcel(exportToExcelCurrentPage,
+		// GridToExcelExportType.CURRENTPAGE);
+		// }
+		// });
+		// hpToolbar.add(exportToExcelCurrentPage);
+		// }
+		// if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
+		// exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .grid_caption_export_to_excel_all());
+		// exportToExcelAll.addClickHandler(new ClickHandler() {
+		// @Override
+		// public void onClick(final ClickEvent event) {
+		// exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
+		// }
+		// });
+		// hpToolbar.add(exportToExcelAll);
+		// }
+		// if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
+		// copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .grid_caption_copy_to_clipboard());
+		// copyToClipboard.addClickHandler(new ClickHandler() {
+		// @Override
+		// public void onClick(final ClickEvent event) {
+		// copyToClipboard();
+		// }
+		// });
+		// hpToolbar.add(copyToClipboard);
+		// }
 
 		generalHp.clear();
 		p.clear();
 		p.add(hpHeader);
+		// ----------------------------------------
+
+		ToolBarHelper toolBarHelper = getToolBarHelper();
+		toolBarHelper.getToolBarPanel().setWidth(gridMetadata.getUISettings().getGridWidth());
+
+		hpToolbar.add(toolBarHelper.getToolBarPanel());
 		p.add(hpToolbar);
+
+		// ----------------------------------------
 		p.add(generalHp);
 		generalHp.add(pluginHTML);
 		p.add(hpFooter);
-
-		// ----------------------------------------
-
-		// p.clear();
-		// generalHp.clear();
-		//
-		// p.add(generalHp);
-		// generalHp.add(pluginHTML);
 
 		// ----------------------------------------
 
@@ -603,6 +612,9 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			selectedRecordsChanged();
 		}
 
+		hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) + "px");
+		getToolBarHelper().fillToolBar();
+
 		processClick(recId, colId, interactionType);
 
 	}
@@ -683,7 +695,11 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 			resetGridSettingsToCurrent();
 
+			hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) + "px");
+			toolBarHelper.fillToolBar();
+
 			runAction(gridExtradata.getActionForDependentElements());
+
 		}
 
 		setupTimer();
@@ -813,10 +829,11 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		localContext = new GridContext();
 		localContext.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
 
-		saveCurrentCheckBoxSelection();
-
 		Cell selected = getStoredRecordId();
 		saveCurrentClickSelection(selected.recId, selected.colId);
+
+		stringSelectedRecordIds = selected.recId;
+		saveCurrentCheckBoxSelection();
 	}
 
 	/**
@@ -889,6 +906,71 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		result.setCurrentDatapanelHeight(GeneralDataPanel.getTabPanel().getOffsetHeight());
 
 		return result;
+	}
+
+	private void addStaticItemToToolBar(final ToolBar toolBar) {
+		final TextButton exportToExcelCurrentPage =
+			new TextButton("", IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE),
+					16, 16));
+		final TextButton exportToExcelAll =
+			new TextButton("", IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL), 16, 16));
+		final TextButton copyToClipboard =
+			new TextButton("", IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
+		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
+			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
+					.getInternationalizedMessages().grid_caption_export_to_excel_current_page());
+			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+					exportToExcel(exportToExcelCurrentPage, GridToExcelExportType.CURRENTPAGE);
+				}
+			});
+			toolBar.add(exportToExcelCurrentPage);
+		}
+		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
+			exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_export_to_excel_all());
+			exportToExcelAll.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+					exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
+				}
+			});
+			toolBar.add(exportToExcelAll);
+		}
+		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
+			copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_copy_to_clipboard());
+			copyToClipboard.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+					copyToClipboard();
+				}
+			});
+			toolBar.add(copyToClipboard);
+		}
+	}
+
+	private ToolBarHelper getToolBarHelper() {
+		if (this.toolBarHelper == null) {
+			final JSLiveGridPluginPanel liveGridPanel = this;
+			this.toolBarHelper = new ToolBarHelper(dataService, this) {
+
+				@Override
+				public void addStaticItemToToolBar(final ToolBar toolBar) {
+					liveGridPanel.addStaticItemToToolBar(toolBar);
+				}
+
+				@Override
+				public void runAction(final Action ac) {
+					liveGridPanel.runAction(ac);
+				}
+			};
+		}
+		return this.toolBarHelper;
 	}
 
 }
