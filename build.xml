@@ -35,7 +35,7 @@
 		<fileset dir="${sc.lib.dir}">
 			<include name="*.jar" />
 		</fileset>
-		<fileset dir="${sc.servlet.cont.dir}/lib">
+		<fileset dir="${sc.servlet.cont.dir}/lib1">
 			<include name="*.jar" />
 		</fileset>
 		<fileset dir="${sc.gwt.dir}">
