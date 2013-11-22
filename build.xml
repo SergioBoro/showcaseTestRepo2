@@ -135,6 +135,7 @@
 	</target>
 
 	<target name="init.local.files" description="Create local settings files from templates"> 
+		<echo>Anlug start"</echo>
 		<copy verbose="true" file="local.template.properties" tofile="local.properties" />
 		<copy verbose="true" file="template.classpath" tofile=".classpath" />
 		<copy verbose="true" file="${sc.src.dir}/general.template.properties" tofile="${sc.src.dir}/${sc.general.props.file}" />
