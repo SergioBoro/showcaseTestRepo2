@@ -35,7 +35,10 @@
     
     <script>
         var dojoConfig = {
-        	deps: [ "dojox/mobile", "dojox/mobile/parser", "dojox/mobile/compat" ],
+//        	deps: [ "dojox/mobile", "dojox/mobile/parser", "dojox/mobile/compat" ],
+// нужно для поддержки мобильности в dgrid'ах,  
+// закомменчено поскольку не работали клики в аккордеоне 
+
             parseOnLoad: false,
             isDebug: false,            
             djeoEngine: 'djeo',
