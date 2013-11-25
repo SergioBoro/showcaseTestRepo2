@@ -243,7 +243,13 @@ public class Accordeon {
 
 		for (int i = 0; i < ng.getElements().size(); i++) {
 
-			TreeItem ti = groupTree.addItem(ng.getElements().get(i).getName());
+			// groupTree.add(w);
+			// com.google.gwt.safehtml.shared.SafeHtmlString
+			// SafeHtml sh;
+			// sh = new SafeHtmlString("fdfdf");
+			// groupTree.addItem(sh);
+			// (itemText)
+			TreeItem ti = groupTree.addTextItem(ng.getElements().get(i).getName());
 			ti.setUserObject(ng.getElements().get(i));
 			generateTreeItem(ng.getElements().get(i), ti);
 
@@ -261,7 +267,7 @@ public class Accordeon {
 		}
 
 		for (int i = 0; i < element.getElements().size(); i++) {
-			TreeItem ti = treeItem.addItem(element.getElements().get(i).getName());
+			TreeItem ti = treeItem.addTextItem(element.getElements().get(i).getName());
 			ti.setUserObject(element.getElements().get(i));
 			generateTreeItem(element.getElements().get(i), ti);
 		}
