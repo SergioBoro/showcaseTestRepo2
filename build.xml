@@ -179,6 +179,7 @@
 				<pathelement location="${sc.src.dir}" />
 				<pathelement location="datagrid" />
 				<pathelement location="extragwt" />
+				<pathelement location="celesta" />
 			</sourceroots>
 		</iajc>
 	</target>
