@@ -65,30 +65,21 @@ function createLiveDGrid(elementId, parentId, metadata) {
 			column["id"]    = metadata["columns"][k]["id"];
 			column["field"] = metadata["columns"][k]["id"];			
 			column["label"] = metadata["columns"][k]["caption"];
-			column["sortable"] = "true";
+			column["sortable"]  = "true";
+			column["valueType"] = metadata["columns"][k]["valueType"];
 			
-			if(metadata["columns"][k]["valueType"] == "DOWNLOAD"){
-				column["renderCell"] = function actionRenderCell(object, value, node, options) {
-					var div = document.createElement("div");
-//					div.className = "renderedCell";
-					div.innerHTML = "<tbody><tr><td style=\"font-size: 1em;\">"+value+"</td><td  align=\"center\" style=\"vertical-align: middle;\"><button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\"><img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 16px; height: 16px;  \"   ></button></p></td></tr></tbody>";					
-					return div;
-		        };
-			}else{
-				column["renderCell"] = function actionRenderCell(object, value, node, options) {
-					var div = document.createElement("div");
-					if(object.rowstyle && (object.rowstyle != "")){
-						div.className = object.rowstyle;						
-					}
-					div.innerHTML = value;					
-					return div;
-		        };
-/*				
-				column["formatter"] = function columnFormatter(item){
-					return item;
-				};
-*/				
-			}
+			column["renderCell"] = function actionRenderCell(object, value, node, options) {
+				var div = document.createElement("div");
+				if(object.rowstyle && (object.rowstyle != "")){
+					div.className = object.rowstyle;						
+				}
+				if(this["valueType"] == "DOWNLOAD"){
+					div.innerHTML = "<tbody><tr><td style=\"font-size: 1em;\">"+value+"</td><td  align=\"center\" style=\"vertical-align: middle;\"><button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\"><img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 16px; height: 16px;  \"   ></button></p></td></tr></tbody>";
+				}else{
+					div.innerHTML = value;
+				}
+				return div;
+	        };
 			
 			columns.push(column);
 		}
@@ -168,19 +159,6 @@ function createLiveDGrid(elementId, parentId, metadata) {
 		for(var k in metadata["columns"]) {
 			grid.styleColumn(metadata["columns"][k]["id"], metadata["columns"][k]["style"]);
 		}
-		
-/*		
-		aspect.around(grid, 'renderRow', function(origMethod) {
-			return function(object, options) {
-				var html = origMethod.apply(this, arguments);
-				if (object.rowstyle != null) {
-					html.className = object.rowstyle;
-				}
-				return html;
-			};
-		});
-*/			
-		
 		
 	});
 }
