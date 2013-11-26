@@ -19069,7 +19069,7 @@ set @gridsettings_str='<gridsettings>
         <col id="Файл2"  width="100px" type="DOWNLOAD" linkId="12"/>                 
         <col id="URL" width="150px" type="LINK"/>
         </columns>
-<properties flip="false" pagesize="22" gridWidth="500px" profile="grid.nowidth.properties" autoSelectRecordId="3" 
+<properties flip="false" pagesize="22" gridWidth="1200px" profile="grid.nowidth.properties" autoSelectRecordId="3" 
  autoSelectRelativeRecord="false" autoSelectColumnId="URL"/>
 </gridsettings>' 
 set    @gridsettings=CAST(@gridsettings_str as xml)
