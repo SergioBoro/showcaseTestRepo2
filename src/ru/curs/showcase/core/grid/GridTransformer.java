@@ -20,6 +20,8 @@ public final class GridTransformer {
 
 	private static final int DEF_COLUMN_WIDTH = 100;
 
+	private static final String HAS_CHILDREN = "hasChildren";
+
 	private GridTransformer() {
 		throw new UnsupportedOperationException();
 	}
@@ -39,7 +41,7 @@ public final class GridTransformer {
 
 		int index = 0;
 		for (Column c : grid.getDataSet().getColumnSet().getColumnsByIndex()) {
-			if ("hasChildren".equalsIgnoreCase(c.getCaption())) {
+			if (HAS_CHILDREN.equalsIgnoreCase(c.getCaption()) || c.isTreeGridIcon()) {
 				continue;
 			}
 
@@ -121,29 +123,36 @@ public final class GridTransformer {
 
 			int index = 0;
 			for (Column c : grid.getDataSet().getColumnSet().getColumnsByIndex()) {
-				index++;
-				String colId = "col" + String.valueOf(index);
-				String val = null;
-
-				if (c.getValueType() == null) {
-					val = rec.getValue(c);
-				} else {
-					switch (c.getValueType()) {
-					case IMAGE:
-						val =
+				if (HAS_CHILDREN.equalsIgnoreCase(c.getCaption())) {
+					lgm.set(c.getCaption(), rec.getValue(c));
+				} else if (c.isTreeGridIcon()) {
+					lgm.set(c.getCaption(),
 							"<a><img border=\"0\" src=\""
-									+ XMLUtils.unEscapeTagXml(rec.getValue(c)) + "\"></a>";
-						break;
-					case LINK:
-						val = getLink(rec.getValue(c));
-						break;
-					default:
-						val = rec.getValue(c);
-						break;
-					}
-				}
-				lgm.set(colId, val);
+									+ XMLUtils.unEscapeTagXml(rec.getValue(c)) + "\"></a>");
+				} else {
+					index++;
+					String colId = "col" + String.valueOf(index);
+					String val = null;
 
+					if (c.getValueType() == null) {
+						val = rec.getValue(c);
+					} else {
+						switch (c.getValueType()) {
+						case IMAGE:
+							val =
+								"<a><img border=\"0\" src=\""
+										+ XMLUtils.unEscapeTagXml(rec.getValue(c)) + "\"></a>";
+							break;
+						case LINK:
+							val = getLink(rec.getValue(c));
+							break;
+						default:
+							val = rec.getValue(c);
+							break;
+						}
+					}
+					lgm.set(colId, val);
+				}
 			}
 			sublist.add(lgm);
 		}
@@ -251,8 +260,13 @@ public final class GridTransformer {
 					continue;
 				}
 
-				if ("hasChildren".equalsIgnoreCase(c.getCaption())) {
+				if (HAS_CHILDREN.equalsIgnoreCase(c.getCaption())) {
 					tgm.setHasChildren(TextUtils.stringToBoolean(rec.getValue(c)));
+					tgm.set(c.getCaption(), rec.getValue(c));
+				} else if (c.isTreeGridIcon()) {
+					tgm.set(c.getCaption(),
+							"<a><img border=\"0\" src=\""
+									+ XMLUtils.unEscapeTagXml(rec.getValue(c)) + "\"></a>");
 				} else {
 					index++;
 					String colId = "col" + String.valueOf(index);

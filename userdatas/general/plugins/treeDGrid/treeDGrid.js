@@ -2,8 +2,8 @@ var arrGrids = {};
 
 
 function createTreeDGrid(elementId, parentId, metadata) {
-	require(["dojo/store/util/QueryResults", "dojo/on", "dgrid/tree", "dgrid/OnDemandGrid", "dgrid/extensions/ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
-	function(QueryResults, on, tree, Grid, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect){
+	require(["put-selector/put", "dojo/store/util/QueryResults", "dojo/on", "dgrid/OnDemandGrid", "dgrid/extensions/ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "tree", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
+	function(put, QueryResults, on, Grid, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, tree, Cache, Memory, aspect){
 		
 		var firstLoading = true;
 		
@@ -82,6 +82,41 @@ function createTreeDGrid(elementId, parentId, metadata) {
 			if(column["id"] == "col1"){		
 				column["formatter"] = function columnFormatter(item){
 					return item;
+				};
+				column["renderExpando"] = function columnRenderExpando(level, hasChildren, expanded, object) {
+					
+				        var dir = this.grid.isRTL ? "right" : "left",
+							cls = ".dgrid-expando-icon",
+							node;
+						if(object.HasChildren){
+							if(object.TreeGridNodeLeafIcon && object.TreeGridNodeLeafIcon.trim().length > 0){
+								cls += ".ui-icon-triangle-1-" + (expanded ? "se" : "e");									
+							}else{
+								cls += ".ui-icon.ui-icon-triangle-1-" + (expanded ? "se" : "e");									
+							}
+						}
+						node = put("div" + cls + "[style=width:20px; margin-" + dir + ": " +
+							(level * (this.indentWidth || 9)) + "px; float: " + dir + "]");
+						
+						node.innerHTML = "&nbsp;"; // for opera to space things properly							
+						if(object.HasChildren && (object.HasChildren == '1')){
+							if(expanded){
+								if(object.TreeGridNodeOpenIcon && object.TreeGridNodeOpenIcon.trim().length > 0){
+									node.innerHTML = object.TreeGridNodeOpenIcon;
+								}
+							}
+							else{
+								if(object.TreeGridNodeCloseIcon && object.TreeGridNodeCloseIcon.trim().length > 0){
+									node.innerHTML = object.TreeGridNodeCloseIcon;										
+								}
+							}
+						}else{
+							if(object.TreeGridNodeLeafIcon && object.TreeGridNodeLeafIcon.trim().length > 0){
+								node.innerHTML = object.TreeGridNodeLeafIcon;									
+							}
+						}
+						return node;
+					
 				};
 			}else{
 				column["renderCell"] = function actionRenderCell(object, value, node, options) {
