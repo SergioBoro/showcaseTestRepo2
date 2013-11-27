@@ -27065,7 +27065,7 @@ declare @Sql varchar(8000);
 
 IF (@parent_id IS NULL) OR (LTrim(@parent_id) = '')
 BEGIN
- set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo6_Id as "~~id", cast( ''<properties>
+ set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/TreeGridNodeClose.gif'' AS [TreeGridNodeCloseIcon], ''imagesingrid/TreeGridNodeOpen.gif'' AS [TreeGridNodeOpenIcon], ''imagesingrid/TreeGridLeaf.png'' AS [TreeGridNodeLeafIcon], ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo6_Id as "~~id", cast( ''<properties>
                     <event name="row_single_click">
                         <action>
                             <main_context>current</main_context>
@@ -27091,7 +27091,7 @@ END
 
 IF (select COUNT(*) from geo6 where geo6_Id = @parent_id) > 0
 BEGIN
- set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo5_Id as "~~id", cast( ''<properties>
+ set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/TreeGridNodeClose.gif'' AS [TreeGridNodeCloseIcon], ''imagesingrid/TreeGridNodeOpen.gif'' AS [TreeGridNodeOpenIcon], ''imagesingrid/TreeGridLeaf.png'' AS [TreeGridNodeLeafIcon], ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo5_Id as "~~id", cast( ''<properties>
                     <event name="row_single_click">
                         <action>
                             <main_context>current</main_context>
@@ -27117,7 +27117,7 @@ END
 
 IF (select COUNT(*) from geo5 where geo5_Id = @parent_id) > 0
 BEGIN
- set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+ set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/TreeGridNodeClose.gif'' AS [TreeGridNodeCloseIcon], ''imagesingrid/TreeGridNodeOpen.gif'' AS [TreeGridNodeOpenIcon], ''imagesingrid/TreeGridLeaf.png'' AS [TreeGridNodeLeafIcon], ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
                     <event name="row_single_click">
                         <action>
                             <main_context>current</main_context>
@@ -27146,7 +27146,7 @@ BEGIN
 -- SET @error_mes = 'Вызов процедуры для города' 
 -- RETURN 1
 
- set @Sql = 'select top(0) Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+ set @Sql = 'select top(0) Name as "Название", Id as "Код", ''imagesingrid/TreeGridNodeClose.gif'' AS [TreeGridNodeCloseIcon], ''imagesingrid/TreeGridNodeOpen.gif'' AS [TreeGridNodeOpenIcon], ''imagesingrid/TreeGridLeaf.png'' AS [TreeGridNodeLeafIcon], ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
                     <event name="row_single_click">
                         <action>
                             <main_context>current</main_context>
