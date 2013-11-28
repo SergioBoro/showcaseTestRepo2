@@ -1,9 +1,11 @@
 <sessioncontext>
    <username></username>
    <sid>testSID</sid>
+   <sessionid>testSession</sessionid>   
    <email/>
    <fullusername/>
    <phone/>
+   <ip/>   
    <urlparams>
       <urlparam name="key1" value="[value1]"/>
       <urlparam name="key2" value="[value21, value22]"/>

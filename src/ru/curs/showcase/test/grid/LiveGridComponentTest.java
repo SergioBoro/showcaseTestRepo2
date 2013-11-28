@@ -42,7 +42,7 @@ public class LiveGridComponentTest extends AbstractTest {
 
 	private static final String FONT_SIZE = "1em";
 
-	private static final String REC_ID = "9";
+	private static final String REC_ID = "Волгоградская обл.";
 	private static final String REC_ID2 = "36";
 
 	private static final int DATA_SIZE = 50;
@@ -101,7 +101,8 @@ public class LiveGridComponentTest extends AbstractTest {
 		assertNull(lge.getAutoSelectColumnId());
 		assertEquals(REC_ID, lge.getAutoSelectRecordId());
 
-		assertEquals("1", lge.getEventManager().getEvents().get(0).getId1().getString());
+		assertEquals("Итого по России", lge.getEventManager().getEvents().get(0).getId1()
+				.getString());
 		assertEquals(InteractionType.SINGLE_CLICK, lge.getEventManager().getEvents().get(0)
 				.getInteractionType());
 

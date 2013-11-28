@@ -424,6 +424,9 @@ public class AbstractTest extends GeneralXMLHelper {
 		gc.setCurrentColumnId("curColumnId");
 		gc.setCurrentRecordId("curRecordId");
 
+		gc.setCurrentDatapanelWidth(0);
+		gc.setCurrentDatapanelHeight(0);
+
 		context.addRelated("01", gc);
 
 		return gc;

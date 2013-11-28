@@ -152,15 +152,15 @@ public class DataPanelFactoryTest extends AbstractTestWithDefaultUserData {
 		assertEquals(DataPanelElementProcType.DOWNLOAD, proc.getType());
 		assertEquals(TEST_GOOD_XSL, proc.getTransformName());
 		assertEquals("test_good_small.xsd", proc.getSchemaName());
-		proc = el.getProcById("proc7");
+		proc = el.getProcById("0207_proc7");
 		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
 		assertEquals(TEST_GOOD_XSL, proc.getTransformName());
 		assertEquals("test_good.xsd", proc.getSchemaName());
-		proc = el.getProcById("proc8");
+		proc = el.getProcById("0207_proc8");
 		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
 		assertNull(proc.getTransformName());
 		assertEquals("test_bad.xsd", proc.getSchemaName());
-		proc = el.getProcById("proc9");
+		proc = el.getProcById("0207_proc9");
 		assertEquals(DataPanelElementProcType.UPLOAD, proc.getType());
 		assertEquals(TEST_GOOD_XSL, proc.getTransformName());
 		assertNull(proc.getSchemaName());
