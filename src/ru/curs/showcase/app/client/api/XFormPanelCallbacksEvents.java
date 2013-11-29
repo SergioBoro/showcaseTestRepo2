@@ -458,6 +458,15 @@ public final class XFormPanelCallbacksEvents {
 			return this.visibleRecordCount;
 		}-*/;
 
+		/**
+		 * Поиск по кнопке (неавтоматический).
+		 * 
+		 * @return boolean
+		 */
+		native boolean manualSearch()/*-{
+			return this.manualSearch != null ? this.manualSearch : false;
+		}-*/;
+
 	}
 
 	private static void showSingleAndMultiSelector(final JavaScriptObject o,
@@ -487,8 +496,9 @@ public final class XFormPanelCallbacksEvents {
 			}
 
 			options.startsWithChecked(param.startWith());
-
 			options.hideStartsWith(param.hideStartWith());
+
+			options.manualSearch(param.manualSearch());
 
 			ErrorHandler errHandler = new ErrorHandler() {
 				@Override

@@ -40,6 +40,7 @@
 			</xf:input>
 
 
+
 			<xf:trigger>
 				<xf:label>Вызов ExtJsTree плагина</xf:label>
 				<xf:action ev:event="DOMActivate">
@@ -112,6 +113,86 @@
 						});" />
 				</xf:action>
 			</xf:trigger>
+
+
+
+			<xf:trigger>
+				<xf:label>Вызов ExtJsTree плагина с неавтоматическим поиском</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:load
+						resource="javascript:gwtCreatePlugin({
+							id:'xformId',
+							/*parentId:'pluginWraper',*/
+							plugin:'extJsTree',
+							/*proc:'pluginExtJsTree',*/
+							proc:'plugin/extJsTree.py',
+							postProcessProc:'plugin/handleExtJsTree.py',
+							/*getDataProcName:'extJsTree_getData',*/
+							getDataProcName:'plugin/extJsTreeGetData.py',
+							generalFilters:['XPath(instance(quot(xformId_myInstance1))/item/name)'],							
+							params:{
+								treePanel: {
+									title: 'Элементы дерева',
+									listeners: {
+										checkchange: {
+											fn: function(node, checked, eOpts) {
+												if (checked) {
+													alert('CheckChange event. Select node '+node.get('name')+'(id:'+node.get('id')+', attr1:'+node.get('attr1')+')');
+												}
+											}
+										}
+									}
+								},
+								core: {
+									checkParent:true,
+									filter:{
+										startsWith:true,
+										delay:900
+									}
+								},
+								dataModel:{
+									fields:[
+										{name: 'attr1', type: 'string'}
+									]
+								}
+							},
+							options: {								
+								dataWidth: '500px',
+								dataHeight: '450px',
+								windowCaption: 'Выбор данных из дерева',
+								manualSearch: true,
+								onSelectionComplete: function(ok, plugin) {
+									if (ok) {
+										plugin.utils.singleXpathMapping({
+											'XPath(instance(quot(xformId_myInstance1))/item/name)':'name',
+											'XPath(instance(quot(xformId_myInstance1))/item/@id)':'id'
+										});
+										plugin.utils.multiXpathMapping({
+											xpathRoot:'XPath(instance(quot(xformId_myInstance))/items)',
+											xpathMapping:{'XPath(instance(quot(xformId_myInstance1))/item)':{'id': '@id','name':'name'}}
+										}, true);
+										
+										/*var records = plugin.getValues();
+										names = [];
+										Ext.Array.each(records, function(rec){
+											names.push(rec.get('name'));
+										});
+ 					                    var a = getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance').getElementsByTagName('info')[0].getElementsByTagName('name')[0];
+										setValue(a, names.join('|'));
+										
+										xforms.ready = false;
+										xforms.refresh();
+										xforms.ready = true;*/
+									}
+								}
+							}
+						});" />
+				</xf:action>
+			</xf:trigger>
+			
+			
+			
+			
 			
 			<xf:repeat id="itemRow" nodeset="instance('xformId_myInstance')/items">
               <div>
