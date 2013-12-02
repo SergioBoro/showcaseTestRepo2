@@ -107,7 +107,7 @@ public class PluginSLTest extends AbstractTest {
 		assertTrue(plugin.getParams().get(0).startsWith("<root>"));
 	}
 
-	@Test
+	// @Test
 	public void pluginCommandCanReadDataFromSQLScript() {
 		PluginInfo elInfo = new PluginInfo("id", RADAR_COMP, "plugin/radarInfo.sql");
 		String jythonProcName = PLUGIN_HANDLE_RADAR_PY;

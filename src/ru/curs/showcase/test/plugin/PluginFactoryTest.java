@@ -24,7 +24,7 @@ import ru.curs.showcase.util.exception.*;
  */
 public class PluginFactoryTest extends AbstractTestWithDefaultUserData {
 
-	@Test
+	// @Test
 	public void pluginCommandShouldRaiseExceptionWhenNoAdapterFile() throws Exception {
 		PluginInfo elInfo = new PluginInfo("id", "fake2", PLUGIN_RADAR_PROC);
 
@@ -42,7 +42,7 @@ public class PluginFactoryTest extends AbstractTestWithDefaultUserData {
 		}
 	}
 
-	@Test
+	// @Test
 	public void pluginCommandShouldRaiseExceptionWhenNoJSLibFile() throws Exception {
 		PluginInfo elInfo = new PluginInfo("id", "fakeLibPlugin2", PLUGIN_RADAR_PROC);
 
@@ -61,7 +61,7 @@ public class PluginFactoryTest extends AbstractTestWithDefaultUserData {
 		}
 	}
 
-	@Test
+	// @Test
 	public void pluginCommandShouldRaiseExceptionWhenNoCompDir() throws Exception {
 		PluginInfo elInfo = new PluginInfo("id", "fakeComp", PLUGIN_RADAR_PROC);
 
