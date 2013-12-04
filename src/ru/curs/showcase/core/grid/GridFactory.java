@@ -462,6 +462,7 @@ public class GridFactory extends CompBasedElementFactory {
 			if (col == null) {
 				col = createColumn(colId);
 				getResult().getDataSet().getColumnSet().getColumns().add(col);
+				col.setIndex(getResult().getDataSet().getColumnSet().getColumns().size() - 1);
 			}
 			if (attrs.getIndex(WIDTH_TAG) > -1) {
 				String width = attrs.getValue(WIDTH_TAG);
@@ -851,7 +852,6 @@ public class GridFactory extends CompBasedElementFactory {
 		private int firstNumber;
 		private int lastNumber;
 		private int counterRecord = 0;
-		private int counterColumn = 1;
 
 		private Column curColumn = null;
 		private Record curRecord = null;
@@ -936,8 +936,9 @@ public class GridFactory extends CompBasedElementFactory {
 					if (curColumn == null) {
 						curColumn = createColumn(colId);
 						getResult().getDataSet().getColumnSet().getColumns().add(curColumn);
+						curColumn.setIndex(getResult().getDataSet().getColumnSet().getColumns()
+								.size() - 1);
 					}
-					curColumn.setIndex(counterColumn - 1);
 					int sqltype;
 					if (atts.getValue(SQLTYPE_ATTR) == null) {
 						sqltype = Types.VARCHAR;
@@ -947,7 +948,6 @@ public class GridFactory extends CompBasedElementFactory {
 					determineValueType(curColumn, sqltype);
 					setupStdColumnProps(curColumn);
 					curColumn.setSorting(getCallContext().getSortingForColumn(curColumn));
-					counterColumn++;
 				}
 
 				processValue = true;
