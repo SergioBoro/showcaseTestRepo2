@@ -36,12 +36,11 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		ProductionModeInitializer.initialize(arg0.getServletContext());
 
 		try {
-			Properties celestaProps = UserDataUtils
-					.getGeneralCelestaProperties();
+			Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
 			if (celestaProps != null) {
 				Celesta.initialize(celestaProps);
 			} else {
-				LOGGER.warn("Celesta property (in app.properties) is not set");
+				LOGGER.warn("Celesta properties (in app.properties) is not set");
 			}
 		} catch (Exception ex) {
 			LOGGER.error("Ошибка инициализации celesta", ex);
