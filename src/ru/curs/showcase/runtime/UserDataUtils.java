@@ -311,26 +311,29 @@ public final class UserDataUtils {
 
 	public static Properties getGeneralCelestaProperties() {
 		Properties generalProps = getGeneralProperties();
-		String scorePath = generalProps.getProperty(CELESTA_PREFIX
-				+ CELESTA_SCORE_PATH);
-		if (scorePath == null || scorePath.isEmpty()) {
-			return null;
-		}
 		Properties celestaProps = new Properties();
-		celestaProps.put(CELESTA_SCORE_PATH, scorePath);
-		celestaProps.put(
-				CELESTA_DATABASE_CLASSNAME,
-				generalProps.getProperty(CELESTA_PREFIX
-						+ CELESTA_DATABASE_CLASSNAME));
-		celestaProps.put(
-				CELESTA_DATABASE_CONNECTION,
-				generalProps.getProperty(CELESTA_PREFIX
-						+ CELESTA_DATABASE_CONNECTION));
-		String pyLibPath = generalProps.getProperty(CELESTA_PREFIX
-				+ CELESTA_PYLIB_PATH);
+
+		String scorePath = generalProps.getProperty(CELESTA_PREFIX + CELESTA_SCORE_PATH);
+		// if (scorePath == null || scorePath.isEmpty()) {
+		// return null;
+		// }
+		if (!(scorePath == null || scorePath.isEmpty())) {
+			celestaProps.put(CELESTA_SCORE_PATH, scorePath);
+		}
+
+		String dbClassname = generalProps.getProperty(CELESTA_PREFIX + CELESTA_DATABASE_CLASSNAME);
+		if (!(dbClassname == null || dbClassname.isEmpty())) {
+			celestaProps.put(CELESTA_DATABASE_CLASSNAME, dbClassname);
+		}
+
+		String dbConnection =
+			generalProps.getProperty(CELESTA_PREFIX + CELESTA_DATABASE_CONNECTION);
+		if (!(dbConnection == null || dbConnection.isEmpty())) {
+			celestaProps.put(CELESTA_DATABASE_CONNECTION, dbConnection);
+		}
+		String pyLibPath = generalProps.getProperty(CELESTA_PREFIX + CELESTA_PYLIB_PATH);
 		if (pyLibPath == null || pyLibPath.isEmpty()) {
-			pyLibPath = JythonIterpretatorFactory.getInstance()
-					.getLibJythonDir();
+			pyLibPath = JythonIterpretatorFactory.getInstance().getLibJythonDir();
 		}
 		celestaProps.put(CELESTA_PYLIB_PATH, pyLibPath);
 
