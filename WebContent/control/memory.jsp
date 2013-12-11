@@ -126,6 +126,20 @@ div {
 		</tr>		
 	</table>
 	
+	<h3>Управление Celesta</h3>
+	<table>
+		<tr>
+			<td width="30%">	
+				<form target="fake" method="get" action="reset">
+					<input type="hidden" name="pool" value="jythonCelesta" /> 
+					<input type="submit"
+						value="Сбросить пул Jython интерпретаторов в Celesta" onclick="window.setInterval('refresh()',1000);"/>
+				</form>
+				<div style="font-style: italic">Сброс будет проведен только в пуле Jython интерпретаторов для источников данных Celesta</div>
+			</td>
+		</tr>		
+	</table>
+	
 	<iframe name="fake"
 		style="position: absolute; width: 0; height: 0; border: 0"
 		src="javascript:''" />

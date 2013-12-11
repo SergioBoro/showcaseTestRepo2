@@ -5,6 +5,9 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import org.slf4j.*;
+
+import ru.curs.celesta.*;
 import ru.curs.showcase.runtime.*;
 
 /**
@@ -18,6 +21,8 @@ public class ControlMemoryServlet extends HttpServlet {
 	public static final String GC_PARAM = "gc";
 	public static final String POOL_PARAM = "pool";
 	private static final long serialVersionUID = 1L;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ControlMemoryServlet.class);
 
 	@Override
 	protected void service(final HttpServletRequest request, final HttpServletResponse response)
@@ -35,6 +40,13 @@ public class ControlMemoryServlet extends HttpServlet {
 				break;
 			case "jython":
 				JythonIterpretatorFactory.getInstance().clear();
+				break;
+			case "jythonCelesta":
+				try {
+					Celesta.getInstance().clearInterpretersPool();
+				} catch (CelestaException e) {
+					LOGGER.error("Ошибка очистки пула интерпретаторов Сelesta ", e);
+				}
 				break;
 			case "xsl":
 				XSLTransformerPoolFactory.getInstance().clear();
