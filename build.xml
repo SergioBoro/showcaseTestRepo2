@@ -10,6 +10,7 @@
 	<property name="sc.extragwt.dir" value="extragwt" />
 	<property name="sc.datagrid.dir" value="datagrid" />
 	<property name="sc.src.dir" value="src" />
+	<property name="celesta.src.dir" value="celesta" />
 	<property name="sc.tmp.dir" value="tmp" />
 	<property name="sc.runtime.dir" value="runtime" />
 	<property name="sc.webapp.dir" value="WebContent" />
@@ -27,6 +28,7 @@
 	<property name="sc.db.backup.prefix" value="showcase-test" />
 	<property name="sc.gwt.dir" value="devtime/gwt" />
 	<property name="sc.junit.dir" value="devtime/junit" />
+	<property name="celesta.javacc.dir" value="devtime/javacc" />
 	
 	<property name="sc.env.props" value="local.properties" />
 	<property file="${sc.env.props}" />
@@ -250,12 +252,19 @@
 			</fileset>
 		</delete>		
 	</target>
+	
+	<target name="celesta.javacc">
+	  <echo>Compiling Celesta parser with javacc...</echo>
+	  <javacc target="${celesta.src.dir}/ru/curs/celesta/score/CelestaParser.jj" outputdirectory="${celesta.src.dir}/ru/curs/celesta/score/" javacchome="${celesta.javacc.dir}" />
+	</target>	
 
 	<target name="rebuild" depends="clean, build" description="clean + build" />
+	
+
 
 	<target name="ci.build" depends="checkProperties, info.env, clean,  
 		init.dirs, init.dojo, init.jython, init.patches, 
-		build, checkstyle, init.db, build.gwt, jdepend,
+		celesta.javacc,	build, checkstyle, init.db, build.gwt, jdepend,
 		dist, javadoc, backup.userdata, backup.sql.scripts, tomcat.prepare.war" 
 		description="Target for CI build"/>
 	
@@ -273,6 +282,13 @@
 		description="Target for Sonar"/>	
 	
 	<target name="dist" depends="write.app.version, write.gwt.version" description="Assembles WAR file">
+		
+		
+		<echo>Copy celesta.sql file to war</echo>
+		<copy tofile="${sc.class.dir}/ru/curs/celesta/score/celesta.sql" file="${celesta.src.dir}/ru/curs/celesta/score/celesta.sql" />
+		
+		
+		
 		<echo>Copy compiled data</echo>
 		<copy todir="${sc.build.dir}/war" overwrite="no">
 			<fileset dir="${sc.webapp.dir}">
@@ -307,12 +323,20 @@
 			</fileset>
 		</copy>		
 
+		<copy todir="${sc.build.dir}/war/WEB-INF/src/${celesta.src.dir}">
+			<fileset dir="${celesta.src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>				
+		
+
 		<echo>Copy runtime libs</echo>
 		<copy todir="${sc.build.dir}/war/WEB-INF/lib">
 			<fileset dir="${sc.runtime.dir}/lib">
 				<include name="**/*.jar" />
 			</fileset>
 		</copy>
+		
 
 		<echo>Making mega war</echo>
 		<war destfile="${sc.war.file}-ext.war">
