@@ -7,6 +7,7 @@
 		<element id="0201" type="grid" subtype="EXT_LIVE_GRID" proc="g1.grid.getData.celesta">
 			<proc id="metadata" name="g1.grid.getSetting.celesta" type="METADATA"/>
 			<proc id="download" name="g1.grid.downloadFile.celesta" type="DOWNLOAD" />
+			<proc id="toolBar" name="g1.grid.gridToolBar.celesta" type="TOOLBAR"/>
 		</element>
 	</tab>
 </datapanel>

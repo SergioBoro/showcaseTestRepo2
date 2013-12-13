@@ -30,6 +30,8 @@ public class GridToolBarSelector extends SourceSelector<GridToolBarGateway> {
 			return new GridToolBarDBGateway();
 		case JYTHON:
 			return new GridToolBarJythonGateway();
+		case CELESTA:
+			return new GridToolBarCelestaGateway();
 		default:
 		}
 
