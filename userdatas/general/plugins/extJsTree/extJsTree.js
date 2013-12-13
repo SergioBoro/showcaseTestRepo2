@@ -153,7 +153,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 				this.removeItem(node.get('id'));
 			}
 			if (callbackFn!=undefined && Ext.isFunction(callbackFn)) {
-				callbackFn.call(this, node, checked, eOpts);
+				callbackFn.call(this.treePanel, node, checked, eOpts);
 			}
 		},
 		_doLoadData: function(data) {
@@ -316,6 +316,7 @@ function createExtJsTree(parentId, pluginParams, data) {
     Ext.onReady(function() {
 		var parentEl = Ext.get(parentId);
 		var extJsTree = new ExtJsTree(parentEl, pluginParams);
+		Ext.ExtJsTree = extJsTree;
 		extJsTree.utils = {
 			singleXpathMapping: function(xpathMapping) {
 				var records = extJsTree.getValues();//extJsTree.treePanel.getView().getChecked();
