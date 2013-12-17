@@ -15,6 +15,8 @@ public class LiveGridColumnConfig implements SerializableElement {
 
 	@XmlAttribute
 	private String id = null;
+	@XmlAttribute
+	private String parentId = null;
 	@XmlTransient
 	private String caption = null;
 	@XmlAttribute
@@ -55,6 +57,14 @@ public class LiveGridColumnConfig implements SerializableElement {
 
 	public void setId(final String id1) {
 		this.id = id1;
+	}
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(final String aParentId) {
+		parentId = aParentId;
 	}
 
 	public String getCaption() {

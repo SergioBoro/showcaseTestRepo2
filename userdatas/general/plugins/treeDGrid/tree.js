@@ -191,7 +191,8 @@ function tree(column){
 					"!ui-icon-triangle-1-" + (expanded ? "e" : "se"));
 				
 // [KURS				
-				target.innerHTML = grid._columns[0]["renderExpando"](0, true, expanded, row.data).innerHTML; 
+//				target.innerHTML = grid._columns[0]["renderExpando"](0, true, expanded, row.data).innerHTML; 
+				target.innerHTML = grid.column(target)["renderExpando"](0, true, expanded, row.data).innerHTML;				
 // KURS]				
 				
 				var preloadNode = target.preloadNode,

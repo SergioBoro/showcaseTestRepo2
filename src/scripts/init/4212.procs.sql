@@ -1,3 +1,8 @@
+GO
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
 CREATE PROCEDURE [dbo].[pluginRadarInfo]
     @main_context varchar(512) ='',
     @add_context varchar(512) ='',
@@ -43,3 +48,6 @@ set @settings='<properties width="800px" height="600px">
                     </properties>'
 
 END
+GO
+
+

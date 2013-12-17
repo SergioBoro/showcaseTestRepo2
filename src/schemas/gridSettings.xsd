@@ -23,19 +23,6 @@
     </xs:element>   
     
     <xs:element name="columns">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element name="col" maxOccurs="unbounded">
-                    <xs:complexType>
-                        <xs:attribute name="id" type="notNullType" use="required"/>
-                        <xs:attribute name="width" type="notNullType"/>
-                        <xs:attribute name="precision" type="xs:unsignedByte"/>
-                        <xs:attribute name="type" type="gridValueType"/>
-                        <xs:attribute name="linkId" type="notNullType"/>                              
-                    </xs:complexType>
-                </xs:element>               
-            </xs:sequence>
-        </xs:complexType>        
         <xs:unique name="colName">
             <xs:selector xpath="col"/>
             <xs:field xpath="@id"/>

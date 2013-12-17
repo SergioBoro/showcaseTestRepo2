@@ -22,6 +22,9 @@ public final class GridTransformer {
 
 	private static final String HAS_CHILDREN = "hasChildren";
 
+	private static final String IMG_START_STRING = "<a><img border=\"0\" src=\"";
+	private static final String IMG_END_STRING = "\"></a>";
+
 	private GridTransformer() {
 		throw new UnsupportedOperationException();
 	}
@@ -53,6 +56,8 @@ public final class GridTransformer {
 			LiveGridColumnConfig column =
 				new LiveGridColumnConfig("col" + String.valueOf(index), c.getCaption(),
 						getIntWidthByStringWidth(c.getWidth()));
+
+			column.setParentId(c.getParentId());
 
 			column.setHorizontalAlignment(c.getHorizontalAlignment());
 
@@ -127,8 +132,8 @@ public final class GridTransformer {
 					lgm.set(c.getCaption(), rec.getValue(c));
 				} else if (c.isTreeGridIcon()) {
 					lgm.set(c.getCaption(),
-							"<a><img border=\"0\" src=\""
-									+ XMLUtils.unEscapeTagXml(rec.getValue(c)) + "\"></a>");
+							IMG_START_STRING + XMLUtils.unEscapeTagXml(rec.getValue(c))
+									+ IMG_END_STRING);
 				} else {
 					index++;
 					String colId = "col" + String.valueOf(index);
@@ -140,8 +145,8 @@ public final class GridTransformer {
 						switch (c.getValueType()) {
 						case IMAGE:
 							val =
-								"<a><img border=\"0\" src=\""
-										+ XMLUtils.unEscapeTagXml(rec.getValue(c)) + "\"></a>";
+								IMG_START_STRING + XMLUtils.unEscapeTagXml(rec.getValue(c))
+										+ IMG_END_STRING;
 							break;
 						case LINK:
 							val = getLink(rec.getValue(c));
@@ -265,8 +270,8 @@ public final class GridTransformer {
 					tgm.set(c.getCaption(), rec.getValue(c));
 				} else if (c.isTreeGridIcon()) {
 					tgm.set(c.getCaption(),
-							"<a><img border=\"0\" src=\""
-									+ XMLUtils.unEscapeTagXml(rec.getValue(c)) + "\"></a>");
+							IMG_START_STRING + XMLUtils.unEscapeTagXml(rec.getValue(c))
+									+ IMG_END_STRING);
 				} else {
 					index++;
 					String colId = "col" + String.valueOf(index);
@@ -278,8 +283,8 @@ public final class GridTransformer {
 						switch (c.getValueType()) {
 						case IMAGE:
 							val =
-								"<a><img border=\"0\" src=\""
-										+ XMLUtils.unEscapeTagXml(rec.getValue(c)) + "\"></a>";
+								IMG_START_STRING + XMLUtils.unEscapeTagXml(rec.getValue(c))
+										+ IMG_END_STRING;
 							break;
 						case LINK:
 							val = getLink(rec.getValue(c));

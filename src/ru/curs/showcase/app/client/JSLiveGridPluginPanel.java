@@ -296,6 +296,9 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		for (final LiveGridColumnConfig egcc : gridMetadata.getColumns()) {
 			JSONObject column = new JSONObject();
 			column.put("id", new JSONString(egcc.getId()));
+			if (egcc.getParentId() != null) {
+				column.put("parentId", new JSONString(egcc.getParentId()));
+			}
 			column.put("caption", new JSONString(egcc.getCaption()));
 			String valueType = "";
 			if (egcc.getValueType() != null) {
@@ -311,6 +314,28 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			columns.put(egcc.getId(), column);
 		}
 		metadata.put("columns", columns);
+
+		if (gridMetadata.getOriginalColumnSet().getVirtualColumns() != null) {
+			JSONObject virtualColumns = new JSONObject();
+			for (final VirtualColumn vc : gridMetadata.getOriginalColumnSet().getVirtualColumns()) {
+				JSONObject virtualColumn = new JSONObject();
+				virtualColumn.put("id", new JSONString(vc.getId()));
+				if (vc.getParentId() != null) {
+					virtualColumn.put("parentId", new JSONString(vc.getParentId()));
+				}
+				if (vc.getWidth() != null) {
+					virtualColumn.put("width", new JSONString(vc.getWidth()));
+				}
+				if (vc.getStyle() != null) {
+					virtualColumn.put("style", new JSONString(vc.getStyle()));
+				}
+				virtualColumn.put("virtualColumnType", new JSONString(vc.getVirtualColumnType()
+						.toString()));
+
+				virtualColumns.put(vc.getId(), virtualColumn);
+			}
+			metadata.put("virtualColumns", virtualColumns);
+		}
 
 		JSONObject data = new JSONObject();
 		JSONArray rows = new JSONArray();
@@ -567,7 +592,6 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 	public void pluginAfterClick(final String recId, final String colId,
 			final String aStringSelectedRecordIds) {
-
 		stringSelectedRecordIds = aStringSelectedRecordIds;
 
 		if (gridMetadata.getUISettings().isSingleClickBeforeDoubleClick()) {

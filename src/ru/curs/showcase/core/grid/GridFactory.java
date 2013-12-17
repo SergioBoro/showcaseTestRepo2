@@ -66,7 +66,10 @@ public class GridFactory extends CompBasedElementFactory {
 	private static final String RELATIVE_NUMBER_TOO_BIG_ERROR =
 		"относительный autoSelectRecordId = %d выходит за пределы страницы (%d записей)";
 	private static final String XML_ERROR_MES = "настройки грида";
+
 	private static final String COL_SETTINGS_TAG = "col";
+	private static final String COLUMN_SET_SETTINGS_TAG = "columnset";
+	private static final String COLUMN_HEADER_SETTINGS_TAG = "columnheader";
 
 	private static final String AUTO_SELECT_REC_TAG = "autoSelectRecordId";
 	private static final String AUTO_SELECT_COL_TAG = "autoSelectColumnId";
@@ -387,7 +390,15 @@ public class GridFactory extends CompBasedElementFactory {
 		/**
 		 * Стартовые тэги, которые будут обработаны данным обработчиком.
 		 */
-		private final String[] startTags = { COL_SETTINGS_TAG, PROPS_TAG };
+		private final String[] startTags = {
+				PROPS_TAG, COL_SETTINGS_TAG, COLUMN_SET_SETTINGS_TAG, COLUMN_HEADER_SETTINGS_TAG };
+
+		/**
+		 * Конечные тэги, которые будут обработаны данным обработчиком.
+		 */
+		private final String[] endTags = { COLUMN_SET_SETTINGS_TAG, COLUMN_HEADER_SETTINGS_TAG };
+
+		private List<String> currentIds = null;
 
 		@Override
 		public Object handleStartTag(final String namespaceURI, final String lname,
@@ -397,6 +408,24 @@ public class GridFactory extends CompBasedElementFactory {
 			}
 			if (qname.equalsIgnoreCase(PROPS_TAG)) {
 				return propertiesSTARTTAGHandler(attrs);
+			}
+			if (qname.equalsIgnoreCase(COLUMN_SET_SETTINGS_TAG)) {
+				return columnsetSTARTTAGHandler(attrs);
+			}
+			if (qname.equalsIgnoreCase(COLUMN_HEADER_SETTINGS_TAG)) {
+				return columnheaderSTARTTAGHandler(attrs);
+			}
+			return null;
+		}
+
+		@Override
+		public Object handleEndTag(final String aNamespaceURI, final String lname,
+				final String qname) {
+			if (qname.equalsIgnoreCase(COLUMN_SET_SETTINGS_TAG)) {
+				return columnsetENDTAGHandler();
+			}
+			if (qname.equalsIgnoreCase(COLUMN_HEADER_SETTINGS_TAG)) {
+				return columnheaderENDTAGHandler();
 			}
 			return null;
 		}
@@ -461,6 +490,19 @@ public class GridFactory extends CompBasedElementFactory {
 			Column col = getResult().getColumnById(colId);
 			if (col == null) {
 				col = createColumn(colId);
+
+				col.setParentId(getParentId());
+				if (col.getParentId() == null) {
+					if (getResult().getDataSet().getColumnSet().getVirtualColumns() == null) {
+						createVirtualColumns();
+					}
+
+					VirtualColumn vc = new VirtualColumn();
+					vc.setId(col.getId());
+					vc.setVirtualColumnType(VirtualColumnType.COLUMN_REAL);
+					getResult().getDataSet().getColumnSet().getVirtualColumns().add(vc);
+				}
+
 				getResult().getDataSet().getColumnSet().getColumns().add(col);
 				col.setIndex(getResult().getDataSet().getColumnSet().getColumns().size() - 1);
 			}
@@ -488,6 +530,77 @@ public class GridFactory extends CompBasedElementFactory {
 			return startTags;
 		}
 
+		@Override
+		protected String[] getEndTrags() {
+			return endTags;
+		}
+
+		private void createVirtualColumns() {
+			getResult().getDataSet().getColumnSet()
+					.setVirtualColumns(new ArrayList<VirtualColumn>());
+
+			currentIds = new ArrayList<String>();
+		}
+
+		private String getParentId() {
+			String parentId = null;
+			if ((currentIds != null) && (currentIds.size() > 0)) {
+				parentId = currentIds.get(currentIds.size() - 1);
+			}
+			return parentId;
+		}
+
+		private void removeParentId() {
+			if ((currentIds != null) && (currentIds.size() > 0)) {
+				currentIds.remove(currentIds.size() - 1);
+			}
+		}
+
+		private Object columnsetSTARTTAGHandler(final Attributes attrs) {
+			return columnsetANDcolumnheaderSTARTTAGHandler(attrs, VirtualColumnType.COLUMN_SET);
+		}
+
+		private Object columnheaderSTARTTAGHandler(final Attributes attrs) {
+			return columnsetANDcolumnheaderSTARTTAGHandler(attrs, VirtualColumnType.COLUMN_HEADER);
+		}
+
+		private Object columnsetANDcolumnheaderSTARTTAGHandler(final Attributes attrs,
+				final VirtualColumnType virtualColumnType) {
+			if (getResult().getDataSet().getColumnSet().getVirtualColumns() == null) {
+				createVirtualColumns();
+			}
+
+			VirtualColumn vc = new VirtualColumn();
+			vc.setId(attrs.getValue(ID_TAG));
+			vc.setParentId(getParentId());
+			if (attrs.getIndex(WIDTH_TAG) > -1) {
+				String width = attrs.getValue(WIDTH_TAG);
+				vc.setWidth(width);
+			}
+			if (attrs.getIndex(GeneralConstants.STYLE_TAG) > -1) {
+				String style = attrs.getValue(GeneralConstants.STYLE_TAG);
+				vc.setStyle(style);
+			}
+			vc.setVirtualColumnType(virtualColumnType);
+			getResult().getDataSet().getColumnSet().getVirtualColumns().add(vc);
+
+			currentIds.add(vc.getId());
+
+			return null;
+		}
+
+		private Object columnsetENDTAGHandler() {
+			removeParentId();
+
+			return null;
+		}
+
+		private Object columnheaderENDTAGHandler() {
+			removeParentId();
+
+			return null;
+		}
+
 	}
 
 	@Override
@@ -502,8 +615,22 @@ public class GridFactory extends CompBasedElementFactory {
 			loadStaticSettings();
 			loadStoredState();
 		}
+		adjustVirtualColumns();
 		calcAutoSelectRecordId();
 		loadLiveGridUISettings();
+	}
+
+	private void adjustVirtualColumns() {
+		if (getResult().getDataSet().getColumnSet().getVirtualColumns() == null) {
+			return;
+		}
+
+		for (VirtualColumn vc : getResult().getDataSet().getColumnSet().getVirtualColumns()) {
+			if (vc.getVirtualColumnType() != VirtualColumnType.COLUMN_REAL) {
+				return;
+			}
+		}
+		getResult().getDataSet().getColumnSet().setVirtualColumns(null);
 	}
 
 	private void loadStoredState() {
