@@ -26,4 +26,10 @@
         <property name="authenticationManager" ref="authenticationManager"/>
     </bean>
 
+	<bean id="oauth2AuthenticationProvider" 
+          class="ru.curs.showcase.security.oauth.Oauth2AuthenticationProvider">
+    </bean> 
+    <bean id="oauth2Filter" class="ru.curs.showcase.security.oauth.Oauth2AuthenticationProcessingFilter">
+	 	<property name="authenticationManager" ref="authenticationManager"/>
+	</bean>
 </beans>

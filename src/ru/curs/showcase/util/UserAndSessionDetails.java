@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import ru.curs.showcase.app.api.UserInfo;
+import ru.curs.showcase.security.oauth.Oauth2Token;
 
 /**
  * 
@@ -19,6 +20,7 @@ public class UserAndSessionDetails extends WebAuthenticationDetails {
 	private static final long serialVersionUID = 8550679539357144098L;
 
 	private UserInfo userInfo = null;
+	private Oauth2Token oauth2Token = null;
 
 	private Boolean authViaAuthServer = false;
 
@@ -40,6 +42,14 @@ public class UserAndSessionDetails extends WebAuthenticationDetails {
 
 	public void setAuthViaAuthServer(final Boolean aauthViaAuthServer) {
 		this.authViaAuthServer = aauthViaAuthServer;
+	}
+
+	public Oauth2Token getOauth2Token() {
+		return oauth2Token;
+	}
+
+	public void setOauth2Token(final Oauth2Token oOauth2Token) {
+		this.oauth2Token = oOauth2Token;
 	}
 
 }

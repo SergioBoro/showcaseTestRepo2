@@ -128,23 +128,27 @@ pageEncoding="UTF-8"%>
   <tr>
     <td align="right">Имя пользователя</td>
     <td><input id="j_username" type="text" name="j_username" /></td>
+    <td></td>
   </tr>
   <tr>
     <td align="right">Пароль</td>
     <td><input  id="j_password" type="password" name="j_password" /></td>
+    <td></td>
   </tr>
   <tr style="display: none;">
     <td align="right">Запомнить меня</td>
     <td><input type="checkbox" name="_spring_security_remember_me" /></td>
+    <td></td>
   </tr>
   <tr>
     <td colspan="2" align="right">
       <input type="submit" value="Войти" />
       <input type="reset" value="Сбросить" />
     </td>
+    <td><%if (UserDataUtils.getGeneralOauth2Properties() != null) {%><a href="oauth?auth=websphere">WebSphere авторизация</a><%}%></td>
   </tr>
   <tr>
-  <td>
+  <td colspan="3">
   <a href="forall/state" target="_blank">О программе</a>
   </td>
   </tr>

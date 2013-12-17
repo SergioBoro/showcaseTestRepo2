@@ -1,87 +1,72 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-xmlns:beans="http://www.springframework.org/schema/beans"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-http://www.springframework.org/schema/security
-http://www.springframework.org/schema/security/spring-security-3.0.xsd"> 
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security.xsd">
 
-<http auto-config="true" use-expressions="true">
-<custom-filter ref="requestHeaderFilter" before="FORM_LOGIN_FILTER"/>
-<!--	<intercept-url pattern="/messageList*" access="ROLE_USER,ROLE_ANONYMOUS" />-->
+	<http pattern="/login.jsp*" security="none"/>
+	<http pattern="/sestimeout.jsp*" security="none"/>
+	<http pattern="/js/dojo/dojo.js" security="none"/>
+	<http pattern="/js/dojo/_firebug/firebug.js" security="none"/>
+	<http pattern="/js/dojo/selector/acme.js" security="none"/>
+	<http pattern="/js/course/geo/ge/resources/icons/*" security="none"/>
+	<http pattern="/getImage*" security="none"/>
+	<http pattern="/solutions/default/resources/favicon.ico*" security="none"/>
+	<http pattern="/auth/isAuthenticatedServlet*" security="none"/>
+	<http pattern="/resources/**" security="none"/>
+	<http pattern="/forall/*" security="none"/>
+	
+	<http auto-config="true" use-expressions="true">
+		<custom-filter ref="oauth2Filter" position="CAS_FILTER" />
+		<custom-filter ref="requestHeaderFilter" before="FORM_LOGIN_FILTER"/>	
+	
+	    <intercept-url pattern="/log/*" access="hasRole('ROLE_ADMIN')"  />
+	    <intercept-url pattern="/control/*" access="hasRole('ROLE_ADMIN')" />    
+	
+		<session-management session-authentication-strategy-ref="sas"/>
+		<session-management session-fixation-protection="none"/>	
+		
+		<intercept-url pattern="/**" access="fullyAuthenticated" />
+		
+	    <form-login login-page="/login.jsp" default-target-url="/index.jsp"
+	                authentication-failure-url="/login.jsp?error=true" /> 
+	    <logout logout-url="/logout" logout-success-url="/login.jsp" invalidate-session="true"/>
+	    <remember-me />
+	    <anonymous username="guest" granted-authority="ROLE_GUEST" />
+	</http>
 
-    <intercept-url pattern="/log/*" access="hasRole('ROLE_ADMIN')" />
-    <intercept-url pattern="/control/*" access="hasRole('ROLE_ADMIN')" />    
-
-	<session-management session-authentication-strategy-ref="sas"/>
-	<session-management session-fixation-protection="none"/>
-	
-<!--	<session-management invalid-session-url="/login.jsp" />-->
-<!--	-->
-	
-<!--	<intercept-url pattern="/login.jsp*" access="fullyAuthenticated" />-->
-	 <intercept-url pattern="/login.jsp*" filters="none"/>   
-	 <intercept-url pattern="/sestimeout.jsp*" filters="none"/>  
-	 <intercept-url pattern="/js/dojo/dojo.js" filters="none"/>
-	 <intercept-url pattern="/js/dojo/_firebug/firebug.js" filters="none"/>
-	  <intercept-url pattern="/js/dojo/selector/acme.js" filters="none"/>
-	  
-	  <intercept-url pattern="/getImage*" filters="none"/>
-	 
-	 
-	 <intercept-url pattern="/js/course/geo/ge/resources/icons/*" filters="none"/>
-	 <intercept-url pattern="/solutions/default/resources/favicon.ico*" filters="none"/>
-	 <intercept-url pattern="/auth/isAuthenticatedServlet*" filters="none"/>
-	 <intercept-url pattern="/resources/login_content/*" filters="none"/> 
-	 
-	 <intercept-url pattern="/resources/internal/arrow_for_disclosure_panel_close.png*" filters="none"/>
-	 <intercept-url pattern="/resources/internal/arrow_for_disclosure_panel_open.png*" filters="none"/>
-	 <intercept-url pattern="/resources/internal/message_error.png*" filters="none"/>
-	
-	<intercept-url pattern="/forall/*" filters="none"/>  
-	
-	<intercept-url pattern="/**" access="fullyAuthenticated" />
-	
-	
-	<!--<http-basic />-->
-<!--    <form-login login-page="/login.jsp" default-target-url="/index.jsp"-->
-<!--                authentication-failure-url="/login.jsp?error=true" /> -->
-    <form-login login-page="/login.jsp" default-target-url="/index.jsp"
-                authentication-failure-url="/login.jsp?error=true" /> 
-    <logout logout-url="/logout" logout-success-url="/login.jsp" invalidate-session="true"/>
-    <remember-me />
-    <anonymous username="guest" granted-authority="ROLE_GUEST" />
-</http>
-
-<!--Установка стратегии аутентикации, при которой не изменяется sessionId в процессе работы сессии-->
- <beans:bean id="sas" class=
-   "org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy" />
+	<!--Установка стратегии аутентикации, при которой не изменяется sessionId в процессе работы сессии-->
+ 	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy" />
   
- <authentication-manager alias="authenticationManager">
+ 	<authentication-manager alias="authenticationManager">
  
-    <!--Провайдер, реализующий аутентификацию через файл, в котором хранятся пользователи и пароли-->
-	<authentication-provider>
-       <password-encoder hash="md5" />	  	
-       <user-service properties="/WEB-INF/user.properties" />	       
-	</authentication-provider>
+	    <!--Провайдер, реализующий аутентификацию через файл, в котором хранятся пользователи и пароли-->
+		<authentication-provider>
+	       <password-encoder hash="md5" />	  	
+	       <user-service properties="/WEB-INF/user.properties" />	       
+		</authentication-provider>
+	
+	    <!--Провайдер, реализующий аутентификацию через AuthServer-->    
+	    <authentication-provider ref="signedRequestAuthenticationProvider"/>	
+	
+		<!--Провайдер, реализующий oauth2 аутентификацию-->    
+	    <authentication-provider ref="oauth2AuthenticationProvider"/>
+	    
+	<!-- коннект к базе sql где хранятся данные-->
+	<!--	<authentication-provider>-->
+	<!---->
+	<!--    <password-encoder hash="md5" />	-->
+	<!--	<jdbc-user-service data-source-ref="dataSource"-->
+	<!--		users-by-username-query=-->
+	<!--			"SELECT username, password, 'true' as enabled FROM Member WHERE username = ?"-->
+	<!--		authorities-by-username-query=-->
+	<!--			"SELECT member.username, member_role.role as authorities FROM member, member_role -->
+	<!--			WHERE member.username = ? AND member.id = member_role.member_id" />		-->
+	<!--		-->
+	<!--	</authentication-provider>-->
 
-    <!--Провайдер, реализующий аутентификацию через AuthServer-->    
-    <authentication-provider ref="signedRequestAuthenticationProvider"/>
-
-
-<!-- коннект к базе sql где хранятся данные-->
-<!--	<authentication-provider>-->
-<!---->
-<!--    <password-encoder hash="md5" />	-->
-<!--	<jdbc-user-service data-source-ref="dataSource"-->
-<!--		users-by-username-query=-->
-<!--			"SELECT username, password, 'true' as enabled FROM Member WHERE username = ?"-->
-<!--		authorities-by-username-query=-->
-<!--			"SELECT member.username, member_role.role as authorities FROM member, member_role -->
-<!--			WHERE member.username = ? AND member.id = member_role.member_id" />		-->
-<!--		-->
-<!--	</authentication-provider>-->
-
- </authentication-manager>
-
+ 	</authentication-manager>
+		
 </beans:beans>

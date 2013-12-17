@@ -77,6 +77,13 @@ public final class UserDataUtils {
 	public static final String CELESTA_DATABASE_CONNECTION = "database.connection";
 	public static final String CELESTA_PYLIB_PATH = "pylib.path";
 
+	public static final String OAUTH_PREFIX = "oauth2.";
+	public static final String OAUTH_AUTHORIZE_URL = "authorize.url";
+	public static final String OAUTH_TOLEN_URL = "token.url";
+	public static final String OAUTH_CLIENT_ID = "clientId";
+	public static final String OAUTH_CLIENT_SECRET = "clientSecret";
+	private static Properties generalOauth2Properties = null;
+
 	public static void setGeneralPropFile(final String aGeneralPropFile) {
 		generalPropFile = aGeneralPropFile;
 	}
@@ -95,8 +102,8 @@ public final class UserDataUtils {
 	 * @throws IOException
 	 */
 	public static InputStream loadUserDataToStream(final String fileName) throws IOException {
-		FileInputStream result =
-			new FileInputStream(getUserDataCatalog() + File.separator + fileName);
+		FileInputStream result = new FileInputStream(getUserDataCatalog() + File.separator
+				+ fileName);
 		return result;
 	}
 
@@ -114,8 +121,8 @@ public final class UserDataUtils {
 	 */
 	static InputStream loadUserDataToStream(final String fileName, final String userdataId)
 			throws IOException {
-		FileInputStream result =
-			new FileInputStream(getUserDataCatalog(userdataId) + File.separator + fileName);
+		FileInputStream result = new FileInputStream(getUserDataCatalog(userdataId)
+				+ File.separator + fileName);
 		return result;
 	}
 
@@ -181,8 +188,7 @@ public final class UserDataUtils {
 		}
 	}
 
-	private static String
-			correctPathToSolutionResources(final String propName, final String source) {
+	private static String correctPathToSolutionResources(final String propName, final String source) {
 		String result = source;
 		if (NAVIGATOR_ICONS_DIR_NAME.equals(propName) || IMAGES_IN_GRID_DIR.equals(propName)) {
 			String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
@@ -273,11 +279,10 @@ public final class UserDataUtils {
 	 *            - исходный текст.
 	 */
 	public static String replaceVariables(final String source) {
-		String value =
-			source.replace("${" + IMAGES_IN_GRID_DIR + "}", getRequiredProp(IMAGES_IN_GRID_DIR));
-		value =
-			value.replace(CURRENT_USERDATA_TEMPLATE, String.format("solutions/%s",
-					AppInfoSingleton.getAppInfo().getCurUserDataId()));
+		String value = source.replace("${" + IMAGES_IN_GRID_DIR + "}",
+				getRequiredProp(IMAGES_IN_GRID_DIR));
+		value = value.replace(CURRENT_USERDATA_TEMPLATE,
+				String.format("solutions/%s", AppInfoSingleton.getAppInfo().getCurUserDataId()));
 		return value;
 	}
 
@@ -338,6 +343,22 @@ public final class UserDataUtils {
 		celestaProps.put(CELESTA_PYLIB_PATH, pyLibPath);
 
 		return celestaProps;
+	}
+
+	public static Properties getGeneralOauth2Properties() {
+		if (generalOauth2Properties == null) {
+			generalOauth2Properties = new Properties();
+			Properties generalProps = getGeneralProperties();
+			generalOauth2Properties.put(OAUTH_AUTHORIZE_URL,
+					generalProps.getProperty(OAUTH_PREFIX + OAUTH_AUTHORIZE_URL));
+			generalOauth2Properties.put(OAUTH_TOLEN_URL,
+					generalProps.getProperty(OAUTH_PREFIX + OAUTH_TOLEN_URL));
+			generalOauth2Properties.put(OAUTH_CLIENT_ID,
+					generalProps.getProperty(OAUTH_PREFIX + OAUTH_CLIENT_ID));
+			generalOauth2Properties.put(OAUTH_CLIENT_SECRET,
+					generalProps.getProperty(OAUTH_PREFIX + OAUTH_CLIENT_SECRET));
+		}
+		return generalOauth2Properties.isEmpty() ? null : generalOauth2Properties;
 	}
 
 	private static String getGeneralPropFile() {
@@ -414,8 +435,8 @@ public final class UserDataUtils {
 	}
 
 	private static void checkUserdataFilesNamesForWrongSymbols(final String userDataCatalog) {
-		BatchFileProcessor fprocessor =
-			new BatchFileProcessor(userDataCatalog, new RegexFilenameFilter("^[.].*", false));
+		BatchFileProcessor fprocessor = new BatchFileProcessor(userDataCatalog,
+				new RegexFilenameFilter("^[.].*", false));
 		try {
 			fprocessor.process(new CheckFileNameAction());
 		} catch (IOException e) {
@@ -423,8 +444,7 @@ public final class UserDataUtils {
 		}
 	}
 
-	private static void checkAppPropsForWrongSymbols(final String userdataId,
-			final Properties props) {
+	private static void checkAppPropsForWrongSymbols(final String userdataId, final Properties props) {
 		String prop;
 		String value;
 		for (Object opr : props.keySet()) {

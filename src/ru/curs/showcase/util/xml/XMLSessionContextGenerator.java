@@ -5,13 +5,17 @@ import java.net.URLDecoder;
 import java.util.*;
 import java.util.Map.Entry;
 
+import javax.xml.bind.*;
+
 import org.slf4j.*;
 import org.w3c.dom.*;
+import org.w3c.dom.Element;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.SessionUtils;
+import ru.curs.showcase.security.oauth.Oauth2Token;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.UTF8Exception;
 
@@ -57,8 +61,8 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		addRelatedContext(context.getRelated());
 		String result = XMLUtils.documentToString(info);
 		result = XMLUtils.xmlServiceSymbolsToNormal(result);
-		LOGGER.debug("XMLSessionContextGenerator.generate()"
-				+ System.getProperty("line.separator") + result);
+		LOGGER.debug("XMLSessionContextGenerator.generate()" + System.getProperty("line.separator")
+				+ result);
 		return result;
 	}
 
@@ -82,9 +86,8 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	}
 
 	private static Document createXML() {
-		Document info =
-			XMLUtils.createBuilder().getDOMImplementation()
-					.createDocument("", SESSION_CONTEXT_TAG, null);
+		Document info = XMLUtils.createBuilder().getDOMImplementation()
+				.createDocument("", SESSION_CONTEXT_TAG, null);
 		return info;
 	}
 
@@ -117,6 +120,17 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		node = info.createElement(IP_TAG);
 		info.getDocumentElement().appendChild(node);
 		node.appendChild(info.createTextNode(SessionUtils.getRemoteAddress()));
+
+		Oauth2Token oauth2Token = SessionUtils.getOauth2Token();
+		if (oauth2Token != null) {
+			try {
+				JAXBContext jc = JAXBContext.newInstance(Oauth2Token.class);
+				Marshaller marshaller = jc.createMarshaller();
+				marshaller.marshal(oauth2Token, info.getDocumentElement());
+			} catch (JAXBException ex) {
+				LOGGER.error("Error marshal Oauth2Token", ex);
+			}
+		}
 	}
 
 	private void addUserData(final Map<String, ArrayList<String>> aMap) {
@@ -124,9 +138,8 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		info.getDocumentElement().appendChild(node);
 		String value = null;
 		if (aMap.get(ExchangeConstants.URL_PARAM_USERDATA) != null) {
-			value =
-				Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_USERDATA).toArray())
-						.replace("[", "").replace("]", "");
+			value = Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_USERDATA).toArray())
+					.replace("[", "").replace("]", "");
 		} else {
 			value = ExchangeConstants.DEFAULT_USERDATA;
 		}

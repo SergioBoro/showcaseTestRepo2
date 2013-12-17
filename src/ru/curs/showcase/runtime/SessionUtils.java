@@ -2,6 +2,7 @@ package ru.curs.showcase.runtime;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import ru.curs.showcase.security.oauth.Oauth2Token;
 import ru.curs.showcase.util.UserAndSessionDetails;
 
 /**
@@ -93,6 +94,13 @@ public final class SessionUtils {
 	public static String getRemoteAddress() {
 		if (getUserAndSessionDetails() != null) {
 			return getUserAndSessionDetails().getRemoteAddress();
+		}
+		return null;
+	}
+
+	public static Oauth2Token getOauth2Token() {
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getOauth2Token();
 		}
 		return null;
 	}
