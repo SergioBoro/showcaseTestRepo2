@@ -304,7 +304,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 	        for(var id in grid.selection){
 	            if(grid.selection[id]){
 	            	if(i > 0){
-		            	selection = selection+",";	
+		            	selection = selection+metadata["common"]["stringSelectedRecordIdsSeparator"];	
 	            	}
 	            	selection = selection+id;
 	            	i++;

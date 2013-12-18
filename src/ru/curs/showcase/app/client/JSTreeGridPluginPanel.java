@@ -31,6 +31,8 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	private static final String PROC100 = "100%";
 
+	private static final String STRING_SELECTED_RECORD_IDS_SEPARATOR = "D13&82#9g7";
+
 	private final VerticalPanel p = new VerticalPanel();
 	private final HorizontalPanel generalHp = new HorizontalPanel();
 	/**
@@ -287,6 +289,9 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 		common.put("loadingMessage", new JSONString(AppCurrContext.getInstance()
 				.getInternationalizedMessages().jsGridLoadingMessage()));
+
+		common.put("stringSelectedRecordIdsSeparator", new JSONString(
+				STRING_SELECTED_RECORD_IDS_SEPARATOR));
 
 		metadata.put("common", common);
 
@@ -685,7 +690,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		List<String> selectedRecordIds = new ArrayList<String>();
 
 		if (stringSelectedRecordIds != null) {
-			String[] strs = stringSelectedRecordIds.split(",");
+			String[] strs = stringSelectedRecordIds.split(STRING_SELECTED_RECORD_IDS_SEPARATOR);
 			for (String s : strs) {
 				selectedRecordIds.add(s);
 			}
@@ -826,7 +831,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		localContext.getSelectedRecordIds().clear();
 
 		if (stringSelectedRecordIds != null) {
-			String[] strs = stringSelectedRecordIds.split(",");
+			String[] strs = stringSelectedRecordIds.split(STRING_SELECTED_RECORD_IDS_SEPARATOR);
 			for (String s : strs) {
 				localContext.getSelectedRecordIds().add(s);
 			}
