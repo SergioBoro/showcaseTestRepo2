@@ -33,8 +33,8 @@ public class GridCelestaGateway implements GridGateway {
 	}
 
 	@Override
-	public RecordSetElementRawData getRawDataAndSettings(
-			final GridContext aContext, final DataPanelElementInfo aElement) {
+	public RecordSetElementRawData getRawDataAndSettings(final GridContext aContext,
+			final DataPanelElementInfo aElement) {
 		return getRecordSetElementRawData(aContext, aElement);
 	}
 
@@ -42,15 +42,22 @@ public class GridCelestaGateway implements GridGateway {
 	 * Получение RecordSetElementRawData. Приоритет у данных заданных в
 	 * gridsettings
 	 */
-	private RecordSetElementRawData getRecordSetElementRawData(
-			final GridContext context, final DataPanelElementInfo element) {
-		CelestaHelper<JythonDTO> helper = new CelestaHelper<JythonDTO>(context,
-				JythonDTO.class);
+	private RecordSetElementRawData getRecordSetElementRawData(final GridContext context,
+			final DataPanelElementInfo element) {
+		CelestaHelper<JythonDTO> helper = new CelestaHelper<JythonDTO>(context, JythonDTO.class);
 		String procName = element.getProcName();
 		JythonDTO result;
 		if (element.loadByOneProc()) {
-			result = helper.runPython(procName, element.getId().getString(),
-					context.getSortedColumns());
+			Object[] params;
+			if (context.getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
+				params = new Object[3];
+				params[2] = context.getParentId();
+			} else {
+				params = new Object[2];
+			}
+			params[0] = element.getId().getString();
+			params[1] = context.getSortedColumns();
+			result = helper.runPython(procName, params);
 		} else {
 			int firstrecord;
 			int pagesize;
@@ -66,8 +73,7 @@ public class GridCelestaGateway implements GridGateway {
 					context.getSortedColumns(), firstrecord, pagesize);
 		}
 
-		RecordSetElementRawData rawData = new RecordSetElementRawData(element,
-				context);
+		RecordSetElementRawData rawData = new RecordSetElementRawData(element, context);
 		fillValidatedSettings(rawData, result.getSettings());
 		if (rawData.getXmlDS() == null && result.getData() != null) {
 			InputStream inData = TextUtils.stringToStream(result.getData());
@@ -84,17 +90,14 @@ public class GridCelestaGateway implements GridGateway {
 			ByteArrayOutputStream osSettings = new ByteArrayOutputStream();
 			ByteArrayOutputStream osDS = new ByteArrayOutputStream();
 
-			SimpleSAX sax = new SimpleSAX(inSettings, new StreamDivider(
-					osSettings, osDS), SAX_ERROR_MES);
+			SimpleSAX sax = new SimpleSAX(inSettings, new StreamDivider(osSettings, osDS),
+					SAX_ERROR_MES);
 			sax.parse();
 
-			InputStream isSettings = StreamConvertor
-					.outputToInputStream(osSettings);
-			String settingsSchemaName = rawData.getElementInfo().getType()
-					.getSettingsSchemaName();
+			InputStream isSettings = StreamConvertor.outputToInputStream(osSettings);
+			String settingsSchemaName = rawData.getElementInfo().getType().getSettingsSchemaName();
 			if (settingsSchemaName != null) {
-				rawData.setSettings(XMLUtils.xsdValidateAppDataSafe(isSettings,
-						settingsSchemaName));
+				rawData.setSettings(XMLUtils.xsdValidateAppDataSafe(isSettings, settingsSchemaName));
 			} else {
 				rawData.setSettings(isSettings);
 			}
@@ -109,17 +112,15 @@ public class GridCelestaGateway implements GridGateway {
 
 	@Override
 	public OutputStreamDataFile downloadFile(final CompositeContext context,
-			final DataPanelElementInfo elementInfo, final ID aLinkId,
-			final String recordId) {
+			final DataPanelElementInfo elementInfo, final ID aLinkId, final String recordId) {
 		CelestaHelper<JythonDownloadResult> helper = new CelestaHelper<JythonDownloadResult>(
 				context, JythonDownloadResult.class);
 		DataPanelElementProc proc = elementInfo.getProcs().get(aLinkId);
 		if (proc == null) {
-			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR
-					+ aLinkId);
+			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR + aLinkId);
 		}
-		JythonDownloadResult jythonResult = helper.runPython(proc.getName(),
-				elementInfo.getId().getString(), recordId);
+		JythonDownloadResult jythonResult = helper.runPython(proc.getName(), elementInfo.getId()
+				.getString(), recordId);
 
 		InputStream is = jythonResult.getInputStream();
 		if (is == null) {
