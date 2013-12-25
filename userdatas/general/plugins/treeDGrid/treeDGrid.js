@@ -90,7 +90,8 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				        var dir = this.grid.isRTL ? "right" : "left",
 							cls = ".dgrid-expando-icon",
 							node;
-						if(object.HasChildren){
+				        
+						if((object.HasChildren) && (object.HasChildren == 1)){
 							if(object.TreeGridNodeLeafIcon && object.TreeGridNodeLeafIcon.trim().length > 0){
 								cls += ".ui-icon-triangle-1-" + (expanded ? "se" : "e");									
 							}else{
