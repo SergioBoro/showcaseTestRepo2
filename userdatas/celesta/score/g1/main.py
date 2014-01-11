@@ -14,7 +14,7 @@ def navigator(context, session):
                 <level2 id="111" name="WebText">
                     <action>
                         <main_context></main_context>
-                        <datapanel type="webText.xml" tab="firstOrCurrent"></datapanel>
+                        <datapanel type="g1.datapanel.webTextDatapanel.celesta" tab="firstOrCurrent"></datapanel>
                     </action>
                 </level2>
                 <level2 id="112" name="XForms">

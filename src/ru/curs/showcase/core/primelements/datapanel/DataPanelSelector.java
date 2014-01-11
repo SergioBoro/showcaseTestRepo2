@@ -40,6 +40,9 @@ public class DataPanelSelector extends SourceSelector<PrimElementsGateway> {
 		case FILE:
 			gateway = new PrimElementsFileGateway(SettingsFileType.DATAPANEL);
 			break;
+		case CELESTA:
+			gateway = new DataPanelCelestaGateway();
+			break;
 		default:
 			gateway = new DataPanelDBGateway();
 		}
