@@ -4,6 +4,7 @@ import org.python.core.PyObject;
 
 import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.core.*;
 import ru.curs.showcase.runtime.SessionUtils;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -59,9 +60,13 @@ public class CelestaHelper<T> {
 		if (result == null) {
 			return null;
 		}
-		Object obj = result.__tojava__(resultType);
+		Object obj = result.__tojava__(Object.class);
 		if (obj == null) {
 			return null;
+		}
+		if (obj instanceof UserMessage) {
+			UserMessageFactory factory = new UserMessageFactory();
+			throw new ValidateException(factory.build(UserMessage.class.cast(obj)));
 		}
 		if (obj.getClass().isAssignableFrom(resultType)) {
 			return resultType.cast(obj);

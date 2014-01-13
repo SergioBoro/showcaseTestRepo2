@@ -22,6 +22,9 @@ public class ServerActivitySelector extends SourceSelector<ActivityGateway> {
 		case JYTHON:
 			res = new ActivityJythonGateway();
 			break;
+		case CELESTA:
+			res = new ActivityCelestaGateway();
+			break;
 		default:
 			res = new ActivityDBGateway();
 		}

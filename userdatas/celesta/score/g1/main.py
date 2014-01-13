@@ -52,21 +52,35 @@ def webtext(context, main, add, filterinfo, session, elementId):
     
     data = u'''
     <h1>
-        <a href="#" onclick="gwtWebTextFunc('${elementId}','testID');">Показать сообщение</a>
+        <a href="#" onclick="gwtWebTextFunc('${elementId}','testIdClient');">Показать сообщение (client activity)</a>
+        <br/>
+        <a href="#" onclick="gwtWebTextFunc('${elementId}','testIdServer');">Показать сообщение (server activity)</a>
     </h1>
     '''
     settings = u'''
     <properties>
-        <event name="single_click" linkId="testId">
+        <event name="single_click" linkId="testIdClient">
              <action >
-                 <main_context>Москва</main_context>
-                     <client>
-                         <activity id="activityID" name="showcaseShowAddContext">
-                             <add_context>
-                                 add_context действия.
-                             </add_context>
-                        </activity>
-                    </client>
+                <main_context>Москва</main_context>
+                <client>
+                    <activity id="activityClientID" name="showcaseShowAddContext">
+                        <add_context>
+                            add_context действия.
+                        </add_context>
+                    </activity>
+                </client>
+            </action>
+        </event>
+        <event name="single_click" linkId="testIdServer">
+             <action >
+                <main_context>Москва</main_context>
+                <server>
+                    <activity id="activityServerID" name="g1.activity.simple.celesta">
+                         <add_context>
+                             add_context для действия
+                         </add_context>  
+                    </activity>             
+                </server>
             </action>
         </event>
     </properties>

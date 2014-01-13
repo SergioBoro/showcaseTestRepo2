@@ -80,7 +80,7 @@ public final class UserMessageFactory {
 							initial.getType());
 			} else {
 				userMessage =
-					new UserMessage(initial.getText(), initial.getId(), initial.getType());
+					new UserMessage(initial.getId(), initial.getText(), initial.getType());
 			}
 			userMessage.setId(initial.getId());
 		}
