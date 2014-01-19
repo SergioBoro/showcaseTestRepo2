@@ -147,7 +147,8 @@
 									checkParent:true,
 									filter:{
 										startsWith:true,
-										delay:900
+										delay:900,
+										autofilter:false
 									}
 								},
 								dataModel:{

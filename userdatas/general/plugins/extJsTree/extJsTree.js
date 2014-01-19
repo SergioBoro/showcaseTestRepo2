@@ -57,16 +57,27 @@ function createExtJsTree(parentId, pluginParams, data) {
 			var dh = Ext.DomHelper;
 			var inputId = Ext.id();
 			var checkboxId = Ext.id();
+			var findButton = {};
+			if (pluginParams.core.filter.autofilter==false) {
+				findButton = {
+					tag:'input',
+					id:'findButton'+inputId,
+					type:'button',
+					value:'Найти',
+					style:'float:right;',
+				}
+			}
 			var filterEl = new Ext.dom.Element(dh.createDom({
 				tag:'div',
-				style:'text-align:center;',
+				style:'float:left;text-align:center;',
 				children: [{
 					tag:'input',
 					id:inputId,
 					type:'text',
 					autocomplete:'off',
-					style:'width:'+(parentEl.getWidth()-5)+'px;'
-				},{
+					style:'width:'+(parentEl.getWidth()-(pluginParams.core.filter.autofilter==false?60:0)-5)+'px;',
+				}, findButton,
+				{
 					tag:'div',
 					style:'text-align:left;',
 					children: [{
@@ -87,13 +98,20 @@ function createExtJsTree(parentId, pluginParams, data) {
 			var checkBoxEl = Ext.get(checkboxId);						
 			if (pluginParams.core.filter.startsWith) {
 				checkBoxEl.set({checked:'checked'});
+			}			
+			if (pluginParams.core.filter.autofilter==false) {
+				var findButtonEl = Ext.get('findButton'+inputId);
+				findButtonEl.on('click', function(event, htmlEl, o) {
+					self._doFilterRefresh();
+				});
+			} else {
+				checkBoxEl.on('click', function(event, htmlEl, o) {
+					self._doClickFilterCheckBox(htmlEl);
+				});
+				inputEl.on('keyup', function(event, htmlEl, o) {
+					self._doKeyupFilterInput(htmlEl);
+				});
 			}
-			checkBoxEl.on('click', function(event, htmlEl, o) {
-				self._doClickFilterCheckBox(htmlEl);
-			});
-			inputEl.on('keyup', function(event, htmlEl, o) {
-				self._doKeyupFilterInput(htmlEl);
-			});
 			
 			this.filter = {
 				'filterEl':filterEl,
@@ -127,6 +145,9 @@ function createExtJsTree(parentId, pluginParams, data) {
 		},
 		_doKeyupFilterInput: function(el) {
 			this.dataLoader.doFilter(el.value, this.filter.checkBoxEl.dom.checked);
+		},
+		_doFilterRefresh: function() {
+			this.dataLoader.doFilter(this.filter.inputEl.getValue(), this.filter.checkBoxEl.dom.checked, true, true);
 		},
 		_selectParentNodes: function (node, checked) {
 			var parentNode = node.parentNode;
@@ -279,20 +300,21 @@ function createExtJsTree(parentId, pluginParams, data) {
 					}
 				});
 			},
-			doFilter: function(val, isChecked, isNoDelay) {				
+			doFilter: function(val, isChecked, isNoDelay, isRefresh) {
 				if (this.timeoutId || isNoDelay) {
 					clearTimeout(this.timeoutId);
 					this.timeoutId = false;
 				}
-				if (this.curVal.val != val || this.curVal.curIsChecked !=isChecked) {
-					if (!isNoDelay) {
-						var self = this;
+				if (isRefresh || this.curVal.val != val || this.curVal.curIsChecked !=isChecked) {
+					var self = this;
+					if (!isNoDelay) {						
 						this.timeoutId = setTimeout(function() {
 							self.timeoutId = false;
 							self.setFilterValue(val,isChecked);
 							self._doEvent();
 						},this.delay);
 					} else {
+						self.setFilterValue(val,isChecked);
 						this._doEvent();
 					}
 				}
