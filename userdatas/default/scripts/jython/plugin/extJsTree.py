@@ -34,11 +34,11 @@ def mainproc():
     data = u'''
     <items>
 			<item id="1" name="Lazy load item" leaf="false" checked="false"/>
-			<item id="2" name="Расходование денежных средств" cls="folder">
+			<item id="2" name="Расходование денежных средств"                          column1="Значение2"  column2="solutions/default/resources/imagesingrid/test.jpg" cls="folder">
 				<children>
-					<item id="21" name="Оплата поставщикам за товар" leaf="true" attr1="a" checked="false"/>
-					<item id="22" name="Расходы по таможенному оформлению" leaf="true" attr1="b" checked="false"/>
-					<item id="23" name="Расходы  на аренду, коммунальные услуги" cls="folder">
+					<item id="21" name="Оплата поставщикам за товар" leaf="true"       column1="Значение21" column2="solutions/default/resources/imagesingrid/TreeGridLeaf.png"  attr1="a" checked="false"/>
+					<item id="22" name="Расходы по таможенному оформлению" leaf="true" column1="Значение22" column2="solutions/default/resources/imagesingrid/test.jpg"  attr1="b" checked="false"/>
+					<item id="23" name="Расходы  на аренду, коммунальные услуги"       column1="Значение3"  column2="solutions/default/resources/imagesingrid/TreeGridLeaf.png"                    cls="folder">
 						<children>
 							<item id="231" name="Аренда недвижимости" leaf="true" attr1="c" checked="false"/>
 							<item id="232" name="Коммунальные услуги" leaf="true" attr1="d" checked="false"/>

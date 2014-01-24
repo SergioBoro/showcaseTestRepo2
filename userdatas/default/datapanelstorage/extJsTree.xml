@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datapanel>
-	<tab id="extJsTreeXFormsTab" name="extJsTree в качестве селлектора в XForms">		
+	<tab id="extJsTreeXFormsTab" name="extJsTree22 в качестве селлектора в XForms">		
 		<element id="extJsTreeXFormsSelector" type="xforms" template="extJsTree_Template.xml" proc="xforms_proc_no_data">
 		</element>
 	</tab>	

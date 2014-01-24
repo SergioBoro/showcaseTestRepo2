@@ -120,12 +120,19 @@ function createExtJsTree(parentId, pluginParams, data) {
 			};
 		},
 		_createExtTreePanel: function(parentEl) {
-			//Построение элемента Ext.tree.Panel								
+			//Построение элемента Ext.tree.Panel
+			
+			var columns =
+				[
+				 {xtype: 'treecolumn', header: 'Название', dataIndex: 'name', flex: 1},
+				];
+			if(pluginParams.view){
+				columns.push(pluginParams.view);				
+			}
+			
 			var option = {
 				store: this.store,
-				columns: [
-					{xtype: 'treecolumn', header: 'Название', dataIndex: 'name', flex: 1}
-				],
+				columns: columns,
 				rootVisible:false,
 				hideHeaders:true,
 				useArrows: true,
