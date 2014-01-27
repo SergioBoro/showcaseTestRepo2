@@ -258,7 +258,7 @@
 	  <javacc target="${celesta.src.dir}/ru/curs/celesta/score/CelestaParser.jj" outputdirectory="${celesta.src.dir}/ru/curs/celesta/score/" javacchome="${celesta.javacc.dir}" />
 	
 	  <echo>Compiling complex filter parser</echo>
-	  <javacc target="${celesta.src.dir}/ru/curs/celesta/dbutils/filter/FilterParser.jj" outputdirectory="${celesta.src.dir}/ru/curs/celesta/dbutils/filter" javacchome="${celesta.javacc.dir" />	
+	  <javacc target="${celesta.src.dir}/ru/curs/celesta/dbutils/filter/FilterParser.jj" outputdirectory="${celesta.src.dir}/ru/curs/celesta/dbutils/filter" javacchome="${celesta.javacc.dir}" />	
 	</target>	
 
 	<target name="rebuild" depends="clean, build" description="clean + build" />
