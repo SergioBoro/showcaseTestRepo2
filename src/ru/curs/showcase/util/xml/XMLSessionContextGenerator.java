@@ -39,6 +39,7 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	private static final String EMAIL_TAG = "email";
 	private static final String PHONE_TAG = "phone";
 	private static final String IP_TAG = "ip";
+	private static final String LOGIN_TAG = "login";
 
 	private final CompositeContext context;
 
@@ -61,8 +62,8 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		addRelatedContext(context.getRelated());
 		String result = XMLUtils.documentToString(info);
 		result = XMLUtils.xmlServiceSymbolsToNormal(result);
-		LOGGER.debug("XMLSessionContextGenerator.generate()" + System.getProperty("line.separator")
-				+ result);
+		LOGGER.debug("XMLSessionContextGenerator.generate()"
+				+ System.getProperty("line.separator") + result);
 		return result;
 	}
 
@@ -86,8 +87,9 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	}
 
 	private static Document createXML() {
-		Document info = XMLUtils.createBuilder().getDOMImplementation()
-				.createDocument("", SESSION_CONTEXT_TAG, null);
+		Document info =
+			XMLUtils.createBuilder().getDOMImplementation()
+					.createDocument("", SESSION_CONTEXT_TAG, null);
 		return info;
 	}
 
@@ -100,6 +102,10 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		node = info.createElement(SID_TAG);
 		info.getDocumentElement().appendChild(node);
 		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserSID()));
+
+		node = info.createElement(LOGIN_TAG);
+		info.getDocumentElement().appendChild(node);
+		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserCaption()));
 
 		node = info.createElement(SESSIONID_TAG);
 		info.getDocumentElement().appendChild(node);
@@ -138,8 +144,9 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		info.getDocumentElement().appendChild(node);
 		String value = null;
 		if (aMap.get(ExchangeConstants.URL_PARAM_USERDATA) != null) {
-			value = Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_USERDATA).toArray())
-					.replace("[", "").replace("]", "");
+			value =
+				Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_USERDATA).toArray())
+						.replace("[", "").replace("]", "");
 		} else {
 			value = ExchangeConstants.DEFAULT_USERDATA;
 		}

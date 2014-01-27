@@ -104,4 +104,11 @@ public final class SessionUtils {
 		}
 		return null;
 	}
+
+	public static String getCurrentUserCaption() {
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getUserInfo().getCaption();
+		}
+		return null;
+	}
 }
