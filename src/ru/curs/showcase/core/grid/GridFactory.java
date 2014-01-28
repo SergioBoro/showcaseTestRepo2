@@ -430,6 +430,7 @@ public class GridFactory extends CompBasedElementFactory {
 			return null;
 		}
 
+		// CHECKSTYLE:OFF
 		private Object propertiesSTARTTAGHandler(final Attributes attrs) {
 			String value;
 			Integer intValue;
@@ -478,12 +479,18 @@ public class GridFactory extends CompBasedElementFactory {
 
 			}
 			if (!getElementInfo().loadByOneProc()) {
-				value = attrs.getValue(TOTAL_COUNT_TAG);
-				intValue = Integer.valueOf(value);
+				try {
+					value = attrs.getValue(TOTAL_COUNT_TAG);
+					intValue = Integer.valueOf(value);
+				} catch (Exception e) {
+					intValue = 0;
+				}
 				serverState().setTotalCount(intValue);
 			}
 			return null;
 		}
+
+		// CHECKSTYLE:ON
 
 		private Object colSTARTTAGHandler(final Attributes attrs) {
 			String colId = attrs.getValue(ID_TAG);
