@@ -14,7 +14,7 @@
 
 	<xs:simpleType name="pictureType">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="[A-Za-zА-Яа-я0-9_-]+\.(png|jpg|jpeg|bmp|gif|tif)" />
+			<xs:pattern value="[A-Za-zА-Яа-я0-9_/-]+\.(png|jpg|jpeg|bmp|gif|tif)" />
 		</xs:restriction>
 	</xs:simpleType>
 
