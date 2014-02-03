@@ -20,7 +20,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
                     results = QueryResults(metadata["data"]["rows"]);
                     results.total = parseInt(metadata["data"]["total"]);
                     
-					gwtAfterLoadData(elementId, "");
+					gwtAfterLoadDataTree(elementId, "");
 				}else{
 					var sortColId  = null;
 					var sortColDir = null;
@@ -38,7 +38,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 						}
 					}
 
-		 	    	var httpParams = gwtGetHttpParams(elementId, options.start, options.count, sortColId, sortColDir, query.parent);
+		 	    	var httpParams = gwtGetHttpParamsTree(elementId, options.start, options.count, sortColId, sortColDir, query.parent);
 		 	    	httpParams = eval('('+httpParams+')');	 	 
 		 	    	
 				    var params = {};
@@ -48,7 +48,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 					results = JsonRest.prototype.query.call(this, query, options, params);
 					results.then(function(results){
 						if(results[0]){
-							gwtAfterLoadData(elementId, results[0]["liveGridExtradata"]);						
+							gwtAfterLoadDataTree(elementId, results[0]["liveGridExtradata"]);						
 						}
 					});				
 				}
@@ -127,7 +127,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 						div.className = object.rowstyle;						
 					}
 					if(this["valueType"] == "DOWNLOAD"){
-						div.innerHTML = "<tbody><tr><td style=\"font-size: 1em;\">"+value+"</td><td  align=\"center\" style=\"vertical-align: middle;\"><button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\"><img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 16px; height: 16px;  \"   ></button></p></td></tr></tbody>";
+						div.innerHTML = "<tbody><tr><td style=\"font-size: 1em;\">"+value+"</td><td  align=\"center\" style=\"vertical-align: middle;\"><button onclick=\"gwtProcessFileDownloadTree('"+elementId+"', '"+object.id+"', '"+this.id+"')\"><img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 16px; height: 16px;  \"   ></button></p></td></tr></tbody>";
 					}else{
 						div.innerHTML = value;
 					}
@@ -290,13 +290,13 @@ function createTreeDGrid(elementId, parentId, metadata) {
 			if(event.target.className.indexOf("expando-icon") != -1){
 				return;
 			}
-			gwtAfterClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
+			gwtAfterClickTree(elementId, grid.row(event).id, grid.column(event).label, getSelection());
 		});
 		grid.on(".dgrid-row:dblclick", function(event){
 			if(event.target.className.indexOf("expando-icon") != -1){
 				return;
 			}
-			gwtAfterDoubleClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
+			gwtAfterDoubleClickTree(elementId, grid.row(event).id, grid.column(event).label, getSelection());
 		});
 		function getSelection()
 		{

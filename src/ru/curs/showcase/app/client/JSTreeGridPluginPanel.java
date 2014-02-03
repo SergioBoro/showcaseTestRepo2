@@ -122,11 +122,11 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	 */
 	// CHECKSTYLE:OFF
 	private static native void setCallbackJSNIFunction() /*-{
-															$wnd.gwtGetHttpParams = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
-															$wnd.gwtAfterLoadData = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;);
-															$wnd.gwtAfterClick = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
-															$wnd.gwtAfterDoubleClick = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterDoubleClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
-															$wnd.gwtProcessFileDownload = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginProcessFileDownload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtGetHttpParamsTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtAfterLoadDataTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtAfterClickTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
+															$wnd.gwtAfterDoubleClickTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterDoubleClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtProcessFileDownloadTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginProcessFileDownload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															}-*/;
 
 	// CHECKSTYLE:ON
