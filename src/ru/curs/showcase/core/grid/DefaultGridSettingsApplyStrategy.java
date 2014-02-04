@@ -1,6 +1,6 @@
 package ru.curs.showcase.core.grid;
 
-import ru.curs.gwt.datagrid.model.DataGridSettings;
+import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.core.ProfileBasedSettingsApplyStrategy;
 import ru.curs.showcase.runtime.*;
 
@@ -24,6 +24,7 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 		"def.visible.exporttoexcel.currentpage";
 	private static final String DEF_VISIBLE_EXPORTTOEXCEL_ALL = "def.visible.exporttoexcel.all";
 	private static final String DEF_VISIBLE_COPYTOCLIPBOARD = "def.visible.copytoclipboard";
+	private static final String DEF_VISIBLE_FILTER = "def.visible.filter";
 	private static final String DEF_VISIBLE_RECORDS_SELECTOR = "def.visible.records.selector";
 	private static final String DEF_VISIBLE_COLUMNS_HEADER = "def.visible.columns.header";
 	private static final String SINGLE_CLICK_BEFORE_DOUBLE = "single.click.before.double";
@@ -40,6 +41,7 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 
 	private static final String DEF_VISIBLE_STRIPEROWS = "def.visible.striperows";
 	private static final String DEF_COLUMN_SHOWLINES = "def.column.showlines";
+	private static final String DEF_COLUMN_HEADER_HOR_ALIGN = "def.columnheader.hor.align";
 
 	/**
 	 * Настройки грида.
@@ -101,6 +103,11 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 			settings.setColumnLines(boolValue);
 		}
 
+		String stringValue = reader().getStringValue(DEF_COLUMN_HEADER_HOR_ALIGN);
+		if (stringValue != null) {
+			settings.setHaColumnHeader(HorizontalAlignment.valueOf(stringValue));
+		}
+
 		applyVisibilitySettings();
 		applyTreeGridNodeIcons();
 	}
@@ -129,6 +136,10 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 		boolValue = reader().getBoolValue(DEF_VISIBLE_COPYTOCLIPBOARD);
 		if (boolValue != null) {
 			settings.setVisibleCopyToClipboard(boolValue);
+		}
+		boolValue = reader().getBoolValue(DEF_VISIBLE_FILTER);
+		if (boolValue != null) {
+			settings.setVisibleFilter(boolValue);
 		}
 		boolValue = reader().getBoolValue(DEF_VISIBLE_RECORDS_SELECTOR);
 		if (boolValue != null) {

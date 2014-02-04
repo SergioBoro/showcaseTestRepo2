@@ -3,7 +3,6 @@
  */
 package ru.curs.showcase.app.client.api;
 
-
 /**
  * 
  * Класс в котором определены все константы клиентской части приложения
@@ -97,7 +96,7 @@ public final class Constants {
 		"resources/internal/ExportToExcelAll.png";
 	public static final String GRID_IMAGE_COPY_TO_CLIPBOARD =
 		"resources/internal/CopyToClipboard.png";
-
+	public static final String GRID_IMAGE_FILTER = "resources/internal/filter.png";
 	public static final String ARROW_FOR_DISCLOSURE_PANEL_CLOSE_IMAGE =
 		"resources/internal/arrow_for_disclosure_panel_close.png";
 	public static final String ARROW_FOR_DISCLOSURE_PANEL_OPEN_IMAGE =

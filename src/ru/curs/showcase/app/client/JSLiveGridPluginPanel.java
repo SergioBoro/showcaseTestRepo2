@@ -295,6 +295,11 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		common.put("stringSelectedRecordIdsSeparator", new JSONString(
 				STRING_SELECTED_RECORD_IDS_SEPARATOR));
 
+		if (gridMetadata.getUISettings().getHaColumnHeader() != null) {
+			common.put("haColumnHeader", new JSONString(gridMetadata.getUISettings()
+					.getHaColumnHeader().toString().toLowerCase()));
+		}
+
 		metadata.put("common", common);
 
 		JSONObject columns = new JSONObject();
@@ -385,44 +390,6 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		hpHeader.setSize(PROC100, PROC100);
 		hpFooter.setSize(PROC100, PROC100);
-
-		// hpToolbar.setHeight(PROC100);
-		// hpToolbar.setSpacing(1);
-		// if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage())
-		// {
-		// exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
-		// .getInternationalizedMessages().grid_caption_export_to_excel_current_page());
-		// exportToExcelCurrentPage.addClickHandler(new ClickHandler() {
-		// @Override
-		// public void onClick(final ClickEvent event) {
-		// exportToExcel(exportToExcelCurrentPage,
-		// GridToExcelExportType.CURRENTPAGE);
-		// }
-		// });
-		// hpToolbar.add(exportToExcelCurrentPage);
-		// }
-		// if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
-		// exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-		// .grid_caption_export_to_excel_all());
-		// exportToExcelAll.addClickHandler(new ClickHandler() {
-		// @Override
-		// public void onClick(final ClickEvent event) {
-		// exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
-		// }
-		// });
-		// hpToolbar.add(exportToExcelAll);
-		// }
-		// if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
-		// copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-		// .grid_caption_copy_to_clipboard());
-		// copyToClipboard.addClickHandler(new ClickHandler() {
-		// @Override
-		// public void onClick(final ClickEvent event) {
-		// copyToClipboard();
-		// }
-		// });
-		// hpToolbar.add(copyToClipboard);
-		// }
 
 		generalHp.clear();
 		p.clear();
@@ -938,17 +905,12 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	}
 
 	private void addStaticItemToToolBar(final ToolBar toolBar) {
-		final TextButton exportToExcelCurrentPage =
-			new TextButton("", IconHelper.getImageResource(
-					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE),
-					16, 16));
-		final TextButton exportToExcelAll =
-			new TextButton("", IconHelper.getImageResource(
-					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL), 16, 16));
-		final TextButton copyToClipboard =
-			new TextButton("", IconHelper.getImageResource(
-					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
 		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
+			final TextButton exportToExcelCurrentPage =
+				new TextButton("", IconHelper.getImageResource(UriUtils
+						.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE), 16,
+						16));
+
 			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
 					.getInternationalizedMessages().grid_caption_export_to_excel_current_page());
 			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
@@ -960,6 +922,11 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			toolBar.add(exportToExcelCurrentPage);
 		}
 		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
+			final TextButton exportToExcelAll =
+				new TextButton("", IconHelper.getImageResource(
+						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL), 16,
+						16));
+
 			exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
 					.grid_caption_export_to_excel_all());
 			exportToExcelAll.addSelectHandler(new SelectHandler() {
@@ -971,6 +938,10 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			toolBar.add(exportToExcelAll);
 		}
 		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
+			final TextButton copyToClipboard =
+				new TextButton("", IconHelper.getImageResource(
+						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
+
 			copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
 					.grid_caption_copy_to_clipboard());
 			copyToClipboard.addSelectHandler(new SelectHandler() {
@@ -981,6 +952,61 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			});
 			toolBar.add(copyToClipboard);
 		}
+
+		// if (gridMetadata.getUISettings().isVisibleFilter()) {
+		// final TextButton filter =
+		// new TextButton("", IconHelper.getImageResource(
+		// UriUtils.fromSafeConstant(Constants.GRID_IMAGE_FILTER), 16, 16));
+		//
+		// filter.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .grid_caption_filter());
+		// filter.addSelectHandler(new SelectHandler() {
+		// @Override
+		// public void onSelect(final SelectEvent event) {
+		// String param = "'Название' содержит 'обл'";
+		// JSFilter filter = new JSFilter(param);
+		// filter.center();
+		// }
+		// });
+		// toolBar.add(filter);
+		// }
+		//
+		// if (gridMetadata.getUISettings().isVisibleFilter()) {
+		// final TextButton filter =
+		// new TextButton("", IconHelper.getImageResource(
+		// UriUtils.fromSafeConstant(Constants.GRID_IMAGE_FILTER), 16, 16));
+		//
+		// filter.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .grid_caption_filter());
+		// filter.addSelectHandler(new SelectHandler() {
+		// @Override
+		// public void onSelect(final SelectEvent event) {
+		// String param = "'Название' содержит 'обл'";
+		// JSFilter2 filter = new JSFilter2(param);
+		// filter.center();
+		// }
+		// });
+		// toolBar.add(filter);
+		// }
+		//
+		// if (gridMetadata.getUISettings().isVisibleFilter()) {
+		// final TextButton filter =
+		// new TextButton("", IconHelper.getImageResource(
+		// UriUtils.fromSafeConstant(Constants.GRID_IMAGE_FILTER), 16, 16));
+		//
+		// filter.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .grid_caption_filter());
+		// filter.addSelectHandler(new SelectHandler() {
+		// @Override
+		// public void onSelect(final SelectEvent event) {
+		// String param = "'Название' содержит 'обл'";
+		// JSFilter3 filter = new JSFilter3(param);
+		// filter.center();
+		// }
+		// });
+		// toolBar.add(filter);
+		// }
+
 	}
 
 	private ToolBarHelper getToolBarHelper() {

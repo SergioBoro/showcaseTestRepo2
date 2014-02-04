@@ -126,6 +126,9 @@ public interface constantsShowcase extends Messages {
 	@DefaultMessage("Копировать в буфер обмена")
 	String grid_caption_copy_to_clipboard();
 
+	@DefaultMessage("Фильтр")
+	String grid_caption_filter();
+
 	@DefaultMessage("Начат экспорт в Excel. Это может занять несколько минут. Кликните сюда, чтобы скрыть сообщение")
 			String grid_message_popup_export_to_excel();
 

@@ -293,6 +293,11 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		common.put("stringSelectedRecordIdsSeparator", new JSONString(
 				STRING_SELECTED_RECORD_IDS_SEPARATOR));
 
+		if (gridMetadata.getUISettings().getHaColumnHeader() != null) {
+			common.put("haColumnHeader", new JSONString(gridMetadata.getUISettings()
+					.getHaColumnHeader().toString().toLowerCase()));
+		}
+
 		metadata.put("common", common);
 
 		JSONObject columns = new JSONObject();

@@ -81,6 +81,15 @@ function createLiveDGrid(elementId, parentId, metadata) {
 				}
 				return div;
 	        };
+
+	        if(metadata["common"]["haColumnHeader"]){
+		        column["renderHeaderCell"] = function actionRenderCell(node) {
+					var div = document.createElement("div");
+					div.style["text-align"] = metadata["common"]["haColumnHeader"];
+					div.innerHTML = this.label;
+					return div;
+		        };
+	        }
 			
 			columns.push(column);
 		}
