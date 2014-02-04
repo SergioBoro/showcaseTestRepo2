@@ -2,7 +2,7 @@ var arrGrids = {};
 
 
 function createTreeDGrid(elementId, parentId, metadata) {
-	require(["dgrid/extensions/CompoundColumns", "dgrid/ColumnSet", "put-selector/put", "dojo/store/util/QueryResults", "dojo/on", "dgrid/OnDemandGrid", "dgrid/extensions/ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "tree", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
+	require(["dgrid/extensions/CompoundColumns", "dgrid/ColumnSet", "put-selector/put", "dojo/store/util/QueryResults", "dojo/on", "dgrid/OnDemandGrid", "ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "tree", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
 	function(CompoundColumns, ColumnSet, put, QueryResults, on, Grid, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, tree, Cache, Memory, aspect){
 		
 		var firstLoading = true;
