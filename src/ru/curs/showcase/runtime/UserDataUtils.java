@@ -102,8 +102,8 @@ public final class UserDataUtils {
 	 * @throws IOException
 	 */
 	public static InputStream loadUserDataToStream(final String fileName) throws IOException {
-		FileInputStream result = new FileInputStream(getUserDataCatalog() + File.separator
-				+ fileName);
+		FileInputStream result =
+			new FileInputStream(getUserDataCatalog() + File.separator + fileName);
 		return result;
 	}
 
@@ -121,8 +121,8 @@ public final class UserDataUtils {
 	 */
 	static InputStream loadUserDataToStream(final String fileName, final String userdataId)
 			throws IOException {
-		FileInputStream result = new FileInputStream(getUserDataCatalog(userdataId)
-				+ File.separator + fileName);
+		FileInputStream result =
+			new FileInputStream(getUserDataCatalog(userdataId) + File.separator + fileName);
 		return result;
 	}
 
@@ -188,7 +188,8 @@ public final class UserDataUtils {
 		}
 	}
 
-	private static String correctPathToSolutionResources(final String propName, final String source) {
+	private static String
+			correctPathToSolutionResources(final String propName, final String source) {
 		String result = source;
 		if (NAVIGATOR_ICONS_DIR_NAME.equals(propName) || IMAGES_IN_GRID_DIR.equals(propName)) {
 			String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
@@ -279,10 +280,11 @@ public final class UserDataUtils {
 	 *            - исходный текст.
 	 */
 	public static String replaceVariables(final String source) {
-		String value = source.replace("${" + IMAGES_IN_GRID_DIR + "}",
-				getRequiredProp(IMAGES_IN_GRID_DIR));
-		value = value.replace(CURRENT_USERDATA_TEMPLATE,
-				String.format("solutions/%s", AppInfoSingleton.getAppInfo().getCurUserDataId()));
+		String value =
+			source.replace("${" + IMAGES_IN_GRID_DIR + "}", getRequiredProp(IMAGES_IN_GRID_DIR));
+		value =
+			value.replace(CURRENT_USERDATA_TEMPLATE, String.format("solutions/%s",
+					AppInfoSingleton.getAppInfo().getCurUserDataId()));
 		return value;
 	}
 
@@ -435,8 +437,8 @@ public final class UserDataUtils {
 	}
 
 	private static void checkUserdataFilesNamesForWrongSymbols(final String userDataCatalog) {
-		BatchFileProcessor fprocessor = new BatchFileProcessor(userDataCatalog,
-				new RegexFilenameFilter("^[.].*", false));
+		BatchFileProcessor fprocessor =
+			new BatchFileProcessor(userDataCatalog, new RegexFilenameFilter("^[.].*", false));
 		try {
 			fprocessor.process(new CheckFileNameAction());
 		} catch (IOException e) {
@@ -444,7 +446,8 @@ public final class UserDataUtils {
 		}
 	}
 
-	private static void checkAppPropsForWrongSymbols(final String userdataId, final Properties props) {
+	private static void checkAppPropsForWrongSymbols(final String userdataId,
+			final Properties props) {
 		String prop;
 		String value;
 		for (Object opr : props.keySet()) {
@@ -459,6 +462,12 @@ public final class UserDataUtils {
 				continue;
 			}
 			if (LOGIN_TITLE.equalsIgnoreCase(prop.trim())) {
+				continue;
+			}
+			if ((CELESTA_PREFIX + CELESTA_PYLIB_PATH).equals(prop.trim())) {
+				continue;
+			}
+			if ((CELESTA_PREFIX + CELESTA_SCORE_PATH).equals(prop.trim())) {
 				continue;
 			}
 
