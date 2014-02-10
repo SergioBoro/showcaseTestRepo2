@@ -73,7 +73,7 @@ public abstract class ToolBarHelper {
 					context.setFilter(elContext.getFilter());
 					context.setSession(elContext.getSession());
 					context.setSessionParamsMap(elContext.getSessionParamsMap());
-					context.addRelated(elInfo.getId(), basicElementPanelBasis.getDetailedContext());
+					context.setRelated(basicElementPanelBasis.getContext().getRelated());
 
 					dataService.getGridToolBar(context, elInfo,
 							new GWTServiceCallback<GridToolBar>(
