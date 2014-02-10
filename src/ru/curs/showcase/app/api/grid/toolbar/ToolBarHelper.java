@@ -1,5 +1,8 @@
 package ru.curs.showcase.app.api.grid.toolbar;
 
+import java.util.Map;
+
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.DataServiceAsync;
@@ -73,8 +76,8 @@ public abstract class ToolBarHelper {
 					context.setFilter(elContext.getFilter());
 					context.setSession(elContext.getSession());
 					context.setSessionParamsMap(elContext.getSessionParamsMap());
-					context.addRelated(elInfo.getId().toString(),
-							basicElementPanelBasis.getDetailedContext());
+					Map<ID, CompositeContext> aRelated = context.getRelated();
+					aRelated.put(elInfo.getId(), basicElementPanelBasis.getDetailedContext());
 
 					dataService.getGridToolBar(context, elInfo,
 							new GWTServiceCallback<GridToolBar>(
