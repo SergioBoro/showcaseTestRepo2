@@ -306,14 +306,21 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		sessionParamsMap = aSessionParamsMap;
 	}
 
-	public void addRelated(final ID aId, final CompositeContext aContext) {
+	public void addRelated(final ID aId, final CompositeContext aContext,
+			final boolean clearRelated) {
 		CompositeContext context = aContext.gwtClone();
 		// в БД не должно идти ничего лишнего
 		context.setMain(null);
 		context.setSession(null);
-		context.getRelated().clear();
+		if (clearRelated) {
+			context.getRelated().clear();
+		}
 		context.getSessionParamsMap().clear();
 		related.put(aId, context);
+	}
+
+	public void addRelated(final ID aId, final CompositeContext aContext) {
+		addRelated(aId, aContext, true);
 	}
 
 	public void addRelated(final String id, final CompositeContext context) {
