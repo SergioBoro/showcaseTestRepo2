@@ -1,5 +1,8 @@
 package ru.curs.showcase.app.api.grid.toolbar;
 
+import java.util.Map.Entry;
+
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.DataServiceAsync;
@@ -66,16 +69,7 @@ public abstract class ToolBarHelper {
 			toolBarRefreshTimer = new Timer() {
 				@Override
 				public void run() {
-					CompositeContext elContext = basicElementPanelBasis.getContext();
-					CompositeContext context = new CompositeContext();
-					context.setMain(elContext.getMain());
-					context.setAdditional(elContext.getAdditional());
-					context.setFilter(elContext.getFilter());
-					context.setSession(elContext.getSession());
-					context.setSessionParamsMap(elContext.getSessionParamsMap());
-					context.addRelated(elInfo.getId(),
-							basicElementPanelBasis.getDetailedContext(), false);
-
+					CompositeContext context = getContext(basicElementPanelBasis);
 					dataService.getGridToolBar(context, elInfo,
 							new GWTServiceCallback<GridToolBar>(
 									"при получении данных панели инструментов грида с сервера") {
@@ -152,7 +146,10 @@ public abstract class ToolBarHelper {
 				textButton.addSelectHandler(new SelectHandler() {
 					@Override
 					public void onSelect(final SelectEvent event) {
-						runAction(item.getAction());
+						CompositeContext context = getContext(basicElementPanelBasis);
+						Action action = item.getAction();
+						action.setContext(context);
+						runAction(action);
 					}
 				});
 			}
@@ -169,7 +166,10 @@ public abstract class ToolBarHelper {
 					menuItem.addSelectionHandler(new SelectionHandler<Item>() {
 						@Override
 						public void onSelection(final SelectionEvent<Item> event) {
-							runAction(item.getAction());
+							CompositeContext context = getContext(basicElementPanelBasis);
+							Action action = item.getAction();
+							action.setContext(context);
+							runAction(action);
 						}
 					});
 				}
@@ -223,6 +223,21 @@ public abstract class ToolBarHelper {
 			createDynamicToolBar(obj, toolBar);
 		}
 		return toolBar;
+	}
+
+	private CompositeContext getContext(final BasicElementPanelBasis element) {
+		CompositeContext elContext = element.getContext();
+		CompositeContext context = new CompositeContext();
+		context.setMain(elContext.getMain());
+		context.setAdditional(elContext.getAdditional());
+		context.setFilter(elContext.getFilter());
+		context.setSession(elContext.getSession());
+		context.setSessionParamsMap(elContext.getSessionParamsMap());
+		for (Entry<ID, CompositeContext> entry : elContext.getRelated().entrySet()) {
+			context.addRelated(entry.getKey(), entry.getValue());
+		}
+		context.addRelated(element.getElementInfo().getId(), element.getDetailedContext());
+		return context;
 	}
 
 	/**
