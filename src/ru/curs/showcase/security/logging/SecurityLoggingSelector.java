@@ -28,7 +28,7 @@ public class SecurityLoggingSelector extends SourceSelector<SecurityLoggingGatew
 		case SP:
 			return new SecurityLoggingDBGateway(getSourceName());
 		case JYTHON:
-			return new SecurityLoggingDBGateway(getSourceName());
+			return new SecurityLoggingJythonGateway(getSourceName());
 		default:
 		}
 
