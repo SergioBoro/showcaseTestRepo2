@@ -66,6 +66,72 @@ public interface constantsShowcase extends Messages {
 	@DefaultMessage("Export to Excel records 0-level")
 	String jsTreeGridExportToExcel0Level();
 
+	@DefaultMessage("equal")
+	String conditionEqual();
+
+	@DefaultMessage("does not equal")
+	String conditionNotEqual();
+
+	@DefaultMessage("is less than")
+	String conditionLess();
+
+	@DefaultMessage("less than or equal")
+	String conditionLessEqual();
+
+	@DefaultMessage("is greater than")
+	String conditionGreater();
+
+	@DefaultMessage("greater than or equal")
+	String conditionGreaterEqual();
+
+	@DefaultMessage("contains")
+	String conditionContain();
+
+	@DefaultMessage("starts with")
+	String conditionStartWith();
+
+	@DefaultMessage("ends with")
+	String conditionEndWith();
+
+	@DefaultMessage("does not contain")
+	String conditionNotContain();
+
+	@DefaultMessage("does not start with")
+	String conditionNotStartWith();
+
+	@DefaultMessage("does not end with")
+	String conditionNotEndWith();
+
+	@DefaultMessage("is empty")
+	String conditionIsEmpty();
+
+	@DefaultMessage("Mapping:")
+	String jsFilterLink();
+
+	@DefaultMessage("Column:")
+	String jsFilterColumn();
+
+	@DefaultMessage("Condition:")
+	String jsFilterCondition();
+
+	@DefaultMessage("Value:")
+	String jsFilterValue();
+
+	@DefaultMessage("Update filter condition")
+	String jsFilterUpdate();
+
+	@DefaultMessage("Add")
+	String jsFilterAdd();
+
+	@DefaultMessage("Delete")
+	String jsFilterDel();
+
+	@DefaultMessage("Clear")
+	String jsFilterClear();
+
+	@DefaultMessage("Cancel")
+	String jsFilterCancel();
+
 	@DefaultMessage("Пожалуйста, подождите...Идет загрузка данных")
 	String please_wait_data_are_loading();
 

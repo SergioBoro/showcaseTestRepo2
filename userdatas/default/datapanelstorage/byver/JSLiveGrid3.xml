@@ -4,8 +4,17 @@
 		<element id="1" type="webtext" transform="bal.xsl" />
 		<element id="6" type="webtext" transform="bal.xsl" />
 	</tab>
+
 	
-	<tab id="2" name="ColumnSets (фиксация столбцов)">
+	<tab id="2" name="Фильтры">
+		<element id="21" type="GRID"  subtype="JS_LIVE_GRID" proc="extlivegrid_bal" 
+		    plugin="liveDGrid" >
+			    <proc id="020101" name="gridToolBar" type="TOOLBAR"/>
+		</element>
+	</tab>
+	
+	
+	<tab id="4" name="ColumnSets (фиксация столбцов)">
 		<element id="2" type="GRID"  subtype="JS_LIVE_GRID" proc="jsgrid_columnsets" 
 		    plugin="liveDGrid" >
 			    <proc id="020101" name="gridToolBar" type="TOOLBAR"/>

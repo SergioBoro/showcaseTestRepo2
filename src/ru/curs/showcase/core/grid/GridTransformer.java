@@ -25,6 +25,8 @@ public final class GridTransformer {
 	private static final String IMG_START_STRING = "<a><img border=\"0\" src=\"";
 	private static final String IMG_END_STRING = "\"></a>";
 
+	private static final String FILTER_TAG = "filter";
+
 	private GridTransformer() {
 		throw new UnsupportedOperationException();
 	}
@@ -344,6 +346,25 @@ public final class GridTransformer {
 
 		String result = XMLUtils.documentToString(doc);
 		gridContext.setSession(result);
+	}
+
+	public static void fillFilterContextByFilterInfo(final GridContext gridContext)
+			throws Exception {
+		if (gridContext.getGridFilterInfo().getFilters().size() > 0) {
+			String filterContext = gridContext.getFilter();
+			if ((filterContext == null) || filterContext.isEmpty()) {
+				filterContext = "<" + FILTER_TAG + "></" + FILTER_TAG + ">";
+			}
+			Document doc = XMLUtils.stringToDocument(filterContext);
+
+			Document docFilterInfo = XMLUtils.objectToXML(gridContext.getGridFilterInfo());
+			Element inserted = docFilterInfo.getDocumentElement();
+			Element child = (Element) doc.importNode(inserted, true);
+			doc.getElementsByTagName(FILTER_TAG).item(0).appendChild(child);
+
+			String result = XMLUtils.documentToString(doc);
+			gridContext.setFilter(result);
+		}
 	}
 
 }

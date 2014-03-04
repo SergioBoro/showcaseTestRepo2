@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.FakeService;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
-import ru.curs.showcase.core.grid.LiveGridDataGetCommand;
+import ru.curs.showcase.core.grid.*;
 import ru.curs.showcase.util.ServletUtils;
 
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -44,6 +44,12 @@ public class JSGridService extends HttpServlet {
 			context = (GridContext) ServletUtils.deserializeObject(stringGridContext);
 			element = (PluginInfo) ServletUtils.deserializeObject(stringElementInfo);
 		} catch (SerializationException e) {
+			throw GeneralExceptionFactory.build(e);
+		}
+
+		try {
+			GridTransformer.fillFilterContextByFilterInfo(context);
+		} catch (Exception e) {
 			throw GeneralExceptionFactory.build(e);
 		}
 

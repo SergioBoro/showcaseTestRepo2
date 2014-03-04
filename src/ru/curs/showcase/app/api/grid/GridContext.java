@@ -62,6 +62,8 @@ public class GridContext extends CompositeContext {
 
 	private LiveInfo liveInfo = new LiveInfo(DEF_OFFSET, DEF_LIMIT);
 
+	private GridFilterInfo gridFilterInfo = new GridFilterInfo();
+
 	private DataPanelElementSubType subtype = null;
 
 	/**
@@ -242,6 +244,14 @@ public class GridContext extends CompositeContext {
 		liveInfo = aLiveInfo;
 	}
 
+	public GridFilterInfo getGridFilterInfo() {
+		return gridFilterInfo;
+	}
+
+	public void setGridFilterInfo(final GridFilterInfo aGridFilterInfo) {
+		gridFilterInfo = aGridFilterInfo;
+	}
+
 	public DataPanelElementSubType getSubtype() {
 		return subtype;
 	}
@@ -267,17 +277,32 @@ public class GridContext extends CompositeContext {
 	@Override
 	public GridContext gwtClone() {
 		GridContext res = (GridContext) super.gwtClone();
+
 		res.currentColumnId = currentColumnId;
 		res.currentRecordId = currentRecordId;
 		res.isFirstLoad = isFirstLoad.booleanValue();
+		res.parentId = parentId;
+		res.currentDatapanelWidth = currentDatapanelWidth;
+		res.currentDatapanelHeight = currentDatapanelHeight;
+
 		res.pageInfo.setNumber(pageInfo.getNumber());
 		res.pageInfo.setSize(pageInfo.getSize());
+
+		res.liveInfo.setOffset(liveInfo.getOffset());
+		res.liveInfo.setLimit(liveInfo.getLimit());
+		res.liveInfo.setTotalCount(liveInfo.getTotalCount());
+
 		for (Column col : sortedColumns) {
 			res.sortedColumns.add(col); // TODO глубокое клонирование
 		}
 		for (String id : selectedRecordIds) {
 			res.selectedRecordIds.add(id);
 		}
+
+		res.gridFilterInfo.setMaxId(gridFilterInfo.getMaxId());
+		res.gridFilterInfo.getFilters().clear();
+		res.gridFilterInfo.getFilters().addAll(gridFilterInfo.getFilters());
+
 		return res;
 	}
 

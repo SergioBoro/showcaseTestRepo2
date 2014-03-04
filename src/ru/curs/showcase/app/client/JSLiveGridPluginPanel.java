@@ -234,11 +234,15 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		// + ", gridMetadata.getUISettings().getGridHeight() = "
 		// + gridMetadata.getUISettings().getGridHeight());
 
+		// ----------------------------------------------------
+
 		final String div = "<div id='";
 		final String htmlForPlugin =
 			div + getDivIdPlugin() + "' style='width:"
 					+ gridMetadata.getUISettings().getGridWidth() + "; height:"
 					+ gridMetadata.getUISettings().getGridHeight() + "px'></div>";
+
+		// ----------------------------------------------------
 
 		pluginHTML = new HTML(htmlForPlugin);
 
@@ -904,6 +908,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		return result;
 	}
 
+	// CHECKSTYLE:OFF
 	private void addStaticItemToToolBar(final ToolBar toolBar) {
 		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
 			final TextButton exportToExcelCurrentPage =
@@ -963,8 +968,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		// filter.addSelectHandler(new SelectHandler() {
 		// @Override
 		// public void onSelect(final SelectEvent event) {
-		// String param = "'Название' содержит 'обл'";
-		// JSFilter filter = new JSFilter(param);
+		// String param = "";
+		// JSFilter1 filter = new JSFilter1(param);
 		// filter.center();
 		// }
 		// });
@@ -981,7 +986,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		// filter.addSelectHandler(new SelectHandler() {
 		// @Override
 		// public void onSelect(final SelectEvent event) {
-		// String param = "'Название' содержит 'обл'";
+		// String param = "";
 		// JSFilter2 filter = new JSFilter2(param);
 		// filter.center();
 		// }
@@ -999,7 +1004,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		// filter.addSelectHandler(new SelectHandler() {
 		// @Override
 		// public void onSelect(final SelectEvent event) {
-		// String param = "'Название' содержит 'обл'";
+		// String param = "";
 		// JSFilter3 filter = new JSFilter3(param);
 		// filter.center();
 		// }
@@ -1007,7 +1012,67 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		// toolBar.add(filter);
 		// }
 
+		if (gridMetadata.getUISettings().isVisibleFilter()) {
+			final TextButton filter =
+				new TextButton("", IconHelper.getImageResource(
+						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_FILTER), 16, 16));
+			filter.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_filter());
+			final JSLiveGridPluginPanel liveGridPanel = this;
+			filter.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+
+					// Отладка
+					// if (localContext.getGridFilterInfo().getFilters().size()
+					// == 0) {
+					//
+					// Filter flt = new Filter();
+					// flt.setId("1");
+					// flt.setLink("OR");
+					// flt.setColumn("Регион");
+					// flt.setCondition("содержит");
+					// flt.setValue("обл");
+					// localContext.getGridFilterInfo().getFilters().add(flt);
+					//
+					// flt = new Filter();
+					// flt.setId("2");
+					// flt.setLink("OR");
+					// flt.setColumn("Регион");
+					// flt.setCondition("содержит");
+					// flt.setValue("моск");
+					// localContext.getGridFilterInfo().getFilters().add(flt);
+					//
+					// flt = new Filter();
+					// flt.setId("3");
+					// flt.setLink("AND");
+					// flt.setColumn("4кв. 2005г.");
+					// flt.setCondition("равно");
+					// flt.setValue("700");
+					// localContext.getGridFilterInfo().getFilters().add(flt);
+					//
+					// flt = new Filter();
+					// flt.setId("4");
+					// flt.setLink("AND");
+					// flt.setColumn("Поле даты");
+					// flt.setCondition("равно");
+					// flt.setValue("текущая_дата");
+					// flt.setDateValue(new Date());
+					// localContext.getGridFilterInfo().getFilters().add(flt);
+					//
+					// localContext.getGridFilterInfo().setMaxId(
+					// localContext.getGridFilterInfo().getFilters().size());
+					// }
+
+					new JSFilter(liveGridPanel);
+				}
+			});
+			toolBar.add(filter);
+		}
+
 	}
+
+	// CHECKSTYLE:ON
 
 	private ToolBarHelper getToolBarHelper() {
 		if (this.toolBarHelper == null) {

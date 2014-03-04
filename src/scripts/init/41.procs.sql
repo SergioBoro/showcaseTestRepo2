@@ -3701,7 +3701,7 @@ Set @ordering=(Select
 				End)     
 declare @Sql varchar(8000);
 set @Sql = 
-'Select [Регион], ''imagesingrid/test.jpg'' AS [Картинка],' + @params+',cast( ''<properties>
+'Select [Регион], GETDATE() as [Сейчас], ''imagesingrid/test.jpg'' AS [Картинка],' + @params+',cast( ''<properties>
                     <event name="row_single_click">
                         <action>
                             <main_context>current</main_context>
@@ -3757,7 +3757,9 @@ set @gridsettings_str='<gridsettings>
             <footer><h3 class="testStyle">Футер. '+@main_context+' зерна, тыс. тонн </h3></footer>            
         </labels>
         <columns>
-        <col id="Регион" width="250px"/> <col id="Картинка" width="50px" type="IMAGE"/>'
+         <col id="Регион" width="250px"/> 
+         <col id="Картинка" width="50px" type="IMAGE"/>
+         <col id="Сейчас" width="100px" type="DATETIME"/>'
         
 select     @gridsettings_str=@gridsettings_str+'<col id="'+#Columns_Name.Col_Id+'" width="85px" precision="2"/>' From #Columns_Name
 set @gridsettings_str=@gridsettings_str+'</columns>
