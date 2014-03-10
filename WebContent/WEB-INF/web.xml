@@ -192,4 +192,10 @@
     <url-pattern>/getImage</url-pattern>
   </servlet-mapping>  
   
+  
+  <error-page>
+ 	 <error-code>500</error-code>
+ 	 <location>/err500.html</location>
+  </error-page>
+  
 </web-app>
