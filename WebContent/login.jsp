@@ -132,7 +132,7 @@ pageEncoding="UTF-8"%>
   </tr>
   <tr>
     <td align="right">Пароль</td>
-    <td><input  id="j_password" type="password" name="j_password" /></td>
+    <td><input  id="j_password" type="password" name="j_password" autocomplete = "off"/></td>
     <td></td>
   </tr>
   <tr style="display: none;">
