@@ -25,6 +25,8 @@ public final class About {
 	 * Процедура показывающая окно "О программе".
 	 */
 	public static void showAbout() {
+		final String br = "<br />";
+
 		DialogBoxWithCaptionButton db = new DialogBoxWithCaptionButton("О программе...");
 		// MessageBox.showSimpleMessage("1", "1");
 		HTML about = new HTML();
@@ -39,6 +41,23 @@ public final class About {
 
 		String caseSensivityIDsSummary =
 			"Идентификаторы" + caseSensivityIDsSummaryPrefix + " чувствительны к регистру.";
+
+		String serverInfo = null;
+		if (!AppCurrContext.getInstance().getServerCurrentState().getHideServerInfoInAboutWindow()) {
+
+			serverInfo =
+				"Версия SQL сервера: "
+						+ AppCurrContext.getInstance().getServerCurrentState().getSqlVersion()
+						+ br
+						+ "Версия JAVA на сервере: "
+						+ AppCurrContext.getInstance().getServerCurrentState().getJavaVersion()
+						+ br
+						+ "Версия сервлет контейнера: "
+						+ AppCurrContext.getInstance().getServerCurrentState()
+								.getServletContainerVersion() + br;
+
+		} else
+			serverInfo = "";
 
 		// MessageBox.showSimpleMessage("1", "12");
 		String userAgent = getUserAgent();
@@ -55,7 +74,7 @@ public final class About {
 
 		}
 		// MessageBox.showSimpleMessage("1", "2");
-		final String br = "<br />";
+
 		String textHTML =
 			"<p><img src='resources/internal/logo.gif' alt='КУРС' /></p>"
 					+ "<img src='resources/internal/favicon32.png' alt='' />&nbsp;Showcase&nbsp;"
@@ -73,16 +92,7 @@ public final class About {
 					+ br
 
 					+ br
-					+ "Версия SQL сервера: "
-					+ AppCurrContext.getInstance().getServerCurrentState().getSqlVersion()
-					+ br
-					+ "Версия JAVA на сервере: "
-					+ AppCurrContext.getInstance().getServerCurrentState().getJavaVersion()
-					+ br
-					+ "Версия сервлет контейнера: "
-					+ AppCurrContext.getInstance().getServerCurrentState()
-							.getServletContainerVersion()
-					+ br
+					+ serverInfo
 
 					+ "Тип браузера: "
 					+ ((browserTypeString != null) ? browserTypeString : "не удалось определить")

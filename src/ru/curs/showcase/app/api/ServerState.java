@@ -17,6 +17,14 @@ public final class ServerState implements SerializableElement {
 	private static final long serialVersionUID = -6409374109173355019L;
 
 	/**
+	 * Свойство, которое определяет показывать ли версию SQL-сервера, версию
+	 * JAVA на сервере, версию сервлет-контейнера в окне about приложения.
+	 * Свойство задается в общем файле app.properties в виде
+	 * security.hideserverinfoinaboutwindow=true
+	 */
+	private Boolean hideServerInfoInAboutWindow;
+
+	/**
 	 * Версия приложения.
 	 */
 	private String appVersion;
@@ -164,6 +172,14 @@ public final class ServerState implements SerializableElement {
 
 	public void setStartingAppSessionContext(final String astartingAppSessionContext) {
 		this.startingAppSessionContext = astartingAppSessionContext;
+	}
+
+	public Boolean getHideServerInfoInAboutWindow() {
+		return hideServerInfoInAboutWindow;
+	}
+
+	public void setHideServerInfoInAboutWindow(final Boolean ahideServerInfoInAboutWindow) {
+		this.hideServerInfoInAboutWindow = ahideServerInfoInAboutWindow;
 	}
 
 }
