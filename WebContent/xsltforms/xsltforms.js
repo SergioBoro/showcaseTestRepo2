@@ -13562,21 +13562,26 @@ function setXFormCacheInstances(subformId, cacheInstances)
 	}
 }
 
-	
-function getSubformInstanceDocument(idModel, idInstance)
+
+function getSubformModel(idModel)
 {
-	instanceDocument = null;
+	var model = null;
 	
 	for (var m = 0, mlen = XsltForms_globals.models.length; m < mlen; m++) {
 		if (XsltForms_globals.models[m].element) {
 			if (XsltForms_globals.models[m].element.id.toLowerCase() == idModel.toLowerCase()) {
-				instanceDocument = XsltForms_globals.models[m].getInstanceDocument(idInstance);
+				model = XsltForms_globals.models[m];
 				break;
 			}
 		}
 	}
 	
-	return instanceDocument;
+	return model;
+}
+	
+function getSubformInstanceDocument(idModel, idInstance)
+{
+	return getSubformModel(idModel).getInstanceDocument(idInstance); 
 }
 
 //KURS]
