@@ -472,7 +472,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			Pattern.compile("XPath\\((\\S*)\\)", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
 
 		Pattern pQuot =
-			Pattern.compile("quot\\((\\w*)\\)", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
+			Pattern.compile("quot\\(([a-zA-Z_0-9-]*)\\)", Pattern.CASE_INSENSITIVE
+					+ Pattern.UNICODE_CASE);
 
 		Matcher mXPath;
 		Matcher mQuot;
@@ -591,7 +592,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			NodeList body = xml.getElementsByTagName("body");
 
 			Element div = xml.createElement("div");
-			div.setAttribute("id", TEMP_TAG_FOR_SELECTOR_ID);
+			div.setAttribute("id", subformId + TEMP_TAG_FOR_SELECTOR_ID);
 			// div.setAttribute("style", "clear: both;");
 			div.setAttribute(GeneralConstants.STYLE_TAG, "display: none;");
 			body.item(0).insertBefore(div, body.item(0).getFirstChild());

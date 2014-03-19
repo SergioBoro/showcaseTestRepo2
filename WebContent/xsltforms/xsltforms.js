@@ -13310,7 +13310,7 @@ function isXPath(value)
 
 function getXPath(value)
 {
-	return value.replace(/^XPath\((\S*)\)/i,"$1").replace(/quot\((\w*)\)/g,"'$1'");
+	return value.replace(/^XPath\((\S*)\)/i,"$1").replace(/quot\(([a-zA-Z_0-9-]*)\)/g,"'$1'");
 }
 
 function getLastPartXPath(value)
