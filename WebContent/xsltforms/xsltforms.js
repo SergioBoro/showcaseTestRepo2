@@ -7491,6 +7491,13 @@ XsltForms_repeat.prototype.build_ = function(ctx) {
 		}
 		for (var i = l; i < n; i++) {
 			var child = r0.cloneNode(true);
+			
+			// [KURS for IE10
+			if(rl == undefined){
+				rl = null;
+			}
+			// KURS]
+			
 			r.insertBefore(child, rl);
 			XsltForms_repeat.initClone(child);
 			delete child.xfElement;
