@@ -192,7 +192,16 @@ var XsltForms_globals = {
 					dbg.appendChild(spn6);
 				}
 				dbg.appendChild(ifr);
-				body.insertBefore(dbg, body.firstChild);
+				
+				// [KURS for IE10
+				var kurs = body.firstChild; 
+				if(kurs == undefined){
+					kurs = null;
+				}
+				body.insertBefore(dbg, kurs);				
+//				body.insertBefore(dbg, body.firstChild);				
+				// KURS]
+				
 				document.getElementById("xsltforms_console").style.display = "block";
 			} else {
 				body.removeChild(document.getElementById("xsltforms_debug"));
@@ -1162,7 +1171,15 @@ XsltForms_browser.loadapplet = function() {
 	appelt.setAttribute("width", "1");
 	appelt.setAttribute("height", "1");
 	var body = XsltForms_browser.isXhtml ? document.getElementsByTagNameNS("http://www.w3.org/1999/xhtml", "body")[0] : document.getElementsByTagName("body")[0];
-	body.insertBefore(appelt, body.firstChild);
+	
+	// [KURS for IE10
+	var kurs = body.firstChild; 
+	if(kurs == undefined){
+		kurs = null;
+	}
+	body.insertBefore(appelt, kurs);
+//	body.insertBefore(appelt, body.firstChild);
+	// KURS]
 };
 
 		
@@ -3486,7 +3503,16 @@ XsltForms_instance.prototype.construct = function(subform) {
 						scriptelt.setAttribute("id", "jsoninst");
 						scriptelt.setAttribute("type", "text/javascript");
 						var body = XsltForms_browser.isXhtml ? document.getElementsByTagNameNS("http://www.w3.org/1999/xhtml", "body")[0] : document.getElementsByTagName("body")[0];
-						body.insertBefore(scriptelt, body.firstChild);
+						
+						// [KURS for IE10
+						var kurs = body.firstChild; 
+						if(kurs == undefined){
+							kurs = null;
+						}
+						body.insertBefore(scriptelt, kurs);						
+//						body.insertBefore(scriptelt, body.firstChild);						
+						// KURS]
+
 					} else {
 						try {
 							var req = XsltForms_browser.openRequest("GET", this.src, false);
@@ -3909,7 +3935,14 @@ XsltForms_browser.xml2csv = function(s, sep) {
 		n0 = n0.nextSibling;
 	}
 	var h = n0.cloneNode(true);
+	
+	// [KURS for IE10
+	if(n0 == undefined){
+		n0 = null;
+	}
+	// KURS]
 	d.documentElement.insertBefore(h, n0);
+	
 	var n = h;
 	var r = "";
 	sep = sep || ",";
@@ -4600,7 +4633,16 @@ XsltForms_submission.prototype.submit = function() {
 			txt.setAttribute("value", ser);
 			outForm.appendChild(txt);
 			body = XsltForms_browser.isXhtml ? document.getElementsByTagNameNS("http://www.w3.org/1999/xhtml", "body")[0] : document.getElementsByTagName("body")[0];
-			body.insertBefore(outForm, body.firstChild);
+			
+			// [KURS for IE10
+			var kurs = body.firstChild; 
+			if(kurs == undefined){
+				kurs = null;
+			}
+			body.insertBefore(outForm, kurs);
+//			body.insertBefore(outForm, body.firstChild);			
+			// KURS]
+
 		}
 		outForm.submit();
 		XsltForms_globals.closeAction();
@@ -4621,7 +4663,16 @@ XsltForms_submission.prototype.submit = function() {
 			scriptelt.setAttribute("id", "jsoninst");
 			scriptelt.setAttribute("type", "text/javascript");
 			body = XsltForms_browser.isXhtml ? document.getElementsByTagNameNS("http://www.w3.org/1999/xhtml", "body")[0] : document.getElementsByTagName("body")[0];
-			body.insertBefore(scriptelt, body.firstChild);
+			
+			// [KURS for IE10
+			var kurs = body.firstChild; 
+			if(kurs == undefined){
+				kurs = null;
+			}
+			body.insertBefore(scriptelt, kurs);
+//			body.insertBefore(scriptelt, body.firstChild);			
+			// KURS]
+			
 			XsltForms_xmlevents.dispatch(this, "xforms-submit-done");
 			XsltForms_globals.closeAction();
 		} else {
@@ -5303,7 +5354,14 @@ XsltForms_insert.prototype.run = function(element, ctx) {
 					nodeAfter = nodes[index];
 				}
 				if (nodeAfter) {
+					
+					// [KURS for IE10
+					if(nodeAfter == undefined){
+						nodeAfter = null;
+					}
+					// KURS]
 					nodeAfter.parentNode.insertBefore(clone, nodeAfter);
+					
 				} else {
 					parent.appendChild(clone);
 				}
@@ -5439,7 +5497,16 @@ XsltForms_load.prototype.run = function(element, ctx) {
 					scriptelt.appendChild(document.createTextNode(subjs));
 				}
 				var body = XsltForms_browser.isXhtml ? document.getElementsByTagNameNS("http://www.w3.org/1999/xhtml", "body")[0] : document.getElementsByTagName("body")[0];
-				body.insertBefore(scriptelt, body.firstChild);
+				
+				// [KURS for IE10
+				var kurs = body.firstChild; 
+				if(kurs == undefined){
+					kurs = null;
+				}
+				body.insertBefore(scriptelt, kurs);
+//				body.insertBefore(scriptelt, body.firstChild);				
+				// KURS]
+				
 				XsltForms_browser.setClass(targetelt, "xforms-subform-loaded", true);
 				if (targetxf) {
 					XsltForms_xmlevents.dispatch(targetxf, "xforms-load-done", null, null, null, null, evcontext);
@@ -7497,14 +7564,21 @@ XsltForms_repeat.prototype.build_ = function(ctx) {
 				rl = null;
 			}
 			// KURS]
-			
 			r.insertBefore(child, rl);
+			
 			XsltForms_repeat.initClone(child);
 			delete child.xfElement;
 			var r0s = r0.nextSibling;
 			for (var isb = 1; isb < this.nbsiblings; isb++, r0s = r0s.nextSibling) {
-				child = r0s.cloneNode(true)
+				child = r0s.cloneNode(true);
+				
+				// [KURS for IE10
+				if(rl == undefined){
+					rl = null;
+				}
+				// KURS]
 				r.insertBefore(child, rl);
+				
 				XsltForms_repeat.initClone(child);
 			}
 		}
@@ -7718,7 +7792,16 @@ XsltForms_select.prototype.setValue = function(value) {
 			empty.text = "\xA0";
 			empty.id = "";
 			if (this.select.children[0]) {
-				this.select.insertBefore(empty, this.select.children[0]);
+				
+				// [KURS for IE10
+				var kurs = this.select.children[0]; 
+				if(kurs == undefined){
+					kurs = null;
+				}
+				this.select.insertBefore(empty, kurs);
+//				this.select.insertBefore(empty, this.select.children[0]);				
+				// KURS]
+
 			} else {
 				this.select.appendChild(empty);
 			}
@@ -13053,7 +13136,16 @@ if (typeof xsltforms_d0 === "undefined") {
 			XsltForms_browser.dialog.show('statusPanel');
 			if (!(document.documentElement.childNodes[0].nodeType === 8 || (XsltForms_browser.isIE && document.documentElement.childNodes[0].childNodes[1] && document.documentElement.childNodes[0].childNodes[1].nodeType === 8))) {
 				var comment = document.createComment("HTML elements and Javascript instructions generated by XSLTForms r" + XsltForms_globals.fileVersion + " - Copyright (C) 2008-2012 <agenceXML> - Alain COUTHURES - http://www.agencexml.com");
-				document.documentElement.insertBefore(comment, document.documentElement.firstChild);
+				
+				// [KURS for IE10
+				var kurs = document.documentElement.firstChild; 
+				if(kurs == undefined){
+					kurs = null;
+				}
+				document.documentElement.insertBefore(comment, kurs);
+//				document.documentElement.insertBefore(comment, document.documentElement.firstChild);				
+				// KURS]
+				
 			}
 			var initelts = document.getElementsByTagName("script");
 			var elts = [];
