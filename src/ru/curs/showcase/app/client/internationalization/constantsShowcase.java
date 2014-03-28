@@ -66,6 +66,9 @@ public interface constantsShowcase extends Messages {
 	@DefaultMessage("Export to Excel records 0-level")
 	String jsTreeGridExportToExcel0Level();
 
+	@DefaultMessage("list of values")
+	String conditionListOfValues();
+
 	@DefaultMessage("equal")
 	String conditionEqual();
 
@@ -116,6 +119,9 @@ public interface constantsShowcase extends Messages {
 
 	@DefaultMessage("Value:")
 	String jsFilterValue();
+
+	@DefaultMessage("Select values:")
+	String jsFilterSelectValues();
 
 	@DefaultMessage("Update filter condition")
 	String jsFilterUpdate();

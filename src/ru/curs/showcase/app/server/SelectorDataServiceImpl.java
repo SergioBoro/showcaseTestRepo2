@@ -3,6 +3,8 @@ package ru.curs.showcase.app.server;
 import org.slf4j.*;
 
 import ru.beta2.extra.gwt.ui.selector.api.*;
+import ru.curs.showcase.app.api.grid.GridContext;
+import ru.curs.showcase.core.grid.GridTransformer;
 import ru.curs.showcase.core.selector.*;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -23,6 +25,10 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 	public DataSet getSelectorData(final DataRequest req) {
 		DataSet ds = new DataSet();
 		try {
+
+			GridTransformer.fillFilterContextByListOfValuesInfo((GridContext) req.getAddData()
+					.getContext());
+
 			SelectorGetCommand command = new SelectorGetCommand(req);
 			ResultSelectorData result = command.execute();
 

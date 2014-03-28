@@ -3756,6 +3756,25 @@ set @gridsettings_str='<gridsettings>
             <header><h3 class="testStyle">'+@main_context+' зерна, тыс. тонн </h3></header>
             <footer><h3 class="testStyle">Футер. '+@main_context+' зерна, тыс. тонн </h3></footer>            
         </labels>
+
+		    <filters>  
+						<multiselector 
+								windowCaption     = "Выберите значения2"
+								dataWidth         = "600px"
+								dataHeight        = "450px"
+								selectedDataWidth = "500px"
+								visibleRecordCount = "25" 
+  			  					procCount         = "[dbo].[regionscount]"  
+								procList          = "[dbo].[regionslist]"
+                				procListAndCount  = ""
+								currentValue      = ""
+								manualSearch       = "false"               
+								startWith          = "true"		        
+				                hideStartsWith     = "false"		        
+								needInitSelection  = "true"
+						/>	
+		    </filters>
+
         <columns>
          <col id="Регион" width="250px"/> 
          <col id="Картинка" width="50px" type="IMAGE"/>

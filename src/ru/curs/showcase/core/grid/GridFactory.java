@@ -71,6 +71,22 @@ public class GridFactory extends CompBasedElementFactory {
 	private static final String COLUMN_SET_SETTINGS_TAG = "columnset";
 	private static final String COLUMN_HEADER_SETTINGS_TAG = "columnheader";
 
+	private static final String FILTER_MULTISELECTOR_TAG = "multiselector";
+
+	private static final String FILTER_MULTISELECTOR_WINDOWCAPTION_TAG = "windowCaption";
+	private static final String FILTER_MULTISELECTOR_DATAWIDTH_TAG = "dataWidth";
+	private static final String FILTER_MULTISELECTOR_DATAHEIGHT_TAG = "dataHeight";
+	private static final String FILTER_MULTISELECTOR_SELECTEDDATAWIDTH_TAG = "selectedDataWidth";
+	private static final String FILTER_MULTISELECTOR_VISIBLERECORDCOUNT_TAG = "visibleRecordCount";
+	private static final String FILTER_MULTISELECTOR_PROCCOUNT_TAG = "procCount";
+	private static final String FILTER_MULTISELECTOR_PROCLIST_TAG = "procList";
+	private static final String FILTER_MULTISELECTOR_PROCLISTANDCOUNT_TAG = "procListAndCount";
+	private static final String FILTER_MULTISELECTOR_CURRENTVALUE_TAG = "currentValue";
+	private static final String FILTER_MULTISELECTOR_MANUALSEARCH_TAG = "manualSearch";
+	private static final String FILTER_MULTISELECTOR_STARTWITH_TAG = "startWith";
+	private static final String FILTER_MULTISELECTOR_HIDESTARTSWITH_TAG = "hideStartsWith";
+	private static final String FILTER_MULTISELECTOR_NEEDINITSELECTION_TAG = "needInitSelection";
+
 	private static final String AUTO_SELECT_REC_TAG = "autoSelectRecordId";
 	private static final String AUTO_SELECT_COL_TAG = "autoSelectColumnId";
 	private static final String AUTO_SELECT_RELATIVE = "autoSelectRelativeRecord";
@@ -391,7 +407,8 @@ public class GridFactory extends CompBasedElementFactory {
 		 * Стартовые тэги, которые будут обработаны данным обработчиком.
 		 */
 		private final String[] startTags = {
-				PROPS_TAG, COL_SETTINGS_TAG, COLUMN_SET_SETTINGS_TAG, COLUMN_HEADER_SETTINGS_TAG };
+				PROPS_TAG, COL_SETTINGS_TAG, COLUMN_SET_SETTINGS_TAG, COLUMN_HEADER_SETTINGS_TAG,
+				FILTER_MULTISELECTOR_TAG };
 
 		/**
 		 * Конечные тэги, которые будут обработаны данным обработчиком.
@@ -414,6 +431,9 @@ public class GridFactory extends CompBasedElementFactory {
 			}
 			if (qname.equalsIgnoreCase(COLUMN_HEADER_SETTINGS_TAG)) {
 				return columnheaderSTARTTAGHandler(attrs);
+			}
+			if (qname.equalsIgnoreCase(FILTER_MULTISELECTOR_TAG)) {
+				return filtermultiselectorSTARTTAGHandler(attrs);
 			}
 			return null;
 		}
@@ -607,6 +627,68 @@ public class GridFactory extends CompBasedElementFactory {
 
 			return null;
 		}
+
+		// CHECKSTYLE:OFF
+		private Object filtermultiselectorSTARTTAGHandler(final Attributes attrs) {
+			FilterMultiselector fms = new FilterMultiselector();
+			getResult().getJSInfo().setFilterMultiselector(fms);
+			String value;
+
+			if (attrs.getIndex(FILTER_MULTISELECTOR_WINDOWCAPTION_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_WINDOWCAPTION_TAG);
+				fms.setWindowCaption(value);
+			}
+			if (attrs.getIndex(FILTER_MULTISELECTOR_DATAWIDTH_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_DATAWIDTH_TAG);
+				fms.setDataWidth(value);
+			}
+			if (attrs.getIndex(FILTER_MULTISELECTOR_DATAHEIGHT_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_DATAHEIGHT_TAG);
+				fms.setDataHeight(value);
+			}
+			if (attrs.getIndex(FILTER_MULTISELECTOR_SELECTEDDATAWIDTH_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_SELECTEDDATAWIDTH_TAG);
+				fms.setSelectedDataWidth(value);
+			}
+			if (attrs.getIndex(FILTER_MULTISELECTOR_VISIBLERECORDCOUNT_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_VISIBLERECORDCOUNT_TAG);
+				fms.setVisibleRecordCount(value);
+			}
+			if (attrs.getIndex(FILTER_MULTISELECTOR_PROCCOUNT_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_PROCCOUNT_TAG);
+				fms.setProcCount(value);
+			}
+			if (attrs.getIndex(FILTER_MULTISELECTOR_PROCLIST_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_PROCLIST_TAG);
+				fms.setProcList(value);
+			}
+			if (attrs.getIndex(FILTER_MULTISELECTOR_PROCLISTANDCOUNT_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_PROCLISTANDCOUNT_TAG);
+				fms.setProcListAndCount(value);
+			}
+			if (attrs.getIndex(FILTER_MULTISELECTOR_CURRENTVALUE_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_CURRENTVALUE_TAG);
+				fms.setCurrentValue(value);
+			}
+			if (attrs.getIndex(FILTER_MULTISELECTOR_MANUALSEARCH_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_MANUALSEARCH_TAG);
+				fms.setManualSearch(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex(FILTER_MULTISELECTOR_STARTWITH_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_STARTWITH_TAG);
+				fms.setStartWith(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex(FILTER_MULTISELECTOR_HIDESTARTSWITH_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_HIDESTARTSWITH_TAG);
+				fms.setHideStartsWith(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex(FILTER_MULTISELECTOR_NEEDINITSELECTION_TAG) > -1) {
+				value = attrs.getValue(FILTER_MULTISELECTOR_NEEDINITSELECTION_TAG);
+				fms.setNeedInitSelection(Boolean.valueOf(value));
+			}
+			return null;
+		}
+		// CHECKSTYLE:ON
 
 	}
 

@@ -1023,7 +1023,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 				@Override
 				public void onSelect(final SelectEvent event) {
 
-					// Отладка
+					// // Отладка
 					// if (localContext.getGridFilterInfo().getFilters().size()
 					// == 0) {
 					//
@@ -1054,10 +1054,24 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 					// flt = new Filter();
 					// flt.setId("4");
 					// flt.setLink("AND");
-					// flt.setColumn("Поле даты");
+					// flt.setColumn("Сейчас");
 					// flt.setCondition("равно");
-					// flt.setValue("текущая_дата");
 					// flt.setDateValue(new Date());
+					// localContext.getGridFilterInfo().getFilters().add(flt);
+					//
+					// flt = new Filter();
+					// flt.setId("5");
+					// flt.setLink("OR");
+					// flt.setColumn("Регион");
+					// flt.setCondition("список значений");
+					// flt.getListOfValues().clear();
+					// flt.getListOfValues().add("Волгоградская обл.");
+					// flt.getListOfValues().add("Калужская обл.");
+					// flt.getListOfValues().add("Брянская обл.");
+					// flt.getListOfValuesId().clear();
+					// flt.getListOfValuesId().add("1118");
+					// flt.getListOfValuesId().add("1129");
+					// flt.getListOfValuesId().add("1115");
 					// localContext.getGridFilterInfo().getFilters().add(flt);
 					//
 					// localContext.getGridFilterInfo().setMaxId(

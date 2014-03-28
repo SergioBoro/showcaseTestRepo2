@@ -350,6 +350,16 @@ public final class GridTransformer {
 
 	public static void fillFilterContextByFilterInfo(final GridContext gridContext)
 			throws Exception {
+		fillFilterContextByFilterOrListOfValuesInfo(gridContext, false);
+	}
+
+	public static void fillFilterContextByListOfValuesInfo(final GridContext gridContext)
+			throws Exception {
+		fillFilterContextByFilterOrListOfValuesInfo(gridContext, true);
+	}
+
+	private static void fillFilterContextByFilterOrListOfValuesInfo(final GridContext gridContext,
+			final boolean isListOfValues) throws Exception {
 		if (gridContext.getGridFilterInfo().getFilters().size() > 0) {
 			String filterContext = gridContext.getFilter();
 			if ((filterContext == null) || filterContext.isEmpty()) {
@@ -357,7 +367,12 @@ public final class GridTransformer {
 			}
 			Document doc = XMLUtils.stringToDocument(filterContext);
 
-			Document docFilterInfo = XMLUtils.objectToXML(gridContext.getGridFilterInfo());
+			Document docFilterInfo;
+			if (isListOfValues) {
+				docFilterInfo = XMLUtils.objectToXML(gridContext.getGridListOfValuesInfo());
+			} else {
+				docFilterInfo = XMLUtils.objectToXML(gridContext.getGridFilterInfo());
+			}
 			Element inserted = docFilterInfo.getDocumentElement();
 			Element child = (Element) doc.importNode(inserted, true);
 			doc.getElementsByTagName(FILTER_TAG).item(0).appendChild(child);

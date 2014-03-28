@@ -20,6 +20,8 @@ public class JSInfo implements SerializableElement {
 
 	private List<String> requiredJS = new ArrayList<String>();
 
+	private FilterMultiselector filterMultiselector = null;
+
 	public String getCreateProc() {
 		return createProc;
 	}
@@ -50,6 +52,14 @@ public class JSInfo implements SerializableElement {
 
 	public void setRequiredJS(final List<String> aRequiredJS) {
 		requiredJS = aRequiredJS;
+	}
+
+	public FilterMultiselector getFilterMultiselector() {
+		return filterMultiselector;
+	}
+
+	public void setFilterMultiselector(final FilterMultiselector aFilterMultiselector) {
+		filterMultiselector = aFilterMultiselector;
 	}
 
 }

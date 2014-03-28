@@ -8,7 +8,8 @@
                 <xs:element ref="labels" minOccurs="0" maxOccurs="1"/>
                 <xs:element ref="columns" minOccurs="0" maxOccurs="1"/>
                 <xs:element ref="action" minOccurs="0" maxOccurs="1"/>
-                <xs:element ref="properties" minOccurs="1" maxOccurs="1"/>                
+                <xs:element ref="properties" minOccurs="1" maxOccurs="1"/>
+                <xs:element ref="filters" minOccurs="0" maxOccurs="1"/>
             </xs:all>                       
         </xs:complexType>
     </xs:element>
@@ -46,4 +47,13 @@
             <xs:attribute name="forceLoadSettings" type="xs:boolean"/>
         </xs:complexType>
     </xs:element>
+    
+    <xs:element name="filters">
+        <xs:complexType>
+            <xs:all>        
+            	<xs:element name="multiselector" minOccurs="0" maxOccurs="1"/>
+            </xs:all>            	
+        </xs:complexType>
+    </xs:element>    
+    
 </xs:schema>

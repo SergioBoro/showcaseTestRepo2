@@ -64,6 +64,9 @@ public class GridContext extends CompositeContext {
 
 	private GridFilterInfo gridFilterInfo = new GridFilterInfo();
 
+	@XmlTransient
+	private GridListOfValuesInfo gridListOfValuesInfo = new GridListOfValuesInfo();
+
 	private DataPanelElementSubType subtype = null;
 
 	/**
@@ -252,6 +255,14 @@ public class GridContext extends CompositeContext {
 		gridFilterInfo = aGridFilterInfo;
 	}
 
+	public GridListOfValuesInfo getGridListOfValuesInfo() {
+		return gridListOfValuesInfo;
+	}
+
+	public void setGridListOfValuesInfo(final GridListOfValuesInfo aGridListOfValuesInfo) {
+		gridListOfValuesInfo = aGridListOfValuesInfo;
+	}
+
 	public DataPanelElementSubType getSubtype() {
 		return subtype;
 	}
@@ -302,6 +313,11 @@ public class GridContext extends CompositeContext {
 		res.gridFilterInfo.setMaxId(gridFilterInfo.getMaxId());
 		res.gridFilterInfo.getFilters().clear();
 		res.gridFilterInfo.getFilters().addAll(gridFilterInfo.getFilters());
+
+		res.gridListOfValuesInfo.setMaxId(gridListOfValuesInfo.getMaxId());
+		res.gridListOfValuesInfo.getFilters().clear();
+		res.gridListOfValuesInfo.getFilters().addAll(gridListOfValuesInfo.getFilters());
+		res.gridListOfValuesInfo.setCurrentColumn(gridListOfValuesInfo.getCurrentColumn());
 
 		return res;
 	}

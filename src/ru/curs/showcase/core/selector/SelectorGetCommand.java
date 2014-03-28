@@ -21,6 +21,11 @@ public class SelectorGetCommand extends DataPanelElementCommand<ResultSelectorDa
 	}
 
 	@Override
+	protected void preProcess() {
+
+	}
+
+	@Override
 	protected DataPanelElementType getRequestedElementType() {
 		return DataPanelElementType.XFORMS;
 	}

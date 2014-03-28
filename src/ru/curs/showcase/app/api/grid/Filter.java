@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.grid;
 
-import java.util.Date;
+import java.util.*;
 
 import javax.xml.bind.annotation.*;
 
@@ -20,6 +20,8 @@ public class Filter implements SerializableElement {
 	private String condition = null;
 	private String value = null;
 	private Date dateValue = null;
+	private List<String> listOfValues = new ArrayList<String>();
+	private List<String> listOfValuesId = new ArrayList<String>();
 
 	public Filter() {
 
@@ -32,6 +34,10 @@ public class Filter implements SerializableElement {
 		condition = src.condition;
 		value = src.value;
 		dateValue = src.dateValue;
+		listOfValues.clear();
+		listOfValues.addAll(src.getListOfValues());
+		listOfValuesId.clear();
+		listOfValuesId.addAll(src.getListOfValuesId());
 	}
 
 	public String getId() {
@@ -80,6 +86,22 @@ public class Filter implements SerializableElement {
 
 	public void setDateValue(final Date aDateValue) {
 		dateValue = aDateValue;
+	}
+
+	public List<String> getListOfValues() {
+		return listOfValues;
+	}
+
+	public void setListOfValues(final List<String> aListOfValues) {
+		listOfValues = aListOfValues;
+	}
+
+	public List<String> getListOfValuesId() {
+		return listOfValuesId;
+	}
+
+	public void setListOfValuesId(final List<String> aListOfValuesId) {
+		listOfValuesId = aListOfValuesId;
 	}
 
 }
