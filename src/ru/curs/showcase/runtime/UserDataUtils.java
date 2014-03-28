@@ -351,14 +351,26 @@ public final class UserDataUtils {
 		if (generalOauth2Properties == null) {
 			generalOauth2Properties = new Properties();
 			Properties generalProps = getGeneralProperties();
-			generalOauth2Properties.put(OAUTH_AUTHORIZE_URL,
-					generalProps.getProperty(OAUTH_PREFIX + OAUTH_AUTHORIZE_URL));
-			generalOauth2Properties.put(OAUTH_TOLEN_URL,
-					generalProps.getProperty(OAUTH_PREFIX + OAUTH_TOLEN_URL));
-			generalOauth2Properties.put(OAUTH_CLIENT_ID,
-					generalProps.getProperty(OAUTH_PREFIX + OAUTH_CLIENT_ID));
-			generalOauth2Properties.put(OAUTH_CLIENT_SECRET,
-					generalProps.getProperty(OAUTH_PREFIX + OAUTH_CLIENT_SECRET));
+
+			String tempParam = generalProps.getProperty(OAUTH_PREFIX + OAUTH_AUTHORIZE_URL);
+			if (tempParam != null) {
+				generalOauth2Properties.put(OAUTH_AUTHORIZE_URL, tempParam);
+			}
+
+			tempParam = generalProps.getProperty(OAUTH_PREFIX + OAUTH_TOLEN_URL);
+			if (tempParam != null) {
+				generalOauth2Properties.put(OAUTH_TOLEN_URL, tempParam);
+			}
+
+			tempParam = generalProps.getProperty(OAUTH_PREFIX + OAUTH_CLIENT_ID);
+			if (tempParam != null) {
+				generalOauth2Properties.put(OAUTH_CLIENT_ID, tempParam);
+			}
+
+			tempParam = generalProps.getProperty(OAUTH_PREFIX + OAUTH_CLIENT_SECRET);
+			if (tempParam != null) {
+				generalOauth2Properties.put(OAUTH_CLIENT_SECRET, tempParam);
+			}
 		}
 		return generalOauth2Properties.isEmpty() ? null : generalOauth2Properties;
 	}
