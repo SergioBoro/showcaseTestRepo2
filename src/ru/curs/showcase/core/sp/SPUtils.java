@@ -52,7 +52,13 @@ public final class SPUtils {
 			sb.append("<" + GeneralXMLHelper.RECORD_TAG + ">");
 			for (int i = 1; i <= md.getColumnCount(); i++) {
 				if (GeneralXMLHelper.PROPERTIES_SQL_TAG.equalsIgnoreCase(md.getColumnLabel(i))) {
-					sb.append(rowset.getString(md.getColumnLabel(i)));
+
+					String value = rowset.getString(md.getColumnLabel(i));
+					if ((value == null) || value.isEmpty()) {
+						value = "<properties></properties>";
+					}
+					sb.append(value);
+
 				} else if (GeneralXMLHelper.ID_SQL_TAG.equalsIgnoreCase(md.getColumnLabel(i))) {
 					sb.append("<_x007e__x007e_" + GeneralXMLHelper.ID_TAG + ">"
 							+ rowset.getString(md.getColumnLabel(i)) + "</_x007e__x007e_"
