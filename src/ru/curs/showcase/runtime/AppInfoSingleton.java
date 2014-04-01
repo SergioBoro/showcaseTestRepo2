@@ -66,6 +66,24 @@ public final class AppInfoSingleton {
 
 	private String userDataLogConfFile = "logback.xml";
 
+	/**
+	 * Переменная, которая содержит в себе значение: false - если в процессе
+	 * запуска прилдожений не произошла ошибка с инициализацией celesta и
+	 * calesta не инициализировалась. В противном случае переменная равна true.
+	 */
+	private Boolean isCelestaInitialized = false;
+
+	/**
+	 * Переменная, которая содержит в себе exception, который произошел при
+	 * инициализации celesta в процессе запуска прилдожения Showcase. Если в
+	 * процессе запуска произошла ошибка инициализации celesta ( переменная
+	 * isCelestaInitialized = false), то необходимо при запуске на сервере
+	 * Showcase jython скриптов celesta (когда пользоватлеь запрашивает инфу от
+	 * челесты) на клиента Showcase возвращать ошибку, что челеста не была
+	 * инициализирована и причину этого, хранящуюся в этом exception.
+	 */
+	private Exception celestainitializationException = null;
+
 	private final CacheManager cacheManager = new CacheManager();
 
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
@@ -389,5 +407,21 @@ public final class AppInfoSingleton {
 
 	public void initWebConsole() {
 		lastLogEvents = new LastLogEvents();
+	}
+
+	public Boolean getIsCelestaInitialized() {
+		return isCelestaInitialized;
+	}
+
+	public void setIsCelestaInitialized(final Boolean aisCelestaInitialized) {
+		this.isCelestaInitialized = aisCelestaInitialized;
+	}
+
+	public Exception getCelestaInitializationException() {
+		return celestainitializationException;
+	}
+
+	public void setCelestaInitializationException(final Exception acelestainitializationException) {
+		this.celestainitializationException = acelestainitializationException;
 	}
 }

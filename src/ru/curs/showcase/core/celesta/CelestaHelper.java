@@ -5,7 +5,7 @@ import org.python.core.PyObject;
 import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.*;
-import ru.curs.showcase.runtime.SessionUtils;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -52,10 +52,20 @@ public class CelestaHelper<T> {
 		String userSID = SessionUtils.getCurrentUserSID();
 		String procName = CelestaUtils.getRealProcName(sProcName);
 		PyObject result;
+
+		if (!AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
+			// AppInfoSingleton.getAppInfo().getCelestaInitializationException().logAll(e);
+			throw new CelestaWorkerException("Ошибка при запуске jython скрипта celesta '"
+					+ procName + "'. Celesta при старте сервера не была инициализированна.",
+					AppInfoSingleton.getAppInfo().getCelestaInitializationException());
+		}
+
 		try {
+
 			result = Celesta.getInstance().runPython(userSID, procName, params);
 		} catch (CelestaException ex) {
-			throw new CelestaWorkerException("Error run celesta jython script", ex);
+			throw new CelestaWorkerException("Ошибка при выполнении jython скрипта celesta '"
+					+ procName + "'", ex);
 		}
 		if (result == null) {
 			return null;

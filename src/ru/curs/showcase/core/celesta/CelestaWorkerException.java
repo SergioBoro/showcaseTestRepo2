@@ -10,7 +10,8 @@ import ru.curs.showcase.util.exception.BaseException;
  * 
  */
 public class CelestaWorkerException extends BaseException {
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = -6575081557900188883L;
 
 	public CelestaWorkerException(final String mes, final Exception e) {
 		super(ExceptionType.SOLUTION, mes, e);

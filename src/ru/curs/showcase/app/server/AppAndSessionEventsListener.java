@@ -39,11 +39,15 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 			Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
 			if (celestaProps != null) {
 				Celesta.initialize(celestaProps);
+				AppInfoSingleton.getAppInfo().setIsCelestaInitialized(true);
 			} else {
 				LOGGER.warn("Celesta properties (in app.properties) is not set");
+				AppInfoSingleton.getAppInfo().setCelestaInitializationException(
+						new Exception("Celesta properties (in app.properties) is not set"));
 			}
 		} catch (Exception ex) {
 			LOGGER.error("Ошибка инициализации celesta", ex);
+			AppInfoSingleton.getAppInfo().setCelestaInitializationException(ex);
 		}
 	}
 
