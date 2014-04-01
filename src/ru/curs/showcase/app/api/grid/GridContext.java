@@ -317,7 +317,6 @@ public class GridContext extends CompositeContext {
 		res.gridListOfValuesInfo.setMaxId(gridListOfValuesInfo.getMaxId());
 		res.gridListOfValuesInfo.getFilters().clear();
 		res.gridListOfValuesInfo.getFilters().addAll(gridListOfValuesInfo.getFilters());
-		res.gridListOfValuesInfo.setCurrentColumn(gridListOfValuesInfo.getCurrentColumn());
 
 		return res;
 	}

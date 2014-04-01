@@ -642,13 +642,13 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 		}
 
 		Filter filter = selectionModel.getSelectedObject();
-		jsLiveGridPluginPanel.getLocalContext().getGridListOfValuesInfo()
-				.setCurrentColumn(filter.getColumn());
 		jsLiveGridPluginPanel.getLocalContext().getGridListOfValuesInfo().setMaxId(maxId);
 		jsLiveGridPluginPanel.getLocalContext().getGridListOfValuesInfo().getFilters().clear();
 		for (final Filter flt : listDataProvider.getList()) {
-			jsLiveGridPluginPanel.getLocalContext().getGridListOfValuesInfo().getFilters()
-					.add(new Filter(flt));
+			if (flt != filter) {
+				jsLiveGridPluginPanel.getLocalContext().getGridListOfValuesInfo().getFilters()
+						.add(new Filter(flt));
+			}
 		}
 
 		SelectorAdditionalData addData = new SelectorAdditionalData();
