@@ -26,8 +26,10 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		DataSet ds = new DataSet();
 		try {
 
-			GridTransformer.fillFilterContextByListOfValuesInfo((GridContext) req.getAddData()
-					.getContext());
+			if (req.getAddData().getContext() instanceof GridContext) {
+				GridTransformer.fillFilterContextByListOfValuesInfo((GridContext) req.getAddData()
+						.getContext());
+			}
 
 			SelectorGetCommand command = new SelectorGetCommand(req);
 			ResultSelectorData result = command.execute();
@@ -48,5 +50,4 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 
 		return ds;
 	}
-
 }
