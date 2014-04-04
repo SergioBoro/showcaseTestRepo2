@@ -13463,7 +13463,8 @@ function getXMLByXPathArray(xpathArray, createSchema)
 	}
 
 	var xml = createSchema?'<schema xmlns="">':'';
-	for (var i in xpathArray) {
+//	for (var i in xpathArray) {
+	for (var i = 0; i < xpathArray.length; i++) {		
 	    if (isXPath(xpathArray[i])) {
            var nodes = (new XsltForms_binding(null, getXPath(xpathArray[i]))).evaluate();
            
@@ -13471,9 +13472,11 @@ function getXMLByXPathArray(xpathArray, createSchema)
       		    xml = xml+'<filter xmlns="">';
       		    if (nodes[0].nodeType == XsltForms_nodeType.ATTRIBUTE) {
       	      	    for (var j in nodes) {
-      	      		   xml = xml+'<'+nodes[j].nodeName+' xmlns="">';
-    	      		   xml = xml+Writer.encoding(nodes[j].nodeValue);
-   	     		       xml = xml+'</'+nodes[j].nodeName+'>';
+      	      	    	if(nodes[j].nodeValue){
+           	      		   xml = xml+'<'+nodes[j].nodeName+' xmlns="">';
+        	      		   xml = xml+Writer.encoding(nodes[j].nodeValue);
+       	     		       xml = xml+'</'+nodes[j].nodeName+'>';
+      	      	    	}
       	      	    }
       		    }else {
       	      	    for (var j in nodes) {
