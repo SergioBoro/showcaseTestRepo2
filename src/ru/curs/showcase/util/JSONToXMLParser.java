@@ -46,6 +46,7 @@ public class JSONToXMLParser {
 
 		String outString = strWriter.toString();
 		// outString = outString.replaceFirst("<[?]xml(.)*[?]>", "");
+		outString = outString.replace(" standalone=\"no\"", "");
 		outString = outString.trim();
 		return outString;
 	}

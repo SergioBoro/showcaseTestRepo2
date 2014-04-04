@@ -74,7 +74,7 @@ public class XMLJSONConverterTest {
 		assertNotNull(result);
 		assertEquals(
 				result.toString(),
-				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n"
+				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
 						+ "<elem1 attr0=\"\" attr1=\"True\" attr2=\"Text\" attr3=\"Русский текст\" attr4=\"1\" attr5=\"3.14\">"
 						+ "\r\nТоже текст\r\n"
 						+ "<elem2 sorted=\"True\">5</elem2>\r\n"
