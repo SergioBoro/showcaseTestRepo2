@@ -2,11 +2,12 @@ package ru.curs.showcase.util;
 
 import java.io.*;
 
-import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.*;
+import javax.xml.transform.TransformerException;
 
+import org.json.JSONException;
 import org.xml.sax.SAXException;
 
-import ru.curs.showcase.util.exception.NotImplementedYetException;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 import com.google.gson.JsonElement;
@@ -15,6 +16,7 @@ import com.google.gson.JsonElement;
  * Класс преобразования xml в JSON и обратно - JSON в xml.
  * 
  * @author bogatov
+ * 
  * 
  */
 public final class XMLJSONConverter {
@@ -58,8 +60,15 @@ public final class XMLJSONConverter {
 	 * @param json
 	 *            - JSON строка
 	 * @return xml строка.
+	 * @throws JSONException
+	 * @throws ParserConfigurationException
+	 * @throws TransformerException
 	 */
-	public static String jsonToXml(final String json) {
-		throw new NotImplementedYetException();
+	public static String jsonToXml(final String json) throws JSONException, TransformerException,
+			ParserConfigurationException {
+		// throw new NotImplementedYetException();
+		JSONToXMLParser jtxParser = new JSONToXMLParser(json);
+		String result = jtxParser.outPrint();
+		return result;
 	}
 }
