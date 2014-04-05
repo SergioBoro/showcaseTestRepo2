@@ -23,20 +23,23 @@ public class XMLJSONConverterTest {
 					+ "<elem3 sorted=\"True\">Снова текст</elem3>"
 					+ "<elem4 sorted=\"True\" attr6=\"False\"/>"
 					+ "<element5 attr7=\"1\"/><element5 attr8=\"2\"/>"
-					+ "<element6 attr9=\"Ещё текст\"/>" + "<element7/>" + "</elem1>";
+					+ "<element6 attr9=\"Ещё текст\"/>"
+					+ "<element7/>"
+					+ "<expr>[question].[current].[105]</expr>" + "</elem1>";
+		// String xml =
+		// "<not>" + "<expr>[question].[current].[105]</expr>" +
+		// "<expr>365.0</expr>" + "</not>";
 		String result = XMLJSONConverter.xmlToJson(xml);
 		assertNotNull(result);
 		assertEquals(
 				result.toString(),
-				"{\"elem1\":{\"element6\":{\"@attr9\":\"Ещё текст\"},"
-						+ "\"element7\":\"None\","
-						+ "\"@attr0\":\"None\","
+				"{\"elem1\":{"
+						+ "\"element6\":{\"@attr9\":\"Ещё текст\"},"
+						+ "\"element7\":\"None\",\"@attr0\":\"None\","
 						+ "\"element5\":[{\"@attr7\":\"1\"},{\"@attr8\":\"2\"}],"
-						+ "\"@attr2\":\"Text\","
-						+ "\"@attr1\":\"True\","
-						+ "\"@attr4\":\"1\","
-						+ "\"@attr3\":\"Русский текст\","
-						+ "\"@attr5\":\"3.14\","
+						+ "\"@attr2\":\"Text\",\"@attr1\":\"True\","
+						+ "\"expr\":\"[question].[current].[105]\","
+						+ "\"@attr4\":\"1\",\"@attr3\":\"Русский текст\",\"@attr5\":\"3.14\","
 						+ "\"#sorted\":[{\"elem2\":\"5\"},{\"elem3\":\"Снова текст\"},{\"elem4\":{\"@attr6\":\"False\"}}]}}");
 		// System.out.println(result.toString());
 	}
