@@ -51,6 +51,12 @@ public class PreProcessFilter implements Filter {
 			}
 			if (isDynamicDataServlet(httpRequest)) {
 				skipServletCaching(response);
+			} else {
+				HttpServletResponse resp = (HttpServletResponse) response;
+				// resp.setHeader("Pragma", "no-cache");
+				resp.setHeader("Cache-Control", "max-age = 31536000");
+				// resp.setDateHeader("Expires", 0);
+				// resp.setDateHeader("Expires", 0);
 			}
 			httpRequest.setCharacterEncoding(TextUtils.DEF_ENCODING);
 
@@ -114,6 +120,15 @@ public class PreProcessFilter implements Filter {
 		// || servletPath.startsWith("/" + AUTH_DATA_SERVLET_PREFIX)
 		// || servletPath.startsWith("/" + INDEX_PAGE)
 		// || servletPath.startsWith("/" + LOGIN_PAGE);
+
+		String tempUrl = httpreq.getRequestURL().toString();
+		// System.out.println(tempUrl);
+
+		if (tempUrl.endsWith("js") || tempUrl.endsWith("css") || tempUrl.endsWith("png")
+				|| tempUrl.endsWith("gif") || tempUrl.endsWith("jpg")) {
+			return false;
+		}
+
 		return true;
 	}
 
