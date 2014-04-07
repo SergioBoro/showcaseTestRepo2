@@ -34,11 +34,18 @@ public class GetImageServlet extends HttpServlet {
 		String paramsForProc = request.getParameter("params");
 
 		response.reset();
-		response.setHeader("Pragma", "no-cache");
-		response.setHeader("Cache-Control", "must-revalidate");
-		response.setHeader("Cache-Control", "no-cache");
-		response.setHeader("Cache-Control", "no-store");
-		response.setDateHeader("Expires", 0);
+
+		// response.setHeader("Pragma", "no-cache");
+		// response.setHeader("Cache-Control",
+		// "must-revalidate,no-store,no-cache");
+
+		long now = System.currentTimeMillis();
+
+		// столько секунд в году
+		final long chachDurationInMs = 60 * 60 * 24 * 365 * 1000;
+
+		// кэшируем на год
+		response.setDateHeader("Expires", now + chachDurationInMs);
 
 		response.setContentType("image/jpeg");
 		response.setCharacterEncoding("UTF-8");
