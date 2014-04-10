@@ -1936,7 +1936,14 @@ XsltForms_browser.setBoolMeta = function(node, meta, value) {
 				if (node.ownerElement) {
 					node.ownerElement.setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta, value);
 				} else {
-					node.selectSingleNode("..").setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta, value);
+// [KURS					
+//					node.selectSingleNode("..").setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta, value);
+					if(XsltForms_browser.isChrome){
+						node["xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta] = value;						
+					}else{
+						node.selectSingleNode("..").setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta, value);						
+					}
+// ]KURS						
 				}
 			}
 		} else {
@@ -1961,7 +1968,14 @@ XsltForms_browser.setTrueBoolMeta = function(node, meta) {
 			if (node.ownerElement) {
 				node.ownerElement.setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta, true);
 			} else {
-				node.selectSingleNode("..").setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta, true);
+// [KURS				
+//				node.selectSingleNode("..").setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta, true);
+				if(XsltForms_browser.isChrome){
+					node["xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta] = true;					
+				}else{
+					node.selectSingleNode("..").setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta, true);						
+				}
+//]KURS						
 			}
 		}
 	}
