@@ -830,6 +830,9 @@ var XsltForms_browser = {
 	isIE6 : navigator.userAgent.match(/\bMSIE 6\.0/),
     isMozilla : navigator.userAgent.match(/\bGecko\b/),
 	isSafari : navigator.userAgent.match(/\bAppleWebKit/) && !window.FileReader,
+// [KURS
+	isChrome : navigator.userAgent.match(/\bAppleWebKit/),
+// ]KURS
 	isFF2 : navigator.userAgent.match(/\bFirefox[\/\s]2\.\b/),
 	isXhtml : false, // document.documentElement.namespaceURI === "http://www.w3.org/1999/xhtml",
 	setClass : function(element, className, value) {
@@ -1831,12 +1834,26 @@ XsltForms_browser.crc32 = function (s) {
 };
 
 XsltForms_browser.getMeta = function(node, meta) {
-	return node.nodeType ? node.nodeType === XsltForms_nodeType.ELEMENT ? node.getAttribute("xsltforms_"+meta) : node.ownerElement ? node.ownerElement.getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) : node.selectSingleNode("..").getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) : null;
-};
+	// [KURS	
+//		return node.nodeType ? node.nodeType === XsltForms_nodeType.ELEMENT ? node.getAttribute("xsltforms_"+meta) : node.ownerElement ? node.ownerElement.getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) : node.selectSingleNode("..").getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) : null;	
+		if(XsltForms_browser.isChrome){
+			return node.nodeType ? node.nodeType === XsltForms_nodeType.ELEMENT ? node.getAttribute("xsltforms_"+meta) : node.ownerElement ? node.ownerElement.getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) : node["xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta] : null;
+		}else{
+			return node.nodeType ? node.nodeType === XsltForms_nodeType.ELEMENT ? node.getAttribute("xsltforms_"+meta) : node.ownerElement ? node.ownerElement.getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) : node.selectSingleNode("..").getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) : null;	
+		}
+	// ]KURS	
+	};
 
-XsltForms_browser.getBoolMeta = function(node, meta) {
-	return Boolean(node.nodeType === XsltForms_nodeType.ELEMENT ? node.getAttribute("xsltforms_"+meta) : node.nodeType === XsltForms_nodeType.ATTRIBUTE ? node.ownerElement ? node.ownerElement.getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) :  node.selectSingleNode("..").getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) : false);
-};
+	XsltForms_browser.getBoolMeta = function(node, meta) {
+	// [KURS	
+//		return Boolean(node.nodeType === XsltForms_nodeType.ELEMENT ? node.getAttribute("xsltforms_"+meta) : node.nodeType === XsltForms_nodeType.ATTRIBUTE ? node.ownerElement ? node.ownerElement.getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) :  node.selectSingleNode("..").getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) : false);	
+		if(XsltForms_browser.isChrome){
+			return Boolean(node.nodeType === XsltForms_nodeType.ELEMENT ? node.getAttribute("xsltforms_"+meta) : node.nodeType === XsltForms_nodeType.ATTRIBUTE ? node.ownerElement ? node.ownerElement.getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) :  node["xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta] : false);
+		}else{
+			return Boolean(node.nodeType === XsltForms_nodeType.ELEMENT ? node.getAttribute("xsltforms_"+meta) : node.nodeType === XsltForms_nodeType.ATTRIBUTE ? node.ownerElement ? node.ownerElement.getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) :  node.selectSingleNode("..").getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta) : false);	
+		}
+	// ]KURS	
+	};
 
 XsltForms_browser.getType = function(node) {
 	if (node.nodeType === XsltForms_nodeType.ELEMENT) {
@@ -1895,7 +1912,16 @@ XsltForms_browser.setMeta = function(node, meta, value) {
 			if (node.ownerElement) {
 				node.ownerElement.setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta, value);
 			} else {
-				node.selectSingleNode("..").setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta, value);
+				
+// [KURS	
+  			//	node.selectSingleNode("..").setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta, value);	
+				if(XsltForms_browser.isChrome){
+					node["xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta] = value;
+				}else{
+					node.selectSingleNode("..").setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta, value);	
+				}
+// ]KURS					
+				
 			}
 		}
 	}
@@ -3357,7 +3383,16 @@ XsltForms_model.prototype.addChange = function(node) {
 	}
 	if (node.nodeType === XsltForms_nodeType.ATTRIBUTE && !XsltForms_browser.inArray(node, list)) {
 		list.push(node);
-		node = node.ownerElement ? node.ownerElement : node.selectSingleNode("..");
+		
+// 		[KURS	
+	//	node = node.ownerElement ? node.ownerElement : node.selectSingleNode("..");	
+		if(XsltForms_browser.isChrome){
+			node = node.ownerElement ? node.ownerElement : node;				
+		}else{
+			node = node.ownerElement ? node.ownerElement : node.selectSingleNode("..");	
+		}
+// 		]KURS		
+		
 	}
 	while (node.nodeType === XsltForms_nodeType.ELEMENT && !XsltForms_browser.inArray(node, list)) {
 		list.push(node);
