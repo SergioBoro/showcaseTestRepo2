@@ -2047,7 +2047,14 @@ XsltForms_browser.setType = function(node, value) {
 			if (node.ownerElement) {
 				node.ownerElement.setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_type", value);
 			} else {
-				node.selectSingleNode("..").setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_type", value);
+// [KURS				
+//				node.selectSingleNode("..").setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_type", value);
+				if(XsltForms_browser.isChrome){
+					node["xsltforms_"+(node.localName ? node.localName : node.baseName)+"_type"] = value;					
+				}else{
+					node.selectSingleNode("..").setAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_type", value);						
+				}
+//]KURS						
 			}
 		}
 	}
@@ -11001,7 +11008,14 @@ XsltForms_stepExpr.prototype.evaluate = function(ctx) {
 				XsltForms_stepExpr.push(ctx, list, input.parentNode, this.nodetest);
 			} else {
 				if (input.nodeType === XsltForms_nodeType.ATTRIBUTE) {
-					XsltForms_stepExpr.push(ctx, list, input.ownerElement ? input.ownerElement : input.selectSingleNode(".."), this.nodetest);
+// [KURS					
+//					XsltForms_stepExpr.push(ctx, list, input.ownerElement ? input.ownerElement : input.selectSingleNode(".."), this.nodetest);
+					if(XsltForms_browser.isChrome){
+						XsltForms_stepExpr.push(ctx, list, input.ownerElement ? input.ownerElement : input, this.nodetest);					
+					}else{
+						XsltForms_stepExpr.push(ctx, list, input.ownerElement ? input.ownerElement : input.selectSingleNode(".."), this.nodetest);						
+					}
+//]KURS
 				}
 			}
 			break;
