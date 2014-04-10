@@ -1953,7 +1953,14 @@ XsltForms_browser.setBoolMeta = function(node, meta, value) {
 				if (node.ownerElement) {
 					node.ownerElement.removeAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta);
 				} else {
-					node.selectSingleNode("..").removeAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta);
+// [KURS					
+//					node.selectSingleNode("..").removeAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta);
+					if(XsltForms_browser.isChrome){
+						node["xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta] = null;						
+					}else{
+						node.selectSingleNode("..").removeAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta);
+					}
+// ]KURS						
 				}
 			}
 		}
