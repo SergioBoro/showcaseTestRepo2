@@ -1878,7 +1878,14 @@ XsltForms_browser.getType = function(node) {
 			return node.ownerElement.getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_type");
 		} else {
 			try {
-				return node.selectSingleNode("..").getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_type");
+// [KURS				
+//				return node.selectSingleNode("..").getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_type");
+				if(XsltForms_browser.isChrome){
+					return node["xsltforms_"+(node.localName ? node.localName : node.baseName)+"_type"];
+				}else{
+					return node.selectSingleNode("..").getAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_type");	
+				}
+// ]KURS				
 			} catch (e) {
 				return null;
 			}
@@ -1996,7 +2003,14 @@ XsltForms_browser.setFalseBoolMeta = function(node, meta) {
 			if (node.ownerElement) {
 				node.ownerElement.removeAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta);
 			} else {
-				node.selectSingleNode("..").removeAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta);
+// [KURS				
+//				node.selectSingleNode("..").removeAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta);
+				if(XsltForms_browser.isChrome){
+					node["xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta] = null;
+				}else{
+					node.selectSingleNode("..").removeAttribute("xsltforms_"+(node.localName ? node.localName : node.baseName)+"_"+meta);	
+				}
+// ]KURS 				
 			}
 		}
 	}
@@ -5389,7 +5403,17 @@ XsltForms_insert.prototype.run = function(element, ctx) {
 		if (nodes.length === 0) {
 			parent = ctx;
 		} else {
-			parent = nodes[0].nodeType === XsltForms_nodeType.DOCUMENT? nodes[0] : nodes[0].nodeType === XsltForms_nodeType.ATTRIBUTE? nodes[0].ownerDocument ? nodes[0].ownerDocument : nodes[0].selectSingleNode("..") : nodes[0].parentNode;
+// [KURS			
+//			parent = nodes[0].nodeType === XsltForms_nodeType.DOCUMENT? nodes[0] : nodes[0].nodeType === XsltForms_nodeType.ATTRIBUTE? nodes[0].ownerDocument ? nodes[0].ownerDocument : nodes[0].selectSingleNode("..") : nodes[0].parentNode;
+			if(XsltForms_browser.isChrome){
+				parent = nodes[0].nodeType === XsltForms_nodeType.DOCUMENT? nodes[0] : nodes[0].nodeType === XsltForms_nodeType.ATTRIBUTE? nodes[0].ownerDocument ? nodes[0].ownerDocument : nodes[0] : nodes[0].parentNode;
+			}else{
+				parent = nodes[0].nodeType === XsltForms_nodeType.DOCUMENT? nodes[0] : nodes[0].nodeType === XsltForms_nodeType.ATTRIBUTE? nodes[0].ownerDocument ? nodes[0].ownerDocument : nodes[0].selectSingleNode("..") : nodes[0].parentNode;	
+			}
+// ]KURS
+			
+			
+			
 			if (parent.nodeType !== XsltForms_nodeType.DOCUMENT && node.nodeType !== XsltForms_nodeType.ATTRIBUTE) {
 				res = this.at ? Math.round(XsltForms_globals.numberValue(this.at.evaluate(new XsltForms_exprContext(ctx, 1, nodes)))) + i - 1: nodes.length - 1;
 				index = isNaN(res)? nodes.length : res + pos;
@@ -10956,7 +10980,16 @@ XsltForms_stepExpr.prototype.evaluate = function(ctx) {
 		case XsltForms_xpathAxis.ANCESTOR_OR_SELF :
 			XsltForms_stepExpr.push(ctx, list, input, this.nodetest);
 			if (input.nodeType === XsltForms_nodeType.ATTRIBUTE) {
-				input = input.ownerElement ? input.ownerElement : input.selectSingleNode("..");
+				
+// [KURS	
+//				input = input.ownerElement ? input.ownerElement : input.selectSingleNode("..");	
+				if(XsltForms_browser.isChrome){
+					input = input.ownerElement ? input.ownerElement : input;
+				}else{
+					input = input.ownerElement ? input.ownerElement : input.selectSingleNode("..");	
+				}
+// ]KURS				
+				
 				XsltForms_stepExpr.push(ctx, list, input, this.nodetest);
 			}
 			for (var pn = input.parentNode; pn.parentNode; pn = pn.parentNode) {
@@ -10965,7 +10998,16 @@ XsltForms_stepExpr.prototype.evaluate = function(ctx) {
 			break;
 		case XsltForms_xpathAxis.ANCESTOR :
 			if (input.nodeType === XsltForms_nodeType.ATTRIBUTE) {
-				input = input.ownerElement ? input.ownerElement : input.selectSingleNode("..");
+				
+// [KURS	
+//				input = input.ownerElement ? input.ownerElement : input.selectSingleNode("..");	
+				if(XsltForms_browser.isChrome){
+					input = input.ownerElement ? input.ownerElement : input;
+				}else{
+					input = input.ownerElement ? input.ownerElement : input.selectSingleNode("..");	
+				}
+// ]KURS				
+				
 				XsltForms_stepExpr.push(ctx, list, input, this.nodetest);
 			}
 			for (var pn2 = input.parentNode; pn2.parentNode; pn2 = pn2.parentNode) {
@@ -10986,7 +11028,16 @@ XsltForms_stepExpr.prototype.evaluate = function(ctx) {
 			XsltForms_stepExpr.pushDescendants(ctx, list, input, this.nodetest);
 			break;
 		case XsltForms_xpathAxis.FOLLOWING :
-			var n = input.nodeType === XsltForms_nodeType.ATTRIBUTE ? input.ownerElement ? input.ownerElement : input.selectSingleNode("..") : input;
+// [KURS			
+//			var n = input.nodeType === XsltForms_nodeType.ATTRIBUTE ? input.ownerElement ? input.ownerElement : input.selectSingleNode("..") : input;
+			var n;
+			if(XsltForms_browser.isChrome){
+				n = input.nodeType === XsltForms_nodeType.ATTRIBUTE ? input.ownerElement ? input.ownerElement : input : input;
+			}else{
+				n = input.nodeType === XsltForms_nodeType.ATTRIBUTE ? input.ownerElement ? input.ownerElement : input.selectSingleNode("..") : input;	
+			}
+//]KURS				
+			
 			while (n.nodeType !== XsltForms_nodeType.DOCUMENT) {
 				for (var nn = n.nextSibling; nn; nn = nn.nextSibling) {
 					XsltForms_stepExpr.push(ctx, list, nn, this.nodetest);
@@ -11020,7 +11071,16 @@ XsltForms_stepExpr.prototype.evaluate = function(ctx) {
 			}
 			break;
 		case XsltForms_xpathAxis.PRECEDING :
-			var p = input.nodeType === XsltForms_nodeType.ATTRIBUTE ? input.ownerElement ? input.ownerElement : input.selectSingleNode("..") : input;
+// [KURS			
+//			var p = input.nodeType === XsltForms_nodeType.ATTRIBUTE ? input.ownerElement ? input.ownerElement : input.selectSingleNode("..") : input;
+			var p;
+			if(XsltForms_browser.isChrome){
+				p = input.nodeType === XsltForms_nodeType.ATTRIBUTE ? input.ownerElement ? input.ownerElement : input : input;
+			}else{
+				p = input.nodeType === XsltForms_nodeType.ATTRIBUTE ? input.ownerElement ? input.ownerElement : input.selectSingleNode("..") : input;	
+			}
+//]KURS				
+			
 			while (p.nodeType !== XsltForms_nodeType.DOCUMENT) {
 				for (var ps = p.previousSibling; ps; ps = ps.previousSibling) {
 					XsltForms_stepExpr.pushDescendantsRev(ctx, list, ps, this.nodetest);
