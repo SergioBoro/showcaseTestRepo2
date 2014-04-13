@@ -54,7 +54,7 @@ function getErrorByIFrame(iframeName)
 		
 		if((body != null) && (typeof body != "undefined")) {
 			var message = body.innerHTML;
-			if(message.trim() != "" && message.trim() != "<pre></pre>") {			
+			if((message.trim() != "") && (message.trim() != "<pre></pre>") && (message.trim() != "<pre style=\"word-wrap: break-word; white-space: pre-wrap;\"></pre>")) {
 				err = message;
 			}
 		}
