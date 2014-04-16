@@ -39,6 +39,10 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 	private Boolean loadedInDOM = false;
 
+	public void setLoadedInDOM(final Boolean aLoadedInDOM) {
+		loadedInDOM = aLoadedInDOM;
+	}
+
 	/**
 	 * Окно для загрузки файлов на сервер.
 	 */

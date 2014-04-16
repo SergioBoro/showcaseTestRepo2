@@ -247,6 +247,8 @@ public final class XFormPanelCallbacksEvents {
 			Action ac = getActionByLinkId(linkId, currentXFormPanel);
 
 			if (ac != null) {
+				currentXFormPanel.setLoadedInDOM(true);
+
 				ac.filterBy(data);
 				runAction(ac, currentXFormPanel.getElement());
 			}
