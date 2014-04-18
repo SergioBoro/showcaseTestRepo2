@@ -118,6 +118,9 @@ function createTreeDGrid(elementId, parentId, metadata) {
 								node.innerHTML = object.TreeGridNodeLeafIcon;									
 							}
 						}
+						if(object.col1){
+							node.title = object.col1;							
+						}
 						return node;
 				};
 			}else{
@@ -131,18 +134,20 @@ function createTreeDGrid(elementId, parentId, metadata) {
 					}else{
 						div.innerHTML = value;
 					}
+					div.title = value;
 					return div;
 		        };
 			}
 			
-	        if(metadata["common"]["haColumnHeader"]){
-		        column["renderHeaderCell"] = function actionRenderCell(node) {
-					var div = document.createElement("div");
+	        column["renderHeaderCell"] = function actionRenderCell(node) {
+				var div = document.createElement("div");
+		        if(metadata["common"]["haColumnHeader"]){
 					div.style["text-align"] = metadata["common"]["haColumnHeader"];
-					div.innerHTML = this.label;
-					return div;
-		        };
-	        }
+		        }
+				div.innerHTML = this.label;		        
+		    	div.title = this.label;
+				return div;
+	        };
 			
 			columns.push(column);
 		}
