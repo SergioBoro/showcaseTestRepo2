@@ -177,6 +177,12 @@ function tree(column){
 			var row = target.element ? target : grid.row(target),
 				hasTransitionend = has("transitionend");
 			
+// [KURS
+			if(row.data.HasChildren && (row.data.HasChildren != 1)){
+				return;	
+			}
+// KURS]
+			
 			target = row.element;
 			target = target.className.indexOf("dgrid-expando-icon") > -1 ? target :
 				querySelector(".dgrid-expando-icon", target)[0];
@@ -192,7 +198,7 @@ function tree(column){
 				
 // [KURS				
 //				target.innerHTML = grid._columns[0]["renderExpando"](0, true, expanded, row.data).innerHTML; 
-				target.innerHTML = grid.column(target)["renderExpando"](0, true, expanded, row.data).innerHTML;				
+				target.innerHTML = grid.column(target)["renderExpando"](0, true, expanded, row.data).innerHTML;
 // KURS]				
 				
 				var preloadNode = target.preloadNode,
