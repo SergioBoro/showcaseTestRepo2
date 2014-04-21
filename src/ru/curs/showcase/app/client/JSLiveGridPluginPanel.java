@@ -647,12 +647,12 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		selectionTimer = new Timer() {
 			@Override
 			public void run() {
+				saveCurrentCheckBoxSelection();
 				processSelectionRecords();
 			}
 		};
 		selectionTimer.schedule(Constants.GRID_SELECTION_DELAY);
 
-		saveCurrentCheckBoxSelection();
 	}
 
 	private void processSelectionRecords() {

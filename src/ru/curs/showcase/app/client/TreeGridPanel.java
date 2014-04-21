@@ -679,12 +679,12 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		selectionTimer = new com.google.gwt.user.client.Timer() {
 			@Override
 			public void run() {
+				saveCurrentCheckBoxSelection();
 				processSelectionRecords();
 			}
 		};
 		selectionTimer.schedule(Constants.GRID_SELECTION_DELAY);
 
-		saveCurrentCheckBoxSelection();
 	}
 
 	private void processSelectionRecords() {
