@@ -960,6 +960,10 @@ public class GridFactory extends CompBasedElementFactory {
 	}
 
 	private String getStringValueOfDate(final java.util.Date date, final Column col) {
+
+		Boolean oldApplyLocalFormatting = applyLocalFormatting;
+		applyLocalFormatting = true;
+
 		DateFormat df = null;
 		String value = getGridProps().getStringValue(DEF_DATE_VALUES_FORMAT);
 		Integer style = DateFormat.DEFAULT;
@@ -987,6 +991,9 @@ public class GridFactory extends CompBasedElementFactory {
 		} else {
 			df = DateFormat.getDateTimeInstance(style, style);
 		}
+
+		applyLocalFormatting = oldApplyLocalFormatting;
+
 		return df.format(date);
 	}
 
