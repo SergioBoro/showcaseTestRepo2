@@ -2,6 +2,8 @@ package ru.curs.showcase.core.html.xform;
 
 import java.io.*;
 
+import org.xml.sax.SAXException;
+
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -21,14 +23,14 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * 
  */
 public class XFormCelestaGateway implements HTMLAdvGateway {
-	private static final String NO_UPLOAD_PROC_ERROR = "Не задана процедура загрузки файлов на сервер для linkId=";
-	private static final String NO_DOWNLOAD_PROC_ERROR = "Не задана процедура скачивания файлов с сервера для linkId=";
+	private static final String NO_UPLOAD_PROC_ERROR =
+		"Не задана процедура загрузки файлов на сервер для linkId=";
+	private static final String NO_DOWNLOAD_PROC_ERROR =
+		"Не задана процедура скачивания файлов с сервера для linkId=";
 
 	@Override
-	public String scriptTransform(final String procName,
-			final XFormContext context) {
-		CelestaHelper<String> helper = new CelestaHelper<String>(context,
-				String.class);
+	public String scriptTransform(final String procName, final XFormContext context) {
+		CelestaHelper<String> helper = new CelestaHelper<String>(context, String.class);
 		String data = context.getFormData();
 		String dataJson = XMLUtils.convertXmlToJson(data);
 		String result = helper.runPython(procName, dataJson);
@@ -38,23 +40,21 @@ public class XFormCelestaGateway implements HTMLAdvGateway {
 	@Override
 	public OutputStreamDataFile downloadFile(final XFormContext context,
 			final DataPanelElementInfo elementInfo, final ID aLinkId) {
-		CelestaHelper<JythonDownloadResult> helper = new CelestaHelper<JythonDownloadResult>(
-				context, JythonDownloadResult.class);
+		CelestaHelper<JythonDownloadResult> helper =
+			new CelestaHelper<JythonDownloadResult>(context, JythonDownloadResult.class);
 		DataPanelElementProc proc = elementInfo.getProcs().get(aLinkId);
 		if (proc == null) {
-			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR
-					+ aLinkId);
+			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR + aLinkId);
 		}
 		String data = context.getFormData();
 		String dataJson = XMLUtils.convertXmlToJson(data);
-		JythonDownloadResult jythonResult = helper.runPython(proc.getName(),
-				elementInfo.getId().getString(), dataJson);
+		JythonDownloadResult jythonResult =
+			helper.runPython(proc.getName(), elementInfo.getId().getString(), dataJson);
 
 		JythonErrorResult error = jythonResult.getError();
 		if (error != null && error.getErrorCode() != 0) {
 			UserMessageFactory factory = new UserMessageFactory();
-			throw new ValidateException(factory.build(error.getErrorCode(),
-					error.getMessage()));
+			throw new ValidateException(factory.build(error.getErrorCode(), error.getMessage()));
 		}
 
 		InputStream is = jythonResult.getInputStream();
@@ -74,19 +74,17 @@ public class XFormCelestaGateway implements HTMLAdvGateway {
 	}
 
 	@Override
-	public void uploadFile(final XFormContext context,
-			final DataPanelElementInfo elementInfo, final ID aLinkId,
-			final DataFile<InputStream> file) {
-		CelestaHelper<Void> helper = new CelestaHelper<Void>(context,
-				Void.class);
+	public void uploadFile(final XFormContext context, final DataPanelElementInfo elementInfo,
+			final ID aLinkId, final DataFile<InputStream> file) {
+		CelestaHelper<Void> helper = new CelestaHelper<Void>(context, Void.class);
 		DataPanelElementProc proc = elementInfo.getProcs().get(aLinkId);
 		if (proc == null) {
 			throw new IncorrectElementException(NO_UPLOAD_PROC_ERROR + aLinkId);
 		}
 		String data = context.getFormData();
 		String dataJson = XMLUtils.convertXmlToJson(data);
-		helper.runPython(proc.getName(), elementInfo.getId().getString(),
-				dataJson, file.getName(), file.getData());
+		helper.runPython(proc.getName(), elementInfo.getId().getString(), dataJson,
+				file.getName(), file.getData());
 	}
 
 	@Override
@@ -97,14 +95,19 @@ public class XFormCelestaGateway implements HTMLAdvGateway {
 	}
 
 	@Override
-	public void saveData(final CompositeContext context,
-			final DataPanelElementInfo elementInfo, final String data) {
+	public void saveData(final CompositeContext context, final DataPanelElementInfo elementInfo,
+			final String data) {
 		final String elementId = elementInfo.getId().getString();
-		CelestaHelper<Void> helper = new CelestaHelper<Void>(context,
-				Void.class);
-		String dataJson = XMLUtils.convertXmlToJson(data);
-		helper.runPython(elementInfo.getSaveProc().getName(), elementId,
-				dataJson);
+		CelestaHelper<Void> helper = new CelestaHelper<Void>(context, Void.class);
+		// String dataJson = XMLUtils.convertXmlToJson(data);
+		String dataJson = null;
+		try {
+			dataJson = XMLJSONConverter.xmlToJson(data);
+		} catch (SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // convertXmlToJson(data);
+		helper.runPython(elementInfo.getSaveProc().getName(), elementId, dataJson);
 	}
 
 }
