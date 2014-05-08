@@ -22,9 +22,12 @@ public class JSONToXMLParser {
 	private final JSONTokener jt;
 	private final JSONObject jo;
 
-	public JSONToXMLParser(final String json) throws JSONException {
-		String inJson = json.replaceAll("u\"", "\"");
-		jt = new JSONTokener(inJson);
+	public JSONToXMLParser(String json) throws JSONException {
+		if (json.contains("u\""))
+			json = json.replaceAll("u\"", "\"");
+		if (json.contains("u \'"))
+			json = json.replaceAll("u \'", "\'");
+		jt = new JSONTokener(json);
 		jo = new JSONObject(jt);
 	}
 
