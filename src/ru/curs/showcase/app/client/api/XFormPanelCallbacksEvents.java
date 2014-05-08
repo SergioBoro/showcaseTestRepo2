@@ -479,7 +479,8 @@ public final class XFormPanelCallbacksEvents {
 		// MessageBox.showSimpleMessage(param.windowCaption(),
 		// param.windowCaption());
 
-		XFormPanel currentXFormPanel = (XFormPanel) ActionExecuter.getElementPanelById(param.id());
+		final XFormPanel currentXFormPanel =
+			(XFormPanel) ActionExecuter.getElementPanelById(param.id());
 
 		if (currentXFormPanel != null) {
 			Options options = new Options();
@@ -542,10 +543,12 @@ public final class XFormPanelCallbacksEvents {
 					} else {
 						if (isMultiSelector) {
 							insertXFormByXPath(selector.isOK(), selector.getSelectedAsJsObject(),
-									param.xpathRoot(), param.xpathMapping(), param.needClear());
+									param.xpathRoot(), param.xpathMapping(), param.needClear(),
+									((XForm) currentXFormPanel.getElement()).getSubformId());
 						} else {
 							setXFormByXPath(selector.isOK(), selector.getSelectedAsJsObject(),
-									param.xpathMapping());
+									param.xpathMapping(),
+									((XForm) currentXFormPanel.getElement()).getSubformId());
 						}
 
 						param.onSelectionComplete(selector.isOK(),
@@ -574,16 +577,20 @@ public final class XFormPanelCallbacksEvents {
 	}
 
 	private static native void setXFormByXPath(final boolean ok, final JavaScriptObject selected,
-			final Map<String, String> xpathMapping) /*-{
-		$wnd.setXFormByXPath(ok, selected, xpathMapping);
+			final Map<String, String> xpathMapping, final String subformId) /*-{
+		$wnd.setXFormByXPath(ok, selected, xpathMapping, subformId);
 	}-*/;
 
-	private static native void insertXFormByXPath(final boolean ok,
-			final JavaScriptObject selected, final String xpathRoot,
-			final Map<String, String> xpathMapping, final boolean needClear) /*-{
+	// CHECKSTYLE:OFF
+	private static native void
+			insertXFormByXPath(final boolean ok, final JavaScriptObject selected,
+					final String xpathRoot, final Map<String, String> xpathMapping,
+					final boolean needClear, final String subformId) /*-{
 		$wnd.insertXFormByXPath(ok, selected, xpathRoot, xpathMapping,
-				needClear);
+				needClear, subformId);
 	}-*/;
+
+	// CHECKSTYLE:ON
 
 	private static native String getValueByXPath(final String xpath) /*-{
 		return $wnd.getValueByXPath(xpath);

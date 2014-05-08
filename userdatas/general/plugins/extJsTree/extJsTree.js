@@ -352,7 +352,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 				if (records!=undefined) {
 					for (i in records) {
 						var selected = records[i].getData();
-						setXFormByXPath(true, selected, xpathMapping)
+						setXFormByXPath(true, selected, xpathMapping, pluginParams.elementPanelId+"_");
 						break;
 					}
 				}				
@@ -365,7 +365,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 						var selectedItem = records[i].getData();
 						selected.push(selectedItem);
 					}
-					insertXFormByXPath(true, selected, xpath.xpathRoot, xpath.xpathMapping, needClear)
+					insertXFormByXPath(true, selected, xpath.xpathRoot, xpath.xpathMapping, needClear, pluginParams.elementPanelId+"_");
 				}				
 			}
 		};
