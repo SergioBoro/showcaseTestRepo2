@@ -33,8 +33,14 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		// authentication.
 		// UsernamePasswordAuthenticationToken arg0 = arg1;
 
-		// arg0
+		String ipAddresOfRemouteHost =
+			((UserAndSessionDetails) arg1.getDetails()).getRemoteAddress();
 
+		if (ipAddresOfRemouteHost == null) {
+			ipAddresOfRemouteHost = "";
+		}
+
+		// System.out.println(qqq);
 		String url = "";
 		String login = arg1.getPrincipal().toString();
 		String pwd = arg1.getCredentials().toString();
@@ -74,14 +80,15 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 				if (groupProviders == null) {
 					server =
 						new URL(url
-								+ String.format("/login?sesid=%s&login=%s&pwd=%s", sesid,
-										encodeParam(login), encodeParam(pwd)));
+								+ String.format("/login?sesid=%s&login=%s&pwd=%s&ip=%s", sesid,
+										encodeParam(login), encodeParam(pwd),
+										ipAddresOfRemouteHost));
 				} else {
 					server =
 						new URL(url
-								+ String.format("/login?sesid=%s&login=%s&pwd=%s&gp=%s", sesid,
-										encodeParam(login), encodeParam(pwd),
-										encodeParam(groupProviders)));
+								+ String.format("/login?sesid=%s&login=%s&pwd=%s&gp=%s&ip=%s",
+										sesid, encodeParam(login), encodeParam(pwd),
+										encodeParam(groupProviders), ipAddresOfRemouteHost));
 				}
 
 				HttpURLConnection c = (HttpURLConnection) server.openConnection();
