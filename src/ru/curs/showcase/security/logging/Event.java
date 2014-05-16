@@ -14,7 +14,16 @@ public class Event {
 	 * 
 	 */
 	public enum TypeEvent {
-		LOGIN, LOGOUT
+		/**
+		 * LOGIN.
+		 * 
+		 */
+		LOGIN,
+		/**
+		 * LOGOUT.
+		 * 
+		 */
+		LOGOUT
 	}
 
 	private final TypeEvent typeEvent;
@@ -36,30 +45,68 @@ public class Event {
 		this.sessionid = sSessionid;
 	}
 
+	/**
+	 * Функция-getter для переменной typeEvent.
+	 * 
+	 * @return typeEvent
+	 */
 	public TypeEvent getTypeEvent() {
 		return typeEvent;
 	}
 
+	/**
+	 * Функция-getter для переменной context.
+	 * 
+	 * @return context
+	 */
 	public CompositeContext getContext() {
 		return context;
 	}
 
+	/**
+	 * Функция-setter для переменной context.
+	 * 
+	 * @param oContext
+	 *            - переменная типа CompositeContext
+	 */
 	public void setContext(final CompositeContext oContext) {
 		this.context = oContext;
 	}
 
+	/**
+	 * Функция-getter для переменной sessionid.
+	 * 
+	 * @return sessionid
+	 */
 	public String getSessionid() {
 		return sessionid;
 	}
 
+	/**
+	 * Функция-setter для переменной sessionid.
+	 * 
+	 * @param sSessionid
+	 *            - строковая переменная
+	 */
 	public void setSessionid(final String sSessionid) {
 		this.sessionid = sSessionid;
 	}
 
+	/**
+	 * Функция-getter для переменной ip.
+	 * 
+	 * @return ip
+	 */
 	public String getIp() {
 		return ip;
 	}
 
+	/**
+	 * Функция-setter для переменной ip.
+	 * 
+	 * @param sIp
+	 *            - строковая переменная
+	 */
 	public void setIp(final String sIp) {
 		this.ip = sIp;
 	}

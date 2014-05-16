@@ -19,22 +19,24 @@ import ru.curs.showcase.util.UserAndSessionDetails;
  * @author den
  * 
  */
-public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcessingFilter {
 
-	protected RequestHeaderProcessingFilter() {
-		super("/j_spring_security_check");
-	}
+public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcessingFilter {
 
 	/**
 	 * Параметр HttpServletRequest с именем пользователя.
 	 */
 	private static final String USERNAME_HEADER = "j_username";
+
 	/**
 	 * Параметр HttpServletRequest с паролем пользователя.
 	 */
 	private static final String PASS_HEADER = "j_password";
 
 	private static final String DOMAIN = "j_domain";
+
+	protected RequestHeaderProcessingFilter() {
+		super("/j_spring_security_check");
+	}
 
 	@Override
 	public Authentication attemptAuthentication(final HttpServletRequest request,

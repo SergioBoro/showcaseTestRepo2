@@ -33,6 +33,7 @@ public final class UserInfoUtils {
 	 * @param is
 	 *            - поток.
 	 * @throws TransformerException
+	 *             вызывается при ошибке трансформации.
 	 */
 	public static List<UserInfo> parseStream(final InputStream is) throws TransformerException {
 		final List<UserInfo> result = new LinkedList<UserInfo>();

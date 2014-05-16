@@ -18,6 +18,10 @@ public final class SecurityParamsFactory {
 	 */
 	public static final String AUTH_SERVER_URL_PARAM = "security.authserverurl";
 
+	/**
+	 * Статическая строквоая константа, соответствующаятому, что не удалось
+	 * считать параметр AUTH_SERVER_URL_PARAM из файла app.properties.
+	 */
 	public static final String APP_PROP_READ_ERROR = "Не удалось считать " + AUTH_SERVER_URL_PARAM
 			+ " из app.properties";
 
@@ -149,10 +153,10 @@ public final class SecurityParamsFactory {
 					new BufferedReader(new InputStreamReader(c.getInputStream(), "UTF-8"));
 				String d = in.readLine();
 
-				String[] аWer = d.split(" ", 0);
+				String[] aWer = d.split(" ", 0);
 				result = "		    <td>     <select id='j_domain' type='text' name='j_domain'>";
-				for (int i = 0; i <= аWer.length - 1; i++) {
-					result = result + "<option value='" + аWer[i] + "'>" + аWer[i] + "</option>";
+				for (int i = 0; i <= aWer.length - 1; i++) {
+					result = result + "<option value='" + aWer[i] + "'>" + aWer[i] + "</option>";
 				}
 
 				result = result + "</select>			    </td>			  ";
