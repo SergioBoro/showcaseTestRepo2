@@ -28,18 +28,17 @@ import com.google.gson.JsonElement;
  */
 public final class XMLUtils {
 
-	public static Schema createSchemaForFile(final File file)
-			throws SAXException {
+	public static Schema createSchemaForFile(final File file) throws SAXException {
 		SchemaFactory schemaFactory = createSchemaFactory();
 		return schemaFactory.newSchema(file);
 	}
 
-	public static final String XML_VERSION_1_0_ENCODING_UTF_8 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+	public static final String XML_VERSION_1_0_ENCODING_UTF_8 =
+		"<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 
 	public static final String XSL_MARKER = "XSL";
 
-	protected static final Logger LOGGER = LoggerFactory
-			.getLogger(XMLUtils.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(XMLUtils.class);
 
 	/**
 	 * Преобразует объект в XML документ.
@@ -90,9 +89,11 @@ public final class XMLUtils {
 	 */
 	public static final String XML_SCHEMA_V1_1 = "http://www.w3.org/XML/XMLSchema/v1.1";
 
-	public static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
+	public static final String JAXP_SCHEMA_LANGUAGE =
+		"http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 
-	public static final String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
+	public static final String JAXP_SCHEMA_SOURCE =
+		"http://java.sun.com/xml/jaxp/properties/schemaSource";
 
 	private XMLUtils() {
 		throw new UnsupportedOperationException();
@@ -114,9 +115,8 @@ public final class XMLUtils {
 	 *             В случае ошибки
 	 * @throws IOException
 	 */
-	public static SQLXML domToSQLXML(final org.w3c.dom.Document doc,
-			final Connection con) throws SQLException, TransformerException,
-			IOException {
+	public static SQLXML domToSQLXML(final org.w3c.dom.Document doc, final Connection con)
+			throws SQLException, TransformerException, IOException {
 		SQLXML sqlxml = con.createSQLXML();
 		Result result = sqlxml.setResult(null);
 		Transformer tr = XSLTransformerPoolFactory.getInstance().acquire();
@@ -156,8 +156,7 @@ public final class XMLUtils {
 		factory.setValidating(false);
 		SAXParser parser;
 		try {
-			factory.setFeature(
-					"http://xml.org/sax/features/namespace-prefixes", true);
+			factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
 			parser = factory.newSAXParser();
 		} catch (SAXException | ParserConfigurationException e) {
 			throw new ServerObjectCreateCloseException(e);
@@ -165,8 +164,8 @@ public final class XMLUtils {
 		return parser;
 	}
 
-	public static void setupStdTransformerParams(final Transformer tr,
-			final boolean excludeXmlDecl) {
+	public static void
+			setupStdTransformerParams(final Transformer tr, final boolean excludeXmlDecl) {
 		if (excludeXmlDecl) {
 			tr.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 		}
@@ -190,22 +189,19 @@ public final class XMLUtils {
 	 * @throws SAXException
 	 * @throws TransformerException
 	 */
-	public static void stringToXMLFile(final String content,
-			final String filename) throws SAXException, IOException,
-			TransformerException {
+	public static void stringToXMLFile(final String content, final String filename)
+			throws SAXException, IOException, TransformerException {
 		Document doc = stringToDocument(content);
 		Transformer tr = XSLTransformerPoolFactory.getInstance().acquire();
 		try {
 			setupStdTransformerParams(tr, true);
-			tr.transform(new DOMSource(doc), new StreamResult(
-					new File(filename)));
+			tr.transform(new DOMSource(doc), new StreamResult(new File(filename)));
 		} finally {
 			XSLTransformerPoolFactory.getInstance().release(tr);
 		}
 	}
 
-	public static Document stringToDocument(final String content)
-			throws SAXException, IOException {
+	public static Document stringToDocument(final String content) throws SAXException, IOException {
 		if ((content == null) || content.isEmpty()) {
 			return null;
 		}
@@ -215,19 +211,15 @@ public final class XMLUtils {
 		return doc;
 	}
 
-	public static String xsltTransform(final SQLXML sqlxml,
-			final String xsltFileName) {
+	public static String xsltTransform(final SQLXML sqlxml, final String xsltFileName) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			Transformer tr = XSLTransformerPoolFactory.getInstance().acquire(
-					xsltFileName);
+			Transformer tr = XSLTransformerPoolFactory.getInstance().acquire(xsltFileName);
 			try {
 				setupStdTransformerParams(tr, true);
-				tr.transform(sqlxml.getSource(DOMSource.class),
-						new StreamResult(baos));
+				tr.transform(sqlxml.getSource(DOMSource.class), new StreamResult(baos));
 			} finally {
-				XSLTransformerPoolFactory.getInstance().release(tr,
-						xsltFileName);
+				XSLTransformerPoolFactory.getInstance().release(tr, xsltFileName);
 			}
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (IOException | TransformerException | SQLException e) {
@@ -235,18 +227,15 @@ public final class XMLUtils {
 		}
 	}
 
-	public static String xsltTransform(final org.w3c.dom.Document doc,
-			final String xsltFileName) {
+	public static String xsltTransform(final org.w3c.dom.Document doc, final String xsltFileName) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			Transformer tr = XSLTransformerPoolFactory.getInstance().acquire(
-					xsltFileName);
+			Transformer tr = XSLTransformerPoolFactory.getInstance().acquire(xsltFileName);
 			try {
 				setupStdTransformerParams(tr, true);
 				tr.transform(new DOMSource(doc), new StreamResult(baos));
 			} finally {
-				XSLTransformerPoolFactory.getInstance().release(tr,
-						xsltFileName);
+				XSLTransformerPoolFactory.getInstance().release(tr, xsltFileName);
 			}
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (IOException | TransformerException e) {
@@ -261,8 +250,9 @@ public final class XMLUtils {
 			logXSLInput(doc, transform.getName());
 			Transformer tr = null;
 			if (transform.getData() != null) {
-				tr = XSLTransformerPoolFactory.getTransformerFactory()
-						.newTransformer(new StreamSource(transform.getData()));
+				tr =
+					XSLTransformerPoolFactory.getTransformerFactory().newTransformer(
+							new StreamSource(transform.getData()));
 			} else {
 				tr = XSLTransformerPoolFactory.getInstance().acquire();
 			}
@@ -289,18 +279,15 @@ public final class XMLUtils {
 		return xsltTransform(doc, (String) null);
 	}
 
-	public static String xsltTransform(final InputStream is,
-			final String xsltFileName) {
+	public static String xsltTransform(final InputStream is, final String xsltFileName) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			Transformer tr = XSLTransformerPoolFactory.getInstance().acquire(
-					xsltFileName);
+			Transformer tr = XSLTransformerPoolFactory.getInstance().acquire(xsltFileName);
 			try {
 				setupStdTransformerParams(tr, true);
 				tr.transform(new StreamSource(is), new StreamResult(baos));
 			} finally {
-				XSLTransformerPoolFactory.getInstance().release(tr,
-						xsltFileName);
+				XSLTransformerPoolFactory.getInstance().release(tr, xsltFileName);
 			}
 			return baos.toString(TextUtils.DEF_ENCODING);
 		} catch (IOException | TransformerException e) {
@@ -308,8 +295,8 @@ public final class XMLUtils {
 		}
 	}
 
-	public static String xsltTransform(final InputStream is,
-			final DataFile<InputStream> transform) {
+	public static String
+			xsltTransform(final InputStream is, final DataFile<InputStream> transform) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			InputStream source = is;
@@ -317,8 +304,9 @@ public final class XMLUtils {
 
 			Transformer tr = null;
 			if (transform.getData() != null) {
-				tr = XSLTransformerPoolFactory.getTransformerFactory()
-						.newTransformer(new StreamSource(transform.getData()));
+				tr =
+					XSLTransformerPoolFactory.getTransformerFactory().newTransformer(
+							new StreamSource(transform.getData()));
 			} else {
 				tr = XSLTransformerPoolFactory.getInstance().acquire();
 			}
@@ -339,8 +327,7 @@ public final class XMLUtils {
 		}
 	}
 
-	private static Object logXSLInput(final Object source,
-			final String xsltFileName) {
+	private static Object logXSLInput(final Object source, final String xsltFileName) {
 		String value = null;
 		Object sourceCopy = source;
 		if ((!LOGGER.isInfoEnabled()) || (xsltFileName == null)) {
@@ -361,21 +348,18 @@ public final class XMLUtils {
 
 		Marker marker = MarkerFactory.getDetachedMarker(XSL_MARKER);
 		marker.add(HandlingDirection.INPUT.getMarker());
-		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s",
-				xsltFileName)));
+		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s", xsltFileName)));
 		LOGGER.info(marker, value);
 		return sourceCopy;
 	}
 
-	private static void logXSLOutput(final String xsltFileName,
-			final String result) {
+	private static void logXSLOutput(final String xsltFileName, final String result) {
 		if (xsltFileName == null) {
 			return;
 		}
 		Marker marker = MarkerFactory.getDetachedMarker(XSL_MARKER);
 		marker.add(HandlingDirection.OUTPUT.getMarker());
-		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s",
-				xsltFileName)));
+		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s", xsltFileName)));
 		LOGGER.info(marker, result);
 	}
 
@@ -410,26 +394,21 @@ public final class XMLUtils {
 	 * @return OutputStream с преобразованным XML
 	 * 
 	 */
-	public static ByteArrayOutputStream xsltTransformForGrid(
-			final org.w3c.dom.Document doc) {
+	public static ByteArrayOutputStream xsltTransformForGrid(final org.w3c.dom.Document doc) {
 		try {
 			Transformer tr = null;
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			tr = XSLTransformerPoolFactory.getInstance().acquire(
-					UserDataUtils.GRIDDATAXSL);
+			tr = XSLTransformerPoolFactory.getInstance().acquire(UserDataUtils.GRIDDATAXSL);
 			try {
 				setupStdTransformerParams(tr, false);
 				tr.transform(new DOMSource(doc), new StreamResult(baos));
 			} finally {
-				XSLTransformerPoolFactory.getInstance().release(tr,
-						UserDataUtils.GRIDDATAXSL);
+				XSLTransformerPoolFactory.getInstance().release(tr, UserDataUtils.GRIDDATAXSL);
 			}
 			return baos;
-		} catch (TransformerFactoryConfigurationError | IOException
-				| TransformerException e) {
+		} catch (TransformerFactoryConfigurationError | IOException | TransformerException e) {
 			throw new XSLTTransformException(
-					"Ошибка при выполнении XSLT-преобразования для таблицы: "
-							+ e.getMessage(), e);
+					"Ошибка при выполнении XSLT-преобразования для таблицы: " + e.getMessage(), e);
 		}
 	}
 
@@ -437,25 +416,29 @@ public final class XMLUtils {
 	 * Schema full checking feature id
 	 * (http://apache.org/xml/features/validation/schema-full-checking).
 	 */
-	private static final String SCHEMA_FULL_CHECKING_FEATURE_ID = "http://apache.org/xml/features/validation/schema-full-checking";
+	private static final String SCHEMA_FULL_CHECKING_FEATURE_ID =
+		"http://apache.org/xml/features/validation/schema-full-checking";
 
 	/**
 	 * Honour all schema locations feature id
 	 * (http://apache.org/xml/features/honour-all-schemaLocations).
 	 */
-	private static final String HONOUR_ALL_SCHEMA_LOCATIONS_ID = "http://apache.org/xml/features/honour-all-schemaLocations";
+	private static final String HONOUR_ALL_SCHEMA_LOCATIONS_ID =
+		"http://apache.org/xml/features/honour-all-schemaLocations";
 
 	/**
 	 * Validate schema annotations feature id
 	 * (http://apache.org/xml/features/validate-annotations).
 	 */
-	private static final String VALIDATE_ANNOTATIONS_ID = "http://apache.org/xml/features/validate-annotations";
+	private static final String VALIDATE_ANNOTATIONS_ID =
+		"http://apache.org/xml/features/validate-annotations";
 
 	/**
 	 * Generate synthetic schema annotations feature id
 	 * (http://apache.org/xml/features/generate-synthetic-annotations).
 	 */
-	private static final String GENERATE_SYNTHETIC_ANNOTATIONS_ID = "http://apache.org/xml/features/generate-synthetic-annotations";
+	private static final String GENERATE_SYNTHETIC_ANNOTATIONS_ID =
+		"http://apache.org/xml/features/generate-synthetic-annotations";
 
 	/**
 	 * Создает стандартную SchemaFactory.
@@ -468,17 +451,13 @@ public final class XMLUtils {
 		boolean validateAnnotations = false;
 		boolean generateSyntheticAnnotations = false;
 
-		SchemaFactory schemaFactory = SchemaFactory
-				.newInstance(XML_SCHEMA_V1_1);
+		SchemaFactory schemaFactory = SchemaFactory.newInstance(XML_SCHEMA_V1_1);
 		// XMLConstants.W3C_XML_SCHEMA_NS_URI
 
 		try {
-			schemaFactory.setFeature(SCHEMA_FULL_CHECKING_FEATURE_ID,
-					schemaFullChecking);
-			schemaFactory.setFeature(HONOUR_ALL_SCHEMA_LOCATIONS_ID,
-					honourAllSchemaLocations);
-			schemaFactory.setFeature(VALIDATE_ANNOTATIONS_ID,
-					validateAnnotations);
+			schemaFactory.setFeature(SCHEMA_FULL_CHECKING_FEATURE_ID, schemaFullChecking);
+			schemaFactory.setFeature(HONOUR_ALL_SCHEMA_LOCATIONS_ID, honourAllSchemaLocations);
+			schemaFactory.setFeature(VALIDATE_ANNOTATIONS_ID, validateAnnotations);
 			schemaFactory.setFeature(GENERATE_SYNTHETIC_ANNOTATIONS_ID,
 					generateSyntheticAnnotations);
 		} catch (SAXNotRecognizedException | SAXNotSupportedException e) {
@@ -493,8 +472,7 @@ public final class XMLUtils {
 	 */
 	public static void setupSchemaFactory() {
 		// System.setProperty("jaxp.debug", "jaxp.debug");
-		System.setProperty("javax.xml.validation.SchemaFactory" + ":"
-				+ XML_SCHEMA_V1_1,
+		System.setProperty("javax.xml.validation.SchemaFactory" + ":" + XML_SCHEMA_V1_1,
 				"org.apache.xerces.jaxp.validation.XMLSchema11Factory");
 	}
 
@@ -505,8 +483,7 @@ public final class XMLUtils {
 		System.setProperty("javax.xml.transform.TransformerFactory",
 				"net.sf.saxon.TransformerFactoryImpl");
 
-		System.setProperty("javax.xml.xpath.XPathFactory:"
-				+ NamespaceConstant.OBJECT_MODEL_SAXON,
+		System.setProperty("javax.xml.xpath.XPathFactory:" + NamespaceConstant.OBJECT_MODEL_SAXON,
 				"net.sf.saxon.xpath.XPathFactoryImpl");
 
 		System.setProperty("javax.xml.stream.XMLOutputFactory",
@@ -523,8 +500,8 @@ public final class XMLUtils {
 	 *            Имя файла XSD-схемы
 	 * 
 	 */
-	public static void xsdValidateUserData(final org.w3c.dom.Document doc,
-			final String schemaFile) {
+	public static void
+			xsdValidateUserData(final org.w3c.dom.Document doc, final String schemaFile) {
 		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
 		validator.validate(new XMLSource(doc, schemaFile));
 	}
@@ -540,8 +517,8 @@ public final class XMLUtils {
 	 *            Имя файла XSD-схемы
 	 * 
 	 */
-	public static void xsdValidateUserData(final SAXParser parser,
-			final InputStream is, final String schemaFile) {
+	public static void xsdValidateUserData(final SAXParser parser, final InputStream is,
+			final String schemaFile) {
 		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
 		validator.validate(new XMLSource(is, parser, schemaFile));
 	}
@@ -582,8 +559,7 @@ public final class XMLUtils {
 	 *            Имя файла XSD-схемы
 	 * 
 	 */
-	public static void xsdValidateUserData(final InputStream is,
-			final String schemaFile) {
+	public static void xsdValidateUserData(final InputStream is, final String schemaFile) {
 		XMLValidator validator = new XMLValidator(new UserDataXSDSource());
 		validator.validate(new XMLSource(is, schemaFile));
 	}
@@ -596,8 +572,7 @@ public final class XMLUtils {
 	 * @return - документ.
 	 */
 	public static Document createEmptyDoc(final String rootTag) {
-		return createBuilder().getDOMImplementation().createDocument("",
-				rootTag, null);
+		return createBuilder().getDOMImplementation().createDocument("", rootTag, null);
 	}
 
 	/**
@@ -609,8 +584,7 @@ public final class XMLUtils {
 	 *            - атрибуты.
 	 * @return - строка.
 	 */
-	public static String saxTagWithAttrsToString(final String qname,
-			final Attributes attrs) {
+	public static String saxTagWithAttrsToString(final String qname, final Attributes attrs) {
 		StringBuilder builder = new StringBuilder(" ");
 		for (int i = 0; i < attrs.getLength(); i++) {
 			String name = attrs.getQName(i);
@@ -673,8 +647,7 @@ public final class XMLUtils {
 	 * @param original
 	 *            - исходная строка.
 	 */
-	public static String xmlServiceSymbolsToNormalWithoutDoubleQuotes(
-			final String original) {
+	public static String xmlServiceSymbolsToNormalWithoutDoubleQuotes(final String original) {
 		if (original == null) {
 			return null;
 		}
@@ -687,32 +660,28 @@ public final class XMLUtils {
 		return result;
 	}
 
-	public static Schema createSchemaForStream(final InputStream aData)
-			throws SAXException {
+	public static Schema createSchemaForStream(final InputStream aData) throws SAXException {
 		SchemaFactory schemaFactory = createSchemaFactory();
 		return schemaFactory.newSchema(new StreamSource(aData));
 	}
 
-	private static String[][] escapeTag = { { "_x007e_", "~" },
-			{ "_x0021_", "!" }, { "_x0040_", "@" }, { "_x0023_", "#" },
-			{ "_x0024_", "$" }, { "_x0025_", "%" }, { "_x005e_", "^" },
-			{ "_x0026_", "&" }, { "_x002a_", "*" }, { "_x0028_", "(" },
-			{ "_x0029_", ")" }, { "_x002b_", "+" }, { "_x002d_", "-" },
-			{ "_x003d_", "=" }, { "_x007b_", "{" }, { "_x007d_", "}" },
-			{ "_x003a_", ":" }, { "_x0022_", "\"" }, { "_x007c_", "|" },
-			{ "_x003b_", ";" }, { "_x0027_", "'" }, { "_x005c_", "\\" },
-			{ "_x003c_", "<" }, { "_x003e_", ">" }, { "_x003f_", "?" },
-			{ "_x002c_", "," }, { "_x002e_", "." }, { "_x002f_", "/" },
-			{ "_x0060_", "`" }, { "_x0020_", " " }, { "_y0051_", "№" },
-			{ "_x2116_", "№" } };
+	private static String[][] escapeTag = {
+			{ "_x007e_", "~" }, { "_x0021_", "!" }, { "_x0040_", "@" }, { "_x0023_", "#" },
+			{ "_x0024_", "$" }, { "_x0025_", "%" }, { "_x005e_", "^" }, { "_x0026_", "&" },
+			{ "_x002a_", "*" }, { "_x0028_", "(" }, { "_x0029_", ")" }, { "_x002b_", "+" },
+			{ "_x002d_", "-" }, { "_x003d_", "=" }, { "_x007b_", "{" }, { "_x007d_", "}" },
+			{ "_x003a_", ":" }, { "_x0022_", "\"" }, { "_x007c_", "|" }, { "_x003b_", ";" },
+			{ "_x0027_", "'" }, { "_x005c_", "\\" }, { "_x003c_", "<" }, { "_x003e_", ">" },
+			{ "_x003f_", "?" }, { "_x002c_", "," }, { "_x002e_", "." }, { "_x002f_", "/" },
+			{ "_x0060_", "`" }, { "_x0020_", " " }, { "_y0051_", "№" }, { "_x2116_", "№" } };
 
-	private static String[][] escapeTagFirstDigit = { { "_x0030_", "0" },
-			{ "_x0031_", "1" }, { "_x0032_", "2" }, { "_x0033_", "3" },
-			{ "_x0034_", "4" }, { "_x0035_", "5" }, { "_x0036_", "6" },
-			{ "_x0037_", "7" }, { "_x0038_", "8" }, { "_x0039_", "9" } };
+	private static String[][] escapeTagFirstDigit = {
+			{ "_x0030_", "0" }, { "_x0031_", "1" }, { "_x0032_", "2" }, { "_x0033_", "3" },
+			{ "_x0034_", "4" }, { "_x0035_", "5" }, { "_x0036_", "6" }, { "_x0037_", "7" },
+			{ "_x0038_", "8" }, { "_x0039_", "9" } };
 
-	private static String[][] escapeValue = { { "_x0026_", "&" },
-			{ "_x003c_", "<" }, { "_x003e_", ">" }, { "_z0051_", "TV" },
+	private static String[][] escapeValue = {
+			{ "_x0026_", "&" }, { "_x003c_", "<" }, { "_x003e_", ">" }, { "_z0051_", "TV" },
 			{ "_z0052_", "tv" } };
 
 	/**
@@ -729,8 +698,7 @@ public final class XMLUtils {
 		}
 		if (Character.isDigit(text.charAt(0))) {
 			for (int i = 0; i < escapeTagFirstDigit.length; i++) {
-				if (escapeTagFirstDigit[i][1].equalsIgnoreCase(text.substring(
-						0, 1))) {
+				if (escapeTagFirstDigit[i][1].equalsIgnoreCase(text.substring(0, 1))) {
 					text = escapeTagFirstDigit[i][0] + text.substring(1);
 					break;
 				}
@@ -767,8 +735,7 @@ public final class XMLUtils {
 		}
 		for (int i = 0; i < escapeTagFirstDigit.length; i++) {
 			while (text.indexOf(escapeTagFirstDigit[i][0]) != -1) {
-				text = text.replace(escapeTagFirstDigit[i][0],
-						escapeTagFirstDigit[i][1]);
+				text = text.replace(escapeTagFirstDigit[i][0], escapeTagFirstDigit[i][1]);
 			}
 		}
 		return text;
@@ -820,6 +787,7 @@ public final class XMLUtils {
 	 *            строка xml.
 	 * @return строка в формате JSON, или пустая строка.
 	 */
+	@Deprecated
 	public static String convertXmlToJson(final String xml) {
 		if (xml == null || xml.isEmpty()) {
 			return "";
