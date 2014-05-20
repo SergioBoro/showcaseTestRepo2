@@ -32,7 +32,16 @@ public class XFormCelestaGateway implements HTMLAdvGateway {
 	public String scriptTransform(final String procName, final XFormContext context) {
 		CelestaHelper<String> helper = new CelestaHelper<String>(context, String.class);
 		String data = context.getFormData();
-		String dataJson = XMLUtils.convertXmlToJson(data);
+
+		// String dataJson = XMLUtils.convertXmlToJson(data);
+		String dataJson = null;
+		try {
+			dataJson = XMLJSONConverter.xmlToJson(data);
+		} catch (SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		String result = helper.runPython(procName, dataJson);
 		return result;
 	}
