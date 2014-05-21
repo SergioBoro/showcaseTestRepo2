@@ -14,7 +14,6 @@ import ru.curs.showcase.core.html.*;
 import ru.curs.showcase.core.jython.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
-import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Шлюз для XForms для работы с Celesta.
@@ -56,7 +55,14 @@ public class XFormCelestaGateway implements HTMLAdvGateway {
 			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR + aLinkId);
 		}
 		String data = context.getFormData();
-		String dataJson = XMLUtils.convertXmlToJson(data);
+		// String dataJson = XMLUtils.convertXmlToJson(data);
+		String dataJson = null;
+		try {
+			dataJson = XMLJSONConverter.xmlToJson(data);
+		} catch (SAXException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		JythonDownloadResult jythonResult =
 			helper.runPython(proc.getName(), elementInfo.getId().getString(), dataJson);
 
@@ -91,7 +97,15 @@ public class XFormCelestaGateway implements HTMLAdvGateway {
 			throw new IncorrectElementException(NO_UPLOAD_PROC_ERROR + aLinkId);
 		}
 		String data = context.getFormData();
-		String dataJson = XMLUtils.convertXmlToJson(data);
+		// String dataJson = XMLUtils.convertXmlToJson(data);
+		String dataJson = null;
+		try {
+			dataJson = XMLJSONConverter.xmlToJson(data);
+
+		} catch (SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		helper.runPython(proc.getName(), elementInfo.getId().getString(), dataJson,
 				file.getName(), file.getData());
 	}

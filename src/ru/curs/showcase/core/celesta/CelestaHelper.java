@@ -1,12 +1,15 @@
 package ru.curs.showcase.core.celesta;
 
+import java.io.IOException;
+
 import org.python.core.PyObject;
+import org.xml.sax.SAXException;
 
 import ru.curs.celesta.*;
+import ru.curs.celesta.showcase.utils.XMLJSONConverter;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Класс помощник работы с Celesta.
@@ -99,8 +102,18 @@ public class CelestaHelper<T> {
 		}
 		resultParams[MAIN_CONTEXT_INDEX] = context.getMain();
 		resultParams[ADD_CONTEXT_INDEX] = context.getAdditional();
-		resultParams[FILTER_CONTEXT_INDEX] = XMLUtils.convertXmlToJson(context.getFilter());
-		resultParams[SESSION_CONTEXT_INDEX] = XMLUtils.convertXmlToJson(context.getSession());
+		// resultParams[FILTER_CONTEXT_INDEX] =
+		// XMLUtils.convertXmlToJson(context.getFilter());
+		// resultParams[SESSION_CONTEXT_INDEX] =
+		// XMLUtils.convertXmlToJson(context.getSession());
+		try {
+			resultParams[FILTER_CONTEXT_INDEX] = XMLJSONConverter.xmlToJson(context.getFilter());
+			resultParams[SESSION_CONTEXT_INDEX] = XMLJSONConverter.xmlToJson(context.getSession());
+		} catch (SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return resultParams;
 	}
 }

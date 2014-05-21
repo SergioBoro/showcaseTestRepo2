@@ -1,12 +1,13 @@
 package ru.curs.showcase.core.primelements.datapanel;
 
-import java.io.InputStream;
+import java.io.*;
+
+import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.celesta.CelestaHelper;
 import ru.curs.showcase.core.primelements.PrimElementsGateway;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Шлюз для элемента DataPanel, источник данных для которого является Celesta.
@@ -26,7 +27,14 @@ public class DataPanelCelestaGateway implements PrimElementsGateway {
 				return additionalParams;
 			}
 		};
-		String json = XMLUtils.convertXmlToJson(context.getSession());
+		// String json = XMLUtils.convertXmlToJson(context.getSession());
+		String json = null;
+		try {
+			json = XMLJSONConverter.xmlToJson(context.getSession());
+		} catch (SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String result = helper.runPython(procName, new Object[] { context.getMain(), json });
 		InputStream stream = TextUtils.stringToStream(result);
 		return new DataFile<InputStream>(stream, procName);
