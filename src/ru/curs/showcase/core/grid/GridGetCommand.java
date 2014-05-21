@@ -55,21 +55,23 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 			factory.setApplyLocalFormatting(applyLocalFormatting);
 			setResult(factory.build());
 		} else {
-			if (getContext().isFirstLoad() || state.isForceLoadSettings()) {
+			if (getContext().isFirstLoad()
+					|| (state.isForceLoadSettings() && applyLocalFormatting)) {
 				SourceSelector<ElementSettingsGateway> sselector =
 					new GridSettingsSelector(getElementInfo());
 				ElementSettingsGateway sgateway = sselector.getGateway();
 				raw = sgateway.getRawData(getContext(), getElementInfo());
 				factory = new GridFactory(raw, state);
+				factory.setApplyLocalFormatting(applyLocalFormatting);
 				factory.buildStepOne();
 				gateway.continueSession(sgateway);
 			} else {
 				factory = new GridFactory(getContext(), getElementInfo(), state);
+				factory.setApplyLocalFormatting(applyLocalFormatting);
 				factory.buildStepOneFast();
 			}
 			raw = gateway.getRawData(getContext(), getElementInfo());
 			factory.setSource(raw);
-			factory.setApplyLocalFormatting(applyLocalFormatting);
 			setResult(factory.buildStepTwo());
 		}
 		AppInfoSingleton.getAppInfo().storeElementState(getSessionId(), getElementInfo(),

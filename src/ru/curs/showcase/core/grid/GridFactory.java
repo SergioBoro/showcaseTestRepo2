@@ -698,7 +698,7 @@ public class GridFactory extends CompBasedElementFactory {
 			super.setupDynamicSettings();
 			loadStaticSettings();
 		} else {
-			if (serverState().isForceLoadSettings()) {
+			if (serverState().isForceLoadSettings() && applyLocalFormatting) {
 				super.setupDynamicSettings();
 			}
 			loadStaticSettings();
