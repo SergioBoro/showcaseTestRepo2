@@ -1,6 +1,7 @@
 package ru.curs.showcase.security.oauth;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -10,6 +11,7 @@ import org.springframework.security.web.authentication.*;
 
 import ru.curs.showcase.app.api.UserInfo;
 import ru.curs.showcase.app.server.PreProcessFilter;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.UserAndSessionDetails;
 
 /**
@@ -29,8 +31,12 @@ public class Oauth2AuthenticationProcessingFilter extends AbstractAuthentication
 			final HttpServletResponse response) throws IOException, ServletException {
 		String auth = request.getParameter("auth");
 		if (auth != null && !auth.isEmpty()) {
-			response.sendRedirect("http://localhost:9080/oauth2/endpoint/DemoProvider/authorize"
-					+ "?client_id=showcase&client_secret=secret&response_type=code");
+			Properties oauth2Properties = UserDataUtils.getGeneralOauth2Properties();
+			response.sendRedirect(oauth2Properties.getProperty(UserDataUtils.OAUTH_AUTHORIZE_URL)
+					+ "?client_id=" + oauth2Properties.getProperty(UserDataUtils.OAUTH_CLIENT_ID)
+					+ "&client_secret="
+					+ oauth2Properties.getProperty(UserDataUtils.OAUTH_CLIENT_SECRET)
+					+ "&response_type=code");
 			return null;
 		}
 		final String code = request.getParameter("code");

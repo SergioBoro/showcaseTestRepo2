@@ -83,6 +83,12 @@ public final class UserDataUtils {
 	public static final String OAUTH_CLIENT_ID = "clientId";
 	public static final String OAUTH_CLIENT_SECRET = "clientSecret";
 	private static Properties generalOauth2Properties = null;
+	private static Properties generalSpnegoProperties = null;
+
+	public static final String SPNEGO_PREAUTH_USERNAME = "spnego.preauth.username";
+	public static final String SPNEGO_PREAUTH_PASSWORD = "spnego.preauth.password";
+	public static final String SPNEGO_ALLOW_BASIC = "spnego.allow.basic";
+	public static final String SPNEGO_LOGGER_LEVEL = "spnego.logger.level";
 
 	public static void setGeneralPropFile(final String aGeneralPropFile) {
 		generalPropFile = aGeneralPropFile;
@@ -373,6 +379,35 @@ public final class UserDataUtils {
 			}
 		}
 		return generalOauth2Properties.isEmpty() ? null : generalOauth2Properties;
+	}
+
+	public static Properties getGeneralSpnegoProperties() {
+		if (generalSpnegoProperties == null) {
+			generalSpnegoProperties = new Properties();
+			Properties generalProps = getGeneralProperties();
+
+			String tempParam = generalProps.getProperty(SPNEGO_PREAUTH_USERNAME);
+			if (tempParam != null) {
+				generalSpnegoProperties.put(SPNEGO_PREAUTH_USERNAME, tempParam);
+			}
+
+			tempParam = generalProps.getProperty(SPNEGO_PREAUTH_PASSWORD);
+			if (tempParam != null) {
+				generalSpnegoProperties.put(SPNEGO_PREAUTH_PASSWORD, tempParam);
+			}
+
+			tempParam = generalProps.getProperty(SPNEGO_ALLOW_BASIC);
+			if (tempParam != null) {
+				generalSpnegoProperties.put(SPNEGO_ALLOW_BASIC, tempParam);
+			}
+
+			tempParam = generalProps.getProperty(SPNEGO_LOGGER_LEVEL);
+			if (tempParam != null) {
+				generalSpnegoProperties.put(SPNEGO_LOGGER_LEVEL, tempParam);
+			}
+
+		}
+		return generalSpnegoProperties.isEmpty() ? null : generalSpnegoProperties;
 	}
 
 	private static String getGeneralPropFile() {

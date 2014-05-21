@@ -20,7 +20,8 @@
 	
 	<http auto-config="true" use-expressions="true">
 		<custom-filter ref="oauth2Filter" position="CAS_FILTER" />
-		<custom-filter ref="requestHeaderFilter" before="FORM_LOGIN_FILTER"/>	
+		<custom-filter ref="requestHeaderFilter" before="FORM_LOGIN_FILTER"/>
+		<custom-filter ref="spnegoFilter" before="BASIC_AUTH_FILTER"/>	
 	
 	    <intercept-url pattern="/log/*" access="hasRole('ROLE_ADMIN')"  />
 	    <intercept-url pattern="/control/*" access="hasRole('ROLE_ADMIN')" />    

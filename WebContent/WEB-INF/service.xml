@@ -32,4 +32,8 @@
     <bean id="oauth2Filter" class="ru.curs.showcase.security.oauth.Oauth2AuthenticationProcessingFilter">
 	 	<property name="authenticationManager" ref="authenticationManager"/>
 	</bean>
+	
+	 <bean id="spnegoFilter" class="ru.curs.showcase.security.spnego.SpnegoAuthenticationProcessingFilter">
+	 	<property name="authenticationManager" ref="authenticationManager"/>
+	 </bean>
 </beans>

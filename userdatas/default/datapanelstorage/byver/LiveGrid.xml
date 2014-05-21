@@ -14,6 +14,7 @@
 		<element id="14" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_extlivegrid" />
 		<element id="11" type="grid" subtype="EXT_LIVE_GRID" proc="extlivegrid_extlivegrid1" hideOnLoad="true">
 		<related id="14"/>
+		<proc id="031101" name="gridToolBar" type="TOOLBAR"/>
 		</element>
 		<element id="10" type="webtext" proc="webtext_grid"
 			hideOnLoad="true" />

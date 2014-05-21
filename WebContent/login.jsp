@@ -145,7 +145,7 @@ pageEncoding="UTF-8"%>
       <input type="submit" value="Войти" />
       <input type="reset" value="Сбросить" />
     </td>
-    <td><%if (UserDataUtils.getGeneralOauth2Properties() != null) {%><a href="oauth?auth=websphere">WebSphere авторизация</a><%}%></td>
+    <td><%if (UserDataUtils.getGeneralOauth2Properties() != null) {%><a href="oauth?auth=websphere">WebSphere авторизация</a><%}%> <%if (UserDataUtils.getGeneralSpnegoProperties() != null) {%><a href="spnego">Spnego авторизация</a><%}%></td>
   </tr>
   <tr>
   <td colspan="3">
