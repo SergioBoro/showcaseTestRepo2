@@ -40,6 +40,10 @@ public final class XMLJSONConverter {
 	 * @throws IOException
 	 */
 	public static String xmlToJson(final String xml) throws SAXException, IOException {
+
+		if (xml == null || xml.isEmpty()) {
+			return "";
+		}
 		SAXParser parser = XMLUtils.createSAXParser();
 		XMLToJSONConverterSaxHandler handler = new XMLToJSONConverterSaxHandler();
 		InputStream in = TextUtils.stringToStream(xml);
