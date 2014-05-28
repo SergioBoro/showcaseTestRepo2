@@ -127,7 +127,8 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				column["renderCell"] = function actionRenderCell(object, value, node, options) {
 					var div = document.createElement("div");
 					if(object.rowstyle && (object.rowstyle != "")){
-						div.className = object.rowstyle;						
+//						div.className = object.rowstyle;
+						node.className = object.rowstyle;
 					}
 					if(this["valueType"] == "DOWNLOAD"){
 						div.innerHTML = "<tbody><tr><td style=\"font-size: 1em;\">"+value+"</td><td  align=\"center\" style=\"vertical-align: middle;\"><button onclick=\"gwtProcessFileDownloadTree('"+elementId+"', '"+object.id+"', '"+this.id+"')\"><img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 16px; height: 16px;  \"   ></button></p></td></tr></tbody>";
