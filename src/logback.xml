@@ -5,6 +5,11 @@
 		value="sc.log %d{HH:mm:ss.SSS} %-5level [%thread]
 				%class.%method
 				line: %line - %msg%n" />
+				
+				
+	<property name="profileLogPattern"
+		value="%msg%n" />
+				
 
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
@@ -48,6 +53,26 @@
 			<OnMatch>NEUTRAL</OnMatch>
 		</filter>
 	</appender>
+	
+	
+	
+<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>E:\\Downloads\\app.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+         <FileNamePattern>E:\\Downloads\\app.%d{yyyy.MM.dd}.log</FileNamePattern> 
+         <maxHistory>30</maxHistory>
+     </rollingPolicy> 
+    <encoder> 
+         <Pattern>${profileLogPattern}</Pattern>
+     </encoder> 
+</appender> 
+
+
+<logger name="profileLog" level="INFO" additivity="false">
+    <appender-ref ref="FILE" />
+</logger>	
+	
+	
 
 	<root level="trace">
 		<appender-ref ref="ShowcaseWebConsoleAppender" />

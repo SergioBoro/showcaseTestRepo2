@@ -1,6 +1,9 @@
 package ru.curs.showcase.app.server;
 
-import java.util.List;
+import java.text.DateFormat;
+import java.util.*;
+
+import org.slf4j.*;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
@@ -39,72 +42,137 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 // CHECKSTYLE:OFF
 public class DataServiceImpl extends RemoteServiceServlet implements DataService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger("profileLog");
+
 	@Override
 	public Navigator getNavigator(final CompositeContext context) throws GeneralException {
+		Date dt1 = new Date();
 		NavigatorGetCommand command = new NavigatorGetCommand(context);
-		return command.execute();
+		Navigator navigator = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog("Navigator", dt1, dt2, "NAVIGATOR", "");
+
+		return navigator;
 	}
 
 	@Override
 	public DataPanel getDataPanel(final Action action) throws GeneralException {
+		Date dt1 = new Date();
 		DataPanelGetCommand command = new DataPanelGetCommand(action);
-		return command.execute();
+		DataPanel dp = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog(dp.getId().getString(), dt1, dt2, "DATAPANEL", "");
+
+		return dp;
 	}
 
 	@Override
 	public WebText getWebText(final CompositeContext context, final DataPanelElementInfo element)
 			throws GeneralException {
+		Date dt1 = new Date();
 		WebTextGetCommand command = new WebTextGetCommand(context, element);
-		return command.execute();
+		WebText wt = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
+
+		return wt;
 	}
 
 	@Override
 	public Grid getGrid(final GridContext context, final DataPanelElementInfo element)
 			throws GeneralException {
+		Date dt1 = new Date();
 		GridGetCommand command = new GridGetCommand(context, element, true);
-		return command.execute();
+		Grid grid = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
+
+		return grid;
 	}
 
 	@Override
 	public LiveGridMetadata getLiveGridMetadata(GridContext context, DataPanelElementInfo element)
 			throws GeneralException {
+		Date dt1 = new Date();
 		LiveGridMetadataGetCommand command = new LiveGridMetadataGetCommand(context, element);
-		return command.execute();
+		LiveGridMetadata lgm = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), element
+				.getSubtype().toString());
+
+		return lgm;
 	}
 
 	@Override
 	public LiveGridData<LiveGridModel> getLiveGridData(GridContext context,
 			DataPanelElementInfo element) throws GeneralException {
+		Date dt1 = new Date();
 		LiveGridDataGetCommand command = new LiveGridDataGetCommand(context, element);
-		return command.execute();
+		LiveGridData<LiveGridModel> lgd = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), element
+				.getSubtype().toString());
+
+		return lgd;
 	}
 
 	@Override
 	public List<TreeGridModel> getTreeGridData(GridContext context, DataPanelElementInfo element)
 			throws GeneralException {
+		Date dt1 = new Date();
 		TreeGridDataGetCommand command = new TreeGridDataGetCommand(context, element);
-		return command.execute();
+		List<TreeGridModel> lst = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), element
+				.getSubtype().toString());
+
+		return lst;
 	}
 
 	@Override
 	public Chart getChart(final CompositeContext context, final DataPanelElementInfo element)
 			throws GeneralException {
+		Date dt1 = new Date();
 		ChartGetCommand command = new ChartGetCommand(context, element);
-		return command.execute();
+		Chart chart = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
+
+		return chart;
 	}
 
 	@Override
 	public GeoMap getGeoMap(final CompositeContext context, final DataPanelElementInfo element)
 			throws GeneralException {
+		Date dt1 = new Date();
 		GeoMapGetCommand command = new GeoMapGetCommand(context, element);
-		return command.execute();
+		GeoMap gm = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
+
+		return gm;
 	}
 
 	@Override
 	public XForm getXForms(final XFormContext context, final DataPanelElementInfo element)
 			throws GeneralException {
+		Date dt1 = new Date();
 		XFormGetCommand command = new XFormGetCommand(context, element);
-		return command.execute();
+		XForm xform = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
+
+		return xform;
 	}
 
 	@Override
@@ -116,46 +184,94 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	@Override
 	public void saveXForms(final XFormContext context, final DataPanelElementInfo element)
 			throws GeneralException {
+		Date dt1 = new Date();
 		XFormSaveCommand command = new XFormSaveCommand(context, element);
 		command.execute();
+		Date dt2 = new Date();
+
+		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "SAVEXFORMS");
+
 	}
 
 	@Override
 	public ServerState getServerCurrentState(final CompositeContext context)
 			throws GeneralException {
+		Date dt1 = new Date();
 		ServerStateGetCommand command = new ServerStateGetCommand(context);
-		return command.execute();
+		ServerState state = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog("ServerCurrentState", dt1, dt2, "SERVERCURRENTSTATE", "");
+
+		return state;
 	}
 
 	@Override
 	public void execServerAction(final Action action) throws GeneralException {
+		Date dt1 = new Date();
 		ExecServerActivityCommand command = new ExecServerActivityCommand(action);
+		Date dt2 = new Date();
+
+		profileToLog("execServerAction", dt1, dt2, "EXECSERVERACTION", "");
+
 		command.execute();
 	}
 
 	@Override
 	public MainPage getMainPage(final CompositeContext context) throws GeneralException {
+		Date dt1 = new Date();
+
 		SecurityLoggingCommand logCommand =
 			new SecurityLoggingCommand(context, getThreadLocalRequest(), TypeEvent.LOGIN);
 		logCommand.execute();
 
 		MainPageGetCommand command = new MainPageGetCommand(context);
-		return command.execute();
+		MainPage mainPage = command.execute();
+
+		Date dt2 = new Date();
+
+		profileToLog("MainPage", dt1, dt2, "MAINPAGE", "");
+
+		return mainPage;
 	}
 
 	@Override
 	public Plugin getPlugin(final RequestData requestData) throws GeneralException {
+		Date dt1 = new Date();
 		PluginCommand command = new PluginCommand(requestData);
-		return command.execute();
+		Plugin plugin = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog(requestData.getElInfo().getFullId(), dt1, dt2, "PLUGIN", "");
+
+		return plugin;
 	}
 
 	@Override
 	public ResponceData getPluginData(final RequestData requestData) {
+		Date dt1 = new Date();
 		ResponceData responceData = new ResponceData();
 		GetDataPluginCommand command = new GetDataPluginCommand(requestData);
 		ResultPluginData result = command.execute();
 		responceData.setJsonData(result.getData());
+		Date dt2 = new Date();
+
+		profileToLog(requestData.getElInfo().getFullId(), dt1, dt2, "PLUGINDATA", "");
+
 		return responceData;
+	}
+
+	@Override
+	public GridToolBar getGridToolBar(final CompositeContext context,
+			final DataPanelElementInfo elInfo) throws GeneralException {
+		Date dt1 = new Date();
+		GridToolBarCommand command = new GridToolBarCommand(context, elInfo);
+		GridToolBar gtb = command.execute();
+		Date dt2 = new Date();
+
+		profileToLog(elInfo.getFullId(), dt1, dt2, elInfo.getType().toString(), "");
+
+		return gtb;
 	}
 
 	@Override
@@ -166,10 +282,26 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		command.execute();
 	}
 
-	@Override
-	public GridToolBar getGridToolBar(final CompositeContext context,
-			final DataPanelElementInfo elInfo) throws GeneralException {
-		GridToolBarCommand command = new GridToolBarCommand(context, elInfo);
-		return command.execute();
+	private void profileToLog(final String elementId, final Date dtBegin, final Date dtEnd,
+			final String elementType, final String elementSubType) {
+
+		// Формат
+		// [id элемента] [time begin] [time end] [duration in ms] [element type]
+		// [elementsbtype]
+
+		String mess =
+			"["
+					+ elementId
+					+ "] ["
+					+ DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT)
+							.format(dtBegin)
+					+ "] ["
+					+ DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT)
+							.format(dtEnd) + "] "
+					+ String.valueOf(dtEnd.getTime() - dtBegin.getTime()) + " " + elementType
+					+ " " + elementSubType;
+
+		LOGGER.info(mess);
+
 	}
 }
