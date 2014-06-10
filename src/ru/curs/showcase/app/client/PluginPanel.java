@@ -70,6 +70,9 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 				plugin = aPlugin;
 				if (plugin != null) {
+
+					super.onSuccess(plugin);
+
 					fillPluginPanel(aPlugin);
 				}
 			}
@@ -259,6 +262,9 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 				plugin = aPlugin;
 				if (plugin != null) {
+
+					super.onSuccess(plugin);
+
 					fillPluginPanel(aPlugin);
 					getPanel().setHeight("100%");
 
@@ -319,6 +325,9 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 				plugin = aPlugin;
 				if (plugin != null) {
+
+					super.onSuccess(plugin);
+
 					fillPluginPanel(aPlugin);
 					getPanel().setHeight("100%");
 				}

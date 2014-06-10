@@ -53,7 +53,11 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 			raw = gateway.getRawDataAndSettings(getContext(), getElementInfo());
 			factory = new GridFactory(raw, state);
 			factory.setApplyLocalFormatting(applyLocalFormatting);
-			setResult(factory.build());
+
+			Grid grid = factory.build();
+			grid.setOkMessage(getContext().getOkMessage());
+
+			setResult(grid);
 		} else {
 			if (getContext().isFirstLoad()
 					|| (state.isForceLoadSettings() && applyLocalFormatting)) {
@@ -72,7 +76,11 @@ public class GridGetCommand extends DataPanelElementCommand<Grid> {
 			}
 			raw = gateway.getRawData(getContext(), getElementInfo());
 			factory.setSource(raw);
-			setResult(factory.buildStepTwo());
+
+			Grid grid = factory.buildStepTwo();
+			grid.setOkMessage(getContext().getOkMessage());
+
+			setResult(grid);
 		}
 		AppInfoSingleton.getAppInfo().storeElementState(getSessionId(), getElementInfo(),
 				getContext(), state);

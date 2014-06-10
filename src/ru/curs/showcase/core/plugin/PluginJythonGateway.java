@@ -35,7 +35,10 @@ public class PluginJythonGateway extends JythonQuery<JythonDTO> implements HTMLG
 			final DataPanelElementInfo aElementInfo) {
 		context = aContext;
 		elementInfo = aElementInfo;
+
 		runTemplateMethod();
+		context.setOkMessage(getResult().getUserMessage());
+
 		Document data = null;
 		InputStream settings = null;
 		try {

@@ -3,8 +3,8 @@ package ru.curs.showcase.core.jython;
 import java.util.List;
 
 import ru.curs.gwt.datagrid.model.Column;
+import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.core.UserMessage;
 
 import com.ziclix.python.sql.PyConnection;
 

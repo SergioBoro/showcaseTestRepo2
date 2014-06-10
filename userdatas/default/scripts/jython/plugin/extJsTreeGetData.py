@@ -7,6 +7,10 @@ Created on 15.02.2013
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.core.jython import JythonDTO
 import xml.etree.ElementTree as ET
+from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.app.api import MessageType
+from ru.curs.showcase.core import UserMessageFactory
+
 
 # init vars
 main = ""
@@ -39,12 +43,16 @@ def mainproc(attributes):
         pCurValue = root.find('.//curValue')
         if pCurValue!=None and pCurValue.text!=None:
             curValue=' ['+pCurValue.text+']'
+        
+        print "dddddddddddddd"    
+        print pCurValue
+            
     data = u'''
     <items>
 		<item id="'''+parentId+'''1" name="Lazy loaded item '''+parentId+'''1'''+curValue+'''" leaf="false" checked="false"/>
 		<item id="'''+parentId+'''2" name="Lazy loaded item '''+parentId+'''2'''+curValue+'''" leaf="false"/>
     </items>'''
-    res = JythonDTO(data)
+    res = JythonDTO(data, UserMessageFactory().build(555, u"Плагин успешно построен из Jython"))
     return res
 
 if __name__ == "__main__":

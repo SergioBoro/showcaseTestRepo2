@@ -6,6 +6,11 @@ Created on 02.11.2011
 '''
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.core.jython import JythonDTO
+from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.app.api import MessageType
+from ru.curs.showcase.core import UserMessageFactory
+
+
 #from ru.curs.showcase.app.api import UserMessage
 #from ru.curs.showcase.util.xml import XMLUtils
 #from org.xml.sax.helpers import DefaultHandler
@@ -102,7 +107,7 @@ def mainproc():
         </template>
     </chartsettings>
     '''
-    return JythonDTO(data, settings)
+    return JythonDTO(data, settings, UserMessageFactory().build(555, u"График(запрос) успешно построен из Jython"))
 
 if __name__ == "__main__":
     mainproc()

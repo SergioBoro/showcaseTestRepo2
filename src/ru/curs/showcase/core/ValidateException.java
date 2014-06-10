@@ -1,6 +1,6 @@
 package ru.curs.showcase.core;
 
-import ru.curs.showcase.app.api.ExceptionType;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.util.exception.BaseException;
 
 /**

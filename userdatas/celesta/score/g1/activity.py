@@ -1,6 +1,6 @@
 # coding: utf-8
 from g1._g1_orm import testCursor 
-from ru.curs.showcase.core import UserMessage
+from ru.curs.showcase.app.api import UserMessage
 from ru.curs.showcase.app.api import MessageType
 
 def simple(context, main, add, filterinfo, session):
@@ -13,3 +13,4 @@ def simple(context, main, add, filterinfo, session):
     
     msg = u'''Activity was performed'''
     return UserMessage(msg, MessageType.INFO)
+#    return UserMessage(msg, MessageType.ERROR)

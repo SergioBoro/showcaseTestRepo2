@@ -80,6 +80,13 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	@ExcludeFromSerialization
 	private Map<ID, CompositeContext> related = new HashMap<ID, CompositeContext>();
 
+	/**
+	 * "ok"-сообщение.
+	 */
+	@XmlTransient
+	@ExcludeFromSerialization
+	private UserMessage okMessage = null;
+
 	public CompositeContext(final Map<String, List<String>> aParams) {
 		super();
 		addSessionParams(aParams);
@@ -127,6 +134,14 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	@Override
 	public void setFilter(final String aFilter) {
 		filter = aFilter;
+	}
+
+	public UserMessage getOkMessage() {
+		return okMessage;
+	}
+
+	public void setOkMessage(final UserMessage aOkMessage) {
+		okMessage = aOkMessage;
 	}
 
 	/**

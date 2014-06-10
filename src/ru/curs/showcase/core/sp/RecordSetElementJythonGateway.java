@@ -51,7 +51,10 @@ public class RecordSetElementJythonGateway extends JythonQuery<JythonDTO> implem
 		context = aContext;
 		elementInfo = aElInfo;
 		conn = ConnectionFactory.getInstance().acquire();
+
 		runTemplateMethod();
+		context.setOkMessage(getResult().getUserMessage());
+
 		String[] query;
 		if (getResult().getData() != null) {
 			String[] tmp = { getResult().getData() };

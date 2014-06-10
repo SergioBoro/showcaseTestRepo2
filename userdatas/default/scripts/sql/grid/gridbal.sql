@@ -3,6 +3,7 @@
 declare @filters as varchar(1024)
 declare @ordering as varchar(1024)
 
+
 IF OBJECT_ID('tempdb.dbo.#Per') is not null 
 drop table #Per
 IF OBJECT_ID('tempdb.dbo.#Reg_year') is not null 
@@ -224,3 +225,10 @@ set @gridsettings_str=@gridsettings_str+'</columns>
                         </action>
 <properties flip="false" pagesize="15" autoSelectRecordId="16"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>' 
 set    @settings=CAST(@gridsettings_str as xml)
+
+
+SET @return = 555
+SET @error_mes = 'Грид успешно построен'
+
+
+

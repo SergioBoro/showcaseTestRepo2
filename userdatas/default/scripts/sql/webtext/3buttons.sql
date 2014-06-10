@@ -50,3 +50,12 @@ set @settings='<properties>
                        </event>   
                                                                   
                     </properties>'
+	                                
+	                                
+	                                
+SET @return = 555
+SET @error_mes = 'Грид22222222 успешно построен'
+
+
+
+	                                

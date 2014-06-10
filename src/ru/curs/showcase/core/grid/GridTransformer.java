@@ -36,6 +36,7 @@ public final class GridTransformer {
 
 		LiveGridMetadata lgm = new LiveGridMetadata();
 		lgm.setId(grid.getId());
+		lgm.setOkMessage(grid.getOkMessage());
 
 		lgm.setHeader(grid.getHeader());
 		lgm.setFooter(grid.getFooter());

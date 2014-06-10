@@ -56,9 +56,11 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 			@Override
 			public void onSuccess(final Chart achart) {
-
 				chart = achart;
 				if (chart != null) {
+
+					super.onSuccess(chart);
+
 					fillChartPanel(achart);
 				}
 			}
@@ -264,9 +266,11 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 			@Override
 			public void onSuccess(final Chart achart) {
-
 				chart = achart;
 				if (chart != null) {
+
+					super.onSuccess(chart);
+
 					fillChartPanel(achart);
 					getPanel().setHeight("100%");
 
@@ -321,9 +325,11 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 			@Override
 			public void onSuccess(final Chart achart) {
-
 				chart = achart;
 				if (chart != null) {
+
+					super.onSuccess(chart);
+
 					fillChartPanel(achart);
 					getPanel().setHeight("100%");
 				}

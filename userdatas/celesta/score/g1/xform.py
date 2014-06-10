@@ -5,6 +5,10 @@ from ru.curs.showcase.core.jython import JythonDownloadResult
 from ru.curs.showcase.runtime import AppInfoSingleton
 from java.io import FileInputStream
 from java.io import File
+from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.app.api import MessageType
+from ru.curs.showcase.core import UserMessageFactory
+
 
 def main(context, main, add, filterinfo, session, elementId):
     print 'Get xform data from Celesta Python procedure.'
@@ -30,7 +34,7 @@ def main(context, main, add, filterinfo, session, elementId):
     <properties>        
     </properties>
     '''    
-    return JythonDTO(data, settings)
+    return JythonDTO(data, settings, UserMessageFactory().build(555, u"xforms успешно построен из Celesta"))
 
 def save(context, main, add, filterinfo, session, elementId, data):
     print 'Save xform data from Celesta Python procedure.'
@@ -41,6 +45,8 @@ def save(context, main, add, filterinfo, session, elementId, data):
     print 'session "%s".' % session
     print 'elementId "%s".' % elementId
     print 'data "%s".' % data
+    
+    return UserMessageFactory().build(555, u"xforms успешно сохранен из Celesta");
     
 def submit(context, main, add, filterinfo, session, data):
     print 'Submit xform data from Celesta Python procedure.'
@@ -63,6 +69,8 @@ def uploadFile(context, main, add, filterinfo, session, elementId, data, fileNam
     print 'elementId "%s".' % elementId
     print 'data "%s".' % data
     print 'fileName "%s".' % fileName
+    
+    return UserMessageFactory().build(555, u"Файл успешно загружен из Celesta");    
 
 def downloadFile(context, main, add, filterinfo, session, elementId, data):
     print 'Download file xform from Celesta Python procedure.'

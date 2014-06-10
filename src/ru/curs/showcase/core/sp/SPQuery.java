@@ -9,6 +9,7 @@ import javax.xml.transform.dom.DOMSource;
 import org.slf4j.*;
 import org.w3c.dom.Document;
 
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.runtime.*;
@@ -312,7 +313,13 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 			}
 
 			UserMessageFactory factory = new UserMessageFactory();
-			throw new ValidateException(factory.build(errorCode, errMess));
+			UserMessage um = factory.build(errorCode, errMess);
+			if (um.getType() == MessageType.ERROR) {
+				throw new ValidateException(um);
+			} else {
+				context.setOkMessage(um);
+			}
+
 		}
 	}
 

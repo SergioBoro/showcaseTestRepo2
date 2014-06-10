@@ -5,6 +5,7 @@ import java.util.List;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.element.VoidElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.GeoMap;
 import ru.curs.showcase.app.api.grid.*;
@@ -54,11 +55,11 @@ public interface DataServiceAsync {
 	void getMainXForms(AsyncCallback<List<String>> callback);
 
 	void saveXForms(XFormContext context, DataPanelElementInfo element,
-			AsyncCallback<Void> callback);
+			AsyncCallback<VoidElement> callback);
 
 	void getServerCurrentState(CompositeContext context, AsyncCallback<ServerState> callback);
 
-	void execServerAction(Action action, AsyncCallback<Void> callback);
+	void execServerAction(Action action, AsyncCallback<VoidElement> callback);
 
 	void getMainPage(CompositeContext context, AsyncCallback<MainPage> callback);
 

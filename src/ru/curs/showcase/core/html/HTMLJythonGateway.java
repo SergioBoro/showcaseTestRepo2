@@ -31,7 +31,10 @@ public class HTMLJythonGateway extends JythonQuery<JythonDTO> implements HTMLGat
 			final DataPanelElementInfo aElementInfo) {
 		context = aContext;
 		elementInfo = aElementInfo;
+
 		runTemplateMethod();
+		context.setOkMessage(getResult().getUserMessage());
+
 		Document data = null;
 		InputStream settings = null;
 		try {

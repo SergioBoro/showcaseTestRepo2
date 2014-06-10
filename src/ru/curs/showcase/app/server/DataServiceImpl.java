@@ -8,6 +8,7 @@ import org.slf4j.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.element.VoidElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.GeoMap;
 import ru.curs.showcase.app.api.grid.*;
@@ -182,14 +183,16 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public void saveXForms(final XFormContext context, final DataPanelElementInfo element)
+	public VoidElement saveXForms(final XFormContext context, final DataPanelElementInfo element)
 			throws GeneralException {
 		Date dt1 = new Date();
 		XFormSaveCommand command = new XFormSaveCommand(context, element);
-		command.execute();
+		VoidElement ve = command.execute();
 		Date dt2 = new Date();
 
 		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "SAVEXFORMS");
+
+		return ve;
 
 	}
 
@@ -207,14 +210,15 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public void execServerAction(final Action action) throws GeneralException {
+	public VoidElement execServerAction(final Action action) throws GeneralException {
 		Date dt1 = new Date();
 		ExecServerActivityCommand command = new ExecServerActivityCommand(action);
 		Date dt2 = new Date();
+		VoidElement ve = command.execute();
 
 		profileToLog("execServerAction", dt1, dt2, "EXECSERVERACTION", "");
 
-		command.execute();
+		return ve;
 	}
 
 	@Override

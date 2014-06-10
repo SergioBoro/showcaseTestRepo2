@@ -7,7 +7,12 @@ Created on 19.01.2012
 
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.runtime import AppInfoSingleton
+from ru.curs.showcase.app.api.element import  VoidElement
+from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.app.api import MessageType
+from ru.curs.showcase.core import UserMessageFactory
 import codecs
+
 
 # init vars
 source = 'formdata.xml'
@@ -33,7 +38,11 @@ def mainproc():
     f = codecs.open(filename, 'w', 'utf-8')
     f.write(data)
     f.close()
-    return None
+
+    
+#   return None
+    return UserMessageFactory().build(555, u"Сохранение xforms успешно выполнено из Jython")
+
 
 if __name__ == '__main__':
     mainproc()

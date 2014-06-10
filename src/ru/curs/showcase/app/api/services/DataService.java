@@ -5,6 +5,7 @@ import java.util.List;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.element.VoidElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.GeoMap;
 import ru.curs.showcase.app.api.grid.*;
@@ -138,7 +139,8 @@ public interface DataService extends RemoteService {
 	 *            - описание элемента.
 	 * @throws GeneralException
 	 */
-	void saveXForms(XFormContext context, DataPanelElementInfo element) throws GeneralException;
+	VoidElement saveXForms(XFormContext context, DataPanelElementInfo element)
+			throws GeneralException;
 
 	/**
 	 * Возвращает информацию о текущем состоянии сервера и о текущем сеансе.
@@ -158,7 +160,7 @@ public interface DataService extends RemoteService {
 	 * 
 	 * @throws GeneralException
 	 */
-	void execServerAction(Action action) throws GeneralException;
+	VoidElement execServerAction(Action action) throws GeneralException;
 
 	/**
 	 * Возвращает данные для формирования главной страницы.

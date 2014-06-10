@@ -9,6 +9,10 @@ from ru.curs.showcase.core.jython import JythonDTO
 from ru.curs.showcase.runtime import ConnectionFactory
 from java.sql import Types
 from ru.curs.showcase.core.sp import SPUtils
+from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.app.api import MessageType
+from ru.curs.showcase.core import UserMessageFactory
+
 
 # init vars
 main = ""
@@ -50,13 +54,13 @@ def mainproc():
             
             data = SPUtils.createXmlDSForGrid(stmt.getResultSet())
             setting = stmt.getSQLXML(7).getString()
-            return JythonDTO(data, setting)
+            return JythonDTO(data, setting, UserMessageFactory().build(555, u"Грид(запрос) успешно построен из Jython"))
         finally:
             stmt.close()
     finally:
         ConnectionFactory.getInstance().release(conn)
     
-    res = JythonDTO(None, None)
+    res = JythonDTO(None, None, UserMessageFactory().build(555, u"Грид(запрос) успешно построен из Jython"))
     return res
 
 def setSQLXMLParam(stmt, index, value):

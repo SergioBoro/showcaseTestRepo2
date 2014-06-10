@@ -96,6 +96,15 @@ public final class UploadHandler extends AbstractFilesHandler {
 
 	@Override
 	protected void fillResponse() throws IOException {
+
+		getResponse().setCharacterEncoding("UTF-8");
+		getResponse().getWriter().append(
+				ExchangeConstants.OK_MESSAGE_TEXT_BEGIN + getContext().getOkMessage().getText()
+						+ ExchangeConstants.OK_MESSAGE_TEXT_END
+						+ ExchangeConstants.OK_MESSAGE_TYPE_BEGIN
+						+ getContext().getOkMessage().getType()
+						+ ExchangeConstants.OK_MESSAGE_TYPE_END);
+
 		getResponse().setStatus(HttpServletResponse.SC_OK);
 		getResponse().getWriter().close();
 	}

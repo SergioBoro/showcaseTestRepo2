@@ -371,6 +371,9 @@ public class GridPanelGWTTest extends GWTTestCase {
 
 			@Override
 			public void onSuccess(final Grid grid1) {
+
+				super.onSuccess(grid1);
+
 				finishTest();
 			}
 		});

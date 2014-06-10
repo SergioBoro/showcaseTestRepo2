@@ -3,7 +3,7 @@ package ru.curs.showcase.app.api.element;
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.ID;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 
@@ -36,6 +36,11 @@ public abstract class DataPanelElement implements SerializableElement {
 	 */
 	private EventManager<? extends Event> eventManager = initEventManager();
 
+	/**
+	 * "ok"-сообщение.
+	 */
+	private UserMessage okMessage = null;
+
 	public DataPanelElement(final DataPanelElementInfo elInfo) {
 		super();
 		id = elInfo.getId();
@@ -67,6 +72,14 @@ public abstract class DataPanelElement implements SerializableElement {
 
 	protected final void setEventManager(final EventManager<? extends Event> aEventManager) {
 		eventManager = aEventManager;
+	}
+
+	public UserMessage getOkMessage() {
+		return okMessage;
+	}
+
+	public void setOkMessage(final UserMessage aOkMessage) {
+		okMessage = aOkMessage;
 	}
 
 	/**

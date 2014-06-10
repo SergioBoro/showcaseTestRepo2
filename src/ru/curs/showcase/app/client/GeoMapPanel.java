@@ -78,9 +78,11 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 			@Override
 			public void onSuccess(final GeoMap aGeoMap) {
-
 				geoMap = aGeoMap;
 				if (geoMap != null) {
+
+					super.onSuccess(geoMap);
+
 					fillMapPanel(aGeoMap);
 				}
 			}
@@ -398,9 +400,11 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 			@Override
 			public void onSuccess(final GeoMap aGeoMap) {
-
 				geoMap = aGeoMap;
 				if (geoMap != null) {
+
+					super.onSuccess(geoMap);
+
 					fillMapPanel(aGeoMap);
 					getPanel().setHeight("100%");
 
@@ -454,9 +458,11 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 			@Override
 			public void onSuccess(final GeoMap aGeoMap) {
-
 				geoMap = aGeoMap;
 				if (geoMap != null) {
+
+					super.onSuccess(geoMap);
+
 					fillMapPanel(aGeoMap);
 					getPanel().setHeight("100%");
 				}

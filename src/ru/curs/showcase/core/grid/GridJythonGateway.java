@@ -57,7 +57,10 @@ public class GridJythonGateway extends JythonQuery<JythonDTO> implements GridGat
 		this.element = aElement;
 
 		RecordSetElementRawData rawData = new RecordSetElementRawData(aElement, aContext);
+
 		runTemplateMethod();
+		context.setOkMessage(getResult().getUserMessage());
+
 		fillValidatedSettings(rawData, getResult().getSettings());
 		if (rawData.getXmlDS() == null && getResult().getData() != null) {
 			InputStream inData = TextUtils.stringToStream(getResult().getData());

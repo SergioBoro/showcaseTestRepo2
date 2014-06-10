@@ -2,6 +2,8 @@ package ru.curs.showcase.core.event;
 
 import java.util.*;
 
+import ru.curs.showcase.app.api.UserMessage;
+import ru.curs.showcase.app.api.element.VoidElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.core.command.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
@@ -13,7 +15,7 @@ import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
  * @author den
  * 
  */
-public final class ExecServerActivityCommand extends ServiceLayerCommand<Void> {
+public final class ExecServerActivityCommand extends ServiceLayerCommand<VoidElement> {
 
 	private static final String SERVER_ACTION_EXECUTED = "Выполнено действие на сервере: ";
 
@@ -50,12 +52,21 @@ public final class ExecServerActivityCommand extends ServiceLayerCommand<Void> {
 	@Override
 	protected void mainProc() throws Exception {
 		ActivityGateway gateway = null;
+		UserMessage okMessage = null;
 		for (Activity act : action.getServerActivities()) {
 			ServerActivitySelector selector = new ServerActivitySelector(act);
 			gateway = selector.getGateway();
 			gateway.exec(act);
 			LOGGER.info(SERVER_ACTION_EXECUTED + getSerializer().serialize(act));
-		}
-	}
 
+			if ((okMessage == null) && (act.getContext().getOkMessage() != null)) {
+				okMessage = act.getContext().getOkMessage();
+			}
+		}
+
+		VoidElement ve = new VoidElement();
+		ve.setOkMessage(okMessage);
+		setResult(ve);
+
+	}
 }

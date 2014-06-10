@@ -6,6 +6,10 @@ Created on 17.12.2011
 '''
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.core.jython import JythonDTO
+from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.app.api import MessageType
+from ru.curs.showcase.core import UserMessageFactory
+
 
 # init vars
 main = ""
@@ -70,7 +74,7 @@ def mainproc():
     <properties>
     </properties>
     '''
-    res = JythonDTO(data, settings)
+    res = JythonDTO(data, settings, UserMessageFactory().build(555, u"Плагин успешно построен из Jython"))
     return res
 
 if __name__ == "__main__":

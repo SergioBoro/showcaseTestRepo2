@@ -7,7 +7,7 @@ import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.ErrorHandler;
 import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.Options;
 import ru.beta2.extra.gwt.ui.selector.api.SelectorAdditionalData;
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.api.element.DataPanelElement;
+import ru.curs.showcase.app.api.element.*;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.client.*;
@@ -68,11 +68,13 @@ public final class XFormPanelCallbacksEvents {
 				curXFormPanel.getDataService().saveXForms(
 						new XFormContext(curXFormPanel.getContext(), data),
 						curXFormPanel.getElementInfo(),
-						new GWTServiceCallback<Void>(AppCurrContext.getInstance()
+						new GWTServiceCallback<VoidElement>(AppCurrContext.getInstance()
 								.getInternationalizedMessages().xform_save_data_error()) {
 
 							@Override
-							public void onSuccess(final Void result) {
+							public void onSuccess(final VoidElement result) {
+
+								super.onSuccess(result);
 
 								// setEnableDisableState(elementId, true);
 

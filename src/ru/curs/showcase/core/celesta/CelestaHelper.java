@@ -7,8 +7,10 @@ import org.xml.sax.SAXException;
 
 import ru.curs.celesta.*;
 import ru.curs.celesta.showcase.utils.XMLJSONConverter;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.*;
+import ru.curs.showcase.core.jython.JythonDTO;
 import ru.curs.showcase.runtime.*;
 
 /**
@@ -78,10 +80,26 @@ public class CelestaHelper<T> {
 			return null;
 		}
 		if (obj instanceof UserMessage) {
+			// UserMessageFactory factory = new UserMessageFactory();
+			// throw new
+			// ValidateException(factory.build(UserMessage.class.cast(obj)));
+
+			UserMessage um = UserMessage.class.cast(obj);
 			UserMessageFactory factory = new UserMessageFactory();
-			throw new ValidateException(factory.build(UserMessage.class.cast(obj)));
+			if (um.getType() == MessageType.ERROR) {
+				throw new ValidateException(factory.build(um));
+			} else {
+				contex.setOkMessage(um);
+				return null;
+			}
+
 		}
 		if (obj.getClass().isAssignableFrom(resultType)) {
+
+			if (obj instanceof JythonDTO) {
+				contex.setOkMessage(((JythonDTO) obj).getUserMessage());
+			}
+
 			return resultType.cast(obj);
 		} else {
 			throw new CelestaWorkerException("Result is not instance of "

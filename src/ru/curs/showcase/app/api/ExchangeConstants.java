@@ -48,4 +48,9 @@ public final class ExchangeConstants implements SerializableElement {
 
 	public static final String SESSION_NOT_AUTH_SIGN = "SessionNotAuthenticated";
 
+	public static final String OK_MESSAGE_TEXT_BEGIN = "okMessageTextBegin";
+	public static final String OK_MESSAGE_TEXT_END = "okMessageTextEnd";
+	public static final String OK_MESSAGE_TYPE_BEGIN = "okMessageTypeBegin";
+	public static final String OK_MESSAGE_TYPE_END = "okMessageTypeEnd";
+
 }

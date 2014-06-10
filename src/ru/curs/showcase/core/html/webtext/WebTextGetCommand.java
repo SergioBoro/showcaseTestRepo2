@@ -24,7 +24,9 @@ public final class WebTextGetCommand extends DataPanelElementCommand<WebText> {
 		HTMLGateway wtgateway = selector.getGateway();
 		HTMLBasedElementRawData rawWT = wtgateway.getRawData(getContext(), getElementInfo());
 		WebTextFactory builder = new WebTextFactory(rawWT);
-		setResult(builder.build());
+		WebText wt = builder.build();
+		wt.setOkMessage(getContext().getOkMessage());
+		setResult(wt);
 	}
 
 	@Override

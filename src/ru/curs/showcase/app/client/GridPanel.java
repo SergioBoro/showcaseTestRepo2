@@ -271,6 +271,9 @@ public class GridPanel extends BasicElementPanelBasis {
 
 			@Override
 			public void onSuccess(final Grid grid1) {
+
+				super.onSuccess(grid1);
+
 				setDataGridPanelByGrid(grid1, ut);
 
 				ProgressWindow.closeProgressWindow();

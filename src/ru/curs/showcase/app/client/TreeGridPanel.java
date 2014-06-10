@@ -198,6 +198,9 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 
 					@Override
 					public void onSuccess(final LiveGridMetadata aGridMetadata) {
+
+						super.onSuccess(aGridMetadata);
+
 						setDataGridPanelByGrid(aGridMetadata);
 					}
 				});

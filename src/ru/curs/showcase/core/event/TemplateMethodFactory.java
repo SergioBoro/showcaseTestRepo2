@@ -123,6 +123,9 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 	}
 
 	private void postProcess() {
+
+		getResult().setOkMessage(getCallContext().getOkMessage());
+
 		getResult().actualizeActions(getCallContext());
 		Action wrong = getResult().checkActions();
 		if (wrong != null) {

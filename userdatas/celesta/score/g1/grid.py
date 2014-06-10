@@ -1,5 +1,8 @@
 # coding: utf-8
-from g1._g1_orm import testCursor 
+from g1._g1_orm import testCursor
+from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.app.api import MessageType
+from ru.curs.showcase.core import UserMessageFactory
 from ru.curs.showcase.core.jython import JythonDTO
 from ru.curs.showcase.core.jython import JythonDownloadResult
 from ru.curs.gwt.datagrid.model import Column
@@ -38,7 +41,7 @@ def getDataAndSetting(context, main, add, filterinfo, session, elementId, sortCo
       <properties flip="false" pagesize="15" totalCount="0" profile="grid.nowidth.properties"/>
     </gridsettings>'''
     
-    res = JythonDTO(data, settings)
+    res = JythonDTO(data, settings, UserMessageFactory().build(555, u"Грид (обычный) успешно построен из Celesta"))
     return res
 
 def getSetting(context, main, add, filterinfo, session, elementId):
@@ -64,7 +67,7 @@ def getSetting(context, main, add, filterinfo, session, elementId):
       <properties flip="false" pagesize="15" totalCount="0" profile="grid.nowidth.properties"/>
     </gridsettings>'''
     
-    res = JythonDTO(None, settings)
+    res = JythonDTO(None, settings, UserMessageFactory().build(555, u"Грид (Live, metadata) успешно построен из Celesta"))
     return res
 
 def getData(context, main, add, filterinfo, session, elementId, sortColumnList, firstrecord, pagesize):
@@ -89,8 +92,17 @@ def getData(context, main, add, filterinfo, session, elementId, sortColumnList, 
             <file>Файл</file>
         </rec>
     </records>'''
+
+
     
-    res = JythonDTO(data, None)
+#    res = JythonDTO(data, None)
+    
+    
+    res = JythonDTO(data, None, UserMessageFactory().build(555, u"Грид (Live, data) успешно построен из Celesta"))
+    return res
+
+    
+    
     return res
 
 def downloadFile(context, main, add, filterinfo, session, elementId, recordId):

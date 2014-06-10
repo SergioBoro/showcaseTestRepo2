@@ -6,6 +6,10 @@ Created on 19.12.2011
 '''
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.core.jython import JythonDTO
+from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.app.api import MessageType
+from ru.curs.showcase.core import UserMessageFactory
+
 
 # init vars
 main = ""
@@ -39,7 +43,7 @@ def mainproc():
             <name>Тест</name>
         </rec>
     </records>'''
-    res = JythonDTO(data)
+    res = JythonDTO(data, UserMessageFactory().build(555, u"Грид(xmlds) успешно построен из Jython"))
     
     
 #    print 'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'

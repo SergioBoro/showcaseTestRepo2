@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ru.curs.showcase.app.api.MessageType;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.*;

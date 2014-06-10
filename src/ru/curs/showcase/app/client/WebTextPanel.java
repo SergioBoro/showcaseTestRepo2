@@ -81,9 +81,11 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 			@Override
 			public void onSuccess(final WebText awt) {
-
 				webText = awt;
 				if (webText != null) {
+
+					super.onSuccess(webText);
+
 					fillWebTextPanel(webText);
 				}
 			}
@@ -167,9 +169,11 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 			@Override
 			public void onSuccess(final WebText awt) {
-
 				webText = awt;
 				if (webText != null) {
+
+					super.onSuccess(webText);
+
 					fillWebTextPanel(awt);
 					getPanel().setHeight(SIZE_ONE_HUNDRED_PERCENTS);
 
@@ -222,9 +226,11 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 			@Override
 			public void onSuccess(final WebText awt) {
-
 				webText = awt;
 				if (webText != null) {
+
+					super.onSuccess(webText);
+
 					fillWebTextPanel(awt);
 					getPanel().setHeight(SIZE_ONE_HUNDRED_PERCENTS);
 					// onElementLoadEvent(getElementInfo().getId());

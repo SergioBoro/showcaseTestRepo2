@@ -1,6 +1,10 @@
 # coding: utf-8
 from g1._g1_orm import testCursor 
 from ru.curs.showcase.core.jython import JythonDTO
+from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.app.api import MessageType
+from ru.curs.showcase.core import UserMessageFactory
+
 
 def navigator(context, session):
     print 'Get navigator data from Celesta Python procedure.'
@@ -85,4 +89,8 @@ def webtext(context, main, add, filterinfo, session, elementId):
         </event>
     </properties>
     '''    
-    return JythonDTO(data, settings)
+    
+    return JythonDTO(data, settings, UserMessageFactory().build(555, u"WebText успешно построен из Celesta"))
+
+
+

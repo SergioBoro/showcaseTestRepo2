@@ -109,6 +109,9 @@ public class PluginComponentImpl implements PluginComponent {
 			@Override
 			public void onSuccess(final Plugin oPlugin) {
 				if (oPlugin != null) {
+
+					super.onSuccess(oPlugin);
+
 					final String pluginTargetId;
 					Size size = oPlugin.getSize();
 					if (size != null && !size.getAutoSize()) {

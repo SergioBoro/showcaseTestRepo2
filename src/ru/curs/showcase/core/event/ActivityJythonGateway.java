@@ -15,7 +15,9 @@ public class ActivityJythonGateway extends JythonQuery<Void> implements Activity
 	@Override
 	public void exec(final Activity act) {
 		activity = act;
+
 		runTemplateMethod();
+		activity.getContext().setOkMessage(getUserMessage());
 	}
 
 	@Override

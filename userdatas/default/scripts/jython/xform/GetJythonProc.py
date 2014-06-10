@@ -6,6 +6,11 @@ Created on 02.11.2011
 '''
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.core.jython import JythonDTO
+from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.app.api import MessageType
+from ru.curs.showcase.core import UserMessageFactory
+
+
 #from ru.curs.showcase.util.xml import XMLUtils
 #from org.xml.sax.helpers import DefaultHandler
 #from ru.curs.showcase.util import TextUtils
@@ -67,7 +72,7 @@ def mainproc():
                         </action>
                        </event>
                     </properties>'''
-    res = JythonDTO(data, settings)
+    res = JythonDTO(data, settings, UserMessageFactory().build(555, u"xforms успешно построен из Jython"))
     return res
 
 if __name__ == "__main__":

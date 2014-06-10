@@ -7,6 +7,7 @@ import java.util.*;
 
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.element.VoidElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.*;
@@ -58,12 +59,16 @@ public final class ActionExecuter {
 			}
 			ac.setRelated(panelContext);
 
-			dataService.execServerAction(ac, new GWTServiceCallback<Void>(AppCurrContext
+			dataService.execServerAction(ac, new GWTServiceCallback<VoidElement>(AppCurrContext
 					.getInstance().getInternationalizedMessages().error_in_server_activity()) {
 
 				@Override
-				public void onSuccess(final Void fakeRes) {
+				public void onSuccess(final VoidElement ve) {
+
+					super.onSuccess(ve);
+
 					handleClientBlocks(ac);
+
 				}
 
 			});

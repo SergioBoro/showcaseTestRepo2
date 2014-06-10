@@ -56,9 +56,11 @@ function getErrorByIFrame(iframeName)
 			var message = body.innerHTML;
 			if((message.trim() != "") && (message.trim() != "<pre></pre>") && (message.trim() != "<pre style=\"word-wrap: break-word; white-space: pre-wrap;\"></pre>")) {
 				err = message;
+				
+				err = err.replace("<root>", "").replace("</root>", "");
 			}
 		}
-	} 
+	}
 	
 	return err; 
 }
@@ -163,3 +165,5 @@ var eventCallbackChartHandler = function(chartEvent) {
 var eventHandler2 = function(chartEvent) {
    if (chartEvent.type=="onclick") console.debug("2", chartEvent);
 };
+
+

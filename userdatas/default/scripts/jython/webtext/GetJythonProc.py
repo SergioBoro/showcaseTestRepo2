@@ -6,7 +6,9 @@ Created on 02.11.2011
 '''
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.core.jython import JythonDTO
-from ru.curs.showcase.core import UserMessage
+from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.app.api import MessageType
+from ru.curs.showcase.core import UserMessageFactory
 import random
 
 # init vars
@@ -62,7 +64,7 @@ def mainproc():
                         </action>
                        </event>
                     </properties>'''
-    res = JythonDTO(data, settings)
+    res = JythonDTO(data, settings, UserMessageFactory().build(555, u"WebText успешно построен из Jython"))
     return res
 
 if __name__ == "__main__":

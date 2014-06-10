@@ -226,6 +226,9 @@ public class XFormPanel extends BasicElementPanelBasis {
 						.getInternationalizedMessages().xformsErrorGetData()) {
 					@Override
 					public void onSuccess(final XForm aXform) {
+
+						super.onSuccess(aXform);
+
 						setXFormPanelByXForms(aXform);
 					}
 				});

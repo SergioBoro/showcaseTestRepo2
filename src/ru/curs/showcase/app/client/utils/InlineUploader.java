@@ -2,7 +2,7 @@ package ru.curs.showcase.app.client.utils;
 
 import java.util.Map.Entry;
 
-import ru.curs.showcase.app.api.ID;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.client.*;
@@ -147,11 +147,31 @@ public class InlineUploader {
 	public static synchronized void onSubmitComplete(final String iframeName) {
 		Boolean result = true;
 
-		String err = getErrorByIFrame(iframeName);
-		if (err != null) {
-			result = false;
-			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-					.getInternationalizedMessages().xforms_upload_error(), err);
+		String mess = getErrorByIFrame(iframeName);
+		if (mess != null) {
+			if (mess.contains(ExchangeConstants.OK_MESSAGE_TEXT_BEGIN)
+					&& mess.contains(ExchangeConstants.OK_MESSAGE_TEXT_END)) {
+				result = true;
+
+				String textMessage =
+					mess.substring(mess.indexOf(ExchangeConstants.OK_MESSAGE_TEXT_BEGIN)
+							+ ExchangeConstants.OK_MESSAGE_TEXT_BEGIN.length(),
+							mess.lastIndexOf(ExchangeConstants.OK_MESSAGE_TEXT_END));
+
+				String typeMessage =
+					mess.substring(mess.indexOf(ExchangeConstants.OK_MESSAGE_TYPE_BEGIN)
+							+ ExchangeConstants.OK_MESSAGE_TYPE_BEGIN.length(),
+							mess.lastIndexOf(ExchangeConstants.OK_MESSAGE_TYPE_END));
+
+				MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+						.getInternationalizedMessages().okMessage(), textMessage, "",
+						MessageType.valueOf(typeMessage), false);
+
+			} else {
+				result = false;
+				MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+						.getInternationalizedMessages().xforms_upload_error(), mess);
+			}
 		}
 
 		if (submitHandler != null) {

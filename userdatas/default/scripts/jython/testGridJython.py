@@ -5,6 +5,9 @@ Created on 19.12.2011
 @author: bogatov
 '''
 from ru.curs.showcase.core.jython import JythonProc
+from ru.curs.showcase.app.api import UserMessage
+from ru.curs.showcase.app.api import MessageType
+from ru.curs.showcase.core import UserMessageFactory
 from ru.curs.showcase.core.jython import JythonDTO
 
 # init vars
@@ -49,7 +52,12 @@ def mainproc():
       </columns>
       <properties flip="false" pagesize="15" totalCount="0" profile="grid.nowidth.properties"/>
    </gridsettings>'''
-    res = JythonDTO(data, settings)
+    
+
+    
+#   res = JythonDTO(data, settings, UserMessage("555", u"Грид успешно построен из Jython", MessageType.INFO))
+
+    res = JythonDTO(data, settings, UserMessageFactory().build(555, u"Грид успешно построен из Jython"))
     return res
     
 

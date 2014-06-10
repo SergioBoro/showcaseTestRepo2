@@ -138,6 +138,9 @@ public interface constantsShowcase extends Messages {
 	@DefaultMessage("Cancel")
 	String jsFilterCancel();
 
+	@DefaultMessage("Message")
+	String okMessage();
+
 	@DefaultMessage("Пожалуйста, подождите...Идет загрузка данных")
 	String please_wait_data_are_loading();
 

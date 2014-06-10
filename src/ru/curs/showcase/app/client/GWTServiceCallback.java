@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.client;
 
 import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.element.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.utils.AccessToDomModel;
 
@@ -56,6 +57,37 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 			// GeneralServerException.getMessageType(caught);
 
 		}
+
+	}
+
+	@Override
+	public void onSuccess(final T dataPanelElement) {
+		UserMessage okMessage = null;
+		if (dataPanelElement instanceof DataPanelElement) {
+			okMessage = ((DataPanelElement) dataPanelElement).getOkMessage();
+		}
+		if (dataPanelElement instanceof VoidElement) {
+			okMessage = ((VoidElement) dataPanelElement).getOkMessage();
+		}
+		if (okMessage == null) {
+			return;
+		}
+
+		String textMessage = okMessage.getText();
+		if ((textMessage == null) || textMessage.isEmpty()) {
+			return;
+		}
+
+		MessageType typeMessage = okMessage.getType();
+		if (typeMessage == null) {
+			typeMessage = MessageType.INFO;
+		}
+
+		// MessageBox.showSimpleMessage(dataPanelElement.getClass().getName(),
+		// okMessage);
+
+		MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+				.getInternationalizedMessages().okMessage(), textMessage, "", typeMessage, false);
 
 	}
 }

@@ -8,6 +8,7 @@ import org.python.core.*;
 import org.python.util.PythonInterpreter;
 import org.slf4j.*;
 
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.runtime.JythonIterpretatorFactory;
 import ru.curs.showcase.util.TextUtils;
@@ -165,8 +166,10 @@ public abstract class JythonQuery<T> {
 
 	private void checkErrors() {
 		if (getUserMessage() != null) {
-			UserMessageFactory factory = new UserMessageFactory();
-			throw new ValidateException(factory.build(getUserMessage()));
+			if (getUserMessage().getType() == MessageType.ERROR) {
+				UserMessageFactory factory = new UserMessageFactory();
+				throw new ValidateException(factory.build(getUserMessage()));
+			}
 		} else if ((getResult() == null) && (waitningResult())) {
 			throw new JythonException(NO_RESULT_ERROR);
 		}

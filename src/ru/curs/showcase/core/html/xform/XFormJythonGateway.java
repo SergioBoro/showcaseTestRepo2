@@ -2,7 +2,7 @@ package ru.curs.showcase.core.html.xform;
 
 import java.io.*;
 
-import ru.curs.showcase.app.api.ID;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
@@ -121,8 +121,12 @@ public class XFormJythonGateway implements HTMLAdvGateway {
 			JythonErrorResult error = xjuh.getResult();
 			if (error != null && error.getErrorCode() != 0) {
 				UserMessageFactory factory = new UserMessageFactory();
-				throw new ValidateException(
-						factory.build(error.getErrorCode(), error.getMessage()));
+				UserMessage um = factory.build(error.getErrorCode(), error.getMessage());
+				if (um.getType() == MessageType.ERROR) {
+					throw new ValidateException(um);
+				} else {
+					aContext.setOkMessage(um);
+				}
 			}
 		} catch (IOException e) {
 			throw new ServerObjectCreateCloseException(e);
@@ -144,7 +148,10 @@ public class XFormJythonGateway implements HTMLAdvGateway {
 		elementInfo = aElementInfo;
 		data = aData;
 		XFormSaveJythonGateway gateway = new XFormSaveJythonGateway();
+
 		gateway.runTemplateMethod();
+		context.setOkMessage(gateway.getUserMessage());
+
 	}
 
 }
