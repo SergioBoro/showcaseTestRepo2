@@ -10,6 +10,7 @@ from ru.curs.showcase.app.api import MessageType
 from ru.curs.showcase.core import UserMessageFactory
 from ru.curs.showcase.core.jython import JythonDTO
 
+
 # init vars
 main = ""
 add = ""
