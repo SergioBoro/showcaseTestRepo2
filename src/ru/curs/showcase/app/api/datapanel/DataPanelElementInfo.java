@@ -386,7 +386,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 * @return - идентификатор.
 	 */
 	public String getFullId() {
-		return "dpe_" + tab.getDataPanel().getId() + "__" + id;
+		String dataPanelId;
+		if (tab != null && tab.getDataPanel() != null && tab.getDataPanel().getId() != null) {
+			dataPanelId = tab.getDataPanel().getId().toString();
+		} else {
+			dataPanelId = "none";
+		}
+		return "dpe_" + dataPanelId + "__" + id;
 	}
 
 	/**
