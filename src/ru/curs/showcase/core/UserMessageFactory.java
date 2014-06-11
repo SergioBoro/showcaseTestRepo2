@@ -67,20 +67,23 @@ public final class UserMessageFactory {
 
 	private UserMessage internalBuild(final UserMessage initial) {
 		loadMessage(initial.getId());
+		String initialText = initial.getText();
+		if (initialText == null) {
+			initialText = "";
+		}
 		if (userMessage != null) {
 			if (userMessage.getText().indexOf("%s") > -1) {
-				userMessage.setText(String.format(userMessage.getText(), initial.getText()));
+				userMessage.setText(String.format(userMessage.getText(), initialText));
 			} else {
-				userMessage.setText(userMessage.getText() + " " + initial.getText());
+				userMessage.setText(userMessage.getText() + " " + initialText);
 			}
 		} else {
 			if (initial.getId() != null) {
 				userMessage =
-					new UserMessage(String.format("%s (%s)", initial.getText(), initial.getId()),
+					new UserMessage(String.format("%s (%s)", initialText, initial.getId()),
 							initial.getType());
 			} else {
-				userMessage =
-					new UserMessage(initial.getId(), initial.getText(), initial.getType());
+				userMessage = new UserMessage(initial.getId(), initialText, initial.getType());
 			}
 			userMessage.setId(initial.getId());
 		}

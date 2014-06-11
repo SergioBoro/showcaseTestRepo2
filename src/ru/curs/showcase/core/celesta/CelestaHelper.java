@@ -86,8 +86,9 @@ public class CelestaHelper<T> {
 
 			UserMessage um = UserMessage.class.cast(obj);
 			UserMessageFactory factory = new UserMessageFactory();
+			um = factory.build(um);
 			if (um.getType() == MessageType.ERROR) {
-				throw new ValidateException(factory.build(um));
+				throw new ValidateException(um);
 			} else {
 				contex.setOkMessage(um);
 				return null;
