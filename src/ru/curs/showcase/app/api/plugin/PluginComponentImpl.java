@@ -83,7 +83,9 @@ public class PluginComponentImpl implements PluginComponent {
 						postProcessProc);
 			}
 			pluginElInfo.setGetDataProcName(getParam().getDataProcName());
-			// this.elInfo.getTab().add(pluginElInfo);
+
+			this.elInfo.getTab().add(pluginElInfo);
+
 		}
 
 		final Element waitElement = addWaitBlock(renderToId);
