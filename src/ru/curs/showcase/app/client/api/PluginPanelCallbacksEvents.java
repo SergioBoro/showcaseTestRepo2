@@ -142,6 +142,15 @@ public final class PluginPanelCallbacksEvents {
 				this.callbackFn(datas);
 			}
 		}-*/;
+
+		/**
+		 * Базовые параметры передаваемые при построение плагина.
+		 * 
+		 * @return String
+		 */
+		native PluginParam pluginParam()/*-{
+			return this.pluginParam;
+		}-*/;
 	}
 
 	/**
@@ -159,18 +168,27 @@ public final class PluginPanelCallbacksEvents {
 				RequestData requestData = new RequestData();
 				requestData.setContext(currentPanel.getContext());
 
+				/*
+				 * PluginInfo pluginInfo = (PluginInfo) currentPanel
+				 * .getElementInfo() .getTab() .getElementInfoById(
+				 * PluginComponent.PLUGININFO_ID_PREF + param.parentId()); if
+				 * (pluginInfo == null) {
+				 * MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+				 * .getInternationalizedMessages().error_of_plugin_getdata(),
+				 * "Не найден PluginInfo"); return; }
+				 */
+				final String elementPanelId =
+					PluginComponent.PLUGININFO_ID_PREF + param.parentId();
 				PluginInfo pluginInfo =
-					(PluginInfo) currentPanel
-							.getElementInfo()
-							.getTab()
-							.getElementInfoById(
-									PluginComponent.PLUGININFO_ID_PREF + param.parentId());
-				if (pluginInfo == null) {
-					MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-							.getInternationalizedMessages().error_of_plugin_getdata(),
-							"Не найден PluginInfo");
-					return;
+					new PluginInfo(elementPanelId, param.pluginParam().plugin(), param
+							.pluginParam().proc());
+				String postProcessProc = param.pluginParam().postProcessProc();
+				if (postProcessProc != null && !postProcessProc.isEmpty()) {
+					pluginInfo.addPostProcessProc(
+							PluginComponent.ELEMENTPROC_ID_PREF + param.parentId(),
+							postProcessProc);
 				}
+				pluginInfo.setGetDataProcName(param.pluginParam().getDataProcName());
 
 				requestData.setElInfo(pluginInfo);
 				if (param.params() != null) {

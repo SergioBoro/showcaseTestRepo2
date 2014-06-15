@@ -266,6 +266,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 			load:function(operation, callback, scope) {
 				var self = this;
 				gwtGetDataPlugin({
+					pluginParam:pluginParams.all,
 					id:pluginParams.elementPanelId,
 					parentId:parentId,
 					params: Ext.apply(operation.params, {generalFilters:this.generalFilters}),

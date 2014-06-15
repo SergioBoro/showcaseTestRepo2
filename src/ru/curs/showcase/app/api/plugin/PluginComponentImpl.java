@@ -82,9 +82,9 @@ public class PluginComponentImpl implements PluginComponent {
 				pluginElInfo.addPostProcessProc(PluginComponent.ELEMENTPROC_ID_PREF + renderToId,
 						postProcessProc);
 			}
-			pluginElInfo.setGetDataProcName(getParam().getDataProcName());
+			pluginElInfo.setGetDataProcName(pluginParam.getDataProcName());
 
-			this.elInfo.getTab().add(pluginElInfo);
+			// this.elInfo.getTab().add(pluginElInfo);
 
 		}
 
@@ -151,6 +151,7 @@ public class PluginComponentImpl implements PluginComponent {
 								public void onComplete() {
 									removeWaitBlock(waitElement);
 									JSONObject options = new JSONObject(pluginParam.params());
+									options.put("all", new JSONObject(pluginParam));
 									options.put("elementPanelId", new JSONString(getElInfo()
 											.getId().getString()));
 									options.put("generalFilters", new JSONString(
