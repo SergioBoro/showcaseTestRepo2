@@ -147,19 +147,18 @@ public class PluginPanel extends BasicElementPanelBasis {
 			drawPlugin(aPlugin.getCreateProc(), params);
 		} catch (JavaScriptException e) {
 
-			// if (e.getCause() != null) {
-			// MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-			// .getInternationalizedMessages().error_of_plugin_painting(),
-			// e.getMessage(),
-			// GeneralException.generateDetailedInfo(e.getCause()),
-			// GeneralException.getMessageType(e.getCause()),
-			// GeneralException.needDetailedInfo(e.getCause()));
-			// } else {
-			// MessageBox
-			// .showSimpleMessage(AppCurrContext.getInstance()
-			// .getInternationalizedMessages().error_of_plugin_painting(),
-			// e.getMessage());
-			// }
+			if (e.getCause() != null) {
+				MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+						.getInternationalizedMessages().error_of_plugin_painting(),
+						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
+						GeneralException.getMessageType(e.getCause()),
+						GeneralException.needDetailedInfo(e.getCause()));
+			} else {
+				MessageBox
+						.showSimpleMessage(AppCurrContext.getInstance()
+								.getInternationalizedMessages().error_of_plugin_painting(),
+								e.getMessage());
+			}
 
 		}
 
