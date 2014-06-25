@@ -364,7 +364,9 @@ function createExtJsTree(parentId, pluginParams, data) {
 					var selected = [];
 					for (i in records) {
 						var selectedItem = records[i].getData();
-						selected.push(selectedItem);
+						if(selectedItem.id != ""){
+							selected.push(selectedItem);							
+						}
 					}
 					insertXFormByXPath(true, selected, xpath.xpathRoot, xpath.xpathMapping, needClear, pluginParams.elementPanelId+"_");
 				}				
