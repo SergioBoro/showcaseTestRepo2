@@ -15,8 +15,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  * @author den
  * 
  */
-public final class XFormScriptTransformCommand extends
-		XFormContextCommand<String> {
+public final class XFormScriptTransformCommand extends XFormContextCommand<String> {
 
 	public XFormScriptTransformCommand(final XFormContext aContext,
 			final DataPanelElementInfo aElInfo) {
@@ -27,8 +26,7 @@ public final class XFormScriptTransformCommand extends
 	protected void mainProc() throws Exception {
 		String procName = getElementInfo().getProcName();
 
-		SourceSelector<HTMLAdvGateway> selector = new SourceSelector<HTMLAdvGateway>(
-				procName) {
+		SourceSelector<HTMLAdvGateway> selector = new SourceSelector<HTMLAdvGateway>(procName) {
 			@Override
 			public HTMLAdvGateway getGateway() {
 				switch (sourceType()) {
@@ -54,10 +52,14 @@ public final class XFormScriptTransformCommand extends
 		String decodedContent = getContext().getFormData();
 		if (((selector.sourceType() == SourceType.SP) || (selector.sourceType() == SourceType.SQL))
 				&& (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL)) {
-			decodedContent = XMLUtils
-					.xmlServiceSymbolsToNormalWithoutDoubleQuotes(decodedContent);
+			// decodedContent =
+			// XMLUtils.xmlServiceSymbolsToNormalWithoutDoubleQuotes(decodedContent);
+			decodedContent =
+				XMLUtils.xmlServiceSymbolsToNormalWithoutDoubleQuotesAndLess(decodedContent);
 		} else {
-			decodedContent = XMLUtils.xmlServiceSymbolsToNormal(decodedContent);
+			// decodedContent =
+			// XMLUtils.xmlServiceSymbolsToNormal(decodedContent);
+			decodedContent = XMLUtils.xmlServiceSymbolsToNormalWithoutLess(decodedContent);
 		}
 		getContext().setFormData(decodedContent);
 

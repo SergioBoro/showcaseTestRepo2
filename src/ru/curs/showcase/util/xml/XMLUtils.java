@@ -640,6 +640,26 @@ public final class XMLUtils {
 	}
 
 	/**
+	 * Функция, частично заменяющая служебные XML символы на обычные. Важное
+	 * замечание: заменяются только XML, но не HTML символы!
+	 * 
+	 * @param original
+	 *            - исходная строка.
+	 */
+	public static String xmlServiceSymbolsToNormalWithoutLess(final String original) {
+		if (original == null) {
+			return null;
+		}
+		String result = original;
+		result = result.replace("&amp;", "&");
+		result = result.replace("&quot;", "\"");
+		result = result.replace("&apos;", "'");
+		// result = result.replace("&lt;", "<");
+		result = result.replace("&gt;", ">");
+		return result;
+	}
+
+	/**
 	 * Функция, частично заменяющая служебные XML символы на обычные (кроме
 	 * двойных кавычек). Важное замечание: заменяются только XML, но не HTML
 	 * символы!
@@ -656,6 +676,28 @@ public final class XMLUtils {
 		// result = result.replace("&quot;", "\"");
 		result = result.replace("&apos;", "'");
 		result = result.replace("&lt;", "<");
+		result = result.replace("&gt;", ">");
+		return result;
+	}
+
+	/**
+	 * Функция, частично заменяющая служебные XML символы на обычные (кроме
+	 * двойных кавычек). Важное замечание: заменяются только XML, но не HTML
+	 * символы!
+	 * 
+	 * @param original
+	 *            - исходная строка.
+	 */
+	public static String
+			xmlServiceSymbolsToNormalWithoutDoubleQuotesAndLess(final String original) {
+		if (original == null) {
+			return null;
+		}
+		String result = original;
+		result = result.replace("&amp;", "&");
+		// result = result.replace("&quot;", "\"");
+		result = result.replace("&apos;", "'");
+		// result = result.replace("&lt;", "<");
 		result = result.replace("&gt;", ">");
 		return result;
 	}
