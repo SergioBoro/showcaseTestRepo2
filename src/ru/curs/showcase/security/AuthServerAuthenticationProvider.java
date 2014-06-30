@@ -54,20 +54,27 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 			throw new AuthenticationServiceException(SecurityParamsFactory.APP_PROP_READ_ERROR, e1);
 		}
 
-		// AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(sesid,
-		// false);
-		// AppCurrContext.getInstance().setAuthViaAuthServ(false);
-		if ("9152046062107176349L_default_value".equals(pwd)) {
-			// AppCurrContext.getInstance().setAuthViaAuthServ(true);
-			AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(sesid, true);
-			((UserAndSessionDetails) arg1.getDetails()).setAuthViaAuthServer(true);
+		// if ("9152046062107176349L_default_value".equals(pwd)) {
 
-			if (AuthServerUtils.getTheAuthServerAlias() == null) {
-				AuthServerUtils.init(url);
+		if (AppInfoSingleton.getAppInfo().getSessionInfoMap().containsKey(sesid)
+				&& AppInfoSingleton.getAppInfo().getSessionInfoMap().get(sesid)
+						.getAuthServerCrossAppPassword().equals(pwd)) {
+
+			try {
+				// AppCurrContext.getInstance().setAuthViaAuthServ(true);
+				AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(sesid, true);
+				((UserAndSessionDetails) arg1.getDetails()).setAuthViaAuthServer(true);
+
+				if (AuthServerUtils.getTheAuthServerAlias() == null) {
+					AuthServerUtils.init(url);
+				}
+
+				((UserAndSessionDetails) arg1.getDetails()).setUserInfo(AuthServerUtils
+						.getTheAuthServerAlias().isAuthenticated(sesid));
+			} finally {
+				AppInfoSingleton.getAppInfo().getSessionInfoMap().get(sesid)
+						.setAuthServerCrossAppPassword(null);
 			}
-
-			((UserAndSessionDetails) arg1.getDetails()).setUserInfo(AuthServerUtils
-					.getTheAuthServerAlias().isAuthenticated(sesid));
 
 		} else {
 			AuthServerUtils.init(url);

@@ -2,13 +2,14 @@ package ru.curs.showcase.security;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.List;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.xml.transform.TransformerException;
 
 import ru.curs.showcase.app.api.UserInfo;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
@@ -34,7 +35,7 @@ public class ShowcaseIsAuthenticatedServlet extends HttpServlet {
 		if (url != null) {
 			UserInfo ud = connectToAuthServer(url, sesid);
 			if (ud != null) {
-				prepareGoodResponce(response, ud);
+				prepareGoodResponce(response, ud, sesid);
 			}
 		}
 	}
@@ -60,15 +61,31 @@ public class ShowcaseIsAuthenticatedServlet extends HttpServlet {
 		return ud;
 	}
 
-	private void prepareGoodResponce(final HttpServletResponse response, final UserInfo ud)
-			throws IOException {
+	private void prepareGoodResponce(final HttpServletResponse response, final UserInfo ud,
+			final String sesid) throws IOException {
 		response.reset();
 		response.setStatus(ud.getResponseCode());
 		response.setContentType("text/html");
 		response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-		response.getWriter().append(
-				String.format("{login:'%s', pwd:'%s'}", ud.getCaption(),
-						"9152046062107176349L_default_value"));
+
+		final Integer n1 = 10000;
+		final Integer n2 = 100;
+		final Integer n3 = 754658923;
+		Random r = new Random();
+		String pwd =
+			"default_value" + r.nextInt(n3) + "AXCVGTEREW" + r.nextInt(n1) + "nbgfredsc"
+					+ r.nextInt(n2);
+
+		if (AppInfoSingleton.getAppInfo().getSessionInfoMap().get(sesid) == null) {
+			SessionInfo sesInfo = new SessionInfo();
+			sesInfo.setAuthServerCrossAppPassword(pwd);
+			AppInfoSingleton.getAppInfo().getSessionInfoMap().put(sesid, sesInfo);
+		} else {
+			AppInfoSingleton.getAppInfo().getSessionInfoMap().get(sesid)
+					.setAuthServerCrossAppPassword(pwd);
+		}
+
+		response.getWriter().append(String.format("{login:'%s', pwd:'%s'}", ud.getCaption(), pwd));
 
 		response.getWriter().close();
 	}
