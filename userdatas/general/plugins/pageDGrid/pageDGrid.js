@@ -73,7 +73,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 				var div = document.createElement("div");
 				if(object.rowstyle && (object.rowstyle != "")){
 //					div.className = object.rowstyle;
-					node.className = object.rowstyle;					
+//					node.className = object.rowstyle;					
 				}
 				if(this["valueType"] == "DOWNLOAD"){
 					div.innerHTML = "<tbody><tr><td style=\"font-size: 1em;\">"+value+"</td><td  align=\"center\" style=\"vertical-align: middle;\"><button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\"><img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 16px; height: 16px;  \"   ></button></p></td></tr></tbody>";
@@ -227,7 +227,16 @@ function createPageDGrid(elementId, parentId, metadata) {
 				deselectOnRefresh: false,				
 				keepScrollPosition: true
 		}, parentId);
-	    arrGrids[parentId] = grid;	    
+	    arrGrids[parentId] = grid;
+	    
+	    
+	    aspect.after( grid, 'renderRow', function( row, args ){
+			if(args[0].rowstyle && (args[0].rowstyle != "")){
+		    	row.className = args[0].rowstyle;				
+			}
+	    	return row;
+	    });
+	    
 	    
 		for(var k in metadata["columns"]) {
 			grid.styleColumn(metadata["columns"][k]["id"], metadata["columns"][k]["style"]);
