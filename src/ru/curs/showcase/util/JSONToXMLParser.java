@@ -21,12 +21,14 @@ public class JSONToXMLParser {
 	private Transformer t;
 	private final JSONTokener jt;
 	private final JSONObject jo;
+	private StringBuffer sbuf;
 
 	public JSONToXMLParser(String json) throws JSONException {
 		if (json.contains("u\""))
 			json = json.replaceAll("u\"", "\"");
 		if (json.contains("u \'"))
 			json = json.replaceAll("u \'", "\'");
+
 		jt = new JSONTokener(json);
 		jo = new JSONObject(jt);
 	}
@@ -52,6 +54,12 @@ public class JSONToXMLParser {
 		outString = outString.replace(" standalone=\"no\"", "");
 		outString = outString.replaceFirst("[?]>", "?>\r\n");
 		outString = outString.trim();
+
+		if (sbuf != null) {
+			String sBufStr = sbuf.toString();
+			sBufStr = sBufStr.replaceAll("<[?]xml(.)*[?]>", "");
+			return sBufStr;
+		}
 		return outString;
 	}
 
@@ -143,8 +151,38 @@ public class JSONToXMLParser {
 		return doc;
 	}
 
+	private void buildArMultiDoc(JSONObject jsonObj) throws TransformerException, JSONException {
+		String[] ar = JSONObject.getNames(jsonObj);
+		sbuf = new StringBuffer();
+		JSONArray jsonArray = (JSONArray) jsonObj.get(ar[0]);
+
+		JSONObject cell;
+		for (int j = 0; j < jsonArray.length(); j++) {
+
+			Document doc1 = builder.newDocument();
+			Element root = doc1.createElement(ar[0]);
+			doc1.appendChild(root);
+
+			cell = (JSONObject) jsonArray.get(j);
+
+			doc1 = buildDoc(doc1, root, cell);
+
+			t = TransformerFactory.newInstance().newTransformer();
+
+			Writer strWriter = new StringWriter();
+			StreamResult streamRes = new StreamResult(strWriter);
+
+			t.setOutputProperty(OutputKeys.INDENT, "yes");
+			t.transform(new DOMSource(doc1), streamRes);
+
+			String outString = strWriter.toString();
+			sbuf.append(outString);
+		}
+
+	}
+
 	private Document gettingDocRoot(final Document doc, final JSONObject jsonObj)
-			throws JSONException {
+			throws JSONException, TransformerException {
 
 		String[] ar = JSONObject.getNames(jsonObj);
 		Element root = doc.createElement(ar[0]);
@@ -153,6 +191,10 @@ public class JSONToXMLParser {
 		Object value = jsonObj.get(ar[0]);
 
 		comparison(doc, root, value);
+
+		if (value.getClass() == JSONArray.class) {
+			buildArMultiDoc(jsonObj);
+		}
 
 		return doc;
 	}
