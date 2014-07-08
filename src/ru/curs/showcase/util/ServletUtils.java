@@ -151,17 +151,21 @@ public final class ServletUtils {
 	public static String getRequestAsString(final HttpServletRequest request)
 			throws java.io.IOException {
 		InputStream is = request.getInputStream();
-		String line;
 
-		try (BufferedReader requestData =
-			new BufferedReader(new InputStreamReader(is, TextUtils.DEF_ENCODING))) {
-			StringBuffer stringBuffer = new StringBuffer();
-			while ((line = requestData.readLine()) != null) {
-				stringBuffer.append(line);
-			}
-			line = stringBuffer.toString();
-		}
-		return line;
+		return TextUtils.streamToString(is);
+
+		// String line;
+		//
+		// try (BufferedReader requestData =
+		// new BufferedReader(new InputStreamReader(is,
+		// TextUtils.DEF_ENCODING))) {
+		// StringBuffer stringBuffer = new StringBuffer();
+		// while ((line = requestData.readLine()) != null) {
+		// stringBuffer.append(line);
+		// }
+		// line = stringBuffer.toString();
+		// }
+		// return line;
 	}
 
 	/**
