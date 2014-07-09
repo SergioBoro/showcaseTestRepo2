@@ -59,6 +59,10 @@ public class MainPageFrameSelector extends SourceSelector<MainPageFrameGateway> 
 		case FILE:
 			gateway = new MainPageFrameFileGateway();
 			break;
+		case CELESTA:
+			// throw new NotImplementedYetException();
+			gateway = new MainPageFrameCelestaGateway();
+			break;
 		default:
 			gateway = new MainPageFrameDBGateway();
 		}
