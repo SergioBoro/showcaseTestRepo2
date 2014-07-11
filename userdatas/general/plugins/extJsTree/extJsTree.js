@@ -64,7 +64,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 					id:'findButton'+inputId,
 					type:'button',
 					value:'Найти',
-					style:'float:right;',
+					style:'float:right;'
 				}
 			}
 			var filterEl = new Ext.dom.Element(dh.createDom({
@@ -75,7 +75,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 					id:inputId,
 					type:'text',
 					autocomplete:'off',
-					style:'width:'+(parentEl.getWidth()-(pluginParams.core.filter.autofilter==false?60:0)-5)+'px;',
+					style:'width:'+(parentEl.getWidth()-(pluginParams.core.filter.autofilter==false?60:0)-5)+'px;'
 				}, findButton,
 				{
 					tag:'div',
@@ -124,7 +124,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 			
 			var columns =
 				[
-				 {xtype: 'treecolumn', header: 'Название', dataIndex: 'name', flex: 1},
+				 {xtype: 'treecolumn', header: 'Название', dataIndex: 'name', flex: 1}
 				];
 			if(pluginParams.view){
 				columns.push(pluginParams.view);				
