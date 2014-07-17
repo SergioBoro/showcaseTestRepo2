@@ -86,10 +86,12 @@ public class JSONToXMLParser {
 		}
 
 		while (outString.contains("myTagForResolvingProblem")) {
-			outString =
-				outString.replaceAll(
-						"\\s\\s<myTagForResolvingProblem>2</myTagForResolvingProblem>\\s\\s", "");
-
+			String str = "</myTagForResolvingProblem>";
+			int ind = outString.indexOf("<myTagForResolvingProblem>");
+			int ind1 = outString.indexOf("</myTagForResolvingProblem>");
+			String str1 = outString.substring(0, ind).trim();
+			String str2 = outString.substring(ind1 + str.length(), outString.length()).trim();
+			outString = str1 + str2;
 		}
 
 		outString = outString.replaceFirst("<[?]xml(.)*[?]>", "");
