@@ -22,16 +22,37 @@ public class JSONToXMLParser {
 	private final JSONTokener jt;
 	private final JSONObject jo;
 	private StringBuffer sbuf;
+	private Boolean vBool = false;
 
 	public JSONToXMLParser(String json) throws JSONException {
-		if (json.contains("u\""))
-			json = json.replaceAll("u\"", "\"");
-		if (json.contains("u \'"))
-			json = json.replaceAll("u \'", "\'");
-
-		jt = new JSONTokener(json);
+		String json1 = json;
+		if (json.contains("u\"")) {
+			json1 = json.replaceAll("u\"", "\"");
+		}
+		String json2 = json1;
+		if (json1.contains("u \'")) {
+			json2 = json1.replaceAll("u \'", "\'");
+		}
+		String newJson = json2;
+		if (newJson.contains("{}")) {
+			newJson = newJson.replaceAll("[{][}]", "{\"myTagForResolvingProblem\"=\"2\"}");
+		}
+		jt = new JSONTokener(newJson);
 		jo = new JSONObject(jt);
 	}
+
+	/**
+	 * Функция, выдающая результирующую xml-строку.
+	 * 
+	 * @return выходная xml-строка
+	 * @throws TransformerException
+	 *             вызывется в случае ошибки построениея DOM-модели документа,
+	 *             используемой в данном методе.
+	 * @throws ParserConfigurationException
+	 *             вызываtется в случае ошибки парсинга.
+	 * @throws JSONException
+	 *             вызывается в случае ошибки парсинга json-объекта.
+	 */
 
 	public String outPrint() throws TransformerException, JSONException,
 			ParserConfigurationException {
@@ -48,11 +69,10 @@ public class JSONToXMLParser {
 		t = TransformerFactory.newInstance().newTransformer();
 		t.setOutputProperty(OutputKeys.INDENT, "yes");
 		t.transform(new DOMSource(doc), streamRes);
-
 		String outString = strWriter.toString();
 		// outString = outString.replaceFirst("<[?]xml(.)*[?]>", "");
 		outString = outString.replace(" standalone=\"no\"", "");
-		outString = outString.replaceFirst("[?]>", "?>\r\n");
+		// outString = outString.replaceFirst("[?]>", "?>\r\n");
 		outString = outString.trim();
 
 		if (sbuf != null) {
@@ -60,6 +80,21 @@ public class JSONToXMLParser {
 			sBufStr = sBufStr.replaceAll("<[?]xml(.)*[?]>", "");
 			return sBufStr;
 		}
+
+		if (outString.contains("xmlns2") && vBool) {
+			outString = outString.replaceFirst("xmlns2", "xmnls");
+		}
+
+		while (outString.contains("myTagForResolvingProblem")) {
+			outString =
+				outString.replaceAll(
+						"\\s\\s<myTagForResolvingProblem>2</myTagForResolvingProblem>\\s\\s", "");
+
+		}
+
+		outString = outString.replaceFirst("<[?]xml(.)*[?]>", "");
+		outString = outString.trim();
+
 		return outString;
 	}
 
@@ -231,6 +266,11 @@ public class JSONToXMLParser {
 			root.setAttribute(key, change);
 		} else if ("None".equalsIgnoreCase(value.toString())) {
 			root.setAttribute(key, "");
+		} else if ("xmlns".equals(key)) {
+			String key1 = key;
+			key1 = key1 + "2";
+			vBool = true;
+			root.setAttribute(key1, value.toString());
 		} else {
 			root.setAttribute(key, value.toString());
 		}

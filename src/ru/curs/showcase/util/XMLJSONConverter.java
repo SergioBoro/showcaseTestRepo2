@@ -8,6 +8,7 @@ import javax.xml.transform.TransformerException;
 import org.json.*;
 import org.xml.sax.SAXException;
 
+import ru.curs.celesta.showcase.utils.JSONToXMLParser;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 import com.google.gson.JsonElement;
@@ -84,8 +85,14 @@ public final class XMLJSONConverter {
 	public static String jsonToXml(final String json) throws JSONException, TransformerException,
 			ParserConfigurationException {
 		// throw new NotImplementedYetException();
-		JSONToXMLParser jtxParser = new JSONToXMLParser(json);
+		String newJson = "{\"tempRootForResolvingProblem\":" + json + "}";
+		JSONToXMLParser jtxParser = new JSONToXMLParser(newJson);
 		String result = jtxParser.outPrint();
+		String fstr = "<tempRootForResolvingProblem>";
+		// int ind1 = result.indexOf(fstr);
+		int ind2 = result.indexOf("</tempRootForResolvingProblem>");
+		result = result.substring(fstr.length(), ind2 - 1);
+		result = result.trim();
 		return result;
 	}
 
