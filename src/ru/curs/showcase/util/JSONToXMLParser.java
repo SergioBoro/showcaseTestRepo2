@@ -245,7 +245,8 @@ public class JSONToXMLParser {
 			}
 
 			text = doc.createTextNode(change);
-		} else if ("None".equalsIgnoreCase(value.toString())) {
+		} else if ("None".equalsIgnoreCase(value.toString())
+				|| "null".equalsIgnoreCase(value.toString())) {
 			text = null;
 		} else {
 			text = doc.createTextNode(value.toString());
@@ -264,7 +265,8 @@ public class JSONToXMLParser {
 			}
 
 			root.setAttribute(key, change);
-		} else if ("None".equalsIgnoreCase(value.toString())) {
+		} else if ("None".equalsIgnoreCase(value.toString())
+				|| "null".equalsIgnoreCase(value.toString())) {
 			root.setAttribute(key, "");
 		} else if ("xmlns".equals(key)) {
 			String key1 = key;
