@@ -73,6 +73,8 @@ public final class UserDataUtils {
 
 	public static final String CELESTA_PREFIX = "celesta.";
 	public static final String CELESTA_SCORE_PATH = "score.path";
+	public static final String CELESTA_SKIP_DBUPDATE = "skip.dbupdate";
+	public static final String CELESTA_LOG_LOGINS = "log.logins";
 	public static final String CELESTA_DATABASE_CLASSNAME = "database.classname";
 	public static final String CELESTA_DATABASE_CONNECTION = "database.connection";
 	public static final String CELESTA_PYLIB_PATH = "pylib.path";
@@ -333,6 +335,19 @@ public final class UserDataUtils {
 		if (!(scorePath == null || scorePath.isEmpty())) {
 			celestaProps.put(CELESTA_SCORE_PATH, scorePath);
 		}
+
+		// ---
+		String logLogins = generalProps.getProperty(CELESTA_PREFIX + CELESTA_LOG_LOGINS);
+		if (!(logLogins == null || logLogins.isEmpty())) {
+			celestaProps.put(CELESTA_LOG_LOGINS, logLogins);
+		}
+
+		String skipDbupdate = generalProps.getProperty(CELESTA_PREFIX + CELESTA_SKIP_DBUPDATE);
+		if (!(skipDbupdate == null || skipDbupdate.isEmpty())) {
+			celestaProps.put(CELESTA_SKIP_DBUPDATE, skipDbupdate);
+		}
+
+		// -----
 
 		String dbClassname = generalProps.getProperty(CELESTA_PREFIX + CELESTA_DATABASE_CLASSNAME);
 		if (!(dbClassname == null || dbClassname.isEmpty())) {
