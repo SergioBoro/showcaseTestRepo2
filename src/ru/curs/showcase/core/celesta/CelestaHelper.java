@@ -54,7 +54,8 @@ public class CelestaHelper<T> {
 	 */
 	public T runPython(final String sProcName, final Object... additionalParams) {
 		Object[] params = mergeAddAndGeneralParameters(this.contex, additionalParams);
-		String userSID = SessionUtils.getCurrentUserSID();
+		// String userSID = SessionUtils.getCurrentUserSID();
+		String sesID = SessionUtils.getCurrentSessionId();
 		String procName = CelestaUtils.getRealProcName(sProcName);
 		PyObject result;
 
@@ -66,8 +67,9 @@ public class CelestaHelper<T> {
 		}
 
 		try {
-
-			result = Celesta.getInstance().runPython(userSID, procName, params);
+			result = Celesta.getInstance().runPython(sesID, procName, params);
+			// result = Celesta.getInstance().runPython(userSID, procName,
+			// params);
 		} catch (CelestaException ex) {
 			throw new CelestaWorkerException("Ошибка при выполнении jython скрипта celesta '"
 					+ procName + "'", ex);

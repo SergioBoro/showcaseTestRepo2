@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
-import ru.curs.celesta.Celesta;
+import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
@@ -68,6 +68,12 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		HttpSession destrHttpSession = arg0.getSession();
 		LOGGER.info("сессия Showcase удаляется..." + destrHttpSession.getId());
 		AppInfoSingleton.getAppInfo().removeSessionInfo(destrHttpSession.getId());
+
+		try {
+			Celesta.getInstance().logout(destrHttpSession.getId(), false);
+		} catch (CelestaException e) {
+			LOGGER.error("Ошибка разлогинивания сессии в celesta", e);
+		}
 
 		SecurityContext context =
 			(SecurityContext) destrHttpSession

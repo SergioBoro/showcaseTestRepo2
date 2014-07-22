@@ -4,9 +4,11 @@ import java.io.*;
 import java.net.*;
 import java.util.IllegalFormatException;
 
+import org.slf4j.*;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 
+import ru.curs.celesta.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.UserAndSessionDetails;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
@@ -18,6 +20,10 @@ import ru.curs.showcase.util.exception.SettingsFileOpenException;
  * 
  */
 public class AuthServerAuthenticationProvider implements AuthenticationProvider {
+
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(AuthServerAuthenticationProvider.class);
+
 	@Override
 	public Authentication authenticate(final Authentication arg1) {
 
@@ -71,6 +77,7 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 
 				((UserAndSessionDetails) arg1.getDetails()).setUserInfo(AuthServerUtils
 						.getTheAuthServerAlias().isAuthenticated(sesid));
+
 			} finally {
 				AppInfoSingleton.getAppInfo().getSessionInfoMap().get(sesid)
 						.setAuthServerCrossAppPassword(null);
@@ -125,6 +132,15 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 				}
 			}
 			// }
+		}
+
+		// привязки сессии приложения к пользователю celesta
+		try {
+			Celesta.getInstance().login(sesid,
+					((UserAndSessionDetails) arg1.getDetails()).getUserInfo().getSid());
+		} catch (CelestaException e) {
+			// TODO Auto-generated catch block
+			LOGGER.error("Ошибка привязки сессии приложения к пользователю в celesta", e);
 		}
 
 		// Authentication g = new Authentication.;
