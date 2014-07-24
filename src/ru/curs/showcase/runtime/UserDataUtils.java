@@ -1,7 +1,7 @@
 package ru.curs.showcase.runtime;
 
 import java.io.*;
-import java.util.Properties;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import org.slf4j.MDC;
@@ -75,9 +75,14 @@ public final class UserDataUtils {
 	public static final String CELESTA_SCORE_PATH = "score.path";
 	public static final String CELESTA_SKIP_DBUPDATE = "skip.dbupdate";
 	public static final String CELESTA_LOG_LOGINS = "log.logins";
-	public static final String CELESTA_DATABASE_CLASSNAME = "database.classname";
-	public static final String CELESTA_DATABASE_CONNECTION = "database.connection";
+	// public static final String CELESTA_DATABASE_CLASSNAME =
+	// "database.classname";
+	// public static final String CELESTA_DATABASE_CONNECTION =
+	// "database.connection";
 	public static final String CELESTA_PYLIB_PATH = "pylib.path";
+	public static final String CELESTA_CONNECTION_URL = "connection.url";
+	public static final String CELESTA_CONNECTION_USERNAME = "connection.username";
+	public static final String CELESTA_CONNECTION_PASSWORD = "connection.password";
 
 	public static final String OAUTH_PREFIX = "oauth2.";
 	public static final String OAUTH_AUTHORIZE_URL = "authorize.url";
@@ -329,11 +334,16 @@ public final class UserDataUtils {
 		Properties celestaProps = new Properties();
 
 		String scorePath = generalProps.getProperty(CELESTA_PREFIX + CELESTA_SCORE_PATH);
-		// if (scorePath == null || scorePath.isEmpty()) {
-		// return null;
-		// }
+		String scorePathForCelestaPropertiesBasedOnCurrentUserdata =
+			generateScorePathForCelestaPropertiesBasedOnCurrentUserdata();
 		if (!(scorePath == null || scorePath.isEmpty())) {
+			scorePath =
+				scorePath + File.pathSeparator
+						+ scorePathForCelestaPropertiesBasedOnCurrentUserdata;
 			celestaProps.put(CELESTA_SCORE_PATH, scorePath);
+		} else {
+			celestaProps.put(CELESTA_SCORE_PATH,
+					scorePathForCelestaPropertiesBasedOnCurrentUserdata);
 		}
 
 		// ---
@@ -347,25 +357,76 @@ public final class UserDataUtils {
 			celestaProps.put(CELESTA_SKIP_DBUPDATE, skipDbupdate);
 		}
 
+		String connectionURL = generalProps.getProperty(CELESTA_PREFIX + CELESTA_CONNECTION_URL);
+		if (!(connectionURL == null || connectionURL.isEmpty())) {
+			celestaProps.put(CELESTA_CONNECTION_URL, connectionURL);
+		}
+
+		String connectionUsername =
+			generalProps.getProperty(CELESTA_PREFIX + CELESTA_CONNECTION_USERNAME);
+		if (!(connectionUsername == null || connectionUsername.isEmpty())) {
+			celestaProps.put(CELESTA_CONNECTION_USERNAME, connectionUsername);
+		}
+
+		String connectionPassword =
+			generalProps.getProperty(CELESTA_PREFIX + CELESTA_CONNECTION_PASSWORD);
+		if (!(connectionPassword == null || connectionPassword.isEmpty())) {
+			celestaProps.put(CELESTA_CONNECTION_PASSWORD, connectionPassword);
+		}
 		// -----
 
-		String dbClassname = generalProps.getProperty(CELESTA_PREFIX + CELESTA_DATABASE_CLASSNAME);
-		if (!(dbClassname == null || dbClassname.isEmpty())) {
-			celestaProps.put(CELESTA_DATABASE_CLASSNAME, dbClassname);
-		}
+		// String dbClassname = generalProps.getProperty(CELESTA_PREFIX +
+		// CELESTA_DATABASE_CLASSNAME);
+		// if (!(dbClassname == null || dbClassname.isEmpty())) {
+		// celestaProps.put(CELESTA_DATABASE_CLASSNAME, dbClassname);
+		// }
 
-		String dbConnection =
-			generalProps.getProperty(CELESTA_PREFIX + CELESTA_DATABASE_CONNECTION);
-		if (!(dbConnection == null || dbConnection.isEmpty())) {
-			celestaProps.put(CELESTA_DATABASE_CONNECTION, dbConnection);
-		}
+		// String dbConnection =
+		// generalProps.getProperty(CELESTA_PREFIX +
+		// CELESTA_DATABASE_CONNECTION);
+		// if (!(dbConnection == null || dbConnection.isEmpty())) {
+		// celestaProps.put(CELESTA_DATABASE_CONNECTION, dbConnection);
+		// }
 		String pyLibPath = generalProps.getProperty(CELESTA_PREFIX + CELESTA_PYLIB_PATH);
+		String pyLibShowcasePath = JythonIterpretatorFactory.getInstance().getLibJythonDir();
+
 		if (pyLibPath == null || pyLibPath.isEmpty()) {
-			pyLibPath = JythonIterpretatorFactory.getInstance().getLibJythonDir();
+			celestaProps.put(CELESTA_PYLIB_PATH, pyLibShowcasePath);
+		} else {
+			if (!pyLibPath.contains(pyLibShowcasePath)) {
+				pyLibPath = pyLibPath + File.pathSeparator + pyLibShowcasePath;
+			}
+			celestaProps.put(CELESTA_PYLIB_PATH, pyLibPath);
 		}
-		celestaProps.put(CELESTA_PYLIB_PATH, pyLibPath);
 
 		return celestaProps;
+	}
+
+	/**
+	 * Возвращает параметр score.path для челесты, который в этой процедуре
+	 * заполняется автоматически на основе userdata (из всех userdata
+	 * извлекаются пути, ведущие к подпапкам score (фиксированное имя папки), и
+	 * перечисляются через System.pathSeparator.
+	 * 
+	 * @return - String
+	 */
+	private static String generateScorePathForCelestaPropertiesBasedOnCurrentUserdata() {
+
+		String result = "";
+		Collection<UserData> uds = AppInfoSingleton.getAppInfo().getUserdatas().values();
+
+		for (UserData ud : uds) {
+
+			result = result + ud.getPath() + "/score" + File.pathSeparator;
+
+		}
+
+		if (!result.isEmpty()) {
+			result.substring(0, result.length() - 1);
+
+		}
+
+		return result;
 	}
 
 	public static Properties getGeneralOauth2Properties() {
