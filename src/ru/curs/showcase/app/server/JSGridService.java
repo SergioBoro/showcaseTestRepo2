@@ -7,6 +7,7 @@ import javax.servlet.http.*;
 
 import org.json.simple.JSONArray;
 
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.FakeService;
@@ -18,16 +19,33 @@ import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
 
 /**
- * Сервлет получения данных для JSGrid'ов.
+ * Сервлет работы с данными для JSGrid'ов.
  * 
  */
 public class JSGridService extends HttpServlet {
 	private static final long serialVersionUID = 350171574189068907L;
 
-	@SuppressWarnings("unchecked")
+	private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
+
 	@Override
-	protected void service(final HttpServletRequest hreq, final HttpServletResponse hresp)
+	protected void doPost(final HttpServletRequest hreq, final HttpServletResponse hresp)
 			throws ServletException, IOException {
+
+		String editor = hreq.getParameter("editor");
+		if (editor == null) {
+			getData(hreq, hresp);
+		} else {
+			if ("addRecord".equals(editor)) {
+				addRecord(hreq, hresp);
+			} else {
+				saveData(hreq, hresp);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void getData(final HttpServletRequest hreq, final HttpServletResponse hresp)
+			throws IOException {
 
 		String stringGridContext = hreq.getParameter(GridContext.class.getName());
 		if (stringGridContext == null) {
@@ -59,7 +77,7 @@ public class JSGridService extends HttpServlet {
 		// ---------------------------------------------
 
 		hresp.setStatus(HttpServletResponse.SC_OK);
-		hresp.setContentType("application/json");
+		hresp.setContentType(CONTENT_TYPE_APPLICATION_JSON);
 		hresp.setCharacterEncoding("UTF-8");
 
 		// ---------------------------------------------
@@ -111,6 +129,149 @@ public class JSGridService extends HttpServlet {
 		}
 
 		// ---------------------------------------------
+
+	}
+
+	private void saveData(final HttpServletRequest hreq, final HttpServletResponse hresp)
+			throws IOException {
+
+		String stringGridContext = hreq.getParameter(GridContext.class.getName());
+		if (stringGridContext == null) {
+			throw new HTTPRequestRequiredParamAbsentException(GridContext.class.getName());
+		}
+		String stringElementInfo = hreq.getParameter(PluginInfo.class.getName());
+		if (stringElementInfo == null) {
+			throw new HTTPRequestRequiredParamAbsentException(PluginInfo.class.getName());
+		}
+
+		GridContext context = null;
+		PluginInfo element = null;
+		try {
+			context = (GridContext) ServletUtils.deserializeObject(stringGridContext);
+			element = (PluginInfo) ServletUtils.deserializeObject(stringElementInfo);
+		} catch (SerializationException e) {
+			throw GeneralExceptionFactory.build(e);
+		}
+
+		try {
+			GridTransformer.fillFilterContextByFilterInfo(context);
+		} catch (Exception e) {
+			throw GeneralExceptionFactory.build(e);
+		}
+
+		// ---------------------------------------------
+
+		hresp.setStatus(HttpServletResponse.SC_OK);
+		hresp.setContentType(CONTENT_TYPE_APPLICATION_JSON);
+		hresp.setCharacterEncoding("UTF-8");
+
+		// ---------------------------------------------
+
+		String success = "1";
+		UserMessage um = null;
+		boolean refreshAfterSave = false;
+
+		try {
+			GridSaveDataCommand command = new GridSaveDataCommand(context, element);
+			GridSaveResult gridSaveResult = command.execute();
+
+			success = "1";
+			if (gridSaveResult != null) {
+				um = gridSaveResult.getOkMessage();
+				if ((um != null) && (um.getType() == MessageType.ERROR)) {
+					success = "0";
+				}
+				refreshAfterSave = gridSaveResult.isRefreshAfterSave();
+			}
+
+		} catch (Exception e) {
+			success = "0";
+			um = new UserMessage(e.getMessage(), MessageType.ERROR);
+		}
+
+		String message = null;
+		try {
+			message =
+				RPC.encodeResponseForSuccess(FakeService.class.getMethod("serializeUserMessage"),
+						um);
+		} catch (SerializationException | NoSuchMethodException | SecurityException e) {
+			throw GeneralExceptionFactory.build(e);
+		}
+
+		try (PrintWriter writer = hresp.getWriter()) {
+			writer.print("{'success':'" + success + "', 'message':'" + message
+					+ "', 'refreshAfterSave':'" + refreshAfterSave + "'}");
+		}
+
+	}
+
+	private void addRecord(final HttpServletRequest hreq, final HttpServletResponse hresp)
+			throws IOException {
+
+		String stringGridContext = hreq.getParameter(GridContext.class.getName());
+		if (stringGridContext == null) {
+			throw new HTTPRequestRequiredParamAbsentException(GridContext.class.getName());
+		}
+		String stringElementInfo = hreq.getParameter(PluginInfo.class.getName());
+		if (stringElementInfo == null) {
+			throw new HTTPRequestRequiredParamAbsentException(PluginInfo.class.getName());
+		}
+
+		GridContext context = null;
+		PluginInfo element = null;
+		try {
+			context = (GridContext) ServletUtils.deserializeObject(stringGridContext);
+			element = (PluginInfo) ServletUtils.deserializeObject(stringElementInfo);
+		} catch (SerializationException e) {
+			throw GeneralExceptionFactory.build(e);
+		}
+
+		try {
+			GridTransformer.fillFilterContextByFilterInfo(context);
+		} catch (Exception e) {
+			throw GeneralExceptionFactory.build(e);
+		}
+
+		// ---------------------------------------------
+
+		hresp.setStatus(HttpServletResponse.SC_OK);
+		hresp.setContentType(CONTENT_TYPE_APPLICATION_JSON);
+		hresp.setCharacterEncoding("UTF-8");
+
+		// ---------------------------------------------
+
+		String success = "1";
+		UserMessage um = null;
+
+		try {
+			GridAddRecordCommand command = new GridAddRecordCommand(context, element);
+			GridAddRecordResult gridAddRecordResult = command.execute();
+
+			success = "1";
+			if (gridAddRecordResult != null) {
+				um = gridAddRecordResult.getOkMessage();
+				if ((um != null) && (um.getType() == MessageType.ERROR)) {
+					success = "0";
+				}
+			}
+
+		} catch (Exception e) {
+			success = "0";
+			um = new UserMessage(e.getMessage(), MessageType.ERROR);
+		}
+
+		String message = null;
+		try {
+			message =
+				RPC.encodeResponseForSuccess(FakeService.class.getMethod("serializeUserMessage"),
+						um);
+		} catch (SerializationException | NoSuchMethodException | SecurityException e) {
+			throw GeneralExceptionFactory.build(e);
+		}
+
+		try (PrintWriter writer = hresp.getWriter()) {
+			writer.print("{'success':'" + success + "', 'message':'" + message + "'}");
+		}
 
 	}
 

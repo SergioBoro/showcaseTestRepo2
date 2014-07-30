@@ -15,4 +15,15 @@
 <message id="556" type="INFO">
 Составное сообщение + 
 </message>
+
+<message id="557" type="INFO">
+xforms успешно сохранен из Челесты 
+</message>
+
+
+<message id="558" type="ERROR">
+xforms успешно сохранен из Челесты2222222222 
+</message>
+
+
 </messages>

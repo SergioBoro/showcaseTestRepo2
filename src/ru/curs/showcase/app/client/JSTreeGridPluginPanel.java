@@ -3,7 +3,7 @@ package ru.curs.showcase.app.client;
 import java.util.*;
 
 import ru.curs.gwt.datagrid.model.*;
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.*;
@@ -15,6 +15,7 @@ import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.*;
 import com.google.gwt.json.client.*;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
@@ -123,10 +124,12 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	// CHECKSTYLE:OFF
 	private static native void setCallbackJSNIFunction() /*-{
 															$wnd.gwtGetHttpParamsTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtEditorGetHttpParamsTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginEditorGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterLoadDataTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterClickTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
 															$wnd.gwtAfterDoubleClickTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterDoubleClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtProcessFileDownloadTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginProcessFileDownload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtShowMessageTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginShowMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															}-*/;
 
 	// CHECKSTYLE:ON
@@ -301,6 +304,11 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 					.getHaColumnHeader().toString().toLowerCase()));
 		}
 
+		if ((getElementInfo().getProcByType(DataPanelElementProcType.ADDRECORD) == null)
+				&& (getElementInfo().getProcByType(DataPanelElementProcType.SAVE) == null)) {
+			common.put("readonly", new JSONString("true"));
+		}
+
 		metadata.put("common", common);
 
 		JSONObject columns = new JSONObject();
@@ -311,11 +319,18 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 				column.put("parentId", new JSONString(egcc.getParentId()));
 			}
 			column.put("caption", new JSONString(egcc.getCaption()));
+
+			if (egcc.isReadonly()) {
+				column.put("readonly", new JSONString(String.valueOf("true")));
+			}
+
 			String valueType = "";
 			if (egcc.getValueType() != null) {
 				valueType = egcc.getValueType().toString();
 			}
 			column.put("valueType", new JSONString(valueType));
+
+			column.put("editor", new JSONString(getColumnEditor(egcc)));
 
 			column.put("style", new JSONString(getCommonColumnStyle() + getColumnStyle(egcc)));
 
@@ -489,6 +504,18 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		$wnd.eval(procName + "(" + params + ");");
 	}-*/;
 
+	private native void pluginAddRecord(final String procName, final String params) /*-{
+		$wnd.eval(procName + "(" + params + ");");
+	}-*/;
+
+	private native void pluginSave(final String procName, final String params) /*-{
+		$wnd.eval(procName + "(" + params + ");");
+	}-*/;
+
+	private native void pluginRevert(final String procName, final String params) /*-{
+		$wnd.eval(procName + "(" + params + ");");
+	}-*/;
+
 	private native String pluginClipboard(final String procName, final String params) /*-{
 		return $wnd.eval(procName + "(" + params + ");");
 	}-*/;
@@ -569,6 +596,46 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		return params;
 	}
 
+	public JSONObject pluginEditorGetHttpParams(final String data, final String editorType) {
+
+		GridContext gridContext = getDetailedContext();
+		if ("save".equalsIgnoreCase(editorType)) {
+			JSONObject column = new JSONObject();
+			int i = 1;
+			for (final LiveGridColumnConfig egcc : gridMetadata.getColumns()) {
+				column.put("col" + String.valueOf(i), new JSONString(egcc.getCaption()));
+				i++;
+			}
+			String json =
+				"{'savedata':{'data':" + data + ", 'columns':" + column.toString() + "}}";
+			gridContext.setEditorData(json);
+
+			gridContext.setAddRecordData(null);
+		} else {
+			gridContext.setEditorData(null);
+
+			String json =
+				"{'addrecorddata':{'currentRecordId':'" + gridContext.getCurrentRecordId() + "'}}";
+			gridContext.setAddRecordData(json);
+		}
+
+		JSONObject params = new JSONObject();
+		try {
+			params.put("gridContextName", new JSONString(gridContext.getClass().getName()));
+			params.put("gridContextValue",
+					new JSONString(gridContext.toParamForHttpPost(getObjectSerializer())));
+
+			params.put("elementInfoName", new JSONString(getElementInfo().getClass().getName()));
+			params.put("elementInfoValue",
+					new JSONString(getElementInfo().toParamForHttpPost(getObjectSerializer())));
+		} catch (SerializationException e) {
+			params.put("error", new JSONString(AppCurrContext.getInstance()
+					.getInternationalizedMessages().jsGridSerializationError()));
+		}
+
+		return params;
+	}
+
 	public void pluginAfterLoadData(final String stringLiveGridExtradata) {
 		if (!stringLiveGridExtradata.isEmpty()) {
 			try {
@@ -602,6 +669,55 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		}
 
 		afterUpdateGrid();
+	}
+
+	public void pluginShowMessage(final String stringMessage, final String editorType) {
+
+		if (!stringMessage.isEmpty()) {
+			try {
+				UserMessage um =
+					(UserMessage) getObjectSerializer().createStreamReader(stringMessage)
+							.readObject();
+				if (um != null) {
+
+					String textMessage = um.getText();
+					if ((textMessage == null) || textMessage.isEmpty()) {
+						return;
+					}
+
+					MessageType typeMessage = um.getType();
+					if (typeMessage == null) {
+						typeMessage = MessageType.INFO;
+					}
+
+					MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+							.getInternationalizedMessages().okMessage(), textMessage, "",
+							typeMessage, false);
+
+				}
+
+			} catch (SerializationException e) {
+				MessageBox.showSimpleMessage("pluginShowMessage", AppCurrContext.getInstance()
+						.getInternationalizedMessages().jsGridDeserializationError()
+						+ " UserMessage: " + e.getMessage());
+			}
+		}
+
+		// MessageBox.showSimpleMessage(gridContext.getCurrentColumnId(),
+		// gridContext.getCurrentRecordId());
+
+		GridContext gridContext = getDetailedContext();
+		gridContext.setEditorData(null);
+
+		InteractionType it;
+		if ("save".equalsIgnoreCase(editorType)) {
+			it = InteractionType.SAVE_DATA;
+		} else {
+			it = InteractionType.ADD_RECORD;
+		}
+
+		processClick(gridContext.getCurrentRecordId(), gridContext.getCurrentColumnId(), it);
+
 	}
 
 	public void pluginAfterClick(final String recId, final String colId,
@@ -813,6 +929,31 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		return style;
 	}
 
+	private String getColumnEditor(final LiveGridColumnConfig egcc) {
+
+		String editor = egcc.getEditor();
+
+		if (editor == null) {
+			String columnEditor = "text";
+
+			GridValueType valueType = egcc.getValueType();
+			if (valueType.isGeneralizedString()) {
+				columnEditor = "text";
+			}
+			if (valueType.isNumber()) {
+				columnEditor = "number";
+			}
+			if (valueType.isDate()) {
+				columnEditor = "date";
+			}
+
+			editor =
+				"{editOn: has('touch') ? 'click' : 'dblclick', editor: '" + columnEditor + "'}";
+		}
+
+		return editor;
+	}
+
 	/**
 	 * Локальный класс для работы с ячейкой грида в Showcase.
 	 * 
@@ -1007,6 +1148,50 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			});
 			toolBar.add(copyToClipboard);
 		}
+
+		if (getElementInfo().getProcByType(DataPanelElementProcType.ADDRECORD) != null) {
+			final TextButton addRecord =
+				new TextButton("", IconHelper.getImageResource(
+						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_ADD_RECORD), 16, 16));
+			addRecord.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_add_record());
+			addRecord.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+					editorAddRecord();
+				}
+			});
+			toolBar.add(addRecord);
+		}
+		if (getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null) {
+			final TextButton save =
+				new TextButton("", IconHelper.getImageResource(
+						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_SAVE), 16, 16));
+			save.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_save());
+			save.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+					editorSave();
+				}
+			});
+			toolBar.add(save);
+		}
+		if (getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null) {
+			final TextButton revert =
+				new TextButton("", IconHelper.getImageResource(
+						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_REVERT), 16, 16));
+			revert.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_revert());
+			revert.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+					editorRevert();
+				}
+			});
+			toolBar.add(revert);
+		}
+
 	}
 
 	private ToolBarHelper getToolBarHelper() {
@@ -1026,6 +1211,21 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			};
 		}
 		return this.toolBarHelper;
+	}
+
+	private void editorAddRecord() {
+		String params = "'" + getDivIdPlugin() + "'";
+		pluginAddRecord(gridMetadata.getJSInfo().getAddRecordProc(), params);
+	}
+
+	private void editorSave() {
+		String params = "'" + getDivIdPlugin() + "'";
+		pluginSave(gridMetadata.getJSInfo().getSaveProc(), params);
+	}
+
+	private void editorRevert() {
+		String params = "'" + getDivIdPlugin() + "'";
+		pluginRevert(gridMetadata.getJSInfo().getRevertProc(), params);
 	}
 
 }

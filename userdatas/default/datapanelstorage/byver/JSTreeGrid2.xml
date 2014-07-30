@@ -7,14 +7,20 @@
 	<tab id="2" name="JSTreeGrid. Профайлы">
 		<element id="0101" type="grid" subtype="JS_TREE_GRID" proc="exttreegrid_default_profile"
 			plugin="treeDGrid" >
+		    <proc id="11" name="jstreegrid_addrecord1" type="ADDRECORD" />		    
+		    <proc id="12" name="jstreegrid_save1" type="SAVE" />		    
 		</element>
 		<element id="0102" type="grid" subtype="JS_TREE_GRID" proc="exttreegrid_special_profile"
 			plugin="treeDGrid" >
+		    <proc id="11" name="jstreegrid_addrecord1" type="ADDRECORD" />		    
+		    <proc id="12" name="jstreegrid_save1" type="SAVE" />		    
 		</element>
 	</tab>
 	<tab id="3" name="Грид - различные типы столбцов">
 		<element id="00101" type="grid" subtype="JS_TREE_GRID" proc="exttreegrid_col_types"
 			plugin="treeDGrid" >
+		    <proc id="11" name="jstreegrid_addrecord1" type="ADDRECORD" />		    
+		    <proc id="12" name="jstreegrid_save1" type="SAVE" />		    
 		</element>
 	</tab>
 	<tab id="10" name="Геодерево. Таймер">

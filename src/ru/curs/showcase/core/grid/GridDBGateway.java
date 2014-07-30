@@ -1,15 +1,26 @@
 package ru.curs.showcase.core.grid;
 
+import java.io.InputStream;
 import java.sql.*;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import oracle.jdbc.OracleTypes;
+
+import org.json.JSONException;
+import org.xml.sax.Attributes;
+import org.xml.sax.helpers.DefaultHandler;
+
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.sp.SPQuery;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.*;
 
 /**
  * Шлюз к БД для грида.
@@ -38,6 +49,14 @@ public class GridDBGateway extends AbstractGridDBGateway {
 	private static final int FILENAME_INDEX = 8;
 	private static final int FILE_INDEX = 9;
 	private static final int ERROR_MES_INDEX_FILE_DOWNLOAD = 10;
+
+	private static final int SAVE_DATA_INDEX = 7;
+	private static final int OUT_SAVE_DATA_RESULT = 8;
+	private static final int ERROR_MES_INDEX_SAVE_DATA = 9;
+
+	private static final int ADD_RECORD_INDEX = 7;
+	private static final int OUT_ADD_RECORD_RESULT = 8;
+	private static final int ERROR_MES_INDEX_ADD_RECORD = 9;
 
 	public GridDBGateway() {
 		super();
@@ -76,7 +95,9 @@ public class GridDBGateway extends AbstractGridDBGateway {
 	}
 
 	@Override
-	protected String getSqlTemplate(final int index) {
+	// CHECKSTYLE:OFF
+			protected
+			String getSqlTemplate(final int index) {
 		switch (index) {
 		case DATA_AND_SETTINS_QUERY:
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
@@ -89,13 +110,19 @@ public class GridDBGateway extends AbstractGridDBGateway {
 				}
 			}
 		case DATA_ONLY_QUERY:
-			return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?)}";
+			return "{? = call  %s (?, ?, ?, ?, ?, ?, ?, ?)  }";
 		case FILE_DOWNLOAD:
 			return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+		case SAVE_DATA:
+			return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?)}";
+		case ADD_RECORD:
+			return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?)}";
 		default:
 			return null;
 		}
 	}
+
+	// CHECKSTYLE:ON
 
 	@Override
 	protected void prepareForGetData() throws SQLException {
@@ -133,6 +160,10 @@ public class GridDBGateway extends AbstractGridDBGateway {
 			}
 		case FILE_DOWNLOAD:
 			return ERROR_MES_INDEX_FILE_DOWNLOAD;
+		case SAVE_DATA:
+			return ERROR_MES_INDEX_SAVE_DATA;
+		case ADD_RECORD:
+			return ERROR_MES_INDEX_ADD_RECORD;
 		default:
 			return -1;
 		}
@@ -158,6 +189,107 @@ public class GridDBGateway extends AbstractGridDBGateway {
 				execute();
 				OutputStreamDataFile result = getFileForBinaryStream(FILE_INDEX, FILENAME_INDEX);
 				return result;
+			} catch (SQLException e) {
+				throw dbExceptionHandler(e);
+			}
+		}
+	}
+
+	@Override
+	public GridSaveResult saveData(final GridContext context,
+			final DataPanelElementInfo elementInfo) {
+		init(context, elementInfo);
+		setTemplateIndex(SAVE_DATA);
+		DataPanelElementProc proc = elementInfo.getProcByType(DataPanelElementProcType.SAVE);
+		setProcName(proc.getName());
+
+		try (SPQuery query = this) {
+			try {
+				prepareElementStatementWithErrorMes();
+
+				String xml = null;
+				try {
+					xml = XMLJSONConverter.jsonToXml(context.getEditorData());
+				} catch (JSONException | TransformerException | ParserConfigurationException e) {
+					throw new SAXError(e);
+				}
+				xml = xml.substring(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.length()).trim();
+				setSQLXMLParam(SAVE_DATA_INDEX, xml);
+
+				getStatement().registerOutParameter(OUT_SAVE_DATA_RESULT, java.sql.Types.SQLXML);
+
+				execute();
+
+				final GridSaveResult gridSaveResult = new GridSaveResult();
+				gridSaveResult.setOkMessage(context.getOkMessage());
+
+				InputStream is = getInputStreamForXMLParam(OUT_SAVE_DATA_RESULT);
+				if (is != null) {
+					SimpleSAX sax = new SimpleSAX(is, new DefaultHandler() {
+						@Override
+						public void startElement(final String namespaceURI, final String lname,
+								final String qname, final Attributes attrs) {
+							if ("properties".equalsIgnoreCase(qname)) {
+								String s = attrs.getValue("refreshAfterSave");
+								if (s != null) {
+									gridSaveResult.setRefreshAfterSave(Boolean.valueOf(s));
+								}
+							}
+						}
+					}, "результаты сохранения данных грида");
+					sax.parse();
+				}
+
+				return gridSaveResult;
+
+			} catch (SQLException e) {
+				throw dbExceptionHandler(e);
+			}
+		}
+
+	}
+
+	@Override
+	public GridAddRecordResult addRecord(final GridContext context,
+			final DataPanelElementInfo elementInfo) {
+		init(context, elementInfo);
+		setTemplateIndex(ADD_RECORD);
+		DataPanelElementProc proc = elementInfo.getProcByType(DataPanelElementProcType.ADDRECORD);
+		setProcName(proc.getName());
+
+		try (SPQuery query = this) {
+			try {
+				prepareElementStatementWithErrorMes();
+
+				String xml = null;
+				try {
+					xml = XMLJSONConverter.jsonToXml(context.getAddRecordData());
+				} catch (JSONException | TransformerException | ParserConfigurationException e) {
+					throw new SAXError(e);
+				}
+				xml = xml.substring(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.length()).trim();
+				setSQLXMLParam(ADD_RECORD_INDEX, xml);
+
+				getStatement().registerOutParameter(OUT_ADD_RECORD_RESULT, java.sql.Types.SQLXML);
+
+				execute();
+
+				GridAddRecordResult gridAddRecordResult = new GridAddRecordResult();
+				gridAddRecordResult.setOkMessage(context.getOkMessage());
+
+				InputStream is = getInputStreamForXMLParam(OUT_ADD_RECORD_RESULT);
+				if (is != null) {
+					SimpleSAX sax = new SimpleSAX(is, new DefaultHandler() {
+						@Override
+						public void startElement(final String namespaceURI, final String lname,
+								final String qname, final Attributes attrs) {
+						}
+					}, "результаты добавления записи в гриде");
+					sax.parse();
+				}
+
+				return gridAddRecordResult;
+
 			} catch (SQLException e) {
 				throw dbExceptionHandler(e);
 			}

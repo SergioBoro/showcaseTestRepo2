@@ -5,18 +5,25 @@
     <xs:element name="properties">
         <xs:complexType>
             <xs:sequence>
+				<xs:element ref="readonly" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="styleClass" minOccurs="0" maxOccurs="unbounded"/>            
                 <xs:element ref="event" minOccurs="0" maxOccurs="unbounded"/>                
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="readonly">
+        <xs:complexType>
+            <xs:attribute name="value" type="xs:boolean" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    
     <xs:element name="styleClass">
         <xs:complexType>
             <xs:attribute name="name" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
-
+    
     <xs:element name="event">
         <xs:complexType>
             <xs:complexContent>
@@ -39,6 +46,8 @@
             <xs:enumeration value="row_double_click"/>
             <xs:enumeration value="cell_double_click"/>
             <xs:enumeration value="row_selection"/>
+            <xs:enumeration value="row_save_data"/>
+            <xs:enumeration value="row_add_record"/>
         </xs:restriction>
     </xs:simpleType>
 

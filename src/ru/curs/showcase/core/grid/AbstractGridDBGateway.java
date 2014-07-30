@@ -18,6 +18,8 @@ public abstract class AbstractGridDBGateway extends CompBasedElementSPQuery impl
 	protected static final int DATA_AND_SETTINS_QUERY = 0;
 	protected static final int DATA_ONLY_QUERY = 1;
 	protected static final int FILE_DOWNLOAD = 2;
+	protected static final int SAVE_DATA = 3;
+	protected static final int ADD_RECORD = 4;
 
 	public AbstractGridDBGateway() {
 		super();

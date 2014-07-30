@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datapanel>
+	<tab id="1" name="1">
+		<element id="1" type="webtext" transform="bal.xsl" />
+		<element id="6" type="webtext" transform="bal.xsl" />
+	</tab>
+	
+	
+	<tab id="12" name="jsTreeGridEditor">
+ 		<element id="1022" type="GRID"  subtype="JS_TREE_GRID" proc="g1.jsTreeGridEditor.getDataAndSetting.celesta" 
+		    plugin="treeDGrid">
+			<proc id="toolBar" name="g1.jsTreeGridEditor.gridToolBar.celesta" type="TOOLBAR"/>		    
+		    <proc id="11" name="g1.jsTreeGridEditor.gridAddRecord.celesta" type="ADDRECORD" />
+		    <proc id="12" name="g1.jsTreeGridEditor.gridSaveData.celesta" type="SAVE" />		    
+		</element>
+	</tab>
+	
+
+
 	<tab id="01" name="Grid">
 		<element id="0101" type="grid" proc="g1.grid.getDataAndSetting.celesta" />
 	</tab>
@@ -10,4 +27,8 @@
 			<proc id="toolBar" name="g1.grid.gridToolBar.celesta" type="TOOLBAR"/>
 		</element>
 	</tab>
+	
+	
+	
+	
 </datapanel>

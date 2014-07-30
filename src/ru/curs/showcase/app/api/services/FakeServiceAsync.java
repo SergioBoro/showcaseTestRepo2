@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.api.services;
 
 import ru.curs.gwt.datagrid.model.ColumnSet;
+import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.geomap.GeoMapExportSettings;
 import ru.curs.showcase.app.api.grid.LiveGridExtradata;
 
@@ -21,5 +22,7 @@ public interface FakeServiceAsync {
 					AsyncCallback<Void> callback);
 
 	void serializeLiveGridExtradata(AsyncCallback<LiveGridExtradata> callback);
+
+	void serializeUserMessage(AsyncCallback<UserMessage> callback);
 
 }

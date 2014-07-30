@@ -5,7 +5,7 @@ import java.io.*;
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.grid.GridContext;
+import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.celesta.CelestaHelper;
 import ru.curs.showcase.core.jython.*;
@@ -24,7 +24,8 @@ import ru.curs.showcase.util.xml.*;
 public class GridCelestaGateway implements GridGateway {
 
 	private static final String SAX_ERROR_MES = "обобщенные настройки (настройки плюс данные)";
-	private static final String NO_DOWNLOAD_PROC_ERROR = "Не задана процедура скачивания файлов с сервера для linkId=";
+	private static final String NO_DOWNLOAD_PROC_ERROR =
+		"Не задана процедура скачивания файлов с сервера для linkId=";
 
 	@Override
 	public RecordSetElementRawData getRawData(final GridContext aContext,
@@ -50,7 +51,8 @@ public class GridCelestaGateway implements GridGateway {
 		if (element.loadByOneProc()) {
 			Object[] params;
 			if (context.getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
-				params = new Object[3];
+				final int i3 = 3;
+				params = new Object[i3];
 				params[2] = context.getParentId();
 			} else {
 				params = new Object[2];
@@ -69,8 +71,9 @@ public class GridCelestaGateway implements GridGateway {
 				firstrecord = context.getPageInfo().getFirstRecord();
 				pagesize = context.getPageSize();
 			}
-			result = helper.runPython(procName, element.getId().getString(),
-					context.getSortedColumns(), firstrecord, pagesize);
+			result =
+				helper.runPython(procName, element.getId().getString(),
+						context.getSortedColumns(), firstrecord, pagesize);
 		}
 
 		RecordSetElementRawData rawData = new RecordSetElementRawData(element, context);
@@ -90,14 +93,15 @@ public class GridCelestaGateway implements GridGateway {
 			ByteArrayOutputStream osSettings = new ByteArrayOutputStream();
 			ByteArrayOutputStream osDS = new ByteArrayOutputStream();
 
-			SimpleSAX sax = new SimpleSAX(inSettings, new StreamDivider(osSettings, osDS),
-					SAX_ERROR_MES);
+			SimpleSAX sax =
+				new SimpleSAX(inSettings, new StreamDivider(osSettings, osDS), SAX_ERROR_MES);
 			sax.parse();
 
 			InputStream isSettings = StreamConvertor.outputToInputStream(osSettings);
 			String settingsSchemaName = rawData.getElementInfo().getType().getSettingsSchemaName();
 			if (settingsSchemaName != null) {
-				rawData.setSettings(XMLUtils.xsdValidateAppDataSafe(isSettings, settingsSchemaName));
+				rawData.setSettings(XMLUtils
+						.xsdValidateAppDataSafe(isSettings, settingsSchemaName));
 			} else {
 				rawData.setSettings(isSettings);
 			}
@@ -113,14 +117,14 @@ public class GridCelestaGateway implements GridGateway {
 	@Override
 	public OutputStreamDataFile downloadFile(final CompositeContext context,
 			final DataPanelElementInfo elementInfo, final ID aLinkId, final String recordId) {
-		CelestaHelper<JythonDownloadResult> helper = new CelestaHelper<JythonDownloadResult>(
-				context, JythonDownloadResult.class);
+		CelestaHelper<JythonDownloadResult> helper =
+			new CelestaHelper<JythonDownloadResult>(context, JythonDownloadResult.class);
 		DataPanelElementProc proc = elementInfo.getProcs().get(aLinkId);
 		if (proc == null) {
 			throw new IncorrectElementException(NO_DOWNLOAD_PROC_ERROR + aLinkId);
 		}
-		JythonDownloadResult jythonResult = helper.runPython(proc.getName(), elementInfo.getId()
-				.getString(), recordId);
+		JythonDownloadResult jythonResult =
+			helper.runPython(proc.getName(), elementInfo.getId().getString(), recordId);
 
 		InputStream is = jythonResult.getInputStream();
 		if (is == null) {
@@ -141,6 +145,30 @@ public class GridCelestaGateway implements GridGateway {
 	@Override
 	public void continueSession(final ElementSettingsGateway aSessionHolder) {
 		return;
+	}
+
+	@Override
+	public GridSaveResult saveData(final GridContext context,
+			final DataPanelElementInfo elementInfo) {
+		CelestaHelper<GridSaveResult> helper =
+			new CelestaHelper<GridSaveResult>(context, GridSaveResult.class);
+		DataPanelElementProc proc = elementInfo.getProcByType(DataPanelElementProcType.SAVE);
+		GridSaveResult gridSaveResult =
+			helper.runPython(proc.getName(), elementInfo.getId().getString(),
+					context.getEditorData());
+		return gridSaveResult;
+	}
+
+	@Override
+	public GridAddRecordResult addRecord(final GridContext context,
+			final DataPanelElementInfo elementInfo) {
+		CelestaHelper<GridAddRecordResult> helper =
+			new CelestaHelper<GridAddRecordResult>(context, GridAddRecordResult.class);
+		DataPanelElementProc proc = elementInfo.getProcByType(DataPanelElementProcType.ADDRECORD);
+		GridAddRecordResult gridAddRecordResult =
+			helper.runPython(proc.getName(), elementInfo.getId().getString(),
+					context.getAddRecordData());
+		return gridAddRecordResult;
 	}
 
 }

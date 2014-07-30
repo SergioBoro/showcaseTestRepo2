@@ -97,6 +97,9 @@ public final class Constants {
 	public static final String GRID_IMAGE_COPY_TO_CLIPBOARD =
 		"resources/internal/CopyToClipboard.png";
 	public static final String GRID_IMAGE_FILTER = "resources/internal/filter.png";
+	public static final String GRID_IMAGE_ADD_RECORD = "resources/internal/AddRecord.png";
+	public static final String GRID_IMAGE_SAVE = "resources/internal/Save.png";
+	public static final String GRID_IMAGE_REVERT = "resources/internal/Revert.png";
 	public static final String ARROW_FOR_DISCLOSURE_PANEL_CLOSE_IMAGE =
 		"resources/internal/arrow_for_disclosure_panel_close.png";
 	public static final String ARROW_FOR_DISCLOSURE_PANEL_OPEN_IMAGE =

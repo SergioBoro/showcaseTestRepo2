@@ -175,7 +175,9 @@ function tree(column){
 			//		if unspecified, toggles the current state.
 			
 			var row = target.element ? target : grid.row(target),
-				hasTransitionend = has("transitionend");
+				hasTransitionend = has("transitionend"),
+				dfd = new Deferred(),
+				promise = dfd.promise;
 			
 // [KURS
 			if(row.data.HasChildren && (row.data.HasChildren != 1)){
@@ -183,9 +185,16 @@ function tree(column){
 			}
 // KURS]
 			
+			// Resolve initial promise immediately;
+			// promise will be reassigned later if necessary to only resolve
+			// after data is retrieved
+			dfd.resolve();
+			
 			target = row.element;
 			target = target.className.indexOf("dgrid-expando-icon") > -1 ? target :
 				querySelector(".dgrid-expando-icon", target)[0];
+			
+			noTransition = noTransition || column.enableTransitions === false;
 			
 			if(target && target.mayHaveChildren &&
 					(noTransition || expand !== !!this._expanded[row.id])){
@@ -199,7 +208,7 @@ function tree(column){
 // [KURS				
 //				target.innerHTML = grid._columns[0]["renderExpando"](0, true, expanded, row.data).innerHTML; 
 				target.innerHTML = grid.column(target)["renderExpando"](0, true, expanded, row.data).innerHTML;
-// KURS]				
+// KURS]
 				
 				var preloadNode = target.preloadNode,
 					rowElement = row.element,
@@ -228,21 +237,13 @@ function tree(column){
 					if("level" in target){
 						query.level = target.level;
 					}
-					Deferred.when(
-						grid.renderQuery ?
-							grid._trackError(function(){
-								return grid.renderQuery(query, preloadNode, options);
-							}) :
+					// Add the query to the promise chain.
+					promise = promise.then(function(){
+						return grid.renderQuery ?
+							grid.renderQuery(query, preloadNode, options) :
 							grid.renderArray(query(options), preloadNode,
-								"level" in query ? { queryLevel: query.level } : {}),
-						function(){
-							// Expand once results are retrieved, if the row is still expanded.
-							if(grid._expanded[row.id] && hasTransitionend){
-								var scrollHeight = container.scrollHeight;
-								container.style.height = scrollHeight ? scrollHeight + "px" : "auto";
-							}
-						}
-					);
+								"level" in query ? { queryLevel: query.level } : {});
+					});
 					
 					if(hasTransitionend){
 						on(container, hasTransitionend, ontransitionend);
@@ -288,6 +289,7 @@ function tree(column){
 					delete this._expanded[row.id];
 				}
 			}
+			return promise;
 		}; // end function grid.expand
 		
 		// Set up a destroy function on column to tear down the listeners/aspects

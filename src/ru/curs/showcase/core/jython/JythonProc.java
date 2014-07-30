@@ -5,6 +5,7 @@ import java.util.List;
 import ru.curs.gwt.datagrid.model.Column;
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.grid.*;
 
 import com.ziclix.python.sql.PyConnection;
 
@@ -242,4 +243,32 @@ public interface JythonProc {
 	 * @return Void
 	 */
 	Void logging(AbstractCompositeContext context, String sessionId, String ip, String typeEvent);
+
+	/**
+	 * Сохраняет отредактированные данные в гриде.
+	 * 
+	 * @param context
+	 *            - контекст вызова.
+	 * @param elementId
+	 *            - идентификатор создаваемого элемента.
+	 * @param saveData
+	 *            - данные для сохранения.
+	 * @return - результат сохранения.
+	 */
+	GridSaveResult gridSaveData(CompositeContext context, String elementId, String saveData);
+
+	/**
+	 * Добавляет запись в гриде.
+	 * 
+	 * @param context
+	 *            - контекст вызова.
+	 * @param elementId
+	 *            - идентификатор создаваемого элемента.
+	 * @param addRecordData
+	 *            - данные, необходимые для добавления записи.
+	 * @return - результат добавления.
+	 */
+	GridAddRecordResult gridAddRecord(CompositeContext context, String elementId,
+			String addRecordData);
+
 }

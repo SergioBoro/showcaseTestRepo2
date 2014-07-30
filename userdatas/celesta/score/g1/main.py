@@ -27,7 +27,7 @@ def navigator(context, session):
                         <datapanel type="xforms.xml" tab="firstOrCurrent"></datapanel>
                     </action>
                 </level2>
-                <level2 id="113" name="Grid">
+                <level2 id="113" name="Grid"  selectOnLoad="true">
                     <action>
                         <main_context></main_context>
                         <datapanel type="grid.xml" tab="firstOrCurrent"></datapanel>

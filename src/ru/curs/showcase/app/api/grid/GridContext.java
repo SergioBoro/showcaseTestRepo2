@@ -75,6 +75,16 @@ public class GridContext extends CompositeContext {
 	private String parentId = null;
 
 	/**
+	 * Отредактированные данные.
+	 */
+	private String editorData = null;
+
+	/**
+	 * Данные, необходимые для добавления записи.
+	 */
+	private String addRecordData = null;
+
+	/**
 	 * Идентификатор выделенной по клику в гриде записи.
 	 */
 	private String currentRecordId = null;
@@ -279,6 +289,22 @@ public class GridContext extends CompositeContext {
 		parentId = aParentId;
 	}
 
+	public String getEditorData() {
+		return editorData;
+	}
+
+	public void setEditorData(final String aEditorData) {
+		editorData = aEditorData;
+	}
+
+	public String getAddRecordData() {
+		return addRecordData;
+	}
+
+	public void setAddRecordData(final String aAddRecordData) {
+		addRecordData = aAddRecordData;
+	}
+
 	/**
 	 * "Тупое" клонирование объекта, работающее в gwt. Заглушка до тех пор, пока
 	 * в GWT не будет официальной реализации clone.
@@ -293,6 +319,8 @@ public class GridContext extends CompositeContext {
 		res.currentRecordId = currentRecordId;
 		res.isFirstLoad = isFirstLoad.booleanValue();
 		res.parentId = parentId;
+		res.editorData = editorData;
+		res.addRecordData = addRecordData;
 		res.currentDatapanelWidth = currentDatapanelWidth;
 		res.currentDatapanelHeight = currentDatapanelHeight;
 

@@ -44,5 +44,10 @@ public enum DataPanelElementProcType implements SerializableElement {
 	/**
 	 * Имя процедуры для получения данных экспорта в Excel.
 	 */
-	EXPORTDATA
+	EXPORTDATA,
+
+	/**
+	 * Имя процедуры для добавления записи в режиме редактирования грида.
+	 */
+	ADDRECORD
 }

@@ -18921,6 +18921,46 @@ declare @Sql varchar(8000);
 IF (@parent_id IS NULL) OR (LTrim(@parent_id) = '')
 BEGIN
  set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo6_Id as "~~id", cast( ''<properties>
+
+
+			<readonly value="false"/>
+
+<!--
+
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
+
+-->
+
+
+                    <event name="row_save_data">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''_row_save_data</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+
+
+
+                    <event name="row_add_record">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''_row_add_record</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+
+
+
+
+
                     <event name="row_single_click">
                         <action>
                             <main_context>current</main_context>
@@ -18931,6 +18971,9 @@ BEGIN
                             </datapanel>
                         </action>
                     </event>    
+
+
+
                     <event name="row_selection">
                         <action>
                             <main_context>current</main_context>
@@ -18941,12 +18984,26 @@ BEGIN
                             </datapanel>
                         </action>
                     </event>                                       
+
+
             </properties>'' as xml)  as [~~properties] from geo6 where Id IS NOT NULL'
 END
 
 IF (select COUNT(*) from geo6 where geo6_Id = @parent_id) > 0
 BEGIN
  set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo5_Id as "~~id", cast( ''<properties>
+
+
+		<readonly value="false"/>
+
+<!--
+
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
+
+-->
+
+
                     <event name="row_single_click">
                         <action>
                             <main_context>current</main_context>
@@ -18970,9 +19027,20 @@ BEGIN
             </properties>'' as xml)  as [~~properties] from geo5 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)' 
 END
 
+
+
+
+
 IF (select COUNT(*) from geo5 where geo5_Id = @parent_id) > 0
 BEGIN
  set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+
+<!--
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
+-->
+
+
                     <event name="row_single_click">
                         <action>
                             <main_context>current</main_context>
@@ -19002,6 +19070,8 @@ BEGIN
 -- RETURN 1
 
  set @Sql = 'select top(0) Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
                     <event name="row_single_click">
                         <action>
                             <main_context>current</main_context>
@@ -19030,20 +19100,30 @@ IF LTRIM(@sortcols)!=''
 BEGIN
  set @Sql = @Sql+' '+@sortcols
 END
+ELSE
+BEGIN
+ set @Sql = @Sql+' order by Name'
+END
+
+
+--RAISERROR (@Sql, 12, 2)
+
+--set @Sql = 'select top (0) 5 as dd'
 
 EXEC(@Sql)
 
 
 Declare @gridsettings_str as varchar(max)
-set @gridsettings_str='<gridsettings>
+set @gridsettings_str='
+<gridsettings>
         <labels>
             <header><h3 class="testStyle">Хедер tree-грида</h3></header>
             <footer><h3 class="testStyle">Футер tree-грида</h3></footer>            
         </labels>
         <columns>
-			<col id="Название" width="200px"/>        
-			<col id="Код" width="50px"/>
-			<col id="Картинка" width="50px" type="IMAGE"/>
+					<col id="Название" width="200px" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: ''text''}" readonly = "false" />        
+					<col id="Код" width="50px" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner, editorArgs: {smallDelta: 0.1} }"/>
+					<col id="Картинка" width="50px" type="IMAGE" readonly = "false" editor="{editor: CheckBox  }"/>
         </columns>        
 						<action>
 							<main_context>current</main_context>
@@ -19055,6 +19135,11 @@ set @gridsettings_str='<gridsettings>
                         </action>
          <properties flip="false" pagesize="50" gridWidth="1200px" gridHeight="500" autoSelectRecordId="9"  autoSelectRelativeRecord="false" totalCount="0"/></gridsettings>'         
 set @gridsettings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид3 успешно построен';
+--return 555;
+
 
 END
 GO

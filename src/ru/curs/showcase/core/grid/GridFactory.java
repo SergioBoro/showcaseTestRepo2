@@ -158,7 +158,21 @@ public class GridFactory extends CompBasedElementFactory {
 							"refresh"
 									+ TextUtils.capitalizeWord(((PluginInfo) getElementInfo())
 											.getPlugin()));
-
+			result.getJSInfo()
+					.setAddRecordProc(
+							"addRecord"
+									+ TextUtils.capitalizeWord(((PluginInfo) getElementInfo())
+											.getPlugin()));
+			result.getJSInfo()
+					.setSaveProc(
+							"save"
+									+ TextUtils.capitalizeWord(((PluginInfo) getElementInfo())
+											.getPlugin()));
+			result.getJSInfo()
+					.setRevertProc(
+							"revert"
+									+ TextUtils.capitalizeWord(((PluginInfo) getElementInfo())
+											.getPlugin()));
 			result.getJSInfo()
 					.setClipboardProc(
 							"clipboard"
@@ -545,6 +559,14 @@ public class GridFactory extends CompBasedElementFactory {
 				String value = attrs.getValue(TYPE_TAG);
 				col.setValueType(GridValueType.valueOf(value));
 			}
+			if (attrs.getIndex(GeneralConstants.READONLY_TAG) > -1) {
+				String value = attrs.getValue(GeneralConstants.READONLY_TAG);
+				col.setReadonly(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex(GeneralConstants.EDITOR_TAG) > -1) {
+				String value = attrs.getValue(GeneralConstants.EDITOR_TAG);
+				col.setEditor(value);
+			}
 			if (attrs.getIndex(LINK_ID_TAG) > -1) {
 				String value = attrs.getValue(LINK_ID_TAG);
 				col.setLinkId(value);
@@ -916,23 +938,35 @@ public class GridFactory extends CompBasedElementFactory {
 			@Override
 			public Object handleStartTag(final String aNamespaceURI, final String aLname,
 					final String aQname, final Attributes attrs) {
-				String value;
-				if (record.getAttributes().getValue(GeneralConstants.STYLE_CLASS_TAG) == null) {
+
+				if (record.getAttributes() == ru.curs.gwt.datagrid.model.Attributes.EMPTY) {
 					initRecAttrs(record);
-					value = attrs.getValue(NAME_TAG);
-				} else {
-					value =
-						record.getAttributes().getValue(GeneralConstants.STYLE_CLASS_TAG) + " "
-								+ attrs.getValue(NAME_TAG);
 				}
 
-				record.getAttributes().setValue(GeneralConstants.STYLE_CLASS_TAG, value);
+				if (aQname.equalsIgnoreCase(GeneralConstants.STYLE_CLASS_TAG)) {
+					String value;
+					if (record.getAttributes().getValue(GeneralConstants.STYLE_CLASS_TAG) == null) {
+						value = attrs.getValue(NAME_TAG);
+					} else {
+						value =
+							record.getAttributes().getValue(GeneralConstants.STYLE_CLASS_TAG)
+									+ " " + attrs.getValue(NAME_TAG);
+					}
+					record.getAttributes().setValue(GeneralConstants.STYLE_CLASS_TAG, value);
+				}
+
+				if (aQname.equalsIgnoreCase(GeneralConstants.READONLY_TAG)) {
+					String value = attrs.getValue(VALUE_TAG);
+					record.getAttributes().setValue(GeneralConstants.READONLY_TAG, value);
+				}
+
 				return null;
 			}
 
 			@Override
 			protected String[] getStartTags() {
-				String[] tags = { GeneralConstants.STYLE_CLASS_TAG };
+				String[] tags =
+					{ GeneralConstants.STYLE_CLASS_TAG, GeneralConstants.READONLY_TAG };
 				return tags;
 			}
 

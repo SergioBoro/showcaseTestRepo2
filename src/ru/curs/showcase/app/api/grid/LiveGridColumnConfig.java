@@ -20,6 +20,10 @@ public class LiveGridColumnConfig implements SerializableElement {
 	@XmlTransient
 	private String caption = null;
 	@XmlAttribute
+	private boolean readonly = false;
+	@XmlAttribute
+	private String editor = null;
+	@XmlAttribute
 	private Integer width = null;
 
 	@XmlTransient
@@ -73,6 +77,22 @@ public class LiveGridColumnConfig implements SerializableElement {
 
 	public void setCaption(final String caption1) {
 		this.caption = caption1;
+	}
+
+	public boolean isReadonly() {
+		return readonly;
+	}
+
+	public void setReadonly(final boolean aReadonly) {
+		readonly = aReadonly;
+	}
+
+	public String getEditor() {
+		return editor;
+	}
+
+	public void setEditor(final String aEditor) {
+		editor = aEditor;
 	}
 
 	public HorizontalAlignment getHorizontalAlignment() {

@@ -5,7 +5,7 @@ import java.io.*;
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.grid.GridContext;
+import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.FileIsAbsentInDBException;
 import ru.curs.showcase.core.jython.*;
 import ru.curs.showcase.core.sp.*;
@@ -156,6 +156,23 @@ public class GridJythonGateway extends JythonQuery<JythonDTO> implements GridGat
 	@Override
 	protected String getJythonProcName() {
 		return element.getProcName();
+	}
+
+	@Override
+	public GridSaveResult
+			saveData(final GridContext aContext, final DataPanelElementInfo aElement) {
+		GridJythonSaveDataHelper saveDataHelper = new GridJythonSaveDataHelper(aContext, aElement);
+		saveDataHelper.runTemplateMethod();
+		return saveDataHelper.getResult();
+	}
+
+	@Override
+	public GridAddRecordResult addRecord(final GridContext aContext,
+			final DataPanelElementInfo aElement) {
+		GridJythonAddRecordHelper addRecordHelper =
+			new GridJythonAddRecordHelper(aContext, aElement);
+		addRecordHelper.runTemplateMethod();
+		return addRecordHelper.getResult();
 	}
 
 }

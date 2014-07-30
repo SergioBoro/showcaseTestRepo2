@@ -204,6 +204,15 @@ public interface constantsShowcase extends Messages {
 	@DefaultMessage("Фильтр")
 	String grid_caption_filter();
 
+	@DefaultMessage("Добавить запись")
+	String grid_caption_add_record();
+
+	@DefaultMessage("Сохранить изменения")
+	String grid_caption_save();
+
+	@DefaultMessage("Отменить изменения")
+	String grid_caption_revert();
+
 	@DefaultMessage("Начат экспорт в Excel. Это может занять несколько минут. Кликните сюда, чтобы скрыть сообщение")
 			String grid_message_popup_export_to_excel();
 

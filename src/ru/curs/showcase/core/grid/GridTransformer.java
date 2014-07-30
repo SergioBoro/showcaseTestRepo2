@@ -62,6 +62,10 @@ public final class GridTransformer {
 
 			column.setParentId(c.getParentId());
 
+			column.setReadonly(c.isReadonly());
+
+			column.setEditor(c.getEditor());
+
 			column.setHorizontalAlignment(c.getHorizontalAlignment());
 
 			column.setValueType(c.getValueType());
@@ -128,6 +132,9 @@ public final class GridTransformer {
 
 			lgm.setRowStyle(rec.getAttributes().getValue(
 					ru.beta2.extra.gwt.ui.GeneralConstants.STYLE_CLASS_TAG));
+
+			lgm.setReadOnly(rec.getAttributes().getValue(
+					ru.beta2.extra.gwt.ui.GeneralConstants.READONLY_TAG));
 
 			int index = 0;
 			for (Column c : grid.getDataSet().getColumnSet().getColumnsByIndex()) {
@@ -260,6 +267,9 @@ public final class GridTransformer {
 
 			tgm.setRowStyle(rec.getAttributes().getValue(
 					ru.beta2.extra.gwt.ui.GeneralConstants.STYLE_CLASS_TAG));
+
+			tgm.setReadOnly(rec.getAttributes().getValue(
+					ru.beta2.extra.gwt.ui.GeneralConstants.READONLY_TAG));
 
 			int index = 0;
 			for (Column c : grid.getDataSet().getColumnSet().getColumnsByIndex()) {

@@ -5,6 +5,7 @@ import java.sql.*;
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.sp.MSSQLExecGateway;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
@@ -113,6 +114,17 @@ public class GridMSSQLExecGateway extends AbstractGridDBGateway {
 	@Override
 	protected int getMainContextIndex() {
 		return MAIN_CONTEXT_INDEX;
+	}
+
+	@Override
+	public GridSaveResult saveData(final GridContext context, final DataPanelElementInfo element) {
+		return null;
+	}
+
+	@Override
+	public GridAddRecordResult addRecord(final GridContext context,
+			final DataPanelElementInfo element) {
+		return null;
 	}
 
 }

@@ -53,6 +53,14 @@ public class LiveGridModel implements Serializable {
 		set("rowstyle", rowstyle);
 	}
 
+	public String getReadOnly() {
+		return (String) get("readonly");
+	}
+
+	public void setReadOnly(final String readonly) {
+		set("readonly", readonly);
+	}
+
 	@Override
 	public boolean equals(final Object obj) {
 		if ((obj != null) && (obj instanceof LiveGridModel)) {

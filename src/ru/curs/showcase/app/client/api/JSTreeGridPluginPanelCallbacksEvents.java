@@ -35,6 +35,11 @@ public final class JSTreeGridPluginPanelCallbacksEvents {
 
 	// CHECKSTYLE:ON
 
+	public static JSONObject pluginEditorGetHttpParams(final String pluginId, final String data,
+			final String editorType) {
+		return getCurrentPanel(pluginId).pluginEditorGetHttpParams(data, editorType);
+	}
+
 	public static void pluginAfterLoadData(final String pluginId,
 			final String stringLiveGridExtradata) {
 		getCurrentPanel(pluginId).pluginAfterLoadData(stringLiveGridExtradata);
@@ -53,6 +58,11 @@ public final class JSTreeGridPluginPanelCallbacksEvents {
 	public static void pluginProcessFileDownload(final String pluginId, final String recId,
 			final String colId) {
 		getCurrentPanel(pluginId).pluginProcessFileDownload(recId, colId);
+	}
+
+	public static void pluginShowMessage(final String pluginId, final String stringMessage,
+			final String editorType) {
+		getCurrentPanel(pluginId).pluginShowMessage(stringMessage, editorType);
 	}
 
 }

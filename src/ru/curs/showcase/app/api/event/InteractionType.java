@@ -29,5 +29,18 @@ public enum InteractionType implements SerializableElement {
 	 * Выделение элемента. Используется в частности для грида - запись
 	 * выделяется с помощью специального столбца-селектора.
 	 */
-	SELECTION
+	SELECTION,
+
+	/**
+	 * Сохранение данных.
+	 * 
+	 */
+	SAVE_DATA,
+
+	/**
+	 * Добавление записи.
+	 * 
+	 */
+	ADD_RECORD
+
 }

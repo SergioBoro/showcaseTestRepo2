@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.api.services;
 
 import ru.curs.gwt.datagrid.model.ColumnSet;
+import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.geomap.GeoMapExportSettings;
 import ru.curs.showcase.app.api.grid.LiveGridExtradata;
 
@@ -17,5 +18,7 @@ public interface FakeService extends RemoteService {
 	void serializeGeoMapExportSettings(GeoMapExportSettings settings);
 
 	LiveGridExtradata serializeLiveGridExtradata();
+
+	UserMessage serializeUserMessage();
 
 }
