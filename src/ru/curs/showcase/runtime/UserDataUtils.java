@@ -71,6 +71,7 @@ public final class UserDataUtils {
 	private static final String INDEX_TITLE = "index.title";
 	private static final String LOGIN_TITLE = "login.title";
 
+	public static final String RDBMS_PREFIX = "rdbms.";
 	public static final String CELESTA_PREFIX = "celesta.";
 	public static final String CELESTA_SCORE_PATH = "score.path";
 	public static final String CELESTA_SKIP_DBUPDATE = "skip.dbupdate";
@@ -357,21 +358,21 @@ public final class UserDataUtils {
 			celestaProps.put(CELESTA_SKIP_DBUPDATE, skipDbupdate);
 		}
 
-		String connectionURL = generalProps.getProperty(CELESTA_PREFIX + CELESTA_CONNECTION_URL);
+		String connectionURL = generalProps.getProperty(RDBMS_PREFIX + CELESTA_CONNECTION_URL);
 		if (!(connectionURL == null || connectionURL.isEmpty())) {
-			celestaProps.put(CELESTA_CONNECTION_URL, connectionURL);
+			celestaProps.put(RDBMS_PREFIX + CELESTA_CONNECTION_URL, connectionURL);
 		}
 
 		String connectionUsername =
-			generalProps.getProperty(CELESTA_PREFIX + CELESTA_CONNECTION_USERNAME);
+			generalProps.getProperty(RDBMS_PREFIX + CELESTA_CONNECTION_USERNAME);
 		if (!(connectionUsername == null || connectionUsername.isEmpty())) {
-			celestaProps.put(CELESTA_CONNECTION_USERNAME, connectionUsername);
+			celestaProps.put(RDBMS_PREFIX + CELESTA_CONNECTION_USERNAME, connectionUsername);
 		}
 
 		String connectionPassword =
-			generalProps.getProperty(CELESTA_PREFIX + CELESTA_CONNECTION_PASSWORD);
+			generalProps.getProperty(RDBMS_PREFIX + CELESTA_CONNECTION_PASSWORD);
 		if (!(connectionPassword == null || connectionPassword.isEmpty())) {
-			celestaProps.put(CELESTA_CONNECTION_PASSWORD, connectionPassword);
+			celestaProps.put(RDBMS_PREFIX + CELESTA_CONNECTION_PASSWORD, connectionPassword);
 		}
 		// -----
 
