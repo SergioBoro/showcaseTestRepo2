@@ -389,6 +389,8 @@ public final class UserDataUtils {
 		// }
 		String pyLibPath = generalProps.getProperty(CELESTA_PREFIX + CELESTA_PYLIB_PATH);
 		String pyLibShowcasePath = JythonIterpretatorFactory.getInstance().getLibJythonDir();
+		File f = new File(pyLibShowcasePath);
+		pyLibShowcasePath = f.getAbsolutePath();
 
 		if (pyLibPath == null || pyLibPath.isEmpty()) {
 			celestaProps.put(CELESTA_PYLIB_PATH, pyLibShowcasePath);
@@ -417,12 +419,14 @@ public final class UserDataUtils {
 
 		for (UserData ud : uds) {
 
-			result = result + ud.getPath() + "/score" + File.pathSeparator;
+			File f = new File(ud.getPath());
+
+			result = result + f.getAbsolutePath() + File.separator + "score" + File.pathSeparator;
 
 		}
 
 		if (!result.isEmpty()) {
-			result.substring(0, result.length() - 1);
+			result = result.substring(0, result.length() - 1);
 
 		}
 
