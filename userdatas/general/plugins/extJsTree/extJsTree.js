@@ -1,8 +1,11 @@
 function createExtJsTree(parentId, pluginParams, data) {
 	//////////////////////// ExtJsTree ////////////////////////
-	var ExtJsTree = function(el, pluginParams) {
+	var ExtJsTree = function(el, pluginParams, data) {
 		var self = this;
 		this.el = el;
+		if (data) {
+			this.data = eval('(' + data + ')');
+		}
 		this.filter = {};//данные относящиеся к фильтру поиска
 		this.pluginParams = pluginParams || {};
 		var treePanel = this.pluginParams.treePanel;
@@ -40,7 +43,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 			], modelOptions.fields||[]);
 			Ext.define('ExtJsTree.DataModel', modelOptions);
 			
-			this.store=this._createStore();
+			this.store=this._createStore(this.data);
 			this.dataLoader = this._createDataLoader();
 			this.dataLoader.callback = {
 				'target':this,
@@ -210,7 +213,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 			}
 			return result;
 		},
-		_createStore: function() {
+		_createStore: function(data) {
 			var root = !data ? [] : {
 				id:'root',
 				name:'/',
@@ -345,7 +348,7 @@ function createExtJsTree(parentId, pluginParams, data) {
         ]);    		
     Ext.onReady(function() {
 		var parentEl = Ext.get(parentId);
-		var extJsTree = new ExtJsTree(parentEl, pluginParams);
+		var extJsTree = new ExtJsTree(parentEl, pluginParams, data);
 		Ext.ExtJsTree = extJsTree;
 		extJsTree.utils = {
 			singleXpathMapping: function(xpathMapping) {

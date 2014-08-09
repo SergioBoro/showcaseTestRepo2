@@ -10,5 +10,9 @@
 	<tab id="extJsTreeXFormsTab" name="extJsTree22 в качестве селлектора в XForms">		
 		<element id="extJsTreeXFormsSelector22" type="xforms" template="extJsTree_Template.xml" proc="xforms_proc_no_data">
 		</element>
-	</tab>	
+	</tab>
+	<tab id="htmlEditorTinymceTab" name="htmlEditorTinymce">		
+		<element id="htmlEditorTinymceXFormsSelector" type="xforms" template="htmlEditorTinymce_Template.xml" proc="xforms_proc_no_data">
+		</element>
+	</tab>
 </datapanel>

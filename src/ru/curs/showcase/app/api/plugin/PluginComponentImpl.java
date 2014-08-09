@@ -195,11 +195,7 @@ public class PluginComponentImpl implements PluginComponent {
 
 	// CHECKSTYLE:OFF
 	public native void drawPlugin(final String procName, final String parentId,
-			final JavaScriptObject pluginParams, final String strParams) /*-{
-		var dynamicParams = null;
-		if (strParams && strParams != '') {
-			dynamicParams = $wnd.eval('(' + strParams + ')');
-		}
+			final JavaScriptObject pluginParams, final String dynamicParams) /*-{
 		var this_ = this;
 		pluginParams.onDrawPluginComplete = $entry(function(val) {
 			this_.@ru.curs.showcase.app.api.plugin.PluginComponentImpl::onDrawPluginCompleteHandler(Lcom/google/gwt/core/client/JavaScriptObject;)(val);
@@ -215,6 +211,9 @@ public class PluginComponentImpl implements PluginComponent {
 	 * @return xml
 	 */
 	private native String getXMLByXPathArray(Object xpathArray) /*-{
+		if (xpathArray == undefined) {
+			return "";
+		}
 		return $wnd.getXMLByXPathArray(xpathArray, false);
 	}-*/;
 

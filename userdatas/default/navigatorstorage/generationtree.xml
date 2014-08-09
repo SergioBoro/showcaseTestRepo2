@@ -148,7 +148,7 @@
           </datapanel>
         </action>
       </level2>
-	  <level2 id="extJsTreePlugin" name="Плагин extJsTree">
+	  <level2 id="extJsTreePlugin" name="Плагин extJsTree, htmlEditorTinymce">
         <action>
           <main_context>none</main_context>
           <datapanel type="extJsTree.xml" tab="firstOrCurrent" >          
