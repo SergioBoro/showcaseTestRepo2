@@ -80,4 +80,10 @@ public class UserMessage implements SerializableElement {
 	public void setId(final String aId) {
 		id = aId;
 	}
+
+	@Override
+	public String toString() {
+		return type.toString();
+	}
+
 }
