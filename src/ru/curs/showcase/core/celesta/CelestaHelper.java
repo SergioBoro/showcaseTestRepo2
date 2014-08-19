@@ -66,8 +66,9 @@ public class CelestaHelper<T> {
 					AppInfoSingleton.getAppInfo().getCelestaInitializationException());
 		}
 
+		RunPythonCallbackFunctionsImpl funcs = new RunPythonCallbackFunctionsImpl();
 		try {
-			result = Celesta.getInstance().runPython(sesID, procName, params);
+			result = Celesta.getInstance().runPython(sesID, procName, funcs, params);
 			// result = Celesta.getInstance().runPython(userSID, procName,
 			// params);
 		} catch (CelestaException ex) {

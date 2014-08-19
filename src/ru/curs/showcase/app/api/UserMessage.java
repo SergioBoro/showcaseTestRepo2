@@ -81,9 +81,4 @@ public class UserMessage implements SerializableElement {
 		id = aId;
 	}
 
-	@Override
-	public String toString() {
-		return type.toString();
-	}
-
 }
