@@ -54,7 +54,11 @@ public class PreProcessFilter implements Filter {
 			} else {
 				HttpServletResponse resp = (HttpServletResponse) response;
 				// resp.setHeader("Pragma", "no-cache");
-				resp.setHeader("Cache-Control", "max-age = 31536000");
+
+				// resp.setHeader("Cache-Control", "max-age = 31536000");
+				// Date d = new Date();
+				// resp.setHeader("Last-Modified", d.toString());
+
 				// resp.setDateHeader("Expires", 0);
 				// resp.setDateHeader("Expires", 0);
 			}
