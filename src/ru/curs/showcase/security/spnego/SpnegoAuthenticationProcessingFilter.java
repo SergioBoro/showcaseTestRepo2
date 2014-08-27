@@ -76,58 +76,64 @@ public class SpnegoAuthenticationProcessingFilter extends AbstractAuthentication
 	public Authentication attemptAuthentication(final HttpServletRequest request,
 			final HttpServletResponse responce) throws ServletException, IOException {
 		final SpnegoHttpServletResponse spnegoResponse = new SpnegoHttpServletResponse(responce);
-		if (this.authenticator == null) {
+		try {
+			if (this.authenticator == null) {
+				try {
+					init();
+				} catch (final Exception ex) {
+					failure(request, spnegoResponse, "Pre-authenticate is failure.", ex);
+					return null;
+				}
+			}
+			SpnegoPrincipal principal = null;
 			try {
-				init();
-			} catch (final Exception ex) {
-				failure(request, spnegoResponse,
-						"Pre-authenticate is failure. Detail: " + ex.getMessage(), ex);
+				principal = this.authenticator.authenticate(request, spnegoResponse);
+			} catch (GSSException gsse) {
+				throw new ServletException(gsse);
+			}
+
+			if (spnegoResponse.isStatusSet()) {
 				return null;
 			}
-		}
-		SpnegoPrincipal principal = null;
-		try {
-			principal = this.authenticator.authenticate(request, spnegoResponse);
-		} catch (GSSException gsse) {
-			throw new ServletException(gsse);
-		}
 
-		if (spnegoResponse.isStatusSet()) {
-			return null;
-		}
-
-		if (principal == null) {
-			if (getFailureHandler() != null) {
-				getFailureHandler().onAuthenticationFailure(request, responce,
+			if (principal == null) {
+				failure(request, spnegoResponse, "Authenticate is failure.",
 						new AuthenticationException("Principal was null.") {
 							private static final long serialVersionUID = 1L;
-
 						});
-			} else {
-				spnegoResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, true);
+				return null;
 			}
-			return null;
-		}
 
-		SpnegoAuthenticationToken token = new SpnegoAuthenticationToken(principal);
-		token.setAuthenticated(true);
-		UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
-		final String[] username = principal.getName().split("@", 2);
-		userAndSessionDetails.setUserInfo(new UserInfo(principal.getName(), null, username[0],
-				null, null, null));
-		token.setDetails(userAndSessionDetails);
-		return token;
+			SpnegoAuthenticationToken token = new SpnegoAuthenticationToken(principal);
+			token.setAuthenticated(true);
+			UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
+			final String[] username = principal.getName().split("@", 2);
+			userAndSessionDetails.setUserInfo(new UserInfo(principal.getName(), null, username[0],
+					null, null, null));
+			token.setDetails(userAndSessionDetails);
+			return token;
+
+		} catch (Exception ex) {
+			failure(request, spnegoResponse, "Authenticate is failure.", ex);
+		}
+		return null;
 	}
 
 	private void failure(final HttpServletRequest request,
 			final SpnegoHttpServletResponse response, final String msg, final Exception ex)
 			throws IOException, ServletException {
 		if (getFailureHandler() != null) {
-			getFailureHandler().onAuthenticationFailure(request, response,
-					new AuthenticationException(msg, ex) {
+			AuthenticationException authEx;
+			if (ex == null || !(ex instanceof AuthenticationException)) {
+				authEx =
+					new AuthenticationException(msg
+							+ (ex != null ? " Detail: " + ex.getMessage() : ""), ex) {
 						private static final long serialVersionUID = 1L;
-
-					});
+					};
+			} else {
+				authEx = (AuthenticationException) ex;
+			}
+			getFailureHandler().onAuthenticationFailure(request, response, authEx);
 		} else {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, true);
 		}
