@@ -71,23 +71,37 @@ public final class UserMessageFactory {
 		if (initialText == null) {
 			initialText = "";
 		}
-		if (userMessage != null) {
-			if (userMessage.getText().indexOf("%s") > -1) {
-				userMessage.setText(String.format(userMessage.getText(), initialText));
-			} else {
-				userMessage.setText(userMessage.getText() + " " + initialText);
-			}
-		} else {
-			if (initial.getId() != null) {
-				userMessage =
-					new UserMessage(String.format("%s (%s)", initialText, initial.getId()),
-							initial.getType());
-			} else {
+
+		if ((initial.getText() != null) && (initial.getId() != null)
+				&& initial.getText().equals(initial.getId())) { // Челеста
+
+			if (userMessage == null) {
 				userMessage = new UserMessage(initial.getId(), initialText, initial.getType());
 			}
-			userMessage.setId(initial.getId());
+			return userMessage;
+
+		} else { // НЕ Челеста
+
+			if (userMessage != null) {
+				if (userMessage.getText().indexOf("%s") > -1) {
+					userMessage.setText(String.format(userMessage.getText(), initialText));
+				} else {
+					userMessage.setText(userMessage.getText() + " " + initialText);
+				}
+			} else {
+				if (initial.getId() != null) {
+					userMessage =
+						new UserMessage(String.format("%s (%s)", initialText, initial.getId()),
+								initial.getType());
+				} else {
+					userMessage = new UserMessage(initial.getId(), initialText, initial.getType());
+				}
+				userMessage.setId(initial.getId());
+			}
+			return userMessage;
+
 		}
-		return userMessage;
+
 	}
 
 	private void loadMessage(final String mesId) {

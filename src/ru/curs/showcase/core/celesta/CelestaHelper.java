@@ -66,10 +66,45 @@ public class CelestaHelper<T> {
 					AppInfoSingleton.getAppInfo().getCelestaInitializationException());
 		}
 
+		boolean messageDone = false;
 		try {
 			result = Celesta.getInstance().runPython(sesID, procName, params);
-			// result = Celesta.getInstance().runPython(userSID, procName,
-			// params);
+
+			CelestaMessage cm = Celesta.getInstance().pollMessage(sesID);
+			if (cm != null) {
+				messageDone = true;
+
+				String mess = cm.getMessage();
+				MessageType mt;
+				switch (cm.getKind()) {
+				case CelestaMessage.INFO:
+					mt = MessageType.INFO;
+					break;
+				case CelestaMessage.WARNING:
+					mt = MessageType.WARNING;
+					break;
+				case CelestaMessage.ERROR:
+					mt = MessageType.ERROR;
+					break;
+				default:
+					mt = MessageType.ERROR;
+					break;
+				}
+
+				UserMessage um = new UserMessage(mess, mess, mt);
+				UserMessageFactory factory = new UserMessageFactory();
+				um = factory.build(um);
+				if (um.getType() == MessageType.ERROR) {
+					throw new ValidateException(um);
+				} else {
+					contex.setOkMessage(um);
+				}
+
+			}
+			while (cm != null) {
+				cm = Celesta.getInstance().pollMessage(sesID);
+			}
+
 		} catch (CelestaException ex) {
 			throw new CelestaWorkerException("Ошибка при выполнении jython скрипта celesta '"
 					+ procName + "'", ex);
@@ -81,10 +116,7 @@ public class CelestaHelper<T> {
 		if (obj == null) {
 			return null;
 		}
-		if (obj instanceof UserMessage) {
-			// UserMessageFactory factory = new UserMessageFactory();
-			// throw new
-			// ValidateException(factory.build(UserMessage.class.cast(obj)));
+		if ((!messageDone) && (obj instanceof UserMessage)) {
 
 			UserMessage um = UserMessage.class.cast(obj);
 			UserMessageFactory factory = new UserMessageFactory();
@@ -99,7 +131,7 @@ public class CelestaHelper<T> {
 		}
 		if (obj.getClass().isAssignableFrom(resultType)) {
 
-			if (obj instanceof JythonDTO) {
+			if ((!messageDone) && (obj instanceof JythonDTO)) {
 				contex.setOkMessage(((JythonDTO) obj).getUserMessage());
 			}
 
