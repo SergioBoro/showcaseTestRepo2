@@ -59,6 +59,15 @@ public class CelestaHelper<T> {
 		String procName = CelestaUtils.getRealProcName(sProcName);
 		PyObject result;
 
+		class Receiver implements CelestaMessage.MessageReceiver {
+			private CelestaMessage msg;
+
+			public void receive(CelestaMessage msg) {
+				this.msg = msg;
+			}
+		}
+		Receiver receiver = new Receiver();
+
 		if (!AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
 			// AppInfoSingleton.getAppInfo().getCelestaInitializationException().logAll(e);
 			throw new CelestaWorkerException("Ошибка при запуске jython скрипта celesta '"
@@ -68,9 +77,9 @@ public class CelestaHelper<T> {
 
 		boolean messageDone = false;
 		try {
-			result = Celesta.getInstance().runPython(sesID, procName, params);
+			result = Celesta.getInstance().runPython(sesID, receiver, procName, params);
 
-			CelestaMessage cm = Celesta.getInstance().pollMessage(sesID);
+			CelestaMessage cm = receiver.msg;
 			if (cm != null) {
 				messageDone = true;
 
@@ -100,9 +109,6 @@ public class CelestaHelper<T> {
 					contex.setOkMessage(um);
 				}
 
-			}
-			while (cm != null) {
-				cm = Celesta.getInstance().pollMessage(sesID);
 			}
 
 		} catch (CelestaException ex) {
