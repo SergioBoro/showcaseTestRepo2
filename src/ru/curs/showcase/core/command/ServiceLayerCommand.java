@@ -117,7 +117,8 @@ public abstract class ServiceLayerCommand<T> {
 		logOutput();
 		dt2 = new Date();
 		if ((result != null) && NAVIGATOR.equalsIgnoreCase(result.getClass().getSimpleName())) {
-			LoggerHelper.profileToLog("Navigator. Вызов уборки мусора.", dt1, dt2, NAVIGATOR, "");
+			LoggerHelper.profileToLog("Navigator. Вывод навигатора в лог.", dt1, dt2, NAVIGATOR,
+					"");
 		}
 
 		dt1 = new Date();
@@ -225,6 +226,7 @@ public abstract class ServiceLayerCommand<T> {
 			}
 		}
 		LOGGER.info(marker, serializer.serialize(result));
+		// LOGGER.info(marker, "Заглушка вместо serializer.serialize(result)");
 	}
 
 	protected abstract void mainProc() throws Exception;
