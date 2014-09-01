@@ -1,9 +1,6 @@
 package ru.curs.showcase.app.server;
 
-import java.text.DateFormat;
 import java.util.*;
-
-import org.slf4j.*;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
@@ -32,6 +29,7 @@ import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
 import ru.curs.showcase.security.logging.*;
+import ru.curs.showcase.util.LoggerHelper;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -43,8 +41,6 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 // CHECKSTYLE:OFF
 public class DataServiceImpl extends RemoteServiceServlet implements DataService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger("profileLog");
-
 	@Override
 	public Navigator getNavigator(final CompositeContext context) throws GeneralException {
 		Date dt1 = new Date();
@@ -52,7 +48,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		Navigator navigator = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog("Navigator", dt1, dt2, "NAVIGATOR", "");
+		LoggerHelper.profileToLog("Navigator. Общее время загрузки.", dt1, dt2, "NAVIGATOR", "");
 
 		return navigator;
 	}
@@ -64,7 +60,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		DataPanel dp = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog(dp.getId().getString(), dt1, dt2, "DATAPANEL", "");
+		LoggerHelper.profileToLog(dp.getId().getString(), dt1, dt2, "DATAPANEL", "");
 
 		return dp;
 	}
@@ -77,7 +73,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		WebText wt = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
 
 		return wt;
 	}
@@ -90,7 +86,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		Grid grid = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
 
 		return grid;
 	}
@@ -103,8 +99,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		LiveGridMetadata lgm = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), element
-				.getSubtype().toString());
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(),
+				element.getSubtype().toString());
 
 		return lgm;
 	}
@@ -117,8 +113,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		LiveGridData<LiveGridModel> lgd = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), element
-				.getSubtype().toString());
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(),
+				element.getSubtype().toString());
 
 		return lgd;
 	}
@@ -131,8 +127,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		List<TreeGridModel> lst = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), element
-				.getSubtype().toString());
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(),
+				element.getSubtype().toString());
 
 		return lst;
 	}
@@ -145,7 +141,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		Chart chart = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
 
 		return chart;
 	}
@@ -158,7 +154,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		GeoMap gm = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
 
 		return gm;
 	}
@@ -171,7 +167,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		XForm xform = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
 
 		return xform;
 	}
@@ -190,7 +186,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		VoidElement ve = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "SAVEXFORMS");
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(),
+				"SAVEXFORMS");
 
 		return ve;
 
@@ -204,7 +201,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		ServerState state = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog("ServerCurrentState", dt1, dt2, "SERVERCURRENTSTATE", "");
+		LoggerHelper.profileToLog("ServerCurrentState", dt1, dt2, "SERVERCURRENTSTATE", "");
 
 		return state;
 	}
@@ -216,7 +213,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		Date dt2 = new Date();
 		VoidElement ve = command.execute();
 
-		profileToLog("execServerAction", dt1, dt2, "EXECSERVERACTION", "");
+		LoggerHelper.profileToLog("execServerAction", dt1, dt2, "EXECSERVERACTION", "");
 
 		return ve;
 	}
@@ -234,7 +231,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 
 		Date dt2 = new Date();
 
-		profileToLog("MainPage", dt1, dt2, "MAINPAGE", "");
+		LoggerHelper.profileToLog("MainPage", dt1, dt2, "MAINPAGE", "");
 
 		return mainPage;
 	}
@@ -246,7 +243,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		Plugin plugin = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog(requestData.getElInfo().getFullId(), dt1, dt2, "PLUGIN", "");
+		LoggerHelper.profileToLog(requestData.getElInfo().getFullId(), dt1, dt2, "PLUGIN", "");
 
 		return plugin;
 	}
@@ -260,7 +257,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		responceData.setJsonData(result.getData());
 		Date dt2 = new Date();
 
-		profileToLog(requestData.getElInfo().getFullId(), dt1, dt2, "PLUGINDATA", "");
+		LoggerHelper.profileToLog(requestData.getElInfo().getFullId(), dt1, dt2, "PLUGINDATA", "");
 
 		return responceData;
 	}
@@ -273,7 +270,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		GridToolBar gtb = command.execute();
 		Date dt2 = new Date();
 
-		profileToLog(elInfo.getFullId(), dt1, dt2, elInfo.getType().toString(), "");
+		LoggerHelper.profileToLog(elInfo.getFullId(), dt1, dt2, elInfo.getType().toString(), "");
 
 		return gtb;
 	}
@@ -286,26 +283,4 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		command.execute();
 	}
 
-	private void profileToLog(final String elementId, final Date dtBegin, final Date dtEnd,
-			final String elementType, final String elementSubType) {
-
-		// Формат
-		// [id элемента] [time begin] [time end] [duration in ms] [element type]
-		// [elementsbtype]
-
-		String mess =
-			"["
-					+ elementId
-					+ "] ["
-					+ DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT)
-							.format(dtBegin)
-					+ "] ["
-					+ DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT)
-							.format(dtEnd) + "] "
-					+ String.valueOf(dtEnd.getTime() - dtBegin.getTime()) + " " + elementType
-					+ " " + elementSubType;
-
-		LOGGER.info(mess);
-
-	}
 }

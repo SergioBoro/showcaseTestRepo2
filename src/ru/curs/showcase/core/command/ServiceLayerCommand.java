@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.AppRegistry;
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.ObjectSerializer;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.ServerLogicError;
 import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
 
@@ -33,6 +33,8 @@ public abstract class ServiceLayerCommand<T> {
 	public static final String SERVLET_MARKER = "Servlet";
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ServiceLayerCommand.class);
+
+	private static final String NAVIGATOR = "NAVIGATOR";
 
 	/**
 	 * Идентификатор текущей HTTP сессии.
@@ -94,14 +96,38 @@ public abstract class ServiceLayerCommand<T> {
 	}
 
 	private T templateMethod() throws Exception {
+
+		Date dt1 = new Date();
+
 		initSessionContext();
 		initCommandContext();
 		initIDSettings();
 		preProcess();
 		logInputParams();
+
+		Date dt2 = new Date();
+		if ((result != null) && NAVIGATOR.equalsIgnoreCase(result.getClass().getSimpleName())) {
+			LoggerHelper.profileToLog("Navigator. Предварительные действия.", dt1, dt2, NAVIGATOR,
+					"");
+		}
+
 		mainProc();
+
+		dt1 = new Date();
 		logOutput();
+		dt2 = new Date();
+		if ((result != null) && NAVIGATOR.equalsIgnoreCase(result.getClass().getSimpleName())) {
+			LoggerHelper.profileToLog("Navigator. Вызов уборки мусора.", dt1, dt2, NAVIGATOR, "");
+		}
+
+		dt1 = new Date();
 		postProcess();
+		dt2 = new Date();
+		if ((result != null) && NAVIGATOR.equalsIgnoreCase(result.getClass().getSimpleName())) {
+			LoggerHelper.profileToLog("Navigator. Очистка пула XSL-трансформаций.", dt1, dt2,
+					NAVIGATOR, "");
+		}
+
 		return result;
 	}
 

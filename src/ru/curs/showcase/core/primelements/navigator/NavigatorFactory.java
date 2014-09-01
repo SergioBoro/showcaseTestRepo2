@@ -11,7 +11,7 @@ import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.core.IncorrectElementException;
 import ru.curs.showcase.core.event.ActionFactory;
 import ru.curs.showcase.runtime.UserDataUtils;
-import ru.curs.showcase.util.DataFile;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -28,6 +28,8 @@ public final class NavigatorFactory extends StartTagSAXHandler {
 	private static final String XML_ERROR_MES = "описание навигатора";
 	private static final String GRP_ICONS_DIR_PARAM_NAME = "navigator.icons.dir.name";
 	private static final String GRP_DEF_ICON_PARAM_NAME = "navigator.def.icon.name";
+
+	private static final String NAVIGATOR = "NAVIGATOR";
 
 	/**
 	 * Стартовые тэги, которые будут обработаны.
@@ -62,10 +64,18 @@ public final class NavigatorFactory extends StartTagSAXHandler {
 	private final LinkedList<NavigatorElement> currentElStack = new LinkedList<NavigatorElement>();
 
 	public NavigatorFactory(final CompositeContext aCallContext) {
+
 		super();
+
+		Date dt1 = new Date();
+
 		groupIconsDir = UserDataUtils.getRequiredProp(GRP_ICONS_DIR_PARAM_NAME);
 		groupDefIcon = UserDataUtils.getRequiredProp(GRP_DEF_ICON_PARAM_NAME);
 		actionFactory = new ActionFactory(aCallContext);
+
+		Date dt2 = new Date();
+		LoggerHelper.profileToLog("Navigator. Создание фабрики.", dt1, dt2, NAVIGATOR, "");
+
 	}
 
 	public void levelSTARTTAGHandler(final Attributes attrs) {
@@ -132,7 +142,14 @@ public final class NavigatorFactory extends StartTagSAXHandler {
 	 * @return - навигатор.
 	 */
 	public Navigator fromStream(final DataFile<InputStream> file) {
+
+		Date dt1 = new Date();
 		XMLUtils.xsdValidateAppDataSafe(file, "navigator.xsd");
+		Date dt2 = new Date();
+		LoggerHelper.profileToLog("Navigator. Валидация потока навигатора.", dt1, dt2, NAVIGATOR,
+				"");
+
+		dt1 = new Date();
 
 		DefaultHandler myHandler = new DefaultHandler() {
 			@Override
@@ -155,6 +172,11 @@ public final class NavigatorFactory extends StartTagSAXHandler {
 
 		SimpleSAX sax = new SimpleSAX(file.getData(), myHandler, XML_ERROR_MES);
 		sax.parse();
+
+		dt2 = new Date();
+		LoggerHelper.profileToLog("Navigator. Формирование навигатора из потока.", dt1, dt2,
+				NAVIGATOR, "");
+
 		postProcess();
 		result.setWelcomeTabCaption(UserDataUtils
 				.getOptionalProp(UserDataUtils.INDEX_WELCOME_TAB_CAPTION));
@@ -162,9 +184,15 @@ public final class NavigatorFactory extends StartTagSAXHandler {
 	}
 
 	private void postProcess() {
+
+		Date dt1 = new Date();
 		for (NavigatorGroup group : result.getGroups()) {
 			checkNavigatorElements(group.getElements());
 		}
+		Date dt2 = new Date();
+		LoggerHelper.profileToLog("Navigator. Валидация датапанелей навигатора.", dt1, dt2,
+				NAVIGATOR, "");
+
 	}
 
 	private void checkNavigatorElements(final List<NavigatorElement> elements) {
