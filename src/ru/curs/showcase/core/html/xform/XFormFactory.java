@@ -52,6 +52,9 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 
 	@Override
 	protected void transformData() {
+
+		Date dt1 = new Date();
+
 		DocumentBuilder db = XMLUtils.createBuilder();
 		Document template = null;
 		XFormTemplateSelector selector = new XFormTemplateSelector(getElementInfo());
@@ -84,18 +87,45 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 		String subformId = XFormProducer.getSubformId(template);
 		result.setSubformId(subformId);
 
+		Date dt2 = new Date();
+		LoggerHelper.profileToLog(getElementInfo().getFullId()
+				+ ". Формирование документа шаблона.", dt1, dt2, getElementInfo().getType()
+				.toString(), "");
+
+		dt1 = new Date();
+
 		template =
 			XFormTemplateModificator.modify(template, getSource().getCallContext(),
 					getElementInfo(), result.getSubformId());
 		logInput(template);
 
+		dt2 = new Date();
+		LoggerHelper.profileToLog(getElementInfo().getFullId()
+				+ ". Модификация документа шаблона.", dt1, dt2, getElementInfo().getType()
+				.toString(), "");
+
 		try {
+			dt1 = new Date();
+
 			html = XFormProducer.getHTML(template, getSource().getData());
 			// html = XFormProducer.getTemplateWithData(template,
 			// getSource().getData());
 
+			dt2 = new Date();
+			LoggerHelper.profileToLog(getElementInfo().getFullId()
+					+ ". XSL-преобразование документа шаблона в HTML-строку.", dt1, dt2,
+					getElementInfo().getType().toString(), "");
+
+			dt1 = new Date();
+
 			logOutput();
 			replaceVariables();
+
+			dt2 = new Date();
+			LoggerHelper.profileToLog(getElementInfo().getFullId() + ". Замена переменных.", dt1,
+					dt2, getElementInfo().getType().toString(), "");
+
+			dt1 = new Date();
 
 			List<String> lst = new ArrayList<String>(2);
 			lst.add(html);
@@ -104,6 +134,11 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 			if (cuttered.size() > 1) {
 				lst.add(cuttered.get(1));
 			}
+
+			dt2 = new Date();
+			LoggerHelper.profileToLog(getElementInfo().getFullId()
+					+ ". Разрезание на части для отображения на странице.", dt1, dt2,
+					getElementInfo().getType().toString(), "");
 
 			result.setXFormParts(lst);
 		} catch (TransformerException | XMLStreamException | IOException e) {

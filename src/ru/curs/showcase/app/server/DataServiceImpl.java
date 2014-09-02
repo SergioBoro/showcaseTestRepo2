@@ -167,7 +167,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		XForm xform = command.execute();
 		Date dt2 = new Date();
 
-		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
+		LoggerHelper.profileToLog(element.getFullId() + ". Общее время загрузки.", dt1, dt2,
+				element.getType().toString(), "");
 
 		return xform;
 	}
