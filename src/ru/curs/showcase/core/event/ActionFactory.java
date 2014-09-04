@@ -3,6 +3,7 @@ package ru.curs.showcase.core.event;
 import org.xml.sax.Attributes;
 
 import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.core.*;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -181,26 +182,28 @@ public class ActionFactory extends SAXTagHandler {
 	}
 
 	public void datapanelSTARTTAGHandler(final Attributes attrs) {
+		// DataPanelLink curDataPanelLink = new DataPanelLink();
+		// curDataPanelLink.setDataPanelId(attrs.getValue(DP_ID_ATTR_NAME));
+		//
+		//
+		// CompositeContext context = curAction.getContext().gwtClone();
+		// context.setSession(callContext.getSession());
+		//
+		// curDataPanelLink.setTabId(attrs.getValue(TAB_TAG));
+		//
+		//
+		// curAction.setDataPanelLink(curDataPanelLink);
+
 		DataPanelLink curDataPanelLink = new DataPanelLink();
 		curDataPanelLink.setDataPanelId(attrs.getValue(DP_ID_ATTR_NAME));
 
-		// ActionTabFinder finder = AppRegistry.getActionTabFinder();
-		// CompositeContext context = curAction.getContext().gwtClone();
-		// context.setSession(callContext.getSession());
-		// curDataPanelLink.setTabId(finder.findTabForAction(context,
-		// curDataPanelLink,
-		// attrs.getValue(TAB_TAG)));
-
-		// ActionTabFinder finder = AppRegistry.getActionTabFinder();
+		ActionTabFinder finder = AppRegistry.getActionTabFinder();
 		CompositeContext context = curAction.getContext().gwtClone();
 		context.setSession(callContext.getSession());
-
-		curDataPanelLink.setTabId(attrs.getValue(TAB_TAG));
-		// curDataPanelLink.setTabId(finder.findTabForAction(context,
-		// curDataPanelLink,
-		// attrs.getValue(TAB_TAG)));
-
+		curDataPanelLink.setTabId(finder.findTabForAction(context, curDataPanelLink,
+				attrs.getValue(TAB_TAG)));
 		curAction.setDataPanelLink(curDataPanelLink);
+
 	}
 
 	public void actionSTARTTAGHandler(final Attributes attrs) {
