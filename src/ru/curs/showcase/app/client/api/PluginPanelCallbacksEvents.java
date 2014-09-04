@@ -3,6 +3,7 @@ package ru.curs.showcase.app.client.api;
 import java.util.List;
 
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
+import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.plugin.*;
 import ru.curs.showcase.app.api.services.GeneralException;
@@ -37,7 +38,37 @@ public final class PluginPanelCallbacksEvents {
 	 *            координаты точки или название экранного элемента, по которому
 	 *            кликнул пользователь.
 	 * */
-	public static void pluginPanelClick(final String pluginDivId, final String eventId) {
+	public static void pluginPanelClick(final String pluginDivId, final String eventId,
+			final String overridenValue, final String replaseWhat, final String id) {// (final
+																						// String
+																						// pluginDivId,
+																						// final
+																						// String
+																						// eventId)
+																						// {
+
+		// final String commonPart = "E40F6599F809__";
+		//
+		// String elementId =
+		// pluginDivId.substring(0,
+		// pluginDivId.length() - Constants.PLUGIN_DIV_ID_SUFFIX.length());
+		//
+		// elementId = elementId.substring(elementId.indexOf(commonPart) +
+		// commonPart.length());
+		//
+		// Plugin pl = ((PluginPanel)
+		// ActionExecuter.getElementPanelById(elementId)).getPlugin();
+		//
+		// List<HTMLEvent> events =
+		// pl.getEventManager().getEventForLink(eventId);
+		//
+		// for (HTMLEvent chev : events) {
+		// AppCurrContext.getInstance().setCurrentActionFromElement(chev.getAction(),
+		// pl);
+		// ActionExecuter.execAction();
+		// }
+
+		// ====
 
 		final String commonPart = "E40F6599F809__";
 
@@ -49,12 +80,57 @@ public final class PluginPanelCallbacksEvents {
 
 		Plugin pl = ((PluginPanel) ActionExecuter.getElementPanelById(elementId)).getPlugin();
 
-		List<HTMLEvent> events = pl.getEventManager().getEventForLink(eventId);
+		ActionFieldType actionFieldType = ActionFieldType.ADD_CONTEXT;
+		if (replaseWhat != null) {
+			actionFieldType = ActionFieldType.valueOf(replaseWhat.toUpperCase());
+		}
 
+		List<HTMLEvent> events = pl.getEventManager().getEventForLink(eventId);
 		for (HTMLEvent chev : events) {
-			AppCurrContext.getInstance().setCurrentActionFromElement(chev.getAction(), pl);
+
+			Action ac = chev.getAction().gwtClone();
+			if (overridenValue != null) {
+				switch (actionFieldType) {
+				case ADD_CONTEXT:
+					ac.setAdditionalContext(overridenValue);
+					break;
+				case MAIN_CONTEXT:
+					ac.setMainContext(overridenValue);
+					break;
+				case FILTER_CONTEXT:
+					ac.filterBy(overridenValue);
+					break;
+				case ELEMENT_ID:
+					if (ac.getDataPanelActionType() != DataPanelActionType.DO_NOTHING) {
+						String elID = id;
+						DataPanelElementLink link = null;
+						if (elID != null) {
+							link = ac.getDataPanelLink().getElementLinkById(elID);
+						} else {
+							if (ac.getDataPanelLink().getElementLinks().size() > 0) {
+								link = ac.getDataPanelLink().getElementLinks().get(0);
+							}
+						}
+						if (link != null) {
+							link.setId(overridenValue);
+						} else {
+							MessageBox.showSimpleMessage("Ошибка",
+									"Элемент действия для замены ID неверно определен (ID = "
+											+ elID + ")");
+						}
+					}
+					break;
+				default:
+					break;
+				}
+			}
+
+			AppCurrContext.getInstance().setCurrentActionFromElement(ac, pl);
 			ActionExecuter.execAction();
 		}
+
+		// ====
+
 	}
 
 	/**
