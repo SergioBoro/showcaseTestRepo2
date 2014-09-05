@@ -26,13 +26,41 @@ public final class AppInitializer {
 	private static final String USER_DATA_INFO =
 		"Добавлен userdata на основе rootpath из '%s' с идентификатором '%s' и путем '%s'";
 
+	private static final String ENABLE_LOG_LEVEL_INFO = "enable.log.level.info";
+	private static final String ENABLE_LOG_LEVEL_WARNING = "enable.log.level.warning";
+	private static final String ENABLE_LOG_LEVEL_ERROR = "enable.log.level.error";
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(AppInitializer.class);
 
 	public static void finishUserdataSetupAndCheckLoggingOverride() {
 		readDefaultUserDatas(FileUtils.GENERAL_PROPERTIES);
+		initEnableLogLevels();
 		checkAnyUserdataExists();
 		setupUserdataLogging();
 		AppInfoSingleton.getAppInfo().initWebConsole();
+	}
+
+	private static void initEnableLogLevels() {
+		String value;
+		boolean boolValue;
+
+		value = UserDataUtils.getGeneralOptionalProp(ENABLE_LOG_LEVEL_INFO);
+		if (value != null) {
+			boolValue = Boolean.valueOf(value);
+			AppInfoSingleton.getAppInfo().setEnableLogLevelInfo(boolValue);
+		}
+
+		value = UserDataUtils.getGeneralOptionalProp(ENABLE_LOG_LEVEL_WARNING);
+		if (value != null) {
+			boolValue = Boolean.valueOf(value);
+			AppInfoSingleton.getAppInfo().setEnableLogLevelWarning(boolValue);
+		}
+
+		value = UserDataUtils.getGeneralOptionalProp(ENABLE_LOG_LEVEL_ERROR);
+		if (value != null) {
+			boolValue = Boolean.valueOf(value);
+			AppInfoSingleton.getAppInfo().setEnableLogLevelError(boolValue);
+		}
 	}
 
 	public static void setupUserdataLogging() {
@@ -49,7 +77,9 @@ public final class AppInitializer {
 			lc.reset();
 			configurator.doConfigure(logConf.toURI().toURL());
 		} catch (JoranException | MalformedURLException e) {
-			LOGGER.error("Ошибка при включении пользовательской конфигурции логгера");
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error("Ошибка при включении пользовательской конфигурции логгера");
+			}
 		}
 	}
 
@@ -117,7 +147,9 @@ public final class AppInitializer {
 					continue;
 				}
 				AppInfoSingleton.getAppInfo().addUserData(id, value);
-				LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+					LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
+				}
 
 			}
 		}

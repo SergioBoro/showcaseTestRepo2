@@ -4,6 +4,8 @@ import java.io.*;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.runtime.AppInfoSingleton;
+
 /**
  * Действие по копированию файла.
  * 
@@ -84,15 +86,21 @@ public class CopyFileAction implements FileAction {
 		}
 		checkForDestDir();
 		copy(sourceFile, destFile);
-		LOGGER.info(String.format(FILE_COPIED_INFO, sourceFile.getName(), toDir));
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			LOGGER.info(String.format(FILE_COPIED_INFO, sourceFile.getName(), toDir));
+		}
 	}
 
 	private boolean checkForDestFileExists(final File sourceFile, final File destFile) {
 		if (destFile.exists()) {
 			if (overwrite) {
-				LOGGER.info(String.format(FILE_OVERWRITE_INFO, destFile.getName()));
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+					LOGGER.info(String.format(FILE_OVERWRITE_INFO, destFile.getName()));
+				}
 			} else {
-				LOGGER.info(String.format(FILE_SKIPED_INFO, sourceFile.getName(), toDir));
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+					LOGGER.info(String.format(FILE_SKIPED_INFO, sourceFile.getName(), toDir));
+				}
 				return false;
 			}
 		}
@@ -103,10 +111,14 @@ public class CopyFileAction implements FileAction {
 		File destDir = new File(toDir);
 		if ((!destDir.exists()) && createDirIfNotExists) {
 			if (!destDir.mkdirs()) {
-				LOGGER.error(String.format(CREATE_DIR_ERROR, destDir.getName()));
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+					LOGGER.error(String.format(CREATE_DIR_ERROR, destDir.getName()));
+				}
 				return;
 			}
-			LOGGER.info(String.format(DIR_CREATED_INFO, destDir.getName()));
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+				LOGGER.info(String.format(DIR_CREATED_INFO, destDir.getName()));
+			}
 		}
 	}
 

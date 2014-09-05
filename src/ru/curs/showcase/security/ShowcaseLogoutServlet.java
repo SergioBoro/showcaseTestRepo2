@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 import org.slf4j.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.UserAndSessionDetails;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
@@ -56,12 +57,15 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 				c.connect();
 
 				if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
-					LOGGER.info(String.format(LOGOUT_INFO, sesid));
+					if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+						LOGGER.info(String.format(LOGOUT_INFO, sesid));
+					}
 				}
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				LOGGER.info(String.format(ERROR_LOGOUT_INFO, sesid));
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+					LOGGER.info(String.format(ERROR_LOGOUT_INFO, sesid));
+				}
 			}
 
 		}

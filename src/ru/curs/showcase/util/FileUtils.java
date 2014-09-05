@@ -8,6 +8,7 @@ import java.util.Properties;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.exception.*;
 
 /**
@@ -68,7 +69,9 @@ public final class FileUtils {
 		try {
 			File sourceFile = new File(source);
 			if (!sourceFile.exists()) {
-				LOGGER.error(String.format("Файл или каталог '%s' не существует", source));
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+					LOGGER.error(String.format("Файл или каталог '%s' не существует", source));
+				}
 				return false;
 			}
 			BatchFileProcessor fprocessor =
@@ -77,7 +80,9 @@ public final class FileUtils {
 			fprocessor.process(new CopyFileAction(destination));
 			return true;
 		} catch (IOException ex) {
-			LOGGER.error(ex.getMessage());
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(ex.getMessage());
+			}
 			return false;
 		}
 	}

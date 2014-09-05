@@ -4,6 +4,7 @@ import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.command.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.OutputStreamDataFile;
 
 /**
@@ -57,8 +58,10 @@ public class GridFileDownloadCommand extends DataPanelElementCommand<OutputStrea
 	protected void logOutput() {
 		super.logOutput();
 
-		LOGGER.info(String.format("Размер скачиваемого файла: %d байт", getResult().getData()
-				.size()));
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			LOGGER.info(String.format("Размер скачиваемого файла: %d байт", getResult().getData()
+					.size()));
+		}
 	}
 
 }

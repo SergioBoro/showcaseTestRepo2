@@ -4,6 +4,7 @@ import org.python.core.PyException;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExceptionType;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
  * Базовый класс серверных исключений Showcase. Наследуется от RuntimeException,
@@ -63,8 +64,10 @@ public abstract class BaseException extends RuntimeException {
 	 *            - исключение.
 	 */
 	public final void logAll(final Throwable e) {
-		String formatedMes = ERROR_CAPTION;
-		LOGGER.error(formatedMes, e);
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+			String formatedMes = ERROR_CAPTION;
+			LOGGER.error(formatedMes, e);
+		}
 	}
 
 	public ExceptionType getType() {

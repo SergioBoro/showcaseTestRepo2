@@ -38,7 +38,9 @@ public class CheckAutenticationFilter implements Filter {
 
 		} else {
 
-			LOGGER.debug(httpReq.getSession().getId());
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+				LOGGER.debug(httpReq.getSession().getId());
+			}
 
 			String url = null;
 			try {

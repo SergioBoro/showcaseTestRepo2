@@ -148,15 +148,17 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 	}
 
 	private void logOutput() {
-		Marker marker = MarkerFactory.getDetachedMarker(XMLUtils.XSL_MARKER);
-		marker.add(HandlingDirection.OUTPUT.getMarker());
-		marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s",
-				XSLTransformerPoolFactory.XSLTFORMS_XSL)));
-		LOGGER.info(marker, html);
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			Marker marker = MarkerFactory.getDetachedMarker(XMLUtils.XSL_MARKER);
+			marker.add(HandlingDirection.OUTPUT.getMarker());
+			marker.add(MarkerFactory.getMarker(String.format("xslTransform=%s",
+					XSLTransformerPoolFactory.XSLTFORMS_XSL)));
+			LOGGER.info(marker, html);
+		}
 	}
 
 	private void logInput(final Document template) {
-		if (!LOGGER.isInfoEnabled()) {
+		if (!(LOGGER.isInfoEnabled() && AppInfoSingleton.getAppInfo().isEnableLogLevelInfo())) {
 			return;
 		}
 		Marker marker = MarkerFactory.getDetachedMarker(XMLUtils.XSL_MARKER);

@@ -9,6 +9,7 @@ import javax.xml.transform.TransformerException;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.UserInfo;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
  * Набор утилит (функций) для работы с сервлетами сервера аутентификации.
@@ -92,7 +93,9 @@ public final class AuthServerUtils {
 				c.getResponseCode();
 			} catch (IOException e) {
 				// Do nothing, not our problems.
-				LOGGER.warn(LOGOUT_WARN);
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {
+					LOGGER.warn(LOGOUT_WARN);
+				}
 			}
 		}
 	}
@@ -132,7 +135,9 @@ public final class AuthServerUtils {
 			try {
 				new URL(url);
 			} catch (MalformedURLException e) {
-				LOGGER.error("Проверка URL", e);
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+					LOGGER.error("Проверка URL", e);
+				}
 			}
 		}
 		theAuthServerAlias = new AuthServerUtils(url);
@@ -171,7 +176,10 @@ public final class AuthServerUtils {
 		} catch (IllegalStateException | TransformerException | SecurityException
 				| IllegalFormatException | NullPointerException | IOException
 				| IndexOutOfBoundsException e) {
-			LOGGER.error("Проверка пользователя", e);
+
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error("Проверка пользователя", e);
+			}
 			return null;
 		}
 	}
@@ -208,7 +216,9 @@ public final class AuthServerUtils {
 		} catch (IllegalStateException | TransformerException | SecurityException
 				| IllegalFormatException | NullPointerException | IOException
 				| IndexOutOfBoundsException e) {
-			LOGGER.error("Проверка входа в систему", e);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error("Проверка входа в систему", e);
+			}
 			return null;
 		}
 	}

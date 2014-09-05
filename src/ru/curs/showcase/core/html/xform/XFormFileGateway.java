@@ -12,6 +12,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.html.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 import ru.curs.showcase.util.xml.XMLUtils;
@@ -47,9 +48,11 @@ public final class XFormFileGateway extends HTMLFileGateway implements HTMLAdvGa
 
 	@Override
 	public String scriptTransform(final String aProcName, final XFormContext aInputData) {
-		LOGGER.info(String.format(
-				"Заглушка: выполнение Submission процедуры '%s' c данными формы  %s", aProcName,
-				aInputData));
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			LOGGER.info(String.format(
+					"Заглушка: выполнение Submission процедуры '%s' c данными формы  %s",
+					aProcName, aInputData));
+		}
 		return null;
 	}
 
@@ -60,7 +63,8 @@ public final class XFormFileGateway extends HTMLFileGateway implements HTMLAdvGa
 		try {
 			dup = new StreamConvertor(FileUtils.loadClassPathResToStream(linkId.getString()));
 		} catch (IOException e) {
-			throw new SettingsFileExchangeException(linkId.getString(), e, SettingsFileType.XM_DATA);
+			throw new SettingsFileExchangeException(linkId.getString(), e,
+					SettingsFileType.XM_DATA);
 		}
 		OutputStreamDataFile file =
 			new OutputStreamDataFile(dup.getOutputStream(), linkId.getString());
@@ -71,9 +75,12 @@ public final class XFormFileGateway extends HTMLFileGateway implements HTMLAdvGa
 	@Override
 	public void uploadFile(final XFormContext aContext, final DataPanelElementInfo aElementInfo,
 			final ID aLinkId, final DataFile<InputStream> aFile) {
-		LOGGER.info(String
-				.format("Заглушка: сохранение файла '%s' с контекстом %s из элемента %s, ссылка %s, данные формы %s",
-						aFile.getName(), aContext, aElementInfo, aLinkId, aContext.getFormData()));
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			LOGGER.info(String
+					.format("Заглушка: сохранение файла '%s' с контекстом %s из элемента %s, ссылка %s, данные формы %s",
+							aFile.getName(), aContext, aElementInfo, aLinkId,
+							aContext.getFormData()));
+		}
 
 	}
 }

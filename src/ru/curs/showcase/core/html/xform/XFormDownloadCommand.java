@@ -5,6 +5,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.command.InputParam;
 import ru.curs.showcase.core.html.HTMLAdvGateway;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.OutputStreamDataFile;
 
 /**
@@ -47,8 +48,10 @@ public final class XFormDownloadCommand extends XFormContextCommand<OutputStream
 	protected void logOutput() {
 		super.logOutput();
 
-		LOGGER.info(String.format("Размер скачиваемого файла: %d байт", getResult().getData()
-				.size()));
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			LOGGER.info(String.format("Размер скачиваемого файла: %d байт", getResult().getData()
+					.size()));
+		}
 
 	}
 

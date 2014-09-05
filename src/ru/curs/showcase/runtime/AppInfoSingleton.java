@@ -66,6 +66,10 @@ public final class AppInfoSingleton {
 
 	private String userDataLogConfFile = "logback.xml";
 
+	private boolean enableLogLevelInfo = true;
+	private boolean enableLogLevelWarning = true;
+	private boolean enableLogLevelError = true;
+
 	/**
 	 * Переменная, которая содержит в себе значение: false - если в процессе
 	 * запуска прилдожений не произошла ошибка с инициализацией celesta и
@@ -152,7 +156,9 @@ public final class AppInfoSingleton {
 	 */
 	public void addSession(final String sessionId) {
 		getOrInitSessionInfoObject(sessionId);
-		LOGGER.info("Число пользовательских сессий: " + getAppInfo().sessionInfoMap.size());
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			LOGGER.info("Число пользовательских сессий: " + getAppInfo().sessionInfoMap.size());
+		}
 	}
 
 	/**
@@ -424,4 +430,29 @@ public final class AppInfoSingleton {
 	public void setCelestaInitializationException(final Exception acelestainitializationException) {
 		this.celestainitializationException = acelestainitializationException;
 	}
+
+	public boolean isEnableLogLevelInfo() {
+		return enableLogLevelInfo;
+	}
+
+	public void setEnableLogLevelInfo(final boolean aEnableLogLevelInfo) {
+		enableLogLevelInfo = aEnableLogLevelInfo;
+	}
+
+	public boolean isEnableLogLevelWarning() {
+		return enableLogLevelWarning;
+	}
+
+	public void setEnableLogLevelWarning(final boolean aEnableLogLevelWarning) {
+		enableLogLevelWarning = aEnableLogLevelWarning;
+	}
+
+	public boolean isEnableLogLevelError() {
+		return enableLogLevelError;
+	}
+
+	public void setEnableLogLevelError(final boolean aEnableLogLevelError) {
+		enableLogLevelError = aEnableLogLevelError;
+	}
+
 }

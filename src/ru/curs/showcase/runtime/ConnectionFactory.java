@@ -168,7 +168,9 @@ public final class ConnectionFactory extends PoolByUserdata<Connection> {
 					aReusable.commit();
 				}
 			} catch (SQLException e) {
-				LOGGER.error(ERROR_CAPTION, e);
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+					LOGGER.error(ERROR_CAPTION, e);
+				}
 			}
 		}
 	}

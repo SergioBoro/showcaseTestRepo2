@@ -45,7 +45,9 @@ public class ControlMemoryServlet extends HttpServlet {
 				try {
 					Celesta.getInstance().clearInterpretersPool();
 				} catch (CelestaException e) {
-					LOGGER.error("Ошибка очистки пула интерпретаторов Сelesta ", e);
+					if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+						LOGGER.error("Ошибка очистки пула интерпретаторов Сelesta ", e);
+					}
 				}
 				break;
 			case "xsl":

@@ -8,6 +8,7 @@ import javax.servlet.http.*;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;
@@ -85,7 +86,9 @@ public final class ServletUtils {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			makeResponseFromString(response, message);
 		} else {
-			LOGGER.warn(CANT_WRITE_RESPONSE_ERROR);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {
+				LOGGER.warn(CANT_WRITE_RESPONSE_ERROR);
+			}
 		}
 	}
 

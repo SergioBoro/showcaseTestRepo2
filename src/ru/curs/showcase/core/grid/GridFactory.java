@@ -787,7 +787,9 @@ public class GridFactory extends CompBasedElementFactory {
 						RELATIVE_NUMBER_TOO_BIG_ERROR, autoSelectRecordId, getRecordSet()
 								.getPageSize()));
 			} else {
-				LOGGER.info(AUTO_SELECT_RELATIVE_RECORD_DISABLED);
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+					LOGGER.info(AUTO_SELECT_RELATIVE_RECORD_DISABLED);
+				}
 				return;
 			}
 		}

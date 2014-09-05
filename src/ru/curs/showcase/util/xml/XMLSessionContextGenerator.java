@@ -14,7 +14,7 @@ import org.w3c.dom.Element;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.runtime.SessionUtils;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.oauth.Oauth2Token;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.UTF8Exception;
@@ -62,8 +62,10 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		addRelatedContext(context.getRelated());
 		String result = XMLUtils.documentToString(info);
 		result = XMLUtils.xmlServiceSymbolsToNormal(result);
-		LOGGER.debug("XMLSessionContextGenerator.generate()"
-				+ System.getProperty("line.separator") + result);
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			LOGGER.debug("XMLSessionContextGenerator.generate()"
+					+ System.getProperty("line.separator") + result);
+		}
 		return result;
 	}
 
@@ -134,7 +136,9 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 				Marshaller marshaller = jc.createMarshaller();
 				marshaller.marshal(oauth2Token, info.getDocumentElement());
 			} catch (JAXBException ex) {
-				LOGGER.error("Error marshal Oauth2Token", ex);
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+					LOGGER.error("Error marshal Oauth2Token", ex);
+				}
 			}
 		}
 	}

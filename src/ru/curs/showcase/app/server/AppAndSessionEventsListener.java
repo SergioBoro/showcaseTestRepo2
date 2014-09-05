@@ -41,12 +41,16 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 				Celesta.initialize(celestaProps);
 				AppInfoSingleton.getAppInfo().setIsCelestaInitialized(true);
 			} else {
-				LOGGER.warn("Celesta properties (in app.properties) is not set");
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {
+					LOGGER.warn("Celesta properties (in app.properties) is not set");
+				}
 				AppInfoSingleton.getAppInfo().setCelestaInitializationException(
 						new Exception("Celesta properties (in app.properties) is not set"));
 			}
 		} catch (Exception ex) {
-			LOGGER.error("Ошибка инициализации celesta", ex);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error("Ошибка инициализации celesta", ex);
+			}
 			AppInfoSingleton.getAppInfo().setCelestaInitializationException(ex);
 		}
 	}
@@ -60,19 +64,25 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 	@Override
 	public final void sessionCreated(final HttpSessionEvent arg0) {
-		LOGGER.info("сессия Showcase создается... " + arg0.getSession().getId());
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			LOGGER.info("сессия Showcase создается... " + arg0.getSession().getId());
+		}
 	}
 
 	@Override
 	public void sessionDestroyed(final HttpSessionEvent arg0) {
 		HttpSession destrHttpSession = arg0.getSession();
-		LOGGER.info("сессия Showcase удаляется..." + destrHttpSession.getId());
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			LOGGER.info("сессия Showcase удаляется..." + destrHttpSession.getId());
+		}
 		AppInfoSingleton.getAppInfo().removeSessionInfo(destrHttpSession.getId());
 
 		try {
 			Celesta.getInstance().logout(destrHttpSession.getId(), false);
 		} catch (CelestaException e) {
-			LOGGER.error("Ошибка разлогинивания сессии в celesta", e);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error("Ошибка разлогинивания сессии в celesta", e);
+			}
 		}
 
 		SecurityContext context =

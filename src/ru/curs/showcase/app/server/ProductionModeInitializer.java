@@ -62,7 +62,8 @@ public final class ProductionModeInitializer {
 	}
 
 	public static void initUserDatas(final ServletContext aServletContext) {
-		AppInitializer.checkUserDataDir(aServletContext.getInitParameter(SHOWCASE_ROOTPATH_USERDATA_PARAM), "context.xml");
+		AppInitializer.checkUserDataDir(
+				aServletContext.getInitParameter(SHOWCASE_ROOTPATH_USERDATA_PARAM), "context.xml");
 		AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
 		UserDataUtils.checkUserdatas();
 		copyUserDatas(aServletContext);
@@ -93,11 +94,15 @@ public final class ProductionModeInitializer {
 								+ String.format(SHOWCASE_DATA_GRID_CSS, userdataId),
 						HEADER_GAP_SELECTOR, WIDTH_PROP);
 		} catch (CSSReadException e) {
-			LOGGER.error(e.getLocalizedMessage());
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(e.getLocalizedMessage());
+			}
 			return;
 		}
 		if (width != null) {
-			LOGGER.info(String.format(CSS_READ, userdataId, width));
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+				LOGGER.info(String.format(CSS_READ, userdataId, width));
+			}
 			int value = TextUtils.getIntSizeValue(width);
 			if (value > 0) {
 				value--;
@@ -135,7 +140,8 @@ public final class ProductionModeInitializer {
 
 	private static void copyGeneralResources(final ServletContext aServletContext) {
 		File generalResRoot =
-			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + UserDataUtils.GENERAL_RES_ROOT);
+			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+					+ UserDataUtils.GENERAL_RES_ROOT);
 		Boolean isAllFilesCopied = true;
 		if (generalResRoot.exists()) {
 			for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
@@ -156,7 +162,9 @@ public final class ProductionModeInitializer {
 			}
 		}
 		if (!isAllFilesCopied) {
-			LOGGER.error(NOT_ALL_FILES_COPIED_ERROR);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(NOT_ALL_FILES_COPIED_ERROR);
+			}
 		}
 	}
 
@@ -168,7 +176,9 @@ public final class ProductionModeInitializer {
 				return Boolean.parseBoolean(value);
 			}
 		} catch (SettingsFileOpenException e1) {
-			LOGGER.error(APP_PROPS_READ_ERROR);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(APP_PROPS_READ_ERROR);
+			}
 			return false;
 		}
 		return false;
@@ -179,7 +189,9 @@ public final class ProductionModeInitializer {
 		String userDataCatalog = "";
 		UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
 		if (us == null) {
-			LOGGER.error(GET_USERDATA_PATH_ERROR);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(GET_USERDATA_PATH_ERROR);
+			}
 			return;
 		}
 		userDataCatalog = us.getPath();
@@ -188,7 +200,9 @@ public final class ProductionModeInitializer {
 		try {
 			dirsForCopyStr = UserDataUtils.getOptionalProp(COPY_USERDATA_DIRS_PARAM, userdataId);
 		} catch (SettingsFileOpenException e) {
-			LOGGER.error(GET_USERDATA_PATH_ERROR);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(GET_USERDATA_PATH_ERROR);
+			}
 			return;
 		}
 		if (dirsForCopyStr == null) {
@@ -199,7 +213,9 @@ public final class ProductionModeInitializer {
 		for (int i = 0; i < dirsForCopy.length; i++) {
 			File dir = new File(userDataCatalog + "/" + dirsForCopy[i]);
 			if (!dir.exists()) {
-				LOGGER.warn(String.format(USER_DATA_DIR_NOT_FOUND_ERROR, dirsForCopy[i]));
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {
+					LOGGER.warn(String.format(USER_DATA_DIR_NOT_FOUND_ERROR, dirsForCopy[i]));
+				}
 				continue;
 			}
 			isAllFilesCopied =
@@ -209,7 +225,9 @@ public final class ProductionModeInitializer {
 		}
 
 		if (!isAllFilesCopied) {
-			LOGGER.error(NOT_ALL_FILES_COPIED_ERROR);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(NOT_ALL_FILES_COPIED_ERROR);
+			}
 		}
 	}
 
@@ -224,7 +242,9 @@ public final class ProductionModeInitializer {
 					+ UserDataUtils.SOLUTIONS_DIR + "/" + userdataId + "/" + dirName)));
 		} catch (IOException e) {
 			isAllFilesCopied = false;
-			LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
+			}
 		}
 		return isAllFilesCopied;
 	}

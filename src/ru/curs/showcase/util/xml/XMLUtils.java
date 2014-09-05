@@ -330,7 +330,9 @@ public final class XMLUtils {
 	private static Object logXSLInput(final Object source, final String xsltFileName) {
 		String value = null;
 		Object sourceCopy = source;
-		if ((!LOGGER.isInfoEnabled()) || (xsltFileName == null)) {
+
+		if ((!(LOGGER.isInfoEnabled() && AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()))
+				|| (xsltFileName == null)) {
 			return sourceCopy;
 		}
 		if (source instanceof InputStream) {
@@ -354,7 +356,7 @@ public final class XMLUtils {
 	}
 
 	private static void logXSLOutput(final String xsltFileName, final String result) {
-		if (xsltFileName == null) {
+		if ((xsltFileName == null) || (!AppInfoSingleton.getAppInfo().isEnableLogLevelInfo())) {
 			return;
 		}
 		Marker marker = MarkerFactory.getDetachedMarker(XSL_MARKER);
@@ -845,7 +847,9 @@ public final class XMLUtils {
 				return json.toString();
 			}
 		} catch (SAXException | IOException e) {
-			LOGGER.error("Error convert XML to JSON", e);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error("Error convert XML to JSON", e);
+			}
 		}
 		return "";
 	}

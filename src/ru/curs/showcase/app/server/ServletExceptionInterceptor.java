@@ -10,6 +10,7 @@ import org.slf4j.*;
 
 import ru.curs.showcase.app.api.BrowserType;
 import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.ServletUtils;
 import ru.curs.showcase.util.exception.BaseException;
 
@@ -45,7 +46,9 @@ public final class ServletExceptionInterceptor {
 			exc = exc.getCause();
 		}
 		if (!(exc instanceof GeneralException) && !(exc instanceof BaseException)) {
-			LOGGER.error(ERROR_MES, exc);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(ERROR_MES, exc);
+			}
 		}
 
 		String mess = exc.getLocalizedMessage();

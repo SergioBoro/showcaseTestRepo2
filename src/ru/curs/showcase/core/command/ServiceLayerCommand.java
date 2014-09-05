@@ -163,7 +163,7 @@ public abstract class ServiceLayerCommand<T> {
 	}
 
 	protected void logInputParams() {
-		if (!LOGGER.isInfoEnabled()) {
+		if (!(LOGGER.isInfoEnabled() && AppInfoSingleton.getAppInfo().isEnableLogLevelInfo())) {
 			return;
 		}
 
@@ -201,7 +201,7 @@ public abstract class ServiceLayerCommand<T> {
 	 * объект получился слишком большой.
 	 */
 	protected void logOutput() {
-		if (!LOGGER.isInfoEnabled()) {
+		if (!(LOGGER.isInfoEnabled() && AppInfoSingleton.getAppInfo().isEnableLogLevelInfo())) {
 			return;
 		}
 		if (result == null) {
@@ -225,8 +225,9 @@ public abstract class ServiceLayerCommand<T> {
 				return;
 			}
 		}
+
 		LOGGER.info(marker, serializer.serialize(result));
-		// LOGGER.info(marker, "Заглушка вместо serializer.serialize(result)");
+
 	}
 
 	protected abstract void mainProc() throws Exception;

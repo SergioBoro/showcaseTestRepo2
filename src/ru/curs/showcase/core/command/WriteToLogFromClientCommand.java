@@ -4,6 +4,7 @@ import org.slf4j.*;
 
 import ru.curs.showcase.app.api.MessageType;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 
 /**
  * Команда для записи в лог (и веб-консоль) сообщений из клиентской части.
@@ -31,13 +32,19 @@ public class WriteToLogFromClientCommand extends ServiceLayerCommand<Void> {
 		Marker marker = MarkerFactory.getDetachedMarker(CLIENT_LABEL);
 		switch (messageType) {
 		case ERROR:
-			logger.error(marker, message);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				logger.error(marker, message);
+			}
 			break;
 		case WARNING:
-			logger.warn(marker, message);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {
+				logger.warn(marker, message);
+			}
 			break;
 		case INFO:
-			logger.info(marker, message);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+				logger.info(marker, message);
+			}
 			break;
 		default:
 			break;

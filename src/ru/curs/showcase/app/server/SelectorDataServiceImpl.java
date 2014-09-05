@@ -6,6 +6,7 @@ import ru.beta2.extra.gwt.ui.selector.api.*;
 import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.core.grid.GridTransformer;
 import ru.curs.showcase.core.selector.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -42,7 +43,9 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			// вернётся пустой датасет.
 			ds.setTotalCount(0);
 
-			LOGGER.error(SELECTOR_ERROR + e.getMessage());
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(SELECTOR_ERROR + e.getMessage());
+			}
 
 			throw new ru.beta2.extra.gwt.ui.selector.api.SelectorDataServiceException(
 					e.getMessage());

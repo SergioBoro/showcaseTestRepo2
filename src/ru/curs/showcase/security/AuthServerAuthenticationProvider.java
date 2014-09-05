@@ -139,8 +139,9 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 			Celesta.getInstance().login(sesid,
 					((UserAndSessionDetails) arg1.getDetails()).getUserInfo().getSid());
 		} catch (CelestaException e) {
-			// TODO Auto-generated catch block
-			LOGGER.error("Ошибка привязки сессии приложения к пользователю в celesta", e);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error("Ошибка привязки сессии приложения к пользователю в celesta", e);
+			}
 		}
 
 		// Authentication g = new Authentication.;

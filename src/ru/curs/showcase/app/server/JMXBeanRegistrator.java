@@ -62,7 +62,9 @@ public final class JMXBeanRegistrator {
 				return;
 			}
 		} catch (MalformedObjectNameException e) {
-			LOGGER.error(REGISTER_ERROR + e.getLocalizedMessage());
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(REGISTER_ERROR + e.getLocalizedMessage());
+			}
 		}
 		ManagementService.registerMBeans(manager, getMBeanServer(), true, false, false, true);
 	}
@@ -79,7 +81,9 @@ public final class JMXBeanRegistrator {
 		} catch (InstanceAlreadyExistsException | MBeanRegistrationException
 				| NotCompliantMBeanException | InstanceNotFoundException
 				| MalformedObjectNameException e) {
-			LOGGER.error(REGISTER_ERROR + e.getLocalizedMessage());
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(REGISTER_ERROR + e.getLocalizedMessage());
+			}
 		}
 	}
 
@@ -98,7 +102,9 @@ public final class JMXBeanRegistrator {
 				getMBeanServer().unregisterMBean(getShowcaseMBeanName());
 			} catch (InstanceNotFoundException | MBeanRegistrationException
 					| MalformedObjectNameException e) {
-				LOGGER.error(UNREGISTER_ERROR + e.getLocalizedMessage());
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+					LOGGER.error(UNREGISTER_ERROR + e.getLocalizedMessage());
+				}
 			}
 		}
 	}

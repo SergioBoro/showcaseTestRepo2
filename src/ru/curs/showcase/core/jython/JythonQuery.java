@@ -10,7 +10,7 @@ import org.slf4j.*;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.core.*;
-import ru.curs.showcase.runtime.JythonIterpretatorFactory;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.*;
 
@@ -110,10 +110,12 @@ public abstract class JythonQuery<T> {
 			@Override
 			public void write(final char[] data, final int offset, final int count)
 					throws IOException {
-				String value = String.valueOf(data, offset, count);
-				if (!value.trim().isEmpty()) {
-					Marker marker = MarkerFactory.getDetachedMarker(JYTHON_MARKER);
-					LOGGER.info(marker, value);
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+					String value = String.valueOf(data, offset, count);
+					if (!value.trim().isEmpty()) {
+						Marker marker = MarkerFactory.getDetachedMarker(JYTHON_MARKER);
+						LOGGER.info(marker, value);
+					}
 				}
 			}
 

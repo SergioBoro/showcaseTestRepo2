@@ -5,6 +5,7 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.command.InputParam;
 import ru.curs.showcase.core.html.HTMLAdvGateway;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.OutputStreamDataFile;
 
 /**
@@ -38,8 +39,10 @@ public final class XFormUploadCommand extends XFormContextCommand<Void> {
 	@Override
 	protected void logInputParams() {
 		super.logInputParams();
-		LOGGER.info("Получен файл '" + file.getName() + "' размером " + file.getData().size()
-				+ " байт");
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			LOGGER.info("Получен файл '" + file.getName() + "' размером " + file.getData().size()
+					+ " байт");
+		}
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.command.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.ExcelFile;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -84,7 +85,9 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 	@Override
 	protected void postProcess() {
 		super.postProcess();
-		LOGGER.info(String.format("Размер возвращаемого файла: %d байт", getResult().getData()
-				.size()));
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			LOGGER.info(String.format("Размер возвращаемого файла: %d байт", getResult().getData()
+					.size()));
+		}
 	}
 }

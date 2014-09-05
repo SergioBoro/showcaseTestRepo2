@@ -7,6 +7,8 @@ import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.*;
 
+import ru.curs.showcase.runtime.AppInfoSingleton;
+
 /**
  * Аспект для @Repeat в модульных тестах.
  * 
@@ -30,7 +32,9 @@ public final class RepeatAspect {
 		Repeat rmAnnotation = method.getAnnotation(Repeat.class);
 		int count = rmAnnotation.count();
 		for (int i = 1; i <= count; i++) {
-			LOGGER.trace("Проход " + i);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+				LOGGER.trace("Проход " + i);
+			}
 			method.invoke(jp.getTarget());
 		}
 

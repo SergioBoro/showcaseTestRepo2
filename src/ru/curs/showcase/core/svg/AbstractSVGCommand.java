@@ -3,6 +3,7 @@ package ru.curs.showcase.core.svg;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.core.command.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.OutputStreamDataFile;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -66,7 +67,9 @@ public abstract class AbstractSVGCommand extends ServiceLayerCommand<OutputStrea
 	@Override
 	protected void logOutput() {
 		super.logOutput();
-		LOGGER.info(String.format("Размер скачиваемого файла: %d байт", getResult().getData()
-				.size()));
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			LOGGER.info(String.format("Размер скачиваемого файла: %d байт", getResult().getData()
+					.size()));
+		}
 	}
 }

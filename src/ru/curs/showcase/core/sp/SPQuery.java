@@ -346,7 +346,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	}
 
 	private void storeParamValue(final int index, final Object value) {
-		if (LOGGER.isInfoEnabled()) {
+		if (LOGGER.isInfoEnabled() && AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 			if (value instanceof String) {
 				params.put(index, value);
 			} else if (value instanceof InputStream) {
@@ -389,10 +389,12 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	}
 
 	protected boolean execute() throws SQLException {
-		String value = SQLUtils.addParamsToSQLTemplate(getSqlText(), params);
-		Marker marker = MarkerFactory.getDetachedMarker(SQL_MARKER);
-		marker.add(HandlingDirection.INPUT.getMarker());
-		LOGGER.info(marker, value);
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			String value = SQLUtils.addParamsToSQLTemplate(getSqlText(), params);
+			Marker marker = MarkerFactory.getDetachedMarker(SQL_MARKER);
+			marker.add(HandlingDirection.INPUT.getMarker());
+			LOGGER.info(marker, value);
+		}
 		boolean res = getStatement().execute();
 		AppInfoSingleton.getAppInfo().addExecutedProc(getProcName());
 		if (!retriveResultSets) {
@@ -457,7 +459,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	}
 
 	private InputStream logOutputXMLStream(final InputStream is) {
-		if (LOGGER.isInfoEnabled()) {
+		if (LOGGER.isInfoEnabled() && AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 			try {
 				StreamConvertor convertor = new StreamConvertor(is);
 				String value = XMLUtils.streamToString(convertor.getCopy());
@@ -471,7 +473,7 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	}
 
 	private InputStream logOutputTextStream(final InputStream is) {
-		if (LOGGER.isInfoEnabled()) {
+		if (LOGGER.isInfoEnabled() && AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 			try {
 				StreamConvertor convertor = new StreamConvertor(is);
 				String value =
@@ -486,16 +488,18 @@ public abstract class SPQuery extends GeneralXMLHelper implements Closeable {
 	}
 
 	private void logOutputXMLDocument(final Document doc) {
-		if (LOGGER.isInfoEnabled()) {
+		if (LOGGER.isInfoEnabled() && AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 			String value = XMLUtils.documentToString(doc);
 			logOutputXMLString(value);
 		}
 	}
 
 	private void logOutputXMLString(final String value) {
-		Marker marker = MarkerFactory.getDetachedMarker(SQL_MARKER);
-		marker.add(HandlingDirection.OUTPUT.getMarker());
-		LOGGER.info(marker, value);
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+			Marker marker = MarkerFactory.getDetachedMarker(SQL_MARKER);
+			marker.add(HandlingDirection.OUTPUT.getMarker());
+			LOGGER.info(marker, value);
+		}
 	}
 
 	protected OutputStreamDataFile

@@ -80,9 +80,11 @@ public abstract class PostgreSQLExecGateway extends SPQuery {
 				String.format(TEMPLATE_CREATE_FUNCTION, proc, getParamsDeclaration(),
 						getReturnsDeclaration(), script);
 
-			Marker marker = MarkerFactory.getDetachedMarker(SQL_MARKER);
-			marker.add(HandlingDirection.INPUT.getMarker());
-			LOGGER.info(marker, sql);
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+				Marker marker = MarkerFactory.getDetachedMarker(SQL_MARKER);
+				marker.add(HandlingDirection.INPUT.getMarker());
+				LOGGER.info(marker, sql);
+			}
 
 			self().getConn().createStatement().execute(sql);
 

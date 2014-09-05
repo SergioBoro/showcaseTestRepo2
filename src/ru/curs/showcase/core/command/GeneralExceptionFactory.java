@@ -6,6 +6,7 @@ import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.core.*;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.exception.BaseException;
 
 /**
@@ -31,7 +32,9 @@ public final class GeneralExceptionFactory {
 	 *            - исключение.
 	 */
 	private static void logAll(final Throwable e) {
-		LOGGER.error(ERROR_CAPTION, e);
+		if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+			LOGGER.error(ERROR_CAPTION, e);
+		}
 	}
 
 	/**
