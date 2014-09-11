@@ -46,6 +46,45 @@ public class CelestaHelper<T> {
 	}
 
 	/**
+	 * Класс-получатель сообщений из Челесты.
+	 * 
+	 */
+	private class Receiver implements CelestaMessage.MessageReceiver {
+		private CelestaMessage msg;
+
+		@Override
+		public void receive(final CelestaMessage aMsg) {
+			msg = aMsg;
+		}
+	}
+
+	private UserMessage getUserMessage(final Receiver receiver) {
+		UserMessage um = null;
+
+		CelestaMessage cm = receiver.msg;
+		if (cm != null) {
+			String mess = cm.getMessage();
+
+			um = new UserMessage(mess, mess, MessageType.INFO);
+			UserMessageFactory factory = new UserMessageFactory();
+			um = factory.build(um);
+
+			switch (cm.getKind()) {
+			case CelestaMessage.WARNING:
+				um.setType(MessageType.WARNING);
+				break;
+			case CelestaMessage.ERROR:
+				um.setType(MessageType.ERROR);
+				break;
+			default:
+				break;
+			}
+		}
+
+		return um;
+	}
+
+	/**
 	 * Выполнить celesta jython скрипт.
 	 * 
 	 * @param sProcName
@@ -59,15 +98,6 @@ public class CelestaHelper<T> {
 		String procName = CelestaUtils.getRealProcName(sProcName);
 		PyObject result;
 
-		class Receiver implements CelestaMessage.MessageReceiver {
-			private CelestaMessage msg;
-
-			public void receive(CelestaMessage msg) {
-				this.msg = msg;
-			}
-		}
-		Receiver receiver = new Receiver();
-
 		if (!AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
 			// AppInfoSingleton.getAppInfo().getCelestaInitializationException().logAll(e);
 			throw new CelestaWorkerException("Ошибка при запуске jython скрипта celesta '"
@@ -76,42 +106,30 @@ public class CelestaHelper<T> {
 		}
 
 		boolean messageDone = false;
+		Receiver receiver = new Receiver();
 		try {
 			result = Celesta.getInstance().runPython(sesID, receiver, procName, params);
 
-			CelestaMessage cm = receiver.msg;
-			if (cm != null) {
+			UserMessage um = getUserMessage(receiver);
+			if (um != null) {
 				messageDone = true;
 
-				String mess = cm.getMessage();
-				MessageType mt;
-				switch (cm.getKind()) {
-				case CelestaMessage.INFO:
-					mt = MessageType.INFO;
-					break;
-				case CelestaMessage.WARNING:
-					mt = MessageType.WARNING;
-					break;
-				case CelestaMessage.ERROR:
-					mt = MessageType.ERROR;
-					break;
-				default:
-					mt = MessageType.ERROR;
-					break;
-				}
-
-				UserMessage um = new UserMessage(mess, mess, mt);
-				UserMessageFactory factory = new UserMessageFactory();
-				um = factory.build(um);
 				if (um.getType() == MessageType.ERROR) {
 					throw new ValidateException(um);
 				} else {
 					contex.setOkMessage(um);
 				}
-
 			}
 
 		} catch (CelestaException ex) {
+
+			UserMessage um = getUserMessage(receiver);
+			if (um != null) {
+				messageDone = true;
+
+				throw new ValidateException(um);
+			}
+
 			throw new CelestaWorkerException("Ошибка при выполнении jython скрипта celesta '"
 					+ procName + "'", ex);
 		}
