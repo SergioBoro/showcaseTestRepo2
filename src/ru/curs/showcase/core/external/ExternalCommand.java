@@ -14,7 +14,7 @@ import ru.curs.showcase.core.command.*;
 public class ExternalCommand extends ServiceLayerCommand<String> {
 
 	private final String request;
-	private final String procName;
+	private String procName;
 
 	@InputParam
 	protected String getRequest() {
@@ -46,11 +46,25 @@ public class ExternalCommand extends ServiceLayerCommand<String> {
 					if (sourceType() == SourceType.JYTHON) {
 						return new JythonExternalCommandGateway();
 					}
+					if (sourceType() == SourceType.CELESTA) {
+						final int i3 = 3;
+						final int i8 = 8;
+
+						if (procName.endsWith(".cl")) {
+							procName = procName.substring(0, procName.length() - i3);
+
+						}
+
+						if (procName.endsWith(".celesta")) {
+							procName = procName.substring(0, procName.length() - i8);
+						}
+
+						return new CelestaExternalCommandGateway();
+					}
 					return new DBExternalCommandGateway();
 				}
 			};
 		ExternalCommandGateway gateway = selector.getGateway();
 		setResult(gateway.handle(request, procName));
 	}
-
 }
