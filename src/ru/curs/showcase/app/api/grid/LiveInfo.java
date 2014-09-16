@@ -21,6 +21,9 @@ public class LiveInfo implements SerializableElement {
 	@XmlAttribute
 	private int totalCount;
 
+	@XmlAttribute
+	private int pageNumber = 1;
+
 	public LiveInfo(final int aDefOffset, final int aDefLimit) {
 		offset = aDefOffset;
 		limit = aDefLimit;
@@ -64,6 +67,14 @@ public class LiveInfo implements SerializableElement {
 
 	public void setTotalCount(final int aTotalCount) {
 		totalCount = aTotalCount;
+	}
+
+	public int getPageNumber() {
+		return pageNumber;
+	}
+
+	public void setPageNumber(final int aPageNumber) {
+		pageNumber = aPageNumber;
 	}
 
 	@Override

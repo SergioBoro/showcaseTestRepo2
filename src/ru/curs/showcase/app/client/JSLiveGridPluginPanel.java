@@ -287,6 +287,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		if (selected.colId != null) {
 			common.put("selColId", new JSONString(selected.colId));
 		}
+		common.put("pageNumber",
+				new JSONString(String.valueOf(gridMetadata.getLiveInfo().getPageNumber())));
 
 		if (gridMetadata.getUISettings().isVisiblePager()) {
 			common.put("isVisiblePager", new JSONString("true"));

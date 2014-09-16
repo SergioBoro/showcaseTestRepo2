@@ -804,6 +804,16 @@ public class GridFactory extends CompBasedElementFactory {
 				getRecordSet().setPageNumber(
 						(int) Math.ceil(((float) autoSelectRecordId + 1)
 								/ getRecordSet().getPageSize()));
+
+				if ((getCallContext().getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)
+						&& (getCallContext().getLiveInfo().getLimit() > 0)) {
+					int pageNumber =
+						(autoSelectRecordId - 1) / getCallContext().getLiveInfo().getLimit() + 1;
+					int offset = (pageNumber - 1) * getCallContext().getLiveInfo().getLimit();
+					getCallContext().getLiveInfo().setPageNumber(pageNumber);
+					getCallContext().getLiveInfo().setOffset(offset);
+				}
+
 			}
 		}
 	}

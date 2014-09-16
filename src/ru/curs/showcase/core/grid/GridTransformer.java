@@ -82,6 +82,7 @@ public final class GridTransformer {
 		lgm.getLiveInfo().setOffset(grid.getLiveInfo().getOffset());
 		lgm.getLiveInfo().setLimit(grid.getDataSet().getRecordSet().getPageSize());
 		lgm.getLiveInfo().setTotalCount(grid.getLiveInfo().getTotalCount());
+		lgm.getLiveInfo().setPageNumber(grid.getLiveInfo().getPageNumber());
 
 		// -------------------------------------------------------
 

@@ -290,12 +290,14 @@ function createPageDGrid(elementId, parentId, metadata) {
 			if(firstLoading){
 				if(metadata["common"]["selectionModel"] == "RECORDS"){
 					if(metadata["common"]["selRecId"]){
+						event.grid.gotoPage(parseInt(metadata["common"]["pageNumber"]));
 						event.grid.select(event.grid.row(metadata["common"]["selRecId"]));
 					}
 				}else{
 					if(metadata["common"]["selRecId"] && metadata["common"]["selColId"]){
 						for(var col in event.grid.columns){
 							if(event.grid.columns[col].label == metadata["common"]["selColId"]){
+								event.grid.gotoPage(parseInt(metadata["common"]["pageNumber"]));								
 								event.grid.select(event.grid.cell(metadata["common"]["selRecId"], col));
 								break;
 							}
