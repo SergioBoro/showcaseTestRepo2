@@ -9,6 +9,8 @@ import org.slf4j.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.*;
 
 import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -34,6 +36,12 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		AppInitializer.initialize();
 
 		ProductionModeInitializer.initialize(arg0.getServletContext());
+
+		WebApplicationContext ctx =
+			WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext());
+		AbstractRefreshableWebApplicationContext actx =
+			(AbstractRefreshableWebApplicationContext) ctx;
+		actx.refresh();
 
 		try {
 			Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
