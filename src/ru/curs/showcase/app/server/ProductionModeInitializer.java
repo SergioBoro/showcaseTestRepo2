@@ -146,17 +146,10 @@ public final class ProductionModeInitializer {
 							+ userdataId));
 				userDataDir.mkdir();
 
-				BatchFileProcessor fprocessor =
-					new BatchFileProcessor(generalResRoot.getAbsolutePath(),
-							new RegexFilenameFilter("^[.].*", false));
-				try {
-					fprocessor.process(new CopyFileAction(userDataDir.getAbsolutePath()));
-				} catch (IOException e) {
-					isAllFilesCopied = false;
-					LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
-				}
+				isAllFilesCopied = copyGeneralDir(aServletContext, generalResRoot, userDataDir);
 			}
 		}
+
 		if (!isAllFilesCopied) {
 			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
 				LOGGER.error(NOT_ALL_FILES_COPIED_ERROR);
@@ -190,8 +183,6 @@ public final class ProductionModeInitializer {
 			isAllFilesCopied =
 				isAllFilesCopied
 						&& copyUserDataDir(aServletContext, userDataCatalog, dirsForCopy[i],
-								userdataId)
-						&& copyUserDataDirForWebInf(aServletContext, userDataCatalog, "WEB-INF",
 								userdataId);
 		}
 
@@ -200,6 +191,38 @@ public final class ProductionModeInitializer {
 				LOGGER.error(NOT_ALL_FILES_COPIED_ERROR);
 			}
 		}
+	}
+
+	private static Boolean copyGeneralDir(final ServletContext aServletContext,
+			final File generalResRoot, final File userDataDir) {
+		Boolean isAllFilesCopied = true;
+
+		File[] files = generalResRoot.listFiles();
+
+		BatchFileProcessor fprocessor =
+			new BatchFileProcessor(generalResRoot.getAbsolutePath(), new RegexFilenameFilter(
+					"^[.].*", false));
+
+		BatchFileProcessor fprocessorForWebInf =
+			new BatchFileProcessor(generalResRoot.getAbsolutePath() + "/WEB-INF",
+					new RegexFilenameFilter("^[.].*", false));
+
+		try {
+			for (File f : files) {
+				if ("WEB-INF".equals(f.getName())) {
+					fprocessorForWebInf.processForWebInf(new CopyFileAction(aServletContext
+							.getRealPath("/" + "WEB-INF")));
+				} else {
+					fprocessor.processWithoutWebInf(new CopyFileAction(userDataDir
+							.getAbsolutePath()));
+				}
+			}
+		} catch (IOException e) {
+			isAllFilesCopied = false;
+			LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
+		}
+
+		return isAllFilesCopied;
 	}
 
 	private static Boolean copyUserDataDir(final ServletContext aServletContext,
@@ -211,24 +234,6 @@ public final class ProductionModeInitializer {
 		try {
 			fprocessor.process(new CopyFileAction(aServletContext.getRealPath("/"
 					+ UserDataUtils.SOLUTIONS_DIR + "/" + userdataId + "/" + dirName)));
-		} catch (IOException e) {
-			isAllFilesCopied = false;
-			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
-				LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
-			}
-		}
-		return isAllFilesCopied;
-	}
-
-	private static Boolean copyUserDataDirForWebInf(final ServletContext aServletContext,
-			final String userDataCatalog, final String dirName, final String userdataId) {
-		Boolean isAllFilesCopied = true;
-		BatchFileProcessor fprocessor =
-			new BatchFileProcessor(userDataCatalog + "/" + dirName, new RegexFilenameFilter(
-					"^[.].*", false));
-		try {
-			fprocessor.processForWebInf(new CopyFileAction(aServletContext.getRealPath("/"
-					+ dirName)));
 		} catch (IOException e) {
 			isAllFilesCopied = false;
 			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
