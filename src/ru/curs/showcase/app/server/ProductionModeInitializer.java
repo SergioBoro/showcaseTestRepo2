@@ -75,18 +75,18 @@ public final class ProductionModeInitializer {
 			// ProcessEngineConfiguration.createStandaloneInMemProcessEngineConfiguration();
 
 			String databaseType =
-				UserDataUtils.getGeneralOptionalProp("activity.database.databaseType");
+				UserDataUtils.getGeneralOptionalProp("activiti.database.databaseType");
 
-			String jdbcUrl = UserDataUtils.getGeneralOptionalProp("activity.database.jdbcUrl");
+			String jdbcUrl = UserDataUtils.getGeneralOptionalProp("activiti.database.jdbcUrl");
 
 			String jdbcDriver =
-				UserDataUtils.getGeneralOptionalProp("activity.database.jdbcDriver");
+				UserDataUtils.getGeneralOptionalProp("activiti.database.jdbcDriver");
 
 			String jdbcUsername =
-				UserDataUtils.getGeneralOptionalProp("activity.database.jdbcUsername");
+				UserDataUtils.getGeneralOptionalProp("activiti.database.jdbcUsername");
 
 			String jdbcPassword =
-				UserDataUtils.getGeneralOptionalProp("activity.database.jdbcPassword");
+				UserDataUtils.getGeneralOptionalProp("activiti.database.jdbcPassword");
 
 			ProcessEngineConfiguration conf =
 				ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration();
