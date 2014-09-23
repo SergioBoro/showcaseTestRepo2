@@ -30,6 +30,8 @@ public final class AppInitializer {
 	private static final String ENABLE_LOG_LEVEL_WARNING = "enable.log.level.warning";
 	private static final String ENABLE_LOG_LEVEL_ERROR = "enable.log.level.error";
 
+	private static final String ENABLE_ACTIVITI = "activiti.enable";
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(AppInitializer.class);
 
 	public static void finishUserdataSetupAndCheckLoggingOverride() {
@@ -37,7 +39,20 @@ public final class AppInitializer {
 		initEnableLogLevels();
 		checkAnyUserdataExists();
 		setupUserdataLogging();
+		setupActivitiUsing();
 		AppInfoSingleton.getAppInfo().initWebConsole();
+	}
+
+	private static void setupActivitiUsing() {
+		String value;
+		boolean boolValue;
+
+		value = UserDataUtils.getGeneralOptionalProp(ENABLE_ACTIVITI);
+		if (value != null) {
+			boolValue = Boolean.valueOf(value);
+			AppInfoSingleton.getAppInfo().setEnableActiviti(boolValue);
+		}
+
 	}
 
 	private static void initEnableLogLevels() {

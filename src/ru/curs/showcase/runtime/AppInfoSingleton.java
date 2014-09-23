@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.sf.ehcache.*;
 
+import org.activiti.engine.ProcessEngine;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
@@ -69,6 +70,23 @@ public final class AppInfoSingleton {
 	private boolean enableLogLevelInfo = true;
 	private boolean enableLogLevelWarning = true;
 	private boolean enableLogLevelError = true;
+
+	/**
+	 * Переменная, которая содержит в себе информацию о том, будет ли хоть в
+	 * одной userdata приложения использоваться сторонняя компонента Activiti.
+	 * По умолчанию она false. Если переменная true, то в памяти серверной части
+	 * Showcase будет создаваться экземпляр движка Activiti, который будет
+	 * передаваться или будет доступен в celesta скриптах. Свойства берется
+	 * иззначения параметра activiti.enable главного файла общего файла
+	 * app.propertes.
+	 */
+	private boolean enableActiviti = false;
+
+	/**
+	 * Переменная, которая сожержит в себе движок Activiti (сторонней
+	 * компоненты) настроенный на текущую базу данных userdata.
+	 */
+	private ProcessEngine activitiProcessEngine = null;
 
 	/**
 	 * Переменная, которая содержит в себе значение: false - если в процессе
@@ -453,6 +471,22 @@ public final class AppInfoSingleton {
 
 	public void setEnableLogLevelError(final boolean aEnableLogLevelError) {
 		enableLogLevelError = aEnableLogLevelError;
+	}
+
+	public boolean isEnableActiviti() {
+		return enableActiviti;
+	}
+
+	public void setEnableActiviti(final boolean aenableActiviti) {
+		this.enableActiviti = aenableActiviti;
+	}
+
+	public ProcessEngine getActivitiProcessEngine() {
+		return activitiProcessEngine;
+	}
+
+	public void setActivitiProcessEngine(final ProcessEngine aactivitiProcessEngine) {
+		this.activitiProcessEngine = aactivitiProcessEngine;
 	}
 
 }

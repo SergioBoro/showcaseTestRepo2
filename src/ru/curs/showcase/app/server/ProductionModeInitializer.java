@@ -4,6 +4,7 @@ import java.io.*;
 
 import javax.servlet.ServletContext;
 
+import org.activiti.engine.*;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
@@ -59,6 +60,47 @@ public final class ProductionModeInitializer {
 		initUserDatas(aServletContext);
 		readCSSs();
 		JMXBeanRegistrator.register();
+		initActiviti();
+	}
+
+	public static void initActiviti() {
+		if (AppInfoSingleton.getAppInfo().isEnableActiviti()) {
+			// log4jConfPath = "/../log4j.properties"
+			// PropertyConfigurator.configure(log4jConfPath) # эти две строки
+			// нужны для внутреннего логгинга Activiti
+
+			// создаём движок с коннектом к встроенной БД
+
+			// ProcessEngineConfiguration conf =
+			// ProcessEngineConfiguration.createStandaloneInMemProcessEngineConfiguration();
+
+			String databaseType =
+				UserDataUtils.getGeneralOptionalProp("activity.database.databaseType");
+
+			String jdbcUrl = UserDataUtils.getGeneralOptionalProp("activity.database.jdbcUrl");
+
+			String jdbcDriver =
+				UserDataUtils.getGeneralOptionalProp("activity.database.jdbcDriver");
+
+			String jdbcUsername =
+				UserDataUtils.getGeneralOptionalProp("activity.database.jdbcUsername");
+
+			String jdbcPassword =
+				UserDataUtils.getGeneralOptionalProp("activity.database.jdbcPassword");
+
+			ProcessEngineConfiguration conf =
+				ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration();
+			conf.setDatabaseType(databaseType);
+			// conf.setJdbcUrl("jdbc:sqlserver://172.16.1.26\\SQL2008;databasename=activitydimatest");
+			conf.setJdbcUrl(jdbcUrl);
+			conf.setJdbcDriver(jdbcDriver);
+			conf.setJdbcUsername(jdbcUsername);
+			conf.setJdbcPassword(jdbcPassword);
+
+			ProcessEngine processEngine = conf.buildProcessEngine();
+			AppInfoSingleton.getAppInfo().setActivitiProcessEngine(processEngine);
+		}
+
 	}
 
 	public static void initUserDatas(final ServletContext aServletContext) {
