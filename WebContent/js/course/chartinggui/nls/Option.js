@@ -1,3 +1,6 @@
-({
-    _useDefaultValue: "Использовать значение по умолчанию"
+define({
+	root: {
+		_useDefaultValue: "Использовать значение по умолчанию"
+	},
+	ru: true
 });

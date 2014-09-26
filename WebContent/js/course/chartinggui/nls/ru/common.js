@@ -1,4 +1,4 @@
-({
+define({
     plot: "Общие настройки",
     theme: "Тема",
     legend: "Легенда",
@@ -6,7 +6,7 @@
     _chartType: "Тип графика:",
     _export: "Экспорт",
 
-// plot types
+    // plot types
     Lines: "Линии",
     StackedLines: "Линии с накоплением",
     Columns: "Столбики",

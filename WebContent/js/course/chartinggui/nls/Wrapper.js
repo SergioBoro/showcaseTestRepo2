@@ -1,5 +1,8 @@
-({
-    plot: "Plot",
-    theme: "Theme",
-    legend: "Legend"
+define({
+	root: {
+		plot: "Plot",
+		theme: "Theme",
+		legend: "Legend"
+	},
+	ru: true
 });

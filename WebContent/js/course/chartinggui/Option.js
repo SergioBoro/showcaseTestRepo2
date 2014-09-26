@@ -80,7 +80,7 @@ dojo.declare("course.chartinggui.Option", [dijit._Widget, dijit._Templated], {
                     this[optionId].set("value", value);
                 }
             }
-            else {
+            else if (!widgetDef.noDefault) {
                 if ( this[optionId].get("value") != value /* a hack for dijit.form.CheckBox */|| this[optionId].declaredClass == "dijit.form.CheckBox") widgetDef.ignoreFirstChange = true;
                 this.useDefaultValue(widgetDef, true);
             }
@@ -94,6 +94,7 @@ dojo.declare("course.chartinggui.Option", [dijit._Widget, dijit._Templated], {
     addDefaultValuesGui: function() {
         for (var i1=0; i1<this.widgetDefs.length; i1++) {
             var widgetDef = this.widgetDefs[i1];
+			if (widgetDef.noDefault) continue;
             var widgetDomNode = this[widgetDef.id].domNode;
             var doCycle = true, trNode = widgetDomNode;
             while (doCycle) {

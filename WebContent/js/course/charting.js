@@ -35,6 +35,8 @@ var chrt = {
     },
     
     _makeAxis: function(axis) {
+		// add titleOrientation: "away"
+		axis.titleOrientation = "away";
 		var labelFunc = axis.labelFunc;
 		if (labelFunc && dojo.isString(labelFunc)) {
 			var _labelFunc = dojo.getObject(labelFunc);

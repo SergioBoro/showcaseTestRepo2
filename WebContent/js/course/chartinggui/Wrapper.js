@@ -143,7 +143,8 @@ dojo.declare("course.chartinggui.Wrapper", null, {
                 this.optionWidgets.push(optionTabContent);
                 var optionTab = dijit.layout.ContentPane({content: optionTabContent.domNode});
                 // set tab title
-                optionTab.title = optionTabContent.title ? optionTabContent.title : dojo.i18n.getLocalization("course.chartinggui", "common")[optionId];
+				// _title is the special case for Axis, title is busy with dojoAttachPoint in Axis
+                optionTab.title = optionTabContent._title ? optionTabContent._title : (optionTabContent.title ? optionTabContent.title : dojo.i18n.getLocalization("course.chartinggui", "common")[optionId]);
                 dojo.connect(optionTabContent, "optionChanged", this, "optionChanged");
                 this.tabContainer.addChild(optionTab);
             }, this);
@@ -166,7 +167,6 @@ dojo.declare("course.chartinggui.Wrapper", null, {
     },
     
     renderChart: function() {
-        console.debug("renderChart");
         var o = this.chartOptions;
 
         // save chart and legend id

@@ -1,3 +1,6 @@
-({
-    _themeSpan: "Chart theme:"
+define({
+	root: {
+		_themeSpan: "Chart theme:"
+	},
+	ru: true
 });

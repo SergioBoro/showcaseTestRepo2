@@ -1,5 +1,5 @@
-({
+define({
     plot: "Plot",
-    theme: "����",
-    legend: "�������"
+    theme: "Тема",
+    legend: "Легенда"
 });

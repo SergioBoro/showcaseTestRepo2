@@ -22,6 +22,7 @@ dojo.declare("course.chartinggui.Axis", course.chartinggui.Option, {
     constructor: function(params, srcNodeRef) {
         this.minorLabelsDef = {id: "minorLabels"};
         this.widgetDefs = [
+			{id: "title", noDefault: true, attachPoint: "axisTitle"},
             {id: "fixLower"},
             {id: "fixUpper"},
             {id: "rotation"},
@@ -39,12 +40,12 @@ dojo.declare("course.chartinggui.Axis", course.chartinggui.Option, {
         this.inherited("postMixInProperties", arguments);
         if (this.optionId == "axisY") {
             this.chartOption.vertical = true;
-            this.title = this.titleY;
+            this._title = this.titleY;
             this._leftBottom1 = this._leftBottom1Y;
             this._leftBottom2 = this._leftBottom2Y;
         }
         else {
-            this.title = this.titleX;
+            this._title = this.titleX;
             this._leftBottom1 = this._leftBottom1X;
             this._leftBottom2 = this._leftBottom2X;
         }

@@ -1,3 +1,6 @@
-﻿({
-    _label: "KURS-Showcase"
+﻿define({
+	root: {
+		_label: "KURS-Showcase"
+	},
+	ru: true
 });

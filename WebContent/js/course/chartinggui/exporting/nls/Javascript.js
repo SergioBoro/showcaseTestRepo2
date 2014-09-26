@@ -1,3 +1,6 @@
-﻿({
-    _label: "Javascript code"
+﻿define({
+	root: {
+		_label: "Javascript code"
+	},
+	ru: true
 });
