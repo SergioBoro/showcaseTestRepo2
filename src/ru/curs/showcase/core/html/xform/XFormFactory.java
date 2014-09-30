@@ -177,6 +177,8 @@ public final class XFormFactory extends HTMLBasedElementFactory {
 		html = html.replace("&gt;", ">");
 		html = html.replace("&amp;", "&");
 
+		html = html.replace("&nbsp;", " ");
+
 		return html;
 	}
 
