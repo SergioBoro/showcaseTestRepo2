@@ -27,7 +27,17 @@
 
 var chartOptions = {
     id: "courseChart",
-    plot: {type: "Columns", tension:"S", gap: 3, markers: true, areas: false/*, fill: "blue", stroke: {color: "red"}*/},
+    plot: [
+		{type: "Columns", tension:"S", gap: 3, markers: true, areas: false/*, fill: "blue", stroke: {color: "red"}*/},
+		{
+			type: "Grid", name: "grid", renderOnAxis: false,
+			majorVLine: {color: new dojo.Color({ r:246, g:249, b:253, a:0.8 }), width: 1},
+			hMajorLines: false,
+			hFill: new dojo.Color({ r:246, g:249, b:253, a:0.8 }),
+			hAlternateFill: new dojo.Color({ r:146, g:149, b:153, a:0.8 }),
+			hStripes: true
+		}
+	],
     /*
     plot: [
         {type: "StackedAreas", tension:"S"},

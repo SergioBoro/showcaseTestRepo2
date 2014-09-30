@@ -125,7 +125,7 @@ dojo.declare("course.chartinggui.Wrapper", null, {
             tabs[i1].destroyRecursive();
         }
         
-        this.chartOptions.plot.type = type;
+        this.chartOptions.plot[0].type = type;
         // load new chart def
         var chartDef = this.chartDefs[type];
         var defaultDef = undefined;
@@ -186,7 +186,7 @@ dojo.declare("course.chartinggui.Wrapper", null, {
     },
     
     getPlotType: function() {
-        return this.chartOptions.plot.type;
+        return this.chartOptions.plot[0].type;
     },
 
     resizeChart: function(w, h) {
