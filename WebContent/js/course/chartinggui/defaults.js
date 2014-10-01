@@ -17,11 +17,12 @@ var columns = {plot: plotColumns};
 
 d.mode = {
     "default": {
-        order: ["plot", "theme", "axisX", "axisY"],
+        order: ["plot", "theme", "axisX", "axisY", "grid"],
         legend: "course.chartinggui.Legend",
         theme: "course.chartinggui.Theme",
         axisX: "course.chartinggui.Axis",
-        axisY: "course.chartinggui.Axis"
+        axisY: "course.chartinggui.Axis",
+		grid: "course.chartinggui.Grid"
     },
     Lines: lines,
     StackedLines: lines,

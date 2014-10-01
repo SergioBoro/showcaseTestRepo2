@@ -139,6 +139,7 @@ dojo.declare("course.chartinggui.Wrapper", null, {
                 var params = {optionId: optionId};
                 if (dojo.isObject(optionDef))  dojo.mixin(params, optionDef.params);
                 if (this.chartOptions[optionId]) params.chartOption = this.chartOptions[optionId];
+				else params.chartOptions = chartOptions;
                 var optionTabContent = new dojo.getObject(className)(params);
                 this.optionWidgets.push(optionTabContent);
                 var optionTab = dijit.layout.ContentPane({content: optionTabContent.domNode});

@@ -2,6 +2,7 @@ define({
     plot: "Общие настройки",
     theme: "Тема",
     legend: "Легенда",
+	grid: "Решётка",
     
     _chartType: "Тип графика:",
     _export: "Экспорт",
