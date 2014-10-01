@@ -73,7 +73,7 @@ public enum BrowserType implements SerializableElement {
 		if (findCI(userAgent, "opera")) {
 			return OPERA;
 		}
-		if (findCI(userAgent, "msie")) {
+		if (findCI(userAgent, "msie") || findCI(userAgent, "Trident")) {
 			return IE;
 		}
 		return null;
@@ -94,7 +94,15 @@ public enum BrowserType implements SerializableElement {
 		case CHROME: // chrome/11.0.696.71
 			return findVersion(userAgent, "chrome\\/([0-9\\.]*)");
 		case IE: // msie 9.0
-			return findVersion(userAgent, "msie\\s([0-9\\.]*)");
+			String ver = null;
+			ver = findVersion(userAgent, "msie\\s([0-9\\.]*)");
+			if (ver == VERSION_NOT_DEFINED) {
+				ver = findVersion(userAgent, "rv:([0-9\\.]*)");
+			}
+			if (ver == VERSION_NOT_DEFINED) {
+				ver = findVersion(userAgent, "rv\\s([0-9\\.]*)");
+			}
+			return ver;
 		case OPERA: // version/11.11
 		case SAFARI:
 			return findVersion(userAgent, "version\\/([0-9\\.]*)");
