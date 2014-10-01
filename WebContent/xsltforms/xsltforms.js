@@ -1751,8 +1751,12 @@ XsltForms_browser.i18n = {
 			pattern = XsltForms_browser.i18n.get("format.datetime");
 		}
 		var d = new Date(2000, 0, 1);
+		// [KURS
+//		XsltForms_browser.i18n._parse(d, "Year", str, pattern, "yyyy");
+//		XsltForms_browser.i18n._parse(d, "Month", str, pattern, "MM");
+		XsltForms_browser.i18n._parse(d, "Month", str, pattern, "MM");		
 		XsltForms_browser.i18n._parse(d, "Year", str, pattern, "yyyy");
-		XsltForms_browser.i18n._parse(d, "Month", str, pattern, "MM");
+		// KURS]		
 		XsltForms_browser.i18n._parse(d, "Date", str, pattern, "dd");
 		XsltForms_browser.i18n._parse(d, "Hours", str, pattern, "hh");
 		XsltForms_browser.i18n._parse(d, "Minutes", str, pattern, "mm");
