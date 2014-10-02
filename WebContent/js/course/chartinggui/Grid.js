@@ -15,26 +15,34 @@ dojo.declare("course.chartinggui.Grid", course.chartinggui.Option, {
     
     constructor: function(params, srcNodeRef) {
         this.chartOption = undefined;
-		var plot = params.chartOptions.plot;
-		if (plot.length>1) {
-			this.chartOption = plot[1]
-		}
+		this.plot = params.chartOptions.plot;
     },
     
     watchChanges: function() {
-		/*
-        dojo.connect(this.themeSelect, "onChange", dojo.hitch(this, function(value){
-            if (this.ignoreFirstChange) {delete this.ignoreFirstChange; return;}
-            if (value == this.noThemeValue) value= "";
-            this.optionChanged(this.optionId, value);
+        dojo.connect(this.showGrid, "onChange", dojo.hitch(this, function(value){
+			if (value) {
+				this.plot[1] = dojo.fromJson(this.gridSettings.get("value"));
+			}
+			else {
+				this.plot.pop()
+			}
+			this.optionChanged();
         }));
-        */
+        dojo.connect(this.gridSettings, "onChange", dojo.hitch(this, function(value){
+			if (this.showGrid.get("value")) {
+				this.plot[1] = dojo.fromJson(this.gridSettings.get("value"));
+				this.optionChanged();
+			}
+        }));
     },
     
     setChartOption: function() {
 		this.ignoreFirstChange = true;
-		this.gridSettings.set("value", dojo.toJson(this.chartOption));
-		this.showGrid.set("value", true);
+		var plot = this.plot;
+		if (plot.length>1) {
+			this.gridSettings.set("value", dojo.toJson(plot[1]));
+			this.showGrid.set("value", true);
+		}
     }
 });
 
