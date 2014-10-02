@@ -40,7 +40,7 @@ dojo.declare("course.chartinggui.Grid", course.chartinggui.Option, {
 		this.ignoreFirstChange = true;
 		var plot = this.plot;
 		if (plot.length>1) {
-			this.gridSettings.set("value", dojo.toJson(plot[1]));
+			this.gridSettings.set("value", dojo.toJson(plot[1], true));
 			this.showGrid.set("value", true);
 		}
     }
