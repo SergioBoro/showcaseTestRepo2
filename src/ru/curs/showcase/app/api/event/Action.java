@@ -63,6 +63,11 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	private Boolean keepUserSettings;
 
 	/**
+	 * Признак того, что нужно выполнять частичное обновление элемента.
+	 */
+	private Boolean partialUpdate = null;
+
+	/**
 	 * Информация об отображении модального окна, связанного с действием.
 	 */
 	private ModalWindowInfo modalWindowInfo;
@@ -132,6 +137,7 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	public void determineState() {
 		determineDPActionType();
 		determineKeepUserSettingsState();
+		determinePartialUpdateState();
 	}
 
 	private void determineKeepUserSettingsState() {
@@ -147,6 +153,26 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 						elink.setKeepUserSettings(getKeepUserSettings());
 					} else {
 						elink.setKeepUserSettings(false);
+					}
+				}
+
+			}
+		}
+	}
+
+	private void determinePartialUpdateState() {
+		boolean actionParamDefined = true;
+		if (partialUpdate == null) {
+			partialUpdate = false;
+			actionParamDefined = false;
+		}
+		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
+			for (DataPanelElementLink elink : dataPanelLink.getElementLinks()) {
+				if (elink.getPartialUpdate() == null) {
+					if (actionParamDefined) {
+						elink.setPartialUpdate(partialUpdate);
+					} else {
+						elink.setPartialUpdate(false);
 					}
 				}
 
@@ -398,6 +424,14 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 		if (!isFiltered()) {
 			context.setFilter(filter);
 		}
+	}
+
+	public Boolean getPartialUpdate() {
+		return partialUpdate;
+	}
+
+	public void setPartialUpdate(final Boolean aPartialUpdate) {
+		partialUpdate = aPartialUpdate;
 	}
 
 	public Boolean getKeepUserSettings() {

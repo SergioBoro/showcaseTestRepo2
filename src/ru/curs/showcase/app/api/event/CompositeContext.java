@@ -87,6 +87,8 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 	@ExcludeFromSerialization
 	private UserMessage okMessage = null;
 
+	private Boolean partialUpdate = false;
+
 	public CompositeContext(final Map<String, List<String>> aParams) {
 		super();
 		addSessionParams(aParams);
@@ -142,6 +144,14 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 
 	public void setOkMessage(final UserMessage aOkMessage) {
 		okMessage = aOkMessage;
+	}
+
+	public Boolean getPartialUpdate() {
+		return partialUpdate;
+	}
+
+	public void setPartialUpdate(final Boolean aPartialUpdate) {
+		partialUpdate = aPartialUpdate;
 	}
 
 	/**

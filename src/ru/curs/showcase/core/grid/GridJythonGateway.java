@@ -155,7 +155,12 @@ public class GridJythonGateway extends JythonQuery<JythonDTO> implements GridGat
 
 	@Override
 	protected String getJythonProcName() {
-		return element.getProcName();
+		// return element.getProcName();
+		if (context.getPartialUpdate()) {
+			return element.getProcByType(DataPanelElementProcType.PARTIALUPDATE).getName();
+		} else {
+			return element.getProcName();
+		}
 	}
 
 	@Override

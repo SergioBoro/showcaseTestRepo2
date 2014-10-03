@@ -34,6 +34,12 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 	 */
 	private Boolean keepUserSettings;
 
+	/**
+	 * Признак того, что нужно выполнять частичное обновление элемента. Данная
+	 * настройка перекрывает аналогичную настройку действия (Action).
+	 */
+	private Boolean partialUpdate = null;
+
 	public DataPanelElementLink() {
 		super();
 	}
@@ -86,6 +92,7 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 		res.id = id;
 		res.context = context.gwtClone();
 		res.keepUserSettings = keepUserSettings;
+		res.partialUpdate = partialUpdate;
 		return res;
 	}
 
@@ -95,6 +102,14 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 
 	public void setKeepUserSettings(final Boolean aKeepUserSettings) {
 		keepUserSettings = aKeepUserSettings;
+	}
+
+	public Boolean getPartialUpdate() {
+		return partialUpdate;
+	}
+
+	public void setPartialUpdate(final Boolean aPartialUpdate) {
+		partialUpdate = aPartialUpdate;
 	}
 
 	@Override

@@ -49,5 +49,11 @@ public enum DataPanelElementProcType implements SerializableElement {
 	/**
 	 * Имя процедуры для добавления записи в режиме редактирования грида.
 	 */
-	ADDRECORD
+	ADDRECORD,
+
+	/**
+	 * Имя процедуры частичного обновления грида.
+	 */
+	PARTIALUPDATE
+
 }

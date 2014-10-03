@@ -180,6 +180,12 @@ public class GridFactory extends CompBasedElementFactory {
 											.getPlugin()));
 
 			result.getJSInfo()
+					.setPartialUpdate(
+							"partialUpdate"
+									+ TextUtils.capitalizeWord(((PluginInfo) getElementInfo())
+											.getPlugin()));
+
+			result.getJSInfo()
 					.getRequiredJS()
 					.add(getAdapterForWebServer(getPluginDir(),
 							((PluginInfo) getElementInfo()).getPlugin() + ".js"));

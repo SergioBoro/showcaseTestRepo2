@@ -46,7 +46,15 @@ public class GridCelestaGateway implements GridGateway {
 	private RecordSetElementRawData getRecordSetElementRawData(final GridContext context,
 			final DataPanelElementInfo element) {
 		CelestaHelper<JythonDTO> helper = new CelestaHelper<JythonDTO>(context, JythonDTO.class);
-		String procName = element.getProcName();
+
+		// String procName = element.getProcName();
+		String procName;
+		if (context.getPartialUpdate()) {
+			procName = element.getProcByType(DataPanelElementProcType.PARTIALUPDATE).getName();
+		} else {
+			procName = element.getProcName();
+		}
+
 		JythonDTO result;
 		if (element.loadByOneProc()) {
 			Object[] params;

@@ -16,6 +16,7 @@ import ru.curs.showcase.util.xml.*;
 public class ActionFactory extends SAXTagHandler {
 	private static final String SHOW_CLOSE_BOTTOM_BUTTON_TAG = "show_close_bottom_button";
 	private static final String KEEP_USER_SETTINGS_TAG = "keep_user_settings";
+	private static final String PARTIAL_UPDATE_TAG = "partial_update";
 	private static final String SHOW_IN_MODE_TAG = "show_in";
 
 	/**
@@ -144,6 +145,11 @@ public class ActionFactory extends SAXTagHandler {
 			curDataPanelElementLink.setKeepUserSettings(Boolean.parseBoolean(value));
 		}
 
+		if (attrs.getIndex(PARTIAL_UPDATE_TAG) > -1) {
+			value = attrs.getValue(PARTIAL_UPDATE_TAG);
+			curDataPanelElementLink.setPartialUpdate(Boolean.parseBoolean(value));
+		}
+
 		CompositeContext context = createContextFromGeneral();
 		curDataPanelElementLink.setContext(context);
 	}
@@ -212,10 +218,17 @@ public class ActionFactory extends SAXTagHandler {
 		if (attrs.getIndex(SHOW_IN_MODE_TAG) > -1) {
 			action.setShowInMode(ShowInMode.valueOf(attrs.getValue(SHOW_IN_MODE_TAG)));
 		}
+
 		if (attrs.getIndex(KEEP_USER_SETTINGS_TAG) > -1) {
 			String value = attrs.getValue(KEEP_USER_SETTINGS_TAG);
 			action.setKeepUserSettings(Boolean.parseBoolean(value));
 		}
+
+		if (attrs.getIndex(PARTIAL_UPDATE_TAG) > -1) {
+			String value = attrs.getValue(PARTIAL_UPDATE_TAG);
+			action.setPartialUpdate(Boolean.parseBoolean(value));
+		}
+
 		curAction = action;
 	}
 

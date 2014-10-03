@@ -185,7 +185,7 @@ public final class ActionExecuter {
 
 		boolean keepElementSettings = dpel.getKeepUserSettings();
 		bep.setNeedResetLocalContext(!keepElementSettings);
-
+		bep.setPartialUpdate(dpel.getPartialUpdate());
 		bep.reDrawPanel(bep.getElementInfo().getContext(ac));
 	}
 
@@ -218,6 +218,7 @@ public final class ActionExecuter {
 					boolean keepElementSettings = bep.getElementInfo().getKeepUserSettings(ac);
 
 					bep.setNeedResetLocalContext(!keepElementSettings);
+					bep.setPartialUpdate(bep.getElementInfo().getPartialUpdate(ac));
 					bep.reDrawPanel(bep.getElementInfo().getContext(ac));
 				}
 			}

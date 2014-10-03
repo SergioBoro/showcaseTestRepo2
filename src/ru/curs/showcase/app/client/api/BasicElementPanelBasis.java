@@ -87,6 +87,17 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 		needResetLocalContext = aNeedResetLocalContext;
 	}
 
+	private boolean partialUpdate = false;
+
+	public boolean isPartialUpdate() {
+		return partialUpdate;
+	}
+
+	@Override
+	public void setPartialUpdate(final boolean aPartialUpdate) {
+		partialUpdate = aPartialUpdate;
+	}
+
 	protected void resetLocalContext() {
 		if (needResetLocalContext) {
 			internalResetLocalContext();

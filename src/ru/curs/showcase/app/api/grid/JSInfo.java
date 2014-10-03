@@ -20,6 +20,7 @@ public class JSInfo implements SerializableElement {
 	private String saveProc;
 	private String revertProc;
 	private String clipboardProc;
+	private String partialUpdate;
 
 	private List<String> requiredJS = new ArrayList<String>();
 
@@ -71,6 +72,14 @@ public class JSInfo implements SerializableElement {
 
 	public void setClipboardProc(final String aClipboardProc) {
 		clipboardProc = aClipboardProc;
+	}
+
+	public String getPartialUpdate() {
+		return partialUpdate;
+	}
+
+	public void setPartialUpdate(final String aPartialUpdate) {
+		partialUpdate = aPartialUpdate;
 	}
 
 	public List<String> getRequiredJS() {

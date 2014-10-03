@@ -180,10 +180,98 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			setFirstLoading(true);
 			setDataGridPanel();
 		} else {
+
 			setFirstLoading(false);
-			String params = "'" + getDivIdPlugin() + "'";
-			pluginRefresh(gridMetadata.getJSInfo().getRefreshProc(), params);
+
+			if (isPartialUpdate()) {
+				partialUpdateGridPanel();
+			} else {
+				String params = "'" + getDivIdPlugin() + "'";
+				pluginProc(gridMetadata.getJSInfo().getRefreshProc(), params);
+			}
+
 		}
+	}
+
+	private void partialUpdateGridPanel() {
+
+		final GridContext gc = getDetailedContext();
+
+		if ((gc.getSortedColumns() == null) || (gc.getSortedColumns().size() == 0)) {
+			MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+					.getInternationalizedMessages().okMessage(), AppCurrContext.getInstance()
+					.getInternationalizedMessages().jsGridPartialUpdateNeedSorting(), "",
+					MessageType.WARNING, false);
+			return;
+		}
+
+		gc.setPartialUpdate(true);
+
+		if (dataService == null) {
+			dataService = GWT.create(DataService.class);
+		}
+
+		dataService.getLiveGridData(gc, getElementInfo(),
+				new GWTServiceCallback<LiveGridData<LiveGridModel>>(AppCurrContext.getInstance()
+						.getInternationalizedMessages().gridErrorGetTable()) {
+
+					@Override
+					public void onFailure(final Throwable caught) {
+						gc.setPartialUpdate(false);
+						super.onFailure(caught);
+					}
+
+					@Override
+					public void onSuccess(final LiveGridData<LiveGridModel> aLiveGridData) {
+						gc.setPartialUpdate(false);
+						super.onSuccess(aLiveGridData);
+						partialUpdateGridPanelByGrid(aLiveGridData);
+					}
+				});
+	}
+
+	private void partialUpdateGridPanelByGrid(final LiveGridData<LiveGridModel> aLiveGridData) {
+
+		LiveGridExtradata gridExtradataNew = aLiveGridData.getLiveGridExtradata();
+
+		for (ru.curs.showcase.app.api.grid.GridEvent ev : gridExtradataNew.getEventManager()
+				.getEvents()) {
+			for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridExtradata.getEventManager()
+					.getEvents()) {
+				if (ev.getId1().equals(evOld.getId1()) && ev.getId2().equals(evOld.getId2())
+						&& (ev.getInteractionType() == evOld.getInteractionType())) {
+					gridExtradata.getEventManager().getEvents().remove(evOld);
+					break;
+				}
+			}
+			gridExtradata.getEventManager().getEvents().add(ev);
+		}
+
+		// ----------------------------------------
+
+		String params = "'" + getDivIdPlugin() + "'";
+
+		JSONObject partialdata = new JSONObject();
+		JSONArray rows = new JSONArray();
+		int i = 0;
+		for (LiveGridModel lgm : aLiveGridData.getData()) {
+			JSONObject row = new JSONObject();
+			for (String key : lgm.getMap().keySet()) {
+				if (lgm.getMap().get(key) == null) {
+					row.put(key, null);
+				} else {
+					row.put(key, new JSONString((String) lgm.getMap().get(key)));
+				}
+			}
+			rows.set(i, row);
+			i++;
+		}
+		partialdata.put("rows", rows);
+
+		params = params + ", " + partialdata;
+
+		pluginProc(gridMetadata.getJSInfo().getPartialUpdate(), params);
+
 	}
 
 	private void setDataGridPanel() {
@@ -466,7 +554,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		// ----------------------------------------
 
 		try {
-			drawPlugin(gridMetadata.getJSInfo().getCreateProc(), params);
+			pluginProc(gridMetadata.getJSInfo().getCreateProc(), params);
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
 				MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
@@ -488,35 +576,15 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 	/**
 	 * 
-	 * Процедура прорисовки плагина.
+	 * Вызов процедуры в плагине.
 	 * 
 	 * @param procName
-	 *            - имя js - процедуры для прорисовки плагина
+	 *            - имя js - процедуры
 	 * @param params
-	 *            - параметры js - процедуры для прорисовки плагина
+	 *            - параметры js - процедуры
 	 * 
 	 */
-	private native void drawPlugin(final String procName, final String params) /*-{
-		$wnd.eval(procName + "(" + params + ");");
-	}-*/;
-
-	private native void pluginRefresh(final String procName, final String params) /*-{
-		$wnd.eval(procName + "(" + params + ");");
-	}-*/;
-
-	private native void pluginAddRecord(final String procName, final String params) /*-{
-		$wnd.eval(procName + "(" + params + ");");
-	}-*/;
-
-	private native void pluginSave(final String procName, final String params) /*-{
-		$wnd.eval(procName + "(" + params + ");");
-	}-*/;
-
-	private native void pluginRevert(final String procName, final String params) /*-{
-		$wnd.eval(procName + "(" + params + ");");
-	}-*/;
-
-	private native String pluginClipboard(final String procName, final String params) /*-{
+	private native String pluginProc(final String procName, final String params) /*-{
 		return $wnd.eval(procName + "(" + params + ");");
 	}-*/;
 
@@ -1079,7 +1147,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	 */
 	public ClipboardDialog copyToClipboard() {
 		String params = "'" + getDivIdPlugin() + "'";
-		String s = pluginClipboard(gridMetadata.getJSInfo().getClipboardProc(), params);
+		String s = pluginProc(gridMetadata.getJSInfo().getClipboardProc(), params);
 
 		ClipboardDialog cd = new ClipboardDialog(s);
 		cd.center();
@@ -1215,17 +1283,17 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 	private void editorAddRecord() {
 		String params = "'" + getDivIdPlugin() + "'";
-		pluginAddRecord(gridMetadata.getJSInfo().getAddRecordProc(), params);
+		pluginProc(gridMetadata.getJSInfo().getAddRecordProc(), params);
 	}
 
 	private void editorSave() {
 		String params = "'" + getDivIdPlugin() + "'";
-		pluginSave(gridMetadata.getJSInfo().getSaveProc(), params);
+		pluginProc(gridMetadata.getJSInfo().getSaveProc(), params);
 	}
 
 	private void editorRevert() {
 		String params = "'" + getDivIdPlugin() + "'";
-		pluginRevert(gridMetadata.getJSInfo().getRevertProc(), params);
+		pluginProc(gridMetadata.getJSInfo().getRevertProc(), params);
 	}
 
 }

@@ -360,6 +360,28 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	}
 
 	/**
+	 * Возвращает значение partialUpdate, заданное в действии для данного
+	 * элемента.
+	 * 
+	 * @param ac
+	 *            - действие.
+	 * @return - partialUpdate.
+	 */
+	public Boolean getPartialUpdate(final Action ac) {
+		if (ac.getDataPanelLink() != null) {
+			for (DataPanelElementLink link : ac.getDataPanelLink().getElementLinks()) {
+				if (link.getId().equals(id)) {
+					return link.getPartialUpdate();
+				}
+			}
+
+			// return ac.getPartialUpdate();
+			return false;
+		}
+		return false;
+	}
+
+	/**
 	 * Возвращает текущий контекст для элемента из переданного действия.
 	 * 
 	 * @param ac

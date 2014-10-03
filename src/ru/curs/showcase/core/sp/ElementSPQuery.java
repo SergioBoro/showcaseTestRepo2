@@ -3,7 +3,7 @@ package ru.curs.showcase.core.sp;
 import java.io.InputStream;
 import java.sql.SQLException;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -95,7 +95,15 @@ public abstract class ElementSPQuery extends SPQuery {
 	protected void init(final CompositeContext aContext, final DataPanelElementInfo aElementInfo) {
 		elementInfo = aElementInfo;
 		setContext(aContext);
-		setProcName(elementInfo.getProcName());
+
+		// setProcName(elementInfo.getProcName());
+		if (aContext.getPartialUpdate()) {
+			setProcName(elementInfo.getProcByType(DataPanelElementProcType.PARTIALUPDATE)
+					.getName());
+		} else {
+			setProcName(elementInfo.getProcName());
+		}
+
 	}
 
 	/**

@@ -66,6 +66,9 @@ public interface constantsShowcase extends Messages {
 	@DefaultMessage("Export to Excel records 0-level")
 	String jsTreeGridExportToExcel0Level();
 
+	@DefaultMessage("To perform a partial update, you must select a sorting grid")
+	String jsGridPartialUpdateNeedSorting();
+
 	@DefaultMessage("list of values")
 	String conditionListOfValues();
 

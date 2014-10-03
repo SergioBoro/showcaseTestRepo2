@@ -26,6 +26,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 	         "dijit/form/RadioButton",
 	         "dijit/form/DataList",	     
 	         
+	         "dojo/store/Observable",	         
 	         "dojo/has",
 	         "dgrid/editor", 
 	         "dgrid/extensions/CompoundColumns", 
@@ -47,14 +48,15 @@ function createTreeDGrid(elementId, parentId, metadata) {
 	         "dojo/domReady!"
 	         ],	function(
         		 Button,DropDownButton,ComboButton,ToggleButton,CurrencyTextBox,DateTextBox,NumberSpinner,NumberTextBox,TextBox,TimeTextBox,ValidationTextBox,SimpleTextarea,Textarea,Select,ComboBox,MultiSelect,FilteringSelect,HorizontalSlider,VerticalSlider,CheckBox,RadioButton,DataList, 
-        		 has, editor, CompoundColumns, ColumnSet, put, QueryResults, on, Grid, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, tree, Cache, Memory, aspect
+        		 Observable, has, editor, CompoundColumns, ColumnSet, put, QueryResults, on, Grid, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, tree, Cache, Memory, aspect
 	         ){
 		
 		var firstLoading = true;
 		
 		
+		var mem = Memory();
 		
-		var store = Cache(JsonRest({
+		var store = Observable(Cache(JsonRest({
 			target:"secured/JSGridService",
 			
 			idProperty: "id",
@@ -178,7 +180,9 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				return results;
 			}
 		
-		}), Memory());
+		}), mem));
+		
+		store.mem = mem;
 		
 		store.getChildren = function(parent, options){
 	    	return store.query({parent: parent.id}, options);
@@ -426,7 +430,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				readonly: metadata["common"]["readonly"]
 		}, parentId);
 	    arrGrids[parentId] = grid;	   
-	    
+		
 	    
 	    aspect.after( grid, 'renderRow', function( row, args ){
 			if(args[0].rowstyle && (args[0].rowstyle != "")){
@@ -582,3 +586,13 @@ function clipboardTreeDGrid(parentId){
 	
 	return str;
 }
+
+function partialUpdateTreeDGrid(parentId, partialdata){
+	for(var k in partialdata["rows"]) {
+		var obj = arrGrids[parentId].store.mem.get(partialdata["rows"][k].id);
+		if(obj){
+				arrGrids[parentId].store.notify(partialdata["rows"][k], obj.id);
+		}
+	}
+}
+

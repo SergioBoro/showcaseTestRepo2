@@ -22,6 +22,8 @@
          <xs:enumeration value="exportdata"/>
          <xs:enumeration value="ADDRECORD"/>
          <xs:enumeration value="addrecord"/>
+         <xs:enumeration value="PARTIALUPDATE"/>
+         <xs:enumeration value="partialupdate"/>
       </xs:restriction>
    </xs:simpleType>
 

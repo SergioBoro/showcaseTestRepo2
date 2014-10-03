@@ -23,6 +23,7 @@
 									</xs:sequence>
 									<xs:attribute name="id" type="notNullType" use="required" />
 									<xs:attribute name="keep_user_settings" type="xs:boolean" />
+									<xs:attribute name="partial_update" type="xs:boolean" />
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
@@ -81,6 +82,7 @@
 			</xs:all>
 			<xs:attribute name="show_in" type="showInMode" />
 			<xs:attribute name="keep_user_settings" type="xs:boolean" />
+			<xs:attribute name="partial_update" type="xs:boolean" />
 			<xs:assert
 				test="if (datapanel or server) then main_context[not(preceding-sibling::*)] else true()" />
 		</xs:complexType>
