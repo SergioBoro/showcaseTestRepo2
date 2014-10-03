@@ -50,6 +50,8 @@ public final class UserDataUtils {
 	 */
 	public static final String PROPFILENAME = "app.properties";
 
+	public static final String GENERALPROPFILENAME = "generalapp.properties";
+
 	public static final String XSLTTRANSFORMSFORGRIDDIR = "xslttransformsforgrid";
 
 	public static final String SCHEMASDIR = "schemas";
@@ -118,6 +120,13 @@ public final class UserDataUtils {
 	public static InputStream loadUserDataToStream(final String fileName) throws IOException {
 		FileInputStream result =
 			new FileInputStream(getUserDataCatalog() + File.separator + fileName);
+		return result;
+	}
+
+	public static InputStream loadGeneralToStream(final String fileName) throws IOException {
+		FileInputStream result =
+			new FileInputStream(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+					+ UserDataUtils.GENERAL_RES_ROOT + File.separator + fileName);
 		return result;
 	}
 
@@ -426,6 +435,13 @@ public final class UserDataUtils {
 
 		}
 
+		File generalResRoot =
+			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+					+ UserDataUtils.GENERAL_RES_ROOT);
+		result =
+			result + generalResRoot.getAbsolutePath() + File.separator + "score"
+					+ File.pathSeparator;
+
 		if (!result.isEmpty()) {
 			result = result.substring(0, result.length() - 1);
 
@@ -493,7 +509,8 @@ public final class UserDataUtils {
 
 	private static String getGeneralPropFile() {
 		if (generalPropFile == null) {
-			return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + PROPFILENAME;
+			return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+					+ UserDataUtils.GENERAL_RES_ROOT + "/" + GENERALPROPFILENAME;
 		}
 		return generalPropFile;
 	}
@@ -501,7 +518,7 @@ public final class UserDataUtils {
 	public static String getGeneralRequiredProp(final String propName) {
 		String value = getGeneralOptionalProp(propName);
 		if (value == null) {
-			throw new SettingsFileRequiredPropException(PROPFILENAME, propName,
+			throw new SettingsFileRequiredPropException(GENERALPROPFILENAME, propName,
 					SettingsFileType.GENERAL_APP_PROPERTIES);
 		}
 		return value;

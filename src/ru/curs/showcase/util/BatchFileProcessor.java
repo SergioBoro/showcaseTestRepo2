@@ -76,8 +76,11 @@ public class BatchFileProcessor {
 		}
 		for (File f : flist) {
 			if (f.isFile()) {
-				action.perform(f);
-			} else if (f.isDirectory() && !("WEB-INF".equals(f.getName()))) {
+				// action.perform(f);
+			} else if (f.isDirectory()
+					&& ("plugins".equals(f.getName()) || "libraries".equals(f.getName())
+							|| "js".equals(f.getName()) || "css".equals(f.getName()) || "resources"
+								.equals(f.getName()))) {
 				BatchFileProcessor bfp =
 					new BatchFileProcessor(getParentDir() + File.separator + f.getName(), filter);
 				bfp.process(action.cloneForHandleChildDir(f.getName()));
