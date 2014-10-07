@@ -77,6 +77,7 @@ public final class UserDataUtils {
 	public static final String CELESTA_PREFIX = "celesta.";
 	public static final String CELESTA_SCORE_PATH = "score.path";
 	public static final String CELESTA_SKIP_DBUPDATE = "skip.dbupdate";
+	public static final String CELESTA_FORCE_DBINITIALIZE = "force.dbinitialize";
 	public static final String CELESTA_LOG_LOGINS = "log.logins";
 	// public static final String CELESTA_DATABASE_CLASSNAME =
 	// "database.classname";
@@ -365,6 +366,11 @@ public final class UserDataUtils {
 		String skipDbupdate = generalProps.getProperty(CELESTA_PREFIX + CELESTA_SKIP_DBUPDATE);
 		if (!(skipDbupdate == null || skipDbupdate.isEmpty())) {
 			celestaProps.put(CELESTA_SKIP_DBUPDATE, skipDbupdate);
+		}
+
+		String forceDBInitialize = generalProps.getProperty(CELESTA_PREFIX + CELESTA_FORCE_DBINITIALIZE);
+		if (!(forceDBInitialize == null || forceDBInitialize.isEmpty())) {
+			celestaProps.put(CELESTA_FORCE_DBINITIALIZE, forceDBInitialize);
 		}
 
 		String connectionURL = generalProps.getProperty(RDBMS_PREFIX + CELESTA_CONNECTION_URL);
