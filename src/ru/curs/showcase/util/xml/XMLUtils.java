@@ -152,7 +152,7 @@ public final class XMLUtils {
 	 */
 	public static SAXParser createSAXParser() {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
-		factory.setNamespaceAware(true);
+		factory.setNamespaceAware(false);
 		factory.setValidating(false);
 		SAXParser parser;
 		try {
