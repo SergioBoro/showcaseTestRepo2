@@ -77,7 +77,23 @@ function createPageDGrid(elementId, parentId, metadata) {
 				}
 				if(this["valueType"] == "DOWNLOAD"){
 					if(value && (value.trim()!="")){
-						div.innerHTML = "<tbody><tr><td style=\"font-size: 1em;\">"+value+"</td><td  align=\"center\" style=\"vertical-align: middle;\"><button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\"><img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 16px; height: 16px;  \"   ></button></p></td></tr></tbody>";						
+//						div.innerHTML = "<tbody><tr><td style=\"font-size: 1em;\">"+value+"</td><td  align=\"center\" style=\"vertical-align: middle;\"><button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\"><img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 16px; height: 16px;  \"   ></button></p></td></tr></tbody>";						
+						
+						div.innerHTML = 
+							"<tbody>" +
+								"<tr>" +
+									"<td>"+value+"" +
+									"</td>" +
+									"<td  align=\"center\" style=\"vertical-align: middle;\">" +
+									
+											"<button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\">" +
+													"<img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 8px; height: 8px;  \"   >" +
+											"</button>" +
+
+									"</td>" +
+								"</tr>" +
+							"</tbody>";						
+						
 					}else{
 						div.innerHTML = value;
 					}
@@ -292,16 +308,17 @@ function createPageDGrid(elementId, parentId, metadata) {
 		}
 		grid.on("dgrid-refresh-complete", function(event) {
 			if(firstLoading){
+				if(metadata["common"]["pageNumber"]){
+					event.grid.gotoPage(parseInt(metadata["common"]["pageNumber"]));						
+				}
 				if(metadata["common"]["selectionModel"] == "RECORDS"){
 					if(metadata["common"]["selRecId"]){
-						event.grid.gotoPage(parseInt(metadata["common"]["pageNumber"]));
 						event.grid.select(event.grid.row(metadata["common"]["selRecId"]));
 					}
 				}else{
 					if(metadata["common"]["selRecId"] && metadata["common"]["selColId"]){
 						for(var col in event.grid.columns){
 							if(event.grid.columns[col].label == metadata["common"]["selColId"]){
-								event.grid.gotoPage(parseInt(metadata["common"]["pageNumber"]));								
 								event.grid.select(event.grid.cell(metadata["common"]["selRecId"], col));
 								break;
 							}
