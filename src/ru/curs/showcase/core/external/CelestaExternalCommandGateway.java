@@ -5,6 +5,8 @@ import java.util.Random;
 import org.python.core.PyObject;
 
 import ru.curs.celesta.*;
+import ru.curs.showcase.app.api.ExceptionType;
+import ru.curs.showcase.util.exception.BaseException;
 
 /**
  * Celesta шлюз для трансформации данных или выполнения команд, полученных из
@@ -17,6 +19,14 @@ public class CelestaExternalCommandGateway implements ExternalCommandGateway {
 
 	private String request;
 	private String source;
+
+	private class MyException extends BaseException {
+		private static final long serialVersionUID = 6725288887082284411L;
+
+		MyException(final ExceptionType aType, final String aMessage) {
+			super(aType, aMessage);
+		}
+	}
 
 	@Override
 	public String handle(final String aRequest, final String aSource) {
@@ -38,14 +48,15 @@ public class CelestaExternalCommandGateway implements ExternalCommandGateway {
 			}
 
 		} catch (CelestaException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new MyException(ExceptionType.SOLUTION,
+					"При запуске процедуры Celesta произошла ошибка: " + e.getMessage());
+
 		} finally {
 			try {
 				Celesta.getInstance().logout(tempSesId, false);
 			} catch (CelestaException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new MyException(ExceptionType.SOLUTION,
+						"При запуске процедуры Celesta произошла ошибка: " + e.getMessage());
 			}
 		}
 
