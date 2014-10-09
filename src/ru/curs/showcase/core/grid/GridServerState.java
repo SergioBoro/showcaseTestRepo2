@@ -34,6 +34,19 @@ public class GridServerState implements SerializableElement {
 	private Integer autoSelectRecordId = null;
 
 	/**
+	 * UID записи, которая должна быть выбрана автоматически после загрузки
+	 * данных.
+	 */
+	private String autoSelectRecordUID = null;
+
+	/**
+	 * Смещение,, определяющее начальное положение записи, выбираемой по
+	 * autoSelectRecordUID.
+	 * 
+	 */
+	private Integer autoSelectOffset = null;
+
+	/**
 	 * Идентификатор столбца, который должен быть выбран автоматически после
 	 * загрузки данных. По идентификатору можно определить autoSelectColumn.
 	 */
@@ -127,6 +140,22 @@ public class GridServerState implements SerializableElement {
 
 	public void setAutoSelectRecordId(final Integer aAutoSelectRecordId) {
 		autoSelectRecordId = aAutoSelectRecordId;
+	}
+
+	public String getAutoSelectRecordUID() {
+		return autoSelectRecordUID;
+	}
+
+	public void setAutoSelectRecordUID(final String aAutoSelectRecordUID) {
+		autoSelectRecordUID = aAutoSelectRecordUID;
+	}
+
+	public Integer getAutoSelectOffset() {
+		return autoSelectOffset;
+	}
+
+	public void setAutoSelectOffset(final Integer aAutoSelectOffset) {
+		autoSelectOffset = aAutoSelectOffset;
 	}
 
 	public String getAutoSelectColumnId() {

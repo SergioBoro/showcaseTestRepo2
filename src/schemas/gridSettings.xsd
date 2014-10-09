@@ -37,6 +37,8 @@
             <xs:attribute name="autoSelectColumnId" type="notNullType"/>
             <xs:attribute name="autoSelectRecordId" type="xs:unsignedInt"/>
             <xs:attribute name="autoSelectRelativeRecord" type="xs:boolean" default="true"/>
+            <xs:attribute name="autoSelectRecordUID" type="xs:string"/>
+            <xs:attribute name="autoSelectOffset" type="xs:unsignedInt"/>
             <xs:attribute name="profile" type="notNullType"/>
             <xs:attribute name="selectMode" type="rowOrCell"/>
             <xs:attribute name="totalCount" type="xs:unsignedInt"/>

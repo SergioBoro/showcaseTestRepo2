@@ -192,8 +192,12 @@ public final class GridTransformer {
 		lge.setGridEventManager(grid.getEventManager());
 
 		String autoSelectRecordId = null;
-		if (grid.getAutoSelectRecord() != null) {
-			autoSelectRecordId = grid.getAutoSelectRecord().getId();
+		if (grid.getAutoSelectRecordUID() != null) {
+			autoSelectRecordId = grid.getAutoSelectRecordUID();
+		} else {
+			if (grid.getAutoSelectRecord() != null) {
+				autoSelectRecordId = grid.getAutoSelectRecord().getId();
+			}
 		}
 		lge.setAutoSelectRecordId(autoSelectRecordId);
 
@@ -329,8 +333,12 @@ public final class GridTransformer {
 		lge.setGridEventManager(grid.getEventManager());
 
 		String autoSelectRecordId = null;
-		if (grid.getAutoSelectRecord() != null) {
-			autoSelectRecordId = grid.getAutoSelectRecord().getId();
+		if (grid.getAutoSelectRecordUID() != null) {
+			autoSelectRecordId = grid.getAutoSelectRecordUID();
+		} else {
+			if (grid.getAutoSelectRecord() != null) {
+				autoSelectRecordId = grid.getAutoSelectRecord().getId();
+			}
 		}
 		lge.setAutoSelectRecordId(autoSelectRecordId);
 

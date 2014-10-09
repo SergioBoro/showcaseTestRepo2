@@ -88,6 +88,8 @@ public class GridFactory extends CompBasedElementFactory {
 	private static final String FILTER_MULTISELECTOR_NEEDINITSELECTION_TAG = "needInitSelection";
 
 	private static final String AUTO_SELECT_REC_TAG = "autoSelectRecordId";
+	private static final String AUTO_SELECT_RECORD_UID_TAG = "autoSelectRecordUID";
+	private static final String AUTO_SELECT_OFFSET_TAG = "autoSelectOffset";
 	private static final String AUTO_SELECT_COL_TAG = "autoSelectColumnId";
 	private static final String AUTO_SELECT_RELATIVE = "autoSelectRelativeRecord";
 	private static final String GRID_WIDTH_TAG = "gridWidth";
@@ -482,6 +484,17 @@ public class GridFactory extends CompBasedElementFactory {
 				value = attrs.getValue(AUTO_SELECT_REC_TAG);
 				serverState().setAutoSelectRecordId(Integer.parseInt(value));
 			}
+
+			if (attrs.getIndex(AUTO_SELECT_RECORD_UID_TAG) > -1) {
+				value = attrs.getValue(AUTO_SELECT_RECORD_UID_TAG);
+				serverState().setAutoSelectRecordUID(value);
+			}
+
+			if (attrs.getIndex(AUTO_SELECT_OFFSET_TAG) > -1) {
+				value = attrs.getValue(AUTO_SELECT_OFFSET_TAG);
+				serverState().setAutoSelectOffset(Integer.parseInt(value));
+			}
+
 			if (attrs.getIndex(AUTO_SELECT_COL_TAG) > -1) {
 				serverState().setAutoSelectColumnId(attrs.getValue(AUTO_SELECT_COL_TAG));
 			}
@@ -733,7 +746,14 @@ public class GridFactory extends CompBasedElementFactory {
 			loadStoredState();
 		}
 		adjustVirtualColumns();
-		calcAutoSelectRecordId();
+
+		if ((serverState().getAutoSelectRecordUID() == null)
+				&& (serverState().getAutoSelectOffset() == null)) {
+			calcAutoSelectRecordId();
+		} else {
+			setupAutoSelectRecordUID();
+		}
+
 		loadLiveGridUISettings();
 	}
 
@@ -820,6 +840,22 @@ public class GridFactory extends CompBasedElementFactory {
 					getCallContext().getLiveInfo().setOffset(offset);
 				}
 
+			}
+		}
+	}
+
+	private void setupAutoSelectRecordUID() {
+		getResult().setAutoSelectRecordUID(serverState().getAutoSelectRecordUID());
+
+		if (getCallContext().isFirstLoad()) {
+			int pageNumber = 1;
+			if (serverState().getAutoSelectOffset() != null) {
+				getCallContext().getLiveInfo().setOffset(serverState().getAutoSelectOffset());
+
+				pageNumber =
+					serverState().getAutoSelectOffset()
+							/ getCallContext().getLiveInfo().getLimit() + 1;
+				getCallContext().getLiveInfo().setPageNumber(pageNumber);
 			}
 		}
 	}

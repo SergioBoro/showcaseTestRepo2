@@ -46,6 +46,12 @@ public class Grid extends DataPanelCompBasedElement implements SizeEstimate {
 	private Record autoSelectRecord = null;
 
 	/**
+	 * UID записи, которая должна быть выбрана автоматически после загрузки
+	 * данных.
+	 */
+	private String autoSelectRecordUID = null;
+
+	/**
 	 * Столбец, который должен быть выделен автоматически при перерисовке грида
 	 * с новыми данными. Если null - ничего делать не надо.
 	 */
@@ -118,6 +124,14 @@ public class Grid extends DataPanelCompBasedElement implements SizeEstimate {
 
 	public final void setAutoSelectRecord(final Record aAutoSelectRecord) {
 		autoSelectRecord = aAutoSelectRecord;
+	}
+
+	public String getAutoSelectRecordUID() {
+		return autoSelectRecordUID;
+	}
+
+	public void setAutoSelectRecordUID(final String aAutoSelectRecordUID) {
+		autoSelectRecordUID = aAutoSelectRecordUID;
 	}
 
 	/**
