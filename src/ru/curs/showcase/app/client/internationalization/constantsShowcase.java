@@ -12,136 +12,136 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface constantsShowcase extends Messages {
 
-	@DefaultMessage("Cancel")
+	@DefaultMessage("Отменить")
 	String selectorCancelText();
 
-	@DefaultMessage("Starts with (Ctrl+B)")
+	@DefaultMessage(" Начинается с (Ctrl+B)")
 	String selectorStartsWithText();
 
-	@DefaultMessage("Not Found")
+	@DefaultMessage("Строка не найдена")
 	String multySelectorStringNotFound();
 
-	@DefaultMessage("when receiving data from the server to the table")
+	@DefaultMessage("при получении данных таблицы с сервера")
 	String gridErrorGetTable();
 
-	@DefaultMessage("Export to Excel")
+	@DefaultMessage("Экспорт в Excel")
 	String gridExportToExcelCaption();
 
-	@DefaultMessage("The table is empty. Export to Excel will not run.")
+	@DefaultMessage("Таблица пуста. Экспорт в Excel выполнен не будет.")
 	String gridExportToExcelEmptyTable();
 
-	@DefaultMessage("Show at most")
+	@DefaultMessage("Показывать не более")
 	String pageGridShowAtMost();
 
-	@DefaultMessage("Loading data")
+	@DefaultMessage("Загрузка данных")
 	String treeGridLoadingData();
 
-	@DefaultMessage("Downloadable entry with ID")
+	@DefaultMessage("Загружаемая запись с идентификатором")
 	String treeGridLoadingDataDuplicateRecord1();
 
-	@DefaultMessage("already present in the grid. Entries are not loaded.")
+	@DefaultMessage("уже присутствует в гриде. Записи загружены не будут.")
 	String treeGridLoadingDataDuplicateRecord2();
 
-	@DefaultMessage("when receiving data from the server XForm")
+	@DefaultMessage("при получении данных XForm с сервера")
 	String xformsErrorGetData();
 
-	@DefaultMessage("when receiving data from the server to the main XForm")
+	@DefaultMessage("при получении данных главной XForm с сервера")
 	String xformsErrorGetMainData();
 
-	@DefaultMessage("An error occurred during downloading files")
+	@DefaultMessage("При загрузке файлов произошла ошибка")
 	String uploadError();
 
-	@DefaultMessage("Error during serialization parameters for Http-request plug.")
+	@DefaultMessage("Ошибка при сериализации параметров для Http-запроса плагина.")
 	String jsGridSerializationError();
 
-	@DefaultMessage("An error occurred while deserializing an object")
+	@DefaultMessage("Ошибка при десериализации объекта")
 	String jsGridDeserializationError();
 
-	@DefaultMessage("Loading...")
+	@DefaultMessage("Загрузка...")
 	String jsGridLoadingMessage();
 
-	@DefaultMessage("Export to Excel descendants of the current record")
+	@DefaultMessage("Экспорт в Excel потомков текущей записи")
 	String jsTreeGridExportToExcelChilds();
 
-	@DefaultMessage("Export to Excel records 0-level")
+	@DefaultMessage("Экспорт в Excel записей нулевого уровня")
 	String jsTreeGridExportToExcel0Level();
 
-	@DefaultMessage("To perform a partial update, you must select a sorting grid")
+	@DefaultMessage("Для выполнения частичного обновления, необходимо задать сортировку грида")
 	String jsGridPartialUpdateNeedSorting();
 
-	@DefaultMessage("list of values")
+	@DefaultMessage("список значений")
 	String conditionListOfValues();
 
-	@DefaultMessage("equal")
+	@DefaultMessage("равно")
 	String conditionEqual();
 
-	@DefaultMessage("does not equal")
+	@DefaultMessage("не равно")
 	String conditionNotEqual();
 
-	@DefaultMessage("is less than")
+	@DefaultMessage("меньше чем")
 	String conditionLess();
 
-	@DefaultMessage("less than or equal")
+	@DefaultMessage("меньше или равно")
 	String conditionLessEqual();
 
-	@DefaultMessage("is greater than")
+	@DefaultMessage("больше чем")
 	String conditionGreater();
 
-	@DefaultMessage("greater than or equal")
+	@DefaultMessage("больше или равно")
 	String conditionGreaterEqual();
 
-	@DefaultMessage("contains")
+	@DefaultMessage("содержит")
 	String conditionContain();
 
-	@DefaultMessage("starts with")
+	@DefaultMessage("начинается ")
 	String conditionStartWith();
 
-	@DefaultMessage("ends with")
+	@DefaultMessage("заканчивается на")
 	String conditionEndWith();
 
-	@DefaultMessage("does not contain")
+	@DefaultMessage("не содержит")
 	String conditionNotContain();
 
-	@DefaultMessage("does not start with")
+	@DefaultMessage("не начинается с")
 	String conditionNotStartWith();
 
-	@DefaultMessage("does not end with")
+	@DefaultMessage("не оканчивается на")
 	String conditionNotEndWith();
 
-	@DefaultMessage("is empty")
+	@DefaultMessage("пусто")
 	String conditionIsEmpty();
 
-	@DefaultMessage("Mapping:")
+	@DefaultMessage("Соответствие")
 	String jsFilterLink();
 
-	@DefaultMessage("Column:")
+	@DefaultMessage("Столбец")
 	String jsFilterColumn();
 
-	@DefaultMessage("Condition:")
+	@DefaultMessage("Условие")
 	String jsFilterCondition();
 
-	@DefaultMessage("Value:")
+	@DefaultMessage("Значение")
 	String jsFilterValue();
 
-	@DefaultMessage("Select values:")
+	@DefaultMessage("Выбрать значения")
 	String jsFilterSelectValues();
 
-	@DefaultMessage("Update filter condition")
+	@DefaultMessage("Обновить условие фильтра")
 	String jsFilterUpdate();
 
-	@DefaultMessage("Add")
+	@DefaultMessage("Добавить")
 	String jsFilterAdd();
 
-	@DefaultMessage("Delete")
+	@DefaultMessage("Удалить")
 	String jsFilterDel();
 
-	@DefaultMessage("Clear")
+	@DefaultMessage("Очистить")
 	String jsFilterClear();
 
-	@DefaultMessage("Cancel")
+	@DefaultMessage("Отменить")
 	String jsFilterCancel();
 
-	@DefaultMessage("Message")
+	@DefaultMessage("Сообщение")
 	String okMessage();
 
 	@DefaultMessage("Пожалуйста, подождите...Идет загрузка данных")
