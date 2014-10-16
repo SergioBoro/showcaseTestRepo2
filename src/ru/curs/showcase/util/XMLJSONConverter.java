@@ -9,7 +9,6 @@ import org.json.*;
 import org.xml.sax.SAXException;
 
 import ru.curs.celesta.showcase.utils.JSONToXMLParser;
-import ru.curs.showcase.util.xml.XMLUtils;
 
 import com.google.gson.JsonElement;
 
@@ -45,7 +44,8 @@ public final class XMLJSONConverter {
 		if (xml == null || xml.isEmpty()) {
 			return "";
 		}
-		SAXParser parser = XMLUtils.createSAXParser();
+		// SAXParser parser = XMLUtils.createSAXParser();
+		SAXParser parser = createSAXParser();
 		XMLToJSONConverterSaxHandler handler = new XMLToJSONConverterSaxHandler();
 		// Данный код вставлен для разрешения случая, когда в xml-файле имеется
 		// несколько корневых эелементов, тогда как на вход SaxParser
@@ -55,7 +55,8 @@ public final class XMLJSONConverter {
 			newXml = newXml.replaceFirst("<[?]xml(.)*[?]>", "");
 		}
 		newXml = "<tempRootForResolvingProblem>" + newXml + "</tempRootForResolvingProblem>";
-		InputStream in = TextUtils.stringToStream(newXml);
+		// InputStream in = TextUtils.stringToStream(newXml);
+		InputStream in = stringToStream(newXml);
 		parser.parse(in, handler);
 		JsonElement result = handler.getResult();
 		String str = result.toString();
@@ -117,5 +118,45 @@ public final class XMLJSONConverter {
 		String str = XMLJSONConverter.xmlToJson(xml);
 		JSONObject jsonObj = new JSONObject(str);
 		return jsonObj;
+	}
+
+	/**
+	 * Стандартная функция для создания SAX XML Parser.
+	 * 
+	 * @return парсер.
+	 */
+	public static SAXParser createSAXParser() {
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		factory.setNamespaceAware(false);
+		factory.setValidating(false);
+		SAXParser parser = null;
+		try {
+			factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
+			parser = factory.newSAXParser();
+		} catch (SAXException | ParserConfigurationException e) {
+			// throw new Exception(e);
+			System.out.println(e.getMessage());
+		}
+		return parser;
+	}
+
+	/**
+	 * Стандартная функция для конвертаци строки в выходной поток.
+	 * 
+	 * @param str
+	 *            - входная строка
+	 * @return байтовый выхоной поток
+	 */
+
+	public static InputStream stringToStream(final String str) {
+		try {
+			if (str != null) {
+				return new ByteArrayInputStream(str.getBytes("UTF-8"));
+			}
+		} catch (UnsupportedEncodingException e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+
 	}
 }
