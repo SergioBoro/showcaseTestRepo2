@@ -40,11 +40,22 @@ public class HTMLFileGateway extends GeneralXMLHelper implements HTMLGateway {
 		File file =
 			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/" + fileName);
 		if (!file.exists()) {
-			throw new SettingsFileOpenException(elementInfo.getProcName(), SettingsFileType.XM_DATA);
+			file =
+				new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+						+ UserDataUtils.GENERAL_RES_ROOT + "/" + fileName);
+			if (!file.exists()) {
+				throw new SettingsFileOpenException(elementInfo.getProcName(),
+						SettingsFileType.XM_DATA);
+			}
 		}
 		try {
 			DocumentBuilder db = XMLUtils.createBuilder();
-			InputStream stream = UserDataUtils.loadUserDataToStream(fileName);
+			InputStream stream = null;
+			if ((new File(UserDataUtils.getUserDataCatalog() + fileName)).exists()) {
+				stream = UserDataUtils.loadUserDataToStream(fileName);
+			} else {
+				stream = UserDataUtils.loadGeneralToStream(fileName);
+			}
 			doc = db.parse(stream);
 		} catch (SAXException | IOException e) {
 			throw new SettingsFileExchangeException(elementInfo.getProcName(), e,
@@ -60,6 +71,18 @@ public class HTMLFileGateway extends GeneralXMLHelper implements HTMLGateway {
 			} catch (IOException e) {
 				throw new SettingsFileExchangeException(getSettingsFileName(), e,
 						SettingsFileType.XM_DATA);
+			}
+		} else {
+			file =
+				new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+						+ UserDataUtils.GENERAL_RES_ROOT + File.separator + fileName);
+			if (file.exists()) {
+				try {
+					settings = UserDataUtils.loadGeneralToStream(fileName);
+				} catch (IOException e) {
+					throw new SettingsFileExchangeException(getSettingsFileName(), e,
+							SettingsFileType.XM_DATA);
+				}
 			}
 		}
 		return new HTMLBasedElementRawData(doc, settings, elementInfo, context);

@@ -68,7 +68,13 @@ public abstract class JythonQuery<T> {
 				new File(JythonIterpretatorFactory.getUserDataScriptDir() + "/"
 						+ getJythonProcName());
 			if (!script.exists()) {
-				throw new SettingsFileOpenException(getJythonProcName(), SettingsFileType.JYTHON);
+				script =
+					new File(JythonIterpretatorFactory.getGeneralScriptDir() + "/"
+							+ getJythonProcName());
+				if (!script.exists()) {
+					throw new SettingsFileOpenException(getJythonProcName(),
+							SettingsFileType.JYTHON);
+				}
 			}
 			String cmd =
 				String.format(

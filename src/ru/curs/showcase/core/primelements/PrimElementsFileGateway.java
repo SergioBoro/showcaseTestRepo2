@@ -58,9 +58,16 @@ public class PrimElementsFileGateway implements PrimElementsGateway {
 	@Override
 	public DataFile<InputStream> getRawData(final CompositeContext aContext) {
 		try {
-			stream =
-				UserDataUtils.loadUserDataToStream(String.format("%s/%s", fileType.getFileDir(),
-						fileName));
+			if (new File(UserDataUtils.getUserDataCatalog() + "/"
+					+ String.format("%s/%s", fileType.getFileDir(), fileName)).exists()) {
+				stream =
+					UserDataUtils.loadUserDataToStream(String.format("%s/%s",
+							fileType.getFileDir(), fileName));
+			} else {
+				stream =
+					UserDataUtils.loadGeneralToStream(String.format("%s/%s",
+							fileType.getFileDir(), fileName));
+			}
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, fileName, SettingsFileType.DATAPANEL);
 		}

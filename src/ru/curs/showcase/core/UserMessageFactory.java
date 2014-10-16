@@ -107,7 +107,12 @@ public final class UserMessageFactory {
 	private void loadMessage(final String mesId) {
 		InputStream stream;
 		try {
-			stream = UserDataUtils.loadUserDataToStream(messageFile);
+			File file = new File(UserDataUtils.getUserDataCatalog() + "/" + messageFile);
+			if (file.exists()) {
+				stream = UserDataUtils.loadUserDataToStream(messageFile);
+			} else {
+				stream = UserDataUtils.loadGeneralToStream(messageFile);
+			}
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, messageFile, SettingsFileType.SOLUTION_MESSAGES);
 		}

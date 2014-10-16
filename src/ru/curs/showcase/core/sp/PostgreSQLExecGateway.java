@@ -1,6 +1,6 @@
 package ru.curs.showcase.core.sp;
 
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
 
 import org.slf4j.*;
@@ -70,8 +70,16 @@ public abstract class PostgreSQLExecGateway extends SPQuery {
 
 			String script;
 			try {
-				script =
-					TextUtils.streamToString(UserDataUtils.loadUserDataToStream(getFileName()));
+				File file =
+					new File(UserDataUtils.getUserDataCatalog() + File.separator + getFileName());
+				if (file.exists()) {
+					script =
+						TextUtils
+								.streamToString(UserDataUtils.loadUserDataToStream(getFileName()));
+				} else {
+					script =
+						TextUtils.streamToString(UserDataUtils.loadGeneralToStream(getFileName()));
+				}
 			} catch (IOException e) {
 				throw new SettingsFileOpenException(getFileName(), SettingsFileType.SQL);
 			}

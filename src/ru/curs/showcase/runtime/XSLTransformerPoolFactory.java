@@ -53,14 +53,32 @@ public final class XSLTransformerPoolFactory extends Pool<Transformer> {
 			is = XSLTransformerPoolFactory.class.getResourceAsStream(xsltFileName);
 			break;
 		case UserDataUtils.GRIDDATAXSL:
-			is =
-				UserDataUtils.loadUserDataToStream(UserDataUtils.XSLTTRANSFORMSFORGRIDDIR + "/"
-						+ xsltFileName);
+			File file =
+				new File(UserDataUtils.getUserDataCatalog() + "/"
+						+ UserDataUtils.XSLTTRANSFORMSFORGRIDDIR + "/" + xsltFileName);
+			if (file.exists()) {
+				is =
+					UserDataUtils.loadUserDataToStream(UserDataUtils.XSLTTRANSFORMSFORGRIDDIR
+							+ "/" + xsltFileName);
+			} else {
+				is =
+					UserDataUtils.loadGeneralToStream(UserDataUtils.XSLTTRANSFORMSFORGRIDDIR + "/"
+							+ xsltFileName);
+			}
 			break;
 		default:
-			is =
-				UserDataUtils.loadUserDataToStream(SettingsFileType.XSLT.getFileDir() + "/"
-						+ xsltFileName);
+			File file1 =
+				new File(UserDataUtils.getUserDataCatalog() + "/"
+						+ SettingsFileType.XSLT.getFileDir() + "/" + xsltFileName);
+			if (file1.exists()) {
+				is =
+					UserDataUtils.loadUserDataToStream(SettingsFileType.XSLT.getFileDir() + "/"
+							+ xsltFileName);
+			} else {
+				is =
+					UserDataUtils.loadGeneralToStream(SettingsFileType.XSLT.getFileDir() + "/"
+							+ xsltFileName);
+			}
 		}
 		return is;
 	}

@@ -90,9 +90,12 @@ public final class PluginFactory extends HTMLBasedElementFactory {
 
 	private String getAdapterForWebServer(final String dir, final String adapterFile) {
 		String adapter = String.format("%s/%s", dir, adapterFile);
+		// String adapterOnTomcat =
+		// String.format("%s/%s/%s", UserDataUtils.SOLUTIONS_DIR,
+		// UserDataUtils.getUserDataId(),
+		// adapter);
 		String adapterOnTomcat =
-			String.format("%s/%s/%s", UserDataUtils.SOLUTIONS_DIR, UserDataUtils.getUserDataId(),
-					adapter);
+			String.format("%s/%s/%s", UserDataUtils.SOLUTIONS_DIR, "general", adapter);
 		return adapterOnTomcat;
 	}
 

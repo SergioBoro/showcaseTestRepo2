@@ -183,12 +183,20 @@ public final class ProductionModeInitializer {
 		Boolean isAllFilesCopied = true;
 		if (generalResRoot.exists()) {
 			for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+
+				File solutionsDir =
+					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR));
+				File generalDir =
+					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/"
+							+ "general"));
 				File userDataDir =
 					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/"
 							+ userdataId));
+				solutionsDir.mkdir();
 				userDataDir.mkdir();
 
-				isAllFilesCopied = copyGeneralDir(aServletContext, generalResRoot, userDataDir);
+				isAllFilesCopied =
+					copyGeneralDir(aServletContext, generalResRoot, userDataDir, generalDir);
 			}
 		}
 
@@ -236,7 +244,7 @@ public final class ProductionModeInitializer {
 	}
 
 	private static Boolean copyGeneralDir(final ServletContext aServletContext,
-			final File generalResRoot, final File userDataDir) {
+			final File generalResRoot, final File userDataDir, final File generalDir) {
 		Boolean isAllFilesCopied = true;
 
 		File[] files = generalResRoot.listFiles();
@@ -254,6 +262,8 @@ public final class ProductionModeInitializer {
 				if ("WEB-INF".equals(f.getName())) {
 					fprocessorForWebInf.processForWebInf(new CopyFileAction(aServletContext
 							.getRealPath("/" + "WEB-INF")));
+				} else if ("plugins".equals(f.getName()) || "libraries".equals(f.getName())) {
+					fprocessor.processForPlugins(new CopyFileAction(generalDir.getAbsolutePath()));
 				} else {
 					fprocessor.processWithoutWebInf(new CopyFileAction(userDataDir
 							.getAbsolutePath()));

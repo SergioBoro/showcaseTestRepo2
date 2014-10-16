@@ -2,12 +2,12 @@ package ru.curs.showcase.util.xml;
 
 import java.io.File;
 
-import javax.xml.validation.*;
+import javax.xml.validation.Schema;
 
 import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.ExceptionType;
-import ru.curs.showcase.runtime.UserDataUtils;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.exception.*;
 
 /**
@@ -21,11 +21,17 @@ public final class UserDataXSDSource implements XSDSource {
 	@Override
 	public Schema getSchema(final String sourceName) throws SAXException {
 		String xsdFullFileName =
-			String.format("%s/%s/%s", UserDataUtils.getUserDataCatalog(), UserDataUtils.SCHEMASDIR,
-					sourceName);
+			String.format("%s/%s/%s", UserDataUtils.getUserDataCatalog(),
+					UserDataUtils.SCHEMASDIR, sourceName);
 		File file = new File(xsdFullFileName);
 		if (!file.exists()) {
-			throw new SettingsFileOpenException(xsdFullFileName, SettingsFileType.SCHEMA);
+			file =
+				new File(String.format("%s/%s/%s", AppInfoSingleton.getAppInfo().getUserdataRoot()
+						+ "/" + UserDataUtils.GENERAL_RES_ROOT, UserDataUtils.SCHEMASDIR,
+						sourceName));
+			if (!file.exists()) {
+				throw new SettingsFileOpenException(xsdFullFileName, SettingsFileType.SCHEMA);
+			}
 		}
 		// передавать InputStream и URL нельзя, т.к. в этом случае парсер не
 		// находит вложенных схем!

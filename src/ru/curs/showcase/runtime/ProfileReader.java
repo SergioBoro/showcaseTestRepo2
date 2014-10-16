@@ -32,7 +32,12 @@ public class ProfileReader {
 
 	public void init() {
 		try {
-			InputStream is = UserDataUtils.loadUserDataToStream(profileName);
+			InputStream is = null;
+			if ((new File(UserDataUtils.getUserDataCatalog() + "/" + profileName)).exists()) {
+				is = UserDataUtils.loadUserDataToStream(profileName);
+			} else {
+				is = UserDataUtils.loadGeneralToStream(profileName);
+			}
 			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
 				props.load(reader);
 			}

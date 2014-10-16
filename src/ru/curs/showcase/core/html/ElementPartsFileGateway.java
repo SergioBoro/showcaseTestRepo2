@@ -23,7 +23,13 @@ public class ElementPartsFileGateway implements ElementPartsGateway {
 			final DataPanelElementInfo elementInfo) {
 		String file = String.format("%s/%s", type.getFileDir(), sourceName);
 		try {
-			return new DataFile<InputStream>(UserDataUtils.loadUserDataToStream(file), sourceName);
+			if ((new File(UserDataUtils.getUserDataCatalog() + File.separator + file)).exists()) {
+				return new DataFile<InputStream>(UserDataUtils.loadUserDataToStream(file),
+						sourceName);
+			} else {
+				return new DataFile<InputStream>(UserDataUtils.loadGeneralToStream(file),
+						sourceName);
+			}
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, sourceName, type);
 		}
