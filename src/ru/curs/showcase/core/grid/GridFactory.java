@@ -1172,24 +1172,30 @@ public class GridFactory extends CompBasedElementFactory {
 		public XmlDSHandler() {
 			super();
 
-			if (getElementInfo().loadByOneProc()) {
-				if ((getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
-						|| (getCallContext().getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
-					firstNumber = getResult().getLiveInfo().getFirstRecord();
-					lastNumber = firstNumber + getResult().getLiveInfo().getLimit();
-				} else {
-					firstNumber = getRecordSet().getPageInfo().getFirstRecord();
-					lastNumber = firstNumber + getRecordSet().getPageSize();
-				}
-			} else {
+			if (getCallContext().getPartialUpdate()) {
 				firstNumber = 1;
-				if ((getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
-						|| (getCallContext().getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
-					lastNumber = firstNumber + getResult().getLiveInfo().getLimit();
+				lastNumber = Integer.MAX_VALUE - 1;
+			} else {
+				if (getElementInfo().loadByOneProc()) {
+					if ((getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
+							|| (getCallContext().getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
+						firstNumber = getResult().getLiveInfo().getFirstRecord();
+						lastNumber = firstNumber + getResult().getLiveInfo().getLimit();
+					} else {
+						firstNumber = getRecordSet().getPageInfo().getFirstRecord();
+						lastNumber = firstNumber + getRecordSet().getPageSize();
+					}
 				} else {
-					lastNumber = firstNumber + getRecordSet().getPageSize();
+					firstNumber = 1;
+					if ((getCallContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
+							|| (getCallContext().getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
+						lastNumber = firstNumber + getResult().getLiveInfo().getLimit();
+					} else {
+						lastNumber = firstNumber + getRecordSet().getPageSize();
+					}
 				}
 			}
+
 		}
 
 		private int getRecordIndex() {

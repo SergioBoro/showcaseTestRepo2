@@ -609,9 +609,8 @@ function clipboardTreeDGrid(parentId){
 
 function partialUpdateTreeDGrid(parentId, partialdata){
 	for(var k in partialdata["rows"]) {
-		var obj = arrGrids[parentId].store.mem.get(partialdata["rows"][k].id);
-		if(obj){
-				arrGrids[parentId].store.notify(partialdata["rows"][k], obj.id);
+		if(arrGrids[parentId].row(partialdata["rows"][k].id).data){
+				arrGrids[parentId].store.notify(partialdata["rows"][k], partialdata["rows"][k].id);
 		}
 	}
 }

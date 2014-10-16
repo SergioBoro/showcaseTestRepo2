@@ -2,12 +2,15 @@ var arrGrids = {};
 
 
 function createPageDGrid(elementId, parentId, metadata) {
-	require(["dgrid/extensions/CompoundColumns", "dgrid/ColumnSet", "dojo/store/util/QueryResults", "dojo/on", "dgrid/Grid", "dgrid/extensions/Pagination", "ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
-	function(CompoundColumns, ColumnSet, QueryResults, on, Grid, Pagination, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect){
+	require(["dojo/store/Observable", "dgrid/extensions/CompoundColumns", "dgrid/ColumnSet", "dojo/store/util/QueryResults", "dojo/on", "dgrid/Grid", "dgrid/extensions/Pagination", "ColumnResizer","dgrid/Selection", "dgrid/CellSelection", "dgrid/Keyboard", "dojo/_base/declare", "JsonRest", "dojo/store/Cache", "dojo/store/Memory", "dojo/aspect", "dojo/domReady!"], 
+	function(Observable, CompoundColumns, ColumnSet, QueryResults, on, Grid, Pagination, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect){
 		
 		var firstLoading = true;
 		
-		var store = Cache(JsonRest({
+		
+		var mem = Memory();		
+		
+		var store = Observable(Cache(JsonRest({
 			target:"secured/JSGridService",
 			
 			idProperty: "id",
@@ -55,8 +58,9 @@ function createPageDGrid(elementId, parentId, metadata) {
 				
 				return results;
 			}
-		}), Memory());
+		}), mem));
 		
+		store.mem = mem;
 
 		var columns = [];
 		for(var k in metadata["columns"]) {
@@ -362,3 +366,17 @@ function clipboardPageDGrid(parentId){
 	
 	return str;
 }
+
+function partialUpdatePageDGrid(parentId, partialdata){
+	for(var k in partialdata["rows"]) {
+		if(arrGrids[parentId].row(partialdata["rows"][k].id).data){
+				arrGrids[parentId].store.notify(partialdata["rows"][k], partialdata["rows"][k].id);
+		}
+	}
+}
+
+
+
+
+
+
