@@ -21,7 +21,8 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 @WebService(targetNamespace = "http://showcase.curs.ru")
 public class ShowcaseExternals {
-	public static final String NOT_XML_OUTPUT_ERROR = "Ошибка решения: рабочая процедура вернула данные не в формате XML";
+	public static final String NOT_XML_OUTPUT_ERROR =
+		"Ошибка решения: рабочая процедура вернула данные не в формате XML";
 
 	@WebMethod
 	@WebResult(name = "response")
@@ -39,15 +40,25 @@ public class ShowcaseExternals {
 					name = "procName", header = true) final String procName)
 			throws ShowcaseExportException {
 		String requestStr = XMLUtils.documentToString(XMLUtils.objectToXML(requestXML));
+
+		try {
+			int ind1 = requestStr.indexOf("<requestAnyXML>");
+			ind1 = ind1 + "<requestAnyXML>".length();
+			int ind2 = requestStr.indexOf("</requestAnyXML>");
+			requestStr = requestStr.substring(ind1 + 1, ind2 - 1).trim();
+		} catch (IndexOutOfBoundsException e) {
+			throw new ShowcaseExportException("Ошибка ввода: Вы ввели данные не в формате XML");
+
+		}
+
 		ExternalCommand command = new ExternalCommand(requestStr, procName);
 		String responseStr = command.executeForExport();
+		responseStr = "<responseAnyXML>" + responseStr + "</responseAnyXML>";
 		try {
 			Document doc = XMLUtils.stringToDocument(responseStr);
 			return (ResponseAnyXML) XMLUtils.xmlToObject(doc, ResponseAnyXML.class);
 		} catch (SAXException | IOException e) {
-			throw new ShowcaseExportException(
-					NOT_XML_OUTPUT_ERROR);
+			throw new ShowcaseExportException(NOT_XML_OUTPUT_ERROR);
 		}
 	}
-
 }
