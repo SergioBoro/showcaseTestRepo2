@@ -70,6 +70,10 @@ public final class UserDataUtils {
 
 	private static String generalPropFile;
 
+	private static final String CONNECTION_URL_PARAM = "rdbms.connection.url";
+	private static final String CONNECTION_USERNAME_PARAM = "rdbms.connection.username";
+	private static final String CONNECTION_PASSWORD_PARAM = "rdbms.connection.password";
+
 	private static final String INDEX_TITLE = "index.title";
 	private static final String LOGIN_TITLE = "login.title";
 
@@ -204,6 +208,12 @@ public final class UserDataUtils {
 			if (result != null) {
 				result = result.trim();
 				result = correctPathToSolutionResources(propName, result);
+			} else if (result == null
+					&& (CONNECTION_URL_PARAM.equals(propName)
+							|| CONNECTION_USERNAME_PARAM.equals(propName) || CONNECTION_PASSWORD_PARAM
+								.equals(propName))) {
+				result = getGeneralProperties().getProperty(propName);
+				result = result.trim();
 			}
 			return result;
 		} catch (IOException e) {
@@ -368,7 +378,8 @@ public final class UserDataUtils {
 			celestaProps.put(CELESTA_SKIP_DBUPDATE, skipDbupdate);
 		}
 
-		String forceDBInitialize = generalProps.getProperty(CELESTA_PREFIX + CELESTA_FORCE_DBINITIALIZE);
+		String forceDBInitialize =
+			generalProps.getProperty(CELESTA_PREFIX + CELESTA_FORCE_DBINITIALIZE);
 		if (!(forceDBInitialize == null || forceDBInitialize.isEmpty())) {
 			celestaProps.put(CELESTA_FORCE_DBINITIALIZE, forceDBInitialize);
 		}
