@@ -30,6 +30,8 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AppAndSessionEventsListener.class);
 
+	private AbstractRefreshableWebApplicationContext actx;
+
 	@Override
 	public final void contextInitialized(final ServletContextEvent arg0) {
 		LOGGER.info(SHOWCASE_LOADING);
@@ -39,12 +41,12 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 		WebApplicationContext ctx =
 			WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext());
-		AbstractRefreshableWebApplicationContext actx =
-			(AbstractRefreshableWebApplicationContext) ctx;
+		actx = (AbstractRefreshableWebApplicationContext) ctx;
 		actx.refresh();
 
 		try {
 			Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
+
 			if (celestaProps != null) {
 				Celesta.initialize(celestaProps);
 				AppInfoSingleton.getAppInfo().setIsCelestaInitialized(true);
@@ -68,6 +70,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		JMXBeanRegistrator.unRegister();
 		AppInfoSingleton.getAppInfo().getCacheManager().shutdown();
 		ConnectionFactory.unregisterDrivers();
+		actx.close();
 	}
 
 	@Override
