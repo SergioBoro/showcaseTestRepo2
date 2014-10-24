@@ -65,7 +65,14 @@
 			<xs:maxInclusive value="100" />
 		</xs:restriction>
 	</xs:simpleType>
-
+	
+	<xs:simpleType name="simpleList">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:pattern value="\w+(\s?\w+)*" />
+		</xs:restriction>
+	</xs:simpleType>
+	
 	<xs:attributeGroup name="identGroup">
 		<xs:attribute name="id" use="required" type="notNullType" />
 		<xs:attribute name="name" use="required" type="notNullType" />

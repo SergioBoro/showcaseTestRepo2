@@ -31,6 +31,7 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 	private static final String SUB_TYPE_TAG = "subtype";
 	private static final String EDITABLE_TAG = "editable";
 	private static final String PLUGIN_TAG = "plugin";
+	private static final String GROUP_TAG = "group";
 
 	/**
 	 * Создаваемая панель.
@@ -147,6 +148,10 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		if (attrs.getIndex(EDITABLE_TAG) > -1) {
 			value = attrs.getValue(EDITABLE_TAG);
 			el.setEditable(Boolean.valueOf(value));
+		}
+		if (attrs.getIndex(GROUP_TAG) > -1) {
+			value = attrs.getValue(GROUP_TAG);
+			el.setGroup(value);
 		}
 
 		readElementSpecificAttrs(attrs, el);

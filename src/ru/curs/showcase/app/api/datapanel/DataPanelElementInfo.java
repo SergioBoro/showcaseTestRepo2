@@ -140,6 +140,8 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 */
 	private Boolean showLoadingMessage = false;
 
+	private List<String> group = null;
+
 	public DataPanelElementInfo(final Integer aPosition, final DataPanelTab aTab) {
 		super();
 		position = aPosition;
@@ -491,6 +493,19 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 
 	public DataPanelElementProc getProcById(final String procId) {
 		return procs.get(new ID(procId));
+	}
+
+	public List<String> getGroup() {
+		return group;
+	}
+
+	public void setGroup(final String aGroup) {
+		group = new ArrayList<String>();
+		String str = aGroup.trim();
+		String[] result = str.split("\\s+");
+		for (int i = 0; i < result.length; i++) {
+			group.add(result[i]);
+		}
 	}
 
 	public void addDataAndMetaDataProcs(final String prefix) {
