@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.event;
 
+import java.util.*;
+
 import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
@@ -40,6 +42,8 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 	 */
 	private Boolean partialUpdate = null;
 
+	private List<String> group = null;
+
 	public DataPanelElementLink() {
 		super();
 	}
@@ -60,6 +64,19 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 
 	public final void setId(final String aId) {
 		id = new ID(aId);
+	}
+
+	public final List<String> getGroup() {
+		return group;
+	}
+
+	public final void setGroup(final String aGroup) {
+		group = new ArrayList<String>();
+		String str = aGroup.trim();
+		String[] result = str.split("\\s+");
+		for (int i = 0; i < result.length; i++) {
+			group.add(result[i]);
+		}
 	}
 
 	@Override

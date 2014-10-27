@@ -21,9 +21,11 @@
 									<xs:sequence>
 										<xs:element name="add_context" minOccurs="0" />
 									</xs:sequence>
-									<xs:attribute name="id" type="notNullType" use="required" />
+									<xs:attribute name="id" type="notNullType" />
+									<xs:attribute name="group" type="simpleList" />
 									<xs:attribute name="keep_user_settings" type="xs:boolean" />
 									<xs:attribute name="partial_update" type="xs:boolean" />
+									<xs:assert test="((count(@id)=1 and count(@group)=0) or (count(@group)=1 and count(@id)=0))" />
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>

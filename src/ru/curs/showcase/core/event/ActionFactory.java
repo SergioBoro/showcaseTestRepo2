@@ -18,6 +18,7 @@ public class ActionFactory extends SAXTagHandler {
 	private static final String KEEP_USER_SETTINGS_TAG = "keep_user_settings";
 	private static final String PARTIAL_UPDATE_TAG = "partial_update";
 	private static final String SHOW_IN_MODE_TAG = "show_in";
+	private static final String GROUP_TAG = "group";
 
 	/**
 	 * Текущее действие.
@@ -138,7 +139,15 @@ public class ActionFactory extends SAXTagHandler {
 		String value;
 		curDataPanelElementLink = new DataPanelElementLink();
 
-		curDataPanelElementLink.setId(attrs.getValue(ID_TAG));
+		if (attrs.getIndex(ID_TAG) > -1) {
+			value = attrs.getValue(ID_TAG);
+			curDataPanelElementLink.setId(attrs.getValue(ID_TAG));
+		}
+
+		if (attrs.getIndex(GROUP_TAG) > -1) {
+			value = attrs.getValue(GROUP_TAG);
+			curDataPanelElementLink.setGroup(attrs.getValue(GROUP_TAG));
+		}
 
 		if (attrs.getIndex(KEEP_USER_SETTINGS_TAG) > -1) {
 			value = attrs.getValue(KEEP_USER_SETTINGS_TAG);
