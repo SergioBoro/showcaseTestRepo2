@@ -55,8 +55,6 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance()
 			.getInternationalizedMessages().grid_message_popup_export_to_excel());
 
-	private int colorAfterLoadData = 1;
-
 	/**
 	 * Основная фабрика для GWT сериализации.
 	 */
@@ -740,9 +738,13 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 		afterUpdateGrid();
 
-		final int delta = 100;
-		colorAfterLoadData = colorAfterLoadData + delta;
-		pluginHTML.getElement().getStyle().setColor("#" + String.valueOf(colorAfterLoadData));
+		String color = pluginHTML.getElement().getStyle().getColor();
+		if ((color == null) || color.trim().isEmpty()) {
+			pluginHTML.getElement().getStyle().setColor("rgb(1, 0, 0)");
+
+		} else {
+			pluginHTML.getElement().getStyle().clearColor();
+		}
 
 	}
 
