@@ -88,6 +88,8 @@ public final class ProductionModeInitializer {
 			String jdbcPassword =
 				UserDataUtils.getGeneralOptionalProp("activiti.database.jdbcPassword");
 
+			String history = UserDataUtils.getGeneralOptionalProp("activiti.history.level");
+
 			ProcessEngineConfiguration conf =
 				ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration();
 			conf.setDatabaseType(databaseType);
@@ -96,6 +98,7 @@ public final class ProductionModeInitializer {
 			conf.setJdbcDriver(jdbcDriver);
 			conf.setJdbcUsername(jdbcUsername);
 			conf.setJdbcPassword(jdbcPassword);
+			conf.setHistory(history);
 
 			ProcessEngine processEngine = conf.buildProcessEngine();
 			AppInfoSingleton.getAppInfo().setActivitiProcessEngine(processEngine);
