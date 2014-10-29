@@ -9850,7 +9850,14 @@ XsltForms_control.getXFElement = function(element) {
 XsltForms_control.focusHandler = function() {
 	var xf = XsltForms_control.getXFElement(this);
 	if (XsltForms_globals.focus !== xf) {
-		xf.focus(true);
+// [KURS
+		
+//		xf.focus(true);
+		if(xf){
+			xf.focus(true);			
+		}
+		
+// KURS]
 	} else {
 		XsltForms_globals.posibleBlur = false;
 	}
