@@ -6,6 +6,16 @@
 	</tab>
 	
 	
+	<tab id="05" name="Навигатор">
+		<element id="051" type="plugin" proc="pluginNavigatorInfo"
+			plugin="navigator">
+			<proc id="052" name="plugin/handleNavigator.py" type="POSTPROCESS" />
+		</element>
+		<element id="053" type="webtext" proc="webtext_filter_and_add" />		
+	</tab>
+	
+	
+	
 	
 	<tab id="01" name="Плагин ExtJS radar chart">
 		<element id="0101_" type="plugin" proc="pluginRadarInfo"

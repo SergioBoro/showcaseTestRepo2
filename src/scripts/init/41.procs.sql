@@ -30202,3 +30202,208 @@ set @gridsettings=CAST(@gridsettings_str as xml)
 
 END
 GO
+
+
+GO
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[pluginNavigatorInfo]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+    @element_id varchar(512) ='',    
+	@params xml='',
+    @data xml output,
+    @settings xml output
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
+
+set    @data=CAST(
+N'
+
+  <navigator afterReloadAction="true">
+
+      <group id="0" name="Тестовая группа"
+             icon="resources/internal/favicon32.png" classNameTitle="class1" styleTitle="height:37px; font-size: 11pt;" 
+      >
+      </group>
+
+      <group id="00" name="Фичи" open="true"
+             icon="resources/internal/favicon32.png" classNameTitle="class1" styleTitle="height:37px; font-size: 11pt;" 
+             classNameGrid="class2"
+             classNameColumn="class3" styleColumn=""
+      >
+
+         <level1 id="07" name="7-й этап"/>
+         <level1 id="08" name="8-й этап"  open="true" closeIcon="resources/internal/TreeGridJointClose.gif" openIcon="resources/internal/TreeGridJointOpen.gif" leafIcon="resources/internal/TreeGridLeafNode.png">
+            <level2 id="0801" name="8-й этап, 1-я неделя" classNameRow="class4"/>
+            <level2 id="0802" name="8-й этап, 2-я неделя"  leafIcon="resources/internal/TreeGridLeafNode.png"/>
+
+            <level2 id="0803" name="8-й этап, 3-я неделя"  open="true">
+							<level3 id="08031" name="8-й этап, 3-я неделя, 1-й день" selectOnLoad="true"/>
+            </level2>
+
+            <level2 id="0804" name="8-й этап, 4-я неделя">
+							<level3 id="08041" name="8-й этап, 4-я неделя, 1-й день"/>
+						</level2>
+
+            <level2 id="0805" name="8-й этап, 5-я неделя"/>
+         </level1>
+         <level1 id="09" name="9-й этап"  closeIcon="resources/internal/TreeGridJointClose.gif" openIcon="resources/internal/TreeGridJointOpen.gif" leafIcon="resources/internal/TreeGridLeafNode.png">
+            <level2 id="0901" name="9-й этап, 1-я неделя"/>
+            <level2 id="0902" name="9-й этап, 2-я неделя"/>
+            <level2 id="0903" name="9-й этап, 3-5 недели" />
+         </level1>
+      </group>
+
+
+
+
+      <group id="1" name="Балансы продовольственных ресурсов" hide="false"
+             icon="resources/internal/favicon32.png" classNameTitle="" styleTitle="height:37px; font-size: 11pt;" 
+      >
+      </group>
+      <group id="2" name="Регионы" 
+             icon="resources/internal/favicon32.png" classNameTitle="" styleTitle="height:37px; font-size: 11pt;" 
+      >
+         <level1 id="08" name="8-й этап"  open="true" closeIcon="resources/internal/TreeGridJointClose.gif" openIcon="resources/internal/TreeGridJointOpen.gif" leafIcon="resources/internal/TreeGridLeafNode.png">
+            <level2 id="0801" name="8-й этап, 1-я неделя"/>
+            <level2 id="0802" name="8-й этап, 2-я неделя"  leafIcon="resources/internal/TreeGridLeafNode.png"/>
+
+            <level2 id="0803" name="8-й этап, 3-я неделя"  open="true">
+							<level3 id="08031" name="8-й этап, 3-я неделя, 1-й день" selectOnLoad="true"/>
+            </level2>
+
+            <level2 id="0804" name="8-й этап, 4-я неделя">
+							<level3 id="08041" name="8-й этап, 4-я неделя, 1-й день"/>
+						</level2>
+
+            <level2 id="0805" name="8-й этап, 5-я неделя"/>
+         </level1>
+         <level1 id="09" name="9-й этап"  closeIcon="resources/internal/TreeGridJointClose.gif" openIcon="resources/internal/TreeGridJointOpen.gif" leafIcon="resources/internal/TreeGridLeafNode.png">
+            <level2 id="0901" name="9-й этап, 1-я неделя"/>
+            <level2 id="0902" name="9-й этап, 2-я неделя"/>
+            <level2 id="0903" name="9-й этап, 3-5 недели" />
+         </level1>
+      </group>
+   </navigator>
+
+' as xml)
+
+set @settings=N'<properties width="300px" height="700px">                                    
+
+
+                       <event name="single_click" linkId="08031">
+                        <action >
+                            <main_context>current</main_context>                        
+							              <datapanel type="current" tab="current">
+                                <element id="053">
+	                                <add_context>08031</add_context>
+                                </element>                                                             
+                            </datapanel>
+                        </action>
+                       </event>                                                                     
+
+
+                       <event name="single_click" linkId="00">
+                        <action >
+                            <main_context>current</main_context>                        
+							              <datapanel type="current" tab="current">
+                                <element id="053">
+	                                <add_context>00</add_context>
+                                </element>                                                             
+                            </datapanel>
+                        </action>
+                       </event>                                                                     
+
+                       <event name="single_click" linkId="07">
+                        <action >
+                            <main_context>current</main_context>                        
+							              <datapanel type="current" tab="current">
+                                <element id="053">
+	                                <add_context>07</add_context>
+                                </element>                                                             
+                            </datapanel>
+                        </action>
+                       </event>                                                                     
+
+                       <event name="single_click" linkId="08">
+                        <action >
+                            <main_context>current</main_context>                        
+							              <datapanel type="current" tab="current">
+                                <element id="053">
+	                                <add_context>08</add_context>
+                                </element>                                                             
+                            </datapanel>
+                        </action>
+                       </event>                                                                     
+
+                       <event name="single_click" linkId="0801">
+                        <action >
+                            <main_context>current</main_context>                        
+							              <datapanel type="current" tab="current">
+                                <element id="053">
+	                                <add_context>0801</add_context>
+                                </element>                                                             
+                            </datapanel>
+                        </action>
+                       </event>                                                                     
+                       <event name="single_click" linkId="0802">
+                        <action >
+                            <main_context>current</main_context>                        
+							              <datapanel type="current" tab="current">
+                                <element id="053">
+	                                <add_context>0802</add_context>
+                                </element>                                                             
+                            </datapanel>
+                        </action>
+                       </event>                                                                     
+                       <event name="single_click" linkId="0803">
+                        <action >
+                            <main_context>current</main_context>                        
+							              <datapanel type="current" tab="current">
+                                <element id="053">
+	                                <add_context>0803</add_context>
+                                </element>                                                             
+                            </datapanel>
+                        </action>
+                       </event>                                                                     
+                       <event name="single_click" linkId="0804">
+                        <action >
+                            <main_context>current</main_context>                        
+							              <datapanel type="current" tab="current">
+                                <element id="053">
+	                                <add_context>0804</add_context>
+                                </element>                                                             
+                            </datapanel>
+                        </action>
+                       </event>                                                                     
+                       <event name="single_click" linkId="0805">
+                        <action >
+                            <main_context>current</main_context>                        
+							              <datapanel type="current" tab="current">
+                                <element id="053">
+	                                <add_context>0805</add_context>
+                                </element>                                                             
+                            </datapanel>
+                        </action>
+                       </event>                                                                     
+
+
+                    </properties>'
+
+
+--set @error_mes = 'Грид успешно построен'
+--RETURN 555;
+
+
+END
+GO

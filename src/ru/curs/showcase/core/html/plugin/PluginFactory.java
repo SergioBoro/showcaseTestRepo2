@@ -106,15 +106,24 @@ public final class PluginFactory extends HTMLBasedElementFactory {
 
 	private void readComponents() {
 		List<String> comps = readImportFile(getPluginDir() + "/" + IMPORT_TXT);
-		for (String comp : comps) {
-			String compDirName = String.format("%s/%s/%s", getPluginsRoot(), COMPONENTS_DIR, comp);
-			File comDir = new File(compDirName);
-			if (!comDir.exists()) {
-				throw new RuntimeException(String.format("Компонент '%s' не найден", comp));
+
+		if ("navigator".equalsIgnoreCase(getElementInfo().getPlugin())) {
+			for (String comp : comps) {
+				result.getRequiredJS().add(getAdapterForWebServer(getPluginDir(), comp));
 			}
-			addImport(comp, "scriptList.txt", result.getRequiredJS());
-			addImport(comp, "styleList.txt", result.getRequiredCSS());
+		} else {
+			for (String comp : comps) {
+				String compDirName =
+					String.format("%s/%s/%s", getPluginsRoot(), COMPONENTS_DIR, comp);
+				File comDir = new File(compDirName);
+				if (!comDir.exists()) {
+					throw new RuntimeException(String.format("Компонент '%s' не найден", comp));
+				}
+				addImport(comp, "scriptList.txt", result.getRequiredJS());
+				addImport(comp, "styleList.txt", result.getRequiredCSS());
+			}
 		}
+
 	}
 
 	private void addImport(final String comp, final String fileName, final List<String> list) {
