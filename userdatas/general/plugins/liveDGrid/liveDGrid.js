@@ -1,4 +1,4 @@
-var arrGrids = {};
+//var arrGrids = {};
 
 
 function createLiveDGrid(elementId, parentId, metadata) {

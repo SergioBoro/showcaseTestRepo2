@@ -167,3 +167,8 @@ var eventHandler2 = function(chartEvent) {
 };
 
 
+// need for dgrids !!
+var arrGrids = {};
+
+
+

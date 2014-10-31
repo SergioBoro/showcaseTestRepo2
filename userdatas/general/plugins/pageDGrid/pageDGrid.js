@@ -1,4 +1,4 @@
-var arrGrids = {};
+//var arrGrids = {};
 
 
 function createPageDGrid(elementId, parentId, metadata) {

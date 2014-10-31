@@ -1,4 +1,4 @@
-var arrGrids = {};
+//var arrGrids = {};
 
 
 function createTreeDGrid(elementId, parentId, metadata) {
