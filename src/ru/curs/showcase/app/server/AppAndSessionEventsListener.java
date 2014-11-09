@@ -70,7 +70,9 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		JMXBeanRegistrator.unRegister();
 		AppInfoSingleton.getAppInfo().getCacheManager().shutdown();
 		ConnectionFactory.unregisterDrivers();
-		actx.close();
+		if (actx != null) {
+			actx.close();
+		}
 	}
 
 	@Override
@@ -102,8 +104,13 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		if (context != null) {
 			Authentication auth = context.getAuthentication();
 			if (auth != null) {
+				TypeEvent typeEvent = TypeEvent.SESSSIONTIMEOUT;
+				if (destrHttpSession.getAttribute(SecurityLoggingCommand.IS_CLICK_LOGOUT) != null) {
+					typeEvent = TypeEvent.LOGOUT;
+				}
 				SecurityLoggingCommand logCommand =
-					new SecurityLoggingCommand(new CompositeContext(), null, TypeEvent.LOGOUT);
+					new SecurityLoggingCommand(new CompositeContext(), null, destrHttpSession,
+							typeEvent);
 				logCommand.execute();
 			}
 		}

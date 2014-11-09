@@ -15,6 +15,10 @@ import com.google.gwt.regexp.shared.*;
  */
 public enum BrowserType implements SerializableElement {
 	/**
+	 * Not defined.
+	 */
+	UNDEFINED("Not defined"),
+	/**
 	 * Microsoft Internet Explorer.
 	 */
 	IE("Microsoft Internet Explorer"),
@@ -76,7 +80,7 @@ public enum BrowserType implements SerializableElement {
 		if (findCI(userAgent, "msie") || findCI(userAgent, "Trident")) {
 			return IE;
 		}
-		return null;
+		return UNDEFINED;
 	}
 
 	/**

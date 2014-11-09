@@ -12,10 +12,9 @@ import ru.curs.showcase.runtime.ConnectionFactory;
  * 
  */
 public class SecurityLoggingDBGateway implements SecurityLoggingGateway {
-	private static final int PARAM_SESSIO_CONTEXT = 1;
-	private static final int PARAM_SESSIONID = 2;
-	private static final int PARAM_IP = 3;
-	private static final int PARAM_TYPE = 4;
+	private static final int PARAM_SESSION_CONTEXT = 1;
+	private static final int PARAM_DATA = 2;
+	private static final int PARAM_TYPE = 3;
 	private final String procName;
 
 	public SecurityLoggingDBGateway(final String sProcName) {
@@ -27,7 +26,7 @@ public class SecurityLoggingDBGateway implements SecurityLoggingGateway {
 	public void doLogging(final Event event) throws SQLException {
 		Connection conn = ConnectionFactory.getInstance().acquire();
 		try {
-			CallableStatement cs = conn.prepareCall("{call " + this.procName + "(?,?,?,?)}");
+			CallableStatement cs = conn.prepareCall("{call " + this.procName + "(?,?,?)}");
 
 			String sessionXml = "";
 			CompositeContext context = event.getContext();
@@ -39,9 +38,10 @@ public class SecurityLoggingDBGateway implements SecurityLoggingGateway {
 			}
 			SQLXML sqlxml = conn.createSQLXML();
 			sqlxml.setString(sessionXml);
-			cs.setSQLXML(PARAM_SESSIO_CONTEXT, sqlxml);
-			cs.setString(PARAM_SESSIONID, event.getSessionid());
-			cs.setString(PARAM_IP, event.getIp());
+			cs.setSQLXML(PARAM_SESSION_CONTEXT, sqlxml);
+			sqlxml = conn.createSQLXML();
+			sqlxml.setString(event.getXml());
+			cs.setSQLXML(PARAM_DATA, sqlxml);
 			cs.setString(PARAM_TYPE, event.getTypeEvent().name());
 
 			cs.execute();

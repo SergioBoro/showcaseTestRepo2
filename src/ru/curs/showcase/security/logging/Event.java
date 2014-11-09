@@ -1,5 +1,8 @@
 package ru.curs.showcase.security.logging;
 
+import java.util.*;
+import java.util.Map.Entry;
+
 import ru.curs.showcase.app.api.event.CompositeContext;
 
 /**
@@ -9,6 +12,8 @@ import ru.curs.showcase.app.api.event.CompositeContext;
  * 
  */
 public class Event {
+	public static final String DATA_TAG = "data";
+
 	/**
 	 * Тип события.
 	 * 
@@ -23,26 +28,27 @@ public class Event {
 		 * LOGOUT.
 		 * 
 		 */
-		LOGOUT
+		LOGOUT,
+		/**
+		 * Session time out.
+		 * 
+		 */
+		SESSSIONTIMEOUT
 	}
 
 	private final TypeEvent typeEvent;
 	private CompositeContext context;
-	private String sessionid;
-	private String ip;
+	private final Map<String, String> mapData = new HashMap<String, String>();
 
 	public Event(final TypeEvent eTypeEvent) {
 		super();
 		this.typeEvent = eTypeEvent;
 	}
 
-	public Event(final TypeEvent eTypeEvent, final CompositeContext oContext,
-			final String sSessionid, final String sIp) {
+	public Event(final TypeEvent eTypeEvent, final CompositeContext oContext) {
 		super();
 		this.typeEvent = eTypeEvent;
 		this.context = oContext;
-		this.ip = sIp;
-		this.sessionid = sSessionid;
 	}
 
 	/**
@@ -74,41 +80,29 @@ public class Event {
 	}
 
 	/**
-	 * Функция-getter для переменной sessionid.
+	 * Добавление атрибута.
 	 * 
 	 * @return sessionid
 	 */
-	public String getSessionid() {
-		return sessionid;
+	public void add(final String name, final String value) {
+		mapData.put(name, value);
 	}
 
 	/**
-	 * Функция-setter для переменной sessionid.
+	 * Возвращает все параметры в виде xml строки.
 	 * 
-	 * @param sSessionid
-	 *            - строковая переменная
+	 * @return string xml
 	 */
-	public void setSessionid(final String sSessionid) {
-		this.sessionid = sSessionid;
-	}
-
-	/**
-	 * Функция-getter для переменной ip.
-	 * 
-	 * @return ip
-	 */
-	public String getIp() {
-		return ip;
-	}
-
-	/**
-	 * Функция-setter для переменной ip.
-	 * 
-	 * @param sIp
-	 *            - строковая переменная
-	 */
-	public void setIp(final String sIp) {
-		this.ip = sIp;
+	public String getXml() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<").append(DATA_TAG).append(">");
+		for (Entry<String, String> entry : mapData.entrySet()) {
+			sb.append("<").append(entry.getKey()).append(">");
+			sb.append(entry.getValue() != null ? entry.getValue() : "");
+			sb.append("</").append(entry.getKey()).append(">");
+		}
+		sb.append("</").append(DATA_TAG).append(">");
+		return sb.toString();
 	}
 
 }

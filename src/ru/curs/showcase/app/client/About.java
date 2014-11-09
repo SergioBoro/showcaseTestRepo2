@@ -95,7 +95,8 @@ public final class About {
 					+ serverInfo
 
 					+ "Тип браузера: "
-					+ ((browserTypeString != null) ? browserTypeString : "не удалось определить")
+					+ ((browserTypeString != null && browserType != ru.curs.showcase.app.api.BrowserType.UNDEFINED) ? browserTypeString
+							: "не удалось определить")
 					+ br
 
 					+ "Версия браузера: "
@@ -134,7 +135,7 @@ public final class About {
 	 * @return UserAgent
 	 */
 	public static native String getUserAgent() /*-{
-		return $wnd.navigator.userAgent.toLowerCase();
-	}-*/;
+												return $wnd.navigator.userAgent.toLowerCase();
+												}-*/;
 
 }

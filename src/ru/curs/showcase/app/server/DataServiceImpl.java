@@ -2,6 +2,8 @@ package ru.curs.showcase.app.server;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -223,8 +225,9 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	public MainPage getMainPage(final CompositeContext context) throws GeneralException {
 		Date dt1 = new Date();
 
+		HttpServletRequest request = getThreadLocalRequest();
 		SecurityLoggingCommand logCommand =
-			new SecurityLoggingCommand(context, getThreadLocalRequest(), TypeEvent.LOGIN);
+			new SecurityLoggingCommand(context, request, request.getSession(), TypeEvent.LOGIN);
 		logCommand.execute();
 
 		MainPageGetCommand command = new MainPageGetCommand(context);

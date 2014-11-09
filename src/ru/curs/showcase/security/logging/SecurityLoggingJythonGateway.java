@@ -26,7 +26,7 @@ public class SecurityLoggingJythonGateway extends JythonQuery<Void> implements
 
 	@Override
 	protected Object execute() {
-		return getProc().logging(event.getContext(), event.getSessionid(), event.getIp(),
+		return getProc().logging(event.getContext(), event.getXml(),
 				event.getTypeEvent().toString());
 	}
 

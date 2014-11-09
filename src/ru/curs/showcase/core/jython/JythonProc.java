@@ -237,12 +237,14 @@ public interface JythonProc {
 	 * Выполнение скрипта логирования авторизации пользователя.
 	 * 
 	 * @param context
-	 * @param SessionId
-	 * @param ip
+	 *            - контекст вызова.
+	 * @param data
+	 *            - данные
 	 * @param typeEvent
+	 *            - тип события
 	 * @return Void
 	 */
-	Void logging(AbstractCompositeContext context, String sessionId, String ip, String typeEvent);
+	Void logging(AbstractCompositeContext context, String data, String typeEvent);
 
 	/**
 	 * Сохраняет отредактированные данные в гриде.
