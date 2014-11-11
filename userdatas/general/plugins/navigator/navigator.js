@@ -56,6 +56,11 @@ function createNavigator(parentId, data, template) {
     	
     	
 	    var aContainer = new AccordionContainer({}, parentId);
+	    
+		if(!data.navigator.group.length){
+			data.navigator.group = [data.navigator.group];
+		}	    
+	    
 		for(var k in data.navigator.group) {
 			
 			if(data.navigator.group[k]["@hide"]  && data.navigator.group[k]["@hide"].toLowerCase()=="true"){
