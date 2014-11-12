@@ -50,7 +50,8 @@ public final class XFormScriptTransformCommand extends XFormContextCommand<Strin
 		};
 
 		String decodedContent = getContext().getFormData();
-		if (((selector.sourceType() == SourceType.SP) || (selector.sourceType() == SourceType.SQL))
+		if (((selector.sourceType() == SourceType.SP)
+				|| (selector.sourceType() == SourceType.CELESTA) || (selector.sourceType() == SourceType.SQL))
 				&& (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL)) {
 			// decodedContent =
 			// XMLUtils.xmlServiceSymbolsToNormalWithoutDoubleQuotes(decodedContent);
