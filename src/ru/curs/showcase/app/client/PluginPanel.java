@@ -88,59 +88,42 @@ public class PluginPanel extends BasicElementPanelBasis {
 	 *            plugin
 	 */
 	protected void fillPluginPanel(final Plugin aPlugin) {
-		final String div = "<div id='";
-		final String htmlForPlugin;
-		// final int n60 = 60;
-		// final int n80 = 80;
-		// if (aGeoMap.getAutoSize()) {
-		// final int width = GeneralDataPanel.getTabPanel().getOffsetWidth() -
-		// n60;
-		// final int height = GeneralDataPanel.getTabPanel().getOffsetHeight() -
-		// n80;
 
-		// htmlForMap =
-		// div + getDivIdMap() + "' style = 'width: " + String.valueOf(width)
-		// + "px; height: " + String.valueOf(height) + "px'></div>";
-		// aGeoMap.applyAutoSizeValuesOnClient(width, height);
+		if (!isPartialUpdate()) {
 
-		// } else {
+			final String div = "<div id='";
+			final String htmlForPlugin;
+			htmlForPlugin =
+				div + getDivIdPlugin() + "' style='width:" + aPlugin.getSize().getWidth()
+						+ "px; height:" + aPlugin.getSize().getHeight() + "px'></div>";
 
-		// plugin.getSize().MessageBox.showSimpleMessage("111",
-		// plugin.getSize());
-		htmlForPlugin =
-			div + getDivIdPlugin() + "' style='width:" + aPlugin.getSize().getWidth()
-					+ "px; height:" + aPlugin.getSize().getHeight() + "px'></div>";
-		// }
-		// MessageBox.showSimpleMessage("456", htmlForPlugin);
-		// final String htmlForMap =
-		// "<div id='" + divIdMap +
-		// "' style = 'width: 900px; height: 600px'></div>";
+			pluginHTML = new HTML(htmlForPlugin);
 
-		pluginHTML = new HTML(htmlForPlugin);
+			generalPluginPanel.clear();
+			generalHp.clear();
 
-		generalPluginPanel.clear();
-		generalHp.clear();
+			generalPluginPanel.add(generalHp);
+			generalHp.add(pluginHTML);
 
-		generalPluginPanel.add(generalHp);
-		generalHp.add(pluginHTML);
+			if (AppCurrContext.getInstance()
+					.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel()
+					.indexOf(getDivIdPlugin()) < 0) {
+				AppCurrContext.getInstance()
+						.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel()
+						.add(getDivIdPlugin());
+				for (String param : aPlugin.getRequiredCSS()) {
+					AccessToDomModel.addCSSLink(param);
+				}
+				for (String param : aPlugin.getRequiredJS()) {
+					AccessToDomModel.addScriptLink(param);
+				}
+			}
+
+		}
 
 		String params = "'" + getDivIdPlugin() + "'";
 		for (String param : aPlugin.getParams()) {
 			params = params + ", " + param.trim();
-		}
-
-		if (AppCurrContext.getInstance()
-				.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel()
-				.indexOf(getDivIdPlugin()) < 0) {
-			AppCurrContext.getInstance()
-					.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel()
-					.add(getDivIdPlugin());
-			for (String param : aPlugin.getRequiredCSS()) {
-				AccessToDomModel.addCSSLink(param);
-			}
-			for (String param : aPlugin.getRequiredJS()) {
-				AccessToDomModel.addScriptLink(param);
-			}
 		}
 
 		try {
