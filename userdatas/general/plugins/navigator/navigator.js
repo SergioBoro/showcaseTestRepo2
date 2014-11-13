@@ -212,11 +212,10 @@ function createNavigator(parentId, data, template) {
 	        if(data.navigator.group[k]["@styleColumn"] && (data.navigator.group[k]["@styleColumn"].trim()!="")){
 				grid.styleColumn("name", data.navigator.group[k]["@styleColumn"]);
 	        }
-
-	        
-	        grid.refresh();	    
 	        
 	        grid.set("showHeader", false);
+	        
+	        grid.refresh();	    
 
 	        
 	        var classNameTitle="";
