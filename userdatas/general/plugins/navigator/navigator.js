@@ -117,7 +117,7 @@ function createNavigator(parentId, data, template) {
 	        	
 				store: store,
 				
-				showHeader: false,
+//				showHeader: false,
 				selectionMode: "single",
 				
 				columns: [tree({
@@ -214,7 +214,9 @@ function createNavigator(parentId, data, template) {
 	        }
 
 	        
-	        grid.refresh();	        
+	        grid.refresh();	    
+	        
+	        grid.set("showHeader", false);
 
 	        
 	        var classNameTitle="";
