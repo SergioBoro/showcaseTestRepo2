@@ -39,7 +39,7 @@ def mainproc():
     print u"dddddddddddddddddddddddddd2: " + editorData
 
     res = GridSaveResult(UserMessageFactory().build(555, u"Данные успешно сохранены из Jython"))
-    res.setRefreshAfterSave(0);
+    res.setRefreshAfterSave(1);
     return res
     
 

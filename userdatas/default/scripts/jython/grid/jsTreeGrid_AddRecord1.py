@@ -35,10 +35,10 @@ class jsTreeGrid_AddRecord1(JythonProc):
 
 def mainproc():
     
-    print u"dddddddddddddddddddddddddd: " + addRecordData
+#    print u"dddddddddddddddddddddddddd: " + addRecordData
     
     
-    print u"ffffffffffffff: " + session
+#    print u"ffffffffffffff: " + session
     
     
 

@@ -16,7 +16,7 @@ from ru.curs.celesta.showcase.utils import XMLJSONConverter
 
 
 
-def getDataAndSetting(context, main, add, filterinfo, session, elementId, sortColumnList, parentId ):
+def getDataAndSetting(context, main, add, filterinfo, session, elementId, sortColumnList):
     print 'Get grid data and setting from Celesta Python procedure.'
     print 'User %s' % context.userId
     print 'main "%s".' % main

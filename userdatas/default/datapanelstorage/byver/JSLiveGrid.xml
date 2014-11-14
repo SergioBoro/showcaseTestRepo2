@@ -7,13 +7,38 @@
 	<tab id="2" name="Начало">
 		<element id="2" type="GRID"  subtype="JS_LIVE_GRID" proc="extlivegrid_bal" 
 		    plugin="liveDGrid" >
-			    <proc id="020101" name="gridToolBar" type="TOOLBAR"/>
+
+			    
+		    <proc id="11" name="jslivegrid_addrecord1" type="ADDRECORD" />		    
+		    <proc id="12" name="jstreegrid_save1" type="SAVE" />
+			    
+			    
+			    <proc id="020101" name="gridToolBar_pagegrid" type="TOOLBAR"/>
+			    
+    			<proc id="14" name="extlivegrid_bal_partial" type="PARTIALUPDATE" />
+			    
+			    
+			    
 		</element>
 		 <!-- 		 refreshByTimer="true" refreshInterval="10"  -->
 		<element id="0202" type="webtext" proc="webtext/selectedRowWriter.py" hideOnLoad="true" />		 
 		<element id="5" type="webtext" proc="webtext_filter_and_add" hideOnLoad="true" />
 		<element id="3" type="chart" proc="chart_bal_extgridlive" hideOnLoad="true" />
 	</tab>
+	
+	
+	
+	<tab id="12" name="Jython">
+ 		<element id="1022" type="GRID"  subtype="JS_LIVE_GRID" proc="grid/jsTreeGridJython.py" 
+		    plugin="liveDGrid">
+			<proc id="020101" name="gridToolBar" type="TOOLBAR"/>		    
+		    <proc id="11" name="grid/jsTreeGrid_AddRecord1.py" type="ADDRECORD" />		    
+		    <proc id="12" name="grid/jsTreeGrid_Save1.py" type="SAVE" />		    
+		</element>
+	</tab>
+	
+	
+	
 	<tab id="3" name="JSLiveGrid как зависимый элемент">
 		<element id="14" type="grid" subtype="JS_LIVE_GRID" proc="extlivegrid_extlivegrid" 
 		    plugin="liveDGrid" >
@@ -32,6 +57,7 @@
 		</element>
 		<element id="0402" type="grid" subtype="JS_LIVE_GRID" proc="extlivegrid_cities_one"
 		    plugin="liveDGrid" >
+			    <proc id="020101" name="gridToolBar" type="TOOLBAR"/>		    
 		</element>
 	</tab>
 	<tab id="5" name="Ссылки в гриде">

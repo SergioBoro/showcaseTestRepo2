@@ -124,10 +124,12 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	// CHECKSTYLE:OFF
 	private static native void setCallbackJSNIFunction() /*-{
 															$wnd.gwtGetHttpParams = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtEditorGetHttpParams = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginEditorGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
 															$wnd.gwtAfterLoadData = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterClick = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
 															$wnd.gwtAfterDoubleClick = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterDoubleClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtProcessFileDownload = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginProcessFileDownload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtShowMessage = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginShowMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															}-*/;
 
 	// CHECKSTYLE:ON
@@ -398,6 +400,11 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 					.getHaColumnHeader().toString().toLowerCase()));
 		}
 
+		if ((getElementInfo().getProcByType(DataPanelElementProcType.ADDRECORD) == null)
+				&& (getElementInfo().getProcByType(DataPanelElementProcType.SAVE) == null)) {
+			common.put("readonly", new JSONString("true"));
+		}
+
 		metadata.put("common", common);
 
 		JSONObject columns = new JSONObject();
@@ -408,11 +415,18 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 				column.put("parentId", new JSONString(egcc.getParentId()));
 			}
 			column.put("caption", new JSONString(egcc.getCaption()));
+
+			if (egcc.isReadonly()) {
+				column.put("readonly", new JSONString(String.valueOf("true")));
+			}
+
 			String valueType = "";
 			if (egcc.getValueType() != null) {
 				valueType = egcc.getValueType().toString();
 			}
 			column.put("valueType", new JSONString(valueType));
+
+			column.put("editor", new JSONString(getColumnEditor(egcc)));
 
 			column.put("style", new JSONString(getCommonColumnStyle() + getColumnStyle(egcc)));
 
@@ -617,6 +631,46 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		return params;
 	}
 
+	public JSONObject pluginEditorGetHttpParams(final String data, final String editorType) {
+
+		GridContext gridContext = getDetailedContext();
+		if ("save".equalsIgnoreCase(editorType)) {
+			JSONObject column = new JSONObject();
+			int i = 1;
+			for (final LiveGridColumnConfig egcc : gridMetadata.getColumns()) {
+				column.put("col" + String.valueOf(i), new JSONString(egcc.getCaption()));
+				i++;
+			}
+			String json =
+				"{'savedata':{'data':" + data + ", 'columns':" + column.toString() + "}}";
+			gridContext.setEditorData(json);
+
+			gridContext.setAddRecordData(null);
+		} else {
+			gridContext.setEditorData(null);
+
+			String json =
+				"{'addrecorddata':{'currentRecordId':'" + gridContext.getCurrentRecordId() + "'}}";
+			gridContext.setAddRecordData(json);
+		}
+
+		JSONObject params = new JSONObject();
+		try {
+			params.put("gridContextName", new JSONString(gridContext.getClass().getName()));
+			params.put("gridContextValue",
+					new JSONString(gridContext.toParamForHttpPost(getObjectSerializer())));
+
+			params.put("elementInfoName", new JSONString(getElementInfo().getClass().getName()));
+			params.put("elementInfoValue",
+					new JSONString(getElementInfo().toParamForHttpPost(getObjectSerializer())));
+		} catch (SerializationException e) {
+			params.put("error", new JSONString(AppCurrContext.getInstance()
+					.getInternationalizedMessages().jsGridSerializationError()));
+		}
+
+		return params;
+	}
+
 	public void pluginAfterLoadData(final String stringLiveGridExtradata) {
 		if (!stringLiveGridExtradata.isEmpty()) {
 			try {
@@ -650,6 +704,55 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		}
 
 		afterUpdateGrid();
+	}
+
+	public void pluginShowMessage(final String stringMessage, final String editorType) {
+
+		if (!stringMessage.isEmpty()) {
+			try {
+				UserMessage um =
+					(UserMessage) getObjectSerializer().createStreamReader(stringMessage)
+							.readObject();
+				if (um != null) {
+
+					String textMessage = um.getText();
+					if ((textMessage == null) || textMessage.isEmpty()) {
+						return;
+					}
+
+					MessageType typeMessage = um.getType();
+					if (typeMessage == null) {
+						typeMessage = MessageType.INFO;
+					}
+
+					MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+							.getInternationalizedMessages().okMessage(), textMessage, "",
+							typeMessage, false);
+
+				}
+
+			} catch (SerializationException e) {
+				MessageBox.showSimpleMessage("pluginShowMessage", AppCurrContext.getInstance()
+						.getInternationalizedMessages().jsGridDeserializationError()
+						+ " UserMessage: " + e.getMessage());
+			}
+		}
+
+		// MessageBox.showSimpleMessage(gridContext.getCurrentColumnId(),
+		// gridContext.getCurrentRecordId());
+
+		GridContext gridContext = getDetailedContext();
+		gridContext.setEditorData(null);
+
+		InteractionType it;
+		if ("save".equalsIgnoreCase(editorType)) {
+			it = InteractionType.SAVE_DATA;
+		} else {
+			it = InteractionType.ADD_RECORD;
+		}
+
+		processClick(gridContext.getCurrentRecordId(), gridContext.getCurrentColumnId(), it);
+
 	}
 
 	public void pluginAfterClick(final String recId, final String colId,
@@ -853,6 +956,31 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		}
 
 		return style;
+	}
+
+	private String getColumnEditor(final LiveGridColumnConfig egcc) {
+
+		String editor = egcc.getEditor();
+
+		if (editor == null) {
+			String columnEditor = "text";
+
+			GridValueType valueType = egcc.getValueType();
+			if (valueType.isGeneralizedString()) {
+				columnEditor = "text";
+			}
+			if (valueType.isNumber()) {
+				columnEditor = "number";
+			}
+			if (valueType.isDate()) {
+				columnEditor = "date";
+			}
+
+			editor =
+				"{editOn: has('touch') ? 'click' : 'dblclick', editor: '" + columnEditor + "'}";
+		}
+
+		return editor;
 	}
 
 	/**
@@ -1170,6 +1298,49 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			toolBar.add(filter);
 		}
 
+		if (getElementInfo().getProcByType(DataPanelElementProcType.ADDRECORD) != null) {
+			final TextButton addRecord =
+				new TextButton("", IconHelper.getImageResource(
+						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_ADD_RECORD), 16, 16));
+			addRecord.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_add_record());
+			addRecord.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+					editorAddRecord();
+				}
+			});
+			toolBar.add(addRecord);
+		}
+		if (getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null) {
+			final TextButton save =
+				new TextButton("", IconHelper.getImageResource(
+						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_SAVE), 16, 16));
+			save.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_save());
+			save.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+					editorSave();
+				}
+			});
+			toolBar.add(save);
+		}
+		if (getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null) {
+			final TextButton revert =
+				new TextButton("", IconHelper.getImageResource(
+						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_REVERT), 16, 16));
+			revert.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+					.grid_caption_revert());
+			revert.addSelectHandler(new SelectHandler() {
+				@Override
+				public void onSelect(final SelectEvent event) {
+					editorRevert();
+				}
+			});
+			toolBar.add(revert);
+		}
+
 	}
 
 	// CHECKSTYLE:ON
@@ -1191,6 +1362,21 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			};
 		}
 		return this.toolBarHelper;
+	}
+
+	private void editorAddRecord() {
+		String params = "'" + getDivIdPlugin() + "'";
+		pluginProc(gridMetadata.getJSInfo().getAddRecordProc(), params);
+	}
+
+	private void editorSave() {
+		String params = "'" + getDivIdPlugin() + "'";
+		pluginProc(gridMetadata.getJSInfo().getSaveProc(), params);
+	}
+
+	private void editorRevert() {
+		String params = "'" + getDivIdPlugin() + "'";
+		pluginProc(gridMetadata.getJSInfo().getRevertProc(), params);
 	}
 
 }

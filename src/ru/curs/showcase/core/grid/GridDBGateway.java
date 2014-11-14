@@ -213,7 +213,12 @@ public class GridDBGateway extends AbstractGridDBGateway {
 				} catch (JSONException | TransformerException | ParserConfigurationException e) {
 					throw new SAXError(e);
 				}
-				xml = xml.substring(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.length()).trim();
+				if (xml.toLowerCase().contains(
+						XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.toLowerCase())) {
+					xml = xml.substring(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.length());
+				}
+				xml = xml.trim();
+
 				setSQLXMLParam(SAVE_DATA_INDEX, xml);
 
 				getStatement().registerOutParameter(OUT_SAVE_DATA_RESULT, java.sql.Types.SQLXML);
@@ -267,7 +272,12 @@ public class GridDBGateway extends AbstractGridDBGateway {
 				} catch (JSONException | TransformerException | ParserConfigurationException e) {
 					throw new SAXError(e);
 				}
-				xml = xml.substring(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.length()).trim();
+				if (xml.toLowerCase().contains(
+						XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.toLowerCase())) {
+					xml = xml.substring(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.length());
+				}
+				xml = xml.trim();
+
 				setSQLXMLParam(ADD_RECORD_INDEX, xml);
 
 				getStatement().registerOutParameter(OUT_ADD_RECORD_RESULT, java.sql.Types.SQLXML);

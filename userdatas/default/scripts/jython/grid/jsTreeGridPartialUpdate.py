@@ -1,9 +1,5 @@
 # coding: utf-8
-'''
-Created on 19.12.2011
 
-@author: bogatov
-'''
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.app.api import UserMessage
 from ru.curs.showcase.app.api import MessageType
@@ -20,7 +16,7 @@ elementId = ""
 sortcols = None #объект типа java.util.List<ru.curs.gwt.datagrid.model.Column>
 
 
-class jsTreeGridJython(JythonProc):
+class jsTreeGridPartialUpdate (JythonProc):
     def getRawData(self, context, elId, scols):
         global main, add, session, filterContext, elementId, sortcols
         main = context.getMain()
@@ -38,64 +34,18 @@ def mainproc():
     data = u'''
     <records>
         <rec>
-            <name>Тест1</name>
+            <name>Тест1_Частичное обновление</name>
             <code>1</code>            
             <_x007e__x007e_id>1</_x007e__x007e_id>
         </rec>
         <rec>
-            <name>Тест2</name>
-            <code>2</code>
-            <_x007e__x007e_id>2</_x007e__x007e_id>
-        </rec>
-        <rec>
-            <name>Тест3</name>
-            <code>3</code>
-            <_x007e__x007e_id>3</_x007e__x007e_id>
-        </rec>
-        <rec>
-            <name>Тест4</name>
+            <name>Тест4_Частичное обновление</name>
             <code>4</code>
             <_x007e__x007e_id>4</_x007e__x007e_id>
         </rec>
-        <rec>
-            <name>Тест5</name>
-            <code>5</code> 
-            <_x007e__x007e_id>5</_x007e__x007e_id>           
-        </rec>
-        <rec>
-            <name>Тест6</name>
-            <code>6</code>            
-            <_x007e__x007e_id>6</_x007e__x007e_id>
-        </rec>
-        <rec>
-            <name>Тест7</name>
-            <code>7</code>            
-            <_x007e__x007e_id>7</_x007e__x007e_id>
-        </rec>
-        <rec>
-            <name>Тест8</name>
-            <code>8</code>            
-            <_x007e__x007e_id>8</_x007e__x007e_id>
-        </rec>
-        
-
-
-        
-        
     </records>'''
-    settings = u'''
-    <gridsettings>
-       <labels>
-        <header>
-        <h3>Edit Grid jython</h3>
-        </header>
-      </labels>
-      <columns>
-        <col id="name" />
-        <col id="code" />
-      </columns>
-      <properties flip="false" gridWidth="1200px" gridHeight="500" pagesize="50" totalCount="0" />
-   </gridsettings>'''
+    
+    settings = None
     
 
     
@@ -103,7 +53,7 @@ def mainproc():
 
 #       res = JythonDTO(data, settings, UserMessageFactory().build(555, u"Грид успешно построен из Jython"))
 
-    print u'dddddddddddddddddddddddddd: Полное обновление'
+    print u'dddddddddddddddddddddddddd: Частичное обновление'
 
     res = JythonDTO(data, settings)
     return res

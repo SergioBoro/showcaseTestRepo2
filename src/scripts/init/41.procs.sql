@@ -30407,3 +30407,778 @@ set @settings=N'<properties width="300px" height="700px">
 
 END
 GO
+
+
+
+GO
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[jslivegrid_addrecord1]
+	@main_context varchar(512),
+	@add_context varchar(512),
+	@filterinfo xml,
+	@session_context xml,
+	@element_Id varchar(512),
+
+	@addrecorddata xml,
+
+  @gridaddrecordresult xml output,
+
+	@error_mes varchar(2048) output	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+--INSERT INTO Debug (context) VALUES (@addrecorddata)
+
+
+/*
+DECLARE @currentRecordId varchar(2048)
+SET @currentRecordId=(select @addrecorddata.value('(/addrecorddata/currentRecordId)[1]','varchar(MAX)'))
+
+
+DECLARE @name varchar(2048)
+DECLARE @Id INTEGER
+DECLARE @ParentId uniqueidentifier
+
+
+SET @name = (SELECT Name FROM geo5 where geo5_Id =  @currentRecordId)
+IF @name IS NOT NULL
+BEGIN
+	SET @Id = (SELECT Id FROM geo5 where geo5_Id =  @currentRecordId)+10000
+	SET @name = @name+'_New'
+	INSERT INTO geo5 (Name, Id, FJField_9) VALUES (@name, @Id, @ParentId)
+END
+*/
+
+
+
+
+Declare @gridaddrecordresult_str as varchar(max)
+set @gridaddrecordresult_str='
+<gridaddrecordresult>
+</gridaddrecordresult>'
+
+set    @gridaddrecordresult=CAST(@gridaddrecordresult_str as xml)
+
+--set    @gridaddrecordresult=NULL
+
+
+	
+
+--	SET @error_mes='Ошибка при добавлении записи'
+--	RETURN 30
+
+
+  set @error_mes = 'Запись успешно добавлена'
+  RETURN 555;
+
+
+	SET @error_mes=''
+	RETURN 0
+
+
+	
+	
+END
+GO
+
+
+GO
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[gridToolBar_pagegrid]
+   @main_context nvarchar(512)='',  
+   @add_context nvarchar(512)='',  
+   @filterinfo xml='',  
+   @session_context xml='',
+   @elementId nvarchar(512)='',
+   @data xml output
+AS
+BEGIN
+
+--insert Debug (context) values (NULL)
+--insert Debug (context) values (NULL)
+--insert Debug (context) values (@session_context)
+
+
+
+declare
+	@id nvarchar(50)='',
+	@columnName nvarchar(150)=''
+
+set @id = @session_context.value('(/sessioncontext/related/gridContext/selectedRecordId)[1]','nvarchar(50)');
+if @id is null begin 
+	set @id = ''
+end
+
+set @columnName = @session_context.value('(/sessioncontext/related/gridContext/currentColumnId)[1]','nvarchar(150)');
+if @columnName is null begin 
+	set @columnName = ''
+end
+
+set @data='
+	<gridtoolbar>
+
+
+
+
+
+		<item text="Частичное обновление" img="imagesingrid/test.jpg" hint="Частичное обновление">
+			<action keep_user_settings="true" partial_update="false">
+				<main_context>current</main_context>
+				<datapanel type="current" tab="current">
+
+					<element id="2" keep_user_settings="true" partial_update="true">
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+
+				</datapanel>
+			</action>
+		</item>
+
+
+		<item text="Полное обновление" img="imagesingrid/test.jpg" hint="Полное обновление">
+			<action>
+				<main_context>current</main_context>
+				<datapanel type="current" tab="current">
+					<element id="2" keep_user_settings="true">
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+				</datapanel>
+			</action>
+		</item>
+
+
+
+
+		<separator/>
+		<item text="Item1" img="imagesingrid/test.jpg" hint="Item one" disable="false">
+			<action show_in="MODAL_WINDOW">
+				<main_context>current</main_context>
+				<modalwindow caption="Item1 click" height="200" width="600"/>
+				<datapanel type="current" tab="current">
+					<element id="0102">
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+					<element id="0202">
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+					<element id="0302">
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+				</datapanel>
+			</action>
+		</item>
+		<group text="Item2Group" >
+			<item text="Item21" hint="Item two" disable="true" />
+			<separator/>
+			<item text="Item22" hint="Item three" disable="false">
+				<action show_in="MODAL_WINDOW">
+					<main_context>current</main_context>
+					<modalwindow caption="Item22 click." height="200" width="600"/>
+					<datapanel type="current" tab="current">
+						<element id="0102">
+							<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+						</element>
+						<element id="0202">
+							<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+						</element>
+						<element id="0302">
+							<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+						</element>
+					</datapanel>
+				</action>
+			</item>
+			<group text="Item23Group" >
+				<item text="Item231" hint="Item two" disable="true" />
+				<separator/>
+				<item text="Item232" hint="Item three" disable="false">
+					<action show_in="MODAL_WINDOW">
+						<main_context>current</main_context>
+						<modalwindow caption="Item232 click." height="200" width="600"/>
+						<datapanel type="current" tab="current">
+							<element id="0102">
+								<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+							</element>
+							<element id="0202">
+								<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+							</element>
+							<element id="0302">
+								<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+							</element>
+						</datapanel>
+					</action>
+				</item>
+			</group>
+		</group>
+    </gridtoolbar>';
+END
+GO
+
+
+GO
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[gridToolBar_pagegrid_2proc]
+   @main_context nvarchar(512)='',  
+   @add_context nvarchar(512)='',  
+   @filterinfo xml='',  
+   @session_context xml='',
+   @elementId nvarchar(512)='',
+   @data xml output
+AS
+BEGIN
+
+--insert Debug (context) values (NULL)
+--insert Debug (context) values (NULL)
+--insert Debug (context) values (@session_context)
+
+
+
+declare
+	@id nvarchar(50)='',
+	@columnName nvarchar(150)=''
+
+set @id = @session_context.value('(/sessioncontext/related/gridContext/selectedRecordId)[1]','nvarchar(50)');
+if @id is null begin 
+	set @id = ''
+end
+
+set @columnName = @session_context.value('(/sessioncontext/related/gridContext/currentColumnId)[1]','nvarchar(150)');
+if @columnName is null begin 
+	set @columnName = ''
+end
+
+set @data='
+	<gridtoolbar>
+
+
+
+
+
+		<item text="Частичное обновление" img="imagesingrid/test.jpg" hint="Частичное обновление">
+			<action keep_user_settings="true" partial_update="false">
+				<main_context>current</main_context>
+				<datapanel type="current" tab="current">
+
+					<element id="0401" keep_user_settings="true" partial_update="true">
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+
+				</datapanel>
+			</action>
+		</item>
+
+
+		<item text="Полное обновление" img="imagesingrid/test.jpg" hint="Полное обновление">
+			<action>
+				<main_context>current</main_context>
+				<datapanel type="current" tab="current">
+					<element id="0401" keep_user_settings="true">
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+				</datapanel>
+			</action>
+		</item>
+
+
+
+
+		<separator/>
+		<item text="Item1" img="imagesingrid/test.jpg" hint="Item one" disable="false">
+			<action show_in="MODAL_WINDOW">
+				<main_context>current</main_context>
+				<modalwindow caption="Item1 click" height="200" width="600"/>
+				<datapanel type="current" tab="current">
+					<element id="0102">
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+					<element id="0202">
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+					<element id="0302">
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+				</datapanel>
+			</action>
+		</item>
+		<group text="Item2Group" >
+			<item text="Item21" hint="Item two" disable="true" />
+			<separator/>
+			<item text="Item22" hint="Item three" disable="false">
+				<action show_in="MODAL_WINDOW">
+					<main_context>current</main_context>
+					<modalwindow caption="Item22 click." height="200" width="600"/>
+					<datapanel type="current" tab="current">
+						<element id="0102">
+							<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+						</element>
+						<element id="0202">
+							<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+						</element>
+						<element id="0302">
+							<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+						</element>
+					</datapanel>
+				</action>
+			</item>
+			<group text="Item23Group" >
+				<item text="Item231" hint="Item two" disable="true" />
+				<separator/>
+				<item text="Item232" hint="Item three" disable="false">
+					<action show_in="MODAL_WINDOW">
+						<main_context>current</main_context>
+						<modalwindow caption="Item232 click." height="200" width="600"/>
+						<datapanel type="current" tab="current">
+							<element id="0102">
+								<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+							</element>
+							<element id="0202">
+								<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+							</element>
+							<element id="0302">
+								<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+							</element>
+						</datapanel>
+					</action>
+				</item>
+			</group>
+		</group>
+    </gridtoolbar>';
+END
+GO
+
+
+GO
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[extlivegrid_bal_partial]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',    
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',	
+    @gridsettings xml output,
+    @error_mes varchar(512) output
+AS
+BEGIN
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
+
+--insert into Debug (context) VALUES (@filterinfo)
+
+
+--insert into Debug (context) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+    
+set @main_context = 'Потери - Всего';    
+
+
+/*
+select 
+ 'Ивановская обл._Частично_обновленный' as "Регион"
+, 43333333333333 as "Код"
+, 'Ивановская обл.' as "~~id"
+, cast('<properties></properties>' as xml) as [~~properties]
+return;
+*/
+
+
+select 
+ 'Томская обл._Частично_обновленный' as "Регион"
+, 4222222 as "Код"
+, 'Томская обл.' as "~~id"
+, cast('<properties></properties>' as xml) as [~~properties]
+
+
+UNION ALL
+select 
+ 'Кировская обл._Частично_обновленный' as "Регион"
+, 4222222 as "Код"
+, 'Кировская обл.' as "~~id"
+, cast('<properties></properties>' as xml) as [~~properties]
+
+
+UNION ALL
+select 
+ 'Астраханская обл._Частично_обновленный' as "Регион"
+, 42 as "Код"
+, 'Астраханская обл.' as "~~id"
+, cast('<properties></properties>' as xml) as [~~properties]
+
+
+UNION ALL
+select 
+ 'Ивановская обл._Частично_обновленный' as "Регион"
+, 43333333333333 as "Код"
+, 'Ивановская обл.' as "~~id"
+, cast('<properties></properties>' as xml) as [~~properties]
+
+
+
+UNION ALL
+select 
+ 'Брянская обл._Частично_обновленный' as "Название"
+, 52 as "Код"
+, 'Брянская обл.' as "~~id"
+, cast( '<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="3">
+						<add_context>Брянская обл._Частично_обновленный2</add_context>                                                                                        
+                                </element> 
+                                <element id="5">
+						<add_context>Брянская обл._Частично_обновленный2</add_context>                                                                                        
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+
+  
+
+
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="5">
+											<add_context>Брянская обл._Частично_обновленный2</add_context>  
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>   
+
+
+
+
+            </properties>' as xml) as [~~properties]
+
+    
+    
+/*    
+declare @filters as varchar(1024)
+declare @ordering as varchar(1024)
+
+IF OBJECT_ID('tempdb.dbo.#Per') is not null 
+drop table #Per
+IF OBJECT_ID('tempdb.dbo.#Reg_year') is not null 
+drop table #Reg_year
+IF OBJECT_ID('tempdb.dbo.#Columns_Name') is not null 
+drop table #Columns_Name
+IF OBJECT_ID('tempdb.dbo.#Tab1') is not null 
+drop table #Tab1
+
+declare @year as varchar(50)
+declare @quater as varchar(50)
+declare @params as varchar(8000)
+Set @year='2010'
+Set @quater='3'
+Set @params=''
+Select
+    [Год],
+    [Квартал]
+Into #Per
+From
+    (Select 
+        Journal_45_Name as [Год],
+        '1' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '2' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '3' as [Квартал]
+    From Journal_45
+    Union ALL
+    Select 
+        Journal_45_Name as [Год],
+        '4' as [Квартал]
+    From Journal_45
+    ) a
+
+Select
+    newid() as id__,
+    geo5_id,
+    geo5.NAME as [Регион],
+    Journal_45_Name,
+    Journal_45_Id,
+    geo6.Name as [Федеральный округ],
+    #Per.[Квартал] ,
+      Case
+            When geo6.Name='Южный ФО' then 3
+            When geo6.Name='Уральский ФО' then 5
+            When geo6.Name='Сибирский ФО' then 6
+            When geo6.Name='Приволжский ФО' then 4
+            When geo6.Name='Дальневосточный ФО' then 7
+            When geo6.Name='Центральный ФО' then 1
+            When geo6.Name='Северо-Западный ФО' then 2
+            Else 0
+         End as sort     
+Into #Reg_year
+From Journal_45 Inner Join #Per
+    On #Per.[Год]= Journal_45_Name,
+    geo5 left Join geo6
+    On geo5.FJField_9=geo6_Id
+Where geo5.FJField_16=1   and
+ cast( Journal_45_Name as float)
+   + cast(#Per.[Квартал] as float)/10 >= cast(cast(@year as int)-5  as float)+cast(@quater as float)/10
+ and
+ cast( Journal_45_Name as float)
+     + cast(#Per.[Квартал] as float)/10 < cast(cast(@year as int)+1  as float)+cast(@quater as float)/10
+Select distinct    
+    [Квартал]  +'кв. ' +Journal_45_Name+ 'г.' as Col_Id,
+    Journal_45_Name,
+     [Квартал]
+Into #Columns_Name
+From #Reg_year
+Order by Journal_45_Name, [Квартал]
+
+select Journal_44.FJField_17 as [~Всего, тыс тонн],
+       Journal_44.FJField_20,
+       Journal_44.FJField_18,
+        geo5.Name as [регион],
+        Journal_41.Journal_41_Name,
+        Journal_40_Name,
+        Journal_45.Journal_45_Name as [год],
+       Journal_44.FJField_16 as [квартал],
+       Case
+            When geo6.Name in ('Южный ФО','Уральский ФО','Сибирский ФО',
+                'Приволжский ФО','Дальневосточный ФО','Центральный ФО','Северо-Западный ФО','Российская Федерация') then 0
+            Else 1
+         End as sort2,
+         geo6.Name
+Into #Tab1
+From Journal_44
+    Inner Join geo5
+    On geo5.geo5_Id=Journal_44.FJField_18
+    Inner Join Journal_40
+    On Journal_40_Id=Journal_44.FJField_14
+    Inner Join Journal_41
+    On Journal_41_Id=Journal_44.FJField_12
+    left Join geo6
+    On geo5.FJField_9=geo6_Id
+    Inner Join Journal_45
+    On Journal_45_Id=Journal_44.FJField_21
+    Where geo5.FJField_16=1    and
+                  Journal_40_Name= @main_context
+
+and
+(((cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)>=(cast(cast(@year as int)  as float)+ cast(@quater as float)/10 )
+
+               and (cast( Journal_45.Journal_45_Name as float)
+               + cast(Journal_44.FJField_16 as float)/10)<(cast((cast(@year as int)+1 )  as float)+cast(@quater as float)/10)
+                and Journal_44.FJField_20='Прогноз')
+        or
+                (( cast( Journal_45.Journal_45_Name as float)
+                   + cast(Journal_44.FJField_16 as float)/10 )< (cast(cast(@year as int)  as float)+cast(@quater as float)/10 )
+                   and Journal_44.FJField_20='Факт'))
+                   
+                   
+select @params = @params + ', [' + RTRIM(#Columns_Name.Col_Id)+']' FROM #Columns_Name
+set @params = substring(@params, 3, len(@params) - 1);
+
+
+
+Insert into #Tab1 (#Tab1.[~Всего, тыс тонн],#Tab1.FJField_20,#Tab1.[регион],
+        #Tab1.Journal_41_Name,#Tab1.Journal_40_Name,#Tab1.год,#Tab1.квартал,#Tab1.sort2)
+select sum([~Всего, тыс тонн]),
+       #Tab1.FJField_20,
+       'Итого по россии',
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал,
+        -1
+        From #Tab1
+   Group by
+   #Tab1.FJField_20,
+        #Tab1.Journal_41_Name,
+        #Tab1.Journal_40_Name,
+        #Tab1.год,#Tab1.квартал
+
+Set @ordering=(Select
+				Case
+					When @sortcols='' then 'Order by sort2'
+					Else @sortcols 
+				End)     
+declare @Sql varchar(8000);
+set @Sql = 
+'Select  [Регион], GETDATE() as [Сейчас], ''imagesingrid/test.jpg'' AS [Картинка],' + @params+', cast( ''<properties>
+
+
+<!--
+		<styleClass name="jslivegrid-record-bold"/>
+		<styleClass name="jslivegrid-record-italic"/>
+-->
+
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="3">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="5">
+									<add_context>''+[Регион]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+
+  
+
+
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="5">
+											<add_context>''+[Регион]+''</add_context>   
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>                                       
+
+
+
+            </properties>'' as xml)  as [~~properties], [Регион] as [~~id] FROM('+
+'SELECT [Регион], sort2,' + @params+
+' FROM' +
+' (Select
+     cast (#Tab1.[~Всего, тыс тонн] as numeric(10,2))as t1,
+     #Reg_year.[Регион] ,
+     #Tab1.квартал+''кв. ''+#Reg_year.[Journal_45_Name]+''г.'' as [Квартал],     
+     #Reg_year.[Федеральный округ],
+      #Tab1.sort2,
+     ''Зерно''  as [~Продовольственный ресурс]
+      
+FROM #Reg_year
+    Left join #Tab1
+        On #Reg_year.[Регион]=#Tab1.[регион] and
+         #Reg_year.Journal_45_Name=#Tab1.год and 
+         #Reg_year.Квартал =#Tab1.квартал
+         ) p '+
+         
+' PIVOT ('+
+'    max(t1)'+
+'    FOR [Квартал] in('+@params+')'+
+' ) AS pvt Where [3кв. 2005г.] is Not NULL )p '+@ordering
+EXEC(@Sql)
+
+
+
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">'+@main_context+' зерна, тыс. тонн </h3></header>
+            <footer><h3 class="testStyle">Футер. '+@main_context+' зерна, тыс. тонн </h3></footer>            
+        </labels>
+
+
+
+
+		    <filters>  
+
+
+
+
+
+						<multiselector 
+								windowCaption     = "Выберите значения2"
+								dataWidth         = "600px"
+								dataHeight        = "450px"
+								selectedDataWidth = "500px"
+								visibleRecordCount = "25" 
+  							procCount         = "[dbo].[regionscount]"  
+								procList          = "[dbo].[regionslist]"
+                procListAndCount  = ""
+								currentValue      = ""
+								manualSearch       = "false"               
+								startWith          = "true"		        
+                hideStartsWith     = "false"		        
+								needInitSelection  = "true"
+						/>	
+
+
+		    </filters>	
+
+
+
+        <columns>
+         <col id="Регион" width="250px"/> 
+         <col id="Картинка" width="50px" type="IMAGE"/>
+         <col id="Сейчас" width="100px" type="DATETIME"/>'
+
+
+        
+select     @gridsettings_str=@gridsettings_str+'<col id="'+#Columns_Name.Col_Id+'" width="85px" precision="2"/>' From #Columns_Name
+set @gridsettings_str=@gridsettings_str+'</columns>
+							<action>
+							<main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="3">
+	                                <add_context>current</add_context>
+                                </element>   
+                                <element id="5">
+	                                <add_context>current</add_context>
+                                </element>                                                                   
+                                
+                            </datapanel>
+                        </action>
+<properties flip="false" 
+
+pagesize="10" 
+
+
+
+
+		autoSelectRecordUID="Московская обл."  
+		
+
+
+gridWidth="1200px"   totalCount="0"/></gridsettings>'
+
+
+set    @gridsettings=CAST(@gridsettings_str as xml)
+
+*/
+
+--SET @error_mes = 'Грид1 успешно построен';
+--return 555;
+
+
+END
+GO
+
+
+
+
