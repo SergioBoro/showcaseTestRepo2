@@ -17,6 +17,7 @@ public class ActionFactory extends SAXTagHandler {
 	private static final String SHOW_CLOSE_BOTTOM_BUTTON_TAG = "show_close_bottom_button";
 	private static final String KEEP_USER_SETTINGS_TAG = "keep_user_settings";
 	private static final String PARTIAL_UPDATE_TAG = "partial_update";
+	private static final String PRESERVE_HIDDEN_TAG = "preserve_hidden";
 	private static final String SHOW_IN_MODE_TAG = "show_in";
 	private static final String GROUP_TAG = "group";
 
@@ -154,6 +155,11 @@ public class ActionFactory extends SAXTagHandler {
 			curDataPanelElementLink.setKeepUserSettings(Boolean.parseBoolean(value));
 		}
 
+		if (attrs.getIndex(PRESERVE_HIDDEN_TAG) > -1) {
+			value = attrs.getValue(PRESERVE_HIDDEN_TAG);
+			curDataPanelElementLink.setPreserveHidden(Boolean.parseBoolean(value));
+		}
+
 		if (attrs.getIndex(PARTIAL_UPDATE_TAG) > -1) {
 			value = attrs.getValue(PARTIAL_UPDATE_TAG);
 			curDataPanelElementLink.setPartialUpdate(Boolean.parseBoolean(value));
@@ -236,6 +242,11 @@ public class ActionFactory extends SAXTagHandler {
 		if (attrs.getIndex(PARTIAL_UPDATE_TAG) > -1) {
 			String value = attrs.getValue(PARTIAL_UPDATE_TAG);
 			action.setPartialUpdate(Boolean.parseBoolean(value));
+		}
+
+		if (attrs.getIndex(PRESERVE_HIDDEN_TAG) > -1) {
+			String value = attrs.getValue(PRESERVE_HIDDEN_TAG);
+			action.setPreserveHidden(Boolean.parseBoolean(value));
 		}
 
 		curAction = action;

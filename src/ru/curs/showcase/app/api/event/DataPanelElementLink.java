@@ -42,6 +42,12 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 	 */
 	private Boolean partialUpdate = null;
 
+	/**
+	 * Признак того, что если во время рефреша элемента он скрыт, то показывать
+	 * его не нужно.
+	 */
+	private Boolean preserveHidden = null;
+
 	private List<String> group = null;
 
 	public DataPanelElementLink() {
@@ -110,6 +116,7 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 		res.context = context.gwtClone();
 		res.keepUserSettings = keepUserSettings;
 		res.partialUpdate = partialUpdate;
+		res.preserveHidden = preserveHidden;
 		return res;
 	}
 
@@ -127,6 +134,14 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 
 	public void setPartialUpdate(final Boolean aPartialUpdate) {
 		partialUpdate = aPartialUpdate;
+	}
+
+	public Boolean getPreserveHidden() {
+		return preserveHidden;
+	}
+
+	public void setPreserveHidden(final Boolean aPreserveHidden) {
+		preserveHidden = aPreserveHidden;
 	}
 
 	@Override

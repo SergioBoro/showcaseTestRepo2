@@ -68,6 +68,12 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	private Boolean partialUpdate = null;
 
 	/**
+	 * Признак того, что если во время рефреша элемента он скрыт, то показывать
+	 * его не нужно.
+	 */
+	private Boolean preserveHidden = null;
+
+	/**
 	 * Информация об отображении модального окна, связанного с действием.
 	 */
 	private ModalWindowInfo modalWindowInfo;
@@ -138,6 +144,7 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 		determineDPActionType();
 		determineKeepUserSettingsState();
 		determinePartialUpdateState();
+		determinePreserveHiddenState();
 	}
 
 	private void determineKeepUserSettingsState() {
@@ -176,6 +183,25 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 					}
 				}
 
+			}
+		}
+	}
+
+	private void determinePreserveHiddenState() {
+		boolean actionParamDefined = true;
+		if (preserveHidden == null) {
+			preserveHidden = false;
+			actionParamDefined = false;
+		}
+		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
+			for (DataPanelElementLink elink : dataPanelLink.getElementLinks()) {
+				if (elink.getPreserveHidden() == null) {
+					if (actionParamDefined) {
+						elink.setPreserveHidden(preserveHidden);
+					} else {
+						elink.setPreserveHidden(false);
+					}
+				}
 			}
 		}
 	}
@@ -432,6 +458,14 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 
 	public void setPartialUpdate(final Boolean aPartialUpdate) {
 		partialUpdate = aPartialUpdate;
+	}
+
+	public Boolean getPreserveHidden() {
+		return preserveHidden;
+	}
+
+	public void setPreserveHidden(final Boolean aPreserveHidden) {
+		preserveHidden = aPreserveHidden;
 	}
 
 	public Boolean getKeepUserSettings() {
