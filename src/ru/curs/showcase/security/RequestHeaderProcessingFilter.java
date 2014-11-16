@@ -5,11 +5,10 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.springframework.security.core.*;
-import org.springframework.security.web.authentication.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 import ru.curs.showcase.app.api.UserInfo;
-import ru.curs.showcase.app.server.PreProcessFilter;
 import ru.curs.showcase.util.UserAndSessionDetails;
 
 //imports omitted
@@ -55,20 +54,12 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 		authRequest.setDetails(userAndSessionDetails);
 
 		// обработчик устанавливающий что будет происходить в случае когда в
-		// процессе аутентификации произошла ошибка - тоесть redirect на
-		// страницу ввода пароля
-		setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler() {
-
-			@Override
-			public void onAuthenticationFailure(final HttpServletRequest request,
-					final HttpServletResponse response, final AuthenticationException exception)
-					throws IOException, ServletException {
-				super.setDefaultFailureUrl("/" + PreProcessFilter.LOGIN_PAGE + "?error=true");
-				super.onAuthenticationFailure(request, response, exception);
-
-			}
-
-		});
+		// процессе аутентификации произошла ошибка
+		AuthFailureHandler authFailureHandler = new AuthFailureHandler();
+		authFailureHandler.add("username", username);
+		authFailureHandler.add("password", password);
+		authFailureHandler.add("domain", domain);
+		setAuthenticationFailureHandler(authFailureHandler);
 		Authentication authentication = this.getAuthenticationManager().authenticate(authRequest);
 		return authentication;
 	}

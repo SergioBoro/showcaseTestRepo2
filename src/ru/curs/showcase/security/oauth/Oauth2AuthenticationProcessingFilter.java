@@ -6,12 +6,12 @@ import java.util.Properties;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.springframework.security.core.*;
-import org.springframework.security.web.authentication.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 import ru.curs.showcase.app.api.UserInfo;
-import ru.curs.showcase.app.server.PreProcessFilter;
 import ru.curs.showcase.runtime.UserDataUtils;
+import ru.curs.showcase.security.AuthFailureHandler;
 import ru.curs.showcase.util.UserAndSessionDetails;
 
 /**
@@ -47,18 +47,9 @@ public class Oauth2AuthenticationProcessingFilter extends AbstractAuthentication
 				: null, null, null, null, null, null));
 		authRequest.setDetails(userAndSessionDetails);
 
-		setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler() {
-
-			@Override
-			public void onAuthenticationFailure(final HttpServletRequest request,
-					final HttpServletResponse response, final AuthenticationException exception)
-					throws IOException, ServletException {
-				super.setDefaultFailureUrl("/" + PreProcessFilter.LOGIN_PAGE + "?error=true");
-				super.onAuthenticationFailure(request, response, exception);
-
-			}
-
-		});
+		AuthFailureHandler authFailureHandler = new AuthFailureHandler("OAUTH2");
+		authFailureHandler.add("code", code);
+		setAuthenticationFailureHandler(authFailureHandler);
 
 		Authentication authentication = this.getAuthenticationManager().authenticate(authRequest);
 		return authentication;

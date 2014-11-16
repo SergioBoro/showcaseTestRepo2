@@ -28356,12 +28356,11 @@ GO
 
 CREATE PROCEDURE [dbo].[securitylogging]
    @session_context xml='',
-   @sessionid nvarchar(32)='',
-   @ipaddres nvarchar(31)='',
+   @data xml='',
    @type nvarchar(10)
 AS
 BEGIN
-	PRINT @sessionid;
+	PRINT cast(@data as varchar(max));
 END	
 
 GO

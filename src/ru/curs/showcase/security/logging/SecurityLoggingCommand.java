@@ -20,24 +20,32 @@ public class SecurityLoggingCommand extends ServiceLayerCommand<Void> {
 
 	private final HttpServletRequest request;
 	private final HttpSession session;
-	private final TypeEvent typeEvent;
+	private final Event event;
 
 	public SecurityLoggingCommand(final CompositeContext context,
 			final HttpServletRequest oRequest, final HttpSession oSession,
-			final TypeEvent eTypeEvent) {
+			final TypeEvent typeEvent) {
 		super(context);
 		this.request = oRequest;
 		this.session = oSession;
-		this.typeEvent = eTypeEvent;
+		this.event = new Event(typeEvent, context);
+	}
+
+	public SecurityLoggingCommand(final CompositeContext context,
+			final HttpServletRequest oRequest, final HttpSession oSession, final Event oEvent) {
+		super(context);
+		this.request = oRequest;
+		this.session = oSession;
+		this.event = oEvent;
 	}
 
 	@Override
 	protected void mainProc() throws Exception {
 		String procName = UserDataUtils.getOptionalProp("security.logging.proc");
-		if (procName != null && !procName.isEmpty()) {
-			Event event = new Event(typeEvent, getContext());
+		if (procName != null && !procName.isEmpty() && this.event != null) {
+			HttpSession httpSession = null;
 			if (this.request != null) {
-				event.add("HttpSessionId", this.request.getSession().getId());
+				httpSession = this.request.getSession();
 				event.add("IP", this.request.getRemoteAddr());
 				event.add("Host", this.request.getRemoteHost());
 				String userAgent = ServletUtils.getUserAgent(this.request);
@@ -48,12 +56,15 @@ public class SecurityLoggingCommand extends ServiceLayerCommand<Void> {
 				event.add("OSVersion", OSType.detectVersion(userAgent));
 				event.add("UserAgent", userAgent);
 			} else if (this.session != null) {
-				event.add("HttpSessionId", this.session.getId());
+				httpSession = this.session;
+			}
+			if (httpSession != null) {
+				event.add("HttpSessionId", httpSession.getId());
 			}
 
 			SecurityLoggingSelector selector = new SecurityLoggingSelector(procName);
 			SecurityLoggingGateway gateway = selector.getGateway();
-			gateway.doLogging(event);
+			gateway.doLogging(this.event);
 		}
 	}
 
