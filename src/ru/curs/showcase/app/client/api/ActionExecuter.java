@@ -177,6 +177,10 @@ public final class ActionExecuter {
 			modWind.showModalWindow(bep);
 
 		}
+
+		if (dpel.getPreserveHidden() || !bep.getPanel().isVisible()) {
+			return;
+		}
 		if (dpel.doHiding()) {
 			bep.hidePanel();
 			return;
