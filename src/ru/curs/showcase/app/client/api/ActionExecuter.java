@@ -178,7 +178,7 @@ public final class ActionExecuter {
 
 		}
 
-		if (dpel.getPreserveHidden() || !bep.getPanel().isVisible()) {
+		if (dpel.getPreserveHidden() && !bep.getPanel().isVisible()) {
 			return;
 		}
 		if (dpel.doHiding()) {
