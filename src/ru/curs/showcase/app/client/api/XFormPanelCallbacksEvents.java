@@ -172,6 +172,8 @@ public final class XFormPanelCallbacksEvents {
 		if (currentXFormPanel != null) {
 			Action ac = getActionByLinkId(linkId, currentXFormPanel);
 			if (ac != null) {
+				currentXFormPanel.setLoadedInDOM(true);
+
 				ac = ac.gwtClone();
 				if (overridenAddContext != null) {
 					ac.setAdditionalContext(overridenAddContext);
