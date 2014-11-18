@@ -162,6 +162,9 @@ public final class ProductionModeInitializer {
 	}
 
 	private static void copyUserDatas(final ServletContext aServletContext) {
+		File solutionsDir =
+			new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR));
+		deleteDirectory(solutionsDir);
 		copyGeneralResources(aServletContext);
 		copyDefaultUserData(aServletContext);
 		copyOtherUserDatas(aServletContext);
@@ -186,16 +189,12 @@ public final class ProductionModeInitializer {
 		Boolean isAllFilesCopied = true;
 		if (generalResRoot.exists()) {
 			for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
-
-				File solutionsDir =
-					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR));
 				File generalDir =
 					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/"
 							+ "general"));
 				File userDataDir =
 					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/"
 							+ userdataId));
-				solutionsDir.mkdir();
 				userDataDir.mkdir();
 
 				isAllFilesCopied =
@@ -298,4 +297,17 @@ public final class ProductionModeInitializer {
 		return isAllFilesCopied;
 	}
 
+	private static boolean deleteDirectory(final File path) {
+		if (path.exists()) {
+			File[] files = path.listFiles();
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].isDirectory() && files[i].listFiles().length > 0) {
+					deleteDirectory(files[i]);
+				} else {
+					files[i].delete();
+				}
+			}
+		}
+		return path.delete();
+	}
 }
