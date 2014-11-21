@@ -21,6 +21,9 @@ public class XFormTemplateSelector extends SourceSelector<ElementPartsGateway> {
 	public ElementPartsGateway getGateway() {
 		ElementPartsGateway gateway;
 		switch (sourceType()) {
+		case CELESTA:
+			gateway = new ElementPartsCelestaGateway();
+			break;
 		case JYTHON:
 			gateway = new ElementPartsJythonGateway();
 			break;

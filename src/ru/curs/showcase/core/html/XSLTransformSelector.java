@@ -19,8 +19,7 @@ public class XSLTransformSelector extends SourceSelector<ElementPartsGateway> {
 	private final CompositeContext context;
 	private final DataPanelElementInfo elInfo;
 
-	public XSLTransformSelector(final CompositeContext aContext,
-			final DataPanelElementInfo aElInfo) {
+	public XSLTransformSelector(final CompositeContext aContext, final DataPanelElementInfo aElInfo) {
 		super(aElInfo.getTransformName());
 		context = aContext;
 		elInfo = aElInfo;
@@ -37,6 +36,9 @@ public class XSLTransformSelector extends SourceSelector<ElementPartsGateway> {
 	public ElementPartsGateway getGateway() {
 		ElementPartsGateway gateway;
 		switch (sourceType()) {
+		case CELESTA:
+			gateway = new ElementPartsCelestaGateway();
+			break;
 		case JYTHON:
 			gateway = new ElementPartsJythonGateway();
 			break;
