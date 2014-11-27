@@ -114,7 +114,13 @@ public final class UserMessageFactory {
 				stream = UserDataUtils.loadGeneralToStream(messageFile);
 			}
 		} catch (IOException e) {
-			throw new SettingsFileOpenException(e, messageFile, SettingsFileType.SOLUTION_MESSAGES);
+			// throw new SettingsFileOpenException(e, messageFile,
+			// SettingsFileType.SOLUTION_MESSAGES);
+
+			mesFound = false;
+			userMessage = null;
+			return;
+
 		}
 
 		DefaultHandler saxHandler = new DefaultHandler() {
