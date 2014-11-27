@@ -180,6 +180,24 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		return true;
 	}
 
+	/**
+	 * Метод для определения того что у элемента датапанели, может быть свойство
+	 * related, ссылающееся на элемент, у которого атрибут
+	 * neverShowInPanel="true".
+	 * 
+	 * @return булевское значение
+	 */
+	public Boolean wrongRelated() {
+		if (checkRelatedExistances()) {
+			for (ID key : related) {
+				if (tab.getElementInfoById(key).getNeverShowInPanel()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public DataPanelElementInfo(final String aId, final DataPanelElementType aType) {
 		super();
 		id = new ID(aId);

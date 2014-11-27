@@ -31,6 +31,17 @@ public class ElementInfoChecker {
 			throw new IncorrectElementException("Некорректное описание элемента: "
 					+ serializer.serialize(element));
 		}
+		if (element.wrongRelated()) {
+			throw new IncorrectElementException(
+					"Для элемента информационной панели c id=\""
+							+ element.getId().toString()
+							+ "\", находящегося на вкладке c id=\""
+							+ element.getTab().getId()
+							+ "\", задано свойство related, "
+							+ "ссылающееся на элемент, для которого установлен атрибут neverShowInPanel=\"true\", "
+							+ "что не позволит отобразиться элементу c id=\""
+							+ element.getId().toString() + "\".");
+		}
 	}
 
 }
