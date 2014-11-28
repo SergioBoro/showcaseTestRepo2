@@ -23,8 +23,17 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 		generalMapPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
-		generalMapPanel.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-				.please_wait_data_are_loading()));
+
+		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
+			generalMapPanel.add(new HTML(AppCurrContext.getInstance()
+					.getInternationalizedMessages().please_wait_data_are_loading()));
+		} else {
+			generalMapPanel.add(new HTML(""));
+		}
+
+		// generalMapPanel.add(new
+		// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .please_wait_data_are_loading()));
 		createChildPanels();
 		dataService = GWT.create(DataService.class);
 
@@ -62,8 +71,17 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		createChildPanels();
 
 		generalMapPanel = new VerticalPanel();
-		generalMapPanel.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-				.please_wait_data_are_loading()));
+
+		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
+			generalMapPanel.add(new HTML(AppCurrContext.getInstance()
+					.getInternationalizedMessages().please_wait_data_are_loading()));
+		} else {
+			generalMapPanel.add(new HTML(""));
+		}
+
+		// generalMapPanel.add(new
+		// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .please_wait_data_are_loading()));
 	}
 
 	private void setMapPanel() {

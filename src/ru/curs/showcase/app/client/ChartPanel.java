@@ -22,8 +22,17 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 		generalChartPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
-		generalChartPanel.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-				.please_wait_data_are_loading()));
+
+		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
+			generalChartPanel.add(new HTML(AppCurrContext.getInstance()
+					.getInternationalizedMessages().please_wait_data_are_loading()));
+		} else {
+			generalChartPanel.add(new HTML(""));
+		}
+
+		// generalChartPanel.add(new
+		// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .please_wait_data_are_loading()));
 
 		dataService = GWT.create(DataService.class);
 
@@ -40,8 +49,17 @@ public class ChartPanel extends BasicElementPanelBasis {
 		// я бы убрал этот код-конец
 
 		generalChartPanel = new VerticalPanel();
-		generalChartPanel.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-				.please_wait_data_are_loading()));
+
+		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
+			generalChartPanel.add(new HTML(AppCurrContext.getInstance()
+					.getInternationalizedMessages().please_wait_data_are_loading()));
+		} else {
+			generalChartPanel.add(new HTML(""));
+		}
+
+		// generalChartPanel.add(new
+		// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .please_wait_data_are_loading()));
 	}
 
 	private void setChartPanel() {

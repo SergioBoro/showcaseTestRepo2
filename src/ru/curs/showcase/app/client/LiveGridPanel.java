@@ -149,8 +149,16 @@ public class LiveGridPanel extends BasicElementPanelBasis {
 	public final void refreshPanel() {
 
 		if (isFirstLoading()) {
-			p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-					.please_wait_data_are_loading()));
+			if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
+				p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+						.please_wait_data_are_loading()));
+			} else {
+				p.add(new HTML(""));
+			}
+
+			// p.add(new
+			// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+			// .please_wait_data_are_loading()));
 		} else {
 			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 			if (this.getElementInfo().getShowLoadingMessage()) {

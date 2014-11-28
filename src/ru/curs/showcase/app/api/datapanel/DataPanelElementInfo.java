@@ -140,6 +140,8 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 */
 	private Boolean showLoadingMessage = false;
 
+	private Boolean showLoadingMessageForFirstTime = true;
+
 	private List<String> group = null;
 
 	public DataPanelElementInfo(final Integer aPosition, final DataPanelTab aTab) {
@@ -507,6 +509,14 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 
 	public void setShowLoadingMessage(final Boolean aShowLoadingMessage) {
 		showLoadingMessage = aShowLoadingMessage;
+	}
+
+	public Boolean getShowLoadingMessageForFirstTime() {
+		return showLoadingMessageForFirstTime;
+	}
+
+	public void setShowLoadingMessageForFirstTime(final Boolean aShowLoadingMessageForFirstTime) {
+		showLoadingMessageForFirstTime = aShowLoadingMessageForFirstTime;
 	}
 
 	public DataPanelElementProc getProcById(final String procId) {

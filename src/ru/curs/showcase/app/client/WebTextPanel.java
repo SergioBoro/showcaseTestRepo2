@@ -45,9 +45,17 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 		generalWebTextPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
-		thmlwidget =
-			new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-					.please_wait_data_are_loading());
+		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
+			thmlwidget =
+				new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+						.please_wait_data_are_loading());
+		} else {
+			thmlwidget = new HTML("");
+		}
+
+		// thmlwidget =
+		// new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .please_wait_data_are_loading());
 
 		dataService = GWT.create(DataService.class);
 		generalWebTextPanel.add(thmlwidget);
@@ -60,9 +68,17 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 		setContext(null);
 
-		thmlwidget =
-			new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-					.please_wait_data_are_loading());
+		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
+			thmlwidget =
+				new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+						.please_wait_data_are_loading());
+		} else {
+			thmlwidget = new HTML("");
+		}
+
+		// thmlwidget =
+		// new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .please_wait_data_are_loading());
 		generalWebTextPanel = new VerticalPanel();
 
 		generalWebTextPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);

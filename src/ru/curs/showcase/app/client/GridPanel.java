@@ -154,8 +154,12 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		// --------------
 
-		p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-				.please_wait_data_are_loading()));
+		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
+			p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+					.please_wait_data_are_loading()));
+		} else {
+			p.add(new HTML(""));
+		}
 
 		if (grid1 == null) {
 			setDataGridPanel(UpdateType.FULL);
@@ -188,8 +192,12 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		if (isFirstLoading()) {
 			setNeedResetLocalContext(true);
-			p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-					.please_wait_data_are_loading()));
+			if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
+				p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+						.please_wait_data_are_loading()));
+			} else {
+				p.add(new HTML(""));
+			}
 			setupRootPanelAndGridPanel(grid1, UpdateType.FULL);
 		} else {
 			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
@@ -202,6 +210,7 @@ public class GridPanel extends BasicElementPanelBasis {
 				dg.setVisible(false);
 				hpFooter.setVisible(false);
 			}
+
 			setupRootPanelAndGridPanel(grid1, UpdateType.UPDATE_BY_REDRAWGRID);
 		}
 	}
@@ -896,6 +905,7 @@ public class GridPanel extends BasicElementPanelBasis {
 			dg.setVisible(false);
 			hpFooter.setVisible(false);
 		}
+
 		setDataGridPanel(UpdateType.UPDATE_BY_REDRAWGRID);
 
 	}

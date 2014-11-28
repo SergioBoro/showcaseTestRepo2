@@ -65,6 +65,7 @@
 			<xs:attribute name="transform" type="xslType" />
 			<xs:attribute name="cacheData" type="xs:boolean" />
 			<xs:attribute name="showLoadingMessage" type="xs:boolean" />
+			<xs:attribute name="showLoadingMessageForFirstTime" type="xs:boolean" />
 			<xs:attribute name="refreshByTimer" type="xs:boolean" />
 			<xs:attribute name="refreshInterval" type="xs:positiveInteger" />
 			<xs:attribute name="plugin" type="notNullType" />

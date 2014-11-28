@@ -212,8 +212,12 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 		p.clear();
 		if (fromConstructor || getElementInfo().getShowLoadingMessage()) {
-			xf.setHTML(AppCurrContext.getInstance().getInternationalizedMessages()
-					.please_wait_data_are_loading());
+			if (getElementInfo().getShowLoadingMessageForFirstTime()) {
+				xf.setHTML(AppCurrContext.getInstance().getInternationalizedMessages()
+						.please_wait_data_are_loading());
+			} else {
+				xf.setHTML("");
+			}
 		}
 		p.add(xf);
 

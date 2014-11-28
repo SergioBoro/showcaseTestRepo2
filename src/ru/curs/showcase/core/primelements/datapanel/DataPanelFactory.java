@@ -20,6 +20,8 @@ import ru.curs.showcase.util.xml.*;
  */
 public final class DataPanelFactory extends StartTagSAXHandler {
 	private static final String SHOW_LOADING_MESSAGE_TAG = "showLoadingMessage";
+	private static final String SHOW_LOADING_MESSAGE_FOR_FIRST_TIME_TAG =
+		"showLoadingMessageForFirstTime";
 	private static final String LAYOUT_TAG = "layout";
 	private static final String ROWSPAN_TAG = "rowspan";
 	public static final String DATAPANEL_XSD = "datapanel.xsd";
@@ -132,6 +134,10 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		if (attrs.getIndex(SHOW_LOADING_MESSAGE_TAG) > -1) {
 			value = attrs.getValue(SHOW_LOADING_MESSAGE_TAG);
 			el.setShowLoadingMessage(Boolean.valueOf(value));
+		}
+		if (attrs.getIndex(SHOW_LOADING_MESSAGE_FOR_FIRST_TIME_TAG) > -1) {
+			value = attrs.getValue(SHOW_LOADING_MESSAGE_FOR_FIRST_TIME_TAG);
+			el.setShowLoadingMessageForFirstTime(Boolean.valueOf(value));
 		}
 		if (attrs.getIndex(REFRESH_BY_TIMER_TAG) > -1) {
 			value = attrs.getValue(REFRESH_BY_TIMER_TAG);
