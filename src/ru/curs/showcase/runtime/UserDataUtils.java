@@ -105,6 +105,8 @@ public final class UserDataUtils {
 	public static final String SPNEGO_ALLOW_BASIC = "spnego.allow.basic";
 	public static final String SPNEGO_LOGGER_LEVEL = "spnego.logger.level";
 
+	public static final String INTERFACE_ONLY_DATAPANEL = "interface.onlyDataPanel";
+
 	public static void setGeneralPropFile(final String aGeneralPropFile) {
 		generalPropFile = aGeneralPropFile;
 	}
@@ -693,5 +695,22 @@ public final class UserDataUtils {
 			return overrided;
 		}
 		return propReadFunc(aPropName, null);
+	}
+
+	public static Boolean getInterfaceOnlyDatapanelForCurrentDatapanel() {
+		String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
+		Boolean b = false;
+		try {
+			String result = getProperties(userdataId).getProperty(INTERFACE_ONLY_DATAPANEL);
+			if (result != null) {
+				result = result.trim();
+				b = Boolean.parseBoolean(result);
+				return b;
+			}
+			return b;
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(e, getCurrentPropFile(),
+					SettingsFileType.APP_PROPERTIES);
+		}
 	}
 }
