@@ -106,6 +106,9 @@ public final class UserDataUtils {
 	public static final String SPNEGO_LOGGER_LEVEL = "spnego.logger.level";
 
 	public static final String INTERFACE_ONLY_DATAPANEL = "interface.onlyDataPanel";
+	public static final String IMPORT_STATIC_EXTERNAL_JS_LIBRARIES =
+		"import.static.external.js.libraries";
+	public static final String IMPORT_STATIC_EXTERNAL_CSS = "import.static.external.css";
 
 	public static void setGeneralPropFile(final String aGeneralPropFile) {
 		generalPropFile = aGeneralPropFile;
@@ -708,6 +711,51 @@ public final class UserDataUtils {
 				return b;
 			}
 			return b;
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(e, getCurrentPropFile(),
+					SettingsFileType.APP_PROPERTIES);
+		}
+	}
+
+	public static List<String> getImportStaticExternalJsLibrariesForCurrentDatapanel() {
+		String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
+		List<String> list = new ArrayList<String>();
+		try {
+			String result =
+				getProperties(userdataId).getProperty(IMPORT_STATIC_EXTERNAL_JS_LIBRARIES);
+			if (result != null) {
+				result = result.trim();
+				String[] str = result.split(",");
+				for (int i = 0; i < str.length; i++) {
+					str[i] = str[i].trim();
+					if (!("".equals(str[i]))) {
+						list.add(str[i]);
+					}
+				}
+			}
+			return list;
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(e, getCurrentPropFile(),
+					SettingsFileType.APP_PROPERTIES);
+		}
+	}
+
+	public static List<String> getImportStaticExternalCssForCurrentDatapanel() {
+		String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
+		List<String> list = new ArrayList<String>();
+		try {
+			String result = getProperties(userdataId).getProperty(IMPORT_STATIC_EXTERNAL_CSS);
+			if (result != null) {
+				result = result.trim();
+				String[] str = result.split(",");
+				for (int i = 0; i < str.length; i++) {
+					str[i] = str[i].trim();
+					if (!("".equals(str[i]))) {
+						list.add(str[i]);
+					}
+				}
+			}
+			return list;
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, getCurrentPropFile(),
 					SettingsFileType.APP_PROPERTIES);
