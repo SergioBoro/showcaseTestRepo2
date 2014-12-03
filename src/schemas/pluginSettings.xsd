@@ -8,8 +8,8 @@
                 <xs:element ref="action" minOccurs="0"/>
                 <xs:element ref="event"  maxOccurs="unbounded" minOccurs="0"/>
             </xs:sequence>  
-            <xs:attribute name="width" type="HtmlPxSizeType"/>
-            <xs:attribute name="height" type="HtmlPxSizeType"/>                                 
+            <xs:attribute name="width" type="HtmlSizeType"/>
+            <xs:attribute name="height" type="HtmlSizeType"/>                                 
         </xs:complexType>
         <xs:unique name="eventId">
             <xs:selector xpath="event"/>

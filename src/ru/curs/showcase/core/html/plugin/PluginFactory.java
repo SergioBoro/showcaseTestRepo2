@@ -174,16 +174,28 @@ public final class PluginFactory extends HTMLBasedElementFactory {
 			public Object handleStartTag(final String aNamespaceURI, final String aLname,
 					final String aQname, final Attributes attrs) {
 				String value;
-				Integer intValue;
+				// Integer intValue;
 				if (attrs.getIndex(WIDTH_TAG) > -1) {
+					// value = attrs.getValue(WIDTH_TAG);
+					// intValue = TextUtils.getIntSizeValue(value);
+					// result.getSize().setWidth(intValue);
+
 					value = attrs.getValue(WIDTH_TAG);
-					intValue = TextUtils.getIntSizeValue(value);
-					result.getSize().setWidth(intValue);
+					if (TextUtils.isInteger(value)) {
+						value = value + "px";
+					}
+					result.getStringSize().setWidth(value);
 				}
 				if (attrs.getIndex(HEIGHT_TAG) > -1) {
+					// value = attrs.getValue(HEIGHT_TAG);
+					// intValue = TextUtils.getIntSizeValue(value);
+					// result.getSize().setHeight(intValue);
+
 					value = attrs.getValue(HEIGHT_TAG);
-					intValue = TextUtils.getIntSizeValue(value);
-					result.getSize().setHeight(intValue);
+					if (TextUtils.isInteger(value)) {
+						value = value + "px";
+					}
+					result.getStringSize().setHeight(value);
 				}
 				return null;
 			}

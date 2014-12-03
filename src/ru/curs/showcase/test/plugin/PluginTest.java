@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 
 import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.app.api.element.Size;
 import ru.curs.showcase.app.api.html.Plugin;
 import ru.curs.showcase.test.AbstractTest;
 import ru.curs.showcase.util.*;
@@ -36,9 +35,9 @@ public class PluginTest extends AbstractTest {
 		assertEquals(0, plugin.getRequiredJS().size());
 		assertEquals(0, plugin.getRequiredCSS().size());
 		assertEquals(0, plugin.getEventManager().getEvents().size());
-		assertEquals(Size.AUTOSIZE_CONSTANT, plugin.getSize().getHeight());
-		assertEquals(Size.AUTOSIZE_CONSTANT, plugin.getSize().getWidth());
-		assertTrue(plugin.getSize().getAutoSize());
+		assertNull(plugin.getStringSize().getHeight());
+		assertNull(plugin.getStringSize().getWidth());
+		assertTrue(plugin.getStringSize().getAutoSize());
 	}
 
 	@Test

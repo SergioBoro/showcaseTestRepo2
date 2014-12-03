@@ -3,7 +3,7 @@ package ru.curs.showcase.app.api.plugin;
 import java.util.*;
 
 import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.app.api.element.Size;
+import ru.curs.showcase.app.api.element.StringSize;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.Plugin;
 import ru.curs.showcase.app.api.services.*;
@@ -115,16 +115,16 @@ public class PluginComponentImpl implements PluginComponent {
 					super.onSuccess(oPlugin);
 
 					final String pluginTargetId;
-					Size size = oPlugin.getSize();
+					StringSize size = oPlugin.getStringSize();
 					if (size != null && !size.getAutoSize()) {
 						pluginTargetId = HTMLPanel.createUniqueId();
 						SimplePanel cellholder = new SimplePanel();
 						cellholder.getElement().setId(pluginTargetId);
 						if (size.getWidth() != null) {
-							cellholder.setWidth(size.getWidth() + "px");
+							cellholder.setWidth(size.getWidth());
 						}
 						if (size.getHeight() != null) {
-							cellholder.setHeight(size.getHeight() + "px");
+							cellholder.setHeight(size.getHeight());
 						}
 						renderToEl.appendChild(cellholder.getElement());
 					} else {

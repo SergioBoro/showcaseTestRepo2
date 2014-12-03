@@ -34,10 +34,10 @@ public class PluginSLTest extends AbstractTest {
 		assertNotNull(plugin);
 		assertNull(plugin.getDefaultAction());
 		assertEquals("createRadar", plugin.getCreateProc());
-		final int width = 800;
-		final int height = 600;
-		assertEquals(width, plugin.getSize().getWidth().intValue());
-		assertEquals(height, plugin.getSize().getHeight().intValue());
+		final String width = "800px";
+		final String height = "600px";
+		assertEquals(width, plugin.getStringSize().getWidth());
+		assertEquals(height, plugin.getStringSize().getHeight());
 		assertEquals("one param expected", 1, plugin.getParams().size());
 		assertEquals("[{name: 'Russia', data1: 63.82, data2: 17.18, data3: 7.77},"
 				+ "{name: 'Moscow', data1: 47.22, data2: 19.12, data3: 20.21},"

@@ -116,6 +116,22 @@ public final class TextUtils {
 	}
 
 	/**
+	 * Проверяет, является ли переданная строка целым числом.
+	 * 
+	 * @param value
+	 *            - строка для проверки
+	 * @return - true/false
+	 */
+	public static boolean isInteger(final String value) {
+		try {
+			Integer.parseInt(value);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	/**
 	 * Функция, возвращающая исходное слово, начинающееся с заглавной буквы. Все
 	 * остальные буквы результата будут строчные.
 	 * 

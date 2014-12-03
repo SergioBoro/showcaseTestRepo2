@@ -44,8 +44,8 @@ public class PostgreSQLTest extends AbstractTest {
 		"Запасы на конец отчетного периода - Всего";
 	private static final String FIRST_PERIOD_CAPTION = "Период 1";
 
-	private static final int PLUGIN_WIDTH = 800;
-	private static final int PLUGIN_HEIGHT = 600;
+	private static final String PLUGIN_WIDTH = "800px";
+	private static final String PLUGIN_HEIGHT = "600px";
 
 	private void setPGUserData() {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(PG_USERDATA);
@@ -184,8 +184,8 @@ public class PostgreSQLTest extends AbstractTest {
 				+ "{name: 'Piter', data1: 58.77, data2: 13.06, data3: 15.22},]", plugin
 				.getParams().get(0));
 		assertEquals("createRadar", plugin.getCreateProc());
-		assertEquals(PLUGIN_HEIGHT, plugin.getSize().getHeight().intValue());
-		assertEquals(PLUGIN_WIDTH, plugin.getSize().getWidth().intValue());
+		assertEquals(PLUGIN_HEIGHT, plugin.getStringSize().getHeight());
+		assertEquals(PLUGIN_WIDTH, plugin.getStringSize().getWidth());
 
 	}
 

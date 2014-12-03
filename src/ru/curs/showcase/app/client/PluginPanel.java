@@ -108,10 +108,11 @@ public class PluginPanel extends BasicElementPanelBasis {
 		if (!isPartialUpdate()) {
 
 			final String div = "<div id='";
-			final String htmlForPlugin;
-			htmlForPlugin =
-				div + getDivIdPlugin() + "' style='width:" + aPlugin.getSize().getWidth()
-						+ "px; height:" + aPlugin.getSize().getHeight() + "px'></div>";
+			final String htmlForPlugin =
+				div + getDivIdPlugin() + "' style='width:" + aPlugin.getStringSize().getWidth()
+						+ "; height:" + aPlugin.getStringSize().getHeight() + ";'></div>";
+
+			// MessageBox.showSimpleMessage("", htmlForPlugin);
 
 			pluginHTML = new HTML(htmlForPlugin);
 
@@ -120,6 +121,12 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 			generalPluginPanel.add(generalHp);
 			generalHp.add(pluginHTML);
+
+			generalPluginPanel.setHeight("100%");
+			generalHp.setHeight("100%");
+			pluginHTML.setHeight("100%");
+
+			generalHp.setWidth("100%");
 
 			if (AppCurrContext.getInstance()
 					.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel()

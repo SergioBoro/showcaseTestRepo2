@@ -29,17 +29,11 @@ public final class Plugin extends DataPanelElement {
 
 	private List<String> requiredCSS = new ArrayList<String>();
 
-	private Size size = initSize();
+	private StringSize stringSize = new StringSize();
 
 	@Override
 	protected EventManager<? extends Event> initEventManager() {
 		return new HTMLEventManager();
-	}
-
-	private Size initSize() {
-		Size s = new Size();
-		s.initAutoSize();
-		return s;
 	}
 
 	@Override
@@ -87,11 +81,11 @@ public final class Plugin extends DataPanelElement {
 		super(aElInfo);
 	}
 
-	public Size getSize() {
-		return size;
+	public StringSize getStringSize() {
+		return stringSize;
 	}
 
-	public void setSize(final Size aSize) {
-		size = aSize;
+	public void setStringSize(final StringSize aStringSize) {
+		stringSize = aStringSize;
 	}
 }
