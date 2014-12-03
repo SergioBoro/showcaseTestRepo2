@@ -62,7 +62,7 @@ public abstract class ToolBarHelper {
 		}
 		final DataPanelElementInfo elInfo = basicElementPanelBasis.getElementInfo();
 		if (elInfo.isToolBarProc()) {
-			panel.clear();
+			// panel.clear();
 			if (toolBarRefreshTimer != null) {
 				toolBarRefreshTimer.cancel();
 			}
@@ -76,6 +76,7 @@ public abstract class ToolBarHelper {
 
 								@Override
 								public void onSuccess(final GridToolBar result) {
+									panel.clear();
 									ToolBar toolBar = new ToolBar();
 									addStaticItemToToolBar(toolBar);
 									createDynamicToolBar(result, toolBar);
