@@ -4,6 +4,8 @@
  
 <%@page import="ru.curs.showcase.security.SecurityParamsFactory"%>
 <%@page import="ru.curs.showcase.runtime.UserDataUtils"%>      
+<%@page import="ru.curs.showcase.runtime.ExternalClientLibrariesUtils"%>
+
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -33,6 +35,9 @@
     <link rel="stylesheet" href="js/dojox/calendar/themes/claro/Calendar.css"/>
     <link rel="stylesheet" href="js/dojox/calendar/themes/claro/MonthColumnView.css"/>
     
+      <%=ExternalClientLibrariesUtils.addExternalCSSByStaticMetod(request.getParameter("userdata"))
+  %>  
+    
     <script>
         var dojoConfig = {
 //        	deps: [ "dojox/mobile", "dojox/mobile/parser", "dojox/mobile/compat" ],
@@ -60,6 +65,9 @@
     <script>
      var appContextPath="<%=request.getContextPath()%>";
     </script>
+    
+  <%=ExternalClientLibrariesUtils.addExternalLinksByStaticMetod(request.getParameter("userdata"))
+  %>  
 
      
 </head>
