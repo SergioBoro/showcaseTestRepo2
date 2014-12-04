@@ -700,7 +700,7 @@ public final class UserDataUtils {
 		return propReadFunc(aPropName, null);
 	}
 
-	public static Boolean getInterfaceOnlyDatapanelForCurrentDatapanel() {
+	public static Boolean getInterfaceOnlyDatapanelForCurrentUserdata() {
 		String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
 		Boolean b = false;
 		try {
@@ -717,7 +717,24 @@ public final class UserDataUtils {
 		}
 	}
 
-	public static List<String> getImportStaticExternalJsLibrariesForCurrentDatapanel() {
+	public static Boolean getInterfaceOnlyDatapanelByUserdataId(String aUserdataId) {
+		String userdataId = aUserdataId;
+		Boolean b = false;
+		try {
+			String result = getProperties(userdataId).getProperty(INTERFACE_ONLY_DATAPANEL);
+			if (result != null) {
+				result = result.trim();
+				b = Boolean.parseBoolean(result);
+				return b;
+			}
+			return b;
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(e, getCurrentPropFile(),
+					SettingsFileType.APP_PROPERTIES);
+		}
+	}
+
+	public static List<String> getImportStaticExternalJsLibrariesForCurrentUserdata() {
 		String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
 		List<String> list = new ArrayList<String>();
 		try {
@@ -740,8 +757,53 @@ public final class UserDataUtils {
 		}
 	}
 
-	public static List<String> getImportStaticExternalCssForCurrentDatapanel() {
+	public static List<String> getImportStaticExternalJsLibrariesByUserdataId(String aUserdataId) {
+		String userdataId = aUserdataId;
+		List<String> list = new ArrayList<String>();
+		try {
+			String result =
+				getProperties(userdataId).getProperty(IMPORT_STATIC_EXTERNAL_JS_LIBRARIES);
+			if (result != null) {
+				result = result.trim();
+				String[] str = result.split(",");
+				for (int i = 0; i < str.length; i++) {
+					str[i] = str[i].trim();
+					if (!("".equals(str[i]))) {
+						list.add(str[i]);
+					}
+				}
+			}
+			return list;
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(e, getCurrentPropFile(),
+					SettingsFileType.APP_PROPERTIES);
+		}
+	}
+
+	public static List<String> getImportStaticExternalCssForCurrentUserdata() {
 		String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
+		List<String> list = new ArrayList<String>();
+		try {
+			String result = getProperties(userdataId).getProperty(IMPORT_STATIC_EXTERNAL_CSS);
+			if (result != null) {
+				result = result.trim();
+				String[] str = result.split(",");
+				for (int i = 0; i < str.length; i++) {
+					str[i] = str[i].trim();
+					if (!("".equals(str[i]))) {
+						list.add(str[i]);
+					}
+				}
+			}
+			return list;
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(e, getCurrentPropFile(),
+					SettingsFileType.APP_PROPERTIES);
+		}
+	}
+
+	public static List<String> getImportStaticExternalCssByUserdataId(String aUserdataId) {
+		String userdataId = aUserdataId;
 		List<String> list = new ArrayList<String>();
 		try {
 			String result = getProperties(userdataId).getProperty(IMPORT_STATIC_EXTERNAL_CSS);
