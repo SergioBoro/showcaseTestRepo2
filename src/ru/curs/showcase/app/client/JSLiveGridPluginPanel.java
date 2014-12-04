@@ -517,7 +517,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		// ----------------------------------------
 
 		ToolBarHelper toolBarHelper = getToolBarHelper();
-		toolBarHelper.getToolBarPanel().setWidth(gridMetadata.getUISettings().getGridWidth());
+		hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
+		generalHp.setWidth("100%");
 
 		hpToolbar.add(toolBarHelper.getToolBarPanel());
 		p.add(hpToolbar);
