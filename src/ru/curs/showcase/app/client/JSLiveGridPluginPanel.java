@@ -516,8 +516,14 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		p.add(hpHeader);
 		// ----------------------------------------
 
+		int ind = gridMetadata.getUISettings().getGridWidth().indexOf("px");
+		String str = gridMetadata.getUISettings().getGridWidth().substring(0, ind);
+		int number = Integer.parseInt(str);
+		number = number + 2;
+
 		ToolBarHelper toolBarHelper = getToolBarHelper();
-		hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
+		// hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
+		hpToolbar.setWidth(number + "px");
 		generalHp.setWidth("100%");
 
 		hpToolbar.add(toolBarHelper.getToolBarPanel());
