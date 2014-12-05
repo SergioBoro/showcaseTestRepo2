@@ -2,7 +2,7 @@ package ru.curs.showcase.app.server;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.Properties;
+import java.util.*;
 
 import org.python.util.PythonInterpreter;
 import org.slf4j.*;
@@ -31,6 +31,8 @@ public final class AppInitializer {
 	private static final String ENABLE_LOG_LEVEL_ERROR = "enable.log.level.error";
 
 	private static final String ENABLE_ACTIVITI = "activiti.enable";
+
+	private static final String COPY_USERDATAS = "copy.userdatas";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AppInitializer.class);
 
@@ -150,6 +152,29 @@ public final class AppInitializer {
 			}
 			AppInfoSingleton.getAppInfo().setUserdataRoot(rootpath);
 			String value;
+
+			String userdatas = UserDataUtils.getGeneralOptionalProp(COPY_USERDATAS);
+			List<String> userdatasList = new ArrayList<String>();
+			if (userdatas != null) {
+				String str = userdatas.trim();
+				String[] result = str.split(":");
+				if (!(str.contains("default"))) {
+					userdatasList.add("default");
+				}
+				for (int i = 0; i < result.length; i++) {
+					for (String name : dir.list()) {
+						if (name.equals(result[i]) && !("".equals(result[i]))) {
+							userdatasList.add(result[i]);
+						}
+					}
+				}
+			}
+
+			Boolean b = false;
+			if (userdatasList.size() > 0) {
+				b = true;
+			}
+
 			for (String id : dir.list()) {
 				if (id.startsWith(".")) {
 					continue;
@@ -161,9 +186,18 @@ public final class AppInitializer {
 				if (!new File(value).isDirectory()) {
 					continue;
 				}
-				AppInfoSingleton.getAppInfo().addUserData(id, value);
-				if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
-					LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
+				if (b) {
+					if (userdatasList.contains(id)) {
+						AppInfoSingleton.getAppInfo().addUserData(id, value);
+						if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+							LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
+						}
+					}
+				} else {
+					AppInfoSingleton.getAppInfo().addUserData(id, value);
+					if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+						LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
+					}
 				}
 
 			}
