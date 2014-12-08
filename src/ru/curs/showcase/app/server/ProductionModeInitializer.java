@@ -168,6 +168,7 @@ public final class ProductionModeInitializer {
 		copyGeneralResources(aServletContext);
 		copyDefaultUserData(aServletContext);
 		copyOtherUserDatas(aServletContext);
+		copyClientExtLib(aServletContext);
 	}
 
 	private static void copyOtherUserDatas(final ServletContext aServletContext) {
@@ -199,6 +200,45 @@ public final class ProductionModeInitializer {
 
 				isAllFilesCopied =
 					copyGeneralDir(aServletContext, generalResRoot, userDataDir, generalDir);
+			}
+		}
+
+		if (!isAllFilesCopied) {
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(NOT_ALL_FILES_COPIED_ERROR);
+			}
+		}
+	}
+
+	private static void copyClientExtLib(final ServletContext aServletContext) {
+		Boolean isAllFilesCopied = true;
+		File generalResRoot =
+			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+					+ UserDataUtils.GENERAL_RES_ROOT + "/js");
+
+		String[] files = null;
+		if (generalResRoot.exists()) {
+			files = generalResRoot.list();
+		}
+
+		File f = null;
+		BatchFileProcessor fprocessor = null;
+		if (files != null) {
+			for (String s : files) {
+				if ("clientextlib".equals(s)) {
+					fprocessor =
+						new BatchFileProcessor(generalResRoot.getAbsolutePath() + "/clientextlib",
+								new RegexFilenameFilter("^[.].*", false));
+				}
+			}
+		}
+
+		if (fprocessor != null) {
+			try {
+				fprocessor.process(new CopyFileAction(aServletContext.getRealPath("/" + "js")));
+			} catch (IOException e) {
+				isAllFilesCopied = false;
+				LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
 			}
 		}
 
