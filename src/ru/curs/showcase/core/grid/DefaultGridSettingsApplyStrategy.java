@@ -20,6 +20,7 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 	private static final String DEF_VISIBLE_COLUMNGROUPS_CUSTOMIZER =
 		"def.visible.columngroups.customizer";
 	private static final String DEF_VISIBLE_PAGER = "def.visible.pager";
+	private static final String DEF_VISIBLE_TOOLBAR = "def.visible.toolbar";
 	private static final String DEF_VISIBLE_EXPORTTOEXCEL_CURRENTPAGE =
 		"def.visible.exporttoexcel.currentpage";
 	private static final String DEF_VISIBLE_EXPORTTOEXCEL_ALL = "def.visible.exporttoexcel.all";
@@ -124,6 +125,10 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 		boolValue = reader().getBoolValue(DEF_VISIBLE_PAGER);
 		if (boolValue != null) {
 			settings.setVisiblePager(boolValue);
+		}
+		boolValue = reader().getBoolValue(DEF_VISIBLE_TOOLBAR);
+		if (boolValue != null) {
+			settings.setVisibleToolBar(boolValue);
 		}
 		boolValue = reader().getBoolValue(DEF_VISIBLE_EXPORTTOEXCEL_CURRENTPAGE);
 		if (boolValue != null) {

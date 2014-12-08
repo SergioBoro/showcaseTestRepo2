@@ -548,18 +548,24 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		p.add(hpHeader);
 		// ----------------------------------------
 
-		int ind = gridMetadata.getUISettings().getGridWidth().indexOf("px");
-		String str = gridMetadata.getUISettings().getGridWidth().substring(0, ind);
-		int number = Integer.parseInt(str);
-		number = number + 2;
-
 		ToolBarHelper toolBarHelper = getToolBarHelper();
-		// hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
-		hpToolbar.setWidth(number + "px");
-		generalHp.setWidth("100%");
 
+		if (gridMetadata.getUISettings().getGridWidth().contains("px")) {
+			int ind = gridMetadata.getUISettings().getGridWidth().indexOf("px");
+			String str = gridMetadata.getUISettings().getGridWidth().substring(0, ind);
+			int number = Integer.parseInt(str);
+			number = number + 2;
+
+			// hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
+			hpToolbar.setWidth(number + "px");
+		} else {
+			hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
+		}
+
+		generalHp.setWidth("100%");
 		hpToolbar.add(toolBarHelper.getToolBarPanel());
 		p.add(hpToolbar);
+		hpToolbar.setVisible(gridMetadata.getUISettings().isVisibleToolBar());
 
 		// ----------------------------------------
 		p.add(generalHp);
