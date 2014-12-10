@@ -63,8 +63,7 @@ public class EventHandlerForActiviti implements ActivitiEventListener {
 				String tempSesId = String.format("Celesta%08X", (new Random()).nextInt());
 				try {
 					Celesta.getInstance().login(tempSesId, "super");
-					PyObject pObj =
-						Celesta.getInstance().runPython(tempSesId, procName, (Object[]) null);
+					PyObject pObj = Celesta.getInstance().runPython(tempSesId, procName, event);
 					Object obj = pObj.__tojava__(Object.class);
 				} catch (CelestaException e) {
 					if (e.getMessage().contains("Traceback")) {
