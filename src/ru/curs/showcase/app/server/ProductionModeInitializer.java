@@ -7,6 +7,7 @@ import javax.servlet.ServletContext;
 import org.activiti.engine.*;
 import org.slf4j.*;
 
+import ru.curs.showcase.activiti.EventHandlerForActiviti;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
@@ -102,6 +103,8 @@ public final class ProductionModeInitializer {
 
 			ProcessEngine processEngine = conf.buildProcessEngine();
 			AppInfoSingleton.getAppInfo().setActivitiProcessEngine(processEngine);
+			RuntimeService rs = processEngine.getRuntimeService();
+			rs.addEventListener(new EventHandlerForActiviti());
 		}
 
 	}

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.sf.ehcache.*;
 
 import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.delegate.event.ActivitiEventType;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
@@ -107,6 +108,12 @@ public final class AppInfoSingleton {
 	private Exception celestainitializationException = null;
 
 	private final CacheManager cacheManager = new CacheManager();
+
+	/**
+	 * Словарь (карта) соответствия событий Activiti и Celesta-скриптов.
+	 */
+	private Map<ActivitiEventType, String> activitiEventScriptDictionary =
+		new HashMap<ActivitiEventType, String>();
 
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
 		return lastLogEvents;
@@ -489,4 +496,12 @@ public final class AppInfoSingleton {
 		this.activitiProcessEngine = aactivitiProcessEngine;
 	}
 
+	public Map<ActivitiEventType, String> getActivitiEventScriptDictionary() {
+		return activitiEventScriptDictionary;
+	}
+
+	public void setActivitiEventScriptDictionary(
+			Map<ActivitiEventType, String> anActivitiEventScriptDictionary) {
+		this.activitiEventScriptDictionary = anActivitiEventScriptDictionary;
+	}
 }
