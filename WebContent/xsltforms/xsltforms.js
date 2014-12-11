@@ -12143,6 +12143,8 @@ XsltForms_calendar.show = function(input, type) {
     // [KURS
 //	var cal = XsltForms_calendar.INSTANCE;
 //	if (!cal) {
+	    XsltForms_calendar.close();	
+	
 		cal = new XsltForms_calendar();
 		XsltForms_calendar.INSTANCE = cal;
 //	}
@@ -12174,8 +12176,15 @@ XsltForms_calendar.show = function(input, type) {
 
 XsltForms_calendar.close = function() {
 	var cal = XsltForms_calendar.INSTANCE;
-	cal.yearList.close();
-	XsltForms_browser.dialog.hide(cal.element, false);
+	
+    // [KURS	
+//	cal.yearList.close();
+//	XsltForms_browser.dialog.hide(cal.element, false);
+	if(cal){
+		cal.yearList.close();
+		XsltForms_browser.dialog.hide(cal.element, false);
+	}
+	// KURS]	
 };
     
 	
