@@ -133,9 +133,13 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 
 					// AppCurrContext.getInstance().setAuthViaAuthServ(true);
 				} else {
+					if (AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
+						Celesta.getInstance().failedLogin(login);
+					}
+					LOGGER.info("Пользователю" + login
+							+ "не удалось войти в систему: Bad credentials");
 					throw new BadCredentialsException("Bad credentials");
 				}
-
 			} catch (BadCredentialsException | IllegalStateException | SecurityException
 					| IllegalFormatException | NullPointerException | IOException
 					| IndexOutOfBoundsException e) {
@@ -145,17 +149,23 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 					throw new BadCredentialsException("Authentication server is not available: "
 							+ e.getMessage(), e);
 				}
+			} catch (CelestaException err) {
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+					LOGGER.error("Ошибка фиксации неудачного логина в коде celesta", err);
+				}
 			}
 			// }
 		}
 
 		// привязки сессии приложения к пользователю celesta
-		try {
-			Celesta.getInstance().login(sesid,
-					((UserAndSessionDetails) arg1.getDetails()).getUserInfo().getSid());
-		} catch (CelestaException e) {
-			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
-				LOGGER.error("Ошибка привязки сессии приложения к пользователю в celesta", e);
+		if (AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
+			try {
+				Celesta.getInstance().login(sesid,
+						((UserAndSessionDetails) arg1.getDetails()).getUserInfo().getSid());
+			} catch (CelestaException e) {
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+					LOGGER.error("Ошибка привязки сессии приложения к пользователю в celesta", e);
+				}
 			}
 		}
 
