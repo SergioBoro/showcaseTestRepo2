@@ -190,7 +190,17 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			parent.replaceChild(trigger, old);
 
 			Element label = doc.createElementNS(XFormProducer.XFORMS_URI, "label");
-			label.setTextContent(buttonLabel);
+			if (buttonLabel.toLowerCase().contains("XPath".toLowerCase())) {
+				ArrayList<String> arr = new ArrayList<>();
+				addXPathsFromStringToArrayXPaths(buttonLabel, arr);
+				buttonLabel = arr.get(0);
+
+				Element xfoutput = doc.createElementNS(XFormProducer.XFORMS_URI, "output");
+				xfoutput.setAttribute("ref", buttonLabel);
+				label.appendChild(xfoutput);
+			} else {
+				label.setTextContent(buttonLabel);
+			}
 			trigger.appendChild(label);
 
 			Element action = doc.createElementNS(XFormProducer.XFORMS_URI, ACTION);
