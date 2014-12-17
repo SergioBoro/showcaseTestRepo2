@@ -67,6 +67,8 @@ public final class GridTransformer {
 
 			column.setParentId(c.getParentId());
 
+			column.setVisible(c.isVisible());
+
 			column.setReadonly(c.isReadonly());
 
 			column.setEditor(c.getEditor());

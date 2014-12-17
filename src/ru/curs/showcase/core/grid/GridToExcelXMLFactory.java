@@ -6,7 +6,7 @@ import org.w3c.dom.*;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.grid.Grid;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -129,7 +129,8 @@ public class GridToExcelXMLFactory extends GeneralXMLHelper {
 		} else {
 			current = cs;
 		}
-		return current.getVisibleColumnsByIndex();
+		// return current.getVisibleColumnsByIndex();
+		return current.getColumnsByIndex();
 	}
 
 	private Element getRoot() {

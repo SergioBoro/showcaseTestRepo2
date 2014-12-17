@@ -389,7 +389,7 @@ public class GridFactory extends CompBasedElementFactory {
 	 */
 	private void setupStdColumnProps(final Column column) {
 		String val;
-		column.setVisible(true);
+		// column.setVisible(true);
 		val = gridProps.getStringValue(DEF_COL_VALUE_DISPLAY_MODE);
 		if (val != null) {
 			column.setDisplayMode(ColumnValueDisplayMode.valueOf(val));
@@ -572,6 +572,10 @@ public class GridFactory extends CompBasedElementFactory {
 			if (attrs.getIndex(WIDTH_TAG) > -1) {
 				String width = attrs.getValue(WIDTH_TAG);
 				col.setWidth(width);
+			}
+			if (attrs.getIndex(VISIBLE_TAG) > -1) {
+				String value = attrs.getValue(VISIBLE_TAG);
+				col.setVisible(Boolean.valueOf(value));
 			}
 			if (attrs.getIndex(PRECISION_TAG) > -1) {
 				String value = attrs.getValue(PRECISION_TAG);

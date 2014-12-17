@@ -20,6 +20,8 @@ public class LiveGridColumnConfig implements SerializableElement {
 	@XmlTransient
 	private String caption = null;
 	@XmlAttribute
+	private boolean visible = true;
+	@XmlAttribute
 	private boolean readonly = false;
 	@XmlAttribute
 	private String editor = null;
@@ -77,6 +79,14 @@ public class LiveGridColumnConfig implements SerializableElement {
 
 	public void setCaption(final String caption1) {
 		this.caption = caption1;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(final boolean aVisible) {
+		visible = aVisible;
 	}
 
 	public boolean isReadonly() {

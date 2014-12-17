@@ -50,6 +50,8 @@ public abstract class GeneralXMLHelper {
 	public static final String WIDTH_TAG = "width";
 	protected static final String HEIGHT_TAG = "height";
 
+	protected static final String VISIBLE_TAG = "visible";
+
 	protected static final String PROPS_TAG = "properties";
 	protected static final String FLIP_TAG = "flip";
 

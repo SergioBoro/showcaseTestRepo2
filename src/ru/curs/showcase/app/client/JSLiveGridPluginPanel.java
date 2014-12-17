@@ -417,6 +417,11 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		JSONObject columns = new JSONObject();
 		for (final LiveGridColumnConfig egcc : gridMetadata.getColumns()) {
+
+			if (!egcc.isVisible()) {
+				continue;
+			}
+
 			JSONObject column = new JSONObject();
 			column.put("id", new JSONString(egcc.getId()));
 			if (egcc.getParentId() != null) {
