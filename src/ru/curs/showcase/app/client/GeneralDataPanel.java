@@ -104,10 +104,12 @@ public class GeneralDataPanel {
 		sp.add(ht);
 		tabVerticalPanel.add(sp);
 		if (welcomeTabCaption == null) {
-			getTabPanel().add(
-					tabVerticalPanel,
-					AppCurrContext.getInstance().getInternationalizedMessages()
-							.welcome_tab_caption());
+			// getTabPanel().add(
+			// tabVerticalPanel,
+			// AppCurrContext.getInstance().getInternationalizedMessages()
+			// .welcome_tab_caption());
+			getTabPanel().add(tabVerticalPanel,
+					AppCurrContext.getInstance().getBundleMap().get("welcome_tab_caption"));
 		} else {
 			getTabPanel().add(tabVerticalPanel, welcomeTabCaption);
 		}

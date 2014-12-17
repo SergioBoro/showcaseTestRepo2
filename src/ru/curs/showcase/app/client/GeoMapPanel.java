@@ -25,8 +25,10 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		generalHp = new HorizontalPanel();
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-			generalMapPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
+			// generalMapPanel.add(new HTML(AppCurrContext.getInstance()
+			// .getInternationalizedMessages().please_wait_data_are_loading()));
+			generalMapPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		} else {
 			generalMapPanel.add(new HTML(""));
 		}
@@ -73,8 +75,10 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		generalMapPanel = new VerticalPanel();
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-			generalMapPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
+			// generalMapPanel.add(new HTML(AppCurrContext.getInstance()
+			// .getInternationalizedMessages().please_wait_data_are_loading()));
+			generalMapPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		} else {
 			generalMapPanel.add(new HTML(""));
 		}
@@ -90,21 +94,26 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
-				AppCurrContext.getInstance().getInternationalizedMessages()
-						.error_of_map_data_retrieving_from_server()) {
+		// dataService.getGeoMap(getContext(), getElementInfo(), new
+		// GWTServiceCallback<GeoMap>(
+		// AppCurrContext.getInstance().getInternationalizedMessages()
+		// .error_of_map_data_retrieving_from_server()) {
+		dataService.getGeoMap(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<GeoMap>(AppCurrContext.getInstance().getBundleMap()
+						.get("error_of_map_data_retrieving_from_server")) {
+					@Override
+					public void onSuccess(final GeoMap aGeoMap) {
+						geoMap = aGeoMap;
+						if (geoMap != null) {
 
-			@Override
-			public void onSuccess(final GeoMap aGeoMap) {
-				geoMap = aGeoMap;
-				if (geoMap != null) {
+							super.onSuccess(geoMap);
 
-					super.onSuccess(geoMap);
-
-					fillMapPanel(aGeoMap);
-				}
-			}
-		});
+							fillMapPanel(aGeoMap);
+						}
+					}
+				});
 
 	}
 
@@ -218,14 +227,24 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			drawMap(getDivIdMap(), divIdLegend, paramMap1, paramMap2);
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
-				MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-						.getInternationalizedMessages().error_of_map_painting(), e.getMessage(),
-						GeneralException.generateDetailedInfo(e.getCause()),
+				// MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+				// .getInternationalizedMessages().error_of_map_painting(),
+				// e.getMessage(),
+				// GeneralException.generateDetailedInfo(e.getCause()),
+				// GeneralException.getMessageType(e.getCause()),
+				// GeneralException.needDetailedInfo(e.getCause()));
+				MessageBox.showMessageWithDetails(
+						AppCurrContext.getInstance().getBundleMap().get("error_of_map_painting"),
+						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
 						GeneralException.getMessageType(e.getCause()),
 						GeneralException.needDetailedInfo(e.getCause()));
 			} else {
-				MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-						.getInternationalizedMessages().error_of_map_painting(), e.getMessage());
+				// MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+				// .getInternationalizedMessages().error_of_map_painting(),
+				// e.getMessage());
+				MessageBox.showSimpleMessage(
+						AppCurrContext.getInstance().getBundleMap().get("error_of_map_painting"),
+						e.getMessage());
 			}
 		}
 
@@ -405,30 +424,38 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalMapPanel.clear();
-			generalMapPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
+			// generalMapPanel.add(new HTML(AppCurrContext.getInstance()
+			// .getInternationalizedMessages().please_wait_data_are_loading()));
+			generalMapPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
-				AppCurrContext.getInstance().getInternationalizedMessages()
-						.error_of_map_data_retrieving_from_server()) {
+		// dataService.getGeoMap(getContext(), getElementInfo(), new
+		// GWTServiceCallback<GeoMap>(
+		// AppCurrContext.getInstance().getInternationalizedMessages()
+		// .error_of_map_data_retrieving_from_server()) {
+		dataService.getGeoMap(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<GeoMap>(AppCurrContext.getInstance().getBundleMap()
+						.get("error_of_map_data_retrieving_from_server")) {
 
-			@Override
-			public void onSuccess(final GeoMap aGeoMap) {
-				geoMap = aGeoMap;
-				if (geoMap != null) {
+					@Override
+					public void onSuccess(final GeoMap aGeoMap) {
+						geoMap = aGeoMap;
+						if (geoMap != null) {
 
-					super.onSuccess(geoMap);
+							super.onSuccess(geoMap);
 
-					fillMapPanel(aGeoMap);
-					getPanel().setHeight("100%");
+							fillMapPanel(aGeoMap);
+							getPanel().setHeight("100%");
 
-				}
-			}
-		});
+						}
+					}
+				});
 
 	}
 
@@ -463,29 +490,37 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalMapPanel.clear();
-			generalMapPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
+			// generalMapPanel.add(new HTML(AppCurrContext.getInstance()
+			// .getInternationalizedMessages().please_wait_data_are_loading()));
+			generalMapPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getGeoMap(getContext(), getElementInfo(), new GWTServiceCallback<GeoMap>(
-				AppCurrContext.getInstance().getInternationalizedMessages()
-						.error_of_map_data_retrieving_from_server()) {
+		// dataService.getGeoMap(getContext(), getElementInfo(), new
+		// GWTServiceCallback<GeoMap>(
+		// AppCurrContext.getInstance().getInternationalizedMessages()
+		// .error_of_map_data_retrieving_from_server()) {
+		dataService.getGeoMap(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<GeoMap>(AppCurrContext.getInstance().getBundleMap()
+						.get("error_of_map_data_retrieving_from_server")) {
 
-			@Override
-			public void onSuccess(final GeoMap aGeoMap) {
-				geoMap = aGeoMap;
-				if (geoMap != null) {
+					@Override
+					public void onSuccess(final GeoMap aGeoMap) {
+						geoMap = aGeoMap;
+						if (geoMap != null) {
 
-					super.onSuccess(geoMap);
+							super.onSuccess(geoMap);
 
-					fillMapPanel(aGeoMap);
-					getPanel().setHeight("100%");
-				}
-			}
-		});
+							fillMapPanel(aGeoMap);
+							getPanel().setHeight("100%");
+						}
+					}
+				});
 
 	}
 

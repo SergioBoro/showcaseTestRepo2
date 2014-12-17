@@ -47,8 +47,8 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
 			thmlwidget =
-				new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-						.please_wait_data_are_loading());
+				new HTML(AppCurrContext.getInstance().getBundleMap()
+						.get("please_wait_data_are_loading"));
 		} else {
 			thmlwidget = new HTML("");
 		}
@@ -70,8 +70,8 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
 			thmlwidget =
-				new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-						.please_wait_data_are_loading());
+				new HTML(AppCurrContext.getInstance().getBundleMap()
+						.get("please_wait_data_are_loading"));
 		} else {
 			thmlwidget = new HTML("");
 		}
@@ -91,22 +91,24 @@ public class WebTextPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getWebText(getContext(), getElementInfo(), new GWTServiceCallback<WebText>(
-				AppCurrContext.getInstance().getInternationalizedMessages()
-						.error_of_webtext_data_retrieving_from_server()) {
+		dataService.getWebText(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<WebText>(AppCurrContext.getInstance().getBundleMap()
+						.get("error_of_webtext_data_retrieving_from_server")) {
 
-			@Override
-			public void onSuccess(final WebText awt) {
-				webText = awt;
-				if (webText != null) {
+					@Override
+					public void onSuccess(final WebText awt) {
+						webText = awt;
+						if (webText != null) {
 
-					super.onSuccess(webText);
+							super.onSuccess(webText);
 
-					fillWebTextPanel(webText);
-				}
-			}
+							fillWebTextPanel(webText);
+						}
+					}
 
-		});
+				});
 
 	}
 
@@ -172,30 +174,32 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
-			thmlwidget.setText(AppCurrContext.getInstance().getInternationalizedMessages()
-					.please_wait_data_are_loading());
+			thmlwidget.setText(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading"));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getWebText(getContext(), getElementInfo(), new GWTServiceCallback<WebText>(
-				AppCurrContext.getInstance().getInternationalizedMessages()
-						.error_of_webtext_data_retrieving_from_server()) {
+		dataService.getWebText(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<WebText>(AppCurrContext.getInstance().getBundleMap()
+						.get("error_of_webtext_data_retrieving_from_server")) {
 
-			@Override
-			public void onSuccess(final WebText awt) {
-				webText = awt;
-				if (webText != null) {
+					@Override
+					public void onSuccess(final WebText awt) {
+						webText = awt;
+						if (webText != null) {
 
-					super.onSuccess(webText);
+							super.onSuccess(webText);
 
-					fillWebTextPanel(awt);
-					getPanel().setHeight(SIZE_ONE_HUNDRED_PERCENTS);
+							fillWebTextPanel(awt);
+							getPanel().setHeight(SIZE_ONE_HUNDRED_PERCENTS);
 
-				}
-			}
-		});
+						}
+					}
+				});
 
 	}
 
@@ -229,31 +233,33 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
-			thmlwidget.setText(AppCurrContext.getInstance().getInternationalizedMessages()
-					.please_wait_data_are_loading());
+			thmlwidget.setText(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading"));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getWebText(getContext(), getElementInfo(), new GWTServiceCallback<WebText>(
-				AppCurrContext.getInstance().getInternationalizedMessages()
-						.error_of_webtext_data_retrieving_from_server()) {
+		dataService.getWebText(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<WebText>(AppCurrContext.getInstance().getBundleMap()
+						.get("error_of_webtext_data_retrieving_from_server")) {
 
-			@Override
-			public void onSuccess(final WebText awt) {
-				webText = awt;
-				if (webText != null) {
+					@Override
+					public void onSuccess(final WebText awt) {
+						webText = awt;
+						if (webText != null) {
 
-					super.onSuccess(webText);
+							super.onSuccess(webText);
 
-					fillWebTextPanel(awt);
-					getPanel().setHeight(SIZE_ONE_HUNDRED_PERCENTS);
-					// onElementLoadEvent(getElementInfo().getId());
+							fillWebTextPanel(awt);
+							getPanel().setHeight(SIZE_ONE_HUNDRED_PERCENTS);
+							// onElementLoadEvent(getElementInfo().getId());
 
-				}
-			}
-		});
+						}
+					}
+				});
 
 	}
 

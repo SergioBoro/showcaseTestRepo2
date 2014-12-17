@@ -213,8 +213,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 		p.clear();
 		if (fromConstructor || getElementInfo().getShowLoadingMessage()) {
 			if (getElementInfo().getShowLoadingMessageForFirstTime()) {
-				xf.setHTML(AppCurrContext.getInstance().getInternationalizedMessages()
-						.please_wait_data_are_loading());
+				xf.setHTML(AppCurrContext.getInstance().getBundleMap()
+						.get("please_wait_data_are_loading"));
 			} else {
 				xf.setHTML("");
 			}
@@ -225,9 +225,11 @@ public class XFormPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getXForms(getDetailedContext(), getElementInfo(),
-				new GWTServiceCallback<XForm>(AppCurrContext.getInstance()
-						.getInternationalizedMessages().xformsErrorGetData()) {
+		dataService.getXForms(
+				getDetailedContext(),
+				getElementInfo(),
+				new GWTServiceCallback<XForm>(AppCurrContext.getInstance().getBundleMap()
+						.get("xformsErrorGetData")) {
 					@Override
 					public void onSuccess(final XForm aXform) {
 

@@ -126,8 +126,9 @@ public class InlineUploader {
 				clearForm(form);
 			}
 		} catch (SerializationException e) {
-			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-					.getInternationalizedMessages().xforms_upload_error(), e.getMessage());
+			MessageBox.showSimpleMessage(
+					AppCurrContext.getInstance().getBundleMap().get("xforms_upload_error"),
+					e.getMessage());
 		}
 
 	}
@@ -163,14 +164,15 @@ public class InlineUploader {
 							+ ExchangeConstants.OK_MESSAGE_TYPE_BEGIN.length(),
 							mess.lastIndexOf(ExchangeConstants.OK_MESSAGE_TYPE_END));
 
-				MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-						.getInternationalizedMessages().okMessage(), textMessage, "",
-						MessageType.valueOf(typeMessage), false);
+				MessageBox.showMessageWithDetails(
+						AppCurrContext.getInstance().getBundleMap().get("okMessage"), textMessage,
+						"", MessageType.valueOf(typeMessage), false);
 
 			} else {
 				result = false;
-				MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-						.getInternationalizedMessages().xforms_upload_error(), mess);
+				MessageBox.showSimpleMessage(
+						AppCurrContext.getInstance().getBundleMap().get("xforms_upload_error"),
+						mess);
 			}
 		}
 

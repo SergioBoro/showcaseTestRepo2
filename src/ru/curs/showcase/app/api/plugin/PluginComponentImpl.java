@@ -99,8 +99,7 @@ public class PluginComponentImpl implements PluginComponent {
 		}
 
 		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
-				.getInstance().getInternationalizedMessages()
-				.error_of_plugin_data_retrieving_from_server()) {
+				.getInstance().getBundleMap().get("error_of_plugin_data_retrieving_from_server")) {
 
 			@Override
 			public void onFailure(final Throwable caught) {
@@ -179,8 +178,8 @@ public class PluginComponentImpl implements PluginComponent {
 		Element element = DOM.getElementById(renderToId);
 		if (element != null) {
 			VerticalPanel generalPluginPanel = new VerticalPanel();
-			generalPluginPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
+			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 			waitElement = generalPluginPanel.getElement();
 			element.appendChild(waitElement);
 		}

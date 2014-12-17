@@ -76,7 +76,7 @@ public class TreeSelectionHandler implements SelectionHandler<TreeItem> {
 
 		final DataServiceAsync dataService = GWT.create(DataService.class);
 		dataService.getDataPanel(action, new GWTServiceCallback<DataPanel>(AppCurrContext
-				.getInstance().getInternationalizedMessages().error()) {
+				.getInstance().getBundleMap().get("error")) {
 
 			// @Override
 			// public void onFailure(final Throwable caught) {

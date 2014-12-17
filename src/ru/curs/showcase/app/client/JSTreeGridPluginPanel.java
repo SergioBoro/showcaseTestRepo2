@@ -52,8 +52,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	// Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL));
 	// private final PushButton copyToClipboard = new PushButton(new Image(
 	// Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
-	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance()
-			.getInternationalizedMessages().grid_message_popup_export_to_excel());
+	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance().getBundleMap()
+			.get("grid_message_popup_export_to_excel"));
 
 	/**
 	 * Основная фабрика для GWT сериализации.
@@ -161,8 +161,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	public void refreshPanel() {
 		if (isFirstLoading()) {
 			if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-				p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-						.please_wait_data_are_loading()));
+				p.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+						.get("please_wait_data_are_loading")));
 			} else {
 				p.add(new HTML(""));
 			}
@@ -206,10 +206,10 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		final GridContext gc = getDetailedContext();
 
 		if ((gc.getSortedColumns() == null) || (gc.getSortedColumns().size() == 0)) {
-			MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-					.getInternationalizedMessages().okMessage(), AppCurrContext.getInstance()
-					.getInternationalizedMessages().jsGridPartialUpdateNeedSorting(), "",
-					MessageType.WARNING, false);
+			MessageBox.showMessageWithDetails(
+					AppCurrContext.getInstance().getBundleMap().get("okMessage"), AppCurrContext
+							.getInstance().getBundleMap().get("jsGridPartialUpdateNeedSorting"),
+					"", MessageType.WARNING, false);
 			return;
 		}
 
@@ -221,7 +221,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 		dataService.getLiveGridData(gc, getElementInfo(),
 				new GWTServiceCallback<LiveGridData<LiveGridModel>>(AppCurrContext.getInstance()
-						.getInternationalizedMessages().gridErrorGetTable()) {
+						.getBundleMap().get("gridErrorGetTable")) {
 
 					@Override
 					public void onFailure(final Throwable caught) {
@@ -291,7 +291,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 		dataService.getLiveGridMetadata(gc, getElementInfo(),
 				new GWTServiceCallback<LiveGridMetadata>(AppCurrContext.getInstance()
-						.getInternationalizedMessages().gridErrorGetTable()) {
+						.getBundleMap().get("gridErrorGetTable")) {
 
 					@Override
 					public void onSuccess(final LiveGridMetadata aGridMetadata) {
@@ -389,8 +389,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			common.put("isVisibleColumnsHeader", new JSONString("true"));
 		}
 
-		common.put("loadingMessage", new JSONString(AppCurrContext.getInstance()
-				.getInternationalizedMessages().jsGridLoadingMessage()));
+		common.put("loadingMessage", new JSONString(AppCurrContext.getInstance().getBundleMap()
+				.get("jsGridLoadingMessage")));
 
 		common.put("stringSelectedRecordIdsSeparator", new JSONString(
 				STRING_SELECTED_RECORD_IDS_SEPARATOR));
@@ -583,16 +583,16 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			pluginProc(gridMetadata.getJSInfo().getCreateProc(), params);
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
-				MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-						.getInternationalizedMessages().error_of_plugin_painting(),
-						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
+				MessageBox.showMessageWithDetails(
+						AppCurrContext.getInstance().getBundleMap()
+								.get("error_of_plugin_painting"), e.getMessage(),
+						GeneralException.generateDetailedInfo(e.getCause()),
 						GeneralException.getMessageType(e.getCause()),
 						GeneralException.needDetailedInfo(e.getCause()));
 			} else {
-				MessageBox
-						.showSimpleMessage(AppCurrContext.getInstance()
-								.getInternationalizedMessages().error_of_plugin_painting(),
-								e.getMessage());
+				MessageBox.showSimpleMessage(
+						AppCurrContext.getInstance().getBundleMap()
+								.get("error_of_plugin_painting"), e.getMessage());
 			}
 		}
 
@@ -628,8 +628,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 			dh.clear();
 
-			dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_error_caption_file_download());
+			dh.setErrorCaption(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_error_caption_file_download"));
 			dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
 
 			try {
@@ -645,8 +645,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 				dh.submit();
 			} catch (SerializationException e) {
 				ru.curs.showcase.app.client.MessageBox.showSimpleMessage(AppCurrContext
-						.getInstance().getInternationalizedMessages()
-						.grid_error_caption_file_download(), e.getMessage());
+						.getInstance().getBundleMap().get("grid_error_caption_file_download"),
+						e.getMessage());
 			}
 		}
 	}
@@ -683,8 +683,10 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			params.put("elementInfoValue",
 					new JSONString(getElementInfo().toParamForHttpPost(getObjectSerializer())));
 		} catch (SerializationException e) {
-			params.put("error", new JSONString(AppCurrContext.getInstance()
-					.getInternationalizedMessages().jsGridSerializationError()));
+			params.put(
+					"error",
+					new JSONString(AppCurrContext.getInstance().getBundleMap()
+							.get("jsGridSerializationError")));
 		}
 
 		return params;
@@ -723,8 +725,10 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			params.put("elementInfoValue",
 					new JSONString(getElementInfo().toParamForHttpPost(getObjectSerializer())));
 		} catch (SerializationException e) {
-			params.put("error", new JSONString(AppCurrContext.getInstance()
-					.getInternationalizedMessages().jsGridSerializationError()));
+			params.put(
+					"error",
+					new JSONString(AppCurrContext.getInstance().getBundleMap()
+							.get("jsGridSerializationError")));
 		}
 
 		return params;
@@ -757,7 +761,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 			} catch (SerializationException e) {
 				MessageBox.showSimpleMessage("afterHttpPostFromPlugin", AppCurrContext
-						.getInstance().getInternationalizedMessages().jsGridDeserializationError()
+						.getInstance().getBundleMap().get("jsGridDeserializationError")
 						+ " LiveGridExtradata: " + e.getMessage());
 			}
 		}
@@ -793,15 +797,14 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 						typeMessage = MessageType.INFO;
 					}
 
-					MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-							.getInternationalizedMessages().okMessage(), textMessage, "",
-							typeMessage, false);
+					MessageBox.showMessageWithDetails(AppCurrContext.getInstance().getBundleMap()
+							.get("okMessage"), textMessage, "", typeMessage, false);
 
 				}
 
 			} catch (SerializationException e) {
 				MessageBox.showSimpleMessage("pluginShowMessage", AppCurrContext.getInstance()
-						.getInternationalizedMessages().jsGridDeserializationError()
+						.getBundleMap().get("jsGridDeserializationError")
 						+ " UserMessage: " + e.getMessage());
 			}
 		}
@@ -1144,8 +1147,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
 
-		dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
-				.grid_error_caption_export_excel());
+		dh.setErrorCaption(AppCurrContext.getInstance().getBundleMap()
+				.get("grid_error_caption_export_excel"));
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridToExcel");
 
 		try {
@@ -1168,9 +1171,9 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 		} catch (SerializationException e) {
 			mp.hide();
-			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-					.getInternationalizedMessages().grid_error_caption_export_excel(),
-					e.getMessage());
+			MessageBox.showSimpleMessage(
+					AppCurrContext.getInstance().getBundleMap()
+							.get("grid_error_caption_export_excel"), e.getMessage());
 		}
 	}
 
@@ -1219,8 +1222,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			new TextButton("", IconHelper.getImageResource(
 					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
 		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
-			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
-					.getInternationalizedMessages().jsTreeGridExportToExcelChilds());
+			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("jsTreeGridExportToExcelChilds"));
 			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
@@ -1230,8 +1233,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			toolBar.add(exportToExcelCurrentPage);
 		}
 		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
-			exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.jsTreeGridExportToExcel0Level());
+			exportToExcelAll.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("jsTreeGridExportToExcel0Level"));
 			exportToExcelAll.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
@@ -1241,8 +1244,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			toolBar.add(exportToExcelAll);
 		}
 		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
-			copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_copy_to_clipboard());
+			copyToClipboard.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_caption_copy_to_clipboard"));
 			copyToClipboard.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
@@ -1256,8 +1259,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			final TextButton addRecord =
 				new TextButton("", IconHelper.getImageResource(
 						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_ADD_RECORD), 16, 16));
-			addRecord.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_add_record());
+			addRecord.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_caption_add_record"));
 			addRecord.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
@@ -1270,8 +1273,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			final TextButton save =
 				new TextButton("", IconHelper.getImageResource(
 						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_SAVE), 16, 16));
-			save.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_save());
+			save.setTitle(AppCurrContext.getInstance().getBundleMap().get("grid_caption_save"));
 			save.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
@@ -1284,8 +1286,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			final TextButton revert =
 				new TextButton("", IconHelper.getImageResource(
 						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_REVERT), 16, 16));
-			revert.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_revert());
+			revert.setTitle(AppCurrContext.getInstance().getBundleMap().get("grid_caption_revert"));
 			revert.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {

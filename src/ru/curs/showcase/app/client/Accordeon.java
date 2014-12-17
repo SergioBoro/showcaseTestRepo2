@@ -126,9 +126,13 @@ public class Accordeon {
 
 		CompositeContext context = MultiUserData.getCurrentContextFromURL();
 
+		// dataService.getNavigator(context, new
+		// GWTServiceCallback<Navigator>(AppCurrContext
+		// .getInstance().getInternationalizedMessages()
+		// .error_of_navigator_data_retrieving_from_server()) {
 		dataService.getNavigator(context, new GWTServiceCallback<Navigator>(AppCurrContext
-				.getInstance().getInternationalizedMessages()
-				.error_of_navigator_data_retrieving_from_server()) {
+				.getInstance().getBundleMap()
+				.get("error_of_navigator_data_retrieving_from_server")) {
 			@Override
 			public void onFailure(final Throwable caught) {
 				ProgressWindow.closeProgressWindow();
@@ -231,7 +235,9 @@ public class Accordeon {
 	private Widget getGroupTreeWidget(final NavigatorGroup ng) {
 
 		if (!(ng.getElements().size() > 0)) {
-			return new HTML(AppCurrContext.getInstance().getInternationalizedMessages().empty());
+			// return new
+			// HTML(AppCurrContext.getInstance().getInternationalizedMessages().empty());
+			return new HTML(AppCurrContext.getInstance().getBundleMap().get("empty"));
 		}
 		SimplePanel simpPanel = new SimplePanel();
 		ScrollPanel sp = new ScrollPanel();
@@ -452,14 +458,21 @@ public class Accordeon {
 					: new ID("");
 
 		verpan.clear();
-		verpan.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-				.please_wait_data_are_loading()));
+		// verpan.add(new
+		// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .please_wait_data_are_loading()));
+		verpan.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+				.get("please_wait_data_are_loading")));
 		accordeon.clear();
 
 		CompositeContext context = MultiUserData.getCurrentContextFromURL();
+		// dataService.getNavigator(context, new
+		// GWTServiceCallback<Navigator>(AppCurrContext
+		// .getInstance().getInternationalizedMessages()
+		// .error_of_navigator_data_retrieving_from_server()) {
 		dataService.getNavigator(context, new GWTServiceCallback<Navigator>(AppCurrContext
-				.getInstance().getInternationalizedMessages()
-				.error_of_navigator_data_retrieving_from_server()) {
+				.getInstance().getBundleMap()
+				.get("error_of_navigator_data_retrieving_from_server")) {
 			@Override
 			public void onFailure(final Throwable caught) {
 

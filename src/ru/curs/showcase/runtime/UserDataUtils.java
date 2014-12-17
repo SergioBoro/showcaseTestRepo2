@@ -109,6 +109,7 @@ public final class UserDataUtils {
 	public static final String IMPORT_STATIC_EXTERNAL_JS_LIBRARIES =
 		"import.static.external.js.libraries";
 	public static final String IMPORT_STATIC_EXTERNAL_CSS = "import.static.external.css";
+	public static final String INTERNATIOLIZATION_LANGUAGE = "internatiolization.language";
 
 	public static void setGeneralPropFile(final String aGeneralPropFile) {
 		generalPropFile = aGeneralPropFile;
@@ -818,6 +819,22 @@ public final class UserDataUtils {
 				}
 			}
 			return list;
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(e, getCurrentPropFile(),
+					SettingsFileType.APP_PROPERTIES);
+		}
+	}
+
+	public static String getLocaleForCurrentUserdata() {
+		String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
+		try {
+			String result = getProperties(userdataId).getProperty(INTERNATIOLIZATION_LANGUAGE);
+			if (result != null) {
+				result = result.trim();
+				return result;
+			} else {
+				return "";
+			}
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, getCurrentPropFile(),
 					SettingsFileType.APP_PROPERTIES);

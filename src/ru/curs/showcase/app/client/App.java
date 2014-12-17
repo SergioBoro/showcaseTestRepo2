@@ -8,6 +8,7 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.*;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -26,33 +27,62 @@ public class App implements EntryPoint {
 	 */
 	@Override
 	public void onModuleLoad() {
+		final CompositeContext context = getCurrentContext();
+		setBundleMapForConstants(context);
+	}
 
+	private void setBundleMapForConstants(final CompositeContext context) {
+		if (dataService == null) {
+			dataService = GWT.create(DataService.class);
+		}
+
+		dataService.getBundle(context, new AsyncCallback<Map<String, String>>() {
+
+			@Override
+			public void onSuccess(final Map<String, String> arg0) {
+				AppCurrContext.getInstance().setBundleMap(arg0);
+				initialize(context);
+			}
+
+			@Override
+			public void onFailure(final Throwable arg0) {
+				MessageBox.showSimpleMessage("error", "bundleMap");
+			}
+		});
+	}
+
+	private void initialize(CompositeContext context) {
 		XFormsUtils.initXForms();
 		FeedbackJSNI.initFeedbackJSNIFunctions();
 		// AppCurrContext.appCurrContext = AppCurrContext.getInstance();
 		AppCurrContext.getInstance();
 
-		CompositeContext context = getCurrentContext();
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getServerCurrentState(context, new GWTServiceCallback<ServerState>(
-				AppCurrContext.getInstance().getInternationalizedMessages()
-						.error_of_server_current_state_retrieving_from_server()) {
+		// dataService.getServerCurrentState(context, new
+		// GWTServiceCallback<ServerState>(
+		// AppCurrContext.getInstance().getInternationalizedMessages()
+		// .error_of_server_current_state_retrieving_from_server()) {
+		dataService.getServerCurrentState(context,
+				new GWTServiceCallback<ServerState>(AppCurrContext.getInstance().getBundleMap()
+						.get("error_of_server_current_state_retrieving_from_server")) {
 
-			@Override
-			public void onSuccess(final ServerState serverCurrentState) {
+					@Override
+					public void onSuccess(final ServerState serverCurrentState) {
 
-				if (serverCurrentState != null) {
+						if (serverCurrentState != null) {
 
-					AppCurrContext.getInstance().setServerCurrentState(serverCurrentState);
-					IDSettings.getInstance().setCaseSensivity(
-							serverCurrentState.getCaseSensivityIDs());
-					getAndFillMainPage();
-				}
-			}
-		});
+							AppCurrContext.getInstance().setServerCurrentState(serverCurrentState);
+							IDSettings.getInstance().setCaseSensivity(
+									serverCurrentState.getCaseSensivityIDs());
+							getAndFillMainPage();
+
+						}
+					}
+				});
+
 	}
 
 	private void getAndFillMainPage() {
@@ -60,9 +90,12 @@ public class App implements EntryPoint {
 			dataService = GWT.create(DataService.class);
 		}
 		CompositeContext context = getCurrentContext();
+		// dataService.getMainPage(context, new
+		// GWTServiceCallback<MainPage>(AppCurrContext
+		// .getInstance().getInternationalizedMessages()
+		// .error_of_main_page_retrieving_from_server()) {
 		dataService.getMainPage(context, new GWTServiceCallback<MainPage>(AppCurrContext
-				.getInstance().getInternationalizedMessages()
-				.error_of_main_page_retrieving_from_server()) {
+				.getInstance().getBundleMap().get("error_of_main_page_retrieving_from_server")) {
 
 			@Override
 			public void onSuccess(final MainPage mainPage) {

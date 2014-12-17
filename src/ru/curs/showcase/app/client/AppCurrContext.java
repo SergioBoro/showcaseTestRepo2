@@ -102,6 +102,8 @@ public final class AppCurrContext extends ActionTransformer {
 	 */
 	private HandlerRegistration regTabPanelSelectionHandler;
 
+	private Map<String, String> bundleMap;
+
 	/**
 	 * @return the regTabPanelSelectionHandler
 	 */
@@ -271,4 +273,11 @@ public final class AppCurrContext extends ActionTransformer {
 			aListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel;
 	}
 
+	public void setBundleMap(final Map<String, String> aBundleMap) {
+		bundleMap = aBundleMap;
+	}
+
+	public Map<String, String> getBundleMap() {
+		return bundleMap;
+	}
 }

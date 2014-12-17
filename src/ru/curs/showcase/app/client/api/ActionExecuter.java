@@ -60,7 +60,7 @@ public final class ActionExecuter {
 			ac.setRelated(panelContext);
 
 			dataService.execServerAction(ac, new GWTServiceCallback<VoidElement>(AppCurrContext
-					.getInstance().getInternationalizedMessages().error_in_server_activity()) {
+					.getInstance().getBundleMap().get("error_in_server_activity")) {
 
 				@Override
 				public void onSuccess(final VoidElement ve) {

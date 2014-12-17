@@ -69,7 +69,11 @@ public final class XFormPanelCallbacksEvents {
 						new XFormContext(curXFormPanel.getContext(), data),
 						curXFormPanel.getElementInfo(),
 						new GWTServiceCallback<VoidElement>(AppCurrContext.getInstance()
-								.getInternationalizedMessages().xform_save_data_error()) {
+								.getBundleMap().get("xform_save_data_error")) {
+							// new
+							// GWTServiceCallback<VoidElement>(AppCurrContext.getInstance()
+							// .getInternationalizedMessages().xform_save_data_error())
+							// {
 
 							@Override
 							public void onSuccess(final VoidElement result) {
@@ -211,8 +215,12 @@ public final class XFormPanelCallbacksEvents {
 			XFormContext xcontext = new XFormContext(currentXFormPanel.getContext(), data);
 			uh.addStdPostParamsToBody(xcontext, currentXFormPanel.getElementInfo());
 		} catch (SerializationException e) {
-			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-					.getInternationalizedMessages().xforms_upload_error(), e.getMessage());
+			// MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+			// .getInternationalizedMessages().xforms_upload_error(),
+			// e.getMessage());
+			MessageBox.showSimpleMessage(
+					AppCurrContext.getInstance().getBundleMap().get("xforms_upload_error"),
+					e.getMessage());
 		}
 
 		currentXFormPanel.getPanel().add(uh);
@@ -632,8 +640,10 @@ public final class XFormPanelCallbacksEvents {
 			DownloadHelper dh = DownloadHelper.getInstance();
 			dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 			dh.clear();
-			dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
-					.xforms_download_error());
+			// dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
+			// .xforms_download_error());
+			dh.setErrorCaption(AppCurrContext.getInstance().getBundleMap()
+					.get("xforms_download_error"));
 			dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/download");
 
 			try {
@@ -642,8 +652,12 @@ public final class XFormPanelCallbacksEvents {
 						currentXFormPanel.getElementInfo());
 				dh.submit();
 			} catch (SerializationException e) {
-				MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-						.getInternationalizedMessages().xforms_download_error(), e.getMessage());
+				// MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+				// .getInternationalizedMessages().xforms_download_error(),
+				// e.getMessage());
+				MessageBox.showSimpleMessage(
+						AppCurrContext.getInstance().getBundleMap().get("xforms_download_error"),
+						e.getMessage());
 			}
 		}
 	}
@@ -703,12 +717,17 @@ public final class XFormPanelCallbacksEvents {
 		if (currentXFormPanel != null) {
 
 			if (currentXFormPanel.getUw() == null) {
+				// currentXFormPanel.setUw(new
+				// UploadWindow(AppCurrContext.getInstance()
+				// .getInternationalizedMessages().xform_upload_caption()));
 				currentXFormPanel.setUw(new UploadWindow(AppCurrContext.getInstance()
-						.getInternationalizedMessages().xform_upload_caption()));
+						.getBundleMap().get("xform_upload_caption")));
 				currentXFormPanel.getPanel().add(currentXFormPanel.getUw());
 				UploadHelper uh = currentXFormPanel.getUw().getUploadHelper();
-				uh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
-						.xforms_upload_error());
+				// uh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
+				// .xforms_upload_error());
+				uh.setErrorCaption(AppCurrContext.getInstance().getBundleMap()
+						.get("xforms_upload_error"));
 				uh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/upload");
 			}
 			currentXFormPanel.getUw().runUpload(param.linkId(), new UploadEndHandler() {

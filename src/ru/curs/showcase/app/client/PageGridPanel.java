@@ -52,8 +52,8 @@ public class PageGridPanel extends BasicElementPanelBasis {
 	private static final String PROC100 = "100%";
 
 	private final VerticalPanel p = new VerticalPanel();
-	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance()
-			.getInternationalizedMessages().grid_message_popup_export_to_excel());
+	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance().getBundleMap()
+			.get("grid_message_popup_export_to_excel"));
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
 	private PagingToolBar toolBarTop = null;
 	private PagingToolBar toolBarBottom = null;
@@ -155,8 +155,8 @@ public class PageGridPanel extends BasicElementPanelBasis {
 
 		if (isFirstLoading()) {
 			if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-				p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-						.please_wait_data_are_loading()));
+				p.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+						.get("please_wait_data_are_loading")));
 			} else {
 				p.add(new HTML(""));
 			}
@@ -196,7 +196,7 @@ public class PageGridPanel extends BasicElementPanelBasis {
 
 		dataService.getLiveGridMetadata(gc, getElementInfo(),
 				new GWTServiceCallback<LiveGridMetadata>(AppCurrContext.getInstance()
-						.getInternationalizedMessages().gridErrorGetTable()) {
+						.getBundleMap().get("gridErrorGetTable")) {
 
 					@Override
 					public void onSuccess(final LiveGridMetadata aGridMetadata) {
@@ -588,9 +588,9 @@ public class PageGridPanel extends BasicElementPanelBasis {
 
 		final int widgetIndex = 6;
 		toolBar.insert(pageSize, widgetIndex);
-		toolBar.insert(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-				.pageGridShowAtMost()
-				+ " "), widgetIndex);
+		toolBar.insert(
+				new HTML(AppCurrContext.getInstance().getBundleMap().get("pageGridShowAtMost")
+						+ " "), widgetIndex);
 		toolBar.insert(new SeparatorToolItem(), widgetIndex);
 	}
 
@@ -888,9 +888,11 @@ public class PageGridPanel extends BasicElementPanelBasis {
 	public void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
 
 		if (grid.getStore().getAll().size() == 0) {
-			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-					.getInternationalizedMessages().gridExportToExcelCaption(), AppCurrContext
-					.getInstance().getInternationalizedMessages().gridExportToExcelEmptyTable());
+			MessageBox
+					.showSimpleMessage(
+							AppCurrContext.getInstance().getBundleMap()
+									.get("gridExportToExcelCaption"), AppCurrContext.getInstance()
+									.getBundleMap().get("gridExportToExcelEmptyTable"));
 			return;
 		}
 
@@ -898,8 +900,8 @@ public class PageGridPanel extends BasicElementPanelBasis {
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
 
-		dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
-				.grid_error_caption_export_excel());
+		dh.setErrorCaption(AppCurrContext.getInstance().getBundleMap()
+				.get("grid_error_caption_export_excel"));
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridToExcel");
 
 		try {
@@ -916,9 +918,9 @@ public class PageGridPanel extends BasicElementPanelBasis {
 
 		} catch (SerializationException e) {
 			mp.hide();
-			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-					.getInternationalizedMessages().grid_error_caption_export_excel(),
-					e.getMessage());
+			MessageBox.showSimpleMessage(
+					AppCurrContext.getInstance().getBundleMap()
+							.get("grid_error_caption_export_excel"), e.getMessage());
 		}
 	}
 
@@ -966,8 +968,8 @@ public class PageGridPanel extends BasicElementPanelBasis {
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
 
-		dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
-				.grid_error_caption_file_download());
+		dh.setErrorCaption(AppCurrContext.getInstance().getBundleMap()
+				.get("grid_error_caption_file_download"));
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
 
 		try {
@@ -978,8 +980,7 @@ public class PageGridPanel extends BasicElementPanelBasis {
 			dh.submit();
 		} catch (SerializationException e) {
 			ru.curs.showcase.app.client.MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-					.getInternationalizedMessages().grid_error_caption_file_download(),
-					e.getMessage());
+					.getBundleMap().get("grid_error_caption_file_download"), e.getMessage());
 		}
 	}
 
@@ -1012,8 +1013,8 @@ public class PageGridPanel extends BasicElementPanelBasis {
 			new TextButton("", IconHelper.getImageResource(
 					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
 		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
-			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
-					.getInternationalizedMessages().grid_caption_export_to_excel_current_page());
+			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_caption_export_to_excel_current_page"));
 			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
@@ -1023,8 +1024,8 @@ public class PageGridPanel extends BasicElementPanelBasis {
 			toolBar.add(exportToExcelCurrentPage);
 		}
 		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
-			exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_export_to_excel_all());
+			exportToExcelAll.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_caption_export_to_excel_all"));
 			exportToExcelAll.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
@@ -1034,8 +1035,8 @@ public class PageGridPanel extends BasicElementPanelBasis {
 			toolBar.add(exportToExcelAll);
 		}
 		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
-			copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_copy_to_clipboard());
+			copyToClipboard.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_caption_copy_to_clipboard"));
 			copyToClipboard.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {

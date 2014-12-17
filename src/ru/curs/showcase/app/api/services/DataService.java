@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.services;
 
-import java.util.List;
+import java.util.*;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
@@ -215,4 +215,6 @@ public interface DataService extends RemoteService {
 	 */
 	GridToolBar getGridToolBar(final CompositeContext context, final DataPanelElementInfo element)
 			throws GeneralException;
+
+	Map<String, String> getBundle(final CompositeContext context) throws GeneralException;
 }

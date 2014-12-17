@@ -27,8 +27,8 @@ public class PluginPanel extends BasicElementPanelBasis {
 		generalHp = new HorizontalPanel();
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-			generalPluginPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
+			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		} else {
 			generalPluginPanel.add(new HTML(""));
 		}
@@ -57,8 +57,8 @@ public class PluginPanel extends BasicElementPanelBasis {
 		generalPluginPanel = new VerticalPanel();
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-			generalPluginPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
+			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		} else {
 			generalPluginPanel.add(new HTML(""));
 		}
@@ -78,8 +78,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 		requestData.setElInfo((PluginInfo) getElementInfo());
 
 		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
-				.getInstance().getInternationalizedMessages()
-				.error_of_plugin_data_retrieving_from_server()) {
+				.getInstance().getBundleMap().get("error_of_plugin_data_retrieving_from_server")) {
 
 			@Override
 			public void onSuccess(final Plugin aPlugin) {
@@ -154,16 +153,16 @@ public class PluginPanel extends BasicElementPanelBasis {
 		} catch (JavaScriptException e) {
 
 			if (e.getCause() != null) {
-				MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-						.getInternationalizedMessages().error_of_plugin_painting(),
-						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
+				MessageBox.showMessageWithDetails(
+						AppCurrContext.getInstance().getBundleMap()
+								.get("error_of_plugin_painting"), e.getMessage(),
+						GeneralException.generateDetailedInfo(e.getCause()),
 						GeneralException.getMessageType(e.getCause()),
 						GeneralException.needDetailedInfo(e.getCause()));
 			} else {
-				MessageBox
-						.showSimpleMessage(AppCurrContext.getInstance()
-								.getInternationalizedMessages().error_of_plugin_painting(),
-								e.getMessage());
+				MessageBox.showSimpleMessage(
+						AppCurrContext.getInstance().getBundleMap()
+								.get("error_of_plugin_painting"), e.getMessage());
 			}
 
 		}
@@ -247,8 +246,8 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalPluginPanel.clear();
-			generalPluginPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
+			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -259,8 +258,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 		requestData.setElInfo((PluginInfo) getElementInfo());
 
 		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
-				.getInstance().getInternationalizedMessages()
-				.error_of_plugin_data_retrieving_from_server()) {
+				.getInstance().getBundleMap().get("error_of_plugin_data_retrieving_from_server")) {
 
 			@Override
 			public void onSuccess(final Plugin aPlugin) {
@@ -310,8 +308,8 @@ public class PluginPanel extends BasicElementPanelBasis {
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalPluginPanel.clear();
-			generalPluginPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
+			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -322,8 +320,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 		requestData.setElInfo((PluginInfo) getElementInfo());
 
 		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
-				.getInstance().getInternationalizedMessages()
-				.error_of_plugin_data_retrieving_from_server()) {
+				.getInstance().getBundleMap().get("error_of_plugin_data_retrieving_from_server")) {
 
 			@Override
 			public void onSuccess(final Plugin aPlugin) {

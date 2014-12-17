@@ -51,8 +51,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 	private static final String PROC100 = "100%";
 	private static final int ICON_SIZE = 16;
 	private final VerticalPanel p = new VerticalPanel();
-	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance()
-			.getInternationalizedMessages().grid_message_popup_export_to_excel());
+	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance().getBundleMap()
+			.get("grid_message_popup_export_to_excel"));
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
 	private final FramedPanel cpGrid = new FramedPanel();
 	private TreeGrid<TreeGridModel> grid = null;
@@ -150,8 +150,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 
 		if (isFirstLoading()) {
 			if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-				p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-						.please_wait_data_are_loading()));
+				p.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+						.get("please_wait_data_are_loading")));
 			} else {
 				p.add(new HTML(""));
 			}
@@ -202,7 +202,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 
 		dataService.getLiveGridMetadata(gc, getElementInfo(),
 				new GWTServiceCallback<LiveGridMetadata>(AppCurrContext.getInstance()
-						.getInternationalizedMessages().gridErrorGetTable()) {
+						.getBundleMap().get("gridErrorGetTable")) {
 
 					@Override
 					public void onSuccess(final LiveGridMetadata aGridMetadata) {
@@ -298,17 +298,22 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 
 									for (TreeGridModel old : models) {
 										if (id.equals(old.getId())) {
-											MessageBox.showSimpleMessage(AppCurrContext
-													.getInstance().getInternationalizedMessages()
-													.treeGridLoadingData(), AppCurrContext
-													.getInstance().getInternationalizedMessages()
-													.treeGridLoadingDataDuplicateRecord1()
-													+ " "
-													+ res.getId()
-													+ " "
-													+ AppCurrContext.getInstance()
-															.getInternationalizedMessages()
-															.treeGridLoadingDataDuplicateRecord2());
+											MessageBox
+													.showSimpleMessage(
+															AppCurrContext.getInstance()
+																	.getBundleMap()
+																	.get("treeGridLoadingData"),
+															AppCurrContext
+																	.getInstance()
+																	.getBundleMap()
+																	.get("treeGridLoadingDataDuplicateRecord1")
+																	+ " "
+																	+ res.getId()
+																	+ " "
+																	+ AppCurrContext
+																			.getInstance()
+																			.getBundleMap()
+																			.get("treeGridLoadingDataDuplicateRecord2"));
 											return;
 										}
 									}
@@ -965,9 +970,11 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 	public void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
 
 		if (grid.getStore().getAll().size() == 0) {
-			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-					.getInternationalizedMessages().gridExportToExcelCaption(), AppCurrContext
-					.getInstance().getInternationalizedMessages().gridExportToExcelEmptyTable());
+			MessageBox
+					.showSimpleMessage(
+							AppCurrContext.getInstance().getBundleMap()
+									.get("gridExportToExcelCaption"), AppCurrContext.getInstance()
+									.getBundleMap().get("gridExportToExcelEmptyTable"));
 			return;
 		}
 
@@ -985,8 +992,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
 
-		dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
-				.grid_error_caption_export_excel());
+		dh.setErrorCaption(AppCurrContext.getInstance().getBundleMap()
+				.get("grid_error_caption_export_excel"));
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridToExcel");
 
 		try {
@@ -1003,9 +1010,9 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 
 		} catch (SerializationException e) {
 			mp.hide();
-			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-					.getInternationalizedMessages().grid_error_caption_export_excel(),
-					e.getMessage());
+			MessageBox.showSimpleMessage(
+					AppCurrContext.getInstance().getBundleMap()
+							.get("grid_error_caption_export_excel"), e.getMessage());
 		}
 	}
 
@@ -1053,8 +1060,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
 
-		dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
-				.grid_error_caption_file_download());
+		dh.setErrorCaption(AppCurrContext.getInstance().getBundleMap()
+				.get("grid_error_caption_file_download"));
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
 
 		try {
@@ -1065,8 +1072,7 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 			dh.submit();
 		} catch (SerializationException e) {
 			ru.curs.showcase.app.client.MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-					.getInternationalizedMessages().grid_error_caption_file_download(),
-					e.getMessage());
+					.getBundleMap().get("grid_error_caption_file_download"), e.getMessage());
 		}
 	}
 
@@ -1091,8 +1097,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				new TextButton("", IconHelper.getImageResource(UriUtils
 						.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE),
 						ICON_SIZE, ICON_SIZE));
-			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
-					.getInternationalizedMessages().grid_caption_export_to_excel_current_page());
+			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_caption_export_to_excel_current_page"));
 			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
@@ -1108,8 +1114,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				new TextButton("", IconHelper.getImageResource(
 						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL),
 						ICON_SIZE, ICON_SIZE));
-			exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_export_to_excel_all());
+			exportToExcelAll.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_caption_export_to_excel_all"));
 			exportToExcelAll.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
@@ -1123,8 +1129,8 @@ public class TreeGridPanel extends BasicElementPanelBasis {
 				new TextButton("", IconHelper.getImageResource(
 						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD),
 						ICON_SIZE, ICON_SIZE));
-			copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_copy_to_clipboard());
+			copyToClipboard.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_caption_copy_to_clipboard"));
 			copyToClipboard.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {

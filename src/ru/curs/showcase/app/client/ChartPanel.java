@@ -24,8 +24,10 @@ public class ChartPanel extends BasicElementPanelBasis {
 		generalHp = new HorizontalPanel();
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-			generalChartPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
+			// generalChartPanel.add(new HTML(AppCurrContext.getInstance()
+			// .getInternationalizedMessages().please_wait_data_are_loading()));
+			generalChartPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		} else {
 			generalChartPanel.add(new HTML(""));
 		}
@@ -51,8 +53,10 @@ public class ChartPanel extends BasicElementPanelBasis {
 		generalChartPanel = new VerticalPanel();
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-			generalChartPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
+			// generalChartPanel.add(new HTML(AppCurrContext.getInstance()
+			// .getInternationalizedMessages().please_wait_data_are_loading()));
+			generalChartPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		} else {
 			generalChartPanel.add(new HTML(""));
 		}
@@ -68,21 +72,27 @@ public class ChartPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getChart(getContext(), getElementInfo(), new GWTServiceCallback<Chart>(
-				AppCurrContext.getInstance().getInternationalizedMessages()
-						.error_of_chart_data_retrieving_from_server()) {
+		// dataService.getChart(getContext(), getElementInfo(), new
+		// GWTServiceCallback<Chart>(
+		// AppCurrContext.getInstance().getInternationalizedMessages()
+		// .error_of_chart_data_retrieving_from_server()) {
+		dataService.getChart(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<Chart>(AppCurrContext.getInstance().getBundleMap()
+						.get("error_of_chart_data_retrieving_from_server")) {
 
-			@Override
-			public void onSuccess(final Chart achart) {
-				chart = achart;
-				if (chart != null) {
+					@Override
+					public void onSuccess(final Chart achart) {
+						chart = achart;
+						if (chart != null) {
 
-					super.onSuccess(chart);
+							super.onSuccess(chart);
 
-					fillChartPanel(achart);
-				}
-			}
-		});
+							fillChartPanel(achart);
+						}
+					}
+				});
 
 	}
 
@@ -159,14 +169,27 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
-				MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-						.getInternationalizedMessages().error_of_chart_painting(), e.getMessage(),
-						GeneralException.generateDetailedInfo(e.getCause()),
-						GeneralException.getMessageType(e.getCause()),
-						GeneralException.needDetailedInfo(e.getCause()));
+				// MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
+				// .getInternationalizedMessages().error_of_chart_painting(),
+				// e.getMessage(),
+				// GeneralException.generateDetailedInfo(e.getCause()),
+				// GeneralException.getMessageType(e.getCause()),
+				// GeneralException.needDetailedInfo(e.getCause()));
+				MessageBox
+						.showMessageWithDetails(
+								AppCurrContext.getInstance().getBundleMap()
+										.get("error_of_chart_painting"), e.getMessage(),
+								GeneralException.generateDetailedInfo(e.getCause()),
+								GeneralException.getMessageType(e.getCause()),
+								GeneralException.needDetailedInfo(e.getCause()));
 			} else {
-				MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-						.getInternationalizedMessages().error_of_chart_painting(), e.getMessage());
+				// MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+				// .getInternationalizedMessages().error_of_chart_painting(),
+				// e.getMessage());
+				MessageBox
+						.showSimpleMessage(
+								AppCurrContext.getInstance().getBundleMap()
+										.get("error_of_chart_painting"), e.getMessage());
 			}
 		}
 
@@ -271,30 +294,38 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalChartPanel.clear();
-			generalChartPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
+			// generalChartPanel.add(new HTML(AppCurrContext.getInstance()
+			// .getInternationalizedMessages().please_wait_data_are_loading()));
+			generalChartPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getChart(getContext(), getElementInfo(), new GWTServiceCallback<Chart>(
-				AppCurrContext.getInstance().getInternationalizedMessages()
-						.error_of_chart_data_retrieving_from_server()) {
+		// dataService.getChart(getContext(), getElementInfo(), new
+		// GWTServiceCallback<Chart>(
+		// AppCurrContext.getInstance().getInternationalizedMessages()
+		// .error_of_chart_data_retrieving_from_server()) {
+		dataService.getChart(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<Chart>(AppCurrContext.getInstance().getBundleMap()
+						.get("error_of_chart_data_retrieving_from_server")) {
 
-			@Override
-			public void onSuccess(final Chart achart) {
-				chart = achart;
-				if (chart != null) {
+					@Override
+					public void onSuccess(final Chart achart) {
+						chart = achart;
+						if (chart != null) {
 
-					super.onSuccess(chart);
+							super.onSuccess(chart);
 
-					fillChartPanel(achart);
-					getPanel().setHeight("100%");
+							fillChartPanel(achart);
+							getPanel().setHeight("100%");
 
-				}
-			}
-		});
+						}
+					}
+				});
 
 	}
 
@@ -329,30 +360,36 @@ public class ChartPanel extends BasicElementPanelBasis {
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalChartPanel.clear();
-			generalChartPanel.add(new HTML(AppCurrContext.getInstance()
-					.getInternationalizedMessages().please_wait_data_are_loading()));
-
+			// generalChartPanel.add(new HTML(AppCurrContext.getInstance()
+			// .getInternationalizedMessages().please_wait_data_are_loading()));
+			generalChartPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getChart(getContext(), getElementInfo(), new GWTServiceCallback<Chart>(
-				AppCurrContext.getInstance().getInternationalizedMessages()
-						.error_of_chart_data_retrieving_from_server()) {
+		// dataService.getChart(getContext(), getElementInfo(), new
+		// GWTServiceCallback<Chart>(
+		// AppCurrContext.getInstance().getInternationalizedMessages()
+		// .error_of_chart_data_retrieving_from_server()) {
+		dataService.getChart(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<Chart>(AppCurrContext.getInstance().getBundleMap()
+						.get("error_of_chart_data_retrieving_from_server")) {
+					@Override
+					public void onSuccess(final Chart achart) {
+						chart = achart;
+						if (chart != null) {
 
-			@Override
-			public void onSuccess(final Chart achart) {
-				chart = achart;
-				if (chart != null) {
+							super.onSuccess(chart);
 
-					super.onSuccess(chart);
-
-					fillChartPanel(achart);
-					getPanel().setHeight("100%");
-				}
-			}
-		});
+							fillChartPanel(achart);
+							getPanel().setHeight("100%");
+						}
+					}
+				});
 
 	}
 }

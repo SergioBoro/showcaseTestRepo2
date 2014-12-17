@@ -27,7 +27,7 @@ public final class XFormsUtils {
 		}
 
 		dataService.getMainXForms(new GWTServiceCallback<List<String>>(AppCurrContext
-				.getInstance().getInternationalizedMessages().xformsErrorGetMainData()) {
+				.getInstance().getBundleMap().get("xformsErrorGetMainData")) {
 			@Override
 			public void onSuccess(final List<String> mainXForm) {
 				// destroy();

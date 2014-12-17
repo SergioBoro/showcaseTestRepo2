@@ -86,8 +86,9 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 		// MessageBox.showSimpleMessage(dataPanelElement.getClass().getName(),
 		// okMessage);
 
-		MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-				.getInternationalizedMessages().okMessage(), textMessage, "", typeMessage, false);
+		MessageBox.showMessageWithDetails(
+				AppCurrContext.getInstance().getBundleMap().get("okMessage"), textMessage, "",
+				typeMessage, false);
 
 	}
 }

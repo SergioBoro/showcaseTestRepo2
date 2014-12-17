@@ -155,15 +155,15 @@ public final class PluginPanelCallbacksEvents {
 				pluginComponent.draw();
 			} catch (JavaScriptException e) {
 				if (e.getCause() != null) {
-					MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-							.getInternationalizedMessages().error_of_plugin_painting(),
-							e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
+					MessageBox.showMessageWithDetails(AppCurrContext.getInstance().getBundleMap()
+							.get("error_of_plugin_painting"), e.getMessage(),
+							GeneralException.generateDetailedInfo(e.getCause()),
 							GeneralException.getMessageType(e.getCause()),
 							GeneralException.needDetailedInfo(e.getCause()));
 				} else {
-					MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-							.getInternationalizedMessages().error_of_plugin_painting(),
-							e.getMessage());
+					MessageBox.showSimpleMessage(
+							AppCurrContext.getInstance().getBundleMap()
+									.get("error_of_plugin_painting"), e.getMessage());
 				}
 			}
 		}
@@ -289,21 +289,21 @@ public final class PluginPanelCallbacksEvents {
 				} catch (JavaScriptException e) {
 					if (e.getCause() != null) {
 						MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-								.getInternationalizedMessages().error_of_plugin_getdata(),
-								e.getMessage(),
+								.getBundleMap().get("error_of_plugin_getdata"), e.getMessage(),
 								GeneralException.generateDetailedInfo(e.getCause()),
 								GeneralException.getMessageType(e.getCause()),
 								GeneralException.needDetailedInfo(e.getCause()));
 					} else {
-						MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-								.getInternationalizedMessages().error_of_plugin_getdata(),
-								e.getMessage());
+						MessageBox.showSimpleMessage(AppCurrContext.getInstance().getBundleMap()
+								.get("error_of_plugin_getdata"), e.getMessage());
 					}
 				}
 			} else {
-				MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-						.getInternationalizedMessages().error_of_plugin_getdata(),
-						"Не найден ElementPanel. Id=" + param.id());
+				MessageBox
+						.showSimpleMessage(
+								AppCurrContext.getInstance().getBundleMap()
+										.get("error_of_plugin_getdata"),
+								"Не найден ElementPanel. Id=" + param.id());
 			}
 		}
 	}

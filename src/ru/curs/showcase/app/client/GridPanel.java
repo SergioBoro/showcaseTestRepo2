@@ -50,8 +50,11 @@ public class GridPanel extends BasicElementPanelBasis {
 		return exportToExcelAll;
 	}
 
-	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance()
-			.getInternationalizedMessages().grid_message_popup_export_to_excel());
+	// private final MessagePopup mp = new
+	// MessagePopup(AppCurrContext.getInstance()
+	// .getInternationalizedMessages().grid_message_popup_export_to_excel());
+	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance().getBundleMap()
+			.get("grid_message_popup_export_to_excel"));
 
 	private final DataGridSettings settingsDataGrid = new DataGridSettings();
 	private DataGrid dg = null;
@@ -137,7 +140,6 @@ public class GridPanel extends BasicElementPanelBasis {
 		setElementInfo(element);
 		setContext(null);
 		setFirstLoading(true);
-
 		// --------------
 
 	}
@@ -155,8 +157,11 @@ public class GridPanel extends BasicElementPanelBasis {
 		// --------------
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-			p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-					.please_wait_data_are_loading()));
+			// p.add(new
+			// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+			// .please_wait_data_are_loading()));
+			p.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 		} else {
 			p.add(new HTML(""));
 		}
@@ -165,8 +170,8 @@ public class GridPanel extends BasicElementPanelBasis {
 			setDataGridPanel(UpdateType.FULL);
 		} else {
 
-			RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
-			RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
+			// RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
+			// RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
 
 			setDataGridPanelByGrid(grid1, UpdateType.FULL);
 
@@ -193,8 +198,11 @@ public class GridPanel extends BasicElementPanelBasis {
 		if (isFirstLoading()) {
 			setNeedResetLocalContext(true);
 			if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-				p.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-						.please_wait_data_are_loading()));
+				// p.add(new
+				// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+				// .please_wait_data_are_loading()));
+				p.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+						.get("please_wait_data_are_loading")));
 			} else {
 				p.add(new HTML(""));
 			}
@@ -203,9 +211,11 @@ public class GridPanel extends BasicElementPanelBasis {
 			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 			if (this.getElementInfo().getShowLoadingMessage()) {
 				hpHeader.clear();
-				hpHeader.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-						.please_wait_data_are_loading()));
-
+				// hpHeader.add(new
+				// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+				// .please_wait_data_are_loading()));
+				hpHeader.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+						.get("please_wait_data_are_loading")));
 				hpToolbar.setVisible(false);
 				dg.setVisible(false);
 				hpFooter.setVisible(false);
@@ -219,8 +229,8 @@ public class GridPanel extends BasicElementPanelBasis {
 		if (grid1 == null) {
 			setDataGridPanel(updateType);
 		} else {
-			RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
-			RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
+			// RootPanel.get(SHOWCASE_APP_CONTAINER).clear();
+			// RootPanel.get(SHOWCASE_APP_CONTAINER).add(p);
 			setDataGridPanelByGrid(grid1, updateType);
 		}
 	}
@@ -379,8 +389,10 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		hpToolbar.setSpacing(1);
 		if (grid.getUISettings().isVisibleExportToExcelCurrentPage()) {
-			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
-					.getInternationalizedMessages().grid_caption_export_to_excel_current_page());
+			// exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
+			// .getInternationalizedMessages().grid_caption_export_to_excel_current_page());
+			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_caption_export_to_excel_current_page"));
 			exportToExcelCurrentPage.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -390,8 +402,10 @@ public class GridPanel extends BasicElementPanelBasis {
 			hpToolbar.add(exportToExcelCurrentPage);
 		}
 		if (grid.getUISettings().isVisibleExportToExcelAll()) {
-			exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_export_to_excel_all());
+			// exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+			// .grid_caption_export_to_excel_all());
+			exportToExcelAll.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_caption_export_to_excel_all"));
 			exportToExcelAll.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -401,8 +415,10 @@ public class GridPanel extends BasicElementPanelBasis {
 			hpToolbar.add(exportToExcelAll);
 		}
 		if (grid.getUISettings().isVisibleCopyToClipboard()) {
-			copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-					.grid_caption_copy_to_clipboard());
+			// copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
+			// .grid_caption_copy_to_clipboard());
+			copyToClipboard.setTitle(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_caption_copy_to_clipboard"));
 			copyToClipboard.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -549,7 +565,7 @@ public class GridPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	private void resetGridSettingsToCurrent() {
+	public void resetGridSettingsToCurrent() {
 		localContext = new GridContext();
 		localContext.setPageNumber(grid.getDataSet().getRecordSet().getPageNumber());
 		localContext.setPageSize(grid.getDataSet().getRecordSet().getPageSize());
@@ -576,8 +592,10 @@ public class GridPanel extends BasicElementPanelBasis {
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
 
-		dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
-				.grid_error_caption_export_excel());
+		// dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .grid_error_caption_export_excel());
+		dh.setErrorCaption(AppCurrContext.getInstance().getBundleMap()
+				.get("grid_error_caption_export_excel"));
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridToExcel");
 
 		try {
@@ -594,9 +612,12 @@ public class GridPanel extends BasicElementPanelBasis {
 
 		} catch (SerializationException e) {
 			mp.hide();
-			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-					.getInternationalizedMessages().grid_error_caption_export_excel(),
-					e.getMessage());
+			// MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+			// .getInternationalizedMessages().grid_error_caption_export_excel(),
+			// e.getMessage());
+			MessageBox.showSimpleMessage(
+					AppCurrContext.getInstance().getBundleMap()
+							.get("grid_error_caption_export_excel"), e.getMessage());
 		}
 	}
 
@@ -724,8 +745,10 @@ public class GridPanel extends BasicElementPanelBasis {
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
 
-		dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
-				.grid_error_caption_file_download());
+		// dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
+		// .grid_error_caption_file_download());
+		dh.setErrorCaption(AppCurrContext.getInstance().getBundleMap()
+				.get("grid_error_caption_file_download"));
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
 
 		try {
@@ -735,9 +758,12 @@ public class GridPanel extends BasicElementPanelBasis {
 
 			dh.submit();
 		} catch (SerializationException e) {
-			MessageBox.showSimpleMessage(AppCurrContext.getInstance()
-					.getInternationalizedMessages().grid_error_caption_file_download(),
-					e.getMessage());
+			// MessageBox.showSimpleMessage(AppCurrContext.getInstance()
+			// .getInternationalizedMessages().grid_error_caption_file_download(),
+			// e.getMessage());
+			MessageBox.showSimpleMessage(
+					AppCurrContext.getInstance().getBundleMap()
+							.get("grid_error_caption_file_download"), e.getMessage());
 		}
 	}
 
@@ -898,8 +924,11 @@ public class GridPanel extends BasicElementPanelBasis {
 		p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			hpHeader.clear();
-			hpHeader.add(new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-					.please_wait_data_are_loading()));
+			// hpHeader.add(new
+			// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
+			// .please_wait_data_are_loading()));
+			hpHeader.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+					.get("please_wait_data_are_loading")));
 
 			hpToolbar.setVisible(false);
 			dg.setVisible(false);

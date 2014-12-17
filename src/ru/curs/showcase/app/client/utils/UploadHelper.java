@@ -19,8 +19,8 @@ import com.google.gwt.user.client.ui.*;
  */
 public final class UploadHelper extends RunServletByFormHelper {
 
-	private static final String UPLOAD_ERROR = AppCurrContext.getInstance()
-			.getInternationalizedMessages().uploadError();
+	private static final String UPLOAD_ERROR = AppCurrContext.getInstance().getBundleMap()
+			.get("uploadError");
 
 	private static final String SC_UPLOADER_CSS = "sc-uploader-comp";
 

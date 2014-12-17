@@ -134,9 +134,10 @@ public class MainPanel {
 				widthNumber = SizeParser.getSize(navigatorWidth);
 			} catch (NumberFormatException e) {
 
-				MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-						.getInternationalizedMessages().transformation_navigator_width_error(), e
-						.getClass().getName() + ": " + e.getMessage(),
+				MessageBox.showMessageWithDetails(
+						AppCurrContext.getInstance().getBundleMap()
+								.get("transformation_navigator_width_error"), e.getClass()
+								.getName() + ": " + e.getMessage(),
 						GeneralException.generateDetailedInfo(e), MessageType.ERROR,
 						GeneralException.needDetailedInfo(e));
 			}

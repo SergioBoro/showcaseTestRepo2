@@ -29,6 +29,7 @@ import ru.curs.showcase.core.html.xform.*;
 import ru.curs.showcase.core.plugin.*;
 import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
 import ru.curs.showcase.security.logging.*;
 import ru.curs.showcase.util.LoggerHelper;
@@ -287,4 +288,30 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		command.execute();
 	}
 
+	@Override
+	public Map<String, String> getBundle(CompositeContext context) throws GeneralException {
+		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
+		Map<String, String> map = new HashMap<String, String>();
+		ResourceBundle bundle = null;
+		String lang = "";
+		lang = UserDataUtils.getLocaleForCurrentUserdata();
+
+		if (!("en".equals(lang))) {
+			bundle =
+				ResourceBundle
+						.getBundle("ru.curs.showcase.app.server.internatiolization.constantsShowcase");
+		} else {
+			Locale loc = new Locale("en");
+			bundle =
+				ResourceBundle.getBundle(
+						"ru.curs.showcase.app.server.internatiolization.constantsShowcase", loc);
+		}
+
+		if (bundle != null) {
+			for (String key : bundle.keySet()) {
+				map.put(key, bundle.getString(key));
+			}
+		}
+		return map;
+	}
 }

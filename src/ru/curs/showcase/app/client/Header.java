@@ -53,9 +53,10 @@ public class Header {
 				SizeParser.getSize(AppCurrContext.getInstance().getMainPage().getHeaderHeight());
 		} catch (NumberFormatException e) {
 
-			MessageBox.showMessageWithDetails(AppCurrContext.getInstance()
-					.getInternationalizedMessages().transformation_header_or_footer_width_error(),
-					e.getClass().getName() + ": " + e.getMessage(),
+			MessageBox.showMessageWithDetails(
+					AppCurrContext.getInstance().getBundleMap()
+							.get("transformation_header_or_footer_width_error"), e.getClass()
+							.getName() + ": " + e.getMessage(),
 					GeneralException.generateDetailedInfo(e), MessageType.ERROR,
 					GeneralException.needDetailedInfo(e));
 		}

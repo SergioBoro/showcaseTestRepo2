@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.services;
 
-import java.util.List;
+import java.util.*;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
@@ -72,5 +72,7 @@ public interface DataServiceAsync {
 			AsyncCallback<GridToolBar> callback);
 
 	void getPluginData(RequestData request, AsyncCallback<ResponceData> callback);
+
+	void getBundle(CompositeContext context, AsyncCallback<Map<String, String>> callback);
 
 }
