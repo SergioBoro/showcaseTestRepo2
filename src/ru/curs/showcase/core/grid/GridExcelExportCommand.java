@@ -69,6 +69,11 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 			getContext().resetForReturnAllRecords();
 		}
 
+		try {
+			GridTransformer.includeDataPanelWidthAndHeightInSessionContext(getContext());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		GridGetCommand command = new GridGetCommand(getContext(), getElementInfo(), false);
 		grid = command.execute();
 		initCommandContext();
