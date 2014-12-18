@@ -106,7 +106,7 @@
 	<div id="showcaseBottomContainer"></div>
 	
 	
-    <img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden; width: 0px; height: 0px" />
+<%if ("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("crossdomain.authentication"))) {%><img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden; width: 0px; height: 0px" /><%}%>
     
 </body>
 </html>

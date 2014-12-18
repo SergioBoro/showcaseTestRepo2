@@ -33,8 +33,13 @@ pageEncoding="UTF-8"%>
 <script type="text/javascript">
 
 	function checkAuthenticationImageSize() {
+		var w;
+		<%if ("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("crossdomain.authentication"))) {%>
 		var pic = document.getElementById("authenticationImage");
-		var w = pic.offsetWidth;  
+		w = pic.offsetWidth;<%}%>  
+		<%if (!("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("crossdomain.authentication")))) {%>
+		w = 1000;
+		<%}%>
 		
 		if (w == 178) {	
 			if (document.getElementById('helloMessage')) 
@@ -156,7 +161,7 @@ pageEncoding="UTF-8"%>
 </form>
 
 <br/>
-<img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden" />
+<%if ("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("crossdomain.authentication"))) {%><img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden" /><%}%>
 
 </body>
 </html>
