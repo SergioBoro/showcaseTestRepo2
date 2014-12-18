@@ -525,7 +525,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		if (gridMetadata.getUISettings().getGridWidth().contains("px")) {
 			int ind = gridMetadata.getUISettings().getGridWidth().indexOf("px");
-			String str = gridMetadata.getUISettings().getGridWidth().substring(0, ind);
+			String str = gridMetadata.getUISettings().getGridWidth().substring(0, ind).trim();
 			int number = Integer.parseInt(str);
 			number = number + 2;
 
