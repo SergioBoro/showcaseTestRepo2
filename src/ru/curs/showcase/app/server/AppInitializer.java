@@ -171,7 +171,7 @@ public final class AppInitializer {
 			}
 
 			Boolean b = false;
-			if (userdatasList.size() > 0) {
+			if (userdatasList.size() > 1) {
 				b = true;
 			}
 
