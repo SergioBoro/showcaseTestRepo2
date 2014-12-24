@@ -115,6 +115,11 @@ public final class AppInfoSingleton {
 	private Map<ActivitiEventType, String> activitiEventScriptDictionary =
 		new HashMap<ActivitiEventType, String>();
 
+	/**
+	 * Карта, содержащая хост и строку запроса. Используется в файле index.jsp.
+	 */
+	private Map<String, String> hostUserdataMap = new HashMap<String, String>();
+
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
 		return lastLogEvents;
 	}
@@ -501,7 +506,16 @@ public final class AppInfoSingleton {
 	}
 
 	public void setActivitiEventScriptDictionary(
-			Map<ActivitiEventType, String> anActivitiEventScriptDictionary) {
+			final Map<ActivitiEventType, String> anActivitiEventScriptDictionary) {
 		this.activitiEventScriptDictionary = anActivitiEventScriptDictionary;
 	}
+
+	public Map<String, String> getHostUserdataMap() {
+		return hostUserdataMap;
+	}
+
+	public void setHostUserdataMap(final Map<String, String> anHostUserdataMap) {
+		this.hostUserdataMap = anHostUserdataMap;
+	}
+
 }

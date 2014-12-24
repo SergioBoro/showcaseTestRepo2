@@ -1,20 +1,35 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- 
+
 <%@page import="ru.curs.showcase.security.SecurityParamsFactory"%>
 <%@page import="ru.curs.showcase.runtime.UserDataUtils"%>      
 <%@page import="ru.curs.showcase.runtime.ExternalClientLibrariesUtils"%>
-
+<%@page import="ru.curs.showcase.runtime.AppInfoSingleton"%>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <%
-	String userdataId = request.getParameter("userdata");
+	String host = request.getRemoteHost();
+	String userdataId = request.getParameter("userdata");	
+	String query = request.getQueryString();
+	
+	if(userdataId != null){
+		AppInfoSingleton.getAppInfo().getHostUserdataMap().put(host, query);
+	}
 	if (userdataId == null) {
 		userdataId = "default";
-	}
+		if(AppInfoSingleton.getAppInfo().getHostUserdataMap().get(host) == null) {
+			if(query != null) {
+				AppInfoSingleton.getAppInfo().getHostUserdataMap().put(host, query + "&userdata=" + userdataId);
+			}
+			if(query == null) {
+				AppInfoSingleton.getAppInfo().getHostUserdataMap().put(host, "userdata=" + userdataId);
+			}
+		}
+	} 
+	
 	String title = "Showcase index page";
 	if (UserDataUtils.getOptionalProp("index.title", userdataId) != null) {
 		title = UserDataUtils.getOptionalProp("index.title", userdataId);
@@ -26,6 +41,18 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=8"/>
 -->	
 	<title><%=title%></title>
+	
+<%
+if(request.getParameter("userdata") == null && AppInfoSingleton.getAppInfo().getHostUserdataMap().get(host).contains("userdata=")) {
+%>
+<script type="text/javascript">
+var host = window.location.host;
+var path = window.location.pathname;
+var protocol = window.location.protocol;
+window.location.replace(protocol + "//" + host + path + "?<%=AppInfoSingleton.getAppInfo().getHostUserdataMap().get(host)%>");
+</script>
+<%}%>
+
     <link rel="stylesheet" href="xsltforms/xsltforms.css" type="text/css" />	
 	<link rel="shortcut icon" href="solutions/<%=userdataId%>/resources/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="solutions/<%=userdataId%>/resources/favicon.ico" type="image/x-icon" />
@@ -101,10 +128,8 @@
      <![endif]-->
 
 	<div id="showcaseHeaderContainer"></div>
-	<div id="showcaseAppContainer">
-	</div>
+	<div id="showcaseAppContainer"></div>
 	<div id="showcaseBottomContainer"></div>
-	
 	
 <%if ("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication"))) {%><img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden; width: 0px; height: 0px" /><%}%>
     
