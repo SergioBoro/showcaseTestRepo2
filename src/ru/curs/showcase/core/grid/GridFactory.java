@@ -218,7 +218,8 @@ public class GridFactory extends CompBasedElementFactory {
 	}
 
 	private String getPluginsRoot() {
-		return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+		// return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+		return AppInfoSingleton.getAppInfo().getSolutionsDirRoot() + "/"
 				+ UserDataUtils.GENERAL_RES_ROOT;
 	}
 
