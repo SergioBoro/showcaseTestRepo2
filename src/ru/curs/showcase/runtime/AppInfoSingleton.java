@@ -120,6 +120,8 @@ public final class AppInfoSingleton {
 	 */
 	private Map<String, String> hostUserdataMap = new HashMap<String, String>();
 
+	private String solutionsDirRoot;
+
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
 		return lastLogEvents;
 	}
@@ -518,4 +520,11 @@ public final class AppInfoSingleton {
 		this.hostUserdataMap = anHostUserdataMap;
 	}
 
+	public String getSolutionsDirRoot() {
+		return solutionsDirRoot;
+	}
+
+	public void setSolutionsDirRoot(final String aSolutionsDirRoot) {
+		this.solutionsDirRoot = aSolutionsDirRoot;
+	}
 }

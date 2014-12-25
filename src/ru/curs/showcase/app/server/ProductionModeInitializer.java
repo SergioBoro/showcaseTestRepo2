@@ -337,6 +337,8 @@ public final class ProductionModeInitializer {
 				LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
 			}
 		}
+		AppInfoSingleton.getAppInfo().setSolutionsDirRoot(
+				aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR));
 		return isAllFilesCopied;
 	}
 
