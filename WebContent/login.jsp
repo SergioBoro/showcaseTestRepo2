@@ -34,10 +34,10 @@ pageEncoding="UTF-8"%>
 
 	function checkAuthenticationImageSize() {
 		var w;
-		<%if ("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication"))) {%>
+		<%if ("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication").trim())) {%>
 		var pic = document.getElementById("authenticationImage");
 		w = pic.offsetWidth;<%}%>  
-		<%if (!("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication")))) {%>
+		<%if (!("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication").trim()))) {%>
 		w = 1000;
 		<%}%>
 		
@@ -161,7 +161,7 @@ pageEncoding="UTF-8"%>
 </form>
 
 <br/>
-<%if ("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication"))) {%><img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden" /><%}%>
+<%if ("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication").trim())) {%><img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden" /><%}%>
 
 </body>
 </html>

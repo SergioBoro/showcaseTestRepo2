@@ -131,7 +131,7 @@ window.location.replace(protocol + "//" + host + path + "?<%=AppInfoSingleton.ge
 	<div id="showcaseAppContainer"></div>
 	<div id="showcaseBottomContainer"></div>
 	
-<%if ("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication"))) {%><img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden; width: 0px; height: 0px" /><%}%>
+<%if ("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication").trim())) {%><img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden; width: 0px; height: 0px" /><%}%>
     
 </body>
 </html>
