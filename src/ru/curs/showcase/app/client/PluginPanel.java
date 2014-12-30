@@ -17,6 +17,11 @@ import com.google.gwt.user.client.ui.*;
  */
 public class PluginPanel extends BasicElementPanelBasis {
 
+	private static final String PLEASE_WAIT_DATA_ARE_LOADING = "please_wait_data_are_loading";
+
+	private static final String ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER =
+		"error_of_plugin_data_retrieving_from_server";
+
 	public PluginPanel(final CompositeContext context1, final DataPanelElementInfo element1) {
 		this.setContext(context1);
 		this.setElementInfo(element1);
@@ -28,7 +33,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
 			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+					.get(PLEASE_WAIT_DATA_ARE_LOADING)));
 		} else {
 			generalPluginPanel.add(new HTML(""));
 		}
@@ -58,7 +63,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
 			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+					.get(PLEASE_WAIT_DATA_ARE_LOADING)));
 		} else {
 			generalPluginPanel.add(new HTML(""));
 		}
@@ -78,7 +83,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 		requestData.setElInfo((PluginInfo) getElementInfo());
 
 		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
-				.getInstance().getBundleMap().get("error_of_plugin_data_retrieving_from_server")) {
+				.getInstance().getBundleMap().get(ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER)) {
 
 			@Override
 			public void onSuccess(final Plugin aPlugin) {
@@ -145,6 +150,10 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 		String params = "'" + getDivIdPlugin() + "'";
 		for (String param : aPlugin.getParams()) {
+			if (aPlugin.getCreateProc().toLowerCase().contains("toolbar")) {
+				param = param.replace("parentId", getDivIdPlugin());
+			}
+
 			params = params + ", " + param.trim();
 		}
 
@@ -247,7 +256,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalPluginPanel.clear();
 			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+					.get(PLEASE_WAIT_DATA_ARE_LOADING)));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -258,7 +267,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 		requestData.setElInfo((PluginInfo) getElementInfo());
 
 		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
-				.getInstance().getBundleMap().get("error_of_plugin_data_retrieving_from_server")) {
+				.getInstance().getBundleMap().get(ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER)) {
 
 			@Override
 			public void onSuccess(final Plugin aPlugin) {
@@ -309,7 +318,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalPluginPanel.clear();
 			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+					.get(PLEASE_WAIT_DATA_ARE_LOADING)));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -320,7 +329,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 		requestData.setElInfo((PluginInfo) getElementInfo());
 
 		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
-				.getInstance().getBundleMap().get("error_of_plugin_data_retrieving_from_server")) {
+				.getInstance().getBundleMap().get(ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER)) {
 
 			@Override
 			public void onSuccess(final Plugin aPlugin) {
