@@ -101,8 +101,14 @@ window.location.replace(protocol + "//" + host + path + "?<%=AppInfoSingleton.ge
 <body class="claro">
 
 <%
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!	
+	if (request.getSession(false)!=null && !request.getSession(false).isNew()) {
+  		request.getSession(false).invalidate();
+	}	
+
 	String authGifSrc = String.format("%s/authentication.gif?sesid=%s",
-			SecurityParamsFactory.getAuthServerUrl(), request.getSession()
+			SecurityParamsFactory.getAuthServerUrl(), request.getSession(true) //!!!!!!!!!
 					.getId());
 
     authGifSrc = SecurityParamsFactory.correctAuthGifSrcRequestInCaseOfInaccessibility(authGifSrc);
