@@ -101,14 +101,12 @@ window.location.replace(protocol + "//" + host + path + "?<%=AppInfoSingleton.ge
 <body class="claro">
 
 <%
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!	
 	if (request.getSession(false)!=null && !request.getSession(false).isNew()) {
   		request.getSession(false).invalidate();
 	}	
 
 	String authGifSrc = String.format("%s/authentication.gif?sesid=%s",
-			SecurityParamsFactory.getAuthServerUrl(), request.getSession(true) //!!!!!!!!!
+			SecurityParamsFactory.getAuthServerUrl(), request.getSession(true) 
 					.getId());
 
     authGifSrc = SecurityParamsFactory.correctAuthGifSrcRequestInCaseOfInaccessibility(authGifSrc);
@@ -137,7 +135,7 @@ window.location.replace(protocol + "//" + host + path + "?<%=AppInfoSingleton.ge
 	<div id="showcaseAppContainer"></div>
 	<div id="showcaseBottomContainer"></div>
 	
-<%if ("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication").trim())) {%><img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden; width: 0px; height: 0px" /><%}%>
+<%if (UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication") != null && "true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication").trim())) {%><img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden; width: 0px; height: 0px" /><%}%>
     
 </body>
 </html>
