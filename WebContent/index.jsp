@@ -49,7 +49,7 @@ if(request.getParameter("userdata") == null && AppInfoSingleton.getAppInfo().get
 var host = window.location.host;
 var path = window.location.pathname;
 var protocol = window.location.protocol;
-window.location.replace(protocol + "//" + host + path + "?<%=AppInfoSingleton.getAppInfo().getHostUserdataMap().get(host)%>");
+<%-- window.location.replace(protocol + "//" + host + path + "?<%=AppInfoSingleton.getAppInfo().getHostUserdataMap().get(host)%>"); --%>
 </script>
 <%}%>
 
