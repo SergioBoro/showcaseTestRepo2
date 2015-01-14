@@ -101,12 +101,8 @@ var protocol = window.location.protocol;
 <body class="claro">
 
 <%
-	if (request.getSession(false)!=null && !request.getSession(false).isNew()) {
-  		request.getSession(false).invalidate();
-	}	
-
 	String authGifSrc = String.format("%s/authentication.gif?sesid=%s",
-			SecurityParamsFactory.getAuthServerUrl(), request.getSession(true) 
+			SecurityParamsFactory.getAuthServerUrl(), request.getSession() 
 					.getId());
 
     authGifSrc = SecurityParamsFactory.correctAuthGifSrcRequestInCaseOfInaccessibility(authGifSrc);

@@ -1,6 +1,7 @@
 package ru.curs.showcase.security;
 
 import java.io.IOException;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -45,6 +46,22 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 		String domain = request.getParameter(DOMAIN);
 		SignedUsernamePasswordAuthenticationToken authRequest =
 			new SignedUsernamePasswordAuthenticationToken(username, password);
+
+		HttpSession session = request.getSession();
+
+		Enumeration en = session.getAttributeNames();
+		Map<String, Object> values = new HashMap<String, Object>();
+		while (en.hasMoreElements()) {
+			String s = (String) en.nextElement();
+			values.put(s, session.getAttribute(s));
+		}
+
+		session.invalidate();
+
+		HttpSession newSession = request.getSession(true);
+		for (String str : values.keySet()) {
+			newSession.setAttribute(str, values.get(str));
+		}
 
 		UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
 		// установка деталей внутреннего пользователя
