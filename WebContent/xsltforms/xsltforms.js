@@ -1524,7 +1524,17 @@ XsltForms_browser.dialog = {
 			div.style.zIndex = (this.zindex + this.initzindex)*2-1;
 			this.showSelects(div, false, modal);
 			if (parent) {
-				var absPos = XsltForms_browser.getAbsolutePos(parent);
+				// [KURS
+//				var absPos = XsltForms_browser.getAbsolutePos(parent);
+
+				var absPos;
+			    if (parent.getBoundingClientRect) {
+			    	absPos = getOffsetRect(parent);
+			    } else {
+			    	absPos = XsltForms_browser.getAbsolutePos(parent);
+			    }
+				// KURS]
+				
 				XsltForms_browser.setPos(div, absPos.x, (absPos.y + parent.offsetHeight));
 			} else {
 				size = XsltForms_browser.getWindowSize();
@@ -14192,6 +14202,29 @@ function getSubformInstanceDocument(idModel, idInstance)
 {
 	return getSubformModel(idModel).getInstanceDocument(idInstance); 
 }
+
+
+
+function getOffsetRect(elem) {
+	
+    var box = elem.getBoundingClientRect();
+    
+    var body = document.body;
+    var docElem = document.documentElement;
+    
+    var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
+    var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
+    
+    var clientTop = docElem.clientTop || body.clientTop || 0;
+    var clientLeft = docElem.clientLeft || body.clientLeft || 0;
+    
+    var top  = box.top +  scrollTop - clientTop;
+    var left = box.left + scrollLeft - clientLeft;
+    
+    return { y: Math.round(top), x: Math.round(left) };
+    
+}
+
 
 //KURS]
 
