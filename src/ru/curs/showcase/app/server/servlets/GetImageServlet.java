@@ -32,6 +32,19 @@ public class GetImageServlet extends HttpServlet {
 
 		String procName = request.getParameter("proc");
 		String paramsForProc = request.getParameter("params");
+		String typeOfReterningDate = request.getParameter("type");
+		if (typeOfReterningDate.isEmpty() || (typeOfReterningDate == null)) {
+			typeOfReterningDate = "image/jpeg";
+		} else {
+			switch (typeOfReterningDate) {
+			case "pdf":
+				typeOfReterningDate = "Application/pdf";
+				break;
+			default:
+				typeOfReterningDate = "image/jpeg";
+			}
+
+		}
 
 		response.reset();
 
@@ -47,7 +60,7 @@ public class GetImageServlet extends HttpServlet {
 		// кэшируем на год
 		response.setDateHeader("Expires", now + chachDurationInMs);
 
-		response.setContentType("image/jpeg");
+		response.setContentType(typeOfReterningDate);
 		response.setCharacterEncoding("UTF-8");
 
 		response.setStatus(HttpServletResponse.SC_OK);
