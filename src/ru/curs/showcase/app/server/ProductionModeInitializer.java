@@ -110,6 +110,10 @@ public final class ProductionModeInitializer {
 	}
 
 	public static void initUserDatas(final ServletContext aServletContext) {
+
+		AppInfoSingleton.getAppInfo().setSolutionsDirRoot(
+				aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR));
+
 		AppInitializer.checkUserDataDir(
 				aServletContext.getInitParameter(SHOWCASE_ROOTPATH_USERDATA_PARAM), "context.xml");
 		AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
@@ -224,7 +228,6 @@ public final class ProductionModeInitializer {
 			files = generalResRoot.list();
 		}
 
-		File f = null;
 		BatchFileProcessor fprocessor = null;
 		if (files != null) {
 			for (String s : files) {
@@ -337,8 +340,6 @@ public final class ProductionModeInitializer {
 				LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
 			}
 		}
-		AppInfoSingleton.getAppInfo().setSolutionsDirRoot(
-				aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR));
 		return isAllFilesCopied;
 	}
 
