@@ -111,6 +111,11 @@ public final class XMLJSONConverter {
 		result = result.substring(fstr.length(), ind2 - 1);
 		result = result.trim();
 		result = result.replaceAll(">\\n[ ]+", ">");
+		if (result.contains("\\&quot;")) {
+			while (result.contains("\\&quot;")) {
+				result = result.replace("\\&quot;", "");
+			}
+		}
 		return result;
 	}
 
