@@ -33,7 +33,7 @@ public class GetImageServlet extends HttpServlet {
 		String procName = request.getParameter("proc");
 		String paramsForProc = request.getParameter("params");
 		String typeOfReterningDate = request.getParameter("type");
-		if (typeOfReterningDate.isEmpty() || (typeOfReterningDate == null)) {
+		if ((typeOfReterningDate == null) || typeOfReterningDate.isEmpty()) {
 			typeOfReterningDate = "image/jpeg";
 		} else {
 			switch (typeOfReterningDate) {
