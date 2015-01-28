@@ -371,7 +371,7 @@ function createLiveDGrid(elementId, parentId, metadata) {
 		}
 		
 	    var	grid = new declare(declareGrid)({
-				store: store,
+//				store: store,
 				getBeforePut: false,
 				minRowsPerPage: parseInt(metadata["common"]["limit"]),
 				selectionMode: selectionMode,
@@ -469,6 +469,8 @@ function createLiveDGrid(elementId, parentId, metadata) {
 				firstLoading = false;
 			}
 		});
+		
+	    grid.set("store", store);
 		
 	});
 }
