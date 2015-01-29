@@ -485,6 +485,13 @@ function createPageDGrid(elementId, parentId, metadata) {
 			}
 		});
 		
+		grid.on("dgrid-datachange", function(event){
+			if(event.value.indexOf("<") > -1){
+				event.returnValue = false;
+				console.log("Заблокирована строка, содержащая символ '<'");
+			}
+		});
+		
 		for(var k in metadata["columns"]) {
 			grid.styleColumn(metadata["columns"][k]["id"], metadata["columns"][k]["style"]);
 		}

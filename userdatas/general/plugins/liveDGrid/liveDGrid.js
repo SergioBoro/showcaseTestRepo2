@@ -470,6 +470,13 @@ function createLiveDGrid(elementId, parentId, metadata) {
 			}
 		});
 		
+		grid.on("dgrid-datachange", function(event){
+			if(event.value.indexOf("<") > -1){
+				event.returnValue = false;
+				console.log("Заблокирована строка, содержащая символ '<'");
+			}
+		});
+		
 	    grid.set("store", store);
 		
 	});

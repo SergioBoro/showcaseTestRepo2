@@ -534,13 +534,12 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				firstLoading = false;
 			}
 		});
-		
 
-		
 		grid.on("dgrid-datachange", function(event){
-//			console.log("dgrid-datachange: ", event);
-			
-			
+			if(event.value.indexOf("<") > -1){
+				event.returnValue = false;
+				console.log("Заблокирована строка, содержащая символ '<'");
+			}
 		});
 		
 		
