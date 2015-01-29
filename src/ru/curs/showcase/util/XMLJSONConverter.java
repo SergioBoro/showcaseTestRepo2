@@ -79,6 +79,12 @@ public final class XMLJSONConverter {
 				str = str.replace("\"" + s + "\"", s);
 			}
 		}
+
+		while (str.contains("\"[") && str.contains("]\"")) {
+			str = str.replace("\"[", "'[");
+			str = str.replace("]\"", "]'");
+		}
+
 		return str;
 	}
 
