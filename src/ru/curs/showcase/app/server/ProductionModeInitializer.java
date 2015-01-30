@@ -176,6 +176,7 @@ public final class ProductionModeInitializer {
 		copyDefaultUserData(aServletContext);
 		copyOtherUserDatas(aServletContext);
 		copyClientExtLib(aServletContext);
+		copyLoginJsp(aServletContext);
 	}
 
 	private static void copyOtherUserDatas(final ServletContext aServletContext) {
@@ -249,6 +250,31 @@ public final class ProductionModeInitializer {
 		}
 
 		if (!isAllFilesCopied) {
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(NOT_ALL_FILES_COPIED_ERROR);
+			}
+		}
+	}
+
+	private static void copyLoginJsp(final ServletContext aServletContext) {
+		Boolean isFileCopied = true;
+		File generalResRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
+		File solutions = new File(AppInfoSingleton.getAppInfo().getSolutionsDirRoot());
+
+		BatchFileProcessor fprocessor =
+			new BatchFileProcessor(generalResRoot.getAbsolutePath(), new RegexFilenameFilter(
+					"^[.].*", false));
+
+		if (fprocessor != null) {
+			try {
+				fprocessor.processForLoginJsp(new CopyFileAction(solutions.getParent()));
+			} catch (IOException e) {
+				isFileCopied = false;
+				LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
+			}
+		}
+
+		if (!isFileCopied) {
 			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
 				LOGGER.error(NOT_ALL_FILES_COPIED_ERROR);
 			}
