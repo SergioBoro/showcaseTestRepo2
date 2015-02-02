@@ -91,6 +91,12 @@ public final class ProductionModeInitializer {
 
 			String history = UserDataUtils.getGeneralOptionalProp("activiti.history.level");
 
+			String databaseTablePrefix =
+				UserDataUtils.getGeneralOptionalProp("activiti.database.table.prefix");
+
+			String tablePrefixIsSchema =
+				UserDataUtils.getGeneralOptionalProp("activiti.table.prefix.is.schema");
+
 			ProcessEngineConfiguration conf =
 				ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration();
 			conf.setDatabaseType(databaseType);
@@ -100,6 +106,20 @@ public final class ProductionModeInitializer {
 			conf.setJdbcUsername(jdbcUsername);
 			conf.setJdbcPassword(jdbcPassword);
 			conf.setHistory(history);
+
+			if (databaseTablePrefix != null && !("".equals(databaseTablePrefix))) {
+				conf.setDatabaseTablePrefix(databaseTablePrefix);
+
+				if (tablePrefixIsSchema != null && !("".equals(tablePrefixIsSchema))) {
+					Boolean b = false;
+					try {
+						b = Boolean.parseBoolean(tablePrefixIsSchema);
+					} catch (Exception e) {
+						LOGGER.error("The value of property could not be convert to Boolean.");
+					}
+					conf.setTablePrefixIsSchema(b);
+				}
+			}
 
 			ProcessEngine processEngine = conf.buildProcessEngine();
 			AppInfoSingleton.getAppInfo().setActivitiProcessEngine(processEngine);
