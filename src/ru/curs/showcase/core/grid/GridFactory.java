@@ -1106,11 +1106,11 @@ public class GridFactory extends CompBasedElementFactory {
 	}
 
 	private void determineValueType(final Column column, final int sqlType) {
-		if (column.getValueType() != null) {
-			return; // тип задан явно
-		}
 		if (column.isTreeGridIcon()) {
 			column.setValueType(GridValueType.IMAGE);
+		}
+		if (column.getValueType() != null) {
+			return; // тип задан явно
 		} else if (SQLUtils.isStringType(sqlType)) {
 			column.setValueType(GridValueType.STRING);
 		} else if (SQLUtils.isIntType(sqlType)) {
