@@ -914,7 +914,6 @@ public class GridFactory extends CompBasedElementFactory {
 		res.setId(colId);
 		res.setCaption(colId);
 		res.setMinWidthPx(0);
-		res.setValueType(GridValueType.STRING);
 		return res;
 	}
 
@@ -1258,13 +1257,14 @@ public class GridFactory extends CompBasedElementFactory {
 				String colId = XMLUtils.unEscapeTagXml(localName);
 				curColumn = getResult().getColumnById(colId);
 
-				if (counterRecord == firstNumber) {
-					if (curColumn == null) {
-						curColumn = createColumn(colId);
-						getResult().getDataSet().getColumnSet().getColumns().add(curColumn);
-						curColumn.setIndex(getResult().getDataSet().getColumnSet().getColumns()
-								.size() - 1);
-					}
+				if (curColumn == null) {
+					curColumn = createColumn(colId);
+					getResult().getDataSet().getColumnSet().getColumns().add(curColumn);
+					curColumn
+							.setIndex(getResult().getDataSet().getColumnSet().getColumns().size() - 1);
+				}
+
+				if (curColumn.getValueType() == null) {
 					int sqltype;
 					if (atts.getValue(SQLTYPE_ATTR) == null) {
 						sqltype = Types.VARCHAR;
@@ -1272,6 +1272,11 @@ public class GridFactory extends CompBasedElementFactory {
 						sqltype = Integer.valueOf(atts.getValue("sqltype"));
 					}
 					determineValueType(curColumn, sqltype);
+				}
+
+				if ((curColumn.getDisplayMode() == null)
+						&& (curColumn.getHorizontalAlignment() == null)
+						&& (curColumn.getWidth() == null)) {
 					setupStdColumnProps(curColumn);
 					curColumn.setSorting(getCallContext().getSortingForColumn(curColumn));
 				}
