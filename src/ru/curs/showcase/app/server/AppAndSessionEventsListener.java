@@ -43,25 +43,28 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 			WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext());
 		actx = (AbstractRefreshableWebApplicationContext) ctx;
 		actx.refresh();
-
 		try {
-			Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
+			try {
+				Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
 
-			if (celestaProps != null) {
-				Celesta.initialize(celestaProps);
-				AppInfoSingleton.getAppInfo().setIsCelestaInitialized(true);
-			} else {
-				if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {
-					LOGGER.warn("Celesta properties (in app.properties) is not set");
+				if (celestaProps != null) {
+					Celesta.initialize(celestaProps);
+					AppInfoSingleton.getAppInfo().setIsCelestaInitialized(true);
+				} else {
+					if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {
+						LOGGER.warn("Celesta properties (in app.properties) is not set");
+					}
+					AppInfoSingleton.getAppInfo().setCelestaInitializationException(
+							new Exception("Celesta properties (in app.properties) is not set"));
 				}
-				AppInfoSingleton.getAppInfo().setCelestaInitializationException(
-						new Exception("Celesta properties (in app.properties) is not set"));
+			} catch (Exception ex) {
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+					LOGGER.error("Ошибка инициализации celesta", ex);
+				}
+				AppInfoSingleton.getAppInfo().setCelestaInitializationException(ex);
 			}
-		} catch (Exception ex) {
-			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
-				LOGGER.error("Ошибка инициализации celesta", ex);
-			}
-			AppInfoSingleton.getAppInfo().setCelestaInitializationException(ex);
+		} finally {
+			ProductionModeInitializer.initActiviti();
 		}
 	}
 

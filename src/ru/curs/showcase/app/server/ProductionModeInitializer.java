@@ -61,7 +61,7 @@ public final class ProductionModeInitializer {
 		initUserDatas(aServletContext);
 		readCSSs();
 		JMXBeanRegistrator.register();
-		initActiviti();
+		// initActiviti();
 	}
 
 	public static void initActiviti() {
