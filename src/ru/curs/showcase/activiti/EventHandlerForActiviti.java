@@ -1,7 +1,7 @@
 package ru.curs.showcase.activiti;
 
 import java.io.*;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.*;
 
 import org.activiti.engine.delegate.event.*;
@@ -57,15 +57,19 @@ public class EventHandlerForActiviti implements ActivitiEventListener {
 		for (ActivitiEventType aet : AppInfoSingleton.getAppInfo()
 				.getActivitiEventScriptDictionary().keySet()) {
 			if (aet == event.getType()) {
-				String procName =
+				List<String> procNameList =
 					AppInfoSingleton.getAppInfo().getActivitiEventScriptDictionary().get(aet);
 
-				if (procName.endsWith(".cl") || procName.endsWith(".celesta")) {
-					LOGGER.info("Выполняется celesta-скрипт " + procName);
-					handleCelestaScript(procName, event);
-				} else if (procName.endsWith(".py")) {
-					LOGGER.info("Выполняется jython-скрипт " + procName);
-					handlePythonScript(procName, event);
+				if (!procNameList.isEmpty()) {
+					for (String procName : procNameList) {
+						if (procName.endsWith(".cl") || procName.endsWith(".celesta")) {
+							LOGGER.info("Выполняется celesta-скрипт " + procName);
+							handleCelestaScript(procName, event);
+						} else if (procName.endsWith(".py")) {
+							LOGGER.info("Выполняется jython-скрипт " + procName);
+							handlePythonScript(procName, event);
+						}
+					}
 				}
 			}
 		}

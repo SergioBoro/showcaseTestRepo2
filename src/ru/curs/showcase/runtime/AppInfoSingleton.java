@@ -112,8 +112,8 @@ public final class AppInfoSingleton {
 	/**
 	 * Словарь (карта) соответствия событий Activiti и Celesta-скриптов.
 	 */
-	private Map<ActivitiEventType, String> activitiEventScriptDictionary =
-		new HashMap<ActivitiEventType, String>();
+	private Map<ActivitiEventType, List<String>> activitiEventScriptDictionary =
+		new HashMap<ActivitiEventType, List<String>>();
 
 	/**
 	 * Карта, содержащая хост и строку запроса. Используется в файле index.jsp.
@@ -121,6 +121,8 @@ public final class AppInfoSingleton {
 	private Map<String, String> hostUserdataMap = new HashMap<String, String>();
 
 	private String solutionsDirRoot;
+
+	private Map<String, Object> sessionAttributesMap = null;
 
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
 		return lastLogEvents;
@@ -503,12 +505,12 @@ public final class AppInfoSingleton {
 		this.activitiProcessEngine = aactivitiProcessEngine;
 	}
 
-	public Map<ActivitiEventType, String> getActivitiEventScriptDictionary() {
+	public Map<ActivitiEventType, List<String>> getActivitiEventScriptDictionary() {
 		return activitiEventScriptDictionary;
 	}
 
 	public void setActivitiEventScriptDictionary(
-			final Map<ActivitiEventType, String> anActivitiEventScriptDictionary) {
+			final Map<ActivitiEventType, List<String>> anActivitiEventScriptDictionary) {
 		this.activitiEventScriptDictionary = anActivitiEventScriptDictionary;
 	}
 
@@ -527,4 +529,13 @@ public final class AppInfoSingleton {
 	public void setSolutionsDirRoot(final String aSolutionsDirRoot) {
 		this.solutionsDirRoot = aSolutionsDirRoot;
 	}
+
+	public void setSessionAttributesMap(final Map<String, Object> aSessionAttributesMap) {
+		this.sessionAttributesMap = aSessionAttributesMap;
+	}
+
+	public Map<String, Object> getSessionAttributesMap() {
+		return sessionAttributesMap;
+	}
+
 }
