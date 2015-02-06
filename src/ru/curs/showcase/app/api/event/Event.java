@@ -129,4 +129,31 @@ public class Event implements SerializableElement, SizeEstimate {
 		result += action.sizeEstimate();
 		return result;
 	}
+
+	/**
+	 * Проверка на то, что два события являются "одинаковыми".
+	 */
+	public boolean extEquals(final Event testEvent) {
+		if ((id2 == null) && (testEvent.getId2() != null)) {
+			return false;
+		}
+		if ((id2 != null) && (testEvent.getId2() == null)) {
+			return false;
+		}
+
+		if ((id2 == null) && (testEvent.getId2() == null)) {
+			if (id1.equals(testEvent.getId1())
+					&& (interactionType == testEvent.getInteractionType())) {
+				return true;
+			}
+		}
+
+		if (id1.equals(testEvent.getId1()) && id2.equals(testEvent.getId2())
+				&& (interactionType == testEvent.getInteractionType())) {
+			return true;
+		}
+
+		return false;
+	}
+
 }

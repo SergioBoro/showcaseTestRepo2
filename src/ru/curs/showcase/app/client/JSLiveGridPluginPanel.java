@@ -246,8 +246,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 				.getEvents()) {
 			for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridExtradata.getEventManager()
 					.getEvents()) {
-				if (ev.getId1().equals(evOld.getId1()) && ev.getId2().equals(evOld.getId2())
-						&& (ev.getInteractionType() == evOld.getInteractionType())) {
+				if (ev.extEquals(evOld)) {
 					gridExtradata.getEventManager().getEvents().remove(evOld);
 					break;
 				}
@@ -714,9 +713,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 					needAdd = true;
 					for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridExtradata
 							.getEventManager().getEvents()) {
-						if (ev.getId1().equals(evOld.getId1())
-								&& ev.getId2().equals(evOld.getId2())
-								&& (ev.getInteractionType() == evOld.getInteractionType())) {
+						if (ev.extEquals(evOld)) {
 							needAdd = false;
 							break;
 						}
