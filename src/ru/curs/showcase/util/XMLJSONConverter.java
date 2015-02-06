@@ -92,15 +92,15 @@ public final class XMLJSONConverter {
 			}
 		}
 
-		while (str.contains("\"[") && str.contains("]\"")) {
-			str = str.replace("\"[", "'[");
-			str = str.replace("]\"", "]'");
-		}
-
-		while (str.contains("\\\\"))
-			str = str.replace("\\\\", "\\");
-		while (str.contains("\\'"))
-			str = str.replace("\\'", "'");
+		// while (str.contains("\"[") && str.contains("]\"")) {
+		// str = str.replace("\"[", "'[");
+		// str = str.replace("]\"", "]'");
+		// }
+		//
+		// while (str.contains("\\\\"))
+		// str = str.replace("\\\\", "\\");
+		// while (str.contains("\\'"))
+		// str = str.replace("\\'", "'");
 
 		return str;
 	}
