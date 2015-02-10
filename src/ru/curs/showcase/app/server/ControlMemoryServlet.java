@@ -50,6 +50,18 @@ public class ControlMemoryServlet extends HttpServlet {
 					}
 				}
 				break;
+			case "celestaReinitialize":
+				try {
+					if (AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
+						Celesta.reInitialize();
+					}
+				} catch (Exception ex) {
+					if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+						LOGGER.error("Ошибка инициализации celesta", ex);
+					}
+					AppInfoSingleton.getAppInfo().setCelestaInitializationException(ex);
+				}
+				break;
 			case "xsl":
 				XSLTransformerPoolFactory.getInstance().clear();
 				break;

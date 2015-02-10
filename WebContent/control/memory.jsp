@@ -137,6 +137,14 @@ div {
 				</form>
 				<div style="font-style: italic">Сброс будет проведен только в пуле Jython интерпретаторов для источников данных Celesta</div>
 			</td>
+			<td width="30%">	
+				<form target="fake" method="get" action="reset">
+					<input type="hidden" name="pool" value="celestaReinitialize" /> 
+					<input type="submit"
+						value="Реинициализировать Celesta" onclick="window.setInterval('refresh()',1000);"/>
+				</form>
+				<div style="font-style: italic">Чтобы реинициализировать Celesta, нажмите эту кнопку</div>
+			</td>
 		</tr>		
 	</table>
 	
