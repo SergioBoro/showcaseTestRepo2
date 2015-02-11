@@ -41,9 +41,10 @@ public final class UserDataUtils {
 
 	/**
 	 * Часть названия параметров в app.properties, относящихся к системе
-	 * аутентификации(authserver).
+	 * аутентификации - mellophone (authserver).
 	 */
-	public static final String AUTHSERVERURL_PART = "authserverurl";
+	// public static final String AUTHSERVERURL_PART = "authserverurl";
+	public static final String AUTHSERVERURL_PART = "mellophoneurl";
 
 	/**
 	 * Имя файла с настройками приложения.

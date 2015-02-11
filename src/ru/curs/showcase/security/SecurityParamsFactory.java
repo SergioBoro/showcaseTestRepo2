@@ -14,21 +14,28 @@ import ru.curs.showcase.runtime.UserDataUtils;
 public final class SecurityParamsFactory {
 
 	/**
-	 * Имя параметра в файле настроек, содержащего путь к AuthServer.
+	 * Имя параметра в файле настроек, содержащего путь к mellophone
+	 * (AuthServer).
 	 */
-	public static final String AUTH_SERVER_URL_PARAM = "security.authserverurl";
+	// public static final String AUTH_SERVER_URL_PARAM =
+	// "security.authserverurl";
+	public static final String AUTH_SERVER_URL_PARAM = "security.mellophoneurl";
 
 	/**
-	 * Статическая строквоая константа, соответствующаятому, что не удалось
-	 * считать параметр AUTH_SERVER_URL_PARAM из файла app.properties.
+	 * Статическая строковая константа, соответствующаятому, что не удалось
+	 * считать параметр MELLO_PHONE_URL_PARAM (AUTH_SERVER_URL_PARAM) из файла
+	 * app.properties.
 	 */
 	public static final String APP_PROP_READ_ERROR = "Не удалось считать " + AUTH_SERVER_URL_PARAM
 			+ " из app.properties";
 
 	/**
-	 * Имя параметра в файле настроек, содержащего локальный путь к AuthServer.
+	 * Имя параметра в файле настроек, содержащего локальный путь к mellophone
+	 * (AuthServer).
 	 */
-	public static final String LOCAL_AUTH_SERVER_URL_PARAM = "local.security.authserverurl";
+	// public static final String LOCAL_AUTH_SERVER_URL_PARAM =
+	// "local.security.authserverurl";
+	public static final String LOCAL_AUTH_SERVER_URL_PARAM = "local.security.mellophoneurl";
 
 	private SecurityParamsFactory() {
 		throw new UnsupportedOperationException();
