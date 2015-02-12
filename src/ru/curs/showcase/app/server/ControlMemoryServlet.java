@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.server;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -54,6 +55,20 @@ public class ControlMemoryServlet extends HttpServlet {
 				try {
 					if (AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
 						Celesta.reInitialize();
+					} else {
+						Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
+
+						if (celestaProps != null) {
+							Celesta.initialize(celestaProps);
+							AppInfoSingleton.getAppInfo().setIsCelestaInitialized(true);
+						} else {
+							if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {
+								LOGGER.warn("Celesta properties (in app.properties) is not set");
+							}
+							AppInfoSingleton.getAppInfo().setCelestaInitializationException(
+									new Exception(
+											"Celesta properties (in app.properties) is not set"));
+						}
 					}
 				} catch (Exception ex) {
 					if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
