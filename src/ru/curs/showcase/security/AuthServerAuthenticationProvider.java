@@ -158,16 +158,16 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		}
 
 		// привязки сессии приложения к пользователю celesta
-		if (AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
-			try {
-				Celesta.getInstance().login(sesid,
-						((UserAndSessionDetails) arg1.getDetails()).getUserInfo().getSid());
-			} catch (CelestaException e) {
-				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
-					LOGGER.error("Ошибка привязки сессии приложения к пользователю в celesta", e);
-				}
+		// if (AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
+		try {
+			Celesta.getInstance().login(sesid,
+					((UserAndSessionDetails) arg1.getDetails()).getUserInfo().getSid());
+		} catch (CelestaException e) {
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error("Ошибка привязки сессии приложения к пользователю в celesta", e);
 			}
 		}
+		// }
 
 		// Authentication g = new Authentication.;
 

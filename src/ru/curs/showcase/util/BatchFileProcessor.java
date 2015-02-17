@@ -130,7 +130,7 @@ public class BatchFileProcessor {
 			return;
 		}
 		for (File f : flist) {
-			if (f.isFile() && "login1.jsp".equals(f.getName())) {
+			if (f.isFile() && "login.jsp".equals(f.getName())) {
 				action.perform(f);
 			} else if (f.isDirectory()) {
 			}
