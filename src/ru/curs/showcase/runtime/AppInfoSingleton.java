@@ -206,6 +206,13 @@ public final class AppInfoSingleton {
 		String userdataId = null;
 
 		for (Map.Entry<String, ArrayList<String>> entry : aMap.entrySet()) {
+			if (ExchangeConstants.URL_PARAM_PERSPECTIVE.equals(entry.getKey())) {
+				if (aMap.get(entry.getKey()) != null) {
+					userdataId = Arrays.toString(entry.getValue().toArray()).trim();
+					userdataId = userdataId.replace("[", "").replace("]", "");
+					break;
+				}
+			}
 			if (ExchangeConstants.URL_PARAM_USERDATA.equals(entry.getKey())) {
 				if (aMap.get(entry.getKey()) != null) {
 					userdataId = Arrays.toString(entry.getValue().toArray()).trim();
@@ -537,5 +544,4 @@ public final class AppInfoSingleton {
 	public Map<String, Object> getSessionAttributesMap() {
 		return sessionAttributesMap;
 	}
-
 }

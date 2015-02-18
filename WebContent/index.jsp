@@ -12,8 +12,15 @@
 <head>
 <%
 	String host = request.getRemoteHost();
-	String userdataId = request.getParameter("userdata");	
 	String query = request.getQueryString();
+	
+	String userdataId = null;
+	if(request.getParameter("userdata") != null)
+		userdataId = request.getParameter("userdata");
+	if(request.getParameter("perspective") != null)
+		userdataId = request.getParameter("perspective");
+	if(request.getParameter("userdata") != null && request.getParameter("perspective") != null)
+		userdataId = request.getParameter("perspective");
 	
 	if(userdataId != null){
 		AppInfoSingleton.getAppInfo().getHostUserdataMap().put(host, query);
@@ -33,6 +40,7 @@
 	String title = "Showcase index page";
 	if (UserDataUtils.getOptionalProp("index.title", userdataId) != null) {
 		title = UserDataUtils.getOptionalProp("index.title", userdataId);
+		
 	}
 %>
 
@@ -62,8 +70,9 @@ var protocol = window.location.protocol;
     <link rel="stylesheet" href="js/dojox/calendar/themes/claro/Calendar.css"/>
     <link rel="stylesheet" href="js/dojox/calendar/themes/claro/MonthColumnView.css"/>
     
-      <%=ExternalClientLibrariesUtils.addExternalCSSByStaticMetod(request.getParameter("userdata"))
-  %>  
+      <%=//ExternalClientLibrariesUtils.addExternalCSSByStaticMetod(request.getParameter("userdata"))
+    		  ExternalClientLibrariesUtils.addExternalCSSByStaticMetod(userdataId)
+  	  %>  
     
     <script>
         var dojoConfig = {
@@ -93,10 +102,10 @@ var protocol = window.location.protocol;
      var appContextPath="<%=request.getContextPath()%>";
     </script>
     
-  <%=ExternalClientLibrariesUtils.addExternalLinksByStaticMetod(request.getParameter("userdata"))
+  <%=//ExternalClientLibrariesUtils.addExternalLinksByStaticMetod(request.getParameter("userdata"))
+		  ExternalClientLibrariesUtils.addExternalLinksByStaticMetod(userdataId)
   %>  
-
-     
+	 
 </head>
 <body class="claro">
 

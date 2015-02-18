@@ -11,7 +11,7 @@ public class NoSuchUserDataException extends BaseException {
 	private static final long serialVersionUID = -6928633456458398538L;
 
 	private static final String ERROR_MES =
-		"Каталог пользовательских данных(userdata) '%s' не существует в корневом каталоге пользовательских данных";
+		"Perspective named '%s' is not available in user's data folder";
 
 	/**
 	 * Идентификатор userdata.
