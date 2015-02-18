@@ -26,6 +26,7 @@ public final class ExchangeConstants implements SerializableElement {
 	 * Название параметра userdata в URL.
 	 */
 	public static final String URL_PARAM_USERDATA = "userdata";
+	public static final String URL_PARAM_PERSPECTIVE = "perspective";
 
 	/**
 	 * Идентификатор userdata по-умолчанию.
