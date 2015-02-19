@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datapanel>
+
+	<tab id="1" name="1">
+		<element id="1" type="webtext" transform="bal.xsl" />
+		<element id="6" type="webtext" transform="bal.xsl" />
+	</tab>
+
+
+	<tab id="101" name="Alfresco">
+		<element id="10101" type="xforms" template="TemplateAlfresco.xml" proc="g1.xformAlfresco.main.celesta">
+			<proc id="proc1" name="g1.xformAlfresco.save.celesta" type="SAVE" />
+			<proc id="upload" name="g1.xformAlfresco.uploadFile.celesta" type="UPLOAD" />
+		</element>
+	</tab>
+
+
+
 	<tab id="01" name="Samples">
 		<element id="0101" type="xforms" template="Template.xml" proc="g1.xform.main.celesta">
 			<proc id="proc1" name="g1.xform.save.celesta" type="SAVE" />
