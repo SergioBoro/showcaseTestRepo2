@@ -1,4 +1,4 @@
-package ru.curs.showcase.util;
+package ru.curs.showcase.util.alfresco;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -21,19 +21,17 @@ public final class AlfrescoManager {
 
 	private static final String DEF_ENCODING = "UTF-8";
 	private static final int HTTP_OK = 200;
-
-	// private static String alfURL = null;
+	private static final int RESULT_OK = 0;
+	private static final int RESULT_ERROR = 1;
 
 	private AlfrescoManager() {
 	}
 
-	private static String login(final String alfURL, final String alfUser, final String alfPass) {
-		// if (alfURL == null) {
-		// alfURL =
-		// UserDataUtils.getGeneralOptionalProp("alfresco.alfrescourl");
-		// }
+	public static AlfrescoLoginResult login(final String alfURL, final String alfUser,
+			final String alfPass) {
 
-		String ticket = null;
+		AlfrescoLoginResult ar = new AlfrescoLoginResult();
+		ar.setResult(RESULT_ERROR);
 
 		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
 		try {
@@ -45,27 +43,28 @@ public final class AlfrescoManager {
 			HttpResponse response = httpclient.execute(httppost);
 
 			HttpEntity resEntity = response.getEntity();
-			try {
-				String resContent = null;
-				if (resEntity != null) {
-					resContent = EntityUtils.toString(resEntity);
-					if (response.getStatusLine().getStatusCode() == HTTP_OK) {
-						JSONTokener jt = new JSONTokener(resContent);
-						JSONObject jo = new JSONObject(jt);
 
-						ticket = jo.getJSONObject("data").getString("ticket");
-					} else {
-						throw new RuntimeException(resContent);
-					}
+			if (resEntity != null) {
+				String resContent = EntityUtils.toString(resEntity);
+				if (response.getStatusLine().getStatusCode() == HTTP_OK) {
+					JSONTokener jt = new JSONTokener(resContent);
+					JSONObject jo = new JSONObject(jt);
+
+					ar.setResult(RESULT_OK);
+					ar.setTicket(jo.getJSONObject("data").getString("ticket"));
 				} else {
-					throw new RuntimeException("HTTP-запрос логирования вернул пустые данные.");
+					ar.setErrorMessage(resContent);
 				}
-			} finally {
-				EntityUtils.consume(resEntity);
+			} else {
+				ar.setErrorMessage("HTTP-запрос логирования вернул пустые данные.");
 			}
 
+			EntityUtils.consume(resEntity);
+
 		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
+			e.printStackTrace();
+			ar.setResult(RESULT_ERROR);
+			ar.setErrorMessage(e.getMessage());
 		} finally {
 			try {
 				httpclient.close();
@@ -74,41 +73,20 @@ public final class AlfrescoManager {
 			}
 		}
 
-		return ticket;
+		return ar;
 	}
 
-	public static String uploadFile(final String fileName, final InputStream file,
-			final PyDictionary alfConnectParams, final PyDictionary alfUploadParams) {
-		String error = null;
+	public static AlfrescoUploadFileResult uploadFile(final String fileName,
+			final InputStream file, final String alfURL, final String alfTicket,
+			final PyDictionary alfUploadParams) {
 
-		String alfURL = "";
-		String alfUser = "";
-		String alfPass = "";
-		for (int i = 0; i < alfConnectParams.items().__len__(); i++) {
-			PyTuple tup = (PyTuple) alfConnectParams.items().__getitem__(i);
-			if ("url".equalsIgnoreCase(tup.__getitem__(0).toString())) {
-				alfURL = tup.__getitem__(1).toString();
-			}
-			if ("user".equalsIgnoreCase(tup.__getitem__(0).toString())) {
-				alfUser = tup.__getitem__(1).toString();
-			}
-			if ("password".equalsIgnoreCase(tup.__getitem__(0).toString())) {
-				alfPass = tup.__getitem__(1).toString();
-			}
-		}
-
-		String ticket = null;
-		try {
-			ticket = login(alfURL, alfUser, alfPass);
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-			error = e.getMessage();
-			return error;
-		}
+		AlfrescoUploadFileResult ar = new AlfrescoUploadFileResult();
+		ar.setResult(RESULT_ERROR);
 
 		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
 		try {
-			HttpPost httppost = new HttpPost(alfURL + "/service/api/upload?alf_ticket=" + ticket);
+			HttpPost httppost =
+				new HttpPost(alfURL + "/service/api/upload?alf_ticket=" + alfTicket);
 
 			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 
@@ -130,18 +108,25 @@ public final class AlfrescoManager {
 			HttpEntity resEntity = response.getEntity();
 
 			if (resEntity != null) {
-				if (response.getStatusLine().getStatusCode() != HTTP_OK) {
-					error = EntityUtils.toString(resEntity);
+				String resContent = EntityUtils.toString(resEntity);
+				if (response.getStatusLine().getStatusCode() == HTTP_OK) {
+					JSONTokener jt = new JSONTokener(resContent);
+					JSONObject jo = new JSONObject(jt);
+
+					ar.setResult(RESULT_OK);
+					ar.setNodeRef(jo.getString("nodeRef"));
+				} else {
+					ar.setErrorMessage(EntityUtils.toString(resEntity));
 				}
 			} else {
-				error = "HTTP-запрос загрузки файла в Alfresco вернул пустые данные.";
+				ar.setErrorMessage("HTTP-запрос загрузки файла в Alfresco вернул пустые данные.");
 			}
 
 			EntityUtils.consume(resEntity);
 		} catch (Exception e) {
 			e.printStackTrace();
-			error = e.getMessage();
-			return error;
+			ar.setResult(RESULT_ERROR);
+			ar.setErrorMessage(e.getMessage());
 		} finally {
 			try {
 				httpclient.close();
@@ -150,7 +135,7 @@ public final class AlfrescoManager {
 			}
 		}
 
-		return error;
+		return ar;
 
 	}
 }

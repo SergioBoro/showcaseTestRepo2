@@ -11,8 +11,9 @@ from ru.curs.showcase.core import UserMessageFactory
 
 
 
-
-from ru.curs.showcase.util import AlfrescoManager
+from ru.curs.showcase.util.alfresco import AlfrescoManager
+#from ru.curs.showcase.util.alfresco import AlfrescoLoginResult
+#from ru.curs.showcase.util.alfresco import AlfrescoUploadFileResult
 
 def template(context, main, add, filterinfo, session, elementId):
     print 'Get xform data from Celesta Python procedure.'
@@ -366,6 +367,22 @@ def submit(context, main, add, filterinfo, session, data):
     
     return data;
 
+def downloadFile(context, main, add, filterinfo, session, elementId, data):
+    print 'Download file xform from Celesta Python procedure.'
+    print 'User %s' % context.userId
+    print 'main "%s".' % main
+    print 'add "%s".' % add
+    print 'filterinfo "%s".' % filterinfo
+    print 'session "%s".' % session
+    print 'elementId "%s".' % elementId
+    print 'data "%s".' % data
+    
+    fileName = 'app.properties'
+    path = AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\" + fileName
+    file = File(path)
+    return JythonDownloadResult(FileInputStream(file),fileName)
+
+
 def uploadFile(context, main, add, filterinfo, session, elementId, data, fileName, file):
     print 'Upload file xform from Celesta Python procedure.'
     print 'User %s' % context.userId
@@ -395,34 +412,106 @@ def uploadFile(context, main, add, filterinfo, session, elementId, data, fileNam
 #    alfUploadParams["uploaddirectory"] = "/folder1"
     
     
-    alfConnectParams = {}
-    alfConnectParams["url"] = "http://127.0.0.1:8080/alfresco"
-    alfConnectParams["user"] = "user222"
-    alfConnectParams["password"] = "пароль"
+    
+    alfURL = "http://127.0.0.1:8080/alfresco"
+    alfUser = "user222" 
+    alfPass = "пароль"
     
     alfUploadParams = {}
     alfUploadParams["destination"] = "workspace://SpacesStore/4bb7e4a3-7281-4d37-ba80-bcd4cba22f45"
     alfUploadParams["uploaddirectory"] = "/test_folder1"
     
-    err = AlfrescoManager.uploadFile(fileName, file, alfConnectParams, alfUploadParams);
-    if err:
-        context.error(err);
-    else:
-        context.message(u"Файл успешно загружен в Alfresco");        
-
     
+    resultLogin = AlfrescoManager.login(alfURL, alfUser, alfPass)
+    if resultLogin.getResult() == 0:
+        resultUploadFile = AlfrescoManager.uploadFile(fileName, file, alfURL, resultLogin.getTicket(), alfUploadParams);
+        if resultUploadFile.getResult() == 0:
+            context.message(u"Файл успешно загружен в Alfresco. Координаты файла в Alfresco: "+resultUploadFile.getNodeRef());            
+        else:
+            context.error(resultUploadFile.getErrorMessage());
+    else:
+        context.error(resultLogin.getErrorMessage());        
+                
 
-def downloadFile(context, main, add, filterinfo, session, elementId, data):
-    print 'Download file xform from Celesta Python procedure.'
+
+
+def webtext(context, main, add, filterinfo, session, elementId):
+    print 'Get navigator data from Celesta Python procedure.'
     print 'User %s' % context.userId
     print 'main "%s".' % main
     print 'add "%s".' % add
     print 'filterinfo "%s".' % filterinfo
     print 'session "%s".' % session
     print 'elementId "%s".' % elementId
-    print 'data "%s".' % data
     
-    fileName = 'app.properties'
-    path = AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "\\" + fileName
-    file = File(path)
-    return JythonDownloadResult(FileInputStream(file),fileName)
+    
+    alfURL = "http://127.0.0.1:8080/alfresco"
+    alfUser = "user222" 
+    alfPass = "пароль"    
+    
+    alfTicket = ""
+    
+    resultLogin = AlfrescoManager.login(alfURL, alfUser, alfPass)
+    if resultLogin.getResult() == 0:
+        alfTicket = resultLogin.getTicket() 
+    else:
+        context.error(resultLogin.getErrorMessage());           
+    
+    data = u'''
+    <h1>
+        <a href="#" onclick="gwtWebTextFunc('${elementId}','testIdClient');">Показать сообщение (client activity)</a>
+        <br/>
+        <a href="#" onclick="gwtWebTextFunc('${elementId}','testIdServer');">Показать сообщение (server activity)</a>
+        <br/>        
+        
+<!--  Guest        
+        
+  <a href="#">
+   <img src="http://127.0.0.1:8080/alfresco/service/api/node/content/workspace/SpacesStore/2c31a645-549c-4479-b939-9cd11cbf8f10?guest=true" 
+   width="1100px" height="700px" alt="lorem"></img>
+  </a>
+-->
+
+  <a href="#">
+   <img src="http://127.0.0.1:8080/alfresco/service/api/node/content/workspace/SpacesStore/2c31a645-549c-4479-b939-9cd11cbf8f10?alf_ticket='''+alfTicket+'''" 
+   width="1100px" height="700px" alt="lorem"></img>
+  </a>
+
+  
+        
+    </h1>
+    '''
+    settings = u'''
+    <properties>
+        <event name="single_click" linkId="testIdClient">
+             <action >
+                <main_context>Москва</main_context>
+                <client>
+                    <activity id="activityClientID" name="showcaseShowAddContext">
+                        <add_context>
+                            add_context действия.
+                        </add_context>
+                    </activity>
+                </client>
+            </action>
+        </event>
+        <event name="single_click" linkId="testIdServer">
+             <action >
+                <main_context>Москва</main_context>
+                <server>
+                    <activity id="activityServerID" name="g1.activity.simple.celesta">
+                         <add_context>
+                             add_context для действия
+                         </add_context>  
+                    </activity>             
+                </server>
+            </action>
+        </event>
+    </properties>
+    '''    
+    
+#    return JythonDTO(data, settings, UserMessageFactory().build(555, u"WebText успешно построен из Celesta"))
+    return JythonDTO(data, settings)
+
+
+
