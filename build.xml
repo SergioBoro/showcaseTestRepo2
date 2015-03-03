@@ -156,6 +156,10 @@
 		<echo>Don't forget setup correct settings in local.properties, ${sc.general.props.file} и app.properties and setup classpath (Build path) in Eclipse</echo>
 	</target>
 
+	<target name="test.init.local.files" description="Create local settings files from templates"> 
+		<copy verbose="true" file="local.template.properties" tofile="local.properties" />
+	</target>
+	
 	<target name="init.dirs" depends="info" description="Create some base dirs">
 		<echo>Check and create required dirs</echo>
 		<mkdir dir="${sc.class.dir}" />
