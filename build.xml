@@ -59,11 +59,11 @@
 	
 <!-- 	<taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask"/> -->
 	
-	<taskdef resource="testngtasks" classpathref="master-classpath"/>
+<!-- 	<taskdef resource="testngtasks" classpathref="master-classpath"/> -->
 	
 	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties"/>	
 	
-	<svnSetting javahl="false" svnkit="true" id="svn.settings" certreject="false" />
+<!-- 	<svnSetting javahl="false" svnkit="true" id="svn.settings" certreject="false" /> -->
 
 	<path id="test-classpath" description="CLASSPATH for unittests">
 		<fileset dir="${sc.runtime.dir}/lib">
