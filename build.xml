@@ -158,7 +158,7 @@
 
 	<target name="test.init.local.files" description="Create local settings files from templates"> 
 	    <echo>Anlug: Copy file local.template.properties to local.properties"</echo>
-		<copy verbose="true" outputencoding="UTF-8" overwrite="true" file="local.template.properties" tofile="local.properties" />
+		<copy verbose="true" encoding="UTF-8" outputencoding="UTF-8" file="local.template.properties" tofile="local.properties" />
 	</target>
 	
 	<target name="init.dirs" depends="info" description="Create some base dirs">
