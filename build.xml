@@ -27,7 +27,9 @@
 	<property name="sc.version" value="" />
 	<property name="sc.db.backup.prefix" value="showcase-test" />
 	<property name="sc.gwt.dir" value="devtime/gwt" />
+<!-- 	<property name="sc.gwt.dir" value="E:/borodanev/gwt-2.5.1" /> -->
 	<property name="sc.junit.dir" value="devtime/junit" />
+<!-- 	<property name="sc.junit.dir" value="global.lib/junit" /> -->
 	<property name="celesta.javacc.dir" value="devtime/javacc" />
 	
 	<property name="sc.env.props" value="local.properties" />
@@ -371,7 +373,7 @@
 	<target name="test" depends="build" description="Unit and component tests run">
 		<junit printsummary="true" showoutput="false" filtertrace="true" haltonerror="true" haltonfailure="true" fork="true">
 			<classpath refid="test-classpath"/>
-			<formatter type="xml" usefile="true" />
+			<formatter type="xml" usefile="false" />
 			
 			<batchtest todir="${sc.build.dir}/junit" >				
 				<fileset dir="${sc.class.dir}">
