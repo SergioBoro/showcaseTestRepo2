@@ -45,6 +45,7 @@ public class PluginSLTest extends AbstractTest {
 				.getParams().get(0));
 	}
 
+	// !!! corrected
 	@Test
 	public void pluginCommandShouldAddLibraryJS() {
 		PluginInfo elInfo = new PluginInfo("id", RADAR_COMP, PLUGIN_RADAR_PROC);
@@ -55,9 +56,9 @@ public class PluginSLTest extends AbstractTest {
 		Plugin plugin = command.execute();
 
 		assertEquals(2, plugin.getRequiredJS().size());
-		assertEquals("solutions/default/plugins/radar/radar.js", plugin.getRequiredJS().get(0));
-		assertEquals("solutions/default/libraries/extJS/ext-all.js", plugin.getRequiredJS().get(1));
-		// assertEquals(1, plugin.getRequiredCSS().size());
+		assertEquals("solutions/general/plugins/radar/radar.js", plugin.getRequiredJS().get(0));
+		assertEquals("solutions/general/libraries/extJS/ext-all.js", plugin.getRequiredJS().get(1));
+		assertEquals(1, plugin.getRequiredCSS().size());
 	}
 
 	@Test

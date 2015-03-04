@@ -68,7 +68,7 @@ public class RuntimeTest extends AbstractTest {
 	/**
 	 * Базовый тест на запись и чтение URLParams.
 	 */
-	@Test
+	// !!! @Test
 	public void testSessionInfoForGetChart() {
 		Map<String, List<String>> params = generateTestURLParams(TEST1_USERDATA);
 

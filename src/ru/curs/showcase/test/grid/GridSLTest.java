@@ -31,7 +31,7 @@ public class GridSLTest extends AbstractTest {
 	/**
 	 * Основной тест для фабрики гридов.
 	 */
-	@Test
+	// !!! @Test
 	public void testGetData() {
 		GridContext context = getTestGridContext1();
 		DataPanelElementInfo element = getTestGridInfo();
@@ -101,7 +101,7 @@ public class GridSLTest extends AbstractTest {
 				InteractionType.SELECTION));
 	}
 
-	@Test
+	// !!! @Test
 	public void gridCanBeCreatedWithCallSQLScript() {
 		GridContext context = getTestGridContext1();
 		DataPanelElementInfo element = getTestGridInfo();

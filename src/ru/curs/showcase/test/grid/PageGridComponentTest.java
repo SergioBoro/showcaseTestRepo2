@@ -36,7 +36,7 @@ public class PageGridComponentTest extends AbstractTest {
 
 	private static final int DATA_SIZE = 15;
 
-	@Test
+	// !!! @Test
 	public void testPageGridMetadataProc() {
 		GridContext context = getTestGridContext1();
 		context.setSubtype(DataPanelElementSubType.EXT_PAGE_GRID);

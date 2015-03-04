@@ -35,7 +35,7 @@ public class XMLJSONConverterTest {
 				result.toString(),
 				"{\"elem1\":{"
 						+ "\"element6\":{\"@attr9\":\"Ещё текст\"},"
-						+ "\"element7\":\"None\",\"@attr0\":\"None\","
+						+ "\"element7\":\"\",\"@attr0\":\"\","
 						+ "\"element5\":[{\"@attr7\":\"1\"},{\"@attr8\":\"2\"}],"
 						+ "\"@attr2\":\"Text\",\"@attr1\":\"True\","
 						+ "\"expr\":\"[question].[current].[105]\","
@@ -51,13 +51,13 @@ public class XMLJSONConverterTest {
 					+ "{\"@attr0\":None,"
 					+ "\"@attr1\":True,"
 					+ "\"@attr2\":\"Text\","
-					+ "\"@attr3\":u\"Русский текст\","
+					+ "\"@attr3\":\"Русский текст\","
 					+ "\"@attr4\":1,"
 					+ "\"@attr5\":3.14,"
-					+ "\"#text\":u\"Тоже текст\","
+					+ "\"#text\":\"Тоже текст\","
 					+ "\"#sorted\":[{\"elem2\":5},"
 					+ "{\"element222\":[True, None]},"
-					+ "{\"elem3\":u\"Снова текст\"},"
+					+ "{\"elem3\":\"Снова текст\"},"
 					+ "{\"element33\":False},"
 					+ "{\"element333\":None},"
 					+ "{\"element44\":[{\"@attr74\":1, \"#text\": \"Test2\"},"
@@ -67,34 +67,36 @@ public class XMLJSONConverterTest {
 					+ "\"@attr6\":False, \"@attr10\":\"False\", \"@attr11\":\"true\", \"@attr12\":\"None\""
 					+ "}" + "}]," + "\"element7\":None,"
 					+ "\"element5\":[{\"@attr7\":1}, {\"@attr8\":2, \"#text\": \"Test3\"}],"
-					+ "\"element555\":[None, False],"
-					+ "\"element6\":{\"@attr9\":u\"Ещё текст\"}," + "\"element8\":True" + "}"
-					+ "}";
+					+ "\"element555\":[None, False]," + "\"element6\":{\"@attr9\":\"Ещё текст\"},"
+					+ "\"element8\":True" + "}" + "}";
 
 		String result = XMLJSONConverter.jsonToXml(json);
+		result = result.replaceAll("(\\s){2,}", " ");
 		// System.out.println(result);
 
 		assertNotNull(result);
 		assertEquals(
 				result.toString(),
-				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
-						+ "<elem1 attr0=\"\" attr1=\"True\" attr2=\"Text\" attr3=\"Русский текст\" attr4=\"1\" attr5=\"3.14\">"
-						+ "\r\nТоже текст\r\n"
-						+ "<elem2 sorted=\"True\">5</elem2>\r\n"
-						+ "<element222 sorted=\"True\">True</element222>\r\n"
-						+ "<element222 sorted=\"True\"/>\r\n"
-						+ "<elem3 sorted=\"True\">Снова текст</elem3>\r\n"
-						+ "<element33 sorted=\"True\">False</element33>\r\n"
-						+ "<element333 sorted=\"True\"/>\r\n"
-						+ "<element44 attr74=\"1\" sorted=\"True\">Test2</element44>\r\n"
-						+ "<element44 attr64=\"True\" attr84=\"2\" attr94=\"\" sorted=\"True\"/>\r\n"
-						+ "<element444 sorted=\"True\">111</element444>\r\n"
-						+ "<element444 sorted=\"True\">444</element444>\r\n"
-						+ "<elem4 attr10=\"False\" attr11=\"true\" attr12=\"\" attr6=\"False\" sorted=\"True\"/>\r\n"
-						+ "<element8>True</element8>\r\n" + "<element6 attr9=\"Ещё текст\"/>\r\n"
-						+ "<element7/>\r\n" + "<element5 attr7=\"1\"/>\r\n"
-						+ "<element5 attr8=\"2\">Test3</element5>\r\n" + "<element555/>\r\n"
-						+ "<element555>False</element555>\r\n" + "</elem1>");
+				"<elem1 attr0=\"\" attr1=\"True\" attr2=\"Text\" attr3=\"Русский текст\" attr4=\"1\" attr5=\"3.14\">"
+						+ "Тоже текст"
+						+ "<elem2>5</elem2>"
+						+ "<element222>True</element222>"
+						+ "<element222/>"
+						+ "<elem3>Снова текст</elem3>"
+						+ "<element33>False</element33>"
+						+ "<element333/>"
+						+ "<element44 attr74=\"1\">Test2</element44>"
+						+ "<element44 attr64=\"True\" attr84=\"2\" attr94=\"\"/>"
+						+ "<element444>111</element444>"
+						+ "<element444>444</element444>"
+						+ "<elem4 attr10=\"False\" attr11=\"true\" attr12=\"\" attr6=\"False\"/>"
+						+ "<element8>True</element8>"
+						+ "<element6 attr9=\"Ещё текст\"/>"
+						+ "<element7/>"
+						+ "<element5 attr7=\"1\"/>"
+						+ "<element5 attr8=\"2\">Test3</element5>"
+						+ "<element555/>"
+						+ "<element555>False</element555>" + "</elem1>");
 
 	}
 }

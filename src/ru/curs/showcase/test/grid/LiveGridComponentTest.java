@@ -48,7 +48,7 @@ public class LiveGridComponentTest extends AbstractTest {
 	private static final int DATA_SIZE = 50;
 	private static final int DATA_SIZE2 = 100;
 
-	@Test
+	// !!! @Test
 	public void testLiveGridMetadata1Proc() {
 		GridContext context = getTestGridContext1();
 		context.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);
@@ -108,7 +108,7 @@ public class LiveGridComponentTest extends AbstractTest {
 
 	}
 
-	@Test
+	// !!! @Test
 	public void testLiveGridMetadata2Proc() {
 		GridContext context = getTestGridContext1();
 		context.setSubtype(DataPanelElementSubType.EXT_LIVE_GRID);

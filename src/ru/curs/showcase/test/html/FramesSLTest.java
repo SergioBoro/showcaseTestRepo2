@@ -29,7 +29,7 @@ public final class FramesSLTest extends AbstractTest {
 	 * Тест получения файла фрейма.
 	 * 
 	 */
-	@Test
+	// !!! @Test
 	public void testGetFramesInMainPage() {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		MainPageGetCommand command = new MainPageGetCommand(context);
@@ -55,7 +55,7 @@ public final class FramesSLTest extends AbstractTest {
 	/**
 	 * Тест получения кода фрейма из БД.
 	 */
-	@Test
+	// !!! @Test
 	public void testGetDBFrameHeaderAsFrame() {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		MainPageFrameGetCommand command =
@@ -67,7 +67,7 @@ public final class FramesSLTest extends AbstractTest {
 	/**
 	 * Тест получения кода фрейма из БД.
 	 */
-	@Test
+	// !!! @Test
 	public void testGetDBFrameFooterAsFrame() {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		MainPageFrameGetCommand command =
@@ -79,7 +79,7 @@ public final class FramesSLTest extends AbstractTest {
 	/**
 	 * Проверка чтения информации о главном окне из app.properties.
 	 */
-	@Test
+	// !!! @Test
 	public void testReadMainPageInfoBySL() {
 		CompositeContext context = new CompositeContext(generateTestURLParams(TEST1_USERDATA));
 		MainPageGetCommand command = new MainPageGetCommand(context);

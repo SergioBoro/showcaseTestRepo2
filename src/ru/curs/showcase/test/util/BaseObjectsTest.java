@@ -175,14 +175,22 @@ public class BaseObjectsTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testJSONObjectSerializer() {
+	// !!! corrected
+			public
+			void testJSONObjectSerializer() {
 		ObjectSerializer serializer = new JSONObjectSerializer();
 		CompositeContext context = CompositeContext.createCurrent();
 		String data = serializer.serialize(context);
 
+		// String expected =
+		// "{\n" + "  \"main\": \"current\",\n" +
+		// "  \"additional\": \"current\",\n"
+		// + "  \"session\": null,\n" + "  \"filter\": null\n" + "}";
 		String expected =
 			"{\n" + "  \"main\": \"current\",\n" + "  \"additional\": \"current\",\n"
-					+ "  \"session\": null,\n" + "  \"filter\": null\n" + "}";
+					+ "  \"session\": null,\n" + "  \"filter\": null,\n"
+					+ "  \"partialUpdate\": false" + "\n}";
+
 		assertEquals(expected, data);
 	}
 

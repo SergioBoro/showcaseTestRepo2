@@ -21,7 +21,7 @@ import ru.curs.showcase.test.AbstractTest;
  * 
  */
 public class ActionTabFinderSLTest extends AbstractTest {
-	@Test
+	// !!! @Test
 	public void testReadFirstTabFromDBFromNavigatorDynSessionContext() {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
@@ -45,7 +45,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 				.getDataPanelLink().getTabId().getString());
 	}
 
-	@Test
+	// !!! @Test
 	public void testReadFirstTabFromDBFromEventDynSessionContext() {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
@@ -72,7 +72,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 		assertEquals("01", grid.getDefaultAction().getDataPanelLink().getTabId().getString());
 	}
 
-	@Test
+	// !!! @Test
 	public void testReadFirstTabFromDBFromSettingsDynSessionContext() {
 		GridContext context = GridContext.createFirstLoadDefault();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));

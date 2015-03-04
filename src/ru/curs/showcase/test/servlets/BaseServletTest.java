@@ -20,7 +20,9 @@ import ru.curs.showcase.util.*;
 public class BaseServletTest extends AbstractServletTest {
 
 	@Test
-	public void testFillErrorResponce() throws IOException {
+	// !!! corrected
+			public
+			void testFillErrorResponce() throws IOException {
 		final String message = "ошибка";
 		preCheckResponse();
 		ServletUtils.fillErrorResponce(response(), message);
@@ -65,7 +67,9 @@ public class BaseServletTest extends AbstractServletTest {
 	}
 
 	@Test
-	public void testDoNoCasheResponse() {
+	// !!! corrected
+			public
+			void testDoNoCasheResponse() {
 		assertNull(response().getHeader("Pragma"));
 		ServletUtils.doNoCasheResponse(response());
 		checkForNoCashe(response());
@@ -74,6 +78,7 @@ public class BaseServletTest extends AbstractServletTest {
 	public static void checkForNoCashe(final MockHttpServletResponse response) {
 		assertEquals("no-cache", response.getHeader("Pragma"));
 		assertEquals("must-revalidate,no-store,no-cache", response.getHeader("Cache-Control"));
-		assertEquals(Long.valueOf(0), response.getHeader("Expires"));
+		// assertEquals(Long.valueOf(0), response.getHeader("Expires"));
+		assertEquals(String.valueOf(0), response.getHeader("Expires"));
 	}
 }

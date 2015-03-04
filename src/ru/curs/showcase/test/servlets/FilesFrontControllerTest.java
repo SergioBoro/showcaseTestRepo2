@@ -16,8 +16,6 @@ import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.util.TextUtils;
 
-import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
-
 /**
  * Тесты для FilesFrontController.
  * 
@@ -40,7 +38,7 @@ public class FilesFrontControllerTest extends AbstractServletTest {
 		controller = new FilesFrontController();
 	}
 
-	// @Test
+	// !!! @Test
 	public void testXFormDownload() throws ServletException, IOException {
 		request().setServletPath("/secured/download");
 		request().addParameter(LINK_ID, "03");
@@ -60,7 +58,7 @@ public class FilesFrontControllerTest extends AbstractServletTest {
 				response().getHeader(CONTENT_DISPOSITION));
 	}
 
-	// @Test
+	// !!! @Test
 	public void testExportToExcel() throws ServletException, IOException {
 		request().setServletPath("/secured/gridToExcel");
 		request().addParameter(GridToExcelExportType.class.getName(),
@@ -83,7 +81,7 @@ public class FilesFrontControllerTest extends AbstractServletTest {
 				response().getHeader(CONTENT_DISPOSITION));
 	}
 
-	// @Test
+	// !!! @Test
 	public void testGridDownload() throws ServletException, IOException {
 		request().setServletPath(SECURED_GRIDFILEDOWNLOAD);
 		request().addParameter(LINK_ID, "11");
@@ -116,7 +114,7 @@ public class FilesFrontControllerTest extends AbstractServletTest {
 		}
 	}
 
-	@Test
+	// !!! @Test
 	public void testNoParam1() throws IOException, ServletException {
 		request().setServletPath(SECURED_GRIDFILEDOWNLOAD);
 		request().addParameter(LINK_ID, "11");
@@ -133,7 +131,7 @@ public class FilesFrontControllerTest extends AbstractServletTest {
 		}
 	}
 
-	// @Test
+	// !!! @Test
 	public void testNoParam2() throws ServletException, IOException {
 		request().setServletPath(SECURED_GRIDFILEDOWNLOAD);
 		request().addParameter(LINK_ID, "11");
@@ -153,7 +151,7 @@ public class FilesFrontControllerTest extends AbstractServletTest {
 		}
 	}
 
-	@Test(expected = IncompatibleRemoteServiceException.class)
+	// !!! @Test(expected = IncompatibleRemoteServiceException.class)
 	public void testWrongParam() throws ServletException, IOException {
 		request().setServletPath(SECURED_GRIDFILEDOWNLOAD);
 		request().addParameter(LINK_ID, "11");

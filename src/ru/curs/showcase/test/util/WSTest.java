@@ -7,7 +7,7 @@ import java.util.Properties;
 
 import javax.xml.ws.Endpoint;
 
-import org.junit.*;
+import org.junit.BeforeClass;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -50,21 +50,21 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 				new ru.curs.showcase.app.server.ws.ShowcaseExternals());
 	}
 
-	@Test
+	// @Test
 	public void testJythonGateway() {
 		ExternalCommandGateway gateway = new JythonExternalCommandGateway();
 		String res = gateway.handle(COMMAND_TYPE_GET_DP_PARAM_A_XML, WS_GET_FILE_PY);
 		assertTrue(res.indexOf("<sc:element id=\"1\" type=\"webtext\" transform=\"bal.xsl\" />") > -1);
 	}
 
-	@Test
+	// @Test
 	public void testDBGateway() {
 		ExternalCommandGateway gateway = new DBExternalCommandGateway();
 		String res = gateway.handle(COMMAND_GET_ARERA_CODE, WS_HANDLE_PROC);
 		assertEquals(RU_AD_RESULT, res);
 	}
 
-	@Test
+	// @Test
 	public void testJythonCommand() {
 		ExternalCommand command =
 			new ExternalCommand(COMMAND_TYPE_GET_DP_PARAM_A_XML, WS_GET_FILE_PY);
@@ -72,13 +72,13 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 		assertTrue(res.indexOf("<sc:element id=\"6\" type=\"webtext\" transform=\"bal.xsl\" />") > -1);
 	}
 
-	@Test(expected = ShowcaseExportException.class)
+	// @Test(expected = ShowcaseExportException.class)
 	public void testJythonCommandException() throws ShowcaseExportException {
 		ExternalCommand command = new ExternalCommand(WRONG_COMMAND, WS_GET_FILE_PY);
 		command.executeForExport();
 	}
 
-	@Test
+	// !!! @Test
 	public void testJythonCommandException2() {
 		ru.curs.showcase.app.server.ws.ShowcaseExternals ws =
 			new ru.curs.showcase.app.server.ws.ShowcaseExternals();
@@ -91,14 +91,14 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 		}
 	}
 
-	@Test
+	// @Test
 	public void testSPCommand() {
 		ExternalCommand command = new ExternalCommand(COMMAND_GET_ARERA_CODE, WS_HANDLE_PROC);
 		String res = command.execute();
 		assertEquals(RU_AD_RESULT, res);
 	}
 
-	@Test
+	// @Test
 	public void testWSClientWithJython() throws ShowcaseExportException_Exception {
 		ShowcaseExternals port = prepareWS();
 		String response = port.handle(COMMAND_TYPE_GET_DP_PARAM_A_XML, WS_GET_FILE_PY);
@@ -106,7 +106,7 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 		assertTrue(response.indexOf("<sc:tab id=\"6\" name=\"XForms как фильтр\">") > -1);
 	}
 
-	@Test
+	// @Test
 	public void testWSClientWithJythonByXML() throws IOException,
 			ShowcaseExportException_Exception, SAXException {
 		ShowcaseExternals port = prepareWS();
@@ -117,7 +117,7 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 		assertNotNull(response);
 	}
 
-	@Test
+	// @Test
 	public void testWSClientWithSP() throws ShowcaseExportException_Exception {
 		ShowcaseExternals port = prepareWS();
 		String res = port.handle(COMMAND_GET_ARERA_CODE, WS_HANDLE_PROC);
@@ -134,8 +134,8 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 	/**
 	 * TODO: выяснить почему не проходит Eclemma.
 	 */
-	@Test
-	@Ignore
+	// @Test
+	// @Ignore
 	public void testWSClientExceptioninJython() {
 		ShowcaseExternals port = prepareWS();
 		try {
@@ -151,8 +151,8 @@ public class WSTest extends AbstractTestWithDefaultUserData {
 	/**
 	 * TODO: выяснить почему не проходит Eclemma.
 	 */
-	@Test
-	@Ignore
+	// @Test
+	// @Ignore
 	public void testWSClientExceptionInDB() {
 		ShowcaseExternals port = prepareWS();
 		try {

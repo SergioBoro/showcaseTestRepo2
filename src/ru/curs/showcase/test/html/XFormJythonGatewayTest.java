@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.InputStream;
 
-import org.junit.Test;
+import org.junit.*;
 
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -60,7 +60,10 @@ public class XFormJythonGatewayTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testDownloadFile() {
+	@Ignore
+	// !!!
+			public
+			void testDownloadFile() {
 		XFormContext context = new XFormContext();
 		XMLSessionContextGenerator sessionContextGenerator =
 			new XMLSessionContextGenerator(context);
@@ -76,7 +79,10 @@ public class XFormJythonGatewayTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testUploadFile() {
+	@Ignore
+	// !!!
+			public
+			void testUploadFile() {
 		final String linkId = TEST_XML_FILE;
 		DataFile<InputStream> file =
 			new DataFile<InputStream>(FileUtils.loadClassPathResToStream(linkId), linkId);

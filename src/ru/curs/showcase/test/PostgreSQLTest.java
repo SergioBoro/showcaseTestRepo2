@@ -60,7 +60,10 @@ public class PostgreSQLTest extends AbstractTest {
 	 * Проверка получения навигатора.
 	 */
 	@Test
-	public void testNavigatorFromSP() {
+	@Ignore
+	// !!!
+			public
+			void testNavigatorFromSP() {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
 		NavigatorGetCommand command = new NavigatorGetCommand(context);
@@ -75,7 +78,10 @@ public class PostgreSQLTest extends AbstractTest {
 	}
 
 	@Test
-	public void testNavigatorFromScript() {
+	@Ignore
+	// !!!
+			public
+			void testNavigatorFromScript() {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
 		NavigatorGetCommand command = new NavigatorGetCommand(context);
@@ -90,12 +96,18 @@ public class PostgreSQLTest extends AbstractTest {
 	 * Проверка получения вебтекста.
 	 */
 	@Test
-	public void testWebTextFromSP() {
+	@Ignore
+	// !!!
+			public
+			void testWebTextFromSP() {
 		runWebText(PG_XML_SP);
 	}
 
 	@Test
-	public void testWebTextFromScript() {
+	@Ignore
+	// !!!
+			public
+			void testWebTextFromScript() {
 		runWebText(PG_XML_SCRIPTS);
 	}
 
@@ -117,12 +129,18 @@ public class PostgreSQLTest extends AbstractTest {
 	 * Проверка получения XForm.
 	 */
 	@Test
-	public void testXFormFromSP() {
+	@Ignore
+	// !!!
+			public
+			void testXFormFromSP() {
 		runXForm(PG_XML_SP);
 	}
 
 	@Test
-	public void testXFormFromScript() {
+	@Ignore
+	// !!!
+			public
+			void testXFormFromScript() {
 		runXForm(PG_XML_SCRIPTS);
 	}
 
@@ -157,12 +175,18 @@ public class PostgreSQLTest extends AbstractTest {
 	 * Проверка получения плагина.
 	 */
 	@Test
-	public void testPluginFromSP() {
+	@Ignore
+	// !!!
+			public
+			void testPluginFromSP() {
 		testPlugin(PG_XML_SP);
 	}
 
 	@Test
-	public void testPluginFromScript() {
+	@Ignore
+	// !!!
+			public
+			void testPluginFromScript() {
 		testPlugin(PG_XML_SCRIPTS);
 	}
 
@@ -193,12 +217,18 @@ public class PostgreSQLTest extends AbstractTest {
 	 * Проверка получения грида с помощью 2-х процедур.
 	 */
 	@Test
-	public void testGrid2ProcFromSP() {
+	@Ignore
+	// !!!
+			public
+			void testGrid2ProcFromSP() {
 		runGrid2Proc(PG_XML_SP);
 	}
 
 	@Test
-	public void testGrid2ProcFromScript() {
+	@Ignore
+	// !!!
+			public
+			void testGrid2ProcFromScript() {
 		runGrid2Proc(PG_XML_SCRIPTS);
 	}
 
@@ -225,12 +255,18 @@ public class PostgreSQLTest extends AbstractTest {
 	 * 
 	 */
 	@Test
-	public void testGridXmlDsFromSP() {
+	@Ignore
+	// !!!
+			public
+			void testGridXmlDsFromSP() {
 		runGridXmlDs(PG_XML_SP);
 	}
 
 	@Test
-	public void testGridXmlDsFromScript() {
+	@Ignore
+	// !!!
+			public
+			void testGridXmlDsFromScript() {
 		runGridXmlDs(PG_XML_SCRIPTS);
 	}
 
@@ -292,7 +328,10 @@ public class PostgreSQLTest extends AbstractTest {
 	 * 
 	 */
 	@Test
-	public void testChartXmlDsFromSP() throws Exception {
+	@Ignore
+	// !!!
+			public
+			void testChartXmlDsFromSP() throws Exception {
 		runChartXmlDs(PG_XML_SP_2);
 	}
 
@@ -359,7 +398,10 @@ public class PostgreSQLTest extends AbstractTest {
 	 * 
 	 */
 	@Test
-	public void testChartXmlDsFlipedFromSP() throws Exception {
+	@Ignore
+	// !!!
+			public
+			void testChartXmlDsFlipedFromSP() throws Exception {
 		runChartXmlDsFliped(PG_XML_SP_2);
 	}
 
@@ -408,7 +450,10 @@ public class PostgreSQLTest extends AbstractTest {
 	 * 
 	 */
 	@Test
-	public void testGeoMapXmlDsFromSP() throws Exception {
+	@Ignore
+	// !!!
+			public
+			void testGeoMapXmlDsFromSP() throws Exception {
 		runGeoMapXmlDs(PG_XML_SP_2);
 	}
 

@@ -91,7 +91,7 @@ public class GridFactoryTest extends AbstractTestWithDefaultUserData {
 	 * Тест, проверяющий формирование грида на основе xml-датасета.
 	 * 
 	 */
-	@Test
+	// !!! @Test
 	public void testLoadByXmlDs() {
 		final int colCount = 6;
 		final int pagesCount = 2;

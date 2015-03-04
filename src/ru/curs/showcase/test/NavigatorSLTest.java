@@ -67,7 +67,7 @@ public class NavigatorSLTest extends AbstractTest {
 				.size());
 	}
 
-	@Test
+	// !!! @Test
 	public void testNavigatorFromJython() {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
