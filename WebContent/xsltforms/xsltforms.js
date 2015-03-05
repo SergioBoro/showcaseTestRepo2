@@ -13986,7 +13986,8 @@ function getXMLByXPathArray(xpathArray, createSchema)
            if(nodes.length > 0){
       		    xml = xml+'<filter xmlns="">';
       		    if (nodes[0].nodeType == XsltForms_nodeType.ATTRIBUTE) {
-      	      	    for (var j in nodes) {
+//     	      	    for (var j in nodes) {
+       		    	for (var j = 0; j < nodes.length; j++) {      	      	    	
       	      	    	if(nodes[j].nodeValue){
            	      		   xml = xml+'<'+nodes[j].nodeName+' xmlns="">';
         	      		   xml = xml+Writer.encoding(nodes[j].nodeValue);
@@ -13994,7 +13995,8 @@ function getXMLByXPathArray(xpathArray, createSchema)
       	      	    	}
       	      	    }
       		    }else {
-      	      	    for (var j in nodes) {
+//     	      	    for (var j in nodes) {
+      		    	for (var j = 0; j < nodes.length; j++) {
       	      		   xml = xml+Writer.toString(nodes[j]);
       	      	    }
       		    }
