@@ -142,6 +142,7 @@
 		<copy verbose="true" overwrite="true" file="local.template.properties" tofile="local.properties" />
 		<copy verbose="true" overwrite="true" file="template.classpath" tofile=".classpath" />
 <!-- 		<copy verbose="true" overwrite="true" file="${sc.src.dir}/general.template.properties" tofile="${sc.src.dir}/${sc.general.props.file}" /> -->
+		<delete file="${sc.src.dir}/${sc.general.props.file}" />
 		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/default/app.template.properties" tofile="${sc.userdata.dir}/default/app.properties" />
 		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/test1/app.template.properties" tofile="${sc.userdata.dir}/test1/app.properties" />
 		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/test2/app.template.properties" tofile="${sc.userdata.dir}/test2/app.properties" />
