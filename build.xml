@@ -379,7 +379,7 @@
 				<fileset dir="${sc.class.dir}">
 <!-- 					<include name="**/suite/*Tests.class"/> -->
 <!-- 					<exclude name="**/suite/PostgreSQLTests.class" /> -->
-					<include name="**/test/chart/ChartFactoryTest.class"/>
+					<include name="**/test/chart/ClassPathCheck.class"/>
 				</fileset>
 			</batchtest>	
 			
