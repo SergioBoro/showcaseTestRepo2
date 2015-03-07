@@ -1,6 +1,6 @@
 package ru.curs.showcase.test.chart;
 
-import org.junit.*;
+import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -29,10 +29,7 @@ public class ChartGatewayTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	@Ignore
-	// !!!
-			public
-			void testGetDataFormJython() {
+	public void testGetDataFormJython() {
 		CompositeContext context = getTestContext1();
 		context.setSession("<" + XMLSessionContextGenerator.SESSION_CONTEXT_TAG + "/>");
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.CHART);

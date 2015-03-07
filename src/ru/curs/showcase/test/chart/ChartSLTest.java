@@ -2,7 +2,7 @@ package ru.curs.showcase.test.chart;
 
 import static org.junit.Assert.*;
 
-import org.junit.*;
+import org.junit.Test;
 
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -95,10 +95,7 @@ public class ChartSLTest extends AbstractTest {
 	}
 
 	@Test
-	@Ignore
-	// !!!
-			public
-			void testJython() {
+	public void testJython() {
 		CompositeContext context = generateContextWithSessionInfo();
 		context.setMain(MAIN_CONTEXT_TAG);
 		DataPanelElementInfo elInfo = new DataPanelElementInfo("id", DataPanelElementType.CHART);
