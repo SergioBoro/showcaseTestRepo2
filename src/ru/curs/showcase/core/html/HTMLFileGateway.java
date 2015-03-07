@@ -51,7 +51,7 @@ public class HTMLFileGateway extends GeneralXMLHelper implements HTMLGateway {
 		try {
 			DocumentBuilder db = XMLUtils.createBuilder();
 			InputStream stream = null;
-			if ((new File(UserDataUtils.getUserDataCatalog() + fileName)).exists()) {
+			if ((new File(UserDataUtils.getUserDataCatalog() + "/" + fileName)).exists()) {
 				stream = UserDataUtils.loadUserDataToStream(fileName);
 			} else {
 				stream = UserDataUtils.loadGeneralToStream(fileName);
