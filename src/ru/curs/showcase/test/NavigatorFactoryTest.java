@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.InputStream;
 
-import org.junit.Test;
+import org.junit.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
@@ -103,7 +103,10 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testWithSelector() {
+	@Ignore
+	// !!!
+			public
+			void testWithSelector() {
 		NavigatorSelector selector = new NavigatorSelector();
 		CompositeContext context = getTestContext1();
 		context.setSession("<" + XMLSessionContextGenerator.SESSION_CONTEXT_TAG + "/>");
@@ -116,7 +119,10 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testFromDB() {
+	@Ignore
+	// !!!
+			public
+			void testFromDB() {
 		CompositeContext context = generateContextWithSessionInfo();
 		NavigatorFactory factory = new NavigatorFactory(context);
 		try (PrimElementsGateway gateway = new NavigatorDBGateway()) {
@@ -126,7 +132,10 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void testFromDBWithException() {
+	@Ignore
+	// !!!
+			public
+			void testFromDBWithException() {
 		CompositeContext context = generateContextWithSessionInfo();
 		try (PrimElementsGateway gateway = new NavigatorDBGateway()) {
 			gateway.getRawData(context, "generationtree_re");
@@ -144,7 +153,10 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	public void navigatorCanBeCreatedByExecutingMSSQLFile() {
+	@Ignore
+	// !!!
+			public
+			void navigatorCanBeCreatedByExecutingMSSQLFile() {
 		CompositeContext context = generateContextWithSessionInfo();
 		NavigatorFactory factory = new NavigatorFactory(context);
 		try (PrimElementsGateway gateway = new NavigatorMSSQLExecGateway()) {
