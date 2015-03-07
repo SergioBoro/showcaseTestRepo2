@@ -167,7 +167,7 @@ public class ChartFactoryTest extends AbstractTestWithDefaultUserData {
 		assertEquals(0, chart.getEventManager().getEvents().size());
 	}
 
-	// !!! @Test
+	@Test
 	public void testGetDataFormJython() throws Exception {
 		CompositeContext context = getTestContext1();
 		context.setSession("<" + XMLSessionContextGenerator.SESSION_CONTEXT_TAG + "/>");
