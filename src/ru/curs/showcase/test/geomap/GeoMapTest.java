@@ -58,9 +58,7 @@ public class GeoMapTest extends AbstractTest {
 	}
 
 	@Test
-	// !!!
-			public
-			void testGeoMapEvent() {
+	public void testGeoMapEvent() {
 		Event event = new GeoMapEvent();
 		ID id1 = new ID("id1");
 		event.setId1(id1);
