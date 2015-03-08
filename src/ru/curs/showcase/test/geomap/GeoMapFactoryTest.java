@@ -30,7 +30,7 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testFromDBDynamicData() throws Exception {
