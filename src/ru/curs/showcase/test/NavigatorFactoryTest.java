@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.InputStream;
 
-import org.junit.*;
+import org.junit.Test;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
@@ -103,7 +103,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testWithSelector() {
@@ -119,7 +119,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testFromDB() {
@@ -132,7 +132,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testFromDBWithException() {
@@ -153,7 +153,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void navigatorCanBeCreatedByExecutingMSSQLFile() {
