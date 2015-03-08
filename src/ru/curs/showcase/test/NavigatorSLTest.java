@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
-import org.junit.Test;
+import org.junit.*;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.Navigator;
@@ -52,9 +52,8 @@ public class NavigatorSLTest extends AbstractTest {
 	}
 
 	@Test
-	// @Ignore
-			public
-			void testNavigatorFromDB() {
+	@Ignore
+	public void testNavigatorFromDB() {
 		CompositeContext context = new CompositeContext();
 		context.setSessionParamsMap(generateTestURLParamsForSL(TEST2_USERDATA));
 		NavigatorGetCommand command = new NavigatorGetCommand(context);
