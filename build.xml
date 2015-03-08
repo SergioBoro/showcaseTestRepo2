@@ -380,6 +380,7 @@
 <!-- 					<include name="**/suite/*Tests.class"/> -->
 <!-- 					<exclude name="**/suite/PostgreSQLTests.class" /> -->
 					<include name="**/test/geomap/GeoMapTest.class"/>
+<!-- 	 -->					
 				</fileset>
 			</batchtest>	
 			
