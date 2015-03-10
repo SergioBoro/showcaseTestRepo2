@@ -2,7 +2,7 @@ package ru.curs.showcase.test.geomap;
 
 import static org.junit.Assert.*;
 
-import org.junit.*;
+import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -116,7 +116,7 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testTemplateCheckWrongConnectionFile() throws Exception {
@@ -139,7 +139,7 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testTemplateCheckWrongStructure() throws Exception {
@@ -161,7 +161,7 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testTemplateCheckWrongNums() throws Exception {
@@ -208,7 +208,7 @@ public class GeoMapFactoryTest extends AbstractTestWithDefaultUserData {
 	 * 
 	 */
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testLoadByXmlDs() throws Exception {
