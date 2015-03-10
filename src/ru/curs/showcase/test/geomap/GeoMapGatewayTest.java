@@ -1,6 +1,6 @@
 package ru.curs.showcase.test.geomap;
 
-import org.junit.*;
+import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -20,7 +20,7 @@ public class GeoMapGatewayTest extends AbstractTestWithDefaultUserData {
 	 * Основная функция тестирования шлюза.
 	 */
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testGetData() {
