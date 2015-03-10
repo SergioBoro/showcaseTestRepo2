@@ -123,7 +123,7 @@ public class TreeGridComponentTest extends AbstractTest {
 	}
 
 	@Test
-	// @Ignore
+	@Ignore
 	// !!!
 			public
 			void testTreeGridData21Proc() {
@@ -149,7 +149,7 @@ public class TreeGridComponentTest extends AbstractTest {
 	}
 
 	@Test
-	// @Ignore
+	@Ignore
 	// !!!
 			public
 			void testTreeGridData22Proc() {
