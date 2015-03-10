@@ -2,7 +2,7 @@ package ru.curs.showcase.test.grid;
 
 import static org.junit.Assert.*;
 
-import org.junit.*;
+import org.junit.Test;
 import org.w3c.dom.*;
 
 import ru.curs.gwt.datagrid.model.GridValueType;
@@ -25,7 +25,7 @@ public class GridExportToExcelSLTest extends AbstractTest {
 	 * Тест экспорта данных из текущей страницы.
 	 */
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testExportCurrentPage() {
@@ -73,7 +73,7 @@ public class GridExportToExcelSLTest extends AbstractTest {
 	 * Тест экспорта всех страниц используя ServiceLayer.
 	 */
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testServiceForExportAll() {
@@ -94,7 +94,7 @@ public class GridExportToExcelSLTest extends AbstractTest {
 	 * Тест экспорта текущей страницы используя ServiceLayer.
 	 */
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testServiceForExportCurrent() {
