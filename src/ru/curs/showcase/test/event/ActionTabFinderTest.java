@@ -2,10 +2,11 @@ package ru.curs.showcase.test.event;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.*;
+import org.junit.Test;
 
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
+import ru.curs.showcase.util.xml.XMLFormatException;
 
 /**
  * Проверка работы механизма ActionTabFinder.
@@ -15,7 +16,7 @@ import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
  */
 public class ActionTabFinderTest extends AbstractTestWithDefaultUserData {
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testReadFirstTabForFileDPFromNavigator() {
@@ -26,7 +27,7 @@ public class ActionTabFinderTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testReadFirstTabFromDBFromNavigator() {
@@ -37,7 +38,7 @@ public class ActionTabFinderTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testReadFirstTabFromDBFromNavigatorDynMainContext() {
@@ -47,7 +48,7 @@ public class ActionTabFinderTest extends AbstractTestWithDefaultUserData {
 		assertEquals("01", action.getDataPanelLink().getTabId().getString());
 	}
 
-	// !!! @Test(expected = XMLFormatException.class)
+	@Test(expected = XMLFormatException.class)
 	public void testReadFirstTabIdFromDBFromNavigatorDynamicEmpty() {
 		getAction("tree_multilevel.wrong2.xml", 0, 0);
 	}
