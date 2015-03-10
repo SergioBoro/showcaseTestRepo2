@@ -2,7 +2,7 @@ package ru.curs.showcase.test.event;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.*;
+import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -33,7 +33,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testReadFirstTabFromDBFromEventDynMainContext() {
@@ -63,7 +63,7 @@ public class ActionTabFinderSLTest extends AbstractTest {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testReadFirstTabFromDBFromSettingsDynMainContext() {
