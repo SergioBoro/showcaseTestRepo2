@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.*;
 
-import org.junit.*;
+import org.junit.Test;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -32,7 +32,7 @@ public class GeoMapSLTest extends AbstractTest {
 	 * БД.
 	 */
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testFromDBStaticData() {
@@ -71,7 +71,7 @@ public class GeoMapSLTest extends AbstractTest {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testMapWithOutIndicators() {
@@ -85,7 +85,7 @@ public class GeoMapSLTest extends AbstractTest {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testJython() {
@@ -101,7 +101,7 @@ public class GeoMapSLTest extends AbstractTest {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testReplaceVariables() {
