@@ -2,7 +2,7 @@ package ru.curs.showcase.test.plugin;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
+import org.junit.*;
 
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.html.Plugin;
