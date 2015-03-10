@@ -487,15 +487,15 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		}
 	    
 	    
-		grid.on(".dgrid-row:click", function(event){
+		grid.on("dgrid-select", function(event){
 			if(!grid.readonly){
-				if(grid.currentRowId != grid.row(event).id){
-					grid.currentRowId = grid.row(event).id;
+				if(grid.currentRowId != grid.row(event.grid._focusedNode).id){
+					grid.currentRowId = grid.row(event.grid._focusedNode).id;
 					grid.save();
 				}
 			}
 			
-			gwtAfterClickTree(elementId, grid.row(event).id, grid.column(event).label, getSelection());
+			gwtAfterClickTree(elementId, grid.row(event.grid._focusedNode).id, grid.column(event.grid._focusedNode).label, getSelection());
 		});
 		grid.on(".dgrid-row:dblclick", function(event){
 			gwtAfterDoubleClickTree(elementId, grid.row(event).id, grid.column(event).label, getSelection());
