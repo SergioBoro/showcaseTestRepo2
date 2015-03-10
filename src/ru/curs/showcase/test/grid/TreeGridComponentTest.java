@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.junit.*;
+import org.junit.Test;
 
 import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -123,7 +123,7 @@ public class TreeGridComponentTest extends AbstractTest {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testTreeGridData21Proc() {
@@ -149,7 +149,7 @@ public class TreeGridComponentTest extends AbstractTest {
 	}
 
 	@Test
-	@Ignore
+	// @Ignore
 	// !!!
 			public
 			void testTreeGridData22Proc() {
