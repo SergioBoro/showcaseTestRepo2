@@ -320,9 +320,9 @@ public class JSONToXMLParser {
 
 	private void comparison2(final Document doc, final Element root, final Object value,
 			final String key) throws JSONException {
-		Object t = null;
+		Object twer = null;
 
-		if (value.equals(t)) {
+		if (value.equals(twer)) {
 			Element elem = doc.createElement(key);
 			root.appendChild(elem);
 			Text text = doc.createTextNode("");
