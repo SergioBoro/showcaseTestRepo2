@@ -89,6 +89,8 @@
 		<pathelement path="${sc.gwt.dir}/gwt-user.jar" />
 	</path>	
 
+	<svnSetting javahl="false" svnkit="true" id="svn.settings" certreject="false" />
+
 	<target name="svn.info" description="Read svn revision">
 		<if>
 			<isset property="os.SVN_REVISION"/>
@@ -181,6 +183,21 @@
 	<target name="compile" depends="init.dirs" description="Compiles .java files to WAR directory">
 		<!--После полной адаптации AspectJ к java 7 перейдем на iajc-->
 		<!--Сейчас компилируем обычным javac-->
+<!-- 		<javac source="1.7" target="1.7" includeantruntime="false" encoding="UTF-8" srcdir="${sc.src.dir}; datagrid; extragwt" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java" > -->
+<!--  		</javac> -->
+		<iajc source="1.7" target="1.7" encoding="UTF-8" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java">
+			<sourceroots>
+				<pathelement location="${sc.src.dir}" />
+				<pathelement location="datagrid" />
+				<pathelement location="extragwt" />
+				<pathelement location="celesta" />
+			</sourceroots>
+		</iajc>
+	</target>
+
+	<target name="compile.junit" depends="init.dirs" description="Compiles .java files to WAR directory">
+		<!--После полной адаптации AspectJ к java 7 перейдем на iajc-->
+		<!--Сейчас компилируем обычным javac-->
 		<javac source="1.7" target="1.7" includeantruntime="false" encoding="UTF-8" srcdir="${sc.src.dir}; ${celesta.src.dir}; datagrid; extragwt" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" >
  		</javac>
 <!-- 		<iajc source="1.7" target="1.7" encoding="UTF-8" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java"> -->
@@ -192,7 +209,8 @@
 <!-- 			</sourceroots> -->
 <!-- 		</iajc> -->
 	</target>
-
+	
+	
 	<target name="build" depends="compile" description="Compile Java sources and copy config files to build dir"> 
 		<echo>Compiling Java sources and coping config files to build dir</echo>
 		<copy todir="${sc.class.dir}">
@@ -204,6 +222,17 @@
 		</copy>
 	</target>
 
+	<target name="build.junit" depends="compile.junit" description="Compile Java sources and copy config files to build dir"> 
+		<echo>Compiling Java sources and coping config files to build dir</echo>
+		<copy todir="${sc.class.dir}">
+			<fileset dir="${sc.src.dir}">
+				<include name="**/*" />
+				<exclude name="**/*.java" />
+				<exclude name="**/*.template" />
+			</fileset>
+		</copy>
+	</target>
+	
 	<target name="build.gwt" depends="init.dirs" description="Build GWT code for all browsers">
 		<echo>Prepare for GWT build for all browsers</echo>
 		<copy file="${sc.gwt.src.root.dir}\App.gwt.xml" tofile="${sc.tmp.dir}\App.gwt.xml.re" overwrite="true" />
@@ -370,7 +399,7 @@
 		</copy>
 	</target>
 
-	<target name="test" depends="build" description="Unit and component tests run">
+	<target name="test" depends="build.junit" description="Unit and component tests run">
 		<junit printsummary="true" showoutput="false" filtertrace="true" haltonerror="true" haltonfailure="true" fork="true">
 			<classpath refid="test-classpath"/>
 			<formatter type="xml" usefile="false" />
@@ -597,6 +626,8 @@
 		</doxygen:doxygen>		
 	</target>
 	
+	<taskdef name="javancss" classname="javancss.JavancssAntTask" />
+	
 	<target name="calc.javancss.metrics" depends="init.dirs" description="Calc Java code metrics">
 		<javancss srcdir="${sc.src.dir}" defaultexcludes="yes"
 		            generateReport="true"
@@ -631,6 +662,8 @@
 			<arg line="-S ${sc.rdbms.name}" />			
 		</exec>	
 	</target>
+	
+	<taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask"/>
 	
 	<target name="xsd.generate" description="Generate XSD schemas by java Enum classes">
 		<schemagen destdir="${sc.tmp.dir}" includeantruntime="false" >
