@@ -27,9 +27,7 @@
 	<property name="sc.version" value="" />
 	<property name="sc.db.backup.prefix" value="showcase-test" />
 	<property name="sc.gwt.dir" value="devtime/gwt" />
-<!-- 	<property name="sc.gwt.dir" value="E:/borodanev/gwt-2.5.1" /> -->
 	<property name="sc.junit.dir" value="devtime/junit" />
-<!-- 	<property name="sc.junit.dir" value="global.lib/junit" /> -->
 	<property name="celesta.javacc.dir" value="devtime/javacc" />
 	
 	<property name="sc.env.props" value="local.properties" />
@@ -158,11 +156,6 @@
 		<copy verbose="true" overwrite="true" file="${sc.userdata.dir}/general/generalapp.template.properties" tofile="${sc.userdata.dir}/general/generalapp.properties" />
 		<copy verbose="true" overwrite="true" file="${sc.gwt.src.root.dir}/template.App.gwt.xml" tofile="${sc.gwt.src.root.dir}/App.gwt.xml" />
 		<echo>Don't forget setup correct settings in local.properties, ${sc.general.props.file} и app.properties and setup classpath (Build path) in Eclipse</echo>
-	</target>
-
-	<target name="test.init.local.files" description="Create local settings files from templates"> 
-	    <echo>Anlug: Copy file local.template.properties to local.properties"</echo>
-		<copy verbose="true" encoding="UTF-8" outputencoding="UTF-8" file="local.template.properties" tofile="local.properties" />
 	</target>
 	
 	<target name="init.dirs" depends="info" description="Create some base dirs">
