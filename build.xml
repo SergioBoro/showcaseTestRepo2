@@ -406,9 +406,8 @@
 			
 			<batchtest todir="${sc.build.dir}/junit" >				
 				<fileset dir="${sc.class.dir}">
-<!-- 					<include name="**/suite/*Tests.class"/> -->
-<!-- 					<exclude name="**/suite/PostgreSQLTests.class" /> -->
-					<include name="**/test/suite/Core09PluginTests.class"/>
+					<include name="**/suite/*Tests.class"/>
+					<exclude name="**/suite/PostgreSQLTests.class" />
 				</fileset>
 			</batchtest>	
 			
