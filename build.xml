@@ -408,7 +408,7 @@
 				<fileset dir="${sc.class.dir}">
 <!-- 					<include name="**/suite/*Tests.class"/> -->
 <!-- 					<exclude name="**/suite/PostgreSQLTests.class" /> -->
-					<include name="**/test/suite/Base10ActionTabFinderTests.class"/>
+					<include name="**/test/suite/Core01NavigatorTests.class"/>
 				</fileset>
 			</batchtest>	
 			
