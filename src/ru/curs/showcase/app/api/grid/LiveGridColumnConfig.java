@@ -117,8 +117,8 @@ public class LiveGridColumnConfig implements SerializableElement {
 		return sorting;
 	}
 
-	public void setSorting(final Sorting sorting1) {
-		this.sorting = sorting1;
+	public void setSorting(final Sorting aSorting) {
+		sorting = aSorting;
 	}
 
 	public boolean hasSorting() {

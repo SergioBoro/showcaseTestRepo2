@@ -73,6 +73,10 @@ public class GridFactory extends CompBasedElementFactory {
 
 	private static final String FILTER_MULTISELECTOR_TAG = "multiselector";
 
+	private static final String SORT_TAG = "sort";
+	private static final String SORT_COLUMN_TAG = "column";
+	private static final String SORT_DIRECTION_TAG = "direction";
+
 	private static final String FILTER_MULTISELECTOR_WINDOWCAPTION_TAG = "windowCaption";
 	private static final String FILTER_MULTISELECTOR_DATAWIDTH_TAG = "dataWidth";
 	private static final String FILTER_MULTISELECTOR_DATAHEIGHT_TAG = "dataHeight";
@@ -134,6 +138,9 @@ public class GridFactory extends CompBasedElementFactory {
 	private final GridServerState serverState;
 
 	private Integer autoSelectRecordId = null;
+
+	private String sortColId = null;
+	private Sorting sortColDirection = Sorting.ASC;
 
 	@Override
 	public Grid getResult() {
@@ -434,7 +441,7 @@ public class GridFactory extends CompBasedElementFactory {
 		 */
 		private final String[] startTags = {
 				PROPS_TAG, COL_SETTINGS_TAG, COLUMN_SET_SETTINGS_TAG, COLUMN_HEADER_SETTINGS_TAG,
-				FILTER_MULTISELECTOR_TAG };
+				FILTER_MULTISELECTOR_TAG, SORT_TAG };
 
 		/**
 		 * Конечные тэги, которые будут обработаны данным обработчиком.
@@ -460,6 +467,9 @@ public class GridFactory extends CompBasedElementFactory {
 			}
 			if (qname.equalsIgnoreCase(FILTER_MULTISELECTOR_TAG)) {
 				return filtermultiselectorSTARTTAGHandler(attrs);
+			}
+			if (qname.equalsIgnoreCase(SORT_TAG)) {
+				return sortSTARTTAGHandler(attrs);
 			}
 			return null;
 		}
@@ -597,6 +607,17 @@ public class GridFactory extends CompBasedElementFactory {
 			if (attrs.getIndex(LINK_ID_TAG) > -1) {
 				String value = attrs.getValue(LINK_ID_TAG);
 				col.setLinkId(value);
+			}
+			return null;
+		}
+
+		private Object sortSTARTTAGHandler(final Attributes attrs) {
+			if (attrs.getIndex(SORT_COLUMN_TAG) > -1) {
+				sortColId = attrs.getValue(SORT_COLUMN_TAG);
+			}
+			if (attrs.getIndex(SORT_DIRECTION_TAG) > -1) {
+				String value = attrs.getValue(SORT_DIRECTION_TAG);
+				sortColDirection = Sorting.valueOf(value);
 			}
 			return null;
 		}
@@ -1227,6 +1248,7 @@ public class GridFactory extends CompBasedElementFactory {
 			return (firstNumber <= counterRecord) && (counterRecord < lastNumber);
 		}
 
+		// CHECKSTYLE:OFF
 		@Override
 		public void startElement(final String uri, final String localName, final String name,
 				final Attributes atts) {
@@ -1292,6 +1314,8 @@ public class GridFactory extends CompBasedElementFactory {
 				}
 			}
 		}
+
+		// CHECKSTYLE:ON
 
 		@Override
 		public void characters(final char[] ch, final int start, final int length) {
@@ -1370,6 +1394,12 @@ public class GridFactory extends CompBasedElementFactory {
 				rec.setValue(col.getId(), getCellValueForXmlDS(rec.getValue(col), col));
 			}
 		}
+
+		Column sortColumn = getResult().getColumnById(sortColId);
+		if (sortColumn != null) {
+			sortColumn.setSorting(sortColDirection);
+		}
+
 	}
 
 	private String getCellValueForXmlDS(final String aValue, final Column col) {

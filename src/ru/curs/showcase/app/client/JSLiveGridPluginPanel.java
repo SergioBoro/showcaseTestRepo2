@@ -73,6 +73,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	private LiveGridExtradata gridExtradata = null;
 	private String stringSelectedRecordIds = null;
 	private boolean isFirstLoading = true;
+	private boolean isInitialSorting = false;
 
 	private boolean isFirstLoading() {
 		return isFirstLoading;
@@ -205,12 +206,15 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		final GridContext gc = getDetailedContext();
 
-		if ((gc.getSortedColumns() == null) || (gc.getSortedColumns().size() == 0)) {
-			MessageBox.showMessageWithDetails(
-					AppCurrContext.getInstance().getBundleMap().get("okMessage"), AppCurrContext
-							.getInstance().getBundleMap().get("jsGridPartialUpdateNeedSorting"),
-					"", MessageType.WARNING, false);
-			return;
+		if (!isInitialSorting) {
+			if ((gc.getSortedColumns() == null) || (gc.getSortedColumns().size() == 0)) {
+				MessageBox.showMessageWithDetails(
+						AppCurrContext.getInstance().getBundleMap().get("okMessage"),
+						AppCurrContext.getInstance().getBundleMap()
+								.get("jsGridPartialUpdateNeedSorting"), "", MessageType.WARNING,
+						false);
+				return;
+			}
 		}
 
 		gc.setPartialUpdate(true);
@@ -414,6 +418,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		metadata.put("common", common);
 
+		isInitialSorting = false;
 		JSONObject columns = new JSONObject();
 		for (final LiveGridColumnConfig egcc : gridMetadata.getColumns()) {
 
@@ -444,6 +449,11 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 			column.put("urlImageFileDownload", new JSONString(gridMetadata.getUISettings()
 					.getUrlImageFileDownload()));
+
+			if (egcc.hasSorting()) {
+				column.put("sorting", new JSONString(egcc.getSorting().toString()));
+				isInitialSorting = true;
+			}
 
 			columns.put(egcc.getId(), column);
 		}

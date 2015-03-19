@@ -79,6 +79,8 @@ public final class GridTransformer {
 
 			column.setLinkId(c.getLinkId());
 
+			column.setSorting(c.getSorting());
+
 			columns.add(column);
 		}
 

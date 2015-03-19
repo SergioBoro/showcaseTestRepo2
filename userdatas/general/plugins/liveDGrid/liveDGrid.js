@@ -420,6 +420,18 @@ function createLiveDGrid(elementId, parentId, metadata) {
 				}
 			}
 		}
+		
+		
+		for(var k in metadata["columns"]) {
+			if(metadata["columns"][k]["sorting"]){
+				var descending = false;
+				if(metadata["columns"][k]["sorting"].toUpperCase()=="DESC"){
+					descending = true;	
+				}
+			    grid.set("sort", [{attribute: metadata["columns"][k]["id"], descending: descending}]);
+			    break;
+			}
+		}		
 
         
 		grid.on("dgrid-select", function(event){

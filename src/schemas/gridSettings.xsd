@@ -10,6 +10,7 @@
                 <xs:element ref="action" minOccurs="0" maxOccurs="1"/>
                 <xs:element ref="properties" minOccurs="1" maxOccurs="1"/>
                 <xs:element ref="filters" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="sorting" minOccurs="0" maxOccurs="1"/>                
             </xs:all>                       
         </xs:complexType>
     </xs:element>
@@ -56,6 +57,36 @@
             	<xs:element name="multiselector" minOccurs="0" maxOccurs="1"/>
             </xs:all>            	
         </xs:complexType>
+    </xs:element>
+    
+    
+    <xs:element name="sorting">
+        <xs:unique name="sort">
+            <xs:selector xpath="sort"/>
+            <xs:field xpath="@column"/>
+            <xs:field xpath="@direction" />            
+        </xs:unique>    
     </xs:element>    
+    
+    <xs:simpleType name="sortDirection">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="asc"/>
+            <xs:enumeration value="ASC"/>
+            <xs:enumeration value="desc"/>
+            <xs:enumeration value="DESC"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:element name="sort">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:restriction base="xs:anyType">
+                    <xs:attribute name="column" type="notNullType" use="required"/>                
+                    <xs:attribute name="direction" type="sortDirection"/>
+                </xs:restriction>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>    
+        
     
 </xs:schema>
