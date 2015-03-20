@@ -767,6 +767,13 @@ public class GridFactory extends CompBasedElementFactory {
 		if (getCallContext().isFirstLoad()) {
 			super.setupDynamicSettings();
 			loadStaticSettings();
+
+			Column sortColumn = getResult().getColumnById(sortColId);
+			if (sortColumn != null) {
+				sortColumn.setSorting(sortColDirection);
+				getCallContext().getSortedColumns().add(sortColumn);
+			}
+
 		} else {
 			if (serverState().isForceLoadSettings() && applyLocalFormatting) {
 				super.setupDynamicSettings();
