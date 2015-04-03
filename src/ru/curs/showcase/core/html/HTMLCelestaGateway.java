@@ -24,23 +24,22 @@ public class HTMLCelestaGateway implements HTMLGateway {
 	public HTMLBasedElementRawData getRawData(final CompositeContext context,
 			final DataPanelElementInfo elementInfo) {
 		final String elementId = elementInfo.getId().getString();
-		CelestaHelper<JythonDTO> helper = new CelestaHelper<JythonDTO>(context,
-				JythonDTO.class);
-		JythonDTO result = helper.runPython(elementInfo.getProcName(),
-				elementId);
+		CelestaHelper<JythonDTO> helper = new CelestaHelper<JythonDTO>(context, JythonDTO.class);
+		JythonDTO result = helper.runPython(elementInfo.getProcName(), elementId);
 		if (result != null) {
 			Document data = null;
 			InputStream settings = null;
 			try {
-				data = XMLUtils.stringToDocument(result.getData());
+				data =
+					XMLUtils.stringToDocument(XMLUtils.xmlServiceSymbolsToNormalPartial(result
+							.getData()));
 			} catch (SAXException | IOException e) {
 				throw new CelestaWorkerException("Error parse result");
 			}
 			if (result.getSettings() != null) {
 				settings = TextUtils.stringToStream(result.getSettings());
 			}
-			return new HTMLBasedElementRawData(data, settings, elementInfo,
-					context);
+			return new HTMLBasedElementRawData(data, settings, elementInfo, context);
 		}
 		return null;
 	}

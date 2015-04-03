@@ -648,6 +648,23 @@ public final class XMLUtils {
 	 * @param original
 	 *            - исходная строка.
 	 */
+	public static String xmlServiceSymbolsToNormalPartial(final String original) {
+		if (original == null) {
+			return null;
+		}
+		String result = original;
+		result = result.replace("&lt;", "<");
+		result = result.replace("&gt;", ">");
+		return result;
+	}
+
+	/**
+	 * Функция, частично заменяющая служебные XML символы на обычные. Важное
+	 * замечание: заменяются только XML, но не HTML символы!
+	 * 
+	 * @param original
+	 *            - исходная строка.
+	 */
 	public static String xmlServiceSymbolsToNormalWithoutLess(final String original) {
 		if (original == null) {
 			return null;
