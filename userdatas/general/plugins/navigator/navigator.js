@@ -19,41 +19,45 @@ function createNavigator(parentId, data, template) {
     	}
     	
     	function fillData(arr, obj, num){
-    		
     		if(obj["level"+num] && !obj["level"+num].length){
     			obj["level"+num] = [obj["level"+num]];
     		}
-    		
-    		for(var k in obj["level"+num]) {
-    			var parent = null;
-    			if(num > 1){
-    				parent = obj["@id"];
-    			}
-    			
-    			var hasChildren = 0;
-    			if(obj["level"+num][k]["level"+(num+1)]){
-    				hasChildren = 1;	
-    			}
-    				
-    			arr.push({id: obj["level"+num][k]["@id"], 
-    				      name: obj["level"+num][k]["@name"],
-    				      parent: parent,
-    				      HasChildren: hasChildren,
-    				      TreeGridNodeCloseIcon: obj["level"+num][k]["@closeIcon"],
-    				      TreeGridNodeOpenIcon: obj["level"+num][k]["@openIcon"],
-    				      TreeGridNodeLeafIcon: obj["level"+num][k]["@leafIcon"],
-    				      open: obj["level"+num][k]["@open"],
-    				      selectOnLoad: obj["level"+num][k]["@selectOnLoad"],
-    				      classNameRow: obj["level"+num][k]["@classNameRow"] 
-    			
-    				      });
-    			
-    			if(hasChildren == 1){
-        			fillData(arr, obj["level"+num][k], num+1);    				
-    			}
+
+    		if(obj["level"+num]){
+        	    for (var k = 0; k < obj["level"+num].length; k++) {    			
+        			var parent = null;
+        			if(num > 1){
+        				parent = obj["@id"];
+        			}
+        			
+        			var hasChildren = 0;
+        			if(obj["level"+num][k]["level"+(num+1)]){
+        				hasChildren = 1;	
+        			}
+        				
+        			arr.push({id: obj["level"+num][k]["@id"], 
+        				      name: obj["level"+num][k]["@name"],
+        				      parent: parent,
+        				      HasChildren: hasChildren,
+        				      TreeGridNodeCloseIcon: obj["level"+num][k]["@closeIcon"],
+        				      TreeGridNodeOpenIcon: obj["level"+num][k]["@openIcon"],
+        				      TreeGridNodeLeafIcon: obj["level"+num][k]["@leafIcon"],
+        				      open: obj["level"+num][k]["@open"],
+        				      selectOnLoad: obj["level"+num][k]["@selectOnLoad"],
+        				      classNameRow: obj["level"+num][k]["@classNameRow"] 
+        			
+        				      });
+        			
+        			if(hasChildren == 1){
+            			fillData(arr, obj["level"+num][k], num+1);    				
+        			}
+        		}
     		}
     	}
     	
+    	if(!data.navigator.group){
+    		return;
+    	}
     	
 	    var aContainer = new AccordionContainer({}, parentId);
 	    
@@ -61,8 +65,7 @@ function createNavigator(parentId, data, template) {
 			data.navigator.group = [data.navigator.group];
 		}	    
 	    
-		for(var k in data.navigator.group) {
-			
+	    for (var k = 0; k < data.navigator.group.length; k++) {
 			if(data.navigator.group[k]["@hide"]  && data.navigator.group[k]["@hide"].toLowerCase()=="true"){
 				continue;
 			}
