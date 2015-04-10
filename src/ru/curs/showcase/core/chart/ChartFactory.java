@@ -233,7 +233,7 @@ public class ChartFactory extends CompBasedElementFactory {
 		FakeChartTemplate template =
 			gson.fromJson(getResult().getTemplate(), FakeChartTemplate.class);
 		if ((template.getPlot() != null)
-				&& (PIE_CHART.equalsIgnoreCase(template.getPlot().getType()))) {
+				&& (PIE_CHART.equalsIgnoreCase(template.getPlot()[0].getType()))) {
 			realFlip = !realFlip;
 		}
 		flip = realFlip;

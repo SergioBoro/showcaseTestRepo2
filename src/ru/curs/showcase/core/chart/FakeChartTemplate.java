@@ -10,13 +10,15 @@ public class FakeChartTemplate {
 	/**
 	 * plot.
 	 */
-	private FakeChartTemplatePlot plot;
 
-	public FakeChartTemplatePlot getPlot() {
+	private FakeChartTemplatePlot[] plot;
+
+	public FakeChartTemplatePlot[] getPlot() {
 		return plot;
 	}
 
-	public void setPlot(final FakeChartTemplatePlot aPlot) {
+	public void setPlot(final FakeChartTemplatePlot[] aPlot) {
 		plot = aPlot;
 	}
+
 }
