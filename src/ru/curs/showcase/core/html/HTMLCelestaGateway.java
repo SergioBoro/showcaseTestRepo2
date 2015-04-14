@@ -30,9 +30,7 @@ public class HTMLCelestaGateway implements HTMLGateway {
 			Document data = null;
 			InputStream settings = null;
 			try {
-				data =
-					XMLUtils.stringToDocument(XMLUtils.xmlServiceSymbolsToNormalPartial(result
-							.getData()));
+				data = XMLUtils.stringToDocument(result.getData());
 			} catch (SAXException | IOException e) {
 				throw new CelestaWorkerException("Error parse result");
 			}
