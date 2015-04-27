@@ -226,8 +226,25 @@ public class GridFactory extends CompBasedElementFactory {
 
 	private String getPluginsRoot() {
 		// return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-		return AppInfoSingleton.getAppInfo().getSolutionsDirRoot() + "/"
-				+ UserDataUtils.GENERAL_RES_ROOT;
+		// return AppInfoSingleton.getAppInfo().getSolutionsDirRoot() + "/"
+		// + UserDataUtils.GENERAL_RES_ROOT;
+
+		File fileRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
+		File file = new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys");
+		if (!(file.exists())) {
+			File[] files = fileRoot.listFiles();
+			for (File f : files) {
+				if (f.getName().startsWith("common.") && !("common.sys".equals(f.getName()))) {
+					File fileN =
+						new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+								+ f.getName());
+					if (fileN.exists())
+						return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName();
+				}
+			}
+		}
+
+		return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys";
 	}
 
 	private List<String> readImportFile(final String fileName) {

@@ -25,10 +25,31 @@ public final class UserDataXSDSource implements XSDSource {
 					UserDataUtils.SCHEMASDIR, sourceName);
 		File file = new File(xsdFullFileName);
 		if (!file.exists()) {
+			// file =
+			// new File(String.format("%s/%s/%s",
+			// AppInfoSingleton.getAppInfo().getUserdataRoot()
+			// + "/" + UserDataUtils.GENERAL_RES_ROOT, UserDataUtils.SCHEMASDIR,
+			// sourceName));
+
+			File fileRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
 			file =
 				new File(String.format("%s/%s/%s", AppInfoSingleton.getAppInfo().getUserdataRoot()
-						+ "/" + UserDataUtils.GENERAL_RES_ROOT, UserDataUtils.SCHEMASDIR,
-						sourceName));
+						+ "/" + "common.sys", UserDataUtils.SCHEMASDIR, sourceName));
+			if (!(file.exists())) {
+				File[] files = fileRoot.listFiles();
+				for (File f : files)
+					if (f.getName().startsWith("common.") && !("common.sys".equals(f.getName()))) {
+						File fileN =
+							new File(String.format("%s/%s/%s", AppInfoSingleton.getAppInfo()
+									.getUserdataRoot() + "/" + f.getName(),
+									UserDataUtils.SCHEMASDIR, sourceName));
+						if (fileN.exists()) {
+							file = fileN;
+							break;
+						}
+					}
+			}
+
 			if (!file.exists()) {
 				throw new SettingsFileOpenException(xsdFullFileName, SettingsFileType.SCHEMA);
 			}

@@ -136,9 +136,32 @@ public final class UserDataUtils {
 	}
 
 	public static InputStream loadGeneralToStream(final String fileName) throws IOException {
+		File fileRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
+		File file =
+			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys" + "/"
+					+ fileName);
 		FileInputStream result =
 			new FileInputStream(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-					+ UserDataUtils.GENERAL_RES_ROOT + File.separator + fileName);
+					+ "common.sys" + "/" + fileName);
+		if (!(file.exists())) {
+			File[] files = fileRoot.listFiles();
+			for (File f : files) {
+				if (f.getName().startsWith("common.") && !("common.sys".equals(f.getName()))) {
+					File fileN =
+						new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+								+ f.getName() + "/" + fileName);
+					result =
+						new FileInputStream(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+								+ f.getName() + "/" + fileName);
+					if (fileN.exists())
+						break;
+				}
+			}
+		}
+		// FileInputStream result =
+		// new FileInputStream(AppInfoSingleton.getAppInfo().getUserdataRoot() +
+		// "/"
+		// + UserDataUtils.GENERAL_RES_ROOT + File.separator + fileName);
 		return result;
 	}
 
@@ -459,9 +482,28 @@ public final class UserDataUtils {
 
 		}
 
+		// File generalResRoot =
+		// new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+		// + UserDataUtils.GENERAL_RES_ROOT);
+
+		File fileRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
 		File generalResRoot =
-			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-					+ UserDataUtils.GENERAL_RES_ROOT);
+			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys");
+		if (!(generalResRoot.exists())) {
+			File[] files = fileRoot.listFiles();
+			for (File f : files) {
+				if (f.getName().startsWith("common.") && !("common.sys".equals(f.getName()))) {
+					File fileN =
+						new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+								+ f.getName());
+					if (fileN.exists()) {
+						generalResRoot = fileN;
+						break;
+					}
+				}
+			}
+		}
+
 		result =
 			result + generalResRoot.getAbsolutePath() + File.separator + "score"
 					+ File.pathSeparator;
@@ -533,8 +575,9 @@ public final class UserDataUtils {
 
 	private static String getGeneralPropFile() {
 		if (generalPropFile == null) {
-			return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-					+ UserDataUtils.GENERAL_RES_ROOT + "/" + GENERALPROPFILENAME;
+			// return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+			// + UserDataUtils.GENERAL_RES_ROOT + "/" + GENERALPROPFILENAME;
+			return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + GENERALPROPFILENAME;
 		}
 		return generalPropFile;
 	}
@@ -595,8 +638,28 @@ public final class UserDataUtils {
 					SettingsFileType.APP_PROPERTIES);
 		}
 
-		checkUserdataFilesNamesForWrongSymbols(AppInfoSingleton.getAppInfo().getUserdataRoot()
-				+ "/" + GENERAL_RES_ROOT);
+		// checkUserdataFilesNamesForWrongSymbols(AppInfoSingleton.getAppInfo().getUserdataRoot()
+		// + "/" + GENERAL_RES_ROOT);
+
+		String genDir = AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys";
+		File fileRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
+		File file = new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys");
+		if (!(file.exists())) {
+			File[] files = fileRoot.listFiles();
+			for (File f : files) {
+				if (f.getName().startsWith("common.") && !("common.sys".equals(f.getName()))) {
+					File fileN =
+						new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+								+ f.getName());
+					if (fileN.exists()) {
+						genDir =
+							AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName();
+						break;
+					}
+				}
+			}
+		}
+		checkUserdataFilesNamesForWrongSymbols(genDir);
 
 		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
 			checkUserdataFilesNamesForWrongSymbols(AppInfoSingleton.getAppInfo()
@@ -719,7 +782,7 @@ public final class UserDataUtils {
 		}
 	}
 
-	public static Boolean getInterfaceOnlyDatapanelByUserdataId(String aUserdataId) {
+	public static Boolean getInterfaceOnlyDatapanelByUserdataId(final String aUserdataId) {
 		String userdataId = aUserdataId;
 		Boolean b = false;
 		try {
@@ -759,7 +822,8 @@ public final class UserDataUtils {
 		}
 	}
 
-	public static List<String> getImportStaticExternalJsLibrariesByUserdataId(String aUserdataId) {
+	public static List<String> getImportStaticExternalJsLibrariesByUserdataId(
+			final String aUserdataId) {
 		String userdataId = aUserdataId;
 		List<String> list = new ArrayList<String>();
 		try {
@@ -804,7 +868,7 @@ public final class UserDataUtils {
 		}
 	}
 
-	public static List<String> getImportStaticExternalCssByUserdataId(String aUserdataId) {
+	public static List<String> getImportStaticExternalCssByUserdataId(final String aUserdataId) {
 		String userdataId = aUserdataId;
 		List<String> list = new ArrayList<String>();
 		try {

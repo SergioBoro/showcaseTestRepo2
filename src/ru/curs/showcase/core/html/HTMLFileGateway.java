@@ -40,9 +40,27 @@ public class HTMLFileGateway extends GeneralXMLHelper implements HTMLGateway {
 		File file =
 			new File(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/" + fileName);
 		if (!file.exists()) {
+			// file =
+			// new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+			// + UserDataUtils.GENERAL_RES_ROOT + "/" + fileName);
+			File fileRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
 			file =
-				new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-						+ UserDataUtils.GENERAL_RES_ROOT + "/" + fileName);
+				new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys"
+						+ "/" + fileName);
+			if (!(file.exists())) {
+				File[] files = fileRoot.listFiles();
+				for (File f : files) {
+					if (f.getName().startsWith("common.") && !("common.sys".equals(f.getName()))) {
+						File fileN =
+							new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+									+ f.getName() + "/" + fileName);
+						if (fileN.exists()) {
+							file = fileN;
+							break;
+						}
+					}
+				}
+			}
 			if (!file.exists()) {
 				throw new SettingsFileOpenException(elementInfo.getProcName(),
 						SettingsFileType.XM_DATA);
@@ -73,17 +91,17 @@ public class HTMLFileGateway extends GeneralXMLHelper implements HTMLGateway {
 						SettingsFileType.XM_DATA);
 			}
 		} else {
-			file =
-				new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-						+ UserDataUtils.GENERAL_RES_ROOT + File.separator + fileName);
-			if (file.exists()) {
-				try {
-					settings = UserDataUtils.loadGeneralToStream(fileName);
-				} catch (IOException e) {
-					throw new SettingsFileExchangeException(getSettingsFileName(), e,
-							SettingsFileType.XM_DATA);
-				}
+			// file =
+			// new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+			// + UserDataUtils.GENERAL_RES_ROOT + File.separator + fileName);
+			// if (file.exists()) {
+			try {
+				settings = UserDataUtils.loadGeneralToStream(fileName);
+			} catch (IOException e) {
+				throw new SettingsFileExchangeException(getSettingsFileName(), e,
+						SettingsFileType.XM_DATA);
 			}
+			// }
 		}
 		return new HTMLBasedElementRawData(doc, settings, elementInfo, context);
 	}

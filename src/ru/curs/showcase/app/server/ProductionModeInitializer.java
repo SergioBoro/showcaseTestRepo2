@@ -212,22 +212,38 @@ public final class ProductionModeInitializer {
 	}
 
 	private static void copyGeneralResources(final ServletContext aServletContext) {
-		File generalResRoot =
-			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-					+ UserDataUtils.GENERAL_RES_ROOT);
+		// File generalResRoot =
+		// new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+		// + UserDataUtils.GENERAL_RES_ROOT);
+		File generalResRoot = null;
 		Boolean isAllFilesCopied = true;
-		if (generalResRoot.exists()) {
-			for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
-				File generalDir =
-					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/"
-							+ "general"));
-				File userDataDir =
-					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/"
-							+ userdataId));
-				userDataDir.mkdir();
+		File userdataRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
+		File[] list = userdataRoot.listFiles();
+		for (File f : list) {
+			if (f.getName().equals("common.sys")) {
+				generalResRoot =
+					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys");
+			} else if (f.getName().startsWith("common") && !(f.getName().equals("common.sys"))) {
+				generalResRoot =
+					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName());
+			} else {
+				continue;
+			}
+			if (generalResRoot.exists()) {
+				for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+					File generalDir =
+						new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR
+								+ "/" + "general"));
+					File userDataDir =
+						new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR
+								+ "/" + userdataId));
+					userDataDir.mkdir();
 
-				isAllFilesCopied =
-					copyGeneralDir(aServletContext, generalResRoot, userDataDir, generalDir);
+					isAllFilesCopied =
+						isAllFilesCopied
+								&& copyGeneralDir(aServletContext, generalResRoot, userDataDir,
+										generalDir);
+				}
 			}
 		}
 

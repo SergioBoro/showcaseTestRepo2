@@ -49,10 +49,10 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 	protected PythonInterpreter createReusableItem() {
 		PySystemState state = new PySystemState();
 		state.path.append(new PyString(getUserDataScriptDir()));
-		File genScriptDir = new File(getGeneralScriptDir());
-		if (genScriptDir.exists()) {
-			state.path.append(new PyString(getGeneralScriptDir()));
-		}
+		// File genScriptDir = new File(getGeneralScriptDir());
+		// if (genScriptDir.exists()) {
+		state.path.append(new PyString(getGeneralScriptDir()));
+		// }
 		File jythonLibPath = new File(AppInfoSingleton.getAppInfo().getWebAppPath() + libDir);
 		if (!jythonLibPath.exists()) {
 			throw new ServerLogicError(String.format(PYTHON_SCRIPTS_DIR_NOT_FOUND, libDir));
@@ -74,8 +74,28 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 	}
 
 	public static String getGeneralScriptDir() {
-		return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-				+ UserDataUtils.GENERAL_RES_ROOT + "/" + SCRIPTS_JYTHON_PATH;
+		File fileRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
+		File file =
+			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys" + "/"
+					+ SCRIPTS_JYTHON_PATH);
+		if (!(file.exists())) {
+			File[] files = fileRoot.listFiles();
+			for (File f : files) {
+				if (f.getName().startsWith("common.") && !("common.sys".equals(f.getName()))) {
+					File fileN =
+						new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+								+ f.getName() + "/" + SCRIPTS_JYTHON_PATH);
+					if (fileN.exists())
+						return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName()
+								+ "/" + SCRIPTS_JYTHON_PATH;
+				}
+			}
+		}
+
+		return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys" + "/"
+				+ SCRIPTS_JYTHON_PATH;
+		// return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+		// + UserDataUtils.GENERAL_RES_ROOT + "/" + SCRIPTS_JYTHON_PATH;
 	}
 
 	public String getLibJythonDir() {

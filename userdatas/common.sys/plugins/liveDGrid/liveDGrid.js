@@ -1,7 +1,7 @@
 //var arrGrids = {};
 
 
-function createTreeDGrid(elementId, parentId, metadata) {
+function createLiveDGrid(elementId, parentId, metadata) {
 	require([
 	         "dijit/form/Button",
 	         "dijit/form/DropDownButton",
@@ -26,14 +26,14 @@ function createTreeDGrid(elementId, parentId, metadata) {
 	         "dijit/form/RadioButton",
 	         "dijit/form/DataList",	     
 	         
-	         "dojo/store/Observable",	         
+	         "dojo/store/Observable", 
 	         "dojo/has",
 	         "dgrid/editor", 
 	         "dgrid/extensions/CompoundColumns", 
 	         "dgrid/ColumnSet", 
-	         "put-selector/put", 
-	         "dojo/store/util/QueryResults", 
+	         "dojo/store/util/QueryResults",
 	         "dojo/on", 
+	         "dgrid/List", 
 	         "dgrid/OnDemandGrid", 
 	         "ColumnResizer",
 	         "dgrid/Selection", 
@@ -41,26 +41,25 @@ function createTreeDGrid(elementId, parentId, metadata) {
 	         "dgrid/Keyboard", 
 	         "dojo/_base/declare", 
 	         "JsonRest", 
-	         "tree", 
 	         "dojo/store/Cache", 
 	         "dojo/store/Memory", 
 	         "dojo/aspect", 
 	         "dojo/domReady!"
 	         ],	function(
-        		 Button,DropDownButton,ComboButton,ToggleButton,CurrencyTextBox,DateTextBox,NumberSpinner,NumberTextBox,TextBox,TimeTextBox,ValidationTextBox,SimpleTextarea,Textarea,Select,ComboBox,MultiSelect,FilteringSelect,HorizontalSlider,VerticalSlider,CheckBox,RadioButton,DataList, 
-        		 Observable, has, editor, CompoundColumns, ColumnSet, put, QueryResults, on, Grid, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, tree, Cache, Memory, aspect
+        		 Button,DropDownButton,ComboButton,ToggleButton,CurrencyTextBox,DateTextBox,NumberSpinner,NumberTextBox,TextBox,TimeTextBox,ValidationTextBox,SimpleTextarea,Textarea,Select,ComboBox,MultiSelect,FilteringSelect,HorizontalSlider,VerticalSlider,CheckBox,RadioButton,DataList,	        		 
+	        	 Observable, has, editor, CompoundColumns, ColumnSet, QueryResults, on, List, Grid, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect
 	         ){
 		
 		var firstLoading = true;
 		
 		
-		var mem = Memory();
+		var mem = Memory();		
 		
 		var store = Observable(Cache(JsonRest({
 			target:"secured/JSGridService",
 			
 			idProperty: "id",
-
+			
 			
 			put: function(object, options){
 				
@@ -69,7 +68,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 					object["editor"] = "addRecord";
 					
 					var strObject = JSON.stringify(object);
-		 	    	var httpParams = gwtEditorGetHttpParamsTree(elementId, strObject, object["editor"]);
+		 	    	var httpParams = gwtEditorGetHttpParams(elementId, strObject, object["editor"]);
 		 	    	httpParams = eval('('+httpParams+')');
 
 				    object[httpParams["gridContextName"]] = httpParams["gridContextValue"];	
@@ -82,7 +81,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 							}
 							else{
 							}
-							gwtShowMessageTree(elementId, value.message, object["editor"]);
+							gwtShowMessage(elementId, value.message, object["editor"]);
 					    }, function(err){
 					    	alert("Произошла ошибка при добавлении записи:\n"+err+"\nПодробности находятся в консоли броузера.");
 					    });
@@ -105,7 +104,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 						  }
 						  return value;
 					});
-		 	    	var httpParams = gwtEditorGetHttpParamsTree(elementId, strObject, object["editor"]);
+		 	    	var httpParams = gwtEditorGetHttpParams(elementId, strObject, object["editor"]);
 		 	    	httpParams = eval('('+httpParams+')');
 
 		 	    	object["gridContextName"] = httpParams["gridContextName"];
@@ -125,7 +124,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 							if(value.refreshAfterSave == 'true'){
 						        grid.refresh();								
 							}
-							gwtShowMessageTree(elementId, value.message, object["editor"]);
+							gwtShowMessage(elementId, value.message, object["editor"]);
 					    }, function(err){
 					        grid.dirty = JSON.parse(object.dirty);				    	
 					    	alert("Произошла ошибка при сохранении данных:\n"+err+"\nПодробности находятся в консоли броузера.");
@@ -134,7 +133,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 					
 				}
 			},
-
+			
 			
 			query: function(query, options){
 				
@@ -144,7 +143,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
                     results = QueryResults(metadata["data"]["rows"]);
                     results.total = parseInt(metadata["data"]["total"]);
                     
-					gwtAfterLoadDataTree(elementId, "");
+					gwtAfterLoadData(elementId, "");
 				}else{
 					var sortColId  = null;
 					var sortColDir = null;
@@ -161,8 +160,8 @@ function createTreeDGrid(elementId, parentId, metadata) {
 							break;
 						}
 					}
-
-		 	    	var httpParams = gwtGetHttpParamsTree(elementId, options.start, options.count, sortColId, sortColDir, query.parent);
+					
+		 	    	var httpParams = gwtGetHttpParams(elementId, options.start, options.count, sortColId, sortColDir);
 		 	    	httpParams = eval('('+httpParams+')');	 	 
 		 	    	
 				    var params = {};
@@ -172,44 +171,27 @@ function createTreeDGrid(elementId, parentId, metadata) {
 					results = JsonRest.prototype.query.call(this, query, options, params);
 					results.then(function(results){
 						if(results[0]){
-							gwtAfterLoadDataTree(elementId, results[0]["liveGridExtradata"]);						
+							gwtAfterLoadData(elementId, results[0]["liveGridExtradata"]);						
 						}
 					});				
 				}
 				
 				return results;
 			}
-		
 		}), mem));
-		
-		store.mem = mem;
-		
-		store.getChildren = function(parent, options){
-	    	return store.query({parent: parent.id}, options);
-		};
-		
+
+		store.mem = mem;		
 		
 		var columns = [];
 		for(var k in metadata["columns"]) {
 			var column = null;
-			if(metadata["columns"][k]["id"] == "col1"){
-				if(metadata["common"]["readonly"] || metadata["columns"][k]["readonly"]){
-					column = tree({});
-				}else{
-					column =  eval("tree(editor("+metadata["columns"][k]["editor"]+"))");
-					column["editable"] = true;					
-				}
+			if(metadata["common"]["readonly"] || metadata["columns"][k]["readonly"]){
+				column = {};
+			}else{
+				column =  eval("editor("+metadata["columns"][k]["editor"]+")");
+				column["editable"] = true;
 			}
-			else
-			{
-				if(metadata["common"]["readonly"] || metadata["columns"][k]["readonly"]){
-					column = {};
-				}else{
-					column =  eval("editor("+metadata["columns"][k]["editor"]+")");
-					column["editable"] = true;
-				}
-			}	
-
+			
 			column["id"]        = metadata["columns"][k]["id"];
 			column["parentId"]  = metadata["columns"][k]["parentId"];			
 			column["field"]     = metadata["columns"][k]["id"];			
@@ -217,92 +199,44 @@ function createTreeDGrid(elementId, parentId, metadata) {
 			column["sortable"]  = "true";
 			column["valueType"] = metadata["columns"][k]["valueType"];
 			
-			if(column["id"] == "col1"){
+			if(column["editable"]){
 				column["formatter"] = function columnFormatter(item){
 					return item;
 				};
-				
-				column["renderExpando"] = function columnRenderExpando(level, hasChildren, expanded, object) {
-					
-				        var dir = this.grid.isRTL ? "right" : "left",
-							cls = ".dgrid-expando-icon",
-							node;
-				        
-						if((object.HasChildren) && (object.HasChildren == 1)){
-							if(object.TreeGridNodeLeafIcon && object.TreeGridNodeLeafIcon.trim().length > 0){
-								cls += ".ui-icon-triangle-1-" + (expanded ? "se" : "e");									
-							}else{
-								cls += ".ui-icon.ui-icon-triangle-1-" + (expanded ? "se" : "e");									
-							}
-						}
-						node = put("div" + cls + "[style=width:20px; margin-" + dir + ": " +
-							(level * (this.indentWidth || 9)) + "px; float: " + dir + "]");
-						
-						node.innerHTML = "&nbsp;"; // for opera to space things properly							
-						if(object.HasChildren && (object.HasChildren == '1')){
-							if(expanded){
-								if(object.TreeGridNodeOpenIcon && object.TreeGridNodeOpenIcon.trim().length > 0){
-									node.innerHTML = object.TreeGridNodeOpenIcon;
-								}
-							}
-							else{
-								if(object.TreeGridNodeCloseIcon && object.TreeGridNodeCloseIcon.trim().length > 0){
-									node.innerHTML = object.TreeGridNodeCloseIcon;										
-								}
-							}
-						}else{
-							if(object.TreeGridNodeLeafIcon && object.TreeGridNodeLeafIcon.trim().length > 0){
-								node.innerHTML = object.TreeGridNodeLeafIcon;									
-							}
-						}
-						if(object.col1){
-							node.title = object.col1;							
-						}
-						return node;
-				};
-				
 			}else{
-				
-				if(column["editable"]){
-					column["formatter"] = function columnFormatter(item){
-						return item;
-					};
-				}else{
-					column["renderCell"] = function actionRenderCell(object, value, node, options) {
-						var div = document.createElement("div");
-						
-						if(this["valueType"] == "DOWNLOAD"){
-							if(value && (value.trim()!="")){
-//								div.innerHTML = "<tbody><tr><td style=\"font-size: 1em;\">"+value+"</td><td  align=\"center\" style=\"vertical-align: middle;\"><button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\"><img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 16px; height: 16px;  \"   ></button></p></td></tr></tbody>";
-								
-								div.innerHTML = 
-									"<tbody>" +
-										"<tr>" +
-											"<td>"+value+"" +
-											"</td>" +
-											"<td  align=\"center\" style=\"vertical-align: middle;\">" +
-											
-													"<button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\">" +
-															"<img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 8px; height: 8px;  \"   >" +
-													"</button>" +
+				column["renderCell"] = function actionRenderCell(object, value, node, options) {
+					var div = document.createElement("div");
+					
+					if(this["valueType"] == "DOWNLOAD"){
+						if(value && (value.trim()!="")){
+//							div.innerHTML = "<tbody><tr><td style=\"font-size: 1em;\">"+value+"</td><td  align=\"center\" style=\"vertical-align: middle;\"><button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\"><img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 16px; height: 16px;  \"   ></button></p></td></tr></tbody>";
+							
+							div.innerHTML = 
+								"<tbody>" +
+									"<tr>" +
+										"<td>"+value+"" +
+										"</td>" +
+										"<td  align=\"center\" style=\"vertical-align: middle;\">" +
+										
+												"<button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\">" +
+														"<img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 8px; height: 8px;  \"   >" +
+												"</button>" +
 
-											"</td>" +
-										"</tr>" +
-									"</tbody>";						
-								
-							}else{
-								div.innerHTML = value;
-							}
+										"</td>" +
+									"</tr>" +
+								"</tbody>";						
+							
 						}else{
 							div.innerHTML = value;
 						}
-						
-						div.title = value;
-						
-						return div;
-			        };
-				}
-				
+					}else{
+						div.innerHTML = value;
+					}
+					
+					div.title = value;
+					
+					return div;
+		        };
 			}
 			
 			if(column["editable"]){
@@ -313,8 +247,8 @@ function createTreeDGrid(elementId, parentId, metadata) {
 					}
 					return result;					
 				};
-			}
-
+			}			
+	        
 			
 	        column["renderHeaderCell"] = function actionRenderCell(node) {
 				var div = document.createElement("div");
@@ -437,11 +371,12 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		}
 		
 	    var	grid = new declare(declareGrid)({
-				store: store,
+//				store: store,
 				getBeforePut: false,
-				showHeader: isVisibleColumnsHeader,
 				minRowsPerPage: parseInt(metadata["common"]["limit"]),
 				selectionMode: selectionMode,
+				
+				showHeader: isVisibleColumnsHeader,
 				loadingMessage: metadata["common"]["loadingMessage"],
 //				noDataMessage: "Таблица пуста",
 				pagingDelay: 50,
@@ -449,8 +384,8 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				keepScrollPosition: true,
 				readonly: metadata["common"]["readonly"]
 		}, parentId);
-	    arrGrids[parentId] = grid;	   
-		
+	    arrGrids[parentId] = grid;	    
+	    
 	    
 	    aspect.after( grid, 'renderRow', function( row, args ){
 			if(args[0].rowstyle && (args[0].rowstyle != "")){
@@ -485,32 +420,20 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				}
 			}
 		}
-	    
-	    
-		for(var k in metadata["columns"]) {
-			if(metadata["columns"][k]["sorting"]){
-				var descending = false;
-				if(metadata["columns"][k]["sorting"].toUpperCase()=="DESC"){
-					descending = true;	
-				}
-			    grid.set("sort", [{attribute: metadata["columns"][k]["id"], descending: descending}]);
-			    break;
-			}
-		}		
+
 		
-		
-		grid.on("dgrid-select", function(event){
+		grid.on(".dgrid-row:click,", function(event){
 			if(!grid.readonly){
-				if(grid.currentRowId != grid.row(event.grid._focusedNode).id){
-					grid.currentRowId = grid.row(event.grid._focusedNode).id;
+				if(grid.currentRowId != grid.row(event).id){
+					grid.currentRowId = grid.row(event).id;
 					grid.save();
 				}
 			}
 			
-			gwtAfterClickTree(elementId, grid.row(event.grid._focusedNode).id, grid.column(event.grid._focusedNode).label, getSelection());
+			gwtAfterClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
 		});
 		grid.on(".dgrid-row:dblclick", function(event){
-			gwtAfterDoubleClickTree(elementId, grid.row(event).id, grid.column(event).label, getSelection());
+			gwtAfterDoubleClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
 		});
 		function getSelection()
 		{
@@ -546,7 +469,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				firstLoading = false;
 			}
 		});
-
+		
 		grid.on("dgrid-datachange", function(event){
 			if(event.value.indexOf("<") > -1){
 				event.returnValue = false;
@@ -554,41 +477,28 @@ function createTreeDGrid(elementId, parentId, metadata) {
 			}
 		});
 		
-		
-		grid.on("dgrid-error", function(event){
-			
-//			alert("dgrid-error: ");
-//			console.log("dgrid-error: ", event);
-			
-			
-		});		
-		
-		
-		
-		for(var k in metadata["columns"]) {
-			grid.styleColumn(metadata["columns"][k]["id"], metadata["columns"][k]["style"]);
-		}
+	    grid.set("store", store);
 		
 	});
 }
 
-function refreshTreeDGrid(parentId){
+function refreshLiveDGrid(parentId){
 	arrGrids[parentId].refresh();
 }
 
-function addRecordTreeDGrid(parentId){
+function addRecordLiveDGrid(parentId){
 	arrGrids[parentId].store.add({id: "addRecord_"+GenerateGUID()});
 }
 
-function saveTreeDGrid(parentId){
+function saveLiveDGrid(parentId){
 	arrGrids[parentId].save();
 }
 
-function revertTreeDGrid(parentId){
+function revertLiveDGrid(parentId){
 	arrGrids[parentId].revert();
 }
 
-function clipboardTreeDGrid(parentId){
+function clipboardLiveDGrid(parentId){
 	var str = "";
 	
 	var grid = arrGrids[parentId];
@@ -611,7 +521,7 @@ function clipboardTreeDGrid(parentId){
 	return str;
 }
 
-function partialUpdateTreeDGrid(parentId, partialdata){
+function partialUpdateLiveDGrid(parentId, partialdata){
 	for(var k in partialdata["rows"]) {
 		if(arrGrids[parentId].row(partialdata["rows"][k].id).data){
 				arrGrids[parentId].store.notify(partialdata["rows"][k], partialdata["rows"][k].id);

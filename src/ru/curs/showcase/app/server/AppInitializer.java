@@ -38,6 +38,7 @@ public final class AppInitializer {
 
 	public static void finishUserdataSetupAndCheckLoggingOverride() {
 		readDefaultUserDatas(FileUtils.GENERAL_PROPERTIES);
+		// readDefaultUserDatas("general.properties");
 		initEnableLogLevels();
 		checkAnyUserdataExists();
 		setupUserdataLogging();
@@ -179,9 +180,12 @@ public final class AppInitializer {
 				if (id.startsWith(".")) {
 					continue;
 				}
-				if (UserDataUtils.GENERAL_RES_ROOT.equalsIgnoreCase(id)) {
+				if (id.startsWith("common.")) {
 					continue;
 				}
+				// if (UserDataUtils.GENERAL_RES_ROOT.equalsIgnoreCase(id)) {
+				// continue;
+				// }
 				value = rootpath + "/" + id;
 				if (!new File(value).isDirectory()) {
 					continue;

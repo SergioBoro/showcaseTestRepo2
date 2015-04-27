@@ -1,7 +1,7 @@
 //var arrGrids = {};
 
 
-function createLiveDGrid(elementId, parentId, metadata) {
+function createPageDGrid(elementId, parentId, metadata) {
 	require([
 	         "dijit/form/Button",
 	         "dijit/form/DropDownButton",
@@ -31,10 +31,10 @@ function createLiveDGrid(elementId, parentId, metadata) {
 	         "dgrid/editor", 
 	         "dgrid/extensions/CompoundColumns", 
 	         "dgrid/ColumnSet", 
-	         "dojo/store/util/QueryResults",
+	         "dojo/store/util/QueryResults", 
 	         "dojo/on", 
-	         "dgrid/List", 
-	         "dgrid/OnDemandGrid", 
+	         "dgrid/Grid", 
+	         "dgrid/extensions/Pagination", 
 	         "ColumnResizer",
 	         "dgrid/Selection", 
 	         "dgrid/CellSelection", 
@@ -46,9 +46,9 @@ function createLiveDGrid(elementId, parentId, metadata) {
 	         "dojo/aspect", 
 	         "dojo/domReady!"
 	         ],	function(
-        		 Button,DropDownButton,ComboButton,ToggleButton,CurrencyTextBox,DateTextBox,NumberSpinner,NumberTextBox,TextBox,TimeTextBox,ValidationTextBox,SimpleTextarea,Textarea,Select,ComboBox,MultiSelect,FilteringSelect,HorizontalSlider,VerticalSlider,CheckBox,RadioButton,DataList,	        		 
-	        	 Observable, has, editor, CompoundColumns, ColumnSet, QueryResults, on, List, Grid, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect
-	         ){
+	        	 Button,DropDownButton,ComboButton,ToggleButton,CurrencyTextBox,DateTextBox,NumberSpinner,NumberTextBox,TextBox,TimeTextBox,ValidationTextBox,SimpleTextarea,Textarea,Select,ComboBox,MultiSelect,FilteringSelect,HorizontalSlider,VerticalSlider,CheckBox,RadioButton,DataList,			
+			     Observable, has, editor, CompoundColumns, ColumnSet, QueryResults, on, Grid, Pagination, ColumnResizer, Selection, CellSelection, Keyboard, declare, JsonRest, Cache, Memory, aspect
+			 ){
 		
 		var firstLoading = true;
 		
@@ -77,7 +77,8 @@ function createLiveDGrid(elementId, parentId, metadata) {
 					var result = this.inherited(arguments);
 					result.then(function(value){
 							if(value.success == '1'){
-								arrGrids[parentId].refresh();								
+//								arrGrids[parentId].refresh();				
+								refreshPageDGrid(parentId);
 							}
 							else{
 							}
@@ -122,7 +123,8 @@ function createLiveDGrid(elementId, parentId, metadata) {
 						        grid.dirty = JSON.parse(object.dirty);
 							}
 							if(value.refreshAfterSave == 'true'){
-						        grid.refresh();								
+//						        grid.refresh();		
+								refreshPageDGrid(parentId);
 							}
 							gwtShowMessage(elementId, value.message, object["editor"]);
 					    }, function(err){
@@ -179,9 +181,9 @@ function createLiveDGrid(elementId, parentId, metadata) {
 				return results;
 			}
 		}), mem));
-
-		store.mem = mem;		
 		
+		store.mem = mem;
+
 		var columns = [];
 		for(var k in metadata["columns"]) {
 			var column = null;
@@ -191,7 +193,7 @@ function createLiveDGrid(elementId, parentId, metadata) {
 				column =  eval("editor("+metadata["columns"][k]["editor"]+")");
 				column["editable"] = true;
 			}
-			
+
 			column["id"]        = metadata["columns"][k]["id"];
 			column["parentId"]  = metadata["columns"][k]["parentId"];			
 			column["field"]     = metadata["columns"][k]["id"];			
@@ -247,9 +249,9 @@ function createLiveDGrid(elementId, parentId, metadata) {
 					}
 					return result;					
 				};
-			}			
-	        
+			}
 			
+	        
 	        column["renderHeaderCell"] = function actionRenderCell(node) {
 				var div = document.createElement("div");
 		        if(metadata["common"]["haColumnHeader"]){
@@ -346,7 +348,7 @@ function createLiveDGrid(elementId, parentId, metadata) {
 		}
 		
 		
-		var declareGrid = [Grid, ColumnResizer, Keyboard];
+		var declareGrid = [Grid, Pagination, ColumnResizer, Keyboard];
 		
 		var selectionMode;
 		if(metadata["common"]["selectionModel"] == "RECORDS"){
@@ -365,6 +367,10 @@ function createLiveDGrid(elementId, parentId, metadata) {
 			declareGrid.push(ColumnSet);			
 		}
 		
+		var isVisiblePager = false;
+		if(metadata["common"]["isVisiblePager"]){
+			isVisiblePager = true;	
+		}		
 		var isVisibleColumnsHeader = false;
 		if(metadata["common"]["isVisibleColumnsHeader"]){
 			isVisibleColumnsHeader = true;	
@@ -373,10 +379,16 @@ function createLiveDGrid(elementId, parentId, metadata) {
 	    var	grid = new declare(declareGrid)({
 //				store: store,
 				getBeforePut: false,
-				minRowsPerPage: parseInt(metadata["common"]["limit"]),
-				selectionMode: selectionMode,
 				
+				showFooter: isVisiblePager,
+				pagingLinks: 2,
+				pagingTextBox: true,
+	            firstLastArrows: true,
+				pageSizeOptions: [25, 50, 75, 100],
+				rowsPerPage: parseInt(metadata["common"]["limit"]),
+
 				showHeader: isVisibleColumnsHeader,
+				selectionMode: selectionMode,
 				loadingMessage: metadata["common"]["loadingMessage"],
 //				noDataMessage: "Таблица пуста",
 				pagingDelay: 50,
@@ -384,7 +396,7 @@ function createLiveDGrid(elementId, parentId, metadata) {
 				keepScrollPosition: true,
 				readonly: metadata["common"]["readonly"]
 		}, parentId);
-	    arrGrids[parentId] = grid;	    
+	    arrGrids[parentId] = grid;
 	    
 	    
 	    aspect.after( grid, 'renderRow', function( row, args ){
@@ -420,29 +432,17 @@ function createLiveDGrid(elementId, parentId, metadata) {
 				}
 			}
 		}
-		
-		
-		for(var k in metadata["columns"]) {
-			if(metadata["columns"][k]["sorting"]){
-				var descending = false;
-				if(metadata["columns"][k]["sorting"].toUpperCase()=="DESC"){
-					descending = true;	
-				}
-			    grid.set("sort", [{attribute: metadata["columns"][k]["id"], descending: descending}]);
-			    break;
-			}
-		}		
-
-        
-		grid.on("dgrid-select", function(event){
+	    
+	    
+		grid.on(".dgrid-row:click,", function(event){
 			if(!grid.readonly){
-				if(grid.currentRowId != grid.row(event.grid._focusedNode).id){
-					grid.currentRowId = grid.row(event.grid._focusedNode).id;
+				if(grid.currentRowId != grid.row(event).id){
+					grid.currentRowId = grid.row(event).id;
 					grid.save();
 				}
 			}
 			
-			gwtAfterClick(elementId, grid.row(event.grid._focusedNode).id, grid.column(event.grid._focusedNode).label, getSelection());
+			gwtAfterClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
 		});
 		grid.on(".dgrid-row:dblclick", function(event){
 			gwtAfterDoubleClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
@@ -464,6 +464,9 @@ function createLiveDGrid(elementId, parentId, metadata) {
 		}
 		grid.on("dgrid-refresh-complete", function(event) {
 			if(firstLoading){
+				if(metadata["common"]["pageNumber"]){
+					event.grid.gotoPage(parseInt(metadata["common"]["pageNumber"]));						
+				}
 				if(metadata["common"]["selectionModel"] == "RECORDS"){
 					if(metadata["common"]["selRecId"]){
 						event.grid.select(event.grid.row(metadata["common"]["selRecId"]));
@@ -489,28 +492,41 @@ function createLiveDGrid(elementId, parentId, metadata) {
 			}
 		});
 		
+		for(var k in metadata["columns"]) {
+			grid.styleColumn(metadata["columns"][k]["id"], metadata["columns"][k]["style"]);
+		}
+		
 	    grid.set("store", store);
 		
 	});
 }
 
-function refreshLiveDGrid(parentId){
+function refreshPageDGrid(parentId){
+	
+	var currentPage = arrGrids[parentId]._currentPage;  
+	
 	arrGrids[parentId].refresh();
+	
+	if(currentPage > 1){
+		arrGrids[parentId].gotoPage(currentPage);		
+	}
+	
 }
 
-function addRecordLiveDGrid(parentId){
+function addRecordPageDGrid(parentId){
 	arrGrids[parentId].store.add({id: "addRecord_"+GenerateGUID()});
 }
 
-function saveLiveDGrid(parentId){
+function savePageDGrid(parentId){
 	arrGrids[parentId].save();
 }
 
-function revertLiveDGrid(parentId){
-	arrGrids[parentId].revert();
+function revertPageDGrid(parentId){
+//	arrGrids[parentId].revert();
+	refreshPageDGrid(parentId);
 }
 
-function clipboardLiveDGrid(parentId){
+function clipboardPageDGrid(parentId){
 	var str = "";
 	
 	var grid = arrGrids[parentId];
@@ -533,11 +549,16 @@ function clipboardLiveDGrid(parentId){
 	return str;
 }
 
-function partialUpdateLiveDGrid(parentId, partialdata){
+function partialUpdatePageDGrid(parentId, partialdata){
 	for(var k in partialdata["rows"]) {
 		if(arrGrids[parentId].row(partialdata["rows"][k].id).data){
 				arrGrids[parentId].store.notify(partialdata["rows"][k], partialdata["rows"][k].id);
 		}
 	}
 }
+
+
+
+
+
 
