@@ -2,7 +2,7 @@ package ru.curs.showcase.test.chart;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
+import org.junit.*;
 
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -25,6 +25,8 @@ public class ChartSLTest extends AbstractTest {
 	 * Проверка работы адаптера в JSON.
 	 */
 	@Test
+	@Ignore
+	// !!!
 	public void testAdaptChartForJS() {
 		CompositeContext context = getTestContext3();
 		DataPanelElementInfo element = getTestChartInfo();
@@ -95,6 +97,8 @@ public class ChartSLTest extends AbstractTest {
 	}
 
 	@Test
+	@Ignore
+	// !!!
 	public void testJython() {
 		CompositeContext context = generateContextWithSessionInfo();
 		context.setMain(MAIN_CONTEXT_TAG);
