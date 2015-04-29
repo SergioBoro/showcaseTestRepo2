@@ -50,12 +50,17 @@ public final class UserDataUtilsTest extends AbstractTestWithDefaultUserData {
 	 */
 	@Test
 	public void testGetValueByName() {
-		UserDataUtils.getGeneralRequiredProp(SecurityParamsFactory.AUTH_SERVER_URL_PARAM);
-		UserDataUtils.getRequiredProp(ConnectionFactory.CONNECTION_URL_PARAM);
+		assertNotNull(UserDataUtils
+				.getGeneralRequiredProp(SecurityParamsFactory.AUTH_SERVER_URL_PARAM));
+		assertNotNull(UserDataUtils.getRequiredProp(ConnectionFactory.CONNECTION_URL_PARAM));
 		assertNotNull(UserDataUtils.getOptionalProp(ConnectionFactory.CONNECTION_URL_PARAM));
 
 		assertEquals("group_icon_default1.png",
 				UserDataUtils.getOptionalProp("navigator.def.icon.name", TEST1_USERDATA));
+
+		assertEquals("ora:pg:test1:test2", UserDataUtils.getGeneralOptionalProp("copy.userdatas"));
+		assertNotNull(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication"));
+		assertEquals("false", UserDataUtils.getGeneralRequiredProp("activiti.enable"));
 	}
 
 	@Test
@@ -134,4 +139,15 @@ public final class UserDataUtilsTest extends AbstractTestWithDefaultUserData {
 		}
 	}
 
+	@Test
+	public void isGeneralappPropertiesExist() {
+		assertTrue((new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+				+ UserDataUtils.GENERALPROPFILENAME)).exists());
+	}
+
+	@Test
+	public void isCommonSysExist() {
+		assertTrue((new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys"))
+				.exists());
+	}
 }
