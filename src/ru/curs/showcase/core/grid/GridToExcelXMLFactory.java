@@ -102,7 +102,11 @@ public class GridToExcelXMLFactory extends GeneralXMLHelper {
 				node.setAttribute(TYPE_TAG, GridValueType.STRING.toStringForExcel());
 				node.appendChild(result.createTextNode(current.getCaption()));
 			} else {
-				node.setAttribute(TYPE_TAG, current.getValueType().toStringForExcel());
+				if (current.getValueType() == null) {
+					node.setAttribute(TYPE_TAG, GridValueType.STRING.toStringForExcel());
+				} else {
+					node.setAttribute(TYPE_TAG, current.getValueType().toStringForExcel());
+				}
 				node.appendChild(result.createTextNode(record.getValue(current)));
 			}
 			rowNode.appendChild(node);
