@@ -66,6 +66,11 @@ public final class XMLJSONConverter {
 				newXml = newXml.replace("&lt;", "&amp;lt;");
 			}
 		}
+		if (newXml.contains("&nbsp;")) {
+			while (newXml.contains("&nbsp;")) {
+				newXml = newXml.replace("&nbsp;", "&amp;nbsp;");
+			}
+		}
 
 		newXml = "<tempRootForResolvingProblem>" + newXml + "</tempRootForResolvingProblem>";
 		// InputStream in = TextUtils.stringToStream(newXml);
