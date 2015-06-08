@@ -1,15 +1,21 @@
 package ru.curs.showcase.core.html.xform;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.*;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.*;
+import org.xml.sax.*;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
+import ru.curs.showcase.runtime.UserDataUtils;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -397,6 +403,9 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		result = insertDataForSelectors(result, subformId);
 		result = generateUploaders(result, aElementInfo, subformId);
 		result = adjustSrvInfo(result, subformId);
+		if (aElementInfo.getBuildTemplate()) {
+			result = insertPartTemplate(result, aCallContext, aElementInfo);
+		}
 		return result;
 	}
 
@@ -617,4 +626,95 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		return xml;
 	}
 
+	/**
+	 * Осуществляет парсинг документа, соответсвующего родительской иксформе, и
+	 * вызов методов непосредственной вставки частей искформы, которые находятся
+	 * в файлах, указанных как значения атрибутов тегов <div>, а именно:
+	 * insertTemplate (соответсвует вставке части иксформы в указанное место) и
+	 * insertBind (соответсвует вставке биндов, сабмишенов и дополнительных
+	 * инстансов).
+	 * 
+	 * @param xml
+	 *            - документ, соответствующий родительской иксформе
+	 * @param aCallContext
+	 *            - родительский контекст
+	 * @param dpei
+	 *            - родительский элемент (соответсвует родельской иксформе)
+	 * @return - документ, дополненный описанными вставками
+	 */
+
+	private static Document insertPartTemplate(final org.w3c.dom.Document xml,
+			CompositeContext aCallContext,
+			DataPanelElementInfo dpei) {
+		String name = "";
+		NodeList nl = xml.getElementsByTagName("div");
+		NodeList nl2 = xml.getElementsByTagName("xf:model");
+		for (int i = 0; i < nl.getLength(); i++) {
+			if (nl.item(i).hasAttributes()
+					&& nl.item(i).getAttributes().getNamedItem("insertTemplate") != null) {
+				Node node = nl.item(i).getAttributes().getNamedItem("insertTemplate");
+				name = node.getTextContent();
+				insertingXml(xml, nl.item(i), aCallContext, dpei, name);
+			}
+			if (nl.item(i).hasAttributes()
+					&& nl.item(i).getAttributes().getNamedItem("insertBind") != null) {
+				Node node = nl.item(i).getAttributes().getNamedItem("insertBind");
+				name = node.getTextContent();
+				insertingXml(xml, nl2.item(0), aCallContext, dpei, name);
+			}
+		}
+		return xml;
+	}
+
+	/**
+	 * Осуществляет непосредственную вставку частей иксформы в документ,
+	 * соответствующий родительской иксформе.
+	 * 
+	 * @param xml
+	 *            - документ, соответствующий родительской иксформе
+	 * @param rootNode
+	 *            - узел родительского документа, куда осуществляется вставка
+	 *            частей иксформы
+	 * @param aCallContext
+	 *            - родительский контекст
+	 * @param dpei
+	 *            - родительский элемент (соответсвует родительской иксформе)
+	 * @param name
+	 *            - имя файла (xml-, питон- или челеста-файла), из которого
+	 *            осуществляется вставка частей иксформы
+	 */
+
+	private static void insertingXml(org.w3c.dom.Document xml, Node rootNode,
+			CompositeContext aCallContext, DataPanelElementInfo dpei, String name) {
+		XFormTemplateSelector selector = new XFormTemplateSelector(name);
+		DataFile<InputStream> data =
+			selector.getGateway().getRawDataForPartTemplate(aCallContext, dpei);
+		DocumentBuilder db = XMLUtils.createBuilder();
+		Document template = null;
+		String stringTemplate = null;
+		try {
+			stringTemplate = TextUtils.streamToString(data.getData(), data.getEncoding());
+			stringTemplate = TextUtils.removeUTF8BOM(stringTemplate);
+			stringTemplate = UserDataUtils.replaceVariables(stringTemplate);
+			StringReader reader = new StringReader(stringTemplate);
+			try {
+				InputSource inputSource = new InputSource(reader);
+				template = db.parse(inputSource);
+			} finally {
+				reader.close();
+			}
+		} catch (SAXException | IOException e1) {
+			throw new XMLFormatException(data.getName(), e1);
+		}
+
+		NodeList nl = template.getElementsByTagName("partOfXFormTemplate");
+		for (int j = 0; j < nl.getLength(); j++) {
+			for (int n = 0; n < nl.item(j).getChildNodes().getLength(); n++) {
+				Node nd = nl.item(j).getChildNodes().item(n);
+				if (nd != null) {
+					rootNode.appendChild(xml.importNode(nd, true));
+				}
+			}
+		}
+	}
 }

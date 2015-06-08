@@ -144,6 +144,13 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 
 	private List<String> group = null;
 
+	/**
+	 * Определяет, встраивать ли в темплейт иксформы дополнительные части,
+	 * определённые в других файлах (xml-, питон- или челеста-файлах, лежащих в
+	 * соответствующих местах юзердаты).
+	 */
+	private boolean buildTemplate = false;
+
 	public DataPanelElementInfo(final Integer aPosition, final DataPanelTab aTab) {
 		super();
 		position = aPosition;
@@ -534,6 +541,14 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		for (int i = 0; i < result.length; i++) {
 			group.add(result[i]);
 		}
+	}
+
+	public boolean getBuildTemplate() {
+		return buildTemplate;
+	}
+
+	public void setBuildTemplate(final Boolean aBuildTemplate) {
+		buildTemplate = aBuildTemplate;
 	}
 
 	public void addDataAndMetaDataProcs(final String prefix) {

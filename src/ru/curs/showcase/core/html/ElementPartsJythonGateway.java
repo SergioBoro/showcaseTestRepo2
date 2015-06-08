@@ -34,6 +34,12 @@ public class ElementPartsJythonGateway extends JythonQuery<String> implements El
 	}
 
 	@Override
+	public DataFile<InputStream> getRawDataForPartTemplate(final CompositeContext aContext,
+			final DataPanelElementInfo aElementInfo) {
+		return getRawData(aContext, aElementInfo);
+	}
+
+	@Override
 	protected Object execute() {
 		return getProc().getRawData(context, elementInfo.getId().getString());
 	}

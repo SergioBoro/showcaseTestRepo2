@@ -23,7 +23,7 @@ public class ElementPartsFileGateway implements ElementPartsGateway {
 			final DataPanelElementInfo elementInfo) {
 		String file = String.format("%s/%s", type.getFileDir(), sourceName);
 		try {
-			if ((new File(UserDataUtils.getUserDataCatalog() + File.separator + file)).exists()) {
+			if ((new File(UserDataUtils.getUserDataCatalog() + "/" + file)).exists()) {
 				return new DataFile<InputStream>(UserDataUtils.loadUserDataToStream(file),
 						sourceName);
 			} else {
@@ -33,6 +33,12 @@ public class ElementPartsFileGateway implements ElementPartsGateway {
 		} catch (IOException e) {
 			throw new SettingsFileOpenException(e, sourceName, type);
 		}
+	}
+
+	@Override
+	public DataFile<InputStream> getRawDataForPartTemplate(final CompositeContext context,
+			final DataPanelElementInfo elementInfo) {
+		return getRawData(context, elementInfo);
 	}
 
 	@Override

@@ -272,7 +272,7 @@
       <level2 id="JSLiveGrid3" name="JSLiveGrid3" selectOnLoad="true">
         <action>
           <main_context>Запасы на конец отчетного периода - Всего</main_context>
-          <datapanel type="byver/JSLiveGrid3.xml" tab="firstOrCurrent" >          
+          <datapanel type="byver/JSLiveGrid3.xml" tab="firstOrCurrent" >  
           </datapanel>
         </action>
       </level2>
@@ -373,7 +373,18 @@
           </datapanel>
         </action>
       </level2>      
-    </level1>        
+    </level1>
+    
+    <level1 id="400" name="Версия 4">
+      <level2 id="partTemplateTest" name="XFormsPartTemplate">
+        <action>
+          <main_context>none</main_context>
+          <datapanel type="xformsPartTemplateTest.xml" tab="firstOrCurrent" >          
+          </datapanel>
+        </action>
+      </level2>
+    </level1>
+    
   </group>
   <group id="1" name="Балансы продовольственных ресурсов">
     <level1 id="3" name="Балансы зерна">   

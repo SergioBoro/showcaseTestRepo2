@@ -16,6 +16,9 @@ import ru.curs.showcase.util.exception.SettingsFileType;
 public interface ElementPartsGateway {
 	DataFile<InputStream> getRawData(CompositeContext aContext, DataPanelElementInfo aElementInfo);
 
+	DataFile<InputStream> getRawDataForPartTemplate(CompositeContext aContext,
+			DataPanelElementInfo aElementInfo);
+
 	void setSource(String aSourceName);
 
 	void setType(SettingsFileType aType);

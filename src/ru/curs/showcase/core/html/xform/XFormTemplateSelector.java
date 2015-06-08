@@ -17,6 +17,10 @@ public class XFormTemplateSelector extends SourceSelector<ElementPartsGateway> {
 		super(elInfo.getTemplateName());
 	}
 
+	public XFormTemplateSelector(final String ruleTemplateName) {
+		super(ruleTemplateName);
+	}
+
 	@Override
 	public ElementPartsGateway getGateway() {
 		ElementPartsGateway gateway;

@@ -45,6 +45,12 @@ public class ElementPartsDBGateway implements ElementPartsGateway {
 		}
 	}
 
+	@Override
+	public DataFile<InputStream> getRawDataForPartTemplate(final CompositeContext aContext,
+			final DataPanelElementInfo aElementInfo) {
+		return getRawData(aContext, aElementInfo);
+	}
+
 	private boolean isEmpty() {
 		return (sourceName == null) || sourceName.isEmpty();
 	}

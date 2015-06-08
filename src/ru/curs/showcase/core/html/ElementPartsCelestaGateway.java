@@ -27,6 +27,15 @@ public class ElementPartsCelestaGateway implements ElementPartsGateway {
 	}
 
 	@Override
+	public DataFile<InputStream> getRawDataForPartTemplate(final CompositeContext context,
+			final DataPanelElementInfo elementInfo) {
+		CelestaHelper<JythonDTO> helper = new CelestaHelper<JythonDTO>(context, JythonDTO.class);
+		JythonDTO result = helper.runPython(sourceName, elementInfo.getId().getString());
+		InputStream data = TextUtils.stringToStream(result.getData());
+		return new DataFile<InputStream>(data, sourceName);
+	}
+
+	@Override
 	public void setSource(final String aSourceName) {
 		sourceName = aSourceName;
 	}
