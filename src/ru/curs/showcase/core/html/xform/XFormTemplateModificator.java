@@ -405,6 +405,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		result = adjustSrvInfo(result, subformId);
 		if (aElementInfo.getBuildTemplate()) {
 			result = insertPartTemplate(result, aCallContext, aElementInfo);
+		} else {
+			result = deletingEmptyDivTags(result);
 		}
 		return result;
 	}
@@ -651,16 +653,21 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		NodeList nl2 = xml.getElementsByTagName("xf:model");
 		for (int i = 0; i < nl.getLength(); i++) {
 			if (nl.item(i).hasAttributes()
+					&& (nl.item(i).getAttributes().getNamedItem("insertTemplate") != null || nl
+							.item(i).getAttributes().getNamedItem("insertBind") != null)) {
+				if (nl.item(i).hasAttributes()
 					&& nl.item(i).getAttributes().getNamedItem("insertTemplate") != null) {
-				Node node = nl.item(i).getAttributes().getNamedItem("insertTemplate");
-				name = node.getTextContent();
-				insertingXml(xml, nl.item(i), aCallContext, dpei, name);
-			}
-			if (nl.item(i).hasAttributes()
+					Node node = nl.item(i).getAttributes().getNamedItem("insertTemplate");
+					name = node.getTextContent();
+					insertingXml(xml, nl.item(i), aCallContext, dpei, name);
+					deletingNonEmptyTag(nl.item(i));
+				} else if (nl.item(i).hasAttributes()
 					&& nl.item(i).getAttributes().getNamedItem("insertBind") != null) {
-				Node node = nl.item(i).getAttributes().getNamedItem("insertBind");
-				name = node.getTextContent();
-				insertingXml(xml, nl2.item(0), aCallContext, dpei, name);
+					Node node = nl.item(i).getAttributes().getNamedItem("insertBind");
+					name = node.getTextContent();
+					insertingXml(xml, nl2.item(0), aCallContext, dpei, name);
+					deletingEmptyTag(nl.item(i));
+				}
 			}
 		}
 		return xml;
@@ -717,4 +724,28 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			}
 		}
 	}
+
+	private static void deletingNonEmptyTag(Node rootNode) {
+		while (rootNode.hasChildNodes()) {
+			rootNode.getParentNode().insertBefore(rootNode.getFirstChild(), rootNode);
+		}
+		rootNode.getParentNode().removeChild(rootNode);
+	}
+
+	private static void deletingEmptyTag(Node rootNode) {
+		rootNode.getParentNode().removeChild(rootNode);
+	}
+
+	private static Document deletingEmptyDivTags(final org.w3c.dom.Document xml) {
+		NodeList nl = xml.getElementsByTagName("div");
+		for (int i = 0; i < nl.getLength(); i++) {
+			if (nl.item(i).hasAttributes()
+					&& (nl.item(i).getAttributes().getNamedItem("insertTemplate") != null || nl
+							.item(i).getAttributes().getNamedItem("insertBind") != null)) {
+				deletingEmptyTag(nl.item(i));
+			}
+		}
+		return xml;
+	}
+
 }

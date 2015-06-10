@@ -149,7 +149,7 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	 * определённые в других файлах (xml-, питон- или челеста-файлах, лежащих в
 	 * соответствующих местах юзердаты).
 	 */
-	private boolean buildTemplate = false;
+	private boolean buildTemplate = true;
 
 	public DataPanelElementInfo(final Integer aPosition, final DataPanelTab aTab) {
 		super();
