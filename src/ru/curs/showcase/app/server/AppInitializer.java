@@ -141,6 +141,7 @@ public final class AppInitializer {
 	private static void jythonInit() {
 		Properties newProps = new Properties();
 		newProps.put("python.cachedir", "../tmp");
+		newProps.put("python.console.encoding", "UTF-8");
 		PythonInterpreter.initialize(System.getProperties(), newProps, new String[0]);
 	}
 
