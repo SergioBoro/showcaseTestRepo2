@@ -8,6 +8,7 @@ from java.io import File
 from ru.curs.showcase.app.api import UserMessage
 from ru.curs.showcase.app.api import MessageType
 from ru.curs.showcase.core import UserMessageFactory
+from ru.curs.celesta.showcase.utils import XMLJSONConverter
 
 
 
@@ -313,7 +314,7 @@ def main(context, main, add, filterinfo, session, elementId):
     
     data = u'''
     <schema xmlns="">
-      <info test="&lt;a href=&quot;&quot; onmouseover=&quot;prompt()&quot;&gt;XSS&lt;/a&gt;">
+      <info>
         <name>Белгородская обл.</name>
         <growth />
         <eyescolour />
@@ -348,24 +349,7 @@ def save(context, main, add, filterinfo, session, elementId, data):
 
     return UserMessage("557", None);
 
-
-    
-def submit(context, main, add, filterinfo, session, data):
-    print 'Submit xform data from Celesta Python procedure.'
-    print 'User %s' % context.userId
-    print 'main "%s".' % main
-    print 'add "%s".' % add
-    print 'filterinfo "%s".' % filterinfo
-    print 'session "%s".' % session
-    print 'data "%s".' % data
-    
-    
-    context.error(u"555");
-
-    return UserMessage("557", None);
-    
-    
-    return data;
+ 
 
 def downloadFile(context, main, add, filterinfo, session, elementId, data):
     print 'Download file xform from Celesta Python procedure.'
@@ -513,5 +497,36 @@ def webtext(context, main, add, filterinfo, session, elementId):
 #    return JythonDTO(data, settings, UserMessageFactory().build(555, u"WebText успешно построен из Celesta"))
     return JythonDTO(data, settings)
 
+
+def submitDeleteFile(context, main, add, filterinfo, session, data):
+    print 'Submit xform data from Celesta Python procedure.'
+    print 'User %s' % context.userId
+    print 'main "%s".' % main
+    print 'add "%s".' % add
+    print 'filterinfo "%s".' % filterinfo
+    print 'session "%s".' % session
+    print 'data "%s".' % data
+
+    
+    alfURL = "http://127.0.0.1:8080/alfresco"
+    alfUser = "user222" 
+    alfPass = "пароль"
+    
+    alfFileId = "50694ed0-63b7-47d8-8e54-67ad19e3c359"
+  
+    
+    resultLogin = AlfrescoManager.login(alfURL, alfUser, alfPass)
+    if resultLogin.getResult() == 0:
+        resultDeleteFile = AlfrescoManager.deleteFile(alfFileId, alfURL, resultLogin.getTicket());
+        if resultDeleteFile.getResult() == 0:
+            context.message(u"Файл успешно удален из Alfresco.");            
+        else:
+            context.error(resultDeleteFile.getErrorMessage());
+    else:
+        context.error(resultLogin.getErrorMessage());        
+
+    
+    
+    return XMLJSONConverter.jsonToXml(data);
 
 

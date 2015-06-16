@@ -18,14 +18,17 @@
 			</xf:instance>
 
 			
-			<xf:submission id="subform_transformation_submit" method="post"
+			<xf:submission id="alfresco_submitDeleteFile" method="post"
 				instance="xformId_mainInstance" replace="instance" ref="instance('xformId_mainInstance')"
-				action="secured/submit?proc=g1.xform.submit.celesta">
+				action="secured/submit?proc=g1.xformAlfresco.submitDeleteFile.celesta">
 				<xf:action ev:event="xforms-submit-done">
-					<xf:message>Submission успешно выполнен</xf:message>
+					<xf:message>Файл из Alfresco успешно удален</xf:message>
 				</xf:action>
 				<xf:action ev:event="xforms-submit-error">
-					<xf:message>Ошибка при выполнении submission</xf:message>
+					<xf:message>
+						Ошибка при удалении файла из Alfresco:
+						<xf:output value="event('response-body')" />
+					</xf:message>
 				</xf:action>				
 			</xf:submission>
 			
@@ -54,15 +57,6 @@
 		<hr/>
 		<div>
 			<xf:trigger>
-				<xf:label>Вызов XFormsTransformationServlet(secured/submit)</xf:label>
-				<xf:action ev:event="DOMActivate">
-					<xf:send submission="subform_transformation_submit" />
-				</xf:action>
-			</xf:trigger>
-		</div>
-		<hr/>
-		<div>
-			<xf:trigger>
 				<xf:label>Вызов Selector</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
@@ -82,6 +76,15 @@
 		<div>Загрузка файлов</div>		
 		<xf:upload id="10101_upload" submit="true" submitLabel="Загрузить файлы в Alfresco" singleFile="false"/>
 		<hr/>
+		<div>
+			<xf:trigger>
+				<xf:label>Удаление файла из Alfresco</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:send submission="alfresco_submitDeleteFile" />
+				</xf:action>
+			</xf:trigger>
+		</div>
+		
 	</body>
 </html>
 

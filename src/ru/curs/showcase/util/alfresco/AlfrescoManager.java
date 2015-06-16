@@ -4,7 +4,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 
 import org.apache.http.*;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.*;
 import org.apache.http.entity.mime.*;
 import org.apache.http.entity.mime.content.StringBody;
@@ -116,7 +116,7 @@ public final class AlfrescoManager {
 					ar.setResult(RESULT_OK);
 					ar.setNodeRef(jo.getString("nodeRef"));
 				} else {
-					ar.setErrorMessage(EntityUtils.toString(resEntity));
+					ar.setErrorMessage(resContent);
 				}
 			} else {
 				ar.setErrorMessage("HTTP-запрос загрузки файла в Alfresco вернул пустые данные.");
@@ -138,4 +138,59 @@ public final class AlfrescoManager {
 		return ar;
 
 	}
+
+	public static AlfrescoDeleteFileResult deleteFile(final String alfFileId, final String alfURL,
+			final String alfTicket) {
+
+		AlfrescoDeleteFileResult ar = new AlfrescoDeleteFileResult();
+		ar.setResult(RESULT_ERROR);
+
+		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
+		try {
+			HttpDelete httpdelete =
+				new HttpDelete(alfURL
+						+ "/service/slingshot/doclib/action/file/node/workspace/SpacesStore/"
+						+ alfFileId + "?alf_ticket=" + alfTicket);
+
+			HttpResponse response = httpclient.execute(httpdelete);
+
+			HttpEntity resEntity = response.getEntity();
+
+			if (resEntity != null) {
+				String resContent = EntityUtils.toString(resEntity);
+				if (response.getStatusLine().getStatusCode() == HTTP_OK) {
+					JSONTokener jt = new JSONTokener(resContent);
+					JSONObject jo = new JSONObject(jt);
+
+					boolean overallSuccess = jo.getBoolean("overallSuccess");
+					if (overallSuccess) {
+						ar.setResult(RESULT_OK);
+					} else {
+						ar.setErrorMessage(resContent);
+					}
+
+				} else {
+					ar.setErrorMessage(resContent);
+				}
+			} else {
+				ar.setErrorMessage("HTTP-запрос удаления файла из Alfresco вернул пустые данные.");
+			}
+
+			EntityUtils.consume(resEntity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ar.setResult(RESULT_ERROR);
+			ar.setErrorMessage(e.getMessage());
+		} finally {
+			try {
+				httpclient.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return ar;
+
+	}
+
 }
