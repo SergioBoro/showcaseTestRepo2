@@ -366,7 +366,7 @@ public final class UserDataUtils {
 		return getGeneralProperties().getProperty(paramName);
 	}
 
-	private static Properties getGeneralProperties() {
+	public static Properties getGeneralProperties() {
 		Properties props = new Properties();
 		try {
 			InputStream is = new FileInputStream(getGeneralPropFile());

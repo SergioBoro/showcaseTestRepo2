@@ -15,6 +15,7 @@ import org.slf4j.*;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.server.GeneralAppProperties;
 import ru.curs.showcase.util.ServletUtils;
 import ru.curs.showcase.util.exception.ServerLogicError;
 
@@ -123,6 +124,13 @@ public final class AppInfoSingleton {
 	private String solutionsDirRoot;
 
 	private Map<String, Object> sessionAttributesMap = null;
+
+	/**
+	 * Переменная класса, содержащего в себе карту со всеми свойствами из файла
+	 * generalapp.properties.
+	 */
+
+	private final GeneralAppProperties generalAppProperties = new GeneralAppProperties();
 
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
 		return lastLogEvents;
@@ -543,5 +551,9 @@ public final class AppInfoSingleton {
 
 	public Map<String, Object> getSessionAttributesMap() {
 		return sessionAttributesMap;
+	}
+
+	public GeneralAppProperties getGeneralAppProperties() {
+		return generalAppProperties;
 	}
 }

@@ -35,14 +35,18 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 	@Override
 	public final void contextInitialized(final ServletContextEvent arg0) {
 		LOGGER.info(SHOWCASE_LOADING);
+
 		AppInitializer.initialize();
 
 		ProductionModeInitializer.initialize(arg0.getServletContext());
+
+		AppInfoSingleton.getAppInfo().getGeneralAppProperties().initialize();
 
 		WebApplicationContext ctx =
 			WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext());
 		actx = (AbstractRefreshableWebApplicationContext) ctx;
 		actx.refresh();
+
 		try {
 			try {
 				Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
@@ -91,7 +95,6 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 			LOGGER.info("сессия Showcase удаляется..." + destrHttpSession.getId());
 		}
-		AppInfoSingleton.getAppInfo().removeSessionInfo(destrHttpSession.getId());
 
 		try {
 			Celesta.getInstance().logout(destrHttpSession.getId(), false);
