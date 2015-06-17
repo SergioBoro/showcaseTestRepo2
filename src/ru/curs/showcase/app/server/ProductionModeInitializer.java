@@ -97,6 +97,9 @@ public final class ProductionModeInitializer {
 			String tablePrefixIsSchema =
 				UserDataUtils.getGeneralOptionalProp("activiti.table.prefix.is.schema");
 
+			String jobExecutorActivate =
+				UserDataUtils.getGeneralOptionalProp("activiti.jobexecutor.activate");
+
 			ProcessEngineConfiguration conf =
 				ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration();
 			conf.setDatabaseType(databaseType);
@@ -106,6 +109,7 @@ public final class ProductionModeInitializer {
 			conf.setJdbcUsername(jdbcUsername);
 			conf.setJdbcPassword(jdbcPassword);
 			conf.setHistory(history);
+			conf.setJobExecutorActivate(Boolean.getBoolean(jobExecutorActivate));
 
 			if (databaseTablePrefix != null && !("".equals(databaseTablePrefix))) {
 				conf.setDatabaseTablePrefix(databaseTablePrefix);
