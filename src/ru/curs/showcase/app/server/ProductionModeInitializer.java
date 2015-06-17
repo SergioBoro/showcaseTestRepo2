@@ -393,9 +393,15 @@ public final class ProductionModeInitializer {
 		BatchFileProcessor fprocessor =
 			new BatchFileProcessor(userDataCatalog + "/" + dirName, new RegexFilenameFilter(
 					"^[.].*", false));
+		BatchFileProcessor fprocessorForLoginContent =
+			new BatchFileProcessor(userDataCatalog + "/resources/login_content",
+					new RegexFilenameFilter("^[.].*", false));
 		try {
-			fprocessor.process(new CopyFileAction(aServletContext.getRealPath("/"
+			fprocessor.processWithoutLoginContent(new CopyFileAction(aServletContext
+					.getRealPath("/"
 					+ UserDataUtils.SOLUTIONS_DIR + "/" + userdataId + "/" + dirName)));
+			fprocessorForLoginContent.process(new CopyFileAction(aServletContext
+					.getRealPath("/resources/login_content")));
 		} catch (IOException e) {
 			isAllFilesCopied = false;
 			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
