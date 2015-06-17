@@ -3,14 +3,32 @@
  */
 package ru.curs.showcase.app.client;
 
+import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
 import ru.curs.showcase.app.api.MessageType;
 import ru.curs.showcase.app.client.api.Constants;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.*;
+import com.google.gwt.resources.client.*;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.ui.*;
+
+
+/**
+ * Класс, ссылающийся на иконки для {@link DialogBoxWithCaptionButton}.
+ * 
+ */
+interface ImagesForDialogBox extends ClientBundle {
+	/**
+	 * Возвращает ImageResource для иконки на кнопку Закрыть.
+	 * 
+	 * @return - ImageResource.
+	 */
+	@Source("resources/message_error.png")
+	ImageResource getErrorIcon();
+}
 
 /**
  * @author anlug
@@ -19,6 +37,12 @@ import com.google.gwt.user.client.ui.*;
  * 
  */
 public final class MessageBox {
+
+	/**
+	 * GWT сервис для доступа к иконкам, хранящимся на сервере.
+	 */
+	private static ImagesForDialogBox images = (ImagesForDialogBox) GWT
+			.create(ImagesForDialogBox.class);
 
 	public static final String SIZE_ONE_HUNDRED_PERCENTS = "100%";
 
@@ -157,7 +181,8 @@ public final class MessageBox {
 			break;
 
 		case ERROR:
-			im1.setUrl(Constants.MESSAGE_ERROR_IMAGE);
+			im1.setResource(images.getErrorIcon());
+			// im1.setUrl(Constants.MESSAGE_ERROR_IMAGE);
 			break;
 
 		default:

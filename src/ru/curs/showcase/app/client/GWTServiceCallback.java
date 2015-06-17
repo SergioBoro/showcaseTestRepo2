@@ -43,10 +43,23 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 				str = msgErrorCaption;
 			}
 
-			MessageBox.showMessageWithDetails(str, caught.getMessage(),
+			if (GeneralException.generateDetailedInfo(caught).contains(
+					"com.google.gwt.user.client.rpc.StatusCodeException")) {
+
+				MessageBox
+						.showMessageWithDetails(
+								"Нет связи с сервером",
+								"Проверьте наличие связи с сервером или обратитесь к администратору вашей сети",
+								GeneralException.generateDetailedInfo(caught), MessageType.ERROR,
+								true);
+
+			} else {
+				MessageBox.showMessageWithDetails(str, caught.getMessage(),
 					GeneralException.generateDetailedInfo(caught),
 					GeneralException.getMessageType(caught),
 					GeneralException.needDetailedInfo(caught));
+			}
+
 			// MessageBox.showMessageWithDetails(msgErrorCaption,
 			// caught.getMessage(),
 			// GeneralServerException
