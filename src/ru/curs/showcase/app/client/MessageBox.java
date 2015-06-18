@@ -3,9 +3,7 @@
  */
 package ru.curs.showcase.app.client;
 
-import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
 import ru.curs.showcase.app.api.MessageType;
-import ru.curs.showcase.app.client.api.Constants;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
@@ -17,17 +15,53 @@ import com.google.gwt.user.client.ui.*;
 
 
 /**
- * Класс, ссылающийся на иконки для {@link DialogBoxWithCaptionButton}.
+ * Интерфейс, ссылающийся на иконки, которые могут понадобится в окне сообщений
+ * на клиенте.
  * 
  */
 interface ImagesForDialogBox extends ClientBundle {
 	/**
-	 * Возвращает ImageResource для иконки на кнопку Закрыть.
+	 * Возвращает ImageResource для картинки "ошибка".
 	 * 
 	 * @return - ImageResource.
 	 */
 	@Source("resources/message_error.png")
 	ImageResource getErrorIcon();
+
+	/**
+	 * Возвращает ImageResource для картинки "Вниманеи".
+	 * 
+	 * @return - ImageResource.
+	 */
+	@Source("resources/message_alert.png")
+	ImageResource getAlertIcon();
+
+	/**
+	 * Возвращает ImageResource для картинки "Инфо".
+	 * 
+	 * @return - ImageResource.
+	 */
+	@Source("resources/message_info.png")
+	ImageResource getInfoIcon();
+
+	/**
+	 * Возвращает ImageResource для картинки
+	 * "arrow_for_disclosure_panel_close.png".
+	 * 
+	 * @return - ImageResource.
+	 */
+	@Source("resources/arrow_for_disclosure_panel_close.png")
+	ImageResource getIconArrowForDisclosurePanelClose();
+
+	/**
+	 * Возвращает ImageResource для картинки
+	 * "arrow_for_disclosure_panel_open.png".
+	 * 
+	 * @return - ImageResource.
+	 */
+	@Source("resources/arrow_for_disclosure_panel_open.png")
+	ImageResource getIconArrowForDisclosurePanelOpen();
+
 }
 
 /**
@@ -173,11 +207,13 @@ public final class MessageBox {
 		switch (messageType) {
 
 		case INFO:
-			im1.setUrl(Constants.MESSAGE_INFO_IMAGE);
+			im1.setResource(images.getInfoIcon());
+			// im1.setUrl(Constants.MESSAGE_INFO_IMAGE);
 			break;
 
 		case WARNING:
-			im1.setUrl(Constants.MESSAGE_ALERT_IMAGE);
+			im1.setResource(images.getAlertIcon());
+			// im1.setUrl(Constants.MESSAGE_ALERT_IMAGE);
 			break;
 
 		case ERROR:
@@ -211,7 +247,8 @@ public final class MessageBox {
 
 			hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 			Image im = new Image();
-			im.setUrl(Constants.ARROW_FOR_DISCLOSURE_PANEL_CLOSE_IMAGE);
+			// im.setUrl(Constants.ARROW_FOR_DISCLOSURE_PANEL_CLOSE_IMAGE);
+			im.setResource(images.getIconArrowForDisclosurePanelClose());
 
 			hp.add(im);
 			hp.add(new HTML(NBSP + "Показать подробную информацию" + NBSP + NBSP));
@@ -228,7 +265,9 @@ public final class MessageBox {
 
 					hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 					Image im = new Image();
-					im.setUrl(Constants.ARROW_FOR_DISCLOSURE_PANEL_OPEN_IMAGE);
+					// im.setUrl(Constants.ARROW_FOR_DISCLOSURE_PANEL_OPEN_IMAGE);
+					im.setResource(images.getIconArrowForDisclosurePanelOpen());
+
 					textArea.setSize("600px", "250px");
 					hp.add(im);
 					hp.add(new HTML(NBSP + "Скрыть подробную информацию" + NBSP + NBSP));
@@ -246,7 +285,8 @@ public final class MessageBox {
 
 					hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 					Image im = new Image();
-					im.setUrl(Constants.ARROW_FOR_DISCLOSURE_PANEL_CLOSE_IMAGE);
+					// im.setUrl(Constants.ARROW_FOR_DISCLOSURE_PANEL_CLOSE_IMAGE);
+					im.setResource(images.getIconArrowForDisclosurePanelClose());
 
 					hp.add(im);
 					hp.add(new HTML(NBSP + "Показать подробную информацию"));
