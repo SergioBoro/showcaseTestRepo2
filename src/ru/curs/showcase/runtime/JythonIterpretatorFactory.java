@@ -1,11 +1,14 @@
 package ru.curs.showcase.runtime;
 
 import java.io.File;
+import java.util.*;
 
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
 
 import ru.curs.showcase.util.exception.ServerLogicError;
+
+//import java.io.File;
 
 /**
  * Пул интерпретаторов Jython.
@@ -51,8 +54,22 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 		state.path.append(new PyString(getUserDataScriptDir()));
 		// File genScriptDir = new File(getGeneralScriptDir());
 		// if (genScriptDir.exists()) {
-		state.path.append(new PyString(getGeneralScriptDir()));
+		if (getGeneralScriptDir().size() > 0) {
+			for (String path : getGeneralScriptDir()) {
+				state.path.append(new PyString(path));
+			}
+		}
 		// }
+		if (getJarList().size() > 0) {
+			for (String jarName : getJarList()) {
+				state.path.append(new PyString(jarName));
+			}
+		}
+		if (getGeneralScriptDirFromWebInf("libJython").size() > 0) {
+			for (String path : getGeneralScriptDirFromWebInf("libJython")) {
+				state.path.append(new PyString(path));
+			}
+		}
 		File jythonLibPath = new File(AppInfoSingleton.getAppInfo().getWebAppPath() + libDir);
 		if (!jythonLibPath.exists()) {
 			throw new ServerLogicError(String.format(PYTHON_SCRIPTS_DIR_NOT_FOUND, libDir));
@@ -73,29 +90,59 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 				+ SCRIPTS_JYTHON_PATH;
 	}
 
-	public static String getGeneralScriptDir() {
+	public static List<String> getGeneralScriptDir() {
+		List<String> pathList = new ArrayList<String>();
 		File fileRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
-		File file =
-			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys" + "/"
-					+ SCRIPTS_JYTHON_PATH);
-		if (!(file.exists())) {
-			File[] files = fileRoot.listFiles();
-			for (File f : files) {
-				if (f.getName().startsWith("common.") && !("common.sys".equals(f.getName()))) {
-					File fileN =
-						new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-								+ f.getName() + "/" + SCRIPTS_JYTHON_PATH);
-					if (fileN.exists())
-						return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName()
-								+ "/" + SCRIPTS_JYTHON_PATH;
-				}
+
+		File[] files = fileRoot.listFiles();
+		for (File f : files) {
+			if (f.getName().startsWith("common.")) {
+				File fileN =
+					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName()
+							+ "/" + SCRIPTS_JYTHON_PATH);
+				if (fileN.exists())
+					pathList.add(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+							+ f.getName() + "/" + SCRIPTS_JYTHON_PATH);
 			}
 		}
 
-		return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys" + "/"
-				+ SCRIPTS_JYTHON_PATH;
+		return pathList;
 		// return AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
 		// + UserDataUtils.GENERAL_RES_ROOT + "/" + SCRIPTS_JYTHON_PATH;
+	}
+
+	public static List<String> getGeneralScriptDirFromWebInf(String libFolder) {
+		List<String> pathList = new ArrayList<String>();
+		File fileRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
+
+		File[] files = fileRoot.listFiles();
+		for (File f : files) {
+			if (f.getName().startsWith("common.")) {
+				File fileN =
+					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName()
+							+ "/WEB-INF/" + libFolder);
+				if (fileN.exists())
+					pathList.add(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+							+ f.getName() + "/WEB-INF/" + libFolder);
+			}
+		}
+
+		return pathList;
+	}
+
+	public static List<String> getJarList() {
+		List<String> jarList = new ArrayList<String>();
+		for (String path : getGeneralScriptDirFromWebInf("lib")) {
+			String[] jarArray = (new File(path)).list();
+			if (jarArray != null && jarArray.length > 0) {
+				for (String jar : jarArray) {
+					if (jar.endsWith(".jar")) {
+						jarList.add(path + "/" + jar);
+					}
+				}
+			}
+		}
+		return jarList;
 	}
 
 	public String getLibJythonDir() {
