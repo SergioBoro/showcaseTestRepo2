@@ -6,7 +6,7 @@ import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
 
-import org.junit.Test;
+import org.junit.*;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -43,6 +43,8 @@ public class NavigatorGatewayTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
+	@Ignore
+	// !!!
 	public void testJythonNavigator() {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(TEST1_USERDATA);
 		CompositeContext context = new CompositeContext();
