@@ -263,8 +263,17 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			input = doc.createElement(INPUT_TAG);
 			input.setAttribute(NAME_TAG, "@@filedata@@" + procId);
 
+			boolean notClearUpload = false;
+			Node node = old.getAttributes().getNamedItem(ExchangeConstants.NOT_CLEAR_UPLOAD_TAG);
+			if (node != null) {
+				notClearUpload = Boolean.parseBoolean(node.getTextContent());
+			}
+			if (notClearUpload) {
+				form.setAttribute(ExchangeConstants.NOT_CLEAR_UPLOAD_TAG.toLowerCase(), "true");
+			}
+
 			boolean singleFile = false;
-			Node node = old.getAttributes().getNamedItem(SINGLE_FILE_TAG);
+			node = old.getAttributes().getNamedItem(SINGLE_FILE_TAG);
 			if (node != null) {
 				singleFile = Boolean.parseBoolean(node.getTextContent());
 			}
@@ -646,8 +655,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	 */
 
 	private static Document insertPartTemplate(final org.w3c.dom.Document xml,
-			CompositeContext aCallContext,
-			DataPanelElementInfo dpei) {
+			CompositeContext aCallContext, DataPanelElementInfo dpei) {
 		String name = "";
 		NodeList nl = xml.getElementsByTagName("div");
 		NodeList nl2 = xml.getElementsByTagName("xf:model");
@@ -656,13 +664,13 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 					&& (nl.item(i).getAttributes().getNamedItem("insertTemplate") != null || nl
 							.item(i).getAttributes().getNamedItem("insertBind") != null)) {
 				if (nl.item(i).hasAttributes()
-					&& nl.item(i).getAttributes().getNamedItem("insertTemplate") != null) {
+						&& nl.item(i).getAttributes().getNamedItem("insertTemplate") != null) {
 					Node node = nl.item(i).getAttributes().getNamedItem("insertTemplate");
 					name = node.getTextContent();
 					insertingXml(xml, nl.item(i), aCallContext, dpei, name);
 					deletingNonEmptyTag(nl.item(i));
 				} else if (nl.item(i).hasAttributes()
-					&& nl.item(i).getAttributes().getNamedItem("insertBind") != null) {
+						&& nl.item(i).getAttributes().getNamedItem("insertBind") != null) {
 					Node node = nl.item(i).getAttributes().getNamedItem("insertBind");
 					name = node.getTextContent();
 					insertingXml(xml, nl2.item(0), aCallContext, dpei, name);

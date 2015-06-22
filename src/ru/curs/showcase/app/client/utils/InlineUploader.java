@@ -123,7 +123,12 @@ public class InlineUploader {
 				counter++;
 				isAtLeastOneFileSelected = true;
 				form.submit();
-				clearForm(form);
+
+				String notClearUpload =
+					form.getAttribute(ExchangeConstants.NOT_CLEAR_UPLOAD_TAG.toLowerCase());
+				if ((notClearUpload == null) || notClearUpload.trim().isEmpty()) {
+					clearForm(form);
+				}
 			}
 		} catch (SerializationException e) {
 			MessageBox.showSimpleMessage(

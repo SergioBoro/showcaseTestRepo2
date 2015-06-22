@@ -4,8 +4,8 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLschema" xmlns:fs="http://www.curs.ru/ns/FormServer"
 	xmlns:xf="http://www.w3.org/2002/xforms">
 	<head>
-		<xf:model id="showcase_Template_uploaders_simple_subform_mainModel">
-			<xf:instance id="Showcase_Template_uploaders_simple_subform_mainInstance">
+		<xf:model id="xformId_mainModel">
+			<xf:instance id="xformId_mainInstance">
 				<schema xmlns="">
 					<info>
 						<name />
@@ -17,7 +17,7 @@
 				</schema>
 			</xf:instance>
 			
-            <xf:instance id="Showcase_Template_uploaders_simple_subform_myInstance">
+            <xf:instance id="xformId_myInstance">
                 <schema xmlns="">
 				  <files1>                
 					<file>Файл11</file>                
@@ -41,12 +41,12 @@
 		<div>
 			Быстрая загрузка файла - 1-й (Выдается ошибка при загрузке, задан submitLabel, запрет мультивыбора)					
 		</div>
-		<xf:upload id="05"  submit="true" submitLabel="Загрузить файлы" singleFile="true"  />
+		<xf:upload id="xformId_05"  submit="true" submitLabel="Загрузить файлы" singleFile="true"  />
 			
 		<div>
-			Быстрая загрузка файла - 2-й (submitLabel по умолчанию)			
+			Быстрая загрузка файла - 22-й (submitLabel по умолчанию)			
 		</div>
-		<xf:upload id="051"  submit="true"  />
+		<xf:upload id="xformId_051"  submit="true" notClearUpload="true" />
 	
 		<hr />
 	
@@ -55,15 +55,15 @@
 		<div>
 			Обычная загрузка файла - 1-й (задан filenamesMapping с предварительной очисткой списка файлов)					
 		</div>
-		<xf:upload id="04" filenamesMapping="XPath(instance(quot(Showcase_Template_uploaders_simple_subform_myInstance))/files1)" needClearFilenames ="true"  />
+		<xf:upload id="xformId_04"  notClearUpload="true"  filenamesMapping="XPath(instance(quot(xformId_myInstance))/files1)" needClearFilenames ="true"  />
 		<div>
 			Список файлов:	
-        <xf:select1 ref="instance('Showcase_Template_uploaders_simple_subform_mainInstance')/info/name">
+        <xf:select1 ref="instance('xformId_mainInstance')/info/name">
             <xf:item>
                 <xf:label>-</xf:label>
                 <xf:value>-</xf:value>
             </xf:item>
-            <xf:itemset nodeset="instance('Showcase_Template_uploaders_simple_subform_myInstance')/files1/file">
+            <xf:itemset nodeset="instance('xformId_myInstance')/files1/file">
                 <xf:label ref="."/>
                 <xf:value ref="."/>
             </xf:itemset>
@@ -75,15 +75,15 @@
 		<div>
 			Обычная загрузка файла - 2-й (задан filenamesMapping без предварительной очистки списка файлов)			
 		</div>
-		<xf:upload id="041" filenamesMapping="XPath(instance(quot(Showcase_Template_uploaders_simple_subform_myInstance))/files2)" />
+		<xf:upload id="xformId_041" filenamesMapping="XPath(instance(quot(xformId_myInstance))/files2)" />
 		<div>
 			Список файлов:	
-        <xf:select1 ref="instance('Showcase_Template_uploaders_simple_subform_mainInstance')/info/growth">
+        <xf:select1 ref="instance('xformId_mainInstance')/info/growth">
             <xf:item>
                 <xf:label>-</xf:label>
                 <xf:value>-</xf:value>
             </xf:item>
-            <xf:itemset nodeset="instance('Showcase_Template_uploaders_simple_subform_myInstance')/files2/file">
+            <xf:itemset nodeset="instance('xformId_myInstance')/files2/file">
                 <xf:label ref="."/>
                 <xf:value ref="."/>
             </xf:itemset>
@@ -100,7 +100,7 @@
 				</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
-						resource="javascript:gwtXFormSave('xformId', '1', Writer.toString(getSubformInstanceDocument('Showcase_Template_uploaders_simple_subform_mainModel', 'Showcase_Template_uploaders_simple_subform_mainInstance')))" />
+						resource="javascript:gwtXFormSave('xformId', '1', Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))" />
 				</xf:action>
 			</xf:trigger>
 		</div>
