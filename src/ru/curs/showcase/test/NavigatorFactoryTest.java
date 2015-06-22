@@ -103,7 +103,7 @@ public class NavigatorFactoryTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
-	// @Ignore
+	@Ignore
 	// !!!
 			public
 			void testWithSelector() {
