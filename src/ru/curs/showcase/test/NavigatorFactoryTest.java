@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.InputStream;
 
-import org.junit.Test;
+import org.junit.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
