@@ -71,6 +71,8 @@ public class ActionAndContextSLTest extends AbstractTest {
 	}
 
 	@Test
+	@Ignore
+	// !!!
 	public void testJythonActivity() {
 		Action action = new Action();
 		Activity activity = Activity.newServerActivity("id", "TestJythonProc.py");
