@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.xml.parsers.DocumentBuilder;
 
-import org.junit.Test;
+import org.junit.*;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -35,6 +35,8 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 	 * Основной тест для проверки работы WebTextDBGateway.
 	 */
 	@Test
+	@Ignore
+	// !!!
 	public void testGetDataBySP() {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "1", "1");
@@ -99,6 +101,8 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 	 * @throws NoSuchMethodException
 	 */
 	@Test
+	@Ignore
+	// !!!
 	public void testEventsAndDefAction() throws IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException {
 		CompositeContext context = getTestContext2();
@@ -164,6 +168,8 @@ public class WebTextSLTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
+	@Ignore
+	// !!!
 	public void testSPTransform() {
 		DataPanelElementInfo el = new DataPanelElementInfo("id", DataPanelElementType.WEBTEXT);
 		CompositeContext context = getTestContext3();
