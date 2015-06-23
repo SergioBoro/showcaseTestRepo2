@@ -219,6 +219,8 @@ public class RuntimeTest extends AbstractTest {
 	}
 
 	@Test
+	@Ignore
+	// !!!
 	public void testExecutedProc() {
 		AppInfoSingleton.getAppInfo().getExecutedProc().clear();
 		final String procName = "activity_for_test";
