@@ -38,6 +38,8 @@ public class DataPanelSLTest extends AbstractTest {
 	}
 
 	@Test
+	@Ignore
+	// !!!
 	public void testBySLFromDB() {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
 		action.setContext(CompositeContext.createCurrent());

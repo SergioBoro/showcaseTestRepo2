@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.sql.*;
 
-import org.junit.Test;
+import org.junit.*;
 
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.test.AbstractTestWithDefaultUserData;
@@ -25,6 +25,8 @@ public class DBConnectionsTest extends AbstractTestWithDefaultUserData {
 	 * 
 	 */
 	@Test
+	@Ignore
+	// !!!
 	public void testConnectionsSimple() {
 		Connection conn1 = ConnectionFactory.getInstance().acquire();
 		try {
