@@ -163,6 +163,8 @@ public class PoolsTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
+	@Ignore
+	// !!!
 	public void jythonPoolShouldReturnGoodInterpreper() throws TransformerConfigurationException,
 			IOException {
 		Pool<PythonInterpreter> pool = JythonIterpretatorFactory.getInstance();
