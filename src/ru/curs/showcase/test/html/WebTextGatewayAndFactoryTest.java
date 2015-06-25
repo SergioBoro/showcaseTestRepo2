@@ -93,6 +93,8 @@ public class WebTextGatewayAndFactoryTest extends AbstractTestWithDefaultUserDat
 	}
 
 	@Test
+	@Ignore
+	// !!!
 	public void testJythonGetSettings() {
 		final String region = "Алтайский край";
 
