@@ -89,6 +89,8 @@ public class ActionAndContextSLTest extends AbstractTest {
 	}
 
 	@Test
+	@Ignore
+	// !!!
 	public void testJythonSAXActivity() {
 		Action action = new Action();
 		Activity activity = Activity.newServerActivity("id", "SAXJythonProc.py");
