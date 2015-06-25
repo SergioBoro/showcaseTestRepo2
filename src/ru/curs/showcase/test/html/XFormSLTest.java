@@ -289,6 +289,8 @@ public class XFormSLTest extends AbstractTest {
 	}
 
 	@Test
+	@Ignore
+	// !!!
 	public void testXFormsXMLDownloadXSLJythonGood() {
 		downloadTestBase("proc6jj");
 	}
