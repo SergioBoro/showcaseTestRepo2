@@ -1,5 +1,6 @@
 package ru.curs.showcase.app.server;
 
+import java.io.File;
 import java.util.Properties;
 
 import javax.servlet.*;
@@ -50,6 +51,29 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		try {
 			try {
 				Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
+				
+				String javaLibPath = celestaProps.getProperty("javalib.path");
+				for (String path : JythonIterpretatorFactory.getGeneralScriptDirFromWebInf("lib")) {
+					if ("".equals(javaLibPath) || javaLibPath == null) {
+						javaLibPath = path;
+					} else {
+						javaLibPath = javaLibPath + File.pathSeparator + path;
+					}
+				}
+				celestaProps.setProperty("javalib.path", javaLibPath);
+				
+				String pyLibPath = celestaProps.getProperty("pylib.path");
+				for (String path : JythonIterpretatorFactory
+						.getGeneralScriptDirFromWebInf("libJython")) {
+					if ("".equals(pyLibPath) || pyLibPath == null) {
+						pyLibPath = path;
+					} else {
+						pyLibPath = pyLibPath + File.pathSeparator + path;
+					}
+				}
+				celestaProps.setProperty("pylib.path", pyLibPath);
+				
+				AppInfoSingleton.getAppInfo().setCelestaProperties(celestaProps);
 
 				if (celestaProps != null) {
 					Celesta.initialize(celestaProps);

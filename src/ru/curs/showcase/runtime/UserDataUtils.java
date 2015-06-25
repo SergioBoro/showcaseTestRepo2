@@ -89,6 +89,7 @@ public final class UserDataUtils {
 	// public static final String CELESTA_DATABASE_CONNECTION =
 	// "database.connection";
 	public static final String CELESTA_PYLIB_PATH = "pylib.path";
+	public static final String CELESTA_JAVALIB_PATH = "javalib.path";
 	public static final String CELESTA_CONNECTION_URL = "connection.url";
 	public static final String CELESTA_CONNECTION_USERNAME = "connection.username";
 	public static final String CELESTA_CONNECTION_PASSWORD = "connection.password";
@@ -470,6 +471,14 @@ public final class UserDataUtils {
 			celestaProps.put(CELESTA_PYLIB_PATH, pyLibPath);
 		}
 
+		String javaLibPath = generalProps.getProperty(CELESTA_PREFIX + CELESTA_JAVALIB_PATH);
+		if (!(javaLibPath == null || javaLibPath.isEmpty())) {
+			while (javaLibPath.contains("/")) {
+				javaLibPath = javaLibPath.replace("/", File.separator);
+			}
+			celestaProps.put(CELESTA_JAVALIB_PATH, javaLibPath);
+		}
+
 		return celestaProps;
 	}
 
@@ -499,30 +508,22 @@ public final class UserDataUtils {
 		// + UserDataUtils.GENERAL_RES_ROOT);
 
 		File fileRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
-		File generalResRoot =
-			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys");
-		if (!(generalResRoot.exists())) {
-			File[] files = fileRoot.listFiles();
-			for (File f : files) {
-				if (f.getName().startsWith("common.") && !("common.sys".equals(f.getName()))) {
+		File[] files = fileRoot.listFiles();
+		for (File f : files) {
+			if (f.getName().startsWith("common.")) {
 					File fileN =
 						new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
 								+ f.getName());
 					if (fileN.exists()) {
-						generalResRoot = fileN;
-						break;
-					}
+					result =
+						result + fileN.getAbsolutePath() + File.separator + "score"
+								+ File.pathSeparator;
 				}
 			}
 		}
 
-		result =
-			result + generalResRoot.getAbsolutePath() + File.separator + "score"
-					+ File.pathSeparator;
-
 		if (!result.isEmpty()) {
 			result = result.substring(0, result.length() - 1);
-
 		}
 
 		return result;
