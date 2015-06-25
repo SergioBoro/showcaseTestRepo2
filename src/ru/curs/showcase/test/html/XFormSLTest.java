@@ -261,6 +261,8 @@ public class XFormSLTest extends AbstractTest {
 	}
 
 	@Test
+	@Ignore
+	// !!!
 	public void testXFormsXMLUploadWithXSLJythonGood() throws IOException {
 		uploadTestBase("proc7jj");
 	}
