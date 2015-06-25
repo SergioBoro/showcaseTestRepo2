@@ -73,8 +73,6 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 				}
 				celestaProps.setProperty("pylib.path", pyLibPath);
 				
-				AppInfoSingleton.getAppInfo().setCelestaProperties(celestaProps);
-
 				if (celestaProps != null) {
 					Celesta.initialize(celestaProps);
 					AppInfoSingleton.getAppInfo().setIsCelestaInitialized(true);
