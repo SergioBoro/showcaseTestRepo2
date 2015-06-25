@@ -8,7 +8,7 @@ import java.sql.*;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
 
-import org.junit.Test;
+import org.junit.*;
 import org.python.util.PythonInterpreter;
 
 import ru.curs.showcase.runtime.*;
@@ -95,6 +95,8 @@ public class PoolsTest extends AbstractTestWithDefaultUserData {
 	}
 
 	@Test
+	@Ignore
+	// !!!
 	public void jythonPoolShouldKeepInterpretersForReuse()
 			throws TransformerConfigurationException, IOException {
 		checkPool(JythonIterpretatorFactory.getInstance());
