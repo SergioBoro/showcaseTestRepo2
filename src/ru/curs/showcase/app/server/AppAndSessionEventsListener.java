@@ -60,7 +60,14 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 						javaLibPath = javaLibPath + File.pathSeparator + path;
 					}
 				}
-				celestaProps.setProperty("javalib.path", javaLibPath);
+				if (javaLibPath != null) {
+					while (javaLibPath.contains("/")) {
+						javaLibPath = javaLibPath.replace("/", File.separator);
+					}
+					celestaProps.setProperty("javalib.path", javaLibPath);
+				} else {
+					celestaProps.setProperty("javalib.path", "");
+				}
 				
 				String pyLibPath = celestaProps.getProperty("pylib.path");
 				for (String path : JythonIterpretatorFactory
