@@ -395,7 +395,7 @@ public final class UserDataUtils {
 			String[] scores = scorePath.split(File.pathSeparator);
 			scorePath = scorePathForCelestaPropertiesBasedOnCurrentUserdata;
 			for (String path : scores) {
-				if (!(scorePath.contains(path.trim()))) {
+				if (!(scorePath.toUpperCase().contains(path.trim().toUpperCase()))) {
 					scorePath = path.trim() + File.pathSeparator + scorePath;
 				}
 			}
@@ -465,7 +465,7 @@ public final class UserDataUtils {
 		if (pyLibPath == null || pyLibPath.isEmpty()) {
 			celestaProps.put(CELESTA_PYLIB_PATH, pyLibShowcasePath);
 		} else {
-			if (!pyLibPath.contains(pyLibShowcasePath)) {
+			if (!(pyLibPath.toUpperCase().contains(pyLibShowcasePath.toUpperCase()))) {
 				pyLibPath = pyLibPath + File.pathSeparator + pyLibShowcasePath;
 			}
 			celestaProps.put(CELESTA_PYLIB_PATH, pyLibPath);
