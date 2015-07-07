@@ -734,11 +734,16 @@ public final class XFormPanelCallbacksEvents {
 
 				@Override
 				public void onEnd(final boolean res, final String filePath) {
-					int index = filePath.lastIndexOf("\\");
-					String fileName = filePath;
-					if (index > -1) {
-						fileName = fileName.substring(++index);
+
+					String fileName = "";
+					if (filePath.indexOf("/") > -1) {
+						fileName =
+							filePath.substring(filePath.lastIndexOf("/") + 1, filePath.length());
+					} else {
+						fileName =
+							filePath.substring(filePath.lastIndexOf("\\") + 1, filePath.length());
 					}
+					
 					param.onSelectionComplete(res, fileName);
 				}
 
