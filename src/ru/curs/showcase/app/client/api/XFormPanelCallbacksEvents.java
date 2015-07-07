@@ -1,5 +1,6 @@
 package ru.curs.showcase.app.client.api;
 
+import java.io.File;
 import java.util.*;
 
 import ru.beta2.extra.gwt.ui.selector.*;
@@ -734,7 +735,7 @@ public final class XFormPanelCallbacksEvents {
 
 				@Override
 				public void onEnd(final boolean res, final String filePath) {
-					int index = filePath.lastIndexOf('\\');
+					int index = filePath.lastIndexOf(File.separator);
 					String fileName = filePath;
 					if (index > -1) {
 						fileName = fileName.substring(++index);
