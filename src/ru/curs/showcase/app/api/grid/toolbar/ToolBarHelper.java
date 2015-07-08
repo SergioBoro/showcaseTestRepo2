@@ -13,7 +13,9 @@ import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
+import com.sencha.gxt.core.client.dom.XElement;
 import com.sencha.gxt.core.client.util.IconHelper;
+import com.sencha.gxt.fx.client.animation.*;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.Container;
 import com.sencha.gxt.widget.core.client.event.*;
@@ -29,6 +31,10 @@ import com.sencha.gxt.widget.core.client.toolbar.*;
  * 
  */
 public abstract class ToolBarHelper {
+
+	private static final int BLINKING_DURATION = 2000;
+	private static final int BLINKING_INTERVAL = 50;
+
 	private static final int ICON_SIZE = 16;
 	private Timer toolBarRefreshTimer = null;
 	private final DataServiceAsync dataService;
@@ -36,7 +42,8 @@ public abstract class ToolBarHelper {
 	private final BasicElementPanelBasis basicElementPanelBasis;
 	private boolean isStaticToolBar = false;
 
-	// private final Panel panel = new SimplePanel();
+	private int blinkingCount = 0;
+	private boolean blinkingStartTimer = false;
 
 	/**
 	 * 
@@ -62,13 +69,20 @@ public abstract class ToolBarHelper {
 		}
 		final DataPanelElementInfo elInfo = basicElementPanelBasis.getElementInfo();
 		if (elInfo.isToolBarProc()) {
-			// panel.clear();
+
+			blinkingStartTimer = true;
+
 			if (toolBarRefreshTimer != null) {
 				toolBarRefreshTimer.cancel();
 			}
+
 			toolBarRefreshTimer = new Timer() {
 				@Override
 				public void run() {
+
+					blinkingStartTimer = false;
+					blinkingCount++;
+
 					CompositeContext context = getContext(basicElementPanelBasis);
 					dataService.getGridToolBar(context, elInfo,
 							new GWTServiceCallback<GridToolBar>(
@@ -81,6 +95,8 @@ public abstract class ToolBarHelper {
 									addStaticItemToToolBar(toolBar);
 									createDynamicToolBar(result, toolBar);
 									panel.add(toolBar);
+
+									blinkingCount--;
 								}
 							});
 				}
@@ -92,6 +108,15 @@ public abstract class ToolBarHelper {
 			addStaticItemToToolBar(toolBar);
 			panel.add(toolBar);
 		}
+	}
+
+	private boolean needBlinking() {
+		return blinkingStartTimer || (blinkingCount > 0);
+	}
+
+	private void blinkItem(final XElement xElement) {
+		Fx fx = new Fx();
+		fx.run(BLINKING_DURATION, new Blink(xElement, BLINKING_INTERVAL));
 	}
 
 	public Panel getToolBarPanel() {
@@ -141,16 +166,20 @@ public abstract class ToolBarHelper {
 	}
 
 	private void addToolBarItem(final ToolBarItem item, final Container toolBar) {
-		TextButton textButton = createTextButton(item);
+		final TextButton textButton = createTextButton(item);
 		if (textButton != null && item.getAction() != null) {
 			if (item.getAction() != null) {
 				textButton.addSelectHandler(new SelectHandler() {
 					@Override
 					public void onSelect(final SelectEvent event) {
-						CompositeContext context = getContext(basicElementPanelBasis);
-						Action action = item.getAction();
-						action.setContext(context);
-						runAction(action);
+						if (needBlinking()) {
+							blinkItem(textButton.getElement());
+						} else {
+							CompositeContext context = getContext(basicElementPanelBasis);
+							Action action = item.getAction();
+							action.setContext(context);
+							runAction(action);
+						}
 					}
 				});
 			}
@@ -158,19 +187,24 @@ public abstract class ToolBarHelper {
 		}
 	}
 
+	// CHECKSTYLE:OFF
 	private void createMenuItemToolBar(final AbstractToolBarItem obj, final Menu menu) {
 		if (obj instanceof ToolBarItem) {
 			final ToolBarItem item = (ToolBarItem) obj;
-			MenuItem menuItem = createMenuItem(item);
+			final MenuItem menuItem = createMenuItem(item);
 			if (menuItem != null) {
 				if (item.getAction() != null) {
 					menuItem.addSelectionHandler(new SelectionHandler<Item>() {
 						@Override
 						public void onSelection(final SelectionEvent<Item> event) {
-							CompositeContext context = getContext(basicElementPanelBasis);
-							Action action = item.getAction();
-							action.setContext(context);
-							runAction(action);
+							if (needBlinking()) {
+								blinkItem(menuItem.getElement());
+							} else {
+								CompositeContext context = getContext(basicElementPanelBasis);
+								Action action = item.getAction();
+								action.setContext(context);
+								runAction(action);
+							}
 						}
 					});
 				}
@@ -191,8 +225,9 @@ public abstract class ToolBarHelper {
 			SeparatorMenuItem separator = new SeparatorMenuItem();
 			menu.add(separator);
 		}
-
 	}
+
+	// CHECKSTYLE:ON
 
 	private void createDynamicToolBar(final AbstractToolBarItem obj, final ToolBar toolBar) {
 		if (obj instanceof ToolBarItem) {
@@ -200,13 +235,23 @@ public abstract class ToolBarHelper {
 			addToolBarItem(item, toolBar);
 		} else if (obj instanceof ToolBarGroup) {
 			ToolBarGroup group = (ToolBarGroup) obj;
-			TextButton textButton = createTextButton(group);
+			final TextButton textButton = createTextButton(group);
 			if (textButton != null) {
 				Menu menu = new Menu();
 				for (AbstractToolBarItem item : group.getItems()) {
 					createMenuItemToolBar(item, menu);
 				}
 				textButton.setMenu(menu);
+
+				textButton.addSelectHandler(new SelectHandler() {
+					@Override
+					public void onSelect(final SelectEvent event) {
+						if (needBlinking()) {
+							blinkItem(textButton.getElement());
+						}
+					}
+				});
+
 				toolBar.add(textButton);
 			}
 		} else if (obj instanceof ToolBarSeparator) {
