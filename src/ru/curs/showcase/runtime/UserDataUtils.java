@@ -503,21 +503,17 @@ public final class UserDataUtils {
 
 		}
 
-		// File generalResRoot =
-		// new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-		// + UserDataUtils.GENERAL_RES_ROOT);
-
 		File fileRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
 		File[] files = fileRoot.listFiles();
 		for (File f : files) {
 			if (f.getName().startsWith("common.")) {
-					File fileN =
-						new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-								+ f.getName());
-					if (fileN.exists()) {
-					result =
-						result + fileN.getAbsolutePath() + File.separator + "score"
-								+ File.pathSeparator;
+				File fileN =
+					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName());
+				if (fileN.exists()) {
+					if ((new File(fileN.getAbsolutePath() + File.separator + "score")).exists())
+						result =
+							result + fileN.getAbsolutePath() + File.separator + "score"
+									+ File.pathSeparator;
 				}
 			}
 		}
