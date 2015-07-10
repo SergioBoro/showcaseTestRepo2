@@ -481,6 +481,15 @@ public final class XFormPanelCallbacksEvents {
 			return this.manualSearch != null ? this.manualSearch : false;
 		}-*/;
 
+		/**
+		 * Признак того, что после фильтрации будет выделена первая запись.
+		 * 
+		 * @return boolean
+		 */
+		native boolean selectedFirst()/*-{
+			return this.selectedFirst != null ? this.selectedFirst : false;
+		}-*/;
+
 	}
 
 	private static void showSingleAndMultiSelector(final JavaScriptObject o,
@@ -514,6 +523,8 @@ public final class XFormPanelCallbacksEvents {
 			options.hideStartsWith(param.hideStartWith());
 
 			options.manualSearch(param.manualSearch());
+
+			options.selectedFirst(param.selectedFirst());
 
 			ErrorHandler errHandler = new ErrorHandler() {
 				@Override
@@ -615,6 +626,11 @@ public final class XFormPanelCallbacksEvents {
 	private static native JavaScriptObject getInitSelection(final String xpathRoot,
 			final Map<String, String> xpathMapping) /*-{
 		return $wnd.getInitSelection(xpathRoot, xpathMapping);
+	}-*/;
+
+	private static native JavaScriptObject getInitSelectionForSingleSelector(
+			final Map<String, String> xpathMapping) /*-{
+		return $wnd.getInitSelectionForSingleSelector(xpathMapping);
 	}-*/;
 
 	/**
@@ -743,7 +759,7 @@ public final class XFormPanelCallbacksEvents {
 						fileName =
 							filePath.substring(filePath.lastIndexOf("\\") + 1, filePath.length());
 					}
-					
+
 					param.onSelectionComplete(res, fileName);
 				}
 
