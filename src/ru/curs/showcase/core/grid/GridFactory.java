@@ -413,33 +413,43 @@ public class GridFactory extends CompBasedElementFactory {
 	 *            - столбец.
 	 */
 	private void setupStdColumnProps(final Column column) {
+
 		String val;
-		// column.setVisible(true);
-		val = gridProps.getStringValue(DEF_COL_VALUE_DISPLAY_MODE);
-		if (val != null) {
-			column.setDisplayMode(ColumnValueDisplayMode.valueOf(val));
+
+		if (column.getDisplayMode() == null) {
+			// column.setVisible(true);
+			val = gridProps.getStringValue(DEF_COL_VALUE_DISPLAY_MODE);
+			if (val != null) {
+				column.setDisplayMode(ColumnValueDisplayMode.valueOf(val));
+			}
 		}
 
-		if (column.getValueType().isString()) {
-			val = gridProps.getStringValue(DEF_STR_COL_HOR_ALIGN);
-		} else if (column.getValueType().isNumber()) {
-			val = gridProps.getStringValue(DEF_NUM_COL_HOR_ALIGN);
-		} else if (column.getValueType().isDate()) {
-			val = gridProps.getStringValue(DEF_DATE_COL_HOR_ALIGN);
-		} else if (column.getValueType() == GridValueType.IMAGE) {
-			val = gridProps.getStringValue(DEF_IMAGE_COL_HOR_ALIGN);
-		} else if (column.getValueType() == GridValueType.LINK) {
-			val = gridProps.getStringValue(DEF_LINK_COL_HOR_ALIGN);
-		} else {
-			val = gridProps.getStringValue(DEF_COL_HOR_ALIGN);
+		if (column.getHorizontalAlignment() == null) {
+			if (column.getValueType().isString()) {
+				val = gridProps.getStringValue(DEF_STR_COL_HOR_ALIGN);
+			} else if (column.getValueType().isNumber()) {
+				val = gridProps.getStringValue(DEF_NUM_COL_HOR_ALIGN);
+			} else if (column.getValueType().isDate()) {
+				val = gridProps.getStringValue(DEF_DATE_COL_HOR_ALIGN);
+			} else if (column.getValueType() == GridValueType.IMAGE) {
+				val = gridProps.getStringValue(DEF_IMAGE_COL_HOR_ALIGN);
+			} else if (column.getValueType() == GridValueType.LINK) {
+				val = gridProps.getStringValue(DEF_LINK_COL_HOR_ALIGN);
+			} else {
+				val = gridProps.getStringValue(DEF_COL_HOR_ALIGN);
+			}
+			if (val != null) {
+				column.setHorizontalAlignment(HorizontalAlignment.valueOf(val));
+			}
 		}
-		if (val != null) {
-			column.setHorizontalAlignment(HorizontalAlignment.valueOf(val));
+
+		if (column.getWidth() == null) {
+			val = gridProps.getStringValue(DEF_COL_WIDTH);
+			if (val != null) {
+				column.setWidth(val);
+			}
 		}
-		val = gridProps.getStringValue(DEF_COL_WIDTH);
-		if ((val != null) && (column.getWidth() == null)) {
-			column.setWidth(val);
-		}
+
 	}
 
 	public GridServerState serverState() {
@@ -1320,10 +1330,8 @@ public class GridFactory extends CompBasedElementFactory {
 					determineValueType(curColumn, sqltype);
 				}
 
-				if ((curColumn.getDisplayMode() == null)
-						&& (curColumn.getHorizontalAlignment() == null)
-						&& (curColumn.getWidth() == null)) {
-					setupStdColumnProps(curColumn);
+				setupStdColumnProps(curColumn);
+				if (curColumn.getSorting() == null) {
 					curColumn.setSorting(getCallContext().getSortingForColumn(curColumn));
 				}
 
