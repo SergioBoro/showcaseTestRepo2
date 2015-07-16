@@ -61,9 +61,9 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 					}
 				}
 				if (javaLibPath != null) {
-					while (javaLibPath.contains("/")) {
-						javaLibPath = javaLibPath.replace("/", File.separator);
-					}
+
+					javaLibPath.replace("/", File.separator);
+
 					celestaProps.setProperty("javalib.path", javaLibPath);
 				} else {
 					celestaProps.setProperty("javalib.path", "");
