@@ -389,9 +389,7 @@ public final class UserDataUtils {
 		String scorePathForCelestaPropertiesBasedOnCurrentUserdata =
 			generateScorePathForCelestaPropertiesBasedOnCurrentUserdata();
 		if (!(scorePath == null || scorePath.isEmpty())) {
-			while (scorePath.contains("/")) {
-				scorePath = scorePath.replace("/", File.separator);
-			}
+			scorePath = scorePath.replace("/", File.separator);
 			String[] scores = scorePath.split(File.pathSeparator);
 			scorePath = scorePathForCelestaPropertiesBasedOnCurrentUserdata;
 			for (String path : scores) {
@@ -454,9 +452,7 @@ public final class UserDataUtils {
 		// }
 		String pyLibPath = generalProps.getProperty(CELESTA_PREFIX + CELESTA_PYLIB_PATH);
 		if (!(pyLibPath == null || pyLibPath.isEmpty())) {
-		while (pyLibPath.contains("/")) {
 			pyLibPath = pyLibPath.replace("/", File.separator);
-			}
 		}
 		String pyLibShowcasePath = JythonIterpretatorFactory.getInstance().getLibJythonDir();
 		File f = new File(pyLibShowcasePath);
@@ -473,9 +469,7 @@ public final class UserDataUtils {
 
 		String javaLibPath = generalProps.getProperty(CELESTA_PREFIX + CELESTA_JAVALIB_PATH);
 		if (!(javaLibPath == null || javaLibPath.isEmpty())) {
-			while (javaLibPath.contains("/")) {
-				javaLibPath = javaLibPath.replace("/", File.separator);
-			}
+			javaLibPath = javaLibPath.replace("/", File.separator);
 			celestaProps.put(CELESTA_JAVALIB_PATH, javaLibPath);
 		}
 
