@@ -141,9 +141,12 @@ public final class UserDataUtils {
 		File file =
 			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys" + "/"
 					+ fileName);
-		FileInputStream result =
+		FileInputStream result = null;
+		if (file.exists()) {
+			result =
 			new FileInputStream(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
 					+ "common.sys" + "/" + fileName);
+		}
 		if (!(file.exists())) {
 			File[] files = fileRoot.listFiles();
 			for (File f : files) {
@@ -151,11 +154,14 @@ public final class UserDataUtils {
 					File fileN =
 						new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
 								+ f.getName() + "/" + fileName);
-					result =
-						new FileInputStream(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-								+ f.getName() + "/" + fileName);
-					if (fileN.exists())
+
+					if (fileN.exists()) {
+						result =
+							new FileInputStream(AppInfoSingleton.getAppInfo().getUserdataRoot()
+									+ "/" + f.getName() + "/" + fileName);
 						break;
+					}
+
 				}
 			}
 		}
