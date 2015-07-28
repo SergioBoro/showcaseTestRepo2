@@ -650,25 +650,16 @@ public final class UserDataUtils {
 		// checkUserdataFilesNamesForWrongSymbols(AppInfoSingleton.getAppInfo().getUserdataRoot()
 		// + "/" + GENERAL_RES_ROOT);
 
-		String genDir = AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys";
 		File fileRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
-		File file = new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys");
-		if (!(file.exists())) {
-			File[] files = fileRoot.listFiles();
+		File[] files = fileRoot.listFiles();
+		if (files != null) {
 			for (File f : files) {
-				if (f.getName().startsWith("common.") && !("common.sys".equals(f.getName()))) {
-					File fileN =
-						new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-								+ f.getName());
-					if (fileN.exists()) {
-						genDir =
-							AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName();
-						break;
-					}
+				if (f.getName().startsWith("common.")) {
+					checkUserdataFilesNamesForWrongSymbols(AppInfoSingleton.getAppInfo()
+							.getUserdataRoot() + "/" + f.getName());
 				}
 			}
 		}
-		checkUserdataFilesNamesForWrongSymbols(genDir);
 
 		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
 			checkUserdataFilesNamesForWrongSymbols(AppInfoSingleton.getAppInfo()
