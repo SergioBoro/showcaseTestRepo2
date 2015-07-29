@@ -46,11 +46,11 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 			ipAddresOfRemouteHost = "";
 		}
 
-		// System.out.println(qqq);
 		String url = "";
 		String login = arg1.getPrincipal().toString();
 		String pwd = arg1.getCredentials().toString();
 		String sesid = ((UserAndSessionDetails) arg1.getDetails()).getSessionId();
+		String oldSesid = AppInfoSingleton.getAppInfo().getSesid();
 		String groupProviders =
 			((UserAndSessionDetails) arg1.getDetails()).getUserInfo().getGroupProviders();
 
@@ -63,8 +63,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		// if ("9152046062107176349L_default_value".equals(pwd)) {
 
 		// для тестирования - надо удалить. начало.
-		if (AppInfoSingleton.getAppInfo().getSessionInfoMap().containsKey(sesid)
-				&& (AppInfoSingleton.getAppInfo().getSessionInfoMap().get(sesid)
+		if (AppInfoSingleton.getAppInfo().getSessionInfoMap().containsKey(oldSesid)
+				&& (AppInfoSingleton.getAppInfo().getSessionInfoMap().get(oldSesid)
 						.getAuthServerCrossAppPassword() != null)) {
 			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
 				LOGGER.error("Попытка аутентификации сессии " + sesid
@@ -75,10 +75,10 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 
 		// для тестирования - надо удалить. конец.
 
-		if (AppInfoSingleton.getAppInfo().getSessionInfoMap().containsKey(sesid)
-				&& (AppInfoSingleton.getAppInfo().getSessionInfoMap().get(sesid)
+		if (AppInfoSingleton.getAppInfo().getSessionInfoMap().containsKey(oldSesid)
+				&& (AppInfoSingleton.getAppInfo().getSessionInfoMap().get(oldSesid)
 						.getAuthServerCrossAppPassword() != null)
-				&& AppInfoSingleton.getAppInfo().getSessionInfoMap().get(sesid)
+				&& AppInfoSingleton.getAppInfo().getSessionInfoMap().get(oldSesid)
 						.getAuthServerCrossAppPassword().equals(pwd)) {
 
 			try {
@@ -91,10 +91,10 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 				}
 
 				((UserAndSessionDetails) arg1.getDetails()).setUserInfo(AuthServerUtils
-						.getTheAuthServerAlias().isAuthenticated(sesid));
+						.getTheAuthServerAlias().isAuthenticated(oldSesid));
 
 			} finally {
-				AppInfoSingleton.getAppInfo().getSessionInfoMap().get(sesid)
+				AppInfoSingleton.getAppInfo().getSessionInfoMap().get(oldSesid)
 						.setAuthServerCrossAppPassword(null);
 			}
 
@@ -136,8 +136,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 					if (AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
 						Celesta.getInstance().failedLogin(login);
 					}
-					LOGGER.info("Пользователю" + login
-							+ "не удалось войти в систему: Bad credentials");
+					LOGGER.info("Пользователю " + login
+							+ " не удалось войти в систему: Bad credentials");
 					throw new BadCredentialsException("Bad credentials");
 				}
 			} catch (BadCredentialsException | IllegalStateException | SecurityException

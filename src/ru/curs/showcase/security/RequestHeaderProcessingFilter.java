@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 import ru.curs.showcase.app.api.UserInfo;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.UserAndSessionDetails;
 
 //imports omitted
@@ -48,6 +49,7 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 			new SignedUsernamePasswordAuthenticationToken(username, password);
 
 		HttpSession session = request.getSession();
+		AppInfoSingleton.getAppInfo().setSesid(session.getId());
 
 		Enumeration en = session.getAttributeNames();
 		Map<String, Object> values = new HashMap<String, Object>();

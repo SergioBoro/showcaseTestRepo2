@@ -48,6 +48,8 @@ public final class AppInfoSingleton {
 	private final Map<String, SessionInfo> sessionInfoMap = Collections
 			.synchronizedMap(new HashMap<String, SessionInfo>());
 
+	private String sesid = "";
+
 	private final SortedSet<String> executedProc = Collections
 			.synchronizedSortedSet(new TreeSet<String>());
 
@@ -556,4 +558,13 @@ public final class AppInfoSingleton {
 	public GeneralAppProperties getGeneralAppProperties() {
 		return generalAppProperties;
 	}
+
+	public String getSesid() {
+		return sesid;
+	}
+
+	public void setSesid(final String aSesid) {
+		this.sesid = aSesid;
+	}
+
 }
