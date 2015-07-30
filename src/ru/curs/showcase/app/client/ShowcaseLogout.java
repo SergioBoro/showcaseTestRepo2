@@ -38,7 +38,8 @@ public final class ShowcaseLogout {
 
 		RequestBuilder builder =
 			new RequestBuilder(RequestBuilder.GET, "auth/logoutServlet?nocache="
-					+ (new Date()).getTime());
+					+ (new Date()).getTime() + "&sesId="
+					+ AppCurrContext.getInstance().getServerCurrentState().getSesId());
 		builder.setTimeoutMillis(LOGOUT_TIMEOUT);
 		try {
 			builder.sendRequest(null, new RequestCallback() {

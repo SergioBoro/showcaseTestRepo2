@@ -78,6 +78,12 @@ public final class ServerState implements SerializableElement {
 	 */
 	private Boolean enableClientLog;
 
+	/**
+	 * Id сессии, который используется в сервлете ShowcaseLogoutServlet, для
+	 * правильного разлогинивания при истечении таймаута сессии.
+	 */
+	private String sesId = "";
+
 	public String getAppVersion() {
 		return appVersion;
 	}
@@ -180,6 +186,14 @@ public final class ServerState implements SerializableElement {
 
 	public void setHideServerInfoInAboutWindow(final Boolean ahideServerInfoInAboutWindow) {
 		this.hideServerInfoInAboutWindow = ahideServerInfoInAboutWindow;
+	}
+
+	public String getSesId() {
+		return sesId;
+	}
+
+	public void setSesId(final String aSesId) {
+		this.sesId = aSesId;
 	}
 
 }
