@@ -109,7 +109,7 @@ public final class ProductionModeInitializer {
 			conf.setJdbcUsername(jdbcUsername);
 			conf.setJdbcPassword(jdbcPassword);
 			conf.setHistory(history);
-			conf.setJobExecutorActivate(Boolean.getBoolean(jobExecutorActivate));
+			conf.setJobExecutorActivate(Boolean.parseBoolean(jobExecutorActivate));
 
 			if (databaseTablePrefix != null && !("".equals(databaseTablePrefix))) {
 				conf.setDatabaseTablePrefix(databaseTablePrefix);

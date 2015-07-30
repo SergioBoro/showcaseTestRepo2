@@ -43,6 +43,10 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 		AppInfoSingleton.getAppInfo().getGeneralAppProperties().initialize();
 
+		AppInfoSingleton.getAppInfo().setDebugSolutionModeEnabled(
+				Boolean.parseBoolean(UserDataUtils
+						.getGeneralOptionalProp("debug.solution.mode.enabled")));
+
 		WebApplicationContext ctx =
 			WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext());
 		actx = (AbstractRefreshableWebApplicationContext) ctx;
