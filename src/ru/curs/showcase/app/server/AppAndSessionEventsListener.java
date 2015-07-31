@@ -45,7 +45,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 		AppInfoSingleton.getAppInfo().setDebugSolutionModeEnabled(
 				Boolean.parseBoolean(UserDataUtils
-						.getGeneralOptionalProp("debug.solution.mode.enabled")));
+						.getGeneralOptionalProp("jython.getStateMethod.isNew")));
 
 		WebApplicationContext ctx =
 			WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext());
@@ -56,6 +56,11 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 			try {
 				Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
 				
+				celestaProps
+						.setProperty("jython.getStateMethod.isNew", String
+								.valueOf(AppInfoSingleton.getAppInfo()
+										.isDebugSolutionModeEnabled()));
+
 				String javaLibPath = celestaProps.getProperty("javalib.path");
 				for (String path : JythonIterpretatorFactory.getGeneralScriptDirFromWebInf("lib")) {
 					if ("".equals(javaLibPath) || javaLibPath == null) {
