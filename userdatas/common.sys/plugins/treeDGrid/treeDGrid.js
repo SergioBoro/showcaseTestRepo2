@@ -282,7 +282,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 											"</td>" +
 											"<td  align=\"center\" style=\"vertical-align: middle;\">" +
 											
-													"<button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\">" +
+													"<button onclick=\"gwtProcessFileDownloadTree('"+elementId+"', '"+object.id+"', '"+this.id+"')\">" +
 															"<img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 8px; height: 8px;  \"   >" +
 													"</button>" +
 
