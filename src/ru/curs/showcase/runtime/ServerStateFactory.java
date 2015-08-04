@@ -65,9 +65,13 @@ public final class ServerStateFactory {
 		state.setGwtVersion(getGwtVersion());
 		state.setCaseSensivityIDs(IDSettings.getInstance().getCaseSensivity());
 
+		
+		
 		String sss =
+			(SecurityContextHolder.getContext().getAuthentication() != null) ?
 			((UserAndSessionDetails) SecurityContextHolder.getContext().getAuthentication()
-					.getDetails()).getSessionId();
+.getDetails()).getSessionId()
+					: "autenticatedSessionIsNull";
 		state.setSesId(sss);
 
 		String hideserverinfoinaboutwindow =
