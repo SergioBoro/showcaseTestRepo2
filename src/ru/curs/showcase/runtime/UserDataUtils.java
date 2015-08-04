@@ -250,7 +250,9 @@ public final class UserDataUtils {
 							|| CONNECTION_USERNAME_PARAM.equals(propName) || CONNECTION_PASSWORD_PARAM
 								.equals(propName))) {
 				result = getGeneralProperties().getProperty(propName);
-				result = result.trim();
+				if (result != null) {
+					result = result.trim();
+				}
 			}
 			return result;
 		} catch (IOException e) {
