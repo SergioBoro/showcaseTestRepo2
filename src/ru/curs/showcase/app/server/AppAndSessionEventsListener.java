@@ -43,9 +43,12 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 		AppInfoSingleton.getAppInfo().getGeneralAppProperties().initialize();
 
+		String stateMethod = UserDataUtils.getGeneralOptionalProp("jython.getStateMethod.isNew");
+		if (stateMethod != null) {
+			stateMethod = stateMethod.trim();
+		}
 		AppInfoSingleton.getAppInfo().setDebugSolutionModeEnabled(
-				Boolean.parseBoolean((UserDataUtils
-						.getGeneralOptionalProp("jython.getStateMethod.isNew")).trim()));
+				Boolean.parseBoolean(stateMethod));
 
 		WebApplicationContext ctx =
 			WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext());
