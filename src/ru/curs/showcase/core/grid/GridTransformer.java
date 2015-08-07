@@ -148,9 +148,11 @@ public final class GridTransformer {
 
 			int index = 0;
 			for (Column c : grid.getDataSet().getColumnSet().getColumnsByIndex()) {
-				if (HAS_CHILDREN.equalsIgnoreCase(c.getCaption())
-						|| PARENT.equalsIgnoreCase(c.getCaption())) {
-					lgm.set(c.getCaption(), rec.getValue(c));
+				if (PARENT.equalsIgnoreCase(c.getCaption())) {
+					continue;
+				}
+				if (HAS_CHILDREN.equalsIgnoreCase(c.getCaption())) {
+					lgm.set(HAS_CHILDREN, TextUtils.stringToBoolean(rec.getValue(c)));
 				} else if (c.isTreeGridIcon()) {
 					lgm.set(c.getCaption(),
 							IMG_START_STRING + XMLUtils.unEscapeTagXml(rec.getValue(c))
@@ -295,7 +297,7 @@ public final class GridTransformer {
 
 				if (HAS_CHILDREN.equalsIgnoreCase(c.getCaption())) {
 					tgm.setHasChildren(TextUtils.stringToBoolean(rec.getValue(c)));
-					tgm.set(c.getCaption(), rec.getValue(c));
+					tgm.set(HAS_CHILDREN, TextUtils.stringToBoolean(rec.getValue(c)));
 				} else if (c.isTreeGridIcon()) {
 					tgm.set(c.getCaption(),
 							IMG_START_STRING + XMLUtils.unEscapeTagXml(rec.getValue(c))

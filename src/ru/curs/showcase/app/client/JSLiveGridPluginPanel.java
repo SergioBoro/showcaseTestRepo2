@@ -205,18 +205,15 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	private void partialUpdateGridPanel() {
 
 		final GridContext gc = getDetailedContext();
-
-		if (!isInitialSorting) {
-			if ((gc.getSortedColumns() == null) || (gc.getSortedColumns().size() == 0)) {
-				MessageBox.showMessageWithDetails(
-						AppCurrContext.getInstance().getBundleMap().get("okMessage"),
-						AppCurrContext.getInstance().getBundleMap()
-								.get("jsGridPartialUpdateNeedSorting"), "", MessageType.WARNING,
-						false);
-				return;
-			}
-		}
-
+		/*
+		 * if (!isInitialSorting) { if ((gc.getSortedColumns() == null) ||
+		 * (gc.getSortedColumns().size() == 0)) {
+		 * MessageBox.showMessageWithDetails(
+		 * AppCurrContext.getInstance().getBundleMap().get("okMessage"),
+		 * AppCurrContext.getInstance().getBundleMap()
+		 * .get("jsGridPartialUpdateNeedSorting"), "", MessageType.WARNING,
+		 * false); return; } }
+		 */
 		gc.setPartialUpdate(true);
 
 		if (dataService == null) {
@@ -402,6 +399,9 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		common.put("loadingMessage", new JSONString(AppCurrContext.getInstance().getBundleMap()
 				.get("jsGridLoadingMessage")));
+
+		common.put("noDataMessage", new JSONString(AppCurrContext.getInstance().getBundleMap()
+				.get("jsGridNoRecordsMessage")));
 
 		common.put("stringSelectedRecordIdsSeparator", new JSONString(
 				STRING_SELECTED_RECORD_IDS_SEPARATOR));

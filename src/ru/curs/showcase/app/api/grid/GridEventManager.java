@@ -61,7 +61,7 @@ public class GridEventManager extends EventManager<GridEvent> {
 	 * @return - действие.
 	 */
 	public Action getSelectionActionForDependentElements(final List<String> selectedRecordIds) {
-		Action result = prepareFilterAction();
+		Action result = prepareFilterAction(selectedRecordIds);
 		fillFilterActionBySelection(selectedRecordIds, result);
 		finishFilterAction(result);
 		return result;
@@ -89,10 +89,28 @@ public class GridEventManager extends EventManager<GridEvent> {
 		}
 	}
 
-	private Action prepareFilterAction() {
+	private Action prepareFilterAction(final List<String> selectedRecordIds) {
+
+		// Action result = new Action(DataPanelActionType.RELOAD_ELEMENTS);
+		// for (Event event : getEvents()) {
+		// if (event.getInteractionType() == InteractionType.SELECTION) {
+		// for (DataPanelElementLink curLink :
+		// event.getAction().getDataPanelLink()
+		// .getElementLinks()) {
+		// DataPanelElementLink newLink = curLink.gwtClone();
+		// newLink.getContext().setAdditional(null);
+		// newLink.getContext().setFilter("");
+		// result.getDataPanelLink().getElementLinks().add(newLink);
+		// }
+		// }
+		// }
+		// return result;
+
 		Action result = new Action(DataPanelActionType.RELOAD_ELEMENTS);
-		for (Event event : getEvents()) {
-			if (event.getInteractionType() == InteractionType.SELECTION) {
+		if ((selectedRecordIds != null) && (!selectedRecordIds.isEmpty())) {
+			String recId = selectedRecordIds.get(0);
+			List<GridEvent> events = getEventForCell(recId, null, InteractionType.SELECTION);
+			for (Event event : events) {
 				for (DataPanelElementLink curLink : event.getAction().getDataPanelLink()
 						.getElementLinks()) {
 					DataPanelElementLink newLink = curLink.gwtClone();
@@ -103,5 +121,6 @@ public class GridEventManager extends EventManager<GridEvent> {
 			}
 		}
 		return result;
+
 	}
 }

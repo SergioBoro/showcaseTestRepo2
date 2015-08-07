@@ -60,6 +60,9 @@ public interface constantsShowcase extends Messages {
 	@DefaultMessage("Загрузка...")
 	String jsGridLoadingMessage();
 
+	@DefaultMessage("Нет записей")
+	String jsGridNoRecordsMessage();
+
 	@DefaultMessage("Экспорт в Excel потомков текущей записи")
 	String jsTreeGridExportToExcelChilds();
 

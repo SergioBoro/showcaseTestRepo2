@@ -199,8 +199,9 @@ public class JSGridService extends HttpServlet {
 		}
 
 		try (PrintWriter writer = hresp.getWriter()) {
-			writer.print("{'success':'" + success + "', 'message':'" + message
-					+ "', 'refreshAfterSave':'" + refreshAfterSave + "'}");
+			message = message.replace("\"", "'");
+			writer.print("{\"success\":\"" + success + "\", \"message\":\"" + message
+					+ "\", \"refreshAfterSave\":\"" + refreshAfterSave + "\"}");
 		}
 
 	}
@@ -270,7 +271,8 @@ public class JSGridService extends HttpServlet {
 		}
 
 		try (PrintWriter writer = hresp.getWriter()) {
-			writer.print("{'success':'" + success + "', 'message':'" + message + "'}");
+			message = message.replace("\"", "'");
+			writer.print("{\"success\":\"" + success + "\", \"message\":\"" + message + "\"}");
 		}
 
 	}

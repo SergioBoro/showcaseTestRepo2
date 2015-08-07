@@ -70,6 +70,11 @@ var protocol = window.location.protocol;
     <link rel="stylesheet" href="js/dojox/calendar/themes/claro/Calendar.css"/>
     <link rel="stylesheet" href="js/dojox/calendar/themes/claro/MonthColumnView.css"/>
     
+    <link rel="stylesheet" href="js/dgrid/css/dgrid.css"/>
+    <link rel="stylesheet" href="js/dgrid/css/skins/claro.css"/>
+    
+    
+    
       <%=//ExternalClientLibrariesUtils.addExternalCSSByStaticMetod(request.getParameter("userdata"))
     		  ExternalClientLibrariesUtils.addExternalCSSByStaticMetod(userdataId)
   	  %>  

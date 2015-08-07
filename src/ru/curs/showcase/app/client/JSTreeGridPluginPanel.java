@@ -206,16 +206,17 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 		final GridContext gc = getDetailedContext();
 
-		if (!isInitialSorting) {
-			if ((gc.getSortedColumns() == null) || (gc.getSortedColumns().size() == 0)) {
-				MessageBox.showMessageWithDetails(
-						AppCurrContext.getInstance().getBundleMap().get("okMessage"),
-						AppCurrContext.getInstance().getBundleMap()
-								.get("jsGridPartialUpdateNeedSorting"), "", MessageType.WARNING,
-						false);
-				return;
-			}
-		}
+		// if (!isInitialSorting) {
+		// if ((gc.getSortedColumns() == null) || (gc.getSortedColumns().size()
+		// == 0)) {
+		// MessageBox.showMessageWithDetails(
+		// AppCurrContext.getInstance().getBundleMap().get("okMessage"),
+		// AppCurrContext.getInstance().getBundleMap()
+		// .get("jsGridPartialUpdateNeedSorting"), "", MessageType.WARNING,
+		// false);
+		// return;
+		// }
+		// }
 
 		gc.setPartialUpdate(true);
 
@@ -271,7 +272,11 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 				if (lgm.getMap().get(key) == null) {
 					row.put(key, null);
 				} else {
-					row.put(key, new JSONString((String) lgm.getMap().get(key)));
+					if ("hasChildren".equalsIgnoreCase(key)) {
+						row.put(key, JSONBoolean.getInstance((Boolean) lgm.getMap().get(key)));
+					} else {
+						row.put(key, new JSONString((String) lgm.getMap().get(key)));
+					}
 				}
 			}
 			rows.set(i, row);
@@ -395,6 +400,9 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		common.put("loadingMessage", new JSONString(AppCurrContext.getInstance().getBundleMap()
 				.get("jsGridLoadingMessage")));
 
+		common.put("noDataMessage", new JSONString(AppCurrContext.getInstance().getBundleMap()
+				.get("jsGridNoRecordsMessage")));
+
 		common.put("stringSelectedRecordIdsSeparator", new JSONString(
 				STRING_SELECTED_RECORD_IDS_SEPARATOR));
 
@@ -482,7 +490,11 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 				if (lgm.getMap().get(key) == null) {
 					row.put(key, null);
 				} else {
-					row.put(key, new JSONString((String) lgm.getMap().get(key)));
+					if ("hasChildren".equalsIgnoreCase(key)) {
+						row.put(key, JSONBoolean.getInstance((Boolean) lgm.getMap().get(key)));
+					} else {
+						row.put(key, new JSONString((String) lgm.getMap().get(key)));
+					}
 				}
 			}
 			rows.set(i, row);
@@ -775,13 +787,13 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 		afterUpdateGrid();
 
-		String color = pluginHTML.getElement().getStyle().getColor();
-		if ((color == null) || color.trim().isEmpty()) {
-			pluginHTML.getElement().getStyle().setColor("rgb(1, 0, 0)");
-
-		} else {
-			pluginHTML.getElement().getStyle().clearColor();
-		}
+		// String color = pluginHTML.getElement().getStyle().getColor();
+		// if ((color == null) || color.trim().isEmpty()) {
+		// pluginHTML.getElement().getStyle().setColor("rgb(1, 0, 0)");
+		//
+		// } else {
+		// pluginHTML.getElement().getStyle().clearColor();
+		// }
 
 	}
 
