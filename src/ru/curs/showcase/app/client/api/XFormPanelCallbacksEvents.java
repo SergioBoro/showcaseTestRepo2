@@ -619,7 +619,7 @@ public final class XFormPanelCallbacksEvents {
 		return $wnd.getValueByXPath(xpath);
 	}-*/;
 
-	private static native String getXMLByXPathArray(final Object xpathArray) /*-{
+	public static native String getXMLByXPathArray(final Object xpathArray) /*-{
 		return $wnd.getXMLByXPathArray(xpathArray);
 	}-*/;
 

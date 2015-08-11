@@ -8,6 +8,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.Plugin;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.*;
+import ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.*;
@@ -91,12 +92,20 @@ public class PluginComponentImpl implements PluginComponent {
 		final Element waitElement = addWaitBlock(renderToId);
 
 		RequestData requestData = new RequestData();
+
+		JavaScriptObject addparams = pluginParam.generalFilters();
+		if (!(addparams == null)) {
+		String xml = XFormPanelCallbacksEvents.getXMLByXPathArray(addparams);
+		getContext().setFilter(xml);
+		}
+
 		requestData.setContext(getContext());
 		requestData.setElInfo(pluginElInfo);
 		if (param.params() != null) {
 			JSONObject json = new JSONObject(param.params());
 			requestData.setXmlParams(JSONUtils.createXmlByJSONValue("params", json));
 		}
+
 
 		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
 				.getInstance().getBundleMap().get("error_of_plugin_data_retrieving_from_server")) {
