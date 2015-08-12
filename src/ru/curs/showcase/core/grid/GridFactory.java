@@ -58,6 +58,9 @@ public class GridFactory extends CompBasedElementFactory {
 	private static final String DEF_VAL_FONT_ST = "def.value.font.strikethrough";
 	private static final String DEF_STR_COL_HOR_ALIGN = "def.str.column.hor.align";
 	private static final String DEF_NUM_COL_HOR_ALIGN = "def.num.column.hor.align";
+	private static final String DEF_NUM_COL_DECIMAL_SEPARATOR = "def.num.column.decimal.separator";
+	private static final String DEF_NUM_COL_GROUPING_SEPARATOR =
+		"def.num.column.grouping.separator";
 	private static final String DEF_DATE_COL_HOR_ALIGN = "def.date.column.hor.align";
 	private static final String DEF_IMAGE_COL_HOR_ALIGN = "def.image.column.hor.align";
 	private static final String DEF_LINK_COL_HOR_ALIGN = "def.link.column.hor.align";
@@ -141,6 +144,9 @@ public class GridFactory extends CompBasedElementFactory {
 
 	private String sortColId = null;
 	private Sorting sortColDirection = Sorting.ASC;
+
+	private String decimalSeparator = null;
+	private String groupingSeparator = null;
 
 	@Override
 	public Grid getResult() {
@@ -847,6 +853,23 @@ public class GridFactory extends CompBasedElementFactory {
 		ProfileBasedSettingsApplyStrategy strategy =
 			new DefaultGridSettingsApplyStrategy(gridProps, getResult().getUISettings());
 		strategy.apply();
+
+		decimalSeparator = gridProps.getStringValue(DEF_NUM_COL_DECIMAL_SEPARATOR);
+		if (decimalSeparator != null) {
+			if (decimalSeparator.contains(" ")) {
+				decimalSeparator = " ";
+			}
+			if (decimalSeparator.isEmpty()) {
+				decimalSeparator = ".";
+			}
+		}
+
+		groupingSeparator = gridProps.getStringValue(DEF_NUM_COL_GROUPING_SEPARATOR);
+		if (groupingSeparator != null) {
+			if (groupingSeparator.contains(" ")) {
+				groupingSeparator = " ";
+			}
+		}
 	}
 
 	private void loadLiveGridUISettings() {
@@ -1107,6 +1130,23 @@ public class GridFactory extends CompBasedElementFactory {
 			final int maximumFractionDigits = 20;
 			nf.setMaximumFractionDigits(maximumFractionDigits);
 		}
+
+		if ((decimalSeparator != null) || (groupingSeparator != null)) {
+			DecimalFormat df = (DecimalFormat) nf;
+			DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance();
+			if (decimalSeparator != null) {
+				dfs.setDecimalSeparator(decimalSeparator.charAt(0));
+			}
+			if (groupingSeparator != null) {
+				if (groupingSeparator.isEmpty()) {
+					nf.setGroupingUsed(false);
+				} else {
+					dfs.setGroupingSeparator(groupingSeparator.charAt(0));
+				}
+			}
+			df.setDecimalFormatSymbols(dfs);
+		}
+
 		return nf.format(value);
 	}
 
