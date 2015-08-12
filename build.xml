@@ -414,7 +414,14 @@
 		<delete failonerror="false" dir="${sc.js.dir}/dojo" />
 		<delete failonerror="false" dir="${sc.js.dir}/dijit" />
 		<delete failonerror="false" dir="${sc.js.dir}/dojox" />
-		<echo>Unpack new dojo files</echo>
+		
+		<echo>Deleting old js files for pluging (dgrid and etc)</echo>
+		<delete failonerror="false" dir="${sc.js.dir}/dgrid" />
+		<delete failonerror="false" dir="${sc.js.dir}/put-selector" />
+		<delete failonerror="false" dir="${sc.js.dir}/xstyle" />
+		<delete failonerror="false" dir="${sc.js.dir}/dstore" />
+		
+		<echo>Unpack new dojo files and js-files for dgrid</echo>
 		<unzip src="dist/js/dojo.zip" dest="${sc.js.dir}">
 		</unzip>
 		<unzip src="dist/js/dijit.zip" dest="${sc.js.dir}">
