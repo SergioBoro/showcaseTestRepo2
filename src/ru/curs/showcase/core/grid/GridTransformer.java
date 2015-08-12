@@ -167,9 +167,13 @@ public final class GridTransformer {
 					} else {
 						switch (c.getValueType()) {
 						case IMAGE:
-							val =
-								IMG_START_STRING + XMLUtils.unEscapeTagXml(rec.getValue(c))
-										+ IMG_END_STRING;
+							if ((rec.getValue(c) == null) || (rec.getValue(c).trim().isEmpty())) {
+								val = "";
+							} else {
+								val =
+									IMG_START_STRING + XMLUtils.unEscapeTagXml(rec.getValue(c))
+											+ IMG_END_STRING;
+							}
 							break;
 						case LINK:
 							val = getLink(rec.getValue(c));
