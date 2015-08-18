@@ -99,7 +99,10 @@ public abstract class JythonQuery<T> {
 
 				String error = handleJythonException(e.value.toString());
 				throw new JythonException(String.format(JYTHON_ERROR, getJythonProcName(), error),
-						e);
+				// e);
+						new Exception(handleJythonExceptionTraceback(e.traceback.dumpStack(),
+								error) + "Exception: " + error));
+
 			}
 		} finally {
 			if (isLoaded) {
@@ -139,12 +142,24 @@ public abstract class JythonQuery<T> {
 
 	private String handleJythonException(final String value) {
 		String error = StringEscapeUtils.unescapeJava(value);
-		Pattern regex = Pattern.compile("^Exception\\(u'(.+)*',\\)$", Pattern.MULTILINE);
+		Pattern regex = Pattern.compile("^Exception\\([u]?'(.+)*',\\)$", Pattern.MULTILINE);
+		Pattern regex1 = Pattern.compile("^Exception\\([u]?\"(.+)*\",\\)$", Pattern.MULTILINE);
 		Matcher regexMatcher = regex.matcher(error);
+		Matcher regexMatcher1 = regex1.matcher(error);
 		if (regexMatcher.matches()) {
 			return regexMatcher.group(1);
 		}
+		if (regexMatcher1.matches()) {
+			return regexMatcher1.group(1);
+		}
 		return error;
+	}
+
+	private String handleJythonExceptionTraceback(final String value, final String error) {
+		String sumValue = value;
+		sumValue = sumValue.replaceFirst("u'(.)+'", "u'" + error + "'");
+		sumValue = sumValue.replaceFirst("u\"(.)+\"", "u\"" + error + "\"");
+		return sumValue;
 	}
 
 	@SuppressWarnings("unchecked")
