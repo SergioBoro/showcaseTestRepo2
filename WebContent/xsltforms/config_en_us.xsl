@@ -27,7 +27,7 @@
 			<calendar.month11>December</calendar.month11>
 			<format.date>MM/dd/yyyy</format.date>
 			<format.datetime>MM/dd/yyyy hh:mm:ss</format.datetime>
-			<format.decimal>.</format.decimal>
+			<format.decimal>,</format.decimal>
 			<status>... Loading ...</status>
 		</properties>
 		<extensions/> <!-- HTML elements to be added just after xsltforms.js and xsltforms.css loading -->
