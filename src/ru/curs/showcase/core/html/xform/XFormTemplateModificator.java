@@ -408,15 +408,15 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	public static Document modify(final Document aTemplate, final CompositeContext aCallContext,
 			final DataPanelElementInfo aElementInfo, final String subformId) {
 		Document result = addSrvInfo(aTemplate, aCallContext, aElementInfo, subformId);
-		result = generateSelectors(result);
-		result = insertDataForSelectors(result, subformId);
-		result = generateUploaders(result, aElementInfo, subformId);
-		result = adjustSrvInfo(result, subformId);
 		if (aElementInfo.getBuildTemplate()) {
 			result = insertPartTemplate(result, aCallContext, aElementInfo);
 		} else {
 			result = deletingEmptyDivTags(result);
 		}
+		result = generateSelectors(result);
+		result = insertDataForSelectors(result, subformId);
+		result = generateUploaders(result, aElementInfo, subformId);
+		result = adjustSrvInfo(result, subformId);
 		return result;
 	}
 
