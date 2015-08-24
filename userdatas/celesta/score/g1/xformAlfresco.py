@@ -402,9 +402,21 @@ def uploadFile(context, main, add, filterinfo, session, elementId, data, fileNam
     alfPass = "пароль"
     
     alfUploadParams = {}
-    alfUploadParams["destination"] = "workspace://SpacesStore/4bb7e4a3-7281-4d37-ba80-bcd4cba22f45"
-    alfUploadParams["uploaddirectory"] = "/test_folder1"
+#    alfUploadParams["destination"] = "workspace://SpacesStore/59baaac6-0f3b-44e3-aac9-56aaa2767769"
+#    alfUploadParams["uploaddirectory"] = "/test_folder1"
     
+    alfUploadParams["updatenoderef"] = "workspace://SpacesStore/97cf8b94-0407-40ed-9582-711f4d42dfa0"    
+    
+    alfUploadParams["description"] = "Это комментарий44"
+    alfUploadParams["majorversion"] = "1.0"
+#    alfUploadParams["overwrite"] = "yes"
+#    alfUploadParams["thumbnails"] = "no"
+    
+
+# contenttype
+# majorversion
+    
+     
     
     resultLogin = AlfrescoManager.login(alfURL, alfUser, alfPass)
     if resultLogin.getResult() == 0:
@@ -420,7 +432,7 @@ def uploadFile(context, main, add, filterinfo, session, elementId, data, fileNam
 
 
 def webtext(context, main, add, filterinfo, session, elementId):
-    print 'Get navigator data from Celesta Python procedure.'
+    print 'Get webtext data from Celesta Python procedure.'
     print 'User %s' % context.userId
     print 'main "%s".' % main
     print 'add "%s".' % add
@@ -456,11 +468,99 @@ def webtext(context, main, add, filterinfo, session, elementId):
   </a>
 -->
 
+
   <a href="#">
-   <img src="http://127.0.0.1:8080/alfresco/service/api/node/content/workspace/SpacesStore/2c31a645-549c-4479-b939-9cd11cbf8f10?alf_ticket='''+alfTicket+'''" 
+<img src="http://127.0.0.1:8080/alfresco/service/api/node/content/workspace/SpacesStore/97cf8b94-0407-40ed-9582-711f4d42dfa0/versions?alf_ticket='''+alfTicket+'''" 
    width="1100px" height="700px" alt="lorem"></img>
   </a>
 
+  
+        
+    </h1>
+    '''
+    settings = u'''
+    <properties>
+        <event name="single_click" linkId="testIdClient">
+             <action >
+                <main_context>Москва</main_context>
+                <client>
+                    <activity id="activityClientID" name="showcaseShowAddContext">
+                        <add_context>
+                            add_context действия.
+                        </add_context>
+                    </activity>
+                </client>
+            </action>
+        </event>
+        <event name="single_click" linkId="testIdServer">
+             <action >
+                <main_context>Москва</main_context>
+                <server>
+                    <activity id="activityServerID" name="g1.activity.simple.celesta">
+                         <add_context>
+                             add_context для действия
+                         </add_context>  
+                    </activity>             
+                </server>
+            </action>
+        </event>
+    </properties>
+    '''    
+    
+#    return JythonDTO(data, settings, UserMessageFactory().build(555, u"WebText успешно построен из Celesta"))
+    return JythonDTO(data, settings)
+
+
+def webtextParticularVersion(context, main, add, filterinfo, session, elementId):
+    print 'Get webtext data from Celesta Python procedure.'
+    print 'User %s' % context.userId
+    print 'main "%s".' % main
+    print 'add "%s".' % add
+    print 'filterinfo "%s".' % filterinfo
+    print 'session "%s".' % session
+    print 'elementId "%s".' % elementId
+    
+    
+    alfURL = "http://127.0.0.1:8080/alfresco"
+    alfUser = "user222" 
+    alfPass = "пароль"    
+    
+    alfTicket = ""
+   
+    alfFileId = "97cf8b94-0407-40ed-9582-711f4d42dfa0"
+    
+    alfVersionId = "" 
+
+    
+    resultLogin = AlfrescoManager.login(alfURL, alfUser, alfPass)
+    if resultLogin.getResult() == 0:
+        alfTicket = resultLogin.getTicket() 
+        
+        resultGetFileVersions = AlfrescoManager.getFileVersions(alfFileId, alfURL, resultLogin.getTicket());
+        if resultGetFileVersions.getResult() == 0:
+            versions = resultGetFileVersions.getVersions()
+            
+# Далее на основе полученных версий, находим идентификатор нужной нам версии. Предположим, что это
+            alfVersionId = "b3984526-43e8-44d7-9ba5-b50318959750"
+        else:
+            context.error(resultGetFileVersions.getErrorMessage());
+        
+        
+    else:
+        context.error(resultLogin.getErrorMessage());           
+    
+    data = u'''
+    <h1>
+        <a href="#" onclick="gwtWebTextFunc('${elementId}','testIdClient');">Показать сообщение (client activity)</a>
+        <br/>
+        <a href="#" onclick="gwtWebTextFunc('${elementId}','testIdServer');">Показать сообщение (server activity)</a>
+        <br/>        
+        
+
+  <a href="#">
+<img src="http://127.0.0.1:8080/alfresco/service/api/node/content/workspace/version2Store/'''+alfVersionId+'''?alf_ticket='''+alfTicket+'''" 
+   width="1100px" height="700px" alt="lorem"></img>
+  </a>
   
         
     </h1>
@@ -530,3 +630,118 @@ def submitDeleteFile(context, main, add, filterinfo, session, data):
     return XMLJSONConverter.jsonToXml(data);
 
 
+
+
+
+def submitGetFileMetaData(context, main, add, filterinfo, session, data):
+    print 'Submit xform data from Celesta Python procedure.'
+    print 'User %s' % context.userId
+    print 'main "%s".' % main
+    print 'add "%s".' % add
+    print 'filterinfo "%s".' % filterinfo
+    print 'session "%s".' % session
+    print 'data "%s".' % data
+
+    
+    alfURL = "http://127.0.0.1:8080/alfresco"
+    alfUser = "user222" 
+    alfPass = "пароль"
+    
+    alfFileId = "97cf8b94-0407-40ed-9582-711f4d42dfa0"
+    
+#    acceptLanguage = ""
+    acceptLanguage = "en-US,en;"
+#    acceptLanguage = "ru-RU,ru;"
+    
+    resultLogin = AlfrescoManager.login(alfURL, alfUser, alfPass)
+    if resultLogin.getResult() == 0:
+        resultGetFileMetaData = AlfrescoManager.getFileMetaData(alfFileId, alfURL, resultLogin.getTicket(), acceptLanguage);
+        if resultGetFileMetaData.getResult() == 0:
+            metaData = resultGetFileMetaData.getMetaData()
+            
+# Далее использование полученных метаданных
+# ............
+                       
+            context.error(metaData);            
+        else:
+            context.error(resultGetFileMetaData.getErrorMessage());
+    else:
+        context.error(resultLogin.getErrorMessage());        
+
+    
+    
+    return XMLJSONConverter.jsonToXml(data);
+
+
+
+def submitSetFileMetaData(context, main, add, filterinfo, session, data):
+    print 'Submit xform data from Celesta Python procedure.'
+    print 'User %s' % context.userId
+    print 'main "%s".' % main
+    print 'add "%s".' % add
+    print 'filterinfo "%s".' % filterinfo
+    print 'session "%s".' % session
+    print 'data "%s".' % data
+
+    
+    alfURL = "http://127.0.0.1:8080/alfresco"
+    alfUser = "user222" 
+    alfPass = "пароль"
+    
+    alfFileId = "97cf8b94-0407-40ed-9582-711f4d42dfa0"
+    
+#    acceptLanguage = ""
+    acceptLanguage = "en-US,en;"
+#    acceptLanguage = "ru-RU,ru;"
+    
+    metaData = unicode("{\"properties\":{\"title\":\"1Название файла\",\"description\":\"1Описание файла\"}}")
+    
+    resultLogin = AlfrescoManager.login(alfURL, alfUser, alfPass)
+    if resultLogin.getResult() == 0:
+        resultSetFileMetaData = AlfrescoManager.setFileMetaData(alfFileId, metaData, alfURL, resultLogin.getTicket(), acceptLanguage);
+        if resultSetFileMetaData.getResult() == 0:
+            context.message(u"Метаданные файла из Alfresco успешно заданы.");            
+        else:
+            context.error(resultSetFileMetaData.getErrorMessage());
+    else:
+        context.error(resultLogin.getErrorMessage());        
+
+    
+    
+    return XMLJSONConverter.jsonToXml(data);
+
+
+
+def submitGetFileVersions(context, main, add, filterinfo, session, data):
+    print 'Submit xform data from Celesta Python procedure.'
+    print 'User %s' % context.userId
+    print 'main "%s".' % main
+    print 'add "%s".' % add
+    print 'filterinfo "%s".' % filterinfo
+    print 'session "%s".' % session
+    print 'data "%s".' % data
+
+    
+    alfURL = "http://127.0.0.1:8080/alfresco"
+    alfUser = "user222" 
+    alfPass = "пароль"
+    
+    alfFileId = "97cf8b94-0407-40ed-9582-711f4d42dfa0"
+    
+    resultLogin = AlfrescoManager.login(alfURL, alfUser, alfPass)
+    if resultLogin.getResult() == 0:
+        resultGetFileVersions = AlfrescoManager.getFileVersions(alfFileId, alfURL, resultLogin.getTicket());
+        if resultGetFileVersions.getResult() == 0:
+            versions = resultGetFileVersions.getVersions()
+# Далее использование полученных версий
+# ............
+                       
+            context.error(versions);            
+        else:
+            context.error(resultGetFileVersions.getErrorMessage());
+    else:
+        context.error(resultLogin.getErrorMessage());        
+
+    
+    
+    return XMLJSONConverter.jsonToXml(data);

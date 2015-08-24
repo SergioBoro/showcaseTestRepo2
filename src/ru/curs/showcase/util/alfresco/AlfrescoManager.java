@@ -24,6 +24,8 @@ public final class AlfrescoManager {
 	private static final int RESULT_OK = 0;
 	private static final int RESULT_ERROR = 1;
 
+	private static final String APPLICATION_JSON = "application/json";
+
 	private AlfrescoManager() {
 	}
 
@@ -36,7 +38,7 @@ public final class AlfrescoManager {
 		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
 		try {
 			HttpPost httppost = new HttpPost(alfURL + "/service/api/login");
-			httppost.setHeader("Content-type", "application/json");
+			httppost.setHeader("Content-Type", APPLICATION_JSON);
 			httppost.setEntity(new StringEntity("{\"username\" : \"" + alfUser
 					+ "\",\"password\" : \"" + alfPass + "\"}"));
 
@@ -174,6 +176,163 @@ public final class AlfrescoManager {
 				}
 			} else {
 				ar.setErrorMessage("HTTP-запрос удаления файла из Alfresco вернул пустые данные.");
+			}
+
+			EntityUtils.consume(resEntity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ar.setResult(RESULT_ERROR);
+			ar.setErrorMessage(e.getMessage());
+		} finally {
+			try {
+				httpclient.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return ar;
+
+	}
+
+	public static AlfrescoGetFileMetaDataResult getFileMetaData(final String alfFileId,
+			final String alfURL, final String alfTicket, final String acceptLanguage) {
+
+		AlfrescoGetFileMetaDataResult ar = new AlfrescoGetFileMetaDataResult();
+		ar.setResult(RESULT_ERROR);
+
+		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
+		try {
+			HttpGet httpget =
+				new HttpGet(alfURL + "/service/api/metadata?nodeRef=workspace://SpacesStore/"
+						+ alfFileId + "&alf_ticket=" + alfTicket);
+
+			if (!((acceptLanguage == null) || (acceptLanguage.trim().isEmpty()))) {
+				httpget.setHeader("Accept-Language", acceptLanguage);
+			}
+
+			HttpResponse response = httpclient.execute(httpget);
+
+			HttpEntity resEntity = response.getEntity();
+
+			if (resEntity != null) {
+				String resContent = EntityUtils.toString(resEntity);
+				if (response.getStatusLine().getStatusCode() == HTTP_OK) {
+					ar.setMetaData(resContent);
+					ar.setResult(RESULT_OK);
+				} else {
+					ar.setErrorMessage(resContent);
+				}
+			} else {
+				ar.setErrorMessage("HTTP-запрос получения метаданных файла из Alfresco вернул пустые данные.");
+			}
+
+			EntityUtils.consume(resEntity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ar.setResult(RESULT_ERROR);
+			ar.setErrorMessage(e.getMessage());
+		} finally {
+			try {
+				httpclient.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return ar;
+
+	}
+
+	public static AlfrescoSetFileMetaDataResult setFileMetaData(final String alfFileId,
+			final String metaData, final String alfURL, final String alfTicket,
+			final String acceptLanguage) {
+
+		AlfrescoSetFileMetaDataResult ar = new AlfrescoSetFileMetaDataResult();
+		ar.setResult(RESULT_ERROR);
+
+		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
+		try {
+			HttpPost httppost =
+				new HttpPost(alfURL + "/service/api/metadata/node/workspace/SpacesStore/"
+						+ alfFileId + "?alf_ticket=" + alfTicket);
+			httppost.setHeader("Content-Type", APPLICATION_JSON);
+			if (!((acceptLanguage == null) || (acceptLanguage.trim().isEmpty()))) {
+				httppost.setHeader("Accept-Language", acceptLanguage);
+			}
+
+			StringEntity entity = new StringEntity(metaData, ContentType.APPLICATION_JSON);
+			entity.setContentType(APPLICATION_JSON);
+
+			httppost.setEntity(entity);
+
+			HttpResponse response = httpclient.execute(httppost);
+
+			HttpEntity resEntity = response.getEntity();
+
+			if (resEntity != null) {
+				String resContent = EntityUtils.toString(resEntity);
+				if (response.getStatusLine().getStatusCode() == HTTP_OK) {
+					JSONTokener jt = new JSONTokener(resContent);
+					JSONObject jo = new JSONObject(jt);
+
+					boolean success = jo.getBoolean("success");
+					if (success) {
+						ar.setResult(RESULT_OK);
+					} else {
+						ar.setErrorMessage(resContent);
+					}
+
+				} else {
+					ar.setErrorMessage(resContent);
+				}
+			} else {
+				ar.setErrorMessage("HTTP-запрос задания метаданных файла из Alfresco вернул пустые данные.");
+			}
+
+			EntityUtils.consume(resEntity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ar.setResult(RESULT_ERROR);
+			ar.setErrorMessage(e.getMessage());
+		} finally {
+			try {
+				httpclient.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return ar;
+
+	}
+
+	public static AlfrescoGetFileVersionsResult getFileVersions(final String alfFileId,
+			final String alfURL, final String alfTicket) {
+
+		AlfrescoGetFileVersionsResult ar = new AlfrescoGetFileVersionsResult();
+		ar.setResult(RESULT_ERROR);
+
+		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
+		try {
+			HttpGet httpget =
+				new HttpGet(alfURL + "/service/api/version?nodeRef=workspace://SpacesStore/"
+						+ alfFileId + "&alf_ticket=" + alfTicket);
+
+			HttpResponse response = httpclient.execute(httpget);
+
+			HttpEntity resEntity = response.getEntity();
+
+			if (resEntity != null) {
+				String resContent = EntityUtils.toString(resEntity);
+				if (response.getStatusLine().getStatusCode() == HTTP_OK) {
+					ar.setVersions(resContent);
+					ar.setResult(RESULT_OK);
+				} else {
+					ar.setErrorMessage(resContent);
+				}
+			} else {
+				ar.setErrorMessage("HTTP-запрос получения версий файла из Alfresco вернул пустые данные.");
 			}
 
 			EntityUtils.consume(resEntity);

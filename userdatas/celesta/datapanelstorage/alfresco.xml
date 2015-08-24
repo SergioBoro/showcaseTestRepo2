@@ -18,6 +18,9 @@
 		<element id="0101" type="webtext" proc="g1.xformAlfresco.webtext.celesta"/>		
 	</tab>
 
+	<tab id="02" name="Получить файл некоторой версии">
+		<element id="0102" type="webtext" proc="g1.xformAlfresco.webtextParticularVersion.celesta"/>		
+	</tab>
 
 
 
