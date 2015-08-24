@@ -113,6 +113,13 @@ public final class UserMessageFactory {
 			} else {
 				stream = UserDataUtils.loadGeneralToStream(messageFile);
 			}
+
+			if (stream == null) {
+				mesFound = false;
+				userMessage = null;
+				return;
+			}
+
 		} catch (IOException e) {
 			// throw new SettingsFileOpenException(e, messageFile,
 			// SettingsFileType.SOLUTION_MESSAGES);
