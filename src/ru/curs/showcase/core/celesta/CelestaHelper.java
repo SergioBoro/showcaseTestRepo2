@@ -130,8 +130,13 @@ public class CelestaHelper<T> {
 				throw new ValidateException(um);
 			}
 
+			String[] err = handleCelestaExceptionError(ex.getMessage());
+			String res = handleCelestaExceptionTraceback(ex.getMessage(), err);
+
 			throw new CelestaWorkerException("Ошибка при выполнении jython скрипта celesta '"
-					+ procName + "'", ex);
+					+ procName + "'",
+			// ex);
+					new Exception(res));
 		}
 		if (result == null) {
 			return null;
@@ -193,4 +198,117 @@ public class CelestaHelper<T> {
 
 		return resultParams;
 	}
+
+	private String[] handleCelestaExceptionError(final String value) {
+		String[] arr = { "", "", "", "", "", "", "" };
+		String error = "";
+		// Pattern regex = Pattern.compile("^((\n|.)+u'(.+)'(\n|.)*)$");
+		// Matcher regexMatcher = regex.matcher(value);
+		// if (regexMatcher.matches()) {
+		// error = StringEscapeUtils.unescapeJava(regexMatcher.group(4));
+		// }
+		// return error;
+		if (value.contains("(u'''") && value.contains("''')")) {
+			int ind1;
+			int ind2;
+			if (value.contains("',)")) {
+				ind1 = value.indexOf("(u'");
+				ind2 = value.indexOf("',)");
+				error = value.substring(ind1 + 3, ind2);
+				arr[0] = error;
+				arr[1] = StringEscapeUtils.unescapeJava(error);
+			}
+			ind1 = value.lastIndexOf("(u'''");
+			ind2 = value.lastIndexOf("''')");
+			error = value.substring(ind1 + 5, ind2);
+			arr[6] = error;
+		}
+
+		if (value.contains("(u'") && value.contains("')")) {
+			int ind1;
+			int ind2;
+			if (value.contains("',)")) {
+				ind1 = value.indexOf("(u'");
+				ind2 = value.indexOf("',)");
+				error = value.substring(ind1 + 3, ind2);
+				arr[0] = error;
+				arr[1] = StringEscapeUtils.unescapeJava(error);
+			}
+			ind1 = value.lastIndexOf("(u'");
+			ind2 = value.lastIndexOf("')");
+			error = value.substring(ind1 + 3, ind2);
+			arr[2] = error;
+		}
+
+		if (value.contains("(u'") && value.contains("')")) {
+			int ind1;
+			int ind2;
+			if (value.contains("\",)")) {
+				ind1 = value.indexOf("(u\"");
+				ind2 = value.indexOf("\",)");
+				error = value.substring(ind1 + 3, ind2);
+				arr[0] = error;
+				arr[1] = StringEscapeUtils.unescapeJava(error);
+			}
+			ind1 = value.lastIndexOf("(u'");
+			ind2 = value.lastIndexOf("')");
+			error = value.substring(ind1 + 3, ind2);
+			arr[4] = error;
+		}
+
+		if (value.contains("(u\"") && value.contains("\")")) {
+			int ind1;
+			int ind2;
+			if (value.contains("',)")) {
+				ind1 = value.indexOf("(u'");
+				ind2 = value.indexOf("',)");
+				error = value.substring(ind1 + 3, ind2);
+				arr[0] = error;
+				arr[1] = StringEscapeUtils.unescapeJava(error);
+			}
+			ind1 = value.lastIndexOf("(u\"");
+			ind2 = value.lastIndexOf("\")");
+			error = value.substring(ind1 + 3, ind2);
+			arr[3] = error;
+		}
+
+		if (value.contains("(u\"") && value.contains("\")")) {
+			int ind1;
+			int ind2;
+			if (value.contains("\",)")) {
+				ind1 = value.indexOf("(u\"");
+				ind2 = value.indexOf("\",)");
+				error = value.substring(ind1 + 3, ind2);
+				arr[0] = error;
+				arr[1] = StringEscapeUtils.unescapeJava(error);
+			}
+			ind1 = value.lastIndexOf("(u\"");
+			ind2 = value.lastIndexOf("\")");
+			error = value.substring(ind1 + 3, ind2);
+			arr[5] = error;
+		}
+
+		return arr;
+	}
+
+	private String handleCelestaExceptionTraceback(final String value, final String[] arr) {
+		String sumValue = value;
+		// sumValue = sumValue.replaceFirst("u'(.)+'", "u'" + error + "'");
+		// sumValue = sumValue.replaceFirst("u\"(.)+\"", "u\"" + error + "\"");
+		if (!"".equals(arr[1])) {
+			sumValue = sumValue.replace(arr[0], arr[1]);
+			if (!"".equals(arr[6]))
+				sumValue = sumValue.replace(arr[6], arr[1]);
+			if (!"".equals(arr[2]))
+				sumValue = sumValue.replace(arr[2], arr[1]);
+			if (!"".equals(arr[3]))
+				sumValue = sumValue.replace(arr[3], arr[1]);
+			if (!"".equals(arr[4]))
+				sumValue = sumValue.replace(arr[4], arr[1]);
+			if (!"".equals(arr[5]))
+				sumValue = sumValue.replace(arr[5], arr[1]);
+		}
+		return sumValue;
+	}
+
 }
