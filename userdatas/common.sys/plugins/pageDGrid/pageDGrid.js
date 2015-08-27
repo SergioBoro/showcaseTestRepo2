@@ -208,19 +208,20 @@ function createPageDGrid(elementId, parentId, metadata) {
 						if(value && (value.trim()!="")){
 							div.innerHTML = 
 								"<tbody>" +
-									"<tr>" +
-										"<td>"+value+"" +
-										"</td>" +
+									"<tr>";
+							if(value.trim()!="enableDownload"){
+								div.innerHTML = div.innerHTML +							
+								"<td>"+value+"" +
+								"</td>";
+							}
+							div.innerHTML = div.innerHTML +										
 										"<td  align=\"center\" style=\"vertical-align: middle;\">" +
-										
 												"<button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\">" +
 														"<img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 8px; height: 8px;  \"   >" +
 												"</button>" +
-
 										"</td>" +
 									"</tr>" +
-								"</tbody>";						
-							
+								"</tbody>";
 						}else{
 							div.innerHTML = value;
 						}
