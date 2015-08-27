@@ -354,15 +354,18 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		if (AppCurrContext.getInstance()
 				.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel()
 				.indexOf(getDivIdPlugin()) < 0) {
+
 			AppCurrContext.getInstance()
 					.getListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel()
 					.add(getDivIdPlugin());
+
 			// for (String param : aPlugin.getRequiredCSS()) {
 			// AccessToDomModel.addCSSLink(param);
 			// }
-			for (String param : gridMetadata.getJSInfo().getRequiredJS()) {
-				AccessToDomModel.addScriptLink(param);
-			}
+
+			// for (String param : gridMetadata.getJSInfo().getRequiredJS()) {
+			// AccessToDomModel.addScriptLink(param);
+			// }
 
 		}
 
@@ -557,7 +560,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		// ----------------------------------------
 
 		try {
-			pluginProc(gridMetadata.getJSInfo().getCreateProc(), params);
+			runGrid(gridMetadata.getJSInfo().getCreateProc(), params, gridMetadata.getJSInfo()
+					.getRequiredJS().toArray());
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
 				MessageBox.showMessageWithDetails(
@@ -576,6 +580,15 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	}
 
 	// CHECKSTYLE:ON
+
+	private native void runGrid(final String procName, final String params, final Object[] list) /*-{
+		if (list != null) {
+			for ( var x = 0; x < list.length; x++) {
+				$wnd.safeIncludeJS(list[x]);
+			}
+		}
+		$wnd.eval(procName + "(" + params + ");");
+	}-*/;
 
 	/**
 	 * 
