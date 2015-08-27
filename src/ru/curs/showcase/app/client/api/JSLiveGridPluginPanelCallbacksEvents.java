@@ -37,8 +37,8 @@ public final class JSLiveGridPluginPanelCallbacksEvents {
 	}
 
 	public static void pluginAfterLoadData(final String pluginId,
-			final String stringLiveGridExtradata) {
-		getCurrentPanel(pluginId).pluginAfterLoadData(stringLiveGridExtradata);
+			final String stringLiveGridExtradata, final String totalCount) {
+		getCurrentPanel(pluginId).pluginAfterLoadData(stringLiveGridExtradata, totalCount);
 	}
 
 	public static void pluginAfterClick(final String pluginId, final String recId,

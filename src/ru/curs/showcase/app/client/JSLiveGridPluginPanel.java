@@ -126,7 +126,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	private static native void setCallbackJSNIFunction() /*-{
 															$wnd.gwtGetHttpParams = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtEditorGetHttpParams = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginEditorGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
-															$wnd.gwtAfterLoadData = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtAfterLoadData = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterClick = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
 															$wnd.gwtAfterDoubleClick = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterDoubleClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtProcessFileDownload = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginProcessFileDownload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
@@ -710,7 +710,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		return params;
 	}
 
-	public void pluginAfterLoadData(final String stringLiveGridExtradata) {
+	public void pluginAfterLoadData(final String stringLiveGridExtradata, final String totalCount) {
 		if (!stringLiveGridExtradata.isEmpty()) {
 			try {
 				LiveGridExtradata gridExtradataNew =
@@ -741,6 +741,10 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		}
 
 		afterUpdateGrid();
+
+		GridContext gridContext = getDetailedContext();
+		gridContext.getLiveInfo().setTotalCount(Integer.parseInt(totalCount));
+
 	}
 
 	public void pluginShowMessage(final String stringMessage, final String editorType) {

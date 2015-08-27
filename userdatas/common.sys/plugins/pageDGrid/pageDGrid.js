@@ -63,7 +63,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 							totalLength: when(parseInt(metadata["data"]["total"]))
 						});
 						
-						gwtAfterLoadData(elementId, "");
+						gwtAfterLoadData(elementId, "", metadata["data"]["total"]);
 					}else{
 						var sortColId  = null;
 						var sortColDir = null;
@@ -95,7 +95,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 						results = Rest.prototype.fetchRange.call(this, kwArgs);
 						results.then(function(results){
 							if(results[0]){
-								gwtAfterLoadData(elementId, results[0]["liveGridExtradata"]);						
+								gwtAfterLoadData(elementId, results[0]["liveGridExtradata"], arrGrids[parentId]._total);						
 							}
 						});				
 					}
