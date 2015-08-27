@@ -2,6 +2,7 @@ package ru.curs.showcase.core.celesta;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.python.core.PyObject;
 import org.xml.sax.SAXException;
 
