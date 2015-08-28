@@ -478,7 +478,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 				if(metadata["common"]["pageNumber"]){
 					var pageNumber = parseInt(metadata["common"]["pageNumber"]);
 					if(pageNumber > 1){
-						event.grid.gotoPage();
+						event.grid.gotoPage(pageNumber);
 					}
 				}
 				
@@ -527,8 +527,16 @@ function savePageDGrid(parentId){
 }
 
 function revertPageDGrid(parentId){
-//	arrGrids[parentId].revert();
-	refreshPageDGrid(parentId);
+	
+//	refreshPageDGrid(parentId);
+	
+	var currentPage = arrGrids[parentId]._currentPage;  
+	
+	arrGrids[parentId].revert();
+	
+	if(currentPage > 1){
+		arrGrids[parentId].gotoPage(currentPage);		
+	}
 }
 
 function clipboardPageDGrid(parentId){
