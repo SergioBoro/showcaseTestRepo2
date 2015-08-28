@@ -737,7 +737,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 				i++;
 			}
 			String json =
-				"{'savedata':{'data':" + data + ", 'columns':" + column.toString() + "}}";
+				"{\"savedata\":{\"data\":" + data + ", \"columns\":" + column.toString() + "}}";
 			gridContext.setEditorData(json);
 
 			gridContext.setAddRecordData(null);
@@ -745,7 +745,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			gridContext.setEditorData(null);
 
 			String json =
-				"{'addrecorddata':{'currentRecordId':'" + gridContext.getCurrentRecordId() + "'}}";
+				"{\"addrecorddata\":{\"currentRecordId\":\"" + gridContext.getCurrentRecordId()
+						+ "\"}}";
 			gridContext.setAddRecordData(json);
 		}
 
