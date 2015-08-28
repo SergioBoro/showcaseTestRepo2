@@ -1365,7 +1365,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			});
 			toolBar.add(addRecord);
 		}
-		if (getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null) {
+		if ((getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null)
+				&& gridMetadata.getUISettings().isVisibleSave()) {
 			final TextButton save =
 				new TextButton("", IconHelper.getImageResource(
 						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_SAVE), 16, 16));
@@ -1378,7 +1379,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			});
 			toolBar.add(save);
 		}
-		if (getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null) {
+		if ((getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null)
+				&& gridMetadata.getUISettings().isVisibleRevert()) {
 			final TextButton revert =
 				new TextButton("", IconHelper.getImageResource(
 						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_REVERT), 16, 16));

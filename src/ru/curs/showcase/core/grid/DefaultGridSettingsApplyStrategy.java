@@ -26,6 +26,8 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 	private static final String DEF_VISIBLE_EXPORTTOEXCEL_ALL = "def.visible.exporttoexcel.all";
 	private static final String DEF_VISIBLE_COPYTOCLIPBOARD = "def.visible.copytoclipboard";
 	private static final String DEF_VISIBLE_FILTER = "def.visible.filter";
+	private static final String DEF_VISIBLE_SAVE = "def.visible.save";
+	private static final String DEF_VISIBLE_REVERT = "def.visible.revert";
 	private static final String DEF_VISIBLE_RECORDS_SELECTOR = "def.visible.records.selector";
 	private static final String DEF_VISIBLE_COLUMNS_HEADER = "def.visible.columns.header";
 	private static final String SINGLE_CLICK_BEFORE_DOUBLE = "single.click.before.double";
@@ -145,6 +147,14 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 		boolValue = reader().getBoolValue(DEF_VISIBLE_FILTER);
 		if (boolValue != null) {
 			settings.setVisibleFilter(boolValue);
+		}
+		boolValue = reader().getBoolValue(DEF_VISIBLE_SAVE);
+		if (boolValue != null) {
+			settings.setVisibleSave(boolValue);
+		}
+		boolValue = reader().getBoolValue(DEF_VISIBLE_REVERT);
+		if (boolValue != null) {
+			settings.setVisibleRevert(boolValue);
 		}
 		boolValue = reader().getBoolValue(DEF_VISIBLE_RECORDS_SELECTOR);
 		if (boolValue != null) {
