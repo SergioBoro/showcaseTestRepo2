@@ -220,6 +220,9 @@ public class ActionFactory extends SAXTagHandler {
 		curDataPanelLink.setDataPanelId(attrs.getValue(DP_ID_ATTR_NAME));
 
 		ActionTabFinder finder = AppRegistry.getActionTabFinder();
+		if (curAction.getContext() == null) {
+			throw new NoMainContextException();
+		}
 		CompositeContext context = curAction.getContext().gwtClone();
 		context.setSession(callContext.getSession());
 		curDataPanelLink.setTabId(finder.findTabForAction(context, curDataPanelLink,

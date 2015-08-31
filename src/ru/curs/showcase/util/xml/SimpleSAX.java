@@ -32,7 +32,7 @@ public class SimpleSAX {
 		SAXParser parser = XMLUtils.createSAXParser();
 		try {
 			parser.parse(stream, saxHandler);
-		} catch (SAXException | IOException | BaseException e) {
+		} catch (SAXException | IOException | BaseException | XMLError e) {
 			stdSAXErrorHandler(e);
 			return false;
 		}
@@ -48,6 +48,9 @@ public class SimpleSAX {
 	 */
 	private void stdSAXErrorHandler(final Throwable e) {
 		Throwable realExc = e;
+		if (realExc instanceof XMLError) {
+			throw new XMLHandlingException(realExc);
+		}
 		if (realExc instanceof BreakSAXLoopException) {
 			return;
 		}

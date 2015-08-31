@@ -124,6 +124,9 @@ public abstract class SAXTagHandler extends GeneralXMLHelper {
 				| IllegalAccessException e) {
 			throw new ServerLogicError(e);
 		} catch (InvocationTargetException e) {
+			if (e.getCause() instanceof NoMainContextException) {
+				throw new XMLError(e);
+			}
 			throw new SAXError(e.getTargetException());
 		}
 	}
