@@ -24,7 +24,9 @@ public final class AlfrescoManager {
 	private static final int RESULT_OK = 0;
 	private static final int RESULT_ERROR = 1;
 
+	private static final String CONTENT_TYPE = "Content-Type";
 	private static final String APPLICATION_JSON = "application/json";
+	private static final String ALF_TICKET = "alf_ticket";
 
 	private AlfrescoManager() {
 	}
@@ -38,7 +40,7 @@ public final class AlfrescoManager {
 		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
 		try {
 			HttpPost httppost = new HttpPost(alfURL + "/service/api/login");
-			httppost.setHeader("Content-Type", APPLICATION_JSON);
+			httppost.setHeader(CONTENT_TYPE, APPLICATION_JSON);
 			httppost.setEntity(new StringEntity("{\"username\" : \"" + alfUser
 					+ "\",\"password\" : \"" + alfPass + "\"}"));
 
@@ -88,7 +90,7 @@ public final class AlfrescoManager {
 		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
 		try {
 			HttpPost httppost =
-				new HttpPost(alfURL + "/service/api/upload?alf_ticket=" + alfTicket);
+				new HttpPost(alfURL + "/service/api/upload?" + ALF_TICKET + "=" + alfTicket);
 
 			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 
@@ -152,7 +154,7 @@ public final class AlfrescoManager {
 			HttpDelete httpdelete =
 				new HttpDelete(alfURL
 						+ "/service/slingshot/doclib/action/file/node/workspace/SpacesStore/"
-						+ alfFileId + "?alf_ticket=" + alfTicket);
+						+ alfFileId + "?" + ALF_TICKET + "=" + alfTicket);
 
 			HttpResponse response = httpclient.execute(httpdelete);
 
@@ -205,7 +207,7 @@ public final class AlfrescoManager {
 		try {
 			HttpGet httpget =
 				new HttpGet(alfURL + "/service/api/metadata?nodeRef=workspace://SpacesStore/"
-						+ alfFileId + "&alf_ticket=" + alfTicket);
+						+ alfFileId + "&" + ALF_TICKET + "=" + alfTicket);
 
 			if (!((acceptLanguage == null) || (acceptLanguage.trim().isEmpty()))) {
 				httpget.setHeader("Accept-Language", acceptLanguage);
@@ -255,8 +257,8 @@ public final class AlfrescoManager {
 		try {
 			HttpPost httppost =
 				new HttpPost(alfURL + "/service/api/metadata/node/workspace/SpacesStore/"
-						+ alfFileId + "?alf_ticket=" + alfTicket);
-			httppost.setHeader("Content-Type", APPLICATION_JSON);
+						+ alfFileId + "?" + ALF_TICKET + "=" + alfTicket);
+			httppost.setHeader(CONTENT_TYPE, APPLICATION_JSON);
 			if (!((acceptLanguage == null) || (acceptLanguage.trim().isEmpty()))) {
 				httppost.setHeader("Accept-Language", acceptLanguage);
 			}
@@ -317,7 +319,7 @@ public final class AlfrescoManager {
 		try {
 			HttpGet httpget =
 				new HttpGet(alfURL + "/service/api/version?nodeRef=workspace://SpacesStore/"
-						+ alfFileId + "&alf_ticket=" + alfTicket);
+						+ alfFileId + "&" + ALF_TICKET + "=" + alfTicket);
 
 			HttpResponse response = httpclient.execute(httpget);
 
@@ -333,6 +335,61 @@ public final class AlfrescoManager {
 				}
 			} else {
 				ar.setErrorMessage("HTTP-запрос получения версий файла из Alfresco вернул пустые данные.");
+			}
+
+			EntityUtils.consume(resEntity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ar.setResult(RESULT_ERROR);
+			ar.setErrorMessage(e.getMessage());
+		} finally {
+			try {
+				httpclient.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return ar;
+
+	}
+
+	public static AlfrescoCreateFolderResult createFolder(final String alfParentFolderId,
+			final String alfCreateFolderParams, final String alfURL, final String alfTicket) {
+
+		AlfrescoCreateFolderResult ar = new AlfrescoCreateFolderResult();
+		ar.setResult(RESULT_ERROR);
+
+		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
+		try {
+			HttpPost httppost =
+				new HttpPost(alfURL + "/service/api/node/folder/workspace/SpacesStore/"
+						+ alfParentFolderId + "?" + ALF_TICKET + "=" + alfTicket);
+			httppost.setHeader(CONTENT_TYPE, APPLICATION_JSON);
+
+			StringEntity entity =
+				new StringEntity(alfCreateFolderParams, ContentType.APPLICATION_JSON);
+			entity.setContentType(APPLICATION_JSON);
+
+			httppost.setEntity(entity);
+
+			HttpResponse response = httpclient.execute(httppost);
+
+			HttpEntity resEntity = response.getEntity();
+
+			if (resEntity != null) {
+				String resContent = EntityUtils.toString(resEntity);
+				if (response.getStatusLine().getStatusCode() == HTTP_OK) {
+					JSONTokener jt = new JSONTokener(resContent);
+					JSONObject jo = new JSONObject(jt);
+
+					ar.setResult(RESULT_OK);
+					ar.setNodeRef(jo.getString("nodeRef"));
+				} else {
+					ar.setErrorMessage(resContent);
+				}
+			} else {
+				ar.setErrorMessage("HTTP-запрос создания директории в Alfresco вернул пустые данные.");
 			}
 
 			EntityUtils.consume(resEntity);

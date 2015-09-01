@@ -613,7 +613,6 @@ def submitDeleteFile(context, main, add, filterinfo, session, data):
     alfPass = "пароль"
     
     alfFileId = "50694ed0-63b7-47d8-8e54-67ad19e3c359"
-  
     
     resultLogin = AlfrescoManager.login(alfURL, alfUser, alfPass)
     if resultLogin.getResult() == 0:
@@ -690,6 +689,7 @@ def submitSetFileMetaData(context, main, add, filterinfo, session, data):
     
     alfFileId = "97cf8b94-0407-40ed-9582-711f4d42dfa0"
     
+    
 #    acceptLanguage = ""
     acceptLanguage = "en-US,en;"
 #    acceptLanguage = "ru-RU,ru;"
@@ -727,6 +727,7 @@ def submitGetFileVersions(context, main, add, filterinfo, session, data):
     alfPass = "пароль"
     
     alfFileId = "97cf8b94-0407-40ed-9582-711f4d42dfa0"
+
     
     resultLogin = AlfrescoManager.login(alfURL, alfUser, alfPass)
     if resultLogin.getResult() == 0:
@@ -745,3 +746,49 @@ def submitGetFileVersions(context, main, add, filterinfo, session, data):
     
     
     return XMLJSONConverter.jsonToXml(data);
+
+
+
+def submitCreateFolder(context, main, add, filterinfo, session, data):
+    print 'Submit xform data from Celesta Python procedure.'
+    print 'User %s' % context.userId
+    print 'main "%s".' % main
+    print 'add "%s".' % add
+    print 'filterinfo "%s".' % filterinfo
+    print 'session "%s".' % session
+    print 'data "%s".' % data
+    
+    alfURL = "http://127.0.0.1:8080/alfresco"
+    alfUser = "user222" 
+    alfPass = "пароль"
+
+    alfParentFolderId = "a9488807-c96c-41e9-a9ee-8a176ae1ccf6"    
+    
+    alfCreateFolderParams = unicode("{\"name\": \"Новая директория1\", \"title\": \"Заголовок новой директории1\", \"description\": \"Описание новой директории1\", \"type\": \"cm:folder\"}")    
+    
+    
+    resultLogin = AlfrescoManager.login(alfURL, alfUser, alfPass)
+    if resultLogin.getResult() == 0:
+        resultCreateFolder = AlfrescoManager.createFolder(alfParentFolderId, alfCreateFolderParams, alfURL, resultLogin.getTicket());
+        if resultCreateFolder.getResult() == 0:
+            nodeRef = resultCreateFolder.getNodeRef()
+# Далее использование nodeRef созданной директории
+# ............
+
+            context.error(u"Директория успешно создана в Alfresco. Координаты директории в Alfresco: "+nodeRef);
+        else:
+            context.error(resultCreateFolder.getErrorMessage());
+    else:
+        context.error(resultLogin.getErrorMessage());        
+
+    return XMLJSONConverter.jsonToXml(data);
+
+
+
+
+
+
+
+
+
+

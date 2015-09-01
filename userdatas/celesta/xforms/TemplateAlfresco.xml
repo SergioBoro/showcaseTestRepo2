@@ -32,6 +32,68 @@
 				</xf:action>				
 			</xf:submission>
 			
+			<xf:submission id="alfresco_submitGetFileMetaData" method="post"
+				instance="xformId_mainInstance" replace="instance" ref="instance('xformId_mainInstance')"
+				action="secured/submit?proc=g1.xformAlfresco.submitGetFileMetaData.celesta">
+				<xf:action ev:event="xforms-submit-done">
+					<xf:message>Метаданные файла из Alfresco успешно получены</xf:message>
+				</xf:action>
+				<xf:action ev:event="xforms-submit-error">
+					<xf:message>
+						Сообщение при получении метаданных файла из Alfresco:
+						<xf:output value="event('response-body')" />
+					</xf:message>
+				</xf:action>				
+			</xf:submission>
+			
+			
+			<xf:submission id="alfresco_submitSetFileMetaData" method="post"
+				instance="xformId_mainInstance" replace="instance" ref="instance('xformId_mainInstance')"
+				action="secured/submit?proc=g1.xformAlfresco.submitSetFileMetaData.celesta">
+				<xf:action ev:event="xforms-submit-done">
+					<xf:message>Метаданные файла из Alfresco успешно заданы</xf:message>
+				</xf:action>
+				<xf:action ev:event="xforms-submit-error">
+					<xf:message>
+						Ошибка при задании метаданных файла из Alfresco:
+						<xf:output value="event('response-body')" />
+					</xf:message>
+				</xf:action>				
+			</xf:submission>
+			
+			
+			<xf:submission id="alfresco_submitGetFileVersions" method="post"
+				instance="xformId_mainInstance" replace="instance" ref="instance('xformId_mainInstance')"
+				action="secured/submit?proc=g1.xformAlfresco.submitGetFileVersions.celesta">
+				<xf:action ev:event="xforms-submit-done">
+					<xf:message>Версии файла из Alfresco успешно получены</xf:message>
+				</xf:action>
+				<xf:action ev:event="xforms-submit-error">
+					<xf:message>
+						Сообщение при получении версий файла из Alfresco:
+						<xf:output value="event('response-body')" />
+					</xf:message>
+				</xf:action>				
+			</xf:submission>
+
+			
+			<xf:submission id="alfresco_submitCreateFolder" method="post"
+				instance="xformId_mainInstance" replace="instance" ref="instance('xformId_mainInstance')"
+				action="secured/submit?proc=g1.xformAlfresco.submitCreateFolder.celesta">
+				<xf:action ev:event="xforms-submit-done">
+					<xf:message>Директория в Alfresco успешно создана</xf:message>
+				</xf:action>
+				<xf:action ev:event="xforms-submit-error">
+					<xf:message>
+						Сообщение при создании директории в Alfresco:
+						<xf:output value="event('response-body')" />
+					</xf:message>
+				</xf:action>				
+			</xf:submission>
+			
+			
+			
+			
 			<xf:bind>
 			</xf:bind>
 		</xf:model>
@@ -81,6 +143,36 @@
 				<xf:label>Удаление файла из Alfresco</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:send submission="alfresco_submitDeleteFile" />
+				</xf:action>
+			</xf:trigger>
+		</div>
+		<hr/>		
+		<div>
+			<xf:trigger>
+				<xf:label>Получение метаданных файла из Alfresco</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:send submission="alfresco_submitGetFileMetaData" />
+				</xf:action>
+			</xf:trigger>
+			<xf:trigger>
+				<xf:label>Задание метаданных файла из Alfresco</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:send submission="alfresco_submitSetFileMetaData" />
+				</xf:action>
+			</xf:trigger>
+			<xf:trigger>
+				<xf:label>Получение версий файла из Alfresco</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:send submission="alfresco_submitGetFileVersions" />
+				</xf:action>
+			</xf:trigger>
+		</div>
+		<hr/>		
+		<div>
+			<xf:trigger>
+				<xf:label>Создание директории в Alfresco</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:send submission="alfresco_submitCreateFolder" />
 				</xf:action>
 			</xf:trigger>
 		</div>
