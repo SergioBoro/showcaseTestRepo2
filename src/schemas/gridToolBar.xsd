@@ -27,10 +27,23 @@
 			<xs:extension base="baseToolBarItem">
 				<xs:choice minOccurs="1" maxOccurs="unbounded">
 					<xs:element name="item" type="toolBarItem" />
-					<xs:element name="group" type="toolBarElement" />
+					<xs:element name="group" type="toolBarElementNew" />
 					<xs:element name="separator" />
 				</xs:choice>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	
+	<xs:complexType name="toolBarElementNew">
+		<xs:complexContent>
+			<xs:extension base="baseToolBarItem">
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="item" type="toolBarItem" />
+					<xs:element name="group" type="toolBarElementNew" />
+					<xs:element name="separator" />
+				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
 </xs:schema>
