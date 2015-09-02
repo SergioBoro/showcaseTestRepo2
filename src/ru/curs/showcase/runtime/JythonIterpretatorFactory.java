@@ -50,8 +50,8 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 
 	@Override
 	protected PythonInterpreter createReusableItem() {
-		// PySystemState state = new PySystemState();
-		PySystemState state = Py.getSystemState();
+		PySystemState state = new PySystemState();
+		// PySystemState state = Py.getSystemState();
 		state.path.append(new PyString(getUserDataScriptDir()));
 		// File genScriptDir = new File(getGeneralScriptDir());
 		// if (genScriptDir.exists()) {
