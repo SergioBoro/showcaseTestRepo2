@@ -6,6 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
@@ -62,6 +63,7 @@ public class CheckAutenticationFilter implements Filter {
 				// SecurityContextHolder.getContext()
 				// .getAuthentication().getDetails()).getSessionId());
 				// }
+
 				if (ud == null) {
 					response.reset();
 					response.setContentType("text/html");
@@ -72,7 +74,26 @@ public class CheckAutenticationFilter implements Filter {
 					filterChain.doFilter(request, response);
 				}
 			} else {
-				filterChain.doFilter(request, response);
+
+				try {
+					if (SecurityContextHolder.getContext().getAuthentication() != null) {
+						filterChain.doFilter(request, response);
+					} else {
+
+						response.reset();
+						response.setContentType("text/html");
+						response.setCharacterEncoding(TextUtils.DEF_ENCODING);
+						response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
+						response.getWriter().close();
+					}
+				} catch (Exception e) {
+					response.reset();
+					response.setContentType("text/html");
+					response.setCharacterEncoding(TextUtils.DEF_ENCODING);
+					response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
+					response.getWriter().close();
+				}
+
 			}
 		}
 	}
