@@ -56,4 +56,10 @@ public final class ExchangeConstants implements SerializableElement {
 
 	public static final String NOT_CLEAR_UPLOAD_TAG = "notClearUpload";
 
+	public static final String CONTEXT_BEGIN = "ContextECE12FBDBegin";
+	public static final String CONTEXT_END = "ContextECE12FBDEnd";
+
+	public static final String OK_MESSAGE_BEGIN = "okMessageECE12FBDBegin";
+	public static final String OK_MESSAGE_END = "okMessageECE12FBDEnd";
+
 }

@@ -7045,7 +7045,10 @@ XsltForms_instance.prototype.setDoc = function(xml, isReset, preserveOld) {
 		
 
 XsltForms_instance.prototype.setDocFromReq = function(req, isReset, preserveOld) {
-	var srcXML = req.responseText;
+// [KURS	
+	//var srcXML = req.responseText;
+	var srcXML = removeOkMessage(req.responseText);
+// KURS]
 	var mediatype = req.getResponseHeader('Content-Type') ? req.getResponseHeader('Content-Type') : this.mediatype;
 	var lines = mediatype.split(";");
 	this.mediatype = lines[0];
@@ -8215,6 +8218,9 @@ XsltForms_submission.prototype.submit = function() {
 							evcontext["error-type"] = "resource-error";
 							subm.issueSubmitException_(evcontext, req, null);
 							XsltForms_globals.closeAction("XsltForms_submission.prototype.submit");
+// [KURS
+							gwtXFormShowErrorMessage(req.responseText);
+// KURS]
 							return;
 						}
 						if (subm.replace === "instance" || (subm.targetref && subm.replace === "text")) {
@@ -8223,9 +8229,15 @@ XsltForms_submission.prototype.submit = function() {
 								targetnode = subm.targetref.bind_evaluate(subm.subform, ctxnode);
 								if (targetnode && targetnode[0]) {
 									if (subm.replace === "instance") {
-										XsltForms_browser.loadXML(targetnode[0], req.responseText);
+// [KURS										
+										//XsltForms_browser.loadXML(targetnode[0], req.responseText);
+										XsltForms_browser.loadXML(targetnode[0], removeOkMessage(req.responseText));										
+// KURS]										
 									} else {
-										XsltForms_browser.loadTextNode(targetnode[0], req.responseText);
+// [KURS
+										//XsltForms_browser.loadTextNode(targetnode[0], req.responseText);
+										XsltForms_browser.loadTextNode(targetnode[0], removeOkMessage(req.responseText));
+// KURS]
 									}
 								}
 							} else {
@@ -8239,8 +8251,14 @@ XsltForms_submission.prototype.submit = function() {
 						XsltForms_submission.requesteventlog(evcontext, req);
 						XsltForms_xmlevents.dispatch(subm, "xforms-submit-done", null, null, null, null, evcontext);
 						XsltForms_globals.closeAction("XsltForms_submission.prototype.submit");
+// [KURS
+						gwtXFormShowMessage(getOkMessage(req.responseText));
+// KURS]
 						if (subm.replace === "all") {
-							var resp = req.responseText;
+// [KURS							
+//							var resp = req.responseText;
+							var resp = removeOkMessage(req.responseText);							
+// KURS]							
 							var piindex = resp.indexOf("<?xml-stylesheet", 0);
 							while ( piindex !== -1) {
 								var xslhref = resp.substr(piindex, resp.substr(piindex).indexOf("?>")).replace(/^.*href=\"([^\"]*)\".*$/, "$1");
@@ -8376,6 +8394,10 @@ XsltForms_submission.prototype.submit = function() {
 							req.setRequestHeader("Accept", "application/xml,text/xml");
 						}
 					}
+// [KURS
+					ser=ser+gwtXFormGetStringContext(subm.subform.eltid);
+					//console.log(ser);
+// KURS]
 					req.send(ser);
 				}
 				if (synchr) {
@@ -8426,9 +8448,15 @@ XsltForms_submission.requesteventlog = function(evcontext, req) {
 			}
 		}
 		if (req.responseXML) {
-			evcontext["response-body"] = [XsltForms_browser.createXMLDocument(req.responseText).documentElement];
+// [KURS			
+			//evcontext["response-body"] = [XsltForms_browser.createXMLDocument(req.responseText).documentElement];
+			evcontext["response-body"] = [XsltForms_browser.createXMLDocument(removeOkMessage(req.responseText)).documentElement];
+// KURS]
 		} else {
-			evcontext["response-body"] = req.responseText || "";
+// [KURS
+			//evcontext["response-body"] = req.responseText || "";
+			evcontext["response-body"] = removeOkMessage(req.responseText) || "";
+// KURS]
 		}
 	} catch (e) {
 	}
@@ -14225,6 +14253,24 @@ function getOffsetRect(elem) {
     
     return { y: Math.round(top), x: Math.round(left) };
     
+}
+
+
+var OK_MESSAGE_BEGIN = "okMessageECE12FBDBegin";
+var OK_MESSAGE_END = "okMessageECE12FBDEnd";
+function getOkMessage(str) {
+	var mess = "";
+	if(str.indexOf(OK_MESSAGE_BEGIN)>-1){
+		mess = str.substring(str.indexOf(OK_MESSAGE_BEGIN)+OK_MESSAGE_BEGIN.length, str.indexOf(OK_MESSAGE_END));
+	}
+	return mess;
+}
+function removeOkMessage(str) {
+	var res = str;
+	if(res.indexOf(OK_MESSAGE_BEGIN)>-1){
+		res = res.substring(0, res.indexOf(OK_MESSAGE_BEGIN));
+	}
+	return res;
 }
 
 

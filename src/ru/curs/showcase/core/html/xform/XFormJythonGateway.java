@@ -54,7 +54,7 @@ public class XFormJythonGateway implements HTMLAdvGateway {
 	 * @author den
 	 * 
 	 */
-	class XFormTransformJythonGateway extends JythonQuery<String> {
+	class XFormTransformJythonGateway extends JythonQuery<JythonDTO> {
 
 		@Override
 		protected Object execute() {
@@ -67,7 +67,7 @@ public class XFormJythonGateway implements HTMLAdvGateway {
 		}
 
 		public XFormTransformJythonGateway() {
-			super(String.class);
+			super(JythonDTO.class);
 		}
 	}
 
@@ -78,7 +78,8 @@ public class XFormJythonGateway implements HTMLAdvGateway {
 		data = aContext.getFormData();
 		XFormTransformJythonGateway gateway = new XFormTransformJythonGateway();
 		gateway.runTemplateMethod();
-		return gateway.getResult();
+		context.setOkMessage(gateway.getResult().getUserMessage());
+		return gateway.getResult().getData();
 	}
 
 	@Override

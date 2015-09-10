@@ -74,6 +74,9 @@ public final class XFormsUtils {
 															$wnd.gwtXFormOnChooseFiles = @ru.curs.showcase.app.client.utils.InlineUploader::onChooseFiles(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/String;);
 															$wnd.gwtCreatePlugin =	@ru.curs.showcase.app.client.api.PluginPanelCallbacksEvents::createPlugin(Lcom/google/gwt/core/client/JavaScriptObject;);
 															$wnd.gwtGetDataPlugin = @ru.curs.showcase.app.client.api.PluginPanelCallbacksEvents::pluginGetData(Lcom/google/gwt/core/client/JavaScriptObject;);
+															$wnd.gwtXFormGetStringContext = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::getStringContext(Ljava/lang/String;);
+															$wnd.gwtXFormShowMessage = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showMessage(Ljava/lang/String;);
+															$wnd.gwtXFormShowErrorMessage = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showErrorMessage(Ljava/lang/String;);
 															}-*/;
 
 	// CHECKSTYLE:ON

@@ -16,7 +16,7 @@ import ru.curs.showcase.app.client.utils.*;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.FormPanel;
 
 /**
@@ -33,8 +33,104 @@ public final class XFormPanelCallbacksEvents {
 		testXFormPanel = testXFormPanel1;
 	}
 
+	private static SerializationStreamFactory ssf = null;
+
 	private XFormPanelCallbacksEvents() {
 
+	}
+
+	/**
+	 * Функция, возвращаюшая сериализованный XFormContext.
+	 * 
+	 * @param eltid
+	 *            Id подформы.
+	 * 
+	 */
+	public static String getStringContext(final String eltid) {
+		String stringContext = "";
+
+		String xformId = eltid.trim();
+		xformId = xformId.substring(0, xformId.length() - 1);
+
+		XFormPanel currentXFormPanel = getCurrentPanel(xformId);
+		if (currentXFormPanel != null) {
+			try {
+				stringContext =
+					ExchangeConstants.CONTEXT_BEGIN
+							+ currentXFormPanel.getContext().toParamForHttpPost(
+									getObjectSerializer()) + ExchangeConstants.CONTEXT_END;
+			} catch (SerializationException e) {
+				MessageBox.showSimpleMessage("getStringContext()",
+						" SerializationError: " + e.getMessage());
+			}
+		}
+
+		return stringContext;
+	}
+
+	/**
+	 * Функция, показывающая сообщение из сабмишена XForm.
+	 * 
+	 * @param stringMessage
+	 *            сериализованное сообщение.
+	 * 
+	 */
+	public static void showMessage(final String stringMessage) {
+		if (!stringMessage.isEmpty()) {
+			try {
+				UserMessage um =
+					(UserMessage) getObjectSerializer().createStreamReader(stringMessage)
+							.readObject();
+				if (um != null) {
+
+					String textMessage = um.getText();
+					if ((textMessage == null) || textMessage.isEmpty()) {
+						return;
+					}
+
+					MessageType typeMessage = um.getType();
+					if (typeMessage == null) {
+						typeMessage = MessageType.INFO;
+					}
+
+					MessageBox.showMessageWithDetails(AppCurrContext.getInstance().getBundleMap()
+							.get("okMessage"), textMessage, "", typeMessage, false);
+
+				}
+
+			} catch (SerializationException e) {
+				MessageBox.showSimpleMessage("showMessage()",
+						"DeserializationError: " + e.getMessage());
+			}
+		}
+	}
+
+	/**
+	 * Функция, показывающая сообщение об ошибке из сабмишена XForm.
+	 * 
+	 * @param stringMessage
+	 *            сообщение об ошибке.
+	 * 
+	 */
+	public static void showErrorMessage(final String stringMessage) {
+		if (!stringMessage.isEmpty()) {
+			String mess = stringMessage.replace("<root>", "").replace("</root>", "");
+			MessageBox.showMessageWithDetails(
+					AppCurrContext.getInstance().getBundleMap().get("okMessage"), mess, "",
+					MessageType.ERROR, false);
+		}
+	}
+
+	/**
+	 * Возвращает "сериализатор" для gwt объектов.
+	 * 
+	 * @return - SerializationStreamFactory.
+	 */
+	private static SerializationStreamFactory getObjectSerializer() {
+		if (ssf == null) {
+			ssf = WebUtils.createStdGWTSerializer();
+		}
+		return ssf;
 	}
 
 	/**
