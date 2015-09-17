@@ -497,7 +497,12 @@ function createPageDGrid(elementId, parentId, metadata) {
 					}
 				}
 				firstLoading = false;
-			}
+			} else {
+				if(event.grid.scrollPosition){
+					event.grid.scrollTo(event.grid.scrollPosition);
+					event.grid.scrollPosition = null;
+				}
+			} 
 		});
 		grid.on("dgrid-datachange", function(event){
 			if(typeof event.value === "string"){
@@ -515,6 +520,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 }
 
 function refreshPageDGrid(parentId){
+	arrGrids[parentId].scrollPosition = arrGrids[parentId].getScrollPosition();
 	arrGrids[parentId].refresh({keepCurrentPage: true});
 }
 
@@ -529,6 +535,8 @@ function savePageDGrid(parentId){
 function revertPageDGrid(parentId){
 	
 //	refreshPageDGrid(parentId);
+	
+	arrGrids[parentId].scrollPosition = arrGrids[parentId].getScrollPosition();
 	
 	var currentPage = arrGrids[parentId]._currentPage;  
 	
