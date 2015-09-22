@@ -361,6 +361,11 @@ function createLiveDGrid(elementId, parentId, metadata) {
 			isVisibleColumnsHeader = true;	
 		}
 		
+		var isAllowTextSelection = false;
+		if(metadata["common"]["isAllowTextSelection"]){
+			isAllowTextSelection = true;	
+		}
+		
 		
 		if(virtualColumnType == 1){
 		    columns = compoundColumns;
@@ -387,6 +392,7 @@ function createLiveDGrid(elementId, parentId, metadata) {
 			getBeforePut: false,
 			minRowsPerPage: parseInt(metadata["common"]["limit"]),
 			selectionMode: selectionMode,
+			allowTextSelection: isAllowTextSelection,			
 			showHeader: isVisibleColumnsHeader,
 			loadingMessage: metadata["common"]["loadingMessage"],
 			noDataMessage: metadata["common"]["noDataMessage"],

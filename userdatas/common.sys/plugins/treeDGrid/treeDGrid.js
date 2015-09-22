@@ -411,6 +411,11 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		if(metadata["common"]["isVisibleColumnsHeader"]){
 			isVisibleColumnsHeader = true;	
 		}
+		
+		var isAllowTextSelection = false;
+		if(metadata["common"]["isAllowTextSelection"]){
+			isAllowTextSelection = true;	
+		}
 
 		
 		if(virtualColumnType == 1){
@@ -439,6 +444,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 			showHeader: isVisibleColumnsHeader,
 			minRowsPerPage: parseInt(metadata["common"]["limit"]),
 			selectionMode: selectionMode,
+			allowTextSelection: isAllowTextSelection,
 			loadingMessage: metadata["common"]["loadingMessage"],
 			noDataMessage: metadata["common"]["noDataMessage"],
 			pagingDelay: 50,

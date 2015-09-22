@@ -400,6 +400,10 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			common.put("isVisibleColumnsHeader", new JSONString("true"));
 		}
 
+		if (gridMetadata.getUISettings().isAllowTextSelection()) {
+			common.put("isAllowTextSelection", new JSONString("true"));
+		}
+
 		common.put("loadingMessage", new JSONString(AppCurrContext.getInstance().getBundleMap()
 				.get("jsGridLoadingMessage")));
 

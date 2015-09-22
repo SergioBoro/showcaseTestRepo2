@@ -369,6 +369,11 @@ function createPageDGrid(elementId, parentId, metadata) {
 			isVisibleColumnsHeader = true;	
 		}
 		
+		var isAllowTextSelection = false;
+		if(metadata["common"]["isAllowTextSelection"]){
+			isAllowTextSelection = true;	
+		}
+		
 		
 		if(virtualColumnType == 1){
 		    columns = compoundColumns;
@@ -401,6 +406,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 			rowsPerPage: parseInt(metadata["common"]["limit"]),
 			showHeader: isVisibleColumnsHeader,
 			selectionMode: selectionMode,
+			allowTextSelection: isAllowTextSelection,
 			loadingMessage: metadata["common"]["loadingMessage"],
 			noDataMessage: metadata["common"]["noDataMessage"],
 			pagingDelay: 50,

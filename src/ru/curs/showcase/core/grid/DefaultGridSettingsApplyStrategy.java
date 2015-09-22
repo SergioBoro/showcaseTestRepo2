@@ -31,7 +31,8 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 	private static final String DEF_VISIBLE_RECORDS_SELECTOR = "def.visible.records.selector";
 	private static final String DEF_VISIBLE_COLUMNS_HEADER = "def.visible.columns.header";
 	private static final String SINGLE_CLICK_BEFORE_DOUBLE = "single.click.before.double";
-
+	private static final String DEF_SELECT_ALLOW_TEXT_SELECTION =
+		"def.select.allow.text.selection";
 	private static final String URL_IMAGE_FILE_DOWNLOAD = "resources/internal/fileDownload.PNG";
 
 	private static final String DEF_TREEGRID_ICON_NODECLOSE = "def.treegrid.icon.nodeclose";
@@ -163,6 +164,10 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 		boolValue = reader().getBoolValue(DEF_VISIBLE_COLUMNS_HEADER);
 		if (boolValue != null) {
 			settings.setVisibleColumnsHeader(boolValue);
+		}
+		boolValue = reader().getBoolValue(DEF_SELECT_ALLOW_TEXT_SELECTION);
+		if (boolValue != null) {
+			settings.setAllowTextSelection(boolValue);
 		}
 	}
 
