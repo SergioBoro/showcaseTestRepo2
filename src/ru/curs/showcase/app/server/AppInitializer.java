@@ -225,6 +225,10 @@ public final class AppInitializer {
 				result += fileInUserdatasRoot + ", ";
 			}
 		}
-		return result.substring(0, result.length() - 2);
+		if (!"".equals(result))
+			result = result.substring(0, result.length() - 2);
+
+		return result;
+
 	}
 }
