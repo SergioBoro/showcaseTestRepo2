@@ -298,11 +298,11 @@ public class JSONToXMLParser {
 		Text text;
 		if (value.getClass() == Boolean.class) {
 			String change = value.toString();
-			if (change.startsWith("t")) {
-				change = "T" + change.substring(1);
-			} else {
-				change = "F" + change.substring(1);
-			}
+			// if (change.startsWith("t")) {
+			// change = "T" + change.substring(1);
+			// } else {
+			// change = "F" + change.substring(1);
+			// }
 
 			text = doc.createTextNode(change);
 		} else if ("None".equalsIgnoreCase(value.toString())
@@ -320,11 +320,11 @@ public class JSONToXMLParser {
 
 		if (value.getClass() == Boolean.class) {
 			String change = value.toString();
-			if (change.startsWith("t")) {
-				change = "T" + change.substring(1);
-			} else {
-				change = "F" + change.substring(1);
-			}
+			// if (change.startsWith("t")) {
+			// change = "T" + change.substring(1);
+			// } else {
+			// change = "F" + change.substring(1);
+			// }
 
 			root.setAttribute(key, change);
 		} else if (value.equals(twer)) {
