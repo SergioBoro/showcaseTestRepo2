@@ -9,6 +9,7 @@ import org.slf4j.*;
 
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.FileUtils;
+import ru.curs.showcase.util.exception.FileNameValidationException;
 import ru.curs.showcase.util.xml.XMLUtils;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
@@ -197,15 +198,33 @@ public final class AppInitializer {
 						if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 							LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
 						}
+						String resultFiles = "";
+						String res = checkForCommonFilesInUserdatas(rootpath, resultFiles);
+						if (!"".equals(res))
+							throw new FileNameValidationException(res);
 					}
 				} else {
 					AppInfoSingleton.getAppInfo().addUserData(id, value);
 					if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 						LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
 					}
+					String resultFiles = "";
+					String res = checkForCommonFilesInUserdatas(rootpath, resultFiles);
+					if (!"".equals(res))
+						throw new FileNameValidationException(res);
 				}
-
 			}
 		}
+	}
+
+	public static String checkForCommonFilesInUserdatas(String rootpath, String resultString) {
+		String result = resultString;
+		for (String fileInUserdatasRoot : new File(rootpath).list()) {
+			if (fileInUserdatasRoot.startsWith("common.")
+					&& !(new File(rootpath + "/" + fileInUserdatasRoot).isDirectory())) {
+				result += fileInUserdatasRoot + ", ";
+			}
+		}
+		return result.substring(0, result.length() - 2);
 	}
 }
