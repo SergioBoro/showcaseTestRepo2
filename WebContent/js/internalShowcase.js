@@ -123,6 +123,127 @@ function addUpload(formId)
 	
 }
 
+function _showModalDialog(url, width, height, closeCallback) {
+    var modalDiv,
+        dialogPrefix = window.showModalDialog ? 'dialog' : '',
+        unit = 'px',
+        maximized = width === true || height === true,
+        w = width || 600,
+        h = height || 500,
+        border = 5,
+        taskbar = 40, // windows taskbar
+        header = 20,
+        x,
+        y;
+
+    if (maximized) {
+        x = 0;
+        y = 0;
+        w = screen.width;
+        h = screen.height;
+    } else {
+        x = window.screenX + (screen.width / 2) - (w / 2) - (border * 2);
+        y = window.screenY + (screen.height / 2) - (h / 2) - taskbar - border;
+    }
+
+    var features = [
+            'toolbar=no',
+            'location=no',
+            'directories=no',
+            'status=no',
+            'menubar=no',
+            'scrollbars=no',
+            'resizable=no',
+            'copyhistory=no',
+            'center=yes',
+            dialogPrefix + 'width=' + w + unit,
+            dialogPrefix + 'height=' + h + unit,
+            dialogPrefix + 'top=' + y + unit,
+            dialogPrefix + 'left=' + x + unit
+        ],
+        showModal = function (context) {
+            if (context) {
+                modalDiv = context.document.createElement('div');
+                modalDiv.style.cssText = 'top:0;right:0;bottom:0;left:0;position:absolute;z-index:50000;';
+                modalDiv.onclick = function () {
+                    if (context.focus) {
+                        context.focus();
+                    }
+                    return false;
+                }
+                window.top.document.body.appendChild(modalDiv);
+            }
+        },
+        removeModal = function () {
+            if (modalDiv) {
+                modalDiv.onclick = null;
+                modalDiv.parentNode.removeChild(modalDiv);
+                modalDiv = null;
+            }
+        };
+
+    // IE
+    if (window.showModalDialog) {
+        window.showModalDialog(url, null, features.join(';') + ';');
+
+        if (closeCallback) {
+            closeCallback();
+        }
+    // Other browsers
+    } else {
+        var win = window.open(url, '', features.join(','));
+        if (maximized) {
+            win.moveTo(0, 0);
+        }
+
+        // When charging the window.
+        var onLoadFn = function () {
+                showModal(this);
+            },
+            // When you close the window.
+            unLoadFn = function () {
+                window.clearInterval(interval);
+                if (closeCallback) {
+                    closeCallback();
+                }
+                removeModal();
+            },
+            // When you refresh the context that caught the window.
+            beforeUnloadAndCloseFn = function () {
+                try {
+                    unLoadFn();
+                }
+                finally {
+                    win.close();
+                }
+            };
+
+        if (win) {
+            // Create a task to check if the window was closed.
+            var interval = window.setInterval(function () {
+                try {
+                    if (win == null || win.closed) {
+                        unLoadFn();
+                    }
+                } catch (e) { }
+            }, 500);
+
+            if (win.addEventListener) {
+                win.addEventListener('load', onLoadFn, false);
+            } else {
+                win.attachEvent('load', onLoadFn);
+            }
+
+            window.addEventListener('beforeunload', beforeUnloadAndCloseFn, false);
+        }
+    }
+}
+
+function showAboutFeedbackJSNIFunction()  
+{	
+	_showModalDialog("about.jsp", 600, 450, false);
+}
+
 var convertorFunc = function(chartId, chartLegendId, optionSet1, optionSet2) {
 
    if (dojo.isString(optionSet1)) optionSet1 = dojo.fromJson(optionSet1);

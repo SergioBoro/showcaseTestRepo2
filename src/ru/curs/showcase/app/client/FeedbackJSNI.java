@@ -193,8 +193,8 @@ public final class FeedbackJSNI {
 		@ru.curs.showcase.app.client.FeedbackJSNI::getElementAdditionContext(Ljava/lang/String;);
 		$wnd.refreshElementFromBaseFeedbackJSNIFunction = 
 		@ru.curs.showcase.app.client.FeedbackJSNI::refreshElementFromBase(Ljava/lang/String;);
-        $wnd.showAboutFeedbackJSNIFunction = 
-		@ru.curs.showcase.app.client.About::showAbout();	
+        //$wnd.showAboutFeedbackJSNIFunction = 
+		//@ru.curs.showcase.app.client.About::showAbout();	
 		//CHECKSTYLE:OFF	
         $wnd.showModalWindowWithHTMLContent =
         @ru.curs.showcase.app.client.ModalWindowWithHTMLContent::showWindow(Ljava/lang/String;Ljava/lang/String;ZII);	
