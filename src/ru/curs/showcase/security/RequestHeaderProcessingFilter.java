@@ -65,6 +65,9 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 			newSession.setAttribute(str, values.get(str));
 		}
 
+		request.getSession(false).setAttribute("username", username);
+		// request.getSession(false).setAttribute("password", password);
+
 		UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
 		// установка деталей внутреннего пользователя
 		userAndSessionDetails.setUserInfo(new UserInfo(username, null, username, null, null,

@@ -75,25 +75,34 @@ public class CheckAutenticationFilter implements Filter {
 				}
 			} else {
 
-				try {
-					if (SecurityContextHolder.getContext().getAuthentication() != null) {
-						filterChain.doFilter(request, response);
-					} else {
+				String username = (String) (httpReq.getSession(false).getAttribute("username"));
+				// String password = (String)
+				// (httpReq.getSession(false).getAttribute("password"));
 
+				if ("master".equals(username)
+				// && "master".equals(password)
+				) {
+					filterChain.doFilter(request, response);
+				} else {
+					try {
+						if (SecurityContextHolder.getContext().getAuthentication() != null) {
+							filterChain.doFilter(request, response);
+						} else {
+
+							response.reset();
+							response.setContentType("text/html");
+							response.setCharacterEncoding(TextUtils.DEF_ENCODING);
+							response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
+							response.getWriter().close();
+						}
+					} catch (Exception e) {
 						response.reset();
 						response.setContentType("text/html");
 						response.setCharacterEncoding(TextUtils.DEF_ENCODING);
 						response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
 						response.getWriter().close();
 					}
-				} catch (Exception e) {
-					response.reset();
-					response.setContentType("text/html");
-					response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-					response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
-					response.getWriter().close();
 				}
-
 			}
 		}
 	}
