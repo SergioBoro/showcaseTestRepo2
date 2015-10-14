@@ -8,7 +8,7 @@
 
     <tx:annotation-driven/>
 
-    <bean id="dataSource"
+  <!--  <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName"
                   value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
@@ -16,7 +16,7 @@
                   value="jdbc:sqlserver://lugovtsov-new;databaseName=SpringSecurityShowcase"/>
         <property name="username" value="sa"/>
         <property name="password" value="F708420Dx"/>
-    </bean>
+    </bean>-->
     
     <bean id="signedRequestAuthenticationProvider" 
           class="ru.curs.showcase.security.AuthServerAuthenticationProvider">
