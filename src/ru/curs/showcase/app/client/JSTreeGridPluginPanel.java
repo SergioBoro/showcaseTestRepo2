@@ -872,8 +872,6 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			handleClick(recId, colId, InteractionType.SINGLE_CLICK);
 		} else {
 
-			doubleClick = false;
-
 			if (clickTimer != null) {
 				clickTimer.cancel();
 			}
@@ -884,6 +882,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 					if (!doubleClick) {
 						handleClick(recId, colId, InteractionType.SINGLE_CLICK);
 					}
+					doubleClick = false;
 				}
 			};
 			clickTimer.schedule(gridMetadata.getUISettings().getDoubleClickTime());
