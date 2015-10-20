@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.*;
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 
+import com.google.gwt.user.client.rpc.GwtTransient;
+
 /**
  * Класс действия, выполняемого при активации визуального элемента UI (например,
  * при щелчке по элементу навигатора, или при щелчке по строке грида).
@@ -93,6 +95,24 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	 * Список действий на сервере, содержащихся в данном действии.
 	 */
 	private List<Activity> clientActivities = new ArrayList<Activity>();
+
+	/**
+	 * Виджет, который вызывает данное действие. Нужен для того, чтобы можно
+	 * было с этим виджетом что-нибудь сделать, например, сделать
+	 * disabled/enabled.
+	 */
+	@GwtTransient
+	@XmlTransient
+	@ExcludeFromSerialization
+	private Object actionCaller = null;
+
+	public Object getActionCaller() {
+		return actionCaller;
+	}
+
+	public void setActionCaller(final Object aActionCaller) {
+		actionCaller = aActionCaller;
+	}
 
 	public final DataPanelLink getDataPanelLink() {
 		return dataPanelLink;
@@ -374,6 +394,7 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 		for (Activity act : clientActivities) {
 			res.clientActivities.add(act.gwtClone());
 		}
+		res.actionCaller = actionCaller;
 		return res;
 	}
 

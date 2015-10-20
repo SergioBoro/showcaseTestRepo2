@@ -178,6 +178,7 @@ public abstract class ToolBarHelper {
 							CompositeContext context = getContext(basicElementPanelBasis);
 							Action action = item.getAction();
 							action.setContext(context);
+							action.setActionCaller(textButton);
 							runAction(action);
 						}
 					}
@@ -203,6 +204,7 @@ public abstract class ToolBarHelper {
 								CompositeContext context = getContext(basicElementPanelBasis);
 								Action action = item.getAction();
 								action.setContext(context);
+								action.setActionCaller(menuItem);
 								runAction(action);
 							}
 						}

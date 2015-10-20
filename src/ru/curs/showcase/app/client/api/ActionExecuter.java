@@ -13,6 +13,9 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.*;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Timer;
+import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 /**
  * 
@@ -47,6 +50,9 @@ public final class ActionExecuter {
 		}
 
 		if (ac.containsServerActivity()) {
+
+			setEnableDisableState(ac.getActionCaller(), false);
+
 			if (dataService == null) {
 				dataService = GWT.create(DataService.class);
 			}
@@ -69,11 +75,42 @@ public final class ActionExecuter {
 
 					handleClientBlocks(ac);
 
+					setEnableDisableState(ac.getActionCaller(), true);
+
 				}
 
 			});
 		} else {
 			handleClientBlocks(ac);
+		}
+	}
+
+	private static void setEnableDisableState(final Object actionCaller, final boolean state) {
+		if (actionCaller == null) {
+			return;
+		}
+
+		if (state) {
+			Timer enabledTimer = new Timer() {
+				@Override
+				public void run() {
+					if (actionCaller instanceof MenuItem) {
+						((MenuItem) actionCaller).setEnabled(state);
+					}
+					if (actionCaller instanceof TextButton) {
+						((TextButton) actionCaller).setEnabled(state);
+					}
+				}
+			};
+			final int delay = 3000;
+			enabledTimer.schedule(delay);
+		} else {
+			if (actionCaller instanceof MenuItem) {
+				((MenuItem) actionCaller).setEnabled(state);
+			}
+			if (actionCaller instanceof TextButton) {
+				((TextButton) actionCaller).setEnabled(state);
+			}
 		}
 	}
 
