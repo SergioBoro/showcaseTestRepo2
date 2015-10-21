@@ -76,14 +76,21 @@ public final class ServletUtils {
 	 *            - ответ.
 	 * @param message
 	 *            - сообщение об ошибке.
+	 * @param needOKStatus
+	 *            - указание на то, что статус ответа должен быть OK, несмотря
+	 *            на ошибку.
 	 * @throws IOException
 	 */
-	public static void fillErrorResponce(final HttpServletResponse response, final String message)
-			throws IOException {
+	public static void fillErrorResponce(final HttpServletResponse response, final String message,
+			final boolean needOKStatus) throws IOException {
 		if (!response.isCommitted()) {
 			response.reset();
 			doNoCasheResponse(response);
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			if (needOKStatus) {
+				response.setStatus(HttpServletResponse.SC_OK);
+			} else {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
 			makeResponseFromString(response, message);
 		} else {
 			if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {

@@ -60,6 +60,13 @@ public final class ServletExceptionInterceptor {
 			mess = "<root>" + mess + "</root>";
 		}
 
-		ServletUtils.fillErrorResponce(response, mess);
+		boolean needOKStatus = false;
+		if ((browserType == BrowserType.IE)
+				&& request.getRequestURL().toString().toLowerCase()
+						.contains("gridFileDownload".toLowerCase())) {
+			needOKStatus = true;
+		}
+
+		ServletUtils.fillErrorResponce(response, mess, needOKStatus);
 	}
 }

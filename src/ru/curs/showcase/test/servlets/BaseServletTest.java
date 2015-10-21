@@ -25,7 +25,7 @@ public class BaseServletTest extends AbstractServletTest {
 			void testFillErrorResponce() throws IOException {
 		final String message = "ошибка";
 		preCheckResponse();
-		ServletUtils.fillErrorResponce(response(), message);
+		ServletUtils.fillErrorResponce(response(), message, false);
 
 		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response().getStatus());
 		assertEquals("text/html", response().getContentType());
