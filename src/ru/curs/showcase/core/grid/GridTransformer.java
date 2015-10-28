@@ -129,6 +129,7 @@ public final class GridTransformer {
 		return lgm;
 	}
 
+	// CHECKSTYLE:OFF
 	public static LiveGridData<LiveGridModel> gridToLiveGridData(final Grid grid) {
 
 		// -------------------------------------------------------
@@ -170,9 +171,7 @@ public final class GridTransformer {
 							if ((rec.getValue(c) == null) || (rec.getValue(c).trim().isEmpty())) {
 								val = "";
 							} else {
-								val =
-									IMG_START_STRING + XMLUtils.unEscapeTagXml(rec.getValue(c))
-											+ IMG_END_STRING;
+								val = XMLUtils.unEscapeTagXml(rec.getValue(c));
 							}
 							break;
 						case LINK:
@@ -222,6 +221,8 @@ public final class GridTransformer {
 		return lgd;
 
 	}
+
+	// CHECKSTYLE:ON
 
 	private static Integer getIntWidthByStringWidth(final String w) {
 		Integer result = DEF_COLUMN_WIDTH;
@@ -316,9 +317,7 @@ public final class GridTransformer {
 					} else {
 						switch (c.getValueType()) {
 						case IMAGE:
-							val =
-								IMG_START_STRING + XMLUtils.unEscapeTagXml(rec.getValue(c))
-										+ IMG_END_STRING;
+							val = XMLUtils.unEscapeTagXml(rec.getValue(c));
 							break;
 						case LINK:
 							val = getLink(rec.getValue(c));
