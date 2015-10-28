@@ -204,32 +204,50 @@ function createPageDGrid(elementId, parentId, metadata) {
 				column["renderCell"] = function actionRenderCell(object, value, node, options) {
 					var div = document.createElement("div");
 					
-					if(this["valueType"] == "DOWNLOAD"){
-						if(value && (value.trim()!="")){
-							div.innerHTML = 
-								"<tbody>" +
-									"<tr>";
-							if(value.trim()!="enableDownload"){
-								div.innerHTML = div.innerHTML +							
-								"<td>"+value+"" +
-								"</td>";
+					switch (this["valueType"]) {
+					    case "DOWNLOAD":
+							if(value && (value.trim()!="")){
+								div.innerHTML = 
+									"<tbody>" +
+										"<tr>";
+								if(value.trim()!="enableDownload"){
+									div.innerHTML = div.innerHTML +							
+									"<td>"+value+"" +
+									"</td>";
+								}
+								div.innerHTML = div.innerHTML +										
+											"<td  align=\"center\" style=\"vertical-align: middle;\">" +
+													"<button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\">" +
+															"<img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 8px; height: 8px;  \"   >" +
+													"</button>" +
+											"</td>" +
+										"</tr>" +
+									"</tbody>";
+							}else{
+								div.innerHTML = value;
 							}
-							div.innerHTML = div.innerHTML +										
-										"<td  align=\"center\" style=\"vertical-align: middle;\">" +
-												"<button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\">" +
-														"<img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 8px; height: 8px;  \"   >" +
-												"</button>" +
-										"</td>" +
-									"</tr>" +
-								"</tbody>";
-						}else{
+					        break; 
+					    case "IMAGE":
+					    	var start = "<a><img border=\"0\" src=\"";
+					    	var end = "\"></a>";
+					    	var sep = ":";
+					    	
+					    	var title = value;
+					    	
+							if(value.indexOf(sep)>-1){
+								title = value.substring(value.indexOf(sep)+1, value.length);
+								value = value.substring(0, value.indexOf(sep));
+							}
+					    	
+							div.innerHTML =  start + value + end;
+							div.title = title;	
+							
+					        break; 
+					    default:
 							div.innerHTML = value;
-						}
-					}else{
-						div.innerHTML = value;
-					}
-					
-					div.title = value;
+					    	div.title = value;
+					    	break;
+					}					
 					
 					return div;
 		        };
