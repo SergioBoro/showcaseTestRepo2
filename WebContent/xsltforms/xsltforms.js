@@ -14082,6 +14082,20 @@ function getInitSelection(xpathRoot, xpathMapping)
 }
 
 
+function getInitSelectionForSingleSelector(xpathMapping)
+{
+	var selected = {};
+	
+	for (var xpath in xpathMapping) {
+	    var col = xpathMapping[xpath];
+   	    var nodes = (new XsltForms_binding(null, getXPath(xpath))).bind_evaluate();
+		selected[col] = XsltForms_browser.getValue(nodes[0]);
+	}
+	
+	return selected;
+}
+
+
 function insertXFormByXPath(ok, selected, xpathRoot, xpathMapping, needClear, subformId)
 {
 	if (ok) {

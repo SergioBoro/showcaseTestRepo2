@@ -13,7 +13,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 			this.pluginParams.treePanel = treePanel = {};
 		}
 		if (treePanel.listeners == undefined) {
-			treePanel.listeners = {}
+			treePanel.listeners = {};
 		}
 		//перехватываем обработчик события checkchange, для хранения выбранных значений
 		var checkchangeFn = undefined;
@@ -24,7 +24,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 			fn: function(node, checked, eOpts) {
 				self._doCheckchange(checkchangeFn, node, checked, eOpts);
 			}
-		}
+		};
 		
 		this.selectedItems = new Array();//выбранные значения
 		this.idPref = '_';//префикс идентификатора выбранного значения
@@ -68,7 +68,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 					type:'button',
 					value:'Найти',
 					style:'float:right;'
-				}
+				};
 			}
 			var filterEl = new Ext.dom.Element(dh.createDom({
 				tag:'div',
@@ -165,7 +165,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 				parentNode.set('checked', checked);
 				this._selectParentNodes(parentNode, checked);
 				if (checked) {
-					this.addItem(parentNode.get('id'), parentNode);
+					this.addItem(parentNode.get('id'), parentNode.getData());
 				} else {
 					this.removeItem(parentNode.get('id'));
 				}
@@ -176,7 +176,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 				if (this.pluginParams.core.checkParent) {
 					this._selectParentNodes(node, true);
 				}
-				this.addItem(node.get('id'), node);
+				this.addItem(node.get('id'), node.getData());
 			} else {
 				if (this.pluginParams.core.checkParent) {
 					this._selectParentNodes(node, false);
@@ -199,9 +199,9 @@ function createExtJsTree(parentId, pluginParams, data) {
 		},
 		_applyFieldsToModel: function(fields, addFields) {
 			var result = addFields || [];
-			for (i = 0; i < fields.length; i++) {
+			for (var i = 0; i < fields.length; i++) {
 				var isContains = false;
-				for (j = 0; j < addFields.length; j++) {
+				for (var j = 0; j < addFields.length; j++) {
 					if (fields[i].name==addFields[j].name) {
 						isContains = true;
 						break;
@@ -250,7 +250,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 		getValues: function() {
 			return this.selectedItems;
 		}
-	}
+	};
 	//////////////////////// END ExtJsTree ////////////////////
 	
 	//////////////////////// DataLoader ////////////////////////
@@ -350,12 +350,48 @@ function createExtJsTree(parentId, pluginParams, data) {
 		var parentEl = Ext.get(parentId);
 		var extJsTree = new ExtJsTree(parentEl, pluginParams, data);
 		Ext.ExtJsTree = extJsTree;
+		
+		
+		if (pluginParams.all.options.needInitSelection) {
+			var tmpUtils = {};
+			tmpUtils.utils = {
+					singleXpathMapping: function(xpathMapping) {
+						var selected = getInitSelectionForSingleSelector(xpathMapping);
+						if(selected.id.trim().length > 0){
+							extJsTree.addItem(selected.id, selected);
+						}
+					},
+					multiXpathMapping: function(xpath, needClear) {
+						var selected = getInitSelection(xpath.xpathRoot, xpath.xpathMapping);
+						
+						for (var i = 0; i < selected.recordCount; i++) {
+							var record = {};
+							for (var j = 0; j < selected.columnCount; j++) {
+								record[selected.names[j]] = selected.values[j][i]; 
+							}
+							extJsTree.addItem(record.id, record);
+						}
+					}
+			};
+	    	
+			if (Ext.isFunction(pluginParams.all.options.onSelectionComplete)) {
+				pluginParams.all.options.onSelectionComplete(true, tmpUtils);
+			};
+
+			extJsTree.treePanel.getRootNode().cascadeBy(function(node) {
+				if (extJsTree.getValue(node.data.id)) {
+					node.set("checked", true);
+				}
+			});		
+		}
+		
+		
 		extJsTree.utils = {
 			singleXpathMapping: function(xpathMapping) {
 				var records = extJsTree.getValues();//extJsTree.treePanel.getView().getChecked();
 				if (records!=undefined) {
 					for (i in records) {
-						var selected = records[i].getData();
+						var selected = records[i];
 						setXFormByXPath(true, selected, xpathMapping, pluginParams.elementPanelId+"_");
 						break;
 					}
@@ -366,7 +402,7 @@ function createExtJsTree(parentId, pluginParams, data) {
 				if (records!=undefined) {
 					var selected = [];
 					for (i in records) {
-						var selectedItem = records[i].getData();
+						var selectedItem = records[i];
 						if(selectedItem.id != ""){
 							selected.push(selectedItem);							
 						}
