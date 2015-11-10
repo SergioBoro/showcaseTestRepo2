@@ -125,6 +125,14 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 				if (fileN.exists())
 					pathList.add(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
 							+ f.getName() + "/WEB-INF/" + libFolder);
+				if (libFolder.equals("libJython")) {
+					fileN =
+					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName()
+							+ "/WEB-INF/" + libFolder + "/site-packages");
+					if (fileN.exists())
+					pathList.add(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+							+ f.getName() + "/WEB-INF/" + libFolder + "/site-packages");
+				}
 			}
 		}
 
