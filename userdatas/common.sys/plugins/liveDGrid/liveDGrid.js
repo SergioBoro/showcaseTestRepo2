@@ -198,6 +198,17 @@ function createLiveDGrid(elementId, parentId, metadata) {
 				column["sortable"]  = "true";
 				column["valueType"] = metadata["columns"][k]["valueType"];
 				
+				
+				function getTitle(title){
+					var res = title;
+					if(res){
+						res = res.replace(/&lt;/g, "<");
+						res = res.replace(/&gt;/g, ">");
+						res = res.replace(/&amp;/g, "&");
+					}
+					return res;
+				}
+				
 				column["renderCell"] = function actionRenderCell(object, value, node, options) {
 					var div = document.createElement("div");
 					
@@ -246,6 +257,8 @@ function createLiveDGrid(elementId, parentId, metadata) {
 					    	break;
 					}					
 					
+			    	div.title = getTitle(div.title);
+					
 					return div;
 		        };
 		        
@@ -256,6 +269,9 @@ function createLiveDGrid(elementId, parentId, metadata) {
 			        }
 					div.innerHTML = this.label;		        
 			    	div.title = this.label;
+			    	
+			    	div.title = getTitle(div.title);
+			    	
 					return div;
 		        };
 				
