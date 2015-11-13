@@ -160,8 +160,9 @@ public class GridPanel extends BasicElementPanelBasis {
 			// p.add(new
 			// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
 			// .please_wait_data_are_loading()));
-			p.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+			// p.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading")));
+			p.add(new HTML("<div class=\"progress-bar\"></div>"));
 		} else {
 			p.add(new HTML(""));
 		}
@@ -201,8 +202,9 @@ public class GridPanel extends BasicElementPanelBasis {
 				// p.add(new
 				// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
 				// .please_wait_data_are_loading()));
-				p.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-						.get("please_wait_data_are_loading")));
+				// p.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+				// .get("please_wait_data_are_loading")));
+				p.add(new HTML("<div class=\"progress-bar\"></div>"));
 			} else {
 				p.add(new HTML(""));
 			}
@@ -214,8 +216,10 @@ public class GridPanel extends BasicElementPanelBasis {
 				// hpHeader.add(new
 				// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
 				// .please_wait_data_are_loading()));
-				hpHeader.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-						.get("please_wait_data_are_loading")));
+				// hpHeader.add(new
+				// HTML(AppCurrContext.getInstance().getBundleMap()
+				// .get("please_wait_data_are_loading")));
+				hpHeader.add(new HTML("<div class=\"progress-bar\"></div>"));
 				hpToolbar.setVisible(false);
 				dg.setVisible(false);
 				hpFooter.setVisible(false);
@@ -927,8 +931,9 @@ public class GridPanel extends BasicElementPanelBasis {
 			// hpHeader.add(new
 			// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
 			// .please_wait_data_are_loading()));
-			hpHeader.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+			// hpHeader.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading")));
+			hpHeader.add(new HTML("<div class=\"progress-bar\"></div>"));
 
 			hpToolbar.setVisible(false);
 			dg.setVisible(false);

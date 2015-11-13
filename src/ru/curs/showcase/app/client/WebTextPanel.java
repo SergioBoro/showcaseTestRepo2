@@ -46,9 +46,9 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		generalWebTextPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-			thmlwidget =
-				new HTML(AppCurrContext.getInstance().getBundleMap()
-						.get("please_wait_data_are_loading"));
+			thmlwidget = new HTML("<div class=\"progress-bar\"></div>");
+			// new HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading"));
 		} else {
 			thmlwidget = new HTML("");
 		}
@@ -69,9 +69,9 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		setContext(null);
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-			thmlwidget =
-				new HTML(AppCurrContext.getInstance().getBundleMap()
-						.get("please_wait_data_are_loading"));
+			thmlwidget = new HTML("<div class=\"progress-bar\"></div>");
+			// new HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading"));
 		} else {
 			thmlwidget = new HTML("");
 		}
@@ -174,8 +174,9 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
-			thmlwidget.setText(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading"));
+			// thmlwidget.setText(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading"));
+			thmlwidget.addStyleName("progress-bar");
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -233,8 +234,9 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
-			thmlwidget.setText(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading"));
+			// thmlwidget.setText(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading"));
+			thmlwidget.addStyleName("progress-bar");
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);

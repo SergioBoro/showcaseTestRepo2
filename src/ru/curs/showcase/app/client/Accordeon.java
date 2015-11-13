@@ -461,8 +461,9 @@ public class Accordeon {
 		// verpan.add(new
 		// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
 		// .please_wait_data_are_loading()));
-		verpan.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-				.get("please_wait_data_are_loading")));
+		// verpan.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+		// .get("please_wait_data_are_loading")));
+		verpan.add(new HTML("<div class=\"progress-bar\"></div>"));
 		accordeon.clear();
 
 		CompositeContext context = MultiUserData.getCurrentContextFromURL();

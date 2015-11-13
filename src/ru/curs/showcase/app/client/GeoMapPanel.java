@@ -27,8 +27,10 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
 			// generalMapPanel.add(new HTML(AppCurrContext.getInstance()
 			// .getInternationalizedMessages().please_wait_data_are_loading()));
-			generalMapPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+			// generalMapPanel.add(new
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading")));
+			generalMapPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 		} else {
 			generalMapPanel.add(new HTML(""));
 		}
@@ -77,8 +79,10 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
 			// generalMapPanel.add(new HTML(AppCurrContext.getInstance()
 			// .getInternationalizedMessages().please_wait_data_are_loading()));
-			generalMapPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+			// generalMapPanel.add(new
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading")));
+			generalMapPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 		} else {
 			generalMapPanel.add(new HTML(""));
 		}
@@ -426,8 +430,10 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			generalMapPanel.clear();
 			// generalMapPanel.add(new HTML(AppCurrContext.getInstance()
 			// .getInternationalizedMessages().please_wait_data_are_loading()));
-			generalMapPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+			// generalMapPanel.add(new
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading")));
+			generalMapPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -492,8 +498,10 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			generalMapPanel.clear();
 			// generalMapPanel.add(new HTML(AppCurrContext.getInstance()
 			// .getInternationalizedMessages().please_wait_data_are_loading()));
-			generalMapPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+			// generalMapPanel.add(new
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading")));
+			generalMapPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);

@@ -6,3 +6,9 @@
  	width: 300px;
 }
 
+.progress-bar
+{
+  	background: url(../resources/scs_progress_bar.gif) no-repeat;
+  	width: 114px; 
+  	height: 14px; 
+}

@@ -213,8 +213,9 @@ public class XFormPanel extends BasicElementPanelBasis {
 		p.clear();
 		if (fromConstructor || getElementInfo().getShowLoadingMessage()) {
 			if (getElementInfo().getShowLoadingMessageForFirstTime()) {
-				xf.setHTML(AppCurrContext.getInstance().getBundleMap()
-						.get("please_wait_data_are_loading"));
+				// xf.setHTML(AppCurrContext.getInstance().getBundleMap()
+				// .get("please_wait_data_are_loading"));
+				xf.setHTML("<div class=\"progress-bar\"></div>");
 			} else {
 				xf.setHTML("");
 			}

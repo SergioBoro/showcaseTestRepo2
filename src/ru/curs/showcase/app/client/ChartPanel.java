@@ -26,8 +26,9 @@ public class ChartPanel extends BasicElementPanelBasis {
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
 			// generalChartPanel.add(new HTML(AppCurrContext.getInstance()
 			// .getInternationalizedMessages().please_wait_data_are_loading()));
-			generalChartPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading")));
+			generalChartPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 		} else {
 			generalChartPanel.add(new HTML(""));
 		}
@@ -55,8 +56,9 @@ public class ChartPanel extends BasicElementPanelBasis {
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
 			// generalChartPanel.add(new HTML(AppCurrContext.getInstance()
 			// .getInternationalizedMessages().please_wait_data_are_loading()));
-			generalChartPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading")));
+			generalChartPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 		} else {
 			generalChartPanel.add(new HTML(""));
 		}
@@ -296,8 +298,10 @@ public class ChartPanel extends BasicElementPanelBasis {
 			generalChartPanel.clear();
 			// generalChartPanel.add(new HTML(AppCurrContext.getInstance()
 			// .getInternationalizedMessages().please_wait_data_are_loading()));
-			generalChartPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+			// generalChartPanel.add(new
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading")));
+			generalChartPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -362,8 +366,10 @@ public class ChartPanel extends BasicElementPanelBasis {
 			generalChartPanel.clear();
 			// generalChartPanel.add(new HTML(AppCurrContext.getInstance()
 			// .getInternationalizedMessages().please_wait_data_are_loading()));
-			generalChartPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+			// generalChartPanel.add(new
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading")));
+			generalChartPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);

@@ -32,8 +32,10 @@ public class PluginPanel extends BasicElementPanelBasis {
 		generalHp = new HorizontalPanel();
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get(PLEASE_WAIT_DATA_ARE_LOADING)));
+			// generalPluginPanel.add(new
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get(PLEASE_WAIT_DATA_ARE_LOADING)));
+			generalPluginPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 		} else {
 			generalPluginPanel.add(new HTML(""));
 		}
@@ -62,8 +64,10 @@ public class PluginPanel extends BasicElementPanelBasis {
 		generalPluginPanel = new VerticalPanel();
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get(PLEASE_WAIT_DATA_ARE_LOADING)));
+			// generalPluginPanel.add(new
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get(PLEASE_WAIT_DATA_ARE_LOADING)));
+			generalPluginPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 		} else {
 			generalPluginPanel.add(new HTML(""));
 		}
@@ -255,8 +259,10 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalPluginPanel.clear();
-			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get(PLEASE_WAIT_DATA_ARE_LOADING)));
+			// generalPluginPanel.add(new
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get(PLEASE_WAIT_DATA_ARE_LOADING)));
+			generalPluginPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
@@ -317,8 +323,10 @@ public class PluginPanel extends BasicElementPanelBasis {
 		getPanel().setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			generalPluginPanel.clear();
-			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get(PLEASE_WAIT_DATA_ARE_LOADING)));
+			// generalPluginPanel.add(new
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get(PLEASE_WAIT_DATA_ARE_LOADING)));
+			generalPluginPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 		}
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);

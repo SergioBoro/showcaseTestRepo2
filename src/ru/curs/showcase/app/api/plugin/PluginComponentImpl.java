@@ -187,8 +187,10 @@ public class PluginComponentImpl implements PluginComponent {
 		Element element = DOM.getElementById(renderToId);
 		if (element != null) {
 			VerticalPanel generalPluginPanel = new VerticalPanel();
-			generalPluginPanel.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-					.get("please_wait_data_are_loading")));
+			// generalPluginPanel.add(new
+			// HTML(AppCurrContext.getInstance().getBundleMap()
+			// .get("please_wait_data_are_loading")));
+			generalPluginPanel.add(new HTML("<div class=\"progress-bar\"></div>"));
 			waitElement = generalPluginPanel.getElement();
 			element.appendChild(waitElement);
 		}

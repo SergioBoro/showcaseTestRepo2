@@ -155,8 +155,9 @@ public class PageGridPanel extends BasicElementPanelBasis {
 
 		if (isFirstLoading()) {
 			if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
-				p.add(new HTML(AppCurrContext.getInstance().getBundleMap()
-						.get("please_wait_data_are_loading")));
+				// p.add(new HTML(AppCurrContext.getInstance().getBundleMap()
+				// .get("please_wait_data_are_loading")));
+				p.add(new HTML("<div class=\"progress-bar\"></div>"));
 			} else {
 				p.add(new HTML(""));
 			}
