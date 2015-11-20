@@ -269,6 +269,16 @@ public class Accordeon {
 	}
 
 	private void generateTreeItem(final NavigatorElement element, final TreeItem treeItem) {
+
+		if (element.getAction() != null) {
+			treeItem.addStyleName("clickable");
+		} else {
+			treeItem.addStyleName("nonclickable");
+		}
+
+		String temp = treeItem.getElement().getId();
+		treeItem.getElement().setId(temp + "_navigator_" + element.getId());
+
 		if (!(element.getElements().size() > 0)) {
 			treeItem.addStyleName("withoutChildren");
 			return;
