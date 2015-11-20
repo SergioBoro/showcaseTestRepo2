@@ -256,6 +256,7 @@ public class Accordeon {
 			// groupTree.addItem(sh);
 			// (itemText)
 			TreeItem ti = groupTree.addTextItem(ng.getElements().get(i).getName());
+
 			ti.setUserObject(ng.getElements().get(i));
 			generateTreeItem(ng.getElements().get(i), ti);
 
@@ -269,9 +270,10 @@ public class Accordeon {
 
 	private void generateTreeItem(final NavigatorElement element, final TreeItem treeItem) {
 		if (!(element.getElements().size() > 0)) {
+			treeItem.addStyleName("withoutChildren");
 			return;
 		}
-
+		treeItem.addStyleName("withChildren");
 		for (int i = 0; i < element.getElements().size(); i++) {
 			TreeItem ti = treeItem.addTextItem(element.getElements().get(i).getName());
 			ti.setUserObject(element.getElements().get(i));
