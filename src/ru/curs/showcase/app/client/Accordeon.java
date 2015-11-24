@@ -156,6 +156,7 @@ public class Accordeon {
 				if (nav != null) {
 					selectNesessaryItemInAccordion(nav.getId(), true);
 				}
+				onLoadNavigator();
 
 			}
 
@@ -509,9 +510,28 @@ public class Accordeon {
 				} else {
 					selectNesessaryItemInAccordion(idToSelect, fireEventSelection);
 				}
+				onLoadNavigator();
 
 			}
 
 		});
 	}
+
+	// CHECKSTYLE:OFF
+	/**
+	 * 
+	 * Процедура которая запускаеn функцию onLoadNavigator, определенную в дом
+	 * модели страницы. Эта функция должна быть определена в файле solution.js
+	 * Процедуру необходимо запускать после прописовки или обновления
+	 * навигатора.
+	 */
+	public native void onLoadNavigator() /*-{
+
+		if ($wnd.onLoadNavigator) {
+			$wnd.onLoadNavigator();
+		}
+	}-*/;
+
+	// CHECKSTYLE:ON
+
 }
