@@ -13,11 +13,13 @@ import org.activiti.engine.delegate.event.ActivitiEventType;
 import org.slf4j.*;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.server.GeneralAppProperties;
 import ru.curs.showcase.util.ServletUtils;
 import ru.curs.showcase.util.exception.ServerLogicError;
+
+import com.google.common.cache.CacheBuilder;
 
 /**
  * Синглетон для хранения информации о сессиях приложения и глобальной
@@ -135,6 +137,12 @@ public final class AppInfoSingleton {
 	 */
 
 	private final GeneralAppProperties generalAppProperties = new GeneralAppProperties();
+
+	/**
+	 * Объект для кэширования датапанелей в случае, когда источником данных
+	 * является xml-файл.
+	 */
+	com.google.common.cache.Cache<String, DataPanel> cache = CacheBuilder.newBuilder().build();
 
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
 		return lastLogEvents;
@@ -567,6 +575,10 @@ public final class AppInfoSingleton {
 
 	public void setSesid(final String aSesid) {
 		this.sesid = aSesid;
+	}
+
+	public com.google.common.cache.Cache<String, DataPanel> getCache() {
+		return cache;
 	}
 
 	public boolean isDebugSolutionModeEnabled() {

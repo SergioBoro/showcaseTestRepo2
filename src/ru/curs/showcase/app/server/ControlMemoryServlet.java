@@ -69,6 +69,9 @@ public class ControlMemoryServlet extends HttpServlet {
 				JythonIterpretatorFactory.getInstance().clear();
 				XSLTransformerPoolFactory.getInstance().clear();
 				break;
+			case "dataPanelCache":
+				AppInfoSingleton.getAppInfo().getCache().asMap().clear();
+				break;
 			default:
 				throw new ServletException(UNKNOWN_PARAM_ERROR);
 			}
@@ -78,6 +81,7 @@ public class ControlMemoryServlet extends HttpServlet {
 		}
 		if (userdata != null) {
 			ProductionModeInitializer.initUserDatas(request.getSession().getServletContext());
+			AppInfoSingleton.getAppInfo().getCache().asMap().clear();
 		}
 	}
 }
