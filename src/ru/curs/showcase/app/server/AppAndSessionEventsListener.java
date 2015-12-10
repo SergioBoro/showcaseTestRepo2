@@ -74,7 +74,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 				}
 				if (javaLibPath != null) {
 
-					javaLibPath.replace("/", File.separator);
+					javaLibPath = javaLibPath.replace("/", File.separator);
 
 					celestaProps.setProperty("javalib.path", javaLibPath);
 				} else {
@@ -90,6 +90,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 						pyLibPath = pyLibPath + File.pathSeparator + path;
 					}
 				}
+				pyLibPath = pyLibPath.replace("/", File.separator);
 				celestaProps.setProperty("pylib.path", pyLibPath);
 				
 				if (celestaProps != null) {
