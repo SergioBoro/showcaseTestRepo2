@@ -1,16 +1,19 @@
 package ru.curs.showcase.runtime;
 
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
-import net.sf.ehcache.*;
-
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.delegate.event.ActivitiEventType;
+import org.ehcache.*;
+import org.ehcache.config.Configuration;
+import org.ehcache.config.xml.XmlConfiguration;
 import org.slf4j.*;
+import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -112,7 +115,8 @@ public final class AppInfoSingleton {
 	 */
 	private Exception celestainitializationException = null;
 
-	private final CacheManager cacheManager = new CacheManager();
+	// private final CacheManager cacheManager = new CacheManager();
+	private final CacheManager cacheManager = generateCacheManager();
 
 	/**
 	 * Словарь (карта) соответствия событий Activiti и Celesta-скриптов.
@@ -407,13 +411,32 @@ public final class AppInfoSingleton {
 		curUserDataId.set(aUserDataId);
 	}
 
+	public CacheManager generateCacheManager() {
+		final URL myUrl = this.getClass().getResource("/ehcache.xml");
+		System.out.println("url" + myUrl);
+		Configuration xmlConfig = null;
+		try {
+			xmlConfig = new XmlConfiguration(myUrl);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| SAXException | IOException e) {
+			e.printStackTrace();
+		}
+		CacheManager myCacheManager = CacheManagerBuilder.newCacheManager(xmlConfig);
+		myCacheManager.init();
+		return myCacheManager;
+	}
+
 	public Object getElementState(final String sessionId, final DataPanelElementInfo dpei,
 			final CompositeContext context) {
-		Cache cache = cacheManager.getCache(GRID_STATE_CACHE);
+		Cache<Object, Object> cache =
+			cacheManager.getCache("gridStateCache", Object.class, Object.class);
 		String key = getSessionKeyForCaching(sessionId, dpei, context);
-		Element el = cache.get(key);
-		if (el != null) {
-			return el.getValue();
+		// Element el = cache.get(key);
+		// if (el != null) {
+		// return el.getValue();
+		// }
+		if (cache.get(key) != null) {
+			return cache.get(key);
 		}
 		return null;
 	}
@@ -426,10 +449,41 @@ public final class AppInfoSingleton {
 
 	public void storeElementState(final String sessionId, final DataPanelElementInfo dpei,
 			final CompositeContext context, final Object state) {
-		Cache cache = cacheManager.getCache(GRID_STATE_CACHE);
+		Cache<Object, Object> cache =
+			cacheManager.getCache("gridStateCache", Object.class, Object.class);
 		String key = getSessionKeyForCaching(sessionId, dpei, context);
-		Element cacheEl = new Element(key, state);
-		cache.put(cacheEl);
+		// Element cacheEl = new Element(key, state);
+		// cache.put(cacheEl);
+		cache.put(key, state);
+	}
+
+	public Cache<Object, Object> getGridStateCache() {
+		CacheManager cm = getCacheManager();
+		Cache<Object, Object> cache = cm.getCache("gridStateCache", Object.class, Object.class);
+		return cache;
+	}
+
+	public Cache<String, DataPanel> getDataPanelCache() {
+		CacheManager cm = getCacheManager();
+		Cache<String, DataPanel> cache =
+			cm.getCache("dataPanelCache", String.class, DataPanel.class);
+		return cache;
+	}
+
+	public int numberOfDataPanelCacheEntries() {
+		int n = 0;
+		for (Cache.Entry<String, DataPanel> s : AppInfoSingleton.getAppInfo().getDataPanelCache()) {
+			++n;
+		}
+		return n;
+	}
+
+	public int numberOfGridStateCacheEntries() {
+		int n = 0;
+		for (Cache.Entry<Object, Object> s : AppInfoSingleton.getAppInfo().getGridStateCache()) {
+			++n;
+		}
+		return n;
 	}
 
 	public UserData getCurUserData() {

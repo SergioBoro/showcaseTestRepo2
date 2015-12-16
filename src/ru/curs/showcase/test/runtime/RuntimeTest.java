@@ -5,8 +5,7 @@ import static org.junit.Assert.*;
 import java.sql.SQLException;
 import java.util.*;
 
-import net.sf.ehcache.CacheManager;
-
+import org.ehcache.Cache;
 import org.junit.*;
 
 import ru.curs.showcase.app.api.*;
@@ -180,24 +179,43 @@ public class RuntimeTest extends AbstractTest {
 	}
 
 	@Test
-	@SuppressWarnings("rawtypes")
-	public void testCache() {
-		assertNotNull(CacheManager.create());
-		assertTrue(CacheManager.getInstance().cacheExists(AppInfoSingleton.GRID_STATE_CACHE));
-		assertEquals(1, CacheManager.getInstance().getCacheNames().length);
+	// @SuppressWarnings("rawtypes")
+			public
+			void testCache() {
+		// assertNotNull(CacheManager.create());
+		// assertTrue(CacheManager.getInstance().cacheExists(AppInfoSingleton.GRID_STATE_CACHE));
+		// assertEquals(1, CacheManager.getInstance().getCacheNames().length);
 
-		List list =
-			CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE).getKeys();
-		assertEquals(0, list.size());
+		// List list =
+		// CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE).getKeys();
+		// CacheManager cm = AppInfoSingleton.getAppInfo().getCacheManager();
+
+		Cache<Object, Object> cache = AppInfoSingleton.getAppInfo().getGridStateCache();
+		assertNotNull(cache);
+
+		// assertEquals(0, list.size());
+		assertEquals(0, AppInfoSingleton.getAppInfo().numberOfGridStateCacheEntries());
+
 		CompositeContext value = new CompositeContext();
 		final String key = "key";
-		CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE)
-				.put(new net.sf.ehcache.Element(key, value));
-		list = CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE).getKeys();
-		assertEquals(1, list.size());
-		assertEquals(key, list.get(0));
-		assertEquals(value, CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE)
-				.get(key).getValue());
+		// CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE)
+		// .put(new net.sf.ehcache.Element(key, value));
+		cache.put(key, value);
+
+		// list =
+		// CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE).getKeys();
+
+		// assertEquals(1, list.size());
+		assertEquals(1, AppInfoSingleton.getAppInfo().numberOfGridStateCacheEntries());
+
+		// assertEquals(key, list.get(0));
+		for (Cache.Entry<Object, Object> ce : cache) {
+			assertEquals(key, ce.getKey());
+			assertEquals(value, ce.getValue());
+		}
+		// assertEquals(value,
+		// CacheManager.getInstance().getCache(AppInfoSingleton.GRID_STATE_CACHE)
+		// .get(key).getValue());
 	}
 
 	@Test
@@ -221,7 +239,8 @@ public class RuntimeTest extends AbstractTest {
 	@Test
 	@Ignore
 	// !!!
-	public void testExecutedProc() {
+			public
+			void testExecutedProc() {
 		AppInfoSingleton.getAppInfo().getExecutedProc().clear();
 		final String procName = "activity_for_test";
 		assertFalse(AppInfoSingleton.getAppInfo().getExecutedProc().contains(procName));

@@ -4,9 +4,7 @@ import java.lang.management.ManagementFactory;
 
 import javax.management.*;
 
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.management.ManagementService;
-
+import org.ehcache.CacheManager;
 import org.slf4j.*;
 
 import ru.curs.showcase.runtime.*;
@@ -66,7 +64,16 @@ public final class JMXBeanRegistrator {
 				LOGGER.error(REGISTER_ERROR + e.getLocalizedMessage());
 			}
 		}
-		ManagementService.registerMBeans(manager, getMBeanServer(), true, false, false, true);
+		try {
+			getMBeanServer().registerMBean(manager, getEhcasheMBeanName(manager));
+		} catch (InstanceAlreadyExistsException | MBeanRegistrationException
+				| NotCompliantMBeanException | MalformedObjectNameException e) {
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(REGISTER_ERROR + e.getLocalizedMessage());
+			}
+		}
+		// ManagementService.registerMBeans(manager, getMBeanServer(), true,
+		// false, false, true);
 	}
 
 	private static void registerShowcaseMBean() {

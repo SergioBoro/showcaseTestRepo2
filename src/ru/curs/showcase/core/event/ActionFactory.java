@@ -227,6 +227,7 @@ public class ActionFactory extends SAXTagHandler {
 		context.setSession(callContext.getSession());
 		curDataPanelLink.setTabId(finder.findTabForAction(context, curDataPanelLink,
 				attrs.getValue(TAB_TAG)));
+		curDataPanelLink.setDataPanelCaching(Boolean.parseBoolean(attrs.getValue(DP_CACHING_TAG)));
 		curAction.setDataPanelLink(curDataPanelLink);
 
 	}

@@ -58,7 +58,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		try {
 			try {
 				Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
-				
+
 				celestaProps
 						.setProperty("jython.getStateMethod.isNew", String
 								.valueOf(AppInfoSingleton.getAppInfo()
@@ -80,7 +80,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 				} else {
 					celestaProps.setProperty("javalib.path", "");
 				}
-				
+
 				String pyLibPath = celestaProps.getProperty("pylib.path");
 				for (String path : JythonIterpretatorFactory
 						.getGeneralScriptDirFromWebInf("libJython")) {
@@ -92,7 +92,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 				}
 				pyLibPath = pyLibPath.replace("/", File.separator);
 				celestaProps.setProperty("pylib.path", pyLibPath);
-				
+
 				if (celestaProps != null) {
 					Celesta.initialize(celestaProps);
 					AppInfoSingleton.getAppInfo().setIsCelestaInitialized(true);
@@ -117,7 +117,8 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 	@Override
 	public final void contextDestroyed(final ServletContextEvent arg0) {
 		JMXBeanRegistrator.unRegister();
-		AppInfoSingleton.getAppInfo().getCacheManager().shutdown();
+		// AppInfoSingleton.getAppInfo().getCacheManager().shutdown();
+		AppInfoSingleton.getAppInfo().getCacheManager().close();
 		ConnectionFactory.unregisterDrivers();
 		if (actx != null) {
 			actx.close();

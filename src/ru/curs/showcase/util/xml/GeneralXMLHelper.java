@@ -29,6 +29,7 @@ public abstract class GeneralXMLHelper {
 	public static final String DP_TAG = "datapanel";
 	protected static final String TAB_TAG = "tab";
 	protected static final String ELEMENT_TAG = "element";
+	protected static final String DP_CACHING_TAG = "dataPanelCaching";
 	/**
 	 * Стандартный тэг для типа.
 	 */

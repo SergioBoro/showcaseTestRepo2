@@ -73,7 +73,7 @@ div {
 				<div style="font-style: italic">Сброс нужен после изменения любой XSL трансформации</div>
 			</td>
 			<td width="30%">
-				<div>Размер кэша: <%=AppInfoSingleton.getAppInfo().getCache().asMap().size()%></div>
+				<div>Размер кэша: <%=AppInfoSingleton.getAppInfo().numberOfDataPanelCacheEntries()%></div>
 				<form target="fake" method="get" action="reset">
 					<input type="hidden" name="pool" value="dataPanelCache" /> <input
 						type="submit" value="Сбросить кэш датапанелей"

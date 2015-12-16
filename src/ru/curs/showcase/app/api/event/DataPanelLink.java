@@ -34,6 +34,11 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 	private Boolean firstOrCurrentTab = false;
 
 	/**
+	 * Признак того, что нужно кэшировать данную информационную панель.
+	 */
+	private Boolean dataPanelCaching = false;
+
+	/**
 	 * Коллекция элементов информационной панели, для которых нужно
 	 * переопределить контекст или которые нужно перерисовать.
 	 */
@@ -120,6 +125,14 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 		firstOrCurrentTab = aFirstOrCurrentTab;
 	}
 
+	public Boolean getDataPanelCaching() {
+		return dataPanelCaching;
+	}
+
+	public void setDataPanelCaching(final Boolean aDataPanelCaching) {
+		dataPanelCaching = aDataPanelCaching;
+	}
+
 	/**
 	 * "Тупое" клонирование объекта, работающее в gwt. Заглушка до тех пор, пока
 	 * в GWT не будет официальной реализации clone.
@@ -132,6 +145,7 @@ public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClon
 		res.dataPanelId = dataPanelId;
 		res.tabId = tabId;
 		res.firstOrCurrentTab = firstOrCurrentTab;
+		res.dataPanelCaching = dataPanelCaching;
 		for (DataPanelElementLink link : elementLinks) {
 			res.getElementLinks().add(link.gwtClone());
 		}

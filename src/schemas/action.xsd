@@ -32,6 +32,7 @@
 						</xs:sequence>
 						<xs:attribute name="type" type="xmlType" use="required" />
 						<xs:attribute name="tab" type="notNullType" />
+						<xs:attribute name="dataPanelCaching" type="xs:boolean" />
 					</xs:complexType>
 					<xs:unique name="elementId">
 						<xs:selector xpath="element" />
