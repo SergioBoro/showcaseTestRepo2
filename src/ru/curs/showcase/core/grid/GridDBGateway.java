@@ -38,10 +38,10 @@ public class GridDBGateway extends AbstractGridDBGateway {
 	private static final int OUT_SETTINGS_PARAM = 8;
 	private static final int ERROR_MES_INDEX_DATA_AND_SETTINGS = 9;
 
-	private static final int PARENT_ID = 8;
-
 	private static final int FIRST_RECORD_INDEX = 8;
 	private static final int PAGE_SIZE_INDEX = 9;
+
+	private static final int PARENT_ID = 10;
 
 	private static final int ORA_CURSOR_INDEX_DATA_AND_SETTINS = 10;
 
@@ -75,7 +75,7 @@ public class GridDBGateway extends AbstractGridDBGateway {
 	@Override
 	protected void prepareForGetDataAndSettings() throws SQLException {
 		prepareElementStatementWithErrorMes();
-		if (getContext().getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
+		if (getContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
 			setStringParam(PARENT_ID, getContext().getParentId());
 		}
 		getStatement().registerOutParameter(getOutSettingsParam(), java.sql.Types.SQLXML);
@@ -87,7 +87,7 @@ public class GridDBGateway extends AbstractGridDBGateway {
 
 	@Override
 	public int getOutSettingsParam() {
-		if (getContext().getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
+		if (getContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
 			return OUT_SETTINGS_PARAM + 1;
 		} else {
 			return OUT_SETTINGS_PARAM;
@@ -103,14 +103,18 @@ public class GridDBGateway extends AbstractGridDBGateway {
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
 				return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 			} else {
-				if (getContext().getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
+				if (getContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
 					return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?, ? )}";
 				} else {
 					return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?)}";
 				}
 			}
 		case DATA_ONLY_QUERY:
-			return "{? = call  %s (?, ?, ?, ?, ?, ?, ?, ?)  }";
+			if (getContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
+				return "{? = call  %s (?, ?, ?, ?, ?, ?, ?, ?, ?)  }";
+			} else {
+				return "{? = call  %s (?, ?, ?, ?, ?, ?, ?, ?)  }";
+			}
 		case FILE_DOWNLOAD:
 			return "{? = call %s (?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 		case SAVE_DATA:
@@ -150,10 +154,15 @@ public class GridDBGateway extends AbstractGridDBGateway {
 	}
 
 	@Override
+	protected int getParentIdIndex() {
+		return PARENT_ID;
+	}
+
+	@Override
 	protected int getErrorMesIndex(final int index) {
 		switch (index) {
 		case DATA_AND_SETTINS_QUERY:
-			if (getContext().getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
+			if (getContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
 				return ERROR_MES_INDEX_DATA_AND_SETTINGS + 1;
 			} else {
 				return ERROR_MES_INDEX_DATA_AND_SETTINGS;

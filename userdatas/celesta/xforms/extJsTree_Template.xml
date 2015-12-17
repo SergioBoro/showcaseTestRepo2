@@ -53,11 +53,28 @@
 										delay:900
 									}
 								},
+								
 								dataModel:{
 									fields:[
-										{name: 'attr1', type: 'string'}
+										{name: '', type: 'string'},
+										
+										{name: 'column1', type: 'string'},										
+										{name: 'column2', type: 'string'}										
 									]
-								}
+								},
+
+								view:{
+									columns:[
+										{ header: 'Столбец1', dataIndex: 'column1'},
+										{ header: 'Столбец2', dataIndex: 'column2'}
+									]
+								}								
+								
+								
+								
+								
+								
+								
 							},
 							options: {								
 								dataWidth: '500px',

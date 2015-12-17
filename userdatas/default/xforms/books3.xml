@@ -38,6 +38,10 @@
     
     <body>
 		<h1>Шаблон xformId</h1>    
+		
+		
+		
+		
 
       <div>
 		<xf:input ref="instance('xformId_myInstance1')/data/book[2]/@year">

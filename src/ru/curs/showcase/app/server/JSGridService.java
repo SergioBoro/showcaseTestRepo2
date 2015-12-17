@@ -5,10 +5,8 @@ import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.json.simple.JSONArray;
-
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.FakeService;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
@@ -43,7 +41,6 @@ public class JSGridService extends HttpServlet {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void getData(final HttpServletRequest hreq, final HttpServletResponse hresp)
 			throws IOException {
 
@@ -66,13 +63,13 @@ public class JSGridService extends HttpServlet {
 		}
 
 		try {
-			GridTransformer.fillFilterContextByFilterInfo(context);
+			GridUtils.fillFilterContextByFilterInfo(context);
 		} catch (Exception e) {
 			throw GeneralExceptionFactory.build(e);
 		}
 
-		LiveGridDataGetCommand command = new LiveGridDataGetCommand(context, element);
-		LiveGridData<LiveGridModel> lgd = command.execute();
+		GridDataGetCommand command = new GridDataGetCommand(context, element, true);
+		GridData gridData = command.execute();
 
 		// ---------------------------------------------
 
@@ -81,54 +78,23 @@ public class JSGridService extends HttpServlet {
 		hresp.setCharacterEncoding("UTF-8");
 
 		// ---------------------------------------------
-		int firstIndex = 0;
-		int lastIndex = 0;
-		int totalCount = 0;
-		if (context.getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
-			totalCount = lgd.getData().size();
-			firstIndex = 0;
-			lastIndex = totalCount - 1;
-		} else {
-			totalCount = context.getLiveInfo().getTotalCount();
-			firstIndex = context.getLiveInfo().getOffset();
-			lastIndex = context.getLiveInfo().getOffset() + context.getLiveInfo().getLimit() - 1;
-		}
+
+		// Внимание! для JS_TREE_GRID будет
+		// totalCount = gridData.getData().size();
+		// firstIndex = 0;
+		// lastIndex = totalCount - 1;
+
+		int totalCount = context.getLiveInfo().getTotalCount();
+		int firstIndex = context.getLiveInfo().getOffset();
+		int lastIndex = context.getLiveInfo().getOffset() + context.getLiveInfo().getLimit() - 1;
 
 		hresp.setHeader("Content-Range",
 				"items " + String.valueOf(firstIndex) + "-" + String.valueOf(lastIndex) + "/"
 						+ String.valueOf(totalCount));
 
-		// -------------------------------
-
-		if (lgd.getData().size() > 0) {
-
-			String stringLiveGridExtradata = null;
-			try {
-				stringLiveGridExtradata =
-					RPC.encodeResponseForSuccess(
-							FakeService.class.getMethod("serializeLiveGridExtradata"),
-							lgd.getLiveGridExtradata());
-
-			} catch (SerializationException | NoSuchMethodException | SecurityException e) {
-				throw GeneralExceptionFactory.build(e);
-			}
-
-			lgd.getData().get(0).set("liveGridExtradata", stringLiveGridExtradata);
-
-		}
-
-		// -------------------------------
-
-		JSONArray data = new JSONArray();
-		for (LiveGridModel lgm : lgd.getData()) {
-			data.add(lgm.getMap());
-		}
-
 		try (PrintWriter writer = hresp.getWriter()) {
-			writer.print(data);
+			writer.print(gridData.getData());
 		}
-
-		// ---------------------------------------------
 
 	}
 
@@ -154,7 +120,7 @@ public class JSGridService extends HttpServlet {
 		}
 
 		try {
-			GridTransformer.fillFilterContextByFilterInfo(context);
+			GridUtils.fillFilterContextByFilterInfo(context);
 		} catch (Exception e) {
 			throw GeneralExceptionFactory.build(e);
 		}
@@ -228,7 +194,7 @@ public class JSGridService extends HttpServlet {
 		}
 
 		try {
-			GridTransformer.fillFilterContextByFilterInfo(context);
+			GridUtils.fillFilterContextByFilterInfo(context);
 		} catch (Exception e) {
 			throw GeneralExceptionFactory.build(e);
 		}

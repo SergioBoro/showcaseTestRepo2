@@ -5,7 +5,22 @@
 		<element id="6" type="webtext" transform="bal.xsl" />
 	</tab>
 	
+	
+	
+	<tab id="05" name="Навигатор">
+	
+		<element id="82" type="webtext" proc="webtext_3buttons" />
+	
+		<element id="051" type="plugin" proc="pluginNavigatorInfo"
+			plugin="navigator">
+			<proc id="052" name="plugin/handleNavigator.py" type="POSTPROCESS" />
+		</element>
+		<element id="053" type="webtext" proc="webtext_filter_and_add" />		
+	</tab>
+	
+	
 <!--	
+-->	
 	<tab id="101__" name="Табличная раскладка офисного ToolBar'a" layout="TABLE" style="width: 620px; background: yellow;" styleClass="css-class">
 		<tr id="r01__" height="100px" style="border-width: medium" styleClass="css-class">
 			<td id="d0101__" width="100%" style="border-width: medium; background: green;" styleClass="css-class" colspan="2" >
@@ -15,24 +30,24 @@
 		</tr>	
 		
 		
-		<tr id="r02__" height="200px" style="border-width: medium" styleClass="css-class">	
-			<td id="d0201__" width="600px"   style="border-width: medium; height: 200px; " styleClass="css-class">
+		<tr id="r02__" height="200px" style="border-width: medium;    " styleClass="css-class">
+			
+			<td id="d0201__" width="600px"   style="border-width: medium; height: 200px;   " styleClass="css-class">
 
-				
 		<element id="0301__" type="plugin" proc="pluginToolBarInfo"
 			plugin="toolbar">
 			<proc id="030101__" name="plugin/handleToolBar.py" type="POSTPROCESS" />
 		</element>
 				
-				
-				
 			</td>
+			
+			
 			<td id="d0102__" width="200px" style="border-width: medium; background: blue;" styleClass="css-class" > 
 				<element id="0102__" type="webtext" proc="webtext_3buttons"/>					
 			</td>
 		</tr>			
 	</tab>	
--->	
+
 	
 	<tab id="03_" name="Офисный ToolBar">
 		<element id="0301_" type="plugin" proc="pluginToolBarInfo"
@@ -130,16 +145,6 @@
 	
 	
 	
-	<tab id="05" name="Навигатор">
-	
-		<element id="82" type="webtext" proc="webtext_3buttons" />
-	
-		<element id="051" type="plugin" proc="pluginNavigatorInfo"
-			plugin="navigator">
-			<proc id="052" name="plugin/handleNavigator.py" type="POSTPROCESS" />
-		</element>
-		<element id="053" type="webtext" proc="webtext_filter_and_add" />		
-	</tab>
 	
 	
 	

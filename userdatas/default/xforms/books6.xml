@@ -79,6 +79,26 @@ ref="instance('books6_mainInstance')"				instance="books6_mainInstance" replace=
 	<body>
 
 		<h1>Шаблон books6</h1>
+		
+		
+		<hr />
+		<br />	
+		<div>
+			Загрузка файла. Размножение upload'ов 			
+		</div>
+		
+		
+
+		<xf:upload id="051"  submit="true" submitLabel="Загрузить файлы" 
+		    singleFile="true"
+		    addUpload="true" addUploadLabel="Добавить еще один upload"  
+		/>
+		<br />
+		<hr />
+		<br />	
+			
+		
+		
 
 		<div style="font-size: 15px;"> Имя: </div>
 		<div>
@@ -201,6 +221,11 @@ ref="instance('books6_mainInstance')"				instance="books6_mainInstance" replace=
 		<div>
 			<xf:textarea ref="instance('books6_mainInstance')/info/comment" />
 		</div>
+		
+		
+<xf:output ref="instance('books6_mainInstance')/info/comment" />		
+		
+		
 		<div style="clear: both;">
 			<xf:output value="'Уважаемый '"/> 
 			<xf:output value="instance('books6_mainInstance')/info/name"/>  
@@ -265,18 +290,6 @@ ref="instance('books6_mainInstance')"				instance="books6_mainInstance" replace=
 		
 		
 		
-		
-		<hr />
-		<br />	
-		<div>
-			Загрузка файла. Размножение upload'ов 			
-		</div>
-
-		<xf:upload id="051"  submit="true" submitLabel="Загрузить файлы" 
-		    singleFile="true"
-		    addUpload="true" addUploadLabel="Добавить еще один upload"  
-		/>
-		<br />	
 
 
 		

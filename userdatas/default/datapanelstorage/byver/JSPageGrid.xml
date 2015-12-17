@@ -4,6 +4,23 @@
 		<element id="1" type="webtext" transform="bal.xsl" />
 		<element id="6" type="webtext" transform="bal.xsl" />
 	</tab>
+	
+	
+	<tab id="4" name="2 процедуры для грида">
+		<element id ="0401" type="grid" subtype="JS_PAGE_GRID" proc="grid_cities_data"  
+		    plugin="pageDGrid">
+			<proc id="040101" name="extlivegrid_cities_metadata" type="METADATA"/>
+			
+			
+		    <proc id="020101" name="gridToolBar_pagegrid_2proc" type="TOOLBAR"/>			
+			
+   			<proc id="14" name="grid_cities_data_partial" type="PARTIALUPDATE" />			
+			
+		</element>
+	</tab>
+	
+	
+	
 	<tab id="2" name="Начало">
 		<element id="2" type="GRID"  subtype="JS_PAGE_GRID" proc="extlivegrid_bal" 
 		    plugin="pageDGrid"    >
@@ -23,8 +40,45 @@
 		 
 		<element id="0202" type="webtext" proc="webtext/selectedRowWriter.py" hideOnLoad="true" />		 
 		<element id="5" type="webtext" proc="webtext_filter_and_add" hideOnLoad="true" />
+ <!--		
 		<element id="3" type="chart" proc="chart_bal_extgridlive" hideOnLoad="true" />
+-->		
 	</tab>
+	
+	
+	
+	
+	<tab id="101_" name="Табличная раскладка" layout="TABLE" style="width: 600px; background: yellow;" styleClass="css-class">
+		<tr id="r01_" height="100px" style="border-width: medium" styleClass="css-class">
+			<td id="d0101_" width="100%" style="border-width: medium; background: green;" styleClass="css-class" colspan="2" >
+				<element id="0101___" type="webtext" proc="webtext_3buttons"
+					style="border-width: medium" styleClass="css-class" />					
+			</td>						
+		</tr>	
+		<tr id="r02_" height="700px" style="border-width: medium;" styleClass="css-class">	
+<!-- 			<td id="d0201_" width="400px"   style="border-width: medium; height: 700px; " styleClass="css-class"> -->
+			<td id="d0201_" width="400px"   style=" vertical-align: top;  border-width: medium; " styleClass="css-class">			
+
+		<element id="511_" type="grid" subtype="JS_PAGE_GRID" proc="extlivegrid_portals" 
+			plugin="pageDGrid" >
+		</element>
+				
+			</td>
+			<td id="d0102_" width="200px" style="border-width: medium; background: blue;" styleClass="css-class" > 
+				<element id="0102_" type="webtext" proc="webtext_3buttons"/>					
+			</td>
+		</tr>			
+	</tab>
+	
+	<tab id="5" name="Ссылки в гриде">
+		<element id="511" type="grid" subtype="JS_PAGE_GRID" proc="extlivegrid_portals" 
+			plugin="pageDGrid" >
+		</element>
+	</tab>
+	
+	
+	
+	
 	
 	
 	<tab id="12" name="Jython">
@@ -50,30 +104,8 @@
 		<element id="10" type="webtext" proc="webtext_grid"
 			hideOnLoad="true" />
 	</tab>
-	<tab id="4" name="2 процедуры для грида">
-		<element id ="0401" type="grid" subtype="JS_PAGE_GRID" proc="grid_cities_data"  
-		    plugin="pageDGrid">
-			<proc id="040101" name="extlivegrid_cities_metadata" type="METADATA"/>
-			
-			
-		    <proc id="020101" name="gridToolBar_pagegrid_2proc" type="TOOLBAR"/>			
-			
-   			<proc id="14" name="grid_cities_data_partial" type="PARTIALUPDATE" />			
-			
-		</element>
-
-		
-<!-- 		<element id="0402" type="grid" subtype="JS_PAGE_GRID" proc="extlivegrid_cities_one" -->
-<!-- 		    plugin="pageDGrid" > -->
-<!-- 		</element> -->
-		
-		
-	</tab>
-	<tab id="5" name="Ссылки в гриде">
-		<element id="511" type="grid" subtype="JS_PAGE_GRID" proc="extlivegrid_portals" 
-			plugin="pageDGrid" >
-		</element>
-	</tab>
+	
+	
 	<tab id="6" name="задание css и id для строки грида">
 		<element id="0201" type="grid" subtype="JS_PAGE_GRID" proc="jslivegrid_portals_id_and_css"
 			plugin="pageDGrid" >

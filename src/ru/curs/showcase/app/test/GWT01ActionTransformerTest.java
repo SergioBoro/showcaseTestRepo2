@@ -10,7 +10,6 @@ import ru.curs.showcase.app.api.CanBeCurrent;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.grid.Grid;
 import ru.curs.showcase.app.client.api.ActionTransformer;
 import ru.curs.showcase.test.AbstractTest;
 import ru.curs.showcase.util.ReflectionUtils;
@@ -101,9 +100,6 @@ public class GWT01ActionTransformerTest extends AbstractTest {
 		act = Activity.newClientActivity("01", "test");
 		act.setContext(CompositeContext.createCurrent());
 		insideAction.getClientActivities().add(act);
-		ah.setCurrentActionFromElement(insideAction, new Grid(new DataPanelElementInfo("2",
-				DataPanelElementType.GRID)));
-
 		assertNotNull(ah.getCurrentAction());
 		assertEquals(DataPanelActionType.REFRESH_TAB, ah.getCurrentAction()
 				.getDataPanelActionType());

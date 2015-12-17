@@ -40,9 +40,12 @@ public final class JSTreeGridPluginPanelCallbacksEvents {
 		return getCurrentPanel(pluginId).pluginEditorGetHttpParams(data, editorType);
 	}
 
-	public static void pluginAfterLoadData(final String pluginId,
-			final String stringLiveGridExtradata) {
-		getCurrentPanel(pluginId).pluginAfterLoadData(stringLiveGridExtradata);
+	public static void pluginAfterLoadData(final String pluginId, final String stringEvents) {
+		getCurrentPanel(pluginId).pluginAfterLoadData(stringEvents);
+	}
+
+	public static void pluginAfterPartialUpdate(final String pluginId, final String stringEvents) {
+		getCurrentPanel(pluginId).pluginAfterPartialUpdate(stringEvents);
 	}
 
 	public static void pluginAfterClick(final String pluginId, final String recId,

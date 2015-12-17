@@ -82,24 +82,11 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public Grid getGrid(final GridContext context, final DataPanelElementInfo element)
+	public GridMetadata getGridMetadata(GridContext context, DataPanelElementInfo element)
 			throws GeneralException {
 		Date dt1 = new Date();
-		GridGetCommand command = new GridGetCommand(context, element, true);
-		Grid grid = command.execute();
-		Date dt2 = new Date();
-
-		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(), "");
-
-		return grid;
-	}
-
-	@Override
-	public LiveGridMetadata getLiveGridMetadata(GridContext context, DataPanelElementInfo element)
-			throws GeneralException {
-		Date dt1 = new Date();
-		LiveGridMetadataGetCommand command = new LiveGridMetadataGetCommand(context, element);
-		LiveGridMetadata lgm = command.execute();
+		GridMetadataGetCommand command = new GridMetadataGetCommand(context, element);
+		GridMetadata lgm = command.execute();
 		Date dt2 = new Date();
 
 		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(),
@@ -109,31 +96,17 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	}
 
 	@Override
-	public LiveGridData<LiveGridModel> getLiveGridData(GridContext context,
-			DataPanelElementInfo element) throws GeneralException {
+	public GridData getGridData(GridContext context, DataPanelElementInfo element)
+			throws GeneralException {
 		Date dt1 = new Date();
-		LiveGridDataGetCommand command = new LiveGridDataGetCommand(context, element);
-		LiveGridData<LiveGridModel> lgd = command.execute();
+		GridDataGetCommand command = new GridDataGetCommand(context, element, true);
+		GridData lgd = command.execute();
 		Date dt2 = new Date();
 
 		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(),
 				element.getSubtype().toString());
 
 		return lgd;
-	}
-
-	@Override
-	public List<TreeGridModel> getTreeGridData(GridContext context, DataPanelElementInfo element)
-			throws GeneralException {
-		Date dt1 = new Date();
-		TreeGridDataGetCommand command = new TreeGridDataGetCommand(context, element);
-		List<TreeGridModel> lst = command.execute();
-		Date dt2 = new Date();
-
-		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(),
-				element.getSubtype().toString());
-
-		return lst;
 	}
 
 	@Override

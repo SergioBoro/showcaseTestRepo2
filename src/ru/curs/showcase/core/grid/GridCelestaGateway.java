@@ -1,6 +1,7 @@
 package ru.curs.showcase.core.grid;
 
 import java.io.*;
+import java.util.*;
 
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -13,6 +14,7 @@ import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
 import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Шлюз для получения настроек элемента grid, где источником данных является
@@ -55,33 +57,23 @@ public class GridCelestaGateway implements GridGateway {
 			procName = element.getProcName();
 		}
 
+		List<SortColumn> scols = null;
+		if (context.sortingEnabled()) {
+			scols = new ArrayList<SortColumn>(1);
+			scols.add(new SortColumn(context.getGridSorting().getSortColId(), context
+					.getGridSorting().getSortColDirection()));
+		}
+
 		JythonDTO result;
-		if (element.loadByOneProc()) {
-			Object[] params;
-			if (context.getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
-				final int i3 = 3;
-				params = new Object[i3];
-				params[2] = context.getParentId();
-			} else {
-				params = new Object[2];
-			}
-			params[0] = element.getId().getString();
-			params[1] = context.getSortedColumns();
-			result = helper.runPython(procName, params);
-		} else {
-			int firstrecord;
-			int pagesize;
-			if ((context.getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
-					|| (context.getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
-				firstrecord = context.getLiveInfo().getFirstRecord();
-				pagesize = context.getLiveInfo().getLimit();
-			} else {
-				firstrecord = context.getPageInfo().getFirstRecord();
-				pagesize = context.getPageSize();
-			}
+		if (context.getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
 			result =
-				helper.runPython(procName, element.getId().getString(),
-						context.getSortedColumns(), firstrecord, pagesize);
+				helper.runPython(procName, element.getId().getString(), scols, context
+						.getLiveInfo().getFirstRecord(), context.getLiveInfo().getLimit(), context
+						.getParentId());
+		} else {
+			result =
+				helper.runPython(procName, element.getId().getString(), scols, context
+						.getLiveInfo().getFirstRecord(), context.getLiveInfo().getLimit());
 		}
 
 		RecordSetElementRawData rawData = new RecordSetElementRawData(element, context);

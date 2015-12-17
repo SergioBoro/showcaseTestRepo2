@@ -1,6 +1,7 @@
 package ru.curs.showcase.core.grid;
 
 import java.io.*;
+import java.util.*;
 
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -12,6 +13,7 @@ import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.ServerObjectCreateCloseException;
 import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Шлюз для получения настроек элемента grid c помощью выполнения Jython
@@ -131,26 +133,17 @@ public class GridJythonGateway extends JythonQuery<JythonDTO> implements GridGat
 
 	@Override
 	protected Object execute() {
-		if (element.loadByOneProc()) {
-			return getProc().getRawData(context, element.getId().getString(),
-					context.getSortedColumns());
-		} else {
 
-			int firstrecord;
-			int pagesize;
-
-			if ((context.getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
-					|| (context.getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
-				firstrecord = context.getLiveInfo().getFirstRecord();
-				pagesize = context.getLiveInfo().getLimit();
-			} else {
-				firstrecord = context.getPageInfo().getFirstRecord();
-				pagesize = context.getPageSize();
-			}
-
-			return getProc().getRawData(context, element.getId().getString(),
-					context.getSortedColumns(), firstrecord, pagesize);
+		List<SortColumn> scols = null;
+		if (context.sortingEnabled()) {
+			scols = new ArrayList<SortColumn>(1);
+			scols.add(new SortColumn(context.getGridSorting().getSortColId(), context
+					.getGridSorting().getSortColDirection()));
 		}
+
+		return getProc().getRawData(context, element.getId().getString(), scols,
+				context.getLiveInfo().getFirstRecord(), context.getLiveInfo().getLimit());
+
 	}
 
 	@Override

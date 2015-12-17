@@ -5,8 +5,12 @@
 		<element id="6" type="webtext" transform="bal.xsl" />
 	</tab>
 	<tab id="2" name="Начало">
-		<element id="2" type="GRID"  subtype="EXT_PAGE_GRID" proc="extpagegrid_bal"/>
-<!-- 	refreshByTimer="true" refreshInterval="5"	   -->
+		<element id="2" type="GRID"  subtype="EXT_PAGE_GRID" proc="extpagegrid_bal">
+		
+			    <proc id="020101" name="gridToolBar" type="TOOLBAR"/>		
+		
+				</element>
+
 		<element id="5" type="webtext" proc="webtext_filter_and_add" hideOnLoad="true" />
 		<element id="3" type="chart" proc="chart_bal_extgridlive" hideOnLoad="true" />
 	</tab>

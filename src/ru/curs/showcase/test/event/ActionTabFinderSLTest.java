@@ -6,10 +6,8 @@ import org.junit.Test;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.navigator.Navigator;
-import ru.curs.showcase.core.grid.GridGetCommand;
 import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
 import ru.curs.showcase.test.AbstractTest;
@@ -60,36 +58,6 @@ public class ActionTabFinderSLTest extends AbstractTest {
 
 		assertEquals("1", webtext.getEventManager().getEvents().get(0).getAction()
 				.getDataPanelLink().getTabId().getString());
-	}
-
-	@Test
-	// @Ignore
-	// !!!
-			public
-			void testReadFirstTabFromDBFromSettingsDynMainContext() {
-		GridContext context = getTestGridContext1();
-		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);
-		elInfo.setProcName("grid_dyn_dp_main");
-		generateTestTabWithElement(elInfo);
-
-		GridGetCommand command = new GridGetCommand(context, elInfo, true);
-		Grid grid = command.execute();
-
-		assertEquals("01", grid.getDefaultAction().getDataPanelLink().getTabId().getString());
-	}
-
-	// !!! @Test
-	public void testReadFirstTabFromDBFromSettingsDynSessionContext() {
-		GridContext context = GridContext.createFirstLoadDefault();
-		context.setSessionParamsMap(generateTestURLParamsForSL(TEST1_USERDATA));
-		DataPanelElementInfo elInfo = new DataPanelElementInfo("01", DataPanelElementType.GRID);
-		elInfo.setProcName("grid_dyn_dp_session");
-		generateTestTabWithElement(elInfo);
-
-		GridGetCommand command = new GridGetCommand(context, elInfo, true);
-		Grid grid = command.execute();
-
-		assertEquals("1", grid.getDefaultAction().getDataPanelLink().getTabId().getString());
 	}
 
 	@Test

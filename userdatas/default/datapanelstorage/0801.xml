@@ -2,7 +2,7 @@
 <datapanel>
 	<tab id="1" name="Фильтрация гридом">
 		<element id="11" type="grid" proc="grid_bal" />
-		<element id="5" type="webtext" proc="webtext_filter_and_add" hideOnLoad="true" />
+		<element id="5" type="webtext" proc="webtext_filter_and_add" hideOnLoad="true" showLoadingMessage="false" />
 	</tab>	
 	<tab id="3" name="Обновление навигатора">
 		<element id="31" type="webtext" proc="webtext_navigator" />

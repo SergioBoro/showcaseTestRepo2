@@ -5,7 +5,6 @@ from ru.curs.showcase.app.api import MessageType
 from ru.curs.showcase.core import UserMessageFactory
 from ru.curs.showcase.core.jython import JythonDTO
 from ru.curs.showcase.core.jython import JythonDownloadResult
-from ru.curs.gwt.datagrid.model import Column
 from java.io import ByteArrayInputStream
 from java.lang import String
 
@@ -64,7 +63,14 @@ def getSetting(context, main, add, filterinfo, session, elementId):
         <col id="name" />
         <col id="file"  width="130px" type="DOWNLOAD" linkId="download"/> 
       </columns>
-      <properties flip="false" pagesize="15" totalCount="0" profile="grid.nowidth.properties"/>
+      
+      
+        <sorting>
+           <sort column="file" direction="DESC"/>        
+        </sorting>      
+      
+      
+      <properties  pagesize="15" totalCount="1" profile="grid.nowidth.properties"/>
     </gridsettings>'''
     
     res = JythonDTO(None, settings, UserMessageFactory().build(555, u"Грид (Live, metadata) успешно построен из Celesta"))
@@ -80,10 +86,14 @@ def getData(context, main, add, filterinfo, session, elementId, sortColumnList, 
     print 'elementId "%s".' % elementId
     print 'firstrecord "%s".' % firstrecord
     print 'pagesize "%s".' % pagesize
-        
+    
+    print 'sortColumnList'    
     if sortColumnList != None:
         for column in sortColumnList:
             print 'sort columnID "%s".' % column.getId()
+            print 'sort direction "%s".' % column.getSorting()
+            
+            
     
     data = u'''
     <records>

@@ -29,20 +29,14 @@
 
    <xs:simpleType name="dataPanelElementSubType">
       <xs:restriction base="xs:string">
-         <xs:enumeration value="EXT_TREE_GRID"/>
-         <xs:enumeration value="ext_tree_grid"/>
-         <xs:enumeration value="EXT_PAGE_GRID"/>
-         <xs:enumeration value="ext_page_grid"/>
-         <xs:enumeration value="EXT_LIVE_GRID"/>
-         <xs:enumeration value="ext_live_grid"/>
-         <xs:enumeration value="PAGING_GRID"/>
-         <xs:enumeration value="paging_grid"/>
          <xs:enumeration value="JS_LIVE_GRID"/>
          <xs:enumeration value="js_live_grid"/>
          <xs:enumeration value="JS_PAGE_GRID"/>
          <xs:enumeration value="js_page_grid"/>
-          <xs:enumeration value="JS_TREE_GRID"/>
+         <xs:enumeration value="JS_TREE_GRID"/>
          <xs:enumeration value="js_tree_grid"/>
+         <xs:enumeration value="JS_LYRA_GRID"/>
+         <xs:enumeration value="js_lyra_grid"/>
       </xs:restriction>
    </xs:simpleType>
 

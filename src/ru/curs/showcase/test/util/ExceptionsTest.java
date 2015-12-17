@@ -4,12 +4,10 @@ import static org.junit.Assert.*;
 
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.*;
 
 import org.junit.*;
 import org.slf4j.*;
 
-import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
@@ -74,8 +72,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test(expected = SettingsFilePropValueFormatException.class)
 	public final void testReadWrongValue() {
 		ProfileReader gp =
-			new ProfileReader(GridServerState.GRID_DEFAULT_PROFILE,
-					SettingsFileType.GRID_PROPERTIES);
+			new ProfileReader("default.properties", SettingsFileType.GRID_PROPERTIES);
 		gp.init();
 		gp.getIntValue("def.column.hor.align");
 	}
@@ -139,7 +136,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	@Ignore
 	// !!!
-	public final void testWrongChartSP() {
+			public final
+			void testWrongChartSP() {
 		CompositeContext context = getTestContext2();
 
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "3", "33");
@@ -163,7 +161,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	@Ignore
 	// !!!
-	public final void testWrongChartSPWithNoResult() {
+			public final
+			void testWrongChartSPWithNoResult() {
 		CompositeContext context = getTestContext2();
 		DataPanelElementInfo element = getDPElement(TEST2_XML, "3", "32");
 
@@ -231,7 +230,7 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 
 		GridGateway gateway = new GridDBGateway();
 		RecordSetElementRawData raw = gateway.getRawDataAndSettings(gc, element);
-		GridFactory factory = new GridFactory(raw);
+		GridMetaFactory factory = new GridMetaFactory(raw, new GridServerState());
 		factory.build();
 	}
 
@@ -364,46 +363,13 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	}
 
 	/**
-	 * Проверяет на отсутствие ошибки при передаче в БД "правильного" параметра
-	 * userdata в sessionContext.
-	 */
-	@Test
-	@Ignore
-	// !!!
-	public void testForUserDataToGridProcSuccessfull() {
-		GridContext context = getTestGridContext1();
-		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);
-		dpei.setProcName("grid_by_userdata");
-		generateTestTabWithElement(dpei);
-
-		GridGetCommand command = new GridGetCommand(context, dpei, true);
-		command.execute();
-	}
-
-	/**
-	 * Проверяет на ошибку при передаче в БД "неверного" параметра userdata в
-	 * sessionContext.
-	 * 
-	 * @throws GeneralException
-	 */
-	@Test(expected = GeneralException.class)
-	public void testForUserDataToGridProcFault() {
-		GridContext context = getTestGridContext1();
-		context.setSessionParamsMap(generateTestURLParamsForSL("test1"));
-		DataPanelElementInfo dpei = new DataPanelElementInfo("1", DataPanelElementType.GRID);
-		dpei.setProcName("grid_by_userdata");
-
-		GridGetCommand command = new GridGetCommand(context, dpei, true);
-		command.execute();
-	}
-
-	/**
 	 * Проверка возврата ошибки с кодом из БД.
 	 */
 	@Test
 	@Ignore
 	// !!!
-	public void testReturnErrorFromDB() {
+			public
+			void testReturnErrorFromDB() {
 		MainPageFrameGateway gateway = new MainPageFrameDBGateway();
 		CompositeContext context = getTestContext1();
 
@@ -434,12 +400,6 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 		CompositeContext context = getTestContext1();
 		DataPanelElementInfo elInfo = getTestGridInfo2();
 		GridContext gc = new GridContext();
-		List<Column> aSortedColumns = new ArrayList<>();
-		Column col = new Column();
-		col.setId("Name111");
-		col.setSorting(Sorting.ASC);
-		aSortedColumns.add(col);
-		gc.setSortedColumns(aSortedColumns);
 		gc.assignNullValues(context);
 
 		GridGateway gateway = new GridDBGateway();
@@ -473,7 +433,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	@Ignore
 	// !!!
-	public void testErrorCodeReturn() {
+			public
+			void testErrorCodeReturn() {
 		XFormContext context = new XFormContext();
 		context.setMain(MAIN_CONTEXT_TAG);
 		context.setAdditional(ADD_CONDITION);
@@ -504,7 +465,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	@Ignore
 	// !!!
-	public void testGeoMapErrorCodeReturn() {
+			public
+			void testGeoMapErrorCodeReturn() {
 		CompositeContext context = new CompositeContext();
 		context.setMain(MAIN_CONTEXT_TAG);
 		context.setAdditional("<mesid>556</mesid>");
@@ -573,7 +535,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	@Ignore
 	// !!!
-	public void testUserMessageByException() {
+			public
+			void testUserMessageByException() {
 		XFormContext context = new XFormContext();
 		context.setFormData("<model/>");
 		HTMLAdvGateway gateway = new HtmlDBGateway();
@@ -689,7 +652,8 @@ public class ExceptionsTest extends AbstractTestWithDefaultUserData {
 	@Test
 	@Ignore
 	// !!!
-	public void testWrongJythonFile() {
+			public
+			void testWrongJythonFile() {
 		final String source = "WrongJythonProc";
 		Activity activity = Activity.newServerActivity("id", source + ".py");
 		CompositeContext context =

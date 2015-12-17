@@ -67,6 +67,10 @@ class handleExtJsTree(JythonProc):
     def postProcess(self, context, elId, adata):
         global data
         data = adata
+        
+        
+        print "dddddddddddddddddddDEFAULT"
+        
         return mainproc()
 
 

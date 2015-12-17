@@ -17,16 +17,32 @@
 				</schema>
 			</xf:instance>
 
+
+
 			
+<!-- 				
+	mode="synchronous"
+	targetref="instance('xformId_mainInstance')/info/name"
+-->			
 			<xf:submission id="subform_transformation_submit" method="post"
-				instance="xformId_mainInstance" replace="instance" ref="instance('xformId_mainInstance')"
+				instance="xformId_mainInstance"  ref="instance('xformId_mainInstance')"
+				
+				
+
+		
+				replace="instance"
+				
+				
 				action="secured/submit?proc=g1.xform.submit.celesta">
 				<xf:action ev:event="xforms-submit-done">
-					<xf:message>Submission успешно выполнен</xf:message>
+<!-- 					<xf:message>Submission успешно выполнен</xf:message> -->
 				</xf:action>
-				<xf:action ev:event="xforms-submit-error">
-					<xf:message>Ошибка при выполнении submission</xf:message>
-				</xf:action>				
+				<xf:action if="event('response-body')!='null'" ev:event="xforms-submit-error">
+<!-- 					<xf:message> -->
+<!-- 						Ошибка при выполнении submission2: -->
+<!-- 						<xf:output value="event('response-body')" /> -->
+<!-- 					</xf:message> -->
+				</xf:action>
 			</xf:submission>
 			
 			<xf:bind>

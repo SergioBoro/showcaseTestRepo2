@@ -8,7 +8,9 @@
 		<element id="0101" type="grid" proc="g1.grid.getDataAndSetting.celesta" />
 	</tab>
 	<tab id="02" name="Live grid">
-		<element id="0201" type="grid" subtype="EXT_LIVE_GRID" proc="g1.grid.getData.celesta">
+		<element id="0201" type="grid" subtype="JS_LIVE_GRID" proc="g1.grid.getData.celesta"
+		plugin="liveDGrid"
+		>
 			<proc id="metadata" name="g1.grid.getSetting.celesta" type="METADATA"/>
 			<proc id="download" name="g1.grid.downloadFile.celesta" type="DOWNLOAD" />
 			<proc id="toolBar" name="g1.grid.gridToolBar.celesta" type="TOOLBAR"/>

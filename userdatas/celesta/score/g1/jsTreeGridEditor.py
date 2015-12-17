@@ -28,14 +28,14 @@ def getDataAndSetting(context, main, add, filterinfo, session, elementId, sortCo
     data = u'''
     <records>
         <rec>
-            <name>Тест1</name>
+            <name></name>
             <code>1</code>            
             <_x007e__x007e_id>1</_x007e__x007e_id>
             <HasChildren>1</HasChildren>
             
         </rec>
         <rec>
-            <name>Тест2</name>
+            <name></name>
             <code>2</code>
             <_x007e__x007e_id>2</_x007e__x007e_id>
             <HasChildren>1</HasChildren>
@@ -84,7 +84,7 @@ def getDataAndSetting(context, main, add, filterinfo, session, elementId, sortCo
         </header>
       </labels>
       <columns>
-        <col id="name" />
+        <col id="name" editor="{ editor: 'checkbox'}"/>
       </columns>
       <properties flip="false" gridWidth="1200px" gridHeight="500" pagesize="15" totalCount="0" />
    </gridsettings>'''
@@ -98,11 +98,11 @@ def getDataAndSetting(context, main, add, filterinfo, session, elementId, sortCo
 
     #context.warning(u"Грид успешно построен из Jython22222222");
     
-    #context.message(u"555");
+#    context.message(u"555");
     
     #context.warning(u"555");
     
-    #context.error(u"555");
+    #context.error(u"wwwwwwwwwww555");
     
     print u'dddddddddddddddddddddddddd: Полное обновление'
     
@@ -127,7 +127,11 @@ def gridSaveData(context, main, add, filterinfo, session, elementId, editorData)
     print 'editorData: %s' % editorData
     
     
-    res = GridSaveResult(UserMessageFactory().build(555, u"Данные успешно сохранены из Челесты"))
+    context.error(u"wwwwwwwwwww555");
+    #context.message(u"wwwwwwwwwww555");
+    
+    #res = GridSaveResult(UserMessageFactory().build(555, u"Данные успешно сохранены из Челесты"))
+    res = GridSaveResult()
     res.setRefreshAfterSave(0);
     return res
 

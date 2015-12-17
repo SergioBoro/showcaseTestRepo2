@@ -21,7 +21,7 @@ import ru.curs.showcase.util.xml.GeneralXMLHelper;
  */
 public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 
-	private static final String CHECK_ACTION_ERROR =
+	protected static final String CHECK_ACTION_ERROR =
 		"Некорректное описание действия в элементе инф. панели: ";
 
 	/**
@@ -61,7 +61,7 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 	 * Основная функция построения объекта на основе данных, уже содержащихся в
 	 * фабрике.
 	 * 
-	 * @return - грид.
+	 * @return - DataPanelElement.
 	 */
 	public DataPanelElement build() throws Exception {
 		initResult();
@@ -83,46 +83,7 @@ public abstract class TemplateMethodFactory extends GeneralXMLHelper {
 		// По умолчанию ничего не делает - данный функционал не всегда нужен
 	}
 
-	/**
-	 * Первый шаг в процессе построения элемента - загрузка настроек.
-	 * 
-	 * @return - грид.
-	 */
-	public DataPanelElement buildStepOne() {
-		initResult();
-		prepareSettings();
-		setupDynamicSettings();
-		return getResult();
-	}
-
-	/**
-	 * Первый шаг в процессе построения элемент - инициализация на основе
-	 * сохраненных настроек.
-	 * 
-	 * @return - грид.
-	 */
-	public DataPanelElement buildStepOneFast() {
-		initResult();
-		setupDynamicSettings();
-		return getResult();
-	}
-
-	/**
-	 * Второй шаг в процессе построения элемента - загрузка данных, их обработка
-	 * и постобработка настроек и данных.
-	 * 
-	 * @return - грид.
-	 */
-	public DataPanelElement buildStepTwo() throws Exception {
-		prepareData();
-		checkSourceError();
-		releaseResources();
-		fillResultByData();
-		postProcess();
-		return getResult();
-	}
-
-	private void postProcess() {
+	protected void postProcess() {
 
 		getResult().setOkMessage(getCallContext().getOkMessage());
 

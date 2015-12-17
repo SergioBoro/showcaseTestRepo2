@@ -39,6 +39,12 @@ def mainproc():
       <columns>
         <col id="name" />
       </columns>
+      
+        <sorting>
+           <sort column="name" direction="DESC"/>        
+        </sorting>        
+      
+      
       <properties flip="false" pagesize="75" totalCount="1" profile="grid.nowidth.properties"/>
    </gridsettings>'''
     res = JythonDTO(None, settings)

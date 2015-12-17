@@ -58,15 +58,28 @@ function createPageDGrid(elementId, parentId, metadata) {
 				_fetch: function (kwArgs) {
 					var results = null;
 					
+					var sortColId  = null;
+					var sortColDir = null;
 					if(firstLoading){
-						results =  new QueryResults(when(metadata["data"]["rows"]), {
-							totalLength: when(parseInt(metadata["data"]["total"]))
-						});
-						
-						gwtAfterLoadData(elementId, "", metadata["data"]["total"]);
-					}else{
-						var sortColId  = null;
-						var sortColDir = null;
+						if(this.initialSort){
+							for(var i = 0; i<this.initialSort.length; i++){
+								for(var k in metadata["columns"]) {
+									if(metadata["columns"][k]["id"] == this.initialSort[i].property){
+										sortColId =	metadata["columns"][k]["caption"];
+										break;
+									}
+								}
+								if(this.initialSort[i].descending){
+									sortColDir = "DESC";
+								}
+								else{
+									sortColDir = "ASC";
+								}
+								break;
+							}
+						}
+					}
+					else{
 						if(grid && grid.sort){
 							for(var i = 0; i<grid.sort.length; i++){
 								var sort = grid.sort[i];
@@ -80,25 +93,30 @@ function createPageDGrid(elementId, parentId, metadata) {
 								break;
 							}
 						}
-						
-			 	    	var httpParams = gwtGetHttpParams(elementId, kwArgs[0].start, kwArgs[0].end-kwArgs[0].start, sortColId, sortColDir);
-			 	    	httpParams = eval('('+httpParams+')');	 	 
-			 	    	
-					    var scparams = {};
-					    scparams[httpParams["gridContextName"]] = httpParams["gridContextValue"];	
-					    scparams[httpParams["elementInfoName"]] = httpParams["elementInfoValue"];
-					    kwArgs["scparams"] = scparams;			
-					    
-					    kwArgs.start = kwArgs[0].start;
-					    kwArgs.end = kwArgs[0].end;					    
-
-						results = Rest.prototype.fetchRange.call(this, kwArgs);
-						results.then(function(results){
-							if(results[0]){
-								gwtAfterLoadData(elementId, results[0]["liveGridExtradata"], arrGrids[parentId]._total);						
-							}
-						});				
 					}
+					
+		 	    	var httpParams = gwtGetHttpParams(elementId, kwArgs[0].start, kwArgs[0].end-kwArgs[0].start, sortColId, sortColDir);
+		 	    	httpParams = eval('('+httpParams+')');	 	 
+		 	    	
+				    var scparams = {};
+				    scparams[httpParams["gridContextName"]] = httpParams["gridContextValue"];	
+				    scparams[httpParams["elementInfoName"]] = httpParams["elementInfoValue"];
+				    kwArgs["scparams"] = scparams;			
+				    
+				    kwArgs.start = kwArgs[0].start;
+				    kwArgs.end = kwArgs[0].end;					    
+
+					results = Rest.prototype.fetchRange.call(this, kwArgs);
+					results.then(function(results){
+						if(results[0]){
+							var events = null;
+							if(results[0]["events"]){
+								events = results[0]["events"];
+							}
+							gwtAfterLoadData(elementId, events, arrGrids[parentId]._total);						
+						}
+					});
+					
 					return results;
 				},
 				
@@ -261,7 +279,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 					}					
 					
 			    	div.title = getTitle(div.title);
-					
+
 					return div;
 		        };
 				
@@ -413,15 +431,19 @@ function createPageDGrid(elementId, parentId, metadata) {
 		    columns = compoundColumns;
 		}
 		
-        var sort = null;
-		for(var k in metadata["columns"]) {
-			if(metadata["columns"][k]["sorting"]){
-				var descending = false;
-				if(metadata["columns"][k]["sorting"].toUpperCase()=="DESC"){
-					descending = true;	
+		var sort = null;
+		if(metadata["common"]["sortColId"] && metadata["common"]["sortColDirection"]){
+			var descending = false;
+			if(metadata["common"]["sortColDirection"].toUpperCase()=="DESC"){
+				descending = true;	
+			}
+			
+			for(var k in metadata["columns"]) {
+				if(metadata["columns"][k]["caption"] == metadata["common"]["sortColId"]){
+					sort = [{property: metadata["columns"][k]["id"], descending: descending}];
+					store.initialSort = sort;
+					break;
 				}
-			    sort = [{property: metadata["columns"][k]["id"], descending: descending}];
-			    break;
 			}
 		}
 		
@@ -433,7 +455,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 		    collection: store,
 			getBeforePut: false,
 			showFooter: isVisiblePager,
-			pagingLinks: 2,
+			pagingLinks: parseInt(metadata["common"]["pagingLinks"]),
 			pagingTextBox: true,
             firstLastArrows: true,
 			pageSizeOptions: [25, 50, 75, 100],
@@ -610,11 +632,19 @@ function clipboardPageDGrid(parentId){
 	return str;
 }
 
-function partialUpdatePageDGrid(parentId, partialdata){
-	for(var k in partialdata["rows"]) {
-		if(arrGrids[parentId].row(partialdata["rows"][k].id).data){
-			arrGrids[parentId].collection.emit('update', {target: partialdata["rows"][k]});			
+function partialUpdatePageDGrid(elementId, parentId, partialdata){
+	for(var k in partialdata) {
+		if(arrGrids[parentId].row(partialdata[k].id).data){
+				arrGrids[parentId].collection.emit('update', {target: partialdata[k]});				
 		}
+	}
+	
+	if(partialdata[0]){
+		var events = null;
+		if(partialdata[0]["events"]){
+			events = partialdata[0]["events"];
+		}
+		gwtAfterPartialUpdate(elementId, events);						
 	}
 }
 

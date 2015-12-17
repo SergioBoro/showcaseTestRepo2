@@ -21,12 +21,21 @@ def navigator(context, session):
                         <datapanel type="g1.datapanel.webTextDatapanel.celesta" tab="firstOrCurrent"></datapanel>
                     </action>
                 </level2>
-                <level2 id="112" name="XForms">
+                <level2 id="112" name="XForms" >
                     <action>
                         <main_context></main_context>
                         <datapanel type="xforms.xml" tab="firstOrCurrent"></datapanel>
                     </action>
                 </level2>
+                
+                <level2 id="113" name="GridNew" selectOnLoad="true">
+                    <action>
+                        <main_context></main_context>
+                        <datapanel type="gridNew.xml" tab="firstOrCurrent"></datapanel>
+                    </action>
+                </level2>
+                
+                
                 <level2 id="113" name="Grid">
                     <action>
                         <main_context></main_context>
@@ -40,7 +49,7 @@ def navigator(context, session):
                     </action>
                 </level2>
                 
-                <level2 id="115" name="Alfresco"   selectOnLoad="true">
+                <level2 id="115" name="Alfresco"  >
                     <action>
                         <main_context></main_context>
                         <datapanel type="alfresco.xml" tab="firstOrCurrent"></datapanel>

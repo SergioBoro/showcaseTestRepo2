@@ -31179,5 +31179,3783 @@ END
 GO
 
 
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_geo_icons]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_geo_icons]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+SET NOCOUNT ON;
+
+
+--insert Debug (context) values (@session_context)
+
+
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Хедер tree-грида</h3></header>
+            <footer><h3 class="testStyle">Футер tree-грида</h3></footer>            
+        </labels>
+        <columns>
+			<col id="Название" width="200px" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: ''text''}" readonly = "false"/>        
+			<col id="Код" width="50px"/>
+			<col id="Картинка" width="50px" type="IMAGE"/>
+        </columns>        
+						<action>
+							<main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+	                                <add_context>current</add_context>
+                                </element>                                                                   
+                            </datapanel>
+                        </action>
+         <properties profile="treegrid.icons.properties"  gridWidth="1200px" gridHeight="500" autoSelectRecordId="85CD7E79-F23E-454B-B4F5-E81EC3755D99"  /></gridsettings>'         
+set @settings=CAST(@gridsettings_str as xml)
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[partial_grid_new_geo]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[partial_grid_new_geo]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+
+    @firstrecord int = 1,
+    @pagesize int = 20,   
+
+    @parent_id varchar(512) =''        
+AS
+BEGIN
+SET NOCOUNT ON;
+
+
+
+select 
+ 'Молдавия_Частично_обновленный' as "Название"
+, 42 as "Код"
+, '85CD7E79-F23E-454B-B4F5-E81EC3755D99' as "~~id"
+--, '85CD7E79-F23E-454B-B4F5-E81EC3755D99' as "Идентификатор"
+--, NULL as "Картинка"
+--, NULL as "parent"
+, 1 as HasChildren
+--, 'false' as readonly
+, cast('<properties></properties>' as xml) as [~~properties]
+UNION ALL
+select 
+ 'Латвия_Частично_обновленный' as "Название"
+, 41 as "Код"
+, '75C8920D-4F26-485B-BD10-223BE4ABC14F' as "~~id"
+--, NULL as "parent"
+, 1 as HasChildren
+, cast('<properties></properties>' as xml) as [~~properties]
+UNION ALL
+select 
+ 'Респ. Башкортостан_Частично_обновленный' as "Название"
+, 52 as "Код"
+, '938C2366-38CE-4F42-8200-0AD2805982C2' as "~~id"
+--, 'AFAF2D58-7016-4A0B-B228-8DC765444A37' as "parent"
+, 1 as HasChildren
+, cast( '<properties>
+                  <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>Респ. Башкортостан_Частично_обновленный2</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>Респ. Башкортостан_Частично_обновленный2</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+
+
+            </properties>' as xml) as [~~properties]
+UNION ALL
+select 
+ 'Пермская обл._Частично_обновленный' as "Название"
+, 51 as "Код"
+, '5C2DF7C9-24DC-45A3-87BB-6B9A37C95AC0' as "~~id"
+--, 'AFAF2D58-7016-4A0B-B228-8DC765444A37' as "parent"
+, 1 as HasChildren
+, cast('<properties></properties>' as xml) as [~~properties]
+UNION ALL
+select 
+ 'АЛЬМЕЖ_Частично_обновленный' as "Название"
+, 71 as "Код"
+, '7FDE1D27-6F73-4F22-A7B9-0A9D7F504873' as "~~id"
+--, '90321F70-379E-4B22-A3A5-5FF8DDAE2527' as "parent"
+, 0 as HasChildren
+, cast('<properties></properties>' as xml) as [~~properties]
+
+
+
+
+
+
+
+
+
+
+--SET @error_mes = 'Грид3 успешно построен';
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[toolbar_grid_new]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[toolbar_grid_new]
+   @main_context nvarchar(512)='',  
+   @add_context nvarchar(512)='',  
+   @filterinfo xml='',  
+   @session_context xml='',
+   @elementId nvarchar(512)='',
+   @data xml output
+AS
+BEGIN
+
+
+--WAITFOR DELAY '00:00:05';
+
+
+--insert Debug (context) values (NULL)
+--insert Debug (context) values (NULL)
+--insert Debug (context) values (@session_context)
+
+
+declare
+	@id nvarchar(50)='',
+	@columnName nvarchar(150)=''
+
+set @id = @session_context.value('(/sessioncontext/related/gridContext/currentRecordId)[1]','nvarchar(50)');
+if @id is null begin 
+	set @id = ''
+end
+
+set @columnName = @session_context.value('(/sessioncontext/related/gridContext/currentColumnId)[1]','nvarchar(150)');
+if @columnName is null begin 
+	set @columnName = ''
+end
+
+set @data='
+	<gridtoolbar>
+
+
+		<item text="Серверное действие" img="imagesingrid/test.jpg" hint="Частичное обновление">
+                        <action >
+                            <main_context>current</main_context>                        
+
+                            <server>
+															<activity id="srv02" name="sc_add_to_debug_console_adapter">
+																<add_context>
+																	add
+																</add_context>
+															</activity>
+                            </server>
+                        </action>
+		</item>
+
+
+		<item text="Частичное обновление" img="imagesingrid/test.jpg" hint="Частичное обновление">
+			<action keep_user_settings="true" partial_update="false">
+				<main_context>current</main_context>
+				<datapanel type="current" tab="current">
+
+					<element id="441" keep_user_settings="true" partial_update="true">
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+
+				</datapanel>
+			</action>
+		</item>
+
+
+		<item text="Полное обновление" img="imagesingrid/test.jpg" hint="Полное обновление">
+			<action>
+				<main_context>current</main_context>
+				<datapanel type="current" tab="current">
+					<element id="441" keep_user_settings="true">
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+				</datapanel>
+			</action>
+		</item>
+
+
+
+
+		<separator/>
+		<item text="Item1" img="imagesingrid/test.jpg" hint="Item one" disable="false">
+			<action show_in="MODAL_WINDOW">
+				<main_context>current</main_context>
+				<modalwindow caption="Item1 click" height="200" width="600"/>
+				<datapanel type="current" tab="current">
+					<element id="443">
+						<add_context>ElementId='+@elementId+', Столбец='+@columnName+', RecordId='+@id+'</add_context>
+					</element>
+				</datapanel>
+			</action>
+		</item>
+		<group text="Item2Group" >
+			<item text="Item21" hint="Item two" disable="true" />
+			<separator/>
+			<item text="Item22" hint="Item three" disable="false">
+				<action show_in="MODAL_WINDOW">
+					<main_context>current</main_context>
+					<modalwindow caption="Item22 click." height="200" width="600"/>
+					<datapanel type="current" tab="current">
+						<element id="443">
+							<add_context>ElementId='+@elementId+', Столбец='+@columnName+', RecordId='+@id+'</add_context>
+						</element>
+					</datapanel>
+				</action>
+			</item>
+			<group text="Item23Group" >
+				<item text="Item231" hint="Item two" disable="true" />
+				<separator/>
+				<item text="Item232" hint="Item three" disable="false">
+					<action show_in="MODAL_WINDOW">
+						<main_context>current</main_context>
+						<modalwindow caption="Item232 click." height="200" width="600"/>
+						<datapanel type="current" tab="current">
+							<element id="443">
+								<add_context>ElementId='+@elementId+', Столбец='+@columnName+', RecordId='+@id+'</add_context>
+							</element>
+						</datapanel>
+					</action>
+				</item>
+			</group>
+		</group>
+    </gridtoolbar>';
+END
+GO
+/****** Object:  StoredProcedure [dbo].[save1_grid_new]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[save1_grid_new]
+	@main_context varchar(512),
+	@add_context varchar(512),
+	@filterinfo xml,
+	@session_context xml,
+	@element_Id varchar(512),
+
+	@savedata xml,
+
+  @gridsaveresult xml output,
+
+	@error_mes varchar(2048) output	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+--INSERT INTO Debug (context) VALUES (@savedata)
+--INSERT INTO Debug (string) VALUES (@savedata)
+
+
+
+Declare @gridsaveresult_str as varchar(max)
+set @gridsaveresult_str='
+<gridsaveresult>
+	<properties refreshAfterSave="false" />
+</gridsaveresult>'
+
+set    @gridsaveresult=CAST(@gridsaveresult_str as xml)
+
+
+--set    @gridsaveresult=NULL
+
+
+--	SET @error_mes='Ошибка при сохранении данных'
+--	RETURN 10
+
+
+  set @error_mes = 'Данные успешно сохранены'
+  RETURN 555;
+
+
+	SET @error_mes=''
+	RETURN 0
+
+
+	
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[partial_grid_new]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:        <Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:    <Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[partial_grid_new]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
+
+--insert into Debug (context) VALUES (@filterinfo)
+
+
+--insert into Debug (context) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+    
+set @main_context = 'Потери - Всего';    
+
+
+/*
+select 
+ 'Ивановская обл._Частично_обновленный' as "Регион"
+, 43333333333333 as "Код"
+, 'Ивановская обл.' as "~~id"
+, cast('<properties></properties>' as xml) as [~~properties]
+return;
+*/
+
+
+select 
+ 'АБАН_Частично_обновленный' as "Название"
+, 6 as "Код"
+, '6' as "~~id"
+, 'imagesingrid/test.jpg:Подсказка' AS [Картинка]
+, cast( '<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="443">
+						<add_context>АБАН_Частично_обновленный2</add_context>                                                                                        
+                                </element> 
+                                <element id="444">
+						<add_context>АБАН_Частично_обновленный2</add_context>                                                                                        
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+
+  
+
+
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="444">
+											<add_context>АБАН_Частично_обновленный2</add_context>  
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>   
+
+
+
+
+            </properties>' as xml) as [~~properties]
+
+
+
+UNION ALL
+select 
+ 'АБАШЕВО_Частично_обновленный' as "Название"
+, 8 as "Код"
+, '8' as "~~id"
+, 'imagesingrid/test.jpg:Подсказка' AS [Картинка]
+, cast( '<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="443">
+						<add_context>АБАШЕВО_Частично_обновленный2</add_context>                                                                                        
+                                </element> 
+                                <element id="444">
+						<add_context>АБАШЕВО_Частично_обновленный2</add_context>                                                                                        
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+
+  
+
+
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="444">
+											<add_context>АБАШЕВО_Частично_обновленный2</add_context>  
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>   
+
+
+
+
+            </properties>' as xml) as [~~properties]
+
+
+
+UNION ALL
+select 
+ 'АБРАМЦЕВО_Частично_обновленный' as "Название"
+, 14 as "Код"
+, '14' as "~~id"
+, 'imagesingrid/test.jpg:Подсказка' AS [Картинка]
+, cast( '<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="443">
+						<add_context>АБРАМЦЕВО_Частично_обновленный2</add_context>                                                                                        
+                                </element> 
+                                <element id="444">
+						<add_context>АБРАМЦЕВО_Частично_обновленный2</add_context>                                                                                        
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+
+  
+
+
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="444">
+											<add_context>АБРАМЦЕВО_Частично_обновленный2</add_context>  
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>   
+
+
+
+
+            </properties>' as xml) as [~~properties]
+
+    
+
+--SET @error_mes = 'Грид1 успешно построен';
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_totalcount]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_totalcount]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+DECLARE @gridsettings_str varchar(max)
+DECLARE @cities_count int
+SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Переменный totalCount. Хедер</h3></header>
+            <footer><h3 class="testStyle">Переменный totalCount. Футер</h3></footer>
+        </labels>
+
+<!--
+-->
+
+        <columns>
+					<col id="Код" width="100px"/>                
+					<col id="Название" width="400px" precision="2"/>        
+          <col  readonly = "true" id="Картинка" width="50px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>
+        </columns>
+
+
+
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+
+
+
+        
+<properties  gridHeight="450"  forceLoadSettings="true"   pagesize="50"  autoSelectRecordId="12"  autoSelectRelativeRecord="false"  gridWidth="700px" 
+totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+set  @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид21 успешно построен';
+--return 555;
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_table_layout]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_table_layout]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+DECLARE @gridsettings_str varchar(max)
+DECLARE @cities_count int
+SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Новый грид. Хедер</h3></header>
+            <footer><h3 class="testStyle">Новый грид. Футер</h3></footer>
+        </labels>
+
+
+        <columns>
+					<col id="Код" width="100px"/>                
+					<col id="Название" width="400px" precision="2"/>        
+          <col  readonly = "true" id="Картинка" width="50px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>
+        </columns>
+
+
+
+<!--
+-->
+
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+
+
+        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="443">
+									<add_context>Действие по умолчанию</add_context>                                                                                             
+                                </element> 
+                                <element id="444">
+									<add_context>Действие по умолчанию</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+        </action>
+
+
+        
+<properties  autoSelectRecordId="12"  gridHeight="400"  forceLoadSettings="false" pagesize="50"  gridWidth="70%" 
+totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+set  @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид21 успешно построен';
+--return 555;
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_special_profile]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_special_profile]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+DECLARE @gridsettings_str varchar(max)
+DECLARE @cities_count int
+SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
+set @gridsettings_str='<gridsettings>
+
+<!--
+-->
+
+        <columns>
+					<col id="Код" width="100px"/>                
+					<col id="Название" width="150px" />        
+          <col  readonly = "true" id="Картинка" width="50px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>
+
+          <col id="INT"  width="50px" type="INT"  />         
+          <col id="FLOAT"  width="50px" type="FLOAT" precision="2"  />                 
+
+          <col id="DATETIME"  width="100px" type="DATETIME"  />         
+          <col id="DATE"  width="70px" type="DATE"  />         
+          <col id="TIME"  width="70px" type="TIME"  />         
+
+        </columns>
+
+
+
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+
+
+
+        
+<properties  profile="special.properties"  gridHeight="450"  forceLoadSettings="false"   pagesize="50"  autoSelectRecordId="12"  autoSelectRelativeRecord="false"  gridWidth="1100px" 
+totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+set  @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид21 успешно построен';
+--return 555;
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_page]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_page]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+DECLARE @gridsettings_str varchar(max)
+DECLARE @cities_count int
+SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Новый грид. Хедер</h3></header>
+            <footer><h3 class="testStyle">Новый грид. Футер</h3></footer>
+        </labels>
+
+
+        <columns>
+					<col  id="Код" width="170px" type="INT"  editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>                
+					<col  id="Название" width="400px" precision="2"/>        
+          <col  readonly = "true" id="Картинка" width="70px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: CheckBox}"/>
+        </columns>
+
+
+
+<!--
+-->
+
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+
+		    <filters>  
+						<multiselector 
+								windowCaption     = "Выберите значения"
+								dataWidth         = "600px"
+								dataHeight        = "450px"
+								selectedDataWidth = "500px"
+								visibleRecordCount = "25" 
+  							procCount         = "[dbo].[regionscount]"  
+								procList          = "[dbo].[regionslist]"
+                procListAndCount  = ""
+								currentValue      = ""
+								manualSearch       = "false"               
+								startWith          = "true"		        
+                hideStartsWith     = "false"		        
+								needInitSelection  = "true"
+						/>	
+		    </filters>	
+
+
+
+        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="443">
+									<add_context>Действие по умолчанию</add_context>                                                                                             
+                                </element> 
+                                <element id="444">
+									<add_context>Действие по умолчанию</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+        </action>
+
+
+<!--
+autoSelectRecordId="12"
+
+autoSelectOffset="100"
+-->
+        
+<properties    autoSelectRecordId="12"    gridHeight="450"  forceLoadSettings="false" pagesize="50"  gridWidth="850px" 
+totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+set  @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид22 успешно построен';
+--return 555;
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_links]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_links]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+DECLARE @gridsettings_str varchar(max)
+DECLARE @cities_count int
+SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3>Порталы. Хедер</h3></header>
+            <footer><h3>Порталы. Футер</h3></footer>
+        </labels>
+
+<!--
+-->
+
+        <columns>
+					<col id="Код" width="100px"/>                
+					<col id="Название" width="200px" />        
+          <col  readonly = "true" id="Картинка" width="50px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>
+					<col id="Название портала" width="200px" />        
+
+					<col id="Логотип" width="250px" type="LINK" />
+					<col id="URL" width="100px" type="LINK"/>
+
+
+        </columns>
+
+
+
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+
+        
+<properties  gridHeight="450"  forceLoadSettings="false"  pagesize="50"  autoSelectRecordId="12"  autoSelectRelativeRecord="false"  gridWidth="1100px" 
+totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+set  @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид21 успешно построен';
+--return 555;
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_geo]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_geo]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+SET NOCOUNT ON;
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+
+
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='
+<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Хедер tree-грида</h3></header>
+            <footer><h3 class="testStyle">Футер tree-грида</h3></footer>            
+        </labels>
+
+<!--
+-->
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+
+
+<!--
+					<col id="Код" width="50px" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner, editorArgs: {smallDelta: 0.1} }"/>
+-->
+
+        <columns>
+					<col id="Название" width="200px"  editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: ''text''}" readonly = "true" />        
+					<col id="Идентификатор" width="100px" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: ''text''}" readonly = "false" />        
+					<col id="Код" width="50px" readonly = "false" editor="{editor: CheckBox}" />
+					<col id="Картинка" width="50px" type="IMAGE" readonly = "false" editor="{editor: CheckBox}" />
+        </columns>        
+						<action>
+							<main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+	                                <add_context>current</add_context>
+                                </element>                                                                   
+                            </datapanel>
+               </action>
+
+
+
+         <properties  gridWidth="1200px" gridHeight="500" 
+		
+autoSelectRecordId="85CD7E79-F23E-454B-B4F5-E81EC3755D99"  
+
+/></gridsettings>'         
+
+
+set @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид3 успешно построен';
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_download_load]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_download_load]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+DECLARE @gridsettings_str varchar(max)
+DECLARE @cities_count int
+SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3>Скачивание файлов из грида. Хедер</h3></header>
+            <footer><h3>Скачивание файлов из грида. Футер</h3></footer>
+        </labels>
+
+<!--
+-->
+
+        <columns>
+					<col id="Код" width="100px"/>                
+					<col id="Название" width="200px" />        
+          <col  readonly = "true" id="Картинка" width="50px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>
+
+          <col id="Файл1"  width="50px" type="DOWNLOAD" linkId="11" readonly="true" />         
+          <col id="Файл2"  width="50px" type="DOWNLOAD" linkId="12"   readonly="true"  />                 
+
+        </columns>
+
+
+
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+
+        
+<properties  gridHeight="450"  forceLoadSettings="false"  pagesize="50"  autoSelectRecordId="12"  autoSelectRelativeRecord="false"  gridWidth="1100px" 
+totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+set  @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид21 успешно построен';
+--return 555;
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_css]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_css]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+DECLARE @gridsettings_str varchar(max)
+DECLARE @cities_count int
+SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Новый грид. Хедер</h3></header>
+            <footer><h3 class="testStyle">Новый грид. Футер</h3></footer>
+        </labels>
+
+<!--
+-->
+
+        <columns>
+					<col id="Код" width="100px"/>                
+					<col id="Название" width="400px" precision="2"/>        
+          <col  readonly = "true" id="Картинка" width="50px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>
+        </columns>
+
+
+
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+
+        
+<properties  gridHeight="450"  forceLoadSettings="false"  pagesize="50"  autoSelectRecordId="12"  autoSelectRelativeRecord="false"  gridWidth="700px" 
+totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+set  @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид21 успешно построен';
+--return 555;
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_compound_columns]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_compound_columns]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+DECLARE @gridsettings_str varchar(max)
+DECLARE @cities_count int
+SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
+set @gridsettings_str='<gridsettings>
+
+<!--
+-->
+
+
+        <columns>
+					  <columnheader id="Заголовок1" style="text-align:center;">
+							<columnheader id="Заголовок11" style="text-align:right;">
+								<col id="Код" width="100px"/>                
+								<col id="Название" width="150px" />        
+							</columnheader>
+								<col  readonly = "true" id="Картинка" width="50px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>
+					  </columnheader>
+
+					  <columnheader id="Заголовок2">
+							<col id="FLOAT"  width="50px" type="FLOAT" precision="2"  />                 
+					  </columnheader>
+        </columns>	
+
+
+<!--
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+-->
+
+
+        
+<properties    gridHeight="450"  forceLoadSettings="false"  pagesize="50"  autoSelectRecordId="12"  autoSelectRelativeRecord="false"  gridWidth="1100px" 
+totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+set  @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид21 успешно построен';
+--return 555;
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_columnsets]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_columnsets]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+DECLARE @gridsettings_str varchar(max)
+DECLARE @cities_count int
+SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
+set @gridsettings_str='<gridsettings>
+
+<!--
+-->
+
+        <columns>
+					<columnset id="Набор столбцов 1" width="250px">
+						<col id="Код" width="100px"/>                
+						<col id="Название" width="150px" />        
+					</columnset>
+
+					<columnset id="Набор столбцов 2" width="250px">
+						<col  readonly = "true" id="Картинка" width="100px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>
+						<col id="INT"  width="150px" type="INT"  />         
+						<col id="FLOAT"  width="150px" type="FLOAT" precision="2"  />                 
+					</columnset>
+
+					<columnset id="Набор столбцов 3" width="200px">
+						<col id="DATETIME"  width="100px" type="DATETIME"  />         
+						<col id="DATE"  width="100px" type="DATE"  />         
+						<col id="TIME"  width="100px" type="TIME"  />         
+					</columnset>
+        </columns>
+
+
+
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+        
+<properties    gridHeight="450"  forceLoadSettings="false"   pagesize="50"  autoSelectRecordId="12"  autoSelectRelativeRecord="false"  gridWidth="800px" 
+totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+set  @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид21 успешно построен';
+--return 555;
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_column_types]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_column_types]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+DECLARE @gridsettings_str varchar(max)
+DECLARE @cities_count int
+SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
+set @gridsettings_str='<gridsettings>
+
+<!--
+-->
+
+        <columns>
+					<col id="Код" width="100px"/>                
+					<col id="Название" width="150px" />        
+          <col  readonly = "true" id="Картинка" width="50px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>
+
+          <col id="INT"  width="50px" type="INT"  />         
+          <col id="FLOAT"  width="50px" type="FLOAT" precision="2"  />                 
+
+          <col id="DATETIME"  width="100px" type="DATETIME"  />         
+          <col id="DATE"  width="70px" type="DATE"  />         
+          <col id="TIME"  width="70px" type="TIME"  />         
+
+        </columns>
+
+
+
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+
+
+
+        
+<properties    gridHeight="450"  forceLoadSettings="false"  pagesize="50"  autoSelectRecordId="12"  autoSelectRelativeRecord="false"  gridWidth="1100px" 
+totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+set  @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид21 успешно построен';
+--return 555;
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta_cell]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta_cell]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+DECLARE @gridsettings_str varchar(max)
+DECLARE @cities_count int
+SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Новый грид. Хедер</h3></header>
+            <footer><h3 class="testStyle">Новый грид. Футер</h3></footer>
+        </labels>
+
+
+        <columns>
+					<col id="Код" width="100px"/>                
+					<col id="Название" width="400px" precision="2"/>        
+          <col  readonly = "true" id="Картинка" width="50px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>
+        </columns>
+
+
+
+<!--
+-->
+
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+
+
+        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="443">
+									<add_context>Действие по умолчанию</add_context>                                                                                             
+                                </element> 
+                                <element id="444">
+									<add_context>Действие по умолчанию</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+        </action>
+
+
+        
+<properties  autoSelectRecordId="12"  autoSelectColumnId="Название" gridHeight="450"  forceLoadSettings="false" pagesize="50"  gridWidth="800px" 
+ profile="grid.nowidth.properties" 
+totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+set  @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид21 успешно построен';
+--return 555;
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_meta]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_meta]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+DECLARE @gridsettings_str varchar(max)
+DECLARE @cities_count int
+SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
+set @gridsettings_str='<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Новый грид. Хедер</h3></header>
+            <footer><h3 class="testStyle">Новый грид. Футер</h3></footer>
+        </labels>
+
+
+        <columns>
+					<col  id="Код" width="170px" type="INT"  editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>                
+					<col  id="Название" width="400px" precision="2"/>        
+          <col  readonly = "true" id="Картинка" width="70px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: CheckBox}"/>
+        </columns>
+
+
+
+<!--
+-->
+
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+
+		    <filters>  
+						<multiselector 
+								windowCaption     = "Выберите значения"
+								dataWidth         = "600px"
+								dataHeight        = "450px"
+								selectedDataWidth = "500px"
+								visibleRecordCount = "25" 
+  							procCount         = "[dbo].[regionscount]"  
+								procList          = "[dbo].[regionslist]"
+                procListAndCount  = ""
+								currentValue      = ""
+								manualSearch       = "false"               
+								startWith          = "true"		        
+                hideStartsWith     = "false"		        
+								needInitSelection  = "true"
+						/>	
+		    </filters>	
+
+
+
+        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="443">
+									<add_context>Действие по умолчанию</add_context>                                                                                             
+                                </element> 
+                                <element id="444">
+									<add_context>Действие по умолчанию</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+        </action>
+
+
+        
+<properties  autoSelectRecordId="12"  gridHeight="450"  forceLoadSettings="false" pagesize="50"  gridWidth="850px" 
+totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+set  @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид22 успешно построен';
+--return 555;
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_totalcount]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_totalcount]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql =  'WITH result AS 	(
+         SELECT 
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[geo3])
+      SELECT
+         [~~id],  
+         [Код], 
+         [Название], 
+         [Картинка]
+         FROM result 
+         WHERE rnum BETWEEN ('+CAST(@firstRecord AS varchar(32)) +') AND ('+CAST(@firstRecord + @pagesize AS varchar(32))+') '
+         +'ORDER by rnum';
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_table_layout_geo]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_table_layout_geo]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20,
+    @parent_id varchar(512) =''       
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+IF @parent_id is NULL
+BEGIN    
+    SET @sql =  '
+         SELECT  top(50)
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+cast( ''<properties>
+
+
+		<readonly value="false"/>
+
+<!--
+
+		<styleClass name="jslivegrid-record-bold"/>
+		<styleClass name="jslivegrid-record-italic"/>
+-->
+
+            </properties>'' as xml)  as [~~properties]           
+            FROM [dbo].[geo3] '+@orderby
+         
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as [Название]'
+
+END
+
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_table_layout]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_table_layout]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql =  'WITH result AS 	(
+         SELECT 
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+cast( ''<properties>
+
+
+		<readonly value="false"/>
+
+<!--
+		<styleClass name="jslivegrid-record-bold"/>
+		<styleClass name="jslivegrid-record-italic"/>
+-->
+
+
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="443">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="444">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+
+  
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="444">
+											<add_context>''+[Name]+''</add_context>   
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>     
+
+                                  
+
+            </properties>'' as xml)  as [~~properties],           
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[geo3])
+      SELECT
+         [~~id],  
+         [Код], 
+         [Название], 
+         [Картинка],
+         [~~properties] FROM result 
+         WHERE rnum BETWEEN ('+CAST(@firstRecord AS varchar(32)) +') AND ('+CAST(@firstRecord + @pagesize AS varchar(32))+') '
+         +'ORDER by rnum';
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_special_profile_geo]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_special_profile_geo]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20,
+    @parent_id varchar(512) =''       
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+
+IF @parent_id is NULL
+BEGIN    
+    SET @sql =  '
+         SELECT top(50)
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+						[_Id] as [INT],
+						[_Id] + 0.1234567 as [FLOAT],
+
+            getdate() AS [DATETIME],
+            getdate() AS [DATE],
+            getdate() AS [TIME]
+            FROM [dbo].[geo3] '+@orderby
+         
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as [Название]'
+
+END
+
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_special_profile]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_special_profile]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql =  'WITH result AS 	(
+         SELECT 
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+						[_Id] as [INT],
+						[_Id] + 0.1234567 as [FLOAT],
+
+            getdate() AS [DATETIME],
+            getdate() AS [DATE],
+            getdate() AS [TIME],
+           
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[geo3])
+      SELECT
+         [~~id],  
+         [Код], 
+         [Название], 
+         [Картинка],
+         [INT],
+				 [FLOAT],
+         [DATETIME],
+         [DATE],
+         [TIME]
+         FROM result 
+         WHERE rnum BETWEEN ('+CAST(@firstRecord AS varchar(32)) +') AND ('+CAST(@firstRecord + @pagesize AS varchar(32))+') '
+         +'ORDER by rnum';
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_page]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_page]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+--insert into Debug (string) VALUES (@sortcols)
+--insert into Debug (context) VALUES (@filterinfo)
+
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql =  'WITH result AS 	(
+         SELECT 
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+cast( ''<properties>
+
+
+		<readonly value="false"/>
+
+<!--
+		<styleClass name="jslivegrid-record-bold"/>
+		<styleClass name="jslivegrid-record-italic"/>
+-->
+
+
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="443">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="444">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+
+  
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="444">
+											<add_context>''+[Name]+''</add_context>   
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>     
+
+                                  
+
+            </properties>'' as xml)  as [~~properties],           
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[geo3])
+      SELECT
+         [~~id],  
+         [Код], 
+         [Название], 
+         [Картинка],
+         [~~properties] FROM result 
+         WHERE rnum BETWEEN ('+CAST(@firstRecord AS varchar(32)) +') AND ('+CAST(@firstRecord + @pagesize AS varchar(32))+') '
+         +'ORDER by rnum';
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_links_geo]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_links_geo]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20,   
+    @parent_id varchar(512) =''    
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+
+IF @parent_id is NULL
+BEGIN    
+    SET @sql =  '
+         SELECT top(50)
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+            ''<div title="fffffffff222">РБК2</div>'' AS [Название портала],
+            ''<link href="http://rbc.ru" image="${images.in.grid.dir}/imagesingrid/rbc.gif" text="rbc.ru" openInNewTab="true"/>''  AS [Логотип],
+            ''<link href="http://rbc.ru"  openInNewTab="true"/>'' as [URL]
+            FROM [dbo].[geo3] '+@orderby
+         
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as [Название]'
+
+END
+
+   EXEC(@sql)	
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_links]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_links]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql =  'WITH result AS 	(
+         SELECT 
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+            ''<div title="fffffffff222">РБК2</div>'' AS [Название портала],
+            ''<link href="http://rbc.ru" image="${images.in.grid.dir}/imagesingrid/rbc.gif" text="rbc.ru" openInNewTab="true"/>''  AS [Логотип],
+            ''<link href="http://rbc.ru"  openInNewTab="true"/>'' as [URL],
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[geo3])
+      SELECT
+         [~~id],  
+         [Код], 
+         [Название], 
+         [Картинка],
+         [Название портала],
+         [Логотип],
+         [URL]
+         FROM result 
+         WHERE rnum BETWEEN ('+CAST(@firstRecord AS varchar(32)) +') AND ('+CAST(@firstRecord + @pagesize AS varchar(32))+') '
+         +'ORDER by rnum';
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_geo_icons]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_geo_icons]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+
+    @firstrecord int = 1,
+    @pagesize int = 20,   
+
+    @parent_id varchar(512) =''        
+AS
+BEGIN
+SET NOCOUNT ON;
+
+
+--insert Debug (context) values (@session_context)
+
+declare @Sql varchar(8000);
+
+IF (@parent_id IS NULL) OR (LTrim(@parent_id) = '')
+BEGIN
+ set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/TreeGridNodeClose.gif'' AS [TreeGridNodeCloseIcon], ''imagesingrid/TreeGridNodeOpen.gif'' AS [TreeGridNodeOpenIcon], ''imagesingrid/TreeGridLeaf.png'' AS [TreeGridNodeLeafIcon], ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo6_Id as "~~id", cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo6 where Id IS NOT NULL'
+END
+
+IF (select COUNT(*) from geo6 where geo6_Id = @parent_id) > 0
+BEGIN
+ set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/TreeGridNodeClose.gif'' AS [TreeGridNodeCloseIcon], ''imagesingrid/TreeGridNodeOpen.gif'' AS [TreeGridNodeOpenIcon], ''imagesingrid/TreeGridLeaf.png'' AS [TreeGridNodeLeafIcon], ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo5_Id as "~~id", cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo5 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)' 
+END
+
+IF (select COUNT(*) from geo5 where geo5_Id = @parent_id) > 0
+BEGIN
+ set @Sql = 'select Name as "Название", Id as "Код", ''imagesingrid/TreeGridNodeClose.gif'' AS [TreeGridNodeCloseIcon], ''imagesingrid/TreeGridNodeOpen.gif'' AS [TreeGridNodeOpenIcon], ''imagesingrid/TreeGridLeaf.png'' AS [TreeGridNodeLeafIcon], ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo3 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)'  
+END
+
+IF (select COUNT(*) from geo3 where geo3_Id = @parent_id) > 0
+BEGIN
+-- SET @error_mes = 'Вызов процедуры для города' 
+-- RETURN 1
+
+ set @Sql = 'select top(0) Name as "Название", Id as "Код", ''imagesingrid/TreeGridNodeClose.gif'' AS [TreeGridNodeCloseIcon], ''imagesingrid/TreeGridNodeOpen.gif'' AS [TreeGridNodeOpenIcon], ''imagesingrid/TreeGridLeaf.png'' AS [TreeGridNodeLeafIcon], ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="155">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo3 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)'  
+	
+END
+
+IF LTRIM(@sortcols)!=''
+BEGIN
+ set @Sql = @Sql+' '+@sortcols
+END
+
+EXEC(@Sql)
+
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_geo]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_geo]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+
+    @firstrecord int = 1,
+    @pagesize int = 20,   
+
+    @parent_id varchar(512) =''        
+	
+AS
+BEGIN
+SET NOCOUNT ON;
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+
+declare @Sql varchar(8000);
+
+IF (@parent_id IS NULL) OR (LTrim(@parent_id) = '')
+BEGIN
+
+
+
+-- set @Sql = 'select Name as "Название", cast(geo6_Id as varchar(50)) as "Идентификатор", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo6_Id as "~~id", cast( ''<properties>
+
+ set @Sql = 'select Name as "Название", cast(geo6_Id as varchar(50)) as "Идентификатор", Id as "Код", 
+''NULL'' AS [Картинка], 1 as HasChildren, geo6_Id as "~~id", cast( ''<properties>
+
+			<readonly value="false"/>
+
+<!--
+
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
+
+-->
+
+
+<!-- 
+
+                    <event name="row_save_data">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''_row_save_data</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+
+
+
+                    <event name="row_add_record">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''_row_add_record</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+
+--> 
+
+
+
+<!-- 
+--> 
+
+
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+
+
+                             
+
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>        
+
+
+
+
+
+            </properties>'' as xml)  as [~~properties] from geo6 where Id IS NOT NULL'
+END
+
+IF (select COUNT(*) from geo6 where geo6_Id = @parent_id) > 0
+BEGIN
+ set @Sql = 'select Name as "Название", cast(geo5_Id as varchar(50)) as "Идентификатор", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo5_Id as "~~id", cast( ''<properties>
+
+
+		<readonly value="false"/>
+
+<!--
+
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
+
+-->
+
+
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo5 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)' 
+END
+
+
+
+
+
+IF (select COUNT(*) from geo5 where geo5_Id = @parent_id) > 0
+BEGIN
+ set @Sql = 'select Name as "Название", Id as "Код", cast(geo3_Id as varchar(50)) as "Идентификатор", ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+
+<!--
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
+-->
+
+
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo3 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)'  
+END
+
+IF (select COUNT(*) from geo3 where geo3_Id = @parent_id) > 0
+BEGIN
+-- SET @error_mes = 'Вызов процедуры для города' 
+-- RETURN 1
+
+ set @Sql = 'select top(0) Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo3 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)'  
+	
+END
+
+IF LTRIM(@sortcols)!=''
+BEGIN
+ set @Sql = @Sql+' '+@sortcols
+END
+ELSE
+BEGIN
+ set @Sql = @Sql+' order by Name'
+END
+
+
+--RAISERROR (@Sql, 12, 2)
+
+--set @Sql = 'select top (0) 5 as dd'
+
+EXEC(@Sql)
+
+
+
+--SET @error_mes = 'Грид3 успешно построен';
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_download_load_geo]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_download_load_geo]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20,   
+    @parent_id varchar(512) =''    
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+IF @parent_id is NULL
+BEGIN    
+    SET @sql =  '
+         SELECT top(50)
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+            ''Файл14'' AS [Файл1],
+            ''Файл24'' AS [Файл2]
+            FROM [dbo].[geo3] '+@orderby
+         
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as [Название]'
+
+END
+
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_download_load]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_download_load]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql =  'WITH result AS 	(
+         SELECT 
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+            ''Файл14'' AS [Файл1],
+            ''Файл24'' AS [Файл2],
+
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[geo3])
+      SELECT
+         [~~id],  
+         [Код], 
+         [Название], 
+         [Картинка],
+         [Файл1],
+         [Файл2]
+         FROM result 
+         WHERE rnum BETWEEN ('+CAST(@firstRecord AS varchar(32)) +') AND ('+CAST(@firstRecord + @pagesize AS varchar(32))+') '
+         +'ORDER by rnum';
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_css_geo]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_css_geo]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20,   
+@parent_id varchar(512) =''    
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+
+
+IF @parent_id is NULL
+BEGIN    
+    SET @sql =  '
+         SELECT  top(50)
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+cast( ''<properties>
+
+
+		<readonly value="false"/>
+
+<!--
+-->
+		<styleClass name="jslivegrid-record-bold"/>
+		<styleClass name="jslivegrid-record-italic"/>
+
+
+            </properties>'' as xml)  as [~~properties]           
+            FROM [dbo].[geo3] '+@orderby
+         
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as [Название]'
+
+END
+
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_css]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_css]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql =  'WITH result AS 	(
+         SELECT 
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+cast( ''<properties>
+
+
+		<readonly value="false"/>
+
+<!--
+-->
+		<styleClass name="jslivegrid-record-bold"/>
+		<styleClass name="jslivegrid-record-italic"/>
+
+
+            </properties>'' as xml)  as [~~properties],           
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[geo3])
+      SELECT
+         [~~id],  
+         [Код], 
+         [Название], 
+         [Картинка],
+         [~~properties] FROM result 
+         WHERE rnum BETWEEN ('+CAST(@firstRecord AS varchar(32)) +') AND ('+CAST(@firstRecord + @pagesize AS varchar(32))+') '
+         +'ORDER by rnum';
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_compound_columns_geo]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_compound_columns_geo]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20,
+    @parent_id varchar(512) =''       
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+
+IF @parent_id is NULL
+BEGIN    
+    SET @sql =  '
+         SELECT top(50)
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+						[_Id] + 0.1234567 as [FLOAT]
+            FROM [dbo].[geo3] '+@orderby
+         
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as [Название]'
+
+END
+
+
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_compound_columns]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_compound_columns]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql =  'WITH result AS 	(
+         SELECT 
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+						[_Id] + 0.1234567 as [FLOAT],
+           
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[geo3])
+      SELECT
+         [~~id],  
+         [Код], 
+         [Название], 
+         [Картинка],
+				 [FLOAT]
+         FROM result 
+         WHERE rnum BETWEEN ('+CAST(@firstRecord AS varchar(32)) +') AND ('+CAST(@firstRecord + @pagesize AS varchar(32))+') '
+         +'ORDER by rnum';
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_columnsets_geo]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_columnsets_geo]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20,
+    @parent_id varchar(512) =''       
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+
+
+IF @parent_id is NULL
+BEGIN    
+    SET @sql =  '
+         SELECT top(50)
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+						[_Id] as [INT],
+						[_Id] + 0.1234567 as [FLOAT],
+
+            getdate() AS [DATETIME],
+            getdate() AS [DATE],
+            getdate() AS [TIME]
+            FROM [dbo].[geo3] '+@orderby
+         
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as [Название]'
+
+END
+
+
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_columnsets]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_columnsets]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql =  'WITH result AS 	(
+         SELECT 
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+						[_Id] as [INT],
+						[_Id] + 0.1234567 as [FLOAT],
+
+            getdate() AS [DATETIME],
+            getdate() AS [DATE],
+            getdate() AS [TIME],
+           
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[geo3])
+      SELECT
+         [~~id],  
+         [Код], 
+         [Название], 
+         [Картинка],
+         [INT],
+				 [FLOAT],
+         [DATETIME],
+         [DATE],
+         [TIME]
+         FROM result 
+         WHERE rnum BETWEEN ('+CAST(@firstRecord AS varchar(32)) +') AND ('+CAST(@firstRecord + @pagesize AS varchar(32))+') '
+         +'ORDER by rnum';
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_column_types_geo]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_column_types_geo]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20,
+    @parent_id varchar(512) =''       
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+
+
+IF @parent_id is NULL
+BEGIN    
+    SET @sql =  '
+         SELECT top(50)
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+						[_Id] as [INT],
+						[_Id] + 0.1234567 as [FLOAT],
+
+            getdate() AS [DATETIME],
+            getdate() AS [DATE],
+            getdate() AS [TIME]
+            FROM [dbo].[geo3] '+@orderby
+         
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as [Название]'
+
+END
+
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_column_types]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_column_types]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql =  'WITH result AS 	(
+         SELECT 
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+						[_Id] as [INT],
+						[_Id] + 0.1234567 as [FLOAT],
+
+            getdate() AS [DATETIME],
+            getdate() AS [DATE],
+            getdate() AS [TIME],
+           
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[geo3])
+      SELECT
+         [~~id],  
+         [Код], 
+         [Название], 
+         [Картинка],
+         [INT],
+				 [FLOAT],
+         [DATETIME],
+         [DATE],
+         [TIME]
+         FROM result 
+         WHERE rnum BETWEEN ('+CAST(@firstRecord AS varchar(32)) +') AND ('+CAST(@firstRecord + @pagesize AS varchar(32))+') '
+         +'ORDER by rnum';
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_cell_geo]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_cell_geo]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20,
+    @parent_id varchar(512) =''       
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+
+
+IF @parent_id is NULL
+BEGIN    
+    SET @sql =  '
+         SELECT top(50)
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+cast( ''<properties>
+
+
+		<readonly value="false"/>
+
+<!--
+		<styleClass name="jslivegrid-record-bold"/>
+		<styleClass name="jslivegrid-record-italic"/>
+-->
+
+
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="543">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="544">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+
+  
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="544">
+											<add_context>''+[Name]+''</add_context>   
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>     
+
+                                  
+
+            </properties>'' as xml)  as [~~properties]           
+            FROM [dbo].[geo3] '+@orderby
+         
+END
+ELSE
+BEGIN
+
+set @Sql = 
+'Select top(0) 5 as [Название]'
+
+END
+
+
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data_cell]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data_cell]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql =  'WITH result AS 	(
+         SELECT 
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+cast( ''<properties>
+
+
+		<readonly value="false"/>
+
+<!--
+		<styleClass name="jslivegrid-record-bold"/>
+		<styleClass name="jslivegrid-record-italic"/>
+-->
+
+
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="543">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="544">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+
+  
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="544">
+											<add_context>''+[Name]+''</add_context>   
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>     
+
+                                  
+
+            </properties>'' as xml)  as [~~properties],           
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[geo3])
+      SELECT
+         [~~id],  
+         [Код], 
+         [Название], 
+         [Картинка],
+         [~~properties] FROM result 
+         WHERE rnum BETWEEN ('+CAST(@firstRecord AS varchar(32)) +') AND ('+CAST(@firstRecord + @pagesize AS varchar(32))+') '
+         +'ORDER by rnum';
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[grid_new_data]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[grid_new_data]
+    @main_context varchar(512) ='Производственное потребление в сельхозорганизациях и у населения - На семена',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+    @firstrecord int = 1,
+    @pagesize int = 20   
+AS
+BEGIN
+
+--    RAISERROR (@pagesize, 16,   1  );
+
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+
+
+    SET NOCOUNT ON
+
+
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+--insert into Debug (string) VALUES (@sortcols)
+--insert into Debug (context) VALUES (@filterinfo)
+
+
+    SET @sortcols = REPLACE(@sortcols,'Код','_Id');
+    SET @sortcols = REPLACE(@sortcols,'Название','Name');
+
+
+
+    DECLARE @sql varchar(max)
+    DECLARE @orderby varchar(max)
+    if (@sortcols = '')
+    SET @orderby = 'ORDER BY [Name]';
+    else
+    SET @orderby = @sortcols;
+    
+    SET @sql =  'WITH result AS 	(
+         SELECT 
+						[_Id] as [~~id],
+						[_Id] as [Код],
+            [Name] as [Название],
+            ''imagesingrid/test.jpg:Подсказка'' AS [Картинка],
+
+cast( ''<properties>
+
+
+		<readonly value="false"/>
+
+<!--
+		<styleClass name="jslivegrid-record-bold"/>
+		<styleClass name="jslivegrid-record-italic"/>
+-->
+
+
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="443">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                <element id="444">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>    
+
+  
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="444">
+											<add_context>''+[Name]+''</add_context>   
+                                </element> 
+                                
+                            </datapanel>
+                        </action>
+                    </event>     
+
+                                  
+
+            </properties>'' as xml)  as [~~properties],           
+            ROW_NUMBER() 
+            OVER ('+@orderby+') AS rnum 
+         FROM [dbo].[geo3])
+      SELECT
+         [~~id],  
+         [Код], 
+         [Название], 
+         [Картинка],
+         [~~properties] FROM result 
+         WHERE rnum BETWEEN ('+CAST(@firstRecord AS varchar(32)) +') AND ('+CAST(@firstRecord + @pagesize AS varchar(32))+') '
+         +'ORDER by rnum';
+   EXEC(@sql)	
+
+
+
+--return 555;
+
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[addrecord1_grid_new]    Script Date: 12/17/2015 10:36:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[addrecord1_grid_new]
+	@main_context varchar(512),
+	@add_context varchar(512),
+	@filterinfo xml,
+	@session_context xml,
+	@element_Id varchar(512),
+
+	@addrecorddata xml,
+
+  @gridaddrecordresult xml output,
+
+	@error_mes varchar(2048) output	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+--INSERT INTO Debug (context) VALUES (@addrecorddata)
+
+
+/*
+DECLARE @currentRecordId varchar(2048)
+SET @currentRecordId=(select @addrecorddata.value('(/addrecorddata/currentRecordId)[1]','varchar(MAX)'))
+
+
+DECLARE @name varchar(2048)
+DECLARE @Id INTEGER
+DECLARE @ParentId uniqueidentifier
+
+
+SET @name = (SELECT Name FROM geo5 where geo5_Id =  @currentRecordId)
+IF @name IS NOT NULL
+BEGIN
+	SET @Id = (SELECT Id FROM geo5 where geo5_Id =  @currentRecordId)+10000
+	SET @name = @name+'_New'
+	INSERT INTO geo5 (Name, Id, FJField_9) VALUES (@name, @Id, @ParentId)
+END
+*/
+
+
+
+
+Declare @gridaddrecordresult_str as varchar(max)
+set @gridaddrecordresult_str='
+<gridaddrecordresult>
+</gridaddrecordresult>'
+
+set    @gridaddrecordresult=CAST(@gridaddrecordresult_str as xml)
+
+--set    @gridaddrecordresult=NULL
+
+
+	
+
+--	SET @error_mes='Ошибка при добавлении записи'
+--	RETURN 30
+
+
+  set @error_mes = 'Запись успешно добавлена'
+  RETURN 555;
+
+
+	SET @error_mes=''
+	RETURN 0
+
+
+	
+	
+END
+GO
 
 

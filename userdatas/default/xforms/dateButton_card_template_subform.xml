@@ -48,10 +48,52 @@
     
 		<h1>Шаблон xformId</h1>    
         
-        <div class="control" style="width: 150px; padding: 2px; float: left;">
-            <xf:input class="xformId_dateInput2" ref="instance('xformId_mainInstance')/date">
-                <xf:label>Выберите дату: </xf:label>
-            </xf:input>
+        <div class="control" style="width: 450px; padding: 2px; float: left;">
+
+        
+
+                <xf:label>Выберите дату: 
+            <xf:input class="xformId_dateInput2" ref="instance('xformId_mainInstance')/date">                
+            </xf:input>    
+                </xf:label>
+                <xf:label>Выберите дату: 
+            <xf:input class="xformId_dateInput2" ref="instance('xformId_mainInstance')/date">                
+            </xf:input>    
+                </xf:label>
+                <xf:label>Выберите дату: 
+            <xf:input class="xformId_dateInput2" ref="instance('xformId_mainInstance')/date">                
+            </xf:input>    
+                </xf:label>
+                <xf:label>Выберите дату: 
+            <xf:input class="xformId_dateInput2" ref="instance('xformId_mainInstance')/date">                
+            </xf:input>    
+                </xf:label>
+                <xf:label>Выберите дату: 
+            <xf:input class="xformId_dateInput2" ref="instance('xformId_mainInstance')/date">                
+            </xf:input>    
+                </xf:label>
+                <xf:label>Выберите дату: 
+            <xf:input class="xformId_dateInput2" ref="instance('xformId_mainInstance')/date">                
+            </xf:input>    
+                </xf:label>
+                <xf:label>Выберите дату: 
+            <xf:input class="xformId_dateInput2" ref="instance('xformId_mainInstance')/date">                
+            </xf:input>    
+                </xf:label>
+                <xf:label>Выберите дату: 
+            <xf:input class="xformId_dateInput2" ref="instance('xformId_mainInstance')/date">                
+            </xf:input>    
+                </xf:label>
+                <xf:label>Выберите дату: 
+            <xf:input class="xformId_dateInput2" ref="instance('xformId_mainInstance')/date">                
+            </xf:input>    
+                </xf:label>
+                <xf:label>Выберите дату: 
+            <xf:input class="xformId_dateInput2" ref="instance('xformId_mainInstance')/date">                
+            </xf:input>    
+                </xf:label>
+            
+
         </div>    
         
         <div class="control" style="width: 10px; padding: 2px; float: left;  clear: both;"/>

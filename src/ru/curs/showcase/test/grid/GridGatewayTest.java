@@ -47,8 +47,8 @@ public class GridGatewayTest extends AbstractTestWithDefaultUserData {
 		Connection conn = ConnectionFactory.getInstance().acquire();
 		try (GridDBGateway gateway = new GridDBGateway(conn)) {
 			GridContext gc = new GridContext();
-			gc.setPageNumber(2);
-			gc.setPageSize(2);
+			// gc.setPageNumber(2);
+			// gc.setPageSize(2);
 			gc.assignNullValues(context);
 			gateway.getRawData(gc, element);
 		}

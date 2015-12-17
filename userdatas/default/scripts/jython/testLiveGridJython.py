@@ -22,7 +22,8 @@ sortcols = None #объект типа java.util.List<ru.curs.gwt.datagrid.model
 
 class testLiveGridJython(JythonProc):
     def getRawData(self, context, elId, scols, frecord, psize):
-        global main, add, session, filterContext, elementId, sortcols, firstrecord, pagesize
+        global main, add, session, filterContext, elementId, sortcols2, firstrecord, pagesize
+        
         main = context.getMain()
         if context.getAdditional():
             add = context.getAdditional()
@@ -33,6 +34,15 @@ class testLiveGridJython(JythonProc):
         sortcols = scols
         firstrecord = frecord
         pagesize = psize
+        
+        
+        print 'sortColumnList'    
+        if sortcols != None:
+            for column in sortcols:
+                print 'sort columnID "%s".' % column.getId()
+                print 'sort direction "%s".' % column.getSorting()        
+
+        
         return mainproc()
 
 

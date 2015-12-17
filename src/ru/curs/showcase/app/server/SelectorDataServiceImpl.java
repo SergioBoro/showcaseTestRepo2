@@ -4,7 +4,7 @@ import org.slf4j.*;
 
 import ru.beta2.extra.gwt.ui.selector.api.*;
 import ru.curs.showcase.app.api.grid.GridContext;
-import ru.curs.showcase.core.grid.GridTransformer;
+import ru.curs.showcase.core.grid.GridUtils;
 import ru.curs.showcase.core.selector.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 
@@ -28,7 +28,7 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		try {
 
 			if (req.getAddData().getContext() instanceof GridContext) {
-				GridTransformer.fillFilterContextByListOfValuesInfo((GridContext) req.getAddData()
+				GridUtils.fillFilterContextByListOfValuesInfo((GridContext) req.getAddData()
 						.getContext());
 			}
 

@@ -2,7 +2,6 @@ package ru.curs.showcase.core.grid;
 
 import java.sql.*;
 
-import ru.curs.gwt.datagrid.model.Column;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.core.sp.*;
@@ -28,6 +27,8 @@ public abstract class AbstractGridDBGateway extends CompBasedElementSPQuery impl
 	protected abstract int getFirstRecordIndex();
 
 	protected abstract int getPageSizeIndex();
+
+	protected abstract int getParentIdIndex();
 
 	protected void prepare() throws SQLException {
 		switch (getTemplateIndex()) {
@@ -64,9 +65,8 @@ public abstract class AbstractGridDBGateway extends CompBasedElementSPQuery impl
 	private void setupSorting(final GridContext settings) throws SQLException {
 		if (settings.sortingEnabled()) {
 			StringBuilder builder = new StringBuilder("ORDER BY ");
-			for (Column col : settings.getSortedColumns()) {
-				builder.append(String.format("\"%s\" %s,", col.getId(), col.getSorting()));
-			}
+			builder.append(String.format("\"%s\" %s,", settings.getGridSorting().getSortColId(),
+					settings.getGridSorting().getSortColDirection()));
 			String sortStatement = builder.substring(0, builder.length() - 1);
 			setStringParam(getSortColsIndex(), sortStatement);
 		} else {
@@ -79,8 +79,6 @@ public abstract class AbstractGridDBGateway extends CompBasedElementSPQuery impl
 		init(context, elementInfo);
 		setRetriveResultSets(true);
 		try {
-			context.normalize();
-
 			prepare();
 
 			setupSorting(context);
@@ -94,18 +92,12 @@ public abstract class AbstractGridDBGateway extends CompBasedElementSPQuery impl
 	}
 
 	protected void setupRange() throws SQLException {
-		int firstRecord;
-		int pageSize;
-		if ((getContext().getSubtype() == DataPanelElementSubType.EXT_LIVE_GRID)
-				|| (getContext().getSubtype() == DataPanelElementSubType.EXT_PAGE_GRID)) {
-			firstRecord = getContext().getLiveInfo().getFirstRecord();
-			pageSize = getContext().getLiveInfo().getLimit();
-		} else {
-			firstRecord = getContext().getPageInfo().getFirstRecord();
-			pageSize = getContext().getPageSize();
+		setIntParam(getFirstRecordIndex(), getContext().getLiveInfo().getFirstRecord());
+		setIntParam(getPageSizeIndex(), getContext().getLiveInfo().getLimit());
+
+		if (getContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
+			setStringParam(getParentIdIndex(), getContext().getParentId());
 		}
-		setIntParam(getFirstRecordIndex(), firstRecord);
-		setIntParam(getPageSizeIndex(), pageSize);
 	}
 
 	@Override

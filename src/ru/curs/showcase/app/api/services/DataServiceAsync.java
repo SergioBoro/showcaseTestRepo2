@@ -32,16 +32,11 @@ public interface DataServiceAsync {
 	void getWebText(CompositeContext context, DataPanelElementInfo element,
 			AsyncCallback<WebText> callback);
 
-	void getGrid(GridContext context, DataPanelElementInfo element, AsyncCallback<Grid> callback);
+	void getGridMetadata(GridContext context, DataPanelElementInfo element,
+			AsyncCallback<GridMetadata> callback);
 
-	void getLiveGridMetadata(GridContext context, DataPanelElementInfo element,
-			AsyncCallback<LiveGridMetadata> callback);
-
-	void getLiveGridData(GridContext context, DataPanelElementInfo element,
-			AsyncCallback<LiveGridData<LiveGridModel>> callback);
-
-	void getTreeGridData(GridContext context, DataPanelElementInfo element,
-			AsyncCallback<List<TreeGridModel>> callback);
+	void getGridData(GridContext context, DataPanelElementInfo element,
+			AsyncCallback<GridData> callback);
 
 	void getChart(CompositeContext context, DataPanelElementInfo element,
 			AsyncCallback<Chart> callback);

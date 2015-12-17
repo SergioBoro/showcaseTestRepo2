@@ -22,6 +22,8 @@
 				  <files1>                
 					<file>Файл11</file>                
 					<file>Файл12</file>
+					<file>Файл13</file>
+					<file>Файл14</file>
 				  </files1>
 				  <files2>                
 					<file>Файл21</file>                
@@ -38,15 +40,78 @@
 	
 	<body>
 	
+<!--	
+		<xf:upload ref="instance('xformId_myInstance')/files1/file" incremental="true">
+			<xf:label>Upload for anyURI: </xf:label>
+		</xf:upload>
+-->	
+	
+<hr/>	
+	
+
+	
+        <xf:group id="names2" ref="instance('xformId_myInstance')/files1/file">
+            <xf:input ref="."/>
+         </xf:group>	 
+	
+<hr/>
+
+	<table>	
+        <xf:repeat id="names1" nodeset="instance('xformId_myInstance')/files1/file">
+			<tr>
+			<td>        
+<!--        
+ 	           <xf:output ref="'Номер п/п: ' + position() + ' '"/>
+           
+-->         
+
+    	         <xf:output value="position()"/>
+        	     <xf:input ref="."/>
+   			</td>        	     
+			</tr>        	     
+            
+		<xf:upload id="xformId_051"  submit="true"  />            
+   
+        </xf:repeat>
+	</table>        
+	
+	
+<hr/>	
+	
+
+	
 		<div>
-			Быстрая загрузка файла - 1-й (Выдается ошибка при загрузке, задан submitLabel, запрет мультивыбора)					
+			Быстрая загрузка файла - 1111-й (Выдается ошибка при загрузке, задан submitLabel, запрет мультивыбора)					
 		</div>
-		<xf:upload id="xformId_05"  submit="true" submitLabel="Загрузить файлы" singleFile="true"  />
+		<xf:upload  action="&lt;xf:message>Неверный формат&lt;/xf:message>"   id="xformId_05"  submit="true" submitLabel="Загрузить файлы" singleFile="true">
+
+
+  
+
+					<xf:action ev:event="DOMActivate">
+						<xf:message>Неверный формат</xf:message>
+					</xf:action>
+
+
+		
+		</xf:upload>  
+		
+		
+
+		
+
+		
+
+
+
+
+
+		
 			
 		<div>
 			Быстрая загрузка файла - 22-й (submitLabel по умолчанию)			
 		</div>
-		<xf:upload id="xformId_051"  submit="true" notClearUpload="true" />
+		<xf:upload id="xformId_051"  submit="true"  />
 	
 		<hr />
 	
@@ -55,7 +120,7 @@
 		<div>
 			Обычная загрузка файла - 1-й (задан filenamesMapping с предварительной очисткой списка файлов)					
 		</div>
-		<xf:upload id="xformId_04"  notClearUpload="true"  filenamesMapping="XPath(instance(quot(xformId_myInstance))/files1)" needClearFilenames ="true"  />
+		<xf:upload id="xformId_04" filenamesMapping="XPath(instance(quot(xformId_myInstance))/files1)" needClearFilenames ="true"  />
 		<div>
 			Список файлов:	
         <xf:select1 ref="instance('xformId_mainInstance')/info/name">
@@ -105,6 +170,8 @@
 			</xf:trigger>
 		</div>
 		
+
+
 
 	</body>
 </html>

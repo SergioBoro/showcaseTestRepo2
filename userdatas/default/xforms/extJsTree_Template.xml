@@ -4,6 +4,24 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLschema" xmlns:fs="http://www.curs.ru/ns/FormServer"
 	xmlns:xf="http://www.w3.org/2002/xforms">
 	<head>
+	
+        <style type="text/css">
+        
+            .dateInput
+            .xforms-value {
+                width: 270px !important;
+                border: 0px;
+                padding: 2px 0px 2px 0px;
+                background-color: #E5F2FF;
+                margin: 2px 0px 0px 0px;
+                min-height: 13px;
+            }
+            
+            
+		</style>
+	
+	
+	
 		<xf:model id="xformId_mainModel">
 			<xf:instance id="xformId_mainInstance">
 				<schema xmlns="">
@@ -42,21 +60,20 @@
 
 
 			<xf:trigger>
-				<xf:label>Вызов ExtJsTree плагина</xf:label>
+				<xf:label>Вызов ExtJsTree плагина22</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
 						resource="javascript:gwtCreatePlugin({
 							id:'xformId',
-							/*parentId:'pluginWraper',*/
 							plugin:'extJsTree',
-							/*proc:'pluginExtJsTree',*/
 							proc:'plugin/extJsTree.py',
 							postProcessProc:'plugin/handleExtJsTree.py',
-							/*getDataProcName:'extJsTree_getData',*/
 							getDataProcName:'plugin/extJsTreeGetData.py',
 							generalFilters:['XPath(instance(quot(xformId_myInstance1))/item/name)'],							
 							params:{
 								treePanel: {
+									menuDisabled: true,
+								hideHeaders: false,
 									title: 'Элементы дерева',
 									listeners: {
 										checkchange: {
@@ -68,18 +85,20 @@
 										}
 									}
 								},
+								
 								core: {
 									checkParent:true,
 									filter:{
 										startsWith:true,
-										delay:900
+										delay:900,
+										autofilter:false
 									}
 								},
 								
 								
 								dataModel:{
 									fields:[
-										{name: 'attr1', type: 'string'},
+										{name: '', type: 'string'},
 										
 										{name: 'column1', type: 'string'},										
 										{name: 'column2', type: 'string'}										
@@ -87,9 +106,10 @@
 								},
 
 								view:{
+							
 									columns:[
-										{ header: 'Столбец1', dataIndex: 'column1'},
-										{ header: 'Столбец2', dataIndex: 'column2'}
+										{ header: 'Столбец1', dataIndex: 'column1', menuDisabled: true},
+										{ header: 'Столбец2', dataIndex: 'column2', menuDisabled: true}
 									]
 								}
 								
@@ -109,18 +129,6 @@
 											xpathRoot:'XPath(instance(quot(xformId_myInstance))/items)',
 											xpathMapping:{'XPath(instance(quot(xformId_myInstance1))/item)':{'id': '@id','name':'name'}}
 										}, true);
-										
-										/*var records = plugin.getValues();
-										names = [];
-										Ext.Array.each(records, function(rec){
-											names.push(rec.get('name'));
-										});
- 					                    var a = getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance').getElementsByTagName('info')[0].getElementsByTagName('name')[0];
-										setValue(a, names.join('|'));
-										
-										xforms.ready = false;
-										xforms.refresh();
-										xforms.ready = true;*/
 									}
 								}
 							}
@@ -146,10 +154,16 @@
 							generalFilters:['XPath(instance(quot(xformId_myInstance1))/item/name)'],							
 							params:{
 								treePanel: {
+								
+								singleExpand : true,
+								
 									title: 'Элементы дерева',
 									listeners: {
 										checkchange: {
 											fn: function(node, checked, eOpts) {
+											
+											
+											
 												if (checked) {
 													alert('CheckChange event. Select node '+node.get('name')+'(id:'+node.get('id')+', attr1:'+node.get('attr1')+')');
 												}
@@ -179,12 +193,12 @@
 								onSelectionComplete: function(ok, plugin) {
 									if (ok) {
 										plugin.utils.singleXpathMapping({
-											'XPath(instance(quot(xformId_myInstance1))/item/name)':'name',
+											'XPath(instance(quot(xformId_myInstance1))/item/name)':'attr1',
 											'XPath(instance(quot(xformId_myInstance1))/item/@id)':'id'
 										});
 										plugin.utils.multiXpathMapping({
 											xpathRoot:'XPath(instance(quot(xformId_myInstance))/items)',
-											xpathMapping:{'XPath(instance(quot(xformId_myInstance1))/item)':{'id': '@id','name':'name'}}
+											xpathMapping:{'XPath(instance(quot(xformId_myInstance1))/item)':{'id': '@id','attr1':'name'}}
 										}, true);
 										
 										/*var records = plugin.getValues();

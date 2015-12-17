@@ -9,7 +9,6 @@ import java.util.*;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.*;
 
-import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
@@ -415,13 +414,13 @@ public class AbstractTest extends GeneralXMLHelper {
 		GridContext gc = new GridContext();
 		gc.setAdditional("<add>value</add>");
 		gc.setFilter("<filter>filter_value</filter>");
-		gc.setPageSize(2);
-		Column col = new Column();
-		col.setId("colId");
-		col.setSorting(Sorting.ASC);
-		col.setWidth("10px");
-		gc.getSortedColumns().add(col);
-		gc.getSelectedRecordIds().add("r1");
+		// gc.setPageSize(2);
+		// Column col = new Column();
+		// col.setId("colId");
+		// col.setSorting(Sorting.ASC);
+		// col.setWidth("10px");
+		// gc.getSortedColumns().add(col);
+		// gc.getSelectedRecordIds().add("r1");
 		gc.getSelectedRecordIds().add("r2");
 		gc.setCurrentColumnId("curColumnId");
 		gc.setCurrentRecordId("curRecordId");
@@ -588,8 +587,8 @@ public class AbstractTest extends GeneralXMLHelper {
 			final int pageNum, final String firstColName) {
 		final int maxColIndex = 5;
 		GridContext gc = new GridContext();
-		gc.setPageNumber(pageNum);
-		gc.setPageSize(pageSize);
+		// gc.setPageNumber(pageNum);
+		// gc.setPageSize(pageSize);
 		addSortedColumn(gc, "3кв. 2007г.", maxColIndex);
 		addSortedColumn(gc, "3кв. 2006г.", 1);
 		addSortedColumn(gc, firstColName, 0);
@@ -604,10 +603,10 @@ public class AbstractTest extends GeneralXMLHelper {
 	}
 
 	private void addSortedColumn(final GridContext settings, final String name, final int index) {
-		Column col = new Column();
-		col.setId(name);
-		col.setSorting(Sorting.ASC);
-		col.setIndex(index);
-		settings.getSortedColumns().add(col);
+		// Column col = new Column();
+		// col.setId(name);
+		// col.setSorting(Sorting.ASC);
+		// col.setIndex(index);
+		// settings.getSortedColumns().add(col);
 	}
 }

@@ -23,13 +23,13 @@ public class JSPageGridPluginPanel extends JSLiveGridPluginPanel {
 	protected void resetGridSettingsToCurrent() {
 		super.resetGridSettingsToCurrent();
 
-		getLocalContext().setSubtype(DataPanelElementSubType.EXT_PAGE_GRID);
+		getLocalContext().setSubtype(DataPanelElementSubType.JS_PAGE_GRID);
 	}
 
 	@Override
 	public GridContext getDetailedContext() {
 		GridContext result = super.getDetailedContext();
-		result.setSubtype(DataPanelElementSubType.EXT_PAGE_GRID);
+		result.setSubtype(DataPanelElementSubType.JS_PAGE_GRID);
 		return result;
 	}
 }

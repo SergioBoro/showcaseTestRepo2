@@ -36,9 +36,13 @@ public final class JSLiveGridPluginPanelCallbacksEvents {
 		return getCurrentPanel(pluginId).pluginEditorGetHttpParams(data, editorType);
 	}
 
-	public static void pluginAfterLoadData(final String pluginId,
-			final String stringLiveGridExtradata, final String totalCount) {
-		getCurrentPanel(pluginId).pluginAfterLoadData(stringLiveGridExtradata, totalCount);
+	public static void pluginAfterLoadData(final String pluginId, final String stringEvents,
+			final String totalCount) {
+		getCurrentPanel(pluginId).pluginAfterLoadData(stringEvents, totalCount);
+	}
+
+	public static void pluginAfterPartialUpdate(final String pluginId, final String stringEvents) {
+		getCurrentPanel(pluginId).pluginAfterPartialUpdate(stringEvents);
 	}
 
 	public static void pluginAfterClick(final String pluginId, final String recId,

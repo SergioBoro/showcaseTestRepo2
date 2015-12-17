@@ -1,16 +1,12 @@
 package ru.curs.showcase.app.api.grid;
 
-import java.util.*;
+import java.util.List;
 
-import ru.curs.gwt.datagrid.model.Record;
-import ru.curs.gwt.datagrid.selection.DataSelection;
 import ru.curs.showcase.app.api.element.EventManager;
 import ru.curs.showcase.app.api.event.*;
 
 /**
  * Менеджер событий для грида.
- * 
- * @author den
  * 
  */
 public class GridEventManager extends EventManager<GridEvent> {
@@ -32,24 +28,6 @@ public class GridEventManager extends EventManager<GridEvent> {
 	public List<GridEvent> getEventForCell(final String rowId, final String colId,
 			final InteractionType interactionType) {
 		return getEventByIds(rowId, colId, interactionType);
-	}
-
-	/**
-	 * Возвращает действие для отрисовки зависимых элементов, содержащее
-	 * фильтрацию по всем выделенным в гриде записям.
-	 * 
-	 * @param selection
-	 *            - информация о выделенных записях.
-	 * @return - действие.
-	 */
-	public Action getSelectionActionForDependentElements(final DataSelection selection) {
-		List<String> selectedRecordIds = new ArrayList<String>();
-
-		for (Record record : selection.getSelectedRecords()) {
-			selectedRecordIds.add(record.getId());
-		}
-
-		return getSelectionActionForDependentElements(selectedRecordIds);
 	}
 
 	/**

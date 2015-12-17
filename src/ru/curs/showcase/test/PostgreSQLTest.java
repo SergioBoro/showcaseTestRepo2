@@ -6,20 +6,16 @@ import java.util.*;
 
 import org.junit.*;
 
-import ru.beta2.extra.gwt.ui.GeneralConstants;
-import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.chart.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.ChildPosition;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.geomap.*;
-import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.core.chart.*;
 import ru.curs.showcase.core.geomap.*;
-import ru.curs.showcase.core.grid.GridGetCommand;
 import ru.curs.showcase.core.html.plugin.PluginCommand;
 import ru.curs.showcase.core.html.webtext.WebTextGetCommand;
 import ru.curs.showcase.core.html.xform.XFormGetCommand;
@@ -210,114 +206,6 @@ public class PostgreSQLTest extends AbstractTest {
 		assertEquals("createRadar", plugin.getCreateProc());
 		assertEquals(PLUGIN_HEIGHT, plugin.getStringSize().getHeight());
 		assertEquals(PLUGIN_WIDTH, plugin.getStringSize().getWidth());
-
-	}
-
-	/**
-	 * Проверка получения грида с помощью 2-х процедур.
-	 */
-	@Test
-	@Ignore
-	// !!!
-			public
-			void testGrid2ProcFromSP() {
-		runGrid2Proc(PG_XML_SP);
-	}
-
-	@Test
-	@Ignore
-	// !!!
-			public
-			void testGrid2ProcFromScript() {
-		runGrid2Proc(PG_XML_SCRIPTS);
-	}
-
-	private void runGrid2Proc(final String fileName) {
-		GridContext context = getTestGridContext1();
-		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
-		DataPanelElementInfo elInfo = getDPElement(fileName, "41", "0401");
-
-		GridGetCommand command = new GridGetCommand(context, elInfo, true);
-		Grid grid = command.execute();
-
-		assertNotNull(grid);
-		final int pageSize = 15;
-		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
-		final int pageNum = 3;
-		assertEquals(pageNum, grid.getDataSet().getRecordSet().getPageNumber());
-		final int pagesCount = CITIES_COUNT / pageSize + 1;
-		assertEquals(pagesCount, grid.getDataSet().getRecordSet().getPagesTotal());
-
-	}
-
-	/**
-	 * Проверка получения грида на основе xml-датасета.
-	 * 
-	 */
-	@Test
-	@Ignore
-	// !!!
-			public
-			void testGridXmlDsFromSP() {
-		runGridXmlDs(PG_XML_SP);
-	}
-
-	@Test
-	@Ignore
-	// !!!
-			public
-			void testGridXmlDsFromScript() {
-		runGridXmlDs(PG_XML_SCRIPTS);
-	}
-
-	private void runGridXmlDs(final String fileName) {
-		final int colCount = 7;
-		final int pagesCount = 2;
-		final int pageSize = 2;
-
-		GridContext context = getTestGridContext1();
-		context.setSessionParamsMap(generateTestURLParamsForSL(PG_USERDATA));
-		DataPanelElementInfo element = getDPElement(fileName, "42", "0201");
-
-		GridGetCommand command = new GridGetCommand(context, element, true);
-		Grid grid = command.execute();
-
-		assertNotNull(context.getSession());
-		assertNotNull(grid);
-		assertNotNull(grid.getDataSet());
-		assertFalse(grid.getHeader().isEmpty());
-		assertTrue(grid.getFooter().isEmpty());
-		assertNotNull(grid.getEventManager().getEvents());
-		assertTrue(grid.getEventManager().getEvents().size() > 0);
-
-		assertNotNull(grid.getDataSet().getRecordSet());
-		assertNotNull(grid.getDataSet().getColumnSet());
-		assertEquals(colCount, grid.getDataSet().getColumnSet().getColumns().size());
-		Column col = grid.getDataSet().getColumnSet().getColumns().get(0);
-		assertEquals(HorizontalAlignment.LEFT, col.getHorizontalAlignment());
-		assertNull(col.getFormat());
-		col = grid.getDataSet().getColumnSet().getColumns().get(1);
-		assertEquals(HorizontalAlignment.CENTER, col.getHorizontalAlignment());
-		assertEquals(GridValueType.IMAGE, col.getValueType());
-		assertEquals("solutions/pg/resources/imagesingrid/test.jpg", grid.getDataSet()
-				.getRecordSet().getRecords().get(0).getValue(col));
-
-		assertEquals(grid.getDataSet().getRecordSet().getPageSize(), grid.getDataSet()
-				.getRecordSet().getRecordsCount());
-		assertEquals(2, grid.getDataSet().getRecordSet().getPageNumber());
-		assertEquals(pageSize, grid.getDataSet().getRecordSet().getPageSize());
-		assertEquals(pagesCount, grid.getDataSet().getRecordSet().getPagesTotal());
-
-		assertNull(grid.getDefaultAction());
-		assertFalse(grid.getUISettings().isSelectOnlyRecords());
-
-		assertNotNull(grid.getAutoSelectRecord());
-		final String recId = "3";
-		assertEquals(recId, grid.getAutoSelectRecord().getId());
-		assertNotNull(grid.getEventManager().getEventForCell(recId, "URL",
-				InteractionType.SINGLE_CLICK));
-		assertEquals("grid-record-bold grid-record-italic", grid.getDataSet().getRecordSet()
-				.getRecords().get(0).getAttributes().getValue(GeneralConstants.STYLE_CLASS_TAG));
 
 	}
 

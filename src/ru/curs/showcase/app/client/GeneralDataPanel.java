@@ -487,20 +487,9 @@ public class GeneralDataPanel {
 
 		DataPanelElementSubType subtype = dpe.getSubtype();
 		if (subtype == null) {
-			subtype = DataPanelElementSubType.PAGING_GRID;
+			subtype = DataPanelElementSubType.JS_LIVE_GRID;
 		}
 		switch (subtype) {
-		case EXT_LIVE_GRID:
-			w = generateExtLiveGridElement(dpe);
-			break;
-
-		case EXT_PAGE_GRID:
-			w = generateExtPageGridElement(dpe);
-			break;
-
-		case EXT_TREE_GRID:
-			w = generateExtTreeGridElement(dpe);
-			break;
 
 		case JS_LIVE_GRID:
 			w = generateJSLiveGridElement(dpe);
@@ -514,31 +503,14 @@ public class GeneralDataPanel {
 			w = generateJSTreeGridElement(dpe);
 			break;
 
-		case PAGING_GRID: // существующий грид
+		case JS_LYRA_GRID:
+			w = generateJSLyraGridElement(dpe);
+			break;
+
 		default:
-			w = generatePagingGridElement(dpe);
+			w = generateJSLiveGridElement(dpe);
 			break;
 		}
-
-		return w;
-	}
-
-	private static Widget generateExtLiveGridElement(final DataPanelElementInfo dpe) {
-		Widget w = null;
-		LiveGridPanel lgp = null;
-
-		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-			lgp = new LiveGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
-			w = lgp.getPanel();
-			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
-		} else {
-			lgp = new LiveGridPanel(dpe);
-			w = lgp.getPanel();
-			lgp.hidePanel();
-		}
-
-		getUiElements(dpe).add(new UIDataPanelElement(lgp));
-		addDataPanelForCaching(dpe, lgp);
 
 		return w;
 	}
@@ -597,66 +569,21 @@ public class GeneralDataPanel {
 		return w;
 	}
 
-	private static Widget generateExtPageGridElement(final DataPanelElementInfo dpe) {
+	private static Widget generateJSLyraGridElement(final DataPanelElementInfo dpe) {
+		BasicElementPanelBasis mp = null;
 		Widget w = null;
-
-		PageGridPanel pgp = null;
-
 		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-			pgp = new PageGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
-			w = pgp.getPanel();
-			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+			mp = new JSLyraGridPluginPanel(getElementContextForNavigatorAction(dpe), dpe);
+			w = mp.getPanel();
 		} else {
-			pgp = new PageGridPanel(dpe);
-			w = pgp.getPanel();
-			pgp.hidePanel();
+			// в случае когда у данного элемента есть главный элемент
+			mp = new JSLyraGridPluginPanel(dpe);
+			w = mp.getPanel();
+			mp.hidePanel();
 		}
 
-		getUiElements(dpe).add(new UIDataPanelElement(pgp));
-		addDataPanelForCaching(dpe, pgp);
-
-		return w;
-	}
-
-	private static Widget generateExtTreeGridElement(final DataPanelElementInfo dpe) {
-		Widget w = null;
-
-		TreeGridPanel tgp = null;
-
-		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-			tgp = new TreeGridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
-			w = tgp.getPanel();
-			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
-		} else {
-			tgp = new TreeGridPanel(dpe);
-			w = tgp.getPanel();
-			tgp.hidePanel();
-		}
-
-		getUiElements(dpe).add(new UIDataPanelElement(tgp));
-		addDataPanelForCaching(dpe, tgp);
-
-		return w;
-	}
-
-	private static Widget generatePagingGridElement(final DataPanelElementInfo dpe) {
-		Widget w = null;
-
-		GridPanel dgp = null;
-
-		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-			dgp = new GridPanel(getElementContextForNavigatorAction(dpe), dpe, null);
-			w = dgp.getPanel();
-			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
-		} else {
-			dgp = new GridPanel(dpe);
-			w = dgp.getPanel();
-			dgp.hidePanel();
-		}
-
-		getUiElements(dpe).add(new UIDataPanelElement(dgp));
-		addDataPanelForCaching(dpe, dgp);
-
+		getUiElements(dpe).add(new UIDataPanelElement(mp));
+		addDataPanelForCaching(dpe, mp);
 		return w;
 	}
 

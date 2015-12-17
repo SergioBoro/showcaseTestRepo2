@@ -11,7 +11,6 @@ import ru.curs.showcase.activiti.EventHandlerForActiviti;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
-import ru.curs.showcase.util.exception.CSSReadException;
 
 /**
  * Инициализатор приложения в рабочем режиме - при запуске Tomcat. Не должен
@@ -37,12 +36,9 @@ public final class ProductionModeInitializer {
 
 	private static final String GET_USERDATA_PATH_ERROR =
 		"Невозможно получить путь к каталогу с пользовательскими данными";
-	private static final String SHOWCASE_DATA_GRID_CSS = "/" + UserDataUtils.SOLUTIONS_DIR
-			+ "/%s/css/solutionGrid.css";
 	public static final String WIDTH_PROP = "width";
-	public static final String HEADER_GAP_SELECTOR = ".webmain-SmartGrid .headerGap";
-	private static final String CSS_READ = "Из CSS файла '" + SHOWCASE_DATA_GRID_CSS
-			+ "' cчитано значение " + HEADER_GAP_SELECTOR + " ." + WIDTH_PROP + " - %s";
+
+	private static final String COMMON_SYS = "common.sys";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductionModeInitializer.class);
 
@@ -161,35 +157,13 @@ public final class ProductionModeInitializer {
 	}
 
 	private static void readCSS(final String userdataId) {
-		CSSPropReader reader = new CSSPropReader();
-		String width = null;
-		try {
-			width =
-				reader.read(
-						AppInfoSingleton.getAppInfo().getWebAppPath()
-								+ String.format(SHOWCASE_DATA_GRID_CSS, userdataId),
-						HEADER_GAP_SELECTOR, WIDTH_PROP);
-		} catch (CSSReadException e) {
-			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
-				LOGGER.error(e.getLocalizedMessage());
-			}
-			return;
-		}
-		if (width != null) {
-			if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
-				LOGGER.info(String.format(CSS_READ, userdataId, width));
-			}
-			int value = TextUtils.getIntSizeValue(width);
-			if (value > 0) {
-				value--;
-			}
 
-			UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
-			if (us != null) {
-				us.setGridColumnGapWidth(value);
+		// Раньше здесь для "советского"грида считывалось только значение
+		// ColumnGapWidth из файла стилей грида. Сейчас это не актуально. Код
+		// считывания убрал, но механизм оставил -- мало ли нужно еще что-то
+		// будет считывать из стилей
 
-			}
-		}
+		// CSSPropReader reader = new CSSPropReader();
 	}
 
 	private static void copyUserDatas(final ServletContext aServletContext) {
@@ -224,10 +198,10 @@ public final class ProductionModeInitializer {
 		File userdataRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
 		File[] list = userdataRoot.listFiles();
 		for (File f : list) {
-			if (f.getName().equals("common.sys")) {
+			if (f.getName().equals(COMMON_SYS)) {
 				generalResRoot =
-					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + "common.sys");
-			} else if (f.getName().startsWith("common") && !(f.getName().equals("common.sys"))) {
+					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + COMMON_SYS);
+			} else if (f.getName().startsWith("common") && !(f.getName().equals(COMMON_SYS))) {
 				generalResRoot =
 					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName());
 			} else {
@@ -402,8 +376,8 @@ public final class ProductionModeInitializer {
 					new RegexFilenameFilter("^[.].*", false));
 		try {
 			fprocessor.processWithoutLoginContent(new CopyFileAction(aServletContext
-					.getRealPath("/"
-					+ UserDataUtils.SOLUTIONS_DIR + "/" + userdataId + "/" + dirName)));
+					.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/" + userdataId + "/"
+							+ dirName)));
 			fprocessorForLoginContent.process(new CopyFileAction(aServletContext
 					.getRealPath("/resources/login_content")));
 		} catch (IOException e) {

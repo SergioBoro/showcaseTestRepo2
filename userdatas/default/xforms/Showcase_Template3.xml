@@ -30,7 +30,7 @@
 
         <div>  
             <xf:trigger>
-                <xf:label>Сохранить и Закрыть</xf:label>
+                <xf:label>Сохранить и Закрыть2</xf:label>
                 <xf:action ev:event="DOMActivate">
                 <xf:load resource="javascript:gwtXFormSave('xformId', '1',  Writer.toString(getSubformInstanceDocument('xformId_mainModel', 'xformId_mainInstance')))"/>
                 </xf:action>

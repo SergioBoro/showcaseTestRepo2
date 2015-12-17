@@ -1,16 +1,13 @@
 package ru.curs.showcase.test.grid;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.grid.GridEvent;
 import ru.curs.showcase.test.AbstractTest;
-
-import com.google.gwt.dom.client.Style.Unit;
 
 /**
  * Модульные тесты (без обращения к БД или файловой системе) грида и его
@@ -20,45 +17,6 @@ import com.google.gwt.dom.client.Style.Unit;
  * 
  */
 public class GridTest extends AbstractTest {
-
-	@Test
-	public void recordShouldDetermineDifferentFontSizeFormated() {
-		Record rec = new Record();
-
-		final String fontSize = "1.1";
-		rec.setFontSize(fontSize);
-		final double accuracy = 0.01;
-		assertEquals(Double.parseDouble(fontSize), rec.getFontSizeValue(), accuracy);
-		assertEquals(Unit.EM, rec.getFontSizeUnit());
-
-		rec.setFontSize("1.1em");
-		assertEquals(Double.parseDouble(fontSize), rec.getFontSizeValue(), accuracy);
-		assertEquals(Unit.EM, rec.getFontSizeUnit());
-
-		rec.setFontSize("12px");
-		final int fonSize2 = 12;
-		assertEquals(fonSize2, rec.getFontSizeValue(), accuracy);
-		assertEquals(Unit.PX, rec.getFontSizeUnit());
-
-		rec.setFontSize("120%");
-		final int fonSize3 = 120;
-		assertEquals(fonSize3, rec.getFontSizeValue(), accuracy);
-		assertEquals(Unit.PCT, rec.getFontSizeUnit());
-	}
-
-	@Test(expected = StringIndexOutOfBoundsException.class)
-	public void exceptionShouldBeRaisedWhenUseWrongFontSizeFormat() {
-		Record rec = new Record();
-
-		try {
-			rec.setFontSize("%");
-			rec.getFontSizeValue();
-		} catch (NumberFormatException e) {
-			rec.setFontSize("");
-			rec.getFontSizeValue();
-		}
-		fail();
-	}
 
 	@Test
 	public void gridEventPropsShouldMatchEventsProps() {
@@ -80,17 +38,7 @@ public class GridTest extends AbstractTest {
 		assertEquals(colId, event.getId2().toString());
 	}
 
-	@Test
-	public void gridActionForDependentElementsShouldReturnDefaultActionIfAutoSelectDisabled() {
-		Grid grid = new Grid(getTestGridInfo());
-		GridEvent event = generateRowClickEvent("1");
-		grid.getEventManager().getEvents().add(event);
-		Action action = generateTestActionForRefreshElements();
-		grid.setDefaultAction(action);
-
-		assertEquals(action, grid.getActionForDependentElements());
-	}
-
+	@SuppressWarnings("unused")
 	private GridEvent generateRowClickEvent(final String id) {
 		GridEvent event = new GridEvent();
 		event.setRecordId(id);
@@ -99,6 +47,7 @@ public class GridTest extends AbstractTest {
 		return event;
 	}
 
+	@SuppressWarnings("unused")
 	private GridEvent generateCellClickEvent(final String row, final String cell) {
 		GridEvent event = new GridEvent();
 		event.setRecordId(row);
@@ -108,110 +57,13 @@ public class GridTest extends AbstractTest {
 		return event;
 	}
 
+	@SuppressWarnings("unused")
 	private GridEvent generateRowDblClickEvent(final String id) {
 		GridEvent event = new GridEvent();
 		event.setRecordId(id);
 		event.setInteractionType(InteractionType.DOUBLE_CLICK);
 		event.setAction(generateTestActionForRefreshElements());
 		return event;
-	}
-
-	@Test
-	public void gridActionForDependentElementsShouldReturnNullByDefault() {
-		Grid grid = new Grid(getTestGridInfo());
-
-		assertNull(grid.getActionForDependentElements());
-	}
-
-	@Test
-	public void gridActionForDependentElementsShouldReturnNullIfNoEventInRecord() {
-		Grid grid = new Grid(getTestGridInfo());
-		Record rec = new Record();
-		rec.setId("1");
-		rec.setIndex(0);
-		grid.setAutoSelectRecord(rec);
-		GridEvent event = generateRowClickEvent("2");
-		grid.getEventManager().getEvents().add(event);
-
-		assertNull(grid.getActionForDependentElements());
-	}
-
-	@Test
-	public void gridActionForDependentElementsShouldReturnAutoSelectRecordEventIfItExists() {
-		Grid grid = new Grid(getTestGridInfo());
-		Record rec = new Record();
-		final String autoSelectRecId = "1";
-		rec.setId(autoSelectRecId);
-		rec.setIndex(0);
-		grid.setAutoSelectRecord(rec);
-		final int recCount = 10;
-		GridEvent event = generateRowClickEvent(autoSelectRecId);
-		grid.getEventManager().getEvents().add(event);
-		Action action = event.getAction();
-		for (int i = 2; i < recCount; i++) {
-			event = generateRowClickEvent(String.valueOf(i));
-			grid.getEventManager().getEvents().add(event);
-		}
-
-		assertEquals(action, grid.getActionForDependentElements());
-	}
-
-	@Test
-	public void gridActionForDependentElementsShouldReturnAutoSelectDblClickEventIfItExists() {
-		Grid grid = new Grid(getTestGridInfo());
-		Record rec = new Record();
-		final String autoSelectRecId = "1";
-		rec.setId(autoSelectRecId);
-		rec.setIndex(0);
-		grid.setAutoSelectRecord(rec);
-		GridEvent event = generateRowDblClickEvent(autoSelectRecId);
-		grid.getEventManager().getEvents().add(event);
-		Action action = event.getAction();
-
-		assertEquals(action, grid.getActionForDependentElements());
-	}
-
-	@Test
-	public void gridActionForDependentElementsShouldReturnAutoSelectCellkEventIfItExists() {
-		Grid grid = new Grid(getTestGridInfo());
-		Record rec = new Record();
-		final String autoSelectId = "1";
-		rec.setId(autoSelectId);
-		rec.setIndex(0);
-		grid.setAutoSelectRecord(rec);
-		Column col = new Column();
-		col.setId(autoSelectId);
-		grid.setAutoSelectColumn(col);
-		GridEvent event = generateRowClickEvent(autoSelectId);
-		grid.getEventManager().getEvents().add(event);
-		event = generateRowDblClickEvent(autoSelectId);
-		grid.getEventManager().getEvents().add(event);
-		event = generateCellClickEvent(autoSelectId, autoSelectId);
-		grid.getEventManager().getEvents().add(event);
-		Action action = event.getAction();
-
-		assertEquals(action, grid.getActionForDependentElements());
-	}
-
-	@Test
-	public void
-			gridActionForDependentElementsShouldReturnRowClickEventIfOnlyAutoSelectRowEnabled() {
-		Grid grid = new Grid(getTestGridInfo());
-		Record rec = new Record();
-		final String autoSelectId = "1";
-		rec.setId(autoSelectId);
-		rec.setIndex(0);
-		grid.setAutoSelectRecord(rec);
-
-		GridEvent event = generateRowClickEvent(autoSelectId);
-		grid.getEventManager().getEvents().add(event);
-		Action action = event.getAction();
-		event = generateRowDblClickEvent(autoSelectId);
-		grid.getEventManager().getEvents().add(event);
-		event = generateCellClickEvent(autoSelectId, autoSelectId);
-		grid.getEventManager().getEvents().add(event);
-
-		assertEquals(action, grid.getActionForDependentElements());
 	}
 
 	private Action generateTestActionForRefreshElements() {

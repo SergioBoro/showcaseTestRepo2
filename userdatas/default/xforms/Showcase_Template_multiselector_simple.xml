@@ -48,8 +48,8 @@
            </xf:instance>
            
            
-			<xf:submission id="Showcase_Template_multiselector_simple_subform_good_save" method="post" instance="Showcase_Template_multiselector_simple_subform_myInstance"
-				replace="instance" ref="instance('Showcase_Template_multiselector_simple_subform_myInstance')" action="secured/sqlTransform?proc=xforms_submission1">
+			<xf:submission id="Showcase_Template_multiselector_simple_subform_good_save" method="post" instance="Showcase_Template_multiselector_simple_subform_mainInstance"
+				replace="instance" ref="instance('Showcase_Template_multiselector_simple_subform_mainInstance')" action="secured/sqlTransform?proc=xforms_submission1">
 				<xf:action ev:event="xforms-submit-done">
 					<xf:message>Submission успешно выполнен</xf:message>
 				</xf:action>
@@ -63,46 +63,43 @@
 
 			<xf:bind>
 			</xf:bind>
+			
+			<xf:action ev:event="xforms-subform-ready">
+					<xf:message>
+
+					</xf:message>			
+			</xf:action>			
+			
 		</xf:model>
 	</head>
 	<body>
 
+
+<table>
+
 <xf:repeat id="Showcase_Template_multiselector_simple_subform_securityRealEstateRow" 
 nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')/info">
 
+<tr>
 		<div style="font-size: 15px;"> Город из селектора: </div>
-		<div>
+
+<td>
+
 			<xf:input ref="instance('Showcase_Template_multiselector_simple_subform_mainInstance')/info/city1">
 				<xf:hint>Содержит город, выбранный в селекторе</xf:hint>
+				<xf:action ev:event="xforms-value-changed">	
+					<xf:send submission="Showcase_Template_multiselector_simple_subform_good_save"></xf:send> 																				
+				</xf:action>						
 			</xf:input>
-
-			<xf:trigger>
-				<xf:label>Old (JS), Selector, 1 процедура</xf:label>
-				<xf:action ev:event="DOMActivate">
-					<xf:load
-						resource="javascript:showSelector({
-			           id : 'xformId',
-                       dataWidth           : '600px',
-                       dataHeight          : '450px', 
-                       visibleRecordCount  : '25',                     
-                       procListAndCount    : '[dbo].[regions_list_and_count]',
-                       generalFilters      : ['фильтры', 'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_myInstance))/infos/info/@id)'],
-                       currentValue        : 'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city1)',
-                       windowCaption       : 'Выберите название',
-                       xpathMapping        : {
-                                              'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city1)': 
-                                              'name', 
-                                              
-                                              'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city2)': 
-                                              null
-                                             }
-                       });" />
-				</xf:action>
-			</xf:trigger>
-			
-			
+</td>			
+	
+<td>
 		    <xf:selector 
-		        buttonLabel        = "New (Tag), Selector, 1 процедура"
+		        buttonLabel        = "ddd2"
+		        needInitSelection  = "true"
+		        
+		        selectedFirst      = "true"
+		               
                 dataWidth          = "'600px'"
                 dataHeight         = "'450px'"
                 visibleRecordCount = "'25'"
@@ -112,57 +109,19 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
 		        startWith          = "false"		        
 		        windowCaption      = "'Выберите название'"
 		        xpathMapping       = "{'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city1)' : 'name', 'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city2)' : null}"
-		    />			
-			
-
-			<xf:trigger>
-				<xf:label>Old (JS), Selector, 2 процедуры</xf:label>
-				<xf:action ev:event="DOMActivate">
-					<xf:load
-						resource="javascript:showSelector({
-			           id : 'xformId',
-                       procCount : '[dbo].[regionscount]',
-                       procList  : '[dbo].[regionslist]',
-                       generalFilters : [
-                                         'фильтры', 
-                                         'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info/name)'
-                                        ],
-                       currentValue        : '',
-                       windowCaption       : 'Выберите название',
-                       xpathMapping        : {
-                                              'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city1)': 
-                                              'name', 
-                                              
-                                              'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city2)': 
-                                              'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city1)'
-                                             }
-					   });" />
-				</xf:action>
-			</xf:trigger>
-			
-			
-		    <xf:selector 
-		        buttonLabel       = "New (Tag), Selector, 2 процедуры"  
-		        procCount         = "'[dbo].[regionscount]'"  
-		        procList          = "'[dbo].[regionslist]'"
-                generalFilters    = " ['фильтры','XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info/name)',]"
-		        windowCaption     = "'Выберите название'"
-		        xpathMapping      = "{
-		                              'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city1)' : 
-		                              'name', 
-		                              
-		                              'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city2)' : 
-		                              'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city1)'
-		                             }"
-		    />			
-			
-			
-		</div>		
+		    />
+		    
+</td>		    			
+		
+</tr>		
 		
 </xf:repeat>
 
+</table>
+
+
 <hr/>
-		<div style="font-size: 15px;"> Город из мультиселектора: </div>
+		<div style="font-size: 15px;"> Город2 из мультиселектора: </div>
 		<div>
 			<xf:input ref="instance('Showcase_Template_multiselector_simple_subform_myInstance1')/info/@id" >
 				<xf:hint>Содержит город, выбранный в мультиселекторе</xf:hint>
@@ -224,7 +183,7 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
 		
 		    <xf:multiselector 
 		        buttonLabel       = "New (Tag), MultiSelector, 1 процедура"
-                dataWidth         = "'600px'"
+                dataWidth         = "'400px'"
                 dataHeight        = "'450px'"
                 selectedDataWidth = "'500px'"
                 visibleRecordCount = "'25'"                
@@ -235,6 +194,9 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
 		        windowCaption     = "'Выберите значения'"
 		        needClear         = "true"
 		        needInitSelection = "true"
+		        
+		        selectedFirst      = "true"		        
+		        
 		        xpathRoot         = "'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_myInstance))/infos)'"
 		        xpathMapping      = "{'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_myInstance1))/info)':{'id': '@id','name':'name'}}"
 		        

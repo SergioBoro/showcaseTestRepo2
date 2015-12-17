@@ -482,14 +482,6 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 		cacheData = aCacheData;
 	}
 
-	/**
-	 * Признак того, что для загрузки элемента используется только одна
-	 * процедура.
-	 */
-	public boolean loadByOneProc() {
-		return getMetadataProc() == null;
-	}
-
 	public List<ID> getRelated() {
 		return related;
 	}

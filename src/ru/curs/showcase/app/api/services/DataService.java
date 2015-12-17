@@ -72,15 +72,11 @@ public interface DataService extends RemoteService {
 	 * @return - грид.
 	 * @throws GeneralException
 	 */
-	Grid getGrid(GridContext context, DataPanelElementInfo element) throws GeneralException;
 
-	LiveGridMetadata getLiveGridMetadata(GridContext context, DataPanelElementInfo element)
+	GridMetadata getGridMetadata(GridContext context, DataPanelElementInfo element)
 			throws GeneralException;
 
-	LiveGridData<LiveGridModel> getLiveGridData(GridContext context, DataPanelElementInfo element)
-			throws GeneralException;
-
-	List<TreeGridModel> getTreeGridData(GridContext context, DataPanelElementInfo element)
+	GridData getGridData(GridContext context, DataPanelElementInfo element)
 			throws GeneralException;
 
 	/**

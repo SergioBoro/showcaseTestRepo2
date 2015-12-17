@@ -64,9 +64,12 @@ showLoadingMessage="false"
 		<element id="82" type="webtext" proc="webtext_3buttons" hideOnLoad="true"/>
 		<element id="83" type="grid" proc="grid_bal_articles"/>
 		
-		<element id="84" type="xforms"    template="books3.xml" 
-			proc="xforms_proc_no_data" neverShowInPanel="true">
-		</element>			
+		
+		
+		<element id="84" type="xforms" template="extJsTree_Template.xml" proc="xforms_proc_no_data" neverShowInPanel="true">
+		</element>
+		
+					
 		
         <element id="0502" type="xforms"   template="Showcase_Template_multiselector_simple_subform.xml"
             proc="xforms_proc_no_data">
@@ -105,6 +108,11 @@ showLoadingMessage="false"
 			<proc id="proc4" name="xforms_submission_um" type="SUBMISSION" />
 			<proc id="proc5" name="xforms_submission_re" type="SUBMISSION" />
 		</element>
+		
+		
+		<element id="extJsTreeXFormsSelector22" type="xforms" template="extJsTree_Template.xml" proc="xforms_proc_no_data">
+		</element>
+		
 
 		
 	</tab>	

@@ -2,12 +2,12 @@ package ru.curs.showcase.app.client;
 
 import java.util.*;
 
-import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.grid.GridEvent;
 import ru.curs.showcase.app.api.grid.toolbar.ToolBarHelper;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
@@ -34,6 +34,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 	private static final String STRING_SELECTED_RECORD_IDS_SEPARATOR = "D13&82#9g7";
 
+	private static final String JSGRID_DESERIALIZATION_ERROR = "jsGridDeserializationError";
+
 	private final VerticalPanel p = new VerticalPanel();
 	private final HorizontalPanel generalHp = new HorizontalPanel();
 	/**
@@ -45,13 +47,6 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	private final HorizontalPanel hpToolbar = new HorizontalPanel();
 	private final HorizontalPanel hpFooter = new HorizontalPanel();
 
-	// private final PushButton exportToExcelCurrentPage = new PushButton(new
-	// Image(
-	// Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE));
-	// private final PushButton exportToExcelAll = new PushButton(new Image(
-	// Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL));
-	// private final PushButton copyToClipboard = new PushButton(new Image(
-	// Constants.GRID_IMAGE_COPY_TO_CLIPBOARD));
 	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance().getBundleMap()
 			.get("grid_message_popup_export_to_excel"));
 
@@ -69,11 +64,10 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		return localContext;
 	}
 
-	private LiveGridMetadata gridMetadata = null;
-	private LiveGridExtradata gridExtradata = null;
+	private GridMetadata gridMetadata = null;
+
 	private String stringSelectedRecordIds = null;
 	private boolean isFirstLoading = true;
-	private boolean isInitialSorting = false;
 
 	private boolean isFirstLoading() {
 		return isFirstLoading;
@@ -127,6 +121,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 															$wnd.gwtGetHttpParamsTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtEditorGetHttpParamsTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginEditorGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterLoadDataTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtAfterPartialUpdateTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterPartialUpdate(Ljava/lang/String;Ljava/lang/String;);																														$wnd.gwtAfterPartialUpdate = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterPartialUpdate(Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterClickTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
 															$wnd.gwtAfterDoubleClickTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterDoubleClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtProcessFileDownloadTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginProcessFileDownload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
@@ -169,19 +164,10 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 				p.add(new HTML(""));
 			}
 
-			// p.add(new
-			// HTML(AppCurrContext.getInstance().getInternationalizedMessages()
-			// .please_wait_data_are_loading()));
 		} else {
 			p.setHeight(String.valueOf(getPanel().getOffsetHeight()) + "px");
 			if (this.getElementInfo().getShowLoadingMessage()) {
-				// // p.clear();
-				// // p.add(new HTML(Constants.PLEASE_WAIT_DATA_ARE_LOADING));
-
-				// cpGrid.setEnabled(false);
-
 				needRestoreAfterShowLoadingMessage = true;
-
 			}
 		}
 
@@ -206,86 +192,35 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	private void partialUpdateGridPanel() {
 
 		final GridContext gc = getDetailedContext();
-
-		// if (!isInitialSorting) {
-		// if ((gc.getSortedColumns() == null) || (gc.getSortedColumns().size()
-		// == 0)) {
-		// MessageBox.showMessageWithDetails(
-		// AppCurrContext.getInstance().getBundleMap().get("okMessage"),
-		// AppCurrContext.getInstance().getBundleMap()
-		// .get("jsGridPartialUpdateNeedSorting"), "", MessageType.WARNING,
-		// false);
-		// return;
-		// }
-		// }
-
 		gc.setPartialUpdate(true);
 
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getLiveGridData(gc, getElementInfo(),
-				new GWTServiceCallback<LiveGridData<LiveGridModel>>(AppCurrContext.getInstance()
-						.getBundleMap().get("gridErrorGetTable")) {
+		dataService.getGridData(gc, getElementInfo(), new GWTServiceCallback<GridData>(
+				AppCurrContext.getInstance().getBundleMap().get("gridErrorGetTable")) {
 
-					@Override
-					public void onFailure(final Throwable caught) {
-						gc.setPartialUpdate(false);
-						super.onFailure(caught);
-					}
+			@Override
+			public void onFailure(final Throwable caught) {
+				gc.setPartialUpdate(false);
+				super.onFailure(caught);
+			}
 
-					@Override
-					public void onSuccess(final LiveGridData<LiveGridModel> aLiveGridData) {
-						gc.setPartialUpdate(false);
-						super.onSuccess(aLiveGridData);
-						partialUpdateGridPanelByGrid(aLiveGridData);
-					}
-				});
+			@Override
+			public void onSuccess(final GridData aLiveGridData) {
+				gc.setPartialUpdate(false);
+				super.onSuccess(aLiveGridData);
+				partialUpdateGridPanelByGrid(aLiveGridData);
+			}
+		});
 	}
 
-	private void partialUpdateGridPanelByGrid(final LiveGridData<LiveGridModel> aLiveGridData) {
+	private void partialUpdateGridPanelByGrid(final GridData aLiveGridData) {
 
-		LiveGridExtradata gridExtradataNew = aLiveGridData.getLiveGridExtradata();
-
-		for (ru.curs.showcase.app.api.grid.GridEvent ev : gridExtradataNew.getEventManager()
-				.getEvents()) {
-			for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridExtradata.getEventManager()
-					.getEvents()) {
-				if (ev.extEquals(evOld)) {
-					gridExtradata.getEventManager().getEvents().remove(evOld);
-					break;
-				}
-			}
-			gridExtradata.getEventManager().getEvents().add(ev);
-		}
-
-		// ----------------------------------------
-
-		String params = "'" + getDivIdPlugin() + "'";
-
-		JSONObject partialdata = new JSONObject();
-		JSONArray rows = new JSONArray();
-		int i = 0;
-		for (LiveGridModel lgm : aLiveGridData.getData()) {
-			JSONObject row = new JSONObject();
-			for (String key : lgm.getMap().keySet()) {
-				if (lgm.getMap().get(key) == null) {
-					row.put(key, null);
-				} else {
-					if ("hasChildren".equalsIgnoreCase(key)) {
-						row.put(key, JSONBoolean.getInstance((Boolean) lgm.getMap().get(key)));
-					} else {
-						row.put(key, new JSONString((String) lgm.getMap().get(key)));
-					}
-				}
-			}
-			rows.set(i, row);
-			i++;
-		}
-		partialdata.put("rows", rows);
-
-		params = params + ", " + partialdata;
+		String params =
+			"'" + getElementInfo().getId().toString() + "'" + ", " + "'" + getDivIdPlugin()
+					+ "', " + aLiveGridData.getData();
 
 		pluginProc(gridMetadata.getJSInfo().getPartialUpdate(), params);
 
@@ -298,24 +233,22 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 		GridContext gc = getDetailedContext();
 
-		dataService.getLiveGridMetadata(gc, getElementInfo(),
-				new GWTServiceCallback<LiveGridMetadata>(AppCurrContext.getInstance()
-						.getBundleMap().get("gridErrorGetTable")) {
+		dataService.getGridMetadata(gc, getElementInfo(), new GWTServiceCallback<GridMetadata>(
+				AppCurrContext.getInstance().getBundleMap().get("gridErrorGetTable")) {
 
-					@Override
-					public void onSuccess(final LiveGridMetadata aGridMetadata) {
+			@Override
+			public void onSuccess(final GridMetadata aGridMetadata) {
 
-						super.onSuccess(aGridMetadata);
+				super.onSuccess(aGridMetadata);
 
-						setDataGridPanelByGrid(aGridMetadata);
-					}
-				});
+				setDataGridPanelByGrid(aGridMetadata);
+			}
+		});
 	}
 
-	private void setDataGridPanelByGrid(final LiveGridMetadata aGridMetadata) {
+	private void setDataGridPanelByGrid(final GridMetadata aGridMetadata) {
 
 		gridMetadata = aGridMetadata;
-		gridExtradata = gridMetadata.getTreeGridData().getLiveGridExtradata();
 
 		beforeUpdateGrid();
 
@@ -424,11 +357,17 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			common.put("readonly", new JSONString("true"));
 		}
 
+		if ((gridMetadata.getGridSorting() != null)
+				&& (gridMetadata.getGridSorting().getSortColId() != null)) {
+			common.put("sortColId", new JSONString(gridMetadata.getGridSorting().getSortColId()));
+			common.put("sortColDirection", new JSONString(gridMetadata.getGridSorting()
+					.getSortColDirection().toString()));
+		}
+
 		metadata.put("common", common);
 
-		isInitialSorting = false;
 		JSONObject columns = new JSONObject();
-		for (final LiveGridColumnConfig egcc : gridMetadata.getColumns()) {
+		for (final GridColumnConfig egcc : gridMetadata.getColumns()) {
 
 			if (!egcc.isVisible()) {
 				continue;
@@ -458,18 +397,13 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			column.put("urlImageFileDownload", new JSONString(gridMetadata.getUISettings()
 					.getUrlImageFileDownload()));
 
-			if (egcc.hasSorting()) {
-				column.put("sorting", new JSONString(egcc.getSorting().toString()));
-				isInitialSorting = true;
-			}
-
 			columns.put(egcc.getId(), column);
 		}
 		metadata.put("columns", columns);
 
-		if (gridMetadata.getOriginalColumnSet().getVirtualColumns() != null) {
+		if (gridMetadata.getVirtualColumns() != null) {
 			JSONObject virtualColumns = new JSONObject();
-			for (final VirtualColumn vc : gridMetadata.getOriginalColumnSet().getVirtualColumns()) {
+			for (final VirtualColumn vc : gridMetadata.getVirtualColumns()) {
 				JSONObject virtualColumn = new JSONObject();
 				virtualColumn.put("id", new JSONString(vc.getId()));
 				if (vc.getParentId() != null) {
@@ -488,33 +422,6 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			}
 			metadata.put("virtualColumns", virtualColumns);
 		}
-
-		JSONObject data = new JSONObject();
-		JSONArray rows = new JSONArray();
-		int i = 0;
-		for (TreeGridModel lgm : gridMetadata.getTreeGridData().getTreeGridData()) {
-			JSONObject row = new JSONObject();
-			for (String key : lgm.getMap().keySet()) {
-				if (lgm.getMap().get(key) == null) {
-					row.put(key, null);
-				} else {
-					if ("hasChildren".equalsIgnoreCase(key)) {
-						row.put(key, JSONBoolean.getInstance((Boolean) lgm.getMap().get(key)));
-					} else {
-						row.put(key, new JSONString((String) lgm.getMap().get(key)));
-					}
-				}
-			}
-			rows.set(i, row);
-			i++;
-		}
-		data.put("rows", rows);
-		data.put(
-				"total",
-				new JSONString(Integer.toString(gridMetadata.getTreeGridData().getTreeGridData()
-						.size())));
-
-		metadata.put("data", data);
 
 		params = params + ", " + metadata;
 
@@ -538,44 +445,6 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 		hpHeader.setSize(PROC100, PROC100);
 		hpFooter.setSize(PROC100, PROC100);
-
-		// hpToolbar.setHeight(PROC100);
-		// hpToolbar.setSpacing(1);
-		// if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage())
-		// {
-		// exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance()
-		// .getInternationalizedMessages().jsTreeGridExportToExcelChilds());
-		// exportToExcelCurrentPage.addClickHandler(new ClickHandler() {
-		// @Override
-		// public void onClick(final ClickEvent event) {
-		// exportToExcel(exportToExcelCurrentPage,
-		// GridToExcelExportType.CURRENTPAGE);
-		// }
-		// });
-		// hpToolbar.add(exportToExcelCurrentPage);
-		// }
-		// if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
-		// exportToExcelAll.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-		// .jsTreeGridExportToExcel0Level());
-		// exportToExcelAll.addClickHandler(new ClickHandler() {
-		// @Override
-		// public void onClick(final ClickEvent event) {
-		// exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
-		// }
-		// });
-		// hpToolbar.add(exportToExcelAll);
-		// }
-		// if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
-		// copyToClipboard.setTitle(AppCurrContext.getInstance().getInternationalizedMessages()
-		// .grid_caption_copy_to_clipboard());
-		// copyToClipboard.addClickHandler(new ClickHandler() {
-		// @Override
-		// public void onClick(final ClickEvent event) {
-		// copyToClipboard();
-		// }
-		// });
-		// hpToolbar.add(copyToClipboard);
-		// }
 
 		generalHp.clear();
 		p.clear();
@@ -655,7 +524,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 	public void pluginProcessFileDownload(final String recId, final String colId) {
 		String colLinkId = null;
-		for (LiveGridColumnConfig lgcc : gridMetadata.getColumns()) {
+		for (GridColumnConfig lgcc : gridMetadata.getColumns()) {
 			if (colId.equals(lgcc.getId())) {
 				colLinkId = lgcc.getLinkId();
 				break;
@@ -698,18 +567,9 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		// gridContext.getLiveInfo().setLimit(limit);
 		gridContext.setParentId(parentId);
 
-		Column colOriginal = null;
-		for (Column c : gridMetadata.getOriginalColumnSet().getColumns()) {
-			if (sortColId.equals(c.getId())) {
-				colOriginal = c;
-				break;
-			}
-		}
-		if (colOriginal != null) {
-			List<Column> sortOriginalCols = new ArrayList<Column>();
-			colOriginal.setSorting(ru.curs.gwt.datagrid.model.Sorting.valueOf(sortColDir));
-			sortOriginalCols.add(colOriginal);
-			gridContext.setSortedColumns(sortOriginalCols);
+		if ((sortColId != null) && (sortColDir != null)) {
+			GridSorting gs = new GridSorting(sortColId, Sorting.valueOf(sortColDir));
+			gridContext.setGridSorting(gs);
 		}
 
 		JSONObject params = new JSONObject();
@@ -737,7 +597,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		if ("save".equalsIgnoreCase(editorType)) {
 			JSONObject column = new JSONObject();
 			int i = 1;
-			for (final LiveGridColumnConfig egcc : gridMetadata.getColumns()) {
+			for (final GridColumnConfig egcc : gridMetadata.getColumns()) {
 				column.put("col" + String.valueOf(i), new JSONString(egcc.getCaption()));
 				i++;
 			}
@@ -774,18 +634,20 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		return params;
 	}
 
-	public void pluginAfterLoadData(final String stringLiveGridExtradata) {
-		if (!stringLiveGridExtradata.isEmpty()) {
+	public void pluginAfterLoadData(final String stringEvents) {
+
+		if (stringEvents != null) {
 			try {
-				LiveGridExtradata gridExtradataNew =
-					(LiveGridExtradata) getObjectSerializer().createStreamReader(
-							stringLiveGridExtradata).readObject();
+
+				@SuppressWarnings("unchecked")
+				List<GridEvent> eventsNew =
+					(List<GridEvent>) getObjectSerializer().createStreamReader(stringEvents)
+							.readObject();
 
 				boolean needAdd;
-				for (ru.curs.showcase.app.api.grid.GridEvent ev : gridExtradataNew
-						.getEventManager().getEvents()) {
+				for (ru.curs.showcase.app.api.grid.GridEvent ev : eventsNew) {
 					needAdd = true;
-					for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridExtradata
+					for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridMetadata
 							.getEventManager().getEvents()) {
 						if (ev.extEquals(evOld)) {
 							needAdd = false;
@@ -793,26 +655,48 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 						}
 					}
 					if (needAdd) {
-						gridExtradata.getEventManager().getEvents().add(ev);
+						gridMetadata.getEventManager().getEvents().add(ev);
 					}
 				}
 
 			} catch (SerializationException e) {
 				MessageBox.showSimpleMessage("afterHttpPostFromPlugin", AppCurrContext
-						.getInstance().getBundleMap().get("jsGridDeserializationError")
-						+ " LiveGridExtradata: " + e.getMessage());
+						.getInstance().getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
+						+ " Events: " + e.getMessage());
 			}
 		}
 
 		afterUpdateGrid();
 
-		// String color = pluginHTML.getElement().getStyle().getColor();
-		// if ((color == null) || color.trim().isEmpty()) {
-		// pluginHTML.getElement().getStyle().setColor("rgb(1, 0, 0)");
-		//
-		// } else {
-		// pluginHTML.getElement().getStyle().clearColor();
-		// }
+	}
+
+	public void pluginAfterPartialUpdate(final String stringEvents) {
+
+		if (stringEvents != null) {
+			try {
+
+				@SuppressWarnings("unchecked")
+				List<GridEvent> eventsNew =
+					(List<GridEvent>) getObjectSerializer().createStreamReader(stringEvents)
+							.readObject();
+
+				for (ru.curs.showcase.app.api.grid.GridEvent ev : eventsNew) {
+					for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridMetadata
+							.getEventManager().getEvents()) {
+						if (ev.extEquals(evOld)) {
+							gridMetadata.getEventManager().getEvents().remove(evOld);
+							break;
+						}
+					}
+					gridMetadata.getEventManager().getEvents().add(ev);
+				}
+
+			} catch (SerializationException e) {
+				MessageBox.showSimpleMessage("afterHttpPostFromPlugin", AppCurrContext
+						.getInstance().getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
+						+ " Events: " + e.getMessage());
+			}
+		}
 
 	}
 
@@ -842,7 +726,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 			} catch (SerializationException e) {
 				MessageBox.showSimpleMessage("pluginShowMessage", AppCurrContext.getInstance()
-						.getBundleMap().get("jsGridDeserializationError")
+						.getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
 						+ " UserMessage: " + e.getMessage());
 			}
 		}
@@ -922,7 +806,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		Action ac = null;
 
 		List<ru.curs.showcase.app.api.grid.GridEvent> events =
-			gridExtradata.getEventManager().getEventForCell(rowId, colId, interactionType);
+			gridMetadata.getEventManager().getEventForCell(rowId, colId, interactionType);
 
 		for (ru.curs.showcase.app.api.grid.GridEvent ev : events) {
 			ac = ev.getAction();
@@ -964,7 +848,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		}
 
 		Action ac =
-			gridExtradata.getEventManager().getSelectionActionForDependentElements(
+			gridMetadata.getEventManager().getSelectionActionForDependentElements(
 					selectedRecordIds);
 
 		runAction(ac);
@@ -979,21 +863,9 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 	private void afterUpdateGrid() {
 
-		if (needRestoreAfterShowLoadingMessage) {
-			// // p.clear();
-			// // p.add(cpGrid);
-
-			needRestoreAfterShowLoadingMessage = false;
-
-			// cpGrid.setEnabled(true);
-		}
+		needRestoreAfterShowLoadingMessage = false;
 
 		if (isFirstLoading) {
-
-			// pluginHTML.setWidth(String.valueOf(pluginHTML.getOffsetWidth() +
-			// 1) + "px");
-
-			// pluginHTML.setWidth(String.valueOf("800px"));
 
 			resetSelection();
 
@@ -1002,7 +874,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) + "px");
 			toolBarHelper.fillToolBar();
 
-			runAction(gridExtradata.getActionForDependentElements());
+			runAction(gridMetadata.getActionForDependentElements());
+
 		}
 
 		setupTimer();
@@ -1011,7 +884,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 	}
 
-	private String getColumnStyle(final LiveGridColumnConfig egcc) {
+	private String getColumnStyle(final GridColumnConfig egcc) {
 		String style = "";
 
 		style = style + "width:" + egcc.getWidth() + "px;";
@@ -1040,7 +913,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			style = style + "font-size:" + gridMetadata.getFontSize() + ";";
 		}
 
-		if (gridMetadata.getFontSize() != null) {
+		if ((gridMetadata.getFontSize() != null) && (gridMetadata.getFontModifiers() != null)) {
 			for (FontModifier fm : gridMetadata.getFontModifiers()) {
 				switch (fm) {
 				case ITALIC:
@@ -1061,9 +934,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			}
 		}
 
-		ColumnSet cs = gridMetadata.getOriginalColumnSet();
-		if ((cs.getColumns().get(0) != null)
-				&& (cs.getColumns().get(0).getDisplayMode() != ColumnValueDisplayMode.SINGLELINE)) {
+		if (gridMetadata.getUISettings().getDisplayMode() != ColumnValueDisplayMode.SINGLELINE) {
 			style = style + "white-space:normal;";
 		} else {
 			style = style + "white-space:nowrap;";
@@ -1072,7 +943,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		return style;
 	}
 
-	private String getColumnEditor(final LiveGridColumnConfig egcc) {
+	private String getColumnEditor(final GridColumnConfig egcc) {
 
 		String editor = egcc.getEditor();
 
@@ -1104,8 +975,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	 * 
 	 */
 	class Cell {
-		private String recId;
-		private String colId;
+		private String recId = null;
+		private String colId = null;
 	}
 
 	private void resetSelection() {
@@ -1147,15 +1018,16 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			cell.recId = localContext.getCurrentRecordId();
 			cell.colId = localContext.getCurrentColumnId();
 		} else {
-			cell.recId = gridExtradata.getAutoSelectRecordId();
-			cell.colId = gridExtradata.getAutoSelectColumnId();
+			cell.recId = gridMetadata.getAutoSelectRecordId();
+			cell.colId = gridMetadata.getAutoSelectColumnId();
+
 		}
 		return cell;
 	}
 
 	protected void resetGridSettingsToCurrent() {
 		localContext = new GridContext();
-		localContext.setSubtype(DataPanelElementSubType.EXT_TREE_GRID);
+		localContext.setSubtype(DataPanelElementSubType.JS_TREE_GRID);
 		getLocalContext().setParentId(null);
 		getLocalContext().resetForReturnAllRecords();
 
@@ -1172,7 +1044,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	 * @param exportType
 	 *            GridToExcelExportType
 	 */
-	public void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
+	private void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
 		String parentId = null;
 		if (exportType == GridToExcelExportType.CURRENTPAGE) {
 			parentId = getStoredRecordId().recId;
@@ -1191,6 +1063,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		try {
 			dh.addParam(exportType.getClass().getName(), exportType.toString());
 
+			@SuppressWarnings("unused")
 			SerializationStreamFactory ssfExcel = dh.getAddObjectSerializer();
 
 			dh.addParam(getDetailedContext().getClass().getName(),
@@ -1198,8 +1071,11 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			dh.addParam(DataPanelElementInfo.class.getName(),
 					getElementInfo().toParamForHttpPost(getObjectSerializer()));
 
-			dh.addParam(gridMetadata.getOriginalColumnSet().getClass().getName(), gridMetadata
-					.getOriginalColumnSet().toParamForHttpPost(ssfExcel));
+			// Refactoring
+
+			// dh.addParam(gridMetadata.getOriginalColumnSet().getClass().getName(),
+			// gridMetadata
+			// .getOriginalColumnSet().toParamForHttpPost(ssfExcel));
 
 			dh.submit();
 
@@ -1220,7 +1096,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	 * @return ClipboardDialog
 	 * 
 	 */
-	public ClipboardDialog copyToClipboard() {
+	private ClipboardDialog copyToClipboard() {
 		String params = "'" + getDivIdPlugin() + "'";
 		String s = pluginProc(gridMetadata.getJSInfo().getClipboardProc(), params);
 
@@ -1234,7 +1110,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		GridContext result = localContext;
 		if (result == null) {
 			result = GridContext.createFirstLoadDefault();
-			result.setSubtype(DataPanelElementSubType.EXT_TREE_GRID);
+			result.setSubtype(DataPanelElementSubType.JS_TREE_GRID);
 			result.setParentId(null);
 		}
 		result.setIsFirstLoad(isNeedResetLocalContext());
@@ -1264,7 +1140,15 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
-					exportToExcel(exportToExcelCurrentPage, GridToExcelExportType.CURRENTPAGE);
+
+					MessageBox
+							.showMessageWithDetails(
+									"Информация",
+									"Данный функционал временно отключен. Используйте копирование в буфер обмена.",
+									"", MessageType.INFO, false);
+
+					// exportToExcel(exportToExcelCurrentPage,
+					// GridToExcelExportType.CURRENTPAGE);
 				}
 			});
 			toolBar.add(exportToExcelCurrentPage);
@@ -1275,7 +1159,15 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			exportToExcelAll.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
-					exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
+
+					MessageBox
+							.showMessageWithDetails(
+									"Информация",
+									"Данный функционал временно отключен. Используйте копирование в буфер обмена.",
+									"", MessageType.INFO, false);
+
+					// exportToExcel(exportToExcelAll,
+					// GridToExcelExportType.ALL);
 				}
 			});
 			toolBar.add(exportToExcelAll);

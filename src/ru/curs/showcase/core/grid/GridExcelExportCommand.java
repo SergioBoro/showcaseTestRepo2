@@ -1,16 +1,10 @@
 package ru.curs.showcase.core.grid;
 
-import java.io.ByteArrayOutputStream;
-
-import org.w3c.dom.Document;
-
-import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.command.*;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.ExcelFile;
-import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Команда экспорта в грид.
@@ -20,7 +14,7 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelFile> {
 
-	private Grid grid;
+	// private Grid grid;
 
 	private final GridToExcelExportType exportType;
 
@@ -29,12 +23,12 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 		return exportType;
 	}
 
-	private final ColumnSet columnSet;
+	// private final ColumnSet columnSet;
 
-	@InputParam
-	public ColumnSet getColumnSet() {
-		return columnSet;
-	}
+	// @InputParam
+	// public ColumnSet getColumnSet() {
+	// return columnSet;
+	// }
 
 	@Override
 	protected DataPanelElementType getRequestedElementType() {
@@ -42,17 +36,20 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 	}
 
 	public GridExcelExportCommand(final GridContext aContext, final DataPanelElementInfo aElInfo,
-			final GridToExcelExportType aExportType, final ColumnSet cs) {
+			final GridToExcelExportType aExportType, /*
+													 * Refactoring final
+													 * ColumnSet cs
+													 */final int dummy) {
 		super(aContext, aElInfo);
 		exportType = aExportType;
-		columnSet = cs;
+		// columnSet = cs;
 	}
 
 	public GridExcelExportCommand(final GridContext aContext, final DataPanelElementInfo aElInfo,
 			final GridToExcelExportType aExportType) {
 		super(aContext, aElInfo);
 		exportType = aExportType;
-		columnSet = null;
+		// columnSet = null;
 	}
 
 	@InputParam
@@ -70,21 +67,26 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 		}
 
 		try {
-			GridTransformer.includeDataPanelWidthAndHeightInSessionContext(getContext());
+			GridUtils.includeDataPanelWidthAndHeightInSessionContext(getContext());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		GridGetCommand command = new GridGetCommand(getContext(), getElementInfo(), false);
-		grid = command.execute();
+		// -----------------------------------Рефакторинг
+		// GridGetCommand command = new GridGetCommand(getContext(),
+		// getElementInfo(), false);
+		// grid = command.execute();
+		// -----------------------------------Рефакторинг
 		initCommandContext();
 	}
 
 	@Override
 	protected void mainProc() throws Exception {
-		GridToExcelXMLFactory factory = new GridToExcelXMLFactory(grid);
-		Document xml = factory.build(columnSet);
-		ByteArrayOutputStream stream = XMLUtils.xsltTransformForGrid(xml);
-		setResult(new ExcelFile(stream));
+		// -----------------------------------Рефакторинг
+		// GridToExcelXMLFactory factory = new GridToExcelXMLFactory(grid);
+		// Document xml = factory.build(columnSet);
+		// ByteArrayOutputStream stream = XMLUtils.xsltTransformForGrid(xml);
+		// setResult(new ExcelFile(stream));
+		// -----------------------------------Рефакторинг
 	}
 
 	@Override

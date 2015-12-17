@@ -7,7 +7,7 @@ Created on 19.01.2012
 
 from ru.curs.showcase.core.jython import JythonProc
 from ru.curs.showcase.test.stress import JythonPoolTest
-from ru.curs.showcase.core import UserMessage
+from ru.curs.showcase.app.api import UserMessage
 
 # init vars
 data = u'''1'''

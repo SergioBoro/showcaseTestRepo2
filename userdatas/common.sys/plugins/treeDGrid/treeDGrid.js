@@ -60,15 +60,28 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				_fetch: function (kwArgs) {
 					var results = null;
 					
+					var sortColId  = null;
+					var sortColDir = null;
 					if(firstLoading){
-						results =  new QueryResults(when(metadata["data"]["rows"]), {
-							totalLength: when(parseInt(metadata["data"]["total"]))
-						});
-						
-						gwtAfterLoadDataTree(elementId, "");
-					}else{
-						var sortColId  = null;
-						var sortColDir = null;
+						if(this.initialSort){
+							for(var i = 0; i<this.initialSort.length; i++){
+								for(var k in metadata["columns"]) {
+									if(metadata["columns"][k]["id"] == this.initialSort[i].property){
+										sortColId =	metadata["columns"][k]["caption"];
+										break;
+									}
+								}
+								if(this.initialSort[i].descending){
+									sortColDir = "DESC";
+								}
+								else{
+									sortColDir = "ASC";
+								}
+								break;
+							}
+						}
+					}
+					else{
 						if(grid && grid.sort){
 							for(var i = 0; i<grid.sort.length; i++){
 								var sort = grid.sort[i];
@@ -82,26 +95,30 @@ function createTreeDGrid(elementId, parentId, metadata) {
 								break;
 							}
 						}
-						
-						
-			 	    	var httpParams = gwtGetHttpParamsTree(elementId, kwArgs[0].start, kwArgs[0].end-kwArgs[0].start, sortColId, sortColDir, this.storeParentId);
-			 	    	httpParams = eval('('+httpParams+')');	 	 
-			 	    	
-					    var scparams = {};
-					    scparams[httpParams["gridContextName"]] = httpParams["gridContextValue"];	
-					    scparams[httpParams["elementInfoName"]] = httpParams["elementInfoValue"];
-					    kwArgs["scparams"] = scparams;		
-					    
-					    kwArgs.start = kwArgs[0].start;
-					    kwArgs.end = kwArgs[0].end;					    
-					    
-						results = Rest.prototype.fetchRange.call(this, kwArgs);
-						results.then(function(results){
-							if(results[0]){
-								gwtAfterLoadDataTree(elementId, results[0]["liveGridExtradata"]);						
-							}
-						});				
 					}
+					
+		 	    	var httpParams = gwtGetHttpParamsTree(elementId, kwArgs[0].start, kwArgs[0].end-kwArgs[0].start, sortColId, sortColDir, this.storeParentId);
+		 	    	httpParams = eval('('+httpParams+')');	 	 
+		 	    	
+				    var scparams = {};
+				    scparams[httpParams["gridContextName"]] = httpParams["gridContextValue"];	
+				    scparams[httpParams["elementInfoName"]] = httpParams["elementInfoValue"];
+				    kwArgs["scparams"] = scparams;		
+				    
+				    kwArgs.start = kwArgs[0].start;
+				    kwArgs.end = kwArgs[0].end;					    
+				    
+					results = Rest.prototype.fetchRange.call(this, kwArgs);
+					results.then(function(results){
+						if(results[0]){
+							var events = null;
+							if(results[0]["events"]){
+								events = results[0]["events"];
+							}
+							gwtAfterLoadDataTree(elementId, events);						
+						}
+					});
+					
 					return results;
 				},
 				
@@ -273,7 +290,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 					}					
 					
 			    	div.title = getTitle(div.title);
-					
+
 					return div;
 		        };
 		        
@@ -294,7 +311,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 					column["renderExpando"] = function columnRenderExpando(level, hasChildren, expanded, object) {
 				        var dir = this.grid.isRTL ? "right" : "left",
 							cls = "dgrid-expando-icon";
-						if(hasChildren){
+						if((hasChildren == "1") || (hasChildren == "true")){
 							cls += " ui-icon ui-icon-triangle-1-" + (expanded ? "se" : "e");							
 						}
 						node = domConstruct.create('div', {
@@ -303,7 +320,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 							style: 'margin-' + dir + ': ' + (level * this.grid.treeIndentWidth) + 'px; float: ' + dir + ';'
 						});
 							
-						if(hasChildren){
+						if((hasChildren == "1") || (hasChildren == "true")){
 							if(expanded){
 								if(object.TreeGridNodeOpenIcon && object.TreeGridNodeOpenIcon.trim().length > 0){
 									node.innerHTML = object.TreeGridNodeOpenIcon;
@@ -456,15 +473,19 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		    columns = compoundColumns;
 		}
 		
-        var sort = null;
-		for(var k in metadata["columns"]) {
-			if(metadata["columns"][k]["sorting"]){
-				var descending = false;
-				if(metadata["columns"][k]["sorting"].toUpperCase()=="DESC"){
-					descending = true;	
+		var sort = null;
+		if(metadata["common"]["sortColId"] && metadata["common"]["sortColDirection"]){
+			var descending = false;
+			if(metadata["common"]["sortColDirection"].toUpperCase()=="DESC"){
+				descending = true;	
+			}
+			
+			for(var k in metadata["columns"]) {
+				if(metadata["columns"][k]["caption"] == metadata["common"]["sortColId"]){
+					sort = [{property: metadata["columns"][k]["id"], descending: descending}];
+					store.initialSort = sort;
+					break;
 				}
-			    sort = [{property: metadata["columns"][k]["id"], descending: descending}];
-			    break;
 			}
 		}
 		
@@ -476,7 +497,8 @@ function createTreeDGrid(elementId, parentId, metadata) {
 			collection: store.getRootCollection(),
 			getBeforePut: false,
 			showHeader: isVisibleColumnsHeader,
-			minRowsPerPage: parseInt(metadata["common"]["limit"]),
+//			minRowsPerPage: parseInt(metadata["common"]["limit"]),
+			minRowsPerPage: 10000,			
 			selectionMode: selectionMode,
 			allowTextSelection: isAllowTextSelection,
 			loadingMessage: metadata["common"]["loadingMessage"],
@@ -624,11 +646,19 @@ function clipboardTreeDGrid(parentId){
 	return str;
 }
 
-function partialUpdateTreeDGrid(parentId, partialdata){
-	for(var k in partialdata["rows"]) {
-		if(arrGrids[parentId].row(partialdata["rows"][k].id).data){
-			arrGrids[parentId].collection.emit('update', {target: partialdata["rows"][k]});
+function partialUpdateTreeDGrid(elementId, parentId, partialdata){
+	for(var k in partialdata) {
+		if(arrGrids[parentId].row(partialdata[k].id).data){
+				arrGrids[parentId].collection.emit('update', {target: partialdata[k]});				
 		}
+	}
+	
+	if(partialdata[0]){
+		var events = null;
+		if(partialdata[0]["events"]){
+			events = partialdata[0]["events"];
+		}
+		gwtAfterPartialUpdateTree(elementId, events);						
 	}
 }
 

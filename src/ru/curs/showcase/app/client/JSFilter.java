@@ -6,7 +6,6 @@ import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
 import ru.beta2.extra.gwt.ui.selector.*;
 import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.Options;
 import ru.beta2.extra.gwt.ui.selector.api.*;
-import ru.curs.gwt.datagrid.model.GridValueType;
 import ru.curs.showcase.app.api.grid.*;
 
 import com.google.gwt.cell.client.AbstractCell;
@@ -199,8 +198,8 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 				columnBoxChangeHandler();
 			}
 		});
-		for (final LiveGridColumnConfig egcc : ((LiveGridMetadata) jsLiveGridPluginPanel
-				.getElement()).getColumns()) {
+		for (final GridColumnConfig egcc : ((GridMetadata) jsLiveGridPluginPanel.getElement())
+				.getColumns()) {
 			columnBox.addItem(egcc.getCaption());
 		}
 		vpEdit.add(new HTML(AppCurrContext.getInstance().getBundleMap().get("jsFilterColumn")
@@ -421,7 +420,7 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 		conditionBox.clear();
 		if (columnBox.getSelectedIndex() > -1) {
 			GridValueType vt =
-				((LiveGridMetadata) jsLiveGridPluginPanel.getElement()).getColumns()
+				((GridMetadata) jsLiveGridPluginPanel.getElement()).getColumns()
 						.get(columnBox.getSelectedIndex()).getValueType();
 
 			if (vt.isGeneralizedString()) {
@@ -458,7 +457,7 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 			btnSelector.setVisible(false);
 
 			GridValueType vt =
-				((LiveGridMetadata) jsLiveGridPluginPanel.getElement()).getColumns()
+				((GridMetadata) jsLiveGridPluginPanel.getElement()).getColumns()
 						.get(columnBox.getSelectedIndex()).getValueType();
 			if (vt.isDate()) {
 				setVisibleValueBoxes(false);
@@ -473,7 +472,7 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 			if (AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues")
 					.equalsIgnoreCase(conditions[i])) {
 				FilterMultiselector fms =
-					((LiveGridMetadata) (jsLiveGridPluginPanel.getElement())).getJSInfo()
+					((GridMetadata) (jsLiveGridPluginPanel.getElement())).getJSInfo()
 							.getFilterMultiselector();
 				if (fms == null) {
 					continue;
@@ -587,7 +586,7 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 
 	private void runSelector() {
 		FilterMultiselector fms =
-			((LiveGridMetadata) (jsLiveGridPluginPanel.getElement())).getJSInfo()
+			((GridMetadata) (jsLiveGridPluginPanel.getElement())).getJSInfo()
 					.getFilterMultiselector();
 
 		Options options = new Options();

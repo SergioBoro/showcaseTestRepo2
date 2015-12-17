@@ -24,6 +24,9 @@ def getDataAndSetting(context, main, add, filterinfo, session, elementId, sortCo
     print 'filterinfo "%s".' % filterinfo
     print 'session "%s".' % session
     print 'elementId "%s".' % elementId
+    print 'sortColumnList '  
+    print sortColumnList
+    
     
     data = u'''
     <records>
@@ -80,12 +83,14 @@ def getDataAndSetting(context, main, add, filterinfo, session, elementId, sortCo
     <gridsettings>
        <labels>
         <header>
-        <h3>Edit Grid jython</h3>
+        <h3>Edit Grid jython2</h3>
         </header>
       </labels>
+<!--      
       <columns>
         <col id="name" />
       </columns>
+-->      
       <properties flip="false" gridWidth="1200px" gridHeight="500" pagesize="15" totalCount="0" />
    </gridsettings>'''
     

@@ -8,7 +8,6 @@ import javax.servlet.ServletException;
 
 import org.junit.*;
 
-import ru.curs.gwt.datagrid.model.ColumnSet;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
@@ -69,8 +68,8 @@ public class FilesFrontControllerTest extends AbstractServletTest {
 			loadTestData(DataPanelElementInfo.class.getSimpleName()
 					+ DataPanelElementType.GRID.toString() + TXT);
 		request().addParameter(DataPanelElementInfo.class.getName(), data);
-		data = loadTestData(ColumnSet.class.getSimpleName() + TXT);
-		request().addParameter(ColumnSet.class.getName(), data);
+		// data = loadTestData(ColumnSet.class.getSimpleName() + TXT);
+		// request().addParameter(ColumnSet.class.getName(), data);
 
 		controller.doPost(request(), response());
 

@@ -42,7 +42,16 @@ class myHandler(DefaultHandler):
             if (attrs.getIndex("checked") > -1):
                 result += u", checked: " + attrs.getValue('checked')
             if (attrs.getIndex("attr1") > -1):
-                result += u", attr1: '" + attrs.getValue('attr1') + "'"     
+                result += u", attr1: '" + attrs.getValue('attr1') + "'"
+                
+                
+            if (attrs.getIndex("column1") > -1):
+                result += u", column1: '" + attrs.getValue('column1') + "'"
+            if (attrs.getIndex("column2") > -1):
+                result += u", column2: '<a><img border=\"0\" src="+attrs.getValue('column2')+"></a>'"
+                
+                
+                     
         elif (qname == "children"):
             result += u", children: ["
             myHandler.isFirst = 1
@@ -61,6 +70,9 @@ class handleExtJsTree(JythonProc):
     def postProcess(self, context, elId, adata):
         global data
         data = adata
+        
+        print "dddddddddddddddddddCELESTA"
+        
         return mainproc()
 
 

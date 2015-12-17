@@ -19,11 +19,12 @@ public class GridPostgreSQLExecGateway extends GridDBGateway {
 	protected void prepareSQL() throws SQLException {
 
 		final PostgreSQLExecGateway pgsql = new PostgreSQLExecGateway(this) {
+			// CHECKSTYLE:OFF
 			@Override
 			protected String getParamsDeclaration() {
 				switch (templateIndex()) {
 				case DATA_AND_SETTINS_QUERY:
-					if (getGridContext().getSubtype() == DataPanelElementSubType.EXT_TREE_GRID) {
+					if (getGridContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
 						return STD_PARAMS
 								+ ", IN sortcols text, IN parent_id text, OUT settings xml, OUT error_mes text";
 					} else {
@@ -31,12 +32,19 @@ public class GridPostgreSQLExecGateway extends GridDBGateway {
 								+ ", IN sortcols text, OUT settings xml, OUT error_mes text";
 					}
 				case DATA_ONLY_QUERY:
-					return "main_context text, add_context text, filterinfo xml, "
-							+ "session_context xml, element_id text, sortcols text, firstrecord int4, pagesize int4";
+					if (getGridContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
+						return "main_context text, add_context text, filterinfo xml, "
+								+ "session_context xml, element_id text, sortcols text, firstrecord int4, pagesize int4, parent_id text";
+					} else {
+						return "main_context text, add_context text, filterinfo xml, "
+								+ "session_context xml, element_id text, sortcols text, firstrecord int4, pagesize int4";
+					}
 				default:
 					throw new NotImplementedYetException();
 				}
 			}
+
+			// CHECKSTYLE:ON
 
 			@Override
 			protected String getReturnsDeclaration() {

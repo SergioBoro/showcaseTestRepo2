@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>
+	<tab id="1" name="1">
+		<element id="1" type="webtext" transform="bal.xsl" />
+		<element id="6" type="webtext" transform="bal.xsl" />
+	</tab>
+
+  
+	
+	<tab id="4" name="ColumnSets (фиксация столбцов)">
+		<element id ="741" type="grid" subtype="JS_TREE_GRID" proc="grid_new_data_columnsets_geo"  
+		    plugin="treeDGrid">
+			<proc id="742" name="grid_new_meta_columnsets" type="METADATA"/>
+		</element>
+	</tab>
+
+
+	<tab id="7" name="Сложные заголовки">
+		<element id ="841" type="grid" subtype="JS_TREE_GRID" proc="grid_new_data_compound_columns_geo"  
+		    plugin="treeDGrid">
+			<proc id="842" name="grid_new_meta_compound_columns" type="METADATA"/>
+		</element>
+	</tab>		
+
+	
+	
+</datapanel>

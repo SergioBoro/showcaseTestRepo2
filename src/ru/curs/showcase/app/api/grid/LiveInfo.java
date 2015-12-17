@@ -15,7 +15,7 @@ public class LiveInfo implements SerializableElement {
 	private static final long serialVersionUID = -8228599035165877092L;
 
 	@XmlAttribute
-	private int offset;
+	private int offset = -1;
 	@XmlAttribute
 	private int limit;
 	@XmlAttribute

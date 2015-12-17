@@ -40,7 +40,8 @@ public class DataPanelSLTest extends AbstractTest {
 	@Test
 	@Ignore
 	// !!!
-	public void testBySLFromDB() {
+			public
+			void testBySLFromDB() {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
 		action.setContext(CompositeContext.createCurrent());
 		DataPanelLink dpLink = new DataPanelLink();
@@ -72,7 +73,8 @@ public class DataPanelSLTest extends AbstractTest {
 	@Test
 	@Ignore
 	// !!!
-	public void testBySLFromJython() {
+			public
+			void testBySLFromJython() {
 		Action action = new Action(DataPanelActionType.RELOAD_PANEL);
 		action.setContext(CompositeContext.createCurrent());
 		DataPanelLink dpLink = new DataPanelLink();
@@ -124,7 +126,7 @@ public class DataPanelSLTest extends AbstractTest {
 
 		DataPanelElementInfo elementInfo = panel.getTabById("4").getElementInfoById("401");
 		assertNotNull(elementInfo);
-		assertEquals(DataPanelElementSubType.EXT_TREE_GRID, elementInfo.getSubtype());
+		assertEquals(DataPanelElementSubType.JS_TREE_GRID, elementInfo.getSubtype());
 		assertEquals(true, elementInfo.getEditable());
 	}
 

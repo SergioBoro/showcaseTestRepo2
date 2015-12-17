@@ -2,10 +2,10 @@ package ru.curs.showcase.core.jython;
 
 import java.util.List;
 
-import ru.curs.gwt.datagrid.model.Column;
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.core.grid.SortColumn;
 
 import com.ziclix.python.sql.PyConnection;
 
@@ -56,7 +56,9 @@ public interface JythonProc {
 	 *         настройки элемента в виде двух строк или объект с информацией для
 	 *         пользователя в случае ошибки.
 	 */
-	Object getRawData(AbstractCompositeContext context, String elementId, List<Column> sortcols);
+	Object
+			getRawData(AbstractCompositeContext context, String elementId,
+					List<SortColumn> sortcols);
 
 	/**
 	 * Возвращает сырые данные для компонента grid в случае задания двумя
@@ -76,8 +78,8 @@ public interface JythonProc {
 	 *         настройки элемента в виде двух строк или объект с информацией для
 	 *         пользователя в случае ошибки.
 	 */
-	Object getRawData(AbstractCompositeContext context, String elementId, List<Column> sortcols,
-			int firstrecord, int pagesize);
+	Object getRawData(AbstractCompositeContext context, String elementId,
+			List<SortColumn> sortcols, int firstrecord, int pagesize);
 
 	/**
 	 * Сохраняет данные (на данный момент, только для XForm).

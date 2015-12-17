@@ -4,7 +4,6 @@ import java.util.*;
 
 import javax.xml.bind.annotation.*;
 
-import ru.curs.gwt.datagrid.model.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementSubType;
 import ru.curs.showcase.app.api.event.CompositeContext;
 
@@ -21,16 +20,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 @XmlRootElement(name = "gridContext")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GridContext extends CompositeContext {
-
-	/**
-	 * Размер страницы с данными грида по умолчанию.
-	 */
-	public static final int DEF_PAGE_SIZE_VAL = 20;
-
-	/**
-	 * Номер страницы в гриде по умолчанию (нумерация с 1).
-	 */
-	private static final int DEF_PAGE_NUMBER = 1;
+	private static final long serialVersionUID = 2005065362465664382L;
 
 	private static final int DEF_OFFSET = 0;
 	private static final int DEF_LIMIT = 50;
@@ -42,23 +32,13 @@ public class GridContext extends CompositeContext {
 
 	@Override
 	public String toString() {
-		return "GridContext [sortedColumns=" + sortedColumns + ", pageInfo=" + pageInfo
-				+ ", liveInfo=" + liveInfo + ", currentRecordId=" + currentRecordId
-				+ ", currentColumnId=" + currentColumnId + ", selectedRecordIds="
-				+ selectedRecordIds + ", isFirstLoad=" + isFirstLoad + ", parentId=" + parentId
-				+ ", toString()=" + super.toString() + "]";
+		return "GridContext [gridSorting=" + gridSorting + ", liveInfo=" + liveInfo
+				+ ", currentRecordId=" + currentRecordId + ", currentColumnId=" + currentColumnId
+				+ ", selectedRecordIds=" + selectedRecordIds + ", isFirstLoad=" + isFirstLoad
+				+ ", parentId=" + parentId + ", toString()=" + super.toString() + "]";
 	}
 
-	private static final long serialVersionUID = 2005065362465664382L;
-
-	/**
-	 * Набор столбцов, на которых установлена сортировка. Если null - сортировка
-	 * не задана.
-	 */
-	@XmlElement(name = "sortedColumn")
-	private List<Column> sortedColumns = new ArrayList<Column>();
-
-	private PageInfo pageInfo = new PageInfo(DEF_PAGE_NUMBER, DEF_PAGE_SIZE_VAL);
+	private GridSorting gridSorting = null;
 
 	private LiveInfo liveInfo = new LiveInfo(DEF_OFFSET, DEF_LIMIT);
 
@@ -90,6 +70,12 @@ public class GridContext extends CompositeContext {
 	private String currentRecordId = null;
 
 	/**
+	 * Идентификатор выделенного по клику в гриде столбца. Имеет смысл только в
+	 * режиме выделения ячеек.
+	 */
+	private String currentColumnId = null;
+
+	/**
 	 * Предлагаемая ширина грида, соответствующая ширине доступного
 	 * пространства.
 	 */
@@ -100,12 +86,6 @@ public class GridContext extends CompositeContext {
 	 * пространства.
 	 */
 	private Integer currentDatapanelHeight = 0;
-
-	/**
-	 * Идентификатор выделенного по клику в гриде столбца. Имеет смысл только в
-	 * режиме выделения ячеек.
-	 */
-	private String currentColumnId = null;
 
 	/**
 	 * Массив идентификаторов выделенных с помощью селектора записей в гриде.
@@ -126,66 +106,16 @@ public class GridContext extends CompositeContext {
 	 * первой странице.
 	 */
 	public void resetForReturnAllRecords() {
-		setPageNumber(1);
-		setPageSize(Integer.MAX_VALUE - 1);
-
 		liveInfo.setOffset(0);
 		liveInfo.setLimit(Integer.MAX_VALUE - 1);
 	}
 
-	/**
-	 * Получение сортировки из запрашиваемых параметров.
-	 * 
-	 * @param aCurColumn
-	 *            - столбец.
-	 * @return - сортировка.
-	 */
-	public Sorting getSortingForColumn(final Column aCurColumn) {
-		if (sortedColumns != null) {
-			for (Column col : sortedColumns) {
-				if (col.getId().equals(aCurColumn.getId())) {
-					return col.getSorting();
-				}
-			}
-		}
-		return null;
+	public GridSorting getGridSorting() {
+		return gridSorting;
 	}
 
-	public void setPageNumber(final int pageNumber) {
-		pageInfo.setNumber(pageNumber);
-	}
-
-	public int getPageNumber() {
-		return pageInfo.getNumber();
-	}
-
-	public void setPageSize(final int pageSize) {
-		pageInfo.setSize(pageSize);
-	}
-
-	public int getPageSize() {
-		return pageInfo.getSize();
-	}
-
-	public final List<Column> getSortedColumns() {
-		return sortedColumns;
-	}
-
-	public final void setSortedColumns(final List<Column> aSortedColumns) {
-		this.sortedColumns = aSortedColumns;
-	}
-
-	/**
-	 * Функция нормализации настроек - т.е. приведения их в вид, необходимый для
-	 * правильной работы шлюза и фабрики.
-	 */
-	public void normalize() {
-		List<Column> source = getSortedColumns();
-		Map<Integer, Column> orderedByIndex = new TreeMap<Integer, Column>();
-		for (Column col : source) {
-			orderedByIndex.put(col.getIndex(), col);
-		}
-		setSortedColumns(new ArrayList<Column>(orderedByIndex.values()));
+	public void setGridSorting(final GridSorting aGridSorting) {
+		gridSorting = aGridSorting;
 	}
 
 	public String getCurrentRecordId() {
@@ -216,7 +146,7 @@ public class GridContext extends CompositeContext {
 	 * Проверка на то, что сортировка присутствует при данных настройках.
 	 */
 	public boolean sortingEnabled() {
-		return (sortedColumns != null) && (!sortedColumns.isEmpty());
+		return (gridSorting != null) && (gridSorting.getSortColId() != null);
 	}
 
 	/**
@@ -239,14 +169,6 @@ public class GridContext extends CompositeContext {
 
 	public void setIsFirstLoad(final Boolean value) {
 		isFirstLoad = value;
-	}
-
-	public PageInfo getPageInfo() {
-		return pageInfo;
-	}
-
-	public void setPageInfo(final PageInfo aPageInfo) {
-		pageInfo = aPageInfo;
 	}
 
 	public LiveInfo getLiveInfo() {
@@ -324,16 +246,12 @@ public class GridContext extends CompositeContext {
 		res.currentDatapanelWidth = currentDatapanelWidth;
 		res.currentDatapanelHeight = currentDatapanelHeight;
 
-		res.pageInfo.setNumber(pageInfo.getNumber());
-		res.pageInfo.setSize(pageInfo.getSize());
-
 		res.liveInfo.setOffset(liveInfo.getOffset());
 		res.liveInfo.setLimit(liveInfo.getLimit());
 		res.liveInfo.setTotalCount(liveInfo.getTotalCount());
 
-		for (Column col : sortedColumns) {
-			res.sortedColumns.add(col); // TODO глубокое клонирование
-		}
+		res.gridSorting = gridSorting;
+
 		for (String id : selectedRecordIds) {
 			res.selectedRecordIds.add(id);
 		}

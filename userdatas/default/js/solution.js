@@ -27,3 +27,9 @@ function showcaseShowAllContexts(mainContext, addContext, filterContext)
 	window.alert('main_context = ' + mainContext + '\n' + 'add_context = ' + 
 			addContext + '\n' + 'filter_context = ' + filterContext);
 }
+
+
+function toggleLevel2()
+{
+	alert("message");
+}

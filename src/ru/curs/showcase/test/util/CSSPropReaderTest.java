@@ -50,13 +50,8 @@ public class CSSPropReaderTest extends AbstractTest {
 	@Test
 	public void testGridColumnGapRead() {
 		CSSPropReader reader = new CSSPropReader();
-		String width =
-			reader.read(AppInfoSingleton.getAppInfo().getWebAppPath() + "/" + TEST_CSS,
-					ProductionModeInitializer.HEADER_GAP_SELECTOR,
-					ProductionModeInitializer.WIDTH_PROP);
-		assertEquals("3px", width);
 
-		width =
+		String width =
 			reader.read(AppInfoSingleton.getAppInfo().getWebAppPath() + "/" + TEST_CSS,
 					".webmain-SmartGrid>.headerGap", ProductionModeInitializer.WIDTH_PROP);
 		assertEquals("2px", width);

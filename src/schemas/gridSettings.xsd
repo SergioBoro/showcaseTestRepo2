@@ -36,7 +36,7 @@
             <xs:attribute name="flip" type="xs:boolean"/>
             <xs:attribute name="pagesize" type="xs:unsignedShort"/>
             <xs:attribute name="autoSelectColumnId" type="notNullType"/>
-            <xs:attribute name="autoSelectRecordId" type="xs:unsignedInt"/>
+            <xs:attribute name="autoSelectRecordId" type="notNullType"/>
             <xs:attribute name="autoSelectRelativeRecord" type="xs:boolean" default="true"/>
             <xs:attribute name="autoSelectRecordUID" type="xs:string"/>
             <xs:attribute name="autoSelectOffset" type="xs:unsignedInt"/>

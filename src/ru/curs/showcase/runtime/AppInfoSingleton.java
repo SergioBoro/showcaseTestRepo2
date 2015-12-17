@@ -335,10 +335,6 @@ public final class AppInfoSingleton {
 		return si.getAuthServerCrossAppPassword();
 	}
 
-	public Integer getGridColumnGapWidth() {
-		return getUserdatas().get(getCurUserDataId()).getGridColumnGapWidth();
-	}
-
 	/**
 	 * Инициализирует пустой объект с информацией о сессии в карте сессий.
 	 * 

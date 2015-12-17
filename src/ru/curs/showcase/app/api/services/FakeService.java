@@ -1,9 +1,10 @@
 package ru.curs.showcase.app.api.services;
 
-import ru.curs.gwt.datagrid.model.ColumnSet;
+import java.util.List;
+
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.geomap.GeoMapExportSettings;
-import ru.curs.showcase.app.api.grid.LiveGridExtradata;
+import ru.curs.showcase.app.api.grid.GridEvent;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 
@@ -13,11 +14,9 @@ import com.google.gwt.user.client.rpc.RemoteService;
  */
 public interface FakeService extends RemoteService {
 
-	void serializeColumnSet(ColumnSet cs);
-
 	void serializeGeoMapExportSettings(GeoMapExportSettings settings);
 
-	LiveGridExtradata serializeLiveGridExtradata();
+	List<GridEvent> serializeEvents();
 
 	UserMessage serializeUserMessage();
 

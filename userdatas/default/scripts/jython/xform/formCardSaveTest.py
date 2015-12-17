@@ -10,7 +10,7 @@ from org.xml.sax.helpers import DefaultHandler
 from java.io import StringWriter, StringBufferInputStream
 from  javax.xml.stream import XMLOutputFactory
 from ru.curs.showcase.test.stress import JythonPoolTest
-from ru.curs.showcase.core import UserMessage
+from ru.curs.showcase.app.api import UserMessage
 
 # init vars
 main = '<part instance="instance.xml"/>'

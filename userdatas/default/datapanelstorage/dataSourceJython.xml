@@ -5,7 +5,9 @@
 		</element>
 	</tab>
 	<tab id="liveGridJython" name="Live grid">
-		<element id="0102" type="grid" subtype="EXT_LIVE_GRID" proc="testLiveGridJython.py">
+		<element id="0102" type="grid" subtype="JS_LIVE_GRID" proc="testLiveGridJython.py"
+		plugin="liveDGrid"
+		>
 			<proc id="010201" name="testLiveGridJythonSettings.py" type="METADATA"/>
 		</element>
 	</tab>
