@@ -8,7 +8,6 @@
 
 	<property name="sc.build.dir" value="build" />
 	<property name="sc.extragwt.dir" value="extragwt" />
-	<property name="sc.datagrid.dir" value="datagrid" />
 	<property name="sc.src.dir" value="src" />
 	<property name="celesta.src.dir" value="celesta" />
 	<property name="sc.tmp.dir" value="tmp" />
@@ -72,7 +71,6 @@
 		<fileset dir="${sc.servlet.cont.dir}/bin">
 			<include name="*.jar" />
 		</fileset>
-		<pathelement path="${sc.datagrid.dir}" />
 		<pathelement path="${sc.extragwt.dir}" />
 		<path refid="master-classpath" />		
 	</path>
@@ -80,9 +78,7 @@
 	<path id="gwt-classpath" description="CLASSPATH for GWT">
 		<!--  порядок важен! -->
 		<pathelement path="${sc.src.dir}" />
-		<pathelement path="${sc.datagrid.dir}" />
 		<pathelement path="${sc.extragwt.dir}" />
-		<pathelement path="${sc.lib.dir}/${sc.gquery-dnd-bundle}" />
 		<pathelement path="${sc.gwt.dir}/gwt-dev.jar" />
 		<pathelement path="${sc.gwt.dir}/gwt-user.jar" />
 	</path>	
@@ -177,12 +173,11 @@
 	<target name="compile" depends="init.dirs" description="Compiles .java files to WAR directory">
 		<!--После полной адаптации AspectJ к java 7 перейдем на iajc-->
 		<!--Сейчас компилируем обычным javac-->
-<!-- 		<javac source="1.7" target="1.7" includeantruntime="false" encoding="UTF-8" srcdir="${sc.src.dir}; datagrid; extragwt" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java" > -->
+<!-- 		<javac source="1.7" target="1.7" includeantruntime="false" encoding="UTF-8" srcdir="${sc.src.dir}; extragwt" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java" > -->
 <!--  		</javac> -->
 		<iajc source="1.7" target="1.7" encoding="UTF-8" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java">
 			<sourceroots>
 				<pathelement location="${sc.src.dir}" />
-				<pathelement location="datagrid" />
 				<pathelement location="extragwt" />
 				<pathelement location="celesta" />
 			</sourceroots>
@@ -192,12 +187,11 @@
 	<target name="compile.junit" depends="init.dirs" description="Compiles .java files to WAR directory">
 		<!--После полной адаптации AspectJ к java 7 перейдем на iajc-->
 		<!--Сейчас компилируем обычным javac-->
-		<javac source="1.7" target="1.7" includeantruntime="false" encoding="UTF-8" srcdir="${sc.src.dir}; ${celesta.src.dir}; datagrid; extragwt" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" >
+		<javac source="1.7" target="1.7" includeantruntime="false" encoding="UTF-8" srcdir="${sc.src.dir}; ${celesta.src.dir}; extragwt" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" >
  		</javac>
 <!-- 		<iajc source="1.7" target="1.7" encoding="UTF-8" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java"> -->
 <!-- 			<sourceroots> -->
 <!-- 				<pathelement location="${sc.src.dir}" /> -->
-<!-- 				<pathelement location="datagrid" /> -->
 <!-- 				<pathelement location="extragwt" /> -->
 <!-- 				<pathelement location="celesta" /> -->
 <!-- 			</sourceroots> -->
@@ -350,11 +344,6 @@
 				<include name="**/*.java" />
 			</fileset>
 		</copy>
-		<copy todir="${sc.build.dir}/war/WEB-INF/src/${sc.datagrid.dir}">
-			<fileset dir="${sc.datagrid.dir}">
-				<include name="**/*.java" />
-			</fileset>
-		</copy>		
 
 		<copy todir="${sc.build.dir}/war/WEB-INF/src/${celesta.src.dir}">
 			<fileset dir="${celesta.src.dir}">
@@ -668,7 +657,6 @@
 	<target name="xsd.generate" description="Generate XSD schemas by java Enum classes">
 		<schemagen destdir="${sc.tmp.dir}" includeantruntime="false" >
 			<src path="${sc.src.dir}/ru/curs/showcase/app/api" />	
-			<src path="${sc.datagrid.dir}/ru/curs/gwt/datagrid" />				
 		  	<schema namespace="" file="javaEnumRaw.xsd" />				
 		  	<include name="**/DataPanelElementType.java"/>
 		  	<include name="**/DataPanelElementProcType.java"/>
