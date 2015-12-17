@@ -88,7 +88,6 @@
 <path>/Showcase/WebContent/WEB-INF/lib/ehcache-terracotta-2.5.1.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/flute.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/gmbal-api-only.jar</path>
-<path>/Showcase/WebContent/WEB-INF/lib/gquery-dnd-bundle-1.0.6.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/groovy-all-2.3.6.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/gson-1.7.1.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/gwt-servlet.jar</path>
