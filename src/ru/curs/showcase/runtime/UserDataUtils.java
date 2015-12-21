@@ -144,8 +144,8 @@ public final class UserDataUtils {
 		FileInputStream result = null;
 		if (file.exists()) {
 			result =
-			new FileInputStream(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-					+ "common.sys" + "/" + fileName);
+				new FileInputStream(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+						+ "common.sys" + "/" + fileName);
 		}
 		if (!(file.exists())) {
 			File[] files = fileRoot.listFiles();
@@ -465,12 +465,17 @@ public final class UserDataUtils {
 		String pyLibShowcasePath = JythonIterpretatorFactory.getInstance().getLibJythonDir();
 		File f = new File(pyLibShowcasePath);
 		pyLibShowcasePath = f.getAbsolutePath();
+		String pyLibShowcasePathSitePacks = pyLibShowcasePath + File.separator + "site-packages";
 
 		if (pyLibPath == null || pyLibPath.isEmpty()) {
-			celestaProps.put(CELESTA_PYLIB_PATH, pyLibShowcasePath);
+			celestaProps.put(CELESTA_PYLIB_PATH, pyLibShowcasePath + File.pathSeparator
+					+ pyLibShowcasePathSitePacks);
 		} else {
 			if (!(pyLibPath.toUpperCase().contains(pyLibShowcasePath.toUpperCase()))) {
 				pyLibPath = pyLibPath + File.pathSeparator + pyLibShowcasePath;
+			}
+			if (!(pyLibPath.toUpperCase().contains(pyLibShowcasePathSitePacks.toUpperCase()))) {
+				pyLibPath = pyLibPath + File.pathSeparator + pyLibShowcasePathSitePacks;
 			}
 			celestaProps.put(CELESTA_PYLIB_PATH, pyLibPath);
 		}
