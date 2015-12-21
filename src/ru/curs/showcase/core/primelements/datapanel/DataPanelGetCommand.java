@@ -38,29 +38,6 @@ public final class DataPanelGetCommand extends ServiceLayerCommand<DataPanel> {
 		Cache<String, DataPanel> cache = AppInfoSingleton.getAppInfo().getDataPanelCache();
 		try (PrimElementsGateway gateway = selector.getGateway()) {
 			if (gateway instanceof PrimElementsFileGateway) {
-				// DataPanel dPan = null;
-				// try {
-				// dPan =
-				// AppInfoSingleton
-				// .getAppInfo()
-				// .getCache()
-				// .get(UserDataUtils.getUserDataCatalog()
-				// + "/"
-				// + String.format("%s/%s", SettingsFileType.DATAPANEL
-				// .getFileDir(), ((PrimElementsFileGateway) gateway)
-				// .getSourceName()), new Callable<DataPanel>() {
-				// @Override
-				// public DataPanel call() throws ExecutionException {
-				// DataFile<InputStream> file =
-				// gateway.getRawData(action.getContext());
-				// DataPanelFactory factory = new DataPanelFactory();
-				// return factory.fromStream(file);
-				// }
-				// });
-				// } catch (ExecutionException e) {
-				// e.printStackTrace();
-				// }
-				// setResult(dPan);
 				String key =
 					UserDataUtils.getUserDataCatalog()
 							+ "/"

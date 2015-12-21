@@ -22,8 +22,6 @@ import ru.curs.showcase.app.server.GeneralAppProperties;
 import ru.curs.showcase.util.ServletUtils;
 import ru.curs.showcase.util.exception.ServerLogicError;
 
-import com.google.common.cache.CacheBuilder;
-
 /**
  * Синглетон для хранения информации о сессиях приложения и глобальной
  * информации в приложении. Хранить данные пользовательских сессий на сервере
@@ -141,12 +139,6 @@ public final class AppInfoSingleton {
 	 */
 
 	private final GeneralAppProperties generalAppProperties = new GeneralAppProperties();
-
-	/**
-	 * Объект для кэширования датапанелей в случае, когда источником данных
-	 * является xml-файл.
-	 */
-	com.google.common.cache.Cache<String, DataPanel> cache = CacheBuilder.newBuilder().build();
 
 	public synchronized Collection<LoggingEventDecorator> getLastLogEvents() {
 		return lastLogEvents;
@@ -625,10 +617,6 @@ public final class AppInfoSingleton {
 
 	public void setSesid(final String aSesid) {
 		this.sesid = aSesid;
-	}
-
-	public com.google.common.cache.Cache<String, DataPanel> getCache() {
-		return cache;
 	}
 
 	public boolean isDebugSolutionModeEnabled() {

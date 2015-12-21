@@ -70,7 +70,6 @@ public class ControlMemoryServlet extends HttpServlet {
 				XSLTransformerPoolFactory.getInstance().clear();
 				break;
 			case "dataPanelCache":
-				// AppInfoSingleton.getAppInfo().getCache().asMap().clear();
 				AppInfoSingleton.getAppInfo().getDataPanelCache().clear();
 				break;
 			default:
@@ -82,7 +81,6 @@ public class ControlMemoryServlet extends HttpServlet {
 		}
 		if (userdata != null) {
 			ProductionModeInitializer.initUserDatas(request.getSession().getServletContext());
-			// AppInfoSingleton.getAppInfo().getCache().asMap().clear();
 			AppInfoSingleton.getAppInfo().getDataPanelCache().clear();
 		}
 	}
