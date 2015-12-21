@@ -32,7 +32,7 @@
              * <none>, for no expiry
       -->
 <!--       <ehcache:tti unit="seconds">2</ehcache:tti> -->
-    <ehcache:ttl unit="seconds">3600</ehcache:ttl>
+    <ehcache:ttl unit="minutes">10</ehcache:ttl>
       </ehcache:expiry>
 
 	
