@@ -29,7 +29,11 @@ public class GridData extends DataPanelCompBasedElement implements SizeEstimate 
 
 	@Override
 	public long sizeEstimate() {
-		return data.length();
+		if (data == null) {
+			return 0;
+		} else {
+			return data.length();
+		}
 	}
 
 	@Override

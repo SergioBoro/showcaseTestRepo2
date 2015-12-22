@@ -1,5 +1,7 @@
 package ru.curs.showcase.core.grid;
 
+import java.util.*;
+
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.SourceSelector;
@@ -14,6 +16,17 @@ import ru.curs.showcase.runtime.AppInfoSingleton;
 public class GridDataGetCommand extends DataPanelElementCommand<GridData> {
 
 	private final Boolean applyLocalFormatting;
+
+	private List<GridColumnConfig> columns = null;
+	private List<HashMap<String, String>> records = null;
+
+	public List<GridColumnConfig> getColumns() {
+		return columns;
+	}
+
+	public List<HashMap<String, String>> getRecords() {
+		return records;
+	}
 
 	@Override
 	protected DataPanelElementType getRequestedElementType() {
@@ -47,22 +60,33 @@ public class GridDataGetCommand extends DataPanelElementCommand<GridData> {
 		GridServerState state =
 			(GridServerState) AppInfoSingleton.getAppInfo().getElementState(getSessionId(),
 					getElementInfo(), getContext());
-		if (state == null) {
-			GridMetadataGetCommand command =
-				new GridMetadataGetCommand(getContext(), getElementInfo());
-			command.execute();
-			state = command.getGridServerState();
-		} else {
-			if (state.isForceLoadSettings()) {
+
+		if (applyLocalFormatting) {
+			if (state == null) {
 				GridMetadataGetCommand command =
 					new GridMetadataGetCommand(getContext(), getElementInfo());
-				state.setTotalCount(command.getTotalCount());
+				command.execute();
+				state = command.getGridServerState();
+			} else {
+				if (state.isForceLoadSettings()) {
+					GridMetadataGetCommand command =
+						new GridMetadataGetCommand(getContext(), getElementInfo());
+					state.setTotalCount(command.getTotalCount());
+				}
 			}
+		} else {
+			GridMetadataGetCommand command =
+				new GridMetadataGetCommand(getContext(), getElementInfo());
+			columns = command.execute().getColumns();
+			state = command.getGridServerState();
 		}
 
 		GridDataFactory factory = new GridDataFactory(rawData, state, applyLocalFormatting);
 		GridData grid = factory.buildData();
 		grid.setOkMessage(getContext().getOkMessage());
+		if (!applyLocalFormatting) {
+			records = factory.getRecords();
+		}
 
 		setResult(grid);
 

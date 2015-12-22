@@ -6,6 +6,7 @@ import org.apache.commons.fileupload.FileUploadException;
 
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.core.grid.GridExcelExportCommand;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
@@ -14,19 +15,12 @@ import com.google.gwt.user.client.rpc.SerializationException;
  * сервлета. Отдельный класс (и один объект на один запрос) нужны для того,
  * чтобы избежать проблем многопоточности.
  * 
- * @author den
- * 
  */
 public class GridToExcelHandler extends AbstractDownloadHandler {
 	/**
 	 * Тип экспорта в Excel.
 	 */
 	private GridToExcelExportType exportType;
-
-	/**
-	 * Описание настроенного пользователем набора столбцов.
-	 */
-	// private ColumnSet columnSet;
 
 	@Override
 	public GridContext getContext() {
@@ -40,18 +34,15 @@ public class GridToExcelHandler extends AbstractDownloadHandler {
 
 	@Override
 	protected void processFiles() {
-		// GridExcelExportCommand command =
-		// new GridExcelExportCommand(getContext(), getElementInfo(),
-		// exportType, columnSet);
-		// setOutputFile(command.execute());
+		GridExcelExportCommand command =
+			new GridExcelExportCommand(getContext(), getElementInfo(), exportType);
+		setOutputFile(command.execute());
 	}
 
 	@Override
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
 		super.getParams();
-		// exportType =
-		// GridToExcelExportType.valueOf(getParam(GridToExcelExportType.class));
-		// columnSet = (ColumnSet) deserializeObject(getParam(ColumnSet.class));
+		exportType = GridToExcelExportType.valueOf(getParam(GridToExcelExportType.class));
 	}
 
 	@Override

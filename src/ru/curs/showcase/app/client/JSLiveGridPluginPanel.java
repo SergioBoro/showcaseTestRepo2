@@ -181,6 +181,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			if (isPartialUpdate()) {
 				partialUpdateGridPanel();
 			} else {
+				gridMetadata.getEventManager().getEvents().clear();
+
 				String params = "'" + getDivIdPlugin() + "'";
 				pluginProc(gridMetadata.getJSInfo().getRefreshProc(), params);
 			}
@@ -654,20 +656,28 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 					(List<GridEvent>) getObjectSerializer().createStreamReader(stringEvents)
 							.readObject();
 
-				boolean needAdd;
-				for (ru.curs.showcase.app.api.grid.GridEvent ev : eventsNew) {
-					needAdd = true;
-					for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridMetadata
-							.getEventManager().getEvents()) {
-						if (ev.extEquals(evOld)) {
-							needAdd = false;
-							break;
+				List<GridEvent> eventsAdd;
+				if (gridMetadata.getEventManager().getEvents().size() == 0) {
+					eventsAdd = eventsNew;
+				} else {
+					eventsAdd = new ArrayList<GridEvent>();
+
+					boolean needAdd;
+					for (ru.curs.showcase.app.api.grid.GridEvent ev : eventsNew) {
+						needAdd = true;
+						for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridMetadata
+								.getEventManager().getEvents()) {
+							if (ev.extEquals(evOld)) {
+								needAdd = false;
+								break;
+							}
+						}
+						if (needAdd) {
+							eventsAdd.add(ev);
 						}
 					}
-					if (needAdd) {
-						gridMetadata.getEventManager().getEvents().add(ev);
-					}
 				}
+				gridMetadata.getEventManager().getEvents().addAll(eventsAdd);
 
 			} catch (SerializationException e) {
 				MessageBox.showSimpleMessage("afterHttpPostFromPlugin", AppCurrContext
@@ -1073,12 +1083,6 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			dh.addParam(DataPanelElementInfo.class.getName(),
 					getElementInfo().toParamForHttpPost(getObjectSerializer()));
 
-			// Refactoring
-
-			// dh.addParam(gridMetadata.getOriginalColumnSet().getClass().getName(),
-			// gridMetadata
-			// .getOriginalColumnSet().toParamForHttpPost(ssfExcel));
-
 			dh.submit();
 
 			mp.hide();
@@ -1136,15 +1140,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
-
-					MessageBox
-							.showMessageWithDetails(
-									"Информация",
-									"Данный функционал временно отключен. Используйте копирование в буфер обмена.",
-									"", MessageType.INFO, false);
-
-					// exportToExcel(exportToExcelCurrentPage,
-					// GridToExcelExportType.CURRENTPAGE);
+					exportToExcel(exportToExcelCurrentPage, GridToExcelExportType.CURRENTPAGE);
 				}
 			});
 			toolBar.add(exportToExcelCurrentPage);
@@ -1160,15 +1156,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			exportToExcelAll.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
-
-					MessageBox
-							.showMessageWithDetails(
-									"Информация",
-									"Данный функционал временно отключен. Используйте копирование в буфер обмена.",
-									"", MessageType.INFO, false);
-
-					// exportToExcel(exportToExcelAll,
-					// GridToExcelExportType.ALL);
+					exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
 				}
 			});
 			toolBar.add(exportToExcelAll);

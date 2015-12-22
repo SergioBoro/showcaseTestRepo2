@@ -77,6 +77,14 @@ public class GridDataFactory extends CompBasedElementFactory {
 		applyLocalFormatting = aApplyLocalFormatting;
 	}
 
+	public ArrayList<HashMap<String, String>> getRecords() {
+		return records;
+	}
+
+	public GridServerState getState() {
+		return state;
+	}
+
 	@Override
 	public GridContext getCallContext() {
 		return (GridContext) super.getCallContext();
@@ -230,7 +238,7 @@ public class GridDataFactory extends CompBasedElementFactory {
 		@Override
 		public void endElement(final String uri, final String localName, final String name) {
 			if (RECORD_TAG.equals(localName)) {
-				if (rec.get(PROPS_TAG) != null) {
+				if (applyLocalFormatting && (rec.get(PROPS_TAG) != null)) {
 					readEvents(rec, "<" + PROPS_TAG + ">" + rec.get(PROPS_TAG) + "</" + PROPS_TAG
 							+ ">");
 					rec.remove(PROPS_TAG);
@@ -542,12 +550,13 @@ public class GridDataFactory extends CompBasedElementFactory {
 			}
 		}
 
-		JSONArray data = new JSONArray();
-		for (HashMap<String, String> rec : records) {
-			data.add(rec);
+		if (applyLocalFormatting) {
+			JSONArray data = new JSONArray();
+			for (HashMap<String, String> rec : records) {
+				data.add(rec);
+			}
+			result.setData(data.toJSONString());
 		}
-
-		result.setData(data.toJSONString());
 
 		if (getCallContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
 			getCallContext().getLiveInfo().setOffset(0);

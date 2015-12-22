@@ -23,24 +23,12 @@ public class GridServerColumnConfig {
 		return valueType;
 	}
 
-	public void setValueType(final GridValueType aValueType) {
-		valueType = aValueType;
-	}
-
 	public String getId() {
 		return id;
 	}
 
-	public void setId(final String aId1) {
-		id = aId1;
-	}
-
 	public String getFormat() {
 		return format;
-	}
-
-	public void setFormat(final String aFormat) {
-		format = aFormat;
 	}
 
 }
