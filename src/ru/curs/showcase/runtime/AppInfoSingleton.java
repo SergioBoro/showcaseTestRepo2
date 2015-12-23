@@ -458,10 +458,42 @@ public final class AppInfoSingleton {
 		return cache;
 	}
 
+	public long numberofDataPanelCacheSizeBytes() {
+		long n = 0L;
+		for (Cache.Entry<String, DataPanel> s : AppInfoSingleton.getAppInfo().getDataPanelCache()) {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			try {
+				ObjectOutputStream oos = new ObjectOutputStream(baos);
+				oos.writeObject(s.getValue());
+				oos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			n += baos.size();
+		}
+		return n;
+	}
+
 	public int numberOfDataPanelCacheEntries() {
 		int n = 0;
 		for (Cache.Entry<String, DataPanel> s : AppInfoSingleton.getAppInfo().getDataPanelCache()) {
 			++n;
+		}
+		return n;
+	}
+
+	public long numberofGridStateCacheSizeBytes() {
+		long n = 0L;
+		for (Cache.Entry<Object, Object> s : AppInfoSingleton.getAppInfo().getGridStateCache()) {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			try {
+				ObjectOutputStream oos = new ObjectOutputStream(baos);
+				oos.writeObject(s.getValue());
+				oos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			n += baos.size();
 		}
 		return n;
 	}

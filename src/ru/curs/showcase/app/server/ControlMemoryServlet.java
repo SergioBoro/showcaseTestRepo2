@@ -72,6 +72,9 @@ public class ControlMemoryServlet extends HttpServlet {
 			case "dataPanelCache":
 				AppInfoSingleton.getAppInfo().getDataPanelCache().clear();
 				break;
+			case "gridStateCache":
+				AppInfoSingleton.getAppInfo().getGridStateCache().clear();
+				break;
 			default:
 				throw new ServletException(UNKNOWN_PARAM_ERROR);
 			}
@@ -82,6 +85,7 @@ public class ControlMemoryServlet extends HttpServlet {
 		if (userdata != null) {
 			ProductionModeInitializer.initUserDatas(request.getSession().getServletContext());
 			AppInfoSingleton.getAppInfo().getDataPanelCache().clear();
+			AppInfoSingleton.getAppInfo().getGridStateCache().clear();
 		}
 	}
 }

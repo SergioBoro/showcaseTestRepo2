@@ -1,12 +1,14 @@
 package ru.curs.showcase.core.grid;
 
+import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.grid.GridValueType;
 
 /**
  * Столбец.
  */
 
-public class GridServerColumnConfig {
+public class GridServerColumnConfig implements SerializableElement {
+	private static final long serialVersionUID = -1529797457839030699L;
 
 	private String id = null;
 	private GridValueType valueType = null;

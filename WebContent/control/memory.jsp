@@ -73,13 +73,24 @@ div {
 				<div style="font-style: italic">Сброс нужен после изменения любой XSL трансформации</div>
 			</td>
 			<td width="30%">
-				<div>Размер кэша: <%=AppInfoSingleton.getAppInfo().numberOfDataPanelCacheEntries()%></div>
+				<div>Размер кэша (в элементах): <%=AppInfoSingleton.getAppInfo().numberOfDataPanelCacheEntries()%></div>
+				<div>Размер кэша (в байтах): <%=(long)(AppInfoSingleton.getAppInfo().numberofDataPanelCacheSizeBytes())%></div>
 				<form target="fake" method="get" action="reset">
 					<input type="hidden" name="pool" value="dataPanelCache" /> <input
 						type="submit" value="Сбросить кэш датапанелей"
 						onclick="window.setInterval('refresh()',1000);" />
 				</form>
 				<div style="font-style: italic">Сбрасывает кэш информационных панелей</div>
+			</td>
+			<td width="30%">
+				<div>Размер кэша (в элементах): <%=AppInfoSingleton.getAppInfo().numberOfGridStateCacheEntries()%></div>
+				<div>Размер кэша (в байтах): <%=(long)(AppInfoSingleton.getAppInfo().numberofGridStateCacheSizeBytes())%></div>
+				<form target="fake" method="get" action="reset">
+					<input type="hidden" name="pool" value="gridStateCache" /> <input
+						type="submit" value="Сбросить кэш гридов"
+						onclick="window.setInterval('refresh()',1000);" />
+				</form>
+				<div style="font-style: italic">Сбрасывает кэш гридов</div>
 			</td>
 		</tr>
 		<tr>
