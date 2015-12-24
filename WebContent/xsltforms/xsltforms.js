@@ -13980,9 +13980,9 @@ function setXFormByXPath(ok, selected, xpathMapping, subformId)
            }
 		}	
 		
-		XsltForms_globals.ready = false;
+//		XsltForms_globals.ready = false;
 		XsltForms_globals.refresh();
-		XsltForms_globals.ready = true;
+//		XsltForms_globals.ready = true;
 		
 	}
 }
@@ -14139,9 +14139,9 @@ function insertXFormByXPath(ok, selected, xpathRoot, xpathMapping, needClear, su
 			break;
 		}
 		
-		XsltForms_globals.ready = false;
+//		XsltForms_globals.ready = false;
 		XsltForms_globals.refresh();
-		XsltForms_globals.ready = true;
+//		XsltForms_globals.ready = true;
 		
 	}
 }
@@ -14179,9 +14179,9 @@ function insertFilenamesByXPath(subformId, inputName, filenamesMapping, needClea
 	    }
 	}
 	
-	XsltForms_globals.ready = false;
+//	XsltForms_globals.ready = false;
 	XsltForms_globals.refresh();
-	XsltForms_globals.ready = true;
+//	XsltForms_globals.ready = true;
 	
 }
 
