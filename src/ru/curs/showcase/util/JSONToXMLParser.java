@@ -106,6 +106,15 @@ public class JSONToXMLParser {
 			outString = outString.replaceFirst("xmlns2", "xmlns");
 		}
 
+		while (outString.contains("{\"myTagForResolvingProblem\"=\"2\"}")) {
+			int ind = outString.indexOf("{\"myTagForResolvingProblem\"=\"2\"}");
+			String str1 = outString.substring(0, ind + 1).trim();
+			String str2 =
+				outString.substring(ind + "{\"myTagForResolvingProblem\"=\"2\"}".length() - 1,
+						outString.length()).trim();
+			outString = str1 + str2;
+		}
+
 		while (outString.contains("myTagForResolvingProblem")) {
 			String str = "</myTagForResolvingProblem>";
 			int ind = outString.indexOf("<myTagForResolvingProblem>");
@@ -200,10 +209,9 @@ public class JSONToXMLParser {
 			Element childElem = null;
 			try {
 				childElem = doc.createElement(childKey);
-			root.appendChild(childElem);
+				root.appendChild(childElem);
 			} catch (Exception e) {
-				System.out
-.println("Не удалось добавить элемент \"" + childKey
+				System.out.println("Не удалось добавить элемент \"" + childKey
 						+ "\" в DOM-модель xml");
 			}
 			cell = jsonArray.get(j);
@@ -249,7 +257,7 @@ public class JSONToXMLParser {
 			Element root = null;
 			try {
 				root = doc1.createElement(ar[0]);
-			doc1.appendChild(root);
+				doc1.appendChild(root);
 			} catch (Exception e) {
 				System.out.println("Не удалось добавить элемент \"" + ar[0]
 						+ "\" в DOM-модель xml");
@@ -279,7 +287,7 @@ public class JSONToXMLParser {
 		Element root = null;
 		try {
 			root = doc.createElement(ar[0]);
-		doc.appendChild(root);
+			doc.appendChild(root);
 		} catch (Exception e) {
 			System.out.println("Не удалось добавить элемент \"" + ar[0] + "\" в DOM-модель xml");
 		}
