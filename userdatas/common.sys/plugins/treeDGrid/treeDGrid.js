@@ -110,13 +110,13 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				    
 					results = Rest.prototype.fetchRange.call(this, kwArgs);
 					results.then(function(results){
+						var events = null;
 						if(results[0]){
-							var events = null;
 							if(results[0]["events"]){
 								events = results[0]["events"];
 							}
-							gwtAfterLoadDataTree(elementId, events);						
 						}
+						gwtAfterLoadDataTree(elementId, events);
 					});
 					
 					return results;

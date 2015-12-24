@@ -108,13 +108,13 @@ function createPageDGrid(elementId, parentId, metadata) {
 
 					results = Rest.prototype.fetchRange.call(this, kwArgs);
 					results.then(function(results){
+						var events = null;
 						if(results[0]){
-							var events = null;
 							if(results[0]["events"]){
 								events = results[0]["events"];
 							}
-							gwtAfterLoadData(elementId, events, arrGrids[parentId]._total);						
 						}
+						gwtAfterLoadData(elementId, events, arrGrids[parentId]._total);
 					});
 					
 					return results;
