@@ -57,7 +57,7 @@ public class GridCelestaGateway implements GridGateway {
 			procName = element.getProcName();
 		}
 
-		List<SortColumn> scols = new ArrayList<SortColumn>();
+		List<SortColumn> scols = new ArrayList<SortColumn>(1);
 		if (context.sortingEnabled()) {
 			scols.add(new SortColumn(context.getGridSorting().getSortColId(), context
 					.getGridSorting().getSortColDirection()));

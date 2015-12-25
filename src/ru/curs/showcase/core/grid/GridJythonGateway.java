@@ -134,7 +134,7 @@ public class GridJythonGateway extends JythonQuery<JythonDTO> implements GridGat
 	@Override
 	protected Object execute() {
 
-		List<SortColumn> scols = new ArrayList<SortColumn>();
+		List<SortColumn> scols = new ArrayList<SortColumn>(1);
 		if (context.sortingEnabled()) {
 			scols.add(new SortColumn(context.getGridSorting().getSortColId(), context
 					.getGridSorting().getSortColDirection()));
