@@ -185,6 +185,8 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 					String value = "";
 					if (entry.getValue() != null) {
 						value = Arrays.toString(entry.getValue().toArray());
+						if (value.contains(" "))
+							value = value.replace(" ", "");
 					}
 					child.setAttribute(VALUE_TAG, value);
 				}
