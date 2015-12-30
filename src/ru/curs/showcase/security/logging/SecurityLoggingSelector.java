@@ -29,6 +29,8 @@ public class SecurityLoggingSelector extends SourceSelector<SecurityLoggingGatew
 			return new SecurityLoggingDBGateway(getSourceName());
 		case JYTHON:
 			return new SecurityLoggingJythonGateway(getSourceName());
+		case CELESTA:
+			return new SecurityLoggingCelestaGateway(getSourceName());
 		default:
 		}
 
