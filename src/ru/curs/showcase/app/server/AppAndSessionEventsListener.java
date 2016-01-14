@@ -139,14 +139,6 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 			LOGGER.info("сессия Showcase удаляется..." + destrHttpSession.getId());
 		}
 
-		try {
-			Celesta.getInstance().logout(destrHttpSession.getId(), false);
-		} catch (CelestaException e) {
-			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
-				LOGGER.error("Ошибка разлогинивания сессии в celesta", e);
-			}
-		}
-
 		SecurityContext context =
 			(SecurityContext) destrHttpSession
 					.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
@@ -161,6 +153,14 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 					new SecurityLoggingCommand(new CompositeContext(), null, destrHttpSession,
 							typeEvent);
 				logCommand.execute();
+			}
+		}
+
+		try {
+			Celesta.getInstance().logout(destrHttpSession.getId(), false);
+		} catch (CelestaException e) {
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error("Ошибка разлогинивания сессии в celesta", e);
 			}
 		}
 	}

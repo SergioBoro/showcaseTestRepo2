@@ -45,7 +45,9 @@ public class SecurityLoggingCommand extends ServiceLayerCommand<Void> {
 		if (procName != null && !procName.isEmpty() && this.event != null) {
 			HttpSession httpSession = null;
 			if (this.request != null) {
-				httpSession = this.request.getSession();
+				// httpSession = this.request.getSession();
+				httpSession =
+					(HttpSession) this.request.getSession(false).getAttribute("newSession");
 				event.add("IP", this.request.getRemoteAddr());
 				event.add("Host", this.request.getRemoteHost());
 				String userAgent = ServletUtils.getUserAgent(this.request);
