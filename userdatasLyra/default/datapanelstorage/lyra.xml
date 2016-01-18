@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datapanel>
+  <tab id="1" name="Тест xforms">	
+    <element id="15" type="xforms"
+    							   
+    				template="lyra.lyraplayer.getTemplate.cl" 
+    				proc="lyra.lyraplayer.getInstance.cl"
+    				 
+    				>
+    				    	
+    </element> 
+  </tab>
+
+<!--
+		<element id ="441" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_lyra"  
+		    plugin="lyraDGrid">
+			<proc id="442" name="grid_new_meta_lyra" type="METADATA"/>
+			
+			<proc id="020101" name="toolbar_grid_new" type="TOOLBAR"/>
+		</element>
+		
+ 		<element id="102_1" type="GRID"  subtype="JS_LIVE_GRID" proc="g1.jsLiveGridNew.getData.celesta" 
+		    plugin="liveDGrid">
+            <proc id="442" name="g1.jsLiveGridNew.getSetting.celesta" type="METADATA"/>		    
+		</element>
+		
+		JS_LIVE_GRID
+		
+-->
+  <tab id="2" name="Тест грида">	
+ 		<element id="21" type="GRID"  subtype="JS_LYRA_GRID" proc="testgrain.jsLiveGridNew.getData.celesta" 
+		    plugin="lyraDGrid">
+            <proc id="22" name="testgrain.jsLiveGridNew.getSetting.celesta" type="METADATA"/>		    
+		</element>
+  </tab>
+
+  
+</datapanel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
