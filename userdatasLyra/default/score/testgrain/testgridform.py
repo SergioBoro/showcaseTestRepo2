@@ -7,7 +7,7 @@ from _testgrain_orm import testCursor
 @form
 class TestGridForm(GridForm):  
     def __init__(self, context):
-        super(GridForm, self).__init__(context)
+        super(TestGridForm, self).__init__(context)
         self.createAllBoundFields()
         
     def _getCursor(self, context):
