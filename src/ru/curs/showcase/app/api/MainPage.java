@@ -42,6 +42,12 @@ public class MainPage implements SerializableElement {
 	private String solutionGridCSSFileName;
 
 	/**
+	 * Имя CSS файла для настроек стилей прогресс-бара для всего решения.
+	 */
+
+	private String progressBarCSSFileName;
+
+	/**
 	 * Код нижнего колонтитула главной страницы.
 	 */
 	private String footer;
@@ -106,4 +112,13 @@ public class MainPage implements SerializableElement {
 	public void setSolutionGridCSSFileName(final String asolutionGridCSSFileName) {
 		this.solutionGridCSSFileName = asolutionGridCSSFileName;
 	}
+
+	public String getProgressBarCSSFileName() {
+		return progressBarCSSFileName;
+	}
+
+	public void setProgressBarCSSFileName(final String aProgressBarCSSFileName) {
+		this.progressBarCSSFileName = aProgressBarCSSFileName;
+	}
+
 }

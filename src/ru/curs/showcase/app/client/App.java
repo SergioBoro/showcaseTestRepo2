@@ -130,13 +130,15 @@ public class App implements EntryPoint {
 		// добавляем свои стили после инициализации GWT-шных
 
 		if (AppCurrContext.getInstance().getMainPage().getSolutionCSSFileName() != null
-				&& AppCurrContext.getInstance().getMainPage().getSolutionGridCSSFileName() != null) {
+				&& AppCurrContext.getInstance().getMainPage().getSolutionGridCSSFileName() != null
+				&& AppCurrContext.getInstance().getMainPage().getProgressBarCSSFileName() != null) {
 
 			addUserDataCSS(AppCurrContext.getInstance().getMainPage().getSolutionCSSFileName(),
-					AppCurrContext.getInstance().getMainPage().getSolutionGridCSSFileName());
+					AppCurrContext.getInstance().getMainPage().getSolutionGridCSSFileName(),
+					AppCurrContext.getInstance().getMainPage().getProgressBarCSSFileName());
 
 		} else {
-			addUserDataCSS("solution.css", "solutionGrid.css");
+			addUserDataCSS("solution.css", "solutionGrid.css", "progressBar.css");
 		}
 	}
 
@@ -148,7 +150,9 @@ public class App implements EntryPoint {
 		return context;
 	}
 
-	private void addUserDataCSS(final String solutionCSS, final String solutionGridCSS) {
+	private void addUserDataCSS(final String solutionCSS, final String solutionGridCSS,
+			final String progressBarCSS) {
+		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/" + progressBarCSS));
 		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/" + solutionCSS));
 		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/" + solutionGridCSS));
 	}
