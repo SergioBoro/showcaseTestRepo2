@@ -197,13 +197,15 @@ public final class ProductionModeInitializer {
 		Boolean isAllFilesCopied = true;
 		File userdataRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
 		File[] list = userdataRoot.listFiles();
-		for (File f : list) {
-			if (f.getName().equals(COMMON_SYS)) {
-				generalResRoot =
-					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + COMMON_SYS);
-			} else if (f.getName().startsWith("common") && !(f.getName().equals(COMMON_SYS))) {
+		// for (File f : list) {
+		for (int c = list.length - 1; c >= 0; c--) {
+			File f = list[c];
+			if (f.getName().startsWith("common") && !(f.getName().equals(COMMON_SYS))) {
 				generalResRoot =
 					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName());
+			} else if (f.getName().equals(COMMON_SYS)) {
+				generalResRoot =
+					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + COMMON_SYS);
 			} else {
 				continue;
 			}
