@@ -147,7 +147,11 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		Element node = info.createElement(ExchangeConstants.URL_PARAM_USERDATA);
 		info.getDocumentElement().appendChild(node);
 		String value = null;
-		if (aMap.get(ExchangeConstants.URL_PARAM_USERDATA) != null) {
+		if (aMap.get(ExchangeConstants.URL_PARAM_PERSPECTIVE) != null) {
+			value =
+				Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_PERSPECTIVE).toArray())
+						.replace("[", "").replace("]", "");
+		} else if (aMap.get(ExchangeConstants.URL_PARAM_USERDATA) != null) {
 			value =
 				Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_USERDATA).toArray())
 						.replace("[", "").replace("]", "");
@@ -172,7 +176,8 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 			info.getDocumentElement().appendChild(node);
 
 			for (Map.Entry<String, ArrayList<String>> entry : aMap.entrySet()) {
-				if (!(ExchangeConstants.URL_PARAM_USERDATA.equals(entry.getKey()))) {
+				if (!(ExchangeConstants.URL_PARAM_USERDATA.equals(entry.getKey()))
+						|| !(ExchangeConstants.URL_PARAM_PERSPECTIVE.equals(entry.getKey()))) {
 					Element child = info.createElement(URL_PARAM_TAG);
 					node.appendChild(child);
 
