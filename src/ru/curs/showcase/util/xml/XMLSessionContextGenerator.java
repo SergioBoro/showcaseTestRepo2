@@ -177,7 +177,7 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 
 			for (Map.Entry<String, ArrayList<String>> entry : aMap.entrySet()) {
 				if (!(ExchangeConstants.URL_PARAM_USERDATA.equals(entry.getKey()))
-						|| !(ExchangeConstants.URL_PARAM_PERSPECTIVE.equals(entry.getKey()))) {
+						&& !(ExchangeConstants.URL_PARAM_PERSPECTIVE.equals(entry.getKey()))) {
 					Element child = info.createElement(URL_PARAM_TAG);
 					node.appendChild(child);
 
