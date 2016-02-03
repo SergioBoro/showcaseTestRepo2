@@ -4,14 +4,17 @@ from lyra.basicForm import form
 from lyra.basicForm import formfield
 from _testgrain_orm import testCursor
 
-@form
+@form(profile='default.properties', 
+      gridwidth=100,
+      gridheight=200,
+      defaultaction='<foo/>')
 class TestForm(CardForm):  
     def __init__(self, context):
         super(TestForm, self).__init__(context)
         self.f1 = 0
         self.f2 = 1
         #self.createField("ff1")
-        #self.createField("id")
+        #fld = self.createField("id")
         self.createAllUnboundFields()
         self.createAllBoundFields()
         
@@ -19,7 +22,8 @@ class TestForm(CardForm):
         return testCursor(context)
 
     @formfield(celestatype='INT', 
-               caption='unbound field 1')
+               caption='unbound field 1',
+               scale=5)
     def ff1(self):
         return self.f1
 
@@ -34,3 +38,5 @@ class TestForm(CardForm):
 
     def _afterReceiving(self, c):
         self.f2 = self.f1 * self.f1
+        
+        
