@@ -293,3 +293,47 @@ var arrGrids = {};
 
 
 
+function measureDownloadSpeed(contentSize)  
+{	
+	var startTime = (new Date()).getTime(); 
+	
+    dojo.xhrGet({ 
+        url: "secured/MeasureDownloadSpeed?contentSize="+contentSize, 
+        sync: true,
+        load: function(responce, ioArgs) { 
+                if (responce != null) { 
+//                	alert("2");
+                	
+                	var endTime = (new Date()).getTime();
+
+/*                	
+                	var duration = Math.round((endTime - startTime) / 1000) ;
+                	var bitsLoaded = (contentSize*1024*1024) * 8;
+                	var speedBps = Math.round(bitsLoaded / duration);
+                	var speedKbps = (speedBps / 1024).toFixed(2);
+                	var speedMbps = (speedKbps / 1024).toFixed(2);
+                	
+*/
+                	var duration = Math.round((endTime - startTime)) ;
+                	var bitsLoaded = (contentSize*1024*1024) * 8 * 1000;
+                	var speedBps = Math.round(bitsLoaded / duration);
+                	var speedKbps = (speedBps / 1024).toFixed(2);
+                	var speedMbps = (speedKbps / 1024).toFixed(2);
+                	
+                	
+                	
+                	alert('Скорость загрузки контента: \n' +
+                			speedBps + ' bps\n' +
+                			speedKbps + ' kbps\n' +
+                			speedMbps + ' Mbps\n');
+ 
+ 
+                }  else {
+                	alert("Ошибка определения скорости загрузки контента!");
+                } 
+        }                
+    }); 
+	
+}
+
+

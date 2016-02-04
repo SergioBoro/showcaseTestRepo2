@@ -15,7 +15,7 @@ def navigator(context, session):
     <navigator width="200px">
         <group id="1" name="Примеры">
             <level1 id="11" name="Компоненты">
-                <level2 id="111" name="WebText">
+                <level2 id="111" name="WebText" selectOnLoad="true">
                     <action>
                         <main_context></main_context>
                         <datapanel type="g1.datapanel.webTextDatapanel.celesta" tab="firstOrCurrent"></datapanel>
@@ -28,7 +28,7 @@ def navigator(context, session):
                     </action>
                 </level2>
                 
-                <level2 id="113" name="GridNew" selectOnLoad="true">
+                <level2 id="113" name="GridNew">
                     <action>
                         <main_context></main_context>
                         <datapanel type="gridNew.xml" tab="firstOrCurrent"></datapanel>
@@ -77,6 +77,14 @@ def webtext(context, main, add, filterinfo, session, elementId):
         <a href="#" onclick="gwtWebTextFunc('${elementId}','testIdClient');">Показать сообщение (client activity)</a>
         <br/>
         <a href="#" onclick="gwtWebTextFunc('${elementId}','testIdServer');">Показать сообщение (server activity)</a>
+        
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>        
+        <button type="button" onclick="measureDownloadSpeed(10);">Измерить скорость загрузки контента</button>
+        
     </h1>
     '''
     settings = u'''
@@ -108,7 +116,8 @@ def webtext(context, main, add, filterinfo, session, elementId):
     </properties>
     '''    
     
-    return JythonDTO(data, settings, UserMessageFactory().build(555, u"WebText успешно построен из Celesta"))
+    #return JythonDTO(data, settings, UserMessageFactory().build(555, u"WebText успешно построен из Celesta"))
+    return JythonDTO(data, settings)
 
 
 

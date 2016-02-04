@@ -67,6 +67,22 @@
     <url-pattern>/secured/JSGridService</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>JSLyraGridService</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.JSLyraGridService</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JSLyraGridService</servlet-name>
+    <url-pattern>/secured/JSLyraGridService</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>MeasureDownloadSpeed</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.MeasureDownloadSpeed</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MeasureDownloadSpeed</servlet-name>
+    <url-pattern>/secured/MeasureDownloadSpeed</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>FilesFrontController</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.FilesFrontController</servlet-class>
   </servlet>
