@@ -9,7 +9,7 @@ import org.slf4j.*;
 
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.FileUtils;
-import ru.curs.showcase.util.exception.*;
+import ru.curs.showcase.util.exception.FileNameValidationException;
 import ru.curs.showcase.util.xml.XMLUtils;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
@@ -202,8 +202,6 @@ public final class AppInitializer {
 						String res = checkForCommonFilesInUserdatas(rootpath, resultFiles);
 						if (!"".equals(res))
 							throw new FileNameValidationException(res);
-						if (!checkForCommonSysInUserdatas(rootpath))
-							throw new NoFolderException("common.sys");
 					}
 				} else {
 					AppInfoSingleton.getAppInfo().addUserData(id, value);
@@ -214,8 +212,6 @@ public final class AppInitializer {
 					String res = checkForCommonFilesInUserdatas(rootpath, resultFiles);
 					if (!"".equals(res))
 						throw new FileNameValidationException(res);
-					if (!checkForCommonSysInUserdatas(rootpath))
-						throw new NoFolderException("common.sys");
 				}
 			}
 		}
@@ -234,16 +230,6 @@ public final class AppInitializer {
 
 		return result;
 
-	}
-
-	public static Boolean checkForCommonSysInUserdatas(String rootpath) {
-		boolean result = false;
-		for (String fileInUserdatasRoot : new File(rootpath).list()) {
-			if ("common.sys".equals(fileInUserdatasRoot))
-				result = true;
-		}
-
-		return result;
 	}
 
 }
