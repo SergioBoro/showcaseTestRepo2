@@ -11,7 +11,13 @@ class TestGridForm(GridForm):
         self.createAllBoundFields()
         
     def _getCursor(self, context):
+        
+#        print 'dddddddd23'
+#        print self
+#        print context
+        
         return testCursor(context)
 
-
+    def getGridHeight(self):
+        return 20
 

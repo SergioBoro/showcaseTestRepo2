@@ -51,7 +51,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 		
 
 			var store = new declare([ Rest, Trackable, Cache ])(lang.mixin({
-				target:"secured/JSGridService",
+				target:"secured/JSLyraGridService",
 				idProperty: "id",
 				
 				_fetch: function (kwArgs) {
@@ -94,7 +94,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 						}
 					}
 					
-		 	    	var httpParams = gwtGetHttpParams(elementId, kwArgs[0].start, kwArgs[0].end-kwArgs[0].start, sortColId, sortColDir);
+		 	    	var httpParams = gwtGetHttpParamsLyra(elementId, kwArgs[0].start, kwArgs[0].end-kwArgs[0].start, sortColId, sortColDir);
 		 	    	httpParams = eval('('+httpParams+')');	 	 
 		 	    	
 				    var scparams = {};
@@ -113,7 +113,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 								events = results[0]["events"];
 							}
 						}
-						gwtAfterLoadData(elementId, events, arrGrids[parentId]._total);
+						gwtAfterLoadDataLyra(elementId, events, arrGrids[parentId]._total);
 					});
 					
 					return results;
@@ -126,7 +126,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 						object["editor"] = "addRecord";
 						
 						var strObject = JSON.stringify(object);
-			 	    	var httpParams = gwtEditorGetHttpParams(elementId, strObject, object["editor"]);
+			 	    	var httpParams = gwtEditorGetHttpParamsLyra(elementId, strObject, object["editor"]);
 			 	    	httpParams = eval('('+httpParams+')');
 
 					    object[httpParams["gridContextName"]] = httpParams["gridContextValue"];	
@@ -139,7 +139,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 								}
 								else{
 								}
-								gwtShowMessage(elementId, value.message, object["editor"]);
+								gwtShowMessageLyra(elementId, value.message, object["editor"]);
 						    }, function(err){
 						    	alert("Произошла ошибка при добавлении записи:\n"+err+"\nПодробности находятся в консоли броузера.");
 						    });
@@ -162,7 +162,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 							  }
 							  return value;
 						});
-			 	    	var httpParams = gwtEditorGetHttpParams(elementId, strObject, object["editor"]);
+			 	    	var httpParams = gwtEditorGetHttpParamsLyra(elementId, strObject, object["editor"]);
 			 	    	httpParams = eval('('+httpParams+')');
 
 			 	    	object["gridContextName"] = httpParams["gridContextName"];
@@ -183,7 +183,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 								if(value.refreshAfterSave == 'true'){
 							        grid.refresh();								
 								}
-								gwtShowMessage(elementId, value.message, object["editor"]);
+								gwtShowMessageLyra(elementId, value.message, object["editor"]);
 						    }, function(err){
 						        grid.dirty = JSON.parse(object.dirty);				    	
 						    	alert("Произошла ошибка при сохранении данных:\n"+err+"\nПодробности находятся в консоли броузера.");
@@ -243,7 +243,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 								}
 								div.innerHTML = div.innerHTML +										
 											"<td  align=\"center\" style=\"vertical-align: middle;\">" +
-													"<button onclick=\"gwtProcessFileDownload('"+elementId+"', '"+object.id+"', '"+this.id+"')\">" +
+													"<button onclick=\"gwtProcessFileDownloadLyra('"+elementId+"', '"+object.id+"', '"+this.id+"')\">" +
 															"<img src="+metadata["columns"][k]["urlImageFileDownload"]+" title=\"Загрузить файл с сервера\"  style=\"vertical-align: middle; align: right; width: 8px; height: 8px;  \"   >" +
 													"</button>" +
 											"</td>" +
@@ -453,6 +453,12 @@ function createLyraDGrid(elementId, parentId, metadata) {
 			bufferRows: 0,
 			farOffRemoval: 0,
 			
+//----------------------Debug			
+//			maxEmptySpace: 100,
+//			queryRowsOverlap: 10,
+//----------------------Debug
+			
+			
 			selectionMode: selectionMode,
 			allowTextSelection: isAllowTextSelection,			
 			showHeader: isVisibleColumnsHeader,
@@ -496,7 +502,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 		
 		grid.on("dgrid-select", function(event){
 			if(firstLoading){
-				gwtAfterClick(elementId, metadata["common"]["selRecId"], metadata["common"]["selColId"], getSelection());				
+				gwtAfterClickLyra(elementId, metadata["common"]["selRecId"], metadata["common"]["selColId"], getSelection());				
 			} else {
 				setTimeout(function(){
 					if(!grid.readonly){
@@ -506,12 +512,12 @@ function createLyraDGrid(elementId, parentId, metadata) {
 						}
 					}
 					
-					gwtAfterClick(elementId, grid.row(event.grid._focusedNode).id, grid.column(event.grid._focusedNode).label, getSelection());
+					gwtAfterClickLyra(elementId, grid.row(event.grid._focusedNode).id, grid.column(event.grid._focusedNode).label, getSelection());
 				}, 50);
 			}
 		});
 		grid.on(".dgrid-row:dblclick", function(event){
-			gwtAfterDoubleClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
+			gwtAfterDoubleClickLyra(elementId, grid.row(event).id, grid.column(event).label, getSelection());
 		});
 		function getSelection()
 		{
@@ -563,6 +569,15 @@ function createLyraDGrid(elementId, parentId, metadata) {
 }
 
 function refreshLyraDGrid(parentId){
+
+//----------------------Debug	
+	var grid = arrGrids[parentId];
+	console.log(grid.getScrollPosition());
+	grid.scrollTo({x:0, y:100000});
+	return;
+//----------------------Debug	
+	
+	
 	arrGrids[parentId].refresh();
 }
 
@@ -613,7 +628,7 @@ function partialUpdateLyraDGrid(elementId, parentId, partialdata){
 		if(partialdata[0]["events"]){
 			events = partialdata[0]["events"];
 		}
-		gwtAfterPartialUpdate(elementId, events);						
+		gwtAfterPartialUpdateLyra(elementId, events);						
 	}
 }
 
