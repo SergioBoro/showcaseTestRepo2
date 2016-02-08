@@ -1,4 +1,4 @@
-package ru.curs.app.server;
+package ru.curs.showcase.app.server.redirection;
 
 import java.io.IOException;
 
