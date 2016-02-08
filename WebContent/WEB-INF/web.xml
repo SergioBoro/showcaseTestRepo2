@@ -26,7 +26,7 @@
   
   <filter>
     <filter-name>RedirectionFilter</filter-name>
-    <filter-class>ru.curs.app.server.RedirectionFilter</filter-class>
+    <filter-class>ru.curs.showcase.app.server.redirection.RedirectionFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>RedirectionFilter</filter-name>
