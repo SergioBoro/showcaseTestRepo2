@@ -132,8 +132,7 @@ public class BatchFileProcessor {
 			if (f.isFile() && "user.properties".equals(f.getName())) {
 				action.perform(f);
 			} else if (f.isDirectory()
-					&& !("lib".equals(f.getName()) || "libJython".equals(f.getName()))
-			) {
+					&& !("lib".equals(f.getName()) || "libJython".equals(f.getName()))) {
 				BatchFileProcessor bfp =
 					new BatchFileProcessor(getParentDir() + File.separator + f.getName(), filter);
 				bfp.process(action.cloneForHandleChildDir(f.getName()));
@@ -148,7 +147,8 @@ public class BatchFileProcessor {
 			return;
 		}
 		for (File f : flist) {
-			if (f.isFile() && "login.jsp".equals(f.getName())) {
+			if (f.isFile()
+					&& ("login.jsp".equals(f.getName()) || "sestimeout.jsp".equals(f.getName()))) {
 				action.perform(f);
 			} else if (f.isDirectory()) {
 			}
