@@ -58,7 +58,7 @@ public class GridDataGetCommand extends DataPanelElementCommand<GridData> {
 		RecordSetElementRawData rawData = gateway.getRawData(getContext(), getElementInfo());
 
 		GridServerState state =
-			(GridServerState) AppInfoSingleton.getAppInfo().getElementState(getSessionId(),
+			(GridServerState) AppInfoSingleton.getAppInfo().getGridCacheState(getSessionId(),
 					getElementInfo(), getContext());
 
 		if (applyLocalFormatting) {

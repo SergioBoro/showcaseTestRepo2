@@ -38,6 +38,9 @@ public interface DataServiceAsync {
 	void getGridData(GridContext context, DataPanelElementInfo element,
 			AsyncCallback<GridData> callback);
 
+	void getLyraGridMetadata(LyraGridContext context, DataPanelElementInfo element,
+			AsyncCallback<GridMetadata> callback);
+
 	void getChart(CompositeContext context, DataPanelElementInfo element,
 			AsyncCallback<Chart> callback);
 

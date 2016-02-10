@@ -69,7 +69,7 @@ public class GridMetadataGetCommand extends DataPanelElementCommand<GridMetadata
 
 		setResult(gm);
 
-		AppInfoSingleton.getAppInfo().storeElementState(getSessionId(), getElementInfo(),
+		AppInfoSingleton.getAppInfo().storeGridCacheState(getSessionId(), getElementInfo(),
 				getContext(), gridServerState);
 
 	}
@@ -81,7 +81,7 @@ public class GridMetadataGetCommand extends DataPanelElementCommand<GridMetadata
 			state = prepareInitGridServerState(context, elementInfo);
 		} else {
 			state =
-				(GridServerState) AppInfoSingleton.getAppInfo().getElementState(getSessionId(),
+				(GridServerState) AppInfoSingleton.getAppInfo().getGridCacheState(getSessionId(),
 						elementInfo, context);
 			if (state == null) {
 				// состояние устарело или память была очищена
@@ -95,7 +95,7 @@ public class GridMetadataGetCommand extends DataPanelElementCommand<GridMetadata
 	private GridServerState prepareInitGridServerState(final GridContext context,
 			final DataPanelElementInfo elementInfo) {
 		GridServerState state = new GridServerState();
-		AppInfoSingleton.getAppInfo().storeElementState(getSessionId(), elementInfo, context,
+		AppInfoSingleton.getAppInfo().storeGridCacheState(getSessionId(), elementInfo, context,
 				state);
 		return state;
 	}

@@ -30,6 +30,9 @@ public class CelestaHelper<T> {
 	private static final int FILTER_CONTEXT_INDEX = 2;
 	private static final int SESSION_CONTEXT_INDEX = 3;
 
+	private static final String LYRAPLAYER_GET_FORM_INSTANCE =
+		"lyra.lyraplayer.getFormInstance.cl";
+
 	private final CompositeContext contex;
 	private final Class<T> resultType;
 
@@ -167,6 +170,75 @@ public class CelestaHelper<T> {
 
 			return resultType.cast(obj);
 		} else {
+			throw new CelestaWorkerException("Result is not instance of "
+					+ this.resultType.getName());
+		}
+
+	}
+
+	/**
+	 * Выполнить celesta jython скрипт для лиры.
+	 * 
+	 * @param lyraClass
+	 *            - квалифицированное имя класса
+	 * @return результат выполнения скрипта
+	 */
+	public T runLyraPython(final String lyraClass, final Object... additionalParams) {
+
+		// lyra
+		// Object[] params = mergeAddAndGeneralParameters(this.contex,
+		// additionalParams);
+		Object[] params = new Object[1];
+		params[0] = lyraClass;
+
+		String sesID = SessionUtils.getCurrentSessionId();
+		String procName = CelestaUtils.getRealProcName(LYRAPLAYER_GET_FORM_INSTANCE);
+		PyObject result;
+
+		if (!AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
+			throw new CelestaWorkerException("Ошибка при запуске jython скрипта celesta '"
+					+ procName + "'. Celesta при старте сервера не была инициализированна.",
+					AppInfoSingleton.getAppInfo().getCelestaInitializationException());
+		}
+
+		Receiver receiver = new Receiver();
+		try {
+			result = Celesta.getInstance().runPython(sesID, receiver, procName, params);
+
+			UserMessage um = getUserMessage(receiver);
+			if (um != null) {
+				if (um.getType() == MessageType.ERROR) {
+					throw new ValidateException(um);
+				} else {
+					contex.setOkMessage(um);
+				}
+			}
+
+		} catch (CelestaException ex) {
+
+			UserMessage um = getUserMessage(receiver);
+			if (um != null) {
+				throw new ValidateException(um);
+			}
+
+			String[] err = handleCelestaExceptionError(ex.getMessage());
+			String res = handleCelestaExceptionTraceback(ex.getMessage(), err);
+
+			throw new CelestaWorkerException("Ошибка при выполнении jython скрипта celesta '"
+					+ procName + "'", new Exception(res));
+		}
+		if (result == null) {
+			return null;
+		}
+
+		Object obj = result.__tojava__(Object.class);
+		if (obj == null) {
+			return null;
+		}
+
+		try {
+			return resultType.cast(obj);
+		} catch (Exception e) {
 			throw new CelestaWorkerException("Result is not instance of "
 					+ this.resultType.getName());
 		}

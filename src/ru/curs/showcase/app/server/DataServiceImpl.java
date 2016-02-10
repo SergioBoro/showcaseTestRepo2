@@ -86,13 +86,13 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 			throws GeneralException {
 		Date dt1 = new Date();
 		GridMetadataGetCommand command = new GridMetadataGetCommand(context, element);
-		GridMetadata lgm = command.execute();
+		GridMetadata gm = command.execute();
 		Date dt2 = new Date();
 
 		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(),
 				element.getSubtype().toString());
 
-		return lgm;
+		return gm;
 	}
 
 	@Override
@@ -100,13 +100,27 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 			throws GeneralException {
 		Date dt1 = new Date();
 		GridDataGetCommand command = new GridDataGetCommand(context, element, true);
-		GridData lgd = command.execute();
+		GridData gd = command.execute();
 		Date dt2 = new Date();
 
 		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(),
 				element.getSubtype().toString());
 
-		return lgd;
+		return gd;
+	}
+
+	@Override
+	public GridMetadata getLyraGridMetadata(LyraGridContext context, DataPanelElementInfo element)
+			throws GeneralException {
+		Date dt1 = new Date();
+		LyraGridMetadataGetCommand command = new LyraGridMetadataGetCommand(context, element);
+		GridMetadata gm = command.execute();
+		Date dt2 = new Date();
+
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(),
+				element.getSubtype().toString());
+
+		return gm;
 	}
 
 	@Override
@@ -287,4 +301,5 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		}
 		return map;
 	}
+
 }

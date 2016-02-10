@@ -79,6 +79,9 @@ public interface DataService extends RemoteService {
 	GridData getGridData(GridContext context, DataPanelElementInfo element)
 			throws GeneralException;
 
+	GridMetadata getLyraGridMetadata(LyraGridContext context, DataPanelElementInfo element)
+			throws GeneralException;
+
 	/**
 	 * Возвращает данные для отрисовки графика по переданным контексту и
 	 * описанию элемента.

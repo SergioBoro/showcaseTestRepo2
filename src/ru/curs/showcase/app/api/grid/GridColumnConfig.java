@@ -27,16 +27,16 @@ public class GridColumnConfig implements SerializableElement {
 	@XmlAttribute
 	private Integer width = null;
 	@XmlAttribute
-	private GridValueType valueType;
+	private GridValueType valueType = null;
 	@XmlAttribute
 	private String format = null;
 	@XmlAttribute
-	private HorizontalAlignment horizontalAlignment;
+	private HorizontalAlignment horizontalAlignment = null;
 	/**
 	 * Ссылка на процедуру загрузки файла.
 	 */
 	@XmlAttribute
-	private String linkId;
+	private String linkId = null;
 
 	public GridColumnConfig() {
 	}

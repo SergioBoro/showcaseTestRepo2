@@ -38,7 +38,6 @@ public class GridData extends DataPanelCompBasedElement implements SizeEstimate 
 
 	@Override
 	protected EventManager<? extends Event> initEventManager() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

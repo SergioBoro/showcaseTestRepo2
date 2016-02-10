@@ -1,14 +1,26 @@
 package ru.curs.showcase.core.grid;
 
+import ru.curs.lyra.BasicGridForm;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.app.api.grid.GridContext;
-import ru.curs.showcase.core.sp.*;
+import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.core.celesta.CelestaHelper;
 
 /**
- * Интерфейс шлюза к уровню данных для лиры-грид.
+ * Шлюз для лиры-грида.
  */
-public interface LyraGridGateway extends RecordSetElementGateway<GridContext> {
 
-	RecordSetElementRawData getRawSettings(GridContext context, DataPanelElementInfo element);
+public class LyraGridGateway {
+
+	public BasicGridForm getLyraFormInstance(final CompositeContext context,
+			final DataPanelElementInfo element) {
+
+		CelestaHelper<BasicGridForm> helper =
+			new CelestaHelper<BasicGridForm>(context, BasicGridForm.class);
+		String procName = element.getProcName();
+		BasicGridForm result = helper.runLyraPython(procName, element.getId().getString());
+
+		return result;
+
+	}
 
 }

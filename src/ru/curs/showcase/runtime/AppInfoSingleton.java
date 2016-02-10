@@ -34,6 +34,7 @@ import ru.curs.showcase.util.exception.ServerLogicError;
 public final class AppInfoSingleton {
 
 	public static final String GRID_STATE_CACHE = "gridStateCache";
+	public static final String LYRA_GRID_STATE_CACHE = "lyraGridStateCache";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AppInfoSingleton.class);
 
@@ -414,10 +415,10 @@ public final class AppInfoSingleton {
 		return myCacheManager;
 	}
 
-	public Object getElementState(final String sessionId, final DataPanelElementInfo dpei,
+	public Object getGridCacheState(final String sessionId, final DataPanelElementInfo dpei,
 			final CompositeContext context) {
 		Cache<Object, Object> cache =
-			cacheManager.getCache("gridStateCache", Object.class, Object.class);
+			cacheManager.getCache(GRID_STATE_CACHE, Object.class, Object.class);
 		String key = getSessionKeyForCaching(sessionId, dpei, context);
 		// Element el = cache.get(key);
 		// if (el != null) {
@@ -429,25 +430,57 @@ public final class AppInfoSingleton {
 		return null;
 	}
 
-	private String getSessionKeyForCaching(final String sessionId,
-			final DataPanelElementInfo dpei, final CompositeContext context) {
-		return sessionId + AppInfoSingleton.getAppInfo().getCurUserDataId()
-				+ dpei.getKeyForCaching(context);
-	}
-
-	public void storeElementState(final String sessionId, final DataPanelElementInfo dpei,
+	public void storeGridCacheState(final String sessionId, final DataPanelElementInfo dpei,
 			final CompositeContext context, final Object state) {
 		Cache<Object, Object> cache =
-			cacheManager.getCache("gridStateCache", Object.class, Object.class);
+			cacheManager.getCache(GRID_STATE_CACHE, Object.class, Object.class);
 		String key = getSessionKeyForCaching(sessionId, dpei, context);
 		// Element cacheEl = new Element(key, state);
 		// cache.put(cacheEl);
 		cache.put(key, state);
 	}
 
+	public Object getLyraGridCacheState(final String sessionId, final DataPanelElementInfo dpei,
+			final CompositeContext context) {
+		Cache<Object, Object> cache =
+			cacheManager.getCache(LYRA_GRID_STATE_CACHE, Object.class, Object.class);
+		String key = getSessionKeyForCaching(sessionId, dpei, context);
+		// Element el = cache.get(key);
+		// if (el != null) {
+		// return el.getValue();
+		// }
+		if (cache.get(key) != null) {
+			return cache.get(key);
+		}
+		return null;
+	}
+
+	public void storeLyraGridCacheState(final String sessionId, final DataPanelElementInfo dpei,
+			final CompositeContext context, final Object state) {
+		Cache<Object, Object> cache =
+			cacheManager.getCache(LYRA_GRID_STATE_CACHE, Object.class, Object.class);
+		String key = getSessionKeyForCaching(sessionId, dpei, context);
+		// Element cacheEl = new Element(key, state);
+		// cache.put(cacheEl);
+		cache.put(key, state);
+	}
+
+	private String getSessionKeyForCaching(final String sessionId,
+			final DataPanelElementInfo dpei, final CompositeContext context) {
+		return sessionId + AppInfoSingleton.getAppInfo().getCurUserDataId()
+				+ dpei.getKeyForCaching(context);
+	}
+
 	public Cache<Object, Object> getGridStateCache() {
 		CacheManager cm = getCacheManager();
-		Cache<Object, Object> cache = cm.getCache("gridStateCache", Object.class, Object.class);
+		Cache<Object, Object> cache = cm.getCache(GRID_STATE_CACHE, Object.class, Object.class);
+		return cache;
+	}
+
+	public Cache<Object, Object> getLyraGridStateCache() {
+		CacheManager cm = getCacheManager();
+		Cache<Object, Object> cache =
+			cm.getCache(LYRA_GRID_STATE_CACHE, Object.class, Object.class);
 		return cache;
 	}
 
@@ -476,7 +509,8 @@ public final class AppInfoSingleton {
 
 	public int numberOfDataPanelCacheEntries() {
 		int n = 0;
-		for (Cache.Entry<String, DataPanel> s : AppInfoSingleton.getAppInfo().getDataPanelCache()) {
+		for (@SuppressWarnings("unused")
+		Cache.Entry<String, DataPanel> s : AppInfoSingleton.getAppInfo().getDataPanelCache()) {
 			++n;
 		}
 		return n;
@@ -500,7 +534,8 @@ public final class AppInfoSingleton {
 
 	public int numberOfGridStateCacheEntries() {
 		int n = 0;
-		for (Cache.Entry<Object, Object> s : AppInfoSingleton.getAppInfo().getGridStateCache()) {
+		for (@SuppressWarnings("unused")
+		Cache.Entry<Object, Object> s : AppInfoSingleton.getAppInfo().getGridStateCache()) {
 			++n;
 		}
 		return n;

@@ -2,7 +2,8 @@ package ru.curs.showcase.core.grid;
 
 import org.w3c.dom.*;
 
-import ru.curs.showcase.app.api.grid.GridContext;
+import ru.curs.lyra.LyraFieldType;
+import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -66,6 +67,25 @@ public final class GridUtils {
 
 			String result = XMLUtils.documentToString(doc);
 			gridContext.setFilter(result);
+		}
+	}
+
+	public static GridValueType getGridValueTypeByLyraFieldType(final LyraFieldType lft) {
+		switch (lft) {
+		case BLOB:
+			return GridValueType.STRING;
+		case BIT:
+			return GridValueType.STRING;
+		case DATETIME:
+			return GridValueType.DATETIME;
+		case REAL:
+			return GridValueType.FLOAT;
+		case INT:
+			return GridValueType.INT;
+		case VARCHAR:
+			return GridValueType.STRING;
+		default:
+			return GridValueType.STRING;
 		}
 	}
 

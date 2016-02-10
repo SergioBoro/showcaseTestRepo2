@@ -105,6 +105,7 @@ public class AbstractTest extends GeneralXMLHelper {
 		AppInfoSingleton.getAppInfo().clearSessions();
 		// AppInfoSingleton.getAppInfo().getCacheManager().clearAll();
 		AppInfoSingleton.getAppInfo().getGridStateCache().clear();
+		AppInfoSingleton.getAppInfo().getLyraGridStateCache().clear();
 		AppInfoSingleton.getAppInfo().getDataPanelCache().clear();
 		IDSettings.getInstance().reset();
 	}
