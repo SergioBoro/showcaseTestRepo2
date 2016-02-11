@@ -4,7 +4,7 @@ from lyra.basicForm import form
 from lyra.basicForm import formfield
 from _testgrain_orm import testCursor
 
-@form
+@form()
 class TestGridForm(GridForm):  
     def __init__(self, context):
         super(TestGridForm, self).__init__(context)
