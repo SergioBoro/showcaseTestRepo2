@@ -81,6 +81,8 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 					celestaProps.setProperty("javalib.path", "");
 				}
 
+				System.out.println("javaLibPath: " + javaLibPath);
+
 				String pyLibPath = celestaProps.getProperty("pylib.path");
 				for (String path : JythonIterpretatorFactory
 						.getGeneralScriptDirFromWebInf("libJython")) {
