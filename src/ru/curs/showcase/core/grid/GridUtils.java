@@ -18,24 +18,6 @@ public final class GridUtils {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void
-			includeDataPanelWidthAndHeightInSessionContext(final GridContext gridContext)
-					throws Exception {
-
-		Document doc = XMLUtils.stringToDocument(gridContext.getSession());
-
-		Element node = doc.createElement("currentDatapanelWidth");
-		doc.getDocumentElement().appendChild(node);
-		node.appendChild(doc.createTextNode(gridContext.getCurrentDatapanelWidth().toString()));
-
-		node = doc.createElement("currentDatapanelHeight");
-		doc.getDocumentElement().appendChild(node);
-		node.appendChild(doc.createTextNode(gridContext.getCurrentDatapanelHeight().toString()));
-
-		String result = XMLUtils.documentToString(doc);
-		gridContext.setSession(result);
-	}
-
 	public static void fillFilterContextByFilterInfo(final GridContext gridContext)
 			throws Exception {
 		fillFilterContextByFilterOrListOfValuesInfo(gridContext, false);

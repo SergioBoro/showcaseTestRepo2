@@ -51,8 +51,6 @@ public class GridDataGetCommand extends DataPanelElementCommand<GridData> {
 	@Override
 	protected void mainProc() throws Exception {
 
-		GridUtils.includeDataPanelWidthAndHeightInSessionContext(getContext());
-
 		SourceSelector<GridGateway> selector = new GridSelector(getElementInfo());
 		GridGateway gateway = selector.getGateway();
 		RecordSetElementRawData rawData = gateway.getRawData(getContext(), getElementInfo());

@@ -1121,9 +1121,6 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		result.resetForReturnAllRecords();
 		result.applyCompositeContext(getContext());
 
-		result.setCurrentDatapanelWidth(GeneralDataPanel.getTabPanel().getOffsetWidth());
-		result.setCurrentDatapanelHeight(GeneralDataPanel.getTabPanel().getOffsetHeight());
-
 		return result;
 	}
 

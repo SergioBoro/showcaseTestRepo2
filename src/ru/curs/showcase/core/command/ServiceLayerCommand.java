@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import org.slf4j.*;
+import org.w3c.dom.*;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
@@ -13,7 +14,8 @@ import ru.curs.showcase.core.AppRegistry;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.ServerLogicError;
-import ru.curs.showcase.util.xml.XMLSessionContextGenerator;
+import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Абстрактный класс команды сервисного уровня приложения. Весь функционал
@@ -188,7 +190,11 @@ public abstract class ServiceLayerCommand<T> {
 	}
 
 	protected void preProcess() {
-		// по умолчанию ничего не делаем
+		try {
+			includeDataPanelWidthAndHeightInSessionContext(getContext());
+		} catch (Exception e) {
+			throw new ServerLogicError(e);
+		}
 	}
 
 	protected void postProcess() {
@@ -264,4 +270,22 @@ public abstract class ServiceLayerCommand<T> {
 	public void setProps(final Map<String, String> aProps) {
 		props = aProps;
 	}
+
+	public static void includeDataPanelWidthAndHeightInSessionContext(final CompositeContext cnt)
+			throws Exception {
+
+		Document doc = XMLUtils.stringToDocument(cnt.getSession());
+
+		Element node = doc.createElement("currentDatapanelWidth");
+		doc.getDocumentElement().appendChild(node);
+		node.appendChild(doc.createTextNode(cnt.getCurrentDatapanelWidth().toString()));
+
+		node = doc.createElement("currentDatapanelHeight");
+		doc.getDocumentElement().appendChild(node);
+		node.appendChild(doc.createTextNode(cnt.getCurrentDatapanelHeight().toString()));
+
+		String result = XMLUtils.documentToString(doc);
+		cnt.setSession(result);
+	}
+
 }

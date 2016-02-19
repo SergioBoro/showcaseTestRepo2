@@ -67,6 +67,10 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 				context.addRelated(id, new CompositeContext());
 			}
 		}
+
+		context.setCurrentDatapanelWidth(GeneralDataPanel.getTabPanel().getOffsetWidth());
+		context.setCurrentDatapanelHeight(GeneralDataPanel.getTabPanel().getOffsetHeight());
+
 		return context;
 	}
 

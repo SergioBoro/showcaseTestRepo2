@@ -52,10 +52,6 @@ public class GridMetadataGetCommand extends DataPanelElementCommand<GridMetadata
 	@Override
 	protected void mainProc() throws Exception {
 
-		GridUtils.includeDataPanelWidthAndHeightInSessionContext(getContext());
-
-		// -----------------------------------
-
 		SourceSelector<ElementSettingsGateway> sselector =
 			new GridSettingsSelector(getElementInfo());
 		ElementSettingsGateway sgateway = sselector.getGateway();

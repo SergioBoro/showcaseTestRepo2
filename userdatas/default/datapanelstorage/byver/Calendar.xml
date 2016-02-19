@@ -4,6 +4,15 @@
 		<element id="1" type="webtext" transform="bal.xsl" />
 		<element id="6" type="webtext" transform="bal.xsl" />
 	</tab>
+
+
+	<tab id="04" name="Календарь">
+		<element id="0101" type="plugin" proc="pluginCalendarInfo"
+			plugin="calendar">
+			<proc id="010101" name="plugin/handleCalendar.py" type="POSTPROCESS" />
+		</element>
+		<element id="5" type="webtext" proc="webtext_filter_and_add" />		
+	</tab>
 	
 	
 	
@@ -164,13 +173,6 @@
 	
 
 
-	<tab id="04" name="Календарь">
-		<element id="0101" type="plugin" proc="pluginCalendarInfo"
-			plugin="calendar">
-			<proc id="010101" name="plugin/handleCalendar.py" type="POSTPROCESS" />
-		</element>
-		<element id="5" type="webtext" proc="webtext_filter_and_add" />		
-	</tab>
 
 	
 	

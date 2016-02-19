@@ -76,18 +76,6 @@ public class GridContext extends CompositeContext {
 	private String currentColumnId = null;
 
 	/**
-	 * Предлагаемая ширина грида, соответствующая ширине доступного
-	 * пространства.
-	 */
-	private Integer currentDatapanelWidth = 0;
-
-	/**
-	 * Предлагаемая высота грида, соответствующая высоте доступного
-	 * пространства.
-	 */
-	private Integer currentDatapanelHeight = 0;
-
-	/**
 	 * Массив идентификаторов выделенных с помощью селектора записей в гриде.
 	 */
 	@XmlElement(name = "selectedRecordId")
@@ -243,8 +231,6 @@ public class GridContext extends CompositeContext {
 		res.parentId = parentId;
 		res.editorData = editorData;
 		res.addRecordData = addRecordData;
-		res.currentDatapanelWidth = currentDatapanelWidth;
-		res.currentDatapanelHeight = currentDatapanelHeight;
 
 		res.liveInfo.setOffset(liveInfo.getOffset());
 		res.liveInfo.setLimit(liveInfo.getLimit());
@@ -282,23 +268,8 @@ public class GridContext extends CompositeContext {
 		setSession(aContext.getSession());
 		setSessionParamsMap(aContext.getSessionParamsMap());
 		setRelated(aContext.getRelated());
-
-	}
-
-	public Integer getCurrentDatapanelWidth() {
-		return currentDatapanelWidth;
-	}
-
-	public void setCurrentDatapanelWidth(final Integer acurrentDatapanelWidth) {
-		this.currentDatapanelWidth = acurrentDatapanelWidth;
-	}
-
-	public Integer getCurrentDatapanelHeight() {
-		return currentDatapanelHeight;
-	}
-
-	public void setCurrentDatapanelHeight(final Integer acurrentDatapanelHeight) {
-		this.currentDatapanelHeight = acurrentDatapanelHeight;
+		setCurrentDatapanelWidth(aContext.getCurrentDatapanelWidth());
+		setCurrentDatapanelHeight(aContext.getCurrentDatapanelHeight());
 	}
 
 }

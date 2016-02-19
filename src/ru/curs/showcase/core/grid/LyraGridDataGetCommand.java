@@ -32,8 +32,6 @@ public class LyraGridDataGetCommand extends DataPanelElementCommand<GridData> {
 	@Override
 	protected void mainProc() throws Exception {
 
-		GridUtils.includeDataPanelWidthAndHeightInSessionContext(getContext());
-
 		LyraGridGateway lgateway = new LyraGridGateway();
 		BasicGridForm basicGridForm = lgateway.getLyraFormInstance(getContext(), getElementInfo());
 

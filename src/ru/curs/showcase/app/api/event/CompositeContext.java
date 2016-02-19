@@ -89,6 +89,18 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 
 	private Boolean partialUpdate = false;
 
+	/**
+	 * Предлагаемая ширина элемента, соответствующая ширине доступного
+	 * пространства.
+	 */
+	private Integer currentDatapanelWidth = 0;
+
+	/**
+	 * Предлагаемая высота элемента, соответствующая высоте доступного
+	 * пространства.
+	 */
+	private Integer currentDatapanelHeight = 0;
+
 	public CompositeContext(final Map<String, List<String>> aParams) {
 		super();
 		addSessionParams(aParams);
@@ -152,6 +164,22 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 
 	public void setPartialUpdate(final Boolean aPartialUpdate) {
 		partialUpdate = aPartialUpdate;
+	}
+
+	public Integer getCurrentDatapanelWidth() {
+		return currentDatapanelWidth;
+	}
+
+	public void setCurrentDatapanelWidth(final Integer acurrentDatapanelWidth) {
+		currentDatapanelWidth = acurrentDatapanelWidth;
+	}
+
+	public Integer getCurrentDatapanelHeight() {
+		return currentDatapanelHeight;
+	}
+
+	public void setCurrentDatapanelHeight(final Integer acurrentDatapanelHeight) {
+		currentDatapanelHeight = acurrentDatapanelHeight;
 	}
 
 	/**
@@ -244,6 +272,8 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		for (Entry<ID, CompositeContext> entry : related.entrySet()) {
 			res.related.put(entry.getKey(), entry.getValue().gwtClone());
 		}
+		res.currentDatapanelWidth = currentDatapanelWidth;
+		res.currentDatapanelHeight = currentDatapanelHeight;
 		return res;
 	}
 

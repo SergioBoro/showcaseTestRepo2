@@ -1123,9 +1123,6 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 		result.setIsFirstLoad(isNeedResetLocalContext());
 		result.applyCompositeContext(getContext());
 
-		result.setCurrentDatapanelWidth(GeneralDataPanel.getTabPanel().getOffsetWidth());
-		result.setCurrentDatapanelHeight(GeneralDataPanel.getTabPanel().getOffsetHeight());
-
 		return result;
 	}
 
