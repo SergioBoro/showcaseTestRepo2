@@ -276,6 +276,13 @@ public abstract class ServiceLayerCommand<T> {
 
 		Document doc = XMLUtils.stringToDocument(cnt.getSession());
 
+		NodeList l = doc.getDocumentElement().getChildNodes();
+		for (int i = 0; i < l.getLength(); i++) {
+			if ("currentDatapanelWidth".equalsIgnoreCase(l.item(i).getNodeName())) {
+				return;
+			}
+		}
+
 		Element node = doc.createElement("currentDatapanelWidth");
 		doc.getDocumentElement().appendChild(node);
 		node.appendChild(doc.createTextNode(cnt.getCurrentDatapanelWidth().toString()));
