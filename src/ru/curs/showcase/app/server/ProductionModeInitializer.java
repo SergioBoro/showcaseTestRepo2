@@ -197,16 +197,38 @@ public final class ProductionModeInitializer {
 		Boolean isAllFilesCopied = true;
 		File userdataRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
 		File[] list = userdataRoot.listFiles();
+
+		generalResRoot =
+			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + COMMON_SYS);
+		if (generalResRoot.exists()) {
+			for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+				File generalDir =
+					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/"
+							+ "general"));
+				File userDataDir =
+					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/"
+							+ userdataId));
+				userDataDir.mkdir();
+
+				isAllFilesCopied =
+					isAllFilesCopied
+							&& copyGeneralDir(aServletContext, generalResRoot, userDataDir,
+									generalDir);
+			}
+		}
+
 		// for (File f : list) {
 		for (int c = list.length - 1; c >= 0; c--) {
 			File f = list[c];
 			if (f.getName().startsWith("common") && !(f.getName().equals(COMMON_SYS))) {
 				generalResRoot =
 					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName());
-			} else if (f.getName().equals(COMMON_SYS)) {
-				generalResRoot =
-					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + COMMON_SYS);
-			} else {
+			} // else if (f.getName().equals(COMMON_SYS)) {
+				// generalResRoot =
+				// new File(AppInfoSingleton.getAppInfo().getUserdataRoot() +
+				// "/" + COMMON_SYS);
+			// }
+			else {
 				continue;
 			}
 			if (generalResRoot.exists()) {
