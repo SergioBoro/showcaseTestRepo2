@@ -17,6 +17,16 @@ function createCalendar(parentId, data, template) {
 			    		  editable: data.metadata.editable
 			    		}, parentId);
 			    	
+			    	
+			    	if(data.buttons){
+						for(var i = 0; i<data.buttons.length; i++){
+							if(data.buttons[i].hide){
+						    	calendar[data.buttons[i].id].domNode.parentNode.removeChild(calendar[data.buttons[i].id].domNode);
+							}
+						}
+			    	}
+			    	
+			    	
 			    	calendar.on("itemClick", function(e){
 //			    		  console.log("Item clicked", e.item);
 			    		gwtPluginFunc(parentId, e.item.id);

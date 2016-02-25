@@ -8,16 +8,21 @@ from ru.curs.showcase.util import TextUtils
 data = None
 resultMetadata = None
 resultData = None
+resultButtons = None
 
 
 class myHandler(DefaultHandler):
     def startElement(self, namespaceURI, lname, qname, attrs):
         global resultMetadata
         global resultData
+        global resultButtons
         if (qname == "metadata"):
-            resultMetadata = u"{date: %s, minHours: %s, maxHours: %s, dateInterval: '%s', style: '%s', editable: %s, toolbarVisible: %s}" % (attrs.getValue('date'), attrs.getValue('minHours'), attrs.getValue('maxHours'), attrs.getValue('dateInterval'), attrs.getValue('style'), attrs.getValue('editable'), attrs.getValue('toolbarVisible'))
+            resultMetadata = u"{date: %s, minHours: %s, maxHours: %s, dateInterval: '%s', dateIntervalSteps: '%s', style: '%s', editable: %s, toolbarVisible: %s}" % (attrs.getValue('date'), attrs.getValue('minHours'), attrs.getValue('maxHours'), attrs.getValue('dateInterval'), attrs.getValue('dateIntervalSteps'), attrs.getValue('style'), attrs.getValue('editable'), attrs.getValue('toolbarVisible'))
         if (qname == "event"):
             resultData += u"{id: %s, summary: %s, startTime: %s, endTime: %s, allDay: '%s'}," % (attrs.getValue('id'), attrs.getValue('summary'), attrs.getValue('startTime'), attrs.getValue('endTime'), attrs.getValue('allDay'))
+        if (qname == "button"):
+            resultButtons += u"{id: %s, hide: %s}," % (attrs.getValue('id'), attrs.getValue('hide'))
+            
 
 class handleCalendar(JythonProc):
 
@@ -29,12 +34,15 @@ class handleCalendar(JythonProc):
 def mainproc():
     global resultMetadata
     global resultData
+    global resultButtons    
     resultData = u'['
+    resultButtons = u'['
     parser = XMLUtils.createSAXParser()
     stream = TextUtils.stringToStream(data)
     parser.parse(stream, myHandler())
     resultData += u']'
-    result = u"{metadata: "+resultMetadata+u", data: "+resultData+u"}"  
+    resultButtons += u']'    
+    result = u"{metadata: "+resultMetadata+u", data: "+resultData+u", buttons: "+resultButtons+u"}"  
     return JythonDTO([result])
 
 if __name__ == "__main__":

@@ -28403,11 +28403,19 @@ BEGIN
     SET NOCOUNT ON;
 
 
+
+insert into Debug (string) VALUES (NULL)
+insert into Debug (string) VALUES (NULL)
+insert into Debug (context) VALUES (@session_context)
+
+
+
+
 set    @data=CAST(
 '<root>
 
 <metadata date="new Date(2012, 0, 5)" minHours="10" maxHours="20" 
-          dateInterval="week" style="position:relative;width:900px;height:800px" editable="false" toolbarVisible="true"
+          dateInterval="month" dateIntervalSteps="2" style="position:relative;width:100%;height:800px;" editable="false" toolbarVisible="true"
 />
 
 <data>
@@ -28416,9 +28424,21 @@ set    @data=CAST(
 <event id="''id3''" summary="''Событие 3''" startTime="new Date(2012, 0, 4, 0, 0)" endTime="new Date(2012, 0, 5, 23, 59)" allDay="true"/>
 </data>
 
+<buttons>
+	<button id="''previousButton''" hide="true"/>
+	<button id="''nextButton''" hide="true"/>
+	<button id="''todayButton''" hide="false"/>
+	<button id="''dayButton''" hide="true"/>
+	<button id="''fourDaysButton''" hide="true"/>
+	<button id="''weekButton''" hide="false"/>
+	<button id="''monthButton''" hide="true"/>
+</buttons>
+
+
+
 </root>' as xml)
 
-set @settings='<properties width="800px" height="600px">                                    
+set @settings='<properties width="100%" height="100%">                                    
 
                        <event name="single_click" linkId="id1">
                         <action >
@@ -28455,7 +28475,14 @@ set @settings='<properties width="800px" height="600px">
 
                     </properties>'
 
+
+--set @error_mes = 'Грид успешно построен'
+--RETURN 555;
+RETURN 0;
+
+
 END
+
 GO
 
 
