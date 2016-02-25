@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.IllegalFormatException;
 
+import javax.net.ssl.*;
+
 import org.slf4j.*;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
@@ -20,6 +22,17 @@ import ru.curs.showcase.util.exception.SettingsFileOpenException;
  * 
  */
 public class AuthServerAuthenticationProvider implements AuthenticationProvider {
+
+	static {
+		HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+			public boolean verify(String hostname, SSLSession session) {
+				// ip address of the service URL(like.23.28.244.244)
+				// if (hostname.equals("23.28.244.244"))
+				return true;
+				// return false;
+			}
+		});
+	}
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AuthServerAuthenticationProvider.class);
