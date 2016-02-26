@@ -45,7 +45,7 @@ public final class UserInfoUtils {
 					UserInfo ui =
 						new UserInfo(atts.getValue("login"), atts.getValue("SID"),
 								atts.getValue("name"), atts.getValue("email"),
-								atts.getValue("phone"));
+								atts.getValue("phone"), atts.getValue("additionalParameter"));
 					result.add(ui);
 				}
 			}
