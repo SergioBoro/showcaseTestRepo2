@@ -112,9 +112,16 @@ public final class SessionUtils {
 		return null;
 	}
 
-	public static String getAdditionalParameter() {
+	// public static String getAdditionalParameter() {
+	// if (getUserAndSessionDetails() != null) {
+	// return getUserAndSessionDetails().getUserInfo().getAdditionalParameter();
+	// }
+	// return null;
+	// }
+
+	public static String[] getAdditionalParameters() {
 		if (getUserAndSessionDetails() != null) {
-			return getUserAndSessionDetails().getUserInfo().getAdditionalParameter();
+			return getUserAndSessionDetails().getUserInfo().getAdditionalParameters();
 		}
 		return null;
 	}

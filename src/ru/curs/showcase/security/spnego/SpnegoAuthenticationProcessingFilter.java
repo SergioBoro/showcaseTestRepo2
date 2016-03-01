@@ -99,7 +99,7 @@ public class SpnegoAuthenticationProcessingFilter extends AbstractAuthentication
 			UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
 			final String[] username = principal.getName().split("@", 2);
 			userAndSessionDetails.setUserInfo(new UserInfo(principal.getName(), null, username[0],
-					null, null, null));
+					null, null, (String) null));
 			token.setDetails(userAndSessionDetails);
 			return token;
 

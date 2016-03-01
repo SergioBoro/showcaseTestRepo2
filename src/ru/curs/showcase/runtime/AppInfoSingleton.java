@@ -54,6 +54,8 @@ public final class AppInfoSingleton {
 
 	private String sesid = "";
 
+	private List<String> additionalParametersList = new ArrayList<String>();
+
 	private final SortedSet<String> executedProc = Collections
 			.synchronizedSortedSet(new TreeSet<String>());
 
@@ -692,5 +694,13 @@ public final class AppInfoSingleton {
 
 	public void setDebugSolutionModeEnabled(final boolean oDebugSolutionModeEnabled) {
 		this.debugSolutionModeEnabled = oDebugSolutionModeEnabled;
+	}
+
+	public List<String> getAdditionalParametersList() {
+		return additionalParametersList;
+	}
+
+	public void setAdditionalParametersList(final List<String> anAdditionalParametersList) {
+		this.additionalParametersList = anAdditionalParametersList;
 	}
 }

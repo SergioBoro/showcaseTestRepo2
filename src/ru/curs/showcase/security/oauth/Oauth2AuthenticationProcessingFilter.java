@@ -44,7 +44,7 @@ public class Oauth2AuthenticationProcessingFilter extends AbstractAuthentication
 		UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
 		java.security.Principal principal = request.getUserPrincipal();
 		userAndSessionDetails.setUserInfo(new UserInfo(principal != null ? principal.toString()
-				: null, null, null, null, null, null));
+				: null, null, null, null, null, (String) null));
 		authRequest.setDetails(userAndSessionDetails);
 
 		AuthFailureHandler authFailureHandler = new AuthFailureHandler("OAUTH2");

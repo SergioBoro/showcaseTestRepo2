@@ -37,10 +37,11 @@ public final class UserInfo implements SerializableElement {
 	 * Телефон пользователя.
 	 */
 	private String phone;
-	/**
-	 * Дополнительный параметр.
-	 */
-	private String additionalParameter;
+	// /**
+	// * Дополнительный параметр.
+	// */
+	// private String additionalParameter;
+	private String[] additionalParameters;
 
 	/**
 	 * Код ответа AuthServer.
@@ -49,25 +50,35 @@ public final class UserInfo implements SerializableElement {
 
 	public UserInfo(final String aLogin, final String aSid, final String aName,
 			final String aEmail, final String aPhone, final String agroupProviders,
-			final String anAdditionalParameter) {
+			final String... anAdditionalParameter) {
 		this.login = aLogin;
 		this.sid = aSid;
 		this.name = aName;
 		this.email = aEmail;
 		this.phone = aPhone;
 		this.groupProviders = agroupProviders;
-		this.additionalParameter = anAdditionalParameter;
+		this.additionalParameters = anAdditionalParameter;
 	}
 
 	public UserInfo(final String aLogin, final String aSid, final String aName,
-			final String aEmail, final String aPhone, final String anAdditionalParameter) {
+			final String aEmail, final String aPhone, final String... anAdditionalParameter) {
 		this.login = aLogin;
 		this.sid = aSid;
 		this.name = aName;
 		this.email = aEmail;
 		this.phone = aPhone;
 		this.groupProviders = null;
-		this.additionalParameter = anAdditionalParameter;
+		this.additionalParameters = anAdditionalParameter;
+	}
+
+	public UserInfo(final String aLogin, final String aSid, final String aName,
+			final String aEmail, final String aPhone, final String agroupProviders) {
+		this.login = aLogin;
+		this.sid = aSid;
+		this.name = aName;
+		this.email = aEmail;
+		this.phone = aPhone;
+		this.groupProviders = agroupProviders;
 	}
 
 	public UserInfo() {
@@ -110,7 +121,7 @@ public final class UserInfo implements SerializableElement {
 		this.groupProviders = agroupProviders;
 	}
 
-	public String getAdditionalParameter() {
-		return additionalParameter;
+	public String[] getAdditionalParameters() {
+		return additionalParameters;
 	}
 }

@@ -11,7 +11,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.UserInfo;
-import ru.curs.showcase.runtime.XSLTransformerPoolFactory;
+import ru.curs.showcase.runtime.*;
 
 /**
  * Класс утилит для получения информации о пользователе (деталей, таких как
@@ -42,10 +42,17 @@ public final class UserInfoUtils {
 			public void startElement(final String uri, final String localName,
 					final String prefixedName, final Attributes atts) throws SAXException {
 				if ("user".equals(localName)) {
+					String[] params = new String[atts.getLength()];
+					String[] values = new String[atts.getLength()];
+					for (int i = 0; i < atts.getLength(); i++) {
+						params[i] = atts.getLocalName(i);
+						values[i] = atts.getValue(params[i]);
+						AppInfoSingleton.getAppInfo().getAdditionalParametersList().add(params[i]);
+					}
 					UserInfo ui =
 						new UserInfo(atts.getValue("login"), atts.getValue("SID"),
 								atts.getValue("name"), atts.getValue("email"),
-								atts.getValue("phone"), atts.getValue("additionalParameter"));
+								atts.getValue("phone"), values);
 					result.add(ui);
 				}
 			}

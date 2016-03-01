@@ -40,7 +40,7 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	private static final String PHONE_TAG = "phone";
 	private static final String IP_TAG = "ip";
 	private static final String LOGIN_TAG = "login";
-	private static final String ADD_PARAM_TAG = "additionalParameter";
+	// private static final String ADD_PARAM_TAG = "additionalParameter";
 
 	private final CompositeContext context;
 
@@ -130,9 +130,20 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		info.getDocumentElement().appendChild(node);
 		node.appendChild(info.createTextNode(SessionUtils.getRemoteAddress()));
 
-		node = info.createElement(ADD_PARAM_TAG);
-		info.getDocumentElement().appendChild(node);
-		node.appendChild(info.createTextNode(SessionUtils.getAdditionalParameter()));
+		// node = info.createElement(ADD_PARAM_TAG);
+		// info.getDocumentElement().appendChild(node);
+		// node.appendChild(info.createTextNode(SessionUtils.getAdditionalParameter()));
+
+		String[] additionalParameters = SessionUtils.getAdditionalParameters();
+		List<String> listAddPar = AppInfoSingleton.getAppInfo().getAdditionalParametersList();
+		for (int k = 0; k < additionalParameters.length; k++) {
+			if (!listAddPar.get(k).equals("SID") && !listAddPar.get(k).equals("login")
+					&& !listAddPar.get(k).equals("name")) {
+				node = info.createElement(listAddPar.get(k));
+				info.getDocumentElement().appendChild(node);
+				node.appendChild(info.createTextNode(additionalParameters[k]));
+			}
+		}
 
 		Oauth2Token oauth2Token = SessionUtils.getOauth2Token();
 		if (oauth2Token != null) {
