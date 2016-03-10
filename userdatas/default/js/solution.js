@@ -33,3 +33,10 @@ function toggleLevel2()
 {
 	alert("message");
 }
+
+function addAdditionalAboutInfo()
+{
+	//Instead of empty string you can place text that would be printed in window "О программе" 
+	
+	return "";
+}

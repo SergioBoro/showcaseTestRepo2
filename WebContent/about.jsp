@@ -197,7 +197,7 @@ AuthServerUtils.init(url);
 			 }
 			
 		</script>
-
+		<script src="solutions/<%=UserDataUtils.getUserDataId()%>/js/solution.js"></script>
 <%
 Properties prop = new Properties();
 try {
@@ -258,7 +258,6 @@ if (userAgent != null) {
 
 }
 %>
-
 
 </head>
 <body>
@@ -358,9 +357,15 @@ if (userAgent != null) {
 					<%= fff
 					+ br
 					+ caseSensivityIDsSummary
-					+ br
-					+ br
 					+ br%>
+						
+					<script type="text/javascript">
+						var output = addAdditionalAboutInfo();
+							document.write(output);	
+					</script>
+					<%= br + br
+					%>
+					
 					
 	</td>
 	<td></td>
