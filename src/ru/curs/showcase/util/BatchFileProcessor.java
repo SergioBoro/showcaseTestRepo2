@@ -148,7 +148,8 @@ public class BatchFileProcessor {
 		}
 		for (File f : flist) {
 			if (f.isFile()
-					&& ("login.jsp".equals(f.getName()) || "sestimeout.jsp".equals(f.getName()))) {
+					&& ("login.jsp".equals(f.getName()) || "sestimeout.jsp".equals(f.getName()) || "about.jsp"
+							.equals(f.getName()))) {
 				action.perform(f);
 			} else if (f.isDirectory()) {
 			}
