@@ -426,4 +426,105 @@ public final class ProductionModeInitializer {
 		}
 		return path.delete();
 	}
+
+	public static void reCopyCSS(final ServletContext aServletContext) {
+		File generalResRoot = null;
+		File userdataRoot = new File(AppInfoSingleton.getAppInfo().getUserdataRoot());
+		File[] list = userdataRoot.listFiles();
+
+		generalResRoot =
+			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + COMMON_SYS);
+		if (generalResRoot.exists()) {
+			for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+				File generalDir =
+					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/"
+							+ "general"));
+				File userDataDir =
+					new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/"
+							+ userdataId));
+
+				reCopyGeneralCSS(aServletContext, generalResRoot, userDataDir, generalDir);
+			}
+		}
+
+		for (int c = list.length - 1; c >= 0; c--) {
+			File f = list[c];
+			if (f.getName().startsWith("common") && !(f.getName().equals(COMMON_SYS))) {
+				generalResRoot =
+					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName());
+			} else {
+				continue;
+			}
+			if (generalResRoot.exists()) {
+				for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+					File generalDir =
+						new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR
+								+ "/" + "general"));
+					File userDataDir =
+						new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR
+								+ "/" + userdataId));
+
+					reCopyGeneralCSS(aServletContext, generalResRoot, userDataDir, generalDir);
+				}
+			}
+		}
+
+		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
+			String userDataCatalog = "";
+			UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
+			if (us == null) {
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+					LOGGER.error(GET_USERDATA_PATH_ERROR);
+				}
+				return;
+			}
+			userDataCatalog = us.getPath();
+
+			File dir = new File(userDataCatalog + "/css");
+
+			if (!dir.exists()) {
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {
+					LOGGER.warn(String.format(USER_DATA_DIR_NOT_FOUND_ERROR, "css"));
+				}
+			}
+			reCopyUserdataCSS(aServletContext, userDataCatalog, userdataId);
+
+		}
+
+	}
+
+	private static void reCopyGeneralCSS(final ServletContext aServletContext,
+			final File generalResRoot, final File userDataDir, final File generalDir) {
+		File[] files = generalResRoot.listFiles();
+
+		BatchFileProcessor fprocessor =
+			new BatchFileProcessor(generalResRoot.getAbsolutePath(), new RegexFilenameFilter(
+					"^[.].*", false));
+
+		try {
+			for (File f : files) {
+				if ("css".equals(f.getName())) {
+					fprocessor.processForCSS(new CopyFileAction(userDataDir.getAbsolutePath()));
+				}
+			}
+		} catch (IOException e) {
+			LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
+		}
+	}
+
+	private static void reCopyUserdataCSS(final ServletContext aServletContext,
+			final String userDataCatalog, final String userdataId) {
+		BatchFileProcessor fprocessor =
+			new BatchFileProcessor(userDataCatalog + "/css", new RegexFilenameFilter("^[.].*",
+					false));
+		try {
+			fprocessor.process(new CopyFileAction(aServletContext.getRealPath("/"
+					+ UserDataUtils.SOLUTIONS_DIR + "/" + userdataId + "/css")));
+		} catch (IOException e) {
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+				LOGGER.error(String.format(FILE_COPY_ERROR, e.getMessage()));
+			}
+		}
+	}
+
 }

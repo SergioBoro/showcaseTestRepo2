@@ -123,6 +123,23 @@ public class BatchFileProcessor {
 		}
 	}
 
+	public void processForCSS(final FileAction action) throws IOException {
+		File[] flist = getFilesList();
+		if (flist == null) {
+			return;
+		}
+		for (File f : flist) {
+			if (f.isFile()) {
+				// action.perform(f);
+			} else if (f.isDirectory() && ("css".equals(f.getName()))) {
+				BatchFileProcessor bfp =
+					new BatchFileProcessor(getParentDir() + File.separator + f.getName(), filter);
+				bfp.process(action.cloneForHandleChildDir(f.getName()));
+				action.perform(f);
+			}
+		}
+	}
+
 	public void processForWebInf(final FileAction action) throws IOException {
 		File[] flist = getFilesList();
 		if (flist == null) {

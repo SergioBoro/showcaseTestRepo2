@@ -143,6 +143,14 @@ div {
 				</form>
 				<div style="font-style: italic">На перезагрузку userdata потребуется 10-30 секунд!</div>
 			</td>
+			<td width="30%">	
+				<form target="fake" method="get" action="reset">
+					<input type="hidden" name="css" value="reload" /> 
+					<input type="submit"
+						value="Перезагрузить стили css"/>
+				</form>
+				<div style="font-style: italic"></div>
+			</td>
 		</tr>		
 	</table>
 	

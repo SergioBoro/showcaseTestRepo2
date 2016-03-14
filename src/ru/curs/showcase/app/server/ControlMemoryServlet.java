@@ -20,6 +20,7 @@ public class ControlMemoryServlet extends HttpServlet {
 	public static final String USERDATA_PARAM = "userdata";
 	public static final String GC_PARAM = "gc";
 	public static final String POOL_PARAM = "pool";
+	public static final String CSS_PARAM = "css";
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControlMemoryServlet.class);
@@ -30,7 +31,8 @@ public class ControlMemoryServlet extends HttpServlet {
 		String pool = request.getParameter(POOL_PARAM);
 		String gc = request.getParameter(GC_PARAM);
 		String userdata = request.getParameter(USERDATA_PARAM);
-		if ((pool == null) && (gc == null) && (userdata == null)) {
+		String css = request.getParameter(CSS_PARAM);
+		if ((pool == null) && (gc == null) && (userdata == null) && (css == null)) {
 			throw new ServletException(NO_PARAMS_ERROR);
 		}
 		if (pool != null) {
@@ -86,6 +88,9 @@ public class ControlMemoryServlet extends HttpServlet {
 			ProductionModeInitializer.initUserDatas(request.getSession().getServletContext());
 			AppInfoSingleton.getAppInfo().getDataPanelCache().clear();
 			AppInfoSingleton.getAppInfo().getGridStateCache().clear();
+		}
+		if (css != null) {
+			ProductionModeInitializer.reCopyCSS(request.getSession().getServletContext());
 		}
 	}
 }
