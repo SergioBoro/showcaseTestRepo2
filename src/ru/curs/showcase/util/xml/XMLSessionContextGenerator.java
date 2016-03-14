@@ -136,12 +136,14 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 
 		String[] additionalParameters = SessionUtils.getAdditionalParameters();
 		List<String> listAddPar = AppInfoSingleton.getAppInfo().getAdditionalParametersList();
-		for (int k = 0; k < additionalParameters.length; k++) {
-			if (!listAddPar.get(k).equals("SID") && !listAddPar.get(k).equals("login")
-					&& !listAddPar.get(k).equals("name")) {
-				node = info.createElement(listAddPar.get(k));
-				info.getDocumentElement().appendChild(node);
-				node.appendChild(info.createTextNode(additionalParameters[k]));
+		if (additionalParameters != null && additionalParameters.length > 0) {
+			for (int k = 0; k < additionalParameters.length; k++) {
+				if (!listAddPar.get(k).equals("SID") && !listAddPar.get(k).equals("login")
+						&& !listAddPar.get(k).equals("name")) {
+					node = info.createElement(listAddPar.get(k));
+					info.getDocumentElement().appendChild(node);
+					node.appendChild(info.createTextNode(additionalParameters[k]));
+				}
 			}
 		}
 
