@@ -209,6 +209,8 @@ public class Accordeon {
 	private void fillAccordeon(final Navigator navigator) {
 		final int m = 4;
 
+		backState();
+
 		for (int i = 0; i < navigator.getGroups().size(); i++) {
 			accordeon.add(getGroupTreeWidget(navigator.getGroups().get(i)),
 					getGroupString(navigator.getGroups().get(i)), true, m);
@@ -533,5 +535,19 @@ public class Accordeon {
 	}-*/;
 
 	// CHECKSTYLE:ON
+
+	public static native void backState() /*-{
+
+		$wnd.addEventListener('popstate', function(e) {
+			var st = "" + e.state;
+			var ar = st.split(";");
+			var item = ar[0];
+			var ind = ar[1];
+
+			$wnd.selectNavigatorItem(item);
+			$wnd.selectDatapanelTab(ind);
+		}, false);
+
+	}-*/;
 
 }

@@ -3,6 +3,7 @@
  */
 package ru.curs.showcase.app.client;
 
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.*;
 
@@ -178,6 +179,19 @@ public final class FeedbackJSNI {
 
 	}
 
+	public static void selectNavigatorItem(final String id) {
+
+		AppCurrContext.getInstance().getMainPanel().getAccordeon()
+				.selectNesessaryItemInAccordion(new ID(id), true);
+
+	}
+
+	public static void selectDatapanelTab(final String index) {
+
+		GeneralDataPanel.getTabPanel().selectTab(Integer.parseInt(index));
+
+	}
+
 	/**
 	 * 
 	 * Процедура инициализирующая Java функции gwt клиентского кода
@@ -222,6 +236,11 @@ public final class FeedbackJSNI {
 		
 		$wnd.showcaseLogout = 
 		@ru.curs.showcase.app.client.ShowcaseLogout::showcaseLogout();	
+		
+		$wnd.selectNavigatorItem = 
+	@ru.curs.showcase.app.client.FeedbackJSNI::selectNavigatorItem(Ljava/lang/String;);
+		$wnd.selectDatapanelTab = 
+	@ru.curs.showcase.app.client.FeedbackJSNI::selectDatapanelTab(Ljava/lang/String;);	
 	}-*/;
 
 }

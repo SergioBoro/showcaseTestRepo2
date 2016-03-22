@@ -25,10 +25,32 @@ public class TabPanelSelectionHandler implements SelectionHandler<Integer> {
 						.getDataPanelTabMetaData().getAction());
 		GeneralDataPanel.fillTabContent(event.getSelectedItem());
 		GeneralDataPanel.getTabPanel().saveTabBarCurrentScrollingPosition();
+
+		AppCurrContext.getInstance().setDatapanelTabIndex(event.getSelectedItem());
+		String str = AppCurrContext.getInstance().getNavigatorItemId();
+		if (event.getSelectedItem() != Integer.parseInt(getState())) {
+			pushState(str + ";" + event.getSelectedItem());
+		}
+
 		// MessageBox.showSimpleMessage("tab handler",
 		// GeneralDataPanel.getTabPanel().getTabBar()
 		// .getElement().getStyle().getLeft());
 
 	}
+
+	public native void pushState(String obj) /*-{
+
+		$wnd.history.pushState(obj, "Tab");
+
+	}-*/;
+
+	public native String getState() /*-{
+
+		var s = "" + $wnd.history.state;
+		var ar = s.split(";");
+		var ret = ar[1];
+		return ret;
+
+	}-*/;
 
 }

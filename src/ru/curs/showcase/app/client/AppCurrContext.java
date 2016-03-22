@@ -22,6 +22,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
  */
 public final class AppCurrContext extends ActionTransformer {
 
+	private static int nnn = 0;
+
 	private final constantsShowcase internationalizedMessages = GWT
 			.create(constantsShowcase.class);
 
@@ -103,6 +105,10 @@ public final class AppCurrContext extends ActionTransformer {
 	private HandlerRegistration regTabPanelSelectionHandler;
 
 	private Map<String, String> bundleMap;
+
+	private Integer datapanelTabIndex = 0;
+
+	private String navigatorItemId = null;
 
 	/**
 	 * @return the regTabPanelSelectionHandler
@@ -280,4 +286,29 @@ public final class AppCurrContext extends ActionTransformer {
 	public Map<String, String> getBundleMap() {
 		return bundleMap;
 	}
+
+	public void setDatapanelTabIndex(final int aDatapanelTabIndex) {
+		datapanelTabIndex = aDatapanelTabIndex;
+	}
+
+	public Integer getDatapanelTabIndex() {
+		return datapanelTabIndex;
+	}
+
+	public void setNavigatorItemId(final String aNavigatorItemId) {
+		navigatorItemId = aNavigatorItemId;
+	}
+
+	public String getNavigatorItemId() {
+		return navigatorItemId;
+	}
+
+	public void iterarteNnn() {
+		++nnn;
+	}
+
+	public int getNnn() {
+		return nnn;
+	}
+
 }

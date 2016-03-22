@@ -64,12 +64,20 @@ public class TreeSelectionHandler implements SelectionHandler<TreeItem> {
 			AppCurrContext.getInstance().setNavigatorAction(ac);
 			generateDatePanel(AppCurrContext.getInstance().getNavigatorAction(),
 					arg0.getSelectedItem());
+
+			String str =
+				((NavigatorElement) arg0.getSelectedItem().getUserObject()).getId().getString();
+			AppCurrContext.getInstance().setNavigatorItemId(str);
+			int ind = AppCurrContext.getInstance().getDatapanelTabIndex();
+			if (!((str).equals(getState()))) {
+				pushState(str + ";" + ind);
+			}
+
 		} else {
 			Accordeon.selectLastSelectedItem(arg0.getSelectedItem());
 		}
 		((ScrollPanel) arg0.getSelectedItem().getTree().getParent())
 				.setHorizontalScrollPosition(0);
-
 	}
 
 	private void generateDatePanel(final Action action, final TreeItem selectedTreeItem) {
@@ -100,5 +108,21 @@ public class TreeSelectionHandler implements SelectionHandler<TreeItem> {
 		return;
 
 	}
+
+	public native void pushState(String obj) /*-{
+
+		$wnd.history.pushState(obj, "Item");
+		//$doc.cookie = "hist=1";
+
+	}-*/;
+
+	public native String getState() /*-{
+
+		var s = "" + $wnd.history.state;
+		var ar = s.split(";");
+		var ret = ar[0];
+		return ret;
+
+	}-*/;
 
 }
