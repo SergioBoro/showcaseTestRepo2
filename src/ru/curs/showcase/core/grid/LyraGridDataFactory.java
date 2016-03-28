@@ -66,9 +66,7 @@ public class LyraGridDataFactory {
 	@SuppressWarnings("unchecked")
 	private void fillResultByData() throws CelestaException {
 
-		List<LyraFormData> records =
-			basicGridForm.getRows(context.getLiveInfo().getOffset(), context.getLiveInfo()
-					.getOffset() - context.getOldPosition());
+		List<LyraFormData> records = basicGridForm.getRows(context.getLiveInfo().getOffset());
 
 		JSONArray data = new JSONArray();
 		for (LyraFormData rec : records) {
