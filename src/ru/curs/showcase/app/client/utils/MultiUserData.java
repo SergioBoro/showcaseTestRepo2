@@ -29,9 +29,17 @@ public final class MultiUserData {
 	 * @return - путь, с учетом текущей userdata
 	 */
 	public static String getPathWithUserData(final String path) {
+
 		String userdataId =
 			com.google.gwt.user.client.Window.Location
-					.getParameter(ExchangeConstants.URL_PARAM_USERDATA);
+					.getParameter(ExchangeConstants.URL_PARAM_PERSPECTIVE);
+
+		if ((userdataId == null) || ("".equals(userdataId))) {
+			userdataId =
+				com.google.gwt.user.client.Window.Location
+						.getParameter(ExchangeConstants.URL_PARAM_USERDATA);
+		}
+
 		if ((userdataId == null) || ("".equals(userdataId))) {
 			userdataId = ExchangeConstants.DEFAULT_USERDATA;
 		}
