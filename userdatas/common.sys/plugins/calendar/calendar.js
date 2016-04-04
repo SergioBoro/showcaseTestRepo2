@@ -27,6 +27,11 @@ function createCalendar(parentId, data, template) {
 			    	}
 			    	
 			    	
+			    	calendar.matrixView.itemToRendererKindFunc = function(item){
+		    		    return "horizontal";
+		    		};
+			    	
+			    	
 			    	calendar.on("itemClick", function(e){
 //			    		  console.log("Item clicked", e.item);
 			    		gwtPluginFunc(parentId, e.item.id);
