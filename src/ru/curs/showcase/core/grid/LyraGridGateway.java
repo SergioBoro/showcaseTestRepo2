@@ -23,4 +23,17 @@ public class LyraGridGateway {
 
 	}
 
+	public BasicGridForm getLyraFormInstance(final CompositeContext context,
+			final DataPanelElementInfo element, final String currentSessionId) {
+
+		CelestaHelper<BasicGridForm> helper =
+			new CelestaHelper<BasicGridForm>(context, BasicGridForm.class);
+		String procName = element.getProcName();
+		BasicGridForm result =
+			helper.runLyraPython(procName, element.getId().getString(), currentSessionId);
+
+		return result;
+
+	}
+
 }

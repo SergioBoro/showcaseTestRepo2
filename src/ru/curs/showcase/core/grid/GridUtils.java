@@ -52,7 +52,8 @@ public final class GridUtils {
 		}
 	}
 
-	public static GridValueType getGridValueTypeByLyraFieldType(final LyraFieldType lft) {
+	public static GridValueType getGridValueTypeByLyraFieldType(final LyraFieldType lft,
+			final String subtype) {
 		switch (lft) {
 		case BLOB:
 			return GridValueType.STRING;
@@ -65,6 +66,18 @@ public final class GridUtils {
 		case INT:
 			return GridValueType.INT;
 		case VARCHAR:
+			if (subtype != null) {
+				switch (subtype.toUpperCase()) {
+				case "IMAGE":
+					return GridValueType.IMAGE;
+				case "LINK":
+					return GridValueType.LINK;
+				case "DOWNLOAD":
+					return GridValueType.DOWNLOAD;
+				default:
+					break;
+				}
+			}
 			return GridValueType.STRING;
 		default:
 			return GridValueType.STRING;

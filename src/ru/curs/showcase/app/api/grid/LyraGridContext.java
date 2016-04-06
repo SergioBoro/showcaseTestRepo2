@@ -11,8 +11,7 @@ import javax.xml.bind.annotation.*;
 public class LyraGridContext extends GridContext {
 	private static final long serialVersionUID = 8898993042175526645L;
 
-	@XmlAttribute
-	private int oldPosition = -1;
+	private int dgridOldPosition = 0;
 
 	/**
 	 * Создает дефолтные настройки для грида - нужны для первоначальной
@@ -24,12 +23,12 @@ public class LyraGridContext extends GridContext {
 		return result;
 	}
 
-	public int getOldPosition() {
-		return oldPosition;
+	public int getDgridOldPosition() {
+		return dgridOldPosition;
 	}
 
-	public void setOldPosition(final int aOldPosition) {
-		oldPosition = aOldPosition;
+	public void setDgridOldPosition(final int aDgridOldPosition) {
+		dgridOldPosition = aDgridOldPosition;
 	}
 
 }

@@ -1,16 +1,31 @@
 package ru.curs.showcase.core.grid;
 
+import java.io.IOException;
 import java.text.*;
 import java.util.*;
+import java.util.regex.*;
 
 import org.json.simple.*;
+import org.xml.sax.*;
 
+import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.celesta.CelestaException;
+import ru.curs.celesta.dbutils.Cursor;
 import ru.curs.lyra.*;
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.services.FakeService;
+import ru.curs.showcase.core.IncorrectElementException;
+import ru.curs.showcase.core.command.GeneralExceptionFactory;
+import ru.curs.showcase.core.event.EventFactory;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.exception.SettingsFileType;
+import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
+
+import com.google.gwt.user.client.rpc.SerializationException;
 
 /**
  * Фабрика для создания данных лирагридов.
@@ -23,9 +38,8 @@ public class LyraGridDataFactory {
 		"def.num.column.grouping.separator";
 	private static final String DEF_DATE_VALUES_FORMAT = "def.date.values.format";
 
-	// private static final String GRID_DEFAULT_PROFILE = "default.properties";
-	private static final int COLUMN_DEFAULT_PRECISION = 2;
 	private static final String GRID_DEFAULT_PROFILE = "default.properties";
+	private static final int COLUMN_DEFAULT_PRECISION = 2;
 
 	private final LyraGridContext context;
 	private final DataPanelElementInfo elInfo;
@@ -35,8 +49,17 @@ public class LyraGridDataFactory {
 
 	private LyraGridServerState state = null;
 
-	private final String profile = GRID_DEFAULT_PROFILE;
+	private String profile = null;
 	private ProfileReader gridProps = null;
+
+	private static final String ID_TAG = "id";
+	private static final String EVENT_COLUMN_TAG = "column";
+	private static final String CELL_PREFIX = "cell";
+	private static final String ROWSTYLE = "rowstyle";
+	private static final String CHECK_ACTION_ERROR =
+		"Некорректное описание действия в элементе инф. панели: ";
+
+	private final List<GridEvent> events = new ArrayList<GridEvent>();
 
 	public LyraGridDataFactory(final LyraGridContext aContext, final DataPanelElementInfo aElInfo,
 			final BasicGridForm aBasicGridForm) {
@@ -66,46 +89,303 @@ public class LyraGridDataFactory {
 	@SuppressWarnings("unchecked")
 	private void fillResultByData() throws CelestaException {
 
-		List<LyraFormData> records = basicGridForm.getRows(context.getLiveInfo().getOffset());
+		LyraGridAddInfo lyraGridAddInfo =
+			((LyraGridScrollBack) basicGridForm.getChangeNotifier()).getLyraGridAddInfo();
+		int lyraApproxTotalCount = basicGridForm.getApproxTotalCount();
+		boolean smallStep = false;
+		int position;
+		int dgridDelta = context.getLiveInfo().getOffset() - context.getDgridOldPosition();
+
+		System.out.println("ddddddddddddd1");
+		System.out.println("lyraNewPosition: " + basicGridForm.getTopVisiblePosition());
+		System.out.println("lyraOldPosition: " + lyraGridAddInfo.getLyraOldPosition());
+		System.out.println("getApproxTotalCount: " + lyraApproxTotalCount);
+
+		if (lyraApproxTotalCount <= LyraGridScrollBack.DGRID_MAX_TOTALCOUNT) {
+
+			context.getLiveInfo().setTotalCount(lyraApproxTotalCount);
+
+			position = context.getLiveInfo().getOffset();
+
+			if (Math.abs(dgridDelta) < LyraGridScrollBack.DGRID_SMALLSTEP) {
+				smallStep = true;
+			}
+
+		} else {
+
+			context.getLiveInfo().setTotalCount(LyraGridScrollBack.DGRID_MAX_TOTALCOUNT);
+
+			if (context.getLiveInfo().getOffset() == 0) {
+				position = 0;
+			} else {
+
+				if (Math.abs(dgridDelta) < LyraGridScrollBack.DGRID_SMALLSTEP) {
+
+					position = basicGridForm.getTopVisiblePosition() + dgridDelta;
+
+					smallStep = true;
+
+				} else {
+
+					if (Math.abs(context.getLiveInfo().getOffset()
+							- LyraGridScrollBack.DGRID_MAX_TOTALCOUNT) < LyraGridScrollBack.DGRID_SMALLSTEP) {
+
+						position = lyraApproxTotalCount - context.getLiveInfo().getLimit();
+
+						// position =
+						// lyraApproxTotalCount
+						// - (LyraGridScrollBack.DGRID_MAX_TOTALCOUNT - context
+						// .getLiveInfo().getOffset());
+
+					} else {
+						double d = lyraApproxTotalCount;
+						d = d / LyraGridScrollBack.DGRID_MAX_TOTALCOUNT;
+						d = d * context.getLiveInfo().getOffset();
+						position = (int) d;
+					}
+
+				}
+
+			}
+
+		}
+
+		// int lyraDelta = position - lyraGridAddInfo.getLyraOldPosition();
+		int lyraDelta = position - basicGridForm.getTopVisiblePosition();
+		lyraGridAddInfo.setLyraOldPosition(position);
+		lyraGridAddInfo.setDgridOldTotalCount(context.getLiveInfo().getTotalCount());
+
+		System.out.println("position: " + position);
+		System.out.println("lyraDelta: " + lyraDelta);
+
+		// --------------------------------------------------------
+
+		// if (position > 0) {
+		// List<LyraFormData> records2 = basicGridForm.getRows(position,
+		// lyraDelta);
+		//
+		// position = basicGridForm.getTopVisiblePosition() + 20;
+		// lyraDelta = 20;
+		// List<LyraFormData> records3 = basicGridForm.getRows(position,
+		// lyraDelta);
+		//
+		// position = basicGridForm.getTopVisiblePosition() - 30;
+		// lyraDelta = -30;
+		// records3 = basicGridForm.getRows(position, lyraDelta);
+		//
+		// int i = records3.size();
+		// }
+
+		// --------------------------------------------------------
+
+		List<LyraFormData> records;
+		if (smallStep && (lyraGridAddInfo.getLastKeyValues() != null) && (dgridDelta > 0)) {
+			// records =
+			// basicGridForm.setPosition(lyraGridAddInfo.getLastKeyValues());
+
+			// records = basicGridForm.getRows(position, lyraDelta);
+			records = basicGridForm.getRows(position);
+		} else {
+			// records = basicGridForm.getRows(position, lyraDelta);
+			records = basicGridForm.getRows(position);
+		}
 
 		JSONArray data = new JSONArray();
-		for (LyraFormData rec : records) {
+
+		int length = Math.min(records.size(), context.getLiveInfo().getLimit());
+		for (int i = 0; i < length; i++) {
+			LyraFormData rec = records.get(i);
+
+			String properties = null;
 			JSONObject obj = new JSONObject();
 			for (LyraFieldValue lyraFieldValue : rec.getFields()) {
-				obj.put(lyraFieldValue.getName(),
-						getCellValue(lyraFieldValue.getValue(), lyraFieldValue.getFieldType(),
-								COLUMN_DEFAULT_PRECISION));
+
+				int colPrecision;
+				if (lyraFieldValue.getScale() == 0) {
+					colPrecision = COLUMN_DEFAULT_PRECISION;
+				} else {
+					colPrecision = lyraFieldValue.getScale();
+				}
+
+				if ("_properties_".equalsIgnoreCase(lyraFieldValue.getName())) {
+					properties = lyraFieldValue.getValue().toString();
+				} else {
+					obj.put(lyraFieldValue.getName(), getCellValue(lyraFieldValue, colPrecision));
+				}
+
 			}
+
+			if ((properties != null) && (!properties.trim().isEmpty())) {
+				String recId = obj.get(ID_TAG).toString();
+				if (recId != null) {
+					String rowstyle = readEvents(recId, properties);
+					if (rowstyle != null) {
+						obj.put(ROWSTYLE, rowstyle);
+					}
+				}
+			}
+
 			obj.put("recversion", String.valueOf(rec.getRecversion()));
 			data.add(obj);
-		}
-		result.setData(data.toJSONString());
 
-		context.getLiveInfo().setTotalCount(basicGridForm.getApproxTotalCount());
+			if (i == length - 1) {
+				lyraGridAddInfo.setLastKeyValues(((Cursor) basicGridForm.rec())
+						.getCurrentKeyValues());
+			}
+		}
+
+		for (Event event : events) {
+			Action action = event.getAction();
+			action.actualizeBy(context);
+		}
+
+		for (Event event : events) {
+			Action action = event.getAction();
+			if (!action.isCorrect()) {
+				throw new IncorrectElementException(CHECK_ACTION_ERROR, action);
+			}
+		}
+
+		if ((data.size() > 0) && (events.size() > 0)) {
+			try {
+				String stringEvents =
+					com.google.gwt.user.server.rpc.RPC.encodeResponseForSuccess(
+							FakeService.class.getMethod("serializeEvents"), events);
+				((JSONObject) data.get(0)).put("events", stringEvents);
+			} catch (SerializationException | NoSuchMethodException e) {
+				throw GeneralExceptionFactory.build(e);
+			}
+		}
+
+		result.setData(data.toJSONString());
 
 	}
 
-	private String getCellValue(final Object value, final LyraFieldType lyraFieldType,
-			final Integer precision) {
+	private String getCellValue(final LyraFieldValue lyraFieldValue, final Integer precision) {
+
+		Object value = lyraFieldValue.getValue();
 		if (value == null) {
+			value = "";
+		}
+
+		String strValue = value.toString();
+
+		if (strValue.trim().isEmpty() || "null".equalsIgnoreCase(strValue)) {
 			return "";
 		}
-		switch (lyraFieldType) {
+
+		switch (lyraFieldValue.getFieldType()) {
 		case BLOB:
-			return value.toString();
+			return strValue;
 		case BIT:
-			return value.toString();
+			return strValue;
 		case DATETIME:
 			return getStringValueOfDate((Date) value);
 		case REAL:
 			return getStringValueOfNumber((Double) value, precision);
 		case INT:
-			return value.toString();
+			return strValue;
 		case VARCHAR:
-			return value.toString();
+			strValue = XMLUtils.unEscapeValueXml(strValue);
+			String subtype = lyraFieldValue.getSubtype();
+			if (subtype != null) {
+				switch (subtype.toUpperCase()) {
+				case "DOWNLOAD":
+					return UserDataUtils.replaceVariables(strValue);
+
+				case "LINK":
+					strValue = UserDataUtils.replaceVariables(strValue);
+					strValue = normalizeLink(strValue);
+					strValue = makeSafeXMLAttrValues(strValue);
+					strValue = getLink(strValue);
+					return strValue;
+
+				case "IMAGE":
+					return String.format("%s/%s",
+							UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR),
+							strValue);
+
+				default:
+					break;
+				}
+			}
+
+			return strValue;
 		default:
-			return value.toString();
+			return strValue;
 		}
+	}
+
+	private static String normalizeLink(final String aValue) {
+		String value = aValue.trim();
+		value = value.replace("></" + GridValueType.LINK.toString().toLowerCase() + ">", "/>");
+		return value;
+	}
+
+	private static String makeSafeXMLAttrValues(final String value) {
+		String res = value.trim();
+
+		Pattern pattern = Pattern.compile("(\\&(?!quot;)(?!lt;)(?!gt;)(?!amp;)(?!apos;))");
+		Matcher matcher = pattern.matcher(res);
+		res = matcher.replaceAll("&amp;");
+
+		pattern =
+			Pattern.compile("(?<!=)(\")(?!\\s*openInNewTab)(?!\\s*text)(?!\\s*href)(?!\\s*image)(?!\\s*/\\>)");
+		matcher = pattern.matcher(res);
+		res = matcher.replaceAll("&quot;");
+
+		pattern = Pattern.compile("(?<!^)(\\<)");
+		matcher = pattern.matcher(res);
+		res = matcher.replaceAll("&lt;");
+
+		pattern = Pattern.compile("(\\>)(?!$)");
+		matcher = pattern.matcher(res);
+		res = matcher.replaceAll("&gt;");
+
+		res = res.replace("'", "&apos;");
+
+		return res;
+	}
+
+	private static String getLink(final String value) {
+		String result = null;
+
+		try {
+			org.w3c.dom.Element el =
+				ru.curs.showcase.util.xml.XMLUtils.stringToDocument(value).getDocumentElement();
+
+			String href = el.getAttribute("href");
+			String text = el.getAttribute("text");
+			if ((text == null) || text.isEmpty()) {
+				text = href;
+			}
+			String image = el.getAttribute("image");
+			String openInNewTab = el.getAttribute("openInNewTab");
+			String target = null;
+			if (Boolean.parseBoolean(openInNewTab)) {
+				target = "_blank";
+			}
+
+			result = "<a class=\"gwt-Anchor\" href=\"" + href + "\" ";
+			if (target != null) {
+				result = result + "target=\"_blank\"";
+			}
+			result = result + ">";
+			if ((image == null) || image.isEmpty()) {
+				result = result + text;
+			} else {
+				String alt = text != null ? " alt=\"" + text + "\"" : "";
+				result =
+					result + "<img border=\"0\" src=\"" + XMLUtils.unEscapeTagXml(image) + "\""
+							+ alt + "/>";
+			}
+			result = result + "</a>";
+
+		} catch (SAXException | IOException e) {
+			result = null;
+		}
+
+		return result;
 	}
 
 	private String getStringValueOfNumber(final Double value, final Integer precision) {
@@ -170,6 +450,12 @@ public class LyraGridDataFactory {
 		if (state == null) {
 			state = new LyraGridServerState();
 
+			if (basicGridForm.getFormProperties().getProfile() == null) {
+				profile = GRID_DEFAULT_PROFILE;
+			} else {
+				profile = basicGridForm.getFormProperties().getProfile();
+			}
+
 			gridProps = new ProfileReader(profile, SettingsFileType.GRID_PROPERTIES);
 			gridProps.init();
 
@@ -197,6 +483,42 @@ public class LyraGridDataFactory {
 			AppInfoSingleton.getAppInfo().storeLyraGridCacheState(
 					SessionUtils.getCurrentSessionId(), elInfo, context, state);
 		}
+	}
+
+	private String readEvents(final String recId, final String data) {
+		final List<String> rowstyle = new ArrayList<String>(1);
+		rowstyle.add(null);
+		EventFactory<GridEvent> factory = new EventFactory<GridEvent>(GridEvent.class, context);
+		factory.initForGetSubSetOfEvents(EVENT_COLUMN_TAG, CELL_PREFIX, elInfo.getType()
+				.getPropsSchemaName());
+		SAXTagHandler recPropHandler = new StartTagSAXHandler() {
+			@Override
+			public Object handleStartTag(final String aNamespaceURI, final String aLname,
+					final String aQname, final Attributes attrs) {
+				if (aQname.equalsIgnoreCase(GeneralConstants.STYLE_CLASS_TAG)) {
+					String newValue = attrs.getValue(NAME_TAG);
+					if (rowstyle.get(0) == null) {
+						rowstyle.set(0, newValue);
+					} else {
+						rowstyle.set(0, rowstyle.get(0) + " " + newValue);
+					}
+				}
+				return null;
+			}
+
+			@Override
+			protected String[] getStartTags() {
+				String[] tags =
+					{ GeneralConstants.STYLE_CLASS_TAG, GeneralConstants.READONLY_TAG };
+				return tags;
+			}
+		};
+		factory.addHandler(recPropHandler);
+
+		events.addAll(factory.getSubSetOfEvents(new ID(recId), data));
+
+		return rowstyle.get(0);
+
 	}
 
 }

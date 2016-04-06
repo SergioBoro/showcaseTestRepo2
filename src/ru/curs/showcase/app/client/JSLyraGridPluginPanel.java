@@ -125,6 +125,7 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 															$wnd.gwtAfterDoubleClickLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginAfterDoubleClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtProcessFileDownloadLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginProcessFileDownload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtShowMessageLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginShowMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtSetOldPositionLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginSetOldPosition(Ljava/lang/String;Ljava/lang/String;);
 															}-*/;
 
 	// CHECKSTYLE:ON
@@ -573,11 +574,17 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 		}
 	}
 
+	public void pluginSetOldPosition(final String oldPosition) {
+		LyraGridContext gridContext = getDetailedContext();
+		// gridContext.setDgridOldPosition(Integer.parseInt(oldPosition));
+		gridContext.getLiveInfo().setOffset(Integer.parseInt(oldPosition));
+	}
+
 	public JSONObject pluginGetHttpParams(final int offset, final int limit,
 			final String sortColId, final String sortColDir) {
 
 		LyraGridContext gridContext = getDetailedContext();
-		gridContext.setOldPosition(gridContext.getLiveInfo().getOffset());
+		gridContext.setDgridOldPosition(gridContext.getLiveInfo().getOffset());
 		gridContext.getLiveInfo().setOffset(offset);
 		gridContext.getLiveInfo().setLimit(limit);
 
@@ -1139,27 +1146,32 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
-					exportToExcel(exportToExcelCurrentPage, GridToExcelExportType.CURRENTPAGE);
+					MessageBox.showMessageWithDetails("Информация",
+							"Данный функционал временно отключен", "", MessageType.INFO, false);
+
+					// exportToExcel(exportToExcelCurrentPage,
+					// GridToExcelExportType.CURRENTPAGE);
 				}
 			});
 			toolBar.add(exportToExcelCurrentPage);
 		}
-		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
-			final TextButton exportToExcelAll =
-				new TextButton("", IconHelper.getImageResource(
-						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL), 16,
-						16));
-
-			exportToExcelAll.setTitle(AppCurrContext.getInstance().getBundleMap()
-					.get("grid_caption_export_to_excel_all"));
-			exportToExcelAll.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(final SelectEvent event) {
-					exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
-				}
-			});
-			toolBar.add(exportToExcelAll);
-		}
+		// if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
+		// final TextButton exportToExcelAll =
+		// new TextButton("", IconHelper.getImageResource(
+		// UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL),
+		// 16,
+		// 16));
+		//
+		// exportToExcelAll.setTitle(AppCurrContext.getInstance().getBundleMap()
+		// .get("grid_caption_export_to_excel_all"));
+		// exportToExcelAll.addSelectHandler(new SelectHandler() {
+		// @Override
+		// public void onSelect(final SelectEvent event) {
+		// exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
+		// }
+		// });
+		// toolBar.add(exportToExcelAll);
+		// }
 		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
 			final TextButton copyToClipboard =
 				new TextButton("", IconHelper.getImageResource(

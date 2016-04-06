@@ -25,8 +25,73 @@
     					proc="lyra.lyraplayer.getInstance.cl"
     				>
     </element> 
+  </tab>
+  
+ 
+<!--  
+  	<tab id="44" name="Основной функционал">
+		<element id ="441" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data"  
+		    plugin="liveDGrid">
+			<proc id="442" name="grid_new_meta" type="METADATA"/>
+		</element>
+	</tab>
+-->	
+  
+  
+  <tab id="4" name="грид kladr">	
+ 	<element id="421" type="GRID" subtype="JS_LYRA_GRID" proc="testgrain.testgridform2.TestGridForm2" 
+	    plugin="lyraDGrid">
+	</element>
+  </tab>
+  
+  
+  <tab id="5" name="showcase (actions, ...)">	
+ 	<element id="521" type="GRID" subtype="JS_LYRA_GRID" proc="testgrain.testgridform3.TestGridForm3" 
+	    plugin="lyraDGrid">
+	    
+		<proc id="020101" name="testgrain.toolbar_grid_new" type="TOOLBAR"/>
+	    			
+	</element>
+	
+	<element id="443" type="webtext" proc="webtext/selectedRowWriter.py" hideOnLoad="true" />		 
+	<element id="444" type="webtext" proc="testgrain.webtext_filter_and_add" hideOnLoad="true" />
 	
   </tab>
+  
+  
+
+  <tab id="6" name="showcase (пустая таблица)">	
+ 	<element id="621" type="GRID" subtype="JS_LYRA_GRID" proc="testgrain.testgridform4.TestGridForm4" 
+	    plugin="lyraDGrid">
+	</element>
+  </tab>
+
+
+
+  <tab id="7" name="showcase (типы полей, css, ...)">	
+ 	<element id="721" type="GRID" subtype="JS_LYRA_GRID" proc="testgrain.testgridform5.TestGridForm5" 
+	    plugin="lyraDGrid">
+	    
+			<proc id="11" name="testgrain.grid_download1" type="DOWNLOAD" />
+			<proc id="12" name="testgrain.grid_download2" type="DOWNLOAD" />
+	    
+	</element>
+	
+	
+  </tab>
+
+
+
+
+<!--
+
+  	<tab id="55" name="test2">
+		<element id ="551" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data2"  
+		    plugin="liveDGrid">
+			<proc id="552" name="grid_new_meta2" type="METADATA"/>
+		</element>
+	</tab>
+-->
 
   
 </datapanel>

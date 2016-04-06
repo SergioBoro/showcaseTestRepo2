@@ -65,4 +65,8 @@ public final class JSLyraGridPluginPanelCallbacksEvents {
 		getCurrentPanel(pluginId).pluginShowMessage(stringMessage, editorType);
 	}
 
+	public static void pluginSetOldPosition(final String pluginId, final String oldPosition) {
+		getCurrentPanel(pluginId).pluginSetOldPosition(oldPosition);
+	}
+
 }

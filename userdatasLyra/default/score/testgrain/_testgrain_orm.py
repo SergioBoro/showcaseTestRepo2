@@ -1,5 +1,5 @@
 # coding=UTF-8
-# Source grain parameters: version=1.0, len=468, crc32=86871CFD; compiler=7.
+# Source grain parameters: version=1.0, len=1716, crc32=752A907D; compiler=7.
 """
 THIS MODULE IS BEING CREATED AUTOMATICALLY EVERY TIME CELESTA STARTS.
 DO NOT MODIFY IT AS YOUR CHANGES WILL BE LOST.
@@ -138,6 +138,372 @@ class testCursor(Cursor):
         self.f7 = c.f7
         self.f8 = c.f8
         self.f9 = c.f9
+        self.recversion = c.recversion
+    def iterate(self):
+        if self.tryFindSet():
+            while True:
+                yield self
+                if not self.nextInSet():
+                    break
+
+class streetCursor(Cursor):
+    onPreDelete  = []
+    onPostDelete = []
+    onPreInsert  = []
+    onPostInsert = []
+    onPreUpdate  = []
+    onPostUpdate = []
+    def __init__(self, context):
+        Cursor.__init__(self, context)
+        self.name = None
+        self.rnum = None
+        self.id = None
+        self.socr = None
+        self.gninmb = None
+        self.uno = None
+        self.ocatd = None
+        self.context = context
+    def _grainName(self):
+        return 'testgrain'
+    def _tableName(self):
+        return 'street'
+    def _parseResult(self, rs):
+        self.name = rs.getString('name')
+        if rs.wasNull():
+            self.name = None
+        self.rnum = rs.getInt('rnum')
+        if rs.wasNull():
+            self.rnum = None
+        self.id = rs.getString('id')
+        if rs.wasNull():
+            self.id = None
+        self.socr = rs.getString('socr')
+        if rs.wasNull():
+            self.socr = None
+        self.gninmb = rs.getString('gninmb')
+        if rs.wasNull():
+            self.gninmb = None
+        self.uno = rs.getString('uno')
+        if rs.wasNull():
+            self.uno = None
+        self.ocatd = rs.getString('ocatd')
+        if rs.wasNull():
+            self.ocatd = None
+        self.recversion = rs.getInt('recversion')
+    def _setFieldValue(self, name, value):
+        setattr(self, name, value)
+    def _clearBuffer(self, withKeys):
+        if withKeys:
+            self.id = None
+        self.name = None
+        self.rnum = None
+        self.socr = None
+        self.gninmb = None
+        self.uno = None
+        self.ocatd = None
+    def _currentKeyValues(self):
+        return array([None if self.id == None else unicode(self.id)], Object)
+    def _currentValues(self):
+        return array([None if self.name == None else unicode(self.name), None if self.rnum == None else int(self.rnum), None if self.id == None else unicode(self.id), None if self.socr == None else unicode(self.socr), None if self.gninmb == None else unicode(self.gninmb), None if self.uno == None else unicode(self.uno), None if self.ocatd == None else unicode(self.ocatd)], Object)
+    def _setAutoIncrement(self, val):
+        pass
+    def _preDelete(self):
+        for f in streetCursor.onPreDelete:
+            f(self)
+    def _postDelete(self):
+        for f in streetCursor.onPostDelete:
+            f(self)
+    def _preInsert(self):
+        for f in streetCursor.onPreInsert:
+            f(self)
+    def _postInsert(self):
+        for f in streetCursor.onPostInsert:
+            f(self)
+    def _preUpdate(self):
+        for f in streetCursor.onPreUpdate:
+            f(self)
+    def _postUpdate(self):
+        for f in streetCursor.onPostUpdate:
+            f(self)
+    def _getBufferCopy(self, context):
+        result = streetCursor(context)
+        result.copyFieldsFrom(self)
+        return result
+    def copyFieldsFrom(self, c):
+        self.name = c.name
+        self.rnum = c.rnum
+        self.id = c.id
+        self.socr = c.socr
+        self.gninmb = c.gninmb
+        self.uno = c.uno
+        self.ocatd = c.ocatd
+        self.recversion = c.recversion
+    def iterate(self):
+        if self.tryFindSet():
+            while True:
+                yield self
+                if not self.nextInSet():
+                    break
+
+class street4Cursor(Cursor):
+    onPreDelete  = []
+    onPostDelete = []
+    onPreInsert  = []
+    onPostInsert = []
+    onPreUpdate  = []
+    onPostUpdate = []
+    def __init__(self, context):
+        Cursor.__init__(self, context)
+        self.name = None
+        self.rnum = None
+        self.id = None
+        self.socr = None
+        self.gninmb = None
+        self.uno = None
+        self.ocatd = None
+        self.context = context
+    def _grainName(self):
+        return 'testgrain'
+    def _tableName(self):
+        return 'street4'
+    def _parseResult(self, rs):
+        self.name = rs.getString('name')
+        if rs.wasNull():
+            self.name = None
+        self.rnum = rs.getInt('rnum')
+        if rs.wasNull():
+            self.rnum = None
+        self.id = rs.getString('id')
+        if rs.wasNull():
+            self.id = None
+        self.socr = rs.getString('socr')
+        if rs.wasNull():
+            self.socr = None
+        self.gninmb = rs.getString('gninmb')
+        if rs.wasNull():
+            self.gninmb = None
+        self.uno = rs.getString('uno')
+        if rs.wasNull():
+            self.uno = None
+        self.ocatd = rs.getString('ocatd')
+        if rs.wasNull():
+            self.ocatd = None
+        self.recversion = rs.getInt('recversion')
+    def _setFieldValue(self, name, value):
+        setattr(self, name, value)
+    def _clearBuffer(self, withKeys):
+        if withKeys:
+            self.id = None
+        self.name = None
+        self.rnum = None
+        self.socr = None
+        self.gninmb = None
+        self.uno = None
+        self.ocatd = None
+    def _currentKeyValues(self):
+        return array([None if self.id == None else unicode(self.id)], Object)
+    def _currentValues(self):
+        return array([None if self.name == None else unicode(self.name), None if self.rnum == None else int(self.rnum), None if self.id == None else unicode(self.id), None if self.socr == None else unicode(self.socr), None if self.gninmb == None else unicode(self.gninmb), None if self.uno == None else unicode(self.uno), None if self.ocatd == None else unicode(self.ocatd)], Object)
+    def _setAutoIncrement(self, val):
+        pass
+    def _preDelete(self):
+        for f in street4Cursor.onPreDelete:
+            f(self)
+    def _postDelete(self):
+        for f in street4Cursor.onPostDelete:
+            f(self)
+    def _preInsert(self):
+        for f in street4Cursor.onPreInsert:
+            f(self)
+    def _postInsert(self):
+        for f in street4Cursor.onPostInsert:
+            f(self)
+    def _preUpdate(self):
+        for f in street4Cursor.onPreUpdate:
+            f(self)
+    def _postUpdate(self):
+        for f in street4Cursor.onPostUpdate:
+            f(self)
+    def _getBufferCopy(self, context):
+        result = street4Cursor(context)
+        result.copyFieldsFrom(self)
+        return result
+    def copyFieldsFrom(self, c):
+        self.name = c.name
+        self.rnum = c.rnum
+        self.id = c.id
+        self.socr = c.socr
+        self.gninmb = c.gninmb
+        self.uno = c.uno
+        self.ocatd = c.ocatd
+        self.recversion = c.recversion
+    def iterate(self):
+        if self.tryFindSet():
+            while True:
+                yield self
+                if not self.nextInSet():
+                    break
+
+class test2Cursor(Cursor):
+    onPreDelete  = []
+    onPostDelete = []
+    onPreInsert  = []
+    onPostInsert = []
+    onPreUpdate  = []
+    onPostUpdate = []
+    def __init__(self, context):
+        Cursor.__init__(self, context)
+        self.id = None
+        self.name = None
+        self.context = context
+    def _grainName(self):
+        return 'testgrain'
+    def _tableName(self):
+        return 'test2'
+    def _parseResult(self, rs):
+        self.id = rs.getInt('id')
+        if rs.wasNull():
+            self.id = None
+        self.name = rs.getString('name')
+        if rs.wasNull():
+            self.name = None
+        self.recversion = rs.getInt('recversion')
+    def _setFieldValue(self, name, value):
+        setattr(self, name, value)
+    def _clearBuffer(self, withKeys):
+        if withKeys:
+            self.id = None
+        self.name = None
+    def _currentKeyValues(self):
+        return array([None if self.id == None else int(self.id)], Object)
+    def _currentValues(self):
+        return array([None if self.id == None else int(self.id), None if self.name == None else unicode(self.name)], Object)
+    def _setAutoIncrement(self, val):
+        self.id = val
+    def _preDelete(self):
+        for f in test2Cursor.onPreDelete:
+            f(self)
+    def _postDelete(self):
+        for f in test2Cursor.onPostDelete:
+            f(self)
+    def _preInsert(self):
+        for f in test2Cursor.onPreInsert:
+            f(self)
+    def _postInsert(self):
+        for f in test2Cursor.onPostInsert:
+            f(self)
+    def _preUpdate(self):
+        for f in test2Cursor.onPreUpdate:
+            f(self)
+    def _postUpdate(self):
+        for f in test2Cursor.onPostUpdate:
+            f(self)
+    def _getBufferCopy(self, context):
+        result = test2Cursor(context)
+        result.copyFieldsFrom(self)
+        return result
+    def copyFieldsFrom(self, c):
+        self.id = c.id
+        self.name = c.name
+        self.recversion = c.recversion
+    def iterate(self):
+        if self.tryFindSet():
+            while True:
+                yield self
+                if not self.nextInSet():
+                    break
+
+class websitesCursor(Cursor):
+    onPreDelete  = []
+    onPostDelete = []
+    onPreInsert  = []
+    onPostInsert = []
+    onPreUpdate  = []
+    onPostUpdate = []
+    def __init__(self, context):
+        Cursor.__init__(self, context)
+        self.id = None
+        self.Name = None
+        self.Picture = None
+        self.File1 = None
+        self.Logo = None
+        self.File2 = None
+        self.Url = None
+        self.context = context
+    def _grainName(self):
+        return 'testgrain'
+    def _tableName(self):
+        return 'websites'
+    def _parseResult(self, rs):
+        self.id = rs.getInt('id')
+        if rs.wasNull():
+            self.id = None
+        self.Name = rs.getString('Name')
+        if rs.wasNull():
+            self.Name = None
+        self.Picture = rs.getString('Picture')
+        if rs.wasNull():
+            self.Picture = None
+        self.File1 = rs.getString('File1')
+        if rs.wasNull():
+            self.File1 = None
+        self.Logo = rs.getString('Logo')
+        if rs.wasNull():
+            self.Logo = None
+        self.File2 = rs.getString('File2')
+        if rs.wasNull():
+            self.File2 = None
+        self.Url = rs.getString('Url')
+        if rs.wasNull():
+            self.Url = None
+        self.recversion = rs.getInt('recversion')
+    def _setFieldValue(self, name, value):
+        setattr(self, name, value)
+    def _clearBuffer(self, withKeys):
+        if withKeys:
+            self.id = None
+        self.Name = None
+        self.Picture = None
+        self.File1 = None
+        self.Logo = None
+        self.File2 = None
+        self.Url = None
+    def _currentKeyValues(self):
+        return array([None if self.id == None else int(self.id)], Object)
+    def _currentValues(self):
+        return array([None if self.id == None else int(self.id), None if self.Name == None else unicode(self.Name), None if self.Picture == None else unicode(self.Picture), None if self.File1 == None else unicode(self.File1), None if self.Logo == None else unicode(self.Logo), None if self.File2 == None else unicode(self.File2), None if self.Url == None else unicode(self.Url)], Object)
+    def _setAutoIncrement(self, val):
+        self.id = val
+    def _preDelete(self):
+        for f in websitesCursor.onPreDelete:
+            f(self)
+    def _postDelete(self):
+        for f in websitesCursor.onPostDelete:
+            f(self)
+    def _preInsert(self):
+        for f in websitesCursor.onPreInsert:
+            f(self)
+    def _postInsert(self):
+        for f in websitesCursor.onPostInsert:
+            f(self)
+    def _preUpdate(self):
+        for f in websitesCursor.onPreUpdate:
+            f(self)
+    def _postUpdate(self):
+        for f in websitesCursor.onPostUpdate:
+            f(self)
+    def _getBufferCopy(self, context):
+        result = websitesCursor(context)
+        result.copyFieldsFrom(self)
+        return result
+    def copyFieldsFrom(self, c):
+        self.id = c.id
+        self.Name = c.Name
+        self.Picture = c.Picture
+        self.File1 = c.File1
+        self.Logo = c.Logo
+        self.File2 = c.File2
+        self.Url = c.Url
         self.recversion = c.recversion
     def iterate(self):
         if self.tryFindSet():

@@ -191,7 +191,13 @@ public class CelestaHelper<T> {
 		Object[] params = new Object[1];
 		params[0] = lyraClass;
 
-		String sesID = SessionUtils.getCurrentSessionId();
+		String sesID;
+		if (additionalParams.length == 2) {
+			sesID = (String) additionalParams[1];
+		} else {
+			sesID = SessionUtils.getCurrentSessionId();
+		}
+
 		String procName = CelestaUtils.getRealProcName(LYRAPLAYER_GET_FORM_INSTANCE);
 		PyObject result;
 

@@ -5,8 +5,8 @@ from lyra.basicForm import formfield
 from _testgrain_orm import testCursor
 
 @form(profile='default.properties', 
-      gridwidth=100,
-      gridheight=200,
+      gridwidth='100px',
+      gridheight='200px',
       defaultaction='<foo/>')
 class TestForm(CardForm):  
     def __init__(self, context):

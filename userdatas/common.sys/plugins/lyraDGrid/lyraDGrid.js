@@ -43,80 +43,108 @@ function createLyraDGrid(elementId, parentId, metadata) {
 			 "dojo/domReady!"
 	         ],	function(
 	        	 Button,DropDownButton,ComboButton,ToggleButton,CurrencyTextBox,DateTextBox,NumberSpinner,NumberTextBox,TextBox,TimeTextBox,ValidationTextBox,SimpleTextarea,Textarea,Select,ComboBox,MultiSelect,FilteringSelect,HorizontalSlider,VerticalSlider,CheckBox,RadioButton,DataList,	        		 
-        		 lang, has, List, Grid, CompoundColumns, ColumnSet, ColumnResizer, Selection, CellSelection, Editor, Keyboard, declare, QueryResults, Rest, Trackable, Cache, when
+	        	 lang, has, List, Grid, CompoundColumns, ColumnSet, ColumnResizer, Selection, CellSelection, Editor, Keyboard, declare, QueryResults, Rest, Trackable, Cache, when
 		     ){
+    	
+		
+		var webSocket;
+	    if(arrGrids[parentId] && arrGrids[parentId].webSocket && (arrGrids[parentId].webSocket.readyState == arrGrids[parentId].webSocket.OPEN)){
+    		webSocket = arrGrids[parentId].webSocket;
+    	}else{
+    		webSocket = new WebSocket("ws://"+window.location.host+window.location.pathname+"secured/JSLyraGridScrollBack");
+            webSocket.onopen = function(){
+             	var httpParams = gwtGetHttpParamsLyra(elementId, -1000, -1000, null, null);
+                webSocket.send(httpParams);
+            };
+            webSocket.onmessage = function(message){
+    			var grid = arrGrids[parentId];
+    			
+    			var pos = parseInt(message.data);
+    			pos = pos * grid.rowHeight;
+    			pos = pos + arrGrids[parentId].getScrollPosition().y-Math.floor(arrGrids[parentId].getScrollPosition().y/grid.rowHeight)*grid.rowHeight;
+    			backScroll = true;
+    			grid.scrollTo({x:0, y:pos});
+            };
+    	}
 		
 		
 		    var firstLoading = true;		
-		
+		    
+		    
+//----------------------Debug		    
+		    var backScroll = false;
+		    var resScroll = null;
+//----------------------Debug
+		    
 
 			var store = new declare([ Rest, Trackable, Cache ])(lang.mixin({
 				target:"secured/JSLyraGridService",
 				idProperty: "id",
 				
 				_fetch: function (kwArgs) {
-					var results = null;
 
-					var sortColId  = null;
-					var sortColDir = null;
-					if(firstLoading){
-						if(this.initialSort){
-							for(var i = 0; i<this.initialSort.length; i++){
-								for(var k in metadata["columns"]) {
-									if(metadata["columns"][k]["id"] == this.initialSort[i].property){
-										sortColId =	metadata["columns"][k]["caption"];
-										break;
-									}
+					
+					if(backScroll){
+//----------------------Debug
+							
+						    gwtSetOldPositionLyra(elementId, kwArgs[0].start);
+						
+//							console.log("backScroll21");
+							
+							results =  new QueryResults(when(resScroll), {
+								totalLength: when(arrGrids[parentId]._total)
+//								totalLength: when(50000)
+							});
+							
+							//gwtAfterLoadDataLyra(elementId, null, "50000");
+							//gwtAfterLoadDataLyra(elementId, null, arrGrids[parentId]._total);
+
+							setTimeout(function(){
+							   backScroll = false;
+//							}, 50);
+							}, 150);
+					
+							
+							return results;
+
+//----------------------Debug
+						
+					} else {
+						var results = null;
+
+						var sortColId  = null;
+						var sortColDir = null;
+						
+			 	    	var httpParams = gwtGetHttpParamsLyra(elementId, kwArgs[0].start, kwArgs[0].end-kwArgs[0].start, sortColId, sortColDir);
+			 	    	httpParams = eval('('+httpParams+')');	 	 
+			 	    	
+					    var scparams = {};
+					    scparams[httpParams["gridContextName"]] = httpParams["gridContextValue"];	
+					    scparams[httpParams["elementInfoName"]] = httpParams["elementInfoValue"];
+					    kwArgs["scparams"] = scparams;			
+					    
+					    kwArgs.start = kwArgs[0].start;
+					    kwArgs.end = kwArgs[0].end;					    
+
+						results = Rest.prototype.fetchRange.call(this, kwArgs);
+						results.then(function(results){
+							var events = null;
+							if(results[0]){
+
+//----------------------Debug								
+								resScroll = results;
+//----------------------Debug
+								
+								if(results[0]["events"]){
+									events = results[0]["events"];
 								}
-								if(this.initialSort[i].descending){
-									sortColDir = "DESC";
-								}
-								else{
-									sortColDir = "ASC";
-								}
-								break;
 							}
-						}
-					}
-					else{
-						if(grid && grid.sort){
-							for(var i = 0; i<grid.sort.length; i++){
-								var sort = grid.sort[i];
-								sortColId = grid.columns[sort.property].label;
-								if(sort.descending){
-									sortColDir = "DESC";
-								}
-								else{
-									sortColDir = "ASC";
-								}
-								break;
-							}
-						}
+							gwtAfterLoadDataLyra(elementId, events, arrGrids[parentId]._total);
+						});
+						
+						return results;
 					}
 					
-		 	    	var httpParams = gwtGetHttpParamsLyra(elementId, kwArgs[0].start, kwArgs[0].end-kwArgs[0].start, sortColId, sortColDir);
-		 	    	httpParams = eval('('+httpParams+')');	 	 
-		 	    	
-				    var scparams = {};
-				    scparams[httpParams["gridContextName"]] = httpParams["gridContextValue"];	
-				    scparams[httpParams["elementInfoName"]] = httpParams["elementInfoValue"];
-				    kwArgs["scparams"] = scparams;			
-				    
-				    kwArgs.start = kwArgs[0].start;
-				    kwArgs.end = kwArgs[0].end;					    
-
-					results = Rest.prototype.fetchRange.call(this, kwArgs);
-					results.then(function(results){
-						var events = null;
-						if(results[0]){
-							if(results[0]["events"]){
-								events = results[0]["events"];
-							}
-						}
-						gwtAfterLoadDataLyra(elementId, events, arrGrids[parentId]._total);
-					});
-					
-					return results;
 				},
 				
 				
@@ -213,7 +241,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 				column["parentId"]  = metadata["columns"][k]["parentId"];			
 				column["field"]     = metadata["columns"][k]["id"];			
 				column["label"]     = metadata["columns"][k]["caption"];
-				column["sortable"]  = "true";
+				column["sortable"]  = false;
 				column["valueType"] = metadata["columns"][k]["valueType"];
 				
 				
@@ -447,11 +475,17 @@ function createLyraDGrid(elementId, parentId, metadata) {
 			sort: sort,
 			collection: store,
 			getBeforePut: false,
+
+			
+			webSocket: webSocket,
 			
 			minRowsPerPage: parseInt(metadata["common"]["limit"]),
 			maxRowsPerPage: parseInt(metadata["common"]["limit"]),
 			bufferRows: 0,
+//			bufferRows: 10,
+//			bufferRows: 1,
 			farOffRemoval: 0,
+			pagingDelay: 50,			
 			
 //----------------------Debug			
 //			maxEmptySpace: 100,
@@ -464,7 +498,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 			showHeader: isVisibleColumnsHeader,
 			loadingMessage: metadata["common"]["loadingMessage"],
 			noDataMessage: metadata["common"]["noDataMessage"],
-			pagingDelay: 50,
+//			pagingDelay: 50,
 			deselectOnRefresh: false,
 			keepScrollPosition: true,
 			readonly: metadata["common"]["readonly"],
@@ -569,15 +603,6 @@ function createLyraDGrid(elementId, parentId, metadata) {
 }
 
 function refreshLyraDGrid(parentId){
-
-//----------------------Debug	
-	var grid = arrGrids[parentId];
-	console.log(grid.getScrollPosition());
-	grid.scrollTo({x:0, y:100000});
-	return;
-//----------------------Debug	
-	
-	
 	arrGrids[parentId].refresh();
 }
 

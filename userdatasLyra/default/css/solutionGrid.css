@@ -332,3 +332,31 @@ border-bottom: 1px solid #99b9e9 !important;
 {
 height: inherit !important;
 }
+
+
+
+
+
+
+.jslivegrid-record-bold {
+
+/*
+max-height: 2em;
+margin: 0px 2px 0px 0px !important;
+*/
+
+/*
+max-height: 2em;
+*/
+ overflow: auto;
+	
+	    background-color: #87cefa;
+	
+	font-weight: bold;
+}
+.jslivegrid-record-italic {
+	font-style: italic;
+}
+
+
+
