@@ -8,7 +8,6 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.*;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -36,7 +35,10 @@ public class App implements EntryPoint {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getBundle(context, new AsyncCallback<Map<String, String>>() {
+		dataService.getBundle(context, new GWTServiceCallback<Map<String, String>>(
+				"Error for bundleMap loading") {
+
+			// new AsyncCallback<Map<String, String>>() {
 
 			@Override
 			public void onSuccess(final Map<String, String> arg0) {
@@ -44,10 +46,10 @@ public class App implements EntryPoint {
 				initialize(context);
 			}
 
-			@Override
-			public void onFailure(final Throwable arg0) {
-				MessageBox.showSimpleMessage("error", "bundleMap");
-			}
+			// @Override
+			// public void onFailure(final Throwable arg0) {
+			// MessageBox.showSimpleMessage("error", "bundleMap");
+			// }
 		});
 	}
 
