@@ -29,78 +29,103 @@ public class CheckAutenticationFilter implements Filter {
 	public void doFilter(final ServletRequest request, final ServletResponse response,
 			final FilterChain filterChain) throws IOException, ServletException {
 		HttpServletRequest httpReq = (HttpServletRequest) request;
-		if (httpReq.getSession(false) == null) {
-			httpReq.getSession();
-			response.reset();
-			response.setContentType("text/html");
-			response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-			response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
-			response.getWriter().close();
+		// if (request instanceof HttpServletRequest) {
+		String url1 = ((HttpServletRequest) request).getRequestURL().toString();
+		// String queryString = ((HttpServletRequest) request).getQueryString();
+		// System.out.println(url1 + "?" + queryString);
 
+		if (!url1.contains("secured/data")) {
+			filterChain.doFilter(request, response);
 		} else {
 
-			if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
-				LOGGER.debug(httpReq.getSession().getId());
-			}
+			if (httpReq.getSession(false) == null) {
+				httpReq.getSession();
+				response.reset();
+				response.setContentType("text/html");
+				response.setCharacterEncoding(TextUtils.DEF_ENCODING);
+				response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
+				response.getWriter().close();
 
-			String url = null;
-			try {
-				url = SecurityParamsFactory.getLocalAuthServerUrl();
-			} catch (SettingsFileOpenException e) {
-				throw new ServletException(SecurityParamsFactory.APP_PROP_READ_ERROR, e);
-			}
-			AuthServerUtils.init(url);
-
-			if (AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(
-					httpReq.getSession().getId())) {
-				UserInfo ud =
-					AuthServerUtils.getTheAuthServerAlias().isAuthenticated(
-							httpReq.getSession().getId());
-				// if (SecurityContextHolder.getContext().getAuthentication() !=
-				// null) {
-				// LOGGER.debug("RequestContextHolder = "
-				// + ((WebAuthenticationDetails)
-				// SecurityContextHolder.getContext()
-				// .getAuthentication().getDetails()).getSessionId());
-				// }
-
-				if (ud == null) {
-					response.reset();
-					response.setContentType("text/html");
-					response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-					response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
-					response.getWriter().close();
-				} else {
-					filterChain.doFilter(request, response);
-				}
 			} else {
 
-				String username = (String) (httpReq.getSession(false).getAttribute("username"));
-				// String password = (String)
-				// (httpReq.getSession(false).getAttribute("password"));
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+					LOGGER.debug(httpReq.getSession().getId());
+				}
 
-				if ("master".equals(username)
-				// && "master".equals(password)
-				) {
-					filterChain.doFilter(request, response);
+				String url = null;
+				try {
+					url = SecurityParamsFactory.getLocalAuthServerUrl();
+				} catch (SettingsFileOpenException e) {
+					throw new ServletException(SecurityParamsFactory.APP_PROP_READ_ERROR, e);
+				}
+				AuthServerUtils.init(url);
+
+				if (AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(
+						httpReq.getSession().getId())) {
+					UserInfo ud =
+						AuthServerUtils.getTheAuthServerAlias().isAuthenticated(
+								httpReq.getSession().getId());
+					// if
+					// (SecurityContextHolder.getContext().getAuthentication()
+					// !=
+					// null) {
+					// LOGGER.debug("RequestContextHolder = "
+					// + ((WebAuthenticationDetails)
+					// SecurityContextHolder.getContext()
+					// .getAuthentication().getDetails()).getSessionId());
+					// }
+
+					if (ud == null) {
+
+						response.reset();
+						response.setContentType("text/html");
+						response.setCharacterEncoding(TextUtils.DEF_ENCODING);
+						response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
+						response.getWriter().close();
+						((HttpServletRequest) request).getSession().invalidate();
+						return;
+
+						// HttpServletResponse httpResponse =
+						// (HttpServletResponse)
+						// response;
+						// httpResponse.sendRedirect(httpReq.getContextPath() +
+						// "/login.jsp");
+
+					} else {
+						filterChain.doFilter(request, response);
+					}
 				} else {
-					try {
-						if (SecurityContextHolder.getContext().getAuthentication() != null) {
-							filterChain.doFilter(request, response);
-						} else {
 
+					String username =
+						(String) (httpReq.getSession(false).getAttribute("username"));
+					// String password = (String)
+					// (httpReq.getSession(false).getAttribute("password"));
+
+					if ("master".equals(username)
+					// && "master".equals(password)
+					) {
+						filterChain.doFilter(request, response);
+					} else {
+						try {
+							if (SecurityContextHolder.getContext().getAuthentication() != null) {
+								filterChain.doFilter(request, response);
+							} else {
+
+								response.reset();
+								response.setContentType("text/html");
+								response.setCharacterEncoding(TextUtils.DEF_ENCODING);
+								response.getWriter().append(
+										ExchangeConstants.SESSION_NOT_AUTH_SIGN);
+								response.getWriter().close();
+
+							}
+						} catch (Exception e) {
 							response.reset();
 							response.setContentType("text/html");
 							response.setCharacterEncoding(TextUtils.DEF_ENCODING);
 							response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
 							response.getWriter().close();
 						}
-					} catch (Exception e) {
-						response.reset();
-						response.setContentType("text/html");
-						response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-						response.getWriter().append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
-						response.getWriter().close();
 					}
 				}
 			}
