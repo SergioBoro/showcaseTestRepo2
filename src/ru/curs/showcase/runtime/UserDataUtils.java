@@ -90,6 +90,7 @@ public final class UserDataUtils {
 	// "database.connection";
 	public static final String CELESTA_PYLIB_PATH = "pylib.path";
 	public static final String CELESTA_JAVALIB_PATH = "javalib.path";
+	public static final String CELESTA_ALLOW_INDEXED_NULLS = "allow.indexed.nulls";
 	public static final String CELESTA_CONNECTION_URL = "connection.url";
 	public static final String CELESTA_CONNECTION_USERNAME = "connection.username";
 	public static final String CELESTA_CONNECTION_PASSWORD = "connection.password";
@@ -484,6 +485,12 @@ public final class UserDataUtils {
 		if (!(javaLibPath == null || javaLibPath.isEmpty())) {
 			javaLibPath = javaLibPath.replace("/", File.separator);
 			celestaProps.put(CELESTA_JAVALIB_PATH, javaLibPath);
+		}
+
+		String allowIndexedNulls =
+			generalProps.getProperty(CELESTA_PREFIX + CELESTA_ALLOW_INDEXED_NULLS);
+		if (!(allowIndexedNulls == null || allowIndexedNulls.isEmpty())) {
+			celestaProps.put(CELESTA_ALLOW_INDEXED_NULLS, allowIndexedNulls);
 		}
 
 		return celestaProps;
