@@ -51,6 +51,13 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 	@Override
 	protected PythonInterpreter createReusableItem() {
 		PySystemState state = new PySystemState();
+
+		if (getJarList().size() > 0) {
+			for (String jarName : getJarList()) {
+				state.path.append(new PyString(jarName));
+			}
+		}
+
 		// PySystemState state = Py.getSystemState();
 		state.path.append(new PyString(getUserDataScriptDir()));
 		// File genScriptDir = new File(getGeneralScriptDir());
@@ -61,11 +68,7 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 			}
 		}
 		// }
-		if (getJarList().size() > 0) {
-			for (String jarName : getJarList()) {
-				state.path.append(new PyString(jarName));
-			}
-		}
+
 		if (getGeneralScriptDirFromWebInf("libJython").size() > 0) {
 			for (String path : getGeneralScriptDirFromWebInf("libJython")) {
 				state.path.append(new PyString(path));
@@ -127,11 +130,11 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 							+ f.getName() + "/WEB-INF/" + libFolder);
 				if (libFolder.equals("libJython")) {
 					fileN =
-					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName()
-							+ "/WEB-INF/" + libFolder + "/site-packages");
+						new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+								+ f.getName() + "/WEB-INF/" + libFolder + "/site-packages");
 					if (fileN.exists())
-					pathList.add(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-							+ f.getName() + "/WEB-INF/" + libFolder + "/site-packages");
+						pathList.add(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+								+ f.getName() + "/WEB-INF/" + libFolder + "/site-packages");
 				}
 			}
 		}
