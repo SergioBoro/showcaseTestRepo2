@@ -228,6 +228,12 @@ function createLiveDGrid(elementId, parentId, metadata) {
 				}
 				
 				column["renderCell"] = function actionRenderCell(object, value, node, options) {
+					
+					if(!value){
+						value = "";
+						
+					}
+					
 					var div = document.createElement("div");
 					
 					switch (this["valueType"]) {
