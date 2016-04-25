@@ -343,7 +343,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 							}
 						}
 						if(object.col1){
-							node.title = getTitle(object.col1);
+//							node.title = getTitle(object.col1);
 						}
 						return node;
 					};
