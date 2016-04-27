@@ -95,7 +95,7 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
 	
 <td>
 		    <xf:selector 
-		        buttonLabel        = "ddd2"
+		        buttonLabel        = "ddd22"
 		        needInitSelection  = "true"
 		        
 		        selectedFirst      = "true"
@@ -154,7 +154,8 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
          
 				
 			<xf:trigger>
-				<xf:label>Old (JS), MultiSelector, 1 процедура</xf:label>
+				<xf:label>Old2 (JS), MultiSelector, 1 процедура</xf:label>
+				<xf:hint  appearance="minimal">Old (JS), MultiSelector, 1 процедура</xf:hint>				
 				<xf:action ev:event="DOMActivate">
 					<xf:load
 						resource="javascript:showMultiSelector({
@@ -182,7 +183,8 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
 			</xf:trigger>
 		
 		    <xf:multiselector 
-		        buttonLabel       = "New (Tag), MultiSelector, 1 процедура"
+		        buttonLabel       = "New (Tag), MultiSelector, 1 процедура, хинт"
+		        buttonHint        = "Это хинт"
                 dataWidth         = "'400px'"
                 dataHeight        = "'450px'"
                 selectedDataWidth = "'500px'"

@@ -32,6 +32,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String SELECTOR_TAG = "selector";
 	private static final String MULTISELECTOR_TAG = "multiselector";
 	private static final String SELECTOR_BUTTON_LABEL_TAG = "buttonLabel";
+	private static final String SELECTOR_BUTTON_HINT_TAG = "buttonHint";
 	private static final String SUBMIT_LABEL_TAG = "submitLabel";
 	private static final String SINGLE_FILE_TAG = "singleFile";
 	private static final String ADD_UPLOAD_TAG = "addUpload";
@@ -180,9 +181,13 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			Node parent = old.getParentNode();
 			String params = "";
 			String buttonLabel = DEFAULT_SELECTOR_LABEL;
+			String buttonHint = null;
 			for (int j = 0; j < old.getAttributes().getLength(); j++) {
 				if (SELECTOR_BUTTON_LABEL_TAG.endsWith(old.getAttributes().item(j).getNodeName())) {
 					buttonLabel = old.getAttributes().item(j).getNodeValue();
+				} else if (SELECTOR_BUTTON_HINT_TAG.endsWith(old.getAttributes().item(j)
+						.getNodeName())) {
+					buttonHint = old.getAttributes().item(j).getNodeValue();
 				} else {
 					if (!old.getAttributes().item(j).getNodeValue().trim().isEmpty()) {
 						params =
@@ -208,6 +213,13 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 				label.setTextContent(buttonLabel);
 			}
 			trigger.appendChild(label);
+
+			if (buttonHint != null) {
+				Element hint = doc.createElementNS(XFormProducer.XFORMS_URI, "hint");
+				hint.setTextContent(buttonHint);
+				hint.setAttribute("appearance", "minimal");
+				trigger.appendChild(hint);
+			}
 
 			Element action = doc.createElementNS(XFormProducer.XFORMS_URI, ACTION);
 			action.setAttributeNS(XFormProducer.EVENTS_URI, "ev:event", DOM_ACTIVATE);
