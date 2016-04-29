@@ -24,8 +24,6 @@ public final class ServerStateFactory {
 	private static final String GWTVERSION_FILE = "gwtversion";
 	private static final String BUILD_FILE = "build";
 	private static final String VERSION_FILE = "version.properties";
-	public static final String HIDE_SERVER_INFO_IN_ABOUT_WINDOW =
-		"security.hideserverinfoinaboutwindow";
 
 	private ServerStateFactory() {
 		throw new UnsupportedOperationException();
@@ -65,23 +63,11 @@ public final class ServerStateFactory {
 		state.setGwtVersion(getGwtVersion());
 		state.setCaseSensivityIDs(IDSettings.getInstance().getCaseSensivity());
 
-		
-		
 		String sss =
-			(SecurityContextHolder.getContext().getAuthentication() != null) ?
-			((UserAndSessionDetails) SecurityContextHolder.getContext().getAuthentication()
-.getDetails()).getSessionId()
+			(SecurityContextHolder.getContext().getAuthentication() != null) ? ((UserAndSessionDetails) SecurityContextHolder
+					.getContext().getAuthentication().getDetails()).getSessionId()
 					: "autenticatedSessionIsNull";
 		state.setSesId(sss);
-
-		String hideserverinfoinaboutwindow =
-			UserDataUtils.getGeneralOptionalProp(HIDE_SERVER_INFO_IN_ABOUT_WINDOW);
-		if (hideserverinfoinaboutwindow != null) {
-			state.setHideServerInfoInAboutWindow(Boolean.valueOf(hideserverinfoinaboutwindow));
-		} else
-			state.setHideServerInfoInAboutWindow(false);
-
-		// state.setHideServerInfoInAboutWindow(ahideServerInfoInAboutWindow);
 
 		String value = UserDataUtils.getGeneralOptionalProp(ENABLE_CLIENT_LOG);
 		Boolean boolValue = Boolean.valueOf(value);

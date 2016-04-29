@@ -153,12 +153,7 @@ AuthServerUtils.init(url);
 		String caseSensivityIDsSummary =
 				"Идентификаторы" + caseSensivityIDsSummaryPrefix + " чувствительны к регистру.";
 
-		boolean getHideServerInfoInAboutWindow = Boolean.valueOf(UserDataUtils.
-				getGeneralOptionalProp("security.hideserverinfoinaboutwindow"));
-		
-		String serverInfo = null;
-		if (!getHideServerInfoInAboutWindow) {
-			serverInfo =
+			String serverInfo =
 					"Версия SQL сервера: "
 							+ sqlVersion
 							+ br
@@ -170,9 +165,6 @@ AuthServerUtils.init(url);
 							+ br
 							+ "Версия dojo: "
 							+ dojoVersion;
-							
-			} else
-				serverInfo = "";
 %>
 		
 		<script type="text/javascript">
