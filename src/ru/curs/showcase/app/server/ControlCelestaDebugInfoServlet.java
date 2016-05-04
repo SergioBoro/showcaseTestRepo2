@@ -35,17 +35,22 @@ public class ControlCelestaDebugInfoServlet extends HttpServlet {
 							+ "var td11 = document.createElement('td'); "
 							+ "var td22 = document.createElement('td'); "
 							+ "var td33 = document.createElement('td'); "
+							+ "var td44 = document.createElement('td'); "
 							+ "var h11 = document.createElement('h4'); "
 							+ "var h22 = document.createElement('h4'); "
 							+ "var h33 = document.createElement('h4'); "
+							+ "var h44 = document.createElement('h4'); "
 							+ "var text11 = document.createTextNode('ProcName'); "
 							+ "var text22 = document.createTextNode('UserId'); "
 							+ "var text33 = document.createTextNode('DBPid'); "
+							+ "var text44 = document.createTextNode('StartTime'); "
 							+ "h11.appendChild(text11); " + "h22.appendChild(text22); "
-							+ "h33.appendChild(text33); " + "td11.appendChild(h11); "
-							+ "td22.appendChild(h22); " + "td33.appendChild(h33); "
+							+ "h33.appendChild(text33); " + "h44.appendChild(text44); "
+							+ "td11.appendChild(h11); " + "td22.appendChild(h22); "
+							+ "td33.appendChild(h33); " + "td44.appendChild(h44); "
 							+ "tr123.appendChild(td11); " + "tr123.appendChild(td22); "
-							+ "tr123.appendChild(td33); " + "table.appendChild(tr123); ";
+							+ "tr123.appendChild(td33); " + "tr123.appendChild(td44); "
+							+ "table.appendChild(tr123); ";
 
 				sb.append(taleStringRepresentation);
 
@@ -54,19 +59,24 @@ public class ControlCelestaDebugInfoServlet extends HttpServlet {
 					String procName = cc.getProcName();
 					String userId = cc.getUserId();
 					int dbPid = cc.getDBPid();
+					String startTime = cc.getStartTime().toString();
 					String taleStringRepresentation2 =
 						"  tr" + i + "= document.createElement('tr'); t" + i
 								+ "td1 = document.createElement('td'); t" + i
 								+ "td2 = document.createElement('td'); t" + i
 								+ "td3 = document.createElement('td'); t" + i
+								+ "td4 = document.createElement('td'); t" + i
 								+ "text1 = document.createTextNode('" + procName + "'); t" + i
 								+ "text2 = document.createTextNode('" + userId + "'); t" + i
 								+ "text3 = document.createTextNode('" + dbPid + "'); t" + i
+								+ "text4 = document.createTextNode('" + startTime + "'); t" + i
 								+ "td1.appendChild(t" + i + "text1); t" + i + "td2.appendChild(t"
-								+ i + "text2); t" + i + "td3.appendChild(t" + i + "text3); "
-								+ "tr" + i + ".appendChild(t" + i + "td1); " + "tr" + i
-								+ ".appendChild(t" + i + "td2); " + "tr" + i + ".appendChild(t"
-								+ i + "td3); " + "table.appendChild(tr" + i + "); ";
+								+ i + "text2); t" + i + "td3.appendChild(t" + i + "text3); t" + i
+								+ "td4.appendChild(t" + i + "text4); " + "tr" + i
+								+ ".appendChild(t" + i + "td1); " + "tr" + i + ".appendChild(t"
+								+ i + "td2); " + "tr" + i + ".appendChild(t" + i + "td3); " + "tr"
+								+ i + ".appendChild(t" + i + "td4); " + "table.appendChild(tr" + i
+								+ "); ";
 					++i;
 					sb.append(taleStringRepresentation2);
 				}

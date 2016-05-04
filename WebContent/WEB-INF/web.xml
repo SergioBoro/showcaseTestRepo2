@@ -206,6 +206,15 @@
     <servlet-name>ControlMemoryServlet</servlet-name>
     <url-pattern>/control/reset</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <servlet-name>ControlCelestaDebugInfoServlet</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.ControlCelestaDebugInfoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ControlCelestaDebugInfoServlet</servlet-name>
+    <url-pattern>/control/debugInfo</url-pattern>
+  </servlet-mapping>
   
   <servlet>
     <description></description>
