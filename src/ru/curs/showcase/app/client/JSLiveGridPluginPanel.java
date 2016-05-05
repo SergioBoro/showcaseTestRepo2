@@ -119,7 +119,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	private static native void setCallbackJSNIFunction() /*-{
 															$wnd.gwtGetHttpParams = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtEditorGetHttpParams = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginEditorGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
-															$wnd.gwtAfterLoadData = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtAfterLoadData = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterPartialUpdate = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterPartialUpdate(Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterClick = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
 															$wnd.gwtAfterDoubleClick = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterDoubleClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
@@ -646,7 +646,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		return params;
 	}
 
-	public void pluginAfterLoadData(final String stringEvents, final String totalCount) {
+	public void pluginAfterLoadData(final String stringEvents, final String totalCount,
+			final String wrongSelection) {
 
 		if (stringEvents != null) {
 			try {
@@ -686,7 +687,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			}
 		}
 
-		afterUpdateGrid();
+		afterUpdateGrid(wrongSelection);
 
 		GridContext gridContext = getDetailedContext();
 		gridContext.getLiveInfo().setTotalCount(Integer.parseInt(totalCount));
@@ -876,6 +877,24 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		runAction(ac);
 	}
 
+	private boolean adjustSelectionRecords(final String wrongSelection) {
+		boolean ret = false;
+		if (!((wrongSelection == null) || wrongSelection.isEmpty())) {
+			GridContext gridContext = getDetailedContext();
+			String[] strs = wrongSelection.split(STRING_SELECTED_RECORD_IDS_SEPARATOR);
+			for (String s : strs) {
+				if (gridContext.getSelectedRecordIds().remove(s)) {
+					ret = true;
+				}
+				if (s.equals(gridContext.getCurrentRecordId())) {
+					gridContext.setCurrentRecordId(null);
+					ret = true;
+				}
+			}
+		}
+		return ret;
+	}
+
 	/**
 	 * Замечание: сбрасывать состояние грида нужно обязательно до вызова
 	 * отрисовки зависимых элементов. Иначе потеряем выделенную запись или
@@ -883,7 +902,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	 * 
 	 */
 
-	private void afterUpdateGrid() {
+	private void afterUpdateGrid(final String wrongSelection) {
 
 		needRestoreAfterShowLoadingMessage = false;
 
@@ -897,6 +916,12 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			toolBarHelper.fillToolBar();
 
 			runAction(gridMetadata.getActionForDependentElements());
+
+		} else {
+
+			if (adjustSelectionRecords(wrongSelection)) {
+				toolBarHelper.fillToolBar();
+			}
 
 		}
 
