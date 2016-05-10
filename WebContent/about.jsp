@@ -191,48 +191,8 @@ AuthServerUtils.init(url);
 		</script>
 		<script src="solutions/<%=UserDataUtils.getUserDataId()%>/js/solution.js"></script>
 <%
-Properties prop = new Properties();
-try {
-	InputStream is = FileUtils.loadClassPathResToStream("version.properties");
-	InputStreamReader reader = null;
-	try {
-		reader = new InputStreamReader(is, TextUtils.DEF_ENCODING);
-		prop.load(reader);
-	} finally {
-		if(reader != null)
-			reader.close();
-	}
-} catch (IOException e) {
-	throw new SettingsFileOpenException("version.properties", SettingsFileType.VERSION);
-} catch (NullPointerException ex) {
-	throw new SettingsFileOpenException("version.properties", SettingsFileType.VERSION);
-} 
-String major = prop.getProperty("version");
-
-String build;
-try {
-	InputStream is = FileUtils.loadClassPathResToStream("build");
-	BufferedReader buf = null;
-	try {
-		buf = new BufferedReader(new InputStreamReader(is));
-		build = buf.readLine();
-		Pattern pattern2 = Pattern.compile("(\\d+|development)");
-		Matcher matcher2 = pattern2.matcher(build);
-		matcher2.find();
-		build = matcher2.group();
-	}finally {
-		if(buf != null)
-			buf.close();
-	}
-} catch (IOException e) {
-	throw new SettingsFileOpenException("build", SettingsFileType.VERSION);
-} catch (NullPointerException ex) {
-	throw new SettingsFileOpenException("build", SettingsFileType.VERSION);
-}
-String appVersion = String.format("%s.%s", major, build);
-
+String appVersion = UserDataUtils.getAppVersion();
 %>
-
 
 <% 
 String userAgent = request.getHeader("User-Agent"); 
