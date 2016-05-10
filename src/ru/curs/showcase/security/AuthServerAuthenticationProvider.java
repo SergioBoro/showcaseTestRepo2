@@ -79,8 +79,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		if (AppInfoSingleton.getAppInfo().getSessionInfoMap().containsKey(oldSesid)
 				&& (AppInfoSingleton.getAppInfo().getSessionInfoMap().get(oldSesid)
 						.getAuthServerCrossAppPassword() != null)) {
-			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
-				LOGGER.error("Попытка аутентификации сессии " + sesid
+			if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+				LOGGER.info("Попытка аутентификации сессии " + sesid
 						+ " через механизм кроссдоменной аутентификации. Пользователь: " + login
 						+ " Пароль: " + pwd);
 			}
