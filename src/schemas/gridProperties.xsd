@@ -15,6 +15,7 @@
     <xs:element name="readonly">
         <xs:complexType>
             <xs:attribute name="value" type="xs:boolean" use="required"/>
+            <xs:attribute name="column" type="notNullType"/>            
         </xs:complexType>
     </xs:element>
     

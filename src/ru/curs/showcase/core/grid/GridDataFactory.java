@@ -332,8 +332,25 @@ public class GridDataFactory extends CompBasedElementFactory {
 					rec.put(ROWSTYLE, value);
 				}
 				if (aQname.equalsIgnoreCase(GeneralConstants.READONLY_TAG)) {
-					String value = attrs.getValue(VALUE_TAG);
-					rec.put(GeneralConstants.READONLY_TAG, value);
+					String newValue = attrs.getValue(VALUE_TAG);
+					boolean readonly = Boolean.parseBoolean(newValue);
+					if (readonly) {
+						String rusColId = attrs.getValue(EVENT_COLUMN_TAG);
+						if (rusColId == null) {
+							newValue = "all;";
+						} else {
+							newValue = state.getColumns().get(rusColId).getId() + ";";
+						}
+
+						String value = rec.get(GeneralConstants.READONLY_TAG);
+						if (value == null) {
+							value = newValue;
+						} else {
+							value = value + newValue;
+						}
+
+						rec.put(GeneralConstants.READONLY_TAG, value);
+					}
 				}
 				return null;
 			}
