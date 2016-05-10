@@ -302,7 +302,7 @@ function createLiveDGrid(elementId, parentId, metadata) {
 				if(column["editable"]){
 					column["canEdit"] = function columnCanEdit(object, value){
 						result = true;
-						if(object.readonly && (((object.readonly).indexOf("all") > -1 ) || ((object.readonly).indexOf(this.id) > -1 ))){
+						if(object.readonly && (((object.readonly).indexOf("all;") > -1 ) || ((object.readonly).indexOf(this.id+";") > -1 ))){
 							result = false;
 						}
 						return result;					
