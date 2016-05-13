@@ -682,6 +682,10 @@ public class GridMetaFactory extends CompBasedElementFactory {
 		result.getJSInfo().setRevertProc("revert" + TextUtils.capitalizeWord(plugin));
 		result.getJSInfo().setClipboardProc("clipboard" + TextUtils.capitalizeWord(plugin));
 		result.getJSInfo().setPartialUpdate("partialUpdate" + TextUtils.capitalizeWord(plugin));
+		result.getJSInfo().setCurrentLevelUpdate(
+				"currentLevelUpdate" + TextUtils.capitalizeWord(plugin));
+		result.getJSInfo().setChildLevelUpdate(
+				"childLevelUpdate" + TextUtils.capitalizeWord(plugin));
 
 		result.getJSInfo().getRequiredJS()
 				.add(getAdapterForWebServer(getPluginDir(), plugin + ".js"));

@@ -243,6 +243,11 @@ public class GridDataFactory extends CompBasedElementFactory {
 							+ ">");
 					rec.remove(PROPS_TAG);
 				}
+
+				if (getCallContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
+					rec.put("parentId", getCallContext().getParentId());
+				}
+
 				records.add(rec);
 				processRecord = false;
 				return;

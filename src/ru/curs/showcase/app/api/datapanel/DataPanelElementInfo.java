@@ -411,6 +411,50 @@ public class DataPanelElementInfo extends TransferableElement implements Seriali
 	}
 
 	/**
+	 * Возвращает значение currentLevelUpdate, заданное в действии для данного
+	 * элемента.
+	 * 
+	 * @param ac
+	 *            - действие.
+	 * @return - currentLevelUpdate.
+	 */
+	public Boolean getCurrentLevelUpdate(final Action ac) {
+		if (ac.getDataPanelLink() != null) {
+			for (DataPanelElementLink link : ac.getDataPanelLink().getElementLinks()) {
+				if (link.getId().equals(id)) {
+					return link.getCurrentLevelUpdate();
+				}
+			}
+
+			// return ac.getPartialUpdate();
+			return false;
+		}
+		return false;
+	}
+
+	/**
+	 * Возвращает значение childLevelUpdate, заданное в действии для данного
+	 * элемента.
+	 * 
+	 * @param ac
+	 *            - действие.
+	 * @return - childLevelUpdate.
+	 */
+	public Boolean getChildLevelUpdate(final Action ac) {
+		if (ac.getDataPanelLink() != null) {
+			for (DataPanelElementLink link : ac.getDataPanelLink().getElementLinks()) {
+				if (link.getId().equals(id)) {
+					return link.getChildLevelUpdate();
+				}
+			}
+
+			// return ac.getPartialUpdate();
+			return false;
+		}
+		return false;
+	}
+
+	/**
 	 * Возвращает текущий контекст для элемента из переданного действия.
 	 * 
 	 * @param ac

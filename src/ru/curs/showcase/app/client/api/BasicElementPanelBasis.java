@@ -92,6 +92,8 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 	}
 
 	private boolean partialUpdate = false;
+	private boolean currentLevelUpdate = false;
+	private boolean childLevelUpdate = false;
 
 	public boolean isPartialUpdate() {
 		return partialUpdate;
@@ -100,6 +102,24 @@ public abstract class BasicElementPanelBasis implements BasicElementPanel {
 	@Override
 	public void setPartialUpdate(final boolean aPartialUpdate) {
 		partialUpdate = aPartialUpdate;
+	}
+
+	public boolean isCurrentLevelUpdate() {
+		return currentLevelUpdate;
+	}
+
+	@Override
+	public void setCurrentLevelUpdate(final boolean aCurrentLevelUpdate) {
+		currentLevelUpdate = aCurrentLevelUpdate;
+	}
+
+	public boolean isChildLevelUpdate() {
+		return childLevelUpdate;
+	}
+
+	@Override
+	public void setChildLevelUpdate(final boolean aCchildLevelUpdate) {
+		childLevelUpdate = aCchildLevelUpdate;
 	}
 
 	protected void resetLocalContext() {

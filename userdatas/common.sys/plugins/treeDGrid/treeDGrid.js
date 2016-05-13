@@ -669,4 +669,37 @@ function partialUpdateTreeDGrid(elementId, parentId, partialdata){
 }
 
 
+function currentLevelUpdateTreeDGrid(elementId, parentId){
+	var rowId = null;
+	try {
+		rowId = arrGrids[parentId].row(arrGrids[parentId]._focusedNode).data.parentId;
+	}catch(err){}
+	
+	if(rowId){
+		var oldLoadingMessage = arrGrids[parentId].loadingMessage; 
+		arrGrids[parentId].set("loadingMessage", null);
+		arrGrids[parentId].expand(rowId, true, null, true);
+		arrGrids[parentId].set("loadingMessage", oldLoadingMessage);
+	}
+}
+
+function childLevelUpdateTreeDGrid(elementId, parentId){
+	var rowId = null;
+	try {
+		rowId = arrGrids[parentId].row(arrGrids[parentId]._focusedNode).id;
+	}catch(err){}
+	
+	if(rowId){
+		var oldLoadingMessage = arrGrids[parentId].loadingMessage; 
+		arrGrids[parentId].set("loadingMessage", null);
+		arrGrids[parentId].expand(rowId, true, null, true);
+		arrGrids[parentId].set("loadingMessage", oldLoadingMessage);
+	}
+}
+
+
+
+
+
+
 

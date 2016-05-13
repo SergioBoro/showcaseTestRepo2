@@ -182,13 +182,28 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			if (isPartialUpdate()) {
 				partialUpdateGridPanel();
 			} else {
-				gridMetadata.getEventManager().getEvents().clear();
 
-				String params = "'" + getDivIdPlugin() + "'";
-				pluginProc(gridMetadata.getJSInfo().getRefreshProc(), params);
+				if (isCurrentLevelUpdate() || isChildLevelUpdate()) {
+					String params =
+						"'" + getElementInfo().getId().toString() + "'" + ", " + "'"
+								+ getDivIdPlugin() + "'";
+					if (isCurrentLevelUpdate()) {
+						pluginProc(gridMetadata.getJSInfo().getCurrentLevelUpdate(), params);
+					}
+					if (isChildLevelUpdate()) {
+						pluginProc(gridMetadata.getJSInfo().getChildLevelUpdate(), params);
+
+					}
+				} else {
+					gridMetadata.getEventManager().getEvents().clear();
+
+					String params = "'" + getDivIdPlugin() + "'";
+					pluginProc(gridMetadata.getJSInfo().getRefreshProc(), params);
+				}
 			}
 
 		}
+
 	}
 
 	private void partialUpdateGridPanel() {

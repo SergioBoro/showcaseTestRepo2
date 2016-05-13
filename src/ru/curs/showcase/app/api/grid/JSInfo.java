@@ -21,6 +21,8 @@ public class JSInfo implements SerializableElement {
 	private String revertProc;
 	private String clipboardProc;
 	private String partialUpdate;
+	private String currentLevelUpdate;
+	private String childLevelUpdate;
 
 	private List<String> requiredJS = new ArrayList<String>();
 
@@ -80,6 +82,22 @@ public class JSInfo implements SerializableElement {
 
 	public void setPartialUpdate(final String aPartialUpdate) {
 		partialUpdate = aPartialUpdate;
+	}
+
+	public String getCurrentLevelUpdate() {
+		return currentLevelUpdate;
+	}
+
+	public void setCurrentLevelUpdate(final String aCurrentLevelUpdate) {
+		currentLevelUpdate = aCurrentLevelUpdate;
+	}
+
+	public String getChildLevelUpdate() {
+		return childLevelUpdate;
+	}
+
+	public void setChildLevelUpdate(final String aChildLevelUpdate) {
+		childLevelUpdate = aChildLevelUpdate;
 	}
 
 	public List<String> getRequiredJS() {

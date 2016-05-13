@@ -86,4 +86,8 @@ public interface BasicElementPanel {
 	void setNeedResetLocalContext(final boolean aNeedResetLocalContext);
 
 	void setPartialUpdate(final boolean aPartialUpdate);
+
+	void setCurrentLevelUpdate(final boolean aCurrentLevelUpdate);
+
+	void setChildLevelUpdate(final boolean aChildLevelUpdate);
 }

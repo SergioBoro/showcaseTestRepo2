@@ -17,6 +17,8 @@ public class ActionFactory extends SAXTagHandler {
 	private static final String SHOW_CLOSE_BOTTOM_BUTTON_TAG = "show_close_bottom_button";
 	private static final String KEEP_USER_SETTINGS_TAG = "keep_user_settings";
 	private static final String PARTIAL_UPDATE_TAG = "partial_update";
+	private static final String CURRENT_LEVEL_UPDATE_TAG = "current_level_update";
+	private static final String CHILD_LEVEL_UPDATE_TAG = "child_level_update";
 	private static final String PRESERVE_HIDDEN_TAG = "preserve_hidden";
 	private static final String SHOW_IN_MODE_TAG = "show_in";
 	private static final String GROUP_TAG = "group";
@@ -165,6 +167,16 @@ public class ActionFactory extends SAXTagHandler {
 			curDataPanelElementLink.setPartialUpdate(Boolean.parseBoolean(value));
 		}
 
+		if (attrs.getIndex(CURRENT_LEVEL_UPDATE_TAG) > -1) {
+			value = attrs.getValue(CURRENT_LEVEL_UPDATE_TAG);
+			curDataPanelElementLink.setCurrentLevelUpdate(Boolean.parseBoolean(value));
+		}
+
+		if (attrs.getIndex(CHILD_LEVEL_UPDATE_TAG) > -1) {
+			value = attrs.getValue(CHILD_LEVEL_UPDATE_TAG);
+			curDataPanelElementLink.setChildLevelUpdate(Boolean.parseBoolean(value));
+		}
+
 		CompositeContext context = createContextFromGeneral();
 		curDataPanelElementLink.setContext(context);
 	}
@@ -246,6 +258,16 @@ public class ActionFactory extends SAXTagHandler {
 		if (attrs.getIndex(PARTIAL_UPDATE_TAG) > -1) {
 			String value = attrs.getValue(PARTIAL_UPDATE_TAG);
 			action.setPartialUpdate(Boolean.parseBoolean(value));
+		}
+
+		if (attrs.getIndex(CURRENT_LEVEL_UPDATE_TAG) > -1) {
+			String value = attrs.getValue(CURRENT_LEVEL_UPDATE_TAG);
+			action.setCurrentLevelUpdate(Boolean.parseBoolean(value));
+		}
+
+		if (attrs.getIndex(CHILD_LEVEL_UPDATE_TAG) > -1) {
+			String value = attrs.getValue(CHILD_LEVEL_UPDATE_TAG);
+			action.setChildLevelUpdate(Boolean.parseBoolean(value));
 		}
 
 		if (attrs.getIndex(PRESERVE_HIDDEN_TAG) > -1) {

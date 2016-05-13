@@ -70,6 +70,16 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 	private Boolean partialUpdate = null;
 
 	/**
+	 * Признак того, что нужно выполнять обновление текущего уровня элемента.
+	 */
+	private Boolean currentLevelUpdate = null;
+
+	/**
+	 * Признак того, что нужно выполнять обновление нижнего уровня элемента.
+	 */
+	private Boolean childLevelUpdate = null;
+
+	/**
 	 * Признак того, что если во время рефреша элемента он скрыт, то показывать
 	 * его не нужно.
 	 */
@@ -164,6 +174,8 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 		determineDPActionType();
 		determineKeepUserSettingsState();
 		determinePartialUpdateState();
+		determineCurrentLevelUpdateState();
+		determineChildLevelUpdateState();
 		determinePreserveHiddenState();
 	}
 
@@ -200,6 +212,46 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 						elink.setPartialUpdate(partialUpdate);
 					} else {
 						elink.setPartialUpdate(false);
+					}
+				}
+
+			}
+		}
+	}
+
+	private void determineCurrentLevelUpdateState() {
+		boolean actionParamDefined = true;
+		if (currentLevelUpdate == null) {
+			currentLevelUpdate = false;
+			actionParamDefined = false;
+		}
+		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
+			for (DataPanelElementLink elink : dataPanelLink.getElementLinks()) {
+				if (elink.getCurrentLevelUpdate() == null) {
+					if (actionParamDefined) {
+						elink.setCurrentLevelUpdate(currentLevelUpdate);
+					} else {
+						elink.setCurrentLevelUpdate(false);
+					}
+				}
+
+			}
+		}
+	}
+
+	private void determineChildLevelUpdateState() {
+		boolean actionParamDefined = true;
+		if (childLevelUpdate == null) {
+			childLevelUpdate = false;
+			actionParamDefined = false;
+		}
+		if (dataPanelActionType != DataPanelActionType.DO_NOTHING) {
+			for (DataPanelElementLink elink : dataPanelLink.getElementLinks()) {
+				if (elink.getChildLevelUpdate() == null) {
+					if (actionParamDefined) {
+						elink.setChildLevelUpdate(childLevelUpdate);
+					} else {
+						elink.setChildLevelUpdate(false);
 					}
 				}
 
@@ -479,6 +531,22 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 
 	public void setPartialUpdate(final Boolean aPartialUpdate) {
 		partialUpdate = aPartialUpdate;
+	}
+
+	public Boolean getCurrentLevelUpdate() {
+		return currentLevelUpdate;
+	}
+
+	public void setCurrentLevelUpdate(final Boolean aCurrentLevelUpdate) {
+		currentLevelUpdate = aCurrentLevelUpdate;
+	}
+
+	public Boolean getChildLevelUpdate() {
+		return childLevelUpdate;
+	}
+
+	public void setChildLevelUpdate(final Boolean aChildLevelUpdate) {
+		childLevelUpdate = aChildLevelUpdate;
 	}
 
 	public Boolean getPreserveHidden() {

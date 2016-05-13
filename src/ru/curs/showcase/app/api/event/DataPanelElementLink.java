@@ -43,6 +43,18 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 	private Boolean partialUpdate = null;
 
 	/**
+	 * Признак того, что нужно выполнять обновление текущего уровня элемента.
+	 * Данная настройка перекрывает аналогичную настройку действия (Action).
+	 */
+	private Boolean currentLevelUpdate = null;
+
+	/**
+	 * Признак того, что нужно выполнять обновление нижнего уровня элемента.
+	 * Данная настройка перекрывает аналогичную настройку действия (Action).
+	 */
+	private Boolean childLevelUpdate = null;
+
+	/**
 	 * Признак того, что если во время рефреша элемента он скрыт, то показывать
 	 * его не нужно.
 	 */
@@ -116,6 +128,8 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 		res.context = context.gwtClone();
 		res.keepUserSettings = keepUserSettings;
 		res.partialUpdate = partialUpdate;
+		res.currentLevelUpdate = currentLevelUpdate;
+		res.childLevelUpdate = childLevelUpdate;
 		res.preserveHidden = preserveHidden;
 		return res;
 	}
@@ -134,6 +148,22 @@ public class DataPanelElementLink implements SerializableElement, GWTClonable, C
 
 	public void setPartialUpdate(final Boolean aPartialUpdate) {
 		partialUpdate = aPartialUpdate;
+	}
+
+	public Boolean getCurrentLevelUpdate() {
+		return currentLevelUpdate;
+	}
+
+	public void setCurrentLevelUpdate(final Boolean aCurrentLevelUpdate) {
+		currentLevelUpdate = aCurrentLevelUpdate;
+	}
+
+	public Boolean getChildLevelUpdate() {
+		return childLevelUpdate;
+	}
+
+	public void setChildLevelUpdate(final Boolean aChildLevelUpdate) {
+		childLevelUpdate = aChildLevelUpdate;
 	}
 
 	public Boolean getPreserveHidden() {
