@@ -39,7 +39,8 @@ function createCalendar(parentId, data, template) {
 			    	
 			    	calendar.on("gridDoubleClick", function(e){
 //			    		  console.log("Item clicked", e.item);
-			    		gwtPluginFunc(parentId, "addItem");
+//			    		gwtPluginFunc(parentId, "addItem");
+			    		gwtPluginFunc(parentId, "addItem", e.date.toString(), "ADD_CONTEXT");			    		
 			    	});
 					
 			    	calendar.on("onItemEditBegin", function(e){
