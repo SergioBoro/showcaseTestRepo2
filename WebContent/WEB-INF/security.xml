@@ -14,6 +14,7 @@
 	<http pattern="/js/course/geo/ge/resources/icons/*" security="none"/>
 	<http pattern="/getImage*" security="none"/>
 	<http pattern="/solutions/default/resources/favicon.ico*" security="none"/>
+	<http pattern="/favicon.ico*" security="none"/>
 	<http pattern="/auth/isAuthenticatedServlet*" security="none"/>
 	<http pattern="/resources/**" security="none"/>
 	<http pattern="/forall/*" security="none"/>
