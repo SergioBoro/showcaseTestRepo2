@@ -622,3 +622,74 @@ set @settings='<properties width="610px" height="170px">
 END
 GO
 
+
+
+
+GO
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[webtext_calendar]
+@main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+    @element_id varchar(512) ='',    
+    @webtextdata xml output,
+    @webtextsettings xml output
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
+declare @addc varchar(MAX)
+if @add_context = ''
+set @add_context = NULL
+SET @addc = coalesce(@add_context, '')
+
+set    @webtextdata=CAST(
+'<div>
+<button type="button" onclick="gwtWebTextFunc(''${elementId}'',''21'');">keep_user_settings=true</button>
+<button type="button" onclick="gwtWebTextFunc(''${elementId}'',''22'');">keep_user_settings=false</button>
+</div>' as xml)
+
+set @webtextsettings='<properties>    
+
+
+                       <event name="single_click" linkId="21">
+                        <action>
+                            <main_context>current</main_context>                        
+                            <datapanel type="current" tab="current">
+
+                                <element id="0101"  keep_user_settings="true">
+	                                <add_context>add</add_context>
+                                </element>                                                             
+                                
+                            </datapanel>
+                        </action>
+                       </event>  
+
+
+                       <event name="single_click" linkId="22">
+                        <action>
+                            <main_context>current</main_context>                        
+                            <datapanel type="current" tab="current">
+
+                                <element id="0101"  keep_user_settings="false">
+	                                <add_context>add</add_context>
+                                </element>                                                             
+                                
+                            </datapanel>
+                        </action>
+                       </event>  
+
+
+
+                                                                  
+                    </properties>'
+
+
+END
+GO

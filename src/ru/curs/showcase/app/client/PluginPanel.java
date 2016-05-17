@@ -161,6 +161,10 @@ public class PluginPanel extends BasicElementPanelBasis {
 			params = params + ", " + param.trim();
 		}
 
+		if (!isNeedResetLocalContext()) {
+			params = params + ", keep_user_settings=true";
+		}
+
 		try {
 			drawPlugin(aPlugin.getCreateProc(), params);
 		} catch (JavaScriptException e) {

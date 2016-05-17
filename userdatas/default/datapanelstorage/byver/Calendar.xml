@@ -7,11 +7,13 @@
 
 
 	<tab id="04" name="Календарь">
-		<element id="0101" type="plugin" proc="pluginCalendarInfo"
+		<element id="0101" type="plugin" proc="pluginCalendarInfo"  
 			plugin="calendar">
 			<proc id="010101" name="plugin/handleCalendar.py" type="POSTPROCESS" />
 		</element>
-		<element id="5" type="webtext" proc="webtext_filter_and_add" />		
+		<element id="5" type="webtext" proc="webtext_filter_and_add" />
+		
+    	<element id="51" type="webtext" proc="webtext_calendar"/>
 	</tab>
 	
 	
