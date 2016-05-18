@@ -605,7 +605,7 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 	public JSONObject pluginEditorGetHttpParams(final String data, final String editorType) {
 
-		GridContext gridContext = getDetailedContext();
+		GridContext gridContext = getContextForEditor();
 		if ("save".equalsIgnoreCase(editorType)) {
 			JSONObject column = new JSONObject();
 			int i = 1;
@@ -1147,6 +1147,13 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		result.applyCompositeContext(getContext());
 
 		return result;
+	}
+
+	private GridContext getContextForEditor() {
+		GridContext gridContext = getDetailedContext();
+		GridContext editorContext = gridContext.gwtClone();
+		editorContext.addRelated(getElementInfo().getId(), gridContext);
+		return editorContext;
 	}
 
 	// CHECKSTYLE:OFF
