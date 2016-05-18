@@ -117,6 +117,11 @@ function createTreeDGrid(elementId, parentId, metadata) {
 							}
 						}
 						gwtAfterLoadDataTree(elementId, events);
+						
+						if(grid){
+							grid.dirty = {};
+						}
+						
 					});
 					
 					return results;

@@ -114,6 +114,11 @@ function createLiveDGrid(elementId, parentId, metadata) {
 							}
 						}
 						gwtAfterLoadData(elementId, events, arrGrids[parentId]._total);
+						
+						if(grid){
+							grid.dirty = {};
+						}
+						
 					});
 					
 					return results;

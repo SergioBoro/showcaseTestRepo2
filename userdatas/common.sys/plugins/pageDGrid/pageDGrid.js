@@ -142,6 +142,11 @@ function createPageDGrid(elementId, parentId, metadata) {
 							
 						}
 						gwtAfterLoadData(elementId, events, arrGrids[parentId]._total, wrongSelection);
+						
+						if(grid){
+							grid.dirty = {};
+						}
+
 					});
 					
 					return results;
