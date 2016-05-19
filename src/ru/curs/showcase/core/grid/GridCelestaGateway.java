@@ -152,9 +152,15 @@ public class GridCelestaGateway implements GridGateway {
 		CelestaHelper<GridSaveResult> helper =
 			new CelestaHelper<GridSaveResult>(context, GridSaveResult.class);
 		DataPanelElementProc proc = elementInfo.getProcByType(DataPanelElementProcType.SAVE);
+
 		GridSaveResult gridSaveResult =
 			helper.runPython(proc.getName(), elementInfo.getId().getString(),
 					context.getEditorData());
+
+		if ((gridSaveResult.getOkMessage() == null) && (context.getOkMessage() != null)) {
+			gridSaveResult.setOkMessage(context.getOkMessage());
+		}
+
 		return gridSaveResult;
 	}
 
@@ -164,9 +170,15 @@ public class GridCelestaGateway implements GridGateway {
 		CelestaHelper<GridAddRecordResult> helper =
 			new CelestaHelper<GridAddRecordResult>(context, GridAddRecordResult.class);
 		DataPanelElementProc proc = elementInfo.getProcByType(DataPanelElementProcType.ADDRECORD);
+
 		GridAddRecordResult gridAddRecordResult =
 			helper.runPython(proc.getName(), elementInfo.getId().getString(),
 					context.getAddRecordData());
+
+		if ((gridAddRecordResult.getOkMessage() == null) && (context.getOkMessage() != null)) {
+			gridAddRecordResult.setOkMessage(context.getOkMessage());
+		}
+
 		return gridAddRecordResult;
 	}
 
