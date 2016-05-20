@@ -341,6 +341,7 @@ public class GridDataFactory extends CompBasedElementFactory {
 					boolean readonly = Boolean.parseBoolean(newValue);
 					if (readonly) {
 						String rusColId = attrs.getValue(EVENT_COLUMN_TAG);
+						rusColId = XMLUtils.unEscapeTagXml(rusColId);
 						if (rusColId == null) {
 							newValue = "all;";
 						} else {
