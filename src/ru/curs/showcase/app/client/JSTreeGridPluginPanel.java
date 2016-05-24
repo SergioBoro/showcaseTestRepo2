@@ -285,7 +285,11 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	}
 
 	private void beforeUpdateGrid() {
+
 		resetLocalContext();
+
+		resetGridSettingsToCurrent();
+
 	}
 
 	// CHECKSTYLE:OFF
@@ -892,10 +896,6 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 		if (isFirstLoading) {
 
-			resetSelection();
-
-			resetGridSettingsToCurrent();
-
 			hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) + "px");
 			toolBarHelper.fillToolBar();
 
@@ -1004,17 +1004,6 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		private String colId = null;
 	}
 
-	private void resetSelection() {
-		// selectionModel.deselectAll();
-		stringSelectedRecordIds = null;
-		if (localContext == null) {
-			return;
-		}
-		localContext.getSelectedRecordIds().clear();
-		localContext.setCurrentColumnId(null);
-		localContext.setCurrentRecordId(null);
-	}
-
 	private void saveCurrentCheckBoxSelection() {
 		localContext.getSelectedRecordIds().clear();
 
@@ -1039,14 +1028,10 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	 */
 	private Cell getStoredRecordId() {
 		Cell cell = new Cell();
-		if ((localContext != null) && (localContext.getCurrentRecordId() != null)) {
-			cell.recId = localContext.getCurrentRecordId();
-			cell.colId = localContext.getCurrentColumnId();
-		} else {
-			cell.recId = gridMetadata.getAutoSelectRecordId();
-			cell.colId = gridMetadata.getAutoSelectColumnId();
 
-		}
+		cell.recId = gridMetadata.getAutoSelectRecordId();
+		cell.colId = gridMetadata.getAutoSelectColumnId();
+
 		return cell;
 	}
 
@@ -1056,10 +1041,12 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		getLocalContext().setParentId(null);
 		getLocalContext().resetForReturnAllRecords();
 
-		Cell selected = getStoredRecordId();
-		saveCurrentClickSelection(selected.recId, selected.colId);
+		String recId = gridMetadata.getAutoSelectRecordId();
+		String colId = gridMetadata.getAutoSelectColumnId();
 
-		stringSelectedRecordIds = selected.recId;
+		saveCurrentClickSelection(recId, colId);
+
+		stringSelectedRecordIds = recId;
 		saveCurrentCheckBoxSelection();
 	}
 
