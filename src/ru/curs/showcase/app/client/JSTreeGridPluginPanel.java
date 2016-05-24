@@ -1029,8 +1029,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	private Cell getStoredRecordId() {
 		Cell cell = new Cell();
 
-		cell.recId = gridMetadata.getAutoSelectRecordId();
-		cell.colId = gridMetadata.getAutoSelectColumnId();
+		cell.recId = localContext.getCurrentRecordId();
+		cell.colId = localContext.getCurrentColumnId();
 
 		return cell;
 	}
