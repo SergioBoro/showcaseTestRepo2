@@ -547,38 +547,73 @@ public class GridDataFactory extends CompBasedElementFactory {
 		return df.format(date);
 	}
 
+	// CHECKSTYLE:OFF
 	@SuppressWarnings("unchecked")
 	private void postProcessingByXmlDS() {
 
-		for (Event event : events) {
-			Action action = event.getAction();
-			action.actualizeBy(getCallContext());
-		}
-
-		for (Event event : events) {
-			Action action = event.getAction();
-			if (!action.isCorrect()) {
-				throw new IncorrectElementException(CHECK_ACTION_ERROR, action);
-			}
-		}
-
-		if ((records.size() > 0) && (events.size() > 0)) {
-			try {
-				String stringEvents =
-					com.google.gwt.user.server.rpc.RPC.encodeResponseForSuccess(
-							FakeService.class.getMethod("serializeEvents"), events);
-				records.get(0).put("events", stringEvents);
-			} catch (SerializationException | NoSuchMethodException e) {
-				throw GeneralExceptionFactory.build(e);
-			}
-		}
-
 		if (applyLocalFormatting) {
+
+			for (Event event : events) {
+				Action action = event.getAction();
+				action.actualizeBy(getCallContext());
+			}
+
+			for (Event event : events) {
+				Action action = event.getAction();
+				if (!action.isCorrect()) {
+					throw new IncorrectElementException(CHECK_ACTION_ERROR, action);
+				}
+			}
+
+			if ((records.size() > 0) && (events.size() > 0)) {
+				try {
+					String stringEvents =
+						com.google.gwt.user.server.rpc.RPC.encodeResponseForSuccess(
+								FakeService.class.getMethod("serializeEvents"), events);
+					records.get(0).put("events", stringEvents);
+				} catch (SerializationException | NoSuchMethodException e) {
+					throw GeneralExceptionFactory.build(e);
+				}
+			}
+
 			JSONArray data = new JSONArray();
 			for (HashMap<String, String> rec : records) {
 				data.add(rec);
 			}
 			result.setData(data.toJSONString());
+
+		} else {
+
+			String imageCols = "";
+			for (GridServerColumnConfig col : state.getColumns().values()) {
+				if (col.getValueType() == GridValueType.IMAGE) {
+					imageCols = imageCols + col.getId() + ";";
+				}
+			}
+
+			for (HashMap<String, String> rec : records) {
+				for (String colId : rec.keySet()) {
+
+					String title = null;
+
+					String value = rec.get(colId);
+					if (value != null) {
+						if (value.toLowerCase().trim().startsWith("<div")) {
+							title = exportToExcelGetTitleFromDiv(value);
+						} else {
+							if (imageCols.contains(colId + ";")) {
+								title = exportToExcelGetTitleFromImage(value);
+							}
+						}
+					}
+
+					if (title != null) {
+						rec.put(colId, title);
+					}
+
+				}
+			}
+
 		}
 
 		if (getCallContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
@@ -589,6 +624,42 @@ public class GridDataFactory extends CompBasedElementFactory {
 			getCallContext().getLiveInfo().setTotalCount(state.getTotalCount());
 		}
 
+	}
+
+	// CHECKSTYLE:ON
+
+	private String exportToExcelGetTitleFromDiv(final String value) {
+		/**
+		 * Получает title из div.
+		 */
+		final class DivHandler extends DefaultHandler {
+			private String title = null;
+
+			public String getTitle() {
+				return title;
+			}
+
+			@Override
+			public void startElement(final String uri, final String localName, final String name,
+					final Attributes atts) {
+				title = atts.getValue("title");
+			}
+		}
+
+		DivHandler handler = new DivHandler();
+		SimpleSAX sax = new SimpleSAX(TextUtils.stringToStream(value), handler, "парсинг div");
+		sax.parse();
+
+		return handler.getTitle();
+	}
+
+	private String exportToExcelGetTitleFromImage(final String value) {
+		String title = null;
+		final String sep = ":";
+		if (value.indexOf(sep) > -1) {
+			title = value.substring(value.indexOf(sep) + 1, value.length());
+		}
+		return title;
 	}
 
 }
