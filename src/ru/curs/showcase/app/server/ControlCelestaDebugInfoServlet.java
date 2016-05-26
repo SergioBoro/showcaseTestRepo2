@@ -14,9 +14,9 @@ import ru.curs.showcase.runtime.AppInfoSingleton;
  * Сервлет для контроля используемой Showcase памяти.
  */
 public class ControlCelestaDebugInfoServlet extends HttpServlet {
-	public static final String UNKNOWN_PARAM_ERROR = "Неизвестное значение параметра pool";
-	public static final String NO_PARAMS_ERROR = "Должен быть задан параметр: pool";
-	public static final String POOL_PARAM = "pool";
+	public static final String UNKNOWN_PARAM_ERROR = "Неизвестное значение параметра trassert";
+	public static final String NO_PARAMS_ERROR = "Должен быть задан параметр: trassert";
+	public static final String TRASSERT_PARAM = "trassert";
 	private static final long serialVersionUID = 2L;
 
 	private static final Logger LOGGER = LoggerFactory
@@ -89,4 +89,32 @@ public class ControlCelestaDebugInfoServlet extends HttpServlet {
 			AppInfoSingleton.getAppInfo().setCelestaInitializationException(ex);
 		}
 	}
+
+	@Override
+	public void doPost(HttpServletRequest req, HttpServletResponse response)
+			throws ServletException, IOException {
+		String trassert = req.getParameter(TRASSERT_PARAM);
+
+		if (trassert != null) {
+			switch (trassert) {
+			case "on":
+				try {
+					Celesta.getInstance().setProfilemode(true);
+				} catch (CelestaException e) {
+					e.printStackTrace();
+				}
+				break;
+			case "off":
+				try {
+					Celesta.getInstance().setProfilemode(false);
+				} catch (CelestaException e) {
+					e.printStackTrace();
+				}
+				break;
+			default:
+				throw new ServletException(UNKNOWN_PARAM_ERROR);
+			}
+		}
+	}
+
 }

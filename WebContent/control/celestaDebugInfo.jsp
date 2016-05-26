@@ -63,6 +63,30 @@ div {
 </head>
 
 <body>
+
+	<h3 align="center">Трассировка процедур Celesta</h3>
+	<table>
+		<tr>
+			<td align="right">
+				<form target="fake" method="post" action="debugInfo"> 
+					<input type="hidden" name="trassert" value="on" /><input
+						type="submit" value="Включить трассировку" onclick="window.location.reload();"/>
+		 		</form>
+			</td>
+<!-- 		</tr> -->
+<!-- 		<tr> -->
+			<td align="left">
+				<form target="fake" method="post" action="debugInfo"> 
+					<input type="hidden" name="trassert" value="off" />
+					<input type="submit" value="Выключить трассировку" onclick="window.location.reload();"/>
+		 		</form>
+			</td>
+		</tr>
+	</table>
+	
+	<h4 align="center">Состояние трассировки</h4>
+		<p align="center"><%=Celesta.getInstance().isProfilemode() ? "Трассировка включена" : 
+			"Трассировка выключена"%></p>
 	
 	<h3 align="center">Получение таблицы процессов</h3>
 <!-- 	<table> -->
@@ -80,5 +104,9 @@ div {
 	<div id = "table_title" style="display:none"><h4>Таблица процессов</h4></div>
 	<div id = "table_div" style="display:none"></div>
 	<table id = "table" border = "1" style="display:none"></table>
+	
+	<iframe name="fake"
+		style="position: absolute; width: 0; height: 0; border: 0"
+		src="javascript:''" />
 </body>
 </html>
