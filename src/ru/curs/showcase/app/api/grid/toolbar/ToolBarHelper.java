@@ -92,6 +92,7 @@ public abstract class ToolBarHelper {
 								public void onSuccess(final GridToolBar result) {
 									panel.clear();
 									ToolBar toolBar = new ToolBar();
+									toolBar.setBorders(false);
 									addStaticItemToToolBar(toolBar);
 									createDynamicToolBar(result, toolBar);
 									panel.add(toolBar);
@@ -105,6 +106,7 @@ public abstract class ToolBarHelper {
 		} else {
 			isStaticToolBar = true;
 			ToolBar toolBar = new ToolBar();
+			toolBar.setBorders(false);
 			addStaticItemToToolBar(toolBar);
 			panel.add(toolBar);
 		}

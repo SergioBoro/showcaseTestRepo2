@@ -480,8 +480,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			int number = Integer.parseInt(str);
 			number = number + 2;
 
-			// hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
 			hpToolbar.setWidth(number + "px");
+			toolBarHelper.getToolBarPanel().setWidth(number + "px");
 		} else {
 			hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
 		}
