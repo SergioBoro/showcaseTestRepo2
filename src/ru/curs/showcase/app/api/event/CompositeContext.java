@@ -223,6 +223,12 @@ public class CompositeContext extends TransferableElement implements CanBeCurren
 		if (related.isEmpty()) {
 			related.putAll(sourceContext.related);
 		}
+		if ((currentDatapanelWidth == null) || (currentDatapanelWidth == 0)) {
+			currentDatapanelWidth = sourceContext.currentDatapanelWidth;
+		}
+		if ((currentDatapanelHeight == null) || (currentDatapanelHeight == 0)) {
+			currentDatapanelHeight = sourceContext.currentDatapanelHeight;
+		}
 	}
 
 	/**

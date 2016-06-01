@@ -283,6 +283,8 @@ public abstract class ToolBarHelper {
 		context.setFilter(elContext.getFilter());
 		context.setSession(elContext.getSession());
 		context.setSessionParamsMap(elContext.getSessionParamsMap());
+		context.setCurrentDatapanelWidth(elContext.getCurrentDatapanelWidth());
+		context.setCurrentDatapanelHeight(elContext.getCurrentDatapanelHeight());
 		for (Entry<ID, CompositeContext> entry : elContext.getRelated().entrySet()) {
 			context.addRelated(entry.getKey(), entry.getValue());
 		}
