@@ -58,7 +58,7 @@ public final class ExternalClientLibrariesUtils {
 		String result = "";
 		String beginScritpTag = "<link rel='stylesheet' href='";
 		String endScritpTag = "'/>";
-		String pathPrefix = "js";
+		String pathPrefix = "css";
 		String auserdataId = userdataId;
 
 		if ((auserdataId == null) || (auserdataId.isEmpty())) {
