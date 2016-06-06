@@ -128,7 +128,10 @@ public final class SecurityParamsFactory {
 
 		} catch (IOException e) {
 
-			result = "";
+			if (!authGifSrc.startsWith("https")) {
+				result = "";
+			} else
+				result = authGifSrc;
 		}
 		return result;
 
