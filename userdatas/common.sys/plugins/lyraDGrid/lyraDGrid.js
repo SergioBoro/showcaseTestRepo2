@@ -51,7 +51,15 @@ function createLyraDGrid(elementId, parentId, metadata) {
 	    if(arrGrids[parentId] && arrGrids[parentId].webSocket && (arrGrids[parentId].webSocket.readyState == arrGrids[parentId].webSocket.OPEN)){
     		webSocket = arrGrids[parentId].webSocket;
     	}else{
-    		webSocket = new WebSocket("ws://"+window.location.host+window.location.pathname+"secured/JSLyraGridScrollBack");
+    		
+    		var protocol;
+    		if(window.location.protocol.indexOf("https") > -1){
+    			protocol = "wss";
+    		} else {
+    			protocol = "ws";
+    		}
+    		
+    		webSocket = new WebSocket(protocol+"://"+window.location.host+window.location.pathname+"secured/JSLyraGridScrollBack");
             webSocket.onopen = function(){
              	var httpParams = gwtGetHttpParamsLyra(elementId, -1000, -1000, null, null);
                 webSocket.send(httpParams);
