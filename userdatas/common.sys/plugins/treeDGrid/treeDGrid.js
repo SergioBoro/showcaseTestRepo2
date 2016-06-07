@@ -51,6 +51,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		
 		
 		    var firstLoading = true;
+		    var needActionExpandAllRecords = metadata["common"]["expandAllRecords"];
 		
 
 			var store = new declare([ Rest, Trackable, Cache, TreeStore ])(lang.mixin({
@@ -117,6 +118,16 @@ function createTreeDGrid(elementId, parentId, metadata) {
 							}
 						}
 						gwtAfterLoadDataTree(elementId, events);
+						
+						if(grid && grid.expandAllRecords && metadata["common"]["selRecId"] && needActionExpandAllRecords){
+							for(var i = 0; i<results.length; i++){
+								if(results[i].id == metadata["common"]["selRecId"]){
+									needActionExpandAllRecords = null;
+									gwtAfterClickTree(elementId, metadata["common"]["selRecId"], metadata["common"]["selColId"], metadata["common"]["selRecId"]);
+									break;
+								}
+							}
+						}
 						
 						if(grid){
 							grid.dirty = {};
@@ -518,6 +529,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 			deselectOnRefresh: false,				
 			keepScrollPosition: true,
 			readonly: metadata["common"]["readonly"],
+			expandAllRecords: metadata["common"]["expandAllRecords"],
 			
 			renderRow: function (object) {
 			     var rowElement = this.inherited(arguments);
@@ -525,7 +537,19 @@ function createTreeDGrid(elementId, parentId, metadata) {
 						rowElement.className = object.rowstyle;
 				 }
 			     return rowElement;
-			}			
+			},
+			
+			shouldExpand: function (row, level, previouslyExpanded) {
+				if(this.expandAllRecords){
+					if((row.data.hasChildren == "1") || (row.data.hasChildren == "true")){
+						return true;
+					}else{
+						return false;
+					}
+				}else{
+					return this.inherited(arguments);
+				}
+			}
 			
 		},  parentId);
 	    arrGrids[parentId] = grid;
@@ -552,7 +576,9 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		
 		grid.on("dgrid-select", function(event){
 			if(firstLoading){
-				gwtAfterClickTree(elementId, metadata["common"]["selRecId"], metadata["common"]["selColId"], getSelection());				
+				 if(!event.grid.expandAllRecords){
+					 gwtAfterClickTree(elementId, metadata["common"]["selRecId"], metadata["common"]["selColId"], getSelection());
+				 }
 			} else {
 				setTimeout(function(){
 					if(!grid.readonly){
@@ -619,22 +645,28 @@ function createTreeDGrid(elementId, parentId, metadata) {
 }
 
 function refreshTreeDGrid(parentId){
+	arrGrids[parentId].expandAllRecords = null;
 	arrGrids[parentId].refresh();
 }
 
 function addRecordTreeDGrid(parentId){
+	arrGrids[parentId].expandAllRecords = null;
 	arrGrids[parentId].collection.add({id: "addRecord_"+GenerateGUID()});
 }
 
 function saveTreeDGrid(parentId){
+	arrGrids[parentId].expandAllRecords = null;
 	arrGrids[parentId].save();
 }
 
 function revertTreeDGrid(parentId){
+	arrGrids[parentId].expandAllRecords = null;
 	arrGrids[parentId].revert();
 }
 
 function clipboardTreeDGrid(parentId){
+	arrGrids[parentId].expandAllRecords = null;
+	
 	var str = "";
 	
 	var grid = arrGrids[parentId];
@@ -658,6 +690,8 @@ function clipboardTreeDGrid(parentId){
 }
 
 function partialUpdateTreeDGrid(elementId, parentId, partialdata){
+	arrGrids[parentId].expandAllRecords = null;
+	
 	for(var k in partialdata) {
 		if(arrGrids[parentId].row(partialdata[k].id).data){
 				arrGrids[parentId].collection.emit('update', {target: partialdata[k]});				
@@ -675,6 +709,8 @@ function partialUpdateTreeDGrid(elementId, parentId, partialdata){
 
 
 function currentLevelUpdateTreeDGrid(elementId, parentId){
+	arrGrids[parentId].expandAllRecords = null;
+	
 	var rowId = null;
 	try {
 		rowId = arrGrids[parentId].row(arrGrids[parentId]._focusedNode).data.parentId;
@@ -689,12 +725,16 @@ function currentLevelUpdateTreeDGrid(elementId, parentId){
 }
 
 function childLevelUpdateTreeDGrid(elementId, parentId){
+	arrGrids[parentId].expandAllRecords = null;	
+	
 	var rowId = null;
+	var hasChildren = null;
 	try {
 		rowId = arrGrids[parentId].row(arrGrids[parentId]._focusedNode).id;
+		hasChildren = arrGrids[parentId].row(arrGrids[parentId]._focusedNode).data.hasChildren;
 	}catch(err){}
 	
-	if(rowId){
+	if(rowId && ((hasChildren == "1") || (hasChildren == "true"))){
 		var oldLoadingMessage = arrGrids[parentId].loadingMessage; 
 		arrGrids[parentId].set("loadingMessage", null);
 		arrGrids[parentId].expand(rowId, true, null, true);

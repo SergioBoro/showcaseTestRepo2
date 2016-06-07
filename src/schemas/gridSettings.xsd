@@ -48,6 +48,7 @@
             <xs:attribute name="gridHeight" type="xs:unsignedInt"/>
             <xs:attribute name="rowHeight" type="xs:unsignedInt"/>
             <xs:attribute name="forceLoadSettings" type="xs:boolean"/>
+            <xs:attribute name="expandAllRecords" type="xs:boolean"/>            
         </xs:complexType>
     </xs:element>
     

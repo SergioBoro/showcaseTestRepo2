@@ -33,6 +33,8 @@ public class GridMetadata extends DataPanelCompBasedElement implements SizeEstim
 	private String autoSelectRecordId = null;
 	private String autoSelectColumnId = null;
 
+	private boolean expandAllRecords = false;
+
 	private GridSorting gridSorting = null;
 
 	/**
@@ -217,6 +219,14 @@ public class GridMetadata extends DataPanelCompBasedElement implements SizeEstim
 
 	public void setGridSorting(final GridSorting aGridSorting) {
 		gridSorting = aGridSorting;
+	}
+
+	public boolean isExpandAllRecords() {
+		return expandAllRecords;
+	}
+
+	public void setExpandAllRecords(final boolean aExpandAllRecords) {
+		expandAllRecords = aExpandAllRecords;
 	}
 
 }

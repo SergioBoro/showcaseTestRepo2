@@ -693,3 +693,365 @@ set @webtextsettings='<properties>
 
 END
 GO
+
+
+
+
+GO
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[grid_new_meta_geo_expandall]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+	@settings xml output,
+    @error_mes varchar(512) output    
+AS
+BEGIN
+SET NOCOUNT ON;
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+
+
+Declare @gridsettings_str as varchar(max)
+set @gridsettings_str='
+<gridsettings>
+        <labels>
+            <header><h3 class="testStyle">Хедер tree-грида</h3></header>
+            <footer><h3 class="testStyle">Футер tree-грида</h3></footer>            
+        </labels>
+
+<!--
+-->
+        <sorting>
+					<sort column="Название" direction="ASC"/>        
+        </sorting>
+
+
+
+<!--
+					<col id="Код" width="50px" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner, editorArgs: {smallDelta: 0.1} }"/>
+-->
+
+        <columns>
+					<col id="Название" width="200px"  editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: ''text''}" readonly = "true" />        
+					<col id="Идентификатор" width="100px" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: ''text''}" readonly = "false" />        
+					<col id="Код" width="50px" readonly = "false" editor="{editor: CheckBox}" />
+					<col id="Картинка" width="50px" type="IMAGE" readonly = "false" editor="{editor: CheckBox}" />
+        </columns>        
+
+				<action>
+														<main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+	                                <add_context>Действие по умолчанию</add_context>
+                                </element>                                                                   
+                            </datapanel>
+        </action>
+
+<!--
+<expandAllRecords>true</expandAllRecords>
+
+
+-->
+
+
+         <properties  gridWidth="1200px" gridHeight="500" 
+
+autoSelectRecordId="AEACB658-4D23-446B-8CDC-EA8858BF60DA"  
+
+expandAllRecords="true"  
+
+/></gridsettings>'         
+
+
+set @settings=CAST(@gridsettings_str as xml)
+
+
+--SET @error_mes = 'Грид3 успешно построен';
+--return 555;
+
+
+END
+GO
+
+
+GO
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[grid_new_data_geo_expandall]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+
+    @firstrecord int = 1,
+    @pagesize int = 20,   
+
+    @parent_id varchar(512) =''        
+	
+AS
+BEGIN
+SET NOCOUNT ON;
+
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--insert into Debug (string) VALUES (@sortcols)
+
+
+--    if (@sortcols = '')
+--     insert into Debug (string) VALUES ('NULLLLLLLLLLLLLLLLLLL')
+--    else
+--     insert into Debug (string) VALUES ('NOT NULLLLLLLLLLLLLLLLLLL')
+
+
+declare @Sql varchar(8000);
+
+IF (@parent_id IS NULL) OR (LTrim(@parent_id) = '')
+BEGIN
+
+
+
+-- set @Sql = 'select Name as "Название", cast(geo6_Id as varchar(50)) as "Идентификатор", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo6_Id as "~~id", cast( ''<properties>
+
+ set @Sql = 'select Name as "Название", cast(geo6_Id as varchar(50)) as "Идентификатор", Id as "Код", 
+''NULL'' AS [Картинка], 1 as HasChildren, geo6_Id as "~~id", cast( ''<properties>
+
+			<readonly value="false"/>
+
+<!--
+
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
+
+-->
+
+
+<!-- 
+
+                    <event name="row_save_data">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''_row_save_data</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+
+
+
+                    <event name="row_add_record">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''_row_add_record</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+
+--> 
+
+
+
+<!-- 
+--> 
+
+
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+
+
+                             
+
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>        
+
+
+
+
+
+            </properties>'' as xml)  as [~~properties] 
+
+from geo6 where 
+
+
+--Id IS NOT NULL
+
+_Id = 5
+
+
+'
+
+
+
+END
+
+IF (select COUNT(*) from geo6 where geo6_Id = @parent_id) > 0
+BEGIN
+ set @Sql = 'select Name as "Название", cast(geo5_Id as varchar(50)) as "Идентификатор", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 1 as HasChildren, geo5_Id as "~~id", cast( ''<properties>
+
+
+		<readonly value="false"/>
+
+<!--
+
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
+
+-->
+
+
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo5 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)' 
+END
+
+
+
+
+
+IF (select COUNT(*) from geo5 where geo5_Id = @parent_id) > 0
+BEGIN
+ set @Sql = 'select Name as "Название", Id as "Код", cast(geo3_Id as varchar(50)) as "Идентификатор", ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+
+<!--
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
+-->
+
+
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo3 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)'  
+END
+
+IF (select COUNT(*) from geo3 where geo3_Id = @parent_id) > 0
+BEGIN
+-- SET @error_mes = 'Вызов процедуры для города' 
+-- RETURN 1
+
+ set @Sql = 'select top(0) Name as "Название", Id as "Код", ''imagesingrid/test.jpg'' AS [Картинка], 0 as HasChildren, geo3_Id as "~~id", cast( ''<properties>
+			<styleClass name="jslivegrid-record-bold"/>
+			<styleClass name="jslivegrid-record-italic"/>
+                    <event name="row_single_click">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>    
+                    <event name="row_selection">
+                        <action>
+                            <main_context>current</main_context>
+                            <datapanel type="current" tab="current">
+                                <element id="105">
+									<add_context>''+[Name]+''</add_context>                                                                                             
+                                </element> 
+                            </datapanel>
+                        </action>
+                    </event>                                       
+            </properties>'' as xml)  as [~~properties] from geo3 where (FJField_9 = '''+@parent_id+''') AND (Id IS NOT NULL)'  
+	
+END
+
+IF LTRIM(@sortcols)!=''
+BEGIN
+ set @Sql = @Sql+' '+@sortcols
+END
+ELSE
+BEGIN
+ set @Sql = @Sql+' order by Name'
+END
+
+
+--RAISERROR (@Sql, 12, 2)
+
+--set @Sql = 'select top (0) 5 as dd'
+
+EXEC(@Sql)
+
+
+
+--SET @error_mes = 'Грид3 успешно построен';
+--return 555;
+
+
+END
+GO
+

@@ -385,6 +385,10 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 					.getSortColDirection().toString()));
 		}
 
+		if (gridMetadata.isExpandAllRecords()) {
+			common.put("expandAllRecords", new JSONString("true"));
+		}
+
 		metadata.put("common", common);
 
 		JSONObject columns = new JSONObject();

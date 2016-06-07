@@ -75,6 +75,7 @@ public class GridMetaFactory extends CompBasedElementFactory {
 	private static final String AUTO_SELECT_REC_TAG = "autoSelectRecordId";
 	private static final String AUTO_SELECT_OFFSET_TAG = "autoSelectOffset";
 	private static final String AUTO_SELECT_COL_TAG = "autoSelectColumnId";
+	private static final String EXPAND_ALL_RECORDS_TAG = "expandAllRecords";
 	private static final String GRID_WIDTH_TAG = "gridWidth";
 	private static final String GRID_HEIGHT_TAG = "gridHeight";
 	private static final String FORCE_LOAD_SETTINGS = "forceLoadSettings";
@@ -241,6 +242,11 @@ public class GridMetaFactory extends CompBasedElementFactory {
 
 			if (attrs.getIndex(AUTO_SELECT_COL_TAG) > -1) {
 				result.setAutoSelectColumnId(attrs.getValue(AUTO_SELECT_COL_TAG));
+			}
+
+			if (attrs.getIndex(EXPAND_ALL_RECORDS_TAG) > -1) {
+				value = attrs.getValue(EXPAND_ALL_RECORDS_TAG);
+				result.setExpandAllRecords(Boolean.valueOf(value));
 			}
 
 			result.getUISettings().setGridWidth(GRID_WIDTH_DEF_VALUE);
