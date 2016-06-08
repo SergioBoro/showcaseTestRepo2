@@ -23,7 +23,7 @@ pageEncoding="UTF-8"%>
 	<link rel="icon" href="solutions/default/resources/favicon.ico" type="image/x-icon" />
 	
     <script type="text/javascript">
-        var djConfig = {
+    	var djConfig = {
             parseOnLoad: false,
             isDebug: false
         };
@@ -85,12 +85,17 @@ pageEncoding="UTF-8"%>
      <p style="margin: 0.2em 0; background: #ccc; color: #000; padding: 0.2em 0;">Ваша текущая версия Internet explorer устарела. Приложение будет работать некорректно. <a href="http://browsehappy.com/">Обновите свой браузер!</a></p>
      <![endif]-->
 
-<%
+<%  
+	if(UserDataUtils.getGeneralOptionalProp("security.ssl.keystore.path") != null){
+		System.setProperty("javax.net.ssl.trustStore", 
+				UserDataUtils.getGeneralOptionalProp("security.ssl.keystore.path").trim());
+	}
+	
 	String authGifSrc = String.format("%s/authentication.gif?sesid=%s",
 			SecurityParamsFactory.getAuthServerUrl(), request.getSession()
 					.getId());
 
-    authGifSrc = SecurityParamsFactory.correctAuthGifSrcRequestInCaseOfInaccessibility(authGifSrc);
+	authGifSrc = SecurityParamsFactory.correctAuthGifSrcRequestInCaseOfInaccessibility(authGifSrc);
 %>
 <c:if test="${not empty param.error}">
 <div id="accessDenied">
