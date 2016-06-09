@@ -44,12 +44,16 @@ public final class DataPanelGetCommand extends ServiceLayerCommand<DataPanel> {
 							+ String.format("%s/%s", SettingsFileType.DATAPANEL.getFileDir(),
 									((PrimElementsFileGateway) gateway).getSourceName());
 
-				DataFile<InputStream> file = gateway.getRawData(action.getContext());
-				DataPanelFactory factory = new DataPanelFactory();
-				DataPanel value = factory.fromStream(file);
+				DataPanel value = cache.get(key);
 
-				if (action.getDataPanelLink().getDataPanelCaching())
-					cache.put(key, value);
+				if (value == null) {
+					DataFile<InputStream> file = gateway.getRawData(action.getContext());
+					DataPanelFactory factory = new DataPanelFactory();
+					value = factory.fromStream(file);
+
+					if (action.getDataPanelLink().getDataPanelCaching())
+						cache.put(key, value);
+				}
 
 				setResult(value);
 			} else if (gateway instanceof DataPanelDBGateway
@@ -69,12 +73,16 @@ public final class DataPanelGetCommand extends ServiceLayerCommand<DataPanel> {
 						((DataPanelDBGateway) gateway).getProcName()
 								+ action.getContext().toString();
 
-				DataFile<InputStream> file = gateway.getRawData(action.getContext());
-				DataPanelFactory factory = new DataPanelFactory();
-				DataPanel value = factory.fromStream(file);
+				DataPanel value = cache.get(key);
 
-				if (action.getDataPanelLink().getDataPanelCaching())
-					cache.put(key, value);
+				if (value == null) {
+					DataFile<InputStream> file = gateway.getRawData(action.getContext());
+					DataPanelFactory factory = new DataPanelFactory();
+					value = factory.fromStream(file);
+
+					if (action.getDataPanelLink().getDataPanelCaching())
+						cache.put(key, value);
+				}
 
 				setResult(value);
 			} else if (gateway instanceof DataPanelCelestaGateway) {
@@ -83,12 +91,16 @@ public final class DataPanelGetCommand extends ServiceLayerCommand<DataPanel> {
 							+ String.format("%s/%s", "score", selector.getSourceName())
 							+ action.getContext().toString();
 
-				DataFile<InputStream> file = gateway.getRawData(action.getContext());
-				DataPanelFactory factory = new DataPanelFactory();
-				DataPanel value = factory.fromStream(file);
+				DataPanel value = cache.get(key);
 
-				if (action.getDataPanelLink().getDataPanelCaching())
-					cache.put(key, value);
+				if (value == null) {
+					DataFile<InputStream> file = gateway.getRawData(action.getContext());
+					DataPanelFactory factory = new DataPanelFactory();
+					value = factory.fromStream(file);
+
+					if (action.getDataPanelLink().getDataPanelCaching())
+						cache.put(key, value);
+				}
 
 				setResult(value);
 			} else if (gateway instanceof PrimElementsJythonGateway) {
@@ -99,12 +111,16 @@ public final class DataPanelGetCommand extends ServiceLayerCommand<DataPanel> {
 									SettingsFileType.JYTHON.getFileDir(), selector.getSourceName())
 							+ action.getContext().toString();
 
-				DataFile<InputStream> file = gateway.getRawData(action.getContext());
-				DataPanelFactory factory = new DataPanelFactory();
-				DataPanel value = factory.fromStream(file);
+				DataPanel value = cache.get(key);
 
-				if (action.getDataPanelLink().getDataPanelCaching())
-					cache.put(key, value);
+				if (value == null) {
+					DataFile<InputStream> file = gateway.getRawData(action.getContext());
+					DataPanelFactory factory = new DataPanelFactory();
+					value = factory.fromStream(file);
+
+					if (action.getDataPanelLink().getDataPanelCaching())
+						cache.put(key, value);
+				}
 
 				setResult(value);
 			} else {
