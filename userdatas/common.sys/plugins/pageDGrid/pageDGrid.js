@@ -210,6 +210,11 @@ function createPageDGrid(elementId, parentId, metadata) {
 						
 						result.then(function(value){
 								if(value.success == '1'){
+									
+									for(var id in grid.dirty) {
+										grid.row(id).element.className = grid.row(id).element.className.replace("jsgrid-record-editing", "");
+									}
+									
 								}
 								else{
 							        grid.dirty = JSON.parse(object.dirty);
@@ -336,11 +341,17 @@ function createPageDGrid(elementId, parentId, metadata) {
 				
 				if(column["editable"]){
 					column["canEdit"] = function columnCanEdit(object, value){
-						result = true;
 						if(object.readonly && (((object.readonly).indexOf("all;") > -1 ) || ((object.readonly).indexOf(this.id+";") > -1 ))){
-							result = false;
+							return false;
 						}
-						return result;					
+						
+						for(var id in this.grid.dirty) {
+							if(id != object.id){
+								return false;
+							}
+						}
+						
+						return true;					
 					};
 				}
 				
@@ -556,7 +567,9 @@ function createPageDGrid(elementId, parentId, metadata) {
 			}
 		});
 		grid.on(".dgrid-row:dblclick", function(event){
-			gwtAfterDoubleClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
+			if(grid.row(event) && grid.column(event)){
+				gwtAfterDoubleClick(elementId, grid.row(event).id, grid.column(event).label, getSelection());
+			}
 		});
 		function getSelection()
 		{
@@ -609,8 +622,35 @@ function createPageDGrid(elementId, parentId, metadata) {
 				if(event.value.indexOf("<") > -1){
 					event.returnValue = false;
 					console.log("Заблокирована строка, содержащая символ '<'");
+					return;
 				}
 			}
+			
+			for(var id in event.grid.dirty) {
+				if(id != event.cell.row.id){
+					event.returnValue = false;
+					return;
+				}
+			}
+			
+			if(event.cell.row.element.className.indexOf("jsgrid-record-editing")==-1){
+				event.cell.row.element.className = event.cell.row.element.className + " jsgrid-record-editing";
+				
+				event.grid.editing = JSON.stringify(event.cell.row.data, function(key, value) {
+					  if (
+							  (key == "dirty")							  
+						   || (key == "gridContextName") 
+					       || (key == "elementInfoName")
+					       || (key == event.cell.row.data["gridContextName"])
+					       || (key == event.cell.row.data["elementInfoName"])
+					     )
+					  {
+						  return undefined;						  
+					  }
+					  return value;
+				});				
+			}
+			
 		});
 		
 		
@@ -635,6 +675,15 @@ function savePageDGrid(parentId){
 
 function revertPageDGrid(parentId){
 	
+	for(var id in arrGrids[parentId].dirty) {
+		if(id){
+			arrGrids[parentId].dirty = {};
+			arrGrids[parentId].collection.emit('update', {target: JSON.parse(arrGrids[parentId].editing)});
+			arrGrids[parentId].dirty = {};
+		}
+	}
+	
+/*	
 //	refreshPageDGrid(parentId);
 	
 	arrGrids[parentId].scrollPosition = arrGrids[parentId].getScrollPosition();
@@ -646,6 +695,7 @@ function revertPageDGrid(parentId){
 	if(currentPage > 1){
 		arrGrids[parentId].gotoPage(currentPage);		
 	}
+*/	
 }
 
 function clipboardPageDGrid(parentId){
