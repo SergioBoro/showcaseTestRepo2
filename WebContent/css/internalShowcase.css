@@ -83,7 +83,14 @@ padding: 0px 20px 0px 0px;
 
 .plugin-navigator-grid-column {
 	  border: none !important ;
-}	  
+}
+
+
+
+.claro .dojoxCalendarColumnView td {
+  border-top:1px dotted #ccc;
+}
+
 
 
 

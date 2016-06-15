@@ -27,6 +27,9 @@ function createCalendar(parentId, data, template) {
 			    		  editable: data.metadata.editable
 			    		}, parentId);
 			    	
+			    	if(data.metadata.timeSlotDuration){
+			    		calendar.columnView.timeSlotDuration = data.metadata.timeSlotDuration;
+			    	}
 			    	
 			    	if(data.buttons){
 						for(var i = 0; i<data.buttons.length; i++){

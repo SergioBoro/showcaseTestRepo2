@@ -28403,19 +28403,13 @@ BEGIN
     SET NOCOUNT ON;
 
 
-
-insert into Debug (string) VALUES (NULL)
-insert into Debug (string) VALUES (NULL)
-insert into Debug (context) VALUES (@session_context)
-
-
-
-
 set    @data=CAST(
 '<root>
 
 <metadata date="new Date(2012, 0, 5)" minHours="10" maxHours="20" 
-          dateInterval="month" dateIntervalSteps="2" style="position:relative;width:100%;height:800px;" editable="false" toolbarVisible="true"
+          dateInterval="month" dateIntervalSteps="2" 
+          style="position:relative;width:100%;height:700px;" editable="false" toolbarVisible="true"
+          timeSlotDuration="60"
 />
 
 <data>
@@ -28425,13 +28419,13 @@ set    @data=CAST(
 </data>
 
 <buttons>
-	<button id="''previousButton''" hide="true"/>
-	<button id="''nextButton''" hide="true"/>
+	<button id="''previousButton''" hide="false"/>
+	<button id="''nextButton''" hide="false"/>
 	<button id="''todayButton''" hide="false"/>
-	<button id="''dayButton''" hide="true"/>
-	<button id="''fourDaysButton''" hide="true"/>
+	<button id="''dayButton''" hide="false"/>
+	<button id="''fourDaysButton''" hide="false"/>
 	<button id="''weekButton''" hide="false"/>
-	<button id="''monthButton''" hide="true"/>
+	<button id="''monthButton''" hide="false"/>
 </buttons>
 
 
