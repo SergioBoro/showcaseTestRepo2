@@ -586,6 +586,10 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		
 		
 		grid.on("dgrid-select", function(event){
+			if(event.parentType && event.parentType.indexOf("mouse") > -1){
+				return;
+			}
+
 			if(firstLoading){
 				 if(!event.grid.expandAllRecords){
 					 gwtAfterClickTree(elementId, metadata["common"]["selRecId"], metadata["common"]["selColId"], getSelection());
@@ -601,6 +605,18 @@ function createTreeDGrid(elementId, parentId, metadata) {
 					
 					gwtAfterClickTree(elementId, grid.row(event.grid._focusedNode).id, grid.column(event.grid._focusedNode).label, getSelection());
 				}, 50);
+			}
+		});
+		grid.on(".dgrid-row:click", function(event){
+			if(grid.row(event) && grid.column(event)){
+				if(!grid.readonly){
+					if(grid.currentRowId != grid.row(event).id){
+						grid.currentRowId = grid.row(event).id;
+						grid.save();
+					}
+				}
+				
+				gwtAfterClickTree(elementId, grid.row(event).id, grid.column(event).label, getSelection());
 			}
 		});
 		grid.on(".dgrid-row:dblclick", function(event){
