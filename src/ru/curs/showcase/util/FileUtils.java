@@ -111,4 +111,20 @@ public final class FileUtils {
 		}
 		return prop.getProperty(SHOWCASE_ROOTPATH_USERDATA_PARAM);
 	}
+
+	public static String getOutsideWarRoot(final String file) {
+		Properties prop = new Properties();
+		InputStream is = null;
+		try {
+			is = new FileInputStream(file);
+			try (InputStreamReader reader = new InputStreamReader(is, TextUtils.DEF_ENCODING)) {
+				prop.load(reader);
+			}
+			is.close();
+		} catch (IOException e) {
+			LOGGER.info("В процессе инициализации папки пользовательских данных зафиксировано отсутствие файла "
+					+ file);
+		}
+		return prop.getProperty(SHOWCASE_ROOTPATH_USERDATA_PARAM);
+	}
 }

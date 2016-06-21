@@ -136,6 +136,10 @@ public final class ProductionModeInitializer {
 
 		AppInitializer.checkUserDataDir(
 				aServletContext.getInitParameter(SHOWCASE_ROOTPATH_USERDATA_PARAM), "context.xml");
+
+		if (AppInfoSingleton.getAppInfo().getUserdatas().size() == 0)
+			getUserdataFromOutsideWar(aServletContext);
+
 		AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
 		UserDataUtils.checkUserdatas();
 		copyUserDatas(aServletContext);
@@ -527,4 +531,18 @@ public final class ProductionModeInitializer {
 		}
 	}
 
+	private static void getUserdataFromOutsideWar(ServletContext aServletContext) {
+		int ind = aServletContext.getContextPath().indexOf("/");
+		String realPath = aServletContext.getContextPath().substring(ind + 1);
+		int ind1 = aServletContext.getRealPath("/").indexOf(File.separator + realPath);
+		String realPath1 = aServletContext.getRealPath("/").substring(0, ind1);
+		int ind2 = realPath1.lastIndexOf(File.separator);
+		String realPath2 = aServletContext.getRealPath("/").substring(0, ind2);
+		String file =
+			realPath2 + File.separator + "userdatas" + File.separator
+					+ FileUtils.GENERAL_PROPERTIES;
+
+		AppInitializer.checkUserDataDir(FileUtils.getOutsideWarRoot(file), file);
+
+	}
 }
