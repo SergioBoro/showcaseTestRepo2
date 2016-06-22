@@ -36,6 +36,10 @@ public final class XFormsUtils {
 					addMainXFormBody(mainXForm.get(0));
 				}
 
+				if ((mainXForm.size() > 1) && (!mainXForm.get(1).trim().isEmpty())) {
+					addMainXFormCSS(mainXForm.get(1));
+				}
+
 				for (int i = 2; i < mainXForm.size(); i++) {
 					addMainXFormScript(mainXForm.get(i));
 				}
@@ -55,6 +59,11 @@ public final class XFormsUtils {
 		while (div.childNodes.length > 0)
 			div.removeChild(div.firstChild);
 
+		//Подчищаем динамические стили
+		var hdr = $doc.getElementsByTagName('head')[0];
+		var ss1 = $doc.getElementById('target_style');
+		if (ss1 != null)
+			hdr.removeChild(ss1);
 	}-*/;
 
 	/**
@@ -80,6 +89,26 @@ public final class XFormsUtils {
 															}-*/;
 
 	// CHECKSTYLE:ON
+
+	/**
+	 * Динамически вставляет в страницу CSS для главной XForm'ы.
+	 * 
+	 * @param cssdef
+	 *            - текст CSS.
+	 */
+	private static native void addMainXFormCSS(final String cssdef) /*-{
+		var ss1 = $doc.createElement('style');
+		ss1.setAttribute('type', 'text/css');
+		ss1.setAttribute('id', 'target_style');
+		if (ss1.styleSheet) { // IE
+			ss1.styleSheet.cssText = cssdef;
+		} else { // the world
+			var tt1 = $doc.createTextNode(cssdef);
+			ss1.appendChild(tt1);
+		}
+		var hh1 = $doc.getElementsByTagName('head')[0];
+		hh1.appendChild(ss1);
+	}-*/;
 
 	/**
 	 * Динамически вставляет в страницу скрипт, используемый главной XForm'ой.

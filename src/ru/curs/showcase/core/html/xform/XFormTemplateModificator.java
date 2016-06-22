@@ -1,7 +1,7 @@
 package ru.curs.showcase.core.html.xform;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.regex.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -17,6 +17,7 @@ import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Класс, модифицирующий шаблон XForms, добавляя в него служебную информацию,
@@ -33,6 +34,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String MULTISELECTOR_TAG = "multiselector";
 	private static final String SELECTOR_BUTTON_LABEL_TAG = "buttonLabel";
 	private static final String SELECTOR_BUTTON_HINT_TAG = "buttonHint";
+	private static final String SELECTOR_ON_SELECTION_COMPLETE_ACTION_TAG =
+		"onSelectionCompleteAction";
 	private static final String SUBMIT_LABEL_TAG = "submitLabel";
 	private static final String SINGLE_FILE_TAG = "singleFile";
 	private static final String ADD_UPLOAD_TAG = "addUpload";
@@ -48,6 +51,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String XMLNS = "xmlns";
 
 	private static final String DOM_ACTIVATE = "DOMActivate";
+	private static final String DOM_FOCUS_IN = "DOMFocusIn";
 	private static final String LOAD = "load";
 	private static final String RESOURCE = "resource";
 	private static final String ACTION = "action";
@@ -66,6 +70,9 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String JS_ADD_UPLOAD = "javascript:addUpload('%s')";
 
 	private static final String JS_SELECTOR_TEMPLATE = "javascript:%s({%s id:'xformId'});";
+
+	private static final String ON_SELECTION_COMPLETE_ACTION_TEMPLATE =
+		"function(ok, selected){if (ok) {document.getElementById('%s').click();}}";
 
 	private static final String JS_ON_CHOOSE_FILES =
 		"gwtXFormOnChooseFiles('%s', '%s', '%s', %s, 'add_upload_index_0')";
@@ -182,12 +189,16 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			String params = "";
 			String buttonLabel = DEFAULT_SELECTOR_LABEL;
 			String buttonHint = null;
+			String onSelectionCompleteAction = null;
 			for (int j = 0; j < old.getAttributes().getLength(); j++) {
 				if (SELECTOR_BUTTON_LABEL_TAG.endsWith(old.getAttributes().item(j).getNodeName())) {
 					buttonLabel = old.getAttributes().item(j).getNodeValue();
 				} else if (SELECTOR_BUTTON_HINT_TAG.endsWith(old.getAttributes().item(j)
 						.getNodeName())) {
 					buttonHint = old.getAttributes().item(j).getNodeValue();
+				} else if (SELECTOR_ON_SELECTION_COMPLETE_ACTION_TAG.endsWith(old.getAttributes()
+						.item(j).getNodeName())) {
+					onSelectionCompleteAction = old.getAttributes().item(j).getNodeValue();
 				} else {
 					if (!old.getAttributes().item(j).getNodeValue().trim().isEmpty()) {
 						params =
@@ -221,6 +232,36 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 				trigger.appendChild(hint);
 			}
 
+			if (onSelectionCompleteAction != null) {
+				String actionId = UUID.randomUUID().toString();
+
+				Element actionTrigger = doc.createElementNS(XFormProducer.XFORMS_URI, "trigger");
+				actionTrigger.setAttribute(ID_TAG, actionId);
+				actionTrigger.setAttribute("class", "selector-action-trigger");
+
+				org.w3c.dom.Document actionDoc;
+				try {
+					actionDoc =
+						XMLUtils.stringToDocumentWithoutNamespace(onSelectionCompleteAction);
+				} catch (SAXException | IOException e) {
+					throw new XMLFormatException("selector-action-trigger", e);
+				}
+
+				Element actionElement = actionDoc.getDocumentElement();
+				actionElement.setAttributeNS(XFormProducer.EVENTS_URI, "ev:event", DOM_FOCUS_IN);
+
+				Node actionNode = doc.importNode(actionElement, true);
+				actionTrigger.appendChild(actionNode);
+
+				parent.insertBefore(actionTrigger, trigger);
+
+				params =
+					"onSelectionCompleteAction : "
+							+ String.format(ON_SELECTION_COMPLETE_ACTION_TEMPLATE, actionId)
+							+ ", " + params;
+
+			}
+
 			Element action = doc.createElementNS(XFormProducer.XFORMS_URI, ACTION);
 			action.setAttributeNS(XFormProducer.EVENTS_URI, "ev:event", DOM_ACTIVATE);
 			trigger.appendChild(action);
@@ -228,6 +269,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			Element load = doc.createElementNS(XFormProducer.XFORMS_URI, LOAD);
 			load.setAttribute(RESOURCE, String.format(JS_SELECTOR_TEMPLATE, selectorFunc, params));
 			action.appendChild(load);
+
 		}
 
 		return doc;

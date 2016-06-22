@@ -145,6 +145,18 @@ public final class XMLUtils {
 		return builder;
 	}
 
+	public static DocumentBuilder createBuilderWithoutNamespace() {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(false);
+		DocumentBuilder builder;
+		try {
+			builder = factory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			throw new ServerObjectCreateCloseException(e);
+		}
+		return builder;
+	}
+
 	/**
 	 * Стандартная функция для создания SAX XML Parser.
 	 * 
@@ -207,6 +219,17 @@ public final class XMLUtils {
 		}
 		InputSource is = new InputSource(new StringReader(content));
 		DocumentBuilder db = createBuilder();
+		Document doc = db.parse(is);
+		return doc;
+	}
+
+	public static Document stringToDocumentWithoutNamespace(final String content)
+			throws SAXException, IOException {
+		if ((content == null) || content.isEmpty()) {
+			return null;
+		}
+		InputSource is = new InputSource(new StringReader(content));
+		DocumentBuilder db = createBuilderWithoutNamespace();
 		Document doc = db.parse(is);
 		return doc;
 	}

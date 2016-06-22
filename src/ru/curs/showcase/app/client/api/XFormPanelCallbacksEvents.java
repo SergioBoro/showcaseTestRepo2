@@ -520,6 +520,21 @@ public final class XFormPanelCallbacksEvents {
 		}-*/;
 
 		/**
+		 * onSelectionCompleteAction.
+		 * 
+		 * @param ok
+		 *            boolean
+		 * 
+		 * @param selected
+		 *            JavaScriptObject
+		 */
+		native void onSelectionCompleteAction(final boolean ok, final JavaScriptObject selected)/*-{
+			if (this.onSelectionCompleteAction != null) {
+				this.onSelectionCompleteAction(ok, selected);
+			}
+		}-*/;
+
+		/**
 		 * Мультиселектор. Определяет тег, куда должны попадать записи.
 		 * 
 		 * @return String
@@ -657,6 +672,9 @@ public final class XFormPanelCallbacksEvents {
 				@Override
 				public void onSelectionComplete(final BaseSelectorComponent selector) {
 					if (param.xpathMapping() == null) {
+						param.onSelectionCompleteAction(selector.isOK(),
+								selector.getSelectedAsJsObject());
+
 						param.onSelectionComplete(selector.isOK(),
 								selector.getSelectedAsJsObject());
 					} else {
@@ -669,6 +687,9 @@ public final class XFormPanelCallbacksEvents {
 									param.xpathMapping(),
 									((XForm) currentXFormPanel.getElement()).getSubformId());
 						}
+
+						param.onSelectionCompleteAction(selector.isOK(),
+								selector.getSelectedAsJsObject());
 
 						param.onSelectionComplete(selector.isOK(),
 								selector.getSelectedAsJsObject());

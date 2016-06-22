@@ -4,6 +4,8 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLschema" xmlns:fs="http://www.curs.ru/ns/FormServer"
 	xmlns:xf="http://www.w3.org/2002/xforms">
 	<head>
+	
+	
 
 		<xf:model id="Showcase_Template_multiselector_simple_subform_mainModel">
 			<xf:instance id="Showcase_Template_multiselector_simple_subform_mainInstance">
@@ -109,6 +111,19 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
 		        startWith          = "false"		        
 		        windowCaption      = "'Выберите название'"
 		        xpathMapping       = "{'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city1)' : 'name', 'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city2)' : null}"
+		        
+   		        onSelectionComplete = "function(ok, selected){if (ok) {
+     			        alert('Это вызов onSelectionComplete');
+		        }}"		        
+		        
+		        onSelectionCompleteAction =
+		        "
+					&lt;xf:action>
+		  				 &lt;xf:message>ddddddddddddddddddd21&lt;/xf:message>
+					&lt;/xf:action>
+		        "
+		        
+		        
 		    />
 		    
 </td>		    			
@@ -118,6 +133,7 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
 </xf:repeat>
 
 </table>
+
 
 
 <hr/>
@@ -152,6 +168,9 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
             </xf:itemset>
         </xf:select1>
          
+         
+         
+         
 				
 			<xf:trigger>
 				<xf:label>Old2 (JS), MultiSelector, 1 процедура</xf:label>
@@ -183,7 +202,7 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
 			</xf:trigger>
 		
 		    <xf:multiselector 
-		        buttonLabel       = "New (Tag), MultiSelector, 1 процедура, хинт"
+		        buttonLabel       = "DDDDDDDDDDDDDDDDDDDDDDDDD"
 		        buttonHint        = "Это хинт"
                 dataWidth         = "'400px'"
                 dataHeight        = "'450px'"
@@ -201,10 +220,24 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
 		        
 		        xpathRoot         = "'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_myInstance))/infos)'"
 		        xpathMapping      = "{'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_myInstance1))/info)':{'id': '@id','name':'name'}}"
+
 		        
-		        onSelectionComplete = "function(ok, selected){if (ok) {alert('Это_вызов_onSelectionComplete');}}"		        
+		        onSelectionComplete = "function(ok, selected){if (ok) {
+			        alert('Это вызов onSelectionComplete');
+		        }}"		    
+		        
+		        
+		        onSelectionCompleteAction =
+		        "
+					&lt;xf:action>
+		  				 &lt;xf:message>ddddddddddddddddddd22&lt;/xf:message>
+					&lt;/xf:action>
+		        "
 		        
 		    />			
+			
+
+			
 			
 				
 			<xf:trigger>
@@ -227,6 +260,10 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
                                              }
                        });" />
 				</xf:action>
+				
+				
+				
+				
 			</xf:trigger>	
 
 		    <xf:multiselector 

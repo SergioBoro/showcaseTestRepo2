@@ -6,6 +6,12 @@
       xmlns:ev="http://www.w3.org/2001/xml-events" 
       xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<head>
+        <style type="text/css">
+          .selector-action-trigger {
+            display : none;
+          }
+        </style>
+                
 		<xf:model id="mainXForm_mainModel">
 			<xf:instance id="mainXForm_mainInstance">
 				<schema xmlns="">
