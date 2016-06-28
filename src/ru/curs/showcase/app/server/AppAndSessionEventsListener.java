@@ -15,6 +15,7 @@ import org.springframework.web.context.support.*;
 
 import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.server.redirection.RedirectionUserdataProp;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
 import ru.curs.showcase.security.logging.*;
@@ -42,6 +43,8 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		ProductionModeInitializer.initialize(arg0.getServletContext());
 
 		AppInfoSingleton.getAppInfo().getGeneralAppProperties().initialize();
+
+		RedirectionUserdataProp.readAndSetRedirectproperties();
 
 		String stateMethod = UserDataUtils.getGeneralOptionalProp("jython.getStateMethod.isNew");
 		if (stateMethod != null) {
