@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.xml.sax.helpers.DefaultHandler;
 
+import ru.curs.celesta.CelestaException;
 import ru.curs.lyra.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.Action;
@@ -65,8 +66,9 @@ public class LyraGridMetaFactory {
 	 * Построение метаданных лирагрида.
 	 * 
 	 * @return - GridMetadata.
+	 * @throws CelestaException
 	 */
-	public GridMetadata buildMetadata() {
+	public GridMetadata buildMetadata() throws CelestaException {
 		initResult();
 
 		setupDynamicSettings();
@@ -86,7 +88,7 @@ public class LyraGridMetaFactory {
 		result = new GridMetadata(elInfo);
 	}
 
-	private void setupDynamicSettings() {
+	private void setupDynamicSettings() throws CelestaException {
 
 		if (basicGridForm.getFormProperties().getGridwidth() == null) {
 			result.getUISettings().setGridWidth(GRID_WIDTH_DEF_VALUE);
@@ -106,6 +108,23 @@ public class LyraGridMetaFactory {
 		}
 		if (basicGridForm.getFormProperties().getFooter() != null) {
 			result.setFooter(basicGridForm.getFormProperties().getFooter());
+		}
+
+		if (basicGridForm.rec().getOrderBy() != null) {
+			result.setGridSorting(new GridSorting());
+
+			String s = basicGridForm.rec().getOrderBy();
+			int pos = s.indexOf(",");
+			if (pos > -1) {
+				s = s.substring(0, pos);
+			}
+			s = s.trim();
+
+			result.getGridSorting().setSortColId(s.substring(1, s.lastIndexOf("\"")));
+
+			if (s.toLowerCase().contains(" desc")) {
+				result.getGridSorting().setSortColDirection(Sorting.DESC);
+			}
 		}
 
 		result.getLiveInfo().setOffset(0);
@@ -321,8 +340,6 @@ public class LyraGridMetaFactory {
 		// похоже не влияет
 		// result.getEventManager().setFireGeneralAndConcreteEvents(true);
 		result.setAutoSelectColumnId(null);
-
-		result.setGridSorting(null);
 
 	}
 

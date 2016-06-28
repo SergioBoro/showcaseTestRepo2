@@ -473,7 +473,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 			}
 			
 			for(var k in metadata["columns"]) {
-				if(metadata["columns"][k]["caption"] == metadata["common"]["sortColId"]){
+				if(metadata["columns"][k]["id"] == metadata["common"]["sortColId"]){
 					sort = [{property: metadata["columns"][k]["id"], descending: descending}];
 					store.initialSort = sort;
 					break;

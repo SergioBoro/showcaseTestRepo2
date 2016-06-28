@@ -43,7 +43,7 @@ create index ix_street on street (name, id);
 
 create table street4(
 /**
- {"width": 270}
+ {"width": 270, "caption": "Название"}
  */
 	name varchar(40) NOT NULL,
 	
