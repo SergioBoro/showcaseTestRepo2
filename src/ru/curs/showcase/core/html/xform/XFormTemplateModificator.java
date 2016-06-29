@@ -464,6 +464,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		Document result = addSrvInfo(aTemplate, aCallContext, aElementInfo, subformId);
 		if (aElementInfo.getBuildTemplate()) {
 			result = insertPartTemplate(result, aCallContext, aElementInfo);
+			result = deletingEmptyBindTags(result);
 		} else {
 			result = deletingEmptyDivTags(result);
 		}
@@ -728,7 +729,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 					Node node = nl.item(i).getAttributes().getNamedItem("insertBind");
 					name = node.getTextContent();
 					insertingXml(xml, nl2.item(0), aCallContext, dpei, name);
-					deletingEmptyTag(nl.item(i));
+					// deletingEmptyTag(nl.item(i));
 				}
 			}
 		}
@@ -804,6 +805,17 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			if (nl.item(i).hasAttributes()
 					&& (nl.item(i).getAttributes().getNamedItem("insertTemplate") != null || nl
 							.item(i).getAttributes().getNamedItem("insertBind") != null)) {
+				deletingEmptyTag(nl.item(i));
+			}
+		}
+		return xml;
+	}
+
+	private static Document deletingEmptyBindTags(final org.w3c.dom.Document xml) {
+		NodeList nl = xml.getElementsByTagName("div");
+		for (int i = 0; i < nl.getLength(); i++) {
+			if (nl.item(i).hasAttributes()
+					&& (nl.item(i).getAttributes().getNamedItem("insertBind") != null)) {
 				deletingEmptyTag(nl.item(i));
 			}
 		}
