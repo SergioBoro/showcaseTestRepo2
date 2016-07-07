@@ -11,7 +11,8 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.delegate.event.ActivitiEventType;
 import org.ehcache.*;
 import org.ehcache.config.Configuration;
-import org.ehcache.config.xml.XmlConfiguration;
+import org.ehcache.config.builders.CacheManagerBuilder;
+import org.ehcache.xml.XmlConfiguration;
 import org.slf4j.*;
 import org.xml.sax.SAXException;
 
@@ -54,6 +55,8 @@ public final class AppInfoSingleton {
 
 	private String sesid = "";
 
+	private String oldSesid = "";
+
 	private List<String> additionalParametersList = new ArrayList<String>();
 
 	private final SortedSet<String> executedProc = Collections
@@ -74,6 +77,12 @@ public final class AppInfoSingleton {
 	private String webAppPath;
 
 	private String userdataRoot;
+
+	/**
+	 * Сообщение, выдаваемое в случае возникновения исключения при старте
+	 * Showcase.
+	 */
+	private String showcaseAppOnStartMessage = "";
 
 	private String userDataLogConfFile = "logback.xml";
 
@@ -402,9 +411,8 @@ public final class AppInfoSingleton {
 		curUserDataId.set(aUserDataId);
 	}
 
-	public CacheManager generateCacheManager() {
+	private CacheManager generateCacheManager() {
 		final URL myUrl = this.getClass().getResource("/ehcache.xml");
-		System.out.println("url" + myUrl);
 		Configuration xmlConfig = null;
 		try {
 			xmlConfig = new XmlConfiguration(myUrl);
@@ -567,6 +575,14 @@ public final class AppInfoSingleton {
 		userdataRoot = aUserdataRoot;
 	}
 
+	public String getShowcaseAppOnStartMessage() {
+		return showcaseAppOnStartMessage;
+	}
+
+	public void setShowcaseAppOnStartMessage(final String aShowcaseAppOnStartMessage) {
+		showcaseAppOnStartMessage = aShowcaseAppOnStartMessage;
+	}
+
 	public SortedSet<String> getExecutedProc() {
 		return executedProc;
 	}
@@ -686,6 +702,14 @@ public final class AppInfoSingleton {
 
 	public void setSesid(final String aSesid) {
 		this.sesid = aSesid;
+	}
+
+	public String getOldSesid() {
+		return oldSesid;
+	}
+
+	public void setOldSesid(final String aOldSesid) {
+		this.oldSesid = aOldSesid;
 	}
 
 	public boolean isDebugSolutionModeEnabled() {

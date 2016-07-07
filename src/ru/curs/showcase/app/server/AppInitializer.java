@@ -39,9 +39,8 @@ public final class AppInitializer {
 
 	public static void finishUserdataSetupAndCheckLoggingOverride() {
 		readDefaultUserDatas(FileUtils.GENERAL_PROPERTIES);
-		// readDefaultUserDatas("general.properties");
-		initEnableLogLevels();
 		checkAnyUserdataExists();
+		initEnableLogLevels();
 		setupUserdataLogging();
 		setupActivitiUsing();
 		AppInfoSingleton.getAppInfo().initWebConsole();
@@ -153,6 +152,7 @@ public final class AppInitializer {
 			if (!dir.exists()) {
 				throw new NoSuchRootPathUserDataException(rootpath);
 			}
+
 			AppInfoSingleton.getAppInfo().setUserdataRoot(rootpath);
 			String value;
 
@@ -185,7 +185,8 @@ public final class AppInitializer {
 				if (id.startsWith("common.")) {
 					continue;
 				}
-				// if (UserDataUtils.GENERAL_RES_ROOT.equalsIgnoreCase(id)) {
+				// if (UserDataUtils.GENERAL_RES_ROOT.equalsIgnoreCase(id))
+				// {
 				// continue;
 				// }
 				value = rootpath + "/" + id;

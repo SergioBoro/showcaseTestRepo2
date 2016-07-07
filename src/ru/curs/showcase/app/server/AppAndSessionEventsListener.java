@@ -19,6 +19,7 @@ import ru.curs.showcase.app.server.redirection.RedirectionUserdataProp;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
 import ru.curs.showcase.security.logging.*;
+import ru.curs.showcase.util.exception.SettingsFileRequiredPropException;
 
 /**
  * Перехватчик старта приложения и сессии. Служит для инициализации приложения.
@@ -40,80 +41,97 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 		AppInitializer.initialize();
 
-		ProductionModeInitializer.initialize(arg0.getServletContext());
-
-		AppInfoSingleton.getAppInfo().getGeneralAppProperties().initialize();
-
-		RedirectionUserdataProp.readAndSetRedirectproperties();
-
-		String stateMethod = UserDataUtils.getGeneralOptionalProp("jython.getStateMethod.isNew");
-		if (stateMethod != null) {
-			stateMethod = stateMethod.trim();
-		}
-		AppInfoSingleton.getAppInfo().setDebugSolutionModeEnabled(
-				Boolean.parseBoolean(stateMethod));
-
-		WebApplicationContext ctx =
-			WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext());
-		actx = (AbstractRefreshableWebApplicationContext) ctx;
-		actx.refresh();
-
 		try {
-			try {
-				Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
+			ProductionModeInitializer.initialize(arg0.getServletContext());
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			AppInfoSingleton.getAppInfo().setShowcaseAppOnStartMessage(e.getMessage());
+		}
 
-				celestaProps
-						.setProperty("jython.getStateMethod.isNew", String
+		if (AppInfoSingleton.getAppInfo().getShowcaseAppOnStartMessage().isEmpty()) {
+			try {
+				AppInfoSingleton.getAppInfo().getGeneralAppProperties().initialize();
+			} catch (SettingsFileRequiredPropException e) {
+				LOGGER.error(e.getMessage());
+				AppInfoSingleton.getAppInfo().setShowcaseAppOnStartMessage(e.getMessage());
+			}
+
+			if (AppInfoSingleton.getAppInfo().getShowcaseAppOnStartMessage().isEmpty()) {
+
+				RedirectionUserdataProp.readAndSetRedirectproperties();
+
+				String stateMethod =
+					UserDataUtils.getGeneralOptionalProp("jython.getStateMethod.isNew");
+				if (stateMethod != null) {
+					stateMethod = stateMethod.trim();
+				}
+				AppInfoSingleton.getAppInfo().setDebugSolutionModeEnabled(
+						Boolean.parseBoolean(stateMethod));
+
+				WebApplicationContext ctx =
+					WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext());
+				actx = (AbstractRefreshableWebApplicationContext) ctx;
+				actx.refresh();
+
+				try {
+					try {
+						Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
+
+						celestaProps.setProperty("jython.getStateMethod.isNew", String
 								.valueOf(AppInfoSingleton.getAppInfo()
 										.isDebugSolutionModeEnabled()));
 
-				String javaLibPath = celestaProps.getProperty("javalib.path");
-				for (String path : JythonIterpretatorFactory.getGeneralScriptDirFromWebInf("lib")) {
-					if ("".equals(javaLibPath) || javaLibPath == null) {
-						javaLibPath = path;
-					} else {
-						javaLibPath = javaLibPath + File.pathSeparator + path;
+						String javaLibPath = celestaProps.getProperty("javalib.path");
+						for (String path : JythonIterpretatorFactory
+								.getGeneralScriptDirFromWebInf("lib")) {
+							if ("".equals(javaLibPath) || javaLibPath == null) {
+								javaLibPath = path;
+							} else {
+								javaLibPath = javaLibPath + File.pathSeparator + path;
+							}
+						}
+						if (javaLibPath != null) {
+
+							javaLibPath = javaLibPath.replace("/", File.separator);
+
+							celestaProps.setProperty("javalib.path", javaLibPath);
+						} else {
+							celestaProps.setProperty("javalib.path", "");
+						}
+
+						String pyLibPath = celestaProps.getProperty("pylib.path");
+						for (String path : JythonIterpretatorFactory
+								.getGeneralScriptDirFromWebInf("libJython")) {
+							if ("".equals(pyLibPath) || pyLibPath == null) {
+								pyLibPath = path;
+							} else {
+								pyLibPath = pyLibPath + File.pathSeparator + path;
+							}
+						}
+						pyLibPath = pyLibPath.replace("/", File.separator);
+						celestaProps.setProperty("pylib.path", pyLibPath);
+
+						if (celestaProps != null) {
+							Celesta.initialize(celestaProps);
+							AppInfoSingleton.getAppInfo().setIsCelestaInitialized(true);
+						} else {
+							if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {
+								LOGGER.warn("Celesta properties (in app.properties) is not set");
+							}
+							AppInfoSingleton.getAppInfo().setCelestaInitializationException(
+									new Exception(
+											"Celesta properties (in app.properties) is not set"));
+						}
+					} catch (Exception ex) {
+						if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+							LOGGER.error("Ошибка инициализации celesta", ex);
+						}
+						AppInfoSingleton.getAppInfo().setCelestaInitializationException(ex);
 					}
+				} finally {
+					ProductionModeInitializer.initActiviti();
 				}
-				if (javaLibPath != null) {
-
-					javaLibPath = javaLibPath.replace("/", File.separator);
-
-					celestaProps.setProperty("javalib.path", javaLibPath);
-				} else {
-					celestaProps.setProperty("javalib.path", "");
-				}
-
-				String pyLibPath = celestaProps.getProperty("pylib.path");
-				for (String path : JythonIterpretatorFactory
-						.getGeneralScriptDirFromWebInf("libJython")) {
-					if ("".equals(pyLibPath) || pyLibPath == null) {
-						pyLibPath = path;
-					} else {
-						pyLibPath = pyLibPath + File.pathSeparator + path;
-					}
-				}
-				pyLibPath = pyLibPath.replace("/", File.separator);
-				celestaProps.setProperty("pylib.path", pyLibPath);
-
-				if (celestaProps != null) {
-					Celesta.initialize(celestaProps);
-					AppInfoSingleton.getAppInfo().setIsCelestaInitialized(true);
-				} else {
-					if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {
-						LOGGER.warn("Celesta properties (in app.properties) is not set");
-					}
-					AppInfoSingleton.getAppInfo().setCelestaInitializationException(
-							new Exception("Celesta properties (in app.properties) is not set"));
-				}
-			} catch (Exception ex) {
-				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
-					LOGGER.error("Ошибка инициализации celesta", ex);
-				}
-				AppInfoSingleton.getAppInfo().setCelestaInitializationException(ex);
 			}
-		} finally {
-			ProductionModeInitializer.initActiviti();
 		}
 	}
 

@@ -2,7 +2,9 @@ package ru.curs.showcase.app.server;
 
 import java.util.*;
 
-import ru.curs.showcase.runtime.UserDataUtils;
+import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.security.SecurityParamsFactory;
+import ru.curs.showcase.util.exception.*;
 
 /**
  * Класс, содержащий в себе карту, представляющую список свойств из файла
@@ -31,6 +33,20 @@ public class GeneralAppProperties {
 			key = (String) k;
 			value = props.getProperty(key);
 			getMap().put(key, value);
+		}
+
+		if (getProperty(UserDataUtils.RDBMS_PREFIX + UserDataUtils.CELESTA_CONNECTION_URL) == null) {
+			throw new SettingsFileRequiredPropException(AppInfoSingleton.getAppInfo()
+					.getUserdataRoot() + "/" + UserDataUtils.GENERALPROPFILENAME,
+					UserDataUtils.RDBMS_PREFIX + UserDataUtils.CELESTA_CONNECTION_URL,
+					SettingsFileType.GENERAL_APP_PROPERTIES);
+		}
+
+		if (getProperty(SecurityParamsFactory.AUTH_SERVER_URL_PARAM) == null) {
+			throw new SettingsFileRequiredPropException(AppInfoSingleton.getAppInfo()
+					.getUserdataRoot() + "/" + UserDataUtils.GENERALPROPFILENAME,
+					SecurityParamsFactory.AUTH_SERVER_URL_PARAM,
+					SettingsFileType.GENERAL_APP_PROPERTIES);
 		}
 	}
 }
