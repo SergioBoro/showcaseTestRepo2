@@ -1,7 +1,7 @@
 create grain testgrain version '1.0';
 
 create table test (
-id int identity not null primary key,
+code int identity not null primary key,
 attrVarchar varchar(2),
 /**
  {"caption": "integer field"}
@@ -27,7 +27,7 @@ f9 datetime not null default getdate()
 create table street (
 	name varchar(40) NOT NULL,
     rnum int,	
-	id varchar(17) NOT NULL PRIMARY KEY,	
+	code varchar(17) NOT NULL PRIMARY KEY,	
 	socr varchar(10) NOT NULL,
 	--index varchar(6) NOT NULL,
 	gninmb varchar(4) NOT NULL,
@@ -35,7 +35,7 @@ create table street (
 	ocatd varchar(11) NOT NULL
 );
 
-create index ix_street on street (name, id);
+create index ix_street on street (name, code);
 
 
 
@@ -48,7 +48,7 @@ create table street4(
 	name varchar(40) NOT NULL,
 	
     rnum int,	
-	id varchar(17) NOT NULL PRIMARY KEY,	
+	code varchar(17) NOT NULL PRIMARY KEY,	
 	socr varchar(10) NOT NULL,
 	--index varchar(6) NOT NULL,
 	gninmb varchar(4) NOT NULL,
@@ -56,19 +56,19 @@ create table street4(
 	ocatd varchar(11) NOT NULL
 );
 
-create index ix_street4 on street4 (name, id);
+create index ix_street4 on street4 (name, code);
 
 
 
 create table test2 (
-id int identity not null primary key,
+code int identity not null primary key,
 name text not null default 'abc'
 );
 
 
 
 create table websites (
-id int identity not null primary key,
+code int identity not null primary key,
 Name varchar(64) NOT NULL,
 
 /**

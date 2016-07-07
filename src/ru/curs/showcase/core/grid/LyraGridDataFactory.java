@@ -52,7 +52,9 @@ public class LyraGridDataFactory {
 	private String profile = null;
 	private ProfileReader gridProps = null;
 
+	@SuppressWarnings("unused")
 	private static final String ID_TAG = "id";
+	private static final String KEYVALUES_SEPARATOR = "_D13k82F9g7";
 	private static final String EVENT_COLUMN_TAG = "column";
 	private static final String CELL_PREFIX = "cell";
 	private static final String ROWSTYLE = "rowstyle";
@@ -179,15 +181,24 @@ public class LyraGridDataFactory {
 		// --------------------------------------------------------
 
 		List<LyraFormData> records;
-		if (smallStep && (lyraGridAddInfo.getLastKeyValues() != null) && (dgridDelta > 0)) {
-			// records =
-			// basicGridForm.setPosition(lyraGridAddInfo.getLastKeyValues());
 
-			// records = basicGridForm.getRows(position, lyraDelta);
-			records = basicGridForm.getRows(position);
+		if (context.getRefreshId() == null) {
+
+			if (smallStep && (lyraGridAddInfo.getLastKeyValues() != null) && (dgridDelta > 0)) {
+				// records =
+				// basicGridForm.setPosition(lyraGridAddInfo.getLastKeyValues());
+
+				// records = basicGridForm.getRows(position, lyraDelta);
+				records = basicGridForm.getRows(position);
+			} else {
+				// records = basicGridForm.getRows(position, lyraDelta);
+				records = basicGridForm.getRows(position);
+			}
+
 		} else {
-			// records = basicGridForm.getRows(position, lyraDelta);
-			records = basicGridForm.getRows(position);
+
+			records = basicGridForm.setPosition(getKeyValuesById(context.getRefreshId()));
+
 		}
 
 		JSONArray data = new JSONArray();
@@ -215,8 +226,11 @@ public class LyraGridDataFactory {
 
 			}
 
+			String recId = getIdByKeyValues(rec.getKeyValues());
+
 			if ((properties != null) && (!properties.trim().isEmpty())) {
-				String recId = obj.get(ID_TAG).toString();
+				// String recId = obj.get(ID_TAG).toString();
+
 				if (recId != null) {
 					String rowstyle = readEvents(recId, properties);
 					if (rowstyle != null) {
@@ -226,6 +240,7 @@ public class LyraGridDataFactory {
 			}
 
 			obj.put("recversion", String.valueOf(rec.getRecversion()));
+			obj.put("id", recId);
 			data.add(obj);
 
 			if (i == length - 1) {
@@ -259,6 +274,22 @@ public class LyraGridDataFactory {
 
 		result.setData(data.toJSONString());
 
+	}
+
+	private Object[] getKeyValuesById(final String refreshId) {
+		String[] keyValues = refreshId.split(KEYVALUES_SEPARATOR);
+		return keyValues;
+	}
+
+	private String getIdByKeyValues(final Object[] keyValues) {
+		String refreshId = "";
+		for (int i = 0; i < keyValues.length; i++) {
+			if (i > 0) {
+				refreshId = refreshId + KEYVALUES_SEPARATOR;
+			}
+			refreshId = keyValues[i].toString();
+		}
+		return refreshId;
 	}
 
 	private String getCellValue(final LyraFieldValue lyraFieldValue, final Integer precision) {

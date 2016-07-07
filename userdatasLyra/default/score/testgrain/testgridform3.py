@@ -41,7 +41,7 @@ class TestGridForm3(GridForm):
 
         c = street4Cursor(context) 
 
-#        c.orderBy('name DESC', 'id DESC')
+#        c.orderBy('name DESC', 'code DESC')
 #        c.orderBy('name aSC')
         c.orderBy('name')
         

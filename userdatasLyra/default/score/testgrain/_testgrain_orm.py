@@ -1,5 +1,5 @@
 # coding=UTF-8
-# Source grain parameters: version=1.0, len=1747, crc32=AD91809D; compiler=8.
+# Source grain parameters: version=1.0, len=1761, crc32=1EAB07E6; compiler=8.
 """
 THIS MODULE IS BEING CREATED AUTOMATICALLY EVERY TIME CELESTA STARTS.
 DO NOT MODIFY IT AS YOUR CHANGES WILL BE LOST.
@@ -32,7 +32,7 @@ class testCursor(Cursor):
     onPostUpdate = []
     def __init__(self, context):
         Cursor.__init__(self, context)
-        self.id = None
+        self.code = None
         self.attrVarchar = None
         self.attrInt = None
         self.f1 = None
@@ -49,9 +49,9 @@ class testCursor(Cursor):
     def _tableName(self):
         return 'test'
     def _parseResult(self, rs):
-        self.id = rs.getInt('id')
+        self.code = rs.getInt('code')
         if rs.wasNull():
-            self.id = None
+            self.code = None
         self.attrVarchar = rs.getString('attrVarchar')
         if rs.wasNull():
             self.attrVarchar = None
@@ -87,7 +87,7 @@ class testCursor(Cursor):
         setattr(self, name, value)
     def _clearBuffer(self, withKeys):
         if withKeys:
-            self.id = None
+            self.code = None
         self.attrVarchar = None
         self.attrInt = None
         self.f1 = None
@@ -99,11 +99,11 @@ class testCursor(Cursor):
         self.f8 = None
         self.f9 = None
     def _currentKeyValues(self):
-        return array([None if self.id == None else int(self.id)], Object)
+        return array([None if self.code == None else int(self.code)], Object)
     def _currentValues(self):
-        return array([None if self.id == None else int(self.id), None if self.attrVarchar == None else unicode(self.attrVarchar), None if self.attrInt == None else int(self.attrInt), None if self.f1 == None else bool(self.f1), None if self.f2 == None else bool(self.f2), None if self.f4 == None else float(self.f4), None if self.f5 == None else float(self.f5), None if self.f6 == None else unicode(self.f6), None if self.f7 == None else unicode(self.f7), _to_timestamp(self.f8), _to_timestamp(self.f9)], Object)
+        return array([None if self.code == None else int(self.code), None if self.attrVarchar == None else unicode(self.attrVarchar), None if self.attrInt == None else int(self.attrInt), None if self.f1 == None else bool(self.f1), None if self.f2 == None else bool(self.f2), None if self.f4 == None else float(self.f4), None if self.f5 == None else float(self.f5), None if self.f6 == None else unicode(self.f6), None if self.f7 == None else unicode(self.f7), _to_timestamp(self.f8), _to_timestamp(self.f9)], Object)
     def _setAutoIncrement(self, val):
-        self.id = val
+        self.code = val
     def _preDelete(self):
         for f in testCursor.onPreDelete:
             f(self)
@@ -127,7 +127,7 @@ class testCursor(Cursor):
         result.copyFieldsFrom(self)
         return result
     def copyFieldsFrom(self, c):
-        self.id = c.id
+        self.code = c.code
         self.attrVarchar = c.attrVarchar
         self.attrInt = c.attrInt
         self.f1 = c.f1
@@ -157,7 +157,7 @@ class streetCursor(Cursor):
         Cursor.__init__(self, context)
         self.name = None
         self.rnum = None
-        self.id = None
+        self.code = None
         self.socr = None
         self.gninmb = None
         self.uno = None
@@ -174,9 +174,9 @@ class streetCursor(Cursor):
         self.rnum = rs.getInt('rnum')
         if rs.wasNull():
             self.rnum = None
-        self.id = rs.getString('id')
+        self.code = rs.getString('code')
         if rs.wasNull():
-            self.id = None
+            self.code = None
         self.socr = rs.getString('socr')
         if rs.wasNull():
             self.socr = None
@@ -194,7 +194,7 @@ class streetCursor(Cursor):
         setattr(self, name, value)
     def _clearBuffer(self, withKeys):
         if withKeys:
-            self.id = None
+            self.code = None
         self.name = None
         self.rnum = None
         self.socr = None
@@ -202,9 +202,9 @@ class streetCursor(Cursor):
         self.uno = None
         self.ocatd = None
     def _currentKeyValues(self):
-        return array([None if self.id == None else unicode(self.id)], Object)
+        return array([None if self.code == None else unicode(self.code)], Object)
     def _currentValues(self):
-        return array([None if self.name == None else unicode(self.name), None if self.rnum == None else int(self.rnum), None if self.id == None else unicode(self.id), None if self.socr == None else unicode(self.socr), None if self.gninmb == None else unicode(self.gninmb), None if self.uno == None else unicode(self.uno), None if self.ocatd == None else unicode(self.ocatd)], Object)
+        return array([None if self.name == None else unicode(self.name), None if self.rnum == None else int(self.rnum), None if self.code == None else unicode(self.code), None if self.socr == None else unicode(self.socr), None if self.gninmb == None else unicode(self.gninmb), None if self.uno == None else unicode(self.uno), None if self.ocatd == None else unicode(self.ocatd)], Object)
     def _setAutoIncrement(self, val):
         pass
     def _preDelete(self):
@@ -232,7 +232,7 @@ class streetCursor(Cursor):
     def copyFieldsFrom(self, c):
         self.name = c.name
         self.rnum = c.rnum
-        self.id = c.id
+        self.code = c.code
         self.socr = c.socr
         self.gninmb = c.gninmb
         self.uno = c.uno
@@ -256,7 +256,7 @@ class street4Cursor(Cursor):
         Cursor.__init__(self, context)
         self.name = None
         self.rnum = None
-        self.id = None
+        self.code = None
         self.socr = None
         self.gninmb = None
         self.uno = None
@@ -273,9 +273,9 @@ class street4Cursor(Cursor):
         self.rnum = rs.getInt('rnum')
         if rs.wasNull():
             self.rnum = None
-        self.id = rs.getString('id')
+        self.code = rs.getString('code')
         if rs.wasNull():
-            self.id = None
+            self.code = None
         self.socr = rs.getString('socr')
         if rs.wasNull():
             self.socr = None
@@ -293,7 +293,7 @@ class street4Cursor(Cursor):
         setattr(self, name, value)
     def _clearBuffer(self, withKeys):
         if withKeys:
-            self.id = None
+            self.code = None
         self.name = None
         self.rnum = None
         self.socr = None
@@ -301,9 +301,9 @@ class street4Cursor(Cursor):
         self.uno = None
         self.ocatd = None
     def _currentKeyValues(self):
-        return array([None if self.id == None else unicode(self.id)], Object)
+        return array([None if self.code == None else unicode(self.code)], Object)
     def _currentValues(self):
-        return array([None if self.name == None else unicode(self.name), None if self.rnum == None else int(self.rnum), None if self.id == None else unicode(self.id), None if self.socr == None else unicode(self.socr), None if self.gninmb == None else unicode(self.gninmb), None if self.uno == None else unicode(self.uno), None if self.ocatd == None else unicode(self.ocatd)], Object)
+        return array([None if self.name == None else unicode(self.name), None if self.rnum == None else int(self.rnum), None if self.code == None else unicode(self.code), None if self.socr == None else unicode(self.socr), None if self.gninmb == None else unicode(self.gninmb), None if self.uno == None else unicode(self.uno), None if self.ocatd == None else unicode(self.ocatd)], Object)
     def _setAutoIncrement(self, val):
         pass
     def _preDelete(self):
@@ -331,7 +331,7 @@ class street4Cursor(Cursor):
     def copyFieldsFrom(self, c):
         self.name = c.name
         self.rnum = c.rnum
-        self.id = c.id
+        self.code = c.code
         self.socr = c.socr
         self.gninmb = c.gninmb
         self.uno = c.uno
@@ -353,7 +353,7 @@ class test2Cursor(Cursor):
     onPostUpdate = []
     def __init__(self, context):
         Cursor.__init__(self, context)
-        self.id = None
+        self.code = None
         self.name = None
         self.context = context
     def _grainName(self):
@@ -361,9 +361,9 @@ class test2Cursor(Cursor):
     def _tableName(self):
         return 'test2'
     def _parseResult(self, rs):
-        self.id = rs.getInt('id')
+        self.code = rs.getInt('code')
         if rs.wasNull():
-            self.id = None
+            self.code = None
         self.name = rs.getString('name')
         if rs.wasNull():
             self.name = None
@@ -372,14 +372,14 @@ class test2Cursor(Cursor):
         setattr(self, name, value)
     def _clearBuffer(self, withKeys):
         if withKeys:
-            self.id = None
+            self.code = None
         self.name = None
     def _currentKeyValues(self):
-        return array([None if self.id == None else int(self.id)], Object)
+        return array([None if self.code == None else int(self.code)], Object)
     def _currentValues(self):
-        return array([None if self.id == None else int(self.id), None if self.name == None else unicode(self.name)], Object)
+        return array([None if self.code == None else int(self.code), None if self.name == None else unicode(self.name)], Object)
     def _setAutoIncrement(self, val):
-        self.id = val
+        self.code = val
     def _preDelete(self):
         for f in test2Cursor.onPreDelete:
             f(self)
@@ -403,7 +403,7 @@ class test2Cursor(Cursor):
         result.copyFieldsFrom(self)
         return result
     def copyFieldsFrom(self, c):
-        self.id = c.id
+        self.code = c.code
         self.name = c.name
         self.recversion = c.recversion
     def iterate(self):
@@ -422,7 +422,7 @@ class websitesCursor(Cursor):
     onPostUpdate = []
     def __init__(self, context):
         Cursor.__init__(self, context)
-        self.id = None
+        self.code = None
         self.Name = None
         self.Picture = None
         self.File1 = None
@@ -435,9 +435,9 @@ class websitesCursor(Cursor):
     def _tableName(self):
         return 'websites'
     def _parseResult(self, rs):
-        self.id = rs.getInt('id')
+        self.code = rs.getInt('code')
         if rs.wasNull():
-            self.id = None
+            self.code = None
         self.Name = rs.getString('Name')
         if rs.wasNull():
             self.Name = None
@@ -461,7 +461,7 @@ class websitesCursor(Cursor):
         setattr(self, name, value)
     def _clearBuffer(self, withKeys):
         if withKeys:
-            self.id = None
+            self.code = None
         self.Name = None
         self.Picture = None
         self.File1 = None
@@ -469,11 +469,11 @@ class websitesCursor(Cursor):
         self.File2 = None
         self.Url = None
     def _currentKeyValues(self):
-        return array([None if self.id == None else int(self.id)], Object)
+        return array([None if self.code == None else int(self.code)], Object)
     def _currentValues(self):
-        return array([None if self.id == None else int(self.id), None if self.Name == None else unicode(self.Name), None if self.Picture == None else unicode(self.Picture), None if self.File1 == None else unicode(self.File1), None if self.Logo == None else unicode(self.Logo), None if self.File2 == None else unicode(self.File2), None if self.Url == None else unicode(self.Url)], Object)
+        return array([None if self.code == None else int(self.code), None if self.Name == None else unicode(self.Name), None if self.Picture == None else unicode(self.Picture), None if self.File1 == None else unicode(self.File1), None if self.Logo == None else unicode(self.Logo), None if self.File2 == None else unicode(self.File2), None if self.Url == None else unicode(self.Url)], Object)
     def _setAutoIncrement(self, val):
-        self.id = val
+        self.code = val
     def _preDelete(self):
         for f in websitesCursor.onPreDelete:
             f(self)
@@ -497,7 +497,7 @@ class websitesCursor(Cursor):
         result.copyFieldsFrom(self)
         return result
     def copyFieldsFrom(self, c):
-        self.id = c.id
+        self.code = c.code
         self.Name = c.Name
         self.Picture = c.Picture
         self.File1 = c.File1

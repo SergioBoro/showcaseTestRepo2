@@ -26,9 +26,10 @@ public final class JSLyraGridPluginPanelCallbacksEvents {
 	}
 
 	public static JSONObject pluginGetHttpParams(final String pluginId, final String offset,
-			final String limit, final String sortColId, final String sortColDir) {
+			final String limit, final String sortColId, final String sortColDir,
+			final String refreshId) {
 		return getCurrentPanel(pluginId).pluginGetHttpParams(Integer.parseInt(offset),
-				Integer.parseInt(limit), sortColId, sortColDir);
+				Integer.parseInt(limit), sortColId, sortColDir, refreshId);
 	}
 
 	public static JSONObject pluginEditorGetHttpParams(final String pluginId, final String data,

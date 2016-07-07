@@ -12,6 +12,9 @@
   <tab id="2" name="грид">	
  	<element id="21" type="GRID" subtype="JS_LYRA_GRID" proc="testgrain.testgridform.TestGridForm" 
 	    plugin="lyraDGrid">
+	    
+	    		<proc id="020101" name="testgrain.toolbar_grid_new" type="TOOLBAR"/>
+	    
 	</element>
   </tab>
 

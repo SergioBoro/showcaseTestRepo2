@@ -117,7 +117,7 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 	 */
 	// CHECKSTYLE:OFF
 	private static native void setCallbackJSNIFunction() /*-{
-															$wnd.gwtGetHttpParamsLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtGetHttpParamsLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtEditorGetHttpParamsLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginEditorGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
 															$wnd.gwtAfterLoadDataLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterPartialUpdateLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginAfterPartialUpdate(Ljava/lang/String;Ljava/lang/String;);
@@ -581,12 +581,14 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 	}
 
 	public JSONObject pluginGetHttpParams(final int offset, final int limit,
-			final String sortColId, final String sortColDir) {
+			final String sortColId, final String sortColDir, final String refreshId) {
 
 		LyraGridContext gridContext = getDetailedContext();
 		gridContext.setDgridOldPosition(gridContext.getLiveInfo().getOffset());
 		gridContext.getLiveInfo().setOffset(offset);
 		gridContext.getLiveInfo().setLimit(limit);
+
+		gridContext.setRefreshId(refreshId);
 
 		if ((sortColId != null) && (sortColDir != null)) {
 			GridSorting gs = new GridSorting(sortColId, Sorting.valueOf(sortColDir));

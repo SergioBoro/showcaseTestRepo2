@@ -13,6 +13,8 @@ public class LyraGridContext extends GridContext {
 
 	private int dgridOldPosition = 0;
 
+	private String refreshId = null;
+
 	/**
 	 * Создает дефолтные настройки для грида - нужны для первоначальной
 	 * отрисовки грида и для тестов.
@@ -29,6 +31,14 @@ public class LyraGridContext extends GridContext {
 
 	public void setDgridOldPosition(final int aDgridOldPosition) {
 		dgridOldPosition = aDgridOldPosition;
+	}
+
+	public String getRefreshId() {
+		return refreshId;
+	}
+
+	public void setRefreshId(final String aRefreshId) {
+		refreshId = aRefreshId;
 	}
 
 }

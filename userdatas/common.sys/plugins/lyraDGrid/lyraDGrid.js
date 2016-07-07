@@ -123,7 +123,25 @@ function createLyraDGrid(elementId, parentId, metadata) {
 						var sortColId  = null;
 						var sortColDir = null;
 						
-			 	    	var httpParams = gwtGetHttpParamsLyra(elementId, kwArgs[0].start, kwArgs[0].end-kwArgs[0].start, sortColId, sortColDir);
+						var refreshId = null;
+						if(arrGrids[parentId] && arrGrids[parentId].refreshId){
+							refreshId = arrGrids[parentId].refreshId;
+							
+							if(arrGrids[parentId].oldStart > 0){
+								arrGrids[parentId].oldStart = 0;
+								
+								results =  new QueryResults(when(resScroll), {
+									totalLength: when(arrGrids[parentId]._total)
+								});
+								return results;
+							}
+						}
+						
+						if(arrGrids[parentId]){
+							arrGrids[parentId].oldStart = kwArgs[0].start;
+						}
+						
+			 	    	var httpParams = gwtGetHttpParamsLyra(elementId, kwArgs[0].start, kwArgs[0].end-kwArgs[0].start, sortColId, sortColDir, refreshId);
 			 	    	httpParams = eval('('+httpParams+')');	 	 
 			 	    	
 					    var scparams = {};
@@ -617,6 +635,16 @@ function createLyraDGrid(elementId, parentId, metadata) {
 }
 
 function refreshLyraDGrid(parentId){
+	
+	var row;
+	if(arrGrids[parentId].oldFocusedNode && arrGrids[parentId].row(arrGrids[parentId].oldFocusedNode)){
+		row = arrGrids[parentId].row(arrGrids[parentId].oldFocusedNode);
+	} else {
+		row = arrGrids[parentId].row(arrGrids[parentId]._focusedNode);
+	}
+	
+	arrGrids[parentId].refreshId = arrGrids[parentId].row(row).id;
+	
 	arrGrids[parentId].refresh();
 }
 
