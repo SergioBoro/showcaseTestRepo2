@@ -11,8 +11,7 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.delegate.event.ActivitiEventType;
 import org.ehcache.*;
 import org.ehcache.config.Configuration;
-import org.ehcache.config.builders.CacheManagerBuilder;
-import org.ehcache.xml.XmlConfiguration;
+import org.ehcache.config.xml.XmlConfiguration;
 import org.slf4j.*;
 import org.xml.sax.SAXException;
 
