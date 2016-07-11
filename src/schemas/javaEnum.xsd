@@ -24,6 +24,8 @@
          <xs:enumeration value="addrecord"/>
          <xs:enumeration value="PARTIALUPDATE"/>
          <xs:enumeration value="partialupdate"/>
+         <xs:enumeration value="REFRESHPARENTS"/>
+         <xs:enumeration value="refreshparents"/>
       </xs:restriction>
    </xs:simpleType>
 

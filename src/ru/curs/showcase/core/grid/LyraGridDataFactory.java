@@ -10,7 +10,6 @@ import org.xml.sax.*;
 
 import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.celesta.CelestaException;
-import ru.curs.celesta.dbutils.Cursor;
 import ru.curs.lyra.*;
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
@@ -240,13 +239,13 @@ public class LyraGridDataFactory {
 			}
 
 			obj.put("recversion", String.valueOf(rec.getRecversion()));
-			obj.put("id", recId);
+			obj.put("id" + KEYVALUES_SEPARATOR, recId);
 			data.add(obj);
 
-			if (i == length - 1) {
-				lyraGridAddInfo.setLastKeyValues(((Cursor) basicGridForm.rec())
-						.getCurrentKeyValues());
-			}
+			// if (i == length - 1) {
+			// lyraGridAddInfo.setLastKeyValues(((Cursor) basicGridForm.rec())
+			// .getCurrentKeyValues());
+			// }
 		}
 
 		for (Event event : events) {
