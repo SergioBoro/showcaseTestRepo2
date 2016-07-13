@@ -175,7 +175,7 @@
 		<!--Сейчас компилируем обычным javac-->
 <!-- 		<javac source="1.7" target="1.7" includeantruntime="false" encoding="UTF-8" srcdir="${sc.src.dir}; extragwt" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java" > -->
 <!--  		</javac> -->
-		<iajc source="1.7" target="1.7" encoding="UTF-8" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java">
+		<iajc source="1.8" target="1.8" encoding="UTF-8" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java">
 			<sourceroots>
 				<pathelement location="${sc.src.dir}" />
 				<pathelement location="extragwt" />
@@ -187,7 +187,7 @@
 	<target name="compile.junit" depends="init.dirs" description="Compiles .java files to WAR directory">
 		<!--После полной адаптации AspectJ к java 7 перейдем на iajc-->
 		<!--Сейчас компилируем обычным javac-->
-		<javac source="1.7" target="1.7" includeantruntime="false" encoding="UTF-8" srcdir="${sc.src.dir}; ${celesta.src.dir}; extragwt" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" >
+		<javac source="1.8" target="1.8" includeantruntime="false" encoding="UTF-8" srcdir="${sc.src.dir}; ${celesta.src.dir}; extragwt" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" >
  		</javac>
 <!-- 		<iajc source="1.7" target="1.7" encoding="UTF-8" destdir="${sc.class.dir}" debug="true" failonerror="true" classpathref="master-classpath" excludes="*/*Test.java"> -->
 <!-- 			<sourceroots> -->
@@ -632,7 +632,7 @@
 	
 
 	<target name="sonar" depends="init.dirs, build, write.app.version" description="Run analysis for Sonar">
-		<property name="sonar.java.source" value="1.7" />
+		<property name="sonar.java.source" value="1.8" />
 		<property name="sonar.sourceEncoding" value="UTF-8" />
 		<property name="sonar.host.url" value="http://localhost:9000" />
 		<property name="sonar.dynamicAnalysis" value="reuseReports" />
