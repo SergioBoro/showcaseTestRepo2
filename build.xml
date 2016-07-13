@@ -615,6 +615,7 @@
 		</doxygen:doxygen>		
 	</target>
 	
+	<!--
 	<taskdef name="javancss" classname="javancss.JavancssAntTask" />
 	
 	<target name="calc.javancss.metrics" depends="init.dirs" description="Calc Java code metrics">
@@ -627,6 +628,8 @@
 			<exclude name="ru/curs/showcase/test/ws/**" />			   	
 		</javancss>
 	</target>
+	
+	-->
 
 	<target name="sonar" depends="init.dirs, build, write.app.version" description="Run analysis for Sonar">
 		<property name="sonar.java.source" value="1.7" />
