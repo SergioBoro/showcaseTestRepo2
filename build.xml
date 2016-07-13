@@ -615,7 +615,7 @@
 		</doxygen:doxygen>		
 	</target>
 	
-	<!--
+	
 	<taskdef name="javancss" classname="javancss.JavancssAntTask" />
 	
 	<target name="calc.javancss.metrics" depends="init.dirs" description="Calc Java code metrics">
@@ -629,7 +629,7 @@
 		</javancss>
 	</target>
 	
-	-->
+	
 
 	<target name="sonar" depends="init.dirs, build, write.app.version" description="Run analysis for Sonar">
 		<property name="sonar.java.source" value="1.7" />
@@ -655,6 +655,7 @@
 		</exec>	
 	</target>
 	
+	<!--
 	<taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask"/>
 	
 	<target name="xsd.generate" description="Generate XSD schemas by java Enum classes">
@@ -673,6 +674,7 @@
 			  <classpath refid="master-classpath"/>		
 		</xslt>			
 	</target>
+	-->
 	
 	<target name="test.stress" description="Run stress test with TestNG">
 		<testng classpathref="test-classpath"
