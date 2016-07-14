@@ -33,11 +33,13 @@ class TestGridForm3(GridForm):
         super(TestGridForm3, self).__init__(context)
         self.createAllBoundFields()
         
+        self.getFormProperties().setHeader(u'''<h1 class="testStyle">'''+context.getShowcaseContext().getMain()+'''</h1>''')    
+        
     def _getCursor(self, context):
         
-#        print 'dddddddd23'
-#        print self
-#        print context
+
+        print 'dddddddd22'
+        print context.getShowcaseContext().getMain();
 
         c = street4Cursor(context) 
 

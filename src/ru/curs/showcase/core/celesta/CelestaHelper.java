@@ -191,9 +191,9 @@ public class CelestaHelper<T> {
 	 */
 	public T runLyraPython(final String lyraClass, final Object... additionalParams) {
 
-		// lyra
-		// Object[] params = mergeAddAndGeneralParameters(this.contex,
-		// additionalParams);
+		String elementId = additionalParams[0].toString();
+		ShowcaseContext sc = generateShowcaseContext(this.contex, elementId);
+
 		Object[] params = new Object[1];
 		params[0] = lyraClass;
 
@@ -215,7 +215,7 @@ public class CelestaHelper<T> {
 
 		Receiver receiver = new Receiver();
 		try {
-			result = Celesta.getInstance().runPython(sesID, receiver, procName, params);
+			result = Celesta.getInstance().runPython(sesID, receiver, sc, procName, params);
 
 			UserMessage um = getUserMessage(receiver);
 			if (um != null) {
