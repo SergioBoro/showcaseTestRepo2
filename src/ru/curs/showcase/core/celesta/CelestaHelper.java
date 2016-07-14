@@ -112,7 +112,13 @@ public class CelestaHelper<T> {
 		boolean messageDone = false;
 		Receiver receiver = new Receiver();
 		try {
-			result = Celesta.getInstance().runPython(sesID, receiver, procName, params);
+
+			String elementId = null;
+			if (additionalParams != null && additionalParams.length > 0) {
+				elementId = additionalParams[0].toString();
+			}
+			ShowcaseContext sc = generateShowcaseContext(this.contex, elementId);
+			result = Celesta.getInstance().runPython(sesID, receiver, sc, procName, params);
 
 			UserMessage um = getUserMessage(receiver);
 			if (um != null) {
@@ -276,6 +282,28 @@ public class CelestaHelper<T> {
 		}
 
 		return resultParams;
+	}
+
+	protected ShowcaseContext generateShowcaseContext(final CompositeContext context,
+			final String elementId) {
+		ShowcaseContext sc = null;
+		String fltr_context = null;
+		String ses_context = null;
+
+		try {
+			fltr_context = XMLJSONConverter.xmlToJson(context.getFilter());
+			ses_context = XMLJSONConverter.xmlToJson(context.getSession());
+		} catch (SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		sc =
+			new ShowcaseContext(context.getMain(), context.getAdditional(), fltr_context,
+					ses_context, elementId);
+
+		return sc;
+
 	}
 
 	private String[] handleCelestaExceptionError(final String value) {
