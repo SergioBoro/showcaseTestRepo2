@@ -174,6 +174,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			// thmlwidget.setText(AppCurrContext.getInstance().getBundleMap()
 			// .get("please_wait_data_are_loading"));
+			thmlwidget.setText("");
 			thmlwidget.addStyleName("progress-bar");
 		}
 		if (dataService == null) {
@@ -233,6 +234,7 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		if (this.getElementInfo().getShowLoadingMessage()) {
 			// thmlwidget.setText(AppCurrContext.getInstance().getBundleMap()
 			// .get("please_wait_data_are_loading"));
+			thmlwidget.setText("");
 			thmlwidget.addStyleName("progress-bar");
 		}
 		if (dataService == null) {
