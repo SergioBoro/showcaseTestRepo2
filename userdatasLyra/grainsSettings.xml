@@ -7,10 +7,10 @@
 		<grain name="common">
 			<!--Указание необходимых групп навигатора для каждой userdata-->
 			<navigator>
-				<userdata name="workflow">
-					<group>0</group>
-					<group>1</group>
-					<group>3</group>
+				<userdata name="default">
+					<!--<group>0</group>-->
+					<!--<group>1</group>-->
+					<group>55</group>
 				</userdata> 
 			</navigator>
 			<mailsender>
