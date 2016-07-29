@@ -68,4 +68,8 @@ public final class JSTreeGridPluginPanelCallbacksEvents {
 		getCurrentPanel(pluginId).pluginShowMessage(stringMessage, editorType);
 	}
 
+	public static boolean pluginUpdateParents(final String pluginId, final String parentId) {
+		return getCurrentPanel(pluginId).pluginUpdateParents(parentId);
+	}
+
 }

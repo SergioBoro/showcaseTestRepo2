@@ -53,6 +53,8 @@ public class GridCelestaGateway implements GridGateway {
 		String procName;
 		if (context.getPartialUpdate()) {
 			procName = element.getProcByType(DataPanelElementProcType.PARTIALUPDATE).getName();
+		} else if (context.getUpdateParents()) {
+			procName = element.getProcByType(DataPanelElementProcType.UPDATEPARENTS).getName();
 		} else {
 			procName = element.getProcName();
 		}

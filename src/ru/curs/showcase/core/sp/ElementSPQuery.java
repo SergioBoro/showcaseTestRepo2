@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.grid.GridContext;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -99,6 +100,10 @@ public abstract class ElementSPQuery extends SPQuery {
 		// setProcName(elementInfo.getProcName());
 		if (aContext.getPartialUpdate()) {
 			setProcName(elementInfo.getProcByType(DataPanelElementProcType.PARTIALUPDATE)
+					.getName());
+		} else if ((aContext instanceof GridContext)
+				&& (((GridContext) aContext).getUpdateParents())) {
+			setProcName(elementInfo.getProcByType(DataPanelElementProcType.UPDATEPARENTS)
 					.getName());
 		} else {
 			setProcName(elementInfo.getProcName());

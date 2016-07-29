@@ -782,10 +782,12 @@ function currentLevelUpdateTreeDGrid(elementId, parentId){
 	}catch(err){}
 	
 	if(rowId){
-		var oldLoadingMessage = arrGrids[parentId].loadingMessage; 
-		arrGrids[parentId].set("loadingMessage", null);
-		arrGrids[parentId].expand(rowId, true, null, true);
-		arrGrids[parentId].set("loadingMessage", oldLoadingMessage);
+		if(!gwtUpdateParents(elementId, rowId)){
+			var oldLoadingMessage = arrGrids[parentId].loadingMessage; 
+			arrGrids[parentId].set("loadingMessage", null);
+			arrGrids[parentId].expand(rowId, true, null, true);
+			arrGrids[parentId].set("loadingMessage", oldLoadingMessage);
+		}
 	}
 }
 
@@ -799,11 +801,15 @@ function childLevelUpdateTreeDGrid(elementId, parentId){
 		hasChildren = arrGrids[parentId].row(arrGrids[parentId]._focusedNode).data.hasChildren;
 	}catch(err){}
 	
-	if(rowId && ((hasChildren == "1") || (hasChildren == "true"))){
-		var oldLoadingMessage = arrGrids[parentId].loadingMessage; 
-		arrGrids[parentId].set("loadingMessage", null);
-		arrGrids[parentId].expand(rowId, true, null, true);
-		arrGrids[parentId].set("loadingMessage", oldLoadingMessage);
+	if(rowId){
+		if(!gwtUpdateParents(elementId, rowId)){
+			if((hasChildren == "1") || (hasChildren == "true")){
+				var oldLoadingMessage = arrGrids[parentId].loadingMessage; 
+				arrGrids[parentId].set("loadingMessage", null);
+				arrGrids[parentId].expand(rowId, true, null, true);
+				arrGrids[parentId].set("loadingMessage", oldLoadingMessage);
+			}
+		}
 	}
 }
 

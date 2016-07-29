@@ -55,6 +55,12 @@ public class GridContext extends CompositeContext {
 	private String parentId = null;
 
 	/**
+	 * Признак того, что выполняется обновление парентов для обновления текущего
+	 * или нижнего уровня. Имеет смысл только для tree-грида.
+	 */
+	private Boolean updateParents = false;
+
+	/**
 	 * Отредактированные данные.
 	 */
 	private String editorData = null;
@@ -197,6 +203,14 @@ public class GridContext extends CompositeContext {
 
 	public void setParentId(final String aParentId) {
 		parentId = aParentId;
+	}
+
+	public Boolean getUpdateParents() {
+		return updateParents;
+	}
+
+	public void setUpdateParents(final Boolean aUpdateParents) {
+		updateParents = aUpdateParents;
 	}
 
 	public String getEditorData() {

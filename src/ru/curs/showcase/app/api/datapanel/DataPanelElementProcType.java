@@ -54,6 +54,11 @@ public enum DataPanelElementProcType implements SerializableElement {
 	/**
 	 * Имя процедуры частичного обновления грида.
 	 */
-	PARTIALUPDATE
+	PARTIALUPDATE,
 
+	/**
+	 * Имя процедуры, возвращающей паренты для обновления текущего и нижнего
+	 * уровней тригрида .
+	 */
+	UPDATEPARENTS
 }

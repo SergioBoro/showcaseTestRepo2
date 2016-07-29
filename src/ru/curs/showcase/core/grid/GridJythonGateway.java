@@ -150,6 +150,8 @@ public class GridJythonGateway extends JythonQuery<JythonDTO> implements GridGat
 		// return element.getProcName();
 		if (context.getPartialUpdate()) {
 			return element.getProcByType(DataPanelElementProcType.PARTIALUPDATE).getName();
+		} else if (context.getUpdateParents()) {
+			return element.getProcByType(DataPanelElementProcType.UPDATEPARENTS).getName();
 		} else {
 			return element.getProcName();
 		}

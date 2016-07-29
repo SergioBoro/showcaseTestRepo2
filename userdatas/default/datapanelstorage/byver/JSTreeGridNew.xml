@@ -17,6 +17,11 @@
 		    <proc id="12" name="jstreegrid_save1" type="SAVE" />
  		    
 			<proc id="14" name="partial_grid_new_geo" type="PARTIALUPDATE" /> 
+			
+<!-- 			 
+-->
+   			
+   			<proc id="15" name="parents_grid_new_geo" type="UPDATEPARENTS" />
    			
 		    
 		</element>

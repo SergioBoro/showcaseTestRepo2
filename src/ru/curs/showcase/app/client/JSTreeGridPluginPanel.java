@@ -36,6 +36,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 	private static final String JSGRID_DESERIALIZATION_ERROR = "jsGridDeserializationError";
 
+	private static final String JSGRID_ERROR_GETTABLE = "gridErrorGetTable";
+
 	private final VerticalPanel p = new VerticalPanel();
 	private final HorizontalPanel generalHp = new HorizontalPanel();
 	/**
@@ -126,6 +128,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 															$wnd.gwtAfterDoubleClickTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterDoubleClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtProcessFileDownloadTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginProcessFileDownload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtShowMessageTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginShowMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtUpdateParents = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginUpdateParents(Ljava/lang/String;Ljava/lang/String;);
 															}-*/;
 
 	// CHECKSTYLE:ON
@@ -216,7 +219,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		}
 
 		dataService.getGridData(gc, getElementInfo(), new GWTServiceCallback<GridData>(
-				AppCurrContext.getInstance().getBundleMap().get("gridErrorGetTable")) {
+				AppCurrContext.getInstance().getBundleMap().get(JSGRID_ERROR_GETTABLE)) {
 
 			@Override
 			public void onFailure(final Throwable caught) {
@@ -251,7 +254,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		GridContext gc = getDetailedContext();
 
 		dataService.getGridMetadata(gc, getElementInfo(), new GWTServiceCallback<GridMetadata>(
-				AppCurrContext.getInstance().getBundleMap().get("gridErrorGetTable")) {
+				AppCurrContext.getInstance().getBundleMap().get(JSGRID_ERROR_GETTABLE)) {
 
 			@Override
 			public void onSuccess(final GridMetadata aGridMetadata) {
@@ -582,6 +585,41 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 						e.getMessage());
 			}
 		}
+	}
+
+	public boolean pluginUpdateParents(final String parentId) {
+
+		if (getElementInfo().getProcByType(DataPanelElementProcType.UPDATEPARENTS) == null) {
+			return false;
+		}
+
+		final GridContext gc = getDetailedContext();
+		gc.setUpdateParents(true);
+		gc.setParentId(parentId);
+
+		if (dataService == null) {
+			dataService = GWT.create(DataService.class);
+		}
+
+		dataService.getGridData(gc, getElementInfo(), new GWTServiceCallback<GridData>(
+				AppCurrContext.getInstance().getBundleMap().get(JSGRID_ERROR_GETTABLE)) {
+
+			@Override
+			public void onFailure(final Throwable caught) {
+				gc.setUpdateParents(false);
+				super.onFailure(caught);
+			}
+
+			@Override
+			public void onSuccess(final GridData aLiveGridData) {
+				gc.setUpdateParents(false);
+				super.onSuccess(aLiveGridData);
+				partialUpdateGridPanelByGrid(aLiveGridData);
+			}
+		});
+
+		return true;
+
 	}
 
 	public JSONObject pluginGetHttpParams(final int offset, final int limit,

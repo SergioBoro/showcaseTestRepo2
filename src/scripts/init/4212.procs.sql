@@ -1055,3 +1055,53 @@ EXEC(@Sql)
 END
 GO
 
+
+
+
+GO
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[parents_grid_new_geo]
+    @main_context varchar(512) ='',
+    @add_context varchar(512) ='',
+    @filterinfo xml='',
+    @session_context xml ='',
+	@element_id varchar(512) ='',    
+    @sortcols varchar(1024) ='',		
+
+    @firstrecord int = 1,
+    @pagesize int = 20,   
+
+    @parent_id varchar(512) =''        
+AS
+BEGIN
+SET NOCOUNT ON;
+
+
+
+select 
+ 'Приволжский ФО_Обновленный_Parent' as "Название"
+, 16 as "Код"
+, 'AFAF2D58-7016-4A0B-B228-8DC765444A37' as "~~id"
+--, '85CD7E79-F23E-454B-B4F5-E81EC3755D99' as "Идентификатор"
+--, NULL as "Картинка"
+, NULL as "parentId"
+
+--, 1 as HasChildren
+
+--, 'false' as readonly
+, cast('<properties></properties>' as xml) as [~~properties]
+
+
+
+
+--SET @error_mes = 'Грид3 успешно построен';
+--return 555;
+
+
+END
+GO
+
+
