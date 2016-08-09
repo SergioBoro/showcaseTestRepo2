@@ -62,7 +62,11 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		addUserData(context.getSessionParamsMap());
 		addRelatedContext(context.getRelated());
 		String result = XMLUtils.documentToString(info);
-		result = XMLUtils.xmlServiceSymbolsToNormal(result);
+
+		// result = XMLUtils.xmlServiceSymbolsToNormal(result);
+
+		result = XMLUtils.xmlServiceSymbolsToNormalWithoutLess(result);
+
 		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 			LOGGER.debug("XMLSessionContextGenerator.generate()"
 					+ System.getProperty("line.separator") + result);
