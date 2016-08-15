@@ -13,6 +13,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.jython.JythonDTO;
 import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Класс помощник работы с Celesta.
@@ -104,8 +105,9 @@ public class CelestaHelper<T> {
 
 		if (!AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
 			// AppInfoSingleton.getAppInfo().getCelestaInitializationException().logAll(e);
-			throw new CelestaWorkerException("Ошибка при запуске jython скрипта celesta '"
-					+ procName + "'. Celesta при старте сервера не была инициализированна.",
+			throw new CelestaWorkerException(
+					"Ошибка при запуске jython скрипта celesta '" + procName
+							+ "'. Celesta при старте сервера не была инициализированна.",
 					AppInfoSingleton.getAppInfo().getCelestaInitializationException());
 		}
 
@@ -143,9 +145,9 @@ public class CelestaHelper<T> {
 			String[] err = handleCelestaExceptionError(ex.getMessage());
 			String res = handleCelestaExceptionTraceback(ex.getMessage(), err);
 
-			throw new CelestaWorkerException("Ошибка при выполнении jython скрипта celesta '"
-					+ procName + "'",
-			// ex);
+			throw new CelestaWorkerException(
+					"Ошибка при выполнении jython скрипта celesta '" + procName + "'",
+					// ex);
 					new Exception(res));
 		}
 		if (result == null) {
@@ -176,8 +178,8 @@ public class CelestaHelper<T> {
 
 			return resultType.cast(obj);
 		} else {
-			throw new CelestaWorkerException("Result is not instance of "
-					+ this.resultType.getName());
+			throw new CelestaWorkerException(
+					"Result is not instance of " + this.resultType.getName());
 		}
 
 	}
@@ -208,8 +210,9 @@ public class CelestaHelper<T> {
 		PyObject result;
 
 		if (!AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
-			throw new CelestaWorkerException("Ошибка при запуске jython скрипта celesta '"
-					+ procName + "'. Celesta при старте сервера не была инициализированна.",
+			throw new CelestaWorkerException(
+					"Ошибка при запуске jython скрипта celesta '" + procName
+							+ "'. Celesta при старте сервера не была инициализированна.",
 					AppInfoSingleton.getAppInfo().getCelestaInitializationException());
 		}
 
@@ -236,8 +239,9 @@ public class CelestaHelper<T> {
 			String[] err = handleCelestaExceptionError(ex.getMessage());
 			String res = handleCelestaExceptionTraceback(ex.getMessage(), err);
 
-			throw new CelestaWorkerException("Ошибка при выполнении jython скрипта celesta '"
-					+ procName + "'", new Exception(res));
+			throw new CelestaWorkerException(
+					"Ошибка при выполнении jython скрипта celesta '" + procName + "'",
+					new Exception(res));
 		}
 		if (result == null) {
 			return null;
@@ -251,8 +255,8 @@ public class CelestaHelper<T> {
 		try {
 			return resultType.cast(obj);
 		} catch (Exception e) {
-			throw new CelestaWorkerException("Result is not instance of "
-					+ this.resultType.getName());
+			throw new CelestaWorkerException(
+					"Result is not instance of " + this.resultType.getName());
 		}
 
 	}
@@ -275,7 +279,8 @@ public class CelestaHelper<T> {
 		// XMLUtils.convertXmlToJson(context.getSession());
 		try {
 			resultParams[FILTER_CONTEXT_INDEX] = XMLJSONConverter.xmlToJson(context.getFilter());
-			resultParams[SESSION_CONTEXT_INDEX] = XMLJSONConverter.xmlToJson(context.getSession());
+			resultParams[SESSION_CONTEXT_INDEX] = XMLJSONConverter
+					.xmlToJson(XMLUtils.xmlServiceSymbolsToNormal(context.getSession()));
 		} catch (SAXException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -292,15 +297,15 @@ public class CelestaHelper<T> {
 
 		try {
 			fltr_context = XMLJSONConverter.xmlToJson(context.getFilter());
-			ses_context = XMLJSONConverter.xmlToJson(context.getSession());
+			ses_context = XMLJSONConverter
+					.xmlToJson(XMLUtils.xmlServiceSymbolsToNormal(context.getSession()));
 		} catch (SAXException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		sc =
-			new ShowcaseContext(context.getMain(), context.getAdditional(), fltr_context,
-					ses_context, elementId);
+		sc = new ShowcaseContext(context.getMain(), context.getAdditional(), fltr_context,
+				ses_context, elementId);
 
 		return sc;
 
