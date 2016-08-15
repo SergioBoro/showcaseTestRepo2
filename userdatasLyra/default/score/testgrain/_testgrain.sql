@@ -56,8 +56,15 @@ create table street4(
 	ocatd varchar(11) NOT NULL
 );
 
-create index ix_street4 on street4 (name, code);
+create index ix_street4 on street4 (name);
 
+create index ix_street41 on street4 (name, gninmb, code);
+
+create index ix_street42 on street4 (gninmb);
+
+create index ix_street43 on street4 (name, gninmb);
+
+create index ix_street44 on street4 (ocatd);
 
 
 create table test2 (

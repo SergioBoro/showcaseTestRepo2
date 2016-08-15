@@ -38,14 +38,26 @@ class TestGridForm3(GridForm):
     def _getCursor(self, context):
         
 
-        print 'dddddddd22'
+        print 'ffffffffffffffffffffffff44'
         print context.getShowcaseContext().getMain();
 
         c = street4Cursor(context) 
 
 #        c.orderBy('name DESC', 'code DESC')
 #        c.orderBy('name aSC')
-        c.orderBy('name')
+#        c.orderBy('name')
+        
+#        c.orderBy('name desc', 'code', 'gninmb desc')
+
+#        c.orderBy('uno desc', 'code DESC')
+        
+#        c.orderBy('name', 'gninmb', 'code')
+
+        c.orderBy('name desc', 'gninmb desc', 'code desc')
+        
+
+        
+        
         
         return c
     

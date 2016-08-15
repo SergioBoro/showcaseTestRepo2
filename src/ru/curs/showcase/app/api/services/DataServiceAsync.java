@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.services;
 
 import java.util.*;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -13,8 +15,6 @@ import ru.curs.showcase.app.api.grid.toolbar.GridToolBar;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.plugin.*;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * Асинхронный "двойник" основного GWT-RPC интерфейса приложения - DataService.
@@ -39,7 +39,7 @@ public interface DataServiceAsync {
 			AsyncCallback<GridData> callback);
 
 	void getLyraGridMetadata(LyraGridContext context, DataPanelElementInfo element,
-			AsyncCallback<GridMetadata> callback);
+			AsyncCallback<LyraGridMetadata> callback);
 
 	void getChart(CompositeContext context, DataPanelElementInfo element,
 			AsyncCallback<Chart> callback);

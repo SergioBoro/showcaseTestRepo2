@@ -269,7 +269,8 @@ function createLyraDGrid(elementId, parentId, metadata) {
 				column["label"]     = metadata["columns"][k]["caption"];
 				column["sortable"]  = false;
 				column["valueType"] = metadata["columns"][k]["valueType"];
-				
+				column["sortingAvailable"] = metadata["columns"][k]["sortingAvailable"];
+
 				
 				function getTitle(title){
 					var res = title;
@@ -350,6 +351,47 @@ function createLyraDGrid(elementId, parentId, metadata) {
 			    	
 			    	div.title = getTitle(div.title);
 			    	
+			    	if(this.sortingPic || this.sortingAvailable){
+			    		
+			    		var pathPic = "resources/internal/grid/"; 
+			    		var extPic = ".png";
+			    		var onePic = "one.png";
+			    		
+						div.innerHTML = 
+							"<tbody>" +
+								"<tr>";
+
+							div.innerHTML = div.innerHTML +							
+							"<td>"+this.label +	"</td>";
+							
+						if(this.sortingPic){
+							div.innerHTML = div.innerHTML +										
+							"<td><span style='padding-left:10px;'> </span></td>" +
+							
+							"<td  align=\"right\" style=\"vertical-align: middle;\">" +
+							"<a>" +
+								"<img src="+(pathPic+this.sortingPic+extPic)+" title=\"Порядок и направление сортировки\"  style=\"vertical-align: middle; align: right; width: 32px; height: 14px;  \"   >" +
+							"</a>" +
+		    				"</td>";
+						}
+						
+						if(this.sortingAvailable){
+							div.innerHTML = div.innerHTML +	    		    				
+		    				"<td><span style='padding-left:10px;'> </span></td>" +    		    				
+
+							"<td  align=\"right\" style=\"vertical-align: middle;\">" +
+							"<a>" +
+									"<img src="+(pathPic+onePic)+" title=\"По данному полю есть индекс одиночной сортировки\"  style=\"vertical-align: middle; align: right; width: 14px; height: 14px;  \"   >" +
+							"</a>" +
+							"</td>";
+						}
+						
+						div.innerHTML = div.innerHTML +
+								"</tr>" +
+							"</tbody>";
+						
+			    	}
+			    	
 					return div;
 		        };
 				
@@ -364,6 +406,41 @@ function createLyraDGrid(elementId, parentId, metadata) {
 				}
 				
 				columns.push(column);
+			}
+			
+			setExternalSorting(columns, metadata["common"]["lyraGridSorting"]);
+			
+			
+			function setExternalSorting(columns, lyraGridSorting){
+				if(!lyraGridSorting){
+					return;
+				}
+				
+				var desc = false;
+				var arr = lyraGridSorting.split(",");
+				for (var m = 0; m < arr.length; m++) {
+					
+					if((m == 0) && (arr[m].toLowerCase().indexOf(" desc")>-1)){
+						desc = true;
+					}
+					
+					var sortName = arr[m].substring(arr[m].indexOf("\"")+1, arr[m].lastIndexOf("\""));
+					
+					for (var n = 0; n < columns.length; n++) {
+						if(columns[n].id == sortName){
+							if(desc){
+								columns[n].sortingPic = "d";
+							} else {
+								columns[n].sortingPic = "a";
+							}
+							
+							columns[n].sortingPic = columns[n].sortingPic + (m+1);
+
+							break;
+						}
+					}
+					
+				}
 			}
 			
 			

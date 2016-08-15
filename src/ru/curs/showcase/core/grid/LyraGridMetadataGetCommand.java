@@ -9,7 +9,7 @@ import ru.curs.showcase.core.command.*;
  * Команда получения метаданных для LyraGrid.
  * 
  */
-public class LyraGridMetadataGetCommand extends DataPanelElementCommand<GridMetadata> {
+public class LyraGridMetadataGetCommand extends DataPanelElementCommand<LyraGridMetadata> {
 
 	@Override
 	protected DataPanelElementType getRequestedElementType() {
@@ -46,7 +46,7 @@ public class LyraGridMetadataGetCommand extends DataPanelElementCommand<GridMeta
 
 		LyraGridMetaFactory factory =
 			new LyraGridMetaFactory(getContext(), getElementInfo(), basicGridForm);
-		GridMetadata gm = factory.buildMetadata();
+		LyraGridMetadata gm = factory.buildMetadata();
 		gm.setOkMessage(getContext().getOkMessage());
 
 		setResult(gm);

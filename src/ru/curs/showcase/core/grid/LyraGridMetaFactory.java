@@ -1,10 +1,11 @@
 package ru.curs.showcase.core.grid;
 
-import java.util.Map;
+import java.util.*;
 
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.celesta.CelestaException;
+import ru.curs.celesta.score.*;
 import ru.curs.lyra.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.Action;
@@ -50,7 +51,7 @@ public class LyraGridMetaFactory {
 	private final DataPanelElementInfo elInfo;
 	private final BasicGridForm basicGridForm;
 
-	private GridMetadata result;
+	private LyraGridMetadata result;
 
 	private String profile = null;
 	private ProfileReader gridProps = null;
@@ -68,7 +69,7 @@ public class LyraGridMetaFactory {
 	 * @return - GridMetadata.
 	 * @throws CelestaException
 	 */
-	public GridMetadata buildMetadata() throws CelestaException {
+	public LyraGridMetadata buildMetadata() throws CelestaException {
 		initResult();
 
 		setupDynamicSettings();
@@ -85,7 +86,7 @@ public class LyraGridMetaFactory {
 	}
 
 	private void initResult() {
-		result = new GridMetadata(elInfo);
+		result = new LyraGridMetadata(elInfo);
 	}
 
 	private void setupDynamicSettings() throws CelestaException {
@@ -110,7 +111,9 @@ public class LyraGridMetaFactory {
 			result.setFooter(basicGridForm.getFormProperties().getFooter());
 		}
 
-		if (basicGridForm.rec().getOrderBy() != null) {
+		if (basicGridForm.rec().getOrderBy().contains(",")) {
+			result.setLyraGridSorting(basicGridForm.rec().getOrderBy());
+		} else {
 			result.setGridSorting(new GridSorting());
 
 			String s = basicGridForm.rec().getOrderBy();
@@ -169,9 +172,9 @@ public class LyraGridMetaFactory {
 			}
 		};
 
-		SimpleSAX sax =
-			new SimpleSAX(TextUtils.stringToStream(basicGridForm.getFormProperties()
-					.getDefaultaction()), myHandler, DEFAULT_ACTION_XML_ERROR);
+		SimpleSAX sax = new SimpleSAX(
+				TextUtils.stringToStream(basicGridForm.getFormProperties().getDefaultaction()),
+				myHandler, DEFAULT_ACTION_XML_ERROR);
 		sax.parse();
 
 		if (result.getDefaultAction() != null) {
@@ -241,7 +244,19 @@ public class LyraGridMetaFactory {
 		}
 	}
 
-	private void setupColumns() {
+	// CHECKSTYLE:OFF
+	private void setupColumns() throws CelestaException {
+
+		List<String> lyraGridAvailableSorting = new ArrayList<String>();
+		if (basicGridForm.rec().meta() instanceof Table) {
+			for (Index index : ((Table) basicGridForm.rec().meta()).getIndices()) {
+				if (index.getColumns().size() == 1) {
+					lyraGridAvailableSorting
+							.add((String) index.getColumns().keySet().toArray()[0]);
+				}
+			}
+		}
+
 		Map<String, LyraFormField> lyraFields = basicGridForm.getFieldsMeta();
 
 		for (LyraFormField field : lyraFields.values()) {
@@ -250,7 +265,7 @@ public class LyraGridMetaFactory {
 				continue;
 			}
 
-			GridColumnConfig column = new GridColumnConfig();
+			LyraGridColumnConfig column = new LyraGridColumnConfig();
 
 			column.setId(field.getName());
 			column.setCaption(field.getCaption());
@@ -297,13 +312,19 @@ public class LyraGridMetaFactory {
 				column.setWidth(field.getWidth());
 			}
 
+			if (lyraGridAvailableSorting.contains(column.getId())) {
+				column.setSortingAvailable(true);
+			}
+
 			column.setFormat(null);
 			column.setParentId(null);
 			column.setEditor(null);
 
 			result.getColumns().add(column);
+
 		}
 	}
+	// CHECKSTYLE:ON
 
 	private void setupPluginSettings() {
 		String plugin = ((PluginInfo) elInfo).getPlugin();
@@ -328,8 +349,8 @@ public class LyraGridMetaFactory {
 	}
 
 	private String getPluginDir() {
-		return String
-				.format("%s/%s", PluginFactory.PLUGINS_DIR, ((PluginInfo) elInfo).getPlugin());
+		return String.format("%s/%s", PluginFactory.PLUGINS_DIR,
+				((PluginInfo) elInfo).getPlugin());
 	}
 
 	private void setupUnused() {
