@@ -30,41 +30,51 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 	@Override
 	public void onFailure(final Throwable caught) {
 		if (caught.getMessage().contains(ExchangeConstants.SESSION_NOT_AUTH_SIGN)) {
-
 			Window.Location.assign(AccessToDomModel.getAppContextPath() + "/sestimeout.jsp");
-			// Window.Location.replace(Window.Location.getPath() + "logout");
-
 		} else {
 
-			String str = GeneralException.getMessageType(caught).getName();
-			if (GeneralException.getMessageType(caught) == MessageType.ERROR) {
-				// str = str + " " + msgErrorCaption;
-				str = msgErrorCaption;
-			}
+			if ((GeneralException.getOriginalExceptionClass(caught) != null) && GeneralException
+					.getOriginalExceptionClass(caught).contains("ValidateException")) {
 
-			if (GeneralException.generateDetailedInfo(caught)
-					.contains("com.google.gwt.user.client.rpc.StatusCodeException")) {
+				String textMessage = caught.getMessage();
+				if ((textMessage == null) || textMessage.isEmpty()) {
+					textMessage = "";
+				}
 
-				MessageBox.showMessageWithDetails("Нет связи с сервером",
-						"Проверьте наличие связи с сервером или обратитесь к администратору вашей сети",
-						GeneralException.generateDetailedInfo(caught), MessageType.ERROR, true,
-						null);
+				MessageType typeMessage = GeneralException.getMessageType(caught);
+				if (typeMessage == null) {
+					typeMessage = MessageType.ERROR;
+				}
+
+				String captionMessage = GeneralException.getMessageCaption(caught);
+				if (captionMessage == null) {
+					captionMessage = msgErrorCaption;
+				}
+
+				String subtypeMessage = GeneralException.getMessageSubtype(caught);
+
+				MessageBox.showMessageWithDetails(captionMessage, textMessage, "", typeMessage,
+						false, subtypeMessage);
 
 			} else {
-				MessageBox.showMessageWithDetails(str, caught.getMessage(),
-						GeneralException.generateDetailedInfo(caught),
-						GeneralException.getMessageType(caught),
-						GeneralException.needDetailedInfo(caught), null);
+				String str = GeneralException.getMessageType(caught).getName();
+				if (GeneralException.getMessageType(caught) == MessageType.ERROR) {
+					str = msgErrorCaption;
+				}
+
+				if (GeneralException.generateDetailedInfo(caught)
+						.contains("com.google.gwt.user.client.rpc.StatusCodeException")) {
+					MessageBox.showMessageWithDetails("Нет связи с сервером",
+							"Проверьте наличие связи с сервером или обратитесь к администратору вашей сети",
+							GeneralException.generateDetailedInfo(caught), MessageType.ERROR, true,
+							null);
+				} else {
+					MessageBox.showMessageWithDetails(str, caught.getMessage(),
+							GeneralException.generateDetailedInfo(caught),
+							GeneralException.getMessageType(caught),
+							GeneralException.needDetailedInfo(caught), null);
+				}
 			}
-
-			// MessageBox.showMessageWithDetails(msgErrorCaption,
-			// caught.getMessage(),
-			// GeneralServerException
-			// .checkExeptionTypeAndCreateDetailedTextOfException(caught));
-			//
-			// GeneralServerException.needDetailedInfo(caught);
-
-			// GeneralServerException.getMessageType(caught);
 
 		}
 

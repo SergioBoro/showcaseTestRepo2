@@ -33,6 +33,16 @@ public class GeneralException extends RuntimeException {
 	private MessageType messageType;
 
 	/**
+	 * Заголовок сообщения, выводимого пользователю.
+	 */
+	private String messageCaption;
+
+	/**
+	 * Подтип сообщения, выводимого пользователю.
+	 */
+	private String messageSubtype;
+
+	/**
 	 * Тип исключения.
 	 */
 	private ExceptionType type;
@@ -169,6 +179,26 @@ public class GeneralException extends RuntimeException {
 		return messageType;
 	}
 
+	public void setMessageType(final MessageType aMessageType) {
+		messageType = aMessageType;
+	}
+
+	public String getMessageCaption() {
+		return messageCaption;
+	}
+
+	public void setMessageCaption(final String aMessageCaption) {
+		messageCaption = aMessageCaption;
+	}
+
+	public String getMessageSubtype() {
+		return messageSubtype;
+	}
+
+	public void setMessageSubtype(final String aMessageSubtype) {
+		messageSubtype = aMessageSubtype;
+	}
+
 	/**
 	 * Функция определения типа исключения, работающая со всеми исключениями.
 	 * 
@@ -184,8 +214,42 @@ public class GeneralException extends RuntimeException {
 		}
 	}
 
-	public void setMessageType(final MessageType aMessageType) {
-		messageType = aMessageType;
+	/**
+	 * Функция определения заголовка исключения, работающая со всеми
+	 * исключениями.
+	 * 
+	 * @param caught
+	 *            - проверяемое исключение.
+	 * @return - заголовок.
+	 */
+	public static String getMessageCaption(final Throwable caught) {
+		if (caught instanceof GeneralException) {
+			return ((GeneralException) caught).messageCaption;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Функция определения подтипа исключения, работающая со всеми исключениями.
+	 * 
+	 * @param caught
+	 *            - проверяемое исключение.
+	 * @return - подтип.
+	 */
+	public static String getMessageSubtype(final Throwable caught) {
+		if (caught instanceof GeneralException) {
+			return ((GeneralException) caught).messageSubtype;
+		} else {
+			return null;
+		}
+	}
+
+	public static String getOriginalExceptionClass(final Throwable caught) {
+		if (caught instanceof GeneralException) {
+			return ((GeneralException) caught).getOriginalExceptionClass();
+		}
+		return null;
 	}
 
 	public Boolean getNeedDatailedInfo() {

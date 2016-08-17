@@ -55,6 +55,8 @@ public final class GeneralExceptionFactory {
 		res.setType(getType(original));
 		res.setContext(aCurrentContext);
 		res.setMessageType(getMessageType(original));
+		res.setMessageCaption(getMessageCaption(original));
+		res.setMessageSubtype(getMessageSubtype(original));
 		res.setNeedDatailedInfo(ExceptionConfig.needDatailedInfoForException(original));
 		return res;
 	}
@@ -75,6 +77,20 @@ public final class GeneralExceptionFactory {
 			return ((ValidateException) exc).getUserMessage().getType();
 		}
 		return MessageType.ERROR;
+	}
+
+	private static String getMessageCaption(final Throwable exc) {
+		if (exc instanceof ValidateException) {
+			return ((ValidateException) exc).getUserMessage().getCaption();
+		}
+		return null;
+	}
+
+	private static String getMessageSubtype(final Throwable exc) {
+		if (exc instanceof ValidateException) {
+			return ((ValidateException) exc).getUserMessage().getSubtype();
+		}
+		return null;
 	}
 
 	private static ExceptionType getType(final Throwable e) {
