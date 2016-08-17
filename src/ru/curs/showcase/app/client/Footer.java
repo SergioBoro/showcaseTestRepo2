@@ -3,13 +3,13 @@
  */
 package ru.curs.showcase.app.client;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.*;
+
 import ru.curs.showcase.app.api.MessageType;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.SizeParser;
-
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
 
 /**
  * @author anlug
@@ -35,7 +35,8 @@ public class Footer {
 		// ht = new HTML();
 
 		ht.setHTML(AppCurrContext.getInstance().getMainPage().getFooter());
-		// ht.setHTML("<iframe style='border:0px; width: 100%; height: 100%' src='"
+		// ht.setHTML("<iframe style='border:0px; width: 100%; height: 100%'
+		// src='"
 		// + AccessToDomModel.getAppContextPath() + "/secured/footer"
 		// + Window.Location.getQueryString() + "'/>");
 
@@ -51,14 +52,14 @@ public class Footer {
 
 			MessageBox.showMessageWithDetails(
 					AppCurrContext.getInstance().getBundleMap()
-							.get("transformation_header_or_footer_width_error"), e.getClass()
-							.getName() + ": " + e.getMessage(),
+							.get("transformation_header_or_footer_width_error"),
+					e.getClass().getName() + ": " + e.getMessage(),
 					GeneralException.generateDetailedInfo(e), MessageType.ERROR,
-					GeneralException.needDetailedInfo(e));
+					GeneralException.needDetailedInfo(e), null);
 		}
 
-		switch (SizeParser.getSizeType(AppCurrContext.getInstance().getMainPage()
-				.getFooterHeight())) {
+		switch (SizeParser
+				.getSizeType(AppCurrContext.getInstance().getMainPage().getFooterHeight())) {
 
 		case PIXELS:
 			absolutePixelSize = sizeNumber;

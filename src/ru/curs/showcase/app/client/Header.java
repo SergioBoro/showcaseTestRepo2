@@ -3,13 +3,13 @@
  */
 package ru.curs.showcase.app.client;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.*;
+
 import ru.curs.showcase.app.api.MessageType;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.utils.SizeParser;
-
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
 
 /**
  * @author anlug
@@ -43,7 +43,8 @@ public class Header {
 		HTML ht = new HTML();
 		// ht = new HTML();
 
-		// ht.setHTML("<iframe style='border:0px; width: 100%; height: 100%;' src='"
+		// ht.setHTML("<iframe style='border:0px; width: 100%; height: 100%;'
+		// src='"
 		// + AccessToDomModel.getAppContextPath() + "/secured/header"
 		// + Window.Location.getQueryString() + "'/>");
 		int sizeNumber = 0;
@@ -55,14 +56,14 @@ public class Header {
 
 			MessageBox.showMessageWithDetails(
 					AppCurrContext.getInstance().getBundleMap()
-							.get("transformation_header_or_footer_width_error"), e.getClass()
-							.getName() + ": " + e.getMessage(),
+							.get("transformation_header_or_footer_width_error"),
+					e.getClass().getName() + ": " + e.getMessage(),
 					GeneralException.generateDetailedInfo(e), MessageType.ERROR,
-					GeneralException.needDetailedInfo(e));
+					GeneralException.needDetailedInfo(e), null);
 		}
 
-		switch (SizeParser.getSizeType(AppCurrContext.getInstance().getMainPage()
-				.getHeaderHeight())) {
+		switch (SizeParser
+				.getSizeType(AppCurrContext.getInstance().getMainPage().getHeaderHeight())) {
 
 		case PIXELS:
 			absolutePixelSize = sizeNumber;
@@ -103,8 +104,8 @@ public class Header {
 		 * 
 		 * if (serverCurrentState != null) {
 		 * 
-		 * AppCurrContext.getInstance().setServerCurrentState(serverCurrentState)
-		 * ;
+		 * AppCurrContext.getInstance().setServerCurrentState(
+		 * serverCurrentState) ;
 		 * 
 		 * fillServerCurrentStateInfoToTheAppropriatePanels();
 		 * 
@@ -122,8 +123,8 @@ public class Header {
 		 * 
 		 * headerHorizontalPanel1.add(onMainPageLink);
 		 * 
-		 * headerHorizontalPanel1.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT
-		 * );
+		 * headerHorizontalPanel1.setHorizontalAlignment(VerticalPanel.
+		 * ALIGN_RIGHT );
 		 * 
 		 * Anchor exitLink = generateExitLink();
 		 * 

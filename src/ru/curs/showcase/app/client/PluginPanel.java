@@ -1,5 +1,8 @@
 package ru.curs.showcase.app.client;
 
+import com.google.gwt.core.client.*;
+import com.google.gwt.user.client.ui.*;
+
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -8,9 +11,6 @@ import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.utils.AccessToDomModel;
-
-import com.google.gwt.core.client.*;
-import com.google.gwt.user.client.ui.*;
 
 /**
  * Класс панели с внешним плагином.
@@ -172,14 +172,13 @@ public class PluginPanel extends BasicElementPanelBasis {
 			if (e.getCause() != null) {
 				MessageBox.showMessageWithDetails(
 						AppCurrContext.getInstance().getBundleMap()
-								.get("error_of_plugin_painting"), e.getMessage(),
-						GeneralException.generateDetailedInfo(e.getCause()),
+								.get("error_of_plugin_painting"),
+						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
 						GeneralException.getMessageType(e.getCause()),
-						GeneralException.needDetailedInfo(e.getCause()));
+						GeneralException.needDetailedInfo(e.getCause()), null);
 			} else {
-				MessageBox.showSimpleMessage(
-						AppCurrContext.getInstance().getBundleMap()
-								.get("error_of_plugin_painting"), e.getMessage());
+				MessageBox.showSimpleMessage(AppCurrContext.getInstance().getBundleMap()
+						.get("error_of_plugin_painting"), e.getMessage());
 			}
 
 		}
@@ -310,8 +309,8 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 	private void checkForDefaultAction() {
 		if (plugin.getActionForDependentElements() != null) {
-			AppCurrContext.getInstance().setCurrentActionFromElement(
-					plugin.getActionForDependentElements(), plugin);
+			AppCurrContext.getInstance()
+					.setCurrentActionFromElement(plugin.getActionForDependentElements(), plugin);
 			ActionExecuter.execAction();
 		}
 	}

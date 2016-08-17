@@ -34,6 +34,9 @@ public abstract class GeneralXMLHelper {
 	 * Стандартный тэг для типа.
 	 */
 	public static final String TYPE_TAG = "type";
+	public static final String SUBTYPE_TAG = "subtype";
+	public static final String CAPTION_TAG = "caption";
+
 	protected static final String PROC_ATTR_NAME = "proc";
 	protected static final String TRANSFORM_ATTR_NAME = "transform";
 	protected static final String HIDE_ON_LOAD_TAG = "hideOnLoad";
@@ -78,8 +81,6 @@ public abstract class GeneralXMLHelper {
 	protected static final String SCHEMA_TAG = "schema";
 
 	protected static final String MODAL_WINDOW_TAG = "modalwindow";
-
-	protected static final String CAPTION_TAG = "caption";
 
 	protected static final String FILENAME_TAG = "filename";
 

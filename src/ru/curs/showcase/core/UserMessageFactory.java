@@ -76,7 +76,8 @@ public final class UserMessageFactory {
 				&& initial.getText().equals(initial.getId())) { // Челеста
 
 			if (userMessage == null) {
-				userMessage = new UserMessage(initial.getId(), initialText, initial.getType());
+				userMessage = new UserMessage(initial.getId(), initialText, initial.getType(),
+						initial.getCaption(), initial.getSubtype());
 			}
 			return userMessage;
 
@@ -92,9 +93,10 @@ public final class UserMessageFactory {
 				if (initial.getId() != null) {
 					userMessage =
 						new UserMessage(String.format("%s (%s)", initialText, initial.getId()),
-								initial.getType());
+								initial.getType(), initial.getCaption(), initial.getSubtype());
 				} else {
-					userMessage = new UserMessage(initial.getId(), initialText, initial.getType());
+					userMessage = new UserMessage(initial.getId(), initialText, initial.getType(),
+							initial.getCaption(), initial.getSubtype());
 				}
 				userMessage.setId(initial.getId());
 			}
@@ -142,8 +144,14 @@ public final class UserMessageFactory {
 						userMessage.setId(mesId);
 						userMessage.setText("");
 						if (attrs.getIndex(GeneralXMLHelper.TYPE_TAG) > -1) {
-							userMessage.setType(MessageType.valueOf(attrs
-									.getValue(GeneralXMLHelper.TYPE_TAG)));
+							userMessage.setType(MessageType
+									.valueOf(attrs.getValue(GeneralXMLHelper.TYPE_TAG)));
+						}
+						if (attrs.getIndex(GeneralXMLHelper.CAPTION_TAG) > -1) {
+							userMessage.setCaption(attrs.getValue(GeneralXMLHelper.CAPTION_TAG));
+						}
+						if (attrs.getIndex(GeneralXMLHelper.SUBTYPE_TAG) > -1) {
+							userMessage.setSubtype(attrs.getValue(GeneralXMLHelper.SUBTYPE_TAG));
 						}
 					}
 				}
@@ -153,8 +161,8 @@ public final class UserMessageFactory {
 			public void characters(final char[] aCh, final int aStart, final int aLength)
 					throws SAXException {
 				if (mesFound) {
-					userMessage.setText(userMessage.getText()
-							+ String.copyValueOf(aCh, aStart, aLength));
+					userMessage.setText(
+							userMessage.getText() + String.copyValueOf(aCh, aStart, aLength));
 				}
 			}
 

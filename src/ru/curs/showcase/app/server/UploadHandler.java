@@ -8,13 +8,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.*;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.google.gwt.user.client.rpc.SerializationException;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.core.html.xform.XFormUploadCommand;
 import ru.curs.showcase.util.*;
-
-import com.google.gwt.user.client.rpc.SerializationException;
 
 /**
  * Класс-обработчик на получение файла из БД с помощью хранимой процедуры.
@@ -35,7 +35,7 @@ public final class UploadHandler extends AbstractFilesHandler {
 		private final ID linkId;
 		private final OutputStreamDataFile file;
 
-		public UploadingFile(final String aLinkId, final OutputStreamDataFile aFile) {
+		UploadingFile(final String aLinkId, final OutputStreamDataFile aFile) {
 			super();
 			linkId = new ID(aLinkId);
 			file = aFile;
@@ -101,13 +101,16 @@ public final class UploadHandler extends AbstractFilesHandler {
 				&& (getContext().getOkMessage().getText() != null)
 				&& (getContext().getOkMessage().getType() != null)) {
 			getResponse().setCharacterEncoding("UTF-8");
-			getResponse().getWriter().append(
-					ExchangeConstants.OK_MESSAGE_TEXT_BEGIN
-							+ getContext().getOkMessage().getText()
-							+ ExchangeConstants.OK_MESSAGE_TEXT_END
-							+ ExchangeConstants.OK_MESSAGE_TYPE_BEGIN
-							+ getContext().getOkMessage().getType()
-							+ ExchangeConstants.OK_MESSAGE_TYPE_END);
+			getResponse().getWriter().append(ExchangeConstants.OK_MESSAGE_TEXT_BEGIN
+					+ getContext().getOkMessage().getText() + ExchangeConstants.OK_MESSAGE_TEXT_END
+					+ ExchangeConstants.OK_MESSAGE_TYPE_BEGIN
+					+ getContext().getOkMessage().getType() + ExchangeConstants.OK_MESSAGE_TYPE_END
+					+ ExchangeConstants.OK_MESSAGE_CAPTION_BEGIN
+					+ getContext().getOkMessage().getCaption()
+					+ ExchangeConstants.OK_MESSAGE_CAPTION_END
+					+ ExchangeConstants.OK_MESSAGE_SUBTYPE_BEGIN
+					+ getContext().getOkMessage().getSubtype()
+					+ ExchangeConstants.OK_MESSAGE_SUBTYPE_END);
 		}
 
 		getResponse().setStatus(HttpServletResponse.SC_OK);

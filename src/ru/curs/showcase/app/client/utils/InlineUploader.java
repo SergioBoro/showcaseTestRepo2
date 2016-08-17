@@ -2,15 +2,15 @@ package ru.curs.showcase.app.client.utils;
 
 import java.util.Map.Entry;
 
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.*;
+import com.google.gwt.user.client.rpc.*;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.api.CompleteHandler;
-
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.*;
-import com.google.gwt.user.client.rpc.*;
 
 /**
  * Класс для загрузки файлов на сервер прямо из XForm.
@@ -98,7 +98,8 @@ public class InlineUploader {
 		}
 	}
 
-	private void submitInlineForm(final DataPanelElementInfo dpei, final JavaScriptObject element) {
+	private void submitInlineForm(final DataPanelElementInfo dpei,
+			final JavaScriptObject element) {
 		boolean isFilesSelected = false;
 		try {
 			FormElement form = (FormElement) FormElement.as(element);
@@ -159,19 +160,36 @@ public class InlineUploader {
 					&& mess.contains(ExchangeConstants.OK_MESSAGE_TEXT_END)) {
 				result = true;
 
-				String textMessage =
-					mess.substring(mess.indexOf(ExchangeConstants.OK_MESSAGE_TEXT_BEGIN)
-							+ ExchangeConstants.OK_MESSAGE_TEXT_BEGIN.length(),
-							mess.lastIndexOf(ExchangeConstants.OK_MESSAGE_TEXT_END));
+				String textMessage = mess.substring(
+						mess.indexOf(ExchangeConstants.OK_MESSAGE_TEXT_BEGIN)
+								+ ExchangeConstants.OK_MESSAGE_TEXT_BEGIN.length(),
+						mess.lastIndexOf(ExchangeConstants.OK_MESSAGE_TEXT_END));
 
-				String typeMessage =
-					mess.substring(mess.indexOf(ExchangeConstants.OK_MESSAGE_TYPE_BEGIN)
-							+ ExchangeConstants.OK_MESSAGE_TYPE_BEGIN.length(),
-							mess.lastIndexOf(ExchangeConstants.OK_MESSAGE_TYPE_END));
+				String typeMessage = mess.substring(
+						mess.indexOf(ExchangeConstants.OK_MESSAGE_TYPE_BEGIN)
+								+ ExchangeConstants.OK_MESSAGE_TYPE_BEGIN.length(),
+						mess.lastIndexOf(ExchangeConstants.OK_MESSAGE_TYPE_END));
 
-				MessageBox.showMessageWithDetails(
-						AppCurrContext.getInstance().getBundleMap().get("okMessage"), textMessage,
-						"", MessageType.valueOf(typeMessage), false);
+				String captionMessage = mess.substring(
+						mess.indexOf(ExchangeConstants.OK_MESSAGE_CAPTION_BEGIN)
+								+ ExchangeConstants.OK_MESSAGE_CAPTION_BEGIN.length(),
+						mess.lastIndexOf(ExchangeConstants.OK_MESSAGE_CAPTION_END));
+
+				if ("null".equalsIgnoreCase(captionMessage)) {
+					captionMessage = AppCurrContext.getInstance().getBundleMap().get("okMessage");
+				}
+
+				String subtypeMessage = mess.substring(
+						mess.indexOf(ExchangeConstants.OK_MESSAGE_SUBTYPE_BEGIN)
+								+ ExchangeConstants.OK_MESSAGE_SUBTYPE_BEGIN.length(),
+						mess.lastIndexOf(ExchangeConstants.OK_MESSAGE_SUBTYPE_END));
+
+				if ("null".equalsIgnoreCase(subtypeMessage)) {
+					subtypeMessage = null;
+				}
+
+				MessageBox.showMessageWithDetails(captionMessage, textMessage, "",
+						MessageType.valueOf(typeMessage), false, subtypeMessage);
 
 			} else {
 				result = false;

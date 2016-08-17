@@ -2,29 +2,28 @@ package ru.curs.showcase.app.client;
 
 import java.util.*;
 
-import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.app.api.element.DataPanelElement;
-import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.app.api.grid.GridEvent;
-import ru.curs.showcase.app.api.grid.toolbar.ToolBarHelper;
-import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.app.client.api.*;
-import ru.curs.showcase.app.client.utils.*;
-
 import com.google.gwt.core.client.*;
-import com.google.gwt.json.client.*;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
 import com.sencha.gxt.core.client.util.IconHelper;
 import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.widget.core.client.event.*;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
+import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.element.DataPanelElement;
+import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.grid.toolbar.ToolBarHelper;
+import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.utils.*;
 
 /**
  * Класс-адаптер панели с внешним плагином типа JSLiveGrid.
@@ -47,8 +46,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	private final HorizontalPanel hpToolbar = new HorizontalPanel();
 	private final HorizontalPanel hpFooter = new HorizontalPanel();
 
-	private final MessagePopup mp = new MessagePopup(AppCurrContext.getInstance().getBundleMap()
-			.get("grid_message_popup_export_to_excel"));
+	private final MessagePopup mp = new MessagePopup(
+			AppCurrContext.getInstance().getBundleMap().get("grid_message_popup_export_to_excel"));
 
 	/**
 	 * Основная фабрика для GWT сериализации.
@@ -136,7 +135,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		setCallbackJSNIFunction();
 	}
 
-	public JSLiveGridPluginPanel(final CompositeContext context, final DataPanelElementInfo element) {
+	public JSLiveGridPluginPanel(final CompositeContext context,
+			final DataPanelElementInfo element) {
 		setContext(context);
 		setElementInfo(element);
 		setFirstLoading(true);
@@ -219,9 +219,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 	private void partialUpdateGridPanelByGrid(final GridData aLiveGridData) {
 
-		String params =
-			"'" + getElementInfo().getId().toString() + "'" + ", " + "'" + getDivIdPlugin()
-					+ "', " + aLiveGridData.getData();
+		String params = "'" + getElementInfo().getId().toString() + "'" + ", " + "'"
+				+ getDivIdPlugin() + "', " + aLiveGridData.getData();
 
 		pluginProc(gridMetadata.getJSInfo().getPartialUpdate(), params);
 
@@ -286,10 +285,9 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		// ----------------------------------------------------
 
 		final String div = "<div id='";
-		final String htmlForPlugin =
-			div + getDivIdPlugin() + "' style='width:"
-					+ gridMetadata.getUISettings().getGridWidth() + "; height:"
-					+ gridMetadata.getUISettings().getGridHeight() + "px'></div>";
+		final String htmlForPlugin = div + getDivIdPlugin() + "' style='width:"
+				+ gridMetadata.getUISettings().getGridWidth() + "; height:"
+				+ gridMetadata.getUISettings().getGridHeight() + "px'></div>";
 
 		// ----------------------------------------------------
 
@@ -351,18 +349,18 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			common.put("isAllowTextSelection", new JSONString("true"));
 		}
 
-		common.put("loadingMessage", new JSONString(AppCurrContext.getInstance().getBundleMap()
-				.get("jsGridLoadingMessage")));
+		common.put("loadingMessage", new JSONString(
+				AppCurrContext.getInstance().getBundleMap().get("jsGridLoadingMessage")));
 
-		common.put("noDataMessage", new JSONString(AppCurrContext.getInstance().getBundleMap()
-				.get("jsGridNoRecordsMessage")));
+		common.put("noDataMessage", new JSONString(
+				AppCurrContext.getInstance().getBundleMap().get("jsGridNoRecordsMessage")));
 
-		common.put("stringSelectedRecordIdsSeparator", new JSONString(
-				STRING_SELECTED_RECORD_IDS_SEPARATOR));
+		common.put("stringSelectedRecordIdsSeparator",
+				new JSONString(STRING_SELECTED_RECORD_IDS_SEPARATOR));
 
 		if (gridMetadata.getUISettings().getHaColumnHeader() != null) {
-			common.put("haColumnHeader", new JSONString(gridMetadata.getUISettings()
-					.getHaColumnHeader().toString().toLowerCase()));
+			common.put("haColumnHeader", new JSONString(
+					gridMetadata.getUISettings().getHaColumnHeader().toString().toLowerCase()));
 		}
 
 		if ((getElementInfo().getProcByType(DataPanelElementProcType.ADDRECORD) == null)
@@ -373,12 +371,12 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		if ((gridMetadata.getGridSorting() != null)
 				&& (gridMetadata.getGridSorting().getSortColId() != null)) {
 			common.put("sortColId", new JSONString(gridMetadata.getGridSorting().getSortColId()));
-			common.put("sortColDirection", new JSONString(gridMetadata.getGridSorting()
-					.getSortColDirection().toString()));
+			common.put("sortColDirection", new JSONString(
+					gridMetadata.getGridSorting().getSortColDirection().toString()));
 		}
 
-		common.put("pagingLinks",
-				new JSONString(String.valueOf(gridMetadata.getUISettings().getPagesButtonCount())));
+		common.put("pagingLinks", new JSONString(
+				String.valueOf(gridMetadata.getUISettings().getPagesButtonCount())));
 
 		metadata.put("common", common);
 
@@ -410,8 +408,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 			column.put("style", new JSONString(getCommonColumnStyle() + getColumnStyle(egcc)));
 
-			column.put("urlImageFileDownload", new JSONString(gridMetadata.getUISettings()
-					.getUrlImageFileDownload()));
+			column.put("urlImageFileDownload",
+					new JSONString(gridMetadata.getUISettings().getUrlImageFileDownload()));
 
 			columns.put(egcc.getId(), column);
 		}
@@ -431,8 +429,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 				if (vc.getStyle() != null) {
 					virtualColumn.put("style", new JSONString(vc.getStyle()));
 				}
-				virtualColumn.put("virtualColumnType", new JSONString(vc.getVirtualColumnType()
-						.toString()));
+				virtualColumn.put("virtualColumnType",
+						new JSONString(vc.getVirtualColumnType().toString()));
 
 				virtualColumns.put(vc.getId(), virtualColumn);
 			}
@@ -495,20 +493,19 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		try {
 
-			runGrid(gridMetadata.getJSInfo().getCreateProc(), params, gridMetadata.getJSInfo()
-					.getRequiredJS().toArray());
+			runGrid(gridMetadata.getJSInfo().getCreateProc(), params,
+					gridMetadata.getJSInfo().getRequiredJS().toArray());
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
 				MessageBox.showMessageWithDetails(
 						AppCurrContext.getInstance().getBundleMap()
-								.get("error_of_plugin_painting"), e.getMessage(),
-						GeneralException.generateDetailedInfo(e.getCause()),
+								.get("error_of_plugin_painting"),
+						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
 						GeneralException.getMessageType(e.getCause()),
-						GeneralException.needDetailedInfo(e.getCause()));
+						GeneralException.needDetailedInfo(e.getCause()), null);
 			} else {
-				MessageBox.showSimpleMessage(
-						AppCurrContext.getInstance().getBundleMap()
-								.get("error_of_plugin_painting"), e.getMessage());
+				MessageBox.showSimpleMessage(AppCurrContext.getInstance().getBundleMap()
+						.get("error_of_plugin_painting"), e.getMessage());
 			}
 		}
 
@@ -516,9 +513,10 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 	// CHECKSTYLE:ON
 
-	private native void runGrid(final String procName, final String params, final Object[] list) /*-{
+	private native void runGrid(final String procName, final String params,
+			final Object[] list) /*-{
 		if (list != null) {
-			for ( var x = 0; x < list.length; x++) {
+			for (var x = 0; x < list.length; x++) {
 				$wnd.safeIncludeJS(list[x]);
 			}
 		}
@@ -562,8 +560,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 				dh.addParam(getContext().getClass().getName(),
 						getContext().toParamForHttpPost(getObjectSerializer()));
-				dh.addParam(DataPanelElementInfo.class.getName(), getElementInfo()
-						.toParamForHttpPost(getObjectSerializer()));
+				dh.addParam(DataPanelElementInfo.class.getName(),
+						getElementInfo().toParamForHttpPost(getObjectSerializer()));
 
 				dh.addParam("recordId", recId);
 
@@ -598,10 +596,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			params.put("elementInfoValue",
 					new JSONString(getElementInfo().toParamForHttpPost(getObjectSerializer())));
 		} catch (SerializationException e) {
-			params.put(
-					"error",
-					new JSONString(AppCurrContext.getInstance().getBundleMap()
-							.get("jsGridSerializationError")));
+			params.put("error", new JSONString(
+					AppCurrContext.getInstance().getBundleMap().get("jsGridSerializationError")));
 		}
 
 		return params;
@@ -625,9 +621,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		} else {
 			gridContext.setEditorData(null);
 
-			String json =
-				"{\"addrecorddata\":{\"currentRecordId\":\"" + gridContext.getCurrentRecordId()
-						+ "\"}}";
+			String json = "{\"addrecorddata\":{\"currentRecordId\":\""
+					+ gridContext.getCurrentRecordId() + "\"}}";
 			gridContext.setAddRecordData(json);
 		}
 
@@ -641,10 +636,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			params.put("elementInfoValue",
 					new JSONString(getElementInfo().toParamForHttpPost(getObjectSerializer())));
 		} catch (SerializationException e) {
-			params.put(
-					"error",
-					new JSONString(AppCurrContext.getInstance().getBundleMap()
-							.get("jsGridSerializationError")));
+			params.put("error", new JSONString(
+					AppCurrContext.getInstance().getBundleMap().get("jsGridSerializationError")));
 		}
 
 		return params;
@@ -657,9 +650,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			try {
 
 				@SuppressWarnings("unchecked")
-				List<GridEvent> eventsNew =
-					(List<GridEvent>) getObjectSerializer().createStreamReader(stringEvents)
-							.readObject();
+				List<GridEvent> eventsNew = (List<GridEvent>) getObjectSerializer()
+						.createStreamReader(stringEvents).readObject();
 
 				List<GridEvent> eventsAdd;
 				if (gridMetadata.getEventManager().getEvents().size() == 0) {
@@ -685,9 +677,11 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 				gridMetadata.getEventManager().getEvents().addAll(eventsAdd);
 
 			} catch (SerializationException e) {
-				MessageBox.showSimpleMessage("afterHttpPostFromPlugin", AppCurrContext
-						.getInstance().getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
-						+ " Events: " + e.getMessage());
+				MessageBox
+						.showSimpleMessage("afterHttpPostFromPlugin",
+								AppCurrContext.getInstance().getBundleMap()
+										.get(JSGRID_DESERIALIZATION_ERROR) + " Events: "
+										+ e.getMessage());
 			}
 		}
 
@@ -704,9 +698,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			try {
 
 				@SuppressWarnings("unchecked")
-				List<GridEvent> eventsNew =
-					(List<GridEvent>) getObjectSerializer().createStreamReader(stringEvents)
-							.readObject();
+				List<GridEvent> eventsNew = (List<GridEvent>) getObjectSerializer()
+						.createStreamReader(stringEvents).readObject();
 
 				for (ru.curs.showcase.app.api.grid.GridEvent ev : eventsNew) {
 					for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridMetadata
@@ -720,9 +713,11 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 				}
 
 			} catch (SerializationException e) {
-				MessageBox.showSimpleMessage("afterHttpPostFromPlugin", AppCurrContext
-						.getInstance().getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
-						+ " Events: " + e.getMessage());
+				MessageBox
+						.showSimpleMessage("afterHttpPostFromPlugin",
+								AppCurrContext.getInstance().getBundleMap()
+										.get(JSGRID_DESERIALIZATION_ERROR) + " Events: "
+										+ e.getMessage());
 			}
 		}
 
@@ -732,9 +727,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		if (!stringMessage.isEmpty()) {
 			try {
-				UserMessage um =
-					(UserMessage) getObjectSerializer().createStreamReader(stringMessage)
-							.readObject();
+				UserMessage um = (UserMessage) getObjectSerializer()
+						.createStreamReader(stringMessage).readObject();
 				if (um != null) {
 
 					String textMessage = um.getText();
@@ -747,15 +741,25 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 						typeMessage = MessageType.INFO;
 					}
 
-					MessageBox.showMessageWithDetails(AppCurrContext.getInstance().getBundleMap()
-							.get("okMessage"), textMessage, "", typeMessage, false);
+					String captionMessage = um.getCaption();
+					if (captionMessage == null) {
+						captionMessage =
+							AppCurrContext.getInstance().getBundleMap().get("okMessage");
+					}
+
+					String subtypeMessage = um.getSubtype();
+
+					MessageBox.showMessageWithDetails(captionMessage, textMessage, "", typeMessage,
+							false, subtypeMessage);
 
 				}
 
 			} catch (SerializationException e) {
-				MessageBox.showSimpleMessage("pluginShowMessage", AppCurrContext.getInstance()
-						.getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
-						+ " UserMessage: " + e.getMessage());
+				MessageBox
+						.showSimpleMessage("pluginShowMessage",
+								AppCurrContext.getInstance().getBundleMap()
+										.get(JSGRID_DESERIALIZATION_ERROR) + " UserMessage: "
+										+ e.getMessage());
 			}
 		}
 
@@ -874,9 +878,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			}
 		}
 
-		Action ac =
-			gridMetadata.getEventManager().getSelectionActionForDependentElements(
-					selectedRecordIds);
+		Action ac = gridMetadata.getEventManager()
+				.getSelectionActionForDependentElements(selectedRecordIds);
 
 		runAction(ac);
 	}
@@ -937,9 +940,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		style = style + "width:" + egcc.getWidth() + "px;";
 
 		if (egcc.getHorizontalAlignment() != null) {
-			style =
-				style + "text-align:" + egcc.getHorizontalAlignment().toString().toLowerCase()
-						+ ";";
+			style = style + "text-align:" + egcc.getHorizontalAlignment().toString().toLowerCase()
+					+ ";";
 		}
 
 		return style;
@@ -1092,8 +1094,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			@SuppressWarnings("unused")
 			SerializationStreamFactory ssfExcel = dh.getAddObjectSerializer();
 
-			dh.addParam(getDetailedContext().getClass().getName(), getDetailedContext()
-					.toParamForHttpPost(getObjectSerializer()));
+			dh.addParam(getDetailedContext().getClass().getName(),
+					getDetailedContext().toParamForHttpPost(getObjectSerializer()));
 			dh.addParam(DataPanelElementInfo.class.getName(),
 					getElementInfo().toParamForHttpPost(getObjectSerializer()));
 
@@ -1104,9 +1106,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 
 		} catch (SerializationException e) {
 			mp.hide();
-			MessageBox.showSimpleMessage(
-					AppCurrContext.getInstance().getBundleMap()
-							.get("grid_error_caption_export_excel"), e.getMessage());
+			MessageBox.showSimpleMessage(AppCurrContext.getInstance().getBundleMap()
+					.get("grid_error_caption_export_excel"), e.getMessage());
 		}
 	}
 
@@ -1149,9 +1150,11 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 	private void addStaticItemToToolBar(final ToolBar toolBar) {
 		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
 			final TextButton exportToExcelCurrentPage =
-				new TextButton("", IconHelper.getImageResource(UriUtils
-						.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE), 16,
-						16));
+				new TextButton("",
+						IconHelper.getImageResource(
+								UriUtils.fromSafeConstant(
+										Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE),
+								16, 16));
 
 			exportToExcelCurrentPage.setTitle(AppCurrContext.getInstance().getBundleMap()
 					.get("grid_caption_export_to_excel_current_page"));
@@ -1164,10 +1167,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			toolBar.add(exportToExcelCurrentPage);
 		}
 		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
-			final TextButton exportToExcelAll =
-				new TextButton("", IconHelper.getImageResource(
-						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL), 16,
-						16));
+			final TextButton exportToExcelAll = new TextButton("", IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL), 16, 16));
 
 			exportToExcelAll.setTitle(AppCurrContext.getInstance().getBundleMap()
 					.get("grid_caption_export_to_excel_all"));
@@ -1180,9 +1181,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 			toolBar.add(exportToExcelAll);
 		}
 		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
-			final TextButton copyToClipboard =
-				new TextButton("", IconHelper.getImageResource(
-						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
+			final TextButton copyToClipboard = new TextButton("", IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
 
 			copyToClipboard.setTitle(AppCurrContext.getInstance().getBundleMap()
 					.get("grid_caption_copy_to_clipboard"));
@@ -1196,10 +1196,10 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		}
 
 		if (gridMetadata.getUISettings().isVisibleFilter()) {
-			final TextButton filter =
-				new TextButton("", IconHelper.getImageResource(
-						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_FILTER), 16, 16));
-			filter.setTitle(AppCurrContext.getInstance().getBundleMap().get("grid_caption_filter"));
+			final TextButton filter = new TextButton("", IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_FILTER), 16, 16));
+			filter.setTitle(
+					AppCurrContext.getInstance().getBundleMap().get("grid_caption_filter"));
 			final JSLiveGridPluginPanel liveGridPanel = this;
 			filter.addSelectHandler(new SelectHandler() {
 				@Override
@@ -1267,11 +1267,10 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		}
 
 		if (getElementInfo().getProcByType(DataPanelElementProcType.ADDRECORD) != null) {
-			final TextButton addRecord =
-				new TextButton("", IconHelper.getImageResource(
-						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_ADD_RECORD), 16, 16));
-			addRecord.setTitle(AppCurrContext.getInstance().getBundleMap()
-					.get("grid_caption_add_record"));
+			final TextButton addRecord = new TextButton("", IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_ADD_RECORD), 16, 16));
+			addRecord.setTitle(
+					AppCurrContext.getInstance().getBundleMap().get("grid_caption_add_record"));
 			addRecord.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {
@@ -1282,9 +1281,8 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		}
 		if ((getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null)
 				&& gridMetadata.getUISettings().isVisibleSave()) {
-			final TextButton save =
-				new TextButton("", IconHelper.getImageResource(
-						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_SAVE), 16, 16));
+			final TextButton save = new TextButton("", IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_SAVE), 16, 16));
 			save.setTitle(AppCurrContext.getInstance().getBundleMap().get("grid_caption_save"));
 			save.addSelectHandler(new SelectHandler() {
 				@Override
@@ -1296,10 +1294,10 @@ public class JSLiveGridPluginPanel extends BasicElementPanelBasis {
 		}
 		if ((getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null)
 				&& gridMetadata.getUISettings().isVisibleRevert()) {
-			final TextButton revert =
-				new TextButton("", IconHelper.getImageResource(
-						UriUtils.fromSafeConstant(Constants.GRID_IMAGE_REVERT), 16, 16));
-			revert.setTitle(AppCurrContext.getInstance().getBundleMap().get("grid_caption_revert"));
+			final TextButton revert = new TextButton("", IconHelper.getImageResource(
+					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_REVERT), 16, 16));
+			revert.setTitle(
+					AppCurrContext.getInstance().getBundleMap().get("grid_caption_revert"));
 			revert.addSelectHandler(new SelectHandler() {
 				@Override
 				public void onSelect(final SelectEvent event) {

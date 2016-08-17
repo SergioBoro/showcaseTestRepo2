@@ -509,7 +509,7 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 								.get("error_of_plugin_painting"),
 						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
 						GeneralException.getMessageType(e.getCause()),
-						GeneralException.needDetailedInfo(e.getCause()));
+						GeneralException.needDetailedInfo(e.getCause()), null);
 			} else {
 				MessageBox.showSimpleMessage(AppCurrContext.getInstance().getBundleMap()
 						.get("error_of_plugin_painting"), e.getMessage());
@@ -756,9 +756,16 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 						typeMessage = MessageType.INFO;
 					}
 
-					MessageBox.showMessageWithDetails(
-							AppCurrContext.getInstance().getBundleMap().get("okMessage"),
-							textMessage, "", typeMessage, false);
+					String captionMessage = um.getCaption();
+					if (captionMessage == null) {
+						captionMessage =
+							AppCurrContext.getInstance().getBundleMap().get("okMessage");
+					}
+
+					String subtypeMessage = um.getSubtype();
+
+					MessageBox.showMessageWithDetails(captionMessage, textMessage, "", typeMessage,
+							false, subtypeMessage);
 
 				}
 
@@ -1154,7 +1161,8 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 				@Override
 				public void onSelect(final SelectEvent event) {
 					MessageBox.showMessageWithDetails("Информация",
-							"Данный функционал временно отключен", "", MessageType.INFO, false);
+							"Данный функционал временно отключен", "", MessageType.INFO, false,
+							null);
 
 					// exportToExcel(exportToExcelCurrentPage,
 					// GridToExcelExportType.CURRENTPAGE);

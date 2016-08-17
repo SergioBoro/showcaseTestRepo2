@@ -70,7 +70,7 @@ public class CelestaHelper<T> {
 		if (cm != null) {
 			String mess = cm.getMessage();
 
-			um = new UserMessage(mess, mess, MessageType.INFO);
+			um = new UserMessage(mess, mess, MessageType.INFO, cm.getCaption(), cm.getSubkind());
 			UserMessageFactory factory = new UserMessageFactory();
 			um = factory.build(um);
 

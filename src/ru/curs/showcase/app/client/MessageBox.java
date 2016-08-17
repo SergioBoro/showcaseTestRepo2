@@ -3,8 +3,6 @@
  */
 package ru.curs.showcase.app.client;
 
-import ru.curs.showcase.app.api.MessageType;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.*;
@@ -13,6 +11,7 @@ import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.ui.*;
 
+import ru.curs.showcase.app.api.MessageType;
 
 /**
  * Интерфейс, ссылающийся на иконки, которые могут понадобится в окне сообщений
@@ -75,8 +74,8 @@ public final class MessageBox {
 	/**
 	 * GWT сервис для доступа к иконкам, хранящимся на сервере.
 	 */
-	private static ImagesForDialogBox images = (ImagesForDialogBox) GWT
-			.create(ImagesForDialogBox.class);
+	private static ImagesForDialogBox images =
+		(ImagesForDialogBox) GWT.create(ImagesForDialogBox.class);
 
 	public static final String SIZE_ONE_HUNDRED_PERCENTS = "100%";
 
@@ -167,12 +166,14 @@ public final class MessageBox {
 	 * @param showDetailedMessage
 	 *            - переменная, определяющая показывать ли в сообщении
 	 *            "подробности"
+	 * @param messageSubtype
+	 *            - подтип сообщения
 	 * @return возвращает DialogBox
 	 * 
 	 */
 	public static DialogBox showMessageWithDetails(final String caption, final String message,
 			final String hideMessage, final MessageType messageType,
-			final Boolean showDetailedMessage) {
+			final Boolean showDetailedMessage, final String messageSubtype) {
 		final DialogBox dlg = createDialogBoxWithClosingOnEsc();
 
 		dlg.getElement().getStyle().setZIndex(Z_INDEX);
@@ -204,25 +205,27 @@ public final class MessageBox {
 
 		Image im1 = new Image();
 
-		switch (messageType) {
+		if (messageSubtype == null) {
+			switch (messageType) {
+			case INFO:
+				im1.setResource(images.getInfoIcon());
+				break;
 
-		case INFO:
-			im1.setResource(images.getInfoIcon());
-			// im1.setUrl(Constants.MESSAGE_INFO_IMAGE);
-			break;
+			case WARNING:
+				im1.setResource(images.getAlertIcon());
+				break;
 
-		case WARNING:
-			im1.setResource(images.getAlertIcon());
-			// im1.setUrl(Constants.MESSAGE_ALERT_IMAGE);
-			break;
+			case ERROR:
+				im1.setResource(images.getErrorIcon());
+				break;
 
-		case ERROR:
-			im1.setResource(images.getErrorIcon());
-			// im1.setUrl(Constants.MESSAGE_ERROR_IMAGE);
-			break;
-
-		default:
-			break;
+			default:
+				break;
+			}
+		} else {
+			String url = Window.Location.getProtocol() + "//" + Window.Location.getHost()
+					+ Window.Location.getPath() + messageSubtype;
+			im1.setUrl(url);
 		}
 
 		horPan.add(im1);
@@ -311,6 +314,6 @@ public final class MessageBox {
 		ok.setFocus(true);
 
 		return dlg;
-
 	}
+
 }

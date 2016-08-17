@@ -53,6 +53,10 @@ public final class ExchangeConstants implements SerializableElement {
 	public static final String OK_MESSAGE_TEXT_END = "okMessageTextEnd";
 	public static final String OK_MESSAGE_TYPE_BEGIN = "okMessageTypeBegin";
 	public static final String OK_MESSAGE_TYPE_END = "okMessageTypeEnd";
+	public static final String OK_MESSAGE_CAPTION_BEGIN = "okMessageCaptionBegin";
+	public static final String OK_MESSAGE_CAPTION_END = "okMessageCaptionEnd";
+	public static final String OK_MESSAGE_SUBTYPE_BEGIN = "okMessageSubtypeBegin";
+	public static final String OK_MESSAGE_SUBTYPE_END = "okMessageSubtypeEnd";
 
 	public static final String NOT_CLEAR_UPLOAD_TAG = "notClearUpload";
 

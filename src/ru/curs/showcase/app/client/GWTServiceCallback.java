@@ -1,12 +1,12 @@
 package ru.curs.showcase.app.client;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.element.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.utils.AccessToDomModel;
-
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * Базовый класс для асинхронных колбэков при вызове сервисов gwt.
@@ -29,7 +29,6 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 
 	@Override
 	public void onFailure(final Throwable caught) {
-
 		if (caught.getMessage().contains(ExchangeConstants.SESSION_NOT_AUTH_SIGN)) {
 
 			Window.Location.assign(AccessToDomModel.getAppContextPath() + "/sestimeout.jsp");
@@ -43,21 +42,19 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 				str = msgErrorCaption;
 			}
 
-			if (GeneralException.generateDetailedInfo(caught).contains(
-					"com.google.gwt.user.client.rpc.StatusCodeException")) {
+			if (GeneralException.generateDetailedInfo(caught)
+					.contains("com.google.gwt.user.client.rpc.StatusCodeException")) {
 
-				MessageBox
-						.showMessageWithDetails(
-								"Нет связи с сервером",
-								"Проверьте наличие связи с сервером или обратитесь к администратору вашей сети",
-								GeneralException.generateDetailedInfo(caught), MessageType.ERROR,
-								true);
+				MessageBox.showMessageWithDetails("Нет связи с сервером",
+						"Проверьте наличие связи с сервером или обратитесь к администратору вашей сети",
+						GeneralException.generateDetailedInfo(caught), MessageType.ERROR, true,
+						null);
 
 			} else {
 				MessageBox.showMessageWithDetails(str, caught.getMessage(),
-					GeneralException.generateDetailedInfo(caught),
-					GeneralException.getMessageType(caught),
-					GeneralException.needDetailedInfo(caught));
+						GeneralException.generateDetailedInfo(caught),
+						GeneralException.getMessageType(caught),
+						GeneralException.needDetailedInfo(caught), null);
 			}
 
 			// MessageBox.showMessageWithDetails(msgErrorCaption,
@@ -96,12 +93,15 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 			typeMessage = MessageType.INFO;
 		}
 
-		// MessageBox.showSimpleMessage(dataPanelElement.getClass().getName(),
-		// okMessage);
+		String captionMessage = okMessage.getCaption();
+		if (captionMessage == null) {
+			captionMessage = AppCurrContext.getInstance().getBundleMap().get("okMessage");
+		}
 
-		MessageBox.showMessageWithDetails(
-				AppCurrContext.getInstance().getBundleMap().get("okMessage"), textMessage, "",
-				typeMessage, false);
+		String subtypeMessage = okMessage.getSubtype();
+
+		MessageBox.showMessageWithDetails(captionMessage, textMessage, "", typeMessage, false,
+				subtypeMessage);
 
 	}
 }
