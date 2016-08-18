@@ -9,10 +9,22 @@
 <message id="test3" type="INFO">
 Информация
 </message>
-<message id="555" type="INFO">
-Отформатированное сообщение: %s. Спасибо!
-</message>
+
 <message id="556" type="INFO">
 Составное сообщение + 
 </message>
+
+
+
+<message id="555" type="ERROR"  
+caption="Отладочный заголовок"   subtype="solutions/default/resources/group_icon_default.png"  >
+Отформатированное2 сообщение: %s. Спасибо!
+</message>
+
+
+
+
 </messages>
+
+
+

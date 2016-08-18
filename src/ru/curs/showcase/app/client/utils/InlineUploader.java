@@ -29,6 +29,8 @@ public class InlineUploader {
 
 	private boolean isAtLeastOneFileSelected = false;
 
+	private static SerializationStreamFactory ssf = null;
+
 	/**
 	 * Обработчик окончания загрузки файлов.
 	 */
@@ -151,6 +153,18 @@ public class InlineUploader {
 		return $wnd.document.getElementById(id);
 	}-*/;
 
+	/**
+	 * Возвращает "сериализатор" для gwt объектов.
+	 * 
+	 * @return - SerializationStreamFactory.
+	 */
+	private static SerializationStreamFactory getObjectSerializer() {
+		if (ssf == null) {
+			ssf = WebUtils.createStdGWTSerializer();
+		}
+		return ssf;
+	}
+
 	public static synchronized void onSubmitComplete(final String iframeName) {
 		Boolean result = true;
 
@@ -193,9 +207,16 @@ public class InlineUploader {
 
 			} else {
 				result = false;
-				MessageBox.showSimpleMessage(
-						AppCurrContext.getInstance().getBundleMap().get("xforms_upload_error"),
-						mess);
+				try {
+					Throwable caught =
+						(Throwable) getObjectSerializer().createStreamReader(mess).readObject();
+
+					WebUtils.onFailure(caught, "Error");
+
+				} catch (SerializationException e) {
+					MessageBox.showSimpleMessage("showErrorMessage()",
+							"DeserializationError: " + e.getMessage());
+				}
 			}
 		}
 

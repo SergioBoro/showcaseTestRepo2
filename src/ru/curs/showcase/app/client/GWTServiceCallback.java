@@ -1,12 +1,10 @@
 package ru.curs.showcase.app.client;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.element.*;
-import ru.curs.showcase.app.api.services.GeneralException;
-import ru.curs.showcase.app.client.utils.AccessToDomModel;
+import ru.curs.showcase.app.client.utils.WebUtils;
 
 /**
  * Базовый класс для асинхронных колбэков при вызове сервисов gwt.
@@ -29,54 +27,8 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 
 	@Override
 	public void onFailure(final Throwable caught) {
-		if (caught.getMessage().contains(ExchangeConstants.SESSION_NOT_AUTH_SIGN)) {
-			Window.Location.assign(AccessToDomModel.getAppContextPath() + "/sestimeout.jsp");
-		} else {
 
-			if ((GeneralException.getOriginalExceptionClass(caught) != null) && GeneralException
-					.getOriginalExceptionClass(caught).contains("ValidateException")) {
-
-				String textMessage = caught.getMessage();
-				if ((textMessage == null) || textMessage.isEmpty()) {
-					textMessage = "";
-				}
-
-				MessageType typeMessage = GeneralException.getMessageType(caught);
-				if (typeMessage == null) {
-					typeMessage = MessageType.ERROR;
-				}
-
-				String captionMessage = GeneralException.getMessageCaption(caught);
-				if (captionMessage == null) {
-					captionMessage = msgErrorCaption;
-				}
-
-				String subtypeMessage = GeneralException.getMessageSubtype(caught);
-
-				MessageBox.showMessageWithDetails(captionMessage, textMessage, "", typeMessage,
-						false, subtypeMessage);
-
-			} else {
-				String str = GeneralException.getMessageType(caught).getName();
-				if (GeneralException.getMessageType(caught) == MessageType.ERROR) {
-					str = msgErrorCaption;
-				}
-
-				if (GeneralException.generateDetailedInfo(caught)
-						.contains("com.google.gwt.user.client.rpc.StatusCodeException")) {
-					MessageBox.showMessageWithDetails("Нет связи с сервером",
-							"Проверьте наличие связи с сервером или обратитесь к администратору вашей сети",
-							GeneralException.generateDetailedInfo(caught), MessageType.ERROR, true,
-							null);
-				} else {
-					MessageBox.showMessageWithDetails(str, caught.getMessage(),
-							GeneralException.generateDetailedInfo(caught),
-							GeneralException.getMessageType(caught),
-							GeneralException.needDetailedInfo(caught), null);
-				}
-			}
-
-		}
+		WebUtils.onFailure(caught, msgErrorCaption);
 
 	}
 

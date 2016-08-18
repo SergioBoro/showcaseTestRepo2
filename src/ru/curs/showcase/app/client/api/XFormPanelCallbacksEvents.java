@@ -120,9 +120,16 @@ public final class XFormPanelCallbacksEvents {
 	public static void showErrorMessage(final String stringMessage) {
 		if (!stringMessage.isEmpty()) {
 			String mess = stringMessage.replace("<root>", "").replace("</root>", "");
-			MessageBox.showMessageWithDetails(
-					AppCurrContext.getInstance().getBundleMap().get("okMessage"), mess, "",
-					MessageType.ERROR, false, null);
+			try {
+				Throwable caught =
+					(Throwable) getObjectSerializer().createStreamReader(mess).readObject();
+
+				WebUtils.onFailure(caught, "Error");
+
+			} catch (SerializationException e) {
+				MessageBox.showSimpleMessage("showErrorMessage()",
+						"DeserializationError: " + e.getMessage());
+			}
 		}
 	}
 

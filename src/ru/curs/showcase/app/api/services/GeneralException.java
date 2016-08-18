@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.api.services;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
 
@@ -11,7 +13,7 @@ import ru.curs.showcase.app.api.datapanel.DataPanelElementContext;
  * @author den
  * 
  */
-public class GeneralException extends RuntimeException {
+public class GeneralException extends RuntimeException implements IsSerializable {
 
 	private static final String EXCEPTION_CLASS = "Класс ошибки: ";
 

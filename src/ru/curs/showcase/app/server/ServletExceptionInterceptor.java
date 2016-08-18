@@ -8,8 +8,12 @@ import javax.servlet.http.*;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.*;
 
+import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.server.rpc.RPC;
+
 import ru.curs.showcase.app.api.BrowserType;
-import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.ServletUtils;
 import ru.curs.showcase.util.exception.BaseException;
@@ -24,14 +28,12 @@ import ru.curs.showcase.util.exception.BaseException;
 public final class ServletExceptionInterceptor {
 
 	private static final String ERROR_MES = "Сообщение об ошибке";
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(ServletExceptionInterceptor.class);
+	private static final Logger LOGGER =
+		LoggerFactory.getLogger(ServletExceptionInterceptor.class);
 
-	@SuppressWarnings("unused")
 	@Pointcut("args(request, response) && execution(public void javax.servlet.http.HttpServlet.do*(..))")
-	private
-			void servletExecutionPointcut(final HttpServletRequest request,
-					final HttpServletResponse response) {
+	private void servletExecutionPointcut(final HttpServletRequest request,
+			final HttpServletResponse response) {
 	};
 
 	@Before("servletExecutionPointcut(request, response)")
@@ -51,7 +53,32 @@ public final class ServletExceptionInterceptor {
 			}
 		}
 
-		String mess = exc.getLocalizedMessage();
+		String mess = null;
+		if (request.getRequestURL().toString().toLowerCase()
+				.contains("/secured/upload".toLowerCase())
+				|| request.getRequestURL().toString().toLowerCase()
+						.contains("/secured/submit".toLowerCase())
+				|| request.getRequestURL().toString().toLowerCase()
+						.contains("/secured/sqlTransform".toLowerCase())
+				|| request.getRequestURL().toString().toLowerCase()
+						.contains("/secured/jythonTransform".toLowerCase())
+				|| request.getRequestURL().toString().toLowerCase()
+						.contains("/secured/xslttransformer".toLowerCase())
+				|| request.getRequestURL().toString().toLowerCase()
+						.contains("/secured/xslTransform".toLowerCase())) {
+
+			try {
+				mess = RPC.encodeResponseForSuccess(
+						FakeService.class.getMethod("serializeThrowable"), exc);
+			} catch (NoSuchMethodException | SecurityException | SerializationException e1) {
+				throw GeneralExceptionFactory.build(e1);
+			}
+
+		} else {
+
+			mess = exc.getLocalizedMessage();
+
+		}
 
 		String userAgent = ServletUtils.getUserAgent(request);
 		BrowserType browserType = BrowserType.detect(userAgent);
@@ -61,12 +88,12 @@ public final class ServletExceptionInterceptor {
 		}
 
 		boolean needOKStatus = false;
-		if ((browserType == BrowserType.IE)
-				&& request.getRequestURL().toString().toLowerCase()
-						.contains("gridFileDownload".toLowerCase())) {
+		if ((browserType == BrowserType.IE) && request.getRequestURL().toString().toLowerCase()
+				.contains("gridFileDownload".toLowerCase())) {
 			needOKStatus = true;
 		}
 
 		ServletUtils.fillErrorResponce(response, mess, needOKStatus);
+
 	}
 }
