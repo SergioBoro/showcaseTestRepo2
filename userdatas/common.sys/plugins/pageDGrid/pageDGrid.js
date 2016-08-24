@@ -406,7 +406,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 							i++;
 						} else {
 							for(var k11 in columns) {
-								if(columns[k11]["label"] == metadata["virtualColumns"][k2]["id"]){
+								if(columns[k11]["id"] == metadata["virtualColumns"][k2]["id"]){
 									compoundColumns.push(columns[k11]);
 									break;
 								}
