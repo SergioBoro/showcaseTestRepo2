@@ -142,8 +142,6 @@ public final class AppInfoSingleton {
 
 	private Map<String, Object> sessionAttributesMap = null;
 
-	private boolean debugSolutionModeEnabled = false;
-
 	/**
 	 * Переменная класса, содержащего в себе карту со всеми свойствами из файла
 	 * generalapp.properties.
@@ -709,14 +707,6 @@ public final class AppInfoSingleton {
 
 	public void setOldSesid(final String aOldSesid) {
 		this.oldSesid = aOldSesid;
-	}
-
-	public boolean isDebugSolutionModeEnabled() {
-		return debugSolutionModeEnabled;
-	}
-
-	public void setDebugSolutionModeEnabled(final boolean oDebugSolutionModeEnabled) {
-		this.debugSolutionModeEnabled = oDebugSolutionModeEnabled;
 	}
 
 	public List<String> getAdditionalParametersList() {

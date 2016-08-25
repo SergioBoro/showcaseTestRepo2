@@ -60,14 +60,6 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 				RedirectionUserdataProp.readAndSetRedirectproperties();
 
-				String stateMethod =
-					UserDataUtils.getGeneralOptionalProp("jython.getStateMethod.isNew");
-				if (stateMethod != null) {
-					stateMethod = stateMethod.trim();
-				}
-				AppInfoSingleton.getAppInfo().setDebugSolutionModeEnabled(
-						Boolean.parseBoolean(stateMethod));
-
 				WebApplicationContext ctx =
 					WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext());
 				actx = (AbstractRefreshableWebApplicationContext) ctx;
@@ -76,10 +68,6 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 				try {
 					try {
 						Properties celestaProps = UserDataUtils.getGeneralCelestaProperties();
-
-						celestaProps.setProperty("jython.getStateMethod.isNew", String
-								.valueOf(AppInfoSingleton.getAppInfo()
-										.isDebugSolutionModeEnabled()));
 
 						String javaLibPath = celestaProps.getProperty("javalib.path");
 						for (String path : JythonIterpretatorFactory

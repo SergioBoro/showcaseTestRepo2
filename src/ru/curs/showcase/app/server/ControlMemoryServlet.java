@@ -7,7 +7,7 @@ import javax.servlet.http.*;
 
 import org.slf4j.*;
 
-import ru.curs.celesta.*;
+import ru.curs.celesta.Celesta;
 import ru.curs.showcase.runtime.*;
 
 /**
@@ -42,15 +42,6 @@ public class ControlMemoryServlet extends HttpServlet {
 				break;
 			case "jython":
 				JythonIterpretatorFactory.getInstance().clear();
-				break;
-			case "jythonCelesta":
-				try {
-					Celesta.getInstance().clearInterpretersPool();
-				} catch (CelestaException e) {
-					if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
-						LOGGER.error("Ошибка очистки пула интерпретаторов Сelesta ", e);
-					}
-				}
 				break;
 			case "celestaReinitialize":
 				try {
