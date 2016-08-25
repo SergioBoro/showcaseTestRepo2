@@ -3,9 +3,10 @@ package ru.curs.showcase.app.server.redirection;
 import java.io.*;
 import java.util.*;
 
+import org.slf4j.*;
+
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.TextUtils;
-import ru.curs.showcase.util.exception.*;
 
 /**
  * Получает настройки приложения, касающиеся переадресации статического
@@ -26,6 +27,8 @@ public final class RedirectionUserdataProp {
 	public static final String REDIRECTION_PROC = "redirection.proc";
 
 	private static String redirectPropFile;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(RedirectionUserdataProp.class);
 
 	// private static String redirectionServerUrl;
 
@@ -66,19 +69,20 @@ public final class RedirectionUserdataProp {
 				prop.load(reader);
 			}
 		} catch (IOException e) {
-			throw new SettingsFileOpenException(getRedirectPropFile(),
-					SettingsFileType.GENERAL_APP_PROPERTIES);
+			prop = null;
+			LOGGER.warn("ВНИМАНИЕ! Для использования возможности"
+					+ " переадресации статического контента,"
+					+ " разместите файл redirect.properties в корневой директории папки"
+					+ " пользовательских данных. Если Вы не используете переадресацию,"
+					+ " проигнорируйте данное сообщение: " + e.getMessage());
 		}
 		return prop;
 	}
 
 	public static void readAndSetRedirectproperties() {
 		Properties prop;
-		try {
-			prop = getRedirectOptionalProp();
-		} catch (SettingsFileOpenException e) {
-			prop = null;
-		}
+		prop = getRedirectOptionalProp();
+
 		if (prop == null) {
 			return;
 		}
