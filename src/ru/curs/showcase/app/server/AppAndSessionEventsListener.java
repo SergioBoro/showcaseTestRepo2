@@ -19,7 +19,6 @@ import ru.curs.showcase.app.server.redirection.RedirectionUserdataProp;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
 import ru.curs.showcase.security.logging.*;
-import ru.curs.showcase.util.exception.SettingsFileRequiredPropException;
 
 /**
  * Перехватчик старта приложения и сессии. Служит для инициализации приложения.
@@ -51,7 +50,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		if (AppInfoSingleton.getAppInfo().getShowcaseAppOnStartMessage().isEmpty()) {
 			try {
 				AppInfoSingleton.getAppInfo().getGeneralAppProperties().initialize();
-			} catch (SettingsFileRequiredPropException e) {
+			} catch (Exception e) {
 				LOGGER.error(e.getMessage());
 				AppInfoSingleton.getAppInfo().setShowcaseAppOnStartMessage(e.getMessage());
 			}

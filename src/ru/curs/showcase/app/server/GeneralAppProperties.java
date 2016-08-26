@@ -1,5 +1,8 @@
 package ru.curs.showcase.app.server;
 
+import java.io.IOException;
+import java.net.*;
+import java.sql.*;
 import java.util.*;
 
 import ru.curs.showcase.runtime.*;
@@ -40,6 +43,53 @@ public class GeneralAppProperties {
 					.getUserdataRoot() + "/" + UserDataUtils.GENERALPROPFILENAME,
 					UserDataUtils.RDBMS_PREFIX + UserDataUtils.CELESTA_CONNECTION_URL,
 					SettingsFileType.GENERAL_APP_PROPERTIES);
+		} else {
+			Driver result = null;
+			try {
+				String url =
+					getProperty(UserDataUtils.RDBMS_PREFIX + UserDataUtils.CELESTA_CONNECTION_URL)
+							.toLowerCase();
+
+				final String mssql = "sqlserver";
+				final String postgresql = "postgresql";
+				final String oracle = "oracle";
+
+				SQLServerType st = null;
+				if (url.indexOf(mssql) > -1) {
+					st = SQLServerType.MSSQL;
+				} else {
+					if (url.indexOf(postgresql) > -1) {
+						st = SQLServerType.POSTGRESQL;
+					} else {
+						if (url.indexOf(oracle) > -1) {
+							st = SQLServerType.ORACLE;
+						}
+					}
+				}
+
+				if (st == SQLServerType.POSTGRESQL) {
+					result = (Driver) Class.forName("org.postgresql.Driver").newInstance();
+				} else if (st == SQLServerType.ORACLE) {
+					result =
+						(Driver) Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+				} else if (st == SQLServerType.MSSQL) {
+					result =
+						(Driver) Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver")
+								.newInstance();
+				}
+
+				DriverManager.registerDriver(result);
+				DriverManager.getConnection(getProperty(UserDataUtils.RDBMS_PREFIX
+						+ UserDataUtils.CELESTA_CONNECTION_URL),
+						getProperty(UserDataUtils.RDBMS_PREFIX
+								+ UserDataUtils.CELESTA_CONNECTION_URL),
+						getProperty(UserDataUtils.RDBMS_PREFIX
+								+ UserDataUtils.CELESTA_CONNECTION_URL));
+
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException
+					| SQLException e) {
+				throw new RuntimeException("Не удаётся подключиться к указанной базе данных");
+			}
 		}
 
 		if (getProperty(SecurityParamsFactory.AUTH_SERVER_URL_PARAM) == null) {
@@ -47,6 +97,26 @@ public class GeneralAppProperties {
 					.getUserdataRoot() + "/" + UserDataUtils.GENERALPROPFILENAME,
 					SecurityParamsFactory.AUTH_SERVER_URL_PARAM,
 					SettingsFileType.GENERAL_APP_PROPERTIES);
+		} else {
+			URL server;
+			try {
+				server = new URL(SecurityParamsFactory.AUTH_SERVER_URL_PARAM);
+
+				HttpURLConnection c = (HttpURLConnection) server.openConnection();
+				c.setRequestMethod("GET");
+				c.setReadTimeout(3000);
+				c.setDoInput(true);
+				c.connect();
+
+				if (c.getResponseCode() != HttpURLConnection.HTTP_OK) {
+					throw new RuntimeException(
+							"Невозможно подключиться к меллофону по указанному адресу");
+				}
+
+			} catch (IOException e) {
+				throw new RuntimeException(
+						"Невозможно подключиться к меллофону по указанному адресу", e);
+			}
 		}
 	}
 }
