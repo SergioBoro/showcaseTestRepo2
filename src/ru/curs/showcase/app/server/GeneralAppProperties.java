@@ -82,9 +82,9 @@ public class GeneralAppProperties {
 				DriverManager.getConnection(getProperty(UserDataUtils.RDBMS_PREFIX
 						+ UserDataUtils.CELESTA_CONNECTION_URL),
 						getProperty(UserDataUtils.RDBMS_PREFIX
-								+ UserDataUtils.CELESTA_CONNECTION_URL),
+								+ UserDataUtils.CELESTA_CONNECTION_USERNAME),
 						getProperty(UserDataUtils.RDBMS_PREFIX
-								+ UserDataUtils.CELESTA_CONNECTION_URL));
+								+ UserDataUtils.CELESTA_CONNECTION_PASSWORD));
 
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException
 					| SQLException e) {
@@ -100,19 +100,13 @@ public class GeneralAppProperties {
 		} else {
 			URL server;
 			try {
-				server = new URL(SecurityParamsFactory.AUTH_SERVER_URL_PARAM);
+				server = new URL(getProperty(SecurityParamsFactory.AUTH_SERVER_URL_PARAM));
 
 				HttpURLConnection c = (HttpURLConnection) server.openConnection();
 				c.setRequestMethod("GET");
 				c.setReadTimeout(3000);
 				c.setDoInput(true);
 				c.connect();
-
-				if (c.getResponseCode() != HttpURLConnection.HTTP_OK) {
-					throw new RuntimeException(
-							"Невозможно подключиться к меллофону по указанному адресу");
-				}
-
 			} catch (IOException e) {
 				throw new RuntimeException(
 						"Невозможно подключиться к меллофону по указанному адресу", e);
