@@ -2,13 +2,6 @@ package ru.curs.showcase.app.api.grid.toolbar;
 
 import java.util.Map.Entry;
 
-import ru.curs.showcase.app.api.ID;
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.services.DataServiceAsync;
-import ru.curs.showcase.app.client.GWTServiceCallback;
-import ru.curs.showcase.app.client.api.*;
-
 import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.gwt.user.client.Timer;
@@ -18,11 +11,18 @@ import com.sencha.gxt.core.client.util.IconHelper;
 import com.sencha.gxt.fx.client.animation.*;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.Container;
-import com.sencha.gxt.widget.core.client.event.*;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.menu.*;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.*;
+
+import ru.curs.showcase.app.api.ID;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.services.DataServiceAsync;
+import ru.curs.showcase.app.client.GWTServiceCallback;
+import ru.curs.showcase.app.client.api.*;
 
 /**
  * Помощник загрузки и формирования панели инструментов.
@@ -35,7 +35,9 @@ public abstract class ToolBarHelper {
 	private static final int BLINKING_DURATION = 2000;
 	private static final int BLINKING_INTERVAL = 50;
 
+	private static final String TOOLBAR_HEIGHT = "28px";
 	private static final int ICON_SIZE = 16;
+
 	private Timer toolBarRefreshTimer = null;
 	private final DataServiceAsync dataService;
 	private final Panel panel;
@@ -56,7 +58,9 @@ public abstract class ToolBarHelper {
 			final BasicElementPanelBasis oBasicElementPanelBasis) {
 		this.dataService = oDataService;
 		this.basicElementPanelBasis = oBasicElementPanelBasis;
+
 		this.panel = new SimplePanel();
+		this.panel.setHeight(TOOLBAR_HEIGHT);
 	}
 
 	/**
@@ -92,6 +96,7 @@ public abstract class ToolBarHelper {
 								public void onSuccess(final GridToolBar result) {
 									panel.clear();
 									ToolBar toolBar = new ToolBar();
+									toolBar.setHeight(TOOLBAR_HEIGHT);
 									toolBar.setBorders(false);
 									addStaticItemToToolBar(toolBar);
 									createDynamicToolBar(result, toolBar);
@@ -106,6 +111,7 @@ public abstract class ToolBarHelper {
 		} else {
 			isStaticToolBar = true;
 			ToolBar toolBar = new ToolBar();
+			toolBar.setHeight(TOOLBAR_HEIGHT);
 			toolBar.setBorders(false);
 			addStaticItemToToolBar(toolBar);
 			panel.add(toolBar);
@@ -268,6 +274,7 @@ public abstract class ToolBarHelper {
 		ToolBar toolBar = oToolBar;
 		if (toolBar == null) {
 			toolBar = new ToolBar();
+			toolBar.setHeight(TOOLBAR_HEIGHT);
 		}
 		for (AbstractToolBarItem obj : oGridToolBar.getItems()) {
 			createDynamicToolBar(obj, toolBar);
