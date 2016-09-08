@@ -10,6 +10,7 @@ import ru.curs.celesta.*;
 import ru.curs.celesta.showcase.utils.XMLJSONConverter;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.grid.LyraGridContext;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.jython.JythonDTO;
 import ru.curs.showcase.runtime.*;
@@ -195,6 +196,7 @@ public class CelestaHelper<T> {
 
 		String elementId = additionalParams[0].toString();
 		ShowcaseContext sc = generateShowcaseContext(this.contex, elementId);
+		sc.setOrderBy(((LyraGridContext) this.contex).getOrderBy());
 
 		Object[] params = new Object[1];
 		params[0] = lyraClass;

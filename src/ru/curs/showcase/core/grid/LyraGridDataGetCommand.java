@@ -1,6 +1,5 @@
 package ru.curs.showcase.core.grid;
 
-import ru.curs.lyra.BasicGridForm;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.command.*;
@@ -32,11 +31,7 @@ public class LyraGridDataGetCommand extends DataPanelElementCommand<GridData> {
 	@Override
 	protected void mainProc() throws Exception {
 
-		LyraGridGateway lgateway = new LyraGridGateway();
-		BasicGridForm basicGridForm = lgateway.getLyraFormInstance(getContext(), getElementInfo());
-
-		LyraGridDataFactory factory =
-			new LyraGridDataFactory(getContext(), getElementInfo(), basicGridForm);
+		LyraGridDataFactory factory = new LyraGridDataFactory(getContext(), getElementInfo());
 		GridData gd = factory.buildData();
 		gd.setOkMessage(getContext().getOkMessage());
 

@@ -5,6 +5,7 @@ import java.util.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.celesta.CelestaException;
+import ru.curs.celesta.score.*;
 import ru.curs.lyra.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.Action;
@@ -48,18 +49,17 @@ public class LyraGridMetaFactory {
 
 	private final LyraGridContext context;
 	private final DataPanelElementInfo elInfo;
-	private final BasicGridForm basicGridForm;
+	private BasicGridForm basicGridForm = null;
 
 	private LyraGridMetadata result;
 
 	private String profile = null;
 	private ProfileReader gridProps = null;
 
-	public LyraGridMetaFactory(final LyraGridContext aContext, final DataPanelElementInfo aElInfo,
-			final BasicGridForm aBasicGridForm) {
+	public LyraGridMetaFactory(final LyraGridContext aContext,
+			final DataPanelElementInfo aElInfo) {
 		context = aContext;
 		elInfo = aElInfo;
-		basicGridForm = aBasicGridForm;
 	}
 
 	/**
@@ -86,6 +86,18 @@ public class LyraGridMetaFactory {
 
 	private void initResult() {
 		result = new LyraGridMetadata(elInfo);
+
+		LyraGridGateway lgateway = new LyraGridGateway();
+		basicGridForm = lgateway.getLyraFormInstance(context, elInfo);
+
+		final int maxExactScrollValue = 71;
+		basicGridForm.setMaxExactScrollValue(maxExactScrollValue);
+		if (basicGridForm.getChangeNotifier() == null) {
+			LyraGridScrollBack scrollBack = new LyraGridScrollBack();
+			scrollBack.setBasicGridForm(basicGridForm);
+			basicGridForm.setChangeNotifier(scrollBack);
+		}
+
 	}
 
 	private void setupDynamicSettings() throws CelestaException {
@@ -109,23 +121,28 @@ public class LyraGridMetaFactory {
 		if (basicGridForm.getFormProperties().getFooter() != null) {
 			result.setFooter(basicGridForm.getFormProperties().getFooter());
 		}
-		/*
-		 * Отладочные правки Ивана
-		 * 
-		 * if (basicGridForm.rec().getOrderBy().contains(",")) {
-		 * result.setLyraGridSorting(basicGridForm.rec().getOrderBy()); } else {
-		 * result.setGridSorting(new GridSorting());
-		 * 
-		 * String s = basicGridForm.rec().getOrderBy(); int pos =
-		 * s.indexOf(","); if (pos > -1) { s = s.substring(0, pos); } s =
-		 * s.trim();
-		 * 
-		 * result.getGridSorting().setSortColId(s.substring(1,
-		 * s.lastIndexOf("\"")));
-		 * 
-		 * if (s.toLowerCase().contains(" desc")) {
-		 * result.getGridSorting().setSortColDirection(Sorting.DESC); } }
-		 */
+
+		if (basicGridForm.orderByColumnNames().length > 1) {
+			String s = "";
+			for (int i = 0; i < basicGridForm.orderByColumnNames().length; i++) {
+				if (i > 0) {
+					s = s + ", ";
+				}
+				s = s + basicGridForm.orderByColumnNames()[i];
+				if (basicGridForm.descOrders()[i]) {
+					s = s + " desc";
+				}
+			}
+			result.setLyraGridSorting(s);
+		} else {
+			result.setGridSorting(new GridSorting());
+			result.getGridSorting()
+					.setSortColId(basicGridForm.orderByColumnNames()[0].replace("\"", ""));
+			if (basicGridForm.descOrders()[0]) {
+				result.getGridSorting().setSortColDirection(Sorting.DESC);
+			}
+		}
+
 		result.getLiveInfo().setOffset(0);
 		result.getLiveInfo().setLimit(basicGridForm.getGridHeight());
 		result.getLiveInfo().setTotalCount(basicGridForm.getApproxTotalCount());
@@ -241,18 +258,17 @@ public class LyraGridMetaFactory {
 	}
 
 	// CHECKSTYLE:OFF
-	private void setupColumns() throws CelestaException {
+	private void setupColumns() {
 
 		List<String> lyraGridAvailableSorting = new ArrayList<String>();
-		/*
-		 * 
-		 * Отладочные правки Ивана
-		 * 
-		 * if (basicGridForm.rec().meta() instanceof Table) { for (Index index :
-		 * ((Table) basicGridForm.rec().meta()).getIndices()) { if
-		 * (index.getColumns().size() == 1) { lyraGridAvailableSorting
-		 * .add((String) index.getColumns().keySet().toArray()[0]); } } }
-		 */
+		if (basicGridForm.meta() instanceof Table) {
+			for (Index index : ((Table) basicGridForm.meta()).getIndices()) {
+				if (index.getColumns().size() == 1) {
+					lyraGridAvailableSorting
+							.add((String) index.getColumns().keySet().toArray()[0]);
+				}
+			}
+		}
 
 		Map<String, LyraFormField> lyraFields = basicGridForm.getFieldsMeta();
 

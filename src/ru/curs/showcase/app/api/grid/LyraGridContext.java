@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.grid;
 
 import javax.xml.bind.annotation.*;
 
+import ru.curs.showcase.app.api.ExcludeFromSerialization;
+
 /**
  * Класс, содержащий детальный контекст лирыгрида.
  * 
@@ -14,6 +16,13 @@ public class LyraGridContext extends GridContext {
 	private int dgridOldPosition = 0;
 
 	private String refreshId = null;
+
+	private boolean sortingChanged = false;
+	private boolean externalSortingOrFilteringChanged = false;
+
+	@XmlTransient
+	@ExcludeFromSerialization
+	private String[] orderBy = null;
 
 	/**
 	 * Создает дефолтные настройки для грида - нужны для первоначальной
@@ -39,6 +48,31 @@ public class LyraGridContext extends GridContext {
 
 	public void setRefreshId(final String aRefreshId) {
 		refreshId = aRefreshId;
+	}
+
+	public boolean isSortingChanged() {
+		return sortingChanged;
+	}
+
+	public void setSortingChanged(final boolean aSortingChanged) {
+		sortingChanged = aSortingChanged;
+	}
+
+	public boolean isExternalSortingOrFilteringChanged() {
+		return externalSortingOrFilteringChanged;
+	}
+
+	public void setExternalSortingOrFilteringChanged(
+			final boolean aExternalSortingOrFilteringChanged) {
+		externalSortingOrFilteringChanged = aExternalSortingOrFilteringChanged;
+	}
+
+	public String[] getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(final String[] aOrderBy) {
+		orderBy = aOrderBy;
 	}
 
 }

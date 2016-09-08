@@ -5,13 +5,13 @@ import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import com.google.gwt.user.client.rpc.SerializationException;
+
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.grid.*;
 import ru.curs.showcase.util.ServletUtils;
-
-import com.google.gwt.user.client.rpc.SerializationException;
 
 /**
  * Сервлет работы с данными для JSLyraGrid'ов.
@@ -25,7 +25,16 @@ public class JSLyraGridService extends HttpServlet {
 	@Override
 	protected void doPost(final HttpServletRequest hreq, final HttpServletResponse hresp)
 			throws ServletException, IOException {
-		getData(hreq, hresp);
+
+		try {
+			getData(hreq, hresp);
+		} catch (Exception e) {
+			hresp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			// hresp.setContentType(CONTENT_TYPE_APPLICATION_JSON);
+			hresp.setCharacterEncoding("UTF-8");
+			hresp.getWriter().write(e.getMessage());
+		}
+
 	}
 
 	private void getData(final HttpServletRequest hreq, final HttpServletResponse hresp)
@@ -70,9 +79,8 @@ public class JSLyraGridService extends HttpServlet {
 		int firstIndex = context.getLiveInfo().getOffset();
 		int lastIndex = context.getLiveInfo().getOffset() + context.getLiveInfo().getLimit() - 1;
 
-		hresp.setHeader("Content-Range",
-				"items " + String.valueOf(firstIndex) + "-" + String.valueOf(lastIndex) + "/"
-						+ String.valueOf(totalCount));
+		hresp.setHeader("Content-Range", "items " + String.valueOf(firstIndex) + "-"
+				+ String.valueOf(lastIndex) + "/" + String.valueOf(totalCount));
 
 		try (PrintWriter writer = hresp.getWriter()) {
 			writer.print(gridData.getData());

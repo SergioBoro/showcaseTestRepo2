@@ -9,7 +9,6 @@ public class LyraGridAddInfo {
 
 	private int lyraOldPosition = 0;
 	private int dgridOldTotalCount = 0;
-	private Object[] lastKeyValues = null;
 
 	public int getLyraOldPosition() {
 		return lyraOldPosition;
@@ -25,14 +24,6 @@ public class LyraGridAddInfo {
 
 	public void setDgridOldTotalCount(final int aDgridOldTotalCount) {
 		dgridOldTotalCount = aDgridOldTotalCount;
-	}
-
-	public Object[] getLastKeyValues() {
-		return lastKeyValues;
-	}
-
-	public void setLastKeyValues(final Object[] aLastKeyValues) {
-		lastKeyValues = aLastKeyValues;
 	}
 
 }

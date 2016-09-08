@@ -13,6 +13,8 @@ public class LyraGridServerState implements SerializableElement {
 	private String groupingSeparator = null;
 	private String dateValuesFormat = null;
 
+	private String[] orderBy = null;
+
 	public String getDateValuesFormat() {
 		return dateValuesFormat;
 	}
@@ -35,6 +37,14 @@ public class LyraGridServerState implements SerializableElement {
 
 	public void setGroupingSeparator(final String aGroupingSeparator) {
 		groupingSeparator = aGroupingSeparator;
+	}
+
+	public String[] getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(final String[] aOrderBy) {
+		orderBy = aOrderBy;
 	}
 
 }

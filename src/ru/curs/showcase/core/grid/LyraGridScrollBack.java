@@ -19,7 +19,7 @@ public class LyraGridScrollBack implements Runnable {
 
 	private BasicGridForm basicGridForm;
 
-	private final LyraGridAddInfo lyraGridAddInfo = new LyraGridAddInfo();
+	private LyraGridAddInfo lyraGridAddInfo = new LyraGridAddInfo();
 
 	public javax.websocket.Session getWebSocketSession() {
 		return webSocketSession;
@@ -33,6 +33,10 @@ public class LyraGridScrollBack implements Runnable {
 		return lyraGridAddInfo;
 	}
 
+	public void setLyraGridAddInfo(final LyraGridAddInfo aLyraGridAddInfo) {
+		lyraGridAddInfo = aLyraGridAddInfo;
+	}
+
 	public BasicGridForm getBasicGridForm() {
 		return basicGridForm;
 	}
@@ -44,7 +48,7 @@ public class LyraGridScrollBack implements Runnable {
 	@Override
 	public void run() {
 
-		System.out.println("ddddddddddddd2");
+		System.out.println("LyraGridScrollBack.ddddddddddddd2");
 		System.out.println("lyraOldPosition: " + lyraGridAddInfo.getLyraOldPosition());
 		System.out.println("lyraNewPosition: " + basicGridForm.getTopVisiblePosition());
 		System.out.println("diff: "
@@ -58,8 +62,9 @@ public class LyraGridScrollBack implements Runnable {
 			return;
 		}
 
-		if (Math.abs(basicGridForm.getTopVisiblePosition() - lyraGridAddInfo.getLyraOldPosition()) < lyraApproxTotalCount
-				/ LYRA_SMALLFACTOR) {
+		if (Math.abs(basicGridForm.getTopVisiblePosition()
+				- lyraGridAddInfo.getLyraOldPosition()) < lyraApproxTotalCount
+						/ LYRA_SMALLFACTOR) {
 			lyraGridAddInfo.setLyraOldPosition(basicGridForm.getTopVisiblePosition());
 			return;
 		}
@@ -75,12 +80,20 @@ public class LyraGridScrollBack implements Runnable {
 
 		lyraGridAddInfo.setLyraOldPosition(basicGridForm.getTopVisiblePosition());
 
-		try {
-			if (webSocketSession.isOpen()) {
-				webSocketSession.getBasicRemote().sendText(String.valueOf(dgridNewPosition));
+		if (webSocketSession != null) {
+			try {
+				if (webSocketSession.isOpen()) {
+					webSocketSession.getBasicRemote().sendText(String.valueOf(dgridNewPosition));
+				} else {
+					System.out.println("webSocketSession is closed");
+				}
+			} catch (IOException e) {
+				throw GeneralExceptionFactory.build(e);
 			}
-		} catch (IOException e) {
-			throw GeneralExceptionFactory.build(e);
+		} else {
+			if (dgridNewPosition != 0) {
+				System.out.println("webSocketSession is null");
+			}
 		}
 
 	}

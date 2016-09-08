@@ -67,6 +67,8 @@ create index ix_street43 on street4 (name, gninmb);
 create index ix_street44 on street4 (ocatd);
 
 
+
+
 create table test2 (
 code int identity not null primary key,
 name text not null default 'abc'

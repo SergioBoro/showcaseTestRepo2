@@ -79,6 +79,8 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 
 	private ToolBarHelper toolBarHelper = null;
 
+	private String lyraGridSorting = "";
+
 	@Override
 	public VerticalPanel getPanel() {
 		return p;
@@ -378,6 +380,7 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 
 		if (gridMetadata.getLyraGridSorting() != null) {
 			common.put("lyraGridSorting", new JSONString(gridMetadata.getLyraGridSorting()));
+			lyraGridSorting = gridMetadata.getLyraGridSorting();
 		}
 
 		metadata.put("common", common);
@@ -600,6 +603,22 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 		if ((sortColId != null) && (sortColDir != null)) {
 			GridSorting gs = new GridSorting(sortColId, Sorting.valueOf(sortColDir));
 			gridContext.setGridSorting(gs);
+
+			String newLyraGridSorting = "\"" + gs.getSortColId() + "\"";
+			if (gs.getSortColDirection() == Sorting.DESC) {
+				newLyraGridSorting = newLyraGridSorting + " desc";
+			}
+
+			if (!newLyraGridSorting
+					.equalsIgnoreCase(lyraGridSorting.toLowerCase().replace(" asc", ""))) {
+				lyraGridSorting = newLyraGridSorting;
+				gridContext.setSortingChanged(true);
+				gridContext.setDgridOldPosition(0);
+			}
+		}
+
+		if (isFirstLoading()) {
+			gridContext.setExternalSortingOrFilteringChanged(true);
 		}
 
 		JSONObject params = new JSONObject();
@@ -614,6 +633,10 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 		} catch (SerializationException e) {
 			params.put("error", new JSONString(
 					AppCurrContext.getInstance().getBundleMap().get("jsGridSerializationError")));
+		} finally {
+			gridContext.setRefreshId(null);
+			gridContext.setSortingChanged(false);
+			gridContext.setExternalSortingOrFilteringChanged(false);
 		}
 
 		return params;

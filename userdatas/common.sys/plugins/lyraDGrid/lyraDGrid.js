@@ -61,7 +61,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
     		
     		webSocket = new WebSocket(protocol+"://"+window.location.host+window.location.pathname+"secured/JSLyraGridScrollBack");
             webSocket.onopen = function(){
-             	var httpParams = gwtGetHttpParamsLyra(elementId, -1000, -1000, null, null);
+             	var httpParams = gwtGetHttpParamsLyra(elementId, -1000, -1000);
                 webSocket.send(httpParams);
             };
             webSocket.onmessage = function(message){
@@ -122,6 +122,39 @@ function createLyraDGrid(elementId, parentId, metadata) {
 
 						var sortColId  = null;
 						var sortColDir = null;
+						if(firstLoading){
+/*							
+							if(this.initialSort){
+								for(var i = 0; i<this.initialSort.length; i++){
+								    sortColId =	this.initialSort[i].property;
+									
+									if(this.initialSort[i].descending){
+										sortColDir = "DESC";
+									} else {
+										sortColDir = "ASC";
+									}
+									
+									break;
+								}
+							}
+*/							
+						}
+						else{
+							if(grid && grid.sort){
+								for(var i = 0; i<grid.sort.length; i++){
+									var sort = grid.sort[i];
+									sortColId = grid.columns[sort.property].id;
+									if(sort.descending){
+										sortColDir = "DESC";
+									}
+									else{
+										sortColDir = "ASC";
+									}
+									break;
+								}
+							}
+						}
+						
 						
 						var refreshId = null;
 						if(arrGrids[parentId] && arrGrids[parentId].refreshId){
@@ -130,7 +163,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 							if(arrGrids[parentId].oldStart > 0){
 								arrGrids[parentId].oldStart = 0;
 								
-								results =  new QueryResults(when(resScroll), {
+								results = new QueryResults(when(resScroll), {
 									totalLength: when(arrGrids[parentId]._total)
 								});
 								return results;
@@ -166,7 +199,23 @@ function createLyraDGrid(elementId, parentId, metadata) {
 								}
 							}
 							gwtAfterLoadDataLyra(elementId, events, arrGrids[parentId]._total);
-						});
+							
+							
+							if(arrGrids[parentId].lyraGridSorting && sortColId){
+								arrGrids[parentId].lyraGridSorting = null;
+								
+								for(var col in arrGrids[parentId].columns) {
+									arrGrids[parentId].columns[col].sortingPic = null;
+								}
+
+								arrGrids[parentId].renderHeader();
+								arrGrids[parentId].updateSortArrow(arrGrids[parentId].sort);
+							}
+							
+							
+					    }, function(err){
+					    	alert("Произошла ошибка при запросе записей с сервера:\n\n"+err.response.text);
+					    });
 						
 						return results;
 					}
@@ -267,7 +316,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 				column["parentId"]  = metadata["columns"][k]["parentId"];			
 				column["field"]     = metadata["columns"][k]["id"];			
 				column["label"]     = metadata["columns"][k]["caption"];
-				column["sortable"]  = false;
+				//column["sortable"]  = false;
 				column["valueType"] = metadata["columns"][k]["valueType"];
 				column["sortingAvailable"] = metadata["columns"][k]["sortingAvailable"];
 
@@ -491,7 +540,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 							i++;
 						} else {
 							for(var k11 in columns) {
-								if(columns[k11]["label"] == metadata["virtualColumns"][k2]["id"]){
+								if(columns[k11]["id"] == metadata["virtualColumns"][k2]["id"]){
 									compoundColumns.push(columns[k11]);
 									break;
 								}
@@ -585,7 +634,6 @@ function createLyraDGrid(elementId, parentId, metadata) {
 			collection: store,
 			getBeforePut: false,
 
-			
 			webSocket: webSocket,
 			
 			minRowsPerPage: parseInt(metadata["common"]["limit"]),
@@ -601,7 +649,6 @@ function createLyraDGrid(elementId, parentId, metadata) {
 //			queryRowsOverlap: 10,
 //----------------------Debug
 			
-			
 			selectionMode: selectionMode,
 			allowTextSelection: isAllowTextSelection,			
 			showHeader: isVisibleColumnsHeader,
@@ -609,7 +656,13 @@ function createLyraDGrid(elementId, parentId, metadata) {
 			noDataMessage: metadata["common"]["noDataMessage"],
 //			pagingDelay: 50,
 			deselectOnRefresh: false,
-			keepScrollPosition: true,
+			
+			
+//          keepScrollPosition: true,
+			keepScrollPosition: false,
+			
+			lyraGridSorting: metadata["common"]["lyraGridSorting"],
+			
 			readonly: metadata["common"]["readonly"],
 			
 			renderRow: function (object) {
@@ -722,7 +775,7 @@ function refreshLyraDGrid(parentId){
 	
 	arrGrids[parentId].refreshId = arrGrids[parentId].row(row).id;
 	
-	arrGrids[parentId].refresh();
+	arrGrids[parentId].refresh({keepScrollPosition: true});
 }
 
 function addRecordLyraDGrid(parentId){

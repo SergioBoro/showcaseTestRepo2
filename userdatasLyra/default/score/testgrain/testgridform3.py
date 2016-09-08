@@ -40,12 +40,27 @@ class TestGridForm3(GridForm):
 
         print 'ffffffffffffffffffffffff44'
         print context.getShowcaseContext().getMain();
+        print context.getShowcaseContext().getOrderBy();
 
-        c = street4Cursor(context) 
+        c = street4Cursor(context)
+        
+        if context.getShowcaseContext().getOrderBy() == None:
+                print '1'
+                c.orderBy('name')
+#                c.orderBy('uno')
+        else: 
+                print '2'
+                c.orderBy(*context.getShowcaseContext().getOrderBy())
+        
+#        c.orderBy('name')
+#        c.orderBy('code DESC')
+         
 
 #        c.orderBy('name DESC', 'code DESC')
+
+
 #        c.orderBy('name aSC')
-#        c.orderBy('name')
+
         
 #        c.orderBy('name desc', 'code', 'gninmb desc')
 
@@ -53,7 +68,10 @@ class TestGridForm3(GridForm):
         
 #        c.orderBy('name', 'gninmb', 'code')
 
-        c.orderBy('name desc', 'gninmb desc', 'code desc')
+#        c.orderBy('name desc', 'gninmb desc', 'code desc')
+
+
+#        c.orderBy('uno desc', 'code asc')
         
 
         
