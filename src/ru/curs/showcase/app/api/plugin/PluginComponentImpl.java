@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.html.Plugin;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.*;
@@ -95,8 +96,8 @@ public class PluginComponentImpl implements PluginComponent {
 
 		JavaScriptObject addparams = pluginParam.generalFilters();
 		if (!(addparams == null)) {
-		String xml = XFormPanelCallbacksEvents.getXMLByXPathArray(addparams);
-		getContext().setFilter(xml);
+			String xml = XFormPanelCallbacksEvents.getXMLByXPathArray(addparams);
+			getContext().setFilter(xml);
 		}
 
 		requestData.setContext(getContext());
@@ -106,75 +107,82 @@ public class PluginComponentImpl implements PluginComponent {
 			requestData.setXmlParams(JSONUtils.createXmlByJSONValue("params", json));
 		}
 
+		dataService.getPlugin(
+				requestData,
+				new GWTServiceCallback<Plugin>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_plugin_data_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving external plugin data from server")) {
 
-		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
-				.getInstance().getBundleMap().get("error_of_plugin_data_retrieving_from_server")) {
-
-			@Override
-			public void onFailure(final Throwable caught) {
-				removeWaitBlock(waitElement);
-				super.onFailure(caught);
-			}
-
-			@Override
-			public void onSuccess(final Plugin oPlugin) {
-				if (oPlugin != null) {
-
-					super.onSuccess(oPlugin);
-
-					final String pluginTargetId;
-					StringSize size = oPlugin.getStringSize();
-					if (size != null && !size.getAutoSize()) {
-						pluginTargetId = HTMLPanel.createUniqueId();
-						SimplePanel cellholder = new SimplePanel();
-						cellholder.getElement().setId(pluginTargetId);
-						if (size.getWidth() != null) {
-							cellholder.setWidth(size.getWidth());
-						}
-						if (size.getHeight() != null) {
-							cellholder.setHeight(size.getHeight());
-						}
-						renderToEl.appendChild(cellholder.getElement());
-					} else {
-						pluginTargetId = renderToId;
+					@Override
+					public void onFailure(final Throwable caught) {
+						removeWaitBlock(waitElement);
+						super.onFailure(caught);
 					}
 
-					StringBuilder sb = new StringBuilder();
-					List<String> paramList = oPlugin.getParams();
-					for (int i = 0; i < paramList.size(); i++) {
-						String itemParam = paramList.get(i);
-						if (i != 0) {
-							sb.append(",");
-						}
-						sb.append(itemParam.trim());
-					}
-					final String params = sb.toString();
+					@Override
+					public void onSuccess(final Plugin oPlugin) {
+						if (oPlugin != null) {
 
-					for (String css : oPlugin.getRequiredCSS()) {
-						AccessToDomModel.addCSSLink(css);
-					}
-					JsInjector.getInstance().addScriptTag(oPlugin.getRequiredJS(),
-							new JsInjector.CallbackLoadResource() {
-								@Override
-								public void onComplete() {
-									removeWaitBlock(waitElement);
-									JSONObject options = new JSONObject(pluginParam.params());
-									options.put("all", new JSONObject(pluginParam));
-									options.put("elementPanelId", new JSONString(getElInfo()
-											.getId().getString()));
-									options.put("generalFilters", new JSONString(
-											getXMLByXPathArray(pluginParam.generalFilters())));
-									drawPlugin(oPlugin.getCreateProc(), pluginTargetId,
-											options.getJavaScriptObject(), params);
+							super.onSuccess(oPlugin);
+
+							final String pluginTargetId;
+							StringSize size = oPlugin.getStringSize();
+							if (size != null && !size.getAutoSize()) {
+								pluginTargetId = HTMLPanel.createUniqueId();
+								SimplePanel cellholder = new SimplePanel();
+								cellholder.getElement().setId(pluginTargetId);
+								if (size.getWidth() != null) {
+									cellholder.setWidth(size.getWidth());
 								}
+								if (size.getHeight() != null) {
+									cellholder.setHeight(size.getHeight());
+								}
+								renderToEl.appendChild(cellholder.getElement());
+							} else {
+								pluginTargetId = renderToId;
+							}
 
-							});
+							StringBuilder sb = new StringBuilder();
+							List<String> paramList = oPlugin.getParams();
+							for (int i = 0; i < paramList.size(); i++) {
+								String itemParam = paramList.get(i);
+								if (i != 0) {
+									sb.append(",");
+								}
+								sb.append(itemParam.trim());
+							}
+							final String params = sb.toString();
 
-				} else {
-					removeWaitBlock(waitElement);
-				}
-			}
-		});
+							for (String css : oPlugin.getRequiredCSS()) {
+								AccessToDomModel.addCSSLink(css);
+							}
+							JsInjector.getInstance().addScriptTag(oPlugin.getRequiredJS(),
+									new JsInjector.CallbackLoadResource() {
+										@Override
+										public void onComplete() {
+											removeWaitBlock(waitElement);
+											JSONObject options =
+												new JSONObject(pluginParam.params());
+											options.put("all", new JSONObject(pluginParam));
+											options.put("elementPanelId", new JSONString(
+													getElInfo().getId().getString()));
+											options.put(
+													"generalFilters",
+													new JSONString(getXMLByXPathArray(pluginParam
+															.generalFilters())));
+											drawPlugin(oPlugin.getCreateProc(), pluginTargetId,
+													options.getJavaScriptObject(), params);
+										}
+
+									});
+
+						} else {
+							removeWaitBlock(waitElement);
+						}
+					}
+				});
 	}
 
 	@Override

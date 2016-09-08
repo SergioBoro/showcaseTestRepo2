@@ -4,6 +4,7 @@ import java.util.List;
 
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
 import com.google.gwt.core.client.GWT;
 
@@ -26,8 +27,11 @@ public final class XFormsUtils {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getMainXForms(new GWTServiceCallback<List<String>>(AppCurrContext
-				.getInstance().getBundleMap().get("xformsErrorGetMainData")) {
+		dataService.getMainXForms(new GWTServiceCallback<List<String>>(
+		// AppCurrContext.getInstance().getBundleMap().get("xformsErrorGetMainData"))
+		// {
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"when retrieving data from server to the main XForm")) {
 			@Override
 			public void onSuccess(final List<String> mainXForm) {
 				// destroy();

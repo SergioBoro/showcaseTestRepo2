@@ -1,14 +1,15 @@
 package ru.curs.showcase.app.client;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.*;
-
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.WebText;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.*;
 
 /**
  * Класс панели с WebText.
@@ -91,9 +92,14 @@ public class WebTextPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getWebText(getContext(), getElementInfo(),
-				new GWTServiceCallback<WebText>(AppCurrContext.getInstance().getBundleMap()
-						.get("error_of_webtext_data_retrieving_from_server")) {
+		dataService.getWebText(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<WebText>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_webtext_data_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving text data from server")) {
 
 					@Override
 					public void onSuccess(final WebText awt) {
@@ -181,9 +187,14 @@ public class WebTextPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getWebText(getContext(), getElementInfo(),
-				new GWTServiceCallback<WebText>(AppCurrContext.getInstance().getBundleMap()
-						.get("error_of_webtext_data_retrieving_from_server")) {
+		dataService.getWebText(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<WebText>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_webtext_data_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving text data from server")) {
 
 					@Override
 					public void onSuccess(final WebText awt) {
@@ -215,8 +226,8 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 	private void checkForDefaultAction() {
 		if (webText.getActionForDependentElements() != null) {
-			AppCurrContext.getInstance()
-					.setCurrentActionFromElement(webText.getActionForDependentElements(), webText);
+			AppCurrContext.getInstance().setCurrentActionFromElement(
+					webText.getActionForDependentElements(), webText);
 			ActionExecuter.execAction();
 		}
 	}
@@ -241,9 +252,14 @@ public class WebTextPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getWebText(getContext(), getElementInfo(),
-				new GWTServiceCallback<WebText>(AppCurrContext.getInstance().getBundleMap()
-						.get("error_of_webtext_data_retrieving_from_server")) {
+		dataService.getWebText(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<WebText>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_webtext_data_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving text data from server")) {
 
 					@Override
 					public void onSuccess(final WebText awt) {

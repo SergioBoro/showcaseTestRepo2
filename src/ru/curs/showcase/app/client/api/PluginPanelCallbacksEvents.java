@@ -2,16 +2,17 @@ package ru.curs.showcase.app.client.api;
 
 import java.util.List;
 
-import com.google.gwt.core.client.*;
-import com.google.gwt.json.client.JSONObject;
-
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.plugin.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 import ru.curs.showcase.app.client.utils.JSONUtils;
+
+import com.google.gwt.core.client.*;
+import com.google.gwt.json.client.JSONObject;
 
 /**
  * 
@@ -72,8 +73,9 @@ public final class PluginPanelCallbacksEvents {
 
 		final String commonPart = "E40F6599F809__";
 
-		String elementId = pluginDivId.substring(0,
-				pluginDivId.length() - Constants.PLUGIN_DIV_ID_SUFFIX.length());
+		String elementId =
+			pluginDivId.substring(0,
+					pluginDivId.length() - Constants.PLUGIN_DIV_ID_SUFFIX.length());
 
 		elementId = elementId.substring(elementId.indexOf(commonPart) + commonPart.length());
 
@@ -143,8 +145,9 @@ public final class PluginPanelCallbacksEvents {
 		final PluginParam param = (PluginParam) oParams;
 		BasicElementPanel currentPanel = ActionExecuter.getElementPanelById(param.id());
 		if (currentPanel != null) {
-			PluginComponent pluginComponent = new PluginComponentImpl(currentPanel.getContext(),
-					currentPanel.getElementInfo(), param);
+			PluginComponent pluginComponent =
+				new PluginComponentImpl(currentPanel.getContext(), currentPanel.getElementInfo(),
+						param);
 			if (param.parentId() == null || param.parentId().isEmpty()) {
 				// плагин будет отображен во всплывающем окне
 				pluginComponent = new WindowPluginDecorator(pluginComponent);
@@ -154,14 +157,18 @@ public final class PluginPanelCallbacksEvents {
 			} catch (JavaScriptException e) {
 				if (e.getCause() != null) {
 					MessageBox.showMessageWithDetails(
-							AppCurrContext.getInstance().getBundleMap()
-									.get("error_of_plugin_painting"),
-							e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
-							GeneralException.getMessageType(e.getCause()),
+							// AppCurrContext.getInstance().getBundleMap().get("error_of_plugin_painting"),
+							CourseClientLocalization.gettext(AppCurrContext.getInstance()
+									.getDomain(), "External plugin constructing error"), e
+									.getMessage(), GeneralException.generateDetailedInfo(e
+									.getCause()), GeneralException.getMessageType(e.getCause()),
 							GeneralException.needDetailedInfo(e.getCause()), null);
 				} else {
-					MessageBox.showSimpleMessage(AppCurrContext.getInstance().getBundleMap()
-							.get("error_of_plugin_painting"), e.getMessage());
+					MessageBox.showSimpleMessage(
+					// AppCurrContext.getInstance().getBundleMap().get("error_of_plugin_painting"),
+							CourseClientLocalization.gettext(AppCurrContext.getInstance()
+									.getDomain(), "External plugin constructing error"), e
+									.getMessage());
 				}
 			}
 		}
@@ -253,8 +260,9 @@ public final class PluginPanelCallbacksEvents {
 				 */
 				final String elementPanelId =
 					PluginComponent.PLUGININFO_ID_PREF + param.parentId();
-				PluginInfo pluginInfo = new PluginInfo(elementPanelId,
-						param.pluginParam().plugin(), param.pluginParam().proc());
+				PluginInfo pluginInfo =
+					new PluginInfo(elementPanelId, param.pluginParam().plugin(), param
+							.pluginParam().proc());
 				String postProcessProc = param.pluginParam().postProcessProc();
 				if (postProcessProc != null && !postProcessProc.isEmpty()) {
 					pluginInfo.addPostProcessProc(
@@ -269,36 +277,45 @@ public final class PluginPanelCallbacksEvents {
 					requestData.setXmlParams(JSONUtils.createXmlByJSONValue("params", json));
 				}
 				try {
-					GetDataPluginHelper helper = new GetDataPluginHelper(requestData,
-							new GetDataPluginHelper.PluginListener() {
+					GetDataPluginHelper helper =
+						new GetDataPluginHelper(requestData,
+								new GetDataPluginHelper.PluginListener() {
 
-								@Override
-								public void onComplete(final ResponceData responce) {
-									JavaScriptObject result = null;
-									if (responce != null) {
-										result = eval(responce.getJsonData());
+									@Override
+									public void onComplete(final ResponceData responce) {
+										JavaScriptObject result = null;
+										if (responce != null) {
+											result = eval(responce.getJsonData());
+										}
+										param.callbackFn(result);
 									}
-									param.callbackFn(result);
-								}
-							});
+								});
 					helper.getData();
 				} catch (JavaScriptException e) {
 					if (e.getCause() != null) {
 						MessageBox.showMessageWithDetails(
-								AppCurrContext.getInstance().getBundleMap()
-										.get("error_of_plugin_getdata"),
-								e.getMessage(),
-								GeneralException.generateDetailedInfo(e.getCause()),
-								GeneralException.getMessageType(e.getCause()),
-								GeneralException.needDetailedInfo(e.getCause()), null);
+								// AppCurrContext.getInstance().getBundleMap().get("error_of_plugin_getdata"),
+								CourseClientLocalization.gettext(AppCurrContext.getInstance()
+										.getDomain(),
+										"Error when retrieving data for external plugin"), e
+										.getMessage(), GeneralException.generateDetailedInfo(e
+										.getCause()),
+								GeneralException.getMessageType(e.getCause()), GeneralException
+										.needDetailedInfo(e.getCause()), null);
 					} else {
-						MessageBox.showSimpleMessage(AppCurrContext.getInstance().getBundleMap()
-								.get("error_of_plugin_getdata"), e.getMessage());
+						MessageBox.showSimpleMessage(
+						// AppCurrContext.getInstance().getBundleMap().get("error_of_plugin_getdata"),
+								CourseClientLocalization.gettext(AppCurrContext.getInstance()
+										.getDomain(),
+										"Error when retrieving data for external plugin"), e
+										.getMessage());
 					}
 				}
 			} else {
 				MessageBox.showSimpleMessage(
-						AppCurrContext.getInstance().getBundleMap().get("error_of_plugin_getdata"),
+						// AppCurrContext.getInstance().getBundleMap().get("error_of_plugin_getdata"),
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"Error when retrieving data for external plugin"),
 						"Не найден ElementPanel. Id=" + param.id());
 			}
 		}

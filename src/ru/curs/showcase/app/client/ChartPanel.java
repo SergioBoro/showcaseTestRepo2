@@ -1,14 +1,15 @@
 package ru.curs.showcase.app.client;
 
-import com.google.gwt.core.client.*;
-import com.google.gwt.user.client.ui.*;
-
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
+
+import com.google.gwt.core.client.*;
+import com.google.gwt.user.client.ui.*;
 
 /**
  * Класс панели с графиком и легендой.
@@ -78,10 +79,14 @@ public class ChartPanel extends BasicElementPanelBasis {
 		// GWTServiceCallback<Chart>(
 		// AppCurrContext.getInstance().getInternationalizedMessages()
 		// .error_of_chart_data_retrieving_from_server()) {
-		dataService.getChart(getContext(), getElementInfo(),
-				new GWTServiceCallback<Chart>(AppCurrContext.getInstance().getBundleMap()
-						.get("error_of_chart_data_retrieving_from_server")) {
-
+		dataService.getChart(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<Chart>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_chart_data_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving graph data from server")) {
 					@Override
 					public void onSuccess(final Chart achart) {
 						chart = achart;
@@ -176,17 +181,20 @@ public class ChartPanel extends BasicElementPanelBasis {
 				// GeneralException.getMessageType(e.getCause()),
 				// GeneralException.needDetailedInfo(e.getCause()));
 				MessageBox.showMessageWithDetails(
-						AppCurrContext.getInstance().getBundleMap().get("error_of_chart_painting"),
-						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
-						GeneralException.getMessageType(e.getCause()),
-						GeneralException.needDetailedInfo(e.getCause()), null);
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_chart_painting"),
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"Graph construction error"), e.getMessage(), GeneralException
+								.generateDetailedInfo(e.getCause()), GeneralException
+								.getMessageType(e.getCause()), GeneralException.needDetailedInfo(e
+								.getCause()), null);
 			} else {
 				// MessageBox.showSimpleMessage(AppCurrContext.getInstance()
 				// .getInternationalizedMessages().error_of_chart_painting(),
 				// e.getMessage());
 				MessageBox.showSimpleMessage(
-						AppCurrContext.getInstance().getBundleMap().get("error_of_chart_painting"),
-						e.getMessage());
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_chart_painting"),
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"Graph construction error"), e.getMessage());
 			}
 		}
 
@@ -306,9 +314,14 @@ public class ChartPanel extends BasicElementPanelBasis {
 		// GWTServiceCallback<Chart>(
 		// AppCurrContext.getInstance().getInternationalizedMessages()
 		// .error_of_chart_data_retrieving_from_server()) {
-		dataService.getChart(getContext(), getElementInfo(),
-				new GWTServiceCallback<Chart>(AppCurrContext.getInstance().getBundleMap()
-						.get("error_of_chart_data_retrieving_from_server")) {
+		dataService.getChart(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<Chart>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_chart_data_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving graph data from server")) {
 
 					@Override
 					public void onSuccess(final Chart achart) {
@@ -340,8 +353,8 @@ public class ChartPanel extends BasicElementPanelBasis {
 
 	private void checkForDefaultAction() {
 		if (chart.getActionForDependentElements() != null) {
-			AppCurrContext.getInstance()
-					.setCurrentActionFromElement(chart.getActionForDependentElements(), chart);
+			AppCurrContext.getInstance().setCurrentActionFromElement(
+					chart.getActionForDependentElements(), chart);
 			ActionExecuter.execAction();
 		}
 	}
@@ -372,9 +385,15 @@ public class ChartPanel extends BasicElementPanelBasis {
 		// GWTServiceCallback<Chart>(
 		// AppCurrContext.getInstance().getInternationalizedMessages()
 		// .error_of_chart_data_retrieving_from_server()) {
-		dataService.getChart(getContext(), getElementInfo(),
-				new GWTServiceCallback<Chart>(AppCurrContext.getInstance().getBundleMap()
-						.get("error_of_chart_data_retrieving_from_server")) {
+		dataService.getChart(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<Chart>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_chart_data_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving graph data from server")) {
+
 					@Override
 					public void onSuccess(final Chart achart) {
 						chart = achart;

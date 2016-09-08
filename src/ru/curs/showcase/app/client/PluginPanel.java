@@ -1,8 +1,5 @@
 package ru.curs.showcase.app.client;
 
-import com.google.gwt.core.client.*;
-import com.google.gwt.user.client.ui.*;
-
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -10,7 +7,11 @@ import ru.curs.showcase.app.api.html.Plugin;
 import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 import ru.curs.showcase.app.client.utils.AccessToDomModel;
+
+import com.google.gwt.core.client.*;
+import com.google.gwt.user.client.ui.*;
 
 /**
  * Класс панели с внешним плагином.
@@ -20,7 +21,8 @@ public class PluginPanel extends BasicElementPanelBasis {
 	private static final String PLEASE_WAIT_DATA_ARE_LOADING = "please_wait_data_are_loading";
 
 	private static final String ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER =
-		"error_of_plugin_data_retrieving_from_server";
+	// "error_of_plugin_data_retrieving_from_server";
+		"when retrieving external plugin data from server";
 
 	public PluginPanel(final CompositeContext context1, final DataPanelElementInfo element1) {
 		this.setContext(context1);
@@ -86,21 +88,26 @@ public class PluginPanel extends BasicElementPanelBasis {
 		requestData.setContext(getContext());
 		requestData.setElInfo((PluginInfo) getElementInfo());
 
-		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
-				.getInstance().getBundleMap().get(ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER)) {
+		dataService.getPlugin(
+				requestData,
+				new GWTServiceCallback<Plugin>(
+				// AppCurrContext.getInstance().getBundleMap().get(ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER)) {
 
-			@Override
-			public void onSuccess(final Plugin aPlugin) {
+					@Override
+					public void onSuccess(final Plugin aPlugin) {
 
-				plugin = aPlugin;
-				if (plugin != null) {
+						plugin = aPlugin;
+						if (plugin != null) {
 
-					super.onSuccess(plugin);
+							super.onSuccess(plugin);
 
-					fillPluginPanel(aPlugin);
-				}
-			}
-		});
+							fillPluginPanel(aPlugin);
+						}
+					}
+				});
 
 	}
 
@@ -171,14 +178,17 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 			if (e.getCause() != null) {
 				MessageBox.showMessageWithDetails(
-						AppCurrContext.getInstance().getBundleMap()
-								.get("error_of_plugin_painting"),
-						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
-						GeneralException.getMessageType(e.getCause()),
-						GeneralException.needDetailedInfo(e.getCause()), null);
+						// AppCurrContext.getInstance().getBundleMap().get("error_of_plugin_painting"),
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"External plugin constructing error"), e.getMessage(),
+						GeneralException.generateDetailedInfo(e.getCause()), GeneralException
+								.getMessageType(e.getCause()), GeneralException.needDetailedInfo(e
+								.getCause()), null);
 			} else {
-				MessageBox.showSimpleMessage(AppCurrContext.getInstance().getBundleMap()
-						.get("error_of_plugin_painting"), e.getMessage());
+				MessageBox.showSimpleMessage(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_plugin_painting"),
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"External plugin constructing error"), e.getMessage());
 			}
 
 		}
@@ -275,23 +285,28 @@ public class PluginPanel extends BasicElementPanelBasis {
 		requestData.setContext(getContext());
 		requestData.setElInfo((PluginInfo) getElementInfo());
 
-		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
-				.getInstance().getBundleMap().get(ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER)) {
+		dataService.getPlugin(
+				requestData,
+				new GWTServiceCallback<Plugin>(
+				// AppCurrContext.getInstance().getBundleMap().get(ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER)) {
 
-			@Override
-			public void onSuccess(final Plugin aPlugin) {
+					@Override
+					public void onSuccess(final Plugin aPlugin) {
 
-				plugin = aPlugin;
-				if (plugin != null) {
+						plugin = aPlugin;
+						if (plugin != null) {
 
-					super.onSuccess(plugin);
+							super.onSuccess(plugin);
 
-					fillPluginPanel(aPlugin);
-					getPanel().setHeight("100%");
+							fillPluginPanel(aPlugin);
+							getPanel().setHeight("100%");
 
-				}
-			}
-		});
+						}
+					}
+				});
 
 	}
 
@@ -309,8 +324,8 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 	private void checkForDefaultAction() {
 		if (plugin.getActionForDependentElements() != null) {
-			AppCurrContext.getInstance()
-					.setCurrentActionFromElement(plugin.getActionForDependentElements(), plugin);
+			AppCurrContext.getInstance().setCurrentActionFromElement(
+					plugin.getActionForDependentElements(), plugin);
 			ActionExecuter.execAction();
 		}
 	}
@@ -339,22 +354,27 @@ public class PluginPanel extends BasicElementPanelBasis {
 		requestData.setContext(getContext());
 		requestData.setElInfo((PluginInfo) getElementInfo());
 
-		dataService.getPlugin(requestData, new GWTServiceCallback<Plugin>(AppCurrContext
-				.getInstance().getBundleMap().get(ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER)) {
+		dataService.getPlugin(
+				requestData,
+				new GWTServiceCallback<Plugin>(
+				// AppCurrContext.getInstance().getBundleMap().get(ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								ERROR_OF_PLUGIN_DATA_RETRIEVING_FROM_SERVER)) {
 
-			@Override
-			public void onSuccess(final Plugin aPlugin) {
+					@Override
+					public void onSuccess(final Plugin aPlugin) {
 
-				plugin = aPlugin;
-				if (plugin != null) {
+						plugin = aPlugin;
+						if (plugin != null) {
 
-					super.onSuccess(plugin);
+							super.onSuccess(plugin);
 
-					fillPluginPanel(aPlugin);
-					getPanel().setHeight("100%");
-				}
-			}
-		});
+							fillPluginPanel(aPlugin);
+							getPanel().setHeight("100%");
+						}
+					}
+				});
 
 	}
 

@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.navigator.*;
 import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 import ru.curs.showcase.app.client.utils.MultiUserData;
 
 import com.google.gwt.core.client.GWT;
@@ -130,37 +131,42 @@ public class Accordeon {
 		// GWTServiceCallback<Navigator>(AppCurrContext
 		// .getInstance().getInternationalizedMessages()
 		// .error_of_navigator_data_retrieving_from_server()) {
-		dataService.getNavigator(context, new GWTServiceCallback<Navigator>(AppCurrContext
-				.getInstance().getBundleMap()
-				.get("error_of_navigator_data_retrieving_from_server")) {
-			@Override
-			public void onFailure(final Throwable caught) {
-				ProgressWindow.closeProgressWindow();
-				super.onFailure(caught);
-			}
+		dataService.getNavigator(
+				context,
+				new GWTServiceCallback<Navigator>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_navigator_data_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving navigator data from server")) {
 
-			@Override
-			public void onSuccess(final Navigator navigator) {
-				ProgressWindow.closeProgressWindow();
-				AppCurrContext
-						.getInstance()
-						.getMainPanel()
-						.generateMainPanel(!navigator.getHideOnLoad(), navigator.getWidth(),
-								navigator.getWelcomeTabCaption());
+					@Override
+					public void onFailure(final Throwable caught) {
+						ProgressWindow.closeProgressWindow();
+						super.onFailure(caught);
+					}
 
-				// navigator.getWidth()
-				fillAccordeon(navigator);
-				verpan.clear();
-				verpan.add(accordeon);
-				NavigatorElement nav = navigator.getAutoSelectElement();
-				if (nav != null) {
-					selectNesessaryItemInAccordion(nav.getId(), true);
-				}
-				onLoadNavigator();
+					@Override
+					public void onSuccess(final Navigator navigator) {
+						ProgressWindow.closeProgressWindow();
+						AppCurrContext
+								.getInstance()
+								.getMainPanel()
+								.generateMainPanel(!navigator.getHideOnLoad(),
+										navigator.getWidth(), navigator.getWelcomeTabCaption());
 
-			}
+						// navigator.getWidth()
+						fillAccordeon(navigator);
+						verpan.clear();
+						verpan.add(accordeon);
+						NavigatorElement nav = navigator.getAutoSelectElement();
+						if (nav != null) {
+							selectNesessaryItemInAccordion(nav.getId(), true);
+						}
+						onLoadNavigator();
 
-		});
+					}
+
+				});
 
 		return verpan;
 	}
@@ -240,7 +246,10 @@ public class Accordeon {
 		if (!(ng.getElements().size() > 0)) {
 			// return new
 			// HTML(AppCurrContext.getInstance().getInternationalizedMessages().empty());
-			return new HTML(AppCurrContext.getInstance().getBundleMap().get("empty"));
+			return new HTML(
+			// AppCurrContext.getInstance().getBundleMap().get("empty"));
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							"Empty"));
 		}
 		SimplePanel simpPanel = new SimplePanel();
 		ScrollPanel sp = new ScrollPanel();
@@ -486,37 +495,42 @@ public class Accordeon {
 		// GWTServiceCallback<Navigator>(AppCurrContext
 		// .getInstance().getInternationalizedMessages()
 		// .error_of_navigator_data_retrieving_from_server()) {
-		dataService.getNavigator(context, new GWTServiceCallback<Navigator>(AppCurrContext
-				.getInstance().getBundleMap()
-				.get("error_of_navigator_data_retrieving_from_server")) {
-			@Override
-			public void onFailure(final Throwable caught) {
+		dataService.getNavigator(
+				context,
+				new GWTServiceCallback<Navigator>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_navigator_data_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving navigator data from server")) {
 
-				ProgressWindow.closeProgressWindow();
-				super.onFailure(caught);
+					@Override
+					public void onFailure(final Throwable caught) {
 
-			}
+						ProgressWindow.closeProgressWindow();
+						super.onFailure(caught);
 
-			@Override
-			public void onSuccess(final Navigator navigator) {
+					}
 
-				uiListOfAccordeonTrees.clear();
-				ProgressWindow.closeProgressWindow();
+					@Override
+					public void onSuccess(final Navigator navigator) {
 
-				fillAccordeon(navigator);
-				verpan.clear();
-				verpan.add(accordeon);
+						uiListOfAccordeonTrees.clear();
+						ProgressWindow.closeProgressWindow();
 
-				if ((selectionId != null) && (!selectionId.isEmpty())) {
-					selectNesessaryItemInAccordion(selectionId, fireEventSelection);
-				} else {
-					selectNesessaryItemInAccordion(idToSelect, fireEventSelection);
-				}
-				onLoadNavigator();
+						fillAccordeon(navigator);
+						verpan.clear();
+						verpan.add(accordeon);
 
-			}
+						if ((selectionId != null) && (!selectionId.isEmpty())) {
+							selectNesessaryItemInAccordion(selectionId, fireEventSelection);
+						} else {
+							selectNesessaryItemInAccordion(idToSelect, fireEventSelection);
+						}
+						onLoadNavigator();
 
-		});
+					}
+
+				});
 	}
 
 	// CHECKSTYLE:OFF

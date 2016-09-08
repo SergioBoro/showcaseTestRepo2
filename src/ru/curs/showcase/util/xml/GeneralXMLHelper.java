@@ -3,6 +3,7 @@ package ru.curs.showcase.util.xml;
 import org.xml.sax.Attributes;
 
 import ru.curs.showcase.app.api.NamedElement;
+import ru.curs.showcase.runtime.UserDataUtils;
 
 /**
  * Базовый класс парсера, содержащий константы для разбора поступающих в систему
@@ -133,6 +134,11 @@ public abstract class GeneralXMLHelper {
 	 */
 	protected void setupBaseProps(final NamedElement el, final Attributes attrs) {
 		el.setId(attrs.getValue(ID_TAG));
-		el.setName(attrs.getValue(NAME_TAG));
+		/**
+		 * Метод UserDataUtils.modifyVariables() переводит строку-аргумент с
+		 * помощью Gettext.
+		 */
+		el.setName(UserDataUtils.modifyVariables(attrs.getValue(NAME_TAG)));
+		// el.setName(attrs.getValue(NAME_TAG));
 	}
 }

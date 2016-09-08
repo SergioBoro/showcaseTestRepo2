@@ -7,6 +7,7 @@ import ru.beta2.extra.gwt.ui.selector.*;
 import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.Options;
 import ru.beta2.extra.gwt.ui.selector.api.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.*;
@@ -85,17 +86,38 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 	// AppCurrContext.getInstance().getInternationalizedMessages().conditionNotEndWith(),
 	// AppCurrContext.getInstance().getInternationalizedMessages().conditionIsEmpty()
 	// };
-	private static final String[] STRING_CONDITIONS = {
-			AppCurrContext.getInstance().getBundleMap().get("conditionContain"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionEqual"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionStartWith"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionEndWith"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionNotContain"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionNotEqual"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionNotStartWith"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionNotEndWith"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionIsEmpty") };
+	private static final String[] STRING_CONDITIONS =
+		{
+				// AppCurrContext.getInstance().getBundleMap().get("conditionContain"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"contains"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"list of values"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionEqual"),
+				CourseClientLocalization
+						.gettext(AppCurrContext.getInstance().getDomain(), "equal"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionStartWith"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"starts with"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionEndWith"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"ends with"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionNotContain"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"does not contain"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionNotEqual"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"does not equal"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionNotStartWith"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"does not start with"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionNotEndWith"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"does not end with"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionIsEmpty")
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"is empty") };
 	// private static final String[] DATE_NUMBER_CONDITIONS = {
 	// AppCurrContext.getInstance().getInternationalizedMessages().conditionEqual(),
 	// AppCurrContext.getInstance().getInternationalizedMessages().conditionListOfValues(),
@@ -106,15 +128,32 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 	// AppCurrContext.getInstance().getInternationalizedMessages().conditionNotEqual(),
 	// AppCurrContext.getInstance().getInternationalizedMessages().conditionIsEmpty()
 	// };
-	private static final String[] DATE_NUMBER_CONDITIONS = {
-			AppCurrContext.getInstance().getBundleMap().get("conditionEqual"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionGreater"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionLess"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionGreaterEqual"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionLessEqual"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionNotEqual"),
-			AppCurrContext.getInstance().getBundleMap().get("conditionIsEmpty") };
+	private static final String[] DATE_NUMBER_CONDITIONS =
+		{
+				// AppCurrContext.getInstance().getBundleMap().get("conditionEqual"),
+				CourseClientLocalization
+						.gettext(AppCurrContext.getInstance().getDomain(), "equal"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"list of values"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionGreater"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"is greater than"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionLess"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"is less than"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionGreaterEqual"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"greater than or equal"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionLessEqual"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"less than or equal"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionNotEqual"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"does not equal"),
+				// AppCurrContext.getInstance().getBundleMap().get("conditionIsEmpty")
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"is empty") };
 
 	/**
 	 * Класс ячейки условия фильтра в списке.
@@ -129,8 +168,9 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 
 	public JSFilter(final JSLiveGridPluginPanel aJSLiveGridPluginPanel) {
 		// setText(AppCurrContext.getInstance().getInternationalizedMessages().grid_caption_filter());
-		setText(AppCurrContext.getInstance().getBundleMap().get("grid_caption_filter"));
-
+		setText(
+		// AppCurrContext.getInstance().getBundleMap().get("grid_caption_filter"));
+		CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(), "Filter"));
 		jsLiveGridPluginPanel = aJSLiveGridPluginPanel;
 
 		fillCelllist();
@@ -189,7 +229,10 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 
 		linkBox.addItem("OR");
 		linkBox.addItem("AND");
-		vpEdit.add(new HTML(AppCurrContext.getInstance().getBundleMap().get("jsFilterLink") + ":"));
+		vpEdit.add(new HTML(
+		// AppCurrContext.getInstance().getBundleMap().get("jsFilterLink")
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"Mapping") + ":"));
 		vpEdit.add(linkBox);
 
 		columnBox.addChangeHandler(new ChangeHandler() {
@@ -202,8 +245,10 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 				.getColumns()) {
 			columnBox.addItem(egcc.getCaption());
 		}
-		vpEdit.add(new HTML(AppCurrContext.getInstance().getBundleMap().get("jsFilterColumn")
-				+ ":"));
+		vpEdit.add(new HTML(
+		// AppCurrContext.getInstance().getBundleMap().get("jsFilterColumn")
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"Column") + ":"));
 		vpEdit.add(columnBox);
 
 		conditionBox.addChangeHandler(new ChangeHandler() {
@@ -212,11 +257,16 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 				conditionBoxChangeHandler();
 			}
 		});
-		vpEdit.add(new HTML(AppCurrContext.getInstance().getBundleMap().get("jsFilterCondition")
-				+ ":"));
+		vpEdit.add(new HTML(
+		// AppCurrContext.getInstance().getBundleMap().get("jsFilterCondition")
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"Condition") + ":"));
 		vpEdit.add(conditionBox);
 
-		vpEdit.add(new HTML(AppCurrContext.getInstance().getBundleMap().get("jsFilterValue") + ":"));
+		vpEdit.add(new HTML(
+		// AppCurrContext.getInstance().getBundleMap().get("jsFilterValue")
+				CourseClientLocalization
+						.gettext(AppCurrContext.getInstance().getDomain(), "Value") + ":"));
 		vpEdit.add(valueBox);
 
 		dateBox =
@@ -226,8 +276,10 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 		vpEdit.add(datePicker);
 
 		btnSelector =
-			new Button(AppCurrContext.getInstance().getBundleMap().get("jsFilterSelectValues"),
-					new ClickHandler() {
+			new Button(
+			// AppCurrContext.getInstance().getBundleMap().get("jsFilterSelectValues"),
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							"Select values"), new ClickHandler() {
 						@Override
 						public void onClick(final ClickEvent event) {
 							runSelector();
@@ -240,8 +292,10 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 		vpEdit.add(html);
 
 		btnUpdate =
-			new Button(AppCurrContext.getInstance().getBundleMap().get("jsFilterUpdate"),
-					new ClickHandler() {
+			new Button(
+			// AppCurrContext.getInstance().getBundleMap().get("jsFilterUpdate"),
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							"Update filter condition"), new ClickHandler() {
 						@Override
 						public void onClick(final ClickEvent event) {
 							updateFilter();
@@ -291,8 +345,10 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 
 	private void fillHPFooter() {
 		Button btnAdd =
-			new Button(AppCurrContext.getInstance().getBundleMap().get("jsFilterAdd"),
-					new ClickHandler() {
+			new Button(
+			// AppCurrContext.getInstance().getBundleMap().get("jsFilterAdd"),
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							"Add"), new ClickHandler() {
 						@Override
 						public void onClick(final ClickEvent event) {
 							Filter filter = new Filter();
@@ -310,8 +366,10 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 		hpFooter.add(html);
 
 		Button btnDel =
-			new Button(AppCurrContext.getInstance().getBundleMap().get("jsFilterDel"),
-					new ClickHandler() {
+			new Button(
+			// AppCurrContext.getInstance().getBundleMap().get("jsFilterDel"),
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							"Delete"), new ClickHandler() {
 						@Override
 						public void onClick(final ClickEvent event) {
 							listDataProvider.getList().remove(selectionModel.getSelectedObject());
@@ -327,8 +385,10 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 		hpFooter.add(html);
 
 		Button btnClear =
-			new Button(AppCurrContext.getInstance().getBundleMap().get("jsFilterClear"),
-					new ClickHandler() {
+			new Button(
+			// AppCurrContext.getInstance().getBundleMap().get("jsFilterClear"),
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							"Clear"), new ClickHandler() {
 						@Override
 						public void onClick(final ClickEvent event) {
 							maxId = 0;
@@ -341,8 +401,10 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 		hpFooter.add(btnClear);
 
 		Button btnCancel =
-			new Button(AppCurrContext.getInstance().getBundleMap().get("jsFilterCancel"),
-					new ClickHandler() {
+			new Button(
+			// AppCurrContext.getInstance().getBundleMap().get("jsFilterCancel"),
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							"Cancel"), new ClickHandler() {
 						@Override
 						public void onClick(final ClickEvent event) {
 							hide();
@@ -443,13 +505,11 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 	}
 
 	private void conditionBoxChangeHandler() {
-		if ((conditionBox.getSelectedIndex() > -1)
-				&& AppCurrContext
-						.getInstance()
-						.getBundleMap()
-						.get("conditionListOfValues")
-						.equalsIgnoreCase(
-								conditionBox.getItemText(conditionBox.getSelectedIndex()))) {
+		if ((conditionBox.getSelectedIndex() > -1) &&
+		// AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues")
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"list of values").equalsIgnoreCase(
+						conditionBox.getItemText(conditionBox.getSelectedIndex()))) {
 			btnSelector.setVisible(true);
 
 			setVisibleValueBoxes(true);
@@ -469,8 +529,10 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 
 	private void setListBoxConditions(final String[] conditions) {
 		for (int i = 0; i < conditions.length; i++) {
-			if (AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues")
-					.equalsIgnoreCase(conditions[i])) {
+			if (
+			// AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues")
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"list of values").equalsIgnoreCase(conditions[i])) {
 				FilterMultiselector fms =
 					((GridMetadata) (jsLiveGridPluginPanel.getElement())).getJSInfo()
 							.getFilterMultiselector();
@@ -525,8 +587,10 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 
 		index = conditionBox.getSelectedIndex();
 		if (index > -1) {
-			if (!AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues")
-					.equalsIgnoreCase(conditionBox.getItemText(index))) {
+			if (!
+			// AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues")
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"list of values").equalsIgnoreCase(conditionBox.getItemText(index))) {
 				filter.getListOfValues().clear();
 				filter.getListOfValuesId().clear();
 			}
@@ -565,8 +629,12 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 	private void renderFilterCell(final com.google.gwt.cell.client.Cell.Context context,
 			final Filter filter, final SafeHtmlBuilder sb) {
 		if (filter.getLink() == null) {
-			sb.appendEscaped(AppCurrContext.getInstance().getBundleMap().get("jsFilterCondition")
-					+ " " + filter.getId());
+			sb.appendEscaped(
+			// AppCurrContext.getInstance().getBundleMap().get("jsFilterCondition")
+			CourseClientLocalization
+					.gettext(AppCurrContext.getInstance().getDomain(), "Condition")
+					+ " "
+					+ filter.getId());
 		} else {
 			String img;
 			if ("OR".equalsIgnoreCase(filter.getLink())) {

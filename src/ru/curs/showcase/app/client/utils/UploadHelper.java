@@ -5,6 +5,7 @@ import java.util.*;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.api.CompleteHandler;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -19,8 +20,10 @@ import com.google.gwt.user.client.ui.*;
  */
 public final class UploadHelper extends RunServletByFormHelper {
 
-	private static final String UPLOAD_ERROR = AppCurrContext.getInstance().getBundleMap()
-			.get("uploadError");
+	private static final String UPLOAD_ERROR =
+	// AppCurrContext.getInstance().getBundleMap().get("uploadError");
+		CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+				"An error occurred during downloading files");
 
 	private static final String SC_UPLOADER_CSS = "sc-uploader-comp";
 

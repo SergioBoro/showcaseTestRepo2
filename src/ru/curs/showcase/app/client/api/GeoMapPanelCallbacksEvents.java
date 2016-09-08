@@ -6,6 +6,7 @@ import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.client.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 import ru.curs.showcase.app.client.utils.DownloadHelper;
 
 import com.google.gwt.regexp.shared.*;
@@ -153,7 +154,10 @@ public final class GeoMapPanelCallbacksEvents {
 
 		// dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
 		// .export_to_png_error());
-		dh.setErrorCaption(AppCurrContext.getInstance().getBundleMap().get("export_to_png_error"));
+		dh.setErrorCaption(
+		// AppCurrContext.getInstance().getBundleMap().get("export_to_png_error"));
+		CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+				"PNG file downloading error"));
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/geoMapExport"
 				+ com.google.gwt.user.client.Window.Location.getQueryString());
 		dh.setEncoding(FormPanel.ENCODING_MULTIPART);
@@ -170,8 +174,9 @@ public final class GeoMapPanelCallbacksEvents {
 			// .getInternationalizedMessages().export_to_png_error(),
 			// e.getMessage());
 			MessageBox.showSimpleMessage(
-					AppCurrContext.getInstance().getBundleMap().get("export_to_png_error"),
-					e.getMessage());
+			// AppCurrContext.getInstance().getBundleMap().get("export_to_png_error"),
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							"PNG file downloading error"), e.getMessage());
 		}
 	}
 
@@ -180,7 +185,8 @@ public final class GeoMapPanelCallbacksEvents {
 		// .export_to_png_error()
 		// + "(djeo)", error);
 		MessageBox.showSimpleMessage(
-				AppCurrContext.getInstance().getBundleMap().get("export_to_png_error") + "(djeo)",
-				error);
+		// AppCurrContext.getInstance().getBundleMap().get("export_to_png_error")
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"PNG file downloading error") + "(djeo)", error);
 	}
 }

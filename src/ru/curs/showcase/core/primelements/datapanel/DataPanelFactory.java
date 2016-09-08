@@ -9,6 +9,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.DataFile;
 import ru.curs.showcase.util.xml.*;
 
@@ -70,7 +71,13 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 	}
 
 	public void tabSTARTTAGHandler(final Attributes attrs) {
-		currentTab = result.add(attrs.getValue(ID_TAG), attrs.getValue(NAME_TAG));
+		/**
+		 * Метод UserDataUtils.modifyVariables() переводит строку-аргумент с
+		 * помощью Gettext.
+		 */
+		currentTab =
+			result.add(attrs.getValue(ID_TAG),
+					UserDataUtils.modifyVariables(attrs.getValue(NAME_TAG)));
 		handleHTMLAttrs(attrs, currentTab.getHtmlAttrs());
 		if (attrs.getIndex(LAYOUT_TAG) > -1) {
 			currentTab.setLayout(DataPanelTabLayout.valueOf(attrs.getValue(LAYOUT_TAG)));

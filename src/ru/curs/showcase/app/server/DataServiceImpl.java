@@ -4,8 +4,6 @@ import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -33,8 +31,10 @@ import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
-import ru.curs.showcase.security.logging.SecurityLoggingCommand;
+import ru.curs.showcase.security.logging.*;
 import ru.curs.showcase.util.LoggerHelper;
+
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * The server side implementation of the RPC service. Является декоратором для
@@ -284,12 +284,14 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		lang = UserDataUtils.getLocaleForCurrentUserdata();
 
 		if (!("en".equals(lang))) {
-			bundle = ResourceBundle
-					.getBundle("ru.curs.showcase.app.server.internatiolization.constantsShowcase");
+			bundle =
+				ResourceBundle
+						.getBundle("ru.curs.showcase.app.server.internatiolization.constantsShowcase");
 		} else {
 			Locale loc = new Locale("en");
-			bundle = ResourceBundle.getBundle(
-					"ru.curs.showcase.app.server.internatiolization.constantsShowcase", loc);
+			bundle =
+				ResourceBundle.getBundle(
+						"ru.curs.showcase.app.server.internatiolization.constantsShowcase", loc);
 		}
 
 		if (bundle != null) {
@@ -300,4 +302,39 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		return map;
 	}
 
+	@Override
+	public String getLocalizationBundleDomainName(CompositeContext context) {
+		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
+		// String lang = UserDataUtils.getLocaleForCurrentUserdata();
+		// String platform = lang.equals("") ? "platform" : "platform" + "_" +
+		// lang;
+		//
+		// ProcessBuilder pb = new ProcessBuilder();
+		// String classpath = pb.environment().get("CLASSPATH");
+		// String localizePath = classpath.substring(classpath.lastIndexOf(";")
+		// + 1);
+		//
+		// File localizeDir = new File(localizePath);
+		//
+		// String domainFile = "";
+		// for (String file : localizeDir.list()) {
+		// if (file.equals(platform + ".po")) {
+		// domainFile = file;
+		// break;
+		// }
+		// }
+
+		String domainFile =
+			UserDataUtils.getPlatformPoFile(AppInfoSingleton.getAppInfo().getCurUserDataId());
+
+		if ("".equals(domainFile))
+			domainFile = UserDataUtils.getDefaultPlatformPoFile();
+
+		String result = "";
+
+		if (!"".equals(domainFile) && domainFile.contains("."))
+			result = domainFile.substring(0, domainFile.lastIndexOf("."));
+
+		return result;
+	}
 }

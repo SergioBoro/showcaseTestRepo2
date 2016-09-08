@@ -1,10 +1,11 @@
 package ru.curs.showcase.app.client;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.element.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 import ru.curs.showcase.app.client.utils.WebUtils;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * Базовый класс для асинхронных колбэков при вызове сервисов gwt.
@@ -57,7 +58,10 @@ public abstract class GWTServiceCallback<T> implements AsyncCallback<T> {
 
 		String captionMessage = okMessage.getCaption();
 		if (captionMessage == null) {
-			captionMessage = AppCurrContext.getInstance().getBundleMap().get("okMessage");
+			captionMessage =
+			// AppCurrContext.getInstance().getBundleMap().get("okMessage");
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"Message");
 		}
 
 		String subtypeMessage = okMessage.getSubtype();

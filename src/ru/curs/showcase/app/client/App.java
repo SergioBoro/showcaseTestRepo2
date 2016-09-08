@@ -5,9 +5,11 @@ import java.util.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.*;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -27,29 +29,60 @@ public class App implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		final CompositeContext context = getCurrentContext();
-		setBundleMapForConstants(context);
+		// setBundleMapForConstants(context);
+		setLocalizationBundleDomain(context);
 	}
 
-	private void setBundleMapForConstants(final CompositeContext context) {
+	// private void setBundleMapForConstants(final CompositeContext context) {
+	// if (dataService == null) {
+	// dataService = GWT.create(DataService.class);
+	// }
+	//
+	// dataService.getBundle(context, new GWTServiceCallback<Map<String,
+	// String>>(
+	// "Error for bundleMap loading") {
+	//
+	// // new AsyncCallback<Map<String, String>>() {
+	//
+	// @Override
+	// public void onSuccess(final Map<String, String> arg0) {
+	// AppCurrContext.getInstance().setBundleMap(arg0);
+	// initialize(context);
+	// setDomain();
+	// }
+	//
+	// // @Override
+	// // public void onFailure(final Throwable arg0) {
+	// // MessageBox.showSimpleMessage("error", "bundleMap");
+	// // }
+	// });
+	// }
+
+	/**
+	 * Метод, устанавливающий имя домена (имя пакетного файла без расширения),
+	 * служащего для перевода клиентской части Showcase.
+	 * 
+	 * @param context
+	 *            - начальный контекст
+	 */
+	private void setLocalizationBundleDomain(final CompositeContext context) {
 		if (dataService == null) {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getBundle(context, new GWTServiceCallback<Map<String, String>>(
-				"Error for bundleMap loading") {
-
-			// new AsyncCallback<Map<String, String>>() {
+		dataService.getLocalizationBundleDomainName(context, new AsyncCallback<String>() {
 
 			@Override
-			public void onSuccess(final Map<String, String> arg0) {
-				AppCurrContext.getInstance().setBundleMap(arg0);
+			public void onSuccess(final String arg0) {
+				AppCurrContext.getInstance().setDomain(arg0);
 				initialize(context);
 			}
 
-			// @Override
-			// public void onFailure(final Throwable arg0) {
-			// MessageBox.showSimpleMessage("error", "bundleMap");
-			// }
+			@Override
+			public void onFailure(final Throwable arg0) {
+				MessageBox
+						.showSimpleMessage("Error", "Error for LocalizationBundleDomain loading");
+			}
 		});
 	}
 
@@ -67,9 +100,13 @@ public class App implements EntryPoint {
 		// GWTServiceCallback<ServerState>(
 		// AppCurrContext.getInstance().getInternationalizedMessages()
 		// .error_of_server_current_state_retrieving_from_server()) {
-		dataService.getServerCurrentState(context,
-				new GWTServiceCallback<ServerState>(AppCurrContext.getInstance().getBundleMap()
-						.get("error_of_server_current_state_retrieving_from_server")) {
+		dataService.getServerCurrentState(
+				context,
+				new GWTServiceCallback<ServerState>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_server_current_state_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving current application state data")) {
 
 					@Override
 					public void onSuccess(final ServerState serverCurrentState) {
@@ -96,16 +133,21 @@ public class App implements EntryPoint {
 		// GWTServiceCallback<MainPage>(AppCurrContext
 		// .getInstance().getInternationalizedMessages()
 		// .error_of_main_page_retrieving_from_server()) {
-		dataService.getMainPage(context, new GWTServiceCallback<MainPage>(AppCurrContext
-				.getInstance().getBundleMap().get("error_of_main_page_retrieving_from_server")) {
+		dataService.getMainPage(
+				context,
+				new GWTServiceCallback<MainPage>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_main_page_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving main application page")) {
 
-			@Override
-			public void onSuccess(final MainPage mainPage) {
-				AppCurrContext.getInstance().setMainPage(mainPage);
-				fillMainPage();
-			}
+					@Override
+					public void onSuccess(final MainPage mainPage) {
+						AppCurrContext.getInstance().setMainPage(mainPage);
+						fillMainPage();
+					}
 
-		});
+				});
 	}
 
 	// генерация и размещение приложения в DOM модели Showcase.

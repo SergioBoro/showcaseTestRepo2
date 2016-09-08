@@ -22,10 +22,14 @@ import com.google.gwt.event.shared.HandlerRegistration;
  */
 public final class AppCurrContext extends ActionTransformer {
 
-	private static int nnn = 0;
-
 	private final constantsShowcase internationalizedMessages = GWT
 			.create(constantsShowcase.class);
+
+	/**
+	 * Имя домена (имя пакетного файла без разширения) для перевода клиенсткой
+	 * части Showcase с помощью Gettext.
+	 */
+	private String domain = "";
 
 	/**
 	 * Список id элементов, для которых были добавлены js и css из внешних
@@ -279,6 +283,14 @@ public final class AppCurrContext extends ActionTransformer {
 			aListOfElementsIdWhichAlreadyAddSomeJSFileandCSSToDomModel;
 	}
 
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String aDomain) {
+		domain = aDomain;
+	}
+
 	public void setBundleMap(final Map<String, String> aBundleMap) {
 		bundleMap = aBundleMap;
 	}
@@ -301,14 +313,6 @@ public final class AppCurrContext extends ActionTransformer {
 
 	public String getNavigatorItemId() {
 		return navigatorItemId;
-	}
-
-	public void iterarteNnn() {
-		++nnn;
-	}
-
-	public int getNnn() {
-		return nnn;
 	}
 
 }

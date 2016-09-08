@@ -7,6 +7,7 @@ import java.util.regex.*;
 import org.slf4j.MDC;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.server.internatiolization.CourseLocalization;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 
@@ -359,7 +360,10 @@ public final class UserDataUtils {
 		value =
 			value.replace(CURRENT_USERDATA_TEMPLATE, String.format("solutions/%s",
 					AppInfoSingleton.getAppInfo().getCurUserDataId()));
-		return value;
+
+		String data = modifyVariables(value);
+
+		return data;
 	}
 
 	public static String getGeneralOptionalProp(final String paramName) {
@@ -963,4 +967,359 @@ public final class UserDataUtils {
 		return appVersion;
 	}
 
+	/**
+	 * Метод, модифицирующий системную переменную окружения CLASSPATH, в
+	 * зависимости от настройки localization.path файла generalapp.properties.
+	 * Данный метод модифицирует переменную CLASSPATH только в памяти в пределах
+	 * рабочей сессии. В пределах же системы переменная остаётся в неизменном
+	 * состоянии.
+	 */
+
+	public static void modifyClasspathEnvVar() {
+		if (getGeneralOptionalProp("localization.path") != null) {
+			String localizationPath = getGeneralOptionalProp("localization.path").trim();
+			File localizationPathAsFile = new File(localizationPath);
+
+			if (localizationPathAsFile.exists()) {
+				ProcessBuilder pb = new ProcessBuilder();
+				Map<String, String> env = pb.environment();
+				String classpath = env.get("CLASSPATH");
+				if (classpath == null) {
+					env.put("CLASSPATH", localizationPath);
+				} else if (!classpath.toUpperCase().contains(localizationPath.toUpperCase())) {
+					String path = env.get("CLASSPATH") + ";" + localizationPath;
+					env.put("CLASSPATH", path);
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Метод поиска (в указанной юзердате в подпапке resources) файла с
+	 * расширенем .po, служащего для локализации клиентской части Showcase.
+	 * 
+	 * @param anUserdataId
+	 *            - юзердата, в которой будет просиходить поиск локализационного
+	 *            файла
+	 * @return имя локализационного файла с расширением
+	 */
+	public static String getPlatformPoFile(String anUserdataId) {
+		File dir = new File(getUserDataCatalog(anUserdataId) + "/" + "resources");
+		AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
+
+		String poFileName = "";
+
+		String lang = UserDataUtils.getLocaleForCurrentUserdata();
+
+		String platform =
+			(lang == null || lang.equals("") || lang.equals("en")) ? "platform" : "platform" + "_"
+					+ lang;
+
+		if (dir.exists()) {
+			for (String file : dir.list()) {
+				if (file.equals(platform + ".po")) {
+					poFileName = file;
+					break;
+				}
+			}
+		}
+
+		return poFileName;
+	}
+
+	/**
+	 * Метод поиска (в папке common.sys в подпапке resources) дефолтного файла с
+	 * расширенем .po, служащего для локализации клиентской части Showcase.
+	 * 
+	 * @return имя локализационного файла с расширением
+	 */
+	public static String getDefaultPlatformPoFile() {
+		File dir =
+			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/common.sys/"
+					+ "resources");
+
+		String poFileName = "";
+
+		String platform = "platform";
+
+		if (dir.exists()) {
+			for (String file : dir.list()) {
+				if (file.equals(platform + ".po")) {
+					poFileName = file;
+					break;
+				}
+			}
+		}
+
+		return poFileName;
+	}
+
+	/**
+	 * Метод поиска (в указанной юзердате в подпапке resources) файла с
+	 * расширенем .class, служащего для локализации серверной части Showcase.
+	 * 
+	 * @param anUserdataId
+	 *            - юзердата, в которой будет просиходить поиск локализационного
+	 *            файла
+	 * @return имя локализационного файла с расширением
+	 */
+	public static String getBundleClass(String anUserdataId) {
+		File dir = new File(getUserDataCatalog(anUserdataId) + "/" + "resources");
+		AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
+		String lang = UserDataUtils.getLocaleForCurrentUserdata();
+
+		String classFileName = "";
+		if (lang != null) {
+			if (dir.exists()) {
+				for (String file : dir.list()) {
+					if (file.equals(lang + ".class")) {
+						classFileName = file;
+						break;
+					}
+				}
+			}
+		}
+
+		return classFileName;
+	}
+
+	/**
+	 * Метод, служущаий для перевода строк с помощью Gettext в серверной части
+	 * Showcase.
+	 * 
+	 * @param value
+	 *            - входящая строка
+	 * @return переведённая строка
+	 */
+	public static String modifyVariables(final String value) {
+		String data = value;
+
+		ResourceBundle bundle = CourseLocalization.getLocalizedResourseBundle();
+
+		if (bundle != null) {
+
+			if (data.contains("$localize(_(\""))
+				while (data.contains("$localize(_(\"")) {
+					int index11 = -1;
+					if (data.contains("$localize(_(\" $localize(_(")) {
+						index11 = data.indexOf("$localize(_(\" $localize(_(");
+					}
+					int index = data.indexOf("\"))", index11);
+
+					String substr11 = "";
+					if (index11 != -1 && index != -1)
+						substr11 =
+							data.substring(index11 + "$localize(_(\" $localize(_(".length() + 1,
+									index);
+
+					if (!"".equals(substr11))
+						data =
+							data.replace("$localize(_(\" $localize(_(\"" + substr11 + "\"))\"))",
+									CourseLocalization.gettext(
+											CourseLocalization.getLocalizedResourseBundle(),
+											substr11));
+
+					int index1 = data.indexOf("$localize(_(");
+					index = data.indexOf("\"))", index1);
+
+					String substr1 = "";
+
+					if (index1 != -1 && index != -1)
+						substr1 = data.substring(index1 + "$localize(_(".length() + 1, index);
+
+					if (!"".equals(substr1))
+						data =
+							data.replace("$localize(_(\"" + substr1 + "\"))", CourseLocalization
+									.gettext(CourseLocalization.getLocalizedResourseBundle(),
+											substr1));
+				}
+
+			if (data.contains("$localize(_(&#34;"))
+				while (data.contains("$localize(_(&#34;")) {
+					int index1 = data.indexOf("$localize(_(&#34;");
+					int index = data.indexOf("&#34;))", index1);
+
+					String substr1 = "";
+
+					if (index1 != -1 && index != -1)
+						substr1 = data.substring(index1 + "$localize(_(&#34;".length(), index);
+
+					if (!"".equals(substr1))
+						data =
+							data.replace("$localize(_(&#34;" + substr1 + "&#34;))",
+									CourseLocalization.gettext(
+											CourseLocalization.getLocalizedResourseBundle(),
+											substr1));
+				}
+
+			if (data.contains("$localize(_(&amp;quot;"))
+				while (data.contains("$localize(_(&amp;quot;")) {
+					int index1 = data.indexOf("$localize(_(&amp;quot;");
+					int index = data.indexOf("&amp;quot;))", index1);
+
+					String substr1 = "";
+
+					if (index1 != -1 && index != -1)
+						substr1 =
+							data.substring(index1 + "$localize(_(&amp;quot;".length(), index);
+
+					if (!"".equals(substr1))
+						data =
+							data.replace("$localize(_(&amp;quot;" + substr1 + "&amp;quot;))",
+									CourseLocalization.gettext(
+											CourseLocalization.getLocalizedResourseBundle(),
+											substr1));
+				}
+
+			if (data.contains("$localize(_(\\\""))
+				while (data.contains("$localize(_(\\\"")) {
+					int index1 = data.indexOf("$localize(_(\\\"");
+					int index = data.indexOf("\\\"))", index1);
+
+					String substr1 = "";
+
+					if (index1 != -1 && index != -1)
+						substr1 = data.substring(index1 + "$localize(_(\\\"".length(), index);
+
+					if (!"".equals(substr1))
+						data =
+							data.replace("$localize(_(\\\"" + substr1 + "\\\"))",
+									CourseLocalization.gettext(
+											CourseLocalization.getLocalizedResourseBundle(),
+											substr1));
+				}
+
+			if (data.contains("$localize(gettext(\""))
+				while (data.contains("$localize(gettext(\"")) {
+					int index22 = -1;
+					if (data.contains("$localize(gettext(\" $localize(gettext(")) {
+						index22 = data.indexOf("$localize(gettext(\" $localize(gettext(");
+					}
+					int index = data.indexOf("\"))", index22);
+
+					String substr22 = "";
+					if (index22 != -1 && index != -1)
+						substr22 =
+							data.substring(
+									index22 + "$localize(gettext(\" $localize(gettext(".length()
+											+ 1, index);
+
+					if (!"".equals(substr22))
+						data =
+							data.replace("$localize(gettext(\" $localize(gettext(\"" + substr22
+									+ "\"))\"))", CourseLocalization.gettext(
+									CourseLocalization.getLocalizedResourseBundle(), substr22));
+
+					int index2 = data.indexOf("$localize(gettext(");
+					index = data.indexOf("\"))", index2);
+
+					String substr2 = "";
+
+					if (index2 != -1 && index != -1)
+						substr2 =
+							data.substring(index2 + "$localize(gettext(".length() + 1, index);
+
+					if (!"".equals(substr2))
+						data =
+							data.replace("$localize(gettext(\"" + substr2 + "\"))",
+									CourseLocalization.gettext(
+											CourseLocalization.getLocalizedResourseBundle(),
+											substr2));
+				}
+
+			if (data.contains("$localize(gettext(&#34;"))
+				while (data.contains("$localize(gettext(&#34;")) {
+					int index1 = data.indexOf("$localize(gettext(&#34;");
+					int index = data.indexOf("&#34;))", index1);
+
+					String substr1 = "";
+
+					if (index1 != -1 && index != -1)
+						substr1 =
+							data.substring(index1 + "$localize(gettext(&#34;".length(), index);
+
+					if (!"".equals(substr1))
+						data =
+							data.replace("$localize(gettext(&#34;" + substr1 + "&#34;))",
+									CourseLocalization.gettext(
+											CourseLocalization.getLocalizedResourseBundle(),
+											substr1));
+				}
+
+			if (data.contains("$localize(gettext(&amp;quot;"))
+				while (data.contains("$localize(gettext(&amp;quot;")) {
+					int index1 = data.indexOf("$localize(gettext(&amp;quot;");
+					int index = data.indexOf("&amp;quot;))", index1);
+
+					String substr1 = "";
+
+					if (index1 != -1 && index != -1)
+						substr1 =
+							data.substring(index1 + "$localize(gettext(&amp;quot;".length(), index);
+
+					if (!"".equals(substr1))
+						data =
+							data.replace(
+									"$localize(gettext(&amp;quot;" + substr1 + "&amp;quot;))",
+									CourseLocalization.gettext(
+											CourseLocalization.getLocalizedResourseBundle(),
+											substr1));
+				}
+
+			if (data.contains("$localize(gettext(\\\""))
+				while (data.contains("$localize(gettext(\\\"")) {
+					int index1 = data.indexOf("$localize(gettext(\\\"");
+					int index = data.indexOf("\\\"))", index1);
+
+					String substr1 = "";
+
+					if (index1 != -1 && index != -1)
+						substr1 =
+							data.substring(index1 + "$localize(gettext(\\\"".length(), index);
+
+					if (!"".equals(substr1))
+						data =
+							data.replace("$localize(gettext(\\\"" + substr1 + "\\\"))",
+									CourseLocalization.gettext(
+											CourseLocalization.getLocalizedResourseBundle(),
+											substr1));
+				}
+
+			if (data.contains("$localize(ngettext(\""))
+				while (data.contains("$localize(ngettext(\"")) {
+					int index1 = data.indexOf("$localize(ngettext(\"");
+					int index2 = data.indexOf("\",", index1 + 1);
+					int index3 = data.indexOf("\"", index2 + 1);
+					int index4 = data.indexOf("\",", index3 + 1);
+					int index5 = data.indexOf("),", index1);
+					int index6 = data.indexOf(")", index5 + 1);
+
+					String substr1 = "";
+					if (index1 != -1 && index2 != -1)
+						substr1 =
+							data.substring(index1 + "$localize(ngettext(\"".length(), index2);
+
+					String substr2 = "";
+					if (!"".equals(substr1) && index3 != -1 && index4 != -1)
+						substr2 = data.substring(index3 + 1, index4);
+
+					int number = -1;
+					if (!"".equals(substr1) && !"".equals(substr2) && index5 != -1)
+						number = Integer.parseInt(data.substring(index4 + 2, index5).trim());
+
+					int number2 = -1;
+					if (!"".equals(substr1) && !"".equals(substr2) && number != -1 && index6 != -1)
+						number2 = Integer.parseInt(data.substring(index5 + 2, index6).trim());
+
+					data =
+						data.replace(data.substring(index1, index6 + 1), String.format(
+								CourseLocalization.ngettext(
+										CourseLocalization.getLocalizedResourseBundle(), substr1,
+										substr2, number), number2));
+				}
+		}
+
+		return data;
+	}
 }

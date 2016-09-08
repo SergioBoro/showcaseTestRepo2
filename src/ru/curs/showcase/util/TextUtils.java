@@ -99,6 +99,26 @@ public final class TextUtils {
 	}
 
 	/**
+	 * Преобразует строку в кодировке encoding в InputStream. Может
+	 * использоваться при работе с Gateway классами и\или при отладке.
+	 * 
+	 * @param str
+	 *            - строка.
+	 * @param encoding
+	 *            - кодировка.
+	 * @return - InputStream.
+	 * @throws UnsupportedEncodingException
+	 */
+	public static InputStream stringToStream(final String str, final String encoding) {
+		try {
+			return new ByteArrayInputStream(str.getBytes(encoding));
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException("Неподдерживаемая кодировка");
+		}
+
+	}
+
+	/**
 	 * Возвращает числовое значение размера, извлеченное из переданной строки.
 	 * 
 	 * @param value

@@ -11,6 +11,7 @@ import ru.curs.showcase.app.api.element.VoidElement;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
@@ -65,21 +66,26 @@ public final class ActionExecuter {
 			}
 			ac.setRelated(panelContext);
 
-			dataService.execServerAction(ac, new GWTServiceCallback<VoidElement>(AppCurrContext
-					.getInstance().getBundleMap().get("error_in_server_activity")) {
+			dataService.execServerAction(
+					ac,
+					new GWTServiceCallback<VoidElement>(
+					// AppCurrContext.getInstance().getBundleMap().get("error_in_server_activity"))
+					// {
+							CourseClientLocalization.gettext(AppCurrContext.getInstance()
+									.getDomain(), "when execution of server action")) {
 
-				@Override
-				public void onSuccess(final VoidElement ve) {
+						@Override
+						public void onSuccess(final VoidElement ve) {
 
-					super.onSuccess(ve);
+							super.onSuccess(ve);
 
-					handleClientBlocks(ac);
+							handleClientBlocks(ac);
 
-					setEnableDisableState(ac.getActionCaller(), true);
+							setEnableDisableState(ac.getActionCaller(), true);
 
-				}
+						}
 
-			});
+					});
 		} else {
 			handleClientBlocks(ac);
 		}

@@ -73,7 +73,11 @@ var protocol = window.location.protocol;
     <link rel="stylesheet" href="js/dgrid/css/dgrid.css"/>
     <link rel="stylesheet" href="js/dgrid/css/skins/claro.css"/>
     
-    
+    <script language="javascript" src="js/Gettext.js"></script>
+     <link rel="gettext" 
+     href="solutions/<%=userdataId%>/resources/<%=(!"".equals(UserDataUtils.getPlatformPoFile(userdataId))) ? 
+    		 UserDataUtils.getPlatformPoFile(userdataId) : UserDataUtils.getDefaultPlatformPoFile()%>" 
+    		 type="application/x-po"/>
     
       <%=//ExternalClientLibrariesUtils.addExternalCSSByStaticMetod(request.getParameter("userdata"))
     		  ExternalClientLibrariesUtils.addExternalCSSByStaticMetod(userdataId)

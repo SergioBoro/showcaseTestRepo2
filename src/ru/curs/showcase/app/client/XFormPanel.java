@@ -9,6 +9,7 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 import ru.curs.showcase.app.client.utils.UploadWindow;
 
 import com.google.gwt.core.client.*;
@@ -229,8 +230,11 @@ public class XFormPanel extends BasicElementPanelBasis {
 		dataService.getXForms(
 				getDetailedContext(),
 				getElementInfo(),
-				new GWTServiceCallback<XForm>(AppCurrContext.getInstance().getBundleMap()
-						.get("xformsErrorGetData")) {
+				new GWTServiceCallback<XForm>(
+				// AppCurrContext.getInstance().getBundleMap().get("xformsErrorGetData"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving data from the server XForm")) {
 					@Override
 					public void onSuccess(final XForm aXform) {
 

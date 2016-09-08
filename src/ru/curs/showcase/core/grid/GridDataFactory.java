@@ -25,7 +25,6 @@ import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.xml.*;
-import ru.curs.showcase.util.xml.XMLUtils;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
@@ -132,7 +131,21 @@ public class GridDataFactory extends CompBasedElementFactory {
 	@Override
 	protected void prepareData() {
 		if (getXmlDS() == null) {
-			setXmlDS(getSource().getXmlDS());
+
+			// Начало перевода с помощью Gettext.
+			InputStream is = getSource().getXmlDS();
+			String str = "";
+			try {
+				str = TextUtils.streamToString(is);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			str = UserDataUtils.modifyVariables(str);
+			is = TextUtils.stringToStream(str);
+			setXmlDS(is);
+			// Окончание перевода с помощью Gettext.
+
+			// setXmlDS(getSource().getXmlDS());
 		}
 	}
 
@@ -208,7 +221,9 @@ public class GridDataFactory extends CompBasedElementFactory {
 				}
 				return;
 			} else {
-				curColId = XMLUtils.unEscapeTagXml(localName);
+				// Здесь осуществляется перевод с помощью Gettext.
+				curColId = UserDataUtils.modifyVariables(XMLUtils.unEscapeTagXml(localName));
+				// curColId = XMLUtils.unEscapeTagXml(localName);
 
 				processValue = true;
 				osValue = new ByteArrayOutputStream();
@@ -256,7 +271,9 @@ public class GridDataFactory extends CompBasedElementFactory {
 			}
 
 			if (processValue) {
-				String colId = XMLUtils.unEscapeTagXml(localName);
+				// Здесь осуществляется перевод с помощью Gettext.
+				String colId = UserDataUtils.modifyVariables(XMLUtils.unEscapeTagXml(localName));
+				// String colId = XMLUtils.unEscapeTagXml(localName);
 				try {
 					if (colId.equals(curColId)) {
 						String value = osValue.toString(TextUtils.DEF_ENCODING);

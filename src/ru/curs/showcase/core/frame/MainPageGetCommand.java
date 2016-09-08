@@ -36,26 +36,46 @@ public final class MainPageGetCommand extends AbstractMainPageFrameCommand<MainP
 		MainPageFrameFactory factory = new MainPageFrameFactory(false);
 		String html = getRawMainPageFrame(getContext(), MainPageFrameType.HEADER);
 		html = factory.build(html);
+		/**
+		 * Метод UserDataUtils.modifyVariables() переводит строку-аргумент с
+		 * помощью Gettext.
+		 */
+		if (html != null)
+			html = UserDataUtils.modifyVariables(html);
 		mp.setHeader(html);
 
 		html = getRawMainPageFrame(getContext(), MainPageFrameType.FOOTER);
 		html = factory.build(html);
+		/**
+		 * Метод UserDataUtils.modifyVariables() переводит строку-аргумент с
+		 * помощью Gettext.
+		 */
+		if (html != null)
+			html = UserDataUtils.modifyVariables(html);
 		mp.setFooter(html);
 
 		html = getRawMainPageFrame(getContext(), MainPageFrameType.WELCOME);
 		html = factory.build(html);
+		/**
+		 * Метод UserDataUtils.modifyVariables() переводит строку-аргумент с
+		 * помощью Gettext.
+		 */
+		if (html != null)
+			html = UserDataUtils.modifyVariables(html);
 		mp.setWelcome(html);
 
 		String cssProcName = UserDataUtils.getOptionalProp(UserDataUtils.CSS_PROC_NAME_PROP);
 		if (cssProcName == null || "none".equals(cssProcName)) {
 			mp.setSolutionCSSFileName(null);
 			mp.setSolutionGridCSSFileName(null);
+			// mp.setProgressBarCSSFileName(null);
 		} else {
 			StyleDBGateway sgw = new StyleDBGateway();
 			String[] cssResult = sgw.getRawData(getContext(), cssProcName);
 			sgw.close();
 			mp.setSolutionCSSFileName(cssResult[0]);
 			mp.setSolutionGridCSSFileName(cssResult[1]);
+			// mp.setProgressBarCSSFileName(cssResult[2]);
 		}
 
 		setResult(mp);

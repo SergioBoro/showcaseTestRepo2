@@ -8,6 +8,7 @@ import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.navigator.NavigatorElement;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.BasicElementPanelBasis;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.*;
@@ -83,27 +84,30 @@ public class TreeSelectionHandler implements SelectionHandler<TreeItem> {
 	private void generateDatePanel(final Action action, final TreeItem selectedTreeItem) {
 
 		final DataServiceAsync dataService = GWT.create(DataService.class);
-		dataService.getDataPanel(action, new GWTServiceCallback<DataPanel>(AppCurrContext
-				.getInstance().getBundleMap().get("error")) {
+		dataService.getDataPanel(
+				action,
+				new GWTServiceCallback<DataPanel>(
+				// AppCurrContext.getInstance().getBundleMap().get("error")) {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"Error")) {
+					// @Override
+					// public void onFailure(final Throwable caught) {
 
-			// @Override
-			// public void onFailure(final Throwable caught) {
+					// MessageBox.showMessageWithDetails(Constants.ERROR,
+					// caught.getMessage(),
+					// GeneralServerException
+					// .checkExeptionTypeAndCreateDetailedTextOfException(caught));
+					// }
 
-			// MessageBox.showMessageWithDetails(Constants.ERROR,
-			// caught.getMessage(),
-			// GeneralServerException
-			// .checkExeptionTypeAndCreateDetailedTextOfException(caught));
-			// }
+					@Override
+					public void onSuccess(final DataPanel dp) {
+						BasicElementPanelBasis.switchOffAllTimers();
+						GeneralDataPanel.redrowGeneralDataPanelAtnavigatorClick(dp);
+						Accordeon.unselectAllTreesItemsExcludingLastSelecter(selectedTreeItem);
 
-			@Override
-			public void onSuccess(final DataPanel dp) {
-				BasicElementPanelBasis.switchOffAllTimers();
-				GeneralDataPanel.redrowGeneralDataPanelAtnavigatorClick(dp);
-				Accordeon.unselectAllTreesItemsExcludingLastSelecter(selectedTreeItem);
+					}
 
-			}
-
-		});
+				});
 
 		return;
 

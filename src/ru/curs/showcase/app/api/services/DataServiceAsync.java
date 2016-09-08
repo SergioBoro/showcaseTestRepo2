@@ -2,8 +2,6 @@ package ru.curs.showcase.app.api.services;
 
 import java.util.*;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -15,6 +13,8 @@ import ru.curs.showcase.app.api.grid.toolbar.GridToolBar;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.plugin.*;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * Асинхронный "двойник" основного GWT-RPC интерфейса приложения - DataService.
@@ -73,4 +73,5 @@ public interface DataServiceAsync {
 
 	void getBundle(CompositeContext context, AsyncCallback<Map<String, String>> callback);
 
+	void getLocalizationBundleDomainName(CompositeContext context, AsyncCallback<String> callback);
 }

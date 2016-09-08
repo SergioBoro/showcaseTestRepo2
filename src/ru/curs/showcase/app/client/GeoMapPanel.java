@@ -1,16 +1,17 @@
 package ru.curs.showcase.app.client;
 
-import com.google.gwt.core.client.*;
-import com.google.gwt.event.dom.client.*;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.*;
-
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
+
+import com.google.gwt.core.client.*;
+import com.google.gwt.event.dom.client.*;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.*;
 
 /**
  * Класс панели с картой и легендой.
@@ -102,9 +103,15 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		// GWTServiceCallback<GeoMap>(
 		// AppCurrContext.getInstance().getInternationalizedMessages()
 		// .error_of_map_data_retrieving_from_server()) {
-		dataService.getGeoMap(getContext(), getElementInfo(),
-				new GWTServiceCallback<GeoMap>(AppCurrContext.getInstance().getBundleMap()
-						.get("error_of_map_data_retrieving_from_server")) {
+		dataService.getGeoMap(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<GeoMap>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_map_data_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving map data from server")) {
+
 					@Override
 					public void onSuccess(final GeoMap aGeoMap) {
 						geoMap = aGeoMap;
@@ -143,8 +150,9 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 			final int width = GeneralDataPanel.getTabPanel().getOffsetWidth() - n60;
 			final int height = GeneralDataPanel.getTabPanel().getOffsetHeight() - n80;
 
-			htmlForMap = div + getDivIdMap() + "' style = 'width: " + String.valueOf(width)
-					+ "px; height: " + String.valueOf(height) + "px'></div>";
+			htmlForMap =
+				div + getDivIdMap() + "' style = 'width: " + String.valueOf(width)
+						+ "px; height: " + String.valueOf(height) + "px'></div>";
 			aGeoMap.applyAutoSizeValuesOnClient(width, height);
 
 		} else {
@@ -235,17 +243,20 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 				// GeneralException.getMessageType(e.getCause()),
 				// GeneralException.needDetailedInfo(e.getCause()));
 				MessageBox.showMessageWithDetails(
-						AppCurrContext.getInstance().getBundleMap().get("error_of_map_painting"),
-						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
-						GeneralException.getMessageType(e.getCause()),
-						GeneralException.needDetailedInfo(e.getCause()), null);
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_map_painting"),
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"Map drawing error"), e.getMessage(), GeneralException
+								.generateDetailedInfo(e.getCause()), GeneralException
+								.getMessageType(e.getCause()), GeneralException.needDetailedInfo(e
+								.getCause()), null);
 			} else {
 				// MessageBox.showSimpleMessage(AppCurrContext.getInstance()
 				// .getInternationalizedMessages().error_of_map_painting(),
 				// e.getMessage());
 				MessageBox.showSimpleMessage(
-						AppCurrContext.getInstance().getBundleMap().get("error_of_map_painting"),
-						e.getMessage());
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_map_painting"),
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"Map drawing error"), e.getMessage());
 			}
 		}
 
@@ -299,14 +310,14 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	private void createButton(final CellPanel buttonsPanel, final ImageFormat imageFormat) {
 		final String fileName = "ExportTo" + imageFormat.toString() + ".png";
 		Button button =
-			new Button("<nobr><img height=\"16\" width=\"16\" src=\"resources/internal/" + fileName
-					+ "\"/>", new ClickHandler() {
-						@Override
-						public void onClick(final ClickEvent aEvent) {
-							export(getDivIdMap(), imageFormat.toString());
-						}
+			new Button("<nobr><img height=\"16\" width=\"16\" src=\"resources/internal/"
+					+ fileName + "\"/>", new ClickHandler() {
+				@Override
+				public void onClick(final ClickEvent aEvent) {
+					export(getDivIdMap(), imageFormat.toString());
+				}
 
-					});
+			});
 		buttonsPanel.add(button);
 	}
 
@@ -406,8 +417,8 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 	 * @param jsonStr2
 	 *            - JSON строка с настройками карты
 	 */
-	public native void drawMap(final String mapId, final String divIdLegend, final String jsonStr1,
-			final String jsonStr2) /*-{
+	public native void drawMap(final String mapId, final String divIdLegend,
+			final String jsonStr1, final String jsonStr2) /*-{
 			                                               	$wnd.gwtMapFunc =  @ru.curs.showcase.app.client.api.GeoMapPanelCallbacksEvents::mapPanelClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 
 															//$wnd.dojo.require("course.geo");
@@ -440,9 +451,14 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		// GWTServiceCallback<GeoMap>(
 		// AppCurrContext.getInstance().getInternationalizedMessages()
 		// .error_of_map_data_retrieving_from_server()) {
-		dataService.getGeoMap(getContext(), getElementInfo(),
-				new GWTServiceCallback<GeoMap>(AppCurrContext.getInstance().getBundleMap()
-						.get("error_of_map_data_retrieving_from_server")) {
+		dataService.getGeoMap(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<GeoMap>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_map_data_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving map data from server")) {
 
 					@Override
 					public void onSuccess(final GeoMap aGeoMap) {
@@ -474,8 +490,8 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 
 	private void checkForDefaultAction() {
 		if (geoMap.getActionForDependentElements() != null) {
-			AppCurrContext.getInstance()
-					.setCurrentActionFromElement(geoMap.getActionForDependentElements(), geoMap);
+			AppCurrContext.getInstance().setCurrentActionFromElement(
+					geoMap.getActionForDependentElements(), geoMap);
 			ActionExecuter.execAction();
 		}
 	}
@@ -506,9 +522,14 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		// GWTServiceCallback<GeoMap>(
 		// AppCurrContext.getInstance().getInternationalizedMessages()
 		// .error_of_map_data_retrieving_from_server()) {
-		dataService.getGeoMap(getContext(), getElementInfo(),
-				new GWTServiceCallback<GeoMap>(AppCurrContext.getInstance().getBundleMap()
-						.get("error_of_map_data_retrieving_from_server")) {
+		dataService.getGeoMap(
+				getContext(),
+				getElementInfo(),
+				new GWTServiceCallback<GeoMap>(
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_map_data_retrieving_from_server"))
+				// {
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"when retrieving map data from server")) {
 
 					@Override
 					public void onSuccess(final GeoMap aGeoMap) {

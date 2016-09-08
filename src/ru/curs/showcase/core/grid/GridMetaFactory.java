@@ -1,6 +1,6 @@
 package ru.curs.showcase.core.grid;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 import org.xml.sax.Attributes;
@@ -147,6 +147,26 @@ public class GridMetaFactory extends CompBasedElementFactory {
 	@Override
 	protected void prepareSettings() {
 		super.prepareSettings();
+
+		// Начало перевода с помощью Gettext.
+		InputStream is = getSettings();
+		String str = "";
+		try {
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL)
+				str = TextUtils.streamToString(is, "UTF-16");
+			else
+				str = TextUtils.streamToString(is);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		str = UserDataUtils.modifyVariables(str);
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL)
+			is = TextUtils.stringToStream(str, "UTF-16");
+		else
+			is = TextUtils.stringToStream(str);
+		getSource().setSettings(is);
+		// Окончание перевода с помощью Gettext.
+
 		setXmlDS(getSource().getXmlDS());
 	}
 
