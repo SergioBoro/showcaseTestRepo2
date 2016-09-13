@@ -1029,6 +1029,39 @@ public final class UserDataUtils {
 	}
 
 	/**
+	 * Метод поиска (в указанной юзердате в подпапке resources) файла с
+	 * расширенем .po, служащего для локализации клиентской части Showcase. Язык
+	 * поиска задаётся как парарметр.
+	 * 
+	 * @param anUserdataId
+	 *            - юзердата, в которой будет просиходить поиск локализационного
+	 *            файла
+	 * @param lang
+	 *            - язык локали
+	 * @return имя локализационного файла с расширением
+	 */
+	public static String getPlatformPoFile(String anUserdataId, String lang) {
+		File dir = new File(getUserDataCatalog(anUserdataId) + "/" + "resources");
+		AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
+
+		String poFileName = "";
+		String platform =
+			(lang == null || lang.equals("") || lang.equals("en")) ? "platform" : "platform" + "_"
+					+ lang;
+
+		if (dir.exists()) {
+			for (String file : dir.list()) {
+				if (file.equals(platform + ".po")) {
+					poFileName = file;
+					break;
+				}
+			}
+		}
+
+		return poFileName;
+	}
+
+	/**
 	 * Метод поиска (в папке common.sys в подпапке resources) дефолтного файла с
 	 * расширенем .po, служащего для локализации клиентской части Showcase.
 	 * 
@@ -1082,6 +1115,50 @@ public final class UserDataUtils {
 		}
 
 		return classFileName;
+	}
+
+	/**
+	 * Метод поиска (в указанной юзердате в подпапке resources) файла с
+	 * расширенем .class, служащего для локализации серверной части Showcase.
+	 * Язык поиска задаётся как парарметр.
+	 * 
+	 * @param anUserdataId
+	 *            - юзердата, в которой будет просиходить поиск локализационного
+	 *            файла
+	 * @param lang
+	 *            - язык локали
+	 * @return имя локализационного файла с расширением
+	 */
+	public static String getBundleClass(String anUserdataId, String lang) {
+		File dir = new File(getUserDataCatalog(anUserdataId) + "/" + "resources");
+		AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
+
+		String classFileName = "";
+		if (lang != null) {
+			if (dir.exists()) {
+				for (String file : dir.list()) {
+					if (file.equals(lang + ".class")) {
+						classFileName = file;
+						break;
+					}
+				}
+			}
+		}
+
+		return classFileName;
+	}
+
+	/**
+	 * Метод, используемый для задания языка локали через Celesta-процедуру,
+	 * которая вызывается во время залогинивания в Showcase.
+	 * 
+	 * @param sesid
+	 *            - id сессии
+	 * @param loc
+	 *            - язык локали
+	 */
+	public static void setLocaleFromCelestaLoggingProc(String sesid, String loc) {
+		AppInfoSingleton.getAppInfo().getLocalizationCache().put(sesid, loc);
 	}
 
 	/**

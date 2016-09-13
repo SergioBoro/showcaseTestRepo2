@@ -498,6 +498,15 @@ public final class AppInfoSingleton {
 		return cache;
 	}
 
+	/**
+	 * Специальный кэш, используемый для локализации с помощью Gettext.
+	 */
+	public Cache<String, String> getLocalizationCache() {
+		CacheManager cm = getCacheManager();
+		Cache<String, String> cache = cm.getCache("localizationCache", String.class, String.class);
+		return cache;
+	}
+
 	public long numberofDataPanelCacheSizeBytes() {
 		long n = 0L;
 		for (Cache.Entry<String, DataPanel> s : AppInfoSingleton.getAppInfo().getDataPanelCache()) {

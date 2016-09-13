@@ -4,7 +4,11 @@ import gnu.gettext.GettextResource;
 
 import java.util.ResourceBundle;
 
-import ru.curs.showcase.runtime.UserDataUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.UserAndSessionDetails;
 
 /**
  * 
@@ -118,6 +122,16 @@ public class CourseLocalization {
 		// }
 
 		String bundleFile = UserDataUtils.getBundleClass(UserDataUtils.getUserDataId());
+
+		if (SecurityContextHolder.getContext().getAuthentication() != null) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
+
+			String lang = AppInfoSingleton.getAppInfo().getLocalizationCache().get(sesid);
+
+			if (lang != null && !"".equals(lang))
+				bundleFile = UserDataUtils.getBundleClass(UserDataUtils.getUserDataId(), lang);
+		}
 
 		ResourceBundle rb = null;
 		try {

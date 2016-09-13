@@ -86,6 +86,36 @@ public class App implements EntryPoint {
 		});
 	}
 
+	/**
+	 * Метод, устанавливающий имя домена (имя пакетного файла без расширения),
+	 * служащего для перевода клиентской части Showcase. Метод не
+	 * предусматривает дальнейшего раскручивания приложения и применяется
+	 * локально. Служит для локализации с помощью Gettext, когда язык
+	 * устанавливается пользователем вне файла app.properties.
+	 * 
+	 * @param context
+	 *            - начальный контекст
+	 */
+	private void setLocalizationBundleDomainOnce(final CompositeContext context) {
+		if (dataService == null) {
+			dataService = GWT.create(DataService.class);
+		}
+
+		dataService.getLocalizationBundleDomainName(context, new AsyncCallback<String>() {
+
+			@Override
+			public void onSuccess(final String arg0) {
+				AppCurrContext.getInstance().setDomain(arg0);
+			}
+
+			@Override
+			public void onFailure(final Throwable arg0) {
+				MessageBox
+						.showSimpleMessage("Error", "Error for LocalizationBundleDomain loading");
+			}
+		});
+	}
+
 	private void initialize(CompositeContext context) {
 		XFormsUtils.initXForms();
 		FeedbackJSNI.initFeedbackJSNIFunctions();
@@ -143,6 +173,8 @@ public class App implements EntryPoint {
 
 					@Override
 					public void onSuccess(final MainPage mainPage) {
+						CompositeContext cont = getCurrentContext();
+						setLocalizationBundleDomainOnce(cont);
 						AppCurrContext.getInstance().setMainPage(mainPage);
 						fillMainPage();
 					}

@@ -118,4 +118,22 @@
 
   </ehcache:cache>
   
+  
+  <ehcache:cache alias="localizationCache">
+    
+    <ehcache:key-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.String</ehcache:key-type> 
+
+    <ehcache:value-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.String</ehcache:value-type> 
+    
+    <ehcache:expiry>
+    	<ehcache:ttl unit="minutes">10800</ehcache:ttl>
+    </ehcache:expiry>
+	
+     <ehcache:eviction-prioritizer>LFU</ehcache:eviction-prioritizer> 
+
+    <ehcache:heap size="10000" unit="entries"/>
+
+  </ehcache:cache>
+  
+  
  </ehcache:config>
