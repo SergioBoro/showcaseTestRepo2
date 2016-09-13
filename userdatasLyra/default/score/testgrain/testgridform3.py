@@ -36,7 +36,9 @@ class TestGridForm3(GridForm):
         self.getFormProperties().setHeader(u'''<h1 class="testStyle">'''+context.getShowcaseContext().getMain()+'''</h1>''')    
         
     def _getCursor(self, context):
-        
+
+
+        #raise Exception(u"СНИЛС должен состоять из 9 значащих и 2 контрольных цифр.")        
 
         print 'ffffffffffffffffffffffff44'
         print context.getShowcaseContext().getMain();
@@ -51,6 +53,8 @@ class TestGridForm3(GridForm):
         else: 
                 print '2'
                 c.orderBy(*context.getShowcaseContext().getOrderBy())
+                
+
         
 #        c.orderBy('name')
 #        c.orderBy('code DESC')

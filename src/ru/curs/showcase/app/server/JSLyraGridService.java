@@ -23,17 +23,10 @@ public class JSLyraGridService extends HttpServlet {
 	private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
 	@Override
-	protected void doPost(final HttpServletRequest hreq, final HttpServletResponse hresp)
+	public void doPost(final HttpServletRequest hreq, final HttpServletResponse hresp)
 			throws ServletException, IOException {
 
-		try {
-			getData(hreq, hresp);
-		} catch (Exception e) {
-			hresp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			// hresp.setContentType(CONTENT_TYPE_APPLICATION_JSON);
-			hresp.setCharacterEncoding("UTF-8");
-			hresp.getWriter().write(e.getMessage());
-		}
+		getData(hreq, hresp);
 
 	}
 

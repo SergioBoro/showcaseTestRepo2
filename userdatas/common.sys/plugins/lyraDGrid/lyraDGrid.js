@@ -214,7 +214,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 							
 							
 					    }, function(err){
-					    	alert("Произошла ошибка при запросе записей с сервера:\n\n"+err.response.text);
+							gwtShowErrorMessageLyra(elementId, err.response.text);
 					    });
 						
 						return results;

@@ -67,7 +67,9 @@ public final class ServletExceptionInterceptor {
 				|| request.getRequestURL().toString().toLowerCase()
 						.contains("/secured/xslTransform".toLowerCase())
 				|| request.getRequestURL().toString().toLowerCase()
-						.contains("/secured/JSGridService".toLowerCase())) {
+						.contains("/secured/JSGridService".toLowerCase())
+				|| request.getRequestURL().toString().toLowerCase()
+						.contains("/secured/JSLyraGridService".toLowerCase())) {
 
 			try {
 				mess = RPC.encodeResponseForSuccess(

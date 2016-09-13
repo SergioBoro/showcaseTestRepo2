@@ -1,8 +1,8 @@
 package ru.curs.showcase.app.client.api;
 
-import ru.curs.showcase.app.client.JSLyraGridPluginPanel;
-
 import com.google.gwt.json.client.JSONObject;
+
+import ru.curs.showcase.app.client.JSLyraGridPluginPanel;
 
 /**
  * Класс, реализующий функции обратного вызова из JSLyraGridPluginPanel.
@@ -64,6 +64,10 @@ public final class JSLyraGridPluginPanelCallbacksEvents {
 	public static void pluginShowMessage(final String pluginId, final String stringMessage,
 			final String editorType) {
 		getCurrentPanel(pluginId).pluginShowMessage(stringMessage, editorType);
+	}
+
+	public static void pluginShowErrorMessage(final String pluginId, final String stringMessage) {
+		getCurrentPanel(pluginId).pluginShowErrorMessage(stringMessage);
 	}
 
 	public static void pluginSetOldPosition(final String pluginId, final String oldPosition) {
