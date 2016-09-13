@@ -5,6 +5,9 @@ import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.server.rpc.RPC;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.grid.*;
@@ -12,9 +15,6 @@ import ru.curs.showcase.app.api.services.FakeService;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.grid.*;
 import ru.curs.showcase.util.ServletUtils;
-
-import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.server.rpc.RPC;
 
 /**
  * Сервлет работы с данными для JSGrid'ов.
@@ -26,7 +26,7 @@ public class JSGridService extends HttpServlet {
 	private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
 	@Override
-	protected void doPost(final HttpServletRequest hreq, final HttpServletResponse hresp)
+	public void doPost(final HttpServletRequest hreq, final HttpServletResponse hresp)
 			throws ServletException, IOException {
 
 		String editor = hreq.getParameter("editor");
@@ -88,9 +88,8 @@ public class JSGridService extends HttpServlet {
 		int firstIndex = context.getLiveInfo().getOffset();
 		int lastIndex = context.getLiveInfo().getOffset() + context.getLiveInfo().getLimit() - 1;
 
-		hresp.setHeader("Content-Range",
-				"items " + String.valueOf(firstIndex) + "-" + String.valueOf(lastIndex) + "/"
-						+ String.valueOf(totalCount));
+		hresp.setHeader("Content-Range", "items " + String.valueOf(firstIndex) + "-"
+				+ String.valueOf(lastIndex) + "/" + String.valueOf(totalCount));
 
 		try (PrintWriter writer = hresp.getWriter()) {
 			writer.print(gridData.getData());
@@ -157,9 +156,8 @@ public class JSGridService extends HttpServlet {
 
 		String message = null;
 		try {
-			message =
-				RPC.encodeResponseForSuccess(FakeService.class.getMethod("serializeUserMessage"),
-						um);
+			message = RPC.encodeResponseForSuccess(
+					FakeService.class.getMethod("serializeUserMessage"), um);
 		} catch (SerializationException | NoSuchMethodException | SecurityException e) {
 			throw GeneralExceptionFactory.build(e);
 		}
@@ -229,9 +227,8 @@ public class JSGridService extends HttpServlet {
 
 		String message = null;
 		try {
-			message =
-				RPC.encodeResponseForSuccess(FakeService.class.getMethod("serializeUserMessage"),
-						um);
+			message = RPC.encodeResponseForSuccess(
+					FakeService.class.getMethod("serializeUserMessage"), um);
 		} catch (SerializationException | NoSuchMethodException | SecurityException e) {
 			throw GeneralExceptionFactory.build(e);
 		}

@@ -147,7 +147,10 @@ function createPageDGrid(elementId, parentId, metadata) {
 							grid.dirty = {};
 						}
 
+				    }, function(err){
+						gwtShowErrorMessage(elementId, err.response.text);
 					});
+
 					
 					return results;
 				},

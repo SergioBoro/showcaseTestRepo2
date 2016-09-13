@@ -1,8 +1,8 @@
 package ru.curs.showcase.app.client.api;
 
-import ru.curs.showcase.app.client.JSTreeGridPluginPanel;
-
 import com.google.gwt.json.client.JSONObject;
+
+import ru.curs.showcase.app.client.JSTreeGridPluginPanel;
 
 /**
  * Класс, реализующий функции обратного вызова из JSLiveGridPluginPanel.
@@ -66,6 +66,10 @@ public final class JSTreeGridPluginPanelCallbacksEvents {
 	public static void pluginShowMessage(final String pluginId, final String stringMessage,
 			final String editorType) {
 		getCurrentPanel(pluginId).pluginShowMessage(stringMessage, editorType);
+	}
+
+	public static void pluginShowErrorMessage(final String pluginId, final String stringMessage) {
+		getCurrentPanel(pluginId).pluginShowErrorMessage(stringMessage);
 	}
 
 	public static boolean pluginUpdateParents(final String pluginId, final String parentId) {

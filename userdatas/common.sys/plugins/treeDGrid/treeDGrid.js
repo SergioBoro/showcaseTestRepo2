@@ -133,7 +133,10 @@ function createTreeDGrid(elementId, parentId, metadata) {
 							grid.dirty = {};
 						}
 						
+				    }, function(err){
+						gwtShowErrorMessageTree(elementId, err.response.text);
 					});
+
 					
 					return results;
 				},
