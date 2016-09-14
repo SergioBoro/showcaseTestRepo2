@@ -121,9 +121,9 @@
   
   <ehcache:cache alias="localizationCache">
     
-    <ehcache:key-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.String</ehcache:key-type> 
+    <ehcache:key-type copier="org.ehcache.internal.copy.SerializingCopier">java.lang.String</ehcache:key-type> 
 
-    <ehcache:value-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.String</ehcache:value-type> 
+    <ehcache:value-type copier="org.ehcache.internal.copy.SerializingCopier">java.lang.String</ehcache:value-type> 
     
     <ehcache:expiry>
     	<ehcache:ttl unit="minutes">10800</ehcache:ttl>
