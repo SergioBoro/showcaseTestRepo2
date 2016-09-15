@@ -1103,7 +1103,7 @@ public final class UserDataUtils {
 		String lang = UserDataUtils.getLocaleForCurrentUserdata();
 
 		String classFileName = "";
-		if (lang != null) {
+		if (lang != null && !"".equals(lang)) {
 			if (dir.exists()) {
 				for (String file : dir.list()) {
 					if (file.equals(lang + ".class")) {
@@ -1113,6 +1113,8 @@ public final class UserDataUtils {
 				}
 			}
 		}
+
+		Locale.setDefault(new Locale(lang));
 
 		return classFileName;
 	}
@@ -1134,7 +1136,7 @@ public final class UserDataUtils {
 		AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
 
 		String classFileName = "";
-		if (lang != null) {
+		if (lang != null && !"".equals(lang)) {
 			if (dir.exists()) {
 				for (String file : dir.list()) {
 					if (file.equals(lang + ".class")) {
@@ -1144,6 +1146,8 @@ public final class UserDataUtils {
 				}
 			}
 		}
+
+		Locale.setDefault(new Locale(lang));
 
 		return classFileName;
 	}
@@ -1262,6 +1266,41 @@ public final class UserDataUtils {
 					if (!"".equals(substr1))
 						data =
 							data.replace("$localize(_(\\\"" + substr1 + "\\\"))",
+									CourseLocalization.gettext(
+											CourseLocalization.getLocalizedResourseBundle(),
+											substr1));
+				}
+
+			if (data.contains("$localize(_('"))
+				while (data.contains("$localize(_('")) {
+					int index1 = data.indexOf("$localize(_('");
+					int index = data.indexOf("'))", index1);
+
+					String substr1 = "";
+
+					if (index1 != -1 && index != -1)
+						substr1 = data.substring(index1 + "$localize(_('".length(), index);
+
+					if (!"".equals(substr1))
+						data =
+							data.replace("$localize(_('" + substr1 + "'))", CourseLocalization
+									.gettext(CourseLocalization.getLocalizedResourseBundle(),
+											substr1));
+				}
+
+			if (data.contains("$localize(gettext('"))
+				while (data.contains("$localize(gettext('")) {
+					int index1 = data.indexOf("$localize(gettext('");
+					int index = data.indexOf("'))", index1);
+
+					String substr1 = "";
+
+					if (index1 != -1 && index != -1)
+						substr1 = data.substring(index1 + "$localize(gettext('".length(), index);
+
+					if (!"".equals(substr1))
+						data =
+							data.replace("$localize(gettext('" + substr1 + "'))",
 									CourseLocalization.gettext(
 											CourseLocalization.getLocalizedResourseBundle(),
 											substr1));
@@ -1395,6 +1434,39 @@ public final class UserDataUtils {
 										CourseLocalization.getLocalizedResourseBundle(), substr1,
 										substr2, number), number2));
 				}
+
+			if (data.contains("$localize(ngettext('"))
+				while (data.contains("$localize(ngettext('")) {
+					int index1 = data.indexOf("$localize(ngettext('");
+					int index2 = data.indexOf("',", index1 + 1);
+					int index3 = data.indexOf("'", index2 + 1);
+					int index4 = data.indexOf("',", index3 + 1);
+					int index5 = data.indexOf("),", index1);
+					int index6 = data.indexOf(")", index5 + 1);
+
+					String substr1 = "";
+					if (index1 != -1 && index2 != -1)
+						substr1 = data.substring(index1 + "$localize(ngettext('".length(), index2);
+
+					String substr2 = "";
+					if (!"".equals(substr1) && index3 != -1 && index4 != -1)
+						substr2 = data.substring(index3 + 1, index4);
+
+					int number = -1;
+					if (!"".equals(substr1) && !"".equals(substr2) && index5 != -1)
+						number = Integer.parseInt(data.substring(index4 + 2, index5).trim());
+
+					int number2 = -1;
+					if (!"".equals(substr1) && !"".equals(substr2) && number != -1 && index6 != -1)
+						number2 = Integer.parseInt(data.substring(index5 + 2, index6).trim());
+
+					data =
+						data.replace(data.substring(index1, index6 + 1), String.format(
+								CourseLocalization.ngettext(
+										CourseLocalization.getLocalizedResourseBundle(), substr1,
+										substr2, number), number2));
+				}
+
 		}
 
 		return data;
