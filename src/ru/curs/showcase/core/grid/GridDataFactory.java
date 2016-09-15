@@ -12,6 +12,8 @@ import org.json.simple.JSONArray;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.google.gwt.user.client.rpc.SerializationException;
+
 import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementSubType;
@@ -25,8 +27,6 @@ import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.xml.*;
-
-import com.google.gwt.user.client.rpc.SerializationException;
 
 /**
  * Фабрика для формирования данных гридов на основе XmlDS.
@@ -228,9 +228,8 @@ public class GridDataFactory extends CompBasedElementFactory {
 				processValue = true;
 				osValue = new ByteArrayOutputStream();
 				try {
-					writerValue =
-						XMLOutputFactory.newInstance().createXMLStreamWriter(osValue,
-								TextUtils.DEF_ENCODING);
+					writerValue = XMLOutputFactory.newInstance().createXMLStreamWriter(osValue,
+							TextUtils.DEF_ENCODING);
 				} catch (XMLStreamException e) {
 					throw new SAXError(e);
 				}
@@ -254,14 +253,14 @@ public class GridDataFactory extends CompBasedElementFactory {
 		public void endElement(final String uri, final String localName, final String name) {
 			if (RECORD_TAG.equals(localName)) {
 				if (applyLocalFormatting && (rec.get(PROPS_TAG) != null)) {
-					readEvents(rec, "<" + PROPS_TAG + ">" + rec.get(PROPS_TAG) + "</" + PROPS_TAG
-							+ ">");
+					readEvents(rec,
+							"<" + PROPS_TAG + ">" + rec.get(PROPS_TAG) + "</" + PROPS_TAG + ">");
 					rec.remove(PROPS_TAG);
 				}
 
 				if ((getCallContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID)
-						&& (!(getCallContext().getPartialUpdate() || getCallContext()
-								.getUpdateParents()))) {
+						&& (!(getCallContext().getPartialUpdate()
+								|| getCallContext().getUpdateParents()))) {
 					rec.put("parentId", getCallContext().getParentId());
 				}
 
@@ -287,7 +286,8 @@ public class GridDataFactory extends CompBasedElementFactory {
 								englId = curColId;
 							}
 
-							if (getCallContext().getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
+							if (getCallContext()
+									.getSubtype() == DataPanelElementSubType.JS_TREE_GRID) {
 								if ("hasChildren".equalsIgnoreCase(englId)) {
 									englId = "hasChildren";
 								}
@@ -322,9 +322,8 @@ public class GridDataFactory extends CompBasedElementFactory {
 	}
 
 	private String getTreeGridIcon(final String value) {
-		String res =
-			String.format("%s/%s",
-					UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR), value);
+		String res = String.format("%s/%s",
+				UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR), value);
 
 		res = "<a><img border=\"0\" src=\"" + XMLUtils.unEscapeTagXml(res) + "\"></a>";
 
@@ -339,8 +338,8 @@ public class GridDataFactory extends CompBasedElementFactory {
 	private void readEvents(final HashMap<String, String> rec, final String data) {
 		EventFactory<GridEvent> factory =
 			new EventFactory<GridEvent>(GridEvent.class, getCallContext());
-		factory.initForGetSubSetOfEvents(EVENT_COLUMN_TAG, CELL_PREFIX, getElementInfo().getType()
-				.getPropsSchemaName());
+		factory.initForGetSubSetOfEvents(EVENT_COLUMN_TAG, CELL_PREFIX,
+				getElementInfo().getType().getPropsSchemaName());
 		SAXTagHandler recPropHandler = new StartTagSAXHandler() {
 			@Override
 			public Object handleStartTag(final String aNamespaceURI, final String aLname,
@@ -408,9 +407,8 @@ public class GridDataFactory extends CompBasedElementFactory {
 		}
 
 		if (col.getValueType() == GridValueType.IMAGE) {
-			value =
-				String.format("%s/%s",
-						UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR), value);
+			value = String.format("%s/%s",
+					UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR), value);
 		} else if (col.getValueType() == GridValueType.LINK) {
 			value = UserDataUtils.replaceVariables(value);
 			value = normalizeLink(value);
@@ -449,8 +447,8 @@ public class GridDataFactory extends CompBasedElementFactory {
 		Matcher matcher = pattern.matcher(res);
 		res = matcher.replaceAll("&amp;");
 
-		pattern =
-			Pattern.compile("(?<!=)(\")(?!\\s*openInNewTab)(?!\\s*text)(?!\\s*href)(?!\\s*image)(?!\\s*/\\>)");
+		pattern = Pattern.compile(
+				"(?<!=)(\")(?!\\s*openInNewTab)(?!\\s*text)(?!\\s*href)(?!\\s*image)(?!\\s*/\\>)");
 		matcher = pattern.matcher(res);
 		res = matcher.replaceAll("&quot;");
 
@@ -495,9 +493,8 @@ public class GridDataFactory extends CompBasedElementFactory {
 				result = result + text;
 			} else {
 				String alt = text != null ? " alt=\"" + text + "\"" : "";
-				result =
-					result + "<img border=\"0\" src=\"" + XMLUtils.unEscapeTagXml(image) + "\""
-							+ alt + "/>";
+				result = result + "<img border=\"0\" src=\"" + XMLUtils.unEscapeTagXml(image)
+						+ "\"" + alt + "/>";
 			}
 			result = result + "</a>";
 
@@ -544,8 +541,8 @@ public class GridDataFactory extends CompBasedElementFactory {
 		return nf.format(value);
 	}
 
-	private String
-			getStringValueOfDate(final java.util.Date date, final GridServerColumnConfig col) {
+	private String getStringValueOfDate(final java.util.Date date,
+			final GridServerColumnConfig col) {
 		DateFormat df = null;
 
 		Integer style = DateFormat.DEFAULT;
@@ -661,7 +658,9 @@ public class GridDataFactory extends CompBasedElementFactory {
 			@Override
 			public void startElement(final String uri, final String localName, final String name,
 					final Attributes atts) {
-				title = atts.getValue("title");
+				if (atts.getValue("title") != null) {
+					title = atts.getValue("title");
+				}
 			}
 		}
 
