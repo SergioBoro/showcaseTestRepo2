@@ -1165,6 +1165,42 @@ public final class UserDataUtils {
 											substr1));
 				}
 
+			if (data.contains("$localize(_('"))
+				while (data.contains("$localize(_('")) {
+					int index11 = -1;
+					if (data.contains("$localize(_(' $localize(_(")) {
+						index11 = data.indexOf("$localize(_(' $localize(_(");
+					}
+					int index = data.indexOf("'))", index11);
+
+					String substr11 = "";
+					if (index11 != -1 && index != -1)
+						substr11 =
+							data.substring(index11 + "$localize(_(' $localize(_(".length() + 1,
+									index);
+
+					if (!"".equals(substr11))
+						data =
+							data.replace("$localize(_(' $localize(_('" + substr11 + "'))'))",
+									CourseLocalization.gettext(
+											CourseLocalization.getLocalizedResourseBundle(),
+											substr11));
+
+					int index1 = data.indexOf("$localize(_(");
+					index = data.indexOf("'))", index1);
+
+					String substr1 = "";
+
+					if (index1 != -1 && index != -1)
+						substr1 = data.substring(index1 + "$localize(_(".length() + 1, index);
+
+					if (!"".equals(substr1))
+						data =
+							data.replace("$localize(_('" + substr1 + "'))", CourseLocalization
+									.gettext(CourseLocalization.getLocalizedResourseBundle(),
+											substr1));
+				}
+
 			if (data.contains("$localize(_(&#34;"))
 				while (data.contains("$localize(_(&#34;")) {
 					int index1 = data.indexOf("$localize(_(&#34;");
@@ -1197,6 +1233,45 @@ public final class UserDataUtils {
 					if (!"".equals(substr1))
 						data =
 							data.replace("$localize(_(&amp;quot;" + substr1 + "&amp;quot;))",
+									CourseLocalization.gettext(
+											CourseLocalization.getLocalizedResourseBundle(),
+											substr1));
+				}
+
+			if (data.contains("$localize(_(&amp;apos;"))
+				while (data.contains("$localize(_(&amp;apos;")) {
+					int index1 = data.indexOf("$localize(_(&amp;apos;");
+					int index = data.indexOf("&amp;apos;))", index1);
+
+					String substr1 = "";
+
+					if (index1 != -1 && index != -1)
+						substr1 =
+							data.substring(index1 + "$localize(_(&amp;apos;".length(), index);
+
+					if (!"".equals(substr1))
+						data =
+							data.replace("$localize(_(&amp;apos;" + substr1 + "&amp;apos;))",
+									CourseLocalization.gettext(
+											CourseLocalization.getLocalizedResourseBundle(),
+											substr1));
+				}
+
+			if (data.contains("$localize(gettext(&amp;apos;"))
+				while (data.contains("$localize(gettext(&amp;apos;")) {
+					int index1 = data.indexOf("$localize(gettext(&amp;apos;");
+					int index = data.indexOf("&amp;apos;))", index1);
+
+					String substr1 = "";
+
+					if (index1 != -1 && index != -1)
+						substr1 =
+							data.substring(index1 + "$localize(gettext(&amp;apos;".length(), index);
+
+					if (!"".equals(substr1))
+						data =
+							data.replace(
+									"$localize(gettext(&amp;apos;" + substr1 + "&amp;apos;))",
 									CourseLocalization.gettext(
 											CourseLocalization.getLocalizedResourseBundle(),
 											substr1));

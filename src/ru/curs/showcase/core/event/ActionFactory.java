@@ -186,6 +186,7 @@ public class ActionFactory extends SAXTagHandler {
 		String value;
 		ModalWindowInfo mwi = new ModalWindowInfo();
 		if (attrs.getIndex(CAPTION_TAG) > -1) {
+			// Перевод с помощью Gettext
 			mwi.setCaption(UserDataUtils.modifyVariables(attrs.getValue(CAPTION_TAG)));
 		}
 		if (attrs.getIndex(WIDTH_TAG) > -1) {

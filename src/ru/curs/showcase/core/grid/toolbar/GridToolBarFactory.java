@@ -101,7 +101,10 @@ public class GridToolBarFactory {
 		}
 
 		private void fillBaseItemByAttr(final BaseToolBarItem itemToolBar, final Attributes attr) {
-			itemToolBar.setText(attr.getValue(GRID_TOOLBAR_ITEM_TEXT_ATTR));
+			if (attr.getValue(GRID_TOOLBAR_ITEM_TEXT_ATTR) != null)
+				// Перевод с помощью Gettext
+				itemToolBar.setText(UserDataUtils.modifyVariables(attr
+						.getValue(GRID_TOOLBAR_ITEM_TEXT_ATTR)));
 			String img = attr.getValue(GRID_TOOLBAR_ITEM_IMG_ATTR);
 			if (img != null && !img.isEmpty()) {
 				img =
@@ -113,7 +116,10 @@ public class GridToolBarFactory {
 					attr.getValue(GRID_TOOLBAR_ITEM_DISABLE_ATTR)));
 			itemToolBar.setVisible(cast(Boolean.class,
 					attr.getValue(GRID_TOOLBAR_ITEM_VISIBLE_ATTR)));
-			itemToolBar.setHint(attr.getValue(GRID_TOOLBAR_ITEM_HINT_ATTR));
+			if (attr.getValue(GRID_TOOLBAR_ITEM_HINT_ATTR) != null)
+				// Перевод с помощью Gettext
+				itemToolBar.setHint(UserDataUtils.modifyVariables(attr
+						.getValue(GRID_TOOLBAR_ITEM_HINT_ATTR)));
 		}
 
 		@SuppressWarnings("unchecked")
