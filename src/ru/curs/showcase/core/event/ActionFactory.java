@@ -4,6 +4,7 @@ import org.xml.sax.Attributes;
 
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.core.*;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.xml.*;
 
 /**
@@ -185,7 +186,7 @@ public class ActionFactory extends SAXTagHandler {
 		String value;
 		ModalWindowInfo mwi = new ModalWindowInfo();
 		if (attrs.getIndex(CAPTION_TAG) > -1) {
-			mwi.setCaption(attrs.getValue(CAPTION_TAG));
+			mwi.setCaption(UserDataUtils.modifyVariables(attrs.getValue(CAPTION_TAG)));
 		}
 		if (attrs.getIndex(WIDTH_TAG) > -1) {
 			value = attrs.getValue(WIDTH_TAG);

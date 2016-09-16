@@ -1089,67 +1089,16 @@ public final class UserDataUtils {
 	}
 
 	/**
-	 * Метод поиска (в указанной юзердате в подпапке resources) файла с
-	 * расширенем .class, служащего для локализации серверной части Showcase.
+	 * Возвращает директорию resources юзердаты в виде объкта File.
 	 * 
 	 * @param anUserdataId
-	 *            - юзердата, в которой будет просиходить поиск локализационного
-	 *            файла
-	 * @return имя локализационного файла с расширением
+	 *            - текущая юзердата
 	 */
-	public static String getBundleClass(String anUserdataId) {
-		File dir = new File(getUserDataCatalog(anUserdataId) + "/" + "resources");
-		AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
-		String lang = UserDataUtils.getLocaleForCurrentUserdata();
-
-		String classFileName = "";
-		if (lang != null && !"".equals(lang)) {
-			if (dir.exists()) {
-				for (String file : dir.list()) {
-					if (file.equals(lang + ".class")) {
-						classFileName = file;
-						break;
-					}
-				}
-			}
-		}
-
-		Locale.setDefault(new Locale(lang));
-
-		return classFileName;
-	}
-
-	/**
-	 * Метод поиска (в указанной юзердате в подпапке resources) файла с
-	 * расширенем .class, служащего для локализации серверной части Showcase.
-	 * Язык поиска задаётся как парарметр.
-	 * 
-	 * @param anUserdataId
-	 *            - юзердата, в которой будет просиходить поиск локализационного
-	 *            файла
-	 * @param lang
-	 *            - язык локали
-	 * @return имя локализационного файла с расширением
-	 */
-	public static String getBundleClass(String anUserdataId, String lang) {
+	public static File getResourceDir(String anUserdataId) {
 		File dir = new File(getUserDataCatalog(anUserdataId) + "/" + "resources");
 		AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
 
-		String classFileName = "";
-		if (lang != null && !"".equals(lang)) {
-			if (dir.exists()) {
-				for (String file : dir.list()) {
-					if (file.equals(lang + ".class")) {
-						classFileName = file;
-						break;
-					}
-				}
-			}
-		}
-
-		Locale.setDefault(new Locale(lang));
-
-		return classFileName;
+		return dir;
 	}
 
 	/**

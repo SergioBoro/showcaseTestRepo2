@@ -2,7 +2,9 @@ package ru.curs.showcase.app.server.internatiolization;
 
 import gnu.gettext.GettextResource;
 
-import java.util.ResourceBundle;
+import java.io.File;
+import java.net.*;
+import java.util.*;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -121,23 +123,25 @@ public class CourseLocalization {
 		// }
 		// }
 
-		String bundleFile = UserDataUtils.getBundleClass(UserDataUtils.getUserDataId());
+		File dir = UserDataUtils.getResourceDir(UserDataUtils.getUserDataId());
 
+		String lang = "";
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
 
-			String lang = AppInfoSingleton.getAppInfo().getLocalizationCache().get(sesid);
-
-			if (lang != null && !"".equals(lang))
-				bundleFile = UserDataUtils.getBundleClass(UserDataUtils.getUserDataId(), lang);
+			lang = AppInfoSingleton.getAppInfo().getLocalizationCache().get(sesid);
 		}
+
+		if (lang == null || "".equals(lang))
+			lang = UserDataUtils.getLocaleForCurrentUserdata();
 
 		ResourceBundle rb = null;
 		try {
-			if (!"".equals(bundleFile) && bundleFile.contains("."))
-				rb =
-					ResourceBundle.getBundle(bundleFile.substring(0, bundleFile.lastIndexOf(".")));
+			URL[] urls = { dir.toURI().toURL() };
+			ClassLoader loader =
+				new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
+			rb = ResourceBundle.getBundle("loc", new Locale(lang), loader);
 		} catch (Exception e) {
 			rb = null;
 		}
