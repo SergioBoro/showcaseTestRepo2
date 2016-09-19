@@ -139,13 +139,24 @@ public class CourseLocalization {
 		ResourceBundle rb = null;
 		try {
 			URL[] urls = { dir.toURI().toURL() };
-			ClassLoader loader =
-				new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
+			MyLoader loader = new MyLoader(urls, Thread.currentThread().getContextClassLoader());
 			rb = ResourceBundle.getBundle("loc", new Locale(lang), loader);
-		} catch (Exception e) {
+			loader.finalize();
+		} catch (Throwable e) {
 			rb = null;
 		}
 		return rb;
 	}
 
+	private static class MyLoader extends URLClassLoader {
+
+		MyLoader(URL[] urls, ClassLoader parentLoader) {
+			super(urls, parentLoader);
+		}
+
+		@Override
+		protected void finalize() throws Throwable {
+			super.finalize();
+		}
+	}
 }
