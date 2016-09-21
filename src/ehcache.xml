@@ -144,5 +144,6 @@
 <!--     <ehcache:eviction-prioritizer>LFU</ehcache:eviction-prioritizer> -->
 
     <ehcache:heap size="10000" unit="entries"/>
+  </ehcache:cache>
   
  </ehcache:config>
