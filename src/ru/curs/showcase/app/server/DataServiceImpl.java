@@ -19,6 +19,7 @@ import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.plugin.*;
 import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.app.server.internatiolization.CourseLocalization;
 import ru.curs.showcase.core.chart.ChartGetCommand;
 import ru.curs.showcase.core.command.*;
 import ru.curs.showcase.core.event.ExecServerActivityCommand;
@@ -308,6 +309,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	@Override
 	public String getLocalizationBundleDomainName(CompositeContext context) {
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
+		if (SecurityContextHolder.getContext().getAuthentication() != null) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
+			AppInfoSingleton.getAppInfo().getLocalizedBundleCache()
+					.put(sesid, CourseLocalization.getLocalizedResourseBundle());
+		}
 		// String lang = UserDataUtils.getLocaleForCurrentUserdata();
 		// String platform = lang.equals("") ? "platform" : "platform" + "_" +
 		// lang;

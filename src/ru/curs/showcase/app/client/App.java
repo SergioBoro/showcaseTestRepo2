@@ -174,7 +174,7 @@ public class App implements EntryPoint {
 					@Override
 					public void onSuccess(final MainPage mainPage) {
 						CompositeContext cont = getCurrentContext();
-						setLocalizationBundleDomainOnce(cont);
+						// setLocalizationBundleDomainOnce(cont);
 						AppCurrContext.getInstance().setMainPage(mainPage);
 						fillMainPage();
 					}

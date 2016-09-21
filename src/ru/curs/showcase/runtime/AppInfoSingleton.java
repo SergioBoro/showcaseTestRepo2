@@ -499,11 +499,23 @@ public final class AppInfoSingleton {
 	}
 
 	/**
-	 * Специальный кэш, используемый для локализации с помощью Gettext.
+	 * Специальный кэш, используемый для локализации с помощью Gettext,
+	 * содержащий sessionId и язык.
 	 */
 	public Cache<String, String> getLocalizationCache() {
 		CacheManager cm = getCacheManager();
 		Cache<String, String> cache = cm.getCache("localizationCache", String.class, String.class);
+		return cache;
+	}
+
+	/**
+	 * Специальный кэш, используемый для локализации с помощью Gettext, в
+	 * котором предполагается хранить sessionId и объект ResourceBundle.
+	 */
+	public Cache<Object, Object> getLocalizedBundleCache() {
+		CacheManager cm = getCacheManager();
+		Cache<Object, Object> cache =
+			cm.getCache("localizedBundleCache", Object.class, Object.class);
 		return cache;
 	}
 

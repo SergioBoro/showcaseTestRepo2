@@ -5,6 +5,8 @@ import java.util.*;
 import java.util.regex.*;
 
 import org.slf4j.MDC;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.server.internatiolization.CourseLocalization;
@@ -1112,6 +1114,8 @@ public final class UserDataUtils {
 	 */
 	public static void setLocaleFromCelestaLoggingProc(String sesid, String loc) {
 		AppInfoSingleton.getAppInfo().getLocalizationCache().put(sesid, loc);
+		AppInfoSingleton.getAppInfo().getLocalizedBundleCache()
+				.put(sesid, CourseLocalization.getLocalizedResourseBundle());
 	}
 
 	/**
@@ -1125,7 +1129,10 @@ public final class UserDataUtils {
 	public static String modifyVariables(final String value) {
 		String data = value;
 
-		ResourceBundle bundle = CourseLocalization.getLocalizedResourseBundle();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
+		ResourceBundle bundle =
+			(ResourceBundle) AppInfoSingleton.getAppInfo().getLocalizedBundleCache().get(sesid);
 
 		if (bundle != null) {
 
@@ -1146,9 +1153,7 @@ public final class UserDataUtils {
 					if (!"".equals(substr11))
 						data =
 							data.replace("$localize(_(\" $localize(_(\"" + substr11 + "\"))\"))",
-									CourseLocalization.gettext(
-											CourseLocalization.getLocalizedResourseBundle(),
-											substr11));
+									CourseLocalization.gettext(bundle, substr11));
 
 					int index1 = data.indexOf("$localize(_(");
 					index = data.indexOf("\"))", index1);
@@ -1160,9 +1165,8 @@ public final class UserDataUtils {
 
 					if (!"".equals(substr1))
 						data =
-							data.replace("$localize(_(\"" + substr1 + "\"))", CourseLocalization
-									.gettext(CourseLocalization.getLocalizedResourseBundle(),
-											substr1));
+							data.replace("$localize(_(\"" + substr1 + "\"))",
+									CourseLocalization.gettext(bundle, substr1));
 				}
 
 			if (data.contains("$localize(_('"))
@@ -1182,9 +1186,7 @@ public final class UserDataUtils {
 					if (!"".equals(substr11))
 						data =
 							data.replace("$localize(_(' $localize(_('" + substr11 + "'))'))",
-									CourseLocalization.gettext(
-											CourseLocalization.getLocalizedResourseBundle(),
-											substr11));
+									CourseLocalization.gettext(bundle, substr11));
 
 					int index1 = data.indexOf("$localize(_(");
 					index = data.indexOf("'))", index1);
@@ -1196,9 +1198,8 @@ public final class UserDataUtils {
 
 					if (!"".equals(substr1))
 						data =
-							data.replace("$localize(_('" + substr1 + "'))", CourseLocalization
-									.gettext(CourseLocalization.getLocalizedResourseBundle(),
-											substr1));
+							data.replace("$localize(_('" + substr1 + "'))",
+									CourseLocalization.gettext(bundle, substr1));
 				}
 
 			if (data.contains("$localize(_(&#34;"))
@@ -1214,9 +1215,7 @@ public final class UserDataUtils {
 					if (!"".equals(substr1))
 						data =
 							data.replace("$localize(_(&#34;" + substr1 + "&#34;))",
-									CourseLocalization.gettext(
-											CourseLocalization.getLocalizedResourseBundle(),
-											substr1));
+									CourseLocalization.gettext(bundle, substr1));
 				}
 
 			if (data.contains("$localize(_(&amp;quot;"))
@@ -1233,9 +1232,7 @@ public final class UserDataUtils {
 					if (!"".equals(substr1))
 						data =
 							data.replace("$localize(_(&amp;quot;" + substr1 + "&amp;quot;))",
-									CourseLocalization.gettext(
-											CourseLocalization.getLocalizedResourseBundle(),
-											substr1));
+									CourseLocalization.gettext(bundle, substr1));
 				}
 
 			if (data.contains("$localize(_(&amp;apos;"))
@@ -1252,9 +1249,7 @@ public final class UserDataUtils {
 					if (!"".equals(substr1))
 						data =
 							data.replace("$localize(_(&amp;apos;" + substr1 + "&amp;apos;))",
-									CourseLocalization.gettext(
-											CourseLocalization.getLocalizedResourseBundle(),
-											substr1));
+									CourseLocalization.gettext(bundle, substr1));
 				}
 
 			if (data.contains("$localize(gettext(&amp;apos;"))
@@ -1272,9 +1267,7 @@ public final class UserDataUtils {
 						data =
 							data.replace(
 									"$localize(gettext(&amp;apos;" + substr1 + "&amp;apos;))",
-									CourseLocalization.gettext(
-											CourseLocalization.getLocalizedResourseBundle(),
-											substr1));
+									CourseLocalization.gettext(bundle, substr1));
 				}
 
 			if (data.contains("$localize(_(\\\""))
@@ -1290,9 +1283,7 @@ public final class UserDataUtils {
 					if (!"".equals(substr1))
 						data =
 							data.replace("$localize(_(\\\"" + substr1 + "\\\"))",
-									CourseLocalization.gettext(
-											CourseLocalization.getLocalizedResourseBundle(),
-											substr1));
+									CourseLocalization.gettext(bundle, substr1));
 				}
 
 			if (data.contains("$localize(_('"))
@@ -1307,9 +1298,8 @@ public final class UserDataUtils {
 
 					if (!"".equals(substr1))
 						data =
-							data.replace("$localize(_('" + substr1 + "'))", CourseLocalization
-									.gettext(CourseLocalization.getLocalizedResourseBundle(),
-											substr1));
+							data.replace("$localize(_('" + substr1 + "'))",
+									CourseLocalization.gettext(bundle, substr1));
 				}
 
 			if (data.contains("$localize(gettext('"))
@@ -1325,9 +1315,7 @@ public final class UserDataUtils {
 					if (!"".equals(substr1))
 						data =
 							data.replace("$localize(gettext('" + substr1 + "'))",
-									CourseLocalization.gettext(
-											CourseLocalization.getLocalizedResourseBundle(),
-											substr1));
+									CourseLocalization.gettext(bundle, substr1));
 				}
 
 			if (data.contains("$localize(gettext(\""))
@@ -1348,8 +1336,7 @@ public final class UserDataUtils {
 					if (!"".equals(substr22))
 						data =
 							data.replace("$localize(gettext(\" $localize(gettext(\"" + substr22
-									+ "\"))\"))", CourseLocalization.gettext(
-									CourseLocalization.getLocalizedResourseBundle(), substr22));
+									+ "\"))\"))", CourseLocalization.gettext(bundle, substr22));
 
 					int index2 = data.indexOf("$localize(gettext(");
 					index = data.indexOf("\"))", index2);
@@ -1363,9 +1350,7 @@ public final class UserDataUtils {
 					if (!"".equals(substr2))
 						data =
 							data.replace("$localize(gettext(\"" + substr2 + "\"))",
-									CourseLocalization.gettext(
-											CourseLocalization.getLocalizedResourseBundle(),
-											substr2));
+									CourseLocalization.gettext(bundle, substr2));
 				}
 
 			if (data.contains("$localize(gettext(&#34;"))
@@ -1382,9 +1367,7 @@ public final class UserDataUtils {
 					if (!"".equals(substr1))
 						data =
 							data.replace("$localize(gettext(&#34;" + substr1 + "&#34;))",
-									CourseLocalization.gettext(
-											CourseLocalization.getLocalizedResourseBundle(),
-											substr1));
+									CourseLocalization.gettext(bundle, substr1));
 				}
 
 			if (data.contains("$localize(gettext(&amp;quot;"))
@@ -1402,9 +1385,7 @@ public final class UserDataUtils {
 						data =
 							data.replace(
 									"$localize(gettext(&amp;quot;" + substr1 + "&amp;quot;))",
-									CourseLocalization.gettext(
-											CourseLocalization.getLocalizedResourseBundle(),
-											substr1));
+									CourseLocalization.gettext(bundle, substr1));
 				}
 
 			if (data.contains("$localize(gettext(\\\""))
@@ -1421,9 +1402,7 @@ public final class UserDataUtils {
 					if (!"".equals(substr1))
 						data =
 							data.replace("$localize(gettext(\\\"" + substr1 + "\\\"))",
-									CourseLocalization.gettext(
-											CourseLocalization.getLocalizedResourseBundle(),
-											substr1));
+									CourseLocalization.gettext(bundle, substr1));
 				}
 
 			if (data.contains("$localize(ngettext(\""))
@@ -1454,9 +1433,8 @@ public final class UserDataUtils {
 
 					data =
 						data.replace(data.substring(index1, index6 + 1), String.format(
-								CourseLocalization.ngettext(
-										CourseLocalization.getLocalizedResourseBundle(), substr1,
-										substr2, number), number2));
+								CourseLocalization.ngettext(bundle, substr1, substr2, number),
+								number2));
 				}
 
 			if (data.contains("$localize(ngettext('"))
@@ -1486,9 +1464,8 @@ public final class UserDataUtils {
 
 					data =
 						data.replace(data.substring(index1, index6 + 1), String.format(
-								CourseLocalization.ngettext(
-										CourseLocalization.getLocalizedResourseBundle(), substr1,
-										substr2, number), number2));
+								CourseLocalization.ngettext(bundle, substr1, substr2, number),
+								number2));
 				}
 
 		}
