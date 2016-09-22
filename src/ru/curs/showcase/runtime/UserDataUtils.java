@@ -1007,7 +1007,11 @@ public final class UserDataUtils {
 	 * @return имя локализационного файла с расширением
 	 */
 	public static String getPlatformPoFile(String anUserdataId) {
-		File dir = new File(getUserDataCatalog(anUserdataId) + "/" + "resources");
+		// File dir = new File(getUserDataCatalog(anUserdataId) + "/" +
+		// "resources");
+		File dir =
+			new File(AppInfoSingleton.getAppInfo().getSolutionsDirRoot() + File.separator
+					+ anUserdataId + File.separator + "resources");
 		AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
 
 		String poFileName = "";
@@ -1043,7 +1047,12 @@ public final class UserDataUtils {
 	 * @return имя локализационного файла с расширением
 	 */
 	public static String getPlatformPoFile(String anUserdataId, String lang) {
-		File dir = new File(getUserDataCatalog(anUserdataId) + "/" + "resources");
+		// File dir = new File(getUserDataCatalog(anUserdataId) + "/" +
+		// "resources");
+		File dir =
+			new File(AppInfoSingleton.getAppInfo().getSolutionsDirRoot() + File.separator
+					+ anUserdataId + File.separator + "resources");
+
 		AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
 
 		String poFileName = "";
@@ -1070,9 +1079,14 @@ public final class UserDataUtils {
 	 * @return имя локализационного файла с расширением
 	 */
 	public static String getDefaultPlatformPoFile() {
+		// File dir =
+		// new File(AppInfoSingleton.getAppInfo().getUserdataRoot() +
+		// "/common.sys/"
+		// + "resources");
+
 		File dir =
-			new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/common.sys/"
-					+ "resources");
+			new File(AppInfoSingleton.getAppInfo().getSolutionsDirRoot() + File.separator
+					+ "default" + File.separator + "resources");
 
 		String poFileName = "";
 
@@ -1088,6 +1102,26 @@ public final class UserDataUtils {
 		}
 
 		return poFileName;
+	}
+
+	public static String getFinalPlatformPoFile(String userdataid) {
+		String domainFile = UserDataUtils.getPlatformPoFile(userdataid);
+
+		if (SecurityContextHolder.getContext().getAuthentication() != null) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
+
+			String lang = AppInfoSingleton.getAppInfo().getLocalizationCache().get(sesid);
+
+			if (lang != null && !"".equals(lang))
+				domainFile = UserDataUtils.getPlatformPoFile(userdataid, lang);
+
+		}
+
+		if ("".equals(domainFile))
+			domainFile = UserDataUtils.getDefaultPlatformPoFile();
+
+		return domainFile;
 	}
 
 	/**
@@ -1114,8 +1148,10 @@ public final class UserDataUtils {
 	 */
 	public static void setLocaleFromCelestaLoggingProc(String sesid, String loc) {
 		AppInfoSingleton.getAppInfo().getLocalizationCache().put(sesid, loc);
-		AppInfoSingleton.getAppInfo().getLocalizedBundleCache()
-				.put(sesid, CourseLocalization.getLocalizedResourseBundle());
+		ResourceBundle bundle = CourseLocalization.getLocalizedResourseBundle();
+		if (bundle != null)
+			AppInfoSingleton.getAppInfo().getLocalizedBundleCache()
+					.put(sesid, CourseLocalization.getLocalizedResourseBundle());
 	}
 
 	/**
@@ -1129,9 +1165,16 @@ public final class UserDataUtils {
 	public static String modifyVariables(final String value) {
 		String data = value;
 
+		ResourceBundle bundle = null;
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
-		ResourceBundle bundle =
+		if (AppInfoSingleton.getAppInfo().getLocalizedBundleCache().get(sesid) == null) {
+			bundle = CourseLocalization.getLocalizedResourseBundle();
+			if (bundle != null)
+				AppInfoSingleton.getAppInfo().getLocalizedBundleCache().put(sesid, bundle);
+		}
+
+		bundle =
 			(ResourceBundle) AppInfoSingleton.getAppInfo().getLocalizedBundleCache().get(sesid);
 
 		if (bundle != null) {

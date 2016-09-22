@@ -4,9 +4,6 @@ import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -19,7 +16,6 @@ import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.plugin.*;
 import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.app.server.internatiolization.CourseLocalization;
 import ru.curs.showcase.core.chart.ChartGetCommand;
 import ru.curs.showcase.core.command.*;
 import ru.curs.showcase.core.event.ExecServerActivityCommand;
@@ -36,7 +32,7 @@ import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
 import ru.curs.showcase.security.logging.*;
-import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.LoggerHelper;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -309,12 +305,15 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 	@Override
 	public String getLocalizationBundleDomainName(CompositeContext context) {
 		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			String sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
-			AppInfoSingleton.getAppInfo().getLocalizedBundleCache()
-					.put(sesid, CourseLocalization.getLocalizedResourseBundle());
-		}
+
+		// if (SecurityContextHolder.getContext().getAuthentication() != null) {
+		// Authentication auth =
+		// SecurityContextHolder.getContext().getAuthentication();
+		// String sesid = ((UserAndSessionDetails)
+		// auth.getDetails()).getSessionId();
+		// AppInfoSingleton.getAppInfo().getLocalizedBundleCache()
+		// .put(sesid, CourseLocalization.getLocalizedResourseBundle());
+		// }
 		// String lang = UserDataUtils.getLocaleForCurrentUserdata();
 		// String platform = lang.equals("") ? "platform" : "platform" + "_" +
 		// lang;
@@ -335,23 +334,7 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		// }
 
 		String domainFile =
-			UserDataUtils.getPlatformPoFile(AppInfoSingleton.getAppInfo().getCurUserDataId());
-
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			String sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
-
-			String lang = AppInfoSingleton.getAppInfo().getLocalizationCache().get(sesid);
-
-			if (lang != null && !"".equals(lang))
-				domainFile =
-					UserDataUtils.getPlatformPoFile(AppInfoSingleton.getAppInfo()
-							.getCurUserDataId(), lang);
-
-		}
-
-		if ("".equals(domainFile))
-			domainFile = UserDataUtils.getDefaultPlatformPoFile();
+			UserDataUtils.getFinalPlatformPoFile(AppInfoSingleton.getAppInfo().getCurUserDataId());
 
 		String result = "";
 

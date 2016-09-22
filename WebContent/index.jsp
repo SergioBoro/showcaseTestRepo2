@@ -75,8 +75,7 @@ var protocol = window.location.protocol;
     
     <script language="javascript" src="js/Gettext.js"></script>
      <link rel="gettext" 
-     href="solutions/<%=userdataId%>/resources/<%=(!"".equals(UserDataUtils.getPlatformPoFile(userdataId))) ? 
-    		 UserDataUtils.getPlatformPoFile(userdataId) : UserDataUtils.getDefaultPlatformPoFile()%>" 
+     href="solutions/<%=userdataId%>/resources/<%=UserDataUtils.getFinalPlatformPoFile(userdataId)%>" 
     		 type="application/x-po"/>
     
       <%=//ExternalClientLibrariesUtils.addExternalCSSByStaticMetod(request.getParameter("userdata"))
