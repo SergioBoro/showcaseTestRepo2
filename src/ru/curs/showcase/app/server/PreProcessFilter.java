@@ -126,7 +126,11 @@ public class PreProcessFilter implements Filter {
 		// || servletPath.startsWith("/" + LOGIN_PAGE);
 
 		String tempUrl = httpreq.getRequestURL().toString();
-		// System.out.println(tempUrl);
+		// System.out.println(tempUrl); "secured.nocache.js"
+
+		if (tempUrl.contains("secured.nocache.js")) {
+			return true;
+		}
 
 		if (tempUrl.endsWith("js") || tempUrl.endsWith("css") || tempUrl.endsWith("png")
 				|| tempUrl.endsWith("gif") || tempUrl.endsWith("jpg")) {
