@@ -230,16 +230,18 @@ public class LyraGridDataFactory {
 			}
 		}
 
-		lyraGridAddInfo.setLyraOldPosition(position);
-		lyraGridAddInfo.setDgridOldTotalCount(context.getLiveInfo().getTotalCount());
-
 		System.out.println("LyraGridDataFactory.ddddddddddddd1");
+		System.out.println("position: " + position);
 		System.out.println("lyraNewPosition: " + basicGridForm.getTopVisiblePosition());
 		System.out.println("lyraOldPosition: " + lyraGridAddInfo.getLyraOldPosition());
-		System.out.println("getApproxTotalCount: " + lyraApproxTotalCount);
-
-		System.out.println("position: " + position);
+		System.out.println("lyraApproxTotalCount(before getRows): " + lyraApproxTotalCount);
+		System.out.println(
+				"getApproxTotalCount(after getRows): " + basicGridForm.getApproxTotalCount());
+		System.out.println("records.size(): " + records.size());
 		System.out.println("dGridTotalCount: " + context.getLiveInfo().getTotalCount());
+
+		lyraGridAddInfo.setLyraOldPosition(basicGridForm.getTopVisiblePosition());
+		lyraGridAddInfo.setDgridOldTotalCount(context.getLiveInfo().getTotalCount());
 
 		// --------------------------------------------------------
 
