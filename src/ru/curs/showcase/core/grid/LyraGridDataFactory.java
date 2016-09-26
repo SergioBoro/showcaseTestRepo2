@@ -5,7 +5,8 @@ import java.text.*;
 import java.util.*;
 import java.util.regex.*;
 
-import org.json.simple.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.xml.sax.*;
 
 import com.google.gwt.user.client.rpc.SerializationException;
@@ -14,12 +15,12 @@ import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.celesta.CelestaException;
 import ru.curs.celesta.score.Table;
 import ru.curs.lyra.*;
-import ru.curs.showcase.app.api.ID;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.FakeService;
-import ru.curs.showcase.core.IncorrectElementException;
+import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.event.EventFactory;
 import ru.curs.showcase.runtime.*;
@@ -87,7 +88,7 @@ public class LyraGridDataFactory {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void fillResultByData() throws CelestaException {
+	private void fillResultByData() throws CelestaException, ValidateException {
 
 		state = (LyraGridServerState) AppInfoSingleton.getAppInfo()
 				.getLyraGridCacheState(SessionUtils.getCurrentSessionId(), elInfo, context);
@@ -98,6 +99,12 @@ public class LyraGridDataFactory {
 
 		LyraGridGateway lgateway = new LyraGridGateway();
 		basicGridForm = lgateway.getLyraFormInstance(context, elInfo);
+
+		if (basicGridForm.getChangeNotifier() == null) {
+			throw new ValidateException(new UserMessage(
+					"Внимание! Произошло обновление скриптов решения. Для корректной работы необходимо перегрузить грид.",
+					MessageType.INFO, "Сообщение"));
+		}
 
 		ensureLyraGridServerState();
 
@@ -150,56 +157,67 @@ public class LyraGridDataFactory {
 		int lyraApproxTotalCount = basicGridForm.getApproxTotalCount();
 		int dgridDelta = context.getLiveInfo().getOffset() - context.getDgridOldPosition();
 
-		System.out.println("LyraGridDataFactory.ddddddddddddd1");
-		System.out.println("lyraNewPosition: " + basicGridForm.getTopVisiblePosition());
-		System.out.println("lyraOldPosition: " + lyraGridAddInfo.getLyraOldPosition());
-		System.out.println("getApproxTotalCount: " + lyraApproxTotalCount);
+		List<LyraFormData> records;
 
-		if (context.getLiveInfo().getOffset() == 0) {
+		String autoSelectRecordPK = basicGridForm.getFormProperties().getHeader();
 
-			position = 0;
+		autoSelectRecordPK = null;
+
+		if (context.isFirstLoad() && (autoSelectRecordPK != null)) {
+
+			records = basicGridForm.setPosition(getKeyValuesById(autoSelectRecordPK));
+
+			position = basicGridForm.getTopVisiblePosition();
 
 		} else {
 
-			if (lyraApproxTotalCount <= LyraGridScrollBack.DGRID_MAX_TOTALCOUNT) {
+			if (context.getRefreshId() == null) {
 
-				position = context.getLiveInfo().getOffset();
+				if (context.getLiveInfo().getOffset() == 0) {
 
-			} else {
-
-				if (Math.abs(dgridDelta) < LyraGridScrollBack.DGRID_SMALLSTEP) {
-
-					position = basicGridForm.getTopVisiblePosition() + dgridDelta;
+					position = 0;
 
 				} else {
 
-					if (Math.abs(context.getLiveInfo().getOffset()
-							- LyraGridScrollBack.DGRID_MAX_TOTALCOUNT) < LyraGridScrollBack.DGRID_SMALLSTEP) {
+					if (lyraApproxTotalCount <= LyraGridScrollBack.DGRID_MAX_TOTALCOUNT) {
 
-						position = lyraApproxTotalCount - context.getLiveInfo().getLimit();
+						position = context.getLiveInfo().getOffset();
 
 					} else {
 
-						double d = lyraApproxTotalCount;
-						d = d / LyraGridScrollBack.DGRID_MAX_TOTALCOUNT;
-						d = d * context.getLiveInfo().getOffset();
-						position = (int) d;
+						if (Math.abs(dgridDelta) < LyraGridScrollBack.DGRID_SMALLSTEP) {
+
+							position = basicGridForm.getTopVisiblePosition() + dgridDelta;
+
+						} else {
+
+							if (Math.abs(context.getLiveInfo().getOffset()
+									- LyraGridScrollBack.DGRID_MAX_TOTALCOUNT) < LyraGridScrollBack.DGRID_SMALLSTEP) {
+
+								position = lyraApproxTotalCount - context.getLiveInfo().getLimit();
+
+							} else {
+
+								double d = lyraApproxTotalCount;
+								d = d / LyraGridScrollBack.DGRID_MAX_TOTALCOUNT;
+								d = d * context.getLiveInfo().getOffset();
+								position = (int) d;
+
+							}
+
+						}
 
 					}
 
 				}
 
+				records = basicGridForm.getRows(position);
+			} else {
+				records = basicGridForm.setPosition(getKeyValuesById(context.getRefreshId()));
+
+				position = basicGridForm.getTopVisiblePosition();
 			}
 
-		}
-
-		// --------------------------------------------------------
-
-		List<LyraFormData> records;
-		if (context.getRefreshId() == null) {
-			records = basicGridForm.getRows(position);
-		} else {
-			records = basicGridForm.setPosition(getKeyValuesById(context.getRefreshId()));
 		}
 
 		if (records.size() < context.getLiveInfo().getLimit()) {
@@ -214,6 +232,11 @@ public class LyraGridDataFactory {
 
 		lyraGridAddInfo.setLyraOldPosition(position);
 		lyraGridAddInfo.setDgridOldTotalCount(context.getLiveInfo().getTotalCount());
+
+		System.out.println("LyraGridDataFactory.ddddddddddddd1");
+		System.out.println("lyraNewPosition: " + basicGridForm.getTopVisiblePosition());
+		System.out.println("lyraOldPosition: " + lyraGridAddInfo.getLyraOldPosition());
+		System.out.println("getApproxTotalCount: " + lyraApproxTotalCount);
 
 		System.out.println("position: " + position);
 		System.out.println("dGridTotalCount: " + context.getLiveInfo().getTotalCount());
@@ -282,6 +305,18 @@ public class LyraGridDataFactory {
 			} catch (SerializationException | NoSuchMethodException e) {
 				throw GeneralExceptionFactory.build(e);
 			}
+		}
+
+		// Позиционирование по ключу записи
+		if ((data.size() > 0) && context.isFirstLoad() && (autoSelectRecordPK != null)) {
+
+			double d = basicGridForm.getTopVisiblePosition();
+			d = (d / basicGridForm.getApproxTotalCount())
+					* lyraGridAddInfo.getDgridOldTotalCount();
+			int dgridNewPosition = (int) d;
+
+			((JSONObject) data.get(0)).put("dgridNewPosition", dgridNewPosition);
+
 		}
 
 		result.setData(data.toJSONString());

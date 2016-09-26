@@ -96,6 +96,7 @@ public class LyraGridMetaFactory {
 			LyraGridScrollBack scrollBack = new LyraGridScrollBack();
 			scrollBack.setBasicGridForm(basicGridForm);
 			basicGridForm.setChangeNotifier(scrollBack);
+			result.setNeedCreateWebSocket(true);
 		}
 
 	}

@@ -403,6 +403,10 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 			lyraGridSorting = gridMetadata.getLyraGridSorting();
 		}
 
+		if (gridMetadata.isNeedCreateWebSocket()) {
+			common.put("isNeedCreateWebSocket", new JSONString("true"));
+		}
+
 		metadata.put("common", common);
 
 		JSONObject columns = new JSONObject();
@@ -644,6 +648,8 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 				gridContext.setDgridOldPosition(0);
 			}
 		}
+
+		gridContext.setIsFirstLoad(isFirstLoading());
 
 		if (isFirstLoading()) {
 			gridContext.setExternalSortingOrFilteringChanged(true);

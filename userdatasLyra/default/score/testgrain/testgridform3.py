@@ -10,7 +10,11 @@ from _testgrain_orm import street4Cursor
       #gridwidth='50%',
       gridheight='410px',
       
-      header=u'''<h1 class="testStyle">Лира грид. Хедер</h1>''',
+      #header=u'''<h1 class="testStyle">Лира грид. Хедер</h1>''',
+      header=u'''74000004000079300''',
+      #header=u'''7400000DDDDDD4000079300''',
+      
+      
       footer=u'''<h1 class="testStyle">Лира грид. Футер</h1>''',
       
       defaultaction=u'''
@@ -27,24 +31,31 @@ from _testgrain_orm import street4Cursor
                             </datapanel>
         </action>
       '''
+      
+      
      )
 class TestGridForm3(GridForm):  
     def __init__(self, context):
         super(TestGridForm3, self).__init__(context)
         self.createAllBoundFields()
         
-        self.getFormProperties().setHeader(u'''<h1 class="testStyle">'''+context.getShowcaseContext().getMain()+'''</h1>''')    
+        #self.getFormProperties().setHeader(u'''<h1 class="testStyle">'''+context.getShowcaseContext().getMain()+'''</h1>''')
+        
+            
         
     def _getCursor(self, context):
-
+        
+        self.getFormProperties().setHeader(u'''<h1 class="testStyle">dddddd'''+context.getShowcaseContext().getMain()+'''</h1>''')
 
         #raise Exception(u"СНИЛС должен состоять из 9 значащих и 2 контрольных цифр.")        
 
-        print 'ffffffffffffffffffffffff44'
+        print 'ffffffffffffffffffffffff44._getCursor'
         print context.getShowcaseContext().getMain();
         print context.getShowcaseContext().getOrderBy();
 
         c = street4Cursor(context)
+        
+        
         
         if context.getShowcaseContext().getOrderBy() == None:
                 print '1'
@@ -54,35 +65,29 @@ class TestGridForm3(GridForm):
                 print '2'
                 c.orderBy(*context.getShowcaseContext().getOrderBy())
                 
-
-        
+       
 #        c.orderBy('name')
 #        c.orderBy('code DESC')
-         
-
 #        c.orderBy('name DESC', 'code DESC')
-
-
 #        c.orderBy('name aSC')
-
-        
 #        c.orderBy('name desc', 'code', 'gninmb desc')
-
 #        c.orderBy('uno desc', 'code DESC')
-        
 #        c.orderBy('name', 'gninmb', 'code')
-
 #        c.orderBy('name desc', 'gninmb desc', 'code desc')
-
-
 #        c.orderBy('uno desc', 'code asc')
         
 
-        
-        
-        
+
+#        if context.getShowcaseContext().getAdditional() == None:
+#                print 'addcontext=None';
+#                self.getFormProperties().setHeader(None)
+#        else: 
+#                print 'addcontext="'+context.getShowcaseContext().getAdditional()+'"';
+#                self.getFormProperties().setHeader(context.getShowcaseContext().getAdditional())
+
+                
         return c
-    
+
 
     def getGridHeight(self):
         return 20

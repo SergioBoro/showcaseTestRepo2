@@ -48,7 +48,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
     	
 		
 		var webSocket;
-	    if(arrGrids[parentId] && arrGrids[parentId].webSocket && (arrGrids[parentId].webSocket.readyState == arrGrids[parentId].webSocket.OPEN)){
+	    if((!metadata["common"]["isNeedCreateWebSocket"]) && arrGrids[parentId] && arrGrids[parentId].webSocket && (arrGrids[parentId].webSocket.readyState == arrGrids[parentId].webSocket.OPEN)){
     		webSocket = arrGrids[parentId].webSocket;
     	}else{
     		
@@ -197,6 +197,12 @@ function createLyraDGrid(elementId, parentId, metadata) {
 								if(results[0]["events"]){
 									events = results[0]["events"];
 								}
+								
+								if(results[0]["dgridNewPosition"]){
+									arrGrids[parentId].dgridNewPosition = results[0]["dgridNewPosition"];
+									arrGrids[parentId].dgridNewPositionId = results[0][store.idProperty];
+								}
+								
 							}
 							gwtAfterLoadDataLyra(elementId, events, arrGrids[parentId]._total);
 							
@@ -732,6 +738,21 @@ function createLyraDGrid(elementId, parentId, metadata) {
 		}
 		grid.on("dgrid-refresh-complete", function(event) {
 			if(firstLoading){
+				
+				
+				if(arrGrids[parentId].dgridNewPosition){
+					var pos = parseInt(arrGrids[parentId].dgridNewPosition);
+					pos = pos * arrGrids[parentId].rowHeight;
+					backScroll = true;
+					arrGrids[parentId].scrollTo({x:0, y:pos});
+					
+					event.grid.select(event.grid.row(event.grid.dgridNewPositionId));
+					
+					arrGrids[parentId].dgridNewPosition = null;
+					arrGrids[parentId].dgridNewPositionId = null;
+				}
+				
+				
 				if(metadata["common"]["selectionModel"] == "RECORDS"){
 					if(metadata["common"]["selRecId"]){
 						event.grid.select(event.grid.row(metadata["common"]["selRecId"]));

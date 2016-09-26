@@ -15,6 +15,8 @@ public class LyraGridMetadata extends GridMetadata {
 
 	private String lyraGridSorting = null;
 
+	private boolean needCreateWebSocket = false;
+
 	public LyraGridMetadata() {
 		super();
 	}
@@ -29,6 +31,14 @@ public class LyraGridMetadata extends GridMetadata {
 
 	public void setLyraGridSorting(final String aLyraGridSorting) {
 		lyraGridSorting = aLyraGridSorting;
+	}
+
+	public boolean isNeedCreateWebSocket() {
+		return needCreateWebSocket;
+	}
+
+	public void setNeedCreateWebSocket(final boolean aNeedCreateWebSocket) {
+		needCreateWebSocket = aNeedCreateWebSocket;
 	}
 
 }
