@@ -87,6 +87,12 @@ public class LyraGridMetaFactory {
 	private void initResult() {
 		result = new LyraGridMetadata(elInfo);
 
+		LyraGridServerState state = (LyraGridServerState) AppInfoSingleton.getAppInfo()
+				.getLyraGridCacheState(SessionUtils.getCurrentSessionId(), elInfo, context);
+		if (state != null) {
+			context.setOrderBy(state.getOrderBy());
+		}
+
 		LyraGridGateway lgateway = new LyraGridGateway();
 		basicGridForm = lgateway.getLyraFormInstance(context, elInfo);
 

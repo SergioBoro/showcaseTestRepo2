@@ -153,21 +153,15 @@ public class LyraGridDataFactory {
 		LyraGridAddInfo lyraGridAddInfo =
 			((LyraGridScrollBack) basicGridForm.getChangeNotifier()).getLyraGridAddInfo();
 
-		int position;
+		int position = -1;
 		int lyraApproxTotalCount = basicGridForm.getApproxTotalCount();
 		int dgridDelta = context.getLiveInfo().getOffset() - context.getDgridOldPosition();
 
 		List<LyraFormData> records;
 
-		String autoSelectRecordPK = basicGridForm.getFormProperties().getHeader();
+		if (context.isFirstLoad()) {
 
-		autoSelectRecordPK = null;
-
-		if (context.isFirstLoad() && (autoSelectRecordPK != null)) {
-
-			records = basicGridForm.setPosition(getKeyValuesById(autoSelectRecordPK));
-
-			position = basicGridForm.getTopVisiblePosition();
+			records = basicGridForm.getRows();
 
 		} else {
 
@@ -215,7 +209,6 @@ public class LyraGridDataFactory {
 			} else {
 				records = basicGridForm.setPosition(getKeyValuesById(context.getRefreshId()));
 
-				position = basicGridForm.getTopVisiblePosition();
 			}
 
 		}
@@ -310,7 +303,8 @@ public class LyraGridDataFactory {
 		}
 
 		// Позиционирование по ключу записи
-		if ((data.size() > 0) && context.isFirstLoad() && (autoSelectRecordPK != null)) {
+		if (context.isFirstLoad() && (data.size() > 0)
+				&& (basicGridForm.getTopVisiblePosition() > 0)) {
 
 			double d = basicGridForm.getTopVisiblePosition();
 			d = (d / basicGridForm.getApproxTotalCount())

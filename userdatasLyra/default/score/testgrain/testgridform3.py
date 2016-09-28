@@ -10,11 +10,7 @@ from _testgrain_orm import street4Cursor
       #gridwidth='50%',
       gridheight='410px',
       
-      #header=u'''<h1 class="testStyle">Лира грид. Хедер</h1>''',
-      header=u'''74000004000079300''',
-      #header=u'''7400000DDDDDD4000079300''',
-      
-      
+      header=u'''<h1 class="testStyle">Лира грид. Хедер</h1>''',
       footer=u'''<h1 class="testStyle">Лира грид. Футер</h1>''',
       
       defaultaction=u'''
@@ -31,23 +27,32 @@ from _testgrain_orm import street4Cursor
                             </datapanel>
         </action>
       '''
-      
-      
      )
+
+
 class TestGridForm3(GridForm):  
     def __init__(self, context):
         super(TestGridForm3, self).__init__(context)
         self.createAllBoundFields()
         
-        #self.getFormProperties().setHeader(u'''<h1 class="testStyle">'''+context.getShowcaseContext().getMain()+'''</h1>''')
+        
+    def _beforeShow(self, context):
+        
+        self.getFormProperties().setHeader(u'''<h1 class="testStyle">'''+context.getShowcaseContext().getMain()+'''</h1>''')
+        
+        if context.getShowcaseContext().getAdditional() == None:
+                print 'addcontext=None';
+                self.rec().tryFirst();
+        else: 
+                print 'addcontext="'+context.getShowcaseContext().getAdditional()+'"';
+                self.rec().code = context.getShowcaseContext().getAdditional()
+                
         
             
         
     def _getCursor(self, context):
         
-        self.getFormProperties().setHeader(u'''<h1 class="testStyle">dddddd'''+context.getShowcaseContext().getMain()+'''</h1>''')
-
-        #raise Exception(u"СНИЛС должен состоять из 9 значащих и 2 контрольных цифр.")        
+        #raise Exception(u"ddddddd")        
 
         print 'ffffffffffffffffffffffff44._getCursor'
         print context.getShowcaseContext().getMain();
@@ -75,17 +80,8 @@ class TestGridForm3(GridForm):
 #        c.orderBy('name', 'gninmb', 'code')
 #        c.orderBy('name desc', 'gninmb desc', 'code desc')
 #        c.orderBy('uno desc', 'code asc')
-        
 
 
-#        if context.getShowcaseContext().getAdditional() == None:
-#                print 'addcontext=None';
-#                self.getFormProperties().setHeader(None)
-#        else: 
-#                print 'addcontext="'+context.getShowcaseContext().getAdditional()+'"';
-#                self.getFormProperties().setHeader(context.getShowcaseContext().getAdditional())
-
-                
         return c
 
 
