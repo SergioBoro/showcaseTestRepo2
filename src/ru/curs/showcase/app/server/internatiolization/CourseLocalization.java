@@ -2,8 +2,7 @@ package ru.curs.showcase.app.server.internatiolization;
 
 import gnu.gettext.GettextResource;
 
-import java.io.File;
-import java.net.*;
+import java.io.*;
 import java.util.*;
 
 import org.springframework.security.core.Authentication;
@@ -134,29 +133,76 @@ public class CourseLocalization {
 		}
 
 		if (lang == null || "".equals(lang))
-			lang = UserDataUtils.getLocaleForCurrentUserdata();
+			lang = UserDataUtils.getLocaleForCurrentUserdata(UserDataUtils.getUserDataId());
+
+		class MyLoader extends ClassLoader {
+
+			public MyLoader(ClassLoader parent) {
+				super(parent);
+			}
+
+			@Override
+			protected Class<?> findClass(String name) throws ClassNotFoundException {
+				File classFile = null;
+				if (dir.exists()) {
+					for (File file : dir.listFiles()) {
+						if (file.getName().substring(0, file.getName().lastIndexOf("."))
+								.equals(name)) {
+							classFile = file;
+							break;
+						}
+					}
+				}
+				try {
+					byte[] b = loadData(classFile);
+					return defineClass(
+							classFile.getName().substring(0, classFile.getName().lastIndexOf(".")),
+							b, 0, b.length);
+				} catch (Exception e) {
+					return null;
+				}
+
+			}
+
+			@Override
+			protected void finalize() throws Throwable {
+				super.finalize();
+			}
+		}
 
 		ResourceBundle rb = null;
 		try {
-			URL[] urls = { dir.toURI().toURL() };
-			MyLoader loader = new MyLoader(urls, Thread.currentThread().getContextClassLoader());
-			rb = ResourceBundle.getBundle("loc", new Locale(lang), loader);
-			loader.finalize();
+			Locale.setDefault(new Locale(lang));
+			rb =
+				ResourceBundle.getBundle("loc", new Locale(lang), new MyLoader(Thread
+						.currentThread().getContextClassLoader()));
+			Runtime.getRuntime().runFinalization();
 		} catch (Throwable e) {
 			rb = null;
 		}
 		return rb;
 	}
 
-	private static class MyLoader extends URLClassLoader {
+	/**
+	 * Вспомогательный метод, используемый при загрузке классов.
+	 */
+	private static byte[] loadData(File file) throws Exception {
+		int maxBufferSize = 1 * 1024 * 1024;
+		byte[] buffer = new byte[maxBufferSize];
 
-		MyLoader(URL[] urls, ClassLoader parentLoader) {
-			super(urls, parentLoader);
-		}
+		try (FileInputStream fileInputStream = new FileInputStream(file);) {
+			int bytesAvailable = fileInputStream.available();
+			int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+			buffer = new byte[bufferSize];
 
-		@Override
-		protected void finalize() throws Throwable {
-			super.finalize();
+			int bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+			while (bytesRead > 0) {
+				bytesAvailable = fileInputStream.available();
+				bufferSize = Math.min(bytesAvailable, maxBufferSize);
+				bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+			}
 		}
+		return buffer;
 	}
 }

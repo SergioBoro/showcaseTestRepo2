@@ -910,8 +910,34 @@ public final class UserDataUtils {
 		}
 	}
 
+	/**
+	 * Метод, возвращающий локаль из текущей юзердаты.
+	 * 
+	 * @return локаль
+	 */
 	public static String getLocaleForCurrentUserdata() {
 		String userdataId = AppInfoSingleton.getAppInfo().getCurUserDataId();
+		try {
+			String result = getProperties(userdataId).getProperty(INTERNATIONALIZATION_LANGUAGE);
+			if (result != null) {
+				result = result.trim();
+				return result;
+			} else {
+				return "";
+			}
+		} catch (IOException e) {
+			throw new SettingsFileOpenException(e, getCurrentPropFile(),
+					SettingsFileType.APP_PROPERTIES);
+		}
+	}
+
+	/**
+	 * Метод, возвращающий локаль из заданной юзердаты.
+	 * 
+	 * @param - заданная юзердаты
+	 * @return локаль
+	 */
+	public static String getLocaleForCurrentUserdata(String userdataId) {
 		try {
 			String result = getProperties(userdataId).getProperty(INTERNATIONALIZATION_LANGUAGE);
 			if (result != null) {
@@ -1012,11 +1038,11 @@ public final class UserDataUtils {
 		File dir =
 			new File(AppInfoSingleton.getAppInfo().getSolutionsDirRoot() + File.separator
 					+ anUserdataId + File.separator + "resources");
-		AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
+		// AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
 
 		String poFileName = "";
 
-		String lang = UserDataUtils.getLocaleForCurrentUserdata();
+		String lang = UserDataUtils.getLocaleForCurrentUserdata(anUserdataId);
 
 		String platform =
 			(lang == null || lang.equals("") || lang.equals("en")) ? "platform" : "platform" + "_"
@@ -1053,7 +1079,7 @@ public final class UserDataUtils {
 			new File(AppInfoSingleton.getAppInfo().getSolutionsDirRoot() + File.separator
 					+ anUserdataId + File.separator + "resources");
 
-		AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
+		// AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
 
 		String poFileName = "";
 		String platform =
@@ -1104,6 +1130,12 @@ public final class UserDataUtils {
 		return poFileName;
 	}
 
+	/**
+	 * Метод, объединяющий в себе все методы поиска файла с расширенем .po,
+	 * служащего для локализации клиентской части Showcase.
+	 * 
+	 * @return имя локализационного файла с расширением
+	 */
 	public static String getFinalPlatformPoFile(String userdataid) {
 		String domainFile = UserDataUtils.getPlatformPoFile(userdataid);
 
@@ -1131,8 +1163,11 @@ public final class UserDataUtils {
 	 *            - текущая юзердата
 	 */
 	public static File getResourceDir(String anUserdataId) {
-		File dir = new File(getUserDataCatalog(anUserdataId) + "/" + "resources");
-		AppInfoSingleton.getAppInfo().setCurUserDataId(anUserdataId);
+		// File dir = new File(getUserDataCatalog(anUserdataId) + "/resources" +
+		// "/loc8n");
+		File dir =
+			new File(AppInfoSingleton.getAppInfo().getSolutionsDirRoot() + File.separator
+					+ anUserdataId + File.separator + "resources" + File.separator + "loc8n");
 
 		return dir;
 	}
@@ -1166,14 +1201,16 @@ public final class UserDataUtils {
 		String data = value;
 
 		ResourceBundle bundle = null;
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
-		if (AppInfoSingleton.getAppInfo().getLocalizedBundleCache().get(sesid) == null) {
-			bundle = CourseLocalization.getLocalizedResourseBundle();
-			if (bundle != null)
-				AppInfoSingleton.getAppInfo().getLocalizedBundleCache().put(sesid, bundle);
+		String sesid = "";
+		if (SecurityContextHolder.getContext().getAuthentication() != null) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
+			if (AppInfoSingleton.getAppInfo().getLocalizedBundleCache().get(sesid) == null) {
+				bundle = CourseLocalization.getLocalizedResourseBundle();
+				if (bundle != null)
+					AppInfoSingleton.getAppInfo().getLocalizedBundleCache().put(sesid, bundle);
+			}
 		}
-
 		bundle =
 			(ResourceBundle) AppInfoSingleton.getAppInfo().getLocalizedBundleCache().get(sesid);
 

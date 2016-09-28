@@ -304,37 +304,21 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 
 	@Override
 	public String getLocalizationBundleDomainName(CompositeContext context) {
-		AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
+		// AppInfoSingleton.getAppInfo().setCurUserDataIdFromMap(context.getSessionParamsMap());
 
-		// if (SecurityContextHolder.getContext().getAuthentication() != null) {
-		// Authentication auth =
-		// SecurityContextHolder.getContext().getAuthentication();
-		// String sesid = ((UserAndSessionDetails)
-		// auth.getDetails()).getSessionId();
-		// AppInfoSingleton.getAppInfo().getLocalizedBundleCache()
-		// .put(sesid, CourseLocalization.getLocalizedResourseBundle());
-		// }
-		// String lang = UserDataUtils.getLocaleForCurrentUserdata();
-		// String platform = lang.equals("") ? "platform" : "platform" + "_" +
-		// lang;
-		//
-		// ProcessBuilder pb = new ProcessBuilder();
-		// String classpath = pb.environment().get("CLASSPATH");
-		// String localizePath = classpath.substring(classpath.lastIndexOf(";")
-		// + 1);
-		//
-		// File localizeDir = new File(localizePath);
-		//
-		// String domainFile = "";
-		// for (String file : localizeDir.list()) {
-		// if (file.equals(platform + ".po")) {
-		// domainFile = file;
-		// break;
-		// }
-		// }
+		String userDataId = null;
 
-		String domainFile =
-			UserDataUtils.getFinalPlatformPoFile(AppInfoSingleton.getAppInfo().getCurUserDataId());
+		if (context.getSessionParamsMap() != null) {
+			userDataId =
+				AppInfoSingleton.getAppInfo().getUserdataIdFromURLParams(
+						context.getSessionParamsMap());
+		}
+
+		if (userDataId == null) {
+			userDataId = "default";
+		}
+
+		String domainFile = UserDataUtils.getFinalPlatformPoFile(userDataId);
 
 		String result = "";
 

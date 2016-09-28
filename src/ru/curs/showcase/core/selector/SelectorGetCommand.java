@@ -1,9 +1,10 @@
 package ru.curs.showcase.core.selector;
 
-import ru.beta2.extra.gwt.ui.selector.api.DataRequest;
+import ru.beta2.extra.gwt.ui.selector.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.command.DataPanelElementCommand;
+import ru.curs.showcase.runtime.UserDataUtils;
 
 /**
  * Команда получения данных селектора компоненты XFORMS.
@@ -35,6 +36,11 @@ public class SelectorGetCommand extends DataPanelElementCommand<ResultSelectorDa
 		SelectorGatewayFactory gf = new SelectorGatewayFactory(this.dataRequest.getProcName());
 		SelectorGateway gateway = gf.getGateway();
 		ResultSelectorData result = gateway.getData(dataRequest);
+		// Начало перевода с помощью Gettext
+		for (DataRecord dr : result.getDataRecordList()) {
+			dr.setName(UserDataUtils.modifyVariables(dr.getName()));
+		}
+		// Конец перевода с помощью Gettext
 		setResult(result);
 	}
 

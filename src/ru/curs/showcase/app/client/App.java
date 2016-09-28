@@ -80,8 +80,11 @@ public class App implements EntryPoint {
 
 			@Override
 			public void onFailure(final Throwable arg0) {
-				MessageBox
-						.showSimpleMessage("Error", "Error for LocalizationBundleDomain loading");
+				// MessageBox
+				// .showSimpleMessage(
+				// "Error",
+				// "Session is not authenticated. Please log out and log in again, or reopen browser window and log in");
+				WebUtils.onFailure(arg0, "Error");
 			}
 		});
 	}
@@ -96,25 +99,6 @@ public class App implements EntryPoint {
 	 * @param context
 	 *            - начальный контекст
 	 */
-	private void setLocalizationBundleDomainOnce(final CompositeContext context) {
-		if (dataService == null) {
-			dataService = GWT.create(DataService.class);
-		}
-
-		dataService.getLocalizationBundleDomainName(context, new AsyncCallback<String>() {
-
-			@Override
-			public void onSuccess(final String arg0) {
-				AppCurrContext.getInstance().setDomain(arg0);
-			}
-
-			@Override
-			public void onFailure(final Throwable arg0) {
-				MessageBox
-						.showSimpleMessage("Error", "Error for LocalizationBundleDomain loading");
-			}
-		});
-	}
 
 	private void initialize(CompositeContext context) {
 		XFormsUtils.initXForms();
@@ -173,8 +157,6 @@ public class App implements EntryPoint {
 
 					@Override
 					public void onSuccess(final MainPage mainPage) {
-						CompositeContext cont = getCurrentContext();
-						// setLocalizationBundleDomainOnce(cont);
 						AppCurrContext.getInstance().setMainPage(mainPage);
 						fillMainPage();
 					}

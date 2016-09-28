@@ -227,7 +227,7 @@ public final class AppInfoSingleton {
 	 * @param aMap
 	 *            - параметры URL.
 	 */
-	private String getUserdataIdFromURLParams(final Map<String, ArrayList<String>> aMap) {
+	public String getUserdataIdFromURLParams(final Map<String, ArrayList<String>> aMap) {
 		String userdataId = null;
 
 		for (Map.Entry<String, ArrayList<String>> entry : aMap.entrySet()) {

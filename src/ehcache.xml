@@ -126,7 +126,7 @@
     <ehcache:value-type copier="org.ehcache.internal.copy.SerializingCopier">java.lang.String</ehcache:value-type> 
     
     <ehcache:expiry>
-    	<ehcache:ttl unit="minutes">10800</ehcache:ttl>
+    	<ehcache:ttl unit="seconds">3600</ehcache:ttl>
     </ehcache:expiry>
 	
      <ehcache:eviction-prioritizer>LFU</ehcache:eviction-prioritizer> 
@@ -138,10 +138,10 @@
   <ehcache:cache alias="localizedBundleCache">
     
     <ehcache:expiry>
-    	<ehcache:ttl unit="minutes">10800</ehcache:ttl>
+    	<ehcache:ttl unit="seconds">3600</ehcache:ttl>
     </ehcache:expiry>
 	
-<!--     <ehcache:eviction-prioritizer>LFU</ehcache:eviction-prioritizer> -->
+     <ehcache:eviction-prioritizer>LFU</ehcache:eviction-prioritizer>
 
     <ehcache:heap size="10000" unit="entries"/>
   </ehcache:cache>
