@@ -92,17 +92,15 @@ public class GridMetadata extends DataPanelCompBasedElement implements SizeEstim
 				columnId = autoSelectColumnId;
 			}
 
-			List<GridEvent> events =
-				getEventManager().getEventForCell(autoSelectRecordId, columnId,
-						InteractionType.SINGLE_CLICK);
+			List<GridEvent> events = getEventManager().getEventForCell(autoSelectRecordId,
+					columnId, InteractionType.SINGLE_CLICK);
 			GridEvent res = getConcreteEvent(events);
 			if (res != null) {
 				return res.getAction();
 			}
 
-			events =
-				getEventManager().getEventForCell(autoSelectRecordId, columnId,
-						InteractionType.DOUBLE_CLICK);
+			events = getEventManager().getEventForCell(autoSelectRecordId, columnId,
+					InteractionType.DOUBLE_CLICK);
 			res = getConcreteEvent(events);
 			if (res != null) {
 				return res.getAction();
@@ -183,18 +181,33 @@ public class GridMetadata extends DataPanelCompBasedElement implements SizeEstim
 	}
 
 	/**
-	 * Добавляет модификаторы шрифта.
+	 * Добавляет модификатор шрифта.
 	 * 
 	 * @param fontm
-	 *            модификаторы шрифта
+	 *            модификатор шрифта
 	 */
-	public void addFontModifier(final FontModifier... fontm) {
+	public void addFontModifier(final FontModifier fontm) {
 		if (fontModifiers == null) {
 			fontModifiers = new HashSet<FontModifier>();
 		}
-		for (FontModifier m : fontm) {
-			fontModifiers.add(m);
+
+		if (!fontModifiers.contains(fontm)) {
+			fontModifiers.add(fontm);
 		}
+	}
+
+	/**
+	 * Удаляет модификатор шрифта.
+	 * 
+	 * @param fontm
+	 *            модификатор шрифта
+	 */
+	public void delFontModifier(final FontModifier fontm) {
+		if (fontModifiers == null) {
+			fontModifiers = new HashSet<FontModifier>();
+		}
+
+		fontModifiers.remove(fontm);
 	}
 
 	public String getAutoSelectRecordId() {

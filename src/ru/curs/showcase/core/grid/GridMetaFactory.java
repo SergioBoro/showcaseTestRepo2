@@ -81,6 +81,7 @@ public class GridMetaFactory extends CompBasedElementFactory {
 	private static final String FORCE_LOAD_SETTINGS = "forceLoadSettings";
 	private static final String PRECISION_TAG = "precision";
 	private static final String PROFILE_TAG = "profile";
+	private static final String HOR_ALIGN_TAG = "horAlign";
 
 	private ProfileReader gridProps = null;
 
@@ -90,6 +91,9 @@ public class GridMetaFactory extends CompBasedElementFactory {
 	private static final String GRID_DEFAULT_PROFILE = "default.properties";
 
 	private String profile = GRID_DEFAULT_PROFILE;
+
+	private String decimalSeparator = null;
+	private String groupingSeparator = null;
 
 	/**
 	 * Результат работы фабрики.
@@ -130,8 +134,9 @@ public class GridMetaFactory extends CompBasedElementFactory {
 		initResult();
 		prepareSettings();
 
-		setupDynamicSettings();
+		setupProfileFileName();
 		setupStaticSettings();
+		setupDynamicSettings();
 		correctSettingsAndData();
 
 		setupPluginSettings();
@@ -152,22 +157,122 @@ public class GridMetaFactory extends CompBasedElementFactory {
 		InputStream is = getSettings();
 		String str = "";
 		try {
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL)
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
 				str = TextUtils.streamToString(is, "UTF-16");
-			else
+			} else {
 				str = TextUtils.streamToString(is);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		str = UserDataUtils.modifyVariables(str);
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL)
+		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
 			is = TextUtils.stringToStream(str, "UTF-16");
-		else
+		} else {
 			is = TextUtils.stringToStream(str);
+		}
 		getSource().setSettings(is);
 		// Окончание перевода с помощью Gettext.
 
 		setXmlDS(getSource().getXmlDS());
+	}
+
+	private void setupProfileFileName() {
+
+		/**
+		 * Класс считывателя названия файла пропертей грида.
+		 * 
+		 */
+		class ProfileFileNameReader extends DefaultHandler {
+			private String profile = null;
+
+			public String getProfile() {
+				return profile;
+			}
+
+			@Override
+			public void startElement(final String uri, final String localName, final String name,
+					final Attributes atts) {
+				if (localName.equalsIgnoreCase(PROPS_TAG)) {
+					if (atts.getIndex(PROFILE_TAG) > -1) {
+						profile = atts.getValue(PROFILE_TAG);
+					}
+				}
+			}
+		}
+
+		InputStream is = getSettings();
+		ProfileFileNameReader handler = new ProfileFileNameReader();
+		SimpleSAX sax = new SimpleSAX(is, handler, "название файла пропертей грида");
+		sax.parse();
+		try {
+			is.reset();
+		} catch (IOException e) {
+			throw new SAXError(e);
+		}
+
+		if (handler.getProfile() != null) {
+			profile = handler.getProfile();
+		}
+
+	}
+
+	private void setupStaticSettings() {
+		gridProps = new ProfileReader(profile, SettingsFileType.GRID_PROPERTIES);
+		gridProps.init();
+
+		ProfileBasedSettingsApplyStrategy strategy =
+			new DefaultGridSettingsApplyStrategy(gridProps, result.getUISettings());
+		strategy.apply();
+
+		setupFormatSettings();
+
+		setupViewSettings();
+	}
+
+	private void setupFormatSettings() {
+		decimalSeparator = gridProps.getStringValue(DEF_NUM_COL_DECIMAL_SEPARATOR);
+		groupingSeparator = gridProps.getStringValue(DEF_NUM_COL_GROUPING_SEPARATOR);
+
+		state.setDateValuesFormat(gridProps.getStringValue(DEF_DATE_VALUES_FORMAT));
+	}
+
+	/**
+	 * Считывает из файла настроек и устанавливает стандартные свойства вида
+	 * информации в гриде.
+	 * 
+	 */
+	private void setupViewSettings() {
+		String value;
+		boolean boolValue;
+		value = gridProps.getStringValue(DEF_VAL_FONT_COLOR);
+		if (value != null) {
+			result.setTextColor(value);
+		}
+		value = gridProps.getStringValue(DEF_VAL_BG_COLOR);
+		if (value != null) {
+			result.setBackgroundColor(value);
+		}
+		value = gridProps.getStringValue(DEF_VAL_FONT_SIZE);
+		if (value != null) {
+			result.setFontSize(value);
+		}
+		boolValue = gridProps.isTrueValue(DEF_VAL_FONT_BOLD);
+		if (boolValue) {
+			result.addFontModifier(FontModifier.BOLD);
+		}
+		boolValue = gridProps.isTrueValue(DEF_VAL_FONT_IT);
+		if (boolValue) {
+			result.addFontModifier(FontModifier.ITALIC);
+		}
+		boolValue = gridProps.isTrueValue(DEF_VAL_FONT_UL);
+		if (boolValue) {
+			result.addFontModifier(FontModifier.UNDERLINE);
+		}
+		boolValue = gridProps.isTrueValue(DEF_VAL_FONT_ST);
+		if (boolValue) {
+			result.addFontModifier(FontModifier.STRIKETHROUGH);
+		}
 	}
 
 	@Override
@@ -246,9 +351,11 @@ public class GridMetaFactory extends CompBasedElementFactory {
 			return null;
 		}
 
+		// CHECKSTYLE:OFF
 		private Object propertiesSTARTTAGHandler(final Attributes attrs) {
 			String value;
 			Integer intValue;
+			boolean boolValue;
 
 			if (attrs.getIndex(AUTO_SELECT_REC_TAG) > -1) {
 				value = attrs.getValue(AUTO_SELECT_REC_TAG);
@@ -282,9 +389,6 @@ public class GridMetaFactory extends CompBasedElementFactory {
 				value = attrs.getValue(FORCE_LOAD_SETTINGS);
 				state.setForceLoadSettings(Boolean.valueOf(value));
 			}
-			if (attrs.getIndex(PROFILE_TAG) > -1) {
-				profile = attrs.getValue(PROFILE_TAG);
-			}
 
 			if (attrs.getIndex(FIRE_GENERAL_AND_CONCRETE_EVENTS_TAG) > -1) {
 				result.getEventManager().setFireGeneralAndConcreteEvents(
@@ -306,8 +410,145 @@ public class GridMetaFactory extends CompBasedElementFactory {
 			result.getLiveInfo().setTotalCount(intValue);
 			state.setTotalCount(intValue);
 
+			// -------------------------------------------------------------
+
+			if (attrs.getIndex("columnheaderHorAlign") > -1) {
+				value = attrs.getValue("columnheaderHorAlign");
+				result.getUISettings().setHaColumnHeader(HorizontalAlignment.valueOf(value));
+			}
+
+			if (attrs.getIndex("numColumnDecimalSeparator") > -1) {
+				decimalSeparator = attrs.getValue("numColumnDecimalSeparator");
+			}
+			if (attrs.getIndex("numColumnGroupingSeparator") > -1) {
+				groupingSeparator = attrs.getValue("numColumnGroupingSeparator");
+			}
+			if (attrs.getIndex("dateValuesFormat") > -1) {
+				state.setDateValuesFormat(attrs.getValue("dateValuesFormat"));
+			}
+
+			if (attrs.getIndex("columnValueDisplayMode") > -1) {
+				value = attrs.getValue("columnValueDisplayMode");
+				result.getUISettings().setDisplayMode(ColumnValueDisplayMode.valueOf(value));
+			}
+
+			if (attrs.getIndex("valueFontColor") > -1) {
+				value = attrs.getValue("valueFontColor");
+				result.setTextColor(value);
+			}
+			if (attrs.getIndex("valueBgColor") > -1) {
+				value = attrs.getValue("valueBgColor");
+				result.setBackgroundColor(value);
+			}
+			if (attrs.getIndex("valueFontSize") > -1) {
+				value = attrs.getValue("valueFontSize");
+				result.setFontSize(value);
+			}
+			if (attrs.getIndex("valueFontBold") > -1) {
+				value = attrs.getValue("valueFontBold");
+				boolValue = Boolean.valueOf(value);
+				if (boolValue) {
+					result.addFontModifier(FontModifier.BOLD);
+				} else {
+					result.delFontModifier(FontModifier.BOLD);
+				}
+			}
+			if (attrs.getIndex("valueFontItalic") > -1) {
+				value = attrs.getValue("valueFontItalic");
+				boolValue = Boolean.valueOf(value);
+				if (boolValue) {
+					result.addFontModifier(FontModifier.ITALIC);
+				} else {
+					result.delFontModifier(FontModifier.ITALIC);
+				}
+			}
+			if (attrs.getIndex("valueFontUnderline") > -1) {
+				value = attrs.getValue("valueFontUnderline");
+				boolValue = Boolean.valueOf(value);
+				if (boolValue) {
+					result.addFontModifier(FontModifier.UNDERLINE);
+				} else {
+					result.delFontModifier(FontModifier.UNDERLINE);
+				}
+			}
+			if (attrs.getIndex("valueFontStrikethrough") > -1) {
+				value = attrs.getValue("valueFontStrikethrough");
+				boolValue = Boolean.valueOf(value);
+				if (boolValue) {
+					result.addFontModifier(FontModifier.STRIKETHROUGH);
+				} else {
+					result.delFontModifier(FontModifier.STRIKETHROUGH);
+				}
+			}
+
+			if (attrs.getIndex("visiblePagesCount") > -1) {
+				value = attrs.getValue("visiblePagesCount");
+				if (value != null) {
+					result.getUISettings().setPagesButtonCount(Integer.valueOf(value));
+				}
+			}
+			if (attrs.getIndex("pagesBlockDuplicateLimit") > -1) {
+				value = attrs.getValue("pagesBlockDuplicateLimit");
+				if (value != null) {
+					result.getUISettings().setPagesButtonCount(Integer.valueOf(value));
+				}
+			}
+
+			if (attrs.getIndex("selectWholeRecord") > -1) {
+				value = attrs.getValue("selectWholeRecord");
+				result.getUISettings().setSelectOnlyRecords(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex("singleClickBeforeDouble") > -1) {
+				value = attrs.getValue("singleClickBeforeDouble");
+				result.getUISettings().setSingleClickBeforeDoubleClick(Boolean.valueOf(value));
+			}
+
+			if (attrs.getIndex("visiblePager") > -1) {
+				value = attrs.getValue("visiblePager");
+				result.getUISettings().setVisiblePager(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex("visibleExporttoexcelCurrentpage") > -1) {
+				value = attrs.getValue("visibleExporttoexcelCurrentpage");
+				result.getUISettings().setVisibleExportToExcelCurrentPage(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex("visibleExporttoexcelAll") > -1) {
+				value = attrs.getValue("visibleExporttoexcelAll");
+				result.getUISettings().setVisibleExportToExcelAll(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex("visibleCopytoclipboard") > -1) {
+				value = attrs.getValue("visibleCopytoclipboard");
+				result.getUISettings().setVisibleCopyToClipboard(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex("visibleFilter") > -1) {
+				value = attrs.getValue("visibleFilter");
+				result.getUISettings().setVisibleFilter(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex("visibleSave") > -1) {
+				value = attrs.getValue("visibleSave");
+				result.getUISettings().setVisibleSave(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex("visibleRevert") > -1) {
+				value = attrs.getValue("visibleRevert");
+				result.getUISettings().setVisibleRevert(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex("visibleToolbar") > -1) {
+				value = attrs.getValue("visibleToolbar");
+				result.getUISettings().setVisibleToolBar(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex("visibleColumnsHeader") > -1) {
+				value = attrs.getValue("visibleColumnsHeader");
+				result.getUISettings().setVisibleColumnsHeader(Boolean.valueOf(value));
+			}
+			if (attrs.getIndex("selectAllowTextSelection") > -1) {
+				value = attrs.getValue("selectAllowTextSelection");
+				result.getUISettings().setAllowTextSelection(Boolean.valueOf(value));
+			}
+
+			// -------------------------------------------------------------
+
 			return null;
 		}
+		// CHECKSTYLE:ON
 
 		/**
 		 * Стандартная функция создания столбца.
@@ -370,6 +611,10 @@ public class GridMetaFactory extends CompBasedElementFactory {
 			if (attrs.getIndex(LINK_ID_TAG) > -1) {
 				String value = attrs.getValue(LINK_ID_TAG);
 				column.setLinkId(value);
+			}
+			if (attrs.getIndex(HOR_ALIGN_TAG) > -1) {
+				String value = attrs.getValue(HOR_ALIGN_TAG);
+				column.setHorizontalAlignment(HorizontalAlignment.valueOf(value));
 			}
 			return null;
 		}
@@ -541,80 +786,6 @@ public class GridMetaFactory extends CompBasedElementFactory {
 		}
 	}
 
-	private void setupStaticSettings() {
-		gridProps = new ProfileReader(profile, SettingsFileType.GRID_PROPERTIES);
-		gridProps.init();
-
-		ProfileBasedSettingsApplyStrategy strategy =
-			new DefaultGridSettingsApplyStrategy(gridProps, result.getUISettings());
-		strategy.apply();
-
-		setupFormatSettings();
-
-		setupViewSettings();
-	}
-
-	private void setupFormatSettings() {
-		String decimalSeparator = gridProps.getStringValue(DEF_NUM_COL_DECIMAL_SEPARATOR);
-		if (decimalSeparator != null) {
-			if (decimalSeparator.contains(" ")) {
-				decimalSeparator = " ";
-			}
-			if (decimalSeparator.isEmpty()) {
-				decimalSeparator = ".";
-			}
-		}
-		state.setDecimalSeparator(decimalSeparator);
-
-		String groupingSeparator = gridProps.getStringValue(DEF_NUM_COL_GROUPING_SEPARATOR);
-		if (groupingSeparator != null) {
-			if (groupingSeparator.contains(" ")) {
-				groupingSeparator = " ";
-			}
-		}
-		state.setGroupingSeparator(groupingSeparator);
-
-		state.setDateValuesFormat(gridProps.getStringValue(DEF_DATE_VALUES_FORMAT));
-	}
-
-	/**
-	 * Считывает из файла настроек и устанавливает стандартные свойства вида
-	 * информации в гриде.
-	 * 
-	 */
-	private void setupViewSettings() {
-		String value;
-		boolean boolValue;
-		value = gridProps.getStringValue(DEF_VAL_FONT_COLOR);
-		if (value != null) {
-			result.setTextColor(value);
-		}
-		value = gridProps.getStringValue(DEF_VAL_BG_COLOR);
-		if (value != null) {
-			result.setBackgroundColor(value);
-		}
-		value = gridProps.getStringValue(DEF_VAL_FONT_SIZE);
-		if (value != null) {
-			result.setFontSize(value);
-		}
-		boolValue = gridProps.isTrueValue(DEF_VAL_FONT_BOLD);
-		if (boolValue) {
-			result.addFontModifier(FontModifier.BOLD);
-		}
-		boolValue = gridProps.isTrueValue(DEF_VAL_FONT_IT);
-		if (boolValue) {
-			result.addFontModifier(FontModifier.ITALIC);
-		}
-		boolValue = gridProps.isTrueValue(DEF_VAL_FONT_UL);
-		if (boolValue) {
-			result.addFontModifier(FontModifier.UNDERLINE);
-		}
-		boolValue = gridProps.isTrueValue(DEF_VAL_FONT_ST);
-		if (boolValue) {
-			result.addFontModifier(FontModifier.STRIKETHROUGH);
-		}
-	}
-
 	@Override
 	protected void correctSettingsAndData() {
 		super.correctSettingsAndData();
@@ -677,6 +848,23 @@ public class GridMetaFactory extends CompBasedElementFactory {
 	}
 
 	private void adjustGridServerState() {
+		if (decimalSeparator != null) {
+			if (decimalSeparator.contains(" ")) {
+				decimalSeparator = " ";
+			}
+			if (decimalSeparator.isEmpty()) {
+				decimalSeparator = ".";
+			}
+		}
+		state.setDecimalSeparator(decimalSeparator);
+
+		if (groupingSeparator != null) {
+			if (groupingSeparator.contains(" ")) {
+				groupingSeparator = " ";
+			}
+		}
+		state.setGroupingSeparator(groupingSeparator);
+
 		HashMap<String, GridServerColumnConfig> hm =
 			new HashMap<String, GridServerColumnConfig>(getResult().getColumns().size());
 		for (final GridColumnConfig gcc : getResult().getColumns()) {
@@ -708,10 +896,10 @@ public class GridMetaFactory extends CompBasedElementFactory {
 		result.getJSInfo().setRevertProc("revert" + TextUtils.capitalizeWord(plugin));
 		result.getJSInfo().setClipboardProc("clipboard" + TextUtils.capitalizeWord(plugin));
 		result.getJSInfo().setPartialUpdate("partialUpdate" + TextUtils.capitalizeWord(plugin));
-		result.getJSInfo().setCurrentLevelUpdate(
-				"currentLevelUpdate" + TextUtils.capitalizeWord(plugin));
-		result.getJSInfo().setChildLevelUpdate(
-				"childLevelUpdate" + TextUtils.capitalizeWord(plugin));
+		result.getJSInfo()
+				.setCurrentLevelUpdate("currentLevelUpdate" + TextUtils.capitalizeWord(plugin));
+		result.getJSInfo()
+				.setChildLevelUpdate("childLevelUpdate" + TextUtils.capitalizeWord(plugin));
 
 		result.getJSInfo().getRequiredJS()
 				.add(getAdapterForWebServer(getPluginDir(), plugin + ".js"));

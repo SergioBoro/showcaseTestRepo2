@@ -48,7 +48,49 @@
             <xs:attribute name="gridHeight" type="xs:unsignedInt"/>
             <xs:attribute name="rowHeight" type="xs:unsignedInt"/>
             <xs:attribute name="forceLoadSettings" type="xs:boolean"/>
-            <xs:attribute name="expandAllRecords" type="xs:boolean"/>            
+            <xs:attribute name="expandAllRecords" type="xs:boolean"/>
+            
+            
+            <xs:attribute name="columnheaderHorAlign" type="notNullType"/>
+            <xs:attribute name="columnHorAlign" type="notNullType"/>
+            <xs:attribute name="numColumnHorAlign" type="notNullType"/>
+            <xs:attribute name="strColumnHorAlign" type="notNullType"/>
+            <xs:attribute name="dateColumnHorAlign" type="notNullType"/>
+            <xs:attribute name="imageColumnHorAlign" type="notNullType"/>
+            <xs:attribute name="linkColumnHorAlign" type="notNullType"/>
+            <xs:attribute name="dateValuesFormat" type="notNullType"/>
+            <xs:attribute name="columnValueDisplayMode" type="notNullType"/>
+            <xs:attribute name="columnWidth" type="notNullType"/>
+            <xs:attribute name="valueFontColor" type="notNullType"/>
+            <xs:attribute name="valueBgColor" type="notNullType"/>
+            <xs:attribute name="valueFontSize" type="notNullType"/>
+            <xs:attribute name="valueFontBold" type="xs:boolean"/>
+            <xs:attribute name="valueFontItalic" type="xs:boolean"/>
+            <xs:attribute name="valueFontUnderline" type="xs:boolean"/>
+            <xs:attribute name="valueFontStrikethrough" type="xs:boolean"/>
+            <xs:attribute name="visiblePagesCount" type="xs:unsignedInt"/>
+            <xs:attribute name="pagesBlockDuplicateLimit" type="xs:unsignedInt"/>
+            <xs:attribute name="selectWholeRecord" type="xs:boolean"/>            
+            <xs:attribute name="singleClickBeforeDouble" type="xs:boolean"/>
+            <xs:attribute name="visibleStriperows" type="xs:boolean"/>
+            <xs:attribute name="columnShowlines" type="xs:boolean"/>
+            <xs:attribute name="visibleColumnsCustomizer" type="xs:boolean"/>
+            <xs:attribute name="visibleColumngroupsCustomizer" type="xs:boolean"/>            
+            <xs:attribute name="visiblePager" type="xs:boolean"/>
+            <xs:attribute name="visibleExporttoexcelCurrentpage" type="xs:boolean"/>
+            <xs:attribute name="visibleExporttoexcelAll" type="xs:boolean"/>
+            <xs:attribute name="visibleCopytoclipboard" type="xs:boolean"/>
+            <xs:attribute name="visibleFilter" type="xs:boolean"/>
+            <xs:attribute name="visibleRecordsSelector" type="xs:boolean"/>
+            <xs:attribute name="visibleColumnsHeader" type="xs:boolean"/>
+            <xs:attribute name="visibleToolbar" type="xs:boolean"/>
+            <xs:attribute name="numColumnDecimalSeparator" type="xs:string"/>
+            <xs:attribute name="numColumnGroupingSeparator" type="xs:string"/>
+            <xs:attribute name="visibleSave" type="xs:boolean"/>
+            <xs:attribute name="visibleRevert" type="xs:boolean"/>
+            <xs:attribute name="selectAllowTextSelection" type="xs:boolean"/>            
+
+                        
         </xs:complexType>
     </xs:element>
     
