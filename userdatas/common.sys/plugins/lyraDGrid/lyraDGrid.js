@@ -87,7 +87,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 
 			var store = new declare([ Rest, Trackable, Cache ])(lang.mixin({
 				target:"secured/JSLyraGridService",
-				idProperty: "id_D13k82F9g7",
+				idProperty: "id_D13k82F9g7_",
 				
 				_fetch: function (kwArgs) {
 

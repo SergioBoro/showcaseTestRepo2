@@ -54,7 +54,7 @@ public class LyraGridDataFactory {
 
 	@SuppressWarnings("unused")
 	private static final String ID_TAG = "id";
-	private static final String KEYVALUES_SEPARATOR = "_D13k82F9g7";
+	private static final String KEYVALUES_SEPARATOR = "_D13k82F9g7_";
 	private static final String EVENT_COLUMN_TAG = "column";
 	private static final String CELL_PREFIX = "cell";
 	private static final String ROWSTYLE = "rowstyle";
@@ -330,11 +330,12 @@ public class LyraGridDataFactory {
 			if (i > 0) {
 				refreshId = refreshId + KEYVALUES_SEPARATOR;
 			}
-			refreshId = keyValues[i].toString();
+			refreshId = refreshId + keyValues[i].toString();
 		}
 		return refreshId;
 	}
 
+	// CHECKSTYLE:OFF
 	private String getCellValue(final LyraFieldValue lyraFieldValue, final Integer precision) {
 
 		Object value = lyraFieldValue.getValue();
@@ -389,6 +390,7 @@ public class LyraGridDataFactory {
 			return strValue;
 		}
 	}
+	// CHECKSTYLE:ON
 
 	private static String normalizeLink(final String aValue) {
 		String value = aValue.trim();

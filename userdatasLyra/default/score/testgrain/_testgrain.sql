@@ -47,14 +47,22 @@ create table street4(
  */
 	name varchar(40) NOT NULL,
 	
-    rnum int,	
+    rnum int NOT NULL,
+    
 	code varchar(17) NOT NULL PRIMARY KEY,	
+	--code varchar(17) NOT NULL,
+	--CONSTRAINT pk_street4 PRIMARY KEY (code, rnum),
+	
 	socr varchar(10) NOT NULL,
 	--index varchar(6) NOT NULL,
 	gninmb varchar(4) NOT NULL,
 	uno varchar(4) NOT NULL,
 	ocatd varchar(11) NOT NULL
+	
+	
 );
+
+
 
 create index ix_street4 on street4 (name);
 
