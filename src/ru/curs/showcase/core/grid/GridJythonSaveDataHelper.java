@@ -9,8 +9,8 @@ import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.jython.JythonQuery;
-import ru.curs.showcase.util.XMLJSONConverter;
-import ru.curs.showcase.util.xml.*;
+import ru.curs.showcase.util.*;
+import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Сохраняет отредактированные данные в гриде.
@@ -33,7 +33,7 @@ public class GridJythonSaveDataHelper extends JythonQuery<GridSaveResult> {
 		try {
 			xml = XMLJSONConverter.jsonToXml(((GridContext) context).getEditorData());
 		} catch (JSONException | TransformerException | ParserConfigurationException e) {
-			throw new SAXError(e);
+			throw new XMLJSONConverterException(e);
 		}
 		xml = xml.substring(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.length()).trim();
 		return getProc().gridSaveData(context, elementInfo.getId().getString(), xml);

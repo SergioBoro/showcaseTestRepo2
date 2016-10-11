@@ -32,8 +32,7 @@ public class NavigatorCelestaGataway implements PrimElementsGateway {
 		try {
 			json = XMLJSONConverter.xmlToJson(context.getSession());
 		} catch (SAXException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new XMLJSONConverterException(e);
 		}
 		String result = helper.runPython(procName, new Object[] { json });
 		InputStream stream = TextUtils.stringToStream(result);

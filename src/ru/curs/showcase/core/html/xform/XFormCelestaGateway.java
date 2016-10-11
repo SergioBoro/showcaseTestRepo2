@@ -37,8 +37,7 @@ public class XFormCelestaGateway implements HTMLAdvGateway {
 		try {
 			dataJson = XMLJSONConverter.xmlToJson(data);
 		} catch (SAXException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new XMLJSONConverterException(e);
 		}
 
 		String result = helper.runPython(procName, dataJson);
@@ -60,8 +59,7 @@ public class XFormCelestaGateway implements HTMLAdvGateway {
 		try {
 			dataJson = XMLJSONConverter.xmlToJson(data);
 		} catch (SAXException | IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			throw new XMLJSONConverterException(e1);
 		}
 		JythonDownloadResult jythonResult =
 			helper.runPython(proc.getName(), elementInfo.getId().getString(), dataJson);
@@ -101,13 +99,11 @@ public class XFormCelestaGateway implements HTMLAdvGateway {
 		String dataJson = null;
 		try {
 			dataJson = XMLJSONConverter.xmlToJson(data);
-
 		} catch (SAXException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new XMLJSONConverterException(e);
 		}
-		helper.runPython(proc.getName(), elementInfo.getId().getString(), dataJson,
-				file.getName(), file.getData());
+		helper.runPython(proc.getName(), elementInfo.getId().getString(), dataJson, file.getName(),
+				file.getData());
 	}
 
 	@Override
@@ -127,8 +123,7 @@ public class XFormCelestaGateway implements HTMLAdvGateway {
 		try {
 			dataJson = XMLJSONConverter.xmlToJson(data);
 		} catch (SAXException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new XMLJSONConverterException(e);
 		} // convertXmlToJson(data);
 		helper.runPython(elementInfo.getSaveProc().getName(), elementId, dataJson);
 	}

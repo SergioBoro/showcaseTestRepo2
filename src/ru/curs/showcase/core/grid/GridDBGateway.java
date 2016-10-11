@@ -6,12 +6,11 @@ import java.sql.*;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import oracle.jdbc.OracleTypes;
-
 import org.json.JSONException;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import oracle.jdbc.OracleTypes;
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -96,8 +95,7 @@ public class GridDBGateway extends AbstractGridDBGateway {
 
 	@Override
 	// CHECKSTYLE:OFF
-			protected
-			String getSqlTemplate(final int index) {
+	protected String getSqlTemplate(final int index) {
 		switch (index) {
 		case DATA_AND_SETTINS_QUERY:
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.ORACLE) {
@@ -220,10 +218,10 @@ public class GridDBGateway extends AbstractGridDBGateway {
 				try {
 					xml = XMLJSONConverter.jsonToXml(context.getEditorData());
 				} catch (JSONException | TransformerException | ParserConfigurationException e) {
-					throw new SAXError(e);
+					throw new XMLJSONConverterException(e);
 				}
-				if (xml.toLowerCase().contains(
-						XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.toLowerCase())) {
+				if (xml.toLowerCase()
+						.contains(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.toLowerCase())) {
 					xml = xml.substring(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.length());
 				}
 				xml = xml.trim();
@@ -279,10 +277,10 @@ public class GridDBGateway extends AbstractGridDBGateway {
 				try {
 					xml = XMLJSONConverter.jsonToXml(context.getAddRecordData());
 				} catch (JSONException | TransformerException | ParserConfigurationException e) {
-					throw new SAXError(e);
+					throw new XMLJSONConverterException(e);
 				}
-				if (xml.toLowerCase().contains(
-						XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.toLowerCase())) {
+				if (xml.toLowerCase()
+						.contains(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.toLowerCase())) {
 					xml = xml.substring(XMLUtils.XML_VERSION_1_0_ENCODING_UTF_8.length());
 				}
 				xml = xml.trim();
