@@ -125,11 +125,15 @@ public final class XMLJSONConverter {
 		}
 
 		newXml = "<tempRootForResolvingProblem>" + newXml + "</tempRootForResolvingProblem>";
+		newXml = newXml.replaceAll("&(?!amp;)", "xxxxxx");
+
 		// InputStream in = TextUtils.stringToStream(newXml);
 		InputStream in = stringToStream(newXml);
 		parser.parse(in, handler);
 		JsonElement result = handler.getResult();
 		String str = result.toString();
+		str = str.replace("xxxxxx", "&");
+
 		int ind = str.indexOf(':');
 		str = str.substring(ind + 1);
 		ind = str.lastIndexOf("}");
