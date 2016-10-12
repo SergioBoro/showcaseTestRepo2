@@ -32,6 +32,9 @@ public class GridColumnConfig implements SerializableElement {
 	private String format = null;
 	@XmlAttribute
 	private HorizontalAlignment horizontalAlignment = null;
+	@XmlAttribute
+	private Sorting firstSortDirection = Sorting.ASC;
+
 	/**
 	 * Ссылка на процедуру загрузки файла.
 	 */
@@ -133,6 +136,14 @@ public class GridColumnConfig implements SerializableElement {
 
 	public void setFormat(final String aFormat) {
 		format = aFormat;
+	}
+
+	public Sorting getFirstSortDirection() {
+		return firstSortDirection;
+	}
+
+	public void setFirstSortDirection(final Sorting aFirstSortDirection) {
+		firstSortDirection = aFirstSortDirection;
 	}
 
 }

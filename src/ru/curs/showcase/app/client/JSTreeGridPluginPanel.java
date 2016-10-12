@@ -444,7 +444,12 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 			column.put("urlImageFileDownload",
 					new JSONString(gridMetadata.getUISettings().getUrlImageFileDownload()));
 
+			if (egcc.getFirstSortDirection() == Sorting.DESC) {
+				column.put("firstSortDirectionDescending", new JSONString("true"));
+			}
+
 			columns.put(egcc.getId(), column);
+
 		}
 		metadata.put("columns", columns);
 

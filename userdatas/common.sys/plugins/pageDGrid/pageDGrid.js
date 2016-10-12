@@ -258,6 +258,7 @@ function createPageDGrid(elementId, parentId, metadata) {
 				column["label"]     = metadata["columns"][k]["caption"];
 				column["sortable"]  = "true";
 				column["valueType"] = metadata["columns"][k]["valueType"];
+				column["firstSortDirectionDescending"] = metadata["columns"][k]["firstSortDirectionDescending"];
 
 				
 				function getTitle(title){

@@ -82,6 +82,7 @@ public class GridMetaFactory extends CompBasedElementFactory {
 	private static final String PRECISION_TAG = "precision";
 	private static final String PROFILE_TAG = "profile";
 	private static final String HOR_ALIGN_TAG = "horAlign";
+	private static final String FIRST_SORT_DIRECTION_TAG = "firstSortDirection";
 
 	private ProfileReader gridProps = null;
 
@@ -615,6 +616,10 @@ public class GridMetaFactory extends CompBasedElementFactory {
 			if (attrs.getIndex(HOR_ALIGN_TAG) > -1) {
 				String value = attrs.getValue(HOR_ALIGN_TAG);
 				column.setHorizontalAlignment(HorizontalAlignment.valueOf(value));
+			}
+			if (attrs.getIndex(FIRST_SORT_DIRECTION_TAG) > -1) {
+				String value = attrs.getValue(FIRST_SORT_DIRECTION_TAG);
+				column.setFirstSortDirection(Sorting.valueOf(value));
 			}
 			return null;
 		}
