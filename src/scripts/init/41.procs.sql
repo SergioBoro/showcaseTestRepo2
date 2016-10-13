@@ -32543,6 +32543,16 @@ BEGIN
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
     SET NOCOUNT ON;
+
+
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (string) VALUES (NULL)
+--insert into Debug (context) VALUES (@session_context)
+
+--INSERT INTO Debug (context, string) VALUES (@session_context, 'grid_new_meta')
+--INSERT INTO Debug (context, string) VALUES ('<tmp_meta></tmp_meta>',  @add_context)
+
+
 DECLARE @gridsettings_str varchar(max)
 DECLARE @cities_count int
 SELECT @cities_count = COUNT(*) FROM [dbo].[geo3]
@@ -32554,9 +32564,13 @@ set @gridsettings_str='<gridsettings>
 
 
         <columns>
-					<col  id="Код" width="170px" type="INT"  editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: NumberSpinner}"/>                
-					<col  id="Название" width="400px" precision="2"/>        
-          <col  readonly = "true" id="Картинка" width="70px" type="IMAGE" editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', editor: CheckBox}"/>
+
+					<col  id="Код" width="170px" type="INT"  horAlign="RIGHT" 
+editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'', 
+         editor: NumberSpinner, editorArgs: {smallDelta: 0.2, disableMouseWheel: true}}"/>                
+
+					<col  id="Название"  firstSortDirection="DESC"  width="400px" precision="2"/>        
+          <col  id="Картинка" readonly = "false"  width="70px" type="IMAGE" editor="{ editor: CheckBox}"/>
         </columns>
 
 
@@ -32604,9 +32618,88 @@ set @gridsettings_str='<gridsettings>
 
 
         
-<properties  autoSelectRecordId="12"  gridHeight="450"  forceLoadSettings="false" pagesize="50"  gridWidth="850px" 
-totalCount="'+CAST(@cities_count as varchar(max))+'"/></gridsettings>' 
+<properties   autoSelectRecordId="12" gridHeight="450"  forceLoadSettings="false" pagesize="50"  gridWidth="850px" 
+totalCount="'+CAST(@cities_count /*0*/ as varchar(max))+'"
+
+
+
+
+
+
+
+
+/></gridsettings>' 
 set  @settings=CAST(@gridsettings_str as xml)
+
+
+
+
+
+/*
+
+# grid settings
+
+columnheaderHorAlign = "RIGHT"
+columnHorAlign = "LEFT"
+numColumnHorAlign = "RIGHT"
+strColumnHorAlign = "LEFT"
+dateColumnHorAlign = "RIGHT"
+imageColumnHorAlign = "CENTER"
+linkColumnHorAlign = "CENTER"
+# LEFT CENTER RIGHT
+
+dateValuesFormat = "SHORT"
+# SHORT MEDIUM LONG FULL
+numColumnDecimalSeparator = ","
+numColumnGroupingSeparator = " "              
+
+columnValueDisplayMode = "MULTILINE"
+# SINGLELINE MULTILINE AUTOFIT
+columnWidth = "100px"
+valueFontColor = "#000000"
+valueBgColor = "#FFFFFF"
+valueFontSize = "1em"
+valueFontBold = "false"
+valueFontItalic = "false"
+valueFontUnderline = "false"
+valueFontStrikethrough = "false"
+
+visiblePagesCount = "5"
+pagesBlockDuplicateLimit = "4"
+selectWholeRecord = "true"
+
+singleClickBeforeDouble = "true"
+
+visibleStriperows = "false"
+columnShowlines = "false"
+
+visibleColumnsCustomizer = "true"
+visibleColumngroupsCustomizer = "true"
+visiblePager = "true"
+visibleExporttoexcelCurrentpage = "true"
+visibleExporttoexcelAll = "true"
+visibleCopytoclipboard = "true"
+visibleFilter = "true"
+visibleRecordsSelector = "true"
+
+visibleColumnsHeader = "true"
+
+visibleToolbar = "true"
+
+visibleSave = "true"
+visibleRevert = "true"
+
+selectAllowTextSelection = "false"
+
+
+*/
+
+
+
+/*
+autoSelectRecordId="12"
+*/
+
 
 
 --SET @error_mes = 'Грид22 успешно построен';
