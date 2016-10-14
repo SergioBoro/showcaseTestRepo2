@@ -1,26 +1,20 @@
 package ru.curs.showcase.app.server;
 
-import org.slf4j.*;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import ru.beta2.extra.gwt.ui.selector.api.*;
 import ru.curs.showcase.app.api.grid.GridContext;
+import ru.curs.showcase.app.api.services.GeneralException;
+import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.grid.GridUtils;
 import ru.curs.showcase.core.selector.*;
-import ru.curs.showcase.runtime.AppInfoSingleton;
-
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * Реализация сервиса для селектора.
  */
 public class SelectorDataServiceImpl extends RemoteServiceServlet implements SelectorDataService {
 
-	private static final String SELECTOR_ERROR =
-		"При получении данных для селектора возникла ошибка: ";
-
 	private static final long serialVersionUID = 8719830458845626545L;
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(SelectorDataServiceImpl.class);
 
 	@Override
 	public DataSet getSelectorData(final DataRequest req) {
@@ -28,8 +22,8 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 		try {
 
 			if (req.getAddData().getContext() instanceof GridContext) {
-				GridUtils.fillFilterContextByListOfValuesInfo((GridContext) req.getAddData()
-						.getContext());
+				GridUtils.fillFilterContextByListOfValuesInfo(
+						(GridContext) req.getAddData().getContext());
 			}
 
 			SelectorGetCommand command = new SelectorGetCommand(req);
@@ -39,16 +33,18 @@ public class SelectorDataServiceImpl extends RemoteServiceServlet implements Sel
 			ds.setRecords(result.getDataRecordList());
 			ds.setTotalCount(result.getCount());
 
+			ds.setOkMessage(result.getOkMessage());
+
+		} catch (GeneralException e) {
+			// вернётся пустой датасет.
+			ds.setTotalCount(0);
+
+			throw e;
 		} catch (Exception e) {
 			// вернётся пустой датасет.
 			ds.setTotalCount(0);
 
-			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
-				LOGGER.error(SELECTOR_ERROR + e.getMessage());
-			}
-
-			throw new ru.beta2.extra.gwt.ui.selector.api.SelectorDataServiceException(
-					e.getMessage());
+			throw GeneralExceptionFactory.build(e);
 		}
 
 		return ds;

@@ -2,9 +2,14 @@ package ru.curs.showcase.app.client.api;
 
 import java.util.*;
 
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.rpc.*;
+import com.google.gwt.user.client.ui.FormPanel;
+
 import ru.beta2.extra.gwt.ui.selector.*;
-import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.ErrorHandler;
-import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.Options;
+import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.*;
 import ru.beta2.extra.gwt.ui.selector.api.SelectorAdditionalData;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.element.*;
@@ -13,12 +18,6 @@ import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 import ru.curs.showcase.app.client.utils.*;
-
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.*;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.rpc.*;
-import com.google.gwt.user.client.ui.FormPanel;
 
 /**
  * Класс, реализующий функции обратного вызова из XFormPanel.
@@ -56,10 +55,9 @@ public final class XFormPanelCallbacksEvents {
 		XFormPanel currentXFormPanel = getCurrentPanel(xformId);
 		if (currentXFormPanel != null) {
 			try {
-				stringContext =
-					ExchangeConstants.CONTEXT_BEGIN
-							+ currentXFormPanel.getContext().toParamForHttpPost(
-									getObjectSerializer()) + ExchangeConstants.CONTEXT_END;
+				stringContext = ExchangeConstants.CONTEXT_BEGIN
+						+ currentXFormPanel.getContext().toParamForHttpPost(getObjectSerializer())
+						+ ExchangeConstants.CONTEXT_END;
 			} catch (SerializationException e) {
 				MessageBox.showSimpleMessage("getStringContext()",
 						" SerializationError: " + e.getMessage());
@@ -79,9 +77,8 @@ public final class XFormPanelCallbacksEvents {
 	public static void showMessage(final String stringMessage) {
 		if (!stringMessage.isEmpty()) {
 			try {
-				UserMessage um =
-					(UserMessage) getObjectSerializer().createStreamReader(stringMessage)
-							.readObject();
+				UserMessage um = (UserMessage) getObjectSerializer()
+						.createStreamReader(stringMessage).readObject();
 				if (um != null) {
 
 					String textMessage = um.getText();
@@ -98,14 +95,14 @@ public final class XFormPanelCallbacksEvents {
 					if (captionMessage == null) {
 						captionMessage =
 							// AppCurrContext.getInstance().getBundleMap().get("okMessage");
-							CourseClientLocalization.gettext(AppCurrContext.getInstance()
-									.getDomain(), "Message");
+							CourseClientLocalization
+									.gettext(AppCurrContext.getInstance().getDomain(), "Message");
 					}
 
 					String subtypeMessage = um.getSubtype();
 
-					MessageBox.showMessageWithDetails(captionMessage, textMessage, "",
-							typeMessage, false, subtypeMessage);
+					MessageBox.showMessageWithDetails(captionMessage, textMessage, "", typeMessage,
+							false, subtypeMessage);
 
 				}
 
@@ -183,10 +180,11 @@ public final class XFormPanelCallbacksEvents {
 						new XFormContext(curXFormPanel.getContext(), data),
 						curXFormPanel.getElementInfo(),
 						new GWTServiceCallback<VoidElement>(
-						// AppCurrContext.getInstance().getBundleMap().get("xform_save_data_error"))
-						// {
-								CourseClientLocalization.gettext(AppCurrContext.getInstance()
-										.getDomain(), "Error when XForms data saving on server")) {
+								// AppCurrContext.getInstance().getBundleMap().get("xform_save_data_error"))
+								// {
+								CourseClientLocalization.gettext(
+										AppCurrContext.getInstance().getDomain(),
+										"Error when XForms data saving on server")) {
 							// new
 							// GWTServiceCallback<VoidElement>(AppCurrContext.getInstance()
 							// .getInternationalizedMessages().xform_save_data_error())
@@ -311,8 +309,8 @@ public final class XFormPanelCallbacksEvents {
 		}
 	}
 
-	private static Action
-			getActionByLinkId(final String linkId, final XFormPanel currentXFormPanel) {
+	private static Action getActionByLinkId(final String linkId,
+			final XFormPanel currentXFormPanel) {
 		Action ac = null;
 
 		List<HTMLEvent> events =
@@ -336,9 +334,10 @@ public final class XFormPanelCallbacksEvents {
 			// .getInternationalizedMessages().xforms_upload_error(),
 			// e.getMessage());
 			MessageBox.showSimpleMessage(
-			// AppCurrContext.getInstance().getBundleMap().get("xforms_upload_error"),
+					// AppCurrContext.getInstance().getBundleMap().get("xforms_upload_error"),
 					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"File uploading error"), e.getMessage());
+							"File uploading error"),
+					e.getMessage());
 		}
 
 		currentXFormPanel.getPanel().add(uh);
@@ -550,7 +549,8 @@ public final class XFormPanelCallbacksEvents {
 		 * @param selected
 		 *            JavaScriptObject
 		 */
-		native void onSelectionCompleteAction(final boolean ok, final JavaScriptObject selected)/*-{
+		native void onSelectionCompleteAction(final boolean ok,
+				final JavaScriptObject selected)/*-{
 			if (this.onSelectionCompleteAction != null) {
 				this.onSelectionCompleteAction(ok, selected);
 			}
@@ -662,9 +662,7 @@ public final class XFormPanelCallbacksEvents {
 			ErrorHandler errHandler = new ErrorHandler() {
 				@Override
 				public void onDataServiceFailure(final Throwable throwable) {
-					MessageBox.showMessageWithDetails("Ошибка при получении данных для селектора",
-							throwable.getMessage(), throwable.getMessage(), MessageType.ERROR,
-							false, null);
+					WebUtils.onFailure(throwable, "Error");
 				}
 			};
 			options.errorHandler(errHandler);
@@ -682,13 +680,11 @@ public final class XFormPanelCallbacksEvents {
 					initSelection = null;
 				}
 
-				c =
-					new MultiSelectorComponent(currentXFormPanel.getSelSrv(),
-							param.windowCaption(), initSelection, options);
+				c = new MultiSelectorComponent(currentXFormPanel.getSelSrv(),
+						param.windowCaption(), initSelection, options);
 			} else {
-				c =
-					new SelectorComponent(currentXFormPanel.getSelSrv(), param.windowCaption(),
-							options);
+				c = new SelectorComponent(currentXFormPanel.getSelSrv(), param.windowCaption(),
+						options);
 			}
 			c.setSelectorListener(new BaseSelectorComponent.SelectorListener() {
 				@Override
@@ -744,10 +740,10 @@ public final class XFormPanelCallbacksEvents {
 	}-*/;
 
 	// CHECKSTYLE:OFF
-	private static native void
-			insertXFormByXPath(final boolean ok, final JavaScriptObject selected,
-					final String xpathRoot, final Map<String, String> xpathMapping,
-					final boolean needClear, final String subformId) /*-{
+	private static native void insertXFormByXPath(final boolean ok,
+			final JavaScriptObject selected, final String xpathRoot,
+			final Map<String, String> xpathMapping, final boolean needClear,
+			final String subformId) /*-{
 		$wnd.insertXFormByXPath(ok, selected, xpathRoot, xpathMapping,
 				needClear, subformId);
 	}-*/;
@@ -767,8 +763,8 @@ public final class XFormPanelCallbacksEvents {
 		return $wnd.getInitSelection(xpathRoot, xpathMapping);
 	}-*/;
 
-	private static native JavaScriptObject getInitSelectionForSingleSelector(
-			final Map<String, String> xpathMapping) /*-{
+	private static native JavaScriptObject
+			getInitSelectionForSingleSelector(final Map<String, String> xpathMapping) /*-{
 		return $wnd.getInitSelectionForSingleSelector(xpathMapping);
 	}-*/;
 
@@ -798,9 +794,9 @@ public final class XFormPanelCallbacksEvents {
 			// dh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
 			// .xforms_download_error());
 			dh.setErrorCaption(
-			// AppCurrContext.getInstance().getBundleMap().get("xforms_download_error"));
-			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-					"File downloading error"));
+					// AppCurrContext.getInstance().getBundleMap().get("xforms_download_error"));
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							"File downloading error"));
 			dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/download");
 
 			try {
@@ -813,9 +809,10 @@ public final class XFormPanelCallbacksEvents {
 				// .getInternationalizedMessages().xforms_download_error(),
 				// e.getMessage());
 				MessageBox.showSimpleMessage(
-				// AppCurrContext.getInstance().getBundleMap().get("xforms_download_error"),
+						// AppCurrContext.getInstance().getBundleMap().get("xforms_download_error"),
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-								"File downloading error"), e.getMessage());
+								"File downloading error"),
+						e.getMessage());
 			}
 		}
 	}
@@ -879,7 +876,7 @@ public final class XFormPanelCallbacksEvents {
 				// UploadWindow(AppCurrContext.getInstance()
 				// .getInternationalizedMessages().xform_upload_caption()));
 				currentXFormPanel.setUw(new UploadWindow(
-				// AppCurrContext.getInstance().getBundleMap().get("xform_upload_caption")));
+						// AppCurrContext.getInstance().getBundleMap().get("xform_upload_caption")));
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 								"File downloading")));
 				currentXFormPanel.getPanel().add(currentXFormPanel.getUw());
@@ -887,9 +884,9 @@ public final class XFormPanelCallbacksEvents {
 				// uh.setErrorCaption(AppCurrContext.getInstance().getInternationalizedMessages()
 				// .xforms_upload_error());
 				uh.setErrorCaption(
-				// AppCurrContext.getInstance().getBundleMap().get("xforms_upload_error"));
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"File uploading error"));
+						// AppCurrContext.getInstance().getBundleMap().get("xforms_upload_error"));
+						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+								"File uploading error"));
 				uh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/upload");
 			}
 			currentXFormPanel.getUw().runUpload(param.linkId(), new UploadEndHandler() {

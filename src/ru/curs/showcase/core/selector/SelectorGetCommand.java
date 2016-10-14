@@ -41,6 +41,9 @@ public class SelectorGetCommand extends DataPanelElementCommand<ResultSelectorDa
 			dr.setName(UserDataUtils.modifyVariables(dr.getName()));
 		}
 		// Конец перевода с помощью Gettext
+		if (result.getOkMessage() == null) {
+			result.setOkMessage(getContext().getOkMessage());
+		}
 		setResult(result);
 	}
 

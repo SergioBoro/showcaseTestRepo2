@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.*;
 
 import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.beta2.extra.gwt.ui.selector.api.DataRecord;
+import ru.curs.showcase.app.api.UserMessage;
 
 /**
  * Результат получения данных селектора.
@@ -19,6 +20,11 @@ public class ResultSelectorData implements SerializableElement {
 	private static final long serialVersionUID = 1L;
 	private final List<DataRecord> dataRecordList;
 	private final int count;
+
+	/**
+	 * "ok"-сообщение.
+	 */
+	private UserMessage okMessage = null;
 
 	public ResultSelectorData() {
 		super();
@@ -48,6 +54,14 @@ public class ResultSelectorData implements SerializableElement {
 
 	public int getCount() {
 		return count;
+	}
+
+	public UserMessage getOkMessage() {
+		return okMessage;
+	}
+
+	public void setOkMessage(final UserMessage aOkMessage) {
+		okMessage = aOkMessage;
 	}
 
 }
