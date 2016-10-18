@@ -54,7 +54,15 @@ def pluginDataAndSettings(context, main, add, filterinfo, session, elementId):
     <properties>
     </properties>
     '''
-    res = JythonDTO(data, settings, UserMessageFactory().build(555, u"Плагин (DataAndSettings) успешно построен из Celesta"))
+    
+#    context.warning('dd2');
+#    context.message('dd1', u'Заголовок4', u"solutions/default/resources/group_icon_default.png");
+    
+#    context.error('dd4', u'Заголовок4', u"solutions/default/resources/group_icon_default.png");
+    
+    
+    #res = JythonDTO(data, settings, UserMessageFactory().build(555, u"Плагин (DataAndSettings) успешно построен из Celesta"))
+    res = JythonDTO(data, settings)    
     return res
 
 def pluginData(context, main, add, filterinfo, session, params):
@@ -71,5 +79,20 @@ def pluginData(context, main, add, filterinfo, session, params):
         <item id="child1" name="Lazy loaded item child1" leaf="true"/>
         <item id="child2" name="Lazy loaded item child2" leaf="true"/>
     </items>'''
-    res = JythonDTO(data, UserMessageFactory().build(555, u"Плагин (Data) успешно построен из Celesta"))
+    
+    
+
+#    context.message('dd11', u'Заголовок4', u"solutions/default/resources/group_icon_default.png");
+#    context.warning('dd22');    
+    context.error('dd44', u'Заголовок4', u"solutions/default/resources/group_icon_default.png");
+    
+    
+    
+    #res = JythonDTO(data, UserMessageFactory().build(555, u"Плагин (Data) успешно построен из Celesta"))
+    res = JythonDTO(data)
+    
+    
     return res
+
+
+

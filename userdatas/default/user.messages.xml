@@ -16,7 +16,7 @@
 
 
 
-<message id="555" type="ERROR"  
+<message id="555" type="WARNING"  
 caption="Отладочный заголовок"   subtype="solutions/default/resources/group_icon_default.png"  >
 Отформатированное2 сообщение: %s. Спасибо!
 </message>

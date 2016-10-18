@@ -74,7 +74,8 @@ def mainproc():
     <properties>
     </properties>
     '''
-    res = JythonDTO(data, settings, UserMessageFactory().build(555, u"Плагин успешно построен из Jython"))
+#    res = JythonDTO(data, settings, UserMessageFactory().build(555, u"Плагин успешно построен из Jython"))
+    res = JythonDTO(data, settings)    
     return res
 
 if __name__ == "__main__":

@@ -25,9 +25,8 @@ public class GetDataPluginCommand extends ServiceLayerCommand<ResultPluginData> 
 		GetDataPluginGateway gateway = gf.getGateway();
 		ResultPluginData result = gateway.getData(this.requestData);
 		if (this.requestData.getElInfo().getPostProcessProcName() != null) {
-			PluginPostProcessJythonGateway postProcessGateway =
-				new PluginPostProcessJythonGateway(this.requestData.getContext(),
-						this.requestData.getElInfo(), result.getData());
+			PluginPostProcessJythonGateway postProcessGateway = new PluginPostProcessJythonGateway(
+					this.requestData.getContext(), this.requestData.getElInfo(), result.getData());
 			String[] params = postProcessGateway.postProcess();
 			String data = "";
 			for (int i = 0; i < params.length; i++) {
@@ -37,6 +36,9 @@ public class GetDataPluginCommand extends ServiceLayerCommand<ResultPluginData> 
 				data += params[i];
 			}
 			result.setData(data);
+		}
+		if (result.getOkMessage() == null) {
+			result.setOkMessage(getContext().getOkMessage());
 		}
 		setResult(result);
 	}

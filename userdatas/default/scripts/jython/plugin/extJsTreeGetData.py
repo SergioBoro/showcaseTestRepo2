@@ -49,10 +49,10 @@ def mainproc(attributes):
             
     data = u'''
     <items>
-		<item id="'''+parentId+'''1" name="Lazy2&#xA;loaded item '''+parentId+'''1'''+curValue+'''" leaf="false" checked="false"/>
+		<item id="'''+parentId+'''1" name="Lazy2\nloaded item '''+parentId+'''1'''+curValue+'''" leaf="false" checked="false"/>
 		<item id="'''+parentId+'''2" name="Lazy2\nloaded item '''+parentId+'''2'''+curValue+'''" leaf="false"/>
     </items>'''
-    res = JythonDTO(data, UserMessageFactory().build(555, u"Плагин успешно построен из Jython"))
+    res = JythonDTO(data, UserMessageFactory().build(555, u"Плагин успешно построен из Jython22"))
     return res
 
 if __name__ == "__main__":

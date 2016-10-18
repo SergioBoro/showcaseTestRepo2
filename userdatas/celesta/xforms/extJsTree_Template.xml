@@ -24,7 +24,7 @@
 	<body>
 		<div>
 			<xf:trigger>
-				<xf:label>Вызов ExtJsTree плагина</xf:label>
+				<xf:label>Вызов ExtJsTree плагина2</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
 						resource="javascript:gwtCreatePlugin({

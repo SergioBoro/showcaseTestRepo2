@@ -149,8 +149,8 @@
 							/*proc:'pluginExtJsTree',*/
 							proc:'plugin/extJsTree.py',
 							postProcessProc:'plugin/handleExtJsTree.py',
-							/*getDataProcName:'extJsTree_getData',*/
-							getDataProcName:'plugin/extJsTreeGetData.py',
+							getDataProcName:'extJsTree_getData',
+							/*getDataProcName:'plugin/extJsTreeGetData.py',*/
 							generalFilters:['XPath(instance(quot(xformId_myInstance1))/item/name)'],							
 							params:{
 								treePanel: {

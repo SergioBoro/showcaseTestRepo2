@@ -15,20 +15,20 @@ def navigator(context, session):
     <navigator width="200px">
         <group id="1" name="Примеры">
             <level1 id="11" name="Компоненты">
-                <level2 id="111" name="WebText" selectOnLoad="true">
+                <level2 id="111" name="WebText" >
                     <action>
                         <main_context></main_context>
                         <datapanel type="g1.datapanel.webTextDatapanel.celesta" tab="firstOrCurrent"></datapanel>
                     </action>
                 </level2>
-                <level2 id="112" name="XForms" >
+                <level2 id="112" name="XForms"  >
                     <action>
                         <main_context></main_context>
                         <datapanel type="xforms.xml" tab="firstOrCurrent"></datapanel>
                     </action>
                 </level2>
                 
-                <level2 id="113" name="GridNew">
+                <level2 id="113" name="GridNew"  >
                     <action>
                         <main_context></main_context>
                         <datapanel type="gridNew.xml" tab="firstOrCurrent"></datapanel>
@@ -42,7 +42,7 @@ def navigator(context, session):
                         <datapanel type="grid.xml" tab="firstOrCurrent"></datapanel>
                     </action>
                 </level2>
-                <level2 id="114" name="Plugin">
+                <level2 id="114" name="Plugin"   selectOnLoad="true"  >
                     <action>
                         <main_context></main_context>
                         <datapanel type="plugin.xml" tab="firstOrCurrent"></datapanel>

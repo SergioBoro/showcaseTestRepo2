@@ -2,6 +2,8 @@ package ru.curs.showcase.app.api.services;
 
 import java.util.*;
 
+import com.google.gwt.user.client.rpc.*;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -13,8 +15,6 @@ import ru.curs.showcase.app.api.grid.toolbar.GridToolBar;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.api.navigator.Navigator;
 import ru.curs.showcase.app.api.plugin.*;
-
-import com.google.gwt.user.client.rpc.*;
 
 /**
  * Основной GWT-RPC интерфейс для приложения. Основное назначение - передача
@@ -186,7 +186,7 @@ public interface DataService extends RemoteService {
 	 *            данные запроса
 	 * @return набор данных
 	 */
-	ResponceData getPluginData(RequestData request);
+	ResponceData getPluginData(RequestData request) throws GeneralException;
 
 	/**
 	 * Функция для записи в лог приложения на сервере из клиентской части. Все

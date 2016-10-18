@@ -10,10 +10,14 @@
 			<proc id="proc1" name="g1.xform.save.celesta" type="SAVE" />
 			<proc id="upload" name="g1.xform.uploadFile.celesta" type="UPLOAD" />
 			<proc id="download" name="g1.xform.downloadFile.celesta" type="DOWNLOAD" />
-			
+
+<!--
 			<related id="102" />
-		</element>
-		
+-->			
+ 		</element>
+ 		
+ 		
+<!--		
  		<element id="102" type="GRID"  subtype="JS_TREE_GRID" proc="g1.jsTreeGridEditor.getDataAndSetting.celesta" 
 		    plugin="treeDGrid">
 			<proc id="toolBar" name="g1.jsTreeGridEditor.gridToolBar.celesta" type="TOOLBAR"/>		    
@@ -21,8 +25,8 @@
 		    <proc id="12" name="g1.jsTreeGridEditor.gridSaveData.celesta" type="SAVE" />
 		    
    			<proc id="14" name="g1.jsTreeGridEditor.gridPartialUpdate.celesta" type="PARTIALUPDATE" />
-		    		    
 		</element>
+ -->		
 		
 	</tab>
 	

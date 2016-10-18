@@ -30,10 +30,14 @@ if @curValue is null
 
 set @data='
 	<items>
-		<item id="'+@parentId+'.1" name="Lazy loaded item '+@parentId+'.1'+@curValue+'" leaf="false"/>
-		<item id="'+@parentId+'.2" name="Lazy loaded item '+@parentId+'.2'+@curValue+'" leaf="false"/>
+		<item id="'+@parentId+'.1" name="Lazy2 loaded item '+@parentId+'.1'+@curValue+'" leaf="false"/>
+		<item id="'+@parentId+'.2" name="Lazy2 loaded item '+@parentId+'.2'+@curValue+'" leaf="false"/>
     </items>
 	';
+
+
+return 555;
+
 
 END
 GO

@@ -9,8 +9,8 @@ import ru.curs.showcase.core.jython.*;
  * @author bogatov
  * 
  */
-public class GetDataPluginJythonGateway extends JythonQuery<JythonDTO> implements
-		GetDataPluginGateway {
+public class GetDataPluginJythonGateway extends JythonQuery<JythonDTO>
+		implements GetDataPluginGateway {
 	private RequestData request;
 
 	public GetDataPluginJythonGateway() {
@@ -24,6 +24,7 @@ public class GetDataPluginJythonGateway extends JythonQuery<JythonDTO> implement
 		JythonDTO jytResult = getResult();
 		ResultPluginData result = new ResultPluginData();
 		result.setData(jytResult.getData());
+		result.setOkMessage(jytResult.getUserMessage());
 		return result;
 	}
 

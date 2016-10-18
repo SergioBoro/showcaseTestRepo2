@@ -1,10 +1,14 @@
 package ru.curs.showcase.app.client.api;
 
-import ru.curs.showcase.app.api.plugin.*;
-import ru.curs.showcase.app.api.services.*;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.plugin.*;
+import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.app.client.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
+import ru.curs.showcase.app.client.utils.WebUtils;
 
 /**
  * Загрузчик данных для плагина.
@@ -57,6 +61,8 @@ public class GetDataPluginHelper {
 				if (listener != null) {
 					listener.onComplete(null);
 				}
+
+				WebUtils.onFailure(caught, "Error");
 			}
 
 			@Override
@@ -64,7 +70,39 @@ public class GetDataPluginHelper {
 				if (listener != null) {
 					listener.onComplete(responce);
 				}
+
+				if (responce.getOkMessage() != null) {
+					showMessage(responce.getOkMessage());
+				}
 			}
 		});
 	}
+
+	private void showMessage(final UserMessage um) {
+
+		String textMessage = um.getText();
+		if ((textMessage == null) || textMessage.isEmpty()) {
+			return;
+		}
+
+		MessageType typeMessage = um.getType();
+		if (typeMessage == null) {
+			typeMessage = MessageType.INFO;
+		}
+
+		String captionMessage = um.getCaption();
+		if (captionMessage == null) {
+			captionMessage =
+				// AppCurrContext.getInstance().getBundleMap().get("okMessage");
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"Message");
+		}
+
+		String subtypeMessage = um.getSubtype();
+
+		MessageBox.showMessageWithDetails(captionMessage, textMessage, "", typeMessage, false,
+				subtypeMessage);
+
+	}
+
 }
