@@ -7,13 +7,13 @@ import org.python.core.PyObject;
 import org.xml.sax.SAXException;
 
 import ru.curs.celesta.*;
-import ru.curs.celesta.showcase.utils.XMLJSONConverter;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.LyraGridContext;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.jython.JythonDTO;
 import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -281,11 +281,10 @@ public class CelestaHelper<T> {
 		// XMLUtils.convertXmlToJson(context.getSession());
 		try {
 			resultParams[FILTER_CONTEXT_INDEX] = XMLJSONConverter.xmlToJson(context.getFilter());
-			resultParams[SESSION_CONTEXT_INDEX] = XMLJSONConverter
-					.xmlToJson(XMLUtils.xmlServiceSymbolsToNormal(context.getSession()));
+			resultParams[SESSION_CONTEXT_INDEX] = XMLJSONConverter.xmlToJson(
+					XMLUtils.xmlServiceSymbolsToNormalWithoutDoubleQuotes(context.getSession()));
 		} catch (SAXException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new XMLJSONConverterException(e);
 		}
 
 		return resultParams;
@@ -299,11 +298,10 @@ public class CelestaHelper<T> {
 
 		try {
 			fltr_context = XMLJSONConverter.xmlToJson(context.getFilter());
-			ses_context = XMLJSONConverter
-					.xmlToJson(XMLUtils.xmlServiceSymbolsToNormal(context.getSession()));
+			ses_context = XMLJSONConverter.xmlToJson(
+					XMLUtils.xmlServiceSymbolsToNormalWithoutDoubleQuotes(context.getSession()));
 		} catch (SAXException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new XMLJSONConverterException(e);
 		}
 
 		sc = new ShowcaseContext(context.getMain(), context.getAdditional(), fltr_context,
