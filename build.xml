@@ -10,6 +10,8 @@
 	<property name="sc.extragwt.dir" value="extragwt" />
 	<property name="sc.src.dir" value="src" />
 	<property name="celesta.src.dir" value="celesta" />
+	<property name="celestajavacc.src.dir" value="celestajavacc" />
+	<property name="celestaresources.src.dir" value="celestaresources" />
 	<property name="sc.tmp.dir" value="tmp" />
 	<property name="sc.runtime.dir" value="runtime" />
 	<property name="sc.webapp.dir" value="WebContent" />
@@ -179,7 +181,6 @@
 			<sourceroots>
 				<pathelement location="${sc.src.dir}" />
 				<pathelement location="extragwt" />
-				<pathelement location="celestageneratedsources" />
 				<pathelement location="celesta" />
 			</sourceroots>
 		</iajc>
@@ -280,10 +281,10 @@
 	
 	<target name="celesta.javacc">
 	  <echo>Compiling Celesta parser with javacc...</echo>
-	  <javacc target="${celesta.src.dir}/ru/curs/celesta/score/CelestaParser.jj" outputdirectory="${celesta.src.dir}/ru/curs/celesta/score/" javacchome="${celesta.javacc.dir}" />
+	  <javacc target="${celestajavacc.src.dir}/CelestaParser.jj" outputdirectory="${celesta.src.dir}/ru/curs/celesta/score/" javacchome="${celesta.javacc.dir}" />
 	
 	  <echo>Compiling complex filter parser</echo>
-	  <javacc target="${celesta.src.dir}/ru/curs/celesta/dbutils/filter/FilterParser.jj" outputdirectory="${celesta.src.dir}/ru/curs/celesta/dbutils/filter" javacchome="${celesta.javacc.dir}" />	
+	  <javacc target="${celestajavacc.src.dir}/FilterParser.jj" outputdirectory="${celesta.src.dir}/ru/curs/celesta/dbutils/filter" javacchome="${celesta.javacc.dir}" />	
 	</target>	
 
 	<target name="rebuild" depends="clean, build" description="clean + build" />
@@ -292,7 +293,7 @@
 
 	<target name="ci.build" depends="checkProperties, info.env, clean,  
 		init.dirs, init.dojo, init.jython, init.patches, 
-		build, checkstyle, init.db, build.gwt, jdepend,
+		celesta.javacc, build, checkstyle, init.db, build.gwt, jdepend,
 		dist, javadoc, backup.userdata, backup.sql.scripts, tomcat.prepare.war" 
 		description="Target for CI build"/>
 	
@@ -313,7 +314,7 @@
 		
 		
 		<echo>Copy celesta.sql file to war</echo>
-		<copy tofile="${sc.class.dir}/ru/curs/celesta/score/celesta.sql" file="${celesta.src.dir}/ru/curs/celesta/score/celesta.sql" />
+		<copy tofile="${sc.class.dir}/ru/curs/celesta/score/celesta.sql" file="${celestaresources.src.dir}/ru/curs/celesta/score/celesta.sql" />
 		
 		
 		
