@@ -179,6 +179,7 @@
 			<sourceroots>
 				<pathelement location="${sc.src.dir}" />
 				<pathelement location="extragwt" />
+				<pathelement location="celestageneratedsources" />
 				<pathelement location="celesta" />
 			</sourceroots>
 		</iajc>
