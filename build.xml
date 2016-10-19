@@ -291,7 +291,7 @@
 
 	<target name="ci.build" depends="checkProperties, info.env, clean,  
 		init.dirs, init.dojo, init.jython, init.patches, 
-		celesta.javacc,	build, checkstyle, init.db, build.gwt, jdepend,
+		build, checkstyle, init.db, build.gwt, jdepend,
 		dist, javadoc, backup.userdata, backup.sql.scripts, tomcat.prepare.war" 
 		description="Target for CI build"/>
 	
