@@ -7,6 +7,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import ru.curs.celesta.CelestaException;
 import ru.curs.celesta.score.*;
 import ru.curs.lyra.*;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.grid.*;
@@ -217,7 +218,17 @@ public class LyraGridMetaFactory {
 		}
 
 		gridProps = new ProfileReader(profile, SettingsFileType.GRID_PROPERTIES);
-		gridProps.init();
+		try {
+			gridProps.init();
+		} catch (Exception e) {
+			if (e.getMessage() == null) {
+				throw new ValidateException(new UserMessage(
+						String.format("Файл свойств грида \"%s\" не существует.", profile),
+						MessageType.ERROR, "Ошибка"));
+			} else {
+				throw e;
+			}
+		}
 
 		ProfileBasedSettingsApplyStrategy strategy =
 			new DefaultGridSettingsApplyStrategy(gridProps, result.getUISettings());

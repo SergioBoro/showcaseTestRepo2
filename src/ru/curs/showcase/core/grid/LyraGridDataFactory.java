@@ -522,7 +522,17 @@ public class LyraGridDataFactory {
 			}
 
 			gridProps = new ProfileReader(profile, SettingsFileType.GRID_PROPERTIES);
-			gridProps.init();
+			try {
+				gridProps.init();
+			} catch (Exception e) {
+				if (e.getMessage() == null) {
+					throw new ValidateException(new UserMessage(
+							String.format("Файл свойств грида \"%s\" не существует.", profile),
+							MessageType.ERROR, "Ошибка"));
+				} else {
+					throw e;
+				}
+			}
 
 			String decimalSeparator = gridProps.getStringValue(DEF_NUM_COL_DECIMAL_SEPARATOR);
 			if (decimalSeparator != null) {
