@@ -11,6 +11,7 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+  
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
@@ -23,8 +24,7 @@
   <listener>
     <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
   </listener>
- 
- <filter>
+  <filter>
     <display-name>CheckShowcaseAppInitialisationFilter</display-name>
     <filter-name>CheckShowcaseAppInitialisationFilter</filter-name>
     <filter-class>ru.curs.showcase.app.server.CheckShowcaseAppInitialisationFilter</filter-class>
@@ -57,7 +57,7 @@
   <filter-mapping>
     <filter-name>RedirectionFilter</filter-name>
     <url-pattern>*</url-pattern>
-  </filter-mapping> 
+  </filter-mapping>
   
   <filter>
     <filter-name>PreProcessFilter</filter-name>
@@ -70,6 +70,19 @@
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
+  
+  <filter>
+    <filter-name>СacheСontrolFilter</filter-name>
+    <filter-class>ru.curs.showcase.app.server.CacheControlFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CacheControlFilter</filter-name>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.js</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  
   <servlet>
     <servlet-name>DataServiceImpl</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.DataServiceImpl</servlet-class>
@@ -109,10 +122,10 @@
   <servlet-mapping>
     <servlet-name>FilesFrontController</servlet-name>
     <url-pattern>/secured/gridToExcel</url-pattern>
-    <url-pattern>/secured/gridFileDownload</url-pattern>  
+    <url-pattern>/secured/gridFileDownload</url-pattern>
     <url-pattern>/secured/download</url-pattern>
     <url-pattern>/secured/upload</url-pattern>
-    <url-pattern>/secured/geoMapExport</url-pattern>        
+    <url-pattern>/secured/geoMapExport</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>XFormScriptTransformServlet</servlet-name>
@@ -122,7 +135,7 @@
     <servlet-name>XFormScriptTransformServlet</servlet-name>
     <url-pattern>/secured/submit</url-pattern>
     <url-pattern>/secured/sqlTransform</url-pattern>
-    <url-pattern>/secured/jythonTransform</url-pattern> 
+    <url-pattern>/secured/jythonTransform</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>SelectorDataService</servlet-name>
@@ -225,7 +238,6 @@
     <servlet-name>ControlCelestaDebugInfoServlet</servlet-name>
     <url-pattern>/control/debugInfo</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <description></description>
     <display-name>GetImageServlet</display-name>
@@ -235,12 +247,10 @@
   <servlet-mapping>
     <servlet-name>GetImageServlet</servlet-name>
     <url-pattern>/getImage</url-pattern>
-  </servlet-mapping>  
-  
-  
+  </servlet-mapping>
   <error-page>
- 	 <error-code>500</error-code>
- 	 <location>/err500.jsp</location>
+    <error-code>500</error-code>
+    <location>/err500.jsp</location>
   </error-page>
   
 </web-app>
