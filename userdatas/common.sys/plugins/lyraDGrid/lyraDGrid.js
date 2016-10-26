@@ -780,7 +780,9 @@ function createLyraDGrid(elementId, parentId, metadata) {
 		});
 		
 		
-		grid.resizeColumnWidth("col1", "5px");
+		if(columns[0]){
+			grid.resizeColumnWidth(columns[0].field, "5px");
+		}
 	    
 	});
 }
