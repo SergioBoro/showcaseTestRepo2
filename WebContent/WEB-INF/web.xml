@@ -72,7 +72,7 @@
   </session-config>
   
   <filter>
-    <filter-name>СacheСontrolFilter</filter-name>
+    <filter-name>CacheControlFilter</filter-name>
     <filter-class>ru.curs.showcase.app.server.CacheControlFilter</filter-class>
   </filter>
   <filter-mapping>
@@ -82,7 +82,7 @@
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
-  
+    
   <servlet>
     <servlet-name>DataServiceImpl</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.DataServiceImpl</servlet-class>
