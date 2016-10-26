@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="ru/curs/showcase/app/jre/*" kind="src" path="src"/>
+	<classpathentry kind="src" output="WebContent/WEB-INF/classes" path="celestaresources"/>
 	<classpathentry kind="src" output="WebContent/WEB-INF/classes" path="celesta"/>
 	<classpathentry kind="src" output="WebContent/WEB-INF/classes" path="extragwt"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
