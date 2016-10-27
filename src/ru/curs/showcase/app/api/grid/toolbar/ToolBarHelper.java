@@ -175,7 +175,7 @@ public abstract class ToolBarHelper {
 
 	private void addToolBarItem(final ToolBarItem item, final Container toolBar) {
 		final TextButton textButton = createTextButton(item);
-		if (textButton != null && item.getAction() != null) {
+		if (textButton != null) {
 			if (item.getAction() != null) {
 				textButton.addSelectHandler(new SelectHandler() {
 					@Override
