@@ -1,7 +1,5 @@
 package ru.curs.showcase.app.api;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
-
 /**
  * Информация о деталях пользователя (таких как e-mail, sid пользователя, полное
  * имя пользователя, телефон), например получаемая из AuthServer.

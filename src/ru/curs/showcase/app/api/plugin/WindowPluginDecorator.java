@@ -1,12 +1,12 @@
 package ru.curs.showcase.app.api.plugin;
 
-import ru.beta2.extra.gwt.ui.*;
-import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
-import ru.curs.showcase.app.api.plugin.PluginParam.Options;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.*;
+
+import ru.curs.showcase.app.api.common.*;
+import ru.curs.showcase.app.api.plugin.PluginParam.Options;
+import ru.curs.showcase.app.client.panels.DialogBoxWithCaptionButton;
 
 /**
  * Декоратор создает всплывающие окно.

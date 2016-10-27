@@ -4,9 +4,8 @@ import java.util.*;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.beta2.extra.gwt.ui.selector.api.DataRecord;
-import ru.curs.showcase.app.api.UserMessage;
+import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.selector.DataRecord;
 
 /**
  * Результат получения данных селектора.

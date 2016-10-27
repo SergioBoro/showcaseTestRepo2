@@ -3,12 +3,12 @@
  */
 package ru.curs.showcase.app.client;
 
-import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
-import ru.curs.showcase.app.client.api.BasicElementPanel;
-
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.*;
+
+import ru.curs.showcase.app.client.api.BasicElementPanel;
+import ru.curs.showcase.app.client.panels.DialogBoxWithCaptionButton;
 
 /**
  * 
@@ -80,7 +80,8 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 
 			heigth =
 
-			(heigth > Window.getClientHeight() - n100) ? Window.getClientHeight() - n100 : heigth;
+				(heigth > Window.getClientHeight() - n100) ? Window.getClientHeight() - n100
+						: heigth;
 		}
 
 		if ((width != null) && (heigth != null)) {

@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.slf4j.MDC;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.util.xml.GeneralXMLHelper;
 

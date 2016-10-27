@@ -4,7 +4,6 @@ import java.util.*;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 
 /**
@@ -14,8 +13,8 @@ import ru.curs.showcase.app.api.*;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DataPanelElementLink implements SerializableElement, GWTClonable, ContainingContext,
-		SizeEstimate {
+public class DataPanelElementLink
+		implements SerializableElement, GWTClonable, ContainingContext, SizeEstimate {
 
 	private static final long serialVersionUID = 8381576475440574251L;
 

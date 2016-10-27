@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.datapanel;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Класс, содержащий стандартные HTML атрибуты, которые будут отображены на

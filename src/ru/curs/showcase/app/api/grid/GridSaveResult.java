@@ -2,8 +2,7 @@ package ru.curs.showcase.app.api.grid;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.UserMessage;
+import ru.curs.showcase.app.api.*;
 
 /**
  * Класс для результатов сохранения отредактированных данных в гриде.

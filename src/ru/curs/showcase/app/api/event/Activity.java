@@ -2,7 +2,6 @@ package ru.curs.showcase.app.api.event;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 
 /**
@@ -16,8 +15,8 @@ import ru.curs.showcase.app.api.*;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Activity extends NamedElement implements SerializableElement, ContainingContext,
-		SizeEstimate {
+public class Activity extends NamedElement
+		implements SerializableElement, ContainingContext, SizeEstimate {
 
 	private static final long serialVersionUID = -3677230519093999292L;
 

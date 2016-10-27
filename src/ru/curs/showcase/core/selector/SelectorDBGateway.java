@@ -4,8 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import oracle.jdbc.OracleTypes;
-import ru.beta2.extra.gwt.ui.selector.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.selector.*;
 import ru.curs.showcase.runtime.*;
 
 /**
@@ -48,14 +48,12 @@ public class SelectorDBGateway implements SelectorGateway {
 		req.setCurValue(curValue);
 
 		if (req.getProcName().indexOf(Constants.PROCNAME_SEPARATOR) > -1) {
-			String procCount =
-				req.getProcName().substring(0,
-						req.getProcName().indexOf(Constants.PROCNAME_SEPARATOR));
+			String procCount = req.getProcName().substring(0,
+					req.getProcName().indexOf(Constants.PROCNAME_SEPARATOR));
 
 			String procList =
-				req.getProcName().substring(
-						req.getProcName().indexOf(Constants.PROCNAME_SEPARATOR)
-								+ Constants.PROCNAME_SEPARATOR.length());
+				req.getProcName().substring(req.getProcName().indexOf(Constants.PROCNAME_SEPARATOR)
+						+ Constants.PROCNAME_SEPARATOR.length());
 
 			if (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL) {
 				procCount = "\"" + procCount + "\"";

@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.element;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Позиция вспомогательной панели относительно элемента информационной панели.

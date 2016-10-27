@@ -1,8 +1,8 @@
 package ru.curs.showcase.core.selector;
 
-import ru.beta2.extra.gwt.ui.selector.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.selector.*;
 import ru.curs.showcase.core.command.DataPanelElementCommand;
 import ru.curs.showcase.runtime.UserDataUtils;
 

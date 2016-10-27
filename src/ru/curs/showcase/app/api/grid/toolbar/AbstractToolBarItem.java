@@ -1,9 +1,10 @@
 package ru.curs.showcase.app.api.grid.toolbar;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Абстрактный класс элемента панели инструментов грида.
+ * 
  * @author bogatov
  *
  */

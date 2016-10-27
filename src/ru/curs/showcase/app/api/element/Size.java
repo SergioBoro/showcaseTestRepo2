@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.element;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Данные о размере элемента. Являются базовым классом для данных графика и

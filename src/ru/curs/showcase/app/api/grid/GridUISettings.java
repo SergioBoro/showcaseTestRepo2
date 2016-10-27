@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.grid;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * 
@@ -142,7 +142,8 @@ public class GridUISettings implements SerializableElement {
 	/**
 	 * Видимость кнопки "Экспорт в Excel текущей страницы".
 	 */
-	public void setVisibleExportToExcelCurrentPage(final boolean aVisibleExportToExcelCurrentPage) {
+	public void
+			setVisibleExportToExcelCurrentPage(final boolean aVisibleExportToExcelCurrentPage) {
 		visibleExportToExcelCurrentPage = aVisibleExportToExcelCurrentPage;
 	}
 

@@ -2,8 +2,7 @@ package ru.curs.showcase.app.api.geomap;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.NamedElement;
+import ru.curs.showcase.app.api.*;
 
 /**
  * 

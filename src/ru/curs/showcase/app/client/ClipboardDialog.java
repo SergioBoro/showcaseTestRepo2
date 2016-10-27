@@ -1,9 +1,9 @@
 package ru.curs.showcase.app.client;
 
-import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
-
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.ui.*;
+
+import ru.curs.showcase.app.client.panels.DialogBoxWithCaptionButton;
 
 /**
  * Класс диалога копирования в буфер обмена.

@@ -11,7 +11,6 @@ import org.xml.sax.*;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
-import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.celesta.CelestaException;
 import ru.curs.celesta.score.Table;
 import ru.curs.lyra.*;

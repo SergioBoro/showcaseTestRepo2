@@ -4,10 +4,9 @@ import java.util.*;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.*;
-
 import com.google.gwt.user.client.rpc.GwtTransient;
+
+import ru.curs.showcase.app.api.*;
 
 /**
  * Класс действия, выполняемого при активации визуального элемента UI (например,
@@ -136,8 +135,8 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 		return navigatorElementLink;
 	}
 
-	public final void setNavigatorElementLink(
-			final NavigatorElementLink aNavigatorElementLinkForOpen) {
+	public final void
+			setNavigatorElementLink(final NavigatorElementLink aNavigatorElementLinkForOpen) {
 		this.navigatorElementLink = aNavigatorElementLinkForOpen;
 	}
 
@@ -313,8 +312,8 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 		final Iterator<? extends ContainingContext> caIterator = getClientActivities().iterator();
 		final Iterator<? extends ContainingContext> saIterator = getServerActivities().iterator();
 		final Iterator<? extends ContainingContext> dpeIterator =
-			dataPanelActionType != DataPanelActionType.DO_NOTHING ? dataPanelLink
-					.getElementLinks().iterator() : null;
+			dataPanelActionType != DataPanelActionType.DO_NOTHING
+					? dataPanelLink.getElementLinks().iterator() : null;
 
 		return new Iterable<ContainingContext>() {
 
@@ -400,9 +399,8 @@ public class Action implements SerializableElement, GWTClonable, ContainingConte
 			if (dataPanelLink.isCurrentTab()) {
 				dataPanelLink.setTabId(prevAction.dataPanelLink.getTabId());
 			}
-			if (dataPanelLink.getFirstOrCurrentTab()
-					&& dataPanelLink.getDataPanelId().equals(
-							prevAction.dataPanelLink.getDataPanelId())) {
+			if (dataPanelLink.getFirstOrCurrentTab() && dataPanelLink.getDataPanelId()
+					.equals(prevAction.dataPanelLink.getDataPanelId())) {
 				dataPanelLink.setTabId(prevAction.dataPanelLink.getTabId());
 			}
 		}

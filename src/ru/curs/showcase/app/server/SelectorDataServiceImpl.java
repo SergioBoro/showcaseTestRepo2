@@ -2,8 +2,8 @@ package ru.curs.showcase.app.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import ru.beta2.extra.gwt.ui.selector.api.*;
 import ru.curs.showcase.app.api.grid.GridContext;
+import ru.curs.showcase.app.api.selector.*;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.grid.GridUtils;

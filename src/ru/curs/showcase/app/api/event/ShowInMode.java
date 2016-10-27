@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.event;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Способ отображения элементов для данного действия.

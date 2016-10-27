@@ -2,8 +2,6 @@ package ru.curs.showcase.app.api;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
-
 /**
  * Класс текущего состояния приложения.
  * 

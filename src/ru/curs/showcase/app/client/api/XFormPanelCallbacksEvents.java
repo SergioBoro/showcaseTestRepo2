@@ -8,15 +8,15 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.FormPanel;
 
-import ru.beta2.extra.gwt.ui.selector.*;
-import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.*;
-import ru.beta2.extra.gwt.ui.selector.api.SelectorAdditionalData;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.element.*;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.html.*;
+import ru.curs.showcase.app.api.selector.SelectorAdditionalData;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
+import ru.curs.showcase.app.client.selector.*;
+import ru.curs.showcase.app.client.selector.BaseSelectorComponent.*;
 import ru.curs.showcase.app.client.utils.*;
 
 /**

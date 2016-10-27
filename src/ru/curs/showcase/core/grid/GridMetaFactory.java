@@ -6,7 +6,6 @@ import java.util.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ru.beta2.extra.gwt.ui.GeneralConstants;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.event.Action;

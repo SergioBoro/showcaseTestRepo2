@@ -2,8 +2,7 @@ package ru.curs.showcase.app.api.element;
 
 import java.util.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.ID;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.*;
 
 /**

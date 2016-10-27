@@ -10,8 +10,7 @@ import javax.xml.stream.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ru.beta2.extra.gwt.ui.GeneralConstants;
-import ru.curs.showcase.app.api.ID;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.geomap.*;
 import ru.curs.showcase.core.event.EventFactory;
 import ru.curs.showcase.core.sp.*;
@@ -86,7 +85,8 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 			layer.setName(layersSql.getString(NAME_TAG.toUpperCase()));
 			if (SQLUtils.existsColumn(layersSql.getMetaData(),
 					TextUtils.capitalizeWord(HINT_FORMAT_TAG))) {
-				layer.setHintFormat(layersSql.getString(TextUtils.capitalizeWord(HINT_FORMAT_TAG)));
+				layer.setHintFormat(
+						layersSql.getString(TextUtils.capitalizeWord(HINT_FORMAT_TAG)));
 			}
 
 		}
@@ -103,9 +103,8 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 		}
 		while (polygonsSql.next()) {
 			GeoMapLayer layer = getLayerForObject(polygonsSql);
-			GeoMapFeature area =
-				layer.addPolygon(polygonsSql.getString(ID_TAG.toUpperCase()),
-						polygonsSql.getString(TextUtils.capitalizeWord(NAME_TAG)));
+			GeoMapFeature area = layer.addPolygon(polygonsSql.getString(ID_TAG.toUpperCase()),
+					polygonsSql.getString(TextUtils.capitalizeWord(NAME_TAG)));
 			if (area == null) {
 				throw new InconsistentSettingsFromDBException(POLYGON_TO_POINT_LAYER_ERROR);
 			}
@@ -118,8 +117,8 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 			}
 			if (SQLUtils.existsColumn(polygonsSql.getMetaData(),
 					TextUtils.capitalizeWord(GeneralConstants.STYLE_CLASS_TAG))) {
-				area.setStyleClass(polygonsSql.getString(TextUtils
-						.capitalizeWord(GeneralConstants.STYLE_CLASS_TAG)));
+				area.setStyleClass(polygonsSql
+						.getString(TextUtils.capitalizeWord(GeneralConstants.STYLE_CLASS_TAG)));
 			}
 			if (SQLUtils.existsColumn(polygonsSql.getMetaData(), TOOLTIP_COL)) {
 				String value = polygonsSql.getString(TOOLTIP_COL);
@@ -142,9 +141,8 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 
 		while (pointsSql.next()) {
 			GeoMapLayer layer = getLayerForObject(pointsSql);
-			GeoMapFeature point =
-				layer.addPoint(pointsSql.getString(ID_TAG.toUpperCase()),
-						pointsSql.getString(TextUtils.capitalizeWord(NAME_TAG)));
+			GeoMapFeature point = layer.addPoint(pointsSql.getString(ID_TAG.toUpperCase()),
+					pointsSql.getString(TextUtils.capitalizeWord(NAME_TAG)));
 			if (point == null) {
 				throw new InconsistentSettingsFromDBException(POINT_TO_POLYGON_LAYER_ERROR);
 			}
@@ -162,8 +160,8 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 			}
 			if (SQLUtils.existsColumn(pointsSql.getMetaData(),
 					TextUtils.capitalizeWord(GeneralConstants.STYLE_CLASS_TAG))) {
-				point.setStyleClass(pointsSql.getString(TextUtils
-						.capitalizeWord(GeneralConstants.STYLE_CLASS_TAG)));
+				point.setStyleClass(pointsSql
+						.getString(TextUtils.capitalizeWord(GeneralConstants.STYLE_CLASS_TAG)));
 			}
 			if (SQLUtils.existsColumn(pointsSql.getMetaData(), PROPERTIES_SQL_TAG)) {
 				readEvents(point.getId(), pointsSql.getString(PROPERTIES_SQL_TAG));
@@ -549,9 +547,8 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 			}
 
 			if (RECORD_TAG.equalsIgnoreCase(localName)) {
-				GeoMapLayer layer =
-					getData().addLayer(
-							GeoMapFeatureType.valueOf(layerObjectType.toUpperCase().trim()));
+				GeoMapLayer layer = getData()
+						.addLayer(GeoMapFeatureType.valueOf(layerObjectType.toUpperCase().trim()));
 				layer.setId(layerId);
 				layer.setName(layerName);
 				if (layerHintFormat != null) {
@@ -605,9 +602,8 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 				processProps = true;
 				osProps = new ByteArrayOutputStream();
 				try {
-					writerProps =
-						XMLOutputFactory.newInstance().createXMLStreamWriter(osProps,
-								TextUtils.DEF_ENCODING);
+					writerProps = XMLOutputFactory.newInstance().createXMLStreamWriter(osProps,
+							TextUtils.DEF_ENCODING);
 				} catch (XMLStreamException e) {
 					throw new SAXError(e);
 				}
@@ -771,9 +767,8 @@ public final class GeoMapFactory extends AbstractGeoMapFactory {
 				processProps = true;
 				osProps = new ByteArrayOutputStream();
 				try {
-					writerProps =
-						XMLOutputFactory.newInstance().createXMLStreamWriter(osProps,
-								TextUtils.DEF_ENCODING);
+					writerProps = XMLOutputFactory.newInstance().createXMLStreamWriter(osProps,
+							TextUtils.DEF_ENCODING);
 				} catch (XMLStreamException e) {
 					throw new SAXError(e);
 				}

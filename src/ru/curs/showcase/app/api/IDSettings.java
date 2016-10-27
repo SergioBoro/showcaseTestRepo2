@@ -1,7 +1,5 @@
 package ru.curs.showcase.app.api;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
-
 /**
  * Класс, содержащий динамические настройки для ID.
  * 

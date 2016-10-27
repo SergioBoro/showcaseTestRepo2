@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.datapanel;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Абстрактный класс элемента инф. панели, соответствующего определенному HTML

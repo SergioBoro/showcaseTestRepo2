@@ -2,13 +2,6 @@ package ru.curs.showcase.app.client;
 
 import java.util.Date;
 
-import ru.beta2.extra.gwt.ui.panels.DialogBoxWithCaptionButton;
-import ru.beta2.extra.gwt.ui.selector.*;
-import ru.beta2.extra.gwt.ui.selector.BaseSelectorComponent.Options;
-import ru.beta2.extra.gwt.ui.selector.api.*;
-import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
-
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.*;
 import com.google.gwt.event.dom.client.*;
@@ -20,6 +13,13 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.*;
 import com.google.gwt.view.client.*;
+
+import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.selector.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
+import ru.curs.showcase.app.client.panels.DialogBoxWithCaptionButton;
+import ru.curs.showcase.app.client.selector.*;
+import ru.curs.showcase.app.client.selector.BaseSelectorComponent.Options;
 
 /**
  * Класс задания фильтра.
@@ -53,8 +53,8 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 
 	private final SelectorDataServiceAsync selSrv = GWT.create(SelectorDataService.class);
 	{
-		((ServiceDefTarget) selSrv).setServiceEntryPoint(GWT.getModuleBaseURL()
-				+ "SelectorDataService" + Window.Location.getQueryString());
+		((ServiceDefTarget) selSrv).setServiceEntryPoint(
+				GWT.getModuleBaseURL() + "SelectorDataService" + Window.Location.getQueryString());
 	}
 
 	private int maxId = 0;
@@ -86,38 +86,35 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 	// AppCurrContext.getInstance().getInternationalizedMessages().conditionNotEndWith(),
 	// AppCurrContext.getInstance().getInternationalizedMessages().conditionIsEmpty()
 	// };
-	private static final String[] STRING_CONDITIONS =
-		{
-				// AppCurrContext.getInstance().getBundleMap().get("conditionContain"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"contains"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"list of values"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionEqual"),
-				CourseClientLocalization
-						.gettext(AppCurrContext.getInstance().getDomain(), "equal"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionStartWith"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"starts with"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionEndWith"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"ends with"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionNotContain"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"does not contain"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionNotEqual"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"does not equal"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionNotStartWith"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"does not start with"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionNotEndWith"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"does not end with"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionIsEmpty")
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"is empty") };
+	private static final String[] STRING_CONDITIONS = {
+			// AppCurrContext.getInstance().getBundleMap().get("conditionContain"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(), "contains"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"list of values"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionEqual"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(), "equal"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionStartWith"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"starts with"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionEndWith"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"ends with"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionNotContain"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"does not contain"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionNotEqual"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"does not equal"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionNotStartWith"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"does not start with"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionNotEndWith"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"does not end with"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionIsEmpty")
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"is empty") };
 	// private static final String[] DATE_NUMBER_CONDITIONS = {
 	// AppCurrContext.getInstance().getInternationalizedMessages().conditionEqual(),
 	// AppCurrContext.getInstance().getInternationalizedMessages().conditionListOfValues(),
@@ -128,32 +125,30 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 	// AppCurrContext.getInstance().getInternationalizedMessages().conditionNotEqual(),
 	// AppCurrContext.getInstance().getInternationalizedMessages().conditionIsEmpty()
 	// };
-	private static final String[] DATE_NUMBER_CONDITIONS =
-		{
-				// AppCurrContext.getInstance().getBundleMap().get("conditionEqual"),
-				CourseClientLocalization
-						.gettext(AppCurrContext.getInstance().getDomain(), "equal"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"list of values"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionGreater"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"is greater than"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionLess"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"is less than"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionGreaterEqual"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"greater than or equal"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionLessEqual"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"less than or equal"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionNotEqual"),
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"does not equal"),
-				// AppCurrContext.getInstance().getBundleMap().get("conditionIsEmpty")
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"is empty") };
+	private static final String[] DATE_NUMBER_CONDITIONS = {
+			// AppCurrContext.getInstance().getBundleMap().get("conditionEqual"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(), "equal"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"list of values"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionGreater"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"is greater than"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionLess"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"is less than"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionGreaterEqual"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"greater than or equal"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionLessEqual"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"less than or equal"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionNotEqual"),
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"does not equal"),
+			// AppCurrContext.getInstance().getBundleMap().get("conditionIsEmpty")
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"is empty") };
 
 	/**
 	 * Класс ячейки условия фильтра в списке.
@@ -169,8 +164,9 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 	public JSFilter(final JSLiveGridPluginPanel aJSLiveGridPluginPanel) {
 		// setText(AppCurrContext.getInstance().getInternationalizedMessages().grid_caption_filter());
 		setText(
-		// AppCurrContext.getInstance().getBundleMap().get("grid_caption_filter"));
-		CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(), "Filter"));
+				// AppCurrContext.getInstance().getBundleMap().get("grid_caption_filter"));
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"Filter"));
 		jsLiveGridPluginPanel = aJSLiveGridPluginPanel;
 
 		fillCelllist();
@@ -203,7 +199,8 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 
 		celllist = new CellList<Filter>(new FilterCell(), providesKey);
 		celllist.setSize("100%", "100%");
-		celllist.setKeyboardPagingPolicy(HasKeyboardPagingPolicy.KeyboardPagingPolicy.CURRENT_PAGE);
+		celllist.setKeyboardPagingPolicy(
+				HasKeyboardPagingPolicy.KeyboardPagingPolicy.CURRENT_PAGE);
 
 		selectionModel = new SingleSelectionModel<Filter>(providesKey);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -230,7 +227,7 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 		linkBox.addItem("OR");
 		linkBox.addItem("AND");
 		vpEdit.add(new HTML(
-		// AppCurrContext.getInstance().getBundleMap().get("jsFilterLink")
+				// AppCurrContext.getInstance().getBundleMap().get("jsFilterLink")
 				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 						"Mapping") + ":"));
 		vpEdit.add(linkBox);
@@ -246,7 +243,7 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 			columnBox.addItem(egcc.getCaption());
 		}
 		vpEdit.add(new HTML(
-		// AppCurrContext.getInstance().getBundleMap().get("jsFilterColumn")
+				// AppCurrContext.getInstance().getBundleMap().get("jsFilterColumn")
 				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 						"Column") + ":"));
 		vpEdit.add(columnBox);
@@ -258,49 +255,48 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 			}
 		});
 		vpEdit.add(new HTML(
-		// AppCurrContext.getInstance().getBundleMap().get("jsFilterCondition")
+				// AppCurrContext.getInstance().getBundleMap().get("jsFilterCondition")
 				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 						"Condition") + ":"));
 		vpEdit.add(conditionBox);
 
 		vpEdit.add(new HTML(
-		// AppCurrContext.getInstance().getBundleMap().get("jsFilterValue")
-				CourseClientLocalization
-						.gettext(AppCurrContext.getInstance().getDomain(), "Value") + ":"));
+				// AppCurrContext.getInstance().getBundleMap().get("jsFilterValue")
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(), "Value")
+						+ ":"));
 		vpEdit.add(valueBox);
 
-		dateBox =
-			new DateBox(datePicker, new Date(), new DateBox.DefaultFormat(
-					DateTimeFormat.getFormat("dd.MM.yyyy HH:mm")));
+		dateBox = new DateBox(datePicker, new Date(),
+				new DateBox.DefaultFormat(DateTimeFormat.getFormat("dd.MM.yyyy HH:mm")));
 		vpEdit.add(dateBox);
 		vpEdit.add(datePicker);
 
-		btnSelector =
-			new Button(
-			// AppCurrContext.getInstance().getBundleMap().get("jsFilterSelectValues"),
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Select values"), new ClickHandler() {
-						@Override
-						public void onClick(final ClickEvent event) {
-							runSelector();
-						}
-					});
+		btnSelector = new Button(
+				// AppCurrContext.getInstance().getBundleMap().get("jsFilterSelectValues"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"Select values"),
+				new ClickHandler() {
+					@Override
+					public void onClick(final ClickEvent event) {
+						runSelector();
+					}
+				});
 		vpEdit.add(btnSelector);
 
 		HTML html = new HTML("");
 		html.setHeight("10px");
 		vpEdit.add(html);
 
-		btnUpdate =
-			new Button(
-			// AppCurrContext.getInstance().getBundleMap().get("jsFilterUpdate"),
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Update filter condition"), new ClickHandler() {
-						@Override
-						public void onClick(final ClickEvent event) {
-							updateFilter();
-						}
-					});
+		btnUpdate = new Button(
+				// AppCurrContext.getInstance().getBundleMap().get("jsFilterUpdate"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"Update filter condition"),
+				new ClickHandler() {
+					@Override
+					public void onClick(final ClickEvent event) {
+						updateFilter();
+					}
+				});
 		vpEdit.add(btnUpdate);
 
 		conditionBox.setWidth("197px");
@@ -316,9 +312,8 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 
 	private void setEnableDisableVPEdit() {
 
-		boolean enabled =
-			(selectionModel.getSelectedObject() != null)
-					&& (celllist.getVisibleItems().indexOf(selectionModel.getSelectedObject()) > -1);
+		boolean enabled = (selectionModel.getSelectedObject() != null)
+				&& (celllist.getVisibleItems().indexOf(selectionModel.getSelectedObject()) > -1);
 
 		if (enabled && linkBox.isEnabled()) {
 			return;
@@ -344,20 +339,19 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 	}
 
 	private void fillHPFooter() {
-		Button btnAdd =
-			new Button(
-			// AppCurrContext.getInstance().getBundleMap().get("jsFilterAdd"),
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Add"), new ClickHandler() {
-						@Override
-						public void onClick(final ClickEvent event) {
-							Filter filter = new Filter();
-							maxId++;
-							filter.setId(String.valueOf(maxId));
-							listDataProvider.getList().add(filter);
-							adjustCelllistRowCount();
-						}
-					});
+		Button btnAdd = new Button(
+				// AppCurrContext.getInstance().getBundleMap().get("jsFilterAdd"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(), "Add"),
+				new ClickHandler() {
+					@Override
+					public void onClick(final ClickEvent event) {
+						Filter filter = new Filter();
+						maxId++;
+						filter.setId(String.valueOf(maxId));
+						listDataProvider.getList().add(filter);
+						adjustCelllistRowCount();
+					}
+				});
 		btnAdd.getElement().getStyle().setFloat(com.google.gwt.dom.client.Style.Float.LEFT);
 		hpFooter.add(btnAdd);
 
@@ -365,18 +359,18 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 		html.getElement().getStyle().setFloat(com.google.gwt.dom.client.Style.Float.LEFT);
 		hpFooter.add(html);
 
-		Button btnDel =
-			new Button(
-			// AppCurrContext.getInstance().getBundleMap().get("jsFilterDel"),
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Delete"), new ClickHandler() {
-						@Override
-						public void onClick(final ClickEvent event) {
-							listDataProvider.getList().remove(selectionModel.getSelectedObject());
-							adjustCelllistRowCount();
-							setEnableDisableVPEdit();
-						}
-					});
+		Button btnDel = new Button(
+				// AppCurrContext.getInstance().getBundleMap().get("jsFilterDel"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"Delete"),
+				new ClickHandler() {
+					@Override
+					public void onClick(final ClickEvent event) {
+						listDataProvider.getList().remove(selectionModel.getSelectedObject());
+						adjustCelllistRowCount();
+						setEnableDisableVPEdit();
+					}
+				});
 		btnDel.getElement().getStyle().setFloat(com.google.gwt.dom.client.Style.Float.LEFT);
 		hpFooter.add(btnDel);
 
@@ -384,32 +378,32 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 		html.getElement().getStyle().setFloat(com.google.gwt.dom.client.Style.Float.LEFT);
 		hpFooter.add(html);
 
-		Button btnClear =
-			new Button(
-			// AppCurrContext.getInstance().getBundleMap().get("jsFilterClear"),
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Clear"), new ClickHandler() {
-						@Override
-						public void onClick(final ClickEvent event) {
-							maxId = 0;
-							listDataProvider.getList().clear();
-							adjustCelllistRowCount();
-							setEnableDisableVPEdit();
-						}
-					});
+		Button btnClear = new Button(
+				// AppCurrContext.getInstance().getBundleMap().get("jsFilterClear"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"Clear"),
+				new ClickHandler() {
+					@Override
+					public void onClick(final ClickEvent event) {
+						maxId = 0;
+						listDataProvider.getList().clear();
+						adjustCelllistRowCount();
+						setEnableDisableVPEdit();
+					}
+				});
 		btnClear.getElement().getStyle().setFloat(com.google.gwt.dom.client.Style.Float.LEFT);
 		hpFooter.add(btnClear);
 
-		Button btnCancel =
-			new Button(
-			// AppCurrContext.getInstance().getBundleMap().get("jsFilterCancel"),
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Cancel"), new ClickHandler() {
-						@Override
-						public void onClick(final ClickEvent event) {
-							hide();
-						}
-					});
+		Button btnCancel = new Button(
+				// AppCurrContext.getInstance().getBundleMap().get("jsFilterCancel"),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						"Cancel"),
+				new ClickHandler() {
+					@Override
+					public void onClick(final ClickEvent event) {
+						hide();
+					}
+				});
 		btnCancel.getElement().getStyle().setFloat(com.google.gwt.dom.client.Style.Float.RIGHT);
 		hpFooter.add(btnCancel);
 
@@ -481,9 +475,8 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 	private void columnBoxChangeHandler() {
 		conditionBox.clear();
 		if (columnBox.getSelectedIndex() > -1) {
-			GridValueType vt =
-				((GridMetadata) jsLiveGridPluginPanel.getElement()).getColumns()
-						.get(columnBox.getSelectedIndex()).getValueType();
+			GridValueType vt = ((GridMetadata) jsLiveGridPluginPanel.getElement()).getColumns()
+					.get(columnBox.getSelectedIndex()).getValueType();
 
 			if (vt.isGeneralizedString()) {
 				setListBoxConditions(STRING_CONDITIONS);
@@ -507,18 +500,18 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 	private void conditionBoxChangeHandler() {
 		if ((conditionBox.getSelectedIndex() > -1) &&
 		// AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues")
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"list of values").equalsIgnoreCase(
-						conditionBox.getItemText(conditionBox.getSelectedIndex()))) {
+				CourseClientLocalization
+						.gettext(AppCurrContext.getInstance().getDomain(), "list of values")
+						.equalsIgnoreCase(
+								conditionBox.getItemText(conditionBox.getSelectedIndex()))) {
 			btnSelector.setVisible(true);
 
 			setVisibleValueBoxes(true);
 		} else {
 			btnSelector.setVisible(false);
 
-			GridValueType vt =
-				((GridMetadata) jsLiveGridPluginPanel.getElement()).getColumns()
-						.get(columnBox.getSelectedIndex()).getValueType();
+			GridValueType vt = ((GridMetadata) jsLiveGridPluginPanel.getElement()).getColumns()
+					.get(columnBox.getSelectedIndex()).getValueType();
 			if (vt.isDate()) {
 				setVisibleValueBoxes(false);
 			} else {
@@ -531,11 +524,11 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 		for (int i = 0; i < conditions.length; i++) {
 			if (
 			// AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues")
-			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-					"list of values").equalsIgnoreCase(conditions[i])) {
-				FilterMultiselector fms =
-					((GridMetadata) (jsLiveGridPluginPanel.getElement())).getJSInfo()
-							.getFilterMultiselector();
+			CourseClientLocalization
+					.gettext(AppCurrContext.getInstance().getDomain(), "list of values")
+					.equalsIgnoreCase(conditions[i])) {
+				FilterMultiselector fms = ((GridMetadata) (jsLiveGridPluginPanel.getElement()))
+						.getJSInfo().getFilterMultiselector();
 				if (fms == null) {
 					continue;
 				}
@@ -589,8 +582,9 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 		if (index > -1) {
 			if (!
 			// AppCurrContext.getInstance().getBundleMap().get("conditionListOfValues")
-			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-					"list of values").equalsIgnoreCase(conditionBox.getItemText(index))) {
+			CourseClientLocalization
+					.gettext(AppCurrContext.getInstance().getDomain(), "list of values")
+					.equalsIgnoreCase(conditionBox.getItemText(index))) {
 				filter.getListOfValues().clear();
 				filter.getListOfValuesId().clear();
 			}
@@ -630,11 +624,9 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 			final Filter filter, final SafeHtmlBuilder sb) {
 		if (filter.getLink() == null) {
 			sb.appendEscaped(
-			// AppCurrContext.getInstance().getBundleMap().get("jsFilterCondition")
-			CourseClientLocalization
-					.gettext(AppCurrContext.getInstance().getDomain(), "Condition")
-					+ " "
-					+ filter.getId());
+					// AppCurrContext.getInstance().getBundleMap().get("jsFilterCondition")
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							"Condition") + " " + filter.getId());
 		} else {
 			String img;
 			if ("OR".equalsIgnoreCase(filter.getLink())) {
@@ -653,9 +645,8 @@ public class JSFilter extends DialogBoxWithCaptionButton {
 	}
 
 	private void runSelector() {
-		FilterMultiselector fms =
-			((GridMetadata) (jsLiveGridPluginPanel.getElement())).getJSInfo()
-					.getFilterMultiselector();
+		FilterMultiselector fms = ((GridMetadata) (jsLiveGridPluginPanel.getElement())).getJSInfo()
+				.getFilterMultiselector();
 
 		Options options = new Options();
 		if (fms.getDataWidth() != null) {

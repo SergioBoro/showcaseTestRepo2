@@ -2,20 +2,20 @@ package ru.curs.showcase.app.client;
 
 import java.util.List;
 
-import ru.beta2.extra.gwt.ui.selector.api.*;
-import ru.curs.showcase.app.api.datapanel.*;
-import ru.curs.showcase.app.api.element.DataPanelElement;
-import ru.curs.showcase.app.api.event.*;
-import ru.curs.showcase.app.api.html.*;
-import ru.curs.showcase.app.api.services.*;
-import ru.curs.showcase.app.client.api.*;
-import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
-import ru.curs.showcase.app.client.utils.UploadWindow;
-
 import com.google.gwt.core.client.*;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.*;
+
+import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.element.DataPanelElement;
+import ru.curs.showcase.app.api.event.*;
+import ru.curs.showcase.app.api.html.*;
+import ru.curs.showcase.app.api.selector.*;
+import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.app.client.api.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
+import ru.curs.showcase.app.client.utils.UploadWindow;
 
 /**
  * Класс панели с XForm.
@@ -53,8 +53,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 	private final SelectorDataServiceAsync selSrv = GWT.create(SelectorDataService.class);
 	{
-		((ServiceDefTarget) selSrv).setServiceEntryPoint(GWT.getModuleBaseURL()
-				+ "SelectorDataService" + Window.Location.getQueryString());
+		((ServiceDefTarget) selSrv).setServiceEntryPoint(
+				GWT.getModuleBaseURL() + "SelectorDataService" + Window.Location.getQueryString());
 	}
 
 	public SelectorDataServiceAsync getSelSrv() {
@@ -227,12 +227,10 @@ public class XFormPanel extends BasicElementPanelBasis {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getXForms(
-				getDetailedContext(),
-				getElementInfo(),
+		dataService.getXForms(getDetailedContext(), getElementInfo(),
 				new GWTServiceCallback<XForm>(
-				// AppCurrContext.getInstance().getBundleMap().get("xformsErrorGetData"))
-				// {
+						// AppCurrContext.getInstance().getBundleMap().get("xformsErrorGetData"))
+						// {
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 								"when retrieving data from the server XForm")) {
 					@Override
@@ -353,7 +351,8 @@ public class XFormPanel extends BasicElementPanelBasis {
 		for (int i = 0; i < uiDataPanel.size(); i++) {
 			List<UIDataPanelElement> uiElements = uiDataPanel.get(i).getUiElements();
 			for (int j = 0; j < uiElements.size(); j++) {
-				if (uiElements.get(j).getElementPanel().getElementInfo().getType() == DataPanelElementType.XFORMS) {
+				if (uiElements.get(j).getElementPanel().getElementInfo()
+						.getType() == DataPanelElementType.XFORMS) {
 					if (((XFormPanel) uiElements.get(j).getElementPanel()).xform != null) {
 
 						XFormPanel xfp = (XFormPanel) uiElements.get(j).getElementPanel();

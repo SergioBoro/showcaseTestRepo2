@@ -14,8 +14,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
-import ru.beta2.extra.gwt.ui.GeneralConstants;
-import ru.curs.showcase.app.api.ID;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementSubType;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;

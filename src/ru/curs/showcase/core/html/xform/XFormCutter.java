@@ -11,7 +11,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ru.beta2.extra.gwt.ui.GeneralConstants;
+import ru.curs.showcase.app.api.GeneralConstants;
 import ru.curs.showcase.runtime.XSLTransformerPoolFactory;
 
 /**
@@ -39,8 +39,8 @@ public final class XFormCutter {
 	 *             проч.
 	 * @throws IOException
 	 */
-	public static List<String> xFormParts(final String xFormHTML) throws TransformerException,
-			XMLStreamException, IOException {
+	public static List<String> xFormParts(final String xFormHTML)
+			throws TransformerException, XMLStreamException, IOException {
 
 		// переход на новую версию XForms
 		String xFormHTML2 = xFormHTML.replace("xmlns=\"\"", "");

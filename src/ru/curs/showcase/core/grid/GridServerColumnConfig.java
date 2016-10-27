@@ -1,6 +1,6 @@
 package ru.curs.showcase.core.grid;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 import ru.curs.showcase.app.api.grid.GridValueType;
 
 /**

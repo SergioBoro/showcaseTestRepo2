@@ -9,15 +9,13 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
-import ru.beta2.extra.gwt.ui.GeneralConstants;
-import ru.curs.showcase.app.api.ExchangeConstants;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.XFormContext;
 import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.xml.*;
-import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Класс, модифицирующий шаблон XForms, добавляя в него служебную информацию,
@@ -45,8 +43,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String FILE = "file";
 	private static final String UPLOAD_DATA_TAG = "uploaddata";
 	private static final String ROOT_SRV_DATA_TAG = "srvdata";
-	private static final String ORIGIN = "instance('%s" + ROOT_SRV_DATA_TAG + "')/"
-			+ UPLOAD_DATA_TAG + "/%s";
+	private static final String ORIGIN =
+		"instance('%s" + ROOT_SRV_DATA_TAG + "')/" + UPLOAD_DATA_TAG + "/%s";
 	private static final String NEED_RELOAD_TAG = "needReload";
 	private static final String XMLNS = "xmlns";
 
@@ -191,19 +189,19 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			String buttonHint = null;
 			String onSelectionCompleteAction = null;
 			for (int j = 0; j < old.getAttributes().getLength(); j++) {
-				if (SELECTOR_BUTTON_LABEL_TAG.endsWith(old.getAttributes().item(j).getNodeName())) {
+				if (SELECTOR_BUTTON_LABEL_TAG
+						.endsWith(old.getAttributes().item(j).getNodeName())) {
 					buttonLabel = old.getAttributes().item(j).getNodeValue();
-				} else if (SELECTOR_BUTTON_HINT_TAG.endsWith(old.getAttributes().item(j)
-						.getNodeName())) {
+				} else if (SELECTOR_BUTTON_HINT_TAG
+						.endsWith(old.getAttributes().item(j).getNodeName())) {
 					buttonHint = old.getAttributes().item(j).getNodeValue();
-				} else if (SELECTOR_ON_SELECTION_COMPLETE_ACTION_TAG.endsWith(old.getAttributes()
-						.item(j).getNodeName())) {
+				} else if (SELECTOR_ON_SELECTION_COMPLETE_ACTION_TAG
+						.endsWith(old.getAttributes().item(j).getNodeName())) {
 					onSelectionCompleteAction = old.getAttributes().item(j).getNodeValue();
 				} else {
 					if (!old.getAttributes().item(j).getNodeValue().trim().isEmpty()) {
-						params =
-							params + old.getAttributes().item(j).getNodeName() + " : "
-									+ old.getAttributes().item(j).getNodeValue() + ", ";
+						params = params + old.getAttributes().item(j).getNodeName() + " : "
+								+ old.getAttributes().item(j).getNodeValue() + ", ";
 					}
 				}
 			}
@@ -255,10 +253,9 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 				parent.insertBefore(actionTrigger, trigger);
 
-				params =
-					"onSelectionCompleteAction : "
-							+ String.format(ON_SELECTION_COMPLETE_ACTION_TEMPLATE, actionId)
-							+ ", " + params;
+				params = "onSelectionCompleteAction : "
+						+ String.format(ON_SELECTION_COMPLETE_ACTION_TEMPLATE, actionId) + ", "
+						+ params;
 
 			}
 
@@ -503,7 +500,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		nl = xml.getElementsByTagNameNS(XFormProducer.XFORMS_URI, LOAD);
 		for (int i = 0; i < nl.getLength(); i++) {
 			n = nl.item(i);
-			if ((n.getAttributes() != null) && (n.getAttributes().getNamedItem(RESOURCE) != null)) {
+			if ((n.getAttributes() != null)
+					&& (n.getAttributes().getNamedItem(RESOURCE) != null)) {
 				selectors.add(n.getAttributes().getNamedItem(RESOURCE).getTextContent());
 			}
 		}
@@ -537,8 +535,9 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			if ((n.getAttributes() != null)
 					&& (n.getAttributes().getNamedItem(FILENAMES_MAPPING) != null)) {
 				isFilenamesMapping = true;
-				addXPathsFromStringToArrayXPaths(n.getAttributes().getNamedItem(FILENAMES_MAPPING)
-						.getTextContent(), xpaths);
+				addXPathsFromStringToArrayXPaths(
+						n.getAttributes().getNamedItem(FILENAMES_MAPPING).getTextContent(),
+						xpaths);
 			}
 		}
 
@@ -556,9 +555,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		Pattern pXPath =
 			Pattern.compile("XPath\\((\\S*)\\)", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
 
-		Pattern pQuot =
-			Pattern.compile("quot\\(([a-zA-Z_0-9-]*)\\)", Pattern.CASE_INSENSITIVE
-					+ Pattern.UNICODE_CASE);
+		Pattern pQuot = Pattern.compile("quot\\(([a-zA-Z_0-9-]*)\\)",
+				Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
 
 		Matcher mXPath;
 		Matcher mQuot;
@@ -584,13 +582,11 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	// CHECKSTYLE:OFF
 	private static void adjustArrayXPathsForMultiSelectors(final ArrayList<String> selectors,
 			final ArrayList<String> xpaths) {
-		Pattern pXPathMapping =
-			Pattern.compile("xpathMapping\\s*\\:\\s*\\{([\\s\\S]*)\\}", Pattern.CASE_INSENSITIVE
-					+ Pattern.UNICODE_CASE);
+		Pattern pXPathMapping = Pattern.compile("xpathMapping\\s*\\:\\s*\\{([\\s\\S]*)\\}",
+				Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
 
-		Pattern pXPathRoot =
-			Pattern.compile("xpathRoot\\s*\\:\\s*\\'(XPath\\(\\S*\\))\\'",
-					Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
+		Pattern pXPathRoot = Pattern.compile("xpathRoot\\s*\\:\\s*\\'(XPath\\(\\S*\\))\\'",
+				Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
 
 		Pattern pQuot =
 			Pattern.compile("'([^']*)'", Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
@@ -716,8 +712,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		NodeList nl2 = xml.getElementsByTagName("xf:model");
 		for (int i = 0; i < nl.getLength(); i++) {
 			if (nl.item(i).hasAttributes()
-					&& (nl.item(i).getAttributes().getNamedItem("insertTemplate") != null || nl
-							.item(i).getAttributes().getNamedItem("insertBind") != null)) {
+					&& (nl.item(i).getAttributes().getNamedItem("insertTemplate") != null
+							|| nl.item(i).getAttributes().getNamedItem("insertBind") != null)) {
 				if (nl.item(i).hasAttributes()
 						&& nl.item(i).getAttributes().getNamedItem("insertTemplate") != null) {
 					Node node = nl.item(i).getAttributes().getNamedItem("insertTemplate");
@@ -803,8 +799,8 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		NodeList nl = xml.getElementsByTagName("div");
 		for (int i = 0; i < nl.getLength(); i++) {
 			if (nl.item(i).hasAttributes()
-					&& (nl.item(i).getAttributes().getNamedItem("insertTemplate") != null || nl
-							.item(i).getAttributes().getNamedItem("insertBind") != null)) {
+					&& (nl.item(i).getAttributes().getNamedItem("insertTemplate") != null
+							|| nl.item(i).getAttributes().getNamedItem("insertBind") != null)) {
 				deletingEmptyTag(nl.item(i));
 			}
 		}

@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.api.datapanel;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Тип хранимой процедуры для элемента информационной панели.

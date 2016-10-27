@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.client.api;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Типы полей в Action. Используется в обработчике webTextPanelClick для замены

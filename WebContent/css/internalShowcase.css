@@ -93,6 +93,34 @@ padding: 0px 20px 0px 0px;
 
 
 
+.extragwt-MenuItem-ImageStub {
+    float: left;
+    width: 16px;
+}
+
+
+/*.extragwt-DataGrid td.boolean span.gwt-CheckBox-disabled {*/
+    /*color: black;*/
+/*}*/
+
+.extragwt-MenuItem-disabled {
+    color: #888888;
+}
+
+/*
+ *  SelectorComponent styles
+ */
+.extragwt-SelectorComponent-ListWrapper {
+    border: 1px solid silver;
+}
+/* Clear yellow background on CellList in SelectorComponent */
+.GL0PBETBJ {
+    background-color: transparent !important;
+}
+
+.extragwt-SelectorComponent-SelectButtonImage {
+    margin-top	: 22px;
+}
 
 
 

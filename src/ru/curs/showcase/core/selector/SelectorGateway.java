@@ -1,6 +1,6 @@
 package ru.curs.showcase.core.selector;
 
-import ru.beta2.extra.gwt.ui.selector.api.DataRequest;
+import ru.curs.showcase.app.api.selector.DataRequest;
 
 /**
  * Шлюз для получения данных, необходимых для компонента селектора.

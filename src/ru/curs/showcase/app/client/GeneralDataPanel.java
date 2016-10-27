@@ -5,19 +5,18 @@ package ru.curs.showcase.app.client;
 
 import java.util.*;
 
-import ru.beta2.extra.gwt.ui.panels.CursScrolledTabLayoutPanel;
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.Event.*;
+import com.google.gwt.user.client.ui.*;
+
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.client.api.BasicElementPanelBasis;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
-
-import com.google.gwt.dom.client.*;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.*;
-import com.google.gwt.user.client.Event.NativePreviewEvent;
-import com.google.gwt.user.client.Event.NativePreviewHandler;
-import com.google.gwt.user.client.ui.*;
+import ru.curs.showcase.app.client.panels.CursScrolledTabLayoutPanel;
 
 /**
  * @author anlug
@@ -40,8 +39,8 @@ public class GeneralDataPanel {
 	/**
 	 * Панель вкладок (закладок) - GeneralDataPanel.
 	 */
-	private static CursScrolledTabLayoutPanel tabPanel = new CursScrolledTabLayoutPanel(2.0,
-			Unit.EM);
+	private static CursScrolledTabLayoutPanel tabPanel =
+		new CursScrolledTabLayoutPanel(2.0, Unit.EM);
 
 	/**
 	 * Процедура создания GeneralDataPanel, которая включает в себя вкладки с
@@ -60,11 +59,11 @@ public class GeneralDataPanel {
 
 				if ((event.getTypeInt() == Event.ONKEYUP) && (nativeEvent.getCtrlKey())
 						&& (nativeEvent.getShiftKey()) && (nativeEvent.getAltKey())
-						&& ((nativeEvent.getKeyCode() == n87) | (nativeEvent.getKeyCode() == n73))) {
+						&& ((nativeEvent.getKeyCode() == n87)
+								| (nativeEvent.getKeyCode() == n73))) {
 
-					String url =
-						"http://" + Window.Location.getHost() + Window.Location.getPath()
-								+ "log/lastLogEvents.jsp";
+					String url = "http://" + Window.Location.getHost() + Window.Location.getPath()
+							+ "log/lastLogEvents.jsp";
 
 					Window.open(url, "_blank", "");
 
@@ -98,7 +97,8 @@ public class GeneralDataPanel {
 		tabVerticalPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		HTML ht = new HTML();
 		ht.setHTML(AppCurrContext.getInstance().getMainPage().getWelcome());
-		// ht.setHTML("<iframe width='100%' height='100%' style='border:0px;' src='"
+		// ht.setHTML("<iframe width='100%' height='100%' style='border:0px;'
+		// src='"
 		// + MultiUserData.getPathWithUserData("html/welcome.jsp") + "'/>");
 		ht.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
@@ -109,8 +109,7 @@ public class GeneralDataPanel {
 			// tabVerticalPanel,
 			// AppCurrContext.getInstance().getInternationalizedMessages()
 			// .welcome_tab_caption());
-			getTabPanel().add(
-					tabVerticalPanel,
+			getTabPanel().add(tabVerticalPanel,
 					// AppCurrContext.getInstance().getBundleMap().get("welcome_tab_caption"));
 					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 							"Welcome"));
@@ -184,9 +183,8 @@ public class GeneralDataPanel {
 	 */
 	public static void selectTab(final DataPanelTab actDpt) {
 		for (int i = 0; i < getTabPanel().getWidgetCount(); i++) {
-			if (actDpt.getId().equals(
-					AppCurrContext.getInstance().getUiDataPanel().get(i).getDataPanelTabMetaData()
-							.getId())) {
+			if (actDpt.getId().equals(AppCurrContext.getInstance().getUiDataPanel().get(i)
+					.getDataPanelTabMetaData().getId())) {
 				getTabPanel().selectTab(i, true);
 				break;
 			}
@@ -244,9 +242,8 @@ public class GeneralDataPanel {
 			Widget el = null;
 			if (dpe.getCacheData()) {
 
-				bepb =
-					AppCurrContext.getInstance().getMapOfDataPanelElements()
-							.get(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
+				bepb = AppCurrContext.getInstance().getMapOfDataPanelElements()
+						.get(dpe.getKeyForCaching(getElementContextForNavigatorAction(dpe)));
 				if (bepb != null) {
 					el = bepb.getPanel();
 
@@ -378,10 +375,9 @@ public class GeneralDataPanel {
 		}
 	}
 
-	private static void
-			setStyleAndHeightAttributesForTableLayoutColoumn(final FlexTable ft,
-					final DataPanelTD td, final Integer currentRowCount,
-					final Integer currentColoumnCount) {
+	private static void setStyleAndHeightAttributesForTableLayoutColoumn(final FlexTable ft,
+			final DataPanelTD td, final Integer currentRowCount,
+			final Integer currentColoumnCount) {
 		String s = td.getHtmlAttrs().getStyle();
 		if (s != null) {
 			ft.getFlexCellFormatter().getElement(currentRowCount, currentColoumnCount)
@@ -394,8 +390,8 @@ public class GeneralDataPanel {
 		}
 		String sc = td.getHtmlAttrs().getStyleClass();
 		if (sc != null) {
-			ft.getFlexCellFormatter()
-					.setStylePrimaryName(currentRowCount, currentColoumnCount, sc);
+			ft.getFlexCellFormatter().setStylePrimaryName(currentRowCount, currentColoumnCount,
+					sc);
 		}
 	}
 
@@ -750,8 +746,8 @@ public class GeneralDataPanel {
 				.getUiElements();
 	}
 
-	private static CompositeContext getElementContextForNavigatorAction(
-			final DataPanelElementInfo dpe) {
+	private static CompositeContext
+			getElementContextForNavigatorAction(final DataPanelElementInfo dpe) {
 		return dpe.getContext(AppCurrContext.getInstance().getNavigatorAction());
 	}
 

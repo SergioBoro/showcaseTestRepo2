@@ -6,8 +6,7 @@ import java.util.regex.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ru.beta2.extra.gwt.ui.GeneralConstants;
-import ru.curs.showcase.app.api.ID;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.DataFile;
@@ -75,9 +74,8 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		 * Метод UserDataUtils.modifyVariables() переводит строку-аргумент с
 		 * помощью Gettext.
 		 */
-		currentTab =
-			result.add(attrs.getValue(ID_TAG),
-					UserDataUtils.modifyVariables(attrs.getValue(NAME_TAG)));
+		currentTab = result.add(attrs.getValue(ID_TAG),
+				UserDataUtils.modifyVariables(attrs.getValue(NAME_TAG)));
 		handleHTMLAttrs(attrs, currentTab.getHtmlAttrs());
 		if (attrs.getIndex(LAYOUT_TAG) > -1) {
 			currentTab.setLayout(DataPanelTabLayout.valueOf(attrs.getValue(LAYOUT_TAG)));
@@ -156,8 +154,8 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 			el.setRefreshInterval(Integer.valueOf(value));
 		}
 		if (attrs.getIndex(SUB_TYPE_TAG) > -1) {
-			el.setSubtype(DataPanelElementSubType.valueOf(attrs.getValue(SUB_TYPE_TAG)
-					.toUpperCase()));
+			el.setSubtype(
+					DataPanelElementSubType.valueOf(attrs.getValue(SUB_TYPE_TAG).toUpperCase()));
 		}
 		if (attrs.getIndex(EDITABLE_TAG) > -1) {
 			value = attrs.getValue(EDITABLE_TAG);

@@ -5,7 +5,6 @@ import java.util.Map.Entry;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 
 /**
@@ -20,9 +19,9 @@ import ru.curs.showcase.app.api.*;
  */
 @XmlRootElement(name = Action.CONTEXT_TAG)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CompositeContext extends TransferableElement implements CanBeCurrent,
-		SerializableElement, Assignable<CompositeContext>, GWTClonable, AbstractCompositeContext,
-		SizeEstimate {
+public class CompositeContext extends TransferableElement
+		implements CanBeCurrent, SerializableElement, Assignable<CompositeContext>, GWTClonable,
+		AbstractCompositeContext, SizeEstimate {
 
 	@Override
 	public String toString() {

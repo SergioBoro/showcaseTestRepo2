@@ -4,7 +4,7 @@ import java.util.*;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Панель инструментов грида.
@@ -35,5 +35,9 @@ public class GridToolBar implements SerializableElement {
 	 */
 	public Collection<AbstractToolBarItem> getItems() {
 		return items;
+	}
+
+	public void setItems(final List<AbstractToolBarItem> aItems) {
+		items = aItems;
 	}
 }

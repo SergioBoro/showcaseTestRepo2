@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.chart;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Значение серии в графике. Кроме собственно значения содержит также подпись и

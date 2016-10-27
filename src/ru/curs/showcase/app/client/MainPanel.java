@@ -3,16 +3,16 @@
  */
 package ru.curs.showcase.app.client;
 
-import ru.beta2.extra.gwt.ui.panels.*;
+import com.google.gwt.event.logical.shared.*;
+import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.ui.*;
+
 import ru.curs.showcase.app.api.MessageType;
 import ru.curs.showcase.app.api.services.GeneralException;
 import ru.curs.showcase.app.client.api.Constants;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
+import ru.curs.showcase.app.client.panels.*;
 import ru.curs.showcase.app.client.utils.*;
-
-import com.google.gwt.event.logical.shared.*;
-import com.google.gwt.user.client.*;
-import com.google.gwt.user.client.ui.*;
 
 /**
  * @author anlug
@@ -82,17 +82,17 @@ public class MainPanel {
 		final int n10 = 20;
 
 		basicVerticalPanel.setStyleName("basicVerticalPanel-CellspacingForMainPanel");
-		p.setPixelSize(Window.getClientWidth() - N16, Window.getClientHeight() - n10
-				- DOM.getElementById("showcaseHeaderContainer").getOffsetHeight()
-				- DOM.getElementById("showcaseBottomContainer").getOffsetHeight());
+		p.setPixelSize(Window.getClientWidth() - N16,
+				Window.getClientHeight() - n10
+						- DOM.getElementById("showcaseHeaderContainer").getOffsetHeight()
+						- DOM.getElementById("showcaseBottomContainer").getOffsetHeight());
 
 		Window.addResizeHandler(new ResizeHandler() {
 			@Override
 			public void onResize(final ResizeEvent event) {
-				int height =
-					event.getHeight() - n10
-							- DOM.getElementById("showcaseHeaderContainer").getOffsetHeight()
-							- DOM.getElementById("showcaseBottomContainer").getOffsetHeight();
+				int height = event.getHeight() - n10
+						- DOM.getElementById("showcaseHeaderContainer").getOffsetHeight()
+						- DOM.getElementById("showcaseBottomContainer").getOffsetHeight();
 				int width = event.getWidth() - N16;
 				p.setHeight(height + "px");
 				p.setWidth(width + "px");
@@ -138,9 +138,10 @@ public class MainPanel {
 				MessageBox.showMessageWithDetails(
 						// AppCurrContext.getInstance().getBundleMap().get("transformation_navigator_width_error"),
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-								"Converting navigator width error"), e.getClass().getName() + ": "
-								+ e.getMessage(), GeneralException.generateDetailedInfo(e),
-						MessageType.ERROR, GeneralException.needDetailedInfo(e), null);
+								"Converting navigator width error"),
+						e.getClass().getName() + ": " + e.getMessage(),
+						GeneralException.generateDetailedInfo(e), MessageType.ERROR,
+						GeneralException.needDetailedInfo(e), null);
 			}
 
 			switch (SizeParser.getSizeType(navigatorWidth)) {

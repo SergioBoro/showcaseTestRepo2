@@ -1,9 +1,9 @@
 package ru.curs.showcase.app.api.grid;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
-
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
+
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Горизонтальное выравнивание.
@@ -22,8 +22,8 @@ public enum HorizontalAlignment implements SerializableElement {
 	 */
 	RIGHT;
 
-	public static HorizontalAlignmentConstant getHorizontalAlignmentConstant(
-			final HorizontalAlignment horizontalAlignment) {
+	public static HorizontalAlignmentConstant
+			getHorizontalAlignmentConstant(final HorizontalAlignment horizontalAlignment) {
 		switch (horizontalAlignment) {
 		case LEFT:
 			return HasHorizontalAlignment.ALIGN_LEFT;

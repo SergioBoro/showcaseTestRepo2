@@ -1,6 +1,5 @@
 package ru.curs.showcase.app.api.datapanel;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 
@@ -44,15 +43,15 @@ public class DataPanelElementContext implements SerializableElement {
 			res = compositeContext.toString();
 		}
 		if (elementInfo != null) {
-			res =
-				res + ExchangeConstants.LINE_SEPARATOR + "panel=" + getPanelId().getString()
-						+ ExchangeConstants.LINE_SEPARATOR + "elementId="
-						+ getElementId().getString() + ExchangeConstants.LINE_SEPARATOR;
+			res = res + ExchangeConstants.LINE_SEPARATOR + "panel=" + getPanelId().getString()
+					+ ExchangeConstants.LINE_SEPARATOR + "elementId=" + getElementId().getString()
+					+ ExchangeConstants.LINE_SEPARATOR;
 		}
 		return res;
 	}
 
-	public DataPanelElementContext(final CompositeContext aContext, final DataPanelElementInfo dpei) {
+	public DataPanelElementContext(final CompositeContext aContext,
+			final DataPanelElementInfo dpei) {
 		super();
 		compositeContext = aContext;
 		elementInfo = dpei;

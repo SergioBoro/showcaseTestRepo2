@@ -4,7 +4,6 @@ import java.util.*;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.*;
 
@@ -18,8 +17,8 @@ import ru.curs.showcase.app.api.event.*;
  */
 @XmlRootElement(name = "element")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DataPanelElementInfo extends TransferableElement implements SerializableElement,
-		ru.curs.showcase.app.api.SelfCheckObject {
+public class DataPanelElementInfo extends TransferableElement
+		implements SerializableElement, ru.curs.showcase.app.api.SelfCheckObject {
 	private static final String KEEP_USER_SETTINGS_ERROR =
 		"Невозможно получить значение keepUserSettings для действия, не содержащего блока для работы с инф. панелью";
 	public static final int DEF_TIMER_INTERVAL = 600;

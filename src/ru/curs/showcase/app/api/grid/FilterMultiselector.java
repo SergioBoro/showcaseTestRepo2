@@ -2,11 +2,11 @@ package ru.curs.showcase.app.api.grid;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
- * Настройки мультиселектора, используемого при условии фильтра
- * "список значений".
+ * Настройки мультиселектора, используемого при условии фильтра "список
+ * значений".
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)

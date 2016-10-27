@@ -1,7 +1,7 @@
 package ru.curs.showcase.core.selector;
 
-import ru.beta2.extra.gwt.ui.selector.api.DataRequest;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.selector.DataRequest;
 import ru.curs.showcase.core.jython.*;
 
 /**
@@ -10,8 +10,8 @@ import ru.curs.showcase.core.jython.*;
  * @author bogatov
  * 
  */
-public class SelectorJythonGateway extends JythonQuery<ResultSelectorData> implements
-		SelectorGateway {
+public class SelectorJythonGateway extends JythonQuery<ResultSelectorData>
+		implements SelectorGateway {
 
 	private CompositeContext context;
 	private String jythonProcName;
@@ -32,9 +32,8 @@ public class SelectorJythonGateway extends JythonQuery<ResultSelectorData> imple
 			// загрузка данных в 2 этапа (выполнение 2-х скриптов)
 			String procCount =
 				procName.substring(0, procName.indexOf(Constants.PROCNAME_SEPARATOR));
-			String procList =
-				procName.substring(procName.indexOf(Constants.PROCNAME_SEPARATOR)
-						+ Constants.PROCNAME_SEPARATOR.length());
+			String procList = procName.substring(procName.indexOf(Constants.PROCNAME_SEPARATOR)
+					+ Constants.PROCNAME_SEPARATOR.length());
 
 			// получение кол-ва
 			runTemplateMethod(procCount);

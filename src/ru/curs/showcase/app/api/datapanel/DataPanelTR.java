@@ -4,8 +4,7 @@ import java.util.*;
 
 import javax.xml.bind.annotation.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
-import ru.curs.showcase.app.api.ExcludeFromSerialization;
+import ru.curs.showcase.app.api.*;
 
 /**
  * Аналог HTML tr для группировки элементов на вкладке.

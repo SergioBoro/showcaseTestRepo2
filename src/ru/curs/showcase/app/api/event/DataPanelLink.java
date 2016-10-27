@@ -2,7 +2,6 @@ package ru.curs.showcase.app.api.event;
 
 import java.util.*;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
 import ru.curs.showcase.app.api.*;
 
 /**
@@ -13,7 +12,8 @@ import ru.curs.showcase.app.api.*;
  * @author den
  * 
  */
-public class DataPanelLink implements CanBeCurrent, SerializableElement, GWTClonable, SizeEstimate {
+public class DataPanelLink
+		implements CanBeCurrent, SerializableElement, GWTClonable, SizeEstimate {
 
 	private static final long serialVersionUID = 5921173204380210732L;
 

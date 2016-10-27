@@ -2,7 +2,7 @@ package ru.curs.showcase.core.grid;
 
 import java.util.HashMap;
 
-import ru.beta2.extra.gwt.ui.SerializableElement;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Динамические настройки грида, загружаемые из БД, которые требуются для
