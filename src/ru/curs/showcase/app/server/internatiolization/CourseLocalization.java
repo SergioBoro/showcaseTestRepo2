@@ -7,9 +7,9 @@ import java.util.*;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import ru.curs.showcase.runtime.*;
-import ru.curs.showcase.util.UserAndSessionDetails;
 
 /**
  * 
@@ -127,7 +127,7 @@ public class CourseLocalization {
 		String lang = "";
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			String sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
+			String sesid = ((WebAuthenticationDetails) auth.getDetails()).getSessionId();
 
 			lang = AppInfoSingleton.getAppInfo().getLocalizationCache().get(sesid);
 		}

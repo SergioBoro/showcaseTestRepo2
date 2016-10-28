@@ -8,9 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.runtime.AppInfoSingleton;
-import ru.curs.showcase.util.TextUtils;
+import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
@@ -108,6 +109,31 @@ public class CheckAutenticationFilter implements Filter {
 					} else {
 						try {
 							if (SecurityContextHolder.getContext().getAuthentication() != null) {
+								if (SecurityContextHolder.getContext().getAuthentication()
+										.getName().equals("guest"))
+									filterChain.doFilter(request, response);
+							}
+							// Случай анонимного входа в приложение.
+							if (CustomAccessProvider.getAccess().equals("permitAll")) {
+								UserAndSessionDetails userAndSessionDetails =
+									new UserAndSessionDetails((HttpServletRequest) request);
+								userAndSessionDetails.setUserInfo(new UserInfo("guest", "super",
+										"guest", null, null, (String) null));
+								userAndSessionDetails.setOauth2Token(null);
+								userAndSessionDetails.setAuthViaAuthServer(false);
+								SessionUtils
+										.setAnonymousUserAndSessionDetails(userAndSessionDetails);
+								String sesid = userAndSessionDetails.getSessionId();
+								try {
+									Celesta.getInstance().login(sesid,
+											userAndSessionDetails.getUserInfo().getSid());
+								} catch (CelestaException e) {
+									if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+										LOGGER.error(
+												"Ошибка привязки сессии приложения к пользователю в celesta",
+												e);
+									}
+								}
 								filterChain.doFilter(request, response);
 							} else {
 

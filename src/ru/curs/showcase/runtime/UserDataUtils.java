@@ -4,9 +4,10 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 
-import org.slf4j.MDC;
+import org.slf4j.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.server.internatiolization.CourseLocalization;
@@ -188,7 +189,7 @@ public final class UserDataUtils {
 	 * @return поток с файлом.
 	 * @throws IOException
 	 */
-	static InputStream loadUserDataToStream(final String fileName, final String userdataId)
+	public static InputStream loadUserDataToStream(final String fileName, final String userdataId)
 			throws IOException {
 		FileInputStream result =
 			new FileInputStream(getUserDataCatalog(userdataId) + File.separator + fileName);
@@ -1141,10 +1142,15 @@ public final class UserDataUtils {
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			String sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
-
-			String lang = AppInfoSingleton.getAppInfo().getLocalizationCache().get(sesid);
-
+			// String sesid = ((UserAndSessionDetails)
+			// auth.getDetails()).getSessionId();
+			String sesid = ((WebAuthenticationDetails) auth.getDetails()).getSessionId();
+			String lang = null;
+			try {
+				lang = AppInfoSingleton.getAppInfo().getLocalizationCache().get(sesid);
+			} catch (Exception e) {
+				lang = null;
+			}
 			if (lang != null && !"".equals(lang))
 				domainFile = UserDataUtils.getPlatformPoFile(userdataid, lang);
 
@@ -1204,7 +1210,7 @@ public final class UserDataUtils {
 		String sesid = "";
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			sesid = ((UserAndSessionDetails) auth.getDetails()).getSessionId();
+			sesid = ((WebAuthenticationDetails) auth.getDetails()).getSessionId();
 			if (AppInfoSingleton.getAppInfo().getLocalizedBundleCache().get(sesid) == null) {
 				bundle = CourseLocalization.getLocalizedResourseBundle();
 				if (bundle != null)

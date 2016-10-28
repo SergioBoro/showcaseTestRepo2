@@ -31,7 +31,7 @@
 		<session-management session-authentication-strategy-ref="sas"/>
 		<session-management session-fixation-protection="none"/>	
 		
-		<intercept-url pattern="/**" access="fullyAuthenticated" />
+		<intercept-url pattern="/**" access="#{@customAccessProvider.returnStringMethod}" />
 		
 	    <form-login login-page="/login.jsp" default-target-url="/index.jsp"
 	                authentication-failure-url="/login.jsp?error=true" /> 
@@ -39,10 +39,13 @@
 	    <remember-me />
 	    <anonymous username="guest" granted-authority="ROLE_GUEST" />
 	</http>
+	
+	<beans:bean id="customAccessProvider"
+    class="ru.curs.showcase.security.CustomAccessProvider" />
 
 	<!--Установка стратегии аутентикации, при которой не изменяется sessionId в процессе работы сессии-->
  	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy" />
-  
+   
  	<authentication-manager alias="authenticationManager">
  
 	    <!--Провайдер, реализующий аутентификацию через файл, в котором хранятся пользователи и пароли-->

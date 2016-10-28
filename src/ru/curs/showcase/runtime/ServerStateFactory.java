@@ -5,7 +5,9 @@ import java.sql.*;
 import java.util.Properties;
 import java.util.regex.*;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.util.*;
@@ -48,15 +50,21 @@ public final class ServerStateFactory {
 		if (SecurityContextHolder.getContext().getAuthentication() == null) {
 			state.setIsNativeUser(false);
 		} else {
-			state.setIsNativeUser(!((UserAndSessionDetails) SecurityContextHolder.getContext()
-					.getAuthentication().getDetails()).isAuthViaAuthServer());
+			if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
+				state.setIsNativeUser(false);
+			else
+				state.setIsNativeUser(!((UserAndSessionDetails) SecurityContextHolder.getContext()
+						.getAuthentication().getDetails()).isAuthViaAuthServer());
 		}
 
 		state.setJavaVersion(System.getProperty("java.version"));
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			state.setUserInfo(((UserAndSessionDetails) SecurityContextHolder.getContext()
-					.getAuthentication().getDetails()).getUserInfo());
+			if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
+				state.setUserInfo(SessionUtils.getAnonymousUserAndSessionDetails().getUserInfo());
+			else
+				state.setUserInfo(((UserAndSessionDetails) SecurityContextHolder.getContext()
+						.getAuthentication().getDetails()).getUserInfo());
 		}
 		state.setSqlVersion(getSQLVersion());
 		state.setDojoVersion(getDojoVersion());
@@ -64,7 +72,7 @@ public final class ServerStateFactory {
 		state.setCaseSensivityIDs(IDSettings.getInstance().getCaseSensivity());
 
 		String sss =
-			(SecurityContextHolder.getContext().getAuthentication() != null) ? ((UserAndSessionDetails) SecurityContextHolder
+			(SecurityContextHolder.getContext().getAuthentication() != null) ? ((WebAuthenticationDetails) SecurityContextHolder
 					.getContext().getAuthentication().getDetails()).getSessionId()
 					: "autenticatedSessionIsNull";
 		state.setSesId(sss);

@@ -17,6 +17,7 @@ import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.server.redirection.RedirectionUserdataProp;
 import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.security.*;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
 import ru.curs.showcase.security.logging.*;
 
@@ -56,6 +57,18 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 			}
 
 			if (AppInfoSingleton.getAppInfo().getShowcaseAppOnStartMessage().isEmpty()) {
+				// Установка анонимного входа
+				Properties props = UserDataUtils.getGeneralProperties();
+				boolean pr =
+					Boolean.parseBoolean(props.getProperty("showcase.authentication.anonymous",
+							"false").trim());
+
+				CustomAccessProvider cap =
+					ApplicationContextProvider.getApplicationContext().getBean(
+							"customAccessProvider", CustomAccessProvider.class);
+				if (pr) {
+					cap.setAccess("permitAll");
+				}
 
 				RedirectionUserdataProp.readAndSetRedirectproperties();
 

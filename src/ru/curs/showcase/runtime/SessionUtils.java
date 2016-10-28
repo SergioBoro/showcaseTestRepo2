@@ -1,5 +1,6 @@
 package ru.curs.showcase.runtime;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import ru.curs.showcase.security.oauth.Oauth2Token;
@@ -19,12 +20,26 @@ public final class SessionUtils {
 	public static final String TEST_SESSION = "testSession";
 	public static final String TEST_SID = "testSID";
 
+	// Переменная, которая задействуется при анонимном входе в приложение.
+	private static UserAndSessionDetails usd = null;
+
 	private SessionUtils() {
 		throw new UnsupportedOperationException();
 	}
 
+	public static void setAnonymousUserAndSessionDetails(
+			UserAndSessionDetails userAndSessionDetails) {
+		usd = userAndSessionDetails;
+	}
+
+	public static UserAndSessionDetails getAnonymousUserAndSessionDetails() {
+		return usd;
+	}
+
 	private static UserAndSessionDetails getUserAndSessionDetails() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
+			if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
+				return usd;
 			return (UserAndSessionDetails) SecurityContextHolder.getContext().getAuthentication()
 					.getDetails();
 		} else {
