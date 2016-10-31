@@ -101,6 +101,7 @@ public abstract class ToolBarHelper {
 									addStaticItemToToolBar(toolBar);
 									createDynamicToolBar(result, toolBar);
 									panel.add(toolBar);
+									toolBar.setHeight(TOOLBAR_HEIGHT);
 
 									blinkingCount--;
 								}
@@ -115,6 +116,7 @@ public abstract class ToolBarHelper {
 			toolBar.setBorders(false);
 			addStaticItemToToolBar(toolBar);
 			panel.add(toolBar);
+			toolBar.setHeight(TOOLBAR_HEIGHT);
 		}
 	}
 
