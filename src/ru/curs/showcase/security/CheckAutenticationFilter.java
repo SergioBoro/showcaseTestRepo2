@@ -117,7 +117,7 @@ public class CheckAutenticationFilter implements Filter {
 							if (CustomAccessProvider.getAccess().equals("permitAll")) {
 								UserAndSessionDetails userAndSessionDetails =
 									new UserAndSessionDetails((HttpServletRequest) request);
-								userAndSessionDetails.setUserInfo(new UserInfo("guest", "super",
+								userAndSessionDetails.setUserInfo(new UserInfo("guest", "guest",
 										"guest", null, null, (String) null));
 								userAndSessionDetails.setOauth2Token(null);
 								userAndSessionDetails.setAuthViaAuthServer(false);
