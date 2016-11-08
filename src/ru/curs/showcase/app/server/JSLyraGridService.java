@@ -7,7 +7,7 @@ import javax.servlet.http.*;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
-import ru.curs.showcase.app.api.datapanel.PluginInfo;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.grid.*;
@@ -37,16 +37,17 @@ public class JSLyraGridService extends HttpServlet {
 		if (stringLyraGridContext == null) {
 			throw new HTTPRequestRequiredParamAbsentException(LyraGridContext.class.getName());
 		}
-		String stringElementInfo = hreq.getParameter(PluginInfo.class.getName());
+		String stringElementInfo = hreq.getParameter(DataPanelElementInfo.class.getName());
 		if (stringElementInfo == null) {
-			throw new HTTPRequestRequiredParamAbsentException(PluginInfo.class.getName());
+			throw new HTTPRequestRequiredParamAbsentException(
+					DataPanelElementInfo.class.getName());
 		}
 
 		LyraGridContext context = null;
-		PluginInfo element = null;
+		DataPanelElementInfo element = null;
 		try {
 			context = (LyraGridContext) ServletUtils.deserializeObject(stringLyraGridContext);
-			element = (PluginInfo) ServletUtils.deserializeObject(stringElementInfo);
+			element = (DataPanelElementInfo) ServletUtils.deserializeObject(stringElementInfo);
 		} catch (SerializationException e) {
 			throw GeneralExceptionFactory.build(e);
 		}

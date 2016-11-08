@@ -684,23 +684,13 @@ public class GeneralDataPanel {
 		BasicElementPanelBasis mp = null;
 		Widget w = null;
 		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
-			if ("dgridServerGrid".equalsIgnoreCase(((PluginInfo) dpe).getPlugin())) {
-				mp = new JSLiveGridPluginPanel(getElementContextForNavigatorAction(dpe), dpe);
-			} else {
-				mp = new PluginPanel(getElementContextForNavigatorAction(dpe), dpe);
-			}
-
+			mp = new PluginPanel(getElementContextForNavigatorAction(dpe), dpe);
 			w = mp.getPanel();
 		} else {
 			// в случае когда у данного элемента есть главный элемент
-			if ("dgridServerGrid".equalsIgnoreCase(((PluginInfo) dpe).getPlugin())) {
-				mp = new JSLiveGridPluginPanel(dpe);
-			} else {
-				mp = new PluginPanel(dpe);
-			}
+			mp = new PluginPanel(dpe);
 			w = mp.getPanel();
 			mp.hidePanel();
-
 		}
 
 		getUiElements(dpe).add(new UIDataPanelElement(mp));

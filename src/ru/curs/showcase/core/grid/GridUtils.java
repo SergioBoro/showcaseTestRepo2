@@ -12,6 +12,8 @@ import ru.curs.showcase.util.xml.XMLUtils;
  */
 public final class GridUtils {
 
+	public static final String GRID_DIR = "js/ui/grids";
+
 	private static final String FILTER_TAG = "filter";
 
 	private GridUtils() {

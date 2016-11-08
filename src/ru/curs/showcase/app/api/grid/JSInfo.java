@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.*;
 import ru.curs.showcase.app.api.SerializableElement;
 
 /**
- * Информация о "плагиновской" составляющей грида.
+ * Информация о JS составляющей грида.
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)

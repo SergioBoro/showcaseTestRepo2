@@ -8,12 +8,11 @@ import ru.curs.celesta.CelestaException;
 import ru.curs.celesta.score.*;
 import ru.curs.lyra.*;
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.event.ActionFactory;
-import ru.curs.showcase.core.html.plugin.PluginFactory;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.TextUtils;
 import ru.curs.showcase.util.exception.SettingsFileType;
@@ -358,7 +357,7 @@ public class LyraGridMetaFactory {
 	// CHECKSTYLE:ON
 
 	private void setupPluginSettings() {
-		String plugin = ((PluginInfo) elInfo).getPlugin();
+		String plugin = "lyraDGrid";
 
 		result.getJSInfo().setCreateProc("create" + TextUtils.capitalizeWord(plugin));
 		result.getJSInfo().setRefreshProc("refresh" + TextUtils.capitalizeWord(plugin));
@@ -369,19 +368,8 @@ public class LyraGridMetaFactory {
 		result.getJSInfo().setPartialUpdate("partialUpdate" + TextUtils.capitalizeWord(plugin));
 
 		result.getJSInfo().getRequiredJS()
-				.add(getAdapterForWebServer(getPluginDir(), plugin + ".js"));
-	}
+				.add(String.format("%s/%s", GridUtils.GRID_DIR, plugin + ".js"));
 
-	private String getAdapterForWebServer(final String dir, final String adapterFile) {
-		String adapter = String.format("%s/%s", dir, adapterFile);
-		String adapterOnTomcat =
-			String.format("%s/%s/%s", UserDataUtils.SOLUTIONS_DIR, "general", adapter);
-		return adapterOnTomcat;
-	}
-
-	private String getPluginDir() {
-		return String.format("%s/%s", PluginFactory.PLUGINS_DIR,
-				((PluginInfo) elInfo).getPlugin());
 	}
 
 	private void setupUnused() {

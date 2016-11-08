@@ -9,7 +9,7 @@ import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
 
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.api.datapanel.PluginInfo;
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.FakeService;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
@@ -48,16 +48,17 @@ public class JSGridService extends HttpServlet {
 		if (stringGridContext == null) {
 			throw new HTTPRequestRequiredParamAbsentException(GridContext.class.getName());
 		}
-		String stringElementInfo = hreq.getParameter(PluginInfo.class.getName());
+		String stringElementInfo = hreq.getParameter(DataPanelElementInfo.class.getName());
 		if (stringElementInfo == null) {
-			throw new HTTPRequestRequiredParamAbsentException(PluginInfo.class.getName());
+			throw new HTTPRequestRequiredParamAbsentException(
+					DataPanelElementInfo.class.getName());
 		}
 
 		GridContext context = null;
-		PluginInfo element = null;
+		DataPanelElementInfo element = null;
 		try {
 			context = (GridContext) ServletUtils.deserializeObject(stringGridContext);
-			element = (PluginInfo) ServletUtils.deserializeObject(stringElementInfo);
+			element = (DataPanelElementInfo) ServletUtils.deserializeObject(stringElementInfo);
 		} catch (SerializationException e) {
 			throw GeneralExceptionFactory.build(e);
 		}
@@ -104,16 +105,17 @@ public class JSGridService extends HttpServlet {
 		if (stringGridContext == null) {
 			throw new HTTPRequestRequiredParamAbsentException(GridContext.class.getName());
 		}
-		String stringElementInfo = hreq.getParameter(PluginInfo.class.getName());
+		String stringElementInfo = hreq.getParameter(DataPanelElementInfo.class.getName());
 		if (stringElementInfo == null) {
-			throw new HTTPRequestRequiredParamAbsentException(PluginInfo.class.getName());
+			throw new HTTPRequestRequiredParamAbsentException(
+					DataPanelElementInfo.class.getName());
 		}
 
 		GridContext context = null;
-		PluginInfo element = null;
+		DataPanelElementInfo element = null;
 		try {
 			context = (GridContext) ServletUtils.deserializeObject(stringGridContext);
-			element = (PluginInfo) ServletUtils.deserializeObject(stringElementInfo);
+			element = (DataPanelElementInfo) ServletUtils.deserializeObject(stringElementInfo);
 		} catch (SerializationException e) {
 			throw GeneralExceptionFactory.build(e);
 		}
@@ -177,16 +179,17 @@ public class JSGridService extends HttpServlet {
 		if (stringGridContext == null) {
 			throw new HTTPRequestRequiredParamAbsentException(GridContext.class.getName());
 		}
-		String stringElementInfo = hreq.getParameter(PluginInfo.class.getName());
+		String stringElementInfo = hreq.getParameter(DataPanelElementInfo.class.getName());
 		if (stringElementInfo == null) {
-			throw new HTTPRequestRequiredParamAbsentException(PluginInfo.class.getName());
+			throw new HTTPRequestRequiredParamAbsentException(
+					DataPanelElementInfo.class.getName());
 		}
 
 		GridContext context = null;
-		PluginInfo element = null;
+		DataPanelElementInfo element = null;
 		try {
 			context = (GridContext) ServletUtils.deserializeObject(stringGridContext);
-			element = (PluginInfo) ServletUtils.deserializeObject(stringElementInfo);
+			element = (DataPanelElementInfo) ServletUtils.deserializeObject(stringElementInfo);
 		} catch (SerializationException e) {
 			throw GeneralExceptionFactory.build(e);
 		}

@@ -7,12 +7,10 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.event.Action;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.*;
 import ru.curs.showcase.core.event.CompBasedElementFactory;
-import ru.curs.showcase.core.html.plugin.PluginFactory;
 import ru.curs.showcase.core.sp.RecordSetElementRawData;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.TextUtils;
@@ -901,7 +899,22 @@ public class GridMetaFactory extends CompBasedElementFactory {
 	}
 
 	private void setupPluginSettings() {
-		String plugin = ((PluginInfo) getElementInfo()).getPlugin();
+
+		String plugin;
+		switch (getElementInfo().getSubtype()) {
+		case JS_LIVE_GRID:
+			plugin = "liveDGrid";
+			break;
+		case JS_PAGE_GRID:
+			plugin = "pageDGrid";
+			break;
+		case JS_TREE_GRID:
+			plugin = "treeDGrid";
+			break;
+		default:
+			plugin = null;
+			break;
+		}
 
 		result.getJSInfo().setCreateProc("create" + TextUtils.capitalizeWord(plugin));
 		result.getJSInfo().setRefreshProc("refresh" + TextUtils.capitalizeWord(plugin));
@@ -916,19 +929,8 @@ public class GridMetaFactory extends CompBasedElementFactory {
 				.setChildLevelUpdate("childLevelUpdate" + TextUtils.capitalizeWord(plugin));
 
 		result.getJSInfo().getRequiredJS()
-				.add(getAdapterForWebServer(getPluginDir(), plugin + ".js"));
-	}
+				.add(String.format("%s/%s", GridUtils.GRID_DIR, plugin + ".js"));
 
-	private String getAdapterForWebServer(final String dir, final String adapterFile) {
-		String adapter = String.format("%s/%s", dir, adapterFile);
-		String adapterOnTomcat =
-			String.format("%s/%s/%s", UserDataUtils.SOLUTIONS_DIR, "general", adapter);
-		return adapterOnTomcat;
-	}
-
-	private String getPluginDir() {
-		return String.format("%s/%s", PluginFactory.PLUGINS_DIR,
-				((PluginInfo) getElementInfo()).getPlugin());
 	}
 
 	public int buildTotalCount() {
