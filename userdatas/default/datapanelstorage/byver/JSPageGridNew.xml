@@ -7,8 +7,7 @@
 	
 	
 	<tab id="44" name="Основной функционал">
-		<element id ="441" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_page"  
-		    plugin="pageDGrid">
+		<element id ="441" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data_page">
 			<proc id="442" name="grid_new_meta_page" type="METADATA"/>
 			
 			<proc id="020101" name="toolbar_grid_new" type="TOOLBAR"/>
@@ -28,7 +27,7 @@
 
 	
 	<tab id="21" name="Переменный totalCount">
-		<element id ="21" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_totalcount"  
+		<element id ="21" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data_totalcount"  
 		    plugin="pageDGrid">
 			<proc id="20101" name="grid_new_meta_totalcount" type="METADATA"/>
 		</element>
@@ -36,14 +35,14 @@
 
 
 	<tab id="3" name="Ссылки в гриде">
-		<element id ="301" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_links"  
+		<element id ="301" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data_links"  
 		    plugin="pageDGrid">
 			<proc id="30101" name="grid_new_meta_links" type="METADATA"/>
 		</element>
 	</tab>
 	
 	<tab id="4" name="Скачивание файлов из грида">
-		<element id="0401" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_download_load"
+		<element id="0401" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data_download_load"
 			plugin="pageDGrid" >
 			<proc id="40101" name="grid_new_meta_download_load" type="METADATA"/>
 						
@@ -54,7 +53,7 @@
 	
 
 	<tab id="6" name="Задание css для строки грида">
-		<element id ="342" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_css"  
+		<element id ="342" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data_css"  
 		    plugin="pageDGrid">
 			<proc id="0201" name="grid_new_meta_css" type="METADATA"/>
 		</element>
@@ -74,7 +73,7 @@
 			<td id="d0201_" width="400px"   style=" vertical-align: top;  border-width: medium; " styleClass="css-class">			
 
 			
-				<element id ="511_" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_table_layout"  
+				<element id ="511_" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data_table_layout"  
 		    		plugin="pageDGrid">
 					<proc id="442" name="grid_new_meta_table_layout" type="METADATA"/>
 			
@@ -91,7 +90,7 @@
 
 
 	<tab id="12" name="Jython">
- 		<element id="1022" type="GRID"  subtype="JS_LIVE_GRID" proc="grid/jsNewGridData.py" 
+ 		<element id="1022" type="GRID"  subtype="JS_PAGE_GRID" proc="grid/jsNewGridData.py" 
 		    plugin="pageDGrid">
 			<proc id="4421" name="grid/jsNewGridMeta.py" type="METADATA"/>		    
 		    

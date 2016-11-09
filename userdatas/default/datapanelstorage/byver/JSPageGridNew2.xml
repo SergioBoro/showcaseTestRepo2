@@ -6,18 +6,18 @@
 	</tab>
 	
 	<tab id="3" name="Различные типы столбцов">
-		<element id="00102" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_column_types"
+		<element id="00102" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data_column_types"
 			plugin="pageDGrid" >
 			<proc id="p010201" name="grid_new_meta_column_types" type="METADATA"/>
 		</element>							
 	</tab>
 	
 	<tab id="2" name="Профайлы">
-		<element id="001022" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_column_types"
+		<element id="001022" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data_column_types"
 			plugin="pageDGrid" >
 			<proc id="p010201" name="grid_new_meta_column_types" type="METADATA"/>
 		</element>
-		<element id="001021" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_special_profile"
+		<element id="001021" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data_special_profile"
 			plugin="pageDGrid" >
 			<proc id="p010201" name="grid_new_meta_special_profile" type="METADATA"/>
 		</element>
@@ -27,7 +27,7 @@
  	
 	
 	<tab id="5" name="Выделение строки, Обновление по таймеру">
-		<element id ="441" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data"
+		<element id ="441" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data"
 		    refreshByTimer="true" refreshInterval="10"  
 		    plugin="pageDGrid">
 			<proc id="442" name="grid_new_meta" type="METADATA"/>
@@ -39,7 +39,7 @@
 	
 	
 	<tab id="6" name="Выделение ячейки, Обновление по таймеру">
-		<element id ="541" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_cell"
+		<element id ="541" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data_cell"
 		    refreshByTimer="true" refreshInterval="10"  
 		    plugin="pageDGrid">
 			<proc id="542" name="grid_new_meta_cell" type="METADATA"/>
