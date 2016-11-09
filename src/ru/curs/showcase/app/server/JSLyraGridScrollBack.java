@@ -7,7 +7,7 @@ import org.apache.tomcat.websocket.WsSession;
 import org.json.*;
 
 import ru.curs.lyra.BasicGridForm;
-import ru.curs.showcase.app.api.datapanel.PluginInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.grid.LyraGridContext;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.grid.*;
@@ -37,14 +37,14 @@ public class JSLyraGridScrollBack {
 
 			LyraGridContext context =
 				(LyraGridContext) ServletUtils.deserializeObject(stringLyraGridContext);
-			PluginInfo element = (PluginInfo) ServletUtils.deserializeObject(stringElementInfo);
+			DataPanelElementInfo element =
+				(DataPanelElementInfo) ServletUtils.deserializeObject(stringElementInfo);
 
 			GridUtils.fillFilterContextByFilterInfo(context);
 
 			LyraGridGateway lgateway = new LyraGridGateway();
-			BasicGridForm basicGridForm =
-				lgateway.getLyraFormInstance(context, element,
-						((WsSession) session).getHttpSessionId());
+			BasicGridForm basicGridForm = lgateway.getLyraFormInstance(context, element,
+					((WsSession) session).getHttpSessionId());
 
 			((LyraGridScrollBack) basicGridForm.getChangeNotifier()).setWebSocketSession(session);
 
