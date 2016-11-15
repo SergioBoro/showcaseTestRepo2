@@ -1,5 +1,7 @@
 package ru.curs.showcase.app.server.rest;
 
+import java.util.Random;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.python.core.PyObject;
@@ -87,7 +89,9 @@ public class RESTGateway {
 			correctedRESTProc = restProc.substring(0, restProc.length() - vosem);
 		}
 
+		String tempSesId = String.format("RESTful%08X", (new Random()).nextInt());
 		try {
+			Celesta.getInstance().login(tempSesId, "userCelestaSid");
 			PyObject pObj = Celesta.getInstance().runPython(sesId, correctedRESTProc, requestType,
 					userToken, requestUrl, urlParams);
 
@@ -104,6 +108,14 @@ public class RESTGateway {
 					"При запуске процедуры Celesta для выполнения REST запроса произошла ошибка: "
 							+ e.getMessage());
 
+		} finally {
+			try {
+				Celesta.getInstance().logout(tempSesId, false);
+			} catch (CelestaException e) {
+				throw new ShowcaseRESTException(ExceptionType.SOLUTION,
+						"Пля выполнении REST запроса произошла ошибка при попытке выйти из сессии в celesta: "
+								+ e.getMessage());
+			}
 		}
 
 		return null;
