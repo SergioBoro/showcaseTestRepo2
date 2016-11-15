@@ -91,7 +91,7 @@ public class RESTGateway {
 		try {
 			Celesta.getInstance().login(tempSesId, "userCelestaSid");
 			PyObject pObj = Celesta.getInstance().runPython(tempSesId, correctedRESTProc,
-					requestType, userToken, requestUrl, urlParams);
+					requestType, userToken, requestUrl, requestData, urlParams);
 
 			Object obj = pObj.__tojava__(Object.class);
 			if (obj == null) {
