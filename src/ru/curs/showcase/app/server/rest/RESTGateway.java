@@ -1,7 +1,5 @@
 package ru.curs.showcase.app.server.rest;
 
-import java.util.Random;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.python.core.PyObject;
@@ -89,11 +87,11 @@ public class RESTGateway {
 			correctedRESTProc = restProc.substring(0, restProc.length() - vosem);
 		}
 
-		String tempSesId = String.format("RESTful%08X", (new Random()).nextInt());
+		String tempSesId = "RESTful" + sesId;
 		try {
 			Celesta.getInstance().login(tempSesId, "userCelestaSid");
-			PyObject pObj = Celesta.getInstance().runPython(sesId, correctedRESTProc, requestType,
-					userToken, requestUrl, urlParams);
+			PyObject pObj = Celesta.getInstance().runPython(tempSesId, correctedRESTProc,
+					requestType, userToken, requestUrl, urlParams);
 
 			Object obj = pObj.__tojava__(Object.class);
 			if (obj == null) {
