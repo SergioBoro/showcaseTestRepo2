@@ -184,6 +184,66 @@ public class CourseLocalization {
 	}
 
 	/**
+	 * Метод установки ResourceBundle для дальнейшего использования в переводе
+	 * серверной части Showcase с помощью Gettext с учётом передачи языка в этот
+	 * метод.
+	 * 
+	 * @param lang
+	 *            - передаваемый извне язык
+	 * @return ResourceBundle
+	 */
+	public static ResourceBundle getLocalizedResourseBundle(String lang) {
+		File dir = UserDataUtils.getResourceDir(UserDataUtils.getUserDataId());
+
+		class MyLoader extends ClassLoader {
+
+			public MyLoader(ClassLoader parent) {
+				super(parent);
+			}
+
+			@Override
+			protected Class<?> findClass(String name) throws ClassNotFoundException {
+				File classFile = null;
+				if (dir.exists()) {
+					for (File file : dir.listFiles()) {
+						if (file.getName().substring(0, file.getName().lastIndexOf("."))
+								.equals(name)) {
+							classFile = file;
+							break;
+						}
+					}
+				}
+				try {
+					byte[] b = loadData(classFile);
+					return defineClass(
+							classFile.getName().substring(0, classFile.getName().lastIndexOf(".")),
+							b, 0, b.length);
+				} catch (Exception e) {
+					return null;
+				}
+
+			}
+
+			@Override
+			protected void finalize() throws Throwable {
+				super.finalize();
+			}
+		}
+
+		ResourceBundle rb = null;
+		try {
+			Locale.setDefault(new Locale(lang));
+			rb =
+				ResourceBundle.getBundle("loc", new Locale(lang), new MyLoader(Thread
+						.currentThread().getContextClassLoader()));
+			Runtime.getRuntime().runFinalization();
+		} catch (Throwable e) {
+			rb = null;
+		}
+		return rb;
+	}
+
+	/**
 	 * Вспомогательный метод, используемый при загрузке классов.
 	 */
 	private static byte[] loadData(File file) throws Exception {
