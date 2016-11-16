@@ -22,6 +22,7 @@ import ru.curs.showcase.util.exception.*;
 public final class ServerStateFactory {
 
 	private static final String ENABLE_CLIENT_LOG = "enable.client.log";
+	private static final String GRIDS_PRELOAD = "grids.preload";
 	private static final String DOJO_VERSION_FILE = "/js/dojo/package.json";
 	private static final String GWTVERSION_FILE = "gwtversion";
 	private static final String BUILD_FILE = "build";
@@ -44,13 +45,14 @@ public final class ServerStateFactory {
 		ServerState state = new ServerState();
 		state.setServerTime(TextUtils.getCurrentLocalDate());
 		state.setAppVersion(getAppVersion());
-		state.setServletContainerVersion(AppInfoSingleton.getAppInfo()
-				.getServletContainerVersion());
+		state.setServletContainerVersion(
+				AppInfoSingleton.getAppInfo().getServletContainerVersion());
 
 		if (SecurityContextHolder.getContext().getAuthentication() == null) {
 			state.setIsNativeUser(false);
 		} else {
-			if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
+			if (SecurityContextHolder.getContext()
+					.getAuthentication() instanceof AnonymousAuthenticationToken)
 				state.setIsNativeUser(false);
 			else
 				state.setIsNativeUser(!((UserAndSessionDetails) SecurityContextHolder.getContext()
@@ -60,7 +62,8 @@ public final class ServerStateFactory {
 		state.setJavaVersion(System.getProperty("java.version"));
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
+			if (SecurityContextHolder.getContext()
+					.getAuthentication() instanceof AnonymousAuthenticationToken)
 				state.setUserInfo(SessionUtils.getAnonymousUserAndSessionDetails().getUserInfo());
 			else
 				state.setUserInfo(((UserAndSessionDetails) SecurityContextHolder.getContext()
@@ -71,15 +74,19 @@ public final class ServerStateFactory {
 		state.setGwtVersion(getGwtVersion());
 		state.setCaseSensivityIDs(IDSettings.getInstance().getCaseSensivity());
 
-		String sss =
-			(SecurityContextHolder.getContext().getAuthentication() != null) ? ((WebAuthenticationDetails) SecurityContextHolder
-					.getContext().getAuthentication().getDetails()).getSessionId()
-					: "autenticatedSessionIsNull";
+		String sss = (SecurityContextHolder.getContext().getAuthentication() != null)
+				? ((WebAuthenticationDetails) SecurityContextHolder.getContext()
+						.getAuthentication().getDetails()).getSessionId()
+				: "autenticatedSessionIsNull";
 		state.setSesId(sss);
 
 		String value = UserDataUtils.getGeneralOptionalProp(ENABLE_CLIENT_LOG);
 		Boolean boolValue = Boolean.valueOf(value);
 		state.setEnableClientLog(boolValue);
+
+		value = UserDataUtils.getGeneralOptionalProp(GRIDS_PRELOAD);
+		boolValue = Boolean.valueOf(value);
+		state.setPreloadGrids(boolValue);
 
 		return state;
 	}
@@ -157,9 +164,8 @@ public final class ServerStateFactory {
 
 	private static String getSQLVersion() throws SQLException {
 
-		String fileName =
-			String.format("%s/version_%s.sql", UserDataUtils.SCRIPTSDIR, ConnectionFactory
-					.getSQLServerType().toString().toLowerCase());
+		String fileName = String.format("%s/version_%s.sql", UserDataUtils.SCRIPTSDIR,
+				ConnectionFactory.getSQLServerType().toString().toLowerCase());
 
 		String sql = "";
 		try {

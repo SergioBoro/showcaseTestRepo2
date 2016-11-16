@@ -337,3 +337,57 @@ function measureDownloadSpeed(contentSize)
 }
 
 
+
+function preloadGrids() 
+{
+	require([
+	         "dijit/form/Button",
+	         "dijit/form/DropDownButton",
+	         "dijit/form/ComboButton",
+	         "dijit/form/ToggleButton",
+	         "dijit/form/CurrencyTextBox",
+	         "dijit/form/DateTextBox",
+	         "dijit/form/NumberSpinner",
+	         "dijit/form/NumberTextBox",
+	         "dijit/form/TextBox",
+	         "dijit/form/TimeTextBox",
+	         "dijit/form/ValidationTextBox",
+	         "dijit/form/SimpleTextarea",
+	         "dijit/form/Textarea",
+	         "dijit/form/Select",
+	         "dijit/form/ComboBox",
+	         "dijit/form/MultiSelect",
+	         "dijit/form/FilteringSelect",
+	         "dijit/form/HorizontalSlider",
+	         "dijit/form/VerticalSlider",
+	         "dijit/form/CheckBox",
+	         "dijit/form/RadioButton",
+	         "dijit/form/DataList",
+
+			 "dojo/_base/lang",
+	         "dojo/has",			 
+			 "dgrid/List",
+			 "dgrid/OnDemandGrid",
+	         "dgrid/extensions/Pagination",			 
+	         "dgrid/extensions/CompoundColumns", 
+	         "dgrid/ColumnSet", 
+			 "dgrid/extensions/ColumnResizer",
+			 "dgrid/Selection",
+	         "dgrid/CellSelection", 				
+			 "dgrid/Editor",
+			 "dgrid/Keyboard",
+			 "dgrid/Tree",			 
+			 "dojo/_base/declare",
+	         "dstore/QueryResults",
+			 "dstore/Rest",
+			 "dstore/Trackable",
+			 "dstore/Cache",
+			 "dstore/Tree",			 
+	     	 "dojo/dom-construct",	     
+	     	 "dojo/when",	         
+			 "dojo/domReady!"
+	         ],	function(){});
+}
+
+
+

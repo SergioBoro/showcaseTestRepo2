@@ -74,6 +74,11 @@ public final class ServerState implements SerializableElement {
 	 */
 	private String sesId = "";
 
+	/**
+	 * Признак того, что гриды нужно грузить при загрузке приложения.
+	 */
+	private boolean preloadGrids = false;
+
 	public String getAppVersion() {
 		return appVersion;
 	}
@@ -176,6 +181,14 @@ public final class ServerState implements SerializableElement {
 
 	public void setSesId(final String aSesId) {
 		this.sesId = aSesId;
+	}
+
+	public boolean isPreloadGrids() {
+		return preloadGrids;
+	}
+
+	public void setPreloadGrids(final boolean aPreloadGrids) {
+		preloadGrids = aPreloadGrids;
 	}
 
 }

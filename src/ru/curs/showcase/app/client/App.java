@@ -2,15 +2,15 @@ package ru.curs.showcase.app.client;
 
 import java.util.*;
 
+import com.google.gwt.core.client.*;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.RootPanel;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 import ru.curs.showcase.app.client.utils.*;
-
-import com.google.gwt.core.client.*;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * Класс точки входа в GWT часть приложения. Используется функция
@@ -83,7 +83,8 @@ public class App implements EntryPoint {
 				// MessageBox
 				// .showSimpleMessage(
 				// "Error",
-				// "Session is not authenticated. Please log out and log in again, or reopen browser window and log in");
+				// "Session is not authenticated. Please log out and log in
+				// again, or reopen browser window and log in");
 				WebUtils.onFailure(arg0, "Error");
 			}
 		});
@@ -114,11 +115,10 @@ public class App implements EntryPoint {
 		// GWTServiceCallback<ServerState>(
 		// AppCurrContext.getInstance().getInternationalizedMessages()
 		// .error_of_server_current_state_retrieving_from_server()) {
-		dataService.getServerCurrentState(
-				context,
+		dataService.getServerCurrentState(context,
 				new GWTServiceCallback<ServerState>(
-				// AppCurrContext.getInstance().getBundleMap().get("error_of_server_current_state_retrieving_from_server"))
-				// {
+						// AppCurrContext.getInstance().getBundleMap().get("error_of_server_current_state_retrieving_from_server"))
+						// {
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 								"when retrieving current application state data")) {
 
@@ -127,9 +127,13 @@ public class App implements EntryPoint {
 
 						if (serverCurrentState != null) {
 
+							if (serverCurrentState.isPreloadGrids()) {
+								preloadGrids();
+							}
+
 							AppCurrContext.getInstance().setServerCurrentState(serverCurrentState);
-							IDSettings.getInstance().setCaseSensivity(
-									serverCurrentState.getCaseSensivityIDs());
+							IDSettings.getInstance()
+									.setCaseSensivity(serverCurrentState.getCaseSensivityIDs());
 							getAndFillMainPage();
 
 						}
@@ -137,6 +141,10 @@ public class App implements EntryPoint {
 				});
 
 	}
+
+	private native void preloadGrids() /*-{
+		$wnd.preloadGrids();
+	}-*/;
 
 	private void getAndFillMainPage() {
 		if (dataService == null) {
@@ -147,11 +155,10 @@ public class App implements EntryPoint {
 		// GWTServiceCallback<MainPage>(AppCurrContext
 		// .getInstance().getInternationalizedMessages()
 		// .error_of_main_page_retrieving_from_server()) {
-		dataService.getMainPage(
-				context,
+		dataService.getMainPage(context,
 				new GWTServiceCallback<MainPage>(
-				// AppCurrContext.getInstance().getBundleMap().get("error_of_main_page_retrieving_from_server"))
-				// {
+						// AppCurrContext.getInstance().getBundleMap().get("error_of_main_page_retrieving_from_server"))
+						// {
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 								"when retrieving main application page")) {
 
@@ -189,7 +196,8 @@ public class App implements EntryPoint {
 
 		if (AppCurrContext.getInstance().getMainPage().getSolutionCSSFileName() != null
 				&& AppCurrContext.getInstance().getMainPage().getSolutionGridCSSFileName() != null
-				&& AppCurrContext.getInstance().getMainPage().getProgressBarCSSFileName() != null) {
+				&& AppCurrContext.getInstance().getMainPage()
+						.getProgressBarCSSFileName() != null) {
 
 			addUserDataCSS(AppCurrContext.getInstance().getMainPage().getSolutionCSSFileName(),
 					AppCurrContext.getInstance().getMainPage().getSolutionGridCSSFileName(),
@@ -214,4 +222,5 @@ public class App implements EntryPoint {
 		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/" + solutionCSS));
 		AccessToDomModel.addCSSLink(MultiUserData.getPathWithUserData("css/" + solutionGridCSS));
 	}
+
 }
