@@ -12,10 +12,7 @@ public class CourseClientLocalization {
 	 * @return перевод переменной <VAR>msgid</VAR>
 	 */
 	public static native String gettext(final String domain, final String msgid) /*-{
-		var myGettext = new $wnd.Gettext({
-			"domain" : domain
-		});
-		return myGettext.gettext(msgid);
+		return $wnd.GettextInstance.gettext(msgid);
 	}-*/;
 
 	/**
@@ -33,10 +30,20 @@ public class CourseClientLocalization {
 	 */
 	public static native String ngettext(final String domain, final String msgid,
 			String msgid_plural, int count) /*-{
-		var myGettext = new $wnd.Gettext({
+		return $wnd.GettextInstance.ngettext(msgid, msgid_plural, count);
+	}-*/;
+
+	/**
+	 * Устанавливает имя используемого для перевода .po-файла без расширения как
+	 * глобальную переменную.
+	 * 
+	 * @param domain
+	 *            - имя используемого для перевода .po-файла без расширения
+	 */
+	public static native void setGettextVariable(final String domain) /*-{
+		$wnd.GettextInstance = new $wnd.Gettext({
 			"domain" : domain
 		});
-		return myGettext.ngettext(msgid, msgid_plural, count);
 	}-*/;
 
 }
