@@ -28,6 +28,9 @@ public class App implements EntryPoint {
 	 */
 	@Override
 	public void onModuleLoad() {
+
+		ProgressWindow.showProgressWindow();
+
 		final CompositeContext context = getCurrentContext();
 		// setBundleMapForConstants(context);
 		setLocalizationBundleDomain(context);
@@ -102,7 +105,7 @@ public class App implements EntryPoint {
 	 *            - начальный контекст
 	 */
 
-	private void initialize(CompositeContext context) {
+	private void initialize(final CompositeContext context) {
 		XFormsUtils.initXForms();
 		FeedbackJSNI.initFeedbackJSNIFunctions();
 		// AppCurrContext.appCurrContext = AppCurrContext.getInstance();
@@ -116,11 +119,11 @@ public class App implements EntryPoint {
 		// GWTServiceCallback<ServerState>(
 		// AppCurrContext.getInstance().getInternationalizedMessages()
 		// .error_of_server_current_state_retrieving_from_server()) {
-		dataService.getServerCurrentState(
-				context,
+		dataService.getServerCurrentState(context,
 				new GWTServiceCallback<ServerState>(
-				// AppCurrContext.getInstance().getBundleMap().get("error_of_server_current_state_retrieving_from_server"))
-				// {
+						// AppCurrContext.getInstance().getBundleMap().
+						// get("error_of_server_current_state_retrieving_from_server"))
+						// {
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 								"when retrieving current application state data")) {
 
@@ -134,8 +137,8 @@ public class App implements EntryPoint {
 							}
 
 							AppCurrContext.getInstance().setServerCurrentState(serverCurrentState);
-							IDSettings.getInstance().setCaseSensivity(
-									serverCurrentState.getCaseSensivityIDs());
+							IDSettings.getInstance()
+									.setCaseSensivity(serverCurrentState.getCaseSensivityIDs());
 							getAndFillMainPage();
 
 						}
@@ -157,11 +160,10 @@ public class App implements EntryPoint {
 		// GWTServiceCallback<MainPage>(AppCurrContext
 		// .getInstance().getInternationalizedMessages()
 		// .error_of_main_page_retrieving_from_server()) {
-		dataService.getMainPage(
-				context,
+		dataService.getMainPage(context,
 				new GWTServiceCallback<MainPage>(
-				// AppCurrContext.getInstance().getBundleMap().get("error_of_main_page_retrieving_from_server"))
-				// {
+						// AppCurrContext.getInstance().getBundleMap().get("error_of_main_page_retrieving_from_server"))
+						// {
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 								"when retrieving main application page")) {
 
@@ -199,7 +201,8 @@ public class App implements EntryPoint {
 
 		if (AppCurrContext.getInstance().getMainPage().getSolutionCSSFileName() != null
 				&& AppCurrContext.getInstance().getMainPage().getSolutionGridCSSFileName() != null
-				&& AppCurrContext.getInstance().getMainPage().getProgressBarCSSFileName() != null) {
+				&& AppCurrContext.getInstance().getMainPage()
+						.getProgressBarCSSFileName() != null) {
 
 			addUserDataCSS(AppCurrContext.getInstance().getMainPage().getSolutionCSSFileName(),
 					AppCurrContext.getInstance().getMainPage().getSolutionGridCSSFileName(),

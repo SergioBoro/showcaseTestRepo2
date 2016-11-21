@@ -76,7 +76,7 @@ public class MainPanel {
 	 * @return возвращает заполненный виджет MainPanel типа VerticalPanel.
 	 */
 	public Widget startMainPanelCreation() {
-		ProgressWindow.showProgressWindow();
+		// ProgressWindow.showProgressWindow();
 		basicVerticalPanel.add(DownloadHelper.getInstance());
 
 		final int n10 = 20;
