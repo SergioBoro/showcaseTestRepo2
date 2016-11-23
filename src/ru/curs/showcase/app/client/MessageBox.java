@@ -3,6 +3,8 @@
  */
 package ru.curs.showcase.app.client;
 
+import ru.curs.showcase.app.api.MessageType;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.*;
@@ -10,8 +12,6 @@ import com.google.gwt.resources.client.*;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.ui.*;
-
-import ru.curs.showcase.app.api.MessageType;
 
 /**
  * Интерфейс, ссылающийся на иконки, которые могут понадобится в окне сообщений
@@ -74,8 +74,8 @@ public final class MessageBox {
 	/**
 	 * GWT сервис для доступа к иконкам, хранящимся на сервере.
 	 */
-	private static ImagesForDialogBox images =
-		(ImagesForDialogBox) GWT.create(ImagesForDialogBox.class);
+	private static ImagesForDialogBox images = (ImagesForDialogBox) GWT
+			.create(ImagesForDialogBox.class);
 
 	public static final String SIZE_ONE_HUNDRED_PERCENTS = "100%";
 
@@ -121,6 +121,7 @@ public final class MessageBox {
 		dialogContents.add(l);
 		dialogContents.add(ok);
 		dialogContents.setCellHorizontalAlignment(ok, HasHorizontalAlignment.ALIGN_RIGHT);
+		dlg.getElement().setAttribute("message_type", "simple");
 		dlg.center();
 		ok.setFocus(true);
 		return dlg;
@@ -205,26 +206,32 @@ public final class MessageBox {
 
 		Image im1 = new Image();
 
+		String attributeMessage = "";
+
 		if (messageSubtype == null) {
 			switch (messageType) {
 			case INFO:
 				im1.setResource(images.getInfoIcon());
+				attributeMessage = "info";
 				break;
 
 			case WARNING:
 				im1.setResource(images.getAlertIcon());
+				attributeMessage = "warning";
 				break;
 
 			case ERROR:
 				im1.setResource(images.getErrorIcon());
+				attributeMessage = "error";
 				break;
 
 			default:
 				break;
 			}
 		} else {
-			String url = Window.Location.getProtocol() + "//" + Window.Location.getHost()
-					+ Window.Location.getPath() + messageSubtype;
+			String url =
+				Window.Location.getProtocol() + "//" + Window.Location.getHost()
+						+ Window.Location.getPath() + messageSubtype;
 			im1.setUrl(url);
 		}
 
@@ -310,6 +317,7 @@ public final class MessageBox {
 		}
 		dialogContents.add(ok);
 		dialogContents.setCellHorizontalAlignment(ok, HasHorizontalAlignment.ALIGN_RIGHT);
+		dlg.getElement().setAttribute("message_type", attributeMessage);
 		dlg.center();
 		ok.setFocus(true);
 
