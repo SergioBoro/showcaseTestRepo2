@@ -93,7 +93,8 @@ public final class XMLJSONConverter {
 
 		int j = 0;
 		for (String content : innerOfCurColIdList) {
-			newXml = newXml.replace(content, "innerOfCurColIdList" + j);
+			if (!" ".equals(content))
+				newXml = newXml.replace(content, "innerOfCurColIdList" + j);
 			j++;
 		}
 
@@ -141,7 +142,8 @@ public final class XMLJSONConverter {
 
 		j = 0;
 		for (String content : innerOfCurColIdList) {
-			str = str.replace("innerOfCurColIdList" + j, content);
+			if (!" ".equals(content))
+				str = str.replace("innerOfCurColIdList" + j, content);
 			j++;
 		}
 
