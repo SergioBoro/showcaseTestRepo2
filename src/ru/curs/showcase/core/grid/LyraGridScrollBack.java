@@ -49,6 +49,7 @@ public class LyraGridScrollBack implements Runnable {
 	public void run() {
 
 		System.out.println("LyraGridScrollBack.ddddddddddddd2");
+		System.out.println("className: " + basicGridForm.getClass().getSimpleName());
 		System.out.println("lyraOldPosition: " + lyraGridAddInfo.getLyraOldPosition());
 		System.out.println("lyraNewPosition: " + basicGridForm.getTopVisiblePosition());
 		System.out.println("diff: "

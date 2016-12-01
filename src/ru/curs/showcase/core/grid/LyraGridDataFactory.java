@@ -158,6 +158,8 @@ public class LyraGridDataFactory {
 
 		List<LyraFormData> records;
 
+		System.out.println("context.isFirstLoad(): " + context.isFirstLoad());
+
 		if (context.isFirstLoad()) {
 
 			records = basicGridForm.getRows();
@@ -223,6 +225,7 @@ public class LyraGridDataFactory {
 		}
 
 		System.out.println("LyraGridDataFactory.ddddddddddddd1");
+		System.out.println("className: " + basicGridForm.getClass().getSimpleName());
 		System.out.println("position: " + position);
 		System.out.println("lyraNewPosition: " + basicGridForm.getTopVisiblePosition());
 		System.out.println("lyraOldPosition: " + lyraGridAddInfo.getLyraOldPosition());
@@ -230,6 +233,7 @@ public class LyraGridDataFactory {
 		System.out.println(
 				"getApproxTotalCount(after getRows): " + basicGridForm.getApproxTotalCount());
 		System.out.println("records.size(): " + records.size());
+		System.out.println("dGridLimit(): " + context.getLiveInfo().getLimit());
 		System.out.println("dGridTotalCount: " + context.getLiveInfo().getTotalCount());
 
 		lyraGridAddInfo.setLyraOldPosition(basicGridForm.getTopVisiblePosition());
