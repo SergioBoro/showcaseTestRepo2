@@ -117,6 +117,7 @@ public class LyraGridDataFactory {
 				ArrayList<String> al = new ArrayList<>(2);
 				String s = context.getGridSorting().getSortColId();
 				if (context.getGridSorting().getSortColDirection() == Sorting.ASC) {
+					s = s + " ASC";
 					al.add(s);
 				} else {
 					s = s + " DESC";
