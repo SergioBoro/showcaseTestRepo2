@@ -64,7 +64,7 @@ public class LyraGridScrollBack implements Runnable {
 		}
 
 		if (Math.abs(basicGridForm.getTopVisiblePosition()
-				- lyraGridAddInfo.getLyraOldPosition()) < lyraApproxTotalCount
+				- lyraGridAddInfo.getLyraOldPosition()) <= lyraApproxTotalCount
 						/ LYRA_SMALLFACTOR) {
 			lyraGridAddInfo.setLyraOldPosition(basicGridForm.getTopVisiblePosition());
 			return;
