@@ -36,8 +36,12 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		String userToken = request.getHeader("user-token");
 		String requestUrl = request.getRequestURL().toString();
 
+		String acceptLanguage = request.getHeader("Accept-Language");
+		if (acceptLanguage == null || acceptLanguage.isEmpty()) {
+			acceptLanguage = "en";
+		}
+
 		String sesId = request.getSession().getId();
-		// String initialUrl = getFullURL(request);
 
 		String requestURLParams = request.getQueryString();
 
@@ -66,8 +70,8 @@ public final class ShowcaseRestServlet extends HttpServlet {
 
 		// request.getReader()
 
-		String responcseData = RESTGateway.executeRESTcommand(requestType, userToken, requestUrl,
-				requestData, requestURLParams, sesId, restProc);
+		String responcseData = RESTGateway.executeRESTcommand(requestType, userToken,
+				acceptLanguage, requestUrl, requestData, requestURLParams, sesId, restProc);
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(responcseData);
 		response.getWriter().close();
