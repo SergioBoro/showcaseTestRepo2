@@ -5,6 +5,8 @@ import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import org.json.*;
+
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.exception.BaseException;
@@ -70,13 +72,30 @@ public final class ShowcaseRestServlet extends HttpServlet {
 
 		// request.getReader()
 
-		String responcseData = RESTGateway.executeRESTcommand(requestType, userToken,
+		JSONObject ff = new JSONObject();
+
+		try {
+			ff.append("sd", "fg");
+			JSONArray a = new JSONArray();
+			a.put("1");
+			a.put("2");
+			ff.append("sd", "ff");
+			ff.putOnce("ttt", "werty");
+			ff.append("sd1", a);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println(ff.toString());
+
+		JythonRestResult responcseData = RESTGateway.executeRESTcommand(requestType, userToken,
 				acceptLanguage, requestUrl, requestData, requestURLParams, sesId, restProc);
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(responcseData);
+		response.getWriter().write(responcseData.getResponseData());
 		response.getWriter().close();
 
-		response.setStatus(HttpServletResponse.SC_OK);
+		response.setStatus(responcseData.getResponseCode());
 
 	}
 

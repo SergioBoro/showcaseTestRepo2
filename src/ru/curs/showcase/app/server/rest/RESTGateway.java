@@ -22,9 +22,10 @@ public class RESTGateway {
 		}
 	}
 
-	static public String executeRESTcommand(final String requestType, final String userToken,
-			final String acceptLanguage, final String requestUrl, final String requestData,
-			final String urlParams, final String sesId, final String restProc) {
+	static public JythonRestResult executeRESTcommand(final String requestType,
+			final String userToken, final String acceptLanguage, final String requestUrl,
+			final String requestData, final String urlParams, final String sesId,
+			final String restProc) {
 		String correctedRESTProc = restProc.trim();
 		final int tri = 3;
 		final int vosem = 8;
@@ -46,8 +47,8 @@ public class RESTGateway {
 			if (obj == null) {
 				return null;
 			}
-			if (obj.getClass().isAssignableFrom(String.class)) {
-				return (String) obj;
+			if (obj.getClass().isAssignableFrom(JythonRestResult.class)) {
+				return (JythonRestResult) obj;
 			}
 
 		} catch (CelestaException e) {
