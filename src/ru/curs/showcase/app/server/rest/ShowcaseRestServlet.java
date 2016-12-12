@@ -5,8 +5,6 @@ import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.json.*;
-
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.exception.BaseException;
@@ -58,45 +56,43 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		}
 		requestData = buffer.toString();
 
-		System.out.println("aaaa data : " + requestData);
+		// System.out.println("aaaa data : " + requestData);
 
 		String restProc = UserDataUtils.getGeneralOptionalProp("rest.entry.proc");
 
 		if ((restProc == null) || restProc.isEmpty()) {
-			System.out.println("restProc: null");
+			// System.out.println("restProc: null");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
-		} else {
-			System.out.println("restProc: " + restProc);
 		}
-
 		// request.getReader()
 
-		JSONObject ff = new JSONObject();
+		// JSONObject ff = new JSONObject();
 
-		try {
-			ff.append("sd", "fg");
-			JSONArray a = new JSONArray();
-			a.put("1");
-			a.put("2");
-			ff.append("sd", "ff");
-			ff.putOnce("ttt", "werty");
-			ff.append("sd1", a);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		System.out.println(ff.toString());
+		// try {
+		// ff.append("sd", "fg");
+		// JSONArray a = new JSONArray();
+		// a.put("1");
+		// a.put("2");
+		// ff.append("sd", "ff");
+		// ff.putOnce("ttt", "werty");
+		// ff.append("sd1", a);
+		// } catch (JSONException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		//
+		// System.out.println(ff.toString());
 
 		JythonRestResult responcseData = RESTGateway.executeRESTcommand(requestType, userToken,
 				acceptLanguage, requestUrl, requestData, requestURLParams, sesId, restProc);
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(responcseData.getResponseData());
-		response.getWriter().close();
 
 		response.setStatus(responcseData.getResponseCode());
 
+		// response.setStatus(201);
+		response.getWriter().close();
 	}
 
 	private String getFullURL(final HttpServletRequest request) {
