@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.jws.*;
 import javax.jws.soap.SOAPBinding;
 
+import org.slf4j.*;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -23,12 +24,15 @@ import ru.curs.showcase.util.xml.XMLUtils;
 public class ShowcaseExternals {
 	public static final String NOT_XML_OUTPUT_ERROR =
 		"Ошибка решения: рабочая процедура вернула данные не в формате XML";
+	private static final Logger LOGGER = LoggerFactory.getLogger(ShowcaseExternals.class);
 
 	@WebMethod
 	@WebResult(name = "response")
 	public String handle(@WebParam(name = "request") final String request, @WebParam(
 			name = "procName") final String procName) throws ShowcaseExportException {
 		ExternalCommand command = new ExternalCommand(request, procName);
+		LOGGER.info("Используется Soap WebService, текстовый формат. \nВызвана процедура "
+				+ procName);
 		return command.executeForExport();
 	}
 
@@ -53,6 +57,7 @@ public class ShowcaseExternals {
 
 		ExternalCommand command = new ExternalCommand(requestStr, procName);
 		String responseStr = command.executeForExport();
+		LOGGER.info("Используется Soap WebService, XML формат. \nВызвана процедура " + procName);
 		responseStr = "<responseAnyXML>" + responseStr + "</responseAnyXML>";
 		try {
 			Document doc = XMLUtils.stringToDocument(responseStr);

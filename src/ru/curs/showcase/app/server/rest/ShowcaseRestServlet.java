@@ -5,6 +5,9 @@ import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.slf4j.*;
+
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.exception.BaseException;
@@ -16,6 +19,8 @@ import ru.curs.showcase.util.exception.BaseException;
 public final class ShowcaseRestServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1311685218914828051L;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ShowcaseRestServlet.class);
 
 	private class ShowcaseRESTException extends BaseException {
 
@@ -84,12 +89,23 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		//
 		// System.out.println(ff.toString());
 
-		JythonRestResult responcseData = RESTGateway.executeRESTcommand(requestType, userToken,
-				acceptLanguage, requestUrl, requestData, requestURLParams, sesId, restProc);
+		JythonRestResult responcseData =
+			RESTGateway.executeRESTcommand(requestType, userToken, acceptLanguage, requestUrl,
+					requestData, requestURLParams, sesId, restProc);
+
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(responcseData.getResponseData());
+		response.getWriter()
+				.write(StringEscapeUtils.unescapeJava(responcseData.getResponseData()));
 
 		response.setStatus(responcseData.getResponseCode());
+
+		LOGGER.info("Используется Rest WebService. \nВызвана процедура " + restProc
+				+ "\nТип запроса: " + requestType + "\nURL запроса: " + requestUrl
+				+ "\nUser Token: " + userToken + "\nAccept Language: " + acceptLanguage
+				+ "\nВходные данные: " + requestData + "\nURL-параметры запроса: "
+				+ requestURLParams + "\nHTTP-код ответа: " + responcseData.getResponseCode()
+				+ "\nВыходные данные: "
+				+ StringEscapeUtils.unescapeJava(responcseData.getResponseData()));
 
 		// response.setStatus(201);
 		response.getWriter().close();
