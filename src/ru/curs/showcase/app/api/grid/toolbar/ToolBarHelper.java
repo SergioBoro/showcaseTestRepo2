@@ -38,9 +38,12 @@ public abstract class ToolBarHelper {
 	private static final String TOOLBAR_HEIGHT = "28px";
 	private static final int ICON_SIZE = 16;
 
+	private static final String TOOLBAR_STYLE_AWAITING_RESPONSE = "awaiting-response";
+	private static final String TOOLBAR_STYLE_READY = "ready";
+
 	private Timer toolBarRefreshTimer = null;
 	private final DataServiceAsync dataService;
-	private final Panel panel;
+	private final SimplePanel panel;
 	private final BasicElementPanelBasis basicElementPanelBasis;
 	private boolean isStaticToolBar = false;
 
@@ -71,6 +74,14 @@ public abstract class ToolBarHelper {
 		if (isStaticToolBar) {
 			return;
 		}
+
+		if (panel.getWidget() != null) {
+			panel.getWidget().removeStyleName(TOOLBAR_STYLE_READY);
+			panel.getWidget().addStyleName(TOOLBAR_STYLE_AWAITING_RESPONSE);
+			// panel.getWidget().setStyleName(TOOLBAR_STYLE_AWAITING_RESPONSE);
+			// panel.getWidget().setStylePrimaryName(TOOLBAR_STYLE_AWAITING_RESPONSE);
+		}
+
 		final DataPanelElementInfo elInfo = basicElementPanelBasis.getElementInfo();
 		if (elInfo.isToolBarProc()) {
 
@@ -94,16 +105,20 @@ public abstract class ToolBarHelper {
 
 								@Override
 								public void onSuccess(final GridToolBar result) {
-									panel.clear();
 									ToolBar toolBar = new ToolBar();
 									toolBar.setHeight(TOOLBAR_HEIGHT);
 									toolBar.setBorders(false);
 									addStaticItemToToolBar(toolBar);
 									createDynamicToolBar(result, toolBar);
+									panel.clear();
 									panel.add(toolBar);
 									toolBar.setHeight(TOOLBAR_HEIGHT);
 
 									blinkingCount--;
+
+									toolBar.addStyleName(TOOLBAR_STYLE_READY);
+									// toolBar.setStyleName(TOOLBAR_STYLE_READY);
+									// toolBar.setStylePrimaryName(TOOLBAR_STYLE_READY);
 								}
 							});
 				}
@@ -117,6 +132,10 @@ public abstract class ToolBarHelper {
 			addStaticItemToToolBar(toolBar);
 			panel.add(toolBar);
 			toolBar.setHeight(TOOLBAR_HEIGHT);
+
+			toolBar.addStyleName(TOOLBAR_STYLE_READY);
+			// toolBar.setStyleName(TOOLBAR_STYLE_READY);
+			// toolBar.setStylePrimaryName(TOOLBAR_STYLE_READY);
 		}
 	}
 
