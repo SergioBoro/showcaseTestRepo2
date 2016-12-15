@@ -63,7 +63,7 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		String login = arg1.getPrincipal().toString();
 		String pwd = arg1.getCredentials().toString();
 		String sesid = ((UserAndSessionDetails) arg1.getDetails()).getSessionId();
-		String oldSesid = AppInfoSingleton.getAppInfo().getSesid();
+		String oldSesid = AppInfoSingleton.getAppInfo().getSesid();		
 		String groupProviders =
 			((UserAndSessionDetails) arg1.getDetails()).getUserInfo().getGroupProviders();
 
@@ -156,6 +156,9 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 			} catch (BadCredentialsException | IllegalStateException | SecurityException
 					| IllegalFormatException | NullPointerException | IOException
 					| IndexOutOfBoundsException e) {
+
+				LOGGER.error("", e);
+
 				if ("Bad credentials".equals(e.getMessage())) {
 					throw new BadCredentialsException(e.getMessage(), e);
 				} else {
