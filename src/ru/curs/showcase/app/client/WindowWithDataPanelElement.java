@@ -3,12 +3,12 @@
  */
 package ru.curs.showcase.app.client;
 
+import ru.curs.showcase.app.client.api.BasicElementPanel;
+import ru.curs.showcase.app.client.panels.DialogBoxWithCaptionButton;
+
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.*;
-
-import ru.curs.showcase.app.client.api.BasicElementPanel;
-import ru.curs.showcase.app.client.panels.DialogBoxWithCaptionButton;
 
 /**
  * 
@@ -51,22 +51,27 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 		return showCloseBottomButton;
 	}
 
-	public WindowWithDataPanelElement(final Boolean ashowCloseBottomButton) {
+	public WindowWithDataPanelElement(final Boolean ashowCloseBottomButton,
+			final Boolean ashowCloseEscOrCross) {
 		super();
 		setShowCloseBottomButton(ashowCloseBottomButton);
+		setShowCloseEscOrCross(ashowCloseEscOrCross);
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
 				String.valueOf(Window.getClientHeight() - n100) + "px");
 	}
 
-	public WindowWithDataPanelElement(final String caption, final Boolean ashowCloseBottomButton) {
+	public WindowWithDataPanelElement(final String caption, final Boolean ashowCloseBottomButton,
+			final Boolean ashowCloseEscOrCross) {
 		super(caption);
 		setShowCloseBottomButton(ashowCloseBottomButton);
+		setShowCloseEscOrCross(ashowCloseEscOrCross);
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
 				String.valueOf(Window.getClientHeight() - n100) + "px");
 	}
 
 	public WindowWithDataPanelElement(final String caption, final Integer width1,
-			final Integer heigth1, final Boolean ashowCloseBottomButton) {
+			final Integer heigth1, final Boolean ashowCloseBottomButton,
+			final Boolean ashowCloseEscOrCross) {
 
 		super(caption);
 
@@ -80,8 +85,7 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 
 			heigth =
 
-				(heigth > Window.getClientHeight() - n100) ? Window.getClientHeight() - n100
-						: heigth;
+			(heigth > Window.getClientHeight() - n100) ? Window.getClientHeight() - n100 : heigth;
 		}
 
 		if ((width != null) && (heigth != null)) {
@@ -100,6 +104,7 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 
 		}
 		setShowCloseBottomButton(ashowCloseBottomButton);
+		setShowCloseEscOrCross(ashowCloseEscOrCross);
 	}
 
 	// public WindowWithDataPanelElement(final boolean autoHide, final boolean
@@ -144,7 +149,7 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 					closeWindow();
 				}
 			});
-
+			
 			dialogContents.add(ok);
 			dialogContents.setCellHorizontalAlignment(ok, HasHorizontalAlignment.ALIGN_RIGHT);
 

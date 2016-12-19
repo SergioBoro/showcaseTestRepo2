@@ -41,8 +41,8 @@ public class DialogBoxWithCaptionButton extends DialogBox {
 	/**
 	 * GWT сервис для доступа к иконкам, хранящимся на сервере.
 	 */
-	private static ImagesForDialogBox images =
-		(ImagesForDialogBox) GWT.create(ImagesForDialogBox.class);
+	private static ImagesForDialogBox images = (ImagesForDialogBox) GWT
+			.create(ImagesForDialogBox.class);
 
 	/**
 	 * Объект Image иконки на кнопку закрыть.
@@ -58,6 +58,28 @@ public class DialogBoxWithCaptionButton extends DialogBox {
 	 * Горизонтальная панель заголовка модального окна.
 	 */
 	private final HorizontalPanel captionPanel = new HorizontalPanel();
+
+	/**
+	 * Переменная определяющая, будет ли срабатывать нажатие на крестик в правом
+	 * верхнем углу модального окна для его закрытия и будет ли закрыто окно при
+	 * нажатии на кнопку Esc клавиатуры.
+	 */
+	private Boolean showCloseEscOrCross;
+
+	/**
+	 * @param ashowCloseEscOrCross
+	 *            the showCloseEscOrCross to set
+	 */
+	public final void setShowCloseEscOrCross(final Boolean ashowCloseEscOrCross) {
+		this.showCloseEscOrCross = ashowCloseEscOrCross;
+	}
+
+	/**
+	 * @return the showCloseBottomButton
+	 */
+	public Boolean getShowCloseEscOrCross() {
+		return showCloseEscOrCross;
+	}
 
 	/**
 	 * Конструктор.
@@ -130,14 +152,16 @@ public class DialogBoxWithCaptionButton extends DialogBox {
 		// event.cancel();
 		// }
 
-		if (!event.isCanceled() && (event.getTypeInt() == Event.ONCLICK)
-				&& isCloseEvent(nativeEvent)) {
-			closeWindow();
-		}
+		if (getShowCloseEscOrCross()) {
+			if (!event.isCanceled() && (event.getTypeInt() == Event.ONCLICK)
+					&& isCloseEvent(nativeEvent)) {
+				closeWindow();
+			}
 
-		if ((event.getTypeInt() == Event.ONKEYUP)
-				&& (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE)) {
-			closeWindow();
+			if ((event.getTypeInt() == Event.ONKEYUP)
+					&& (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE)) {
+				closeWindow();
+			}
 		}
 
 		super.onPreviewNativeEvent(event);

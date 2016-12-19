@@ -47,6 +47,7 @@
 						<xs:attribute name="width" type="xs:positiveInteger" />
 						<xs:attribute name="height" type="xs:positiveInteger" />
 						<xs:attribute name="show_close_bottom_button" type="xs:boolean" />
+						<xs:attribute name="show_close_esc_or_cross" type="xs:boolean" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="server" minOccurs="0">

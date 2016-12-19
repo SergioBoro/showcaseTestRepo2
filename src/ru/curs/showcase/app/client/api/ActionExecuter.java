@@ -198,24 +198,35 @@ public final class ActionExecuter {
 				if (mwi.getCaption() != null) {
 					modWind =
 						new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
-								mwi.getHeight(), mwi.getShowCloseBottomButton());
+								mwi.getHeight(), mwi.getShowCloseBottomButton(),
+								mwi.getShowCloseEscOrCross());
 				} else {
 
 					if (mwi.getCaption() != null) {
 
 						modWind =
 							new WindowWithDataPanelElement(mwi.getCaption(),
-									mwi.getShowCloseBottomButton());
+									mwi.getShowCloseBottomButton(), mwi.getShowCloseEscOrCross());
 
 					} else {
-						modWind = new WindowWithDataPanelElement(mwi.getShowCloseBottomButton());
+						modWind =
+							new WindowWithDataPanelElement(mwi.getShowCloseBottomButton(),
+									mwi.getShowCloseEscOrCross());
 					}
 
 				}
 
 			} else {
-				modWind = new WindowWithDataPanelElement(false);
+				modWind = new WindowWithDataPanelElement(false, true);
 			}
+
+			// modWind.addCloseHandler(new CloseHandler<PopupPanel>() {
+			// @Override
+			// public void onClose(CloseEvent<PopupPanel> arg0) {
+			// MessageBox.showSimpleMessage("Message",
+			// "Are you sure? Data could be lost!");
+			// }
+			// });
 
 			modWind.showModalWindow(bep);
 
@@ -276,7 +287,7 @@ public final class ActionExecuter {
 	}
 
 	private static void handleNavigatorBlock(final Action ac) {
-
+		
 		if (ac.getNavigatorElementLink() != null) {
 
 			// }
