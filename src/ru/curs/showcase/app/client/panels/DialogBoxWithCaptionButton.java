@@ -60,25 +60,24 @@ public class DialogBoxWithCaptionButton extends DialogBox {
 	private final HorizontalPanel captionPanel = new HorizontalPanel();
 
 	/**
-	 * Переменная определяющая, будет ли срабатывать нажатие на крестик в правом
-	 * верхнем углу модального окна для его закрытия и будет ли закрыто окно при
-	 * нажатии на кнопку Esc клавиатуры.
+	 * Переменная определяющая,будет ли закрыто окно при нажатии на кнопку Esc
+	 * клавиатуры.
 	 */
-	private Boolean showCloseEscOrCross;
+	private Boolean closeOnEsc;
 
 	/**
-	 * @param ashowCloseEscOrCross
-	 *            the showCloseEscOrCross to set
+	 * @param aCloseOnEsc
+	 *            the closeOnEsc to set
 	 */
-	public final void setShowCloseEscOrCross(final Boolean ashowCloseEscOrCross) {
-		this.showCloseEscOrCross = ashowCloseEscOrCross;
+	public final void setCloseOnEsc(final Boolean aCloseOnEsc) {
+		closeOnEsc = aCloseOnEsc;
 	}
 
 	/**
-	 * @return the showCloseBottomButton
+	 * @return the closeOnEsc
 	 */
-	public Boolean getShowCloseEscOrCross() {
-		return showCloseEscOrCross;
+	public Boolean getCloseOnEsc() {
+		return closeOnEsc;
 	}
 
 	/**
@@ -152,12 +151,12 @@ public class DialogBoxWithCaptionButton extends DialogBox {
 		// event.cancel();
 		// }
 
-		if (getShowCloseEscOrCross()) {
-			if (!event.isCanceled() && (event.getTypeInt() == Event.ONCLICK)
-					&& isCloseEvent(nativeEvent)) {
-				closeWindow();
-			}
+		if (!event.isCanceled() && (event.getTypeInt() == Event.ONCLICK)
+				&& isCloseEvent(nativeEvent)) {
+			closeWindow();
+		}
 
+		if (getCloseOnEsc()) {
 			if ((event.getTypeInt() == Event.ONKEYUP)
 					&& (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE)) {
 				closeWindow();

@@ -35,11 +35,9 @@ public final class ModalWindowInfo implements SerializableElement, GWTClonable, 
 	private Boolean showCloseBottomButton = false;
 
 	/**
-	 * Признак того, будет ли срабатывать крестик для закрытия формы,
-	 * расположенный в верхнем правом углу окна, и будет ли при этом срабатывать
-	 * кнопка ESC клавиатуры для закрытия окна.
+	 * Признак того, будет срабатывать кнопка ESC клавиатуры для закрытия окна.
 	 */
-	private Boolean showCloseEscOrCross = true;
+	private Boolean closeOnEsc = true;
 
 	public String getCaption() {
 		return caption;
@@ -73,12 +71,12 @@ public final class ModalWindowInfo implements SerializableElement, GWTClonable, 
 		showCloseBottomButton = aShowCloseBottomButton;
 	}
 
-	public Boolean getShowCloseEscOrCross() {
-		return showCloseEscOrCross;
+	public Boolean getCloseOnEsc() {
+		return closeOnEsc;
 	}
 
-	public void setShowCloseEscOrCross(final Boolean aShowCloseEscOrCross) {
-		showCloseEscOrCross = aShowCloseEscOrCross;
+	public void setCloseOnEsc(final Boolean aCloseOnEsc) {
+		closeOnEsc = aCloseOnEsc;
 	}
 
 	@Override
@@ -88,6 +86,7 @@ public final class ModalWindowInfo implements SerializableElement, GWTClonable, 
 		res.height = height;
 		res.width = width;
 		res.showCloseBottomButton = showCloseBottomButton;
+		res.closeOnEsc = closeOnEsc;
 		return res;
 	}
 

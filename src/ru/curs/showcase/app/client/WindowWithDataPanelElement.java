@@ -52,26 +52,25 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 	}
 
 	public WindowWithDataPanelElement(final Boolean ashowCloseBottomButton,
-			final Boolean ashowCloseEscOrCross) {
+			final Boolean aCloseOnEsc) {
 		super();
 		setShowCloseBottomButton(ashowCloseBottomButton);
-		setShowCloseEscOrCross(ashowCloseEscOrCross);
+		setCloseOnEsc(aCloseOnEsc);
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
 				String.valueOf(Window.getClientHeight() - n100) + "px");
 	}
 
 	public WindowWithDataPanelElement(final String caption, final Boolean ashowCloseBottomButton,
-			final Boolean ashowCloseEscOrCross) {
+			final Boolean aCloseOnEsc) {
 		super(caption);
 		setShowCloseBottomButton(ashowCloseBottomButton);
-		setShowCloseEscOrCross(ashowCloseEscOrCross);
+		setCloseOnEsc(aCloseOnEsc);
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
 				String.valueOf(Window.getClientHeight() - n100) + "px");
 	}
 
 	public WindowWithDataPanelElement(final String caption, final Integer width1,
-			final Integer heigth1, final Boolean ashowCloseBottomButton,
-			final Boolean ashowCloseEscOrCross) {
+			final Integer heigth1, final Boolean ashowCloseBottomButton, final Boolean aCloseOnEsc) {
 
 		super(caption);
 
@@ -104,7 +103,7 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 
 		}
 		setShowCloseBottomButton(ashowCloseBottomButton);
-		setShowCloseEscOrCross(ashowCloseEscOrCross);
+		setCloseOnEsc(aCloseOnEsc);
 	}
 
 	// public WindowWithDataPanelElement(final boolean autoHide, final boolean
@@ -149,7 +148,7 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 					closeWindow();
 				}
 			});
-			
+
 			dialogContents.add(ok);
 			dialogContents.setCellHorizontalAlignment(ok, HasHorizontalAlignment.ALIGN_RIGHT);
 

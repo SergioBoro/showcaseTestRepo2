@@ -199,19 +199,19 @@ public final class ActionExecuter {
 					modWind =
 						new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
 								mwi.getHeight(), mwi.getShowCloseBottomButton(),
-								mwi.getShowCloseEscOrCross());
+								mwi.getCloseOnEsc());
 				} else {
 
 					if (mwi.getCaption() != null) {
 
 						modWind =
 							new WindowWithDataPanelElement(mwi.getCaption(),
-									mwi.getShowCloseBottomButton(), mwi.getShowCloseEscOrCross());
+									mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc());
 
 					} else {
 						modWind =
 							new WindowWithDataPanelElement(mwi.getShowCloseBottomButton(),
-									mwi.getShowCloseEscOrCross());
+									mwi.getCloseOnEsc());
 					}
 
 				}
@@ -287,7 +287,7 @@ public final class ActionExecuter {
 	}
 
 	private static void handleNavigatorBlock(final Action ac) {
-		
+
 		if (ac.getNavigatorElementLink() != null) {
 
 			// }

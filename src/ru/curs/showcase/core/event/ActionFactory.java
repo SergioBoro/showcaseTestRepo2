@@ -16,7 +16,7 @@ import ru.curs.showcase.util.xml.*;
  */
 public class ActionFactory extends SAXTagHandler {
 	private static final String SHOW_CLOSE_BOTTOM_BUTTON_TAG = "show_close_bottom_button";
-	private static final String SHOW_CLOSE_ESC_OR_CROSS_TAG = "show_close_esc_or_cross";
+	private static final String CLOSE_ON_ESC = "close_on_esc";
 	private static final String KEEP_USER_SETTINGS_TAG = "keep_user_settings";
 	private static final String PARTIAL_UPDATE_TAG = "partial_update";
 	private static final String CURRENT_LEVEL_UPDATE_TAG = "current_level_update";
@@ -202,9 +202,9 @@ public class ActionFactory extends SAXTagHandler {
 			value = attrs.getValue(SHOW_CLOSE_BOTTOM_BUTTON_TAG);
 			mwi.setShowCloseBottomButton(Boolean.parseBoolean(value));
 		}
-		if (attrs.getIndex(SHOW_CLOSE_ESC_OR_CROSS_TAG) > -1) {
-			value = attrs.getValue(SHOW_CLOSE_ESC_OR_CROSS_TAG);
-			mwi.setShowCloseEscOrCross(Boolean.parseBoolean(value));
+		if (attrs.getIndex(CLOSE_ON_ESC) > -1) {
+			value = attrs.getValue(CLOSE_ON_ESC);
+			mwi.setCloseOnEsc(Boolean.parseBoolean(value));
 		}
 		curAction.setModalWindowInfo(mwi);
 	}
