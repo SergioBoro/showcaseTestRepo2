@@ -65,9 +65,8 @@ public final class AuthServerUtils {
 			return false;
 		}
 		try {
-			URL server =
-				new URL(authServerURL
-						+ String.format("/login?sesid=%s&login=%s&pwd=%s", sesid, login, pwd));
+			URL server = new URL(authServerURL
+					+ String.format("/login?sesid=%s&login=%s&pwd=%s", sesid, login, pwd));
 			HttpURLConnection c = (HttpURLConnection) server.openConnection();
 			c.setRequestMethod(REQUEST_METHOD);
 			c.connect();
@@ -157,8 +156,8 @@ public final class AuthServerUtils {
 			return null;
 		}
 		try {
-			URL server =
-				new URL(authServerURL + String.format("/checkname?sesid=%s&name=%s", sesid, login));
+			URL server = new URL(
+					authServerURL + String.format("/checkname?sesid=%s&name=%s", sesid, login));
 			HttpURLConnection c = (HttpURLConnection) server.openConnection();
 			c.setRequestMethod(REQUEST_METHOD);
 			c.setDoInput(true);
@@ -199,20 +198,28 @@ public final class AuthServerUtils {
 		try {
 			URL server =
 				new URL(authServerURL + String.format("/isauthenticated?sesid=%s", sesid));
-			HttpURLConnection c = (HttpURLConnection) server.openConnection();
-			c.setRequestMethod(REQUEST_METHOD);
-			c.setDoInput(true);
-			c.connect();
-			if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				List<UserInfo> l = UserInfoUtils.parseStream(c.getInputStream());
-				if (l.isEmpty()) {
-					return null;
+
+			HttpURLConnection c = null;
+			try {
+				c = (HttpURLConnection) server.openConnection();
+				c.setRequestMethod(REQUEST_METHOD);
+				c.setDoInput(true);
+				c.connect();
+				if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
+					List<UserInfo> l = UserInfoUtils.parseStream(c.getInputStream());
+					if (l.isEmpty()) {
+						return null;
+					} else {
+						return l.get(0);
+					}
 				} else {
-					return l.get(0);
+					return null;
 				}
-			} else {
-				return null;
+			} finally {
+				if (c != null)
+					c.disconnect();
 			}
+
 		} catch (IllegalStateException | TransformerException | SecurityException
 				| IllegalFormatException | NullPointerException | IOException
 				| IndexOutOfBoundsException e) {
