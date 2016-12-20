@@ -99,12 +99,11 @@ public final class ShowcaseRestServlet extends HttpServlet {
 
 		response.setStatus(responcseData.getResponseCode());
 
-		LOGGER.info("Используется Rest WebService. \nВызвана процедура " + restProc
-				+ "\nТип запроса: " + requestType + "\nURL запроса: " + requestUrl
-				+ "\nUser Token: " + userToken + "\nAccept Language: " + acceptLanguage
-				+ "\nВходные данные: " + requestData + "\nURL-параметры запроса: "
-				+ requestURLParams + "\nHTTP-код ответа: " + responcseData.getResponseCode()
-				+ "\nВыходные данные: "
+		LOGGER.info("Using Rest WebService. \nCalled procedure: " + restProc + "\nRequest Type: "
+				+ requestType + "\nRequest URL: " + requestUrl + "\nUser Token: " + userToken
+				+ "\nAccept Language: " + acceptLanguage + "\nRequest Data: " + requestData
+				+ "\nRequest URL Params: " + requestURLParams + "\nResponse Code: "
+				+ responcseData.getResponseCode() + "\nResponse Data: "
 				+ StringEscapeUtils.unescapeJava(responcseData.getResponseData()));
 
 		// response.setStatus(201);

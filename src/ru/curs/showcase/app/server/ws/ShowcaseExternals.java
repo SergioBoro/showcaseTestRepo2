@@ -31,8 +31,7 @@ public class ShowcaseExternals {
 	public String handle(@WebParam(name = "request") final String request, @WebParam(
 			name = "procName") final String procName) throws ShowcaseExportException {
 		ExternalCommand command = new ExternalCommand(request, procName);
-		LOGGER.info("Используется Soap WebService, текстовый формат. \nВызвана процедура "
-				+ procName);
+		LOGGER.info("Using Soap WebService, text format. \nCalled procedure: " + procName);
 		return command.executeForExport();
 	}
 
@@ -57,7 +56,7 @@ public class ShowcaseExternals {
 
 		ExternalCommand command = new ExternalCommand(requestStr, procName);
 		String responseStr = command.executeForExport();
-		LOGGER.info("Используется Soap WebService, XML формат. \nВызвана процедура " + procName);
+		LOGGER.info("Using Soap WebService, XML format. \nCalled procedure: " + procName);
 		responseStr = "<responseAnyXML>" + responseStr + "</responseAnyXML>";
 		try {
 			Document doc = XMLUtils.stringToDocument(responseStr);
