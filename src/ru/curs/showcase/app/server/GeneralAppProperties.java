@@ -38,9 +38,11 @@ public class GeneralAppProperties {
 			getMap().put(key, value);
 		}
 
-		if (getProperty(UserDataUtils.RDBMS_PREFIX + UserDataUtils.CELESTA_CONNECTION_URL) == null) {
-			throw new SettingsFileRequiredPropException(AppInfoSingleton.getAppInfo()
-					.getUserdataRoot() + "/" + UserDataUtils.GENERALPROPFILENAME,
+		if (getProperty(
+				UserDataUtils.RDBMS_PREFIX + UserDataUtils.CELESTA_CONNECTION_URL) == null) {
+			throw new SettingsFileRequiredPropException(
+					AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+							+ UserDataUtils.GENERALPROPFILENAME,
 					UserDataUtils.RDBMS_PREFIX + UserDataUtils.CELESTA_CONNECTION_URL,
 					SettingsFileType.GENERAL_APP_PROPERTIES);
 		} else {
@@ -73,14 +75,14 @@ public class GeneralAppProperties {
 					result =
 						(Driver) Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
 				} else if (st == SQLServerType.MSSQL) {
-					result =
-						(Driver) Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver")
-								.newInstance();
+					result = (Driver) Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver")
+							.newInstance();
 				}
 
 				DriverManager.registerDriver(result);
-				DriverManager.getConnection(getProperty(UserDataUtils.RDBMS_PREFIX
-						+ UserDataUtils.CELESTA_CONNECTION_URL),
+				DriverManager.getConnection(
+						getProperty(
+								UserDataUtils.RDBMS_PREFIX + UserDataUtils.CELESTA_CONNECTION_URL),
 						getProperty(UserDataUtils.RDBMS_PREFIX
 								+ UserDataUtils.CELESTA_CONNECTION_USERNAME),
 						getProperty(UserDataUtils.RDBMS_PREFIX
@@ -93,23 +95,31 @@ public class GeneralAppProperties {
 		}
 
 		if (getProperty(SecurityParamsFactory.AUTH_SERVER_URL_PARAM) == null) {
-			throw new SettingsFileRequiredPropException(AppInfoSingleton.getAppInfo()
-					.getUserdataRoot() + "/" + UserDataUtils.GENERALPROPFILENAME,
+			throw new SettingsFileRequiredPropException(
+					AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
+							+ UserDataUtils.GENERALPROPFILENAME,
 					SecurityParamsFactory.AUTH_SERVER_URL_PARAM,
 					SettingsFileType.GENERAL_APP_PROPERTIES);
 		} else {
 			URL server;
+			HttpURLConnection c = null;
 			try {
 				server = new URL(getProperty(SecurityParamsFactory.AUTH_SERVER_URL_PARAM));
 
-				HttpURLConnection c = (HttpURLConnection) server.openConnection();
+				c = (HttpURLConnection) server.openConnection();
 				c.setRequestMethod("GET");
 				c.setReadTimeout(3000);
 				c.setDoInput(true);
+
 				c.connect();
+
 			} catch (IOException e) {
 				throw new RuntimeException(
 						"Невозможно подключиться к меллофону по указанному адресу", e);
+			} finally {
+				if (c != null) {
+					c.disconnect();
+				}
 			}
 		}
 	}
