@@ -26,8 +26,8 @@ public final class SecurityParamsFactory {
 	 * считать параметр MELLO_PHONE_URL_PARAM (AUTH_SERVER_URL_PARAM) из файла
 	 * app.properties.
 	 */
-	public static final String APP_PROP_READ_ERROR = "Не удалось считать " + AUTH_SERVER_URL_PARAM
-			+ " из app.properties";
+	public static final String APP_PROP_READ_ERROR =
+		"Не удалось считать " + AUTH_SERVER_URL_PARAM + " из app.properties";
 
 	/**
 	 * Имя параметра в файле настроек, содержащего локальный путь к mellophone
@@ -114,10 +114,11 @@ public final class SecurityParamsFactory {
 	public static String correctAuthGifSrcRequestInCaseOfInaccessibility(final String authGifSrc) {
 		String result = "";
 		URL server;
+		HttpURLConnection c = null;
 		try {
 			server = new URL(authGifSrc);
 
-			HttpURLConnection c = (HttpURLConnection) server.openConnection();
+			c = (HttpURLConnection) server.openConnection();
 			c.setRequestMethod("GET");
 			c.setDoInput(true);
 			c.connect();
@@ -130,6 +131,10 @@ public final class SecurityParamsFactory {
 
 			result = "";
 
+		} finally {
+			if (c != null) {
+				c.disconnect();
+			}
 		}
 		return result;
 
@@ -147,10 +152,11 @@ public final class SecurityParamsFactory {
 		String result = "";
 
 		URL server;
+		HttpURLConnection c = null;
 		try {
 			server = new URL(getAuthServerUrl() + "/importgroupsproviders");
 
-			HttpURLConnection c = (HttpURLConnection) server.openConnection();
+			c = (HttpURLConnection) server.openConnection();
 			c.setRequestMethod("GET");
 			c.setDoInput(true);
 			c.connect();
@@ -174,6 +180,10 @@ public final class SecurityParamsFactory {
 		} catch (IOException e) {
 
 			result = "";
+		} finally {
+			if (c != null) {
+				c.disconnect();
+			}
 		}
 
 		return result;

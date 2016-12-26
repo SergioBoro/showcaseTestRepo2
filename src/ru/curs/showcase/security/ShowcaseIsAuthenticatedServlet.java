@@ -40,25 +40,34 @@ public class ShowcaseIsAuthenticatedServlet extends HttpServlet {
 		}
 	}
 
-	private UserInfo connectToAuthServer(final String url, final String sesid) throws IOException,
-			ServletException {
-		URL server = new URL(url + String.format("/isauthenticated?sesid=%s", sesid));
-		HttpURLConnection c = (HttpURLConnection) server.openConnection();
-		c.setRequestMethod("GET");
-		c.setDoInput(true);
-		c.connect();
-		UserInfo ud = null;
-		if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
-			try {
-				List<UserInfo> l = UserInfoUtils.parseStream(c.getInputStream());
-				ud = l.get(0);
-				ud.setResponseCode(c.getResponseCode());
-			} catch (TransformerException e) {
-				throw new ServletException(
-						AuthServerUtils.AUTH_SERVER_DATA_ERROR + e.getMessage(), e);
+	private UserInfo connectToAuthServer(final String url, final String sesid)
+			throws IOException, ServletException {
+		HttpURLConnection c = null;
+		try {
+			URL server = new URL(url + String.format("/isauthenticated?sesid=%s", sesid));
+			c = (HttpURLConnection) server.openConnection();
+			c.setRequestMethod("GET");
+			c.setDoInput(true);
+			c.connect();
+			UserInfo ud = null;
+			if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				try {
+					List<UserInfo> l = UserInfoUtils.parseStream(c.getInputStream());
+					ud = l.get(0);
+					ud.setResponseCode(c.getResponseCode());
+				} catch (TransformerException e) {
+					throw new ServletException(
+							AuthServerUtils.AUTH_SERVER_DATA_ERROR + e.getMessage(), e);
+				}
 			}
+			return ud;
+		} finally {
+			if (c != null) {
+				c.disconnect();
+			}
+
 		}
-		return ud;
+
 	}
 
 	private void prepareGoodResponce(final HttpServletResponse response, final UserInfo ud,
@@ -72,9 +81,8 @@ public class ShowcaseIsAuthenticatedServlet extends HttpServlet {
 		final Integer n2 = 100;
 		final Integer n3 = 754658923;
 		Random r = new Random();
-		String pwd =
-			"default_value" + r.nextInt(n3) + "AXCVGTEREW" + r.nextInt(n1) + "nbgfredsc"
-					+ r.nextInt(n2);
+		String pwd = "default_value" + r.nextInt(n3) + "AXCVGTEREW" + r.nextInt(n1) + "nbgfredsc"
+				+ r.nextInt(n2);
 
 		if (AppInfoSingleton.getAppInfo().getSessionInfoMap().get(sesid) == null) {
 			SessionInfo sesInfo = new SessionInfo();

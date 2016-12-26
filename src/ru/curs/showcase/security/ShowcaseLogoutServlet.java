@@ -70,6 +70,11 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 				if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 					LOGGER.info(String.format(ERROR_LOGOUT_INFO, sesid));
 				}
+			} finally {
+				if (c != null) {
+					c.disconnect();
+				}
+
 			}
 
 		}

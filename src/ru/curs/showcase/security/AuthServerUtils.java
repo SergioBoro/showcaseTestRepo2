@@ -64,15 +64,20 @@ public final class AuthServerUtils {
 		if (authServerURL == null) {
 			return false;
 		}
+		HttpURLConnection c = null;
 		try {
 			URL server = new URL(authServerURL
 					+ String.format("/login?sesid=%s&login=%s&pwd=%s", sesid, login, pwd));
-			HttpURLConnection c = (HttpURLConnection) server.openConnection();
+			c = (HttpURLConnection) server.openConnection();
 			c.setRequestMethod(REQUEST_METHOD);
 			c.connect();
 			return c.getResponseCode() == HttpURLConnection.HTTP_OK;
 		} catch (IOException e) {
 			return false;
+		} finally {
+			if (c != null) {
+				c.disconnect();
+			}
 		}
 	}
 
@@ -84,9 +89,10 @@ public final class AuthServerUtils {
 	 */
 	public void logout(final String sesid) {
 		if (authServerURL != null) {
+			HttpURLConnection c = null;
 			try {
 				URL server = new URL(authServerURL + String.format("/logout?sesid=%s", sesid));
-				HttpURLConnection c = (HttpURLConnection) server.openConnection();
+				c = (HttpURLConnection) server.openConnection();
 				c.setRequestMethod(REQUEST_METHOD);
 				c.connect();
 				c.getResponseCode();
@@ -95,7 +101,12 @@ public final class AuthServerUtils {
 				if (AppInfoSingleton.getAppInfo().isEnableLogLevelWarning()) {
 					LOGGER.warn(LOGOUT_WARN);
 				}
+			} finally {
+				if (c != null) {
+					c.disconnect();
+				}
 			}
+
 		}
 	}
 
@@ -109,14 +120,19 @@ public final class AuthServerUtils {
 		if (authServerURL == null) {
 			return false;
 		}
+		HttpURLConnection c = null;
 		try {
 			URL server = new URL(authServerURL + "/authentication.gif");
-			HttpURLConnection c = (HttpURLConnection) server.openConnection();
+			c = (HttpURLConnection) server.openConnection();
 			c.connect();
 			return c.getResponseCode() == HttpURLConnection.HTTP_OK
 					&& c.getContentType().startsWith("image/gif");
 		} catch (IOException e) {
 			return false;
+		} finally {
+			if (c != null) {
+				c.disconnect();
+			}
 		}
 	}
 
@@ -155,10 +171,11 @@ public final class AuthServerUtils {
 		if (authServerURL == null) {
 			return null;
 		}
+		HttpURLConnection c = null;
 		try {
 			URL server = new URL(
 					authServerURL + String.format("/checkname?sesid=%s&name=%s", sesid, login));
-			HttpURLConnection c = (HttpURLConnection) server.openConnection();
+			c = (HttpURLConnection) server.openConnection();
 			c.setRequestMethod(REQUEST_METHOD);
 			c.setDoInput(true);
 			c.connect();
@@ -180,6 +197,10 @@ public final class AuthServerUtils {
 				LOGGER.error("Проверка пользователя", e);
 			}
 			return null;
+		} finally {
+			if (c != null) {
+				c.disconnect();
+			}
 		}
 	}
 
