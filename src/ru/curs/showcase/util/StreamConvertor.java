@@ -28,7 +28,7 @@ public class StreamConvertor {
 
 	private void copy() throws IOException {
 		int chunk = 0;
-		final int bufLen = 512;
+		final int bufLen = 2048;
 		byte[] data = new byte[bufLen];
 
 		while (-1 != (chunk = input.read(data))) {
