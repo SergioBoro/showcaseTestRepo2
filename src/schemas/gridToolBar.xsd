@@ -8,6 +8,11 @@
 		<xs:attribute name="text" type="xs:string" />
 		<xs:attribute name="img" type="xs:string" />
 		<xs:attribute name="hint" type="xs:string" />
+		<xs:attribute name="popupText" type="xs:string" />
+		<xs:attribute name="style" type="xs:string" />
+		<xs:attribute name="className" type="xs:string" />
+ 		<xs:attribute name="iconClassName" type="xs:string" />
+		<xs:attribute name="id" type="xs:string" />
 		<xs:attribute name="visible" type="xs:boolean" default="true" />
 		<xs:attribute name="disable" type="xs:boolean" default="false" />
 	</xs:complexType>

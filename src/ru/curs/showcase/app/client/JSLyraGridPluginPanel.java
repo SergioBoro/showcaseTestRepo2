@@ -5,15 +5,9 @@ import java.util.*;
 import com.google.gwt.core.client.*;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
-import com.sencha.gxt.core.client.util.IconHelper;
-import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -29,7 +23,7 @@ import ru.curs.showcase.app.client.utils.*;
 /**
  * Класс-адаптер панели с внешним плагином типа JSLyraGrid.
  */
-public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
+public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 	private static final String PROC100 = "100%";
 
 	private static final String STRING_SELECTED_RECORD_IDS_SEPARATOR = "D13&82#9g7";
@@ -50,11 +44,6 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 	private final HorizontalPanel hpToolbar = new HorizontalPanel();
 	private final HorizontalPanel hpFooter = new HorizontalPanel();
 
-	private final MessagePopup mp = new MessagePopup(
-			// AppCurrContext.getInstance().getBundleMap().get("grid_message_popup_export_to_excel"));
-			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-					"Export to Excel is running. It may take a few minutes. Click here to hide the message."));
-
 	/**
 	 * Основная фабрика для GWT сериализации.
 	 */
@@ -70,6 +59,12 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 	}
 
 	private LyraGridMetadata gridMetadata = null;
+
+	@Override
+	public GridMetadata getGridMetadata() {
+		return gridMetadata;
+	}
+
 	private String stringSelectedRecordIds = null;
 	private boolean isFirstLoading = true;
 
@@ -134,6 +129,7 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 															$wnd.gwtShowMessageLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginShowMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtShowErrorMessageLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginShowErrorMessage(Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtSetOldPositionLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginSetOldPosition(Ljava/lang/String;Ljava/lang/String;);
+		  											        $wnd.gwtToolbarRunAction = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginToolbarRunAction(Ljava/lang/String;Ljava/lang/String;);
 															}-*/;
 
 	// CHECKSTYLE:ON
@@ -277,10 +273,6 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 	@Override
 	protected void internalResetLocalContext() {
 		localContext = null;
-	}
-
-	private String getDivIdPlugin() {
-		return getElementInfo().getFullId() + Constants.PLUGIN_DIV_ID_SUFFIX;
 	}
 
 	private void beforeUpdateGrid() {
@@ -501,17 +493,19 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 
 		ToolBarHelper toolBarHelper = getToolBarHelper();
 
-		if (gridMetadata.getUISettings().getGridWidth().contains("px")) {
-			int ind = gridMetadata.getUISettings().getGridWidth().indexOf("px");
-			String str = gridMetadata.getUISettings().getGridWidth().substring(0, ind).trim();
-			int number = Integer.parseInt(str);
-			number = number + 2;
-
-			hpToolbar.setWidth(number + "px");
-			toolBarHelper.getToolBarPanel().setWidth(number + "px");
-		} else {
-			hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
-		}
+		// if (gridMetadata.getUISettings().getGridWidth().contains("px")) {
+		// int ind = gridMetadata.getUISettings().getGridWidth().indexOf("px");
+		// String str = gridMetadata.getUISettings().getGridWidth().substring(0,
+		// ind).trim();
+		// int number = Integer.parseInt(str);
+		// number = number + 2;
+		//
+		// hpToolbar.setWidth(number + "px");
+		// toolBarHelper.getToolBarPanel().setWidth(number + "px");
+		// } else {
+		// hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
+		// }
+		hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
 
 		generalHp.setWidth("100%");
 		hpToolbar.add(toolBarHelper.getToolBarPanel());
@@ -527,8 +521,7 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 
 		try {
 
-			runGrid(gridMetadata.getJSInfo().getCreateProc(), params,
-					gridMetadata.getJSInfo().getRequiredJS().toArray());
+			runGrid(gridMetadata.getJSInfo().getCreateProc(), params);
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
 				MessageBox.showMessageWithDetails(
@@ -551,14 +544,15 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 
 	// CHECKSTYLE:ON
 
-	private native void runGrid(final String procName, final String params,
-			final Object[] list) /*-{
-		if (list != null) {
-			for (var x = 0; x < list.length; x++) {
-				$wnd.safeIncludeJS(list[x]);
-			}
+	private native void runGrid(final String procName, final String params) /*-{
+
+		try {
+			$wnd.eval(procName + "(" + params + ");");
+		} catch (e) {
+			$wnd.safeIncludeJS("js/ui/grids/lyraDGrid.js");
+			$wnd.eval(procName + "(" + params + ");");
 		}
-		$wnd.eval(procName + "(" + params + ");");
+
 	}-*/;
 
 	/**
@@ -933,7 +927,8 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	private void runAction(final Action ac) {
+	@Override
+	public void runAction(final Action ac) {
 		if (ac != null) {
 			AppCurrContext.getInstance().setCurrentActionFromElement(ac, gridMetadata);
 			ActionExecuter.execAction();
@@ -1158,7 +1153,16 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 	 * @param exportType
 	 *            GridToExcelExportType
 	 */
-	private void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
+	@Override
+	public void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
+
+		MessageBox.showMessageWithDetails("Информация", "Данный функционал временно отключен", "",
+				MessageType.INFO, false, null);
+
+		if (1 == 1) {
+			return;
+		}
+
 		DownloadHelper dh = DownloadHelper.getInstance();
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
 		dh.clear();
@@ -1182,11 +1186,7 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 
 			dh.submit();
 
-			mp.hide();
-			mp.show(wFrom);
-
 		} catch (SerializationException e) {
-			mp.hide();
 			MessageBox.showSimpleMessage(
 					// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_export_excel"),
 					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
@@ -1201,7 +1201,8 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 	 * @return ClipboardDialog
 	 * 
 	 */
-	private ClipboardDialog copyToClipboard() {
+	@Override
+	public ClipboardDialog copyToClipboard() {
 		String params = "'" + getDivIdPlugin() + "'";
 		String s = pluginProc(gridMetadata.getJSInfo().getClipboardProc(), params);
 
@@ -1223,167 +1224,30 @@ public class JSLyraGridPluginPanel extends BasicElementPanelBasis {
 		return result;
 	}
 
-	// CHECKSTYLE:OFF
-	private void addStaticItemToToolBar(final ToolBar toolBar) {
-		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
-			final TextButton exportToExcelCurrentPage =
-				new TextButton("",
-						IconHelper.getImageResource(
-								UriUtils.fromSafeConstant(
-										Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE),
-								16, 16));
-
-			exportToExcelCurrentPage.setTitle(
-					// AppCurrContext.getInstance().getBundleMap().get("grid_caption_export_to_excel_current_page"));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Export current page to Excel"));
-			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(final SelectEvent event) {
-					MessageBox.showMessageWithDetails("Информация",
-							"Данный функционал временно отключен", "", MessageType.INFO, false,
-							null);
-
-					// exportToExcel(exportToExcelCurrentPage,
-					// GridToExcelExportType.CURRENTPAGE);
-				}
-			});
-			toolBar.add(exportToExcelCurrentPage);
-		}
-		// if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
-		// final TextButton exportToExcelAll =
-		// new TextButton("", IconHelper.getImageResource(
-		// UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL),
-		// 16,
-		// 16));
-		//
-		// exportToExcelAll.setTitle(AppCurrContext.getInstance().getBundleMap()
-		// .get("grid_caption_export_to_excel_all"));
-		// exportToExcelAll.addSelectHandler(new SelectHandler() {
-		// @Override
-		// public void onSelect(final SelectEvent event) {
-		// exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
-		// }
-		// });
-		// toolBar.add(exportToExcelAll);
-		// }
-		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
-			final TextButton copyToClipboard = new TextButton("", IconHelper.getImageResource(
-					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
-
-			copyToClipboard.setTitle(
-					// AppCurrContext.getInstance().getBundleMap().get("grid_caption_copy_to_clipboard"));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Copy to clipboard"));
-			copyToClipboard.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(final SelectEvent event) {
-					copyToClipboard();
-				}
-			});
-			toolBar.add(copyToClipboard);
-		}
-
-		if (gridMetadata.getUISettings().isVisibleFilter()) {
-
-			// lyra
-
-			// final TextButton filter =
-			// new TextButton("", IconHelper.getImageResource(
-			// UriUtils.fromSafeConstant(Constants.GRID_IMAGE_FILTER), 16, 16));
-			// filter.setTitle(AppCurrContext.getInstance().getBundleMap().get("grid_caption_filter"));
-			// final JSLyraGridPluginPanel lyraGridPanel = this;
-			// filter.addSelectHandler(new SelectHandler() {
-			// @Override
-			// public void onSelect(final SelectEvent event) {
-			// new JSFilter(lyraGridPanel);
-			// }
-			// });
-			// toolBar.add(filter);
-		}
-
-		if (getElementInfo().getProcByType(DataPanelElementProcType.ADDRECORD) != null) {
-			final TextButton addRecord = new TextButton("", IconHelper.getImageResource(
-					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_ADD_RECORD), 16, 16));
-			addRecord.setTitle(
-					// AppCurrContext.getInstance().getBundleMap().get("grid_caption_add_record"));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Add Record"));
-			addRecord.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(final SelectEvent event) {
-					editorAddRecord();
-				}
-			});
-			toolBar.add(addRecord);
-		}
-		if ((getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null)
-				&& gridMetadata.getUISettings().isVisibleSave()) {
-			final TextButton save = new TextButton("", IconHelper.getImageResource(
-					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_SAVE), 16, 16));
-			save.setTitle(
-					// AppCurrContext.getInstance().getBundleMap().get("grid_caption_save"));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Save"));
-			save.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(final SelectEvent event) {
-					editorSave();
-				}
-			});
-			toolBar.add(save);
-		}
-		if ((getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null)
-				&& gridMetadata.getUISettings().isVisibleRevert()) {
-			final TextButton revert = new TextButton("", IconHelper.getImageResource(
-					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_REVERT), 16, 16));
-			revert.setTitle(
-					// AppCurrContext.getInstance().getBundleMap().get("grid_caption_revert"));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Undo"));
-			revert.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(final SelectEvent event) {
-					editorRevert();
-				}
-			});
-			toolBar.add(revert);
-		}
-
-	}
-
 	// CHECKSTYLE:ON
 
-	private ToolBarHelper getToolBarHelper() {
+	@Override
+	public ToolBarHelper getToolBarHelper() {
 		if (this.toolBarHelper == null) {
-			final JSLyraGridPluginPanel liveGridPanel = this;
-			this.toolBarHelper = new ToolBarHelper(dataService, this) {
-
-				@Override
-				public void addStaticItemToToolBar(final ToolBar toolBar) {
-					liveGridPanel.addStaticItemToToolBar(toolBar);
-				}
-
-				@Override
-				public void runAction(final Action ac) {
-					liveGridPanel.runAction(ac);
-				}
-			};
+			this.toolBarHelper = new ToolBarHelper(dataService, this);
 		}
 		return this.toolBarHelper;
 	}
 
-	private void editorAddRecord() {
+	@Override
+	public void editorAddRecord() {
 		String params = "'" + getDivIdPlugin() + "'";
 		pluginProc(gridMetadata.getJSInfo().getAddRecordProc(), params);
 	}
 
-	private void editorSave() {
+	@Override
+	public void editorSave() {
 		String params = "'" + getDivIdPlugin() + "'";
 		pluginProc(gridMetadata.getJSInfo().getSaveProc(), params);
 	}
 
-	private void editorRevert() {
+	@Override
+	public void editorRevert() {
 		String params = "'" + getDivIdPlugin() + "'";
 		pluginProc(gridMetadata.getJSInfo().getRevertProc(), params);
 	}

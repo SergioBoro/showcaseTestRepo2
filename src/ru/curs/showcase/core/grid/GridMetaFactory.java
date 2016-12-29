@@ -928,9 +928,6 @@ public class GridMetaFactory extends CompBasedElementFactory {
 		result.getJSInfo()
 				.setChildLevelUpdate("childLevelUpdate" + TextUtils.capitalizeWord(plugin));
 
-		result.getJSInfo().getRequiredJS()
-				.add(String.format("%s/%s", GridUtils.GRID_DIR, plugin + ".js"));
-
 	}
 
 	public int buildTotalCount() {

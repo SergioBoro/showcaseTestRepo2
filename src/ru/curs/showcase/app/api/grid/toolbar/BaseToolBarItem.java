@@ -1,19 +1,24 @@
 package ru.curs.showcase.app.api.grid.toolbar;
 
-
 /**
- * Абстрактный базовый класс элемента (элемент, группа) панели инструментов грида.
+ * Абстрактный базовый класс элемента (элемент, группа) панели инструментов
+ * грида.
  * 
  * @author bogatov
  * 
  */
 public abstract class BaseToolBarItem extends AbstractToolBarItem {
 	private static final long serialVersionUID = 1L;
-	private String text;
+	private String text = "";
 	private String img;
 	private Boolean visible = Boolean.TRUE;
 	private Boolean disable = Boolean.FALSE;
-	private String hint;
+	private String hint = "";
+	private String style = "";
+	private String className = "";
+	private String iconClassName = "";
+	private String id = null;
+	private String popupText = null;
 
 	public String getText() {
 		return text;
@@ -53,5 +58,45 @@ public abstract class BaseToolBarItem extends AbstractToolBarItem {
 
 	public void setHint(final String sHint) {
 		this.hint = sHint;
+	}
+
+	public String getStyle() {
+		return style;
+	}
+
+	public void setStyle(final String aStyle) {
+		style = aStyle;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(final String aClassName) {
+		className = aClassName;
+	}
+
+	public String getIconClassName() {
+		return iconClassName;
+	}
+
+	public void setIconClassName(final String aIconClassName) {
+		iconClassName = aIconClassName;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(final String aId) {
+		id = aId;
+	}
+
+	public String getPopupText() {
+		return popupText;
+	}
+
+	public void setPopupText(final String aPopupText) {
+		popupText = aPopupText;
 	}
 }

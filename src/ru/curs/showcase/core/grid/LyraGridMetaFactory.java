@@ -367,9 +367,6 @@ public class LyraGridMetaFactory {
 		result.getJSInfo().setClipboardProc("clipboard" + TextUtils.capitalizeWord(plugin));
 		result.getJSInfo().setPartialUpdate("partialUpdate" + TextUtils.capitalizeWord(plugin));
 
-		result.getJSInfo().getRequiredJS()
-				.add(String.format("%s/%s", GridUtils.GRID_DIR, plugin + ".js"));
-
 	}
 
 	private void setupUnused() {

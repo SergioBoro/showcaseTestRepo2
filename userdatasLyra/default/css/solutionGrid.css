@@ -1,4 +1,4 @@
-п»ї.webmain-DataGrid {
+.webmain-DataGrid {
     border: 1px solid white;  
 /*    border: 3px solid black;    */
     
@@ -40,7 +40,7 @@
 }
 .webmain-SmartGrid .headerGap {
     width: 2px;
-    min-width: 0px; /* РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ */
+    min-width: 0px; /* обязательно */
     background-color: #FFFFFF;
 }
 
@@ -360,6 +360,13 @@ max-height: 2em;
 
 
 
+.testJSToolbarButton {
+    background-image: url('../resources/imagesingrid/test.jpg');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    text-align: center;"
+}
 
 
 

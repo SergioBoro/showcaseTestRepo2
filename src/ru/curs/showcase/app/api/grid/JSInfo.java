@@ -1,7 +1,5 @@
 package ru.curs.showcase.app.api.grid;
 
-import java.util.*;
-
 import javax.xml.bind.annotation.*;
 
 import ru.curs.showcase.app.api.SerializableElement;
@@ -23,8 +21,6 @@ public class JSInfo implements SerializableElement {
 	private String partialUpdate;
 	private String currentLevelUpdate;
 	private String childLevelUpdate;
-
-	private List<String> requiredJS = new ArrayList<String>();
 
 	private FilterMultiselector filterMultiselector = null;
 
@@ -98,14 +94,6 @@ public class JSInfo implements SerializableElement {
 
 	public void setChildLevelUpdate(final String aChildLevelUpdate) {
 		childLevelUpdate = aChildLevelUpdate;
-	}
-
-	public List<String> getRequiredJS() {
-		return requiredJS;
-	}
-
-	public void setRequiredJS(final List<String> aRequiredJS) {
-		requiredJS = aRequiredJS;
 	}
 
 	public FilterMultiselector getFilterMultiselector() {

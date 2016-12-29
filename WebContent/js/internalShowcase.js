@@ -341,6 +341,15 @@ function measureDownloadSpeed(contentSize)
 function preloadGrids() 
 {
 	require([
+             "dijit/registry",
+	         "dijit/Toolbar",
+	         "dojo/_base/array",
+             "dijit/ToolbarSeparator",
+             "dijit/DropDownMenu", 
+             "dijit/MenuItem",
+             "dijit/popup",
+             "dojo/fx",
+	         
 	         "dijit/form/Button",
 	         "dijit/form/DropDownButton",
 	         "dijit/form/ComboButton",
@@ -386,7 +395,21 @@ function preloadGrids()
 	     	 "dojo/dom-construct",	     
 	     	 "dojo/when",	         
 			 "dojo/domReady!"
-	         ],	function(){});
+	     	 
+	         ],	function(){
+		
+		safeIncludeJS("js/ui/grids/toolbar.js");
+		safeIncludeJS("js/ui/grids/liveDGrid.js");
+		safeIncludeJS("js/ui/grids/pageDGrid.js");
+		safeIncludeJS("js/ui/grids/treeDGrid.js");
+		safeIncludeJS("js/ui/grids/lyraDGrid.js");
+		
+	});
+	
+	
+	
+	
+	
 }
 
 

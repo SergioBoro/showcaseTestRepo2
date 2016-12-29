@@ -31366,13 +31366,6 @@ AS
 BEGIN
 
 
---WAITFOR DELAY '00:00:05';
-
-
---insert Debug (context) values (NULL)
---insert Debug (context) values (NULL)
---insert Debug (context) values (@session_context)
-
 
 declare
 	@id nvarchar(50)='',
@@ -31388,11 +31381,26 @@ if @columnName is null begin
 	set @columnName = ''
 end
 
-set @data='
+
+
+DECLARE @data_str NVARCHAR(MAX);
+
+set @data_str='
+
+<!--     
+	<gridtoolbar className="testJSToolbar" style="font-style: italic;">
+  style="width: 50%;"
+-->
+
 	<gridtoolbar>
 
+<!--     
+-->
 
-		<item text="Серверное действие" img="imagesingrid/test.jpg" hint="Частичное обновление">
+		<item text="Серверное действие"  hint="Серверное действие"
+            iconClassName="testJSToolbarButton"  >
+   
+
                         <action >
                             <main_context>current</main_context>                        
 
@@ -31404,11 +31412,17 @@ set @data='
 															</activity>
                             </server>
                         </action>
+
+
 		</item>
 
 
-		<item text="Частичное обновление" img="imagesingrid/test.jpg" hint="Частичное обновление">
-			<action keep_user_settings="true" partial_update="false">
+
+
+		<item text="Частичное обновление"  hint="Частичное обновление"
+          className="awaiting-response" iconClassName="testJSToolbarButton" popupText="Всплывающее сообщение">
+
+			<action keep_user_settings="true" partial_update="false"       >
 				<main_context>current</main_context>
 				<datapanel type="current" tab="current">
 
@@ -31421,7 +31435,7 @@ set @data='
 		</item>
 
 
-		<item text="Полное обновление" img="imagesingrid/test.jpg" hint="Полное обновление">
+		<item text="Полное обновление" hint="Полное обновление"  style="background-color: blue;">
 			<action>
 				<main_context>current</main_context>
 				<datapanel type="current" tab="current">
@@ -31432,52 +31446,70 @@ set @data='
 			</action>
 		</item>
 
+		<separator/>
+
+		<item text="Обновление текущего уровня"  hint="Обновление текущего уровня">
+			<action keep_user_settings="true"   current_level_update = "true"   >
+				<main_context>current</main_context>
+				<datapanel type="current" tab="current">
+
+					<element id="441" keep_user_settings="true"  current_level_update = "true"  >
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+
+				</datapanel>
+			</action>
+		</item>
+
+
+
+		<item text="Обновление нижнего уровня"  hint="Обновление нижнего уровня"
+          iconClassName="testJSToolbarButton">
+			<action keep_user_settings="true"  child_level_update = "true">
+				<main_context>current</main_context>
+				<datapanel type="current" tab="current">
+
+					<element id="441" keep_user_settings="true"   child_level_update = "true"  >
+						<add_context>ElementId='+@elementId+' Name='+@columnName+', Id='+@id+'</add_context>
+					</element>
+
+				</datapanel>
+			</action>
+		</item>
+
+
 
 
 
 		<separator/>
-		<item text="Item1" img="imagesingrid/test.jpg" hint="Item one" disable="false">
-			<action show_in="MODAL_WINDOW">
-				<main_context>current</main_context>
-				<modalwindow caption="Item1 click" height="200" width="600"/>
-				<datapanel type="current" tab="current">
-					<element id="443">
-						<add_context>ElementId='+@elementId+', Столбец='+@columnName+', RecordId='+@id+'</add_context>
-					</element>
-				</datapanel>
-			</action>
+		<item text="Item1"  hint="Item one" disable="true" iconClassName="testJSToolbarButton">
 		</item>
-		<group text="Item2Group" >
-			<item text="Item21" hint="Item two" disable="true" />
+		<group text="Item2Group"   iconClassName="testJSToolbarButton" >
+			<item text="Item21" hint="Item two"  disable="true"/>
 			<separator/>
-			<item text="Item22" hint="Item three" disable="false">
+			<item text="Item22" hint="Item three"  iconClassName="testJSToolbarButton">
 				<action show_in="MODAL_WINDOW">
 					<main_context>current</main_context>
 					<modalwindow caption="Item22 click." height="200" width="600"/>
 					<datapanel type="current" tab="current">
 						<element id="443">
-							<add_context>ElementId='+@elementId+', Столбец='+@columnName+', RecordId='+@id+'</add_context>
+						  <add_context>ElementId='+@elementId+', Столбец='+@columnName+', RecordId='+@id+'</add_context>
 						</element>
 					</datapanel>
 				</action>
 			</item>
-			<group text="Item23Group" >
-				<item text="Item231" hint="Item two" disable="true" />
-				<separator/>
-				<item text="Item232" hint="Item three" disable="false">
-					<action show_in="MODAL_WINDOW">
-						<main_context>current</main_context>
-						<modalwindow caption="Item232 click." height="200" width="600"/>
-						<datapanel type="current" tab="current">
-							<element id="443">
-								<add_context>ElementId='+@elementId+', Столбец='+@columnName+', RecordId='+@id+'</add_context>
-							</element>
-						</datapanel>
-					</action>
-				</item>
-			</group>
 		</group>
+
+
+
     </gridtoolbar>';
+
+
+SET @data = @data_str;
+
+
+RETURN 0;
+
 END
 GO
 /****** Object:  StoredProcedure [dbo].[save1_grid_new]    Script Date: 12/17/2015 10:36:54 ******/

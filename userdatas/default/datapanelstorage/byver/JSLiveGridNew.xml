@@ -6,24 +6,60 @@
 	</tab>
 	
 	
+<!--	
+	<tab id="44" name="Профилирование">
+		<element id ="441" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data"  
+		    plugin="pageDGrid">
+			<proc id="442" name="grid_new_meta" type="METADATA"/>
+			
+		</element>
+		
+		
+	</tab>
+
+-->
+
+
+
+
 	<tab id="44" name="Основной функционал">
-		<element id ="441" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data"  
-		    plugin="liveDGrid">
+		<element id ="441" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data">
 			<proc id="442" name="grid_new_meta" type="METADATA"/>
 			
 			<proc id="020101" name="toolbar_grid_new" type="TOOLBAR"/>
 			
-		    <proc id="11" name="addrecord1_grid_new" type="ADDRECORD" />		    
+<!--
+-->
+ 		    <proc id="11" name="addrecord1_grid_new" type="ADDRECORD" />		     
 		    <proc id="12" name="save1_grid_new" type="SAVE" />
 		    
-   			<proc id="14" name="partial_grid_new" type="PARTIALUPDATE" />		    
+   			<proc id="14" name="partial_grid_new" type="PARTIALUPDATE" />
+   			
+		    
 			
 		</element>
+		
+		
+<!--		
+		<element id ="4411" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data">
+			<proc id="4421" name="grid_new_meta" type="METADATA"/>
+			<proc id="0201011" name="toolbar_grid_new" type="TOOLBAR"/>
+ 		    <proc id="111" name="addrecord1_grid_new" type="ADDRECORD" />		     
+		    <proc id="121" name="save1_grid_new" type="SAVE" />
+   			<proc id="141" name="partial_grid_new" type="PARTIALUPDATE" />
+		</element>
+-->		
+		
+		
 		
 		<element id="443" type="webtext" proc="webtext/selectedRowWriter.py" hideOnLoad="true" />		 
 		<element id="444" type="webtext" proc="webtext_filter_and_add" hideOnLoad="true" />
 		
 	</tab>
+
+<!--
+			<proc id="procLiveGridExportData" name="extLiveGrid_exportData" type="EXPORTDATA" />
+-->
 
 
 	

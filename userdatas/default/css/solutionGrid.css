@@ -381,4 +381,23 @@ max-height: 2em;
 
 
 
+.ready {
+    background-color: blue !important;
+}
+.awaiting-response {
+    background-color: yellow !important;
+}
+
+
+.testJSToolbar {
+	font-weight: bold !important;
+}
+
+.testJSToolbarButton {
+    background-image: url('../resources/imagesingrid/test.jpg');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    text-align: center;"
+}
 

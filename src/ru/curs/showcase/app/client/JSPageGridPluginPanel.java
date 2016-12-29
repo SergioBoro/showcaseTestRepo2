@@ -9,7 +9,8 @@ import ru.curs.showcase.app.api.grid.GridContext;
  */
 public class JSPageGridPluginPanel extends JSLiveGridPluginPanel {
 
-	public JSPageGridPluginPanel(final CompositeContext context, final DataPanelElementInfo element) {
+	public JSPageGridPluginPanel(final CompositeContext context,
+			final DataPanelElementInfo element) {
 		super(context, element);
 
 	}
@@ -32,4 +33,18 @@ public class JSPageGridPluginPanel extends JSLiveGridPluginPanel {
 		result.setSubtype(DataPanelElementSubType.JS_PAGE_GRID);
 		return result;
 	}
+
+	@Override
+	protected native void runGrid(final String procName,
+			final String params) /*-{
+
+		try {
+			$wnd.eval(procName + "(" + params + ");");
+		} catch (e) {
+			$wnd.safeIncludeJS("js/ui/grids/pageDGrid.js");
+			$wnd.eval(procName + "(" + params + ");");
+		}
+
+	}-*/;
+
 }

@@ -27,6 +27,11 @@ public class GridToolBarFactory {
 	private static final String GRID_TOOLBAR_ITEM_DISABLE_ATTR = "disable";
 	private static final String GRID_TOOLBAR_ITEM_VISIBLE_ATTR = "visible";
 	private static final String GRID_TOOLBAR_ITEM_HINT_ATTR = "hint";
+	private static final String GRID_TOOLBAR_STYLE_ATTR = "style";
+	private static final String GRID_TOOLBAR_CLASSNAME_ATTR = "className";
+	private static final String GRID_TOOLBAR_ITEM_ICONCLASSNAME_ATTR = "iconClassName";
+	private static final String GRID_TOOLBAR_ITEM_ID_ATTR = "id";
+	private static final String GRID_TOOLBAR_ITEM_POPUPTEXT_ATTR = "popupText";
 	private static final String GRID_TOOLBAR_GROUP_TAG = "group";
 	private static final String GRID_TOOLBAR_SEPARATOR_TAG = "separator";
 
@@ -53,6 +58,14 @@ public class GridToolBarFactory {
 				final Attributes attr) throws SAXException {
 			if (GRID_TOOLBAR_TAG.equalsIgnoreCase(name)) {
 				this.gridToolBar = new GridToolBar();
+
+				if (attr.getValue(GRID_TOOLBAR_STYLE_ATTR) != null) {
+					this.gridToolBar.setStyle(attr.getValue(GRID_TOOLBAR_STYLE_ATTR));
+				}
+				if (attr.getValue(GRID_TOOLBAR_CLASSNAME_ATTR) != null) {
+					this.gridToolBar.setClassName(attr.getValue(GRID_TOOLBAR_CLASSNAME_ATTR));
+				}
+
 			} else if (GRID_TOOLBAR_ITEM_TAG.equalsIgnoreCase(name)) {
 				ToolBarItem itemToolBar = new ToolBarItem();
 				fillBaseItemByAttr(itemToolBar, attr);
@@ -101,25 +114,41 @@ public class GridToolBarFactory {
 		}
 
 		private void fillBaseItemByAttr(final BaseToolBarItem itemToolBar, final Attributes attr) {
-			if (attr.getValue(GRID_TOOLBAR_ITEM_TEXT_ATTR) != null)
+			if (attr.getValue(GRID_TOOLBAR_ITEM_TEXT_ATTR) != null) {
 				// Перевод с помощью Gettext
-				itemToolBar.setText(UserDataUtils.modifyVariables(attr
-						.getValue(GRID_TOOLBAR_ITEM_TEXT_ATTR)));
+				itemToolBar.setText(
+						UserDataUtils.modifyVariables(attr.getValue(GRID_TOOLBAR_ITEM_TEXT_ATTR)));
+			}
 			String img = attr.getValue(GRID_TOOLBAR_ITEM_IMG_ATTR);
 			if (img != null && !img.isEmpty()) {
-				img =
-					String.format("%s/%s",
-							UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR), img);
+				img = String.format("%s/%s",
+						UserDataUtils.getRequiredProp(UserDataUtils.IMAGES_IN_GRID_DIR), img);
 			}
 			itemToolBar.setImg(img);
-			itemToolBar.setDisable(cast(Boolean.class,
-					attr.getValue(GRID_TOOLBAR_ITEM_DISABLE_ATTR)));
-			itemToolBar.setVisible(cast(Boolean.class,
-					attr.getValue(GRID_TOOLBAR_ITEM_VISIBLE_ATTR)));
-			if (attr.getValue(GRID_TOOLBAR_ITEM_HINT_ATTR) != null)
+			itemToolBar.setDisable(
+					cast(Boolean.class, attr.getValue(GRID_TOOLBAR_ITEM_DISABLE_ATTR)));
+			itemToolBar.setVisible(
+					cast(Boolean.class, attr.getValue(GRID_TOOLBAR_ITEM_VISIBLE_ATTR)));
+			if (attr.getValue(GRID_TOOLBAR_ITEM_HINT_ATTR) != null) {
 				// Перевод с помощью Gettext
-				itemToolBar.setHint(UserDataUtils.modifyVariables(attr
-						.getValue(GRID_TOOLBAR_ITEM_HINT_ATTR)));
+				itemToolBar.setHint(
+						UserDataUtils.modifyVariables(attr.getValue(GRID_TOOLBAR_ITEM_HINT_ATTR)));
+			}
+			if (attr.getValue(GRID_TOOLBAR_STYLE_ATTR) != null) {
+				itemToolBar.setStyle(attr.getValue(GRID_TOOLBAR_STYLE_ATTR));
+			}
+			if (attr.getValue(GRID_TOOLBAR_CLASSNAME_ATTR) != null) {
+				itemToolBar.setClassName(attr.getValue(GRID_TOOLBAR_CLASSNAME_ATTR));
+			}
+			if (attr.getValue(GRID_TOOLBAR_ITEM_ICONCLASSNAME_ATTR) != null) {
+				itemToolBar.setIconClassName(attr.getValue(GRID_TOOLBAR_ITEM_ICONCLASSNAME_ATTR));
+			}
+			if (attr.getValue(GRID_TOOLBAR_ITEM_ID_ATTR) != null) {
+				itemToolBar.setId(attr.getValue(GRID_TOOLBAR_ITEM_ID_ATTR));
+			}
+			if (attr.getValue(GRID_TOOLBAR_ITEM_POPUPTEXT_ATTR) != null) {
+				itemToolBar.setPopupText(attr.getValue(GRID_TOOLBAR_ITEM_POPUPTEXT_ATTR));
+			}
 		}
 
 		@SuppressWarnings("unchecked")
@@ -130,8 +159,8 @@ public class GridToolBarFactory {
 				} else if (Boolean.class.isAssignableFrom(type)) {
 					return (T) Boolean.valueOf(value);
 				} else {
-					throw new UnsupportedOperationException("Not supported yet. Type=" + type
-							+ ", Value" + value);
+					throw new UnsupportedOperationException(
+							"Not supported yet. Type=" + type + ", Value" + value);
 				}
 			}
 			return null;
@@ -186,9 +215,8 @@ public class GridToolBarFactory {
 	}
 
 	public GridToolBar build() {
-		InputStream xml =
-			XMLUtils.xsdValidateAppDataSafe(TextUtils.stringToStream(rawData.getXmlData()),
-					"gridToolBar.xsd");
+		InputStream xml = XMLUtils.xsdValidateAppDataSafe(
+				TextUtils.stringToStream(rawData.getXmlData()), "gridToolBar.xsd");
 		XmlHandler handler = new XmlHandler();
 		SimpleSAX sax = new SimpleSAX(xml, handler, SAX_ERROR_MES);
 		sax.parse();

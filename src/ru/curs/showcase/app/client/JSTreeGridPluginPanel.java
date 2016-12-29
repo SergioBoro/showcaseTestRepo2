@@ -5,15 +5,9 @@ import java.util.*;
 import com.google.gwt.core.client.*;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
-import com.sencha.gxt.core.client.util.IconHelper;
-import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -29,7 +23,7 @@ import ru.curs.showcase.app.client.utils.*;
 /**
  * Класс-адаптер панели с внешним плагином типа JSTreeGrid.
  */
-public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
+public class JSTreeGridPluginPanel extends JSBaseGridPluginPanel {
 	private static final String PROC100 = "100%";
 
 	private static final String STRING_SELECTED_RECORD_IDS_SEPARATOR = "D13&82#9g7";
@@ -55,11 +49,6 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	private final HorizontalPanel hpToolbar = new HorizontalPanel();
 	private final HorizontalPanel hpFooter = new HorizontalPanel();
 
-	private final MessagePopup mp = new MessagePopup(
-			// AppCurrContext.getInstance().getBundleMap().get("grid_message_popup_export_to_excel"));
-			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-					"Export to Excel is running. It may take a few minutes. Click here to hide the message."));
-
 	/**
 	 * Основная фабрика для GWT сериализации.
 	 */
@@ -75,6 +64,11 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	}
 
 	private GridMetadata gridMetadata = null;
+
+	@Override
+	public GridMetadata getGridMetadata() {
+		return gridMetadata;
+	}
 
 	private String stringSelectedRecordIds = null;
 	private boolean isFirstLoading = true;
@@ -138,6 +132,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 															$wnd.gwtShowMessageTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginShowMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
                                                             $wnd.gwtShowErrorMessageTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginShowErrorMessage(Ljava/lang/String;Ljava/lang/String;);															
 															$wnd.gwtUpdateParents = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginUpdateParents(Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtToolbarRunAction = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginToolbarRunAction(Ljava/lang/String;Ljava/lang/String;);
 															}-*/;
 
 	// CHECKSTYLE:ON
@@ -295,10 +290,6 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	@Override
 	protected void internalResetLocalContext() {
 		localContext = null;
-	}
-
-	private String getDivIdPlugin() {
-		return getElementInfo().getFullId() + Constants.PLUGIN_DIV_ID_SUFFIX;
 	}
 
 	private void beforeUpdateGrid() {
@@ -505,17 +496,19 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 		ToolBarHelper toolBarHelper = getToolBarHelper();
 
-		if (gridMetadata.getUISettings().getGridWidth().contains("px")) {
-			int ind = gridMetadata.getUISettings().getGridWidth().indexOf("px");
-			String str = gridMetadata.getUISettings().getGridWidth().substring(0, ind).trim();
-			int number = Integer.parseInt(str);
-			number = number + 2;
-
-			hpToolbar.setWidth(number + "px");
-			toolBarHelper.getToolBarPanel().setWidth(number + "px");
-		} else {
-			hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
-		}
+		// if (gridMetadata.getUISettings().getGridWidth().contains("px")) {
+		// int ind = gridMetadata.getUISettings().getGridWidth().indexOf("px");
+		// String str = gridMetadata.getUISettings().getGridWidth().substring(0,
+		// ind).trim();
+		// int number = Integer.parseInt(str);
+		// number = number + 2;
+		//
+		// hpToolbar.setWidth(number + "px");
+		// toolBarHelper.getToolBarPanel().setWidth(number + "px");
+		// } else {
+		// hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
+		// }
+		hpToolbar.setWidth(gridMetadata.getUISettings().getGridWidth());
 
 		generalHp.setWidth("100%");
 		hpToolbar.add(toolBarHelper.getToolBarPanel());
@@ -530,8 +523,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		// ----------------------------------------
 
 		try {
-			runGrid(gridMetadata.getJSInfo().getCreateProc(), params,
-					gridMetadata.getJSInfo().getRequiredJS().toArray());
+			runGrid(gridMetadata.getJSInfo().getCreateProc(), params);
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
 				MessageBox.showMessageWithDetails(
@@ -554,14 +546,15 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 	// CHECKSTYLE:ON
 
-	private native void runGrid(final String procName, final String params,
-			final Object[] list) /*-{
-		if (list != null) {
-			for (var x = 0; x < list.length; x++) {
-				$wnd.safeIncludeJS(list[x]);
-			}
+	private native void runGrid(final String procName, final String params) /*-{
+
+		try {
+			$wnd.eval(procName + "(" + params + ");");
+		} catch (e) {
+			$wnd.safeIncludeJS("js/ui/grids/treeDGrid.js");
+			$wnd.eval(procName + "(" + params + ");");
 		}
-		$wnd.eval(procName + "(" + params + ");");
+
 	}-*/;
 
 	/**
@@ -942,7 +935,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		}
 	}
 
-	private void runAction(final Action ac) {
+	@Override
+	public void runAction(final Action ac) {
 		if (ac != null) {
 			AppCurrContext.getInstance().setCurrentActionFromElement(ac, gridMetadata);
 			ActionExecuter.execAction();
@@ -1153,7 +1147,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	 * @param exportType
 	 *            GridToExcelExportType
 	 */
-	private void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
+	@Override
+	public void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
 		String parentId = null;
 		if (exportType == GridToExcelExportType.CURRENTPAGE) {
 			parentId = getStoredRecordId().recId;
@@ -1184,11 +1179,7 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 
 			dh.submit();
 
-			mp.hide();
-			mp.show(wFrom);
-
 		} catch (SerializationException e) {
-			mp.hide();
 			MessageBox.showSimpleMessage(
 					// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_export_excel"),
 					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
@@ -1203,7 +1194,8 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 	 * @return ClipboardDialog
 	 * 
 	 */
-	private ClipboardDialog copyToClipboard() {
+	@Override
+	public ClipboardDialog copyToClipboard() {
 		String params = "'" + getDivIdPlugin() + "'";
 		String s = pluginProc(gridMetadata.getJSInfo().getClipboardProc(), params);
 
@@ -1234,134 +1226,28 @@ public class JSTreeGridPluginPanel extends BasicElementPanelBasis {
 		return editorContext;
 	}
 
-	private void addStaticItemToToolBar(final ToolBar toolBar) {
-		final TextButton exportToExcelCurrentPage = new TextButton("", IconHelper.getImageResource(
-				UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_CURRENT_PAGE), 16,
-				16));
-		final TextButton exportToExcelAll = new TextButton("", IconHelper.getImageResource(
-				UriUtils.fromSafeConstant(Constants.GRID_IMAGE_EXPORT_TO_EXCEL_ALL), 16, 16));
-		final TextButton copyToClipboard = new TextButton("", IconHelper.getImageResource(
-				UriUtils.fromSafeConstant(Constants.GRID_IMAGE_COPY_TO_CLIPBOARD), 16, 16));
-		if (gridMetadata.getUISettings().isVisibleExportToExcelCurrentPage()) {
-			exportToExcelCurrentPage.setTitle(
-					// AppCurrContext.getInstance().getBundleMap().get("jsTreeGridExportToExcelChilds"));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Export to Excel descendants of the current record"));
-			exportToExcelCurrentPage.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(final SelectEvent event) {
-					exportToExcel(exportToExcelCurrentPage, GridToExcelExportType.CURRENTPAGE);
-				}
-			});
-			toolBar.add(exportToExcelCurrentPage);
-		}
-		if (gridMetadata.getUISettings().isVisibleExportToExcelAll()) {
-			exportToExcelAll.setTitle(
-					// AppCurrContext.getInstance().getBundleMap().get("jsTreeGridExportToExcel0Level"));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Export to Excel records 0-level"));
-			exportToExcelAll.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(final SelectEvent event) {
-					exportToExcel(exportToExcelAll, GridToExcelExportType.ALL);
-				}
-			});
-			toolBar.add(exportToExcelAll);
-		}
-		if (gridMetadata.getUISettings().isVisibleCopyToClipboard()) {
-			copyToClipboard.setTitle(
-					// AppCurrContext.getInstance().getBundleMap().get("grid_caption_copy_to_clipboard"));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Copy to clipboard"));
-			copyToClipboard.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(final SelectEvent event) {
-					copyToClipboard();
-				}
-			});
-			toolBar.add(copyToClipboard);
-		}
-
-		if (getElementInfo().getProcByType(DataPanelElementProcType.ADDRECORD) != null) {
-			final TextButton addRecord = new TextButton("", IconHelper.getImageResource(
-					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_ADD_RECORD), 16, 16));
-			addRecord.setTitle(
-					// AppCurrContext.getInstance().getBundleMap().get("grid_caption_add_record"));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Add Record"));
-			addRecord.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(final SelectEvent event) {
-					editorAddRecord();
-				}
-			});
-			toolBar.add(addRecord);
-		}
-		if ((getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null)
-				&& gridMetadata.getUISettings().isVisibleSave()) {
-			final TextButton save = new TextButton("", IconHelper.getImageResource(
-					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_SAVE), 16, 16));
-			save.setTitle(
-					// AppCurrContext.getInstance().getBundleMap().get("grid_caption_save"));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Save"));
-			save.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(final SelectEvent event) {
-					editorSave();
-				}
-			});
-			toolBar.add(save);
-		}
-		if ((getElementInfo().getProcByType(DataPanelElementProcType.SAVE) != null)
-				&& gridMetadata.getUISettings().isVisibleRevert()) {
-			final TextButton revert = new TextButton("", IconHelper.getImageResource(
-					UriUtils.fromSafeConstant(Constants.GRID_IMAGE_REVERT), 16, 16));
-			revert.setTitle(
-					// AppCurrContext.getInstance().getBundleMap().get("grid_caption_revert"));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Undo"));
-			revert.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(final SelectEvent event) {
-					editorRevert();
-				}
-			});
-			toolBar.add(revert);
-		}
-
-	}
-
-	private ToolBarHelper getToolBarHelper() {
+	@Override
+	public ToolBarHelper getToolBarHelper() {
 		if (this.toolBarHelper == null) {
-			final JSTreeGridPluginPanel treeGridPanel = this;
-			this.toolBarHelper = new ToolBarHelper(dataService, this) {
-
-				@Override
-				public void addStaticItemToToolBar(final ToolBar toolBar) {
-					treeGridPanel.addStaticItemToToolBar(toolBar);
-				}
-
-				@Override
-				public void runAction(final Action ac) {
-					treeGridPanel.runAction(ac);
-				}
-			};
+			this.toolBarHelper = new ToolBarHelper(dataService, this);
 		}
 		return this.toolBarHelper;
 	}
 
-	private void editorAddRecord() {
+	@Override
+	public void editorAddRecord() {
 		String params = "'" + getDivIdPlugin() + "'";
 		pluginProc(gridMetadata.getJSInfo().getAddRecordProc(), params);
 	}
 
-	private void editorSave() {
+	@Override
+	public void editorSave() {
 		String params = "'" + getDivIdPlugin() + "'";
 		pluginProc(gridMetadata.getJSInfo().getSaveProc(), params);
 	}
 
-	private void editorRevert() {
+	@Override
+	public void editorRevert() {
 		String params = "'" + getDivIdPlugin() + "'";
 		pluginProc(gridMetadata.getJSInfo().getRevertProc(), params);
 	}

@@ -14,8 +14,7 @@
 
   <!-- Other module inherits                                      -->
   <inherits name="com.google.gwt.http.HTTP"/>
-  
-  <inherits name='com.sencha.gxt.ui.GXT'/>
+  <inherits name="com.google.gwt.json.JSON"/>  
   
   <super-source path="jre"></super-source>
 
@@ -28,7 +27,6 @@
 
 <!--   
   <set-property name="user.agent" value="safari" />
-  <set-property name="gxt.user.agent" value="chrome"/>
 -->  
 
   
@@ -57,8 +55,6 @@
 <!--   where safari==chrome, gecko1_8==firefox 2+ -->
 <!-- Для того, чтобы компилировалось все - строчку set-property надо убрать -->
 
-<!-- <set-property name="gxt.user.agent" value="chrome"/> -->
-<!-- Нужно раскомментировать, чтобы компилировалась только одна пермутация в Sencha GXT  -->
 
 <set-configuration-property name="CssResource.style" value="stable"/>
 

@@ -19,6 +19,9 @@ public class GridToolBar implements SerializableElement {
 	private static final long serialVersionUID = 1L;
 	private List<AbstractToolBarItem> items = new ArrayList<AbstractToolBarItem>();
 
+	private String style = null;
+	private String className = null;
+
 	public GridToolBar() {
 		super();
 	}
@@ -40,4 +43,21 @@ public class GridToolBar implements SerializableElement {
 	public void setItems(final List<AbstractToolBarItem> aItems) {
 		items = aItems;
 	}
+
+	public String getStyle() {
+		return style;
+	}
+
+	public void setStyle(final String aStyle) {
+		style = aStyle;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(final String aClassName) {
+		className = aClassName;
+	}
+
 }

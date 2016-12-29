@@ -125,5 +125,54 @@ padding: 0px 20px 0px 0px;
 
 
 
+.exportToExcelCurrentPage {
+    background-image: url('../resources/internal/ExportToExcelCurrentPage.png');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    text-align: center;"
+}
+.exportToExcelAll {
+    background-image: url('../resources/internal/ExportToExcelAll.png');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    text-align: center;"
+}
+.copyToClipboard {
+    background-image: url('../resources/internal/CopyToClipboard.png');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    text-align: center;"
+}
+.filter {
+    background-image: url('../resources/internal/filter.png');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    text-align: center;"
+}
+.addRecord {
+    background-image: url('../resources/internal/AddRecord.png');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    text-align: center;"
+}
+.save {
+    background-image: url('../resources/internal/Save.png');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    text-align: center;"
+}
+.revert {
+    background-image: url('../resources/internal/Revert.png');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    text-align: center;"
+}
 
 

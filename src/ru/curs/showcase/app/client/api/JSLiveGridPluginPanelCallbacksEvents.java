@@ -2,7 +2,7 @@ package ru.curs.showcase.app.client.api;
 
 import com.google.gwt.json.client.JSONObject;
 
-import ru.curs.showcase.app.client.JSLiveGridPluginPanel;
+import ru.curs.showcase.app.client.*;
 
 /**
  * Класс, реализующий функции обратного вызова из JSLiveGridPluginPanel.
@@ -19,10 +19,14 @@ public final class JSLiveGridPluginPanelCallbacksEvents {
 	 * @param pluginId
 	 *            - Id элемента плагина.
 	 * 
-	 * @return PageGridPluginPanel
+	 * @return JSLiveGridPluginPanel
 	 */
 	private static JSLiveGridPluginPanel getCurrentPanel(final String pluginId) {
 		return (JSLiveGridPluginPanel) ActionExecuter.getElementPanelById(pluginId);
+	}
+
+	private static JSBaseGridPluginPanel getBaseCurrentPanel(final String pluginId) {
+		return (JSBaseGridPluginPanel) ActionExecuter.getElementPanelById(pluginId);
 	}
 
 	public static JSONObject pluginGetHttpParams(final String pluginId, final String offset,
@@ -67,6 +71,10 @@ public final class JSLiveGridPluginPanelCallbacksEvents {
 
 	public static void pluginShowErrorMessage(final String pluginId, final String stringMessage) {
 		getCurrentPanel(pluginId).pluginShowErrorMessage(stringMessage);
+	}
+
+	public static boolean pluginToolbarRunAction(final String pluginId, final String actionId) {
+		return getBaseCurrentPanel(pluginId).pluginToolbarRunAction(actionId);
 	}
 
 }

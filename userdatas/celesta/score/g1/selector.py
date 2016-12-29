@@ -32,6 +32,10 @@ def procCount(context, main, add, filterinfo, session, params, curValue, startsW
     print 'curValue "%s".' % curValue
     print 'startsWith "%s".' % startsWith
     
+    
+#    context.warning('dd1');    
+#    context.error('dd1');
+    
     return ResultSelectorData(None, 3)
 
 def procList(context, main, add, filterinfo, session, params, curValue, startsWith, firstRecord, recordCount):
@@ -53,5 +57,22 @@ def procList(context, main, add, filterinfo, session, params, curValue, startsWi
         rec.setId("item"+str(i))
         rec.setName("Item "+str(i))
         recordList.add(rec)
+        
+        
+#    context.warning('dd2');
+#    context.message('dd1', u'Заголовок4', u"solutions/default/resources/group_icon_default.png");
+    
+    context.error('dd4', u'Заголовок4', u"solutions/default/resources/group_icon_default.png");
+    
+  
     
     return ResultSelectorData(recordList, 0)
+
+
+
+
+
+
+
+
+

@@ -4,6 +4,7 @@ from ru.curs.showcase.core.jython import JythonDTO
 from ru.curs.showcase.app.api import UserMessage
 from ru.curs.showcase.app.api import MessageType
 from ru.curs.showcase.core import UserMessageFactory
+from ru.curs.celesta.showcase.utils import XMLJSONConverter
 
 
 def pluginDataAndSettings(context, main, add, filterinfo, session, elementId):
@@ -17,7 +18,7 @@ def pluginDataAndSettings(context, main, add, filterinfo, session, elementId):
     
     data = u'''
     <items>
-            <item id="1" name="Lazy load item" leaf="false" checked="false"/>
+            <item id="1" name="La&quot;zy load item" leaf="false" checked="false"/>
             <item id="2" name="Расходование денежных средств"                          column1="Значение2"  column2="solutions/default/resources/imagesingrid/test.jpg" cls="folder">
                 <children>
                     <item id="21" name="Оплата поставщикам за товар" leaf="true"       column1="Значение21" column2="solutions/default/resources/imagesingrid/TreeGridLeaf.png"  attr1="a" checked="false"/>
@@ -62,6 +63,17 @@ def pluginDataAndSettings(context, main, add, filterinfo, session, elementId):
     
     
     #res = JythonDTO(data, settings, UserMessageFactory().build(555, u"Плагин (DataAndSettings) успешно построен из Celesta"))
+    
+    json = XMLJSONConverter.xmlToJson(data)
+    print 'json "%s".' % json
+    
+    xml = XMLJSONConverter.jsonToXml(json)
+    print 'xml "%s".' % xml
+    
+    json = XMLJSONConverter.xmlToJson(xml)
+    print 'json2 "%s".' % json
+    
+    
     res = JythonDTO(data, settings)    
     return res
 

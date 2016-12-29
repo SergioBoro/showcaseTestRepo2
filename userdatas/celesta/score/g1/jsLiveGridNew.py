@@ -30,45 +30,45 @@ def getDataAndSetting(context, main, add, filterinfo, session, elementId, sortCo
     data = u'''
     <records>
         <rec>
-            <name>Тест1</name>
+            <Название>Тест1</Название>
             <code>1</code>            
             <_x007e__x007e_id>1</_x007e__x007e_id>
             <HasChildren>1</HasChildren>
             
         </rec>
         <rec>
-            <name>Тест2</name>
+            <Название>Тест2</Название>
             <code>2</code>
             <_x007e__x007e_id>2</_x007e__x007e_id>
             <HasChildren>1</HasChildren>
         </rec>
         <rec>
-            <name>Тест3</name>
+            <Название>Тест3</Название>
             <code>3</code>
             <_x007e__x007e_id>3</_x007e__x007e_id>
         </rec>
         <rec>
-            <name>Тест4</name>
+            <Название>Тест4</Название>
             <code>4</code>
             <_x007e__x007e_id>4</_x007e__x007e_id>
         </rec>
         <rec>
-            <name>Тест5</name>
+            <Название>Тест5</Название>
             <code>5</code> 
             <_x007e__x007e_id>5</_x007e__x007e_id>           
         </rec>
         <rec>
-            <name>Тест6</name>
+            <Название>Тест6</Название>
             <code>6</code>            
             <_x007e__x007e_id>6</_x007e__x007e_id>
         </rec>
         <rec>
-            <name>Тест7</name>
+            <Название>Тест7</Название>
             <code>7</code>            
             <_x007e__x007e_id>7</_x007e__x007e_id>
         </rec>
         <rec>
-            <name>Тест8</name>
+            <Название>Тест8</Название>
             <code>8</code>            
             <_x007e__x007e_id>8</_x007e__x007e_id>
         </rec>
@@ -85,11 +85,11 @@ def getDataAndSetting(context, main, add, filterinfo, session, elementId, sortCo
         <h3>Edit Grid jython2</h3>
         </header>
       </labels>
-<!--      
+      
       <columns>
-        <col id="name" />
+        <col id="Название" />
       </columns>
--->      
+      
       <properties flip="false" gridWidth="1200px" gridHeight="500" pagesize="15" totalCount="0" />
    </gridsettings>'''
     
@@ -126,6 +126,9 @@ def getSetting(context, main, add, filterinfo, session, elementId):
     print 'session "%s".' % session
     print 'elementId "%s".' % elementId
     
+    
+   
+    
     settings = u'''
     <gridsettings>
        <labels>
@@ -133,14 +136,40 @@ def getSetting(context, main, add, filterinfo, session, elementId):
         <h3>Edit Grid jython2</h3>
         </header>
       </labels>
+      
+      
+        <sorting>
+                    <sort column="Название" direction="ASC"/>        
+        </sorting>      
+      
       <columns>
-        <col id="name" />
+        <col id="Название" />
         <col id="code" />        
       </columns>
       <properties flip="false" gridWidth="1200px" gridHeight="500" pagesize="15" totalCount="8" />
    </gridsettings>'''
     
-    res = JythonDTO(None, settings, UserMessageFactory().build(555, u"Грид (Live, metadata) успешно построен из Celesta"))
+    
+    #context.message(u"555");
+    
+    #context.message(u"Сообщение", u"Заголовок");
+    #context.message(u"Сообщение", u"Заголовок", u"solutions/default/resources/group_icon_default.png" );
+    
+    #context.warning(u"555");
+    
+    #context.warning(u"Сообщение", u"Заголовок");
+    #context.warning(u"Сообщение", u"Заголовок", u"solutions/default/resources/group_icon_default.png" );
+    
+    #context.error(u"555");
+    
+    #context.error(u"Сообщение", u"Заголовок");
+    #context.error(u"Сообщение", u"Заголовок22", u"solutions/default/resources/group_icon_default.png" );
+    
+    
+
+    
+#    res = JythonDTO(None, settings, UserMessageFactory().build(555, u"Грид (Live, metadata) успешно построен из Celesta"))
+    res = JythonDTO(None, settings)    
     return res
 
 def getData(context, main, add, filterinfo, session, elementId, sortColumnList, firstrecord, pagesize):
@@ -161,49 +190,59 @@ def getData(context, main, add, filterinfo, session, elementId, sortColumnList, 
             print 'sort direction "%s".' % column.getSorting()
             
             
+            
+    raise Exception(
+            u"СНИЛС должен состоять из 9 значащих и 2 контрольных цифр.")
+            
+            
+            
     
     data = u'''
     <records>
         <rec>
-            <name>Тест1</name>
+<!--        
+            <Название>Тест1</Название>
+-->            
             <code>1</code>            
             <_x007e__x007e_id>1</_x007e__x007e_id>
             <HasChildren>1</HasChildren>
             
         </rec>
         <rec>
-            <name>Тест2</name>
+            <Название>Тест2</Название>
             <code>2</code>
             <_x007e__x007e_id>2</_x007e__x007e_id>
             <HasChildren>1</HasChildren>
         </rec>
         <rec>
-            <name>Тест3</name>
+<!--        
+            <Название>Тест3</Название>
+-->            
             <code>3</code>
             <_x007e__x007e_id>3</_x007e__x007e_id>
         </rec>
         <rec>
-            <name>Тест4</name>
+            <Название>Тест4</Название>
             <code>4</code>
             <_x007e__x007e_id>4</_x007e__x007e_id>
         </rec>
         <rec>
-            <name>Тест5</name>
+            <Название>Тест5</Название>
             <code>5</code> 
             <_x007e__x007e_id>5</_x007e__x007e_id>           
         </rec>
         <rec>
-            <name>Тест6</name>
+            <Название>Тест6</Название>
             <code>6</code>            
             <_x007e__x007e_id>6</_x007e__x007e_id>
         </rec>
         <rec>
-            <name>Тест7</name>
+            <Название>Тест7</Название>
             <code>7</code>            
             <_x007e__x007e_id>7</_x007e__x007e_id>
         </rec>
         <rec>
-            <name>Тест8</name>
+            <Название>Тест8</Название>
             <code>8</code>            
             <_x007e__x007e_id>8</_x007e__x007e_id>
         </rec>
@@ -214,7 +253,15 @@ def getData(context, main, add, filterinfo, session, elementId, sortColumnList, 
 #    res = JythonDTO(data, None)
     
     
-    res = JythonDTO(data, None, UserMessageFactory().build(555, u"Грид (Live, data) успешно построен из Celesta"))
+#    res = JythonDTO(data, None, UserMessageFactory().build(555, u"Грид (Live, data) успешно построен из Celesta"))
+    
+    
+    
+    
+    
+    
+    
+    res = JythonDTO(data, None)    
     return res
 
     
@@ -233,7 +280,18 @@ def gridSaveData(context, main, add, filterinfo, session, elementId, editorData)
     print 'editorData: %s' % editorData
     
     
-    res = GridSaveResult(UserMessageFactory().build(555, u"Данные успешно сохранены из Челесты"))
+    #context.message(u"555");
+    context.message(u"ffffffffffff");
+    
+    #context.warning(u"555");
+    #context.warning(u"gggggggggg");
+    
+    #context.error(u"555");    
+    #context.error(u"ddddddddddddd");
+    
+    
+#    res = GridSaveResult(UserMessageFactory().build(555, u"Данные успешно сохранены из Челесты"))
+    res = GridSaveResult()    
     res.setRefreshAfterSave(0);
     return res
 
@@ -250,7 +308,20 @@ def gridAddRecord(context, main, add, filterinfo, session, elementId, addRecordD
     print 'addRecordData: %s' % addRecordData
     
     
-    res = GridAddRecordResult(UserMessageFactory().build(555, u"Запись успешно добавлена из Челесты"))
+    #context.message(u"555");
+    context.message(u"ffffffffffff");
+    
+    #context.warning(u"555");
+    #context.warning(u"gggggggggg");
+    
+    #context.error(u"555");    
+    #context.error(u"ddddddddddddd");
+    
+
+
+    
+    #res = GridAddRecordResult(UserMessageFactory().build(555, u"Запись успешно добавлена из Челесты"))
+    res = GridAddRecordResult()    
     return res
     
 

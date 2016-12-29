@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?eclipse-pydev version="1.0"?><pydev_project>
-<pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">C:\jython2.7.0\jython.jar</pydev_property>
+<pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">jython 2.7</pydev_property>
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
 <path>/Showcase/WebContent/WEB-INF/classes</path>
@@ -31,9 +31,7 @@
 <path>/Showcase/runtime/lib/stax-api-1.0.1.jar</path>
 <path>/Showcase/runtime/lib/xmlbeans-2.3.0.jar</path>
 <path>/Showcase/userdatas/default/scripts/jython</path>
-<path>/Showcase/userdatas/test1/scripts/jython</path>
 <path>/Showcase/src/scripts/init</path>
-<path>/Showcase/userdatas/test2/scripts/jython</path>
 <path>/Showcase/WebContent/WEB-INF/lib/FastInfoset.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/activiti-bpmn-converter-5.16.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/activiti-bpmn-layout-5.16.jar</path>
@@ -92,7 +90,6 @@
 <path>/Showcase/WebContent/WEB-INF/lib/gson-1.7.1.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/gwt-servlet.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/gwt-slider-bar-1.0.jar</path>
-<path>/Showcase/WebContent/WEB-INF/lib/gxt-3.0.1.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/h2-1.4.180.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/ha-api.jar</path>
 <path>/Showcase/WebContent/WEB-INF/lib/httpclient-4.4.jar</path>
@@ -173,7 +170,7 @@
 </pydev_pathproperty>
 
 <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
-<path>X:\jprojects\Showcase\WebContent\WEB-INF\libJython\site-packages</path>
-<path>X:\jprojects\Showcase\WebContent\WEB-INF\libJython</path>
+<path>D:\workspace8\Showcase\WebContent\WEB-INF\libJython\site-packages</path>
+<path>D:\workspace8\Showcase\WebContent\WEB-INF\libJython</path>
 </pydev_pathproperty>
 </pydev_project>

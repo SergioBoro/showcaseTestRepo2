@@ -113,7 +113,7 @@ ref="instance('xformId_mainInstance')"                instance="xformId_mainInst
 
 
             <xf:trigger>
-                <xf:label>Selector</xf:label>
+                <xf:label>Selector22</xf:label>
                 <xf:action ev:event="DOMActivate">
                     <xf:load
                         resource="javascript:showSelector({
