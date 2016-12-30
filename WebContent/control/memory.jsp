@@ -6,6 +6,8 @@
 <%@page import="ru.curs.showcase.runtime.JythonIterpretatorFactory"%>
 <%@page import="ru.curs.showcase.runtime.XSLTransformerPoolFactory"%>
 <%@page import="ru.curs.showcase.runtime.MemoryController"%>
+<%@page import="ru.curs.showcase.app.server.AppAndSessionEventsListener"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -115,13 +117,6 @@ div {
 				<div>Максимум heap space: <%=MemoryController.getMaxHeap()%></div>
 			</td>
 			<td width="30%">
-				<div><h4>Используется PermGen space: <%=MemoryController.getUsedPermGen()%></h4></div>
-				<div><h4>Свободно всего PermGen space: <%=MemoryController.getAllFreePermGen()%></h4></div>								
-				<div>Выделено PermGen space: <%=MemoryController.getCommitedPermGen()%></div>				
-				<div>Начальное значение PermGen space: <%=MemoryController.getInitPermGen()%></div>						
-				<div>Максимум PermGen space: <%=MemoryController.getMaxPermGen()%></div>			
-			</td>
-			<td width="30%">
 				<form target="fake" method="get"
 					action="reset">
 					<input type="hidden" name="gc" value="run" /> <input
@@ -167,6 +162,17 @@ div {
 			</td>
 		</tr>		
 	</table>
+	
+	<h3>Информация о сессиях</h3>
+	<table>
+		<tr>
+			<td width="30%">	
+				<div><h4>Количество активных сессий: <%=AppAndSessionEventsListener.getActiveSessions().toString()%></h4></div>
+				<div><h4>Количество аутентифицированных сессий: <%=AppAndSessionEventsListener.getAuthenticatedSessions().toString()%></h4></div>
+			</td>
+		</tr>		
+	</table>
+	
 	
 	<iframe name="fake"
 		style="position: absolute; width: 0; height: 0; border: 0"

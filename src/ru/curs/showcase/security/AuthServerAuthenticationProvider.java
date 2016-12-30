@@ -11,6 +11,7 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 
 import ru.curs.celesta.*;
+import ru.curs.showcase.app.server.AppAndSessionEventsListener;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.UserAndSessionDetails;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
@@ -63,9 +64,11 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		String login = arg1.getPrincipal().toString();
 		String pwd = arg1.getCredentials().toString();
 		String sesid = ((UserAndSessionDetails) arg1.getDetails()).getSessionId();
-		String oldSesid = AppInfoSingleton.getAppInfo().getSesid();		
+		String oldSesid = AppInfoSingleton.getAppInfo().getSesid();
 		String groupProviders =
 			((UserAndSessionDetails) arg1.getDetails()).getUserInfo().getGroupProviders();
+
+		AppAndSessionEventsListener.increment();
 
 		try {
 			url = SecurityParamsFactory.getLocalAuthServerUrl();
