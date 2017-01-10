@@ -1,6 +1,29 @@
 function createCalendar(parentId, data, template) {
-	require(["dijit/registry", "dojox/calendar/Calendar", "dojo/store/Memory"],
-			  function(registry, Calendar, Memory){
+	require([
+	         "dijit/registry", 
+	         "dojox/calendar/Calendar", 
+	         "dojo/store/Memory",
+	         "dojo/_base/declare",
+	         "dojox/calendar/MonthColumnView",
+	         "dojox/calendar/Keyboard", 
+	         "dojox/calendar/Mouse",
+	         "dojox/calendar/VerticalRenderer", 
+	         "dijit/form/Button",
+	         "dojo/_base/lang",
+	         "dojo/on"
+	         ], function(
+	        		 registry, 
+	        		 Calendar, 
+	        		 Memory,
+	        		 declare,
+	        		 MonthColumnView,
+	        		 Keyboard,
+	        		 Mouse,
+	        		 VerticalRenderer,
+	        		 Button,
+	        		 lang,
+	        		 on
+	         ){
 		
 		            var dateInterval      = data.metadata.dateInterval;
 		            var dateIntervalSteps = data.metadata.dateIntervalSteps;
@@ -24,7 +47,61 @@ function createCalendar(parentId, data, template) {
 			    		  dateInterval: dateInterval,
 						  dateIntervalSteps: dateIntervalSteps,
 			    		  style: data.metadata.style,
-			    		  editable: data.metadata.editable
+			    		  editable: data.metadata.editable,
+			    		  
+			    			_createDefaultViews: function(){
+			    				Calendar.prototype._createDefaultViews.call(this);
+			    				
+			    				this.monthColumnView = declare([MonthColumnView, Keyboard, Mouse])({
+			    					verticalRenderer: VerticalRenderer				
+			    				});
+			    				
+			    				this.monthColumnView.on("columnHeaderClick", lang.hitch(this, function(e){
+			    					this.set("dateInterval", "month");
+			    					this.set("dateIntervalSteps", 1);
+			    					this.set("date", e.date);
+			    				}));
+			    				
+			    				return [this.columnView, this.matrixView, this.monthColumnView];
+			    			},
+			    			
+			    			_computeCurrentView: function(startDate, endDate, duration){
+			    				// show the month column view if the duration is greater than 31x2 days
+			    				if(duration>62){
+			    					return this.monthColumnView;
+			    				}else{
+			    					return Calendar.prototype._computeCurrentView.call(this, startDate, endDate, duration);
+			    				}
+			    			},
+			    			
+			    			_configureView: function(view, index, timeInterval, duration){
+			    				// show only from January to June or from July to December
+			    				if(view.viewKind == "monthColumns"){
+			    					var m = timeInterval[0].getMonth();
+			    					var d = this.newDate(timeInterval[0]);
+			    					d.setMonth(m<6?0:6);
+			    					view.set("startDate", d);
+			    					view.set("columnCount", 6);
+			    				}else{
+			    					return Calendar.prototype._configureView.call(this, view, index, timeInterval, duration);
+			    				}
+			    			},
+			    		  
+				    		configureButtons: function(){
+					         	var button = new Button({});					         	
+								this.toolbar.addChild(button);
+								this.sixMonthButton = button;
+								
+				    			Calendar.prototype.configureButtons.call(this);
+				    			
+				    			this.own(
+				    				on(this.sixMonthButton, "click", lang.hitch(this, function(){
+				    					this.set("dateIntervalSteps", 6);
+				    					this.set("dateInterval", "month");
+				    				}))
+				    			);
+				    		},
+			    		  
 			    		}, parentId);
 			    	
 			    	if(data.metadata.timeSlotDuration){
@@ -74,9 +151,6 @@ function createCalendar(parentId, data, template) {
 					        }
 				        }
 			    	}
-			    	
-			    	
-			    	
 			      
 			  }
 	);
