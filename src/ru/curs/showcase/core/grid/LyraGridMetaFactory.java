@@ -96,7 +96,7 @@ public class LyraGridMetaFactory {
 		LyraGridGateway lgateway = new LyraGridGateway();
 		basicGridForm = lgateway.getLyraFormInstance(context, elInfo);
 
-		final int maxExactScrollValue = 71;
+		final int maxExactScrollValue = 120;
 		basicGridForm.setMaxExactScrollValue(maxExactScrollValue);
 		if (basicGridForm.getChangeNotifier() == null) {
 			LyraGridScrollBack scrollBack = new LyraGridScrollBack();
