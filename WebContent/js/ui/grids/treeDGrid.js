@@ -392,6 +392,28 @@ function createTreeDGrid(elementId, parentId, metadata) {
 				
 				columns.push(column);
 			}
+			var columnFieldSave = null;
+			if(metadata["common"]["fieldSave"]){
+				columnFieldSave = {};
+				columnFieldSave["id"]        = "fieldSave";
+				columnFieldSave["parentId"]  = column["parentId"];				
+				columnFieldSave["sortable"]  = "false";
+				columnFieldSave["editable"] = false;				
+				columnFieldSave["renderCell"] = function actionRenderCell(object, value, node, options) {
+					var div = document.createElement("div");
+					div.innerHTML =	"<button  title=\""+metadata["common"]["fieldSave"]+"\"  onclick=\"saveTreeDGrid('"+parentId+"')\">" +
+										"<img src=\"resources/internal/Save.png\"  style=\"vertical-align: middle; align: middle; width: 12px; height: 12px;  \"   >" +
+									"</button>" ;
+					return div;
+		        };
+		        columnFieldSave["renderHeaderCell"] = function actionRenderCell(node) {
+					var div = document.createElement("div");
+					div.innerHTML = "<img src=\"resources/internal/Save.png\"  style=\"vertical-align: middle; align: middle; width: 18px; height: 18px;  \"   >";		        
+			    	div.title = metadata["common"]["fieldSave"];
+					return div;
+		        };
+				columns.push(columnFieldSave);
+			}
 			
 			
 			var virtualColumnType = 0;
@@ -457,6 +479,11 @@ function createTreeDGrid(elementId, parentId, metadata) {
 							}
 						}	
 					}
+					
+					if(columnFieldSave){
+						compoundColumns.push(columnFieldSave);
+					}
+					
 				}
 				
 				if(virtualColumnType == 2){
@@ -572,6 +599,9 @@ function createTreeDGrid(elementId, parentId, metadata) {
 
 		for(var k in metadata["columns"]) {
 			grid.styleColumn(metadata["columns"][k]["id"], metadata["columns"][k]["style"]);
+		}
+		if(grid.column("fieldSave")){
+			grid.styleColumn("fieldSave", "width: 30px;");	
 		}
 		if(virtualColumnType == 1){
 		    for(var k1 in allVirtualColumns) {

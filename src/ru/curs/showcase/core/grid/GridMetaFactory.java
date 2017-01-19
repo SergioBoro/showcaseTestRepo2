@@ -535,6 +535,10 @@ public class GridMetaFactory extends CompBasedElementFactory {
 				value = attrs.getValue("visibleSave");
 				result.getUISettings().setVisibleSave(Boolean.valueOf(value));
 			}
+			if (attrs.getIndex("visibleFieldSave") > -1) {
+				value = attrs.getValue("visibleFieldSave");
+				result.getUISettings().setVisibleFieldSave(Boolean.valueOf(value));
+			}
 			if (attrs.getIndex("visibleRevert") > -1) {
 				value = attrs.getValue("visibleRevert");
 				result.getUISettings().setVisibleRevert(Boolean.valueOf(value));

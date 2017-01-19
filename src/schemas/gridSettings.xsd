@@ -87,6 +87,7 @@
             <xs:attribute name="numColumnDecimalSeparator" type="xs:string"/>
             <xs:attribute name="numColumnGroupingSeparator" type="xs:string"/>
             <xs:attribute name="visibleSave" type="xs:boolean"/>
+            <xs:attribute name="visibleFieldSave" type="xs:boolean"/>
             <xs:attribute name="visibleRevert" type="xs:boolean"/>
             <xs:attribute name="selectAllowTextSelection" type="xs:boolean"/>            
 

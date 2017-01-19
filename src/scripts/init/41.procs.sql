@@ -32719,6 +32719,7 @@ visibleColumnsHeader = "true"
 visibleToolbar = "true"
 
 visibleSave = "true"
+visibleFieldSave = "false"
 visibleRevert = "true"
 
 selectAllowTextSelection = "false"

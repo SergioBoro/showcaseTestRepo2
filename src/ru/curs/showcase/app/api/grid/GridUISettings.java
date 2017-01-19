@@ -89,6 +89,10 @@ public class GridUISettings implements SerializableElement {
 	 */
 	private boolean visibleSave = true;
 	/**
+	 * Видимость поля "Сохранить изменения".
+	 */
+	private boolean visibleFieldSave = false;
+	/**
 	 * Видимость кнопки "Отменить изменения".
 	 */
 	private boolean visibleRevert = true;
@@ -201,6 +205,14 @@ public class GridUISettings implements SerializableElement {
 	 */
 	public void setVisibleSave(final boolean aVisibleSave) {
 		visibleSave = aVisibleSave;
+	}
+
+	public boolean isVisibleFieldSave() {
+		return visibleFieldSave;
+	}
+
+	public void setVisibleFieldSave(final boolean aVisibleFieldSave) {
+		visibleFieldSave = aVisibleFieldSave;
 	}
 
 	/**

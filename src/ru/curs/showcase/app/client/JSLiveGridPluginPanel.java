@@ -391,6 +391,11 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 		common.put("pagingLinks", new JSONString(
 				String.valueOf(gridMetadata.getUISettings().getPagesButtonCount())));
 
+		if (gridMetadata.getUISettings().isVisibleFieldSave()) {
+			common.put("fieldSave", new JSONString(CourseClientLocalization
+					.gettext(AppCurrContext.getInstance().getDomain(), "Save")));
+		}
+
 		metadata.put("common", common);
 
 		JSONObject columns = new JSONObject();

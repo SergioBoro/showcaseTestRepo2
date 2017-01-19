@@ -402,6 +402,11 @@ public class JSTreeGridPluginPanel extends JSBaseGridPluginPanel {
 			common.put("expandAllRecords", new JSONString("true"));
 		}
 
+		if (gridMetadata.getUISettings().isVisibleFieldSave()) {
+			common.put("fieldSave", new JSONString(CourseClientLocalization
+					.gettext(AppCurrContext.getInstance().getDomain(), "Save")));
+		}
+
 		metadata.put("common", common);
 
 		JSONObject columns = new JSONObject();
