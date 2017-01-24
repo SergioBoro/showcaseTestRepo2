@@ -30,7 +30,7 @@ public class ToolBarHelper {
 	private final JSBaseGridPluginPanel jsBaseGridPluginPanel;
 	private boolean isStaticToolBar = false;
 	private boolean needStaticItems;
-	private boolean needAdjustToolBarWidth = true;
+	private final boolean needAdjustToolBarWidth = true;
 
 	private int blinkingCount = 0;
 	private boolean blinkingStartTimer = false;
@@ -125,10 +125,10 @@ public class ToolBarHelper {
 
 		HTML pluginHTML = new HTML(htmlForPlugin);
 
-		if (needAdjustToolBarWidth) {
-			needAdjustToolBarWidth = false;
-			panel.setWidth(String.valueOf(panel.getOffsetWidth() + 2) + "px");
-		}
+		// if (needAdjustToolBarWidth) {
+		// needAdjustToolBarWidth = false;
+		// panel.setWidth(String.valueOf(panel.getOffsetWidth() + 2) + "px");
+		// }
 
 		panel.clear();
 		panel.add(pluginHTML);
