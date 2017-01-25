@@ -533,17 +533,19 @@ public final class ProductionModeInitializer {
 	}
 
 	private static void getUserdataFromOutsideWar(ServletContext aServletContext) {
-		int ind = aServletContext.getContextPath().indexOf("/");
-		String realPath = aServletContext.getContextPath().substring(ind + 1);
-		int ind1 = aServletContext.getRealPath("/").indexOf(File.separator + realPath);
-		String realPath1 = aServletContext.getRealPath("/").substring(0, ind1);
-		int ind2 = realPath1.lastIndexOf(File.separator);
-		String realPath2 = aServletContext.getRealPath("/").substring(0, ind2);
-		String file =
-			realPath2 + File.separator + "userdatas" + File.separator
-					+ FileUtils.GENERAL_PROPERTIES;
+		try {
+			int ind = aServletContext.getContextPath().indexOf("/");
+			String realPath = aServletContext.getContextPath().substring(ind + 1);
+			int ind1 = aServletContext.getRealPath("/").indexOf(File.separator + realPath);
+			String realPath1 = aServletContext.getRealPath("/").substring(0, ind1);
+			int ind2 = realPath1.lastIndexOf(File.separator);
+			String realPath2 = aServletContext.getRealPath("/").substring(0, ind2);
+			String file =
+				realPath2 + File.separator + "userdatas" + File.separator
+						+ FileUtils.GENERAL_PROPERTIES;
 
-		AppInitializer.checkUserDataDir(FileUtils.getOutsideWarRoot(file), file);
-
+			AppInitializer.checkUserDataDir(FileUtils.getOutsideWarRoot(file), file);
+		} catch (Exception ex) {
+		}
 	}
 }
