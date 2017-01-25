@@ -53,6 +53,10 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		return activeSessions;
 	}
 
+	public static synchronized void setActiveSessions(final Object anActiveSessions) {
+		activeSessions = anActiveSessions;
+	}
+
 	public static synchronized Integer getAuthenticatedSessions() {
 		return authenticatedSessions;
 	}
@@ -223,16 +227,39 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 	@Override
 	public final void sessionCreated(final HttpSessionEvent arg0) {
+		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+		try {
+			Object anActiveSessions = mBeanServer.getAttribute(objectName, "activeSessions");
+			setActiveSessions(anActiveSessions);
+		} catch (AttributeNotFoundException | InstanceNotFoundException | MBeanException
+				| ReflectionException e) {
+			e.printStackTrace();
+		}
+
 		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 			LOGGER.info("сессия Showcase создается... " + arg0.getSession().getId());
+			LOGGER.info("Showcase.Sessions.Count: DateTime: " + new Date() + " Number: "
+					+ getActiveSessions());
 		}
 	}
 
 	@Override
 	public void sessionDestroyed(final HttpSessionEvent arg0) {
 		HttpSession destrHttpSession = arg0.getSession();
+
+		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+		try {
+			Object anActiveSessions = mBeanServer.getAttribute(objectName, "activeSessions");
+			setActiveSessions(anActiveSessions);
+		} catch (AttributeNotFoundException | InstanceNotFoundException | MBeanException
+				| ReflectionException e) {
+			e.printStackTrace();
+		}
+
 		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 			LOGGER.info("сессия Showcase удаляется..." + destrHttpSession.getId());
+			LOGGER.info("Showcase.Sessions.Count: DateTime: " + new Date() + " Number: "
+					+ getActiveSessions());
 		}
 
 		SecurityContext context =
