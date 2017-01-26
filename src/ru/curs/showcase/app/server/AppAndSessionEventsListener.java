@@ -40,12 +40,14 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 	/**
 	 * Количество активных сессий.
 	 */
-	private static Object activeSessions;
+	private static Object activeSessions = 0;
 
 	/**
 	 * Количество аутентифицированных сессий.
 	 */
 	private static Integer authenticatedSessions = 0;
+
+	private MBeanServer mBeanServer;
 
 	private ObjectName objectName;
 
@@ -123,7 +125,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 					RedirectionUserdataProp.readAndSetRedirectproperties();
 
-					MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+					mBeanServer = ManagementFactory.getPlatformMBeanServer();
 					try {
 						objectName =
 							new ObjectName("Catalina:type=Manager,context="
@@ -146,6 +148,16 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 							}
 						}
 					}, 0, 10 * 1000);
+
+					try {
+						// Регистрация класса MBean в MBean-сервере
+						ActiveSessions activeSessionsMBean = new ActiveSessions();
+						ObjectName activeSessionsName =
+							new ObjectName("AppAndSessionEventsListener:name=activeSessionsMBean");
+						mBeanServer.registerMBean(activeSessionsMBean, activeSessionsName);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
 					WebApplicationContext ctx =
 						WebApplicationContextUtils.getWebApplicationContext(arg0
@@ -227,7 +239,6 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 	@Override
 	public final void sessionCreated(final HttpSessionEvent arg0) {
-		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 		try {
 			Object anActiveSessions = mBeanServer.getAttribute(objectName, "activeSessions");
 			setActiveSessions(anActiveSessions);
@@ -247,7 +258,6 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 	public void sessionDestroyed(final HttpSessionEvent arg0) {
 		HttpSession destrHttpSession = arg0.getSession();
 
-		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 		try {
 			Object anActiveSessions = mBeanServer.getAttribute(objectName, "activeSessions");
 			setActiveSessions(anActiveSessions);
