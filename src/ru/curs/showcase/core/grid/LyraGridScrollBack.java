@@ -12,7 +12,7 @@ import ru.curs.showcase.core.command.GeneralExceptionFactory;
 public class LyraGridScrollBack implements Runnable {
 
 	public static final int DGRID_MAX_TOTALCOUNT = 50000;
-	public static final int DGRID_SMALLSTEP = 100;
+	public static final int DGRID_SMALLSTEP = 120;
 	private static final int LYRA_SMALLFACTOR = 100;
 
 	private javax.websocket.Session webSocketSession;

@@ -49,6 +49,8 @@
             <xs:attribute name="rowHeight" type="xs:unsignedInt"/>
             <xs:attribute name="forceLoadSettings" type="xs:boolean"/>
             <xs:attribute name="expandAllRecords" type="xs:boolean"/>
+            <xs:attribute name="toolbarClassName" type="xs:string"/>
+            <xs:attribute name="toolbarStyle" type="xs:string"/>
             
             
             <xs:attribute name="columnheaderHorAlign" type="notNullType"/>

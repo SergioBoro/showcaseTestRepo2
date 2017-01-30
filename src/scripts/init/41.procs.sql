@@ -32650,7 +32650,7 @@ editor="{editOn: has(''touch'') ? ''click'' : ''dblclick'',
 
 
         
-<properties  profile="default2.properties"  autoSelectRecordId="12" gridHeight="450"  forceLoadSettings="false" pagesize="50"  gridWidth="850px" 
+<properties toolbarClassName="testGridToolbar"  toolbarStyle="font-style: italic;" profile="default2.properties"  autoSelectRecordId="12" gridHeight="450"  forceLoadSettings="false" pagesize="50"  gridWidth="850px" 
 totalCount="'+CAST(@cities_count /*0*/ as varchar(max))+'"
 
 

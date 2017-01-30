@@ -349,6 +349,9 @@ public class GridUISettings implements SerializableElement {
 	 */
 	private Integer gridHeight = null;
 
+	private String toolbarClassName = null;
+	private String toolbarStyle = null;
+
 	/**
 	 * Горизонтальное выравнивание заголовков столбцов.
 	 */
@@ -378,6 +381,22 @@ public class GridUISettings implements SerializableElement {
 		gridHeight = aGridHeight;
 	}
 
+	public String getToolbarClassName() {
+		return toolbarClassName;
+	}
+
+	public void setToolbarClassName(final String aToolbarClassName) {
+		toolbarClassName = aToolbarClassName;
+	}
+
+	public String getToolbarStyle() {
+		return toolbarStyle;
+	}
+
+	public void setToolbarStyle(final String aToolbarStyle) {
+		toolbarStyle = aToolbarStyle;
+	}
+
 	public ColumnValueDisplayMode getDisplayMode() {
 		return displayMode;
 	}
@@ -398,6 +417,7 @@ public class GridUISettings implements SerializableElement {
 		visibleCopyToClipboard = source.visibleCopyToClipboard;
 		visibleFilter = source.visibleFilter;
 		visibleSave = source.visibleSave;
+		visibleFieldSave = source.visibleFieldSave;
 		visibleRevert = source.visibleRevert;
 		allowTextSelection = source.allowTextSelection;
 		urlImageFileDownload = source.urlImageFileDownload;
@@ -405,6 +425,9 @@ public class GridUISettings implements SerializableElement {
 		gridHeight = source.gridHeight;
 		haColumnHeader = source.haColumnHeader;
 		displayMode = source.displayMode;
+		toolbarClassName = source.toolbarClassName;
+		toolbarStyle = source.toolbarStyle;
+
 	}
 
 }

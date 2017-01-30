@@ -76,6 +76,8 @@ public class GridMetaFactory extends CompBasedElementFactory {
 	private static final String EXPAND_ALL_RECORDS_TAG = "expandAllRecords";
 	private static final String GRID_WIDTH_TAG = "gridWidth";
 	private static final String GRID_HEIGHT_TAG = "gridHeight";
+	private static final String GRID_TOOLBAR_CLASSNAME_TAG = "toolbarClassName";
+	private static final String GRID_TOOLBAR_STYLE_TAG = "toolbarStyle";
 	private static final String FORCE_LOAD_SETTINGS = "forceLoadSettings";
 	private static final String PRECISION_TAG = "precision";
 	private static final String PROFILE_TAG = "profile";
@@ -392,6 +394,13 @@ public class GridMetaFactory extends CompBasedElementFactory {
 			if (attrs.getIndex(GRID_HEIGHT_TAG) > -1) {
 				value = attrs.getValue(GRID_HEIGHT_TAG);
 				result.getUISettings().setGridHeight(Integer.parseInt(value));
+			}
+			if (attrs.getIndex(GRID_TOOLBAR_CLASSNAME_TAG) > -1) {
+				result.getUISettings()
+						.setToolbarClassName(attrs.getValue(GRID_TOOLBAR_CLASSNAME_TAG));
+			}
+			if (attrs.getIndex(GRID_TOOLBAR_STYLE_TAG) > -1) {
+				result.getUISettings().setToolbarStyle(attrs.getValue(GRID_TOOLBAR_STYLE_TAG));
 			}
 			if (attrs.getIndex(FORCE_LOAD_SETTINGS) > -1) {
 				value = attrs.getValue(FORCE_LOAD_SETTINGS);

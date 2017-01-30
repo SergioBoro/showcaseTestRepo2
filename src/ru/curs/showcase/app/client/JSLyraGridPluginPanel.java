@@ -907,7 +907,8 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			selectedRecordsChanged();
 		}
 
-		hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) + "px");
+		// hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) +
+		// "px");
 		getToolBarHelper().fillToolBar();
 
 		processClick(recId, colId, interactionType);
@@ -984,7 +985,8 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 			resetGridSettingsToCurrent();
 
-			hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) + "px");
+			// hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) +
+			// "px");
 			toolBarHelper.fillToolBar();
 
 			runAction(gridMetadata.getActionForDependentElements());

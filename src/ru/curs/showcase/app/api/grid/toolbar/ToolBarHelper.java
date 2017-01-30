@@ -50,7 +50,22 @@ public class ToolBarHelper {
 		jsBaseGridPluginPanel = aJSBaseGridPluginPanel;
 
 		panel = new SimplePanel();
-		panel.setHeight(TOOLBAR_HEIGHT);
+
+		String toolbarClassName =
+			jsBaseGridPluginPanel.getGridMetadata().getUISettings().getToolbarClassName();
+		String toolbarStyle =
+			jsBaseGridPluginPanel.getGridMetadata().getUISettings().getToolbarStyle();
+		if ((toolbarClassName == null) && (toolbarStyle == null)) {
+			panel.setHeight(TOOLBAR_HEIGHT);
+		} else {
+			if (toolbarClassName != null) {
+				panel.addStyleName(toolbarClassName);
+			}
+			if (toolbarStyle != null) {
+				panel.getElement().setAttribute("style", toolbarStyle);
+			}
+		}
+
 	}
 
 	/**
