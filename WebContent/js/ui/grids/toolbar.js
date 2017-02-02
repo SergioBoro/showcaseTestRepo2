@@ -1,5 +1,6 @@
 function createGridToolBar(elementId, parentId, metadata) {
-	require([
+	require({async:true},
+			[
              "dijit/registry",
 	         "dijit/Toolbar",
 	         "dijit/form/Button",

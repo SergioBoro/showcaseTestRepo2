@@ -1,5 +1,6 @@
 function createLyraDGrid(elementId, parentId, metadata) {
-	require([
+	require(/*{async:true},*/ 
+			[
 			 "dojo/_base/lang",
 	         "dojo/has",			 
 			 "dgrid/List",

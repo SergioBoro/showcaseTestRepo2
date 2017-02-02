@@ -53,7 +53,7 @@ function createLiveDGrid(elementId, parentId, metadata) {
 	}
 	
 	
-	require(arrScripts,	function(
+	require({async:true}, arrScripts,	function(
         		 lang, has, List, Grid, CompoundColumns, ColumnSet, ColumnResizer, Selection, CellSelection, Editor, Keyboard, declare, QueryResults, Rest, Trackable, Cache, when, domReady,	        		 
 	        	 Button,DropDownButton,ComboButton,ToggleButton,CurrencyTextBox,DateTextBox,NumberSpinner,NumberTextBox,TextBox,TimeTextBox,ValidationTextBox,SimpleTextarea,Textarea,Select,ComboBox,MultiSelect,FilteringSelect,HorizontalSlider,VerticalSlider,CheckBox,RadioButton,DataList	        		 
 		     ){

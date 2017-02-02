@@ -56,7 +56,7 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		}
 	
 
-	require(arrScripts ,function(
+	require({async:true}, arrScripts ,function(
         		 lang, has, List, Grid, CompoundColumns, ColumnSet, ColumnResizer, Selection, CellSelection, Editor, Keyboard, Tree, declare, QueryResults, Rest, Trackable, Cache, TreeStore, domConstruct, when, domReady,	        		 
 	        	 Button,DropDownButton,ComboButton,ToggleButton,CurrencyTextBox,DateTextBox,NumberSpinner,NumberTextBox,TextBox,TimeTextBox,ValidationTextBox,SimpleTextarea,Textarea,Select,ComboBox,MultiSelect,FilteringSelect,HorizontalSlider,VerticalSlider,CheckBox,RadioButton,DataList	        		 
 		     ){
