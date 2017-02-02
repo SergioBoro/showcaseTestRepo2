@@ -1,52 +1,64 @@
 function createTreeDGrid(elementId, parentId, metadata) {
-	require([
-	         "dijit/form/Button",
-	         "dijit/form/DropDownButton",
-	         "dijit/form/ComboButton",
-	         "dijit/form/ToggleButton",
-	         "dijit/form/CurrencyTextBox",
-	         "dijit/form/DateTextBox",
-	         "dijit/form/NumberSpinner",
-	         "dijit/form/NumberTextBox",
-	         "dijit/form/TextBox",
-	         "dijit/form/TimeTextBox",
-	         "dijit/form/ValidationTextBox",
-	         "dijit/form/SimpleTextarea",
-	         "dijit/form/Textarea",
-	         "dijit/form/Select",
-	         "dijit/form/ComboBox",
-	         "dijit/form/MultiSelect",
-	         "dijit/form/FilteringSelect",
-	         "dijit/form/HorizontalSlider",
-	         "dijit/form/VerticalSlider",
-	         "dijit/form/CheckBox",
-	         "dijit/form/RadioButton",
-	         "dijit/form/DataList",
+	
+	var arrScripts = [
+	     			 "dojo/_base/lang",
+	    	         "dojo/has",			 
+	    			 "dgrid/List",
+	    			 "dgrid/OnDemandGrid",
+	    	         "dgrid/extensions/CompoundColumns", 
+	    	         "dgrid/ColumnSet", 
+	    			 "dgrid/extensions/ColumnResizer",
+	    			 "dgrid/Selection",
+	    	         "dgrid/CellSelection", 				
+	    			 "dgrid/Editor",
+	    			 "dgrid/Keyboard",
+	    			 "dgrid/Tree",			 
+	    			 "dojo/_base/declare",
+	    	         "dstore/QueryResults",
+	    			 "dstore/Rest",
+	    			 "dstore/Trackable",
+	    			 "dstore/Cache",
+	    			 "dstore/Tree",			 
+	    	     	 "dojo/dom-construct",	     
+	    	     	 "dojo/when",
+	    			 "dojo/domReady!"
+	                 ];
+	
+	var arrEditors = [
+		     	         "dijit/form/Button",
+		    	         "dijit/form/DropDownButton",
+		    	         "dijit/form/ComboButton",
+		    	         "dijit/form/ToggleButton",
+		    	         "dijit/form/CurrencyTextBox",
+		    	         "dijit/form/DateTextBox",
+		    	         "dijit/form/NumberSpinner",
+		    	         "dijit/form/NumberTextBox",
+		    	         "dijit/form/TextBox",
+		    	         "dijit/form/TimeTextBox",
+		    	         "dijit/form/ValidationTextBox",
+		    	         "dijit/form/SimpleTextarea",
+		    	         "dijit/form/Textarea",
+		    	         "dijit/form/Select",
+		    	         "dijit/form/ComboBox",
+		    	         "dijit/form/MultiSelect",
+		    	         "dijit/form/FilteringSelect",
+		    	         "dijit/form/HorizontalSlider",
+		    	         "dijit/form/VerticalSlider",
+		    	         "dijit/form/CheckBox",
+		    	         "dijit/form/RadioButton",
+		    	         "dijit/form/DataList"
+		             ];
+		
+		if(!metadata["common"]["readonly"]){
+			for(var i = 0; i < arrEditors.length; i++){
+				arrScripts.push(arrEditors[i]);
+			}
+		}
+	
 
-			 "dojo/_base/lang",
-	         "dojo/has",			 
-			 "dgrid/List",
-			 "dgrid/OnDemandGrid",
-	         "dgrid/extensions/CompoundColumns", 
-	         "dgrid/ColumnSet", 
-			 "dgrid/extensions/ColumnResizer",
-			 "dgrid/Selection",
-	         "dgrid/CellSelection", 				
-			 "dgrid/Editor",
-			 "dgrid/Keyboard",
-			 "dgrid/Tree",			 
-			 "dojo/_base/declare",
-	         "dstore/QueryResults",
-			 "dstore/Rest",
-			 "dstore/Trackable",
-			 "dstore/Cache",
-			 "dstore/Tree",			 
-	     	 "dojo/dom-construct",	     
-	     	 "dojo/when",
-			 "dojo/domReady!"
-	         ],	function(
-	        	 Button,DropDownButton,ComboButton,ToggleButton,CurrencyTextBox,DateTextBox,NumberSpinner,NumberTextBox,TextBox,TimeTextBox,ValidationTextBox,SimpleTextarea,Textarea,Select,ComboBox,MultiSelect,FilteringSelect,HorizontalSlider,VerticalSlider,CheckBox,RadioButton,DataList,	        		 
-        		 lang, has, List, Grid, CompoundColumns, ColumnSet, ColumnResizer, Selection, CellSelection, Editor, Keyboard, Tree, declare, QueryResults, Rest, Trackable, Cache, TreeStore, domConstruct, when
+	require(arrScripts ,function(
+        		 lang, has, List, Grid, CompoundColumns, ColumnSet, ColumnResizer, Selection, CellSelection, Editor, Keyboard, Tree, declare, QueryResults, Rest, Trackable, Cache, TreeStore, domConstruct, when, domReady,	        		 
+	        	 Button,DropDownButton,ComboButton,ToggleButton,CurrencyTextBox,DateTextBox,NumberSpinner,NumberTextBox,TextBox,TimeTextBox,ValidationTextBox,SimpleTextarea,Textarea,Select,ComboBox,MultiSelect,FilteringSelect,HorizontalSlider,VerticalSlider,CheckBox,RadioButton,DataList	        		 
 		     ){
 		
 		

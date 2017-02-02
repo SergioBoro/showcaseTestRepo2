@@ -1,6 +1,25 @@
 function createLyraDGrid(elementId, parentId, metadata) {
 	require([
-	         "dijit/form/Button",
+			 "dojo/_base/lang",
+	         "dojo/has",			 
+			 "dgrid/List",
+			 "dgrid/OnDemandGrid",
+	         "dgrid/extensions/CompoundColumns", 
+	         "dgrid/ColumnSet", 
+			 "dgrid/extensions/ColumnResizer",
+			 "dgrid/Selection",
+	         "dgrid/CellSelection", 				
+			 "dgrid/Editor",
+			 "dgrid/Keyboard",
+			 "dojo/_base/declare",
+	         "dstore/QueryResults",
+			 "dstore/Rest",
+			 "dstore/Trackable",
+			 "dstore/Cache",
+	     	 "dojo/when",	         
+			 "dojo/domReady!"
+///*	         
+	         ,"dijit/form/Button",
 	         "dijit/form/DropDownButton",
 	         "dijit/form/ComboButton",
 	         "dijit/form/ToggleButton",
@@ -21,29 +40,11 @@ function createLyraDGrid(elementId, parentId, metadata) {
 	         "dijit/form/VerticalSlider",
 	         "dijit/form/CheckBox",
 	         "dijit/form/RadioButton",
-	         "dijit/form/DataList",
-
-			 "dojo/_base/lang",
-	         "dojo/has",			 
-			 "dgrid/List",
-			 "dgrid/OnDemandGrid",
-	         "dgrid/extensions/CompoundColumns", 
-	         "dgrid/ColumnSet", 
-			 "dgrid/extensions/ColumnResizer",
-			 "dgrid/Selection",
-	         "dgrid/CellSelection", 				
-			 "dgrid/Editor",
-			 "dgrid/Keyboard",
-			 "dojo/_base/declare",
-	         "dstore/QueryResults",
-			 "dstore/Rest",
-			 "dstore/Trackable",
-			 "dstore/Cache",
-	     	 "dojo/when",	         
-			 "dojo/domReady!"
+	         "dijit/form/DataList"
+//*/	         
 	         ],	function(
-	        	 Button,DropDownButton,ComboButton,ToggleButton,CurrencyTextBox,DateTextBox,NumberSpinner,NumberTextBox,TextBox,TimeTextBox,ValidationTextBox,SimpleTextarea,Textarea,Select,ComboBox,MultiSelect,FilteringSelect,HorizontalSlider,VerticalSlider,CheckBox,RadioButton,DataList,	        		 
-	        	 lang, has, List, Grid, CompoundColumns, ColumnSet, ColumnResizer, Selection, CellSelection, Editor, Keyboard, declare, QueryResults, Rest, Trackable, Cache, when
+	        	 lang, has, List, Grid, CompoundColumns, ColumnSet, ColumnResizer, Selection, CellSelection, Editor, Keyboard, declare, QueryResults, Rest, Trackable, Cache, when, domReady	        		 
+	        	 ,Button,DropDownButton,ComboButton,ToggleButton,CurrencyTextBox,DateTextBox,NumberSpinner,NumberTextBox,TextBox,TimeTextBox,ValidationTextBox,SimpleTextarea,Textarea,Select,ComboBox,MultiSelect,FilteringSelect,HorizontalSlider,VerticalSlider,CheckBox,RadioButton,DataList	        		 
 		     ){
     	
 		
