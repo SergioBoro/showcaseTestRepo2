@@ -340,7 +340,8 @@ function measureDownloadSpeed(contentSize)
 
 function preloadGrids() 
 {
-	require([
+	require({async:true}, 
+			[
              "dijit/registry",
 	         "dijit/Toolbar",
 	         "dojo/_base/array",
