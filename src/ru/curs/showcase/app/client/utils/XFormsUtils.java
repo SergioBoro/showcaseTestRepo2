@@ -2,11 +2,11 @@ package ru.curs.showcase.app.client.utils;
 
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
+
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
-
-import com.google.gwt.core.client.GWT;
 
 /**
  * Общие утилиты для XForms. В том числе, генерация главной XForm'ы.
@@ -28,8 +28,8 @@ public final class XFormsUtils {
 		}
 
 		dataService.getMainXForms(new GWTServiceCallback<List<String>>(
-		// AppCurrContext.getInstance().getBundleMap().get("xformsErrorGetMainData"))
-		// {
+				// AppCurrContext.getInstance().getBundleMap().get("xformsErrorGetMainData"))
+				// {
 				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 						"when retrieving data from server to the main XForm")) {
 			@Override
@@ -75,9 +75,9 @@ public final class XFormsUtils {
 	 */
 	// CHECKSTYLE:OFF
 	private static native void setCallbackJSNIFunction() /*-{
-															$wnd.gwtXFormSave = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickSave(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtXFormSave = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickSave(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;);
 														//	$wnd.gwtXFormFilter = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickFilter(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
-															$wnd.gwtXFormUpdate = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickUpdate(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtXFormUpdate = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickUpdate(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;);
 															$wnd.showSelector =	@ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
 															$wnd.showMultiSelector = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showMultiSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
 															$wnd.gwtXFormDownload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::downloadFile(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);

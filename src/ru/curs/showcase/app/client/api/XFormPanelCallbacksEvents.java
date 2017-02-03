@@ -161,14 +161,14 @@ public final class XFormPanelCallbacksEvents {
 	 *            - Данные xForm'ы
 	 */
 	public static void xFormPanelClickSave(final String xformId, final String linkId,
-			final String data, final String elementId) {
+			final String data, final String elementId, final Boolean forceCloseWindow) {
 		final XFormPanel curXFormPanel = getCurrentPanel(xformId);
 
 		if (curXFormPanel != null) {
 
 			// MessageBox.showSimpleMessage("xFormPanelClickSave. xformId=" +
 			// xformId + ", linkId="
-			// + linkId, data);
+			// + linkId + ", forceCloseWindow=" + forceCloseWindow, data);
 
 			final Action ac = getActionByLinkId(linkId, curXFormPanel);
 
@@ -205,7 +205,14 @@ public final class XFormPanelCallbacksEvents {
 										// MessageBox.showSimpleMessage("InlineUploaderComplete",
 										// "aRes=" + String.valueOf(aRes));
 
-										runAction(ac, curXFormPanel.getElement());
+										if (ac != null) {
+											runAction(ac, curXFormPanel.getElement());
+										} else {
+											if (Boolean.parseBoolean(
+													String.valueOf(forceCloseWindow))) {
+												ActionExecuter.closeCurrentWindow();
+											}
+										}
 
 										setEnableDisableState(elementId, true);
 									}
@@ -218,7 +225,15 @@ public final class XFormPanelCallbacksEvents {
 							}
 						});
 			} else {
-				runAction(ac, curXFormPanel.getElement());
+
+				if (ac != null) {
+					runAction(ac, curXFormPanel.getElement());
+				} else {
+					if (Boolean.parseBoolean(String.valueOf(forceCloseWindow))) {
+						ActionExecuter.closeCurrentWindow();
+					}
+				}
+
 			}
 		}
 	}
@@ -280,7 +295,7 @@ public final class XFormPanelCallbacksEvents {
 	 *            Данные xForm'ы
 	 */
 	public static void xFormPanelClickUpdate(final String xformId, final String linkId,
-			final String overridenAddContext) {
+			final String overridenAddContext, final Boolean forceCloseWindow) {
 
 		// MessageBox.showSimpleMessage("xFormPanelClickUpdate. xformId=" +
 		// xformId + ", linkId="
@@ -298,6 +313,10 @@ public final class XFormPanelCallbacksEvents {
 					ac.setAdditionalContext(overridenAddContext);
 				}
 				runAction(ac, currentXFormPanel.getElement());
+			} else {
+				if (Boolean.parseBoolean(String.valueOf(forceCloseWindow))) {
+					ActionExecuter.closeCurrentWindow();
+				}
 			}
 		}
 	}

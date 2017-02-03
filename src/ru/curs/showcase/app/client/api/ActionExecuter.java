@@ -312,4 +312,10 @@ public final class ActionExecuter {
 		return getElementPanelById(new ID(id));
 	}
 
+	public static void closeCurrentWindow() {
+		if (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() != null) {
+			AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement().closeWindow();
+		}
+	}
+
 }
