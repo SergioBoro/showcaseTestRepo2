@@ -4,6 +4,7 @@ import org.python.core.PyObject;
 
 import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.ExceptionType;
+import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.util.exception.BaseException;
 
 /**
@@ -37,9 +38,14 @@ public class RESTGateway {
 			correctedRESTProc = restProc.substring(0, restProc.length() - vosem);
 		}
 
-		String tempSesId = "RESTful" + sesId;
+		Boolean isRestWithCelestaAuthentication =
+			(UserDataUtils.getGeneralOptionalProp("rest.authentication.type") == "celesta") ? true
+					: false;
+
+		String tempSesId = isRestWithCelestaAuthentication ? sesId : "RESTful" + sesId;
 		try {
-			Celesta.getInstance().login(tempSesId, "userCelestaSid");
+			if (!isRestWithCelestaAuthentication)
+				Celesta.getInstance().login(tempSesId, "userCelestaSid");
 			PyObject pObj = Celesta.getInstance().runPython(tempSesId, correctedRESTProc,
 					requestType, userToken, acceptLanguage, requestUrl, requestData, urlParams);
 
@@ -58,7 +64,8 @@ public class RESTGateway {
 
 		} finally {
 			try {
-				Celesta.getInstance().logout(tempSesId, false);
+				if (!isRestWithCelestaAuthentication)
+					Celesta.getInstance().logout(tempSesId, false);
 			} catch (CelestaException e) {
 				throw new ShowcaseRESTException(ExceptionType.SOLUTION,
 						"Пля выполнении REST запроса произошла ошибка при попытке выйти из сессии в celesta: "

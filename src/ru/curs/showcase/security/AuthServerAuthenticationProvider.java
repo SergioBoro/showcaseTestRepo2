@@ -208,7 +208,7 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		return SignedUsernamePasswordAuthenticationToken.class.isAssignableFrom(arg0);
 	}
 
-	private String encodeParam(final String param) throws UnsupportedEncodingException {
+	public static String encodeParam(final String param) throws UnsupportedEncodingException {
 		String s = param;
 		s = s.replace("%", "AB4AFD63A4C");
 		s = s.replace("+", "D195B4C989F");

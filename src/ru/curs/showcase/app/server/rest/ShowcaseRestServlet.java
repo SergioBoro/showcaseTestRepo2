@@ -1,16 +1,22 @@
 package ru.curs.showcase.app.server.rest;
 
 import java.io.*;
+import java.net.*;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
+import javax.xml.transform.TransformerException;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.*;
+import org.springframework.security.authentication.AuthenticationServiceException;
 
-import ru.curs.showcase.app.api.ExceptionType;
+import ru.curs.celesta.*;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.runtime.UserDataUtils;
-import ru.curs.showcase.util.exception.BaseException;
+import ru.curs.showcase.security.*;
+import ru.curs.showcase.util.exception.*;
 
 /**
  * @author a.lugovtsov
@@ -35,18 +41,100 @@ public final class ShowcaseRestServlet extends HttpServlet {
 	public void service(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 
+		// rest.authentication.type
+		String sesId = request.getSession().getId();
+		String requestUrl = request.getRequestURL().toString();
+
+		if ((requestUrl.endsWith("restlogin")) || requestUrl.endsWith("restlogin/")) {
+
+			String userSid = null;
+
+			String usr = request.getParameter("user");
+
+			String pwd = request.getParameter("password");
+
+			// взаимоействие с мелофоном
+
+			URL server;
+			String url = "";
+			try {
+				url = SecurityParamsFactory.getLocalAuthServerUrl();
+			} catch (SettingsFileOpenException e1) {
+				throw new AuthenticationServiceException(SecurityParamsFactory.APP_PROP_READ_ERROR,
+						e1);
+			}
+
+			server = new URL(url + String.format("/checkcredentials?login=%s&pwd=%s",
+					AuthServerAuthenticationProvider.encodeParam(usr),
+					AuthServerAuthenticationProvider.encodeParam(pwd)));
+
+			HttpURLConnection c = null;
+
+			try {
+				c = (HttpURLConnection) server.openConnection();
+				c.setRequestMethod("GET");
+				c.connect();
+				if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
+					UserInfo ud = null;
+					try {
+						List<UserInfo> l = UserInfoUtils.parseStream(c.getInputStream());
+						ud = l.get(0);
+						ud.setResponseCode(c.getResponseCode());
+					} catch (TransformerException e) {
+						throw new ServletException(
+								AuthServerUtils.AUTH_SERVER_DATA_ERROR + e.getMessage(), e);
+					}
+					userSid = ud.getSid();
+				} else {
+					userSid = null;
+				}
+
+			} finally {
+				if (c != null) {
+					c.disconnect();
+				}
+			}
+
+			try {
+				if (userSid != null) {
+					Celesta.getInstance().login(sesId, userSid);
+				}
+			} catch (CelestaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
+
+		// String restProc =
+		// UserDataUtils.getGeneralOptionalProp("rest.authentication.type");
+		// localhost:8082/mellophone/checkcredentials?login=Иванов1&pwd=пасс1
+
 		// System.out.println("aaaa: " + request.getMethod());
+
+		if ((requestUrl.endsWith("restlogout")) || requestUrl.endsWith("restlogout/")) {
+
+			try {
+				Celesta.getInstance().logout(sesId, false);
+			} catch (CelestaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			response.setStatus(HttpServletResponse.SC_OK);
+			return;
+		}
 
 		String requestType = request.getMethod();
 		String userToken = request.getHeader("user-token");
-		String requestUrl = request.getRequestURL().toString();
+		// String requestUrl = request.getRequestURL().toString();
 
 		String acceptLanguage = request.getHeader("Accept-Language");
 		if (acceptLanguage == null || acceptLanguage.isEmpty()) {
 			acceptLanguage = "en";
 		}
-
-		String sesId = request.getSession().getId();
 
 		String requestURLParams = request.getQueryString();
 
@@ -89,9 +177,8 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		//
 		// System.out.println(ff.toString());
 
-		JythonRestResult responcseData =
-			RESTGateway.executeRESTcommand(requestType, userToken, acceptLanguage, requestUrl,
-					requestData, requestURLParams, sesId, restProc);
+		JythonRestResult responcseData = RESTGateway.executeRESTcommand(requestType, userToken,
+				acceptLanguage, requestUrl, requestData, requestURLParams, sesId, restProc);
 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter()
