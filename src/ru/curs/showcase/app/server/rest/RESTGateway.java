@@ -39,8 +39,8 @@ public class RESTGateway {
 		}
 
 		Boolean isRestWithCelestaAuthentication =
-			(UserDataUtils.getGeneralOptionalProp("rest.authentication.type") == "celesta") ? true
-					: false;
+			("celesta".equals(UserDataUtils.getGeneralOptionalProp("rest.authentication.type")))
+					? true : false;
 
 		String tempSesId = isRestWithCelestaAuthentication ? sesId : "RESTful" + sesId;
 		try {
