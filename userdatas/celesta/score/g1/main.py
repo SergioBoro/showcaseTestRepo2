@@ -42,7 +42,7 @@ def navigator(context, session):
                         <datapanel type="grid.xml" tab="firstOrCurrent"></datapanel>
                     </action>
                 </level2>
-                <level2 id="114" name="Plugin"   selectOnLoad="true"  >
+                <level2 id="114" name="Plugin" >
                     <action>
                         <main_context></main_context>
                         <datapanel type="plugin.xml" tab="firstOrCurrent"></datapanel>
@@ -54,9 +54,16 @@ def navigator(context, session):
                         <main_context></main_context>
                         <datapanel type="alfresco.xml" tab="firstOrCurrent"></datapanel>
                     </action>
-                </level2>     
+                </level2>                     
                 
-                     
+                <level2 id="jsForm" name="jsForm" selectOnLoad="true" >
+                    <action>
+                        <main_context>Data of main context</main_context>
+                        <datapanel type="jsForm.xml" tab="firstOrCurrent" >          
+                        </datapanel>
+                    </action>
+                </level2>
+                
             </level1>
         </group>
     </navigator>

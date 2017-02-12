@@ -26,6 +26,8 @@
          <xs:enumeration value="partialupdate"/>
          <xs:enumeration value="UPDATEPARENTS"/>
          <xs:enumeration value="updateparents"/>
+         <xs:enumeration value="JSFORMSUBMIT"/>
+         <xs:enumeration value="jsformsubmit"/>
       </xs:restriction>
    </xs:simpleType>
 
@@ -56,6 +58,8 @@
          <xs:enumeration value="chart"/>
          <xs:enumeration value="GRID"/>
          <xs:enumeration value="grid"/>
+         <xs:enumeration value="JSFORM"/>
+         <xs:enumeration value="jsForm"/>
       </xs:restriction>
    </xs:simpleType>
 

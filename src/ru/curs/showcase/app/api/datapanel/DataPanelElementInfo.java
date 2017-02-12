@@ -174,6 +174,8 @@ public class DataPanelElementInfo extends TransferableElement
 			return procName != null;
 		case XFORMS:
 			return templateName != null;
+		case JSFORM:
+			return templateName != null;
 		default:
 			return true;
 		}

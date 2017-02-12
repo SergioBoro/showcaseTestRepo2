@@ -194,6 +194,9 @@ public final class DataPanelFactory extends StartTagSAXHandler {
 		case XFORMS:
 			el.setTemplateName(attrs.getValue(TEMPLATE_TAG));
 			break;
+		case JSFORM:
+			el.setTemplateName(attrs.getValue(TEMPLATE_TAG));
+			break;
 		default:
 			break;
 		}

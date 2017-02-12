@@ -227,6 +227,9 @@ public class GeneralDataPanel {
 		case PLUGIN:
 			return generatePluginElement(dpe);
 
+		case JSFORM:
+			return generateJsForElement(dpe);
+
 		default:
 			return null;
 
@@ -727,6 +730,35 @@ public class GeneralDataPanel {
 
 		getUiElements(dpe).add(new UIDataPanelElement(mp));
 		addDataPanelForCaching(dpe, mp);
+		return w;
+
+	}
+
+	/**
+	 * создает и возвращает виджет для элементов типа JsForm.
+	 * 
+	 * @param dpe
+	 *            - DataPanelElement
+	 * @return - Widget
+	 */
+	public static Widget generateJsForElement(final DataPanelElementInfo dpe) {
+
+		JsFormPanel wtp = null;
+		Widget w = null;
+		if (!(dpe.getHideOnLoad()) && (!(dpe.getNeverShowInPanel()))) {
+			wtp = new JsFormPanel(getElementContextForNavigatorAction(dpe), dpe);
+			w = wtp.getPanel();
+			w.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+		} else {
+			wtp = new JsFormPanel(dpe);
+			w = wtp.getPanel();
+			wtp.hidePanel();
+		}
+
+		getUiElements(dpe).add(new UIDataPanelElement(wtp));
+
+		addDataPanelForCaching(dpe, wtp);
+
 		return w;
 
 	}

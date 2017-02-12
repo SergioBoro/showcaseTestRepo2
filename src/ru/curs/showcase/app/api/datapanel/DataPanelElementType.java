@@ -32,7 +32,12 @@ public enum DataPanelElementType implements SerializableElement {
 	/**
 	 * UI плагин - произвольная внешняя компонента JavaScript или Flash.
 	 */
-	PLUGIN;
+	PLUGIN,
+	/**
+	 * jsForm - форма предоставляющая произвольный набор JavaScript компонент
+	 * (dojo) и/или html.
+	 */
+	JSFORM;
 
 	/**
 	 * Возвращает имя схемы для проверки общих настроек элемента.

@@ -60,5 +60,9 @@ public enum DataPanelElementProcType implements SerializableElement {
 	 * Имя процедуры, возвращающей паренты для обновления текущего и нижнего
 	 * уровней тригрида .
 	 */
-	UPDATEPARENTS
+	UPDATEPARENTS,
+	/**
+	 * Имя процедуры, возвращающей данные для элемента JsForm.
+	 */
+	JSFORMSUBMIT
 }

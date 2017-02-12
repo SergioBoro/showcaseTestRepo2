@@ -5,8 +5,8 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import ru.curs.showcase.app.api.UserMessage;
+import ru.curs.showcase.app.api.event.Event;
 import ru.curs.showcase.app.api.geomap.GeoMapExportSettings;
-import ru.curs.showcase.app.api.grid.GridEvent;
 
 /**
  * Асинхронный компаньон FakeService.
@@ -19,7 +19,7 @@ public interface FakeServiceAsync {
 	void serializeGeoMapExportSettings(GeoMapExportSettings settings,
 			AsyncCallback<Void> callback);
 
-	void serializeEvents(AsyncCallback<List<GridEvent>> callback);
+	<E extends Event> void serializeEvents(AsyncCallback<List<E>> callback);
 
 	void serializeUserMessage(AsyncCallback<UserMessage> callback);
 

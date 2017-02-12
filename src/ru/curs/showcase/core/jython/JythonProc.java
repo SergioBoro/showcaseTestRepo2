@@ -2,12 +2,12 @@ package ru.curs.showcase.core.jython;
 
 import java.util.List;
 
+import com.ziclix.python.sql.PyConnection;
+
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.grid.SortColumn;
-
-import com.ziclix.python.sql.PyConnection;
 
 /**
  * Единый интерфейс для всех (!) Jython процедур. Каждая конкретная процедура на
@@ -56,9 +56,8 @@ public interface JythonProc {
 	 *         настройки элемента в виде двух строк или объект с информацией для
 	 *         пользователя в случае ошибки.
 	 */
-	Object
-			getRawData(AbstractCompositeContext context, String elementId,
-					List<SortColumn> sortcols);
+	Object getRawData(AbstractCompositeContext context, String elementId,
+			List<SortColumn> sortcols);
 
 	/**
 	 * Возвращает сырые данные для компонента grid в случае задания двумя
@@ -181,8 +180,8 @@ public interface JythonProc {
 	 *            - атрибуты запроса
 	 * @return объект класса JythonDownloadResultForGrid
 	 */
-	<T extends InputAttributes> JythonDownloadResult getInputStream(
-			AbstractCompositeContext aContext, T attributes);
+	<T extends InputAttributes> JythonDownloadResult
+			getInputStream(AbstractCompositeContext aContext, T attributes);
 
 	/**
 	 * Загрузить файл на сервер.
@@ -274,5 +273,31 @@ public interface JythonProc {
 	 */
 	GridAddRecordResult gridAddRecord(CompositeContext context, String elementId,
 			String addRecordData);
+
+	/**
+	 * Процедура получения данных элемента JsForm.
+	 * 
+	 * @param aContext
+	 *            - контекст.
+	 * @param elementId
+	 *            - идентификатор элемента.
+	 * @return - массив строк в JythonDTO, являющихся параметрами элемента или
+	 *         UserMessage в случае ошибки.
+	 */
+	Object templateJsForm(CompositeContext aContext, String elementId);
+
+	/**
+	 * Процедура передачи данных элемента JsForm.
+	 * 
+	 * @param aContext
+	 *            - контекст.
+	 * @param elementId
+	 *            - идентификатор элемента.
+	 * @param aData
+	 *            - входные данные.
+	 * @return - массив строк в JythonDTO, являющихся параметрами элемента или
+	 *         UserMessage в случае ошибки.
+	 */
+	Object submiJsForm(CompositeContext aContext, String elementId, String aData);
 
 }

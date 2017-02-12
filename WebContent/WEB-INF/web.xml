@@ -92,6 +92,14 @@
     <url-pattern>/secured/data</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>JsFormService</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.JsFormService</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JsFormService</servlet-name>
+    <url-pattern>/secured/JsFormService</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>JSGridService</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.JSGridService</servlet-class>
   </servlet>
