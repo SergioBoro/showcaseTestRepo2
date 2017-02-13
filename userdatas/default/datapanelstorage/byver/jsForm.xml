@@ -3,7 +3,7 @@
   <tab id="1" name="dijit/form/Button">
     <!--<element id="1" type="jsForm" template="jsFormTemplate">-->
     <!--<element id="1" type="jsForm" template="jsForm.py">-->
-    <element id="1" type="jsForm" template="jsForms\dijitFormButton.html">
+    <element id="1" type="jsForm" template="jsForms\dijitFormButton.html" showLoadingMessage="true">
       <proc id="submit01" name="jsFormSubmit" type="JSFORMSUBMIT" />
       <proc id="submit02" name="jsForm.py" type="JSFORMSUBMIT" />
     </element>

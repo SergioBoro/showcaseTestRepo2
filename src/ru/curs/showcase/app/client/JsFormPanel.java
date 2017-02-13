@@ -89,10 +89,9 @@ public class JsFormPanel extends BasicElementPanelBasis {
 	private void setJsFormPanel() {
 		final DataPanelElementInfo elInfo = getElementInfo();
 		if (elInfo.getShowLoadingMessage()) {
-			rootEl.setText("");
-			rootEl.addStyleName("progress-bar");
+			rootEl.setHTML("<div class=\"progress-bar\"></div>");
 		}
-		executeHttpRequests("template", null, true,
+		executeHttpRequests("template", null, false,
 				new Callback<XHRRequestSuccessData, XHRRequestErrData>() {
 
 					@Override
