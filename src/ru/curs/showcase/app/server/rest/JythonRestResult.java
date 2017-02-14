@@ -14,6 +14,20 @@ public class JythonRestResult {
 	private String responseData;
 
 	/**
+	 * Тип данных в теле ответа на рест запрос (параметр Content-Type в хедере
+	 * ответа).
+	 */
+	private String contentType;
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String acontentType) {
+		this.contentType = acontentType;
+	}
+
+	/**
 	 * Код возврата.
 	 */
 	private Integer responseCode;
@@ -35,9 +49,15 @@ public class JythonRestResult {
 	}
 
 	public JythonRestResult(final String aresponseData, final Integer aresponseCode) {
+		this(aresponseData, aresponseCode, "application/json");
+	}
+
+	public JythonRestResult(final String aresponseData, final Integer aresponseCode,
+			final String acontentType) {
 		super();
-		responseData = aresponseData;
-		responseCode = aresponseCode;
+		this.responseData = aresponseData;
+		this.responseCode = aresponseCode;
+		this.contentType = acontentType;
 	}
 
 }

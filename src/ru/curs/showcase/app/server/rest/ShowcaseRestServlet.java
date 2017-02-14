@@ -185,6 +185,7 @@ public final class ShowcaseRestServlet extends HttpServlet {
 				.write(StringEscapeUtils.unescapeJava(responcseData.getResponseData()));
 
 		response.setStatus(responcseData.getResponseCode());
+		response.setHeader("Content-Type", responcseData.getContentType());
 
 		LOGGER.info("Using Rest WebService. \nCalled procedure: " + restProc + "\nRequest Type: "
 				+ requestType + "\nRequest URL: " + requestUrl + "\nUser Token: " + userToken
