@@ -277,7 +277,10 @@
   </servlet-mapping>
   
   
-  
+  <error-page>
+    <error-code>404</error-code>
+    <location>/err404.jsp</location>
+  </error-page>
   <error-page>
     <error-code>500</error-code>
     <location>/err500.jsp</location>
