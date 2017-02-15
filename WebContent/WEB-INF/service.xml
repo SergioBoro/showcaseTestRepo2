@@ -19,6 +19,15 @@
     </bean>-->
 
     <bean class="ru.curs.showcase.security.ApplicationContextProvider"/>
+
+    
+	<bean id="esiaAuthenticationProvider" 
+          class="ru.curs.showcase.security.esia.ESIAAuthenticationProvider">
+    </bean>
+    <bean id="esiaFilter" class="ru.curs.showcase.security.esia.ESIAAuthenticationProcessingFilter">
+	 	<property name="authenticationManager" ref="authenticationManager"/>
+	</bean>
+
     
     <bean id="signedRequestAuthenticationProvider" 
           class="ru.curs.showcase.security.AuthServerAuthenticationProvider">

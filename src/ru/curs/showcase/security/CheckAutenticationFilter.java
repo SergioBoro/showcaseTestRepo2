@@ -61,11 +61,10 @@ public class CheckAutenticationFilter implements Filter {
 				}
 				AuthServerUtils.init(url);
 
-				if (AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(
-						httpReq.getSession().getId())) {
-					UserInfo ud =
-						AuthServerUtils.getTheAuthServerAlias().isAuthenticated(
-								httpReq.getSession().getId());
+				if (AppInfoSingleton.getAppInfo()
+						.getAuthViaAuthServerForSession(httpReq.getSession().getId())) {
+					UserInfo ud = AuthServerUtils.getTheAuthServerAlias()
+							.isAuthenticated(httpReq.getSession().getId());
 					// if
 					// (SecurityContextHolder.getContext().getAuthentication()
 					// !=
@@ -96,6 +95,13 @@ public class CheckAutenticationFilter implements Filter {
 						filterChain.doFilter(request, response);
 					}
 				} else {
+
+					String esiaAuthenticated =
+						(String) (httpReq.getSession(false).getAttribute("esiaAuthenticated"));
+					if ((esiaAuthenticated != null) && ("true".equals(esiaAuthenticated))) {
+						filterChain.doFilter(request, response);
+						return;
+					}
 
 					String username =
 						(String) (httpReq.getSession(false).getAttribute("username"));
@@ -140,8 +146,8 @@ public class CheckAutenticationFilter implements Filter {
 								response.reset();
 								response.setContentType("text/html");
 								response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-								response.getWriter().append(
-										ExchangeConstants.SESSION_NOT_AUTH_SIGN);
+								response.getWriter()
+										.append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
 								response.getWriter().close();
 
 							}
