@@ -3,7 +3,7 @@ pageEncoding="UTF-8"%>
 
 <%@page import="ru.curs.showcase.security.SecurityParamsFactory"%>   
 <%@page import="ru.curs.showcase.runtime.UserDataUtils"%> 
-<%@page import="ru.curs.showcase.security.esia.ESIAManager"%>
+<%@page import="ru.curs.showcase.security.esia.EsiaSettings"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -151,31 +151,15 @@ pageEncoding="UTF-8"%>
     <td><input type="checkbox" name="_spring_security_remember_me" /></td>
     <td></td>
   </tr>
+
   
   <!--    
-    <td><a href="https://www.yandex.ru/">
-    4Вход с помощью учетной записи портала госуслуг</a></td>    
-
-    <td><a href="https://esia-portal1.test.gosuslugi.ru/aas/oauth2/ac?access_type=offline&scope=openid+http%3A%2F%2Fesia.gosuslugi.ru%2Fusr_inf&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2FShowcase&state=b5fbf220-5a2e-4771-a9f4-5b3fe2ce2e28&client_secret=MIIGsQYJKoZIhvcNAQcCoIIGojCCBp4CAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGgggPHMIIDwzCCAqugAwIBAgIJALdLvXHF-1FwMA0GCSqGSIb3DQEBCwUAMHgxCzAJBgNVBAYTAlJVMQ8wDQYDVQQIDAZSdXNzaWExDzANBgNVBAcMBk1vc2NvdzESMBAGA1UECgwJUk5JTVUgbHRkMQ8wDQYDVQQDDAZTZXJnZXkxIjAgBgkqhkiG9w0BCQEWE3Nzc2xlcGNvdkBnbWFpbC5jb20wHhcNMTYwOTIzMTA1NjA4WhcNMTcwOTE4MTA1NjA4WjB4MQswCQYDVQQGEwJSVTEPMA0GA1UECAwGUnVzc2lhMQ8wDQYDVQQHDAZNb3Njb3cxEjAQBgNVBAoMCVJOSU1VIGx0ZDEPMA0GA1UEAwwGU2VyZ2V5MSIwIAYJKoZIhvcNAQkBFhNzc3NsZXBjb3ZAZ21haWwuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4bkAshSXkZTuDNl5rCO7mZ_BubhVUtosNbdqEJQZkwuVuE8fG-kpBx2XnImiGkrkatth8epba4FSoWf2scB317_qeCkWJbuB35Y_bmEOxnvYTJO45EqgON_oNCDmQU9ifkHIcTXVoQj0cVFP6PQK-dpoHmyz3kNFHAgCXhJOL4-Qnj1__D92tnuXv3NEQPUY5wS_46STNGHrjz_6caMQsSpj0pSIFo98s6ose5suJYgdBHJ5knkcVj15MQOibAZ8RBQw8zLZOuF7S7JZKYQSQFLsY7LOxx-5PlCHtbd1gU0MCIF9jxXX0ap9M8s61rxfqA1153r7o9qDRQPyLZq1dQIDAQABo1AwTjAdBgNVHQ4EFgQU_P8wnrlJ-du5WB8kFm-zfOgdQzgwHwYDVR0jBBgwFoAU_P8wnrlJ-du5WB8kFm-zfOgdQzgwDAYDVR0TBAUwAwEB_zANBgkqhkiG9w0BAQsFAAOCAQEAwZY_6XWiAjmW5dluAS_hSJck8y2cB4s8eZ5M0_KY0bV6U2dLdwpYpLq6OG3jYWkGXZY4YleFYsavo8GRVHT9adM752Hvgsoi8RdlIdgTinkPFPH67rit5sipn6d-2DhekXno1ytiAfJJhRb8i0S6f21ySAXvY8nCvhgF0GAbbv2kPZzsfwvJPjmmyUtAKgQ1KBlEmEv5aOBsG5B5r7YZZcCUQ8SSLsUH-ZKH8yKWarNYMks7t6vf-IcB9oW4IRjTAI6HBplSzPJ29vXid0dxUXEW7A0nr-82CK5ZoLE1-q86sRfjT6IJl4SykdmWP2_O9gDgQjlzA3ZtqLYpoXoZMTGCAq4wggKqAgEBMIGFMHgxCzAJBgNVBAYTAlJVMQ8wDQYDVQQIDAZSdXNzaWExDzANBgNVBAcMBk1vc2NvdzESMBAGA1UECgwJUk5JTVUgbHRkMQ8wDQYDVQQDDAZTZXJnZXkxIjAgBgkqhkiG9w0BCQEWE3Nzc2xlcGNvdkBnbWFpbC5jb20CCQC3S71xxftRcDANBglghkgBZQMEAgEFAKCB-jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xNzAyMTMxMDA2NDhaMC8GCSqGSIb3DQEJBDEiBCD_VrvIAPGVWF_5dH7K8jb9XtG27hKAjvSkfNfTMkoNbzCBjgYJKoZIhvcNAQkPMYGAMH4wCwYJYIZIAWUDBAEqMAgGBiqFAwICCTAIBgYqhQMCAhUwCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzAOBggqhkiG9w0DAgICAIAwDQYIKoZIhvcNAwICAUAwBwYFKw4DAgcwDQYIKoZIhvcNAwICASgwDQYJKoZIhvcNAQEBBQAEggEA26RNmpPlYmXVPPMV_I-8xISA9iVFcBwBUB5xikohOjignSan8ljpWcJyhbkcP2k7TcB3Xh5A-EM7HpWGZplCeLZWU76OLHWi35uavRW_0eNyYzXHMHGWCE_jsR7ieIh2b5PPC7xS0n9DaFZHQES-HYjNunk07NXR0YY3IVnKw85mGJyZuZb0Jsz6yIL6XesKtfm7Javou8yDc89vV2k-Kx2u0Q8QOn0vvmGumFKC8cYirHUdXIqxeMmqd5rId58mRFuykRGP0Tnk2Ln5rxLANAfmBuJ5lEVL8W9fiiKJLnLbxo9jPYqmdOxafr-Zd65PXosOlorwJteMCacdWSUnKA%3D%3D&client_id=PNMO08771&timestamp=2017.02.13+10%3A06%3A48+%2B0000">
-    Вход с помощью учетной записи портала госуслуг</a></td>    
-
-
-  <tr>
-  
-  
-    <td><a href=<%=ESIAManager.getAuthorizationURL()%>>
-    Вход с помощью </br>учетной записи  </br>портала госуслуг</a></td>    
-  
-  </tr>
-
-  
   -->
   
   <tr>
-  
-    <td><a href="esia?auth=esia">
-    Вход с помощью </br>учетной записи  </br>портала госуслуг</a></td>    
-  
+    <td>
+     <%if (EsiaSettings.ESIA_ENABLE){%><a href="esia?auth=esia">Вход с помощью </br>учетной записи  </br>портала госуслуг</a><%}%>    
+    </td>
   </tr>
   
   
