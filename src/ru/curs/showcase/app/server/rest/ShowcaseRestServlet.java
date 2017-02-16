@@ -95,13 +95,24 @@ public final class ShowcaseRestServlet extends HttpServlet {
 				}
 			}
 
-			try {
-				if (userSid != null) {
+			if (userSid != null) {
+				try {
+
 					Celesta.getInstance().login(sesId, userSid);
+				} catch (CelestaException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			} catch (CelestaException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} else {
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter()
+						.write("ОШИБКА выполнения REST запроса restlogin: Логин пользователя ''"
+								+ usr + "'' неуспешен. Неверная пара логин-пароль.");
+
+				response.setStatus(403);
+				response.getWriter().close();
+				// response.setHeader("Content-Type",
+				// responcseData.getContentType());
 			}
 
 			// response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
