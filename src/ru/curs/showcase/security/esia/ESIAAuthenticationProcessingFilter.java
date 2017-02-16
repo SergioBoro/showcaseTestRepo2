@@ -33,10 +33,10 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 
 		String code = request.getParameter("code");
 
-		ESIAAuthenticationToken authRequest = new ESIAAuthenticationToken(code);
-		UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
-
 		ESIAUserInfo esiaUI = ESIAManager.getUserInfo(code);
+
+		ESIAAuthenticationToken authRequest = new ESIAAuthenticationToken(esiaUI.getSnils());
+		UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
 
 		// System.out.println("oid = " + esiaUI.getOid());
 		// System.out.println("snils = " + esiaUI.getSnils());
@@ -56,18 +56,20 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 
 		authRequest.setDetails(userAndSessionDetails);
 
-		if (esiaUI.isTrusted()) {
-			request.getSession(false).setAttribute("esiaAuthenticated", "true");
-		} else {
-			request.getSession(false).setAttribute("esiaAuthenticated", "false");
-		}
-
 		// AuthFailureHandler authFailureHandler = new
 		// AuthFailureHandler("OAUTH2");
 		// authFailureHandler.add("code", code);
 		// setAuthenticationFailureHandler(authFailureHandler);
 
 		Authentication authentication = this.getAuthenticationManager().authenticate(authRequest);
+
+		if (esiaUI.isTrusted()) {
+			request.getSession(false).setAttribute("esiaAuthenticated", "true");
+		} else {
+			request.getSession(false).setAttribute("esiaAuthenticated", "false");
+			authentication.setAuthenticated(false);
+		}
+
 		return authentication;
 
 	}

@@ -8,11 +8,11 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
  */
 public class ESIAAuthenticationToken extends AbstractAuthenticationToken {
 	private static final long serialVersionUID = 1L;
-	private final String code;
+	private final String username;
 
-	public ESIAAuthenticationToken(final String sCode) {
+	public ESIAAuthenticationToken(final String sUsername) {
 		super(null);
-		this.code = sCode;
+		username = sUsername;
 	}
 
 	@Override
@@ -22,6 +22,6 @@ public class ESIAAuthenticationToken extends AbstractAuthenticationToken {
 
 	@Override
 	public Object getPrincipal() {
-		return this.code;
+		return this.username;
 	}
 }
