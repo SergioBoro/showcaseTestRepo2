@@ -21,7 +21,7 @@ public final class EsiaSettings {
 	public static final String VALUE_CLIENT_ID =
 		UserDataUtils.getGeneralOptionalProp("esia.param.clientid");
 	public static final String VALUE_REDIRECT_URI =
-		UserDataUtils.getGeneralOptionalProp("esia.param.redirecturi");
+		UserDataUtils.getGeneralOptionalProp("esia.param.clienturi") + "/esia";
 	public static final String VALUE_SCOPE =
 		UserDataUtils.getGeneralOptionalProp("esia.param.scope");
 
