@@ -74,4 +74,6 @@ public interface DataServiceAsync {
 	void getBundle(CompositeContext context, AsyncCallback<Map<String, String>> callback);
 
 	void getLocalizationBundleDomainName(CompositeContext context, AsyncCallback<String> callback);
+
+	void copyToClipboard(String message, AsyncCallback<Void> callback);
 }

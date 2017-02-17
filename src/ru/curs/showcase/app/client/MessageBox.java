@@ -3,14 +3,20 @@
  */
 package ru.curs.showcase.app.client;
 
+import java.util.Date;
+
 import ru.curs.showcase.app.api.MessageType;
+import ru.curs.showcase.app.api.services.*;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.*;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.*;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -76,6 +82,8 @@ public final class MessageBox {
 	 */
 	private static ImagesForDialogBox images = (ImagesForDialogBox) GWT
 			.create(ImagesForDialogBox.class);
+
+	private static DataServiceAsync dataService;
 
 	public static final String SIZE_ONE_HUNDRED_PERCENTS = "100%";
 
@@ -237,6 +245,10 @@ public final class MessageBox {
 
 		horPan.add(im1);
 
+		Date date = new Date();
+		DateTimeFormat dtf = DateTimeFormat.getFormat("dd-MM-yyyy HH:mm:ss z");
+		String formattedDate = dtf.format(date);
+
 		Label l = new Label(message);
 		horPan.setCellHorizontalAlignment(l, HasHorizontalAlignment.ALIGN_LEFT);
 		horPan.add(l);
@@ -310,18 +322,63 @@ public final class MessageBox {
 			textArea.setSize("90%", SIZE_ONE_HUNDRED_PERCENTS);
 			final int n1 = 5;
 			textArea.setVisibleLines(n1);
-			textArea.setText(hideMessage);
+			textArea.setText("Time: " + formattedDate + "\r\n\r\n" + hideMessage);
 
 			textArea.setReadOnly(true);
 			dp.setContent(textArea);
+			// }
+
+			final String messageToCopy =
+				"Time: "
+						+ formattedDate
+						+ "\r\n\r\nUser: "
+						+ AppCurrContext.getInstance().getServerCurrentState().getUserInfo()
+								.getCaption() + "\r\n\r\n" + hideMessage;
+
+			Button copy =
+				new Button(CourseClientLocalization.gettext(AppCurrContext.getInstance()
+						.getDomain(), "Copy"));
+			copy.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(final ClickEvent event) {
+					if (dataService == null) {
+						dataService = GWT.create(DataService.class);
+					}
+
+					dataService.copyToClipboard(messageToCopy, new AsyncCallback<Void>() {
+
+						@Override
+						public void onFailure(final Throwable arg0) {
+						}
+
+						@Override
+						public void onSuccess(Void arg0) {
+							// Ничего не выводим
+						}
+					});
+				}
+			});
+			HorizontalPanel leftPanel = new HorizontalPanel();
+			leftPanel.setSize("100%", "100%");
+			leftPanel.add(copy);
+			leftPanel.setCellHorizontalAlignment(copy, HasHorizontalAlignment.ALIGN_LEFT);
+			HorizontalPanel rightPanel = new HorizontalPanel();
+			rightPanel.setSize("100%", "100%");
+			rightPanel.add(ok);
+			rightPanel.setCellHorizontalAlignment(ok, HasHorizontalAlignment.ALIGN_RIGHT);
+			DockPanel dockPanel = new DockPanel();
+			dockPanel.add(leftPanel, DockPanel.WEST);
+			dockPanel.add(rightPanel, DockPanel.EAST);
+			dialogContents.add(dockPanel);
+			dockPanel.setSize("100%", "100%");
+		} else {
+			dialogContents.add(ok);
+			dialogContents.setCellHorizontalAlignment(ok, HasHorizontalAlignment.ALIGN_RIGHT);
 		}
-		dialogContents.add(ok);
-		dialogContents.setCellHorizontalAlignment(ok, HasHorizontalAlignment.ALIGN_RIGHT);
 		dlg.getElement().setAttribute("message_type", attributeMessage);
 		dlg.center();
 		ok.setFocus(true);
 
 		return dlg;
 	}
-
 }

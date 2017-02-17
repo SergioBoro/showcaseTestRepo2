@@ -209,6 +209,9 @@ msgstr "Export entire table to Excel"
 msgid "Copy to clipboard"
 msgstr "Copy to clipboard"
 
+msgid "Copy"
+msgstr "Copy"
+
 msgid "Filter"
 msgstr "Filter"
 

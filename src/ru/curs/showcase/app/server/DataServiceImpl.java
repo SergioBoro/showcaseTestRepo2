@@ -1,10 +1,10 @@
 package ru.curs.showcase.app.server;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.*;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
-
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
@@ -33,8 +33,10 @@ import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
-import ru.curs.showcase.security.logging.SecurityLoggingCommand;
+import ru.curs.showcase.security.logging.*;
 import ru.curs.showcase.util.LoggerHelper;
+
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * The server side implementation of the RPC service. Является декоратором для
@@ -285,12 +287,14 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		lang = UserDataUtils.getLocaleForCurrentUserdata();
 
 		if (!("en".equals(lang))) {
-			bundle = ResourceBundle
-					.getBundle("ru.curs.showcase.app.server.internatiolization.constantsShowcase");
+			bundle =
+				ResourceBundle
+						.getBundle("ru.curs.showcase.app.server.internatiolization.constantsShowcase");
 		} else {
 			Locale loc = new Locale("en");
-			bundle = ResourceBundle.getBundle(
-					"ru.curs.showcase.app.server.internatiolization.constantsShowcase", loc);
+			bundle =
+				ResourceBundle.getBundle(
+						"ru.curs.showcase.app.server.internatiolization.constantsShowcase", loc);
 		}
 
 		if (bundle != null) {
@@ -308,8 +312,9 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		String userDataId = null;
 
 		if (context.getSessionParamsMap() != null) {
-			userDataId = AppInfoSingleton.getAppInfo()
-					.getUserdataIdFromURLParams(context.getSessionParamsMap());
+			userDataId =
+				AppInfoSingleton.getAppInfo().getUserdataIdFromURLParams(
+						context.getSessionParamsMap());
 		}
 
 		if (userDataId == null) {
@@ -324,5 +329,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 			result = domainFile.substring(0, domainFile.lastIndexOf("."));
 
 		return result;
+	}
+
+	@Override
+	public void copyToClipboard(String message) {
+		StringSelection selection = new StringSelection(message);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(selection, selection);
 	}
 }

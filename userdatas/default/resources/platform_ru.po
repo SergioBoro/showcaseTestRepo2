@@ -209,6 +209,9 @@ msgstr "Экспорт в Excel всей таблицы"
 msgid "Copy to clipboard"
 msgstr "Копировать в буфер обмена"
 
+msgid "Copy"
+msgstr "Копировать"
+
 msgid "Filter"
 msgstr "Фильтр"
 
