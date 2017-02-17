@@ -158,7 +158,7 @@ pageEncoding="UTF-8"%>
   
   <tr>
     <td>
-     <%if (EsiaSettings.ESIA_ENABLE){%><a href="esia?auth=esia">Вход с помощью </br>учетной записи  </br>портала госуслуг</a><%}%>    
+     <%if (EsiaSettings.isEsiaEnable()){%><a href="esia?auth=esia">Вход с помощью </br>учетной записи  </br>портала госуслуг</a><%}%>    
     </td>
   </tr>
   

@@ -8,8 +8,16 @@ import ru.curs.showcase.runtime.UserDataUtils;
  */
 public final class EsiaSettings {
 
-	public static final boolean ESIA_ENABLE =
+	private static boolean esiaEnable =
 		Boolean.valueOf(UserDataUtils.getGeneralOptionalProp("esia.enable"));
+
+	public static boolean isEsiaEnable() {
+		return esiaEnable;
+	}
+
+	public static void setEsiaEnable(final boolean aEsiaEnable) {
+		esiaEnable = aEsiaEnable;
+	}
 
 	public static final String CERT_FILE_NAME =
 		UserDataUtils.getGeneralOptionalProp("esia.certificate");

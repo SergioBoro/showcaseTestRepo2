@@ -20,7 +20,7 @@ import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.server.redirection.RedirectionUserdataProp;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.*;
-import ru.curs.showcase.security.esia.ESIAManager;
+import ru.curs.showcase.security.esia.*;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
 import ru.curs.showcase.security.logging.SecurityLoggingCommand;
 
@@ -198,7 +198,15 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 						}
 					} finally {
 						ProductionModeInitializer.initActiviti();
-						ESIAManager.init();
+
+						try {
+							ESIAManager.init();
+						} catch (ESIAException e) {
+							if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+								LOGGER.error("Ошибка инициализации ESIA");
+							}
+						}
+
 					}
 				}
 			}

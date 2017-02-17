@@ -21,7 +21,7 @@ import org.bouncycastle.openssl.jcajce.*;
 import org.bouncycastle.operator.*;
 import org.bouncycastle.operator.jcajce.*;
 import org.bouncycastle.pkcs.PKCS8EncryptedPrivateKeyInfo;
-import org.json.*;
+import org.json.JSONObject;
 
 /**
  * Класс интеграции Showcase и ESIA.
@@ -53,20 +53,23 @@ public final class ESIAManager {
 	private static final String URL_TOKEN_EXCHANGE = "/aas/oauth2/te";
 	private static final String URL_USER_INFO = "/rs/prns/%s";
 
-	private static CMSSignedDataGenerator generator;
+	private static CMSSignedDataGenerator generator = null;
 
-	static {
-		if (EsiaSettings.ESIA_ENABLE) {
+	private ESIAManager() {
+	}
 
-			if (Security.getProvider(BC) == null) {
-				Security.addProvider(new BouncyCastleProvider());
-			}
-
-			JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider(BC);
-			JcaX509CertificateConverter certconv =
-				new JcaX509CertificateConverter().setProvider(BC);
+	public static void init() {
+		if (EsiaSettings.isEsiaEnable()) {
 
 			try {
+
+				if (Security.getProvider(BC) == null) {
+					Security.addProvider(new BouncyCastleProvider());
+				}
+
+				JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider(BC);
+				JcaX509CertificateConverter certconv =
+					new JcaX509CertificateConverter().setProvider(BC);
 
 				PrivateKey privateKey = null;
 				X509CertificateHolder x509CertificateHolder = null;
@@ -108,17 +111,12 @@ public final class ESIAManager {
 						parser.close();
 					}
 				}
-			} catch (CMSException | OperatorCreationException | IOException ex) {
-				ex.printStackTrace();
+			} catch (Exception e) {
+				EsiaSettings.setEsiaEnable(false);
+				throw new ESIAException(e);
 			}
 
 		}
-	}
-
-	private ESIAManager() {
-	}
-
-	public static void init() {
 	}
 
 	private static Object parsePemObject(final Object in, final String pphrase,
@@ -135,21 +133,20 @@ public final class ESIAManager {
 						((PKCS8EncryptedPrivateKeyInfo) o).decryptPrivateKeyInfo(pkcs8decoder));
 			}
 		} catch (Throwable t) {
-			throw new RuntimeException("Failed to decode private key", t);
+			throw new ESIAException("Failed to decode private key", t);
 		}
 
 		if (o instanceof PEMKeyPair) {
 			try {
 				return converter.getKeyPair((PEMKeyPair) o);
 			} catch (PEMException e) {
-				throw new RuntimeException("Failed to construct public/private key pair", e);
+				throw new ESIAException("Failed to construct public/private key pair", e);
 			}
 		} else if (o instanceof RSAPrivateCrtKey) {
 			return o;
 		} else if (o instanceof X509CertificateHolder) {
 			return o;
 		} else {
-			System.out.println("generic case  type " + o.getClass().getName());
 			return o;
 		}
 	}
@@ -167,8 +164,8 @@ public final class ESIAManager {
 						new String(Base64.getUrlEncoder().encode(sigData.getEncoded()), UTF8));
 			}
 
-		} catch (CMSException | IOException ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			throw new ESIAException(e);
 		}
 
 	}
@@ -180,40 +177,37 @@ public final class ESIAManager {
 
 	public static String getAuthorizationURL() {
 
-		HashMap<String, String> params = new HashMap<String, String>();
+		try {
 
-		params.put(PARAM_CLIENT_ID, EsiaSettings.VALUE_CLIENT_ID);
-		params.put(PARAM_REDIRECT_URI, EsiaSettings.VALUE_REDIRECT_URI);
-		params.put(PARAM_SCOPE, EsiaSettings.VALUE_SCOPE.replaceAll(";", " "));
-		params.put(PARAM_RESPONSE_TYPE, VALUE_RESPONSE_TYPE);
-		params.put(PARAM_STATE, UUID.randomUUID().toString());
-		params.put(PARAM_TIMESTAMP, getTimeStamp());
-		params.put(PARAM_ACCESS_TYPE, VALUE_ACCESS_TYPE);
+			HashMap<String, String> params = new HashMap<String, String>();
 
-		putClientSecret(params);
+			params.put(PARAM_CLIENT_ID, EsiaSettings.VALUE_CLIENT_ID);
+			params.put(PARAM_REDIRECT_URI, EsiaSettings.VALUE_REDIRECT_URI);
+			params.put(PARAM_SCOPE, EsiaSettings.VALUE_SCOPE.replaceAll(";", " "));
+			params.put(PARAM_RESPONSE_TYPE, VALUE_RESPONSE_TYPE);
+			params.put(PARAM_STATE, UUID.randomUUID().toString());
+			params.put(PARAM_TIMESTAMP, getTimeStamp());
+			params.put(PARAM_ACCESS_TYPE, VALUE_ACCESS_TYPE);
 
-		String url = EsiaSettings.URL_BASE + URL_AUTHORIZATION + "?";
+			putClientSecret(params);
 
-		String query = "";
+			String url = EsiaSettings.URL_BASE + URL_AUTHORIZATION + "?";
 
-		for (String key : params.keySet()) {
-
-			try {
+			String query = "";
+			for (String key : params.keySet()) {
 				if (!query.isEmpty()) {
 					query = query + "&";
 				}
-
 				query = query + key + "=" + URLEncoder.encode(params.get(key), UTF8);
-
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+
+			url = url + query;
+
+			return url;
+
+		} catch (Exception e) {
+			throw new ESIAException(e);
 		}
-
-		url = url + query;
-
-		return url;
 
 	}
 
@@ -222,35 +216,35 @@ public final class ESIAManager {
 
 		ESIAUserInfo ui = new ESIAUserInfo();
 
-		HashMap<String, String> params = new HashMap<String, String>();
-
-		params.put(PARAM_CLIENT_ID, EsiaSettings.VALUE_CLIENT_ID);
-		params.put(PARAM_CODE, code);
-		params.put(PARAM_GRANT_TYPE, VALUE_GRANT_TYPE);
-		params.put(PARAM_REDIRECT_URI, EsiaSettings.VALUE_REDIRECT_URI);
-		params.put(PARAM_TIMESTAMP, getTimeStamp());
-		params.put(PARAM_TOKEN_TYPE, VALUE_TOKEN_TYPE);
-		params.put(PARAM_SCOPE, EsiaSettings.VALUE_SCOPE.replaceAll(";", " "));
-		params.put(PARAM_STATE, UUID.randomUUID().toString());
-
-		putClientSecret(params);
-
-		// --------------------------------------------------
-
-		long oid = 0;
-		String accessToken = null;
-
 		HttpsURLConnection conn = null;
 		try {
 			try {
 
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put(PARAM_CLIENT_ID, EsiaSettings.VALUE_CLIENT_ID);
+				params.put(PARAM_CODE, code);
+				params.put(PARAM_GRANT_TYPE, VALUE_GRANT_TYPE);
+				params.put(PARAM_REDIRECT_URI, EsiaSettings.VALUE_REDIRECT_URI);
+				params.put(PARAM_TIMESTAMP, getTimeStamp());
+				params.put(PARAM_TOKEN_TYPE, VALUE_TOKEN_TYPE);
+				params.put(PARAM_SCOPE, EsiaSettings.VALUE_SCOPE.replaceAll(";", " "));
+				params.put(PARAM_STATE, UUID.randomUUID().toString());
+
+				putClientSecret(params);
+
+				// --------------------------------------------------
+
+				long oid = 0;
+				String accessToken = null;
+
 				StringBuilder postData = new StringBuilder();
 				for (Entry<String, String> param : params.entrySet()) {
 					if (postData.length() != 0) {
-						postData.append('&');
+						postData.append("&");
 					}
 					postData.append(URLEncoder.encode(param.getKey(), UTF8));
-					postData.append('=');
+					postData.append("=");
 					postData.append(URLEncoder.encode(String.valueOf(param.getValue()), UTF8));
 				}
 				byte[] postDataBytes = postData.toString().getBytes(UTF8);
@@ -277,49 +271,30 @@ public final class ESIAManager {
 					}
 					String resContent = sb.toString();
 
-					// System.out.println(resContent);
-
 					JSONObject jo = new JSONObject(resContent);
 
 					String idToken = jo.getString("id_token");
 					accessToken = jo.getString("access_token");
-
-					// System.out.println(idToken);
 
 					String[] idTokenParts = idToken.split("\\.");
 
 					String payload =
 						new String(Base64.getUrlDecoder().decode(idTokenParts[1]), UTF8);
 
-					// System.out.println(payload);
-
 					jo = new JSONObject(payload);
 
 					oid = jo.getJSONObject("urn:esia:sbj").getLong("urn:esia:sbj:oid");
 
-					// System.out.println(oid);
-
 				} else {
-					System.out.println("conn.getResponseCode() = " + conn.getResponseCode());
+					throw new ESIAException("Ошибка при получении маркера доступа, responseCode = "
+							+ conn.getResponseCode());
 				}
 
-			} catch (IOException | JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} finally {
-			if (conn != null) {
 				conn.disconnect();
-			}
-		}
 
-		// --------------------------------------------------
+				// --------------------------------------------------
 
-		conn = null;
-		try {
-			try {
-
-				URL url = new URL(EsiaSettings.URL_BASE + String.format(URL_USER_INFO, oid));
+				url = new URL(EsiaSettings.URL_BASE + String.format(URL_USER_INFO, oid));
 
 				conn = (HttpsURLConnection) url.openConnection();
 				conn.setRequestMethod("GET");
@@ -341,29 +316,42 @@ public final class ESIAManager {
 					}
 					String resContent = sb.toString();
 
-					// System.out.println(resContent);
-
 					JSONObject jo = new JSONObject(resContent);
 
 					ui.setOid(oid);
-					ui.setSnils(jo.getString("snils"));
-					ui.setTrusted(jo.getBoolean("trusted"));
-					ui.setFirstName(jo.getString("firstName"));
-					ui.setLastName(jo.getString("lastName"));
-					ui.setMiddleName(jo.getString("middleName"));
-					ui.setGender(jo.getString("gender"));
-					ui.setBirthDate(jo.getString("birthDate"));
+					if (jo.has("snils")) {
+						ui.setSnils(jo.getString("snils"));
+					}
+					if (jo.has("trusted")) {
+						ui.setTrusted(jo.getBoolean("trusted"));
+					}
+					if (jo.has("firstName")) {
+						ui.setFirstName(jo.getString("firstName"));
+					}
+					if (jo.has("lastName")) {
+						ui.setLastName(jo.getString("lastName"));
+					}
+					if (jo.has("middleName")) {
+						ui.setMiddleName(jo.getString("middleName"));
+					}
+					if (jo.has("gender")) {
+						ui.setGender(jo.getString("gender"));
+					}
+					if (jo.has("birthDate")) {
+						ui.setBirthDate(jo.getString("birthDate"));
+					}
 					if (jo.has("birthPlace")) {
 						ui.setBirthPlace(jo.getString("birthPlace"));
 					}
 
 				} else {
-					System.out.println("conn.getResponseCode() = " + conn.getResponseCode());
+					throw new ESIAException(
+							"Ошибка при получении данных о пользователе, responseCode = "
+									+ conn.getResponseCode());
 				}
 
-			} catch (IOException | JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				throw new ESIAException(e);
 			}
 		} finally {
 			if (conn != null) {
