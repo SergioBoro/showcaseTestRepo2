@@ -41,17 +41,23 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 	/**
 	 * Количество активных сессий.
 	 */
-	private static Object activeSessions;
+	private static Object activeSessions = 0;
 
 	/**
 	 * Количество аутентифицированных сессий.
 	 */
 	private static Integer authenticatedSessions = 0;
 
+	private MBeanServer mBeanServer;
+
 	private ObjectName objectName;
 
 	public static synchronized Object getActiveSessions() {
 		return activeSessions;
+	}
+
+	public static synchronized void setActiveSessions(final Object anActiveSessions) {
+		activeSessions = anActiveSessions;
 	}
 
 	public static synchronized Integer getAuthenticatedSessions() {
@@ -117,7 +123,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 					RedirectionUserdataProp.readAndSetRedirectproperties();
 
-					MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+					mBeanServer = ManagementFactory.getPlatformMBeanServer();
 					try {
 						objectName = new ObjectName("Catalina:type=Manager,context="
 								+ arg0.getServletContext().getContextPath() + ",host=localhost");
@@ -138,6 +144,16 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 							}
 						}
 					}, 0, 10 * 1000);
+
+					try {
+						// Регистрация класса MBean в MBean-сервере
+						ActiveSessions activeSessionsMBean = new ActiveSessions();
+						ObjectName activeSessionsName =
+							new ObjectName("AppAndSessionEventsListener:name=activeSessionsMBean");
+						mBeanServer.registerMBean(activeSessionsMBean, activeSessionsName);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
 					WebApplicationContext ctx = WebApplicationContextUtils
 							.getWebApplicationContext(arg0.getServletContext());
@@ -226,16 +242,37 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 	@Override
 	public final void sessionCreated(final HttpSessionEvent arg0) {
+		try {
+			Object anActiveSessions = mBeanServer.getAttribute(objectName, "activeSessions");
+			setActiveSessions(anActiveSessions);
+		} catch (AttributeNotFoundException | InstanceNotFoundException | MBeanException
+				| ReflectionException e) {
+			e.printStackTrace();
+		}
+
 		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 			LOGGER.info("сессия Showcase создается... " + arg0.getSession().getId());
+			LOGGER.info("Showcase.Sessions.Count: DateTime: " + new Date() + " Number: "
+					+ getActiveSessions());
 		}
 	}
 
 	@Override
 	public void sessionDestroyed(final HttpSessionEvent arg0) {
 		HttpSession destrHttpSession = arg0.getSession();
+
+		try {
+			Object anActiveSessions = mBeanServer.getAttribute(objectName, "activeSessions");
+			setActiveSessions(anActiveSessions);
+		} catch (AttributeNotFoundException | InstanceNotFoundException | MBeanException
+				| ReflectionException e) {
+			e.printStackTrace();
+		}
+
 		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 			LOGGER.info("сессия Showcase удаляется..." + destrHttpSession.getId());
+			LOGGER.info("Showcase.Sessions.Count: DateTime: " + new Date() + " Number: "
+					+ getActiveSessions());
 		}
 
 		SecurityContext context = (SecurityContext) destrHttpSession
