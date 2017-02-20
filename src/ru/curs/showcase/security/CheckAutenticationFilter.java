@@ -99,6 +99,22 @@ public class CheckAutenticationFilter implements Filter {
 					String esiaAuthenticated =
 						(String) (httpReq.getSession(false).getAttribute("esiaAuthenticated"));
 					if ((esiaAuthenticated != null) && ("true".equals(esiaAuthenticated))) {
+
+						UserAndSessionDetails userAndSessionDetails =
+							(UserAndSessionDetails) (httpReq.getSession(false)
+									.getAttribute("Details"));
+
+						try {
+							Celesta.getInstance().login(userAndSessionDetails.getSessionId(),
+									userAndSessionDetails.getUserInfo().getSid());
+						} catch (CelestaException e) {
+							if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
+								LOGGER.error(
+										"Ошибка привязки сессии приложения к пользователю в celesta",
+										e);
+							}
+						}
+
 						filterChain.doFilter(request, response);
 						return;
 					}

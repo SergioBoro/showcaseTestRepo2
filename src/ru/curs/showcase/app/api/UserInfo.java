@@ -42,6 +42,23 @@ public final class UserInfo implements SerializableElement {
 	private String[] additionalParameters;
 
 	/**
+	 * СНИЛС пользователя.
+	 */
+	private String snils = null;
+	/**
+	 * Пол пользователя.
+	 */
+	private String gender = null;
+	/**
+	 * Дата рождения пользователя.
+	 */
+	private String birthDate = null;
+	/**
+	 * Место рождения пользователя.
+	 */
+	private String birthPlace = null;
+
+	/**
 	 * Код ответа AuthServer.
 	 */
 	private int responseCode;
@@ -121,5 +138,37 @@ public final class UserInfo implements SerializableElement {
 
 	public String[] getAdditionalParameters() {
 		return additionalParameters;
+	}
+
+	public String getSnils() {
+		return snils;
+	}
+
+	public void setSnils(final String aSnils) {
+		snils = aSnils;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(final String aGender) {
+		gender = aGender;
+	}
+
+	public String getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(final String aBirthDate) {
+		birthDate = aBirthDate;
+	}
+
+	public String getBirthPlace() {
+		return birthPlace;
+	}
+
+	public void setBirthPlace(final String aBirthPlace) {
+		birthPlace = aBirthPlace;
 	}
 }
