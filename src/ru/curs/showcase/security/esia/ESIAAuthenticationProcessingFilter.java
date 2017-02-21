@@ -39,14 +39,12 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 
 		String code = request.getParameter("code");
 
+		UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
 		ESIAAuthenticationToken authRequest = null;
 		boolean esiaAuthenticated = false;
-		UserAndSessionDetails userAndSessionDetails = new UserAndSessionDetails(request);
 		if (code != null) {
 
 			ESIAUserInfo esiaUI = ESIAManager.getUserInfo(code);
-
-			authRequest = new ESIAAuthenticationToken(esiaUI.getSnils());
 
 			UserInfo ui = new UserInfo(esiaUI.getSnils(),
 					String.valueOf(esiaUI.getOid()), esiaUI.getLastName() + " "
@@ -58,6 +56,8 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 			ui.setBirthPlace(esiaUI.getBirthPlace());
 
 			userAndSessionDetails.setUserInfo(ui);
+
+			authRequest = new ESIAAuthenticationToken(esiaUI.getSnils());
 
 			authRequest.setDetails(userAndSessionDetails);
 
@@ -88,7 +88,7 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 
 		if (esiaAuthenticated) {
 			request.getSession(false).setAttribute("esiaAuthenticated", "true");
-			request.getSession(false).setAttribute("Details", userAndSessionDetails);
+			authentication.setAuthenticated(true);
 		} else {
 			request.getSession(false).setAttribute("esiaAuthenticated", "false");
 			authentication.setAuthenticated(false);
