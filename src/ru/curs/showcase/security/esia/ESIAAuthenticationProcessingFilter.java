@@ -46,14 +46,17 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 
 			ESIAUserInfo esiaUI = ESIAManager.getUserInfo(code);
 
-			UserInfo ui = new UserInfo(esiaUI.getSnils(),
-					String.valueOf(esiaUI.getOid()), esiaUI.getLastName() + " "
-							+ esiaUI.getFirstName() + " " + esiaUI.getMiddleName(),
-					null, null, (String) null);
+			UserInfo ui = new UserInfo(esiaUI.getSnils(), String.valueOf(esiaUI.getOid()),
+					esiaUI.getLastName() + " " + esiaUI.getFirstName() + " "
+							+ esiaUI.getMiddleName(),
+					esiaUI.getEmail(), esiaUI.getPhone(), (String) null);
 			ui.setSnils(esiaUI.getSnils());
 			ui.setGender(esiaUI.getGender());
 			ui.setBirthDate(esiaUI.getBirthDate());
 			ui.setBirthPlace(esiaUI.getBirthPlace());
+			ui.setFirstName(esiaUI.getFirstName());
+			ui.setLastName(esiaUI.getLastName());
+			ui.setMiddleName(esiaUI.getMiddleName());
 
 			userAndSessionDetails.setUserInfo(ui);
 

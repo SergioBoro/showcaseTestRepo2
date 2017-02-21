@@ -49,6 +49,20 @@ public final class UserInfo implements SerializableElement {
 	 * Пол пользователя.
 	 */
 	private String gender = null;
+
+	/**
+	 * Имя пользователя.
+	 */
+	private String firstName = null;
+	/**
+	 * Фамилия пользователя.
+	 */
+	private String lastName = null;
+	/**
+	 * Отчество пользователя.
+	 */
+	private String middleName = null;
+
 	/**
 	 * Дата рождения пользователя.
 	 */
@@ -171,4 +185,29 @@ public final class UserInfo implements SerializableElement {
 	public void setBirthPlace(final String aBirthPlace) {
 		birthPlace = aBirthPlace;
 	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(final String aFirstName) {
+		firstName = aFirstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(final String aLastName) {
+		lastName = aLastName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(final String aMiddleName) {
+		middleName = aMiddleName;
+	}
+
 }

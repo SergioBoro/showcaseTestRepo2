@@ -19,7 +19,8 @@ public class ESIAUserInfo {
 	private String birthDate = null;
 	private String birthPlace = null;
 
-	// телефоны, email'ы,
+	private String phone = null;
+	private String email = null;
 
 	public long getOid() {
 		return oid;
@@ -91,6 +92,22 @@ public class ESIAUserInfo {
 
 	public void setBirthPlace(final String aBirthPlace) {
 		birthPlace = aBirthPlace;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(final String aPhone) {
+		phone = aPhone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(final String aEmail) {
+		email = aEmail;
 	}
 
 }

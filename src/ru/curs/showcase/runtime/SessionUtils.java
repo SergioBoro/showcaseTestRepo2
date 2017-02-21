@@ -107,6 +107,30 @@ public final class SessionUtils {
 		}
 	}
 
+	public static String getCurrentUserFirstName() {
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getUserInfo().getFirstName();
+		} else {
+			return null;
+		}
+	}
+
+	public static String getCurrentUserLastName() {
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getUserInfo().getLastName();
+		} else {
+			return null;
+		}
+	}
+
+	public static String getCurrentUserMiddleName() {
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getUserInfo().getMiddleName();
+		} else {
+			return null;
+		}
+	}
+
 	public static String getRemoteAddress() {
 		if (getUserAndSessionDetails() != null) {
 			return getUserAndSessionDetails().getRemoteAddress();
