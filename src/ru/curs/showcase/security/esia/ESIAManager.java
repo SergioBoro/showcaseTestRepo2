@@ -1,9 +1,7 @@
 package ru.curs.showcase.security.esia;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -42,6 +40,8 @@ import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
 import org.bouncycastle.pkcs.PKCS8EncryptedPrivateKeyInfo;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import ru.curs.showcase.util.TextUtils;
 
 /**
  * Класс интеграции Showcase и ESIA.
@@ -280,12 +280,7 @@ public final class ESIAManager {
 
 				if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 
-					Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), UTF8));
-					StringBuilder sb = new StringBuilder();
-					for (int c; (c = in.read()) >= 0;) {
-						sb.append((char) c);
-					}
-					String resContent = sb.toString();
+					String resContent = TextUtils.streamToString(conn.getInputStream());
 
 					JSONObject jo = new JSONObject(resContent);
 
@@ -323,12 +318,7 @@ public final class ESIAManager {
 
 				if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 
-					Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), UTF8));
-					StringBuilder sb = new StringBuilder();
-					for (int c; (c = in.read()) >= 0;) {
-						sb.append((char) c);
-					}
-					String resContent = sb.toString();
+					String resContent = TextUtils.streamToString(conn.getInputStream());
 
 					JSONObject jo = new JSONObject(resContent);
 
@@ -381,12 +371,7 @@ public final class ESIAManager {
 
 				if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 
-					Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), UTF8));
-					StringBuilder sb = new StringBuilder();
-					for (int c; (c = in.read()) >= 0;) {
-						sb.append((char) c);
-					}
-					String resContent = sb.toString();
+					String resContent = TextUtils.streamToString(conn.getInputStream());
 
 					JSONObject jo = new JSONObject(resContent);
 					int size = 0;
@@ -395,16 +380,23 @@ public final class ESIAManager {
 					}
 
 					if (size > 0) {
+						String phn = null;
 						JSONArray ja = jo.getJSONArray("elements");
 						for (int i = 0; i < size; i++) {
 							String type = ja.getJSONObject(i).getString("type");
 							String value = ja.getJSONObject(i).getString("value");
-							if ("MBT".equalsIgnoreCase(type)) {
-								ui.setPhone(value);
-							}
 							if ("EML".equalsIgnoreCase(type)) {
 								ui.setEmail(value);
 							}
+							if ("MBT".equalsIgnoreCase(type)) {
+								ui.setPhone(value);
+							}
+							if ("PHN".equalsIgnoreCase(type)) {
+								phn = value;
+							}
+						}
+						if (ui.getPhone() == null) {
+							ui.setPhone(phn);
 						}
 					}
 
