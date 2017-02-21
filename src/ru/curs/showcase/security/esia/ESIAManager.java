@@ -63,9 +63,10 @@ public final class ESIAManager {
 
 			try {
 
-				if (Security.getProvider(BC) == null) {
-					Security.addProvider(new BouncyCastleProvider());
+				if (Security.getProvider(BC) != null) {
+					Security.removeProvider(BC);
 				}
+				Security.addProvider(new BouncyCastleProvider());
 
 				JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider(BC);
 				JcaX509CertificateConverter certconv =
