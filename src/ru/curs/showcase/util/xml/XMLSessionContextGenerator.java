@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import javax.xml.bind.*;
 
 import org.slf4j.*;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import ru.curs.showcase.app.api.*;
@@ -39,6 +39,12 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	private static final String EMAIL_TAG = "email";
 	private static final String PHONE_TAG = "phone";
 	private static final String IP_TAG = "ip";
+
+	private static final String SNILS_TAG = "snils";
+	private static final String GENDER_TAG = "gender";
+	private static final String BIRTHDATE_TAG = "birthdate";
+	private static final String BIRTHPLACE_TAG = "birthplace";
+
 	private static final String LOGIN_TAG = "login";
 	// private static final String ADD_PARAM_TAG = "additionalParameter";
 
@@ -94,17 +100,16 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	}
 
 	private static Document createXML() {
-		Document info =
-			XMLUtils.createBuilder().getDOMImplementation()
-					.createDocument("", SESSION_CONTEXT_TAG, null);
+		Document info = XMLUtils.createBuilder().getDOMImplementation().createDocument("",
+				SESSION_CONTEXT_TAG, null);
 		return info;
 	}
 
 	private void addUserNode() {
 		Element node = info.createElement(USERNAME_TAG);
 		info.getDocumentElement().appendChild(node);
-		node.appendChild(info.createTextNode(ru.curs.showcase.runtime.SessionUtils
-				.getCurrentSessionUserName()));
+		node.appendChild(info.createTextNode(
+				ru.curs.showcase.runtime.SessionUtils.getCurrentSessionUserName()));
 
 		node = info.createElement(SID_TAG);
 		info.getDocumentElement().appendChild(node);
@@ -129,6 +134,22 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		node = info.createElement(PHONE_TAG);
 		info.getDocumentElement().appendChild(node);
 		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserPhone()));
+
+		node = info.createElement(SNILS_TAG);
+		info.getDocumentElement().appendChild(node);
+		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserSnils()));
+
+		node = info.createElement(GENDER_TAG);
+		info.getDocumentElement().appendChild(node);
+		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserGender()));
+
+		node = info.createElement(BIRTHDATE_TAG);
+		info.getDocumentElement().appendChild(node);
+		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserBirthDate()));
+
+		node = info.createElement(BIRTHPLACE_TAG);
+		info.getDocumentElement().appendChild(node);
+		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserBirthPlace()));
 
 		node = info.createElement(IP_TAG);
 		info.getDocumentElement().appendChild(node);
@@ -170,13 +191,11 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		info.getDocumentElement().appendChild(node);
 		String value = null;
 		if (aMap.get(ExchangeConstants.URL_PARAM_PERSPECTIVE) != null) {
-			value =
-				Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_PERSPECTIVE).toArray())
-						.replace("[", "").replace("]", "");
+			value = Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_PERSPECTIVE).toArray())
+					.replace("[", "").replace("]", "");
 		} else if (aMap.get(ExchangeConstants.URL_PARAM_USERDATA) != null) {
-			value =
-				Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_USERDATA).toArray())
-						.replace("[", "").replace("]", "");
+			value = Arrays.toString(aMap.get(ExchangeConstants.URL_PARAM_USERDATA).toArray())
+					.replace("[", "").replace("]", "");
 		} else {
 			value = ExchangeConstants.DEFAULT_USERDATA;
 		}

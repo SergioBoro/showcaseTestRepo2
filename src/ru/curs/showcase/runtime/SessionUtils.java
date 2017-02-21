@@ -27,8 +27,8 @@ public final class SessionUtils {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void setAnonymousUserAndSessionDetails(
-			UserAndSessionDetails userAndSessionDetails) {
+	public static void
+			setAnonymousUserAndSessionDetails(UserAndSessionDetails userAndSessionDetails) {
 		usd = userAndSessionDetails;
 	}
 
@@ -38,7 +38,8 @@ public final class SessionUtils {
 
 	private static UserAndSessionDetails getUserAndSessionDetails() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
+			if (SecurityContextHolder.getContext()
+					.getAuthentication() instanceof AnonymousAuthenticationToken)
 				return usd;
 			return (UserAndSessionDetails) SecurityContextHolder.getContext().getAuthentication()
 					.getDetails();
@@ -140,4 +141,37 @@ public final class SessionUtils {
 		}
 		return null;
 	}
+
+	public static String getCurrentUserSnils() {
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getUserInfo().getSnils();
+		} else {
+			return null;
+		}
+	}
+
+	public static String getCurrentUserGender() {
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getUserInfo().getGender();
+		} else {
+			return null;
+		}
+	}
+
+	public static String getCurrentUserBirthDate() {
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getUserInfo().getBirthDate();
+		} else {
+			return null;
+		}
+	}
+
+	public static String getCurrentUserBirthPlace() {
+		if (getUserAndSessionDetails() != null) {
+			return getUserAndSessionDetails().getUserInfo().getBirthPlace();
+		} else {
+			return null;
+		}
+	}
+
 }
