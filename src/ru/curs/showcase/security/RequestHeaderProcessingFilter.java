@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 import ru.curs.showcase.app.api.UserInfo;
+import ru.curs.showcase.app.server.AppAndSessionEventsListener;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.UserAndSessionDetails;
 
@@ -76,6 +77,8 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 				domain));
 
 		authRequest.setDetails(userAndSessionDetails);
+
+		AppAndSessionEventsListener.increment();
 
 		// обработчик устанавливающий что будет происходить в случае когда в
 		// процессе аутентификации произошла ошибка

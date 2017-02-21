@@ -8,6 +8,7 @@ import javax.servlet.http.*;
 
 import org.slf4j.*;
 
+import ru.curs.showcase.app.server.AppAndSessionEventsListener;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.security.logging.SecurityLoggingCommand;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
@@ -27,6 +28,14 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 	@Override
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
+
+		HttpSession oldSession =
+			(HttpSession) request.getSession(false).getAttribute("newSession");
+		String oldSesid = request.getParameter("sesId");
+
+		if (oldSesid.equals(oldSession.getId())) {
+			AppAndSessionEventsListener.decrement();
+		}
 
 		String sesid = null;
 		HttpSession session = request.getSession();

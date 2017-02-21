@@ -11,7 +11,6 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 
 import ru.curs.celesta.*;
-import ru.curs.showcase.app.server.AppAndSessionEventsListener;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.UserAndSessionDetails;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
@@ -35,8 +34,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		});
 	}
 
-	private static final Logger LOGGER =
-		LoggerFactory.getLogger(AuthServerAuthenticationProvider.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(AuthServerAuthenticationProvider.class);
 
 	@Override
 	public Authentication authenticate(final Authentication arg1) {
@@ -68,13 +67,10 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		String groupProviders =
 			((UserAndSessionDetails) arg1.getDetails()).getUserInfo().getGroupProviders();
 
-		AppAndSessionEventsListener.increment();
-
 		try {
 			url = SecurityParamsFactory.getLocalAuthServerUrl();
 		} catch (SettingsFileOpenException e1) {
-			throw new AuthenticationServiceException(SecurityParamsFactory.APP_PROP_READ_ERROR,
-					e1);
+			throw new AuthenticationServiceException(SecurityParamsFactory.APP_PROP_READ_ERROR, e1);
 		}
 
 		// if ("9152046062107176349L_default_value".equals(pwd)) {
@@ -107,8 +103,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 					AuthServerUtils.init(url);
 				}
 
-				((UserAndSessionDetails) arg1.getDetails()).setUserInfo(
-						AuthServerUtils.getTheAuthServerAlias().isAuthenticated(oldSesid));
+				((UserAndSessionDetails) arg1.getDetails()).setUserInfo(AuthServerUtils
+						.getTheAuthServerAlias().isAuthenticated(oldSesid));
 
 			} finally {
 				AppInfoSingleton.getAppInfo().getSessionInfoMap().get(oldSesid)
@@ -124,13 +120,17 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 			try {
 				URL server;
 				if (groupProviders == null) {
-					server = new URL(url + String.format("/login?sesid=%s&login=%s&pwd=%s&ip=%s",
-							sesid, encodeParam(login), encodeParam(pwd), ipAddresOfRemouteHost));
+					server =
+						new URL(url
+								+ String.format("/login?sesid=%s&login=%s&pwd=%s&ip=%s", sesid,
+										encodeParam(login), encodeParam(pwd),
+										ipAddresOfRemouteHost));
 				} else {
 					server =
-						new URL(url + String.format("/login?sesid=%s&login=%s&pwd=%s&gp=%s&ip=%s",
-								sesid, encodeParam(login), encodeParam(pwd),
-								encodeParam(groupProviders), ipAddresOfRemouteHost));
+						new URL(url
+								+ String.format("/login?sesid=%s&login=%s&pwd=%s&gp=%s&ip=%s",
+										sesid, encodeParam(login), encodeParam(pwd),
+										encodeParam(groupProviders), ipAddresOfRemouteHost));
 				}
 				HttpURLConnection c = null;
 				try {
@@ -142,8 +142,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 						// AppCurrContext.getInstance();
 						AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(sesid, true);
 						((UserAndSessionDetails) arg1.getDetails()).setAuthViaAuthServer(true);
-						((UserAndSessionDetails) arg1.getDetails()).setUserInfo(
-								AuthServerUtils.getTheAuthServerAlias().isAuthenticated(sesid));
+						((UserAndSessionDetails) arg1.getDetails()).setUserInfo(AuthServerUtils
+								.getTheAuthServerAlias().isAuthenticated(sesid));
 
 						// AppCurrContext.getInstance().setAuthViaAuthServ(true);
 					} else {
@@ -169,8 +169,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 				if ("Bad credentials".equals(e.getMessage())) {
 					throw new BadCredentialsException(e.getMessage(), e);
 				} else {
-					throw new BadCredentialsException(
-							"Authentication server is not available: " + e.getMessage(), e);
+					throw new BadCredentialsException("Authentication server is not available: "
+							+ e.getMessage(), e);
 				}
 			} catch (CelestaException err) {
 				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
