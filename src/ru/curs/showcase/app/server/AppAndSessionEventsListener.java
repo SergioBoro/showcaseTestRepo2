@@ -145,7 +145,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 									mBeanServer.getAttribute(objectName, "activeSessions");
 							} catch (AttributeNotFoundException | InstanceNotFoundException
 									| MBeanException | ReflectionException e) {
-								e.printStackTrace();
+								// e.printStackTrace();
 							}
 						}
 					}, 0, 10 * 1000);
