@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.security.esia.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.*;
 
@@ -52,11 +53,18 @@ public final class ServerStateFactory {
 			state.setIsNativeUser(false);
 		} else {
 			if (SecurityContextHolder.getContext()
-					.getAuthentication() instanceof AnonymousAuthenticationToken)
+					.getAuthentication() instanceof AnonymousAuthenticationToken) {
 				state.setIsNativeUser(false);
-			else
+			} else if (SecurityContextHolder.getContext()
+					.getAuthentication() instanceof ESIAAuthenticationToken) {
+
+				state.setIsESIAUser(true);
+				state.setEsiaLogoutURL(ESIAManager.getLogoutURL());
+
+			} else {
 				state.setIsNativeUser(!((UserAndSessionDetails) SecurityContextHolder.getContext()
 						.getAuthentication().getDetails()).isAuthViaAuthServer());
+			}
 		}
 
 		state.setJavaVersion(System.getProperty("java.version"));

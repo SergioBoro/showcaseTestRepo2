@@ -31,6 +31,17 @@ public final class ServerState implements SerializableElement {
 	private Boolean isNativeUser;
 
 	/**
+	 * Признак того, что это пользователь ESIA.
+	 */
+	private Boolean isESIAUser = false;
+
+	/**
+	 * Переменная типа String, содержащая в себе значение-ссылку, осуществляющую
+	 * выход из ЕСИА.
+	 */
+	private String esiaLogoutURL = null;
+
+	/**
 	 * Версия контейнера сервлетов.
 	 */
 	private String servletContainerVersion;
@@ -189,6 +200,22 @@ public final class ServerState implements SerializableElement {
 
 	public void setPreloadGrids(final boolean aPreloadGrids) {
 		preloadGrids = aPreloadGrids;
+	}
+
+	public Boolean getIsESIAUser() {
+		return isESIAUser;
+	}
+
+	public void setIsESIAUser(final Boolean aIsESIAUser) {
+		isESIAUser = aIsESIAUser;
+	}
+
+	public String getEsiaLogoutURL() {
+		return esiaLogoutURL;
+	}
+
+	public void setEsiaLogoutURL(final String aEsiaLogoutURL) {
+		esiaLogoutURL = aEsiaLogoutURL;
 	}
 
 }

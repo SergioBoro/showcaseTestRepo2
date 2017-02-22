@@ -5,10 +5,10 @@ package ru.curs.showcase.app.client;
 
 import java.util.Date;
 
-import ru.curs.showcase.app.client.utils.AccessToDomModel;
-
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.Window;
+
+import ru.curs.showcase.app.client.utils.AccessToDomModel;
 
 /**
  * @author anlug
@@ -36,10 +36,9 @@ public final class ShowcaseLogout {
 	 */
 	public static void showcaseLogout() {
 
-		RequestBuilder builder =
-			new RequestBuilder(RequestBuilder.GET, "auth/logoutServlet?nocache="
-					+ (new Date()).getTime() + "&sesId="
-					+ AppCurrContext.getInstance().getServerCurrentState().getSesId());
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+				"auth/logoutServlet?nocache=" + (new Date()).getTime() + "&sesId="
+						+ AppCurrContext.getInstance().getServerCurrentState().getSesId());
 		builder.setTimeoutMillis(LOGOUT_TIMEOUT);
 		try {
 			builder.sendRequest(null, new RequestCallback() {
@@ -51,7 +50,18 @@ public final class ShowcaseLogout {
 
 				@Override
 				public void onResponseReceived(final Request request, final Response response) {
-					Window.Location.assign(AccessToDomModel.getAppContextPath() + "/logout");
+
+					if (AppCurrContext.getInstance().getServerCurrentState().getIsESIAUser()) {
+
+						Window.Location.assign(AppCurrContext.getInstance().getServerCurrentState()
+								.getEsiaLogoutURL());
+
+					} else {
+
+						Window.Location.assign(AccessToDomModel.getAppContextPath() + "/logout");
+
+					}
+
 				}
 			});
 
