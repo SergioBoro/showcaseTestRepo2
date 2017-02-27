@@ -22,6 +22,17 @@ public class ESIAUserInfo {
 	private String phone = null;
 	private String email = null;
 
+	public String getLogin() {
+		String login = snils;
+		if (login == null) {
+			login = email;
+		}
+		if (login == null) {
+			login = phone;
+		}
+		return login;
+	}
+
 	public long getOid() {
 		return oid;
 	}
