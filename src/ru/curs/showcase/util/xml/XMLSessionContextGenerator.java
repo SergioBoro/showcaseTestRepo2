@@ -47,6 +47,7 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 	private static final String GENDER_TAG = "gender";
 	private static final String BIRTHDATE_TAG = "birthdate";
 	private static final String BIRTHPLACE_TAG = "birthplace";
+	private static final String TRUSTED_TAG = "trusted";
 
 	private static final String LOGIN_TAG = "login";
 	// private static final String ADD_PARAM_TAG = "additionalParameter";
@@ -165,6 +166,10 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 		node = info.createElement(BIRTHPLACE_TAG);
 		info.getDocumentElement().appendChild(node);
 		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserBirthPlace()));
+
+		node = info.createElement(TRUSTED_TAG);
+		info.getDocumentElement().appendChild(node);
+		node.appendChild(info.createTextNode(SessionUtils.getCurrentUserTrusted()));
 
 		node = info.createElement(IP_TAG);
 		info.getDocumentElement().appendChild(node);

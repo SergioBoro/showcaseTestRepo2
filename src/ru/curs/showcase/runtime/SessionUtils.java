@@ -131,6 +131,14 @@ public final class SessionUtils {
 		}
 	}
 
+	public static String getCurrentUserTrusted() {
+		if (getUserAndSessionDetails() != null) {
+			return String.valueOf(getUserAndSessionDetails().getUserInfo().isTrusted());
+		} else {
+			return null;
+		}
+	}
+
 	public static String getRemoteAddress() {
 		if (getUserAndSessionDetails() != null) {
 			return getUserAndSessionDetails().getRemoteAddress();

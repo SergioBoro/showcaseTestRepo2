@@ -73,6 +73,11 @@ public final class UserInfo implements SerializableElement {
 	private String birthPlace = null;
 
 	/**
+	 * Является ли пользователь подтвержденным.
+	 */
+	private boolean trusted = false;
+
+	/**
 	 * Код ответа AuthServer.
 	 */
 	private int responseCode;
@@ -208,6 +213,14 @@ public final class UserInfo implements SerializableElement {
 
 	public void setMiddleName(final String aMiddleName) {
 		middleName = aMiddleName;
+	}
+
+	public boolean isTrusted() {
+		return trusted;
+	}
+
+	public void setTrusted(final boolean aTrusted) {
+		trusted = aTrusted;
 	}
 
 }

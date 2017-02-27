@@ -35,6 +35,9 @@ public final class EsiaSettings {
 
 	public static final String URL_BASE = UserDataUtils.getGeneralOptionalProp("esia.url");
 
+	public static final boolean ALLOW_AUTHENTICATE_ONLY_TRUSTED_USER = Boolean.valueOf(
+			UserDataUtils.getGeneralOptionalProp("esia.allow.authenticate.only.trusted.user"));
+
 	private EsiaSettings() {
 	}
 

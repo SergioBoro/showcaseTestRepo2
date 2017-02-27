@@ -21,8 +21,8 @@ import ru.curs.showcase.util.UserAndSessionDetails;
  */
 public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(ESIAAuthenticationProcessingFilter.class);
+	private static final Logger LOGGER =
+		LoggerFactory.getLogger(ESIAAuthenticationProcessingFilter.class);
 
 	protected ESIAAuthenticationProcessingFilter() {
 		super("/esia");
@@ -47,11 +47,10 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 
 			ESIAUserInfo esiaUI = ESIAManager.getUserInfo(code);
 
-			UserInfo ui =
-				new UserInfo(esiaUI.getSnils(), String.valueOf(esiaUI.getOid()),
-						esiaUI.getLastName() + " " + esiaUI.getFirstName() + " "
-								+ esiaUI.getMiddleName(), esiaUI.getEmail(), esiaUI.getPhone(),
-						(String) null);
+			UserInfo ui = new UserInfo(esiaUI.getSnils(), String.valueOf(esiaUI.getOid()),
+					esiaUI.getLastName() + " " + esiaUI.getFirstName() + " "
+							+ esiaUI.getMiddleName(),
+					esiaUI.getEmail(), esiaUI.getPhone(), (String) null);
 			ui.setSnils(esiaUI.getSnils());
 			ui.setGender(esiaUI.getGender());
 			ui.setBirthDate(esiaUI.getBirthDate());
@@ -59,6 +58,7 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 			ui.setFirstName(esiaUI.getFirstName());
 			ui.setLastName(esiaUI.getLastName());
 			ui.setMiddleName(esiaUI.getMiddleName());
+			ui.setTrusted(esiaUI.isTrusted());
 
 			userAndSessionDetails.setUserInfo(ui);
 
@@ -66,7 +66,8 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 
 			authRequest.setDetails(userAndSessionDetails);
 
-			esiaAuthenticated = esiaUI.isTrusted();
+			esiaAuthenticated =
+				(!ESIAManager.isAllowAuthenticateOnlyTrustedUser()) || esiaUI.isTrusted();
 
 		} else {
 
@@ -77,8 +78,8 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
 				String error = request.getParameter("error");
 				String errorDescription = request.getParameter("error_description");
-				LOGGER.error("Ошибка аутентификации через ESIA: " + error + ", "
-						+ errorDescription);
+				LOGGER.error(
+						"Ошибка аутентификации через ESIA: " + error + ", " + errorDescription);
 			}
 
 			esiaAuthenticated = false;
