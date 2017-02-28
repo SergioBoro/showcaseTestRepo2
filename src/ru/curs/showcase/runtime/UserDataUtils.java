@@ -401,6 +401,16 @@ public final class UserDataUtils {
 		Properties generalProps = getGeneralProperties();
 		Properties celestaProps = new Properties();
 
+		String propertyKeyString;
+		int prefixLength = CELESTA_PREFIX.length();
+		for (Object propertyKey : generalProps.keySet()) {
+			propertyKeyString = ((String) propertyKey).trim();
+			if (propertyKeyString.startsWith(CELESTA_PREFIX)) {
+				celestaProps.put(propertyKeyString.substring(prefixLength), generalProps
+						.getProperty(propertyKeyString).trim());
+			}
+		}
+
 		String scorePath = generalProps.getProperty(CELESTA_PREFIX + CELESTA_SCORE_PATH);
 		String scorePathForCelestaPropertiesBasedOnCurrentUserdata =
 			generateScorePathForCelestaPropertiesBasedOnCurrentUserdata();
