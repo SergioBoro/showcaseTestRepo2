@@ -612,6 +612,10 @@ public class GridDataFactory extends CompBasedElementFactory {
 					String title = null;
 
 					String value = rec.get(colId);
+
+					value = XMLUtils.xmlServiceSymbolsToNormal(value);
+					rec.put(colId, value);
+
 					if (value != null) {
 						if (value.toLowerCase().trim().startsWith("<div")) {
 							title = exportToExcelGetTitleFromDiv(value);
