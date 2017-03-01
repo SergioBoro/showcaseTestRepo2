@@ -133,7 +133,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 									+ arg0.getServletContext().getContextPath()
 									+ ",host=localhost");
 					} catch (MalformedObjectNameException e1) {
-						e1.printStackTrace();
+						// e1.printStackTrace();
 					}
 
 					Timer updateTimer = new Timer(true);
@@ -157,7 +157,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 							new ObjectName("AppAndSessionEventsListener:name=activeSessionsMBean");
 						mBeanServer.registerMBean(activeSessionsMBean, activeSessionsName);
 					} catch (Exception e) {
-						e.printStackTrace();
+						// e.printStackTrace();
 					}
 
 					WebApplicationContext ctx =
@@ -254,7 +254,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 			setActiveSessions(anActiveSessions);
 		} catch (AttributeNotFoundException | InstanceNotFoundException | MBeanException
 				| ReflectionException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 
 		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
@@ -273,7 +273,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 			setActiveSessions(anActiveSessions);
 		} catch (AttributeNotFoundException | InstanceNotFoundException | MBeanException
 				| ReflectionException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 
 		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
@@ -291,6 +291,7 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 				TypeEvent typeEvent = TypeEvent.SESSSIONTIMEOUT;
 				if (destrHttpSession.getAttribute(SecurityLoggingCommand.IS_CLICK_LOGOUT) != null) {
 					typeEvent = TypeEvent.LOGOUT;
+					decrement();
 				}
 				if (typeEvent == TypeEvent.SESSSIONTIMEOUT) {
 					decrement();
