@@ -206,6 +206,9 @@ public class ActionFactory extends SAXTagHandler {
 			value = attrs.getValue(CLOSE_ON_ESC);
 			mwi.setCloseOnEsc(Boolean.parseBoolean(value));
 		}
+		if (attrs.getIndex(CLASS_STYLE_TAG) > -1) {
+			mwi.setCssClass(attrs.getValue(CLASS_STYLE_TAG));
+		}
 		curAction.setModalWindowInfo(mwi);
 	}
 

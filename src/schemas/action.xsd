@@ -45,9 +45,12 @@
 					<xs:complexType>
 						<xs:attribute name="caption" type="xs:string" />
 						<xs:attribute name="width" type="xs:positiveInteger" />
-						<xs:attribute name="height" type="xs:positiveInteger" />
+						<xs:attribute name="height" type="xs:positiveInteger" />	
+						<xs:attribute name="class_style" type="xs:string" />
 						<xs:attribute name="show_close_bottom_button" type="xs:boolean" />
 						<xs:attribute name="close_on_esc" type="xs:boolean" />
+						<xs:assert test="(@width and @height and not(@class_style)) 
+                            or (not(@width) and not(@height) and @class_style)"/>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="server" minOccurs="0">

@@ -37,6 +37,7 @@ public abstract class GeneralXMLHelper {
 	public static final String TYPE_TAG = "type";
 	public static final String SUBTYPE_TAG = "subtype";
 	public static final String CAPTION_TAG = "caption";
+	public static final String CLASS_STYLE_TAG = "class_style";
 
 	protected static final String PROC_ATTR_NAME = "proc";
 	protected static final String TRANSFORM_ATTR_NAME = "transform";

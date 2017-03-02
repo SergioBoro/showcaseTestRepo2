@@ -5,9 +5,6 @@ package ru.curs.showcase.app.client.api;
 
 import java.util.*;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Timer;
-
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.VoidElement;
@@ -15,6 +12,9 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Timer;
 
 /**
  * 
@@ -64,24 +64,26 @@ public final class ActionExecuter {
 			}
 			ac.setRelated(panelContext);
 
-			dataService.execServerAction(ac, new GWTServiceCallback<VoidElement>(
+			dataService.execServerAction(
+					ac,
+					new GWTServiceCallback<VoidElement>(
 					// AppCurrContext.getInstance().getBundleMap().get("error_in_server_activity"))
 					// {
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"when execution of server action")) {
+							CourseClientLocalization.gettext(AppCurrContext.getInstance()
+									.getDomain(), "when execution of server action")) {
 
-				@Override
-				public void onSuccess(final VoidElement ve) {
+						@Override
+						public void onSuccess(final VoidElement ve) {
 
-					super.onSuccess(ve);
+							super.onSuccess(ve);
 
-					handleClientBlocks(ac);
+							handleClientBlocks(ac);
 
-					setEnableDisableState(ac.getActionCaller(), true);
+							setEnableDisableState(ac.getActionCaller(), true);
 
-				}
+						}
 
-			});
+					});
 		} else {
 			handleClientBlocks(ac);
 		}
@@ -106,8 +108,8 @@ public final class ActionExecuter {
 
 	private static void handleClientBlocks(final Action ac) {
 		for (Activity act : ac.getClientActivities()) {
-			runClientActivity(act.getName(), act.getContext().getMain(),
-					act.getContext().getAdditional(), act.getContext().getFilter());
+			runClientActivity(act.getName(), act.getContext().getMain(), act.getContext()
+					.getAdditional(), act.getContext().getFilter());
 		}
 
 		handleNavigatorBlock(ac);
@@ -129,8 +131,8 @@ public final class ActionExecuter {
 		case DO_NOTHING:
 			// MessageBox.showSimpleMessage("1", "DO_NOTHING");
 
-			if ((ac.getShowInMode() == ShowInMode.PANEL) && (AppCurrContext.getInstance()
-					.getCurrentOpenWindowWithDataPanelElement() != null)) {
+			if ((ac.getShowInMode() == ShowInMode.PANEL)
+					&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() != null)) {
 				AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement()
 						.closeWindow();
 			}
@@ -168,36 +170,58 @@ public final class ActionExecuter {
 
 	private static void handleReloadElement(final Action ac, final BasicElementPanel bep,
 			final DataPanelElementLink dpel) {
-		if ((ac.getShowInMode() == ShowInMode.PANEL) && (AppCurrContext.getInstance()
-				.getCurrentOpenWindowWithDataPanelElement() != null)) {
+		if ((ac.getShowInMode() == ShowInMode.PANEL)
+				&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() != null)) {
 			AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement().closeWindow();
 		}
-		if ((ac.getShowInMode() == ShowInMode.MODAL_WINDOW) && (AppCurrContext.getInstance()
-				.getCurrentOpenWindowWithDataPanelElement() == null)) {
+		if ((ac.getShowInMode() == ShowInMode.MODAL_WINDOW)
+				&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() == null)) {
 
 			ModalWindowInfo mwi = ac.getModalWindowInfo();
 			WindowWithDataPanelElement modWind = null;
 			if (mwi != null) {
 
 				if (mwi.getCaption() != null) {
-					modWind = new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
-							mwi.getHeight(), mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc());
+					if (mwi.getCssClass() != null)
+						modWind =
+							new WindowWithDataPanelElement(mwi.getCaption(), mwi.getCssClass(),
+									mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc());
+					else
+						modWind =
+							new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
+									mwi.getHeight(), mwi.getShowCloseBottomButton(),
+									mwi.getCloseOnEsc());
 				} else {
 
 					if (mwi.getCaption() != null) {
-
-						modWind = new WindowWithDataPanelElement(mwi.getCaption(),
-								mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc());
+						if (mwi.getCssClass() != null)
+							modWind =
+								new WindowWithDataPanelElement(mwi.getCaption(),
+										mwi.getCssClass(), mwi.getShowCloseBottomButton(),
+										mwi.getCloseOnEsc());
+						else
+							modWind =
+								new WindowWithDataPanelElement(mwi.getCaption(),
+										mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc());
 
 					} else {
-						modWind = new WindowWithDataPanelElement(mwi.getShowCloseBottomButton(),
-								mwi.getCloseOnEsc());
+						if (mwi.getCssClass() != null)
+							modWind =
+								new WindowWithDataPanelElement(mwi.getCssClass(), true,
+										mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc());
+						else
+							modWind =
+								new WindowWithDataPanelElement(mwi.getShowCloseBottomButton(),
+										mwi.getCloseOnEsc());
 					}
 
 				}
 
 			} else {
-				modWind = new WindowWithDataPanelElement(false, true);
+				if (mwi.getCssClass() != null)
+					modWind = new WindowWithDataPanelElement(mwi.getCssClass(), true, false, true);
+				else
+					modWind = new WindowWithDataPanelElement(false, true);
 			}
 
 			// modWind.addCloseHandler(new CloseHandler<PopupPanel>() {
@@ -232,8 +256,8 @@ public final class ActionExecuter {
 	private static void handleRefreshTab(final Action ac) {
 		// Обновить вкладку целиком (активную), а перед этим закрыть
 		// модальное окно если оно открыто.
-		if ((ac.getShowInMode() == ShowInMode.PANEL) && (AppCurrContext.getInstance()
-				.getCurrentOpenWindowWithDataPanelElement() != null)) {
+		if ((ac.getShowInMode() == ShowInMode.PANEL)
+				&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() != null)) {
 			AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement().closeWindow();
 		}
 
