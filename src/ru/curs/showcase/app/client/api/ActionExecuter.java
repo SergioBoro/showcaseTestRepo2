@@ -182,46 +182,28 @@ public final class ActionExecuter {
 			if (mwi != null) {
 
 				if (mwi.getCaption() != null) {
-					if (mwi.getCssClass() != null)
-						modWind =
-							new WindowWithDataPanelElement(mwi.getCaption(), mwi.getCssClass(),
-									mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc());
-					else
-						modWind =
-							new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
-									mwi.getHeight(), mwi.getShowCloseBottomButton(),
-									mwi.getCloseOnEsc());
+					modWind =
+						new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
+								mwi.getHeight(), mwi.getShowCloseBottomButton(),
+								mwi.getCloseOnEsc(), mwi.getCssClass());
 				} else {
 
 					if (mwi.getCaption() != null) {
-						if (mwi.getCssClass() != null)
-							modWind =
-								new WindowWithDataPanelElement(mwi.getCaption(),
-										mwi.getCssClass(), mwi.getShowCloseBottomButton(),
-										mwi.getCloseOnEsc());
-						else
-							modWind =
-								new WindowWithDataPanelElement(mwi.getCaption(),
-										mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc());
+						modWind =
+							new WindowWithDataPanelElement(mwi.getCaption(),
+									mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc(),
+									mwi.getCssClass());
 
 					} else {
-						if (mwi.getCssClass() != null)
-							modWind =
-								new WindowWithDataPanelElement(mwi.getCssClass(), true,
-										mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc());
-						else
-							modWind =
-								new WindowWithDataPanelElement(mwi.getShowCloseBottomButton(),
-										mwi.getCloseOnEsc());
+						modWind =
+							new WindowWithDataPanelElement(mwi.getShowCloseBottomButton(),
+									mwi.getCloseOnEsc(), mwi.getCssClass());
 					}
 
 				}
 
 			} else {
-				if (mwi.getCssClass() != null)
-					modWind = new WindowWithDataPanelElement(mwi.getCssClass(), true, false, true);
-				else
-					modWind = new WindowWithDataPanelElement(false, true);
+				modWind = new WindowWithDataPanelElement(false, true, mwi.getCssClass());
 			}
 
 			// modWind.addCloseHandler(new CloseHandler<PopupPanel>() {

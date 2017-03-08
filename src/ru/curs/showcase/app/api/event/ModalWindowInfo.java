@@ -43,7 +43,7 @@ public final class ModalWindowInfo implements SerializableElement, GWTClonable, 
 	 * css class, отвечающий за высоту и ширину окна, соответствует атрибуту
 	 * class_style действия.
 	 */
-	private String cssClass;
+	private String cssClass = null;
 
 	public String getCaption() {
 		return caption;
@@ -111,15 +111,11 @@ public final class ModalWindowInfo implements SerializableElement, GWTClonable, 
 		if (caption != null) {
 			result += caption.length();
 		}
-		if (cssClass != null) {
-			result += 2 * Integer.SIZE / Byte.SIZE;
-		} else {
-			if (height != null) {
-				result += Integer.SIZE / Byte.SIZE;
-			}
-			if (width != null) {
-				result += Integer.SIZE / Byte.SIZE;
-			}
+		if (height != null) {
+			result += Integer.SIZE / Byte.SIZE;
+		}
+		if (width != null) {
+			result += Integer.SIZE / Byte.SIZE;
 		}
 		return result;
 	}

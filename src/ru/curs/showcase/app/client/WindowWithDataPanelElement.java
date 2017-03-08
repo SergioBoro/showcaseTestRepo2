@@ -52,8 +52,11 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 	}
 
 	public WindowWithDataPanelElement(final Boolean ashowCloseBottomButton,
-			final Boolean aCloseOnEsc) {
+			final Boolean aCloseOnEsc, final String aCssClass) {
 		super();
+		if (aCssClass != null) {
+			this.setStyleName(aCssClass);
+		}
 		setShowCloseBottomButton(ashowCloseBottomButton);
 		setCloseOnEsc(aCloseOnEsc);
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
@@ -61,30 +64,25 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 	}
 
 	public WindowWithDataPanelElement(final String caption, final Boolean ashowCloseBottomButton,
-			final Boolean aCloseOnEsc) {
+			final Boolean aCloseOnEsc, final String aCssClass) {
 		super(caption);
+		if (aCssClass != null) {
+			this.setStyleName(aCssClass);
+		}
 		setShowCloseBottomButton(ashowCloseBottomButton);
 		setCloseOnEsc(aCloseOnEsc);
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
 				String.valueOf(Window.getClientHeight() - n100) + "px");
 	}
 
-	public WindowWithDataPanelElement(final String aCssClass, final Boolean isCssClassPresented,
-			final Boolean ashowCloseBottomButton, final Boolean aCloseOnEsc) {
-		setShowCloseBottomButton(ashowCloseBottomButton);
-		setCloseOnEsc(aCloseOnEsc);
-		if (aCssClass == null && !isCssClassPresented) {
-			sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
-					String.valueOf(Window.getClientHeight() - n100) + "px");
-		} else if (aCssClass != null && isCssClassPresented) {
-			sp.setStyleName(aCssClass);
-		}
-	}
-
 	public WindowWithDataPanelElement(final String caption, final Integer width1,
-			final Integer heigth1, final Boolean ashowCloseBottomButton, final Boolean aCloseOnEsc) {
+			final Integer heigth1, final Boolean ashowCloseBottomButton,
+			final Boolean aCloseOnEsc, final String aCssClass) {
 
 		super(caption);
+		if (aCssClass != null) {
+			this.setStyleName(aCssClass);
+		}
 
 		Integer width = width1;
 		Integer heigth = heigth1;
@@ -113,24 +111,6 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 						String.valueOf(heigth) + "px");
 			}
 
-		}
-		setShowCloseBottomButton(ashowCloseBottomButton);
-		setCloseOnEsc(aCloseOnEsc);
-	}
-
-	public WindowWithDataPanelElement(final String caption, final String aCssClass,
-			final Boolean ashowCloseBottomButton, final Boolean aCloseOnEsc) {
-
-		super(caption);
-
-		if (aCssClass == null) {
-			Integer width = Window.getClientWidth() - n100;
-			Integer heigth = Window.getClientHeight() - n100;
-			if ((width != null) && (heigth != null)) {
-				sp.setSize(String.valueOf(width) + "px", String.valueOf(heigth) + "px");
-			}
-		} else {
-			sp.setStyleName(aCssClass);
 		}
 		setShowCloseBottomButton(ashowCloseBottomButton);
 		setCloseOnEsc(aCloseOnEsc);
