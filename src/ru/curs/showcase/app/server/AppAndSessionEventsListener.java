@@ -52,6 +52,8 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 	private ObjectName objectName;
 
+	private String contextPath;
+
 	public static synchronized Object getActiveSessions() {
 		return activeSessions;
 	}
@@ -126,11 +128,13 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 					RedirectionUserdataProp.readAndSetRedirectproperties();
 
+					contextPath = arg0.getServletContext().getContextPath();
+					if (contextPath == null || "".equals(contextPath))
+						contextPath = "/";
 					mBeanServer = ManagementFactory.getPlatformMBeanServer();
 					try {
 						objectName =
-							new ObjectName("Catalina:type=Manager,context="
-									+ arg0.getServletContext().getContextPath()
+							new ObjectName("Catalina:type=Manager,context=" + contextPath
 									+ ",host=localhost");
 					} catch (MalformedObjectNameException e1) {
 						// e1.printStackTrace();
