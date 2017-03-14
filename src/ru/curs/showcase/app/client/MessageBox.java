@@ -6,7 +6,6 @@ package ru.curs.showcase.app.client;
 import java.util.Date;
 
 import ru.curs.showcase.app.api.MessageType;
-import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
 import com.google.gwt.core.client.GWT;
@@ -16,7 +15,6 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.*;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -83,7 +81,7 @@ public final class MessageBox {
 	private static ImagesForDialogBox images = (ImagesForDialogBox) GWT
 			.create(ImagesForDialogBox.class);
 
-	private static DataServiceAsync dataService;
+	// private static DataServiceAsync dataService;
 
 	public static final String SIZE_ONE_HUNDRED_PERCENTS = "100%";
 
@@ -341,21 +339,26 @@ public final class MessageBox {
 			copy.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
-					if (dataService == null) {
-						dataService = GWT.create(DataService.class);
-					}
+					// if (dataService == null) {
+					// dataService = GWT.create(DataService.class);
+					// }
+					//
+					// dataService.copyToClipboard(messageToCopy, new
+					// AsyncCallback<Void>() {
+					//
+					// @Override
+					// public void onFailure(final Throwable arg0) {
+					// Window.alert("Clipboard Error: " + arg0);
+					// }
+					//
+					// @Override
+					// public void onSuccess(Void arg0) {
+					// // Ничего не выводим
+					// }
+					// });
+					// }
 
-					dataService.copyToClipboard(messageToCopy, new AsyncCallback<Void>() {
-
-						@Override
-						public void onFailure(final Throwable arg0) {
-						}
-
-						@Override
-						public void onSuccess(Void arg0) {
-							// Ничего не выводим
-						}
-					});
+					copyToClipboard(messageToCopy);
 				}
 			});
 			HorizontalPanel leftPanel = new HorizontalPanel();
@@ -381,4 +384,31 @@ public final class MessageBox {
 
 		return dlg;
 	}
+
+	public static native void copyToClipboard(String text) /*-{
+		var textArea = $doc.createElement("textarea");
+		textArea.style.position = 'fixed';
+		textArea.style.top = 0;
+		textArea.style.left = 0;
+		textArea.style.width = '2em';
+		textArea.style.height = '2em';
+		textArea.style.padding = 0;
+		textArea.style.border = 'none';
+		textArea.style.outline = 'none';
+		textArea.style.boxShadow = 'none';
+		textArea.style.background = 'transparent';
+		textArea.value = text;
+		textArea.id = 'ta';
+		$doc.body.appendChild(textArea);
+		var range = $doc.createRange();
+		range.selectNode(textArea);
+		textArea.select();
+		$wnd.getSelection().addRange(range);
+		try {
+			var successful = $doc.execCommand('copy');
+		} catch (err) {
+			alert('Oops, unable to copy');
+		}
+		$doc.body.removeChild(textArea);
+	}-*/;
 }
