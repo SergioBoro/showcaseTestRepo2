@@ -11,8 +11,8 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 
 import ru.curs.celesta.*;
-import ru.curs.showcase.runtime.AppInfoSingleton;
-import ru.curs.showcase.util.UserAndSessionDetails;
+import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
@@ -150,6 +150,26 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 						if (AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
 							Celesta.getInstance().failedLogin(login);
 						}
+
+						if (UserDataUtils
+								.getGeneralOptionalProp("mellophone.show.reason.for.blocked.user") != null
+								&& "true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp(
+										"mellophone.show.reason.for.blocked.user").trim())) {
+							String servletResponseMessage = "";
+							try {
+								servletResponseMessage =
+									TextUtils.streamToString(c.getErrorStream());
+							} catch (Exception e) {
+							}
+
+							if (servletResponseMessage
+									.contains("locked out for too many unsuccessful login attempts")) {
+								LOGGER.info("Пользователь " + login + " заблокирован");
+								throw new BadCredentialsException("User '" + login
+										+ "' is blocked by mellophone");
+							}
+						}
+
 						LOGGER.info("Пользователю " + login
 								+ " не удалось войти в систему: Bad credentials");
 						throw new BadCredentialsException("Bad credentials");
@@ -167,6 +187,9 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 				LOGGER.error("", e);
 
 				if ("Bad credentials".equals(e.getMessage())) {
+					throw new BadCredentialsException(e.getMessage(), e);
+				} else if (e.getMessage().contains("User")
+						&& e.getMessage().contains("is blocked by mellophone")) {
 					throw new BadCredentialsException(e.getMessage(), e);
 				} else {
 					throw new BadCredentialsException("Authentication server is not available: "
