@@ -64,4 +64,7 @@ public final class ExchangeConstants implements SerializableElement {
 	public static final String OK_MESSAGE_BEGIN = "okMessageECE12FBDBegin";
 	public static final String OK_MESSAGE_END = "okMessageECE12FBDEnd";
 
+	public static final String OK_MESSAGE_X = "F7C3F7E2";
+	public static final String OK_MESSAGE_QUOT = "A97A03D8";
+
 }

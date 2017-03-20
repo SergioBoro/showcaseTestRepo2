@@ -757,12 +757,19 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 
 	}
 
+	private String replaceServiceSymbols(final String mess) {
+		String ret = mess;
+		ret = ret.replace(ExchangeConstants.OK_MESSAGE_X, "\\x");
+		ret = ret.replace(ExchangeConstants.OK_MESSAGE_QUOT, "\\\"");
+		return ret;
+	}
+
 	public void pluginShowMessage(final String stringMessage, final String editorType) {
 
 		if (!stringMessage.isEmpty()) {
 			try {
 				UserMessage um = (UserMessage) getObjectSerializer()
-						.createStreamReader(stringMessage).readObject();
+						.createStreamReader(replaceServiceSymbols(stringMessage)).readObject();
 				if (um != null) {
 
 					String textMessage = um.getText();
@@ -817,6 +824,7 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 	public void pluginShowErrorMessage(final String stringMessage) {
 		if (!stringMessage.isEmpty()) {
 			String mess = stringMessage.replace("<root>", "").replace("</root>", "");
+			mess = replaceServiceSymbols(mess);
 			try {
 				Throwable caught =
 					(Throwable) getObjectSerializer().createStreamReader(mess).readObject();

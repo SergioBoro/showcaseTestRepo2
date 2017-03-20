@@ -160,6 +160,7 @@ public class JSGridService extends HttpServlet {
 		try {
 			message = RPC.encodeResponseForSuccess(
 					FakeService.class.getMethod("serializeUserMessage"), um);
+			message = replaceServiceSymbols(message);
 		} catch (SerializationException | NoSuchMethodException | SecurityException e) {
 			throw GeneralExceptionFactory.build(e);
 		}
@@ -232,6 +233,7 @@ public class JSGridService extends HttpServlet {
 		try {
 			message = RPC.encodeResponseForSuccess(
 					FakeService.class.getMethod("serializeUserMessage"), um);
+			message = replaceServiceSymbols(message);
 		} catch (SerializationException | NoSuchMethodException | SecurityException e) {
 			throw GeneralExceptionFactory.build(e);
 		}
@@ -241,6 +243,13 @@ public class JSGridService extends HttpServlet {
 			writer.print("{\"success\":\"" + success + "\", \"message\":\"" + message + "\"}");
 		}
 
+	}
+
+	private String replaceServiceSymbols(final String mess) {
+		String ret = mess;
+		ret = ret.replace("\\x", ExchangeConstants.OK_MESSAGE_X);
+		ret = ret.replace("\\\"", ExchangeConstants.OK_MESSAGE_QUOT);
+		return ret;
 	}
 
 }
