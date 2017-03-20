@@ -103,8 +103,11 @@ pageEncoding="UTF-8"%>
   <font color="red">
   <b>Ошибка!</b>
   <br/>
+  <%if(((Exception)request.getSession().
+		  getAttribute("SPRING_SECURITY_LAST_EXCEPTION")).getMessage().contains("Bad credentials")) {%>
   Имя пользователя и/или пароль неверны!<br/>
   Отказано в доступе. <br/>
+  <%}%>
   Ответ сервера: ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message} 
   <br/>
   </font>
