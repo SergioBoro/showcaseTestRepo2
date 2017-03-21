@@ -613,11 +613,6 @@ public class GridDataFactory extends CompBasedElementFactory {
 
 					String value = rec.get(colId);
 
-					value = XMLUtils.xmlServiceSymbolsToNormal(value);
-					if (value != null) {
-						rec.put(colId, value);
-					}
-
 					if (value != null) {
 						if (value.toLowerCase().trim().startsWith("<div")) {
 							title = exportToExcelGetTitleFromDiv(value);
@@ -629,7 +624,13 @@ public class GridDataFactory extends CompBasedElementFactory {
 					}
 
 					if (title != null) {
+						title = XMLUtils.xmlServiceSymbolsToNormal(title);
 						rec.put(colId, title);
+					} else {
+						if (value != null) {
+							value = XMLUtils.xmlServiceSymbolsToNormal(value);
+							rec.put(colId, value);
+						}
 					}
 
 				}
