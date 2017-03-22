@@ -276,7 +276,11 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 	}
 
 	private void beforeUpdateGrid() {
+
 		resetLocalContext();
+
+		resetGridSettingsToCurrent();
+
 	}
 
 	// CHECKSTYLE:OFF
@@ -982,8 +986,6 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 		if (isFirstLoading) {
 
 			resetSelection();
-
-			resetGridSettingsToCurrent();
 
 			// hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) +
 			// "px");
