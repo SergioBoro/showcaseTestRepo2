@@ -151,23 +151,30 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 							Celesta.getInstance().failedLogin(login);
 						}
 
+						String servletResponseMessage = "";
+						try {
+							servletResponseMessage = TextUtils.streamToString(c.getErrorStream());
+						} catch (Exception e) {
+						}
+
 						if (UserDataUtils
 								.getGeneralOptionalProp("mellophone.show.reason.for.blocked.user") != null
 								&& "true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp(
 										"mellophone.show.reason.for.blocked.user").trim())) {
-							String servletResponseMessage = "";
-							try {
-								servletResponseMessage =
-									TextUtils.streamToString(c.getErrorStream());
-							} catch (Exception e) {
-							}
 
 							if (servletResponseMessage
 									.contains("locked out for too many unsuccessful login attempts")) {
-								LOGGER.info("Пользователь " + login + " заблокирован");
+								LOGGER.info("Пользователь " + login + " заблокирован меллофоном");
 								throw new BadCredentialsException("User '" + login
 										+ "' is blocked by mellophone");
 							}
+						}
+
+						if (servletResponseMessage.contains("is blocked permanently")) {
+							LOGGER.info("Пользователь " + login
+									+ " заблокирован на постоянной основе");
+							throw new BadCredentialsException("User '" + login
+									+ "' is blocked by administrator");
 						}
 
 						LOGGER.info("Пользователю " + login
@@ -190,6 +197,9 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 					throw new BadCredentialsException(e.getMessage(), e);
 				} else if (e.getMessage().contains("User")
 						&& e.getMessage().contains("is blocked by mellophone")) {
+					throw new BadCredentialsException(e.getMessage(), e);
+				} else if (e.getMessage().contains("User")
+						&& e.getMessage().contains("is blocked by administrator")) {
 					throw new BadCredentialsException(e.getMessage(), e);
 				} else {
 					throw new BadCredentialsException("Authentication server is not available: "
