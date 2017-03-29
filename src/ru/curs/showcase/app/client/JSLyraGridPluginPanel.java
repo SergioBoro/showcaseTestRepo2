@@ -1107,6 +1107,10 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 	}
 
 	private void saveCurrentCheckBoxSelection() {
+		if (localContext == null) {
+			return;
+		}
+
 		localContext.getSelectedRecordIds().clear();
 
 		if (stringSelectedRecordIds != null) {
@@ -1118,6 +1122,10 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 	}
 
 	private void saveCurrentClickSelection(final String recId, final String colId) {
+		if (localContext == null) {
+			return;
+		}
+
 		localContext.setCurrentRecordId(recId);
 		localContext.setCurrentColumnId(colId);
 	}
@@ -1227,8 +1235,6 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 		return result;
 	}
-
-	// CHECKSTYLE:ON
 
 	@Override
 	public ToolBarHelper getToolBarHelper() {
