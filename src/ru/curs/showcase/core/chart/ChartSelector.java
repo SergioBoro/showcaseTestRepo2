@@ -2,7 +2,7 @@ package ru.curs.showcase.core.chart;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.core.*;
+import ru.curs.showcase.core.SourceSelector;
 import ru.curs.showcase.core.sp.*;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
 
@@ -18,6 +18,9 @@ public class ChartSelector extends SourceSelector<RecordSetElementGateway<Compos
 	public RecordSetElementGateway<CompositeContext> getGateway() {
 		RecordSetElementGateway<CompositeContext> gateway = null;
 		switch (sourceType()) {
+		case CELESTA:
+			gateway = new ChartCelestaGateway();
+			break;
 		case JYTHON:
 			gateway = new RecordSetElementJythonGateway();
 			break;
