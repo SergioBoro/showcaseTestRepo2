@@ -25,6 +25,9 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		generalMapPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
 
+		this.getPanel().addStyleName("geomap-element");
+		this.getPanel().addStyleName("id-" + element1.getId().getString());
+
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
 			// generalMapPanel.add(new HTML(AppCurrContext.getInstance()
 			// .getInternationalizedMessages().please_wait_data_are_loading()));
@@ -76,6 +79,9 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 		createChildPanels();
 
 		generalMapPanel = new VerticalPanel();
+
+		this.getPanel().addStyleName("geomap-element");
+		this.getPanel().addStyleName("id-" + element1.getId().getString());
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
 			// generalMapPanel.add(new HTML(AppCurrContext.getInstance()

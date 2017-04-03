@@ -81,6 +81,10 @@ public class Accordeon {
 	 */
 	private final DataServiceAsync dataService = GWT.create(DataService.class);
 
+	public Widget getPanel() {
+		return verpan;
+	}
+
 	/**
 	 * @return the accordeon
 	 */
@@ -124,6 +128,8 @@ public class Accordeon {
 
 		accordeon.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		verpan.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
+
+		this.getPanel().addStyleName("navigator-element");
 
 		CompositeContext context = MultiUserData.getCurrentContextFromURL();
 

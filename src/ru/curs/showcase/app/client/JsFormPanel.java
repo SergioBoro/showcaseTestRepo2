@@ -2,6 +2,13 @@ package ru.curs.showcase.app.client;
 
 import java.util.List;
 
+import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.html.*;
+import ru.curs.showcase.app.client.api.BasicElementPanelBasis;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
+import ru.curs.showcase.app.client.utils.WebUtils;
+
 import com.google.gwt.core.client.*;
 import com.google.gwt.dom.client.*;
 import com.google.gwt.json.client.*;
@@ -9,13 +16,6 @@ import com.google.gwt.regexp.shared.*;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
-
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
-import ru.curs.showcase.app.api.event.CompositeContext;
-import ru.curs.showcase.app.api.html.*;
-import ru.curs.showcase.app.client.api.BasicElementPanelBasis;
-import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
-import ru.curs.showcase.app.client.utils.WebUtils;
 
 /**
  * Класс панели JsForm.
@@ -29,21 +29,25 @@ public class JsFormPanel extends BasicElementPanelBasis {
 	private JsForm jsForm = null;
 	private final VerticalPanel rootPanel = new VerticalPanel();
 	private final HTML rootEl = new HTML();
-	private final RegExp jsRegExp =
-		RegExp.compile("<script.*?(?:src\\s*=\\s*[\"'](.*?)[\"'])?>([\\s\\S]*?)<\\/script>", "ig");
-	private static final String DESERIALIZATION_ERROR =
-		CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-				"An error occurred while deserializing an object");
+	private final RegExp jsRegExp = RegExp.compile(
+			"<script.*?(?:src\\s*=\\s*[\"'](.*?)[\"'])?>([\\s\\S]*?)<\\/script>", "ig");
+	private static final String DESERIALIZATION_ERROR = CourseClientLocalization.gettext(
+			AppCurrContext.getInstance().getDomain(),
+			"An error occurred while deserializing an object");
 
 	public JsFormPanel(final CompositeContext context, final DataPanelElementInfo elementInfo) {
 		this.setContext(context);
 		this.setElementInfo(elementInfo);
+		this.getPanel().addStyleName("jsform-element");
+		this.getPanel().addStyleName("id-" + elementInfo.getId().getString());
 		init(true);
 	}
 
 	public JsFormPanel(final DataPanelElementInfo elementInfo) {
 		this.setContext(null);
 		this.setElementInfo(elementInfo);
+		this.getPanel().addStyleName("jsform-element");
+		this.getPanel().addStyleName("id-" + elementInfo.getId().getString());
 		init(false);
 	}
 
@@ -101,8 +105,9 @@ public class JsFormPanel extends BasicElementPanelBasis {
 						if (deserializeEvents != null && !deserializeEvents.isEmpty()) {
 							try {
 								@SuppressWarnings("unchecked")
-								List<HTMLEvent> events = (List<HTMLEvent>) getObjectSerializer()
-										.createStreamReader(deserializeEvents).readObject();
+								List<HTMLEvent> events =
+									(List<HTMLEvent>) getObjectSerializer().createStreamReader(
+											deserializeEvents).readObject();
 								result.getEventManager().getEvents().addAll(events);
 							} catch (SerializationException e) {
 								MessageBox.showSimpleMessage("Error deserialize of JsForm event",
@@ -117,9 +122,10 @@ public class JsFormPanel extends BasicElementPanelBasis {
 					public void onFailure(final XHRRequestErrData err) {
 						String errMsg = "";
 						if (err != null) {
-							errMsg = "<h1>Error " + err.getStatus()
-									+ "</h1><div>Received data:<br/><pre>"
-									+ SafeHtmlUtils.htmlEscape(err.getData()) + "<pre></div>";
+							errMsg =
+								"<h1>Error " + err.getStatus()
+										+ "</h1><div>Received data:<br/><pre>"
+										+ SafeHtmlUtils.htmlEscape(err.getData()) + "<pre></div>";
 						}
 						setJsFormPanelData(new JsForm(errMsg, elInfo));
 					}
@@ -187,10 +193,11 @@ public class JsFormPanel extends BasicElementPanelBasis {
 				paramObj.put("elementInfo", new JSONString(serializeElInfo));
 			}
 		} catch (SerializationException e) {
-			paramObj.put("error",
-					new JSONString(CourseClientLocalization.gettext(
-							AppCurrContext.getInstance().getDomain(),
-							"Error serialization context or element info of JsForm.")));
+			paramObj.put(
+					"error",
+					new JSONString(CourseClientLocalization
+							.gettext(AppCurrContext.getInstance().getDomain(),
+									"Error serialization context or element info of JsForm.")));
 		}
 
 		RequestParam param = JsonUtils.safeEval(paramObj.toString());

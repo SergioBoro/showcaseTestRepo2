@@ -2,13 +2,6 @@ package ru.curs.showcase.app.client;
 
 import java.util.*;
 
-import com.google.gwt.core.client.*;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.rpc.*;
-import com.google.gwt.user.client.ui.*;
-
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
@@ -20,6 +13,13 @@ import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 import ru.curs.showcase.app.client.utils.*;
 
+import com.google.gwt.core.client.*;
+import com.google.gwt.json.client.*;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.rpc.*;
+import com.google.gwt.user.client.ui.*;
+
 /**
  * Класс-адаптер панели с внешним плагином типа JSLyraGrid.
  */
@@ -29,7 +29,7 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 	private static final String STRING_SELECTED_RECORD_IDS_SEPARATOR = "D13&82#9g7";
 
 	private static final String JSGRID_DESERIALIZATION_ERROR =
-		// "jsGridDeserializationError";
+	// "jsGridDeserializationError";
 		CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 				"An error occurred while deserializing an object");
 
@@ -139,14 +139,18 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 		setElementInfo(element);
 		setFirstLoading(true);
 		setCallbackJSNIFunction();
+		this.getPanel().addStyleName("jslyragrid-element");
+		this.getPanel().addStyleName("id-" + element.getId().getString());
+
 	}
 
-	public JSLyraGridPluginPanel(final CompositeContext context,
-			final DataPanelElementInfo element) {
+	public JSLyraGridPluginPanel(final CompositeContext context, final DataPanelElementInfo element) {
 		setContext(context);
 		setElementInfo(element);
 		setFirstLoading(true);
 		setCallbackJSNIFunction();
+		this.getPanel().addStyleName("jslyragrid-element");
+		this.getPanel().addStyleName("id-" + element.getId().getString());
 
 		refreshPanel();
 	}
@@ -205,10 +209,12 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			dataService = GWT.create(DataService.class);
 		}
 
-		dataService.getGridData(gc, getElementInfo(),
+		dataService.getGridData(
+				gc,
+				getElementInfo(),
 				new GWTServiceCallback<GridData>(
-						// AppCurrContext.getInstance().getBundleMap().get("gridErrorGetTable"))
-						// {
+				// AppCurrContext.getInstance().getBundleMap().get("gridErrorGetTable"))
+				// {
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 								"when retrieving table data from server")) {
 
@@ -229,8 +235,9 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 	private void partialUpdateGridPanelByGrid(final GridData aLiveGridData) {
 
-		String params = "'" + getElementInfo().getId().toString() + "'" + ", " + "'"
-				+ getDivIdPlugin() + "', " + aLiveGridData.getData();
+		String params =
+			"'" + getElementInfo().getId().toString() + "'" + ", " + "'" + getDivIdPlugin()
+					+ "', " + aLiveGridData.getData();
 
 		pluginProc(gridMetadata.getJSInfo().getPartialUpdate(), params);
 
@@ -243,10 +250,12 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 		LyraGridContext gc = getDetailedContext();
 
-		dataService.getLyraGridMetadata(gc, getElementInfo(),
+		dataService.getLyraGridMetadata(
+				gc,
+				getElementInfo(),
 				new GWTServiceCallback<LyraGridMetadata>(
-						// AppCurrContext.getInstance().getBundleMap().get("gridErrorGetTable"))
-						// {
+				// AppCurrContext.getInstance().getBundleMap().get("gridErrorGetTable"))
+				// {
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 								"when retrieving table data from server")) {
 
@@ -295,9 +304,10 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 		// ----------------------------------------------------
 
 		final String div = "<div id='";
-		final String htmlForPlugin = div + getDivIdPlugin() + "' style='width:"
-				+ gridMetadata.getUISettings().getGridWidth() + "; height:"
-				+ gridMetadata.getUISettings().getGridHeight() + "px'></div>";
+		final String htmlForPlugin =
+			div + getDivIdPlugin() + "' style='width:"
+					+ gridMetadata.getUISettings().getGridWidth() + "; height:"
+					+ gridMetadata.getUISettings().getGridHeight() + "px'></div>";
 
 		// ----------------------------------------------------
 
@@ -359,24 +369,26 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			common.put("isAllowTextSelection", new JSONString("true"));
 		}
 
-		common.put("loadingMessage",
+		common.put(
+				"loadingMessage",
 				new JSONString(
-						// AppCurrContext.getInstance().getBundleMap().get("jsGridLoadingMessage")));
+				// AppCurrContext.getInstance().getBundleMap().get("jsGridLoadingMessage")));
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 								"Loading...")));
 
-		common.put("noDataMessage",
+		common.put(
+				"noDataMessage",
 				new JSONString(
-						// AppCurrContext.getInstance().getBundleMap().get("jsGridNoRecordsMessage")));
+				// AppCurrContext.getInstance().getBundleMap().get("jsGridNoRecordsMessage")));
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 								"No records")));
 
-		common.put("stringSelectedRecordIdsSeparator",
-				new JSONString(STRING_SELECTED_RECORD_IDS_SEPARATOR));
+		common.put("stringSelectedRecordIdsSeparator", new JSONString(
+				STRING_SELECTED_RECORD_IDS_SEPARATOR));
 
 		if (gridMetadata.getUISettings().getHaColumnHeader() != null) {
-			common.put("haColumnHeader", new JSONString(
-					gridMetadata.getUISettings().getHaColumnHeader().toString().toLowerCase()));
+			common.put("haColumnHeader", new JSONString(gridMetadata.getUISettings()
+					.getHaColumnHeader().toString().toLowerCase()));
 		}
 
 		if ((getElementInfo().getProcByType(DataPanelElementProcType.ADDRECORD) == null)
@@ -387,12 +399,12 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 		if ((gridMetadata.getGridSorting() != null)
 				&& (gridMetadata.getGridSorting().getSortColId() != null)) {
 			common.put("sortColId", new JSONString(gridMetadata.getGridSorting().getSortColId()));
-			common.put("sortColDirection", new JSONString(
-					gridMetadata.getGridSorting().getSortColDirection().toString()));
+			common.put("sortColDirection", new JSONString(gridMetadata.getGridSorting()
+					.getSortColDirection().toString()));
 		}
 
-		common.put("pagingLinks", new JSONString(
-				String.valueOf(gridMetadata.getUISettings().getPagesButtonCount())));
+		common.put("pagingLinks",
+				new JSONString(String.valueOf(gridMetadata.getUISettings().getPagesButtonCount())));
 
 		if (gridMetadata.getLyraGridSorting() != null) {
 			common.put("lyraGridSorting", new JSONString(gridMetadata.getLyraGridSorting()));
@@ -433,8 +445,8 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 			column.put("style", new JSONString(getCommonColumnStyle() + getColumnStyle(egcc)));
 
-			column.put("urlImageFileDownload",
-					new JSONString(gridMetadata.getUISettings().getUrlImageFileDownload()));
+			column.put("urlImageFileDownload", new JSONString(gridMetadata.getUISettings()
+					.getUrlImageFileDownload()));
 
 			columns.put(egcc.getId(), column);
 
@@ -459,8 +471,8 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 				if (vc.getStyle() != null) {
 					virtualColumn.put("style", new JSONString(vc.getStyle()));
 				}
-				virtualColumn.put("virtualColumnType",
-						new JSONString(vc.getVirtualColumnType().toString()));
+				virtualColumn.put("virtualColumnType", new JSONString(vc.getVirtualColumnType()
+						.toString()));
 
 				virtualColumns.put(vc.getId(), virtualColumn);
 			}
@@ -531,16 +543,15 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 				MessageBox.showMessageWithDetails(
 						// AppCurrContext.getInstance().getBundleMap().get("error_of_plugin_painting"),
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-								"External plugin constructing error"),
-						e.getMessage(), GeneralException.generateDetailedInfo(e.getCause()),
-						GeneralException.getMessageType(e.getCause()),
-						GeneralException.needDetailedInfo(e.getCause()), null);
+								"External plugin constructing error"), e.getMessage(),
+						GeneralException.generateDetailedInfo(e.getCause()), GeneralException
+								.getMessageType(e.getCause()), GeneralException.needDetailedInfo(e
+								.getCause()), null);
 			} else {
 				MessageBox.showSimpleMessage(
-						// AppCurrContext.getInstance().getBundleMap().get("error_of_plugin_painting"),
+				// AppCurrContext.getInstance().getBundleMap().get("error_of_plugin_painting"),
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-								"External plugin constructing error"),
-						e.getMessage());
+								"External plugin constructing error"), e.getMessage());
 			}
 		}
 
@@ -588,9 +599,9 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			dh.clear();
 
 			dh.setErrorCaption(
-					// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_file_download"));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Error when downloading file"));
+			// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_file_download"));
+			CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"Error when downloading file"));
 			dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
 
 			try {
@@ -598,18 +609,17 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 				dh.addParam(getContext().getClass().getName(),
 						getContext().toParamForHttpPost(getObjectSerializer()));
-				dh.addParam(DataPanelElementInfo.class.getName(),
-						getElementInfo().toParamForHttpPost(getObjectSerializer()));
+				dh.addParam(DataPanelElementInfo.class.getName(), getElementInfo()
+						.toParamForHttpPost(getObjectSerializer()));
 
 				dh.addParam("recordId", recId);
 
 				dh.submit();
 			} catch (SerializationException e) {
 				ru.curs.showcase.app.client.MessageBox.showSimpleMessage(
-						// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_file_download"),
+				// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_file_download"),
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-								"Error when downloading file"),
-						e.getMessage());
+								"Error when downloading file"), e.getMessage());
 			}
 		}
 	}
@@ -639,8 +649,8 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 				newLyraGridSorting = newLyraGridSorting + " desc";
 			}
 
-			if (!newLyraGridSorting
-					.equalsIgnoreCase(lyraGridSorting.toLowerCase().replace(" asc", ""))) {
+			if (!newLyraGridSorting.equalsIgnoreCase(lyraGridSorting.toLowerCase().replace(" asc",
+					""))) {
 				lyraGridSorting = newLyraGridSorting;
 				gridContext.setSortingChanged(true);
 				gridContext.setDgridOldPosition(0);
@@ -663,10 +673,13 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			params.put("elementInfoValue",
 					new JSONString(getElementInfo().toParamForHttpPost(getObjectSerializer())));
 		} catch (SerializationException e) {
-			params.put("error", new JSONString(
-					// AppCurrContext.getInstance().getBundleMap().get("jsGridSerializationError")));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Error during serialization parameters for Http-request plug.")));
+			params.put(
+					"error",
+					new JSONString(
+							// AppCurrContext.getInstance().getBundleMap().get("jsGridSerializationError")));
+							CourseClientLocalization
+									.gettext(AppCurrContext.getInstance().getDomain(),
+											"Error during serialization parameters for Http-request plug.")));
 		} finally {
 			gridContext.setRefreshId(null);
 			gridContext.setSortingChanged(false);
@@ -694,8 +707,9 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 		} else {
 			gridContext.setEditorData(null);
 
-			String json = "{\"addrecorddata\":{\"currentRecordId\":\""
-					+ gridContext.getCurrentRecordId() + "\"}}";
+			String json =
+				"{\"addrecorddata\":{\"currentRecordId\":\"" + gridContext.getCurrentRecordId()
+						+ "\"}}";
 			gridContext.setAddRecordData(json);
 		}
 
@@ -709,10 +723,13 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			params.put("elementInfoValue",
 					new JSONString(getElementInfo().toParamForHttpPost(getObjectSerializer())));
 		} catch (SerializationException e) {
-			params.put("error", new JSONString(
-					// AppCurrContext.getInstance().getBundleMap().get("jsGridSerializationError")));
-					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Error during serialization parameters for Http-request plug.")));
+			params.put(
+					"error",
+					new JSONString(
+							// AppCurrContext.getInstance().getBundleMap().get("jsGridSerializationError")));
+							CourseClientLocalization
+									.gettext(AppCurrContext.getInstance().getDomain(),
+											"Error during serialization parameters for Http-request plug.")));
 		}
 
 		return params;
@@ -724,8 +741,9 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			try {
 
 				@SuppressWarnings("unchecked")
-				List<GridEvent> eventsNew = (List<GridEvent>) getObjectSerializer()
-						.createStreamReader(stringEvents).readObject();
+				List<GridEvent> eventsNew =
+					(List<GridEvent>) getObjectSerializer().createStreamReader(stringEvents)
+							.readObject();
 
 				List<GridEvent> eventsAdd;
 				if (gridMetadata.getEventManager().getEvents().size() == 0) {
@@ -752,7 +770,7 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 			} catch (SerializationException e) {
 				MessageBox.showSimpleMessage("afterHttpPostFromPlugin",
-						// AppCurrContext.getInstance().getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
+				// AppCurrContext.getInstance().getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
 						JSGRID_DESERIALIZATION_ERROR + " Events: " + e.getMessage());
 			}
 		}
@@ -770,8 +788,9 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			try {
 
 				@SuppressWarnings("unchecked")
-				List<GridEvent> eventsNew = (List<GridEvent>) getObjectSerializer()
-						.createStreamReader(stringEvents).readObject();
+				List<GridEvent> eventsNew =
+					(List<GridEvent>) getObjectSerializer().createStreamReader(stringEvents)
+							.readObject();
 
 				for (ru.curs.showcase.app.api.grid.GridEvent ev : eventsNew) {
 					for (ru.curs.showcase.app.api.grid.GridEvent evOld : gridMetadata
@@ -786,7 +805,7 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 			} catch (SerializationException e) {
 				MessageBox.showSimpleMessage("afterHttpPostFromPlugin",
-						// AppCurrContext.getInstance().getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
+				// AppCurrContext.getInstance().getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
 						JSGRID_DESERIALIZATION_ERROR + " Events: " + e.getMessage());
 			}
 		}
@@ -797,8 +816,9 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 		if (!stringMessage.isEmpty()) {
 			try {
-				UserMessage um = (UserMessage) getObjectSerializer()
-						.createStreamReader(stringMessage).readObject();
+				UserMessage um =
+					(UserMessage) getObjectSerializer().createStreamReader(stringMessage)
+							.readObject();
 				if (um != null) {
 
 					String textMessage = um.getText();
@@ -815,20 +835,20 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 					if (captionMessage == null) {
 						captionMessage =
 							// AppCurrContext.getInstance().getBundleMap().get("okMessage");
-							CourseClientLocalization
-									.gettext(AppCurrContext.getInstance().getDomain(), "Message");
+							CourseClientLocalization.gettext(AppCurrContext.getInstance()
+									.getDomain(), "Message");
 					}
 
 					String subtypeMessage = um.getSubtype();
 
-					MessageBox.showMessageWithDetails(captionMessage, textMessage, "", typeMessage,
-							false, subtypeMessage);
+					MessageBox.showMessageWithDetails(captionMessage, textMessage, "",
+							typeMessage, false, subtypeMessage);
 
 				}
 
 			} catch (SerializationException e) {
 				MessageBox.showSimpleMessage("pluginShowMessage",
-						// AppCurrContext.getInstance().getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
+				// AppCurrContext.getInstance().getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
 						JSGRID_DESERIALIZATION_ERROR + " UserMessage: " + e.getMessage());
 			}
 		}
@@ -966,8 +986,9 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			}
 		}
 
-		Action ac = gridMetadata.getEventManager()
-				.getSelectionActionForDependentElements(selectedRecordIds);
+		Action ac =
+			gridMetadata.getEventManager().getSelectionActionForDependentElements(
+					selectedRecordIds);
 
 		runAction(ac);
 	}
@@ -1007,8 +1028,9 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 		style = style + "width:" + egcc.getWidth() + "px;";
 
 		if (egcc.getHorizontalAlignment() != null) {
-			style = style + "text-align:" + egcc.getHorizontalAlignment().toString().toLowerCase()
-					+ ";";
+			style =
+				style + "text-align:" + egcc.getHorizontalAlignment().toString().toLowerCase()
+						+ ";";
 		}
 
 		return style;
@@ -1180,9 +1202,9 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 		dh.clear();
 
 		dh.setErrorCaption(
-				// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_export_excel"));
-				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-						"Error when exporting to Excel"));
+		// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_export_excel"));
+		CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+				"Error when exporting to Excel"));
 		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridToExcel");
 
 		try {
@@ -1191,8 +1213,8 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			@SuppressWarnings("unused")
 			SerializationStreamFactory ssfExcel = dh.getAddObjectSerializer();
 
-			dh.addParam(getDetailedContext().getClass().getName(),
-					getDetailedContext().toParamForHttpPost(getObjectSerializer()));
+			dh.addParam(getDetailedContext().getClass().getName(), getDetailedContext()
+					.toParamForHttpPost(getObjectSerializer()));
 			dh.addParam(DataPanelElementInfo.class.getName(),
 					getElementInfo().toParamForHttpPost(getObjectSerializer()));
 
@@ -1200,10 +1222,9 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 		} catch (SerializationException e) {
 			MessageBox.showSimpleMessage(
-					// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_export_excel"),
+			// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_export_excel"),
 					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Error when exporting to Excel"),
-					e.getMessage());
+							"Error when exporting to Excel"), e.getMessage());
 		}
 	}
 

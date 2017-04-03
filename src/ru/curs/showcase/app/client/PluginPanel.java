@@ -33,6 +33,9 @@ public class PluginPanel extends BasicElementPanelBasis {
 		generalPluginPanel = new VerticalPanel();
 		generalHp = new HorizontalPanel();
 
+		this.getPanel().addStyleName("plugin-element");
+		this.getPanel().addStyleName("id-" + element1.getId().getString());
+
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
 			// generalPluginPanel.add(new
 			// HTML(AppCurrContext.getInstance().getBundleMap()
@@ -64,6 +67,9 @@ public class PluginPanel extends BasicElementPanelBasis {
 		setCollbackJSNIFunction();
 
 		generalPluginPanel = new VerticalPanel();
+
+		this.getPanel().addStyleName("plugin-element");
+		this.getPanel().addStyleName("id-" + element1.getId().getString());
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
 			// generalPluginPanel.add(new

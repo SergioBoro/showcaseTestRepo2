@@ -44,6 +44,9 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		this.setElementInfo(element1);
 		generalWebTextPanel = new VerticalPanel();
 
+		this.getPanel().addStyleName("webtext-element");
+		this.getPanel().addStyleName("id-" + element1.getId().getString());
+
 		generalWebTextPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
 		if (this.getElementInfo().getShowLoadingMessageForFirstTime()) {
@@ -81,6 +84,9 @@ public class WebTextPanel extends BasicElementPanelBasis {
 		// new HTML(AppCurrContext.getInstance().getInternationalizedMessages()
 		// .please_wait_data_are_loading());
 		generalWebTextPanel = new VerticalPanel();
+
+		this.getPanel().addStyleName("webtext-element");
+		this.getPanel().addStyleName("id-" + element1.getId().getString());
 
 		generalWebTextPanel.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 		generalWebTextPanel.add(thmlwidget);
