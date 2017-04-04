@@ -2,6 +2,11 @@ package ru.curs.showcase.app.client.selector;
 
 import java.util.List;
 
+import ru.curs.showcase.app.api.common.*;
+import ru.curs.showcase.app.api.selector.*;
+import ru.curs.showcase.app.client.AppCurrContext;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
+
 import com.google.gwt.cell.client.*;
 import com.google.gwt.core.client.*;
 import com.google.gwt.dom.client.*;
@@ -13,11 +18,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.*;
-
-import ru.curs.showcase.app.api.common.*;
-import ru.curs.showcase.app.api.selector.*;
-import ru.curs.showcase.app.client.AppCurrContext;
-import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
 /**
  * Компонента множественного выбора из больших списков.
@@ -78,6 +78,8 @@ public class MultiSelectorComponent extends BaseSelectorComponent {
 		WidgetBuilder b = new WidgetBuilder();
 		fillWidgetBuilder(b);
 		setWidget(b.done());
+
+		this.addStyleName("server-multiselector-popup");
 	}
 
 	public MultiSelectorComponent(final SelectorDataServiceAsync srv1, final String title,
@@ -90,6 +92,8 @@ public class MultiSelectorComponent extends BaseSelectorComponent {
 		WidgetBuilder b = new WidgetBuilder();
 		fillWidgetBuilder(b);
 		setWidget(b.done());
+
+		this.addStyleName("server-multiselector-popup");
 	}
 
 	private void createCelllist() {
@@ -131,8 +135,8 @@ public class MultiSelectorComponent extends BaseSelectorComponent {
 
 		selectedCelllist = new CellList<DataRecord>(new SelectedDataCell(), providesKey);
 		selectedCelllist.setSize(PROC100, PROC100);
-		selectedCelllist.setKeyboardPagingPolicy(
-				HasKeyboardPagingPolicy.KeyboardPagingPolicy.CURRENT_PAGE);
+		selectedCelllist
+				.setKeyboardPagingPolicy(HasKeyboardPagingPolicy.KeyboardPagingPolicy.CURRENT_PAGE);
 
 		selectedSelectionModel = new MultiSelectionModel<DataRecord>(providesKey);
 		selectedCelllist.setSelectionModel(selectedSelectionModel);
@@ -157,17 +161,22 @@ public class MultiSelectorComponent extends BaseSelectorComponent {
 		String searchStringWidth;
 		if (getOptions().getManualSearch()) {
 			final int delta = 18;
-			searchStringWidth = String.valueOf(getIntSizeValue(getOptions().getDataWidth())
-					- getIntSizeValue(CLEAR_BUTTON_WIDTH) * 2 - delta) + "px";
+			searchStringWidth =
+				String.valueOf(getIntSizeValue(getOptions().getDataWidth())
+						- getIntSizeValue(CLEAR_BUTTON_WIDTH) * 2 - delta)
+						+ "px";
 		} else {
-			searchStringWidth = String.valueOf(getIntSizeValue(getOptions().getDataWidth())
-					- getIntSizeValue(CLEAR_BUTTON_WIDTH) - 2) + "px";
+			searchStringWidth =
+				String.valueOf(getIntSizeValue(getOptions().getDataWidth())
+						- getIntSizeValue(CLEAR_BUTTON_WIDTH) - 2)
+						+ "px";
 		}
 
 		final int deltaSearchSelectedString = 38;
-		String searchSelectedStringWidth = String.valueOf(
-				getIntSizeValue(getOptions().getSelectedDataWidth()) - deltaSearchSelectedString)
-				+ "px";
+		String searchSelectedStringWidth =
+			String.valueOf(getIntSizeValue(getOptions().getSelectedDataWidth())
+					- deltaSearchSelectedString)
+					+ "px";
 
 		b.vertical().width(PROC100).horizontal().width(PROC100).height(PROC100);
 
@@ -175,8 +184,10 @@ public class MultiSelectorComponent extends BaseSelectorComponent {
 			b.vertical().width(PROC100).spacing(DEF_SPACING).horizontal().width(PROC100)
 					.widget(getSearchString()).width(searchStringWidth).height(PROC100).label(" ");
 		if (getOptions().getManualSearch()) {
-			wbSearch = wbSearch.button(manualSearchAction(), ActionButtonStyle.IMAGE)
-					.height(CLEAR_BUTTON_HEIGHT).width(CLEAR_BUTTON_WIDTH).label(" ").width("4px");
+			wbSearch =
+				wbSearch.button(manualSearchAction(), ActionButtonStyle.IMAGE)
+						.height(CLEAR_BUTTON_HEIGHT).width(CLEAR_BUTTON_WIDTH).label(" ")
+						.width("4px");
 		}
 		wbSearch =
 			wbSearch.button(clearAction(), ActionButtonStyle.IMAGE).height(CLEAR_BUTTON_HEIGHT)
@@ -213,10 +224,13 @@ public class MultiSelectorComponent extends BaseSelectorComponent {
 	public void initData(final String params, final String procName, final String curValue,
 			final SelectorAdditionalData addData) {
 		final int deltaSearchSelectedString = 12;
-		selectedScrollPanel.setHeight(
-				String.valueOf(getSearchString().getParent().getParent().getOffsetHeight()
-						- searchSelectedString.getOffsetHeight() - deltaSearchSelectedString
-						- 2 * DEF_SPACING) + "px");
+		selectedScrollPanel.setHeight(String.valueOf(getSearchString().getParent().getParent()
+				.getOffsetHeight()
+				- searchSelectedString.getOffsetHeight()
+				- deltaSearchSelectedString
+				- 2
+				* DEF_SPACING)
+				+ "px");
 
 		super.initData(params, procName, curValue, addData);
 
@@ -404,9 +418,8 @@ public class MultiSelectorComponent extends BaseSelectorComponent {
 			@Override
 			protected void perform() {
 				boolean found = false;
-				for (int i =
-					selectedCelllist.getKeyboardSelectedRow() + 1; i < selectedDataProvider
-							.getList().size(); i++) {
+				for (int i = selectedCelllist.getKeyboardSelectedRow() + 1; i < selectedDataProvider
+						.getList().size(); i++) {
 					if (selectedDataProvider.getList().get(i).getName().toLowerCase()
 							.contains(searchSelectedString.getText().toLowerCase())) {
 						selectedCelllist.setKeyboardSelectedRow(i, true);
@@ -418,9 +431,9 @@ public class MultiSelectorComponent extends BaseSelectorComponent {
 					// Window.alert(AppCurrContext.getInstance().getInternationalizedMessages()
 					// .multySelectorStringNotFound());
 					Window.alert(
-							// AppCurrContext.getInstance().getBundleMap().get("multySelectorStringNotFound"));
-							CourseClientLocalization.gettext(
-									AppCurrContext.getInstance().getDomain(), "Not found"));
+					// AppCurrContext.getInstance().getBundleMap().get("multySelectorStringNotFound"));
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							"Not found"));
 				}
 			}
 		};
@@ -497,8 +510,9 @@ public class MultiSelectorComponent extends BaseSelectorComponent {
 
 			if ((MOUSE_WHEEL.equals(event.getType()))
 					|| (DOM_MOUSE_SCROLL.equals(event.getType()))) {
-				getScroll().setScrollPosition(getScroll().getScrollPosition()
-						+ MOUSE_SCROLL_UNITS * event.getMouseWheelVelocityY());
+				getScroll().setScrollPosition(
+						getScroll().getScrollPosition() + MOUSE_SCROLL_UNITS
+								* event.getMouseWheelVelocityY());
 
 			}
 

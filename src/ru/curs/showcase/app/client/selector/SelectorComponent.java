@@ -1,5 +1,8 @@
 package ru.curs.showcase.app.client.selector;
 
+import ru.curs.showcase.app.api.common.*;
+import ru.curs.showcase.app.api.selector.*;
+
 import com.google.gwt.cell.client.*;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.*;
@@ -8,9 +11,6 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.view.client.*;
-
-import ru.curs.showcase.app.api.common.*;
-import ru.curs.showcase.app.api.selector.*;
 
 /**
  * Компонента выбора из больших списков.
@@ -36,6 +36,8 @@ public class SelectorComponent extends BaseSelectorComponent {
 		WidgetBuilder b = new WidgetBuilder();
 		fillWidgetBuilder(b);
 		setWidget(b.done());
+
+		this.addStyleName("server-selector-popup");
 	}
 
 	public SelectorComponent(final SelectorDataServiceAsync srv1, final String title,
@@ -47,6 +49,8 @@ public class SelectorComponent extends BaseSelectorComponent {
 		WidgetBuilder b = new WidgetBuilder();
 		fillWidgetBuilder(b);
 		setWidget(b.done());
+
+		this.addStyleName("server-selector-popup");
 	}
 
 	private void createCelllist() {
@@ -99,19 +103,25 @@ public class SelectorComponent extends BaseSelectorComponent {
 		String searchStringWidth;
 		if (getOptions().getManualSearch()) {
 			final int delta = 18;
-			searchStringWidth = String.valueOf(getIntSizeValue(getOptions().getDataWidth())
-					- getIntSizeValue(CLEAR_BUTTON_WIDTH) * 2 - delta) + "px";
+			searchStringWidth =
+				String.valueOf(getIntSizeValue(getOptions().getDataWidth())
+						- getIntSizeValue(CLEAR_BUTTON_WIDTH) * 2 - delta)
+						+ "px";
 		} else {
-			searchStringWidth = String.valueOf(getIntSizeValue(getOptions().getDataWidth())
-					- getIntSizeValue(CLEAR_BUTTON_WIDTH) - 2) + "px";
+			searchStringWidth =
+				String.valueOf(getIntSizeValue(getOptions().getDataWidth())
+						- getIntSizeValue(CLEAR_BUTTON_WIDTH) - 2)
+						+ "px";
 		}
 
 		WidgetBuilder wbSearch =
 			b.vertical().width(PROC100).spacing(DEF_SPACING).horizontal().width(PROC100)
 					.widget(getSearchString()).width(searchStringWidth).height(PROC100).label(" ");
 		if (getOptions().getManualSearch()) {
-			wbSearch = wbSearch.button(manualSearchAction(), ActionButtonStyle.IMAGE)
-					.height(CLEAR_BUTTON_HEIGHT).width(CLEAR_BUTTON_WIDTH).label(" ").width("4px");
+			wbSearch =
+				wbSearch.button(manualSearchAction(), ActionButtonStyle.IMAGE)
+						.height(CLEAR_BUTTON_HEIGHT).width(CLEAR_BUTTON_WIDTH).label(" ")
+						.width("4px");
 		}
 		wbSearch =
 			wbSearch.button(clearAction(), ActionButtonStyle.IMAGE).height(CLEAR_BUTTON_HEIGHT)
@@ -183,8 +193,9 @@ public class SelectorComponent extends BaseSelectorComponent {
 
 			if ((MOUSE_WHEEL.equals(event.getType()))
 					|| (DOM_MOUSE_SCROLL.equals(event.getType()))) {
-				getScroll().setScrollPosition(getScroll().getScrollPosition()
-						+ MOUSE_SCROLL_UNITS * event.getMouseWheelVelocityY());
+				getScroll().setScrollPosition(
+						getScroll().getScrollPosition() + MOUSE_SCROLL_UNITS
+								* event.getMouseWheelVelocityY());
 
 			}
 
