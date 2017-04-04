@@ -30,14 +30,13 @@ function createCalendar(parentId, data, template) {
 			    	
 			    	var w = registry.byId(parentId);
 			    	if(w){
-			    		
 			    		if(template){
 				    		dateInterval      = w.dateInterval;
 				    		dateIntervalSteps = w.dateIntervalSteps;
 			    		}
 			    		
+			    		w.timer.stop();
 			    		w.destroy();
-			    		
 			    	}
 			    	
 			    	var calendar = new Calendar({
@@ -151,7 +150,26 @@ function createCalendar(parentId, data, template) {
 					        }
 				        }
 			    	}
-			      
+			    	
+			    	
+				   	dojo.require('dojox.timing');
+				   	var timer = new dojox.timing.Timer(1000);
+				   	timer.onTick = function(){
+					   	 if(this.calendar.domNode.offsetWidth == 0){
+					   		this.stop();
+					   		return;
+					   	 }
+				    	 if(this.offsetWidth != this.calendar.domNode.offsetWidth){
+					    	 this.offsetWidth = this.calendar.domNode.offsetWidth;
+					    	 this.calendar.currentView.resize();
+				    	 }
+				   	}
+				   	timer.calendar    = calendar;
+				   	timer.offsetWidth = calendar.domNode.offsetWidth; 
+				   	timer.start();
+				   	calendar.timer = timer;
+
+				   	
 			  }
 	);
 }
