@@ -209,6 +209,8 @@ public class GeneralDataPanel {
 
 		SimplePanel vp = new SimplePanel();
 		getTabPanel().add(vp, dpt.getName());
+		vp.addStyleName("datapanel-tab-element");
+		vp.addStyleName("id-" + dpt.getId().getString());
 		return vp;
 	}
 
