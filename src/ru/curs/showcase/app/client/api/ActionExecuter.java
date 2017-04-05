@@ -5,6 +5,9 @@ package ru.curs.showcase.app.client.api;
 
 import java.util.*;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Timer;
+
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.VoidElement;
@@ -12,9 +15,6 @@ import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Timer;
 
 /**
  * 
@@ -50,7 +50,7 @@ public final class ActionExecuter {
 
 		if (ac.containsServerActivity()) {
 
-			setEnableDisableState(ac.getActionCaller(), false);
+			// setEnableDisableState(ac.getActionCaller(), false);
 
 			if (dataService == null) {
 				dataService = GWT.create(DataService.class);
@@ -64,31 +64,31 @@ public final class ActionExecuter {
 			}
 			ac.setRelated(panelContext);
 
-			dataService.execServerAction(
-					ac,
-					new GWTServiceCallback<VoidElement>(
+			dataService.execServerAction(ac, new GWTServiceCallback<VoidElement>(
 					// AppCurrContext.getInstance().getBundleMap().get("error_in_server_activity"))
 					// {
-							CourseClientLocalization.gettext(AppCurrContext.getInstance()
-									.getDomain(), "when execution of server action")) {
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							"when execution of server action")) {
 
-						@Override
-						public void onSuccess(final VoidElement ve) {
+				@Override
+				public void onSuccess(final VoidElement ve) {
 
-							super.onSuccess(ve);
+					super.onSuccess(ve);
 
-							handleClientBlocks(ac);
+					handleClientBlocks(ac);
 
-							setEnableDisableState(ac.getActionCaller(), true);
+					// setEnableDisableState(ac.getActionCaller(), true);
 
-						}
+				}
 
-					});
+			});
 		} else {
 			handleClientBlocks(ac);
 		}
 	}
 
+	// эта функция не испоьзуется сейчас. оставлена на будующее - возможно она
+	// понадобится чтобы дизейслить эллементы вебстраницы в определенных случаях
 	private static void setEnableDisableState(final Object actionCaller, final boolean state) {
 		if (actionCaller == null) {
 			return;
@@ -108,8 +108,8 @@ public final class ActionExecuter {
 
 	private static void handleClientBlocks(final Action ac) {
 		for (Activity act : ac.getClientActivities()) {
-			runClientActivity(act.getName(), act.getContext().getMain(), act.getContext()
-					.getAdditional(), act.getContext().getFilter());
+			runClientActivity(act.getName(), act.getContext().getMain(),
+					act.getContext().getAdditional(), act.getContext().getFilter());
 		}
 
 		handleNavigatorBlock(ac);
@@ -131,8 +131,8 @@ public final class ActionExecuter {
 		case DO_NOTHING:
 			// MessageBox.showSimpleMessage("1", "DO_NOTHING");
 
-			if ((ac.getShowInMode() == ShowInMode.PANEL)
-					&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() != null)) {
+			if ((ac.getShowInMode() == ShowInMode.PANEL) && (AppCurrContext.getInstance()
+					.getCurrentOpenWindowWithDataPanelElement() != null)) {
 				AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement()
 						.closeWindow();
 			}
@@ -170,34 +170,31 @@ public final class ActionExecuter {
 
 	private static void handleReloadElement(final Action ac, final BasicElementPanel bep,
 			final DataPanelElementLink dpel) {
-		if ((ac.getShowInMode() == ShowInMode.PANEL)
-				&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() != null)) {
+		if ((ac.getShowInMode() == ShowInMode.PANEL) && (AppCurrContext.getInstance()
+				.getCurrentOpenWindowWithDataPanelElement() != null)) {
 			AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement().closeWindow();
 		}
-		if ((ac.getShowInMode() == ShowInMode.MODAL_WINDOW)
-				&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() == null)) {
+		if ((ac.getShowInMode() == ShowInMode.MODAL_WINDOW) && (AppCurrContext.getInstance()
+				.getCurrentOpenWindowWithDataPanelElement() == null)) {
 
 			ModalWindowInfo mwi = ac.getModalWindowInfo();
 			WindowWithDataPanelElement modWind = null;
 			if (mwi != null) {
 
 				if (mwi.getCaption() != null) {
-					modWind =
-						new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
-								mwi.getHeight(), mwi.getShowCloseBottomButton(),
-								mwi.getCloseOnEsc(), mwi.getCssClass());
+					modWind = new WindowWithDataPanelElement(mwi.getCaption(), mwi.getWidth(),
+							mwi.getHeight(), mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc(),
+							mwi.getCssClass());
 				} else {
 
 					if (mwi.getCaption() != null) {
-						modWind =
-							new WindowWithDataPanelElement(mwi.getCaption(),
-									mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc(),
-									mwi.getCssClass());
+						modWind = new WindowWithDataPanelElement(mwi.getCaption(),
+								mwi.getShowCloseBottomButton(), mwi.getCloseOnEsc(),
+								mwi.getCssClass());
 
 					} else {
-						modWind =
-							new WindowWithDataPanelElement(mwi.getShowCloseBottomButton(),
-									mwi.getCloseOnEsc(), mwi.getCssClass());
+						modWind = new WindowWithDataPanelElement(mwi.getShowCloseBottomButton(),
+								mwi.getCloseOnEsc(), mwi.getCssClass());
 					}
 
 				}
@@ -238,8 +235,8 @@ public final class ActionExecuter {
 	private static void handleRefreshTab(final Action ac) {
 		// Обновить вкладку целиком (активную), а перед этим закрыть
 		// модальное окно если оно открыто.
-		if ((ac.getShowInMode() == ShowInMode.PANEL)
-				&& (AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement() != null)) {
+		if ((ac.getShowInMode() == ShowInMode.PANEL) && (AppCurrContext.getInstance()
+				.getCurrentOpenWindowWithDataPanelElement() != null)) {
 			AppCurrContext.getInstance().getCurrentOpenWindowWithDataPanelElement().closeWindow();
 		}
 
