@@ -10,7 +10,8 @@ function createCalendar(parentId, data, template) {
 	         "dojox/calendar/VerticalRenderer", 
 	         "dijit/form/Button",
 	         "dojo/_base/lang",
-	         "dojo/on"
+	         "dojo/on",
+	         "dojox/timing"
 	         ], function(
 	        		 registry, 
 	        		 Calendar, 
