@@ -28403,19 +28403,20 @@ BEGIN
     SET NOCOUNT ON;
 
 
+
 set    @data=CAST(
 '<root>
 
 <metadata date="new Date(2012, 0, 5)" minHours="10" maxHours="20" 
-          dateInterval="month" dateIntervalSteps="2" 
+          dateInterval="month" dateIntervalSteps="1" 
           style="position:relative;width:100%;height:700px;" editable="false" toolbarVisible="true"
-          timeSlotDuration="60"
+          timeSlotDuration="20"
 />
 
 <data>
-<event id="''id1''" summary="''Событие 1''" startTime="new Date(2012, 0, 2, 10, 0)" endTime="new Date(2012, 0, 2, 12, 15)" allDay=""/>
-<event id="''id2''" summary="''Событие 2''" startTime="new Date(2012, 0, 3, 15, 0)" endTime="new Date(2012, 0, 4, 12, 45)" allDay=""/>
-<event id="''id3''" summary="''Событие 3''" startTime="new Date(2012, 0, 4, 0, 0)" endTime="new Date(2012, 0, 5, 23, 59)" allDay="true"/>
+<event className="''Calendar1''" id="''id1''" summary="''Событие 1''" startTime="new Date(2012, 0, 2, 10, 0)" endTime="new Date(2012, 0, 2, 12, 15)" allDay=""/>
+<event className="''Calendar2''" id="''id2''" summary="''Событие 2''" startTime="new Date(2012, 0, 3, 15, 0)" endTime="new Date(2012, 0, 4, 12, 45)" allDay=""/>
+<event className="''Calendar3''" id="''id3''" summary="''Событие 3''" startTime="new Date(2012, 0, 4, 0, 0)" endTime="new Date(2012, 0, 5, 23, 59)" allDay="true"/>
 </data>
 
 <buttons>
@@ -28426,6 +28427,7 @@ set    @data=CAST(
 	<button id="''fourDaysButton''" hide="false"/>
 	<button id="''weekButton''" hide="false"/>
 	<button id="''monthButton''" hide="false"/>
+	<button id="''sixMonthButton''" hide="false"/>
 </buttons>
 
 
@@ -28469,10 +28471,6 @@ set @settings='<properties width="100%" height="100%">
 
                     </properties>'
 
-
---set @error_mes = 'Грид успешно построен'
---RETURN 555;
-RETURN 0;
 
 
 END

@@ -23,7 +23,8 @@ function createCalendar(parentId, data, template) {
 	        		 VerticalRenderer,
 	        		 Button,
 	        		 lang,
-	        		 on
+	        		 on,
+	        		 timing
 	         ){
 		
 		            var dateInterval      = data.metadata.dateInterval;
@@ -100,6 +101,10 @@ function createCalendar(parentId, data, template) {
 				    					this.set("dateInterval", "month");
 				    				}))
 				    			);
+				    		},
+				    		
+				    		cssClassFunc: function(item){
+				    		    return item.className;
 				    		},
 			    		  
 			    		}, parentId);

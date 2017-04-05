@@ -19,7 +19,7 @@ class myHandler(DefaultHandler):
         if (qname == "metadata"):
             resultMetadata = u"{date: %s, minHours: %s, maxHours: %s, dateInterval: '%s', dateIntervalSteps: '%s', style: '%s', editable: %s, toolbarVisible: %s, timeSlotDuration: %s}" % (attrs.getValue('date'), attrs.getValue('minHours'), attrs.getValue('maxHours'), attrs.getValue('dateInterval'), attrs.getValue('dateIntervalSteps'), attrs.getValue('style'), attrs.getValue('editable'), attrs.getValue('toolbarVisible'), attrs.getValue('timeSlotDuration'))
         if (qname == "event"):
-            resultData += u"{id: %s, summary: %s, startTime: %s, endTime: %s, allDay: '%s'}," % (attrs.getValue('id'), attrs.getValue('summary'), attrs.getValue('startTime'), attrs.getValue('endTime'), attrs.getValue('allDay'))
+            resultData += u"{id: %s, summary: %s, startTime: %s, endTime: %s, allDay: '%s', className: %s}," % (attrs.getValue('id'), attrs.getValue('summary'), attrs.getValue('startTime'), attrs.getValue('endTime'), attrs.getValue('allDay'), attrs.getValue('className'))
         if (qname == "button"):
             resultButtons += u"{id: %s, hide: %s}," % (attrs.getValue('id'), attrs.getValue('hide'))
             

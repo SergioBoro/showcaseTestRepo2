@@ -12,3 +12,25 @@
   	width: 114px; 
   	height: 14px; 
 }
+
+
+.claro .dojoxCalendarEvent.Calendar1 .bg {
+  background-color: #00AA00 !important;
+}
+.claro .dojoxCalendarEvent.Calendar1.Hovered .bg {
+  background-color: #00FF00 !important;
+}
+.claro .dojoxCalendarEvent.Calendar1.Selected .bg {
+  background-color: #004400 !important;
+}
+.claro .dojoxCalendarEvent.Calendar2 .bg {
+  background-color: #0000AA !important;
+}
+.claro .dojoxCalendarEvent.Calendar2.Hovered .bg {
+  background-color: #0000FF !important;
+}
+.claro .dojoxCalendarEvent.Calendar2.Selected .bg {
+  background-color: #000044 !important;
+}
+
+
