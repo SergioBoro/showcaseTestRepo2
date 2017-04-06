@@ -182,39 +182,54 @@ public class MultiSelectorComponent extends BaseSelectorComponent {
 
 		WidgetBuilder wbSearch =
 			b.vertical().width(PROC100).spacing(DEF_SPACING).horizontal().width(PROC100)
-					.widget(getSearchString()).width(searchStringWidth).height(PROC100).label(" ");
+					.widget(getSearchString())
+					.style("server-multiselector-searchstringtextbox-element")
+					.width(searchStringWidth).height(PROC100).label(" ");
 		if (getOptions().getManualSearch()) {
 			wbSearch =
 				wbSearch.button(manualSearchAction(), ActionButtonStyle.IMAGE)
+						.style("server-multiselector-manualsearchbutton-element")
 						.height(CLEAR_BUTTON_HEIGHT).width(CLEAR_BUTTON_WIDTH).label(" ")
 						.width("4px");
 		}
 		wbSearch =
-			wbSearch.button(clearAction(), ActionButtonStyle.IMAGE).height(CLEAR_BUTTON_HEIGHT)
-					.width(CLEAR_BUTTON_WIDTH).end().widget(getStartsWithCheckbox());
+			wbSearch.button(clearAction(), ActionButtonStyle.IMAGE)
+					.style("server-multiselector-clearbutton-element").height(CLEAR_BUTTON_HEIGHT)
+					.width(CLEAR_BUTTON_WIDTH).end().widget(getStartsWithCheckbox())
+					.style("server-multiselector-checkbox-element");
 
 		b.horizontal().width(PROC100).style("extragwt-SelectorComponent-ListWrapper")
-				.widget(getCellholder()).smartWidth(getOptions().getDataWidth())
-				.widget(getScroll()).end().end();
+				.style("server-multiselector-listwrapper-element").widget(getCellholder())
+				.smartWidth(getOptions().getDataWidth()).widget(getScroll()).end().end();
 
 		b.vertical().height(PROC100).width(PROC100).spacing(DEF_SPACING)
-				.button(selectAction(), ActionButtonStyle.IMAGE).height(SELECT_BUTTONS_HEIGHT)
+				.button(selectAction(), ActionButtonStyle.IMAGE)
+				.style("server-multiselector-selectbutton-element").height(SELECT_BUTTONS_HEIGHT)
 				.width(SELECT_BUTTONS_WIDTH).button(selectAllAction(), ActionButtonStyle.IMAGE)
+				.style("server-multiselector-selectallbutton-element")
 				.height(SELECT_BUTTONS_HEIGHT).width(SELECT_BUTTONS_WIDTH)
-				.button(unselectAction(), ActionButtonStyle.IMAGE).height(SELECT_BUTTONS_HEIGHT)
-				.width(SELECT_BUTTONS_WIDTH).button(unselectAllAction(), ActionButtonStyle.IMAGE)
+				.button(unselectAction(), ActionButtonStyle.IMAGE)
+				.style("server-multiselector-unselectbutton-element")
+				.height(SELECT_BUTTONS_HEIGHT).width(SELECT_BUTTONS_WIDTH)
+				.button(unselectAllAction(), ActionButtonStyle.IMAGE)
+				.style("server-multiselector-unselectallbutton-element")
 				.height(SELECT_BUTTONS_HEIGHT).width(SELECT_BUTTONS_WIDTH).end();
 
 		b.vertical().width(PROC100).spacing(DEF_SPACING).horizontal().width(PROC100)
-				.widget(searchSelectedString).width(searchSelectedStringWidth).height(PROC100)
-				.label(" ").button(findAction(), ActionButtonStyle.IMAGE)
-				.height(CLEAR_BUTTON_HEIGHT).width(CLEAR_BUTTON_WIDTH).end();
+				.widget(searchSelectedString)
+				.style("server-multiselector-searchselectedstringtextbox-element")
+				.width(searchSelectedStringWidth).height(PROC100).label(" ")
+				.button(findAction(), ActionButtonStyle.IMAGE)
+				.style("server-multiselector-findbutton-element").height(CLEAR_BUTTON_HEIGHT)
+				.width(CLEAR_BUTTON_WIDTH).end();
 
-		b.widget(selectedScrollPanel).style("extragwt-SelectorComponent-ListWrapper").end().end();
+		b.widget(selectedScrollPanel).style("extragwt-SelectorComponent-ListWrapper")
+				.style("server-multiselector-selectedlistwrapper-element").end().end();
 
 		b.horizontal().height(PROC100).width(PROC100).label(" ").cellWidth(PROC100)
-				.button(getOkAction()).widget(new HTML("&nbsp;&nbsp;")).button(getCancelAction())
-				.end()
+				.button(getOkAction()).style("server-multiselector-okbutton-element")
+				.widget(new HTML("&nbsp;&nbsp;")).button(getCancelAction())
+				.style("server-multiselector-cancelbutton-element").end()
 				// .widget(getDebug())
 				.end();
 

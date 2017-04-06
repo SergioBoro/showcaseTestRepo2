@@ -116,23 +116,29 @@ public class SelectorComponent extends BaseSelectorComponent {
 
 		WidgetBuilder wbSearch =
 			b.vertical().width(PROC100).spacing(DEF_SPACING).horizontal().width(PROC100)
-					.widget(getSearchString()).width(searchStringWidth).height(PROC100).label(" ");
+					.widget(getSearchString())
+					.style("server-selector-searchstringtextbox-element").width(searchStringWidth)
+					.height(PROC100).label(" ");
 		if (getOptions().getManualSearch()) {
 			wbSearch =
 				wbSearch.button(manualSearchAction(), ActionButtonStyle.IMAGE)
+						.style("server-selector-manualsearchbutton-element")
 						.height(CLEAR_BUTTON_HEIGHT).width(CLEAR_BUTTON_WIDTH).label(" ")
 						.width("4px");
 		}
 		wbSearch =
-			wbSearch.button(clearAction(), ActionButtonStyle.IMAGE).height(CLEAR_BUTTON_HEIGHT)
-					.width(CLEAR_BUTTON_WIDTH).end().widget(getStartsWithCheckbox());
+			wbSearch.button(clearAction(), ActionButtonStyle.IMAGE)
+					.style("server-selector-clearbutton-element").height(CLEAR_BUTTON_HEIGHT)
+					.width(CLEAR_BUTTON_WIDTH).end().widget(getStartsWithCheckbox())
+					.style("server-selector-checkbox-element");
 
 		b.horizontal().width(PROC100).style("extragwt-SelectorComponent-ListWrapper")
-				.widget(getCellholder()).smartWidth(getOptions().getDataWidth())
-				.widget(getScroll()).end();
+				.style("server-selector-listwrapper-element").widget(getCellholder())
+				.smartWidth(getOptions().getDataWidth()).widget(getScroll()).end();
 
 		b.horizontal().width(PROC100).label(" ").cellWidth(PROC100).button(getOkAction())
-				.widget(new HTML("&nbsp;&nbsp;")).button(getCancelAction()).end()
+				.style("server-selector-okbutton-element").widget(new HTML("&nbsp;&nbsp;"))
+				.button(getCancelAction()).style("server-selector-cancelbutton-element").end()
 				// .widget(debug)
 				.end();
 

@@ -55,8 +55,10 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 			final Boolean aCloseOnEsc, final String aCssClass) {
 		super();
 		if (aCssClass != null) {
-			this.setStyleName(aCssClass);
+			this.addStyleName(aCssClass);
 		}
+		this.addStyleName("modalwindow-element");
+
 		setShowCloseBottomButton(ashowCloseBottomButton);
 		setCloseOnEsc(aCloseOnEsc);
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
@@ -67,8 +69,10 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 			final Boolean aCloseOnEsc, final String aCssClass) {
 		super(caption);
 		if (aCssClass != null) {
-			this.setStyleName(aCssClass);
+			this.addStyleName(aCssClass);
 		}
+		this.addStyleName("modalwindow-element");
+
 		setShowCloseBottomButton(ashowCloseBottomButton);
 		setCloseOnEsc(aCloseOnEsc);
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
@@ -81,8 +85,9 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 
 		super(caption);
 		if (aCssClass != null) {
-			this.setStyleName(aCssClass);
+			this.addStyleName(aCssClass);
 		}
+		this.addStyleName("modalwindow-element");
 
 		Integer width = width1;
 		Integer heigth = heigth1;
