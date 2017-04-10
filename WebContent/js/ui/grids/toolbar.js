@@ -103,6 +103,10 @@ function createGridToolBar(elementId, parentId, metadata) {
 		                 
 		                 onMouseDown: function(event) {
 		                	 
+			            	 if(this.disabled){
+			            		 return;
+			            	 }
+		                	 
 			            	 if(event.button != 0){
 			            		 return;
 			            	 }
