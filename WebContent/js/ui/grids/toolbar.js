@@ -101,16 +101,20 @@ function createGridToolBar(elementId, parentId, metadata) {
 		                 
 		                 needEnableDisableState: md["needEnableDisableState"],
 		                 
+		                 
+		                 canOnClick: true,
+		                 
 		                 onMouseDown: function(event) {
+		                	 this.canOnClick = event.button == 0;
+		                 },
+		                 
+		                 onClick: function(event) {
 		                	 
-			            	 if(this.disabled){
+			            	 if(!this.canOnClick){
+			            		 this.canOnClick = true;
 			            		 return;
 			            	 }
 		                	 
-			            	 if(event.button != 0){
-			            		 return;
-			            	 }
-			            	 
 			            	 if(gwtToolbarRunAction(elementId, this.idAction)) {
 			            		 blinkItem(this);
 			            	 } else {
