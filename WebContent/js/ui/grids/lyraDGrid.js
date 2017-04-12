@@ -190,6 +190,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 						results = Rest.prototype.fetchRange.call(this, kwArgs);
 						results.then(function(results){
 							var events = null;
+							var addData = null;
 							if(results[0]){
 
 //----------------------Debug								
@@ -200,13 +201,17 @@ function createLyraDGrid(elementId, parentId, metadata) {
 									events = results[0]["events"];
 								}
 								
+								if(results[0]["addData_D13k82F9g7_"]){
+									addData = results[0]["addData_D13k82F9g7_"];
+								}
+								
 								if(results[0]["dgridNewPosition"]){
 									arrGrids[parentId].dgridNewPosition = results[0]["dgridNewPosition"];
 									arrGrids[parentId].dgridNewPositionId = results[0][store.idProperty];
 								}
 								
 							}
-							gwtAfterLoadDataLyra(elementId, events, arrGrids[parentId]._total);
+							gwtAfterLoadDataLyra(elementId, events, addData, arrGrids[parentId]._total);
 							
 							
 							if(arrGrids[parentId].lyraGridSorting && sortColId){

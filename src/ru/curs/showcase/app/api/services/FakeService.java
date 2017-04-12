@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.Event;
 import ru.curs.showcase.app.api.geomap.GeoMapExportSettings;
+import ru.curs.showcase.app.api.grid.LyraGridAddData;
 
 /**
  * Содержит fake функции для того, чтобы заработали "ручные вызовы" сериализации
@@ -21,5 +22,7 @@ public interface FakeService extends RemoteService {
 	UserMessage serializeUserMessage();
 
 	Throwable serializeThrowable();
+
+	LyraGridAddData serializeLyraGridAddData();
 
 }

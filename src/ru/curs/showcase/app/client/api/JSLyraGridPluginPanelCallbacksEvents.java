@@ -38,8 +38,8 @@ public final class JSLyraGridPluginPanelCallbacksEvents {
 	}
 
 	public static void pluginAfterLoadData(final String pluginId, final String stringEvents,
-			final String totalCount) {
-		getCurrentPanel(pluginId).pluginAfterLoadData(stringEvents, totalCount);
+			final String stringAddData, final String totalCount) {
+		getCurrentPanel(pluginId).pluginAfterLoadData(stringEvents, stringAddData, totalCount);
 	}
 
 	public static void pluginAfterPartialUpdate(final String pluginId, final String stringEvents) {

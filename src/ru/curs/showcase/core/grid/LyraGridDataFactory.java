@@ -306,6 +306,27 @@ public class LyraGridDataFactory {
 			}
 		}
 
+		if (data.size() > 0) {
+			if ((basicGridForm.getFormProperties().getHeader() != null)
+					|| (basicGridForm.getFormProperties().getFooter() != null)) {
+
+				LyraGridAddData addData = new LyraGridAddData();
+				addData.setHeader(basicGridForm.getFormProperties().getHeader());
+				addData.setFooter(basicGridForm.getFormProperties().getFooter());
+
+				try {
+					String stringAddData =
+						com.google.gwt.user.server.rpc.RPC.encodeResponseForSuccess(
+								FakeService.class.getMethod("serializeLyraGridAddData"), addData);
+					((JSONObject) data.get(0)).put("addData" + KEYVALUES_SEPARATOR, stringAddData);
+				} catch (SerializationException | NoSuchMethodException e) {
+					throw GeneralExceptionFactory.build(e);
+				}
+
+			}
+
+		}
+
 		// Позиционирование по ключу записи
 		if (context.isFirstLoad() && (data.size() > 0)
 				&& (basicGridForm.getTopVisiblePosition() > 0)) {

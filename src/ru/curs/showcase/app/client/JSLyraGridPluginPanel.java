@@ -33,6 +33,8 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 		CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 				"An error occurred while deserializing an object");
 
+	private static final String AFTER_HTTP_POST_FROM_PLUGIN = "afterHttpPostFromPlugin";
+
 	private final VerticalPanel p = new VerticalPanel();
 	private final HorizontalPanel generalHp = new HorizontalPanel();
 	/**
@@ -48,6 +50,11 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 	 * Основная фабрика для GWT сериализации.
 	 */
 	private SerializationStreamFactory ssf = null;
+	/**
+	 * Вспомогательная фабрика для GWT сериализации.
+	 */
+	private SerializationStreamFactory addSSF = null;
+
 	private Timer selectionTimer = null;
 	private Timer clickTimer = null;
 	private boolean doubleClick = false;
@@ -114,6 +121,13 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 		return ssf;
 	}
 
+	public SerializationStreamFactory getAddObjectSerializer() {
+		if (addSSF == null) {
+			addSSF = WebUtils.createAddGWTSerializer();
+		}
+		return addSSF;
+	}
+
 	/**
 	 * Установка процедур обратного вызова.
 	 */
@@ -121,7 +135,7 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 	private static native void setCallbackJSNIFunction() /*-{
 															$wnd.gwtGetHttpParamsLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtEditorGetHttpParamsLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginEditorGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
-															$wnd.gwtAfterLoadDataLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtAfterLoadDataLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterPartialUpdateLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginAfterPartialUpdate(Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterClickLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginAfterClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
 															$wnd.gwtAfterDoubleClickLyra = @ru.curs.showcase.app.client.api.JSLyraGridPluginPanelCallbacksEvents::pluginAfterDoubleClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
@@ -735,7 +749,8 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 		return params;
 	}
 
-	public void pluginAfterLoadData(final String stringEvents, final String totalCount) {
+	public void pluginAfterLoadData(final String stringEvents, final String stringAddData,
+			final String totalCount) {
 
 		if (stringEvents != null) {
 			try {
@@ -769,9 +784,29 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 				gridMetadata.getEventManager().getEvents().addAll(eventsAdd);
 
 			} catch (SerializationException e) {
-				MessageBox.showSimpleMessage("afterHttpPostFromPlugin",
+				MessageBox.showSimpleMessage(AFTER_HTTP_POST_FROM_PLUGIN,
 				// AppCurrContext.getInstance().getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
 						JSGRID_DESERIALIZATION_ERROR + " Events: " + e.getMessage());
+			}
+		}
+
+		if (stringAddData != null) {
+			try {
+				LyraGridAddData addData = (LyraGridAddData) getAddObjectSerializer()
+						.createStreamReader(stringAddData).readObject();
+
+				if ((hpHeader.getWidgetCount() > 0) && (!((HTML) (hpHeader.getWidget(0))).getHTML()
+						.equals(addData.getHeader()))) {
+					((HTML) (hpHeader.getWidget(0))).setHTML(addData.getHeader());
+				}
+
+				if ((hpFooter.getWidgetCount() > 0) && (!((HTML) (hpFooter.getWidget(0))).getHTML()
+						.equals(addData.getFooter()))) {
+					((HTML) (hpFooter.getWidget(0))).setHTML(addData.getFooter());
+				}
+			} catch (SerializationException e) {
+				MessageBox.showSimpleMessage(AFTER_HTTP_POST_FROM_PLUGIN,
+						JSGRID_DESERIALIZATION_ERROR + " LyraGridAddData: " + e.getMessage());
 			}
 		}
 
@@ -804,7 +839,7 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 				}
 
 			} catch (SerializationException e) {
-				MessageBox.showSimpleMessage("afterHttpPostFromPlugin",
+				MessageBox.showSimpleMessage(AFTER_HTTP_POST_FROM_PLUGIN,
 				// AppCurrContext.getInstance().getBundleMap().get(JSGRID_DESERIALIZATION_ERROR)
 						JSGRID_DESERIALIZATION_ERROR + " Events: " + e.getMessage());
 			}
