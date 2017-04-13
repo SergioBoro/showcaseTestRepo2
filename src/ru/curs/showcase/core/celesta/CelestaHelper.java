@@ -198,8 +198,9 @@ public class CelestaHelper<T> {
 		ShowcaseContext sc = generateShowcaseContext(this.contex, elementId);
 		sc.setOrderBy(((LyraGridContext) this.contex).getOrderBy());
 
-		Object[] params = new Object[1];
+		Object[] params = new Object[2];
 		params[0] = lyraClass;
+		params[1] = elementId;
 
 		String sesID;
 		if (additionalParams.length == 2) {
