@@ -292,12 +292,12 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		if (context != null) {
 			Authentication auth = context.getAuthentication();
 			if (auth != null) {
-				TypeEvent typeEvent = TypeEvent.SESSSIONTIMEOUT;
+				TypeEvent typeEvent = TypeEvent.SESSIONTIMEOUT;
 				if (destrHttpSession.getAttribute(SecurityLoggingCommand.IS_CLICK_LOGOUT) != null) {
 					typeEvent = TypeEvent.LOGOUT;
 					decrement();
 				}
-				if (typeEvent == TypeEvent.SESSSIONTIMEOUT) {
+				if (typeEvent == TypeEvent.SESSIONTIMEOUT) {
 					decrement();
 				}
 				SecurityLoggingCommand logCommand =

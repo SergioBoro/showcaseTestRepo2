@@ -38,7 +38,7 @@ public class Event {
 		 * Session time out.
 		 * 
 		 */
-		SESSSIONTIMEOUT
+		SESSIONTIMEOUT
 	}
 
 	private final TypeEvent typeEvent;
