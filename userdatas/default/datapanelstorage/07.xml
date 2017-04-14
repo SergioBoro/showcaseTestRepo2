@@ -28,5 +28,12 @@
 			proc="xforms_proc3" neverShowInPanel="true">
 			<proc id="proc1" name="xforms_saveproc3" type="SAVE"/>
 		</element>
-	</tab>				
+	</tab>
+	 <tab id="331" name="JSform Test">
+        <element id="13" type="jsForm" template="htmldatascript.py" showLoadingMessage="true">
+ 		<proc id="mysubmit1" name="myJSForm1" type="JSFORMSUBMIT" />
+ 		<proc id="mysubmit2" name="myJSForm2" type="JSFORMSUBMIT" />       
+        </element>
+        <element id="333" type="jsForm" template="jsForms\closeModal.html" neverShowInPanel="true"/>
+    </tab>				
 </datapanel>
