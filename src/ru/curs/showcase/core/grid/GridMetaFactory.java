@@ -158,19 +158,31 @@ public class GridMetaFactory extends CompBasedElementFactory {
 		InputStream is = getSettings();
 		String str = "";
 		try {
-			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-				str = TextUtils.streamToString(is, "UTF-16");
-			} else {
+			if (getElementInfo().getProcName().endsWith(".py")
+					|| getElementInfo().getProcName().endsWith(".celesta")
+					|| getElementInfo().getProcName().endsWith(".cl")) {
 				str = TextUtils.streamToString(is);
+			} else {
+				if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+					str = TextUtils.streamToString(is, "UTF-16");
+				} else {
+					str = TextUtils.streamToString(is);
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		str = UserDataUtils.modifyVariables(str);
-		if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
-			is = TextUtils.stringToStream(str, "UTF-16");
-		} else {
+		if (getElementInfo().getProcName().endsWith(".py")
+				|| getElementInfo().getProcName().endsWith(".celesta")
+				|| getElementInfo().getProcName().endsWith(".cl")) {
 			is = TextUtils.stringToStream(str);
+		} else {
+			if (ConnectionFactory.getSQLServerType() == SQLServerType.MSSQL) {
+				is = TextUtils.stringToStream(str, "UTF-16");
+			} else {
+				is = TextUtils.stringToStream(str);
+			}
 		}
 		getSource().setSettings(is);
 		// Окончание перевода с помощью Gettext.
@@ -224,9 +236,9 @@ public class GridMetaFactory extends CompBasedElementFactory {
 			gridProps.init();
 		} catch (Exception e) {
 			if (e.getMessage() == null) {
-				throw new ValidateException(new UserMessage(
-						String.format("Файл свойств грида \"%s\" не существует.", profile),
-						MessageType.ERROR, "Ошибка"));
+				throw new ValidateException(new UserMessage(String.format(
+						"Файл свойств грида \"%s\" не существует.", profile), MessageType.ERROR,
+						"Ошибка"));
 			} else {
 				throw e;
 			}
@@ -396,8 +408,8 @@ public class GridMetaFactory extends CompBasedElementFactory {
 				result.getUISettings().setGridHeight(Integer.parseInt(value));
 			}
 			if (attrs.getIndex(GRID_TOOLBAR_CLASSNAME_TAG) > -1) {
-				result.getUISettings()
-						.setToolbarClassName(attrs.getValue(GRID_TOOLBAR_CLASSNAME_TAG));
+				result.getUISettings().setToolbarClassName(
+						attrs.getValue(GRID_TOOLBAR_CLASSNAME_TAG));
 			}
 			if (attrs.getIndex(GRID_TOOLBAR_STYLE_TAG) > -1) {
 				result.getUISettings().setToolbarStyle(attrs.getValue(GRID_TOOLBAR_STYLE_TAG));
@@ -569,6 +581,7 @@ public class GridMetaFactory extends CompBasedElementFactory {
 
 			return null;
 		}
+
 		// CHECKSTYLE:ON
 
 		/**
@@ -936,10 +949,10 @@ public class GridMetaFactory extends CompBasedElementFactory {
 		result.getJSInfo().setRevertProc("revert" + TextUtils.capitalizeWord(plugin));
 		result.getJSInfo().setClipboardProc("clipboard" + TextUtils.capitalizeWord(plugin));
 		result.getJSInfo().setPartialUpdate("partialUpdate" + TextUtils.capitalizeWord(plugin));
-		result.getJSInfo()
-				.setCurrentLevelUpdate("currentLevelUpdate" + TextUtils.capitalizeWord(plugin));
-		result.getJSInfo()
-				.setChildLevelUpdate("childLevelUpdate" + TextUtils.capitalizeWord(plugin));
+		result.getJSInfo().setCurrentLevelUpdate(
+				"currentLevelUpdate" + TextUtils.capitalizeWord(plugin));
+		result.getJSInfo().setChildLevelUpdate(
+				"childLevelUpdate" + TextUtils.capitalizeWord(plugin));
 
 	}
 
