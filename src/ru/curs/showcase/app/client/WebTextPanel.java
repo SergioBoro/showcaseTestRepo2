@@ -1,6 +1,6 @@
 package ru.curs.showcase.app.client;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.WebText;
@@ -8,7 +8,8 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.*;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -116,6 +117,25 @@ public class WebTextPanel extends BasicElementPanelBasis {
 
 							fillWebTextPanel(webText);
 						}
+
+						Scheduler.get().scheduleDeferred(new Command() {
+							@Override
+							public void execute() {
+								for (DataPanelElementInfo el : AppCurrContext.getReadyStateMap()
+										.keySet()) {
+									if (el.getType() == DataPanelElementType.WEBTEXT
+											&& !AppCurrContext.getReadyStateMap().get(el)) {
+										AppCurrContext.getReadyStateMap().put(el, true);
+										break;
+									}
+								}
+
+								if (!AppCurrContext.getReadyStateMap().containsValue(false))
+									DOM.getElementById("showcaseReady").setAttribute("isReady",
+											"true");
+							}
+						});
+
 					}
 
 				});

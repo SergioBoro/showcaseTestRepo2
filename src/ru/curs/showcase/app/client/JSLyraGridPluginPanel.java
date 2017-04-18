@@ -16,6 +16,7 @@ import ru.curs.showcase.app.client.utils.*;
 import com.google.gwt.core.client.*;
 import com.google.gwt.json.client.*;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
@@ -27,6 +28,8 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 	private static final String PROC100 = "100%";
 
 	private static final String STRING_SELECTED_RECORD_IDS_SEPARATOR = "D13&82#9g7";
+
+	private static boolean jsLyraGridBoolean = false;
 
 	private static final String JSGRID_DESERIALIZATION_ERROR =
 	// "jsGridDeserializationError";
@@ -279,6 +282,33 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 						super.onSuccess(aGridMetadata);
 
 						setDataGridPanelByGrid(aGridMetadata);
+
+						Scheduler.get().scheduleDeferred(new Command() {
+							@Override
+							public void execute() {
+								for (DataPanelElementInfo el : AppCurrContext.getReadyStateMap()
+										.keySet()) {
+									if (el.getType() == DataPanelElementType.GRID
+											&& !AppCurrContext.getReadyStateMap().get(el)) {
+										AppCurrContext.getReadyStateMap().put(el, true);
+										break;
+									}
+								}
+
+								for (DataPanelElementInfo el : AppCurrContext.getReadyStateMap()
+										.keySet()) {
+									if (el.getType() == DataPanelElementType.GRID
+											&& !el.isToolBarProc()) {
+										if (AppCurrContext.getReadyStateMap().get(el)) {
+											jsLyraGridBoolean = true;
+										} else {
+											jsLyraGridBoolean = false;
+										}
+									}
+								}
+							}
+						});
+
 					}
 				});
 	}
@@ -1026,6 +1056,11 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 					selectedRecordIds);
 
 		runAction(ac);
+
+		if (jsLyraGridBoolean) {
+			jsLyraGridBoolean = false;
+			DOM.getElementById("showcaseReady").setAttribute("isReady", "true");
+		}
 	}
 
 	/**

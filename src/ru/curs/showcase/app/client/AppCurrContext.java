@@ -6,7 +6,7 @@ package ru.curs.showcase.app.client;
 import java.util.*;
 
 import ru.curs.showcase.app.api.*;
-import ru.curs.showcase.app.api.datapanel.DataPanel;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.internationalization.constantsShowcase;
 
@@ -24,6 +24,13 @@ public final class AppCurrContext extends ActionTransformer {
 
 	private final constantsShowcase internationalizedMessages = GWT
 			.create(constantsShowcase.class);
+
+	/**
+	 * Карта, отвечающая за полную отрисовку вкладки датапанели (т.н. состояние
+	 * ready).
+	 */
+	private static HashMap<DataPanelElementInfo, Boolean> readyStateMap =
+		new HashMap<DataPanelElementInfo, Boolean>();
 
 	/**
 	 * Имя домена (имя пакетного файла без разширения) для перевода клиенсткой
@@ -313,6 +320,14 @@ public final class AppCurrContext extends ActionTransformer {
 
 	public String getNavigatorItemId() {
 		return navigatorItemId;
+	}
+
+	public static HashMap<DataPanelElementInfo, Boolean> getReadyStateMap() {
+		return readyStateMap;
+	}
+
+	public static void setReadyStateMap(HashMap<DataPanelElementInfo, Boolean> aMap) {
+		readyStateMap = aMap;
 	}
 
 }

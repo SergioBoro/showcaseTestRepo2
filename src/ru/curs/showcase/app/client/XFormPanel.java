@@ -13,7 +13,7 @@ import ru.curs.showcase.app.client.internationalization.CourseClientLocalization
 import ru.curs.showcase.app.client.utils.UploadWindow;
 
 import com.google.gwt.core.client.*;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.*;
 
@@ -247,6 +247,24 @@ public class XFormPanel extends BasicElementPanelBasis {
 						super.onSuccess(aXform);
 
 						setXFormPanelByXForms(aXform);
+
+						Scheduler.get().scheduleDeferred(new Command() {
+							@Override
+							public void execute() {
+								for (DataPanelElementInfo el : AppCurrContext.getReadyStateMap()
+										.keySet()) {
+									if (el.getType() == DataPanelElementType.XFORMS
+											&& !AppCurrContext.getReadyStateMap().get(el)) {
+										AppCurrContext.getReadyStateMap().put(el, true);
+										break;
+									}
+								}
+
+								if (!AppCurrContext.getReadyStateMap().containsValue(false))
+									DOM.getElementById("showcaseReady").setAttribute("isReady",
+											"true");
+							}
+						});
 					}
 				});
 

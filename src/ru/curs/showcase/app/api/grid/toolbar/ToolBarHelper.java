@@ -2,15 +2,16 @@ package ru.curs.showcase.app.api.grid.toolbar;
 
 import java.util.HashMap;
 
-import com.google.gwt.json.client.*;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.*;
-
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.DataServiceAsync;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.api.Constants;
+
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.json.client.*;
+import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.ui.*;
 
 /**
  * Помощник загрузки и формирования панели инструментов.
@@ -101,6 +102,7 @@ public class ToolBarHelper {
 					blinkingCount++;
 
 					CompositeContext context = jsBaseGridPluginPanel.getContextForJSToolbar();
+
 					dataService.getGridToolBar(context, elInfo,
 							new GWTServiceCallback<GridToolBar>(
 									"при получении данных панели инструментов грида с сервера") {
@@ -116,6 +118,13 @@ public class ToolBarHelper {
 									// panel.getWidget().setStyleName(TOOLBAR_STYLE_READY);
 									// panel.getWidget().setStylePrimaryName(TOOLBAR_STYLE_READY);
 
+									Scheduler.get().scheduleDeferred(new Command() {
+										@Override
+										public void execute() {
+											DOM.getElementById("showcaseReady").setAttribute(
+													"isReady", "true");
+										}
+									});
 								}
 							});
 				}
@@ -161,8 +170,9 @@ public class ToolBarHelper {
 		}
 		metadata.put("common", common);
 
-		String params = "'" + jsBaseGridPluginPanel.getElementInfo().getId().toString() + "'"
-				+ ", '" + jsBaseGridPluginPanel.getDivIdToolBar() + "'";
+		String params =
+			"'" + jsBaseGridPluginPanel.getElementInfo().getId().toString() + "'" + ", '"
+					+ jsBaseGridPluginPanel.getDivIdToolBar() + "'";
 
 		needStaticItems = true;
 		if (gridToolBar != null) {
@@ -247,6 +257,7 @@ public class ToolBarHelper {
 		runToolBar(params);
 
 	}
+
 	// CHECKSTYLE:ON
 
 	private void createJSBaseItem(final JSONObject jsonItem, final BaseToolBarItem item) {

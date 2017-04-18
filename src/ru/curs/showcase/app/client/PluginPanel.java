@@ -11,6 +11,7 @@ import ru.curs.showcase.app.client.internationalization.CourseClientLocalization
 import ru.curs.showcase.app.client.utils.AccessToDomModel;
 
 import com.google.gwt.core.client.*;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -112,6 +113,25 @@ public class PluginPanel extends BasicElementPanelBasis {
 
 							fillPluginPanel(aPlugin);
 						}
+
+						Scheduler.get().scheduleDeferred(new Command() {
+							@Override
+							public void execute() {
+								for (DataPanelElementInfo el : AppCurrContext.getReadyStateMap()
+										.keySet()) {
+									if (el.getType() == DataPanelElementType.PLUGIN
+											&& !AppCurrContext.getReadyStateMap().get(el)) {
+										AppCurrContext.getReadyStateMap().put(el, true);
+										break;
+									}
+								}
+
+								if (!AppCurrContext.getReadyStateMap().containsValue(false))
+									DOM.getElementById("showcaseReady").setAttribute("isReady",
+											"true");
+							}
+						});
+
 					}
 				});
 
@@ -379,6 +399,7 @@ public class PluginPanel extends BasicElementPanelBasis {
 							fillPluginPanel(aPlugin);
 							getPanel().setHeight("100%");
 						}
+
 					}
 				});
 

@@ -2,7 +2,7 @@ package ru.curs.showcase.app.client;
 
 import java.util.List;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.html.*;
 import ru.curs.showcase.app.client.api.BasicElementPanelBasis;
@@ -14,6 +14,7 @@ import com.google.gwt.dom.client.*;
 import com.google.gwt.json.client.*;
 import com.google.gwt.regexp.shared.*;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
 
@@ -116,6 +117,25 @@ public class JsFormPanel extends BasicElementPanelBasis {
 						}
 
 						setJsFormPanelData(result);
+
+						Scheduler.get().scheduleDeferred(new Command() {
+							@Override
+							public void execute() {
+								for (DataPanelElementInfo el : AppCurrContext.getReadyStateMap()
+										.keySet()) {
+									if (el.getType() == DataPanelElementType.JSFORM
+											&& !AppCurrContext.getReadyStateMap().get(el)) {
+										AppCurrContext.getReadyStateMap().put(el, true);
+										break;
+									}
+								}
+
+								if (!AppCurrContext.getReadyStateMap().containsValue(false))
+									DOM.getElementById("showcaseReady").setAttribute("isReady",
+											"true");
+							}
+						});
+
 					}
 
 					@Override
