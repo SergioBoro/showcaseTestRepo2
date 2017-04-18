@@ -165,8 +165,11 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 							if (servletResponseMessage
 									.contains("locked out for too many unsuccessful login attempts")) {
 								LOGGER.info("Пользователь " + login + " заблокирован меллофоном");
+								String time_to_unlock =
+									servletResponseMessage.substring(servletResponseMessage
+											.indexOf("Time to unlock"));
 								throw new BadCredentialsException("User '" + login
-										+ "' is blocked by mellophone");
+										+ "' is blocked by mellophone. " + time_to_unlock);
 							}
 						}
 
