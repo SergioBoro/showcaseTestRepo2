@@ -9,7 +9,7 @@ import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
 import com.google.gwt.core.client.*;
-import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -116,9 +116,9 @@ public class ChartPanel extends BasicElementPanelBasis {
 										}
 									}
 
-									if (!AppCurrContext.getReadyStateMap().containsValue(false))
-										DOM.getElementById("showcaseReady").setAttribute(
-												"isReady", "true");
+									if (!AppCurrContext.getReadyStateMap().containsValue(false)) {
+										RootPanel.getBodyElement().addClassName("ready");
+									}
 								}
 							});
 

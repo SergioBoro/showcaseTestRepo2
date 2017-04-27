@@ -4,10 +4,11 @@
 package ru.curs.showcase.app.client;
 
 import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.grid.toolbar.ToolBarHelper;
 import ru.curs.showcase.app.client.api.BasicElementPanelBasis;
 
 import com.google.gwt.event.logical.shared.*;
-import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * @author anlug
@@ -19,13 +20,25 @@ public class TabPanelSelectionHandler implements SelectionHandler<Integer> {
 
 	@Override
 	public void onSelection(final SelectionEvent<Integer> event) {
-		DOM.getElementById("showcaseReady").setAttribute("isReady", "false");
+		RootPanel.getBodyElement().removeClassName("ready");
 
 		BasicElementPanelBasis.switchOffAllTimers();
+
+		AppCurrContext.getInstance().setWebTextXformTrueStateForReadyStateMap(false);
+		AppCurrContext.getInstance().setGridWithToolbarWebtextTrueStateForReadyStateMap(false);
+		AppCurrContext.getInstance().setGridWithoutToolbarWebtextTrueStateForReadyStateMap(false);
+		AppCurrContext.getInstance().setGridWithToolbarGridTrueStateForReadyStateMap(false);
+
+		ToolBarHelper.booleanWithToolBar = false;
+		ToolBarHelper.booleanWithToolBar1 = false;
+		ToolBarHelper.booleanWithoutToolBar = false;
 
 		DataPanelTab dpt =
 			AppCurrContext.getInstance().getUiDataPanel().get(event.getSelectedItem())
 					.getDataPanelTabMetaData();
+
+		if (!AppCurrContext.getFromActionElementsMap().isEmpty())
+			AppCurrContext.getFromActionElementsMap().clear();
 
 		if (!AppCurrContext.getReadyStateMap().isEmpty())
 			AppCurrContext.getReadyStateMap().clear();
@@ -60,7 +73,6 @@ public class TabPanelSelectionHandler implements SelectionHandler<Integer> {
 		// MessageBox.showSimpleMessage("tab handler",
 		// GeneralDataPanel.getTabPanel().getTabBar()
 		// .getElement().getStyle().getLeft());
-
 	}
 
 	public native void pushState(String obj) /*-{

@@ -76,4 +76,6 @@ public interface DataServiceAsync {
 	void getLocalizationBundleDomainName(CompositeContext context, AsyncCallback<String> callback);
 
 	void copyToClipboard(String message, AsyncCallback<Void> callback);
+
+	void fakeRPC(AsyncCallback<Void> callback);
 }

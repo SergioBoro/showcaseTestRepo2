@@ -139,9 +139,9 @@ public class GeoMapPanel extends BasicElementPanelBasis {
 										}
 									}
 
-									if (!AppCurrContext.getReadyStateMap().containsValue(false))
-										DOM.getElementById("showcaseReady").setAttribute(
-												"isReady", "true");
+									if (!AppCurrContext.getReadyStateMap().containsValue(false)) {
+										RootPanel.getBodyElement().addClassName("ready");
+									}
 								}
 							});
 						}

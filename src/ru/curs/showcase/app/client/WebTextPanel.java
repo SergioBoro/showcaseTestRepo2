@@ -9,7 +9,7 @@ import ru.curs.showcase.app.client.api.*;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
 import com.google.gwt.core.client.*;
-import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -130,9 +130,9 @@ public class WebTextPanel extends BasicElementPanelBasis {
 									}
 								}
 
-								if (!AppCurrContext.getReadyStateMap().containsValue(false))
-									DOM.getElementById("showcaseReady").setAttribute("isReady",
-											"true");
+								if (!AppCurrContext.getReadyStateMap().containsValue(false)) {
+									RootPanel.getBodyElement().addClassName("ready");
+								}
 							}
 						});
 
@@ -232,6 +232,43 @@ public class WebTextPanel extends BasicElementPanelBasis {
 							fillWebTextPanel(awt);
 							getPanel().setHeight(SIZE_ONE_HUNDRED_PERCENTS);
 							thmlwidget.removeStyleName("progress-bar");
+
+							Scheduler.get().scheduleDeferred(new Command() {
+								@Override
+								public void execute() {
+									for (DataPanelElementInfo el : AppCurrContext
+											.getReadyStateMap().keySet()) {
+										if (getElementInfo().getId().getString()
+												.equals(el.getId().getString())
+												&& !AppCurrContext.getReadyStateMap().get(el)) {
+											AppCurrContext.getReadyStateMap().put(el, true);
+											break;
+										}
+									}
+
+									for (DataPanelElementInfo el : AppCurrContext
+											.getFromActionElementsMap().keySet()) {
+										if (getElementInfo().getId().getString()
+												.equals(el.getId().getString())
+												&& !AppCurrContext.getFromActionElementsMap().get(
+														el)) {
+											AppCurrContext.getFromActionElementsMap()
+													.put(el, true);
+											break;
+										}
+									}
+
+									if (!AppCurrContext.getInstance()
+											.getWebTextXformTrueStateForReadyStateMap()
+											&& !AppCurrContext
+													.getInstance()
+													.getGridWithToolbarWebtextTrueStateForReadyStateMap())
+										if (!AppCurrContext.getReadyStateMap()
+												.containsValue(false)) {
+											RootPanel.getBodyElement().addClassName("ready");
+										}
+								}
+							});
 
 						}
 					}

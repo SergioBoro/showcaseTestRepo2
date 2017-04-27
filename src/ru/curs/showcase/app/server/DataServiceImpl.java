@@ -337,4 +337,9 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(selection, selection);
 	}
+
+	@Override
+	public void fakeRPC() {
+		// Nothing to do
+	}
 }

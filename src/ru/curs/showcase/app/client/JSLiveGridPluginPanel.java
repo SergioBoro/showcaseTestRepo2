@@ -16,7 +16,6 @@ import ru.curs.showcase.app.client.utils.*;
 import com.google.gwt.core.client.*;
 import com.google.gwt.json.client.*;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
@@ -33,8 +32,6 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 	// "jsGridDeserializationError";
 		CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 				"An error occurred while deserializing an object");
-
-	private static boolean jsLiveGridBoolean = false;
 
 	private final VerticalPanel p = new VerticalPanel();
 	private final HorizontalPanel generalHp = new HorizontalPanel();
@@ -265,32 +262,6 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 						super.onSuccess(aGridMetadata);
 
 						setDataGridPanelByGrid(aGridMetadata);
-
-						Scheduler.get().scheduleDeferred(new Command() {
-							@Override
-							public void execute() {
-								for (DataPanelElementInfo el : AppCurrContext.getReadyStateMap()
-										.keySet()) {
-									if (el.getType() == DataPanelElementType.GRID
-											&& !AppCurrContext.getReadyStateMap().get(el)) {
-										AppCurrContext.getReadyStateMap().put(el, true);
-										break;
-									}
-								}
-
-								for (DataPanelElementInfo el : AppCurrContext.getReadyStateMap()
-										.keySet()) {
-									if (el.getType() == DataPanelElementType.GRID
-											&& !el.isToolBarProc()) {
-										if (AppCurrContext.getReadyStateMap().get(el)) {
-											jsLiveGridBoolean = true;
-										} else {
-											jsLiveGridBoolean = false;
-										}
-									}
-								}
-							}
-						});
 
 					}
 				});
@@ -993,12 +964,6 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 					selectedRecordIds);
 
 		runAction(ac);
-
-		if (jsLiveGridBoolean) {
-			jsLiveGridBoolean = false;
-			DOM.getElementById("showcaseReady").setAttribute("isReady", "true");
-		}
-
 	}
 
 	private boolean adjustSelectionRecords(final String wrongSelection) {

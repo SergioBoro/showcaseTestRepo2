@@ -14,7 +14,7 @@ import com.google.gwt.dom.client.*;
 import com.google.gwt.json.client.*;
 import com.google.gwt.regexp.shared.*;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.*;
 
@@ -130,9 +130,9 @@ public class JsFormPanel extends BasicElementPanelBasis {
 									}
 								}
 
-								if (!AppCurrContext.getReadyStateMap().containsValue(false))
-									DOM.getElementById("showcaseReady").setAttribute("isReady",
-											"true");
+								if (!AppCurrContext.getReadyStateMap().containsValue(false)) {
+									RootPanel.getBodyElement().addClassName("ready");
+								}
 							}
 						});
 

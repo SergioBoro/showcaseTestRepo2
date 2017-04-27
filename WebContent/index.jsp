@@ -147,7 +147,6 @@ var protocol = window.location.protocol;
 	<div id="showcaseHeaderContainer"></div>
 	<div id="showcaseAppContainer"></div>
 	<div id="showcaseBottomContainer"></div>
-	<div id="showcaseReady"></div>
 	
 <%if (UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication") != null && "true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication").trim())) {%><img src="<%=authGifSrc%>" alt=" " id="authenticationImage" style="visibility:hidden; width: 0px; height: 0px" /><%}%>
     

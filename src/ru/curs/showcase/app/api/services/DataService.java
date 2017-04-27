@@ -220,4 +220,6 @@ public interface DataService extends RemoteService {
 	String getLocalizationBundleDomainName(final CompositeContext context);
 
 	void copyToClipboard(final String message);
+
+	void fakeRPC();
 }

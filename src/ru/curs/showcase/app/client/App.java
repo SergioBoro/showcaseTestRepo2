@@ -9,7 +9,6 @@ import ru.curs.showcase.app.client.internationalization.CourseClientLocalization
 import ru.curs.showcase.app.client.utils.*;
 
 import com.google.gwt.core.client.*;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -30,7 +29,7 @@ public class App implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 
-		DOM.getElementById("showcaseReady").setAttribute("isReady", "false");
+		RootPanel.getBodyElement().removeClassName("ready");
 
 		ProgressWindow.showProgressWindow();
 

@@ -2,7 +2,7 @@ package ru.curs.showcase.app.api.grid.toolbar;
 
 import java.util.HashMap;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.DataServiceAsync;
 import ru.curs.showcase.app.client.*;
@@ -31,6 +31,10 @@ public class ToolBarHelper {
 	private final JSBaseGridPluginPanel jsBaseGridPluginPanel;
 	private boolean isStaticToolBar = false;
 	private boolean needStaticItems;
+	public static boolean booleanWithToolBar = false;
+	public static boolean booleanWithToolBar1 = false;
+	public static boolean booleanWithoutToolBar = false;
+	private boolean alreadyReadyWithToolbar = false;
 	private final boolean needAdjustToolBarWidth = true;
 
 	private int blinkingCount = 0;
@@ -109,7 +113,6 @@ public class ToolBarHelper {
 
 								@Override
 								public void onSuccess(final GridToolBar result) {
-
 									createJSToolBar(result);
 
 									blinkingCount--;
@@ -121,8 +124,82 @@ public class ToolBarHelper {
 									Scheduler.get().scheduleDeferred(new Command() {
 										@Override
 										public void execute() {
-											DOM.getElementById("showcaseReady").setAttribute(
-													"isReady", "true");
+											boolean xformRelated = false;
+											for (DataPanelElementInfo elem : AppCurrContext
+													.getReadyStateMap().keySet()) {
+												if (elInfo.getRelated().contains(elem.getId())) {
+													AppCurrContext.getReadyStateMap().put(elem,
+															true);
+													if (elem.getType() == DataPanelElementType.XFORMS)
+														xformRelated = true;
+												}
+											}
+
+											if (elInfo.getType() == DataPanelElementType.GRID
+													&& !AppCurrContext.getReadyStateMap().get(
+															elInfo)) {
+												AppCurrContext.getReadyStateMap()
+														.put(elInfo, true);
+											}
+
+											for (java.util.Map.Entry<DataPanelElementInfo, Boolean> ddd : AppCurrContext
+													.getFromActionElementsMap().entrySet()) {
+												if (ddd.getKey().getType() == DataPanelElementType.WEBTEXT)
+													AppCurrContext
+															.getInstance()
+															.setGridWithToolbarWebtextTrueStateForReadyStateMap(
+																	true);
+
+												if (ddd.getKey().getType() == DataPanelElementType.GRID)
+													AppCurrContext
+															.getInstance()
+															.setGridWithToolbarGridTrueStateForReadyStateMap(
+																	true);
+											}
+
+											if (!booleanWithToolBar) {
+												if (!AppCurrContext.getReadyStateMap()
+														.containsValue(false)) {
+													RootPanel.getBodyElement().addClassName(
+															"ready");
+													alreadyReadyWithToolbar = true;
+													if (!xformRelated
+															&& AppCurrContext
+																	.getInstance()
+																	.getGridWithToolbarGridTrueStateForReadyStateMap())
+														booleanWithToolBar = true;
+												}
+											}
+
+											if (!booleanWithToolBar1 && !alreadyReadyWithToolbar) {
+												boolean innerBool = false;
+												for (DataPanelElementInfo el : AppCurrContext
+														.getReadyStateMap().keySet()) {
+													if ((el.getHideOnLoad() || el.getContext(
+															AppCurrContext.getInstance()
+																	.getCurrentAction())
+															.doHiding())
+															&& !AppCurrContext.getReadyStateMap()
+																	.get(el))
+														innerBool = true;
+													else if ((el.getHideOnLoad() || el.getContext(
+															AppCurrContext.getInstance()
+																	.getCurrentAction())
+															.doHiding())
+															&& AppCurrContext.getReadyStateMap()
+																	.get(el))
+														innerBool = false;
+												}
+												if (innerBool) {
+													RootPanel.getBodyElement().addClassName(
+															"ready");
+													if (!xformRelated
+															&& AppCurrContext
+																	.getInstance()
+																	.getGridWithToolbarGridTrueStateForReadyStateMap())
+														booleanWithToolBar1 = true;
+												}
+											}
 										}
 									});
 								}
@@ -139,6 +216,69 @@ public class ToolBarHelper {
 			// panel.getWidget().setStyleName(TOOLBAR_STYLE_READY);
 			// panel.getWidget().setStylePrimaryName(TOOLBAR_STYLE_READY);
 
+			toolBarRefreshTimer = new Timer() {
+				@Override
+				public void run() {
+
+					dataService.fakeRPC(new GWTServiceCallback<Void>("Error") {
+						@Override
+						public void onSuccess(final Void result) {
+
+							Scheduler.get().scheduleDeferred(new Command() {
+								@Override
+								public void execute() {
+									for (DataPanelElementInfo elem : AppCurrContext
+											.getReadyStateMap().keySet()) {
+										if (elInfo.getRelated().contains(elem.getId())) {
+											AppCurrContext.getReadyStateMap().put(elem, true);
+										}
+									}
+
+									if (elInfo.getType() == DataPanelElementType.GRID
+											&& !AppCurrContext.getReadyStateMap().get(elInfo)) {
+										AppCurrContext.getReadyStateMap().put(elInfo, true);
+									}
+									for (java.util.Map.Entry<DataPanelElementInfo, Boolean> ddd : AppCurrContext
+											.getFromActionElementsMap().entrySet()) {
+										if (ddd.getKey().getType() == DataPanelElementType.WEBTEXT)
+											AppCurrContext
+													.getInstance()
+													.setGridWithoutToolbarWebtextTrueStateForReadyStateMap(
+															true);
+
+									}
+
+									if (!AppCurrContext.getReadyStateMap().containsValue(false)) {
+										RootPanel.getBodyElement().addClassName("ready");
+									}
+
+									if (!booleanWithoutToolBar) {
+										boolean innerBool = false;
+										for (DataPanelElementInfo el : AppCurrContext
+												.getReadyStateMap().keySet()) {
+											if ((el.getHideOnLoad() || el.getContext(
+													AppCurrContext.getInstance()
+															.getCurrentAction()).doHiding())
+													&& !AppCurrContext.getReadyStateMap().get(el))
+												innerBool = true;
+											else if ((el.getHideOnLoad() || el.getContext(
+													AppCurrContext.getInstance()
+															.getCurrentAction()).doHiding())
+													&& AppCurrContext.getReadyStateMap().get(el))
+												innerBool = false;
+										}
+										if (innerBool) {
+											RootPanel.getBodyElement().addClassName("ready");
+											booleanWithoutToolBar = true;
+										}
+									}
+								}
+							});
+						}
+					});
+				}
+			};
+			toolBarRefreshTimer.schedule(2000);
 		}
 	}
 

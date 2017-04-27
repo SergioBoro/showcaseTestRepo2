@@ -33,6 +33,20 @@ public final class AppCurrContext extends ActionTransformer {
 		new HashMap<DataPanelElementInfo, Boolean>();
 
 	/**
+	 * Карта, включающая элементы, пришедшие из действия.
+	 */
+	private static HashMap<DataPanelElementInfo, Boolean> fromActionElementsMap =
+		new HashMap<DataPanelElementInfo, Boolean>();
+
+	private boolean webTextXformTrueStateForReadyStateMap = false;
+
+	private boolean gridWithToolbarWebtextTrueStateForReadyStateMap = false;
+
+	private boolean gridWithoutToolbarWebtextTrueStateForReadyStateMap = false;
+
+	private boolean gridWithToolbarGridTrueStateForReadyStateMap = false;
+
+	/**
 	 * Имя домена (имя пакетного файла без разширения) для перевода клиенсткой
 	 * части Showcase с помощью Gettext.
 	 */
@@ -328,6 +342,46 @@ public final class AppCurrContext extends ActionTransformer {
 
 	public static void setReadyStateMap(HashMap<DataPanelElementInfo, Boolean> aMap) {
 		readyStateMap = aMap;
+	}
+
+	public static HashMap<DataPanelElementInfo, Boolean> getFromActionElementsMap() {
+		return fromActionElementsMap;
+	}
+
+	public static void setFromActionElementsMap(HashMap<DataPanelElementInfo, Boolean> aMap) {
+		fromActionElementsMap = aMap;
+	}
+
+	public boolean getWebTextXformTrueStateForReadyStateMap() {
+		return webTextXformTrueStateForReadyStateMap;
+	}
+
+	public void setWebTextXformTrueStateForReadyStateMap(boolean state) {
+		webTextXformTrueStateForReadyStateMap = state;
+	}
+
+	public boolean getGridWithToolbarWebtextTrueStateForReadyStateMap() {
+		return gridWithToolbarWebtextTrueStateForReadyStateMap;
+	}
+
+	public void setGridWithToolbarWebtextTrueStateForReadyStateMap(boolean state) {
+		gridWithToolbarWebtextTrueStateForReadyStateMap = state;
+	}
+
+	public boolean getGridWithoutToolbarWebtextTrueStateForReadyStateMap() {
+		return gridWithoutToolbarWebtextTrueStateForReadyStateMap;
+	}
+
+	public void setGridWithoutToolbarWebtextTrueStateForReadyStateMap(boolean state) {
+		gridWithoutToolbarWebtextTrueStateForReadyStateMap = state;
+	}
+
+	public boolean getGridWithToolbarGridTrueStateForReadyStateMap() {
+		return gridWithToolbarGridTrueStateForReadyStateMap;
+	}
+
+	public void setGridWithToolbarGridTrueStateForReadyStateMap(boolean state) {
+		gridWithToolbarGridTrueStateForReadyStateMap = state;
 	}
 
 }

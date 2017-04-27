@@ -129,7 +129,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 * Конструктор класса XFormPanel без начального показа XForm.
 	 */
 	public XFormPanel(final DataPanelElementInfo element) {
-
 		// MessageBox.showSimpleMessage("",
 		// "Конструктор класса XFormPanel без начального показа XForm");
 
@@ -138,7 +137,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 
 		this.getPanel().addStyleName("xform-element");
 		this.getPanel().addStyleName("id-" + element.getId().getString());
-
 	}
 
 	/**
@@ -146,7 +144,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 	 */
 	public XFormPanel(final CompositeContext context, final DataPanelElementInfo element,
 			final XForm xformExternal) {
-
 		// MessageBox
 		// .showSimpleMessage("",
 		// "Конструктор класса XFormPanel с начальным показом XForm");
@@ -197,7 +194,6 @@ public class XFormPanel extends BasicElementPanelBasis {
 		setContext(context);
 
 		refreshPanel();
-
 	}
 
 	@Override
@@ -251,18 +247,33 @@ public class XFormPanel extends BasicElementPanelBasis {
 						Scheduler.get().scheduleDeferred(new Command() {
 							@Override
 							public void execute() {
+								boolean gridRelated = false;
+								for (DataPanelElementInfo elem : AppCurrContext.getReadyStateMap()
+										.keySet()) {
+									if (getElementInfo().getRelated().contains(elem.getId())) {
+										AppCurrContext.getReadyStateMap().put(elem, true);
+										if (elem.getType() == DataPanelElementType.GRID)
+											gridRelated = true;
+									}
+								}
+
 								for (DataPanelElementInfo el : AppCurrContext.getReadyStateMap()
 										.keySet()) {
-									if (el.getType() == DataPanelElementType.XFORMS
+									if (getElementInfo().getId().getString()
+											.equals(el.getId().getString())
 											&& !AppCurrContext.getReadyStateMap().get(el)) {
 										AppCurrContext.getReadyStateMap().put(el, true);
 										break;
 									}
 								}
 
-								if (!AppCurrContext.getReadyStateMap().containsValue(false))
-									DOM.getElementById("showcaseReady").setAttribute("isReady",
-											"true");
+								if (!gridRelated) {
+									if (!AppCurrContext.getReadyStateMap().containsValue(false)) {
+										RootPanel.getBodyElement().addClassName("ready");
+										AppCurrContext.getInstance()
+												.setWebTextXformTrueStateForReadyStateMap(true);
+									}
+								}
 							}
 						});
 					}
