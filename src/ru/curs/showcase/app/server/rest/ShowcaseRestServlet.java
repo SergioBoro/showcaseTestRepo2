@@ -2,7 +2,7 @@ package ru.curs.showcase.app.server.rest;
 
 import java.io.*;
 import java.net.*;
-import java.util.List;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -16,6 +16,7 @@ import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.security.*;
+import ru.curs.showcase.util.ServletUtils;
 import ru.curs.showcase.util.exception.*;
 
 /**
@@ -60,13 +61,15 @@ public final class ShowcaseRestServlet extends HttpServlet {
 			try {
 				url = SecurityParamsFactory.getLocalAuthServerUrl();
 			} catch (SettingsFileOpenException e1) {
-				throw new AuthenticationServiceException(SecurityParamsFactory.APP_PROP_READ_ERROR,
-						e1);
+				throw new AuthenticationServiceException(
+						SecurityParamsFactory.APP_PROP_READ_ERROR, e1);
 			}
 
-			server = new URL(url + String.format("/checkcredentials?login=%s&pwd=%s",
-					AuthServerAuthenticationProvider.encodeParam(usr),
-					AuthServerAuthenticationProvider.encodeParam(pwd)));
+			server =
+				new URL(url
+						+ String.format("/checkcredentials?login=%s&pwd=%s",
+								AuthServerAuthenticationProvider.encodeParam(usr),
+								AuthServerAuthenticationProvider.encodeParam(pwd)));
 
 			HttpURLConnection c = null;
 
@@ -81,8 +84,8 @@ public final class ShowcaseRestServlet extends HttpServlet {
 						ud = l.get(0);
 						ud.setResponseCode(c.getResponseCode());
 					} catch (TransformerException e) {
-						throw new ServletException(
-								AuthServerUtils.AUTH_SERVER_DATA_ERROR + e.getMessage(), e);
+						throw new ServletException(AuthServerUtils.AUTH_SERVER_DATA_ERROR
+								+ e.getMessage(), e);
 					}
 					userSid = ud.getSid();
 				} else {
@@ -105,9 +108,9 @@ public final class ShowcaseRestServlet extends HttpServlet {
 				}
 			} else {
 				response.setCharacterEncoding("UTF-8");
-				response.getWriter()
-						.write("ОШИБКА выполнения REST запроса restlogin: Логин пользователя ''"
-								+ usr + "'' неуспешен. Неверная пара логин-пароль.");
+				response.getWriter().write(
+						"ОШИБКА выполнения REST запроса restlogin: Логин пользователя ''" + usr
+								+ "'' неуспешен. Неверная пара логин-пароль.");
 
 				response.setStatus(403);
 				response.getWriter().close();
@@ -188,8 +191,22 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		//
 		// System.out.println(ff.toString());
 
-		JythonRestResult responcseData = RESTGateway.executeRESTcommand(requestType, userToken,
-				acceptLanguage, requestUrl, requestData, requestURLParams, sesId, restProc);
+		// final String requestType,
+		// final String requestUrl, final String requestData, final String
+		// requestHeaders,
+		// final String urlParams, final String sesId, final String restProc
+
+		JythonRestResult responcseData = null;
+		if (restProc.endsWith(".cl") || restProc.endsWith(".celesta"))
+			responcseData =
+				RESTGateway.executeRESTcommand(requestType, truncateRequestUrl(requestUrl),
+						requestData, getHeadersJson(request), getUrlParamsJson(request), sesId,
+						restProc);
+		if (restProc.endsWith(".py"))
+			responcseData =
+				RESTGateway.executeRESTcommandFromJythonProc(requestType,
+						truncateRequestUrl(requestUrl), requestData, getHeadersJson(request),
+						getUrlParamsJson(request), restProc);
 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter()
@@ -220,4 +237,47 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		}
 	}
 
+	private String getUrlParamsJson(final HttpServletRequest request) {
+		SortedMap<String, List<String>> map = null;
+		try {
+			map = ServletUtils.prepareURLParamsMap(request);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		if (map == null)
+			return "{}";
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		for (String key : map.keySet()) {
+			if (map.get(key).size() > 1) {
+				sb.append(key + ":[");
+				for (int k = 0; k < map.get(key).size() - 1; k++) {
+					sb.append(map.get(key).get(k) + ",");
+				}
+				sb.append(map.get(key).get(map.get(key).size() - 1) + "],");
+			} else if (map.get(key).size() == 1) {
+				sb.append(key + ":" + map.get(key) + ",");
+			}
+		}
+		String result = sb.toString().substring(0, sb.toString().length() - 1) + "}";
+		return result;
+	}
+
+	private String getHeadersJson(final HttpServletRequest request) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		while (request.getHeaderNames().hasMoreElements()) {
+			String headerName = (String) request.getHeaderNames().nextElement();
+			String headerValue = request.getHeader(headerName);
+			sb.append(headerName + ":" + headerValue + ",");
+		}
+		String result = sb.toString().substring(0, sb.toString().length() - 1) + "}";
+		return result;
+	}
+
+	private String truncateRequestUrl(final String url) {
+		String[] parts = url.split("api");
+		return parts[1];
+	}
 }

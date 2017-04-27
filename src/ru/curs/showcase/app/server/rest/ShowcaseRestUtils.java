@@ -5,7 +5,7 @@ import ru.curs.showcase.runtime.UserDataUtils;
 public class ShowcaseRestUtils {
 
 	/**
-	 * Получение типа аутентификации и свойства в файле generalapp.properties.
+	 * Получение типа аутентификации из свойства в файле generalapp.properties.
 	 * 
 	 * @return тип аутентификации в виде значения объекта Enum
 	 */

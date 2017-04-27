@@ -2,12 +2,12 @@ package ru.curs.showcase.core.jython;
 
 import java.util.List;
 
-import com.ziclix.python.sql.PyConnection;
-
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.grid.SortColumn;
+
+import com.ziclix.python.sql.PyConnection;
 
 /**
  * Единый интерфейс для всех (!) Jython процедур. Каждая конкретная процедура на
@@ -56,8 +56,9 @@ public interface JythonProc {
 	 *         настройки элемента в виде двух строк или объект с информацией для
 	 *         пользователя в случае ошибки.
 	 */
-	Object getRawData(AbstractCompositeContext context, String elementId,
-			List<SortColumn> sortcols);
+	Object
+			getRawData(AbstractCompositeContext context, String elementId,
+					List<SortColumn> sortcols);
 
 	/**
 	 * Возвращает сырые данные для компонента grid в случае задания двумя
@@ -180,8 +181,8 @@ public interface JythonProc {
 	 *            - атрибуты запроса
 	 * @return объект класса JythonDownloadResultForGrid
 	 */
-	<T extends InputAttributes> JythonDownloadResult
-			getInputStream(AbstractCompositeContext aContext, T attributes);
+	<T extends InputAttributes> JythonDownloadResult getInputStream(
+			AbstractCompositeContext aContext, T attributes);
 
 	/**
 	 * Загрузить файл на сервер.
@@ -299,5 +300,15 @@ public interface JythonProc {
 	 *         UserMessage в случае ошибки.
 	 */
 	Object submiJsForm(CompositeContext aContext, String elementId, String aData);
+
+	/**
+	 * Возвращает ответ Rest-сервлета. Получает на вход набор строк и возвращает
+	 * строку.
+	 * 
+	 * @param data
+	 *            - набор строковых параметров
+	 * @return ответ Rest-сервлета в виде строки
+	 */
+	Object getRestResponcseData(String... data);
 
 }
