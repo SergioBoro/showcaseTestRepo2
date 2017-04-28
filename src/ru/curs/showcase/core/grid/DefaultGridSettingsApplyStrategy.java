@@ -28,6 +28,8 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 	private static final String DEF_COLUMN_HEADER_HOR_ALIGN = "def.columnheader.hor.align";
 	private static final String DEF_COL_VALUE_DISPLAY_MODE = "def.column.value.display.mode";
 	private static final String URL_IMAGE_FILE_DOWNLOAD = "resources/internal/fileDownload.PNG";
+	private static final String DEF_TOOLBAR_CLASSNAME = "def.toolbar.classname";
+	private static final String DEF_TOOLBAR_STYLE = "def.toolbar.style";
 
 	/**
 	 * Настройки грида.
@@ -69,6 +71,16 @@ public final class DefaultGridSettingsApplyStrategy extends ProfileBasedSettings
 		stringValue = reader().getStringValue(DEF_COL_VALUE_DISPLAY_MODE);
 		if (stringValue != null) {
 			settings.setDisplayMode(ColumnValueDisplayMode.valueOf(stringValue));
+		}
+
+		stringValue = reader().getStringValue(DEF_TOOLBAR_CLASSNAME);
+		if (stringValue != null) {
+			settings.setToolbarClassName(stringValue);
+		}
+
+		stringValue = reader().getStringValue(DEF_TOOLBAR_STYLE);
+		if (stringValue != null) {
+			settings.setToolbarStyle(stringValue);
 		}
 
 		applyVisibilitySettings();
