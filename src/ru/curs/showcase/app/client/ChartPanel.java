@@ -360,6 +360,40 @@ public class ChartPanel extends BasicElementPanelBasis {
 							fillChartPanel(achart);
 							getPanel().setHeight("100%");
 						}
+
+						Scheduler.get().scheduleDeferred(new Command() {
+							@Override
+							public void execute() {
+								for (DataPanelElementInfo el : AppCurrContext.getReadyStateMap()
+										.keySet()) {
+									if (getElementInfo().getId().getString()
+											.equals(el.getId().getString())
+											&& !AppCurrContext.getReadyStateMap().get(el)) {
+										AppCurrContext.getReadyStateMap().put(el, true);
+										break;
+									}
+								}
+
+								for (DataPanelElementInfo el : AppCurrContext
+										.getFromActionElementsMap().keySet()) {
+									if (getElementInfo().getId().getString()
+											.equals(el.getId().getString())
+											&& !AppCurrContext.getFromActionElementsMap().get(el)) {
+										AppCurrContext.getFromActionElementsMap().put(el, true);
+										break;
+									}
+								}
+
+								if (!AppCurrContext.getInstance()
+										.getChartXformTrueStateForReadyStateMap()
+										&& !AppCurrContext
+												.getInstance()
+												.getGridWithToolbarChartTrueStateForReadyStateMap())
+									if (!AppCurrContext.getReadyStateMap().containsValue(false)) {
+										RootPanel.getBodyElement().addClassName("ready");
+									}
+							}
+						});
 					}
 				});
 

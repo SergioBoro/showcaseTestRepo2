@@ -27,6 +27,15 @@ public class TabPanelSelectionHandler implements SelectionHandler<Integer> {
 		AppCurrContext.getInstance().setWebTextXformTrueStateForReadyStateMap(false);
 		AppCurrContext.getInstance().setGridWithToolbarWebtextTrueStateForReadyStateMap(false);
 		AppCurrContext.getInstance().setGridWithoutToolbarWebtextTrueStateForReadyStateMap(false);
+		AppCurrContext.getInstance().setChartXformTrueStateForReadyStateMap(false);
+		AppCurrContext.getInstance().setGridWithToolbarChartTrueStateForReadyStateMap(false);
+		AppCurrContext.getInstance().setGridWithoutToolbarChartTrueStateForReadyStateMap(false);
+		AppCurrContext.getInstance().setGeoMapXformTrueStateForReadyStateMap(false);
+		AppCurrContext.getInstance().setGridWithToolbarGeoMapTrueStateForReadyStateMap(false);
+		AppCurrContext.getInstance().setGridWithoutToolbarGeoMapTrueStateForReadyStateMap(false);
+		AppCurrContext.getInstance().setPluginXformTrueStateForReadyStateMap(false);
+		AppCurrContext.getInstance().setGridWithToolbarPluginTrueStateForReadyStateMap(false);
+		AppCurrContext.getInstance().setGridWithoutToolbarPluginTrueStateForReadyStateMap(false);
 		AppCurrContext.getInstance().setGridWithToolbarGridTrueStateForReadyStateMap(false);
 
 		ToolBarHelper.booleanWithToolBar = false;

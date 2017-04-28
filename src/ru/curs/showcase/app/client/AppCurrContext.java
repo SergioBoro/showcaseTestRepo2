@@ -44,6 +44,24 @@ public final class AppCurrContext extends ActionTransformer {
 
 	private boolean gridWithoutToolbarWebtextTrueStateForReadyStateMap = false;
 
+	private boolean chartXformTrueStateForReadyStateMap = false;
+
+	private boolean gridWithToolbarChartTrueStateForReadyStateMap = false;
+
+	private boolean gridWithoutToolbarChartTrueStateForReadyStateMap = false;
+
+	private boolean geoMapXformTrueStateForReadyStateMap = false;
+
+	private boolean gridWithToolbarGeoMapTrueStateForReadyStateMap = false;
+
+	private boolean gridWithoutToolbarGeoMapTrueStateForReadyStateMap = false;
+
+	private boolean pluginXformTrueStateForReadyStateMap = false;
+
+	private boolean gridWithToolbarPluginTrueStateForReadyStateMap = false;
+
+	private boolean gridWithoutToolbarPluginTrueStateForReadyStateMap = false;
+
 	private boolean gridWithToolbarGridTrueStateForReadyStateMap = false;
 
 	/**
@@ -374,6 +392,78 @@ public final class AppCurrContext extends ActionTransformer {
 
 	public void setGridWithoutToolbarWebtextTrueStateForReadyStateMap(boolean state) {
 		gridWithoutToolbarWebtextTrueStateForReadyStateMap = state;
+	}
+
+	public boolean getChartXformTrueStateForReadyStateMap() {
+		return chartXformTrueStateForReadyStateMap;
+	}
+
+	public void setChartXformTrueStateForReadyStateMap(boolean state) {
+		chartXformTrueStateForReadyStateMap = state;
+	}
+
+	public boolean getGridWithToolbarChartTrueStateForReadyStateMap() {
+		return gridWithToolbarChartTrueStateForReadyStateMap;
+	}
+
+	public void setGridWithToolbarChartTrueStateForReadyStateMap(boolean state) {
+		gridWithToolbarChartTrueStateForReadyStateMap = state;
+	}
+
+	public boolean getGridWithoutToolbarChartTrueStateForReadyStateMap() {
+		return gridWithoutToolbarChartTrueStateForReadyStateMap;
+	}
+
+	public void setGridWithoutToolbarChartTrueStateForReadyStateMap(boolean state) {
+		gridWithoutToolbarChartTrueStateForReadyStateMap = state;
+	}
+
+	public boolean getGeoMapXformTrueStateForReadyStateMap() {
+		return geoMapXformTrueStateForReadyStateMap;
+	}
+
+	public void setGeoMapXformTrueStateForReadyStateMap(boolean state) {
+		geoMapXformTrueStateForReadyStateMap = state;
+	}
+
+	public boolean getGridWithToolbarGeoMapTrueStateForReadyStateMap() {
+		return gridWithToolbarGeoMapTrueStateForReadyStateMap;
+	}
+
+	public void setGridWithToolbarGeoMapTrueStateForReadyStateMap(boolean state) {
+		gridWithToolbarGeoMapTrueStateForReadyStateMap = state;
+	}
+
+	public boolean getGridWithoutToolbarGeoMapTrueStateForReadyStateMap() {
+		return gridWithoutToolbarGeoMapTrueStateForReadyStateMap;
+	}
+
+	public void setGridWithoutToolbarGeoMapTrueStateForReadyStateMap(boolean state) {
+		gridWithoutToolbarGeoMapTrueStateForReadyStateMap = state;
+	}
+
+	public boolean getPluginXformTrueStateForReadyStateMap() {
+		return pluginXformTrueStateForReadyStateMap;
+	}
+
+	public void setPluginXformTrueStateForReadyStateMap(boolean state) {
+		pluginXformTrueStateForReadyStateMap = state;
+	}
+
+	public boolean getGridWithToolbarPluginTrueStateForReadyStateMap() {
+		return gridWithToolbarPluginTrueStateForReadyStateMap;
+	}
+
+	public void setGridWithToolbarPluginTrueStateForReadyStateMap(boolean state) {
+		gridWithToolbarPluginTrueStateForReadyStateMap = state;
+	}
+
+	public boolean getGridWithoutToolbarPluginTrueStateForReadyStateMap() {
+		return gridWithoutToolbarPluginTrueStateForReadyStateMap;
+	}
+
+	public void setGridWithoutToolbarPluginTrueStateForReadyStateMap(boolean state) {
+		gridWithoutToolbarPluginTrueStateForReadyStateMap = state;
 	}
 
 	public boolean getGridWithToolbarGridTrueStateForReadyStateMap() {

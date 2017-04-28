@@ -149,11 +149,25 @@ public class ToolBarHelper {
 															.getInstance()
 															.setGridWithToolbarWebtextTrueStateForReadyStateMap(
 																	true);
-
+												if (ddd.getKey().getType() == DataPanelElementType.CHART)
+													AppCurrContext
+															.getInstance()
+															.setGridWithToolbarChartTrueStateForReadyStateMap(
+																	true);
 												if (ddd.getKey().getType() == DataPanelElementType.GRID)
 													AppCurrContext
 															.getInstance()
 															.setGridWithToolbarGridTrueStateForReadyStateMap(
+																	true);
+												if (ddd.getKey().getType() == DataPanelElementType.GEOMAP)
+													AppCurrContext
+															.getInstance()
+															.setGridWithToolbarGeoMapTrueStateForReadyStateMap(
+																	true);
+												if (ddd.getKey().getType() == DataPanelElementType.PLUGIN)
+													AppCurrContext
+															.getInstance()
+															.setGridWithToolbarPluginTrueStateForReadyStateMap(
 																	true);
 											}
 
@@ -245,7 +259,21 @@ public class ToolBarHelper {
 													.getInstance()
 													.setGridWithoutToolbarWebtextTrueStateForReadyStateMap(
 															true);
-
+										if (ddd.getKey().getType() == DataPanelElementType.CHART)
+											AppCurrContext
+													.getInstance()
+													.setGridWithoutToolbarChartTrueStateForReadyStateMap(
+															true);
+										if (ddd.getKey().getType() == DataPanelElementType.GEOMAP)
+											AppCurrContext
+													.getInstance()
+													.setGridWithoutToolbarGeoMapTrueStateForReadyStateMap(
+															true);
+										if (ddd.getKey().getType() == DataPanelElementType.PLUGIN)
+											AppCurrContext
+													.getInstance()
+													.setGridWithoutToolbarPluginTrueStateForReadyStateMap(
+															true);
 									}
 
 									if (!AppCurrContext.getReadyStateMap().containsValue(false)) {

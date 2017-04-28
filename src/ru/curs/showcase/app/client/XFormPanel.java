@@ -272,6 +272,12 @@ public class XFormPanel extends BasicElementPanelBasis {
 										RootPanel.getBodyElement().addClassName("ready");
 										AppCurrContext.getInstance()
 												.setWebTextXformTrueStateForReadyStateMap(true);
+										AppCurrContext.getInstance()
+												.setChartXformTrueStateForReadyStateMap(true);
+										AppCurrContext.getInstance()
+												.setGeoMapXformTrueStateForReadyStateMap(true);
+										AppCurrContext.getInstance()
+												.setPluginXformTrueStateForReadyStateMap(true);
 									}
 								}
 							}
