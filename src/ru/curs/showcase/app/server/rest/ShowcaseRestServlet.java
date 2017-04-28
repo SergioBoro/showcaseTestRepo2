@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.json.JSONObject;
 import org.slf4j.*;
 import org.springframework.security.authentication.AuthenticationServiceException;
 
@@ -238,46 +239,35 @@ public final class ShowcaseRestServlet extends HttpServlet {
 	}
 
 	private String getUrlParamsJson(final HttpServletRequest request) {
-		SortedMap<String, List<String>> map = null;
+		SortedMap<String, List<String>> urlParamsMap = null;
 		try {
-			map = ServletUtils.prepareURLParamsMap(request);
+			urlParamsMap = ServletUtils.prepareURLParamsMap(request);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		if (map == null)
+		if (urlParamsMap == null)
 			return "{}";
 
-		StringBuilder sb = new StringBuilder();
-		sb.append("{");
-		for (String key : map.keySet()) {
-			if (map.get(key).size() > 1) {
-				sb.append(key + ":[");
-				for (int k = 0; k < map.get(key).size() - 1; k++) {
-					sb.append(map.get(key).get(k) + ",");
-				}
-				sb.append(map.get(key).get(map.get(key).size() - 1) + "],");
-			} else if (map.get(key).size() == 1) {
-				sb.append(key + ":" + map.get(key) + ",");
-			}
-		}
-		String result = sb.toString().substring(0, sb.toString().length() - 1) + "}";
-		return result;
+		org.json.JSONObject jsonObj = new JSONObject(urlParamsMap);
+		return jsonObj.toString();
 	}
 
 	private String getHeadersJson(final HttpServletRequest request) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("{");
-		while (request.getHeaderNames().hasMoreElements()) {
-			String headerName = (String) request.getHeaderNames().nextElement();
+		Map<String, String> headersMap = new HashMap<>();
+		@SuppressWarnings("unchecked")
+		Enumeration<String> iterator = request.getHeaderNames();
+		while (iterator.hasMoreElements()) {
+			String headerName = iterator.nextElement();
 			String headerValue = request.getHeader(headerName);
-			sb.append(headerName + ":" + headerValue + ",");
+			headersMap.put(headerName, headerValue);
 		}
-		String result = sb.toString().substring(0, sb.toString().length() - 1) + "}";
-		return result;
+		org.json.JSONObject jsonObj = new JSONObject(headersMap);
+		return jsonObj.toString();
 	}
 
 	private String truncateRequestUrl(final String url) {
-		String[] parts = url.split("api");
-		return parts[1];
+		// String[] parts = url.split("api");
+		// return parts[1];
+		return url.substring(url.indexOf("api") + 3);
 	}
 }
