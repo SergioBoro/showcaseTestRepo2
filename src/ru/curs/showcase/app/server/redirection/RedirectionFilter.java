@@ -5,21 +5,15 @@ import java.io.IOException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import org.python.core.PyObject;
-
-import ru.curs.celesta.*;
-import ru.curs.showcase.app.api.ExceptionType;
-import ru.curs.showcase.util.exception.BaseException;
-
 public class RedirectionFilter implements Filter {
 
-	private class MyException extends BaseException {
-		private static final long serialVersionUID = 6725288887082284411L;
-
-		MyException(final ExceptionType aType, final String aMessage) {
-			super(aType, aMessage);
-		}
-	}
+	// private class MyException extends BaseException {
+	// private static final long serialVersionUID = 6725288887082284411L;
+	//
+	// MyException(final ExceptionType aType, final String aMessage) {
+	// super(aType, aMessage);
+	// }
+	// }
 
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response,
@@ -61,9 +55,16 @@ public class RedirectionFilter implements Filter {
 			filterChain.doFilter(request, response);
 			return;
 		}
+		// String redirectToUrl =
+		// getRedirectionUrlForLink(initialUrl, sesId,
+		// RedirectionUserdataProp.getRedirectionProc());
+
+		RedirectSelector rs = new RedirectSelector();
+		String redirectionProc = RedirectionUserdataProp.getRedirectionProc();
+		rs.setSourceName(redirectionProc);
+
 		String redirectToUrl =
-			getRedirectionUrlForLink(initialUrl, sesId,
-					RedirectionUserdataProp.getRedirectionProc());
+			rs.getGateway().getRedirectionUrlForLink(initialUrl, sesId, redirectionProc);
 
 		if (redirectToUrl != null && !redirectToUrl.isEmpty() && !redirectToUrl.equals(initialUrl)) {
 			httpRes.sendRedirect(redirectToUrl);
@@ -71,43 +72,6 @@ public class RedirectionFilter implements Filter {
 		} else {
 			filterChain.doFilter(request, response);
 		}
-
-	}
-
-	private String getRedirectionUrlForLink(final String initialUrl, final String sesId,
-			final String redirectionProc) {
-		String correctedRedirectionProc = redirectionProc.trim();
-		final int tri = 3;
-		final int vosem = 8;
-		if (redirectionProc.endsWith(".cl")) {
-			correctedRedirectionProc =
-				redirectionProc.substring(0, redirectionProc.length() - tri);
-		}
-
-		if (redirectionProc.endsWith(".celesta")) {
-			correctedRedirectionProc =
-				redirectionProc.substring(0, redirectionProc.length() - vosem);
-		}
-
-		try {
-			PyObject pObj =
-				Celesta.getInstance().runPython(sesId, correctedRedirectionProc, initialUrl);
-
-			Object obj = pObj.__tojava__(Object.class);
-			if (obj == null) {
-				return null;
-			}
-			if (obj.getClass().isAssignableFrom(String.class)) {
-				return (String) obj;
-			}
-
-		} catch (CelestaException e) {
-			throw new MyException(ExceptionType.SOLUTION,
-					"При запуске процедуры Celesta произошла ошибка: " + e.getMessage());
-
-		}
-
-		return null;
 
 	}
 

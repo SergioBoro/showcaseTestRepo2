@@ -302,6 +302,16 @@ public interface JythonProc {
 	Object submiJsForm(CompositeContext aContext, String elementId, String aData);
 
 	/**
+	 * Возвращает URL для редиректа. Получает на вход строку и возвращает
+	 * строку.
+	 * 
+	 * @param data
+	 *            - исходный URL в виде строки
+	 * @return URL для редиректа в виде строки
+	 */
+	Object getRedirectURL(String data);
+
+	/**
 	 * Возвращает ответ Rest-сервлета. Получает на вход набор строк и возвращает
 	 * строку.
 	 * 
