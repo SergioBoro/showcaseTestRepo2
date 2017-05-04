@@ -67,6 +67,15 @@ public class TabPanelSelectionHandler implements SelectionHandler<Integer> {
 			}
 		}
 
+		for (UIDataPanelTab uidpt : AppCurrContext.getInstance().getUiDataPanel()) {
+			if (uidpt.getDataPanelTabMetaData().getId().getString()
+					.equals(dpt.getId().getString())) {
+				uidpt.getWidgetDatapanelTab().addStyleName("active");
+			} else {
+				uidpt.getWidgetDatapanelTab().removeStyleName("active");
+			}
+		}
+
 		AppCurrContext.getInstance().setNavigatorActionFromTab(
 				AppCurrContext.getInstance().getUiDataPanel().get(event.getSelectedItem())
 						.getDataPanelTabMetaData().getAction());
