@@ -21,8 +21,8 @@ import ru.curs.showcase.util.UserAndSessionDetails;
  */
 public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
 
-	private static final Logger LOGGER =
-		LoggerFactory.getLogger(ESIAAuthenticationProcessingFilter.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ESIAAuthenticationProcessingFilter.class);
 
 	protected ESIAAuthenticationProcessingFilter() {
 		super("/esia");
@@ -47,10 +47,11 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 
 			ESIAUserInfo esiaUI = ESIAManager.getUserInfo(code);
 
-			UserInfo ui = new UserInfo(esiaUI.getLogin(), String.valueOf(esiaUI.getOid()),
-					esiaUI.getLastName() + " " + esiaUI.getFirstName() + " "
-							+ esiaUI.getMiddleName(),
-					esiaUI.getEmail(), esiaUI.getPhone(), (String) null);
+			UserInfo ui =
+				new UserInfo(esiaUI.getLogin(), String.valueOf(esiaUI.getOid()),
+						esiaUI.getLastName() + " " + esiaUI.getFirstName() + " "
+								+ esiaUI.getMiddleName(), esiaUI.getEmail(), esiaUI.getPhone(),
+						(String) null);
 			ui.setSnils(esiaUI.getSnils());
 			ui.setGender(esiaUI.getGender());
 			ui.setBirthDate(esiaUI.getBirthDate());
@@ -78,8 +79,8 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
 				String error = request.getParameter("error");
 				String errorDescription = request.getParameter("error_description");
-				LOGGER.error(
-						"Ошибка аутентификации через ESIA: " + error + ", " + errorDescription);
+				LOGGER.error("Ошибка аутентификации через ESIA: " + error + ", "
+						+ errorDescription);
 			}
 
 			esiaAuthenticated = false;
@@ -93,7 +94,6 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 		Authentication authentication = this.getAuthenticationManager().authenticate(authRequest);
 
 		if (esiaAuthenticated) {
-			AppAndSessionEventsListener.increment();
 			request.getSession(false).setAttribute("newSession", request.getSession(false));
 
 			request.getSession(false).setAttribute("esiaAuthenticated", "true");
@@ -102,6 +102,9 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 			request.getSession(false).setAttribute("esiaAuthenticated", "false");
 			authentication.setAuthenticated(false);
 		}
+
+		if (authentication.isAuthenticated())
+			AppAndSessionEventsListener.increment();
 
 		return authentication;
 

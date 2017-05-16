@@ -88,6 +88,10 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 		authFailureHandler.add("domain", domain);
 		setAuthenticationFailureHandler(authFailureHandler);
 		Authentication authentication = this.getAuthenticationManager().authenticate(authRequest);
+
+		if (authentication.isAuthenticated())
+			AppAndSessionEventsListener.increment();
+
 		return authentication;
 	}
 }
