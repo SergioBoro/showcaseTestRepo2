@@ -75,6 +75,10 @@ public final class UserMessageFactory {
 		// Перевод с помощью Gettext.
 		initialText = UserDataUtils.modifyVariables(initialText);
 
+		if (initial.getCaption() != null) {
+			initial.setCaption(UserDataUtils.modifyVariables(initial.getCaption()));
+		}
+
 		if ((initial.getText() != null) && (initial.getId() != null)
 				&& initial.getText().equals(initial.getId())) { // Челеста
 
