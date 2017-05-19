@@ -178,7 +178,7 @@ public final class XMLJSONConverter {
 		// str = str.replace("\\'", "'");
 
 		if (str.contains("&quot;")) {
-			str = str.replace("&quot;", "\"");
+			str = str.replace("&quot;", "\\\"");
 		}
 		if (str.contains("&lt;")) {
 			str = str.replace("&lt;", "<");
