@@ -22,9 +22,6 @@ public class ToolBarHelper {
 	// private static final String TOOLBAR_HEIGHT = "31px";
 	private static final String TOOLBAR_HEIGHT = "29px";
 
-	private static final String TOOLBAR_STYLE_AWAITING_RESPONSE = "awaiting-response";
-	private static final String TOOLBAR_STYLE_READY = "ready";
-
 	private Timer toolBarRefreshTimer = null;
 	private final DataServiceAsync dataService;
 	private final SimplePanel panel;
@@ -82,13 +79,6 @@ public class ToolBarHelper {
 			return;
 		}
 
-		if (panel.getWidget() != null) {
-			panel.getWidget().removeStyleName(TOOLBAR_STYLE_READY);
-			panel.getWidget().addStyleName(TOOLBAR_STYLE_AWAITING_RESPONSE);
-			// panel.getWidget().setStyleName(TOOLBAR_STYLE_AWAITING_RESPONSE);
-			// panel.getWidget().setStylePrimaryName(TOOLBAR_STYLE_AWAITING_RESPONSE);
-		}
-
 		final DataPanelElementInfo elInfo = jsBaseGridPluginPanel.getElementInfo();
 		if (elInfo.isToolBarProc()) {
 
@@ -116,10 +106,6 @@ public class ToolBarHelper {
 									createJSToolBar(result);
 
 									blinkingCount--;
-
-									panel.getWidget().addStyleName(TOOLBAR_STYLE_READY);
-									// panel.getWidget().setStyleName(TOOLBAR_STYLE_READY);
-									// panel.getWidget().setStylePrimaryName(TOOLBAR_STYLE_READY);
 
 									Scheduler.get().scheduleDeferred(new Command() {
 										@Override
@@ -225,10 +211,6 @@ public class ToolBarHelper {
 			isStaticToolBar = true;
 
 			createJSToolBar(null);
-
-			panel.getWidget().addStyleName(TOOLBAR_STYLE_READY);
-			// panel.getWidget().setStyleName(TOOLBAR_STYLE_READY);
-			// panel.getWidget().setStylePrimaryName(TOOLBAR_STYLE_READY);
 
 			toolBarRefreshTimer = new Timer() {
 				@Override
