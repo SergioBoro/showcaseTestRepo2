@@ -14,11 +14,11 @@ import org.slf4j.*;
 import org.springframework.security.authentication.AuthenticationServiceException;
 
 import ru.curs.celesta.*;
-import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.UserInfo;
 import ru.curs.showcase.runtime.UserDataUtils;
 import ru.curs.showcase.security.*;
 import ru.curs.showcase.util.ServletUtils;
-import ru.curs.showcase.util.exception.*;
+import ru.curs.showcase.util.exception.SettingsFileOpenException;
 
 /**
  * @author a.lugovtsov
@@ -29,15 +29,6 @@ public final class ShowcaseRestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1311685218914828051L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShowcaseRestServlet.class);
-
-	private class ShowcaseRESTException extends BaseException {
-
-		private static final long serialVersionUID = 6725288887092284411L;
-
-		ShowcaseRESTException(final ExceptionType aType, final String aMessage) {
-			super(aType, aMessage);
-		}
-	}
 
 	@Override
 	public void service(final HttpServletRequest request, final HttpServletResponse response)
@@ -62,15 +53,13 @@ public final class ShowcaseRestServlet extends HttpServlet {
 			try {
 				url = SecurityParamsFactory.getLocalAuthServerUrl();
 			} catch (SettingsFileOpenException e1) {
-				throw new AuthenticationServiceException(
-						SecurityParamsFactory.APP_PROP_READ_ERROR, e1);
+				throw new AuthenticationServiceException(SecurityParamsFactory.APP_PROP_READ_ERROR,
+						e1);
 			}
 
-			server =
-				new URL(url
-						+ String.format("/checkcredentials?login=%s&pwd=%s",
-								AuthServerAuthenticationProvider.encodeParam(usr),
-								AuthServerAuthenticationProvider.encodeParam(pwd)));
+			server = new URL(url + String.format("/checkcredentials?login=%s&pwd=%s",
+					AuthServerAuthenticationProvider.encodeParam(usr),
+					AuthServerAuthenticationProvider.encodeParam(pwd)));
 
 			HttpURLConnection c = null;
 
@@ -85,8 +74,8 @@ public final class ShowcaseRestServlet extends HttpServlet {
 						ud = l.get(0);
 						ud.setResponseCode(c.getResponseCode());
 					} catch (TransformerException e) {
-						throw new ServletException(AuthServerUtils.AUTH_SERVER_DATA_ERROR
-								+ e.getMessage(), e);
+						throw new ServletException(
+								AuthServerUtils.AUTH_SERVER_DATA_ERROR + e.getMessage(), e);
 					}
 					userSid = ud.getSid();
 				} else {
@@ -109,9 +98,9 @@ public final class ShowcaseRestServlet extends HttpServlet {
 				}
 			} else {
 				response.setCharacterEncoding("UTF-8");
-				response.getWriter().write(
-						"ОШИБКА выполнения REST запроса restlogin: Логин пользователя ''" + usr
-								+ "'' неуспешен. Неверная пара логин-пароль.");
+				response.getWriter()
+						.write("ОШИБКА выполнения REST запроса restlogin: Логин пользователя ''"
+								+ usr + "'' неуспешен. Неверная пара логин-пароль.");
 
 				response.setStatus(403);
 				response.getWriter().close();
@@ -199,15 +188,21 @@ public final class ShowcaseRestServlet extends HttpServlet {
 
 		JythonRestResult responcseData = null;
 		if (restProc.endsWith(".cl") || restProc.endsWith(".celesta"))
-			responcseData =
-				RESTGateway.executeRESTcommand(requestType, truncateRequestUrl(requestUrl),
-						requestData, getHeadersJson(request), getUrlParamsJson(request), sesId,
-						restProc);
-		if (restProc.endsWith(".py"))
-			responcseData =
-				RESTGateway.executeRESTcommandFromJythonProc(requestType,
+
+			try {
+				responcseData = RESTGateway.executeRESTcommand(requestType,
 						truncateRequestUrl(requestUrl), requestData, getHeadersJson(request),
-						getUrlParamsJson(request), restProc);
+						getUrlParamsJson(request), sesId, restProc);
+			} catch (RESTGateway.ShowcaseRESTUnauthorizedException e) {
+
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				return;
+
+			}
+		if (restProc.endsWith(".py"))
+			responcseData = RESTGateway.executeRESTcommandFromJythonProc(requestType,
+					truncateRequestUrl(requestUrl), requestData, getHeadersJson(request),
+					getUrlParamsJson(request), restProc);
 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter()

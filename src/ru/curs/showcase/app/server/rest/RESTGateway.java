@@ -26,6 +26,15 @@ public class RESTGateway {
 		}
 	}
 
+	static public class ShowcaseRESTUnauthorizedException extends BaseException {
+
+		private static final long serialVersionUID = 6725288887092284411L;
+
+		ShowcaseRESTUnauthorizedException(final ExceptionType aType, final String aMessage) {
+			super(aType, aMessage);
+		}
+	}
+
 	static public JythonRestResult executeRESTcommand(final String requestType,
 			final String requestUrl, final String requestData, final String requestHeaders,
 			final String urlParams, final String sesId, final String restProc) {
@@ -41,16 +50,15 @@ public class RESTGateway {
 		}
 
 		Boolean isRestWithCelestaAuthentication =
-			("celesta".equals(UserDataUtils.getGeneralOptionalProp("rest.authentication.type"))) ? true
-					: false;
+			("celesta".equals(UserDataUtils.getGeneralOptionalProp("rest.authentication.type")))
+					? true : false;
 
 		String tempSesId = isRestWithCelestaAuthentication ? sesId : "RESTful" + sesId;
 		try {
 			if (!isRestWithCelestaAuthentication)
 				Celesta.getInstance().login(tempSesId, "userCelestaSid");
-			PyObject pObj =
-				Celesta.getInstance().runPython(tempSesId, correctedRESTProc, requestType,
-						requestUrl, requestData, requestHeaders, urlParams);
+			PyObject pObj = Celesta.getInstance().runPython(tempSesId, correctedRESTProc,
+					requestType, requestUrl, requestData, requestHeaders, urlParams);
 
 			Object obj = pObj.__tojava__(Object.class);
 			if (obj == null) {
@@ -61,6 +69,11 @@ public class RESTGateway {
 			}
 
 		} catch (CelestaException e) {
+			if (e.getMessage().contains("Session") & e.getMessage().contains("is not logged in"))
+				throw new ShowcaseRESTUnauthorizedException(ExceptionType.SOLUTION,
+						"При запуске процедуры Celesta для выполнения REST запроса произошла ошибка: "
+								+ e.getMessage());
+
 			throw new ShowcaseRESTException(ExceptionType.SOLUTION,
 					"При запуске процедуры Celesta для выполнения REST запроса произошла ошибка: "
 							+ e.getMessage());
@@ -88,10 +101,9 @@ public class RESTGateway {
 		parent = parent.replace('/', '.');
 		boolean isLoaded = false;
 		String className = TextUtils.extractFileName(restProc);
-		String cmd =
-			String.format(
-					"from org.python.core import codecs; codecs.setDefaultEncoding('utf-8'); from %s import %s",
-					parent, className);
+		String cmd = String.format(
+				"from org.python.core import codecs; codecs.setDefaultEncoding('utf-8'); from %s import %s",
+				parent, className);
 
 		try {
 			interpreter.exec(cmd);
@@ -100,9 +112,8 @@ public class RESTGateway {
 			PyObject pyClass = interpreter.get(className);
 			PyObject pyObj = pyClass.__call__();
 			JythonProc proc = (JythonProc) pyObj.__tojava__(JythonProc.class);
-			JythonRestResult result =
-				(JythonRestResult) proc.getRestResponcseData(requestType, requestUrl, requestData,
-						requestHeaders, urlParams);
+			JythonRestResult result = (JythonRestResult) proc.getRestResponcseData(requestType,
+					requestUrl, requestData, requestHeaders, urlParams);
 			return result;
 
 		} catch (PyException e) {
