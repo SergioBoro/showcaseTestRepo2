@@ -710,7 +710,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 		
 		
 		grid.on("dgrid-select", function(event){
-			if(event.parentType && event.parentType.indexOf("mouse") > -1){
+			if(event.parentType && ((event.parentType.indexOf("mouse") > -1) || (event.parentType.indexOf("pointer") > -1))){
 				return;
 			}
 			
