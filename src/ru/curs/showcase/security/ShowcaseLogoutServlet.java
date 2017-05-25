@@ -28,74 +28,70 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String esiaAuthenticated =
-			(String) (request.getSession(false).getAttribute("esiaAuthenticated"));
+		// HttpSession oldSession =
+		// (HttpSession) request.getSession(false).getAttribute("newSession");
+		// String oldSesid = request.getParameter("sesId");
 
-		if ((esiaAuthenticated != null) && ("true".equals(esiaAuthenticated))) {
+		// if (oldSesid.equals(oldSession.getId())) {
+		// AppAndSessionEventsListener.decrement();
+		// }
 
-			response.sendRedirect(request.getContextPath() + "/logout");
+		String sesid = null;
+		HttpSession session = request.getSession();
 
-		} else {
+		// sesid = session.getId();
+		sesid = request.getParameter("sesId");
 
-			// HttpSession oldSession =
-			// (HttpSession)
-			// request.getSession(false).getAttribute("newSession");
-			// String oldSesid = request.getParameter("sesId");
-			//
-			// if (oldSesid.equals(oldSession.getId())) {
-			// AppAndSessionEventsListener.decrement();
-			// }
+		// Признак пользовательского выхода из системы
+		session.setAttribute(SecurityLoggingCommand.IS_CLICK_LOGOUT, Boolean.TRUE);
 
-			String sesid = null;
-			HttpSession session = request.getSession();
+		// if (!((UserAndSessionDetails)
+		// SecurityContextHolder.getContext().getAuthentication()
+		// .getDetails()).isAuthViaAuthServer()) {
 
-			// sesid = session.getId();
-			sesid = request.getParameter("sesId");
+		if (!(AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(sesid))) {
+			return;
+		}
 
-			// Признак пользовательского выхода из системы
-			session.setAttribute(SecurityLoggingCommand.IS_CLICK_LOGOUT, Boolean.TRUE);
+		String url = null;
+		try {
+			url = SecurityParamsFactory.getLocalAuthServerUrl();
+		} catch (SettingsFileOpenException e) {
+			throw new ServletException(SecurityParamsFactory.APP_PROP_READ_ERROR);
+		}
 
-			// if (!((UserAndSessionDetails)
-			// SecurityContextHolder.getContext().getAuthentication()
-			// .getDetails()).isAuthViaAuthServer()) {
-
-			if (!(AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(sesid))) {
-				return;
-			}
-
-			String url = null;
+		if (url != null) {
+			URL server = new URL(url + String.format("/logout?sesid=%s", sesid));
+			HttpURLConnection c = (HttpURLConnection) server.openConnection();
+			c.setRequestMethod("GET");
+			c.setDoInput(true);
 			try {
-				url = SecurityParamsFactory.getLocalAuthServerUrl();
-			} catch (SettingsFileOpenException e) {
-				throw new ServletException(SecurityParamsFactory.APP_PROP_READ_ERROR);
-			}
+				c.connect();
 
-			if (url != null) {
-				URL server = new URL(url + String.format("/logout?sesid=%s", sesid));
-				HttpURLConnection c = (HttpURLConnection) server.openConnection();
-				c.setRequestMethod("GET");
-				c.setDoInput(true);
-				try {
-					c.connect();
-
-					if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
-						if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
-							LOGGER.info(String.format(LOGOUT_INFO, sesid));
-						}
-					}
-
-				} catch (IOException e) {
+				if (c.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
-						LOGGER.info(String.format(ERROR_LOGOUT_INFO, sesid));
+						LOGGER.info(String.format(LOGOUT_INFO, sesid));
 					}
-				} finally {
-					if (c != null) {
-						c.disconnect();
-					}
+				}
 
+			} catch (IOException e) {
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+					LOGGER.info(String.format(ERROR_LOGOUT_INFO, sesid));
+				}
+			} finally {
+				if (c != null) {
+					c.disconnect();
 				}
 
 			}
+
 		}
+
+		String esiaAuthenticated =
+			(String) (request.getSession(false).getAttribute("esiaAuthenticated"));
+		if ((esiaAuthenticated != null) && ("true".equals(esiaAuthenticated))) {
+			response.sendRedirect(request.getContextPath() + "/logout");
+		}
+
 	}
 }

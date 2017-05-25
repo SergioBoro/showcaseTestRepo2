@@ -119,6 +119,10 @@ public final class UserInfo implements SerializableElement {
 		super();
 	}
 
+	public String getLogin() {
+		return login;
+	}
+
 	public String getSid() {
 		return sid;
 	}
