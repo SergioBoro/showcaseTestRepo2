@@ -64,15 +64,12 @@
  	
  	    <!--Провайдер, реализующий аутентификацию через ESIA-->    
 	    <authentication-provider ref="esiaAuthenticationProvider"/>	
- 	
  
 	    <!--Провайдер, реализующий аутентификацию через файл, в котором хранятся пользователи и пароли-->
 		<authentication-provider>
 	       <password-encoder hash="md5" />	  	
 	       <user-service properties="/WEB-INF/user.properties" />	       
 		</authentication-provider>
-	
-		<authentication-provider ref="facebookAuthProvider"/>	
 	
 	    <!--Провайдер, реализующий аутентификацию через AuthServer-->    
 	    <authentication-provider ref="signedRequestAuthenticationProvider"/>	
