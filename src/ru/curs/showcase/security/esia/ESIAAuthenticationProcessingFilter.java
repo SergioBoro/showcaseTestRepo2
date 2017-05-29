@@ -104,7 +104,7 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 		}
 
 		if (authentication.isAuthenticated())
-			AppAndSessionEventsListener.increment();
+			AppAndSessionEventsListener.incrementingAuthenticatedSessions();
 
 		return authentication;
 

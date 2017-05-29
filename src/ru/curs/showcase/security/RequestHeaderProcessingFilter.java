@@ -43,6 +43,13 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 	@Override
 	public Authentication attemptAuthentication(final HttpServletRequest request,
 			final HttpServletResponse response) throws IOException, ServletException {
+		ShowcaseAuthenticationSuccessHandler successHandler =
+			ApplicationContextProvider.getApplicationContext().getBean(
+					"customAuthenticationSuccessHandler",
+					ShowcaseAuthenticationSuccessHandler.class);
+
+		setAuthenticationSuccessHandler(successHandler);
+
 		String username = request.getParameter(USERNAME_HEADER);
 		String password = request.getParameter(PASS_HEADER);
 		String domain = request.getParameter(DOMAIN);
@@ -78,8 +85,6 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 
 		authRequest.setDetails(userAndSessionDetails);
 
-		AppAndSessionEventsListener.increment();
-
 		// обработчик устанавливающий что будет происходить в случае когда в
 		// процессе аутентификации произошла ошибка
 		AuthFailureHandler authFailureHandler = new AuthFailureHandler();
@@ -90,7 +95,7 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 		Authentication authentication = this.getAuthenticationManager().authenticate(authRequest);
 
 		if (authentication.isAuthenticated())
-			AppAndSessionEventsListener.increment();
+			AppAndSessionEventsListener.incrementingAuthenticatedSessions();
 
 		return authentication;
 	}

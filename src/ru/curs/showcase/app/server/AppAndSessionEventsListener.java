@@ -52,7 +52,11 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 
 	private ObjectName objectName;
 
-	private String contextPath;
+	private static String contextPath;
+
+	public static String getContextPath() {
+		return contextPath;
+	}
 
 	public static synchronized Object getActiveSessions() {
 		return activeSessions;
@@ -66,11 +70,11 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 		return authenticatedSessions;
 	}
 
-	public static synchronized void increment() {
+	public static synchronized void incrementingAuthenticatedSessions() {
 		++authenticatedSessions;
 	}
 
-	public static synchronized void decrement() {
+	public static synchronized void decrementingAuthenticatedSessions() {
 		--authenticatedSessions;
 		if (authenticatedSessions < 0)
 			authenticatedSessions = 0;
@@ -295,10 +299,10 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 				TypeEvent typeEvent = TypeEvent.SESSIONTIMEOUT;
 				if (destrHttpSession.getAttribute(SecurityLoggingCommand.IS_CLICK_LOGOUT) != null) {
 					typeEvent = TypeEvent.LOGOUT;
-					decrement();
+					decrementingAuthenticatedSessions();
 				}
 				if (typeEvent == TypeEvent.SESSIONTIMEOUT) {
-					decrement();
+					decrementingAuthenticatedSessions();
 				}
 				SecurityLoggingCommand logCommand =
 					new SecurityLoggingCommand(new CompositeContext(), null, destrHttpSession,

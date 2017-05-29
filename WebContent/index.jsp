@@ -6,11 +6,17 @@
 <%@page import="ru.curs.showcase.runtime.UserDataUtils"%>      
 <%@page import="ru.curs.showcase.runtime.ExternalClientLibrariesUtils"%>
 <%@page import="ru.curs.showcase.runtime.AppInfoSingleton"%>
-    
+<%@page import="ru.curs.showcase.app.server.AppAndSessionEventsListener"%>  
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <%
+	request.getSession().setAttribute("queryString", request.getQueryString());
+	Cookie cookie = new Cookie("queryString", request.getQueryString());
+	cookie.setPath(AppAndSessionEventsListener.getContextPath());
+	response.addCookie(cookie);
+	
 	String host = request.getRemoteHost();
 	String query = request.getQueryString();
 	

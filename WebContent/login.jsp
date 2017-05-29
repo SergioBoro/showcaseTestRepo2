@@ -4,6 +4,7 @@ pageEncoding="UTF-8"%>
 <%@page import="ru.curs.showcase.security.SecurityParamsFactory"%>   
 <%@page import="ru.curs.showcase.runtime.UserDataUtils"%> 
 <%@page import="ru.curs.showcase.security.esia.EsiaSettings"%>
+<%@page import="ru.curs.showcase.app.server.AppAndSessionEventsListener"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -13,6 +14,13 @@ pageEncoding="UTF-8"%>
 	String title = "Авторизация в КУРС: Showcase";
 	if (UserDataUtils.getGeneralOptionalProp("login.title") != null) {
 		title = UserDataUtils.getGeneralOptionalProp("login.title");
+	}
+	
+	if(request.getParameter("error") == null && request.getParameter("exited") == null)
+	{
+		Cookie cookie = new Cookie("queryString", "");
+		cookie.setPath(AppAndSessionEventsListener.getContextPath());
+		response.addCookie(cookie);
 	}
 %>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
