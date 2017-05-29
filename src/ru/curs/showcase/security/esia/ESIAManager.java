@@ -1,45 +1,27 @@
 package ru.curs.showcase.security.esia;
 
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.security.PrivateKey;
-import java.security.Security;
+import java.io.*;
+import java.net.*;
+import java.security.*;
 import java.security.interfaces.RSAPrivateCrtKey;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
-import java.util.HashMap;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
-import org.bouncycastle.cms.CMSProcessableByteArray;
-import org.bouncycastle.cms.CMSSignedData;
-import org.bouncycastle.cms.CMSSignedDataGenerator;
-import org.bouncycastle.cms.CMSTypedData;
+import org.bouncycastle.cms.*;
 import org.bouncycastle.cms.jcajce.JcaSignerInfoGeneratorBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.openssl.PEMEncryptedKeyPair;
-import org.bouncycastle.openssl.PEMException;
-import org.bouncycastle.openssl.PEMKeyPair;
-import org.bouncycastle.openssl.PEMParser;
-import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
-import org.bouncycastle.openssl.jcajce.JceOpenSSLPKCS8DecryptorProviderBuilder;
-import org.bouncycastle.openssl.jcajce.JcePEMDecryptorProviderBuilder;
-import org.bouncycastle.operator.ContentSigner;
-import org.bouncycastle.operator.InputDecryptorProvider;
-import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
+import org.bouncycastle.openssl.*;
+import org.bouncycastle.openssl.jcajce.*;
+import org.bouncycastle.operator.*;
+import org.bouncycastle.operator.jcajce.*;
 import org.bouncycastle.pkcs.PKCS8EncryptedPrivateKeyInfo;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.*;
 
 import ru.curs.showcase.util.TextUtils;
 
@@ -91,7 +73,8 @@ public final class ESIAManager {
 				Security.addProvider(new BouncyCastleProvider());
 
 				JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider(BC);
-				JcaX509CertificateConverter certconv = new JcaX509CertificateConverter().setProvider(BC);
+				JcaX509CertificateConverter certconv =
+					new JcaX509CertificateConverter().setProvider(BC);
 
 				PrivateKey privateKey = null;
 				X509CertificateHolder x509CertificateHolder = null;
@@ -104,23 +87,24 @@ public final class ESIAManager {
 					Object objCertificate = parser.readObject();
 					parser.close();
 					fis.close();
-					x509CertificateHolder = (X509CertificateHolder) parsePemObject(objCertificate, null, converter,
-							certconv);
+					x509CertificateHolder = (X509CertificateHolder) parsePemObject(objCertificate,
+							null, converter, certconv);
 
 					fis = new FileInputStream(EsiaSettings.KEY_FILE_NAME);
 					parser = new PEMParser(new InputStreamReader(fis));
 					Object objPrivateKey = parser.readObject();
 					parser.close();
 					fis.close();
-					privateKey = (PrivateKey) parsePemObject(objPrivateKey, EsiaSettings.KEY_PASS, converter, certconv);
+					privateKey = (PrivateKey) parsePemObject(objPrivateKey, EsiaSettings.KEY_PASS,
+							converter, certconv);
 
 					generator = new CMSSignedDataGenerator();
-					ContentSigner sha256Signer = new JcaContentSignerBuilder("SHA256withRSA").setProvider(BC)
-							.build(privateKey);
+					ContentSigner sha256Signer = new JcaContentSignerBuilder("SHA256withRSA")
+							.setProvider(BC).build(privateKey);
 
 					generator.addSignerInfoGenerator(new JcaSignerInfoGeneratorBuilder(
-							new JcaDigestCalculatorProviderBuilder().setProvider(BC).build()).build(sha256Signer,
-									x509CertificateHolder));
+							new JcaDigestCalculatorProviderBuilder().setProvider(BC).build())
+									.build(sha256Signer, x509CertificateHolder));
 
 					generator.addCertificate(x509CertificateHolder);
 
@@ -140,17 +124,18 @@ public final class ESIAManager {
 		}
 	}
 
-	private static Object parsePemObject(final Object in, final String pphrase, final JcaPEMKeyConverter converter,
-			final JcaX509CertificateConverter certconv) {
+	private static Object parsePemObject(final Object in, final String pphrase,
+			final JcaPEMKeyConverter converter, final JcaX509CertificateConverter certconv) {
 		Object o = in;
 		try {
 			if (o instanceof PEMEncryptedKeyPair) {
-				o = ((PEMEncryptedKeyPair) o)
-						.decryptKeyPair(new JcePEMDecryptorProviderBuilder().build(pphrase.toCharArray()));
+				o = ((PEMEncryptedKeyPair) o).decryptKeyPair(
+						new JcePEMDecryptorProviderBuilder().build(pphrase.toCharArray()));
 			} else if (o instanceof PKCS8EncryptedPrivateKeyInfo) {
-				InputDecryptorProvider pkcs8decoder = new JceOpenSSLPKCS8DecryptorProviderBuilder()
-						.build(pphrase.toCharArray());
-				o = converter.getPrivateKey(((PKCS8EncryptedPrivateKeyInfo) o).decryptPrivateKeyInfo(pkcs8decoder));
+				InputDecryptorProvider pkcs8decoder =
+					new JceOpenSSLPKCS8DecryptorProviderBuilder().build(pphrase.toCharArray());
+				o = converter.getPrivateKey(
+						((PKCS8EncryptedPrivateKeyInfo) o).decryptPrivateKeyInfo(pkcs8decoder));
 			}
 		} catch (Throwable t) {
 			throw new ESIAException("Failed to decode private key", t);
@@ -174,12 +159,14 @@ public final class ESIAManager {
 	private static void putClientSecret(final HashMap<String, String> params) {
 
 		try {
-			CMSTypedData msg = new CMSProcessableByteArray((params.get(PARAM_SCOPE) + params.get(PARAM_TIMESTAMP)
-					+ params.get(PARAM_CLIENT_ID) + params.get(PARAM_STATE)).getBytes());
+			CMSTypedData msg =
+				new CMSProcessableByteArray((params.get(PARAM_SCOPE) + params.get(PARAM_TIMESTAMP)
+						+ params.get(PARAM_CLIENT_ID) + params.get(PARAM_STATE)).getBytes());
 
 			synchronized (generator) {
 				CMSSignedData sigData = generator.generate(msg, false);
-				params.put(PARAM_CLIENT_SECRET, new String(Base64.getUrlEncoder().encode(sigData.getEncoded()), UTF8));
+				params.put(PARAM_CLIENT_SECRET,
+						new String(Base64.getUrlEncoder().encode(sigData.getEncoded()), UTF8));
 			}
 
 		} catch (Exception e) {
@@ -198,13 +185,11 @@ public final class ESIAManager {
 	}
 
 	public static String getLogoutURL() {
-
-		return EsiaSettings.URL_BASE + URL_LOGOUT + "?" + PARAM_CLIENT_ID + "=" + EsiaSettings.VALUE_CLIENT_ID;
-
+		return EsiaSettings.URL_BASE + URL_LOGOUT + "?" + PARAM_CLIENT_ID + "="
+				+ EsiaSettings.VALUE_CLIENT_ID;
 	}
 
 	public static String getAuthorizationURL() {
-
 		try {
 
 			HashMap<String, String> params = new HashMap<String, String>();
@@ -236,7 +221,6 @@ public final class ESIAManager {
 		} catch (Exception e) {
 			throw new ESIAException(e);
 		}
-
 	}
 
 	// CHECKSTYLE:OFF
@@ -300,15 +284,16 @@ public final class ESIAManager {
 
 					String[] idTokenParts = idToken.split("\\.");
 
-					String payload = new String(Base64.getUrlDecoder().decode(idTokenParts[1]), UTF8);
+					String payload =
+						new String(Base64.getUrlDecoder().decode(idTokenParts[1]), UTF8);
 
 					jo = new JSONObject(payload);
 
 					oid = jo.getJSONObject("urn:esia:sbj").getLong("urn:esia:sbj:oid");
 
 				} else {
-					throw new ESIAException(
-							"Ошибка при получении маркера доступа, responseCode = " + conn.getResponseCode());
+					throw new ESIAException("Ошибка при получении маркера доступа, responseCode = "
+							+ conn.getResponseCode());
 				}
 
 				conn.disconnect();
@@ -361,7 +346,8 @@ public final class ESIAManager {
 
 				} else {
 					throw new ESIAException(
-							"Ошибка при получении данных о пользователе, responseCode = " + conn.getResponseCode());
+							"Ошибка при получении данных о пользователе, responseCode = "
+									+ conn.getResponseCode());
 				}
 
 				conn.disconnect();
@@ -413,7 +399,8 @@ public final class ESIAManager {
 
 				} else {
 					throw new ESIAException(
-							"Ошибка при получении данных о пользователе, responseCode = " + conn.getResponseCode());
+							"Ошибка при получении данных о пользователе, responseCode = "
+									+ conn.getResponseCode());
 				}
 
 			} catch (Exception e) {

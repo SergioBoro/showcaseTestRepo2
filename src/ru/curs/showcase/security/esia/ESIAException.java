@@ -8,7 +8,7 @@ import ru.curs.showcase.util.exception.BaseException;
  * 
  */
 public class ESIAException extends BaseException {
-	private static final long serialVersionUID = -2528466907609857701L;
+	private static final long serialVersionUID = -2051866084221760857L;
 
 	public ESIAException(final Throwable aCause) {
 		super(ExceptionType.SOLUTION, aCause);

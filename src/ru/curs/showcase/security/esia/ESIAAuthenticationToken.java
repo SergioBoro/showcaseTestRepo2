@@ -12,6 +12,7 @@ public class ESIAAuthenticationToken extends AbstractAuthenticationToken {
 
 	public ESIAAuthenticationToken(final String sUsername) {
 		super(null);
+
 		username = sUsername;
 	}
 

@@ -34,7 +34,6 @@ public class ESIAAuthenticationProvider implements AuthenticationProvider {
 		UserInfo userInfo = userAndSessionDetails.getUserInfo();
 
 		if (userInfo != null) {
-
 			try {
 				Celesta.getInstance().login(userAndSessionDetails.getSessionId(),
 						userInfo.getSid());
@@ -57,7 +56,6 @@ public class ESIAAuthenticationProvider implements AuthenticationProvider {
 				HttpURLConnection conn = null;
 				try {
 					try {
-
 						StringWriter sw = new StringWriter();
 						XMLStreamWriter xw =
 							XMLOutputFactory.newInstance().createXMLStreamWriter(sw);
