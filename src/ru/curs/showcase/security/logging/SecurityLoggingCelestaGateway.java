@@ -1,7 +1,11 @@
 package ru.curs.showcase.security.logging;
 
+import java.util.Random;
+
+import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.celesta.CelestaHelper;
+import ru.curs.showcase.security.logging.Event.TypeEvent;
 
 public class SecurityLoggingCelestaGateway implements SecurityLoggingGateway {
 
@@ -23,9 +27,22 @@ public class SecurityLoggingCelestaGateway implements SecurityLoggingGateway {
 				}
 			};
 
-		helper.runPython(procName, new Object[] {
-				// event.getContext(),
-				event.getXml(), event.getTypeEvent().toString() });
-	}
+		if (event.getTypeEvent() == TypeEvent.LOGINERROR
+				|| event.getTypeEvent() == TypeEvent.SESSIONTIMEOUT) {
+			String tempSesId = String.format("Logging%08X", (new Random()).nextInt());
+			try {
+				Celesta.getInstance().login(tempSesId, "userCelestaSid");
+			} catch (CelestaException e) {
+				e.printStackTrace();
+			}
+			helper.runPythonWithSessionSet(tempSesId, procName, new Object[] {
+					// event.getContext(),
+					event.getXml(), event.getTypeEvent().toString() });
 
+		} else {
+			helper.runPython(procName, new Object[] {
+					// event.getContext(),
+					event.getXml(), event.getTypeEvent().toString() });
+		}
+	}
 }

@@ -57,6 +57,10 @@ public class SecurityLoggingCommand extends ServiceLayerCommand<Void> {
 				event.add("OS", browserType != null ? OSType.detect(userAgent).toString() : "");
 				event.add("OSVersion", OSType.detectVersion(userAgent));
 				event.add("UserAgent", userAgent);
+				Exception securityLastExeption =
+					(Exception) httpSession.getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+				if (securityLastExeption != null)
+					event.add("SecurityLastExeption", securityLastExeption.getMessage());
 			} else if (this.session != null) {
 				httpSession = this.session;
 			}
@@ -69,5 +73,4 @@ public class SecurityLoggingCommand extends ServiceLayerCommand<Void> {
 			gateway.doLogging(this.event);
 		}
 	}
-
 }
