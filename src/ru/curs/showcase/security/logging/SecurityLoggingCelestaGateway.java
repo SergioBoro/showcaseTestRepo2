@@ -39,6 +39,13 @@ public class SecurityLoggingCelestaGateway implements SecurityLoggingGateway {
 					// event.getContext(),
 					event.getXml(), event.getTypeEvent().toString() });
 
+		} else if (event.getTypeEvent() == TypeEvent.LOGIN) {
+			int index1 = event.getXml().indexOf("<HttpSessionId>");
+			int index2 = event.getXml().indexOf("</HttpSessionId>");
+			String sesid = event.getXml().substring(index1 + "<HttpSessionId>".length(), index2);
+			helper.runPythonWithSessionSet(sesid, procName, new Object[] {
+					// event.getContext(),
+					event.getXml(), event.getTypeEvent().toString() });
 		} else {
 			helper.runPython(procName, new Object[] {
 					// event.getContext(),

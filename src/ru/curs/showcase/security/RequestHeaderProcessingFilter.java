@@ -10,8 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 import ru.curs.showcase.app.api.UserInfo;
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.server.AppAndSessionEventsListener;
 import ru.curs.showcase.runtime.AppInfoSingleton;
+import ru.curs.showcase.security.logging.Event.TypeEvent;
+import ru.curs.showcase.security.logging.*;
 import ru.curs.showcase.util.UserAndSessionDetails;
 
 //imports omitted
@@ -94,8 +97,13 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 		setAuthenticationFailureHandler(authFailureHandler);
 		Authentication authentication = this.getAuthenticationManager().authenticate(authRequest);
 
-		if (authentication.isAuthenticated())
+		if (authentication.isAuthenticated()) {
 			AppAndSessionEventsListener.incrementingAuthenticatedSessions();
+			SecurityLoggingCommand logCommand =
+				new SecurityLoggingCommand(new CompositeContext(), request, request.getSession(),
+						TypeEvent.LOGIN);
+			logCommand.execute();
+		}
 
 		return authentication;
 	}
