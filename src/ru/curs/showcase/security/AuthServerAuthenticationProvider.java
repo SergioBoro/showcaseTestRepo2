@@ -161,15 +161,26 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 								.getGeneralOptionalProp("mellophone.show.reason.for.blocked.user") != null
 								&& "true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp(
 										"mellophone.show.reason.for.blocked.user").trim())) {
-
 							if (servletResponseMessage
-									.contains("locked out for too many unsuccessful login attempts")) {
+									.contains("locked out for too many unsuccessful login attempts")
+									&& servletResponseMessage.contains("Резюме:")) {
 								LOGGER.info("Пользователь " + login + " заблокирован меллофоном");
 								String time_to_unlock =
 									servletResponseMessage.substring(servletResponseMessage
 											.indexOf("Time to unlock"));
 								throw new BadCredentialsException("User '" + login
 										+ "' is blocked by mellophone. " + time_to_unlock);
+							}
+
+							if (servletResponseMessage
+									.contains("locked out for too many unsuccessful login attempts")
+									&& !servletResponseMessage.contains("Резюме:")) {
+								LOGGER.info("Пользователь " + login + " заблокирован меллофоном");
+								String time_to_unlock =
+									servletResponseMessage.substring(servletResponseMessage
+											.indexOf("Time to unlock"));
+								throw new BadCredentialsException("User '" + login
+										+ "' is already blocked by mellophone. " + time_to_unlock);
 							}
 						}
 
@@ -200,6 +211,9 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 					throw new BadCredentialsException(e.getMessage(), e);
 				} else if (e.getMessage().contains("User")
 						&& e.getMessage().contains("is blocked by mellophone")) {
+					throw new BadCredentialsException(e.getMessage(), e);
+				} else if (e.getMessage().contains("User")
+						&& e.getMessage().contains("is already blocked by mellophone")) {
 					throw new BadCredentialsException(e.getMessage(), e);
 				} else if (e.getMessage().contains("User")
 						&& e.getMessage().contains("is blocked by administrator")) {
@@ -235,6 +249,7 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		// } catch (Exception e) {
 		// }
 		// SecurityContextHolder.getContext().setAuthentication(arg0);
+
 		return arg1;
 
 	}
