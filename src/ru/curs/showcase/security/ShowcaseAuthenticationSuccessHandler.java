@@ -18,12 +18,14 @@ public class ShowcaseAuthenticationSuccessHandler extends SimpleUrlAuthenticatio
 		DefaultSavedRequest defaultSavedRequest =
 			(DefaultSavedRequest) (new HttpSessionRequestCache().getRequest(request, response));
 
-		String requestUrl = request.getContextPath() + "/";
+		String requestUrl = defaultSavedRequest.getRequestURL().toString();
+		// request.getContextPath() + "/";
 
 		String queryString = "";
 
-		if (defaultSavedRequest != null)
+		if (defaultSavedRequest != null) {
 			queryString = defaultSavedRequest.getQueryString();
+		}
 
 		if (queryString == null || "".equals(queryString)) {
 			Cookie[] cookies = request.getCookies();

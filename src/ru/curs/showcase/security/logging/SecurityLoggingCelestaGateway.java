@@ -1,6 +1,6 @@
 package ru.curs.showcase.security.logging;
 
-import java.util.Random;
+import java.util.*;
 
 import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -35,14 +35,41 @@ public class SecurityLoggingCelestaGateway implements SecurityLoggingGateway {
 			} catch (CelestaException e) {
 				e.printStackTrace();
 			}
+
 			helper.runPythonWithSessionSet(tempSesId, procName, new Object[] {
 					// event.getContext(),
 					event.getXml(), event.getTypeEvent().toString() });
 
 		} else if (event.getTypeEvent() == TypeEvent.LOGIN) {
+
 			int index1 = event.getXml().indexOf("<HttpSessionId>");
 			int index2 = event.getXml().indexOf("</HttpSessionId>");
 			String sesid = event.getXml().substring(index1 + "<HttpSessionId>".length(), index2);
+
+			int index10 = event.getXml().indexOf("<UserName>");
+			int index20 = event.getXml().indexOf("</UserName>");
+			String username = event.getXml().substring(index10 + "<UserName>".length(), index20);
+
+			if ("master".equals(username)) {
+				try {
+					Celesta.getInstance().login(sesid, "userCelestaSid");
+				} catch (CelestaException e) {
+					e.printStackTrace();
+				}
+				Map<String, List<String>> map = new HashMap<>();
+				List<String> list = new ArrayList<>();
+				list.add("userCelestaSid");
+				map.put("sid", list);
+				CompositeContext context = event.getContext();
+				context.addSessionParams(map);
+				helper = new CelestaHelper<String>(context, String.class) {
+					@Override
+					protected Object[] mergeAddAndGeneralParameters(
+							final CompositeContext context, final Object[] additionalParams) {
+						return additionalParams;
+					}
+				};
+			}
 			helper.runPythonWithSessionSet(sesid, procName, new Object[] {
 					// event.getContext(),
 					event.getXml(), event.getTypeEvent().toString() });

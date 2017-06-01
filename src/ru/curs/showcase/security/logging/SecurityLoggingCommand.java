@@ -66,7 +66,8 @@ public class SecurityLoggingCommand extends ServiceLayerCommand<Void> {
 			}
 			if (httpSession != null) {
 				event.add("HttpSessionId", httpSession.getId());
-				if (event.getTypeEvent() == TypeEvent.SESSIONTIMEOUT) {
+				if (event.getTypeEvent() == TypeEvent.SESSIONTIMEOUT
+						|| event.getTypeEvent() == TypeEvent.LOGIN) {
 					String userName = (String) httpSession.getAttribute("username");
 					if (userName != null)
 						event.add("UserName", userName);
