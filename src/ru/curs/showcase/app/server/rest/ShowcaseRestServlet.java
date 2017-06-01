@@ -211,6 +211,14 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		response.setStatus(responcseData.getResponseCode());
 		response.setHeader("Content-Type", responcseData.getContentType());
 
+		for (Iterator<Map.Entry<String, String>> iter =
+			responcseData.getResponseHttpParametersMap().entrySet().iterator(); iter.hasNext();) {
+			Map.Entry<String, String> entry = iter.next();
+
+			response.setHeader(entry.getKey(), entry.getValue());
+
+		}
+
 		LOGGER.info("Using Rest WebService. \nCalled procedure: " + restProc + "\nRequest Type: "
 				+ requestType + "\nRequest URL: " + requestUrl + "\nUser Token: " + userToken
 				+ "\nAccept Language: " + acceptLanguage + "\nRequest Data: " + requestData
