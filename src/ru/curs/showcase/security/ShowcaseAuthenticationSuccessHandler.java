@@ -18,8 +18,12 @@ public class ShowcaseAuthenticationSuccessHandler extends SimpleUrlAuthenticatio
 		DefaultSavedRequest defaultSavedRequest =
 			(DefaultSavedRequest) (new HttpSessionRequestCache().getRequest(request, response));
 
-		String requestUrl = defaultSavedRequest.getRequestURL().toString();
-		// request.getContextPath() + "/";
+		String requestUrl = "";
+
+		if (defaultSavedRequest != null)
+			requestUrl = defaultSavedRequest.getRequestURL().toString();
+		else
+			requestUrl = request.getContextPath() + "/";
 
 		String queryString = "";
 
