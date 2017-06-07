@@ -18,7 +18,7 @@ pageEncoding="UTF-8"%>
 	
 	if(request.getParameter("error") == null && request.getParameter("exited") == null)
 	{
-		Cookie cookie = new Cookie("queryString", "");
+		Cookie cookie = new Cookie("queryString" + request.getServerPort() + request.getContextPath(), "");
 		cookie.setPath(AppAndSessionEventsListener.getContextPath());
 		response.addCookie(cookie);
 	}

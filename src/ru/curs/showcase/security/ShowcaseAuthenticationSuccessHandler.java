@@ -26,17 +26,17 @@ public class ShowcaseAuthenticationSuccessHandler extends SimpleUrlAuthenticatio
 			requestUrl = request.getContextPath() + "/";
 
 		String queryString = "";
+		String port = "" + request.getServerPort();
 
-		if (defaultSavedRequest != null) {
+		if (defaultSavedRequest != null)
 			queryString = defaultSavedRequest.getQueryString();
-		}
 
 		if (queryString == null || "".equals(queryString)) {
 			Cookie[] cookies = request.getCookies();
 			if (cookies != null && cookies.length > 0) {
 				for (Cookie cookie : cookies) {
-					if (cookie.getName().equals("queryString") && cookie.getValue() != null
-							&& !"".equals(cookie.getValue())) {
+					if (cookie.getName().equals("queryString" + port + request.getContextPath())
+							&& cookie.getValue() != null && !"".equals(cookie.getValue())) {
 						queryString = cookie.getValue();
 					}
 				}

@@ -12,10 +12,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <%
-	request.getSession().setAttribute("queryString", request.getQueryString());
-	Cookie cookie = new Cookie("queryString", request.getQueryString());
-	cookie.setPath(AppAndSessionEventsListener.getContextPath());
-	response.addCookie(cookie);
+request.getSession().setAttribute("queryString" + request.getServerPort() + request.getContextPath(), request.getQueryString());
+Cookie cookie = new Cookie("queryString" + request.getServerPort() + request.getContextPath(), request.getQueryString());
+cookie.setPath(AppAndSessionEventsListener.getContextPath());
+response.addCookie(cookie);
 	
 	String host = request.getRemoteHost();
 	String query = request.getQueryString();
