@@ -39,6 +39,7 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		String requestUrl = request.getRequestURL().toString();
 
 		if ((requestUrl.endsWith("restlogin")) || requestUrl.endsWith("restlogin/")) {
+			addAccessControlAllowOriginPropertyToResponceHeader(response);
 
 			String userSid = null;
 
@@ -119,7 +120,7 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		// System.out.println("aaaa: " + request.getMethod());
 
 		if ((requestUrl.endsWith("restlogout")) || requestUrl.endsWith("restlogout/")) {
-
+			addAccessControlAllowOriginPropertyToResponceHeader(response);
 			try {
 				Celesta.getInstance().logout(sesId, false);
 			} catch (CelestaException e) {
@@ -272,5 +273,12 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		// String[] parts = url.split("api");
 		// return parts[1];
 		return url.substring(url.indexOf("api") + 3);
+	}
+
+	private void addAccessControlAllowOriginPropertyToResponceHeader(
+			final HttpServletResponse aresponse) {
+		String rach = UserDataUtils.getGeneralOptionalProp("rest.allow.crossdomain.hosts");
+		if (rach != null && "true".equalsIgnoreCase(rach.trim()))
+			aresponse.setHeader("Access-Control-Allow-Origin", "*");
 	}
 }
