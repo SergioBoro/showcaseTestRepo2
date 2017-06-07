@@ -12,8 +12,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <%
-request.getSession().setAttribute("queryString" + request.getServerPort() + request.getContextPath(), request.getQueryString());
-Cookie cookie = new Cookie("queryString" + request.getServerPort() + request.getContextPath(), request.getQueryString());
+String webAppName = request.getContextPath();
+if (webAppName.contains("/")) {
+	webAppName = webAppName.replace("/", "");
+}
+request.getSession().setAttribute("queryString" + request.getServerPort() + webAppName, request.getQueryString());
+Cookie cookie = new Cookie("queryString" + request.getServerPort() + webAppName, request.getQueryString());
 cookie.setPath(AppAndSessionEventsListener.getContextPath());
 response.addCookie(cookie);
 	

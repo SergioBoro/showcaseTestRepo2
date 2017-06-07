@@ -29,11 +29,15 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 
+		String webAppName = request.getContextPath();
+		if (webAppName.contains("/")) {
+			webAppName = webAppName.replace("/", "");
+		}
+
 		String attr =
 			(String) (request.getSession(false).getAttribute("queryString"
-					+ request.getServerPort() + request.getContextPath()));
-		Cookie cookie =
-			new Cookie("queryString" + request.getServerPort() + request.getContextPath(), attr);
+					+ request.getServerPort() + webAppName));
+		Cookie cookie = new Cookie("queryString" + request.getServerPort() + webAppName, attr);
 		cookie.setPath(AppAndSessionEventsListener.getContextPath());
 		response.addCookie(cookie);
 

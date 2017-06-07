@@ -15,10 +15,15 @@ pageEncoding="UTF-8"%>
 	if (UserDataUtils.getGeneralOptionalProp("login.title") != null) {
 		title = UserDataUtils.getGeneralOptionalProp("login.title");
 	}
+
+	String webAppName = request.getContextPath();
+	if (webAppName.contains("/")) {
+		webAppName = webAppName.replace("/", "");
+	}
 	
 	if(request.getParameter("error") == null && request.getParameter("exited") == null)
 	{
-		Cookie cookie = new Cookie("queryString" + request.getServerPort() + request.getContextPath(), "");
+		Cookie cookie = new Cookie("queryString" + request.getServerPort() + webAppName, "");
 		cookie.setPath(AppAndSessionEventsListener.getContextPath());
 		response.addCookie(cookie);
 	}
