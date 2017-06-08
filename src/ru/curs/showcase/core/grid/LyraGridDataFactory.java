@@ -56,11 +56,20 @@ public class LyraGridDataFactory {
 	private static final String KEYVALUES_SEPARATOR = "_D13k82F9g7_";
 	private static final String EVENT_COLUMN_TAG = "column";
 	private static final String CELL_PREFIX = "cell";
+	private static final String PROPERTIES = "_properties_";
 	private static final String ROWSTYLE = "rowstyle";
 	private static final String CHECK_ACTION_ERROR =
 		"Некорректное описание действия в элементе инф. панели: ";
 
+	/**
+	 * Не локальная Locale по умолчанию. Используется для передачи данных в
+	 * приложения, которые плохо обрабатывают текущую Locale (экспорт в Excel).
+	 */
+	private static final Locale DEF_NON_LOCAL_LOCALE = Locale.US;
+
 	private final List<GridEvent> events = new ArrayList<GridEvent>();
+
+	private GridToExcelExportType excelExportType = null;
 
 	public LyraGridDataFactory(final LyraGridContext aContext,
 			final DataPanelElementInfo aElInfo) {
@@ -152,6 +161,8 @@ public class LyraGridDataFactory {
 
 		LyraGridAddInfo lyraGridAddInfo =
 			((LyraGridScrollBack) basicGridForm.getChangeNotifier()).getLyraGridAddInfo();
+
+		lyraGridAddInfo.setExcelExportType(null);
 
 		int position = -1;
 		int lyraApproxTotalCount = basicGridForm.getApproxTotalCount();
@@ -259,7 +270,7 @@ public class LyraGridDataFactory {
 					colPrecision = lyraFieldValue.getScale();
 				}
 
-				if ("_properties_".equalsIgnoreCase(lyraFieldValue.getName())) {
+				if (PROPERTIES.equalsIgnoreCase(lyraFieldValue.getName())) {
 					properties = lyraFieldValue.getValue().toString();
 				} else {
 					obj.put(lyraFieldValue.getName(), getCellValue(lyraFieldValue, colPrecision));
@@ -341,6 +352,138 @@ public class LyraGridDataFactory {
 		}
 
 		result.setData(data.toJSONString());
+
+	}
+
+	public List<HashMap<String, String>> buildRecordsForExcel(
+			final GridToExcelExportType aExcelExportType) throws CelestaException {
+
+		excelExportType = aExcelExportType;
+
+		state = (LyraGridServerState) AppInfoSingleton.getAppInfo()
+				.getLyraGridCacheState(SessionUtils.getCurrentSessionId(), elInfo, context);
+
+		if (state != null) {
+			context.setOrderBy(state.getOrderBy());
+		}
+
+		LyraGridGateway lgateway = new LyraGridGateway();
+		basicGridForm = lgateway.getLyraFormInstance(context, elInfo);
+
+		if (basicGridForm.getChangeNotifier() == null) {
+			throw new ValidateException(new UserMessage(
+					"Внимание! Произошло обновление скриптов решения. Для корректной работы необходимо перегрузить грид.",
+					MessageType.INFO, "Сообщение"));
+		}
+
+		ensureLyraGridServerState();
+
+		LyraGridAddInfo lyraGridAddInfo =
+			((LyraGridScrollBack) basicGridForm.getChangeNotifier()).getLyraGridAddInfo();
+
+		lyraGridAddInfo.setExcelExportType(excelExportType);
+
+		// ---------------------------------------------------
+
+		ArrayList<HashMap<String, String>> excelRecords = new ArrayList<HashMap<String, String>>();
+
+		if (excelExportType == GridToExcelExportType.CURRENTPAGE) {
+			buildRecordsForExcelCurrentPage(excelRecords);
+		} else {
+			buildRecordsForExcelAll(excelRecords);
+		}
+
+		return excelRecords;
+	}
+
+	private void buildRecordsForExcelCurrentPage(final List<HashMap<String, String>> excelRecords)
+			throws CelestaException {
+
+		List<LyraFormData> records =
+			basicGridForm.setPosition(getKeyValuesById(context.getRefreshId()));
+		// lyraGridAddInfo.setLyraOldPosition(basicGridForm.getTopVisiblePosition());
+
+		// int length = Math.min(records.size(),
+		// context.getLiveInfo().getLimit());
+		int length = records.size();
+		for (int i = 0; i < length; i++) {
+			LyraFormData rec = records.get(i);
+
+			HashMap<String, String> obj = new HashMap<String, String>();
+			for (LyraFieldValue lyraFieldValue : rec.getFields()) {
+
+				int colPrecision;
+				if (lyraFieldValue.getScale() == 0) {
+					colPrecision = COLUMN_DEFAULT_PRECISION;
+				} else {
+					colPrecision = lyraFieldValue.getScale();
+				}
+
+				if (!PROPERTIES.equalsIgnoreCase(lyraFieldValue.getName())) {
+					obj.put(lyraFieldValue.getName(), getCellValue(lyraFieldValue, colPrecision));
+				}
+
+			}
+
+			excelRecords.add(obj);
+		}
+
+	}
+
+	private void buildRecordsForExcelAll(final List<HashMap<String, String>> excelRecords)
+			throws CelestaException {
+
+		int approxTotalCount = -1;
+		int step = basicGridForm.getGridHeight();
+
+		List<String> prevIds = new ArrayList<String>();
+
+		for (int position = 0; position < (approxTotalCount =
+			Math.max(approxTotalCount, basicGridForm.getApproxTotalCount())); position += step) {
+
+			List<LyraFormData> records = basicGridForm.getRows(position);
+
+			// int length = Math.min(records.size(),
+			// context.getLiveInfo().getLimit());
+			int length = records.size();
+			for (int i = 0; i < length; i++) {
+
+				LyraFormData rec = records.get(i);
+
+				if (position + step >= approxTotalCount) {
+					if (prevIds.indexOf(getIdByKeyValues(rec.getKeyValues())) > -1) {
+						continue;
+					}
+				} else {
+					if (position + 2 * step >= approxTotalCount) {
+						prevIds.add(getIdByKeyValues(rec.getKeyValues()));
+					}
+				}
+
+				HashMap<String, String> obj = new HashMap<String, String>();
+				for (LyraFieldValue lyraFieldValue : rec.getFields()) {
+
+					int colPrecision;
+					if (lyraFieldValue.getScale() == 0) {
+						colPrecision = COLUMN_DEFAULT_PRECISION;
+					} else {
+						colPrecision = lyraFieldValue.getScale();
+					}
+
+					if (!PROPERTIES.equalsIgnoreCase(lyraFieldValue.getName())) {
+						obj.put(lyraFieldValue.getName(),
+								getCellValue(lyraFieldValue, colPrecision));
+					}
+
+				}
+
+				excelRecords.add(obj);
+			}
+
+		}
+
+		basicGridForm.setPosition(getKeyValuesById(context.getRefreshId()));
+		// lyraGridAddInfo.setLyraOldPosition(basicGridForm.getTopVisiblePosition());
 
 	}
 
@@ -489,9 +632,13 @@ public class LyraGridDataFactory {
 	}
 
 	private String getStringValueOfNumber(final Double value, final Integer precision) {
-		NumberFormat nf;
 
-		nf = NumberFormat.getNumberInstance();
+		NumberFormat nf;
+		if (excelExportType == null) {
+			nf = NumberFormat.getNumberInstance();
+		} else {
+			nf = NumberFormat.getNumberInstance(DEF_NON_LOCAL_LOCALE);
+		}
 
 		if (precision != null) {
 			nf.setMinimumFractionDigits(precision);

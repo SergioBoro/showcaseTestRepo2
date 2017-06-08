@@ -3,6 +3,7 @@ package ru.curs.showcase.core.grid;
 import java.io.IOException;
 
 import ru.curs.lyra.BasicGridForm;
+import ru.curs.showcase.app.api.grid.GridToExcelExportType;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 
 /**
@@ -48,6 +49,10 @@ public class LyraGridScrollBack implements Runnable {
 	@Override
 	public void run() {
 
+		if (lyraGridAddInfo.getExcelExportType() == GridToExcelExportType.ALL) {
+			return;
+		}
+
 		System.out.println("LyraGridScrollBack.ddddddddddddd2");
 		System.out.println("className: " + basicGridForm.getClass().getSimpleName());
 		System.out.println("lyraOldPosition: " + lyraGridAddInfo.getLyraOldPosition());
@@ -67,6 +72,10 @@ public class LyraGridScrollBack implements Runnable {
 				- lyraGridAddInfo.getLyraOldPosition()) <= lyraApproxTotalCount
 						/ LYRA_SMALLFACTOR) {
 			lyraGridAddInfo.setLyraOldPosition(basicGridForm.getTopVisiblePosition());
+			return;
+		}
+
+		if (lyraGridAddInfo.getExcelExportType() == GridToExcelExportType.CURRENTPAGE) {
 			return;
 		}
 

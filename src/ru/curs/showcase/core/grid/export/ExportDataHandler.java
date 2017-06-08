@@ -4,15 +4,15 @@ import java.io.OutputStream;
 
 import javax.servlet.http.*;
 
-import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
+import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;
+
+import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.server.*;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.util.TextUtils;
-
-import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;
 
 /**
  * Обработчик запроса на экспорт данных в Excel.
@@ -25,17 +25,21 @@ public class ExportDataHandler {
 
 	public void handle(final HttpServletRequest request, final HttpServletResponse response) {
 		try {
-			DataPanelElementInfo eInfo =
-				(DataPanelElementInfo) deserializeObject(getParam(request,
-						DataPanelElementInfo.class));
+			DataPanelElementInfo eInfo = (DataPanelElementInfo) deserializeObject(
+					getParam(request, DataPanelElementInfo.class));
 			GridToExcelExportType gridToExcelExportType =
 				GridToExcelExportType.valueOf(getParam(request, GridToExcelExportType.class));
 
 			if (eInfo.getExportDataProc() == null
 					|| GridToExcelExportType.CURRENTPAGE.equals(gridToExcelExportType)) {
 				// Прежний функционал выгрузки в Excel
-				GridToExcelHandler handler = new GridToExcelHandler();
-				handler.handle(request, response);
+				if (eInfo.getSubtype() == DataPanelElementSubType.JS_LYRA_GRID) {
+					LyraGridToExcelHandler handler = new LyraGridToExcelHandler();
+					handler.handle(request, response);
+				} else {
+					GridToExcelHandler handler = new GridToExcelHandler();
+					handler.handle(request, response);
+				}
 				return;
 			}
 
@@ -47,13 +51,13 @@ public class ExportDataHandler {
 			response.setCharacterEncoding(TextUtils.DEF_ENCODING);
 			if (ExportType.XLST.equals(exportType)) {
 				response.setContentType("application/vnd.vnd.xlsx");
-				response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName
-						+ ".xlsx\"");
+				response.setHeader("Content-Disposition",
+						"attachment; filename=\"" + fileName + ".xlsx\"");
 			} else {
 				response.setContentType("text/csv");
 				if (exportType == null) {
-					response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName
-							+ ".csv\"");
+					response.setHeader("Content-Disposition",
+							"attachment; filename=\"" + fileName + ".csv\"");
 				}
 			}
 
@@ -96,9 +100,8 @@ public class ExportDataHandler {
 	 * @throws SerializationException
 	 */
 	protected Object deserializeObject(final String data) throws SerializationException {
-		ServerSerializationStreamReader streamReader =
-			new ServerSerializationStreamReader(Thread.currentThread().getContextClassLoader(),
-					null);
+		ServerSerializationStreamReader streamReader = new ServerSerializationStreamReader(
+				Thread.currentThread().getContextClassLoader(), null);
 		streamReader.prepareToRead(data);
 		return streamReader.readObject();
 	}

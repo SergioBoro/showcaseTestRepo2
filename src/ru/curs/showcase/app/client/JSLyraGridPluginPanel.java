@@ -1222,12 +1222,10 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 	@Override
 	public void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType) {
 
-		MessageBox.showMessageWithDetails("Информация", "Данный функционал временно отключен", "",
-				MessageType.INFO, false, null);
-
-		if (1 == 1) {
-			return;
-		}
+		LyraGridContext gridContext = getDetailedContext();
+		String params = "'" + getDivIdPlugin() + "'";
+		String refreshId = pluginProc("getRefreshIdForExcelLyraDGrid", params);
+		gridContext.setRefreshId(refreshId);
 
 		DownloadHelper dh = DownloadHelper.getInstance();
 		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
@@ -1246,7 +1244,7 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			SerializationStreamFactory ssfExcel = dh.getAddObjectSerializer();
 
 			dh.addParam(getDetailedContext().getClass().getName(),
-					getDetailedContext().toParamForHttpPost(getObjectSerializer()));
+					gridContext.toParamForHttpPost(getObjectSerializer()));
 			dh.addParam(DataPanelElementInfo.class.getName(),
 					getElementInfo().toParamForHttpPost(getObjectSerializer()));
 
@@ -1258,6 +1256,8 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 							"Error when exporting to Excel"),
 					e.getMessage());
+		} finally {
+			gridContext.setRefreshId(null);
 		}
 	}
 

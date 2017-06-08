@@ -1,5 +1,7 @@
 package ru.curs.showcase.core.grid;
 
+import ru.curs.showcase.app.api.grid.GridToExcelExportType;
+
 /**
  * Класс для хранения дополнительной информации, необходимой для подключения
  * лирагрид.
@@ -9,6 +11,8 @@ public class LyraGridAddInfo {
 
 	private int lyraOldPosition = 0;
 	private int dgridOldTotalCount = 0;
+
+	private GridToExcelExportType excelExportType = null;
 
 	public int getLyraOldPosition() {
 		return lyraOldPosition;
@@ -24,6 +28,14 @@ public class LyraGridAddInfo {
 
 	public void setDgridOldTotalCount(final int aDgridOldTotalCount) {
 		dgridOldTotalCount = aDgridOldTotalCount;
+	}
+
+	protected GridToExcelExportType getExcelExportType() {
+		return excelExportType;
+	}
+
+	protected void setExcelExportType(final GridToExcelExportType aExcelExportType) {
+		excelExportType = aExcelExportType;
 	}
 
 }

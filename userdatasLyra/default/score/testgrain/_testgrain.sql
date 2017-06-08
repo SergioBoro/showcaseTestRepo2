@@ -77,6 +77,64 @@ create index ix_street44 on street4 (ocatd);
 
 
 
+create table street5(
+/**
+ {"width": 270, "caption": "Название"}
+ */
+	name varchar(40) NOT NULL,
+	
+    rnum int NOT NULL,
+    
+	code varchar(17) NOT NULL PRIMARY KEY,	
+	--code varchar(17) NOT NULL,
+	--CONSTRAINT pk_street4 PRIMARY KEY (code, rnum),
+	
+	socr varchar(10) NOT NULL,
+	--index varchar(6) NOT NULL,
+	gninmb varchar(4) NOT NULL,
+	uno varchar(4) NOT NULL,
+	ocatd varchar(11) NOT NULL
+	
+	
+);
+create index ix_street5 on street5 (name);
+create index ix_street51 on street5 (name, gninmb, code);
+create index ix_street52 on street5 (gninmb);
+create index ix_street53 on street5 (name, gninmb);
+create index ix_street54 on street5 (ocatd);
+
+
+
+
+create table street6(
+/**
+ {"width": 270, "caption": "Название"}
+ */
+	name varchar(40) NOT NULL,
+	
+    rnum int NOT NULL    ,
+    
+	code varchar(17) NOT NULL PRIMARY KEY,	
+	--code varchar(17) NOT NULL,
+	--CONSTRAINT pk_street4 PRIMARY KEY (code, rnum),
+	
+	socr varchar(10) NOT NULL,
+	--index varchar(6) NOT NULL,
+	gninmb varchar(4) NOT NULL,
+	uno varchar(4) NOT NULL,
+	ocatd varchar(11) NOT NULL
+	
+	
+);
+create index ix_street6 on street6 (name);
+create index ix_street61 on street6 (name, gninmb, code);
+create index ix_street62 on street6 (gninmb);
+create index ix_street63 on street6 (name, gninmb);
+create index ix_street64 on street6 (ocatd);
+
+
+
+
 create table test2 (
 code int identity not null primary key,
 name text not null default 'abc'

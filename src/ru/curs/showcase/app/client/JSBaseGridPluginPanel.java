@@ -81,8 +81,7 @@ public abstract class JSBaseGridPluginPanel extends BasicElementPanelBasis {
 			jsonItem.put(ICON_CLASS_NAME, new JSONString(id));
 			jsonStaticItems.put(String.valueOf(id), jsonItem);
 		}
-		if (getGridMetadata().getUISettings().isVisibleExportToExcelAll()
-				&& (!isJSLyraGridPluginPanel())) {
+		if (getGridMetadata().getUISettings().isVisibleExportToExcelAll()) {
 			String id = "exportToExcelAll";
 			JSONObject jsonItem = new JSONObject();
 			jsonItem.put("id", new JSONString(id));

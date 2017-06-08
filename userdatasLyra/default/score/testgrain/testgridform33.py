@@ -2,7 +2,7 @@
 from lyra.gridForm import GridForm
 from lyra.basicForm import form
 from lyra.basicForm import formfield
-from _testgrain_orm import street4Cursor
+from _testgrain_orm import street6Cursor
 
 @form(
       profile='test.properties',
@@ -32,9 +32,9 @@ from _testgrain_orm import street4Cursor
      )
 
 
-class TestGridForm3(GridForm):  
+class TestGridForm33(GridForm):  
     def __init__(self, context):
-        super(TestGridForm3, self).__init__(context)
+        super(TestGridForm33, self).__init__(context)
         self.createAllBoundFields()
         
         
@@ -60,7 +60,7 @@ class TestGridForm3(GridForm):
         print context.getShowcaseContext().getMain();
         print context.getShowcaseContext().getOrderBy();
 
-        c = street4Cursor(context)
+        c = street6Cursor(context)
         
         
         if context.getShowcaseContext().getOrderBy() == None:

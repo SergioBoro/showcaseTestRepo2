@@ -812,6 +812,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 	});
 }
 
+
 function refreshLyraDGrid(parentId){
 	
 	var row;
@@ -824,7 +825,22 @@ function refreshLyraDGrid(parentId){
 	arrGrids[parentId].refreshId = arrGrids[parentId].row(row).id;
 	
 	arrGrids[parentId].refresh({keepScrollPosition: true});
+	
 }
+
+function getRefreshIdForExcelLyraDGrid(parentId){
+	
+	var row;
+	if(arrGrids[parentId].oldFocusedNode && arrGrids[parentId].row(arrGrids[parentId].oldFocusedNode)){
+		row = arrGrids[parentId].row(arrGrids[parentId].oldFocusedNode);
+	} else {
+		row = arrGrids[parentId].row(arrGrids[parentId]._focusedNode);
+	}
+	
+	return arrGrids[parentId].row(row).id;
+	
+}
+
 
 function addRecordLyraDGrid(parentId){
 	arrGrids[parentId].collection.add({id: "addRecord_"+GenerateGUID()});

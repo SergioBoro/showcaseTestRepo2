@@ -4,11 +4,11 @@ import java.io.IOException;
 
 import org.apache.commons.fileupload.FileUploadException;
 
+import com.google.gwt.user.client.rpc.SerializationException;
+
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.grid.GridExcelExportCommand;
-
-import com.google.gwt.user.client.rpc.SerializationException;
 
 /**
  * Обработчик запроса на получение Excel файла по данным в гриде. Вызывается из
@@ -21,6 +21,10 @@ public class GridToExcelHandler extends AbstractDownloadHandler {
 	 * Тип экспорта в Excel.
 	 */
 	private GridToExcelExportType exportType;
+
+	protected GridToExcelExportType getExportType() {
+		return exportType;
+	}
 
 	@Override
 	public GridContext getContext() {

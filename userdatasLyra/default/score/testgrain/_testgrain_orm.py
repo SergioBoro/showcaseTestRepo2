@@ -1,5 +1,5 @@
 # coding=UTF-8
-# Source grain parameters: version=1.0, len=2080, crc32=1FAE4207; compiler=8.
+# Source grain parameters: version=1.0, len=3452, crc32=905B2AFC; compiler=9.
 """
 THIS MODULE IS BEING CREATED AUTOMATICALLY EVERY TIME CELESTA STARTS.
 DO NOT MODIFY IT AS YOUR CHANGES WILL BE LOST.
@@ -326,6 +326,204 @@ class street4Cursor(Cursor):
             f(self)
     def _getBufferCopy(self, context):
         result = street4Cursor(context)
+        result.copyFieldsFrom(self)
+        return result
+    def copyFieldsFrom(self, c):
+        self.name = c.name
+        self.rnum = c.rnum
+        self.code = c.code
+        self.socr = c.socr
+        self.gninmb = c.gninmb
+        self.uno = c.uno
+        self.ocatd = c.ocatd
+        self.recversion = c.recversion
+    def iterate(self):
+        if self.tryFindSet():
+            while True:
+                yield self
+                if not self.nextInSet():
+                    break
+
+class street5Cursor(Cursor):
+    onPreDelete  = []
+    onPostDelete = []
+    onPreInsert  = []
+    onPostInsert = []
+    onPreUpdate  = []
+    onPostUpdate = []
+    def __init__(self, context):
+        Cursor.__init__(self, context)
+        self.name = None
+        self.rnum = None
+        self.code = None
+        self.socr = None
+        self.gninmb = None
+        self.uno = None
+        self.ocatd = None
+        self.context = context
+    def _grainName(self):
+        return 'testgrain'
+    def _tableName(self):
+        return 'street5'
+    def _parseResult(self, rs):
+        self.name = rs.getString('name')
+        if rs.wasNull():
+            self.name = None
+        self.rnum = rs.getInt('rnum')
+        if rs.wasNull():
+            self.rnum = None
+        self.code = rs.getString('code')
+        if rs.wasNull():
+            self.code = None
+        self.socr = rs.getString('socr')
+        if rs.wasNull():
+            self.socr = None
+        self.gninmb = rs.getString('gninmb')
+        if rs.wasNull():
+            self.gninmb = None
+        self.uno = rs.getString('uno')
+        if rs.wasNull():
+            self.uno = None
+        self.ocatd = rs.getString('ocatd')
+        if rs.wasNull():
+            self.ocatd = None
+        self.recversion = rs.getInt('recversion')
+    def _setFieldValue(self, name, value):
+        setattr(self, name, value)
+    def _clearBuffer(self, withKeys):
+        if withKeys:
+            self.code = None
+        self.name = None
+        self.rnum = None
+        self.socr = None
+        self.gninmb = None
+        self.uno = None
+        self.ocatd = None
+    def _currentKeyValues(self):
+        return array([None if self.code == None else unicode(self.code)], Object)
+    def _currentValues(self):
+        return array([None if self.name == None else unicode(self.name), None if self.rnum == None else int(self.rnum), None if self.code == None else unicode(self.code), None if self.socr == None else unicode(self.socr), None if self.gninmb == None else unicode(self.gninmb), None if self.uno == None else unicode(self.uno), None if self.ocatd == None else unicode(self.ocatd)], Object)
+    def _setAutoIncrement(self, val):
+        pass
+    def _preDelete(self):
+        for f in street5Cursor.onPreDelete:
+            f(self)
+    def _postDelete(self):
+        for f in street5Cursor.onPostDelete:
+            f(self)
+    def _preInsert(self):
+        for f in street5Cursor.onPreInsert:
+            f(self)
+    def _postInsert(self):
+        for f in street5Cursor.onPostInsert:
+            f(self)
+    def _preUpdate(self):
+        for f in street5Cursor.onPreUpdate:
+            f(self)
+    def _postUpdate(self):
+        for f in street5Cursor.onPostUpdate:
+            f(self)
+    def _getBufferCopy(self, context):
+        result = street5Cursor(context)
+        result.copyFieldsFrom(self)
+        return result
+    def copyFieldsFrom(self, c):
+        self.name = c.name
+        self.rnum = c.rnum
+        self.code = c.code
+        self.socr = c.socr
+        self.gninmb = c.gninmb
+        self.uno = c.uno
+        self.ocatd = c.ocatd
+        self.recversion = c.recversion
+    def iterate(self):
+        if self.tryFindSet():
+            while True:
+                yield self
+                if not self.nextInSet():
+                    break
+
+class street6Cursor(Cursor):
+    onPreDelete  = []
+    onPostDelete = []
+    onPreInsert  = []
+    onPostInsert = []
+    onPreUpdate  = []
+    onPostUpdate = []
+    def __init__(self, context):
+        Cursor.__init__(self, context)
+        self.name = None
+        self.rnum = None
+        self.code = None
+        self.socr = None
+        self.gninmb = None
+        self.uno = None
+        self.ocatd = None
+        self.context = context
+    def _grainName(self):
+        return 'testgrain'
+    def _tableName(self):
+        return 'street6'
+    def _parseResult(self, rs):
+        self.name = rs.getString('name')
+        if rs.wasNull():
+            self.name = None
+        self.rnum = rs.getInt('rnum')
+        if rs.wasNull():
+            self.rnum = None
+        self.code = rs.getString('code')
+        if rs.wasNull():
+            self.code = None
+        self.socr = rs.getString('socr')
+        if rs.wasNull():
+            self.socr = None
+        self.gninmb = rs.getString('gninmb')
+        if rs.wasNull():
+            self.gninmb = None
+        self.uno = rs.getString('uno')
+        if rs.wasNull():
+            self.uno = None
+        self.ocatd = rs.getString('ocatd')
+        if rs.wasNull():
+            self.ocatd = None
+        self.recversion = rs.getInt('recversion')
+    def _setFieldValue(self, name, value):
+        setattr(self, name, value)
+    def _clearBuffer(self, withKeys):
+        if withKeys:
+            self.code = None
+        self.name = None
+        self.rnum = None
+        self.socr = None
+        self.gninmb = None
+        self.uno = None
+        self.ocatd = None
+    def _currentKeyValues(self):
+        return array([None if self.code == None else unicode(self.code)], Object)
+    def _currentValues(self):
+        return array([None if self.name == None else unicode(self.name), None if self.rnum == None else int(self.rnum), None if self.code == None else unicode(self.code), None if self.socr == None else unicode(self.socr), None if self.gninmb == None else unicode(self.gninmb), None if self.uno == None else unicode(self.uno), None if self.ocatd == None else unicode(self.ocatd)], Object)
+    def _setAutoIncrement(self, val):
+        pass
+    def _preDelete(self):
+        for f in street6Cursor.onPreDelete:
+            f(self)
+    def _postDelete(self):
+        for f in street6Cursor.onPostDelete:
+            f(self)
+    def _preInsert(self):
+        for f in street6Cursor.onPreInsert:
+            f(self)
+    def _postInsert(self):
+        for f in street6Cursor.onPostInsert:
+            f(self)
+    def _preUpdate(self):
+        for f in street6Cursor.onPreUpdate:
+            f(self)
+    def _postUpdate(self):
+        for f in street6Cursor.onPostUpdate:
+            f(self)
+    def _getBufferCopy(self, context):
+        result = street6Cursor(context)
         result.copyFieldsFrom(self)
         return result
     def copyFieldsFrom(self, c):
