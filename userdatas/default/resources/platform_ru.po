@@ -200,6 +200,9 @@ msgstr "Ошибка при получение данных плагина"
 msgid "Graph construction error"
 msgstr "Ошибка при построении графика"
 
+msgid "JSForm construction error"
+msgstr "Ошибка при построении js-формы"
+
 msgid "Export current page to Excel"
 msgstr "Экспорт в Excel текущей страницы"
 

@@ -140,6 +140,21 @@ public class JsFormPanel extends BasicElementPanelBasis {
 
 					@Override
 					public void onFailure(final XHRRequestErrData err) {
+						if (err.getMessage() != null && !"".equals(err.getMessage())
+								&& err.getMessage().contains("<html>")) {
+							int index1 =
+								err.getMessage().indexOf("<strong>Error message:</strong>");
+							int index2 = err.getMessage().indexOf("</body>");
+							String errorMessage =
+								err.getMessage()
+										.substring(
+												index1
+														+ "<strong>Error message:</strong>"
+																.length(), index2).trim();
+							MessageBox.showSimpleMessage(CourseClientLocalization.gettext(
+									AppCurrContext.getInstance().getDomain(),
+									"JSForm construction error"), errorMessage);
+						}
 						String errMsg = "";
 						if (err != null) {
 							errMsg =
@@ -250,7 +265,8 @@ public class JsFormPanel extends BasicElementPanelBasis {
 					callback.@com.google.gwt.core.client.Callback::onSuccess(Ljava/lang/Object;)(data);
 				}, function(err) {
 					callback.@com.google.gwt.core.client.Callback::onFailure(Ljava/lang/Object;)({
-						message : err.message,
+//						message : err.message,
+						message : err.response ? err.response.text : err.message,
 						status : err.response ? err.response.status : '',
 						data : err.response ? err.response.data : '',
 						isError : true

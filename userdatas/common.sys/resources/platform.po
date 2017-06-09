@@ -200,6 +200,9 @@ msgstr "Error when retrieving data for external plugin"
 msgid "Graph construction error"
 msgstr "Graph construction error"
 
+msgid "JSForm construction error"
+msgstr "JSForm construction error"
+
 msgid "Export current page to Excel"
 msgstr "Export current page to Excel"
 
