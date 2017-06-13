@@ -8,8 +8,6 @@ import javax.servlet.http.*;
 
 import org.json.simple.JSONObject;
 
-import com.google.gwt.user.client.rpc.SerializationException;
-
 import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -18,6 +16,8 @@ import ru.curs.showcase.app.api.services.FakeService;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.html.jsForm.*;
 import ru.curs.showcase.util.ServletUtils;
+
+import com.google.gwt.user.client.rpc.SerializationException;
 
 /**
  * Сервлет обрабатывающий запросы элемента jsForm.
@@ -66,8 +66,8 @@ public class JsFormService extends HttpServlet {
 			submitData(resp, context, elInfo, procId, data);
 			break;
 		default:
-			throw GeneralExceptionFactory.build(new UnsupportedOperationException(
-					"The action \"" + action + "\" is not supported."));
+			throw GeneralExceptionFactory.build(new UnsupportedOperationException("The action \""
+					+ action + "\" is not supported."));
 		}
 
 	}
@@ -82,8 +82,9 @@ public class JsFormService extends HttpServlet {
 		List<HTMLEvent> events = jsForm.getEventManager().getEvents();
 		if (events != null && !events.isEmpty()) {
 			try {
-				String stringEvents = com.google.gwt.user.server.rpc.RPC.encodeResponseForSuccess(
-						FakeService.class.getMethod("serializeEvents"), events);
+				String stringEvents =
+					com.google.gwt.user.server.rpc.RPC.encodeResponseForSuccess(
+							FakeService.class.getMethod("serializeEvents"), events);
 				obj.put("events", stringEvents);
 			} catch (SerializationException | NoSuchMethodException e) {
 				throw GeneralExceptionFactory.build(e);
@@ -91,6 +92,7 @@ public class JsFormService extends HttpServlet {
 		}
 
 		resp.setStatus(HttpServletResponse.SC_OK);
+		resp.setCharacterEncoding("UTF-8");
 		try (PrintWriter writer = resp.getWriter()) {
 			writer.print(obj.toJSONString());
 		}
@@ -107,6 +109,7 @@ public class JsFormService extends HttpServlet {
 		obj.put("data", outData);
 
 		resp.setStatus(HttpServletResponse.SC_OK);
+		resp.setCharacterEncoding("UTF-8");
 		try (PrintWriter writer = resp.getWriter()) {
 			writer.print(obj.toJSONString());
 		}
