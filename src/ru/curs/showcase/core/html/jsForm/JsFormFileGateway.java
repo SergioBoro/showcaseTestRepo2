@@ -27,8 +27,10 @@ public class JsFormFileGateway implements JsFormTemplateGateway {
 		JsFormData jsFormData = new JsFormData();
 		String fileName = element.getTemplateName();
 		try {
-			byte[] bytes = Files.readAllBytes(Paths.get(
-					AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/" + fileName));
+			byte[] bytes =
+				Files.readAllBytes(Paths.get(AppInfoSingleton.getAppInfo().getCurUserData()
+						.getPath()
+						+ "/" + SettingsFileType.JSFORM.getFileDir() + "/" + fileName));
 			jsFormData.setData(new String(bytes, StandardCharsets.UTF_8));
 		} catch (IOException e) {
 			throw new SettingsFileExchangeException(fileName, e, SettingsFileType.DATA);
@@ -36,10 +38,12 @@ public class JsFormFileGateway implements JsFormTemplateGateway {
 
 		String settingsFileName =
 			TextUtils.extractFileName(element.getTemplateName()) + ".settings.xml";
-		String settingFileName = String.format("%s/%s/%s", DATA_DIR,
-				element.getType().toString().toLowerCase(), settingsFileName);
-		Path settingPath = Paths.get(
-				AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/" + settingFileName);
+		String settingFileName =
+			String.format("%s/%s/%s", DATA_DIR, element.getType().toString().toLowerCase(),
+					settingsFileName);
+		Path settingPath =
+			Paths.get(AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/"
+					+ settingFileName);
 
 		if (Files.exists(settingPath)) {
 			try {

@@ -14,6 +14,7 @@ public enum SettingsFileType {
 	DATAPANEL("Файл инф. панели", "datapanelstorage"),
 	NAVIGATOR("Файл навигатора", "navigatorstorage"),
 	XFORM("Файл шаблона XForm", "xforms"),
+	JSFORM("Файл шаблона JSForm", "jsForms"),
 	XSLT("Файл XSL трансформации", "xslttransforms"),
 	SOLUTION_MESSAGES("Файл с сообщениями решения для пользователя"),
 	SCHEMA("Файл XSD схемы"),

@@ -3,10 +3,10 @@
   <tab id="1" name="dijit/form/Button">
     <!--<element id="1" type="jsForm" template="jsFormTemplate">-->
     <!--<element id="1" type="jsForm" template="jsForm.py">-->
-    <element id="1" type="jsForm" template="jsForms\dijitFormButton.html" showLoadingMessage="true">
+    <element id="1" type="jsForm" template="dijitFormButton.html" showLoadingMessage="true">
       <proc id="submit01" name="jsFormSubmit" type="JSFORMSUBMIT" />
       <proc id="submit02" name="jsForm.py" type="JSFORMSUBMIT" />
     </element>
-    <element id="2" type="jsForm" template="jsForms\closeModal.html" neverShowInPanel="true"/>
+    <element id="2" type="jsForm" template="closeModal.html" neverShowInPanel="true"/>
   </tab>
 </datapanel>

@@ -34,6 +34,6 @@
  		<proc id="mysubmit1" name="myJSForm1" type="JSFORMSUBMIT" />
  		<proc id="mysubmit2" name="myJSForm2" type="JSFORMSUBMIT" />       
         </element>
-        <element id="333" type="jsForm" template="jsForms\closeModal.html" neverShowInPanel="true"/>
+        <element id="333" type="jsForm" template="closeModal.html" neverShowInPanel="true"/>
     </tab>				
 </datapanel>
