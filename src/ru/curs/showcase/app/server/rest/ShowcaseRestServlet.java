@@ -211,10 +211,13 @@ public final class ShowcaseRestServlet extends HttpServlet {
 
 		response.setStatus(responcseData.getResponseCode());
 		response.setHeader("Content-Type", responcseData.getContentType());
-
+		addAccessControlAllowOriginPropertyToResponceHeader(response);
 		for (Iterator<Map.Entry<String, String>> iter =
 			responcseData.getResponseHttpParametersMap().entrySet().iterator(); iter.hasNext();) {
 			Map.Entry<String, String> entry = iter.next();
+			if ("Access-Control-Allow-Origin".equals(entry.getKey())) {
+				continue;
+			}
 
 			response.setHeader(entry.getKey(), entry.getValue());
 
