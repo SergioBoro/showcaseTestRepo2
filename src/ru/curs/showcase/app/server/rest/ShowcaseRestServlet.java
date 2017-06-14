@@ -105,19 +105,11 @@ public final class ShowcaseRestServlet extends HttpServlet {
 
 				response.setStatus(403);
 				response.getWriter().close();
-				// response.setHeader("Content-Type",
-				// responcseData.getContentType());
+
 			}
 
-			// response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
-
-		// String restProc =
-		// UserDataUtils.getGeneralOptionalProp("rest.authentication.type");
-		// localhost:8082/mellophone/checkcredentials?login=Иванов1&pwd=пасс1
-
-		// System.out.println("aaaa: " + request.getMethod());
 
 		if ((requestUrl.endsWith("restlogout")) || requestUrl.endsWith("restlogout/")) {
 			addAccessControlAllowOriginPropertyToResponceHeader(response);
@@ -134,7 +126,6 @@ public final class ShowcaseRestServlet extends HttpServlet {
 
 		String requestType = request.getMethod();
 		String userToken = request.getHeader("user-token");
-		// String requestUrl = request.getRequestURL().toString();
 
 		String acceptLanguage = request.getHeader("Accept-Language");
 		if (acceptLanguage == null || acceptLanguage.isEmpty()) {
@@ -142,8 +133,6 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		}
 
 		String requestURLParams = request.getQueryString();
-
-		// request.getReader().toString()
 
 		String requestData = "";
 		StringBuilder buffer = new StringBuilder();
@@ -154,8 +143,6 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		}
 		requestData = buffer.toString();
 
-		// System.out.println("aaaa data : " + requestData);
-
 		String restProc = UserDataUtils.getGeneralOptionalProp("rest.entry.proc");
 
 		if ((restProc == null) || restProc.isEmpty()) {
@@ -163,29 +150,6 @@ public final class ShowcaseRestServlet extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
-		// request.getReader()
-
-		// JSONObject ff = new JSONObject();
-
-		// try {
-		// ff.append("sd", "fg");
-		// JSONArray a = new JSONArray();
-		// a.put("1");
-		// a.put("2");
-		// ff.append("sd", "ff");
-		// ff.putOnce("ttt", "werty");
-		// ff.append("sd1", a);
-		// } catch (JSONException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		//
-		// System.out.println(ff.toString());
-
-		// final String requestType,
-		// final String requestUrl, final String requestData, final String
-		// requestHeaders,
-		// final String urlParams, final String sesId, final String restProc
 
 		JythonRestResult responcseData = null;
 		if (restProc.endsWith(".cl") || restProc.endsWith(".celesta"))
@@ -230,7 +194,6 @@ public final class ShowcaseRestServlet extends HttpServlet {
 				+ responcseData.getResponseCode() + "\nResponse Data: "
 				+ StringEscapeUtils.unescapeJava(responcseData.getResponseData()));
 
-		// response.setStatus(201);
 		response.getWriter().close();
 	}
 
