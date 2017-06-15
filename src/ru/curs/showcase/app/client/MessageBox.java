@@ -385,6 +385,36 @@ public final class MessageBox {
 		return dlg;
 	}
 
+	public static void showErrorMessageWindow(final String caption, final String message) {
+		DialogBox db =
+			showMessageWithDetails(CourseClientLocalization.gettext(AppCurrContext.getInstance()
+					.getDomain(), caption), CourseClientLocalization.gettext(AppCurrContext
+					.getInstance().getDomain(), message), "", MessageType.ERROR, Boolean.FALSE,
+					(String) null);
+		db.center();
+		db.show();
+	}
+
+	public static void showWarningMessageWindow(final String caption, final String message) {
+		DialogBox db =
+			showMessageWithDetails(CourseClientLocalization.gettext(AppCurrContext.getInstance()
+					.getDomain(), caption), CourseClientLocalization.gettext(AppCurrContext
+					.getInstance().getDomain(), message), "", MessageType.WARNING, Boolean.FALSE,
+					(String) null);
+		db.center();
+		db.show();
+	}
+
+	public static void showInfoMessageWindow(final String caption, final String message) {
+		DialogBox db =
+			showMessageWithDetails(CourseClientLocalization.gettext(AppCurrContext.getInstance()
+					.getDomain(), caption), CourseClientLocalization.gettext(AppCurrContext
+					.getInstance().getDomain(), message), "", MessageType.INFO, Boolean.FALSE,
+					(String) null);
+		db.center();
+		db.show();
+	}
+
 	public static native void copyToClipboard(String text) /*-{
 		var textArea = $doc.createElement("textarea");
 		textArea.style.position = 'fixed';

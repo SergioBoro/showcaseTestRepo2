@@ -212,6 +212,12 @@ public final class FeedbackJSNI {
 		//CHECKSTYLE:OFF	
         $wnd.showModalWindowWithHTMLContent =
         @ru.curs.showcase.app.client.ModalWindowWithHTMLContent::showWindow(Ljava/lang/String;Ljava/lang/String;ZII);	
+        $wnd.showInfoMessageWindow = 
+        @ru.curs.showcase.app.client.MessageBox::showInfoMessageWindow(Ljava/lang/String;Ljava/lang/String;);
+        $wnd.showWarningMessageWindow =
+        @ru.curs.showcase.app.client.MessageBox::showWarningMessageWindow(Ljava/lang/String;Ljava/lang/String;);
+        $wnd.showErrorMessageWindow = 
+        @ru.curs.showcase.app.client.MessageBox::showErrorMessageWindow(Ljava/lang/String;Ljava/lang/String;);
         //CHECKSTYLE:ON    
         $wnd.closeModalWindowWithHTMLContent =
         @ru.curs.showcase.app.client.ModalWindowWithHTMLContent::closeWindow();	         			
@@ -240,7 +246,7 @@ public final class FeedbackJSNI {
 		$wnd.selectNavigatorItem = 
 	@ru.curs.showcase.app.client.FeedbackJSNI::selectNavigatorItem(Ljava/lang/String;);
 		$wnd.selectDatapanelTab = 
-	@ru.curs.showcase.app.client.FeedbackJSNI::selectDatapanelTab(Ljava/lang/String;);	
+	@ru.curs.showcase.app.client.FeedbackJSNI::selectDatapanelTab(Ljava/lang/String;);
 	}-*/;
 
 }
