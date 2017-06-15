@@ -63,7 +63,7 @@ public class DialogBoxWithCaptionButton extends DialogBox {
 	 * Переменная определяющая,будет ли закрыто окно при нажатии на кнопку Esc
 	 * клавиатуры.
 	 */
-	private Boolean closeOnEsc;
+	private Boolean closeOnEsc = true;
 
 	/**
 	 * @param aCloseOnEsc
