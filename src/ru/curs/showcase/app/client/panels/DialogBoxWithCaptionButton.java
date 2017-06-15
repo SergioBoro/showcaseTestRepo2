@@ -156,12 +156,13 @@ public class DialogBoxWithCaptionButton extends DialogBox {
 			closeWindow();
 		}
 
-		if (getCloseOnEsc()) {
-			if ((event.getTypeInt() == Event.ONKEYUP)
-					&& (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE)) {
-				closeWindow();
+		if (getCloseOnEsc() != null)
+			if (getCloseOnEsc()) {
+				if ((event.getTypeInt() == Event.ONKEYUP)
+						&& (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE)) {
+					closeWindow();
+				}
 			}
-		}
 
 		super.onPreviewNativeEvent(event);
 	}
