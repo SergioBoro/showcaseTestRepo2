@@ -45,6 +45,8 @@
 		<element id="0401" type="grid" subtype="JS_PAGE_GRID" proc="grid_new_data_download_load"
 			plugin="pageDGrid" >
 			<proc id="40101" name="grid_new_meta_download_load" type="METADATA"/>
+			
+			<proc id="020101" name="toolbar_grid_new_download_file" type="TOOLBAR"/>
 						
 			<proc id="11" name="grid_download1" type="DOWNLOAD" />
 			<proc id="12" name="grid_download2" type="DOWNLOAD" />

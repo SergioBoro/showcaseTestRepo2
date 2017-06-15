@@ -20,6 +20,20 @@
 -->
 
 
+	<tab id="4" name="Скачивание файлов из грида">
+		<element id="0401" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_download_load"
+			plugin="liveDGrid" >
+			<proc id="40101" name="grid_new_meta_download_load" type="METADATA"/>
+			
+			<proc id="020101" name="toolbar_grid_new_download_file" type="TOOLBAR"/>
+						
+			<proc id="11" name="grid_download1" type="DOWNLOAD" />
+			<proc id="12" name="grid_download2" type="DOWNLOAD" />
+		</element>		
+	</tab>		
+
+
+
 
 
 	<tab id="44" name="Основной функционал">
@@ -51,8 +65,21 @@
 -->		
 		
 		
+<!--
+		<element id="443" type="xforms" template="Showcase_Template.xml" hideOnLoad="true"
+			proc="xforms_proc1"   >
+			<proc id="proc1" name="xforms_saveproc1" type="SAVE" />
+			<proc id="proc2" name="xforms_submission1" type="SUBMISSION" />
+			<proc id="051" name="xforms_upload_by_userdata" type="UPLOAD" />			
+		</element>
+
+-->
+
+		<element id="443" type="webtext" proc="webtext/selectedRowWriter.py" hideOnLoad="true" />		
 		
-		<element id="443" type="webtext" proc="webtext/selectedRowWriter.py" hideOnLoad="true" />		 
+		
+		
+				 
 		<element id="444" type="webtext" proc="webtext_filter_and_add" hideOnLoad="true" />
 		
 	</tab>
@@ -78,15 +105,6 @@
 		</element>
 	</tab>
 	
-	<tab id="4" name="Скачивание файлов из грида">
-		<element id="0401" type="grid" subtype="JS_LIVE_GRID" proc="grid_new_data_download_load"
-			plugin="liveDGrid" >
-			<proc id="40101" name="grid_new_meta_download_load" type="METADATA"/>
-						
-			<proc id="11" name="grid_download1" type="DOWNLOAD" />
-			<proc id="12" name="grid_download2" type="DOWNLOAD" />
-		</element>		
-	</tab>		
 	
 
 	<tab id="6" name="Задание css для строки грида">

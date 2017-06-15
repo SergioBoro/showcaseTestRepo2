@@ -7,8 +7,7 @@
 
 
 	<tab id="10" name="Основной функционал">
- 		<element id="441" type="GRID"  subtype="JS_TREE_GRID" proc="grid_new_data_geo"
-		    plugin="treeDGrid">
+ 		<element id="441" type="GRID"  subtype="JS_TREE_GRID" proc="grid_new_data_geo">
 			<proc id="442" name="grid_new_meta_geo" type="METADATA"/>
 			
    			<proc id="020101" name="toolbar_grid_new" type="TOOLBAR"/>
@@ -55,6 +54,8 @@
 		<element id="0401" type="grid" subtype="JS_TREE_GRID" proc="grid_new_data_download_load_geo"
 			plugin="treeDGrid" >
 			<proc id="40101" name="grid_new_meta_download_load" type="METADATA"/>
+			
+			<proc id="020101" name="toolbar_grid_new_download_file" type="TOOLBAR"/>
 						
 			<proc id="11" name="grid_download1" type="DOWNLOAD" />
 			<proc id="12" name="grid_download2" type="DOWNLOAD" />

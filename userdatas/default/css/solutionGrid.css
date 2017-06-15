@@ -381,12 +381,12 @@ max-height: 2em;
 
 
 
-.ready {
-    background-color: blue !important;
-}
-.awaiting-response {
-    background-color: yellow !important;
-}
+/* .ready { */
+/*     background-color: blue !important; */
+/* } */
+/* .awaiting-response { */
+/*     background-color: yellow !important; */
+/* } */
 
 
 .testJSToolbar {

@@ -31,6 +31,7 @@ public class GridToolBarFactory {
 	private static final String GRID_TOOLBAR_CLASSNAME_ATTR = "className";
 	private static final String GRID_TOOLBAR_ITEM_ICONCLASSNAME_ATTR = "iconClassName";
 	private static final String GRID_TOOLBAR_ITEM_ID_ATTR = "id";
+	private static final String GRID_TOOLBAR_ITEM_DOWNLOAD_LINK_ID_ATTR = "downloadLinkId";
 	private static final String GRID_TOOLBAR_ITEM_POPUPTEXT_ATTR = "popupText";
 	private static final String GRID_TOOLBAR_GROUP_TAG = "group";
 	private static final String GRID_TOOLBAR_SEPARATOR_TAG = "separator";
@@ -69,6 +70,12 @@ public class GridToolBarFactory {
 			} else if (GRID_TOOLBAR_ITEM_TAG.equalsIgnoreCase(name)) {
 				ToolBarItem itemToolBar = new ToolBarItem();
 				fillBaseItemByAttr(itemToolBar, attr);
+
+				if (attr.getValue(GRID_TOOLBAR_ITEM_DOWNLOAD_LINK_ID_ATTR) != null) {
+					itemToolBar.setDownloadLinkId(
+							attr.getValue(GRID_TOOLBAR_ITEM_DOWNLOAD_LINK_ID_ATTR));
+				}
+
 				addItemToolBar(itemToolBar);
 				this.curItemToolBar = itemToolBar;
 			} else if (GRID_TOOLBAR_GROUP_TAG.equalsIgnoreCase(name)) {

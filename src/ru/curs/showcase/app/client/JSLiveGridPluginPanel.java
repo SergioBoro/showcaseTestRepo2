@@ -33,6 +33,8 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 		CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 				"An error occurred while deserializing an object");
 
+	private static final String ERROR_WHEN_DOWNLOADING_FILE = "Error when downloading file";
+
 	private final VerticalPanel p = new VerticalPanel();
 	private final HorizontalPanel generalHp = new HorizontalPanel();
 	/**
@@ -128,7 +130,7 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 															$wnd.gwtProcessFileDownload = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginProcessFileDownload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtShowMessage = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginShowMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															   $wnd.gwtShowErrorMessage = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginShowErrorMessage(Ljava/lang/String;Ljava/lang/String;);
-															   $wnd.gwtToolbarRunAction = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginToolbarRunAction(Ljava/lang/String;Ljava/lang/String;);
+															   $wnd.gwtToolbarRunAction = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginToolbarRunAction(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															}-*/;
 
 	// CHECKSTYLE:ON
@@ -594,7 +596,7 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 			dh.setErrorCaption(
 					// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_file_download"));
 					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-							"Error when downloading file"));
+							ERROR_WHEN_DOWNLOADING_FILE));
 			dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
 
 			try {
@@ -612,10 +614,44 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 				ru.curs.showcase.app.client.MessageBox.showSimpleMessage(
 						// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_file_download"),
 						CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
-								"Error when downloading file"),
+								ERROR_WHEN_DOWNLOADING_FILE),
 						e.getMessage());
 			}
 		}
+	}
+
+	@Override
+	public void toolbarProcessFileDownload(final String downloadLinkId) {
+
+		DownloadHelper dh = DownloadHelper.getInstance();
+		dh.setEncoding(FormPanel.ENCODING_URLENCODED);
+		dh.clear();
+
+		dh.setErrorCaption(
+				// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_file_download"));
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						ERROR_WHEN_DOWNLOADING_FILE));
+		dh.setAction(ExchangeConstants.SECURED_SERVLET_PREFIX + "/gridFileDownload");
+
+		try {
+			dh.addParam("linkId", downloadLinkId);
+
+			dh.addParam(getContext().getClass().getName(),
+					getContext().toParamForHttpPost(getObjectSerializer()));
+			dh.addParam(DataPanelElementInfo.class.getName(),
+					getElementInfo().toParamForHttpPost(getObjectSerializer()));
+
+			dh.addParam("recordId", getDetailedContext().getCurrentRecordId());
+
+			dh.submit();
+		} catch (SerializationException e) {
+			ru.curs.showcase.app.client.MessageBox.showSimpleMessage(
+					// AppCurrContext.getInstance().getBundleMap().get("grid_error_caption_file_download"),
+					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+							ERROR_WHEN_DOWNLOADING_FILE),
+					e.getMessage());
+		}
+
 	}
 
 	public JSONObject pluginGetHttpParams(final int offset, final int limit,

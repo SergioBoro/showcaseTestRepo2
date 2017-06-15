@@ -24,6 +24,8 @@ public abstract class JSBaseGridPluginPanel extends BasicElementPanelBasis {
 
 	public abstract ToolBarHelper getToolBarHelper();
 
+	public abstract void toolbarProcessFileDownload(final String downloadLinkId);
+
 	public abstract void runAction(final Action ac);
 
 	public abstract void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType);
@@ -172,7 +174,7 @@ public abstract class JSBaseGridPluginPanel extends BasicElementPanelBasis {
 	}
 	// CHECKSTYLE:ON
 
-	public boolean pluginToolbarRunAction(final String actionId) {
+	public boolean pluginToolbarRunAction(final String actionId, final String downloadLinkId) {
 
 		if (getToolBarHelper() == null) {
 			return false;
@@ -218,6 +220,10 @@ public abstract class JSBaseGridPluginPanel extends BasicElementPanelBasis {
 				action.setContext(contextForJSToolbarAction);
 				// action.setActionCaller(menuItem);
 				runAction(action);
+			}
+
+			if (downloadLinkId != null) {
+				toolbarProcessFileDownload(downloadLinkId);
 			}
 
 		}

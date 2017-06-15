@@ -130,6 +130,8 @@
  	<element id="721" type="GRID" subtype="JS_LYRA_GRID" proc="testgrain.testgridform5.TestGridForm5" 
 	    plugin="lyraDGrid">
 	    
+    		<proc id="020101" name="testgrain.toolbar_grid_new_download_file" type="TOOLBAR"/>
+	    
 			<proc id="11" name="testgrain.grid_download1" type="DOWNLOAD" />
 			<proc id="12" name="testgrain.grid_download2" type="DOWNLOAD" />
 	    

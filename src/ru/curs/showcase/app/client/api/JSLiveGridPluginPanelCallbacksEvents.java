@@ -73,8 +73,9 @@ public final class JSLiveGridPluginPanelCallbacksEvents {
 		getCurrentPanel(pluginId).pluginShowErrorMessage(stringMessage);
 	}
 
-	public static boolean pluginToolbarRunAction(final String pluginId, final String actionId) {
-		return getBaseCurrentPanel(pluginId).pluginToolbarRunAction(actionId);
+	public static boolean pluginToolbarRunAction(final String pluginId, final String actionId,
+			final String downloadLinkId) {
+		return getBaseCurrentPanel(pluginId).pluginToolbarRunAction(actionId, downloadLinkId);
 	}
 
 }

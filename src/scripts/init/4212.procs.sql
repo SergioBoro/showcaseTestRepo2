@@ -1105,3 +1105,112 @@ END
 GO
 
 
+GO
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[toolbar_grid_new_download_file]
+   @main_context nvarchar(512)='',  
+   @add_context nvarchar(512)='',  
+   @filterinfo xml='',  
+   @session_context xml='',
+   @elementId nvarchar(512)='',
+   @data xml output
+AS
+BEGIN
+
+declare
+	@id nvarchar(50)='',
+	@columnName nvarchar(150)=''
+
+set @id = @session_context.value('(/sessioncontext/related/gridContext/currentRecordId)[1]','nvarchar(50)');
+if @id is null begin 
+	set @id = ''
+end
+
+set @columnName = @session_context.value('(/sessioncontext/related/gridContext/currentColumnId)[1]','nvarchar(150)');
+if @columnName is null begin 
+	set @columnName = ''
+end
+
+
+
+DECLARE @data_str NVARCHAR(MAX);
+
+set @data_str='
+
+
+	<gridtoolbar>
+
+		<item text="Серверное действие"  hint="Серверное действие" disable="false"
+            iconClassName="testJSToolbarButton"  >
+   
+
+                        <action >
+                            <main_context>current</main_context>                        
+
+                            <server>
+															<activity id="srv02" name="sc_add_to_debug_console_adapter">
+																<add_context>
+																	add
+																</add_context>
+															</activity>
+                            </server>
+                        </action>
+
+
+		</item>
+
+
+
+		<item text="Скачать файл 1"  hint="Скачать файл"  downloadLinkId="11" iconClassName="testJSToolbarButton" >
+		</item>
+
+
+		<group text="Item2Group"   iconClassName="testJSToolbarButton" >
+			<item text="Скачать файл 2" hint="Скачать файл 2" downloadLinkId="12"  disable="false" iconClassName="testJSToolbarButton">
+
+
+
+
+
+			</item>
+			<separator/>
+			<item text="Item22" hint="Item three"  iconClassName="testJSToolbarButton">
+				<action show_in="MODAL_WINDOW">
+					<main_context>current</main_context>
+					<modalwindow caption="Item22 click." height="700" width="600"/>
+					<datapanel type="current" tab="current">
+						<element id="443">
+						  <add_context>ElementId='+@elementId+', Столбец='+@columnName+', RecordId='+@id+'</add_context>
+						</element>
+					</datapanel>
+				</action>
+			</item>
+		</group>
+
+
+ 	  <item text="Item1"  hint="Item one" disable="false" iconClassName="testJSToolbarButton"></item>
+
+
+
+
+
+
+    </gridtoolbar>';
+
+
+
+SET @data = @data_str;
+
+
+
+RETURN 0;
+
+END
+GO
+
+
+
+

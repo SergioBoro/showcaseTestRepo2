@@ -424,9 +424,14 @@ public class ToolBarHelper {
 
 		if (item instanceof ToolBarItem) {
 			final ToolBarItem toolBarItem = (ToolBarItem) item;
+
 			Action ac = toolBarItem.getAction();
 			if ((ac != null) && (ac.containsServerActivity())) {
 				jsonItem.put("needEnableDisableState", new JSONString(String.valueOf(true)));
+			}
+
+			if (toolBarItem.getDownloadLinkId() != null) {
+				jsonItem.put("downloadLinkId", new JSONString(toolBarItem.getDownloadLinkId()));
 			}
 		}
 

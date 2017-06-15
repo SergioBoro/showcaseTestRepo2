@@ -97,6 +97,8 @@ function createGridToolBar(elementId, parentId, metadata) {
 		                 
 		                 idAction: md["id"],
 		                 
+		                 downloadLinkId: md["downloadLinkId"],
+		                 
 		                 popupText: md["popupText"],
 		                 
 		                 needEnableDisableState: md["needEnableDisableState"],
@@ -115,7 +117,7 @@ function createGridToolBar(elementId, parentId, metadata) {
 			            		 return;
 			            	 }
 		                	 
-			            	 if(gwtToolbarRunAction(elementId, this.idAction)) {
+			            	 if(gwtToolbarRunAction(elementId, this.idAction, this.downloadLinkId)) {
 			            		 blinkItem(this);
 			            	 } else {
 			            		 if(this.popupText){

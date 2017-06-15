@@ -7,13 +7,13 @@ import ru.curs.showcase.app.api.event.Action;
 /**
  * Элемент панели инструментов.
  * 
- * @author bogatov
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ToolBarItem extends BaseToolBarItem {
 	private static final long serialVersionUID = 1L;
+
 	private Action action;
+	private String downloadLinkId = null;
 
 	public ToolBarItem() {
 		super();
@@ -23,7 +23,16 @@ public class ToolBarItem extends BaseToolBarItem {
 		return action;
 	}
 
-	public void setAction(final Action oAction) {
-		this.action = oAction;
+	public void setAction(final Action aAction) {
+		action = aAction;
 	}
+
+	public String getDownloadLinkId() {
+		return downloadLinkId;
+	}
+
+	public void setDownloadLinkId(final String aDownloadLinkId) {
+		downloadLinkId = aDownloadLinkId;
+	}
+
 }
