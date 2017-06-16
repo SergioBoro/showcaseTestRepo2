@@ -247,7 +247,8 @@ public final class MessageBox {
 		DateTimeFormat dtf = DateTimeFormat.getFormat("dd-MM-yyyy HH:mm:ss z");
 		String formattedDate = dtf.format(date);
 
-		Label l = new Label(message);
+		// Label l = new Label(message);
+		Label l = new HTML(message);
 		horPan.setCellHorizontalAlignment(l, HasHorizontalAlignment.ALIGN_LEFT);
 		horPan.add(l);
 
