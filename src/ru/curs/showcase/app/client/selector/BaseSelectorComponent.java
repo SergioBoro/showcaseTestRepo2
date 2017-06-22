@@ -87,7 +87,7 @@ public abstract class BaseSelectorComponent extends DialogBoxWithCaptionButton {
 		/**
 		 * Значение по умолчанию.
 		 */
-		private static final int DEF_DATAREQUESTDELAY = 100;
+		private static final int DEF_DATAREQUESTDELAY = 430;
 		/**
 		 * Значение по умолчанию.
 		 */
