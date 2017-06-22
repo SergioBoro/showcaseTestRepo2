@@ -98,7 +98,10 @@ public class CheckAutenticationFilter implements Filter {
 
 					String esiaAuthenticated =
 						(String) (httpReq.getSession(false).getAttribute("esiaAuthenticated"));
-					if ((esiaAuthenticated != null) && ("true".equals(esiaAuthenticated))) {
+					if ((esiaAuthenticated != null) && ("true".equals(esiaAuthenticated))
+							&& AppInfoSingleton.getAppInfo()
+									.getOrInitSessionInfoObject(httpReq.getSession().getId())
+									.isAuthViaESIA()) {
 						filterChain.doFilter(request, response);
 						return;
 					}

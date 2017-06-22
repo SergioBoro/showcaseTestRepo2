@@ -13,6 +13,11 @@ public class SessionInfo {
 	private boolean authViaAuthServer = false;
 
 	/**
+	 * Признак того, что авторизация была произведена через ESIA.
+	 */
+	private boolean authViaESIA = false;
+
+	/**
 	 * Уникальный временный пароль, сгенерированный для данной сессии при
 	 * аутентификации через AuthServer.
 	 */
@@ -32,5 +37,13 @@ public class SessionInfo {
 
 	public void setAuthViaAuthServer(final boolean aAuthViaAuthServer) {
 		authViaAuthServer = aAuthViaAuthServer;
+	}
+
+	public boolean isAuthViaESIA() {
+		return authViaESIA;
+	}
+
+	public void setAuthViaESIA(final boolean aAuthViaESIA) {
+		authViaESIA = aAuthViaESIA;
 	}
 }
