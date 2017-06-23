@@ -69,6 +69,8 @@ public class ESIAAuthenticationProcessingFilter extends AbstractAuthenticationPr
 
 			authRequest.setDetails(userAndSessionDetails);
 
+			request.getSession(false).setAttribute("username", ui.getLogin());
+
 			esiaAuthenticated =
 				(!ESIAManager.isAllowAuthenticateOnlyTrustedUser()) || esiaUI.isTrusted();
 
