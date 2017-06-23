@@ -41,7 +41,8 @@ public class SecurityLoggingCommand extends ServiceLayerCommand<Void> {
 
 	@Override
 	protected void mainProc() throws Exception {
-		String procName = UserDataUtils.getOptionalProp("security.logging.proc");
+		// UserDataUtils.getOptionalProp("security.logging.proc");
+		String procName = UserDataUtils.getGeneralOptionalProp("security.logging.proc");
 		if (procName != null && !procName.isEmpty() && this.event != null) {
 			HttpSession httpSession = null;
 			if (this.request != null) {
