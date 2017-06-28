@@ -122,6 +122,7 @@ public class GeneralDataPanel {
 		}
 		JavaScriptFromGWTFeedbackJSNI.setCurrentUserDetailsForViewInHTMLControl("WELCOME");
 
+		RootPanel.getBodyElement().addClassName("ready");
 	}
 
 	/**
