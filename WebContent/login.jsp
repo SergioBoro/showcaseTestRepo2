@@ -50,7 +50,7 @@ pageEncoding="UTF-8"%>
 		var w;
 		<%if (UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication") != null && "true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication").trim())) {%>
 		var pic = document.getElementById("authenticationImage");
-		w = pic.offsetWidth;<%}%>  
+		w = pic.naturalWidth;<%}%>  
 		<%if (UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication") == null || !("true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication").trim()))) {%>
 		w = 1000;
 		<%}%>
