@@ -90,6 +90,8 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 	}
 
 	public static String getUserDataScriptDir() {
+		if (AppInfoSingleton.getAppInfo().getCurUserDataId() == null)
+			AppInfoSingleton.getAppInfo().setCurUserDataId("default");
 		return AppInfoSingleton.getAppInfo().getCurUserData().getPath() + "/"
 				+ SCRIPTS_JYTHON_PATH;
 	}
@@ -121,22 +123,22 @@ public final class JythonIterpretatorFactory extends PoolByUserdata<PythonInterp
 
 		File[] files = fileRoot.listFiles();
 		for (File f : files) {
-			if (f.getName().startsWith("common.")) {
-				File fileN =
+			// if (f.getName().startsWith("common.")) {
+			File fileN =
+				new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName()
+						+ "/WEB-INF/" + libFolder);
+			if (fileN.exists())
+				pathList.add(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName()
+						+ "/WEB-INF/" + libFolder);
+			if (libFolder.equals("libJython")) {
+				fileN =
 					new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/" + f.getName()
-							+ "/WEB-INF/" + libFolder);
+							+ "/WEB-INF/" + libFolder + "/site-packages");
 				if (fileN.exists())
 					pathList.add(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-							+ f.getName() + "/WEB-INF/" + libFolder);
-				if (libFolder.equals("libJython")) {
-					fileN =
-						new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-								+ f.getName() + "/WEB-INF/" + libFolder + "/site-packages");
-					if (fileN.exists())
-						pathList.add(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
-								+ f.getName() + "/WEB-INF/" + libFolder + "/site-packages");
-				}
+							+ f.getName() + "/WEB-INF/" + libFolder + "/site-packages");
 			}
+			// }
 		}
 
 		return pathList;
