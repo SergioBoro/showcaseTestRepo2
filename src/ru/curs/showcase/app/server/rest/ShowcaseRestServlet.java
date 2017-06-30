@@ -54,13 +54,15 @@ public final class ShowcaseRestServlet extends HttpServlet {
 			try {
 				url = SecurityParamsFactory.getLocalAuthServerUrl();
 			} catch (SettingsFileOpenException e1) {
-				throw new AuthenticationServiceException(SecurityParamsFactory.APP_PROP_READ_ERROR,
-						e1);
+				throw new AuthenticationServiceException(
+						SecurityParamsFactory.APP_PROP_READ_ERROR, e1);
 			}
 
-			server = new URL(url + String.format("/checkcredentials?login=%s&pwd=%s",
-					AuthServerAuthenticationProvider.encodeParam(usr),
-					AuthServerAuthenticationProvider.encodeParam(pwd)));
+			server =
+				new URL(url
+						+ String.format("/checkcredentials?login=%s&pwd=%s",
+								AuthServerAuthenticationProvider.encodeParam(usr),
+								AuthServerAuthenticationProvider.encodeParam(pwd)));
 
 			HttpURLConnection c = null;
 
@@ -75,8 +77,8 @@ public final class ShowcaseRestServlet extends HttpServlet {
 						ud = l.get(0);
 						ud.setResponseCode(c.getResponseCode());
 					} catch (TransformerException e) {
-						throw new ServletException(
-								AuthServerUtils.AUTH_SERVER_DATA_ERROR + e.getMessage(), e);
+						throw new ServletException(AuthServerUtils.AUTH_SERVER_DATA_ERROR
+								+ e.getMessage(), e);
 					}
 					userSid = ud.getSid();
 				} else {
@@ -99,9 +101,9 @@ public final class ShowcaseRestServlet extends HttpServlet {
 				}
 			} else {
 				response.setCharacterEncoding("UTF-8");
-				response.getWriter()
-						.write("ОШИБКА выполнения REST запроса restlogin: Логин пользователя ''"
-								+ usr + "'' неуспешен. Неверная пара логин-пароль.");
+				response.getWriter().write(
+						"ОШИБКА выполнения REST запроса restlogin: Логин пользователя ''" + usr
+								+ "'' неуспешен. Неверная пара логин-пароль.");
 
 				response.setStatus(403);
 				response.getWriter().close();
@@ -126,6 +128,7 @@ public final class ShowcaseRestServlet extends HttpServlet {
 
 		String requestType = request.getMethod();
 		String userToken = request.getHeader("user-token");
+		String clientIP = request.getRemoteAddr();
 
 		String acceptLanguage = request.getHeader("Accept-Language");
 		if (acceptLanguage == null || acceptLanguage.isEmpty()) {
@@ -155,9 +158,10 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		if (restProc.endsWith(".cl") || restProc.endsWith(".celesta"))
 
 			try {
-				responcseData = RESTGateway.executeRESTcommand(requestType,
-						truncateRequestUrl(requestUrl), requestData, getHeadersJson(request),
-						getUrlParamsJson(request), sesId, restProc);
+				responcseData =
+					RESTGateway.executeRESTcommand(requestType, truncateRequestUrl(requestUrl),
+							requestData, getHeadersJson(request), getUrlParamsJson(request),
+							sesId, restProc, clientIP);
 			} catch (RESTGateway.ShowcaseRESTUnauthorizedException e) {
 
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -165,9 +169,10 @@ public final class ShowcaseRestServlet extends HttpServlet {
 
 			}
 		if (restProc.endsWith(".py"))
-			responcseData = RESTGateway.executeRESTcommandFromJythonProc(requestType,
-					truncateRequestUrl(requestUrl), requestData, getHeadersJson(request),
-					getUrlParamsJson(request), restProc);
+			responcseData =
+				RESTGateway.executeRESTcommandFromJythonProc(requestType,
+						truncateRequestUrl(requestUrl), requestData, getHeadersJson(request),
+						getUrlParamsJson(request), restProc, clientIP);
 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter()
@@ -188,10 +193,10 @@ public final class ShowcaseRestServlet extends HttpServlet {
 		}
 
 		LOGGER.info("Using Rest WebService. \nCalled procedure: " + restProc + "\nRequest Type: "
-				+ requestType + "\nRequest URL: " + requestUrl + "\nUser Token: " + userToken
-				+ "\nAccept Language: " + acceptLanguage + "\nRequest Data: " + requestData
-				+ "\nRequest URL Params: " + requestURLParams + "\nResponse Code: "
-				+ responcseData.getResponseCode() + "\nResponse Data: "
+				+ requestType + "\nRequest URL: " + requestUrl + "\nClient IP: " + clientIP
+				+ "\nUser Token: " + userToken + "\nAccept Language: " + acceptLanguage
+				+ "\nRequest Data: " + requestData + "\nRequest URL Params: " + requestURLParams
+				+ "\nResponse Code: " + responcseData.getResponseCode() + "\nResponse Data: "
 				+ StringEscapeUtils.unescapeJava(responcseData.getResponseData()));
 
 		response.getWriter().close();
