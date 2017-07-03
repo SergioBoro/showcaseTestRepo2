@@ -494,7 +494,8 @@
 		    	<fileset dir="src">
 					<include name="**/*.java" />
 					<exclude name="ru/curs/showcase/app/jre/**" />
-					<exclude name="ru/curs/showcase/test/ws/**" />		    		
+					<exclude name="ru/curs/showcase/test/ws/**" />
+					<exclude name="ru/curs/showcase/core/grid/LyraGridDataFactory.java" />
 		    	</fileset>
 		  </cs:checkstyle>		
 	</target>

@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.SerializationException;
 
 import ru.curs.celesta.CelestaException;
 import ru.curs.celesta.score.Table;
+import ru.curs.fastxl.*;
 import ru.curs.lyra.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
@@ -432,6 +433,13 @@ public class LyraGridDataFactory {
 		basicGridForm.saveCursorPosition();
 
 		basicGridForm.externalAction(c -> {
+			GridRecordSet rs = new LyraGridRecordSet(c, basicGridForm.getFieldsMeta());
+			FastXLProcessor fastXLProcessor = new FastXLProcessor(rs, out);
+			try {
+				fastXLProcessor.execute();
+			} catch (EFastXLRuntime e) {
+				throw GeneralExceptionFactory.build(e);
+			}
 			return null;
 		}, null);
 
