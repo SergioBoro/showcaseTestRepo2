@@ -487,7 +487,7 @@
 	<target name="checkstyle" depends="init.dirs, compile" description="Runs Checkstyle checks">
 		  <cs:checkstyle config="global.conf/Curs.Def.CheckStyle.config"
 		              failureProperty="checkstyle.failure"
-		              failOnViolation="true" logViolationsToConsole="true" 
+		              failOnViolation="true" 
 		  	          classpathref="master-classpath">
 		    	<formatter type="xml" tofile="${sc.build.dir}/checkstyle/report.xml"/>
 		  	    <formatter type="plain"/>
