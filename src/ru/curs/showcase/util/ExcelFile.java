@@ -18,19 +18,8 @@ public class ExcelFile extends OutputStreamDataFile {
 	 */
 	private static final String DEF_FILENAME = "table";
 
-	/**
-	 * Расширение генерируемого Excel файла. Используем xls вместо xml для
-	 * корректной обработки браузерами и Windows на компьютерах обычных
-	 * пользователей.
-	 */
-	private static final String FILEEXT = "xls";
-
-	public ExcelFile(final ByteArrayOutputStream aData) {
-		super(aData, generateName());
-	}
-
-	private static String generateName() {
-		return String.format("%s.%s", DEF_FILENAME, FILEEXT);
+	public ExcelFile(final ByteArrayOutputStream aData, final String fileExtension) {
+		super(aData, String.format("%s.%s", DEF_FILENAME, fileExtension));
 	}
 
 	public ExcelFile() {
@@ -39,6 +28,6 @@ public class ExcelFile extends OutputStreamDataFile {
 
 	@Override
 	public boolean isTextFile() {
-		return true;
+		return ".xls".equalsIgnoreCase(TextUtils.extractFileExt(getName()));
 	}
 }

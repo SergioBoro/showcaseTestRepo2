@@ -251,6 +251,22 @@ public final class TextUtils {
 	}
 
 	/**
+	 * Возвращает расширение файла из полного пути.
+	 * 
+	 * @param path
+	 *            - путь к файлу.
+	 * @return - расширение.
+	 */
+	public static String extractFileExt(final String path) {
+		if (path == null) {
+			return null;
+		}
+
+		int index = path.lastIndexOf('.');
+		return index == -1 ? null : path.substring(index);
+	}
+
+	/**
 	 * Правильное преобразование массива в строку. Arrays.toString не выставляет
 	 * переводы строк.
 	 */

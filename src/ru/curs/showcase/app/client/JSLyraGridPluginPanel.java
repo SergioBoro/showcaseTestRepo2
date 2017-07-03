@@ -684,9 +684,11 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			final String sortColId, final String sortColDir, final String refreshId) {
 
 		LyraGridContext gridContext = getDetailedContext();
-		gridContext.setDgridOldPosition(gridContext.getLiveInfo().getOffset());
-		gridContext.getLiveInfo().setOffset(offset);
-		gridContext.getLiveInfo().setLimit(limit);
+		if (offset >= 0) {
+			gridContext.setDgridOldPosition(gridContext.getLiveInfo().getOffset());
+			gridContext.getLiveInfo().setOffset(offset);
+			gridContext.getLiveInfo().setLimit(limit);
+		}
 
 		gridContext.setRefreshId(refreshId);
 

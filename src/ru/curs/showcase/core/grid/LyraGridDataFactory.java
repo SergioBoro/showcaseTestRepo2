@@ -1,6 +1,6 @@
 package ru.curs.showcase.core.grid;
 
-import java.io.IOException;
+import java.io.*;
 import java.text.*;
 import java.util.*;
 import java.util.regex.*;
@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.SerializationException;
 
 import ru.curs.celesta.CelestaException;
 import ru.curs.celesta.score.Table;
+import ru.curs.fastxl.*;
 import ru.curs.lyra.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
@@ -355,11 +356,7 @@ public class LyraGridDataFactory {
 
 	}
 
-	public List<HashMap<String, String>> buildRecordsForExcel(
-			final GridToExcelExportType aExcelExportType) throws CelestaException {
-
-		excelExportType = aExcelExportType;
-
+	private void exportExcelPrepare() {
 		state = (LyraGridServerState) AppInfoSingleton.getAppInfo()
 				.getLyraGridCacheState(SessionUtils.getCurrentSessionId(), elInfo, context);
 
@@ -382,22 +379,15 @@ public class LyraGridDataFactory {
 			((LyraGridScrollBack) basicGridForm.getChangeNotifier()).getLyraGridAddInfo();
 
 		lyraGridAddInfo.setExcelExportType(excelExportType);
-
-		// ---------------------------------------------------
-
-		ArrayList<HashMap<String, String>> excelRecords = new ArrayList<HashMap<String, String>>();
-
-		if (excelExportType == GridToExcelExportType.CURRENTPAGE) {
-			buildRecordsForExcelCurrentPage(excelRecords);
-		} else {
-			buildRecordsForExcelAll(excelRecords);
-		}
-
-		return excelRecords;
 	}
 
-	private void buildRecordsForExcelCurrentPage(final List<HashMap<String, String>> excelRecords)
-			throws CelestaException {
+	public List<HashMap<String, String>> exportExcelCurrentPage() throws CelestaException {
+
+		excelExportType = GridToExcelExportType.CURRENTPAGE;
+
+		exportExcelPrepare();
+
+		ArrayList<HashMap<String, String>> excelRecords = new ArrayList<HashMap<String, String>>();
 
 		List<LyraFormData> records =
 			basicGridForm.setPosition(getKeyValuesById(context.getRefreshId()));
@@ -428,62 +418,37 @@ public class LyraGridDataFactory {
 			excelRecords.add(obj);
 		}
 
+		return excelRecords;
+
 	}
 
-	private void buildRecordsForExcelAll(final List<HashMap<String, String>> excelRecords)
-			throws CelestaException {
+	public ByteArrayOutputStream exportExcelAll() throws Exception {
 
-		int approxTotalCount = -1;
-		int step = basicGridForm.getGridHeight();
+		excelExportType = GridToExcelExportType.ALL;
 
-		List<String> prevIds = new ArrayList<String>();
+		exportExcelPrepare();
 
-		for (int position = 0; position < (approxTotalCount =
-			Math.max(approxTotalCount, basicGridForm.getApproxTotalCount())); position += step) {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-			List<LyraFormData> records = basicGridForm.getRows(position);
+		basicGridForm.externalAction(c -> {
 
-			// int length = Math.min(records.size(),
-			// context.getLiveInfo().getLimit());
-			int length = records.size();
-			for (int i = 0; i < length; i++) {
+			basicGridForm.saveCursorPosition();
 
-				LyraFormData rec = records.get(i);
-
-				if (position + step >= approxTotalCount) {
-					if (prevIds.indexOf(getIdByKeyValues(rec.getKeyValues())) > -1) {
-						continue;
-					}
-				} else {
-					if (position + 2 * step >= approxTotalCount) {
-						prevIds.add(getIdByKeyValues(rec.getKeyValues()));
-					}
-				}
-
-				HashMap<String, String> obj = new HashMap<String, String>();
-				for (LyraFieldValue lyraFieldValue : rec.getFields()) {
-
-					int colPrecision;
-					if (lyraFieldValue.getScale() == 0) {
-						colPrecision = COLUMN_DEFAULT_PRECISION;
-					} else {
-						colPrecision = lyraFieldValue.getScale();
-					}
-
-					if (!PROPERTIES.equalsIgnoreCase(lyraFieldValue.getName())) {
-						obj.put(lyraFieldValue.getName(),
-								getCellValue(lyraFieldValue, colPrecision));
-					}
-
-				}
-
-				excelRecords.add(obj);
+			GridRecordSet rs = new LyraGridRecordSet(c);
+			FastXLProcessor fastXLProcessor = new FastXLProcessor(rs, out);
+			try {
+				fastXLProcessor.execute();
+			} catch (EFastXLRuntime e) {
+				throw GeneralExceptionFactory.build(e);
 			}
 
-		}
+			basicGridForm.restoreCursorPosition();
 
-		basicGridForm.setPosition(getKeyValuesById(context.getRefreshId()));
-		// lyraGridAddInfo.setLyraOldPosition(basicGridForm.getTopVisiblePosition());
+			return null;
+
+		}, null);
+
+		return out;
 
 	}
 

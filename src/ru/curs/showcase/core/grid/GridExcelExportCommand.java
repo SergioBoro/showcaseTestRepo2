@@ -60,7 +60,7 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 			new GridToExcelXMLFactory(command.getColumns(), command.getRecords());
 		org.w3c.dom.Document xml = factory.build();
 		ByteArrayOutputStream stream = XMLUtils.xsltTransformForGrid(xml);
-		setResult(new ExcelFile(stream));
+		setResult(new ExcelFile(stream, "xls"));
 
 	}
 
@@ -68,8 +68,8 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 	protected void postProcess() {
 		super.postProcess();
 		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
-			LOGGER.info(String.format("Размер возвращаемого файла: %d байт", getResult().getData()
-					.size()));
+			LOGGER.info(String.format("Размер возвращаемого файла: %d байт",
+					getResult().getData().size()));
 		}
 	}
 }

@@ -54,19 +54,29 @@ public final class LyraGridExcelExportCommand extends DataPanelElementCommand<Ex
 	@Override
 	protected void mainProc() throws Exception {
 
-		LyraGridMetaFactory lyraGridMetaFactory =
-			new LyraGridMetaFactory(getContext(), getElementInfo());
-		LyraGridMetadata gm = lyraGridMetaFactory.buildMetadata();
+		if (exportType == GridToExcelExportType.CURRENTPAGE) {
 
-		LyraGridDataFactory lyraGridDataFactory =
-			new LyraGridDataFactory(getContext(), getElementInfo());
-		List<HashMap<String, String>> records =
-			lyraGridDataFactory.buildRecordsForExcel(exportType);
+			LyraGridMetaFactory lyraGridMetaFactory =
+				new LyraGridMetaFactory(getContext(), getElementInfo());
+			LyraGridMetadata gm = lyraGridMetaFactory.buildMetadata();
 
-		GridToExcelXMLFactory factory = new GridToExcelXMLFactory(gm.getColumns(), records);
-		org.w3c.dom.Document xml = factory.build();
-		ByteArrayOutputStream stream = XMLUtils.xsltTransformForGrid(xml);
-		setResult(new ExcelFile(stream));
+			LyraGridDataFactory lyraGridDataFactory =
+				new LyraGridDataFactory(getContext(), getElementInfo());
+			List<HashMap<String, String>> records = lyraGridDataFactory.exportExcelCurrentPage();
+
+			GridToExcelXMLFactory factory = new GridToExcelXMLFactory(gm.getColumns(), records);
+			org.w3c.dom.Document xml = factory.build();
+			ByteArrayOutputStream stream = XMLUtils.xsltTransformForGrid(xml);
+			setResult(new ExcelFile(stream, "xls"));
+
+		} else {
+
+			LyraGridDataFactory lyraGridDataFactory =
+				new LyraGridDataFactory(getContext(), getElementInfo());
+			ByteArrayOutputStream stream = lyraGridDataFactory.exportExcelAll();
+			setResult(new ExcelFile(stream, "xlsx"));
+
+		}
 
 	}
 
