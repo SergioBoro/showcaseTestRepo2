@@ -432,7 +432,9 @@ public class LyraGridDataFactory {
 
 		basicGridForm.externalAction(c -> {
 			basicGridForm.saveCursorPosition();
+			// CHECKSTYLE:OFF
 			GridRecordSet rs = new LyraGridRecordSet(c, basicGridForm.getFieldsMeta());
+			// CHECKSTYLE:ON
 			FastXLProcessor fastXLProcessor = new FastXLProcessor(rs, out);
 			try {
 				fastXLProcessor.execute();
