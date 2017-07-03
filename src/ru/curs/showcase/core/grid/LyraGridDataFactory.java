@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.SerializationException;
 
 import ru.curs.celesta.CelestaException;
 import ru.curs.celesta.score.Table;
+import ru.curs.fastxl.*;
 import ru.curs.lyra.*;
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
@@ -421,8 +422,29 @@ public class LyraGridDataFactory {
 
 	}
 
-	public ByteArrayOutputStream exportExcelAll() {
-		return null;
+	public ByteArrayOutputStream exportExcelAll() throws Exception {
+
+		excelExportType = GridToExcelExportType.ALL;
+
+		exportExcelPrepare();
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+		basicGridForm.externalAction(c -> {
+			basicGridForm.saveCursorPosition();
+			GridRecordSet rs = new LyraGridRecordSet(c, basicGridForm.getFieldsMeta());
+			FastXLProcessor fastXLProcessor = new FastXLProcessor(rs, out);
+			try {
+				fastXLProcessor.execute();
+			} catch (EFastXLRuntime e) {
+				throw GeneralExceptionFactory.build(e);
+			}
+			basicGridForm.restoreCursorPosition();
+			return null;
+		}, null);
+
+		return out;
+
 	}
 
 	private Object[] getKeyValuesById(final String refreshId) {
