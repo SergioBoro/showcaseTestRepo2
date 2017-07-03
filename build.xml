@@ -446,7 +446,7 @@
 			<arg value="gwt-dev.jar" />
 		</exec>
 	</target>
-
+	
 	<target name="init.ws.tests" description="Write JAX-WS client Java files for tests">
 		<echo>Updating WS test files from ${sc.webapp}/forall/webservices?wsdl</echo>
 		<exec resolveexecutable="true" executable="cmd" dir="." failonerror="true">
@@ -487,7 +487,7 @@
 	<target name="checkstyle" depends="init.dirs, compile" description="Runs Checkstyle checks">
 		  <cs:checkstyle config="global.conf/Curs.Def.CheckStyle.config"
 		              failureProperty="checkstyle.failure"
-		              failOnViolation="true" classpathref="master-classpath">
+		              failOnViolation="false" classpathref="master-classpath">
 		    	<formatter type="xml" tofile="${sc.build.dir}/checkstyle/report.xml"/>
 		  	    <formatter type="plain"/>
 		    	<fileset dir="src">
