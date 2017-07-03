@@ -429,19 +429,13 @@ public class LyraGridDataFactory {
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 
+		basicGridForm.saveCursorPosition();
+
 		basicGridForm.externalAction(c -> {
-			basicGridForm.saveCursorPosition();
-			// GridRecordSet rs = new LyraGridRecordSet(c,
-			// basicGridForm.getFieldsMeta());
-			// FastXLProcessor fastXLProcessor = new FastXLProcessor(rs, out);
-			// try {
-			// fastXLProcessor.execute();
-			// } catch (EFastXLRuntime e) {
-			// throw GeneralExceptionFactory.build(e);
-			// }
-			basicGridForm.restoreCursorPosition();
 			return null;
 		}, null);
+
+		basicGridForm.restoreCursorPosition();
 
 		return out;
 
