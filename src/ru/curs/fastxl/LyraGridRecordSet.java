@@ -7,6 +7,9 @@ import ru.curs.celesta.dbutils.BasicCursor;
 import ru.curs.celesta.score.*;
 import ru.curs.lyra.LyraFormField;
 
+/**
+ * LyraGridRecordSet.
+ */
 public class LyraGridRecordSet implements GridRecordSet {
 	private final BasicCursor c;
 	private final ColumnMeta[] m;
@@ -14,10 +17,10 @@ public class LyraGridRecordSet implements GridRecordSet {
 	private Object[] buf;
 
 	private boolean firstRecord = true;
-	Map<String, LyraFormField> lyraFields;
+	private final Map<String, LyraFormField> lyraFields;
 
-	public LyraGridRecordSet(BasicCursor cursor, Map<String, LyraFormField> aLyraFields)
-			throws CelestaException {
+	public LyraGridRecordSet(final BasicCursor cursor,
+			final Map<String, LyraFormField> aLyraFields) throws CelestaException {
 		c = cursor._getBufferCopy(cursor.callContext());
 		c.copyFiltersFrom(cursor);
 		c.copyOrderFrom(cursor);
@@ -45,17 +48,17 @@ public class LyraGridRecordSet implements GridRecordSet {
 	}
 
 	@Override
-	public boolean isInteger(int i) throws EFastXLRuntime {
+	public boolean isInteger(final int i) throws EFastXLRuntime {
 		return m[i - 1].getCelestaType() == IntegerColumn.CELESTA_TYPE;
 	}
 
 	@Override
-	public boolean isFloat(int i) throws EFastXLRuntime {
+	public boolean isFloat(final int i) throws EFastXLRuntime {
 		return m[i - 1].getCelestaType() == FloatingColumn.CELESTA_TYPE;
 	}
 
 	@Override
-	public String getColumnName(int i) throws EFastXLRuntime {
+	public String getColumnName(final int i) throws EFastXLRuntime {
 		return lyraFields.get(names[i - 1]).getCaption();
 	}
 
@@ -65,34 +68,37 @@ public class LyraGridRecordSet implements GridRecordSet {
 	}
 
 	@Override
-	public double getDouble(int i) throws EFastXLRuntime {
+	public double getDouble(final int i) throws EFastXLRuntime {
 		Object v = buf[i - 1];
-		if (v == null)
+		if (v == null) {
 			return 0;
-		else if (v instanceof Double)
+		} else if (v instanceof Double) {
 			return (Double) v;
-		else
+		} else {
 			return Double.parseDouble(v.toString());
+		}
 	}
 
 	@Override
-	public int getInt(int i) throws EFastXLRuntime {
+	public int getInt(final int i) throws EFastXLRuntime {
 		Object v = buf[i - 1];
-		if (v == null)
+		if (v == null) {
 			return 0;
-		else if (v instanceof Integer)
+		} else if (v instanceof Integer) {
 			return (Integer) v;
-		else
+		} else {
 			return Integer.parseInt(v.toString());
+		}
 	}
 
 	@Override
-	public String getString(int i) throws EFastXLRuntime {
+	public String getString(final int i) throws EFastXLRuntime {
 		Object v = buf[i - 1];
-		if (v == null)
+		if (v == null) {
 			return "";
-		else
+		} else {
 			return v.toString();
+		}
 	}
 
 }
