@@ -1,8 +1,11 @@
 package ru.curs.fastxl;
 
+import java.util.Map;
+
 import ru.curs.celesta.CelestaException;
 import ru.curs.celesta.dbutils.BasicCursor;
 import ru.curs.celesta.score.*;
+import ru.curs.lyra.LyraFormField;
 
 public class LyraGridRecordSet implements GridRecordSet {
 	private final BasicCursor c;
@@ -11,8 +14,10 @@ public class LyraGridRecordSet implements GridRecordSet {
 	private Object[] buf;
 
 	private boolean firstRecord = true;
+	Map<String, LyraFormField> lyraFields;
 
-	public LyraGridRecordSet(BasicCursor cursor) throws CelestaException {
+	public LyraGridRecordSet(BasicCursor cursor, Map<String, LyraFormField> aLyraFields)
+			throws CelestaException {
 		c = cursor._getBufferCopy(cursor.callContext());
 		c.copyFiltersFrom(cursor);
 		c.copyOrderFrom(cursor);
@@ -20,6 +25,8 @@ public class LyraGridRecordSet implements GridRecordSet {
 		names = cursor.meta().getColumns().keySet().toArray(new String[0]);
 		c.tryFirst();
 		buf = c._currentValues();
+
+		lyraFields = aLyraFields;
 	}
 
 	@Override
@@ -49,7 +56,7 @@ public class LyraGridRecordSet implements GridRecordSet {
 
 	@Override
 	public String getColumnName(int i) throws EFastXLRuntime {
-		return names[i - 1];
+		return lyraFields.get(names[i - 1]).getCaption();
 	}
 
 	@Override

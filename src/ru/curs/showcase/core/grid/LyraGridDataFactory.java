@@ -434,12 +434,11 @@ public class LyraGridDataFactory {
 
 			basicGridForm.saveCursorPosition();
 
-			GridRecordSet rs = new LyraGridRecordSet(c);
+			GridRecordSet rs = new LyraGridRecordSet(c, basicGridForm.getFieldsMeta());
 			FastXLProcessor fastXLProcessor = new FastXLProcessor(rs, out);
 			try {
 				fastXLProcessor.execute();
 			} catch (EFastXLRuntime e) {
-
 				throw GeneralExceptionFactory.build(e);
 			}
 
