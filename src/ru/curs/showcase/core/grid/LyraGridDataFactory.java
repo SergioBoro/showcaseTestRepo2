@@ -439,7 +439,6 @@ public class LyraGridDataFactory {
 			try {
 				fastXLProcessor.execute();
 			} catch (EFastXLRuntime e) {
-
 				throw GeneralExceptionFactory.build(e);
 			}
 
