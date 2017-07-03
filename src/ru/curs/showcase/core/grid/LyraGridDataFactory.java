@@ -431,10 +431,7 @@ public class LyraGridDataFactory {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 		basicGridForm.externalAction(c -> {
-
 			basicGridForm.saveCursorPosition();
-
-			//
 			GridRecordSet rs = new LyraGridRecordSet(c, basicGridForm.getFieldsMeta());
 			FastXLProcessor fastXLProcessor = new FastXLProcessor(rs, out);
 			try {
@@ -442,11 +439,8 @@ public class LyraGridDataFactory {
 			} catch (EFastXLRuntime e) {
 				throw GeneralExceptionFactory.build(e);
 			}
-
 			basicGridForm.restoreCursorPosition();
-
 			return null;
-
 		}, null);
 
 		return out;
