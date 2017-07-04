@@ -52,7 +52,7 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 
 		setAuthenticationSuccessHandler(successHandler);
 
-		String username = request.getParameter(USERNAME_HEADER).toLowerCase();
+		String username = request.getParameter(USERNAME_HEADER);
 		String password = request.getParameter(PASS_HEADER);
 		String domain = request.getParameter(DOMAIN);
 		SignedUsernamePasswordAuthenticationToken authRequest =
