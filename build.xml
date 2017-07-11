@@ -288,10 +288,10 @@
 	<target name="rebuild" depends="clean, build" description="clean + build" />
 	
 
-
+	<!-- checkstyle встатить эту задачу в ci.build после задачи build-->
 	<target name="ci.build" depends="checkProperties, info.env, clean,  
 		init.dirs, init.dojo, init.jython, init.patches, 
-		celesta.javacc, build, checkstyle, init.db, build.gwt, jdepend,
+		celesta.javacc, build, init.db, build.gwt, jdepend,
 		dist, javadoc, backup.userdata, backup.sql.scripts, tomcat.prepare.war" 
 		description="Target for CI build"/>
 	
