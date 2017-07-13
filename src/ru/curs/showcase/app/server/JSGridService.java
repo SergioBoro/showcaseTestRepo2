@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.server;
 
 import java.io.*;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -14,7 +15,7 @@ import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.app.api.services.FakeService;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.grid.*;
-import ru.curs.showcase.util.ServletUtils;
+import ru.curs.showcase.util.*;
 
 /**
  * Сервлет работы с данными для JSGrid'ов.
@@ -43,6 +44,8 @@ public class JSGridService extends HttpServlet {
 
 	private void getData(final HttpServletRequest hreq, final HttpServletResponse hresp)
 			throws IOException {
+
+		Date dt1 = new Date();
 
 		String stringGridContext = hreq.getParameter(GridContext.class.getName());
 		if (stringGridContext == null) {
@@ -95,6 +98,10 @@ public class JSGridService extends HttpServlet {
 		try (PrintWriter writer = hresp.getWriter()) {
 			writer.print(gridData.getData());
 		}
+
+		Date dt2 = new Date();
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2,
+				element.getType().toString() + "_DATA", element.getSubtype().toString());
 
 	}
 
