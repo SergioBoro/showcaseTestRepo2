@@ -4,6 +4,8 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.*;
 import java.util.*;
 
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.chart.Chart;
 import ru.curs.showcase.app.api.datapanel.*;
@@ -31,8 +33,6 @@ import ru.curs.showcase.core.primelements.datapanel.DataPanelGetCommand;
 import ru.curs.showcase.core.primelements.navigator.NavigatorGetCommand;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.LoggerHelper;
-
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * The server side implementation of the RPC service. Является декоратором для
@@ -87,8 +87,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		GridMetadata gm = command.execute();
 		Date dt2 = new Date();
 
-		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(),
-				element.getSubtype().toString());
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2,
+				element.getType().toString() + "_METADATA", element.getSubtype().toString());
 
 		return gm;
 	}
@@ -101,8 +101,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		GridData gd = command.execute();
 		Date dt2 = new Date();
 
-		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2, element.getType().toString(),
-				element.getSubtype().toString());
+		LoggerHelper.profileToLog(element.getFullId(), dt1, dt2,
+				element.getType().toString() + "_DATA", element.getSubtype().toString());
 
 		return gd;
 	}
@@ -262,7 +262,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		GridToolBar gtb = command.execute();
 		Date dt2 = new Date();
 
-		LoggerHelper.profileToLog(elInfo.getFullId(), dt1, dt2, elInfo.getType().toString(), "");
+		LoggerHelper.profileToLog(elInfo.getFullId(), dt1, dt2, elInfo.getType().toString(),
+				"GridToolBar");
 
 		return gtb;
 	}
@@ -284,14 +285,12 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		lang = UserDataUtils.getLocaleForCurrentUserdata();
 
 		if (!("en".equals(lang))) {
-			bundle =
-				ResourceBundle
-						.getBundle("ru.curs.showcase.app.server.internatiolization.constantsShowcase");
+			bundle = ResourceBundle
+					.getBundle("ru.curs.showcase.app.server.internatiolization.constantsShowcase");
 		} else {
 			Locale loc = new Locale("en");
-			bundle =
-				ResourceBundle.getBundle(
-						"ru.curs.showcase.app.server.internatiolization.constantsShowcase", loc);
+			bundle = ResourceBundle.getBundle(
+					"ru.curs.showcase.app.server.internatiolization.constantsShowcase", loc);
 		}
 
 		if (bundle != null) {
@@ -309,9 +308,8 @@ public class DataServiceImpl extends RemoteServiceServlet implements DataService
 		String userDataId = null;
 
 		if (context.getSessionParamsMap() != null) {
-			userDataId =
-				AppInfoSingleton.getAppInfo().getUserdataIdFromURLParams(
-						context.getSessionParamsMap());
+			userDataId = AppInfoSingleton.getAppInfo()
+					.getUserdataIdFromURLParams(context.getSessionParamsMap());
 		}
 
 		if (userDataId == null) {
