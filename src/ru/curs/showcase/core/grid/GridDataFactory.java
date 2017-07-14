@@ -131,20 +131,7 @@ public class GridDataFactory extends CompBasedElementFactory {
 	protected void prepareData() {
 		if (getXmlDS() == null) {
 
-			// Начало перевода с помощью Gettext.
-			InputStream is = getSource().getXmlDS();
-			String str = "";
-			try {
-				str = TextUtils.streamToString(is);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			str = UserDataUtils.modifyVariables(str);
-			is = TextUtils.stringToStream(str);
-			setXmlDS(is);
-			// Окончание перевода с помощью Gettext.
-
-			// setXmlDS(getSource().getXmlDS());
+			setXmlDS(getSource().getXmlDS());
 		}
 	}
 
@@ -221,8 +208,9 @@ public class GridDataFactory extends CompBasedElementFactory {
 				return;
 			} else {
 				// Здесь осуществляется перевод с помощью Gettext.
-				curColId = UserDataUtils.modifyVariables(XMLUtils.unEscapeTagXml(localName));
-				// curColId = XMLUtils.unEscapeTagXml(localName);
+				// curColId =
+				// UserDataUtils.modifyVariables(XMLUtils.unEscapeTagXml(localName));
+				curColId = XMLUtils.unEscapeTagXml(localName);
 
 				processValue = true;
 				osValue = new ByteArrayOutputStream();
@@ -270,8 +258,9 @@ public class GridDataFactory extends CompBasedElementFactory {
 
 			if (processValue) {
 				// Здесь осуществляется перевод с помощью Gettext.
-				String colId = UserDataUtils.modifyVariables(XMLUtils.unEscapeTagXml(localName));
-				// String colId = XMLUtils.unEscapeTagXml(localName);
+				// String colId =
+				// UserDataUtils.modifyVariables(XMLUtils.unEscapeTagXml(localName));
+				String colId = XMLUtils.unEscapeTagXml(localName);
 				try {
 					if (colId.equals(curColId)) {
 						String value = osValue.toString(TextUtils.DEF_ENCODING);
