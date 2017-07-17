@@ -185,8 +185,12 @@ public final class ESIAManager {
 	}
 
 	public static String getLogoutURL() {
-		return EsiaSettings.URL_BASE + URL_LOGOUT + "?" + PARAM_CLIENT_ID + "="
+		String url = EsiaSettings.URL_BASE + URL_LOGOUT + "?" + PARAM_CLIENT_ID + "="
 				+ EsiaSettings.VALUE_CLIENT_ID;
+		if (EsiaSettings.VALUE_LOGOUT_REDIRECT_URI != null) {
+			url = url + "&redirect_url=" + EsiaSettings.VALUE_LOGOUT_REDIRECT_URI;
+		}
+		return url;
 	}
 
 	public static String getAuthorizationURL() {

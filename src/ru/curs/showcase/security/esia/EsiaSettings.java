@@ -30,6 +30,8 @@ public final class EsiaSettings {
 		UserDataUtils.getGeneralOptionalProp("esia.param.clientid");
 	public static final String VALUE_REDIRECT_URI =
 		UserDataUtils.getGeneralOptionalProp("esia.param.redirecturi");
+	public static final String VALUE_LOGOUT_REDIRECT_URI =
+		UserDataUtils.getGeneralOptionalProp("esia.param.logoutredirecturi");
 	public static final String VALUE_SCOPE =
 		UserDataUtils.getGeneralOptionalProp("esia.param.scope");
 
