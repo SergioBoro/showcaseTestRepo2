@@ -1236,6 +1236,8 @@ public final class UserDataUtils {
 	 */
 	public static String modifyVariables(final String value) {
 		String data = value;
+		if (data == null)
+			return null;
 
 		ResourceBundle bundle = null;
 		String sesid = "";
@@ -1595,6 +1597,9 @@ public final class UserDataUtils {
 
 	public static String modifyVariables(final String value, ResourceBundle bundle) {
 		String data = value;
+		if (data == null)
+			return null;
+
 		if (bundle != null) {
 
 			if (data.contains("$localize(_(\""))
@@ -1943,6 +1948,8 @@ public final class UserDataUtils {
 	 */
 	public static String modifyVariablesForWS(final String value) {
 		String data = value;
+		if (data == null)
+			return null;
 
 		ResourceBundle bundle = CourseLocalization.getLocalizedResourseBundle();
 
@@ -2297,6 +2304,8 @@ public final class UserDataUtils {
 	 */
 	public static String modifyVariablesForWS(final String value, final String lang) {
 		String data = value;
+		if (data == null)
+			return null;
 
 		ResourceBundle bundle = CourseLocalization.getLocalizedResourseBundle(lang);
 
