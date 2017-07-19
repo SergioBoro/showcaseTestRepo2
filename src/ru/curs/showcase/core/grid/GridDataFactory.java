@@ -144,7 +144,7 @@ public class GridDataFactory extends CompBasedElementFactory {
 			setXmlDS(is);
 			// Окончание перевода с помощью Gettext.
 
-			setXmlDS(getSource().getXmlDS());
+			// setXmlDS(getSource().getXmlDS());
 		}
 	}
 
