@@ -28,6 +28,11 @@ public final class ProductionModeInitializer {
 
 	private static final String COPY_USERDATA_DIRS_PARAM = "js:css:resources";
 
+	private static final String COPY_COMMON_FILES_ON_STARTUP = "copy.common.files.on.startup";
+
+	private static final String COPY_PERSPECTIVE_FILES_ON_STARTUP =
+		"copy.perspective.files.on.startup";
+
 	private static final String USER_DATA_DIR_NOT_FOUND_ERROR =
 		"Каталог с пользовательскими данными с именем '%s' не найден. ";
 	private static final String NOT_ALL_FILES_COPIED_ERROR =
@@ -381,7 +386,9 @@ public final class ProductionModeInitializer {
 							.getRealPath("/" + "WEB-INF")));
 				} else if ("plugins".equals(f.getName()) || "libraries".equals(f.getName())) {
 					fprocessor.processForPlugins(new CopyFileAction(generalDir.getAbsolutePath()));
-				} else {
+				} else if (UserDataUtils.getGeneralOptionalProp(COPY_COMMON_FILES_ON_STARTUP) == null
+						|| !"false".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp(
+								COPY_COMMON_FILES_ON_STARTUP).trim())) {
 					fprocessor.processWithoutWebInf(new CopyFileAction(userDataDir
 							.getAbsolutePath()));
 				}
@@ -404,11 +411,15 @@ public final class ProductionModeInitializer {
 			new BatchFileProcessor(userDataCatalog + "/resources/login_content",
 					new RegexFilenameFilter("^[.].*", false));
 		try {
-			fprocessor.processWithoutLoginContent(new CopyFileAction(aServletContext
-					.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/" + userdataId + "/"
-							+ dirName)));
-			fprocessorForLoginContent.process(new CopyFileAction(aServletContext
-					.getRealPath("/resources/login_content")));
+			if (UserDataUtils.getOptionalProp(COPY_PERSPECTIVE_FILES_ON_STARTUP, userdataId) == null
+					|| !"false".equalsIgnoreCase(UserDataUtils.getOptionalProp(
+							COPY_PERSPECTIVE_FILES_ON_STARTUP, userdataId).trim())) {
+				fprocessor.processWithoutLoginContent(new CopyFileAction(aServletContext
+						.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/" + userdataId + "/"
+								+ dirName)));
+				fprocessorForLoginContent.process(new CopyFileAction(aServletContext
+						.getRealPath("/resources/login_content")));
+			}
 		} catch (IOException e) {
 			isAllFilesCopied = false;
 			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
