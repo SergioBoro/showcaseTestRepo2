@@ -1,13 +1,11 @@
 package ru.curs.showcase.app.api.selector;
 
-import java.io.Serializable;
-
 import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Дополнительная информация.
  */
-public class SelectorAdditionalData implements Serializable {
+public class SelectorAdditionalData implements SerializableElement {
 	private static final long serialVersionUID = -3561342065265034932L;
 
 	private SerializableElement context;

@@ -76,10 +76,11 @@ public final class XFormsUtils {
 	// CHECKSTYLE:OFF
 	private static native void setCallbackJSNIFunction() /*-{
 															$wnd.gwtXFormSave = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickSave(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;);
-														//	$wnd.gwtXFormFilter = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickFilter(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
 															$wnd.gwtXFormUpdate = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::xFormPanelClickUpdate(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;);
-															$wnd.showSelector =	@ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
-															$wnd.showMultiSelector = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showMultiSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
+															
+															//$wnd.showSelector =	@ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
+															//$wnd.showMultiSelector = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showMultiSelector(Lcom/google/gwt/core/client/JavaScriptObject;);
+															
 															$wnd.gwtXFormDownload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::downloadFile(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtXFormUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::uploadFile(Lcom/google/gwt/core/client/JavaScriptObject;);
 															$wnd.gwtXFormSimpleUpload = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::simpleUpload(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
@@ -90,6 +91,11 @@ public final class XFormsUtils {
 															$wnd.gwtXFormGetStringContext = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::getStringContext(Ljava/lang/String;);
 															$wnd.gwtXFormShowMessage = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showMessage(Ljava/lang/String;);
 															$wnd.gwtXFormShowErrorMessage = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showErrorMessage(Ljava/lang/String;);
+															$wnd.gwtSelectorGetHttpParams = @ru.curs.showcase.app.client.JSSelector::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtSelectorGetLocalizedParams = @ru.curs.showcase.app.client.JSSelector::pluginGetLocalizedParams(Ljava/lang/String;);
+															$wnd.gwtSelectorShowMessage = @ru.curs.showcase.app.client.JSSelector::pluginShowMessage(Ljava/lang/String;);
+															$wnd.gwtSelectorShowErrorMessage = @ru.curs.showcase.app.client.JSSelector::pluginShowErrorMessage(Ljava/lang/String;);
+															$wnd.gwtSelectorShowTextMessage = @ru.curs.showcase.app.client.JSSelector::pluginShowTextMessage(Ljava/lang/String;);															
 															}-*/;
 
 	// CHECKSTYLE:ON
@@ -137,6 +143,9 @@ public final class XFormsUtils {
 	private static native void addMainXFormBody(final String mainXForm) /*-{
 		var div = $doc.getElementById('mainXForm');
 		div.innerHTML = mainXForm;
+
+		$wnd.safeIncludeJS("js/ui/selectors/selector.js");
+		$wnd.safeIncludeJS("js/ui/selectors/multiSelector.js");
 	}-*/;
 
 }

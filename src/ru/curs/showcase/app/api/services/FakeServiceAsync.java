@@ -8,6 +8,7 @@ import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.Event;
 import ru.curs.showcase.app.api.geomap.GeoMapExportSettings;
 import ru.curs.showcase.app.api.grid.LyraGridAddData;
+import ru.curs.showcase.app.api.selector.DataRequest;
 
 /**
  * Асинхронный компаньон FakeService.
@@ -27,4 +28,7 @@ public interface FakeServiceAsync {
 	void serializeThrowable(AsyncCallback<Throwable> callback);
 
 	void serializeLyraGridAddData(AsyncCallback<LyraGridAddData> callback);
+
+	void serializeDataRequest(DataRequest req, AsyncCallback<Void> callback);
+
 }

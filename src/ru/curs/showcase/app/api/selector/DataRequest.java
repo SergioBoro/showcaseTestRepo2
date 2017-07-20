@@ -1,11 +1,11 @@
 package ru.curs.showcase.app.api.selector;
 
-import java.io.Serializable;
+import ru.curs.showcase.app.api.SerializableElement;
 
 /**
  * Запрос данных.
  */
-public class DataRequest implements Serializable {
+public class DataRequest implements SerializableElement {
 	private static final long serialVersionUID = 578677012513550530L;
 
 	private String params;

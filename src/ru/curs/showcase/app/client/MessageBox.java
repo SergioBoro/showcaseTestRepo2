@@ -5,9 +5,6 @@ package ru.curs.showcase.app.client;
 
 import java.util.Date;
 
-import ru.curs.showcase.app.api.MessageType;
-import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.*;
@@ -16,6 +13,9 @@ import com.google.gwt.resources.client.*;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.ui.*;
+
+import ru.curs.showcase.app.api.MessageType;
+import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
 /**
  * Интерфейс, ссылающийся на иконки, которые могут понадобится в окне сообщений
@@ -78,8 +78,8 @@ public final class MessageBox {
 	/**
 	 * GWT сервис для доступа к иконкам, хранящимся на сервере.
 	 */
-	private static ImagesForDialogBox images = (ImagesForDialogBox) GWT
-			.create(ImagesForDialogBox.class);
+	private static ImagesForDialogBox images =
+		(ImagesForDialogBox) GWT.create(ImagesForDialogBox.class);
 
 	// private static DataServiceAsync dataService;
 
@@ -87,7 +87,8 @@ public final class MessageBox {
 
 	public static final String NBSP = "&nbsp;";
 
-	private static final int Z_INDEX = 103;
+	// private static final int Z_INDEX = 103;
+	private static final int Z_INDEX = 951;
 
 	private MessageBox() {
 		super();
@@ -235,9 +236,8 @@ public final class MessageBox {
 				break;
 			}
 		} else {
-			String url =
-				Window.Location.getProtocol() + "//" + Window.Location.getHost()
-						+ Window.Location.getPath() + messageSubtype;
+			String url = Window.Location.getProtocol() + "//" + Window.Location.getHost()
+					+ Window.Location.getPath() + messageSubtype;
 			im1.setUrl(url);
 		}
 
@@ -327,16 +327,13 @@ public final class MessageBox {
 			dp.setContent(textArea);
 			// }
 
-			final String messageToCopy =
-				"Time: "
-						+ formattedDate
-						+ "\r\n\r\nUser: "
-						+ AppCurrContext.getInstance().getServerCurrentState().getUserInfo()
-								.getCaption() + "\r\n\r\n" + hideMessage;
+			final String messageToCopy = "Time: "
+					+ formattedDate + "\r\n\r\nUser: " + AppCurrContext.getInstance()
+							.getServerCurrentState().getUserInfo().getCaption()
+					+ "\r\n\r\n" + hideMessage;
 
-			Button copy =
-				new Button(CourseClientLocalization.gettext(AppCurrContext.getInstance()
-						.getDomain(), "Copy"));
+			Button copy = new Button(CourseClientLocalization
+					.gettext(AppCurrContext.getInstance().getDomain(), "Copy"));
 			copy.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(final ClickEvent event) {
@@ -387,31 +384,34 @@ public final class MessageBox {
 	}
 
 	public static void showErrorMessageWindow(final String caption, final String message) {
-		DialogBox db =
-			showMessageWithDetails(CourseClientLocalization.gettext(AppCurrContext.getInstance()
-					.getDomain(), caption), CourseClientLocalization.gettext(AppCurrContext
-					.getInstance().getDomain(), message), "", MessageType.ERROR, Boolean.FALSE,
-					(String) null);
+		DialogBox db = showMessageWithDetails(
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						caption),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						message),
+				"", MessageType.ERROR, Boolean.FALSE, (String) null);
 		db.center();
 		db.show();
 	}
 
 	public static void showWarningMessageWindow(final String caption, final String message) {
-		DialogBox db =
-			showMessageWithDetails(CourseClientLocalization.gettext(AppCurrContext.getInstance()
-					.getDomain(), caption), CourseClientLocalization.gettext(AppCurrContext
-					.getInstance().getDomain(), message), "", MessageType.WARNING, Boolean.FALSE,
-					(String) null);
+		DialogBox db = showMessageWithDetails(
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						caption),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						message),
+				"", MessageType.WARNING, Boolean.FALSE, (String) null);
 		db.center();
 		db.show();
 	}
 
 	public static void showInfoMessageWindow(final String caption, final String message) {
-		DialogBox db =
-			showMessageWithDetails(CourseClientLocalization.gettext(AppCurrContext.getInstance()
-					.getDomain(), caption), CourseClientLocalization.gettext(AppCurrContext
-					.getInstance().getDomain(), message), "", MessageType.INFO, Boolean.FALSE,
-					(String) null);
+		DialogBox db = showMessageWithDetails(
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						caption),
+				CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+						message),
+				"", MessageType.INFO, Boolean.FALSE, (String) null);
 		db.center();
 		db.show();
 	}

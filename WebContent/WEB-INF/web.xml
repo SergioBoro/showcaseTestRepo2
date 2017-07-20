@@ -126,6 +126,14 @@
     <url-pattern>/secured/JSGridService</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>JSSelectorService</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.JSSelectorService</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JSSelectorService</servlet-name>
+    <url-pattern>/secured/JSSelectorService</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>JSLyraGridService</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.JSLyraGridService</servlet-class>
   </servlet>

@@ -8,6 +8,7 @@ import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.Event;
 import ru.curs.showcase.app.api.geomap.GeoMapExportSettings;
 import ru.curs.showcase.app.api.grid.LyraGridAddData;
+import ru.curs.showcase.app.api.selector.DataRequest;
 
 /**
  * Содержит fake функции для того, чтобы заработали "ручные вызовы" сериализации
@@ -24,5 +25,7 @@ public interface FakeService extends RemoteService {
 	Throwable serializeThrowable();
 
 	LyraGridAddData serializeLyraGridAddData();
+
+	void serializeDataRequest(DataRequest req);
 
 }
