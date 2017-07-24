@@ -488,7 +488,7 @@ function showMultiSelector(selectorParam) {
 	    	 return selectorParam.id;
 	     }
 	     function getGeneralFilters(){
-	    	 return getXMLByXPathArray(selectorParam.generalFilters);
+	    	 return getXMLByXPathArray(selectorParam.generalFilters ? selectorParam.generalFilters : "");
 	     }
 	     function getProcName(){
 	    	return selectorParam.procListAndCount ? selectorParam.procListAndCount : selectorParam.procCount + "FDCF8ABB9B6540A89E350010424C2B80" + selectorParam.procList;
