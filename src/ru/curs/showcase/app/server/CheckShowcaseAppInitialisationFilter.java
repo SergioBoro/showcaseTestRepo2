@@ -3,7 +3,7 @@ package ru.curs.showcase.app.server;
 import java.io.IOException;
 
 import javax.servlet.*;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.util.TextUtils;
@@ -18,9 +18,12 @@ public class CheckShowcaseAppInitialisationFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
+		HttpServletRequest httpReq = (HttpServletRequest) request;
 		HttpServletResponse httpResp = (HttpServletResponse) response;
 
-		if (AppInfoSingleton.getAppInfo().getShowcaseAppOnStartMessage() != null
+		if (httpReq.getRequestURL().toString().contains("/api/")) {
+			chain.doFilter(request, response);
+		} else if (AppInfoSingleton.getAppInfo().getShowcaseAppOnStartMessage() != null
 				&& !AppInfoSingleton.getAppInfo().getShowcaseAppOnStartMessage().isEmpty()) {
 			String exceptionText = AppInfoSingleton.getAppInfo().getShowcaseAppOnStartMessage();
 

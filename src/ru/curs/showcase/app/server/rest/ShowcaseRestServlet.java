@@ -15,7 +15,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 
 import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.UserInfo;
-import ru.curs.showcase.runtime.UserDataUtils;
+import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.security.*;
 import ru.curs.showcase.util.ServletUtils;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
@@ -33,6 +33,14 @@ public final class ShowcaseRestServlet extends HttpServlet {
 	@Override
 	public void service(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
+		if (AppInfoSingleton.getAppInfo().getShowcaseAppOnStartMessage()
+				.contains("Не удаётся подключиться к указанной базе данных")) {
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write("При запуске сервера приложений произошла ошибка.");
+			response.setStatus(500);
+			response.getWriter().close();
+			return;
+		}
 
 		// rest.authentication.type
 		String sesId = request.getSession().getId();
