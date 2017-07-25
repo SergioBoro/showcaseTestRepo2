@@ -14,6 +14,23 @@ function showSelector(selectorParam) {
 	         "dojo/domReady!"
 	     ], function(registry, Dialog, lang, Grid, Selection, Keyboard, declare, Rest, Cache, timing){
 		
+		
+		dojo.xhrGet({
+			sync: true,
+			url: window.appContextPath + "/sessionTimeoutCheckForClientJS",
+			handleAs: "json",
+			preventCache: true,
+			load: function(data) {
+				if(data.value === "true"){
+					window.location.replace(window.appContextPath + "/sestimeout.jsp");
+				}
+		  	},
+			error: function(error) {
+				window.location.replace(window.appContextPath + "/sestimeout.jsp");
+			}
+		});
+		
+		
 		var localizedParams = gwtSelectorGetLocalizedParams(getXFormId());
 		localizedParams = eval('('+localizedParams+')');
 		

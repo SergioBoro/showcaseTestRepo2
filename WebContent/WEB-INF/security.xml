@@ -19,7 +19,7 @@
 	<http pattern="/resources/**" security="none"/>
 	<http pattern="/forall/*" security="none"/>
 	<http pattern="/auth/logoutServlet**" security="none"/>
-	<http pattern="/auth/facebookPasswordServlet**" security="none"/>
+	<http pattern="/sessionTimeoutCheckForClientJS**" security="none"/>
 	<http pattern="/api/**" security="none"/>
 	
 	<http auto-config="true" use-expressions="true">
