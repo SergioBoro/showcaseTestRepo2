@@ -41,8 +41,8 @@ public class DialogBoxWithCaptionButton extends DialogBox {
 	/**
 	 * GWT сервис для доступа к иконкам, хранящимся на сервере.
 	 */
-	private static ImagesForDialogBox images = (ImagesForDialogBox) GWT
-			.create(ImagesForDialogBox.class);
+	private static ImagesForDialogBox images =
+		(ImagesForDialogBox) GWT.create(ImagesForDialogBox.class);
 
 	/**
 	 * Объект Image иконки на кнопку закрыть.
@@ -88,7 +88,10 @@ public class DialogBoxWithCaptionButton extends DialogBox {
 	 */
 	public DialogBoxWithCaptionButton(final boolean autoHide, final boolean modal,
 			final String caption) {
-		super(autoHide, modal);
+
+		// super(autoHide, modal);
+		super(autoHide, false);
+
 		Element td = getCellElement(0, 1);
 		DOM.removeChild(td, (Element) td.getFirstChildElement());
 		DOM.appendChild(td, captionPanel.getElement());
