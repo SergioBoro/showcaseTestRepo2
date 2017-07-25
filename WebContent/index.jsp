@@ -7,6 +7,7 @@
 <%@page import="ru.curs.showcase.runtime.ExternalClientLibrariesUtils"%>
 <%@page import="ru.curs.showcase.runtime.AppInfoSingleton"%>
 <%@page import="ru.curs.showcase.app.server.AppAndSessionEventsListener"%>  
+<%@page import="java.io.File"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -84,9 +85,16 @@ var protocol = window.location.protocol;
     <link rel="stylesheet" href="js/dgrid/css/skins/claro.css"/>
     
     <script language="javascript" src="js/Gettext.js"></script>
+     
+     <%if((new File(AppInfoSingleton.getAppInfo().getSolutionsDirRoot() + File.separator +
+    		 userdataId + File.separator + "resources" + File.separator +
+    		 UserDataUtils.getFinalPlatformPoFile(userdataId))).exists()){ %>
      <link rel="gettext" 
      href="solutions/<%=userdataId%>/resources/<%=UserDataUtils.getFinalPlatformPoFile(userdataId)%>" 
     		 type="application/x-po"/>
+    <%}else{%>
+    <link rel="gettext" href="resources/platform.po" type="application/x-po"/>
+    <%}%>
     
       <%=//ExternalClientLibrariesUtils.addExternalCSSByStaticMetod(request.getParameter("userdata"))
     		  ExternalClientLibrariesUtils.addExternalCSSByStaticMetod(userdataId)

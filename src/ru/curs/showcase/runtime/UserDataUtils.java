@@ -43,6 +43,8 @@ public final class UserDataUtils {
 	 */
 	public static final String SOLUTIONS_DIR = "solutions";
 
+	public static final String RESOURCES_DIR = "resources";
+
 	/**
 	 * Часть названия параметров в app.properties, относящихся к системе
 	 * аутентификации - mellophone (authserver).
@@ -1131,6 +1133,17 @@ public final class UserDataUtils {
 
 		if (dir.exists()) {
 			for (String file : dir.list()) {
+				if (file.equals(platform + ".po")) {
+					poFileName = file;
+					break;
+				}
+			}
+		}
+
+		File dir2 = new File(AppInfoSingleton.getAppInfo().getResourcesDirRoot());
+
+		if ("".equals(poFileName)) {
+			for (String file : dir2.list()) {
 				if (file.equals(platform + ".po")) {
 					poFileName = file;
 					break;

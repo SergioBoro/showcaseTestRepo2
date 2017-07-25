@@ -140,6 +140,8 @@ public final class AppInfoSingleton {
 
 	private String solutionsDirRoot;
 
+	private String resourcesDirRoot;
+
 	private Map<String, Object> sessionAttributesMap = null;
 
 	/**
@@ -700,6 +702,14 @@ public final class AppInfoSingleton {
 
 	public void setSolutionsDirRoot(final String aSolutionsDirRoot) {
 		this.solutionsDirRoot = aSolutionsDirRoot;
+	}
+
+	public String getResourcesDirRoot() {
+		return resourcesDirRoot;
+	}
+
+	public void setResourcesDirRoot(final String aResourcesDirRoot) {
+		this.resourcesDirRoot = aResourcesDirRoot;
 	}
 
 	public void setSessionAttributesMap(final Map<String, Object> aSessionAttributesMap) {

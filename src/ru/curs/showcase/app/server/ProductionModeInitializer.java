@@ -139,6 +139,9 @@ public final class ProductionModeInitializer {
 		AppInfoSingleton.getAppInfo().setSolutionsDirRoot(
 				aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR));
 
+		AppInfoSingleton.getAppInfo().setResourcesDirRoot(
+				aServletContext.getRealPath("/" + UserDataUtils.RESOURCES_DIR));
+
 		AppInitializer.checkUserDataDir(
 				aServletContext.getInitParameter(SHOWCASE_ROOTPATH_USERDATA_PARAM), "context.xml");
 

@@ -108,12 +108,18 @@ public class AppAndSessionEventsListener implements ServletContextListener, Http
 							+ "common.sys" + File.separator + "resources" + File.separator
 							+ "platform.po");
 
+				File platformPoFileDefault =
+					new File(AppInfoSingleton.getAppInfo().getResourcesDirRoot() + File.separator
+							+ "platform.po");
+
 				if (!platformPoFile.exists()) {
-					LOGGER.error("ОШИБКА: Не удалось найти дефолтный файл platform.po "
-							+ "локализации клиенсткой части Showcase");
-					AppInfoSingleton.getAppInfo().setShowcaseAppOnStartMessage(
-							"ОШИБКА: Не удалось найти дефолтный файл platform.po "
-									+ "локализации клиенсткой части Showcase");
+					if (!platformPoFileDefault.exists()) {
+						LOGGER.error("ОШИБКА: Не удалось найти дефолтный файл platform.po "
+								+ "локализации клиенсткой части Showcase");
+						AppInfoSingleton.getAppInfo().setShowcaseAppOnStartMessage(
+								"ОШИБКА: Не удалось найти дефолтный файл platform.po "
+										+ "локализации клиенсткой части Showcase");
+					}
 				}
 
 				if (AppInfoSingleton.getAppInfo().getShowcaseAppOnStartMessage().isEmpty()) {
