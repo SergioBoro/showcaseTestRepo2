@@ -522,10 +522,10 @@ function showMultiSelector(selectorParam) {
 	    	 return selectorParam.startWith ? selectorParam.startWith : false;
 	     }
 	     function getDataWidth(){
-	    	 return selectorParam.dataWidth ? selectorParam.dataWidth : "400px";
+	    	 return (selectorParam.dataWidth ? selectorParam.dataWidth : "400px") + " !important";
 	     }
 	     function getDataHeight(){
-	    	 return selectorParam.dataHeight ? selectorParam.dataHeight : "250px";
+	    	 return (selectorParam.dataHeight ? selectorParam.dataHeight : "250px") + " !important";
 	     }
 	     function getWindowCaption(){
 	    	 return selectorParam.windowCaption ? selectorParam.windowCaption : "";
@@ -537,7 +537,7 @@ function showMultiSelector(selectorParam) {
 	    	 return selectorParam.visibleRecordCount ? selectorParam.visibleRecordCount : 15;
 	     }
 	     function getSelectedDataWidth(){
-	    	 return selectorParam.selectedDataWidth ? selectorParam.selectedDataWidth : "312px";
+	    	 return (selectorParam.selectedDataWidth ? selectorParam.selectedDataWidth : "312px") + " !important";
 	     }
 	     function getNeedClear(){
 	    	 return selectorParam.needClear ? selectorParam.needClear : false;

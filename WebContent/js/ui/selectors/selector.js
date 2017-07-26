@@ -315,10 +315,10 @@ function showSelector(selectorParam) {
 	    	 return selectorParam.startWith ? selectorParam.startWith : false;
 	     }
 	     function getDataWidth(){
-	    	 return selectorParam.dataWidth ? selectorParam.dataWidth : "400px";
+	    	 return (selectorParam.dataWidth ? selectorParam.dataWidth : "400px") + " !important";
 	     }
 	     function getDataHeight(){
-	    	 return selectorParam.dataHeight ? selectorParam.dataHeight : "250px";
+	    	 return (selectorParam.dataHeight ? selectorParam.dataHeight : "250px") + " !important";
 	     }
 	     function getWindowCaption(){
 	    	 return selectorParam.windowCaption ? selectorParam.windowCaption : "";
