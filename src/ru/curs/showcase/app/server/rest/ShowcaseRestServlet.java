@@ -183,8 +183,7 @@ public final class ShowcaseRestServlet extends HttpServlet {
 						getUrlParamsJson(request), restProc, clientIP);
 
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter()
-				.write(StringEscapeUtils.unescapeJava(responcseData.getResponseData()));
+		response.getWriter().write(responcseData.getResponseData());
 
 		response.setStatus(responcseData.getResponseCode());
 		response.setHeader("Content-Type", responcseData.getContentType());
