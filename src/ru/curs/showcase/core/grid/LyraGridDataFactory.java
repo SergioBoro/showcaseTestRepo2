@@ -265,10 +265,10 @@ public class LyraGridDataFactory {
 			for (LyraFieldValue lyraFieldValue : rec.getFields()) {
 
 				int colPrecision;
-				if (lyraFieldValue.getScale() == 0) {
+				if (lyraFieldValue.meta().getScale() == 0) {
 					colPrecision = COLUMN_DEFAULT_PRECISION;
 				} else {
-					colPrecision = lyraFieldValue.getScale();
+					colPrecision = lyraFieldValue.meta().getScale();
 				}
 
 				if (PROPERTIES.equalsIgnoreCase(lyraFieldValue.getName())) {
@@ -403,10 +403,10 @@ public class LyraGridDataFactory {
 			for (LyraFieldValue lyraFieldValue : rec.getFields()) {
 
 				int colPrecision;
-				if (lyraFieldValue.getScale() == 0) {
+				if (lyraFieldValue.meta().getScale() == 0) {
 					colPrecision = COLUMN_DEFAULT_PRECISION;
 				} else {
-					colPrecision = lyraFieldValue.getScale();
+					colPrecision = lyraFieldValue.meta().getScale();
 				}
 
 				if (!PROPERTIES.equalsIgnoreCase(lyraFieldValue.getName())) {
@@ -433,7 +433,7 @@ public class LyraGridDataFactory {
 		basicGridForm.saveCursorPosition();
 
 		basicGridForm.externalAction(c -> {
-			GridRecordSet rs = new LyraGridRecordSet(c, basicGridForm.getFieldsMeta());
+			GridRecordSet rs = new LyraGridRecordSet(c, basicGridForm);
 			FastXLProcessor fastXLProcessor = new FastXLProcessor(rs, out);
 			try {
 				fastXLProcessor.execute();
@@ -479,7 +479,7 @@ public class LyraGridDataFactory {
 			return "";
 		}
 
-		switch (lyraFieldValue.getFieldType()) {
+		switch (lyraFieldValue.meta().getType()) {
 		case BLOB:
 			return strValue;
 		case BIT:
@@ -492,7 +492,7 @@ public class LyraGridDataFactory {
 			return strValue;
 		case VARCHAR:
 			strValue = XMLUtils.unEscapeValueXml(strValue);
-			String subtype = lyraFieldValue.getSubtype();
+			String subtype = lyraFieldValue.meta().getSubtype();
 			if (subtype != null) {
 				switch (subtype.toUpperCase()) {
 				case "DOWNLOAD":

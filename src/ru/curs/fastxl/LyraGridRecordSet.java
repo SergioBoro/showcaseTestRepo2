@@ -1,35 +1,38 @@
 package ru.curs.fastxl;
 
-import java.util.Map;
-
 import ru.curs.celesta.CelestaException;
 import ru.curs.celesta.dbutils.BasicCursor;
-import ru.curs.celesta.score.*;
-import ru.curs.lyra.LyraFormField;
+import ru.curs.lyra.*;
 
 /**
  * LyraGridRecordSet.
  */
 public class LyraGridRecordSet implements GridRecordSet {
-	private final BasicCursor c;
-	private final ColumnMeta[] m;
-	private final String[] names;
+
 	private Object[] buf;
+	private final BasicCursor c;
+	private final LyraFormField[] m;
+
+	private final BasicGridForm basicGridForm;
 
 	private boolean firstRecord = true;
-	private final Map<String, LyraFormField> lyraFields;
 
-	public LyraGridRecordSet(final BasicCursor cursor,
-			final Map<String, LyraFormField> aLyraFields) throws CelestaException {
-		c = cursor._getBufferCopy(cursor.callContext());
-		c.copyFiltersFrom(cursor);
-		c.copyOrderFrom(cursor);
-		m = cursor.meta().getColumns().values().toArray(new ColumnMeta[0]);
-		names = cursor.meta().getColumns().keySet().toArray(new String[0]);
+	public LyraGridRecordSet(final BasicCursor cursor, final BasicGridForm aBasicGridForm)
+			throws CelestaException {
+
+		basicGridForm = aBasicGridForm;
+
+		c = cursor;
+		// c = cursor._getBufferCopy(cursor.callContext());
+		// c.copyFiltersFrom(cursor);
+		// c.copyOrderFrom(cursor);
+
+		m = basicGridForm.getFieldsMeta().values().stream().filter(LyraFormField::isVisible)
+				.toArray(LyraFormField[]::new);
 		c.tryFirst();
-		buf = c._currentValues();
 
-		lyraFields = aLyraFields;
+		initBuf();
+
 	}
 
 	@Override
@@ -40,31 +43,38 @@ public class LyraGridRecordSet implements GridRecordSet {
 		}
 		try {
 			boolean result = c.next();
-			buf = c._currentValues();
+			initBuf();
 			return result;
 		} catch (CelestaException e) {
 			throw new EFastXLRuntime(e);
 		}
 	}
 
+	private void initBuf() throws CelestaException {
+		LyraFormData lfd =
+			new LyraFormData(c, basicGridForm.getFieldsMeta(), basicGridForm._getId());
+		buf = lfd.getFields().stream().filter(fv -> fv.meta().isVisible())
+				.map(LyraFieldValue::getValue).toArray();
+	}
+
 	@Override
 	public boolean isInteger(final int i) throws EFastXLRuntime {
-		return m[i - 1].getCelestaType() == IntegerColumn.CELESTA_TYPE;
+		return m[i - 1].getType() == LyraFieldType.INT;
 	}
 
 	@Override
 	public boolean isFloat(final int i) throws EFastXLRuntime {
-		return m[i - 1].getCelestaType() == FloatingColumn.CELESTA_TYPE;
+		return m[i - 1].getType() == LyraFieldType.REAL;
 	}
 
 	@Override
 	public String getColumnName(final int i) throws EFastXLRuntime {
-		return lyraFields.get(names[i - 1]).getCaption();
+		return m[i - 1].getCaption();
 	}
 
 	@Override
 	public int getColumnCount() throws EFastXLRuntime {
-		return names.length;
+		return m.length;
 	}
 
 	@Override
