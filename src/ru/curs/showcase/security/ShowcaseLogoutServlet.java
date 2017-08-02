@@ -34,12 +34,14 @@ public class ShowcaseLogoutServlet extends HttpServlet {
 			webAppName = webAppName.replace("/", "");
 		}
 
-		String attr =
-			(String) (request.getSession(false).getAttribute("queryString"
-					+ request.getServerPort() + webAppName));
-		Cookie cookie = new Cookie("queryString" + request.getServerPort() + webAppName, attr);
-		cookie.setPath(AppAndSessionEventsListener.getContextPath());
-		response.addCookie(cookie);
+		if (request.getSession(false) != null) {
+			String attr =
+				(String) (request.getSession(false).getAttribute("queryString"
+						+ request.getServerPort() + webAppName));
+			Cookie cookie = new Cookie("queryString" + request.getServerPort() + webAppName, attr);
+			cookie.setPath(AppAndSessionEventsListener.getContextPath());
+			response.addCookie(cookie);
+		}
 
 		// HttpSession oldSession =
 		// (HttpSession) request.getSession(false).getAttribute("newSession");

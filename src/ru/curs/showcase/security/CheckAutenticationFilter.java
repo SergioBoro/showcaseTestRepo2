@@ -6,6 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import ru.curs.celesta.*;
@@ -61,10 +62,11 @@ public class CheckAutenticationFilter implements Filter {
 				}
 				AuthServerUtils.init(url);
 
-				if (AppInfoSingleton.getAppInfo()
-						.getAuthViaAuthServerForSession(httpReq.getSession().getId())) {
-					UserInfo ud = AuthServerUtils.getTheAuthServerAlias()
-							.isAuthenticated(httpReq.getSession().getId());
+				if (AppInfoSingleton.getAppInfo().getAuthViaAuthServerForSession(
+						httpReq.getSession().getId())) {
+					UserInfo ud =
+						AuthServerUtils.getTheAuthServerAlias().isAuthenticated(
+								httpReq.getSession().getId());
 					// if
 					// (SecurityContextHolder.getContext().getAuthentication()
 					// !=
@@ -92,13 +94,30 @@ public class CheckAutenticationFilter implements Filter {
 						// "/login.jsp");
 
 					} else {
+						Authentication auth =
+							AppInfoSingleton.getAppInfo()
+									.getSessionAuthenticationMapForCrossDomainEntrance()
+									.get(httpReq.getSession().getId());
+						if (auth != null) {
+							if (((UserAndSessionDetails) auth.getDetails()) != null) {
+								String sid =
+									((UserAndSessionDetails) auth.getDetails()).getUserInfo()
+											.getSid();
+								if (!ud.getSid().equals(sid)) {
+									((UserAndSessionDetails) auth.getDetails()).setUserInfo(ud);
+									SecurityContextHolder.getContext().setAuthentication(auth);
+								}
+							}
+						}
+
 						filterChain.doFilter(request, response);
 					}
 				} else {
 
 					String esiaAuthenticated =
 						(String) (httpReq.getSession(false).getAttribute("esiaAuthenticated"));
-					if ((esiaAuthenticated != null) && ("true".equals(esiaAuthenticated))
+					if ((esiaAuthenticated != null)
+							&& ("true".equals(esiaAuthenticated))
 							&& AppInfoSingleton.getAppInfo()
 									.getOrInitSessionInfoObject(httpReq.getSession().getId())
 									.isAuthViaESIA()) {
@@ -149,8 +168,8 @@ public class CheckAutenticationFilter implements Filter {
 								response.reset();
 								response.setContentType("text/html");
 								response.setCharacterEncoding(TextUtils.DEF_ENCODING);
-								response.getWriter()
-										.append(ExchangeConstants.SESSION_NOT_AUTH_SIGN);
+								response.getWriter().append(
+										ExchangeConstants.SESSION_NOT_AUTH_SIGN);
 								response.getWriter().close();
 
 							}

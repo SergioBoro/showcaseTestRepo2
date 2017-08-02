@@ -13,6 +13,7 @@ import org.ehcache.*;
 import org.ehcache.config.Configuration;
 import org.ehcache.config.xml.XmlConfiguration;
 import org.slf4j.*;
+import org.springframework.security.core.Authentication;
 import org.xml.sax.SAXException;
 
 import ru.curs.showcase.app.api.ExchangeConstants;
@@ -60,6 +61,13 @@ public final class AppInfoSingleton {
 
 	private final SortedSet<String> executedProc = Collections
 			.synchronizedSortedSet(new TreeSet<String>());
+	/**
+	 * Карта, используемая для устранения проблемы того, что имя пользователя
+	 * остаётся старым при повторном входе при кросс-доменной аутентификации,
+	 * вследствие неуничтожения сессии данного пользователя.
+	 */
+	private final Map<String, Authentication> sessionAuthenticationMapForCrossDomainEntrance =
+		Collections.synchronizedMap(new HashMap<String, Authentication>());
 
 	/**
 	 * Идентификатор userdata в текущем запросе.
@@ -746,5 +754,9 @@ public final class AppInfoSingleton {
 
 	public void setAdditionalParametersList(final List<String> anAdditionalParametersList) {
 		this.additionalParametersList = anAdditionalParametersList;
+	}
+
+	public Map<String, Authentication> getSessionAuthenticationMapForCrossDomainEntrance() {
+		return sessionAuthenticationMapForCrossDomainEntrance;
 	}
 }
