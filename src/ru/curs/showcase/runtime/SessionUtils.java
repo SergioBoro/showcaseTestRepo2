@@ -27,8 +27,8 @@ public final class SessionUtils {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void
-			setAnonymousUserAndSessionDetails(UserAndSessionDetails userAndSessionDetails) {
+	public static void setAnonymousUserAndSessionDetails(
+			UserAndSessionDetails userAndSessionDetails) {
 		usd = userAndSessionDetails;
 	}
 
@@ -38,8 +38,7 @@ public final class SessionUtils {
 
 	private static UserAndSessionDetails getUserAndSessionDetails() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			if (SecurityContextHolder.getContext()
-					.getAuthentication() instanceof AnonymousAuthenticationToken)
+			if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
 				return usd;
 			return (UserAndSessionDetails) SecurityContextHolder.getContext().getAuthentication()
 					.getDetails();
@@ -68,6 +67,10 @@ public final class SessionUtils {
 	 */
 	public static String getCurrentSessionId() {
 		if (getUserAndSessionDetails() != null) {
+			String sessionID = getUserAndSessionDetails().getSessionId();
+			if (sessionID == null) {
+				return AppInfoSingleton.getAppInfo().getSesid();
+			}
 			return getUserAndSessionDetails().getSessionId();
 		} else {
 			return TEST_SESSION;

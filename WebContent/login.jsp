@@ -4,6 +4,7 @@ pageEncoding="UTF-8"%>
 <%@page import="ru.curs.showcase.security.SecurityParamsFactory"%>   
 <%@page import="ru.curs.showcase.runtime.UserDataUtils"%> 
 <%@page import="ru.curs.showcase.security.esia.EsiaSettings"%>
+<%@page import="ru.curs.showcase.runtime.AppInfoSingleton"%>
 <%@page import="ru.curs.showcase.app.server.AppAndSessionEventsListener"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -104,12 +105,12 @@ pageEncoding="UTF-8"%>
 		System.setProperty("javax.net.ssl.trustStore", 
 				UserDataUtils.getGeneralOptionalProp("security.ssl.keystore.path").trim());
 	}
-	
-	String authGifSrc = String.format("%s/authentication.gif?sesid=%s",
-			SecurityParamsFactory.getAuthServerUrl(), request.getSession()
-					.getId());
 
-	authGifSrc = SecurityParamsFactory.correctAuthGifSrcRequestInCaseOfInaccessibility(authGifSrc);
+String authGifSrc = String.format("%s/authentication.gif?sesid=%s",
+		SecurityParamsFactory.getAuthServerUrl(), request.getSession() 
+				.getId());
+
+authGifSrc = SecurityParamsFactory.correctAuthGifSrcRequestInCaseOfInaccessibility(authGifSrc);
 %>
 <c:if test="${not empty param.error}">
 <div id="accessDenied">
@@ -162,7 +163,7 @@ pageEncoding="UTF-8"%>
     <td><input  id="j_password" type="password" name="j_password" autocomplete = "off"/></td>
     <td></td>
   </tr>
-  <tr style="display: none;">
+  <tr>
     <td align="right">Запомнить меня</td>
     <td><input type="checkbox" name="_spring_security_remember_me" /></td>
     <td></td>

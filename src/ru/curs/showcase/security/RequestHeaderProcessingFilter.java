@@ -50,8 +50,12 @@ public class RequestHeaderProcessingFilter extends AbstractAuthenticationProcess
 			ApplicationContextProvider.getApplicationContext().getBean(
 					"customAuthenticationSuccessHandler",
 					ShowcaseAuthenticationSuccessHandler.class);
-
 		setAuthenticationSuccessHandler(successHandler);
+
+		IPTokenBasedRememberMeServices rememberMeServiceHandler =
+			ApplicationContextProvider.getApplicationContext().getBean(
+					"ipTokenBasedRememberMeServicesBean", IPTokenBasedRememberMeServices.class);
+		setRememberMeServices(rememberMeServiceHandler);
 
 		String username = request.getParameter(USERNAME_HEADER);
 		String password = request.getParameter(PASS_HEADER);

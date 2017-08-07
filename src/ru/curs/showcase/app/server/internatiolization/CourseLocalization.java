@@ -128,7 +128,9 @@ public class CourseLocalization {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String sesid = ((WebAuthenticationDetails) auth.getDetails()).getSessionId();
-
+			if (sesid == null) {
+				sesid = AppInfoSingleton.getAppInfo().getSesid();
+			}
 			lang = AppInfoSingleton.getAppInfo().getLocalizationCache().get(sesid);
 		}
 

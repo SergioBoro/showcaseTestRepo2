@@ -1224,14 +1224,17 @@ public final class UserDataUtils {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			sesid = ((WebAuthenticationDetails) auth.getDetails()).getSessionId();
-			if (AppInfoSingleton.getAppInfo().getLocalizedBundleCache().get(sesid) == null) {
+			if (sesid != null
+					&& AppInfoSingleton.getAppInfo().getLocalizedBundleCache().get(sesid) == null) {
 				bundle = CourseLocalization.getLocalizedResourseBundle();
 				if (bundle != null)
 					AppInfoSingleton.getAppInfo().getLocalizedBundleCache().put(sesid, bundle);
 			}
 		}
-		bundle =
-			(ResourceBundle) AppInfoSingleton.getAppInfo().getLocalizedBundleCache().get(sesid);
+		if (sesid != null)
+			bundle =
+				(ResourceBundle) AppInfoSingleton.getAppInfo().getLocalizedBundleCache()
+						.get(sesid);
 
 		if (bundle == null)
 			bundle = CourseLocalization.getLocalizedResourseBundle();
@@ -1257,6 +1260,9 @@ public final class UserDataUtils {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			sesid = ((WebAuthenticationDetails) auth.getDetails()).getSessionId();
+			if (sesid == null) {
+				sesid = AppInfoSingleton.getAppInfo().getSesid();
+			}
 			if (AppInfoSingleton.getAppInfo().getLocalizedBundleCache().get(sesid) == null) {
 				bundle = CourseLocalization.getLocalizedResourseBundle();
 				if (bundle != null)

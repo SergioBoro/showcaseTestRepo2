@@ -21,7 +21,16 @@ request.getSession().setAttribute("queryString" + request.getServerPort() + webA
 Cookie cookie = new Cookie("queryString" + request.getServerPort() + webAppName, request.getQueryString());
 cookie.setPath(AppAndSessionEventsListener.getContextPath());
 response.addCookie(cookie);
-	
+
+	Cookie[] cookies = request.getCookies();
+	if (cookies != null && cookies.length > 0) {
+		for (Cookie cookie1 : cookies) {
+			if (cookie1.getName().equals("remembermecookie")) {
+				request.getSession(false).setAttribute("remembermecookie", cookie1);
+			}
+		}
+	}
+
 	String host = request.getRemoteHost();
 	String query = request.getQueryString();
 	
@@ -136,11 +145,11 @@ var protocol = window.location.protocol;
 <body class="claro">
 
 <%
-	String authGifSrc = String.format("%s/authentication.gif?sesid=%s",
-			SecurityParamsFactory.getAuthServerUrl(), request.getSession() 
-					.getId());
-
-    authGifSrc = SecurityParamsFactory.correctAuthGifSrcRequestInCaseOfInaccessibility(authGifSrc);
+String authGifSrc = String.format("%s/authentication.gif?sesid=%s",
+		SecurityParamsFactory.getAuthServerUrl(), request.getSession() 
+				.getId());
+ 
+authGifSrc = SecurityParamsFactory.correctAuthGifSrcRequestInCaseOfInaccessibility(authGifSrc);
 %>
 
 

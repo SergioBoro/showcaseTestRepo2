@@ -3,7 +3,7 @@ package ru.curs.showcase.security;
 import java.io.IOException;
 
 import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.*;
 
 import org.slf4j.*;
 import org.springframework.security.core.Authentication;
@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.server.AppAndSessionEventsListener;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
@@ -31,6 +32,7 @@ public class CheckAutenticationFilter implements Filter {
 	public void doFilter(final ServletRequest request, final ServletResponse response,
 			final FilterChain filterChain) throws IOException, ServletException {
 		HttpServletRequest httpReq = (HttpServletRequest) request;
+		HttpServletResponse httpResp = (HttpServletResponse) response;
 		// if (request instanceof HttpServletRequest) {
 		String url1 = ((HttpServletRequest) request).getRequestURL().toString();
 		// String queryString = ((HttpServletRequest) request).getQueryString();
@@ -121,6 +123,32 @@ public class CheckAutenticationFilter implements Filter {
 							&& AppInfoSingleton.getAppInfo()
 									.getOrInitSessionInfoObject(httpReq.getSession().getId())
 									.isAuthViaESIA()) {
+						filterChain.doFilter(request, response);
+						return;
+					}
+
+					String remembermeAuthenticated =
+						(String) (httpReq.getSession(false)
+								.getAttribute("remembermeAuthenticated"));
+					if ((remembermeAuthenticated != null)
+							&& ("true".equals(remembermeAuthenticated))) {
+						boolean presented = false;
+						Cookie remembermecookie =
+							(Cookie) httpReq.getSession(false).getAttribute("remembermecookie");
+						if (remembermecookie != null) {
+							remembermecookie.setPath(AppAndSessionEventsListener.getContextPath());
+							remembermecookie.setMaxAge(1209600);
+							Cookie[] cookies = httpReq.getCookies();
+							if (cookies != null && cookies.length > 0) {
+								for (Cookie cookie : cookies) {
+									if (cookie.getName().equals("remembermecookie")) {
+										presented = true;
+									}
+								}
+							}
+							if (!presented)
+								httpResp.addCookie(remembermecookie);
+						}
 						filterChain.doFilter(request, response);
 						return;
 					}

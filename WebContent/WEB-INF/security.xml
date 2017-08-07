@@ -30,7 +30,8 @@
 -->
  		<custom-filter ref="oauth2Filter" position="CAS_FILTER" /> 
 		<custom-filter ref="requestHeaderFilter" before="FORM_LOGIN_FILTER"/>
-		<custom-filter ref="spnegoFilter" before="BASIC_AUTH_FILTER"/>	
+		<custom-filter ref="spnegoFilter" before="BASIC_AUTH_FILTER"/>
+		<custom-filter ref="rememberMeFilter" before="REMEMBER_ME_FILTER"/>		
 	
 	    <intercept-url pattern="/log/*" access="hasRole('ROLE_ADMIN')"  />
 	    <intercept-url pattern="/control/*" access="hasRole('ROLE_ADMIN')" />    
@@ -45,9 +46,25 @@
 	                authentication-success-handler-ref="customAuthenticationSuccessHandler" /> 
 	    <logout logout-url="/logout" invalidate-session="true" 
 	    		logout-success-url="/login.jsp?exited=true" />
-	    <remember-me />
+	    <remember-me key="remembermekeysecurity" services-ref="ipTokenBasedRememberMeServicesBean"/>
 	    <anonymous username="guest" granted-authority="ROLE_GUEST" />
 	</http>
+
+<beans:bean class="ru.curs.showcase.security.IPTokenBasedRememberMeServices" 
+	id="ipTokenBasedRememberMeServicesBean">
+<beans:property name="key" value="remembermekeysecurity" />
+<beans:property name="userDetailsService" ref="userService"/>
+ <beans:property name="cookieName" value="remembermecookie" />
+  <beans:property name="tokenValiditySeconds" value="1209600" />
+</beans:bean>
+
+<beans:bean id="userService" class="ru.curs.showcase.security.ShowcaseUserDetailsService"/>
+
+<beans:bean id="rememberMeFilter"
+		class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+	<beans:property name="rememberMeServices" ref="ipTokenBasedRememberMeServicesBean" />
+	<beans:property name="authenticationManager" ref="authenticationManager" />
+</beans:bean>
 	
 	<beans:bean id="customAccessProvider"
     class="ru.curs.showcase.security.CustomAccessProvider" />
