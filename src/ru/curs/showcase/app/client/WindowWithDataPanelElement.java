@@ -63,6 +63,8 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 		setCloseOnEsc(aCloseOnEsc);
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
 				String.valueOf(Window.getClientHeight() - n100) + "px");
+
+		RootPanel.getBodyElement().addClassName("ready");
 	}
 
 	public WindowWithDataPanelElement(final String caption, final Boolean ashowCloseBottomButton,
@@ -77,6 +79,8 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 		setCloseOnEsc(aCloseOnEsc);
 		sp.setSize(String.valueOf(Window.getClientWidth() - n100) + "px",
 				String.valueOf(Window.getClientHeight() - n100) + "px");
+
+		RootPanel.getBodyElement().addClassName("ready");
 	}
 
 	public WindowWithDataPanelElement(final String caption, final Integer width1,
@@ -119,6 +123,8 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 		}
 		setShowCloseBottomButton(ashowCloseBottomButton);
 		setCloseOnEsc(aCloseOnEsc);
+
+		RootPanel.getBodyElement().addClassName("ready");
 	}
 
 	// public WindowWithDataPanelElement(final boolean autoHide, final boolean
