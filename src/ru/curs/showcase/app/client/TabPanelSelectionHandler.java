@@ -52,10 +52,18 @@ public class TabPanelSelectionHandler implements SelectionHandler<Integer> {
 		if (!AppCurrContext.getReadyStateMap().isEmpty())
 			AppCurrContext.getReadyStateMap().clear();
 
+		if (!AppCurrContext.getNeverShowInPanelElementsFromActionMap().isEmpty())
+			AppCurrContext.getNeverShowInPanelElementsFromActionMap().clear();
+
+		if (!AppCurrContext.getNeverShowInPanelElementsReadyStateMap().isEmpty())
+			AppCurrContext.getNeverShowInPanelElementsReadyStateMap().clear();
+
 		if (dpt.getLayout() == DataPanelTabLayout.VERTICAL) {
 			for (DataPanelElementInfo dpei : dpt.getElements()) {
 				if (!dpei.getNeverShowInPanel() && !dpei.getHideOnLoad())
 					AppCurrContext.getReadyStateMap().put(dpei, false);
+				if (dpei.getNeverShowInPanel() || dpei.getHideOnLoad())
+					AppCurrContext.getNeverShowInPanelElementsReadyStateMap().put(dpei, false);
 			}
 		} else {
 			for (DataPanelTR dptr : dpt.getTrs()) {
@@ -63,6 +71,10 @@ public class TabPanelSelectionHandler implements SelectionHandler<Integer> {
 					if (!dptd.getElement().getNeverShowInPanel()
 							&& !dptd.getElement().getHideOnLoad())
 						AppCurrContext.getReadyStateMap().put(dptd.getElement(), false);
+					if (dptd.getElement().getNeverShowInPanel()
+							|| dptd.getElement().getHideOnLoad())
+						AppCurrContext.getNeverShowInPanelElementsReadyStateMap().put(
+								dptd.getElement(), false);
 				}
 			}
 		}

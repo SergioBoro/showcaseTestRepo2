@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.client;
 
-import java.util.List;
+import java.util.*;
+import java.util.Map.Entry;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
@@ -267,9 +268,61 @@ public class XFormPanel extends BasicElementPanelBasis {
 									}
 								}
 
+								for (DataPanelElementInfo el : AppCurrContext
+										.getNeverShowInPanelElementsReadyStateMap().keySet()) {
+									if (getElementInfo().getId().getString()
+											.equals(el.getId().getString())
+											&& !AppCurrContext
+													.getNeverShowInPanelElementsReadyStateMap()
+													.get(el)) {
+										AppCurrContext.getNeverShowInPanelElementsReadyStateMap()
+												.put(el, true);
+										break;
+									}
+								}
+
+								for (DataPanelElementInfo el : AppCurrContext
+										.getNeverShowInPanelElementsFromActionMap().keySet()) {
+									if (getElementInfo().getId().getString()
+											.equals(el.getId().getString())
+											&& !AppCurrContext
+													.getNeverShowInPanelElementsFromActionMap()
+													.get(el)) {
+										AppCurrContext.getNeverShowInPanelElementsFromActionMap()
+												.put(el, true);
+										break;
+									}
+								}
+
+								for (Entry<DataPanelElementInfo, Boolean> readyEntry : AppCurrContext
+										.getNeverShowInPanelElementsReadyStateMap().entrySet()) {
+									for (Entry<DataPanelElementInfo, Boolean> fromActionEntry : AppCurrContext
+											.getNeverShowInPanelElementsFromActionMap().entrySet()) {
+										if (readyEntry
+												.getKey()
+												.getId()
+												.getString()
+												.equals(fromActionEntry.getKey().getId()
+														.getString())) {
+											if (readyEntry.getKey().getType() == DataPanelElementType.XFORMS
+													&& fromActionEntry.getKey().getType() == DataPanelElementType.XFORMS
+													&& readyEntry.getValue()
+													&& fromActionEntry.getValue()) {
+												RootPanel.getBodyElement().addClassName("ready");
+											}
+										}
+									}
+								}
+
 								if (!gridRelated) {
 									if (!AppCurrContext.getReadyStateMap().containsValue(false)) {
-										RootPanel.getBodyElement().addClassName("ready");
+										if (RootPanel.getBodyElement().getClassName() != null
+												&& !RootPanel.getBodyElement().getClassName()
+														.contains("ready")
+												&& !RootPanel.getBodyElement().getClassName()
+														.equals("ready")) {
+											RootPanel.getBodyElement().addClassName("ready");
+										}
 										AppCurrContext.getInstance()
 												.setWebTextXformTrueStateForReadyStateMap(true);
 										AppCurrContext.getInstance()

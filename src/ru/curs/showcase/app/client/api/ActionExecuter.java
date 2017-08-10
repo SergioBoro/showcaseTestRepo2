@@ -183,6 +183,10 @@ public final class ActionExecuter {
 							AppCurrContext.getFromActionElementsMap().put(dpei, false);
 							AppCurrContext.getReadyStateMap().put(dpei, false);
 						}
+						if (dpei.getNeverShowInPanel() || dpei.getHideOnLoad()) {
+							AppCurrContext.getNeverShowInPanelElementsFromActionMap().put(dpei,
+									false);
+						}
 					}
 				} else {
 					for (DataPanelTR dptr : dpt.getTrs()) {
@@ -193,6 +197,11 @@ public final class ActionExecuter {
 								AppCurrContext.getFromActionElementsMap().put(dptd.getElement(),
 										false);
 								AppCurrContext.getReadyStateMap().put(dptd.getElement(), false);
+							}
+							if (dptd.getElement().getNeverShowInPanel()
+									|| dptd.getElement().getHideOnLoad()) {
+								AppCurrContext.getNeverShowInPanelElementsFromActionMap().put(
+										dptd.getElement(), false);
 							}
 						}
 					}

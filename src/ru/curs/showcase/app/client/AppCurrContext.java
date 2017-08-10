@@ -38,6 +38,20 @@ public final class AppCurrContext extends ActionTransformer {
 	private static HashMap<DataPanelElementInfo, Boolean> fromActionElementsMap =
 		new HashMap<DataPanelElementInfo, Boolean>();
 
+	/**
+	 * Карта, включающая элементы со свойствами neverShowInPanel и hideOnLoad,
+	 * равными true.
+	 */
+	private static HashMap<DataPanelElementInfo, Boolean> neverShowInPanelElementsReadyStateMap =
+		new HashMap<DataPanelElementInfo, Boolean>();
+
+	/**
+	 * Карта, включающая элементы, пришедшие из действия, со свойствами
+	 * neverShowInPanel и hideOnLoad, равными true.
+	 */
+	private static HashMap<DataPanelElementInfo, Boolean> neverShowInPanelElementsFromActionMap =
+		new HashMap<DataPanelElementInfo, Boolean>();
+
 	private boolean webTextXformTrueStateForReadyStateMap = false;
 
 	private boolean gridWithToolbarWebtextTrueStateForReadyStateMap = false;
@@ -368,6 +382,26 @@ public final class AppCurrContext extends ActionTransformer {
 
 	public static void setFromActionElementsMap(HashMap<DataPanelElementInfo, Boolean> aMap) {
 		fromActionElementsMap = aMap;
+	}
+
+	public static HashMap<DataPanelElementInfo, Boolean>
+			getNeverShowInPanelElementsReadyStateMap() {
+		return neverShowInPanelElementsReadyStateMap;
+	}
+
+	public static void setNeverShowInPanelElementsReadyStateMap(
+			HashMap<DataPanelElementInfo, Boolean> aMap) {
+		neverShowInPanelElementsReadyStateMap = aMap;
+	}
+
+	public static HashMap<DataPanelElementInfo, Boolean>
+			getNeverShowInPanelElementsFromActionMap() {
+		return neverShowInPanelElementsFromActionMap;
+	}
+
+	public static void setNeverShowInPanelElementsFromActionMap(
+			HashMap<DataPanelElementInfo, Boolean> aMap) {
+		neverShowInPanelElementsFromActionMap = aMap;
 	}
 
 	public boolean getWebTextXformTrueStateForReadyStateMap() {
