@@ -7,10 +7,12 @@ import java.util.*;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
+import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.BasicElementPanelBasis;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 import ru.curs.showcase.app.client.panels.CursScrolledTabLayoutPanel;
 
+import com.google.gwt.core.client.*;
 import com.google.gwt.dom.client.*;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -32,6 +34,7 @@ public class GeneralDataPanel {
 	public static final String SIZE_ONE_HUNDRED_PERCENTS = "100%";
 	public static final String STYLE = "style";
 
+	private final DataServiceAsync dataService = GWT.create(DataService.class);;
 	/**
 	 * HandlerRegistration.
 	 */
@@ -122,7 +125,17 @@ public class GeneralDataPanel {
 		}
 		JavaScriptFromGWTFeedbackJSNI.setCurrentUserDetailsForViewInHTMLControl("WELCOME");
 
-		RootPanel.getBodyElement().addClassName("ready");
+		dataService.fakeRPC(new GWTServiceCallback<Void>("Error") {
+			@Override
+			public void onSuccess(final Void result) {
+				Scheduler.get().scheduleDeferred(new Command() {
+					@Override
+					public void execute() {
+						RootPanel.getBodyElement().addClassName("ready");
+					}
+				});
+			}
+		});
 	}
 
 	/**
