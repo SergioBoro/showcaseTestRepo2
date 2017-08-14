@@ -19,6 +19,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -125,17 +126,29 @@ public class GeneralDataPanel {
 		}
 		JavaScriptFromGWTFeedbackJSNI.setCurrentUserDetailsForViewInHTMLControl("WELCOME");
 
-		dataService.fakeRPC(new GWTServiceCallback<Void>("Error") {
+		Timer delayTimer = new Timer() {
 			@Override
-			public void onSuccess(final Void result) {
-				Scheduler.get().scheduleDeferred(new Command() {
+			public void run() {
+				dataService.fakeRPC(new GWTServiceCallback<Void>("Error") {
 					@Override
-					public void execute() {
-						RootPanel.getBodyElement().addClassName("ready");
+					public void onSuccess(final Void result) {
+						Scheduler.get().scheduleDeferred(new Command() {
+							@Override
+							public void execute() {
+								if (RootPanel.getBodyElement().getClassName() != null
+										&& !RootPanel.getBodyElement().getClassName()
+												.contains("ready")
+										&& !RootPanel.getBodyElement().getClassName()
+												.equals("ready")) {
+									RootPanel.getBodyElement().addClassName("ready");
+								}
+							}
+						});
 					}
 				});
 			}
-		});
+		};
+		delayTimer.schedule(1000);
 	}
 
 	/**
