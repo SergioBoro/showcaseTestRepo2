@@ -52,6 +52,8 @@ public final class AppCurrContext extends ActionTransformer {
 	private static HashMap<DataPanelElementInfo, Boolean> neverShowInPanelElementsFromActionMap =
 		new HashMap<DataPanelElementInfo, Boolean>();
 
+	private boolean navigatorItemSelected = false;
+
 	private boolean webTextXformTrueStateForReadyStateMap = false;
 
 	private boolean gridWithToolbarWebtextTrueStateForReadyStateMap = false;
@@ -508,4 +510,11 @@ public final class AppCurrContext extends ActionTransformer {
 		gridWithToolbarGridTrueStateForReadyStateMap = state;
 	}
 
+	public boolean getNavigatorItemSelected() {
+		return navigatorItemSelected;
+	}
+
+	public void setNavigatorItemSelected(boolean state) {
+		navigatorItemSelected = state;
+	}
 }

@@ -31,6 +31,8 @@ public class App implements EntryPoint {
 
 		RootPanel.getBodyElement().removeClassName("ready");
 
+		AppCurrContext.getInstance().setNavigatorItemSelected(false);
+
 		ProgressWindow.showProgressWindow();
 
 		final CompositeContext context = getCurrentContext();

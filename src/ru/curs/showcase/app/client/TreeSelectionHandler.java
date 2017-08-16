@@ -10,9 +10,9 @@ import ru.curs.showcase.app.api.services.*;
 import ru.curs.showcase.app.client.api.BasicElementPanelBasis;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.*;
 import com.google.gwt.event.logical.shared.*;
-import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -104,7 +104,19 @@ public class TreeSelectionHandler implements SelectionHandler<TreeItem> {
 						BasicElementPanelBasis.switchOffAllTimers();
 						GeneralDataPanel.redrowGeneralDataPanelAtnavigatorClick(dp);
 						Accordeon.unselectAllTreesItemsExcludingLastSelecter(selectedTreeItem);
-
+						Scheduler.get().scheduleDeferred(new Command() {
+							@Override
+							public void execute() {
+								Timer fakeDelayTimer = new Timer() {
+									@Override
+									public void run() {
+										AppCurrContext.getInstance()
+												.setNavigatorItemSelected(true);
+									}
+								};
+								fakeDelayTimer.schedule(500);
+							}
+						});
 					}
 
 				});
