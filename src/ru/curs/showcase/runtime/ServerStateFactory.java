@@ -28,6 +28,7 @@ public final class ServerStateFactory {
 	private static final String GWTVERSION_FILE = "gwtversion";
 	private static final String BUILD_FILE = "build";
 	private static final String VERSION_FILE = "version.properties";
+	private static final String PAGE_SPLITTER_WIDTH = "page.splitter.width";
 
 	private ServerStateFactory() {
 		throw new UnsupportedOperationException();
@@ -46,17 +47,15 @@ public final class ServerStateFactory {
 		ServerState state = new ServerState();
 		state.setServerTime(TextUtils.getCurrentLocalDate());
 		state.setAppVersion(getAppVersion());
-		state.setServletContainerVersion(
-				AppInfoSingleton.getAppInfo().getServletContainerVersion());
+		state.setServletContainerVersion(AppInfoSingleton.getAppInfo()
+				.getServletContainerVersion());
 
 		if (SecurityContextHolder.getContext().getAuthentication() == null) {
 			state.setIsNativeUser(false);
 		} else {
-			if (SecurityContextHolder.getContext()
-					.getAuthentication() instanceof AnonymousAuthenticationToken) {
+			if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
 				state.setIsNativeUser(false);
-			} else if (SecurityContextHolder.getContext()
-					.getAuthentication() instanceof ESIAAuthenticationToken) {
+			} else if (SecurityContextHolder.getContext().getAuthentication() instanceof ESIAAuthenticationToken) {
 
 				state.setIsESIAUser(true);
 				state.setEsiaLogoutURL(ESIAManager.getLogoutURL());
@@ -70,8 +69,7 @@ public final class ServerStateFactory {
 		state.setJavaVersion(System.getProperty("java.version"));
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			if (SecurityContextHolder.getContext()
-					.getAuthentication() instanceof AnonymousAuthenticationToken)
+			if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
 				state.setUserInfo(SessionUtils.getAnonymousUserAndSessionDetails().getUserInfo());
 			else
 				state.setUserInfo(((UserAndSessionDetails) SecurityContextHolder.getContext()
@@ -82,10 +80,10 @@ public final class ServerStateFactory {
 		state.setGwtVersion(getGwtVersion());
 		state.setCaseSensivityIDs(IDSettings.getInstance().getCaseSensivity());
 
-		String sss = (SecurityContextHolder.getContext().getAuthentication() != null)
-				? ((WebAuthenticationDetails) SecurityContextHolder.getContext()
-						.getAuthentication().getDetails()).getSessionId()
-				: "autenticatedSessionIsNull";
+		String sss =
+			(SecurityContextHolder.getContext().getAuthentication() != null) ? ((WebAuthenticationDetails) SecurityContextHolder
+					.getContext().getAuthentication().getDetails()).getSessionId()
+					: "autenticatedSessionIsNull";
 		state.setSesId(sss);
 
 		String value = UserDataUtils.getGeneralOptionalProp(ENABLE_CLIENT_LOG);
@@ -95,6 +93,13 @@ public final class ServerStateFactory {
 		value = UserDataUtils.getGeneralOptionalProp(GRIDS_PRELOAD);
 		boolValue = Boolean.valueOf(value);
 		state.setPreloadGrids(boolValue);
+
+		value = UserDataUtils.getOptionalProp(PAGE_SPLITTER_WIDTH);
+		Integer intValue = null;
+		if (value != null) {
+			intValue = Integer.valueOf(value);
+		}
+		state.setPageSplitterWidth(intValue);
 
 		return state;
 	}
@@ -172,8 +177,9 @@ public final class ServerStateFactory {
 
 	private static String getSQLVersion() throws SQLException {
 
-		String fileName = String.format("%s/version_%s.sql", UserDataUtils.SCRIPTSDIR,
-				ConnectionFactory.getSQLServerType().toString().toLowerCase());
+		String fileName =
+			String.format("%s/version_%s.sql", UserDataUtils.SCRIPTSDIR, ConnectionFactory
+					.getSQLServerType().toString().toLowerCase());
 
 		String sql = "";
 		try {

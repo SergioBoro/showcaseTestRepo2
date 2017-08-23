@@ -15,9 +15,11 @@ package ru.curs.showcase.app.client.panels;
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-import com.google.gwt.core.client.Scheduler;
+import ru.curs.showcase.app.client.AppCurrContext;
+
+import com.google.gwt.core.client.*;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.*;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.*;
@@ -140,8 +142,9 @@ public class CursSplitLayoutPanel extends DockLayoutPanel {
 				if (mouseDown) {
 					int size;
 					if (reverse) {
-						size = getTargetPosition() + getTargetSize() - getEventPosition(event)
-								- offset;
+						size =
+							getTargetPosition() + getTargetSize() - getEventPosition(event)
+									- offset;
 					} else {
 						size = getEventPosition(event) - getTargetPosition() - offset;
 					}
@@ -274,7 +277,7 @@ public class CursSplitLayoutPanel extends DockLayoutPanel {
 	/**
 	 * Размер (ширина) splitter.
 	 */
-	private final int splitterSize;
+	private int splitterSize;
 
 	/**
 	 * SplitterDragHandler - обработчик на перемещение Splitter.
@@ -287,6 +290,10 @@ public class CursSplitLayoutPanel extends DockLayoutPanel {
 	 */
 	public CursSplitLayoutPanel() {
 		this(DEFAULT_SPLITTER_SIZE);
+		if (AppCurrContext.getInstance().getServerCurrentState().getPageSplitterWidth() != null) {
+			setSplitterSize(AppCurrContext.getInstance().getServerCurrentState()
+					.getPageSplitterWidth());
+		}
 	}
 
 	/**
@@ -322,6 +329,10 @@ public class CursSplitLayoutPanel extends DockLayoutPanel {
 	 */
 	public int getSplitterSize() {
 		return splitterSize;
+	}
+
+	public void setSplitterSize(int aSplitterSize) {
+		splitterSize = aSplitterSize;
 	}
 
 	@Override
@@ -380,8 +391,7 @@ public class CursSplitLayoutPanel extends DockLayoutPanel {
 	 *            - widget
 	 */
 	void assertIsChild1(final Widget widget) {
-		assert (widget == null) || (widget
-				.getParent() == this) : "The specified widget is not a child of this panel";
+		assert (widget == null) || (widget.getParent() == this) : "The specified widget is not a child of this panel";
 	}
 
 	private Splitter getAssociatedSplitter(final Widget child) {

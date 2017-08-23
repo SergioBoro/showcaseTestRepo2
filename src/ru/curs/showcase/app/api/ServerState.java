@@ -90,6 +90,11 @@ public final class ServerState implements SerializableElement {
 	 */
 	private boolean preloadGrids = false;
 
+	/**
+	 * Настройки ширины dragger-а навигатора.
+	 */
+	private Integer pageSplitterWidth;
+
 	public String getAppVersion() {
 		return appVersion;
 	}
@@ -218,4 +223,11 @@ public final class ServerState implements SerializableElement {
 		esiaLogoutURL = aEsiaLogoutURL;
 	}
 
+	public Integer getPageSplitterWidth() {
+		return pageSplitterWidth;
+	}
+
+	public void setPageSplitterWidth(final Integer aPageSplitterWidth) {
+		pageSplitterWidth = aPageSplitterWidth;
+	}
 }
