@@ -52,4 +52,8 @@ public class JSLyraGridScrollBack {
 			throw GeneralExceptionFactory.build(e);
 		}
 	}
+
+	@OnError
+	public void onError(final Session session, final Throwable thr) {
+	}
 }
