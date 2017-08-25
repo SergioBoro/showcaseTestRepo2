@@ -49,11 +49,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
 		     ){
     	
 		
-		var webSocket;
-	    if((!metadata["common"]["isNeedCreateWebSocket"]) && arrGrids[parentId] && arrGrids[parentId].webSocket && (arrGrids[parentId].webSocket.readyState == arrGrids[parentId].webSocket.OPEN)){
-    		webSocket = arrGrids[parentId].webSocket;
-    	}else{
-    		
+		function createWebSocket(){
     		var protocol;
     		if(window.location.protocol.indexOf("https") > -1){
     			protocol = "wss";
@@ -61,7 +57,7 @@ function createLyraDGrid(elementId, parentId, metadata) {
     			protocol = "ws";
     		}
     		
-    		webSocket = new WebSocket(protocol+"://"+window.location.host+window.location.pathname+"secured/JSLyraGridScrollBack");
+    		var webSocket = new WebSocket(protocol+"://"+window.location.host+window.location.pathname+"secured/JSLyraGridScrollBack");
             webSocket.onopen = function(){
              	var httpParams = gwtGetHttpParamsLyra(elementId, -1000, -1000);
                 webSocket.send(httpParams);
@@ -75,6 +71,15 @@ function createLyraDGrid(elementId, parentId, metadata) {
     			backScroll = true;
     			grid.scrollTo({x:0, y:pos});
             };
+            return webSocket; 
+		}
+		
+				
+		var webSocket;
+	    if((!metadata["common"]["isNeedCreateWebSocket"]) && arrGrids[parentId] && arrGrids[parentId].webSocket && (arrGrids[parentId].webSocket.readyState == arrGrids[parentId].webSocket.OPEN)){
+    		webSocket = arrGrids[parentId].webSocket;
+    	}else{
+    		webSocket = createWebSocket();
     	}
 		
 		
@@ -208,6 +213,11 @@ function createLyraDGrid(elementId, parentId, metadata) {
 								if(results[0]["dgridNewPosition"]){
 									arrGrids[parentId].dgridNewPosition = results[0]["dgridNewPosition"];
 									arrGrids[parentId].dgridNewPositionId = results[0][store.idProperty];
+								}
+								
+								if(results[0]["needRecreateWebsocket"]){
+						    		var webSocket = createWebSocket();
+						    		arrGrids[parentId].webSocket = webSocket;
 								}
 								
 							}

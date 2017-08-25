@@ -14,6 +14,8 @@ public class LyraGridAddInfo {
 
 	private GridToExcelExportType excelExportType = null;
 
+	private boolean needRecreateWebsocket = false;
+
 	public int getLyraOldPosition() {
 		return lyraOldPosition;
 	}
@@ -36,6 +38,14 @@ public class LyraGridAddInfo {
 
 	protected void setExcelExportType(final GridToExcelExportType aExcelExportType) {
 		excelExportType = aExcelExportType;
+	}
+
+	public boolean isNeedRecreateWebsocket() {
+		return needRecreateWebsocket;
+	}
+
+	public void setNeedRecreateWebsocket(final boolean aNeedRecreateWebsocket) {
+		needRecreateWebsocket = aNeedRecreateWebsocket;
 	}
 
 }

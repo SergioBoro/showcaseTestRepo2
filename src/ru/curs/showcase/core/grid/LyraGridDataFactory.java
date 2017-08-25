@@ -339,6 +339,11 @@ public class LyraGridDataFactory {
 
 		}
 
+		if ((data.size() > 0) && lyraGridAddInfo.isNeedRecreateWebsocket()) {
+			((JSONObject) data.get(0)).put("needRecreateWebsocket", true);
+			lyraGridAddInfo.setNeedRecreateWebsocket(false);
+		}
+
 		// Позиционирование по ключу записи
 		if (context.isFirstLoad() && (data.size() > 0)
 				&& (basicGridForm.getTopVisiblePosition() > 0)) {

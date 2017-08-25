@@ -96,6 +96,7 @@ public class LyraGridScrollBack implements Runnable {
 					webSocketSession.getBasicRemote().sendText(String.valueOf(dgridNewPosition));
 				} else {
 					System.out.println("webSocketSession is closed");
+					lyraGridAddInfo.setNeedRecreateWebsocket(true);
 				}
 			} catch (IOException e) {
 				throw GeneralExceptionFactory.build(e);
