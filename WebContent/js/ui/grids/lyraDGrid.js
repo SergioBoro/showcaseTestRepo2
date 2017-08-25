@@ -1,4 +1,8 @@
 function createLyraDGrid(elementId, parentId, metadata) {
+	
+try {
+	
+
 	require(/*{async:true},*/ 
 			[
 			 "dojo/_base/lang",
@@ -820,6 +824,15 @@ function createLyraDGrid(elementId, parentId, metadata) {
 		}
 	    
 	});
+	
+	
+} catch (err) {
+	console.log("При построении лира-грида возникла следующая ошибка: "+err);
+	alert("При построении лира-грида возникла следующая ошибка: "+err);
+	throw err;
+}	
+
+
 }
 
 
