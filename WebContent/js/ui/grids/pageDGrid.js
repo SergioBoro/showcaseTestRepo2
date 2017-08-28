@@ -1,5 +1,8 @@
 function createPageDGrid(elementId, parentId, metadata) {
 	
+try {
+	
+	
 	var arrScripts = [
 	     			 "dojo/_base/lang",
 	    	         "dojo/has",			 
@@ -719,6 +722,14 @@ function createPageDGrid(elementId, parentId, metadata) {
 		grid.resizeColumnWidth("col1", "5px");
 		
 	});
+
+	
+} catch (err) {
+	console.log("При построении page-грида возникла следующая ошибка: "+err);
+	throw err;
+}	
+	
+	
 }
 
 function refreshPageDGrid(parentId){

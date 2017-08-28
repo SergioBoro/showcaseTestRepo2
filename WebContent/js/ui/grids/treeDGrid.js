@@ -1,5 +1,9 @@
 function createTreeDGrid(elementId, parentId, metadata) {
 	
+
+try {
+	
+	
 	var arrScripts = [
 	     			 "dojo/_base/lang",
 	    	         "dojo/has",			 
@@ -744,6 +748,14 @@ function createTreeDGrid(elementId, parentId, metadata) {
 		grid.resizeColumnWidth("col1", "5px");		
 		
 	});
+	
+	
+} catch (err) {
+	console.log("При построении tree-грида возникла следующая ошибка: "+err);
+	throw err;
+}	
+	
+	
 }
 
 function refreshTreeDGrid(parentId){
