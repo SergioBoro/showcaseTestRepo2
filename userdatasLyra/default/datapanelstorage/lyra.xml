@@ -2,6 +2,16 @@
 <datapanel>
 
 
+
+  <tab id="6" name="showcase (пустая таблица)">	
+ 	<element id="621" type="GRID" subtype="JS_LYRA_GRID" proc="testgrain.testgridform4.TestGridForm4" 
+	    plugin="lyraDGrid">
+	</element>
+  </tab>
+
+
+
+
   <tab id="5" name="showcase (actions, ...)">	
  	<element id="521" type="GRID" subtype="JS_LYRA_GRID" proc="testgrain.testgridform3.TestGridForm3">
 	    
@@ -127,11 +137,6 @@
   
   
 
-  <tab id="6" name="showcase (пустая таблица)">	
- 	<element id="621" type="GRID" subtype="JS_LYRA_GRID" proc="testgrain.testgridform4.TestGridForm4" 
-	    plugin="lyraDGrid">
-	</element>
-  </tab>
 
 
 

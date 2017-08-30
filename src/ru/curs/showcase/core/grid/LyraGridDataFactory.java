@@ -55,6 +55,7 @@ public class LyraGridDataFactory {
 	@SuppressWarnings("unused")
 	private static final String ID_TAG = "id";
 	private static final String KEYVALUES_SEPARATOR = "_D13k82F9g7_";
+	private static final String ADDDATA_COLUMN = "addData" + KEYVALUES_SEPARATOR;
 	private static final String EVENT_COLUMN_TAG = "column";
 	private static final String CELL_PREFIX = "cell";
 	private static final String PROPERTIES = "_properties_";
@@ -318,27 +319,6 @@ public class LyraGridDataFactory {
 			}
 		}
 
-		if (data.size() > 0) {
-			if ((basicGridForm.getFormProperties().getHeader() != null)
-					|| (basicGridForm.getFormProperties().getFooter() != null)) {
-
-				LyraGridAddData addData = new LyraGridAddData();
-				addData.setHeader(basicGridForm.getFormProperties().getHeader());
-				addData.setFooter(basicGridForm.getFormProperties().getFooter());
-
-				try {
-					String stringAddData =
-						com.google.gwt.user.server.rpc.RPC.encodeResponseForSuccess(
-								FakeService.class.getMethod("serializeLyraGridAddData"), addData);
-					((JSONObject) data.get(0)).put("addData" + KEYVALUES_SEPARATOR, stringAddData);
-				} catch (SerializationException | NoSuchMethodException e) {
-					throw GeneralExceptionFactory.build(e);
-				}
-
-			}
-
-		}
-
 		if ((data.size() > 0) && lyraGridAddInfo.isNeedRecreateWebsocket()) {
 			((JSONObject) data.get(0)).put("needRecreateWebsocket", true);
 			lyraGridAddInfo.setNeedRecreateWebsocket(false);
@@ -357,7 +337,30 @@ public class LyraGridDataFactory {
 
 		}
 
-		result.setData(data.toJSONString());
+		JSONObject objAddData = null;
+		LyraGridAddData addData = new LyraGridAddData();
+		addData.setHeader(basicGridForm.getFormProperties().getHeader());
+		addData.setFooter(basicGridForm.getFormProperties().getFooter());
+		try {
+			String stringAddData = com.google.gwt.user.server.rpc.RPC.encodeResponseForSuccess(
+					FakeService.class.getMethod("serializeLyraGridAddData"), addData);
+			if (data.size() > 0) {
+				((JSONObject) data.get(0)).put(ADDDATA_COLUMN, stringAddData);
+			} else {
+				objAddData = new JSONObject();
+				objAddData.put(ADDDATA_COLUMN, stringAddData);
+			}
+		} catch (SerializationException | NoSuchMethodException e) {
+			throw GeneralExceptionFactory.build(e);
+		}
+
+		if (data.size() > 0) {
+			result.setData(data.toJSONString());
+		} else {
+			if (objAddData != null) {
+				result.setData(objAddData.toJSONString());
+			}
+		}
 
 	}
 

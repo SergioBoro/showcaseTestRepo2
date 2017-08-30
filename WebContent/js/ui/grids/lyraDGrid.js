@@ -200,6 +200,11 @@ try {
 						results.then(function(results){
 							var events = null;
 							var addData = null;
+							
+							if(results && (!results[0]) && results["addData_D13k82F9g7_"]){
+								addData = results["addData_D13k82F9g7_"];
+							}
+							
 							if(results[0]){
 
 //----------------------Debug								
