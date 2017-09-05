@@ -2,9 +2,9 @@ package ru.curs.showcase.core.html.xform;
 
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.html.XFormContext;
-import ru.curs.showcase.core.*;
+import ru.curs.showcase.core.SourceSelector;
 import ru.curs.showcase.core.html.*;
-import ru.curs.showcase.runtime.*;
+import ru.curs.showcase.runtime.ConnectionFactory;
 import ru.curs.showcase.util.exception.NotImplementedYetException;
 import ru.curs.showcase.util.xml.XMLUtils;
 
@@ -50,18 +50,8 @@ public final class XFormScriptTransformCommand extends XFormContextCommand<Strin
 		};
 
 		String decodedContent = getContext().getFormData();
-		if (((selector.sourceType() == SourceType.SP)
-				|| (selector.sourceType() == SourceType.CELESTA) || (selector.sourceType() == SourceType.SQL))
-				&& (ConnectionFactory.getSQLServerType() == SQLServerType.POSTGRESQL)) {
-			// decodedContent =
-			// XMLUtils.xmlServiceSymbolsToNormalWithoutDoubleQuotes(decodedContent);
-			decodedContent =
-				XMLUtils.xmlServiceSymbolsToNormalWithoutDoubleQuotesAndLess(decodedContent);
-		} else {
-			// decodedContent =
-			// XMLUtils.xmlServiceSymbolsToNormal(decodedContent);
-			decodedContent = XMLUtils.xmlServiceSymbolsToNormalWithoutLess(decodedContent);
-		}
+		decodedContent =
+			XMLUtils.xmlServiceSymbolsToNormalWithoutDoubleQuotesAndLess(decodedContent);
 		getContext().setFormData(decodedContent);
 
 		HTMLAdvGateway gateway = selector.getGateway();
