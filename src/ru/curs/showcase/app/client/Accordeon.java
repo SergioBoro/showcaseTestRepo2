@@ -14,6 +14,8 @@ import ru.curs.showcase.app.client.utils.MultiUserData;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.logical.shared.*;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -154,6 +156,7 @@ public class Accordeon {
 					@Override
 					public void onSuccess(final Navigator navigator) {
 						ProgressWindow.closeProgressWindow();
+
 						AppCurrContext
 								.getInstance()
 								.getMainPanel()
@@ -171,7 +174,6 @@ public class Accordeon {
 						onLoadNavigator();
 
 					}
-
 				});
 
 		return verpan;
@@ -223,6 +225,27 @@ public class Accordeon {
 
 		backState();
 
+		accordeon.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+			@Override
+			public void onBeforeSelection(final BeforeSelectionEvent<Integer> arg0) {
+				RootPanel.getBodyElement().removeClassName("navigator-group");
+			}
+		});
+
+		accordeon.addSelectionHandler(new SelectionHandler<Integer>() {
+			@Override
+			public void onSelection(final SelectionEvent<Integer> arg0) {
+				final Timer fakeDelayTimerAdd = new Timer() {
+					@Override
+					public void run() {
+						RootPanel.getBodyElement().addClassName("navigator-group");
+					}
+				};
+				final int n500 = 500;
+				fakeDelayTimerAdd.schedule(n500);
+			}
+		});
+
 		for (int i = 0; i < navigator.getGroups().size(); i++) {
 			accordeon.add(getGroupTreeWidget(navigator.getGroups().get(i)),
 					getGroupString(navigator.getGroups().get(i)), true, m);
@@ -244,6 +267,7 @@ public class Accordeon {
 		HTML headerText = new HTML(ng.getName());
 		headerText.setStyleName("cw-StackPanelHeader");
 		hPanel.add(headerText);
+
 		return hPanel.getElement().getString();
 	}
 
@@ -257,22 +281,17 @@ public class Accordeon {
 					CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
 							"Empty"));
 		}
-		SimplePanel simpPanel = new SimplePanel();
-		ScrollPanel sp = new ScrollPanel();
+		final SimplePanel simpPanel = new SimplePanel();
+		final ScrollPanel sp = new ScrollPanel();
 		simpPanel.add(sp);
-		Tree groupTree = new Tree();
+		final Tree groupTree = new Tree();
+
 		uiListOfAccordeonTrees.add(groupTree);
 		sp.add(groupTree);
 		sp.setSize(SIZE_ONE_HUNDRED_PERCENTS, SIZE_ONE_HUNDRED_PERCENTS);
 
 		for (int i = 0; i < ng.getElements().size(); i++) {
 
-			// groupTree.add(w);
-			// com.google.gwt.safehtml.shared.SafeHtmlString
-			// SafeHtml sh;
-			// sh = new SafeHtmlString("fdfdf");
-			// groupTree.addItem(sh);
-			// (itemText)
 			TreeItem ti = groupTree.addTextItem(ng.getElements().get(i).getName());
 
 			ti.setUserObject(ng.getElements().get(i));

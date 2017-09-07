@@ -19,6 +19,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 
 /**
@@ -131,13 +132,25 @@ public class GeneralDataPanel {
 				Scheduler.get().scheduleDeferred(new Command() {
 					@Override
 					public void execute() {
-						if (!AppCurrContext.getInstance().getNavigatorItemSelected())
-							if (RootPanel.getBodyElement().getClassName() != null
-									&& !RootPanel.getBodyElement().getClassName()
-											.contains("ready")
-									&& !RootPanel.getBodyElement().getClassName().equals("ready")) {
+						final Timer timer = new Timer() {
+							@Override
+							public void run() {
+								// if
+								// (!AppCurrContext.getInstance().getNavigatorItemSelected())
+								// if (RootPanel.getBodyElement().getClassName()
+								// != null
+								// &&
+								// !RootPanel.getBodyElement().getClassName().contains("ready")
+								// &&
+								// !RootPanel.getBodyElement().getClassName().equals("ready"))
+								// {
 								RootPanel.getBodyElement().addClassName("ready");
+								// }
 							}
+
+						};
+						final int n50 = 50;
+						timer.schedule(n50);
 					}
 				});
 			}

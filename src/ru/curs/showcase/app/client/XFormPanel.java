@@ -1,7 +1,6 @@
 package ru.curs.showcase.app.client;
 
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.List;
 
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.element.DataPanelElement;
@@ -294,35 +293,96 @@ public class XFormPanel extends BasicElementPanelBasis {
 									}
 								}
 
-								for (Entry<DataPanelElementInfo, Boolean> readyEntry : AppCurrContext
-										.getNeverShowInPanelElementsReadyStateMap().entrySet()) {
-									for (Entry<DataPanelElementInfo, Boolean> fromActionEntry : AppCurrContext
-											.getNeverShowInPanelElementsFromActionMap().entrySet()) {
-										if (readyEntry
-												.getKey()
-												.getId()
-												.getString()
-												.equals(fromActionEntry.getKey().getId()
-														.getString())) {
-											if (readyEntry.getKey().getType() == DataPanelElementType.XFORMS
-													&& fromActionEntry.getKey().getType() == DataPanelElementType.XFORMS
-													&& readyEntry.getValue()
-													&& fromActionEntry.getValue()) {
-												RootPanel.getBodyElement().addClassName("ready");
-											}
-										}
-									}
-								}
+								// for (Entry<DataPanelElementInfo, Boolean>
+								// readyEntry : AppCurrContext
+								// .getNeverShowInPanelElementsReadyStateMap().entrySet())
+								// {
+								// for (Entry<DataPanelElementInfo, Boolean>
+								// fromActionEntry : AppCurrContext
+								// .getNeverShowInPanelElementsFromActionMap().entrySet())
+								// {
+								// if (readyEntry
+								// .getKey()
+								// .getId()
+								// .getString()
+								// .equals(fromActionEntry.getKey().getId()
+								// .getString())) {
+								// if (readyEntry.getKey().getType() ==
+								// DataPanelElementType.XFORMS
+								// && fromActionEntry.getKey().getType() ==
+								// DataPanelElementType.XFORMS
+								// && readyEntry.getValue()
+								// && fromActionEntry.getValue()) {
+								// // final Timer timer = new
+								// // Timer() {
+								// // @Override
+								// // public void run() {
+								// //
+								// RootPanel.getBodyElement().addClassName("ready");
+								// // }
+								// // };
+								// // final int n3000 = 3000;
+								// // timer.schedule(n3000);
+								//
+								// // final Timer timer = new
+								// // Timer() {
+								// // @Override
+								// // public void run() {
+								// //
+								// // dataService
+								// // .fakeRPC(new
+								// // GWTServiceCallback<Void>(
+								// // "Error") {
+								// // @Override
+								// // public void onSuccess(
+								// // final Void result) {
+								// // Scheduler
+								// // .get()
+								// // .scheduleDeferred(
+								// // new Command() {
+								// // @Override
+								// // public
+								// // void
+								// // execute() {
+								// // RootPanel
+								// // .getBodyElement()
+								// // .addClassName(
+								// // "ready");
+								// // }
+								// // });
+								// // }
+								// // });
+								// // }
+								// // };
+								// // final int n3000 = 3000;
+								// // timer.schedule(n3000);
+								//
+								// }
+								// }
+								// }
+								// }
 
 								if (!gridRelated) {
 									if (!AppCurrContext.getReadyStateMap().containsValue(false)) {
-										if (RootPanel.getBodyElement().getClassName() != null
-												&& !RootPanel.getBodyElement().getClassName()
-														.contains("ready")
-												&& !RootPanel.getBodyElement().getClassName()
-														.equals("ready")) {
-											RootPanel.getBodyElement().addClassName("ready");
-										}
+										// if
+										// (RootPanel.getBodyElement().getClassName()
+										// != null
+										// &&
+										// !RootPanel.getBodyElement().getClassName()
+										// .contains("ready")
+										// &&
+										// !RootPanel.getBodyElement().getClassName()
+										// .equals("ready")) {
+										// final Timer timer = new Timer() {
+										// @Override
+										// public void run() {
+										RootPanel.getBodyElement().addClassName("ready");
+										// }
+										// };
+										// final int n500 = 500;
+										// timer.schedule(n500);
+
+										// }
 										AppCurrContext.getInstance()
 												.setWebTextXformTrueStateForReadyStateMap(true);
 										AppCurrContext.getInstance()

@@ -175,6 +175,15 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 		center();
 		show();
 
+		final Timer timer = new Timer() {
+			@Override
+			public void run() {
+				RootPanel.getBodyElement().addClassName("modalwindow");
+			}
+		};
+		final int n1000 = 1000;
+		timer.schedule(n1000);
+
 		// альтернатива - xforms в iframe
 
 		// NamedFrame iframe = new NamedFrame("modalXForm1");
@@ -238,6 +247,16 @@ public class WindowWithDataPanelElement extends DialogBoxWithCaptionButton {
 			((XFormPanel) bep).unloadSubform();
 		}
 		bep = null;
+
+		final Timer timer = new Timer() {
+			@Override
+			public void run() {
+				RootPanel.getBodyElement().removeClassName("modalwindow");
+				RootPanel.getBodyElement().addClassName("ready");
+			}
+		};
+		final int n1000 = 1000;
+		timer.schedule(n1000);
 
 	}
 }

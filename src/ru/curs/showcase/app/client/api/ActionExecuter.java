@@ -45,6 +45,7 @@ public final class ActionExecuter {
 	 */
 	public static void execAction() {
 		RootPanel.getBodyElement().removeClassName("ready");
+		RootPanel.getBodyElement().removeClassName("navigator-item");
 
 		final Action ac = AppCurrContext.getInstance().getCurrentAction();
 		if (ac == null) {
@@ -339,6 +340,8 @@ public final class ActionExecuter {
 			if (ac.getNavigatorElementLink().getRefresh()) {
 				acrd.refreshAccordeon(ac.getNavigatorElementLink().getId(), fireSelectionAction);
 			} else {
+				// RootPanel.getBodyElement().addClassName("selectionReady");
+				// MessageBox.showSimpleMessage("", "action executer");
 				acrd.selectNesessaryItemInAccordion(ac.getNavigatorElementLink().getId(),
 						fireSelectionAction);
 			}

@@ -8,6 +8,7 @@ import ru.curs.showcase.app.api.grid.toolbar.ToolBarHelper;
 import ru.curs.showcase.app.client.api.BasicElementPanelBasis;
 
 import com.google.gwt.event.logical.shared.*;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -103,6 +104,15 @@ public class TabPanelSelectionHandler implements SelectionHandler<Integer> {
 		// MessageBox.showSimpleMessage("tab handler",
 		// GeneralDataPanel.getTabPanel().getTabBar()
 		// .getElement().getStyle().getLeft());
+
+		final Timer delayTimer = new Timer() {
+			@Override
+			public void run() {
+				RootPanel.getBodyElement().removeClassName("navigator-item");
+				RootPanel.getBodyElement().addClassName("tabselected");
+			}
+		};
+		delayTimer.schedule(1000);
 	}
 
 	public native void pushState(String obj) /*-{
