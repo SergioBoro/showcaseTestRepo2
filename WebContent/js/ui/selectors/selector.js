@@ -78,8 +78,8 @@ function showSelector(selectorParam) {
 
 		var content4 =	        
 	        '<div class="dijitDialogPaneActionBar">'+
-	        '	<button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onFocus:function(){selectorDialog.executeOK();selectorDialog.hide();}" class="server-selector-okbutton-element">OK</button>'+	        
-	        ' 	<button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){selectorDialog.hide();}" class="server-selector-cancelbutton-element">'+localizedParams["cancelTitle"]+'</button>'+
+	        '	<button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onFocus:function(){selectorDialog.executeOK();selectorDialog.hide();selectorDialog.delayAfterHide();}" class="server-selector-okbutton-element">OK</button>'+	        
+	        ' 	<button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){selectorDialog.hide();selectorDialog.delayAfterHide();}" class="server-selector-cancelbutton-element">'+localizedParams["cancelTitle"]+'</button>'+
 	        '</div>';
 		
 		var content = content1 + content4;		
@@ -142,6 +142,10 @@ function showSelector(selectorParam) {
 		    		dojo.stopEvent(event);
 		    	}
 		    },
+		    
+		    delayAfterHide: function(){
+		    	setTimeout(function() { document.body.className = document.body.className.replace("selector","");}, 1000);
+			},
 		    
 		    executeOK: function(){
 		    	
@@ -279,6 +283,7 @@ function showSelector(selectorParam) {
 				 selectorGrid.select(selectorGrid.collection.selectedId);
 				 selectorGrid.collection.selectedId = null;
 			 }
+			 setTimeout(function() { document.body.className += " selector"; }, 500);
 		 });
 		 
 		 selectorGrid.on(".dgrid-row:dblclick", function(event){
@@ -330,6 +335,6 @@ function showSelector(selectorParam) {
 	    	 return selectorParam.visibleRecordCount ? selectorParam.visibleRecordCount : 15;
 	     }
 	     
-             
+         
     });	
 }

@@ -13,7 +13,7 @@ function showMultiSelector(selectorParam) {
              "dstore/Memory",
 			 "dstore/Trackable",
 			 "dojox/timing",
-	         "dojo/domReady!"
+			 "dojo/domReady!"
 	     ], function(registry, Dialog, lang, Grid, Selection, Keyboard, declare, Rest, Cache, Memory, Trackable, timing){
 		
 		dojo.xhrGet({
@@ -79,8 +79,8 @@ function showMultiSelector(selectorParam) {
 
 		var content4 =	        
 	        '<div class="dijitDialogPaneActionBar">'+
-	        '	<button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onFocus:function(){selectorDialog.executeOK();selectorDialog.hide();}" class="server-multiselector-okbutton-element">OK</button>'+	        
-	        ' 	<button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){selectorDialog.hide();}" class="server-multiselector-cancelbutton-element">'+localizedParams["cancelTitle"]+'</button>'+
+	        '	<button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onFocus:function(){selectorDialog.executeOK();selectorDialog.hide();selectorDialog.delayAfterHide();}" class="server-multiselector-okbutton-element">OK</button>'+	        
+	        ' 	<button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){selectorDialog.hide();selectorDialog.delayAfterHide();}" class="server-multiselector-cancelbutton-element">'+localizedParams["cancelTitle"]+'</button>'+
 	        '</div>';
 		
 
@@ -225,6 +225,10 @@ function showMultiSelector(selectorParam) {
 		    		
 		    	});
 		    },
+		    
+		    delayAfterHide: function(){
+		    	setTimeout(function() { document.body.className = document.body.className.replace("multiselector","");}, 1000);
+			},
 		    
 		    selectAction: function(){
 			     for(var id in selectorGrid.selection){
@@ -412,6 +416,7 @@ function showMultiSelector(selectorParam) {
 				 selectorGrid.select(selectorGrid.collection.selectedId);
 				 selectorGrid.collection.selectedId = null;
 			 }
+			 setTimeout(function() { document.body.className += " multiselector"; }, 500);
 		 });
 		 
 		 selectorGrid.on(".dgrid-row:dblclick", function(event){
@@ -471,7 +476,7 @@ function showMultiSelector(selectorParam) {
 				showHeader: false
 				
 		 }, 'selectedGrid');
-		 
+		  
 		 selectedGrid.on(".dgrid-row:dblclick", function(event){
 			 if(selectedGrid.row(event)){
 				 selectedGrid.collection.remove(selectedGrid.row(event).id);
@@ -496,9 +501,7 @@ function showMultiSelector(selectorParam) {
 
 		 
 	     selectorDialog.show();
-	     
-
-
+	    
 	     
 	     function getXFormId(){
 	    	 return selectorParam.id;
@@ -543,6 +546,6 @@ function showMultiSelector(selectorParam) {
 	    	 return selectorParam.needClear ? selectorParam.needClear : false;
 	     }
 	     
-             
+	     
     });	
 }
