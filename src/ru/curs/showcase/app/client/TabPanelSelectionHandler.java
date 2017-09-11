@@ -104,7 +104,7 @@ public class TabPanelSelectionHandler implements SelectionHandler<Integer> {
 		// MessageBox.showSimpleMessage("tab handler",
 		// GeneralDataPanel.getTabPanel().getTabBar()
 		// .getElement().getStyle().getLeft());
-
+		
 		final Timer delayTimer = new Timer() {
 			@Override
 			public void run() {
@@ -112,7 +112,7 @@ public class TabPanelSelectionHandler implements SelectionHandler<Integer> {
 				RootPanel.getBodyElement().addClassName("tabselected");
 			}
 		};
-		delayTimer.schedule(1000);
+		delayTimer.schedule(1500);
 	}
 
 	public native void pushState(String obj) /*-{

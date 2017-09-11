@@ -299,6 +299,48 @@ public class Accordeon {
 
 		}
 
+		groupTree.addOpenHandler(new OpenHandler<TreeItem>() {
+			@Override
+			public void onOpen(OpenEvent<TreeItem> arg0) {
+				RootPanel.getBodyElement().removeClassName("navigator-item");
+				final Timer delayTimerRemove = new Timer() {
+					@Override
+					public void run() {
+						RootPanel.getBodyElement().removeClassName("expand");
+					}
+				};
+				delayTimerRemove.schedule(200);
+				final Timer delayTimerAdd = new Timer() {
+					@Override
+					public void run() {
+						RootPanel.getBodyElement().addClassName("expand");
+					}
+				};
+				delayTimerAdd.schedule(500);
+			}
+		});
+
+		groupTree.addCloseHandler(new CloseHandler<TreeItem>() {
+			@Override
+			public void onClose(CloseEvent<TreeItem> arg0) {
+				RootPanel.getBodyElement().removeClassName("navigator-item");
+				final Timer delayTimerRemove = new Timer() {
+					@Override
+					public void run() {
+						RootPanel.getBodyElement().removeClassName("expand");
+					}
+				};
+				delayTimerRemove.schedule(200);
+				final Timer delayTimerAdd = new Timer() {
+					@Override
+					public void run() {
+						RootPanel.getBodyElement().addClassName("expand");
+					}
+				};
+				delayTimerAdd.schedule(1000);
+			}
+		});
+
 		groupTree.addSelectionHandler(new TreeSelectionHandler());
 
 		return simpPanel;

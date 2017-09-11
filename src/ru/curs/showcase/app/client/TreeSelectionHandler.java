@@ -27,9 +27,11 @@ public class TreeSelectionHandler implements SelectionHandler<TreeItem> {
 	 * Переменная, защищающая от двойного клика на элементе дерева.
 	 */
 	private Boolean canBeSelectedAfterPreviousSelection = true;
-	
+
 	@Override
 	public void onSelection(final SelectionEvent<TreeItem> arg0) {
+
+		RootPanel.getBodyElement().removeClassName("tabselected");
 
 		if (!canBeSelectedAfterPreviousSelection) {
 			Accordeon.selectLastSelectedItem(arg0.getSelectedItem());
@@ -84,7 +86,7 @@ public class TreeSelectionHandler implements SelectionHandler<TreeItem> {
 				RootPanel.getBodyElement().addClassName("navigator-item");
 			}
 		};
-		delayTimer.schedule(500);
+		delayTimer.schedule(1000);
 
 	}
 
