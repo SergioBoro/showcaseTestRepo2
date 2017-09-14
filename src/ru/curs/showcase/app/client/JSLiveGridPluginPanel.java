@@ -780,6 +780,14 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 			}
 		}
 
+		final Timer delayTimer = new Timer() {
+			@Override
+			public void run() {
+				RootPanel.getBodyElement().addClassName("updategrid");
+			}
+		};
+		delayTimer.schedule(500);
+
 		afterUpdateGrid(wrongSelection);
 
 		GridContext gridContext = getDetailedContext();
@@ -949,18 +957,12 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 
 		processClick(recId, colId, interactionType);
 
-		final Timer delayTimer = new Timer() {
-			@Override
-			public void run() {
-				RootPanel.getBodyElement().addClassName("ready");
-			}
-		};
-		delayTimer.schedule(2000);
-
 	}
 
 	private void processClick(final String rowId, final String colId,
 			final InteractionType interactionType) {
+		RootPanel.getBodyElement().removeClassName("updategrid");
+
 		Action ac = null;
 
 		List<ru.curs.showcase.app.api.grid.GridEvent> events =
@@ -970,6 +972,16 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 			ac = ev.getAction();
 			runAction(ac);
 		}
+
+		final Timer delayTimer = new Timer() {
+			@Override
+			public void run() {
+				RootPanel.getBodyElement().addClassName("ready");
+				RootPanel.getBodyElement().addClassName("updategrid");
+			}
+		};
+		delayTimer.schedule(2000);
+
 	}
 
 	@Override

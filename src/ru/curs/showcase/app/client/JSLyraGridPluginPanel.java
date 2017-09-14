@@ -855,6 +855,14 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			}
 		}
 
+		final Timer delayTimer = new Timer() {
+			@Override
+			public void run() {
+				RootPanel.getBodyElement().addClassName("updategrid");
+			}
+		};
+		delayTimer.schedule(500);
+
 		afterUpdateGrid();
 
 		LyraGridContext gridContext = getDetailedContext();
@@ -1021,6 +1029,8 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 	private void processClick(final String rowId, final String colId,
 			final InteractionType interactionType) {
+		RootPanel.getBodyElement().removeClassName("updategrid");
+
 		Action ac = null;
 
 		List<ru.curs.showcase.app.api.grid.GridEvent> events =
@@ -1035,6 +1045,7 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			@Override
 			public void run() {
 				RootPanel.getBodyElement().addClassName("ready");
+				RootPanel.getBodyElement().addClassName("updategrid");
 			}
 		};
 		delayTimer.schedule(2000);
