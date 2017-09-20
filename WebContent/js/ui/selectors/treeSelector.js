@@ -1,9 +1,5 @@
 function showTreeSelector(selectorParam) {
 	
-	
-	console.log(selectorParam);
-	
-	
 	require({async:true},
 			[
              "dijit/registry",
