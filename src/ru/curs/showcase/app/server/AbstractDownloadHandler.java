@@ -5,12 +5,11 @@ import java.net.URLEncoder;
 
 import org.apache.commons.fileupload.FileUploadException;
 
-import ru.curs.showcase.app.api.BrowserType;
+import com.google.gwt.user.client.rpc.SerializationException;
+
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.util.*;
-
-import com.google.gwt.user.client.rpc.SerializationException;
 
 /**
  * Базовый обработчик для сервлетов, предназначенных для передачи файлов на
@@ -39,17 +38,8 @@ public abstract class AbstractDownloadHandler extends AbstractFilesHandler {
 		setContentType();
 		getResponse().setCharacterEncoding(TextUtils.DEF_ENCODING);
 
-		String userAgent = ServletUtils.getUserAgent(getRequest());
-		BrowserType browserType = BrowserType.detect(userAgent);
-		if (browserType == BrowserType.FIREFOX) {
-			// для корректной передачи русского названия файла
-			getResponse().setHeader("Content-Disposition",
-					String.format("attachment; filename*=\"%s\"", encName));
-
-		} else {
-			getResponse().setHeader("Content-Disposition",
-					String.format("attachment; filename=\"%s\"", encName));
-		}
+		getResponse().setHeader("Content-Disposition",
+				String.format("attachment; filename*=UTF-8''%s", encName));
 
 		try (OutputStream out = getResponse().getOutputStream()) {
 			out.write(outputFile.getData().toByteArray());
@@ -71,7 +61,8 @@ public abstract class AbstractDownloadHandler extends AbstractFilesHandler {
 	@Override
 	protected void getParams() throws SerializationException, FileUploadException, IOException {
 		setContext((CompositeContext) deserializeObject(getParam(getContextClass())));
-		setElementInfo((DataPanelElementInfo) deserializeObject(getParam(DataPanelElementInfo.class)));
+		setElementInfo(
+				(DataPanelElementInfo) deserializeObject(getParam(DataPanelElementInfo.class)));
 	}
 
 	protected Class<? extends CompositeContext> getContextClass() {
