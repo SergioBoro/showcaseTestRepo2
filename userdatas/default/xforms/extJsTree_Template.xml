@@ -58,9 +58,10 @@
 			</xf:input>
 
 
-
+	<!-- 
+	-->	
 			<xf:trigger>
-				<xf:label>Вызов ExtJsTree плагина22</xf:label>
+				<xf:label>Вызов ExtJsTree плагина</xf:label>
 				<xf:action ev:event="DOMActivate">
 					<xf:load
 						resource="javascript:gwtCreatePlugin({
@@ -72,7 +73,7 @@
 							generalFilters:['XPath(instance(quot(xformId_myInstance1))/item/name)'],							
 							params:{
 								treePanel: {
-									menuDisabled: true,
+									menuDisabled: false,
 								hideHeaders: false,
 									title: 'Элементы дерева',
 									listeners: {
@@ -91,7 +92,7 @@
 									filter:{
 										startsWith:true,
 										delay:900,
-										autofilter:false
+										autofilter:true
 									}
 								},
 								
@@ -218,9 +219,129 @@
 						});" />
 				</xf:action>
 			</xf:trigger>
+
+		
+<hr/>		
+					
+			
+			<!-- 
+					{field: 'id', label: 'Код'},
+					
+					{label: '', selector: 'checkbox', width: '20', resizable: false},
+					{label: '', selector: 'radio', width: '20', resizable: false},					
+
+
+                xpathRoot         = "'XPath(instance(quot(xformId_myInstance))/items)'"
+   			    xpathMapping      = "{'XPath(instance(quot(xformId_myInstance1))/item)':{'id': '@id','name':'name'}}"
+								
+                xpathMapping = "{'XPath(instance(quot(xformId_myInstance1))/item/name)' : 'name', 'XPath(instance(quot(xformId_myInstance1))/item/@id)' : 'id'}"								
+								
+			-->
 			
 			
 			
+		    <xf:treeselector
+		        buttonLabel        = "Вызов нового триселектора"
+   		        windowCaption      = "'Выбор данных из дерева'"
+   		        
+   		        startWith          = "true"
+                hideStartWith      = "false"
+                manualSearch       = "false" 
+		               
+                dataWidth          = "'500px'"
+                dataHeight         = "'450px'"
+				hideHeaders        = "false"
+				
+				
+				checkParent = "true"
+				
+				
+				
+				columns =  "[
+								{label: '', selector: 'checkbox', width: '20', resizable: false},							      
+							    {field: 'name', label: 'Название', width: '200', renderExpando: true},								
+								
+								{field: 'column1', label: 'Столбец1', width: '100', horAlign: 'right'},										
+								{field: 'column2', label: 'Ст2', width: '50', type: 'image', horAlign: 'center'}										
+							]"
+				
+		        getDataProcName   = "'plugin/extJsTreeGetData.py'"                
+		          
+		        generalFilters     = "['XPath(instance(quot(xformId_myInstance1))/item/name)']"
+		        
+				needClear = "true"
+				
+
+                xpathRoot         = "'XPath(instance(quot(xformId_myInstance))/items)'"
+   			    xpathMapping      = "{'XPath(instance(quot(xformId_myInstance1))/item)':{'id': '@id','name':'name'}}"
+		        
+		        
+		        
+   		        onSelectionComplete = "function(ok, selected){if (ok) {
+     			        alert('Это вызов onSelectionComplete для триселектора');
+		        }}"		        
+		        
+		        onSelectionCompleteAction =
+		        "
+					&lt;xf:action>
+		  				 &lt;xf:message>Это вызов onSelectionCompleteAction для триселектора&lt;/xf:message>
+					&lt;/xf:action>
+		        "
+		        
+		    />
+			
+
+
+		    <xf:treeselector
+		        buttonLabel        = "Вызов нового триселектора без картинок на ноды"
+   		        windowCaption      = "'Выбор данных из дерева'"
+   		        
+   		        startWith          = "true"
+                hideStartWith      = "false"
+                manualSearch       = "false" 
+		               
+                dataWidth          = "'500px'"
+                dataHeight         = "'450px'"
+				hideHeaders        = "false"
+				
+				
+				
+				checkParent = "true"
+				
+				
+				
+				columns =  "[
+								{label: '', selector: 'radio', width: '20', resizable: false},							      
+							    {field: 'name', label: 'Название', width: '200', renderExpando: true},								
+								
+								{field: 'column1', label: 'Столбец1', width: '100', horAlign: 'right'},										
+								{field: 'column2', label: 'Ст2', width: '50', type: 'image', horAlign: 'center'}										
+							]"
+				
+		        getDataProcName   = "'plugin/extJsTreeGetData2.py'"                
+		          
+		        generalFilters     = "['XPath(instance(quot(xformId_myInstance1))/item/name)']"
+		        
+				needClear = "true"
+				
+
+                xpathMapping = "{'XPath(instance(quot(xformId_myInstance1))/item/name)' : 'name', 'XPath(instance(quot(xformId_myInstance1))/item/@id)' : 'id'}"		        
+		        
+		        
+   		        onSelectionComplete = "function(ok, selected){if (ok) {
+     			        alert('Это вызов onSelectionComplete для триселектора');
+		        }}"		        
+		        
+		        onSelectionCompleteAction =
+		        "
+					&lt;xf:action>
+		  				 &lt;xf:message>Это вызов onSelectionCompleteAction для триселектора&lt;/xf:message>
+					&lt;/xf:action>
+		        "
+		        
+		    />
+
+
 			
 			
 			<xf:repeat id="itemRow" nodeset="instance('xformId_myInstance')/items">
@@ -232,7 +353,7 @@
 			<div id="pluginWraper"></div>
 		</div>
 		
-		<hr/>
+		
 		
 	</body>
 </html>

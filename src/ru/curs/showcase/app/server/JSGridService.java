@@ -7,12 +7,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.server.rpc.RPC;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.DataPanelElementInfo;
 import ru.curs.showcase.app.api.grid.*;
-import ru.curs.showcase.app.api.services.FakeService;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.grid.*;
 import ru.curs.showcase.util.*;
@@ -163,15 +161,7 @@ public class JSGridService extends HttpServlet {
 			um = new UserMessage(e.getMessage(), MessageType.ERROR);
 		}
 
-		String message = null;
-		try {
-			message = RPC.encodeResponseForSuccess(
-					FakeService.class.getMethod("serializeUserMessage"), um);
-			message = replaceServiceSymbols(message);
-		} catch (SerializationException | NoSuchMethodException | SecurityException e) {
-			throw GeneralExceptionFactory.build(e);
-		}
-
+		String message = GridUtils.getSerializeUserMessage(um);
 		try (PrintWriter writer = hresp.getWriter()) {
 			message = message.replace("\"", "'");
 			writer.print("{\"success\":\"" + success + "\", \"message\":\"" + message
@@ -236,27 +226,12 @@ public class JSGridService extends HttpServlet {
 			um = new UserMessage(e.getMessage(), MessageType.ERROR);
 		}
 
-		String message = null;
-		try {
-			message = RPC.encodeResponseForSuccess(
-					FakeService.class.getMethod("serializeUserMessage"), um);
-			message = replaceServiceSymbols(message);
-		} catch (SerializationException | NoSuchMethodException | SecurityException e) {
-			throw GeneralExceptionFactory.build(e);
-		}
-
+		String message = GridUtils.getSerializeUserMessage(um);
 		try (PrintWriter writer = hresp.getWriter()) {
 			message = message.replace("\"", "'");
 			writer.print("{\"success\":\"" + success + "\", \"message\":\"" + message + "\"}");
 		}
 
-	}
-
-	private String replaceServiceSymbols(final String mess) {
-		String ret = mess;
-		ret = ret.replace("\\x", ExchangeConstants.OK_MESSAGE_X);
-		ret = ret.replace("\\\"", ExchangeConstants.OK_MESSAGE_QUOT);
-		return ret;
 	}
 
 }

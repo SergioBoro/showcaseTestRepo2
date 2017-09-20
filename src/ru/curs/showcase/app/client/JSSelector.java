@@ -1,14 +1,17 @@
 package ru.curs.showcase.app.client;
 
-import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.*;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.*;
 
 import ru.curs.showcase.app.api.*;
+import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.html.XForm;
+import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.app.api.selector.*;
 import ru.curs.showcase.app.client.api.ActionExecuter;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
-import ru.curs.showcase.app.client.utils.WebUtils;
+import ru.curs.showcase.app.client.utils.*;
 
 /**
  * Класс селектора.
@@ -169,5 +172,52 @@ public final class JSSelector {
 							stringMessage, "", MessageType.INFO, false, null);
 		}
 	}
+
+	// CHECKSTYLE:OFF
+	public static String pluginTreeGetHttpParams(final String searchString,
+			final String startsWith, final String xformId, final String generalFilters,
+			final String getDataProcName, final String parentId, final String parentName) {
+
+		XFormPanel currentXFormPanel = (XFormPanel) ActionExecuter.getElementPanelById(xformId);
+
+		RequestData requestData = new RequestData();
+
+		requestData.setContext(currentXFormPanel.getContext());
+
+		PluginInfo elInfo = new PluginInfo();
+		elInfo.setId(currentXFormPanel.getElementInfo().getId());
+		elInfo.setGetDataProcName(getDataProcName);
+		requestData.setElInfo(elInfo);
+
+		JSONObject json = new JSONObject();
+		if (parentId == null) {
+			json.put("node", new JSONString("root"));
+		} else {
+			json.put("id", new JSONString(parentId));
+			json.put("name", new JSONString(parentName));
+		}
+		json.put("curValue", new JSONString(searchString));
+		json.put("startsWith", JSONBoolean.getInstance(Boolean.valueOf(startsWith)));
+		json.put("generalFilters", new JSONString(generalFilters));
+		requestData.setXmlParams(JSONUtils.createXmlByJSONValue("params", json));
+
+		// -------------------------------------------------
+
+		if (ssf == null) {
+			ssf = WebUtils.createStdGWTSerializer();
+		}
+
+		SerializationStreamWriter writer = ssf.createStreamWriter();
+		try {
+			writer.writeObject(requestData);
+		} catch (SerializationException e) {
+			return CourseClientLocalization.gettext(AppCurrContext.getInstance().getDomain(),
+					"Error during serialization parameters for Http-request plug.") + ": "
+					+ e.getMessage();
+		}
+
+		return writer.toString();
+	}
+	// CHECKSTYLE:ON
 
 }

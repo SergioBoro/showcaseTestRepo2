@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 from ru.curs.showcase.app.api import UserMessage
 from ru.curs.showcase.app.api import MessageType
 from ru.curs.showcase.core import UserMessageFactory
+from net.sf.saxon.functions import Nilled_1
 
 
 # init vars
@@ -28,6 +29,10 @@ class extJsTreeGetData(JythonProc):
         session = context.getSession()
         if context.getFilter():
             filterContext = context.getFilter()
+            
+            
+            
+            
         return mainproc(attr)
 
 
@@ -35,6 +40,11 @@ def mainproc(attributes):
     parentId=''
     curValue=''
     xmlParams = attributes.getXmlParams()
+    
+    print 'DDDDDDDDDDDDDD44'
+    print xmlParams
+    
+    
     if xmlParams!=None:
         root = ET.fromstring(xmlParams)        
         pId = root.find('.//id')
@@ -44,16 +54,52 @@ def mainproc(attributes):
         if pCurValue!=None and pCurValue.text!=None:
             curValue=' ['+pCurValue.text+']'
         
+        
         print "dddddddddddddd"    
-        print pCurValue
-            
+        print curValue
+          
+
+    data = None
+    
     data = u'''
     <items>
-		<item id="'''+parentId+'''1" name="Lazy2\nloaded item '''+parentId+'''1'''+curValue+'''" leaf="false" checked="false"/>
-		<item id="'''+parentId+'''2" name="Lazy2\nloaded item '''+parentId+'''2'''+curValue+'''" leaf="false"/>
     </items>'''
-    res = JythonDTO(data, UserMessageFactory().build(555, u"Плагин успешно построен из Jython22"))
+    
+    data = u'''
+    <items>
+        <item/>
+    </items>'''
+    
+    data = u'''
+    <items>
+        <item id="'''+parentId+'''1" name="Название1 записи '''+parentId+'''1'''+curValue+'''" column1="Значение1" column2="solutions/default/resources/imagesingrid/test.jpg"  leaf="false" checked="true"                       treeGridNodeCloseIcon="solutions/default/resources/imagesingrid/TreeGridNodeClose.gif" treeGridNodeOpenIcon="solutions/default/resources/imagesingrid/TreeGridNodeOpen.gif" treeGridNodeLeafIcon="solutions/default/resources/imagesingrid/TreeGridLeaf.png"/>
+        <item id="'''+parentId+'''2" name="Название2 записи '''+parentId+'''2'''+curValue+'''" column1="Значение2" column2="solutions/default/resources/imagesingrid/test.jpg"  leaf="false"                                       treeGridNodeCloseIcon="solutions/default/resources/imagesingrid/TreeGridNodeClose.gif" treeGridNodeOpenIcon="solutions/default/resources/imagesingrid/TreeGridNodeOpen.gif" treeGridNodeLeafIcon="solutions/default/resources/imagesingrid/TreeGridLeaf.png"/>
+        <item id="'''+parentId+'''3" name="Название3 записи '''+parentId+'''3'''+curValue+'''" column1="Значение3" column2="solutions/default/resources/imagesingrid/test.jpg"                                hasChildren="false" treeGridNodeCloseIcon="solutions/default/resources/imagesingrid/TreeGridNodeClose.gif" treeGridNodeOpenIcon="solutions/default/resources/imagesingrid/TreeGridNodeOpen.gif" treeGridNodeLeafIcon="solutions/default/resources/imagesingrid/TreeGridLeaf.png"/>        
+        <item id="'''+parentId+'''4" name="Название4 записи '''+parentId+'''4'''+curValue+'''" column1="Значение4" column2="solutions/default/resources/imagesingrid/test.jpg"               checked="true"   hasChildren="true"  treeGridNodeCloseIcon="solutions/default/resources/imagesingrid/TreeGridNodeClose.gif" treeGridNodeOpenIcon="solutions/default/resources/imagesingrid/TreeGridNodeOpen.gif" treeGridNodeLeafIcon="solutions/default/resources/imagesingrid/TreeGridLeaf.png"/>        
+    </items>'''
+
+
+
+
+        
+    
+    #res = JythonDTO(data, UserMessageFactory().build(555, u"Триселектор успешно построен из Jython"))
+    res = JythonDTO(data)    
     return res
 
 if __name__ == "__main__":
     mainproc()
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

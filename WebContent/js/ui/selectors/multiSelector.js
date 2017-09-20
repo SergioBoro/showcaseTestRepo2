@@ -346,11 +346,11 @@ function showMultiSelector(selectorParam) {
 
 				results = Rest.prototype.fetchRange.call(this, kwArgs);
 				results.then(function(results){
-					if(getSelectedFirst() && results[0] && results[0]["id"]){
+					if(getSelectedFirst() && results && results[0] && results[0]["id"]){
 						selectorStore.selectedId = results[0]["id"];
 					}
 					
-					if(results[0] && results[0]["message_D13k82F9g7"]){
+					if(results && results[0] && results[0]["message_D13k82F9g7"]){
 						gwtSelectorShowMessage(results[0]["message_D13k82F9g7"]);
 					}
 					

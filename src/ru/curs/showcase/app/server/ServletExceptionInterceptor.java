@@ -71,6 +71,8 @@ public final class ServletExceptionInterceptor {
 				|| request.getRequestURL().toString().toLowerCase()
 						.contains("/secured/JSSelectorService".toLowerCase())
 				|| request.getRequestURL().toString().toLowerCase()
+						.contains("/secured/JSTreeSelectorService".toLowerCase())
+				|| request.getRequestURL().toString().toLowerCase()
 						.contains("/secured/JSLyraGridService".toLowerCase())) {
 
 			try {

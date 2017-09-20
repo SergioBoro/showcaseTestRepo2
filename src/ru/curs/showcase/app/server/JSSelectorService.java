@@ -8,12 +8,10 @@ import javax.servlet.http.*;
 import org.json.simple.JSONArray;
 
 import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.server.rpc.RPC;
 
-import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.selector.*;
-import ru.curs.showcase.app.api.services.FakeService;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
+import ru.curs.showcase.core.grid.GridUtils;
 import ru.curs.showcase.core.selector.*;
 import ru.curs.showcase.util.ServletUtils;
 
@@ -54,14 +52,14 @@ public class JSSelectorService extends HttpServlet {
 		hresp.setContentType(CONTENT_TYPE_APPLICATION_JSON);
 		hresp.setCharacterEncoding("UTF-8");
 
-		// ---------------------------------------------
-
 		int totalCount = result.getCount();
 		int firstIndex = req.getFirstRecord();
 		int lastIndex = req.getFirstRecord() + req.getRecordCount() - 1;
 
 		hresp.setHeader("Content-Range", "items " + String.valueOf(firstIndex) + "-"
 				+ String.valueOf(lastIndex) + "/" + String.valueOf(totalCount));
+
+		// ---------------------------------------------
 
 		JSONArray data = new JSONArray();
 		for (DataRecord dr : result.getDataRecordList()) {
@@ -78,7 +76,7 @@ public class JSSelectorService extends HttpServlet {
 
 		if ((result.getOkMessage() != null) && (data.size() > 0)) {
 			((org.json.simple.JSONObject) data.get(0)).put(FIELD_MESSAGE,
-					getSerializeUserMessage(result.getOkMessage()));
+					GridUtils.getSerializeUserMessage(result.getOkMessage()));
 		}
 
 		if ((data.size() > 0) || (result.getOkMessage() == null)) {
@@ -88,32 +86,15 @@ public class JSSelectorService extends HttpServlet {
 		} else {
 			if (result.getOkMessage() != null) {
 				org.json.simple.JSONObject obj = new org.json.simple.JSONObject();
-				obj.put(FIELD_MESSAGE, getSerializeUserMessage(result.getOkMessage()));
+				obj.put(FIELD_MESSAGE, GridUtils.getSerializeUserMessage(result.getOkMessage()));
 				try (PrintWriter writer = hresp.getWriter()) {
 					writer.print(obj.toJSONString());
 				}
 			}
 		}
 
-	}
+		// ---------------------------------------------
 
-	private String getSerializeUserMessage(final UserMessage um) {
-		String message = null;
-		try {
-			message = RPC.encodeResponseForSuccess(
-					FakeService.class.getMethod("serializeUserMessage"), um);
-			message = replaceServiceSymbols(message);
-		} catch (SerializationException | NoSuchMethodException | SecurityException e) {
-			throw GeneralExceptionFactory.build(e);
-		}
-		return message;
-	}
-
-	private String replaceServiceSymbols(final String mess) {
-		String ret = mess;
-		ret = ret.replace("\\x", ExchangeConstants.OK_MESSAGE_X);
-		ret = ret.replace("\\\"", ExchangeConstants.OK_MESSAGE_QUOT);
-		return ret;
 	}
 
 }

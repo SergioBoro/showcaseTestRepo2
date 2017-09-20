@@ -75,6 +75,27 @@
 		</xf:model>
 	</head>
 	<body>
+  <xf:dialog id="details">
+   <xf:input id="firstname" ref="instance('Showcase_Template_multiselector_simple_subform_mainInstance')/info/city1">
+    <xf:label>First Name : </xf:label>
+   </xf:input>
+<xf:trigger>
+					<xf:label>Закрыть</xf:label>
+					<xf:action ev:event="DOMActivate">
+						<xf:hide dialog="details"/>
+					</xf:action>
+				</xf:trigger>
+   
+  </xf:dialog>
+
+
+			<xf:trigger>
+				<xf:label>dialog</xf:label>
+				<xf:action ev:event="DOMActivate">
+ 					<xf:show dialog="details"/>
+				</xf:action>
+			</xf:trigger>
+
 
 
 <table>
@@ -292,6 +313,116 @@ nodeset="instance('Showcase_Template_multiselector_simple_subform_mainInstance')
 					
 		</div>
 <hr/>
+
+			<!-- 
+					{field: 'id', label: 'Код'},
+					
+					{label: '', selector: 'checkbox', width: '20', resizable: false},
+					{label: '', selector: 'radio', width: '20', resizable: false},					
+
+
+                xpathRoot         = "'XPath(instance(quot(xformId_myInstance))/items)'"
+   			    xpathMapping      = "{'XPath(instance(quot(xformId_myInstance1))/item)':{'id': '@id','name':'name'}}"
+								
+                xpathMapping = "{'XPath(instance(quot(xformId_myInstance1))/item/name)' : 'name', 'XPath(instance(quot(xformId_myInstance1))/item/@id)' : 'id'}"								
+								
+			-->
+			
+			
+			
+		    <xf:treeselector
+		        buttonLabel        = "Вызов нового триселектора"
+   		        windowCaption      = "'Выбор данных из дерева'"
+   		        
+   		        startWith          = "true"
+                hideStartWith      = "false"
+                manualSearch       = "false" 
+		               
+                dataWidth          = "'500px'"
+                dataHeight         = "'450px'"
+				hideHeaders        = "false"
+				
+				columns =  "[
+								{label: '', selector: 'checkbox', width: '20', resizable: false},							      
+							    {field: 'name', label: 'Название', width: '200', renderExpando: true},								
+								
+								{field: 'column1', label: 'Столбец1', width: '100', horAlign: 'right'},										
+								{field: 'column2', label: 'Ст2', width: '50', type: 'image', horAlign: 'center'}										
+							]"
+				
+		        getDataProcName   = "'plugin/extJsTreeGetData.py'"                
+		          
+		        generalFilters    = "['XPath(instance(quot(Showcase_Template_multiselector_simple_subform_myInstance))/infos/info[3]/name4)', 'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_myInstance))/infos/info[3]/name4/@id)']"
+		        
+				needClear = "true"
+				
+
+		        xpathRoot         = "'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_myInstance))/infos)'"
+		        xpathMapping      = "{'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_myInstance1))/info)':{'id': '@id','name':'name'}}"
+		        
+		        
+		        
+   		        onSelectionComplete = "function(ok, selected){if (ok) {
+     			        alert('Это вызов onSelectionComplete для триселектора');
+		        }}"		        
+		        
+		        onSelectionCompleteAction =
+		        "
+					&lt;xf:action>
+		  				 &lt;xf:message>Это вызов onSelectionCompleteAction для триселектора&lt;/xf:message>
+					&lt;/xf:action>
+		        "
+		        
+		    />
+			
+
+
+		    <xf:treeselector
+		        buttonLabel        = "Вызов нового триселектора без картинок на ноды"
+   		        windowCaption      = "'Выбор данных из дерева'"
+   		        
+   		        startWith          = "true"
+                hideStartWith      = "false"
+                manualSearch       = "false" 
+		               
+                dataWidth          = "'500px'"
+                dataHeight         = "'450px'"
+				hideHeaders        = "false"
+				
+				columns =  "[
+								{label: '', selector: 'radio', width: '20', resizable: false},							      
+							    {field: 'name', label: 'Название', width: '200', renderExpando: true},								
+								
+								{field: 'column1', label: 'Столбец1', width: '100', horAlign: 'right'},										
+								{field: 'column2', label: 'Ст2', width: '50', type: 'image', horAlign: 'center'}										
+							]"
+				
+		        getDataProcName   = "'plugin/extJsTreeGetData2.py'"                
+		          
+				needClear = "true"
+				
+
+		        generalFilters     = "['XPath(instance(quot(Showcase_Template_multiselector_simple_subform_myInstance))/infos/info/name)']"
+		        xpathMapping       = "{'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city1)' : 'name', 'XPath(instance(quot(Showcase_Template_multiselector_simple_subform_mainInstance))/info[index(quot(Showcase_Template_multiselector_simple_subform_securityRealEstateRow))]/city2)' : null}"
+		        
+		        
+		        
+   		        onSelectionComplete = "function(ok, selected){if (ok) {
+     			        alert('Это вызов onSelectionComplete для триселектора');
+		        }}"		        
+		        
+		        onSelectionCompleteAction =
+		        "
+					&lt;xf:action>
+		  				 &lt;xf:message>Это вызов onSelectionCompleteAction для триселектора&lt;/xf:message>
+					&lt;/xf:action>
+		        "
+		        
+		    />
+
+<hr/>
+
+
 		<div style="clear: both;">
 		
 		

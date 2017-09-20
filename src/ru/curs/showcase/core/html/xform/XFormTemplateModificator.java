@@ -30,6 +30,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String UPLOAD_TAG = "upload";
 	private static final String SELECTOR_TAG = "selector";
 	private static final String MULTISELECTOR_TAG = "multiselector";
+	private static final String TREESELECTOR_TAG = "treeselector";
 	private static final String SELECTOR_BUTTON_LABEL_TAG = "buttonLabel";
 	private static final String SELECTOR_BUTTON_HINT_TAG = "buttonHint";
 	private static final String SELECTOR_ON_SELECTION_COMPLETE_ACTION_TAG =
@@ -56,6 +57,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	private static final String VALUE = "value";
 	private static final String SHOW_SELECTOR = "showSelector";
 	private static final String SHOW_MULTISELECTOR = "showMultiSelector";
+	private static final String SHOW_TREESELECTOR = "showTreeSelector";
 	private static final String CREATEPLUGIN = "gwtCreatePlugin";
 	private static final String TEMP_TAG_FOR_SELECTOR_ID = "tempTagForSelector";
 
@@ -188,8 +190,9 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 	}
 
 	private static org.w3c.dom.Document generateSelectors(final org.w3c.dom.Document doc) {
-		org.w3c.dom.Document result = generateSingleAndMultiSelector(doc, SELECTOR_TAG);
-		result = generateSingleAndMultiSelector(result, MULTISELECTOR_TAG);
+		org.w3c.dom.Document result = generateSingleAndMultiAndTreeSelector(doc, SELECTOR_TAG);
+		result = generateSingleAndMultiAndTreeSelector(result, MULTISELECTOR_TAG);
+		result = generateSingleAndMultiAndTreeSelector(result, TREESELECTOR_TAG);
 
 		// LoggerFactory.getLogger(XFormTemplateModificator.class).info(
 		// XMLUtils.documentToString(result));
@@ -197,18 +200,27 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		return result;
 	}
 
-	private static org.w3c.dom.Document generateSingleAndMultiSelector(
+	// CHECKSTYLE:OFF
+	private static org.w3c.dom.Document generateSingleAndMultiAndTreeSelector(
 			final org.w3c.dom.Document doc, final String selectorTag) {
 		String selectorFunc;
+		String cssPrefix;
 		switch (selectorTag) {
 		case SELECTOR_TAG:
 			selectorFunc = SHOW_SELECTOR;
+			cssPrefix = "";
 			break;
 		case MULTISELECTOR_TAG:
 			selectorFunc = SHOW_MULTISELECTOR;
+			cssPrefix = "multi";
+			break;
+		case TREESELECTOR_TAG:
+			selectorFunc = SHOW_TREESELECTOR;
+			cssPrefix = "tree";
 			break;
 		default:
 			selectorFunc = SHOW_SELECTOR;
+			cssPrefix = "";
 			break;
 		}
 
@@ -253,7 +265,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 			} else {
 				label.setTextContent(buttonLabel);
 			}
-			trigger.setAttribute("class", "server-selector-element");
+			trigger.setAttribute("class", "server-" + cssPrefix + "selector-element");
 			trigger.appendChild(label);
 
 			if (buttonHint != null) {
@@ -304,6 +316,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 		return doc;
 	}
+	// CHECKSTYLE:ON
 
 	private static Document insertDataForSelectors(final org.w3c.dom.Document xml,
 			final String subformId) {
@@ -357,6 +370,7 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		for (String selector : selectors) {
 			if ((selector.toLowerCase().indexOf(SHOW_SELECTOR.toLowerCase()) > -1)
 					|| (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) > -1)
+					|| (selector.toLowerCase().indexOf(SHOW_TREESELECTOR.toLowerCase()) > -1)
 					|| (selector.toLowerCase().indexOf(CREATEPLUGIN.toLowerCase()) > -1)) {
 				addXPathsFromStringToArrayXPaths(selector, xpaths);
 			}
@@ -434,8 +448,9 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 		String s;
 
 		for (String selector : selectors) {
-			if (selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) == -1
-					&& selector.toLowerCase().indexOf(CREATEPLUGIN.toLowerCase()) == -1) {
+			if ((selector.toLowerCase().indexOf(SHOW_MULTISELECTOR.toLowerCase()) == -1)
+					&& (selector.toLowerCase().indexOf(SHOW_TREESELECTOR.toLowerCase()) == -1)
+					&& (selector.toLowerCase().indexOf(CREATEPLUGIN.toLowerCase()) == -1)) {
 				continue;
 			}
 
@@ -476,15 +491,16 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 						addIfNotContains(xpaths, s);
 
 						if (sLastPartXPath != null) {
-							s = xpathRoot.get(0) + "/" + sLastPartXPath + "/" + localXPath;
-							addIfNotContains(xpaths, s);
+							if (xpathRoot.size() > 0) {
+								s = xpathRoot.get(0) + "/" + sLastPartXPath + "/" + localXPath;
+								addIfNotContains(xpaths, s);
+							}
 						}
 					}
 				}
 			}
 		}
 	}
-
 	// CHECKSTYLE:ON
 
 	private static Document setDataForSelectors(final org.w3c.dom.Document xml,

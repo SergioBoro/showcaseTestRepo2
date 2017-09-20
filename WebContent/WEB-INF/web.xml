@@ -127,6 +127,14 @@
     <url-pattern>/secured/JSSelectorService</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>JSTreeSelectorService</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.JSTreeSelectorService</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JSTreeSelectorService</servlet-name>
+    <url-pattern>/secured/JSTreeSelectorService</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>JSLyraGridService</servlet-name>
     <servlet-class>ru.curs.showcase.app.server.JSLyraGridService</servlet-class>
   </servlet>

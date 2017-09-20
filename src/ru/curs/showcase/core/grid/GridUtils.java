@@ -2,8 +2,14 @@ package ru.curs.showcase.core.grid;
 
 import org.w3c.dom.*;
 
+import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.server.rpc.RPC;
+
 import ru.curs.lyra.LyraFieldType;
+import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.grid.*;
+import ru.curs.showcase.app.api.services.FakeService;
+import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
@@ -84,6 +90,25 @@ public final class GridUtils {
 		default:
 			return GridValueType.STRING;
 		}
+	}
+
+	public static String getSerializeUserMessage(final UserMessage um) {
+		String message = null;
+		try {
+			message = RPC.encodeResponseForSuccess(
+					FakeService.class.getMethod("serializeUserMessage"), um);
+			message = replaceServiceSymbols(message);
+		} catch (SerializationException | NoSuchMethodException | SecurityException e) {
+			throw GeneralExceptionFactory.build(e);
+		}
+		return message;
+	}
+
+	private static String replaceServiceSymbols(final String mess) {
+		String ret = mess;
+		ret = ret.replace("\\x", ExchangeConstants.OK_MESSAGE_X);
+		ret = ret.replace("\\\"", ExchangeConstants.OK_MESSAGE_QUOT);
+		return ret;
 	}
 
 }

@@ -92,6 +92,7 @@ public final class XFormsUtils {
 															$wnd.gwtXFormShowMessage = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showMessage(Ljava/lang/String;);
 															$wnd.gwtXFormShowErrorMessage = @ru.curs.showcase.app.client.api.XFormPanelCallbacksEvents::showErrorMessage(Ljava/lang/String;);
 															$wnd.gwtSelectorGetHttpParams = @ru.curs.showcase.app.client.JSSelector::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtTreeSelectorGetHttpParams = @ru.curs.showcase.app.client.JSSelector::pluginTreeGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
 															$wnd.gwtSelectorGetLocalizedParams = @ru.curs.showcase.app.client.JSSelector::pluginGetLocalizedParams(Ljava/lang/String;);
 															$wnd.gwtSelectorShowMessage = @ru.curs.showcase.app.client.JSSelector::pluginShowMessage(Ljava/lang/String;);
 															$wnd.gwtSelectorShowErrorMessage = @ru.curs.showcase.app.client.JSSelector::pluginShowErrorMessage(Ljava/lang/String;);
@@ -146,6 +147,7 @@ public final class XFormsUtils {
 
 		$wnd.safeIncludeJS("js/ui/selectors/selector.js");
 		$wnd.safeIncludeJS("js/ui/selectors/multiSelector.js");
+		$wnd.safeIncludeJS("js/ui/selectors/treeSelector.js");
 	}-*/;
 
 }

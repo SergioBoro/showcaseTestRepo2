@@ -1,7 +1,6 @@
 package ru.curs.showcase.app.api.plugin;
 
-import java.io.Serializable;
-
+import ru.curs.showcase.app.api.SerializableElement;
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.event.CompositeContext;
 
@@ -11,8 +10,9 @@ import ru.curs.showcase.app.api.event.CompositeContext;
  * @author bogatov
  * 
  */
-public class RequestData implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class RequestData implements SerializableElement {
+	private static final long serialVersionUID = -840082315414372619L;
+
 	private CompositeContext context;
 	private PluginInfo elInfo;
 	private String xmlParams;
