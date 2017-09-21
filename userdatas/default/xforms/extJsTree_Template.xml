@@ -256,6 +256,7 @@
 				checkParent = "true"
 				
 				
+				allowSelectAll = "true"
 				
 				columns =  "[
 								{label: '', selector: 'checkbox', width: '20', resizable: false},							      
@@ -264,6 +265,9 @@
 								{field: 'column1', label: 'Столбец1', width: '100', horAlign: 'right'},										
 								{field: 'column2', label: 'Ст2', width: '50', type: 'image', horAlign: 'center'}										
 							]"
+							
+							
+							
 				
 		        getDataProcName   = "'plugin/extJsTreeGetData.py'"                
 		          
@@ -309,6 +313,7 @@
 				checkParent = "true"
 				
 				
+				allowSelectAll = "false"
 				
 				columns =  "[
 								{label: '', selector: 'radio', width: '20', resizable: false},							      

@@ -429,7 +429,9 @@ function showTreeSelector(selectorParam) {
 			class: "server-treeselector-listwrapper-element",
 			showHeader: !getHideHeaders(),
 			
-		    single: single
+		    single: single,
+		    
+		    allowSelectAll: !single && getAllowSelectAll()
 			
 		 }, 'selectorGrid');
 		 
@@ -494,8 +496,10 @@ function showTreeSelector(selectorParam) {
 	     function getCheckParent(){
 	    	 return selectorParam.checkParent ? selectorParam.checkParent : false;
 	     }
-	     
-	     
+	     function getAllowSelectAll(){
+	    	 return selectorParam.allowSelectAll ? selectorParam.allowSelectAll : false;
+	     }
+
 	     
 	     
     });	
