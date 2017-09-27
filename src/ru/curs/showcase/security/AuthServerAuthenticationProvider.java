@@ -37,6 +37,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AuthServerAuthenticationProvider.class);
 
+	private String innerMessage = null;
+
 	@Override
 	public Authentication authenticate(final Authentication arg1) {
 
@@ -191,6 +193,21 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 									+ "' is blocked by administrator");
 						}
 
+						if (servletResponseMessage.contains("Stored procedure message begin:")) {
+							int indexBegin =
+								servletResponseMessage.indexOf("Stored procedure message begin:");
+							int beginMessageLength = "Stored procedure message begin:".length();
+							int indexEnd =
+								servletResponseMessage.indexOf("Stored procedure message end.");
+
+							innerMessage =
+								servletResponseMessage.substring(indexBegin + beginMessageLength,
+										indexEnd).trim();
+
+							LOGGER.info(innerMessage);
+							throw new BadCredentialsException(innerMessage);
+						}
+
 						LOGGER.info("Пользователю " + login
 								+ " не удалось войти в систему: Bad credentials");
 						throw new BadCredentialsException("Bad credentials");
@@ -217,6 +234,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 					throw new BadCredentialsException(e.getMessage(), e);
 				} else if (e.getMessage().contains("User")
 						&& e.getMessage().contains("is blocked by administrator")) {
+					throw new BadCredentialsException(e.getMessage(), e);
+				} else if (innerMessage != null && e.getMessage().contains(innerMessage)) {
 					throw new BadCredentialsException(e.getMessage(), e);
 				} else {
 					throw new BadCredentialsException("Authentication server is not available: "
