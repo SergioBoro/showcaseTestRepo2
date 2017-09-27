@@ -1212,10 +1212,13 @@ public final class UserDataUtils {
 	 */
 	public static void setLocaleFromCelestaLoggingProc(String sesid, String loc) {
 		AppInfoSingleton.getAppInfo().getLocalizationCache().put(sesid, loc);
-		ResourceBundle bundle = CourseLocalization.getLocalizedResourseBundle();
-		if (bundle != null)
+		ResourceBundle bundle = CourseLocalization.getLocalizedResourseBundle(loc);
+		if (bundle != null) {
+			AppInfoSingleton.getAppInfo().getLocalizedBundleCache().put(sesid, bundle);
+		} else {
 			AppInfoSingleton.getAppInfo().getLocalizedBundleCache()
 					.put(sesid, CourseLocalization.getLocalizedResourseBundle());
+		}
 	}
 
 	public static ResourceBundle getResourceBundleForGettext() {
