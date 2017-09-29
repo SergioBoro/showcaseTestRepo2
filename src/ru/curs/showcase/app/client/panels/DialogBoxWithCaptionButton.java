@@ -155,19 +155,30 @@ public class DialogBoxWithCaptionButton extends DialogBox {
 		// }
 
 		if (!event.isCanceled() && (event.getTypeInt() == Event.ONCLICK)
-				&& isCloseEvent(nativeEvent)) {
+				&& isCloseEvent(nativeEvent) && !isActiveXFormDialog()) {
 			closeWindow();
 		}
 
-		if (getCloseOnEsc() != null)
+		if (getCloseOnEsc() != null) {
 			if (getCloseOnEsc()) {
 				if ((event.getTypeInt() == Event.ONKEYUP)
-						&& (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE)) {
+						&& (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE)
+						&& !isActiveXFormDialog()) {
 					closeWindow();
 				}
 			}
+		}
 
 		super.onPreviewNativeEvent(event);
+	}
+
+	private boolean isActiveXFormDialog() {
+		boolean res = false;
+		Element surround = DOM.getElementById("xforms-dialog-surround");
+		if ((surround != null) && (surround.getStyle().getDisplay().equalsIgnoreCase("block"))) {
+			res = true;
+		}
+		return res;
 	}
 
 	private boolean isCloseEvent(final NativeEvent event) {
