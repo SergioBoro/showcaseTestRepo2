@@ -106,8 +106,9 @@ public class CelestaHelper<T> {
 
 		if (!AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
 			// AppInfoSingleton.getAppInfo().getCelestaInitializationException().logAll(e);
-			throw new CelestaWorkerException("Ошибка при запуске jython скрипта celesta '"
-					+ procName + "'. Celesta при старте сервера не была инициализированна.",
+			throw new CelestaWorkerException(
+					"Ошибка при запуске jython скрипта celesta '" + procName
+							+ "'. Celesta при старте сервера не была инициализированна.",
 					AppInfoSingleton.getAppInfo().getCelestaInitializationException());
 		}
 
@@ -136,7 +137,7 @@ public class CelestaHelper<T> {
 		} catch (CelestaException ex) {
 
 			UserMessage um = getUserMessage(receiver);
-			if (um != null) {
+			if ((um != null) && (um.getType() == MessageType.ERROR)) {
 				messageDone = true;
 
 				throw new ValidateException(um);
@@ -145,9 +146,9 @@ public class CelestaHelper<T> {
 			String[] err = handleCelestaExceptionError(ex.getMessage());
 			String res = handleCelestaExceptionTraceback(ex.getMessage(), err);
 
-			throw new CelestaWorkerException("Ошибка при выполнении jython скрипта celesta '"
-					+ procName + "'",
-			// ex);
+			throw new CelestaWorkerException(
+					"Ошибка при выполнении jython скрипта celesta '" + procName + "'",
+					// ex);
 					new Exception(res));
 		}
 		if (result == null) {
@@ -178,8 +179,8 @@ public class CelestaHelper<T> {
 
 			return resultType.cast(obj);
 		} else {
-			throw new CelestaWorkerException("Result is not instance of "
-					+ this.resultType.getName());
+			throw new CelestaWorkerException(
+					"Result is not instance of " + this.resultType.getName());
 		}
 
 	}
@@ -203,8 +204,9 @@ public class CelestaHelper<T> {
 
 		if (!AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
 			// AppInfoSingleton.getAppInfo().getCelestaInitializationException().logAll(e);
-			throw new CelestaWorkerException("Ошибка при запуске jython скрипта celesta '"
-					+ procName + "'. Celesta при старте сервера не была инициализированна.",
+			throw new CelestaWorkerException(
+					"Ошибка при запуске jython скрипта celesta '" + procName
+							+ "'. Celesta при старте сервера не была инициализированна.",
 					AppInfoSingleton.getAppInfo().getCelestaInitializationException());
 		}
 
@@ -242,9 +244,9 @@ public class CelestaHelper<T> {
 			String[] err = handleCelestaExceptionError(ex.getMessage());
 			String res = handleCelestaExceptionTraceback(ex.getMessage(), err);
 
-			throw new CelestaWorkerException("Ошибка при выполнении jython скрипта celesta '"
-					+ procName + "'",
-			// ex);
+			throw new CelestaWorkerException(
+					"Ошибка при выполнении jython скрипта celesta '" + procName + "'",
+					// ex);
 					new Exception(res));
 		}
 		if (result == null) {
@@ -275,8 +277,8 @@ public class CelestaHelper<T> {
 
 			return resultType.cast(obj);
 		} else {
-			throw new CelestaWorkerException("Result is not instance of "
-					+ this.resultType.getName());
+			throw new CelestaWorkerException(
+					"Result is not instance of " + this.resultType.getName());
 		}
 
 	}
@@ -309,8 +311,9 @@ public class CelestaHelper<T> {
 		PyObject result;
 
 		if (!AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
-			throw new CelestaWorkerException("Ошибка при запуске jython скрипта celesta '"
-					+ procName + "'. Celesta при старте сервера не была инициализированна.",
+			throw new CelestaWorkerException(
+					"Ошибка при запуске jython скрипта celesta '" + procName
+							+ "'. Celesta при старте сервера не была инициализированна.",
 					AppInfoSingleton.getAppInfo().getCelestaInitializationException());
 		}
 
@@ -337,8 +340,9 @@ public class CelestaHelper<T> {
 			String[] err = handleCelestaExceptionError(ex.getMessage());
 			String res = handleCelestaExceptionTraceback(ex.getMessage(), err);
 
-			throw new CelestaWorkerException("Ошибка при выполнении jython скрипта celesta '"
-					+ procName + "'", new Exception(res));
+			throw new CelestaWorkerException(
+					"Ошибка при выполнении jython скрипта celesta '" + procName + "'",
+					new Exception(res));
 		}
 		if (result == null) {
 			return null;
@@ -352,8 +356,8 @@ public class CelestaHelper<T> {
 		try {
 			return resultType.cast(obj);
 		} catch (Exception e) {
-			throw new CelestaWorkerException("Result is not instance of "
-					+ this.resultType.getName());
+			throw new CelestaWorkerException(
+					"Result is not instance of " + this.resultType.getName());
 		}
 
 	}
@@ -376,9 +380,8 @@ public class CelestaHelper<T> {
 		// XMLUtils.convertXmlToJson(context.getSession());
 		try {
 			resultParams[FILTER_CONTEXT_INDEX] = XMLJSONConverter.xmlToJson(context.getFilter());
-			resultParams[SESSION_CONTEXT_INDEX] =
-				XMLJSONConverter.xmlToJson(XMLUtils
-						.xmlServiceSymbolsToNormalWithoutDoubleQuotes(context.getSession()));
+			resultParams[SESSION_CONTEXT_INDEX] = XMLJSONConverter.xmlToJson(
+					XMLUtils.xmlServiceSymbolsToNormalWithoutDoubleQuotes(context.getSession()));
 		} catch (SAXException | IOException e) {
 			throw new XMLJSONConverterException(e);
 		}
@@ -394,16 +397,14 @@ public class CelestaHelper<T> {
 
 		try {
 			fltr_context = XMLJSONConverter.xmlToJson(context.getFilter());
-			ses_context =
-				XMLJSONConverter.xmlToJson(XMLUtils
-						.xmlServiceSymbolsToNormalWithoutDoubleQuotes(context.getSession()));
+			ses_context = XMLJSONConverter.xmlToJson(
+					XMLUtils.xmlServiceSymbolsToNormalWithoutDoubleQuotes(context.getSession()));
 		} catch (SAXException | IOException e) {
 			throw new XMLJSONConverterException(e);
 		}
 
-		sc =
-			new ShowcaseContext(context.getMain(), context.getAdditional(), fltr_context,
-					ses_context, elementId);
+		sc = new ShowcaseContext(context.getMain(), context.getAdditional(), fltr_context,
+				ses_context, elementId);
 
 		return sc;
 
