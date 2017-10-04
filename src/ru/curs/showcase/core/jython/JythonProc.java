@@ -2,12 +2,12 @@ package ru.curs.showcase.core.jython;
 
 import java.util.List;
 
+import com.ziclix.python.sql.PyConnection;
+
 import ru.curs.showcase.app.api.UserMessage;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.grid.*;
 import ru.curs.showcase.core.grid.SortColumn;
-
-import com.ziclix.python.sql.PyConnection;
 
 /**
  * Единый интерфейс для всех (!) Jython процедур. Каждая конкретная процедура на
@@ -56,9 +56,8 @@ public interface JythonProc {
 	 *         настройки элемента в виде двух строк или объект с информацией для
 	 *         пользователя в случае ошибки.
 	 */
-	Object
-			getRawData(AbstractCompositeContext context, String elementId,
-					List<SortColumn> sortcols);
+	Object getRawData(AbstractCompositeContext context, String elementId,
+			List<SortColumn> sortcols);
 
 	/**
 	 * Возвращает сырые данные для компонента grid в случае задания двумя
@@ -173,6 +172,17 @@ public interface JythonProc {
 	Object getSelectorData(CompositeContext aContext, DataSelectorAttributes aAttributes);
 
 	/**
+	 * Получить данные для нового триселектора.
+	 * 
+	 * @param aContext
+	 *            - контекст.
+	 * @param aAttributes
+	 *            - атрибуты запроса.
+	 * @return - объект класса ResultTreeSelectorData, содержащий данные.
+	 */
+	Object getTreeSelectorData(CompositeContext aContext, DataTreeSelectorAttributes aAttributes);
+
+	/**
 	 * Получить InputStream для загрузки файла.
 	 * 
 	 * @param aContext
@@ -181,8 +191,8 @@ public interface JythonProc {
 	 *            - атрибуты запроса
 	 * @return объект класса JythonDownloadResultForGrid
 	 */
-	<T extends InputAttributes> JythonDownloadResult getInputStream(
-			AbstractCompositeContext aContext, T attributes);
+	<T extends InputAttributes> JythonDownloadResult
+			getInputStream(AbstractCompositeContext aContext, T attributes);
 
 	/**
 	 * Загрузить файл на сервер.

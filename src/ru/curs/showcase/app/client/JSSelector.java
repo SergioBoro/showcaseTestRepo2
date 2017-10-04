@@ -1,17 +1,15 @@
 package ru.curs.showcase.app.client;
 
-import com.google.gwt.json.client.*;
-import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.*;
 
 import ru.curs.showcase.app.api.*;
 import ru.curs.showcase.app.api.datapanel.PluginInfo;
 import ru.curs.showcase.app.api.html.XForm;
-import ru.curs.showcase.app.api.plugin.RequestData;
 import ru.curs.showcase.app.api.selector.*;
 import ru.curs.showcase.app.client.api.ActionExecuter;
 import ru.curs.showcase.app.client.internationalization.CourseClientLocalization;
-import ru.curs.showcase.app.client.utils.*;
+import ru.curs.showcase.app.client.utils.WebUtils;
 
 /**
  * Класс селектора.
@@ -180,7 +178,7 @@ public final class JSSelector {
 
 		XFormPanel currentXFormPanel = (XFormPanel) ActionExecuter.getElementPanelById(xformId);
 
-		RequestData requestData = new RequestData();
+		TreeDataRequest requestData = new TreeDataRequest();
 
 		requestData.setContext(currentXFormPanel.getContext());
 
@@ -189,25 +187,18 @@ public final class JSSelector {
 		elInfo.setGetDataProcName(getDataProcName);
 		requestData.setElInfo(elInfo);
 
-		JSONObject json = new JSONObject();
-		if (parentId == null) {
-			json.put("node", new JSONString("root"));
-		} else {
-			json.put("id", new JSONString(parentId));
-			json.put("name", new JSONString(parentName));
-		}
-		json.put("curValue", new JSONString(searchString));
-		json.put("startsWith", JSONBoolean.getInstance(Boolean.valueOf(startsWith)));
-		json.put("generalFilters", new JSONString(generalFilters));
-		requestData.setXmlParams(JSONUtils.createXmlByJSONValue("params", json));
+		requestData.setParams(generalFilters);
+		requestData.setCurValue(searchString);
+		requestData.setStartsWith(Boolean.valueOf(startsWith));
+		requestData.setParentId(parentId);
 
 		// -------------------------------------------------
 
-		if (ssf == null) {
-			ssf = WebUtils.createStdGWTSerializer();
+		if (addSSF == null) {
+			addSSF = WebUtils.createAddGWTSerializer();
 		}
 
-		SerializationStreamWriter writer = ssf.createStreamWriter();
+		SerializationStreamWriter writer = addSSF.createStreamWriter();
 		try {
 			writer.writeObject(requestData);
 		} catch (SerializationException e) {

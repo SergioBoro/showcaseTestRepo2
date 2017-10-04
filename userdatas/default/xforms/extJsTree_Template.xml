@@ -302,7 +302,7 @@
    		        
    		        startWith          = "true"
                 hideStartWith      = "false"
-                manualSearch       = "false" 
+                manualSearch       = "true" 
 		               
                 dataWidth          = "'500px'"
                 dataHeight         = "'450px'"

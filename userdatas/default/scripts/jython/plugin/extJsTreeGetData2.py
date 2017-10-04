@@ -21,7 +21,7 @@ filterContext = ""
 
 
 class extJsTreeGetData2(JythonProc):
-    def getPluginData(self, context, attr):
+    def getTreeSelectorData(self, context, attr):
         global main, add, session, filterContext, elementId
         main = context.getMain()
         if context.getAdditional():
@@ -30,33 +30,27 @@ class extJsTreeGetData2(JythonProc):
         if context.getFilter():
             filterContext = context.getFilter()
             
-            
-            
-            
         return mainproc(attr)
 
 
 def mainproc(attributes):
     parentId=''
     curValue=''
-    xmlParams = attributes.getXmlParams()
     
-    print 'DDDDDDDDDDDDDD44'
-    print xmlParams
-    
-    
-    if xmlParams!=None:
-        root = ET.fromstring(xmlParams)        
-        pId = root.find('.//id')
-        if pId!=None and pId.text!=None:
-            parentId=pId.text+'.'
-        pCurValue = root.find('.//curValue')
-        if pCurValue!=None and pCurValue.text!=None:
-            curValue=' ['+pCurValue.text+']'
+    if attributes!=None:
         
+        pId = attributes.getParentId()
+        if pId!=None:
+            parentId=pId+'.'
+        pCurValue = attributes.getCurValue()
+        if pCurValue!=None and pCurValue!='':
+            curValue=' ['+pCurValue+']'
+
+        #attributes.getParams()
+        #attributes.isStartsWith()
         
-        print "dddddddddddddd"    
-        print curValue
+        #print "dddddddddddddd"    
+        #print curValue
           
 
     data = None

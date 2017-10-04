@@ -11,6 +11,13 @@ def navigator(context, session):
     print 'User %s' % context.userId
     print 'Sesion "%s".' % session
     
+    
+    cursor = testCursor(context)
+    print 'cursor.count() "%s".' % cursor.count()
+    
+    #cursor.first();
+    
+    
     data = u'''
     <navigator width="200px">
         <group id="1" name="Примеры">
@@ -21,7 +28,7 @@ def navigator(context, session):
                         <datapanel type="g1.datapanel.webTextDatapanel.celesta" tab="firstOrCurrent"></datapanel>
                     </action>
                 </level2>
-                <level2 id="112" name="XForms"  >
+                <level2 id="112" name="XForms" >
                     <action>
                         <main_context></main_context>
                         <datapanel type="xforms.xml" tab="firstOrCurrent"></datapanel>
@@ -42,7 +49,7 @@ def navigator(context, session):
                         <datapanel type="grid.xml" tab="firstOrCurrent"></datapanel>
                     </action>
                 </level2>
-                <level2 id="114" name="Plugin" >
+                <level2 id="114" name="Новый триселектор"  selectOnLoad="true">
                     <action>
                         <main_context></main_context>
                         <datapanel type="plugin.xml" tab="firstOrCurrent"></datapanel>
@@ -56,7 +63,7 @@ def navigator(context, session):
                     </action>
                 </level2>                     
                 
-                <level2 id="jsForm" name="jsForm" selectOnLoad="true" >
+                <level2 id="jsForm" name="jsForm"  >
                     <action>
                         <main_context>Data of main context</main_context>
                         <datapanel type="jsForm.xml" tab="firstOrCurrent" >          

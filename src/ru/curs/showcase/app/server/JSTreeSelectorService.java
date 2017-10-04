@@ -10,10 +10,10 @@ import org.xml.sax.SAXException;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 
-import ru.curs.showcase.app.api.plugin.RequestData;
+import ru.curs.showcase.app.api.selector.TreeDataRequest;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.grid.GridUtils;
-import ru.curs.showcase.core.plugin.*;
+import ru.curs.showcase.core.selector.*;
 import ru.curs.showcase.util.*;
 
 /**
@@ -38,20 +38,20 @@ public class JSTreeSelectorService extends HttpServlet {
 			throw new HTTPRequestRequiredParamAbsentException("parent");
 		}
 
-		String stringRequestData = hreq.getParameter("RequestData");
+		String stringRequestData = hreq.getParameter("TreeDataRequest");
 		if (stringRequestData == null) {
-			throw new HTTPRequestRequiredParamAbsentException("RequestData");
+			throw new HTTPRequestRequiredParamAbsentException("TreeDataRequest");
 		}
 
-		RequestData requestData = null;
+		TreeDataRequest requestData = null;
 		try {
-			requestData = (RequestData) ServletUtils.deserializeObject(stringRequestData);
+			requestData = (TreeDataRequest) ServletUtils.deserializeObject(stringRequestData);
 		} catch (SerializationException e) {
 			throw GeneralExceptionFactory.build(e);
 		}
 
-		GetDataPluginCommand command = new GetDataPluginCommand(requestData);
-		ResultPluginData result = command.execute();
+		TreeSelectorGetCommand command = new TreeSelectorGetCommand(requestData);
+		ResultTreeSelectorData result = command.execute();
 
 		// ---------------------------------------------
 

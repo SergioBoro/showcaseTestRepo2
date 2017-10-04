@@ -233,7 +233,7 @@ function showTreeSelector(selectorParam) {
 	 	    	var httpParams = gwtTreeSelectorGetHttpParams(selectorSearchStringValue, selectorStartsWithValue, getXFormId(), getGeneralFilters(), getProcName(), this.storeParentId, storeParentName);
 	 	    	
 			    var scparams = {};
-			    scparams["RequestData"] = httpParams;	
+			    scparams["TreeDataRequest"] = httpParams;	
 			    kwArgs["scparams"] = scparams;			
 			    
 			    kwArgs.start = kwArgs[0].start;
