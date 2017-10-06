@@ -9,7 +9,6 @@ import org.slf4j.*;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 
-import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.UserInfo;
 import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.security.SecurityParamsFactory;
@@ -35,9 +34,9 @@ public class ESIAAuthenticationProvider implements AuthenticationProvider {
 
 		if (userInfo != null) {
 			try {
-				Celesta.getInstance().login(userAndSessionDetails.getSessionId(),
-						userInfo.getSid());
-			} catch (CelestaException e) {
+				AppInfoSingleton.getAppInfo().getCelestaInstance()
+						.login(userAndSessionDetails.getSessionId(), userInfo.getSid());
+			} catch (Exception e) {
 				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
 					LOGGER.error("Ошибка привязки сессии приложения к пользователю в celesta", e);
 				}

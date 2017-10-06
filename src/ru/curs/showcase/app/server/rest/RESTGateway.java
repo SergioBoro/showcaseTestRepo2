@@ -3,7 +3,7 @@ package ru.curs.showcase.app.server.rest;
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
 
-import ru.curs.celesta.*;
+import ru.curs.celesta.CelestaException;
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.core.jython.JythonProc;
 import ru.curs.showcase.runtime.*;
@@ -51,16 +51,17 @@ public class RESTGateway {
 		}
 
 		Boolean isRestWithCelestaAuthentication =
-			("celesta".equals(UserDataUtils.getGeneralOptionalProp("rest.authentication.type"))) ? true
-					: false;
+			("celesta".equals(UserDataUtils.getGeneralOptionalProp("rest.authentication.type")))
+					? true : false;
 
 		String tempSesId = isRestWithCelestaAuthentication ? sesId : "RESTful" + sesId;
 		try {
 			if (!isRestWithCelestaAuthentication)
-				Celesta.getInstance().login(tempSesId, "userCelestaSid");
-			PyObject pObj =
-				Celesta.getInstance().runPython(tempSesId, correctedRESTProc, requestType,
-						requestUrl, requestData, requestHeaders, urlParams, clientIP);
+				AppInfoSingleton.getAppInfo().getCelestaInstance().login(tempSesId,
+						"userCelestaSid");
+			PyObject pObj = AppInfoSingleton.getAppInfo().getCelestaInstance().runPython(tempSesId,
+					correctedRESTProc, requestType, requestUrl, requestData, requestHeaders,
+					urlParams, clientIP);
 
 			Object obj = pObj.__tojava__(Object.class);
 			if (obj == null) {
@@ -83,8 +84,8 @@ public class RESTGateway {
 		} finally {
 			try {
 				if (!isRestWithCelestaAuthentication)
-					Celesta.getInstance().logout(tempSesId, false);
-			} catch (CelestaException e) {
+					AppInfoSingleton.getAppInfo().getCelestaInstance().logout(tempSesId, false);
+			} catch (Exception e) {
 				throw new ShowcaseRESTException(ExceptionType.SOLUTION,
 						"Пля выполнении REST запроса произошла ошибка при попытке выйти из сессии в celesta: "
 								+ e.getMessage());
@@ -103,10 +104,9 @@ public class RESTGateway {
 		parent = parent.replace('/', '.');
 		boolean isLoaded = false;
 		String className = TextUtils.extractFileName(restProc);
-		String cmd =
-			String.format(
-					"from org.python.core import codecs; codecs.setDefaultEncoding('utf-8'); from %s import %s",
-					parent, className);
+		String cmd = String.format(
+				"from org.python.core import codecs; codecs.setDefaultEncoding('utf-8'); from %s import %s",
+				parent, className);
 
 		try {
 			interpreter.exec(cmd);
@@ -115,9 +115,8 @@ public class RESTGateway {
 			PyObject pyClass = interpreter.get(className);
 			PyObject pyObj = pyClass.__call__();
 			JythonProc proc = (JythonProc) pyObj.__tojava__(JythonProc.class);
-			JythonRestResult result =
-				(JythonRestResult) proc.getRestResponcseData(requestType, requestUrl, requestData,
-						requestHeaders, urlParams, clientIP);
+			JythonRestResult result = (JythonRestResult) proc.getRestResponcseData(requestType,
+					requestUrl, requestData, requestHeaders, urlParams, clientIP);
 			return result;
 
 		} catch (PyException e) {

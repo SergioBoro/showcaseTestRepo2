@@ -10,7 +10,6 @@ import org.slf4j.*;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 
-import ru.curs.celesta.*;
 import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.SettingsFileOpenException;
@@ -34,8 +33,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		});
 	}
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AuthServerAuthenticationProvider.class);
+	private static final Logger LOGGER =
+		LoggerFactory.getLogger(AuthServerAuthenticationProvider.class);
 
 	private String innerMessage = null;
 
@@ -72,7 +71,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		try {
 			url = SecurityParamsFactory.getLocalAuthServerUrl();
 		} catch (SettingsFileOpenException e1) {
-			throw new AuthenticationServiceException(SecurityParamsFactory.APP_PROP_READ_ERROR, e1);
+			throw new AuthenticationServiceException(SecurityParamsFactory.APP_PROP_READ_ERROR,
+					e1);
 		}
 
 		// if ("9152046062107176349L_default_value".equals(pwd)) {
@@ -105,8 +105,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 					AuthServerUtils.init(url);
 				}
 
-				((UserAndSessionDetails) arg1.getDetails()).setUserInfo(AuthServerUtils
-						.getTheAuthServerAlias().isAuthenticated(oldSesid));
+				((UserAndSessionDetails) arg1.getDetails()).setUserInfo(
+						AuthServerUtils.getTheAuthServerAlias().isAuthenticated(oldSesid));
 
 			} finally {
 				AppInfoSingleton.getAppInfo().getSessionInfoMap().get(oldSesid)
@@ -122,17 +122,13 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 			try {
 				URL server;
 				if (groupProviders == null) {
-					server =
-						new URL(url
-								+ String.format("/login?sesid=%s&login=%s&pwd=%s&ip=%s", sesid,
-										encodeParam(login), encodeParam(pwd),
-										ipAddresOfRemouteHost));
+					server = new URL(url + String.format("/login?sesid=%s&login=%s&pwd=%s&ip=%s",
+							sesid, encodeParam(login), encodeParam(pwd), ipAddresOfRemouteHost));
 				} else {
 					server =
-						new URL(url
-								+ String.format("/login?sesid=%s&login=%s&pwd=%s&gp=%s&ip=%s",
-										sesid, encodeParam(login), encodeParam(pwd),
-										encodeParam(groupProviders), ipAddresOfRemouteHost));
+						new URL(url + String.format("/login?sesid=%s&login=%s&pwd=%s&gp=%s&ip=%s",
+								sesid, encodeParam(login), encodeParam(pwd),
+								encodeParam(groupProviders), ipAddresOfRemouteHost));
 				}
 				HttpURLConnection c = null;
 				try {
@@ -144,13 +140,13 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 						// AppCurrContext.getInstance();
 						AppInfoSingleton.getAppInfo().setAuthViaAuthServerForSession(sesid, true);
 						((UserAndSessionDetails) arg1.getDetails()).setAuthViaAuthServer(true);
-						((UserAndSessionDetails) arg1.getDetails()).setUserInfo(AuthServerUtils
-								.getTheAuthServerAlias().isAuthenticated(sesid));
+						((UserAndSessionDetails) arg1.getDetails()).setUserInfo(
+								AuthServerUtils.getTheAuthServerAlias().isAuthenticated(sesid));
 
 						// AppCurrContext.getInstance().setAuthViaAuthServ(true);
 					} else {
 						if (AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
-							Celesta.getInstance().failedLogin(login);
+							AppInfoSingleton.getAppInfo().getCelestaInstance().failedLogin(login);
 						}
 
 						String servletResponseMessage = "";
@@ -159,28 +155,28 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 						} catch (Exception e) {
 						}
 
-						if (UserDataUtils
-								.getGeneralOptionalProp("mellophone.show.reason.for.blocked.user") != null
-								&& "true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp(
-										"mellophone.show.reason.for.blocked.user").trim())) {
-							if (servletResponseMessage
-									.contains("locked out for too many unsuccessful login attempts")
+						if (UserDataUtils.getGeneralOptionalProp(
+								"mellophone.show.reason.for.blocked.user") != null
+								&& "true".equalsIgnoreCase(UserDataUtils
+										.getGeneralOptionalProp(
+												"mellophone.show.reason.for.blocked.user")
+										.trim())) {
+							if (servletResponseMessage.contains(
+									"locked out for too many unsuccessful login attempts")
 									&& servletResponseMessage.contains("Резюме:")) {
 								LOGGER.info("Пользователь " + login + " заблокирован меллофоном");
-								String time_to_unlock =
-									servletResponseMessage.substring(servletResponseMessage
-											.indexOf("Time to unlock"));
+								String time_to_unlock = servletResponseMessage.substring(
+										servletResponseMessage.indexOf("Time to unlock"));
 								throw new BadCredentialsException("User '" + login
 										+ "' is blocked by mellophone. " + time_to_unlock);
 							}
 
-							if (servletResponseMessage
-									.contains("locked out for too many unsuccessful login attempts")
+							if (servletResponseMessage.contains(
+									"locked out for too many unsuccessful login attempts")
 									&& !servletResponseMessage.contains("Резюме:")) {
 								LOGGER.info("Пользователь " + login + " заблокирован меллофоном");
-								String time_to_unlock =
-									servletResponseMessage.substring(servletResponseMessage
-											.indexOf("Time to unlock"));
+								String time_to_unlock = servletResponseMessage.substring(
+										servletResponseMessage.indexOf("Time to unlock"));
 								throw new BadCredentialsException("User '" + login
 										+ "' is already blocked by mellophone. " + time_to_unlock);
 							}
@@ -189,8 +185,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 						if (servletResponseMessage.contains("is blocked permanently")) {
 							LOGGER.info("Пользователь " + login
 									+ " заблокирован на постоянной основе");
-							throw new BadCredentialsException("User '" + login
-									+ "' is blocked by administrator");
+							throw new BadCredentialsException(
+									"User '" + login + "' is blocked by administrator");
 						}
 
 						if (servletResponseMessage.contains("Stored procedure message begin:")) {
@@ -200,9 +196,8 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 							int indexEnd =
 								servletResponseMessage.indexOf("Stored procedure message end.");
 
-							innerMessage =
-								servletResponseMessage.substring(indexBegin + beginMessageLength,
-										indexEnd).trim();
+							innerMessage = servletResponseMessage
+									.substring(indexBegin + beginMessageLength, indexEnd).trim();
 
 							LOGGER.info(innerMessage);
 							throw new BadCredentialsException(innerMessage);
@@ -238,10 +233,10 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 				} else if (innerMessage != null && e.getMessage().contains(innerMessage)) {
 					throw new BadCredentialsException(e.getMessage(), e);
 				} else {
-					throw new BadCredentialsException("Authentication server is not available: "
-							+ e.getMessage(), e);
+					throw new BadCredentialsException(
+							"Authentication server is not available: " + e.getMessage(), e);
 				}
-			} catch (CelestaException err) {
+			} catch (Exception err) {
 				if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
 					LOGGER.error("Ошибка фиксации неудачного логина в коде celesta", err);
 				}
@@ -252,9 +247,9 @@ public class AuthServerAuthenticationProvider implements AuthenticationProvider 
 		// привязки сессии приложения к пользователю celesta
 		// if (AppInfoSingleton.getAppInfo().getIsCelestaInitialized()) {
 		try {
-			Celesta.getInstance().login(sesid,
+			AppInfoSingleton.getAppInfo().getCelestaInstance().login(sesid,
 					((UserAndSessionDetails) arg1.getDetails()).getUserInfo().getSid());
-		} catch (CelestaException e) {
+		} catch (Exception e) {
 			if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {
 				LOGGER.error("Ошибка привязки сессии приложения к пользователю в celesta", e);
 			}

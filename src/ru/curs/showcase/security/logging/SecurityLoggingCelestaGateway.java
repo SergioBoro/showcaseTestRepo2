@@ -2,9 +2,9 @@ package ru.curs.showcase.security.logging;
 
 import java.util.*;
 
-import ru.curs.celesta.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.core.celesta.CelestaHelper;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 import ru.curs.showcase.security.logging.Event.TypeEvent;
 
 public class SecurityLoggingCelestaGateway implements SecurityLoggingGateway {
@@ -31,14 +31,16 @@ public class SecurityLoggingCelestaGateway implements SecurityLoggingGateway {
 				|| event.getTypeEvent() == TypeEvent.SESSIONTIMEOUT) {
 			String tempSesId = String.format("Logging%08X", (new Random()).nextInt());
 			try {
-				Celesta.getInstance().login(tempSesId, "userCelestaSid");
-			} catch (CelestaException e) {
+				AppInfoSingleton.getAppInfo().getCelestaInstance().login(tempSesId,
+						"userCelestaSid");
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
-			helper.runPythonWithSessionSet(tempSesId, procName, new Object[] {
-					// event.getContext(),
-					event.getXml(), event.getTypeEvent().toString() });
+			helper.runPythonWithSessionSet(tempSesId, procName,
+					new Object[] {
+							// event.getContext(),
+							event.getXml(), event.getTypeEvent().toString() });
 
 		} else if (event.getTypeEvent() == TypeEvent.LOGIN) {
 
@@ -52,8 +54,9 @@ public class SecurityLoggingCelestaGateway implements SecurityLoggingGateway {
 
 			if ("master".equals(username)) {
 				try {
-					Celesta.getInstance().login(sesid, "userCelestaSid");
-				} catch (CelestaException e) {
+					AppInfoSingleton.getAppInfo().getCelestaInstance().login(sesid,
+							"userCelestaSid");
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				Map<String, List<String>> map = new HashMap<>();
@@ -64,19 +67,21 @@ public class SecurityLoggingCelestaGateway implements SecurityLoggingGateway {
 				context.addSessionParams(map);
 				helper = new CelestaHelper<String>(context, String.class) {
 					@Override
-					protected Object[] mergeAddAndGeneralParameters(
-							final CompositeContext context, final Object[] additionalParams) {
+					protected Object[] mergeAddAndGeneralParameters(final CompositeContext context,
+							final Object[] additionalParams) {
 						return additionalParams;
 					}
 				};
 			}
-			helper.runPythonWithSessionSet(sesid, procName, new Object[] {
-					// event.getContext(),
-					event.getXml(), event.getTypeEvent().toString() });
+			helper.runPythonWithSessionSet(sesid, procName,
+					new Object[] {
+							// event.getContext(),
+							event.getXml(), event.getTypeEvent().toString() });
 		} else {
-			helper.runPython(procName, new Object[] {
-					// event.getContext(),
-					event.getXml(), event.getTypeEvent().toString() });
+			helper.runPython(procName,
+					new Object[] {
+							// event.getContext(),
+							event.getXml(), event.getTypeEvent().toString() });
 		}
 	}
 }

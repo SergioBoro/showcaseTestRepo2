@@ -2,8 +2,9 @@ package ru.curs.showcase.app.server.redirection;
 
 import org.python.core.PyObject;
 
-import ru.curs.celesta.*;
+import ru.curs.celesta.CelestaException;
 import ru.curs.showcase.app.api.ExceptionType;
+import ru.curs.showcase.runtime.AppInfoSingleton;
 
 public class RedirectCelestaGateway implements RedirectGateway {
 
@@ -24,8 +25,8 @@ public class RedirectCelestaGateway implements RedirectGateway {
 		}
 
 		try {
-			PyObject pObj =
-				Celesta.getInstance().runPython(sesId, correctedRedirectionProc, initialUrl);
+			PyObject pObj = AppInfoSingleton.getAppInfo().getCelestaInstance().runPython(sesId,
+					correctedRedirectionProc, initialUrl);
 
 			Object obj = pObj.__tojava__(Object.class);
 			if (obj == null) {

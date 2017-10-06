@@ -16,6 +16,7 @@ import org.slf4j.*;
 import org.springframework.security.core.Authentication;
 import org.xml.sax.SAXException;
 
+import ru.curs.celesta.Celesta;
 import ru.curs.showcase.app.api.ExchangeConstants;
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.CompositeContext;
@@ -50,17 +51,30 @@ public final class AppInfoSingleton {
 	/**
 	 * Карта пользовательских сессий.
 	 */
-	private final Map<String, SessionInfo> sessionInfoMap = Collections
-			.synchronizedMap(new HashMap<String, SessionInfo>());
+	private final Map<String, SessionInfo> sessionInfoMap =
+		Collections.synchronizedMap(new HashMap<String, SessionInfo>());
 
 	private String sesid = "";
 
 	private String oldSesid = "";
 
+	/**
+	 * Celesta instance для работы Showcase c источником данных Челеста.
+	 */
+	private Celesta celesta = null;
+
+	public Celesta getCelestaInstance() {
+		return celesta;
+	}
+
+	public void setCelestaInstance(final Celesta acelesta) {
+		this.celesta = acelesta;
+	}
+
 	private List<String> additionalParametersList = new ArrayList<String>();
 
-	private final SortedSet<String> executedProc = Collections
-			.synchronizedSortedSet(new TreeSet<String>());
+	private final SortedSet<String> executedProc =
+		Collections.synchronizedSortedSet(new TreeSet<String>());
 	/**
 	 * Карта, используемая для устранения проблемы того, что имя пользователя
 	 * остаётся старым при повторном входе при кросс-доменной аутентификации,
@@ -163,8 +177,8 @@ public final class AppInfoSingleton {
 		return lastLogEvents;
 	}
 
-	public synchronized Collection<LoggingEventDecorator> getLastLogEvents(
-			final ServletRequest request) {
+	public synchronized Collection<LoggingEventDecorator>
+			getLastLogEvents(final ServletRequest request) {
 		SortedMap<String, List<String>> params;
 		try {
 			params = ServletUtils.prepareURLParamsMap((HttpServletRequest) request);
@@ -175,8 +189,8 @@ public final class AppInfoSingleton {
 		return getLastLogEvents(params);
 	}
 
-	public Collection<LoggingEventDecorator> getLastLogEvents(
-			final Map<String, List<String>> params) {
+	public Collection<LoggingEventDecorator>
+			getLastLogEvents(final Map<String, List<String>> params) {
 		Collection<LoggingEventDecorator> result = new ArrayList<>();
 
 		skip: for (LoggingEventDecorator event : lastLogEvents) {
@@ -328,7 +342,8 @@ public final class AppInfoSingleton {
 	 * @param pass
 	 *            - пароль.
 	 */
-	public void setAuthServerCrossAppPasswordForSession(final String sessionId, final String pass) {
+	public void setAuthServerCrossAppPasswordForSession(final String sessionId,
+			final String pass) {
 		SessionInfo si = getOrInitSessionInfoObject(sessionId);
 		si.setAuthServerCrossAppPassword(pass);
 	}
@@ -482,8 +497,8 @@ public final class AppInfoSingleton {
 		cache.put(key, state);
 	}
 
-	private String getSessionKeyForCaching(final String sessionId,
-			final DataPanelElementInfo dpei, final CompositeContext context) {
+	private String getSessionKeyForCaching(final String sessionId, final DataPanelElementInfo dpei,
+			final CompositeContext context) {
 		return sessionId + AppInfoSingleton.getAppInfo().getCurUserDataId()
 				+ dpei.getKeyForCaching(context);
 	}
@@ -531,7 +546,8 @@ public final class AppInfoSingleton {
 
 	public long numberofDataPanelCacheSizeBytes() {
 		long n = 0L;
-		for (Cache.Entry<String, DataPanel> s : AppInfoSingleton.getAppInfo().getDataPanelCache()) {
+		for (Cache.Entry<String, DataPanel> s : AppInfoSingleton.getAppInfo()
+				.getDataPanelCache()) {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			try {
 				ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -643,7 +659,8 @@ public final class AppInfoSingleton {
 		return celestainitializationException;
 	}
 
-	public void setCelestaInitializationException(final Exception acelestainitializationException) {
+	public void
+			setCelestaInitializationException(final Exception acelestainitializationException) {
 		this.celestainitializationException = acelestainitializationException;
 	}
 

@@ -1,6 +1,7 @@
 package ru.curs.showcase.app.server;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -45,7 +46,13 @@ public class ControlMemoryServlet extends HttpServlet {
 				break;
 			case "celestaReinitialize":
 				try {
-					Celesta.reInitialize();
+					// Celesta.reInitialize();
+					Properties celestaProperties =
+						AppInfoSingleton.getAppInfo().getCelestaInstance().getSetupProperties();
+					AppInfoSingleton.getAppInfo().getCelestaInstance().close();
+					AppInfoSingleton.getAppInfo()
+							.setCelestaInstance(Celesta.createInstance(celestaProperties));
+
 					AppInfoSingleton.getAppInfo().setIsCelestaInitialized(true);
 				} catch (Exception ex) {
 					if (AppInfoSingleton.getAppInfo().isEnableLogLevelError()) {

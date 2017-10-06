@@ -10,7 +10,7 @@ import org.python.core.*;
 import org.python.util.PythonInterpreter;
 import org.slf4j.*;
 
-import ru.curs.celesta.*;
+import ru.curs.celesta.CelestaException;
 import ru.curs.showcase.app.api.ExceptionType;
 import ru.curs.showcase.core.jython.*;
 import ru.curs.showcase.runtime.*;
@@ -93,8 +93,9 @@ public class EventHandlerForActiviti implements ActivitiEventListener {
 
 		String tempSesId = String.format("Celesta%08X", (new Random()).nextInt());
 		try {
-			Celesta.getInstance().login(tempSesId, "super");
-			PyObject pObj = Celesta.getInstance().runPython(tempSesId, procName, event);
+			AppInfoSingleton.getAppInfo().getCelestaInstance().login(tempSesId, "super");
+			PyObject pObj = AppInfoSingleton.getAppInfo().getCelestaInstance().runPython(tempSesId,
+					procName, event);
 			Object obj = pObj.__tojava__(Object.class);
 		} catch (CelestaException e) {
 			if (e.getMessage().contains("Traceback")) {
@@ -109,8 +110,8 @@ public class EventHandlerForActiviti implements ActivitiEventListener {
 
 		} finally {
 			try {
-				Celesta.getInstance().logout(tempSesId, false);
-			} catch (CelestaException e) {
+				AppInfoSingleton.getAppInfo().getCelestaInstance().logout(tempSesId, false);
+			} catch (Exception e) {
 				if (e.getMessage().contains("Traceback")) {
 					int ind = e.getMessage().indexOf("Traceback");
 					String ex = e.getMessage().substring(0, ind - 1).trim();
@@ -140,10 +141,9 @@ public class EventHandlerForActiviti implements ActivitiEventListener {
 					throw new SettingsFileOpenException(procName, SettingsFileType.JYTHON);
 				}
 			}
-			String cmd =
-				String.format(
-						"from org.python.core import codecs; codecs.setDefaultEncoding('utf-8'); from %s import %s",
-						parent, className);
+			String cmd = String.format(
+					"from org.python.core import codecs; codecs.setDefaultEncoding('utf-8'); from %s import %s",
+					parent, className);
 			try {
 				setupJythonLogging(interpreter);
 				interpreter.exec(cmd);

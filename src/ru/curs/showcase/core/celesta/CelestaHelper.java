@@ -121,7 +121,8 @@ public class CelestaHelper<T> {
 				elementId = additionalParams[0].toString();
 			}
 			ShowcaseContext sc = generateShowcaseContext(this.contex, elementId);
-			result = Celesta.getInstance().runPython(sesID, receiver, sc, procName, params);
+			result = AppInfoSingleton.getAppInfo().getCelestaInstance().runPython(sesID, receiver,
+					sc, procName, params);
 
 			UserMessage um = getUserMessage(receiver);
 			if (um != null) {
@@ -219,7 +220,8 @@ public class CelestaHelper<T> {
 				elementId = additionalParams[0].toString();
 			}
 			ShowcaseContext sc = generateShowcaseContext(this.contex, elementId);
-			result = Celesta.getInstance().runPython(sesID, receiver, sc, procName, params);
+			result = AppInfoSingleton.getAppInfo().getCelestaInstance().runPython(sesID, receiver,
+					sc, procName, params);
 
 			UserMessage um = getUserMessage(receiver);
 			if (um != null) {
@@ -319,7 +321,8 @@ public class CelestaHelper<T> {
 
 		Receiver receiver = new Receiver();
 		try {
-			result = Celesta.getInstance().runPython(sesID, receiver, sc, procName, params);
+			result = AppInfoSingleton.getAppInfo().getCelestaInstance().runPython(sesID, receiver,
+					sc, procName, params);
 
 			UserMessage um = getUserMessage(receiver);
 			if (um != null) {
