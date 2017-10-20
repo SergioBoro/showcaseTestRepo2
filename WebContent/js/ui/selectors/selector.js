@@ -194,7 +194,7 @@ function showSelector(selectorParam) {
 				} else {
 					selectorSearchStringValue = getCurrentValue();
 				}
-				selectorSearchStringValue = selectorSearchStringValue.replace("&quot;", "\"");
+				selectorSearchStringValue = selectorSearchStringValue.replace(/&quot;/g, "\"");
 				
 				if(selectorStartsWith){
 					if(selectorStartsWith.get("checked")){
@@ -311,7 +311,7 @@ function showSelector(selectorParam) {
 	     }
 	     function getCurrentValue(){
 	    	 var s = selectorParam.currentValue ? getValueByXPath(selectorParam.currentValue) : "";
-	    	 s = s.replace("\"", "&quot;");
+	    	 s = s.replace(/"/g, "&quot;");
 	    	 return s;
 	     }
 	     function getManualSearch(){
