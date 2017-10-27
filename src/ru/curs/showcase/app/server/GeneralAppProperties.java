@@ -108,7 +108,11 @@ public class GeneralAppProperties {
 				c.setReadTimeout(3000);
 				c.setDoInput(true);
 
-				c.connect();
+				if (getProperty("zero.configuration.check.mellophone") == null
+						|| "true".equalsIgnoreCase(getProperty(
+								"zero.configuration.check.mellophone").trim())) {
+					c.connect();
+				}
 
 			} catch (IOException e) {
 				throw new RuntimeException(
