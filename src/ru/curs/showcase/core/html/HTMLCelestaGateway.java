@@ -30,7 +30,9 @@ public class HTMLCelestaGateway implements HTMLGateway {
 			Document data = null;
 			InputStream settings = null;
 			try {
-				data = XMLUtils.stringToDocument(result.getData());
+				String stringData = result.getData();
+				stringData = replaceVariables(stringData);
+				data = XMLUtils.stringToDocument(stringData);
 			} catch (SAXException | IOException e) {
 				throw new CelestaWorkerException("Error parse result");
 			}
@@ -40,6 +42,15 @@ public class HTMLCelestaGateway implements HTMLGateway {
 			return new HTMLBasedElementRawData(data, settings, elementInfo, context);
 		}
 		return null;
+	}
+
+	private String replaceVariables(final String str) {
+
+		String ret = str;
+
+		ret = ret.replace("{", "_figurnayaskobka_");
+
+		return ret;
 	}
 
 }
