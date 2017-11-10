@@ -33,6 +33,9 @@ public final class ProductionModeInitializer {
 	private static final String COPY_PERSPECTIVE_FILES_ON_STARTUP =
 		"copy.perspective.files.on.startup";
 
+	private static final String DELETE_SOLUTIONS_DIR_ON_TOMCAT_STSRTUP =
+		"delete.solutions.dir.on.tomcat.startup";
+
 	private static final String USER_DATA_DIR_NOT_FOUND_ERROR =
 		"Каталог с пользовательскими данными с именем '%s' не найден. ";
 	private static final String NOT_ALL_FILES_COPIED_ERROR =
@@ -59,7 +62,7 @@ public final class ProductionModeInitializer {
 	 */
 	public static void initialize(final ServletContext aServletContext) {
 		initClassPath(aServletContext);
-		initUserDatas(aServletContext);
+		initUserDatas(aServletContext, false);
 		readCSSs();
 		JMXBeanRegistrator.register();
 		// initActiviti();
@@ -134,7 +137,8 @@ public final class ProductionModeInitializer {
 
 	}
 
-	public static void initUserDatas(final ServletContext aServletContext) {
+	public static void initUserDatas(final ServletContext aServletContext,
+			final boolean fromControlMemoryJsp) {
 
 		AppInfoSingleton.getAppInfo().setSolutionsDirRoot(
 				aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR));
@@ -150,7 +154,7 @@ public final class ProductionModeInitializer {
 
 		AppInitializer.finishUserdataSetupAndCheckLoggingOverride();
 		UserDataUtils.checkUserdatas();
-		copyUserDatas(aServletContext);
+		copyUserDatas(aServletContext, fromControlMemoryJsp);
 		AppInfoSingleton.getAppInfo().setServletContainerVersion(aServletContext.getServerInfo());
 	}
 
@@ -179,30 +183,38 @@ public final class ProductionModeInitializer {
 		// CSSPropReader reader = new CSSPropReader();
 	}
 
-	private static void copyUserDatas(final ServletContext aServletContext) {
+	private static void copyUserDatas(final ServletContext aServletContext,
+			final boolean fromControlMemoryJsp) {
 		File solutionsDir =
 			new File(aServletContext.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR));
-		deleteDirectory(solutionsDir);
-		copyGeneralResources(aServletContext);
-		copyDefaultUserData(aServletContext);
-		copyOtherUserDatas(aServletContext);
+		if (UserDataUtils.getGeneralOptionalProp(DELETE_SOLUTIONS_DIR_ON_TOMCAT_STSRTUP) == null
+				|| !"false".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp(
+						DELETE_SOLUTIONS_DIR_ON_TOMCAT_STSRTUP).trim())) {
+			deleteDirectory(solutionsDir);
+		}
+		copyGeneralResources(aServletContext, fromControlMemoryJsp);
+		copyDefaultUserData(aServletContext, fromControlMemoryJsp);
+		copyOtherUserDatas(aServletContext, fromControlMemoryJsp);
 		copyClientExtLib(aServletContext);
 		copyLoginJsp(aServletContext);
 	}
 
-	private static void copyOtherUserDatas(final ServletContext aServletContext) {
+	private static void copyOtherUserDatas(final ServletContext aServletContext,
+			final boolean fromControlMemoryJsp) {
 		for (String userdataId : AppInfoSingleton.getAppInfo().getUserdatas().keySet()) {
 			if (!(ExchangeConstants.DEFAULT_USERDATA.equals(userdataId))) {
-				copyUserData(aServletContext, userdataId);
+				copyUserData(aServletContext, userdataId, fromControlMemoryJsp);
 			}
 		}
 	}
 
-	private static void copyDefaultUserData(final ServletContext aServletContext) {
-		copyUserData(aServletContext, ExchangeConstants.DEFAULT_USERDATA);
+	private static void copyDefaultUserData(final ServletContext aServletContext,
+			final boolean fromControlMemoryJsp) {
+		copyUserData(aServletContext, ExchangeConstants.DEFAULT_USERDATA, fromControlMemoryJsp);
 	}
 
-	private static void copyGeneralResources(final ServletContext aServletContext) {
+	private static void copyGeneralResources(final ServletContext aServletContext,
+			final boolean fromControlMemoryJsp) {
 		// File generalResRoot =
 		// new File(AppInfoSingleton.getAppInfo().getUserdataRoot() + "/"
 		// + UserDataUtils.GENERAL_RES_ROOT);
@@ -226,7 +238,7 @@ public final class ProductionModeInitializer {
 				isAllFilesCopied =
 					isAllFilesCopied
 							&& copyGeneralDir(aServletContext, generalResRoot, userDataDir,
-									generalDir);
+									generalDir, fromControlMemoryJsp);
 			}
 		}
 
@@ -257,7 +269,7 @@ public final class ProductionModeInitializer {
 					isAllFilesCopied =
 						isAllFilesCopied
 								&& copyGeneralDir(aServletContext, generalResRoot, userDataDir,
-										generalDir);
+										generalDir, fromControlMemoryJsp);
 				}
 			}
 		}
@@ -332,8 +344,8 @@ public final class ProductionModeInitializer {
 		}
 	}
 
-	private static void
-			copyUserData(final ServletContext aServletContext, final String userdataId) {
+	private static void copyUserData(final ServletContext aServletContext,
+			final String userdataId, final boolean fromControlMemoryJsp) {
 		String userDataCatalog = "";
 		UserData us = AppInfoSingleton.getAppInfo().getUserData(userdataId);
 		if (us == null) {
@@ -358,7 +370,7 @@ public final class ProductionModeInitializer {
 			isAllFilesCopied =
 				isAllFilesCopied
 						&& copyUserDataDir(aServletContext, userDataCatalog, dirsForCopy[i],
-								userdataId);
+								userdataId, fromControlMemoryJsp);
 		}
 
 		if (!isAllFilesCopied) {
@@ -369,7 +381,8 @@ public final class ProductionModeInitializer {
 	}
 
 	private static Boolean copyGeneralDir(final ServletContext aServletContext,
-			final File generalResRoot, final File userDataDir, final File generalDir) {
+			final File generalResRoot, final File userDataDir, final File generalDir,
+			final boolean fromControlMemoryJsp) {
 		Boolean isAllFilesCopied = true;
 
 		File[] files = generalResRoot.listFiles();
@@ -387,11 +400,17 @@ public final class ProductionModeInitializer {
 				if ("WEB-INF".equals(f.getName())) {
 					fprocessorForWebInf.processForWebInf(new CopyFileAction(aServletContext
 							.getRealPath("/" + "WEB-INF")));
-				} else if ("plugins".equals(f.getName()) || "libraries".equals(f.getName())) {
+				}
+				// else if ("plugins".equals(f.getName()) ||
+				// "libraries".equals(f.getName())) {
+				// fprocessor.processForPlugins(new
+				// CopyFileAction(generalDir.getAbsolutePath()));
+				// }
+				else if ((UserDataUtils.getGeneralOptionalProp(COPY_COMMON_FILES_ON_STARTUP) == null || !"false"
+						.equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp(
+								COPY_COMMON_FILES_ON_STARTUP).trim()))
+						|| fromControlMemoryJsp) {
 					fprocessor.processForPlugins(new CopyFileAction(generalDir.getAbsolutePath()));
-				} else if (UserDataUtils.getGeneralOptionalProp(COPY_COMMON_FILES_ON_STARTUP) == null
-						|| !"false".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp(
-								COPY_COMMON_FILES_ON_STARTUP).trim())) {
 					fprocessor.processWithoutWebInf(new CopyFileAction(userDataDir
 							.getAbsolutePath()));
 				}
@@ -405,7 +424,8 @@ public final class ProductionModeInitializer {
 	}
 
 	private static Boolean copyUserDataDir(final ServletContext aServletContext,
-			final String userDataCatalog, final String dirName, final String userdataId) {
+			final String userDataCatalog, final String dirName, final String userdataId,
+			final boolean fromControlMemoryJsp) {
 		Boolean isAllFilesCopied = true;
 		BatchFileProcessor fprocessor =
 			new BatchFileProcessor(userDataCatalog + "/" + dirName, new RegexFilenameFilter(
@@ -414,9 +434,10 @@ public final class ProductionModeInitializer {
 			new BatchFileProcessor(userDataCatalog + "/resources/login_content",
 					new RegexFilenameFilter("^[.].*", false));
 		try {
-			if (UserDataUtils.getOptionalProp(COPY_PERSPECTIVE_FILES_ON_STARTUP, userdataId) == null
-					|| !"false".equalsIgnoreCase(UserDataUtils.getOptionalProp(
-							COPY_PERSPECTIVE_FILES_ON_STARTUP, userdataId).trim())) {
+			if ((UserDataUtils.getOptionalProp(COPY_PERSPECTIVE_FILES_ON_STARTUP, userdataId) == null || !"false"
+					.equalsIgnoreCase(UserDataUtils.getOptionalProp(
+							COPY_PERSPECTIVE_FILES_ON_STARTUP, userdataId).trim()))
+					|| fromControlMemoryJsp) {
 				fprocessor.processWithoutLoginContent(new CopyFileAction(aServletContext
 						.getRealPath("/" + UserDataUtils.SOLUTIONS_DIR + "/" + userdataId + "/"
 								+ dirName)));

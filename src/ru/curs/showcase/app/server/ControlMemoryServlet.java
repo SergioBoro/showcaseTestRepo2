@@ -83,7 +83,8 @@ public class ControlMemoryServlet extends HttpServlet {
 			Runtime.getRuntime().gc();
 		}
 		if (userdata != null) {
-			ProductionModeInitializer.initUserDatas(request.getSession().getServletContext());
+			ProductionModeInitializer
+					.initUserDatas(request.getSession().getServletContext(), true);
 			AppInfoSingleton.getAppInfo().getDataPanelCache().clear();
 			AppInfoSingleton.getAppInfo().getGridStateCache().clear();
 		}

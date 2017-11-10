@@ -2,7 +2,7 @@ package ru.curs.showcase.app.server;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.*;
+import java.util.Properties;
 
 import org.python.util.PythonInterpreter;
 import org.slf4j.*;
@@ -156,27 +156,28 @@ public final class AppInitializer {
 			AppInfoSingleton.getAppInfo().setUserdataRoot(rootpath);
 			String value;
 
-			String userdatas = UserDataUtils.getGeneralOptionalProp(COPY_USERDATAS);
-			List<String> userdatasList = new ArrayList<String>();
-			if (userdatas != null) {
-				String str = userdatas.trim();
-				String[] result = str.split(":");
-				if (!(str.contains("default"))) {
-					userdatasList.add("default");
-				}
-				for (int i = 0; i < result.length; i++) {
-					for (String name : dir.list()) {
-						if (name.equals(result[i]) && !("".equals(result[i]))) {
-							userdatasList.add(result[i]);
-						}
-					}
-				}
-			}
-
-			Boolean b = false;
-			if (userdatasList.size() > 1) {
-				b = true;
-			}
+			// String userdatas =
+			// UserDataUtils.getGeneralOptionalProp(COPY_USERDATAS);
+			// List<String> userdatasList = new ArrayList<String>();
+			// if (userdatas != null) {
+			// String str = userdatas.trim();
+			// String[] result = str.split(":");
+			// if (!(str.contains("default"))) {
+			// userdatasList.add("default");
+			// }
+			// for (int i = 0; i < result.length; i++) {
+			// for (String name : dir.list()) {
+			// if (name.equals(result[i]) && !("".equals(result[i]))) {
+			// userdatasList.add(result[i]);
+			// }
+			// }
+			// }
+			// }
+			//
+			// Boolean b = false;
+			// if (userdatasList.size() > 1) {
+			// b = true;
+			// }
 
 			for (String id : dir.list()) {
 				if (id.startsWith(".")) {
@@ -193,27 +194,28 @@ public final class AppInitializer {
 				if (!new File(value).isDirectory()) {
 					continue;
 				}
-				if (b) {
-					if (userdatasList.contains(id)) {
-						AppInfoSingleton.getAppInfo().addUserData(id, value);
-						if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
-							LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
-						}
-						String resultFiles = "";
-						String res = checkForCommonFilesInUserdatas(rootpath, resultFiles);
-						if (!"".equals(res))
-							throw new FileNameValidationException(res);
-					}
-				} else {
-					AppInfoSingleton.getAppInfo().addUserData(id, value);
-					if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
-						LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
-					}
-					String resultFiles = "";
-					String res = checkForCommonFilesInUserdatas(rootpath, resultFiles);
-					if (!"".equals(res))
-						throw new FileNameValidationException(res);
+				// if (b) {
+				// if (userdatasList.contains(id)) {
+				// AppInfoSingleton.getAppInfo().addUserData(id, value);
+				// if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+				// LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
+				// }
+				// String resultFiles = "";
+				// String res = checkForCommonFilesInUserdatas(rootpath,
+				// resultFiles);
+				// if (!"".equals(res))
+				// throw new FileNameValidationException(res);
+				// }
+				// } else {
+				AppInfoSingleton.getAppInfo().addUserData(id, value);
+				if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
+					LOGGER.info(String.format(USER_DATA_INFO, file, id, value));
 				}
+				String resultFiles = "";
+				String res = checkForCommonFilesInUserdatas(rootpath, resultFiles);
+				if (!"".equals(res))
+					throw new FileNameValidationException(res);
+				// }
 			}
 		}
 	}
