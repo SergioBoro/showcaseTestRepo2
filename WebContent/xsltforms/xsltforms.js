@@ -1573,6 +1573,14 @@ XsltForms_browser.dialog = {
 		}
 	},
 
+	
+// [KURS
+	hideALL : function() {
+    	for (var m = 0; (m < 1000) && (this.dialogs.length > 0); m++) {
+    		this.hide(this.dialogs[0], true);
+    	}
+	},
+// KURS]		
 		
 
 	knownSelect : function(s) {
