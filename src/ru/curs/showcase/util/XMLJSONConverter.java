@@ -9,8 +9,6 @@ import javax.xml.transform.TransformerException;
 import org.json.*;
 import org.xml.sax.SAXException;
 
-import ru.curs.celesta.showcase.utils.JSONToXMLParser;
-
 import com.google.gson.JsonElement;
 
 /**
@@ -109,8 +107,8 @@ public final class XMLJSONConverter {
 					int innerIndex = arr[i].indexOf("</currentColumnId>".toUpperCase());
 					string = arr[i].substring(0, innerIndex);
 					int outerIndex = newXml.toUpperCase().indexOf(string);
-					innerOfCurColIdList.add(newXml.substring(outerIndex,
-							outerIndex + string.length()));
+					innerOfCurColIdList
+							.add(newXml.substring(outerIndex, outerIndex + string.length()));
 				}
 			}
 		}
@@ -230,8 +228,8 @@ public final class XMLJSONConverter {
 	 * @throws ParserConfigurationException
 	 * @throws TransformerException
 	 */
-	public static String jsonToXml(final String json) throws JSONException, TransformerException,
-			ParserConfigurationException {
+	public static String jsonToXml(final String json)
+			throws JSONException, TransformerException, ParserConfigurationException {
 		// throw new NotImplementedYetException();
 		String newJson = "{\"tempRootForResolvingProblem\":" + json + "}";
 		JSONToXMLParser jtxParser = new JSONToXMLParser(newJson);
@@ -247,8 +245,8 @@ public final class XMLJSONConverter {
 				result = result.replace("\\&quot;", "");
 			}
 		}
-		if (result.contains("&amp;")) {
-			result = result.replace("&amp;", "&");
+		if (result.contains("&amp;#10;")) {
+			result = result.replace("&amp;#10;", "&#10;");
 		}
 		return result;
 	}
@@ -268,8 +266,8 @@ public final class XMLJSONConverter {
 	 * @throws IOException
 	 * @throws JSONException
 	 */
-	public static JSONObject xmlToJsonObject(final String xml) throws JSONException, SAXException,
-			IOException {
+	public static JSONObject xmlToJsonObject(final String xml)
+			throws JSONException, SAXException, IOException {
 		String str = XMLJSONConverter.xmlToJson(xml);
 		JSONObject jsonObj = new JSONObject(str);
 		return jsonObj;
@@ -295,8 +293,8 @@ public final class XMLJSONConverter {
 	 * @throws JSONException
 	 */
 	public static JSONObject xmlToJsonObject(final String xml,
-			final boolean isAttributesPrefixPresented) throws JSONException, SAXException,
-			IOException {
+			final boolean isAttributesPrefixPresented)
+			throws JSONException, SAXException, IOException {
 		String str = XMLJSONConverter.xmlToJson(xml, isAttributesPrefixPresented);
 		JSONObject jsonObj = new JSONObject(str);
 		return jsonObj;
