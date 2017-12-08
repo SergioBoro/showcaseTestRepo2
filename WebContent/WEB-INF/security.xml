@@ -16,6 +16,7 @@
 	<http pattern="/solutions/default/resources/favicon.ico*" security="none"/>
 	<http pattern="/favicon.ico*" security="none"/>
 	<http pattern="/auth/isAuthenticatedServlet*" security="none"/>
+	<http pattern="/auth/isAutologinServlet*" security="none"/>
 	<http pattern="/resources/**" security="none"/>
 	<http pattern="/forall/*" security="none"/>
 	<http pattern="/auth/logoutServlet**" security="none"/>

@@ -189,6 +189,14 @@
     <url-pattern>/auth/isAuthenticatedServlet</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>isAutologinServlet</servlet-name>
+    <servlet-class>ru.curs.showcase.security.ShowcaseIsAutologinServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>isAutologinServlet</servlet-name>
+    <url-pattern>/auth/isAutologinServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>logoutServlet</servlet-name>
     <servlet-class>ru.curs.showcase.security.ShowcaseLogoutServlet</servlet-class>
   </servlet>

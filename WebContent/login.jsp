@@ -6,6 +6,8 @@ pageEncoding="UTF-8"%>
 <%@page import="ru.curs.showcase.security.esia.EsiaSettings"%>
 <%@page import="ru.curs.showcase.runtime.AppInfoSingleton"%>
 <%@page import="ru.curs.showcase.app.server.AppAndSessionEventsListener"%>
+<%@page import="org.springframework.security.web.savedrequest.DefaultSavedRequest"%>
+<%@page import="org.springframework.security.web.savedrequest.HttpSessionRequestCache"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -28,6 +30,20 @@ pageEncoding="UTF-8"%>
 		cookie.setPath(AppAndSessionEventsListener.getContextPath());
 		response.addCookie(cookie);
 	}
+	if(request.getParameter("exited") != null)
+	{
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null && cookies.length > 0) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("queryString" + request.getServerPort() + webAppName)
+						&& cookie.getValue() != null && cookie.getValue().contains("autologin=true")) {
+					Cookie removeAutologinCookie = new Cookie("queryString" + request.getServerPort() + webAppName, "");
+					removeAutologinCookie.setPath(AppAndSessionEventsListener.getContextPath());
+					response.addCookie(removeAutologinCookie);
+				}
+			}
+		}
+	}
 %>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!--
@@ -48,6 +64,37 @@ pageEncoding="UTF-8"%>
 <script type="text/javascript">
 
 	function checkAuthenticationImageSize() {
+		<%DefaultSavedRequest defaultSavedRequest =
+			(DefaultSavedRequest) (new HttpSessionRequestCache().getRequest(request, response)); 
+	
+		String autologin = "false";
+		
+	if(defaultSavedRequest != null)
+	{
+		if(defaultSavedRequest.getQueryString() != null &&
+				defaultSavedRequest.getQueryString().contains("autologin=true")){
+				 autologin = "true";
+		}}%>
+		
+		dojo.xhrGet({
+			sync: true,
+			url: "<%=request.getContextPath()%>/auth/isAutologinServlet?autologin=<%=autologin%>",
+			handleAs: 'json',
+			preventCache: true,
+			timeout: 10000,
+			load: function(data) {
+				document.getElementsByName('j_username')[0].value = data.login;
+				document.getElementsByName('j_password')[0].value = data.pwd;
+				if(data.submit === "true"){
+					document.formlogin.submit();
+					return;
+				}
+			},
+			error: function(error) {
+				alert("Ошибка автологина.");
+			}
+		});
+		
 		var w;
 		<%if (UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication") != null && "true".equalsIgnoreCase(UserDataUtils.getGeneralOptionalProp("security.crossdomain.authentication").trim())) {%>
 		var pic = document.getElementById("authenticationImage");
@@ -64,8 +111,11 @@ pageEncoding="UTF-8"%>
 			id = setTimeout("checkIsAuthenticatedSession()",1000);
 		}
 		else {			
+			<%if (!autologin.equals("true")) { %>
 		    document.formlogin.style.display = "";
 		    document.getElementById("j_username").focus();
+			<%}%>
+			
 		}
 	}
 	
@@ -86,8 +136,6 @@ pageEncoding="UTF-8"%>
 			}
 		});
 	}
-   
-
    
 </script>	
 	
