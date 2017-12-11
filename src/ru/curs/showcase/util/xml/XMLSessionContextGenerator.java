@@ -83,7 +83,9 @@ public final class XMLSessionContextGenerator extends GeneralXMLHelper {
 
 		// result = XMLUtils.xmlServiceSymbolsToNormal(result);
 
-		result = XMLUtils.xmlServiceSymbolsToNormalWithoutLess(result);
+		// result = XMLUtils.xmlServiceSymbolsToNormalWithoutLess(result);
+
+		result = XMLUtils.xmlServiceSymbolsToNormalWithoutDoubleQuotesAndLess(result);
 
 		if (AppInfoSingleton.getAppInfo().isEnableLogLevelInfo()) {
 			LOGGER.debug("XMLSessionContextGenerator.generate()"

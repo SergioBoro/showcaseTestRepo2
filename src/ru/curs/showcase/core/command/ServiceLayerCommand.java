@@ -15,7 +15,6 @@ import ru.curs.showcase.runtime.*;
 import ru.curs.showcase.util.*;
 import ru.curs.showcase.util.exception.ServerLogicError;
 import ru.curs.showcase.util.xml.*;
-import ru.curs.showcase.util.xml.XMLUtils;
 
 /**
  * Абстрактный класс команды сервисного уровня приложения. Весь функционал
@@ -216,15 +215,14 @@ public abstract class ServiceLayerCommand<T> {
 
 		Marker marker = MarkerFactory.getDetachedMarker(SERVLET_MARKER);
 		marker.add(HandlingDirection.OUTPUT.getMarker());
-		marker.add(MarkerFactory.getMarker(String.format("class=%s", result.getClass()
-				.getSimpleName())));
+		marker.add(MarkerFactory
+				.getMarker(String.format("class=%s", result.getClass().getSimpleName())));
 		if (result instanceof SizeEstimate) {
 			SizeEstimate se = (SizeEstimate) result;
 			long esimateValue = se.sizeEstimate();
 			if (esimateValue > MAX_LOG_OBJECT_SIZE) {
 				Runtime.getRuntime().gc();
-				LOGGER.info(
-						marker,
+				LOGGER.info(marker,
 						String.format(
 								"Оценка размера возвращаемого объекта: %d байт. Объект не будет выведен в лог.",
 								esimateValue));
@@ -271,10 +269,13 @@ public abstract class ServiceLayerCommand<T> {
 		props = aProps;
 	}
 
-	public static void includeDataPanelWidthAndHeightInSessionContext(final CompositeContext cnt)
+	private static void includeDataPanelWidthAndHeightInSessionContext(final CompositeContext cnt)
 			throws Exception {
 
-		Document doc = XMLUtils.stringToDocument(cnt.getSession());
+		final String quotReplace = "4A7D134CC0E64243A";
+
+		Document doc =
+			XMLUtils.stringToDocument(cnt.getSession().replaceAll("&quot;", quotReplace));
 
 		NodeList l = doc.getDocumentElement().getChildNodes();
 		for (int i = 0; i < l.getLength(); i++) {
@@ -292,7 +293,7 @@ public abstract class ServiceLayerCommand<T> {
 		node.appendChild(doc.createTextNode(cnt.getCurrentDatapanelHeight().toString()));
 
 		String result = XMLUtils.documentToString(doc);
-		cnt.setSession(result);
+		cnt.setSession(result.replaceAll(quotReplace, "&quot;"));
 	}
 
 }
