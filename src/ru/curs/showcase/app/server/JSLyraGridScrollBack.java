@@ -1,5 +1,8 @@
 package ru.curs.showcase.app.server;
 
+import java.util.ArrayList;
+import java.util.Map.Entry;
+
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
@@ -7,7 +10,9 @@ import org.apache.tomcat.websocket.WsSession;
 import org.json.*;
 
 import ru.curs.lyra.BasicGridForm;
+import ru.curs.showcase.app.api.ID;
 import ru.curs.showcase.app.api.datapanel.*;
+import ru.curs.showcase.app.api.event.CompositeContext;
 import ru.curs.showcase.app.api.grid.LyraGridContext;
 import ru.curs.showcase.core.command.GeneralExceptionFactory;
 import ru.curs.showcase.core.grid.*;
@@ -54,8 +59,25 @@ public class JSLyraGridScrollBack {
 				CompositeContextOnBasisOfUserAndSessionDetails contextWithSessionContext =
 					new CompositeContextOnBasisOfUserAndSessionDetails(usd);
 
+				for (Entry<String, ArrayList<String>> entry : context.getSessionParamsMap()
+						.entrySet()) {
+					ArrayList<String> values = new ArrayList<String>();
+					for (String value : entry.getValue()) {
+						values.add(value);
+					}
+					contextWithSessionContext.getSessionParamsMap().put(entry.getKey(), values);
+				}
+				for (Entry<ID, CompositeContext> entry : context.getRelated().entrySet()) {
+					contextWithSessionContext.getRelated().put(entry.getKey(),
+							entry.getValue().gwtClone());
+				}
+				contextWithSessionContext
+						.setCurrentDatapanelWidth(context.getCurrentDatapanelWidth());
+				contextWithSessionContext
+						.setCurrentDatapanelHeight(context.getCurrentDatapanelHeight());
+
 				XMLSessionContextGenerator generator =
-					new XMLSessionContextGenerator(contextWithSessionContext);
+					new XMLSessionContextGenerator(contextWithSessionContext, element);
 				String sessionContext = generator.generate();
 
 				context.setSession(sessionContext);
