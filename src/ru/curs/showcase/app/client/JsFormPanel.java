@@ -175,6 +175,29 @@ public class JsFormPanel extends BasicElementPanelBasis {
 			// detect and inject javascript
 			MatchResult m;
 			while ((m = jsRegExp.exec(jsForm.getTemplate())) != null) {
+				int indexOpenComment = -1;
+				int indexCloseComment = -1;
+				int indexOpenScriptTag = -1;
+				int indexCloseScriptTag = -1;
+				do {
+					indexOpenComment = jsForm.getTemplate().indexOf("<!--");
+					indexCloseComment = jsForm.getTemplate().indexOf("-->", indexOpenComment);
+					indexOpenScriptTag = jsForm.getTemplate().indexOf("<script", indexOpenComment);
+					indexCloseScriptTag =
+						jsForm.getTemplate().indexOf("</script>", indexOpenScriptTag);
+					if (indexOpenComment != -1 && indexCloseComment != -1
+							&& indexOpenComment < indexOpenScriptTag
+							&& indexOpenScriptTag < indexCloseScriptTag
+							&& indexCloseScriptTag < indexCloseComment)
+						jsForm.setTemplate(jsForm.getTemplate().substring(0, indexOpenComment)
+								+ jsForm.getTemplate().substring(
+										indexCloseComment + "-->".length(),
+										jsForm.getTemplate().length()));
+				} while (indexOpenComment != -1 && indexCloseComment != -1
+						&& indexOpenComment < indexOpenScriptTag
+						&& indexOpenScriptTag < indexCloseScriptTag
+						&& indexCloseScriptTag < indexCloseComment);
+
 				/*
 				 * ScriptInjector.fromString(m.getGroup(1)).setRemoveTag( false)
 				 * .setWindow(ScriptInjector.TOP_WINDOW).inject();
