@@ -197,6 +197,14 @@
     <url-pattern>/auth/isAutologinServlet</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>ShowcaseFileUploader</servlet-name>
+    <servlet-class>ru.curs.showcase.app.server.file.ShowcaseFileUploader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowcaseFileUploader</servlet-name>
+    <url-pattern>/fileupload</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>logoutServlet</servlet-name>
     <servlet-class>ru.curs.showcase.security.ShowcaseLogoutServlet</servlet-class>
   </servlet>
