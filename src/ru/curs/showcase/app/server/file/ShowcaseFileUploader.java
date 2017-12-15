@@ -61,6 +61,10 @@ public class ShowcaseFileUploader extends HttpServlet {
 			}
 			if (obj.getClass().isAssignableFrom(JythonDTO.class)) {
 				responseData = (JythonDTO) obj;
+				if (responseData.getData() != null)
+					response.getWriter().print(
+							"<script>alert('" + responseData.getData() + "');</script>");
+
 			}
 
 		} catch (CelestaException e) {
