@@ -14,6 +14,7 @@ public class ToolBarItem extends BaseToolBarItem {
 
 	private Action action;
 	private String downloadLinkId = null;
+	private String fileName = null;
 
 	public ToolBarItem() {
 		super();
@@ -33,6 +34,14 @@ public class ToolBarItem extends BaseToolBarItem {
 
 	public void setDownloadLinkId(final String aDownloadLinkId) {
 		downloadLinkId = aDownloadLinkId;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(final String aFileName) {
+		fileName = aFileName;
 	}
 
 }

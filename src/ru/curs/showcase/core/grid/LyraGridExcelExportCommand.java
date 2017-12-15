@@ -67,14 +67,14 @@ public final class LyraGridExcelExportCommand extends DataPanelElementCommand<Ex
 			GridToExcelXMLFactory factory = new GridToExcelXMLFactory(gm.getColumns(), records);
 			org.w3c.dom.Document xml = factory.build();
 			ByteArrayOutputStream stream = XMLUtils.xsltTransformForGrid(xml);
-			setResult(new ExcelFile(stream, "xls"));
+			setResult(new ExcelFile(stream, getContext().getFileName(), "xls"));
 
 		} else {
 
 			LyraGridDataFactory lyraGridDataFactory =
 				new LyraGridDataFactory(getContext(), getElementInfo());
 			ByteArrayOutputStream stream = lyraGridDataFactory.exportExcelAll();
-			setResult(new ExcelFile(stream, "xlsx"));
+			setResult(new ExcelFile(stream, getContext().getFileName(), "xlsx"));
 
 		}
 

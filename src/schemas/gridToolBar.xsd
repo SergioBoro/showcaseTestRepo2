@@ -16,6 +16,7 @@
 		<xs:attribute name="visible" type="xs:boolean" default="true" />
 		<xs:attribute name="disable" type="xs:boolean" default="false" />
 		<xs:attribute name="downloadLinkId" type="xs:string" />
+		<xs:attribute name="fileName" type="xs:string" />
 	</xs:complexType>
 
 	<xs:complexType name="toolBarItem">

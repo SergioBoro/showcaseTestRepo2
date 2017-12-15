@@ -432,7 +432,12 @@ public class ToolBarHelper {
 
 			if (toolBarItem.getDownloadLinkId() != null) {
 				jsonItem.put("downloadLinkId", new JSONString(toolBarItem.getDownloadLinkId()));
+			} else {
+				if (toolBarItem.getFileName() != null) {
+					jsonItem.put("downloadLinkId", new JSONString(toolBarItem.getFileName()));
+				}
 			}
+
 		}
 
 	}

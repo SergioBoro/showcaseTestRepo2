@@ -95,6 +95,9 @@ public class GridContext extends CompositeContext {
 	@XmlTransient
 	private Boolean isFirstLoad = false;
 
+	@XmlTransient
+	private String fileName = null;
+
 	/**
 	 * Сбрасывает настройки таким образом, чтобы сервер вернул все записи на
 	 * первой странице.
@@ -163,6 +166,14 @@ public class GridContext extends CompositeContext {
 
 	public void setIsFirstLoad(final Boolean value) {
 		isFirstLoad = value;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(final String aFileName) {
+		fileName = aFileName;
 	}
 
 	public LiveInfo getLiveInfo() {

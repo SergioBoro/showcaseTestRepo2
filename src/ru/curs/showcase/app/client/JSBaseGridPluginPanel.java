@@ -28,7 +28,8 @@ public abstract class JSBaseGridPluginPanel extends BasicElementPanelBasis {
 
 	public abstract void runAction(final Action ac);
 
-	public abstract void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType);
+	public abstract void exportToExcel(final Widget wFrom, final GridToExcelExportType exportType,
+			final String fileName);
 
 	public abstract ClipboardDialog copyToClipboard();
 
@@ -186,11 +187,11 @@ public abstract class JSBaseGridPluginPanel extends BasicElementPanelBasis {
 
 		if ("exportToExcelCurrentPage".equals(actionId)) {
 
-			exportToExcel(null, GridToExcelExportType.CURRENTPAGE);
+			exportToExcel(null, GridToExcelExportType.CURRENTPAGE, downloadLinkId);
 
 		} else if ("exportToExcelAll".equals(actionId)) {
 
-			exportToExcel(null, GridToExcelExportType.ALL);
+			exportToExcel(null, GridToExcelExportType.ALL, downloadLinkId);
 
 		} else if ("copyToClipboard".equals(actionId)) {
 

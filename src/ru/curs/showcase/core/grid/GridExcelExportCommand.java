@@ -60,7 +60,7 @@ public final class GridExcelExportCommand extends DataPanelElementCommand<ExcelF
 			new GridToExcelXMLFactory(command.getColumns(), command.getRecords());
 		org.w3c.dom.Document xml = factory.build();
 		ByteArrayOutputStream stream = XMLUtils.xsltTransformForGrid(xml);
-		setResult(new ExcelFile(stream, "xls"));
+		setResult(new ExcelFile(stream, getContext().getFileName(), "xls"));
 
 	}
 
