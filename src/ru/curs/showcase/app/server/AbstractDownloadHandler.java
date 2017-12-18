@@ -35,6 +35,7 @@ public abstract class AbstractDownloadHandler extends AbstractFilesHandler {
 	@Override
 	protected void fillResponse() throws IOException {
 		String encName = URLEncoder.encode(outputFile.getName(), TextUtils.DEF_ENCODING);
+		encName = encName.replaceAll("\\+", "%20");
 		setContentType();
 		getResponse().setCharacterEncoding(TextUtils.DEF_ENCODING);
 
