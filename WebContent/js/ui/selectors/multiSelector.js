@@ -127,7 +127,8 @@ function showMultiSelector(selectorParam) {
 		        '    </td>'+        
 		        '</tr>'+
 		        '<tr style="height: 100%;">'+
-		        '    <td> <div id="selectedGrid" style= "width: '+getSelectedDataWidth()+'; height: 100%;"></div> </td>'+
+//		        '    <td> <div id="selectedGrid" style= "width: '+getSelectedDataWidth()+'; height: 100%;"></div> </td>'+
+		        '    <td> <div id="selectedGrid" style= "width: '+getSelectedDataWidth()+'; height: '+getSelectedDataHeight()+'"></div> </td>'+		        
 		        '</tr>'+
 	            '</table>';
 			
@@ -541,6 +542,13 @@ function showMultiSelector(selectorParam) {
 	     }
 	     function getSelectedDataWidth(){
 	    	 return (selectorParam.selectedDataWidth ? selectorParam.selectedDataWidth : "312px") + " !important";
+	     }
+	     function getSelectedDataHeight(){
+	    	 if (navigator.userAgent.search("Chrome/63") >= 0){
+	    		 return getDataHeight();
+	    	 } else {
+	    		 return "100%";
+	    	 }
 	     }
 	     function getNeedClear(){
 	    	 return selectorParam.needClear ? selectorParam.needClear : false;
