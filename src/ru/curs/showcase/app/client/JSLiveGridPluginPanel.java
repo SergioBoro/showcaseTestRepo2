@@ -1052,6 +1052,8 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 			// toolBarHelper.fillToolBar();
 			// }
 
+			adjustSelectionRecords(wrongSelection);
+
 			if (isRefreshLoading) {
 				toolBarHelper.fillToolBar();
 			}

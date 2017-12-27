@@ -128,7 +128,32 @@ try {
 								events = results[0]["events"];
 							}
 						}
-						gwtAfterLoadData(elementId, events, arrGrids[parentId]._total);
+						var wrongSelection = "";
+						if(results && grid && grid.needAdjustSelectionRecords){
+						    var i = 0;
+					        for(var id in grid.selection){
+					            if(grid.selection[id]){
+					            	var exist = null;
+					            	for (var j = 0; j < results.length; j++) {
+					            		if(id == results[j].id){
+					            			exist = true;
+					            			break;
+					            		}
+					            	}
+					            	if(!exist){
+						            	if(i > 0){
+						            		wrongSelection = wrongSelection+metadata["common"]["stringSelectedRecordIdsSeparator"];	
+						            	}
+						            	wrongSelection = wrongSelection+id;
+						            	i++;
+						            	
+						            	grid.deselect(id);
+					            	}
+					            }
+					        }
+							grid.needAdjustSelectionRecords = null;
+						}
+						gwtAfterLoadData(elementId, events, arrGrids[parentId]._total, wrongSelection);
 						
 						if(grid){
 							grid.dirty = {};
@@ -680,6 +705,7 @@ try {
 }
 
 function refreshLiveDGrid(parentId){
+	arrGrids[parentId].needAdjustSelectionRecords = true;	
 	arrGrids[parentId].refresh();
 }
 

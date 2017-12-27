@@ -128,7 +128,7 @@ public class JSTreeGridPluginPanel extends JSBaseGridPluginPanel {
 	private static native void setCallbackJSNIFunction() /*-{
 															$wnd.gwtGetHttpParamsTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtEditorGetHttpParamsTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginEditorGetHttpParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
-															$wnd.gwtAfterLoadDataTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;);
+															$wnd.gwtAfterLoadDataTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterLoadData(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterPartialUpdateTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterPartialUpdate(Ljava/lang/String;Ljava/lang/String;);																														$wnd.gwtAfterPartialUpdate = @ru.curs.showcase.app.client.api.JSLiveGridPluginPanelCallbacksEvents::pluginAfterPartialUpdate(Ljava/lang/String;Ljava/lang/String;);
 															$wnd.gwtAfterClickTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);															
 															$wnd.gwtAfterDoubleClickTree = @ru.curs.showcase.app.client.api.JSTreeGridPluginPanelCallbacksEvents::pluginAfterDoubleClick(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
@@ -774,7 +774,7 @@ public class JSTreeGridPluginPanel extends JSBaseGridPluginPanel {
 		return params;
 	}
 
-	public void pluginAfterLoadData(final String stringEvents) {
+	public void pluginAfterLoadData(final String stringEvents, final String wrongSelection) {
 
 		if (stringEvents != null) {
 			try {
@@ -821,7 +821,7 @@ public class JSTreeGridPluginPanel extends JSBaseGridPluginPanel {
 		};
 		delayTimer.schedule(500);
 
-		afterUpdateGrid();
+		afterUpdateGrid(wrongSelection);
 
 	}
 
@@ -1054,6 +1054,24 @@ public class JSTreeGridPluginPanel extends JSBaseGridPluginPanel {
 
 	}
 
+	private boolean adjustSelectionRecords(final String wrongSelection) {
+		boolean ret = false;
+		if (!((wrongSelection == null) || wrongSelection.isEmpty())) {
+			GridContext gridContext = getDetailedContext();
+			String[] strs = wrongSelection.split(STRING_SELECTED_RECORD_IDS_SEPARATOR);
+			for (String s : strs) {
+				if (gridContext.getSelectedRecordIds().remove(s)) {
+					ret = true;
+				}
+				if (s.equals(gridContext.getCurrentRecordId())) {
+					gridContext.setCurrentRecordId(null);
+					ret = true;
+				}
+			}
+		}
+		return ret;
+	}
+
 	/**
 	 * Замечание: сбрасывать состояние грида нужно обязательно до вызова
 	 * отрисовки зависимых элементов. Иначе потеряем выделенную запись или
@@ -1061,7 +1079,7 @@ public class JSTreeGridPluginPanel extends JSBaseGridPluginPanel {
 	 * 
 	 */
 
-	private void afterUpdateGrid() {
+	private void afterUpdateGrid(final String wrongSelection) {
 
 		needRestoreAfterShowLoadingMessage = false;
 
@@ -1074,6 +1092,8 @@ public class JSTreeGridPluginPanel extends JSBaseGridPluginPanel {
 			runAction(gridMetadata.getActionForDependentElements());
 
 		} else {
+
+			adjustSelectionRecords(wrongSelection);
 
 			if (isRefreshLoading) {
 				toolBarHelper.fillToolBar();

@@ -131,7 +131,6 @@ try {
 						}
 						var wrongSelection = "";
 						if(results && grid && grid.needAdjustSelectionRecords){
-							
 						    var i = 0;
 					        for(var id in grid.selection){
 					            if(grid.selection[id]){
@@ -154,7 +153,6 @@ try {
 					            }
 					        }
 							grid.needAdjustSelectionRecords = null;
-							
 						}
 						gwtAfterLoadData(elementId, events, arrGrids[parentId]._total, wrongSelection);
 						
