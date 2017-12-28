@@ -284,16 +284,18 @@ public final class XFormTemplateModificator extends GeneralXMLHelper {
 
 				org.w3c.dom.Document actionDoc;
 				try {
+					onSelectionCompleteAction =
+						"<xf:action>" + onSelectionCompleteAction + "</xf:action>";
 					actionDoc =
 						XMLUtils.stringToDocumentWithoutNamespace(onSelectionCompleteAction);
 				} catch (SAXException | IOException e) {
 					throw new XMLFormatException("selector-action-trigger", e);
 				}
 
-				Element actionElement = actionDoc.getDocumentElement();
-				actionElement.setAttributeNS(XFormProducer.EVENTS_URI, "ev:event", DOM_FOCUS_IN);
+				actionDoc.getDocumentElement().setAttributeNS(XFormProducer.EVENTS_URI, "ev:event",
+						DOM_FOCUS_IN);
 
-				Node actionNode = doc.importNode(actionElement, true);
+				Node actionNode = doc.importNode(actionDoc.getDocumentElement(), true);
 				actionTrigger.appendChild(actionNode);
 
 				parent.insertBefore(actionTrigger, trigger);
