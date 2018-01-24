@@ -14128,7 +14128,7 @@ function insertXFormByXPath(ok, selected, xpathRoot, xpathMapping, needClear, su
    		    	map[col] = (new XsltForms_binding("xsd:string", xpathFull)).bind_evaluate();
    		    }
 			
-   		    for (var i in selected) {
+		    for (var i = 0; i < selected.length; i++) {
    		        for (var col in value) {
    			        xpathFull = getXPath(xpath)+"/"+value[col];
               	    (new XsltForms_setvalue(subform, new XsltForms_binding(null, xpathFull),null,selected[i][col],null,null)).run(element);
