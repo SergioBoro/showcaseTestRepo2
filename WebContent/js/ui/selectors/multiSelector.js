@@ -544,7 +544,14 @@ function showMultiSelector(selectorParam) {
 	    	 return (selectorParam.selectedDataWidth ? selectorParam.selectedDataWidth : "312px") + " !important";
 	     }
 	     function getSelectedDataHeight(){
-	    	 if (navigator.userAgent.search("Chrome/63") >= 0){
+	    	 if ((navigator.userAgent.search("Chrome/63") >= 0) 
+	    			 || (navigator.userAgent.search("Chrome/64") >= 0)
+ 	    			 || (navigator.userAgent.search("Chrome/65") >= 0)
+	    			 || (navigator.userAgent.search("Chrome/66") >= 0)
+	    			 || (navigator.userAgent.search("Chrome/67") >= 0)
+	    			 || (navigator.userAgent.search("Chrome/68") >= 0)
+	    			 || (navigator.userAgent.search("Chrome/69") >= 0)
+	    			 ){
 	    		 return getDataHeight();
 	    	 } else {
 	    		 return "100%";
