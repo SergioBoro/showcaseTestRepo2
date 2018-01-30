@@ -1,10 +1,9 @@
 package ru.curs.showcase.app.client.api;
 
-import java.util.*;
+import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.rpc.*;
 import com.google.gwt.user.client.ui.FormPanel;
 
@@ -399,40 +398,6 @@ public final class XFormPanelCallbacksEvents {
 			}
 		}
 	}
-
-	private static native void setXFormByXPath(final boolean ok, final JavaScriptObject selected,
-			final Map<String, String> xpathMapping, final String subformId) /*-{
-		$wnd.setXFormByXPath(ok, selected, xpathMapping, subformId);
-	}-*/;
-
-	// CHECKSTYLE:OFF
-	private static native void insertXFormByXPath(final boolean ok,
-			final JavaScriptObject selected, final String xpathRoot,
-			final Map<String, String> xpathMapping, final boolean needClear,
-			final String subformId) /*-{
-		$wnd.insertXFormByXPath(ok, selected, xpathRoot, xpathMapping,
-				needClear, subformId);
-	}-*/;
-
-	// CHECKSTYLE:ON
-
-	private static native String getValueByXPath(final String xpath) /*-{
-		return $wnd.getValueByXPath(xpath);
-	}-*/;
-
-	public static native String getXMLByXPathArray(final Object xpathArray) /*-{
-		return $wnd.getXMLByXPathArray(xpathArray);
-	}-*/;
-
-	private static native JavaScriptObject getInitSelection(final String xpathRoot,
-			final Map<String, String> xpathMapping) /*-{
-		return $wnd.getInitSelection(xpathRoot, xpathMapping);
-	}-*/;
-
-	private static native JavaScriptObject
-			getInitSelectionForSingleSelector(final Map<String, String> xpathMapping) /*-{
-		return $wnd.getInitSelectionForSingleSelector(xpathMapping);
-	}-*/;
 
 	/**
 	 * Загружает файл с сервера.
