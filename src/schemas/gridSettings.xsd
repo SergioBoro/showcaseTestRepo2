@@ -51,7 +51,7 @@
             <xs:attribute name="expandAllRecords" type="xs:boolean"/>
             <xs:attribute name="toolbarClassName" type="xs:string"/>
             <xs:attribute name="toolbarStyle" type="xs:string"/>
-            
+            <xs:attribute name="toolbarCreateImmediately" type="xs:string"/>
             
             <xs:attribute name="columnheaderHorAlign" type="notNullType"/>
             <xs:attribute name="columnHorAlign" type="notNullType"/>
