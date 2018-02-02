@@ -551,11 +551,13 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 		try {
 
-			runGrid(gridMetadata.getJSInfo().getCreateProc(), params);
-
 			if (gridMetadata.getUISettings().isToolbarCreateImmediately()) {
 				getToolBarHelper().fillToolBarImmediately();
 			}
+
+			toolBarHelper.fillToolBar();
+
+			runGrid(gridMetadata.getJSInfo().getCreateProc(), params);
 
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
@@ -1007,9 +1009,9 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 			selectedRecordsChanged();
 		}
 
-		// hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) +
-		// "px");
-		getToolBarHelper().fillToolBar();
+		if (!isFirstLoading) {
+			getToolBarHelper().fillToolBar();
+		}
 
 		processClick(recId, colId, interactionType);
 
@@ -1095,9 +1097,7 @@ public class JSLyraGridPluginPanel extends JSBaseGridPluginPanel {
 
 			resetSelection();
 
-			// hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) +
-			// "px");
-			toolBarHelper.fillToolBar();
+			// toolBarHelper.fillToolBar();
 
 			runAction(gridMetadata.getActionForDependentElements());
 

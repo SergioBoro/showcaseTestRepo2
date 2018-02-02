@@ -530,11 +530,13 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 
 		try {
 
-			runGrid(gridMetadata.getJSInfo().getCreateProc(), params);
-
 			if (gridMetadata.getUISettings().isToolbarCreateImmediately()) {
 				getToolBarHelper().fillToolBarImmediately();
 			}
+
+			toolBarHelper.fillToolBar();
+
+			runGrid(gridMetadata.getJSInfo().getCreateProc(), params);
 
 		} catch (JavaScriptException e) {
 			if (e.getCause() != null) {
@@ -941,9 +943,9 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 			selectedRecordsChanged();
 		}
 
-		// hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) +
-		// "px");
-		getToolBarHelper().fillToolBar();
+		if (!isFirstLoading) {
+			getToolBarHelper().fillToolBar();
+		}
 
 		processClick(recId, colId, interactionType);
 
@@ -1045,17 +1047,11 @@ public class JSLiveGridPluginPanel extends JSBaseGridPluginPanel {
 
 		if (isFirstLoading) {
 
-			// hpToolbar.setHeight(String.valueOf(hpToolbar.getOffsetHeight()) +
-			// "px");
-			toolBarHelper.fillToolBar();
+			// toolBarHelper.fillToolBar();
 
 			runAction(gridMetadata.getActionForDependentElements());
 
 		} else {
-
-			// if (adjustSelectionRecords(wrongSelection)) {
-			// toolBarHelper.fillToolBar();
-			// }
 
 			adjustSelectionRecords(wrongSelection);
 
