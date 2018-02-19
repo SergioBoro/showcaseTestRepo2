@@ -9,7 +9,7 @@ import ru.curs.showcase.app.api.SerializableElement;
  * запросе данных.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class LyraGridAddData implements SerializableElement {
+public class GridAddData implements SerializableElement {
 	private static final long serialVersionUID = -3159944028389882617L;
 
 	private String header = null;

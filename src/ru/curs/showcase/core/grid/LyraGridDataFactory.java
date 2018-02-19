@@ -345,12 +345,12 @@ public class LyraGridDataFactory {
 		}
 
 		JSONObject objAddData = null;
-		LyraGridAddData addData = new LyraGridAddData();
+		GridAddData addData = new GridAddData();
 		addData.setHeader(basicGridForm.getFormProperties().getHeader());
 		addData.setFooter(basicGridForm.getFormProperties().getFooter());
 		try {
 			String stringAddData = com.google.gwt.user.server.rpc.RPC.encodeResponseForSuccess(
-					FakeService.class.getMethod("serializeLyraGridAddData"), addData);
+					FakeService.class.getMethod("serializeGridAddData"), addData);
 			if (data.size() > 0) {
 				((JSONObject) data.get(0)).put(ADDDATA_COLUMN, stringAddData);
 			} else {
