@@ -2,16 +2,16 @@ package ru.curs.showcase.app.api.grid.toolbar;
 
 import java.util.HashMap;
 
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.json.client.*;
-import com.google.gwt.user.client.*;
-import com.google.gwt.user.client.ui.*;
-
 import ru.curs.showcase.app.api.datapanel.*;
 import ru.curs.showcase.app.api.event.*;
 import ru.curs.showcase.app.api.services.DataServiceAsync;
 import ru.curs.showcase.app.client.*;
 import ru.curs.showcase.app.client.api.Constants;
+
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.json.client.*;
+import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.ui.*;
 
 /**
  * Помощник загрузки и формирования панели инструментов.
@@ -82,6 +82,8 @@ public class ToolBarHelper {
 			return;
 		}
 
+		RootPanel.getBodyElement().removeClassName("toolbar");
+
 		final DataPanelElementInfo elInfo = jsBaseGridPluginPanel.getElementInfo();
 		if (elInfo.isToolBarProc()) {
 
@@ -113,6 +115,10 @@ public class ToolBarHelper {
 									Scheduler.get().scheduleDeferred(new Command() {
 										@Override
 										public void execute() {
+
+											if (blinkingCount == 0)
+												RootPanel.getBodyElement().addClassName("toolbar");
+
 											boolean xformRelated = false;
 											for (DataPanelElementInfo elem : AppCurrContext
 													.getReadyStateMap().keySet()) {
@@ -125,37 +131,37 @@ public class ToolBarHelper {
 											}
 
 											if (elInfo.getType() == DataPanelElementType.GRID
-													&& !AppCurrContext.getReadyStateMap()
-															.get(elInfo)) {
-												AppCurrContext.getReadyStateMap().put(elInfo,
-														true);
+													&& !AppCurrContext.getReadyStateMap().get(
+															elInfo)) {
+												AppCurrContext.getReadyStateMap()
+														.put(elInfo, true);
 											}
 
 											for (java.util.Map.Entry<DataPanelElementInfo, Boolean> ddd : AppCurrContext
 													.getFromActionElementsMap().entrySet()) {
-												if (ddd.getKey()
-														.getType() == DataPanelElementType.WEBTEXT)
-													AppCurrContext.getInstance()
+												if (ddd.getKey().getType() == DataPanelElementType.WEBTEXT)
+													AppCurrContext
+															.getInstance()
 															.setGridWithToolbarWebtextTrueStateForReadyStateMap(
 																	true);
-												if (ddd.getKey()
-														.getType() == DataPanelElementType.CHART)
-													AppCurrContext.getInstance()
+												if (ddd.getKey().getType() == DataPanelElementType.CHART)
+													AppCurrContext
+															.getInstance()
 															.setGridWithToolbarChartTrueStateForReadyStateMap(
 																	true);
-												if (ddd.getKey()
-														.getType() == DataPanelElementType.GRID)
-													AppCurrContext.getInstance()
+												if (ddd.getKey().getType() == DataPanelElementType.GRID)
+													AppCurrContext
+															.getInstance()
 															.setGridWithToolbarGridTrueStateForReadyStateMap(
 																	true);
-												if (ddd.getKey()
-														.getType() == DataPanelElementType.GEOMAP)
-													AppCurrContext.getInstance()
+												if (ddd.getKey().getType() == DataPanelElementType.GEOMAP)
+													AppCurrContext
+															.getInstance()
 															.setGridWithToolbarGeoMapTrueStateForReadyStateMap(
 																	true);
-												if (ddd.getKey()
-														.getType() == DataPanelElementType.PLUGIN)
-													AppCurrContext.getInstance()
+												if (ddd.getKey().getType() == DataPanelElementType.PLUGIN)
+													AppCurrContext
+															.getInstance()
 															.setGridWithToolbarPluginTrueStateForReadyStateMap(
 																	true);
 											}
@@ -163,12 +169,13 @@ public class ToolBarHelper {
 											if (!booleanWithToolBar) {
 												if (!AppCurrContext.getReadyStateMap()
 														.containsValue(false)) {
-													RootPanel.getBodyElement()
-															.addClassName("ready");
+													RootPanel.getBodyElement().addClassName(
+															"ready");
 													alreadyReadyWithToolbar = true;
-													if (!xformRelated && AppCurrContext
-															.getInstance()
-															.getGridWithToolbarGridTrueStateForReadyStateMap())
+													if (!xformRelated
+															&& AppCurrContext
+																	.getInstance()
+																	.getGridWithToolbarGridTrueStateForReadyStateMap())
 														booleanWithToolBar = true;
 												}
 											}
@@ -177,29 +184,28 @@ public class ToolBarHelper {
 												boolean innerBool = false;
 												for (DataPanelElementInfo el : AppCurrContext
 														.getReadyStateMap().keySet()) {
-													if ((el.getHideOnLoad() || el
-															.getContext(
-																	AppCurrContext.getInstance()
-																			.getCurrentAction())
+													if ((el.getHideOnLoad() || el.getContext(
+															AppCurrContext.getInstance()
+																	.getCurrentAction())
 															.doHiding())
 															&& !AppCurrContext.getReadyStateMap()
 																	.get(el))
 														innerBool = true;
-													else if ((el.getHideOnLoad() || el
-															.getContext(
-																	AppCurrContext.getInstance()
-																			.getCurrentAction())
+													else if ((el.getHideOnLoad() || el.getContext(
+															AppCurrContext.getInstance()
+																	.getCurrentAction())
 															.doHiding())
 															&& AppCurrContext.getReadyStateMap()
 																	.get(el))
 														innerBool = false;
 												}
 												if (innerBool) {
-													RootPanel.getBodyElement()
-															.addClassName("ready");
-													if (!xformRelated && AppCurrContext
-															.getInstance()
-															.getGridWithToolbarGridTrueStateForReadyStateMap())
+													RootPanel.getBodyElement().addClassName(
+															"ready");
+													if (!xformRelated
+															&& AppCurrContext
+																	.getInstance()
+																	.getGridWithToolbarGridTrueStateForReadyStateMap())
 														booleanWithToolBar1 = true;
 												}
 											}
@@ -240,19 +246,23 @@ public class ToolBarHelper {
 									for (java.util.Map.Entry<DataPanelElementInfo, Boolean> ddd : AppCurrContext
 											.getFromActionElementsMap().entrySet()) {
 										if (ddd.getKey().getType() == DataPanelElementType.WEBTEXT)
-											AppCurrContext.getInstance()
+											AppCurrContext
+													.getInstance()
 													.setGridWithoutToolbarWebtextTrueStateForReadyStateMap(
 															true);
 										if (ddd.getKey().getType() == DataPanelElementType.CHART)
-											AppCurrContext.getInstance()
+											AppCurrContext
+													.getInstance()
 													.setGridWithoutToolbarChartTrueStateForReadyStateMap(
 															true);
 										if (ddd.getKey().getType() == DataPanelElementType.GEOMAP)
-											AppCurrContext.getInstance()
+											AppCurrContext
+													.getInstance()
 													.setGridWithoutToolbarGeoMapTrueStateForReadyStateMap(
 															true);
 										if (ddd.getKey().getType() == DataPanelElementType.PLUGIN)
-											AppCurrContext.getInstance()
+											AppCurrContext
+													.getInstance()
 													.setGridWithoutToolbarPluginTrueStateForReadyStateMap(
 															true);
 									}
@@ -265,12 +275,13 @@ public class ToolBarHelper {
 										boolean innerBool = false;
 										for (DataPanelElementInfo el : AppCurrContext
 												.getReadyStateMap().keySet()) {
-											if ((el.getHideOnLoad() || el.getContext(AppCurrContext
-													.getInstance().getCurrentAction()).doHiding())
+											if ((el.getHideOnLoad() || el.getContext(
+													AppCurrContext.getInstance()
+															.getCurrentAction()).doHiding())
 													&& !AppCurrContext.getReadyStateMap().get(el))
 												innerBool = true;
-											else if ((el.getHideOnLoad()
-													|| el.getContext(AppCurrContext.getInstance()
+											else if ((el.getHideOnLoad() || el.getContext(
+													AppCurrContext.getInstance()
 															.getCurrentAction()).doHiding())
 													&& AppCurrContext.getReadyStateMap().get(el))
 												innerBool = false;
@@ -303,8 +314,9 @@ public class ToolBarHelper {
 		panel.clear();
 		panel.add(pluginHTML);
 
-		String params = "'" + jsBaseGridPluginPanel.getElementInfo().getId().toString() + "'"
-				+ ", '" + jsBaseGridPluginPanel.getDivIdToolBar() + "'";
+		String params =
+			"'" + jsBaseGridPluginPanel.getElementInfo().getId().toString() + "'" + ", '"
+					+ jsBaseGridPluginPanel.getDivIdToolBar() + "'";
 
 		JSONObject metadata = new JSONObject();
 
@@ -358,8 +370,9 @@ public class ToolBarHelper {
 		}
 		metadata.put("common", common);
 
-		String params = "'" + jsBaseGridPluginPanel.getElementInfo().getId().toString() + "'"
-				+ ", '" + jsBaseGridPluginPanel.getDivIdToolBar() + "'";
+		String params =
+			"'" + jsBaseGridPluginPanel.getElementInfo().getId().toString() + "'" + ", '"
+					+ jsBaseGridPluginPanel.getDivIdToolBar() + "'";
 
 		actions.clear();
 		needStaticItems = true;
