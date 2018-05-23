@@ -129,12 +129,17 @@ public class CourseLocalization {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String sesid = ((WebAuthenticationDetails) auth.getDetails()).getSessionId();
 			if (sesid == null) {
+				String remoteAddr =
+					((WebAuthenticationDetails) auth.getDetails()).getRemoteAddress();
+				if (remoteAddr != null)
+					sesid =
+						AppInfoSingleton.getAppInfo().getRemoteAddrSessionMap().get(remoteAddr);
 				// sesid = AppInfoSingleton.getAppInfo().getSesid();
-				String[] arr =
-					AppInfoSingleton.getAppInfo().getRemoteAddrSessionMap().values()
-							.toArray(new String[0]);
-				if (arr.length > 0)
-					sesid = arr[arr.length - 1];
+				// String[] arr =
+				// AppInfoSingleton.getAppInfo().getRemoteAddrSessionMap().values()
+				// .toArray(new String[0]);
+				// if (arr.length > 0)
+				// sesid = arr[arr.length - 1];
 			}
 			lang = AppInfoSingleton.getAppInfo().getLocalizationCache().get(sesid);
 		}
